@@ -445,6 +445,12 @@ function we_tag_field($attribs){
 		if($style){
 			$_linkAttribs['style'] = $style;
 		}
+		foreach($attribs as $key => $val){
+			if(strpos($key, 'pass_') === 0){
+				$_linkAttribs[$key] = $val;
+			}
+		}
+
 
 		if($winprops){
 

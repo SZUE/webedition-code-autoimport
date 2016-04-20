@@ -41,6 +41,7 @@ class we_base_browserDetect{
 	const SYS_UNIX = 'unix';
 	const SYS_ANDROID = 'android';
 	const SYS_IPHONE = 'iphone';
+	const SYS_IPAD = 'ipad';
 
 	///Browser
 	protected static $br = self::UNKNOWN;
@@ -188,6 +189,8 @@ class we_base_browserDetect{
 			self::$sys = self::SYS_ANDROID;
 		} elseif(stristr($bracket, 'iPhone')){
 			self::$sys = self::SYS_IPHONE;
+		} elseif(stristr($bracket, 'iPad')){
+			self::$sys = self::SYS_IPAD;
 		} elseif(stristr($bracket, 'linux') || stristr($bracket, 'x11') || stristr($bracket, 'sun')){
 			self::$sys = self::SYS_UNIX;
 		}

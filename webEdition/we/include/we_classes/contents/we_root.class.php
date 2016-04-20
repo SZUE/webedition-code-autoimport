@@ -421,8 +421,8 @@ abstract class we_root extends we_class{
 	}
 
 	function add_owner($id){
-		$ids = is_array($id) ? $id : explode(',', $id);
-		$this->Owners = implode(',', array_unique(array_filter(explode(',', $this->Owners)) + $ids, SORT_NUMERIC));
+		$ids = array_filter(is_array($id) ? $id : explode(',', $id));
+		$this->Owners = implode(',', array_unique(array_filter(array_merge(explode(',', $this->Owners), $ids)), SORT_NUMERIC));
 	}
 
 	function del_owner($id){

@@ -113,14 +113,14 @@ abstract class we_fileupload{
 			$ct = strtolower($ct);
 			if(in_array($ct, we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true))){
 				$exts4cts = is_array(($tmp = we_base_ContentTypes::inst()->getExtension($ct))) ? array_merge($exts4cts, $tmp) : $exts4cts;
-				$cts[] = $ct;
+				$cts = array_merge(we_base_ContentTypes::inst()->getRealContentTypes($ct));
 			}
 		}
 
 		$ret = array(
-			'cts' => $cts ? ',' . implode(',', $cts) . ',' : '',
-			'exts4cts' => $exts4cts ? ',' . strtolower(implode(',', $exts4cts)) . ',' : '',
-			'exts' => $exts ? ',' . strtolower(implode(',', $exts)) . ',' : '',
+			'cts' => $cts ? ',' . implode(',', array_unique($cts)) . ',' : '',
+			'exts4cts' => $exts4cts ? ',' . strtolower(implode(',', array_unique($exts4cts))) . ',' : '',
+			'exts' => $exts ? ',' . strtolower(implode(',', array_unique($exts))) . ',' : '',
 		);
 		$ret['all'] = str_replace(',,', ',', $ret['cts'] . $ret['exts4cts'] . $ret['exts']);
 

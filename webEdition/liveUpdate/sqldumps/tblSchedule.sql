@@ -7,7 +7,7 @@ CREATE TABLE ###TBLPREFIX###tblSchedule (
   SerializedData longblob NOT NULL,
   Schedpro text NOT NULL,
 	`rerun` enum('once','hour','day','week','month','year') NOT NULL default 'once',
-  Active tinyint unsigned default NULL,
+  Active tinyint unsigned NOT NULL default '0',
   PRIMARY KEY (DID,ClassName,Active,`expire`,task,rerun),
   KEY Wann (`expire`,Active,`lockedUntil`)
 ) ENGINE=MyISAM;

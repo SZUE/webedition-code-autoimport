@@ -1809,7 +1809,7 @@ var weFileUpload = (function () {
 					case 'fileOK' :
 						i = s.mapFiles[cur.fileNum];
 						try {
-							document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 200;
+							document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 360;
 						} catch(e){}
 
 						this.setInternalProgressCompleted(true, i, '');

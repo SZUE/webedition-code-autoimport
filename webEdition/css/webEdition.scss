@@ -1021,6 +1021,7 @@ optgroup{
 		border: none;
 		tr {
 			height: 12px;
+			cursor: pointer;
 		}
 		tr:first-child td{
 			text-align:right;
@@ -1446,6 +1447,14 @@ span{
 .objectFileElement{
 	padding:10px 30px;
 	border-bottom:1px solid #AFB0AF;
+}
+
+//image upload & objectFile image-background
+div.filedrag_content_right img,
+.objectFileElement[id^="img_"] img{
+	background-color: lightgrey;
+	background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
+	background-size: 6px 6px;
 }
 
 .clearfix:after {
@@ -1970,7 +1979,7 @@ div.collection-content{
 
 			&.colNum{
 				width: 46px;
-				padding: 0 16px 0 0;
+				padding: 26px 16px 0 0;
 				text-align: right;
 			}
 
@@ -1980,10 +1989,11 @@ div.collection-content{
 			}
 			&.colContent{
 				width: 400px;
+				padding-top:13px;
 			}
 			&.colControls{
 				width: 220px;
-				padding: 4px 10px 0 0;
+				padding: 15px 10px 0 0;
 			}
 		}
 
@@ -2039,17 +2049,29 @@ div.collection-content{
 		tr.rowAttribsMeta{
 			display: none
 		}
+
+		td.colNum {
+			padding: 10px 2px 0 0;
+		}
 		td.colPreview {
-			width: 60px;
+			width: 50px;
 			padding: 3px 9px 3px 0;
 		}
+		td.colContent {
+			width: 520px;
+			padding: 2px 0 0 0;
+		}
+		td.colControls {
+			width: 120px;
+			padding: 4px 0 0 0;
+		}
 		div.previewDiv{
-			width: 50px;
+			width: 54px;
 			height: 30px;
 			span{
 				text-align: center;
 				font-size: 14px;
-				padding: 4px;
+				padding: 4px 4px 4px 0;
 			}
 			div.divBtnSelect{
 				padding: 2px 0 0 0;
@@ -2229,4 +2251,17 @@ div.collection-content{
 	label.elementText{
 		display: inline-block;
 	}
+}
+
+.iframeNoScroll{
+	overflow:hidden;
+}
+
+.iframeScroll{
+	overflow:auto !important;
+}
+
+.iframeScrollIpad{
+	overflow:scroll !important;
+	-webkit-overflow-scrolling:touch !important;
 }

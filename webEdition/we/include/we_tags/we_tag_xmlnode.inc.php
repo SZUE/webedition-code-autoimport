@@ -51,7 +51,7 @@ function we_tag_xmlnode($attribs){
 		echo $foo;
 		return false;
 	}
-	$feed = weTag_getAttribute('feed', $attribs, '', we_base_request::HTML);
+	$feed = we_tag_getPostName(weTag_getAttribute('feed', $attribs, '', we_base_request::STRING));
 	$url = weTag_getAttribute('url', $attribs, '', we_base_request::URL);
 
 	if(!isset($GLOBALS["xpaths"])){
@@ -69,39 +69,37 @@ function we_tag_xmlnode($attribs){
 	}
 
 	$ind_name = count($GLOBALS['xpaths']) + 1;
-	$GLOBALS["xpaths"][$ind_name] = array();
-	$GLOBALS["xpaths"][$ind_name]['xpath'] = $attribs["xpath"];
-	$GLOBALS["xpaths"][$ind_name]['parent'] = $parent_name;
-	$got_name = false;
+	$GLOBALS["xpaths"][$ind_name] = array(
+		'xpath' => $attribs["xpath"],
+		'parent' => $parent_name
+	);
 
 	// find feed
 	if($url){
 		$feed_name = new we_xml_browser($url);
 		$GLOBALS["xpaths"][$ind_name]["url"] = $url;
 		$got_name = true;
+	} elseif($feed){
+		$feed_name = $GLOBALS["xmlfeeds"][$feed];
+		$GLOBALS["xpaths"][$ind_name]["feed"] = $feed;
+		$got_name = true;
 	} else {
-		if($feed){
-			$feed_name = $GLOBALS["xmlfeeds"][$feed];
-			$GLOBALS["xpaths"][$ind_name]["feed"] = $feed;
-			$got_name = true;
-		} else {
-			$got_name = false;
-			$c_name = 0;
+		$got_name = false;
+		$c_name = 0;
 
-			if(!empty($parent_name)){
-				for($c_name = $pind_name; $c_name > -1; $c_name--){
-					$otac_name = $GLOBALS["xstack"][$c_name];
-					if(isset($GLOBALS["xpaths"][$otac_name])){
-						if(isset($GLOBALS["xpaths"][$otac_name]["url"]) && !empty($GLOBALS["xpaths"][$otac_name]["url"])){
-							$feed_name = new we_xml_browser($GLOBALS["xpaths"][$otac_name]["url"]);
-							$GLOBALS["xpaths"][$ind_name]["url"] = $GLOBALS["xpaths"][$otac_name]["url"];
-							$got_name = true;
-						}
-						if(isset($GLOBALS["xpaths"][$otac_name]["feed"]) && !empty($GLOBALS["xpaths"][$otac_name]["feed"])){
-							$feed_name = $GLOBALS["xmlfeeds"][$GLOBALS["xpaths"][$otac_name]["feed"]];
-							$GLOBALS["xpaths"][$ind_name]["feed"] = $GLOBALS["xpaths"][$otac_name]["feed"];
-							$got_name = true;
-						}
+		if(!empty($parent_name)){
+			for($c_name = $pind_name; $c_name > -1; $c_name--){
+				$otac_name = $GLOBALS["xstack"][$c_name];
+				if(isset($GLOBALS["xpaths"][$otac_name])){
+					if(isset($GLOBALS["xpaths"][$otac_name]["url"]) && !empty($GLOBALS["xpaths"][$otac_name]["url"])){
+						$feed_name = new we_xml_browser($GLOBALS["xpaths"][$otac_name]["url"]);
+						$GLOBALS["xpaths"][$ind_name]["url"] = $GLOBALS["xpaths"][$otac_name]["url"];
+						$got_name = true;
+					}
+					if(isset($GLOBALS["xpaths"][$otac_name]["feed"]) && !empty($GLOBALS["xpaths"][$otac_name]["feed"])){
+						$feed_name = $GLOBALS["xmlfeeds"][$GLOBALS["xpaths"][$otac_name]["feed"]];
+						$GLOBALS["xpaths"][$ind_name]["feed"] = $GLOBALS["xpaths"][$otac_name]["feed"];
+						$got_name = true;
 					}
 				}
 			}
@@ -138,7 +136,6 @@ function we_tag_xmlnode($attribs){
 }
 
 class _we_tag_xmlnode_struct{
-
 	private $nodes_name;
 	private $feed_name;
 	private $init = false;

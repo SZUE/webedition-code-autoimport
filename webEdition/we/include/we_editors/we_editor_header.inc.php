@@ -123,7 +123,6 @@ switch($_SESSION['weS']['we_mode']){
 }
 
 echo we_html_element::jsScript(JS_DIR . 'we_editor_header.js', '
-var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(parent.name);
 _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 	($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE=true;' : ''));
 $_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : '') : $we_doc->Text);
