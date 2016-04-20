@@ -1147,7 +1147,8 @@ class we_versions_version{
 			case 'binaryPath':
 				$binaryPath = '';
 				switch($document['ContentType']){
-					case 'objectFile':
+					case we_base_ContentTypes::COLLECTION:
+					case we_base_ContentTypes::OBJECT_FILE:
 					case we_base_ContentTypes::TEMPLATE:
 						break;
 					default:
@@ -1156,10 +1157,10 @@ class we_versions_version{
 
 						$vers = $this->getVersion();
 
-						$versionName = $document['ID'] . '_' . $document['Table'] . '_' . $vers . $document['Extension'];
+						$versionName = $document['ID'] . '_' . $document['Table'] . '_' . $vers . (empty($document['Extension']) ? '' : $document['Extension']);
 						$binaryPath = $versionName . '.gz';
 						$binaryFile = $_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $binaryPath;
-						if($document['IsDynamic']){
+						if(!empty($document['IsDynamic'])){
 							$this->writePreviewDynFile($document['ID'], $siteFile, $binaryFile, $documentObj);
 						} elseif(file_exists($siteFile) && $document['Extension'] === '.php' && ($document['ContentType'] == we_base_ContentTypes::WEDOCUMENT || $document['ContentType'] == we_base_ContentTypes::HTML)){
 							we_base_file::save($binaryFile, gzencode(file_get_contents($siteFile), 9));

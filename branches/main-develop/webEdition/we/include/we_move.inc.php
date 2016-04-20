@@ -29,19 +29,27 @@ $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2);
 $script = '';
 
 if(($table == TEMPLATES_TABLE && !permissionhandler::hasPerm("MOVE_TEMPLATE")) ||
-		($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
-		(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
+	($table == FILE_TABLE && !permissionhandler::hasPerm("MOVE_DOCUMENT")) ||
+	(defined('OBJECT_TABLE') && $table == OBJECT_TABLE && !permissionhandler::hasPerm("MOVE_OBJECTFILES"))){
 	require_once (WE_USERS_MODULE_PATH . 'we_users_permmessage.inc.php');
 	exit();
 }
 
 $yuiSuggest = & weSuggest::getInstance();
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
-if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
-	$db = new DB_WE();
-	if(($targetDirectroy = we_base_request::_(we_base_request::INT, 'we_target')) === false){
-		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
-	} elseif(($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
+$script = '';
+switch($cmd0){
+	case 'do_move':
+	case 'move_single_document':
+		$db = new DB_WE();
+		if(($targetDirectroy = we_base_request::_(we_base_request::INT, 'we_target')) === false){
+			$script = we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
+			break;
+		}
+		if(!($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
+			$script = we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
+			break;
+		}
 
 		// list of all item names which should be moved
 		$items2move = array();
@@ -107,19 +115,16 @@ if($cmd0 === 'do_move' || $cmd0 === 'move_single_document'){
 		} else {
 			$script .= we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
 		}
-	} else {
-		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
-	}
-	$script = we_html_element::jsElement($script);
 }
+$script = $script ? we_html_element::jsElement($script) : '';
 
 //	in seeMode return to startDocument ...
 
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 	$js = ($retVal ? //	document moved -> go to seeMode startPage
-					we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');" :
-					we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
+			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.we_cmd('start_multi_editor');" :
+			we_message_reporting::getShowMessageCall(g_l('alert', '[move_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
 
 	echo we_html_tools::getHtmlTop('', '', '', $script . we_html_element::jsElement($js));
 	exit();
@@ -299,7 +304,7 @@ echo
 <form name="we_form" method="post" onsubmit="return false">
 <div>
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(
-		g_l('newFile', '[title_move]')) . '</h1>
+	g_l('newFile', '[title_move]')) . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', '[move_text]') . '</span>
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
 <div>' . $_buttons . '</div></div>' . we_html_tools::hidden("sel", "") .

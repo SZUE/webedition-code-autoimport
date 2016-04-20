@@ -70,7 +70,6 @@ class weSuggest{
 	var $inputMayBeEmpty = array();
 	var $_doOnItemSelect = array();
 	var $_doOnTextfieldBlur = array();
-	var $preCheck = "";
 	/*	 * ************************************* */
 	var $acId = '';
 	var $checkFieldValue = true;
@@ -141,31 +140,31 @@ class weSuggest{
 				//$weFieldWS[] = '[' . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . ']';
 
 				$current = "{
-				'id' : '" . $this->inputfields[$i] . "',
-				'container': '" . $this->containerfields[$i] . "',
-				'old': document.getElementById('" . $this->inputfields[$i] . "').value,
-				'selector': '" . $this->selectors[$i] . "',
-				'sel': '',
-				'newval': null,
-				'run': false,
-				'found': 0,
-				'cType': '',
-				'valid': true,
-				'countMark': 0,
-				'changed': false,
-				'maxResults':" . $this->weMaxResults[$i] . ",
-				'table': '" . $this->tables[$i] . "',
-				'rootDir': '" . $this->rootDirs[$i] . "',
-				'cTypes': '" . $this->contentTypes[$i] . "',
-				'workspace': [" . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . "],
-				'mayBeEmpty': " . ($this->inputMayBeEmpty[$i] ? "true" : "false") . ",
-				'checkField': " . intval(!empty($this->checkFieldsValues[$i]));
+	id : '" . $this->inputfields[$i] . "',
+	container: '" . $this->containerfields[$i] . "',
+	old: document.getElementById('" . $this->inputfields[$i] . "').value,
+	selector: '" . $this->selectors[$i] . "',
+	sel: '',
+	newval: null,
+	run: false,
+	found: 0,
+	cType: '',
+	valid: true,
+	countMark: 0,
+	changed: false,
+	maxResults:" . $this->weMaxResults[$i] . ",
+	table: '" . $this->tables[$i] . "',
+	rootDir: '" . $this->rootDirs[$i] . "',
+	cTypes: '" . $this->contentTypes[$i] . "',
+	workspace: [" . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . "],
+	mayBeEmpty: " . ($this->inputMayBeEmpty[$i] ? "true" : "false") . ",
+	checkField: " . intval(!empty($this->checkFieldsValues[$i]));
 
 				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
 					if($this->setOnSelectFields[$i]){
 						$current .=",
-	'fields_id': ['" . implode('\',\'', $this->setOnSelectFields[$i]) . '\']' . ",
-	'fields_val': [document.getElementById('" . implode("').value,document.getElementById('", $this->setOnSelectFields[$i]) . "').value]";
+	fields_id: ['" . implode('\',\'', $this->setOnSelectFields[$i]) . '\']' . ",
+	fields_val: [document.getElementById('" . implode("').value,document.getElementById('", $this->setOnSelectFields[$i]) . "').value]";
 					}
 				}
 				if($this->_doOnItemSelect[$i]){
@@ -181,7 +180,7 @@ class weSuggest{
 							$additionalFields .= ($j > 0 ? "," : "") . str_replace('-', '_', $this->setOnSelectFields[$i][$j]);
 						}
 						$current .=",
-							'checkValues':'" . $additionalFields . "'";
+	checkValues:'" . $additionalFields . "'";
 					}
 				}
 				// EOF loop fields
@@ -224,14 +223,24 @@ class weSuggest{
 		}
 
 		return we_html_element::jsElement('
-YAHOO.autocoml.width= ' . intval($this->width) . ';
-YAHOO.autocoml.ajaxURL = WE().consts.dirs.WEBEDITION_DIR+"rpc.php";
-YAHOO.autocoml.selfType="' . $weSelfContentType . '";
-YAHOO.autocoml.selfID="' . $weSelfID . '";
-YAHOO.autocoml.yuiAcFieldsById = {' . implode(',', $fildsById) . '};
-YAHOO.autocoml.yuiAcFields = [' . implode(',', $fildsObj) . '];
-YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
-				$this->preCheck);
+function initYahooData(){
+	if(YAHOO.autocoml===undefined||!YAHOO.autocoml){
+		setTimeout(initYahooData, 100);
+		return;
+	}
+	try{
+	YAHOO.autocoml.width= ' . intval($this->width) . ';
+	YAHOO.autocoml.ajaxURL = WE().consts.dirs.WEBEDITION_DIR+"rpc.php";
+	YAHOO.autocoml.selfType="' . $weSelfContentType . '";
+	YAHOO.autocoml.selfID="' . $weSelfID . '";
+	YAHOO.autocoml.yuiAcFieldsById = {' . implode(',', $fildsById) . '};
+	YAHOO.autocoml.yuiAcFields = [' . implode(',', $fildsObj) . '];
+	YAHOO.autocoml.init();
+	}catch(e){
+	//catch bug in IE
+	}
+}
+YAHOO.util.Event.addListener(window, "load", initYahooData );');
 	}
 
 	function getHTML($reset = true){
@@ -270,20 +279,26 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 			$dropzoneContent = 'Drag and Drop Auswahl<br>' . $texts[(($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0))];
 			$dropzoneStyle  = 'width:auto;padding-top:14px;height:60px;';
 
-			// FIXME: add code for icons so we can have preview for all cts
-			if(false && $this->resultValue && $this->contentType === we_base_ContentTypes::IMAGE){
-				$DE_WE = new DB_WE;
-				$file = $DE_WE->getHash('SELECT Path,Extension,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $this->resultValue);
-				if($file['ContentType'] === we_base_ContentTypes::IMAGE){
-					$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->resultValue . "&size[width]=100&size[heihjt]=100&path=" . urlencode($file['Path']) . "&extension=" . $file['Extension'];
-					$imgDiv = we_html_element::htmlDiv(array('style' => 'float:left;height:100%;'), 
-							we_html_element::htmlSpan(array('style' => 'display:inline-block;height: 100%;vertical-align: middle;')) .
-							we_html_element::htmlSpan(array('id' => 'preview_' . $this->acId), we_html_element::htmlImg(array('src' => $url, 'style' => 'vertical-align:middle;')))
-					);
-					$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array('style' => 'display:inline-block;padding-top:30px;'), $dropzoneContent);
-					$dropzoneStyle  = 'width:auto;padding:0px 0 0 12px;';
+			$img = '';
+			$eventAttribs = array('ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);');
+
+			if(true && $this->contentType === we_base_ContentTypes::IMAGE){ // FIXME: add code for icons so we can have preview for all cts
+				if($this->resultValue){
+					$DE_WE = new DB_WE;
+					$file = $DE_WE->getHash('SELECT Path,Extension,ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $this->resultValue);
+
+					if($file['ContentType'] === we_base_ContentTypes::IMAGE){
+						$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->resultValue . "&size[width]=100&size[heihjt]=100&path=" . urlencode($file['Path']) . "&extension=" . $file['Extension'];
+						$img = we_html_element::htmlImg(array('src' => $url, 'style' => 'vertical-align:middle;'));
+					}
 				}
-				
+
+				$imgDiv = we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'float:left;height:100%;')), 
+						we_html_element::htmlSpan(array('style' => 'display:inline-block;height: 100%;vertical-align: middle;')) .
+						we_html_element::htmlSpan(array('id' => 'preview_' . $this->acId), $img)
+				);
+				$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'display:inline-block;padding-top:30px;')), $dropzoneContent);
+				$dropzoneStyle  = 'width:auto;padding:0px 0 0 12px;';
 			}
 
 			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;top.dropzoneAddPreview('" . $this->acId . "', id, table, ct, path);" . $this->doOnDropFromTree . "}";
@@ -291,7 +306,7 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 			$dropzone = we_fileupload_ui_base::getExternalDropZone('we_File', $dropzoneContent, $dropzoneStyle, implode(',', $this->contentTypes), array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->acId, $this->table);
 
 
-			$html = we_html_element::htmlDiv(array(), 
+			$html = we_html_element::htmlDiv(array(),
 				we_html_element::htmlDiv(array(), $html) .
 				we_html_element::htmlDiv(array('style' => 'margin-top:-4px;'), $dropzone)
 			);
@@ -582,7 +597,7 @@ YAHOO.util.Event.addListener(this, "load", YAHOO.autocoml.init);' .
 		if($this->isDropFromExt || $this->isDropFromTree){
 			$this->doOnItemSelect .= top.dropzoneAddPreview('" . $this->acId . "', document.we_form['yuiAcResult" . $this->acId . "'].value, '" . $this->table . "', 'image/*', document.we_form['yuiAcId" . $this->acId . "'].value);";
 		}
-		 * 
+		 *
 		 */
 		$this->_doOnItemSelect[] = $this->doOnItemSelect;
 		$this->doOnItemSelect = '';

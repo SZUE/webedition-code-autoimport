@@ -1402,8 +1402,9 @@ class we_objectFile extends we_document{
 			(!empty($thumbID) ?
 				'<img src="' . $_imgSrc . '" style="height:' . $_imgHeight . 'px;width:' . $_imgWight . 'px" />' :
 				$img->getHtml()) .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_image','" . ($id ? : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
-			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();");
+			we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect(" . ($id? : 0) . ",'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )", true, 0, 0, '', '', ($id ? false : true)) .
+			we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image','" . ($id ? : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
+			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();", true, 0, 0, '', '', ($id ? false : true));
 	}
 
 	private function getBinaryHTML($type, $name, array $attribs, $editable = true){

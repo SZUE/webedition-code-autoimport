@@ -23,7 +23,6 @@
  */
 define("WE_EDIT_IMAGE", true);
 
-
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsElement(
 	(substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
@@ -71,7 +70,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			'</optgroup>
 </select>'
 			) .
-			we_html_element::htmlDiv(array('id' => 'focus_info', 'style' => 'margin-top:10px; display:none'), we_html_tools::htmlAlertAttentionBox(/*g_l('weClass', '[focus_info]')*/'Der Bildfokus findet Verwendung beim Erstellen von Miniaturansichten: Er definiert den (neuen) Mittelpunkt, um den herum beim "Beschneiden" und "Größe einpassen" das Bild abgeschnitten wird.', we_html_tools::TYPE_INFO, 640)) .
+			we_html_element::htmlDiv(array('id' => 'focus_info', 'style' => 'margin-top:10px; display:none'), we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[focus_info]'), we_html_tools::TYPE_INFO, 640)) .
 
 '<table class="default">
 ' . ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_IMAGEEDIT ?

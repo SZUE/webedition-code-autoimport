@@ -88,7 +88,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 			});
 
 			extDocHeader.location = "about:blank";
-			extDocFooter.location = "<?php echo WEBEDITION_DIR . 'we/include/we_seem/we_SEEM_openExtDoc_footer.php' ?>";
+			extDocFooter.location = WE().consts.dirs.WEBEDITION_DIR+ "we/include/we_seem/we_SEEM_openExtDoc_footer.php";
 		}
 	}
 	//-->

@@ -235,109 +235,20 @@ if(!$we_doc->getElement('data')){
 }
 echo we_html_tools::getHtmlTop('', '', 'frameset') .
  STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'we_edit_frameset.js');
-?>
-<script><!--
-	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
-	_EditorFrame.initEditorFrameData({
-		EditorType: "model",
-		EditorDocumentText: "<?php echo oldHtmlspecialchars($we_doc->Text); ?>",
-		EditorDocumentPath: "<?php echo $we_doc->Path; ?>",
-		EditorEditorTable: "<?php echo $we_doc->Table; ?>",
-		EditorDocumentId: <?php echo $we_doc->ID; ?>,
-		EditorTransaction: "<?php echo $we_transaction; ?>",
-		EditorContentType: "<?php echo $we_doc->ContentType; ?>",
-		EditorDocumentParameters:<?php echo (isset($parastr) ? '"' . $parastr . '"' : '""'); ?>
-	});
-
-
-	if (!_EditorFrame.EditorDocumentId) {
-		if (top.treeData && top.treeData.table != _EditorFrame.EditorEditorTable) {
-			top.we_cmd('load', _EditorFrame.EditorEditorTable);
-		}
-	}
-
-	if (top.treeData && (top.treeData.state == top.treeData.tree_states["select"] || top.treeData.state == top.treeData.tree_states["selectitem"])) {
-		top.we_cmd("exit_delete");
-	}
-
-	function doUnload() {
-		try {
-			closeAllModalWindows();
-
-<?php if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ ?>
-				if (!unlock && (!top.opener || top.opener.win)) {	//	login to super easy edit mode
-					unlock = true;
-				}
-<?php } ?>
-		} catch (e) {
-		}
-	}
-
-<?php
-if(isset($parastr) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "edit_document_with_parameters"){
-	echo 'var parameters = "' . $parastr . '";';
-}
-
-if($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE){
-	?>
-
-		function checkDocument() {
-			loc = null;
-			try {
-				loc = editor.location;
-			} catch (e) {
-			}
-
-			_EditorFrame.setEditorIsHot(false);
-
-			if (loc) {	//	Page is on webEdition-Server, open it with matching command
-				// close existing editor, it was closed very hard
-				WE().layout.weEditorFrameController.closeDocument(_EditorFrame.getFrameId());
-
-				// build command for this location
-				top.we_cmd("open_url_in_editor", loc);
-
-			} else {	//	Page is not known - replace top and bottom frame of editor
-				//	Fill upper and lower Frame with white
-				//	If the document is editable with webedition, it will be replaced
-				//	Location not known - empty top and footer
-
-				//	close window, when in seeMode include window.
-	<?php if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){ ?>
-					WE().util.showMessage(WE().consts.g_l.main.close_include, WE().consts.message.WE_MESSAGE_ERROR, window);
-					top.close();
-		<?php
-	} else {
-		?>
-					_EditorFrame.initEditorFrameData({
-						"EditorType": "none_webedition",
-						"EditorContentType": "none_webedition",
-						"EditorDocumentText": "Unknown",
-						"EditorDocumentPath": "Unknown"
-					});
-
-					editHeader.location = "about:blank";
-					editFooter.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_seem/we_SEEM_openExtDoc_footer.php' ?>";
-
-		<?php
-	}
-	?>
-			}
-		}
-	<?php
-}
-?>
-//-->
-</script>
-<?php
+ we_html_element::jsElement((isset($parastr) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "edit_document_with_parameters" ?
+		'var parameters = "' . $parastr . '";' :
+		'') .
+	'var SEEM_edit_include=' . intval(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')) . ';
+var USERACCESS=' . intval($we_doc->userHasAccess() == we_root::USER_HASACCESS) . ';'
+) .
+ we_html_element::jsScript(JS_DIR . 'we_edit_frameset.js', "edit_framesetStart('" . oldHtmlspecialchars($we_doc->Text) . "','" . $we_doc->Path . "','" . $we_doc->Table . "'," . $we_doc->ID . ",'" . $we_transaction . "','" . $we_doc->ContentType . "','" . (empty($parastr) ? '' : $parastr ) . "');");
 
 function setOnload(){
 	// Don't do this with Templates and only in Preview Mode
 	// in Edit-Mode all must be reloaded !!!
 	// To remove this functionality - just use the second condition as well.
 	return ($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE/* && $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW */ ?
-			'if(top.edit_include){top.edit_include.close();} if(openedWithWE==false){ checkDocument(); } setOpenedWithWE(false);' :
+			'setOnload();' :
 			'');
 }
 
