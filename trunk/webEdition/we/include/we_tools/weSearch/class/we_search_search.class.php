@@ -963,12 +963,12 @@ class we_search_search extends we_search_base{
 				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $_db->escape(trim($keyword)) . '%" AND docTable="' . $this->db->escape(stripTblPrefix($table)) . '" AND Active=1');
 				$contents = array_unique(array_merge($contents, $_db->getAll(true)));
 
-				return ($contents ? ' WETABLE.ID IN (' . implode(',', $contents) . ')' : '');
+				return ($contents ? ' WETABLE.ID IN(' . implode(',', $contents) . ')' : '');
 			case TEMPLATES_TABLE:
 				$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.Name="data" AND l.DocumentTable="' . $_db->escape(stripTblPrefix(TEMPLATES_TABLE)) . '"');
 				$contents = $_db->getAll(true);
 
-				return ($contents ? ' WETABLE.ID IN (' . implode(',', $contents) . ')' : '');
+				return ($contents ? ' WETABLE.ID IN(' . implode(',', $contents) . ')' : '');
 			case VERSIONS_TABLE:
 				//FIXME: versions are searched even if the field is not checked!
 				$contents = array();
@@ -1035,7 +1035,7 @@ class we_search_search extends we_search_base{
 				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $_db->escape(trim($keyword)) . '%" AND docTable="tblObjectFiles" AND Active=1');
 				$Ids = array_merge($Ids, $_db->getAll(true));
 
-				return ($Ids ? '  ' . OBJECT_FILES_TABLE . '.ID IN (' . implode(',', $Ids) . ')' : '');
+				return ($Ids ? ' WETABLE.ID IN (' . implode(',', $Ids) . ')' : '');
 		}
 
 		return '';
