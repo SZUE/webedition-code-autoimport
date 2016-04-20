@@ -1147,7 +1147,8 @@ class we_versions_version{
 			case 'binaryPath':
 				$binaryPath = '';
 				switch($document['ContentType']){
-					case 'objectFile':
+					case we_base_ContentTypes::COLLECTION:
+					case we_base_ContentTypes::OBJECT_FILE:
 					case we_base_ContentTypes::TEMPLATE:
 						break;
 					default:
