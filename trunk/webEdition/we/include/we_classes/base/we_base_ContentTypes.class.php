@@ -50,8 +50,8 @@ class we_base_ContentTypes{
 		$this->ct = array(
 // Content Type for Images
 			self::IMAGE => array(
-				'Extension' => array('.gif', '.jpg', '.jpeg', '.png', '.svg', '.svgz'),
-				'ContentTypes' => array('image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png', 'image/svg+xml', 'image/svg-xml', 'image/x-citrix-pjpeg'),
+				'Extension' => array('.gif', '.jpg', '.jpeg', '.png', '.svg', '.svgz', '.ico'),
+				'ContentTypes' => array('image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png', 'image/svg+xml', 'image/svg-xml', 'image/x-citrix-pjpeg', 'image/x-icon'),
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_GRAFIK',
 				'DefaultCode' => '',
