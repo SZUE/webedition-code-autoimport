@@ -66,13 +66,15 @@ weSearch = {
 	rolloverElem: null,
 	init: function () {
 		if (weSearch.conf.editorBodyFrame.document.readyState === "complete") {
-			weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
-			weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
+			if (weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch)) {
+				weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;
+				weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML = '';
 
-			weSearch.sizeScrollContent();
-			document.addEventListener('mousemove', weSearch.updateElem, false);
-			document.addEventListener('resize', weSearch.sizeScrollContent(), false);
-			WE().util.setIconOfDocClass(document, 'resultIcon');
+				weSearch.sizeScrollContent();
+				document.addEventListener('mousemove', weSearch.updateElem, false);
+				document.addEventListener('resize', weSearch.sizeScrollContent(), false);
+				WE().util.setIconOfDocClass(document, 'resultIcon');
+			}
 		} else {
 			setTimeout(weSearch.init, 10);
 		}
