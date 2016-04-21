@@ -33,9 +33,12 @@ class we_cache_file implements we_cache_base{
 	}
 
 	public static function load($entry){
-		$t = time();
-		$meta = self::loadMeta();
+		static $t = 0;
+		$t = $t? : time();
+		static $meta = false;
+		$meta = $meta? : self::loadMeta();
 		if(!$meta || !isset($meta[$entry]) || $meta[$entry] < $t){
+			$meta = false;
 			return false;
 		}
 		return we_unserialize(we_base_file::load(WE_CACHE_PATH . 'we_cache_data_' . $entry));
