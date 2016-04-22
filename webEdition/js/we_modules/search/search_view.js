@@ -233,7 +233,9 @@ weSearch = {
 
 		if (Checks.length !== 0) {
 			if (newSearch) {
-				window.document.we_form.elements['searchstart' + this.conf.whichsearch].value = 0;
+				if(!sameRange){ // FIXME: newSearch && sameRange means new search table (eg to exclude deteted files) but same range
+					window.document.we_form.elements['searchstart' + this.conf.whichsearch].value = 0;
+				}
 				window.document.we_form.elements.newSearch.value = 1;
 			} else {
 				window.document.we_form.elements.newSearch.value = 0;
@@ -317,7 +319,7 @@ weSearch = {
 	absTop: function (el) {
 		return (el.offsetParent) ? el.offsetTop + this.absTop(el.offsetParent) : el.offsetTop;
 	},
-	reloadSameRange: function () {
+	reloadSameRange: function () {// FIXME: add param "newSearchTable"
 		var scrollActive = document.getElementById('scrollActive');
 		if (scrollActive === null) {
 			//this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value = parseInt(this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value) + anzahl;
@@ -1037,7 +1039,8 @@ weSearch = {
 			document.getElementById("resetBusyDocSearch").innerHTML = '';
 
 			// reload search from same startID
-			weSearch.reloadSameRange();
+			//weSearch.reloadSameRange(); // FIXME: reloadSameRange uses same table so deleted files are still here
+			weSearch.search(true, true);
 		},
 		failure: function (o) {
 			top.console.log("callback failure");
