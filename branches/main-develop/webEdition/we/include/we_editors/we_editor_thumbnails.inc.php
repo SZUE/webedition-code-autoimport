@@ -74,9 +74,13 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 					$thumbnail = '<table class="default" style="width:570px;"><tr><td style="width:538px;"><img src="' . $src . '" style="width:' . $thumbObj->getOutputWidth() . 'px;height:' . $thumbObj->getOutputHeight() . 'px;" /></td><td>' . $delbut . '</td></tr></table>';
 
-					$parts[] = array("headline" => $thumbObj->getThumbName(),
-						"html" => $thumbnail,
-						'space' => 120
+					$parts[] = array(
+						'headline' => $thumbObj->getThumbName(),
+						'space' => 200,
+						'noline' => true
+					);
+					$parts[] = array(
+						'html' => $thumbnail,
 					);
 				}
 				$parts[] = array("headline" => "",
