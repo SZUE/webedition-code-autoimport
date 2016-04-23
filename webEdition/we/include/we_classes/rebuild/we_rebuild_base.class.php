@@ -98,6 +98,10 @@ abstract class we_rebuild_base{
 						break;
 					case 'we_temporaryDocument':
 						$content = we_temporaryDocument::load($data['id'], $data['tbl'], $GLOBALS['DB_WE']);
+						if(empty($content[0]['elements'])){
+							//document is unreadable
+							continue;
+						}
 						if($data['tbl'] === 'tblFile'){
 							$doc = new we_webEditionDocument();
 							$doc->Table = FILE_TABLE;
