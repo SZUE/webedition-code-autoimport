@@ -148,8 +148,7 @@ function incTree() {
 		self.document.getElementById("incBaum").style.backgroundColor = "grey";
 	} else
 	if (w < WE().consts.size.tree.min) {
-		w = WE().consts.size.tree.min;
-		setTreeWidth(w);
+		toggleTree(true);
 	}
 }
 
