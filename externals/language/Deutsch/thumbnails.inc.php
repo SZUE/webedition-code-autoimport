@@ -47,7 +47,7 @@ $l_thumbnails=array(
 	'saved_successfully'=>'Einstellungen gespeichert',
 	'sepia'=>'Sepia',
 	'thumbnails'=>'Miniaturansichten',
-	'unsharp'=>'Unschärfe',
+	'unsharp'=>'Unscharf maskieren',
 	'unsharp_desc'=>'Die Miniaturansicht erhält über diese Maske mehr Schärfe und das Bild sieht nicht mehr so verwaschen aus.',
 	'width'=>'Breite',
 );
