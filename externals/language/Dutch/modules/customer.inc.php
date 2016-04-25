@@ -132,6 +132,8 @@ $l_modules_customer=array(
 	'importing'=>'Bezig met importeren',
 	'insert_field'=>'Voeg veld in',
 	'login'=>'Login',
+		'reset_ok'=>'',
+	),
 	'login_denied'=>'Toegang geweigerd',
 	'mac'=>'Mac formaat',
 	'manual_selection'=>'Handmatige selectie',

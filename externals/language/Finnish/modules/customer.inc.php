@@ -132,6 +132,8 @@ $l_modules_customer=array(
 	'importing'=>'Tuodaan',
 	'insert_field'=>'Lisää kenttä',
 	'login'=>'Kirjaudu',
+		'reset_ok'=>'',
+	),
 	'login_denied'=>'Pääsy kielletty',
 	'mac'=>'Mac muoto',
 	'manual_selection'=>'Manuaalinen valinta',

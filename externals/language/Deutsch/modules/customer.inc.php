@@ -132,6 +132,8 @@ $l_modules_customer=array(
 	'importing'=>'Importieren',
 	'insert_field'=>'Feld hinzufügen:',
 	'login'=>'Login',
+		'reset_ok'=>'Anzahl fehlgeschlagener Logins erfolgreich zurückgesetzt',
+	),
 	'login_denied'=>'Zugang gesperrt',
 	'mac'=>'MAC-Format',
 	'manual_selection'=>'Manuell Auswahl',
