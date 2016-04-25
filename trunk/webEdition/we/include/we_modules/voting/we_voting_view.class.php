@@ -222,7 +222,7 @@ parent.document.title = "' . $title . '";
 				if($this->voting->delete()){
 					echo we_html_element::jsElement(
 						'top.content.treeData.deleteEntry(' . $this->voting->ID . ');
-setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[voting_deleted]')).'", WE().consts.message.WE_MESSAGE_NOTICE, window);');
+setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[voting_deleted]')) . '", WE().consts.message.WE_MESSAGE_NOTICE, window);');
 					$this->voting = new we_voting_voting();
 					$_REQUEST['home'] = '1';
 					$_REQUEST['pnt'] = 'edbody';
@@ -474,7 +474,10 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 	}
 
 	public function getHomeScreen(){
-		$hiddens["cmd"] = "home";
+		$hiddens = array(
+			"cmd" => "home",
+			'pnt' => 'edbody'
+		);
 		$content = we_html_button::create_button('new_voting', "javascript:top.we_cmd('new_voting');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING")) .
 			'<br/>' .
 			we_html_button::create_button('new_voting_group', "javascript:top.we_cmd('new_voting_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_VOTING"));
