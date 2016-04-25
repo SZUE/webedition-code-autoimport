@@ -44,7 +44,7 @@ function we_tag_url($attribs){
 			$testid = $doc->ID;
 			if($id === 'top'){//check for object
 				if($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile){//ein object
-					$triggerid = ($triggerid ? : $GLOBALS['WE_MAIN_DOC']->ID);
+					$triggerid = ($triggerid ? : $GLOBALS['WE_MAIN_ID']);
 
 					$path_parts = pathinfo(id_to_path($triggerid));
 					if($objectseourls && $GLOBALS['WE_MAIN_DOC']->Url != '' && show_SeoLinks()){
