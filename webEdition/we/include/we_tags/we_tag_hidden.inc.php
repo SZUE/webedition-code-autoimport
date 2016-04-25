@@ -30,16 +30,17 @@ function we_tag_hidden($attribs){
 
 	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
 	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
+	$varType = weTag_getAttribute('varType', $attribs, we_base_request::STRING, we_base_request::STRING);
 
 	switch(weTag_getAttribute("type", $attribs, '', we_base_request::STRING)){
 		case 'session' :
-			$value = $_SESSION[$name];
+			$value = getArrayValue($_SESSION, null, $name);
 			break;
 		case 'request' :
-			$value = we_base_request::_(we_base_request::HTML, $name, '');
+			$value = we_base_util::rmPhp(we_base_request::filterVar(getArrayValue($_REQUEST, null, $name), $varType))
 			break;
 		default :
-			$value = isset($GLOBALS[$name]) ? $GLOBALS[$name] : '';
+			$value = getArrayValue($GLOBALS, null, $name);
 			break;
 	}
 
