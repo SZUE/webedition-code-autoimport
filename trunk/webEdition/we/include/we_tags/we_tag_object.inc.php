@@ -108,10 +108,12 @@ function we_tag_object($attribs){
 
 	if(!$we_oid){//Fix #10526 check if objectID is given by request
 		$id = ($oid = we_base_request::_(we_base_request::INT, 'we_objectID')) ? $oid : we_base_request::_(we_base_request::INT, 'we_oid', 0);
-		$classid = $id ? f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($id), '', $GLOBALS['DB_WE']) : 0;
 	}else{
 		$id = $we_oid;
 	}
+
+	//Fix #10609 we need classID now!
+	$classid = $classid ? : ($id ? f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($id), '', $GLOBALS['DB_WE']) : 0);
 
 	if($id && $classid){
 		$unique = md5(uniqid(__FUNCTION__, true));
