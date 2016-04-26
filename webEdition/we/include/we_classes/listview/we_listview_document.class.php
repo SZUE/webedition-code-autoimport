@@ -426,9 +426,7 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 			foreach($patterns as $pattern){
 				$match = preg_split('/' . $pattern . '/', $exp, -1, PREG_SPLIT_NO_EMPTY);
 				if(count($match) > 1){
-					$m1 = strtr($match[0], array('(' => '', ' ' => '')); // #5719: einfache und OR-verknuepfte Conditions gefixt
-					$m2 = strtr($match[1], array(' ' => '')); // #5719
-					$sqlarr = $this->makeFieldCondition($m1, $pattern, $m2);
+					$sqlarr = $this->makeFieldCondition(trim($match[0]), $pattern, trim($match[1]));
 					$cond = str_replace($match[0] . $pattern . $match[1], $sqlarr, $cond);
 					break;
 				}
