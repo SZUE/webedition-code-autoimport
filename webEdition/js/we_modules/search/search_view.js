@@ -233,9 +233,6 @@ weSearch = {
 
 		if (Checks.length !== 0) {
 			if (newSearch) {
-				if(!sameRange){ // FIXME: newSearch && sameRange means new search table (eg to exclude deteted files) but same range
-					window.document.we_form.elements['searchstart' + this.conf.whichsearch].value = 0;
-				}
 				window.document.we_form.elements.newSearch.value = 1;
 			} else {
 				window.document.we_form.elements.newSearch.value = 0;
