@@ -418,50 +418,26 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 	}
 
 	function makeConditionSql($cond){
-		$cond = str_replace(array('&gt;', '&lt;'), array('>', '<'), $cond);
-
-		$arr = explode(' ', $cond);
-
-		$logic = array(
-			'and' => array($arr[0]),
-			'or' => array(),
-			'not' => array(),
-		);
-		$current = 'and';
-		$c = 0;
-		for($i = 1; $i < count($arr); $i++){
-			$elem = strtolower($arr[$i]);
-			if(in_array($elem, array_keys($logic))){
-				$c = count($logic[$current]);
-				$current = $elem;
-			} else {
-				if(isset($logic[$current][$c])){
-					$logic[$current][$c].=' ' . $arr[$i];
-				} else {
-					$logic[$current][$c] = $arr[$i];
+		$cond = strtr($cond, array('&gt;' => '>', '&lt;' => '<'));
+		$func = function($value) { return trim($value," \t\n\r\0\x0B()"); };
+		$arr = array_map($func, preg_split('/(AND|OR)/i', $cond, -1, PREG_SPLIT_NO_EMPTY));
+		$patterns = array('<>', '!=', '<=', '>=', '=', '<', '>', 'NOT LIKE', 'LIKE', 'NOT IN', 'IN');
+		foreach($arr as $exp){
+			foreach($patterns as $pattern){
+				$match = preg_split('/' . $pattern . '/', $exp, -1, PREG_SPLIT_NO_EMPTY);
+				if(count($match) > 1){
+					$m1 = strtr($match[0], array('(' => '', ' ' => '')); // #5719: einfache und OR-verknuepfte Conditions gefixt
+					$m2 = strtr($match[1], array(' ' => '')); // #5719
+					$sqlarr = $this->makeFieldCondition($m1, $pattern, $m2);
+					$cond = str_replace($match[0] . $pattern . $match[1], $sqlarr, $cond);
+					break;
 				}
 			}
 		}
-
-		$sqlarr = '';
-		$patterns = array('<>', '!=', '<=', '>=', '=', '<', '>', 'LIKE', 'IN');
-		foreach($logic as $oper => $arr){
-			foreach($arr as $exp){
-				foreach($patterns as $pattern){
-					$match = preg_split('/' . $pattern . '/', $exp, -1, PREG_SPLIT_NO_EMPTY);
-					if(count($match) > 1){
-						$match[0] = str_replace(array('(', ')', ' '), '', $match[0]); // #5719: einfache und OR-verknuepfte Conditions gefixt
-						$match[1] = str_replace(array('(', ')', ' '), '', $match[1]); // #5719
-						$sqlarr = (($sqlarr != '') ? $sqlarr . ' ' . strtoupper($oper) . ' ' : '') . $this->makeFieldCondition($match[0], $pattern, $match[1]);
-						break;
-					}
-				}
-			}
-		}
-		return $sqlarr;
+		return $cond;
 	}
 
-	function makeFieldCondition($name, $operation, $value){
+	private function makeFieldCondition($name, $operation, $value){
 		return (strpos($name, 'WE_') === 0) ? //Fix: #9389
 			'(' . FILE_TABLE . '.' . substr($name, 3) . ' ' . $operation . ' ' . $value . ')' :
 			'(l.nHash=x\'' . md5($name) . '\' AND c.Dat ' . $operation . ' ' . $value . ')';
