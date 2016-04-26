@@ -132,7 +132,7 @@ $l_modules_customer=array(
 	'importing'=>'Importer',
 	'insert_field'=>'Insert field',
 	'login'=>'Login',
-		'reset_ok'=>'',
+		'reset_ok'=>'Failed logins reset successfully.',
 	),
 	'login_denied'=>'Acces refusé',
 	'mac'=>'Format MAC',

@@ -132,7 +132,7 @@ $l_modules_customer=array(
 	'importing'=>'Tuodaan',
 	'insert_field'=>'Lisää kenttä',
 	'login'=>'Kirjaudu',
-		'reset_ok'=>'',
+		'reset_ok'=>'Failed logins reset successfully.',
 	),
 	'login_denied'=>'Pääsy kielletty',
 	'mac'=>'Mac muoto',
