@@ -50,20 +50,14 @@ function we_tag_path($attribs){
 	$style = $style ? ' style="' . $style . '"' : '';
 
 	$path = '';
-	$q = array();
-	foreach($indexArray as $v){
-		$q[] = '"' . $db->escape($v) . '"';
-	}
-	$q = ' Text IN (' . implode(',', $q) . ')';
+	$q = ' Text IN ("' . implode('","', array_map('escape_sql_query', $indexArray)) . '")';
 	$show = $doc->getElement($field);
 	if(!in_array($doc->Text, $indexArray)){
-		if(!$show){
-			$show = $doc->Text;
-		}
+		$show = $show? : $doc->Text;
 		$path = $oldHtmlspecialchars ? oldHtmlspecialchars($sep . $show) : $sep . $show;
 	}
 	while($pID){
-		list($fileID, $filePath) = (getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder=0 AND (' . $q . ') AND Published>0', NULL, MYSQLI_NUM)? :
+		list($fileID, $filePath, $fText) = (getHash('SELECT ID,Path,Text FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder=0 AND ' . $q . ' AND Published>0', NULL, MYSQLI_NUM)? :
 				array(0, '')
 			);
 		if($fileID){
@@ -71,9 +65,7 @@ function we_tag_path($attribs){
 			if(!$show && $fieldforfolder){
 				$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
 			}
-			if(!$show){
-				$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID));
-			}
+			$show = $show? : $fText;
 			if($fileID != $doc->ID){
 				$link_pre = '<a href="' . $filePath . '"' . $class . $style . '>';
 				$link_post = '</a>';
@@ -82,7 +74,7 @@ function we_tag_path($attribs){
 			}
 		} else {
 			$link_pre = $link_post = '';
-			$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID));
+			$show = $fText;
 		}
 		if($max){
 			$show = cutText($show, $max);
@@ -95,7 +87,7 @@ function we_tag_path($attribs){
 		return $path;
 	}
 
-	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)', null);
+	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND ' . $q . ' AND (Published>0 AND IsSearchable=1)', null);
 	$fileID = $hash ? $hash['ID'] : 0;
 	$filePath = ($hash ? $hash['Path'] : '');
 

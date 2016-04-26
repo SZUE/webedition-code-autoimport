@@ -32,7 +32,7 @@ function we_tag_pageLanguage($attribs){
 			$out = $lang[0];
 			break;
 		case 'country':
-			$out = $lang[1];
+			$out = empty($lang[1]) ? '' : $lang[1];
 			break;
 		case 'language_name':
 			$out = we_base_country::getTranslation($lang[0], we_base_country::LANGUAGE, $lang[0]);
