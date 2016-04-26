@@ -418,9 +418,10 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 	}
 
 	function makeConditionSql($cond){
+		//FIXME: a>5 AND b>5 will not work, we have a flat join, so both conditions on different link-values cannot match
 		$cond = strtr($cond, array('&gt;' => '>', '&lt;' => '<'));
 		$func = function($value) { return trim($value," \t\n\r\0\x0B()"); };
-		$arr = array_map($func, preg_split('/(AND|OR)/i', $cond, -1, PREG_SPLIT_NO_EMPTY));
+		$arr = array_map($func, preg_split('/(and|AND|or|OR|&&|\|\|)/i', $cond, -1, PREG_SPLIT_NO_EMPTY));
 		$patterns = array('<>', '!=', '<=', '>=', '=', '<', '>', 'NOT LIKE', 'LIKE', 'NOT IN', 'IN');
 		foreach($arr as $exp){
 			foreach($patterns as $pattern){
