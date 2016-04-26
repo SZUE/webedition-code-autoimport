@@ -364,7 +364,7 @@ we_FileUpload.init({
 	isInternalBtnUpload : ' . ($this->isInternalBtnUpload ? 'true' : 'false') . ',
 	responseClass : "' . $this->responseClass . '"
 });
-			') . ($this->externalProgress['create'] ? $progressbar->getJS('', true) : '');
+			') . ($this->externalProgress['create'] ? $progressbar->getJSCode() : '');
 	}
 
 	protected function _getJsGl(){

@@ -52,7 +52,7 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	$pb->addText('&nbsp;', 0, 'copyWeDocumentCustomerFilterText');
 	$pb->setStudWidth(10);
 	$pb->setStudLen(300);
-	$js = $pb->getJS('', true) . $pb->getJSCode();
+	$js = $pb->getJSCode();
 
 	// image and progressbar
 	$content = $pb->getHTML();

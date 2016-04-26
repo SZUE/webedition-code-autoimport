@@ -892,7 +892,7 @@ function doUnload() {
 		$pb = new we_progressBar(0);
 		$pb->setStudLen(200);
 		$pb->addText("&nbsp;", 0, "progressTxt");
-		$js.=$pb->getJS('', true);
+		$js.=$pb->getJSCode();
 
 		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
