@@ -67,7 +67,7 @@ WE().consts.g_l.customer.view={
 	delete_alert:"' . g_l('modules_customer', '[delete_alert]') . '",
 	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_delete]')) . '",
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_save]')) . '",
-	reset_failed_login_successfully:"'. we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[login][reset_ok]')) .'"
+	reset_failed_login_successfully:"'. we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[login_reset_ok]')) .'"
 };
 WE().consts.g_l.customer.admin={
 	del_fild_question:"' . g_l('modules_customer', '[del_fild_question]') . '",
