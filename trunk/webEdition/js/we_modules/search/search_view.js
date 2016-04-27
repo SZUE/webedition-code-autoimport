@@ -176,6 +176,8 @@ weSearch = {
 		var Checks = [], m = 0, i, table;
 
 		newSearch = newSearch === undefined ? true : newSearch;
+		sameRange = sameRange === undefined ? false : sameRange;
+
 		sameRange = sameRange || !newSearch ? true : false;// if not newSearch we preserve range anyway.
 
 		switch (this.conf.whichsearch) {
