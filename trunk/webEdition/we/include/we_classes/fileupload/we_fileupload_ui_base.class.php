@@ -158,17 +158,24 @@ handleDragOver = function(e, name){
 	if(e.preventDefault){
 		e.preventDefault();
 	}
-	document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag we_file_drag_hover";
+	try {
+		document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag we_file_drag_hover";
+	} catch(e){}
 }
 
 handleDragLeave = function(e, name){
-	document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag";
+	try {
+		document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag";
+	} catch(e){}
 }
 
 handleDrop' . $name . ' = function(e, writebackId, writebackTarget){
 	var text, files;
 
-	document.getElementById("div_' . $name . '_fileDrag").className = "we_file_drag";
+	try {
+		document.getElementById("div_' . $name . '_fileDrag").className = "we_file_drag";
+	} catch(e){}
+
 	e.preventDefault();
 	e.stopPropagation();
 
