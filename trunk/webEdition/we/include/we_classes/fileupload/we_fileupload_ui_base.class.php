@@ -142,7 +142,7 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->isInternalBtnUpload = $flag;
 	}
 
-	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', $contentType = '', $callback = array(), $writebackId = '', $writebackTarget = '', $predefinedCallbackInt = '', $predefinedCallbackExt = '', $dropFromTree = true, $dropFromExt = true, $name = '', $table = ''){
+	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', $contentType = '', $callback = array(), $writebackId = '', $writebackTarget = '', $predefinedCallbackInt = '', $predefinedCallbackExt = '', $dropFromTree = true, $dropFromExt = true, $table = ''){
 		if(!self::isDragAndDrop()){
 			return $content;
 		}
