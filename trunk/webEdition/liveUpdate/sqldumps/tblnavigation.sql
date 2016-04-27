@@ -53,3 +53,9 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   KEY LinkID (LinkID),
   KEY Path (Path(30))
 ) ENGINE=MyISAM;
+
+/* query separator */
+UPDATE ###TBLPREFIX###tblnavigation SET Url="" WHERE Url="http://";
+
+/* query separator */
+UPDATE ###TBLPREFIX###tblnavigation SET FolderUrl="" WHERE FolderUrl="http://";
