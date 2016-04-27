@@ -280,7 +280,7 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 			$dropzoneStyle  = 'width:auto;padding-top:14px;height:60px;';
 
 			$img = '';
-			$eventAttribs = array('ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);');
+			$eventAttribs = array('ondragover' => 'handleDragOver(event, \'' . $this->acId . '\');', 'ondragleave' => 'handleDragLeave(event, \'' . $this->acId . '\');');
 
 			if(true && $this->contentType === we_base_ContentTypes::IMAGE){ // FIXME: add code for icons so we can have preview for all cts
 				if($this->resultValue){
