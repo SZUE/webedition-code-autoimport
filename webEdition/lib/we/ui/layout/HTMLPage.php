@@ -285,7 +285,6 @@ EOS;
 				// add title tag if not empty
 				($this->getTitle() !== '' ? '<title>' . $this->getTitle() . '</title>' : '');
 
-		$html.=STYLESHEET;
 		// add link tags for external CSS files
 		foreach($this->_CSSFiles as $file){
 			$html .= '<link rel="stylesheet" type="text/css" href="' . $file['path'] . '" media="' . $file['media'] . '" />';
@@ -299,9 +298,11 @@ EOS;
 			}
 			$html .= "</style>";
 		}
-		$html.=STYLESHEET .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				YAHOO_FILES;
+
+		$html .= STYLESHEET .
+			we_html_element::cssLink(CSS_DIR . 'apps.css') .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+			YAHOO_FILES;
 
 		// add javascript tags for external JavaScript files
 		foreach($this->_JSFiles as $file){
