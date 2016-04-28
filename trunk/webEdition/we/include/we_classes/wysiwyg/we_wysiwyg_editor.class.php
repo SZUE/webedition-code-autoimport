@@ -1073,20 +1073,29 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 		ed.onInit.add(function(ed, o){
 			ed.dom.bind(ed.getWin(), ["drop"], function(e) {
-				e.preventDefault();
-				e.stopPropagation();
 				if (e.dataTransfer && e.dataTransfer.getData("text")) {
 					var data = e.dataTransfer.getData("text").split(",");
+
+					// dragging from WE (when permitted) comes with transfer text starting with "dragItem": we handle it
 					if(data[0] && data[0] === "dragItem" && data[1] === WE().consts.tables.FILE_TABLE){
+						e.preventDefault();
+						e.stopPropagation();
 						if(data[3] === WE().consts.contentTypes.IMAGE){
 							ed.execCommand("mceWeimage", true, data[2]);
 						} else {
 							ed.execCommand("mceWelink", true, data[2]);
 						}
+						return false;
 					}
 
-					return false;
+					// dragging inside tiny comes with transfer text not starting with "dragItem": let tiny handle it
+					return true;
 				}
+
+				// dragging images from os comes witout transfer text: we prevent it!
+				e.preventDefault();
+				e.stopPropagation();
+				return false;
 			});
 
 			//ed.execCommand("mceWevisualaid", true);
