@@ -31,12 +31,16 @@ td.mceToolbar{
 .tbButtonWysiwygBorder {
 	border: 1px solid #006DB8;
 	margin: 0px;
-	padding:4px;
+	padding: 4px;
 	text-align: left;
 	text-decoration: none;
 	position: relative;
 	overflow: auto;
 	height: auto;
+	width: 50px;
+	background-color: #F5F5F5; }
+
+.wysiwygPreview {
+	background-color: transparent;
 	width: auto;
-	background-color: #F5F5F5;
 }
