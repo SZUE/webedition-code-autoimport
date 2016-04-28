@@ -41,7 +41,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 	 */
 	const kDateTimeClassDisabled = 'we_ui_controls_DateTime_disabled';
 
-	protected $_height = 22;
+	//protected $_height = 22; // use height from css files
 
 	/**
 	 * type attribute => overwritten
