@@ -36,8 +36,7 @@ if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 
 echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 		we_html_element::cssLink(CSS_DIR . 'multiEditor.css') .
-		we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js') .
-		we_html_element::jsScript(JS_DIR . 'multiEditor/multiTabs.js')
+	we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js', '')
 );
 ?>
 <body onresize="if(WE().layout.multiTabs){WE().layout.multiTabs.setFrameSize()}" onload="startMultiEditor(<?php echo $_cmd_string; ?>);" style="overflow: hidden;">

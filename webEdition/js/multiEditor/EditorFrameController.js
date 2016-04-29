@@ -23,73 +23,68 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_cmd() {
-	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-//	var url = WE().util.getWe_cmdArgsUrl(args);
-
 	if (top.we_cmd) {
 		top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }
 
+function setFrameSize() {
+	WE().layout.multiTabs.setFrameSize();
+}
+
 function startMultiEditor() {
+	WE().layout.weEditorFrameController = new EditorFrameController();
 	WE().layout.multiTabs = new TabView(this.document);
 	var args = ['start_multi_editor'];
 	we_cmd.apply(this, args.concat(Array.prototype.slice.call(arguments)));
 }
 
 
-//--------------------------------------------------------------------
-// CLASS:
-//   EditorFrameController
-//
-// DESCRIPTION:
-//   manages all available EditorFrames
-//
-// ARGUMENTS:
-//   none
-//
-// RETURNS:
-//   none
-//--------------------------------------------------------------------
+/**
+ // CLASS:
+ //   EditorFrameController
+ //
+ // DESCRIPTION:
+ //   manages all available EditorFrames
+ //
+ // ARGUMENTS:
+ //   none
+ //
+ // RETURNS:
+ //   none
+ */
 function EditorFrameController() {
-
 	// reference to the Editor Frameset: used to manipulate the "cols" attribute
 	this.MultiEditorFrameset = null;
-
 	// reference to the window containing the EditorFrameset, check if we need this
 	this.MultiEditorFramesetWindow = null;
-
 	// currently active Frameset, id of the frame
 	this.ActiveEditorFrameId = null;
-
 	// array/object of the Editor Frames (EditorFrame)
 	this.EditorFrames = null;
-
 	// array of ids of free EditorFramesets
 	this.FreeEditorFrames = null;
-
 	// amount of editorFrames
 	this.EditorWindowsAmount = 0;
+}
 
-	//----------------------------------------
-	// functions concerning the functionality
-	//----------------------------------------
+EditorFrameController.prototype = {
+	/*functions concerning the functionality*/
 
-	//--------------------------------------------------------------------
-	// FUNCTION:
-	//   init
-	//
-	// DESCRIPTION:
-	//   initailises the EditorFrameControler
-	//
-	// ARGUMENTS:
-	//   none
-	//
-	// RETURNS:
-	//   nothing
-	//--------------------------------------------------------------------
-	this.init = function () {
-
+	/**
+	 // FUNCTION:
+	 //   init
+	 //
+	 // DESCRIPTION:
+	 //   initailises the EditorFrameControler
+	 //
+	 // ARGUMENTS:
+	 //   none
+	 //
+	 // RETURNS:
+	 //   nothing
+	 */
+	init: function () {
 		// init references to FramesetWindow and Frameset
 		this.MultiEditorFramesetWindow = top.bm_content_frame;
 		this.MultiEditorFrameset = this.MultiEditorFramesetWindow.document.getElementById("multiEditorFrameset");
@@ -105,28 +100,24 @@ function EditorFrameController() {
 			for (i = 0; i < _frames.length; i++) {
 				this.EditorFrames[_frames[i].id] = new EditorFrame(_frames[i], _frames[i].id);
 				this.FreeEditorFrames.push(_frames[i].id);
-
 			}
 		}
-	};
-
-	//--------------------------------------------------------------------
-	// FUNCTION:
-	//   isInitialized
-	//
-	// DESCRIPTION:
-	//   returns if the EditorFrameControlle is initialized
-	//
-	// ARGUMENTS:
-	//   none
-	//
-	// RETURNS:
-	//   boolean
-	//--------------------------------------------------------------------
-	this.isInitialized = function () {
+	},
+	/**FUNCTION:
+	 //   isInitialized
+	 //
+	 // DESCRIPTION:
+	 //   returns if the EditorFrameControlle is initialized
+	 //
+	 // ARGUMENTS:
+	 //   none
+	 //
+	 // RETURNS:
+	 //   boolean
+	 --------------------------------------------------------------------*/
+	isInitialized: function () {
 		return (this.EditorFrames !== null);
-	};
-
+	},
 	/**
 	 * FUNCTION:
 	 *	openDocument
@@ -155,11 +146,9 @@ function EditorFrameController() {
 	 * RETURNS:
 	 *   nothing
 	 */
-	this.openDocument = function (table, id, ct, editcmd, dt, url, code, mode, parameters) {
-
+	openDocument: function (table, id, ct, editcmd, dt, url, code, mode, parameters) {
 		if (this.EditorFrames === null) {
 			this.init();
-
 		}
 
 		// initalize variables
@@ -174,23 +163,18 @@ function EditorFrameController() {
 
 		// check if a already open document shall be opened
 		if ((_editorId = this.getEditorIdOfOpenDocument(table, id, editcmd, url))) { // activate open tab
-
 			if (parameters !== this.getEditorFrame(_editorId).getEditorDocumentParameters()) {
 				// re-open document
 				this.closeDocument(_editorId, "WE().layout.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
-
 			} else if (this.ActiveEditorFrameId !== _editorId) {
-
 				// add to navigationHistory:
 				top.weNavigationHistory.addDocToHistory(table, id, ct, editcmd, url, parameters);
 
 				// activate in tree
 				if (top.treeData && top.treeData.table === table) {
 					top.treeData.selectNode(id);
-
 				} else if (top.treeData) {
 					top.treeData.unselectNode();
-
 				}
 
 				// activate tab
@@ -217,11 +201,9 @@ function EditorFrameController() {
 
 				} else if (url) {
 					we_cmd('open_extern_document', url, parameters);
-
 				} else if (id) { // edit_document
 					if (parameters) {
 						we_cmd('edit_document_with_parameters', table, id, ct, parameters);
-
 					} else {
 						// instead calling the command we could also build the url and call it from here
 						we_cmd('edit_document', table, id, ct);
@@ -231,18 +213,17 @@ function EditorFrameController() {
 				} else {
 					we_cmd('new_document', table, id, ct, "", "", "", "", dt);
 				}
+			} else if (this.EditorWindowsAmount === 1) { // only one active document here, for example SeeMode
+				// build nextCmd
+				// table,id,ct,editcmd,dt,url,code,mode
+				this.closeDocument(this.ActiveEditorFrameId, "WE().layout.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
+
 			} else {
-				if (this.EditorWindowsAmount === 1) { // only one active document here, for example SeeMode
-					// build nextCmd
-					// table,id,ct,editcmd,dt,url,code,mode
-					this.closeDocument(this.ActiveEditorFrameId, "WE().layout.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
-				} else {
-					top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR, window);
-				}
+				top.we_showMessage(WE().consts.g_l.main.no_editor_left, WE().consts.message.WE_MESSAGE_ERROR, window);
+
 			}
 		}
-	};
-
+	},
 	/**
 	 * FUNCTION:
 	 *   closeDocument
@@ -258,7 +239,7 @@ function EditorFrameController() {
 	 * RETURNS:
 	 *   nothing
 	 */
-	this.closeDocument = function (editorId, nextCommand) {
+	closeDocument: function (editorId, nextCommand) {
 		if (this.EditorFrames === null) {
 			this.init();
 		}
@@ -266,9 +247,7 @@ function EditorFrameController() {
 		nextCommand = (nextCommand ? nextCommand : "");
 
 		if (top.we_cmd("eplugin_exit_doc", this.getEditorFrame(editorId).getEditorTransaction())) {
-
 			if (this.EditorFrames[editorId]) {
-
 				// check if there are unsaved changes
 				if (this.getEditorFrame(editorId).getEditorIsHot()) {
 					this.showEditor(editorId);
@@ -276,7 +255,6 @@ function EditorFrameController() {
 					if (!this.getEditorFrame(editorId).EditorExitDocQuestionDialog) { // open exit_doc_question if not already open
 						this.getEditorFrame(editorId).EditorExitDocQuestionDialog = true;
 						this.getEditorFrame(editorId).EditorExitDocQuestionDialog = top.we_cmd("exit_doc_question", editorId, this.getEditorFrame(editorId).getEditorContentType(), nextCommand);
-
 					} else {
 						this.getEditorFrame(editorId).EditorExitDocQuestionDialog.open();
 					}
@@ -297,8 +275,7 @@ function EditorFrameController() {
 				WE().layout.multiTabs.closeTab(editorId);
 			}
 		}
-	};
-
+	},
 	/**
 	 * FUNCTION:
 	 *   doLogout
@@ -312,7 +289,7 @@ function EditorFrameController() {
 	 * RETURNS:
 	 *   boolean
 	 */
-	this.doLogoutMultiEditor = function () {
+	doLogoutMultiEditor: function () {
 		// close all none Hot Editors
 		if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
 			_UsedEditors = this.getEditorsInUse();
@@ -326,18 +303,27 @@ function EditorFrameController() {
 		}
 
 		// if all Editors are closed,
-		if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
-			if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // seeMode
-				this.closeDocument(this.ActiveEditorFrameId, 'top.we_cmd("dologout");');
-			} else {
-				top.we_cmd("exit_multi_doc_question", 'dologout');
-			}
-		} else {
+		if (this.FreeEditorFrames.length === this.EditorWindowsAmount ||
+						this.getAllHotEditors().length === 0) {
 			return true;
 		}
+		if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // seeMode
+			this.closeDocument(this.ActiveEditorFrameId, 'top.we_cmd("dologout");');
+		} else {
+			top.we_cmd("exit_multi_doc_question", 'dologout');
+		}
 		return false;
-	};
-
+	},
+	getAllHotEditors: function () {
+		var allHotDocuments = this.getEditorsInUse();
+		var hot = [];
+		for (var frameId in allHotDocuments) {
+			if (allHotDocuments[frameId].getEditorIsHot()) {
+				hot.push(allHotDocuments[frameId]);
+			}
+		}
+		return hot;
+	},
 	/**
 	 * FUNCTION:
 	 *   closeAllDocuments
@@ -351,7 +337,7 @@ function EditorFrameController() {
 	 * RETURNS:
 	 *   nothing
 	 */
-	this.closeAllDocuments = function () {
+	closeAllDocuments: function () {
 		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(WE().consts.g_l.main.eplugin_exit_doc)) {
 			// close all none Hot Editors
 			if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
@@ -366,29 +352,26 @@ function EditorFrameController() {
 			}
 
 			// if all Editors are closed,
-			if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
-				if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // only one document open
-					this.closeDocument(this.ActiveEditorFrameId, 'top.we_cmd("close_all_documents");');
-				} else {
-					top.we_cmd("exit_multi_doc_question", 'close_all_documents');
-				}
-			} else {
+			if (this.FreeEditorFrames.length === this.EditorWindowsAmount ||
+							this.getAllHotEditors().length === 0) {
 				return true;
 			}
+			if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) === 1) { // only one document open
+				this.closeDocument(this.ActiveEditorFrameId, 'top.we_cmd("close_all_documents");');
+			} else {
+				top.we_cmd("exit_multi_doc_question", 'close_all_documents');
+			}
+
 			return false;
 		}
-	};
-
-	this.closeAllButActiveDocument = function (activeId) {
-
+	},
+	closeAllButActiveDocument: function (activeId) {
 		if (top.we_cmd("editor_plugin_doc_count") === 0 || confirm(WE().consts.g_l.main.eplugin_exit_doc)) {
-
 			// only do something, if more than one editor is open
 			if ((this.EditorWindowsAmount - this.FreeEditorFrames.length) > 1) {
 				// get active id, if not given
 				if (!activeId) {
 					activeId = this.ActiveEditorFrameId;
-
 				}
 
 				_UsedEditors = this.getEditorsInUse();
@@ -408,30 +391,27 @@ function EditorFrameController() {
 							this.closeDocument(frameId, 'top.we_cmd("close_all_but_active_document", "' + activeId + '");');
 							return;
 
-						} else {
-							this.closeDocument(frameId);
-
 						}
+						this.closeDocument(frameId);
 					}
 				}
 			}
 		}
-	};
-
-	//--------------------------------------------------------------------
-	// FUNCTION:
-	//   closeEditorFrame
-	//
-	// DESCRIPTION:
-	//   Clears the current editor and frees it for the next document
-	//
-	// ARGUMENTS:
-	//   frameId - id of the editor window, which should be freed
-	//
-	// RETURNS:
-	//   nothing
-	//--------------------------------------------------------------------
-	this.closeEditorFrame = function (frameId) {
+	},
+	/**-------------------------------------------------------------------
+	 // FUNCTION:
+	 //   closeEditorFrame
+	 //
+	 // DESCRIPTION:
+	 //   Clears the current editor and frees it for the next document
+	 //
+	 // ARGUMENTS:
+	 //   frameId - id of the editor window, which should be freed
+	 //
+	 // RETURNS:
+	 //   nothing
+	 --------------------------------------------------------------------*/
+	closeEditorFrame: function (frameId) {
 		var docRef;
 		if (this.EditorFrames[frameId]) {
 			switch (this.EditorFrames[frameId].EditorType) {
@@ -505,10 +485,8 @@ function EditorFrameController() {
 			}
 			this.toggleFrames();
 		}
-	};
-
-	/*--------------------------------------------------------------------
-	 // FUNCTION:
+	},
+	/*FUNCTION:
 	 //   showEditor
 	 //
 	 // DESCRIPTION:
@@ -519,8 +497,8 @@ function EditorFrameController() {
 	 //
 	 // RETURNS:
 	 //   nothing
-	 //--------------------------------------------------------------------*/
-	this.showEditor = function (editorId) {
+	 */
+	showEditor: function (editorId) {
 		if (editorId !== this.ActiveEditorFrameId) {
 			// add to navigationHistory:
 			_currentEditor = this.getEditorFrame(editorId);
@@ -551,56 +529,45 @@ function EditorFrameController() {
 				this.toggleFrames();
 			}
 		}
-	};
-
-	this.switchToContentEditor = function () {
+	},
+	switchToContentEditor: function () {
 		this.getActiveEditorFrame().switchToContentEditor(2);
-	};
-
-
-	this.switchToNonContentEditor = function () {
+	},
+	switchToNonContentEditor: function () {
 		this.getActiveEditorFrame().switchToContentEditor(1);
-	};
-
-	this.getVisibleEditorFrame = function () {
+	},
+	getVisibleEditorFrame: function () {
 		editorFrame = this.getActiveEditorFrame();
 		if (!editorFrame) {
 			return null;
 		}
 		return editorFrame.getContentEditor();
-	};
-
-	this.isEditTab = function () {
+	},
+	isEditTab: function () {
 		editorFrame = this.getActiveEditorFrame();
 		if (!editorFrame) {
 			return null;
 		}
 		return editorFrame.getContentEditor() === this.getActiveDocumentReference().frames[2];
-	};
-
-	//--------------------------------------------------------------------
-	// FUNCTION:
-	//   toggleFrames
-	//
-	// DESCRIPTION:
-	//   sets the "cols"-Attribute of the EditorFrameset
-	//
-	// ARGUMENTS:
-	//   none
-	//
-	// RETURNS:
-	//   nothing
-	//--------------------------------------------------------------------
-	this.toggleFrames = function () {
-		if (!this.isInitialized()) {
-
-		}
+	},
+	/**FUNCTION:
+	 //   toggleFrames
+	 //
+	 // DESCRIPTION:
+	 //   sets the "cols"-Attribute of the EditorFrameset
+	 //
+	 // ARGUMENTS:
+	 //   none
+	 //
+	 // RETURNS:
+	 //   nothing
+	 */
+	toggleFrames: function () {
 		var frameId;
 		//		var _colStr = "";
 		if (!this.ActiveEditorFrameId) {
 			first = true;
 			for (frameId in this.EditorFrames) {
-
 				if (first) {
 					this.getEditorFrame(frameId).setEmptyEditor();
 					if (WE().session.isChrome) {
@@ -619,7 +586,6 @@ function EditorFrameController() {
 					}
 				}
 			}
-
 		} else {
 			for (frameId in this.EditorFrames) {
 				if (this.ActiveEditorFrameId === frameId) {
@@ -629,7 +595,6 @@ function EditorFrameController() {
 						this.getEditorFrame(frameId).EditorFrameReference.style.width = "100%";
 						this.getEditorFrame(frameId).EditorFrameReference.style.height = "100%";
 					}
-
 				} else {
 					if (this.getEditorFrame(frameId).getEditorIsInUse() && this.getEditorFrame(frameId).EditorType !== "none_webedition" && this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows) {
 						this.EditorFrames[frameId].getDocumentReference().closeAllModalWindows();
@@ -647,80 +612,67 @@ function EditorFrameController() {
 				}
 			}
 		}
-	};
-
-	//--------------------------------------------------------------------
-	// FUNCTION:
-	//   getFreeWindow
-	//
-	// DESCRIPTION:
-	//   returns next free frame
-	//
-	// ARGUMENTS:
-	//   none
-	//
-	// RETURNS:
-	//   name EditorFrame object or false
-	//--------------------------------------------------------------------
-	this.getFreeWindow = function () {
-
+	},
+	/*FUNCTION:
+	 //   getFreeWindow
+	 //
+	 // DESCRIPTION:
+	 //   returns next free frame
+	 //
+	 // ARGUMENTS:
+	 //   none
+	 //
+	 // RETURNS:
+	 //   name EditorFrame object or false
+	 */
+	getFreeWindow: function () {
 		if (this.EditorFrames === null) {
 			this.init();
 		}
 
 		if (this.FreeEditorFrames.length > 0) {
-
 			return this.EditorFrames[this.FreeEditorFrames.shift()];
 			//var objref = this.EditorFrames[this.FreeEditorFrames.shift()];
 			//objref.useEditorFrame(); - if there occure any errors use this here
 			//return objref;
 		}
 		return false;
-	};
-
-	//--------------------------------------------------------------------
-	// FUNCTION:
-	//   getNumberOfFreeWindows
-	//
-	// DESCRIPTION:
-	//   returns number of available free frames
-	//
-	// ARGUMENTS:
-	//   none
-	//
-	// RETURNS:
-	//   integer
-	//--------------------------------------------------------------------
-	this.getNumberOfFreeWindows = function () {
-		if (this.FreeEditorFrames === null) {
-			return 0;
-		}
-		return this.FreeEditorFrames.length;
-	};
-
-
-	this.getEditorIdOfOpenDocument = function (table, id, editcmd, url) {
-
+	},
+	/*
+	 // FUNCTION:
+	 //   getNumberOfFreeWindows
+	 //
+	 // DESCRIPTION:
+	 //   returns number of available free frames
+	 //
+	 // ARGUMENTS:
+	 //   none
+	 //
+	 // RETURNS:
+	 //   integer
+	 */
+	getNumberOfFreeWindows: function () {
+		return (this.FreeEditorFrames === null ? 0 : this.FreeEditorFrames.length);
+	},
+	getEditorIdOfOpenDocument: function (table, id, editcmd, url) {
 		if (id === "0" && !editcmd && !url) {
 			return null;
-
 		}
+
 		for (var _editorId in this.EditorFrames) {
 			if (table && id && this.getEditorEditorTable(_editorId) === table && this.getEditorDocumentId(_editorId) == id) { // open by id
 				return _editorId;
-
-			} else if (editcmd === "open_cockpit" && this.EditorFrames[_editorId].EditorType === "cockpit") { // open a cmd window
+			}
+			if (editcmd === "open_cockpit" && this.EditorFrames[_editorId].EditorType === "cockpit") { // open a cmd window
 				return _editorId;
-
-			} else if (url && this.EditorFrames[_editorId].EditorUrl === url) { // open with URL
+			}
+			if (url && this.EditorFrames[_editorId].EditorUrl === url) { // open with URL
 				return _editorId;
-
 			}
 		}
 		return null;
-	};
-
-	this.getEditorsInUse = function () {
+	},
+	getEditorsInUse: function () {
 		var _ret = {};
 		for (var frameId in this.EditorFrames) {
 			if (this.EditorFrames[frameId].getEditorIsInUse()) {
@@ -728,28 +680,25 @@ function EditorFrameController() {
 			}
 		}
 		return _ret;
-	};
-
+	},
 	//----------------------------------------
 	// getters
 	// all getters can have the transactionnumber as parameter,
 	// but take the current editor as default
 	//----------------------------------------
 
-	this.getActiveEditorFrame = function () {
+	getActiveEditorFrame: function () {
 		return (this.ActiveEditorFrameId ? this.EditorFrames[this.ActiveEditorFrameId] : false);
-	};
-
-	this.getEditorFrameByTransaction = function (theTransaction) {
+	},
+	getEditorFrameByTransaction: function (theTransaction) {
 		for (var frameId in this.EditorFrames) {
 			if (this.EditorFrames[frameId] && (this.EditorFrames[frameId].getEditorTransaction() === theTransaction)) {
 				return this.EditorFrames[frameId];
 			}
 		}
 		return null;
-	};
-
-	this.getEditorFrame = function (frameId) {
+	},
+	getEditorFrame: function (frameId) {
 		if (frameId !== undefined && frameId !== "") {
 			return this.EditorFrames[frameId];
 		}
@@ -757,28 +706,24 @@ function EditorFrameController() {
 			return this.EditorFrames[this.ActiveEditorFrameId];
 		}
 		return false;
-	};
-
-	this.getDocumentReferenceByTransaction = function (theTransaction) {
+	},
+	getDocumentReferenceByTransaction: function (theTransaction) {
 		_win = this.getEditorFrameByTransaction(theTransaction);
 		return (_win ? _win.getDocumentReference() : false);
 
-	};
-
-	this.getActiveDocumentReference = function () {
+	},
+	getActiveDocumentReference: function () {
 		if (this.EditorFrames === null) {
 			this.init();
 		}
 
 		_win = this.getActiveEditorFrame();
 		return (_win ? _win.getDocumentReference() : false);
-	};
-
+	},
 	//----------------------------------------
 	// setters
 	//----------------------------------------
-	this.setActiveEditorFrame = function (id) {
-
+	setActiveEditorFrame: function (id) {
 		if (this.ActiveEditorFrameId !== id) {
 			if ((_oldActive = this.getEditorFrame(this.ActiveEditorFrameId))) {
 				_oldActive.setEditorIsActive(false);
@@ -789,71 +734,53 @@ function EditorFrameController() {
 			_EditorWindow = this.getEditorFrame(id);
 			_EditorWindow.setEditorIsActive(true);
 		}
-	};
-
-	this.setEditorIsHot = function (newVal, id) {
+	},
+	setEditorIsHot: function (newVal, id) {
 		_EditorWindow = this.getEditorFrame(id);
 		if (_EditorWindow) {
 			_EditorWindow.setEditorIsHot(newVal);
 		}
-	};
-
+	},
 	//----------------------------------------
 	// getters
 	//----------------------------------------
 
-	this.getEditorIsHot = function (id) {
+	getEditorIsHot: function (id) {
 		_EditorWindow = this.getEditorFrame(id);
 		if (_EditorWindow) {
 			return _EditorWindow.getEditorIsHot();
 		}
 		return null;
-	};
-
-	this.getEditorTransaction = function (frameId) {
+	},
+	getEditorTransaction: function (frameId) {
 		if ((_EditorFrame = this.getEditorFrame(frameId))) {
 			return _EditorFrame.getEditorTransaction();
 		}
 		return null;
 
-	};
-
-	this.getEditorDocumentId = function (frameId) {
+	},
+	getEditorDocumentId: function (frameId) {
 		if ((_EditorFrame = this.getEditorFrame(frameId))) {
 			return _EditorFrame.getEditorDocumentId();
 		}
 		return null;
-	};
-
-	this.getEditorEditorTable = function (frameId) {
+	},
+	getEditorEditorTable: function (frameId) {
 		var _EditorFrame = this.getEditorFrame(frameId);
 		return _EditorFrame.getEditorEditorTable();
-
-	};
-
-	this.getEditorIsHot = function (frameId) {
-		var _EditorFrame = this.getEditorFrame(frameId);
-		return _EditorFrame.getEditorIsHot();
-
-	};
-
-	this.getEditorEditPageNr = function (frameId) {
+	},
+	getEditorEditPageNr: function (frameId) {
 		var _EditorFrame = this.getEditorFrame(frameId);
 		return _EditorFrame.getEditorEditPageNr();
-
-	};
-
-	this.getEditorIsActive = function (frameId) {
+	},
+	getEditorIsActive: function (frameId) {
 		var _EditorFrame = this.getEditorFrame(frameId);
 		return _EditorFrame.getEditorIsActive(frameId);
-
-	};
-
-	this.getEditorIsInUse = function (frameId) {
+	},
+	getEditorIsInUse: function (frameId) {
 		var _EditorFrame = this.getEditorFrame(frameId);
 		return _EditorFrame.getEditorIsInUse();
-	};
-
+	},
 	/*
 	 // TODO: make better fn getEditorStateByID(id, table, editPage), returning an array with all status data and references if open
 	 this.getEditorIfOpen = function (table, id, editPage) {
@@ -875,31 +802,25 @@ function EditorFrameController() {
 	 };
 	 */
 
-}
-WE().layout.weEditorFrameController = new EditorFrameController();
+};
 
-//--------------------------------------------------------------------
-// CLASS:
-//   EditorFrameset
-//
-// DESCRIPTION:
-//   Manages access to one editor-window.
-//
-// ARGUMENTS:
-//   none
-//
-// RETURNS:
-//   none
-//--------------------------------------------------------------------
+/**CLASS:
+ //   EditorFrameset
+ //
+ // DESCRIPTION:
+ //   Manages access to one editor-window.
+ //
+ // ARGUMENTS:
+ //   none
+ //
+ // RETURNS:
+ //   none
+ */
 function EditorFrame(ref, elementId) {
-
 	this.FrameId = elementId;
-
 	this.EditorFrameWindow = top.bm_content_frame.window.frames[elementId];
 	this.EditorFrameReference = ref; // not needed yet !
-
 	this.EditorType = null;	// model|cockpit|none_webedition, etc
-
 	this.EditorTransaction = null; // is set
 	this.EditorDocumentId = ""; // is set
 	this.EditorEditorTable = ""; // is set
@@ -939,27 +860,22 @@ function EditorFrame(ref, elementId) {
 	// used in: closeDocument, closeEditorFrame, toggleFrames !
 	this.EditorExitDocQuestionDialog = false;
 
+}
 
-	//----------------------------------------
-	// functionality
-	//----------------------------------------
+EditorFrame.prototype = {
+	/*functionality*/
 
-	this.freeEditor = function () {
-
+	freeEditor: function () {
 		this.setEmptyEditor();
-
 		this.EditorType = null;	// model|cockpit, etc
-
 		this.EditorTransaction = null;
 		this.EditorDocumentId = "";
 		this.EditorEditorTable = "";
 		this.EditorIsLoading = true;
 		this.EditorIsHot = false;
-
 		this.EditorUrl = "";
 		this.EditorDocumentParameters = "";
 		this.EditorEditCmd = "";
-
 		// checkboxes in Editor-Footer:
 		this.EditorMakeNewDoc = false;
 		this.EditorPublishWhenSave = false;
@@ -973,30 +889,21 @@ function EditorFrame(ref, elementId) {
 		this.EditorDocumentText = " &hellip; ";
 		this.EditorDocumentPath = null;
 		this.EditorContentType = "";
-
-
 		this.EditorEditPageNr = null;
 		this.EditorTable = null;
 		this.EditorIsActive = false;
 		this.EditorIsInUse = false;
-	};
-
-	this.initEditorFrameData = function (obj) {
+	},
+	initEditorFrameData: function (obj) {
 		this.EditorIsInUse = true;
 		if (obj) {
 			for (var eigen in obj) {
-				if (typeof (obj[eigen]) === "boolean") {
-					this[eigen] = obj[eigen];
-				} else {
-					this[eigen] = obj[eigen];
-				}
+				this[eigen] = obj[eigen];
 			}
 			this.updateEditorTab();
 		}
-	};
-
-
-	this.updateEditorTab = function () {
+	},
+	updateEditorTab: function () {
 		this.EditorDocumentText = this.EditorDocumentText.replace(/</g, "&lt;");
 		this.EditorDocumentText = this.EditorDocumentText.replace(/>/g, "&gt;");
 		WE().layout.multiTabs.setText(this.FrameId, this.EditorDocumentText);
@@ -1010,147 +917,115 @@ function EditorFrame(ref, elementId) {
 		WE().layout.multiTabs.setContentType(this.FrameId, this.EditorContentType);
 		WE().layout.multiTabs.setLoading(this.FrameId, this.EditorIsLoading);
 		WE().layout.multiTabs.setModified(this.FrameId, this.EditorIsHot);
-	};
-
-	//--------------------------------------------------------------------
-	// FUNCTION:
-	//   setEmptyEditor
-	//
-	// DESCRIPTION:
-	//   if all editors are closed, the editor shows an emtpy page
-	//
-	// ARGUMENTS:
-	//   none
-	//
-	// RETURNS:
-	//   nothing
-	//--------------------------------------------------------------------
-	this.setEmptyEditor = function () {
+	},
+	/**
+	 // FUNCTION:
+	 //   setEmptyEditor
+	 //
+	 // DESCRIPTION:
+	 //   if all editors are closed, the editor shows an emtpy page
+	 //
+	 // ARGUMENTS:
+	 //   none
+	 //
+	 // RETURNS:
+	 //   nothing
+	 */
+	setEmptyEditor: function () {
 		this.EditorFrameWindow.location = WE().consts.dirs.WEBEDITION_DIR + "html/blank_editor.html";
-	};
-
-	this.getEditorFrameWindow = function () {
+	},
+	getEditorFrameWindow: function () {
 		return this.EditorFrameWindow;
-	};
-
-	this.getDocumentReference = function () {
+	},
+	getDocumentReference: function () {
 		return this.getEditorFrameWindow();
-	};
-
-	this.getFrameId = function () {
+	},
+	getFrameId: function () {
 		return this.FrameId;
-	};
-
-	this.getEditorType = function () {
+	},
+	getEditorType: function () {
 		return this.EditorType;
-	};
-
-	this.getEditorTransaction = function () {
+	},
+	getEditorTransaction: function () {
 		return this.EditorTransaction;
-	};
-
-	this.getEditorDocumentId = function () {
+	},
+	getEditorDocumentId: function () {
 		return this.EditorDocumentId;
-	};
-
-	this.getEditorEditorTable = function () {
+	},
+	getEditorEditorTable: function () {
 		return this.EditorEditorTable;
-	};
-
-	this.getEditorIsHot = function () {
+	},
+	getEditorIsHot: function () {
 		return this.EditorIsHot;
-	};
-
-	this.getEditorEditCmd = function () {
+	},
+	getEditorEditCmd: function () {
 		return this.EditorEditCmd;
-	};
-
-	this.getEditorUrl = function () {
+	},
+	getEditorUrl: function () {
 		return this.EditorUrl;
-	};
-
-	this.getEditorDocumentParameters = function () {
+	},
+	getEditorDocumentParameters: function () {
 		return this.EditorDocumentParameters;
-	};
-
-	this.getEditorMakeNewDoc = function () {
+	},
+	getEditorMakeNewDoc: function () {
 		return this.EditorMakeNewDoc;
-	};
-
-	this.getEditorPublishWhenSave = function () {
+	},
+	getEditorPublishWhenSave: function () {
 		return this.EditorPublishWhenSave;
-	};
-
-	this.getEditorAutoRebuild = function () {
+	},
+	getEditorAutoRebuild: function () {
 		return this.EditorAutoRebuild;
-	};
-
-	this.getEditorMakeSameDoc = function () {
+	},
+	getEditorMakeSameDoc: function () {
 		return this.EditorMakeSameDoc;
-	};
-
-	this.getEditorDidSetHiddenText = function () {
+	},
+	getEditorDidSetHiddenText: function () {
 		return this.EditorDidSetHiddenText;
-	};
-
-	this.getEditorDocumentPath = function () {
+	},
+	getEditorDocumentPath: function () {
 		return this.EditorDocumentPath;
-	};
-
-	this.getEditorDocumentText = function () {
+	},
+	getEditorDocumentText: function () {
 		return this.EditorDocumentText;
-	};
-
-	this.getEditorEditPageNr = function () {
+	},
+	getEditorEditPageNr: function () {
 		return this.EditorEditPageNr;
-	};
-
-	this.getEditorContentType = function () {
+	},
+	getEditorContentType: function () {
 		return this.EditorContentType;
-	};
-
-	this.getEditorTable = function () {
+	},
+	getEditorTable: function () {
 		return this.EditorTable;
-	};
-
-	this.getEditorIsActive = function () {
+	},
+	getEditorIsActive: function () {
 		return this.EditorIsActive;
-	};
-
-	this.getEditorIsInUse = function () {
+	},
+	getEditorIsInUse: function () {
 		return this.EditorIsInUse;
-	};
-
-	this.getEditorReloadNeeded = function () {
+	},
+	getEditorReloadNeeded: function () {
 		return this.EditorReloadNeeded;
-	};
-
-	this.getEditorReloadAllNeeded = function () {
+	},
+	getEditorReloadAllNeeded: function () {
 		return this.EditorReloadAllNeeded;
-	};
-
+	},
 	// setters
-	this.setEditorMakeNewDoc = function (newVal) {
+	setEditorMakeNewDoc: function (newVal) {
 		this.EditorMakeNewDoc = newVal;
-	};
-
-	this.setEditorPublishWhenSave = function (newVal) {
+	},
+	setEditorPublishWhenSave: function (newVal) {
 		this.EditorPublishWhenSave = newVal;
-	};
-
-	this.setEditorAutoRebuild = function (newVal) {
+	},
+	setEditorAutoRebuild: function (newVal) {
 		this.EditorAutoRebuild = newVal;
-	};
-
-	this.setEditorMakeSameDoc = function (newVal) {
+	},
+	setEditorMakeSameDoc: function (newVal) {
 		this.EditorMakeSameDoc = newVal;
-	};
-
-	this.setEditorDidSetHiddenText = function (newVal) {
+	},
+	setEditorDidSetHiddenText: function (newVal) {
 		this.EditorDidSetHiddenText = newVal;
-	};
-
-	this.setEditorIsActive = function (newVal) {
+	},
+	setEditorIsActive: function (newVal) {
 		this.EditorIsActive = newVal;
 		if (newVal) {
 			var _theEditorFrame = this.getEditorFrameWindow();
@@ -1188,54 +1063,58 @@ function EditorFrame(ref, elementId) {
 				this.setEditorReloadNeeded(false);
 			}
 		}
-	};
-
-	this.setEditorEditPageNr = function (newVal) {
+	},
+	setEditorEditPageNr: function (newVal) {
 		this.EditorEditPageNr = newVal;
-	};
-
-	this.setEditorDocumentId = function (newVal) {
+	},
+	setEditorDocumentId: function (newVal) {
 		this.EditorDocumentId = newVal.toString();
-	};
-
-	this.setEditorIsHot = function (newVal) {
+	},
+	setEditorIsHot: function (newVal) {
 		var _update = this.EditorIsHot !== newVal;
 		this.EditorIsHot = newVal;
 		if (_update) {
 			this.updateEditorTab();
 		}
-	};
-
-	this.setEditorIsLoading = function (newVal) {
+	},
+	setEditorIsLoading: function (newVal) {
 		var _update = this.EditorIsLoading !== newVal;
 		this.EditorIsLoading = newVal;
 		if (_update) {
 			this.updateEditorTab();
 		}
-	};
-
-	this.setEditorReloadNeeded = function (newVal) {
+	},
+	setEditorReloadNeeded: function (newVal) {
 		this.EditorReloadNeeded = newVal;
-	};
-
-	this.setEditorReloadAllNeeded = function (newVal) {
+	},
+	setEditorReloadAllNeeded: function (newVal) {
 		this.EditorReloadAllNeeded = newVal;
-	};
-
-	this.switchToContentEditor = function (nr) {
+	},
+	switchToContentEditor: function (nr) {
 		var iframe = this.getEditorFrameWindow().document.getElementsByTagName("IFRAME");
 		iframe[nr].parentElement.style.display = 'block';
 		iframe[(nr === 1 ? 2 : 1)].parentElement.style.display = 'none';
-	};
-
-	this.getContentEditorHeightForFrameNr = function (nr) {
+	},
+	getContentEditorHeightForFrameNr: function (nr) {
+		var framesets = this.getEditorFrameWindow().document.getElementsByTagName("FRAMESET");
+		if (framesets.length) {
+			//FIXME: remove if frames obsolete
+			var frameset = framesets[0];
+			if (!frameset) {
+				return null;
+			}
+			var rows = frameset.rows;
+			if (!rows) {
+				return null;
+			}
+			var parts = rows.split(",");
+			return parts[nr];
+		}
 		var iframes = this.getEditorFrameWindow().document.getElementsByTagName("IFRAME");
 		//note embedded elements such as cockpit don't have a
 		return (iframes[nr] && iframes[nr].parentElement.style.display === "none" ? "0" : "+1");
-
-	};
-
-	this.getContentEditor = function () {//iframes are frames in dom too
+	},
+	getContentEditor: function () {//iframes are frames in dom too
 		if (this.getContentEditorHeightForFrameNr(1) === "0") {
 			return this.getEditorFrameWindow().frames[2];
 		}
@@ -1243,10 +1122,194 @@ function EditorFrame(ref, elementId) {
 			return this.getEditorFrameWindow().frames[1];
 		}
 		return null;
-	};
-
-	this.getContentFrame = function () {
+	},
+	getContentFrame: function () {
 		return this.getEditorFrameWindow().frames[2];
-	};
+	}
 
-}
+};
+
+
+/**
+ * class declaration
+ * the class TabView controls the behaviort of the tabs
+ * onload a instance of this class is created
+ */
+TabView = function (myDoc) {
+	this.myDoc = myDoc;
+	this.init();
+};
+/**
+ * class TabView methods and properties
+ */
+TabView.prototype = {
+	/**
+	 * if a tab for the given frameId exists, it will be selected
+	 * if not if will be added
+	 */
+	openTab: function (frameId, text, title) {
+		if (this.myDoc.getElementById("tab_" + frameId) === undefined) {
+			this.addTab(frameId, text, title);
+		} else {
+			this.selectTab(frameId);
+		}
+	},
+	/**
+	 * adds an new tab to the tab view
+	 */
+	addTab: function (frameId, text, title, pos) {
+		newtab = this.tabDummy.cloneNode(true);
+		newtab.innerHTML = newtab.innerHTML.replace(/###tabTextId###/g, "text_" + frameId).replace(/###modId###/g, "mod_" + frameId).replace(/###loadId###/g, "load_" + frameId).replace(/###closeId###/g, "close_" + frameId);
+		newtab.id = "tab_" + frameId;
+		newtab.name = "tab";
+		newtab.title = title;
+		newtab.className = "tabActive";
+		if (pos !== undefined) {
+			if (this.tabContainer.childNodes.length > pos) {
+				this.tabContainer.insertBefore(newtab, this.tabContainer.childNodes[pos]);
+			} else {
+				pos = undefined;
+			}
+		}
+		if (pos === undefined) {
+			this.tabContainer.appendChild(newtab);
+		}
+		this.setText(frameId, text);
+		this.setTitle(frameId, title);
+		this.selectTab(frameId);
+	},
+	/**
+	 * controls the click on the close button
+	 */
+	onCloseTab: function (val) {
+		frameId = (typeof val) == "object" ? val.id.replace(/close_/g, "") : val;
+		WE().layout.weEditorFrameController.closeDocument(frameId);
+	},
+	/**
+	 * removes a tab from the tab view
+	 */
+	closeTab: function (frameId) {
+		this.tabContainer.removeChild(this.myDoc.getElementById('tab_' + frameId));
+		if (this.activeTab == frameId) {
+			this.activeTab = null;
+		}
+		this.setFrameSize();
+		this.contentType[frameId] = "";
+	},
+	/**
+	 * selects a tab (set style for selected tabs)
+	 */
+	selectTab: function (frameId) {
+		this.deselectAll();
+		if (this.activeTab !== null) {
+			this.deselectTab(this.activeTab);
+		}
+		if (this.myDoc.getElementById('tab_' + frameId) && typeof (this.myDoc.getElementById('tab_' + frameId)) == "object") {
+			this.myDoc.getElementById('tab_' + frameId).className = 'tabActive';
+		}
+		this.activeTab = frameId;
+	},
+	/**
+	 * deselects a tab (set style for deselected tabs)
+	 */
+	deselectTab: function (frameId) {
+		if (this.myDoc.getElementById('tab_' + frameId)) {
+			this.myDoc.getElementById('tab_' + frameId).className = "tab";
+		}
+	},
+	/**
+	 * deselects all tab (set style for deselected tabs to all tabs)
+	 */
+	deselectAll: function () {
+		tabs = this.myDoc.getElementsByName("tab");
+		for (i = 0; tabs.length; i++) {
+			tabs[i].className = "tab";
+		}
+	},
+	/**
+	 * sets the tab label
+	 */
+	setText: function (frameId, val) {
+		text = this.myDoc.getElementById('text_' + frameId);
+		if (text) {
+			text.innerHTML = val;
+			this.setFrameSize();
+		}
+	},
+	setTextClass: function (frameId, classname) {
+		text = this.myDoc.getElementById('text_' + frameId);
+		if (classname) {
+			text.className = "text " + classname;
+		}
+	},
+	/**
+	 * sets the tab title
+	 */
+	setTitle: function (frameId, val) {
+		title = this.myDoc.getElementById('tab_' + frameId);
+		if (title) {
+			title.title = val;
+		}
+	},
+	/**
+	 * sets the id to the icon
+	 */
+	setId: function (frameId, val) {
+		var el = this.myDoc.getElementById('load_' + frameId);
+		if (el) {
+			el.title = val;
+		}
+	},
+	/**
+	 * marks a tab as modified an not safed
+	 */
+	setModified: function (frameId, modified) {
+		this.myDoc.getElementById('mod_' + frameId).style.visibility = (modified ?
+						"visible" :
+						"hidden");
+	},
+	/**
+	 * displays the loading loading icon
+	 */
+	setLoading: function (frameId, loading) {
+		if (loading) {
+			this.myDoc.getElementById('load_' + frameId).innerHTML = '<span class="fa-stack fa-lg fileicon"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>';
+		} else {
+			var _text = this.myDoc.getElementById('text_' + frameId).innerHTML;
+			var _ext = _text ? _text.replace(/^.*\./, ".") : "";
+			this.myDoc.getElementById('load_' + frameId).innerHTML = WE().util.getTreeIcon(this.contentType[frameId], false, _ext);
+		}
+	},
+	/**
+	 * displays the content type icon
+	 */
+	setContentType: function (frameId, contentType) {
+		this.contentType[frameId] = contentType;
+		this.setLoading(frameId, false);
+	},
+	/**
+	 * controls the click on a tab
+	 */
+	selectFrame: function (val) {
+		frameId = (typeof val) == "object" ? val.id.replace(/tab_/g, "") : val;
+		WE().layout.weEditorFrameController.showEditor(frameId);
+		//this.selectTab(frameId);
+	},
+	setFrameSize: function () {
+		tabsHeight = (this.myDoc.getElementById('tabContainer').clientHeight ? (this.myDoc.getElementById('tabContainer').clientHeight) : (this.myDoc.body.clientHeight));
+		tabsHeight = Math.max(tabsHeight, 30);
+		this.myDoc.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight + "px";
+		this.myDoc.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight + "px";
+	},
+	/**
+	 * inits some vars
+	 */
+	init: function () {
+		this.tabs = [];
+		this.frames = [];
+		this.activeTab = null;
+		this.tabContainer = this.myDoc.getElementById('tabContainer');
+		this.tabDummy = this.myDoc.getElementById('tabDummy');
+		this.contentType = [];
+	}
+};
