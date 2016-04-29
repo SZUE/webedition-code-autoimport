@@ -613,6 +613,7 @@ return {
 	 * this function is used to prepare textaea content for db
 	 * it returns an array of img/href-ids (for use in registerMediaLinks)
 	 */
+
 	public static function reparseInternalLinks(&$origContent, $replace = false, $name = ''){// FIXME: move to we_document?
 		$regs = $internalIDs = array();
 		$content = $origContent;
@@ -634,7 +635,6 @@ return {
 
 		// FIXME: the obove stuff has to be done before parsing medialinks!
 		// FIXME: make we_wysiwyg_editor::registerMedisLinks() just looking for IDs and writing the correct MediaLinks (after making internal link elsewhere)!
-
 		// parse internal IDs in one step to preserve order!
 		$content = str_replace(array(we_base_link::TYPE_THUMB_PREFIX), we_base_link::TYPE_INT_PREFIX, $content);
 		if(preg_match_all('/(src|href)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+),?(\\d*)["|?]/i', $content, $regs, PREG_SET_ORDER)){
@@ -1013,7 +1013,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	editor_css: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/editorCss.css') . '",
 	//content_css: "' . we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol . '"+getDocumentCss(true)' . ($contentCss ? '+",' . $contentCss . '"' : '') . ',
 	content_css: "' . we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol . '"+getDocumentCss(true)' . ($contentCss ? '+",' . $contentCss . '"' : '') . ',
-	popup_css_add: "' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontLiberation/stylesheet.css') . ',' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css') . (we_base_browserDetect::isMAC() ? ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css') : '') . '",
+	popup_css_add: "' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontLiberation/stylesheet.css') . ',' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css') . '",
 	' . (in_array('template', $allCommands) && $this->templates ? $this->getTemplates() : '') . '
 
 	// Skin options
