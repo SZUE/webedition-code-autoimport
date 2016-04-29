@@ -1,4 +1,3 @@
-webEdition/lib/we/net/Http.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -667,6 +666,7 @@ lib/we/ui/layout/NoteDiv.js
 lib/we/ui/dialog/OkCancelDialog.js
 lib/we/ui/controls/WeWysiwygEditorWindow.php
 lib/we/ui/controls/JavaMenu.jar
+lib/we/net/Http.php
 lib/we/net/Community.php
 lib/we/License.txt
 lib/additional/pear/PEAR5.php
