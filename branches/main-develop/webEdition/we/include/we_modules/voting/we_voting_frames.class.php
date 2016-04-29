@@ -580,7 +580,7 @@ function newIp(){
 				$table->addRow();
 				$table->setRow($key + 1, array("id" => "row_scores_$key"));
 				$table->setCol($i, 0, array('style' => 'width: ' . ($this->_width_size - 150) . 'px'), we_html_element::htmlSpan(array('id' => 'answers_score_' . $key), oldHtmlspecialchars(stripslashes($value))));
-				$table->setColContent($i, 1, $pb->getJS('', true) . $pb->getHTML());
+				$table->setColContent($i, 1, $pb->getJSCode() . $pb->getHTML());
 				$table->setColContent($i, 2, '&nbsp;');
 				$table->setColContent($i, 3, we_html_tools::htmlTextInput('scores_' . $key, 4, $this->View->voting->Scores[$key], '', 'id="scores_' . $key . '" onKeyUp="var r=parseInt(this.value);if(isNaN(r)) this.value=' . $this->View->voting->Scores[$key] . '; else{ this.value=r;document.we_form.scores_changed.value=1;}refreshTotal();"'));
 				$i++;

@@ -280,7 +280,7 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 			$dropzoneStyle  = 'width:auto;padding-top:14px;height:60px;';
 
 			$img = '';
-			$eventAttribs = array('ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);');
+			$eventAttribs = array('ondragover' => 'handleDragOver(event, \'' . $this->acId . '\');', 'ondragleave' => 'handleDragLeave(event, \'' . $this->acId . '\');');
 
 			if(true && $this->contentType === we_base_ContentTypes::IMAGE){ // FIXME: add code for icons so we can have preview for all cts
 				if($this->resultValue){
@@ -293,7 +293,7 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 					}
 				}
 
-				$imgDiv = we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'float:left;height:100%;')), 
+				$imgDiv = we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'float:left;height:100%;')),
 						we_html_element::htmlSpan(array('style' => 'display:inline-block;height: 100%;vertical-align: middle;')) .
 						we_html_element::htmlSpan(array('id' => 'preview_' . $this->acId), $img)
 				);
@@ -303,7 +303,7 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 
 			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;top.dropzoneAddPreview('" . $this->acId . "', id, table, ct, path);" . $this->doOnDropFromTree . "}";
 			$callbackExt = "if(importedDocument.id){" . $this->doOnDropFromExt . "top.close();}";
-			$dropzone = we_fileupload_ui_base::getExternalDropZone('we_File', $dropzoneContent, $dropzoneStyle, implode(',', $this->contentTypes), array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->acId, $this->table);
+			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, implode(',', $this->contentTypes), array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->table);
 
 
 			$html = we_html_element::htmlDiv(array(),

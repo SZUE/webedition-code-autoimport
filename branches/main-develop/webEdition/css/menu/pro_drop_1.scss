@@ -111,7 +111,7 @@ way to fit your requirements.
 				margin-top: 0;
 				padding: 0 2px 4px 2px;
 				border-top-left-radius: 0;
-				box-shadow: 2px 2px 3px $DarkGrey; 
+				box-shadow: 2px 2px 3px $DarkGrey;
 				li:hover ul,
 					li:hover ul li:hover ul,
 					li:hover ul li:hover ul li:hover ul,
@@ -129,6 +129,8 @@ way to fit your requirements.
 				}
 				li:hover ul{
 					left: 15.7em;
+					max-height: 46em;
+					overflow-y: auto;
 				}
 			}
 

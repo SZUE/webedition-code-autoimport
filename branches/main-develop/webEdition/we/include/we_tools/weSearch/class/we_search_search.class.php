@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -620,8 +619,7 @@ class we_search_search extends we_search_base{
 	private function searchInTitle($keyword, $table){
 		$_db2 = new DB_WE();
 		//first check published documents
-		$_db2->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.Name="Title" AND c.Dat LIKE "%' . $_db2->escape(trim($keyword)) . '%" AND l.DocumentTable="' . stripTblPrefix($table) . '"');
-		$titles = $_db2->getAll(true);
+		$titles = array();
 
 		//check unpublished documents
 		$_db2->query('SELECT DocumentID, DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE docTable="tblFile" AND Active=1 AND DocumentObject LIKE "%' . $_db2->escape(trim($keyword)) . '%"');
@@ -635,7 +633,7 @@ class we_search_search extends we_search_base{
 			}
 		}
 
-		return ($titles ? ' WETABLE.ID IN (' . implode(',', $titles) . ') ' : '');
+		return ' (WETABLE.ID IN (SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.Name="Title" AND c.Dat LIKE "%' . $_db2->escape(trim($keyword)) . '%" AND l.DocumentTable="' . stripTblPrefix($table) . '") ' . ($titles ? ' OR WETABLE.ID IN (' . implode(',', $titles) . ')' : '') . ' )';
 	}
 
 	function searchCategory($keyword, $table){

@@ -62,13 +62,13 @@ while($_db->next_record()){
 $_parts = array(
 	array(
 		'headline' => g_l('navigation', '[name]'),
-		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="if(document.we_form.Text.value!=\'\') WE().layout.button.switch_button_state(document, \'save\', \'enabled\'); else WE().layout.button.switch_button_state(document, \'save\', \'disabled\');" onkeyup="if(document.we_form.Text.value!=\'\') WE().layout.button.switch_button_state(document, \'save\', \'enabled\'); else WE().layout.button.switch_button_state(document, \'save\', \'disabled\');"'),
+		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="setSaveState();" onkeyup="setSaveState();"'),
 		'space' => $_space_size,
 		'noline' => 1
 	),
 	array(
 		'headline' => g_l('navigation', '[group]'),
-		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, array('style' => 'width: ' . $_input_size . 'px;', 'onchange' => "queryEntries(this.value)")),
+		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, array('style' => 'width: ' . $_input_size . 'px;', 'onchange' => 'queryEntries(this.value);')),
 		'space' => $_space_size,
 		'noline' => 1
 	),
@@ -82,7 +82,7 @@ $_parts = array(
 		'headline' => g_l('navigation', '[order]'),
 		'html' => we_html_tools::hidden('Ordn', $_navi->Ordn) .
 		we_html_tools::htmlTextInput('OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) .
-		we_html_tools::htmlSelect('OrdnSelect', array('begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')), 1, '', false, array('onchange' => "document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;document.we_form.Ordn.value=this.value;"), "value", 317),
+		we_html_tools::htmlSelect('OrdnSelect', array('begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')), 1, '', false, array('onchange' => 'changeOrder(this);'), 'value', 317),
 		'space' => $_space_size,
 		'noline' => 1
 	)
@@ -97,7 +97,7 @@ $_body = we_html_element::htmlBody(
 		), we_html_element::htmlForm(
 			array(
 			"name" => "we_form", "onsubmit" => "return false"
-			), we_html_multiIconBox::getHTML('', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), "", 311)));
+			), we_html_multiIconBox::getHTML('', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'), '', 311)));
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
 	YAHOO_FILES .

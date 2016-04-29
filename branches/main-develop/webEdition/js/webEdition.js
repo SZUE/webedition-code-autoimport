@@ -148,8 +148,7 @@ function incTree() {
 		self.document.getElementById("incBaum").style.backgroundColor = "grey";
 	} else
 	if (w < WE().consts.size.tree.min) {
-		w = WE().consts.size.tree.min;
-		setTreeWidth(w);
+		toggleTree(true);
 	}
 }
 
@@ -1162,14 +1161,11 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
 		case "help_documentation":
-			new (WE().util.jsWindow)(this, "http://documentation.webedition.org/wiki/" + WE().session.docuLang + "/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(this, "http://documentation.webedition.org/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
 			break;
 
 		case "help_tagreference":
 			new (WE().util.jsWindow)(this, "http://tags.webedition.org/" + WE().session.docuLang + "/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
-			break;
-		case "help_demo":
-			new (WE().util.jsWindow)(this, "http://demo.webedition.org/" + WE().session.docuLang + "/", "help_demo", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "open_tagreference":
 			var docupath = "http://tags.webedition.org/" + WE().session.docuLang + "/" + args[1];

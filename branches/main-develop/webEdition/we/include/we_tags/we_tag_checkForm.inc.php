@@ -130,7 +130,7 @@ if(self.' . $onError . '){' .
 	var wrongEmail = [0];
 	var pwError    = false;
 
-	formular = document.getElementById("' . $match . '");
+	formular = document.forms.' . $match . ';
 	' . $jsMandatory . '
 	' . $jsEmail . '
 	' . $jsPasword . '

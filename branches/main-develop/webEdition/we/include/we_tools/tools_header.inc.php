@@ -25,7 +25,7 @@ $we_tabs = new we_tabs();
 
 $name = array();
 
-$_menuItems = we_tool_lookup::getAllTools(true, true);
+$_menuItems = we_tool_lookup::getAllTools(true, false);
 $tool = we_base_request::_(we_base_request::STRING, 'tool');
 
 // temporarily show search-tab (on first position)

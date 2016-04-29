@@ -1,9 +1,10 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * webEdition CMS
+ * $Rev: 11965 $
+ * $Author: lukasimhof $
+ * $Date: 2016-04-19 22:58:04 +0200 (Di, 19 Apr 2016) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -17,30 +18,11 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-table.mceToolbar{
-	float:left;
-}
+@import "config.scss";
 
-td.mceToolbar{
-	padding-right:3px;
-}
-
-.tbButtonWysiwygBorder {
-	border: 1px solid #006DB8;
-	margin: 0px;
-	padding: 4px;
-	text-align: left;
-	text-decoration: none;
-	position: relative;
-	overflow: auto;
-	height: auto;
-	width: 50px;
-	background-color: #F5F5F5; }
-
-.wysiwygPreview {
-	background-color: transparent;
-	width: auto;
+#resize {
+	top: 0;
 }
