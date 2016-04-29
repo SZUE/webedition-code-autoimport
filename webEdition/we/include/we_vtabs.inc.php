@@ -45,7 +45,6 @@ $vtab = array(
 		'desc' => '<i class="fa fa-archive"></i> ' . g_l('global', '[vfile]'),
 	)
 );
-//$defTab = we_base_request::_(we_base_request::STRING, "table", '');
 foreach($vtab as $tab => $val){
 	if($val['show']){
 		echo '<div class="tab tabNorm" onclick="clickVTab(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="middlefont">' . $val['desc'] . '</span></div>';
