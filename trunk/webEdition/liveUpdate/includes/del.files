@@ -724,6 +724,7 @@ js/utils/lib.js
 js/utils/dimension.js
 js/selectors/we_sselector_footer.js
 js/seeMode.php
+js/multiEditor/multiTabs.js
 js/messageConsoleView.js
 js/messageConsoleImages.js
 js/menu/clickMenu_IE8.js
