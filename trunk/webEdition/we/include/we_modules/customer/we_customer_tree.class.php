@@ -55,12 +55,12 @@ class we_customer_tree extends weTree{
 		);
 
 		$js = (!$rootID ?
-				$this->topFrame . '.treeData.clear();' .
-				$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
-			'var attribs={};';
+						$this->topFrame . '.treeData.clear();' .
+						$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
+				'var attribs={};';
 		foreach($treeItems as $item){
 			$js.=($rootID ? 'if(' . $this->topFrame . '.treeData.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){' : '') .
-				'attribs={';
+					'attribs={';
 
 			foreach($item as $k => $v){
 				if($k === 'text'){
@@ -72,14 +72,14 @@ class we_customer_tree extends weTree{
 					}
 				}
 				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-						intval($v) :
-						'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') .
-					',';
+								intval($v) :
+								'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') .
+						',';
 			}
 
 			$js.='};' .
-				$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));' .
-				($rootID ? '}' : '');
+					$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));' .
+					($rootID ? '}' : '');
 		}
 		$js.=$this->topFrame . '.drawTree();';
 
@@ -88,8 +88,8 @@ class we_customer_tree extends weTree{
 
 	static function getItems($pid, $offset = 0, $segment = 500, $sort = ""){
 		return (empty($sort) ?
-				self::getItemsFromDB($pid, $offset, $segment) :
-				self::getSortFromDB($pid, $sort, $offset, $segment));
+						self::getItemsFromDB($pid, $offset, $segment) :
+						self::getSortFromDB($pid, $sort, $offset, $segment));
 	}
 
 	private static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,Forename,Surname', $addWhere = "", $addOrderBy = ""){
@@ -97,19 +97,19 @@ class we_customer_tree extends weTree{
 
 		$prevoffset = max(0, $offset - $segment);
 		$items = ($offset && $segment ?
-				array(array(
-					"id" => "prev_" . $ParentID,
-					"parentid" => $ParentID,
-					"text" => "display (" . $prevoffset . "-" . $offset . ")",
-					"contenttype" => "arrowup",
-					"table" => CUSTOMER_TABLE,
-					"typ" => "threedots",
-					"open" => 0,
-					"published" => 1,
-					"disabled" => 0,
-					"tooltip" => "",
-					"offset" => $prevoffset
-				)) : array());
+						array(array(
+						"id" => "prev_" . $ParentID,
+						"parentid" => $ParentID,
+						"text" => "display (" . $prevoffset . "-" . $offset . ")",
+						"contenttype" => "arrowup",
+						"table" => CUSTOMER_TABLE,
+						"typ" => "threedots",
+						"open" => 0,
+						"published" => 1,
+						"disabled" => 0,
+						"tooltip" => "",
+						"offset" => $prevoffset
+					)) : array());
 
 
 		$settings = new we_customer_settings();
@@ -117,8 +117,8 @@ class we_customer_tree extends weTree{
 
 
 		$where = ' WHERE 1 ' .
-			(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
-			' ' . $addWhere;
+				(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+				' ' . $addWhere;
 
 		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat, 0 AS ParentID,' . $elem . ',LoginDenied FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . self::getSortOrder($settings) . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
@@ -190,16 +190,16 @@ class we_customer_tree extends weTree{
 		foreach($sort_defs as $c => $sortdef){
 			if(!empty($sortdef['function'])){
 				$select[] = ($settings->customer->isInfoDate($sortdef['field']) ?
-						sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef["field"] . "_" . $sortdef["function"] :
-						sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . ' AS ' . $sortdef['field'] . '_' . $sortdef["function"]);
+								sprintf($settings->FunctionTable[$sortdef['function']], 'FROM_UNIXTIME(' . $sortdef['field'] . ')') . ' AS ' . $sortdef["field"] . "_" . $sortdef["function"] :
+								sprintf($settings->FunctionTable[$sortdef['function']], $sortdef['field']) . ' AS ' . $sortdef['field'] . '_' . $sortdef["function"]);
 
 				$grouparr[] = $sortdef['field'] . '_' . $sortdef['function'];
 				$orderarr[] = $sortdef['field'] . '_' . $sortdef['function'] . ' ' . $sortdef['order'];
 				$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
 				if(isset($pidarr[$c])){
 					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
-							'(' . $sortdef['field'] . '_' . $sortdef["function"] . "='' OR " . $sortdef['field'] . '_' . $sortdef['function'] . ' IS NULL)' :
-							$sortdef['field'] . '_' . $sortdef['function'] . "='" . $pidarr[$c] . "'");
+									'(' . $sortdef['field'] . '_' . $sortdef["function"] . "='' OR " . $sortdef['field'] . '_' . $sortdef['function'] . ' IS NULL)' :
+									$sortdef['field'] . '_' . $sortdef['function'] . "='" . $pidarr[$c] . "'");
 				}
 			} else {
 				$select[] = $sortdef['field'];
@@ -207,21 +207,22 @@ class we_customer_tree extends weTree{
 				$orderarr[] = $sortdef['field'] . ' ' . $sortdef['order'];
 				if(!empty($pidarr[$c])){
 					$havingarr[] = ($pidarr[$c] == g_l('modules_customer', '[no_value]') ?
-							'(' . $sortdef['field'] . "='' OR " . $sortdef['field'] . ' IS NULL)' :
-							$sortdef['field'] . "='" . $pidarr[$c] . "'");
+									'(' . $sortdef['field'] . "='' OR " . $sortdef['field'] . ' IS NULL)' :
+									$sortdef['field'] . "='" . $pidarr[$c] . "'");
 				}
 			}
 		}
 
 		$level = count($pidarr);
 		$levelcount = count($grouparr);
+		$select = array_filter($select);
 
 		$grp = implode(',', array_slice($grouparr, 0, $level + 1));
 
 		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,LoginDenied,Forename,Surname' .
-			($select ? ',' . implode(',', $select) : '' ) . ' FROM ' . CUSTOMER_TABLE .
-			(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
-			' GROUP BY ' . $grp . (count($grouparr) ? ($level ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
+				($select ? ',' . implode(',', $select) : '' ) . ' FROM ' . CUSTOMER_TABLE .
+				(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+				' GROUP BY ' . $grp . (count($grouparr) ? ($level ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		$items = $foo = array();
 		$gname = '';
@@ -236,8 +237,8 @@ class we_customer_tree extends weTree{
 				$gid = '{' . $gname . '}';
 
 				$groupTotal = f('SELECT COUNT(ID) FROM ' . CUSTOMER_TABLE . ' WHERE ' . $grp . '="' . $db->escape($gname) . '"' .
-					(!permissionhandler::hasPerm('ADMINISTRATOR') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
-					(count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : ''));
+						(!permissionhandler::hasPerm('ADMINISTRATOR') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+						(count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : ''));
 
 				$items[] = array(
 					'id' => str_replace("\'", '*****quot*****', $gid),
@@ -255,8 +256,8 @@ class we_customer_tree extends weTree{
 				$foo = array();
 				for($i = 0; $i < $levelcount; $i++){
 					$foo[] = ($i == 0 ?
-							('{' . ($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')) . '}') :
-							($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')));
+									('{' . ($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')) . '}') :
+									($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')));
 					$gname = implode('-|-', $foo);
 					if($i >= $level){
 						if(!isset($check[$gname])){
@@ -339,10 +340,10 @@ class we_customer_tree extends weTree{
 
 	public static function getSortOrder($settings, $concat = 'ORDER BY'){
 		$ret = ($settings->getSettings('default_order') ?
-				($settings->formatFields ?
-					implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order') :
-					'Text ' . $settings->getSettings('default_order')) :
-				'');
+						($settings->formatFields ?
+								implode(' ' . $settings->getSettings('default_order') . ',', $settings->formatFields) . ' ' . $settings->getSettings('default_order') :
+								'Text ' . $settings->getSettings('default_order')) :
+						'');
 		return ($ret ? $concat . ' ' . $ret : '');
 	}
 
