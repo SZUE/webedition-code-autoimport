@@ -30,7 +30,7 @@ class we_navigation_tree extends weTree{
 
 	function getJSTreeCode(){
 		return parent::getJSTreeCode() .
-			we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
+				we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
 	}
 
 	static function getItems($ParentID = 0, $offset = 0, $segment = 500){
@@ -89,11 +89,9 @@ class we_navigation_tree extends weTree{
 				$fileds[strtolower($k)] = $v;
 			}
 
-			if($db->f('IsFolder') == 0){
-				$_charset = we_navigation_navigation::findCharset($db->f('ParentID'));
-			} else {
-				$_charset = $db->f('Charset');
-			}
+			$_charset = ($db->f('IsFolder') == 0 ?
+							we_navigation_navigation::findCharset($db->f('ParentID')) :
+							$db->f('Charset'));
 
 			$_text = strip_tags(strtr($db->f('Text'), array(
 				'&amp;' => '&', "<br/>" => " ", "<br />" => " "

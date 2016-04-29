@@ -48,14 +48,14 @@ function we_cmd() {
 					top.content.editor.edbody.deleteorder();
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.shop.view.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.shop.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "new_article":
 			if (top.content.right && top.content.editor.edbody.hot && top.content.editor.edbody.hot === 1) {
 				top.content.editor.edbody.neuerartikel();
 			} else {
-				top.we_showMessage(WE().consts.g_l.shop.view.no_order_there, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.shop.no_order_there, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "pref_shop":

@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -83,7 +83,7 @@ function we_cmd_shop(args, url) {
 		case "delete_shop":
 			var wind = WE().util.jsWindow.prototype.find('edit_module');
 			if (wind) {
-				wind.content.we_cmd.apply(this, arguments);
+				wind.content.we_cmd.apply(this, args);
 				wind.focus();
 			}
 			break;

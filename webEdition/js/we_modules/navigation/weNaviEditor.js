@@ -30,6 +30,19 @@ function save() {
 	self.close();
 }
 
+function setSaveState() {
+	if (document.we_form.Text.value !== '') {
+		WE().layout.button.switch_button_state(document, 'save', 'enabled');
+	} else {
+		WE().layout.button.switch_button_state(document, 'save', 'disabled');
+	}
+}
+
+function changeOrder(elem){
+	document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;
+	document.we_form.Ordn.value=elem.value;
+}
+
 var ajaxObj = {
 	handleSuccess: function (o) {
 		this.processResult(o);

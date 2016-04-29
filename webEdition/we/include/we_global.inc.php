@@ -699,7 +699,7 @@ function we_check_email($email){
 	}
 	list($name, $host) = explode('@', $email);
 	$host = (function_exists('idn_to_ascii') ? idn_to_ascii($host) : $host);
-	return (filter_var(trim($name . '@' . $hostl), FILTER_VALIDATE_EMAIL) !== false);
+	return (filter_var(trim($name . '@' . $host), FILTER_VALIDATE_EMAIL) !== false);
 }
 
 /** This function should be used ONLY in generating code for the FRONTEND

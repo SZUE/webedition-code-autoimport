@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_request{
+
 	private static $allTables = array();
 
 	const NOT_VALID = '__NOT_VALID__'; // to be used as default just for indicating that is IS an default
@@ -97,8 +98,8 @@ class we_base_request{
 				return;
 			case self::CMD:
 				$var = strpos($var, 'WECMDENC_') !== false ?
-					base64_decode(urldecode(substr($var, 9))) :
-					$var;
+						base64_decode(urldecode(substr($var, 9))) :
+						$var;
 				return;
 			case self::UNIT:
 				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
@@ -152,8 +153,8 @@ class we_base_request{
 					}
 					$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[3]) : $regs[3]);
 					$mail = (filter_var($regs[2] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
-							$regs[1] . ($regs[1] ? '<' : '') . $regs[2] . '@' . $regs[3] . ($regs[1] ? '>' : '') :
-							'');
+									$regs[1] . ($regs[1] ? '<' : '') . $regs[2] . '@' . $regs[3] . ($regs[1] ? '>' : '') :
+									'');
 				}//if format didn't match, filter the whole var as one address
 
 				$mails = array_filter($mails);
@@ -173,8 +174,8 @@ class we_base_request{
 				$host = (function_exists('idn_to_ascii') ? idn_to_ascii($regs[3]) : $regs[3]);
 
 				$var = (filter_var($regs[2] . '@' . $host, FILTER_VALIDATE_EMAIL) !== false ?
-						$regs[1] . ($regs[1] ? '<' : '') . $regs[2] . '@' . $regs[3] . ($regs[1] ? '>' : '') :
-						'');
+								$regs[1] . ($regs[1] ? '<' : '') . $regs[2] . '@' . $regs[3] . ($regs[1] ? '>' : '') :
+								'');
 				return;
 			case self::WEFILELIST:
 			case self::WEFILELISTA:
@@ -183,7 +184,7 @@ class we_base_request{
 				$var = explode(',', trim(strtr($var, array(
 					'../' => '',
 					'//' => ''
-						)), ','));
+								)), ','));
 				foreach($var as &$cur){
 					$cur = ($type == self::WEFILELIST || $type == self::WEFILELISTA ? $cur : filter_var($cur, FILTER_SANITIZE_URL));
 					if($cur === rtrim(WEBEDITION_DIR, '/') || strpos($cur, WEBEDITION_DIR) === 0){//file-selector has propably access
@@ -208,6 +209,10 @@ class we_base_request{
 				return;
 			case self::URL:
 				if(preg_match('-(' . we_base_link::TYPE_INT_PREFIX . '|' . we_base_link::TYPE_MAIL_PREFIX . '|' . we_base_link::TYPE_OBJ_PREFIX . '|' . we_base_link::TYPE_THUMB_PREFIX . ')-', $var)){
+					return;
+				}
+				if($var === 'http://' || $var === 'https://'){
+					$var = '';
 					return;
 				}
 				$urls = parse_url($var); //removed urldecode due to %20 elemination in paths
@@ -403,13 +408,13 @@ class we_base_request{
 		$pass = isset($parsed_url['pass']) ? ':' . $parsed_url['pass'] : '';
 
 		return
-			(isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '') .
-			(isset($parsed_url['host']) ? $parsed_url['host'] : '') .
-			(isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '') .
-			($user || $pass ? $pass . '@' : '') .
-			(isset($parsed_url['path']) ? $parsed_url['path'] : '') .
-			(isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '') .
-			(isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '');
+				(isset($parsed_url['scheme']) ? $parsed_url['scheme'] . '://' : '') .
+				(isset($parsed_url['host']) ? $parsed_url['host'] : '') .
+				(isset($parsed_url['port']) ? ':' . $parsed_url['port'] : '') .
+				($user || $pass ? $pass . '@' : '') .
+				(isset($parsed_url['path']) ? $parsed_url['path'] : '') .
+				(isset($parsed_url['query']) ? '?' . $parsed_url['query'] : '') .
+				(isset($parsed_url['fragment']) ? '#' . $parsed_url['fragment'] : '');
 	}
 
 }

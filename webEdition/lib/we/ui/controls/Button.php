@@ -538,6 +538,8 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 			$this->_style .= 'display:none;';
 		}
 
+		// FIXME: return we_html_button and adapt js to the new ones!
+
 		return $this->_getWrapperStart() . '<div' . $this->_getNonBooleanAttribs('id,title,onclick,onClick,onMouseUp,onMouseDown,onMouseOut') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($classNormal) . '>' . $this->_getButtonContent() . '</div>' . $this->_getWrapperEnd();
 	}
 
