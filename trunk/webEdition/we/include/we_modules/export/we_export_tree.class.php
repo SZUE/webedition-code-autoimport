@@ -29,17 +29,17 @@ class we_export_tree extends weTree{
 	}
 
 	function getJSLoadTree($clear, array $treeItems){
-		$js = $this->topFrame . '.treeData.table=' . $this->topFrame . '.table;';
+		$js =  'top.opener.treeData.table=top.opener.table;';
 
 		foreach($treeItems as $item){
 
-			$js.=($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
-					$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
+			$js.=($clear ? '' : 'if(top.opener.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
+					'top.opener.treeData.addSort(new top.opener.node({';
 			$elems = '';
 			foreach($item as $k => $v){
 				$elems.='"' . strtolower($k) . '":' .
 						(strtolower($k) === "checked" ?
-								'(WE().util.in_array("' . $item["id"] . '", ' . $this->topFrame . '.SelectedItems.' . $item['table'] . ')?
+								'(WE().util.in_array("' . $item["id"] . '", top.content.editor.edbody.SelectedItems.' . $item['table'] . ')?
 	\'1\':
 	\'' . $v . '\'),
 ' :
@@ -47,8 +47,8 @@ class we_export_tree extends weTree{
 			}
 			$js.=rtrim($elems, ',') . '}));' . ($clear ? '' : '}');
 		}
-		$js.=$this->topFrame . '.treeData.setState(' . $this->topFrame . '.treeData.tree_states["select"]);' .
-				$this->topFrame . '.drawTree();';
+		$js.= 'top.opener.treeData.setState(top.opener.treeData.tree_states["select"]);' .
+				'top.opener.drawTree();';
 
 		return $js;
 	}
@@ -56,11 +56,11 @@ class we_export_tree extends weTree{
 	function getJSStartTree(){
 		return 'function startTree(){
 	treeData.frames={
-		top:' . $this->topFrame . ',
+		top:top.opener,
 		cmd:' . $this->cmdFrame . ',
 		tree:' . $this->treeFrame . '
 	};
-	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+treeData.frames.top.table+"&pid=0&openFolders="+treeData.frames.top.openFolders[treeData.frames.top.table];
+	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+treeData.frames.top.table+"&pid=0&openFolders="+openFolders[treeData.frames.top.treeData.table];
 }';
 	}
 
@@ -237,12 +237,12 @@ var openFolders= {
 		self::getItems($table, $parentFolder, $treeItems, $openFolders);
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement('
-if(!' . $this->topFrame . '.treeData) {' .
+if(!top.opener.treeData) {' .
 						we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) . '
 }' .
 						($parentFolder ? '' :
-								$this->topFrame . '.treeData.clear();' .
-								$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
+								 'top.opener.treeData.clear();' .
+								'top.opener.treeData.add(top.opener.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
 						) .
 						$this->getJSLoadTree(!$parentFolder, $treeItems)
 				), we_html_element::htmlBody(array("bgcolor" => "#ffffff"))
