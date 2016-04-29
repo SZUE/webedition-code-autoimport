@@ -944,10 +944,13 @@ editors/template/CodeMirror/MODIFICATIONS
 editors/template/CodeMirror/LICENSE
 editors/template/CodeMirror/INFO
 editors/content/eplugin/gal
+css/wysiwyg/tinymce/tinyDialogCss_mac.scss
+css/wysiwyg/tinymce/tinyDialogCss_mac.css
 css/wysiwyg/tinymce/contentCssLast.php
 css/we_tab_modules.css
 css/mozillamenu.php
 css/menu/pro_drop_safari.css
+css/menu/pro_drop_mac.css
 css/menu/pro_drop_mac.css
 css/menu/clickMenu_IE8.js
 css/menu/clickMenu.js
