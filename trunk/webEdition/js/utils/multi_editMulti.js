@@ -149,7 +149,6 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		item.setAttribute("type", "hidden");
 		form.appendChild(item);
 
-		//this.form.appendChild(item);
 		this.parent.appendChild(item);
 
 		item = null;
@@ -256,7 +255,6 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 				}
 			}
 			var item = document.getElementById(this.name + "_variant" + i + "_" + this.name + "_item" + this.itemCount);
-			//this.form.removeChild(item);
 			this.parent.removeChild(item);
 		}
 

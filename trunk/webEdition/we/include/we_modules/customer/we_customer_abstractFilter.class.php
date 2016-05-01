@@ -249,25 +249,20 @@ abstract class we_customer_abstractFilter{
 		if(we_base_request::_(we_base_request::STRING, 'filterSelect_0') === false){
 			return array();
 		}
-
 		$count = 0;
 		$filter = array();
-		while(true){
-			if(($field = we_base_request::_(we_base_request::STRING, 'filterSelect_' . $count))){
-
-				if(trim(($val = we_base_request::_(we_base_request::STRING, 'filterValue_' . $count)))){
-					$filter[] = array(
-						'logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) === 'OR' ? ' OR ' : ' AND '),
-						'field' => $field,
-						'operation' => we_base_request::_(we_base_request::INT, 'filterOperation_' . $count),
-						'value' => $val
-					);
-				}
-				$count++;
-			} else {
-				return $filter;
+		while(($field = we_base_request::_(we_base_request::STRING, 'filterSelect_' . $count))){
+			if(trim(($val = we_base_request::_(we_base_request::STRING, 'filterValue_' . $count)))){
+				$filter[] = array(
+					'logic' => (we_base_request::_(we_base_request::STRING, 'filterLogic_' . $count) === 'OR' ? ' OR ' : ' AND '),
+					'field' => $field,
+					'operation' => we_base_request::_(we_base_request::INT, 'filterOperation_' . $count),
+					'value' => $val
+				);
 			}
+			$count++;
 		}
+		return $filter;
 	}
 
 	/**
@@ -282,14 +277,11 @@ abstract class we_customer_abstractFilter{
 		}
 		$customers = array();
 		$i = 0;
-		while(true){
-			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
-				$customers[] = $val;
-				$i++;
-			} else {
-				return path_to_id($customers, CUSTOMER_TABLE, $GLOBALS['DB_WE'], true);
-			}
+		while(($val = we_base_request::_(we_base_request::STRING, $name . '_variant1_' . $name . '_item' . $i))){
+			$customers[] = $val;
+			$i++;
 		}
+		return $customers;
 	}
 
 	/**
@@ -303,16 +295,12 @@ abstract class we_customer_abstractFilter{
 			return array();
 		}
 		$blackList = array();
-
 		$i = 0;
-		while(true){
-			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
-				$blackList[] = $val;
-				$i++;
-			} else {
-				return path_to_id($blackList, CUSTOMER_TABLE, $GLOBALS['DB_WE'], true);
-			}
+		while(($val = we_base_request::_(we_base_request::STRING, $name . '_variant1_' . $name . '_item' . $i))){
+			$blackList[] = $val;
+			$i++;
 		}
+		return $blackList;
 	}
 
 	/**
@@ -327,14 +315,11 @@ abstract class we_customer_abstractFilter{
 		}
 		$whiteList = array();
 		$i = 0;
-		while(true){
-			if(($val = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i))){
-				$whiteList[] = $val;
-				$i++;
-			} else {
-				return path_to_id($whiteList, CUSTOMER_TABLE, $GLOBALS['DB_WE'], true);
-			}
+		while(($val = we_base_request::_(we_base_request::STRING, $name . '_variant1_' . $name . '_item' . $i))){
+			$whiteList[] = $val;
+			$i++;
 		}
+		return $whiteList;
 	}
 
 	/**

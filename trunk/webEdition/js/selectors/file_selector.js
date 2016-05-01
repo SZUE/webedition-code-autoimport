@@ -255,44 +255,40 @@ function queryString(what, id, o) {
 	return options.formtarget + 'what=' + what + '&table=' + options.table + '&id=' + id + "&order=" + o + "&filter=" + currentType;
 }
 
-function fillIDs() {
-	allIDs = ",";
-	allPaths = ",";
-	allTexts = ",";
-	allIsFolder = ",";
+function fillIDs(asArray) {
+	allIDs = [];
+	allPaths = [];
+	allTexts = [];
+	allIsFolder = [];
 
 	for (var i = 0; i < entries.length; i++) {
 		if (isFileSelected(entries[i].ID)) {
-			allIDs += (entries[i].ID + ",");
-			allPaths += (entries[i].path + ",");
-			allTexts += (entries[i].text + ",");
-			allIsFolder += (entries[i].isFolder + ",");
+			allIDs.push(entries[i].ID);
+			allPaths.push(entries[i].path);
+			allTexts.push(entries[i].text);
+			allIsFolder.push(entries[i].isFolder);
 		}
 	}
-	if (top.currentID !== "") {
-		if (allIDs.indexOf("," + top.currentID + ",") === -1) {
-			allIDs += (top.currentID + ",");
-		}
+	if (top.currentID !== "" && allIDs.indexOf(top.currentID) === -1) {
+		allIDs.push(top.currentID);
 	}
-	if (top.currentPath !== "") {
-		if (allPaths.indexOf("," + top.currentPath + ",") === -1) {
-			allPaths += (top.currentPath + ",");
-			allTexts += (we_makeTextFromPath(top.currentPath) + ",");
-		}
+	if (top.currentPath !== "" && allPaths.indexOf(top.currentPath) === -1) {
+		allPaths.push(top.currentPath);
+		allTexts.push(we_makeTextFromPath(top.currentPath));
 	}
 
-	if (allIDs == ",") {
-		allIDs = "";
-	}
-	if (allPaths == ",") {
-		allPaths = "";
-	}
-	if (allTexts == ",") {
-		allTexts = "";
-	}
-
-	if (allIsFolder == ",") {
-		allIsFolder = "";
+	if (!asArray) {
+		allIDs = allIDs.join(',');
+		allPaths = allPaths.join(',');
+		allTexts = allTexts.join(',');
+		allIsFolder = allIsFolder.join(',');
+		//keep old behaviour
+		if (allIDs) {
+			allIDs = "," + allIDs + ",";
+			allPaths = "," + allPaths + ",";
+			allTexts = "," + allTexts + ",";
+			allIsFolder = "," + allIsFolder + ",";
+		}
 	}
 }
 
