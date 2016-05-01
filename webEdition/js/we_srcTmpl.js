@@ -312,7 +312,7 @@ function openTagWizWithReturn(Ereignis) {
 function openTagWizardPrompt(_wrongTag) {
 	var _prompttext = g_l.insert_tagname;
 	if (_wrongTag) {
-		_prompttext = g_l.insert_tagname_not_exist + _prompttext;
+		_prompttext = g_l.insert_tagname_not_exist.replace(/_wrongTag/, _wrongTag) + _prompttext;
 	}
 
 	var _tagName = prompt(_prompttext);

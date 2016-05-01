@@ -91,15 +91,15 @@ function updateView() {' .
 		$_modeRadioFilter = we_html_forms::radiobutton(we_customer_abstractFilter::FILTER, $mode === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "wecf_hot();updateView();");
 
 		// ################# Selector for specific customers ###############
-		list($_specificCustomersSelect, $script) = $this->getMultiEdit('specificCustomersEdit', id_to_path($this->_filter->getSpecificCustomers(), CUSTOMER_TABLE, null, true), "", $mode === we_customer_abstractFilter::SPECIFIC);
+		list($_specificCustomersSelect, $script) = $this->getMultiEdit('specificCustomersEdit', $this->_filter->getSpecificCustomers(), "", $mode === we_customer_abstractFilter::SPECIFIC);
 		$_script.=$script;
 		// ################# Selector blacklist ###############
 
-		list($_blackListSelect, $script) = $this->getMultiEdit('blackListEdit', id_to_path($this->_filter->getBlackList(), CUSTOMER_TABLE, null, true), g_l('modules_customerFilter', '[black_list]'), $mode === we_customer_abstractFilter::FILTER);
+		list($_blackListSelect, $script) = $this->getMultiEdit('blackListEdit', $this->_filter->getBlackList(), g_l('modules_customerFilter', '[black_list]'), $mode === we_customer_abstractFilter::FILTER);
 		$_script.=$script;
 		// ################# Selector for whitelist ###############
 
-		list($_whiteListSelect, $script) = $this->getMultiEdit('whiteListEdit', id_to_path($this->_filter->getWhiteList(), CUSTOMER_TABLE, null, true), g_l('modules_customerFilter', '[white_list]'), $mode === we_customer_abstractFilter::FILTER);
+		list($_whiteListSelect, $script) = $this->getMultiEdit('whiteListEdit', $this->_filter->getWhiteList(), g_l('modules_customerFilter', '[white_list]'), $mode === we_customer_abstractFilter::FILTER);
 		$_script.=$script;
 		// ################# customer filter ###############
 
@@ -167,7 +167,7 @@ EOS;
 	 * @return string
 	 */
 	function getDiv($content = '', $divId = '', $isVisible = true, $marginLeft = 0){
-		return '<div' . ($divId ? (' id="' . $divId . '"') : '') . ' style="display:' . ($isVisible ? 'block' : 'none') . ';margin-left:' . $marginLeft . 'px;margin-top:5px;margin-bottom:10px;">' . $content . '</div>';
+		return '<div' . ($divId ? (' id="' . $divId . '"') : '') . ' style="display:' . ($isVisible ? 'block' : 'none') . ';margin-left:' . $marginLeft . 'px;">' . $content . '</div>';
 	}
 
 	/**
@@ -180,26 +180,36 @@ EOS;
 	 * @return string
 	 */
 	private function getMultiEdit($name, $data, $headline = "", $isVisible = true){
+		static $settingsSQL = false;
+		if(!$settingsSQL){
+			$settings = new we_customer_settings();
+			$settings->load();
+			$settingsSQL = $settings->treeTextFormatSQL;
+		}
 		$_delBut = addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;wecf_hot();"));
 		$_script = <<<EO_SCRIPT
 
 var $name = new multi_edit("{$name}MultiEdit",document.we_form,0,"$_delBut",$this->_width,false);
+$name.addVariant();
 $name.addVariant();
 document.we_form.{$name}Control.value = $name.name;
 
 EO_SCRIPT;
 
 
-		if(is_array($data)){
-			foreach($data as $_dat){
+		if($data){
+			$db = new DB_WE();
+			$data = $db->getAllq('SELECT ID,' . $settingsSQL . ' AS Text FROM ' . CUSTOMER_TABLE . ' WHERE ID IN (' . implode(',', $data) . ') ORDER BY Text', false);
+			foreach($data as $dat){
 				$_script .= $name . '.addItem();' .
-					$name . '.setItem(0,(' . $name . '.itemCount-1),"' . $_dat . '");';
+					$name . '.setItem(0,(' . $name . '.itemCount-1),"' . $dat['Text'] . '");' .
+					$name . '.setItem(1,(' . $name . '.itemCount-1),"' . $dat['ID'] . '");';
 			}
 		}
 
 		$_script .= $name . '.showVariant(0);';
 
-		$_addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allPaths);opener.wecf_hot();','','','',1)");
+		$_addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs(true);opener.addToMultiEdit(opener." . $name . ", top.allTexts,top.allIDs);opener.wecf_hot();','','','',1)");
 
 		$_buttonTable = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")") . $_addbut;
 

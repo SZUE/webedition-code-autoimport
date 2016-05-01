@@ -46,7 +46,7 @@ echo we_html_multiIconBox::getJS();
 	var editorHighlightCurrentLine =<?php echo intval($_SESSION['prefs']['editorHighlightCurrentLine']); ?>;
 	var g_l = {
 		insert_tagname: "<?php echo g_l('weTagWizard', '[insert_tagname]'); ?>",
-		insert_tagname_not_exist: "<?php sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"" + _wrongTag + "\"') . '\n\n'; ?>",
+		insert_tagname_not_exist: "<?php sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"_wrongTag\"') . '\n\n'; ?>",
 	}
 //-->
 </script>

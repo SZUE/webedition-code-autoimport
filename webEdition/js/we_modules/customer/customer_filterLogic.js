@@ -35,7 +35,7 @@ function wecf_logic_changed(s) {
 	var cell = s.parentNode;
 	var row = cell.parentNode;
 	var prev = row.previousSibling;
-	while (prev.nodeName.toLowerCase() != "tr") {
+	while (prev.nodeName.toLowerCase() !== "tr") {
 		prev = prev.previousSibling;
 	}
 
@@ -43,12 +43,12 @@ function wecf_logic_changed(s) {
 	var l2 = prev.childNodes.length;
 
 	for (var i = 0; i < l2; i++) {
-		if (prev.childNodes[i].nodeName.toLowerCase() == "td") {
+		if (prev.childNodes[i].nodeName.toLowerCase() === "td") {
 			prev.childNodes[i].style.paddingBottom = (val == "OR") ? "10px" : "0";
 		}
 	}
 	for (i = 0; i < l; i++) {
-		if (row.childNodes[i].nodeName.toLowerCase() == "td") {
+		if (row.childNodes[i].nodeName.toLowerCase() === "td") {
 			row.childNodes[i].style.paddingTop = (val == "OR") ? "10px" : "0";
 			row.childNodes[i].style.borderTop = (val == "OR") ? "1px solid grey" : "0";
 		}
@@ -64,22 +64,22 @@ function removeFromMultiEdit(_multEdit) {
 	}
 }
 
-function addToMultiEdit(_multEdit, paths) {
+function addToMultiEdit(_multEdit, paths, ids) {
 	wecf_hot();
-	var path = paths.split(",");
 	var found = false;
 	var j = 0;
-	for (var i = 0; i < path.length; i++) {
-		if (path[i] !== "") {
+	for (var i = 0; i < ids.length; i++) {
+		if (ids[i] !== "") {
 			found = false;
 			for (j = 0; j < _multEdit.itemCount; j++) {
-				if (_multEdit.form.elements[_multEdit.name + "_variant0_" + _multEdit.name + "_item" + j].value == path[i]) {
+				if (_multEdit.form.elements[_multEdit.name + "_variant1_" + _multEdit.name + "_item" + j].value == ids[i]) {
 					found = true;
 				}
 			}
 			if (!found) {
 				_multEdit.addItem();
-				_multEdit.setItem(0, (_multEdit.itemCount - 1), path[i]);
+				_multEdit.setItem(0, (_multEdit.itemCount - 1), paths[i]);
+				_multEdit.setItem(1, (_multEdit.itemCount - 1), ids[i]);
 			}
 		}
 	}
