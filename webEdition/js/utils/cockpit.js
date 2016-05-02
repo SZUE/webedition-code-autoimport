@@ -314,7 +314,7 @@ function onDragNode(iPosX, iPosY) {
 		}
 	}
 	obj = oWidget.p();
-	if (oBuff !== null && obj.nextSibling != oBuff.node && oBuff.node.parentNode !== undefined && oBuff.node.parentNode.nodeType == 1) {
+	if (oBuff && obj.nextSibling != oBuff.node && oBuff.node.parentNode && oBuff.node.parentNode.nodeType == 1) {
 		oBuff.node.parentNode.insertBefore(obj, oBuff.node);
 	}
 }
