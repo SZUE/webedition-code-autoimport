@@ -27,23 +27,36 @@ session_write_close();
 //FIXME: send no perms img; but better an invalid picture, than access to unallowed images
 
 $imageId = we_base_request::_(we_base_request::INT, 'id', 0);
-$imagePath = we_base_request::_(we_base_request::FILE, 'path', '');
-$imageSizeW = we_base_request::_(we_base_request::INT, 'size', 0, 'width');
-$imageSizeH = we_base_request::_(we_base_request::INT, 'size', $imageSizeW, 'height');
-$extension = we_base_request::_(we_base_request::STRING, 'extension', '');
+$thumbID = we_base_request::_(we_base_request::INT, 'thumbID', 0);
 
-if(!($imageId || $imagePath) && !$imageSizeW && !$extension){
-	exit();
+if($thumbID){
+	$img = new we_imageDocument();
+	$img->initByID($imageId, FILE_TABLE, false);
+	$thumbObj = new we_thumbnail();
+	$thumbObj->initByThumbID($thumbID, $img->ID, $img->Filename, $img->Path, $img->Extension, $img->getElement('origwidth'), $img->getElement('origheight'), $img->getDocument());
+	if(!$thumbObj->exists()){
+		$thumbObj->createThumb();
+	}
+	$file = $thumbObj->getOutputPath(true, false);
+} else {
+	$imagePath = we_base_request::_(we_base_request::FILE, 'path', '');
+	$imageSizeW = we_base_request::_(we_base_request::INT, 'size', 0, 'width');
+	$imageSizeH = we_base_request::_(we_base_request::INT, 'size', $imageSizeW, 'height');
+	$extension = we_base_request::_(we_base_request::STRING, 'extension', '');
+
+	if(!($imageId || $imagePath) && !$imageSizeW && !$extension){
+		exit();
+	}
+
+	$whiteList = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::IMAGE);
+
+	if(!in_array(strtolower($extension), $whiteList)){
+		exit();
+	}
+
+	$imageExt = substr($extension, 1);
+	$file = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
 }
-
-$whiteList = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::IMAGE);
-
-if(!in_array(strtolower($extension), $whiteList)){
-	exit();
-}
-
-$imageExt = substr($extension, 1);
-$file = we_base_imageEdit::createPreviewThumb($imagePath, $imageId, $imageSizeW, $imageSizeH, $imageExt);
 if(file_exists($file) && is_readable($file)){
 	$stat = stat($file);
 	$etag = md5($imageId . $stat['size'] . $stat['ctime'] . $stat['mtime']);
