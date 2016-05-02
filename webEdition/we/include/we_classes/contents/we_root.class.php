@@ -1221,8 +1221,8 @@ abstract class we_root extends we_class{
 		if(strpos($this->ParentPath, '..') !== false || ($this->ParentPath && $this->ParentPath{0} != '/')){
 			return true;
 		}
-		if(($ws = get_ws($GLOBALS['we_doc']->Table, true))){ //	doc has workspaces
-			if(!(we_users_util::in_workspace($this->ParentID, $ws, $GLOBALS['we_doc']->Table, $GLOBALS['DB_WE']))){
+		if(($ws = get_ws($this->Table, true))){ //	doc has workspaces
+			if(!(we_users_util::in_workspace($this->ParentID, $ws, $this->Table, $GLOBALS['DB_WE']))){
 				return true;
 			}
 		}
