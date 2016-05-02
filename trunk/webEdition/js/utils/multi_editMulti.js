@@ -278,19 +278,17 @@ function multi_editMulti(parentId, form, itemNum, but, width, editable, minCount
 		this.showVariant(this.currentVariant);
 	};
 
-	this.setItem = function (variant, item, value) {//alert(this.name+"_variant"+variant+"_"+this.name+"_item"+item);
+	this.setItem = function (variant, item, value) {
 		this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_item" + item].value = value;
 	};
 	this.setItemImageID = function (variant, item, value) {
 		this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_itemImageID" + item].value = value;
-		//alert(this.name+"_variant"+variant+"_"+this.name+"_itemImageID"+item+ ' ' +this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemImageID"+item].value);
 	};
 	this.setItemMediaID = function (variant, item, value) {
 		this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_itemMediaID" + item].value = value;
 	};
 	this.setItemSuccessorID = function (variant, item, value) {
 		this.form.elements[this.name + "_variant" + variant + "_" + this.name + "_itemSuccessorID" + item].value = value;
-		//alert(this.name+"_variant"+variant+"_"+this.name+"_itemSuccessorID"+item+ ' ' +this.form.elements[this.name+"_variant"+variant+"_"+this.name+"_itemSuccessorID"+item].value);
 	};
 
 
