@@ -31,6 +31,7 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 
 	$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+	session_write_close();
 
 	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
 
@@ -66,5 +67,5 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 
 	$table .= '</tr></table>';
 
-	echo we_html_element::htmlBody(array('style' => 'margin: 5px 5px 5px 5px'), $table) . '</html>';
+	echo we_html_element::htmlBody(array('style' => 'margin: 5px;'), $table) . '</html>';
 }
