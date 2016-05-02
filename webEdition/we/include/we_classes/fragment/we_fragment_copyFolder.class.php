@@ -674,7 +674,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 	static function formCreateCategoryChooser(){
 
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs(true);opener.addCat(top.allPaths);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
