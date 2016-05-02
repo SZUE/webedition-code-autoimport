@@ -1137,9 +1137,9 @@ class we_objectFile extends we_document{
 			$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			$cmd1 = "document.forms[0].elements['" . $Path_elem_Name . "'].value";
 			$wecmdenc4 = we_base_request::encCmd("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][1].checked=true;" : ""));
-			$but = (!permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? '' : (
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $cmd1 . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "'," . we_base_request::encCmd($cmd1) . ",'" . $wecmdenc4 . "')")
-					));
+			$but = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? (
+					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1)  . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "'," . $cmd1 . ",'" . $wecmdenc4 . "')")
+					) : '');
 		}
 
 		return '<tr>' .
