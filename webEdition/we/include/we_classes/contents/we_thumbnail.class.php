@@ -361,6 +361,10 @@ class we_thumbnail{
 		return $outarr[0] ? self::OK : self::BUILDERROR;
 	}
 
+	public function getOutputformat(){
+		return $this->outputFormat;
+	}
+
 	public function exists(){
 		return !$this->isOriginal() && file_exists($this->getOutputPath(true));
 	}
