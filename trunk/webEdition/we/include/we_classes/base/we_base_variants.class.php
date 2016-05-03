@@ -509,7 +509,7 @@ abstract class we_base_variants{
 		// add default data to listview
 		$elements = $model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'];
 		//this elemets contains only the variant fields, not the non-variant fields of the object
-		if(!is_array($elements) && $elements{0} == 'a'){
+		if(!is_array($elements) && ($elements{0} == 'a' || $elements{0} == '{')){
 			$elements = we_unserialize($elements);
 		}
 
