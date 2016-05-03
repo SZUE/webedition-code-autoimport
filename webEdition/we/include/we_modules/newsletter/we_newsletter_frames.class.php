@@ -1863,8 +1863,6 @@ self.focus();
 	}
 
 	function getHTMLClearLog(){
-		we_html_tools::protect();
-
 		if(we_base_request::_(we_base_request::STRING, "ncmd") === "do_clear_log"){
 			$this->View->db->query('TRUNCATE TABLE ' . NEWSLETTER_LOG_TABLE);
 			return

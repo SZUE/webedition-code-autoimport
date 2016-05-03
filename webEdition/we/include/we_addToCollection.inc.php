@@ -47,7 +47,7 @@ if($cmd0 === 'do_addToCollection'){
 	if(($targetCollection = we_base_request::_(we_base_request::INT, 'we_target', 0)) === 0){
 		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} elseif(!($sel = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
-		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$script .= 'top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_ERROR, window);';
 	} else {
 		$collection = new we_collection();
 		$isSession = false;
@@ -87,11 +87,7 @@ echo we_html_tools::getHtmlTop() .
 			table: "' . $table . '",
 			targetInsertIndex: ' . $insertIndex . ',
 			targetInsertPos: ' . $insertPos . '
-		},{
-			nothingToMove: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_move]')) . '",
-			notValidFolder: "' . we_message_reporting::prepareMsgForJS(g_l('weClass', '[notValidFolder]')) . '"
-		}
-	);') .
+		});') .
  weSuggest::getYuiFiles();
 
 if($cmd0 === "do_addToCollection"){

@@ -28,13 +28,8 @@ weAddToCollection = {
 		targetInsertIndex: '',
 		targetInsertPos: -1
 	},
-	g_l: {
-		nothingToMove: '',
-		notValidFolder: ''
-	},
-	init: function (conf, g_l) {
+	init: function (conf) {
 		this.conf = conf;
-		this.g_l = g_l;
 
 		top.treeData.setState(top.treeData.tree_states.select);
 		if (top.treeData.table != this.conf.table) {
@@ -53,7 +48,7 @@ weAddToCollection = {
 			}
 		}
 		if (!sel) {
-			top.we_showMessage(this.g_l.nothingToMove, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
 
@@ -67,7 +62,7 @@ weAddToCollection = {
 				setTimeout(press_ok_move, 100);
 				return;
 			} else if (!acStatus.valid) {
-				top.we_showMessage(this.g_l.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				return;
 			}
 		}
@@ -153,7 +148,7 @@ weAddToCollection = {
 			}
 		}
 		if (!sel) {
-			top.we_showMessage(this.g_l.nothingToMove, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
 

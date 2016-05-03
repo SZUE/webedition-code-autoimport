@@ -163,14 +163,9 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
 		doctype_exists: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_exists]')); ?>",
 	};
 <?php
-if(isset($we_JavaScript)){
-	echo $we_JavaScript . ';';
-}
-if($we_show_response){
-	if($we_responseText){
-		echo we_message_reporting::getShowMessageCall($we_responseText, $we_response_type);
-	}
-}
+echo (empty($we_JavaScript) ? '' : $we_JavaScript . ';') .
+ ($we_show_response && $we_responseText ? we_message_reporting::getShowMessageCall($we_responseText, $we_response_type) : '');
+
 switch($wecmd0){
 	case "deleteDocType":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){

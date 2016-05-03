@@ -439,9 +439,7 @@ function we_submitForm(target, url) {
 		}
 	}
 	if (!sel) {
-<?php
-echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
-?>
+		top.we_showMessage(WE().consts.g_l.main.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 
