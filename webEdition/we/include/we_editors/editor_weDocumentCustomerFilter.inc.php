@@ -31,7 +31,7 @@ if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_E
 	if(!$_filter){
 		$_filter = we_customer_documentFilter::getEmptyDocumentCustomerFilter();
 	}
-	$_view = new we_customer_documentFilterView($_filter, 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', 520);
+	$_view = new we_customer_documentFilterView($_filter, '_EditorFrame.setEditorIsHot(true);', 520);
 
 	$parts[] = array(
 		'headline' => g_l('modules_customerFilter', '[customerFilter]'),
@@ -89,7 +89,7 @@ function formWebuser($canChange, $width = 388){
 
 	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements['" . $idname . "'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'" . $idname . "\\'].value','document.we_form.elements[\\'" . $textname . "\\'].value')");
 
-	$_trashBut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);");
+	$_trashBut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);");
 	/*
 	  $out = we_html_tools::htmlFormElementTable($inputFeld,
 	  g_l('modules_customer','[connected_with_customer]'),
