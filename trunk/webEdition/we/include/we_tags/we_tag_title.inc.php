@@ -44,5 +44,5 @@ function we_tag_title($attribs, $content){
 	}
 
 	$title = ($prefix ? $prefix . ($title ? $delimiter : '') : '') . $title . ($suffix ? ($title ? $delimiter : ($prefix ? $delimiter : '')) . $suffix : '');
-	return getHtmlTag('title', $attribs, $htmlspecialchars ? oldHtmlspecialchars(strip_tags($title)) : strip_tags($title), true) . "\n";
+	return getHtmlTag('title', $attribs, str_replace('<>', '', ($htmlspecialchars ? oldHtmlspecialchars(strip_tags($title)) : strip_tags($title))), true) . "\n";
 }
