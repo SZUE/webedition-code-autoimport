@@ -303,7 +303,7 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 
 			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;top.dropzoneAddPreview('" . $this->acId . "', id, table, ct, path);" . $this->doOnDropFromTree . "}";
 			$callbackExt = "if(importedDocument.id){" . $this->doOnDropFromExt . "top.close();}";
-			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, implode(',', $this->contentTypes), array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->table);
+			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->contentTypes, array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->table);
 
 
 			$html = we_html_element::htmlDiv(array(),

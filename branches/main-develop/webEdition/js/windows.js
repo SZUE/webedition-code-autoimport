@@ -108,6 +108,13 @@ jsWindow.prototype = {
 		} else {
 			var refObj;
 			for (var i = 0; i < WE().layout.windows.length; i++) {
+				if (!WE().layout.windows[i]) {
+					//remove from window list
+					WE().layout.windows.splice(i, 1);
+					//reset i
+					i = -1;
+					continue;
+				}
 				if (WE().layout.windows[i].wind === ref) {
 					refObj = WE().layout.windows[i];
 				}

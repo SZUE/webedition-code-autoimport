@@ -36,52 +36,11 @@ if(!$cmd || $cmd != "save_last"){
 
 	echo we_html_element::jsScript(JS_DIR . 'selectors/sselector_cmd.js');
 	?>
-	<script><!--
-		function setDir(dir) {
-			var a = top.document.getElementById("lookin").options;
-			if (a.length - 2 > -1) {
-				for (j = 0; j < a.length; j++) {
-					if (a[j].value === dir) {
-						a.length = j + 1;
-						a[j].selected = true;
-					}
-				}
-	<?php
-	switch(we_base_request::_(we_base_request::STRING, 'filter')){
-		case we_base_ContentTypes::FOLDER:
-		case 'filefolder':
-			echo 'selectFile(dir);';
-	}
-	?>
-				top.currentDir = dir;
-				selectDir();
-			} else {
-				top.we_showMessage(WE().consts.g_l.sfselector.already_root, WE().consts.message.WE_MESSAGE_ERROR, window);
-			}
-		}
-
-		function drawDir(dir, what, sid) {
-			switch (what) {
-				case "new_folder":
-					top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=new_folder&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
-					break;
-				case "rename_folder":
-					if (sid) {
-						top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_folder&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
-					}
-					break;
-				case "rename_file":
-					if (sid) {
-						top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_file&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=<?php echo $selectOwn; ?>";
-					}
-					break;
-				default:
-					setTimeout(function (url) {
-						top.fsbody.location = url;
-					}, 100, 'we_sselector_body.php?dir=' + encodeURI(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '&selectOwn=<?php echo $selectOwn; ?>');
-			}
-		}
-	<?php
+	<script><!--<?php
+	echo '
+filter="' . we_base_request::_(we_base_request::STRING, 'filter') . '";
+selectOwn=' . intval($selectOwn) . ';
+';
 
 	function delDir($dir){
 		$d = dir($dir);

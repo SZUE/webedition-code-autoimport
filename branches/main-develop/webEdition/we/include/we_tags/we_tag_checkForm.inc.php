@@ -121,11 +121,11 @@ if(self.' . $onError . '){' .
 
 	switch($type){
 		case "id" : //  id of formular is given
-			$initFunction = 'weCheckFormEvent.addEvent( window, "load", function(){
-        initWeCheckForm_by_id(weCheckForm_id_' . $match . ',"' . $match . '");
-        }
-    );';
-			$checkFunction = 'function weCheckForm_id_' . $match . '(ev){
+			$function = we_html_element::jsElement(
+					'weCheckFormEvent.addEvent(window, "load", function(){
+	initWeCheckForm_by_id(weCheckForm_id_' . $match . ',"' . $match . '");
+ });
+ function weCheckForm_id_' . $match . '(ev){
 	var missingReq = [0];
 	var wrongEmail = [0];
 	var pwError    = false;
@@ -143,23 +143,22 @@ if(self.' . $onError . '){' .
 			return false;
 	}
 	return true;
-}';
+}');
 
-			$function = we_html_element::jsElement($initFunction . ' ' . $checkFunction);
 			break;
 
 		case "name" : //  name of formular is given
-			$initFunction = 'weCheckFormEvent.addEvent( window, "load", function(){
+			$function = we_html_element::jsElement(
+					'weCheckFormEvent.addEvent( window, "load", function(){
         initWeCheckForm_by_name(weCheckForm_n_' . $match . ',"' . $match . '");
         }
-    );';
-			$checkFunction = '
+    );
 function weCheckForm_n_' . $match . '(ev){
 		var missingReq = [0];
 		var wrongEmail = [0];
 		var pwError    = false;
 
-		formular = document.forms["' . $match . '"];
+		formular = document.forms.' . $match . ';
 		' . $jsMandatory . '
 		' . $jsEmail . '
 		' . $jsPasword . '
@@ -172,9 +171,8 @@ function weCheckForm_n_' . $match . '(ev){
 				return false;
 		}
 	return true;
-}';
+}');
 
-			$function = we_html_element::jsElement($checkFunction . ' ' . $initFunction);
 			break;
 	}
 

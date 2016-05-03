@@ -66,11 +66,7 @@ function select_thumbnails(sel) {
 		}
 	}
 
-	if (thumbs.length) {
-		WE().layout.button.switch_button_state(document, "add", "enabled");
-	} else {
-		WE().layout.button.switch_button_state(document, "add", "disabled");
-	}
+	WE().layout.button.switch_button_state(document, "add", (thumbs.length ? "enabled" : "disabled"));
 
 	self.showthumbs.location = WE().consts.dirs.WEBEDITION_DIR + "showThumb.php?u=" + Math.random() + "&t=" + transaction + "&id=" + encodeURI(thumbs.join(","));
 

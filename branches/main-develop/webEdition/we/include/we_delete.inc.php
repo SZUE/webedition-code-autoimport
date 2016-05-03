@@ -269,7 +269,7 @@ function confirmDel(){' .
 					}
 
 					if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	only update tree when in normal mode
-						$script .= weTree::deleteTreeEntries(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE);
+						$script .= we_tree_base::deleteTreeEntries(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE);
 					}
 
 					if(!empty($deletedItems)){

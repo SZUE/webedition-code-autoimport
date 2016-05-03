@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_messaging_tree extends weTree{
+class we_messaging_tree extends we_tree_base{
 	private $transaction;
 
 	function __construct($frameset, $topFrame, $treeFrame, $cmdFrame, $transaction){

@@ -35,7 +35,7 @@ if(!$notprotect){
 }
 
 function deleteTreeEntries($dontDeleteClassFolders = false){
-	return weTree::deleteTreeEntries($dontDeleteClassFolders);
+	return we_tree_base::deleteTreeEntries($dontDeleteClassFolders);
 }
 
 function checkDeleteEntry($id, $table){

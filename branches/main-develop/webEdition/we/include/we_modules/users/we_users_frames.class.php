@@ -27,7 +27,7 @@ class we_users_frames extends we_modules_frame{
 	public function __construct($frameset){
 		parent::__construct($frameset);
 		$this->module = 'users';
-		$this->Tree = new we_users_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_tree_users($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->showTreeFooter = true;
 		$this->treeDefaultWidth = 224;
 		$this->View = new we_users_view($frameset, 'top.content');
@@ -58,7 +58,7 @@ class we_users_frames extends we_modules_frame{
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
 						we_html_element::jsElement($rootjs .
-							$this->Tree->getJSLoadTree(!$pid, we_users_tree::getItems($pid, $offset, $this->Tree->default_segment))
+							$this->Tree->getJSLoadTree(!$pid, we_tree_users::getItems($pid, $offset, $this->Tree->default_segment))
 						)
 					)
 				)

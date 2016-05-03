@@ -32,6 +32,7 @@
  */
 
 abstract class we_autoloader{
+
 	private static $domains = array(
 		'backup' => 'we_exim/backup',
 		'banner' => 'we_modules/banner',
@@ -75,6 +76,7 @@ abstract class we_autoloader{
 		'users' => 'we_modules/users',
 		'shop' => 'we_modules/shop',
 		'tag' => 'we_classes/tag',
+		'tree' => 'we_classes/tree',
 		'tool' => 'we_classes/tools',
 		'versions' => 'we_versions',
 		'view' => 'we_classes/view',
@@ -128,13 +130,11 @@ abstract class we_autoloader{
 			'we_docTypes' => 'we_docTypes.class.php',
 			'we_element' => 'we_element.class.php',
 			'we_history' => 'we_history.class.php',
-			'weMainTree' => 'weMainTree.class.php',
 			'we_progressBar' => 'we_progressBar.class.php',
 			'we_SEEM' => 'SEEM/we_SEEM.class.php',
 			'weSuggest' => 'weSuggest.class.php',
 			'we_tabs' => 'we_tabs.class.php',
 			'we_tab' => 'we_tab.class.php',
-			'weTree' => 'weTree.class.php',
 			'we_updater' => 'we_updater.class.php',
 			'weToolLookup' => 'tools/we_tool_lookup.class.php',
 			'we_message_reporting' => 'we_message_reporting.class.php',
