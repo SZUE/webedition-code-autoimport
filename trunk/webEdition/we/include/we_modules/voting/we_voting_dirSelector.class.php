@@ -75,7 +75,6 @@ class we_voting_dirSelector extends we_selector_directory{
 	}
 
 	function printCreateFolderHTML(){
-		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
 		'<script><!--
 top.clearEntries();
@@ -119,7 +118,7 @@ top.selectFile(top.currentID);
 	}
 
 	function query(){
-		$this->db->query('SELECT ' .$this->fields . ' FROM ' .
+		$this->db->query('SELECT ' . $this->fields . ' FROM ' .
 			$this->db->escape($this->table) .
 			' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' ' . self::getUserExtraQuery($this->table));
 	}
@@ -146,13 +145,13 @@ top.selectFile(top.currentID);
 	}
 
 	function printDoRenameFolderHTML(){
-		we_html_tools::protect();
+		$this->FolderText = rawurldecode($this->FolderText);
+		$txt = $this->FolderText;
+
 		echo we_html_tools::getHtmlTop() .
 		'<script><!--
 top.clearEntries();
 ';
-		$this->FolderText = rawurldecode($this->FolderText);
-		$txt = $this->FolderText;
 		if(!$txt){
 			echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
@@ -161,8 +160,8 @@ top.clearEntries();
 			$folder->Text = $txt;
 			$folder->Filename = $txt;
 			$folder->Path = $folder->getPath();
-			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE Path="' . $folder->Path . '" AND ID!=' . $this->we_editDirID);
-			if($this->db->next_record()){
+			$exists = f('SELECT 1 FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE Path="' . $folder->Path . '" AND ID!=' . $this->we_editDirID . ' LIMIT 1', '', $this->db);
+			if($exists){
 				$we_responseText = sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path);
 				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(preg_match('/[%/\\"\']/', $folder->Text)){

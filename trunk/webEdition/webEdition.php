@@ -210,6 +210,8 @@ var WebEdition = {
 				nothing_to_save: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) ?>",
 				nothing_to_publish: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) ?>",
 				nothing_to_delete: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_delete]')) ?>",
+				nothing_to_move:"<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_move]')) ?>",
+				notValidFolder:"<?php echo we_message_reporting::prepareMsgForJS(g_l('weClass', '[notValidFolder]')) ?>",
 				save_error_fields_value_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')); ?>",
 				name_nok:"<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[name_nok]')); ?>",
 				prefs_saved_successfully: "<?php echo we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')); ?>",
@@ -235,6 +237,11 @@ var WebEdition = {
 				msgNotice:"<?php echo g_l('messageConsole', '[iconBar][notice]'); ?>",
 				msgWarning:"<?php echo g_l('messageConsole', '[iconBar][warning]'); ?>",
 				msgError:"<?php echo g_l('messageConsole', '[iconBar][error]'); ?>",
+			},
+			alert:{
+				move:"<?php echo g_l('alert', '[move]'); ?>",
+				move_exit_open_docs_question:"<?php echo g_l('alert', '[move_exit_open_docs_question]'); ?>",
+				move_exit_open_docs_continue:"<?php echo g_l('alert', '[move_exit_open_docs_continue]'); ?>",
 			},
 			cockpit:{
 			},

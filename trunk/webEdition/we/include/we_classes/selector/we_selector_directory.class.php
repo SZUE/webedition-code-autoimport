@@ -285,20 +285,15 @@ top.parentID = "' . $this->values['ParentID'] . '";' :
 	}
 
 	function printNewFolderHTML(){
-		echo '<script><!--
+		echo we_html_element::jsElement('
 top.clearEntries();
 top.makeNewFolder = true;' .
-		$this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() . '
-//-->
-</script>';
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() . '
+');
 	}
 
 	function printCreateFolderHTML(){
-		we_html_tools::protect();
-		echo we_html_tools::getHtmlTop() .
-		'<script><!--
-top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
@@ -306,11 +301,15 @@ top.clearEntries();';
 				new we_folder());
 
 		$folder->we_new($this->table, $this->dir, $txt);
-		if(($msg = $folder->checkFieldsOnSave())){
-			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
-		} else {
+		if(!($msg = $folder->checkFieldsOnSave())){
 			$folder->we_save();
-			echo 'var ref;
+		}
+
+		echo we_html_tools::getHtmlTop() .
+		we_html_element::jsElement('
+top.clearEntries();' .
+			($msg ? we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
+				'var ref;
 if(top.opener.top.treeData){
 	ref = top.opener.top;
 }else if(top.opener.top.opener.top.treeData){
@@ -319,21 +318,15 @@ if(top.opener.top.treeData){
 if(ref){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});
 }' .
-			($this->canSelectDir ? '
+				($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '');
-		}
-
-
-
-		echo
-		$this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.makeNewFolder = false;
-top.selectFile(top.currentID);
-//-->
-</script>
+top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '')
+			) .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.makeNewFolder = false;
+top.selectFile(top.currentID);') . '
 </head><body></body></html>';
 	}
 
@@ -364,22 +357,15 @@ options.userCanMakeNewFolder=' . intval($this->userCanMakeNewFolder) . ';
 
 	function printRenameFolderHTML(){
 		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
-			echo '<script><!--
+			echo we_html_element::jsElement('
 top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'
-//-->
-</script>';
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML());
 		}
 	}
 
 	function printDoRenameFolderHTML(){
-		we_html_tools::protect();
-		echo we_html_tools::getHtmlTop() .
-		'<script><!--
-top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 
@@ -394,7 +380,11 @@ top.clearEntries();';
 		$folder->Published = time();
 		$folder->Path = $folder->getPath();
 		$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
-		if(($msg = $folder->checkFieldsOnSave())){
+
+		echo we_html_tools::getHtmlTop() .
+		'<script><!--
+top.clearEntries();';
+				if(($msg = $folder->checkFieldsOnSave())){
 			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){

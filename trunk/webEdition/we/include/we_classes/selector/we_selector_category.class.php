@@ -170,7 +170,6 @@ top.selectFile(top.currentID);'), we_html_element::htmlBody());
 	}
 
 	function printDoRenameEntryHTML(){
-		we_html_tools::protect();
 		$this->EntryText = rawurldecode($this->EntryText);
 		$txt = trim($this->EntryText);
 		$Path = ($txt ? (!intval($this->dir) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db)) . '/' . $txt : '');
@@ -255,7 +254,6 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;'), we_html_el
 	}
 
 	function printDoDelEntryHTML(){
-		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop();
 
 		if(($catsToDel = we_base_request::_(we_base_request::INTLISTA, 'todel', array()))){
@@ -409,7 +407,6 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$cat = new we_category($catId);
 			$cat->registerMediaLinks();
 		}
-		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js . 'top.setDir(top.document.getElementById("lookin").value);' .
 				($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR) )
 			), we_html_element::htmlBody());
@@ -470,8 +467,6 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$ta = we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("catDescription", $description, array("bgcolor" => "white", "inlineedit" => "true", "wysiwyg" => "true", "width" => 450, "height" => 130), true, 'autobr', true, "", true, true, true, false, ""), "<b>" . g_l('global', '[description]') . "</b>", "left", "defaultfont", "", "", "", "", "", 0);
 			$saveBut = we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();");
 		}
-
-		we_html_tools::protect();
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
 			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .

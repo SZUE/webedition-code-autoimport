@@ -83,7 +83,6 @@ class we_versions_fragment extends we_fragment_base{
 	}
 
 	static function printHeader(){
-		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',' ');
 	}
 

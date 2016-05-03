@@ -47,7 +47,7 @@ switch($cmd0){
 			break;
 		}
 		if(!($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
-			$script = we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$script = 'top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_ERROR, window);';
 			break;
 		}
 
@@ -144,133 +144,9 @@ switch($table){
 
 echo we_html_tools::getHtmlTop() . STYLESHEET .
  $script .
- weSuggest::getYuiFiles();
-?>
-<script><!--
-	top.treeData.setState(top.treeData.tree_states["select"]);
-	if (top.treeData.table != "<?php echo $table; ?>") {
-		top.treeData.table = "<?php echo $table; ?>";
-		we_cmd("load", "<?php echo $table; ?>");
-	} else {
-		we_cmd("load", "<?php echo $table; ?>");
-		top.drawTree();
-	}
+ weSuggest::getYuiFiles() .
+ we_html_element::jsScript(JS_DIR . 'move.js', "initMove('" . $table . "');");
 
-	function press_ok_move() {
-		var sel = "";
-		for (var i = 1; i <= top.treeData.len; i++) {
-			if (top.treeData[i].checked == 1) {
-				sel += (top.treeData[i].id + ",");
-			}
-		}
-		if (!sel) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
-			return;
-		}
-
-		// check if selected target exists
-		var acStatus = '';
-		var invalidAcFields = false;
-		acStatus = YAHOO.autocoml.checkACFields();
-		acStatusType = typeof acStatus;
-		if (acStatusType.toLowerCase() == 'object') {
-			if (acStatus.running) {
-				setTimeout(press_ok_move, 100);
-				return;
-			}
-			if (!acStatus.valid) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('weClass', '[notValidFolder]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
-				return;
-			}
-		}
-
-		// close all documents before moving.
-
-
-		// no open document can be moved
-		// close all Editors with deleted documents
-		var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-
-		var _move_table = "<?php
-echo $table;
-?>";
-		var _move_ids = "," + sel;
-
-		var _open_move_editors = [];
-
-		for (frameId in _usedEditors) {
-			if (_move_table == _usedEditors[frameId].getEditorEditorTable()) {
-				_open_move_editors.push(_usedEditors[frameId]);
-			}
-		}
-		if (_open_move_editors.length) {
-			_openDocs_Str = "";
-
-			for (i = 0; i < _open_move_editors.length; i++) {
-				_openDocs_Str += "- " + _open_move_editors[i].getEditorDocumentPath() + "\n";
-
-			}
-			if (confirm("<?php
-printf(g_l('alert', '[move_exit_open_docs_question]'), $_type, $_type);
-?>" + _openDocs_Str + "\n<?php
-echo g_l('alert', '[move_exit_open_docs_continue]');
-?>")) {
-
-				for (i = 0; i < _open_move_editors.length; i++) {
-					_open_move_editors[i].setEditorIsHot(false);
-					WE().layout.weEditorFrameController.closeDocument(_open_move_editors[i].getFrameId());
-
-				}
-				we_cmd('do_move', '', '<?php
-echo $table;
-?>');
-			}
-
-		} else {
-
-			if (confirm('<?php
-echo g_l('alert', '[move]');
-?>')) {
-				we_cmd('do_move', '', '<?php
-echo $table;
-?>');
-			}
-		}
-	}
-
-	function we_submitForm(target, url) {
-		var f = self.document.we_form;
-		if (!f.checkValidity()) {
-			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-			return false;
-		}
-		var sel = "";
-		for (var i = 1; i <= top.treeData.len; i++) {
-			if (top.treeData[i].checked == 1) {
-				sel += (top.treeData[i].id + ",");
-			}
-		}
-		if (!sel) {
-<?php echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR) ?>
-			return false;
-		}
-
-		sel = sel.substring(0, sel.length - 1);
-		f.sel.value = sel;
-		f.target = target;
-		f.action = url;
-		f.method = "post";
-		f.submit();
-		return true;
-	}
-	function we_cmd() {
-		//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-//	var url = WE().util.getWe_cmdArgsUrl(args);
-		parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-	}
-//-->
-</script>
-<?php
 if($cmd0 === 'do_move'){
 	echo '</head><body></body></html>';
 	exit();
