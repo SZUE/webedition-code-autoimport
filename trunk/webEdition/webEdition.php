@@ -45,7 +45,7 @@ function getWebEdition_Tree(){
 	switch($_SESSION['weS']['we_mode']){
 		default:
 		case we_base_constants::MODE_NORMAL:
-			$Tree = new weMainTree("webEdition.php", "top", "top", "top.load");
+			$Tree = new we_tree_main("webEdition.php", "top", "top", "top.load");
 			return $Tree->getJSTreeCode();
 		case we_base_constants::MODE_SEE:
 			return we_html_element::jsElement('
@@ -307,13 +307,13 @@ foreach(we_base_request::getAllTables() as $k => $v){
 		},
 		size:{
 			tree: {
-				hidden:<?php echo weTree::HiddenWidth; ?>,
-				defaultWidth:<?php echo weTree::DefaultWidth; ?>,
-				min:<?php echo weTree::MinWidth; ?>,
-				max:<?php echo weTree::MaxWidth; ?>,
-				step:<?php echo weTree::StepWidth; ?>,
-				moveWidth:<?php echo weTree::MoveWidth; ?>,
-				deleteWidth:<?php echo weTree::DeleteWidth; ?>
+				hidden:<?php echo we_tree_base::HiddenWidth; ?>,
+				defaultWidth:<?php echo we_tree_base::DefaultWidth; ?>,
+				min:<?php echo we_tree_base::MinWidth; ?>,
+				max:<?php echo we_tree_base::MaxWidth; ?>,
+				step:<?php echo we_tree_base::StepWidth; ?>,
+				moveWidth:<?php echo we_tree_base::MoveWidth; ?>,
+				deleteWidth:<?php echo we_tree_base::DeleteWidth; ?>
 			},
 			catSelect: {
 				width:<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
@@ -504,7 +504,7 @@ if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailabl
 		switch($_SESSION['weS']['we_mode']){
 			default:
 			case we_base_constants::MODE_NORMAL:
-				$treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? intval($_COOKIE["treewidth_main"]) : weTree::DefaultWidth;
+				$treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= we_tree_base::MinWidth) ? intval($_COOKIE["treewidth_main"]) : we_tree_base::DefaultWidth;
 				$treeStyle = 'display:block;';
 				break;
 			case we_base_constants::MODE_SEE:

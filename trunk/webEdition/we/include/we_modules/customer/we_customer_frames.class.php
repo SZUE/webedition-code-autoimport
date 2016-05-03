@@ -32,7 +32,7 @@ class we_customer_frames extends we_modules_frame{
 		$this->showTreeHeader = true;
 		$this->showTreeFooter = true;
 
-		$this->Tree = new we_customer_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_tree_customer($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_customer_view($frameset);
 	}
 
@@ -357,7 +357,7 @@ function setTab(tab) {
 						we_html_element::jsElement(
 							(we_base_request::_(we_base_request::STRING, 'error') ?
 								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
-							$this->Tree->getJSLoadTree($pid, we_customer_tree::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
+							$this->Tree->getJSLoadTree($pid, we_tree_customer::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
 					)
 				)
 		);

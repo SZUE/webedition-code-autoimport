@@ -118,11 +118,11 @@ class we_customer_selector extends we_users_selector{
 				($optionalID ? ' ID=' . intval($optionalID) : '1') . ' AND ' .
 				(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '1 ') .
 				' GROUP BY ' . $grp . ($grouparr ? ($level == $levelcount ? ',ID' : '') : 'ID') . ($havingarr ? ' HAVING ' . implode(' AND ', $havingarr) : '') .
-				' ORDER BY ' . implode(',', $orderarr) . we_customer_tree::getSortOrder($settings, ','));
+				' ORDER BY ' . implode(',', $orderarr) . we_tree_customer::getSortOrder($settings, ','));
 			return ($level < $levelcount);
 		} else {
 			$this->db->query('SELECT ID,Username AS Path,0 AS IsFolder,' . $settings->treeTextFormatSQL . ' AS Text,"we/customer" AS ContentType FROM ' . CUSTOMER_TABLE .
-				' WHERE ' . (!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '1 ') . we_customer_tree::getSortOrder($settings));
+				' WHERE ' . (!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '1 ') . we_tree_customer::getSortOrder($settings));
 			//no need to search directory
 			return false;
 		}

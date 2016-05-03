@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_banner_tree extends weTree{
+class we_banner_tree extends we_tree_base{
 
 	protected function customJSFile(){
 		return we_html_element::jsScript(JS_DIR . 'banner_tree.js');

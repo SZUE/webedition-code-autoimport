@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-abstract class weTree{
+abstract class we_tree_base{
 
 	const DefaultWidth = 300;
 	const MinWidth = 200;

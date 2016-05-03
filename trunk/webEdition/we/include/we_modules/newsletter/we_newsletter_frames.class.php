@@ -31,7 +31,7 @@ class we_newsletter_frames extends we_modules_frame{
 		parent::__construct($frameset);
 		$this->module = 'newsletter';
 		$this->View = new we_newsletter_view($frameset);
-		$this->Tree = new we_newsletter_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
+		$this->Tree = new we_tree_newsletter($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
 		$this->weAutoCompleter = &weSuggest::getInstance();
 	}
 
@@ -432,7 +432,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 				"nopt" => ""));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, we_newsletter_tree::getItemsFromDB($pid)))
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, we_tree_newsletter::getItemsFromDB($pid)))
 					)
 		));
 	}
