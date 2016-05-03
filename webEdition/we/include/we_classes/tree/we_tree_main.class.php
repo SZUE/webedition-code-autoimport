@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class weMainTree extends weTree{
+class we_tree_main extends we_tree_base{
 
 	function getHTMLContruct($classes = ''){
 		return parent::getHTMLContruct('withFooter');

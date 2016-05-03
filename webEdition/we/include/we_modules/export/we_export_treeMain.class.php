@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_export_treeMain extends weTree{
+class we_export_treeMain extends we_tree_base{
 
 	protected function customJSFile(){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_treeMain.js');
@@ -38,7 +38,7 @@ function startTree(){
 	};
 	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=cmd&cmd=mainload&pid=0";
 	drawTree();
-			}';
+}';
 	}
 
 	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
@@ -72,7 +72,7 @@ function startTree(){
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
-				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/export'),
+				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/export'),
 				'disabled' => 0,
 				'tooltip' => $db->f('ID'),
 				'offset' => $offset,

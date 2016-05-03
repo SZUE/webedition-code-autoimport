@@ -761,7 +761,7 @@ abstract class we_root extends we_class{
 	}
 
 	function getMoveTreeEntryScript($select = true){
-		$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load');
+		$Tree = new we_tree_main('webEdition.php', 'top', 'top', 'top.load');
 		return $Tree->getJSUpdateTreeScript($this, $select);
 	}
 
