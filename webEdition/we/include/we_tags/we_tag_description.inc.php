@@ -41,8 +41,8 @@ function we_tag_description($attribs, $content){
 
 	$attribs["name"] = "description";
 	$descr = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL) ? oldHtmlspecialchars(strip_tags($descr)) : strip_tags($descr);
-	$attribs["content"] = $max ? cutText($descr, $max, true) : $descr;
+	$attribs["content"] = str_replace('"', '\'', ($max ? cutText($descr, $max, true) : $descr));
 	return getHtmlTag("meta", removeAttribs($attribs, array(
-				'htmlspecialchars', 'max'
-			))) . "\n";
+			'htmlspecialchars', 'max'
+		))) . "\n";
 }

@@ -40,7 +40,7 @@ function we_tag_keywords($attribs, $content){
 		$GLOBALS['meta']['Keywords']['default'] = $keys;
 		return;
 	}
-	$attribs["name"] = "keywords";
-	$attribs["content"] = $htmlspecialchars ? oldHtmlspecialchars(strip_tags($keys)) : strip_tags($keys);
+	$attribs['name'] = 'keywords';
+	$attribs['content'] = str_replace('"', '\'', ($htmlspecialchars ? oldHtmlspecialchars(strip_tags($keys)) : strip_tags($keys)));
 	return getHtmlTag("meta", $attribs) . "\n";
 }
