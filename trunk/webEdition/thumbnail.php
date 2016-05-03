@@ -38,6 +38,7 @@ if($thumbID){
 		$thumbObj->createThumb();
 	}
 	$file = $thumbObj->getOutputPath(true, false);
+	$imageExt = $thumbObj->outputFormat;
 } else {
 	$imagePath = we_base_request::_(we_base_request::FILE, 'path', '');
 	$imageSizeW = we_base_request::_(we_base_request::INT, 'size', 0, 'width');
