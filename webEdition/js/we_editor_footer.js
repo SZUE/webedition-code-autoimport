@@ -1,4 +1,4 @@
-/* global WE, top*/
+/* global WE, top, self*/
 
 /**
  * webEdition CMS
@@ -103,7 +103,7 @@ function setTextDocument(hasCtrl, value) {
 }
 
 function setPath() {
-		WE().layout.we_setPath(doc.Path, doc.Text, doc.ID, doc.classname);
+	WE().layout.we_setPath(_EditorFrame, doc.Path, doc.Text, doc.ID, doc.classname);
 }
 
 function saveReload() {
@@ -153,8 +153,8 @@ function we_save_document() {
 	}
 
 	/*if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
-		we_cmd('glossary_check', '', we_transaction);
-	} else */{
+	 we_cmd('glossary_check', '', we_transaction);
+	 } else */{
 		acStatus = '';
 		invalidAcFields = false;
 		try {
