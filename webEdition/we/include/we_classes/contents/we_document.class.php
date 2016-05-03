@@ -1055,7 +1055,7 @@ class we_document extends we_root{
 					return;
 				}
 				$val = $this->getElement($attribs['name']);
-				if(isset($this->TableID) || (is_string($val) && $val && $val{0} == 'a')){// we can not use '$this instanceof we_objectFile' to identify objectFile, we have to use 'isset($this->TableID)' instead
+				if(isset($this->TableID) || (is_string($val) && $val && ($val{0} == 'a' || $val{0} == '{'))){// we can not use '$this instanceof we_objectFile' to identify objectFile, we have to use 'isset($this->TableID)' instead
 					return self::getHrefByArray(we_unserialize($val));
 				}
 				break;
@@ -1089,7 +1089,10 @@ class we_document extends we_root{
 	}
 
 	static function getHrefByArray(array $hrefArr){
-		return (!empty($hrefArr['extPath']) && empty($hrefArr['int'])) ? $hrefArr['extPath'] : (isset($hrefArr['intID']) ? id_to_path($hrefArr['intID']) : '');
+		return ($hrefArr['int'] ?
+				(empty($hrefArr['intID']) ? '' : id_to_path($hrefArr['intID'])) :
+				(empty($hrefArr['extPath']) ? '' : $hrefArr['extPath'])
+			);
 	}
 
 	function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){

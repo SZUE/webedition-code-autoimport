@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition SDK
@@ -26,10 +26,11 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(parent.name);
+
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
-	var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 
 	switch (args[0]) {
 		case 'switch_edit_page':
@@ -57,7 +58,6 @@ var we_editor_header = {
 		}
 	},
 	scrollUpEditorContent: function () {
-		var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 		_EditorFrame.getContentEditor().scrollBy(0, -10);
 		if (this.evtCounter) {
 			this.timeout = setTimeout(we_editor_header.scrollUpEditorContent, 66);
@@ -65,4 +65,3 @@ var we_editor_header = {
 	}
 };
 
-var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(parent.name);

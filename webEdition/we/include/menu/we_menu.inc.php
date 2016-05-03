@@ -374,20 +374,6 @@ $we_menu = array(
 	array(// separator
 		'parent' => 'file'
 	),
-	/* array(// File > Save
-	  'text' => g_l('javaMenu_global', '[save]'),
-	  'parent' => 'file',
-	  'cmd' => 'trigger_save_document',
-	  'perm' => 'SAVE_DOCUMENT_TEMPLATE',
-
-	  ),
-	  array(// File > Publish
-	  'text' => g_l('javaMenu_global', '[publish]'),
-	  'parent' => 'file',
-	  'cmd' => 'trigger_publish_document',
-	  'perm' => 'PUBLISH',
-
-	  ), */
 	/*array(
 		'text' => g_l('javaMenu_glossary', '[glossary_check]'),
 		'parent' => 'file',
