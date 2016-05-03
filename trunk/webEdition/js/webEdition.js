@@ -254,7 +254,6 @@ function we_sbmtFrm(target, url, source) {
 		}
 	}
 	return false;
-
 }
 
 function doSave(url, trans, cmd) {
@@ -713,7 +712,7 @@ function we_cmd_base(args, url) {
 		case "delete_navi":
 		case "delete_all_navi":
 			// set Editor hot
-			_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			_EditorFrame.setEditorIsHot(true);
 			/* falls through */
 		case "reload_editpage":
@@ -1597,8 +1596,8 @@ WE().util.validate = {
 	}
 };
 
-WE().layout.we_setPath = function (path, text, id, classname) {
-	var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+WE().layout.we_setPath = function (_EditorFrame, path, text, id, classname) {
+	_EditorFrame = _EditorFrame ? _EditorFrame : WE().layout.weEditorFrameController.getActiveEditorFrame();
 	// update document-tab
 	_EditorFrame.initEditorFrameData({
 		EditorDocumentText: text,
