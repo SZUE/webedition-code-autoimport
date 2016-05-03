@@ -81,7 +81,7 @@ class we_voting_dirSelector extends we_selector_directory{
 top.clearEntries();
 ';
 		$this->FolderText = rawurldecode($this->FolderText);
-		$txt = rawurldecode(we_base_request::_(we_base_request::STRING, 'we_FolderText_tmp', ''));
+		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
 
 		if(!$txt){
 			echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);

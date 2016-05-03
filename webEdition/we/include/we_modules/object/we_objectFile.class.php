@@ -1138,9 +1138,9 @@ class we_objectFile extends we_document{
 			$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			$cmd1 = "document.forms[0].elements['" . $Path_elem_Name . "'].value";
 			$wecmdenc4 = we_base_request::encCmd("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][1].checked=true;" : ""));
-			$but = (!permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? '' : (
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $cmd1 . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "'," . we_base_request::encCmd($cmd1) . ",'" . $wecmdenc4 . "')")
-					));
+			$but = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? (
+					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1)  . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "'," . $cmd1 . ",'" . $wecmdenc4 . "')")
+					) : '');
 		}
 
 		return '<tr>' .
@@ -1364,26 +1364,17 @@ class we_objectFile extends we_document{
 // identifying default thumbnail of class:
 		$defvals = $this->getDefaultValueArray();
 		$thumbID = isset($defvals['img_' . $name]['defaultThumb']) ? $defvals['img_' . $name]['defaultThumb'] : 0;
+		$thumbID = $thumbID ? f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $thumbID) : 0;
 // creating thumbnail only if it really exists:
-		$thumbdb = new DB_WE();
-		$thumbdb->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE);
-		$thumbs = $thumbdb->getAll();
-		array_unshift($thumbs, '');
-		if(!empty($thumbID) && isset($thumbs[$thumbID]['ID']) && $thumbID <= count($thumbs)){
-			if($img->ID > 0){
-				$thumbObj = new we_thumbnail();
-				$thumbObj->initByThumbID($thumbs[$thumbID]['ID'], $img->ID, $img->Filename, $img->Path, $img->Extension, $img->getElement('origwidth'), $img->getElement('origheight'), $img->getDocument());
-				$thumbObj->createThumb();
-				$_imgSrc = $thumbObj->getOutputPath(false, true);
-				$_imgHeight = $thumbObj->getOutputHeight();
-				$_imgWight = $thumbObj->getOutputWidth();
+		if($thumbID){
+			if($img->ID){
+				$_imgSrc = WEBEDITION_DIR . 'thumbnail.php?id=' . $id . '&thumbID=' . $thumbID;
+				$_imgHeight = $_imgWight = 0;
 			} else {
 				$_imgSrc = ICON_DIR . 'no_image.gif';
 				$_imgHeight = 64;
 				$_imgWight = 64;
 			}
-		} else {
-			$thumbID = 0;
 		}
 
 		if(!$editable){
@@ -1399,8 +1390,8 @@ class we_objectFile extends we_document{
 			) .
 			'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 // show thumbnail of image if there exists one:
-			(!empty($thumbID) ?
-				'<img src="' . $_imgSrc . '" style="height:' . $_imgHeight . 'px;width:' . $_imgWight . 'px" />' :
+			($thumbID ?
+				'<img src="' . $_imgSrc . '" ' . ($_imgHeight ? 'style="height:' . $_imgHeight . 'px;width:' . $_imgWight . 'px"' : '') . '/>' :
 				$img->getHtml()) .
 			we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect(" . ($id? : 0) . ",'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )", true, 0, 0, '', '', ($id ? false : true)) .
 			we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image','" . ($id ? : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .

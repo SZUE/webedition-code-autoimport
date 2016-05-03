@@ -33,20 +33,19 @@ function removeAllCats() {
 }
 
 function addCat(paths) {
-	var path = paths.split(",");
 	var found = false;
 	var j = 0;
-	for (var i = 0; i < path.length; i++) {
-		if (path[i] !== "") {
+	for (var i = 0; i < paths.length; i++) {
+		if (paths[i] !== "") {
 			found = false;
 			for (j = 0; j < categories_edit.itemCount; j++) {
-				if (categories_edit.form.elements[categories_edit.name + "_variant0_" + categories_edit.name + "_item" + j].value == path[i]) {
+				if (categories_edit.form.elements[categories_edit.name + "_variant0_" + categories_edit.name + "_item" + j].value == paths[i]) {
 					found = true;
 				}
 			}
 			if (!found) {
 				categories_edit.addItem();
-				categories_edit.setItem(0, (categories_edit.itemCount - 1), path[i]);
+				categories_edit.setItem(0, (categories_edit.itemCount - 1), paths[i]);
 			}
 		}
 	}

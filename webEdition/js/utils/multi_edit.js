@@ -33,19 +33,15 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 	this.parent = document.getElementById(parentId);
 	this.form = form;
 	this.editable = editable;
-	this.delRelatedItems = false;
+	this.relatedItems = [];
 
 	this.createItemHidden = function (name) {
 		var item = document.createElement("input");
 		item.setAttribute("name", name);
 		item.setAttribute("id", name);
 		item.setAttribute("type", "hidden");
-		form.appendChild(item);
 
-		//this.form.appendChild(item);
 		this.parent.appendChild(item);
-
-		item = null;
 	};
 
 	this.updateHidden = function (item, value) {
@@ -71,7 +67,6 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 		this.variantCount--;
 		for (var z = 0; z < this.itemCount; z++) {
 			var item = document.getElementById(this.name + "_variant" + this.variantCount + "_" + this.name + "_item" + z);
-			//this.form.removeChild(item);
 			this.parent.removeChild(item);
 		}
 		this.currentVariant = (variant < (this.variantCount - 1) ?
@@ -92,10 +87,10 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 		var set = document.createElement("div");
 		set.setAttribute("id", this.name + "_item" + this.itemCount);
 
-		set.innerHTML = "<table style=\"margin-bottom:5px;\" class=\"default\"><tr valign=\"middle\"><td style=\"width:" + this.defWidth + "px\">" +
+		set.innerHTML = '<table style="margin-bottom:5px;" class="default"><tr valign="middle"><td style="width:' + this.defWidth + 'px">' +
 						(this.editable === true ?
-										"<input name=\"" + this.name + "_item" + this.itemCount + "\" id=\"" + this.name + "_item_input_" + this.itemCount + "\" type=\"text\" style=\"width:" + this.defWidth + "px\" onkeyup=\"" + this.name + ".updateHidden(\'item" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td>" :
-										"<label id=\"" + this.name + "_item_label_" + this.itemCount + "\" class=\"defaultfont\"></td>"
+										'<input name="' + this.name + "_item" + this.itemCount + '" id="' + this.name + "_item_input_" + this.itemCount + '" type="text" style="width:' + this.defWidth + 'px" onkeyup="' + this.name + ".updateHidden(\'item" + this.itemCount + "\',this.value)\" class=\"wetextinput\"></td>" :
+										'<label id="' + this.name + "_item_label_" + this.itemCount + '" class="defaultfont"></td>'
 										) + "<td>&nbsp;</td><td>" + butt + "</td></tr></table>";
 
 		this.parent.appendChild(set);
@@ -117,26 +112,15 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 				}
 			}
 			var item = document.getElementById(this.name + "_variant" + i + "_" + this.name + "_item" + this.itemCount);
-			//this.form.removeChild(item);
 			this.parent.removeChild(item);
 		}
 
 		var item1 = document.getElementById(this.name + "_item" + this.itemCount);
 		this.parent.removeChild(item1);
-		if (this.delRelatedItems) {
-			document.getElementById("updateScores").value = true;
-			elemRow = document.getElementById("row_scores_" + child);
-			elemRow.parentNode.removeChild(elemRow);
-			var xcount = child + 1;
-			while ((elemRow = document.getElementById("row_scores_" + xcount))) {
-				elemRow.setAttribute('id', "row_scores_" + (xcount - 1));
-				var elemX;
-				if ((elemX = document.getElementById("scores_" + xcount))) {
-					elemX.setAttribute('id', "scores_" + (xcount - 1));
-					elemX.setAttribute('name', "scores_" + (xcount - 1));
-				}
-				xcount++;
-			}
+		if (this.relatedItems[child]) {
+			this.parent.removeChild(this.relatedItems[child]);
+			//remove from list
+			this.relatedItems.splice(child, 1);
 		}
 		this.showVariant(this.currentVariant);
 	};

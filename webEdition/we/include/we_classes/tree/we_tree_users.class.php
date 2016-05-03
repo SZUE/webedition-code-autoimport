@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_users_tree extends weTree{
+class we_tree_users extends we_tree_base{
 
 	protected function customJSFile(){
 		return we_html_element::jsScript(JS_DIR . 'users_tree.js');

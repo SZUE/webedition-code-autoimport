@@ -29,7 +29,7 @@ class we_shop_frames extends we_modules_frame{
 		$this->module = 'shop';
 		$this->treeDefaultWidth = 204;
 		$this->hasIconbar = true;
-		$this->Tree = new we_shop_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_tree_shop($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_shop_view($frameset, 'top.content');
 	}
 

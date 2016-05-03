@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_shop_tree extends weTree{
+class we_tree_shop extends we_tree_base{
 
 	protected function customJSFile(){
 		return we_html_element::jsScript(JS_DIR . 'shop_tree.js');
@@ -30,15 +30,15 @@ class we_shop_tree extends weTree{
 
 	function getJSStartTree(){
 		return '
-			function startTree(){
-				treeData.frames={
-					top:' . $this->topFrame . ',
-					cmd:' . $this->cmdFrame . ',
-					tree:' . $this->treeFrame . '
-				};
-				loadData();
-				drawTree();
-			}';
+function startTree(){
+	treeData.frames={
+		top:' . $this->topFrame . ',
+		cmd:' . $this->cmdFrame . ',
+		tree:' . $this->treeFrame . '
+	};
+	loadData();
+	drawTree();
+}';
 	}
 
 	function getJSTreeCode(){

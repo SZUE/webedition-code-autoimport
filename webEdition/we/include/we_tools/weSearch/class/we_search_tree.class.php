@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search_tree extends weTree{
+class we_search_tree extends we_tree_base{
 	static $treeItems = array();
 
 	function getJSTreeCode(){
