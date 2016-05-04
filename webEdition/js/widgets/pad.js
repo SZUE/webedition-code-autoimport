@@ -247,7 +247,7 @@ function saveNote() {
 		if (q_init[idx[i]] != q_curr[idx[i]]) {
 			hot = true;
 		}
-		csv += (idx[i] === 'Title' || idx[i] === 'Text') ? parent.Base64.encode(q_curr[idx[i]]) : q_curr[idx[i]];
+		csv += (idx[i] === 'Title' || idx[i] === 'Text') ? WE().util.Base64.encode(q_curr[idx[i]]) : q_curr[idx[i]];
 		if (i < idx_len - 1) {
 			csv += ';';
 		}
@@ -307,7 +307,7 @@ function initDlg() {
 	_oCsv_ = opener.document.getElementById(_sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	var aCsv = _sInitCsv_.split(',');
-	_sInitTitle = opener.Base64.decode(aCsv[0]);
+	_sInitTitle = WE().util.Base64.decode(aCsv[0]);
 	_sInitBin = aCsv[1];
 	var i;
 	for (i = 0; i < _aRdo.length; i++) {
@@ -349,7 +349,7 @@ function getTitle() {
 
 function save() {
 	var oCsv_ = opener.document.getElementById(_sObjId + '_csv');
-	var sTitleEnc = opener.Base64.encode(getTitle());
+	var sTitleEnc = WE().util.Base64.encode(getTitle());
 	var sBit = getBitString();
 	oCsv_.value = sTitleEnc.concat(',' + sBit);
 	if ((_lastPreviewCsv !== '' && sTitleEnc.concat(',' + sBit) !== _lastPreviewCsv) ||
@@ -364,7 +364,7 @@ function save() {
 }
 
 function preview() {
-	var sTitleEnc = opener.Base64.encode(getTitle());
+	var sTitleEnc = WE().util.Base64.encode(getTitle());
 	var sTitleEsc = escape(sTitleEnc);
 	var sBit = getBitString();
 	opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId);
@@ -374,7 +374,7 @@ function preview() {
 
 function exit_close() {
 	if (_lastPreviewCsv !== '' && (_sInitTitle != getTitle() || _sInitBin != getBitString())) {
-		opener.rpc(_sInitCsv_, '', '', '', escape(opener.Base64.encode(_sInitTitle)), _sObjId);
+		opener.rpc(_sInitCsv_, '', '', '', escape(WE().util.Base64.encode(_sInitTitle)), _sObjId);
 	}
 	exitPrefs();
 	self.close();

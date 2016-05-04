@@ -60,7 +60,7 @@ function init() {
 	_fo = document.forms[0];
 	var sCsv_ = opener.document.getElementById(_sObjId + '_csv').value;
 	var aCsv = sCsv_.split(',');
-	var sUri = opener.Base64.decode(aCsv[0]);
+	var sUri = WE().util.Base64.decode(aCsv[0]);
 	_sInitUri = sUri;
 	_sInitRssCfg = aCsv[1];
 	var oSctRss = _fo.elements.sct_rss;
@@ -176,14 +176,14 @@ function save() {
 	var oSctConf = _fo.elements.sct_conf;
 	var oCsv_ = opener.document.getElementById(_sObjId + '_csv');
 	var oRdoTitle = _fo.elements.rdo_title;
-	oCsv_.value = opener.Base64.encode(sUri) + ',' + getBinary('conf') + ',' + oSctConf.selectedIndex +
+	oCsv_.value = WE().util.Base64.encode(sUri) + ',' + getBinary('conf') + ',' + oSctConf.selectedIndex +
 					',' + getBinary('tb') + ',' + ((oRdoTitle[0].checked) ? 0 : 1);
 	if (_bIsHotTopRssFeeds) {
 		var oSctRss = _fo.elements.sct_rss;
 		var aNewTopRssFeeds = [];
 		for (var i = 0; _iTopRssFeedsLen > i; i++) {
-			aNewTopRssFeeds[i] = [opener.Base64.encode(oSctRss.options[i + 1].text),
-				opener.Base64.encode(oSctRss.options[i + 1].value)];
+			aNewTopRssFeeds[i] = [WE().util.Base64.encode(oSctRss.options[i + 1].text),
+				WE().util.Base64.encode(oSctRss.options[i + 1].value)];
 		}
 		opener._trf = aNewTopRssFeeds;
 		opener._isHotTrf = true;
@@ -271,8 +271,8 @@ function handleTopRssFeed(sAction) {
 
 function populateSct(oSctRss) {
 	for (var i = 0; _iTopRssFeedsLen > i; i++) {
-		var sOptVal = opener.Base64.decode(aTopRssFeeds[i][1]);
-		var sOptTxt = opener.Base64.decode(aTopRssFeeds[i][0]);
+		var sOptVal = WE().util.Base64.decode(aTopRssFeeds[i][1]);
+		var sOptTxt = WE().util.Base64.decode(aTopRssFeeds[i][0]);
 		oSctRss.options[oSctRss.options.length] = new Option(sOptTxt, sOptVal);
 	}
 }

@@ -298,7 +298,7 @@ WE().consts.g_l.cockpit.pad={
 	title_empty: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[title_empty]')) . "',
 	date_empty: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[date_empty]')) . "',
 };
-var _ttlB64Esc=escape(WE().layout.cockpitFrame.Base64.encode(_sTb));
+var _ttlB64Esc=escape(WE().util.Base64.encode(_sTb));
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		array(
 		"onload" => (($command !== "home") ? "if(parent!=self)init();" : "") . 'calendarSetup();toggleTblValidity();'
