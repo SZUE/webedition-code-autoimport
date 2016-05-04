@@ -29,6 +29,75 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
+	const kIconAddCat = 'kIconAddCat';
+	const kIconAddDoc = 'kIconAddDoc';
+	const kIconAddField = 'kIconAddField';
+	const kIconAddFile = 'kIconAddFile';
+	const kIconAddFlash = 'kIconAddFlash';
+	const kIconAddImage = 'kIconAddImage';
+	const kIconAddLink = 'kIconAddLink';
+	const kIconAddListElement = 'kIconAddListElement';
+	const kIconAddNote = 'kIconAddNote';
+	const kIconAddQuicktime = 'kIconAddQuicktime';
+	const kIconAddSchedule = 'kIconAddSchedule';
+	const kIconAddTemplate = 'kIconAddTemplate';
+	const kIconAddThumbnail = 'kIconAddThumbnail';
+	const kIconDatePicker = 'kIconDatePicker';
+	const kIconDirectionDown = 'kIconDirectionDown';
+	const kIconDirectionLeft = 'kIconDirectionLeft';
+	const kIconDirectionRight = 'kIconDirectionRight';
+	const kIconDirectionUp = 'kIconDirectionUp';
+	const kIconEdit = 'kIconEdit';
+	const kIconEditFlash = 'kIconEditFlash';
+	const kIconEditImage = 'kIconEditImage';
+	const kIconEditInclude = 'kIconEditInclude';
+	const kIconEditLink = 'kIconEditLink';
+	const kIconEditList = 'kIconEditList';
+	const kIconEditObject = 'kIconEditObject';
+	const kIconEditPDF = 'kIconEditPDF';
+	const kIconEditQuicktime = 'kIconEditQuicktime';
+	const kIconFolderBack = 'kIconFolderBack';
+	const kIconPlus = 'kIconPlus';
+	const kIconPublish = 'kIconPublish';
+	const kIconReload = 'kIconReload';
+	const kIconSearch = 'kIconSearch';
+	const kIconTrash = 'kIconTrash';
+	const kIconUnpublish = 'kIconUnpublish';
+	const kIconView = 'kIconView';
+	const kIconHelp = 'kIconHelp';
+	const kIconIconView = 'kIconIconView';
+	const kIconListview = 'kIconListview';
+	const kIconMessagesCopy = 'kIconMessagesCopy';
+	const kIconMessagesCreate = 'kIconMessagesCreate';
+	const kIconMessagesCut = 'kIconMessagesCut';
+	const kIconMessagesPaste = 'kIconMessagesPaste';
+	const kIconMessagesReply = 'kIconMessagesReply';
+	const kIconMessagesTasks = 'kIconMessagesTasks';
+	const kIconMessagesTrash = 'kIconMessagesTrash';
+	const kIconMessagesUpdate = 'kIconMessagesUpdate';
+	const kIconNewBannergroup = 'kIconNewBannergroup';
+	const kIconNewDirectory = 'kIconNewDirectory';
+	const kIconPaymentVal = 'kIconPaymentVal';
+	const kIconSelectImage = 'kIconSelectImage';
+	const kIconShopAddNew = 'kIconShopAddNew';
+	const kIconShopDelArt = 'kIconShopDelArt';
+	const kIconShopDelOrd = 'kIconShopDelOrd';
+	const kIconShopExtArt = 'kIconShopExtArt';
+	const kIconShopPrefs = 'kIconShopPrefs';
+	const kIconShopSum = 'kIconShopSum';
+	const kIconShopVariants = 'kIconShopVariants';
+	const kIconSpellcheck = 'kIconSpellcheck';
+	const kIconTaskCopy = 'kIconTaskCopy';
+	const kIconTaskCreate = 'kIconTaskCreate';
+	const kIconTaskCut = 'kIconTaskCut';
+	const kIconTaskForward = 'kIconTaskForward';
+	const kIconTaskMessages = 'kIconTaskMessages';
+	const kIconTaskPaste = 'kIconTaskPaste';
+	const kIconTaskReject = 'kIconTaskReject';
+	const kIconTaskStatus = 'kIconTaskStatus';
+	const kIconTaskTrash = 'kIconTaskTrash';
+	const kIconTaskUpdate = 'kIconTaskUpdate';
+
 	/**
 	 * Default class name for button
 	 */
@@ -171,6 +240,8 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	 * @var string
 	 */
 	protected $_onClick = '';
+	
+	protected $_isTextReady = false;
 
 	/**
 	 * Constructor
@@ -343,6 +414,150 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 		return $this->_icon;
 	}
 
+	public function getButtonContent(){
+		switch($this->getIcon()){
+				case self::kIconAddCat:
+					return '';
+				case self::kIconAddDoc:
+					return '';
+				case self::kIconAddField:
+					return '';
+				case self::kIconAddFile:
+					return '';
+				case self::kIconAddFlash:
+					return '';
+				case self::kIconAddImage:
+					return '';
+				case self::kIconAddLink:
+					return '';
+				case self::kIconAddListElement:
+					return '';
+				case self::kIconAddNote:
+					return '';
+				case self::kIconAddQuicktime:
+					return '';
+				case self::kIconAddSchedule:
+					return '';
+				case self::kIconAddTemplate:
+					return '';
+				case self::kIconAddThumbnail:
+					return '';
+				case self::kIconDatePicker:
+					return '';
+				case self::kIconDirectionDown:
+					return '';
+				case self::kIconDirectionLeft:
+					return '';
+				case self::kIconDirectionRight:
+					return '';
+				case self::kIconDirectionUp:
+					return '';
+				case self::kIconEdit:
+					return '';
+				case self::kIconEditFlash:
+					return '';
+				case self::kIconEditImage:
+					return '';
+				case self::kIconEditInclude:
+					return '';
+				case self::kIconEditLink:
+					return '';
+				case self::kIconEditList:
+					return '';
+				case self::kIconEditObject:
+					return '';
+				case self::kIconEditPDF:
+					return '';
+				case self::kIconEditQuicktime:
+					return '';
+				case self::kIconFolderBack:
+					return '';
+				case self::kIconPlus:
+					return we_html_button::PLUS;
+				case self::kIconPublish:
+					return we_html_button::PUBLISH;
+				case self::kIconReload:
+					return '';
+				case self::kIconSearch:
+					return we_html_button::SEARCH;
+				case self::kIconTrash:
+					return we_html_button::TRASH;
+				case self::kIconUnpublish:
+					return '';
+				case self::kIconView:
+					return we_html_button::VIEW;
+				case self::kIconHelp:
+					return '';
+				case self::kIconIconView:
+					return '';
+				case self::kIconListview:
+					return '';
+				case self::kIconMessagesCopy:
+					return '';
+				case self::kIconMessagesCreate:
+					return '';
+				case self::kIconMessagesCut:
+					return '';
+				case self::kIconMessagesPaste:
+					return '';
+				case self::kIconMessagesReply:
+					return '';
+				case self::kIconMessagesTasks:
+					return '';
+				case self::kIconMessagesTrash:
+					return '';
+				case self::kIconMessagesUpdate:
+					return '';
+				case self::kIconNewBannergroup:
+					return '';
+				case self::kIconNewDirectory:
+					return '';
+				case self::kIconPaymentVal:
+					return '';
+				case self::kIconSelectImage:
+					return '';
+				case self::kIconShopAddNew:
+					return '';
+				case self::kIconShopDelArt:
+					return '';
+				case self::kIconShopDelOrd:
+					return '';
+				case self::kIconShopExtArt:
+					return '';
+				case self::kIconShopPrefs:
+					return '';
+				case self::kIconShopSum:
+					return '';
+				case self::kIconShopVariants:
+					return '';
+				case self::kIconSpellcheck:
+					return '';
+				case self::kIconTaskCopy:
+					return '';
+				case self::kIconTaskCreate:
+					return '';
+				case self::kIconTaskCut:
+					return '';
+				case self::kIconTaskForward:
+					return '';
+				case self::kIconTaskMessages:
+					return '';
+				case self::kIconTaskPaste:
+					return '';
+				case self::kIconTaskReject:
+					return '';
+				case self::kIconTaskStatus:
+					return '';
+				case self::kIconTaskTrash:
+					return '';
+				case self::kIconTaskUpdate:
+					return '';
+				default:
+					$this->_isTextReady = true;
+					return $this->getText();
+		}
+	}
+
 	/**
 	 * Set icon of internal button
 	 *
@@ -389,158 +604,15 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	}
 
 	/**
-	 * Retrieve start tag <a> if button is type = href or <div> if button is type = submit
-	 *
-	 * @return string
-	 */
-	public function _getWrapperStart(){
-		if($this->getType() === 'href'){
-
-			$onClick = ($this->getDisabled() ? "return false;" : "return true;");
-
-			return '<div style="width:' . $this->getWidth() . 'px;
-			height:' . $this->getHeight() . 'px;"><a onclick="' . $onClick . '" id="a_' . $this->getId() . '" style="text-decoration:none;display:block;"  ' . $this->_getNonBooleanAttribs('href,target,title') . '>';
-		}
-		if($this->getType() === 'submit'){
-			return '<div style="position:relative;z-index:1;width:' . $this->getWidth() . 'px;
-				height:' . $this->getHeight() . 'px;">
-				<input id="input_' . $this->getId() . '" ' . $this->_getBooleanAttribs('disabled') . ' ' . $this->_getNonBooleanAttribs('onMouseDown,onMouseOut') . '
-				style="position:absolute;z-index:2;width:' . $this->getWidth() . 'px;
-				height:' . $this->getHeight() . 'px;"
-				type="image" title="' . $this->getTitle() . '">';
-		}
-
-		return "";
-	}
-
-	/**
-	 * Returns end tag </a> if button is type = href or </div> if button is type = submit
-	 *
-	 * @return string
-	 */
-	public function _getWrapperEnd(){
-		switch($this->getType()){
-			case 'href':
-				return '</a></div>';
-			case 'submit':
-				return '</div>';
-		}
-
-		return "";
-	}
-
-	/**
-	 * Returns button content, image or text or both
-	 *
-	 * @return string
-	 */
-	public function _getButtonContent(){
-		$buttonHTML = '';
-
-		if($this->getDisabled()){
-			$classLeft = self::kButtonClassDisabledLeft;
-			$classMiddle = self::kButtonClassDisabledMiddle;
-			$classRight = self::kButtonClassDisabledRight;
-			$tblClass = self::kButtonClassDisabledInnerTable;
-		} else {
-			$classLeft = self::kButtonClassLeft;
-			$classMiddle = self::kButtonClassMiddle;
-			$classRight = self::kButtonClassRight;
-			$tblClass = self::kButtonClassInnerTable;
-		}
-		if($this->getImagePath() === ""){
-			$buttonHTML .= '<div' . $this->_getComputedClassAttrib($classLeft) . ' style="height:' . $this->_height . 'px"></div><div style="width:' . $this->getWidth() . 'px;height:' . $this->getHeight() . 'px;"' . $this->_getComputedClassAttrib($classMiddle) . '>';
-		}
-		$buttonHTML .= '<table id="table_' . $this->getId() . '" class="default ' . $tblClass . '"><tr>';
-
-		if($this->getIcon() !== '' || $this->getImagePath() !== ''){
-			$image = '';
-			if($this->getImagePath() !== ''){
-				$image = $this->getImagePath();
-			} elseif($this->getIcon() !== ''){
-				$image = $this->getIcon();
-			}
-			$imagePath = $_SERVER['DOCUMENT_ROOT'] . $image;
-			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $image) && is_readable($imagePath)){
-				$button = '<img src="' . $image . '" style="-khtml-user-select: none;padding:0px 5px 0px 5px;" />';
-				if($this->getText() !== ""){
-					$text = $this->getText();
-					switch($this->getTextPosition()){
-						case "left" :
-							$buttonHTML .= '<td>' . $text . '</td><td>' . $button . '</td>';
-							break;
-						case "right" :
-							$buttonHTML .= '<td>' . $button . '</td><td>' . $text . '</td>';
-							break;
-					}
-				} else {
-					$buttonHTML .= '<td>' . $button . '</td>';
-				}
-			}
-		} else {
-			$buttonHTML .= '<td>' . $this->getText() . '</td>';
-		}
-		$buttonHTML .= '</tr></table>';
-		if($this->getImagePath() === ""){
-			$buttonHTML .= '</div><div' . $this->_getComputedClassAttrib($classRight) . ' style="height:' . $this->_height . 'px"></div>';
-		}
-
-		return $buttonHTML;
-	}
-
-	/**
-	 * Returns string with non boolean attribs to insert into html tag
-	 *
-	 * @param string $attribsString comma separated string with attribute names
-	 * @return string
-	 */
-	protected function _getNonBooleanAttribs($attribsString){
-		$arr = explode(',', $attribsString);
-		$attribs = '';
-		foreach($arr as $attribName){
-			$internalName = "_$attribName";
-			switch($internalName){
-				case "_onMouseDown":
-					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.down(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}"';
-					break;
-				case "_onMouseUp":
-					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.up(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}"';
-					break;
-				case "_onMouseOut":
-					$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="if(we_ui_controls_Button.out(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}"';
-					break;
-			}
-			if(isset($this->$internalName) && $this->$internalName !== ''){
-				$attribs .= ' ' . oldHtmlspecialchars($attribName) . '="' .
-					($internalName === "_onClick" ?
-						'if(we_ui_controls_Button.up(\'' . $this->getId() . '\')) {' . oldHtmlspecialchars($this->$internalName) . '}' :
-						oldHtmlspecialchars($this->$internalName)) .
-					'"';
-			}
-		}
-		return $attribs;
-	}
-
-	/**
 	 * Renders and returns HTML of button
 	 *
 	 * @return string
 	 */
 	public function _renderHTML(){
+		$dimensions = array('width' => $this->getWidth(), 'height' => 0 /* $this->getHeight()*/);
 
-		if($this->getDisabled()){
-			$classNormal = self::kButtonClassDisabledNormal;
-		} else {
-			$classNormal = self::kButtonClassNormal;
-		}
-
-		if($this->getHidden()){
-			$this->_style .= 'display:none;';
-		}
-
-		// FIXME: return we_html_button and adapt js to the new ones!
-
-		return $this->_getWrapperStart() . '<div' . $this->_getNonBooleanAttribs('id,title,onclick,onClick,onMouseUp,onMouseDown,onMouseOut') . $this->_getComputedStyleAttrib() . $this->_getComputedClassAttrib($classNormal) . '>' . $this->_getButtonContent() . '</div>' . $this->_getWrapperEnd();
+		//FIXME: make css
+		return we_html_element::htmlDiv(array('style' => 'margin: 6px 0 0 0px;'), we_html_button::create_button($this->getButtonContent(), $this->getHref(), true, 0, 0, $this->getOnClick(), $this->getTarget(), $this->getDisabled(), false, '', false, $this->getTitle(), $this->getClass(), $this->getId(), $this->_isTextReady, array_filter($dimensions)));
 	}
 
 }

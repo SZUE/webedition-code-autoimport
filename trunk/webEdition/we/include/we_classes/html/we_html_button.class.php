@@ -86,9 +86,13 @@ abstract class we_html_button{
 	 * @param boolean $important
 	 * @static
 	 */
-	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = ''){
+	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = '', $dimensions = array()){
+		// $dimensions: to be used only when calling this function from app
+		$style = isset($dimensions['width']) || isset($dimensions['height']) ? ' style="' . (isset($dimensions['width']) ? 'width:' . $dimensions['width'] . 'px;' : '') . (isset($dimensions['height']) ? 'height:' . $dimensions['height'] . 'px;' : '') . '"' : '';
+
 		return '<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
 			($disabled ? ' disabled="disabled"' : '') .
+			$style .
 			' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' .
 			' onclick="' . oldHtmlspecialchars($cmd) . '"' .
 			'>' . $text . '</button>';
@@ -110,7 +114,7 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = ''){
+	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, $dimensions = array()){
 		$cmd = '';
 
 		// Check width
@@ -178,7 +182,7 @@ abstract class we_html_button{
 				//add text, no break;
 				$value.=' ';
 			default:
-				$text = g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
+				$text = $notTranslate ? $name : g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
 				$value = ($name == 'next' ? $text . ' ' . $value : $value . $text);
 		}
 		$hrefData = explode(':', $href, 2);
@@ -209,7 +213,7 @@ abstract class we_html_button{
 						"window.location.href='" . $href . "';");
 		}
 
-		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($title ? : (g_l('button', '[' . $name . '][alt]', true) ? : '')), $disabled, $hrefData[0] === self::WE_FORM, $class);
+		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($title ? : (g_l('button', '[' . $name . '][alt]', true) ? : '')), $disabled, $hrefData[0] === self::WE_FORM, $class, $dimensions);
 	}
 
 	static function formatButtons($buttons){
