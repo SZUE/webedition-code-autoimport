@@ -117,11 +117,10 @@ class we_fragment_base{
 		$this->printBodyTag($bodyAttributes);
 		for($i = 0; $i < $this->taskPerFragment; $i++){
 			if($i > 0){
-				$this->currentTask++; // before: currentTask was incremented with $i;
+				$this->currentTask++;
 			}
 			if($this->currentTask == $this->numberOfTasks){
-
-				unlink($filename);
+				we_base_file::delete($filename);
 				$this->finish();
 				break;
 			} else {
