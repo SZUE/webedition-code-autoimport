@@ -60,38 +60,24 @@ container.prototype.checkNode = function (imgName) {
 		if (this[i].id == object_name) {
 			treeData.frames.tree.populate(this[i].id, this.table);
 			if (this[i].checked == 1) {
-				if (document.images) {
-					if (treeData.frames.tree.document.getElementsByName(imgName)) {
-						tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
-						tmp.classList.remove('fa-check-square-o');
-						tmp.classList.add('fa-square-o');
-					}
+				if (treeData.frames.tree.document.getElementsByName(imgName)) {
+					tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
+					tmp.classList.remove('fa-check-square-o');
+					tmp.classList.add('fa-square-o');
 				}
 				this[i].checked = 0;
-				if (treeData.frames.top.SelectedItems[treeData.frames.top.table].length > 1) {
-					found = false;
-					treeData.frames.top.SelectedItems[treeData.frames.top.table].length = treeData.frames.top.SelectedItems[treeData.frames.top.table].length + 1;
-					for (z = 0; z < treeData.frames.top.SelectedItems[treeData.frames.top.table].length; z++) {
-						if (treeData.frames.top.SelectedItems[treeData.frames.top.table][z] == this[i].id)
-							found = true;
-						if (found) {
-							treeData.frames.top.SelectedItems[treeData.frames.top.table][z] = treeData.frames.top.SelectedItems[treeData.frames.top.table][z + 1];
-						}
-					}
-					treeData.frames.top.SelectedItems[treeData.frames.top.table].length = treeData.frames.top.SelectedItems[treeData.frames.top.table].length - 2;
-				} else {
-					treeData.frames.top.SelectedItems[treeData.frames.top.table] = [];
+				var pos = treeData.frames.top.SelectedItems[treeData.frames.top.table].indexOf(this[i].id);
+				if (pos > -1) {
+					treeData.frames.top.SelectedItems[treeData.frames.top.table].splice(pos, 1);
 				}
 
 				this[i].applylayout();
 				break;
 			} else {
-				if (document.images) {
-					if (treeData.frames.tree.document.getElementsByName(imgName)) {
-						tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
-						tmp.classList.remove('fa-square-o');
-						tmp.classList.add('fa-check-square-o');
-					}
+				if (treeData.frames.tree.document.getElementsByName(imgName)) {
+					tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
+					tmp.classList.remove('fa-square-o');
+					tmp.classList.add('fa-check-square-o');
 				}
 				this[i].checked = 1;
 				treeData.frames.top.SelectedItems[treeData.frames.top.table].push(this[i].id);
@@ -105,9 +91,6 @@ container.prototype.checkNode = function (imgName) {
 		if (top.content.hot !== undefined) {
 			top.content.hot = 1;
 		}
-	}
-	if (!document.images) {
-		drawTree();
 	}
 };
 
@@ -144,7 +127,7 @@ function setHead(tab) {
 
 
 function drawTree() {
-	treeData.frames.tree.document.getElementById("treetable").innerHTML = '<div class="treetable \'+treeData.getLayout()+\'">' +
+	treeData.frames.tree.document.getElementById("treetable").innerHTML = '<div class="treetable ' + treeData.getLayout() + '">' +
 					treeData.draw(treeData.startloc, "") +
 					"</div>";
 }

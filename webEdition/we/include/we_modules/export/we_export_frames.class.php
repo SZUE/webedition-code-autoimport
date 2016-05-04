@@ -114,7 +114,7 @@ function setTab(tab) {
 		}
 		$yuiSuggest = & weSuggest::getInstance();
 		//FIXME: folder don't have a tree to start.
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;if(window.startTree){startTree();}", "onunload" => "WE().util.jsWindow.prototype.closeAll(window);"), weSuggest::getYuiFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiJs()
+		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;if(window.startTree){startTree();start();}", "onunload" => "WE().util.jsWindow.prototype.closeAll(window);"), weSuggest::getYuiFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiJs()
 		);
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
