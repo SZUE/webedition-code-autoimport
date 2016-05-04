@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
 
@@ -141,10 +140,11 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'selectors.css') .
  we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js') .
  we_html_element::jsElement('top.allentries=' . ($files ? '["' . (implode('","', $files)) . '"]' : '[]') . ';');
+
 ?>
 </head>
 <body onload="WE().util.setIconOfDocClass(document, 'treeIcon');doScrollTo();">
-	<form name="we_form" target="fscmd" action="we_sselector_cmd.php" method="post" onsubmit="return false;">
+	<form name="we_form" target="fscmd" action="we_cmd.php?we_cmd[0]=selectorBrowseCmd" method="post" onsubmit="return false;">
 		<table class="default"><?php
 			if($nf === 'new_folder'){
 				?>

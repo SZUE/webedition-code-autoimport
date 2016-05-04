@@ -3,6 +3,8 @@ we_sselector_inc.php
 we_sselector_header.php
 we_sselector_footer.php
 we_sselector_editFile.php
+we_sselector_cmd.php
+we_sselector_body.php
 we_lcmd.php
 we_imgSelect.php
 we_docSelect.php
