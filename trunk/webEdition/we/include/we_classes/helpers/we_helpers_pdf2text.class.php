@@ -30,7 +30,6 @@
 //ini_set('memory_limit', '21M');
 
 class we_helpers_pdf2text{
-
 	const READPORTION = 512000;
 	const NL = "\n";
 	const SPACE = ' ';
@@ -232,7 +231,7 @@ class we_helpers_pdf2text{
 		switch(isset($elem['Filter']) ? $elem['Filter'] : ''){
 
 			case '/Fl':
-			case '/FlateDecode':
+			case self::FILTER_GZ:
 				return @gzuncompress($elem['stream']);
 			case 'ASCIIHexDecode':
 			case 'AHx':
@@ -715,13 +714,22 @@ class we_helpers_pdf2text{
 
 	private function getAllPageObjects($id){
 		$id = array_map('trim', array_filter(explode(self::TRIM_REF, $id)));
+		if(defined('DEBUG') && strstr(DEBUG, 'page')){
+			print_r($id);
+		}
 		foreach($id as $cur){
 			if(empty($cur) || !isset($this->data[$cur])){
+				if(defined('DEBUG') && strstr(DEBUG, 'page')){
+					echo 'Page ' . $cur . " not found\n";
+				}
 				continue;
 			}
 			$elem = $this->data[$cur];
 			switch($elem['Type']){
 				case '/Pages':
+					if(defined('DEBUG') && strstr(DEBUG, 'page')){
+						print_r($elem);
+					}
 					$this->unset[] = $cur;
 					$this->getAllPageObjects(trim($elem['Kids'], self::TRIM_LIST));
 					break;
@@ -749,6 +757,12 @@ class we_helpers_pdf2text{
 					$x = array_filter(explode(self::TRIM_REF, trim($elem['Contents'], self::TRIM_LIST)));
 					$x = array_map('trim', $x);
 					$this->objects = array_merge($this->objects, $x);
+					break;
+				case '/Group':
+					$x = array_filter(explode(self::TRIM_REF, trim($elem['Contents'], self::TRIM_LIST)));
+					$x = array_map('trim', $x);
+					$this->objects = array_merge($this->objects, $x);
+					break;
 			}
 		}
 	}
@@ -792,22 +806,29 @@ class we_helpers_pdf2text{
 		$fs = 10;
 		$hasData = false;
 		$lines = array();
-		preg_match_all('#([^\r\n]*)?[ \r\n]{0,2}(T.|rg|RG|"|\')#Us', $text, $lines, PREG_SET_ORDER);
+		preg_match_all('#'
+			. '(?(?=\[.*\])'//if [] is found
+			. '(\[[^\r\n\[\]]*\])'//use this pattern for []
+			. '|'
+			. '([^\r\n]*))'//use this for strings without []
+			. '[ \r\n]{0,2}(T.|rg|RG|"|\')#Us', $text, $lines, PREG_SET_ORDER);
 		/* print_r(str_replace("\r","\n",$text));
 		  print_r($lines);
 		  return; */
 		foreach($lines as $line){
 			if(defined('DEBUG') && strstr(DEBUG, 'line')){
-				print_r($line);
+				p_r($line);
 			}
-			switch($line[2]){
+			$type = $line[3];
+			$data = $line[1]? : $line[2];
+			switch($type){
 				case 'Tf'://fontsize
 					if($hasData){
 						$this->applyTextChars($tmpText, $selectedFont);
 						$tmpText = '';
 					}
 					$hasData = false;
-					list($selectedFont, $fs) = explode(' ', trim($line[1], ' '));
+					list($selectedFont, $fs) = explode(' ', trim($data, ' '));
 					$fs = floatval($fs);
 					$selectedFont = trim($selectedFont, self::TRIM_NAME);
 					break;
@@ -815,7 +836,7 @@ class we_helpers_pdf2text{
 					$tmpText .= self::NL;
 					break;
 				case 'Td'://potential newline
-					list(, $tmp) = explode(' ', $line[1]);
+					list(, $tmp) = explode(' ', $data);
 					if($tmp){
 						$tmpText .= self::NL;
 					}
@@ -862,6 +883,7 @@ class we_helpers_pdf2text{
 			}
 			$this->text.=$tmp;
 		} else {
+			$this->text.=$text;
 			if(defined('DEBUG') && strstr(DEBUG, 'fontout')){
 				echo 'Error-text: ' . $selectedFont;
 			}
