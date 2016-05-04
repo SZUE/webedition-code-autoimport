@@ -60,7 +60,7 @@ function WE(retBool) {
 
 function we_showMessage(message, prio, win) {
 	win = (win ? win : this.window);
-	if (WE()) {
+	if (WE(true)) {
 		WE().util.showMessage(message, prio, win);
 	} else { // there is no webEdition window open, just show the alert
 		win.alert(message);

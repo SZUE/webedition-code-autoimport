@@ -2000,7 +2000,7 @@ var weFileUpload = (function () {
 					}
 				} else if (resp.status === 'success') {
 					_.sender.currentFile = null;
-					if (WE()) {
+					if (WE(true)) {
 						window.we_cmd('update_file');
 						WE().layout.we_setPath(null, resp.weDoc.path, resp.weDoc.text, 0, "published");
 					}
