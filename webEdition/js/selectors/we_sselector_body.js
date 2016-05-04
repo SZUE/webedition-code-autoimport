@@ -94,3 +94,16 @@ function keypressed(e) {
 		setTimeout(document.we_form.txt.blur, 30);
 	}
 }
+
+function setScrollTo() {
+	parent.scrollToVal = pageYOffset;
+}
+
+function initSelector(type) {
+	document.we_form.elements.txt.focus();
+	document.we_form.elements.txt.select();
+	if (type === "rename_folder" || type === "rename_file") {
+		document.we_form.elements.oldtxt.value = document.we_form.elements.txt.value;
+	}
+	document.we_form.elements.pat.value = top.currentDir;
+}

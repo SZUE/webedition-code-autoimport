@@ -74,14 +74,14 @@ document.edit_folder.submit();
 <body class="weDialogBody" style="border-top: 1px solid black;">
 	<form name="edit_folder" action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php" method="post">
 		<?php
-		echo we_html_tools::hidden('we_transaction', $transaction);
-		echo we_html_tools::hidden('mcmd', 'save_folder_settings');
-		echo we_html_tools::hidden('mode', $mode);
-
-		if(($fid = we_base_request::_(we_base_request::INT, 'fid')) !== false){
-
-			echo we_html_tools::hidden('fid', $fid);
-		}
+		$fid = we_base_request::_(we_base_request::INT, 'fid');
+		echo
+		we_html_element::htmlHiddens(array(
+			'we_transaction' => $transaction,
+			'mcmd' => 'save_folder_settings',
+			'mode' => $mode,
+			($fid ? 'fid' : '') => $fid
+		));
 
 		switch($mode){
 			case 'new':
@@ -114,7 +114,7 @@ document.edit_folder.submit();
 		$input_tbl = '<table cellpadding="5" >
 	<tr>
 	  <td class="defaultfont">' . g_l('modules_messaging', '[folder_name]') . '</td>
-	  <td class="defaultfont">' . ($specialfolder ? ($n . we_html_tools::hidden("folder_name", $orgn)) : we_html_tools::htmlTextInput('folder_name', 24, $n, 24, 'onchange="top.content.setHot();"')) . '</td>
+	  <td class="defaultfont">' . ($specialfolder ? ($n . we_html_element::htmlHidden("folder_name", $orgn)) : we_html_tools::htmlTextInput('folder_name', 24, $n, 24, 'onchange="top.content.setHot();"')) . '</td>
 	</tr>
 	<tr>
 	  <td class="defaultfont">' . g_l('modules_messaging', '[parent_folder]') . '</td>
@@ -127,7 +127,7 @@ document.edit_folder.submit();
       </table>';
 
 		$_btn_tbl = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:save()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:top.content.we_cmd('messaging_start_view','', '" . we_base_request::_(we_base_request::TABLE, "table", "") . "')")
-				)
+			)
 		;
 		echo we_html_tools::htmlDialogLayout($input_tbl, $heading, $_btn_tbl, "100%", 30, "", "none");
 		?></td>

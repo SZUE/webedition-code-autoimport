@@ -41,10 +41,10 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 <script><!--
 	function we_submitForm(target, url) {
 		var f = self.document.we_form;
-			if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-		return false;
-	}
+		if (!f.checkValidity()) {
+			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			return false;
+		}
 
 		var sel = "";
 		for (var i = 1; i <= top.treeData.len; i++) {
@@ -80,8 +80,8 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 			$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 			?>
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=delete_folders&folders=<?php echo implode(',', $v) ?>';
-					top.content.we_cmd('messaging_start_view', '', '<?php echo we_base_request::_(we_base_request::TABLE, 'table', ''); ?>');
-					//-->
+				top.content.we_cmd('messaging_start_view', '', '<?php echo we_base_request::_(we_base_request::TABLE, 'table', ''); ?>');
+				//-->
 			</script>
 			</head>
 			<body></body>
@@ -97,10 +97,12 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 </script>
 <?php
 $form = '<form name="we_form" method="post">' .
-		we_html_tools::hidden('we_transaction', $transaction) .
-		we_html_tools::hidden('folders', '') .
-		we_html_tools::hidden('mcmd', 'delete_folders') .
-		'</form>';
+	we_html_element::htmlHiddens(array(
+		'we_transaction' => $transaction,
+		'folders' => '',
+		'mcmd' => 'delete_folders'
+	)) .
+	'</form>';
 
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_delete()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:top.content.we_cmd('messaging_start_view')")
 );

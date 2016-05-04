@@ -895,7 +895,10 @@ function CalendarChanged(calObject) {
 						'headline' => g_l('modules_shop', '[Artikel]'),
 						'space' => 100,
 						'html' => '
-		<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden('we_cmd[]', 'add_new_article') . '
+		<form name="we_intern_form">' . we_html_element::htmlHiddens(array(
+							'bid' => $_REQUEST['bid'],
+							'we_cmd[]' => 'add_new_article'
+						)) . '
 			<table class="default">
 			<tr>
 			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, array("onchange" => "selectArticle(this.options[this.selectedIndex].value)"), 'value', '380') . '</td>
@@ -958,9 +961,11 @@ function CalendarChanged(calObject) {
 						'space' => 100,
 						'html' => '
 							<form name="we_form" target="edbody">' .
-						we_html_tools::hidden('bid', $_REQUEST['bid']) .
-						we_html_tools::hidden('we_cmd[]', 'add_article') .
-						we_html_tools::hidden('add_article', $_REQUEST['add_article']) .
+						we_html_element::htmlHiddens(array(
+							'bid' => $_REQUEST['bid'],
+							'we_cmd[]' => 'add_article',
+							'add_article' => $_REQUEST['add_article']
+						)) .
 						'<b>' . $model->elements[WE_SHOP_TITLE_FIELD_NAME]['dat'] . '</b>',
 						'noline' => 1
 					);
@@ -1144,8 +1149,10 @@ function CalendarChanged(calObject) {
 				echo '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-				we_html_tools::hidden('bid', $_REQUEST['bid']) .
-				we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
+				we_html_element::htmlHiddens(array(
+					'bid' => $_REQUEST['bid'],
+					"we_cmd[]" => 'save_shipping_cost'
+				)) .
 				we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
 				'</form></body></html>';
 				exit;
@@ -1279,8 +1286,10 @@ function CalendarChanged(calObject) {
 				echo '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-				we_html_tools::hidden('bid', $_REQUEST['bid']) .
-				we_html_tools::hidden('we_cmd[]', 'save_order_customer') .
+				we_html_element::htmlHiddens(array(
+					'bid' => $_REQUEST['bid'],
+					'we_cmd[]' => 'save_order_customer'
+				)) .
 				we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]'), '', 560) .
 				'</form>
 						</body>

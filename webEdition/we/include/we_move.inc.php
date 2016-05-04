@@ -107,7 +107,7 @@ switch($cmd0){
 							"path" => $item['Path']
 						);
 					}
-					$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"moveInfo.php","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
+					$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=moveInfo","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
 				} else {
 					$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[move_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
@@ -183,7 +183,7 @@ echo
 	g_l('newFile', '[title_move]')) . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', '[move_text]') . '</span>
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
-<div>' . $_buttons . '</div></div>' . we_html_tools::hidden("sel", "") .
+<div>' . $_buttons . '</div></div>' . we_html_element::htmlHidden("sel", "") .
  '</form>' .
  $yuiSuggest->getYuiJs() .
  '</body>

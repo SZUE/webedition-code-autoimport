@@ -23,7 +23,7 @@
  */
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-		we_html_element::jsScript(JS_DIR . 'customizeValidation.js'));
+	we_html_element::jsScript(JS_DIR . 'customizeValidation.js'));
 ?>
 <body class="weDialogBody" style="overflow:hidden;">
 	<?php
@@ -73,10 +73,12 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 				$selectedService = $service;
 			}
 		}
-		$hiddenFields = we_html_tools::hidden('id', $selectedService->id) .
-				we_html_tools::hidden('art', 'custom');
+		$hiddenFields = we_html_element::htmlHiddens(array(
+				'id' => $selectedService->id,
+				'art' => 'custom'
+		));
 	} else {
-		$hiddenFields = we_html_tools::hidden('art', 'custom');
+		$hiddenFields = we_html_element::htmlHidden('art', 'custom');
 		$selectArr = array();
 	}
 
@@ -87,12 +89,12 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 	$_table = '<table>
     <tr><td style="padding-right:10px;">' . we_html_tools::htmlSelect('validationService', $selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, array('onchange' => 'we_cmd(\'customValidationService\',\'selectService\');'), "value", 320) . '</td>
         <td style="vertical-align:top">' . we_html_button::create_button('new_service', 'javascript:we_cmd(\'customValidationService\',\'newService\');')
-			. '<div style="height:10px;"></div>'
-			. we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', (empty($services))) . '
+		. '<div style="height:10px;"></div>'
+		. we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'customValidationService\',\'deleteService\');', true, 100, 22, '', '', (empty($services))) . '
         </td>
     </tr>
     </table>' .
-			$hiddenFields;
+		$hiddenFields;
 
 	$parts = array(
 		array('headline' => g_l('validation', '[available_services]'), 'html' => $_table, 'space' => 150)
@@ -113,6 +115,6 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 	}
 
 	echo '<form name="we_form" onsubmit="return false;">' .
-			we_html_multiIconBox::getHTML('weDocValidation', $parts, 30, we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('customValidationService','saveService');", true, 100, 22, '', '', (empty($services))), we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('close');")), -1, '', '', false, g_l('validation', '[adjust_service]'))
+	we_html_multiIconBox::getHTML('weDocValidation', $parts, 30, we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('customValidationService','saveService');", true, 100, 22, '', '', (empty($services))), we_html_button::create_button(we_html_button::CANCEL, "javascript:we_cmd('close');")), -1, '', '', false, g_l('validation', '[adjust_service]'))
 	. '</form>' .
 	'</body></html>';

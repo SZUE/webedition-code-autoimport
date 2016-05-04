@@ -132,7 +132,7 @@ function editFile() {
 			if (a.value != top.currentName) {
 				top.currentID = top.sitepath + top.rootDir + top.currentDir + "/" + a.value;
 			}
-			url = "we_sselector_editFile.php?id=" + top.currentID;
+			url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=selectorEdit&id=" + top.currentID;
 			new (WE().util.jsWindow)(window, url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
 		}
 		else {

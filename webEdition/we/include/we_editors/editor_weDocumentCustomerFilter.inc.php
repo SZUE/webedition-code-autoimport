@@ -57,7 +57,7 @@ echo we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
  '</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
  we_class::hiddenTrans() .
  (!($we_doc instanceof we_imageDocument) && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
-	we_html_tools::hidden('we_edit_weDocumentCustomerFilter', 1) : '') .
+	we_html_element::htmlHidden('we_edit_weDocumentCustomerFilter', 1) : '') .
  we_html_multiIconBox::getHTML('weDocProp', $parts, 20, '', -1, g_l('weClass', '[moreProps]'), g_l('weClass', '[lessProps]')) .
  we_html_element::htmlHidden("we_complete_request", 1) . '</form>
 </body>

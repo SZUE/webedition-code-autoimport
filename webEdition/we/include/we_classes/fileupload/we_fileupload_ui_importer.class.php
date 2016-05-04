@@ -55,8 +55,11 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 
 	public function getHTML($hiddens = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
-		$alert = we_html_tools::hidden('we_cmd[0]', 'import_files') .
-			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
+		$alert = we_html_element::htmlHiddens(array(
+				'we_cmd[0]' => 'import_files',
+				'cmd' => 'content',
+				'step' => 2
+			)) .
 			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . ($this->maxUploadSizeMBytes == 0 ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), $this->maxUploadSizeMBytes)), we_html_tools::TYPE_INFO, 520, false, 20));
 
 		$topParts = array(

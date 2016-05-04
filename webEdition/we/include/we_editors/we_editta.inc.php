@@ -67,7 +67,7 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js) . STYLESHEET);
 
-$out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '">' . we_html_tools::hidden('ok', 1);
+$out = '<body onload="top.focus();" class="weDialogBody"><form name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '">' . we_html_element::htmlHidden('ok', 1);
 
 foreach($_REQUEST['we_cmd'] as $k => $v){
 	$out .= we_html_element::htmlHidden('we_cmd[' . $k . ']', $v);
@@ -76,7 +76,7 @@ foreach($_REQUEST['we_cmd'] as $k => $v){
 // WYSIWYG && FORBIDHTML && FORBIDPHP
 $onOffVals = array('off' => 'false', 'on' => 'true');
 $selected = $we_doc->getElement($name . "dhtmledit") === "on" ? 'on' : 'off';
-$wysiwyg = we_html_tools::htmlSelect("dhtmledit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_tools::hidden('dhtmledit_orig', $we_doc->elements[$name . "dhtmledit"]["dat"]);
+$wysiwyg = we_html_tools::htmlSelect("dhtmledit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_element::htmlHidden('dhtmledit_orig', $we_doc->elements[$name . "dhtmledit"]["dat"]);
 
 $selected = $we_doc->getElement($name . "forbidhtml") === "on" ? 'on' : 'off';
 $forbidhtml = we_html_tools::htmlSelect("forbidhtml", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
@@ -123,7 +123,7 @@ $parts[] = array(
 
 // INLINEEDIT && SHOWMENUS
 $selected = $we_doc->getElement($name . "inlineedit", "dat", 'on') === "on" ? 'on' : 'off';
-$inlineedit = we_html_tools::htmlSelect("inlineedit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_tools::hidden('inlineedit_orig', $we_doc->elements[$name . "inlineedit"]["dat"]);
+$inlineedit = we_html_tools::htmlSelect("inlineedit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_element::htmlHidden('inlineedit_orig', $we_doc->elements[$name . "inlineedit"]["dat"]);
 
 $selected = $we_doc->getElement($name . "showmenus", "dat", 'on') === "on" ? 'on' : 'off';
 $showmenus = we_html_tools::htmlSelect("showmenus", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
