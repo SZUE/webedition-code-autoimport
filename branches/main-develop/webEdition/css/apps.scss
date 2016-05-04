@@ -21,8 +21,15 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+/* FIXME: move this styles to lib/we/ui/themes/default/we_ui_layout_HTMLPage/style,css and make scss in lib/we */
+
 @import "config.scss";
 
 #resize {
 	top: 0;
+}
+
+.weEditorBody{
+	overflow:auto !important;
 }

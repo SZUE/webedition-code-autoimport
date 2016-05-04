@@ -77,13 +77,13 @@ class we_export_dirSelector extends we_selector_directory{
 	}
 
 	function printCreateFolderHTML(){
-		we_html_tools::protect();
+		$this->FolderText = rawurldecode($this->FolderText);
+		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
+
 		echo we_html_tools::getHtmlTop() .
 		'<script><!--
 top.clearEntries();
 ';
-		$this->FolderText = rawurldecode($this->FolderText);
-		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
 		if(!$txt){
 			echo we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
@@ -125,13 +125,13 @@ top.selectFile(top.currentID);
 	}
 
 	function printDoRenameFolderHTML(){
-		we_html_tools::protect();
+		$this->FolderText = rawurldecode($this->FolderText);
+		$txt = $this->FolderText;
+
 		echo we_html_tools::getHtmlTop() .
 		'<script><!--
 top.clearEntries();
 ';
-		$this->FolderText = rawurldecode($this->FolderText);
-		$txt = $this->FolderText;
 		if(!$txt){
 			echo we_message_reporting::getShowMessageCall(g_l('export', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {

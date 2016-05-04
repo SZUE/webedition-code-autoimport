@@ -215,8 +215,10 @@ var dependencies = {
 </head>
 <body onload="switchType(document.we_form[\'SelectionType\'].value)" class="weDialogBody">
 	<form name="we_form" target="cmdFrame" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleCmd">' .
-			we_html_tools::hidden('cmd', '') .
-			we_html_tools::hidden('ID', '0') .
+			we_html_element::htmlHiddens(array(
+				'cmd' => '',
+				'ID' => '0'
+			)) .
 			we_html_multiIconBox::getHTML('navigationRules', $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]')) . '
 	</form>' .
 			$yuiSuggest->getYuiJs() .
@@ -244,7 +246,11 @@ var dependencies = {
 
 		$table->setCol(1, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
-		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) .
+		return $table->getHtml() .
+			we_html_element::htmlHiddens(array(
+				'CategoriesControl' => 0,
+				'CategoriesCount' => 0
+			)) .
 			we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
 			var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",400,false);

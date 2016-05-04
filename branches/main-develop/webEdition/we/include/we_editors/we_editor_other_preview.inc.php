@@ -39,9 +39,6 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3) === 'download'){
 	}
 }
 
-$onload = (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
-				' onload="WE().layout.we_setPath(\'' . $we_doc->Path . '\',\'' . $we_doc->Text . '\', ' . intval($we_doc->ID) . ',\'published\');"' : ''
-		);
 echo we_html_tools::getHtmlTop();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
@@ -49,7 +46,11 @@ echo STYLESHEET;
 ?>
 </head>
 
-<body class="weEditorBody previewOther" <?php echo $onload; ?>>
+<body class="weEditorBody previewOther" <?php
+			echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
+				' onload="WE().layout.we_setPath(_EditorFrame,\'' . $we_doc->Path . '\',\'' . $we_doc->Text . '\', ' . intval($we_doc->ID) . ',\'published\');"' : ''
+			);
+			?>>
 	<form name="we_form" method="post">
 		<?php
 		echo we_class::hiddenTrans();

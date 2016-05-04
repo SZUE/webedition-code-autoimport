@@ -158,7 +158,7 @@ function clearSearch() {
 ');
 
 		$searchlabel = $this->viewclass === 'todo' ? '[search_todos]' : '[search_messages]';
-		$hidden = we_html_tools::hidden('we_transaction', $this->transaction);
+		$hidden = we_html_element::htmlHidden('we_transaction', $this->transaction);
 		$table = new we_html_table(array('style' => 'margin: 4px 0px 0px 7px;', 'border' => 0), 1, 2);
 
 		$table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left:10px;'), g_l('modules_messaging', $searchlabel) .

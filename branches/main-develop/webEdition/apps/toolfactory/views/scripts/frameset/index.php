@@ -26,7 +26,7 @@ $appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
 $appName = Zend_Controller_Front::getInstance()->getParam('appName');
 
 $frameset = new we_ui_layout_Frameset();
-$frameset->setRows('32,*,0');
+$frameset->setRows('40,*,0');
 
 // parameter for each frame
 $param = ($this->tab ?

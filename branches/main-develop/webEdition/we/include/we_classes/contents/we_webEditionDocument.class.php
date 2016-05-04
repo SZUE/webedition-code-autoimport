@@ -195,7 +195,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$v = $this->IsDynamic;
 		if(!$disabled){
 			$n = 'we_' . $this->Name . '_IsDynamic';
-			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[IsDynamic]'), false, "defaultfont", "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
+			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[IsDynamic]'), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
 					'function switchExt() {' .
 					($this->Published ?
 						'' :
@@ -340,9 +340,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 
 
-			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . ($foo ? implode(',', $foo) : -1) . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", array(), 'left', 'defaultfont', '', $openButton, array(0, ''));
+			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . ($foo ? implode(',', $foo) : -1) . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", array(), 'left', 'defaultfont', '', $openButton, array(0, ''));
 		}
-		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), '', 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', array(), 'left', 'defaultfont', '', $openButton);
+		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), '', 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', array(), 'left', 'defaultfont', '', $openButton);
 	}
 
 	/**
@@ -415,7 +415,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 
 			//	Last step: get Information about the charsets
-			$retSelect = $this->htmlSelect('we_tmp_' . $name, $_charsetHandler->getCharsetsByArray($chars), 1, $value, false, array('onblur' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'), 'value', 254);
+			$retSelect = $this->htmlSelect('we_tmp_' . $name, $_charsetHandler->getCharsetsByArray($chars), 1, $value, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'), 'value', 254);
 		} else {
 			//	charset-tag NOT available
 			$retInput = we_html_tools::htmlTextInput("dummi", 40, g_l('charset', '[error][no_charset_tag]'), '', ' readonly disabled', 'text', 254);

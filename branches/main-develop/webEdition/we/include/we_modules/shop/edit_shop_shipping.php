@@ -226,7 +226,7 @@ function we_submitForm(url){
 			$parts[] = array(
 				'headline' => g_l('modules_shop', '[shipping][name]'),
 				'space' => 200,
-				'html' => we_class::htmlTextInput('weShipping_text', 24, $weShipping->text) . we_html_tools::hidden('weShippingId', $weShipping->id),
+				'html' => we_class::htmlTextInput('weShipping_text', 24, $weShipping->text) . we_html_element::htmlHidden('weShippingId', $weShipping->id),
 				'noline' => 1
 			);
 			$parts[] = array(

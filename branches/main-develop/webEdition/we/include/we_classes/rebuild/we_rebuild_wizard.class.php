@@ -539,7 +539,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 */
 	static function getRebuildThumbnails(){
 
-		$thumbsFolders = we_base_request::_(we_base_request::INT, 'thumbsFolders', '');
+		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, 'metaFolders', '');
 		$metaFields = we_base_request::_(we_base_request::INT, '_field', array());
 		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', array()));

@@ -587,7 +587,7 @@ function newIp(){
 			}
 		}
 		$table->addRow();
-		$table->setColContent($i, 0, we_html_element::htmlB(g_l('modules_voting', '[total_voting]') . ':') . we_html_tools::hidden("updateScores", false, array("id" => 'updateScores')));
+		$table->setColContent($i, 0, we_html_element::htmlB(g_l('modules_voting', '[total_voting]') . ':') . we_html_element::htmlHidden("updateScores", false, 'updateScores'));
 		$table->setCol($i, 3, array('colspan' => 3), we_html_element::htmlB(we_html_element::htmlSpan(array('id' => 'total'), $total_score)));
 
 		$butt = we_html_button::create_button('reset_score', "javascript:top.content.setHot();resetScores();");

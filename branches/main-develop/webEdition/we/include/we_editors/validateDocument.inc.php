@@ -97,13 +97,15 @@ if($services){
 	}
 	$_select .= '</optgroup></optgroup></select>';
 	$selectedService = $validationService[0];
-	$_hiddens = we_html_tools::hidden('host', $selectedService->host) .
-		we_html_tools::hidden('path', $selectedService->path) .
-		we_html_tools::hidden('ctype', $selectedService->ctype) .
-		we_html_tools::hidden('s_method', $selectedService->method) .
-		we_html_tools::hidden('checkvia', $selectedService->checkvia) .
-		we_html_tools::hidden('varname', $selectedService->varname) .
-		we_html_tools::hidden('additionalVars', $selectedService->additionalVars);
+	$_hiddens = we_html_element::htmlHiddens(array(
+			'host' => $selectedService->host,
+			'path' => $selectedService->path,
+			'ctype' => $selectedService->ctype,
+			's_method' => $selectedService->method,
+			'checkvia' => $selectedService->checkvia,
+			'varname' => $selectedService->varname,
+			'additionalVars' => $selectedService->additionalVars
+	));
 } else {
 	$_select = g_l('validation', '[no_services_available]');
 }
@@ -140,7 +142,7 @@ echo STYLESHEET . we_html_element::jsElement('
  we_html_element::jsScript(JS_DIR . 'validateDocument.js') .
  '</head>' .
  we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), '<form name="we_form">'
-	. we_html_tools::hidden('we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))
+	. we_html_element::htmlHidden('we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))
 	. we_html_multiIconBox::getHTML('weDocValidation', $parts, 20, '', -1, '', '', false) .
 	'</form>') .
  '</html>';

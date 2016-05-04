@@ -36,7 +36,7 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 	var $entries;
 	var $lcmdFrame = "";
 	var $width = 350;
-	var $height = 30;
+	var $height = 31;
 	var $menuaction = "";
 
 	function __construct($entries, $lcmdFrame = "top.load", $menuaction = 'parent.'){

@@ -70,7 +70,7 @@ function confirmDel(){' .
 		$wfchk_html .= we_html_element::jsElement('function confirmDel(){}');
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
-		we_html_tools::hidden("sel", implode(',', $selectedItems)) . "</form>";
+		we_html_element::htmlHidden("sel", implode(',', $selectedItems)) . "</form>";
 } elseif(in_array($wecmd0, array("do_delete", 'delete_single_document'))){
 	if(($selectedItems = we_base_request::_(we_base_request::INTLISTA, "sel", array()))){
 		//	look which documents must be deleted.
@@ -340,7 +340,7 @@ for ( frameId in _usedEditors ) {
 									"path" => $datafile
 								);
 							}
-							$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"delInfo.php","we_delinfo",-1,-1,550,550,true,true,true);';
+							$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",-1,-1,550,550,true,true,true);';
 						} else {
 							$delete_ok = g_l('alert', '[delete_ok]');
 							$script .= we_message_reporting::getShowMessageCall($delete_ok, we_message_reporting::WE_MESSAGE_NOTICE);
@@ -439,9 +439,7 @@ function we_submitForm(target, url) {
 		}
 	}
 	if (!sel) {
-<?php
-echo we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
-?>
+		top.we_showMessage(WE().consts.g_l.main.nothing_to_delete, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}
 
@@ -478,7 +476,7 @@ $content = '<span class="middlefont">' . $delete_text . '</span>';
 
 $_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:if(confirm('" . $delete_confirm . "')) we_cmd('do_delete','','" . $table . "')"), "", we_html_button::create_button('quit_delete', "javascript:we_cmd('exit_delete','','" . $table . "')"), 10, "left");
 
-$form = '<form name="we_form" method="post">' . we_html_tools::hidden('sel', '') . '</form>';
+$form = '<form name="we_form" method="post">' . we_html_element::htmlHidden('sel', '') . '</form>';
 
 echo '</head><body class="weTreeHeader">
 <div>

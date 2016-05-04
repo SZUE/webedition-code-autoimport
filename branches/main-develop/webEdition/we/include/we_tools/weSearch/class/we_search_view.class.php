@@ -517,8 +517,11 @@ WE().consts.weSearch= {
 <tr>
  <td style="padding-right:20px;">' . $searchInput . ($whichSearch == self::SEARCH_MEDIA ? ' ' . we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_HELP, false) : '') . '</td>
  <td>' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
- <td>' . we_html_tools::hidden('location' . $whichSearch . '[0]', 'CONTAIN') . '</td>
- <td>' . we_html_tools::hidden($searchTables, 1) . '</td>
+ <td>' . we_html_element::htmlHiddens(array(
+	 'location' . $whichSearch . '[0]'=> 'CONTAIN',
+	 $searchTables=>1
+ )) . '</td>
+ <td></td>
  <td></td>
 </tr>' . (false && $whichSearch == self::SEARCH_MEDIA ?
 				'<tr><td colspan="5"></td></tr>' :
@@ -1074,7 +1077,7 @@ WE().consts.weSearch= {
 
 			$locationValue = (isset($currentLocation[$i]) ? $currentLocation[$i] : '');
 			$out .= '<tr id="filterRow_' . $i . '">
-	<td>' . we_html_tools::hidden('hidden_searchFields' . $whichSearch . '[' . $i . ']', isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : '') .
+	<td>' . we_html_element::htmlHidden('hidden_searchFields' . $whichSearch . '[' . $i . ']', isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : '') .
 				we_html_tools::htmlSelect('searchFields' . $whichSearch . '[' . $i . ']', $this->searchclass->getFields($i, $whichSearch), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ''), false, array('class' => "defaultfont", 'id' => 'searchFields' . $whichSearch . '[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) .
 				'</td>
 	<td id="td_location' . $whichSearch . '[' . $i . ']">' . we_html_tools::htmlSelect('location' . $whichSearch . '[' . $i . ']', we_search_search::getLocation($handle), 1, $locationValue, false, array('class' => "defaultfont", 'style' => 'width:150px', $locationDisabled => $locationDisabled, 'id' => 'location' . $whichSearch . '[' . $i . ']')) . '</td>

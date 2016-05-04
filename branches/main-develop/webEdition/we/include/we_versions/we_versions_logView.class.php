@@ -306,7 +306,7 @@ function back(id) {
 					(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:20px;"><a id="showAll_' . $logId . '" href="#" onclick="showAll(' . $logId . ');">' . g_l('logging', '[all]') . '</a></span>' : '') .
 					'<span style="margin-right:5px;"><a title="' . g_l('logging', '[back]') . '" href="#" onclick="back(' . $logId . ');"><i class="fa fa-caret-left" id="back_' . $logId . '" style="display:none;border:2px solid #DDD;"/></a></span>' .
 					(($anzGesamt > self::versionPerPage) ? '<span style="margin-right:5px;"><a title="' . g_l('logging', '[next]') . '" href="#" onclick="next(' . $logId . ');"><i class="fa fa-caret-right" id="next_' . $logId . '" style="border:2px solid #DDD;"/></a></span>' : '') .
-					we_html_tools::hidden("start_" . $logId, $start) . '</td></tr>
+					we_html_element::htmlHidden("start_" . $logId, $start) . '</td></tr>
 				</table>';
 				break;
 			case we_versions_log::VERSIONS_PREFS:

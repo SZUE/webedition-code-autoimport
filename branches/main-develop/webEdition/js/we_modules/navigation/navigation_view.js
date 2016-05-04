@@ -218,7 +218,7 @@ function moveUp(pos, parent, selector) {
 	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
 	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");
 
-	if (top.content.editor.edbody.document.we_form.Ordn.value == 1) {
+	if (top.content.editor.edbody.document.we_form.Ordn.value == 0) {
 		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "disabled");
 	} else {
 		WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", "enabled");

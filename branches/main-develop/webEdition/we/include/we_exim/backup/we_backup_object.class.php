@@ -158,7 +158,7 @@ class we_backup_object extends we_object{
 			}
 
 			foreach($add as $key => $value){
-				$this->DB_WE->addCol($ctable, $col, $value);
+				$this->DB_WE->addCol($ctable, $key, $value);
 			}
 			foreach($addKey as $key => $value){
 				$this->DB_WE->addKey($ctable, $value);

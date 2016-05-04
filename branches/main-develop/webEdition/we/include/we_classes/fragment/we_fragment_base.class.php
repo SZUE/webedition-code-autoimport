@@ -107,7 +107,7 @@ class we_fragment_base{
 		} else {
 			$this->taskPerFragment = $taskPerFragment;
 			$this->init();
-			if(!we_base_file::save($filename, we_serialize($this->alldata, SERIALIZE_JSON))){
+			if(!we_base_file::save($filename, we_serialize($this->alldata))){
 				exit('Could not write: ' . $filename);
 			}
 			we_base_file::insertIntoCleanUp($filename, 10 * 3600);
@@ -117,11 +117,10 @@ class we_fragment_base{
 		$this->printBodyTag($bodyAttributes);
 		for($i = 0; $i < $this->taskPerFragment; $i++){
 			if($i > 0){
-				$this->currentTask++; // before: currentTask was incremented with $i;
+				$this->currentTask++;
 			}
 			if($this->currentTask == $this->numberOfTasks){
-
-				unlink($filename);
+				we_base_file::delete($filename);
 				$this->finish();
 				break;
 			} else {

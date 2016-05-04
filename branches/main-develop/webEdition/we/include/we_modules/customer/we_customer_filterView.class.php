@@ -213,8 +213,10 @@ EO_SCRIPT;
 
 		$_buttonTable = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")") . $_addbut;
 
-		$_select = we_html_tools::hidden($name . 'Control', we_base_request::_(we_base_request::RAW, $name . 'Control', 0)) .
-			we_html_tools::hidden($name . 'Count', (isset($data) ? count($data) : '0')) .
+		$_select = we_html_element::htmlHiddens(array(
+				$name . 'Control' => we_base_request::_(we_base_request::RAW, $name . 'Control', 0),
+				$name . 'Count' => (isset($data) ? count($data) : '0')
+			)) .
 			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
 			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . $this->_width . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
 			'<div style="width:' . ($this->_width + 13) . 'px;text-align:right">' . $_buttonTable . '</div>';

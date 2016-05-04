@@ -285,8 +285,8 @@ abstract class we_root extends we_class{
 		$myid = $this->$IDName;
 		if($disabled){
 			return we_html_tools::htmlFormElementTable(array(
-					"text" => we_html_tools::hidden($idname, $myid, array('id' => $idname)) .
-					we_html_tools::hidden($textname, $path, array('id' => $textname)) .
+					"text" => we_html_element::htmlHidden($idname, $myid, $idname) .
+					we_html_element::htmlHidden($textname, $path, $textname) .
 					we_html_element::htmlInput(array('name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width - 6), 'disabled' => 1)),
 					'style' => 'vertical-align:top;height:10px;'), g_l('weClass', '[dir]')
 			);
