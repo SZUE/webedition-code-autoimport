@@ -12,6 +12,7 @@ we_catSelect.php
 we_backup/download/dummy
 we_ajaxcmd.php
 we/versions/dummy
+we/tmp/fragments/.htaccess
 we/templates/dummy
 we/include/xhtml.inc.php
 we/include/webEdition_seem.inc.php
