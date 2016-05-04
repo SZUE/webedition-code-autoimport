@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_dialog_abbr extends we_dialog_base{
-
 	var $dialogWidth = 370;
 	var $JsOnly = true;
 	var $changeableArgs = array("title",
@@ -48,8 +47,8 @@ class we_dialog_abbr extends we_dialog_base{
 
 	public static function getTinyMceJS(){
 		return
-				parent::getTinyMceJS() .
-				we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weabbr/js/abbr_init.js');
+			parent::getTinyMceJS() .
+			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weabbr/js/abbr_init.js');
 	}
 
 	function getOkJs(){
@@ -70,16 +69,18 @@ top.close();
 <tr><td>' . $lang . '</td></tr>
 </table>';
 		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY")){
-			$table .= we_html_tools::hidden("weSaveToGlossary", 0) .
-					we_html_tools::hidden("language", we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
-					we_html_tools::hidden("text", "");
+			$table .= we_html_element::htmlHiddens(array(
+					'weSaveToGlossary' => 0,
+					'language' => we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage']),
+					'text' => ''
+			));
 		}
 
 		return $table;
 	}
 
 	function getDialogButtons(){
-		$buttons = 			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();")		;
+		$buttons = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['we_dialog_args[title]'].value='';weDoOk();");
 
 		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals){
 			$buttons.= we_html_button::create_button('to_glossary', "javascript:weSaveToGlossaryFn();", true, 100);

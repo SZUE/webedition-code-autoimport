@@ -80,7 +80,7 @@ $_parts = array(
 	),
 	array(
 		'headline' => g_l('navigation', '[order]'),
-		'html' => we_html_tools::hidden('Ordn', $_navi->Ordn) .
+		'html' => we_html_element::htmlHidden('Ordn', $_navi->Ordn) .
 		we_html_tools::htmlTextInput('OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) .
 		we_html_tools::htmlSelect('OrdnSelect', array('begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')), 1, '', false, array('onchange' => 'changeOrder(this);'), 'value', 317),
 		'space' => $_space_size,

@@ -57,9 +57,11 @@ top.close();
 <tr><td>' . $this->getLangField("lang", g_l('wysiwyg', '[language]'), 260) . '</td></tr>
 </table>' .
 			(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
-				we_html_tools::hidden("weSaveToGlossary", 0) .
-				we_html_tools::hidden("language", we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage'])) .
-				we_html_tools::hidden("text", "") : ''
+				we_html_element::htmlHiddens(array(
+					'weSaveToGlossary' => 0,
+					'language' => we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage']),
+					'text' => ''
+				)) : ''
 			);
 	}
 

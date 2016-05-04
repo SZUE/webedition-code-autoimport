@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_html_tools{
-
 	const OPTGROUP = '<!--we_optgroup-->';
 	const TYPE_NONE = 0;
 	const TYPE_ALERT = 1;
@@ -92,8 +91,8 @@ abstract class we_html_tools{
 			}
 		}
 		return '<table class="default">' .
-				($text ? '<tr><td class="' . trim($textclass) . '" style="' . ($abstand ? 'margin-bottom:' . $abstand . 'px;' : '') . 'text-align:' . trim($textalign) . ';" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
-				'<tr>' . $elemOut . '</tr></table>';
+			($text ? '<tr><td class="' . trim($textclass) . '" style="' . ($abstand ? 'margin-bottom:' . $abstand . 'px;' : '') . 'text-align:' . trim($textalign) . ';" colspan="' . $colspan . '">' . $text . '</td></tr>' : '') .
+			'<tr>' . $elemOut . '</tr></table>';
 	}
 
 	static function targetBox($name, $size, $width = '', $id = '', $value = '', $onChange = '', $abstand = 8, $selectboxWidth = '', $disabled = false){
@@ -147,25 +146,25 @@ this.selectedIndex = 0;' .
 
 	static function htmlTextInput($name, $size = 24, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0, $markHot = '', $disabled = false, $readonly = false){
 		$style = ($width || $height) ? (' style="' . ($width ? ('width: ' . $width . (is_numeric($width) ? 'px' : '') . ';') : '') .
-				($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
+			($height ? ('height: ' . $height . (is_numeric($height) ? 'px' : '') . ';') : '') . '"') : '';
 		return '<input' . ($markHot ? ' onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);' . $markHot . '.hot=1;"' : '') .
-				(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
-				'" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? ' ' . $attribs : '') . $style . ($disabled ? (' disabled="true"') : '') . ($readonly ? (' readonly="true"') : '') . ' />';
+			(strstr($attribs, "class=") ? "" : ' class="wetextinput"') . ' type="' . trim($type) . '" name="' . trim($name) .
+			'" value="' . oldHtmlspecialchars($value) . '"' . ($maxlength ? (' maxlength="' . intval($maxlength) . '"') : '') . ($attribs ? ' ' . $attribs : '') . $style . ($disabled ? (' disabled="true"') : '') . ($readonly ? (' readonly="true"') : '') . ' />';
 	}
 
 	static function htmlMessageBox($w, $h, $content, $headline = '', $buttons = ''){
 		return '<div class="htmlMessageBox" style="width:' . $w . 'px;height:' . $h . 'px;">' .
-				($headline ? '<h1 class="header">' . $headline . '</h1>' : '') .
-				'<div>' . $content . '</div><div class="buttons">' . $buttons . '</div></div>';
+			($headline ? '<h1 class="header">' . $headline . '</h1>' : '') .
+			'<div>' . $content . '</div><div class="buttons">' . $buttons . '</div></div>';
 	}
 
 	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
 		return we_html_multiIconBox::getHTML('', array(
-					array(
-						"html" => $content,
-						"headline" => ""
-					)
-						), $marginLeft, ($buttons ? '<div style="text-align:right;margin-left:10px;">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
+				array(
+					"html" => $content,
+					"headline" => ""
+				)
+				), $marginLeft, ($buttons ? '<div style="text-align:right;margin-left:10px;">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
@@ -201,10 +200,10 @@ this.selectedIndex = 0;' .
 		for($f = 0; $f < $anz; $f++){
 			$bgcol = $bgColor ? : ((!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : "white");
 			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f == 0) ? '' : "border-left:1px solid silver;" ) . 'border-bottom: 1px solid silver;background-color:' . $bgcol . '; ' .
-					(isset($content[$f]["align"]) ? 'text-align:' . $content[$f]["align"] . ';' : '') . ' ' .
-					(isset($content[$f]["height"]) ? 'height:' . $content[$f]["height"] . 'px;' : '') . '">' .
-					(!empty($content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
-					'</td>';
+				(isset($content[$f]["align"]) ? 'text-align:' . $content[$f]["align"] . ';' : '') . ' ' .
+				(isset($content[$f]["height"]) ? 'height:' . $content[$f]["height"] . 'px;' : '') . '">' .
+				(!empty($content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
+				'</td>';
 		}
 
 		return $out;
@@ -253,18 +252,18 @@ this.selectedIndex = 0;' .
 				continue;
 			}
 			$ret .= '<option value="' . ($oldHtmlspecialchars ? oldHtmlspecialchars($value) : $value) . '"' . (in_array(
-							(($compare === "value") ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
+					(($compare === "value") ? $value : $text), $selIndex) ? ' selected="selected"' : '') . '>' . ($oldHtmlspecialchars ? oldHtmlspecialchars($text) : $text) . '</option>';
 		}
 		$ret .= ($optgroup ? '</optgroup>' : '');
 
 		return ($name ? we_html_element::htmlSelect(array_merge(array(
-							'class' => 'weSelect ' . $cls,
-							'name' => trim($name),
-							'size' => abs($size),
-							($multiple ? 'multiple' : '') => 'multiple',
-							($width ? 'width' : '') => ($width ? : '')
-										), $attribs
-								), $ret) : $ret);
+					'class' => 'weSelect ' . $cls,
+					'name' => trim($name),
+					'size' => abs($size),
+					($multiple ? 'multiple' : '') => 'multiple',
+					($width ? 'width' : '') => ($width ? : '')
+						), $attribs
+					), $ret) : $ret);
 	}
 
 	//FIXME: make fn more concise and make base all country selects on it
@@ -360,9 +359,9 @@ this.selectedIndex = 0;' .
 			$atts['id'] = 'tmp_' . $atts['id'];
 		}
 		$atts['onchange'] = 'this.form.elements[\'' . $name . '\'].value' . ($mode === 'add' ?
-						' += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' :
-						'=this.options[this.selectedIndex].value;'
-				) . 'this.selectedIndex=0;';
+				' += ((this.form.elements[\'' . $name . '\'].value ? \' \' : \'\') + this.options[this.selectedIndex].value);' :
+				'=this.options[this.selectedIndex].value;'
+			) . 'this.selectedIndex=0;';
 		$atts['name'] = 'tmp_' . $name;
 		//$atts['size'] = isset($atts['size']) ? $atts['size'] : 1;
 		$selectMenue = getHtmlTag('select', removeAttribs($atts, array('size')), $opts, true); //  remove size for choice
@@ -378,8 +377,8 @@ this.selectedIndex = 0;' .
 				$disabled = '';
 			}
 			$out = '<table class="default"><tr><td>' .
-					self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
-					'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
+				self::htmlTextInput($name, 5, $selected, "", $attribs, "text", $width / 2, 0, "top") .
+				'</td><td><select class="weSelect" name="wetmp_' . $name . '" size=1' . $disabled . ($width ? ' style="width: ' . ($width / 2) . 'px"' : '') . ' onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);if(this.options[this.selectedIndex].text){this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].text;};this.selectedIndex=0"><option>';
 			foreach($extensions as $extension){
 				$out .= '<option>' . $extension . '</option>';
 			}
@@ -388,30 +387,6 @@ this.selectedIndex = 0;' .
 		}
 		$_ext = $extensions[0];
 		return self::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
-	}
-
-	static function pExtensionPopup($name, $selected, $extensions){
-		echo self::getExtensionPopup($name, $selected, $extensions);
-	}
-
-	/**
-	 *
-	 * @param int $w
-	 * @param int $h
-	 * @param type $border
-	 * @return type
-	 * @deprecated since version 6.3.0
-	 */
-	static function getPixel($w, $h, $border = 0){
-		//FIXME: remove this
-		return '';
-	}
-
-	static function hidden($name, $value, $attribs = null){
-		$attribs['name'] = $name;
-		$attribs['type'] = 'hidden';
-		$attribs['value'] = strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value;
-		return getHtmlTag('input', $attribs);
 	}
 
 	static function we_getDayPos($format){
@@ -496,9 +471,9 @@ this.selectedIndex = 0;' .
 				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
 			$daySelect = getHtmlTag('select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, '_day'),
-						'id' => sprintf($name, '_day')
-							)), $days, true) . '&nbsp;';
+					'name' => sprintf($name, '_day'),
+					'id' => sprintf($name, '_day')
+					)), $days, true) . '&nbsp;';
 		} else {
 			$daySelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
@@ -528,9 +503,9 @@ this.selectedIndex = 0;' .
 				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), $val);
 			}
 			$monthSelect = getHtmlTag('select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, '_month'),
-						'id' => sprintf($name, '_month')
-							)), $months, true) . '&nbsp;';
+					'name' => sprintf($name, '_month'),
+					'id' => sprintf($name, '_month')
+					)), $months, true) . '&nbsp;';
 		} else {
 			$monthSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
@@ -553,9 +528,9 @@ this.selectedIndex = 0;' .
 				$years .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
 			$yearSelect = getHtmlTag('select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, '_year'),
-						'id' => sprintf($name, '_year')
-							)), $years, true) . '&nbsp;';
+					'name' => sprintf($name, '_year'),
+					'id' => sprintf($name, '_year')
+					)), $years, true) . '&nbsp;';
 		} else {
 			$yearSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
@@ -573,9 +548,9 @@ this.selectedIndex = 0;' .
 				$hours .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
 			$hourSelect = getHtmlTag('select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, '_hour'),
-						'id' => sprintf($name, '_hour')
-							)), $hours, true) . '&nbsp;';
+					'name' => sprintf($name, '_hour'),
+					'id' => sprintf($name, '_hour')
+					)), $hours, true) . '&nbsp;';
 		} else {
 			$hourSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
@@ -593,9 +568,9 @@ this.selectedIndex = 0;' .
 				$minutes .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
 			}
 			$minSelect = getHtmlTag('select', array_merge($_attsSelect, array(
-						'name' => sprintf($name, '_minute'),
-						'id' => sprintf($name, '_minute')
-							)), $minutes, true) . '&nbsp;';
+					'name' => sprintf($name, '_minute'),
+					'id' => sprintf($name, '_minute')
+					)), $minutes, true) . '&nbsp;';
 		} else {
 			$minSelect = getHtmlTag('input', array_merge($_attsHidden, array(
 				'type' => 'hidden',
@@ -620,10 +595,10 @@ this.selectedIndex = 0;' .
 		ksort($_timePosArray);
 
 		return '<table class="default"><tr><td>' .
-				implode('', $_datePosArray) .
-				($_showHour || $_showMinute ? '</td></tr><tr><td>' : '') .
-				implode('', $_timePosArray) .
-				'</td></tr></table>';
+			implode('', $_datePosArray) .
+			($_showHour || $_showMinute ? '</td></tr><tr><td>' : '') .
+			implode('', $_timePosArray) .
+			'</td></tr></table>';
 	}
 
 	//FIXME: remove deprecated
@@ -634,8 +609,8 @@ this.selectedIndex = 0;' .
 
 	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $extraHead = '', $body = '', $skipErrorHandler = true){
 		return we_html_element::htmlDocType($doctype) .
-				we_html_element::htmlhtml(we_html_element::htmlHead(self::getHtmlInnerHead($title, $charset, $skipErrorHandler) . $extraHead, ($extraHead || $body ? true : false)) .
-						$body, ($body ? true : false)
+			we_html_element::htmlhtml(we_html_element::htmlHead(self::getHtmlInnerHead($title, $charset, $skipErrorHandler) . $extraHead, ($extraHead || $body ? true : false)) .
+				$body, ($body ? true : false)
 		);
 	}
 
@@ -646,21 +621,21 @@ this.selectedIndex = 0;' .
 	private static function getHtmlInnerHead($title, $charset, $skipErrorHandler){
 		self::headerCtCharset('text/html', ($charset ? : $GLOBALS['WE_BACKENDCHARSET']));
 		return
-				//load this as early as possible
-				($skipErrorHandler ?
-						'' :
-						self::getJSErrorHandler(true)
-				) .
-				we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				self::htmlMetaCtCharset(($charset ? : $GLOBALS['WE_BACKENDCHARSET'])) .
-				we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
-				we_html_element::htmlMeta(array('name' => 'viewport', 'content' => 'width=device-width, height=device-height, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes')) .
-				we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
-				we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
-				we_html_element::htmlMeta(array('http-equiv' => 'pragma', 'content' => 'no-cache')) .
-				we_html_element::htmlMeta(array('http-equiv' => 'imagetoolbar', 'content' => 'no')) .
-				we_html_element::htmlMeta(array('name' => 'generator', 'content' => 'webEdition')) .
-				we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico'));
+			//load this as early as possible
+			($skipErrorHandler ?
+				'' :
+				self::getJSErrorHandler(true)
+			) .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+			self::htmlMetaCtCharset(($charset ? : $GLOBALS['WE_BACKENDCHARSET'])) .
+			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
+			we_html_element::htmlMeta(array('name' => 'viewport', 'content' => 'width=device-width, height=device-height, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes')) .
+			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
+			we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
+			we_html_element::htmlMeta(array('http-equiv' => 'pragma', 'content' => 'no-cache')) .
+			we_html_element::htmlMeta(array('http-equiv' => 'imagetoolbar', 'content' => 'no')) .
+			we_html_element::htmlMeta(array('name' => 'generator', 'content' => 'webEdition')) .
+			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico'));
 	}
 
 	static function htmlMetaCtCharset($charset){
@@ -777,10 +752,10 @@ this.selectedIndex = 0;' .
 		}
 
 		return '<div class="alertAttentionBox' . ($icon ? ' alertIcon' : '') . ($clip ? ' alertCut' : '') . '" style="' . ($width ? ' width:' . $width . (is_numeric($width) ? 'px' : '') . ';' : '') . '">' .
-				($icon ? '<div class="icon">' . $icon . '</div>' : '') .
-				'<div class="middlefont ' . ($clip > 0 ? 'cutText" id="td_' . $unique . '" style="max-width:' . $clip . 'ex;"' : '"') . '>' . $text . '</div>' .
-				($clip > 0 ? '<button type="button" class="weBtn clipbutton" id="btn_' . $unique . '" onclick="WE().util.clip(document,\'' . $unique . '\',' . $clip . ')"><i class="fa fa-lg fa-caret-right"></i></button>' : '') .
-				'</div>';
+			($icon ? '<div class="icon">' . $icon . '</div>' : '') .
+			'<div class="middlefont ' . ($clip > 0 ? 'cutText" id="td_' . $unique . '" style="max-width:' . $clip . 'ex;"' : '"') . '>' . $text . '</div>' .
+			($clip > 0 ? '<button type="button" class="weBtn clipbutton" id="btn_' . $unique . '" onclick="WE().util.clip(document,\'' . $unique . '\',' . $clip . ')"><i class="fa fa-lg fa-caret-right"></i></button>' : '') .
+			'</div>';
 	}
 
 	public static function setHttpCode($status){
@@ -843,9 +818,9 @@ this.selectedIndex = 0;' .
 
 	public static function getCalendarFiles(){
 		return we_html_element::cssLink(LIB_DIR . 'additional/jscalendar/skins/aqua/theme.css') .
-				we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
-				we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
-				we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar.js') .
+			we_html_element::jsScript(WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/calendar.js') .
+			we_html_element::jsScript(LIB_DIR . 'additional/jscalendar/calendar-setup.js');
 	}
 
 }

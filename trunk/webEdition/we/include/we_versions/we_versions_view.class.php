@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_versions_view{
-
 	public $db;
 	public $version;
 	public $searchclass;
@@ -152,7 +151,7 @@ var searchClass={
 				<tr id="filterRow_' . $i . '">
 					<td>' . we_html_tools::htmlSelect("searchFields[" . $i . "]", $this->searchclass->getFields(), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
 					<td id="td_location[' . $i . ']">' .
-					we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($currentLocation[$i]) ? $currentLocation[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
+				we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($currentLocation[$i]) ? $currentLocation[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
 					<td id="td_search[' . $i . ']">' . $search . '</td>
 					<td id="td_delButton[' . $i . ']">' . $button . '</td>
 					<td id="td_hiddenLocation[' . $i . ']">' . (!$locationDisabled ? '' : we_html_element::htmlHidden('location[' . $i . ']', $currentLocation[$i])) . '</td>
@@ -170,7 +169,7 @@ var searchClass={
 	</tr>
 	</table>
 	<div style="border-top: 1px solid #AFB0AF;clear:both;"></div>' .
-				we_html_element::jsElement("calendarSetup(" . $this->Model->height . ");");
+			we_html_element::jsElement("calendarSetup(" . $this->Model->height . ");");
 
 		return $out;
 	}
@@ -196,11 +195,13 @@ var searchClass={
 		$Path = we_base_request::_(we_base_request::FILE, 'path', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '/');
 
 
-		return we_html_tools::hidden("we_transaction", $we_transaction) .
-				we_html_tools::hidden("order", $order) .
-				we_html_tools::hidden("mode", $mode) .
-				we_html_tools::hidden("height", $height) .
-				'<table class="default" style="margin-top:20px;margin-bottom:12px;">
+		return we_html_element::htmlHiddens(array(
+				"we_transaction" => $we_transaction,
+				"order" => $order,
+				"mode" => $mode,
+				"height" => $height
+			)) .
+			'<table class="default" style="margin-top:20px;margin-bottom:12px;">
 <tr id="beschreibung_print" class="defaultfont">
 	<td>
 	<strong>' . g_l('versions', '[versions]') . ':</strong><br/>
@@ -213,7 +214,7 @@ var searchClass={
 	<td></td>
 	<td id="eintraege_pro_seite" style="font-size:12px;width:130px;">' . g_l('versions', '[eintraege_pro_seite]') . ':</td>
 	<td class="defaultfont lowContrast" style="width:70px;">' .
-				we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '
+			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '
 	</td>
 	<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>
 	<td>' . $this->getNextPrev($foundItems) . '</td>
@@ -243,18 +244,18 @@ var searchClass={
 		$searchstart = $this->Model->getProperty('currentSearchstart');
 
 		$out = '<table class="default"><tr><td id="zurueck">' .
-				($searchstart ?
-						we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
-						we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)) .
-				'</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
-				(($we_search_anzahl - $searchstart) < $anzahl ?
-						$we_search_anzahl :
-						$searchstart + $anzahl) .
-				' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td id="weiter">' .
-				(($searchstart + $anzahl) < $we_search_anzahl ?
-						we_html_button::create_button(we_html_button::NEXT, "javascript:next(" . $anzahl . ");") : //bt_back
-						we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
-				'</td><td>';
+			($searchstart ?
+				we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
+				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)) .
+			'</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
+			(($we_search_anzahl - $searchstart) < $anzahl ?
+				$we_search_anzahl :
+				$searchstart + $anzahl) .
+			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td id="weiter">' .
+			(($searchstart + $anzahl) < $we_search_anzahl ?
+				we_html_button::create_button(we_html_button::NEXT, "javascript:next(" . $anzahl . ");") : //bt_back
+				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
+			'</td><td>';
 
 		$pages = array();
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
@@ -268,12 +269,12 @@ var searchClass={
 		if(!isset($GLOBALS['setInputSearchstart'])){
 			if(!defined('searchstart')){
 				define('searchstart', true);
-				$out .= we_html_tools::hidden("searchstart", $searchstart);
+				$out .= we_html_element::htmlHidden("searchstart", $searchstart);
 			}
 		}
 
 		$out .= $select .
-				'</td></tr></table>';
+			'</td></tr></table>';
 
 		return $out;
 	}
@@ -310,8 +311,8 @@ var searchClass={
 
 				usort($_Result, function($a, $b) use ($desc){
 					return $desc ?
-							strnatcasecmp($b['modifierID'], $a['modifierID']) :
-							strnatcasecmp($a['modifierID'], $b['modifierID']);
+						strnatcasecmp($b['modifierID'], $a['modifierID']) :
+						strnatcasecmp($a['modifierID'], $b['modifierID']);
 				});
 			} else {
 				$sortText = $sortierung[0];
@@ -356,8 +357,8 @@ var searchClass={
 				array("dat" => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>"),
 				array("dat" => "<span class='printShow'>" .
 					(($_versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $_versions[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
-							we_html_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
-							'') .
+						we_html_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
+						'') .
 					'</span>'),
 			);
 		}
@@ -376,7 +377,7 @@ var searchClass={
 			array("dat" => '<a href="javascript:setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span>'),
 			array("dat" => g_l('versions', '[modifications]')),
 			array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' .
-						we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
+					we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
 				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
 			array("dat" => ''),
 			array("dat" => ''),
@@ -450,8 +451,8 @@ var searchClass={
 </tr>
 </table>
 <div id="scrollContent" style="background-color:#fff;width:100%">' .
-				$this->tabListContent($content) .
-				'</div>';
+			$this->tabListContent($content) .
+			'</div>';
 	}
 
 	function tabListContent($content){
@@ -506,8 +507,8 @@ var searchClass={
 			$rightContent = '<div class="defaultfont">' . $mainContent . '</div>';
 
 			$out .= '<div style="margin-left:0px" id="div_' . $uniqname . '_' . $i . '">' .
-					$rightContent .
-					'</div>';
+				$rightContent .
+				'</div>';
 		}
 
 		$out .= '</td></tr></table>';
