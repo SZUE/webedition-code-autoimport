@@ -773,7 +773,7 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_SHOPVAT:
 			case we_objectFile::TYPE_SHOPCATEGORY:
 				$foo = $type == we_objectFile::TYPE_SHOPCATEGORY ? WE_SHOP_CATEGORY_FIELD_NAME : WE_SHOP_VAT_FIELD_NAME;
-				$content .= we_html_tools::hidden("we_" . $this->Name . "_input[$name]", $foo) .
+				$content .= we_html_element::htmlHidden("we_" . $this->Name . "_input[$name]", $foo) .
 					we_html_tools::htmlTextInput("tmp" . $foo, 40, $foo, 52, ' readonly="readonly" disabled="disabled"', "text", 388);
 				break;
 			default:

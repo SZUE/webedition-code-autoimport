@@ -208,7 +208,7 @@ function pathOfDocumentChanged() {
 		}
 
 		_filepath += _filetext;
-		WE().layout.we_setPath(_filepath, _filetext, -1, "");
+		WE().layout.we_setPath(_EditorFrame, _filepath, _filetext, -1, "");
 		if (hasCustomerFilter) {
 			updateCustomerFilterIfNeeded();
 		}
@@ -427,7 +427,7 @@ function we_checkObjFieldname(i) {
 }
 
 function metaFieldSelectProposal(sel, inputName, isCsv) {
-	WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+	_EditorFrame.setEditorIsHot(true);
 
 	var valInput = document.forms[0].elements[inputName].value,
 					newVal = valInput,

@@ -83,8 +83,7 @@ class we_versions_fragment extends we_fragment_base{
 	}
 
 	static function printHeader(){
-		we_html_tools::protect();
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '',' ');
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
 	function printBodyTag($attributes = ""){
@@ -94,8 +93,6 @@ class we_versions_fragment extends we_fragment_base{
 	function printFooter(){
 		$this->printJSReload();
 	}
-
-
 
 	/**
 	 * Create and returns data Array with IDs and other information for the fragmment class for rebuilding documents
@@ -173,6 +170,5 @@ class we_versions_fragment extends we_fragment_base{
 		}
 		return $data;
 	}
-
 
 }

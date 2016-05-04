@@ -316,7 +316,7 @@ abstract class we_listview_base{
 			'bsuniquevid',
 			's'//password-form
 				), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
-		if(TAGLINKS_OBJECTSEOURLS && $GLOBALS['WE_MAIN_DOC']->Url && show_SeoLinks()){
+		if(TAGLINKS_OBJECTSEOURLS && !empty($GLOBALS['WE_MAIN_DOC']->Url) && show_SeoLinks()){
 			$filterArr[] = 'we_objectID';
 			$filterArr[] = 'we_oid';
 		}

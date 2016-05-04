@@ -45,10 +45,8 @@ echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
 	var docClass = "<?php echo isset($GLOBALS['we_doc']) ? get_class($GLOBALS['we_doc']) : ''; ?>";
 	var hasCustomerFilter =<?php echo intval(isset($GLOBALS['we_doc']) && defined('CUSTOMER_TABLE') && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)); ?>;
 	var hasGlossary =<?php echo intval(defined('GLOSSARY_TABLE') && isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE)); ?>;
-
 	var gdType = "<?php echo $hasGD && isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->getGDType() : ''; ?>";
 	var gdSupport = <?php echo intval($hasGD && isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->gd_support() : 0); ?>;
-
 	var isWEObject =<?php echo intval(isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT/* FIXME: only supported for type object || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE */)); ?>;
 	var WE_EDIT_IMAGE =<?php echo intval(defined('WE_EDIT_IMAGE')); ?>;
 	//-->

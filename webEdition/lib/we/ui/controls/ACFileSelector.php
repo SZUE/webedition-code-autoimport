@@ -443,7 +443,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 	public function getInputField(){
 		$this->_suggestObj->setAcId('_' . $this->getId());
 		$this->_suggestObj->setContentType($this->getContentType());
-		$this->_suggestObj->setInput($this->getFolderPathName(), $this->getFolderPathValue());
+		$this->_suggestObj->setInput($this->getFolderPathName(), $this->getFolderPathValue(), '', $this->getDisabled());
 		$this->_suggestObj->setMaxResults(20);
 		$this->_suggestObj->setMayBeEmpty($this->getMayBeEmpty());
 		$this->_suggestObj->setResult($this->getFolderIdName(), $this->getFolderIdValue());
@@ -451,8 +451,11 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$this->_suggestObj->setSelector($this->getSelector());
 		$this->_suggestObj->setTable($this->getTable());
 		$this->_suggestObj->setWidth($this->getWidth());
-		$this->_suggestObj->setInputDisabled($this->getDisabled());
-		$this->_suggestObj->setOnChange($this->getOnChange());
+
+		//$this->_suggestObj->setOnChange($this->getOnChange());
+		$this->_suggestObj->setDoOnItemSelect($this->getOnChange());
+		$this->_suggestObj->setDoOnTextfieldBlur($this->getOnChange());
+
 		$this->_suggestObj->setMayBeEmpty($this->getMayBeEmpty());
 
 		$weAutoCompleter = $this->_suggestObj->getHTML();

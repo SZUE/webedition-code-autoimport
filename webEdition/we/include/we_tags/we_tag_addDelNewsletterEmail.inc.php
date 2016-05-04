@@ -226,6 +226,8 @@ function we_tag_addDelNewsletterEmail($attribs){
 						$mywedoc = $GLOBALS['we_doc'];
 						unset($GLOBALS['we_doc']);
 					}
+					$mailtextHTML = ($mailid > 0) && we_base_file::isWeFile($mailid, FILE_TABLE, $GLOBALS['DB_WE']) ? we_getDocumentByID($mailid, '', $GLOBALS['DB_WE']) : '';
+					$mailtextHTML = str_replace('###TITLE###', $f['subscribe_title'], ($f['subscribe_title'] ? preg_replace('%([^ ])###TITLE###%', '${1} ' . $f['subscribe_title'], $mailtextHTML) : $mailtextHTML));
 				}
 
 				$GLOBALS['WE_HTMLMAIL'] = false;

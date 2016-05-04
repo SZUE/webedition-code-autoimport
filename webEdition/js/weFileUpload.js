@@ -28,13 +28,13 @@
 	}, false);
 
 	/*
-	if (win.console) {
-		console = {
-			log: function () {
-			}
-		};
-	}
-	*/
+	 if (win.console) {
+	 console = {
+	 log: function () {
+	 }
+	 };
+	 }
+	 */
 })(window);
 
 var weFileUpload = (function () {
@@ -172,7 +172,7 @@ var weFileUpload = (function () {
 			this.checkIsPresetFiles = function () {
 				if (_.controller.isPreset && WE().layout.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload) {
 					_.controller.fileSelectHandler(null, true, WE().layout.weEditorFrameController.getVisibleEditorFrame().document.presetFileupload);
-				} else if(_.controller.isPreset && top.opener.document.presetFileupload){
+				} else if (_.controller.isPreset && top.opener.document.presetFileupload) {
 					_.controller.fileSelectHandler(null, true, top.opener.document.presetFileupload);
 				}
 			};
@@ -646,12 +646,12 @@ var weFileUpload = (function () {
 
 			this.sendNextFile = function () {
 				var cur, fr = null, cnt,
-					that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
+								that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
 
 				/* when using short syntax in line 1156 we must change some this to that = _.sender. FIXME: WHY?!
-				if (that.uploadFiles.length > 0) {
-					that.currentFile = cur = that.uploadFiles.shift();
-				*/
+				 if (that.uploadFiles.length > 0) {
+				 that.currentFile = cur = that.uploadFiles.shift();
+				 */
 				if (this.uploadFiles.length > 0) {
 					this.currentFile = cur = this.uploadFiles.shift();
 					if (cur.uploadConditionsOk) {
@@ -693,7 +693,7 @@ var weFileUpload = (function () {
 
 			this.sendNextChunk = function (split) {
 				var resp, oldPos, blob,
-					cur = this.currentFile; // when using short syntax in line 1156 we must change some this to that = _.sender. FIXME: WHY?!
+								cur = this.currentFile; // when using short syntax in line 1156 we must change some this to that = _.sender. FIXME: WHY?!
 
 				if (this.isCancelled) {
 					this.isCancelled = false;
@@ -708,15 +708,15 @@ var weFileUpload = (function () {
 						blob = new Blob([cur.dataArray.subarray(oldPos, cur.currentPos)]);
 
 						this.sendChunk(
-							blob,
-							cur.file.name,
-							(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
-							(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
-							cur.partNum,
-							cur.totalParts,
-							cur.fileNameTemp,
-							cur.size
-						);
+										blob,
+										cur.file.name,
+										(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
+										(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
+										cur.partNum,
+										cur.totalParts,
+										cur.fileNameTemp,
+										cur.size
+										);
 					}
 				} else {
 					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.size, 1, 1, '', cur.size);
@@ -952,14 +952,14 @@ var weFileUpload = (function () {
 
 			this.checkFileType = function (type, name) {
 				var n = name || '',
-					ext = n.split('.').pop().toLowerCase(),
-					tc = _.sender.typeCondition,
-					typeGroup = type.split('/').shift() + '/*';
+								ext = n.split('.').pop().toLowerCase(),
+								tc = _.sender.typeCondition,
+								typeGroup = type.split('/').shift() + '/*';
 
 				ext = ext ? '.' + ext : '';
 
 				// no restrictions
-				if(!tc.accepted.cts && !tc.accepted.exts && !tc.forbidden.cts && !tc.forbidden.exts){
+				if (!tc.accepted.cts && !tc.accepted.exts && !tc.forbidden.cts && !tc.forbidden.exts) {
 					return 1; // 4: no restrictions
 				}
 
@@ -971,8 +971,8 @@ var weFileUpload = (function () {
 				}
 
 				// explicitly aloud
-				if(tc.accepted.cts || tc.accepted.exts){
-					if(tc.accepted.cts && type && (tc.accepted.cts.indexOf(',' + type + ',') !== -1 || tc.accepted.cts.indexOf(',' + typeGroup + ',') !== -1)){
+				if (tc.accepted.cts || tc.accepted.exts) {
+					if (tc.accepted.cts && type && (tc.accepted.cts.indexOf(',' + type + ',') !== -1 || tc.accepted.cts.indexOf(',' + typeGroup + ',') !== -1)) {
 						return 1; // 1: mime ok
 					}
 					if (tc.accepted.exts && tc.accepted.exts.indexOf(',' + ext + ',') !== -1) {
@@ -1484,9 +1484,9 @@ var weFileUpload = (function () {
 				if (files[0] instanceof File && !_.utils.contains(_.sender.preparedFiles, files[0])) {
 					f = _.controller.prepareFile(files[0]);
 					var inputId = 'fileInput_uploadFiles_',
-						index = e.target.id.substring(inputId.length),
-						nameField = document.getElementById('name_uploadFiles_' + index),
-						sizeField = document.getElementById('size_uploadFiles_' + index);
+									index = e.target.id.substring(inputId.length),
+									nameField = document.getElementById('name_uploadFiles_' + index),
+									sizeField = document.getElementById('size_uploadFiles_' + index);
 
 					_.sender.preparedFiles[index] = f.isSizeOk ? f : null;
 					nameField.value = f.file.name;
@@ -1810,7 +1810,8 @@ var weFileUpload = (function () {
 						i = s.mapFiles[cur.fileNum];
 						try {
 							document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 360;
-						} catch(e){}
+						} catch (e) {
+						}
 
 						this.setInternalProgressCompleted(true, i, '');
 						return;
@@ -1820,7 +1821,8 @@ var weFileUpload = (function () {
 						j = i + 1;
 						try {
 							document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 200;
-						} catch(e){}
+						} catch (e) {
+						}
 						this.setInternalProgressCompleted(false, i, arg.message);
 						if (cur.partNum === 1) {
 							this.elems.footer.setProgressText('progress_title', _.utils.gl.doImport + ' ' + _.utils.gl.file + ' ' + j);
@@ -1838,7 +1840,8 @@ var weFileUpload = (function () {
 						this.elems.footer.setProgressText('progress_title', _.utils.gl.doImport + ' ' + _.utils.gl.file + ' 1');
 						try {
 							document.getElementById('div_upload_files').scrollTop = 0;
-						} catch(e){}
+						} catch (e) {
+						}
 
 						return;
 					case 'cancelUpload' :
@@ -1846,7 +1849,8 @@ var weFileUpload = (function () {
 						this.setInternalProgressCompleted(false, s.mapFiles[cur.fileNum], _.utils.gl.cancelled);
 						try {
 							document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 200;
-						} catch(e){}
+						} catch (e) {
+						}
 						for (j = 0; j < s.uploadFiles.length; j++) {
 							var file = s.uploadFiles[j];
 							this.setInternalProgressCompleted(false, s.mapFiles[file.fileNum], _.utils.gl.cancelled);
@@ -1858,7 +1862,8 @@ var weFileUpload = (function () {
 					case 'resetGui' :
 						try {
 							document.getElementById('td_uploadFiles').innerHTML = '';
-						} catch(e){}
+						} catch (e) {
+						}
 						_.sender.preparedFiles = [];
 						this.nextTitleNr = 1;
 						this.isUploadEnabled = false;
@@ -1873,7 +1878,7 @@ var weFileUpload = (function () {
 			this.setInternalProgressCompleted = function (success, index, txt) {
 				if (success) {
 					this.setInternalProgress(100, index);
-					if(document.getElementById(_.fieldName + '_progress_image_' + index)){
+					if (document.getElementById(_.fieldName + '_progress_image_' + index)) {
 						document.getElementById(_.fieldName + '_progress_image_' + index).className = 'progress_finished';
 					}
 				} else {
@@ -1881,7 +1886,7 @@ var weFileUpload = (function () {
 						document.images['alert_img_' + index].style.visibility = 'visible';
 						document.images['alert_img_' + index].title = txt;
 					}
-					if(document.getElementById(_.fieldName + '_progress_image_' + index)){
+					if (document.getElementById(_.fieldName + '_progress_image_' + index)) {
 						document.getElementById(_.fieldName + '_progress_image_' + index).className = 'progress_failed';
 					}
 				}
@@ -1981,7 +1986,7 @@ var weFileUpload = (function () {
 				_.sender.preparedFiles = [];
 				if (_.uiType !== 'wedoc') {
 					var cur = this.currentFile;
-					if(resp.status === 'failure'){
+					if (resp.status === 'failure') {
 						_.sender.resetParams();
 					} else {
 						this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
@@ -1995,9 +2000,9 @@ var weFileUpload = (function () {
 					}
 				} else if (resp.status === 'success') {
 					_.sender.currentFile = null;
-					if (WE()) {
+					if (WE(true)) {
 						window.we_cmd('update_file');
-						WE().layout.we_setPath(resp.weDoc.path, resp.weDoc.text, 0, "published");
+						WE().layout.we_setPath(null, resp.weDoc.path, resp.weDoc.text, 0, "published");
 					}
 
 					this.fireCallback();
@@ -2082,15 +2087,15 @@ var weFileUpload = (function () {
 
 			this.addFile = function (f) {
 				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.size) + ', ' :
-					'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
+								'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
 				var typeText = f.isTypeOk ? _.utils.gl.typeTextOk + (f.isTypeOk === 1 ? f.type : f.file.name.split('.').pop().toUpperCase()) :
-					'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
+								'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
 
 				this.elems.fileDrag_state_1.style.backgroundColor = 'rgb(243, 247, 255)';
 
 				var fn = f.file.name;
 				var fe = '';
-				if(fn.length > 27) {
+				if (fn.length > 27) {
 					var farr = fn.split('.');
 					fe = farr.pop();
 					fn = farr.join('.');

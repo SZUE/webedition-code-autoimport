@@ -2,6 +2,9 @@ we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
 we_sselector_footer.php
+we_sselector_editFile.php
+we_sselector_cmd.php
+we_sselector_body.php
 we_lcmd.php
 we_imgSelect.php
 we_docSelect.php
@@ -12,6 +15,7 @@ we_catSelect.php
 we_backup/download/dummy
 we_ajaxcmd.php
 we/versions/dummy
+we/tmp/fragments/.htaccess
 we/templates/dummy
 we/include/xhtml.inc.php
 we/include/webEdition_seem.inc.php
@@ -653,6 +657,7 @@ notExist.php
 noAvailable.php
 newMsg.php
 mozillamenu.php
+moveInfo.php
 liveUpdate/tmp/dummy
 liveUpdate/templates/register.inc.php
 liveUpdate/templates/modules.inc.php
@@ -952,6 +957,7 @@ editors/template/CodeMirror/MODIFICATIONS
 editors/template/CodeMirror/LICENSE
 editors/template/CodeMirror/INFO
 editors/content/eplugin/gal
+delInfo.php
 css/wysiwyg/tinymce/tinyDialogCss_mac.scss
 css/wysiwyg/tinymce/tinyDialogCss_mac.css
 css/wysiwyg/tinymce/contentCssLast.php

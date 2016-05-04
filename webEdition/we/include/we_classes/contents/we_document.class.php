@@ -132,12 +132,12 @@ class we_document extends we_root{
 
 	function formInGlossar(){
 		return (we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) ?
-				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);') :
+				we_html_forms::checkboxWithHidden((bool) $this->InGlossar, 'we_' . $this->Name . '_InGlossar', g_l('weClass', '[InGlossar]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);') :
 				'');
 	}
 
 	function formIsSearchable(){
-		return we_html_forms::checkboxWithHidden((bool) $this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);');
+		return we_html_forms::checkboxWithHidden((bool) $this->IsSearchable, 'we_' . $this->Name . '_IsSearchable', g_l('weClass', '[IsSearchable]'), false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 	}
 
 	protected function formExtension2(){
@@ -159,7 +159,7 @@ class we_document extends we_root{
 			$selected = $this->Extension;
 		}
 		return $this->Extensions ?
-			we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', permissionhandler::hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', '[extension]')) :
+			we_html_tools::htmlFormElementTable(we_html_tools::getExtensionPopup('we_' . $this->Name . '_Extension', $selected, $this->Extensions, 100, 'onselect="_EditorFrame.setEditorIsHot(true);"', permissionhandler::hasPerm('EDIT_DOCEXTENSION')), g_l('weClass', '[extension]')) :
 			we_html_element::htmlHidden('we_' . $this->Name . '_Extension', $selected);
 	}
 
@@ -1430,7 +1430,7 @@ class we_document extends we_root{
 		if(empty($props) || $props['mode'] === 'none' /* || !$values */ || $props['type'] !== 'textfield'){
 			$name = in_array($field, explode(',', we_metadata_metaData::STANDARD_FIELDS)) ? g_l('weClass', '[' . $field . ']') : $field;
 
-			return $this->formInputField('txt', $field, $name, 40, 508, '', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"');
+			return $this->formInputField('txt', $field, $name, 40, 508, '', 'onchange="_EditorFrame.setEditorIsHot(true);"');
 		}
 
 		$leading = $props['csv'] ? '-- ' . g_l('buttons_global', '[add][value]') . ' -- ' : '-- ' . g_l('buttons_global', '[select][value]') . ' --';
@@ -1484,7 +1484,7 @@ class we_document extends we_root{
 
 		return '<table class="default">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
+			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
 			'</table>';
 	}
 

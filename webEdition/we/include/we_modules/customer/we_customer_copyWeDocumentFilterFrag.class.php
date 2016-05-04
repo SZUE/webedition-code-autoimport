@@ -45,7 +45,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		$_db = new DB_WE();
 		// now get all childs of this folder
 
-		$_db->query('SELECT *,ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE	ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND PATH LIKE "' . $_theFolder->Path . '/%"');
+		$_db->query('SELECT ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE	ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND PATH LIKE "' . $_theFolder->Path . '/%"');
 
 		$this->alldata = array();
 

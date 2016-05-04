@@ -55,8 +55,11 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 
 	public function getHTML($hiddens = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
-		$alert = we_html_tools::hidden('we_cmd[0]', 'import_files') .
-			we_html_tools::hidden('cmd', 'content') . we_html_tools::hidden('step', 2) .
+		$alert = we_html_element::htmlHiddens(array(
+				'we_cmd[0]' => 'import_files',
+				'cmd' => 'content',
+				'step' => 2
+			)) .
 			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . ($this->maxUploadSizeMBytes == 0 ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), $this->maxUploadSizeMBytes)), we_html_tools::TYPE_INFO, 520, false, 20));
 
 		$topParts = array(
@@ -121,13 +124,13 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 							<td class="weFileUploadEntry_size" style="width:6em;text-align:right;margin-left:2px" id="size_uploadFiles_WEFORMNUM">FILESIZE</td>
 							<td style="text-align:middle"><span id="alert_img_WEFORMNUM" style="visibility:hidden;" class="fa-stack fa-lg" style="color:#F2F200;" title=""><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span></td>
 							<td>
-								<div class="fileInputWrapper" style="vertical-align: bottom; display: inline-block;">
-									<input class="fileInput fileInputList fileInputHidden" type="file" id="fileInput_uploadFiles_WEFORMNUM" name="" />
-									' . we_html_button::create_button(we_html_button::EDIT, 'javascript:void(0)') . '
-								</div>
+								' . we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);") . '
 							</td>
 							<td>
-								' . we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);") . '
+								<div class="fileInputWrapper" style="overflow:hidde;vertical-align: bottom; display: inline-block;">
+									<input style="width:40px; height:26px;" class="fileInput fileInputList fileInputHidden" type="file" id="fileInput_uploadFiles_WEFORMNUM" name="" />
+									' . we_html_button::create_button('fa:, fa-lg fa-hdd-o', 'javascript:void(0)') . '
+								</div>
 							</td>
 					</tr></tbody></table>
 				</div>

@@ -568,7 +568,7 @@ function doUnload() {
 
 		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
-				$foo, oldHtmlspecialchars(g_l('siteimport', '[template]'), ENT_QUOTES), "left", "defaultfont", we_html_tools::hidden('templateID', intval($tid)), $button);
+				$foo, oldHtmlspecialchars(g_l('siteimport', '[template]'), ENT_QUOTES), "left", "defaultfont", we_html_element::htmlHidden('templateID', intval($tid)), $button);
 	}
 
 	/**
@@ -591,7 +591,7 @@ function doUnload() {
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.toPath.value");
 		$_to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.to.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
-		//$_hidden = we_html_tools::hidden("to",$this->to);
+		//$_hidden = we_html_element::htmlHidden("to",$this->to);
 		//$_input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
 		//$_importTo = we_html_tools::htmlFormElementTable($_input, g_l('siteimport',"[importTo]"), "left", "defaultfont", $_to_button, $_hidden, "", "", 0);
 
@@ -1020,7 +1020,7 @@ function doUnload() {
 		  g_l('weClass',"[dir]"),
 		  "left",
 		  "defaultfont",
-		  we_html_tools::hidden($idname,0),
+		  we_html_element::htmlHidden($idname,0),
 		  $button);
 		 */
 

@@ -88,15 +88,15 @@ function we_tag_shopField($attribs){
 				$atts['checked'] = 'checked';
 			}
 
-			// added we_html_tools::hidden #6544
-			return getHtmlTag('input', $atts) . we_html_tools::hidden($fieldname, $savedVal);
+			// added we_html_element::htmlHidden #6544
+			return getHtmlTag('input', $atts) . we_html_element::htmlHidden($fieldname, $savedVal);
 
 		case 'choice':
 			return we_html_tools::htmlInputChoiceField($fieldname, $savedVal, $values, $atts, $mode);
 
 		case 'hidden':
 			$atts = removeAttribs($atts, array('reference'));
-			return we_html_tools::hidden($fieldname, $savedVal, $atts);
+			return we_html_element::htmlHidden($fieldname, $savedVal, $atts);
 
 		case 'print':
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, we_base_request::BOOL);
