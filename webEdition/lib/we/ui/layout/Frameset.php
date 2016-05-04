@@ -118,7 +118,7 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 		} else {
 
 			$isToolbar = false;
-			$positioning = array('top: 0px; height: 32px;', '', 'top: 32px; bottom: 0px;');
+			$positioning = array('top: 0px; height: 40px;', '', 'top: 43px; bottom: 0px;');
 			$sources = array($this->_frames[0]['src'], '', $this->_frames[1]['src']);
 			$names = array('', '', $this->_frames[1]['name']);
 
@@ -126,7 +126,7 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 				$isToolbar = true;
 				$rows = explode(',', $this->_getNonBooleanAttribs('rows'));
 				$toolBarHeight = intval(trim($rows[1]));
-				$positioning = array('top: 0px; height: 32px;', 'top: 32px; height: ' . $toolBarHeight . 'px', 'top: ' . (32 + $toolBarHeight) . 'px; bottom: 0px;');
+				$positioning = array('top: 0px; height: 40px;', 'top: 43px; height: ' . $toolBarHeight . 'px', 'top: ' . (43 + $toolBarHeight) . 'px; bottom: 0px;');
 				$sources = array($this->_frames[0]['src'], $this->_frames[1]['src'], $this->_frames[2]['src']);
 				$names = array('', $this->_frames[1]['name'], $this->_frames[2]['name']);
 			}

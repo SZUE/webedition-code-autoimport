@@ -53,13 +53,13 @@ we_ui_controls_WeWysiwygEditor.setDisabled = function(idOrObject, disabled)
 we_ui_controls_WeWysiwygEditor.setData = function(idOrObject, data)
 {
 	if (document.getElementById(idOrObject)) {
-		document.getElementById(idOrObject).innerHTML = base64_decode(data);
+		document.getElementById(idOrObject).innerHTML = WE().util.Base64.decode(data);
 	}
 }
 we_ui_controls_WeWysiwygEditor.setDataView = function(idOrObject, data)
 {
 	if (document.getElementById(idOrObject + '_View')) {
-		document.getElementById(idOrObject + '_View').innerHTML = base64_decode(data);
+		document.getElementById(idOrObject + '_View').innerHTML = WE().util.Base64.decode(data);
 	}
 }
 

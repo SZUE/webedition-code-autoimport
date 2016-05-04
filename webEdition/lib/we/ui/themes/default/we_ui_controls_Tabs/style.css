@@ -64,7 +64,7 @@
 	float:left;
 	height:21px;
 	background-color:#ededed;/*tabsBG_active.gif*/
-	border-bottom: 1px solid #999999;
+	/* border-bottom: 1px solid #999999; */
 	cursor:pointer;
 	position:relative;
 	z-index:1;
@@ -75,7 +75,7 @@
 	float:left;
 	height:21px;
 	background-color:#ededed;/*tabsBG_active.gif*/
-	border-bottom: 1px solid #999999;
+	/* border-bottom: 1px solid #999999; */
 	background-repeat: repeat-x;
 	cursor:default;
 	position:relative;
