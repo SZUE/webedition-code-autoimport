@@ -92,11 +92,11 @@ parent.document.title = "' . $title . '"
 		foreach($arr as $table => $elem){
 			$items = makeArrayFromCSV($this->export->$elem);
 			foreach($items as $item){
-				$selected .= 'SelectedItems["' . $table . '"].push("' . $item . '");';
+				$selected .= 'treeData.frames.top.SelectedItems["' . $table . '"].push("' . $item . '");';
 			}
 
 			if(($open = we_base_request::_(we_base_request::STRING, $elem . '_open'))){
-				$opened .= 'openFolders["' . $table . '"]="' . $open . '";';
+				$opened .= 'treeData.frames.top.openFolders["' . $table . '"]="' . $open . '";';
 			}
 		}
 
