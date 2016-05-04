@@ -107,7 +107,7 @@ class we_fragment_base{
 		} else {
 			$this->taskPerFragment = $taskPerFragment;
 			$this->init();
-			if(!we_base_file::save($filename, we_serialize($this->alldata, SERIALIZE_JSON))){
+			if(!we_base_file::save($filename, we_serialize($this->alldata))){
 				exit('Could not write: ' . $filename);
 			}
 			we_base_file::insertIntoCleanUp($filename, 10 * 3600);
