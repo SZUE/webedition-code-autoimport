@@ -71,7 +71,7 @@ function selectFile(fid) {
 function reorderDir(dir, order) {
 	setTimeout(function (url) {
 		top.fsbody.location = url;
-	}, 100, 'we_sselector_body.php?dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID));
+	}, 100, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=selectorBrowse&dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID));
 }
 
 function selectDir(path) {
@@ -105,7 +105,7 @@ function goUp() {
 
 function delFile(ask) {
 	if ((top.currentID !== "") && (top.document.getElementsByName("fname")[0].value !== "")) {
-		top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + ask;
+		top.fscmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowseCmd&cmd=delete_file&fid=" + top.currentID + "&ask=" + ask;
 	} else {
 		top.we_showMessage(WE().consts.g_l.sfselector.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
@@ -135,21 +135,21 @@ function setDir(dir) {
 function drawDir(dir, what, sid) {
 	switch (what) {
 		case "new_folder":
-			top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=new_folder&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=" + selectOwn;
+			top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.rootDir + dir) + "&nf=new_folder&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=" + selectOwn;
 			break;
 		case "rename_folder":
 			if (sid) {
-				top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_folder&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=" + selectOwn;
+				top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_folder&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=" + selectOwn;
 			}
 			break;
 		case "rename_file":
 			if (sid) {
-				top.fsbody.location = "we_sselector_body.php?dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_file&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=" + selectOwn;
+				top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_file&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=" + selectOwn;
 			}
 			break;
 		default:
 			setTimeout(function (url) {
 				top.fsbody.location = url;
-			}, 100, 'we_sselector_body.php?dir=' + encodeURI(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '&selectOwn=' + selectOwn);
+			}, 100, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=selectorBrowse&dir=' + encodeURI(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '&selectOwn=' + selectOwn);
 	}
 }

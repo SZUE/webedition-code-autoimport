@@ -48,6 +48,10 @@ function findInclude($cmd){
 			return 'selectors.inc.php';
 		case 'selectorEdit':
 			return 'we_editors/selectorEdit.inc.php';
+		case 'selectorBrowse':
+			return 'we_selectorBrowse.inc.php';
+		case 'selectorBrowseCmd':
+			return 'we_selectorBrowseCmd.inc.php';
 		case 'we_fileupload_editor':
 			return 'we_editors/we_fileupload.inc.php';
 		case 'backupLog':
