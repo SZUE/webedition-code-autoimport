@@ -1238,27 +1238,26 @@ class we_search_search extends we_search_base{
 					$this->where .= ' AND Path LIKE "%' . $this->db->escape($path) . '%" ';
 					$tmpTableWhere = '(SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%" )';
 				}
+				$where = str_replace('WETABLE.', 'f.', $this->where);
 
-				$this->db->query('INSERT INTO ' . SEARCHRESULT_TABLE . ' (UID,docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ' . $_SESSION['user']['ID'] . ',ID,"' . stripTblPrefix(FILE_TABLE) . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` f WHERE ' . str_replace('WETABLE.', 'f.', $this->where));
+				$this->db->query('INSERT INTO ' . SEARCHRESULT_TABLE . ' (UID,docID,docTable,Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension) SELECT ' . $_SESSION['user']['ID'] . ',ID,"' . stripTblPrefix(FILE_TABLE) . '",Text,Path,ParentID,IsFolder,IsProtected,temp_template_id,TemplateID,ContentType,CreationDate,CreatorID,ModDate,Published,Extension FROM `' . FILE_TABLE . '` f WHERE ' . $where);
 
 				//first check published documents
-				$this->db->query('SELECT l.DID,c.Dat FROM `' . LINK_TABLE . '` l JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) WHERE l.nHash=x\'' . md5("Title") . '\' AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"' . ($path ? ' AND l.DID IN ' . $tmpTableWhere : ''));
-				$titles = $this->db->getAllFirst(false);
+				$this->db->query('UPDATE ' . SEARCHRESULT_TABLE . ' sr JOIN `' . LINK_TABLE . '` l ON (sr.docID=l.DID AND sr.docTable=l.DocumentTable) JOIN `' . CONTENT_TABLE . '` c ON (l.CID=c.ID) ' . ($path ? '' : ' JOIN ' . FILE_TABLE . ' f ON f.ID= l.DID') .
+					' SET sr.SiteTitle=c.Dat' .
+					' WHERE sr.UID=' . $_SESSION['user']['ID'] . ' AND l.nHash=x\'' . md5("Title") . '\' AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"' . ($path ? ' AND l.DID IN ' . $tmpTableWhere : ' AND ' . $where));
 
 				//check unpublished documents
-				$this->db->query('SELECT DocumentID, DocumentObject FROM `' . TEMPORARY_DOC_TABLE . '` WHERE docTable="tblFile" AND Active=1 ' . ($path ? ' AND DocumentID IN ' . $tmpTableWhere : ''));
+				$titles = array();
+				$this->db->query('SELECT td.DocumentID, td.DocumentObject FROM `' . TEMPORARY_DOC_TABLE . '` td ' . ($path ? '' : ' JOIN ' . FILE_TABLE . ' f ON f.ID=td.DocumentID') . ' WHERE td.docTable="tblFile" AND td.Active=1 ' . ($path ? ' AND td.DocumentID IN ' . $tmpTableWhere : ' AND ' . $where));
 				while($this->db->next_record()){
 					$tempDoc = we_unserialize($this->db->f('DocumentObject'));
-					if(isset($tempDoc[0]['elements']['Title'])){
+					if(!empty($tempDoc[0]['elements']['Title'])){
 						$titles[$this->db->f('DocumentID')] = $tempDoc[0]['elements']['Title']['dat'];
 					}
 				}
-				if(is_array($titles) && $titles){
-					foreach($titles as $k => $v){
-						if($v != ""){
-							$this->db->query('UPDATE ' . SEARCHRESULT_TABLE . ' SET SiteTitle="' . $this->db->escape($v) . '" WHERE UID=' . $_SESSION['user']['ID'] . ' AND docID=' . intval($k) . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '" LIMIT 1');
-						}
-					}
+				foreach($titles as $k => $v){
+					$this->db->query('UPDATE ' . SEARCHRESULT_TABLE . ' SET SiteTitle="' . $this->db->escape($v) . '" WHERE UID=' . $_SESSION['user']['ID'] . ' AND docID=' . intval($k) . ' AND docTable="' . stripTblPrefix(FILE_TABLE) . '" LIMIT 1');
 				}
 				break;
 
