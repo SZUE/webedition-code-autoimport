@@ -508,7 +508,7 @@ function t_e($type = 'warning'){
 			break;
 		case 'deprecated':
 			$inc = true;
-			$type = E_USER_DEPRECATED;
+			$type = E_USER_NOTICE; //E_USER_DEPRECATED - seems not to work anymore
 			break;
 		case 'warning':
 			$inc = true;
