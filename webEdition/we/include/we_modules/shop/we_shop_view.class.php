@@ -817,7 +817,7 @@ function CalendarChanged(calObject) {
 				$searchBut = we_html_button::create_button(we_html_button::SEARCH, 'javascript:searchArticles();');
 
 				// first get all shop documents
-				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" AND l.DocumentTable!="tblTemplates" ' .
+				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' AND l.DocumentTable!="tblTemplates" ' .
 					(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
 						' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
 						'')

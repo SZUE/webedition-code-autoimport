@@ -230,7 +230,7 @@ function printElement($code){
 	}
 	t_e('deprecated', 'we-tag contained php code which needs evaluation, this is deprecated, use parseTag instead', $code);
 	//FIXME:eval????
-	eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
+	eval('?>' . str_replace(array('<?php','<?=', '?>'), array('<?php ','<?= ', ' ?>'), $code));
 }
 
 function getArrayValue($var, $name, $arrayIndex, $isset = false){
