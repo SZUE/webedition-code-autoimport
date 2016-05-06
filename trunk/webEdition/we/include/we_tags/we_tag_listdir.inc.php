@@ -65,9 +65,9 @@ function we_tag_listdir($attribs){
 	$db = new DB_WE();
 
 	$db->query('SELECT ID,Text,IsFolder,Path,IF(IsFolder,(SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=f.ID AND IsFolder=0 AND (' . $indexes . ') AND (Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') LIMIT 1),0) AS FolderIndex,
-(SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.Name=IF(f.IsFolder,"' . $db->escape($dirfield) . '","' . $db->escape($name) . '")) AS name,
+(SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.nHash=IF(f.IsFolder,x\'' . md5($dirfield) . '\',x\'' . md5($name) . '\')) AS name,
 ' . ($sort ?
-			'(SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.Name="' . $db->escape($sort) . '")' :
+			'(SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DID=f.ID AND l.nHash=x\'' . md5($sort) . '\')' :
 			'Text') . ' AS sort
 FROM ' . FILE_TABLE . ' f WHERE ((Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') OR (IsFolder=1)) AND ParentID=' . intval($dirID) . ' ORDER BY ' . ($sort ? 'sort' : 'Text') . ($desc ? ' DESC' : ''));
 

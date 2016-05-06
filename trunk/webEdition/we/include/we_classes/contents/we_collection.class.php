@@ -503,7 +503,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'), $rowHtml->getHtml());
 	}
-	
+
 	private function makeListItemMinimal($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
 		$textname = 'we_' . $this->Name . '_ItemName_' . $index;
 		$idname = 'we_' . $this->Name . '_ItemID_' . $index;
@@ -695,10 +695,10 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 
 		$itemsCsv = implode(',', array_keys($items));
-		$orCustomElement = ' OR (l.Name = "elemIMG" AND c.Dat != "") OR (l.Name = "elemIMG" AND c.BDID != 0)';
+		$orCustomElement = ' OR (l.nHash=x\'' . md5('elemIMG') . '\'" AND (c.Dat!="" OR c.BDID != 0) )';
 		if($this->getRemTable() === stripTblPrefix(FILE_TABLE)){
 			$this->DB_WE->query('SELECT l.DID, l.Name, l.type, c.Dat, c.BDID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID = c.ID
-				WHERE l.DocumentTable="tblFile" AND l.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((l.type="attrib" AND l.Name IN ("title", "alt")) OR (l.type="txt" AND l.Name IN ("Title", "Description")) ' . $orCustomElement . ')'
+				WHERE l.DocumentTable="tblFile" AND l.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((l.type="attrib" AND l.nHash IN (x\'' . md5('title') . '\',x\'' . md5('alt') . '\') ) OR (l.type="txt" AND l.nHash IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\') ) ' . $orCustomElement . ')'
 			);
 
 			while($this->DB_WE->next_record()){
