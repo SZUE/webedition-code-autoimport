@@ -887,14 +887,14 @@ abstract class we_root extends we_class{
 		$this->OldPath = $this->Path;
 	}
 
-	public function we_save($resave = false){
+	public function we_save($resave = false, $skipHook = false){
 		//$this->i_setText;
 		if($this->PublWhenSave){
 			$this->Published = time();
 		}
 		if(!$resave){
 			$this->ModDate = time();
-			$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
+			$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && !empty($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		}
 		$this->RebuildDate = time();
 		if(!parent::we_save($resave)){
