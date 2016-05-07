@@ -29,12 +29,12 @@ class we_export_tree extends we_tree_base{
 	}
 
 	function getJSLoadTree($clear, array $treeItems){
-		$js =  'top.opener.treeData.table=top.opener.table;';
+		$js =  'top.content.editor.edbody.treeData.table=top.content.editor.edbody.table;';
 
 		foreach($treeItems as $item){
 
-			$js.=($clear ? '' : 'if(top.opener.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
-					'top.opener.treeData.addSort(new top.opener.node({';
+			$js.=($clear ? '' : 'if(top.content.editor.edbody.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
+					'top.content.editor.edbody.treeData.add(new top.content.editor.edbody.node({';
 			$elems = '';
 			foreach($item as $k => $v){
 				$elems.='"' . strtolower($k) . '":' .
@@ -47,8 +47,8 @@ class we_export_tree extends we_tree_base{
 			}
 			$js.=rtrim($elems, ',') . '}));' . ($clear ? '' : '}');
 		}
-		$js.= 'top.opener.treeData.setState(top.opener.treeData.tree_states["select"]);' .
-				'top.opener.drawTree();';
+		$js.= 'top.content.editor.edbody.treeData.setState(top.content.editor.edbody.treeData.tree_states["select"]);' .
+				'top.content.editor.edbody.drawTree();';
 
 		return $js;
 	}
@@ -56,7 +56,7 @@ class we_export_tree extends we_tree_base{
 	function getJSStartTree(){
 		return 'function startTree(){
 	treeData.frames={
-		top:top.opener,
+		top:top.content.editor.edbody,
 		cmd:' . $this->cmdFrame . ',
 		tree:' . $this->treeFrame . '
 	};
@@ -237,12 +237,12 @@ var openFolders= {
 		self::getItems($table, $parentFolder, $treeItems, $openFolders);
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement('
-if(!top.opener.treeData) {' .
+if(!top.content.editor.edbody.treeData) {' .
 						we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) . '
 }' .
 						($parentFolder ? '' :
-								 'top.opener.treeData.clear();' .
-								'top.opener.treeData.add(top.opener.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
+								 'top.content.editor.edbody.treeData.clear();' .
+								'top.content.editor.edbody.treeData.add(top.content.editor.edbody.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
 						) .
 						$this->getJSLoadTree(!$parentFolder, $treeItems)
 				), we_html_element::htmlBody(array("bgcolor" => "#ffffff"))

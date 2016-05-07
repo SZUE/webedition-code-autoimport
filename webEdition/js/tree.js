@@ -368,10 +368,6 @@ container.prototype = {
 			}
 			break;
 		}
-
-		if (!document.images) {
-			drawTree();
-		}
 	},
 	parentChecked: function (start) {
 		for (var i = 1; i <= this.len; i++) {
