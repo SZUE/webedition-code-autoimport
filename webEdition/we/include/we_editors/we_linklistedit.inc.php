@@ -75,8 +75,9 @@ if(($charset = $we_doc->getElement('Charset'))){ //	send charset which might be 
 
 $name = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 $nr = we_base_request::_(we_base_request::INT, 'we_cmd', '-1', 2);
+$ok = we_base_request::_(we_base_request::BOOL, "ok");
 
-if(we_base_request::_(we_base_request::BOOL, 'ok')){
+if($ok){
 	$alt = we_base_request::_(we_base_request::STRING, 'alt', '');
 	$img_title = we_base_request::_(we_base_request::STRING, 'img_title', '');
 	$text = we_base_request::_(we_base_request::HTML, 'text', '');
@@ -202,10 +203,7 @@ if(we_base_request::_(we_base_request::BOOL, 'ok')){
 		$ll->setImageAttrib($nr, 'alt', $link['alt']);
 
 		$linklist = $ll->getString();
-	} /* else {
-	  $link['nr'] = 0;
-	  $linklist = serialize(array($link));
-	  } */
+	}
 } elseif($nr > -1){
 	$ll = new we_base_linklist(we_unserialize($we_doc->getElement($name)));
 	$href = $ll->getHref($nr);
@@ -346,59 +344,38 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 <?php
 $trans = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
 
-$ok = we_base_request::_(we_base_request::BOOL, "ok");
 $cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $name = we_base_request::_(we_base_request::STRING, 'name', $name);
 
-if($ok && $cmd === "edit_link_at_class"){
-	$_SESSION['weS']['WE_LINK'] = $link;
-	//FIXME: we_field XSS
-	?>
-		opener.setScrollTo();
-		opener.we_cmd("object_change_link_at_class", "<?php echo $trans; ?>", "<?php echo we_base_request::_(we_base_request::STRING, "we_field"); ?>", "<?php echo $name; ?>");
-		top.close();
-	<?php
-} else if($ok && $cmd === "edit_link_at_object"){
-	$_SESSION['weS']['WE_LINK'] = $link;
-	?>
-		opener.setScrollTo();
-		opener.we_cmd("object_change_link_at_object", "<?php echo $trans; ?>", "link_<?php echo $name; ?>");
-		top.close();
-	<?php
-} else if($ok && !empty($linklist)){
-	$_SESSION['weS']["WE_LINKLIST"] = $linklist;
-	?>
-		opener.setScrollTo();
-		opener.we_cmd("change_linklist", "<?php echo $name; ?>", "");
-	<?php
-} else if($ok && !empty($link)){
-	$_SESSION['weS']['WE_LINK'] = $link;
-	?>
-		opener.setScrollTo();
-		opener.we_cmd("change_link", "<?php echo $name; ?>", "");
-	<?php
-} else {
-	?>
-		function we_cmd() {
-			var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-			var url = WE().util.getWe_cmdArgsUrl(args);
-
-			switch (args[0]) {
-				case "we_selector_image":
-				case "we_selector_document":
-					new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
-					break;
-
-				case "browse_server":
-					new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
-					break;
-
-				default:
-					opener.parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-
-			}
-		}
-	<?php
+if($ok){
+	if($cmd === "edit_link_at_class"){
+		$_SESSION['weS']['WE_LINK'] = $link;
+		//FIXME: we_field XSS
+		?>
+			opener.setScrollTo();
+			opener.we_cmd("object_change_link_at_class", "<?php echo $trans; ?>", "<?php echo we_base_request::_(we_base_request::STRING, "we_field"); ?>", "<?php echo $name; ?>");
+			top.close();
+		<?php
+	} else if($cmd === "edit_link_at_object"){
+		$_SESSION['weS']['WE_LINK'] = $link;
+		?>
+			opener.setScrollTo();
+			opener.we_cmd("object_change_link_at_object", "<?php echo $trans; ?>", "link_<?php echo $name; ?>");
+			top.close();
+		<?php
+	} else if(!empty($linklist)){
+		$_SESSION['weS']["WE_LINKLIST"] = $linklist;
+		?>
+			opener.setScrollTo();
+			opener.we_cmd("change_linklist", "<?php echo $name; ?>", "");
+		<?php
+	} else if(!empty($link)){
+		$_SESSION['weS']['WE_LINK'] = $link;
+		?>
+			opener.setScrollTo();
+			opener.we_cmd("change_link", "<?php echo $name; ?>", "");
+		<?php
+	}
 }
 ?>
 //-->

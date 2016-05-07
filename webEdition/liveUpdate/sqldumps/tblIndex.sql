@@ -40,12 +40,12 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   Description text NOT NULL,
   Path varchar(255) NOT NULL default '',
   Language varchar(5) default NULL,
-  PRIMARY KEY (ID,WorkspaceID,ClassID),
+  PRIMARY KEY (ID,ClassID,WorkspaceID),
 	FULLTEXT Text (Text)
 ) ENGINE=MyISAM;
 
 /* query separator */
-###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,WorkspaceID,ClassID);###
+###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblIndex)ALTER IGNORE TABLE ###TBLPREFIX###tblIndex ADD PRIMARY KEY (ID,ClassID,WorkspaceID);###
 
 /* query separator */
 ###UPDATEONLY###DROP TABLE IF EXISTS ###TBLPREFIX###tblIndex_Backup;
