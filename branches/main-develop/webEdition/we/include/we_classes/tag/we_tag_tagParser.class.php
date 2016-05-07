@@ -358,7 +358,7 @@ class we_tag_tagParser{
 		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs === 'array()' || $attribs === '[]' ? '' : $attribs));
 		return 'we_tag(\'' . $name . '\'' .
 			($attr ? ',' . $attr : ($content ? ',array()' : '')) .
-			($content ? ',"' . ($cslash ? addcslashes($content, '"') : $content) . '"' : '') . ')';
+			($content ? ',\'' . ($cslash ? addcslashes($content, '\'') : $content) . '\'' : '') . ')';
 	}
 
 	public static function printArray(array $array, $printEmpty = true){

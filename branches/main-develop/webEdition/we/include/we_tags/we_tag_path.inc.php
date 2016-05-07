@@ -61,9 +61,9 @@ function we_tag_path($attribs){
 				array(0, '')
 			);
 		if($fileID){
-			$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($dirfield) . '"');
+			$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.nHash=x\'' . md5($dirfield) . '\'');
 			if(!$show && $fieldforfolder){
-				$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
+				$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.nHash=x\'' . md5($field) . '\'');
 			}
 			$show = $show? : $fText;
 			if($fileID != $doc->ID){
@@ -92,7 +92,7 @@ function we_tag_path($attribs){
 	$filePath = ($hash ? $hash['Path'] : '');
 
 	if($fileID){
-		$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
+		$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.nHash=x\'' . md5($field) . '\'');
 		if(!$show){
 			$show = $home;
 		}

@@ -228,9 +228,10 @@ function printElement($code){
 		echo $code;
 		return;
 	}
-	t_e('deprecated', 'we-tag contained php code which needs evaluation, this is deprecated, use parseTag instead', $code);
-	//FIXME:eval????
-	eval('?>' . str_replace(array('<?php', '?>'), array('<?php ', ' ?>'), $code));
+	//t_e('deprecated', 'we-tag contained php code which needs evaluation, this is deprecated, use parseTag instead', $code);
+	//this is used e.g. in <we:a>$var</we> or in <we:a><we:ifBack....
+	//FIXME: bad eval????
+	eval('?>' . str_replace(array('<?php','<?=', '?>'), array('<?php ','<?= ', ' ?>'), $code));
 }
 
 function getArrayValue($var, $name, $arrayIndex, $isset = false){

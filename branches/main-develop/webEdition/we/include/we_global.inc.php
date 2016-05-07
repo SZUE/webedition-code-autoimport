@@ -511,7 +511,7 @@ function t_e($type = 'warning'){
 			break;
 		case 'deprecated':
 			$inc = true;
-			$type = E_USER_DEPRECATED;
+			$type = E_USER_NOTICE; //E_USER_DEPRECATED - seems not to work anymore
 			break;
 		case 'warning':
 			$inc = true;
@@ -1171,7 +1171,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		}
 		//non UTF-8 json decode
 		static $json = null;
-		$json = $json ? : new Services_JSON(16/* SERVICES_JSON_LOOSE_TYPE */);
+		$json = $json ? : new Services_JSON(16/* SERVICES_JSON_LOOSE_TYPE */ | Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
 		return (array) $json->decode(str_replace("\n", '\n', $string));
 	}
 	//data is really not serialized!
