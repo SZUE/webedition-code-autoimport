@@ -1620,6 +1620,7 @@ function doUnload() {
 			case we_base_ContentTypes::QUICKTIME:
 			case we_base_ContentTypes::VIDEO:
 			case we_base_ContentTypes::AUDIO:
+				$filesize = !is_dir($path) && ($filesize = filesize($path)) ? $filesize : 0;
 				break;
 			default:
 				if(!is_dir($path) && filesize($path)){
@@ -1684,9 +1685,11 @@ function doUnload() {
 			case we_base_ContentTypes::FLASH:
 			case we_base_ContentTypes::QUICKTIME:
 			case we_base_ContentTypes::VIDEO:
+				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'image');
 				break;
 			case we_base_ContentTypes::AUDIO:
+				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'audio');
 				break;
 			case we_base_ContentTypes::HTML :
