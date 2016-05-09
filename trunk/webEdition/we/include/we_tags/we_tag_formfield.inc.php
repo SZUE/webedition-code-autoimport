@@ -239,7 +239,7 @@ function we_tag_formfield($attribs){
 			$foo = explode("<_BR_>", str_replace(array("\r\n", "\r", "\n",), '<_BR_>', $GLOBALS['we_doc']->getElement($name, 'ffvalues')));
 			foreach($foo as $v){
 				$_atts = array(
-					'value' => oldHtmlspecialchars($v)
+					'value' => oldHtmlspecialchars(trim($v))
 				);
 				if($selected == $v){
 					$_atts['selected'] = 'selected';
