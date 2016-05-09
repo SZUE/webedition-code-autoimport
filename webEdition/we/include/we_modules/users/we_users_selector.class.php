@@ -96,7 +96,7 @@ class we_users_selector extends we_selector_file{
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$go = true;
 		} else {
-			$rootPath = f('SELECT Path FROM ' . $this->table . ' WHERE ID=(SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . intval($_SESSION["user"]["ID"]) . ')', '', $this->db);
+			$rootPath = f('SELECT Path FROM ' . $this->table . ' WHERE ID=(SELECT ParentID FROM ' . $this->table . ' WHERE ID=' . intval($_SESSION['user']['ID']) . ')', '', $this->db);
 			$go = (f('SELECT 1 FROM ' . $this->table . ' WHERE ID=' . intval($this->dir) . ' AND Path LIKE "' . $rootPath . '%" LIMIT 1', '', $this->db));
 		}
 		if($go){

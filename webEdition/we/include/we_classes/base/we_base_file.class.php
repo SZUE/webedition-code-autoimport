@@ -292,7 +292,7 @@ abstract class we_base_file{
 
 	public static function insertIntoCleanUp($path, $date = 300){
 		$DB_WE = new DB_WE();
-		$date = max($date,300); //make each entry last at least 300 seconds
+		$date = max($date, 300); //make each entry last at least 300 seconds
 		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
 				'Path' => $DB_WE->escape($path),
 				'Date' => sql_function('(NOW()+ INTERVAL ' . intval($date) . ' SECOND)'),
@@ -328,6 +328,7 @@ abstract class we_base_file{
 		umask($umask);
 		return true;
 	}
+
 	/**
 	 * @deprecated since version 7.0
 	 * @param type $RootDir
@@ -631,6 +632,10 @@ abstract class we_base_file{
 			$db->query('DELETE FROM ' . CLEAN_UP_TABLE . ' WHERE Path LIKE "%' . $GLOBALS['DB_WE']->escape($seesID) . '%"');
 		}
 		$d = dir(TEMP_PATH);
+		if(!$d){
+			self::checkAndMakeFolder(TEMP_PATH);
+			$d = dir(TEMP_PATH);
+		}
 		while(false !== ($entry = $d->read())){
 			switch($entry){
 				case '.':
@@ -653,6 +658,10 @@ abstract class we_base_file{
 
 // when a fragment task was stopped by the user, the tmp file will not be deleted! So we have to clean up
 		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
+		if(!$d){
+			self::checkAndMakeFolder(rtrim(WE_FRAGMENT_PATH, '/'));
+		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
+		}
 		while(false !== ($entry = $d->read())){
 			switch($entry){
 				case '.':
@@ -671,6 +680,16 @@ abstract class we_base_file{
 			}
 		}
 		$d->close();
+	}
+
+	public function cleanWECache(){
+		if(defined('WE_VERSION_UPDATE')){
+			if(!is_writeable(WE_CACHE_PATH)){
+				t_e('cachedir ' . WE_CACHE_PATH . ' is not writeable expect errors, undefined behaviour');
+				return;
+			}
+			we_cache_file::clean();
+		}
 	}
 
 	public static function we_filenameNotValid($filename, $isIso = false){
