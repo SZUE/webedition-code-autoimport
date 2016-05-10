@@ -611,24 +611,24 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$_content = new we_html_table(array('class' => 'default propertydualtable'), 5, 3);
 		$row = 0;
 		// Row 1
-		$_content->setCol($row, 0, null, $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
-		$_content->setCol($row, 1, null, $this->formInputInfo2(155, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
-		$_content->setCol($row++, 2, null, $this->formInput2(155, 'border', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row, 0, null, $this->formInputInfo2(148, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
+		$_content->setCol($row, 1, null, $this->formInputInfo2(148, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
+		$_content->setCol($row++, 2, null, $this->formInput2(148, 'border', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 
 		// Row 2
-		$_content->setCol($row, 0, null, $this->formInput2(155, 'align', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol($row, 1, null, $this->formInput2(155, 'hspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol($row++, 2, null, $this->formInput2(155, 'vspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row, 0, null, $this->formInput2(148, 'align', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row, 1, null, $this->formInput2(148, 'hspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row++, 2, null, $this->formInput2(148, 'vspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 
 		// Row 3
-		$_content->setCol($row, 0, array('colspan' => 3), $this->formInput2(328, 'alt', 23, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol($row++, 2, null, $this->formInput2(155, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row, 0, array('colspan' => 2), $this->formInput2(332, 'alt', 23, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row++, 2, null, $this->formInput2(148, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 
 		//	Row 4
-		$_content->setCol($row, 0, array('colspan' => 3), $this->formInput2(328, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
+		$_content->setCol($row, 0, array('colspan' => 2), $this->formInput2(332, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
 
 		$_titleField = 'we_' . $this->Name . '_attrib[title]';
 		//$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
@@ -652,7 +652,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($longdesc_id_name, $longdesc_id);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth(328);
+		$yuiSuggest->setWidth(332);
 		$cmd1 = "document.we_form.elements['" . $longdesc_id_name . "'].value";
 
 		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $longdesc_text_name . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
