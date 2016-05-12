@@ -1811,7 +1811,7 @@ function delElement(elvalues,elem) {
 		// Generate needed JS
 		$js = we_html_element::jsElement("
 function select_seem_start() {
-	myWindStr=\"WE().util.jsWindow.prototype.find('preferences').wind\";
+	myWindStr=\"WE().util.jsWindow.prototype.find('preferences')\";
 
 	if(document.getElementById('seem_start_type').value == 'object') {
 		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_object.value, '" . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements.seem_start_object.value', myWindStr + '.document.forms[0].elements.seem_start_object_name.value', '', '', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
