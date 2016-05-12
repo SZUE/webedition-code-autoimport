@@ -78,7 +78,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "select_seem_start":
-			myWindStr = "WE().util.jsWindow.prototype.find(\'preferences\').wind";
+			myWindStr = "WE().util.jsWindow.prototype.find(\'preferences\')";
 			top.opener.top.we_cmd("we_selector_document", myWind.document.forms[0].elements.seem_start_file.value, WE().consts.tables.FILE_TABLE, myWindStr + ".document.forms[0].elements.seem_start_file.value", myWindStr + ".document.forms[0].elements.seem_start_file_name.value", "", "", "", WE().consts.contentTypes.WEDOCUMENT, 1);
 			break;
 		case "openNavigationDirselector":
