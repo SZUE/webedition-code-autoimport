@@ -101,7 +101,7 @@ jsWindow.prototype = {
 	},
 //FIXME:this function should be called instead of a top.close
 	closeAll: function (ref) {
-		if (ref === undefined) {
+		if (ref === undefined || ref === null) {
 			while (WE().layout.windows.length) {
 				WE().layout.windows.pop().close();
 			}
