@@ -1491,13 +1491,13 @@ var weFileUpload = (function () {
 					_.sender.preparedFiles[index] = f.isSizeOk ? f : null;
 					nameField.value = f.file.name;
 					sizeField.innerHTML = f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red"> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>';
-				}
 
-				if (f.isSizeOk) {
-					if (!_.view.isUploadEnabled) {
-						_.controller.enableWeButton('next', true);
-						_.view.isUploadEnabled = true;
-						_.sender.isCancelled = false;
+					if (f.isSizeOk) {
+						if (!_.view.isUploadEnabled) {
+							_.controller.enableWeButton('next', true);
+							_.view.isUploadEnabled = true;
+							_.sender.isCancelled = false;
+						}
 					}
 				}
 			};
