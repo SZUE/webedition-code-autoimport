@@ -229,7 +229,9 @@ WE().consts.g_l.newsletter = {
 	email_delete:"' . g_l('modules_newsletter', '[email_delete]') . '",
 	email_delete_all:"' . g_l('modules_newsletter', '[email_delete_all]') . '",
 	search_finished:"' . g_l('modules_newsletter', '[search_finished]') . '",
-	del_email_file:"' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[del_email_file]')) . '"
+	del_email_file:"' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[del_email_file]')) . '",
+	all_list:"' . g_l('modules_newsletter', '[all_list]') . '",
+	mailing_list:"' . g_l('modules_newsletter', '[mailing_list]') . '",
 };
 var frameSet="' . $this->frameset . '";
 ') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');

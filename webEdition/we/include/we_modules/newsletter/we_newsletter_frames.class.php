@@ -210,12 +210,13 @@ function we_cmd() {
 			break;
 		default:
 			parent.edbody.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-
 	}
 }
 
 function addGroup(text, val) {
-	 ' . ($group ? '' : 'document.we_form.gview[document.we_form.gview.length] = new Option(text,val);' ) . '
+	if(document.we_form.gview){
+		document.we_form.gview[document.we_form.gview.length] = new Option(text,val);
+	 }
 }
 
 function delGroup(val) {
@@ -223,27 +224,22 @@ function delGroup(val) {
 }
 
 function populateGroups() {
-	if (top.content.editor.edbody.getGroupsNum) {
-
-		if (top.content.editor.edbody.loaded) {
-			var num=top.content.editor.edbody.getGroupsNum();
-
-				if (!num) {
-					num = 1;
-				} else {
-					num++;
-				}
-
-				addGroup(WE().util.sprintf("' . g_l('modules_newsletter', '[all_list]') . '",0),0);
-
-				for (i = 1; i < num; i++) {
-					addGroup(WE().util.sprintf("' . g_l('modules_newsletter', '[mailing_list]') . '",i),i);
-				}
-		} else {
-			setTimeout(populateGroups,100);
-		}
-	} else {
+	if (!top.content.editor.edbody.getGroupsNum||!top.content.editor.edbody.loaded) {
 		setTimeout(populateGroups,100);
+		return;
+	}
+	var num=top.content.editor.edbody.getGroupsNum();
+
+	if (!num) {
+		num = 1;
+	} else {
+		num++;
+	}
+
+	addGroup(WE().util.sprintf(WE().consts.g_l.newsletter.all_list,0),0);
+
+	for (i = 1; i < num; i++) {
+		addGroup(WE().util.sprintf(WE().consts.g_l.newsletter.mailing_list,i),i);
 	}
 }
 
@@ -252,15 +248,16 @@ function we_save() {
 }
 
 function afterLoad(){
-if(self.document.we_form.htmlmail_check!==undefined) {
-	if(top.opener.top.nlHTMLMail) {
-		self.document.we_form.htmlmail_check.checked = true;
-		document.we_form.hm.value=1;
-	} else {
-		self.document.we_form.htmlmail_check.checked = false;
-		document.we_form.hm.value=0;
+	if(self.document.we_form.htmlmail_check!==undefined) {
+		if(top.opener.top.nlHTMLMail) {
+			self.document.we_form.htmlmail_check.checked = true;
+			document.we_form.hm.value=1;
+		} else {
+			self.document.we_form.htmlmail_check.checked = false;
+			document.we_form.hm.value=0;
+		}
+	populateGroups();
 	}
-}
 }');
 
 		$select = new we_html_select(array('name' => 'gview'));
@@ -283,7 +280,7 @@ if(self.document.we_form.htmlmail_check!==undefined) {
 			}
 		}
 
-		$body = we_html_element::htmlBody(array("id" => "footerBody", "onload" => "afterLoad();setTimeout(populateGroups,100)"), we_html_element::htmlForm(array(), we_html_element::htmlHidden("hm", 0) .
+		$body = we_html_element::htmlBody(array("id" => "footerBody", "onload" => "afterLoad();"), we_html_element::htmlForm(array(), we_html_element::htmlHidden("hm", 0) .
 					$table2->getHtml()
 				)
 		);
@@ -1074,29 +1071,24 @@ window.onload=extraInit;');
 
 	function getHTMLNewsletterGroups(){
 		$count = count($this->View->newsletter->groups);
-
 		$out = we_html_multiIconBox::getJS();
 
 		for($i = 0; $i < $count; $i++){
-			$parts = array();
-
-			if(defined('CUSTOMER_TABLE')){
-				$parts[] = array("headline" => g_l('modules_newsletter', '[customers]'), "html" => $this->getHTMLCustomer($i), 'space' => 140);
-			}
-
-			$parts[] = array("headline" => g_l('modules_newsletter', '[file_email]'), "html" => $this->getHTMLExtern($i), 'space' => 140);
-			$parts[] = array("headline" => g_l('modules_newsletter', '[emails]'), "html" => $this->getHTMLEmails($i), 'space' => 140);
+			$parts = array(
+				defined('CUSTOMER_TABLE') ? array("headline" => g_l('modules_newsletter', '[customers]'), "html" => $this->getHTMLCustomer($i), 'space' => 140) : null,
+				array("headline" => g_l('modules_newsletter', '[file_email]'), "html" => $this->getHTMLExtern($i), 'space' => 140),
+				array("headline" => g_l('modules_newsletter', '[emails]'), "html" => $this->getHTMLEmails($i), 'space' => 140)
+			);
 
 
-			$plus = ($i == $count - 1 ? we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addGroup')") : null);
-			$trash = ($count > 1 ? we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('delGroup'," . $i . ")") : null);
-
-			$buttons = $plus . $trash;
+			$buttons = ($i == $count - 1 ? we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('addGroup')") : null) .
+				($count > 1 ? we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('delGroup'," . $i . ")") : null);
 
 			$wepos = weGetCookieVariable("but_newsletter_group_box_$i");
 
 			$out.= we_html_multiIconBox::getHTML("newsletter_group_box_$i", $parts, 30, "", 0, "", "", (($wepos === "down") || ($count < 2 ? true : false)), sprintf(g_l('modules_newsletter', '[mailing_list]'), ($i + 1))) .
-				we_html_element::htmlBr() . '<div style="margin-right:30px;">' . $buttons . '</div>';
+				we_html_element::htmlBr() .
+				'<div style="margin-right:30px;">' . $buttons . '</div>';
 		}
 
 		return $out;
