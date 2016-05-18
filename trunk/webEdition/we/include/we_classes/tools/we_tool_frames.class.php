@@ -188,9 +188,9 @@ function we_save() {
 			we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30);
 	}
 
-/*	protected function getHTMLTreeFooter(){
-		return '<div id="infoField" class="defaultfont"></div>';
-	}*/
+	/* 	protected function getHTMLTreeFooter(){
+	  return '<div id="infoField" class="defaultfont"></div>';
+	  } */
 
 	protected function getHTMLCmd(){
 		$pid = we_base_request::_(we_base_request::STRING, "pid");
@@ -219,8 +219,8 @@ function we_save() {
 	}
 
 	function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
+		$cmd1 = "document.we_form.elements['" . $IDName . "'].value";
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "','" . $filter . "'," . $cmd1 . ");");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', ($this->_width_size - 120), 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
