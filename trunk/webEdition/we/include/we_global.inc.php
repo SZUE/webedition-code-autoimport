@@ -735,17 +735,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 			}
 			break;
 	}
-	/* if($xhtml){ //	xhtml, check if and what we shall debug
 
-	  if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
-	  $showWrong = (!empty($_SESSION['prefs']['xhtml_show_wrong']) && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
-	  // at the moment only transitional is supported
-	  $xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional', we_base_request::STRING);
-	  $attribs = removeAttribs($attribs, $removeAttribs);
-
-	  validation::validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
-	  }
-	  } */
 	$attribs = removeAttribs($attribs, $removeAttribs);
 
 	$tag = '<' . $element;
