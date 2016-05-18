@@ -235,7 +235,7 @@ body.radient{
 #fsfooter,
 .radient,
 #fsheader{
-	background: linear-gradient(white, #E7E7E7);
+	background: $Grey;
 }
 
 #footerBody{
@@ -365,14 +365,17 @@ body.radient{
 
 td.boxHeader{
 	padding:1px 5px 1px 5px;
-	background-color:lightgrey;
-	background: linear-gradient(#EFEFEF, #CACACA);
-	border-bottom-width: 0px;
+	background: $MiddleBlue;
+	color:white;
 	border-collapse: collapse;
-	border-left-width: 0px;
-	border-right-width: 0px;
-	border-top-width: 0px;
+	border-width: 0px;
+	border-bottom: 0.5em solid white;
+	padding: 0px 0.5em !important;
 	height:21px;
+	white-space: nowrap;
+	td,a{
+		color:inherit !important;
+	}
 }
 
 #bframeDiv{
@@ -935,7 +938,7 @@ optgroup{
 	border-top: 2px groove white;
 	/*padding left for rebuild*/
 	padding:5px 10px 10px 0px;
-	background: linear-gradient(#B4B3B3, #C6C5C5);
+	background: $Grey;
 	overflow:hidden;
 }
 
@@ -952,7 +955,6 @@ optgroup{
 
 #toolMenu,
 #headerDiv{
-	/*background: linear-gradient(#4675b1, $MiddleBlue);*/
 	background: $MiddleBlue;
 	color: white;
 	line-height: 40px;
@@ -1079,7 +1081,7 @@ table.error{
 	cursor:pointer;
 	border-right: 1px solid #2F5889;
 	&:hover{
-		background: linear-gradient(to bottom, #345881, #284A70) transparent !important;
+		background: $DarkBlueGradient transparent !important;
 	}
 }
 
@@ -1088,7 +1090,7 @@ table.error{
 	position:relative;
 	float:left;
 	&:hover {
-		background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
+		background: $DarkBlueGradient;
 		cursor: pointer;
 	}
 	i{
@@ -1529,7 +1531,7 @@ body.moduleEditor{
 		bottom: 0px;
 		height: $editorFooterHeight;
 		overflow: hidden;
-		background: linear-gradient(to bottom, #B4B3B3, #C6C5C5) transparent;
+		background: $Grey;
 		border-top: 2px groove white;
 	}
 }
