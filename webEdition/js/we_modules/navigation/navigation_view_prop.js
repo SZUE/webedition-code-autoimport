@@ -317,7 +317,7 @@ function submitForm(target, action, method) {
 	var f = self.document.we_form;
 	populateVars();
 	f.target = (target ? target : "edbody");
-	f.action = (action ? action : data.frameset);
+	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation");
 	f.method = (method ? method : "post");
 	f.submit();
 }

@@ -27,6 +27,7 @@ class we_navigation_view extends we_modules_view{
 	var $page = 1;
 
 	public function __construct($frameset){
+		$frameset = WEBEDITION_DIR . 'we_showMod.php?mod=navigation';
 		parent::__construct($frameset);
 		$this->Model = new we_navigation_navigation();
 	}
@@ -82,9 +83,7 @@ WE().consts.navigation={
 	LSELECTION_INTERN:"' . we_navigation_navigation::LSELECTION_INTERN . '",
 	LSELECTION_EXTERN:"' . we_navigation_navigation::LSELECTION_EXTERN . '",
 };
-var data={
-	frameset:"' . $this->frameset . '",
-};') .
+') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view.js');
 	}
 
@@ -105,7 +104,6 @@ var data={
 
 		return we_html_element::jsElement('
 var data={
-	frameset:"' . $this->frameset . '",
 	IsFolder:' . intval($this->Model->IsFolder) . ',
 };
 
@@ -279,7 +277,7 @@ if(top.content.makeNewDoc) {
 				if($this->Model->delete()){
 					echo we_html_element::jsElement('
 top.content.treeData.deleteEntry(' . $this->Model->ID . ');
-setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[navigation_deleted]')).'", WE().consts.message.WE_MESSAGE_NOTICE, window);');
+setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[navigation_deleted]')) . '", WE().consts.message.WE_MESSAGE_NOTICE, window);');
 					$this->Model = new we_navigation_navigation();
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
