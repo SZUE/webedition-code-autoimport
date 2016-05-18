@@ -1352,7 +1352,7 @@ class we_object extends we_document{
 		return '<tr>' .
 			'<td>' . we_html_tools::htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", 146) . '</td>' .
 			'<td>' .
-			$selectObject  .
+			$selectObject .
 			we_html_element::htmlHidden($idname, $myid) .
 			(($count + 1 < $this->getElement($name . "max") || $this->getElement($name . "max") == "") ?
 				we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($i) . "','" . $name . "','" . ($f) . "')", true, 40, 22) :
@@ -1867,7 +1867,7 @@ class we_object extends we_document{
 
 	function add_workspace(array $ids){
 		$wsp = trim($this->Workspaces, ',');
-		$this->Workspaces = implode(',', ($wsp ? array_unique(array_merge(explode(',', $wsp), $ids), SORT_NUMERIC) : $ids));
+		$this->Workspaces = implode(',', ($wsp !== '' ? array_unique(array_merge(explode(',', $wsp), $ids), SORT_NUMERIC) : $ids));
 	}
 
 	function del_workspace($id){
