@@ -164,7 +164,7 @@ this.selectedIndex = 0;' .
 					"html" => $content,
 					"headline" => ""
 				)
-				), $marginLeft, ($buttons ? '<div style="text-align:right;margin-left:10px;">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
+				), $marginLeft, ($buttons ? '<div class="htmlDialogLayoutButtons">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
 	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
@@ -186,7 +186,7 @@ this.selectedIndex = 0;' .
 		if($buttons){
 			$_table = new we_html_table(array('class' => 'default'), 3, 1, array(
 				array(array('colspan' => 2), $out),
-				array(array('style' => 'text-align:right;margin-top:5px;'), $buttons),
+				array(array('class' => 'htmlDialogBorderButtons'), $buttons),
 			));
 			return $_table->getHtml();
 		}
@@ -198,8 +198,8 @@ this.selectedIndex = 0;' .
 		$out = '';
 
 		for($f = 0; $f < $anz; $f++){
-			$bgcol = $bgColor ? : ((!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : "white");
-			$out .= '<td class="' . $class . '" style="padding:2px 5px 2px 5px;' . (($f == 0) ? '' : "border-left:1px solid silver;" ) . 'border-bottom: 1px solid silver;background-color:' . $bgcol . '; ' .
+			$bgcol = $bgColor ? : ((!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : '');
+			$out .= '<td class="htmlDialogBorder4Cell ' . $class . '" style="' . (($f == 0) ? '' : "border-left:1px solid silver;" ) . ($bgcol ? 'background-color:' . $bgcol . '; ' : '') .
 				(isset($content[$f]["align"]) ? 'text-align:' . $content[$f]["align"] . ';' : '') . ' ' .
 				(isset($content[$f]["height"]) ? 'height:' . $content[$f]["height"] . 'px;' : '') . '">' .
 				(!empty($content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
@@ -227,7 +227,7 @@ this.selectedIndex = 0;' .
 		if($buttons){
 			$_table = new we_html_table(array("class" => 'default'), 3, 1, array(
 				array(array("colspan" => 2), $out),
-				array(array('style' => 'text-align:right;padding-top:5px;'), $buttons)
+				array(array('class' => 'htmlDialogBorderButtons'), $buttons)
 			));
 			return $_table->getHtml();
 		}
@@ -601,12 +601,6 @@ this.selectedIndex = 0;' .
 			'</td></tr></table>';
 	}
 
-	//FIXME: remove deprecated
-	public static function htmlTop($title = 'webEdition', $charset = '', $doctype = ''){
-		t_e('deprecated', 'call of deprecated function');
-		echo self::getHtmlTop($title, $charset, $doctype);
-	}
-
 	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $extraHead = '', $body = '', $skipErrorHandler = true){
 		return we_html_element::htmlDocType($doctype) .
 			we_html_element::htmlhtml(we_html_element::htmlHead(self::getHtmlInnerHead($title, $charset, $skipErrorHandler) . $extraHead, ($extraHead || $body ? true : false)) .
@@ -651,7 +645,6 @@ this.selectedIndex = 0;' .
 	}
 
 	/**
-	 *
 	 * @param string $text
 	 * @param string $img
 	 * @param bool $yes
