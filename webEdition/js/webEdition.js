@@ -666,7 +666,6 @@ function we_cmd_base(args, url) {
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
-			top.console.log('yep', args);
 			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_fileupload_editor":

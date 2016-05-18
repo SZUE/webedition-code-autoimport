@@ -263,7 +263,7 @@ class we_object extends we_document{
 				'cssClasses' => $this->getElement($info['name'] . 'cssClasses'),
 				'fontnames' => $this->getElement($info['name'] . 'fontnames'),
 				'fontsizes' => $this->getElement($info['name'] . 'fontsizes'),
-				'formats' => $this->getElement($info['name'] . 'fontformats'),
+				'formats' => $this->getElement($info['name'] . 'formats'),
 				'tinyparams' => $this->getElement($info['name'] . 'tinyparams'),
 				'templates' => $this->getElement($info['name'] . 'templates'),
 				'xml' => $this->getElement($info['name'] . 'xml'),

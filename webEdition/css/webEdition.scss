@@ -2265,3 +2265,19 @@ div.collection-content{
 	overflow:scroll !important;
 	-webkit-overflow-scrolling:touch !important;
 }
+
+div.htmlDialogLayoutButtons{
+	text-align:right;
+	margin-left:10px;
+}
+
+.htmlDialogBorderButtons{
+	text-align:right;
+	margin-top:5px;
+}
+
+.htmlDialogBorder4Cell{
+	padding:2px 5px 2px 5px;
+	border-bottom: 1px solid silver;
+	background-color:white;
+}

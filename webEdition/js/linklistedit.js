@@ -81,3 +81,23 @@ function changeCTypeSelect(s) {
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
+
+function we_cmd() {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "we_selector_image":
+		case "we_selector_document":
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			break;
+
+		case "browse_server":
+			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			break;
+
+		default:
+			opener.parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+
+	}
+}

@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
-	function Header($weGlossaryFrames){
+	function Header(we_glossary_frames $weGlossaryFrames){
 		$we_tabs = new we_tabs();
 
 		$we_tabs->addTab(new we_tab(g_l('modules_glossary', '[overview]'), we_tab::ACTIVE, "setTab('1');"));
@@ -32,7 +32,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[type]'), g_l('modules_glossary', '[' . array_pop(explode('_', we_base_request::_(we_base_request::STRING, 'cmdid'))) . ']'));
 	}
 
-	function Body($weGlossaryFrames){
+	function Body(we_glossary_frames $weGlossaryFrames){
 		$_js = '';
 
 		$Temp = explode("_", we_base_request::_(we_base_request::STRING, 'cmdid'));
@@ -91,46 +91,8 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$Search->setWhere($Where);
 
 		// ---> Search End
-		// ---> some javascript code
-		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 
-		$_js .= $weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '&pnt=edheader&cmd=glossary_view_type&cmdid=' . $cmdid . '";
-						' . $weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '&pnt=edfooter&cmd=glossary_view_type&cmdid=' . $cmdid . '";
-function AllItems(){
-	if(document.we_form.selectAll.value == 0) {
-		temp = true;
-		document.we_form.selectAll.value = 1;
-	} else {
-		temp = false;
-		document.we_form.selectAll.value = 0;
-	}
-	for (var x = 0; x< document.we_form.elements.length; x++) {
-		var y = document.we_form.elements[x];
-		if(y.name == \'ID[]\') {
-			y.checked = temp;
-		}
-	}
-}
-function SubmitForm() {
-	document.we_form.submit();
-}
-function next() {
-	document.we_form.Offset.value = parseInt(document.we_form.Offset.value) + ' . $Rows . ';
-	SubmitForm();
-}
-function prev() {
-	document.we_form.Offset.value = parseInt(document.we_form.Offset.value) - ' . $Rows . ';
-	SubmitForm();
-}
-function jump(val) {
-	document.we_form.Offset.value = val;
-	SubmitForm();
-}';
-
-		$js = we_html_element::jsElement($_js);
-
-		// ---> end of javascript
-		// ---> build content
+		$js = we_html_element::jsElement($_js) . we_html_element::jsScript(JS_DIR . 'we_modules/glossary/we_glossary_frameEditorType.js', "loadHeaderFooter('" . we_base_request::_(we_base_request::STRING, 'cmdid') . "');Rows=" . $Rows . ";");
 
 		$content = self::getHTMLPreferences($Search, $Type, $Language) .
 			($Search->countItems() ?
@@ -147,7 +109,6 @@ function jump(val) {
 			0 => array(
 				'headline' => '',
 				'html' => $content,
-
 			),
 		);
 
@@ -158,11 +119,11 @@ function jump(val) {
 		return self::buildBody($weGlossaryFrames, $content);
 	}
 
-	function Footer($weGlossaryFrames){
+	function Footer(we_glossary_frames $weGlossaryFrames){
 		return self::buildFooter($weGlossaryFrames, "");
 	}
 
-	private static function getHTMLSearchResult($weGlossaryFrames, &$Search, $Type){
+	private static function getHTMLSearchResult(we_glossary_frames $weGlossaryFrames, &$Search, $Type){
 
 		$Search->execute();
 
@@ -312,28 +273,28 @@ function jump(val) {
 				"selectAll" => 0,
 				"do" => ""
 			)) . '
-		<table class="default" style="width:637px;margin-bottom:12px;">
-		<tr>
-			<td style="width:80px;"></td>
-			<td style="width:157px;"></td>
-			<td style="width:280px;"></td>
-			<td style="width:20px;"></td>
-			<td style="width:100px"></td>
-		</tr>
-		<tr>
-			<td class="defaultfont lowContrast">' . g_l('modules_glossary', '[search]') . '</td>
-			<td colspan="2">' . we_html_tools::htmlTextInput('Keyword', 24, we_base_request::_(we_base_request::STRING, 'Keyword', ''), "", "style=\"width: 430px\"") . '</td>
-			<td></td>
-			<td>' . $button . '</td>
-		</tr>
-		<tr>
-			<td class="defaultfont lowContrast" style="padding-top:12px;">' . g_l('modules_glossary', '[view]') . '</td>
-			<td>' . we_html_tools::htmlSelect("Rows", $_rows, 1, $Search->Rows, "", array('onchange' => "SubmitForm();")) . '</td>
-			<td>' . we_html_forms::checkboxWithHidden(we_base_request::_(we_base_request::BOOL, 'GreenOnly'), "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
-			<td></td>
-			<td>' . $newButton . '</td>
-		</tr>
-		</table>';
+<table class="default" style="width:637px;margin-bottom:12px;">
+	<tr>
+		<td style="width:80px;"></td>
+		<td style="width:157px;"></td>
+		<td style="width:280px;"></td>
+		<td style="width:20px;"></td>
+		<td style="width:100px"></td>
+	</tr>
+	<tr>
+		<td class="defaultfont lowContrast">' . g_l('modules_glossary', '[search]') . '</td>
+		<td colspan="2">' . we_html_tools::htmlTextInput('Keyword', 24, we_base_request::_(we_base_request::STRING, 'Keyword', ''), "", "style=\"width: 430px\"") . '</td>
+		<td></td>
+		<td>' . $button . '</td>
+	</tr>
+	<tr>
+		<td class="defaultfont lowContrast" style="padding-top:12px;">' . g_l('modules_glossary', '[view]') . '</td>
+		<td>' . we_html_tools::htmlSelect("Rows", $_rows, 1, $Search->Rows, "", array('onchange' => "SubmitForm();")) . '</td>
+		<td>' . we_html_forms::checkboxWithHidden(we_base_request::_(we_base_request::BOOL, 'GreenOnly'), "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
+		<td></td>
+		<td>' . $newButton . '</td>
+	</tr>
+	</table>';
 	}
 
 	private static function getHTMLPrevNext($Search, $extended = false){
@@ -356,50 +317,50 @@ function jump(val) {
 		$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, array("onchange" => "jump(this.value);"));
 
 		return '
-		<table class="default withBigSpace" style="margin:12px 0px 12px 5px;">
-		<tr>
-			<td>' . ($extended && (permissionhandler::hasPerm("DELETE_GLOSSARY") || permissionhandler::hasPerm("NEW_GLOSSARY")) ? we_html_button::create_button('selectAll', "javascript: AllItems();") : "") . '</td>
-			<td style="text-align:right"><table class="default">
-				<tr>
-					<td>' . $prev . '</td>
-					<td class="defaultfont" style="padding-left:10px;"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . g_l('global', '[from]') . ' ' . $sum . '</b></td>
-					<td style="padding-left:10px;">' . $next . '</td>
-					<td style="padding-left:10px;">' . $select . '</td>
-				</tr>
-				</table></td>
-		</tr>
-		' .
+	<table class="default withBigSpace" style="margin:12px 0px 12px 5px;">
+	<tr>
+		<td>' . ($extended && (permissionhandler::hasPerm("DELETE_GLOSSARY") || permissionhandler::hasPerm("NEW_GLOSSARY")) ? we_html_button::create_button('selectAll', "javascript: AllItems();") : "") . '</td>
+		<td style="text-align:right"><table class="default">
+			<tr>
+				<td>' . $prev . '</td>
+				<td class="defaultfont" style="padding-left:10px;"><b>' . ($Search->Rows == 1 ? $min : $min . '-' . $max) . ' ' . g_l('global', '[from]') . ' ' . $sum . '</b></td>
+				<td style="padding-left:10px;">' . $next . '</td>
+				<td style="padding-left:10px;">' . $select . '</td>
+			</tr>
+			</table></td>
+	</tr>
+	' .
 			($extended ?
 				'<tr>
-			<td colspan="3">
-				<table class="default">
-				<tr>
-					<td class="small">' . (permissionhandler::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_delete]') . "')) { document.we_form.elements.do.value='delete'; SubmitForm(); }") . '</td>
-					<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[delete_selected_items]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		<tr>
-		<tr>
-			<td colspan="3">
-				<table class="default">
-				<tr>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-sun-o', "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; SubmitForm(); }") . '</td>
-					<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[publish_selected_items]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3">
-				<table class="default">
-				<tr>
-					<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_unpublish]') . "')) { document.we_form.elements.do.value='unpublish'; SubmitForm(); }") . '</td>
-					<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[unpublish_selected_items]') : "") . '</td>
-				</tr>
-				</table>
-			</td>
-		</tr>' :
+		<td colspan="3">
+			<table class="default">
+			<tr>
+				<td class="small">' . (permissionhandler::hasPerm("DELETE_GLOSSARY") ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_delete]') . "')) { document.we_form.elements.do.value='delete'; SubmitForm(); }") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[delete_selected_items]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	<tr>
+	<tr>
+		<td colspan="3">
+			<table class="default">
+			<tr>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_publish,fa-lg fa-sun-o', "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_publish]') . "')) { document.we_form.elements.do.value='publish'; SubmitForm(); }") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[publish_selected_items]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3">
+			<table class="default">
+			<tr>
+				<td class="small">' . (permissionhandler::hasPerm("NEW_GLOSSARY") ? we_html_button::create_button('fa:btn_function_unpublish,fa-lg fa-moon-o', "javascript: if(confirm('" . g_l('modules_glossary', '[confirm_unpublish]') . "')) { document.we_form.elements.do.value='unpublish'; SubmitForm(); }") . '</td>
+				<td class="small" style="padding-left:1em;">' . g_l('modules_glossary', '[unpublish_selected_items]') : "") . '</td>
+			</tr>
+			</table>
+		</td>
+	</tr>' :
 				'') .
 			'</table>';
 	}

@@ -190,7 +190,7 @@ abstract class we_navigation_dynList{
 	public static function getCatgories($dirid, $count){
 		$_ids = array();
 		$db = new DB_WE();
-		$db->query('SELECT ID,Text,Title FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($dirid) . ' AND IsFolder=0  LIMIT ' . $count);
+		$db->query('SELECT ID,Text,Title FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($dirid) . ' LIMIT ' . $count);
 
 		while($db->next_record()){
 			$_ids[] = array(
@@ -251,8 +251,8 @@ abstract class we_navigation_dynList{
 	public static function getFirstDynDocument($id, we_database_base $db = null){
 		$db = $db ? : new DB_WE();
 		return (
-			($_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published!=0;', '', $db))? :
-				f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $db->escape(id_to_path($id, FILE_TABLE, $db)) . '%" AND IsFolder=0 AND IsDynamic=1 AND Published!=0;', '', $db)
+			($_id = f('SELECT ID FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($id) . ' AND IsFolder=0 AND IsDynamic=1 AND Published!=0', '', $db))? :
+				f('SELECT ID FROM ' . FILE_TABLE . ' WHERE Path LIKE "' . $db->escape(id_to_path($id, FILE_TABLE, $db)) . '%" AND IsFolder=0 AND IsDynamic=1 AND Published!=0', '', $db)
 			);
 	}
 

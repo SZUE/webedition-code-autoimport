@@ -271,7 +271,10 @@ class we_wysiwyg_editor{
 			return $options;
 		}
 
-		$options = $leadingEmpty ? array('---') + $options : $options;
+		if($leadingEmpty){
+			array_unshift($options, '---');
+		}
+
 		return $asArray ? $options : implode(',', $options);
 	}
 
