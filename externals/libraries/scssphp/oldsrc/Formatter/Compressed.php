@@ -2,28 +2,25 @@
 /**
  * SCSSPHP
  *
- * @copyright 2012-2015 Leaf Corcoran
+ * @copyright 2012-2014 Leaf Corcoran
  *
+ * @license http://opensource.org/licenses/gpl-license GPL-3.0
  * @license http://opensource.org/licenses/MIT MIT
  *
- * @link http://leafo.github.io/scssphp
+ * @link http://leafo.net/scssphp
  */
 
 namespace Leafo\ScssPhp\Formatter;
 
 use Leafo\ScssPhp\Formatter;
-use Leafo\ScssPhp\Formatter\OutputBlock;
 
 /**
- * Crunched formatter
+ * SCSS compressed formatter
  *
- * @author Anthon Pang <anthon.pang@gmail.com>
+ * @author Leaf Corcoran <leafot@gmail.com>
  */
-class Crunched extends Formatter
+class Compressed extends Formatter
 {
-    /**
-     * {@inheritdoc}
-     */
     public function __construct()
     {
         $this->indentLevel = 0;
@@ -33,27 +30,28 @@ class Crunched extends Formatter
         $this->close = '}';
         $this->tagSeparator = ',';
         $this->assignSeparator = ':';
-        $this->keepSemicolons = false;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function blockLines(OutputBlock $block)
+    public function indentStr($n = 0)
     {
-        $inner = $this->indentStr();
+        return '';
+    }
 
-        $glue = $this->break . $inner;
+    public function blockLines($inner, $block)
+    {
+        $glue = $this->break.$inner;
 
         foreach ($block->lines as $index => $line) {
-            if (substr($line, 0, 2) === '/*') {
+            if (substr($line, 0, 2) === '/*' && substr($line, 2, 1) !== '!') {
                 unset($block->lines[$index]);
+            } elseif (substr($line, 0, 3) === '/*!') {
+                $block->lines[$index] = '/*' . substr($line, 3);
             }
         }
 
         echo $inner . implode($glue, $block->lines);
 
-        if (! empty($block->children)) {
+        if (!empty($block->children)) {
             echo $this->break;
         }
     }
