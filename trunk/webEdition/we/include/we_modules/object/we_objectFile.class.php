@@ -3025,7 +3025,7 @@ class we_objectFile extends we_document{
 		}
 
 		$showLink = false;
-		if($foo['Workspaces']){
+		if($foo['Workspaces'] !== ''){
 			$wsp = array_merge(explode(',', trim($foo['Workspaces'], ',')), explode(',', trim($foo['ExtraWorkspacesSelected'], ',')));
 			if(we_users_util::in_workspace(($foo['TriggerID'] ? : $pid), $wsp, FILE_TABLE, $DB_WE)){
 				$showLink = true;
@@ -3060,7 +3060,7 @@ class we_objectFile extends we_document{
 			}
 			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
 		}
-		if($foo['Workspaces']){
+		if($foo['Workspaces'] !== ''){
 			$path = self::getNextDynDoc('', $pid, $foo['Workspaces'], '', $DB_WE);
 			/* $fooArr = makeArrayFromCSV($foo['Workspaces']);
 			  $path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%" LIMIT 1', '', $DB_WE); */
