@@ -998,77 +998,50 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 
 	function getHTMLFieldSelector(){
 		$_type = we_base_request::_(we_base_request::STRING, 'type'); // doctype || class
-		$_selection = we_base_request::_(we_base_request::INT, 'selection'); // templateid or classid
+		$_selection = we_base_request::_(we_base_request::INT, 'selection'); // doctype or classid
 		$_cmd = we_base_request::_(we_base_request::JS, 'cmd'); // js command
 		$_multi = we_base_request::_(we_base_request::JS, 'multi'); // js command
 
-		$__fields = array();
 
-		if($_type == we_navigation_navigation::STYPE_DOCTYPE){
+		switch($_type){
+			case we_navigation_navigation::STYPE_DOCTYPE:
+				$_fields = array();
+				$_templates = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_selection));
+				$_ids = makeArrayFromCSV($_templates);
 
-			$_db = new DB_WE();
-			$_fields = array();
-			$_templates = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($_selection), '', $_db);
-			$_ids = makeArrayFromCSV($_templates);
-
-			foreach($_ids as $_templateID){
-				$_template = new we_template();
-				$_template->initByID($_templateID, TEMPLATES_TABLE);
-				$_fields = array_merge($_fields, $_template->readAllVariantFields(true));
-			}
-			$__fields = array_keys($_fields);
-			$__tmp = array();
-			foreach($__fields as $val){
-				$__tmp[$val] = $val;
-			}
-			$__fields = $__tmp;
-		} else {
-			if(defined('OBJECT_TABLE')){
-
-				$_class = new we_object();
-				$_class->initByID($_selection, OBJECT_TABLE);
-				$_fields = $_class->getAllVariantFields();
-				foreach($_fields as $_key => $val){
-					$__fields[$_key] = substr($_key, strpos($_key, "_") + 1);
+				foreach($_ids as $_templateID){
+					$_template = new we_template();
+					$_template->initByID($_templateID, TEMPLATES_TABLE);
+					$_fields = array_merge($_fields, array_keys($_template->readAllVariantFields(true)));
 				}
-			}
+				$f = array_unique($_fields);
+				$fields = array_combine($f, $f);
+				break;
+			default:
+				$fields = array();
+				if(defined('OBJECT_TABLE')){
+
+					$_class = new we_object();
+					$_class->initByID($_selection, OBJECT_TABLE);
+					$_fields = array_keys($_class->getAllVariantFields());
+					foreach($_fields as $_key){
+						$fields[$_key] = substr($_key, strpos($_key, "_") + 1);
+					}
+				}
 		}
 		$_parts = array(
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlSelect(
-					'fields', $__fields, 20, '', ($_multi ? true : false), array('style' => "width: 300px; height: 200px; margin: 5px 0px 5px 0px;", 'onclick' => "setTimeout(selectItem,100);")),
+					'fields', $fields, 20, '', ($_multi ? true : false), array('style' => "width: 300px; height: 200px; margin: 5px 0px 5px 0px;", 'onclick' => "setTimeout(selectItem,100);")),
 			)
 		);
-		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:setFields();', true, 100, 22, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
+		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:setFields('" . $_cmd . "');", true, 100, 22, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
 
 		$_body = we_html_element::htmlBody(
-				array(
-				"class" => "weDialogBody", "onload" => "loaded=1;"
-				), we_html_element::htmlForm(
-					array(
-					"name" => "we_form", "onsubmit" => "return false"
-					), we_html_multiIconBox::getHTML('', $_parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
+				array("class" => "weDialogBody", "onload" => "loaded=1;"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), we_html_multiIconBox::getHTML('', $_parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
 
-		return $this->getHTMLDocument($_body, we_html_element::jsElement('
-function setFields() {
-	var list = document.we_form.fields.options;
-
-	var fields = [];
-	for(i=0;i<list.length;i++){
-		if(list[i].selected){
-			fields.push(list[i].value);
-		}
-	}
-	opener.' . $_cmd . '(fields.join(","));
-	self.close();
-}
-
-function selectItem() {
-	if(document.we_form.fields.selectedIndex>-1){
-		WE().layout.button.switch_button_state(document, "save", "enabled");
-	}
-}'));
+		return $this->getHTMLDocument($_body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_frame.js'));
 	}
 
 	function getHTMLCount(){
@@ -1080,17 +1053,18 @@ function selectItem() {
 	function getHTMLDirSelector(){
 		$rootDirID = 0;
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
+		$cmd1 = "document.we_form.elements.FolderID.value";
+		$wecmdenc1 = we_base_request::encCmd($cmd1);
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
 		$wecmdenc3 = we_base_request::encCmd("opener.top.content.mark();");
-		$_button_doc = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$_button_doc = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		$_countSubDirs = 1;
 		if(defined('OBJECT_FILES_TABLE') && ($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS || $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK)){
 			$_classDirID = f('SELECT ' . OBJECT_FILES_TABLE . '.ID AS classDirID FROM ' . OBJECT_TABLE . ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' ON (' . OBJECT_TABLE . '.Path=' . OBJECT_FILES_TABLE . '.Path) WHERE ' . OBJECT_TABLE . '.ID=' . $this->Model->ClassID, 'classDirID', $this->db);
 			$_countSubDirs = f('SELECT COUNT(1) FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID=' . $_classDirID . ' AND IsFolder=1', '', $this->db);
 		}
 
-		$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',classDirs[document.we_form.elements.ClassID.options[document.we_form.elements.ClassID.selectedIndex].value])", true, 100, 22, "", "", ($_countSubDirs ? false : true), false, "_XFolder") : '';
+		$_button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',classDirs[document.we_form.elements.ClassID.options[document.we_form.elements.ClassID.selectedIndex].value])", true, 100, 22, "", "", ($_countSubDirs ? false : true), false, "_XFolder") : '';
 		$_button_cat = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements.FolderID.value,'" . CATEGORY_TABLE . "','document.we_form.elements.FolderID.value','document.we_form.elements.FolderPath.value','opener.top.content.mark();','','" . $rootDirID . "')");
 		$_buttons = '<div id="docFolder" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCTYPE) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolder" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catFolder" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_CATEGORY ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
 
@@ -1211,10 +1185,10 @@ function selectItem() {
 	}
 
 	function getHTMLLink($prefix = ''){
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements." . $prefix . "UrlID.value");
+		$cmd1 = "document.we_form.elements." . $prefix . "UrlID.value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements." . $prefix . "UrlIDPath.value");
 		$wecmdenc3 = we_base_request::encCmd("opener.top.content.mark()");
-		$_cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements." . $prefix . "UrlID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+		$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
 		$_path = id_to_path($this->Model->UrlID);
 

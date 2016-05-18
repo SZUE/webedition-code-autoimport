@@ -104,3 +104,22 @@ function addCat(paths) {
 	}
 	categories_edit.showVariant(0);
 }
+
+function setFields(cmd) {
+	var list = document.we_form.fields.options;
+
+	var fields = [];
+	for (i = 0; i < list.length; i++) {
+		if (list[i].selected) {
+			fields.push(list[i].value);
+		}
+	}
+	opener[cmd](fields.join(","));
+	self.close();
+}
+
+function selectItem() {
+	if (document.we_form.fields.selectedIndex > -1) {
+		WE().layout.button.switch_button_state(document, "save", "enabled");
+	}
+}

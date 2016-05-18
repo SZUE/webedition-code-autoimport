@@ -171,19 +171,6 @@ class we_newsletter_view extends we_modules_view{
 		return $out;
 	}
 
-	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
-
-	function formDocChooser($width = '', $rootDirID = 0, $Pathname = 'ParentPath', $Pathvalue = '/', $IDName = 'ParentID', $IDValue = 0, $cmd = ''){
-		$Pathvalue = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($IDValue), 'Path', $this->db);
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
-
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', ' readonly', 'text', $width, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), $button);
-	}
-
 	function getFields($id, $table){
 		$ClassName = f('SELECT ClassName FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($id), 'ClassName', $this->db);
 		$foo = array();
