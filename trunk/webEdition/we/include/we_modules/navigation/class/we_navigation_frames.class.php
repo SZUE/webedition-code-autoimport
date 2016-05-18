@@ -29,12 +29,13 @@ class we_navigation_frames extends we_modules_frame{
 	public $Table = NAVIGATION_TABLE;
 
 	function __construct($_frameset){
+		$_frameset = WEBEDITION_DIR . 'we_showMod.php?mod=navigation';
 		parent::__construct($_frameset);
 		$this->module = 'navigation';
 		$this->treeDefaultWidth = 220;
 		$this->showTreeFooter = true;
 
-		$this->Tree = new we_navigation_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
+		$this->Tree = new we_navigation_tree($_frameset, 'top.content', 'top.content', 'top.content.cmd');
 		$this->View = new we_navigation_view($_frameset);
 		$this->Model = &$this->View->Model;
 	}

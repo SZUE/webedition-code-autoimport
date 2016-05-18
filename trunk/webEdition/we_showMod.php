@@ -144,7 +144,7 @@ switch($mod){
 				$GLOBALS['extraJS'] = ob_get_clean();
 				break;
 			default:
-				$weFrame = new we_navigation_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+				$weFrame = new we_navigation_frames();
 				$weFrame->process();
 				break;
 		}
