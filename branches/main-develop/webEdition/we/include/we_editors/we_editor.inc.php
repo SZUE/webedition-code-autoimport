@@ -480,10 +480,13 @@ if(
 								$we_doc->lockDocument();
 							}
 							$wasSaved = true;
-							if($we_doc->ContentType === we_base_ContentTypes::OBJECT){
-								$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
-							} else if($we_doc->ContentType === we_base_ContentTypes::COLLECTION){
-								$we_JavaScript .= "if(top.treeData.table==='" . VFILE_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
+							switch($we_doc->ContentType){
+								case we_base_ContentTypes::OBJECT:
+									$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
+									break;
+								case we_base_ContentTypes::COLLECTION:
+									$we_JavaScript .= "if(top.treeData.table==='" . VFILE_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
+									break;
 							}
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;

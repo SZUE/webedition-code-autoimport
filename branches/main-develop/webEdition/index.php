@@ -145,16 +145,6 @@ function showMessage(message, prio, win){
 	'</head>';
 }
 
-function cleanWECache(){
-	if(defined('WE_VERSION_UPDATE')){
-		if(!is_writeable(WE_CACHE_PATH)){
-			t_e('cachedir ' . WE_CACHE_PATH . ' is not writeable expect errors, undefined behaviour');
-			return;
-		}
-		we_cache_file::clean();
-	}
-}
-
 /* * ***************************************************************************
  * CLEAN Temporary Data left over from last logout  bug #4240
  * *************************************************************************** */
@@ -173,7 +163,7 @@ foreach($removePaths as $path){
 }
 
 we_base_file::cleanTempFiles(true);
-cleanWECache();
+we_base_file::cleanWECache();
 we_navigation_cache::clean();
 we_captcha_captcha::cleanup($GLOBALS['DB_WE']);
 we_search_search::cleanOldEntries();

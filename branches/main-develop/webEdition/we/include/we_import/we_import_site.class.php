@@ -560,11 +560,9 @@ function doUnload() {
 	 */
 	private function _getTemplateSelectHTML($tid){
 		$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid));
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['templateID'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['templateDummy'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.displayTable();");
+		$cmd1 = "document.we_form.elements['templateID'].value";
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['templateDummy'].value") . "','" . we_base_request::encCmd("opener.displayTable();") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
 		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
@@ -578,18 +576,18 @@ function doUnload() {
 	 */
 	private function _getContentHTML(){
 		// Suorce Directory
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.from.value");
+
+		$cmd1 = "document.we_form.elements.from.value";
 		$_from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','" . we_base_ContentTypes::FOLDER . "',document.we_form.elements.from.value)") :
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "','" . we_base_ContentTypes::FOLDER . "'," . $cmd1 . ")") :
 			"";
 
 		$_input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
 		$_importFrom = we_html_tools::htmlFormElementTable($_input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", $_from_button, '', "", "", "", 0);
 
 		// Destination Directory
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.to.value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.toPath.value");
-		$_to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.to.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
+		$cmd1 = "document.we_form.elements.to.value";
+		$_to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.toPath.value") . "','','','0')");
 
 		//$_hidden = we_html_element::htmlHidden("to",$this->to);
 		//$_input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
@@ -996,9 +994,9 @@ function doUnload() {
 	 */
 	private static function _formPathHTML($templateName, $myid){
 		$path = id_to_path($myid, TEMPLATES_TABLE);
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.templateParentID.value");
+		$cmd1 = "document.we_form.elements.templateParentID.value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.templateDirName.value");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.templateParentID.value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','','')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("TplPath");
@@ -1620,6 +1618,7 @@ function doUnload() {
 			case we_base_ContentTypes::QUICKTIME:
 			case we_base_ContentTypes::VIDEO:
 			case we_base_ContentTypes::AUDIO:
+				$filesize = !is_dir($path) && ($filesize = filesize($path)) ? $filesize : 0;
 				break;
 			default:
 				if(!is_dir($path) && filesize($path)){
@@ -1684,9 +1683,11 @@ function doUnload() {
 			case we_base_ContentTypes::FLASH:
 			case we_base_ContentTypes::QUICKTIME:
 			case we_base_ContentTypes::VIDEO:
+				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'image');
 				break;
 			case we_base_ContentTypes::AUDIO:
+				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'audio');
 				break;
 			case we_base_ContentTypes::HTML :

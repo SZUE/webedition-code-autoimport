@@ -173,7 +173,7 @@ class we_export_wizard{
 		if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1))){
 			$args .= "&we_cmd[1]=" . $cmd1;
 		}
-		$this->Tree = new we_export_tree(WE_EXPORT_MODULE_DIR . "export_frameset.php", 'top.opener', $this->bodyFrame, $this->loadFrame);
+		$this->Tree = new we_export_tree(WE_EXPORT_MODULE_DIR . "export_frameset.php", $this->topFrame, $this->bodyFrame, $this->loadFrame);
 
 		$js = $this->getJSTop() .
 				$this->Tree->getJSTreeCode() .

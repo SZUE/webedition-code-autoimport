@@ -227,10 +227,9 @@ class we_docTypes extends we_class{
 
 		$textname = 'we_' . $this->Name . '_ParentPath';
 		$idname = 'we_' . $this->Name . '_ParentID';
-
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
+		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "', '', '')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . FILE_TABLE . "', '" . we_base_request::encCmd($cmd1) . "', '" . $wecmdenc2 . "', '', '')");
 		$yuiSuggest->setAcId("Path");
 		$yuiSuggest->setContentType("folder");
 		$yuiSuggest->setInput($textname, $this->ParentPath);

@@ -393,17 +393,18 @@ function tinyEdOnPostRender(ed, cm) {
 }
 
 function tinyWeResizeEditor(render, name) {
-	var h = tinyMCE.DOM.get(name + "_toolbargroup").parentNode.offsetHeight;
-	if (render && --tinyMCE.weResizeLoops && h < 24) {
+	var el = tinyMCE.DOM.get(name + "_toolbargroup");
+	var h = el ? el.parentNode.offsetHeight : 0;
+	if ((render || !el) && --tinyMCE.weResizeLoops && h < 24) {
 		setTimeout(tinyWeResizeEditor, 10, true);
+		return;
 	}
 
 	tinyMCE.DOM.setStyle(
 					tinyMCE.DOM.get(name + "_ifr"),
 					"height",
-					//(tinyMCE.DOM.get(name+"_tbl").offsetHeight - h - 30)+"px");
-									(window.innerHeight - h - 60) + "px"
-									);
+					(window.innerHeight - h - 60) + "px"
+					);
 }
 
 function tinySetEditorLevel(ed) {
@@ -423,7 +424,7 @@ function tinySetEditorLevel(ed) {
 	} else if (top.opener !== null && top.opener.top.WebEdition && top.opener.top.WebEdition.layout.weEditorFrameController !== undefined && top.isWeDialog === undefined) {
 		ed.editorLevel = "popup";
 		ed.weEditorFrame = top.opener.top.WebEdition.layout.weEditorFrameController;
-	} else if(top.isWeDialog) {
+	} else if (top.isWeDialog) {
 		ed.editorLevel = "fullscreen";
 		ed.weEditorFrame = null;
 	} else {

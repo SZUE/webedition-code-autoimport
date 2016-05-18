@@ -24,30 +24,29 @@
  */
 class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 
-	function Header($weGlossaryFrames){
+	function Header(we_glossary_frames $weGlossaryFrames){
 		$cmdid = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(new we_tab(g_l('modules_glossary', '[dictionary]'), we_tab::ACTIVE, "setTab('1');"));
 
 		$frontendL = getWeFrontendLanguagesForBackend();
-		$title = g_l('modules_glossary', '[dictionary]') . ":&nbsp;" . $frontendL[$cmdid];
 
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[dictionary]'), $frontendL[$cmdid]);
 	}
 
-	function Body($weGlossaryFrames){
+	function Body(we_glossary_frames $weGlossaryFrames){
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 
-		return self::buildBody($weGlossaryFrames, we_html_element::jsElement($weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '&pnt=edheader&cmd=view_dictionary&cmdid=' . $cmdid . '";' .
-					$weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '&pnt=edfooter&cmd=view_dictionary&cmdid=' . $cmdid . '"') .
-				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames), 30, '', -1, '', '', false))
+		return self::buildBody($weGlossaryFrames, we_html_element::jsElement($weGlossaryFrames->topFrame . '.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=view_dictionary&cmdid=' . $cmdid . '";' .
+					$weGlossaryFrames->topFrame . '.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=view_dictionary&cmdid=' . $cmdid . '"') .
+				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties(), 30, '', -1, '', '', false))
 		);
 	}
 
-	function getHTMLTabProperties($weGlossaryFrames){
+	private function getHTMLTabProperties(){
 		$language = substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5);
 
 		$content = '<table class="default">

@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 
-	function Header($weGlossaryFrames){
+	function Header(we_glossary_frames $weGlossaryFrames){
 
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(new we_tab(g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
@@ -50,127 +50,14 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		return self::buildHeader($weGlossaryFrames, $we_tabs, $title, ($weGlossaryFrames->View->Glossary->ID ? oldHtmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary', '[menu_new]')) . '<div id="mark" style="display: none;">*</div>');
 	}
 
-	function Body($weGlossaryFrames){
+	function Body(we_glossary_frames $weGlossaryFrames){
 		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 		$yuiSuggest = &weSuggest::getInstance();
 
 		$out = weSuggest::getYuiFiles() .
-			we_html_element::jsElement('
-var table = "' . GLOSSARY_TABLE . '";
-
-function toggle(id){
-	var elem = document.getElementById(id);
-	if(elem.style.display == "none") elem.style.display = "block";
-	else elem.style.display = "none";
-}
-
-function setVisible(id,visible){
-	var elem = document.getElementById(id);
-	if(visible==true) elem.style.display = "block";
-	else elem.style.display = "none";
-}
-
-function showType(type) {
-	document.getElementById("type_abbreviation").style.display = "none";
-	document.getElementById("type_acronym").style.display = "none";
-	document.getElementById("type_foreignword").style.display = "none";
-	document.getElementById("type_link").style.display = "none";
-	document.getElementById("type_textreplacement").style.display = "none";
-	document.getElementById("type_" + type).style.display = "block";
-	document.we_form.cmd.value = "edit_" + type;
-	if(type == "link") {
-		document.getElementsByClassName("btn_direction_weMultibox_table")[0].style.display = "inline";
-		document.getElementById("text_weMultibox").style.display = "inline";
-		document.getElementById("div_weMultibox_2").style.display = "block";
-		document.getElementById("div_weMultibox_3").style.display = "block";
-		document.getElementById("div_weMultibox_4").style.display = "block";
-		document.getElementById("div_weMultibox_5").style.display = "block";
-		document.getElementById("div_weMultibox_6").style.display = "block";
-		document.getElementById("div_weMultibox_7").style.display = "block";
-		showLinkMode("intern");
-	} else {
-		document.getElementsByClassName("btn_direction_weMultibox_table")[0].style.display = "none";
-		document.getElementById("text_weMultibox").style.display = "none";
-		document.getElementById("div_weMultibox_2").style.display = "none";
-		document.getElementById("div_weMultibox_3").style.display = "none";
-		document.getElementById("div_weMultibox_4").style.display = "none";
-		document.getElementById("div_weMultibox_5").style.display = "none";
-		document.getElementById("div_weMultibox_6").style.display = "none";
-		document.getElementById("div_weMultibox_7").style.display = "none";
-	}
-}
-
-function showLinkMode(mode) {
-	document.getElementById("mode_intern").style.display = "none";
-	document.getElementById("mode_extern").style.display = "none";
-	document.getElementById("mode_object").style.display = "none";
-	document.getElementById("mode_category").style.display = "none";
-	document.getElementById("mode_" + mode).style.display = "block";
-	if(mode == "category") {
-		showLinkModeCategory("intern");
-	}
-}
-
-function showLinkModeCategory(mode) {
-	document.getElementById("mode_category_intern").style.display = "none";
-	document.getElementById("mode_category_extern").style.display = "none";
-	document.getElementById("mode_category_" + mode).style.display = "block";
-}
-
-function setHot() {
-	' . $weGlossaryFrames->topFrame . '.editor.edheader.document.getElementById("mark").style.display = "inline";
-	top.hot=1;
-}
-
-function setDisplay(id, display) {
-	document.getElementById(id).style.display = display;
-}
-
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
-
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]) {
-		case "populateWorkspaces":
-			document.we_form.cmd.value=args[0];
-			document.we_form.tabnr.value=' . $this->topFrame . '.activ_tab;
-			document.we_form.pnt.value="cmd";
-			submitForm("cmd");
-			break;
-		case "we_selector_image":
-		case "we_selector_document":
-			new (WE().util.jsWindow)(this, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
-			break;
-		case "we_selector_file":
-			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
-			break;
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
-			break;
-		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
-			break;
-		default:
-			' . $this->topFrame . '.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-
-	}
-}
-
-function submitForm(target,action,method) {
-	var f = self.document.we_form;
-
-	f.target = (target?target:"edbody");
-	f.action = (action?action:"' . $weGlossaryFrames->frameset . '");
-	f.method = (method?method:"post");
-	f.submit();
-}' .
-				$weGlossaryFrames->topFrame . '.editor.edheader.location="' . $weGlossaryFrames->frameset . '&pnt=edheader";' .
-				$weGlossaryFrames->topFrame . '.editor.edfooter.location="' . $weGlossaryFrames->frameset . '&pnt=edfooter"') .
+			we_html_element::jsElement('var table="' . GLOSSARY_TABLE . '";') .
+			we_html_element::jsScript(JS_DIR . 'we_modules/glossary/we_glossary_frameEditorItem.js', 'loadHeaderFooter();') .
 			we_html_multiIconBox::getJs() .
 			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false)) .
 			we_html_element::jsElement(
@@ -187,7 +74,7 @@ function submitForm(target,action,method) {
 		return self::buildBody($weGlossaryFrames, $out);
 	}
 
-	function Footer($weGlossaryFrames){
+	function Footer(we_glossary_frames $weGlossaryFrames){
 		$SaveButton = we_html_button::create_button(we_html_button::SAVE, "javascript:if(top.publishWhenSave==1){top.content.editor.edbody.document.getElementById('Published').value=1;};we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
 		$UnpublishButton = we_html_button::create_button('deactivate', "javascript:top.content.editor.edbody.document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
 
@@ -224,7 +111,7 @@ function we_save() {
 		return self::buildFooter($weGlossaryFrames, $form);
 	}
 
-	function getHTMLTabProperties(we_glossary_glossary $glossary){
+	private function getHTMLTabProperties(we_glossary_glossary $glossary){
 		$_types = array(
 			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
 			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
@@ -367,10 +254,8 @@ function we_save() {
 	}
 
 	function getHTMLIntern(we_glossary_glossary $glossary){
-		$_rootDirID = 0;
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkID]'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkPath]'].value");
-		$_cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][InternLinkID]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "')";
+		$cmd1 = "document.we_form.elements['link[Attributes][InternLinkID]'].value";
+		$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkPath]'].value") . "','','','0')";
 		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
 
 		if($glossary->Type === "link" && $glossary->getAttribute('mode') === "intern"){
@@ -430,11 +315,8 @@ function we_save() {
 			$_linkPath = $_linkID = $_workspaceID = $_parameter = "";
 		}
 
-		$_rootDirID = 0;
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['link[Attributes][ObjectLinkID]'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['link[Attributes][ObjectLinkPath]'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('populateWorkspaces');");
-		$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $_rootDirID . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
+		$cmd1 = "document.we_form.elements['link[Attributes][ObjectLinkID]'].value";
+		$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][ObjectLinkPath]'].value") . "','" . we_base_request::encCmd("opener.we_cmd('populateWorkspaces');") . "','','0','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
 
 		$yuiSuggest = &weSuggest::getInstance();
@@ -449,7 +331,7 @@ function we_save() {
 		$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 		$yuiSuggest->setWidth(400);
 
-		$_wsid = ($this->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($this->View->Glossary->getAttribute('ObjectLinkID')) : array());
+		$_wsid = ($glossary->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($glossary->View->Glossary->getAttribute('ObjectLinkID')) : array());
 
 		return '<div id="mode_object" style="display: none;">
 	<table class="default">
@@ -488,20 +370,14 @@ function we_save() {
 			$_parameter = "";
 		}
 
+		$cmd1 = "document.we_form.elements['link[Attributes][CategoryLinkID]'].value";
 
-		$_rootDirID = 0;
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryLinkID]'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryLinkPath]'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.setHot();");
-
-		$_cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'" . CATEGORY_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $_rootDirID . "')";
+		$_cmd = "javascript:we_cmd('we_selector_category'," . $cmd1 . ",'" . CATEGORY_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryLinkPath]'].value") . "','" . we_base_request::encCmd("opener.setHot();") . "','','0')";
 
 		$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryLinkID]', $_linkID), we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false));
 
-		$_rootDirID = 0;
 		$cmd1 = "document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryInternLinkPath]'].value");
-		$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "')";
+		$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryInternLinkPath]'].value") . "','','','0')";
 
 		$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]', 58, $_internLinkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryInternLinkID]', $_internLinkID), we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false)
 		);
@@ -595,7 +471,28 @@ function we_save() {
 	}
 
 	private function getHTMLLinkAttributes(we_glossary_glossary $glossary){
-		$_parts = array(
+		$_input_width = 70;
+		$_popup = new we_html_table(array('cellpadding' => 5), 4, 4);
+		$_popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
+		$_popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));
+
+		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_xposition]', 5, $glossary->getAttribute('popup_xposition'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_x]')));
+		$_popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_yposition]', 5, $glossary->getAttribute('popup_yposition'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_y]')));
+		$_popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_width]', 5, $glossary->getAttribute('popup_width'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_width]')));
+
+		$_popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_height]', 5, $glossary->getAttribute('popup_height'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_height]')));
+
+
+		$_popup->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary', '[popup_status]')));
+		$_popup->setCol(2, 1, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary', '[popup_scrollbars]')));
+		$_popup->setCol(2, 2, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary', '[popup_menubar]')));
+
+		$_popup->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary', '[popup_resizable]')));
+		$_popup->setCol(3, 1, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary', '[popup_location]')));
+		$_popup->setCol(3, 2, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]')));
+
+
+		return array(
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_glossary', '[linkprops_desc]'), we_html_tools::TYPE_INFO, 520),
@@ -632,37 +529,13 @@ function we_save() {
 				'space' => 120,
 				'noline' => 1
 			),
+			array(
+				'headline' => g_l('modules_glossary', '[popup]'),
+				'html' => $_popup->getHTML(),
+				'space' => 120,
+				'noline' => 1
+			)
 		);
-
-		$_input_width = 70;
-		$_popup = new we_html_table(array('cellpadding' => 5), 4, 4);
-		$_popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
-		$_popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));
-
-		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_xposition]', 5, $glossary->getAttribute('popup_xposition'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_x]')));
-		$_popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_yposition]', 5, $glossary->getAttribute('popup_yposition'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_y]')));
-		$_popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_width]', 5, $glossary->getAttribute('popup_width'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_width]')));
-
-		$_popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_height]', 5, $glossary->getAttribute('popup_height'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_height]')));
-
-
-		$_popup->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary', '[popup_status]')));
-		$_popup->setCol(2, 1, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary', '[popup_scrollbars]')));
-		$_popup->setCol(2, 2, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary', '[popup_menubar]')));
-
-		$_popup->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary', '[popup_resizable]')));
-		$_popup->setCol(3, 1, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary', '[popup_location]')));
-		$_popup->setCol(3, 2, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]')));
-
-
-		$_parts[] = array(
-			'headline' => g_l('modules_glossary', '[popup]'),
-			'html' => $_popup->getHTML(),
-			'space' => 120,
-			'noline' => 1
-		);
-
-		return $_parts;
 	}
 
 }
