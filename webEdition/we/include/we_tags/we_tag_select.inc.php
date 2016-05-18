@@ -24,7 +24,7 @@
  */
 function we_parse_tag_select($attribs, $content){
 	return '<?php if($GLOBALS[\'we_editmode\']){ ob_start();?>' . $content . '<?php $we_select_content=ob_get_clean();}else{$we_select_content=\'\';}'
-		. 'printElement(' . we_tag_tagParser::printTag('select', $attribs, '$we_select_content') . ');?>';
+		. 'printElement(' . we_tag_tagParser::printTag('select', $attribs, '$we_select_content', false, true) . ');?>';
 }
 
 function we_tag_select($attribs, $content){
@@ -61,7 +61,7 @@ function we_tag_select($attribs, $content){
 			}
 			break;
 	}
-	$attribs = removeAttribs($attribs, array('reload', 'value', '_name_orig')); //	not html - valid
+	$attribs = removeAttribs($attribs, array('reload', 'value', '_name_orig', 'type', 'values')); //	not html - valid
 	$attribs['class'] = "defaultfont";
 	$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 	$attribs['onchange'] = '_EditorFrame.setEditorIsHot(true);' . ($onchange ? : "") . ';' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '');

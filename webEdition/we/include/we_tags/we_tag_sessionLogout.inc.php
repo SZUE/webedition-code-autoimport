@@ -22,17 +22,21 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+function we_parse_tag_sessionLogout($attribs, $content){
+	return '<?php printElement(' . we_tag_tagParser::printTag('sessionLogout', $attribs) . ');?>' . $content . '</a>';
+}
+
 function we_tag_sessionLogout($attribs, $content){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
 	}
 	$id = weTag_getAttribute('id', $attribs, '', we_base_request::STRING);
 	$id = ($id === 'self') ? $GLOBALS['WE_MAIN_DOC']->ID : $id;
-	$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
+	$row = getHash('SELECT Path,IsFolder FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 
 	$url = ($row ? $row['Path'] . ($row['IsFolder'] ? '/' : '') : '');
 	$attribs = removeAttribs($attribs, array('id', '_name_orig')); //	not html - valid
 	$attribs['href'] = $url . '?we_webUser_logout=1';
 
-	return getHtmlTag('a', $attribs, $content, true);
+	return getHtmlTag('a', $attribs, $content);
 }
