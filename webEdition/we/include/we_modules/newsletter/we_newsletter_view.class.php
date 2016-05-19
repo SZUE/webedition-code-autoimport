@@ -748,11 +748,11 @@ self.close();');
 				break;
 
 			case "delete_email_file":
-				$nrid = we_base_request::_(we_base_request::INT, "nrid", '');
+				$nrid = we_base_request::_(we_base_request::INT, "nrid", false);
 				$csv_file = we_base_request::_(we_base_request::FILE, "csv_file", '');
 				$emails = ($csv_file ? we_newsletter_newsletter::getEmailsFromExtern($csv_file, 2) : array());
 
-				if($nrid){
+				if($nrid !== false){
 					unset($emails[$nrid]);
 					$emails_out = '';
 					foreach($emails as $email){
