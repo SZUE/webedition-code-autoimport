@@ -229,7 +229,6 @@ class we_search_base{
 	}
 
 	function getNextPrev($we_search_anzahl){
-		t_e('call', $this->anzahl, $we_search_anzahl);
 		$out = '<table class="default">
 <tr>
 	<td>' .
