@@ -178,13 +178,7 @@ function setColor(theRow, theRowNum, newColor) {
 	if (fo.elements.mark.value !== '' || theRow.style === undefined) {
 		return false;
 	}
-	if (document.getElementsByTagName !== undefined) {
-		theCells = theRow.getElementsByTagName('td');
-	} else if (theRow.cells !== undefined) {
-		theCells = theRow.cells;
-	} else {
-		return false;
-	}
+	theCells = theRow.getElementsByTagName('td');
 	var rowCellsCnt = theCells.length;
 	var domDetect = (window.opera === undefined && theCells[0].getAttribute !== undefined);
 	var c = null;
