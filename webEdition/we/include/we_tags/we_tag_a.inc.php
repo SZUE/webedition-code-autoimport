@@ -21,9 +21,9 @@
  * @param		$content
  * @return		string
  */
-/*function we_parse_tag_a($attribs, $content){
-	return '<?php printElement(' . we_tag_tagParser::printTag('a', $attribs, $content, true) . ');?>';
-}*/
+/* function we_parse_tag_a($attribs, $content){
+  return '<?php printElement(' . we_tag_tagParser::printTag('a', $attribs, $content, true) . ');?>';
+  } */
 
 function we_tag_a($attribs, $content){
 	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){
@@ -134,7 +134,6 @@ function we_tag_a($attribs, $content){
 			$shopname = weTag_getAttribute('shopname', $attribs);
 			$ifShopname = ($shopname ? '&shopname=' . $shopname : '');
 			if($delarticle){ // delete article
-
 				$customReq = '';
 				if(isset($GLOBALS['lv']) && ($GLOBALS['lv'] instanceof we_shop_shop)){
 
@@ -231,7 +230,6 @@ function we_tag_a($attribs, $content){
 
 	if($button){ //	show button
 		$attribs['type'] = 'button';
-		$attribs['value'] = oldHtmlspecialchars($content);
 		$attribs['onclick'] = ($target ? "var we_win=window.open('','" . $target . "');we_win" : 'self') .
 			".document.location='" . $url . oldHtmlspecialchars(($param ? '?' . implode('&', $param) : '')) . "';";
 
@@ -242,7 +240,7 @@ function we_tag_a($attribs, $content){
 			$confirm = str_replace("'", "\\'", $confirm);
 			$attribs['onclick'] = 'if(confirm(\'' . $confirm . '\')){' . $attribs['onclick'] . '}';
 		}
-		return getHtmlTag('input', $attribs);
+		return getHtmlTag('button', $attribs, $content, true);
 	}
 //	show normal link
 	$attribs['href'] = $url . ($param ? oldHtmlspecialchars('?' . implode('&', $param)) : '');
