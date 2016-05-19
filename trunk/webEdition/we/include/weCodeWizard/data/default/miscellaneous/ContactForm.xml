@@ -18,7 +18,7 @@
     <legend>__GL([miscellaneous][ContactForm][yourData])__</legend>
     <p>
       <label for="title">__GL([miscellaneous][ContactForm][salutation])__*:</label>
-      <select size="1" name="title" id="title">
+      <select name="title" id="title">
         <option></option>
         <option value="__GL([miscellaneous][ContactForm][mr])__">__GL([miscellaneous][ContactForm][mr])__</option>
         <option value="__GL([miscellaneous][ContactForm][mrs])__">__GL([miscellaneous][ContactForm][mrs])__</option>

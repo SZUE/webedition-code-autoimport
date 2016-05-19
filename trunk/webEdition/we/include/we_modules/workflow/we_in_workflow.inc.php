@@ -81,7 +81,7 @@ echo STYLESHEET;
 			if($wfID){
 				?>
 				<form action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
-					$wf_select = '<select name="wf_select" size="1">';
+					$wf_select = '<select name="wf_select">';
 					$wfs = we_workflow_utility::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE, $we_doc->Table, $all);
 					foreach($wfs as $wID => $wfname){
 						$wf_select .= '<option value="' . $wID . '"' . (($wID == $wfID) ? ' selected' : '') . '>' . oldHtmlspecialchars($wfname) . "</option>\n";

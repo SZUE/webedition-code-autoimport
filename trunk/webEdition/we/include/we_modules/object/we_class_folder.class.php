@@ -203,7 +203,6 @@ class we_class_folder extends we_folder{
 
 	function searchProperties(){
 		$pathLen = 32;
-		$strlen = 20;
 
 		$userWSArray = $this->setDefaultWorkspaces();
 
@@ -239,7 +238,7 @@ class we_class_folder extends we_folder{
 		);
 
 		$content = array();
-		$f = 0;
+
 		while($this->searchclass->next_record()){
 			$stateclass = !$this->searchclass->f("Published") ? 'notpublished' : ($this->searchclass->f("ModDate") > $this->searchclass->f("Published") ? 'changed' : '');
 			$content[] = array(
@@ -271,10 +270,9 @@ class we_class_folder extends we_folder{
 			);
 
 			$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("ID") . "]'].checked=true;";
-			$f++;
 		}
 
-		return $this->getSearchresult($content, $headline, $f, $javascriptAll);
+		return $this->getSearchresult($content, $headline, $javascriptAll);
 	}
 
 	function searchFields(){
@@ -424,7 +422,7 @@ class we_class_folder extends we_folder{
 			$f++;
 		}
 
-		return $this->getSearchresult($content, $headline, $f, $javascriptAll);
+		return $this->getSearchresult($content, $headline, $javascriptAll);
 	}
 
 	function getSearchDialog(){
@@ -542,7 +540,8 @@ class we_class_folder extends we_folder{
 		return $out;
 	}
 
-	function getSearchresult($content, $headline, $foundItems, $javascriptAll){
+	function getSearchresult($content, $headline, $javascriptAll){
+		$foundItems = $this->searchclass->maxItems;
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$values = array(10 => 10, 25 => 25, 50 => 50, 100 => 100, 500 => 500, 1000 => 1000, 5000 => 5000, 10000 => 10000, 50000 => 50000, 100000 => 100000);
@@ -567,7 +566,7 @@ class we_class_folder extends we_folder{
 		<td style="width:350px;">' . we_html_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>	</tr>
 <tr>
 	<td class="defaultfont lowContrast" style="width:128px;">' . g_l('modules_objectClassfoldersearch', '[anzeige]') . '</td>
-	<td colspan="3">' . we_html_tools::htmlSelect('searchView', array('properties' => g_l('weClass','[properties]'), 'fields' => g_l('modules_objectClassfoldersearch','[FELDER]')), 1, $this->searchView, "", array('onchange' => 'this.form.elements.SearchStart.value=0;submit();')) . '</td>
+	<td colspan="3">' . we_html_tools::htmlSelect('searchView', array('properties' => g_l('weClass', '[properties]'), 'fields' => g_l('modules_objectClassfoldersearch', '[FELDER]')), 1, $this->searchView, "", array('onchange' => 'this.form.elements.SearchStart.value=0;submit();')) . '</td>
 </tr>
 </table>
 	<table class="default" style="margin-bottom:12px;">

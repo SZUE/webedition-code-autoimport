@@ -50,12 +50,12 @@ function addRow(rowNr) {
 
 		_cell = document.createElement("TD");
 		_cell.style.paddingTop = "4px";
-		_cell.innerHTML = '<select onchange="wecf_hot();" class="weSelect leftInput" size="1">' + filter.args + '</select>';
+		_cell.innerHTML = '<select onchange="wecf_hot();" class="weSelect leftInput">' + filter.args + '</select>';
 		_newRow.appendChild(_cell);
 
 		_cell = document.createElement("TD");
 		_cell.style.paddingTop = "4px";
-		_cell.innerHTML = '<select onchange="wecf_hot();" class="weSelect middleInput" size="1" >' + filter.op + '</select>';
+		_cell.innerHTML = '<select onchange="wecf_hot();" class="weSelect middleInput">' + filter.op + '</select>';
 		_newRow.appendChild(_cell);
 
 		_cell = document.createElement("TD");
@@ -112,7 +112,7 @@ function updateFilterTable() {
 
 			_cell = _row.cells[0];  // logic
 			if (_cell.innerHTML.trim().toLowerCase().substring(0, 4) == "<img" && i > 0) {
-				_cell.innerHTML = '<select onchange="wecf_logic_changed(this);" class="weSelect defaultfont" name="filterLogic_' + i + '" size="1">' + filter.logic + '</select>';
+				_cell.innerHTML = '<select onchange="wecf_logic_changed(this);" class="weSelect defaultfont" name="filterLogic_' + i + '">' + filter.logic + '</select>';
 			}
 
 			if (i > 0) {

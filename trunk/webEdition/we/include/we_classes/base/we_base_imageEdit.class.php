@@ -738,7 +738,7 @@ abstract class we_base_imageEdit{
 	 * @param string[optional] $sel
 	 */
 	public static function qualitySelect($name = 'quality', $sel = 8){
-		return '<select name="' . $name . '" class="weSelect" size="1">
+		return '<select name="' . $name . '" class="weSelect">
 <option value="0"' . (($sel == 0) ? ' selected' : '') . '>0 - ' . g_l('weClass', '[quality_low]') . '</option>
 <option value="1"' . (($sel == 1) ? ' selected' : '') . '>1</option>
 <option value="2"' . (($sel == 2) ? ' selected' : '') . '>2</option>

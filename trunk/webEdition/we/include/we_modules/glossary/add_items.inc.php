@@ -260,7 +260,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 						var td = document.createElement('td');
 						var html;
 
-						html = '<select class="defaultfont" name="item[' + word + '][type]" size="1" id="type_' + counter + '" onchange="disableItem(' + counter + ', this.value);" style="width: 140px">'
+						html = '<select class="defaultfont" name="item[' + word + '][type]" id="type_' + counter + '" onchange="disableItem(' + counter + ', this.value);" style="width: 140px">'
 		<?php
 		foreach($Modes as $Key => $Value){
 			echo "		+	'<option value=\"" . $Key . "\"' + (type == '" . $Key . "' ? ' selected=\"selected\"' : '') + '>" . $Value . "</option>'";
@@ -276,7 +276,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 					function getLanguageColumn(word, lang) {
 						var td = document.createElement('td');
-						td.innerHTML = '<select class="defaultfont" name="item[' + word + '][lang]" size="1" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">' +
+						td.innerHTML = '<select class="defaultfont" name="item[' + word + '][lang]" id="lang_' + counter + '" disabled=\"disabled\" style="width: 100px">' +
 										'<option value="' + lang + '">' + lang + '</option>' +
 										'<optgroup label="' + WE().consts.g_l.glossary.change_to + '">'
 						'<option value="">-- ' + WE().consts.g_l.glossary.input + ' --</option>' +

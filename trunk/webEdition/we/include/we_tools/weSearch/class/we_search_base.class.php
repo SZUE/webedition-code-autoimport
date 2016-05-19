@@ -35,6 +35,7 @@ class we_search_base{
 	var $get;
 	var $Order;
 	var $anzahl = 10;
+	var $maxItems = 0;
 	var $searchstart = 0;
 	public $Record = array();
 
@@ -177,7 +178,7 @@ class we_search_base{
 		$this->where = ($where? : $this->where);
 		$this->get = ($get? : rtrim($this->get, ',')? : '*' );
 		$this->Order = ($order? : $this->Order);
-
+		$this->maxItems = f('SELECT COUNT(1) FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : ''));
 		$this->limit = ' LIMIT ' . ($limit ? : $this->searchstart . ',' . $this->anzahl . ' ');
 
 		$this->db->query('SELECT ' . $this->get . ' FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : '') . ' ' . ($this->Order ? ' ORDER BY ' . $this->Order : '') . ' ' . $this->limit);
@@ -228,6 +229,7 @@ class we_search_base{
 	}
 
 	function getNextPrev($we_search_anzahl){
+		t_e('call', $this->anzahl, $we_search_anzahl);
 		$out = '<table class="default">
 <tr>
 	<td>' .
@@ -250,7 +252,8 @@ class we_search_base{
 	<td>';
 
 		$pages = array();
-		for($i = 0; $i < ceil($we_search_anzahl / $this->anzahl); $i++){
+		$maxPages = ceil($we_search_anzahl / $this->anzahl);
+		for($i = 0; $i < $maxPages; $i++){
 			$pages[($i * $this->anzahl)] = ($i + 1);
 		}
 
