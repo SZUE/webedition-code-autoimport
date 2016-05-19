@@ -110,7 +110,7 @@ echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 	);
 	$_buttons_bottom = we_html_button::position_yes_no_cancel($_buttons[0], null, $_buttons[1]);
 
-	$_selectCode = '<select name="dictSelect" id="dictSelect" size="1" onchange="selectDict(this.value)">';
+	$_selectCode = '<select name="dictSelect" id="dictSelect" onchange="selectDict(this.value)">';
 
 	$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 	$_i = 0;

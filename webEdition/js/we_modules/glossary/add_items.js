@@ -194,7 +194,7 @@ function getTitleColumn(word, suggestions, title) {
 	var html;
 
 	html = '<input class="wetextinput" type="text" name="item[' + word + '][title]" size="24" value="' + title + '" maxlength="100" id="title_' + counter + '" style="display: inline; width: 200px;" disabled=\"disabled\" " />' +
-					'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" size="1" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">' +
+					'<select class="defaultfont" name="suggest_' + counter + '" id="suggest_' + counter + '" onchange="document.getElementById(\'title_' + counter + '\').value=this.value;this.value=\'\';" disabled=\"disabled\" style="width: 200px; display: none;">' +
 					'<option value="' + word + '">' + word + '</option>' +
 					'<optgroup label="' + WE().consts.g_l.glossary.change_to + '">' +
 					'<option value="">-- ' + WE().consts.g_l.glossary.input + ' --</option>' +

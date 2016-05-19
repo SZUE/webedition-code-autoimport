@@ -119,7 +119,7 @@ function we_tag_formfield($attribs){
 
 				if($m['change'] == 1){
 					if(count($default) > 1){
-						$valselect = '<select name="' . $name . 'tmp" size="1" onchange="this.form.elements[\'' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']\'].value=this.options[this.selectedIndex].value;">' .
+						$valselect = '<select name="' . $name . 'tmp" onchange="this.form.elements[\'' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']\'].value=this.options[this.selectedIndex].value;">' .
 								'<option value=""></option>';
 						foreach($default as $v){
 							$valselect .= '<option value="' . $v . '">' . $v . '</option>';
@@ -136,7 +136,7 @@ function we_tag_formfield($attribs){
 					if(count($default) > 1){
 						$val = $GLOBALS['we_doc']->getElement($name, 'ff_' . $type_sel . '_' . $f);
 						if(count($default) > 1){
-							$valselect = '<select name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']" size="1">';
+							$valselect = '<select name="' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']">';
 							foreach($default as $v){
 								$valselect .= '<option value="' . $v . '"' . (($v == $val) ? " selected" : "") . '>' . $v . '</option>';
 							}
@@ -176,7 +176,7 @@ function we_tag_formfield($attribs){
 			case 'checkbox':
 				$tbl .= '	<tr>
 		<td>' . g_l('global', '[checked]') . ':</td>
-		<td><select name="' . $nameprefix . 'ffchecked]" size="1"><option value="0"' . ($GLOBALS['we_doc']->getElement($name, 'ffchecked') ? "" : " selected") . '>' . g_l('global', '[no]') . '</option><option value="1"' . ($GLOBALS['we_doc']->getElement($name, 'ffchecked') ? " selected" : "") . '>' . g_l('global', '[yes]') . '</option></select></td>
+		<td><select name="' . $nameprefix . 'ffchecked]"><option value="0"' . ($GLOBALS['we_doc']->getElement($name, 'ffchecked') ? "" : " selected") . '>' . g_l('global', '[no]') . '</option><option value="1"' . ($GLOBALS['we_doc']->getElement($name, 'ffchecked') ? " selected" : "") . '>' . g_l('global', '[yes]') . '</option></select></td>
 	</tr>';
 				break;
 		}
