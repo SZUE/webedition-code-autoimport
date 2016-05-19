@@ -224,17 +224,17 @@ class we_class_folder extends we_folder{
 			array('dat' => ""),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[zeige]')),
 			array('dat' => ""),
-			array('dat' => '<a href="javascript:setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a> ' . $this->getSortImage('Path')),
-			array('dat' => '<a href="javascript:setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a> ' . $this->getSortImage('ID')),
+			array('dat' => '<span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . $this->getSortImage('Path') . '</span>'),
+			array('dat' => '<span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . $this->getSortImage('ID') . '</span>'),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[Arbeitsbereiche]')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[xtraArbeitsbereiche]')),
-			array('dat' => '<a href="javascript:setOrder(\'Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . '</a> ' . $this->getSortImage('Published')),
-			array('dat' => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('modules_objectClassfoldersearch', '[geaendert]') . '</a> ' . $this->getSortImage('ModDate')),
-			array('dat' => '<a href="javascript:setOrder(\'Url\');">' . g_l('modules_objectClassfoldersearch', '[url]') . '</a> ' . $this->getSortImage('Url')),
-			array('dat' => '<a href="javascript:setOrder(\'TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . '</a> ' . $this->getSortImage('TriggerID')),
+			array('dat' => '<span onclick="setOrder(\'Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . $this->getSortImage('Published') . '</span>'),
+			array('dat' => '<span onclick="setOrder(\'ModDate\');">' . g_l('modules_objectClassfoldersearch', '[geaendert]') . $this->getSortImage('ModDate') . '</span>'),
+			array('dat' => '<span onclick="setOrder(\'Url\');">' . g_l('modules_objectClassfoldersearch', '[url]') . $this->getSortImage('Url') . '</span>'),
+			array('dat' => '<span onclick="setOrder(\'TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . $this->getSortImage('TriggerID') . '</span>'),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[charset]')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[language]')),
-			array('dat' => '<a href="javascript:setOrder(\'WebUserID\');">' . g_l('modules_objectClassfoldersearch', '[WebUser]') . '</a> ' . $this->getSortImage('WebUserID')),
+			array('dat' => '<span onclick="setOrder(\'WebUserID\');">' . g_l('modules_objectClassfoldersearch', '[WebUser]') . $this->getSortImage('WebUserID') . '</span>'),
 		);
 
 		$content = array();
@@ -307,8 +307,8 @@ class we_class_folder extends we_folder{
 			array('dat' => ''),
 			array('dat' => '<table class="default defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch', '[zeige]') . '</td><td></td></tr></table>'),
 			array('dat' => ''),
-			array('dat' => '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a></td><td> ' . $this->getSortImage('Path') . '</td></tr></table>'),
-			array('dat' => '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a></td><td> ' . $this->getSortImage('ID') . '</td></tr></table>'),
+			array('dat' => '<table class="default defaultfont"><tr><td><span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</span></td><td> ' . $this->getSortImage('Path') . '</td></tr></table>'),
+			array('dat' => '<table class="default defaultfont"><tr><td><span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</span></td><td> ' . $this->getSortImage('ID') . '</td></tr></table>'),
 		);
 
 		$content = $head = $type = array();

@@ -372,9 +372,9 @@ var searchClass={
 	 */
 	public function makeHeadLines(){
 		return array(
-			array("dat" => '<a href="javascript:setOrder(\'version\');">' . g_l('versions', '[version]') . '</a> <span id="version" >' . $this->getSortImage('version') . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'modifierID\');">' . g_l('versions', '[user]') . '</a> <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span>'),
-			array("dat" => '<a href="javascript:setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span>'),
+			array("dat" => '<span onclick="setOrder(\'version\');">' . g_l('versions', '[version]') . ' <span id="version" >' . $this->getSortImage('version') . '</span></span>'),
+			array("dat" => '<span onclick="setOrder(\'modifierID\');">' . g_l('versions', '[user]') . ' <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span></span>'),
+			array("dat" => '<span onclick="setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span></span>'),
 			array("dat" => g_l('versions', '[modifications]')),
 			array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR") ? '<div style="margin:0px 0px 5px 0px;" id="deleteButton">' .
 					we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
