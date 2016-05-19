@@ -72,25 +72,32 @@ class liveUpdateFrames{
 
 		switch($this->Section){
 			case 'tabs':
-				return $this->htmlTabs();
+				include(LIVEUPDATE_TEMPLATE_DIR . 'tabs.inc.php');
+				return '';
 			case 'frameset':
 				return $this->htmlFrameset();
 			case 'upgrade':
-				return $this->htmlUpgrade();
+				include(LIVEUPDATE_TEMPLATE_DIR . 'upgrade.inc.php');
+				return '';
 			case 'beta':
-				return $this->htmlBeta();
+				include(LIVEUPDATE_TEMPLATE_DIR . 'beta.inc.php');
+				return '';
 			case 'update':
-				return $this->htmlUpdate();
+				include(LIVEUPDATE_TEMPLATE_DIR . 'update.inc.php');
+				return '';
 			case 'modules':
 				return $this->htmlModules();
 			case 'languages':
 				return $this->htmlLanguages();
 			case 'updatelog':
-				return $this->htmlUpdatelog();
+				include(LIVEUPDATE_TEMPLATE_DIR . 'updatelog.inc.php');
+				return'';
 			case 'connect':
-				return $this->htmlConnect();
+				include(LIVEUPDATE_TEMPLATE_DIR . 'connect.inc.php');
+				return '';
 			case 'nextVersion':
-				return $this->htmlNextVersion();
+				include(LIVEUPDATE_TEMPLATE_DIR . 'nextVersion.inc.php');
+				return '';
 			default:
 				echo "Frame $this->Section is not known!";
 				return;
@@ -235,8 +242,8 @@ class liveUpdateFrames{
 	/**
 	 * @return string
 	 */
-	function htmlFrameset(){
-		$activeTab = liveUpdateFrames::getValidTab($this->Data['activeTab']);
+	private function htmlFrameset(){
+		$activeTab = self::getValidTab($this->Data['activeTab']);
 
 		$show = "?section=$activeTab";
 		$active = "&active=$activeTab";
@@ -249,52 +256,23 @@ class liveUpdateFrames{
 </html>';
 	}
 
-	function htmlTabs(){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'tabs.inc.php');
-	}
-
-	function htmlUpgrade(){
-
-		include(LIVEUPDATE_TEMPLATE_DIR . 'upgrade.inc.php');
-	}
-
-	function htmlBeta(){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'beta.inc.php');
-	}
-
-	function htmlUpdate(){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'update.inc.php');
-	}
-
-	function htmlNextVersion(){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'nextVersion.inc.php');
-	}
-
 	function htmlLanguages(){
 		include(LIVEUPDATE_TEMPLATE_DIR . 'languages.inc.php');
 	}
 
-	function htmlConnect(){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'connect.inc.php');
-	}
-
-	function htmlConnectionSuccess($errorMessage = ''){
+	static function htmlConnectionSuccess($errorMessage = ''){
 		include(LIVEUPDATE_TEMPLATE_DIR . 'connectSuccess.inc.php');
 	}
 
-	function htmlConnectionError(){
+	static function htmlConnectionError(){
 		include(LIVEUPDATE_TEMPLATE_DIR . 'connectError.inc.php');
 	}
 
-	function htmlStateMessage(){
+	static function htmlStateMessage(){
 		include(LIVEUPDATE_TEMPLATE_DIR . 'stateMessage.inc.php');
 	}
 
-	function htmlUpdatelog(){
-		include(LIVEUPDATE_TEMPLATE_DIR . 'updatelog.inc.php');
-	}
-
-	function getValidTab($showTab = ''){
+	static function getValidTab($showTab = ''){
 		if(in_array($showTab, $GLOBALS['updatecmds'])){
 			return $showTab;
 		}
