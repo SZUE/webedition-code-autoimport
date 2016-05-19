@@ -1126,17 +1126,17 @@ abstract class we_database_base{
 			$cache = array();
 			return $cache;
 		}
-		$hash = md5($query, true);
-		if($resultType == MYSQL_NUM || !isset($cache[$hash])){
-			$this->query($query);
-			$data = ($this->next_record($resultType) ? $this->Record : array());
-			if($resultType != MYSQL_NUM && $data){
-				$cache[$hash] = $data;
-			}
-			$this->free();
-			return $data;
+		$hash = $resultType . md5($query, true);
+		if(isset($cache[$hash])){
+			return $cache[$hash];
 		}
-		return $cache[$hash];
+		$this->query($query);
+		$data = ($this->next_record($resultType) ? $this->Record : array());
+		if($data){
+			$cache[$hash] = $data;
+		}
+		$this->free();
+		return $data;
 	}
 
 }
