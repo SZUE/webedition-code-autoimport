@@ -194,8 +194,8 @@ class we_tag_tagParser{
 	public static function makeArrayFromAttribs($attr){
 		$attribs = self::parseAttribs($attr, false);
 		@eval('$arr = array(' . $attribs . ');'); //FIXME: can we remove this eval?
-		if(!isset($arr)||!is_array($arr)){
-			t_e($attr,$attribs);
+		if(!isset($arr) || !is_array($arr)){
+			t_e($attr, $attribs);
 			return array();
 		}
 		return $arr;
@@ -354,11 +354,15 @@ class we_tag_tagParser{
 	}
 
 	//FIXME: GLOBALS as "\$xx" should be set here directly? using isset??
-	public static function printTag($name, $attribs = '', $content = '', $cslash = false){
+	public static function printTag($name, $attribs = '', $content = '', $cslash = false, $directContent = false){
 		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs === 'array()' || $attribs === '[]' ? '' : $attribs));
 		return 'we_tag(\'' . $name . '\'' .
 			($attr ? ',' . $attr : ($content ? ',array()' : '')) .
-			($content ? ',\'' . ($cslash ? addcslashes($content, '\'') : $content) . '\'' : '') . ')';
+			($content ?
+				($directContent ? ',' . $content :
+					(',\'' . ($cslash ? addcslashes($content, '\'') : $content) . '\'' )
+				) : '')
+			. ')';
 	}
 
 	public static function printArray(array $array, $printEmpty = true){

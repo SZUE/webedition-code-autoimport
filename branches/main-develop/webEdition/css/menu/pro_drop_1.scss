@@ -62,7 +62,7 @@ way to fit your requirements.
 		position: relative;
 		z-index: 200;
 		div {
-			background: linear-gradient(#345881, #284a70);
+			background: $DarkBlueGradient;
 			height: $menuHeight;
 			//top: 4px;
 			color: #ffffff;
