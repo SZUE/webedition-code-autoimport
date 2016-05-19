@@ -1679,7 +1679,7 @@ function delElement(elvalues,elem) {
 				foreach($parentWsp[CUSTOMER_TABLE] as $setting){
 					$setting = we_unserialize($setting);
 					foreach($setting as $cur){
-						$parent.=($parent ? $cur['logic'] . ' ' : '') . we_customer_abstractFilter::evalSingleFilterQuery($cur['operation'], $cur['field'], $cur['value']) . "\n";
+						$parent.=($parent ? ' ' . $cur['logic'] . ' ' : '') . we_customer_abstractFilter::evalSingleFilterQuery($cur['operation'], $cur['field'], $cur['value']) . "\n";
 					}
 				}
 			} else {

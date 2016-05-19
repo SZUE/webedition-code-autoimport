@@ -272,6 +272,7 @@ EO_SCRIPT;
 
 		$_filter = $this->_filter->getFilter();
 		foreach($_filter as $_key => $_value){
+			$_value['logic'] = trim($_value['logic']);
 			$_adv_row .= '
 				<tr id="filterRow_' . $_i . '">
 					<td style="padding-top: ' . ($_value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
