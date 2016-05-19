@@ -127,6 +127,9 @@ class we_html_baseElement{
 				foreach($vals as $val){
 					$val = trim($val);
 					if($val){
+						/*if(count(explode(':', $val))==1){
+							t_e($val);
+						}*/
 						list($k, $v) = explode(':', $val);
 						$this->setStyle(trim($k), trim($v));
 					}

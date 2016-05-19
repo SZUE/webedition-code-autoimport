@@ -564,7 +564,6 @@ function afterLoad(){
 			$closeflag = true;
 		}
 
-
 		$js = $this->View->getJSProperty();
 
 		$texts = array('send_step', 'send_wait', 'test_account', 'default_sender', 'default_reply', we_newsletter_newsletter::FEMALE_SALUTATION_FIELD, we_newsletter_newsletter::MALE_SALUTATION_FIELD);
@@ -576,7 +575,6 @@ function afterLoad(){
 		$c = 0;
 
 		foreach($texts as $text){
-
 			if(!isset($settings[$text])){
 				$this->View->putSetting($text, (isset($defaults[$text]) ? $defaults[$text] : 0));
 				$settings = we_newsletter_view::getSettings();
@@ -639,7 +637,7 @@ function afterLoad(){
 
 		$deselect = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.global_mailing_list.value=''");
 
-		$gml_table = new we_html_table(array('class' => 'default withSpace', "style" => 'width:538px;margin:10px; 0px;'), 4, 2);
+		$gml_table = new we_html_table(array('class' => 'default withSpace', "style" => 'width:538px;margin:10px;'), 4, 2);
 		$gml_table->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[global_mailing_list]'));
 		$gml_table->setCol(2, 0, array(), $this->formFileChooser(380, "global_mailing_list", $settings["global_mailing_list"]));
 		$gml_table->setCol(2, 1, array('style' => 'text-align:right'), $deselect);
