@@ -142,7 +142,7 @@ class Services_JSON{
 	 *                                   strings or numbers, if you return an object, make sure it does
 	 *                                   not have a toJSON method, otherwise an error will occur.
 	 */
-	function Services_JSON($use = 0){
+	function __construct($use = 0){
 		$this->use = $use;
 		$this->_mb_strlen = function_exists('mb_strlen');
 		$this->_mb_convert_encoding = function_exists('mb_convert_encoding');
