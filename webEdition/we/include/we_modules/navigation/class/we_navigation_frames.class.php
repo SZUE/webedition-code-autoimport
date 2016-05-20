@@ -1051,7 +1051,15 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 	}
 
 	function getHTMLDirSelector(){
-		$rootDirID = 0;
+		$_table = $this->Model->SelectionType == we_navigation_navigation::STYPE_DOCTYPE ? FILE_TABLE :
+			($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS ? OBJECT_FILES_TABLE :
+				($this->Model->SelectionType == we_navigation_navigation::STYPE_CATEGORY ? CATEGORY_TABLE :
+					FILE_TABLE));
+
+		$ws = get_ws($_table, true);
+		if($ws){
+			$rootDirID = reset($ws);
+		}
 
 		$cmd1 = "document.we_form.elements.FolderID.value";
 		$wecmdenc1 = we_base_request::encCmd($cmd1);
@@ -1068,10 +1076,6 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		$_button_cat = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements.FolderID.value,'" . CATEGORY_TABLE . "','document.we_form.elements.FolderID.value','document.we_form.elements.FolderPath.value','opener.top.content.mark();','','" . $rootDirID . "')");
 		$_buttons = '<div id="docFolder" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCTYPE) ? 'inline' : 'none') . '">' . $_button_doc . '</div><div id="objFolder" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS ? 'inline' : 'none') . '">' . $_button_obj . '</div><div id="catFolder" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_CATEGORY ? 'inline' : 'none') . '">' . $_button_cat . '</div>';
 
-		$_table = $this->Model->SelectionType == we_navigation_navigation::STYPE_DOCTYPE ? FILE_TABLE :
-			($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS ? OBJECT_FILES_TABLE :
-				($this->Model->SelectionType == we_navigation_navigation::STYPE_CATEGORY ? CATEGORY_TABLE :
-					FILE_TABLE));
 
 		$_path = id_to_path($this->Model->FolderID, $_table);
 		$_attribs = array("onchange" => $this->topFrame . ".mark();");
