@@ -48,7 +48,7 @@ WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFoot
 			$we_doc->makeSameNew();
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			$script .= 'opener.top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
-		} elseif(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){
+		} elseif(in_array($we_doc->EditPageNr, array(we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO))){
 			$script .= 'opener.top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 		}
 	} else {
@@ -81,7 +81,7 @@ echo STYLESHEET;
 			if($wfID){
 				?>
 				<form action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
-					$wf_select = '<select name="wf_select" size="1">';
+					$wf_select = '<select name="wf_select">';
 					$wfs = we_workflow_utility::getAllWorkflows(we_workflow_workflow::STATE_ACTIVE, $we_doc->Table, $all);
 					foreach($wfs as $wID => $wfname){
 						$wf_select .= '<option value="' . $wID . '"' . (($wID == $wfID) ? ' selected' : '') . '>' . oldHtmlspecialchars($wfname) . "</option>\n";

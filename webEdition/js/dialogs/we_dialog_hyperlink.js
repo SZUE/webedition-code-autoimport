@@ -82,7 +82,7 @@ function showanchors(name, val, onCh) {
 		}
 	}
 	if (allAnchors.length) {
-		document.writeln('<select class="defaultfont" style="width:100px" name="' + name + '" id="' + name + '" size="1"' + (onCh ? ' onchange="' + onCh + '"' : '') + '>');
+		document.writeln('<select class="defaultfont" style="width:100px" name="' + name + '" id="' + name + '"' + (onCh ? ' onchange="' + onCh + '"' : '') + '>');
 		document.writeln('<option value="">');
 
 		for (i = 0; i < allAnchors.length; i++) {

@@ -361,8 +361,8 @@ function selectCategories() {
 
 		$widthInput = we_html_tools::htmlTextInput("fu_doc_width", 10, intval($this->imageEditProps['imageWidth']), '', '', "text", 60);
 		$heightInput = we_html_tools::htmlTextInput("fu_doc_height", 10, intval($this->imageEditProps['imageHeight']), '', '', "text", 60);
-		$widthSelect = '<select size="1" class="weSelect" name="fu_doc_widthSelect"><option value="pixel"' . ($this->imageEditProps['widthSelect'] === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($this->imageEditProps['widthSelect'] !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
-		$heightSelect = '<select size="1" class="weSelect" name="fu_doc_heightSelect"><option value="pixel"' . ($this->imageEditProps['heightSelect'] === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($this->imageEditProps['heightSelect'] !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+		$widthSelect = '<select class="weSelect" name="fu_doc_widthSelect"><option value="pixel"' . ($this->imageEditProps['widthSelect'] === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($this->imageEditProps['widthSelect'] !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+		$heightSelect = '<select class="weSelect" name="fu_doc_heightSelect"><option value="pixel"' . ($this->imageEditProps['heightSelect'] === 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . ($this->imageEditProps['heightSelect'] !== 'pixel' ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
 		$ratio_checkbox = we_html_forms::checkboxWithHidden(($this->imageEditProps['keepRatio'] ? true : false), 'fu_doc_keepRatio', g_l('thumbnails', '[ratio]'), false, 'defaultfont', '');
 
 		$html = '<table>

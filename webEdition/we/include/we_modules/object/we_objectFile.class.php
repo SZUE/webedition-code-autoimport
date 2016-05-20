@@ -3026,6 +3026,7 @@ class we_objectFile extends we_document{
 		}
 
 		$showLink = false;
+		//note: /=0, so "0" is a valid wsp
 		if($foo['Workspaces'] !== ''){
 			$wsp = array_merge(explode(',', trim($foo['Workspaces'], ',')), explode(',', trim($foo['ExtraWorkspacesSelected'], ',')));
 			if(we_users_util::in_workspace(($foo['TriggerID'] ? : $pid), $wsp, FILE_TABLE, $DB_WE)){

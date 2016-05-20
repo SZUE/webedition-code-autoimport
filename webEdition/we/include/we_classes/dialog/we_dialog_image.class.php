@@ -304,7 +304,7 @@ class we_dialog_image extends we_dialog_base{
 			 * thumbnail select list
 			 */
 			$thumbdata = (isset($this->args["thumbnail"]) ? $this->args["thumbnail"] : "");
-			$thumbnails = '<select id="selectThumbnail" name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);"' . ($this->getDisplayThumbsSel() === 'none' ? ' disabled="disabled"' : '') . '>';
+			$thumbnails = '<select id="selectThumbnail" name="we_dialog_args[thumbnail]" onchange="imageChanged(true);"' . ($this->getDisplayThumbsSel() === 'none' ? ' disabled="disabled"' : '') . '>';
 			$thumbnails .= '<option value="0"' . (($thumbdata == 0) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[nothumb]') . '</option>';
 
 			$this->db->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
@@ -351,7 +351,7 @@ class we_dialog_image extends we_dialog_base{
 		$title = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[title]", 5, (isset($this->args["title"]) ? $this->args["title"] : ""), "", "", "text", 315), g_l('global', '[title]'));
 
 		$foo = '
-			<select class="defaultfont" name="we_dialog_args[align]" size="1" style="width:140px;">
+			<select class="defaultfont" name="we_dialog_args[align]" style="width:140px;">
 				<option value="">' . g_l('global', '[default]') . '</option>
 				<option value="top"' . (($this->args["align"] === "top") ? "selected" : "") . '>Top</option>
 				<option value="middle"' . (($this->args["align"] === "middle") ? "selected" : "") . '>Middle</option>

@@ -28,7 +28,7 @@ function getLangField($name, $value, $title, $width){
 	//FIXME: these values should be obtained from global settings
 	$input = we_html_tools::htmlTextInput($name, 15, $value, '', '', 'text', $width - 50);
 	//FIXME: remove this fixed list by global lang settings
-	$select = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" size="1" onchange="this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
+	$select = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" onchange="this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
 						<option value=""></option>
 						<option value="en">en</option>
 						<option value="de">de</option>
@@ -44,7 +44,7 @@ function getLangField($name, $value, $title, $width){
 
 function getRevRelSelect($type, $value){
 	$input = we_html_tools::htmlTextInput($type, 15, $value, '', '', 'text', 70);
-	$select = '<select name="' . $type . '_sel" class="defaultfont" size="1" style="width:70px;" onchange="this.form.elements[\'' . $type . '\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
+	$select = '<select name="' . $type . '_sel" class="defaultfont" style="width:70px;" onchange="this.form.elements[\'' . $type . '\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
 <option></option>
 <option>contents</option>
 <option>chapter</option>
@@ -387,7 +387,7 @@ if($ok){
 	<?php
 	if(!we_base_request::_(we_base_request::BOOL, "ok")){
 
-		$_select_type = '<select name="type" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
+		$_select_type = '<select name="type" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
 <option value="' . we_base_link::TYPE_EXT . '"' . (($type == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($type == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($type == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>
@@ -492,7 +492,7 @@ if($ok){
 		$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", '', "", "", "", "", 0);
 
 
-		$_content_select = '<select name="ctype" size="1" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
+		$_content_select = '<select name="ctype" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
 <option value="' . we_base_link::CONTENT_TEXT . '"' . (($ctype == we_base_link::CONTENT_TEXT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[text]')) . '</option>
 <option value="' . we_base_link::CONTENT_EXT . '"' . (($ctype == we_base_link::CONTENT_EXT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[external_image]')) . '</option>
 <option value="' . we_base_link::CONTENT_INT . '"' . (($ctype == we_base_link::CONTENT_INT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[internal_image]')) . '</option>
@@ -537,7 +537,7 @@ if($ok){
 		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("hspace", 4, $hspace, "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 40) . '</td>
 		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("vspace", 4, $vspace, "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 40) . '</td>
 		<td>
-			<select class="defaultfont" name="align" size="1">
+			<select class="defaultfont" name="align">
 			<option value="">Default</option>
 			<option value="top"' . (($align === "top") ? "selected" : "") . '>Top</option>
 			<option value="middle"' . (($align === "middle") ? "selected" : "") . '>Middle</option>

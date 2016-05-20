@@ -156,7 +156,10 @@ function exit_open() {
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
-		$this->dir = $this->startID ? : ($setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0);
+		$ws = get_ws($this->table, true);
+		$rootDirID = ($ws ? reset($ws) : 0);
+
+		$this->dir = $this->startID ? : ($setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : $rootDirID);
 		if($this->rootDirID){
 			if(!in_parentID($this->dir, $this->rootDirID, $this->table, $this->db)){
 				$this->dir = $this->rootDirID;
@@ -291,7 +294,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 	<tr>
 		<td class="defaultfont description">' . g_l('fileselector', '[type]') . '</td>
 		<td class="defaultfont">
-			<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
+			<select name="filter" class="weSelect" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
 				<option value="">' . g_l('fileselector', '[all_Types]') . '</option>';
 			foreach(we_base_ContentTypes::inst()->getWETypes() as $ctype){
 				$ret.= '<option value="' . oldHtmlspecialchars($ctype) . '">' . g_l('contentTypes', '[' . $ctype . ']') . '</option>';
