@@ -141,8 +141,8 @@ function we_getImageResizeDialog(){
 	$widthInput = we_html_tools::htmlTextInput("width", 10, $width, "", 'onkeypress="return WE().util.IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.widthSelect);"', "text", 60);
 	$heightInput = we_html_tools::htmlTextInput("height", 10, $height, "", 'onkeypress="return WE().util.IsDigit(event,this);" onkeyup="we_keep_ratio(this,this.form.heightSelect);"', "text", 60);
 
-	$widthSelect = '<select class="weSelect" size="1" name="widthSelect" onchange="we_switchPixelPercent(this.form.width,this);"><option value="pixel">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
-	$heightSelect = '<select class="weSelect" size="1" name="heightSelect" onchange="we_switchPixelPercent(this.form.height,this);"><option value="pixel">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
+	$widthSelect = '<select class="weSelect" name="widthSelect" onchange="we_switchPixelPercent(this.form.width,this);"><option value="pixel">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
+	$heightSelect = '<select class="weSelect" name="heightSelect" onchange="we_switchPixelPercent(this.form.height,this);"><option value="pixel">' . g_l('weClass', '[pixel]') . '</option><option value="percent">' . g_l('weClass', '[percent]') . '</option></select>';
 
 	$ratio_checkbox = we_html_forms::checkbox(1, true, "ratio", g_l('thumbnails', '[ratio]'), false, "defaultfont", "if(this.checked){we_keep_ratio(this.form.width,this.form.widthSelect);}");
 

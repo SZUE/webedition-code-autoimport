@@ -492,7 +492,7 @@ function submitForm(target,action,method) {
 				$totalPriceAndVat = $totalPrice;
 
 				if($pricesAreNet){ // prices are net
-					$orderTable .= '<tr><td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td></tr>';
+					$orderTable .= '<tr><td height="1" colspan="11"><hr style="color: black" noshade /></td></tr>';
 
 					if(isset($orderData[WE_SHOP_SHIPPING]) && isset($shippingCostsNet)){
 
@@ -505,7 +505,7 @@ function submitForm(target,action,method) {
 			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
 		</tr>
 		<tr>
-			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
+			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
 		</tr>';
 					}
 					$orderTable .= '
@@ -545,7 +545,7 @@ function submitForm(target,action,method) {
 			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
 		</tr>
 		<tr>
-			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
+			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
@@ -579,14 +579,14 @@ function submitForm(target,action,method) {
 
 					$orderTable .= '
 		<tr>
-			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
+			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
 			<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\')">' . we_base_util::formatNumber($shippingCostsNet) . $waehr . '</a></td>
 		</tr>
 		<tr>
-			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
+			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>

@@ -534,7 +534,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$code = '<table class="default"><tr><td class="defaultfont">' .
 			we_html_tools::htmlTextInput($this->uid . "_TagName", 50, $this->banner->TagName, "", 'style="width:250px" onchange="top.content.setHot();"') .
 			'</td>
-<td class="defaultfont" style="padding-left:10px;"><select style="width:240px" class="weSelect" name="' . $this->uid . '_TagName_tmp" size="1" onchange="top.content.setHot(); this.form.elements[\'' . $this->uid . '_TagName\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0">' .
+<td class="defaultfont" style="padding-left:10px;"><select style="width:240px" class="weSelect" name="' . $this->uid . '_TagName_tmp" onchange="top.content.setHot(); this.form.elements[\'' . $this->uid . '_TagName\'].value=this.options[this.selectedIndex].value;this.selectedIndex=0">' .
 			'<option value=""></option>';
 		foreach($tagnames as $tagname){
 			$code .= '<option value="' . $tagname . '">' . $tagname . '</option>' . "\n";

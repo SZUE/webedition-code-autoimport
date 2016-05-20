@@ -172,7 +172,7 @@ class we_listview_search extends we_listview_base{
 				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this) :
 				'');
 
-		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail.' GROUP BY ClassID,ID';
+		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail . ' GROUP BY i.ClassID,i.ID';
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . INDEX_TABLE . ' i LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' . $where, '', $this->DB_WE);
 
 		$this->DB_WE->query(
@@ -186,10 +186,9 @@ class we_listview_search extends we_listview_base{
 
 	public function next_record(){
 		if($this->DB_WE->next_record()){
-			$fileData = ($this->DB_WE->Record['ClassID'] ?
-					getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1') :
-					getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1')
-				);
+			$fileData = getHash('SELECT * FROM ' .
+				($this->DB_WE->Record['ClassID'] ? OBJECT_FILES_TABLE : FILE_TABLE ) .
+				' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1');
 			foreach($fileData as $key => $val){
 				$this->DB_WE->Record['wedoc_' . $key] = $val;
 			}

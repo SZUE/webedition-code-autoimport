@@ -373,8 +373,11 @@ td.boxHeader{
 	padding: 0px 0.5em !important;
 	height:21px;
 	white-space: nowrap;
-	td,a{
+	td{
 		color:inherit !important;
+	}
+	i{
+		padding-left:1em;
 	}
 }
 
@@ -1405,6 +1408,10 @@ span{
     direction:rtl;
     text-align:left;
 	}
+}
+
+span[onclick]{
+	cursor: pointer;
 }
 
 .we-state-green{

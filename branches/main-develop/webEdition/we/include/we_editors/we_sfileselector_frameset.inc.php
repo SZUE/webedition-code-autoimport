@@ -28,7 +28,7 @@ function printHeaderHTML($ret){
 <table class="selectorHeaderTable">
 	<tr style="vertical-align:middle">
 		<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
-		<td class="lookin"><select name="lookin" id="lookin" size="1" onchange="top.fscmd.setDir(lookin.options[lookin.selectedIndex].value);" class="defaultfont" style="width:100%">
+		<td class="lookin"><select name="lookin" id="lookin" onchange="top.fscmd.setDir(lookin.options[lookin.selectedIndex].value);" class="defaultfont" style="width:100%">
 				<option value="/">/</option>
 			</select></td>
 		<td>' . we_html_button::create_button('root_dir', "javascript:top.fscmd.setDir('/');") . '</td>
@@ -72,7 +72,7 @@ function printFooterTable($ret, $filter, $currentName){
 	<tr>
 		<td class="defaultfont description">' . g_l('fileselector', '[type]') . '</td>
 		<td class="defaultfont">
-			<select name="filter" class="weSelect" size="1" onchange="top.fscmd.setFilter(this.options[this.selectedIndex].value)" style="width:100%">
+			<select name="filter" class="weSelect" onchange="top.fscmd.setFilter(this.options[this.selectedIndex].value)" style="width:100%">
 				' . $options . '</select></td>
 	</tr>' : '') . '
 	<tr>

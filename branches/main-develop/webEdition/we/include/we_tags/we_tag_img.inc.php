@@ -164,7 +164,7 @@ function we_tag_img($attribs){
 			$db = $GLOBALS['DB_WE'];
 			$db->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 			if($db->num_rows()){
-				$thumbnails = '<select name="' . $thumbname . '" size="1" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' .
+				$thumbnails = '<select name="' . $thumbname . '" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' .
 						'<option title="' . $db->f('description') . '" value=""' . (($thumbattr == '') ? (' selected="selected"') : "") . '></option>';
 				while($db->next_record()){
 					$thumbnails .= '<option value="' . $db->f("Name") . '"' . (($thumbattr == $db->f("Name")) ? (' selected="selected"') : "") . '>' . $db->f("Name") . '</option>';
