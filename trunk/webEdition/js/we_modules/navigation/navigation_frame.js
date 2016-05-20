@@ -69,12 +69,6 @@ function onFolderSelectionChangeJS(value) {
 	);
 }
 
-function openToEdit(tab, id, contentType) {
-	if (id > 0) {
-		WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
-	}
-}
-
 function removeAllCats() {
 	top.content.mark();
 	if (categories_edit.itemCount > 0) {

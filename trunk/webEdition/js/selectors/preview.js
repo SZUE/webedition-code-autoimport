@@ -28,9 +28,6 @@ function setInfoSize() {
 		infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0) + "px";
 	}
 }
-function openToEdit(tab, id, contentType) {
-	WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
-}
 
 function weWriteBreadCrumb(BreadCrumb) {
 	//FIXME: this function should not need a timeout - check
