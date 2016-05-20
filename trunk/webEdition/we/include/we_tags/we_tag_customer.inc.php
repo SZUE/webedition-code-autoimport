@@ -54,19 +54,18 @@ function we_tag_customer($attribs){
 
 		$we_doc = $GLOBALS['we_doc'];
 		$we_cid = intval(($we_doc->getElement($name, 'bdid') ?
-						$we_doc->getElement($name, 'bdid') :
-						($we_doc->getElement($name) ?
-								$we_doc->getElement($name) :
-								$we_cid)
+				$we_doc->getElement($name, 'bdid') :
+				($we_doc->getElement($name) ?
+					$we_doc->getElement($name) :
+					$we_cid)
 		));
 
 		$we_cid = $we_cid ? : we_base_request::_(we_base_request::INT, 'we_cid', 0);
 		$path = f('SELECT Username FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $we_cid);
 		$textname = 'we_' . $GLOBALS['we_doc']->Name . '_customer[' . $name . '_path]';
 		$idname = 'we_' . $GLOBALS['we_doc']->Name . '_customer[' . $name . '#bdid]';
-		$table = CUSTOMER_TABLE;
-		$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements['" . $idname . "'].value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.forms[0].elements['" . $idname . "'].value,'" . $table . "','document.we_form.elements[\'" . $idname . "\'].value','document.we_form.elements[\'" . $textname . "\'].value','opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','',0,'',1)");
+		$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.forms[0].elements." . $idname . ".value=0;document.forms[0].elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(false);we_cmd('reload_editpage');");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.forms[0].elements." . $idname . ".value,WE().consts.tables.CUSTOMER_TABLE,'document.we_form.elements." . $idname . ".value','document.we_form.elements." . $textname . ".value);opener.we_cmd(\'reload_editpage\');opener._EditorFrame.setEditorIsHot(true);','',0,'',1)");
 
 		if($GLOBALS['we_editmode']){
 			?>

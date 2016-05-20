@@ -83,21 +83,10 @@ function formWebuser($canChange, $width = 388){
 	$textname = 'wetmp_' . $GLOBALS['we_doc']->Name . '_WebUserID';
 	$idname = 'we_' . $GLOBALS['we_doc']->Name . '_WebUserID';
 
-	//$attribs = ' readonly';
-	//$inputFeld=we_html_tools::htmlTextInput($textname,24,$webuser,"",$attribs,"",$width);
-	//$idfield = $GLOBALS['we_doc']->htmlHidden($idname,$GLOBALS['we_doc']->WebUserID);
 
-	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements['" . $idname . "'].value,'" . CUSTOMER_TABLE . "','document.we_form.elements[\\'" . $idname . "\\'].value','document.we_form.elements[\\'" . $textname . "\\'].value')");
+	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements." . $idname . ".value,WE().consts.tables.CUSTOMER_TABLE,'document.we_form.elements." . $idname . ".value','document.we_form.elements." . $textname . ".value');");
+	$_trashBut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements." . $idname . ".value=0;document.we_form.elements." . $textname . ".value='';_EditorFrame.setEditorIsHot(true);");
 
-	$_trashBut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);");
-	/*
-	  $out = we_html_tools::htmlFormElementTable($inputFeld,
-	  g_l('modules_customer','[connected_with_customer]'),
-	  "left",
-	  "defaultfont",
-	  $idfield,
-	  $button,$_trashBut);
-	 */
 	$yuiSuggest = & weSuggest::getInstance();
 	$yuiSuggest->setAcId("Customer");
 	$yuiSuggest->setContentType("");
