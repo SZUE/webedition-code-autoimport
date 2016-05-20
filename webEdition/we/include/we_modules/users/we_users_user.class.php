@@ -668,7 +668,7 @@ class we_users_user{
 					$_SESSION['prefs']['Language'] = $settingvalue;
 
 					if($settingvalue != $GLOBALS['WE_LANGUAGE']){
-						$save_javascript .= "
+						$save_javascript = "
 if (top.frames[0]) {
 	top.frames[0].location.reload();
 }
@@ -716,7 +716,7 @@ _multiEditorreload = true;
 					$_SESSION['prefs']['BackendCharset'] = $settingvalue;
 
 					if($settingvalue != $GLOBALS['WE_BACKENDCHARSET']){
-						$save_javascript .= "
+						$save_javascript = "
 if (top.frames[0]) {
 	top.frames[0].location.reload();
 }
@@ -806,7 +806,7 @@ _multiEditorreload = true;";
 
 						if($_generate_java_script){
 							$height = we_base_request::_(we_base_request::INT, 'weHeight');
-							$save_javascript .= '
+							$save_javascript = '
 								top.opener.top.resizeTo(' . $settingvalue . ', ' . $height . ');
 								top.opener.top.moveTo((screen.width / 2) - ' . ($settingvalue / 2) . ', (screen.height / 2) - ' . ($height / 2) . ');';
 						}
@@ -834,7 +834,7 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['editorFont'] = 1;
 					}
 
-					$save_javascript .= '
+					$save_javascript = '
 if ( !_multiEditorreload ) {
 	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 
@@ -879,7 +879,7 @@ _multiEditorreload = true;';
 					if(empty($GLOBALS['editor_reloaded'])){
 						$GLOBALS['editor_reloaded'] = true;
 
-						$save_javascript .= '
+						$save_javascript = '
 if ( !_multiEditorreload ) {
 	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 
@@ -941,7 +941,7 @@ _multiEditorreload = true;';
 					$_SESSION['prefs']['editorFontsize'] = -1;
 					$_SESSION['prefs']['editorFont'] = 0;
 
-					$save_javascript .= '
+					$save_javascript = '
 if ( !_multiEditorreload ) {
 	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 
@@ -1689,7 +1689,8 @@ function delElement(elvalues,elem) {
 				'headline' => g_l('modules_users', '[workspace_customer]'),
 				'html' => ($this->ParentID ?
 					'<div id="infoCUSTOMER" style="' . ($this->ParentWsCust ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' .
-					$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') . $view->getFilterCustomers(),
+					$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') .
+				$view->getFilterCustomers(),
 				'space' => 200
 			);
 		}
