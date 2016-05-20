@@ -1080,7 +1080,7 @@ function we_cmd_base(args, url) {
 				widthBeforeDeleteModeSidebar = widthSidebar;
 
 				if (args[2] != 1) {
-					we_repl(document.getElementsName("treeheader")[0], url, args[0]);
+					we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
 				}
 			}
 			break;
