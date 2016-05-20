@@ -334,6 +334,7 @@ we/include/we_modules/export/exportLoadTree.php
 we/include/we_modules/export/edit_export_frameset.php
 we/include/we_modules/edit_separator.html
 we/include/we_modules/customer/we_webEditionCmd_customer.inc.php
+we/include/we_modules/customer/we_listview_onlinemonitor.class.php
 we/include/we_modules/customer/we_listview_customer.class.php
 we/include/we_modules/customer/we_customertag.inc.php
 we/include/we_modules/customer/we_customer_treeLoader.class.php
@@ -346,10 +347,12 @@ we/include/we_modules/customer/weNavigationCustomerFilter.class.php
 we/include/we_modules/customer/weDocumentCustomerFilterView.class.php
 we/include/we_modules/customer/weDocumentCustomerFilter.class.php
 we/include/we_modules/customer/weCustomerView.php
+we/include/we_modules/customer/weCustomerView.class.php
 we/include/we_modules/customer/weCustomerTreeLoader.php
 we/include/we_modules/customer/weCustomerTree.php
 we/include/we_modules/customer/weCustomerSettings.php
 we/include/we_modules/customer/weCustomerFrames.php
+we/include/we_modules/customer/weCustomerFrames.class.php
 we/include/we_modules/customer/weCustomerFilterView.class.php
 we/include/we_modules/customer/weCustomerEIWizard.php
 we/include/we_modules/customer/weCustomerEI.php
