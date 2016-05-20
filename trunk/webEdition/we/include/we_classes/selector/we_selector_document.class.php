@@ -156,7 +156,10 @@ function exit_open() {
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
-		$this->dir = $this->startID ? : ($setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0);
+		$ws = get_ws($this->table, true);
+		$rootDirID = ($ws ? reset($ws) : 0);
+
+		$this->dir = $this->startID ? : ($setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : $rootDirID);
 		if($this->rootDirID){
 			if(!in_parentID($this->dir, $this->rootDirID, $this->table, $this->db)){
 				$this->dir = $this->rootDirID;

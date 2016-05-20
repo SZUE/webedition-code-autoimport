@@ -84,8 +84,10 @@ class we_selector_directory extends we_selector_file{
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
-		$this->dir = $this->startID ? : ($setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0);
 		$ws = get_ws($this->table, true);
+		$rootDirID = ($ws ? reset($ws) : 0);
+
+		$this->dir = $this->startID ? : ($setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : $rootDirID ) : $rootDirID);
 		if($ws && in_array($this->dir, $ws)){
 			$this->dir = "";
 		}
@@ -384,7 +386,7 @@ top.we_editDirID=' . $this->we_editDirID . ';' .
 		echo we_html_tools::getHtmlTop() .
 		'<script><!--
 top.clearEntries();';
-				if(($msg = $folder->checkFieldsOnSave())){
+		if(($msg = $folder->checkFieldsOnSave())){
 			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
