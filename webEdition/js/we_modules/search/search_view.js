@@ -344,9 +344,6 @@ weSearch = {
 			this.search(false);
 		}
 	},
-	openToEdit: function (tab, id, contentType) {
-		WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
-	},
 	openModule: function (mod, id) {
 		top.we_cmd(mod + '_edit_ifthere', id);
 	},

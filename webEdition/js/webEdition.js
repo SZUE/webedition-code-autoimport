@@ -1719,6 +1719,12 @@ WE().util.Base64 = {
 	}
 };
 
+WE().layout.openToEdit = function (tab, id, contentType) {
+	if (id > 0) {
+		WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
+	}
+};
+
 WE().layout.we_setPath = function (_EditorFrame, path, text, id, classname) {
 	_EditorFrame = _EditorFrame ? _EditorFrame : WE().layout.weEditorFrameController.getActiveEditorFrame();
 	// update document-tab
