@@ -425,8 +425,7 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 						break;
 					case "onchange":
 						$_onchange = 1;
-						$this->inputAttribs .= $key . '="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
-						hot = 1}' : '') . $val . '" ';
+						$this->inputAttribs .= $key . '="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=1;' : '') . $val . '" ';
 						break;
 					case "class":
 						$_class = 1;
@@ -441,14 +440,10 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 				$this->inputAttribs .= 'class="wetextinput" ';
 			}
 			if(!isset($_onchange)){
-				$this->inputAttribs .= ' onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
-						hot = 1};
-						' : '') . '" ';
+				$this->inputAttribs .= ' onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=1;' : '') . '" ';
 			}
 		} else {
-			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
-						hot = 1;
-						}' : '') . '" ';
+			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=1;' : '') . '" ';
 		}
 		if(!$this->inputId){
 			$this->setInputId();
