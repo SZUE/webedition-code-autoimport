@@ -35,7 +35,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	$pb->setStudLen(270);
 	$pb->addText("&nbsp;", 0, "pbar1");
 
-	$buttons = '<table class="default" style="width:300px"><tr><td id="pbTd" style="text-align:left;display:none;">' . $pb->getHTML() . $pb->getJSCode() . '</td><td style="text-align:right">' .
+	$buttons = '<table class="default" style="width:100%"><tr><td id="pbTd" style="text-align:left;display:none;">' . $pb->getHTML() . $pb->getJSCode() . '</td><td style="text-align:right">' .
 			we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
 			'</td></tr></table>';
 
