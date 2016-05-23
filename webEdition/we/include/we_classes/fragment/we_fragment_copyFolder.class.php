@@ -216,7 +216,6 @@ class we_fragment_copyFolder extends we_fragment_base{
 	}
 
 	function copyFile(){
-
 		$GLOBALS['we_doc'] = $this->getDocument();
 		$this->copyToPath = id_to_path($this->data['CopyToId']);
 		$path = preg_replace('|^' . $this->data['CopyFromPath'] . '/|', $this->copyToPath . '/', $this->data['Path']);
@@ -673,7 +672,6 @@ class we_fragment_copyFolder extends we_fragment_base{
 	}
 
 	static function formCreateCategoryChooser(){
-
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs(true);opener.addCat(top.allPaths);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 

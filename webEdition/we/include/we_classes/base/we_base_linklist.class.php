@@ -97,7 +97,7 @@ class we_base_linklist{
 
 	function getHref($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
-		return $cur['href'];
+		return empty($cur['href']) ? '' : $cur['href'];
 	}
 
 	function getAttribs($nr = -1){
@@ -107,7 +107,7 @@ class we_base_linklist{
 
 	function getTarget($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
-		return $cur['target'];
+		return empty($cur['target']) ? '' : $cur['target'];
 	}
 
 	function getTitle($nr = -1){
@@ -253,7 +253,7 @@ class we_base_linklist{
 
 	function getText($nr = -1){
 		$cur = ($nr != -1 ? $this->listArray[$nr] : current($this->listArray));
-		return $cur["text"];
+		return empty($cur["text"]) ? '' : $cur["text"];
 	}
 
 	function getAnchor($nr = -1){
