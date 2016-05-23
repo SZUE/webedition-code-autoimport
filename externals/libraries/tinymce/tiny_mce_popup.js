@@ -316,9 +316,6 @@ tinyMCEPopup.resizeToInnerSize = function () {
 		if (a.dom) {
 			var b = a.dom.getViewPort(window), pw;
 			a.editor.windowManager.resizeBy(a.getWindowArg("mce_width") - (b.w * ratio_w), a.getWindowArg("mce_height") - (b.h * ratio_h), a.id || window);
-			if ((pw = document.getElementsByClassName("panel_wrapper")[0]) !== undefined) {
-				pw.style.height = '300px';
-			}
 		}
 	}, 10);
 
