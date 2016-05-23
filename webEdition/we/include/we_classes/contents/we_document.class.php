@@ -194,11 +194,11 @@ class we_document extends we_root{
 		$navis = new we_chooser_multiFile(508, $navItems, 'delete_navi', $delallbut . $addbut, 'module_navigation_edit_navi', 'Path', NAVIGATION_TABLE);
 		$navis->extraDelFn = 'setScrollTo();';
 		$NoDelNavis = $navItems;
-		foreach($NoDelNavis as $_path){
-			$_id = path_to_id($_path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
-			$_naviItem = new we_navigation_navigation($_id);
-			if(!$_naviItem->hasAnyChilds()){
-				if(($pos = array_search($_path, $NoDelNavis)) === false){
+		foreach($NoDelNavis as $path){
+			$id = path_to_id($path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
+			$naviItem = new we_navigation_navigation($id);
+			if(!$naviItem->hasAnyChilds()){
+				if(($pos = array_search($path, $NoDelNavis)) === false){
 					continue;
 				}
 				unset($NoDelNavis[$pos]);
@@ -234,31 +234,31 @@ class we_document extends we_root{
 			if(is_numeric($ordn)){
 				$ordn--;
 			}
-			$_ord = ($ordn === 'end' ? -1 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
+			$ord = ($ordn === 'end' ? -1 : (is_numeric($ordn) && $ordn > 0 ? $ordn : 0));
 
 			$new_path = rtrim(id_to_path($parentid, NAVIGATION_TABLE), '/') . '/' . $text;
 			$id = $id? : path_to_id($new_path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
 
-			$_naviItem = new we_navigation_navigation($id);
+			$naviItem = new we_navigation_navigation($id);
 
-			$_naviItem->Ordn = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($parentid));
-			$_naviItem->ParentID = $parentid;
-			$_naviItem->LinkID = $this->ID;
-			$_naviItem->Text = $text;
-			$_naviItem->Path = $new_path;
+			$naviItem->Ordn = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($parentid));
+			$naviItem->ParentID = $parentid;
+			$naviItem->LinkID = $this->ID;
+			$naviItem->Text = $text;
+			$naviItem->Path = $new_path;
 			if(NAVIGATION_ENTRIES_FROM_DOCUMENT){
-				$_naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
-				$_naviItem->SelectionType = we_navigation_navigation::STYPE_DOCLINK;
+				$naviItem->Selection = we_navigation_navigation::SELECTION_STATIC;
+				$naviItem->SelectionType = we_navigation_navigation::STYPE_DOCLINK;
 			} else {
-				$_naviItem->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
-				$_naviItem->SelectionType = we_navigation_navigation::STYPE_DOCTYPE;
-				$_naviItem->IsFolder = 1;
-				$charset = $_naviItem->findCharset($_naviItem->ParentID);
-				$_naviItem->Charset = ($charset ? : (DEFAULT_CHARSET ? : $GLOBALS['WE_BACKENDCHARSET']));
+				$naviItem->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
+				$naviItem->SelectionType = we_navigation_navigation::STYPE_DOCTYPE;
+				$naviItem->IsFolder = 1;
+				$charset = $naviItem->findCharset($naviItem->ParentID);
+				$naviItem->Charset = ($charset ? : (DEFAULT_CHARSET ? : $GLOBALS['WE_BACKENDCHARSET']));
 			}
 
-			$_naviItem->save();
-			$_naviItem->reorderAbs($_ord);
+			$naviItem->save();
+			$naviItem->reorderAbs($ord);
 		}
 	}
 
@@ -268,10 +268,10 @@ class we_document extends we_root{
 		if(($pos = array_search($path, $navis)) === false){
 			return;
 		}
-		$_id = path_to_id($path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
-		$_naviItem = new we_navigation_navigation($_id);
-		if(!$_naviItem->hasAnyChilds()){
-			$_naviItem->delete();
+		$id = path_to_id($path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
+		$naviItem = new we_navigation_navigation($id);
+		if(!$naviItem->hasAnyChilds()){
+			$naviItem->delete();
 			unset($navis[$pos]);
 		}
 	}
@@ -279,10 +279,10 @@ class we_document extends we_root{
 	function delAllNavi(){
 		$navis = $this->getNavigationItems();
 		foreach($navis as $path){
-			$_id = path_to_id($path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
-			$_naviItem = new we_navigation_navigation($_id);
-			if(!$_naviItem->hasAnyChilds()){
-				$_naviItem->delete();
+			$id = path_to_id($path, NAVIGATION_TABLE, $GLOBALS['DB_WE']);
+			$naviItem = new we_navigation_navigation($id);
+			if(!$naviItem->hasAnyChilds()){
+				$naviItem->delete();
 				if(($pos = array_search($path, $navis)) === false){
 					continue;
 				}
@@ -312,8 +312,8 @@ class we_document extends we_root{
 // clear value
 			$names = $this->getNamesFromContent($content);
 
-			foreach($names as $_name){
-				$this->setElement($_name . '_' . $new_nr, '');
+			foreach($names as $curname){
+				$this->setElement($curname. '_' . $new_nr, '');
 			}
 
 			$listarray[] = '_' . $new_nr;
@@ -772,22 +772,22 @@ class we_document extends we_root{
 //	set name of image for rollover ...
 
 			if(isset($attribs['name'])){ //	here we must change the name for a rollover-image
-				$_useName = $attribs['name'] . '_img';
-				$img->setElement('name', $_useName, 'dat');
+				$useName = $attribs['name'] . '_img';
+				$img->setElement('name', $useName, 'dat');
 			} else {
-				$_useName = '';
+				$useName = '';
 			}
 
 			$xml = weTag_getAttribute('xml', $attribs, (XHTML_DEFAULT), we_base_request::BOOL);
 			$oldHtmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, true, we_base_request::BOOL);
 			if($only){
 				return ($only === 'content' ?
-						self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
+						self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls) :
 						isset($link[$only]) ? $link[$only] : ''); // #3636
 			}
 
-			if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $_useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
-				if(($startTag = self::getLinkStartTag($link, $attribs, $parentID, $path, $db, $img, $_useName, $hidedirindex, $objectseourls))){
+			if(($content = self::getLinkContent($link, $parentID, $path, $db, $img, $xml, $useName, $oldHtmlspecialchars, $hidedirindex, $objectseourls))){
+				if(($startTag = self::getLinkStartTag($link, $attribs, $parentID, $path, $db, $img, $useName, $hidedirindex, $objectseourls))){
 					return $startTag . $content . '</a>';
 				}
 				return $content;
@@ -976,10 +976,10 @@ class we_document extends we_root{
 					$retval = strip_tags($retval, '<br/>,<p>');
 				}
 
-				$_htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
-				$_wysiwyg = weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL);
+				$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
+				$wysiwyg = weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL);
 
-				if($_htmlspecialchars && (!$_wysiwyg)){
+				if($htmlspecialchars && (!$wysiwyg)){
 					$retval = preg_replace('/#we##br([^#]*)#we##/', '<br${1}>', oldHtmlspecialchars(preg_replace('/<br([^>]*)>/i', '#we##br${1}#we##', $retval), ENT_QUOTES));
 				}
 				if(!weTag_getAttribute('php', $attribs, (defined('WE_PHP_DEFAULT') && WE_PHP_DEFAULT), we_base_request::BOOL)){
@@ -1140,8 +1140,8 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkContent($link, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $xml = '', $_useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
-		$l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
+	function getLinkContent($link, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $xml = '', $useName = '', $htmlspecialchars = false, $hidedirindex = false, $objectseourls = false){
+		//$l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls);
 
 		if(!empty($GLOBALS['we_link_not_published'])){
 			unset($GLOBALS['we_link_not_published']);
@@ -1155,9 +1155,9 @@ class we_document extends we_root{
 
 				$img_attribs = array('width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title']) ? $link['img_title'] : ''));
 
-				if($_useName){ //	rollover with links ...
-					$img_attribs['name'] = $_useName;
-					$img->elements['name']['dat'] = $_useName;
+				if($useName){ //	rollover with links ...
+					$img_attribs['name'] = $useName;
+					$img->elements['name']['dat'] = $useName;
 				}
 
 				if($xml){
@@ -1191,27 +1191,27 @@ class we_document extends we_root{
 		}
 	}
 
-	function getLinkStartTag($link, $attribs, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $_useName = '', $hidedirindex = false, $objectseourls = false){
+	function getLinkStartTag($link, $attribs, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $useName = '', $hidedirindex = false, $objectseourls = false){
 		if(($l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls))){
 //    define some arrays to order the attribs to image, link or js-window ...
-			$_popUpAtts = array('jswin', 'jscenter', 'jswidth', 'jsheight', 'jsposx', 'jsposy', 'jsstatus', 'jsscrollbars', 'jsmenubar', 'jstoolbar', 'jsresizable', 'jslocation');
+			$popUpAtts = array('jswin', 'jscenter', 'jswidth', 'jsheight', 'jsposx', 'jsposy', 'jsstatus', 'jsscrollbars', 'jsmenubar', 'jstoolbar', 'jsresizable', 'jslocation');
 
 //    attribs only for image - these are already handled
-			$_imgAtts = array('img_id', 'width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'img_title');
+			$imgAtts = array('img_id', 'width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'img_title');
 
 //    these are handled separately
-			$_dontUse = array('img_id', 'obj_id', 'ctype', 'anchor', 'params', 'attribs', 'img_src', 'text', 'type', 'only');
+			$dontUse = array('img_id', 'obj_id', 'ctype', 'anchor', 'params', 'attribs', 'img_src', 'text', 'type', 'only');
 
 //    these are already handled dont get them in output
-			$_we_linkAtts = array('id');
+			$we_linkAtts = array('id');
 
-			$_linkAttribs = array();
+			$linkAttribs = array();
 
 // define image-if necessary - handle with image-attribs
 			$img = ($img ? : new we_imageDocument());
 
 //   image attribs
-			foreach($_imgAtts as $att){ //  take all attribs belonging to image inside content
+			foreach($imgAtts as $att){ //  take all attribs belonging to image inside content
 				$img_attribs[$att] = isset($link[$att]) ? $link[$att] : '';
 			}
 
@@ -1221,8 +1221,8 @@ class we_document extends we_root{
 
 			if($link['ctype'] == we_base_link::TYPE_INT){
 //	set name of image dynamically
-				if($_useName){ //	we must set the name of the image -> rollover
-					$img->setElement('name', $_useName, 'dat');
+				if($useName){ //	we must set the name of the image -> rollover
+					$img->setElement('name', $useName, 'dat');
 				}
 				$rollOverScript = $img->getRollOverScript();
 				$rollOverAttribsArr = $img->getRollOverAttribsArr();
@@ -1234,26 +1234,26 @@ class we_document extends we_root{
 // Link-Attribs
 //   1st attribs-string from link dialog ! These are already used in content ...
 			if(isset($link['attribs'])){
-				$_linkAttribs = array_merge(we_tag_tagParser::makeArrayFromAttribs($link['attribs']), $_linkAttribs);
+				$linkAttribs = array_merge(we_tag_tagParser::makeArrayFromAttribs($link['attribs']), $linkAttribs);
 			}
 
 //   2nd take all atts given in link-array - from function we_tag_link()
 			foreach($link as $k => $v){ //   define all attribs - later we can remove/overwrite them
-				if($v != '' && !in_array($k, $_we_linkAtts) && !in_array($k, $_imgAtts) && !in_array($k, $_popUpAtts) && !in_array($k, $_dontUse)){
-					$_linkAttribs[$k] = $v;
+				if($v != '' && !in_array($k, $we_linkAtts) && !in_array($k, $imgAtts) && !in_array($k, $popUpAtts) && !in_array($k, $dontUse)){
+					$linkAttribs[$k] = $v;
 				}
 			}
 
 //   3rd we take attribs given from we:link,
 			foreach($attribs as $k => $v){ //   define all attribs - later we can remove/overwrite them
-				if($v != '' && !in_array($k, $_imgAtts) && !in_array($k, $_popUpAtts) && !in_array($k, $_dontUse)){
-					$_linkAttribs[$k] = $v;
+				if($v != '' && !in_array($k, $imgAtts) && !in_array($k, $popUpAtts) && !in_array($k, $dontUse)){
+					$linkAttribs[$k] = $v;
 				}
 			}
 
 //   4th use Rollover attributes
 			foreach($rollOverAttribsArr as $n => $v){
-				$_linkAttribs[$n] = $v;
+				$linkAttribs[$n] = $v;
 			}
 //   override the href at last important !
 
@@ -1261,45 +1261,45 @@ class we_document extends we_root{
 			if(strpos($linkAdds, '?') === false && strpos($linkAdds, '&') !== false && strpos($linkAdds, '&') == 0){//Bug #5478
 				$linkAdds = substr_replace($linkAdds, '?', 0, 1);
 			}
-			$_linkAttribs['href'] = $l_href . str_replace('&', '&amp;', $linkAdds);
+			$linkAttribs['href'] = $l_href . str_replace('&', '&amp;', $linkAdds);
 
 // The pop-up-window                              */
-			$_popUpCtrl = array();
-			foreach($_popUpAtts as $n){
+			$popUpCtrl = array();
+			foreach($popUpAtts as $n){
 				if(isset($link[$n])){
-					$_popUpCtrl[$n] = $link[$n];
+					$popUpCtrl[$n] = $link[$n];
 				}
 			}
 
 
-			if(!empty($_popUpCtrl['jswin'])){ //  add attribs for popUp-window
+			if(!empty($popUpCtrl['jswin'])){ //  add attribs for popUp-window
 				$js = 'var we_winOpts = \'\';';
-				if(!empty($_popUpCtrl["jscenter"]) && !empty($_popUpCtrl["jswidth"]) && !empty($_popUpCtrl["jsheight"])){
-					$js .= 'if (window.screen) {var w = ' . $_popUpCtrl["jswidth"] . ';var h = ' . $_popUpCtrl["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
-				} else if(!empty($_popUpCtrl["jsposx"]) || !empty($_popUpCtrl["jsposy"])){
-					if($_popUpCtrl["jsposx"] != ''){
-						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $_popUpCtrl["jsposx"] . '\';';
+				if(!empty($popUpCtrl["jscenter"]) && !empty($popUpCtrl["jswidth"]) && !empty($popUpCtrl["jsheight"])){
+					$js .= 'if (window.screen) {var w = ' . $popUpCtrl["jswidth"] . ';var h = ' . $popUpCtrl["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
+				} else if(!empty($popUpCtrl["jsposx"]) || !empty($popUpCtrl["jsposy"])){
+					if($popUpCtrl["jsposx"] != ''){
+						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $popUpCtrl["jsposx"] . '\';';
 					}
-					if($_popUpCtrl["jsposy"] != ''){
-						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $_popUpCtrl["jsposy"] . '\';';
+					if($popUpCtrl["jsposy"] != ''){
+						$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $popUpCtrl["jsposy"] . '\';';
 					}
 				}
 				$js.=
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (!empty($_popUpCtrl["jsstatus"]) ? 'yes' : 'no') .
-					',scrollbars=' . (!empty($_popUpCtrl["jsscrollbars"]) ? 'yes' : 'no') .
-					',menubar=' . (!empty($_popUpCtrl["jsmenubar"]) ? 'yes' : 'no') .
-					',resizable=' . (!empty($_popUpCtrl["jsresizable"]) ? 'yes' : 'no') .
-					',location=' . (!empty($_popUpCtrl["jslocation"]) ? 'yes' : 'no') .
-					',toolbar=' . (!empty($_popUpCtrl["jstoolbar"]) ? 'yes' : 'no') .
-					(empty($_popUpCtrl["jswidth"]) ? '' : ',width=' . $_popUpCtrl["jswidth"] ) .
-					(empty($_popUpCtrl["jsheight"]) ? '' : ',height=' . $_popUpCtrl["jsheight"] ) .
+					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (!empty($popUpCtrl["jsstatus"]) ? 'yes' : 'no') .
+					',scrollbars=' . (!empty($popUpCtrl["jsscrollbars"]) ? 'yes' : 'no') .
+					',menubar=' . (!empty($popUpCtrl["jsmenubar"]) ? 'yes' : 'no') .
+					',resizable=' . (!empty($popUpCtrl["jsresizable"]) ? 'yes' : 'no') .
+					',location=' . (!empty($popUpCtrl["jslocation"]) ? 'yes' : 'no') .
+					',toolbar=' . (!empty($popUpCtrl["jstoolbar"]) ? 'yes' : 'no') .
+					(empty($popUpCtrl["jswidth"]) ? '' : ',width=' . $popUpCtrl["jswidth"] ) .
+					(empty($popUpCtrl["jsheight"]) ? '' : ',height=' . $popUpCtrl["jsheight"] ) .
 					'\';';
 				$foo = $js . "var we_win = window.open('','we_" . (isset($attribs["name"]) ? $attribs["name"] : "") . "',we_winOpts);";
 
-				$_linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
-				$_linkAttribs['onclick'] = $foo;
+				$linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
+				$linkAttribs['onclick'] = $foo;
 			}
-			return $rollOverScript . getHtmlTag('a', removeAttribs($_linkAttribs, array('hidedirindex', 'objectseourls')), '', false, true);
+			return $rollOverScript . getHtmlTag('a', removeAttribs($linkAttribs, array('hidedirindex', 'objectseourls')), '', false, true);
 		}
 		if(!empty($GLOBALS['we_link_not_published'])){
 			unset($GLOBALS['we_link_not_published']);
@@ -1470,12 +1470,11 @@ class we_document extends we_root{
 	function formCharset($withHeadline = false){
 		$value = $this->getElement('Charset');
 
-		$_charsetHandler = new we_base_charsetHandler();
+		$charsetHandler = new we_base_charsetHandler();
 
-		$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
-		$_charsets[''] = '';
-		asort($_charsets);
-		reset($_charsets);
+		$charsets = $charsetHandler->getCharsetsForTagWizzard();
+		$charsets[''] = '';
+		asort($charsets);
 
 		$name = 'Charset';
 
@@ -1484,7 +1483,7 @@ class we_document extends we_root{
 
 		return '<table class="default">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
+			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
 			'</table>';
 	}
 
@@ -1523,11 +1522,6 @@ class we_document extends we_root{
 			}
 		}
 	}
-
-	/* private function i_deleteNavigation(){
-	  $this->DB_WE->query('DELETE FROM ' . NAVIGATION_TABLE . ' WHERE ' . we_navigation_navigation::getNavCondition($this->ID, $this->Table));
-	  return true;
-	  } */
 
 	/**
 	 * get styles for textarea or object

@@ -45,7 +45,7 @@ class we_base_linklist{
 		$this->attribs = $attribs;
 		ksort($listArray, SORT_NUMERIC);
 		$this->listArray = array_values($listArray);
-		$limit = !empty($attribs['limit']) ? abs($attribs['limit']) : 0;
+		$limit = empty($attribs['limit']) ? 0 : abs($attribs['limit']);
 		$this->editmode = (!empty($GLOBALS["we_editmode"]) && (!isset($GLOBALS["lv"])));
 		if(!$this->editmode){
 			$this->show = count($this->listArray);
