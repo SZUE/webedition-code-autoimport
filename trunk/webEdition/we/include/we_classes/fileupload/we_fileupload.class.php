@@ -115,7 +115,7 @@ abstract class we_fileupload{
 				$exts4cts = is_array(($tmp = we_base_ContentTypes::inst()->getExtension($ct))) ? array_merge($exts4cts, $tmp) :
 					($tmp ? array_merge($exts4cts, explode(',', trim($tmp, ','))) : $exts4cts);
 				$tmp = we_base_ContentTypes::inst()->getRealContentTypes($ct);
-				$cts = !empty($tmp) ? array_merge($cts, $tmp) : array_merge($cts, array($ct));
+				$cts = empty($tmp) ? array_merge($cts, array($ct)) : array_merge($cts, $tmp);
 			}
 		}
 
