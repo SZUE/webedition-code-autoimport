@@ -48,10 +48,9 @@ class we_search_view extends we_modules_view{
 	//private $view = self::VIEW_LIST;
 
 	public function __construct($frameset = ''){
-		$topframe = 'top.content';
-		parent::__construct($frameset, $topframe);
-		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
-		$this->editorHeaderFrame = $this->topFrame . '.editor.edheader';
+		parent::__construct($frameset);
+		$this->editorBodyFrame = 'top.content.editor.edbody';
+		$this->editorHeaderFrame =  'top.content.editor.edheader';
 		$this->Model = !isset($_SESSION['weS'][$this->toolName . '_session']) ? new we_search_model() :
 			$_SESSION['weS'][$this->toolName . '_session'];
 		//$this->Model = new we_search_model();
@@ -126,11 +125,11 @@ WE().consts.g_l.weSearch = {
 				$this->Model->prepareModelForSearch();
 				$this->Model->setIsFolder(/* $cmd == 'tool_weSearch_new_group' ? 1 : */ 0);
 
-				echo we_html_element::jsElement('if(' . $this->topFrame . '.editor){' .
+				echo we_html_element::jsElement('if(top.content.editor){' .
 					$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .
 					($tab !== 0 ? '&tab=' . $tab : '') .
-					'&text=' . urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+					'&text=' . urlencode($this->Model->Text) . '";
+					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 }');
 				break;
 
@@ -147,11 +146,11 @@ WE().consts.g_l.weSearch = {
 				echo we_html_element::jsElement(
 					$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .
 					($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
-					urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+					urlencode($this->Model->Text) . '";
+top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 if(top.content.treeData){
- top.content.treeData.unselectNode();
- top.content.treeData.selectNode("' . $this->Model->ID . '");
+	top.content.treeData.unselectNode();
+	top.content.treeData.selectNode("' . $this->Model->ID . '");
 }');
 				break;
 
@@ -195,15 +194,15 @@ if(top.content.treeData){
 					$this->Model->updateChildPaths($oldpath);
 
 					$js = we_html_element::jsElement(($newone ?
-								$this->topFrame . '.treeData.makeNewEntry({id:' . $this->Model->ID . ',parentid:' . $this->Model->ParentID . ',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/search') . '\',table:\'' . SUCHE_TABLE . '\',published:0});' :
-								$this->topFrame . '.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . $this->Model->Text . '\',parentid:' . $this->Model->ParentID . ',order:0,tooltip:' . $this->Model->ID . '});') .
+								'top.content.treeData.makeNewEntry({id:' . $this->Model->ID . ',parentid:' . $this->Model->ParentID . ',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/search') . '\',table:\'' . SUCHE_TABLE . '\',published:0});' :
+								'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . $this->Model->Text . '\',parentid:' . $this->Model->ParentID . ',order:0,tooltip:' . $this->Model->ID . '});') .
 							$this->editorHeaderFrame . '.location.reload();' .
 							we_message_reporting::getShowMessageCall(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
-							$this->topFrame . '.hot=0;'
+							'top.content.hot=0;'
 					);
 
 					if(we_base_request::_(we_base_request::BOOL, 'delayCmd')){
-						$js .= we_html_element::jsElement($this->topFrame . '.we_cmd("' . we_base_request::_(we_base_request::STRING, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
+						$js .= we_html_element::jsElement('top.content.we_cmd("' . we_base_request::_(we_base_request::STRING, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
 						);
 						$_REQUEST['delayCmd'] = '';
 						$_REQUEST['delayParam'] = '';
@@ -212,7 +211,7 @@ if(top.content.treeData){
 					$js = we_html_element::jsElement($js .
 							$this->editorHeaderFrame . '.location.reload();' .
 							we_message_reporting::getShowMessageCall(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_failed]' : '[save_failed]')), we_message_reporting::WE_MESSAGE_ERROR) .
-							$this->topFrame . '.hot=0;'
+							'top.content.hot=0;'
 					);
 				}
 
@@ -223,9 +222,9 @@ if(top.content.treeData){
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 				if($this->Model->delete()){
 					echo we_html_element::jsElement(
-						$this->topFrame . '.treeData.deleteEntry("' . $this->Model->ID . '");
+						'top.content.treeData.deleteEntry("' . $this->Model->ID . '");
 setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')) . '", WE().consts.message.WE_MESSAGE_NOTICE, window);' .
-						$this->topFrame . '.we_cmd("tool_weSearch_edit");'
+						'top.content.we_cmd("tool_weSearch_edit");'
 					);
 					$this->Model = new we_search_model();
 					$_REQUEST['pnt'] = 'edbody';

@@ -176,14 +176,14 @@ var settings={
 };
 
 function doScrollTo(){
-	if(opener.' . $pob->topFrame . '.scrollToVal){
-		window.scrollTo(0,opener.' . $pob->topFrame . '.scrollToVal);
-		opener.' . $pob->topFrame . '.scrollToVal=0;
+	if(opener.top.content.scrollToVal){
+		window.scrollTo(0,opener.top.content.scrollToVal);
+		opener.top.content.scrollToVal=0;
 	}
 }
 
 function setScrollTo(){
-		opener.' . $pob->topFrame . '.scrollToVal=pageYOffset;
+		opener.top.content.scrollToVal=pageYOffset;
 }' .
 						$pob->getJSSubmitFunction("sort_admin")) .
 				we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_sortAdmin.js');

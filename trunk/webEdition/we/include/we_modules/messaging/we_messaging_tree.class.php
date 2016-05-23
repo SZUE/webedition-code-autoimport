@@ -38,7 +38,7 @@ class we_messaging_tree extends we_tree_base{
 		return '
 function startTree(){
 	treeData.frames={
-		top:' . $this->topFrame . ',
+		top:top.content,
 		cmd:' . $this->cmdFrame . ',
 		tree:' . $this->treeFrame . '
 	};

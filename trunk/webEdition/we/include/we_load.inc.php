@@ -257,13 +257,13 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$js = we_html_element::jsElement('
 top.document.getElementById("treeName").innerHTML="' . $name . '";
 function loadTreeData(){
-	if(!' . $Tree->topFrame . '.treeData) {
+	if(!top.content.treeData) {
 		window.setTimeout(loadTreeData,500);
 		return;
 	}' .
 				($parentFolder ? '' :
-					$Tree->topFrame . '.treeData.clear();' .
-					$Tree->topFrame . '.treeData.add(' . $Tree->topFrame . '.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
+					'top.treeData.clear();
+top.treeData.add(top.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
 				) .
 				$Tree->getJSLoadTree(!$parentFolder, $treeItems) . '
 }

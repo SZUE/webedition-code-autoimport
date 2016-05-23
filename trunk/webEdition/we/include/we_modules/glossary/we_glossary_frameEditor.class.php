@@ -33,7 +33,7 @@ class we_glossary_frameEditor{
 		);
 		$tabsHead = we_tabs::getHeader("
 function setTab(tab) {
-	" . $this->topFrame . ".activ_tab=tab;
+	top.content.activ_tab=tab;
 	//top.content.editor.edbody.we_cmd('switchPage',0);
 }");
 

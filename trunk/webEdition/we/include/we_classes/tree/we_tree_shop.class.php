@@ -32,7 +32,7 @@ class we_tree_shop extends we_tree_base{
 		return '
 function startTree(){
 	treeData.frames={
-		top:' . $this->topFrame . ',
+		top:top.content,
 		cmd:' . $this->cmdFrame . ',
 		tree:' . $this->treeFrame . '
 	};
