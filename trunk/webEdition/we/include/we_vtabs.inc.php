@@ -25,7 +25,7 @@ $_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >
 
 $vtab = array(
 	'FILE_TABLE' => array(
-		'show' => permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') || permissionhandler::hasPerm('ADMINISTRATOR'),
+		'show' => permissionhandler::hasPerm('CAN_SEE_DOCUMENTS'),
 		'desc' => '<i class="fa fa-file-o"></i> ' . g_l('global', '[documents]'),
 	),
 	'TEMPLATES_TABLE' => array(

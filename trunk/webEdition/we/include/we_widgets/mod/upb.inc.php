@@ -42,14 +42,14 @@ if($bTypeDoc && $bTypeObj){
 	if(defined('FILE_TABLE')){
 		$tbls[] = FILE_TABLE;
 	}
-	if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+	if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 		$tbls[] = OBJECT_FILES_TABLE;
 	}
 } else {
 	if($bTypeDoc && defined('FILE_TABLE')){
 		$tbls[] = FILE_TABLE;
 	}
-	if($bTypeObj && defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+	if($bTypeObj && defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 		$tbls[] = OBJECT_FILES_TABLE;
 	}
 }
@@ -58,7 +58,7 @@ $_cont = array();
 $db = $GLOBALS['DB_WE'];
 foreach($tbls as $table){
 	if(defined('WORKFLOW_TABLE')){
-		$myWfDocsArray = we_workflow_utility::getWorkflowDocsForUser($_SESSION["user"]["ID"], $table, permissionhandler::hasPerm("ADMINISTRATOR"), permissionhandler::hasPerm("PUBLISH"), ($table == $_objectFilesTable) ? '' : get_ws($table));
+		$myWfDocsArray = we_workflow_utility::getWorkflowDocsForUser($_SESSION['user']['ID'], $table, permissionhandler::hasPerm('ADMINISTRATOR'), permissionhandler::hasPerm("PUBLISH"), ($table == $_objectFilesTable) ? '' : get_ws($table));
 		$myWfDocsCSV = implode(',', $myWfDocsArray);
 		$wfDocsArray = we_workflow_utility::getAllWorkflowDocs($table, $db);
 		$wfDocsCSV = implode(',', $wfDocsArray);

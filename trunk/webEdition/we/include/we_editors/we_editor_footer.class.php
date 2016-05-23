@@ -223,13 +223,13 @@ abstract class we_editor_footer{
 
 		switch($we_doc->ContentType){
 			case we_base_ContentTypes::TEMPLATE:
-				if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR")){
+				if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 					$_normalTable->addCol(2);
 					$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', '[we_new_doc_after_save]'), false, "defaultfont", "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				}
 				break;
 			case we_base_ContentTypes::OBJECT:
-				if(permissionhandler::hasPerm("NEW_OBJECTFILE") || permissionhandler::hasPerm("ADMINISTRATOR")){
+				if(permissionhandler::hasPerm("NEW_OBJECTFILE")){
 					$_normalTable->addCol(2);
 					$_normalTable->setColContent(0, $_pos++, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('modules_object', '[we_new_doc_after_save]'), false, "defaultfont", "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeNewDoc( (this.checked) ? true : false );"));
 				}
@@ -365,6 +365,29 @@ abstract class we_editor_footer{
 			self::addDelButton($_seeModeTable, $we_doc, $_pos);
 		}
 		echo $_seeModeTable->getHtml();
+	}
+
+	public static function hasNewPerm(we_root $we_doc){
+		//	Check permissions for buttons
+		switch($we_doc->ContentType){
+			case we_base_ContentTypes::HTML:
+				return permissionhandler::hasPerm("NEW_HTML");
+
+			case we_base_ContentTypes::WEDOCUMENT:
+				return permissionhandler::hasPerm("NEW_WEBEDITIONSITE");
+			case we_base_ContentTypes::OBJECT_FILE:
+				return permissionhandler::hasPerm("NEW_OBJECTFILE");
+			case we_base_ContentTypes::FOLDER:
+				switch($we_doc->Table){
+					case FILE_TABLE:
+						return permissionhandler::hasPerm('NEW_DOC_FOLDER');
+					case TEMPLATES_TABLE:
+						return permissionhandler::hasPerm('NEW_TEMP_FOLDER');
+					case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
+						return permissionhandler::hasPerm('NEW_OBJECTFILE_FOLDER');
+				}
+		}
+		return false;
 	}
 
 }

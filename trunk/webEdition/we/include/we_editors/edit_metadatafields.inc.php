@@ -121,7 +121,7 @@ function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $
  */
 function save_all_values(){
 	//SAVE METADATA FIELDS TO DB
-	if(permissionhandler::hasPerm('ADMINISTRATOR') || permissionhandler::hasPerm('EDIT_METADATAFIELD')){
+	if(permissionhandler::hasPerm('EDIT_METADATAFIELD')){
 		$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METADATA_TABLE);
 		$GLOBALS['DB_WE']->query('TRUNCATE TABLE ' . METAVALUES_TABLE);
 
@@ -265,7 +265,7 @@ function build_dialog($selected_setting = 'ui'){
 				</td>
 				<td colspan="2" style="padding-bottom:1px;">
 					<div class="small" id="metadataProposalChecks0_' . $key . '">&nbsp;</div>
-					<div id="metadataProposalChecks1_' . $key . '">' . 
+					<div id="metadataProposalChecks1_' . $key . '">' .
 						we_html_forms::checkboxWithHidden($value['csv'], 'metadataCsv[' . $key . ']', 'CSV', false, 'defaultfont', '', false, '', we_html_tools::TYPE_NONE, 0, '', '', $title = g_l('metadata', '[csv_desc]')) .
 						we_html_forms::checkboxWithHidden($value['closed'], 'metadataClosed[' . $key . ']', g_l('metadata', '[closedList]'), false, 'defaultfont', '', false, '', we_html_tools::TYPE_NONE, 0, '', '', $title = g_l('metadata', '[closedList_desc]')) .
 					'</div>
