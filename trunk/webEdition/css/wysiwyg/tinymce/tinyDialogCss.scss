@@ -59,11 +59,15 @@ i.fa-ban, i.fa-cancel {
 	border: 0px;
 	font-size: $bigfont;
 	color: #000000;
-	width:100%;
-	margin: 0px; padding: 0;
+	margin: 0px;
+	padding: 0px;
 	border: 0px;
 	overflow:hidden;
-	height:auto;
+	height:$defaultEditorTabHeight;
+	position:absolute;
+	top:0px;
+	left:0px;
+	right:0px;
 
 	li {
 		margin: 0px;
@@ -123,6 +127,14 @@ form{
 	border: none;
 	overflow: auto;
 	padding-top: 12px;
+	position: absolute;
+	top:$defaultEditorTabHeight;
+	bottom:$diaglogFooterHeight;
+	left:0px;
+	right:0px;
+	#class{
+		width:110px;
+	}
 }
 
 label{
@@ -139,9 +151,6 @@ legend{
 	width:110px;
 }
 
-.panel_wrapper #class{
-	width:110px;
-}
 
 textarea{
 	margin-left:0px;
@@ -173,14 +182,14 @@ select, input[type="text"], input[type="number"], input[type="search"], input[ty
 .mceActionPanel{
 	background: #a5aaae none repeat scroll 0 0;
 	border-top: medium none;
-	bottom: 0;
 	box-sizing: border-box;
-	left: 0;
 	overflow: hidden;
 	padding: 7px 10px;
 	position: absolute;
-	right: 0;
-	height: 45px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	height: $diaglogFooterHeight;
 
 	#insert,
 	#cancel,
@@ -205,7 +214,6 @@ select, input[type="text"], input[type="number"], input[type="search"], input[ty
 		margin-left:0.5em;
 		margin-right:0.5em;
 		margin-bottom: 1ex;
-		/*min-width: 9em; */
 		white-space: nowrap;
 		width: auto;
 		box-shadow: 1px 1px 2px $DarkGrey;
@@ -246,6 +254,9 @@ select, input[type="text"], input[type="number"], input[type="search"], input[ty
 			display:block;
 		}
 	}
+	div {
+		display: inline;
+	}
 }
 
 #colorpicker #previewblock{
@@ -264,10 +275,6 @@ select, input[type="text"], input[type="number"], input[type="search"], input[ty
 	margin-bottom:-2px;
 	height:18px;
 	width:20px;
-}
-
-.mceActionPanel div {
-	display: inline;
 }
 
 .panel_toggle_insert_span{
