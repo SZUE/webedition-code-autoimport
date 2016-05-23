@@ -549,7 +549,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 					}
 					break;
 				case 'linklist' :
-					$ll = new we_base_linklist($we_doc->getElement($k));
+					$ll = new we_base_linklist(we_unserialize($we_doc->getElement($k)));
 					$changed = false;
 					$cnt = $ll->length();
 					for($i = 0; $i < $cnt; $i++){
