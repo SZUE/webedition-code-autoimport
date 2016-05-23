@@ -21,14 +21,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::protect();
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 1);
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-function inWorkflow($doc){
+function inWorkflow(we_root $doc){
 	if(!defined('WORKFLOW_TABLE') || !$doc->IsTextContentDoc){
 		return false;
 	}
@@ -70,33 +69,7 @@ switch($we_doc->userHasAccess()){
 //	preparations of needed vars
 $showPubl = permissionhandler::hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
 $reloadPage = (bool) (($showPubl || $we_doc->ContentType == we_base_ContentTypes::TEMPLATE) && (!$we_doc->ID));
-$haspermNew = false;
-
-//	Check permissions for buttons
-switch($we_doc->ContentType){
-	case we_base_ContentTypes::HTML:
-		$haspermNew = permissionhandler::hasPerm("NEW_HTML");
-		break;
-	case we_base_ContentTypes::WEDOCUMENT:
-		$haspermNew = permissionhandler::hasPerm("NEW_WEBEDITIONSITE");
-		break;
-	case we_base_ContentTypes::OBJECT_FILE:
-		$haspermNew = permissionhandler::hasPerm("NEW_OBJECTFILE");
-		break;
-	case we_base_ContentTypes::FOLDER:
-		switch($we_doc->Table){
-			case FILE_TABLE:
-				$haspermNew = permissionhandler::hasPerm('NEW_DOC_FOLDER');
-				break;
-			case TEMPLATES_TABLE:
-				$haspermNew = permissionhandler::hasPerm('NEW_TEMP_FOLDER');
-				break;
-			case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
-				$haspermNew = permissionhandler::hasPerm('NEW_OBJECTFILE_FOLDER');
-				break;
-		}
-		break;
-}
+$haspermNew = we_editor_footer::hasNewPerm($we_doc);
 
 $showGlossaryCheck = 0; /* (!empty($_SESSION['prefs']['force_glossary_check']) &&
   ( $we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE ) ? 1 : 0);
@@ -162,7 +135,7 @@ function we_footerLoaded(){
 	if(doc.isTemplate && !doc.isFolder){
 		setTemplate();
 	}' .
-		$_js_permnew .'
+		$_js_permnew . '
 	setPath();
 }' .
 		$js) .

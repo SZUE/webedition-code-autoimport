@@ -81,7 +81,7 @@ for (frameId in _usedEditors) {
 
 	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
 		//	JS, when not in seem
-		$isTmpl = $we_doc->ContentType == we_base_ContentTypes::TEMPLATE && (permissionhandler::hasPerm("NEW_WEBEDITIONSITE") || permissionhandler::hasPerm("ADMINISTRATOR"));
+		$isTmpl = $we_doc->ContentType == we_base_ContentTypes::TEMPLATE && permissionhandler::hasPerm("NEW_WEBEDITIONSITE");
 		echo ($isTmpl ?
 			'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .
 			(!empty($saveTemplate) ?
@@ -89,7 +89,7 @@ for (frameId in _usedEditors) {
 				''
 			) .
 			'} else {' :
-			(($isObject = $we_doc->ContentType === we_base_ContentTypes::OBJECT && (permissionhandler::hasPerm('NEW_OBJECTFILE') || permissionhandler::hasPerm("ADMINISTRATOR"))) ?
+			(($isObject = $we_doc->ContentType === we_base_ContentTypes::OBJECT && permissionhandler::hasPerm('NEW_OBJECTFILE')) ?
 				"if( _EditorFrame.getEditorMakeNewDoc() == true ) {
 				top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');
 			} else {" : '')) .
