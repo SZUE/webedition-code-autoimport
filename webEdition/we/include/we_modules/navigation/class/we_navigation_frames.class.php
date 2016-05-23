@@ -123,8 +123,8 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$tabsHead = we_tabs::getHeader(
 				($this->Model->IsFolder == 0 ? '
-if(' . $this->View->topFrame . '.activ_tab!=1 && ' . $this->View->topFrame . '.activ_tab!=3) {
-	' . $this->View->topFrame . '.activ_tab=1;
+if(top.content.activ_tab!=1 && top.content.activ_tab!=3) {
+	top.content.activ_tab=1;
 }' : ''
 				) . '
 function mark() {
@@ -364,7 +364,7 @@ function setTab(tab) {
 					'folder,objectFile' :
 					implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME))
 			));
-		$yuiSuggest->setInput('LinkPath', $path, array("onchange" => $this->topFrame . ".mark();"));
+		$yuiSuggest->setInput('LinkPath', $path, array("onchange" => 'top.content.mark();'));
 		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('LinkID', $this->Model->LinkID);
@@ -589,15 +589,12 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			$this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ?
 				implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)) :
 				($this->Model->SelectionType === 'folder,objectFile' ? OBJECT_FILES_TABLE : ''));
-		$yuiSuggest->setInput('LinkPath', $path, array(
-			"onchange" => $this->topFrame . ".mark();"
-		));
+		$yuiSuggest->setInput('LinkPath', $path, array("onchange" => "top.content.mark();"));
 		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('LinkID', $this->Model->LinkID);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable(
-			$this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : CATEGORY_TABLE));
+		$yuiSuggest->setTable($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : ($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : CATEGORY_TABLE));
 		$yuiSuggest->setWidth($this->_width_size - 150);
 		$yuiSuggest->setSelectButton($_buttons);
 
@@ -771,7 +768,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			<td style="text-align:right">' .
 			we_html_button::create_button(we_html_button::REFRESH, 'javascript: showPreview();') .
 			we_html_button::create_button('reset', 'javascript: document.getElementById("previewCode").value = "' . str_replace(array("\r\n", "\n"), '\n', addslashes(we_navigation_navigation::defaultPreviewCode)) . '"; showPreview();')
-			//,we_button::create_button('new_template', 'javascript: '.$this->topFrame.'.we_cmd("create_template");')
+			//,we_button::create_button('new_template', 'javascript: top.content.we_cmd("create_template");')
 			. '</td>
 		</tr>
 		</table>';
@@ -928,9 +925,7 @@ function showPreview() {
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId($PathName);
 		$yuiSuggest->setContentType($acCTypes ? : $filter);
-		$yuiSuggest->setInput($PathName, $path, array(
-			'onchange' => $this->topFrame . ".mark();"
-		));
+		$yuiSuggest->setInput($PathName, $path, array('onchange' => 'top.content.mark();'));
 		$yuiSuggest->setLabel($title);
 		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty($mayBeEmpty);
@@ -1069,7 +1064,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 
 
 		$path = id_to_path($this->Model->FolderID? : $rootDirID, $_table);
-		$_attribs = array("onchange" => $this->topFrame . ".mark();");
+		$_attribs = array("onchange" => 'top.content.mark();');
 		if(!$_countSubDirs){
 			$_attribs['disabled'] = "disabled";
 		}
@@ -1190,9 +1185,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId($prefix . 'UrlIDPath');
 		$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH, we_base_ContentTypes::QUICKTIME)));
-		$yuiSuggest->setInput($prefix . 'UrlIDPath', $path, array(
-			"onchange" => $this->topFrame . ".mark();"
-		));
+		$yuiSuggest->setInput($prefix . 'UrlIDPath', $path, array("onchange" => 'top.content.mark();'));
 		$yuiSuggest->setMaxResults(50);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($prefix . 'UrlID', $this->Model->UrlID);

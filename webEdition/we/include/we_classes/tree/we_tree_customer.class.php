@@ -55,11 +55,11 @@ class we_tree_customer extends we_tree_base{
 		);
 
 		$js = (!$rootID ?
-				$this->topFrame . '.treeData.clear();' .
-				$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
+				'top.content.treeData.clear();' .
+				'top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
 			'var attribs={};';
 		foreach($treeItems as $item){
-			$js.=($rootID ? 'if(' . $this->topFrame . '.treeData.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){' : '') .
+			$js.=($rootID ? 'if(top.content.treeData.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){' : '') .
 				'attribs={';
 
 			foreach($item as $k => $v){
@@ -77,11 +77,11 @@ class we_tree_customer extends we_tree_base{
 					',';
 			}
 
-			$js.='};' .
-				$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));' .
+			$js.='};
+top.content.treeData.add(new top.content.node(attribs));' .
 				($rootID ? '}' : '');
 		}
-		$js.=$this->topFrame . '.drawTree();';
+		$js.='top.content.drawTree();';
 
 		return $js;
 	}
