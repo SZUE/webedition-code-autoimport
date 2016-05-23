@@ -108,7 +108,7 @@ div.le_widget {
 	}
 
 	div.widget{
-		width: 100%;
+		//width: 100%;
 		border: none;
 		background: $MiddleGrey;
 		&.bgc_white{
@@ -187,7 +187,7 @@ div.le_widget {
 			vertical-align: top;
 			text-align: left;
 			height: 22px;
-			
+
 			span {
 				cursor: pointer;
 			}
@@ -268,4 +268,14 @@ td{
 		font-family: $weFontBold;
 		cursor:pointer;
 	}
+}
+
+.cls_expand {
+	vertical-align: top;
+	width: 454px;
+}
+
+.cls_collapse{
+	vertical-align: top;
+	width: 225px;
 }

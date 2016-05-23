@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Use this class to add a widget to the Cockpit.
  */
 abstract class we_base_widget{
-
 	static $js = '';
 
 	const w_icon = 20;
@@ -51,8 +49,6 @@ abstract class we_base_widget{
 	 * @return     object Returns the we_html_table object
 	 */
 	static function create($iId, $sType, $oContent, $aLabel = array("", ""), $sCls = "white", $iRes = 0, $sCsv = "", $w = 0, $h = 0, $resize = true){
-		$w+=22;
-
 		$oDrag = new we_html_table(array("id" => $iId . "_h", "style" => "width:100%"), 1, 1);
 		$oDrag->setCol(0, 0, array('style' => 'width:' . self::w_icon . 'px;height:16px;'));
 
@@ -77,8 +73,8 @@ abstract class we_base_widget{
 		  </span>');
 
 		$sIco = ($sType != "_reCloneType_") ? ($resize ? $oIco_prc->getHtml() : $oIco_pc->getHtml()) :
-				we_html_element::htmlDiv(array("id" => $iId . "_ico_prc", "style" => "display:block;"), $oIco_prc->getHtml()) .
-				we_html_element::htmlDiv(array("id" => $iId . "_ico_pc", "style" => "display:none;"), $oIco_pc->getHtml());
+			we_html_element::htmlDiv(array("id" => $iId . "_ico_prc", "style" => "display:block;"), $oIco_prc->getHtml()) .
+			we_html_element::htmlDiv(array("id" => $iId . "_ico_pc", "style" => "display:none;"), $oIco_pc->getHtml());
 
 		$oTb = new we_html_table(array("id" => $iId . "_tb", 'class' => 'widget_controls'), 1, 2);
 		$oTb->setCol(0, 0, array(), $oDrag->getHtml());
@@ -86,18 +82,18 @@ abstract class we_base_widget{
 
 		if($iId != 'clone'){
 			self::$js.="setLabel('" . $iId . "','" . str_replace("'", "\'", $aLabel[0]) . "','" . str_replace("'", "\'", $aLabel[1]) . "');" .
-					"initWidget('" . $iId . "');";
+				"initWidget('" . $iId . "');";
 		}
-		return we_html_element::htmlDiv(array("id" => $iId . "_bx", "style" => "width:" . $w . "px;", "class" => 'widget bgc_' . $sCls), $oTb->getHtml() .
-						we_html_element::htmlDiv(array("id" => $iId . "_lbl", "class" => "label widgetTitle",)) .
-						we_html_element::htmlDiv(array("id" => $iId . "_wrapper", "class" => "content"), we_html_element::htmlDiv(array("id" => $iId . "_content"), $oContent) .
-								we_html_element::htmlHidden($iId . '_prefix', $aLabel[0], $iId . '_prefix') .
-								we_html_element::htmlHidden($iId . '_postfix', $aLabel[1], $iId . '_postfix') .
-								we_html_element::htmlHidden($iId . '_res', $iRes, $iId . '_res') .
-								we_html_element::htmlHidden($iId . '_type', $sType, $iId . '_type') .
-								we_html_element::htmlHidden($iId . '_cls', $sCls, $iId . '_cls') .
-								we_html_element::htmlHidden($iId . '_csv', $sCsv, $iId . '_csv')
-						)
+		return we_html_element::htmlDiv(array("id" => $iId . "_bx", "class" => 'widget bgc_' . $sCls . ' ' . ($w > 400 ? 'cls_expand' : 'cls_collapse')), $oTb->getHtml() .
+				we_html_element::htmlDiv(array("id" => $iId . "_lbl", "class" => "label widgetTitle",)) .
+				we_html_element::htmlDiv(array("id" => $iId . "_wrapper", "class" => "content"), we_html_element::htmlDiv(array("id" => $iId . "_content"), $oContent) .
+					we_html_element::htmlHidden($iId . '_prefix', $aLabel[0], $iId . '_prefix') .
+					we_html_element::htmlHidden($iId . '_postfix', $aLabel[1], $iId . '_postfix') .
+					we_html_element::htmlHidden($iId . '_res', $iRes, $iId . '_res') .
+					we_html_element::htmlHidden($iId . '_type', $sType, $iId . '_type') .
+					we_html_element::htmlHidden($iId . '_cls', $sCls, $iId . '_cls') .
+					we_html_element::htmlHidden($iId . '_csv', $sCsv, $iId . '_csv')
+				)
 		);
 	}
 

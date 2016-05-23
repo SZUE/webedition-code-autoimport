@@ -26,16 +26,6 @@
 
 var _propsDlg = [];
 
-function addCss() {
-	jsCss = '<style>';
-	for (i = 1; i <= 10; i++) {
-		jsCss += '.cls_' + i + '_collapse{width:' + oCfg.general_.cls_collapse + 'px;vertical-align:top;}' +
-						'.cls_' + i + '_expand{width:' + oCfg.general_.cls_expand + 'px;vertical-align:top;}';
-	}
-	jsCss += '</style>';
-	document.write(jsCss);
-}
-
 function getColumnAsoc(id) {
 	var oNode = document.getElementById(id);
 	var iNodeLen = oNode.childNodes.length;
@@ -86,7 +76,7 @@ function modifyLayoutCols(iCols) {
 		for (i = 1; i <= iAppendCols; i++) {
 			var oCell = document.createElement('TD');
 			oCell.setAttribute('id', 'c_' + (_iLayoutCols + i));
-			oCell.setAttribute('class', 'cls_' + (_iLayoutCols + i) + '_collapse');
+			oCell.setAttribute('class', 'cls_collapse');
 			var oWildcard = document.createElement('DIV');
 			oWildcard.setAttribute('class', 'wildcard');
 			oWildcard.setAttribute('style', 'margin-rigth:5px');
@@ -208,11 +198,11 @@ function updateJsStyleCls() {
 	for (var i = 1; i <= _iLayoutCols; i++) {
 		var oCol = document.getElementById('c_' + i);
 		if (hasExpandedWidget(oCol)) {
-			cls1 = 'cls_' + i + '_expand';
-			cls2 = 'cls_' + i + '_collapse';
+			cls1 = 'cls_expand';
+			cls2 = 'cls_collapse';
 		} else {
-			cls1 = 'cls_' + i + '_collapse';
-			cls2 = 'cls_' + i + '_expand';
+			cls1 = 'cls_collapse';
+			cls2 = 'cls_expand';
 		}
 		if (!oCol.classList.contains(cls1)) {
 			if (oCol.classList.contains(cls2)) {
@@ -248,18 +238,16 @@ function setLabel(id, prefix, postfix) {
 	el_label.innerHTML = label + suspensionPts;
 }
 
-function setWidth(id, w) {
-	document.getElementById(id).style.width = w + 'px';
-}
-
 function setWidgetWidth(id, w) {
-	setWidth(id + "_bx", w);
+	var el = document.getElementById(id + "_bx");
+	el.classList.remove("cls_collapse");
+	el.classList.remove("cls_expand");
+	el.classList.add(w);
 }
-
 
 function resizeWidget(id) {
 	var _type = document.getElementById(id + '_type').value;
-	var w = (resizeIdx('get', id) === "0") ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
+	var w = (resizeIdx('get', id) === "0") ? 'cls_expand' : 'cls_collapse';
 	resizeIdx('swap', id);
 	setWidgetWidth(id, w);
 	document.getElementById(id + '_lbl').innerHTML = '';
@@ -328,25 +316,16 @@ function fadeTrans(wizId, start, end, ms) {
 
 function toggle(wizId, wizType, prefix, postfix) {
 	var defRes = oCfg[wizType + '_props_'].res;
-	var defW = (defRes !== undefined) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
-	var asoc = {
-		'width': {
-			'_inline': defW,
-			'_bx': defW + (2 * oCfg.general_.wh_edge)
-		}
-	};
 	var props = {
-		'prefix': prefix, 'postfix': postfix, 'type': wizType, 'res': defRes
+		prefix: prefix,
+		postfix: postfix,
+		type: wizType,
+		res: defRes
 	};
-	for (var att_name in asoc) {
-		for (var v in asoc[att_name]) {
-			document.getElementById(wizId + v).style[att_name] = asoc[att_name][v] + "px";
-		}
-	}
 	for (var p in props) {
 		document.getElementById(wizId + '_' + p).value = props[p];
 	}
-	if (defRes === "1" && !document.getElementById('c_1').classList.contains('cls_1_expand')) {
+	if (defRes === "1" && !document.getElementById('c_1').classList.contains('cls_expand')) {
 		updateJsStyleCls();
 	}
 }
@@ -358,19 +337,15 @@ function pushContent(wizType, wizId, cNode, prefix, postfix, sCsv) {
 	document.getElementById(wizId + '_csv').value = sCsv;
 	toggle(wizId, wizType, prefix, postfix);
 	setLabel(wizId);
-	if (wizTheme !== 'white') {
-		setTheme(wizId, wizTheme);
-	}
+	setTheme(wizId, wizTheme);
 	document.getElementById(wizId).style.display = 'block';
-	if (oCfg.blend_.fadeIn !== undefined) {
-		fadeTrans(wizId, 0, 100, oCfg.blend_.v);
-	}
+	fadeTrans(wizId, 0, 100, 400);
 }
 
 function createWidget(typ, row, col) {
 // for IE
 	if (typ === 'pad') {
-		document.getElementById('c_' + col).className = 'cls_' + col + '_expand';
+		document.getElementById('c_' + col).className = 'cls_expand';
 	}
 //EOF for IE
 	var domNode = document.getElementById('c_' + col);
@@ -389,7 +364,6 @@ function createWidget(typ, row, col) {
 		}
 	}
 	var nodeToClone = document.getElementById(cloneSampleId);
-	var regex = cloneSampleId;
 	var re = new RegExp(((cloneSampleId === 'divClone') ? new_id + '|clone' : cloneSampleId), 'g');
 	var sClonedNode = nodeToClone.innerHTML.replace(re, new_id);
 	if (cloneSampleId === 'divClone') {
@@ -400,9 +374,7 @@ function createWidget(typ, row, col) {
 	divClone.setAttribute('class', 'le_widget');
 	divClone.className = 'le_widget'; // for IE
 	divClone.innerHTML = sClonedNode;
-	if (oCfg.blend_.fadeIn !== undefined) {
-		divClone.style.display = 'none';
-	}
+	divClone.style.display = 'none';
 	if (asoc.length && row) {
 		domNode.insertBefore(divClone, document.getElementById(asoc[row - 1].id));
 	} else { // add to empty col - before wildcard!
@@ -412,7 +384,7 @@ function createWidget(typ, row, col) {
 						_td.childNodes[0]
 						);
 	}
-	if (findInArray(_noResizeTypes, typ) > -1) {
+	if (findInArray(oCfg._noResizeTypes, typ) > -1) {
 		var oPrc = document.getElementById(new_id + '_ico_prc');
 		var oPc = document.getElementById(new_id + '_ico_pc');
 		if (oPrc) {
@@ -422,14 +394,10 @@ function createWidget(typ, row, col) {
 			oPc.style.display = 'block';
 		}
 	}
-	if (oCfg.blend_.fadeIn !== undefined) {
-		setOpacity(divClone.id, 0);
-	}
+	setOpacity(divClone.id, 0);
 	if (cloneSampleId !== 'divClone') {
 		divClone.style.display = 'block';
-		if (oCfg.blend_.fadeIn !== undefined) {
-			fadeTrans(new_id, 0, 100, oCfg.blend_.v);
-		}
+		fadeTrans(new_id, 0, 100, 400);
 	} else {
 		top.we_cmd('edit_home', 'add', typ, new_id);
 	}
@@ -485,7 +453,6 @@ function showLoadingSymbol(elementId) {
 		clone.style.display = "inline";
 	}
 }
-
 
 /**
  * hide the spinning wheel for a widget
@@ -675,9 +642,8 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 }
 
 function propsWidget(wid, ref) {
-	var iHeight = oCfg[wid + '_props_'].iDlgHeight;
 	var uri = composeUri(arguments);
-	_propsDlg[ref] = new (WE().util.jsWindow)(window, uri, ref, -1, -1, oCfg.general_.iDlgWidth, iHeight, true, true, true);
+	_propsDlg[ref] = new (WE().util.jsWindow)(window, uri, ref, -1, -1, oCfg.iDlgWidth, oCfg[wid + '_props_'].iDlgHeight, true, true, true);
 }
 
 function closeAllModalWindows() {
@@ -798,6 +764,3 @@ function transmit(doc, type, id) {
 		WE().layout.cockpitFrame.pushContent(type, id, doc.document.getElementById('content').innerHTML, doc.document.getElementById('prefix').innerHTML, doc.document.getElementById('postfix').innerHTML, doc.document.getElementById('csv').innerHTML);
 	}
 }
-
-//dont move this as on load event, since adding css will fire load event again.
-addCss();
