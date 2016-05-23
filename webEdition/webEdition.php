@@ -198,7 +198,7 @@ var WebEdition = {
 				no_document_opened: '<?php echo we_message_reporting::prepareMsgForJS(g_l('global', '[no_document_opened]')); ?>',
 				no_editor_left: "<?php echo g_l('multiEditor', '[no_editor_left]'); ?>",
 				eplugin_exit_doc: "<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>",
-				delete_single_confirm_delete: "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>",
+				delete_single_confirm_delete: "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>\n",
 				cockpit_reset_settings: '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
 				cockpit_not_activated: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
 				no_perms: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]')); ?>',
