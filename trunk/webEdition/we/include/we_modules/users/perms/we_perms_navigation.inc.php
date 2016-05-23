@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,8 @@ $perm_group_title[$perm_group_name] = g_l('perms_' . $perm_group_name, '[perm_gr
 $perm_defaults[$perm_group_name] = array(
 	'EDIT_NAVIGATION' => 1,
 	'DELETE_NAVIGATION' => 1,
-	'EDIT_NAVIAGTION_RULES' => 0
+	'EDIT_NAVIAGTION_RULES' => 0,
+	'EDIT_DYNAMIC_NAVIGATION' => 0,
 );
 
 $perm_values[$perm_group_name] = array_keys($perm_defaults[$perm_group_name]);

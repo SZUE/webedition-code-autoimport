@@ -121,12 +121,10 @@ function we_cmd() {
 	}
 }
 
-
-var copyNaviFolderUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc.php";
 function copyNaviFolder(folderPath, folderID) {
 	var parentPos = selfNaviPath.indexOf(folderPath);
 	if (parentPos === -1 || selfNaviPath.indexOf(folderPath) > 0) {
-		cnfUrl = copyNaviFolderUrl + "?protocol=text&cmd=CopyNavigationFolder&cns=navigation&we_cmd[0]=" + selfNaviPath + "&we_cmd[1]=" + selfNaviId + "&we_cmd[2]=" + folderPath + "&we_cmd[3]=" + folderID;
+		cnfUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=text&cmd=CopyNavigationFolder&cns=navigation&we_cmd[0]=" + selfNaviPath + "&we_cmd[1]=" + selfNaviId + "&we_cmd[2]=" + folderPath + "&we_cmd[3]=" + folderID;
 		YAHOO.util.Connect.asyncRequest("GET", cnfUrl, {
 			success: function (o) {
 				if (o.responseText !== "") {

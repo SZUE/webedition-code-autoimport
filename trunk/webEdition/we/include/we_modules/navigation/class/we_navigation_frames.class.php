@@ -28,6 +28,11 @@ class we_navigation_frames extends we_modules_frame{
 	var $Model;
 	public $Table = NAVIGATION_TABLE;
 
+	const TAB_PROPERTIES = '1'; //make sure to keep 1
+	const TAB_CONTENT = '2';
+	const TAB_CUSTOMER = '3';
+	const TAB_PREVIEW = 'preview';
+
 	function __construct($_frameset){
 		$_frameset = WEBEDITION_DIR . 'we_showMod.php?mod=navigation';
 		parent::__construct($_frameset);
@@ -108,17 +113,17 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab(g_l('navigation', '[property]'), '((top.content.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
-		if($this->Model->IsFolder){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[content]'), '((top.content.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
+		$we_tabs->addTab(new we_tab(g_l('navigation', '[property]'), '((top.content.activ_tab==' . self::TAB_PROPERTIES . ') ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('" . self::TAB_PROPERTIES . "');", array("id" => "tab_" . self::TAB_PROPERTIES)));
+		if($this->Model->IsFolder && permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION')){
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[content]'), '((top.content.activ_tab=="' . self::TAB_CONTENT . '") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('" . self::TAB_CONTENT . "');", array("id" => "tab_" . self::TAB_CONTENT)));
 		}
 
 		if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_EDIT_CUSTOMERFILTER")){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[customers]'), '((top.content.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[customers]'), '((top.content.activ_tab=="' . self::TAB_CUSTOMER . '") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('" . self::TAB_CUSTOMER . "');", array("id" => "tab_" . self::TAB_CUSTOMER)));
 		}
 
 		if($this->Model->IsFolder){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[preview]'), '((top.content.activ_tab=="preview") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('preview');", array("id" => "tab_preview")));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[preview]'), '((top.content.activ_tab=="' . self::TAB_PREVIEW . '") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('" . self::TAB_PREVIEW . "');", array("id" => "tab_" . self::TAB_PREVIEW)));
 		}
 
 		$tabsHead = we_tabs::getHeader(
@@ -143,7 +148,7 @@ function setTab(tab) {
 			parent.edbody.document.we_form.cmd.value="";
 			if (top.content.activ_tab != tab || (top.content.activ_tab=="preview" && tab=="preview")) {
 				parent.edbody.document.we_form.pnt.value = "preview";
-				parent.edbody.document.we_form.tabnr.value = "preview";
+				parent.edbody.document.we_form.tabnr.value = "' . self::TAB_PREVIEW . '";
 				parent.edbody.submitForm();
 			}
 		break;
@@ -294,26 +299,19 @@ function setTab(tab) {
 				'CategoriesCount' => (isset($this->Model->Categories) ? count($this->Model->Categories) : 0),
 				'SortCount' => (isset($this->Model->Sort) ? count($this->Model->Sort) : 0))) .
 			'<div style="display: block;">' .
-			we_html_tools::htmlSelect('Selection', array(
-				we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
-				we_navigation_navigation::SELECTION_STATIC => g_l('navigation', '[stat_selection]')
-				), 1, $this->Model->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');top.content.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STYPE_DOCTYPE . '\');'), 'value', $this->_width_size) . '<br />' . we_html_tools::htmlSelect(
-				'SelectionType', $_seltype, 1, $this->Model->SelectionType, false, array('onchange' => 'closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);top.content.mark();', 'style' => 'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) .
-			'<div id="dynamic" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . '">' .
-			$this->getHTMLDynamic() .
-			'</div>
-			<div id="static" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_STATIC ? 'display: block;' : 'display: none;') . '">
-
-				<div id="staticSelect" style="' . ($this->Model->SelectionType != we_navigation_navigation::STYPE_URLLINK ? 'display: block;' : 'display: none;') . '">' .
-			$this->getHTMLStatic() .
-			'</div>
-				<div id="staticUrl" style="' . (($this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK || $this->Model->SelectionType == we_navigation_navigation::STYPE_URLLINK) ? 'display: block;' : 'display: none;') . ';margin-top:5px;">' .
-			$this->getHTMLLink() .
-			'</div>
-				<div style="margin-top:5px;">' .
-			we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput('Parameter', 58, $this->Model->Parameter, '', 'onchange="top.content.mark();"', 'text', $this->_width_size, 0), g_l('navigation', '[parameter]')) . '
-				</div>
+			(permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION') ?
+				we_html_tools::htmlSelect('Selection', array(
+					we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_selection]'),
+					we_navigation_navigation::SELECTION_STATIC => g_l('navigation', '[stat_selection]')
+					), 1, $this->Model->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);setPresentation(this.value);setWorkspaces(\'\');top.content.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STYPE_DOCTYPE . '\');'), 'value', $this->_width_size) . '<br />' :
+				we_html_element::htmlHidden('Selection', $this->Model->Selection)
+			) .
+			we_html_tools::htmlSelect('SelectionType', $_seltype, 1, $this->Model->SelectionType, false, array('onchange' => 'closeAllType();clearFields();closeAllStats();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);top.content.mark();', 'style' => 'width: ' . $this->_width_size . 'px; margin-top: 5px;'), 'value', $this->_width_size) .
+			'<div id="dynamic" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . '">' . $this->getHTMLDynamic() . '</div>' .
+			'<div id="static" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_STATIC ? 'display: block;' : 'display: none;') . '">
+				<div id="staticSelect" style="' . ($this->Model->SelectionType != we_navigation_navigation::STYPE_URLLINK ? 'display: block;' : 'display: none;') . '">' . $this->getHTMLStatic() . '</div>
+				<div id="staticUrl" style="' . (($this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK || $this->Model->SelectionType == we_navigation_navigation::STYPE_URLLINK) ? 'display: block;' : 'display: none;') . ';margin-top:5px;">' . $this->getHTMLLink() . '</div>
+				<div style="margin-top:5px;">' . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Parameter', 58, $this->Model->Parameter, '', 'onchange="top.content.mark();"', 'text', $this->_width_size, 0), g_l('navigation', '[parameter]')) . '</div>
 			</div>
 			</div>';
 
@@ -622,13 +620,13 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 				'CategoriesCount' => (isset($this->Model->Categories) ? count($this->Model->Categories) : '0'),
 				'SortCount' => (isset($this->Model->Sort) ? count($this->Model->Sort) : '0'))) . '
 <div style="display: block;">
-	<div style="display:block;">
-				' . we_html_tools::htmlSelect('Selection', array(
+	<div style="display:block;">' .
+			we_html_tools::htmlSelect('Selection', array(
 				we_navigation_navigation::SELECTION_NODYNAMIC => g_l('navigation', '[no_dyn_content]'),
 				we_navigation_navigation::SELECTION_DYNAMIC => g_l('navigation', '[dyn_content]')
 				), 1, $this->Model->Selection, false, array('style' => 'width: ' . $this->_width_size . 'px;', 'onchange' => 'toggle(\'dynamic\');setPresentation(\'dynamic\');setWorkspaces(\'\');top.content.mark();setCustomerFilter(this);onSelectionTypeChangeJS(\'' . we_navigation_navigation::STYPE_DOCTYPE . '\');'), 'value', $this->_width_size) . '
 	</div>
-	<div id="dynamic" style="' . ($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . ';margin-top:5px">' .
+	<div id="dynamic" style="' . ($this->Model->Selection === we_navigation_navigation::SELECTION_DYNAMIC ? 'display: block;' : 'display: none;') . ';margin-top:5px">' .
 			we_html_tools::htmlSelect('SelectionType', $_seltype, 1, $this->Model->SelectionType, false, array('onchange' => "closeAllType();clearFields();toggle(this.value);setWorkspaces(this.value);onSelectionTypeChangeJS(this.value);setStaticSelection(this.value);" . 'top.content.mark();'), 'value', $this->_width_size) .
 			$this->getHTMLDynamic() . '
 	</div>
@@ -797,10 +795,10 @@ function showPreview() {
 	}
 
 	function getHTMLProperties($preselect = ''){
-		$tabNr = we_base_request::_(we_base_request::STRING, 'tabnr', 1); //FIXME: due to preview - fix this as a better tab-name; replace 1-3 with consts
+		$tabNr = we_base_request::_(we_base_request::STRING, 'tabnr', self::TAB_PROPERTIES); //FIXME: due to preview - fix this as a better tab-name; replace 1-3 with consts
 
-		if($this->Model->IsFolder == 0 && $tabNr != 1 && $tabNr != 3){
-			$tabNr = 1;
+		if($this->Model->IsFolder == 0 && $tabNr != self::TAB_PROPERTIES && $tabNr != self::TAB_CUSTOMER){
+			$tabNr = self::TAB_PROPERTIES;
 		}
 
 		$hiddens = array(
@@ -812,7 +810,7 @@ function showPreview() {
 		);
 
 		$yuiSuggest = & weSuggest::getInstance();
-		if($tabNr === 'preview'){
+		if($tabNr === self::TAB_PREVIEW){
 			$out = $this->getHTMLEditorPreview();
 		} else {
 			// Property tab content
@@ -820,7 +818,7 @@ function showPreview() {
 				we_html_element::htmlDiv(
 					array(
 					'id' => 'tab1',
-					'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')
+					'style' => ($tabNr == self::TAB_PROPERTIES ? 'display: block;' : 'display: none')
 					), $this->View->getCommonHiddens($hiddens) .
 					we_html_element::htmlHiddens(array(
 						'IsFolder' => (isset($this->Model->IsFolder) ? $this->Model->IsFolder : 0),
@@ -833,11 +831,11 @@ function showPreview() {
 						$this->getHTMLAttributes() :
 						''
 					)
-				) . ($this->Model->IsFolder ?
-					we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) :
+				) . ($this->Model->IsFolder && permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION') ?
+					we_html_element::htmlDiv(array('id' => 'tab' . self::TAB_CONTENT, 'style' => ($tabNr == self::TAB_CONTENT ? 'display: block;' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab2(), 30, '', -1, '', '', false, $preselect)) :
 					''
 				) . ((defined('CUSTOMER_TABLE')) ?
-					we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) :
+					we_html_element::htmlDiv(array('id' => 'tab' . self::TAB_CUSTOMER, 'style' => ($tabNr == self::TAB_CUSTOMER ? 'display: block;' : 'display: none')), we_html_multiIconBox::getHTML('', $this->getHTMLTab3(), 30, '', -1, '', '', false, $preselect)) :
 					''
 				);
 		}
