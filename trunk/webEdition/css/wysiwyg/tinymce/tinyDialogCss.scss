@@ -165,10 +165,22 @@ input[type="text"]{
 	line-height: 18px;
 }
 
-input[type="text"], input[type="number"], input[type="search"], input[type="tel"], input[type="url"], textarea {
+input[type="text"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea {
 	line-height: 18px;
 }
-select, input[type="text"], input[type="number"], input[type="search"], input[type="tel"], input[type="url"], textarea {
+
+select,
+input[type="text"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea {
 	background-color: white;
 	border: 1px solid #a5aaae;
 	box-sizing: border-box;
@@ -177,6 +189,13 @@ select, input[type="text"], input[type="number"], input[type="search"], input[ty
 	padding: 5px 3px;
 	line-height: 150%;
 	height:auto;
+}
+
+select,input,textarea{
+	&[disabled]{
+		background-color: lightgray;
+		color:darkgray;
+	}
 }
 
 .mceActionPanel{
