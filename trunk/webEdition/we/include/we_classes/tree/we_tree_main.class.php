@@ -63,10 +63,10 @@ while(1){
 		$s .= '
 if(weWindow.treeData){
 	var obj = weWindow.treeData;' .
-				($select ? '
+			($select ? '
 	weWindow.treeData.selection_table="' . $doc->Table . '";
 	weWindow.treeData.selection="' . $doc->ID . '";' :
-						'weWindow.treeData.unselectNode();') . '
+				'weWindow.treeData.unselectNode();') . '
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.treeData.indexOfEntry(' . $doc->ParentID . ')]){
 			var attribs={
@@ -78,11 +78,11 @@ if(weWindow.treeData){
 			"inschedule":\'' . intval($hasSched) . '\'
 			};
 
-			var visible=(' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ParentID . ')!=-1?
-				' . $this->topFrame . '.treeData[' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ParentID . ')].open:
+			var visible=(top.treeData.indexOfEntry(' . $doc->ParentID . ')!=-1?
+				top.treeData[top.treeData.indexOfEntry(' . $doc->ParentID . ')].open:
 					0);
-			if(' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ID . ')!=-1){
-				' . $this->topFrame . '.treeData.updateEntry(attribs);
+			if(top.treeData.indexOfEntry(' . $doc->ID . ')!=-1){
+				top.treeData.updateEntry(attribs);
 			}else{
 			//FIXME: makenewentry!
 				attribs.contenttype=\'' . $doc->ContentType . '\';
@@ -92,11 +92,11 @@ if(weWindow.treeData){
 				attribs.open=0;
 				attribs.disabled=0;
 				attribs.tooltip=' . $doc->ID . ';
-				' . $this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node(attribs));
+				top.treeData.addSort(new top.node(attribs));
 			}
 			weWindow.drawTree();
-		}else if(' . $this->topFrame . '.treeData.indexOfEntry(' . $doc->ID . ')!=-1){
-		' . $this->topFrame . '.treeData.deleteEntry(' . $doc->ID . ');
+		}else if(top.treeData.indexOfEntry(' . $doc->ID . ')!=-1){
+			top.treeData.deleteEntry(' . $doc->ID . ');
 		}
 	}
 }';
@@ -112,17 +112,17 @@ if(weWindow.treeData){
 
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
-				$js.= ($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry("' . $item['id'] . '")<0){') .
-						$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node({';
+				$js.= ($clear ? '' : 'if(top.treeData.indexOfEntry("' . $item['id'] . '")<0){') .
+					'top.treeData.add(new top.node({';
 				foreach($item as $k => $v){
 					$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-									intval($v) :
-									'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') . ',';
+							intval($v) :
+							'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') . ',';
 				}
 				$js.='}));' . ($clear ? '' : '}');
 			}
 		}
-		$js.=$this->topFrame . '.drawTree();';
+		$js.= 'top.drawTree();';
 
 		return $js;
 	}

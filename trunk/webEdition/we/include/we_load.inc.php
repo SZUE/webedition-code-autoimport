@@ -257,7 +257,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$js = we_html_element::jsElement('
 top.document.getElementById("treeName").innerHTML="' . $name . '";
 function loadTreeData(){
-	if(!top.content.treeData) {
+	if(!top.treeData) {
 		window.setTimeout(loadTreeData,500);
 		return;
 	}' .
