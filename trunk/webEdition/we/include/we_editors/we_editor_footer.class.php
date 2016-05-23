@@ -24,7 +24,7 @@
  */
 abstract class we_editor_footer{
 
-	static function fileLocked($we_doc){
+	static function fileLocked(we_root $we_doc){
 //	user
 		$_username = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->isLockedByUser()));
 
@@ -56,7 +56,7 @@ abstract class we_editor_footer{
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
 	}
 
-	static function fileIsRestricted($we_doc){
+	static function fileIsRestricted(we_root $we_doc){
 		$_messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 2);
 //	spaceholder
 		$_messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
@@ -65,13 +65,13 @@ abstract class we_editor_footer{
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $_messageTbl->getHtml()));
 	}
 
-	static function workflow($we_doc){
+	static function workflow(we_root $we_doc){
 		if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) || permissionhandler::hasPerm("PUBLISH")){
 
 			$_table = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
-							we_workflow_view::showFooterForNormalMode($we_doc, $GLOBALS['showPubl']) :
-							($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
-									we_workflow_view::showFooterForSEEMMode($we_doc, $GLOBALS['showPubl']) : ''));
+					we_workflow_view::showFooterForNormalMode($we_doc, $GLOBALS['showPubl']) :
+					($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
+						we_workflow_view::showFooterForSEEMMode($we_doc, $GLOBALS['showPubl']) : ''));
 
 			$_we_form = we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $_table);
 
@@ -87,11 +87,11 @@ abstract class we_editor_footer{
 		echo '</html>';
 	}
 
-	private static function addDelButton($table, $we_doc, &$_pos){
+	private static function addDelButton($table, we_root $we_doc, &$_pos){
 		$_ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
 		if(!$_ctrlElem || !$_ctrlElem['hide']){
 			$table->addCol(2);
-			$table->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button(we_html_button::TRASH, "javascript:if(confirm('" . g_l('alert', '[delete_single][confirm_delete]') . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
+			$table->setCol(0, $_pos++, array(), we_html_button::create_button(we_html_button::TRASH, "javascript:if(confirm(WE().consts.g_l.main.delete_single_confirm_delete+'" . $we_doc->Path . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
 		}
 	}
 
@@ -99,7 +99,7 @@ abstract class we_editor_footer{
 	 * @return void
 	 * @desc Prints the footer for the normal mode
 	 */
-	static function normalMode($we_doc, $we_transaction, $haspermNew, $showPubl){
+	static function normalMode(we_root $we_doc, $we_transaction, $haspermNew, $showPubl){
 		$_normalTable = new we_html_table(array("class" => 'default footertable'), 1, 1);
 		$_pos = 0;
 
@@ -148,8 +148,8 @@ abstract class we_editor_footer{
 				$_normalTable->addCol(2);
 				if(we_base_moduleInfo::isActive(we_base_moduleInfo::EDITOR)){
 					$_normalTable->setColContent(0, $_pos++, (stripos($we_doc->ContentType, 'text/') !== false ?
-									we_html_button::create_button('fat:startEditor,fa-lg fa-external-link', "javascript:editSource();") :
-									we_html_button::create_button('fat:startEditor,fa-lg fa-external-link', "javascript:editFile();"))
+							we_html_button::create_button('fat:startEditor,fa-lg fa-external-link', "javascript:editSource();") :
+							we_html_button::create_button('fat:startEditor,fa-lg fa-external-link', "javascript:editFile();"))
 					);
 				}
 		}
@@ -164,11 +164,11 @@ abstract class we_editor_footer{
 		switch($we_doc->Table){
 			case FILE_TABLE:
 				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_DOC_FOLDER')) ||
-						(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_DOCUMENT'));
+					(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_DOCUMENT'));
 				break;
 			case TEMPLATES_TABLE:
 				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_TEMP_FOLDER')) ||
-						(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_TEMPLATE'));
+					(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_TEMPLATE'));
 				break;
 			case OBJECT_FILES_TABLE:
 				$hasPerm = (permissionhandler::hasPerm('DELETE_OBJECTFILE'));
@@ -178,7 +178,7 @@ abstract class we_editor_footer{
 				break;
 			case VFILE_TABLE:
 				$hasPerm = ($we_doc->IsFolder && permissionhandler::hasPerm('DELETE_COLLECTION_FOLDER')) ||
-						(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_COLLECTION'));
+					(!$we_doc->IsFolder && permissionhandler::hasPerm('DELETE_COLLECTION'));
 				break;
 			default:
 				$hasPerm = false;
@@ -213,7 +213,7 @@ abstract class we_editor_footer{
 				}
 		}
 
-		if(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder*/) && $haspermNew){
+		if(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew){
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 			if(!$_ctrlElem || !$_ctrlElem['hide']){
 				$_normalTable->addCol(2);
@@ -243,7 +243,7 @@ abstract class we_editor_footer{
 	 * @return void
 	 * @desc prints the footer for the See-Mode
 	 */
-	static function SEEMode($we_doc, $we_transaction, $haspermNew, $showPubl){
+	static function SEEMode(we_root $we_doc, $we_transaction, $haspermNew, $showPubl){
 		$_seeModeTable = new we_html_table(array("class" => 'default footertable'), 1, 1);
 		$_pos = 0;
 
@@ -251,33 +251,33 @@ abstract class we_editor_footer{
 		//	Always button preview
 		if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){ // first button is always - preview, when exists
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button('fat:preview,fa-lg fa-eye', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setCol(0, $_pos++, array(), we_html_button::create_button('fat:preview,fa-lg fa-eye', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 		// shop variants
 		if(defined('SHOP_TABLE')){
 			if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && in_array(we_base_constants::WE_EDITPAGE_VARIANTS, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->canHaveVariants(true) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_VARIANTS){ // first button is always - preview, when exists
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button('shopVariants', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_VARIANTS . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$_seeModeTable->setCol(0, $_pos++, array(), we_html_button::create_button('shopVariants', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_VARIANTS . ",'" . $GLOBALS["we_transaction"] . "');"));
 			}
 		}
 
 		//	image-documents have no preview but thumbnailview instead ...
 		if($GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_THUMBNAILS && in_array(we_base_constants::WE_EDITPAGE_THUMBNAILS, $GLOBALS['we_doc']->EditPageNrs)){
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button('thumbnails', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_THUMBNAILS . ",'" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setCol(0, $_pos++, array(), we_html_button::create_button('thumbnails', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_THUMBNAILS . ",'" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 		//	Button edit !!!
 		if($GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_CONTENT && in_array(we_base_constants::WE_EDITPAGE_CONTENT, $GLOBALS['we_doc']->EditPageNrs)){ // then button "edit"
 			$_seeModeTable->addCol(2);
-			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button(we_html_button::EDIT, "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_CONTENT . ", '" . $GLOBALS["we_transaction"] . "');"));
+			$_seeModeTable->setCol(0, $_pos++, array(), we_html_button::create_button(we_html_button::EDIT, "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_CONTENT . ", '" . $GLOBALS["we_transaction"] . "');"));
 		}
 		//	Button properties
 		if(in_array(we_base_constants::WE_EDITPAGE_PROPERTIES, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_SCHEDULER)){
 			if(permissionhandler::isUserAllowedForAction("switch_edit_page", we_base_constants::WE_EDITPAGE_PROPERTIES)){
 				$_seeModeTable->addCol(2);
-				$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top'), we_html_button::create_button('properties', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));
+				$_seeModeTable->setCol(0, $_pos++, array(), we_html_button::create_button('properties', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));
 			}
 		}
 
@@ -290,14 +290,14 @@ abstract class we_editor_footer{
 
 		//	Button scheduler
 		if(in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES) &&
-				we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && permissionhandler::hasPerm("CAN_SEE_SCHEDULER")){
+			we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && permissionhandler::hasPerm("CAN_SEE_SCHEDULER")){
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('fat:schedule_button,fa-lg fa-clock-o', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 		//	Button put in workflow
 		if(/* $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PROPERTIES && */ $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_SCHEDULER && // then button "workflow"
-				defined('WORKFLOW_TABLE') && $we_doc->IsTextContentDoc && $we_doc->ID){
+			defined('WORKFLOW_TABLE') && $we_doc->IsTextContentDoc && $we_doc->ID){
 
 			$_ctrlElem = getControlElement('button', 'workflow'); //	look tag we:controlElement for details
 
@@ -344,14 +344,14 @@ abstract class we_editor_footer{
 			}
 		}
 
-		if(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder*/) && $haspermNew && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_THUMBNAILS)){
+		if(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_THUMBNAILS)){
 
 			//	makesamedoc only when not in edit_include-window
 			$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
 
 			$showPubl_makeSamNew = ($_ctrlElem && $_ctrlElem['hide'] ? '<div style="display: hidden;">' : '') .
-					we_html_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)) .
-					($_ctrlElem && $_ctrlElem['hide'] ? '</div>' : '');
+				we_html_forms::checkbox("makeSameDoc", ( $_ctrlElem ? $_ctrlElem['checked'] : false), "makeSameDoc", g_l('global', '[we_make_same][' . $we_doc->ContentType . ']'), false, "defaultfont", " WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorMakeSameDoc( (this.checked) ? true : false );", ( $_ctrlElem ? $_ctrlElem['readonly'] : false)) .
+				($_ctrlElem && $_ctrlElem['hide'] ? '</div>' : '');
 
 			$_seeModeTable->addCol(2);
 			$_seeModeTable->setCol(0, $_pos++, array('style' => 'vertical-align:top;'), $showPubl_makeSamNew);

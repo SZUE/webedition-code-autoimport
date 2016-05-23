@@ -98,9 +98,9 @@ switch($we_doc->ContentType){
 		break;
 }
 
-$showGlossaryCheck = 0;/*(!empty($_SESSION['prefs']['force_glossary_check']) &&
-	( $we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE ) ? 1 : 0);
-*/
+$showGlossaryCheck = 0; /* (!empty($_SESSION['prefs']['force_glossary_check']) &&
+  ( $we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE ) ? 1 : 0);
+ */
 //	added for we:controlElement type="button" name="save" hide="true"
 $_ctrlElem = getControlElement('button', 'save');
 
@@ -117,10 +117,10 @@ if($canWeSave &&
 $pass_publish = $canWeSave && ($showPubl || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL)) ? " WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave() " : "''";
 $js_we_save_cmd = "we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);";
 
-$js = "
+$js = '
 function generatedSaveDoc(addCmd){
 	if(weCanSave){
-" . ($we_doc->isBinary() ?
+' . ($we_doc->isBinary() ?
 		we_fileupload_ui_preview::getJsOnLeave($js_we_save_cmd) :
 		$js_we_save_cmd
 	) .
@@ -142,31 +142,29 @@ if(($we_doc->IsTextContentDoc /* || $we_doc->IsFolder */) && $haspermNew && //	$
 }
 
 echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsElement('
-	var we_transaction="' . $we_transaction . '";
-	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
-	var doc={
-		ID:' . intval($we_doc->ID) . ',
-		Path:"' . $we_doc->Path . '",
-		Text:"' . $we_doc->Text . '",
-		contentType:"' . $we_doc->ContentType . '",
-		editFilename:"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path) . '",
-		makeSameDocCheck: ' . intval(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew && (!inWorkflow($we_doc))) . ',
-		isTemplate:' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
-		isFolder:' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . ',
-		classname:"' . ($we_doc->Published == 0 ? 'notpublished' : (!in_array($we_doc->Table, array(TEMPLATES_TABLE, VFILE_TABLE)) && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
-	};
-	var weCanSave=' . ($canWeSave ? 'true' : 'false') . ';
-	var _showGlossaryCheck = ' . $showGlossaryCheck . ';
-
+var we_transaction="' . $we_transaction . '";
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
+var doc={
+	ID:' . intval($we_doc->ID) . ',
+	Path:"' . $we_doc->Path . '",
+	Text:"' . $we_doc->Text . '",
+	contentType:"' . $we_doc->ContentType . '",
+	editFilename:"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path) . '",
+	makeSameDocCheck: ' . intval(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew && (!inWorkflow($we_doc))) . ',
+	isTemplate:' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
+	isFolder:' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . ',
+	classname:"' . ($we_doc->Published == 0 ? 'notpublished' : (!in_array($we_doc->Table, array(TEMPLATES_TABLE, VFILE_TABLE)) && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
+};
+var weCanSave=' . ($canWeSave ? 'true' : 'false') . ';
+var _showGlossaryCheck = ' . $showGlossaryCheck . ';
 
 function we_footerLoaded(){
-if(doc.isTemplate && !doc.isFolder){
-			setTemplate();
-			}' .
-		$_js_permnew .
-		'setPath();
-}
-' .
+	if(doc.isTemplate && !doc.isFolder){
+		setTemplate();
+	}' .
+		$_js_permnew .'
+	setPath();
+}' .
 		$js) .
 	we_html_element::jsScript(JS_DIR . 'we_editor_footer.js')
 );
@@ -180,7 +178,7 @@ if(inWorkflow($we_doc)){
 <body id="footerBody" onload="we_footerLoaded();"<?php echo $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER); ?>>
 	<form name="we_form" action=""<?php if(!empty($we_doc->IsClassFolder)){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
-				<?php
+					<?php
 					echo we_html_element::htmlHidden('sel', $we_doc->ID);
 					$_SESSION['weS']['seemForOpenDelSelector'] = array(
 						'ID' => $we_doc->ID,
