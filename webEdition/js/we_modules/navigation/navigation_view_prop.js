@@ -206,7 +206,7 @@ function setStaticSelection(value) {
 		case WE().consts.navigation.STYPE_CATEGORY:
 			setVisible("dynUrl", true);
 			setVisible("dynamic_LinkSelectionDiv", true);
-			dynamic_setLinkSelection(WE().consts.navigation.LSELECTION_INTERN);
+			setLinkSelection("dynamic_", WE().consts.navigation.LSELECTION_INTERN);
 			break;
 		case WE().consts.navigation.STYPE_CATLINK:
 			setVisible("dynUrl", false);
@@ -217,14 +217,14 @@ function setStaticSelection(value) {
 			setVisible("catLink", false);
 			setVisible(value, true);
 			setVisible("LinkSelectionDiv", true);
-			setLinkSelection(WE().consts.navigation.LSELECTION_INTERN);
+			setLinkSelection("", WE().consts.navigation.LSELECTION_INTERN);
 			break;
 		case WE().consts.navigation.STYPE_URLLINK:
 			setVisible("dynUrl", false);
 			setVisible("staticSelect", false);
 			setVisible("staticUrl", true);
 			setVisible("LinkSelectionDiv", false);
-			setLinkSelection(WE().consts.navigation.LSELECTION_EXTERN);
+			setLinkSelection("", WE().consts.navigation.LSELECTION_EXTERN);
 			break;
 		case WE().consts.navigation.STYPE_DOCLINK:
 		case WE().consts.navigation.STYPE_OBJLINK:

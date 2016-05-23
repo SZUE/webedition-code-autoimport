@@ -852,8 +852,7 @@ function showPreview() {
 
 	function getHTMLFieldChooser($title, $name, $value, $cmd, $type, $selection, $extraField = "", $extraFieldWidth = 0){
 		$_disabled = !(($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS && $this->Model->ClassID != 0) || ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCTYPE && $this->Model->DocTypeID != 0));
-		$_cmd = "javascript:var st=document.we_form.SelectionType.options[document.we_form.SelectionType.selectedIndex].value; var s=(st=='" . we_navigation_navigation::STYPE_DOCTYPE . "' ? document.we_form.DocTypeID.options[document.we_form.DocTypeID.selectedIndex].value : document.we_form.ClassID.options[document.we_form.ClassID.selectedIndex].value); we_cmd('openFieldSelector','" . $cmd . "',st,s,0)";
-		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', $_disabled, false, "_$name");
+		$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:fieldChooserBut('" . $cmd . "');", true, 100, 22, '', '', $_disabled, false, '_' . $name);
 		if(!$extraField){
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
@@ -863,7 +862,7 @@ function showPreview() {
 			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
 					we_html_element::htmlHidden($name, $value) .
-					we_html_tools::htmlTextInput("__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); top.content.mark();"', 'text', ($this->_width_size - 120) - abs($extraFieldWidth) - 8, 0), $title, 'left', 'defaultfont', '', $extraField, $_button);
+					we_html_tools::htmlTextInput('__' . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); top.content.mark();"', 'text', ($this->_width_size - 120) - abs($extraFieldWidth) - 8, 0), $title, 'left', 'defaultfont', '', $extraField, $_button);
 		}
 	}
 
@@ -896,8 +895,7 @@ function showPreview() {
 			$_cmd = "javascript:we_cmd('we_selector_file'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $cmd . "','','" . $rootDirID . "')";
 			$_selector = weSuggest::DirSelector;
 		} else {
-			$cmd1 = "document.we_form.$IDName.value";
-			$_cmd = "javascript:we_cmd('" . ($filter == we_base_ContentTypes::IMAGE ? 'we_selector_image' : 'we_selector_document') . "'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.$PathName.value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+			$_cmd = "javascript:we_cmd('" . ($filter == we_base_ContentTypes::IMAGE ? 'we_selector_image' : 'we_selector_document') . "'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 			$_selector = weSuggest::DocSelector;
 		}
 
@@ -942,20 +940,7 @@ function showPreview() {
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category','','" . CATEGORY_TABLE . "','','','fillIDs(true);opener.addCat(top.allPaths);opener.top.content.mark();')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;top.content.mark();'));
 
-		$variant_js = '
-var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",' . ($this->_width_size - 10) . ',false);
-categories_edit.addVariant();
-			document.we_form.CategoriesControl.value = categories_edit.name;';
-
-		if(is_array($this->Model->Categories)){
-			foreach($this->Model->Categories as $cat){
-				$variant_js .= '
-categories_edit.addItem();
-categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
-			}
-		}
-
-		$variant_js .= 'categories_edit.showVariant(0);';
+		$variant_js = 'categoriesEdit(' . ($this->_width_size - 10) . ', [' . (!empty($this->Model->Categories) ? '"' . implode('","', $this->Model->Categories) . '"' : '') . '], "' . $del_but . '");';
 
 		$table = new we_html_table(
 			array(
@@ -1022,10 +1007,10 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 		);
 		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:setFields('" . $_cmd . "');", true, 100, 22, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
 
-		$_body = we_html_element::htmlBody(
+		$body = we_html_element::htmlBody(
 				array("class" => "weDialogBody", "onload" => "loaded=1;"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), we_html_multiIconBox::getHTML('', $_parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
 
-		return $this->getHTMLDocument($_body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_frame.js'));
+		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_frame.js'));
 	}
 
 	function getHTMLCount(){
@@ -1140,8 +1125,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 
 			return '<div id="objLinkWorkspaceClass" style="display: ' . (($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC) ? 'block' : 'none') . ';margin-top: 5px;">' .
 				we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlSelect(
-						'WorkspaceIDClass', $_wsid, 1, $this->Model->WorkspaceID, false, array('style' => 'width: ' . $this->_width_size . 'px;', 'onchange' => 'top.content.mark();'), 'value'), g_l('navigation', '[workspace]')
+					we_html_tools::htmlSelect('WorkspaceIDClass', $_wsid, 1, $this->Model->WorkspaceID, false, array('style' => 'width: ' . $this->_width_size . 'px;', 'onchange' => 'top.content.mark();'), 'value'), g_l('navigation', '[workspace]')
 				) . '</div>';
 		}
 
@@ -1154,8 +1138,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 
 			return '<div id="objLinkWorkspace" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK && ($this->Model->WorkspaceID > -1)) ? 'block' : 'none') . ';margin-top: 5px;">' .
 				we_html_tools::htmlFormElementTable(
-					we_html_tools::htmlSelect(
-						'WorkspaceID', $_wsid, 1, $this->Model->WorkspaceID, false, array('style' => 'width: ' . $this->_width_size . 'px;', 'onchange' => 'top.content.mark();'), 'value'), g_l('navigation', '[workspace]')) .
+					we_html_tools::htmlSelect('WorkspaceID', $_wsid, 1, $this->Model->WorkspaceID, false, array('style' => 'width: ' . $this->_width_size . 'px;', 'onchange' => 'top.content.mark();'), 'value'), g_l('navigation', '[workspace]')) .
 				'</div>';
 		}
 		if($this->Model->FolderSelection == we_navigation_navigation::STYPE_OBJLINK && $this->Model->LinkID){
@@ -1190,24 +1173,18 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");';
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
-		return we_html_element::jsElement('
-function ' . $prefix . 'setLinkSelection(value){
-		setVisible("' . $prefix . 'intern",(value=="' . we_navigation_navigation::LSELECTION_INTERN . '"));
-		setVisible("' . $prefix . 'extern",(value!="' . we_navigation_navigation::LSELECTION_INTERN . '"));
-}') . '<div id="' . $prefix . 'LinkSelectionDiv" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK || $this->Model->SelectionType == we_navigation_navigation::STYPE_CATEGORY) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlSelect(
-					$prefix . 'LinkSelection', array(
+		return '<div id="' . $prefix . 'LinkSelectionDiv" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK || $this->Model->SelectionType == we_navigation_navigation::STYPE_CATEGORY) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlSelect($prefix . 'LinkSelection', array(
 					we_navigation_navigation::LSELECTION_INTERN => g_l('navigation', '[intern]'),
 					we_navigation_navigation::LSELECTION_EXTERN => g_l('navigation', '[extern]')
-					), 1, $this->Model->LinkSelection, false, array('style' => 'width: ' . $this->_width_size . 'px;', 'onchange' => $prefix . 'setLinkSelection(this.value);top.content.mark();'), 'value'), g_l('navigation', '[linkSelection]')) . '</div>
+					), 1, $this->Model->LinkSelection, false, array('style' => 'width: ' . $this->_width_size . 'px;', 'onchange' => "setLinkSelection('" . $prefix . "',this.value);top.content.mark();"), 'value'), g_l('navigation', '[linkSelection]')) . '</div>
 				<div id="' . $prefix . 'intern" style="display: ' . (($this->Model->LinkSelection === we_navigation_navigation::LSELECTION_INTERN && $this->Model->SelectionType != we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">
 				' . $weAcSelector . '
 				</div>
 				<div id="' . $prefix . 'extern" style="display: ' . (($this->Model->LinkSelection === we_navigation_navigation::LSELECTION_EXTERN || $this->Model->SelectionType == we_navigation_navigation::STYPE_URLLINK) ? 'block' : 'none') . ';margin-top: 5px;">' . we_html_tools::htmlTextInput(
 				$prefix . 'Url', 58, $this->Model->Url, '', 'onchange="top.content.mark();"', 'text', $this->_width_size) . '</div>
 				<div style="margin-top: 5px;">' . we_html_tools::htmlFormElementTable(
-				we_html_tools::htmlTextInput(
-					$prefix . 'CatParameter', 58, $this->Model->CatParameter, '', 'onchange="top.content.mark();"', 'text', $this->_width_size), g_l('navigation', '[catParameter]')) . '</div>';
+				we_html_tools::htmlTextInput($prefix . 'CatParameter', 58, $this->Model->CatParameter, '', 'onchange="top.content.mark();"', 'text', $this->_width_size), g_l('navigation', '[catParameter]')) . '</div>';
 	}
 
 	function getHTMLCharsetTable(){
