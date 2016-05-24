@@ -201,7 +201,7 @@ if($ok){
 		$ll->setImageAttrib($nr, 'vspace', $link['vspace']);
 		$ll->setImageAttrib($nr, 'align', $link['align']);
 		$ll->setImageAttrib($nr, 'alt', $link['alt']);
-
+		$ll->cleanup($nr);
 		$linklist = $ll->getString();
 	}
 } elseif($nr > -1){
@@ -357,7 +357,7 @@ if($ok){
 			top.close();
 		<?php
 	} else if($cmd === "edit_link_at_object"){
-		$_SESSION['weS']['WE_LINK'] = $link;
+		$_SESSION['weS']['WE_LINK'] = array_filter($link);
 		?>
 			opener.setScrollTo();
 			opener.we_cmd("object_change_link_at_object", "<?php echo $trans; ?>", "link_<?php echo $name; ?>");
@@ -370,7 +370,7 @@ if($ok){
 			opener.we_cmd("change_linklist", "<?php echo $name; ?>", "");
 		<?php
 	} else if(!empty($link)){
-		$_SESSION['weS']['WE_LINK'] = $link;
+		$_SESSION['weS']['WE_LINK'] = array_filter($link);
 		?>
 			opener.setScrollTo();
 			opener.we_cmd("change_link", "<?php echo $name; ?>", "");
@@ -666,13 +666,14 @@ if($ok){
 			<input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 			<?php
 			if(!empty($ll)){
+				$ll->cleanup(0);
 				?>
 				<input type="hidden" name="linklist" value="<?php echo oldHtmlspecialchars($ll->getString()); ?>" />
 				<?php
 			}
 			echo we_html_element::htmlHiddens(array(
 				"name" => $name,
-				"nr" => we_base_request::_(we_base_request::INT, "nr", $nr),
+				"nr" => we_base_request::_(we_base_request::INT, 'nr', $nr),
 				"ok" => 1,
 				"we_transaction" => $we_transaction,
 				"we_field" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3)

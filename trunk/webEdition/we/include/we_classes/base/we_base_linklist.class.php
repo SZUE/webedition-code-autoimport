@@ -102,7 +102,7 @@ class we_base_linklist{
 
 	function getAttribs($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
-		return isset($cur["attribs"]) ? $cur["attribs"] : "";
+		return isset($cur['attribs']) ? $cur['attribs'] : '';
 	}
 
 	function getTarget($nr = -1){
@@ -321,8 +321,18 @@ class we_base_linklist{
 		return ($id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $this->db) : '');
 	}
 
+	function cleanup($nr){
+		if($nr){
+			$this->listArray[$nr] = array_filter($this->listArray[$nr]);
+		} else {
+			foreach($this->listArray as &$l){
+				$l = array_filter($l);
+			}
+		}
+	}
+
 	function getString(){
-		return ($this->listArray ? we_serialize($this->listArray, SERIALIZE_JSON) : '');
+		return ($this->listArray ? we_serialize(array_filter($this->listArray), SERIALIZE_JSON) : '');
 	}
 
 	//added for #7269
@@ -410,19 +420,27 @@ class we_base_linklist{
 	}
 
 	function setImageAttribs($nr, $val){
-		$this->listArray[$nr]["img_attribs"] = $val;
+		$this->listArray[$nr]["img_attribs"] = array_filter($val);
 	}
 
 	function setImageAttrib($nr, $key, $val){
-		$this->listArray[$nr]["img_attribs"][$key] = $val;
+		if($val){
+			$this->listArray[$nr]["img_attribs"][$key] = $val;
+		} elseif(isset($this->listArray[$nr]["img_attribs"][$key])){
+			unset($this->listArray[$nr]["img_attribs"][$key]);
+		}
 	}
 
 	function setJsWinAttribs($nr, $val){
-		$this->listArray[$nr]["jswin_attribs"] = $val;
+		$this->listArray[$nr]["jswin_attribs"] = array_filter($val);
 	}
 
 	function setJsWinAttrib($nr, $key, $val){
-		$this->listArray[$nr]["jswin_attribs"][$key] = $val;
+		if($val){
+			$this->listArray[$nr]['jswin_attribs'][$key] = $val;
+		} elseif(isset($this->listArray[$nr]['jswin_attribs'][$key])){
+			unset($this->listArray[$nr]['jswin_attribs'][$key]);
+		}
 	}
 
 	function setBcc($nr, $val){
@@ -567,7 +585,7 @@ class we_base_linklist{
 
 	private function getRawLink(){
 		return array(
-			'href' => we_base_link::EMPTY_EXT,
+			'href' => '',
 			'text' => g_l('global', '[new_link]'),
 			'target' => '',
 			'type' => we_base_link::TYPE_EXT,
