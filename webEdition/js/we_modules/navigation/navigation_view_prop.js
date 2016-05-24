@@ -132,15 +132,15 @@ function copyNaviFolder(folderPath, folderID) {
 					//FIXME: add code for Tree reload!
 					top.content.cmd.location.reload();
 				} else {
-					WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 			},
 			failure: function (o) {
-				WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 		});
 	} else {
-		WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 

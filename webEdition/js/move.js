@@ -1,4 +1,4 @@
-/* global top */
+/* global top, WE */
 
 /**
  * webEdition CMS
@@ -81,10 +81,9 @@ function press_ok_move() {
 
 	// check if selected target exists
 	var acStatus = '';
-	var invalidAcFields = false;
 	acStatus = YAHOO.autocoml.checkACFields();
 	acStatusType = typeof acStatus;
-	if (acStatusType.toLowerCase() == 'object') {
+	if (acStatusType.toLowerCase() === 'object') {
 		if (acStatus.running) {
 			setTimeout(press_ok_move, 100);
 			return;
