@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -25,7 +26,6 @@
  * @license		http://www.gnu.org/copyleft/gpl.html  GPL
  * @version    	SVN: $Id$
  */
-
 class we_navigation_items{
 	const TEMPLATE_DEFAULT_CURRENT = 'defaultCurrent';
 	const TEMPLATE_DEFAULT_POSITION = 'defaultPosition';
@@ -61,20 +61,20 @@ class we_navigation_items{
 		}
 
 		return ($navi->LimitAccess ?
-			array(
+				array(
 				'id' => $navi->AllCustomers == 0 ? $navi->Customers : array(),
 				'filter' => $navi->ApplyFilter == 1 ? $navi->CustomerFilter : array(),
 				'blacklist' => $navi->ApplyFilter == 1 ? $navi->BlackList : array(),
 				'whitelist' => $navi->ApplyFilter == 1 ? $navi->WhiteList : array(),
 				'usedocumentfilter' => $navi->UseDocumentFilter ? 1 : 0
-			) :
-			array(
+				) :
+				array(
 				'id' => '',
 				'filter' => '',
 				'blacklist' => '',
 				'whitelist' => '',
 				'usedocumentfilter' => 1
-			));
+		));
 	}
 
 	private function initRulesFromDB(){
@@ -206,7 +206,7 @@ class we_navigation_items{
 
 		$currentWorkspace = $isObject ? //webEdition object
 			(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
-				we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/'). '.php'), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/')), $GLOBALS['WE_MAIN_DOC']->Workspaces, $GLOBALS['WE_MAIN_DOC']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
+				we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/') . '.php'), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/')), $GLOBALS['WE_MAIN_DOC']->Workspaces, $GLOBALS['WE_MAIN_DOC']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
 				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
 			) : //webEdition document
 			$GLOBALS['WE_MAIN_DOC']->Path;
@@ -298,8 +298,8 @@ class we_navigation_items{
 
 	function getItems($id = false){
 		return ($id ?
-			$this->getItemIds($id) :
-			array_keys($this->items));
+				$this->getItemIds($id) :
+				array_keys($this->items));
 	}
 
 	function getItem($id){
@@ -416,7 +416,7 @@ class we_navigation_items{
 				$_ids[] = $_db->Record['IconID'];
 			}
 		}
-		$_ids = $_ids ? array_diff(array_unique($_ids), array_keys(self::$Storage['ids'])) : array();
+		$_ids = $_ids ? array_filter(array_diff(array_unique($_ids), array_keys(self::$Storage['ids']))) : array();
 		if($_ids){
 			$_db->query('SELECT ID,IF(Published>0,Path,"") FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $_ids) . ') ORDER BY ID');
 			//keep array index
