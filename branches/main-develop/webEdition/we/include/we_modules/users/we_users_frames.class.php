@@ -48,8 +48,8 @@ class we_users_frames extends we_modules_frame{
 		$rootjs = "";
 		if(!$pid){
 			$rootjs.=
-				$this->Tree->topFrame . '.treeData.clear();' .
-				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+				'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
 		}
 		$hiddens = we_html_element::htmlHiddens(array(
 				"pnt" => "cmd",

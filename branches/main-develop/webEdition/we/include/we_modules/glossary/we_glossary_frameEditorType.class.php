@@ -45,7 +45,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 				case 'delete':
 					if($GLOBALS['DB_WE']->query('DELETE FROM ' . GLOSSARY_TABLE . ' WHERE ID IN (' . implode(',', $id) . ')')){
 						foreach($id as $_id){
-							$_js .= $weGlossaryFrames->View->topFrame . '.treeData.deleteEntry(' . $_id . ');';
+							$_js .= 'top.content.treeData.deleteEntry(' . $_id . ');';
 						}
 					}
 					$Cache->write();
@@ -176,7 +176,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 					'bgcolor' => '#ffffff',
 				),
 				array(
-					'dat' => '<a href="javascript://" onclick="' . $weGlossaryFrames->topFrame . '.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+' . $weGlossaryFrames->topFrame . '.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>',
+					'dat' => '<a href="javascript://" onclick="top.content.editor.edbody.location=\'' . $weGlossaryFrames->frameset . '&pnt=edbody&cmd=edit_glossary_' . $Type . '&cmdid=' . $Search->getField('ID') . '&tabnr=\'+top.content.activ_tab;">' . oldHtmlspecialchars($Search->getField('Text')) . '</a>',
 					'height' => 25,
 					'style' => 'text-align:left',
 					'bgcolor' => '#ffffff',

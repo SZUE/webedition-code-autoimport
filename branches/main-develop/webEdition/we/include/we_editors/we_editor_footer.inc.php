@@ -21,14 +21,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::protect();
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 1);
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-function inWorkflow($doc){
+function inWorkflow(we_root $doc){
 	if(!defined('WORKFLOW_TABLE') || !$doc->IsTextContentDoc){
 		return false;
 	}
@@ -70,37 +69,11 @@ switch($we_doc->userHasAccess()){
 //	preparations of needed vars
 $showPubl = permissionhandler::hasPerm("PUBLISH") && $we_doc->userCanSave() && $we_doc->IsTextContentDoc;
 $reloadPage = (bool) (($showPubl || $we_doc->ContentType == we_base_ContentTypes::TEMPLATE) && (!$we_doc->ID));
-$haspermNew = false;
+$haspermNew = we_editor_footer::hasNewPerm($we_doc);
 
-//	Check permissions for buttons
-switch($we_doc->ContentType){
-	case we_base_ContentTypes::HTML:
-		$haspermNew = permissionhandler::hasPerm("NEW_HTML");
-		break;
-	case we_base_ContentTypes::WEDOCUMENT:
-		$haspermNew = permissionhandler::hasPerm("NEW_WEBEDITIONSITE");
-		break;
-	case we_base_ContentTypes::OBJECT_FILE:
-		$haspermNew = permissionhandler::hasPerm("NEW_OBJECTFILE");
-		break;
-	case we_base_ContentTypes::FOLDER:
-		switch($we_doc->Table){
-			case FILE_TABLE:
-				$haspermNew = permissionhandler::hasPerm('NEW_DOC_FOLDER');
-				break;
-			case TEMPLATES_TABLE:
-				$haspermNew = permissionhandler::hasPerm('NEW_TEMP_FOLDER');
-				break;
-			case defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
-				$haspermNew = permissionhandler::hasPerm('NEW_OBJECTFILE_FOLDER');
-				break;
-		}
-		break;
-}
-
-$showGlossaryCheck = 0;/*(!empty($_SESSION['prefs']['force_glossary_check']) &&
-	( $we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE ) ? 1 : 0);
-*/
+$showGlossaryCheck = 0; /* (!empty($_SESSION['prefs']['force_glossary_check']) &&
+  ( $we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE ) ? 1 : 0);
+ */
 //	added for we:controlElement type="button" name="save" hide="true"
 $_ctrlElem = getControlElement('button', 'save');
 
@@ -117,10 +90,10 @@ if($canWeSave &&
 $pass_publish = $canWeSave && ($showPubl || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL)) ? " WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave() " : "''";
 $js_we_save_cmd = "we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);";
 
-$js = "
+$js = '
 function generatedSaveDoc(addCmd){
 	if(weCanSave){
-" . ($we_doc->isBinary() ?
+' . ($we_doc->isBinary() ?
 		we_fileupload_ui_preview::getJsOnLeave($js_we_save_cmd) :
 		$js_we_save_cmd
 	) .
@@ -142,31 +115,29 @@ if(($we_doc->IsTextContentDoc /* || $we_doc->IsFolder */) && $haspermNew && //	$
 }
 
 echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsElement('
-	var we_transaction="' . $we_transaction . '";
-	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
-	var doc={
-		ID:' . intval($we_doc->ID) . ',
-		Path:"' . $we_doc->Path . '",
-		Text:"' . $we_doc->Text . '",
-		contentType:"' . $we_doc->ContentType . '",
-		editFilename:"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path) . '",
-		makeSameDocCheck: ' . intval(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew && (!inWorkflow($we_doc))) . ',
-		isTemplate:' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
-		isFolder:' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . ',
-		classname:"' . ($we_doc->Published == 0 ? 'notpublished' : (!in_array($we_doc->Table, array(TEMPLATES_TABLE, VFILE_TABLE)) && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
-	};
-	var weCanSave=' . ($canWeSave ? 'true' : 'false') . ';
-	var _showGlossaryCheck = ' . $showGlossaryCheck . ';
-
+var we_transaction="' . $we_transaction . '";
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
+var doc={
+	ID:' . intval($we_doc->ID) . ',
+	Path:"' . $we_doc->Path . '",
+	Text:"' . $we_doc->Text . '",
+	contentType:"' . $we_doc->ContentType . '",
+	editFilename:"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path) . '",
+	makeSameDocCheck: ' . intval(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew && (!inWorkflow($we_doc))) . ',
+	isTemplate:' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
+	isFolder:' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . ',
+	classname:"' . ($we_doc->Published == 0 ? 'notpublished' : (!in_array($we_doc->Table, array(TEMPLATES_TABLE, VFILE_TABLE)) && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
+};
+var weCanSave=' . ($canWeSave ? 'true' : 'false') . ';
+var _showGlossaryCheck = ' . $showGlossaryCheck . ';
 
 function we_footerLoaded(){
-if(doc.isTemplate && !doc.isFolder){
-			setTemplate();
-			}' .
-		$_js_permnew .
-		'setPath();
-}
-' .
+	if(doc.isTemplate && !doc.isFolder){
+		setTemplate();
+	}' .
+		$_js_permnew . '
+	setPath();
+}' .
 		$js) .
 	we_html_element::jsScript(JS_DIR . 'we_editor_footer.js')
 );
@@ -180,7 +151,7 @@ if(inWorkflow($we_doc)){
 <body id="footerBody" onload="we_footerLoaded();"<?php echo $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER); ?>>
 	<form name="we_form" action=""<?php if(!empty($we_doc->IsClassFolder)){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
-				<?php
+					<?php
 					echo we_html_element::htmlHidden('sel', $we_doc->ID);
 					$_SESSION['weS']['seemForOpenDelSelector'] = array(
 						'ID' => $we_doc->ID,

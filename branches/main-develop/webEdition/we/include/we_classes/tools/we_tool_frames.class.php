@@ -76,7 +76,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(new we_tab(g_l('tools', '[properties]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
+		$we_tabs->addTab(new we_tab(g_l('tools', '[properties]'), '((top.content.activ_tab==1) ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
 
 		$tabsHead = we_tabs::getHeader('
 function mark() {
@@ -102,16 +102,16 @@ function setTab(tab) {
 		break;
 	}
 	self.focus();
-	' . $this->topFrame . '.activ_tab=tab;
+	top.content.activ_tab=tab;
 }
 
-' . ($this->Model->ID ? '' : $this->topFrame . '.activ_tab=1;'));
+' . ($this->Model->ID ? '' : 'top.content.activ_tab=1;'));
 
 		/* $table = new we_html_table(array("width" => '100%', "class" => 'default'), 3, 1);
 
 		  $table->setCol(1, 0, array("class" => "small",'style'=>'p'), we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>')); */
 
-		$extraJS = 'document.getElementById("tab_"+' . $this->topFrame . '.activ_tab).className="tabActive";';
+		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 		$body = we_html_element::htmlBody(array("id" => "eHeaderBody", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .
 				$we_tabs->getHTML() .
 				'</div>' . we_html_element::jsElement($extraJS)
@@ -150,7 +150,7 @@ function setTab(tab) {
 
 		return $this->getHTMLDocument(we_html_element::jsElement('
 function we_save() {
-	' . $this->topFrame . '.we_cmd("tool_' . $this->toolName . '_save");
+	top.content.we_cmd("tool_' . $this->toolName . '_save");
 }') .
 				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), $_but_table)
 				)
@@ -166,8 +166,8 @@ function we_save() {
 		return array(array(
 				'headline' => g_l('tools', '[general]'),
 				'html' => we_html_element::htmlHidden('newone', ($this->Model->ID == 0 ? 1 : 0)) .
-				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . 'px;" onchange="' . $this->topFrame . '.mark();"'), g_l('tools', '[name]')) .
-				$this->getHTMLChooser(g_l('tools', '[group]'), $this->Table, 0, 'ParentID', $this->Model->ParentID, 'ParentPath', 'opener.' . $this->topFrame . '.mark()', ''),
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . 'px;" onchange="top.content.mark();"'), g_l('tools', '[name]')) .
+				$this->getHTMLChooser(g_l('tools', '[group]'), $this->Table, 0, 'ParentID', $this->Model->ParentID, 'ParentPath', 'opener.top.content.mark()', ''),
 				'space' => $this->_space_size,
 				'noline' => 1
 			)
@@ -205,8 +205,8 @@ function we_save() {
 
 		$rootjs = ($pid ?
 				'' :
-				$this->Tree->topFrame . '.treeData.clear();' .
-				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
+				'top.content.treeData.clear();' .
+				'top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
 
 		$hiddens = we_html_element::htmlHiddens(array(
 				'pnt' => 'cmd',
@@ -228,7 +228,7 @@ function we_save() {
 	protected function getHTMLExitQuestion(){
 		if(($dp = we_base_request::_(we_base_request::INT, 'delayParam'))){
 
-			$_frame = 'opener.' . $this->topFrame;
+			$_frame = 'opener.top.content';
 //			$_form = $_frame . '.document.we_form';
 
 			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("tool_' . $this->toolName . '_save");self.close();';

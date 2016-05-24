@@ -62,13 +62,6 @@ function we_tag_link($attribs, $content){
 		if(!$link){
 			$link = array(
 				'id' => (isset($id) ? $id : ''),
-				'width' => '',
-				'height' => '',
-				'border' => '',
-				'hspace' => '',
-				'vspace' => '',
-				'align' => '',
-				'alt' => '',
 				'ctype' => ((!empty($imageid)) ? we_base_link::CONTENT_INT : we_base_link::CONTENT_TEXT),
 				'img_id' => ((!empty($imageid) ) ? $imageid : ''),
 				'type' => (isset($id) ? we_base_link::TYPE_INT : we_base_link::TYPE_EXT),

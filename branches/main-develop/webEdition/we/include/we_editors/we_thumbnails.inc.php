@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -26,8 +25,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'));
 
 // Check if we need to create a new thumbnail
-if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) &&
-		permissionhandler::hasPerm('ADMINISTRATOR')){
+if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) && permissionhandler::hasPerm('ADMINISTRATOR')){
 	$DB_WE->query('INSERT INTO ' . THUMBNAILS_TABLE . ' SET Name="' . $DB_WE->escape($name) . '"');
 	$GLOBALS['id'] = $DB_WE->getInsertId();
 } else {
@@ -62,11 +60,11 @@ $GLOBALS['id'] = $GLOBALS['id']? : ( f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' 
  */
 function create_dialog($name, $title, $content, $expand = -1, $show_text = '', $hide_text = '', $cookie = false, $JS = ''){
 	return
-			// Check, if we need to write some JavaScripts
-			($JS ? : '') .
-			($expand != -1 ? we_html_multiIconBox::getJS() : '') .
-			// Return HTML code of dialog
-			we_html_multiIconBox::getHTML($name, $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie === 'down') : $cookie, $title);
+		// Check, if we need to write some JavaScripts
+		($JS ? : '') .
+		($expand != -1 ? we_html_multiIconBox::getJS() : '') .
+		// Return HTML code of dialog
+		we_html_multiIconBox::getHTML($name, $content, 30, '', $expand, $show_text, $hide_text, $cookie != false ? ($cookie === 'down') : $cookie, $title);
 }
 
 /**
@@ -125,7 +123,9 @@ function save_all_values(){
 		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_quality', null), 'Quality');
 		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'Format', null), 'Format');
 		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'description', null), 'description');
-		$setArray['Options'] = implode(',', array_filter(we_base_request::_(we_base_request::STRING, 'Options', array()), function($v) {return $v !== we_thumbnail::OPTION_DEFAULT;}));
+		$setArray['Options'] = implode(',', array_filter(we_base_request::_(we_base_request::STRING, 'Options', array()), function($v){
+				return $v !== we_thumbnail::OPTION_DEFAULT;
+			}));
 		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'edited_id', 0));
 	}
 }
@@ -158,13 +158,13 @@ function build_dialog($selected_setting = 'ui'){
 			$_needed_JavaScript_Source = "
 var thumbnail_names = [" . $_thumbnail_names . "];
 function delete_thumbnail() {" .
-					(permissionhandler::hasPerm('ADMINISTRATOR') ?
-							"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($id))) . "');
+				(permissionhandler::hasPerm('ADMINISTRATOR') ?
+					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($id))) . "');
 
 		if (deletion == true) {
 			self.location = consts.reloadUrl+'&deletethumbnail=" . $id . "';
 		}" :
-							"") . "
+					"") . "
 }";
 
 			$_needed_JavaScript = we_html_element::jsElement($_needed_JavaScript_Source);
@@ -203,14 +203,14 @@ function delete_thumbnail() {" .
 			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(),);
 
 			$allData = (getHash('SELECT Name,Width,Height,Quality,Format,Options,description FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $id)? :
-							array(
-						'Name' => '',
-						'Width' => '',
-						'Height' => '',
-						'Quality' => '',
-						'Format' => '',
-						'Options' => '',
-						'description' => ''
+					array(
+					'Name' => '',
+					'Width' => '',
+					'Height' => '',
+					'Quality' => '',
+					'Format' => '',
+					'Options' => '',
+					'description' => ''
 			));
 
 			$allData['Options'] = explode(',', $allData['Options']);
@@ -270,7 +270,6 @@ function delete_thumbnail() {" .
 						default:
 							$_thumbnail_option_table[$k]->setCol(($i % $v[0]), intval($i++ / $v[0]), null, we_html_forms::radiobutton($key, $val[0], 'Options[' . $k . ']', $val[1], true, "defaultfont", '', false, '', we_html_tools::TYPE_NONE, 0, '', '', (isset($val[2]) ? $val[2] : '')));
 					}
-					
 				}
 			}
 
@@ -311,7 +310,7 @@ function delete_thumbnail() {" .
 				array('headline' => g_l('thumbnails', '[properties]'), 'html' => $_window_html->getHtml(), 'space' => 10),
 				array('headline' => 'Filter', 'html' => we_html_element::htmlDiv(array('class' => 'editorThumbnailsFilter'), $_thumbnail_option_table['filter']->getHtml()), 'space' => 0),
 				array('headline' => g_l('thumbnails', '[format]'), 'html' => $_thumbnail_format_select->getHtml(), 'space' => 100),
-					), -1, '', '', false, $_needed_JavaScript);
+				), -1, '', '', false, $_needed_JavaScript);
 	}
 
 	return '';
@@ -325,8 +324,8 @@ function delete_thumbnail() {" .
 function render_dialog(){
 	// Render setting groups
 	return we_html_element::htmlDiv(array('id' => 'thumbnails_dialog'), build_dialog('dialog')) .
-			// Render save screen
-			we_html_element::htmlDiv(array('id' => 'thumbnails_save', 'style' => 'display: none;'), build_dialog('save'));
+		// Render save screen
+		we_html_element::htmlDiv(array('id' => 'thumbnails_save', 'style' => 'display: none;'), build_dialog('save'));
 }
 
 function getFooter(){
@@ -344,11 +343,11 @@ function getMainDialog(){
 	$tn = we_base_request::_(we_base_request::STRING, 'thumbnail_name');
 	if((strpos($tn, "'") !== false || strpos($tn, ',') !== false)){
 		$save_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
-				'history.back()';
+			'history.back()';
 	} else {
 		save_all_values();
 		$save_javascript = we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-				"self.location = consts.reloadUrl+'&id=" . we_base_request::_(we_base_request::INT, "edited_id", 0) . "';";
+			"self.location = consts.reloadUrl+'&id=" . we_base_request::_(we_base_request::INT, "edited_id", 0) . "';";
 	}
 
 	return we_html_element::jsElement($save_javascript) . build_dialog('saved');
@@ -371,16 +370,16 @@ var g_l={
 //  check if gd_lib is installed ...
 if(we_base_imageEdit::gd_version() > 0){
 	echo we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'init();')
-			, we_html_element::htmlExIFrame('we_thumbnails', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;') .
-			we_html_element::htmlExIFrame('we_thumbnails_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+		, we_html_element::htmlExIFrame('we_thumbnails', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;') .
+		we_html_element::htmlExIFrame('we_thumbnails_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 	) . '</html>';
 	return;
 }//  gd_lib is not installed - show error
 
 echo we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_multiIconBox::getHTML('thumbnails', array(
-			array(
-				'headline' => '',
-				'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 440),
-			)
-				), 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'))
+		array(
+			'headline' => '',
+			'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 440),
+		)
+		), 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'))
 ) . '</html>';

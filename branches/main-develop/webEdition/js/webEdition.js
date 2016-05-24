@@ -504,7 +504,7 @@ function we_cmd_base(args, url) {
 			if (ctrl.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
-				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + "\n" + path)) {
+				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 					we_sbmtFrm(self.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
 				}
@@ -1716,6 +1716,12 @@ WE().util.Base64 = {
 		}
 
 		return string;
+	}
+};
+
+WE().layout.openToEdit = function (tab, id, contentType) {
+	if (id > 0) {
+		WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
 	}
 };
 

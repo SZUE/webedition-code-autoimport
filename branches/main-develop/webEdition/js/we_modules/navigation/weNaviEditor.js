@@ -51,13 +51,11 @@ var ajaxObj = {
 			eval(o.responseText);
 
 			var items = weResponse.data.split(",");
-			var i = 0;
-
-			for (s in items) {
-				i++;
+			
+			for (var s in items) {
 				var row = items[s].split(":");
 				if (row.length > 1) {
-					document.getElementById("details").innerHTML += "<div style=\"width: 40px; float: left;\">" + i + "</div><div style=\"width: 220px;\">" + row[1] + "</div>";
+					document.getElementById("details").innerHTML += '<div style="width: 40px; float: left;">' + i + '</div><div style="width: 220px;">' + row[1] + "</div>";
 				}
 			}
 		}
