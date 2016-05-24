@@ -328,13 +328,13 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$yuiSuggest = &weSuggest::getInstance();
 		$noInternals = false;
 
-		$extHref = (!$this->args['extHref'] ? we_base_link::EMPTY_EXT : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref']));
+		$extHref = (!$this->args['extHref'] ? '' : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref']));
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
 			$noInternals = true;
 			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] !== we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>';
 
-			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', '', 'url', 300);
+			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'placeholder="http://"', 'url', 300);
 			// E-MAIL LINK
 			$_email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300);
 		} else {
