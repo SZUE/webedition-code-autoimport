@@ -120,7 +120,7 @@ function press_ok_move() {
 
 		}
 		if (confirm(
-						WE().util.sprintf(WE().consts.g_l.move.move_exit_open_docs_question, $_type, $_type) + _openDocs_Str + "\n" + WE().consts.g_l.move.move_exit_open_docs_continue)) {
+						WE().util.sprintf(WE().consts.g_l.alert.move_exit_open_docs_question, $_type, $_type) + _openDocs_Str + "\n" + WE().consts.g_l.alert.move_exit_open_docs_continue)) {
 
 			for (i = 0; i < _open_move_editors.length; i++) {
 				_open_move_editors[i].setEditorIsHot(false);
@@ -132,7 +132,7 @@ function press_ok_move() {
 
 	} else {
 
-		if (confirm(WE().consts.g_l.move.move)) {
+		if (confirm(WE().consts.g_l.alert.move)) {
 			we_cmd('do_move', '', _move_table);
 		}
 	}
