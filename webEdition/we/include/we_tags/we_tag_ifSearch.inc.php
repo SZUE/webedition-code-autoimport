@@ -28,6 +28,6 @@ function we_tag_ifSearch($attribs){
 
 	return ($set ?
 			isset($_REQUEST['we_lv_search_' . $name]) :
-			(isset($_REQUEST['we_lv_search_' . $name]) && trim(we_base_request::_(we_base_request::HTML, 'we_lv_search_' . $name)))
+			(isset($_REQUEST['we_lv_search_' . $name]) && trim(we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $name)))
 		);
 }
