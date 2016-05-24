@@ -346,9 +346,6 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 			infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0 )+"px";
 		}
 	}
-	function openToEdit(tab,id,contentType){
-		WE().layout.weEditorFrameController.openDocument(tab,id,contentType);
-	}
 	function weWriteBreadCrumb(BreadCrumb){
 		if(top.document.getElementById("fspath")){
 			top.document.getElementById("fspath").innerHTML = BreadCrumb;
@@ -455,11 +452,11 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 						),
 						array(
 							"caption" => "ID",
-							"content" => "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
+							"content" => "<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
 					<div style='float:left; vertical-align:baseline; margin-right:4px;'>
 					<i class='fa fa-edit fa-lg'></i>
 					</div></a>
-					<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
+					<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
 						<div>" . $this->id . "</div>
 					</a>"
 						)

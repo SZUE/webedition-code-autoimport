@@ -39,14 +39,11 @@ class we_newsletter_view extends we_modules_view{
 	var $get_import = 0;
 	var $hiddens = array('ID');
 	var $customers_fields;
-	var $frameset;
-	var $topFrame;
-	var $cmdFrame;
 	protected $show_import_box = -1;
 	protected $show_export_box = -1;
 
 	public function __construct($frameset){
-		parent::__construct($frameset, '');
+		parent::__construct($frameset);
 
 		$this->newsletter = new we_newsletter_newsletter();
 
@@ -65,8 +62,6 @@ class we_newsletter_view extends we_modules_view{
 		$this->newsletter->Reply = $this->settings['default_reply'];
 		$this->newsletter->Test = $this->settings['test_account'];
 		$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
-		$this->topFrame = 'top.content';
-		$this->cmdFrame = 'top.content.cmd';
 	}
 
 	function getHiddens($predefs = array()){

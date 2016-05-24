@@ -199,13 +199,13 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 				$s2 .= we_html_element::htmlDiv(array("id" => "m_" . $iCurrId, "class" => "le_widget"), $widget);
 			}
 		}
-		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . (($bExtendedCol) ? '_expand' : '_collapse') . '">' .
+		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_'. (($bExtendedCol) ? 'expand' : 'collapse') . '">' .
 			$s2 .
 			we_html_element::htmlDiv(array("class" => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')), '') . '</td>';
 	}
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
-		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . '_collapse">' .
+		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_collapse">' .
 			we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>' .
 			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}

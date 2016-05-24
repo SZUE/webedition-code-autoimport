@@ -203,15 +203,18 @@ for($i = 0; $i < count($aTopRssFeeds); $i++){
 //$aCfgProps[]= $aTopRssFeeds;
 
 $jsPrefs = "
-function weConf(){
-	this.general_={'cls_collapse':" . ($small + 23) . ",'cls_expand':" . ($large + 22) . ",'w_collapse':" . ($small + 23) . ",'w_expand':" . ($large + 22) . ",'wh_edge':11,'w_icon_bar':40,'iDlgWidth':" . $iDlgWidth . "};
-";
+var oCfg={
+	iDlgWidth:" . $iDlgWidth . ",
+	_noResizeTypes:['pad']
+};";
 
 foreach($aPrefs as $type => $_prefs){
-	$jsPrefs .= "this." . $type . "_props_={'width':" . $_prefs["width"] . ",'height':" . $_prefs["height"] . ",'res':" . $_prefs["res"] . ",'cls':'" . $_prefs["cls"] . "','iDlgHeight':" . $_prefs["dlgHeight"] . "};";
+	$jsPrefs .= "oCfg." . $type . "_props_={
+		width:" . $_prefs["width"] . ",
+		height:" . $_prefs["height"] . ",
+		res:" . $_prefs["res"] . ",
+		cls:'" . $_prefs["cls"] . "',
+		iDlgHeight:" . $_prefs["dlgHeight"] . "
+};";
 }
-$jsPrefs .= "this.blend_={'fadeIn':1,'fadeOut':1,'v':400};
-};
-var _noResizeTypes=['pad'];
-var oCfg=new weConf();
-";
+

@@ -376,7 +376,7 @@ var searchClass={
 			array("dat" => '<span onclick="setOrder(\'modifierID\');">' . g_l('versions', '[user]') . ' <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span></span>'),
 			array("dat" => '<span onclick="setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span></span>'),
 			array("dat" => g_l('versions', '[modifications]')),
-			array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR") ? '<div id="deleteButton">' .
+			array("dat" => (permissionhandler::hasPerm('ADMINISTRATOR') ? '<div id="deleteButton">' .
 					we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
 				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
 			array("dat" => ''),

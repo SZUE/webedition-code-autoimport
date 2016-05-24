@@ -417,8 +417,8 @@ function afterLoad(){
 		}
 
 		$rootjs = (!$pid ?
-				$this->Tree->topFrame . '.treeData.clear();' .
-				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
+				 'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
 				'');
 
 

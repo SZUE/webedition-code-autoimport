@@ -48,10 +48,9 @@ class we_search_view extends we_modules_view{
 	//private $view = self::VIEW_LIST;
 
 	public function __construct($frameset = ''){
-		$topframe = 'top.content';
-		parent::__construct($frameset, $topframe);
-		$this->editorBodyFrame = $this->topFrame . '.editor.edbody';
-		$this->editorHeaderFrame = $this->topFrame . '.editor.edheader';
+		parent::__construct($frameset);
+		$this->editorBodyFrame = 'top.content.editor.edbody';
+		$this->editorHeaderFrame =  'top.content.editor.edheader';
 		$this->Model = !isset($_SESSION['weS'][$this->toolName . '_session']) ? new we_search_model() :
 			$_SESSION['weS'][$this->toolName . '_session'];
 		//$this->Model = new we_search_model();
@@ -126,11 +125,11 @@ WE().consts.g_l.weSearch = {
 				$this->Model->prepareModelForSearch();
 				$this->Model->setIsFolder(/* $cmd == 'tool_weSearch_new_group' ? 1 : */ 0);
 
-				echo we_html_element::jsElement('if(' . $this->topFrame . '.editor){' .
+				echo we_html_element::jsElement('if(top.content.editor){' .
 					$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .
 					($tab !== 0 ? '&tab=' . $tab : '') .
-					'&text=' . urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+					'&text=' . urlencode($this->Model->Text) . '";
+					top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 }');
 				break;
 
@@ -147,11 +146,11 @@ WE().consts.g_l.weSearch = {
 				echo we_html_element::jsElement(
 					$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .
 					($cmdid !== false ? '&cmdid=' . $cmdid : '') . '&text=' .
-					urlencode($this->Model->Text) . '";' .
-					$this->topFrame . '.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
+					urlencode($this->Model->Text) . '";
+top.content.editor.edfooter.location="' . $this->frameset . '&pnt=edfooter";
 if(top.content.treeData){
- top.content.treeData.unselectNode();
- top.content.treeData.selectNode("' . $this->Model->ID . '");
+	top.content.treeData.unselectNode();
+	top.content.treeData.selectNode("' . $this->Model->ID . '");
 }');
 				break;
 
@@ -195,15 +194,15 @@ if(top.content.treeData){
 					$this->Model->updateChildPaths($oldpath);
 
 					$js = we_html_element::jsElement(($newone ?
-								$this->topFrame . '.treeData.makeNewEntry({id:' . $this->Model->ID . ',parentid:' . $this->Model->ParentID . ',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/search') . '\',table:\'' . SUCHE_TABLE . '\',published:0});' :
-								$this->topFrame . '.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . $this->Model->Text . '\',parentid:' . $this->Model->ParentID . ',order:0,tooltip:' . $this->Model->ID . '});') .
+								'top.content.treeData.makeNewEntry({id:' . $this->Model->ID . ',parentid:' . $this->Model->ParentID . ',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/search') . '\',table:\'' . SUCHE_TABLE . '\',published:0});' :
+								'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . $this->Model->Text . '\',parentid:' . $this->Model->ParentID . ',order:0,tooltip:' . $this->Model->ID . '});') .
 							$this->editorHeaderFrame . '.location.reload();' .
 							we_message_reporting::getShowMessageCall(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
-							$this->topFrame . '.hot=0;'
+							'top.content.hot=0;'
 					);
 
 					if(we_base_request::_(we_base_request::BOOL, 'delayCmd')){
-						$js .= we_html_element::jsElement($this->topFrame . '.we_cmd("' . we_base_request::_(we_base_request::STRING, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
+						$js .= we_html_element::jsElement('top.content.we_cmd("' . we_base_request::_(we_base_request::STRING, 'delayCmd') . '"' . (($dp = we_base_request::_(we_base_request::RAW, 'delayParam')) ? ',"' . $dp . '"' : '') . ');'
 						);
 						$_REQUEST['delayCmd'] = '';
 						$_REQUEST['delayParam'] = '';
@@ -212,7 +211,7 @@ if(top.content.treeData){
 					$js = we_html_element::jsElement($js .
 							$this->editorHeaderFrame . '.location.reload();' .
 							we_message_reporting::getShowMessageCall(g_l('searchtool', ($this->Model->IsFolder == 1 ? '[save_group_failed]' : '[save_failed]')), we_message_reporting::WE_MESSAGE_ERROR) .
-							$this->topFrame . '.hot=0;'
+							'top.content.hot=0;'
 					);
 				}
 
@@ -223,9 +222,9 @@ if(top.content.treeData){
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 				if($this->Model->delete()){
 					echo we_html_element::jsElement(
-						$this->topFrame . '.treeData.deleteEntry("' . $this->Model->ID . '");
+						'top.content.treeData.deleteEntry("' . $this->Model->ID . '");
 setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1 ? '[group_deleted]' : '[item_deleted]')) . '", WE().consts.message.WE_MESSAGE_NOTICE, window);' .
-						$this->topFrame . '.we_cmd("tool_weSearch_edit");'
+						'top.content.we_cmd("tool_weSearch_edit");'
 					);
 					$this->Model = new we_search_model();
 					$_REQUEST['pnt'] = 'edbody';
@@ -668,7 +667,7 @@ WE().consts.weSearch= {
 					array(
 					array("dat" => $actionCheckbox),
 					array("dat" => '<span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"]),
+					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"]),
 					array("dat" => ($whichSearch === 'TmplSearch' ? str_replace('/' . $result[$f]["Text"], '', $result[$f]["Path"]) : $result[$f]["SiteTitle"])),
 					array("dat" => isset($result[$f]["VersionID"]) && $result[$f]['VersionID'] ?
 							"-" :
@@ -693,11 +692,11 @@ WE().consts.weSearch= {
 								)
 							)
 						)),
-					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . '"><span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
+					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . '"><span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
 					array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'vertical-align:top;"', 'dat' => array(
 							array('elem' => 'table', '' => '', 'dat' => array(
 									array('elem' => 'row', 'dat' => array(
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . '" class="bold"', 'dat' => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"] . '</u></a>'),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . '" class="bold"', 'dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"] . '</u></a>'),
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:75px;text-align:left"', 'dat' => (($result[$f]['IsUsed'] && $this->Model->getProperty('currentAnzahlMedialinks')) ? we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:weSearch.toggleAdditionalContent(this, " . $result[$f]['docID'] . ")", true, 21, 22, "", "", false, false, '__' . $result[$f]['docID'], false, 'Verwendet in:') : '')),
 											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:70px;text-align:left"', 'dat' => $result[$f]['fileSize']),
 											array('elem' => 'td', 'attribs' => ($result[$f]['IsUsed'] ? 'title="Dokument wird benutzt." onclick="weSearch.showAdditional(' . $result[$f]['docID'] . ')" style="cursor:pointer;width:45px;text-align:left;' . $standardStyle . 'height:auto;"' : 'title="Dokument wird nicht benutzt!" style="width:45px;text-align:left;' . $standardStyle . '"'), 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($result[$f]['IsUsed'] ? 'green' : 'yellow') . ';"></i>'),
@@ -705,7 +704,7 @@ WE().consts.weSearch= {
 											array('elem' => 'td', 'attribs' => 'title="' . ($result[$f]['media_title'] ? : 'Title-Attribut nicht gesetzt" ') . '" style="width:45px;text-align:left;' . $standardStyle . '"', 'dat' => '<i class="fa fa-lg fa-circle" style="color:' . ($result[$f]['media_title'] ? 'green' : 'red') . ';"></i>'),
 											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['CreationDate']) : '-'),
 											array('elem' => 'td', 'attribs' => 'style="width:90px;' . $standardStyle . '"', 'dat' => $result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : '-'),
-											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:30px;text-align:left"', 'dat' => we_html_button::create_button(we_html_button::EDIT, "javascript:weSearch.openToEdit('" . FILE_TABLE . "'," . $result[$f]["docID"] . ",'" . $result[$f]["ContentType"] . "');", true, 27, 22)),
+											array('elem' => 'td', 'attribs' => 'style="' . $standardStyle . 'width:30px;text-align:left"', 'dat' => we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.openToEdit('" . FILE_TABLE . "'," . $result[$f]["docID"] . ",'" . $result[$f]["ContentType"] . "');", true, 27, 22)),
 										)),
 									array('elem' => 'row', 'dat' => ($this->Model->getProperty('currentAnzahlMedialinks') ? array(
 											array('elem' => 'td', 'attribs' => 'id="infoTable_' . $result[$f]["docID"] . '" style="display:none;width:100%;text-align:left;"' . $standardStyle . 'height:auto;overflow:visible;" colspan="7"', 'dat' => $this->makeAdditionalContentMedia($result[$f])),
@@ -762,12 +761,12 @@ WE().consts.weSearch= {
 				}
 
 				$content[] = array(
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageView'] . '<span></a>'),
+					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageView'] . '<span></a>'),
 					array("dat" => we_base_util::shortenPath($result[$f]["SiteTitle"], 17)),
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $result[$f]["Path"] : $result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($result[$f]["Text"], 20) . '</u></a>'),
+					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $result[$f]["Path"] : $result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($result[$f]["Text"], 20) . '</u></a>'),
 					array("dat" => '<nobr>' . ($result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) : "-") . '</nobr>'),
 					array("dat" => '<nobr>' . ($result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) : "-") . '</nobr>'),
-					array("dat" => '<a href="javascript:weSearch.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '</span></a>'),
+					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '</span></a>'),
 					array("dat" => $result[$f]['fileSize']),
 					array("dat" => $iconHTML['sizeX'] . " x " . $iconHTML['sizeY']),
 					array("dat" => we_base_util::shortenPath(g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']'), 22)),

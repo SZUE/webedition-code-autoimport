@@ -64,7 +64,6 @@ function we_cmd_object(args, url) {
 		case "object_remove_image_at_class":
 		case "object_delete_link_at_class":
 		case "object_change_multiobject_at_class":
-//url += "#f"+(parseInt(args[1])-1);
 			we_sbmtFrm(top.load, url);
 			break;
 		case "object_change_link_at_object":

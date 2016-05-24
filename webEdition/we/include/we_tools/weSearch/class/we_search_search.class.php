@@ -1082,7 +1082,7 @@ class we_search_search extends we_search_base{
 							$isModified[$k][$db->f('ID')] = $db->f('Published') > 0 && $db->f('ModDate') > $db->f('Published');
 							$isUnpublished[$k][$db->f('ID')] = $db->f('Published') == 0;
 							$ct[$k][$db->f('ID')] = $db->f('ContentType');
-							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
+							$onclick[$k][$db->f('ID')] = 'WE().layout.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
 							$type[$k][$db->f('ID')] = 'we_doc';
 							$mod[$k][$db->f('ID')] = '';
 							$isTmpPossible[$k][$db->f('ID')] = true;
@@ -1095,7 +1095,7 @@ class we_search_search extends we_search_base{
 							$accessible[$k][$db->f('ID')] = true;
 							$paths[$k][$db->f('ID')] = $db->f('Path');
 							$ct[$k][$db->f('ID')] = $db->f('ContentType');
-							$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
+							$onclick[$k][$db->f('ID')] = 'WE().layout.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . $db->f('ContentType') . '\')';
 							$type[$k][$db->f('ID')] = 'we_doc';
 							$mod[$k][$db->f('ID')] = '';
 							$isTmpPossible[$k][$db->f('ID')] = false;
@@ -1108,7 +1108,7 @@ class we_search_search extends we_search_base{
 								$accessible[$k][$db->f('ID')] = true;
 								$paths[$k][$db->f('ID')] = $db->f('Path');
 								$ct[$k][$db->f('ID')] = we_base_ContentTypes::COLLECTION;
-								$onclick[$k][$db->f('ID')] = 'weSearch.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . we_base_ContentTypes::COLLECTION . '\')';
+								$onclick[$k][$db->f('ID')] = 'WE().layout.openToEdit(\'' . addTblPrefix($k) . '\',\'' . $db->f('ID') . '\',\'' . we_base_ContentTypes::COLLECTION . '\')';
 								$type[$k][$db->f('ID')] = 'we_doc';
 								$mod[$k][$db->f('ID')] = '';
 								$isTmpPossible[$k][$db->f('ID')] = false;

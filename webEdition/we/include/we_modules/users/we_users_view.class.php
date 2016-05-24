@@ -103,9 +103,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		$_SESSION["user_session_data"] = $user_object;
 		echo we_html_element::jsElement('
-		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
-		top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody";
-		top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
+top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edheader";
+top.content.editor.edbody.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody";
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edfooter";');
 	}
 
 	private function new_user(){
