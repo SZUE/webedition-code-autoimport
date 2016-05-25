@@ -223,12 +223,19 @@ class we_tag_tagParser{
 		return ($asArray ? $attribs : implode(',', $attribs));
 	}
 
-	public function getTagsWithAttributes(){
+	public function getTagsWithAttributes($withBlocknames = false){
 		$regs = array();
-		$ret = array();
+		$blocks = $ret = array();
+
 		foreach($this->tags as $tag){
 			if(preg_match('%<we:([[:alnum:]_-]+)[ \t\n\r]*(.*)/?>?%msi', $tag, $regs)){
-				$ret[] = array('name' => $regs[1], 'attribs' => (isset($regs[2]) ? self::parseAttribs($regs[2], true) : array()));
+				$attribs = (isset($regs[2]) ? self::parseAttribs($regs[2], true) : array());
+				$ret[] = array('name' => $regs[1], 'attribs' => $attribs + ($withBlocknames ? array('weblock' => $blocks) : array()));
+				if($withBlocknames && $regs[1] === 'block' && !empty($attribs['name'])){
+					array_unshift($blocks, 'blk_' . $attribs['name']);
+				}
+			} elseif($withBlocknames && strpos($tag, '</we:block') !== false){
+				array_shift($blocks);
 			}
 		}
 		return $ret;
