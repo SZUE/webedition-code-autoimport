@@ -272,7 +272,6 @@ function weDoOk() {' .
 		$clSelect = new we_html_select(array(
 			"name" => "we_dialog_args[cssclass]",
 			"id" => "we_dialog_args[cssclass]",
-			"size" => 1,
 			"style" => $style,
 			'class' => 'defaultfont'
 		));
