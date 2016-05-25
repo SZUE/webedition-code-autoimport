@@ -288,7 +288,7 @@ class we_listview_document extends we_listview_base{
 
 		$this->anz = $this->DB_WE->num_rows();
 
-		$_idListArray = array();
+		$idListArray = array();
 
 		while($this->DB_WE->next_record()){
 			$this->IDs[] = $this->DB_WE->f('ID');
@@ -296,16 +296,16 @@ class we_listview_document extends we_listview_base{
 				$this->calendar_struct['storage'][$this->DB_WE->f('ID')] = intval($this->DB_WE->f('Calendar'));
 			}
 			if($this->customers === '*' && intval($this->DB_WE->f('WebUserID')) > 0){
-				$_idListArray[] = $this->DB_WE->f('WebUserID');
+				$idListArray[] = $this->DB_WE->f('WebUserID');
 			}
 		}
-		if($this->customers === '*' && $_idListArray){
-			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . implode(',', array_unique($_idListArray)) . ')');
+		if($this->customers === '*' && $idListArray){
+			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . implode(',', array_unique($idListArray)) . ')');
 			$encrypted = we_customer_customer::getEncryptedFields();
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
 				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = array_merge($this->DB_WE->getRecord(), $encrypted);
 			}
-			unset($_idListArray);
+			unset($idListArray);
 		}
 
 		$this->DB_WE->query(

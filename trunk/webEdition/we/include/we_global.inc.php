@@ -84,8 +84,8 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 			}
 			return $page;
 		case 'curl':
-			$_response = we_base_util::getCurlHttp($server, $url, array());
-			return ($_response['status'] ? $_response['error'] : $_response['data']);
+			$response = we_base_util::getCurlHttp($server, $url, array());
+			return ($response['status'] ? $response['error'] : $response['data']);
 		default:
 			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 	}
@@ -1005,7 +1005,7 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 
 function we_templatePost(){
 	if(--$GLOBALS['WE_TEMPLATE_INIT'] == 0 && !isWE()){
-		if(isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed'])){
+		if(!empty($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed'])){
 			unset($_SESSION['webuser']['loginfailed']);
 		}
 		if(defined('DEBUG_MEM')){
