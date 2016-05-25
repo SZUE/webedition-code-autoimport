@@ -313,7 +313,7 @@ class we_document extends we_root{
 			$names = $this->getNamesFromContent($content);
 
 			foreach($names as $curname){
-				$this->setElement($curname. '_' . $new_nr, '');
+				$this->setElement($curname . '_' . $new_nr, '');
 			}
 
 			$listarray[] = '_' . $new_nr;
@@ -875,7 +875,7 @@ class we_document extends we_root{
 				switch($pathOnly ? 'path' : (isset($attribs['only']) ? $attribs['only'] : '')){
 					case 'src': //TODO: make separate case for multi domain project to devide between path and src
 					case 'path':
-						return (isset($attribs['thumbnail']) ? $img->getHtml(false, true, $pathOnly) : $img->Path);
+						return (empty($attribs['thumbnail']) ? $img->Path : $img->getHtml(false, true, true) );
 					case 'id':
 						return $img->ID;
 					case 'parentpath':
