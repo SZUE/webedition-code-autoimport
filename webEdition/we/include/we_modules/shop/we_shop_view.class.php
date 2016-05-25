@@ -1213,7 +1213,7 @@ function CalendarChanged(calObject) {
 							$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 							$langcode = array_search($lang[0], getWELangs());
 							$countrycode = array_search($langcode, getWECountries());
-							$countryselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'size' => 1, 'style' => 'width:280px;', 'class' => 'wetextinput'));
+							$countryselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput'));
 
 							$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 							foreach($topCountries as $countrykey => &$countryvalue){
@@ -1257,7 +1257,7 @@ function CalendarChanged(calObject) {
 								list($lcvalue) = explode('_', $lcvalue);
 							}
 							unset($countryvalue);
-							$languageselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'size' => 1, 'style' => 'width:280px;', 'class' => 'wetextinput'));
+							$languageselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput'));
 							foreach(g_l('languages', '') as $languagekey => $languagevalue){
 								if(in_array($languagekey, $frontendL)){
 									$languageselect->addOption($languagekey, $languagevalue);

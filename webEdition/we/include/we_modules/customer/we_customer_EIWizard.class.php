@@ -221,7 +221,7 @@ switch (args[0]){
 				case self::TYPE_CSV:
 					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 4, 1);
 
-					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
+					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "defaultfont", "style" => "width: 254px;"));
 					$_file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
 					$_file_encoding->addOption("unix", g_l('modules_customer', '[unix]'));
 					$_file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
@@ -653,7 +653,7 @@ function callBack(){
 
 					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 5, 1);
 
-					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "size" => 1, "class" => "defaultfont", "style" => "width: 254px;"));
+					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "defaultfont", "style" => "width: 254px;"));
 					$_file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
 					$_file_encoding->addOption('unix', g_l('modules_customer', '[unix]'));
 					$_file_encoding->addOption('mac', g_l('modules_customer', '[mac]'));
@@ -705,7 +705,6 @@ function callBack(){
 					if($xmlWellFormed && $hasChildNode){
 						$rcdSelect = new we_html_select(array(
 							'name' => "we_select",
-							'size' => 1,
 							'class' => 'defaultfont',
 							(($isSingleNode) ? "disabled" : "style") => "",
 							'onchange' => "this.form.elements.xml_to.value=this.options[this.selectedIndex].value; this.form.elements.xml_from.value=1;this.form.elements.dataset.value=this.options[this.selectedIndex].text;" .
@@ -800,7 +799,6 @@ function callBack(){
 		foreach($records as $record){
 			$we_fields = new we_html_select(array(
 				"name" => "field_mappings[$record]",
-				"size" => 1,
 				"class" => "defaultfont",
 				"onclick" => "",
 				"style" => "")
