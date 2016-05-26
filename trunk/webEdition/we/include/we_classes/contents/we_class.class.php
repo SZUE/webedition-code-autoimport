@@ -57,7 +57,7 @@ abstract class we_class{
 	protected $insertID = 0;
 
 	/* Flag which is set when the file is not new */
-	var $wasUpdate = 0;
+	var $wasUpdate = false;
 	public $InWebEdition = false;
 	var $PublWhenSave = 1;
 	var $IsTextContentDoc = false;
@@ -373,9 +373,9 @@ abstract class we_class{
 			}
 		}
 		if($fields){
-			$where = ($this->wasUpdate ? ' WHERE ID=' . intval($this->ID) : '');
-			$ret = (bool) ($this->DB_WE->query(($this->wasUpdate ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($fields) . $where));
-			$this->ID = ($this->wasUpdate ? $this->ID : $this->DB_WE->getInsertId());
+			$where = ($this->wasUpdate || $this->ID ? ' WHERE ID=' . intval($this->ID) : '');
+			$ret = (bool) ($this->DB_WE->query(($where ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($this->Table) . ' SET ' . we_database_base::arraySetter($fields) . $where));
+			$this->ID = ($this->ID ? : $this->DB_WE->getInsertId());
 			return $ret;
 		}
 		return false;
