@@ -1590,6 +1590,7 @@ class we_document extends we_root{
 			}
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\d+),(\d+)"/i', $text, $regs, PREG_SET_ORDER)){
+			$text = preg_replace('/(="' . we_base_link::TYPE_THUMB_PREFIX . '[^>]* )width="[^"]*"([^>]* )height="[^"]*"([^>]*>)/U', '$1$2$3', $text);
 			foreach($regs as $reg){
 				list(, $imgID, $thumbID) = $reg;
 				$thumbObj = new we_thumbnail();
