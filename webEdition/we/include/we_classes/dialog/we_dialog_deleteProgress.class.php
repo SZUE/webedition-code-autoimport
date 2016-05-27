@@ -35,18 +35,18 @@ abstract class we_dialog_deleteProgress{
 		$pb = we_html_tools::htmlDialogLayout($WE_PB->getHTML(), g_l('delete', '[delete]'), $cancelButton);
 
 		return we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-						$js, we_html_element::htmlBody(array(
-							"class" => "weDialogBody"
-								), $pb
-						)
+				$js, we_html_element::htmlBody(array(
+					"class" => "weDialogBody"
+					), $pb
+				)
 		);
 	}
 
 	public static function getHTML($table, $currentID){
 		return we_html_tools::getHtmlTop(g_l('delete', '[delete]'), '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';")
-								, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-								we_html_element::htmlIFrame('delcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-						)
+					, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+					we_html_element::htmlIFrame('delcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+				)
 		);
 	}
 
@@ -57,7 +57,7 @@ abstract class we_dialog_deleteProgress{
 		} else {
 			$taskname = md5(session_id() . "_del");
 			$table = we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE);
-			new we_fragment_del($taskname, 1, 0, $table);
+			new we_fragment_del($taskname, $table);
 		}
 	}
 

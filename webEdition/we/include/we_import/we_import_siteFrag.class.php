@@ -61,8 +61,4 @@ top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . oldH
 				g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
 	}
 
-	static function printHeader(){
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
-	}
-
 }

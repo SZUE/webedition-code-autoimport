@@ -642,12 +642,6 @@ class we_fragment_copyFolder extends we_fragment_base{
 		}
 	}
 
-	//FIXME: this function is called statically!
-	static function printHeader(){
-		//FIXME: missing title
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . weSuggest::getYuiFiles());
-	}
-
 	static function formCreateTemplateDirChooser(){
 		$path = '/';
 		$myid = 0;
