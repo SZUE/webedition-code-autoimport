@@ -296,14 +296,6 @@ $l_buttons_global=array(
 	'delold'=>array(
 		'value'=>'Delete files on server',
 	),
-	'demoversion'=>array(
-		'alt'=>'Demoversio',
-		'value'=>'Demoversio',
-	),
-	'deselectAll'=>array(
-		'alt'=>'Kumoa valinta',
-		'value'=>'Kumoa valinta',
-	),
 	'download'=>array(
 		'alt'=>'download',
 		'value'=>'Download',
@@ -549,13 +541,8 @@ $l_buttons_global=array(
 		'alt'=>'Hae',
 		'value'=>'Hae',
 	),
-	'selectAllObjects'=>array(
-		'alt'=>'Select all Objects',
-		'value'=>'Select all',
-	),
 	'selectAll'=>array(
 		'alt'=>'Valitse kaikki',
-		'value'=>'Valitse kaikki',
 	),
 	'select'=>array(
 		'alt'=>'Valitse',

@@ -296,14 +296,6 @@ $l_buttons_global=array(
 	'delold'=>array(
 		'value'=>'Delete files on server',
 	),
-	'demoversion'=>array(
-		'alt'=>'Demo versie...',
-		'value'=>'Demo version',
-	),
-	'deselectAll'=>array(
-		'alt'=>'Deselecteer komplete selectie',
-		'value'=>'Deselect all',
-	),
 	'download'=>array(
 		'alt'=>'download',
 		'value'=>'Download',
@@ -549,13 +541,8 @@ $l_buttons_global=array(
 		'alt'=>'Zoek...',
 		'value'=>'Search',
 	),
-	'selectAllObjects'=>array(
-		'alt'=>'Select all Objects',
-		'value'=>'Select all',
-	),
 	'selectAll'=>array(
 		'alt'=>'Selecteer komplete tekst',
-		'value'=>'Select all',
 	),
 	'select'=>array(
 		'alt'=>'Selecteer',
