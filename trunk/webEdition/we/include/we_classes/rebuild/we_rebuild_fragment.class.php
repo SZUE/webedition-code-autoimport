@@ -46,19 +46,11 @@ class we_rebuild_fragment extends we_fragment_base{
 			top.close();');
 	}
 
-	static function printHeader(){
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
-	}
-
-	function printBodyTag($attributes = ''){
-
-	}
-
-	function printFooter(){
+	function printBodyTag(array $attributes = array()){
 		//note we need to subtract this, since it was already added in constructor loop.
 		$this->currentTask = $this->currentTask - $this->taskPerFragment + 1;
-
 		$this->printJSReload();
+		echo '<body>';
 	}
 
 }

@@ -190,10 +190,11 @@ abstract class we_rebuild_base{
 				if($data['it']){
 					$GLOBALS['we_doc']->insertAtIndex();
 				} else {
-					if(!$GLOBALS['we_doc']->we_rewrite()){
+					if($GLOBALS['we_doc']->we_rewrite()){
+						$GLOBALS['we_doc']->we_republish($data['mt']);
+					} else {
 						t_e('error in writing document', $GLOBALS['we_doc']->Path);
 					}
-					$GLOBALS['we_doc']->we_republish($data['mt']);
 				}
 				if($printIt){
 					echo ("   done$_newLine");

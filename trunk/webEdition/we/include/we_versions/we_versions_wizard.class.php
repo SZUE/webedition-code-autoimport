@@ -738,7 +738,7 @@ set_button_state(false);';
 					break;
 			}
 			if(count($data)){
-				$fr = new we_versions_fragment($taskname, 1, 0, array(), $data);
+				$fr = new we_versions_fragment($taskname, $data);
 
 				return array();
 			}
@@ -747,7 +747,7 @@ set_button_state(false);';
 				""
 			);
 		}
-		$fr = new we_versions_fragment($taskname, 1, 0, array());
+		$fr = new we_versions_fragment($taskname);
 		return array();
 	}
 
