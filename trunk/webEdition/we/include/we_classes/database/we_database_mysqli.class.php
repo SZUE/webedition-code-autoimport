@@ -94,9 +94,11 @@ class DB_WE extends we_database_base{
 				case 'connect'://old mysql if
 				case 'mysqli_connect':
 					$this->Query_ID = null;
-					$this->Link_ID = @new mysqli($Host, $User, $Password, $Database);
-					//need the @ operator, since can't catch mysqli warning on reconnect pconnection
-					if($this->Link_ID->connect_error){
+					$this->Link_ID = mysqli_init();
+					$this->Link_ID->options(MYSQLI_OPT_CONNECT_TIMEOUT, 60);
+					if(!$this->Link_ID->real_connect($Host, $User, $Password, $Database, null, null, MYSQLI_CLIENT_COMPRESS) ||
+						//need the @ operator, since can't catch mysqli warning on reconnect pconnection
+						$this->Link_ID->connect_error){
 						$this->Link_ID = null;
 						$this->halt("mysqli_(p)connect($Host, $User) failed.");
 						return false;
