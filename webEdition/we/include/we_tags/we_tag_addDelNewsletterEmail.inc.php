@@ -340,7 +340,6 @@ function we_tag_addDelNewsletterEmail($attribs){
 				}
 				$fields = (!$uid ? array(
 						'Username' => $f['subscribe_mail'],
-						'Text' => $f['subscribe_mail'],
 						'Path' => '/' . $f['subscribe_mail'],
 						'Password' => $GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'],
 						'MemberSince' => time(),
