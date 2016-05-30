@@ -67,6 +67,7 @@ abstract class we_html_button{
 	const PREVIEW = 'fat:preview,fa-lg fa-eye';
 	const CALENDAR = 'fa:date_picker,fa-lg fa-calendar';
 	const PUBLISH = 'fat:publish,fa-lg fa-globe';
+	const TOGGLE = 'fa:selectAll,fa-lg fa-check-square-o,fa-lg fa-square-o';
 	const NOT_FOUND = '.fa-lg fa-bullseye';
 
 	/**

@@ -40,6 +40,6 @@ CREATE TABLE ###TBLPREFIX###tblObject (
   DefaultWorkspaces varchar(1000) NOT NULL default '',
   Templates varchar(255) NOT NULL default '',
   PRIMARY KEY (ID),
-  KEY Path (Path),
+  UNIQUE KEY Path (Path),
   KEY IsFolder (IsFolder)
 ) ENGINE=MyISAM;

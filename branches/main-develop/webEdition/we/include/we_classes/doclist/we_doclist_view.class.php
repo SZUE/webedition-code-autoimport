@@ -38,7 +38,6 @@ class we_doclist_view extends we_search_view{
 
 		return we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view.js') .
 			we_html_element::jsElement('
-WE().consts.dirs.IMAGE_DIR="' . IMAGE_DIR . '";
 weSearch.conf = {
 	whichsearch: "' . we_search_view::SEARCH_DOCLIST . '",
 	we_transaction: "' . $this->Model->transaction . '",

@@ -24,8 +24,8 @@
  */
 class we_versions_fragment extends we_fragment_base{
 
-	public function __construct($name, $taskPerFragment, $pause = 0, $bodyAttributes = "", $initdata = ""){
-		parent::__construct($name, $taskPerFragment, $pause, $bodyAttributes, $initdata);
+	public function __construct($name, $initdata = ''){
+		parent::__construct($name, 1, 0, array(), $initdata);
 	}
 
 	function doTask(){
@@ -86,12 +86,9 @@ class we_versions_fragment extends we_fragment_base{
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
-	function printBodyTag($attributes = ""){
-
-	}
-
-	function printFooter(){
+	function printBodyTag(array $attributes = array()){
 		$this->printJSReload();
+		echo '<body>';
 	}
 
 	/**

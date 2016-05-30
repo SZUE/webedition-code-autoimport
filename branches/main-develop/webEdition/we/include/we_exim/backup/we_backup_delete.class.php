@@ -23,12 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_backup_delete extends we_fragment_base{
-
 	private $db;
 
-	function __construct($name, $taskPerFragment, $pause = 0){
+	function __construct($name){
 		$this->db = new DB_WE();
-		parent::__construct($name, $taskPerFragment, $pause);
+		parent::__construct($name, 1, 0);
 	}
 
 	function init(){
@@ -79,10 +78,6 @@ class we_backup_delete extends we_fragment_base{
 		}
 		unset($_SESSION['weS']['backup_delete']);
 		echo we_html_element::jsElement('top.close();');
-	}
-
-	static function printHeader(){
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
 }

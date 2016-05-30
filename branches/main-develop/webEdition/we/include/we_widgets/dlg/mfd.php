@@ -93,7 +93,7 @@ $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['
 
 $oDbTableType = $oChbxDocs . $oChbxTmpl . $oChbxObjs . $oChbxCls;
 
-$oSctDate = new we_html_select(array("name" => "sct_date", "size" => 1, "class" => "defaultfont", "onchange" => ""));
+$oSctDate = new we_html_select(array("name" => "sct_date", "class" => "defaultfont", "onchange" => ""));
 $aLangDate = array(
 	g_l('cockpit', '[all]'),
 	g_l('cockpit', '[today]'),
@@ -108,7 +108,7 @@ $oSctDate->selectOption($iDate);
 
 $oChbxShowMfdBy = we_html_forms::checkbox(0, $sDisplayOpt{0}, "chbx_display_opt", g_l('cockpit', '[modified_by]'), true, "defaultfont", "", false, "", 0, 0);
 $oChbxShowDate = we_html_forms::checkbox(0, $sDisplayOpt{1}, "chbx_display_opt", g_l('cockpit', '[date_last_modification]'), true, "defaultfont", "", false, "", 0, 0);
-$oSctNumEntries = new we_html_select(array("name" => "sct_amount_entries", "size" => 1, "class" => "defaultfont"));
+$oSctNumEntries = new we_html_select(array("name" => "sct_amount_entries", "class" => "defaultfont"));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[all]'));
 for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 	$oSctNumEntries->insertOption($iCurrEntry, $iCurrEntry, $iCurrEntry);

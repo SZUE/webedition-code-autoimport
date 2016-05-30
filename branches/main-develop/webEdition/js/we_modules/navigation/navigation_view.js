@@ -78,14 +78,14 @@ function we_cmd() {
 			}
 			break;
 		case "module_navigation_save":
-			if (top.content.editor.edbody.document.we_form.cmd.value === "home"){
+			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
 			if (top.content.editor.edbody.loaded) {
 				if (top.content.editor.edbody.document.we_form.presetFolder)
 					top.content.editor.edbody.document.we_form.presetFolder.value = makeNewDoc;
 				var cont = true;
-				if (top.content.editor.edbody.document.we_form.Selection !== undefined) {
+				if (top.content.editor.edbody.document.we_form.Selection && top.content.editor.edbody.document.we_form.Selection.options) {
 					if (top.content.editor.edbody.document.we_form.Selection.options[top.content.editor.edbody.document.we_form.Selection.selectedIndex].value === WE().consts.navigation.SELECTION_DYNAMIC && top.content.editor.edbody.document.we_form.IsFolder.value == "1") {
 						cont = confirm(WE().consts.g_l.navigation.view.save_populate_question);
 					}
@@ -102,7 +102,7 @@ function we_cmd() {
 			break;
 		case "populate":
 		case "depopulate":
-			if (top.content.editor.edbody.document.we_form.cmd.value === "home"){
+			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
 			if (top.content.editor.edbody.loaded) {

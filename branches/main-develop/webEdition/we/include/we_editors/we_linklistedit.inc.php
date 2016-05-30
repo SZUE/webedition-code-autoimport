@@ -271,7 +271,7 @@ if($ok){
 		$type = we_base_link::TYPE_MAIL;
 	} else {
 		$link = (we_unserialize($we_doc->getElement($name))? :
-				array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
+						array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
 		$href = isset($link['href']) ? $link['href'] : '';
 		if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
@@ -368,12 +368,14 @@ if($ok){
 		?>
 			opener.setScrollTo();
 			opener.we_cmd("change_linklist", "<?php echo $name; ?>", "");
+			top.close();
 		<?php
 	} else if(!empty($link)){
 		$_SESSION['weS']['WE_LINK'] = array_filter($link);
 		?>
 			opener.setScrollTo();
 			opener.we_cmd("change_link", "<?php echo $name; ?>", "");
+			top.close();
 		<?php
 	}
 }
@@ -385,7 +387,7 @@ if($ok){
 
 <body class="weDialogBody" onload="self.focus();" style="overflow:hidden;">
 	<?php
-	if(!we_base_request::_(we_base_request::BOOL, "ok")){
+	if(!$ok){
 
 		$_select_type = '<select name="type" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
 <option value="' . we_base_link::TYPE_EXT . '"' . (($type == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
@@ -396,17 +398,14 @@ if($ok){
 </select>';
 
 
+		$cmd1 = 'document.we_form.href.value';
+		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
 
-		$wecmdenc1 = we_base_request::encCmd('document.we_form.href.value');
-		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.href.value, '')") : "";
-		$butspace = 10;
 		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, '', 'placeholder="http://www.example.com"', "url", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", 'placeholder="user@example.com"', "text", 300);
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.id.value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.href_int.value");
-
-		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$cmd1 = "document.we_form.elements.id.value";
+		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.href_int.value") . "','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('Doc');
@@ -421,9 +420,8 @@ if($ok){
 
 		$intLink = $yuiSuggest->getHTML();
 		if(defined('OBJECT_TABLE')){
-			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.obj_id.value");
-			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.href_obj.value");
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
+			$cmd1 = "document.we_form.elements.obj_id.value";
+			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.href_obj.value") . "','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Obj");
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
@@ -501,13 +499,12 @@ if($ok){
 
 		$ctext = we_html_tools::htmlTextInput("text", 30, $text, "", "", "text", 300);
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.img_src.value");
-		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.img_src.value, '')") : "";
+		$cmd1 = "document.we_form.img_src.value";
+		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
 		$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.img_id.value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.src_int.value");
-		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.forms[0].img_id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$cmd1 = "document.we_form.elements.img_id.value";
+		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.src_int.value") . "','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$yuiSuggest->setAcId("Image");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);

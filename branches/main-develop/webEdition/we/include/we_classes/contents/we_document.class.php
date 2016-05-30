@@ -313,7 +313,7 @@ class we_document extends we_root{
 			$names = $this->getNamesFromContent($content);
 
 			foreach($names as $curname){
-				$this->setElement($curname. '_' . $new_nr, '');
+				$this->setElement($curname . '_' . $new_nr, '');
 			}
 
 			$listarray[] = '_' . $new_nr;
@@ -875,7 +875,7 @@ class we_document extends we_root{
 				switch($pathOnly ? 'path' : (isset($attribs['only']) ? $attribs['only'] : '')){
 					case 'src': //TODO: make separate case for multi domain project to devide between path and src
 					case 'path':
-						return (isset($attribs['thumbnail']) ? $img->getHtml(false, true, $pathOnly) : $img->Path);
+						return (empty($attribs['thumbnail']) ? $img->Path : $img->getHtml(false, true, true) );
 					case 'id':
 						return $img->ID;
 					case 'parentpath':
@@ -1590,6 +1590,7 @@ class we_document extends we_root{
 			}
 		}
 		if(preg_match_all('/src="' . we_base_link::TYPE_THUMB_PREFIX . '(\d+),(\d+)"/i', $text, $regs, PREG_SET_ORDER)){
+			$text = preg_replace('/(="' . we_base_link::TYPE_THUMB_PREFIX . '[^>]* )width="[^"]*"([^>]* )height="[^"]*"([^>]*>)/U', '$1$2$3', $text);
 			foreach($regs as $reg){
 				list(, $imgID, $thumbID) = $reg;
 				$thumbObj = new we_thumbnail();

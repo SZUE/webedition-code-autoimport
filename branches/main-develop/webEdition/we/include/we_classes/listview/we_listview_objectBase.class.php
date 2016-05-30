@@ -124,13 +124,13 @@ abstract class we_listview_objectBase extends we_listview_base{
 			if(!is_numeric($_key) && $_val){
 				switch($_key){
 					case 'DefaultDesc':
-						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Description,';
+						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Description,`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS WE_Description,';
 						break;
 					case 'DefaultTitle':
-						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Title,';
+						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Title,`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS WE_Title,';
 						break;
 					case 'DefaultKeywords':
-						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Keywords,';
+						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Keywords,`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS WE_Keywords,';
 						break;
 				}
 			}

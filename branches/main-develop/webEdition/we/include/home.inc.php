@@ -74,12 +74,6 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		var _bDgSave = false;
 		var bInitDrag = false;
 		var oTblWidgets = null;
-		WE().consts.g_l.cockpit = {
-			reduce_size: '<?php echo g_l('cockpit', '[reduce_size]') ?>',
-			increase_size: '<?php echo g_l('cockpit', '[increase_size]'); ?>',
-			pre_remove: '<?php echo g_l('cockpit', '[pre_remove]'); ?>"',
-			post_remove: '" <?php echo g_l('cockpit', '[post_remove]'); ?>'
-		};
 		WE().layout.cockpitFrame.transact = "<?php echo md5(uniqid(__FILE__, true)); ?>";
 
 	<?php

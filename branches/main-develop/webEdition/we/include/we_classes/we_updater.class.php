@@ -157,6 +157,34 @@ abstract class we_updater{
 		}
 	}
 
+	private function correctTblFile(we_database_base $db){
+		//added in 7.0.1
+		if(!$db->isKeyExist(FILE_TABLE, 'Path', ['Path'], 'UNIQUE KEY')){
+			if($db->isKeyExistAtAll(FILE_TABLE, 'Path')){
+				$db->delKey(FILE_TABLE, 'Path');
+			}
+			//we need an temporary key
+			$db->addKey(FILE_TABLE, 'KEY Path(Path)');
+			//first cleanup really invalid entries
+			$db->query('DELETE FROM ' . FILE_TABLE . ' f1 WHERE CreationDate=0 AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile")');
+			$safeDel = $db->getAllq('SELECT f1.ID FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM ' . '.LINK_TABLE.' . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AND EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile")', true);
+			if($safeDel){
+				$db->query('DELETE FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', $safeDel) . ')');
+			}
+
+			//check if we still have bad entries
+			$problems = $db->getAllq('SELECT f1.ID AS fail,f1.Path AS `Name1`,f2.ID as other,f2.Path AS `Name2`,BINARY f1.Path=BINARY f2.Path AS `binEq`,EXISTS (SELECT * FROM '.LINK_TABLE.' WHERE DID=f1.ID AND DocumentTable="tblFile") AS origOk,EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile") AS otherOk,f2.ContentType,f1.CreationDate AS `create1`,f2.CreationDate AS `create2`,f1.ModDate AS `mod1`,f2.ModDate AS `mod2` FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID<f2.ID');
+
+			if($problems){
+				t_e('we can\'t upgrade table due to file-list', $problems);
+			} else {
+				//finally add a new unique key, del temp index
+				$db->delKey(FILE_TABLE, 'Path');
+				$db->addKey(FILE_TABLE, 'UNIQUE KEY Path(Path)');
+			}
+		}
+	}
+
 	public static function fixInconsistentTables(we_database_base $db = null){//from backup
 		$db = $db? : $GLOBALS['DB_WE'];
 		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
@@ -164,12 +192,15 @@ UNION
 SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')
 UNION
 SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href" AND Name LIKE "%_intPath"
+UNION
+SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="object" AND Name LIKE "%_path"
 ', true);
 
 		if(($del = $db->getAll(true))){
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
 		}
 		self::upgradeTblLink($db);
+		self::correctTblFile($db);
 
 		$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
 
@@ -377,22 +408,22 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		$all = $db->getAll();
 		foreach($all as $a){
 			$db->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'CustomerFilter' => we_serialize(we_unserialize($a['CustomerFilter']), SERIALIZE_JSON),
-				'WhiteList' => trim($a['WhiteList'], ','),
-				'BlackList' => trim($a['BlackList'], ','),
-				'Customers' => trim($a['Customers'], ','),
-			)) . ' WHERE ID=' . $a['ID']);
+					'CustomerFilter' => we_serialize(we_unserialize($a['CustomerFilter']), SERIALIZE_JSON),
+					'WhiteList' => trim($a['WhiteList'], ','),
+					'BlackList' => trim($a['BlackList'], ','),
+					'Customers' => trim($a['Customers'], ','),
+				)) . ' WHERE ID=' . $a['ID']);
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
 			$db->query("SELECT modelId,filter,whiteList,blackList,specificCustomers FROM " . CUSTOMER_FILTER_TABLE . " WHERE filter LIKE 'a:%{i:%'");
 			$all = $db->getAll();
 			foreach($all as $a){
 				$db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'filter' => we_serialize(we_unserialize($a['filter']), SERIALIZE_JSON),
-					'whiteList' => trim($a['whiteList'], ','),
-					'blackList' => trim($a['blackList'], ','),
-					'specificCustomers' => trim($a['specificCustomers'], ','),
-				)) . ' WHERE modelId=' . $a['modelId']);
+						'filter' => we_serialize(we_unserialize($a['filter']), SERIALIZE_JSON),
+						'whiteList' => trim($a['whiteList'], ','),
+						'blackList' => trim($a['blackList'], ','),
+						'specificCustomers' => trim($a['specificCustomers'], ','),
+					)) . ' WHERE modelId=' . $a['modelId']);
 			}
 		}
 	}
@@ -410,12 +441,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 		self::meassure('updateUsers');
 		self::updateObjectFilesX($db);
 		self::meassure('updateObjectFilesX');
-		/*
-		  self::updateVoting();
-		  self::meassure('updateVoting');
-		  self::convertTemporaryDoc();
-		  self::meassure('convertTemporaryDoc');
-		 * */
 		self::fixInconsistentTables($db);
 		self::meassure('fixInconsistentTables');
 		self::updateGlossar();
@@ -439,3 +464,11 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="href"
 	}
 
 }
+
+//SELECT f1.ID,f1.Path,FROM_UNIXTIME(f1.CreationDate),f1.ContentType,f2.ID,f2.Path,FROM_UNIXTIME(f2.CreationDate),f2.ContentType,EXISTS (SELECT * FROM tblLink WHERE DID=f1.ID AND DocumentTable='tblFile') FROM `tblFile` f1 JOIN tblFile f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID GROUP BY f1.ID
+
+//SELECT ID,Path,ContentType,TemplateID FROM `tblFile` f1 WHERE CreationDate=0 AND NOT EXISTS (SELECT * FROM tblLink WHERE DID=f1.ID AND DocumentTable='tblFile')
+
+//SELECT f1.ID AS fail,f2.ID as other,EXISTS (SELECT * FROM tblLink WHERE DID=f2.ID AND DocumentTable='tblFile') AS otherOk,FROM_UNIXTIME(f1.CreationDate),f1.ContentType,f2.Path,FROM_UNIXTIME(f2.CreationDate),f2.ContentType FROM `tblFile` f1 JOIN tblFile f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM tblLink WHERE DID=f1.ID AND DocumentTable='tblFile') GROUP BY f1.ID
+
+//SELECT f1.ID AS fail,f2.ID as other,BINARY f1.Path=BINARY f2.Path AS `binEq`,EXISTS (SELECT * FROM tblLink WHERE DID=f1.ID AND DocumentTable='tblFile') AS origOk,EXISTS (SELECT * FROM tblLink WHERE DID=f2.ID AND DocumentTable='tblFile') AS otherOk,f1.ContentType,f1.CreationDate,f2.CreationDate,f1.ModDate,f2.ModDate FROM `tblFile` f1 JOIN tblFile f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM tblLink WHERE DID=f1.ID AND DocumentTable='tblFile')

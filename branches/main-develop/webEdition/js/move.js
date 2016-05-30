@@ -1,4 +1,4 @@
-/* global top */
+/* global top, WE */
 
 /**
  * webEdition CMS
@@ -67,7 +67,7 @@ function we_submitForm(target, url) {
 	return true;
 }
 
-function press_ok_move() {
+function press_ok_move(type) {
 	var sel = "";
 	for (var i = 1; i <= top.treeData.len; i++) {
 		if (top.treeData[i].checked == 1) {
@@ -81,12 +81,11 @@ function press_ok_move() {
 
 	// check if selected target exists
 	var acStatus = '';
-	var invalidAcFields = false;
 	acStatus = YAHOO.autocoml.checkACFields();
 	acStatusType = typeof acStatus;
-	if (acStatusType.toLowerCase() == 'object') {
+	if (acStatusType.toLowerCase() === 'object') {
 		if (acStatus.running) {
-			setTimeout(press_ok_move, 100);
+			setTimeout(press_ok_move, 100, type);
 			return;
 		}
 		if (!acStatus.valid) {
@@ -103,7 +102,7 @@ function press_ok_move() {
 	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 
 	var _move_table = top.treeData.table;
-	var _move_ids = "," + sel;
+	//var _move_ids = "," + sel;
 
 	var _open_move_editors = [];
 
@@ -119,8 +118,7 @@ function press_ok_move() {
 			_openDocs_Str += "- " + _open_move_editors[i].getEditorDocumentPath() + "\n";
 
 		}
-		if (confirm(
-						WE().util.sprintf(WE().consts.g_l.move.move_exit_open_docs_question, $_type, $_type) + _openDocs_Str + "\n" + WE().consts.g_l.move.move_exit_open_docs_continue)) {
+		if (confirm(WE().util.sprintf(WE().consts.g_l.alert.move_exit_open_docs_question, type, type) + _openDocs_Str + "\n" + WE().consts.g_l.alert.move_exit_open_docs_continue)) {
 
 			for (i = 0; i < _open_move_editors.length; i++) {
 				_open_move_editors[i].setEditorIsHot(false);
@@ -132,7 +130,7 @@ function press_ok_move() {
 
 	} else {
 
-		if (confirm(WE().consts.g_l.move.move)) {
+		if (confirm(WE().consts.g_l.alert.move)) {
 			we_cmd('do_move', '', _move_table);
 		}
 	}

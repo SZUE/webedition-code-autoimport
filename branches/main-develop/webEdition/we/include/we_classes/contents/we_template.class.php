@@ -42,7 +42,7 @@ class we_template extends we_document{
 		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');
 		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS);
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS/*, we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS*/);
 		}
 		$this->Published = 1;
 		$this->InWebEdition = true;
@@ -111,6 +111,8 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				return 'we_editors/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return "we_editors/we_editor_versions.inc.php";
+			case we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS:
+				return 'we_editors/we_editor_unusedElements.inc.php';
 		}
 	}
 

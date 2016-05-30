@@ -1421,10 +1421,6 @@ abstract class we_root extends we_class{
 		}
 	}
 
-	public function we_republish(){
-		return true;
-	}
-
 	/**
 	 * @return	int
 	 * @desc	checks if the user can modify a document, or only read the doc (only preview tab).

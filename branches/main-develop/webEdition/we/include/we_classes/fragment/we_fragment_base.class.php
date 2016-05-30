@@ -88,7 +88,7 @@ class we_fragment_base{
 	 * @param      int $bodyAttributes
 	 * @param      array $initdata
 	 */
-	public function __construct($name, $taskPerFragment, $pause = 1, $bodyAttributes = "", $initdata = ""){
+	public function __construct($name, $taskPerFragment, $pause = 1, array $bodyAttributes = array(), $initdata = ""){
 		$this->name = $name;
 		$this->taskPerFragment = $taskPerFragment;
 		$this->pause = $pause;
@@ -136,39 +136,30 @@ class we_fragment_base{
 	 *
 	 * @param      array $attributes
 	 */
-	function printBodyTag($attributes = ''){
-		$nextTask = $this->currentTask + $this->taskPerFragment;
+	function printBodyTag(array $attributes = array()){
 		$attr = "";
-		if($attributes){
-			foreach($attributes as $k => $v){
-				$attr .= " $k=\"$v\"";
-			}
+		foreach($attributes as $k => $v){
+			$attr .= " $k=\"$v\"";
 		}
-		$tail = ""; //FIXME: make this a post request
-//Fixme: use http_build_query
-		foreach($_REQUEST as $i => $v){
-			if(is_array($v)){
-				foreach($v as $k => $av){
-					$tail .= "&" . rawurlencode($i) . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
-				}
-			} elseif($i != "fr_" . rawurlencode($this->name) . "_ct"){
-				$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
-			}
-		}
+		$onload = $this->getJSReload();
+		echo '<body' . $attr . ($onload ? ' onload="' . $onload : '') . '>';
+	}
 
-		$onload = "document.location='" . $_SERVER['SCRIPT_NAME'] . '?fr_' . rawurlencode($this->name) . '_ct=' . ($nextTask) . $tail . "';";
+	protected function getJSReload(){
+		$nextTask = $this->currentTask + $this->taskPerFragment;
+		$tmp = $_REQUEST;
+		$tmp['fr_' . $this->name . '_ct'] = ($nextTask);
+		$tail = http_build_query($tmp, null, null, PHP_QUERY_RFC3986);
 
-		if($this->pause){
-			$onload = 'setTimeout(function(){
-' . $onload . '
-},' . $this->pause . ');';
+		$onload = "document.location='" . $_SERVER["SCRIPT_NAME"] . '?' . $tail . "';";
+
+		$onload = ($this->pause ?
+				'setTimeout(function(){' . $onload . '},' . $this->pause . ');' :
+				$onload);
+
+		if(($nextTask <= $this->numberOfTasks)){
+			return $onload;
 		}
-		echo "<body" .
-		$attr .
-		(($nextTask <= $this->numberOfTasks) ?
-			(' onload="' . $onload . '"') :
-			"") .
-		">";
 	}
 
 	/**
@@ -177,29 +168,7 @@ class we_fragment_base{
 	 * @param      array $attributes
 	 */
 	function printJSReload(){
-		$nextTask = $this->currentTask + $this->taskPerFragment;
-		$tail = ""; //FIXME: make this a post request
-		//Fixme: use http_build_query
-		foreach($_REQUEST as $i => $v){
-			if(is_array($v)){
-				foreach($v as $k => $av){
-					$tail .= "&" . rawurlencode($i) . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
-				}
-			} elseif($i != "fr_" . rawurlencode($this->name) . "_ct"){
-				$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
-			}
-		}
-
-		$onload = "document.location='" . $_SERVER["SCRIPT_NAME"] . "?fr_" . rawurlencode($this->name) . "_ct=" . ($nextTask) . $tail . "';";
-
-		if($this->pause){
-			$onload = 'setTimeout(function(){
-' . $onload . '
-},' . $this->pause . ');';
-		}
-		if(($nextTask <= $this->numberOfTasks)){
-			echo we_html_element::jsElement($onload);
-		}
+		echo $this->getJSReload();
 	}
 
 	/**
@@ -210,15 +179,9 @@ class we_fragment_base{
 		echo '</body></html>';
 	}
 
-	// overwrite the following functions
-
-	/**
-	 * Prints the header.
-	 * This Function should be overwritten
-	 *
-	 */
 	static function printHeader(){
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
+		//FIXME: missing title
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . weSuggest::getYuiFiles());
 	}
 
 	/**
