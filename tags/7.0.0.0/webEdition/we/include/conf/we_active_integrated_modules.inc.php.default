@@ -1,0 +1,24 @@
+<?php
+/**
+ * webEdition CMS configuration file
+ * NOTE: this file is regenerated, so any extra contents will be overwritten
+ */
+
+$GLOBALS['_we_active_integrated_modules'] = array(
+	'users',
+	'customer',
+	'collection',
+	'schedule',
+	'shop',
+	'editor',
+	'object',
+//	'messaging',
+//	'workflow',
+	'newsletter',
+	'banner',
+	'export',
+//	'voting',
+//	'spellchecker',
+	'glossary',
+	'navigation'
+);
