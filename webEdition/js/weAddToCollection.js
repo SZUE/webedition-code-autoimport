@@ -54,12 +54,12 @@ weAddToCollection = {
 
 		// check if selected target exists
 		var acStatus = '';
-		var invalidAcFields = false;
+		//var invalidAcFields = false;
 		acStatus = YAHOO.autocoml.checkACFields();
 		acStatusType = typeof acStatus;
 		if (acStatusType.toLowerCase() === 'object') {
 			if (acStatus.running) {
-				setTimeout(press_ok_move, 100);
+				setTimeout(press_ok_move, 100, "");
 				return;
 			} else if (!acStatus.valid) {
 				top.we_showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -80,7 +80,7 @@ weAddToCollection = {
 		_collID = _collID ? _collID : 0;
 		for (_frameId in _usedEditors) {
 			_editor = _usedEditors[_frameId];
-			if (_editor.getEditorEditorTable() == WE().consts.tables.VFILE_TABLE && _editor.getEditorDocumentId() == _collID) {
+			if (_editor.getEditorEditorTable() === WE().consts.tables.VFILE_TABLE && _editor.getEditorDocumentId() == _collID) {
 				_isOpen = true;
 				_transaction = _editor.getEditorTransaction();
 				if (_editor.getEditorEditPageNr() == 1) {

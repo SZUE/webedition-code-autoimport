@@ -286,7 +286,7 @@ function openBrowser(url) {
 	try {
 		browserwind = window.open(WE().consts.dirs.WEBEDITION_DIR + "openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 	} catch (e) {
-		top.we_showMessage(WE().consts.g_l.main.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.alert.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -414,7 +414,7 @@ function doUnloadNormal(whichWindow) {
 
 function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	if (!WE().layout.weEditorFrameController.closeAllDocuments()) {
-		return WE().consts.g_l.main.exit_multi_doc_question;
+		return WE().consts.g_l.alert.exit_multi_doc_question;
 	}
 	if (WE().session.seemode) {
 		doUnloadSEEM(whichWindow);
@@ -1116,7 +1116,7 @@ function we_cmd_base(args, url) {
 		case "reset_home":
 			var _currEditor = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			if (_currEditor && _currEditor.getEditorType() === "cockpit") {
-				if (confirm(WE().consts.g_l.main.cockpit_reset_settings)) {
+				if (confirm(WE().consts.g_l.cockpit.reset_settings)) {
 					//FIXME: currently this doesn't work
 					WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]' + args[0];
 					if ((window.treeData !== undefined) && window.treeData) {
@@ -1124,7 +1124,7 @@ function we_cmd_base(args, url) {
 					}
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 			break;
 
@@ -1141,7 +1141,7 @@ function we_cmd_base(args, url) {
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
 				WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[0].substr(args[0].length - 3), 1, 1);
 			} else {
-				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "open_document":

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -25,7 +26,6 @@
  * @license		http://www.gnu.org/copyleft/gpl.html  GPL
  * @version    	SVN: $Id$
  */
-
 class we_navigation_items{
 	const TEMPLATE_DEFAULT_CURRENT = 'defaultCurrent';
 	const TEMPLATE_DEFAULT_POSITION = 'defaultPosition';
@@ -39,7 +39,7 @@ class we_navigation_items{
 	var $currentRules = array();
 	private static $Storage = array(
 		'items' => array(),
-		'ids' => array(),
+		'ids' => array(0 => '/'),
 	);
 
 	static function getCustomerData(we_navigation_navigation $navi){
@@ -61,20 +61,20 @@ class we_navigation_items{
 		}
 
 		return ($navi->LimitAccess ?
-			array(
+				array(
 				'id' => $navi->AllCustomers == 0 ? $navi->Customers : array(),
 				'filter' => $navi->ApplyFilter == 1 ? $navi->CustomerFilter : array(),
 				'blacklist' => $navi->ApplyFilter == 1 ? $navi->BlackList : array(),
 				'whitelist' => $navi->ApplyFilter == 1 ? $navi->WhiteList : array(),
 				'usedocumentfilter' => $navi->UseDocumentFilter ? 1 : 0
-			) :
-			array(
+				) :
+				array(
 				'id' => '',
 				'filter' => '',
 				'blacklist' => '',
 				'whitelist' => '',
 				'usedocumentfilter' => 1
-			));
+		));
 	}
 
 	private function initRulesFromDB(){
@@ -122,12 +122,12 @@ class we_navigation_items{
 			$this->initRulesFromDB();
 		}
 
-		foreach($this->items as &$_item){
-			if(is_object($_item) && method_exists($_item, 'isCurrent')){
-				$this->hasCurrent |= ($_item->isCurrent($this));
+		foreach($this->items as &$item){
+			if(is_object($item) && method_exists($item, 'isCurrent')){
+				$this->hasCurrent |= ($item->isCurrent($this));
 			}
 		}
-		unset($_item);
+		unset($item);
 		$this->loopAllRules();
 		return true;
 	}
@@ -135,35 +135,35 @@ class we_navigation_items{
 	private function initById($parentid = 0, $showRoot = true){
 		$this->items = array();
 		$this->rootItem = intval($parentid);
-		$_navigation = new we_navigation_navigation();
+		$navigation = new we_navigation_navigation();
 		$this->readItemsFromDb($this->rootItem);
-		$_item = self::getItemFromPool($parentid);
-		$_navigation->initByRawData($_item ? : array('ID' => 0, 'Path' => '/'));
+		$item = self::getItemFromPool($parentid);
+		$navigation->initByRawData($item ? : array('ID' => 0, 'Path' => '/'));
 
 // set defaultTemplates
 		$this->setDefaultTemplates();
-		list($table, $linkid) = $_navigation->getTableIdForItem();
-		$this->items['id' . $_navigation->ID] = new we_navigation_item(
-			$_navigation->ID, $linkid, $table, $_navigation->Text, $_navigation->Display, $_navigation->getHref(), (!$showRoot || $_navigation->ID == 0 ? 'root' : ($_navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')), self::id2path($_navigation->IconID), $_navigation->Attributes, $_navigation->LimitAccess, self::getCustomerData($_navigation), $_navigation->CurrentOnUrlPar, $_navigation->CurrentOnAnker);
+		list($table, $linkid) = $navigation->getTableIdForItem();
+		$this->items['id' . $navigation->ID] = new we_navigation_item(
+			$navigation->ID, $linkid, $table, $navigation->Text, $navigation->Display, $navigation->getHref(), (!$showRoot || $navigation->ID == 0 ? 'root' : ($navigation->IsFolder ? we_base_ContentTypes::FOLDER : 'item')), self::id2path($navigation->IconID), $navigation->Attributes, $navigation->LimitAccess, self::getCustomerData($navigation), $navigation->CurrentOnUrlPar, $navigation->CurrentOnAnker);
 
-		$items = $_navigation->getDynamicPreview(self::$Storage['items'], true);
+		$items = $navigation->getDynamicPreview(self::$Storage['items'], true);
 
-		foreach($items as $_item){
-			if($_item['id']){
-				if(!empty($_item['name'])){
-					$_item['text'] = $_item['name'];
+		foreach($items as $item){
+			if($item['id']){
+				if(!empty($item['name'])){
+					$item['text'] = $item['name'];
 				}
-				$this->items['id' . $_item['id']] = new we_navigation_item($_item['id'], $_item['docid'], $_item['table'], $_item['text'], $_item['display'], $_item['href'], $_item['type'], $_item['icon'], $_item['attributes'], $_item['limitaccess'], $_item['customers'], isset($_item['currentonurlpar']) ? $_item['currentonurlpar'] : '', isset($_item['currentonanker']) ? $_item['currentonanker'] : '', $_item['currentoncat'], $_item['catparam']);
+				$this->items['id' . $item['id']] = new we_navigation_item($item['id'], $item['docid'], $item['table'], $item['text'], $item['display'], $item['href'], $item['type'], $item['icon'], $item['attributes'], $item['limitaccess'], $item['customers'], isset($item['currentonurlpar']) ? $item['currentonurlpar'] : '', isset($item['currentonanker']) ? $item['currentonanker'] : '', $item['currentoncat'], $item['catparam']);
 
-				if(isset($this->items['id' . $_item['parentid']])){
-					$this->items['id' . $_item['parentid']]->addItem($this->items['id' . $_item['id']]);
+				if(isset($this->items['id' . $item['parentid']])){
+					$this->items['id' . $item['parentid']]->addItem($this->items['id' . $item['id']]);
 				}
 
-				$this->hasCurrent |= ($this->items['id' . $_item['id']]->isCurrent($this));
+				$this->hasCurrent |= ($this->items['id' . $item['id']]->isCurrent($this));
 
 // add currentRules
-				if(isset($_item['currentRule'])){
-					$this->currentRules[] = $_item['currentRule'];
+				if(isset($item['currentRule'])){
+					$this->currentRules[] = $item['currentRule'];
 				}
 			}
 		}
@@ -206,7 +206,7 @@ class we_navigation_items{
 
 		$currentWorkspace = $isObject ? //webEdition object
 			(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
-				we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/'). '.php'), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/')), $GLOBALS['WE_MAIN_DOC']->Workspaces, $GLOBALS['WE_MAIN_DOC']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
+				we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/') . '.php'), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/')), $GLOBALS['WE_MAIN_DOC']->Workspaces, $GLOBALS['WE_MAIN_DOC']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
 				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
 			) : //webEdition document
 			$GLOBALS['WE_MAIN_DOC']->Path;
@@ -298,8 +298,8 @@ class we_navigation_items{
 
 	function getItems($id = false){
 		return ($id ?
-			$this->getItemIds($id) :
-			array_keys($this->items));
+				$this->getItemIds($id) :
+				array_keys($this->items));
 	}
 
 	function getItem($id){
@@ -392,35 +392,35 @@ class we_navigation_items{
 	}
 
 	function readItemsFromDb($id){
-		$_pathArr = id_to_path($id, NAVIGATION_TABLE, null, true);
-		$_path = we_base_file::clearPath((isset($_pathArr[0]) ? $_pathArr[0] : '') . '/%');
+		$db = new DB_WE();
+		$path = id_to_path($id, NAVIGATION_TABLE, $db);
+		$path = we_base_file::clearPath($path . '/%');
 
-		$_ids = array();
+		$ids = array();
 
-		$_db = new DB_WE();
-		$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $_db->escape($_path) . '" ' . ($id ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
-		while($_db->next_record()){
-			$_tmpItem = $_db->getRecord();
-			$_tmpItem['Name'] = $_tmpItem['Text'];
-			self::$Storage['items'][] = $_tmpItem;
+		$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($path) . '" ' . ($id ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
+		while($db->next_record()){
+			$tmpItem = $db->getRecord();
+			$tmpItem['Name'] = $tmpItem['Text'];
+			self::$Storage['items'][] = $tmpItem;
 
-			if($_db->Record['IsFolder'] && ($_db->Record['FolderSelection'] === '' || $_db->Record['FolderSelection'] == we_navigation_navigation::STYPE_DOCLINK)){
-				$_ids[] = $_db->Record['LinkID'];
-			} elseif($_db->Record['Selection'] == we_navigation_navigation::SELECTION_STATIC && $_db->Record['SelectionType'] == we_navigation_navigation::STYPE_DOCLINK){
-				$_ids[] = $_db->Record['LinkID'];
-			} elseif(($_db->Record['SelectionType'] == we_navigation_navigation::STYPE_CATEGORY || $_db->Record['SelectionType'] == we_navigation_navigation::STYPE_CATLINK) && $_db->Record['LinkSelection'] != we_navigation_navigation::LSELECTION_EXTERN){
-				$_ids[] = $_db->Record['UrlID'];
+			if($db->Record['IsFolder'] && ($db->Record['FolderSelection'] === '' || $db->Record['FolderSelection'] == we_navigation_navigation::STYPE_DOCLINK)){
+				$ids[] = $db->Record['LinkID'];
+			} elseif($db->Record['Selection'] == we_navigation_navigation::SELECTION_STATIC && $db->Record['SelectionType'] == we_navigation_navigation::STYPE_DOCLINK){
+				$ids[] = $db->Record['LinkID'];
+			} elseif(($db->Record['SelectionType'] == we_navigation_navigation::STYPE_CATEGORY || $db->Record['SelectionType'] == we_navigation_navigation::STYPE_CATLINK) && $db->Record['LinkSelection'] != we_navigation_navigation::LSELECTION_EXTERN){
+				$ids[] = $db->Record['UrlID'];
 			}
 
-			if($_db->Record['IconID']){
-				$_ids[] = $_db->Record['IconID'];
+			if($db->Record['IconID']){
+				$ids[] = $db->Record['IconID'];
 			}
 		}
-		$_ids = $_ids ? array_diff(array_unique($_ids), array_keys(self::$Storage['ids'])) : array();
-		if($_ids){
-			$_db->query('SELECT ID,IF(Published>0,Path,"") FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $_ids) . ') ORDER BY ID');
+		$ids = $ids ? array_diff(array_unique($ids), array_keys(self::$Storage['ids'])) : array();
+		if($ids){
+			$db->query('SELECT ID,IF(Published>0,Path,"") FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $ids) . ') ORDER BY ID');
 			//keep array index
-			self::$Storage['ids'] = self::$Storage['ids'] + $_db->getAllFirst(false);
+			self::$Storage['ids'] = self::$Storage['ids'] + $db->getAllFirst(false);
 		}
 	}
 
@@ -435,11 +435,11 @@ class we_navigation_items{
 	}
 
 	public static function id2path($id){
-		if(!$id){
-			return '/';
-		}
 		if(isset(self::$Storage['ids'][$id])){
 			return self::$Storage['ids'][$id];
+		}
+		if(!$id){
+			return '/';
 		}
 		return (self::$Storage['ids'][$id] = id_to_path($id, FILE_TABLE));
 	}

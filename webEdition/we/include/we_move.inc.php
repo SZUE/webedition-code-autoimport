@@ -173,7 +173,7 @@ $yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELEC
 
 $weAcSelector = $yuiSuggest->getHTML();
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, 'javascript:press_ok_move();'), '', we_html_button::create_button('quit_move', "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left");
+$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:press_ok_move('" . $_type . "');"), '', we_html_button::create_button('quit_move', "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left");
 
 echo
 '</head><body class="weTreeHeaderMove">

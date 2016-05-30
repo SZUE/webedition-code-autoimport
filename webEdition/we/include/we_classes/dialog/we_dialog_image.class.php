@@ -141,8 +141,8 @@ class we_dialog_image extends we_dialog_base{
 				$this->args['thumbnail'] = $thumb;
 				$this->args['fileSrc'] = id_to_path($fileID);
 				$this->args['src'] = $thumbpath . '?thumb=' . $fileID . ',' . $thumb;
-				$width = $thumbObj->getOutputWidth();
-				$height = $thumbObj->getOutputHeight();
+				$width = '';//$thumbObj->getOutputWidth();
+				$height = '';//$thumbObj->getOutputHeight();
 				unset($thumbObj);
 			} else {
 				$this->args['thumbnail'] = '';
@@ -442,25 +442,32 @@ class we_dialog_image extends we_dialog_base{
 			case 'update_editor':
 				//fill in all fields
 				$js = '
-					top.document.we_form["we_cmd[0]"].value = "";
-					var inputElem;';
+top.document.we_form["we_cmd[0]"].value = "";
+var inputElem;';
 				foreach($args as $k => $v){
 					$js .= $k !== 'cssclass' ? '
-						if(inputElem = top.document.we_form.elements["we_dialog_args[' . $k . ']"]){
-							inputElem.value = "' . $v . '";
-						}' : '';
+if(inputElem = top.document.we_form.elements["we_dialog_args[' . $k . ']"]){
+	inputElem.value = "' . $v . '";
+}' : '';
 				}
 				$js .= '
-
-						try{' .
+if(inputElem = top.document.we_form.elements["we_dialog_args[thumbnail]"]){
+	var dis=(inputElem.value!="");
+	top.document.we_form.elements["we_dialog_args[height]"].disabled=dis;
+	top.document.we_form.elements["we_dialog_args[width]"].disabled=dis;
+}
+try{' .
 					($this->getDisplayThumbsSel() === 'none' ? 'top.document.getElementById("selectThumbnail").setAttribute("disabled", "disabled");' : 'top.document.getElementById("selectThumbnail").removeAttribute("disabled");') . '
-						} catch(err){}
+} catch(err){}
 
-						var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
-						var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';
-						if(top.document.we_form.tinyMCEInitRatioH !== undefined) top.document.we_form.tinyMCEInitRatioH.value = rh;
-						if(top.document.we_form.tinyMCEInitRatioW !== undefined) top.document.we_form.tinyMCEInitRatioW.value = rw;
-					';
+var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
+var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';
+if(top.document.we_form.tinyMCEInitRatioH !== undefined){
+	top.document.we_form.tinyMCEInitRatioH.value = rh;
+}
+if(top.document.we_form.tinyMCEInitRatioW !== undefined){
+	top.document.we_form.tinyMCEInitRatioW.value = rw;
+}';
 
 				echo we_html_tools::getHtmlTop($this->dialogTitle, '', '', we_html_element::jsElement($js), we_html_element::htmlBody());
 				break;

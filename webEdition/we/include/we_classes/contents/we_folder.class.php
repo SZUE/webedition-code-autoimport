@@ -442,7 +442,7 @@ class we_folder extends we_root{
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		//FIXME: give JS an array!
 		$wecmdenc3 = we_base_request::encCmd("var parents=[" . implode(',', $parents) . "];if(parents.indexOf(currentID) > -1){
-			WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+			WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 }else{
 	opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');
 }");

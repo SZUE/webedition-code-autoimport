@@ -72,7 +72,6 @@ foreach($shortcuts as $k => $v){
 
 $oSctPool = new we_html_select(array(
 	"name" => "sct_pool",
-	"size" => 1,
 	"class" => "defaultfont",
 	"onchange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
 	)

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  * Provides functions for creating and handling webEdition thumbnails.
  */
 class we_thumbnail{
-
 	const OK = 0;
 	const USE_ORIGINAL = 1;
 	const BUILDERROR = 2;
@@ -246,7 +244,7 @@ class we_thumbnail{
 	 */
 	public function initByThumbID($thumbID, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
 		$_foo = getHash('SELECT Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? :
-				array(
+			array(
 			'Width' => 0,
 			'Height' => 0,
 			'Options' => '',
@@ -254,7 +252,7 @@ class we_thumbnail{
 			'Name' => '',
 			'Date' => '',
 			'Quality' => ''
-				)
+			)
 		;
 		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Options'], $_foo['Format'], $_foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $_foo['Date'], $_foo['Quality']);
 	}
@@ -275,7 +273,7 @@ class we_thumbnail{
 	 */
 	public function initByThumbName($thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
 		$_foo = getHash('SELECT ID,Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db)? :
-				array(
+			array(
 			'ID' => 0,
 			'Width' => 0,
 			'Height' => 0,
@@ -318,7 +316,7 @@ class we_thumbnail{
 		/* FIXME: the following code was missing here (and in several places where this function is called)!
 		 * Is this the right place to execute it? or should we move it to init() or some other place?
 		 */
-		if(($createIfNotExist && !$this->exists()) && ($this->createThumb() === we_thumbnail::BUILDERROR)){
+		if(($createIfNotExist && (!$this->exists() || (intval(filectime($this->getOutputPath(true))) < intval($this->getDate())))) && ($this->createThumb() === we_thumbnail::BUILDERROR)){
 			t_e('Error creating thumbnail for file', $this->Filename . $this->Extension);
 			return false;
 		}
@@ -424,8 +422,8 @@ class we_thumbnail{
 			return $arr;
 		}
 		return (we_base_imageEdit::gd_version() ?
-						we_base_imageEdit::getimagesize($filename) :
-						$arr);
+				we_base_imageEdit::getimagesize($filename) :
+				$arr);
 	}
 
 	/**
@@ -436,9 +434,9 @@ class we_thumbnail{
 	 */
 	public function getOutputPath($withDocumentRoot = false, $unique = false){
 		return ($withDocumentRoot ? WEBEDITION_PATH . '../' : '') .
-				$this->outputPath .
-				((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime(WEBEDITION_PATH . '../' . $this->outputPath) : time()) :
-						'');
+			$this->outputPath .
+			((!$withDocumentRoot && $unique ) ? '?t=' . ($this->exists() ? filemtime(WEBEDITION_PATH . '../' . $this->outputPath) : time()) :
+				'');
 	}
 
 	/**
@@ -490,13 +488,13 @@ class we_thumbnail{
 	 */
 	private function setOutputPath(){
 		if(
-				( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) ) &&
-				we_base_imageEdit::gd_version() > 0 &&
-				we_base_imageEdit::is_imagetype_supported($this->outputFormat) &&
-				we_base_imageEdit::is_imagetype_read_supported(
-						isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
-								we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : ''
-				)
+			( (!$this->useOriginalSize()) || (!$this->hasOriginalType() ) ) &&
+			we_base_imageEdit::gd_version() > 0 &&
+			we_base_imageEdit::is_imagetype_supported($this->outputFormat) &&
+			we_base_imageEdit::is_imagetype_read_supported(
+				isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)]) ?
+					we_base_imageEdit::$GDIMAGE_TYPE[strtolower($this->imageExtension)] : ''
+			)
 		){
 			$this->outputPath = self::getThumbDirectory() . '/' . $this->imageID . '_' . $this->thumbID . '_' . $this->imageFileName . '.' . $this->outputFormat;
 		} else {
@@ -553,8 +551,8 @@ class we_thumbnail{
 	 */
 	private function useOriginalSize(){
 		return ($this->generateSmaller ?
-						false :
-						(!in_array(self::OPTION_MAXSIZE, $this->options)) && (!in_array(self::OPTION_FITINSIDE, $this->options)) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0));
+				false :
+				(!in_array(self::OPTION_MAXSIZE, $this->options)) && (!in_array(self::OPTION_FITINSIDE, $this->options)) && (($this->imageWidth <= $this->thumbWidth) || $this->thumbWidth == 0) && (($this->imageHeight <= $this->thumbHeight) || $this->thumbHeight == 0));
 	}
 
 	/**
@@ -574,7 +572,7 @@ class we_thumbnail{
 	 */
 	private function getImageData($getBinary = false, $onlyFocus = false){
 		$this->db->query('SELECT l.Name,c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->imageID) .
-				' AND l.DocumentTable="tblFile"' . ($onlyFocus ? ' AND l.nHash=x\'' . md5("focus") . '\'' : ''));
+			' AND l.DocumentTable="tblFile"' . ($onlyFocus ? ' AND l.nHash=x\'' . md5("focus") . '\'' : ''));
 
 		while($this->db->next_record()){
 			switch($this->db->f('Name')){

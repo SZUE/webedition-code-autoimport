@@ -77,7 +77,6 @@ $doctypeElement = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect(
 
 $cls = new we_html_select(array(
 	"name" => "classID",
-	"size" => 1,
 	"class" => "defaultfont",
 	"style" => "width:420px; border: #AAAAAA solid 1px"
 	));

@@ -914,7 +914,6 @@ HTS;
 		$DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
 		$DTselect = new we_html_select(array(
 			'name' => 'v[docType]',
-			'size' => 1,
 			'class' => 'weSelect',
 			'onclick' => (defined('OBJECT_TABLE')) ? "self.document.we_form.elements['v[import_type]'][0].checked=true;" : '',
 			'onchange' => 'this.form.doctypeChanged.value=1; weChangeDocType(this);',
@@ -948,7 +947,6 @@ HTS;
 
 		$TPLselect = new we_html_select(array(
 			'name' => 'docTypeTemplateId',
-			'size' => 1,
 			'class' => 'weSelect',
 			'onclick' => (defined('OBJECT_TABLE')) ? "self.document.we_form.elements['v[import_type]'][0].checked=true;" : '',
 			//'onchange'  => "we_submit_form(self.document.we_form, 'wizbody', '".$this->path."');",
@@ -1019,7 +1017,6 @@ HTS;
 		$v['classID'] = isset($v['classID']) ? $v['classID'] : -1;
 		$CLselect = new we_html_select(array(
 			'name' => 'v[classID]',
-			'size' => 1,
 			'class' => 'weSelect',
 			'onclick' => "self.document.we_form.elements['v[import_type]'][1].checked=true;",
 			'style' => 'width: 150px')
@@ -1144,7 +1141,6 @@ HTS;
 			if($xmlWellFormed && $hasChildNode){
 				$rcdSelect = new we_html_select(array(
 					'name' => 'we_select',
-					'size' => 1,
 					'class' => 'weSelect',
 					(($isSingleNode) ? 'disabled' : 'style') => '',
 					'onchange' => "this.form.elements['v[to_iElem]'].value=this.options[this.selectedIndex].value; this.form.elements['v[from_iElem]'].value=1;this.form.elements['v[sct_node]'].value=this.options[this.selectedIndex].text;" .
@@ -1375,7 +1371,6 @@ function handle_event(evt) {
 			$hdns .= we_html_element::htmlHidden('records[' . $i . ']', $record);
 			$sct_we_fields = new we_html_select(array(
 				'name' => 'we_flds[' . $record . ']',
-				'size' => 1,
 				'class' => 'weSelect',
 				'onclick' => '',
 				'style' => '')
@@ -1421,7 +1416,6 @@ function handle_event(evt) {
 		// Assigned record or attribute field selectors.
 		$rcdPfxSelect = new we_html_select(array(
 			'name' => 'v[rcd_pfx]',
-			'size' => 1,
 			'class' => 'weSelect',
 			'onclick' => "self.document.we_form.elements['v[pfx_fn]'].value=1;self.document.we_form.elements['v[rdo_filename]'][1].checked=true;",
 			'style' => 'width: 150px')
@@ -1588,7 +1582,7 @@ function handle_eventNext(){
 		$importLocs->setCol($_tblRow++, 0, array(), $importFromLocal);
 
 		$iptDel = we_html_tools::htmlTextInput('v[csv_seperator]', 2, (isset($v['csv_seperator']) ? (($v['csv_seperator'] != '') ? $v['csv_seperator'] : ' ') : ';'), 2, '', 'text', 20);
-		$fldDel = new we_html_select(array('name' => 'v[sct_csv_seperator]', 'size' => 1, 'class' => 'weSelect', 'onchange' => "this.form.elements['v[csv_seperator]'].value=this.options[this.selectedIndex].innerHTML.substr(0,2);this.selectedIndex=options[0];", "style" => "width: 130px"));
+		$fldDel = new we_html_select(array('name' => 'v[sct_csv_seperator]', 'class' => 'weSelect', 'onchange' => "this.form.elements['v[csv_seperator]'].value=this.options[this.selectedIndex].innerHTML.substr(0,2);this.selectedIndex=options[0];", "style" => "width: 130px"));
 		$fldDel->addOption('', '');
 		$fldDel->addOption('semicolon', g_l('import', '[semicolon]'));
 		$fldDel->addOption('comma', g_l('import', '[comma]'));
@@ -1599,7 +1593,7 @@ function handle_eventNext(){
 			$fldDel->selectOption($v['sct_csv_seperator']);
 		}
 
-		$charSet = new we_html_select(array('name' => 'v[file_format]', 'size' => 1, 'class' => 'weSelect', 'onchange' => '', 'style' => ''));
+		$charSet = new we_html_select(array('name' => 'v[file_format]', 'class' => 'weSelect', 'onchange' => '', 'style' => ''));
 		$charSet->addOption('win', 'Windows');
 		$charSet->addOption('unix', 'Unix');
 		$charSet->addOption('mac', 'Mac');
@@ -1607,7 +1601,7 @@ function handle_eventNext(){
 			$charSet->selectOption($v['file_format']);
 		}
 
-		$txtDel = new we_html_select(array('name' => 'v[csv_enclosed]', 'size' => 1, 'class' => 'weSelect', 'onchange' => '', 'style' => 'width: 300px'));
+		$txtDel = new we_html_select(array('name' => 'v[csv_enclosed]', 'class' => 'weSelect', 'onchange' => '', 'style' => 'width: 300px'));
 		$txtDel->addOption('double_quote', g_l('import', '[double_quote]'));
 		$txtDel->addOption('single_quote', g_l('import', '[single_quote]'));
 		$txtDel->addOption('none', g_l('import', '[none]'));
@@ -1832,7 +1826,6 @@ HTS;
 
 		$DTselect = new we_html_select(array(
 			'name' => 'v[docType]',
-			'size' => 1,
 			'class' => 'weSelect',
 			'onclick' => (defined('OBJECT_TABLE')) ? "self.document.we_form.elements['v[import_type]'][0].checked=true;" : '',
 			'onchange' => "this.form.doctypeChanged.value=1; weChangeDocType(this);",
@@ -1868,7 +1861,6 @@ HTS;
 
 		$TPLselect = new we_html_select(array(
 			"name" => "v[we_TemplateID]",
-			"size" => 1,
 			"class" => "weSelect",
 			"onclick" => "self.document.we_form.elements['v[import_type]'][0].checked=true;",
 			"style" => "width: 300px")
@@ -1938,7 +1930,6 @@ HTS;
 			$CLselect = new we_html_select(array(
 				'id' => 'classID',
 				"name" => "v[classID]",
-				"size" => 1,
 				"class" => "weSelect",
 				"onclick" => "self.document.we_form.elements['v[import_type]'][1].checked=true;",
 				'onchange' => "var elem=document.we_form.elements['v[classID]'];document.we_form.elements['v[obj_path]'].value='/'+elem.options[elem.selectedIndex].text;"
@@ -2215,7 +2206,6 @@ function handle_event(evt) {
 			$hdns .= we_html_element::htmlHidden("records[$i]", $record);
 			$sct_we_fields = new we_html_select(array(
 				"name" => 'we_flds[' . $record . ']',
-				"size" => 1,
 				"class" => "weSelect",
 				"onclick" => "",
 				"style" => "")
@@ -2260,7 +2250,6 @@ function handle_event(evt) {
 		// Assigned record or attribute field selectors.
 		$rcdPfxSelect = new we_html_select(array(
 			"name" => "v[rcd_pfx]",
-			"size" => 1,
 			"class" => "weSelect",
 			"onclick" => "self.document.we_form.elements['v[pfx_fn]'].value=1;self.document.we_form.elements['v[rdo_filename]'][1].checked=true;",
 			"style" => "width: 150px")

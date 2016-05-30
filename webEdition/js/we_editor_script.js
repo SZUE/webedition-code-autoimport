@@ -160,7 +160,7 @@ function updateCustomerFilterIfNeeded() {
 							eval(o.responseText);
 							if (weResponse) {
 								if (weResponse.data === "true") {
-									_question = isFolder ? WE().consts.g_l.main.confirm_applyFilterFolder : WE().consts.g_l.main.confirm_applyFilterDocument;
+									_question = isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
 									if (confirm(_question)) {
 										top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
 									}

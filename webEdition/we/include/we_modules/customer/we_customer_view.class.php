@@ -67,7 +67,7 @@ WE().consts.g_l.customer.view={
 	delete_alert:"' . g_l('modules_customer', '[delete_alert]') . '",
 	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_delete]')) . '",
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_save]')) . '",
-	reset_failed_login_successfully:"'. we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[login_reset_ok]')) .'"
+	reset_failed_login_successfully:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[login_reset_ok]')) . '"
 };
 WE().consts.g_l.customer.admin={
 	del_fild_question:"' . g_l('modules_customer', '[del_fild_question]') . '",
@@ -841,7 +841,7 @@ self.close();');
 				$langcode = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 
 				$countrycode = array_search($langcode, getWECountries());
-				$countryselect = new we_html_select(array('name' => $field, 'size' => 1, 'style' => 'width:240px;', 'class' => 'wetextinput', 'id' => ($field === 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field === 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
+				$countryselect = new we_html_select(array('name' => $field, 'style' => 'width:240px;', 'class' => 'wetextinput', 'id' => ($field === 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field === 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
 
 				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
@@ -886,7 +886,7 @@ self.close();');
 						$lcvalue = $lccode[0];
 					}
 					unset($lcvalue);
-					$languageselect = new we_html_select(array('name' => $field, 'size' => 1, 'style' => 'width:240px;', 'class' => 'wetextinput', "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => ($field === "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
+					$languageselect = new we_html_select(array('name' => $field, 'style' => 'width:240px;', 'class' => 'wetextinput', "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => ($field === "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
 					foreach(g_l('languages', '') as $languagekey => $languagevalue){
 						if(in_array($languagekey, $frontendL)){
 							$languageselect->addOption($languagekey, $languagevalue);
@@ -907,7 +907,7 @@ self.close();');
 					$defs = array_merge(array($value), $defs);
 				}
 
-				$select = new we_html_select(array("name" => $field, "size" => 1, "style" => "width:240px;", "class" => "wetextinput", "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => "top.content.setHot();"));
+				$select = new we_html_select(array("name" => $field, "style" => "width:240px;", "class" => "wetextinput", "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => "top.content.setHot();"));
 				foreach($defs as $def){
 					$select->addOption($def, $def);
 				}

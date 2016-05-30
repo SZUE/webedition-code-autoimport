@@ -54,7 +54,7 @@ parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 
 		$templ->initByID($this->data, TEMPLATES_TABLE);
 		$content = $templ->getElement("data");
-
+		$regs = array();
 		if(preg_match_all('/##WEPATH##([^ ]+) ###WEPATH###/i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $cur){
 				$path = $cur[1];
@@ -70,14 +70,10 @@ parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		}
-		echo we_html_element::jsElement(				'
+		echo we_html_element::jsElement('
 top.opener.top.we_cmd("load","' . FILE_TABLE . '");
 WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);
 top.close();');
-	}
-
-	static function printHeader(){
-		echo we_html_tools::getHtmlTop(g_l('copyFolder', '[headline]'), STYLESHEET);
 	}
 
 }

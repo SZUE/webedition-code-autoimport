@@ -29,7 +29,6 @@ $jsFile = we_html_element::jsScript(JS_DIR . 'widgets/dlg_prefs.js');
 
 $oSctCls = new we_html_select(array(
 	"name" => "sct_cls",
-	"size" => 1,
 	"class" => "defaultfont",
 	"style" => "width:120px;border:#AAAAAA solid 1px"
 		));
