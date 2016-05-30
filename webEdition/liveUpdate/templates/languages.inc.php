@@ -69,7 +69,7 @@ if($jsAlert){
 $content = '
 <div>
 <form name="we_form">
-' . we_html_element::htmlHidden('section', 'languages') . '
+' . we_html_tools::hidden('section', 'languages') . '
 ' . g_l('liveUpdate', '[languages][installedLngs]') . '
 <br />
 ' . $languagesStr . '

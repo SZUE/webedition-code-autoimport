@@ -42,6 +42,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 	urlMap varchar(100) NOT NULL default '',
 	parseFile tinyint unsigned NOT NULL default '0',
 	PRIMARY KEY  (ID),
+  KEY Path (Path(30),IsFolder),
   KEY WebUserID (WebUserID),
 	KEY urlMap (urlMap),
 	KEY TemplateID (TemplateID,IsDynamic),
@@ -52,5 +53,3 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 ###ONCOL(listview,###TBLPREFIX###tblFile) UPDATE ###TBLPREFIX###tblFile SET viewType="icons" WHERE listview=1;###
 /* query separator */
 ###UPDATEDROPCOL(listview,###TBLPREFIX###tblFile)###
-/* query separator */
-###INSTALLONLY###ALTER TABLE ###TBLPREFIX###tblFile ADD UNIQUE KEY Path(Path)

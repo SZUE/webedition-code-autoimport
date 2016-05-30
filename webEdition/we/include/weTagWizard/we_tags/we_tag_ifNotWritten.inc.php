@@ -22,7 +22,4 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	, false, '');
 
 
-$this->Attributes = array(
-	$error,
-	new weTagData_textAttribute('formname', false, '')
-);
+$this->Attributes = array($error);

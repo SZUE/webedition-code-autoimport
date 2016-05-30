@@ -38,10 +38,7 @@ WE().layout.we_tabs.prototype = {
 		for (i = 0; i < docTabs.length; i++) {
 			docTabs[i].className = "tabNormal";
 		}
-		var obj = this.doc.getElementById(tab);
-		if (obj) {
-			obj.className = "tabActive";
-		}
+		this.doc.getElementById(tab).className = "tabActive";
 	},
 	setTabClass: function (elem) {
 		var els = this.doc.getElementsByTagName("*");

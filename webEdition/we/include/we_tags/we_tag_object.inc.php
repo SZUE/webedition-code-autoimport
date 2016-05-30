@@ -70,7 +70,7 @@ function we_tag_object($attribs){
 		$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')') : 0);
 
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid);
-		$textname = 'we_' . $we_doc->Name . '_vars[' . $name . '_path]';
+		$textname = 'we_' . $we_doc->Name . '_object[' . $name . '_path]';
 		$idname = 'we_' . $we_doc->Name . '_object[' . $name . '#bdid]';
 
 		if($GLOBALS['we_editmode']){
@@ -108,12 +108,10 @@ function we_tag_object($attribs){
 
 	if(!$we_oid){//Fix #10526 check if objectID is given by request
 		$id = ($oid = we_base_request::_(we_base_request::INT, 'we_objectID')) ? $oid : we_base_request::_(we_base_request::INT, 'we_oid', 0);
+		$classid = $id ? f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($id), '', $GLOBALS['DB_WE']) : 0;
 	}else{
 		$id = $we_oid;
 	}
-
-	//Fix #10609 we need classID now!
-	$classid = $classid ? : ($id ? f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($id), '', $GLOBALS['DB_WE']) : 0);
 
 	if($id && $classid){
 		$unique = md5(uniqid(__FUNCTION__, true));

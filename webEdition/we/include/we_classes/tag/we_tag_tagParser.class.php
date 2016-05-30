@@ -194,8 +194,8 @@ class we_tag_tagParser{
 	public static function makeArrayFromAttribs($attr){
 		$attribs = self::parseAttribs($attr, false);
 		@eval('$arr = array(' . $attribs . ');'); //FIXME: can we remove this eval?
-		if(!isset($arr) || !is_array($arr)){
-			t_e($attr, $attribs);
+		if(!isset($arr)||!is_array($arr)){
+			t_e($attr,$attribs);
 			return array();
 		}
 		return $arr;
@@ -223,19 +223,12 @@ class we_tag_tagParser{
 		return ($asArray ? $attribs : implode(',', $attribs));
 	}
 
-	public function getTagsWithAttributes($withBlocknames = false){
+	public function getTagsWithAttributes(){
 		$regs = array();
-		$blocks = $ret = array();
-
+		$ret = array();
 		foreach($this->tags as $tag){
 			if(preg_match('%<we:([[:alnum:]_-]+)[ \t\n\r]*(.*)/?>?%msi', $tag, $regs)){
-				$attribs = (isset($regs[2]) ? self::parseAttribs($regs[2], true) : array());
-				$ret[] = array('name' => $regs[1], 'attribs' => $attribs + ($withBlocknames ? array('weblock' => $blocks) : array()));
-				if($withBlocknames && $regs[1] === 'block' && !empty($attribs['name'])){
-					array_unshift($blocks, 'blk_' . $attribs['name']);
-				}
-			} elseif($withBlocknames && strpos($tag, '</we:block') !== false){
-				array_shift($blocks);
+				$ret[] = array('name' => $regs[1], 'attribs' => (isset($regs[2]) ? self::parseAttribs($regs[2], true) : array()));
 			}
 		}
 		return $ret;
@@ -361,15 +354,11 @@ class we_tag_tagParser{
 	}
 
 	//FIXME: GLOBALS as "\$xx" should be set here directly? using isset??
-	public static function printTag($name, $attribs = '', $content = '', $cslash = false, $directContent = false){
+	public static function printTag($name, $attribs = '', $content = '', $cslash = false){
 		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs === 'array()' || $attribs === '[]' ? '' : $attribs));
 		return 'we_tag(\'' . $name . '\'' .
 			($attr ? ',' . $attr : ($content ? ',array()' : '')) .
-			($content ?
-				($directContent ? ',' . $content :
-					(',\'' . ($cslash ? addcslashes($content, '\'') : $content) . '\'' )
-				) : '')
-			. ')';
+			($content ? ',"' . ($cslash ? addcslashes($content, '"') : $content) . '"' : '') . ')';
 	}
 
 	public static function printArray(array $array, $printEmpty = true){

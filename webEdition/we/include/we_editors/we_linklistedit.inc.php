@@ -28,7 +28,7 @@ function getLangField($name, $value, $title, $width){
 	//FIXME: these values should be obtained from global settings
 	$input = we_html_tools::htmlTextInput($name, 15, $value, '', '', 'text', $width - 50);
 	//FIXME: remove this fixed list by global lang settings
-	$select = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" onchange="this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
+	$select = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" size="1" onchange="this.form.elements[\'' . $name . '\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">
 						<option value=""></option>
 						<option value="en">en</option>
 						<option value="de">de</option>
@@ -44,7 +44,7 @@ function getLangField($name, $value, $title, $width){
 
 function getRevRelSelect($type, $value){
 	$input = we_html_tools::htmlTextInput($type, 15, $value, '', '', 'text', 70);
-	$select = '<select name="' . $type . '_sel" class="defaultfont" style="width:70px;" onchange="this.form.elements[\'' . $type . '\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
+	$select = '<select name="' . $type . '_sel" class="defaultfont" size="1" style="width:70px;" onchange="this.form.elements[\'' . $type . '\'].value=this.options[this.selectedIndex].text;this.selectedIndex=0;">
 <option></option>
 <option>contents</option>
 <option>chapter</option>
@@ -75,9 +75,8 @@ if(($charset = $we_doc->getElement('Charset'))){ //	send charset which might be 
 
 $name = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 $nr = we_base_request::_(we_base_request::INT, 'we_cmd', '-1', 2);
-$ok = we_base_request::_(we_base_request::BOOL, "ok");
 
-if($ok){
+if(we_base_request::_(we_base_request::BOOL, 'ok')){
 	$alt = we_base_request::_(we_base_request::STRING, 'alt', '');
 	$img_title = we_base_request::_(we_base_request::STRING, 'img_title', '');
 	$text = we_base_request::_(we_base_request::HTML, 'text', '');
@@ -201,9 +200,12 @@ if($ok){
 		$ll->setImageAttrib($nr, 'vspace', $link['vspace']);
 		$ll->setImageAttrib($nr, 'align', $link['align']);
 		$ll->setImageAttrib($nr, 'alt', $link['alt']);
-		$ll->cleanup($nr);
+
 		$linklist = $ll->getString();
-	}
+	} /* else {
+	  $link['nr'] = 0;
+	  $linklist = serialize(array($link));
+	  } */
 } elseif($nr > -1){
 	$ll = new we_base_linklist(we_unserialize($we_doc->getElement($name)));
 	$href = $ll->getHref($nr);
@@ -271,7 +273,7 @@ if($ok){
 		$type = we_base_link::TYPE_MAIL;
 	} else {
 		$link = (we_unserialize($we_doc->getElement($name))? :
-						array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
+				array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
 		$href = isset($link['href']) ? $link['href'] : '';
 		if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
@@ -344,40 +346,59 @@ echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getE
 <?php
 $trans = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
 
+$ok = we_base_request::_(we_base_request::BOOL, "ok");
 $cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $name = we_base_request::_(we_base_request::STRING, 'name', $name);
 
-if($ok){
-	if($cmd === "edit_link_at_class"){
-		$_SESSION['weS']['WE_LINK'] = $link;
-		//FIXME: we_field XSS
-		?>
-			opener.setScrollTo();
-			opener.we_cmd("object_change_link_at_class", "<?php echo $trans; ?>", "<?php echo we_base_request::_(we_base_request::STRING, "we_field"); ?>", "<?php echo $name; ?>");
-			top.close();
-		<?php
-	} else if($cmd === "edit_link_at_object"){
-		$_SESSION['weS']['WE_LINK'] = array_filter($link);
-		?>
-			opener.setScrollTo();
-			opener.we_cmd("object_change_link_at_object", "<?php echo $trans; ?>", "link_<?php echo $name; ?>");
-			top.close();
-		<?php
-	} else if(!empty($linklist)){
-		$_SESSION['weS']["WE_LINKLIST"] = $linklist;
-		?>
-			opener.setScrollTo();
-			opener.we_cmd("change_linklist", "<?php echo $name; ?>", "");
-			top.close();
-		<?php
-	} else if(!empty($link)){
-		$_SESSION['weS']['WE_LINK'] = array_filter($link);
-		?>
-			opener.setScrollTo();
-			opener.we_cmd("change_link", "<?php echo $name; ?>", "");
-			top.close();
-		<?php
-	}
+if($ok && $cmd === "edit_link_at_class"){
+	$_SESSION['weS']['WE_LINK'] = $link;
+	//FIXME: we_field XSS
+	?>
+		opener.setScrollTo();
+		opener.we_cmd("object_change_link_at_class", "<?php echo $trans; ?>", "<?php echo we_base_request::_(we_base_request::STRING, "we_field"); ?>", "<?php echo $name; ?>");
+		top.close();
+	<?php
+} else if($ok && $cmd === "edit_link_at_object"){
+	$_SESSION['weS']['WE_LINK'] = $link;
+	?>
+		opener.setScrollTo();
+		opener.we_cmd("object_change_link_at_object", "<?php echo $trans; ?>", "link_<?php echo $name; ?>");
+		top.close();
+	<?php
+} else if($ok && !empty($linklist)){
+	$_SESSION['weS']["WE_LINKLIST"] = $linklist;
+	?>
+		opener.setScrollTo();
+		opener.we_cmd("change_linklist", "<?php echo $name; ?>", "");
+	<?php
+} else if($ok && !empty($link)){
+	$_SESSION['weS']['WE_LINK'] = $link;
+	?>
+		opener.setScrollTo();
+		opener.we_cmd("change_link", "<?php echo $name; ?>", "");
+	<?php
+} else {
+	?>
+		function we_cmd() {
+			var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+			var url = WE().util.getWe_cmdArgsUrl(args);
+
+			switch (args[0]) {
+				case "we_selector_image":
+				case "we_selector_document":
+					new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1,<?php echo we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT; ?>, true, true, true, true);
+					break;
+
+				case "browse_server":
+					new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
+					break;
+
+				default:
+					opener.parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+
+			}
+		}
+	<?php
 }
 ?>
 //-->
@@ -387,9 +408,9 @@ if($ok){
 
 <body class="weDialogBody" onload="self.focus();" style="overflow:hidden;">
 	<?php
-	if(!$ok){
+	if(!we_base_request::_(we_base_request::BOOL, "ok")){
 
-		$_select_type = '<select name="type" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
+		$_select_type = '<select name="type" size="1" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
 <option value="' . we_base_link::TYPE_EXT . '"' . (($type == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($type == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($type == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>
@@ -398,14 +419,17 @@ if($ok){
 </select>';
 
 
-		$cmd1 = 'document.we_form.href.value';
-		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
 
+		$wecmdenc1 = we_base_request::encCmd('document.we_form.href.value');
+		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.href.value, '')") : "";
+		$butspace = 10;
 		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, '', 'placeholder="http://www.example.com"', "url", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", 'placeholder="user@example.com"', "text", 300);
 
-		$cmd1 = "document.we_form.elements.id.value";
-		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.href_int.value") . "','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.id.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.href_int.value");
+
+		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('Doc');
@@ -420,8 +444,9 @@ if($ok){
 
 		$intLink = $yuiSuggest->getHTML();
 		if(defined('OBJECT_TABLE')){
-			$cmd1 = "document.we_form.elements.obj_id.value";
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.href_obj.value") . "','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
+			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.obj_id.value");
+			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.href_obj.value");
+			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].obj_id.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Obj");
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
@@ -490,7 +515,7 @@ if($ok){
 		$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", '', "", "", "", "", 0);
 
 
-		$_content_select = '<select name="ctype" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
+		$_content_select = '<select name="ctype" size="1" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
 <option value="' . we_base_link::CONTENT_TEXT . '"' . (($ctype == we_base_link::CONTENT_TEXT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[text]')) . '</option>
 <option value="' . we_base_link::CONTENT_EXT . '"' . (($ctype == we_base_link::CONTENT_EXT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[external_image]')) . '</option>
 <option value="' . we_base_link::CONTENT_INT . '"' . (($ctype == we_base_link::CONTENT_INT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[internal_image]')) . '</option>
@@ -499,12 +524,13 @@ if($ok){
 
 		$ctext = we_html_tools::htmlTextInput("text", 30, $text, "", "", "text", 300);
 
-		$cmd1 = "document.we_form.img_src.value";
-		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.img_src.value");
+		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '', document.we_form.img_src.value, '')") : "";
 		$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 
-		$cmd1 = "document.we_form.elements.img_id.value";
-		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.src_int.value") . "','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.img_id.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.src_int.value");
+		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.forms[0].img_id.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$yuiSuggest->setAcId("Image");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);
@@ -534,7 +560,7 @@ if($ok){
 		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("hspace", 4, $hspace, "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 40) . '</td>
 		<td style="padding-right:10px;">' . we_html_tools::htmlTextInput("vspace", 4, $vspace, "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 40) . '</td>
 		<td>
-			<select class="defaultfont" name="align">
+			<select class="defaultfont" name="align" size="1">
 			<option value="">Default</option>
 			<option value="top"' . (($align === "top") ? "selected" : "") . '>Top</option>
 			<option value="middle"' . (($align === "middle") ? "selected" : "") . '>Middle</option>
@@ -663,14 +689,13 @@ if($ok){
 			<input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 			<?php
 			if(!empty($ll)){
-				$ll->cleanup(0);
 				?>
 				<input type="hidden" name="linklist" value="<?php echo oldHtmlspecialchars($ll->getString()); ?>" />
 				<?php
 			}
 			echo we_html_element::htmlHiddens(array(
 				"name" => $name,
-				"nr" => we_base_request::_(we_base_request::INT, 'nr', $nr),
+				"nr" => we_base_request::_(we_base_request::INT, "nr", $nr),
 				"ok" => 1,
 				"we_transaction" => $we_transaction,
 				"we_field" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3)

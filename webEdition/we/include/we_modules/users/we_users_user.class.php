@@ -668,7 +668,7 @@ class we_users_user{
 					$_SESSION['prefs']['Language'] = $settingvalue;
 
 					if($settingvalue != $GLOBALS['WE_LANGUAGE']){
-						$save_javascript = "
+						$save_javascript .= "
 if (top.frames[0]) {
 	top.frames[0].location.reload();
 }
@@ -716,7 +716,7 @@ _multiEditorreload = true;
 					$_SESSION['prefs']['BackendCharset'] = $settingvalue;
 
 					if($settingvalue != $GLOBALS['WE_BACKENDCHARSET']){
-						$save_javascript = "
+						$save_javascript .= "
 if (top.frames[0]) {
 	top.frames[0].location.reload();
 }
@@ -806,7 +806,7 @@ _multiEditorreload = true;";
 
 						if($_generate_java_script){
 							$height = we_base_request::_(we_base_request::INT, 'weHeight');
-							$save_javascript = '
+							$save_javascript .= '
 								top.opener.top.resizeTo(' . $settingvalue . ', ' . $height . ');
 								top.opener.top.moveTo((screen.width / 2) - ' . ($settingvalue / 2) . ', (screen.height / 2) - ' . ($height / 2) . ');';
 						}
@@ -834,7 +834,7 @@ _multiEditorreload = true;";
 						$_SESSION['prefs']['editorFont'] = 1;
 					}
 
-					$save_javascript = '
+					$save_javascript .= '
 if ( !_multiEditorreload ) {
 	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 
@@ -879,7 +879,7 @@ _multiEditorreload = true;';
 					if(empty($GLOBALS['editor_reloaded'])){
 						$GLOBALS['editor_reloaded'] = true;
 
-						$save_javascript = '
+						$save_javascript .= '
 if ( !_multiEditorreload ) {
 	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 
@@ -941,7 +941,7 @@ _multiEditorreload = true;';
 					$_SESSION['prefs']['editorFontsize'] = -1;
 					$_SESSION['prefs']['editorFont'] = 0;
 
-					$save_javascript = '
+					$save_javascript .= '
 if ( !_multiEditorreload ) {
 	var _usedEditors =  WE().layout.weEditorFrameController.getEditorsInUse();
 
@@ -1679,7 +1679,7 @@ function delElement(elvalues,elem) {
 				foreach($parentWsp[CUSTOMER_TABLE] as $setting){
 					$setting = we_unserialize($setting);
 					foreach($setting as $cur){
-						$parent.=($parent ? ' ' . $cur['logic'] . ' ' : '') . we_customer_abstractFilter::evalSingleFilterQuery($cur['operation'], $cur['field'], $cur['value']) . "\n";
+						$parent.=($parent ? $cur['logic'] . ' ' : '') . we_customer_abstractFilter::evalSingleFilterQuery($cur['operation'], $cur['field'], $cur['value']) . "\n";
 					}
 				}
 			} else {
@@ -1689,8 +1689,7 @@ function delElement(elvalues,elem) {
 				'headline' => g_l('modules_users', '[workspace_customer]'),
 				'html' => ($this->ParentID ?
 					'<div id="infoCUSTOMER" style="' . ($this->ParentWsCust ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' .
-					$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') .
-				$view->getFilterCustomers(),
+					$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') . $view->getFilterCustomers(),
 				'space' => 200
 			);
 		}
@@ -1812,7 +1811,7 @@ function delElement(elvalues,elem) {
 		// Generate needed JS
 		$js = we_html_element::jsElement("
 function select_seem_start() {
-	myWindStr=\"WE().util.jsWindow.prototype.find('preferences')\";
+	myWindStr=\"WE().util.jsWindow.prototype.find('preferences').wind\";
 
 	if(document.getElementById('seem_start_type').value == 'object') {
 		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_object.value, '" . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements.seem_start_object.value', myWindStr + '.document.forms[0].elements.seem_start_object_name.value', '', '', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
@@ -2058,7 +2057,7 @@ function show_seem_chooser(val) {
 		return array();
 		//FIXME: this is not correct!
 		//Editor Mode
-		$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
+		$_template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "size" => 1, "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 		$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
 		$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
 		$_template_editor_mode->selectOption($this->Preferences['editorMode']);
@@ -2083,7 +2082,7 @@ function show_seem_chooser(val) {
 		// Build specify font
 		$_template_editor_font_specify_code = we_html_forms::checkbox(1, $_template_editor_font_specify, $this->Name . "_Preference_editorFont", g_l('prefs', '[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('" . $this->Name . "_Preference_editorFont')[0].checked) { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = true; }");
 
-		$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$_template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "size" => 1, "style" => "width: 90px;", ($_template_editor_font_specify ? "enabled" : "disabled") => ($_template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($_template_fonts as $tf){
 			$_template_editor_font_select_box->addOption($tf, $tf);
@@ -2099,7 +2098,7 @@ function show_seem_chooser(val) {
 			}
 		}
 
-		$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "size" => 1, "style" => "width: 90px;", ($_template_editor_font_size_specify ? "enabled" : "disabled") => ($_template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($_template_font_sizes as $tf){
 			$_template_editor_font_sizes_select_box->addOption($tf, $tf);

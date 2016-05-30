@@ -28,8 +28,6 @@ function we_tag_ifWritten($attribs){
 		case 'customer':
 			return empty($GLOBALS['ERROR']['saveRegisteredUser']);
 		default:
-			$name = weTag_getAttribute('formname', $attribs, (empty($GLOBALS['WE_FORM']) ? 'we_global_form' : $GLOBALS['WE_FORM']), we_base_request::STRING);
-
-			return empty($GLOBALS['ERROR']['write'][$type][$name]);;
+			return isset($GLOBALS['we_' . $type . '_write_ok']) && ($GLOBALS['we_' . $type . '_write_ok']);
 	}
 }

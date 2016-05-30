@@ -285,8 +285,8 @@ abstract class we_root extends we_class{
 		$myid = $this->$IDName;
 		if($disabled){
 			return we_html_tools::htmlFormElementTable(array(
-					"text" => we_html_element::htmlHidden($idname, $myid, $idname) .
-					we_html_element::htmlHidden($textname, $path, $textname) .
+					"text" => we_html_tools::hidden($idname, $myid, array('id' => $idname)) .
+					we_html_tools::hidden($textname, $path, array('id' => $textname)) .
 					we_html_element::htmlInput(array('name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width - 6), 'disabled' => 1)),
 					'style' => 'vertical-align:top;height:10px;'), g_l('weClass', '[dir]')
 			);
@@ -761,7 +761,7 @@ abstract class we_root extends we_class{
 	}
 
 	function getMoveTreeEntryScript($select = true){
-		$Tree = new we_tree_main('webEdition.php', 'top', 'top', 'top.load');
+		$Tree = new weMainTree('webEdition.php', 'top', 'top', 'top.load');
 		return $Tree->getJSUpdateTreeScript($this, $select);
 	}
 
@@ -887,14 +887,14 @@ abstract class we_root extends we_class{
 		$this->OldPath = $this->Path;
 	}
 
-	public function we_save($resave = false, $skipHook = false){
+	public function we_save($resave = false){
 		//$this->i_setText;
 		if($this->PublWhenSave){
 			$this->Published = time();
 		}
 		if(!$resave){
 			$this->ModDate = time();
-			$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && !empty($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
+			$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		}
 		$this->RebuildDate = time();
 		if(!parent::we_save($resave)){
@@ -1221,8 +1221,8 @@ abstract class we_root extends we_class{
 		if(strpos($this->ParentPath, '..') !== false || ($this->ParentPath && $this->ParentPath{0} != '/')){
 			return true;
 		}
-		if(($ws = get_ws($this->Table, true))){ //	doc has workspaces
-			if(!(we_users_util::in_workspace($this->ParentID, $ws, $this->Table, $GLOBALS['DB_WE']))){
+		if(($ws = get_ws($GLOBALS['we_doc']->Table, true))){ //	doc has workspaces
+			if(!(we_users_util::in_workspace($this->ParentID, $ws, $GLOBALS['we_doc']->Table, $GLOBALS['DB_WE']))){
 				return true;
 			}
 		}
@@ -1419,6 +1419,10 @@ abstract class we_root extends we_class{
 		if($delTemp){
 			$this->DB_WE->query('DELETE FROM ' . FILELINK_TABLE . ' WHERE ID=' . intval($this->ID) . ' AND DocumentTable="' . stripTblPrefix($this->Table) . '" AND isTemp=1 AND type="media"');
 		}
+	}
+
+	public function we_republish(){
+		return true;
 	}
 
 	/**

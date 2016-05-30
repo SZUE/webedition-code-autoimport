@@ -101,20 +101,13 @@ jsWindow.prototype = {
 	},
 //FIXME:this function should be called instead of a top.close
 	closeAll: function (ref) {
-		if (ref === undefined || ref === null) {
+		if (ref === undefined) {
 			while (WE().layout.windows.length) {
 				WE().layout.windows.pop().close();
 			}
 		} else {
 			var refObj;
 			for (var i = 0; i < WE().layout.windows.length; i++) {
-				if (!WE().layout.windows[i]) {
-					//remove from window list
-					WE().layout.windows.splice(i, 1);
-					//reset i
-					i = -1;
-					continue;
-				}
 				if (WE().layout.windows[i].wind === ref) {
 					refObj = WE().layout.windows[i];
 				}

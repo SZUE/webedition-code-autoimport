@@ -35,10 +35,10 @@ switch($_SESSION['weS']['we_mode']){
 	case we_base_constants::MODE_NORMAL:
 		$we_tabs = new we_tabs();
 		// user has no access to file - only preview mode.
-		$access = $we_doc->userHasAccess();
-		if($access != we_root::USER_HASACCESS && $access != we_root::USER_NO_SAVE){
+		if($we_doc->userHasAccess() != we_root::USER_HASACCESS && $we_doc->userHasAccess() != we_root::USER_NO_SAVE){
 			if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
-				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-eye"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_PREVIEW, 'title' => g_l('weClass', '[preview]'))));
+				$jscmd = "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
+				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-eye"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW) ? we_tab::ACTIVE : we_tab::NORMAL), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), array("id" => "tab_" . we_base_constants::WE_EDITPAGE_PREVIEW, 'title' => g_l('weClass', '[preview]'))));
 			}
 		} else { //	show tabs according to permissions
 			if(in_array(we_base_constants::WE_EDITPAGE_PROPERTIES, $we_doc->EditPageNrs) && permissionhandler::hasPerm("CAN_SEE_PROPERTIES")){
@@ -82,10 +82,6 @@ switch($_SESSION['weS']['we_mode']){
 				//preview of real page in templates
 				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-eye"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, 'title' => g_l('weClass', '[preview]'))));
 			}
-			if(in_array(we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS, $we_doc->EditPageNrs)){
-				//show unused elements on pages not available in template
-				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-balance-scale"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS, 'title' => g_l('weClass', '[unusedElementsTab]'))));
-			}
 			if(in_array(we_base_constants::WE_EDITPAGE_FIELDS, $we_doc->EditPageNrs)){
 				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_FIELDS) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_FIELDS . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_FIELDS, 'title' => g_l('weClass', '[docList]'))));
 			}
@@ -93,6 +89,10 @@ switch($_SESSION['weS']['we_mode']){
 				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_DOCLIST) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_DOCLIST . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_DOCLIST, 'title' => g_l('weClass', '[docList]'))));
 			}
 
+			/* 			if(in_array(we_base_constants::WE_EDITPAGE_SEARCH, $we_doc->EditPageNrs)){
+			  $we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_SEARCH) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_SEARCH . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_SEARCH, 'title' => g_l('weClass', '[search]'))));
+			  }
+			 */
 			if(permissionhandler::hasPerm("CAN_SEE_SCHEDULER") && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $we_doc->EditPageNrs) && $we_doc->ContentType != "folder"){
 				$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-clock-o"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_SCHEDULER) ? we_tab::ACTIVE : we_tab::NORMAL), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_SCHEDULER . ",'" . $we_transaction . "');", array("id" => "tab_" . we_base_constants::WE_EDITPAGE_SCHEDULER, 'title' => g_l('weClass', '[scheduler]'))));
 			}
@@ -128,26 +128,26 @@ _EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 $_text = ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : '') : $we_doc->Text);
 ?>
 </head>
-<body id="eHeaderBody" onload="WE().layout.we_setPath(_EditorFrame,<?php echo "'" . $we_doc->Path . "','" . $_text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table !== TEMPLATES_TABLE && $we_doc->Table !== VFILE_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "'"; ?>);weTabs.setFrameSize();" onresize="weTabs.setFrameSize()"
+<body id="eHeaderBody" onload="WE().layout.we_setPath(<?php echo "'" . $we_doc->Path . "','" . $_text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table !== TEMPLATES_TABLE && $we_doc->Table !== VFILE_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "'"; ?>);weTabs.setFrameSize();" onresize="weTabs.setFrameSize()"
 			<?php echo $we_doc->getEditorBodyAttributes(we_root::EDITOR_HEADER); ?>>
 	<div id="main" ><?php
-		echo '<div id="headrow">&nbsp;' . ($we_doc->ContentType ? we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) : '') . ': ' .
-		($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="' . WEBEDITION_DIR . 'openBrowser.php?url=' . $we_doc->ID . '" target="browser">' : '') .
-		'<span id="h_path" class="bold"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)';
-		switch($we_doc->ContentType){
-			case we_base_ContentTypes::WEDOCUMENT:
-				if($we_doc->TemplateID && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-					echo ' - <a class="bold" style="color:#006699" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openTemplate]') . '</a>';
-				}
-				break;
-			case we_base_ContentTypes::TEMPLATE:
-				if($we_doc->MasterTemplateID){
-					echo ' - <a class="bold" style="color:#006699" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->MasterTemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openMasterTemplate]') . '</a>';
-				}
-			default:
-		}
-		echo '</div>' . ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
-			$we_tabs->getHTML() : '');
-		?></div>
+			echo '<div id="headrow">&nbsp;' . ($we_doc->ContentType ? we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) : '') . ': ' .
+			($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="' . WEBEDITION_DIR . 'openBrowser.php?url=' . $we_doc->ID . '" target="browser">' : '') .
+			'<span id="h_path" class="bold"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)';
+			switch($we_doc->ContentType){
+				case we_base_ContentTypes::WEDOCUMENT:
+					if($we_doc->TemplateID && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
+						echo ' - <a class="bold" style="color:#006699" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->TemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openTemplate]') . '</a>';
+					}
+					break;
+				case we_base_ContentTypes::TEMPLATE:
+					if($we_doc->MasterTemplateID){
+						echo ' - <a class="bold" style="color:#006699" href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . TEMPLATES_TABLE . '\',' . $we_doc->MasterTemplateID . ',\'' . we_base_ContentTypes::TEMPLATE . '\');">' . g_l('weClass', '[openMasterTemplate]') . '</a>';
+					}
+				default:
+			}
+			echo '</div>' . ($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE ?
+				$we_tabs->getHTML() : '');
+			?></div>
 </body>
 </html>

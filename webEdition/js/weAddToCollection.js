@@ -28,8 +28,13 @@ weAddToCollection = {
 		targetInsertIndex: '',
 		targetInsertPos: -1
 	},
-	init: function (conf) {
+	g_l: {
+		nothingToMove: '',
+		notValidFolder: ''
+	},
+	init: function (conf, g_l) {
 		this.conf = conf;
+		this.g_l = g_l;
 
 		top.treeData.setState(top.treeData.tree_states.select);
 		if (top.treeData.table != this.conf.table) {
@@ -48,21 +53,21 @@ weAddToCollection = {
 			}
 		}
 		if (!sel) {
-			top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(this.g_l.nothingToMove, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return;
 		}
 
 		// check if selected target exists
 		var acStatus = '';
-		//var invalidAcFields = false;
+		var invalidAcFields = false;
 		acStatus = YAHOO.autocoml.checkACFields();
 		acStatusType = typeof acStatus;
 		if (acStatusType.toLowerCase() === 'object') {
 			if (acStatus.running) {
-				setTimeout(press_ok_move, 100, "");
+				setTimeout(press_ok_move, 100);
 				return;
 			} else if (!acStatus.valid) {
-				top.we_showMessage(WE().consts.g_l.main.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(this.g_l.notValidFolder, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				return;
 			}
 		}
@@ -80,7 +85,7 @@ weAddToCollection = {
 		_collID = _collID ? _collID : 0;
 		for (_frameId in _usedEditors) {
 			_editor = _usedEditors[_frameId];
-			if (_editor.getEditorEditorTable() === WE().consts.tables.VFILE_TABLE && _editor.getEditorDocumentId() == _collID) {
+			if (_editor.getEditorEditorTable() == WE().consts.tables.VFILE_TABLE && _editor.getEditorDocumentId() == _collID) {
 				_isOpen = true;
 				_transaction = _editor.getEditorTransaction();
 				if (_editor.getEditorEditPageNr() == 1) {
@@ -148,7 +153,7 @@ weAddToCollection = {
 			}
 		}
 		if (!sel) {
-			top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(this.g_l.nothingToMove, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
 

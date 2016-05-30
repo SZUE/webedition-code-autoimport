@@ -112,10 +112,8 @@ abstract class we_fileupload{
 		foreach($weCts as $ct){
 			$ct = strtolower($ct);
 			if(in_array($ct, we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true))){
-				$exts4cts = is_array(($tmp = we_base_ContentTypes::inst()->getExtension($ct))) ? array_merge($exts4cts, $tmp) :
-					($tmp ? array_merge($exts4cts, explode(',', trim($tmp, ','))) : $exts4cts);
-				$tmp = we_base_ContentTypes::inst()->getRealContentTypes($ct);
-				$cts = empty($tmp) ? array_merge($cts, array($ct)) : array_merge($cts, $tmp);
+				$exts4cts = is_array(($tmp = we_base_ContentTypes::inst()->getExtension($ct))) ? array_merge($exts4cts, $tmp) : $exts4cts;
+				$cts = array_merge(we_base_ContentTypes::inst()->getRealContentTypes($ct));
 			}
 		}
 

@@ -422,7 +422,7 @@ if(
 							}
 							$wasSaved = true;
 							$wasNew = (intval($we_doc->ID) == 0) ? true : false;
-							$we_JavaScript .= "WE().layout.we_setPath(_EditorFrame,'" . $we_doc->Path . "', '" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');" .
+							$we_JavaScript .= "WE().layout.we_setPath('" . $we_doc->Path . "', '" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');" .
 								'_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -480,13 +480,10 @@ if(
 								$we_doc->lockDocument();
 							}
 							$wasSaved = true;
-							switch($we_doc->ContentType){
-								case we_base_ContentTypes::OBJECT:
-									$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
-									break;
-								case we_base_ContentTypes::COLLECTION:
-									$we_JavaScript .= "if(top.treeData.table==='" . VFILE_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
-									break;
+							if($we_doc->ContentType === we_base_ContentTypes::OBJECT){
+								$we_JavaScript .= "if(top.treeData.table=='" . OBJECT_FILES_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
+							} else if($we_doc->ContentType === we_base_ContentTypes::COLLECTION){
+								$we_JavaScript .= "if(top.treeData.table==='" . VFILE_TABLE . "'){top.we_cmd('loadVTab', top.treeData.table, 0);}";
 							}
 							$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_save_ok]'), $we_doc->Path);
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -554,7 +551,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 								$we_JavaScript .= ($we_doc->ContentType === "folder" ? 'top.we_cmd("switch_edit_page",' . $we_doc->EditPageNr . ',"' . $we_transaction . '");' : '') .
 									'_EditorFrame.getDocumentReference().frames.editFooter.location.reload();';
 							}
-							$we_JavaScript .= "WE().layout.we_setPath(_EditorFrame,'" . $we_doc->Path . "','" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');";
+							$we_JavaScript .= "WE().layout.we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');";
 
 
 							if(!we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
@@ -575,7 +572,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 						$isClose = preg_match('|closeDocument|', $js);
 					} else if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4) && (!$wf_flag)){
 						$we_doc->makeSameNew();
-						$we_JavaScript .= "WE().layout.we_setPath(_EditorFrame,'" . $we_doc->Path . "','" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');";
+						$we_JavaScript .= "WE().layout.we_setPath('" . $we_doc->Path . "','" . $we_doc->Text . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table != TEMPLATES_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');";
 //	switch to propertiy page, when user is allowed to do so.
 						switch($_SESSION['weS']['we_mode']){
 							case we_base_constants::MODE_SEE:

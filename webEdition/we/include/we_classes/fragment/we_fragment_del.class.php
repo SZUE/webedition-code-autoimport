@@ -26,10 +26,10 @@ class we_fragment_del extends we_fragment_base{
 	private $db;
 	private $table;
 
-	function __construct($name, $table){
+	function __construct($name, $taskPerFragment, $pause, $table){
 		$this->db = new DB_WE();
 		$this->table = $table;
-		parent::__construct($name, 1, 0);
+		parent::__construct($name, $taskPerFragment, $pause);
 	}
 
 	function init(){
@@ -70,6 +70,11 @@ class we_fragment_del extends we_fragment_base{
 		unset($_SESSION['weS']['todel']);
 		unset($_SESSION['weS']['we_not_deleted_entries']);
 		unset($_SESSION['weS']['we_go_seem_start']);
+	}
+
+	static function printHeader(){
+		we_html_tools::protect();
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
 }

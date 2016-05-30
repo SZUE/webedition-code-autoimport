@@ -271,10 +271,7 @@ class we_wysiwyg_editor{
 			return $options;
 		}
 
-		if($leadingEmpty){
-			array_unshift($options, '---');
-		}
-
+		$options = $leadingEmpty ? array('---') + $options : $options;
 		return $asArray ? $options : implode(',', $options);
 	}
 
@@ -616,7 +613,6 @@ return {
 	 * this function is used to prepare textaea content for db
 	 * it returns an array of img/href-ids (for use in registerMediaLinks)
 	 */
-
 	public static function reparseInternalLinks(&$origContent, $replace = false, $name = ''){// FIXME: move to we_document?
 		$regs = $internalIDs = array();
 		$content = $origContent;
@@ -638,6 +634,7 @@ return {
 
 		// FIXME: the obove stuff has to be done before parsing medialinks!
 		// FIXME: make we_wysiwyg_editor::registerMedisLinks() just looking for IDs and writing the correct MediaLinks (after making internal link elsewhere)!
+
 		// parse internal IDs in one step to preserve order!
 		$content = str_replace(array(we_base_link::TYPE_THUMB_PREFIX), we_base_link::TYPE_INT_PREFIX, $content);
 		if(preg_match_all('/(src|href)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+),?(\\d*)["|?]/i', $content, $regs, PREG_SET_ORDER)){
@@ -1016,7 +1013,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 	editor_css: "' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/editorCss.css') . '",
 	//content_css: "' . we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol . '"+getDocumentCss(true)' . ($contentCss ? '+",' . $contentCss . '"' : '') . ',
 	content_css: "' . we_html_element::getUnCache(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/contentCssFirst.php') . '&tinyMceBackgroundColor=' . $this->bgcol . '"+getDocumentCss(true)' . ($contentCss ? '+",' . $contentCss . '"' : '') . ',
-	popup_css_add: "' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontLiberation/stylesheet.css') . ',' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css') . '",
+	popup_css_add: "' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontLiberation/stylesheet.css') . ',' . we_html_element::getUnCache(WEBEDITION_DIR . 'lib/additional/fontawesome/css/font-awesome.min.css') . ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss.css') . (we_base_browserDetect::isMAC() ? ',' . we_html_element::getUnCache(CSS_DIR . 'wysiwyg/tinymce/tinyDialogCss_mac.css') : '') . '",
 	' . (in_array('template', $allCommands) && $this->templates ? $this->getTemplates() : '') . '
 
 	// Skin options
@@ -1076,29 +1073,20 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 
 		ed.onInit.add(function(ed, o){
 			ed.dom.bind(ed.getWin(), ["drop"], function(e) {
+				e.preventDefault();
+				e.stopPropagation();
 				if (e.dataTransfer && e.dataTransfer.getData("text")) {
 					var data = e.dataTransfer.getData("text").split(",");
-
-					// dragging from WE (when permitted) comes with transfer text starting with "dragItem": we handle it
 					if(data[0] && data[0] === "dragItem" && data[1] === WE().consts.tables.FILE_TABLE){
-						e.preventDefault();
-						e.stopPropagation();
 						if(data[3] === WE().consts.contentTypes.IMAGE){
 							ed.execCommand("mceWeimage", true, data[2]);
 						} else {
 							ed.execCommand("mceWelink", true, data[2]);
 						}
-						return false;
 					}
 
-					// dragging inside tiny comes with transfer text not starting with "dragItem": let tiny handle it
-					return true;
+					return false;
 				}
-
-				// dragging images from os comes witout transfer text: we prevent it!
-				e.preventDefault();
-				e.stopPropagation();
-				return false;
 			});
 
 			//ed.execCommand("mceWevisualaid", true);

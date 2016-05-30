@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_linklist{
-
 	private $name = "";
 	private $listArray;
 	private $db;
@@ -46,7 +45,7 @@ class we_base_linklist{
 		$this->attribs = $attribs;
 		ksort($listArray, SORT_NUMERIC);
 		$this->listArray = array_values($listArray);
-		$limit = empty($attribs['limit']) ? 0 : abs($attribs['limit']);
+		$limit = !empty($attribs['limit']) ? abs($attribs['limit']) : 0;
 		$this->editmode = (!empty($GLOBALS["we_editmode"]) && (!isset($GLOBALS["lv"])));
 		if(!$this->editmode){
 			$this->show = count($this->listArray);
@@ -98,17 +97,17 @@ class we_base_linklist{
 
 	function getHref($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
-		return empty($cur['href']) ? '' : $cur['href'];
+		return $cur['href'];
 	}
 
 	function getAttribs($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
-		return isset($cur['attribs']) ? $cur['attribs'] : '';
+		return isset($cur["attribs"]) ? $cur["attribs"] : "";
 	}
 
 	function getTarget($nr = -1){
 		$cur = $nr != -1 ? $this->listArray[$nr] : current($this->listArray);
-		return empty($cur['target']) ? '' : $cur['target'];
+		return $cur['target'];
 	}
 
 	function getTitle($nr = -1){
@@ -157,23 +156,28 @@ class we_base_linklist{
 		}
 
 		if(isset($jswinAttribs) && is_array($jswinAttribs) && !empty($jswinAttribs["jswin"])){ //popUp
-			$js = "var we_winOpts = '';" .
-					(!empty($jswinAttribs["jscenter"]) && !empty($jswinAttribs["jswidth"]) && !empty($jswinAttribs["jsheight"]) ?
-					'if (window.screen) {var w = ' . $jswinAttribs["jswidth"] . ';var h = ' . $jswinAttribs["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};' : (
-							(empty($jswinAttribs["jsposx"]) ? '' : 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $jswinAttribs["jsposx"] . '\';' ) .
-							(empty($jswinAttribs["jsposy"]) ? '' : 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $jswinAttribs["jsposy"] . '\';')
-							)
-					) .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (empty($jswinAttribs["jsstatus"]) ? 'no' : 'yes' ) .
-					',scrollbars=' . (empty($jswinAttribs["jsscrollbars"]) ? 'no' : 'yes') .
-					',menubar=' . (empty($jswinAttribs["jsmenubar"]) ? 'no' : 'yes') .
-					',resizable=' . (empty($jswinAttribs["jsresizable"]) ? 'no' : 'yes') .
-					',location=' . (empty($jswinAttribs["jslocation"]) ? 'no' : 'yes') .
-					',toolbar=' . (empty($jswinAttribs["jstoolbar"]) ? 'no' : 'yes') .
-					(empty($jswinAttribs["jswidth"]) ? '' : ',width=' . $jswinAttribs["jswidth"]) .
-					(empty($jswinAttribs["jsheight"]) ? '' : ',height=' . $jswinAttribs["jsheight"]) .
-					'\';';
-			$foo = $js . "var we_win = window.open('','we_ll_" . key($this->listArray) . "',we_winOpts);";
+			$js = "var we_winOpts = '';";
+			if($jswinAttribs["jscenter"] && $jswinAttribs["jswidth"] && $jswinAttribs["jsheight"]){
+				$js .= 'if (window.screen) {var w = ' . $jswinAttribs["jswidth"] . ';var h = ' . $jswinAttribs["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};';
+			} elseif($jswinAttribs["jsposx"] != "" || $jswinAttribs["jsposy"] != ""){
+				if($jswinAttribs["jsposx"] != ""){
+					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $jswinAttribs["jsposx"] . '\';';
+				}
+				if($jswinAttribs["jsposy"] != ""){
+					$js .= 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $jswinAttribs["jsposy"] . '\';';
+				}
+			}
+			$js.=
+				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . ($jswinAttribs["jsstatus"] ? 'yes' : 'no') .
+				',scrollbars=' . ($jswinAttribs["jsscrollbars"] ? 'yes' : 'no') .
+				',menubar=' . ($jswinAttribs["jsmenubar"] ? 'yes' : 'no') .
+				',resizable=' . ($jswinAttribs["jsresizable"] ? 'yes' : 'no') .
+				',location=' . ($jswinAttribs["jslocation"] ? 'yes' : 'no') .
+				',toolbar=' . (!empty($jswinAttribs["jstoolbar"]) ? 'yes' : 'no') .
+				($jswinAttribs["jswidth"] ? ',width=' . $jswinAttribs["jswidth"] : '') .
+				($jswinAttribs["jsheight"] ? ',height=' . $jswinAttribs["jsheight"] : '') .
+				'\';';
+			$foo = $js . "var we_win = window.open('','" . "we_ll_" . key($this->listArray) . "',we_winOpts);";
 
 			$lattribs = removeAttribs($lattribs, array('name', 'href', 'onClick'));
 
@@ -249,7 +253,7 @@ class we_base_linklist{
 
 	function getText($nr = -1){
 		$cur = ($nr != -1 ? $this->listArray[$nr] : current($this->listArray));
-		return empty($cur["text"]) ? '' : $cur["text"];
+		return $cur["text"];
 	}
 
 	function getAnchor($nr = -1){
@@ -317,18 +321,8 @@ class we_base_linklist{
 		return ($id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $this->db) : '');
 	}
 
-	function cleanup($nr){
-		if($nr){
-			$this->listArray[$nr] = array_filter($this->listArray[$nr]);
-		} else {
-			foreach($this->listArray as &$l){
-				$l = array_filter($l);
-			}
-		}
-	}
-
 	function getString(){
-		return ($this->listArray ? we_serialize(array_filter($this->listArray), SERIALIZE_JSON) : '');
+		return ($this->listArray ? we_serialize($this->listArray, SERIALIZE_JSON) : '');
 	}
 
 	//added for #7269
@@ -416,27 +410,19 @@ class we_base_linklist{
 	}
 
 	function setImageAttribs($nr, $val){
-		$this->listArray[$nr]["img_attribs"] = array_filter($val);
+		$this->listArray[$nr]["img_attribs"] = $val;
 	}
 
 	function setImageAttrib($nr, $key, $val){
-		if($val){
-			$this->listArray[$nr]["img_attribs"][$key] = $val;
-		} elseif(isset($this->listArray[$nr]["img_attribs"][$key])){
-			unset($this->listArray[$nr]["img_attribs"][$key]);
-		}
+		$this->listArray[$nr]["img_attribs"][$key] = $val;
 	}
 
 	function setJsWinAttribs($nr, $val){
-		$this->listArray[$nr]["jswin_attribs"] = array_filter($val);
+		$this->listArray[$nr]["jswin_attribs"] = $val;
 	}
 
 	function setJsWinAttrib($nr, $key, $val){
-		if($val){
-			$this->listArray[$nr]['jswin_attribs'][$key] = $val;
-		} elseif(isset($this->listArray[$nr]['jswin_attribs'][$key])){
-			unset($this->listArray[$nr]['jswin_attribs'][$key]);
-		}
+		$this->listArray[$nr]["jswin_attribs"][$key] = $val;
 	}
 
 	function setBcc($nr, $val){
@@ -464,22 +450,22 @@ class we_base_linklist{
 
 		if($this->editmode){
 			$disabled = ($this->show > 0 && $this->length() >= $this->show);
-			$plusbut = we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('insert_link_at_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 100, 22, "", "", $disabled);
+			$plusbut = we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(1);we_cmd('insert_link_at_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 100, 22, "", "", $disabled);
 			if($ret === false){
 				if(isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $this->attribs["name"])){
 					echo we_html_element::jsElement('we_cmd("edit_linklist","' . $this->attribs["name"] . '","' . (!empty($GLOBALS["we_list_insertedNr"]) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '");');
 				}
 				if($this->show == -1 || ($this->show > $this->length())){
-					echo "<br/>" . we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled) .
+					echo "<br/>" . we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled) .
 					we_html_element::htmlHidden('we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']', $this->getString()) . ($this->length() ? '' : $plusbut);
 				}
 			} else {
 				// Create button object
 				// Create buttons
-				$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('up_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt > 0));
-				$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
-				$editbut = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('edit_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true);
-				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('delete_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "','')", true);
+				$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(1);we_cmd('up_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt > 0));
+				$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(1);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
+				$editbut = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(1);we_cmd('edit_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true);
+				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(1);we_cmd('delete_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "','')", true);
 				echo $plusbut . $upbut . $downbut . $editbut . $trashbut . '<br/>';
 			}
 		}
@@ -581,7 +567,7 @@ class we_base_linklist{
 
 	private function getRawLink(){
 		return array(
-			'href' => '',
+			'href' => we_base_link::EMPTY_EXT,
 			'text' => g_l('global', '[new_link]'),
 			'target' => '',
 			'type' => we_base_link::TYPE_EXT,
@@ -631,7 +617,7 @@ class we_base_linklist{
 	function last(){
 		if($this->editmode && ($this->show == -1 || ($this->show > $this->length()))){
 			echo "<br/>" .
-			we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", false) .
+			we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(1);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", false) .
 			we_html_element::htmlHidden('we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']', $this->getString());
 		}
 	}

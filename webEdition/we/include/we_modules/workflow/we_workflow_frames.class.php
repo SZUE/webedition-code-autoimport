@@ -27,7 +27,7 @@ class we_workflow_frames extends we_modules_frame{
 	public function __construct($frameset){
 		parent::__construct($frameset);
 		$this->module = "workflow";
-		$this->Tree = new we_workflow_tree($frameset, "top.content", "top.content", "top.content.cmd");
+		$this->Tree = new we_workflow_tree($this->frameset, "top.content", "top.content", "top.content.cmd");
 		$this->View = new we_workflow_view($frameset);
 	}
 
@@ -151,8 +151,8 @@ function we_save() {
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		$rootjs = ($pid ? '' :
-				 'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
 
 		$hiddens = we_html_element::htmlHiddens(array(
 				"wcmd" => "",

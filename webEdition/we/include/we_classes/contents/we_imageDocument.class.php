@@ -356,8 +356,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	 */
 	function getHtml($dyn = false, $inc_href = true, $pathOnly = false){
 		$_data = $this->getElement('data');
-		//if path only - we need to get a possible thumbnail if selected
-		$only = $pathOnly ? '' : $this->getElement('only');
+		$only = $this->getElement('only');
 		if($this->getElement('pathonly')){
 			$only = 'path';
 		}
@@ -612,30 +611,30 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$_content = new we_html_table(array('class' => 'default propertydualtable'), 5, 3);
 		$row = 0;
 		// Row 1
-		$_content->setCol($row, 0, null, $this->formInputInfo2(148, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
-		$_content->setCol($row, 1, null, $this->formInputInfo2(148, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
-		$_content->setCol($row++, 2, null, $this->formInput2(148, 'border', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row, 0, null, $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', "origwidth"));
+		$_content->setCol($row, 1, null, $this->formInputInfo2(155, 'height', 10, 'attrib', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', "origheight"));
+		$_content->setCol($row++, 2, null, $this->formInput2(155, 'border', 10, 'attrib', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"'));
 
 
 		// Row 2
-		$_content->setCol($row, 0, null, $this->formInput2(148, 'align', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol($row, 1, null, $this->formInput2(148, 'hspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol($row++, 2, null, $this->formInput2(148, 'vspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row, 0, null, $this->formInput2(155, 'align', 10, 'attrib', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"'));
+		$_content->setCol($row, 1, null, $this->formInput2(155, 'hspace', 10, 'attrib', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"'));
+		$_content->setCol($row++, 2, null, $this->formInput2(155, 'vspace', 10, 'attrib', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"'));
 
 
 		// Row 3
-		$_content->setCol($row, 0, array('colspan' => 2), $this->formInput2(332, 'alt', 23, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol($row++, 2, null, $this->formInput2(148, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$_content->setCol($row, 0, array('colspan' => 3), $this->formInput2(328, 'alt', 23, 'attrib', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"'));
+		$_content->setCol($row++, 2, null, $this->formInput2(155, 'name', 10, 'attrib', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"'));
 
 
 		//	Row 4
-		$_content->setCol($row, 0, array('colspan' => 2), $this->formInput2(332, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
+		$_content->setCol($row, 0, array('colspan' => 3), $this->formInput2(328, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', 'Title'));
 
 		$_titleField = 'we_' . $this->Name . '_attrib[title]';
 		//$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
 		$useMetaTitle = 'we_' . $this->Name . '_attrib[useMetaTitle]';
 		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814
-		$_content->setCol($row++, 2, array('style' => 'vertical-align:bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $_titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $_titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $_titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $_titleField . "'].value='';}_EditorFrame.setEditorIsHot(true);"));
+		$_content->setCol($row++, 2, array('style' => 'vertical-align:bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $_titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $_titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $_titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $_titleField . "'].value='';}WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path
@@ -653,11 +652,11 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setMayBeEmpty(1);
 		$yuiSuggest->setResult($longdesc_id_name, $longdesc_id);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setWidth(332);
+		$yuiSuggest->setWidth(328);
 		$cmd1 = "document.we_form.elements['" . $longdesc_id_name . "'].value";
 
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $longdesc_text_name . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
-		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $longdesc_id_name . "'].value='-1';document.we_form.elements['" . $longdesc_text_name . "'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $longdesc_text_name . "'].value") . "','" . we_base_request::encCmd("opener.WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
+		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $longdesc_id_name . "'].value='-1';document.we_form.elements['" . $longdesc_text_name . "'].value='';WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
 		$_content->setCol($row, 0, array('style' => 'vertical-align:bottom', 'colspan' => 5), $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs());
 
 		// Return HTML
@@ -828,18 +827,18 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$_content = new we_html_table(array('class' => 'default'), (defined('OBJECT_TABLE') ? 11 : 9), 2);
 		$row = 0;
 		// No link
-		$_content->setCol($row, 0, array('style' => 'vertical-align:top;padding-bottom:10px;'), we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol($row, 0, array('style' => 'vertical-align:top;padding-bottom:10px;'), we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);'));
 		$_content->setCol($row++, 1, null, '');
 
 		// External link
 		$_ext_link_table = new we_html_table(array('class' => 'default'), 1, 2);
 
-		$_ext_link_table->setCol(0, 0, null, we_html_tools::htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
+		$_ext_link_table->setCol(0, 0, null, we_html_tools::htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"', "text", 280));
 		$_ext_link_table->setCol(0, 1, null, $butExt);
 
 		$_ext_link = "href" . we_html_element::htmlBr() . $_ext_link_table->getHtml();
 
-		$_content->setCol($row, 0, array('style' => 'vertical-align:top;padding-bottom:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
+		$_content->setCol($row, 0, array('style' => 'vertical-align:top;padding-bottom:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true)'));
 		$_content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $_ext_link);
 
 
@@ -857,7 +856,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setLabel('href');
 		$_int_link = $yuiSuggest->getHTML();
 
-		$_content->setCol($row, 0, array('style' => 'vertical-align:top'), we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$_content->setCol($row, 0, array('style' => 'vertical-align:top'), we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);'));
 		$_content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $_int_link);
 
 		// Object link
@@ -876,12 +875,12 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			$_obj_link = $yuiSuggest->getHTML();
 
 
-			$_content->setCol($row, 0, array('style' => 'vertical-align:top;padding-top:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+			$_content->setCol($row, 0, array('style' => 'vertical-align:top;padding-top:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);'));
 			$_content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $_obj_link);
 		}
 
 		// Target
-		$_content->setCol($row++, 0, array('colspan' => 2, 'class' => 'defaultfont', 'style' => 'vertical-align:top;padding:20px 0px;'), g_l('weClass', '[target]') . we_html_element::htmlBr() . we_html_tools::targetBox('we_' . $this->Name . '_txt[LinkTarget]', 33, 0, '', $this->getElement('LinkTarget'), '_EditorFrame.setEditorIsHot(true);', 20, 97));
+		$_content->setCol($row++, 0, array('colspan' => 2, 'class' => 'defaultfont', 'style' => 'vertical-align:top;padding:20px 0px;'), g_l('weClass', '[target]') . we_html_element::htmlBr() . we_html_tools::targetBox('we_' . $this->Name . '_txt[LinkTarget]', 33, 0, '', $this->getElement('LinkTarget'), 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);', 20, 97));
 
 
 		// Rollover image
@@ -898,7 +897,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setLabel('href');
 		$_rollover = $yuiSuggest->getHTML();
 
-		$_content->setCol($row, 0, array('style' => 'vertical-align:top'), we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['" . $RollOverFlagName . "'].value = (this.checked ? 1 : 0); ") . we_html_element::htmlHidden($RollOverFlagName, $RollOverFlag));
+		$_content->setCol($row, 0, array('style' => 'vertical-align:top'), we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true); this.form.elements['" . $RollOverFlagName . "'].value = (this.checked ? 1 : 0); ") . we_html_element::htmlHidden($RollOverFlagName, $RollOverFlag));
 		$_content->setCol($row, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $_rollover);
 
 		return $_content->getHtml();
@@ -990,13 +989,13 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 	public function getPropertyPage(){
 		return we_html_multiIconBox::getHTML('PropertyPage', array(
-				array('icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => 140),
-				array('icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
-				//array('icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => 140),
-				array('icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => 140),
-				array('icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => 140),
-				array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => 140),
-				array('icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => 140),
+			array('icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => 140),
+			array('icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
+			//array('icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => 140),
+			array('icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => 140),
+			array('icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => 140),
+			array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => 140),
+			array('icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => 140),
 		));
 	}
 

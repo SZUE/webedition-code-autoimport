@@ -79,12 +79,12 @@ function we_tag_write($attribs){
 					if(!$id || f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $id . ' AND TableID=' . intval($classid))){
 						$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid), $id, true);
 					} else {
-						$GLOBALS['ERROR']['write']['object'][$name] = true;
+						$GLOBALS['we_object_write_ok'] = false;
 						t_e('Object ' . $id . ' is no element of class ' . intval($classid) . '!');
 						return;
 					}
 				} else {
-					$GLOBALS['ERROR']['write']['object'][$name] = true;
+					$GLOBALS['we_object_write_ok'] = false;
 					t_e('Table ' . intval($classid) . ' does not exist!');
 					return;
 				}
@@ -92,7 +92,7 @@ function we_tag_write($attribs){
 		}
 
 		if(!$ok){
-			$GLOBALS['ERROR']['write']['object'][$name] = true;
+			$GLOBALS['we_object_write_ok'] = false;
 			return;
 		}
 		$isOwner = !empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && (
@@ -109,7 +109,7 @@ function we_tag_write($attribs){
 			//$newObject = ($GLOBALS['we_'.$type][$name]->ID) ? false : true;
 			if($protected){
 				if(!isset($_SESSION['webuser']['ID']) || !isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered']){
-					$GLOBALS['ERROR']['write'][$type][$name] = true;
+					$GLOBALS['we_' . $type . '_write_ok'] = false;
 					return;
 				}
 				if(!$GLOBALS['we_' . $type][$name]->WebUserID){
@@ -117,14 +117,14 @@ function we_tag_write($attribs){
 				}
 			} elseif($userid){
 				if(!isset($_SESSION['webuser']['ID']) || !isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered']){
-					$GLOBALS['ERROR']['write'][$type][$name] = true;
+					$GLOBALS['we_' . $type . '_write_ok'] = false;
 					return;
 				}
 				if(!$GLOBALS['we_' . $type][$name]->getElement($userid)){
 					$GLOBALS['we_' . $type][$name]->setElement($userid, $_SESSION['webuser']['ID']);
 				}
 			}
-			$GLOBALS['ERROR']['write'][$type][$name] = false;
+			$GLOBALS['we_' . $type . '_write_ok'] = true;
 			checkAndCreateBinary($name, ($type === 'document' ? 'we_document' : 'we_object'));
 
 			//FIXME: we should probably use checkFieldsOnSave?!
@@ -183,7 +183,7 @@ function we_tag_write($attribs){
 				} else {
 					switch($onduplicate){
 						case 'abort':
-							$GLOBALS['ERROR']['write'][$type][$name] = true;
+							$GLOBALS['we_object_write_ok'] = false;
 							$doWrite = false;
 							break;
 						case 'overwrite':
@@ -275,7 +275,7 @@ function we_tag_write($attribs){
 				$phpmail->Send();
 			}
 		} else {
-			$GLOBALS['ERROR']['write'][$type][$name] = 1;
+			$GLOBALS['we_object_write_ok'] = false;
 		}
 	}
 	if(!empty($GLOBALS['WE_SESSION_START'])){

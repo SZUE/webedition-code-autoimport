@@ -1,5 +1,3 @@
-/* global top, WE */
-
 /**
  * webEdition CMS
  *
@@ -27,13 +25,13 @@
 function setHotDocuments() {
 	var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();
 	var _hotDocumentsOfCt = {};
-	var ct;
 	for (var frameId in allHotDocuments) {
-		ct = allHotDocuments[frameId].getEditorContentType();
-		if (!_hotDocumentsOfCt[ct]) {
-			_hotDocumentsOfCt[ct] = [];
+		if (allHotDocuments[frameId].getEditorIsHot()) {
+			if (!_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()]) {
+				_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()] = [];
+			}
+			_hotDocumentsOfCt[allHotDocuments[frameId].getEditorContentType()].push(allHotDocuments[frameId]);
 		}
-		_hotDocumentsOfCt[ct].push(allHotDocuments[frameId]);
 	}
 
 	for (var ct in _hotDocumentsOfCt) {

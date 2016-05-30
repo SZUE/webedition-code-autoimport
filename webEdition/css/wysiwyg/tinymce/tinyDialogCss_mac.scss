@@ -1,10 +1,9 @@
 /**
  * webEdition CMS
  *
- * webEdition CMS
- * $Rev: 11965 $
- * $Author: lukasimhof $
- * $Date: 2016-04-19 22:58:04 +0200 (Di, 19 Apr 2016) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,18 +17,33 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+.mceActionPanel{
+	#replaceBtn{
+		position:absolute;
+		right: 325px;
+	}
 
-/* FIXME: move this styles to lib/we/ui/themes/default/we_ui_layout_HTMLPage/style,css and make scss in lib/we */
+	#replaceAllBtn,
+	#apply{
+		position:absolute;
+		right: 220px;
+	}
 
-@import "config.scss";
+	#insert{
+		position:absolute;
+		right: 10px;
+	}
 
-#resize {
-	top: 0;
-}
+	#cancel{
+		position:absolute;
+		right: 115px;
+	}
 
-.weEditorBody{
-	overflow:auto !important;
+	#action{
+		position:absolute;
+		right: 230px;
+	}
 }

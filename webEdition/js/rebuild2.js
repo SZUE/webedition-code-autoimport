@@ -116,18 +116,25 @@ function we_cmd() {
 			f.step.value = 1;
 			f.submit();
 			break;
-		case "toggle_all_fields":
+		case "deselect_all_fields":
 			var _elem = document.we_form.elements;
-			var checked = 0;
-			for (var i = 0; i < _elem.length; i++) {
+			var _elemLength = _elem.length;
+			for (var i = 0; i < _elemLength; i++) {
 				if (_elem[i].name.substring(0, 7) == "_field[") {
-					_elem[i].checked = !_elem[i].checked;
-					if (_elem[i].checked) {
-						checked++;
-					}
+					_elem[i].checked = false;
 				}
 			}
-			document._errorMessage = (checked > 0 ? "" : WE().consts.g_l.rebuild.noFieldsChecked);
+			document._errorMessage = WE().consts.g_l.rebuild.noFieldsChecked;
+			break;
+		case "select_all_fields":
+			var _elem = document.we_form.elements;
+			var _elemLength = _elem.length;
+			for (var i = 0; i < _elemLength; i++) {
+				if (_elem[i].name.substring(0, 7) == "_field[") {
+					_elem[i].checked = true;
+				}
+			}
+			document._errorMessage = "";
 			break;
 		default:
 			opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));

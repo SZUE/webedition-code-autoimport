@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_captcha_image{
-
 	/**
 	 * @var integer
 	 * @desc Length of the text
@@ -169,29 +168,26 @@ class we_captcha_image{
 		$this->font = array();
 
 		// set the font families
-		$families = array_filter(explode(",", $family));
-		if($families){
-			$this->font['family'] = array();
-			foreach($families as $family){
+		$families = explode(",", $family);
+		$this->font['family'] = array();
+		if(count($families) > 1){
+			foreach($families as $idx => $family){
 				$this->font['family'][] = $family;
 			}
 		} else {
-			$this->font['family'] = array('Times');
+			$this->font['family'][] = $family;
 		}
 
 		// set the font size
 		$sizes = explode(",", $size);
+		$this->font['size'] = array();
 		if(count($sizes) > 1){
 			sort($sizes, SORT_NUMERIC);
-			$this->font['size'] = array(
-				'min' => intval($sizes[0]),
-				'max' => intval($sizes[1])
-			);
+			$this->font['size']['min'] = $sizes[0];
+			$this->font['size']['max'] = $sizes[1];
 		} else {
-			$this->font['size'] = array(
-				'min' => intval($size),
-				'max' => intval($size)
-			);
+			$this->font['size']['min'] = $size;
+			$this->font['size']['max'] = $size;
 		}
 
 		// set the font colors
@@ -438,7 +434,6 @@ class we_captcha_image{
 	}
 
 	private function getFont($family, $size, $sign){
-		$use_fontfile = false;
 		if(!empty($this->fontpath) && file_exists($_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . ".ttf")){
 			$family = $_SERVER['DOCUMENT_ROOT'] . $this->fontpath . $family . '.ttf';
 			$use_fontfile = true;
@@ -470,7 +465,7 @@ class we_captcha_image{
 				} else if(file_exists(substr($windir, 0, 2) . "/fonts/" . $family . "ttf")){
 					$family = substr($windir, 0, 2) . "/fonts/" . $family . "ttf";
 				} else {
-					$family = $_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
+					$family = LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
 				}
 			} else if(isset($_ENV['SystemRoot'])){
 				$windir = substr_replace('\\', '/', $_ENV['SystemRoot']);
@@ -479,7 +474,7 @@ class we_captcha_image{
 				} else if(file_exists(substr($windir, 0, 2) . "/fonts/" . $family . "ttf")){
 					$family = substr($windir, 0, 2) . "/fonts/" . $family . "ttf";
 				} else {
-					$family = $_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
+					$family = LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
 				}
 			} else if(isset($_ENV['SystemDrive'])){
 				$windir = substr_replace('\\', '/', $_ENV['SystemDrive']);
@@ -490,11 +485,13 @@ class we_captcha_image{
 				} else if(file_exists($windir . "/fonts/" . $family . "ttf")){
 					$family = $windir . "/fonts/" . $family . "ttf";
 				} else {
-					$family = $_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
+					$family = LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
 				}
 			} else {
-				$family = $_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
+				$use_fontfile = false;
+				$family = LIB_DIR . 'additional/fonts/DejaVuSans.ttf';
 			}
+			$use_fontfile = true;
 
 			// Angle
 			$angle = rand($this->angle['left'], $this->angle['right']);
@@ -582,10 +579,11 @@ class we_captcha_image{
 		}
 
 		$code = "";
-		$sumwidth = $xpos = 0;
+		$xpos = 0;
 
 		$signs = array();
 
+		$sumwidth = 0;
 
 		for($counter = 0; $counter < $this->textlength; $counter++){
 
@@ -609,7 +607,9 @@ class we_captcha_image{
 			$color = $this->font['color'][rand(0, count($this->font['color']) - 1)];
 
 			// Family
+
 			list($use_fontfile, $family, $angle, $width, $height) = $this->getFont($this->font['family'][rand(0, count($this->font['family']) - 1)], rand($this->font['size']['min'], $this->font['size']['max']), $sign);
+
 
 			// Abstand X-Position
 			if(($xpos + $width) <= $this->width){
@@ -630,21 +630,21 @@ class we_captcha_image{
 				}
 
 				$signs[] = ($use_fontfile ?
-								array(
-							'size' => $size,
-							'angle' => $angle,
-							'xpos' => $xpos,
-							'ypos' => $ypos,
-							'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
-							'family' => file_exists($family) ? $family : $_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'additional/fonts/DejaVuSans.ttf',
-							'sign' => $sign,
-								) :
-								array(
-							'xpos' => $xpos,
-							'ypos' => $ypos,
-							'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
-							'family' => $family,
-							'sign' => $sign,
+						array(
+						'size' => $size,
+						'angle' => $angle,
+						'xpos' => $xpos,
+						'ypos' => $ypos,
+						'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
+						'family' => file_exists($family) ? $family : LIB_DIR . 'additional/fonts/DejaVuSans.ttf',
+						'sign' => $sign,
+						) :
+						array(
+						'xpos' => $xpos,
+						'ypos' => $ypos,
+						'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
+						'family' => $family,
+						'sign' => $sign,
 				));
 
 
@@ -673,21 +673,21 @@ class we_captcha_image{
 				break;
 			case 'center':
 				$xoffset = ($use_fontfile ?
-								($this->width / 2) - ($sumwidth / 2) :
-								($this->width / 2) - ($sumwidth / 2) + 3);
+						($this->width / 2) - ($sumwidth / 2) :
+						($this->width / 2) - ($sumwidth / 2) + 3);
 		}
 
 		foreach($signs as $sign){
 			if($use_fontfile){
 				imagettftext(
-						$image, // Imageressource
-						$sign['size'], // Fontsize
-						$sign['angle'], // Angle
-						$xoffset + $sign['xpos'], // X-Position
-						$sign['ypos'], // Y-Position
-						$sign['color'], // Fontcolor
-						$sign['family'], // Font Family (File)
-						$sign['sign'] // Text
+					$image, // Imageressource
+					$sign['size'], // Fontsize
+					$sign['angle'], // Angle
+					$xoffset + $sign['xpos'], // X-Position
+					$sign['ypos'], // Y-Position
+					$sign['color'], // Fontcolor
+					$sign['family'], // Font Family (File)
+					$sign['sign'] // Text
 				);
 			} else {
 				imagestring($image, $sign['family'], $xoffset + $sign['xpos'], $sign['ypos'], $sign['sign'], $sign['color']);

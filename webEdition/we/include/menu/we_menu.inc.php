@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -25,7 +26,7 @@ $seeMode = !(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] =
 $we_menu = array(
 	'file_new' => array(// File > New
 		'text' => g_l('javaMenu_global', '[new]'),
-	//'parent' => 'file',
+		//'parent' => 'file',
 	),
 	'file_new_wedoc' => array(// File > New > webEdition Document
 		'text' => g_l('javaMenu_global', '[webEdition_page]'),
@@ -204,9 +205,10 @@ $we_menu = array(
 		'perm' => 'NEW_COLLECTION',
 		'hide' => !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
-	'file' => array(// File
+		'file' => array(// File
 		'text' => g_l('javaMenu_global', '[file]'),
 	),
+
 	/* 	$we_menu[1011100]['parent'] = 'file_new'; // separator
 	  // File > New > Wizards
 	  'text'=> g_l('javaMenu_global', '[wizards]') . '&hellip;',
@@ -354,6 +356,7 @@ $we_menu = array(
 		'perm' => 'SAVE_COLLECTION',
 		'hide' => $seeMode || !we_base_moduleInfo::isActive(we_base_moduleInfo::COLLECTION)
 	),
+
 	array(// File > add to collection > documents
 		'text' => g_l('javaMenu_global', '[documents]'),
 		'parent' => 'file_addcoll',
@@ -371,6 +374,20 @@ $we_menu = array(
 	array(// separator
 		'parent' => 'file'
 	),
+	/* array(// File > Save
+	  'text' => g_l('javaMenu_global', '[save]'),
+	  'parent' => 'file',
+	  'cmd' => 'trigger_save_document',
+	  'perm' => 'SAVE_DOCUMENT_TEMPLATE',
+
+	  ),
+	  array(// File > Publish
+	  'text' => g_l('javaMenu_global', '[publish]'),
+	  'parent' => 'file',
+	  'cmd' => 'trigger_publish_document',
+	  'perm' => 'PUBLISH',
+
+	  ), */
 	/*array(
 		'text' => g_l('javaMenu_glossary', '[glossary_check]'),
 		'parent' => 'file',

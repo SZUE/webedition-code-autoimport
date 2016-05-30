@@ -160,7 +160,7 @@ function updateCustomerFilterIfNeeded() {
 							eval(o.responseText);
 							if (weResponse) {
 								if (weResponse.data === "true") {
-									_question = isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
+									_question = isFolder ? WE().consts.g_l.main.confirm_applyFilterFolder : WE().consts.g_l.main.confirm_applyFilterDocument;
 									if (confirm(_question)) {
 										top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
 									}
@@ -208,7 +208,7 @@ function pathOfDocumentChanged() {
 		}
 
 		_filepath += _filetext;
-		WE().layout.we_setPath(_EditorFrame, _filepath, _filetext, -1, "");
+		WE().layout.we_setPath(_filepath, _filetext, -1, "");
 		if (hasCustomerFilter) {
 			updateCustomerFilterIfNeeded();
 		}
@@ -427,7 +427,7 @@ function we_checkObjFieldname(i) {
 }
 
 function metaFieldSelectProposal(sel, inputName, isCsv) {
-	_EditorFrame.setEditorIsHot(true);
+	WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 
 	var valInput = document.forms[0].elements[inputName].value,
 					newVal = valInput,

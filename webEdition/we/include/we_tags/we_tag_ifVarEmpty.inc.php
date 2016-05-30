@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 function we_tag_ifVarEmpty($attribs){
 	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__))){
 		echo $foo;
@@ -78,7 +79,7 @@ function we_tag_ifVarEmpty($attribs){
 			$attribs['name'] = $match;
 			$attribs['_name_orig'] = $match_orig;
 			$foo = $doc->getField($attribs, $type, true);
-			return empty($foo) || $foo === '/';
+			return empty($foo);
 		case 'multiobject':
 			//FIXME: this makes no sense
 			$attribs['name'] = $match;

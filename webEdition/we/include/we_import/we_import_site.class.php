@@ -560,13 +560,15 @@ function doUnload() {
 	 */
 	private function _getTemplateSelectHTML($tid){
 		$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid));
-		$cmd1 = "document.we_form.elements['templateID'].value";
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['templateID'].value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['templateDummy'].value");
+		$wecmdenc3 = we_base_request::encCmd("opener.displayTable();");
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['templateDummy'].value") . "','" . we_base_request::encCmd("opener.displayTable();") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
 		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
-				$foo, oldHtmlspecialchars(g_l('siteimport', '[template]'), ENT_QUOTES), "left", "defaultfont", we_html_element::htmlHidden('templateID', intval($tid)), $button);
+				$foo, oldHtmlspecialchars(g_l('siteimport', '[template]'), ENT_QUOTES), "left", "defaultfont", we_html_tools::hidden('templateID', intval($tid)), $button);
 	}
 
 	/**
@@ -576,20 +578,20 @@ function doUnload() {
 	 */
 	private function _getContentHTML(){
 		// Suorce Directory
-
-		$cmd1 = "document.we_form.elements.from.value";
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.from.value");
 		$_from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "','" . we_base_ContentTypes::FOLDER . "'," . $cmd1 . ")") :
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "','" . we_base_ContentTypes::FOLDER . "',document.we_form.elements.from.value)") :
 			"";
 
 		$_input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
 		$_importFrom = we_html_tools::htmlFormElementTable($_input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", $_from_button, '', "", "", "", 0);
 
 		// Destination Directory
-		$cmd1 = "document.we_form.elements.to.value";
-		$_to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.toPath.value") . "','','','0')");
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.to.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.toPath.value");
+		$_to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.to.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0')");
 
-		//$_hidden = we_html_element::htmlHidden("to",$this->to);
+		//$_hidden = we_html_tools::hidden("to",$this->to);
 		//$_input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
 		//$_importTo = we_html_tools::htmlFormElementTable($_input, g_l('siteimport',"[importTo]"), "left", "defaultfont", $_to_button, $_hidden, "", "", 0);
 
@@ -747,8 +749,8 @@ function doUnload() {
 				$widthInput = we_html_tools::htmlTextInput("width", 10, $this->width, "", '', "text", 60);
 				$heightInput = we_html_tools::htmlTextInput("height", 10, $this->height, "", '', "text", 60);
 
-				$widthSelect = '<select class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->widthSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
-				$heightSelect = '<select class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->heightSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+				$widthSelect = '<select size="1" class="weSelect" name="widthSelect"><option value="pixel"' . (($this->widthSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->widthSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
+				$heightSelect = '<select size="1" class="weSelect" name="heightSelect"><option value="pixel"' . (($this->heightSelect === "pixel") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[pixel]') . '</option><option value="percent"' . (($this->heightSelect === "percent") ? ' selected="selected"' : '') . '>' . g_l('weClass', '[percent]') . '</option></select>';
 
 				$ratio_checkbox = we_html_forms::checkbox(
 						1, $this->keepRatio, "keepRatio", g_l('thumbnails', '[ratio]'));
@@ -890,7 +892,7 @@ function doUnload() {
 		$pb = new we_progressBar(0);
 		$pb->setStudLen(200);
 		$pb->addText("&nbsp;", 0, "progressTxt");
-		$js.=$pb->getJSCode();
+		$js.=$pb->getJS('', true);
 
 		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
@@ -994,9 +996,9 @@ function doUnload() {
 	 */
 	private static function _formPathHTML($templateName, $myid){
 		$path = id_to_path($myid, TEMPLATES_TABLE);
-		$cmd1 = "document.we_form.elements.templateParentID.value";
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.templateParentID.value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.templateDirName.value");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','','')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.templateParentID.value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("TplPath");
@@ -1018,7 +1020,7 @@ function doUnload() {
 		  g_l('weClass',"[dir]"),
 		  "left",
 		  "defaultfont",
-		  we_html_element::htmlHidden($idname,0),
+		  we_html_tools::hidden($idname,0),
 		  $button);
 		 */
 
@@ -1618,7 +1620,6 @@ function doUnload() {
 			case we_base_ContentTypes::QUICKTIME:
 			case we_base_ContentTypes::VIDEO:
 			case we_base_ContentTypes::AUDIO:
-				$filesize = !is_dir($path) && ($filesize = filesize($path)) ? $filesize : 0;
 				break;
 			default:
 				if(!is_dir($path) && filesize($path)){
@@ -1683,11 +1684,9 @@ function doUnload() {
 			case we_base_ContentTypes::FLASH:
 			case we_base_ContentTypes::QUICKTIME:
 			case we_base_ContentTypes::VIDEO:
-				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'image');
 				break;
 			case we_base_ContentTypes::AUDIO:
-				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'audio');
 				break;
 			case we_base_ContentTypes::HTML :

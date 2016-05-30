@@ -457,7 +457,7 @@ abstract class we_export_functions{
 		if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
 			$DB_WE = new DB_WE();
 
-			$_template_code = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($we_doc->TemplateID) . ' AND l.nHash=x\'' . md5("completeData") . '\'', '', $DB_WE);
+			$_template_code = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($we_doc->TemplateID) . ' AND l.Name=x\'' . md5("completeData") . '\'', '', $DB_WE);
 			$_tag_parser = new we_tag_tagParser($_template_code);
 			$_tags = $_tag_parser->getAllTags();
 			$_regs = $_records = array();
@@ -647,13 +647,13 @@ abstract class we_export_functions{
 
 					switch($format){
 						case we_import_functions::TYPE_GENERIC_XML:
-							$_tag_name = self::correctTagname($field['name'], 'value', $i);
-							$_content = $we_obj->getElementByType($field["name"], $field["type"], (empty($dv[$realName]) ? array() : $dv[$realName]));
+							$_tag_name = self::correctTagname($field["name"], "value", $i);
+							$_content = $we_obj->getElementByType($field["name"], $field["type"], $dv[$realName]);
 							$_file .= self::formatOutput($_tag_name, we_document::parseInternalLinks($_content, 0, ''), $format, 2, $cdata, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
 
 							break;
 						case 'csv':
-							$_content = $we_obj->getElementByType($field["name"], $field["type"], (empty($dv[$realName]) ? array() : $dv[$realName]));
+							$_content = $we_obj->getElementByType($field["name"], $field["type"], $dv[$realName]);
 							$_file .= self::formatOutput("", we_document::parseInternalLinks($_content, 0, ''), $format, 2, false, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
 
 							break;

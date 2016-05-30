@@ -88,7 +88,7 @@ class we_fragment_base{
 	 * @param      int $bodyAttributes
 	 * @param      array $initdata
 	 */
-	public function __construct($name, $taskPerFragment, $pause = 1, array $bodyAttributes = array(), $initdata = ""){
+	public function __construct($name, $taskPerFragment, $pause = 1, $bodyAttributes = "", $initdata = ""){
 		$this->name = $name;
 		$this->taskPerFragment = $taskPerFragment;
 		$this->pause = $pause;
@@ -107,7 +107,7 @@ class we_fragment_base{
 		} else {
 			$this->taskPerFragment = $taskPerFragment;
 			$this->init();
-			if(!we_base_file::save($filename, we_serialize($this->alldata))){
+			if(!we_base_file::save($filename, we_serialize($this->alldata, SERIALIZE_JSON))){
 				exit('Could not write: ' . $filename);
 			}
 			we_base_file::insertIntoCleanUp($filename, 10 * 3600);
@@ -117,10 +117,11 @@ class we_fragment_base{
 		$this->printBodyTag($bodyAttributes);
 		for($i = 0; $i < $this->taskPerFragment; $i++){
 			if($i > 0){
-				$this->currentTask++;
+				$this->currentTask++; // before: currentTask was incremented with $i;
 			}
 			if($this->currentTask == $this->numberOfTasks){
-				we_base_file::delete($filename);
+
+				unlink($filename);
 				$this->finish();
 				break;
 			} else {
@@ -136,30 +137,39 @@ class we_fragment_base{
 	 *
 	 * @param      array $attributes
 	 */
-	function printBodyTag(array $attributes = array()){
-		$attr = "";
-		foreach($attributes as $k => $v){
-			$attr .= " $k=\"$v\"";
-		}
-		$onload = $this->getJSReload();
-		echo '<body' . $attr . ($onload ? ' onload="' . $onload : '') . '>';
-	}
-
-	protected function getJSReload(){
+	function printBodyTag($attributes = ''){
 		$nextTask = $this->currentTask + $this->taskPerFragment;
-		$tmp = $_REQUEST;
-		$tmp['fr_' . $this->name . '_ct'] = ($nextTask);
-		$tail = http_build_query($tmp, null, null, PHP_QUERY_RFC3986);
-
-		$onload = "document.location='" . $_SERVER["SCRIPT_NAME"] . '?' . $tail . "';";
-
-		$onload = ($this->pause ?
-				'setTimeout(function(){' . $onload . '},' . $this->pause . ');' :
-				$onload);
-
-		if(($nextTask <= $this->numberOfTasks)){
-			return $onload;
+		$attr = "";
+		if($attributes){
+			foreach($attributes as $k => $v){
+				$attr .= " $k=\"$v\"";
+			}
 		}
+		$tail = ""; //FIXME: make this a post request
+//Fixme: use http_build_query
+		foreach($_REQUEST as $i => $v){
+			if(is_array($v)){
+				foreach($v as $k => $av){
+					$tail .= "&" . rawurlencode($i) . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
+				}
+			} elseif($i != "fr_" . rawurlencode($this->name) . "_ct"){
+				$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
+			}
+		}
+
+		$onload = "document.location='" . $_SERVER['SCRIPT_NAME'] . '?fr_' . rawurlencode($this->name) . '_ct=' . ($nextTask) . $tail . "';";
+
+		if($this->pause){
+			$onload = 'setTimeout(function(){
+' . $onload . '
+},' . $this->pause . ');';
+		}
+		echo "<body" .
+		$attr .
+		(($nextTask <= $this->numberOfTasks) ?
+			(' onload="' . $onload . '"') :
+			"") .
+		">";
 	}
 
 	/**
@@ -168,7 +178,29 @@ class we_fragment_base{
 	 * @param      array $attributes
 	 */
 	function printJSReload(){
-		echo $this->getJSReload();
+		$nextTask = $this->currentTask + $this->taskPerFragment;
+		$tail = ""; //FIXME: make this a post request
+		//Fixme: use http_build_query
+		foreach($_REQUEST as $i => $v){
+			if(is_array($v)){
+				foreach($v as $k => $av){
+					$tail .= "&" . rawurlencode($i) . "[" . rawurlencode($k) . "]=" . rawurlencode($av);
+				}
+			} elseif($i != "fr_" . rawurlencode($this->name) . "_ct"){
+				$tail .= "&" . rawurlencode($i) . "=" . rawurlencode($v);
+			}
+		}
+
+		$onload = "document.location='" . $_SERVER["SCRIPT_NAME"] . "?fr_" . rawurlencode($this->name) . "_ct=" . ($nextTask) . $tail . "';";
+
+		if($this->pause){
+			$onload = 'setTimeout(function(){
+' . $onload . '
+},' . $this->pause . ');';
+		}
+		if(($nextTask <= $this->numberOfTasks)){
+			echo we_html_element::jsElement($onload);
+		}
 	}
 
 	/**
@@ -179,9 +211,15 @@ class we_fragment_base{
 		echo '</body></html>';
 	}
 
+	// overwrite the following functions
+
+	/**
+	 * Prints the header.
+	 * This Function should be overwritten
+	 *
+	 */
 	static function printHeader(){
-		//FIXME: missing title
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . weSuggest::getYuiFiles());
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
 	/**

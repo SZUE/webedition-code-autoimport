@@ -25,6 +25,9 @@ define("WE_EDIT_IMAGE", true);
 
 echo we_html_tools::getHtmlTop() .
  we_html_element::jsElement(
+	(substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
+		'WE().layout.we_setPath("' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");' :
+		'') .
 	'function changeOption(elem){
 	var cmnd = elem.options[elem.selectedIndex].value;
 	if(cmnd){
@@ -41,11 +44,7 @@ echo we_html_tools::getHtmlTop() .
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
-<body class="weEditorBody" style="padding:20px;" onload="<?php
-echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
-	'WE().layout.we_setPath(_EditorFrame,"' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");' :
-	'');
-?>">
+<body class="weEditorBody" style="padding:20px;">
 	<form name="we_form" method="post" onsubmit="return false;">
 		<?php
 		echo we_class::hiddenTrans();
@@ -56,7 +55,7 @@ echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15
 		$supported = we_base_imageEdit::supported_image_types();
 		$focus = we_unserialize($GLOBALS['we_doc']->getElement('focus', 'dat'), array(0, 0));
 		echo we_html_element::htmlDiv(array(), '
-<select name="editmenue" onchange="changeOption(this);"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($_gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
+<select name="editmenue" size="1" onchange="changeOption(this);"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($_gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
 <option value="imageEditTools_reset" selected="selected" style="color:grey"></option>
 <optgroup label="' . g_l('weClass', '[edit]') . '">
 <option value="image_resize">' . g_l('weClass', '[resize]') . '&hellip;</option>
@@ -70,9 +69,10 @@ echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15
 			(($_gdtype != "png" && in_array('png', $supported)) ? '<option value="doImage_convertPNG">' . g_l('weClass', '[convert_png]') . '</option>' : '') .
 			'</optgroup>
 </select>'
-		) .
-		we_html_element::htmlDiv(array('id' => 'focus_info', 'style' => 'margin-top:10px; display:none'), we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[focus_info]'), we_html_tools::TYPE_INFO, 640)) .
-		'<table class="default">
+			) .
+			we_html_element::htmlDiv(array('id' => 'focus_info', 'style' => 'margin-top:10px; display:none'), we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[focus_info]'), we_html_tools::TYPE_INFO, 640)) .
+
+'<table class="default">
 ' . ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_IMAGEEDIT ?
 			'<tr><td style="padding-bottom:20px;"></td></tr>' :
 			''

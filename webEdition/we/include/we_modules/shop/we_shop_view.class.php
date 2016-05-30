@@ -492,7 +492,7 @@ function submitForm(target,action,method) {
 				$totalPriceAndVat = $totalPrice;
 
 				if($pricesAreNet){ // prices are net
-					$orderTable .= '<tr><td height="1" colspan="11"><hr style="color: black" noshade /></td></tr>';
+					$orderTable .= '<tr><td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td></tr>';
 
 					if(isset($orderData[WE_SHOP_SHIPPING]) && isset($shippingCostsNet)){
 
@@ -505,7 +505,7 @@ function submitForm(target,action,method) {
 			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
 		</tr>
 		<tr>
-			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
+			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 		</tr>';
 					}
 					$orderTable .= '
@@ -545,7 +545,7 @@ function submitForm(target,action,method) {
 			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
 		</tr>
 		<tr>
-			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
+			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
@@ -579,14 +579,14 @@ function submitForm(target,action,method) {
 
 					$orderTable .= '
 		<tr>
-			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
+			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
 			<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\')">' . we_base_util::formatNumber($shippingCostsNet) . $waehr . '</a></td>
 		</tr>
 		<tr>
-			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
+			<td height="1" colspan="11"><hr size="1" style="color: black" noshade /></td>
 		</tr>
 		<tr>
 			<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
@@ -817,7 +817,7 @@ function CalendarChanged(calObject) {
 				$searchBut = we_html_button::create_button(we_html_button::SEARCH, 'javascript:searchArticles();');
 
 				// first get all shop documents
-				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.nHash=x\'' . md5(WE_SHOP_TITLE_FIELD_NAME) . '\' AND l.DocumentTable!="tblTemplates" ' .
+				$this->db->query('SELECT c.dat AS shopTitle, l.DID AS documentId FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID JOIN ' . FILE_TABLE . ' f ON f.ID=l.DID WHERE l.Name="' . WE_SHOP_TITLE_FIELD_NAME . '" AND l.DocumentTable!="tblTemplates" ' .
 					(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
 						' AND c.Dat LIKE "%' . $this->db->escape($_REQUEST['searchArticle']) . '%"' :
 						'')
@@ -895,10 +895,7 @@ function CalendarChanged(calObject) {
 						'headline' => g_l('modules_shop', '[Artikel]'),
 						'space' => 100,
 						'html' => '
-		<form name="we_intern_form">' . we_html_element::htmlHiddens(array(
-							'bid' => $_REQUEST['bid'],
-							'we_cmd[]' => 'add_new_article'
-						)) . '
+		<form name="we_intern_form">' . we_html_tools::hidden('bid', $_REQUEST['bid']) . we_html_tools::hidden('we_cmd[]', 'add_new_article') . '
 			<table class="default">
 			<tr>
 			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, array("onchange" => "selectArticle(this.options[this.selectedIndex].value)"), 'value', '380') . '</td>
@@ -961,11 +958,9 @@ function CalendarChanged(calObject) {
 						'space' => 100,
 						'html' => '
 							<form name="we_form" target="edbody">' .
-						we_html_element::htmlHiddens(array(
-							'bid' => $_REQUEST['bid'],
-							'we_cmd[]' => 'add_article',
-							'add_article' => $_REQUEST['add_article']
-						)) .
+						we_html_tools::hidden('bid', $_REQUEST['bid']) .
+						we_html_tools::hidden('we_cmd[]', 'add_article') .
+						we_html_tools::hidden('add_article', $_REQUEST['add_article']) .
 						'<b>' . $model->elements[WE_SHOP_TITLE_FIELD_NAME]['dat'] . '</b>',
 						'noline' => 1
 					);
@@ -1149,10 +1144,8 @@ function CalendarChanged(calObject) {
 				echo '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-				we_html_element::htmlHiddens(array(
-					'bid' => $_REQUEST['bid'],
-					"we_cmd[]" => 'save_shipping_cost'
-				)) .
+				we_html_tools::hidden('bid', $_REQUEST['bid']) .
+				we_html_tools::hidden("we_cmd[]", 'save_shipping_cost') .
 				we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
 				'</form></body></html>';
 				exit;
@@ -1213,7 +1206,7 @@ function CalendarChanged(calObject) {
 							$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 							$langcode = array_search($lang[0], getWELangs());
 							$countrycode = array_search($langcode, getWECountries());
-							$countryselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput'));
+							$countryselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'size' => 1, 'style' => 'width:280px;', 'class' => 'wetextinput'));
 
 							$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 							foreach($topCountries as $countrykey => &$countryvalue){
@@ -1257,7 +1250,7 @@ function CalendarChanged(calObject) {
 								list($lcvalue) = explode('_', $lcvalue);
 							}
 							unset($countryvalue);
-							$languageselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput'));
+							$languageselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'size' => 1, 'style' => 'width:280px;', 'class' => 'wetextinput'));
 							foreach(g_l('languages', '') as $languagekey => $languagevalue){
 								if(in_array($languagekey, $frontendL)){
 									$languageselect->addOption($languagekey, $languagevalue);
@@ -1286,10 +1279,8 @@ function CalendarChanged(calObject) {
 				echo '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-				we_html_element::htmlHiddens(array(
-					'bid' => $_REQUEST['bid'],
-					'we_cmd[]' => 'save_order_customer'
-				)) .
+				we_html_tools::hidden('bid', $_REQUEST['bid']) .
+				we_html_tools::hidden('we_cmd[]', 'save_order_customer') .
 				we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]'), '', 560) .
 				'</form>
 						</body>

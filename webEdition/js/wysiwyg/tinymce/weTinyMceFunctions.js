@@ -393,18 +393,17 @@ function tinyEdOnPostRender(ed, cm) {
 }
 
 function tinyWeResizeEditor(render, name) {
-	var el = tinyMCE.DOM.get(name + "_toolbargroup");
-	var h = el ? el.parentNode.offsetHeight : 0;
-	if ((render || !el) && --tinyMCE.weResizeLoops && h < 24) {
+	var h = tinyMCE.DOM.get(name + "_toolbargroup").parentNode.offsetHeight;
+	if (render && --tinyMCE.weResizeLoops && h < 24) {
 		setTimeout(tinyWeResizeEditor, 10, true);
-		return;
 	}
 
 	tinyMCE.DOM.setStyle(
 					tinyMCE.DOM.get(name + "_ifr"),
 					"height",
-					(window.innerHeight - h - 60) + "px"
-					);
+					//(tinyMCE.DOM.get(name+"_tbl").offsetHeight - h - 30)+"px");
+									(window.innerHeight - h - 60) + "px"
+									);
 }
 
 function tinySetEditorLevel(ed) {
@@ -416,20 +415,18 @@ function tinySetEditorLevel(ed) {
 	// if editorLevel = "inline" we use a local copy of weEditorFrame.EditorIsHot
 	ed.weEditorFrameIsHot = false;
 
-	//FIXME: this doesn't work: we need to know wheter it is inline, popup or fullscreen and wheter we are on a document/object in multieditor
-	//simply mark inline-false-popup and fullscreen with some js var and then check for multieditor on the respective level
 	if (window._EditorFrame !== undefined) {
 		ed.editorLevel = "inline";
 		ed.weEditorFrame = window._EditorFrame;
-	} else if (top.opener !== null && top.opener.top.WebEdition && top.opener.top.WebEdition.layout.weEditorFrameController !== undefined && top.isWeDialog === undefined) {
-		ed.editorLevel = "popup";
-		ed.weEditorFrame = top.opener.top.WebEdition.layout.weEditorFrameController;
-	} else if (top.isWeDialog) {
-		ed.editorLevel = "fullscreen";
-		ed.weEditorFrame = null;
 	} else {
-		ed.editorLevel = "popup";
-		ed.weEditorFrame = null;
+		//FIXME: check if WE().layout.weEditorFrameController cannot be used
+		if (top.opener !== null && top.opener.top.WebEdition.layout.weEditorFrameController !== undefined && top.isWeDialog === undefined) {
+			ed.editorLevel = "popup";
+			ed.weEditorFrame = top.opener.top.WebEdition.layout.weEditorFrameController;
+		} else {
+			ed.editorLevel = "fullscreen";
+			ed.weEditorFrame = null;
+		}
 	}
 
 	try {

@@ -108,8 +108,8 @@ class we_messaging_frames extends we_modules_frame{
 			$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 			$rootjs = ($pid ? '' :
-					'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(' . $pid . ',\'root\',\'root\'));'
+					$this->Tree->topFrame . '.treeData.clear();' .
+					$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(' . $pid . ',\'root\',\'root\'));'
 				);
 
 
@@ -158,7 +158,7 @@ function clearSearch() {
 ');
 
 		$searchlabel = $this->viewclass === 'todo' ? '[search_todos]' : '[search_messages]';
-		$hidden = we_html_element::htmlHidden('we_transaction', $this->transaction);
+		$hidden = we_html_tools::hidden('we_transaction', $this->transaction);
 		$table = new we_html_table(array('style' => 'margin: 4px 0px 0px 7px;', 'border' => 0), 1, 2);
 
 		$table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left:10px;'), g_l('modules_messaging', $searchlabel) .

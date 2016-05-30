@@ -178,7 +178,13 @@ function setColor(theRow, theRowNum, newColor) {
 	if (fo.elements.mark.value !== '' || theRow.style === undefined) {
 		return false;
 	}
-	theCells = theRow.getElementsByTagName('td');
+	if (document.getElementsByTagName !== undefined) {
+		theCells = theRow.getElementsByTagName('td');
+	} else if (theRow.cells !== undefined) {
+		theCells = theRow.cells;
+	} else {
+		return false;
+	}
 	var rowCellsCnt = theCells.length;
 	var domDetect = (window.opera === undefined && theCells[0].getAttribute !== undefined);
 	var c = null;
@@ -241,7 +247,7 @@ function saveNote() {
 		if (q_init[idx[i]] != q_curr[idx[i]]) {
 			hot = true;
 		}
-		csv += (idx[i] === 'Title' || idx[i] === 'Text') ? WE().util.Base64.encode(q_curr[idx[i]]) : q_curr[idx[i]];
+		csv += (idx[i] === 'Title' || idx[i] === 'Text') ? parent.Base64.encode(q_curr[idx[i]]) : q_curr[idx[i]];
 		if (i < idx_len - 1) {
 			csv += ';';
 		}
@@ -255,18 +261,18 @@ function saveNote() {
 				weValidFrom = q_curr.ValidFrom.replace(/-/g, '');
 				weValidUntil = q_curr.ValidUntil.replace(/-/g, '');
 				if (weValidFrom > weValidUntil) {
-					top.we_showMessage(WE().consts.g_l.cockpit.pad.until_befor_from, WE().consts.message.WE_MESSAGE_NOTICE, window);
+					top.we_showMessage(WE.consts.g_l.cockpit.pad.until_befor_from, WE().consts.message.WE_MESSAGE_NOTICE, window);
 					return false;
 				}
 			}
 			if (q_curr.Title === '') {
-				top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE.consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				return false;
 			}
 			var q_ID = document.getElementById(_id + '_ID').value;
 			parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), (q_ID + ';' + encodeURI(csv)), 'update', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr.Title), escape(q_curr.Text));
 		} else {
-			top.we_showMessage(WE().consts.g_l.cockpit.pad.note_not_modified, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE.consts.g_l.cockpit.pad.note_not_modified, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		}
 		return;
 	}
@@ -276,23 +282,23 @@ function saveNote() {
 			weValidFrom = q_curr.ValidFrom.replace(/-/g, '');
 			weValidUntil = q_curr.ValidUntil.replace(/-/g, '');
 			if (weValidFrom > weValidUntil) {
-				top.we_showMessage(WE().consts.g_l.cockpit.pad.until_befor_from, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE.consts.g_l.cockpit.pad.until_befor_from, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				return false;
 			} else if (!weValidFrom || !weValidUntil) {
-				top.we_showMessage(WE().consts.g_l.cockpit.pad.date_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE.consts.g_l.cockpit.pad.date_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				return false;
 			}
 		} else if (q_curr.Validity == 'date' && !q_curr.ValidFrom) {
-			top.we_showMessage(WE().consts.g_l.cockpit.pad.date_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE.consts.g_l.cockpit.pad.date_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
 		if (q_curr.Title === '') {
-			top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
+			top.we_showMessage(WE.consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			return false;
 		}
 		parent.rpc(_ttlB64Esc.concat(',' + _sInitProps), escape(csv), 'insert', '', _ttlB64Esc, _sObjId, 'pad/pad', escape(q_curr.Title), escape(q_curr.Text));
 	} else {
-		top.we_showMessage(WE().consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
+		top.we_showMessage(WE.consts.g_l.cockpit.pad.title_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	}
 }
 
@@ -301,7 +307,7 @@ function initDlg() {
 	_oCsv_ = opener.document.getElementById(_sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	var aCsv = _sInitCsv_.split(',');
-	_sInitTitle = WE().util.Base64.decode(aCsv[0]);
+	_sInitTitle = opener.Base64.decode(aCsv[0]);
 	_sInitBin = aCsv[1];
 	var i;
 	for (i = 0; i < _aRdo.length; i++) {
@@ -343,7 +349,7 @@ function getTitle() {
 
 function save() {
 	var oCsv_ = opener.document.getElementById(_sObjId + '_csv');
-	var sTitleEnc = WE().util.Base64.encode(getTitle());
+	var sTitleEnc = opener.Base64.encode(getTitle());
 	var sBit = getBitString();
 	oCsv_.value = sTitleEnc.concat(',' + sBit);
 	if ((_lastPreviewCsv !== '' && sTitleEnc.concat(',' + sBit) !== _lastPreviewCsv) ||
@@ -358,7 +364,7 @@ function save() {
 }
 
 function preview() {
-	var sTitleEnc = WE().util.Base64.encode(getTitle());
+	var sTitleEnc = opener.Base64.encode(getTitle());
 	var sTitleEsc = escape(sTitleEnc);
 	var sBit = getBitString();
 	opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId);
@@ -368,7 +374,7 @@ function preview() {
 
 function exit_close() {
 	if (_lastPreviewCsv !== '' && (_sInitTitle != getTitle() || _sInitBin != getBitString())) {
-		opener.rpc(_sInitCsv_, '', '', '', escape(WE().util.Base64.encode(_sInitTitle)), _sObjId);
+		opener.rpc(_sInitCsv_, '', '', '', escape(opener.Base64.encode(_sInitTitle)), _sObjId);
 	}
 	exitPrefs();
 	self.close();

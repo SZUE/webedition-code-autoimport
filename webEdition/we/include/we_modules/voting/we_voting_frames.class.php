@@ -67,24 +67,24 @@ class we_voting_frames extends we_modules_frame{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab(g_l('modules_voting', '[property]'), '((top.content.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
+		$we_tabs->addTab(new we_tab(g_l('modules_voting', '[property]'), '((' . $this->topFrame . '.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
 		if(!$this->View->voting->IsFolder){
-			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[inquiry]'), '((top.content.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
-			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[options]'), '((top.content.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
+			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[inquiry]'), '((' . $this->topFrame . '.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
+			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[options]'), '((' . $this->topFrame . '.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
 
 			if($this->View->voting->ID){
-				$we_tabs->addTab(new we_tab(g_l('modules_voting', '[result]'), '((top.content.activ_tab==4) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('4');", array("id" => "tab_4")));
+				$we_tabs->addTab(new we_tab(g_l('modules_voting', '[result]'), '((' . $this->topFrame . '.activ_tab==4) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('4');", array("id" => "tab_4")));
 			}
 		}
 
 		$tabsHead = we_tabs::getHeader('
-function setTab(tab) {
-	parent.edbody.toggle("tab"+top.content.activ_tab);
-	parent.edbody.toggle("tab"+tab);
-	top.content.activ_tab=tab;
-	self.focus();
-}' .
-				($this->View->voting->ID ? '' : 'top.content.activ_tab=1;')
+				function setTab(tab) {
+					parent.edbody.toggle("tab"+' . $this->topFrame . '.activ_tab);
+					parent.edbody.toggle("tab"+tab);
+					' . $this->topFrame . '.activ_tab=tab;
+					self.focus();
+				}
+				' . ($this->View->voting->ID ? '' : $this->topFrame . '.activ_tab=1;')
 		);
 
 
@@ -143,7 +143,7 @@ function setTab(tab) {
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top . content . setHot(); #####placeHolder#####'));
 		$del_but1 = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();'));
 
-		$_Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener.top.content.mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
+		$_Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener." . $this->topFrame . ".mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
 			(permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
 		$sel_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();'));
@@ -303,7 +303,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 
 			$export_box->setCol(1, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'csv_dir', '/', '', we_base_ContentTypes::FOLDER), g_l('export', '[dir]')));
 
-			$lineend = new we_html_select(array('name' => 'csv_lineend', 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
+			$lineend = new we_html_select(array('name' => 'csv_lineend', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
 			$lineend->addOption('windows', g_l('export', '[windows]'));
 			$lineend->addOption('unix', g_l('export', '[unix]'));
 			$lineend->addOption('mac', g_l('export', '[mac]'));
@@ -316,14 +316,14 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 
 
 
-			$delimiter = new we_html_select(array('name' => 'csv_delimiter', 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
+			$delimiter = new we_html_select(array('name' => 'csv_delimiter', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
 			$delimiter->addOption(';', g_l('export', '[semicolon]'));
 			$delimiter->addOption(',', g_l('export', '[comma]'));
 			$delimiter->addOption(':', g_l('export', '[colon]'));
 			$delimiter->addOption('\t', g_l('export', '[tab]'));
 			$delimiter->addOption(' ', g_l('export', '[space]'));
 
-			$enclose = new we_html_select(array('name' => 'csv_enclose', 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
+			$enclose = new we_html_select(array('name' => 'csv_enclose', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
 			$enclose->addOption(0, g_l('export', '[double_quote]'));
 			$enclose->addOption(1, g_l('export', '[single_quote]'));
 
@@ -343,7 +343,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			return $parts;
 		}
 
-		$activeTime = new we_html_select(array('name' => 'ActiveTime', 'class' => 'weSelect', 'style' => 'width:200', 'onchange' => 'top.content.setHot(); if(this.value!=0) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
+		$activeTime = new we_html_select(array('name' => 'ActiveTime', 'class' => 'weSelect', 'size' => 1, 'style' => 'width:200', 'onchange' => 'top.content.setHot(); if(this.value!=0) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
 		$activeTime->addOption((0), g_l('modules_voting', '[always]'));
 		$activeTime->addOption((1), g_l('modules_voting', '[until]'));
 		$activeTime->selectOption($this->View->voting->ActiveTime);
@@ -433,7 +433,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		$parts = array();
 
 
-		$selectTime = new we_html_select(array('name' => 'RevoteTime', 'class' => 'weSelect', 'style' => 'width:200', 'onchange' => 'top.content.setHot(); if(this.value==0) setVisible(\'method_table\',false); else setVisible(\'method_table\',true);'));
+		$selectTime = new we_html_select(array('name' => 'RevoteTime', 'class' => 'weSelect', 'size' => 1, 'style' => 'width:200', 'onchange' => 'top.content.setHot(); if(this.value==0) setVisible(\'method_table\',false); else setVisible(\'method_table\',true);'));
 		$selectTime->addOption((-1), g_l('modules_voting', '[never]'));
 		$selectTime->addOption((86400), g_l('modules_voting', '[one_day]'));
 		$selectTime->addOption((3600), g_l('modules_voting', '[one_hour]'));
@@ -580,14 +580,14 @@ function newIp(){
 				$table->addRow();
 				$table->setRow($key + 1, array("id" => "row_scores_$key"));
 				$table->setCol($i, 0, array('style' => 'width: ' . ($this->_width_size - 150) . 'px'), we_html_element::htmlSpan(array('id' => 'answers_score_' . $key), oldHtmlspecialchars(stripslashes($value))));
-				$table->setColContent($i, 1, $pb->getJSCode() . $pb->getHTML());
+				$table->setColContent($i, 1, $pb->getJS('', true) . $pb->getHTML());
 				$table->setColContent($i, 2, '&nbsp;');
 				$table->setColContent($i, 3, we_html_tools::htmlTextInput('scores_' . $key, 4, $this->View->voting->Scores[$key], '', 'id="scores_' . $key . '" onKeyUp="var r=parseInt(this.value);if(isNaN(r)) this.value=' . $this->View->voting->Scores[$key] . '; else{ this.value=r;document.we_form.scores_changed.value=1;}refreshTotal();"'));
 				$i++;
 			}
 		}
 		$table->addRow();
-		$table->setColContent($i, 0, we_html_element::htmlB(g_l('modules_voting', '[total_voting]') . ':') . we_html_element::htmlHidden("updateScores", false, 'updateScores'));
+		$table->setColContent($i, 0, we_html_element::htmlB(g_l('modules_voting', '[total_voting]') . ':') . we_html_tools::hidden("updateScores", false, array("id" => 'updateScores')));
 		$table->setCol($i, 3, array('colspan' => 3), we_html_element::htmlB(we_html_element::htmlSpan(array('id' => 'total'), $total_score)));
 
 		$butt = we_html_button::create_button('reset_score', "javascript:top.content.setHot();resetScores();");
@@ -644,19 +644,19 @@ function refreshTexts(){
 
 		$export_box->setCol(1, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($this->formFileChooser($this->_width_size - 130, 'csv_dir', '/', '', we_base_ContentTypes::FOLDER), g_l('export', '[dir]')));
 
-		$lineend = new we_html_select(array('name' => 'csv_lineend', 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
+		$lineend = new we_html_select(array('name' => 'csv_lineend', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
 		$lineend->addOption('windows', g_l('export', '[windows]'));
 		$lineend->addOption('unix', g_l('export', '[unix]'));
 		$lineend->addOption('mac', g_l('export', '[mac]'));
 
-		$delimiter = new we_html_select(array('name' => 'csv_delimiter', 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
+		$delimiter = new we_html_select(array('name' => 'csv_delimiter', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
 		$delimiter->addOption(';', g_l('export', '[semicolon]'));
 		$delimiter->addOption(',', g_l('export', '[comma]'));
 		$delimiter->addOption(':', g_l('export', '[colon]'));
 		$delimiter->addOption('\t', g_l('export', '[tab]'));
 		$delimiter->addOption(' ', g_l('export', '[space]'));
 
-		$enclose = new we_html_select(array('name' => 'csv_enclose', 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
+		$enclose = new we_html_select(array('name' => 'csv_enclose', 'size' => 1, 'class' => 'defaultfont', 'style' => 'width: ' . $this->_width_size . 'px'));
 		$enclose->addOption(0, g_l('export', '[double_quote]'));
 		$enclose->addOption(1, g_l('export', '[single_quote]'));
 
@@ -739,8 +739,8 @@ function setVisible(id,visible){
 		$rootjs = '';
 		if(!$pid){
 			$rootjs.=
-				'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
+				$this->Tree->topFrame . '.treeData.clear();' .
+				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
 		}
 
 		$hiddens = we_html_element::htmlHiddens(array(

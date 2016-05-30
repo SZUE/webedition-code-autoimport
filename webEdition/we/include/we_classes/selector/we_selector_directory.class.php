@@ -84,10 +84,8 @@ class we_selector_directory extends we_selector_file{
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
+		$this->dir = $this->startID ? : ($setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0 ) : 0);
 		$ws = get_ws($this->table, true);
-		$rootDirID = ($ws ? reset($ws) : 0);
-
-		$this->dir = $this->startID ? : ($setLastDir ? (isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : $rootDirID ) : $rootDirID);
 		if($ws && in_array($this->dir, $ws)){
 			$this->dir = "";
 		}
@@ -246,7 +244,7 @@ top.selectIt();';
 <table class="selectorHeaderTable">
 	<tr style="vertical-align:middle">
 		<td class="defaultfont lookinText">' . g_l('fileselector', '[lookin]') . '</td>
-		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%"></select>' .
+		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" size="1" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%"></select>' .
 			((!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE ? '
 		</td>
 		<td>' . we_html_button::create_button('root_dir', "javascript:if(rootDirButsState){top.setRootDir();}", true, 0, 0, "", "", $this->dir == intval($this->rootDirID), false) . '</td>
@@ -287,15 +285,20 @@ top.parentID = "' . $this->values['ParentID'] . '";' :
 	}
 
 	function printNewFolderHTML(){
-		echo we_html_element::jsElement('
+		echo '<script><!--
 top.clearEntries();
 top.makeNewFolder = true;' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() . '
-');
+		$this->printCmdAddEntriesHTML() .
+		$this->printCMDWriteAndFillSelectorHTML() . '
+//-->
+</script>';
 	}
 
 	function printCreateFolderHTML(){
+		we_html_tools::protect();
+		echo we_html_tools::getHtmlTop() .
+		'<script><!--
+top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
@@ -303,15 +306,11 @@ top.makeNewFolder = true;' .
 				new we_folder());
 
 		$folder->we_new($this->table, $this->dir, $txt);
-		if(!($msg = $folder->checkFieldsOnSave())){
+		if(($msg = $folder->checkFieldsOnSave())){
+			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
+		} else {
 			$folder->we_save();
-		}
-
-		echo we_html_tools::getHtmlTop() .
-		we_html_element::jsElement('
-top.clearEntries();' .
-			($msg ? we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
-				'var ref;
+			echo 'var ref;
 if(top.opener.top.treeData){
 	ref = top.opener.top;
 }else if(top.opener.top.opener.top.treeData){
@@ -320,15 +319,21 @@ if(top.opener.top.treeData){
 if(ref){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});
 }' .
-				($this->canSelectDir ? '
+			($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '')
-			) .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = false;
-top.selectFile(top.currentID);') . '
+top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '');
+		}
+
+
+
+		echo
+		$this->printCmdAddEntriesHTML() .
+		$this->printCMDWriteAndFillSelectorHTML() .
+		'top.makeNewFolder = false;
+top.selectFile(top.currentID);
+//-->
+</script>
 </head><body></body></html>';
 	}
 
@@ -359,15 +364,22 @@ options.userCanMakeNewFolder=' . intval($this->userCanMakeNewFolder) . ';
 
 	function printRenameFolderHTML(){
 		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
-			echo we_html_element::jsElement('
+			echo '<script><!--
 top.clearEntries();
 top.we_editDirID=' . $this->we_editDirID . ';' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML());
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'
+//-->
+</script>';
 		}
 	}
 
 	function printDoRenameFolderHTML(){
+		we_html_tools::protect();
+		echo we_html_tools::getHtmlTop() .
+		'<script><!--
+top.clearEntries();';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 
@@ -382,10 +394,6 @@ top.we_editDirID=' . $this->we_editDirID . ';' .
 		$folder->Published = time();
 		$folder->Path = $folder->getPath();
 		$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
-
-		echo we_html_tools::getHtmlTop() .
-		'<script><!--
-top.clearEntries();';
 		if(($msg = $folder->checkFieldsOnSave())){
 			echo we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
@@ -478,8 +486,8 @@ top.selectFile(top.currentID);
 		<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td title=\"" . $result['Path'] . "\" width='10'>" . g_l('fileselector', '[name]') . ": </td><td>
 			<div style='margin-right:14px'>" . $result['Text'] . "</div></td></tr>
 		<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td width='10'>ID: </td><td>
-			<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><i class='fa fa-lg fa-edit'></i></div></a>
-			<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div>" . $this->id . "</div></a>
+			<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div style='float:left; vertical-align:baseline; margin-right:4px;'><i class='fa fa-lg fa-edit'></i></div></a>
+			<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><div>" . $this->id . "</div></a>
 		</td></tr>";
 			if($result['CreationDate']){
 				$previewDefauts .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . g_l('fileselector', '[created]') . ": </td><td>" . date(g_l('date', '[format][default]'), $result['CreationDate']) . "</td></tr>";

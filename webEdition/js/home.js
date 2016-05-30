@@ -26,6 +26,141 @@
 
 var _propsDlg = [];
 
+var Base64 = {
+	// private property
+	_keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+	// public method for encoding
+	encode: function (input) {
+		var output = "";
+		var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+		var i = 0;
+
+		input = Base64._utf8_encode(input);
+
+		while (i < input.length) {
+
+			chr1 = input.charCodeAt(i++);
+			chr2 = input.charCodeAt(i++);
+			chr3 = input.charCodeAt(i++);
+
+			enc1 = chr1 >> 2;
+			enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+			enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+			enc4 = chr3 & 63;
+
+			if (isNaN(chr2)) {
+				enc3 = enc4 = 64;
+			} else if (isNaN(chr3)) {
+				enc4 = 64;
+			}
+
+			output = output +
+							this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+							this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+
+		}
+
+		return output;
+	},
+	// public method for decoding
+	decode: function (input) {
+		var output = "";
+		var chr1, chr2, chr3;
+		var enc1, enc2, enc3, enc4;
+		var i = 0;
+
+		input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+		while (i < input.length) {
+
+			enc1 = this._keyStr.indexOf(input.charAt(i++));
+			enc2 = this._keyStr.indexOf(input.charAt(i++));
+			enc3 = this._keyStr.indexOf(input.charAt(i++));
+			enc4 = this._keyStr.indexOf(input.charAt(i++));
+
+			chr1 = (enc1 << 2) | (enc2 >> 4);
+			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+			chr3 = ((enc3 & 3) << 6) | enc4;
+
+			output = output + String.fromCharCode(chr1);
+
+			if (enc3 !== 64) {
+				output = output + String.fromCharCode(chr2);
+			}
+			if (enc4 !== 64) {
+				output = output + String.fromCharCode(chr3);
+			}
+
+		}
+
+		output = Base64._utf8_decode(output);
+
+		return output;
+
+	},
+	// private method for UTF-8 encoding
+	_utf8_encode: function (string) {
+		string = string.replace(/\r\n/g, "\n");
+		var utftext = "";
+
+		for (var n = 0; n < string.length; n++) {
+
+			var c = string.charCodeAt(n);
+
+			if (c < 128) {
+				utftext += String.fromCharCode(c);
+			} else if ((c > 127) && (c < 2048)) {
+				utftext += String.fromCharCode((c >> 6) | 192);
+				utftext += String.fromCharCode((c & 63) | 128);
+			} else {
+				utftext += String.fromCharCode((c >> 12) | 224);
+				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+				utftext += String.fromCharCode((c & 63) | 128);
+			}
+
+		}
+
+		return utftext;
+	},
+	// private method for UTF-8 decoding
+	_utf8_decode: function (utftext) {
+		var string = "";
+		var i = 0;
+		var c = c2 = 0;
+
+		while (i < utftext.length) {
+			c = utftext.charCodeAt(i);
+			if (c < 128) {
+				string += String.fromCharCode(c);
+				i++;
+			} else if ((c > 191) && (c < 224)) {
+				c2 = utftext.charCodeAt(i + 1);
+				string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+				i += 2;
+			} else {
+				c2 = utftext.charCodeAt(i + 1);
+				c3 = utftext.charCodeAt(i + 2);
+				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+				i += 3;
+			}
+
+		}
+
+		return string;
+	}
+
+};
+
+function addCss() {
+	jsCss = '<style>';
+	for (i = 1; i <= 10; i++) {
+		jsCss += '.cls_' + i + '_collapse{width:' + oCfg.general_.cls_collapse + 'px;vertical-align:top;}' +
+						'.cls_' + i + '_expand{width:' + oCfg.general_.cls_expand + 'px;vertical-align:top;}';
+	}
+	jsCss += '</style>';
+	document.write(jsCss);
+}
+
 function getColumnAsoc(id) {
 	var oNode = document.getElementById(id);
 	var iNodeLen = oNode.childNodes.length;
@@ -76,7 +211,7 @@ function modifyLayoutCols(iCols) {
 		for (i = 1; i <= iAppendCols; i++) {
 			var oCell = document.createElement('TD');
 			oCell.setAttribute('id', 'c_' + (_iLayoutCols + i));
-			oCell.setAttribute('class', 'cls_collapse');
+			oCell.setAttribute('class', 'cls_' + (_iLayoutCols + i) + '_collapse');
 			var oWildcard = document.createElement('DIV');
 			oWildcard.setAttribute('class', 'wildcard');
 			oWildcard.setAttribute('style', 'margin-rigth:5px');
@@ -198,11 +333,11 @@ function updateJsStyleCls() {
 	for (var i = 1; i <= _iLayoutCols; i++) {
 		var oCol = document.getElementById('c_' + i);
 		if (hasExpandedWidget(oCol)) {
-			cls1 = 'cls_expand';
-			cls2 = 'cls_collapse';
+			cls1 = 'cls_' + i + '_expand';
+			cls2 = 'cls_' + i + '_collapse';
 		} else {
-			cls1 = 'cls_collapse';
-			cls2 = 'cls_expand';
+			cls1 = 'cls_' + i + '_collapse';
+			cls2 = 'cls_' + i + '_expand';
 		}
 		if (!oCol.classList.contains(cls1)) {
 			if (oCol.classList.contains(cls2)) {
@@ -238,16 +373,18 @@ function setLabel(id, prefix, postfix) {
 	el_label.innerHTML = label + suspensionPts;
 }
 
-function setWidgetWidth(id, w) {
-	var el = document.getElementById(id + "_bx");
-	el.classList.remove("cls_collapse");
-	el.classList.remove("cls_expand");
-	el.classList.add(w);
+function setWidth(id, w) {
+	document.getElementById(id).style.width = w + 'px';
 }
+
+function setWidgetWidth(id, w) {
+	setWidth(id + "_bx", w);
+}
+
 
 function resizeWidget(id) {
 	var _type = document.getElementById(id + '_type').value;
-	var w = (resizeIdx('get', id) === "0") ? 'cls_expand' : 'cls_collapse';
+	var w = (resizeIdx('get', id) === "0") ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
 	resizeIdx('swap', id);
 	setWidgetWidth(id, w);
 	document.getElementById(id + '_lbl').innerHTML = '';
@@ -316,16 +453,25 @@ function fadeTrans(wizId, start, end, ms) {
 
 function toggle(wizId, wizType, prefix, postfix) {
 	var defRes = oCfg[wizType + '_props_'].res;
-	var props = {
-		prefix: prefix,
-		postfix: postfix,
-		type: wizType,
-		res: defRes
+	var defW = (defRes !== undefined) ? oCfg.general_.w_expand : oCfg.general_.w_collapse;
+	var asoc = {
+		'width': {
+			'_inline': defW,
+			'_bx': defW + (2 * oCfg.general_.wh_edge)
+		}
 	};
+	var props = {
+		'prefix': prefix, 'postfix': postfix, 'type': wizType, 'res': defRes
+	};
+	for (var att_name in asoc) {
+		for (var v in asoc[att_name]) {
+			document.getElementById(wizId + v).style[att_name] = asoc[att_name][v] + "px";
+		}
+	}
 	for (var p in props) {
 		document.getElementById(wizId + '_' + p).value = props[p];
 	}
-	if (defRes === "1" && !document.getElementById('c_1').classList.contains('cls_expand')) {
+	if (defRes === "1" && !document.getElementById('c_1').classList.contains('cls_1_expand')) {
 		updateJsStyleCls();
 	}
 }
@@ -337,15 +483,19 @@ function pushContent(wizType, wizId, cNode, prefix, postfix, sCsv) {
 	document.getElementById(wizId + '_csv').value = sCsv;
 	toggle(wizId, wizType, prefix, postfix);
 	setLabel(wizId);
-	setTheme(wizId, wizTheme);
+	if (wizTheme !== 'white') {
+		setTheme(wizId, wizTheme);
+	}
 	document.getElementById(wizId).style.display = 'block';
-	fadeTrans(wizId, 0, 100, 400);
+	if (oCfg.blend_.fadeIn !== undefined) {
+		fadeTrans(wizId, 0, 100, oCfg.blend_.v);
+	}
 }
 
 function createWidget(typ, row, col) {
 // for IE
 	if (typ === 'pad') {
-		document.getElementById('c_' + col).className = 'cls_expand';
+		document.getElementById('c_' + col).className = 'cls_' + col + '_expand';
 	}
 //EOF for IE
 	var domNode = document.getElementById('c_' + col);
@@ -364,6 +514,7 @@ function createWidget(typ, row, col) {
 		}
 	}
 	var nodeToClone = document.getElementById(cloneSampleId);
+	var regex = cloneSampleId;
 	var re = new RegExp(((cloneSampleId === 'divClone') ? new_id + '|clone' : cloneSampleId), 'g');
 	var sClonedNode = nodeToClone.innerHTML.replace(re, new_id);
 	if (cloneSampleId === 'divClone') {
@@ -374,7 +525,9 @@ function createWidget(typ, row, col) {
 	divClone.setAttribute('class', 'le_widget');
 	divClone.className = 'le_widget'; // for IE
 	divClone.innerHTML = sClonedNode;
-	divClone.style.display = 'none';
+	if (oCfg.blend_.fadeIn !== undefined) {
+		divClone.style.display = 'none';
+	}
 	if (asoc.length && row) {
 		domNode.insertBefore(divClone, document.getElementById(asoc[row - 1].id));
 	} else { // add to empty col - before wildcard!
@@ -384,7 +537,7 @@ function createWidget(typ, row, col) {
 						_td.childNodes[0]
 						);
 	}
-	if (findInArray(oCfg._noResizeTypes, typ) > -1) {
+	if (findInArray(_noResizeTypes, typ) > -1) {
 		var oPrc = document.getElementById(new_id + '_ico_prc');
 		var oPc = document.getElementById(new_id + '_ico_pc');
 		if (oPrc) {
@@ -394,10 +547,14 @@ function createWidget(typ, row, col) {
 			oPc.style.display = 'block';
 		}
 	}
-	setOpacity(divClone.id, 0);
+	if (oCfg.blend_.fadeIn !== undefined) {
+		setOpacity(divClone.id, 0);
+	}
 	if (cloneSampleId !== 'divClone') {
 		divClone.style.display = 'block';
-		fadeTrans(new_id, 0, 100, 400);
+		if (oCfg.blend_.fadeIn !== undefined) {
+			fadeTrans(new_id, 0, 100, oCfg.blend_.v);
+		}
 	} else {
 		top.we_cmd('edit_home', 'add', typ, new_id);
 	}
@@ -453,6 +610,7 @@ function showLoadingSymbol(elementId) {
 		clone.style.display = "inline";
 	}
 }
+
 
 /**
  * hide the spinning wheel for a widget
@@ -642,8 +800,9 @@ function rpcHandleResponse(sType, sObjId, oDoc, sCsvLabel) {
 }
 
 function propsWidget(wid, ref) {
+	var iHeight = oCfg[wid + '_props_'].iDlgHeight;
 	var uri = composeUri(arguments);
-	_propsDlg[ref] = new (WE().util.jsWindow)(window, uri, ref, -1, -1, oCfg.iDlgWidth, oCfg[wid + '_props_'].iDlgHeight, true, true, true);
+	_propsDlg[ref] = new (WE().util.jsWindow)(window, uri, ref, -1, -1, oCfg.general_.iDlgWidth, iHeight, true, true, true);
 }
 
 function closeAllModalWindows() {
@@ -764,3 +923,6 @@ function transmit(doc, type, id) {
 		WE().layout.cockpitFrame.pushContent(type, id, doc.document.getElementById('content').innerHTML, doc.document.getElementById('prefix').innerHTML, doc.document.getElementById('postfix').innerHTML, doc.document.getElementById('csv').innerHTML);
 	}
 }
+
+//dont move this as on load event, since adding css will fire load event again.
+addCss();

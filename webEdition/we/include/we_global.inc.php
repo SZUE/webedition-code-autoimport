@@ -84,8 +84,8 @@ function getHTTP($server, $url, $port = '', $username = '', $password = ''){
 			}
 			return $page;
 		case 'curl':
-			$response = we_base_util::getCurlHttp($server, $url, array());
-			return ($response['status'] ? $response['error'] : $response['data']);
+			$_response = we_base_util::getCurlHttp($server, $url, array());
+			return ($_response['status'] ? $_response['error'] : $_response['data']);
 		default:
 			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
 	}
@@ -508,7 +508,7 @@ function t_e($type = 'warning'){
 			break;
 		case 'deprecated':
 			$inc = true;
-			$type = E_USER_NOTICE; //E_USER_DEPRECATED - seems not to work anymore
+			$type = E_USER_DEPRECATED;
 			break;
 		case 'warning':
 			$inc = true;
@@ -696,7 +696,7 @@ function we_check_email($email){
 	}
 	list($name, $host) = explode('@', $email);
 	$host = (function_exists('idn_to_ascii') ? idn_to_ascii($host) : $host);
-	return (filter_var(trim($name . '@' . $host), FILTER_VALIDATE_EMAIL) !== false);
+	return (filter_var(trim($name . '@' . $hostl), FILTER_VALIDATE_EMAIL) !== false);
 }
 
 /** This function should be used ONLY in generating code for the FRONTEND
@@ -735,7 +735,17 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
 			}
 			break;
 	}
+	/* if($xhtml){ //	xhtml, check if and what we shall debug
 
+	  if(XHTML_DEBUG){ //  check if XHTML_DEBUG is activated - system pref
+	  $showWrong = (!empty($_SESSION['prefs']['xhtml_show_wrong']) && isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition); //  check if XML_SHOW_WRONG is true (user) - only in webEdition
+	  // at the moment only transitional is supported
+	  $xhtmlType = weTag_getAttribute('xmltype', $attribs, 'transitional', we_base_request::STRING);
+	  $attribs = removeAttribs($attribs, $removeAttribs);
+
+	  validation::validateXhtmlAttribs($element, $attribs, $xhtmlType, $showWrong, XHTML_REMOVE_WRONG);
+	  }
+	  } */
 	$attribs = removeAttribs($attribs, $removeAttribs);
 
 	$tag = '<' . $element;
@@ -1005,7 +1015,7 @@ function we_templatePostContent($force = false, $fullPoster = false){//force on 
 
 function we_templatePost(){
 	if(--$GLOBALS['WE_TEMPLATE_INIT'] == 0 && !isWE()){
-		if(!empty($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed'])){
+		if(isset($_SESSION) && isset($_SESSION['webuser']) && isset($_SESSION['webuser']['loginfailed'])){
 			unset($_SESSION['webuser']['loginfailed']);
 		}
 		if(defined('DEBUG_MEM')){
@@ -1158,7 +1168,7 @@ function we_unserialize($string, $default = array(), $quiet = false){
 		}
 		//non UTF-8 json decode
 		static $json = null;
-		$json = $json ? : new Services_JSON(16/* SERVICES_JSON_LOOSE_TYPE */ | Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
+		$json = $json ? : new Services_JSON(16/* SERVICES_JSON_LOOSE_TYPE */);
 		return (array) $json->decode(str_replace("\n", '\n', $string));
 	}
 	//data is really not serialized!

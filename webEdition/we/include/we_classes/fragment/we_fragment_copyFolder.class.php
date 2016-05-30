@@ -216,6 +216,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 	}
 
 	function copyFile(){
+
 		$GLOBALS['we_doc'] = $this->getDocument();
 		$this->copyToPath = id_to_path($this->data['CopyToId']);
 		$path = preg_replace('|^' . $this->data['CopyFromPath'] . '/|', $this->copyToPath . '/', $this->data['Path']);
@@ -548,7 +549,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 					}
 					break;
 				case 'linklist' :
-					$ll = new we_base_linklist(we_unserialize($we_doc->getElement($k)));
+					$ll = new we_base_linklist($we_doc->getElement($k));
 					$changed = false;
 					$cnt = $ll->length();
 					for($i = 0; $i < $cnt; $i++){
@@ -642,6 +643,12 @@ class we_fragment_copyFolder extends we_fragment_base{
 		}
 	}
 
+	//FIXME: this function is called statically!
+	static function printHeader(){
+		//FIXME: missing title
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . weSuggest::getYuiFiles());
+	}
+
 	static function formCreateTemplateDirChooser(){
 		$path = '/';
 		$myid = 0;
@@ -666,7 +673,8 @@ class we_fragment_copyFolder extends we_fragment_base{
 	}
 
 	static function formCreateCategoryChooser(){
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs(true);opener.addCat(top.allPaths);')");
+
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .

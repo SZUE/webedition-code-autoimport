@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_messaging_tree extends we_tree_base{
+class we_messaging_tree extends weTree{
 	private $transaction;
 
 	function __construct($frameset, $topFrame, $treeFrame, $cmdFrame, $transaction){
@@ -38,7 +38,7 @@ class we_messaging_tree extends we_tree_base{
 		return '
 function startTree(){
 	treeData.frames={
-		top:top.content,
+		top:' . $this->topFrame . ',
 		cmd:' . $this->cmdFrame . ',
 		tree:' . $this->treeFrame . '
 	};

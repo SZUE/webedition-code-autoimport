@@ -95,7 +95,7 @@ if($_SESSION['user']['Username'] && $_SESSION['user']['ID']){
 	$_SESSION['perms'] = we_users_user::getAllPermissions($_SESSION['user']['ID']);
 	we_users_user::setEffectiveWorkspaces($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 }
-
+t_e($_SESSION['perms']);
 $_SESSION['user']['isWeSession'] = true;
 unset($userdata);
 we_base_sessionHandler::makeNewID();

@@ -181,7 +181,7 @@ class we_class_folder extends we_folder{
 
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("var parents =[" . implode(',', $parents) . "];if(parents.indexOf(currentID) > -1){
-			WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');};");
+			WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);}else{opener.top.we_cmd('copyFolder', currentID," . $this->ID . ",1,'" . $this->Table . "');};");
 		$but = we_html_button::create_button(we_html_button::SELECT, $this->ID ? "javascript:we_cmd('we_selector_directory', document.forms[0].elements['" . $idname . "'].value, '" . $this->Table . "', '" . $wecmdenc1 . "', '', '" . $wecmdenc3 . "',''," . $this->RootfolderID . ");" : "javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR), true, 100, 22, "", "", $_disabled);
 
 		return '<table class="default" style="margin-bottom:2px;"><tr><td>' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 388, false) . '</td><td>' .
@@ -203,6 +203,7 @@ class we_class_folder extends we_folder{
 
 	function searchProperties(){
 		$pathLen = 32;
+		$strlen = 20;
 
 		$userWSArray = $this->setDefaultWorkspaces();
 
@@ -224,21 +225,21 @@ class we_class_folder extends we_folder{
 			array('dat' => ""),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[zeige]')),
 			array('dat' => ""),
-			array('dat' => '<span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . $this->getSortImage('Path') . '</span>'),
-			array('dat' => '<span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . $this->getSortImage('ID') . '</span>'),
+			array('dat' => '<a href="javascript:setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a> ' . $this->getSortImage('Path')),
+			array('dat' => '<a href="javascript:setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a> ' . $this->getSortImage('ID')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[Arbeitsbereiche]')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[xtraArbeitsbereiche]')),
-			array('dat' => '<span onclick="setOrder(\'Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . $this->getSortImage('Published') . '</span>'),
-			array('dat' => '<span onclick="setOrder(\'ModDate\');">' . g_l('modules_objectClassfoldersearch', '[geaendert]') . $this->getSortImage('ModDate') . '</span>'),
-			array('dat' => '<span onclick="setOrder(\'Url\');">' . g_l('modules_objectClassfoldersearch', '[url]') . $this->getSortImage('Url') . '</span>'),
-			array('dat' => '<span onclick="setOrder(\'TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . $this->getSortImage('TriggerID') . '</span>'),
+			array('dat' => '<a href="javascript:setOrder(\'Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . '</a> ' . $this->getSortImage('Published')),
+			array('dat' => '<a href="javascript:setOrder(\'ModDate\');">' . g_l('modules_objectClassfoldersearch', '[geaendert]') . '</a> ' . $this->getSortImage('ModDate')),
+			array('dat' => '<a href="javascript:setOrder(\'Url\');">' . g_l('modules_objectClassfoldersearch', '[url]') . '</a> ' . $this->getSortImage('Url')),
+			array('dat' => '<a href="javascript:setOrder(\'TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . '</a> ' . $this->getSortImage('TriggerID')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[charset]')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[language]')),
-			array('dat' => '<span onclick="setOrder(\'WebUserID\');">' . g_l('modules_objectClassfoldersearch', '[WebUser]') . $this->getSortImage('WebUserID') . '</span>'),
+			array('dat' => '<a href="javascript:setOrder(\'WebUserID\');">' . g_l('modules_objectClassfoldersearch', '[WebUser]') . '</a> ' . $this->getSortImage('WebUserID')),
 		);
 
 		$content = array();
-
+		$f = 0;
 		while($this->searchclass->next_record()){
 			$stateclass = !$this->searchclass->f("Published") ? 'notpublished' : ($this->searchclass->f("ModDate") > $this->searchclass->f("Published") ? 'changed' : '');
 			$content[] = array(
@@ -270,9 +271,10 @@ class we_class_folder extends we_folder{
 			);
 
 			$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("ID") . "]'].checked=true;";
+			$f++;
 		}
 
-		return $this->getSearchresult($content, $headline, $javascriptAll);
+		return $this->getSearchresult($content, $headline, $f, $javascriptAll);
 	}
 
 	function searchFields(){
@@ -307,8 +309,8 @@ class we_class_folder extends we_folder{
 			array('dat' => ''),
 			array('dat' => '<table class="default defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch', '[zeige]') . '</td><td></td></tr></table>'),
 			array('dat' => ''),
-			array('dat' => '<table class="default defaultfont"><tr><td><span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</span></td><td> ' . $this->getSortImage('Path') . '</td></tr></table>'),
-			array('dat' => '<table class="default defaultfont"><tr><td><span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</span></td><td> ' . $this->getSortImage('ID') . '</td></tr></table>'),
+			array('dat' => '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</a></td><td> ' . $this->getSortImage('Path') . '</td></tr></table>'),
+			array('dat' => '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</a></td><td> ' . $this->getSortImage('ID') . '</td></tr></table>'),
 		);
 
 		$content = $head = $type = array();
@@ -422,7 +424,7 @@ class we_class_folder extends we_folder{
 			$f++;
 		}
 
-		return $this->getSearchresult($content, $headline, $javascriptAll);
+		return $this->getSearchresult($content, $headline, $f, $javascriptAll);
 	}
 
 	function getSearchDialog(){
@@ -540,8 +542,7 @@ class we_class_folder extends we_folder{
 		return $out;
 	}
 
-	function getSearchresult($content, $headline, $javascriptAll){
-		$foundItems = $this->searchclass->maxItems;
+	function getSearchresult($content, $headline, $foundItems, $javascriptAll){
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$values = array(10 => 10, 25 => 25, 50 => 50, 100 => 100, 500 => 500, 1000 => 1000, 5000 => 5000, 10000 => 10000, 50000 => 50000, 100000 => 100000);
@@ -566,21 +567,19 @@ class we_class_folder extends we_folder{
 		<td style="width:350px;">' . we_html_forms::checkboxWithHidden($this->GreenOnly == 1 ? true : false, "we_" . $this->Name . "_GreenOnly", g_l('modules_objectClassfoldersearch', '[sicht]'), false, "defaultfont", "toggleShowVisible(document.getElementById('_we_" . $this->Name . "_GreenOnly'));") . '</td>	</tr>
 <tr>
 	<td class="defaultfont lowContrast" style="width:128px;">' . g_l('modules_objectClassfoldersearch', '[anzeige]') . '</td>
-	<td colspan="3">' . we_html_tools::htmlSelect('searchView', array('properties' => g_l('weClass', '[properties]'), 'fields' => g_l('modules_objectClassfoldersearch', '[FELDER]')), 1, $this->searchView, "", array('onchange' => 'this.form.elements.SearchStart.value=0;submit();')) . '</td>
+	<td colspan="3">' . we_html_tools::htmlSelect('searchView', array('properties' => g_l('weClass','[properties]'), 'fields' => g_l('modules_objectClassfoldersearch','[FELDER]')), 1, $this->searchView, "", array('onchange' => 'this.form.elements.SearchStart.value=0;submit();')) . '</td>
 </tr>
 </table>
 	<table class="default" style="margin-bottom:12px;">
 	<tr>
-		<td class="defaultfont lowContrast" style="width:200px">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") .
-			//(isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') .
-			'</td>
+		<td class="defaultfont lowContrast" style="width:200px">' . (isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') . '</td>
 		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
-	</table>
-	<div id="scrollContent_DoclistSearch">' . we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '</div>
+	</table>' .
+			'<div id="scrollContent_DoclistSearch">' . we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '</div>
 	<table class="default" style="margin:12px 0px;">
 	<tr>
-		<td style="width:200px;">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") . '</td>
+		<td style="width:200px;">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button('selectAllObjects', "javascript: " . $javascriptAll) : "") . '</td>
 		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	<tr>
@@ -846,6 +845,7 @@ for ( frameId in _usedEditors ) {
 
 			if($update){
 				$javascript .= "_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();" .
+					//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
 					$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	 top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);
@@ -860,6 +860,7 @@ weWindow.treeData.selectNode(" . $GLOBALS['we_doc']->ID . ");";
 
 				if($obj->we_publish()){
 					$javascript .= "_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();" .
+						//.	"_EditorFrame.setEditorDocumentId(".$obj->ID.");\n"
 						$obj->getUpdateTreeScript(false) . "
 if(top.treeData.table!='" . OBJECT_FILES_TABLE . "') {
 	top.we_cmd('loadVTab', '" . OBJECT_FILES_TABLE . "', 0);

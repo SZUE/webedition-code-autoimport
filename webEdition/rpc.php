@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -34,14 +33,14 @@ function dieWithError($text, $protocol){
 			$resp = new we_rpc_response();
 			$resp->setStatus(false);
 			$resp->setData('data', $text);
-			$errorView = new we_rpc_jsonView('', $protocol);
+			$errorView = new we_rpc_jsonView();
 			echo $errorView->getResponse($resp);
 			exit;
 		case 'text':
 			$resp = new we_rpc_response();
 			$resp->setStatus(false);
 			$resp->setData('data', $text);
-			$errorView = new we_rpc_view('', $protocol);
+			$errorView = new we_rpc_view();
 			echo $errorView->getResponse($resp);
 			exit;
 		default:

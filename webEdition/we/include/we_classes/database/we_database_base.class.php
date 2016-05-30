@@ -956,7 +956,7 @@ abstract class we_database_base{
 	 * @return boolean true if exists
 	 */
 	public function isKeyExistAtAll($tab, $key){
-		$zw = $this->getTableKeyArray($tab);
+		$zw = $this->getTableCreateArray($tab);
 		if($zw){
 			foreach($zw as $v){
 				if(preg_match('|.*KEY *`?' . $key . '`? \(|', $v)){
@@ -973,12 +973,11 @@ abstract class we_database_base{
 	 * @param string $key full key definition what is used in a create statement
 	 * @return boolean true, if the exact definition is met, false otherwise
 	 */
-	public function isKeyExist($tab, $name, array $definition, $type = ''){
-		$zw = $this->getTableKeyArray($tab);
+	public function isKeyExist($tab, $key){
+		$zw = $this->getTableCreateArray($tab);
 		if($zw){
-			$definition = array_map('preg_quote', $definition);
 			foreach($zw as $v){
-				if(preg_match('|' . ($type ? $type : '.*KEY') . ' *`?' . preg_quote($name) . '`? \(`?' . implode('`?, ?`?', $definition) . '`?\)|', $v)){
+				if(trim(rtrim($v, ',')) == $key){
 					return true;
 				}
 			}
@@ -1127,17 +1126,17 @@ abstract class we_database_base{
 			$cache = array();
 			return $cache;
 		}
-		$hash = $resultType . md5($query, true);
-		if(isset($cache[$hash])){
-			return $cache[$hash];
+		$hash = md5($query, true);
+		if($resultType == MYSQL_NUM || !isset($cache[$hash])){
+			$this->query($query);
+			$data = ($this->next_record($resultType) ? $this->Record : array());
+			if($resultType != MYSQL_NUM && $data){
+				$cache[$hash] = $data;
+			}
+			$this->free();
+			return $data;
 		}
-		$this->query($query);
-		$data = ($this->next_record($resultType) ? $this->Record : array());
-		if($data){
-			$cache[$hash] = $data;
-		}
-		$this->free();
-		return $data;
+		return $cache[$hash];
 	}
 
 }

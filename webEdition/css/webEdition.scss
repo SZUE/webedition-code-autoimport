@@ -235,7 +235,7 @@ body.radient{
 #fsfooter,
 .radient,
 #fsheader{
-	background: $Grey;
+	background: linear-gradient(white, #E7E7E7);
 }
 
 #footerBody{
@@ -310,6 +310,8 @@ body.radient{
 	background-color: $DarkBlue;
 	color: white;
 
+
+
 	div.tab	{
 		border-bottom: 1px solid #284051;
 		border-right: 1px solid $DarkBlue;
@@ -363,20 +365,14 @@ body.radient{
 
 td.boxHeader{
 	padding:1px 5px 1px 5px;
-	background: $MiddleBlue;
-	color:white;
+	background-color:lightgrey;
+	background: linear-gradient(#EFEFEF, #CACACA);
+	border-bottom-width: 0px;
 	border-collapse: collapse;
-	border-width: 0px;
-	border-bottom: 0.5em solid white;
-	padding: 0px 0.5em !important;
+	border-left-width: 0px;
+	border-right-width: 0px;
+	border-top-width: 0px;
 	height:21px;
-	white-space: nowrap;
-	td{
-		color:inherit !important;
-	}
-	i{
-		padding-left:1em;
-	}
 }
 
 #bframeDiv{
@@ -939,7 +935,7 @@ optgroup{
 	border-top: 2px groove white;
 	/*padding left for rebuild*/
 	padding:5px 10px 10px 0px;
-	background: $Grey;
+	background: linear-gradient(#B4B3B3, #C6C5C5);
 	overflow:hidden;
 }
 
@@ -956,6 +952,7 @@ optgroup{
 
 #toolMenu,
 #headerDiv{
+	/*background: linear-gradient(#4675b1, $MiddleBlue);*/
 	background: $MiddleBlue;
 	color: white;
 	line-height: 40px;
@@ -1082,7 +1079,7 @@ table.error{
 	cursor:pointer;
 	border-right: 1px solid #2F5889;
 	&:hover{
-		background: $DarkBlueGradient transparent !important;
+		background: linear-gradient(to bottom, #345881, #284A70) transparent !important;
 	}
 }
 
@@ -1091,7 +1088,7 @@ table.error{
 	position:relative;
 	float:left;
 	&:hover {
-		background: $DarkBlueGradient;
+		background: linear-gradient(to bottom, #345881, #284a70) transparent !important;
 		cursor: pointer;
 	}
 	i{
@@ -1408,10 +1405,6 @@ span{
 	}
 }
 
-span[onclick]{
-	cursor: pointer;
-}
-
 .we-state-green{
 	color: #00cc00;
 }
@@ -1536,7 +1529,7 @@ body.moduleEditor{
 		bottom: 0px;
 		height: $editorFooterHeight;
 		overflow: hidden;
-		background: $Grey;
+		background: linear-gradient(to bottom, #B4B3B3, #C6C5C5) transparent;
 		border-top: 2px groove white;
 	}
 }
@@ -2271,20 +2264,4 @@ div.collection-content{
 .iframeScrollIpad{
 	overflow:scroll !important;
 	-webkit-overflow-scrolling:touch !important;
-}
-
-div.htmlDialogLayoutButtons{
-	text-align:right;
-	margin-left:10px;
-}
-
-.htmlDialogBorderButtons{
-	text-align:right;
-	margin-top:5px;
-}
-
-.htmlDialogBorder4Cell{
-	padding:2px 5px 2px 5px;
-	border-bottom: 1px solid silver;
-	background-color:white;
 }

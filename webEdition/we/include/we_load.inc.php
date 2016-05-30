@@ -230,7 +230,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 		$js = '';
 	} else {
-		$Tree = new we_tree_main("webEdition.php", "top", "top", "top.load");
+		$Tree = new weMainTree("webEdition.php", "top", "top", "top.load");
 		$treeItems = array();
 		getItems($table, $parentFolder, $offset, $Tree->default_segment);
 
@@ -257,13 +257,13 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$js = we_html_element::jsElement('
 top.document.getElementById("treeName").innerHTML="' . $name . '";
 function loadTreeData(){
-	if(!top.treeData) {
+	if(!' . $Tree->topFrame . '.treeData) {
 		window.setTimeout(loadTreeData,500);
 		return;
 	}' .
 				($parentFolder ? '' :
-					'top.treeData.clear();
-top.treeData.add(top.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
+					$Tree->topFrame . '.treeData.clear();' .
+					$Tree->topFrame . '.treeData.add(' . $Tree->topFrame . '.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
 				) .
 				$Tree->getJSLoadTree(!$parentFolder, $treeItems) . '
 }

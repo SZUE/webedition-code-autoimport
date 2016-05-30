@@ -148,7 +148,8 @@ function incTree() {
 		self.document.getElementById("incBaum").style.backgroundColor = "grey";
 	} else
 	if (w < WE().consts.size.tree.min) {
-		toggleTree(true);
+		w = WE().consts.size.tree.min;
+		setTreeWidth(w);
 	}
 }
 
@@ -195,7 +196,7 @@ function storeTreeWidth(w) {
 	WE().util.weSetCookie(self.document, "treewidth_main", w, ablauf, "/");
 }
 
-function clickVTab(tab, table) {
+function clickVTab(tab, no, table) {
 	if (top.deleteMode) {
 		we_cmd('exit_delete', table);
 	}
@@ -204,16 +205,16 @@ function clickVTab(tab, table) {
 			we_cmd('loadVTab', table, 0);
 		}
 	} else {
-		setActiveVTab(table);
+		setActiveVTab(no);
 		treeOut();
 		we_cmd('loadVTab', table, 0);
 	}
 }
 
-function setActiveVTab(table) {
+function setActiveVTab(no) {
 	var allTabs = document.getElementById("vtabs").getElementsByClassName("tab");
 	for (var i = 0; i < allTabs.length; i++) {
-		allTabs[i].className = "tab " + (allTabs[i].getAttribute("data-table") === table ? "tabActive" : "tabNorm");
+		allTabs[i].className = "tab " + (i == no ? "tabActive" : "tabNorm");
 	}
 }
 
@@ -254,6 +255,7 @@ function we_sbmtFrm(target, url, source) {
 		}
 	}
 	return false;
+
 }
 
 function doSave(url, trans, cmd) {
@@ -286,7 +288,7 @@ function openBrowser(url) {
 	try {
 		browserwind = window.open(WE().consts.dirs.WEBEDITION_DIR + "openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 	} catch (e) {
-		top.we_showMessage(WE().consts.g_l.alert.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.main.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -414,7 +416,7 @@ function doUnloadNormal(whichWindow) {
 
 function doUnload(whichWindow) { // triggered when webEdition-window is closed
 	if (!WE().layout.weEditorFrameController.closeAllDocuments()) {
-		return WE().consts.g_l.alert.exit_multi_doc_question;
+		return WE().consts.g_l.main.exit_multi_doc_question;
 	}
 	if (WE().session.seemode) {
 		doUnloadSEEM(whichWindow);
@@ -504,7 +506,7 @@ function we_cmd_base(args, url) {
 			if (ctrl.getActiveDocumentReference()) {
 				if (!hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
-				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
+				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + "\n" + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
 					we_sbmtFrm(self.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
 				}
@@ -528,16 +530,16 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "do_delete":
-			we_sbmtFrm(self.load, url, document.getElementsByName("treeheader")[0]);
+			we_sbmtFrm(self.load, url, document.getElementsByTagName("iframe").treeheader);
 			break;
 		case "move_single_document":
 			we_sbmtFrm(self.load, url, WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
 			break;
 		case "do_move":
-			we_sbmtFrm(self.load, url, document.getElementsByName("treeheader")[0]);
+			we_sbmtFrm(self.load, url, document.getElementsByTagName("iframe").treeheader);
 			break;
 		case "do_addToCollection":
-			we_sbmtFrm(self.load, url, document.getElementsByName("treeheader")[0]);
+			we_sbmtFrm(self.load, url, document.getElementsByTagName("iframe").treeheader);
 			break;
 		case "change_passwd":
 			new (WE().util.jsWindow)(this, url, "we_change_passwd", -1, -1, 250, 300, true, false, true, false);
@@ -666,6 +668,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "we_selector_image":
 		case "we_selector_document":
+			top.console.log('yep', args);
 			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_fileupload_editor":
@@ -673,7 +676,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "setTab":
 			if (treeData !== undefined) {
-				setActiveVTab(args[1]);
+				setTab(args[1]);
 				treeData.table = args[1];
 			} else {
 				setTimeout(we_cmd, 500, "setTab", args[1]);
@@ -711,7 +714,7 @@ function we_cmd_base(args, url) {
 		case "delete_navi":
 		case "delete_all_navi":
 			// set Editor hot
-			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+			_EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			_EditorFrame.setEditorIsHot(true);
 			/* falls through */
 		case "reload_editpage":
@@ -1044,7 +1047,7 @@ function we_cmd_base(args, url) {
 			widthBeforeDeleteModeSidebar = widthSidebar;
 
 			if (args[2] != 1) {
-				we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
+				we_repl(document.getElementsByTagName("iframe").treeheader, url, args[0]);
 			}
 			break;
 		case "move":
@@ -1080,7 +1083,7 @@ function we_cmd_base(args, url) {
 				widthBeforeDeleteModeSidebar = widthSidebar;
 
 				if (args[2] != 1) {
-					we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
+					we_repl(document.getElementsByTagName("iframe").treeheader, url, args[0]);
 				}
 			}
 			break;
@@ -1116,7 +1119,7 @@ function we_cmd_base(args, url) {
 		case "reset_home":
 			var _currEditor = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			if (_currEditor && _currEditor.getEditorType() === "cockpit") {
-				if (confirm(WE().consts.g_l.cockpit.reset_settings)) {
+				if (confirm(WE().consts.g_l.main.cockpit_reset_settings)) {
 					//FIXME: currently this doesn't work
 					WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]' + args[0];
 					if ((window.treeData !== undefined) && window.treeData) {
@@ -1124,7 +1127,7 @@ function we_cmd_base(args, url) {
 					}
 				}
 			} else {
-				top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
 			}
 			break;
 
@@ -1141,7 +1144,7 @@ function we_cmd_base(args, url) {
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
 				WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[0].substr(args[0].length - 3), 1, 1);
 			} else {
-				top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().consts.g_l.main.cockpit_not_activated, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "open_document":
@@ -1159,11 +1162,14 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
 		case "help_documentation":
-			new (WE().util.jsWindow)(this, "http://documentation.webedition.org/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(this, "http://documentation.webedition.org/wiki/" + WE().session.docuLang + "/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
 			break;
 
 		case "help_tagreference":
 			new (WE().util.jsWindow)(this, "http://tags.webedition.org/" + WE().session.docuLang + "/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
+			break;
+		case "help_demo":
+			new (WE().util.jsWindow)(this, "http://demo.webedition.org/" + WE().session.docuLang + "/", "help_demo", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "open_tagreference":
 			var docupath = "http://tags.webedition.org/" + WE().session.docuLang + "/" + args[1];
@@ -1226,7 +1232,7 @@ function we_cmd_base(args, url) {
 				_sendToFrame.focus();
 			}
 			// if visible frame equals to editpage content and there is already content loaded
-			if (_isEditpageContent && _visibleEditorFrame && _visibleEditorFrame.weIsTextEditor !== undefined && _currentEditorRootFrame.frames[2].location !== "about:blank") {
+			if (_isEditpageContent && _visibleEditorFrame.weIsTextEditor !== undefined && _currentEditorRootFrame.frames[2].location !== "about:blank") {
 				// tell the backend the right edit page nr and break (don't send the form)
 				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
 					success: function (o) {
@@ -1595,138 +1601,8 @@ WE().util.validate = {
 	}
 };
 
-WE().util.Base64 = {
-	// private property
-	_keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
-	// public method for encoding
-	encode: function (input) {
-		var output = "";
-		var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-		var i = 0;
-
-		input = this._utf8_encode(input);
-
-		while (i < input.length) {
-
-			chr1 = input.charCodeAt(i++);
-			chr2 = input.charCodeAt(i++);
-			chr3 = input.charCodeAt(i++);
-
-			enc1 = chr1 >> 2;
-			enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-			enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-			enc4 = chr3 & 63;
-
-			if (isNaN(chr2)) {
-				enc3 = enc4 = 64;
-			} else if (isNaN(chr3)) {
-				enc4 = 64;
-			}
-
-			output = output +
-							this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
-							this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
-
-		}
-
-		return output;
-	},
-	// public method for decoding
-	decode: function (input) {
-		var output = "";
-		var chr1, chr2, chr3;
-		var enc1, enc2, enc3, enc4;
-		var i = 0;
-
-		input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
-		while (i < input.length) {
-
-			enc1 = this._keyStr.indexOf(input.charAt(i++));
-			enc2 = this._keyStr.indexOf(input.charAt(i++));
-			enc3 = this._keyStr.indexOf(input.charAt(i++));
-			enc4 = this._keyStr.indexOf(input.charAt(i++));
-
-			chr1 = (enc1 << 2) | (enc2 >> 4);
-			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-			chr3 = ((enc3 & 3) << 6) | enc4;
-
-			output = output + String.fromCharCode(chr1);
-
-			if (enc3 !== 64) {
-				output = output + String.fromCharCode(chr2);
-			}
-			if (enc4 !== 64) {
-				output = output + String.fromCharCode(chr3);
-			}
-
-		}
-
-		output = this._utf8_decode(output);
-
-		return output;
-
-	},
-	// private method for UTF-8 encoding
-	_utf8_encode: function (string) {
-		string = string.replace(/\r\n/g, "\n");
-		var utftext = "";
-
-		for (var n = 0; n < string.length; n++) {
-
-			var c = string.charCodeAt(n);
-
-			if (c < 128) {
-				utftext += String.fromCharCode(c);
-			} else if ((c > 127) && (c < 2048)) {
-				utftext += String.fromCharCode((c >> 6) | 192);
-				utftext += String.fromCharCode((c & 63) | 128);
-			} else {
-				utftext += String.fromCharCode((c >> 12) | 224);
-				utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-				utftext += String.fromCharCode((c & 63) | 128);
-			}
-
-		}
-
-		return utftext;
-	},
-	// private method for UTF-8 decoding
-	_utf8_decode: function (utftext) {
-		var string = "";
-		var i = 0;
-		var c = c2 = 0;
-
-		while (i < utftext.length) {
-			c = utftext.charCodeAt(i);
-			if (c < 128) {
-				string += String.fromCharCode(c);
-				i++;
-			} else if ((c > 191) && (c < 224)) {
-				c2 = utftext.charCodeAt(i + 1);
-				string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
-				i += 2;
-			} else {
-				c2 = utftext.charCodeAt(i + 1);
-				c3 = utftext.charCodeAt(i + 2);
-				string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
-				i += 3;
-			}
-
-		}
-
-		return string;
-	}
-};
-
-WE().layout.openToEdit = function (tab, id, contentType) {
-	if (id > 0) {
-		WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
-	}
-};
-
-WE().layout.we_setPath = function (_EditorFrame, path, text, id, classname) {
-	_EditorFrame = _EditorFrame ? _EditorFrame : WE().layout.weEditorFrameController.getActiveEditorFrame();
+WE().layout.we_setPath = function (path, text, id, classname) {
+	var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 	// update document-tab
 	_EditorFrame.initEditorFrameData({
 		EditorDocumentText: text,

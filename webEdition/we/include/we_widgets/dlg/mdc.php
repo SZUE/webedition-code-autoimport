@@ -77,6 +77,7 @@ $doctypeElement = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect(
 
 $cls = new we_html_select(array(
 	"name" => "classID",
+	"size" => 1,
 	"class" => "defaultfont",
 	"style" => "width:420px; border: #AAAAAA solid 1px"
 	));
@@ -95,7 +96,7 @@ if($ac){
 }
 
 function getHTMLCategory(){
-	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs(true);opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 	$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;top.mark();'));
 
 	$variant_js = '

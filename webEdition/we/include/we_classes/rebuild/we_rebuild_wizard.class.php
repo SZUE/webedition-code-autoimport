@@ -434,7 +434,8 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[expl_rebuild_metadata]'), we_html_tools::TYPE_INFO, 520) .
 				'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', '[metadata]') . ':</div>';
 
-		$selAllBut = we_html_button::create_button(we_html_button::TOGGLE, "javascript:we_cmd('toggle_all_fields');");
+		$selAllBut = we_html_button::create_button('selectAll', "javascript:we_cmd('select_all_fields');");
+		$deselAllBut = we_html_button::create_button('deselectAll', "javascript:we_cmd('deselect_all_fields');");
 
 		foreach($metaDataFields as $md){
 			if($md['importFrom']){
@@ -442,7 +443,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			}
 		}
 
-		$_html .= we_html_element::htmlSpan(array('style' => 'margin:10px 0 20px 0;'), $selAllBut) .
+		$_html .= we_html_element::htmlSpan(array('style' => 'margin:10px 0 20px 0;'), $selAllBut, $deselAllBut) .
 				we_html_forms::checkbox(1, $onlyEmpty, 'onlyEmpty', g_l('rebuild', '[onlyEmpty]'));
 
 
@@ -538,7 +539,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 */
 	static function getRebuildThumbnails(){
 
-		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', '');
+		$thumbsFolders = we_base_request::_(we_base_request::INT, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, 'metaFolders', '');
 		$metaFields = we_base_request::_(we_base_request::INT, '_field', array());
 		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', array()));

@@ -23,11 +23,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_backup_delete extends we_fragment_base{
+
 	private $db;
 
-	function __construct($name){
+	function __construct($name, $taskPerFragment, $pause = 0){
 		$this->db = new DB_WE();
-		parent::__construct($name, 1, 0);
+		parent::__construct($name, $taskPerFragment, $pause);
 	}
 
 	function init(){
@@ -73,11 +74,16 @@ class we_backup_delete extends we_fragment_base{
 	function finish(){
 		if(!empty($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok'])){
 			echo we_html_element::jsElement('
-					new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",-1,-1,600,550,true,true,true);
+					new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"delInfo.php","we_delinfo",-1,-1,600,550,true,true,true);
 			');
 		}
 		unset($_SESSION['weS']['backup_delete']);
 		echo we_html_element::jsElement('top.close();');
+	}
+
+	static function printHeader(){
+		we_html_tools::protect();
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
 }

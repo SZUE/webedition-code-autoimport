@@ -1,4 +1,4 @@
-/* global WE, top, self*/
+/* global WE, top*/
 
 /**
  * webEdition CMS
@@ -38,7 +38,7 @@ function we_submitForm(target, url) {
 
 function put_in_workflow(table) {
 	if (_EditorFrame.getEditorIsHot()) {
-		if (confirm(WE().consts.g_l.alert.in_wf_warning[table])) {
+		if (confirm(WE().consts.g_l.main.in_wf_warning[table])) {
 			we_cmd('save_document', '', '', '', '', 0, 0, 1);
 		}
 	} else {
@@ -103,7 +103,7 @@ function setTextDocument(hasCtrl, value) {
 }
 
 function setPath() {
-	WE().layout.we_setPath(_EditorFrame, doc.Path, doc.Text, doc.ID, doc.classname);
+		WE().layout.we_setPath(doc.Path, doc.Text, doc.ID, doc.classname);
 }
 
 function saveReload() {
@@ -153,8 +153,8 @@ function we_save_document() {
 	}
 
 	/*if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
-	 we_cmd('glossary_check', '', we_transaction);
-	 } else */{
+		we_cmd('glossary_check', '', we_transaction);
+	} else */{
 		acStatus = '';
 		invalidAcFields = false;
 		try {

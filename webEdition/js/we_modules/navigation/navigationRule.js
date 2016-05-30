@@ -73,11 +73,13 @@ function removeAllCats() {
 }
 
 function addCat(paths, ids) {
-	for (var i = 0; i < paths.length; i++) {
-		if (paths[i] !== "") {
+
+	var path = paths.split(",");
+	var id = ids.split(",");
+	for (var i = 0; i < path.length; i++) {
+		if (path[i] !== "") {
 			categories_edit.addItem();
-		//FIXME: ids will not be used, since this js function only has 3 parameters!
-			categories_edit.setItem(0, (categories_edit.itemCount - 1), paths[i], ids[i]);
+			categories_edit.setItem(0, (categories_edit.itemCount - 1), path[i], id[i]);
 		}
 	}
 	categories_edit.showVariant(0);

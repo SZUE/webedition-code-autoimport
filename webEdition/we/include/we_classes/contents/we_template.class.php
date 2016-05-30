@@ -42,7 +42,7 @@ class we_template extends we_document{
 		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');
 		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS/*, we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS*/);
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS);
 		}
 		$this->Published = 1;
 		$this->InWebEdition = true;
@@ -111,8 +111,6 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 				return 'we_editors/we_editor_variants.inc.php';
 			case we_base_constants::WE_EDITPAGE_VERSIONS:
 				return "we_editors/we_editor_versions.inc.php";
-			case we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS:
-				return 'we_editors/we_editor_unusedElements.inc.php';
 		}
 	}
 
@@ -511,7 +509,7 @@ we_templateInit();?>';
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		$openButton = we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID\'].value)');
-		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');_EditorFrame.setEditorIsHot(true);", true, 27, 22);
+		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputMasterTemplate');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", true, 27, 22);
 
 		$yuiSuggest->setAcId('MasterTemplate');
 		$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::TEMPLATE);
@@ -870,9 +868,11 @@ we_templateInit();?>';
 	}
 
 	public function getPropertyPage(){
+		list($cnt, $select) = $this->formTemplateDocuments();
 		return we_html_multiIconBox::getHTML('PropertyPage', array(
 				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
 				array('icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => 140),
+				array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[documents]') . ($cnt ? ' (' . $cnt . ')' : ''), 'html' => $select, 'space' => 140),
 				array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 140),
 				array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => 140)
 				)

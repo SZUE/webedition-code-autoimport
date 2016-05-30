@@ -50,6 +50,7 @@
 class weSuggest{
 	const DocSelector = 'docSelector';
 	const DirSelector = 'dirSelector';
+
 	const USE_DRAG_AND_DROP = true;
 
 	private $noautoinit = false;
@@ -249,7 +250,7 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 
 		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir, $this->noautoinit);
 		$inputField = $this->_htmlTextInput($this->inputName, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
-		$resultField = we_html_element::htmlHidden($this->resultName, $this->resultValue, $resultId);
+		$resultField = we_html_tools::hidden($this->resultName, $this->resultValue, array('id' => $resultId));
 		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
 
 		$html = we_html_tools::htmlFormElementTable(
@@ -269,17 +270,17 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 		if(self::USE_DRAG_AND_DROP && ($this->isDropFromTree || $this->isDropFromExt)){
 			$this->isDropFromExt = $this->table === FILE_TABLE ? $this->isDropFromExt : false;
 
-			$texts = array(// FIXME: G_L(): [suggest][dnd_text_(0|1|2|3)] to avoid texts-array
+			$texts = array( // FIXME: G_L(): [suggest][dnd_text_(0|1|2|3)] to avoid texts-array
 				'[something is wrong]',
 				'Dateien aus dem Dateibaum hierher ziehen',
 				'Dateien zum Upload von der Festplatte hierher ziehen',
 				'Dateien aus dem Dateibaum oder <br>zum Upload von der Festplatte hierher ziehen'
 			);
 			$dropzoneContent = 'Drag and Drop Auswahl<br>' . $texts[(($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0))];
-			$dropzoneStyle = 'width:auto;padding-top:14px;height:60px;';
+			$dropzoneStyle  = 'width:auto;padding-top:14px;height:60px;';
 
 			$img = '';
-			$eventAttribs = array('ondragover' => 'handleDragOver(event, \'' . $this->acId . '\');', 'ondragleave' => 'handleDragLeave(event, \'' . $this->acId . '\');');
+			$eventAttribs = array('ondragover' => 'handleDragOver(event);', 'ondragleave' => 'handleDragLeave(event);');
 
 			if(true && $this->contentType === we_base_ContentTypes::IMAGE){ // FIXME: add code for icons so we can have preview for all cts
 				if($this->resultValue){
@@ -292,22 +293,24 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 					}
 				}
 
-				$imgDiv = we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'float:left;height:100%;')), we_html_element::htmlSpan(array('style' => 'display:inline-block;height: 100%;vertical-align: middle;')) .
+				$imgDiv = we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'float:left;height:100%;')), 
+						we_html_element::htmlSpan(array('style' => 'display:inline-block;height: 100%;vertical-align: middle;')) .
 						we_html_element::htmlSpan(array('id' => 'preview_' . $this->acId), $img)
 				);
 				$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'display:inline-block;padding-top:30px;')), $dropzoneContent);
-				$dropzoneStyle = 'width:auto;padding:0px 0 0 12px;';
+				$dropzoneStyle  = 'width:auto;padding:0px 0 0 12px;';
 			}
 
 			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;top.dropzoneAddPreview('" . $this->acId . "', id, table, ct, path);" . $this->doOnDropFromTree . "}";
 			$callbackExt = "if(importedDocument.id){" . $this->doOnDropFromExt . "top.close();}";
-			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->contentTypes, array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->table);
+			$dropzone = we_fileupload_ui_base::getExternalDropZone('we_File', $dropzoneContent, $dropzoneStyle, implode(',', $this->contentTypes), array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->acId, $this->table);
 
 
-			$html = we_html_element::htmlDiv(array(), we_html_element::htmlDiv(array(), $html) .
-					we_html_element::htmlDiv(array('style' => 'margin-top:-4px;'), $dropzone)
+			$html = we_html_element::htmlDiv(array(),
+				we_html_element::htmlDiv(array(), $html) .
+				we_html_element::htmlDiv(array('style' => 'margin-top:-4px;'), $dropzone)
 			);
-			$this->isDropFromTree = $this->isDropFromExt = false; //reset default for other instances on the same site
+			$this->isDropFromTree = $this->isDropFromExt = false;//reset default for other instances on the same site
 		}
 
 
@@ -413,7 +416,6 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 		$this->inputName = $name;
 		$this->inputValue = $value;
 		$this->inputAttribs = "";
-		$class = $onchange = 0;
 		if(isset($attribs) && is_array($attribs)){
 			foreach($attribs as $key => $val){
 				$key = strtolower($key);
@@ -422,11 +424,12 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 						$this->inputId = $key;
 						break;
 					case "onchange":
-						$onchange = 1;
-						$this->inputAttribs .= $key . '="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=1;' : '') . $val . '" ';
+						$_onchange = 1;
+						$this->inputAttribs .= $key . '="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+						hot = 1}' : '') . $val . '" ';
 						break;
 					case "class":
-						$class = 1;
+						$_class = 1;
 						$val.=' wetextinput';
 					case "onblur":
 					case "onfocus":
@@ -434,14 +437,18 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 						$this->inputAttribs .= $key . '="' . $val . '" ';
 				}
 			}
-			if(!$class){
+			if(!isset($_class)){
 				$this->inputAttribs .= 'class="wetextinput" ';
 			}
-			if(!$onchange){
-				$this->inputAttribs .= ' onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=1;' : '') . '" ';
+			if(!isset($_onchange)){
+				$this->inputAttribs .= ' onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+						hot = 1};
+						' : '') . '" ';
 			}
 		} else {
-			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);hot=1;' : '') . '" ';
+			$this->inputAttribs = 'class="wetextinput" onchange="' . ($markHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+						hot = 1;
+						}' : '') . '" ';
 		}
 		if(!$this->inputId){
 			$this->setInputId();
@@ -587,9 +594,9 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 		}
 
 		/* FIXME: dropzone callback must be placed here: but this is never called, because we have imageChanged() onChange() in other fields
-		  if($this->isDropFromExt || $this->isDropFromTree){
-		  $this->doOnItemSelect .= top.dropzoneAddPreview('" . $this->acId . "', document.we_form['yuiAcResult" . $this->acId . "'].value, '" . $this->table . "', 'image/*', document.we_form['yuiAcId" . $this->acId . "'].value);";
-		  }
+		if($this->isDropFromExt || $this->isDropFromTree){
+			$this->doOnItemSelect .= top.dropzoneAddPreview('" . $this->acId . "', document.we_form['yuiAcResult" . $this->acId . "'].value, '" . $this->table . "', 'image/*', document.we_form['yuiAcId" . $this->acId . "'].value);";
+		}
 		 *
 		 */
 		$this->_doOnItemSelect[] = $this->doOnItemSelect;

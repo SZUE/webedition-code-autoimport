@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_tree_customer extends we_tree_base{
+class we_customer_tree extends weTree{
 
 	protected function customJSFile(){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_tree.js');
@@ -55,11 +55,11 @@ class we_tree_customer extends we_tree_base{
 		);
 
 		$js = (!$rootID ?
-				'top.content.treeData.clear();' .
-				'top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
+				$this->topFrame . '.treeData.clear();' .
+				$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
 			'var attribs={};';
 		foreach($treeItems as $item){
-			$js.=($rootID ? 'if(top.content.treeData.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){' : '') .
+			$js.=($rootID ? 'if(' . $this->topFrame . '.treeData.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){' : '') .
 				'attribs={';
 
 			foreach($item as $k => $v){
@@ -77,11 +77,11 @@ class we_tree_customer extends we_tree_base{
 					',';
 			}
 
-			$js.='};
-top.content.treeData.add(new top.content.node(attribs));' .
+			$js.='};' .
+				$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node(attribs));' .
 				($rootID ? '}' : '');
 		}
-		$js.='top.content.drawTree();';
+		$js.=$this->topFrame . '.drawTree();';
 
 		return $js;
 	}
@@ -127,7 +127,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 				'typ' => ($db->f("IsFolder") == 1 ? 'group' : 'item'),
 				'contenttype' => ($db->f("IsFolder") == 1 ? 'we/customerGroup' : 'we/customer'),
 				'disabled' => 0,
-				'published' => $db->f('LoginDenied') ? 0 : 1,
+				'published' => intval($db->f('LoginDenied')),
 				'tooltip' => intval($db->f("ID")),
 				'offset' => $offset,
 				'ID' => intval($db->f("ID")),
@@ -215,7 +215,6 @@ top.content.treeData.add(new top.content.node(attribs));' .
 
 		$level = count($pidarr);
 		$levelcount = count($grouparr);
-		$select = array_filter($select);
 
 		$grp = implode(',', array_slice($grouparr, 0, $level + 1));
 
@@ -308,7 +307,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 						'isfolder' => $db->f("IsFolder"),
 						'typ' => "item",
 						'disabled' => 0,
-						'published' => $db->f('LoginDenied') ? 0 : 1,
+						'published' => $db->f('LoginDenied'),
 						'tooltip' => $db->f("ID")
 					);
 				}

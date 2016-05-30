@@ -21,10 +21,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect(array("BROWSE_SERVER"));
 
 echo we_html_tools::getHtmlTop() . STYLESHEET;
+
+$we_fileData = "";
 
 $id = we_base_request::_(we_base_request::FILE, 'id');
 if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){
@@ -38,8 +41,6 @@ if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){
 	if($we_fileData === false){
 		$we_alerttext = sprintf(g_l('alert', '[can_not_open_file]'), str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), 1);
 	}
-} else {
-	$we_fileData = "";
 }
 
 $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:document.forms[0].submit();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();"));

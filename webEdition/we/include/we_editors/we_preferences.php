@@ -61,7 +61,7 @@ function create_dialog($name, array $content, $expand = -1, $show_text = '', $hi
 }
 
 function getColorInput($name, $value, $disabled = false, $width = 20, $height = 20){
-	return we_html_element::htmlHidden($name, $value) . '<table class="default" style="border:1px solid grey;margin:2px 0px;"><tr><td' .
+	return we_html_tools::hidden($name, $value) . '<table class="default" style="border:1px solid grey;margin:2px 0px;"><tr><td' .
 		($disabled ? ' class="disabled"' : '') .
 		' id="color_' . $name . '" ' .
 		($value ? (' style="background-color:' . $value . ';"') : '') .
@@ -515,11 +515,12 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array(
 		case 'WE_ERROR_MAIL':
 			$_file = &$GLOBALS['config_files']['conf_global']['content'];
 
-			if(!$settingvalue && WE_ERROR_MAIL){
+			if($settingvalue == 0 && WE_ERROR_MAIL == 1){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, 'WE_ERROR_MAIL', 0, true, $comment);
-			} else if($settingvalue && !WE_ERROR_MAIL){
+			} else if($settingvalue == 1 && WE_ERROR_MAIL == 0){
 				$_file = we_base_preferences::changeSourceCode('define', $_file, 'WE_ERROR_MAIL', 1, true, $comment);
 			}
+
 			return;
 
 		case 'WE_ERROR_MAIL_ADDRESS':
@@ -1174,7 +1175,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_attr = ' class="defaultfont" style="width:150px;"';
 			$_attr_dis = ' class="defaultfont" style="width:150px;color:grey;"';
 
-			$_template_editor_mode = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorMode]', 'onchange' => 'displayEditorOptions(this.options[this.options.selectedIndex].value);'));
+			$_template_editor_mode = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorMode]', 'size' => 1, 'onchange' => 'displayEditorOptions(this.options[this.options.selectedIndex].value);'));
 			$_template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
 			$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
 			//$_template_editor_mode->addOption('java', g_l('prefs', '[editor_java]'));
@@ -1211,7 +1212,7 @@ function build_dialog($selected_setting = 'ui'){
 			// Build specify font
 			$_template_editor_font_specify_code = we_html_forms::checkbox(1, $_template_editor_font_specify, 'newconf[editorFont]', g_l('prefs', '[specify]'), true, 'defaultfont', "if (document.getElementsByName('newconf[editorFont]')[0].checked) { document.getElementsByName('newconf[editorFontname]')[0].disabled = false;document.getElementsByName('newconf[editorFontsize]')[0].disabled = false; } else { document.getElementsByName('newconf[editorFontname]')[0].disabled = true;document.getElementsByName('newconf[editorFontsize]')[0].disabled = true; }");
 
-			$_template_editor_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontname]', 'style' => 'width: 135px;', ($_template_editor_font_specify ? 'enabled' : 'disabled') => ($_template_editor_font_specify ? 'enabled' : 'disabled')));
+			$_template_editor_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontname]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_font_specify ? 'enabled' : 'disabled') => ($_template_editor_font_specify ? 'enabled' : 'disabled')));
 
 			/* 			$_colorsDisabled = true;
 
@@ -1228,7 +1229,7 @@ function build_dialog($selected_setting = 'ui'){
 			}
 			$_template_editor_font_select_box->selectOption($_template_editor_font_specify ? get_value('editorFontname') : 'Courier New');
 
-			$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontsize]', 'style' => 'width: 135px;', ($_template_editor_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_font_size_specify ? 'enabled' : 'disabled')));
+			$_template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontsize]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_font_size_specify ? 'enabled' : 'disabled')));
 			foreach($_template_font_sizes as $key => $sz){
 				$_template_editor_font_sizes_select_box->addOption($sz, $sz);
 			}
@@ -1254,7 +1255,7 @@ function build_dialog($selected_setting = 'ui'){
 			  <tr><td id="label_editorCommentFontcolor"' . $attr . '>' . g_l('prefs', '[editor_comment_font_color]') . '</td><td>' . $_template_editor_comment_fontcolor_selector . '</td></tr>
 			  </table>';
 			 */
-			$_template_editor_theme = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTheme]'));
+			$_template_editor_theme = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTheme]', 'size' => 1));
 			foreach(glob(WE_LIB_PATH . 'additional/CodeMirror/theme/*.css') as $filename){
 				$theme = str_replace(array('.css', WE_LIB_PATH . 'additional/CodeMirror/theme/'), '', $filename);
 				$_template_editor_theme->addOption($theme, $theme);
@@ -1266,41 +1267,39 @@ function build_dialog($selected_setting = 'ui'){
 			$_template_editor_highlightLine_code = we_html_forms::checkbox(1, get_value('editorHighlightCurrentLine'), 'newconf[editorHighlightCurrentLine]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
 			//Build activation of code completion
-			$_template_editor_codecompletion_code = we_html_element::htmlHiddens(array(
-					'newconf[editorCodecompletion][WE]' => get_value('editorCodecompletion-WE'),
-					'newconf[editorCodecompletion][htmlTag]' => get_value('editorCodecompletion-htmlTag'),
-					'newconf[editorCodecompletion][htmlDefAttr]' => get_value('editorCodecompletion-htmlDefAttr'),
-					'newconf[editorCodecompletion][htmlAttr]' => get_value('editorCodecompletion-htmlAttr'),
-					'newconf[editorCodecompletion][htmlJSAttr]' => get_value('editorCodecompletion-htmlJSAttr'),
-					'newconf[editorCodecompletion][html5Tag]' => get_value('editorCodecompletion-html5Tag'),
-					'newconf[editorCodecompletion][html5Attr]' => get_value('editorCodecompletion-html5Attr')
-				)) .
-				we_html_forms::checkbox(1, get_value('editorCodecompletion-WE'), 'editorCodecompletion0', 'WE-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][WE]\');') .
+			$_template_editor_codecompletion_code = we_html_forms::checkbox(1, get_value('editorCodecompletion-WE'), 'editorCodecompletion0', 'WE-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][WE]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][WE]', get_value('editorCodecompletion-WE')) .
 				'<br/>' .
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlTag'), 'editorCodecompletion1', 'HTML-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlTag]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][htmlTag]', get_value('editorCodecompletion-htmlTag')) .
 				'<br/>' .
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlDefAttr'), 'editorCodecompletion2', 'HTML-Default-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlDefAttr]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][htmlDefAttr]', get_value('editorCodecompletion-htmlDefAttr')) .
 				'<br/>' .
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlAttr'), 'editorCodecompletion3', 'HTML-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlAttr]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][htmlAttr]', get_value('editorCodecompletion-htmlAttr')) .
 				'<br/>' .
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlJSAttr'), 'editorCodecompletion4', 'HTML-JS-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlJSAttr]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][htmlJSAttr]', get_value('editorCodecompletion-htmlJSAttr')) .
 				'<br/>' .
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-html5Tag'), 'editorCodecompletion5', 'HTML5-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Tag]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][html5Tag]', get_value('editorCodecompletion-html5Tag')) .
 				'<br/>' .
-				we_html_forms::checkbox(1, get_value('editorCodecompletion-html5Attr'), 'editorCodecompletion6', 'HTML5-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Attr]\');');
+				we_html_forms::checkbox(1, get_value('editorCodecompletion-html5Attr'), 'editorCodecompletion6', 'HTML5-Attribs', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][html5Attr]\');') .
+				we_html_tools::hidden('newconf[editorCodecompletion][html5Attr]', get_value('editorCodecompletion-html5Attr'));
 
 
 			$_template_editor_tabstop_code = we_html_forms::checkbox(1, get_value('editorShowTab'), 'editorShowTab', g_l('prefs', '[show]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorShowTab]\');') .
-				we_html_element::htmlHidden('newconf[editorShowTab]', get_value('editorShowTab')) .
+				we_html_tools::hidden('newconf[editorShowTab]', get_value('editorShowTab')) .
 				'<table class="default">
 				<tr><td class="defaultfont" style="width:200px;">' . g_l('prefs', '[editor_tabSize]') . '</td><td>' . we_html_tools::htmlTextInput("newconf[editorTabSize]", 2, get_value("editorTabSize"), 2, "", "number", 135) . '</td></tr>
 			</table>';
 
 			$_template_editor_Wrap_code = we_html_forms::checkbox(1, get_value('editorWrap'), 'editorWrap', g_l('prefs', '[editor_enable]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorWrap]\');') .
-				we_html_element::htmlHidden('newconf[editorWrap]', get_value('editorWrap'));
+				we_html_tools::hidden('newconf[editorWrap]', get_value('editorWrap'));
 
 			$_template_editor_autoIndent_code = we_html_forms::checkbox(1, get_value('editorAutoIndent'), 'editorAutoIndent', g_l('prefs', '[editor_enable]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorAutoIndent]\');') .
-				we_html_element::htmlHidden('newconf[editorAutoIndent]', get_value('editorAutoIndent'));
+				we_html_tools::hidden('newconf[editorAutoIndent]', get_value('editorAutoIndent'));
 
 			$_template_editor_tooltips_code = we_html_forms::checkbox(1, get_value('editorTooltips'), 'newconf[editorTooltips]', g_l('prefs', '[editorTooltips]'), true, 'defaultfont', '') .
 				'<br/>' .
@@ -1312,14 +1311,14 @@ function build_dialog($selected_setting = 'ui'){
 			// Build specify font
 			$_template_editor_tooltip_font_specify_code = we_html_forms::checkbox(1, $_template_editor_tooltip_font_specify, 'newconf[editorTooltipFont]', g_l('prefs', '[specify]'), true, 'defaultfont', 'if (document.getElementsByName(\'newconf[editorTooltipFont]\')[0].checked) { document.getElementsByName(\'newconf[editorTooltipFontname]\')[0].disabled = false;document.getElementsByName(\'newconf[editorTooltipFontsize]\')[0].disabled = false; } else { document.getElementsByName(\'newconf[editorTooltipFontname]\')[0].disabled = true;document.getElementsByName(\'newconf[editorTooltipFontsize]\')[0].disabled = true; }');
 
-			$_template_editor_tooltip_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTooltipFontname]', 'style' => 'width: 135px;', ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled')));
+			$_template_editor_tooltip_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTooltipFontname]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_specify ? 'enabled' : 'disabled')));
 
 			foreach($_template_fonts as $font){
 				$_template_editor_tooltip_font_select_box->addOption($font, $font);
 			}
 			$_template_editor_tooltip_font_select_box->selectOption($_template_editor_tooltip_font_specify ? get_value('editorTooltipFontname') : 'Tahoma');
 
-			$_template_editor_tooltip_font_sizes_select_box = new we_html_select(array('class' => 'weSelect editor editor_codemirror2', 'name' => 'newconf[editorTooltipFontsize]', 'style' => 'width: 135px;', ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled')));
+			$_template_editor_tooltip_font_sizes_select_box = new we_html_select(array('class' => 'weSelect editor editor_codemirror2', 'name' => 'newconf[editorTooltipFontsize]', 'size' => 1, 'style' => 'width: 135px;', ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled') => ($_template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled')));
 			$template_toolfont_sizes = array(10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
 			foreach($template_toolfont_sizes as $sz){
 				$_template_editor_tooltip_font_sizes_select_box->addOption($sz, $sz);
@@ -1377,7 +1376,7 @@ for(i=0;i<elements.length; ++i){
 				/**
 				 * Recipients list
 				 */
-				$_select_box = new we_html_select(array("class" => "weSelect", "name" => "we_recipient", 'size' => 10, "style" => "width: 340px;height:100px", "ondblclick" => "edit_recipient();"));
+				$_select_box = new we_html_select(array("class" => "weSelect", "name" => "we_recipient", "size" => 10, "style" => "width: 340px;height:100px", "ondblclick" => "edit_recipient();"));
 
 				$_enabled_buttons = false;
 
@@ -1766,7 +1765,7 @@ for(i=0;i<elements.length; ++i){
 			$_auth_pass = get_value("HTTP_PASSWORD");
 
 			// Build dialog if user has permission
-			$_use_auth = we_html_element::htmlHidden('newconf[useauth]', $_auth) .
+			$_use_auth = we_html_tools::hidden('newconf[useauth]', $_auth) .
 				we_html_forms::checkbox(1, $_auth, "useauthEnabler", g_l('prefs', '[useauth]'), false, "defaultfont", "set_state_auth();");
 
 			/**
@@ -1893,6 +1892,11 @@ for(i=0;i<elements.length; ++i){
 			$_foldAt = 4;
 
 			// Create checkboxes
+			/* $_template_error_handling_table = new we_html_table(array('class' => 'default'), 8, 1);
+			  $_template_error_handling_table->setCol(0, 0, null, we_html_forms::checkbox(1, get_value('DISABLE_TEMPLATE_CODE_CHECK'), 'DISABLE_TEMPLATE_CODE_CHECK', g_l('prefs', '[disable_template_code_check]'), true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[DISABLE_TEMPLATE_CODE_CHECK]\');') .
+			  we_html_tools::hidden('newconf[DISABLE_TEMPLATE_CODE_CHECK]', get_value('DISABLE_TEMPLATE_CODE_CHECK')));
+			 */
+			// Create checkboxes
 			$_we_error_handler = we_html_forms::checkbox(1, get_value('WE_ERROR_HANDLER'), 'newconf[WE_ERROR_HANDLER]', g_l('prefs', '[error_use_handler]'), false, 'defaultfont', 'set_state_error_handler();');
 
 			// Error types
@@ -1916,7 +1920,7 @@ for(i=0;i<elements.length; ++i){
 			$_error_mail_specify_table = new we_html_table(array('class' => 'default', 'style' => 'margin-left:25px;'), 1, 4);
 
 			$_error_mail_specify_table->setCol(0, 1, array('class' => 'defaultfont'), g_l('prefs', '[error_mail_address]') . ': ');
-			$_error_mail_specify_table->setCol(0, 2, array('style' => 'text-align:left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, get_value('WE_ERROR_MAIL_ADDRESS'), 100, 'placeholder="mail@example"', 'email', 195));
+			$_error_mail_specify_table->setCol(0, 2, array('style' => 'text-align:left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, (get_value('WE_ERROR_MAIL') ? get_value('WE_ERROR_MAIL_ADDRESS') : ''), 100, 'placeholder="mail@example"', 'email', 195));
 
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());
 
@@ -1929,6 +1933,52 @@ for(i=0;i<elements.length; ++i){
 
 			return create_dialog('settings_error_expert', $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
 
+		/*		 * *******************************************************************
+		 * Validation (XHTML)
+		 * ******************************************************************* */
+		/* case 'validation':
+		  if(!permissionhandler::hasPerm('ADMINISTRATOR')){
+		  break;
+		  }
+
+		  //  activate xhtml_debug
+		  $_xhtml_debug = we_html_forms::checkbox(1, get_value('XHTML_DEBUG'), 'setXhtml_debug', g_l('prefs', '[xhtml_debug_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[XHTML_DEBUG]\');disable_xhtml_fields(this.checked, mainXhtmlFields);disable_xhtml_fields((document.forms[0][\'setXhtml_show_wrong\'].checked && this.checked), showXhtmlFields);') .
+		  we_html_tools::hidden('newconf[XHTML_DEBUG]', get_value('XHTML_DEBUG'));
+
+		  //  activate xhtml_remove_wrong
+		  $_xhtml_remove_wrong = we_html_forms::checkbox(1, get_value('XHTML_REMOVE_WRONG'), 'setXhtml_remove_wrong', g_l('prefs', '[xhtml_remove_wrong]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'xhtml_remove_wrong\');', !get_value('XHTML_DEBUG')) .
+		  we_html_tools::hidden('newconf[XHTML_REMOVE_WRONG]', get_value('XHTML_REMOVE_WRONG'));
+
+		  //  activate xhtml_show_wrong
+		  $_xhtml_show_wrong = we_html_forms::checkbox(1, get_value('xhtml_show_wrong'), 'setXhtml_show_wrong', g_l('prefs', '[xhtml_show_wrong_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong]\');disable_xhtml_fields(this.checked,showXhtmlFields);', !get_value('XHTML_DEBUG')) .
+		  we_html_tools::hidden('newconf[xhtml_show_wrong]', get_value('xhtml_show_wrong'));
+
+		  //  activate xhtml_show_wrong_text
+		  $_xhtml_show_wrong_text = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_text'), 'setXhtml_show_wrong_text', g_l('prefs', '[xhtml_show_wrong_text_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_text]\');', !get_value('xhtml_show_wrong')) .
+		  we_html_tools::hidden('newconf[xhtml_show_wrong_text]', get_value('xhtml_show_wrong_text'));
+
+		  //  activate xhtml_show_wrong_text
+		  $_xhtml_show_wrong_js = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_js'), 'setXhtml_show_wrong_js', g_l('prefs', '[xhtml_show_wrong_js_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_js]\');', !get_value('xhtml_show_wrong')) .
+		  we_html_tools::hidden('newconf[xhtml_show_wrong_js]', get_value('xhtml_show_wrong_js'));
+
+		  //  activate xhtml_show_wrong_text
+		  $_xhtml_show_wrong_error_log = we_html_forms::checkbox(1, get_value('xhtml_show_wrong_error_log'), 'setXhtml_show_wrong_error_log', g_l('prefs', '[xhtml_show_wrong_error_log_html]'), false, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[xhtml_show_wrong_error_log]\');', !get_value('xhtml_show_wrong')) .
+		  we_html_tools::hidden('newconf[xhtml_show_wrong_error_log]', get_value('xhtml_show_wrong_error_log'));
+
+		  $_settings = array(
+		  array('html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[xhtml_debug_explanation]'), we_html_tools::TYPE_INFO, 450), 'noline' => 1),
+		  array('headline' => g_l('prefs', '[xhtml_debug_headline]'), 'html' => $_xhtml_debug . '<br/>' . $_xhtml_remove_wrong, 'space' => 200, 'noline' => 1),
+		  array('headline' => g_l('prefs', '[xhtml_show_wrong_headline]'), 'html' => $_xhtml_show_wrong .
+		  '<br/>' .
+		  $_xhtml_show_wrong_text .
+		  '<br/>' .
+		  $_xhtml_show_wrong_js .
+		  '<br/>' .
+		  $_xhtml_show_wrong_error_log, 'space' => 200, 'noline' => 1),
+		  );
+
+		  return create_dialog('',$_settings, -1);
+		 */
 		case 'security':
 			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
 				return;
@@ -2019,29 +2069,28 @@ for(i=0;i<elements.length; ++i){
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
 				$_emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, array("onchange" => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"), 'value', 300, 'defaultfont');
 
-				$_smtp_table = new we_html_table(array('class' => 'default', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'), 4, 2);
+				$_smtp_table = new we_html_table(array('class' => 'default', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'), 9, 3);
 				$_smtp_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('prefs', '[smtp_server]'));
-				$_smtp_table->setCol(0, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_SERVER]', 24, get_value('SMTP_SERVER'), 180, '', 'text', 180));
-				$_smtp_table->setCol(1, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_port]'));
-				$_smtp_table->setCol(1, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PORT]', 24, get_value('SMTP_PORT'), 180, '', 'text', 180));
+				$_smtp_table->setCol(0, 2, array('styke' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_SERVER]', 24, get_value('SMTP_SERVER'), 180, '', 'text', 180));
+				$_smtp_table->setCol(2, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_port]'));
+				$_smtp_table->setCol(2, 2, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PORT]', 24, get_value('SMTP_PORT'), 180, '', 'text', 180));
 
 
 				$_encryptSelect = we_html_tools::htmlSelect('newconf[SMTP_ENCRYPTION]', array(0 => g_l('prefs', '[smtp_encryption_none]'), 'ssl' => g_l('prefs', '[smtp_encryption_ssl]'), 'tls' => g_l('prefs', '[smtp_encryption_tls]')), 1, get_value('SMTP_ENCRYPTION'), false, array(), 'value', 180, 'defaultfont');
 
-				$_smtp_table->setCol(2, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_encryption]'));
-				$_smtp_table->setCol(2, 1, array('style' => 'text-align:right'), $_encryptSelect);
-				$_smtp_table->setCol(3, 0, array('class' => 'defaultfont', 'colspan' => 3), we_html_forms::checkbox(1, get_value('SMTP_AUTH'), 'newconf[SMTP_AUTH]', g_l('prefs', '[smtp_auth]'), false, 'defaultfont', "var el2 = document.getElementById('auth_table').style; if(this.checked) el2.display='block'; else el2.display='none';"));
+				$_smtp_table->setCol(4, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_encryption]'));
+				$_smtp_table->setCol(4, 2, array('style' => 'text-align:left'), $_encryptSelect);
 
 
-				$_auth_table = new we_html_table(array('class' => 'default', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'), 2, 2);
+				$_auth_table = new we_html_table(array('class' => 'default', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'), 4, 3);
 				$_auth_table->setCol(0, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_username]'));
-				$_auth_table->setCol(0, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, 'placeholder="username"', 'text', 180));
-				$_auth_table->setCol(1, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_password]'));
-				$_auth_table->setCol(1, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, get_value('SMTP_PASSWORD'), 105, 'placeholder="password"', 'password', 180));
+				$_auth_table->setCol(0, 2, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, '', 'text', 105));
+				$_auth_table->setCol(2, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_password]'));
+				$_auth_table->setCol(2, 2, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, get_value('SMTP_PASSWORD'), 105, '', 'password', 105));
+				$_smtp_table->setCol(6, 0, array('class' => 'defaultfont', 'colspan' => 3), we_html_forms::checkbox(1, get_value('SMTP_AUTH'), 'newconf[SMTP_AUTH]', g_l('prefs', '[smtp_auth]'), false, 'defaultfont', "var el2 = document.getElementById('auth_table').style; if(this.checked) el2.display='block'; else el2.display='none';"));
 
 				$_settings[] = array('headline' => g_l('prefs', '[mailer_type]'), 'html' => $_emailSelect, 'space' => 120, 'noline' => 1);
 				$_settings[] = array('headline' => '', 'html' => $_smtp_table->getHtml(), 'space' => 120, 'noline' => 1);
-				$_settings[] = array('headline' => '', 'html' => $_auth_table->getHtml(), 'space' => 120, 'noline' => 1);
 			}
 
 			return create_dialog('settings_email', $_settings);

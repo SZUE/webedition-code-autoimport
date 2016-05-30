@@ -45,7 +45,7 @@ function getWebEdition_Tree(){
 	switch($_SESSION['weS']['we_mode']){
 		default:
 		case we_base_constants::MODE_NORMAL:
-			$Tree = new we_tree_main("webEdition.php", "top", "top", "top.load");
+			$Tree = new weMainTree("webEdition.php", "top", "top", "top.load");
 			return $Tree->getJSTreeCode();
 		case we_base_constants::MODE_SEE:
 			return we_html_element::jsElement('
@@ -177,9 +177,11 @@ var WebEdition = {
 		},
 		dirs:{
 			WEBEDITION_DIR:"<?php echo WEBEDITION_DIR; ?>",
-			WE_MODULES_DIR: "<?php echo WE_MODULES_DIR; ?>",
 			WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : ''; ?>",
+			WE_MODULES_DIR: "<?php echo WE_MODULES_DIR; ?>",
 			WE_MESSAGING_MODULE_DIR: "<?php echo defined('WE_MESSAGING_MODULE_DIR') ? WE_MESSAGING_MODULE_DIR : ''; ?>",
+			IMAGE_DIR:"<?php echo IMAGE_DIR; ?>",
+			ICON_DIR:"<?php echo ICON_DIR; ?>",
 			WE_CUSTOMER_MODULE_DIR:"<?php echo defined('WE_CUSTOMER_MODULE_DIR') ? WE_CUSTOMER_MODULE_DIR : 'WE_CUSTOMER_MODULE_DIR'; ?>",
 			WE_INCLUDES_DIR:"<?php echo WE_INCLUDES_DIR; ?>",
 			WE_SHOP_MODULE_DIR: "<?php echo defined('WE_SHOP_MODULE_DIR') ? WE_SHOP_MODULE_DIR : 'WE_SHOP_MODULE_DIR'; ?>",
@@ -191,11 +193,14 @@ var WebEdition = {
 			main:{
 				unable_to_call_setpagenr: '<?php echo g_l('global', '[unable_to_call_setpagenr]'); ?>',
 				open_link_in_SEEM_edit_include: '<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[open_link_in_SEEM_edit_include]')); ?>',
+				browser_crashed: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>',
 				no_perms_action: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms_action]')); ?>',
 				no_document_opened: '<?php echo we_message_reporting::prepareMsgForJS(g_l('global', '[no_document_opened]')); ?>',
 				no_editor_left: "<?php echo g_l('multiEditor', '[no_editor_left]'); ?>",
 				eplugin_exit_doc: "<?php echo g_l('alert', '[eplugin_exit_doc]'); ?>",
-				delete_single_confirm_delete: "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>\n",
+				delete_single_confirm_delete: "<?php echo g_l('alert', '[delete_single][confirm_delete]'); ?>",
+				cockpit_reset_settings: '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
+				cockpit_not_activated: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
 				no_perms: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[no_perms]')); ?>',
 				nav_first_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][first_document]')); ?>',
 				nav_last_document: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[navigation][last_document]')); ?>',
@@ -205,14 +210,23 @@ var WebEdition = {
 				nothing_to_save: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_save]')) ?>",
 				nothing_to_publish: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_publish]')) ?>",
 				nothing_to_delete: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_delete]')) ?>",
-				nothing_to_move:"<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[nothing_to_move]')) ?>",
-				notValidFolder:"<?php echo we_message_reporting::prepareMsgForJS(g_l('weClass', '[notValidFolder]')) ?>",
 				save_error_fields_value_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')); ?>",
 				name_nok:"<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[name_nok]')); ?>",
 				prefs_saved_successfully: "<?php echo we_message_reporting::prepareMsgForJS(g_l('cockpit', '[prefs_saved_successfully]')); ?>",
+				copy_folder_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[copy_folder_not_valid]')); ?>",
 				folder_copy_success: "<?php echo we_message_reporting::prepareMsgForJS(g_l('copyFolder', '[copy_success]')); ?>",
+				exit_multi_doc_question: "<?php echo g_l('alert', '[exit_multi_doc_question]'); ?>",
 				close_include:"<?php echo we_message_reporting::prepareMsgForJS(g_l('SEEM', '[alert][close_include]')); ?>",
+				confirm_applyFilterFolder: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]'); ?>",
+				confirm_applyFilterDocument: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]'); ?>",
 				untitled:"<?php echo g_l('global', '[untitled]'); ?>",
+				in_wf_warning:{
+					tblFile:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : ''); ?>",
+					tblObjectFiles:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObjectFiles][in_wf_warning]') : ''); ?>",
+					tblObject:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObject][in_wf_warning]') : ''); ?>",
+					tblTemplates:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblTemplates][in_wf_warning]') : ''); ?>",
+					tblVFiles:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblVFiles][in_wf_warning]') : ''); ?>",
+				},
 			},
 			message_reporting:{
 				notice:"<?php echo g_l('alert', '[notice]'); ?>",
@@ -222,30 +236,7 @@ var WebEdition = {
 				msgWarning:"<?php echo g_l('messageConsole', '[iconBar][warning]'); ?>",
 				msgError:"<?php echo g_l('messageConsole', '[iconBar][error]'); ?>",
 			},
-			alert:{
-				browser_crashed: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[browser_crashed]')); ?>',
-				confirm_applyFilterFolder: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersFolder]'); ?>",
-				confirm_applyFilterDocument: "<?php echo g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]'); ?>",
-				copy_folder_not_valid: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[copy_folder_not_valid]')); ?>",
-				exit_multi_doc_question: "<?php echo g_l('alert', '[exit_multi_doc_question]'); ?>",
-				in_wf_warning:{
-					tblFile:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : ''); ?>",
-					tblObjectFiles:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObjectFiles][in_wf_warning]') : ''); ?>",
-					tblObject:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObject][in_wf_warning]') : ''); ?>",
-					tblTemplates:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblTemplates][in_wf_warning]') : ''); ?>",
-					tblVFiles:"<?php echo (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblVFiles][in_wf_warning]') : ''); ?>",
-				},
-				move:"<?php echo g_l('alert', '[move]'); ?>",
-				move_exit_open_docs_question:"<?php echo g_l('alert', '[move_exit_open_docs_question]'); ?>",
-				move_exit_open_docs_continue:"<?php echo g_l('alert', '[move_exit_open_docs_continue]'); ?>",
-			},
 			cockpit:{
-				increase_size: '<?php echo g_l('cockpit', '[increase_size]'); ?>',
-				not_activated: '<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')); ?>',
-				pre_remove: '<?php echo g_l('cockpit', '[pre_remove]'); ?>"',
-				post_remove: '" <?php echo g_l('cockpit', '[post_remove]'); ?>',
-				reduce_size: '<?php echo g_l('cockpit', '[reduce_size]') ?>',
-				reset_settings: '<?php echo g_l('alert', '[cockpit_reset_settings]'); ?>',
 			},
 			editorScript:{
 				confirm_navDel: "<?php echo g_l('navigation', '[del_question]'); ?>",
@@ -316,13 +307,13 @@ foreach(we_base_request::getAllTables() as $k => $v){
 		},
 		size:{
 			tree: {
-				hidden:<?php echo we_tree_base::HiddenWidth; ?>,
-				defaultWidth:<?php echo we_tree_base::DefaultWidth; ?>,
-				min:<?php echo we_tree_base::MinWidth; ?>,
-				max:<?php echo we_tree_base::MaxWidth; ?>,
-				step:<?php echo we_tree_base::StepWidth; ?>,
-				moveWidth:<?php echo we_tree_base::MoveWidth; ?>,
-				deleteWidth:<?php echo we_tree_base::DeleteWidth; ?>
+				hidden:<?php echo weTree::HiddenWidth; ?>,
+				defaultWidth:<?php echo weTree::DefaultWidth; ?>,
+				min:<?php echo weTree::MinWidth; ?>,
+				max:<?php echo weTree::MaxWidth; ?>,
+				step:<?php echo weTree::StepWidth; ?>,
+				moveWidth:<?php echo weTree::MoveWidth; ?>,
+				deleteWidth:<?php echo weTree::DeleteWidth; ?>
 			},
 			catSelect: {
 				width:<?php echo we_selector_file::WINDOW_CATSELECTOR_WIDTH; ?>,
@@ -513,7 +504,7 @@ if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailabl
 		switch($_SESSION['weS']['we_mode']){
 			default:
 			case we_base_constants::MODE_NORMAL:
-				$treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= we_tree_base::MinWidth) ? intval($_COOKIE["treewidth_main"]) : we_tree_base::DefaultWidth;
+				$treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= weTree::MinWidth) ? intval($_COOKIE["treewidth_main"]) : weTree::DefaultWidth;
 				$treeStyle = 'display:block;';
 				break;
 			case we_base_constants::MODE_SEE:

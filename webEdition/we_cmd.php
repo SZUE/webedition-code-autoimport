@@ -40,18 +40,12 @@ function findInclude($cmd){
 				unset($_SESSION['weS']['seemForOpenDelSelector']['Table']);
 			}
 		//no break
-		case 'we_selector_category':
-		case 'we_selector_directory':
-		case 'we_selector_document':
 		case 'we_selector_file':
+		case 'we_selector_category':
+		case 'we_selector_document':
 		case 'we_selector_image':
+		case 'we_selector_directory':
 			return 'selectors.inc.php';
-		case 'selectorEdit':
-			return 'we_editors/selectorEdit.inc.php';
-		case 'selectorBrowse':
-			return 'we_selectorBrowse.inc.php';
-		case 'selectorBrowseCmd':
-			return 'we_selectorBrowseCmd.inc.php';
 		case 'we_fileupload_editor':
 			return 'we_editors/we_fileupload.inc.php';
 		case 'backupLog':
@@ -74,9 +68,9 @@ function findInclude($cmd){
 			return 'we_modules/home.inc.php';
 		case 'loadSidebarDocument':
 			return 'sidebar.inc.php';
-		case 'siteImport':
-		case 'siteImportCreateWePageSettings':
 		case 'siteImportSaveWePageSettings':
+		case 'siteImportCreateWePageSettings':
+		case 'siteImport':
 		case 'updateSiteImportTable':
 			return 'we_siteimport.inc.php';
 		case 'loadTree':
@@ -94,16 +88,16 @@ function findInclude($cmd){
 			return 'we_logout.inc.php';
 		case 'openColorChooser':
 			return 'we_editors/we_colorChooser.inc.php';
-		case 'add_dt_template':
+		case 'newDocType':
+		case 'doctypes':
+		case 'save_docType':
 		case 'change_docType':
 		case 'deleteDocType':
 		case 'deleteDocTypeok':
+		case 'add_dt_template':
 		case 'delete_dt_template':
-		case 'doctypes':
-		case 'dt_add_cat':
 		case 'dt_delete_cat':
-		case 'newDocType':
-		case 'save_docType':
+		case 'dt_add_cat':
 			return 'we_editors/doctypeEdit.inc.php';
 		case 'rebuild':
 			return 'we_editors/we_rebuild.inc.php';
@@ -131,9 +125,9 @@ function findInclude($cmd){
 		case 'edit_document_with_parameters':
 			$GLOBALS['parastr'] = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 4);
 		case 'edit_document':
-		case 'edit_folder':
 		case 'new_document':
 		case 'new_folder':
+		case 'edit_folder':
 			return 'we_editors/we_edit_frameset.inc.php';
 		case 'edit_include_document':
 			return 'we_editors/SEEM_edit_include_document.inc.php';
@@ -145,65 +139,65 @@ function findInclude($cmd){
 		case 'load_import':
 		case 'do_import':
 			return 'we_editors/we_import_editor.inc.php';
+		case 'save_document':
+		case 'new_alias':
 		//case 'delete_alias':
-		case 'add_cat':
+		case 'switch_edit_page':
+		case 'update_image':
+		case 'update_file':
+		case 'copyDocument':
+		case 'insert_entry_at_list':
+		case 'down_entry_at_list':
+		case 'up_entry_at_list':
+		case 'down_link_at_list':
+		case 'up_link_at_list':
+		case 'delete_list':
 		case 'add_entry_to_list':
 		case 'add_link_to_linklist':
-		case 'add_navi':
-		case 'change_link':
 		case 'change_linklist':
-		case 'copyDocument':
-		case 'del_thumb':
-		case 'delete_all_cats':
-		case 'delete_all_navi':
-		case 'delete_cat':
-		case 'delete_link':
+		case 'change_link':
 		case 'delete_linklist':
-		case 'delete_list':
-		case 'delete_navi':
-		case 'doImage_convertGIF':
-		case 'doImage_convertJPEG':
-		case 'doImage_convertPNG':
-		case 'doImage_crop':
-		case 'do_add_thumbnails':
-		case 'doctype_changed':
-		case 'down_entry_at_list':
-		case 'down_link_at_list':
-		case 'insert_entry_at_list':
 		case 'insert_link_at_linklist':
-		case 'load_editor':
-		case 'new_alias':
-		case 'publish':
 		case 'reload_editpage':
+		case 'doctype_changed':
 		case 'remove_image':
-		case 'resizeImage':
-		case 'restore_defaults':
-		case 'revert_published':
-		case 'rotateImage':
-		case 'save_document':
-		case 'switch_edit_page':
-		case 'template_changed':
-		case 'unpublish':
-		case 'up_entry_at_list':
-		case 'up_link_at_list':
-		case 'update_file':
-		case 'update_image':
 		case 'wrap_on_off':
+		case 'restore_defaults':
+		case 'publish':
+		case 'unpublish':
+		case 'delete_link':
+		case 'add_cat':
+		case 'delete_cat':
+		case 'delete_all_cats':
+		case 'do_add_thumbnails':
+		case 'del_thumb':
+		case 'resizeImage':
+		case 'rotateImage':
+		case 'doImage_convertGIF':
+		case 'doImage_convertPNG':
+		case 'doImage_convertJPEG':
+		case 'doImage_crop':
+		case 'template_changed':
+		case 'add_navi':
+		case 'delete_navi':
+		case 'delete_all_navi':
+		case 'revert_published':
+		case 'load_editor':
 		//variants
 		case 'insert_variant':
-		case 'move_variant_down':
 		case 'move_variant_up':
-		case 'preview_variant':
+		case 'move_variant_down':
 		case 'remove_variant':
+		case 'preview_variant':
 			return 'we_editors/we_editor.inc.php';
 		case 'edit_linklist':
 		case 'edit_link':
 		case 'edit_link_at_class':
 		case 'edit_link_at_object':
 			return 'we_editors/we_linklistedit.inc.php';
-		case 'closeFolder':
 		case 'load':
 		case 'loadFolder':
+		case 'closeFolder':
 			return 'we_load.inc.php';
 		case 'delete':
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_delete.inc.php' : 'home.inc.php');
@@ -211,16 +205,12 @@ function findInclude($cmd){
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_move.inc.php' : 'home.inc.php');
 		case 'addToCollection':
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_addToCollection.inc.php' : 'home.inc.php');
-		case 'delete_single_document':
 		case 'do_delete':
+		case 'delete_single_document':
 			return 'we_delete.inc.php';
-		case 'delInfo':
-			return 'we_delInfo.inc.php';
 		case 'do_move':
 		case 'move_single_document':
 			return 'we_move.inc.php';
-		case 'moveInfo':
-			return 'we_moveInfo.inc.php';
 		case 'do_addToCollection':
 			return 'we_addToCollection.inc.php';
 		case 'show_binaryDoc':
@@ -257,10 +247,10 @@ function findInclude($cmd){
 			return 'changeTriggerID_rec.inc.php';
 		case 'add_thumbnail':
 			return 'we_editors/add_thumbnail.inc.php';
-		case 'image_convertJPEG':
-		case 'image_crop':
 		case 'image_resize':
+		case 'image_convertJPEG':
 		case 'image_rotate':
+		case 'image_crop':
 			return 'we_editors/image_edit.inc.php';
 		case 'open_wysiwyg_window':
 			return 'wysiwygWindow.inc.php';

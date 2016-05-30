@@ -27,7 +27,10 @@ class we_import_siteFrag extends we_fragment_base{
 
 	function __construct($obj){
 		$this->_obj = $obj;
-		parent::__construct("siteImport", 1, 0, array('style' => 'margin:10px 15px;'));
+		parent::__construct(
+			"siteImport", 1, 0, array(
+			'style' => 'margin:10px 15px;'
+		));
 	}
 
 	function init(){
@@ -59,6 +62,10 @@ top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . oldH
 		echo we_html_element::jsElement(
 			"top.siteimportbuttons.setProgress(100);setTimeout('" . we_message_reporting::getShowMessageCall(
 				g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
+	}
+
+	static function printHeader(){
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
 	}
 
 }

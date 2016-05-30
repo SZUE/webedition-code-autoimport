@@ -172,13 +172,8 @@ weSearch = {
 			//alert("Failure");
 		}
 	},
-	search: function (newSearch, sameRange) {
+	search: function (newSearch) {
 		var Checks = [], m = 0, i, table;
-
-		newSearch = newSearch === undefined ? true : newSearch;
-		sameRange = sameRange === undefined ? false : sameRange;
-
-		sameRange = sameRange || !newSearch ? true : false;// if not newSearch we preserve range anyway.
 
 		switch (this.conf.whichsearch) {
 			case WE().consts.weSearch.SEARCH_DOCLIST:
@@ -237,11 +232,12 @@ weSearch = {
 		}
 
 		if (Checks.length !== 0) {
-			if(!sameRange){
+			if (newSearch) {
 				window.document.we_form.elements['searchstart' + this.conf.whichsearch].value = 0;
+				window.document.we_form.elements.newSearch.value = 1;
+			} else {
+				window.document.we_form.elements.newSearch.value = 0;
 			}
-			window.document.we_form.elements.newSearch.value = newSearch ? 1 : 0;
-
 			this.makeAjaxRequestDoclist();
 		}
 	},
@@ -321,7 +317,7 @@ weSearch = {
 	absTop: function (el) {
 		return (el.offsetParent) ? el.offsetTop + this.absTop(el.offsetParent) : el.offsetTop;
 	},
-	reloadSameRange: function () {// FIXME: add param "newSearchTable"
+	reloadSameRange: function () {
 		var scrollActive = document.getElementById('scrollActive');
 		if (scrollActive === null) {
 			//this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value = parseInt(this.conf.editorBodyFrame.document.we_form.elements['searchstart' + this.conf.whichsearch].value) + anzahl;
@@ -343,6 +339,9 @@ weSearch = {
 			doc.we_form.elements['searchstart' + this.conf.whichsearch].value = parseInt(doc.we_form.elements['searchstart' + this.conf.whichsearch].value) - parseInt(doc.we_form.elements['anzahl' + this.conf.whichsearch].value);
 			this.search(false);
 		}
+	},
+	openToEdit: function (tab, id, contentType) {
+		WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
 	},
 	openModule: function (mod, id) {
 		top.we_cmd(mod + '_edit_ifthere', id);
@@ -1035,8 +1034,10 @@ weSearch = {
 
 			// reset busy
 			document.getElementById("resetBusy" + weSearch.conf.whichsearch).innerHTML = '';
+			document.getElementById("resetBusyDocSearch").innerHTML = '';
 
-			weSearch.search(true, true);
+			// reload search from same startID
+			weSearch.reloadSameRange();
 		},
 		failure: function (o) {
 			top.console.log("callback failure");

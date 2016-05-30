@@ -141,8 +141,8 @@ class we_dialog_image extends we_dialog_base{
 				$this->args['thumbnail'] = $thumb;
 				$this->args['fileSrc'] = id_to_path($fileID);
 				$this->args['src'] = $thumbpath . '?thumb=' . $fileID . ',' . $thumb;
-				$width = '';//$thumbObj->getOutputWidth();
-				$height = '';//$thumbObj->getOutputHeight();
+				$width = $thumbObj->getOutputWidth();
+				$height = $thumbObj->getOutputHeight();
 				unset($thumbObj);
 			} else {
 				$this->args['thumbnail'] = '';
@@ -250,10 +250,10 @@ class we_dialog_image extends we_dialog_base{
 			/**
 			 * input for external image files
 			 */
-			$cmd1 = "document.we_form.elements['we_dialog_args[extSrc]'].value";
-
+			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[extSrc]'].value");
+			$wecmdenc4 = we_base_request::encCmd("opener.document.we_form.elements.radio_type[0].checked=true;top.we_form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';opener.imageChanged();");
 			$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "',''," . $cmd1 . ",'" . we_base_request::encCmd("opener.document.we_form.elements.radio_type[0].checked=true;top.we_form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';opener.imageChanged();") . "')"
+				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','',document.we_form.elements['we_dialog_args[extSrc]'].value,'" . $wecmdenc4 . "')"
 				) : "";
 			$radioButtonExt = we_html_forms::radiobutton(we_base_link::TYPE_EXT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_EXT), "radio_type", g_l('wysiwyg', '[external_image]'), true, "defaultfont", "if(this.form.elements['radio_type'][1].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_EXT . "';top.document.getElementById('imageExt').style.display='block';top.document.getElementById('imageInt').style.display='none';}imageChanged();");
 			$textInput = we_html_tools::htmlTextInput("we_dialog_args[extSrc]", 30, (isset($this->args["extSrc"]) ? $this->args["extSrc"] : ""), "", ' onfocus="if(this.form.elements.radio_type[1].checked){imageChanged();}" onchange="imageChanged();if(this.value !== \'\' && this.value !== \'' . we_base_link::EMPTY_EXT . '\'){weButton.enable(\'btn_edit_ext\')}else{weButton.disable(\'btn_edit_ext\')}" ', "text", 315);
@@ -304,7 +304,7 @@ class we_dialog_image extends we_dialog_base{
 			 * thumbnail select list
 			 */
 			$thumbdata = (isset($this->args["thumbnail"]) ? $this->args["thumbnail"] : "");
-			$thumbnails = '<select id="selectThumbnail" name="we_dialog_args[thumbnail]" onchange="imageChanged(true);"' . ($this->getDisplayThumbsSel() === 'none' ? ' disabled="disabled"' : '') . '>';
+			$thumbnails = '<select id="selectThumbnail" name="we_dialog_args[thumbnail]" size="1" onchange="imageChanged(true);"' . ($this->getDisplayThumbsSel() === 'none' ? ' disabled="disabled"' : '') . '>';
 			$thumbnails .= '<option value="0"' . (($thumbdata == 0) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[nothumb]') . '</option>';
 
 			$this->db->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
@@ -351,7 +351,7 @@ class we_dialog_image extends we_dialog_base{
 		$title = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[title]", 5, (isset($this->args["title"]) ? $this->args["title"] : ""), "", "", "text", 315), g_l('global', '[title]'));
 
 		$foo = '
-			<select class="defaultfont" name="we_dialog_args[align]" style="width:140px;">
+			<select class="defaultfont" name="we_dialog_args[align]" size="1" style="width:140px;">
 				<option value="">' . g_l('global', '[default]') . '</option>
 				<option value="top"' . (($this->args["align"] === "top") ? "selected" : "") . '>Top</option>
 				<option value="middle"' . (($this->args["align"] === "middle") ? "selected" : "") . '>Middle</option>
@@ -442,32 +442,25 @@ class we_dialog_image extends we_dialog_base{
 			case 'update_editor':
 				//fill in all fields
 				$js = '
-top.document.we_form["we_cmd[0]"].value = "";
-var inputElem;';
+					top.document.we_form["we_cmd[0]"].value = "";
+					var inputElem;';
 				foreach($args as $k => $v){
 					$js .= $k !== 'cssclass' ? '
-if(inputElem = top.document.we_form.elements["we_dialog_args[' . $k . ']"]){
-	inputElem.value = "' . $v . '";
-}' : '';
+						if(inputElem = top.document.we_form.elements["we_dialog_args[' . $k . ']"]){
+							inputElem.value = "' . $v . '";
+						}' : '';
 				}
 				$js .= '
-if(inputElem = top.document.we_form.elements["we_dialog_args[thumbnail]"]){
-	var dis=(inputElem.value!="");
-	top.document.we_form.elements["we_dialog_args[height]"].disabled=dis;
-	top.document.we_form.elements["we_dialog_args[width]"].disabled=dis;
-}
-try{' .
-					($this->getDisplayThumbsSel() === 'none' ? 'top.document.getElementById("selectThumbnail").setAttribute("disabled", "disabled");' : 'top.document.getElementById("selectThumbnail").removeAttribute("disabled");') . '
-} catch(err){}
 
-var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
-var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';
-if(top.document.we_form.tinyMCEInitRatioH !== undefined){
-	top.document.we_form.tinyMCEInitRatioH.value = rh;
-}
-if(top.document.we_form.tinyMCEInitRatioW !== undefined){
-	top.document.we_form.tinyMCEInitRatioW.value = rw;
-}';
+						try{' .
+					($this->getDisplayThumbsSel() === 'none' ? 'top.document.getElementById("selectThumbnail").setAttribute("disabled", "disabled");' : 'top.document.getElementById("selectThumbnail").removeAttribute("disabled");') . '
+						} catch(err){}
+
+						var rh = ' . (intval($args["width"] * $args["height"]) ? ($this->args["width"] / $args["height"]) : 0) . ';
+						var rw = ' . (intval($args["width"] * $args["height"]) ? ($this->args["height"] / $args["width"]) : 0) . ';
+						if(top.document.we_form.tinyMCEInitRatioH !== undefined) top.document.we_form.tinyMCEInitRatioH.value = rh;
+						if(top.document.we_form.tinyMCEInitRatioW !== undefined) top.document.we_form.tinyMCEInitRatioW.value = rw;
+					';
 
 				echo we_html_tools::getHtmlTop($this->dialogTitle, '', '', we_html_element::jsElement($js), we_html_element::htmlBody());
 				break;

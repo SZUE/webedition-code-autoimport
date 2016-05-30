@@ -142,8 +142,9 @@ class we_navigation_ruleFrames{
 		$yuiSuggest->setResult('FolderID');
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth(275);
-		$cmd1 = "document.we_form.elements.FolderID.value";
-		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . FILE_TABLE . "', '" . we_base_request::encCmd($cmd1) . "', '" . we_base_request::encCmd("document.we_form.elements.FolderIDPath.value") . "')"), 10);
+		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
+		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderIDPath.value");
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory', document.we_form.elements.FolderID.value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "', '" . $wecmdenc2 . "')"), 10);
 		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements.FolderID.value = '';document.we_form.elements.FolderIDPath.value = '';"));
 
 		$weAcSelector = $yuiSuggest->getHTML();
@@ -169,8 +170,10 @@ class we_navigation_ruleFrames{
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setTable(OBJECT_TABLE);
 			$yuiSuggest->setWidth(275);
-			$cmd1 = "document.we_form.elements.ClassID.value";
-			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.ClassIDPath.value") . "','" . we_base_request::encCmd("top.opener.we_cmd('get_workspaces');") . "')"), 10);
+			$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.ClassID.value");
+			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.ClassIDPath.value");
+			$wecmdenc3 = we_base_request::encCmd("top.opener.we_cmd('get_workspaces');");
+			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements.ClassID.value, '" . OBJECT_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')"), 10);
 
 			$weAcSelector = $yuiSuggest->getHTML();
 
@@ -212,10 +215,8 @@ var dependencies = {
 </head>
 <body onload="switchType(document.we_form[\'SelectionType\'].value)" class="weDialogBody">
 	<form name="we_form" target="cmdFrame" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleCmd">' .
-			we_html_element::htmlHiddens(array(
-				'cmd' => '',
-				'ID' => '0'
-			)) .
+			we_html_tools::hidden('cmd', '') .
+			we_html_tools::hidden('ID', '0') .
 			we_html_multiIconBox::getHTML('navigationRules', $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]')) . '
 	</form>' .
 			$yuiSuggest->getYuiJs() .
@@ -223,7 +224,7 @@ var dependencies = {
 	}
 
 	function getHTMLCategory(){
-		$addbut = we_html_button::create_button('add', "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs(true);opener.addCat(top.allPaths, top.allIDs);')");
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths, top.allIDs);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 
@@ -243,11 +244,7 @@ var dependencies = {
 
 		$table->setCol(1, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
-		return $table->getHtml() .
-			we_html_element::htmlHiddens(array(
-				'CategoriesControl' => 0,
-				'CategoriesCount' => 0
-			)) .
+		return $table->getHtml() . we_html_tools::hidden('CategoriesControl', 0) . we_html_tools::hidden('CategoriesCount', 0) .
 			we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
 			var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",400,false);

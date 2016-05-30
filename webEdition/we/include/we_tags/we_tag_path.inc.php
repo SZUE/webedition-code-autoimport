@@ -50,22 +50,30 @@ function we_tag_path($attribs){
 	$style = $style ? ' style="' . $style . '"' : '';
 
 	$path = '';
-	$q = ' Text IN ("' . implode('","', array_map('escape_sql_query', $indexArray)) . '")';
+	$q = array();
+	foreach($indexArray as $v){
+		$q[] = '"' . $db->escape($v) . '"';
+	}
+	$q = ' Text IN (' . implode(',', $q) . ')';
 	$show = $doc->getElement($field);
 	if(!in_array($doc->Text, $indexArray)){
-		$show = $show? : $doc->Text;
+		if(!$show){
+			$show = $doc->Text;
+		}
 		$path = $oldHtmlspecialchars ? oldHtmlspecialchars($sep . $show) : $sep . $show;
 	}
 	while($pID){
-		list($fileID, $filePath, $fText) = (getHash('SELECT ID,Path,Text FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder=0 AND ' . $q . ' AND Published>0', NULL, MYSQLI_NUM)? :
+		list($fileID, $filePath) = (getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder=0 AND (' . $q . ') AND Published>0', NULL, MYSQLI_NUM)? :
 				array(0, '')
 			);
 		if($fileID){
-			$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.nHash=x\'' . md5($dirfield) . '\'');
+			$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($dirfield) . '"');
 			if(!$show && $fieldforfolder){
-				$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.nHash=x\'' . md5($field) . '\'');
+				$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
 			}
-			$show = $show? : $fText;
+			if(!$show){
+				$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID));
+			}
 			if($fileID != $doc->ID){
 				$link_pre = '<a href="' . $filePath . '"' . $class . $style . '>';
 				$link_post = '</a>';
@@ -74,7 +82,7 @@ function we_tag_path($attribs){
 			}
 		} else {
 			$link_pre = $link_post = '';
-			$show = $fText;
+			$show = f('SELECT Text FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pID));
 		}
 		if($max){
 			$show = cutText($show, $max);
@@ -87,12 +95,12 @@ function we_tag_path($attribs){
 		return $path;
 	}
 
-	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND ' . $q . ' AND (Published>0 AND IsSearchable=1)', null);
+	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND (' . $q . ') AND (Published>0 AND IsSearchable=1)', null);
 	$fileID = $hash ? $hash['ID'] : 0;
 	$filePath = ($hash ? $hash['Path'] : '');
 
 	if($fileID){
-		$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.nHash=x\'' . md5($field) . '\'');
+		$show = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON c.ID=l.CID WHERE l.DocumentTable="tblFile" AND l.DID=' . intval($fileID) . ' AND l.Name="' . $db->escape($field) . '"');
 		if(!$show){
 			$show = $home;
 		}

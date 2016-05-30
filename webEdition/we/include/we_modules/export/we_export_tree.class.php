@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_export_tree extends we_tree_base{
+class we_export_tree extends weTree{
 
 	protected function customJSFile(){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'export/export_tree.js');
@@ -34,7 +34,7 @@ class we_export_tree extends we_tree_base{
 		foreach($treeItems as $item){
 
 			$js.=($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
-					$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node({';
+					$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
 			$elems = '';
 			foreach($item as $k => $v){
 				$elems.='"' . strtolower($k) . '":' .
@@ -47,7 +47,7 @@ class we_export_tree extends we_tree_base{
 			}
 			$js.=rtrim($elems, ',') . '}));' . ($clear ? '' : '}');
 		}
-		$js.= $this->topFrame . '.treeData.setState(' . $this->topFrame . '.treeData.tree_states["select"]);' .
+		$js.=$this->topFrame . '.treeData.setState(' . $this->topFrame . '.treeData.tree_states["select"]);' .
 				$this->topFrame . '.drawTree();';
 
 		return $js;
@@ -60,7 +60,7 @@ class we_export_tree extends we_tree_base{
 		cmd:' . $this->cmdFrame . ',
 		tree:' . $this->treeFrame . '
 	};
-	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+treeData.frames.top.table+"&pid=0&openFolders="+openFolders[treeData.frames.top.treeData.table];
+	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+treeData.frames.top.table+"&pid=0&openFolders="+treeData.frames.top.openFolders[treeData.frames.top.table];
 }';
 	}
 

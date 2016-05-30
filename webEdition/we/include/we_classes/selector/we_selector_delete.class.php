@@ -64,6 +64,7 @@ consts.DEL=' . self::DEL . ';
 	}
 
 	function printDoDelEntryHTML(){
+		we_html_tools::protect();
 		$js = '';
 		if(($del = we_base_request::_(we_base_request::INT, "todel"))){
 			$_SESSION['weS']['todel'] = $del;

@@ -74,6 +74,12 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		var _bDgSave = false;
 		var bInitDrag = false;
 		var oTblWidgets = null;
+		WE().consts.g_l.cockpit = {
+			reduce_size: '<?php echo g_l('cockpit', '[reduce_size]') ?>',
+			increase_size: '<?php echo g_l('cockpit', '[increase_size]'); ?>',
+			pre_remove: '<?php echo g_l('cockpit', '[pre_remove]'); ?>"',
+			post_remove: '" <?php echo g_l('cockpit', '[post_remove]'); ?>'
+		};
 		WE().layout.cockpitFrame.transact = "<?php echo md5(uniqid(__FILE__, true)); ?>";
 
 	<?php
@@ -193,13 +199,13 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 				$s2 .= we_html_element::htmlDiv(array("id" => "m_" . $iCurrId, "class" => "le_widget"), $widget);
 			}
 		}
-		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_'. (($bExtendedCol) ? 'expand' : 'collapse') . '">' .
+		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . (($bExtendedCol) ? '_expand' : '_collapse') . '">' .
 			$s2 .
 			we_html_element::htmlDiv(array("class" => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')), '') . '</td>';
 	}
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
-		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_collapse">' .
+		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . $iCurrCol . '_collapse">' .
 			we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>' .
 			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}

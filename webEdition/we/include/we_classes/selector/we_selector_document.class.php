@@ -156,10 +156,7 @@ function exit_open() {
 	}
 
 	protected function setDefaultDirAndID($setLastDir){
-		$ws = get_ws($this->table, true);
-		$rootDirID = ($ws ? reset($ws) : 0);
-
-		$this->dir = $this->startID ? : ($setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : $rootDirID);
+		$this->dir = $this->startID ? : ($setLastDir && isset($_SESSION['weS']['we_fs_lastDir'][$this->table]) ? intval($_SESSION['weS']['we_fs_lastDir'][$this->table]) : 0);
 		if($this->rootDirID){
 			if(!in_parentID($this->dir, $this->rootDirID, $this->table, $this->db)){
 				$this->dir = $this->rootDirID;
@@ -294,7 +291,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 	<tr>
 		<td class="defaultfont description">' . g_l('fileselector', '[type]') . '</td>
 		<td class="defaultfont">
-			<select name="filter" class="weSelect" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
+			<select name="filter" class="weSelect" size="1" onchange="top.setFilter(this.options[this.selectedIndex].value)" class="defaultfont" style="width:100%">
 				<option value="">' . g_l('fileselector', '[all_Types]') . '</option>';
 			foreach(we_base_ContentTypes::inst()->getWETypes() as $ctype){
 				$ret.= '<option value="' . oldHtmlspecialchars($ctype) . '">' . g_l('contentTypes', '[' . $ctype . ']') . '</option>';
@@ -345,6 +342,9 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 		if(infoElem=document.getElementById("info")) {
 			infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0 )+"px";
 		}
+	}
+	function openToEdit(tab,id,contentType){
+		WE().layout.weEditorFrameController.openDocument(tab,id,contentType);
 	}
 	function weWriteBreadCrumb(BreadCrumb){
 		if(top.document.getElementById("fspath")){
@@ -452,11 +452,11 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 						),
 						array(
 							"caption" => "ID",
-							"content" => "<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
+							"content" => "<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
 					<div style='float:left; vertical-align:baseline; margin-right:4px;'>
 					<i class='fa fa-edit fa-lg'></i>
 					</div></a>
-					<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
+					<a href='javascript:openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
 						<div>" . $this->id . "</div>
 					</a>"
 						)

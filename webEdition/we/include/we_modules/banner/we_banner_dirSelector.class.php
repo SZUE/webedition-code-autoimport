@@ -78,6 +78,7 @@ class we_banner_dirSelector extends we_selector_directory{
 	}
 
 	function printCreateFolderHTML(){
+		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
 		'<script><!--
 top.clearEntries();
@@ -127,6 +128,7 @@ top.selectFile(top.currentID);
 	}
 
 	function printDoRenameFolderHTML(){
+		we_html_tools::protect();
 		echo we_html_tools::getHtmlTop() .
 		'<script><!--
 top.clearEntries();

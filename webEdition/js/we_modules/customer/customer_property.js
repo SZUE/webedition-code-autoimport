@@ -139,7 +139,6 @@ function resetLogins(id) {
 						if (weResponse.DataArray.data === "true") {
 							document.getElementById("FailedCustomerLogins").innerText = weResponse.DataArray.value;
 						}
-						top.we_showMessage(WE().consts.g_l.customer.view.reset_failed_login_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 					}
 				} catch (exc) {
 				}

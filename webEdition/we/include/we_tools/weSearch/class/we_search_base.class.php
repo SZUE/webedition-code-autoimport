@@ -35,7 +35,6 @@ class we_search_base{
 	var $get;
 	var $Order;
 	var $anzahl = 10;
-	var $maxItems = 0;
 	var $searchstart = 0;
 	public $Record = array();
 
@@ -178,7 +177,7 @@ class we_search_base{
 		$this->where = ($where? : $this->where);
 		$this->get = ($get? : rtrim($this->get, ',')? : '*' );
 		$this->Order = ($order? : $this->Order);
-		$this->maxItems = f('SELECT COUNT(1) FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : ''));
+
 		$this->limit = ' LIMIT ' . ($limit ? : $this->searchstart . ',' . $this->anzahl . ' ');
 
 		$this->db->query('SELECT ' . $this->get . ' FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : '') . ' ' . ($this->Order ? ' ORDER BY ' . $this->Order : '') . ' ' . $this->limit);
@@ -251,8 +250,7 @@ class we_search_base{
 	<td>';
 
 		$pages = array();
-		$maxPages = ceil($we_search_anzahl / $this->anzahl);
-		for($i = 0; $i < $maxPages; $i++){
+		for($i = 0; $i < ceil($we_search_anzahl / $this->anzahl); $i++){
 			$pages[($i * $this->anzahl)] = ($i + 1);
 		}
 
@@ -261,7 +259,7 @@ class we_search_base{
 		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements.SearchStart.value = this.value;we_cmd('reload_editpage');"));
 		if(!defined('SearchStart')){//we need this, since pager is shown above & under the results
 			define("SearchStart", true);
-			$out .= we_html_element::htmlHidden("SearchStart", $this->searchstart);
+			$out .= we_html_tools::hidden("SearchStart", $this->searchstart);
 		}
 
 		return $out . $select . '</td></tr></table>';

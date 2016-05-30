@@ -1,4 +1,4 @@
-/* global WE, top, YAHOO */
+/* global WE, top, YAHOO, data */
 
 /**
  * webEdition CMS
@@ -121,10 +121,12 @@ function we_cmd() {
 	}
 }
 
+
+var copyNaviFolderUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc.php";
 function copyNaviFolder(folderPath, folderID) {
 	var parentPos = selfNaviPath.indexOf(folderPath);
 	if (parentPos === -1 || selfNaviPath.indexOf(folderPath) > 0) {
-		cnfUrl = WE().consts.dirs.WEBEDITION_DIR + "rpc.php?protocol=text&cmd=CopyNavigationFolder&cns=navigation&we_cmd[0]=" + selfNaviPath + "&we_cmd[1]=" + selfNaviId + "&we_cmd[2]=" + folderPath + "&we_cmd[3]=" + folderID;
+		cnfUrl = copyNaviFolderUrl + "?protocol=text&cmd=CopyNavigationFolder&cns=navigation&we_cmd[0]=" + selfNaviPath + "&we_cmd[1]=" + selfNaviId + "&we_cmd[2]=" + folderPath + "&we_cmd[3]=" + folderID;
 		YAHOO.util.Connect.asyncRequest("GET", cnfUrl, {
 			success: function (o) {
 				if (o.responseText !== "") {
@@ -132,15 +134,15 @@ function copyNaviFolder(folderPath, folderID) {
 					//FIXME: add code for Tree reload!
 					top.content.cmd.location.reload();
 				} else {
-					WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+					WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 				}
 			},
 			failure: function (o) {
-				WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+				WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
 		});
 	} else {
-		WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+		WE().util.showMessage(WE().consts.g_l.main.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -206,7 +208,7 @@ function setStaticSelection(value) {
 		case WE().consts.navigation.STYPE_CATEGORY:
 			setVisible("dynUrl", true);
 			setVisible("dynamic_LinkSelectionDiv", true);
-			setLinkSelection("dynamic_", WE().consts.navigation.LSELECTION_INTERN);
+			dynamic_setLinkSelection(WE().consts.navigation.LSELECTION_INTERN);
 			break;
 		case WE().consts.navigation.STYPE_CATLINK:
 			setVisible("dynUrl", false);
@@ -217,14 +219,14 @@ function setStaticSelection(value) {
 			setVisible("catLink", false);
 			setVisible(value, true);
 			setVisible("LinkSelectionDiv", true);
-			setLinkSelection("", WE().consts.navigation.LSELECTION_INTERN);
+			setLinkSelection(WE().consts.navigation.LSELECTION_INTERN);
 			break;
 		case WE().consts.navigation.STYPE_URLLINK:
 			setVisible("dynUrl", false);
 			setVisible("staticSelect", false);
 			setVisible("staticUrl", true);
 			setVisible("LinkSelectionDiv", false);
-			setLinkSelection("", WE().consts.navigation.LSELECTION_EXTERN);
+			setLinkSelection(WE().consts.navigation.LSELECTION_EXTERN);
 			break;
 		case WE().consts.navigation.STYPE_DOCLINK:
 		case WE().consts.navigation.STYPE_OBJLINK:
@@ -315,7 +317,7 @@ function submitForm(target, action, method) {
 	var f = self.document.we_form;
 	populateVars();
 	f.target = (target ? target : "edbody");
-	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation");
+	f.action = (action ? action : data.frameset);
 	f.method = (method ? method : "post");
 	f.submit();
 }

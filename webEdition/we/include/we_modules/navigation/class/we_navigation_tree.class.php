@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_navigation_tree extends we_tree_base{
+class we_navigation_tree extends weTree{
 
 	protected function customJSFile(){
 		return we_html_element::jsScript(JS_DIR . 'navigation_tree.js');
@@ -30,7 +30,7 @@ class we_navigation_tree extends we_tree_base{
 
 	function getJSTreeCode(){
 		return parent::getJSTreeCode() .
-				we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
+			we_html_element::jsElement('drawTree.selection_table="' . NAVIGATION_TABLE . '";');
 	}
 
 	static function getItems($ParentID = 0, $offset = 0, $segment = 500){
@@ -89,9 +89,11 @@ class we_navigation_tree extends we_tree_base{
 				$fileds[strtolower($k)] = $v;
 			}
 
-			$_charset = ($db->f('IsFolder') == 0 ?
-							we_navigation_navigation::findCharset($db->f('ParentID')) :
-							$db->f('Charset'));
+			if($db->f('IsFolder') == 0){
+				$_charset = we_navigation_navigation::findCharset($db->f('ParentID'));
+			} else {
+				$_charset = $db->f('Charset');
+			}
 
 			$_text = strip_tags(strtr($db->f('Text'), array(
 				'&amp;' => '&', "<br/>" => " ", "<br />" => " "

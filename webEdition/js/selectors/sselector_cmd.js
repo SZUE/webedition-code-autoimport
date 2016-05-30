@@ -22,8 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var filter = '';
-var selectOwn = 0;
 
 function drawNewFolder() {
 	for (var i = 0; i < top.allentries.length; i++) {
@@ -71,7 +69,7 @@ function selectFile(fid) {
 function reorderDir(dir, order) {
 	setTimeout(function (url) {
 		top.fsbody.location = url;
-	}, 100, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=selectorBrowse&dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID));
+	}, 100, 'we_sselector_body.php?dir=' + dir + '&ord=' + order + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID));
 }
 
 function selectDir(path) {
@@ -105,51 +103,8 @@ function goUp() {
 
 function delFile(ask) {
 	if ((top.currentID !== "") && (top.document.getElementsByName("fname")[0].value !== "")) {
-		top.fscmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowseCmd&cmd=delete_file&fid=" + top.currentID + "&ask=" + ask;
+		top.fscmd.location = "we_sselector_cmd.php?cmd=delete_file&fid=" + top.currentID + "&ask=" + ask;
 	} else {
 		top.we_showMessage(WE().consts.g_l.sfselector.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
-	}
-}
-
-function setDir(dir) {
-	var a = top.document.getElementById("lookin").options;
-	if (a.length - 2 > -1) {
-		for (j = 0; j < a.length; j++) {
-			if (a[j].value === dir) {
-				a.length = j + 1;
-				a[j].selected = true;
-			}
-		}
-		switch (filter) {
-			case 'folder':
-			case 'filefolder':
-				selectFile(dir);
-		}
-		top.currentDir = dir;
-		selectDir();
-	} else {
-		top.we_showMessage(WE().consts.g_l.sfselector.already_root, WE().consts.message.WE_MESSAGE_ERROR, window);
-	}
-}
-
-function drawDir(dir, what, sid) {
-	switch (what) {
-		case "new_folder":
-			top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.rootDir + dir) + "&nf=new_folder&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=" + selectOwn;
-			break;
-		case "rename_folder":
-			if (sid) {
-				top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_folder&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=" + selectOwn;
-			}
-			break;
-		case "rename_file":
-			if (sid) {
-				top.fsbody.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorBrowse&dir=" + encodeURI(top.rootDir + dir) + "&nf=rename_file&sid=" + encodeURI(sid) + "&file=" + top.currentFilter + "&curID=" + encodeURI(top.currentID) + "&selectOwn=" + selectOwn;
-			}
-			break;
-		default:
-			setTimeout(function (url) {
-				top.fsbody.location = url;
-			}, 100, WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=selectorBrowse&dir=' + encodeURI(top.rootDir + dir) + '&file=' + top.currentFilter + '&curID=' + encodeURI(top.currentID) + '&selectOwn=' + selectOwn);
 	}
 }

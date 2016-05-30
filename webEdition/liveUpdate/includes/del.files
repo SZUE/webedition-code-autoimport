@@ -2,9 +2,6 @@ we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
 we_sselector_footer.php
-we_sselector_editFile.php
-we_sselector_cmd.php
-we_sselector_body.php
 we_lcmd.php
 we_imgSelect.php
 we_docSelect.php
@@ -15,7 +12,6 @@ we_catSelect.php
 we_backup/download/dummy
 we_ajaxcmd.php
 we/versions/dummy
-we/tmp/fragments/.htaccess
 we/templates/dummy
 we/include/xhtml.inc.php
 we/include/webEdition_seem.inc.php
@@ -127,7 +123,6 @@ we/include/we_modules/voting/mod_home.inc.php
 we/include/we_modules/voting/edit_voting_frameset.php
 we/include/we_modules/users/we_webEditionCmd_users.inc.php
 we/include/we_modules/users/we_users_util.php
-we/include/we_modules/users/we_users_tree.class.php
 we/include/we_modules/users/we_users_ping.php
 we/include/we_modules/users/we_users_ping.inc.php
 we/include/we_modules/users/we_users_lockmessage.inc.php
@@ -160,7 +155,6 @@ we/include/we_modules/show.php
 we/include/we_modules/shop/we_webEditionCmd_shop.inc.php
 we/include/we_modules/shop/we_template_variant.inc.php
 we/include/we_modules/shop/we_shop_variants.class.php
-we/include/we_modules/shop/we_shop_tree.class.php
 we/include/we_modules/shop/we_shop_ordertag.class.php
 we/include/we_modules/shop/we_shop_orderitemtag.class.php
 we/include/we_modules/shop/we_shop_listviewShopVariants.class.php
@@ -220,7 +214,6 @@ we/include/we_modules/object/we_class_folder.inc.php
 we/include/we_modules/object/we_classFolder_properties.inc.php
 we/include/we_modules/newsletter/we_webEditionCmd_newsletter.inc.php
 we/include/we_modules/newsletter/we_newsletter_treeLoader.class.php
-we/include/we_modules/newsletter/we_newsletter_tree.class.php
 we/include/we_modules/newsletter/we_newsletterDirSelector.php
 we/include/we_modules/newsletter/we_dirfs.php
 we/include/we_modules/newsletter/weNewsletterView.php
@@ -334,11 +327,9 @@ we/include/we_modules/export/exportLoadTree.php
 we/include/we_modules/export/edit_export_frameset.php
 we/include/we_modules/edit_separator.html
 we/include/we_modules/customer/we_webEditionCmd_customer.inc.php
-we/include/we_modules/customer/we_listview_onlinemonitor.class.php
 we/include/we_modules/customer/we_listview_customer.class.php
 we/include/we_modules/customer/we_customertag.inc.php
 we/include/we_modules/customer/we_customer_treeLoader.class.php
-we/include/we_modules/customer/we_customer_tree.class.php
 we/include/we_modules/customer/we_customer_listview.class.php
 we/include/we_modules/customer/we_customer_customertag.class.php
 we/include/we_modules/customer/we_conf_customerpro.inc.php
@@ -347,12 +338,10 @@ we/include/we_modules/customer/weNavigationCustomerFilter.class.php
 we/include/we_modules/customer/weDocumentCustomerFilterView.class.php
 we/include/we_modules/customer/weDocumentCustomerFilter.class.php
 we/include/we_modules/customer/weCustomerView.php
-we/include/we_modules/customer/weCustomerView.class.php
 we/include/we_modules/customer/weCustomerTreeLoader.php
 we/include/we_modules/customer/weCustomerTree.php
 we/include/we_modules/customer/weCustomerSettings.php
 we/include/we_modules/customer/weCustomerFrames.php
-we/include/we_modules/customer/weCustomerFrames.class.php
 we/include/we_modules/customer/weCustomerFilterView.class.php
 we/include/we_modules/customer/weCustomerEIWizard.php
 we/include/we_modules/customer/weCustomerEI.php
@@ -500,7 +489,6 @@ we/include/we_classes/we_binaryDocument.inc.php
 we/include/we_classes/we_binaryDocument.class.php
 we/include/we_classes/weXMLComposer.class.php
 we/include/we_classes/weTree.inc.php
-we/include/we_classes/weTree.class.php
 we/include/we_classes/weTableDialog.class.inc.php
 we/include/we_classes/weSuggest.class.inc.php
 we/include/we_classes/weSpecialCharDialog.class.inc.php
@@ -512,7 +500,6 @@ we/include/we_classes/weMetaData/weMetaData.class.php
 we/include/we_classes/weMetaData/lib/PEAR_IPTC.php
 we/include/we_classes/weMetaData/conf/mapping.inc.php
 we/include/we_classes/weMainTree.inc.php
-we/include/we_classes/weMainTree.class.php
 we/include/we_classes/weLangDialog.class.inc.php
 we/include/we_classes/weImportRtfDialog.class.inc.php
 we/include/we_classes/weImageDialog.class.inc.php
@@ -660,7 +647,6 @@ notExist.php
 noAvailable.php
 newMsg.php
 mozillamenu.php
-moveInfo.php
 liveUpdate/tmp/dummy
 liveUpdate/templates/register.inc.php
 liveUpdate/templates/modules.inc.php
@@ -738,7 +724,6 @@ js/utils/lib.js
 js/utils/dimension.js
 js/selectors/we_sselector_footer.js
 js/seeMode.php
-js/multiEditor/multiTabs.js
 js/messageConsoleView.js
 js/messageConsoleImages.js
 js/menu/clickMenu_IE8.js
@@ -958,9 +943,6 @@ editors/template/CodeMirror/MODIFICATIONS
 editors/template/CodeMirror/LICENSE
 editors/template/CodeMirror/INFO
 editors/content/eplugin/gal
-delInfo.php
-css/wysiwyg/tinymce/tinyDialogCss_mac.scss
-css/wysiwyg/tinymce/tinyDialogCss_mac.css
 css/wysiwyg/tinymce/contentCssLast.php
 css/we_tab_modules.css
 css/mozillamenu.php
@@ -1029,7 +1011,6 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/weCodeWizard/data/English_UTF-8
 !we/include/weCodeWizard/data/Deutsch_UTF-8
 !we/include/java_menu
-!we/include/fonts
 !sidebar/img
 !rpc/cmds/tools/navigation
 !rpc/base

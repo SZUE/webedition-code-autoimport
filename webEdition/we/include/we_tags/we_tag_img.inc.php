@@ -129,7 +129,7 @@ function we_tag_img($attribs){
 	$dropzoneCmdencInt = we_base_request::encCmd($dropzoneCallbackInt . $btnSelectCallback);
 	$dropzoneCmdencExt = we_base_request::encCmd($btnSelectCallback . 'setTimeout(self.close, 250);');
 	if($GLOBALS['we_editmode'] && $out && $showcontrol){ //in editMode we surround image with dropzone
-		$out = we_fileupload_ui_base::getExternalDropZone($name, $out, 'width:auto;height:auto;padding:12px;', array(we_base_ContentTypes::IMAGE), array('tree' => $dropzoneCmdencInt, 'external' => $dropzoneCmdencExt), $fname, $btnSelectWecmdenc1);
+		$out = we_fileupload_ui_base::getExternalDropZone('we_File', $out, 'width:auto;height:auto;padding:12px;', we_base_ContentTypes::IMAGE, array('tree' => $dropzoneCmdencInt, 'external' => $dropzoneCmdencExt), $fname, $btnSelectWecmdenc1);
 	}
 
 	if(!$id && (!$GLOBALS['we_editmode'])){
@@ -164,7 +164,7 @@ function we_tag_img($attribs){
 			$db = $GLOBALS['DB_WE'];
 			$db->query('SELECT ID,Name,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 			if($db->num_rows()){
-				$thumbnails = '<select name="' . $thumbname . '" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' .
+				$thumbnails = '<select name="' . $thumbname . '" size="1" onchange="top.we_cmd(\'reload_editpage\'); _EditorFrame.setEditorIsHot(true);">' .
 						'<option title="' . $db->f('description') . '" value=""' . (($thumbattr == '') ? (' selected="selected"') : "") . '></option>';
 				while($db->next_record()){
 					$thumbnails .= '<option value="' . $db->f("Name") . '"' . (($thumbattr == $db->f("Name")) ? (' selected="selected"') : "") . '>' . $db->f("Name") . '</option>';

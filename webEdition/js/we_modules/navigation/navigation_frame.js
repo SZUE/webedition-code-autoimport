@@ -1,4 +1,4 @@
-/* global top, WE, YAHOO */
+/* global top, WE */
 
 /**
  * webEdition SDK
@@ -25,8 +25,6 @@
  * @subpackage we_ui_controls
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
-var categories_edit;
 
 function onSelectionClassChangeJS(value) {
 	YAHOO.autocoml.modifySetById("yuiAcInputFolderPath", {
@@ -71,21 +69,10 @@ function onFolderSelectionChangeJS(value) {
 	);
 }
 
-function fieldChooserBut(cmd) {
-	var st = document.we_form.SelectionType.options[document.we_form.SelectionType.selectedIndex].value;
-	var s = (st === WE().consts.navigation.STYPE_DOCTYPE ? document.we_form.DocTypeID.options[document.we_form.DocTypeID.selectedIndex].value : document.we_form.ClassID.options[document.we_form.ClassID.selectedIndex].value);
-	we_cmd('openFieldSelector', cmd, st, s, 0);
-}
-
-function categoriesEdit(size, elements, delBut) {
-	categories_edit = new multi_edit("categories", document.we_form, 0, delBut, size, false);
-	categories_edit.addVariant();
-	document.we_form.CategoriesControl.value = categories_edit.name;
-	for (var i = 0; i < elements.length; i++) {
-		categories_edit.addItem();
-		categories_edit.setItem(0, (categories_edit.itemCount - 1), elements[i]);
+function openToEdit(tab, id, contentType) {
+	if (id > 0) {
+		WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
 	}
-	categories_edit.showVariant(0);
 }
 
 function removeAllCats() {
@@ -99,45 +86,22 @@ function removeAllCats() {
 
 function addCat(paths) {
 	top.content.mark();
+	var path = paths.split(",");
 	var found = false;
 	var j = 0;
-	for (var i = 0; i < paths.length; i++) {
-		if (paths[i] !== "") {
+	for (var i = 0; i < path.length; i++) {
+		if (path[i] !== "") {
 			found = false;
 			for (j = 0; j < categories_edit.itemCount; j++) {
-				if (categories_edit.form.elements[categories_edit.name + "_variant0_" + categories_edit.name + "_item" + j].value == paths[i]) {
+				if (categories_edit.form.elements[categories_edit.name + "_variant0_" + categories_edit.name + "_item" + j].value == path[i]) {
 					found = true;
 				}
 			}
 			if (!found) {
 				categories_edit.addItem();
-				categories_edit.setItem(0, (categories_edit.itemCount - 1), paths[i]);
+				categories_edit.setItem(0, (categories_edit.itemCount - 1), path[i]);
 			}
 		}
 	}
 	categories_edit.showVariant(0);
-}
-
-function setLinkSelection(prefix, value) {
-	setVisible(prefix + "intern", (value === WE().consts.navigation.LSELECTION_INTERN));
-	setVisible(prefix + "extern", (value !== WE().consts.navigation.LSELECTION_INTERN));
-}
-
-function setFields(cmd) {
-	var list = document.we_form.fields.options;
-
-	var fields = [];
-	for (i = 0; i < list.length; i++) {
-		if (list[i].selected) {
-			fields.push(list[i].value);
-		}
-	}
-	opener[cmd](fields.join(","));
-	self.close();
-}
-
-function selectItem() {
-	if (document.we_form.fields.selectedIndex > -1) {
-		WE().layout.button.switch_button_state(document, "save", "enabled");
-	}
 }
