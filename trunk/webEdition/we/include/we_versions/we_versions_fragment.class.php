@@ -86,11 +86,6 @@ class we_versions_fragment extends we_fragment_base{
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ');
 	}
 
-	function printBodyTag(array $attributes = array()){
-		$this->printJSReload();
-		echo '<body>';
-	}
-
 	/**
 	 * Create and returns data Array with IDs and other information for the fragmment class for rebuilding documents
 	 *
