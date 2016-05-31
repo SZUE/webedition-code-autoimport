@@ -298,12 +298,16 @@ print $newResponse->getOutput();
 if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php")){
 		require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php");
 	} else {
-		class_alias("liveUpdateFunctions","liveUpdateFunctionsServer");
+		if(!class_exists("liveUpdateFunctionsServer", false)){
+			class_alias("liveUpdateFunctions","liveUpdateFunctionsServer");
+		}
 	}
 	if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php")){
 		require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php");
 	} else {
-		class_alias("liveUpdateResponse","liveUpdateResponseServer");
+		if(!class_exists("liveUpdateResponseServer", false)){
+			class_alias("liveUpdateResponse","liveUpdateResponseServer");
+		}
 	}
 	$liveUpdateFnc = new liveUpdateFunctionsServer();
 	$liveUpdateRsp = new liveUpdateResponseServer();
