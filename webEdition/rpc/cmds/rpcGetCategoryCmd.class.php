@@ -46,8 +46,7 @@ class rpcGetCategoryCmd extends we_rpc_cmd{
 			$catField = we_base_request::_(we_base_request::STRING, 'catfield', '');
 			$categories = $this->getCategory($obj, we_base_request::_(we_base_request::INTLIST, 'cats', ''), $catField);
 			$categories = strtr($categories, array("\r" => '', "\n" => ''));
-			$resp->setData("elementsById", array($target => array("innerHTML" => addslashes($categories)))
-			);
+			$resp->setData("elementsById", array($target => array("innerHTML" => $categories)));
 		}
 		return $resp;
 	}
@@ -56,6 +55,7 @@ class rpcGetCategoryCmd extends we_rpc_cmd{
 		$cats = new we_chooser_multiDirExtended(410, $categories, 'delete_' . $obj . 'Cat', '', '', '"we/category"', CATEGORY_TABLE);
 		$cats->setRowPrefix($obj);
 		$cats->setCatField($catField);
+		$cats->setOnchangeSetHot(false);
 		return $cats->getTableRows();
 	}
 
