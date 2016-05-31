@@ -40,6 +40,7 @@ class we_chooser_multiDir{
 	var $extraDelFn = '';
 	var $thirdDelPar = '';
 	protected $Record = array();
+	protected $onchangeSetHot = true;
 
 	public function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $ct = 'ContentType', $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){
 		$this->db = new DB_WE();
@@ -67,7 +68,7 @@ class we_chooser_multiDir{
 	<td class="chooserFileIcon" data-contenttype="' . $this->Record['ContentType'] . '"></td>
 	<td class="' . $this->css . '">' . $this->Record['Path'] . '</td>
 	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_html_button::create_button(we_html_button::TRASH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
+						we_html_button::create_button(we_html_button::TRASH, "javascript:" . $this->getJsSetHot() . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
 						'') . '</td>
 </tr>';
 		}
@@ -80,7 +81,7 @@ class we_chooser_multiDir{
 	<td class="chooserFileIcon" data-contenttype="folder"></td>
 	<td class="' . $this->css . '">/</td>
 	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
-						we_html_button::create_button(we_html_button::TRASH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);" . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
+						we_html_button::create_button(we_html_button::TRASH, "javascript:" . $this->getJsSetHot() . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
 						'') . '</td>
 </tr>';
 		}
@@ -98,6 +99,14 @@ class we_chooser_multiDir{
 		  }
 		  }
 		  return true; */
+	}
+
+	function setOnchangeSetHot($setHot = true){
+		$this->onchangeSetHot = $setHot;
+	}
+	
+	function getJsSetHot(){
+		return $this->onchangeSetHot ? "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);" : '';
 	}
 
 	function get(){
