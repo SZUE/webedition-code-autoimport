@@ -3,9 +3,9 @@
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * $Rev: 8665 $
+ * $Author: mokraemer $
+ * $Date: 2014-12-02 17:11:48 +0100 (Di, 02. Dez 2014) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -22,7 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_listviewEnd(){
-
-	return $GLOBALS['lv']->rows ? min(($GLOBALS['lv']->start - abs($GLOBALS['lv']->offset)) + ($GLOBALS['lv']->maxItemsPerPage), ($GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset))) : ($GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset));
+function we_tag_ifFound(){
+	return isset($GLOBALS['lv']) && $GLOBALS['lv']->anz;
 }

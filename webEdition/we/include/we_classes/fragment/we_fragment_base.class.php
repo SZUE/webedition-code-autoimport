@@ -113,20 +113,18 @@ class we_fragment_base{
 			we_base_file::insertIntoCleanUp($filename, 10 * 3600);
 		}
 		$this->numberOfTasks = count($this->alldata);
+		$this->updateTaskPerFragment();
 		static::printHeader();
 		$this->printBodyTag($bodyAttributes);
-		for($i = 0; $i < $this->taskPerFragment; $i++){
-			if($i > 0){
-				$this->currentTask++;
-			}
-			if($this->currentTask == $this->numberOfTasks){
-				we_base_file::delete($filename);
-				$this->finish();
-				break;
-			} else {
-				$this->data = $this->alldata[$this->currentTask];
-				$this->doTask();
-			}
+		for($i = 0; $i < $this->taskPerFragment && $this->currentTask < $this->numberOfTasks; $i++){
+			$this->data = $this->alldata[$this->currentTask];
+			$this->doTask();
+
+			$this->currentTask++;
+		}
+		if($this->currentTask >= $this->numberOfTasks){
+			we_base_file::delete($filename);
+			$this->finish();
 		}
 		$this->printFooter();
 	}
@@ -142,14 +140,14 @@ class we_fragment_base{
 			$attr .= " $k=\"$v\"";
 		}
 		$onload = $this->getJSReload();
-		echo '<body' . $attr . ($onload ? ' onload="' . $onload : '') . '>';
+		echo '<body' . $attr . ($onload ? ' onload="' . $onload : '') . '">';
 	}
 
 	protected function getJSReload(){
 		$nextTask = $this->currentTask + $this->taskPerFragment;
 		$tmp = $_REQUEST;
 		$tmp['fr_' . $this->name . '_ct'] = ($nextTask);
-		$tail = http_build_query($tmp, null, null, PHP_QUERY_RFC3986);
+		$tail = http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
 
 		$onload = "document.location='" . $_SERVER["SCRIPT_NAME"] . '?' . $tail . "';";
 
@@ -157,18 +155,9 @@ class we_fragment_base{
 				'setTimeout(function(){' . $onload . '},' . $this->pause . ');' :
 				$onload);
 
-		if(($nextTask <= $this->numberOfTasks)){
+		if(($nextTask < $this->numberOfTasks)){
 			return $onload;
 		}
-	}
-
-	/**
-	 * Prints a javascript for reloading next task.
-	 *
-	 * @param      array $attributes
-	 */
-	function printJSReload(){
-		echo $this->getJSReload();
 	}
 
 	/**
@@ -182,6 +171,10 @@ class we_fragment_base{
 	static function printHeader(){
 		//FIXME: missing title
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . weSuggest::getYuiFiles());
+	}
+
+	protected function updateTaskPerFragment(){
+
 	}
 
 	/**
