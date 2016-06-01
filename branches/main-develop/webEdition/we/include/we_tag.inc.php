@@ -531,39 +531,3 @@ function we_post_tag_listview(){
 		}
 	}
 }
-
-//FIXME: remove in 7.1
-function we_tag_linkToSEEM($attribs, $content){
-	t_e('deprecated', __FUNCTION__);
-	return we_tag('linkToSeeMode', $attribs, $content);
-}
-
-function we_tag_ifshopexists(){
-	t_e('deprecated', __FUNCTION__);
-	return we_tag('ifIsActive', array('name' => 'shop'));
-}
-
-function we_tag_ifobjektexists(){
-	t_e('deprecated', __FUNCTION__);
-	return we_tag('ifIsActive', array('name' => 'object'));
-}
-
-function we_tag_ifnewsletterexists(){
-	t_e('deprecated', __FUNCTION__);
-	return we_tag('ifIsActive', array('name' => 'newsletter'));
-}
-
-function we_tag_ifcustomerexists(){
-	t_e('deprecated', __FUNCTION__);
-	return we_tag('ifIsActive', array('name' => 'customer'));
-}
-
-function we_tag_ifbannerexists(){
-	t_e('deprecated', __FUNCTION__);
-	return we_tag('ifIsActive', array('name' => 'banner'));
-}
-
-function we_tag_ifvotingexists(){
-	t_e('deprecated', __FUNCTION__);
-	return we_tag('ifIsActive', array('name' => 'voting'));
-}
