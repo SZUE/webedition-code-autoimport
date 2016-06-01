@@ -16,7 +16,6 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblversions (
-  ID bigint unsigned NOT NULL auto_increment,
   documentID int unsigned NOT NULL,
   documentTable enum('tblFile','tblObjectFiles','tblTemplates','tblObject') NOT NULL default 'tblFile',
   documentElements longblob NOT NULL,
@@ -62,8 +61,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   fromImport tinyint unsigned NOT NULL,
   resetFromVersion bigint unsigned NOT NULL,
   InGlossar tinyint unsigned NOT NULL,
-  PRIMARY KEY  (ID),
-  UNIQUE KEY documentID (documentID,documentTable,version),
+  PRIMARY KEY (documentID,documentTable,version),
   KEY timestamp (timestamp,CreationDate),
   KEY binaryPath (binaryPath),
   KEY version (version)
