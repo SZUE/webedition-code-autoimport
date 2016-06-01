@@ -22,6 +22,6 @@ function we_parse_tag_ifNotHasEntries($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifHasEntries', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotHasEntries($attribs){
+function we_tag_ifNotHasEntries(array $attribs){
 	return !we_tag('ifHasEntries', $attribs);
 }

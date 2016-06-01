@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_newsletterConfirmLink($attribs, $content){
+function we_tag_newsletterConfirmLink(array $attribs, $content){
 
 	$plain = weTag_getAttribute("plain", $attribs, false, we_base_request::BOOL);
 

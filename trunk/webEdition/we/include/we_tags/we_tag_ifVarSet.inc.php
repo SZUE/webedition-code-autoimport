@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifVarSet($attribs){
+function we_tag_ifVarSet(array $attribs){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		echo $foo;
 		return false;

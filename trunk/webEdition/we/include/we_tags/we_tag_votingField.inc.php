@@ -22,8 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_votingField($attribs){
-
+function we_tag_votingField(array $attribs){
 	if(isset($GLOBALS['_we_voting'])){
 		$name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 		$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);

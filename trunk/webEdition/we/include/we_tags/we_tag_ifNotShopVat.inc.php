@@ -22,6 +22,6 @@ function we_parse_tag_ifNotShopVat($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifShopVat', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotShopVat($attribs){
+function we_tag_ifNotShopVat(array $attribs){
 	return !we_tag('ifShopVat', $attribs);
 }

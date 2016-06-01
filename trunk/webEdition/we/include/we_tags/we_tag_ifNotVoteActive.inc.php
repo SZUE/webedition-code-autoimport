@@ -22,6 +22,6 @@ function we_parse_tag_ifNotVoteActive($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifVoteActive', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotVoteActive($attribs){
+function we_tag_ifNotVoteActive(array $attribs){
 	return !we_tag('ifVoteActive', $attribs);
 }

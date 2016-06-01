@@ -26,7 +26,7 @@ function we_parse_tag_blockControls($attribs, $content, array $arr){
 	return '<?php we_tag_blockControls("##blockControlsREPL##"' . ($arr ? '+' . we_tag_tagParser::printArray($arr, false) : '') . ');?>';
 }
 
-function we_tag_blockControls($attribs){
+function we_tag_blockControls(array $attribs){
 	//if in listview no Buttons are shown!
 	if(!$GLOBALS['we_editmode'] || isset($GLOBALS['lv']) || !isset($attribs['list']) || (isset($attribs['show']) && !$attribs['show'])){
 		return '';

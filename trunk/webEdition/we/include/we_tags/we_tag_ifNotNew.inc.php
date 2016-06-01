@@ -22,6 +22,6 @@ function we_parse_tag_ifNotNew($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifNew', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotNew($attribs, $content){
+function we_tag_ifNotNew(array $attribs, $content){
 	return !we_tag('ifNew', $attribs, $content);
 }

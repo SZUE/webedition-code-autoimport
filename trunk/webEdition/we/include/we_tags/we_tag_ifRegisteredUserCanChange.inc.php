@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifRegisteredUserCanChange($attribs){
+function we_tag_ifRegisteredUserCanChange(array $attribs){
 	$admin = weTag_getAttribute('admin', $attribs, '', we_base_request::STRING);
 	$userid = weTag_getAttribute('userid', $attribs, '', we_base_request::STRING); // deprecated  use protected=true instead
 	$protected = weTag_getAttribute('protected', $attribs, false, we_base_request::BOOL);

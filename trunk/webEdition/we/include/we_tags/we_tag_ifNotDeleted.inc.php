@@ -22,6 +22,6 @@ function we_parse_tag_ifNotDeleted($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifDeleted', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotDeleted($attribs, $content){
+function we_tag_ifNotDeleted(array $attribs, $content){
 	return !we_tag('ifDeleted', $attribs, $content);
 }

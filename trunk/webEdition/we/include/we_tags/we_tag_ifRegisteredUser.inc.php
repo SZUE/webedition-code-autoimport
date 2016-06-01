@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifRegisteredUser($attribs){
+function we_tag_ifRegisteredUser(array $attribs){
 	if(isset($GLOBALS['WE_MAIN_DOC_REF']) && $GLOBALS['WE_MAIN_DOC_REF']->InWebEdition){
 		return (bool) $GLOBALS['WE_MAIN_DOC_REF']->getEditorPersistent('registered');
 	}

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_conditionAdd($attribs){
+function we_tag_conditionAdd(array $attribs){
 	if(($foo = attributFehltError($attribs, 'field', __FUNCTION__))){
 		return $foo;
 	}

@@ -24,6 +24,6 @@ function we_parse_tag_ifNotField($attribs, $content){
 
 include_once('we_tag_ifField.inc.php');
 
-function we_tag_ifNotField($attribs, $content){
+function we_tag_ifNotField(array $attribs, $content){
 	return !we_tag_ifField($attribs, $content);
 }

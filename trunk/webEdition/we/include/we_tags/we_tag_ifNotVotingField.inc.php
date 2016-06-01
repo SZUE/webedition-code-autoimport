@@ -22,6 +22,6 @@ function we_parse_tag_ifNotVotingField($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifVotingField', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotVotingField($attribs){
+function we_tag_ifNotVotingField(array $attribs){
 	return !we_tag('ifVotingField', $attribs);
 }

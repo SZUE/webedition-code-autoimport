@@ -22,6 +22,6 @@ function we_parse_tag_ifNotTemplate($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifTemplate', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotTemplate($attribs){
+function we_tag_ifNotTemplate(array $attribs){
 	return !we_tag('ifTemplate', $attribs);
 }

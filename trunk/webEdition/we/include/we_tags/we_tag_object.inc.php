@@ -35,7 +35,7 @@ function we_parse_tag_object($attribs, $content, array $arr){
 		we_post_tag_listview(); ?>';
 }
 
-function we_tag_object($attribs){
+function we_tag_object(array $attribs){
 	if(!defined('OBJECT_TABLE')){
 		echo modulFehltError('Object/DB', __FUNCTION__);
 		return false;

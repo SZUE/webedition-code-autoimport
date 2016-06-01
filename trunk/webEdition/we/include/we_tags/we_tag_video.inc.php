@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_video($attribs){
+function we_tag_video(array $attribs){
 	$lid = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	if(!($lid || $name) && ($foo = attributFehltError($attribs, array('name' => false, 'id' => false), __FUNCTION__))){

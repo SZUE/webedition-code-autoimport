@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifWritten($attribs){
+function we_tag_ifWritten(array $attribs){
 	$type = (weTag_getAttribute('type', $attribs, '', we_base_request::STRING)? : weTag_getAttribute('var', $attribs, 'document', we_base_request::STRING))? : weTag_getAttribute('doc', $attribs, 'document', we_base_request::STRING);
 	switch($type){
 		case 'customer':

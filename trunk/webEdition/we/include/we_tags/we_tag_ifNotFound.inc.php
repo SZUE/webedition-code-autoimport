@@ -22,6 +22,6 @@ function we_parse_tag_ifNotFound($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifFound', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotFound($attribs){
+function we_tag_ifNotFound(array $attribs){
 	return !we_tag('ifFound', $attribs);
 }

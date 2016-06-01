@@ -22,7 +22,7 @@ function we_parse_tag_ifNotEqual($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifEqual', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotEqual($attribs){
+function we_tag_ifNotEqual(array $attribs){
 	if(isset($attribs['_name_orig'])){
 		$attribs['name'] = $attribs['_name_orig'];
 	}

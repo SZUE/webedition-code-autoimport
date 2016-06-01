@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_category($attribs){
+function we_tag_category(array $attribs){
 	// initialize possible Attributes
 	$delimiter = weTag_getAttribute('delimiter', $attribs, weTag_getAttribute('tokken', $attribs, ',', we_base_request::RAW_CHECKED), we_base_request::RAW_CHECKED);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '', we_base_request::FILE);

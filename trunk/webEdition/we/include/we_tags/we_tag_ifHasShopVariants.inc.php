@@ -22,14 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-/**
- * This function returns if an article has variants
- *
- * @param	$attribs array
- *
- * @return	boolean
- */
 function we_tag_ifHasShopVariants(){
 	return (we_base_variants::getNumberOfVariants($GLOBALS['we_doc']) > 0);
 }

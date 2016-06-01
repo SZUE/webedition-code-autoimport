@@ -61,11 +61,11 @@ function we_parse_tag_listview($attribs, $content, array $arr){
 			break;
 	}
 	//setting global $lv is for backward compatibility
-	return '<?php ' . (strpos($content, '$lv') !== false ? 'global $lv;' : '') . 
+	return '<?php ' . (strpos($content, '$lv') !== false ? 'global $lv;' : '') .
 		we_tag_tagParser::printTag('listview', $attribs) . ';?>' . $content . '<?php we_post_tag_listview();?>';
 }
 
-function we_tag_listview($attribs){
+function we_tag_listview(array $attribs){
 	$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
 	$doctype = weTag_getAttribute('doctype', $attribs, '', we_base_request::STRING);
 	$class = weTag_getAttribute('classid', $attribs, 0, we_base_request::INT);

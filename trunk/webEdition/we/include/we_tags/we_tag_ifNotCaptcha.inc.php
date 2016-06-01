@@ -22,6 +22,6 @@ function we_parse_tag_ifNotCaptcha($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifCaptcha', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotCaptcha($attribs, $content){
+function we_tag_ifNotCaptcha(array $attribs, $content){
 	return !we_tag('ifCaptcha', $attribs, $content);
 }

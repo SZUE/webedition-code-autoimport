@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifShopVat($attribs){
+function we_tag_ifShopVat(array $attribs){
 	if(!we_shop_category::isCategoryMode()){
 		if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 			echo $foo;

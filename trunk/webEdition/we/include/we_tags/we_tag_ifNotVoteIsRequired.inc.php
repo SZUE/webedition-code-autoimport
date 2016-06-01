@@ -22,6 +22,6 @@ function we_parse_tag_ifNotVoteIsRequired($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifVoteIsRequired', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotVoteIsRequired($attribs){
+function we_tag_ifNotVoteIsRequired(array $attribs){
 	return !we_tag('ifVoteIsRequired', $attribs);
 }

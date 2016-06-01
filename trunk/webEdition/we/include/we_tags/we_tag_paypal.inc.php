@@ -30,7 +30,7 @@
  *
  * @return			void
  */
-function we_tag_paypal($attribs){
+function we_tag_paypal(array $attribs){
 	$DB_WE = $GLOBALS['DB_WE'];
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__))){

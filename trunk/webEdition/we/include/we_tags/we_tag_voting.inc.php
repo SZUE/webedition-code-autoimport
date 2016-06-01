@@ -26,7 +26,7 @@ function we_parse_tag_voting($attribs, $content){
 	return '<?php printElement(' . we_tag_tagParser::printTag('voting', $attribs) . ');?>' . $content . '<?php if(isset($GLOBALS[\'_we_voting\'])) unset($GLOBALS[\'_we_voting\']);?>';
 }
 
-function we_tag_voting($attribs){
+function we_tag_voting(array $attribs){
 	if(!defined('VOTING_TABLE')){
 		return modulFehltError('Voting', __FUNCTION__);
 	}

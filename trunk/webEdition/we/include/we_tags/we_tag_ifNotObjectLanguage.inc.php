@@ -22,6 +22,6 @@ function we_parse_tag_ifNotObjectLanguage($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifObjectLanguage', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotObjectLanguage($attribs){
+function we_tag_ifNotObjectLanguage(array $attribs){
 	return !we_tag('ifObjectLanguage', $attribs);
 }

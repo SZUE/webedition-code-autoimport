@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_sessionStart($attribs){
+function we_tag_sessionStart(array $attribs){
 	$GLOBALS['WE_SESSION_START'] = true;
 	if((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->InWebEdition) || !empty($GLOBALS['we_editmode'])){
 		return '';

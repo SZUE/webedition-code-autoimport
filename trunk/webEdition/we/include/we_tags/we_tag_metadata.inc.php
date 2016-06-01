@@ -29,7 +29,7 @@ function we_parse_tag_metadata($attribs, $content, array $arr){
 	return '<?php if(' . we_tag_tagParser::printTag('metadata', $attribs) . '){?>' . $content . '<?php } we_post_tag_listview();?>';
 }
 
-function we_tag_metadata($attribs){
+function we_tag_metadata(array $attribs){
 	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
 	$id = weTag_getAttribute("id", $attribs, 0, we_base_request::INT);
 

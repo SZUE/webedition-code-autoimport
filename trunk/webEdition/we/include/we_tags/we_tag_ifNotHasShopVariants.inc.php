@@ -22,6 +22,6 @@ function we_parse_tag_ifNotHasShopVariants($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifHasShopVariants', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotHasShopVariants($attribs){
+function we_tag_ifNotHasShopVariants(array $attribs){
 	return !we_tag('ifHasShopVariants', $attribs);
 }
