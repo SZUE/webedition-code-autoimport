@@ -159,7 +159,7 @@ abstract class we_updater{
 
 	private function correctTblFile(we_database_base $db){
 		//added in 7.0.1
-		if(!$db->isKeyExist(FILE_TABLE, 'Path', ['Path'], 'UNIQUE KEY')){
+		if(!$db->isKeyExist(FILE_TABLE, 'Path', array('Path'), 'UNIQUE KEY')){
 			if($db->isKeyExistAtAll(FILE_TABLE, 'Path')){
 				$db->delKey(FILE_TABLE, 'Path');
 			}

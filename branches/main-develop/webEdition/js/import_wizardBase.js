@@ -25,18 +25,17 @@ var ajaxUrl = WE().consts.dirs.WEBEDITION_DIR + 'rpc.php';
 
 var weGetCategoriesHandleSuccess = function (o) {
 	if (o.responseText !== undefined) {
-		var json = JSON.parse(o.responseText);
+		var obj = JSON.parse(o.responseText);
 
-		for (var elemNr in json.elemsById) {
-			for (var propNr in json.elemsById[elemNr].props) {
-				var propval = json.elemsById[elemNr].props[propNr].val;
-				propval = propval.replace(/\\\'/g, "'");
-				propval = propval.replace(/'/g, "\\\'");
-				var eId = json.elemsById[elemNr].elemId;
-				top.wizbody.document.getElementById(json.elemsById[elemNr].elemId)[json.elemsById[elemNr].props[propNr].prop ] = propval;
+
+		for (var property in obj) {
+			if (obj.hasOwnProperty(property)) {
+				top.wizbody.document.getElementById(property).innerHTML = obj[property].innerHTML;
 			}
 		}
 	}
+
+	WE().util.setIconOfDocClass(document,"chooserFileIcon");
 };
 
 var weGetCategoriesHandleFailure = function (o) {

@@ -172,15 +172,15 @@ class we_listview_search extends we_listview_base{
 				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this) :
 				'');
 
-		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail . ' GROUP BY i.ClassID,i.ID';
-		$this->anz_all = f('SELECT COUNT(1) FROM ' . INDEX_TABLE . ' i LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' . $where, '', $this->DB_WE);
+		$where = ' WHERE ' . $bedingung_sql . ' ' . $dtcl_query . ' ' . $cat_tail . ' ' . $ws_where . ' ' . $where_lang . ' ' . $weDocumentCustomerFilter_tail;
+		$this->anz_all = f('SELECT COUNT(DISTINCT i.ID,i.WorkspaceID) FROM ' . INDEX_TABLE . ' i LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' . $where, '', $this->DB_WE);
 
 		$this->DB_WE->query(
 			'SELECT i.Category,i.ID,i.ID AS DID,i.ID AS OID,i.ClassID,i.Text,COALESCE(wsp.Path,"/") AS Workspace,i.WorkspaceID,i.Title,i.Description,COALESCE(f.Path' . (defined('OBJECT_FILES_TABLE') ? ',of.Path' : '') . ') AS Path,i.Language, ' . ($random ? 'RAND() ' : $ranking) . ' AS ranking ' .
 			'FROM ' . INDEX_TABLE . ' i LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID LEFT JOIN ' . FILE_TABLE . ' f ON (i.ID=f.ID AND i.ClassID=0) ' .
 			(defined('OBJECT_FILES_TABLE') ? 'LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON (i.ID=of.ID AND i.ClassID>0) ' : '') .
 			$where .
-			' ORDER BY ranking DESC ' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
+			' GROUP BY i.ClassID,i.ID ORDER BY ranking DESC ' . ($this->order ? (',' . $this->order) : '') . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . intval($this->start) . ',' . intval($this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 

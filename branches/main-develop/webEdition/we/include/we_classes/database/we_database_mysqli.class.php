@@ -96,10 +96,16 @@ class DB_WE extends we_database_base{
 					$this->Query_ID = null;
 					$this->Link_ID = mysqli_init();
 					$this->Link_ID->options(MYSQLI_OPT_CONNECT_TIMEOUT, 60);
-					if(!$this->Link_ID->real_connect($Host, $User, $Password, $Database, null, null, MYSQLI_CLIENT_COMPRESS) ||
+					if((!@$this->Link_ID->real_connect($Host, $User, $Password, $Database, null, null, MYSQLI_CLIENT_COMPRESS) &&
+					!@$this->Link_ID->real_connect($Host, $User, $Password, $Database, null, null, MYSQLI_CLIENT_COMPRESS) &&
+					!@$this->Link_ID->real_connect($Host, $User, $Password, $Database, null, null, MYSQLI_CLIENT_COMPRESS) 
+
+					)||
+
 						//need the @ operator, since can't catch mysqli warning on reconnect pconnection
 						$this->Link_ID->connect_error){
 						$this->Link_ID = null;
+						t_e("mysqli_(p)connect($Host, $User) failed.");
 						$this->halt("mysqli_(p)connect($Host, $User) failed.");
 						return false;
 					}
