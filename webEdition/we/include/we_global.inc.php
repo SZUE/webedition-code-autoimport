@@ -645,10 +645,7 @@ function we_getDocumentByID($id, $includepath = '', we_database_base $db = null,
 
 	$GLOBALS['we_doc']->initByID($id, FILE_TABLE, we_class::LOAD_MAID_DB);
 	$content = $GLOBALS['we_doc']->i_getDocument($includepath);
-	$charset = $GLOBALS['we_doc']->getElement('Charset');
-	if(!$charset){
-		$charset = DEFAULT_CHARSET;
-	}
+	$charset = $GLOBALS['we_doc']->getElement('Charset')? : DEFAULT_CHARSET;
 
 	if(isset($backupdoc)){
 		$GLOBALS['we_doc'] = $backupdoc;

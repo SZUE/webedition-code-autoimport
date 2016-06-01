@@ -108,7 +108,7 @@ jsWindow.prototype = {
 		} else {
 			var refObj;
 			for (var i = 0; i < WE().layout.windows.length; i++) {
-				if (!WE().layout.windows[i]) {
+				if (!WE().layout.windows[i] || WE().layout.windows[i] === undefined || WE().layout.windows[i].wind === undefined) {
 					//remove from window list
 					WE().layout.windows.splice(i, 1);
 					//reset i

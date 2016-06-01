@@ -268,7 +268,7 @@ abstract class we_base_util{
 		return ($_result > 0 ? self::number2System($_result, $chars, $str) : $str);
 	}
 
-	static function getCurlHttp($server, $path, $files = array(), $header = false, $timeout = 0){
+	static function getCurlHttp($server, $path = '', $files = array(), $header = false, $timeout = 0){
 		$_response = array(
 			'data' => '', // data if successful
 			'status' => 0, // 0=ok otherwise error

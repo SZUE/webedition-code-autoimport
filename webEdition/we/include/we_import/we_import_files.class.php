@@ -263,16 +263,6 @@ function back() {
 		top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import&we_cmd[1]=' . we_import_functions::TYPE_LOCAL_FILES . '";
 	} else {
 		top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import_files";
-		/*
-		f = top.imgimportcontent.we_startform;
-		var i, q = [];
-		for (i = 0; i < f.elements.length; i++) {
-			if(f.elements[i].name !== "step"){
-				q.push(f.elements[i].name + "=" + encodeURIComponent(f.elements[i].value));
-			}
-		}
-		top.location.href=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=import_files&" + q.join("&");
-		*/
 	}
 }
 
