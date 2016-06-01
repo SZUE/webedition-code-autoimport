@@ -231,7 +231,7 @@ function printElement($code){
 	//t_e('deprecated', 'we-tag contained php code which needs evaluation, this is deprecated, use parseTag instead', $code);
 	//this is used e.g. in <we:a>$var</we> or in <we:a><we:ifBack....
 	//FIXME: bad eval????
-	eval('?>' . str_replace(array('<?php','<?=', '?>'), array('<?php ','<?= ', ' ?>'), $code));
+	eval('?>' . str_replace(array('<?php', '<?=', '?>'), array('<?php ', '<?= ', ' ?>'), $code));
 }
 
 function getArrayValue($var, $name, $arrayIndex, $isset = false){
@@ -441,7 +441,7 @@ function we_getInputRadioField($name, $value, $itsValue, $atts){
 	return getHtmlTag('input', $atts);
 }
 
-function we_getTextareaField($name, $value, $atts){
+function we_getTextareaField($name, $value, array $atts){
 	$atts['name'] = $name;
 	$atts['rows'] = isset($atts['rows']) ? $atts['rows'] : 5;
 	$atts['cols'] = isset($atts['cols']) ? $atts['cols'] : 20;
@@ -449,7 +449,7 @@ function we_getTextareaField($name, $value, $atts){
 	return getHtmlTag('textarea', $atts, oldHtmlspecialchars($value), true);
 }
 
-function we_getInputTextInputField($name, $value, $atts){
+function we_getInputTextInputField($name, $value, array $atts){
 	$atts['type'] = 'text';
 	$atts['name'] = $name;
 	$atts['value'] = oldHtmlspecialchars($value);
@@ -460,7 +460,7 @@ function we_getInputTextInputField($name, $value, $atts){
 //function we_getInputChoiceField($name, $value, $values, $atts, $mode, $valuesIsHash = false){}
 //=> moved as statical function htmlInputChoiceField() to we_html_tools
 
-function we_getInputCheckboxField($name, $value, $attr){
+function we_getInputCheckboxField($name, $value, array $attr){
 	//  returns a checkbox with associated hidden-field
 
 	$tmpname = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(time())
@@ -484,8 +484,7 @@ function we_getInputCheckboxField($name, $value, $attr){
 	return getHtmlTag('input', $attr) . getHtmlTag('input', $_attsHidden);
 }
 
-function we_getSelectField($name, $value, $values, $attribs = array(), $addMissing = true){
-
+function we_getSelectField($name, $value, $values, array $attribs = array(), $addMissing = true){
 	$options = makeArrayFromCSV($values);
 	$attribs['name'] = $name;
 	$content = '';
