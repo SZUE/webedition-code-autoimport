@@ -24,7 +24,5 @@
  */
 function we_tag_listviewEnd(){
 
-	return $GLOBALS['lv']->rows ? min(
-					($GLOBALS['lv']->start - abs($GLOBALS['lv']->offset)) + ($GLOBALS['lv']->maxItemsPerPage), ($GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset))) : ($GLOBALS['lv']->anz_all - abs(
-					$GLOBALS['lv']->offset));
+	return $GLOBALS['lv']->rows ? min(($GLOBALS['lv']->start - abs($GLOBALS['lv']->offset)) + ($GLOBALS['lv']->maxItemsPerPage), ($GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset))) : ($GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset));
 }
