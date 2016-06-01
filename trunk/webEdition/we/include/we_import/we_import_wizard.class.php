@@ -1446,7 +1446,7 @@ function handle_event(evt) {
 
 		$parts = array(
 			array(
-				'html' => '<br/>' . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, 'defaultfont'),
+				'html' => '<br/>' . we_html_tools::htmlDialogBorder3(510, $rows, $th, 'defaultfont'),
 			)
 		);
 		if(!empty($dateFields)){
@@ -2276,7 +2276,7 @@ function handle_event(evt) {
 
 		$parts = array(
 			array(
-				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, "defaultfont"),
+				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, $rows, $th, "defaultfont"),
 			)
 		);
 

@@ -845,7 +845,7 @@ function callBack(){
 			),
 			array(
 				"headline" => g_l('modules_customer', '[import_step4]'),
-				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $tableheader, "defaultfont"),
+				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, $rows, $tableheader, "defaultfont"),
 				'space' => 150),
 		);
 

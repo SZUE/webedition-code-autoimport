@@ -1802,7 +1802,7 @@ self.focus();
 			$nextprev->setCol(0, 5, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), $add);
 
 			$out = $nextprev->getHtml() .
-				we_html_tools::htmlDialogBorder3(850, 300, $content, $headlines) .
+				we_html_tools::htmlDialogBorder3(850, $content, $headlines) .
 				$end;
 		} else {
 			if(!$csv_file && empty($csv_file) && strlen($csv_file) < 4){

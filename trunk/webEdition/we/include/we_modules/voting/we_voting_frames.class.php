@@ -922,7 +922,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			$parts = array(
 				array(
 					'headline' => '',
-					'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
+					'html' => we_html_tools::htmlDialogBorder3(730, $content, $headline) . $nextprev,
 					'noline' => 1
 				)
 			);
@@ -1048,7 +1048,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			$parts = array(
 				array(
 					'headline' => '',
-					'html' => we_html_tools::htmlDialogBorder4(1000, 300, $content, $headline) . $nextprev,
+					'html' => we_html_tools::htmlDialogBorder4(1000, $content, $headline) . $nextprev,
 					'noline' => 1
 				)
 			);
@@ -1158,7 +1158,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			$parts = array(
 				array(
 					'headline' => '',
-					'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
+					'html' => we_html_tools::htmlDialogBorder3(730, $content, $headline) . $nextprev,
 					'noline' => 1
 				)
 			);

@@ -577,7 +577,7 @@ class we_class_folder extends we_folder{
 		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	</table>
-	<div id="scrollContent_DoclistSearch">' . we_html_tools::htmlDialogBorder3(900, 0, $content, $headline) . '</div>
+	<div id="scrollContent_DoclistSearch">' . we_html_tools::htmlDialogBorder3(900, $content, $headline) . '</div>
 	<table class="default" style="margin:12px 0px;">
 	<tr>
 		<td style="width:200px;">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") . '</td>

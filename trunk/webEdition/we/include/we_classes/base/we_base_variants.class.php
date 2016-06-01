@@ -609,7 +609,7 @@ abstract class we_base_variants{
 			),
 			array(
 				'headline' => '',
-				'html' => we_html_tools::htmlDialogBorder3(600, 0, $content, $headline),
+				'html' => we_html_tools::htmlDialogBorder3(600, $content, $headline),
 				'noline' => 1
 			)
 		);

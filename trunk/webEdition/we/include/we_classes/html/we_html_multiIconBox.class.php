@@ -48,11 +48,11 @@ abstract class we_html_multiIconBox{
 			if($c === null){
 				continue;
 			}
-			$_forceRightHeadline = (!empty($c['forceRightHeadline']));
+			$forceRightHeadline = (!empty($c['forceRightHeadline']));
 			$icon = (empty($c["icon"]) ? '' : we_html_element::htmlImg(array('src' => ICON_DIR . $c['icon'], 'class' => 'multiIcon')) )? : (empty($c['iconX']) ? '' : $c['iconX']);
 			$headline = (empty($c["headline"]) ? '' : '<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</div>' );
 			$leftWidth = (!empty($c["space"]) ? abs($c["space"]) : 0);
-			$leftContent = $icon ? : (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
+			$leftContent = $icon ? : (($leftWidth && (!$forceRightHeadline)) ? $headline : '');
 
 			$out.=(isset($c['class']) ? '<div class="' . $c['class'] . '">' : '') .
 				($i == $foldAtNr && $foldAtNr < count($content) ? // only if the folded items contain stuff.
@@ -65,7 +65,7 @@ abstract class we_html_multiIconBox{
 					'<div style="' . ($leftWidth ? ' width:' . $leftWidth . 'px' : '') . '" class="multiiconleft largeicons">' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
 					'') .
 				//right
-				'<div class="multiIconRight">' . ($icon || !$leftContent || $_forceRightHeadline ? $headline : '') . '<div>' . (!empty($c["html"]) ? $c["html"] : '') . '</div></div>' .
+				'<div class="multiIconRight">' . ($icon || !$leftContent || $forceRightHeadline ? $headline : '') . '<div>' . (!empty($c["html"]) ? $c["html"] : '') . '</div></div>' .
 				'</div>' .
 				(isset($c['class']) ? '</div>' : '');
 		}
