@@ -532,68 +532,12 @@ function we_post_tag_listview(){
 	}
 }
 
-function we_tag_ifSidebar(){
-	return defined('WE_SIDEBAR');
-}
-
-function we_tag_ifDemo(){
-	return !defined('UID');
-}
-
-function we_tag_ifSeeMode($attribs, $content){
-	return (we_tag('ifWebEdition', $attribs, $content)) && (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE);
-}
-
-function we_tag_ifTdEmpty(){
-	return $GLOBALS['lv']->tdEmpty();
-}
-
-function we_tag_ifTop(){
-	return ($GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID);
-}
-
-function we_tag_ifFound(){
-	return isset($GLOBALS['lv']) && $GLOBALS['lv']->anz;
-}
-
-function we_tag_ifLastCol(){
-	return (isset($GLOBALS['lv'])) && $GLOBALS['lv']->shouldPrintEndTR();
-}
-
-function we_tag_ifNotEmpty($attribs){
-	return (!empty($GLOBALS['we_editmode'])) || !we_tag('ifEmpty', $attribs);
-}
-
-function we_tag_ifReturnPage(){
-	return we_base_request::_(we_base_request::RAW, 'we_returnpage') !== false;
-}
-
-function we_tag_ifWebEdition(){
-	return $GLOBALS['WE_MAIN_DOC']->InWebEdition;
-}
-
+//FIXME: remove in 7.1
 function we_tag_linkToSEEM($attribs, $content){
 	t_e('deprecated', __FUNCTION__);
 	return we_tag('linkToSeeMode', $attribs, $content);
 }
 
-function we_tag_listviewPageNr(){
-	return $GLOBALS['lv']->rows ? (((abs($GLOBALS['lv']->start) - abs($GLOBALS['lv']->offset)) / $GLOBALS['lv']->maxItemsPerPage) + 1) : 1;
-}
-
-function we_tag_listviewPages(){
-	return $GLOBALS['lv']->rows ? ceil(((float) $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset)) / ((float) $GLOBALS['lv']->maxItemsPerPage )) : 1;
-}
-
-function we_tag_listviewRows(){
-	return $GLOBALS['lv']->anz_all - abs($GLOBALS['lv']->offset);
-}
-
-function we_tag_listviewStart(){
-	return $GLOBALS['lv']->start + 1 - abs($GLOBALS['lv']->offset);
-}
-
-//FIXME: remove in 7.1
 function we_tag_ifshopexists(){
 	t_e('deprecated', __FUNCTION__);
 	return we_tag('ifIsActive', array('name' => 'shop'));
