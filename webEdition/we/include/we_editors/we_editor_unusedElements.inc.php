@@ -100,12 +100,8 @@ if(!empty($remove)){
 
 		$parts = array(
 			array(
-				'headline' => 'Obsolete Elemente',
-				'html' => we_html_tools::htmlAlertAttentionBox('<strong>Experimentelles Feature</strong><br/>
-Alle hier angezeigten Elemente sind in Dokumenten basierend auf dieser Vorlage gefunden worden, konnten beim Parsen dieser Vorlage jedoch nicht mehr gefunden werden.<br/>
-Bitte beachten Sie, daß Elemente aus &lt;we:include&gt;, sowie Elemente deren Name dynamisch ermittelt werden, hier als obsolet angezeigt werden können!<br/>
-<strong>Entfernen Sie NUR Elemente bei denen Sie sich sicher sind das diese nicht mehr gebraucht werden. Sie sollten vorher unbedingt ein funktionierendes Backup erstellen!</strong>
-Um die obsoleten Elemente abschließend aus der Suche zu entfernen, führen Sie bitte im Anschluß einen Index-Rebuild durch!', we_html_tools::TYPE_ALERT, 850, false)
+				'headline' => g_l('weClass', '[unusedElementsTab]'),
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[unusedElements][description]'), we_html_tools::TYPE_ALERT, 850, false)
 			),
 			array(
 				'html' => $table->getHtml(),
