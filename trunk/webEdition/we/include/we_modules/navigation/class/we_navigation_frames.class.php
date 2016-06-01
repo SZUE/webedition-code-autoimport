@@ -146,7 +146,7 @@ function setTab(tab) {
 	switch (tab) {
 		case "preview":	// submit the information to preview screen
 			parent.edbody.document.we_form.cmd.value="";
-			if (top.content.activ_tab != tab || (top.content.activ_tab=="preview" && tab=="preview")) {
+			if (top.content.activ_tab != tab || (top.content.activ_tab=="' . self::TAB_PREVIEW . '" && tab=="' . self::TAB_PREVIEW . '")) {
 				parent.edbody.document.we_form.pnt.value = "preview";
 				parent.edbody.document.we_form.tabnr.value = "' . self::TAB_PREVIEW . '";
 				parent.edbody.submitForm();
@@ -154,7 +154,7 @@ function setTab(tab) {
 		break;
 
 		default: // just toggle content to show
-			if (top.content.activ_tab!="preview") {
+			if (top.content.activ_tab!="' . self::TAB_PREVIEW . '") {
 				parent.edbody.toggle("tab"+top.content.activ_tab);
 				parent.edbody.toggle("tab"+tab);
 				top.content.activ_tab=tab;
@@ -749,22 +749,22 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 	<td height="30"><label for="previewCode">' . g_l('navigation', '[preview_code]') . '</label><br /></td>
 <tr>
 	<td>' . we_html_element::htmlTextArea(
-		array(
-		'name' => 'previewCode',
-		'id' => 'previewCode',
-		'style' => 'width: 640px; height: 200px;',
-		'class' => 'defaultfont'
-		), $this->Model->previewCode) . '</td>
+				array(
+				'name' => 'previewCode',
+				'id' => 'previewCode',
+				'style' => 'width: 640px; height: 200px;',
+				'class' => 'defaultfont'
+				), $this->Model->previewCode) . '</td>
 </tr>
 <tr>
 	<td height="10"></td>
 <tr>
 <tr>
 	<td style="text-align:right">' .
-	we_html_button::create_button(we_html_button::REFRESH, 'javascript: showPreview();') .
-	we_html_button::create_button('reset', 'javascript: document.getElementById("previewCode").value = "' . str_replace(array("\r\n", "\n"), '\n', addslashes(we_navigation_navigation::defaultPreviewCode)) . '"; showPreview();')
-	//,we_button::create_button('new_template', 'javascript: top.content.we_cmd("create_template");')
-	. '</td>
+			we_html_button::create_button(we_html_button::REFRESH, 'javascript: showPreview();') .
+			we_html_button::create_button('reset', 'javascript: document.getElementById("previewCode").value = "' . str_replace(array("\r\n", "\n"), '\n', addslashes(we_navigation_navigation::defaultPreviewCode)) . '"; showPreview();')
+			//,we_button::create_button('new_template', 'javascript: top.content.we_cmd("create_template");')
+			. '</td>
 </tr>
 </table>';
 
