@@ -78,7 +78,7 @@ if(permissionhandler::hasPerm('administrator')){
 		$parts = array(
 			array(
 				'headline' => '',
-				'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
+				'html' => we_html_tools::htmlDialogBorder3(730, $content, $headline) . $nextprev,
 				'noline' => 1
 			)
 		);

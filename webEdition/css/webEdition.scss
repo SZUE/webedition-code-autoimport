@@ -361,6 +361,7 @@ body.radient{
 	overflow: hidden;
 }
 
+tr.boxHeader td,
 td.boxHeader{
 	padding:1px 5px 1px 5px;
 	background: $MiddleBlue;
@@ -2278,13 +2279,14 @@ div.htmlDialogLayoutButtons{
 	margin-left:10px;
 }
 
-.htmlDialogBorderButtons{
-	text-align:right;
-	margin-top:5px;
-}
-
-.htmlDialogBorder4Cell{
-	padding:2px 5px 2px 5px;
-	border-bottom: 1px solid silver;
-	background-color:white;
+tr.htmlDialogBorder4Cell{
+	td{
+		padding:2px 5px 2px 5px;
+		border-bottom: 1px solid silver;
+		border-left: 1px solid silver;
+		background-color:white;
+	}
+	td:first-child{
+		border-left: none;
+	}
 }

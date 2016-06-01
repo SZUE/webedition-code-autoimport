@@ -633,7 +633,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			);
 		}
 
-		$table = we_html_tools::htmlDialogBorder3(650, 0, $rows, $headline, $class);
+		$table = we_html_tools::htmlDialogBorder3(650, $rows, $headline, $class);
 		$delbut = we_html_button::create_button(we_html_button::DELETE, "javascript:top.content.setHot();we_cmd('delete_stat')");
 
 		return $content . $table . "<br/>" . $delbut;

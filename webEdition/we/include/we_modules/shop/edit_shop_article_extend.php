@@ -259,7 +259,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 				}
 
 				$parts[] = array(
-					'html' => we_html_tools::htmlDialogBorder3(670, 100, $content, $headline),
+					'html' => we_html_tools::htmlDialogBorder3(670, $content, $headline),
 					'noline' => true
 				);
 
@@ -327,7 +327,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 					);
 				}
 				$parts[] = array(
-					'html' => we_html_tools::htmlDialogBorder3(670, 100, $content, $headline),
+					'html' => we_html_tools::htmlDialogBorder3(670, $content, $headline),
 					'noline' => true
 				);
 

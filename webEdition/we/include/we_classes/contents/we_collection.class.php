@@ -412,7 +412,6 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
 				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline collection-head'), g_l('weClass', '[collection][collectionTitle]')) .
-			//we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][attentionBox]'), we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox($longtext . $ddtext, we_html_tools::TYPE_INFO, 850, false, 29)) .
 			we_html_element::htmlDiv(array('class' => 'collection-toolbar'), $toolbar->getHtml()) .
 			we_html_element::htmlDiv(array('id' => 'content_div_list', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .

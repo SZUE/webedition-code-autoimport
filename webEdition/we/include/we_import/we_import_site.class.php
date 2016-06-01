@@ -365,7 +365,7 @@ function doUnload() {
 				$i++;
 			}
 		}
-		return we_html_tools::htmlDialogBorder3(420, 270, $content, $headlines, "middlefont", "", "", "fields", "margin-top:5px;");
+		return we_html_tools::htmlDialogBorder3(420, $content, $headlines, "middlefont", "fields");
 	}
 
 	/**

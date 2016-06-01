@@ -362,7 +362,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 	}
 
 	$parts[] = array(
-		'html' => we_html_tools::htmlDialogBorder3(670, 100, $content, $headline),
+		'html' => we_html_tools::htmlDialogBorder3(670, $content, $headline),
 		'noline' => true
 	);
 

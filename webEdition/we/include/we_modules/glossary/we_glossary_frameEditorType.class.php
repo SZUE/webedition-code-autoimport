@@ -253,7 +253,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			$content[] = $temp;
 		}
 
-		$retVal .= we_html_tools::htmlDialogBorder3(636, 0, $content, $headline);
+		$retVal .= we_html_tools::htmlDialogBorder3(636, $content, $headline);
 
 		return $retVal;
 	}
