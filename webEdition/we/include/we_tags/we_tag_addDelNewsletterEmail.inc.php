@@ -25,7 +25,7 @@
  * @param       string  $fieldGroup     Erwartet eine Feldgruppe (Bereich) aus der webEdition KV; Default: "Newsletter"; Nur bei $type == customer
  * @param       string  $mailingList    Erwartet den Namen der Mailing-Liste OHNE Feldgruppe (Bereich) aus der webEdition KV; Default: "Ok"; Nur bei $type == customer
  */
-function we_tag_addDelNewsletterEmail($attribs){
+function we_tag_addDelNewsletterEmail(array $attribs){
 	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__))){
 		return $foo;
 	}

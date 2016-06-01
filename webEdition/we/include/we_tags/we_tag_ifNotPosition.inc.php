@@ -22,6 +22,6 @@ function we_parse_tag_ifNotPosition($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifPosition', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotPosition($attribs){
+function we_tag_ifNotPosition(array $attribs){
 	return !we_tag('ifPosition', $attribs);
 }

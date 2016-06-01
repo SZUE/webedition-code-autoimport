@@ -31,7 +31,7 @@ function we_parse_tag_repeatShopItem($a, $content, $attribs){
 	return '<?php ' . we_tag_tagParser::printTag('repeatShopItem', $attribs) . '; while($GLOBALS[\'lv\']->next_record()) {?>' . $content . '<?php } ' . we_tag_tagParser::printTag('repeatShopItem', array('_type' => 'stop')) . ';?>';
 }
 
-function we_tag_repeatShopItem($attribs){
+function we_tag_repeatShopItem(array $attribs){
 	if(!defined('SHOP_TABLE')){
 		echo modulFehltError('Shop', __FUNCTION__);
 		return;

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_bannerSum($attribs){
+function we_tag_bannerSum(array $attribs){
 	if(!isset($GLOBALS['lv'])){
 		return false;
 	}

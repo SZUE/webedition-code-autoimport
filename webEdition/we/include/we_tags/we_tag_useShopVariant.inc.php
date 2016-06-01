@@ -23,13 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-/**
- * This function inits a shop variant if available
- *
- * @param	$attribs array
- *
- * @return	void
- */
 function we_tag_useShopVariant(){
 	if(!$GLOBALS['we_doc']->InWebEdition && ($var = we_base_request::_(we_base_request::HTML, we_base_constants::WE_VARIANT_REQUEST)) !== false){
 		we_base_variants::useVariant($GLOBALS['we_doc'], $var);

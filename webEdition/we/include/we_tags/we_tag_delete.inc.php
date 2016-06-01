@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_delete($attribs){
+function we_tag_delete(array $attribs){
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$type = weTag_getAttribute('type', $attribs, 'document', we_base_request::STRING);
 	$userid = weTag_getAttribute('userid', $attribs, 0, we_base_request::STRING); // deprecated  use protected=true instead

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_field($attribs){
+function we_tag_field(array $attribs){
 	//show field in case of e.g. listdir
 	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){
 		return $GLOBALS['lv']->field;

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_subscribe($attribs){
+function we_tag_subscribe(array $attribs){
 	$type = weTag_getAttribute("type", $attribs, "email", we_base_request::STRING);
 	$values = weTag_getAttribute("values", $attribs, '', we_base_request::RAW);
 	$value = weTag_getAttribute("value", $attribs, '', we_base_request::RAW);

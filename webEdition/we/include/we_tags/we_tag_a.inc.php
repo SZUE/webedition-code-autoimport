@@ -25,7 +25,7 @@
   return '<?php printElement(' . we_tag_tagParser::printTag('a', $attribs, $content, true) . ');?>';
   } */
 
-function we_tag_a($attribs, $content){
+function we_tag_a(array $attribs, $content){
 	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){
 		$id = $GLOBALS['lv']->ID;
 	} else {

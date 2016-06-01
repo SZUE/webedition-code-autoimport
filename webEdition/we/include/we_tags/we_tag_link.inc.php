@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_link($attribs, $content){
+function we_tag_link(array $attribs, $content){
 	if(isset($GLOBALS['we']['ll'])){
 		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
 		$link = $GLOBALS['we']['ll']->getLink();

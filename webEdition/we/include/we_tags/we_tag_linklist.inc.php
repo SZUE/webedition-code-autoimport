@@ -26,7 +26,7 @@ function we_parse_tag_linklist($attribs, $content){
 	return '<?php $GLOBALS[\'we\'][\'ll\']=' . we_tag_tagParser::printTag('linklist', $attribs) . '; while($GLOBALS[\'we\'][\'ll\']->next()){?>' . $content . '<?php } $GLOBALS[\'we\'][\'ll\']->last(); unset($GLOBALS[\'we\'][\'ll\']);' . we_tag_tagParser::printTag('linklist', array('_type' => 'stop')) . ';?>';
 }
 
-function we_tag_linklist($attribs){
+function we_tag_linklist(array $attribs){
 	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		default:
 			$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);

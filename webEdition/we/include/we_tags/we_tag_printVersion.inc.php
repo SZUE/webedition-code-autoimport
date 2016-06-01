@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_printVersion($attribs, $content){
+function we_tag_printVersion(array $attribs, $content){
 	if(($foo = attributFehltError($attribs, 'tid', __FUNCTION__))){
 		return $foo;
 	}

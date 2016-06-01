@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_author($attribs){
+function we_tag_author(array $attribs){
 	// attributes
 	$creator = weTag_getAttribute('creator', $attribs, false, we_base_request::BOOL);
 	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);

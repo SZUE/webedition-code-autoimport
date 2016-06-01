@@ -22,6 +22,6 @@ function we_parse_tag_ifNotHasCurrentEntry($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifHasCurrentEntry', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotHasCurrentEntry($attribs){
+function we_tag_ifNotHasCurrentEntry(array $attribs){
 	return !we_tag('ifHasCurrentEntry', $attribs);
 }

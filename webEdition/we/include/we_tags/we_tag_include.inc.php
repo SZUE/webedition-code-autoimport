@@ -84,7 +84,7 @@ function we_resetBackVar($we_unique){
 	unset($GLOBALS['we']['backVars'][$we_unique]);
 }
 
-function we_tag_include($attribs){//FIXME: include doesn't work in editmode - check funktionen
+function we_tag_include(array $attribs){//FIXME: include doesn't work in editmode - check funktionen
 	$id = intval(weTag_getAttribute('id', $attribs, 0, we_base_request::INT));
 	$path = weTag_getAttribute('path', $attribs, '', we_base_request::FILE);
 

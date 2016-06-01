@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifPageLanguage($attribs){
+function we_tag_ifPageLanguage(array $attribs){
 	if(($foo = attributFehltError($attribs, 'match', __FUNCTION__, true))){
 		echo $foo;
 		return false;

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_navigation($attribs){
+function we_tag_navigation(array $attribs){
 	$parentid = weTag_getAttribute('parentid', $attribs, -1, we_base_request::INT);
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$name = weTag_getAttribute('navigationname', $attribs, 'default', we_base_request::STRING);

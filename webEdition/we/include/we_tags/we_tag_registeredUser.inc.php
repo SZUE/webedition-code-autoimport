@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_registeredUser($attribs){
+function we_tag_registeredUser(array $attribs){
 
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$show = weTag_getAttribute('show', $attribs, '', we_base_request::STRING);

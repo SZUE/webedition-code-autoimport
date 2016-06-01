@@ -22,6 +22,6 @@ function we_parse_tag_ifNotEditmode($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifEditmode', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotEditmode($attribs){
+function we_tag_ifNotEditmode(array $attribs){
 	return !we_tag('ifEditmode', $attribs);
 }

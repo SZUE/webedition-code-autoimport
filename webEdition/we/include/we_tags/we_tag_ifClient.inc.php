@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifClient($attribs){
+function we_tag_ifClient(array $attribs){
 	$br = we_base_browserDetect::inst();
 
 	if(($browser = weTag_getAttribute('browser', $attribs, '', we_base_request::STRING))){

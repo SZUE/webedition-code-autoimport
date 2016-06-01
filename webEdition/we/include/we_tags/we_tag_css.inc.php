@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_css($attribs){
+function we_tag_css(array $attribs){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
 	}
@@ -57,9 +57,9 @@ function we_tag_css($attribs){
 	$attribs['href'] = $row['Path'] . ($row['IsFolder'] ? '/' : '') . '?m=' . $row['Published'];
 
 	if($GLOBALS['we_editmode']){
-		// these stylesheets are applied to wysiwyg using addDocumentCss depending on attribute "applyto": 
+		// these stylesheets are applied to wysiwyg using addDocumentCss depending on attribute "applyto":
 		// so prevent JS getDocumentCss() from applying it again or when applyto=around!
-		$attribs['href'] .= '&wysiwyg=0'; 
+		$attribs['href'] .= '&wysiwyg=0';
 	}
 
 	return $nolink ? '' : getHtmlTag('link', $attribs) . "\n";

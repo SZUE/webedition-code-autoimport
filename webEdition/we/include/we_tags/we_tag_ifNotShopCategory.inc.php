@@ -22,6 +22,6 @@ function we_parse_tag_ifNotShopCategory($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifShopCategory', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotShopCategory($attribs){
+function we_tag_ifNotShopCategory(array $attribs){
 	return !we_tag('ifShopCategory', $attribs);
 }

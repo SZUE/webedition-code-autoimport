@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_icon($attribs){
+function we_tag_icon(array $attribs){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
 	}

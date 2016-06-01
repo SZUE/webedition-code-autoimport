@@ -18,7 +18,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_saveRegisteredUser($attribs){
+function we_tag_saveRegisteredUser(array $attribs){
 	if(!(defined('CUSTOMER_TABLE') && isset($_REQUEST['s']))){
 		return;
 	}

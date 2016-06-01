@@ -22,6 +22,6 @@ function we_parse_tag_ifVotingFieldNotEmpty($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifVotingFieldEmpty', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifVotingFieldNotEmpty($attribs){
+function we_tag_ifVotingFieldNotEmpty(array $attribs){
 	return !we_tag('ifVotingFieldEmpty', $attribs);
 }

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_linkToSeeMode($attribs){
+function we_tag_linkToSeeMode(array $attribs){
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT); //	if a document-id is selected go to that document
 	$oid = weTag_getAttribute('oid', $attribs, 0, we_base_request::INT); //	if an object-id is selected go to that object
 	$permission = weTag_getAttribute('permission', $attribs, '', we_base_request::STRING);

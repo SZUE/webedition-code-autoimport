@@ -22,6 +22,6 @@ function we_parse_tag_ifNotSearch($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifSearch', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotSearch($attribs){
+function we_tag_ifNotSearch(array $attribs){
 	return !we_tag('ifSearch', $attribs);
 }

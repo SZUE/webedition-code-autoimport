@@ -24,7 +24,7 @@
  */
 require_once (WE_INCLUDES_PATH . 'we_tags/we_tag_category.inc.php');
 
-function we_tag_shopCategory($attribs){
+function we_tag_shopCategory(array $attribs){
 	$id = weTag_getAttribute('id', $attribs, false, we_base_request::INT);
 	$showpath = weTag_getAttribute('showpath', $attribs, false, we_base_request::BOOL);
 	$rootdir = weTag_getAttribute('rootdir', $attribs, '', we_base_request::FILE);

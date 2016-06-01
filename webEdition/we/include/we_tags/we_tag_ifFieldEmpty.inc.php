@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_isFieldNotEmpty($attribs){
+function we_isFieldNotEmpty(array $attribs){
 	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
 	if(!isset($GLOBALS['lv'])){
