@@ -244,26 +244,25 @@ class we_shop_statusMails{
 
 		$docID = intval($docID);
 
-		if($docID && we_base_file::isWeFile($docID, FILE_TABLE, $DB_WE)){
-			$_SESSION['WE_SendMail'] = true;
-			$_REQUEST['we_orderid'] = $order;
-			$_REQUEST['we_userlanguage'] = $UserLang;
-			$_REQUEST['we_shopstatus'] = $was;
-
-			$codes = we_getDocumentByID($docID, '', $DB_WE);
-			$maildoc = new we_webEditionDocument();
-			$maildoc->initByID($docID);
-
-			if(!empty($this->EMailData['DocumentAttachmentFieldA'])){
-				$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
-				$codes = $codes . $attachmentA;
-			}
-			unset($_REQUEST['we_orderid'], $_SESSION['WE_SendMail']);
-		} else {
+		if(!$docID || !we_base_file::isWeFile($docID, FILE_TABLE, $DB_WE)){
 			t_e('Document to send as status mail is empty! ID: ' . $docID, $field);
 			return false;
 		}
 
+		$_SESSION['WE_SendMail'] = true;
+		$_REQUEST['we_orderid'] = $order;
+		$_REQUEST['we_userlanguage'] = $UserLang;
+		$_REQUEST['we_shopstatus'] = $was;
+		$charset = '';
+		$codes = we_getDocumentByID($docID, '', $DB_WE, $charset);
+		$maildoc = new we_webEditionDocument();
+		$maildoc->initByID($docID);
+
+		if(!empty($this->EMailData['DocumentAttachmentFieldA'])){
+			$attachmentA = $maildoc->getElement($this->EMailData['DocumentAttachmentFieldA']);
+			$codes = $codes . $attachmentA;
+		}
+		unset($_REQUEST['we_orderid'], $_SESSION['WE_SendMail']);
 
 		$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField'])? : 'no subject given';
 		if($recipientOK && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
@@ -274,7 +273,7 @@ class we_shop_statusMails{
 
 			$phpmail = new we_helpers_mail('', $subject, $from);
 			$phpmail->setIsEmbedImages(true);
-
+			$phpmail->setCharSet($charset);
 			$phpmail->addHTMLPart($codes);
 			$phpmail->setTextPartOutOfHTML($codes);
 			$phpmail->addTo($cdata[$this->EMailData['emailField']], ( (isset($this->EMailData['titleField']) && $this->EMailData['titleField'] != '' && isset($cdata[$this->EMailData['titleField']]) && $cdata[$this->EMailData['titleField']] != '' ) ? $cdata[$this->EMailData['titleField']] . ' ' : '') . $cdata['Forename'] . ' ' . $cdata['Surname']);
