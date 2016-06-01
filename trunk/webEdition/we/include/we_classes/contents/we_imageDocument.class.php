@@ -801,7 +801,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$RollOverFlag = $this->getElement('RollOverFlag') ? 1 : 0;
 		$RollOverIDName = 'we_' . $this->Name . '_txt[RollOverID]';
 		$RollOverID = $this->getElement('RollOverID') ? : '';
-		$RollOverPathname = 'we_' . $this->Name . '_txt[RollOverPath]';
+		$RollOverPathname = 'we_' . $this->Name . '_vars[RollOverPath]';
 		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($RollOverID), '', $this->DB_WE);
 
 		$checkFlagName = 'check_' . $this->Name . '_RollOverFlag';
