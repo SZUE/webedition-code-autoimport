@@ -565,9 +565,29 @@ we_templateInit();?>';
 	/**
 	 * @desc 	this function returns the code of the unparsed template
 	 * @return	array with the filed names and attributes
-	 * @param	boolean $completeCode if true then the function returns the code of the complete template (with master template and included templates)
+	 * @param	boolean $completeCode if true then the function returns the code of the complete template (with master template)
 	 */
-	function getTemplateCode($completeCode = true){
+	function getTemplateCode($completeCode = true, $fillIncluded = false){
+		if($fillIncluded){
+			$regs = $codes = array();
+			$max = 100;
+			$db = $GLOBALS['DB_WE'];
+			$code = $this->getElement('completeData');
+			while(( --$max) > 0 && preg_match('|<we:include ([^>]*type="template"[^>]*)/>|', $code, $regs)){
+				$parse = we_tag_tagParser::parseAttribs($regs[1], true);
+				if(!empty($parse['path'])){
+					$parse['id'] = path_to_id($parse['path'], TEMPLATES_TABLE, $db);
+				}
+				if(!empty($parse['id'])){
+					$id = intval($parse['id']);
+					if(!isset($codes[$id])){
+						$codes[$id] = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE DocumentTable="tblTemplates" AND nHash=x\'' . md5('completeData') . '\' AND l.DID=' . $id);
+					}
+					$code = str_replace($regs[0], $codes[$id], $code);
+				}
+			}
+			return $code;
+		}
 		return $completeCode ? $this->getElement('completeData') : $this->getElement('data');
 	}
 
@@ -699,7 +719,7 @@ we_templateInit();?>';
 				// get attributes of tag
 				$att = we_tag_tagParser::parseAttribs($regs[1], true);
 				// if type-attribute is equal to "template"
-				if(isset($att['type']) && $att['type'] === 'template'){
+				if(!empty($att['type']) && $att['type'] === 'template'){
 
 					// if path is set - look for the id of the template
 					if(!empty($att['path'])){

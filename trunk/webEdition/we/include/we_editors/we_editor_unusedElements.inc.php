@@ -34,7 +34,8 @@ if(!empty($remove)){
 	<form name="we_form" method="post" action="" onsubmit="return false;">
 		<?php
 		echo we_class::hiddenTrans();
-		$tp = new we_tag_tagParser($GLOBALS['we_doc']->getTemplateCode(true));
+
+		$tp = new we_tag_tagParser($GLOBALS['we_doc']->getTemplateCode(true, true));
 		$relevantTags = array(
 			'normal' => array(),
 			'block' => array(),
