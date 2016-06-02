@@ -155,8 +155,26 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 			switch($GLOBALS['we_doc']->ContentType){
 				case we_base_ContentTypes::TEMPLATE:
 					list($cnt, $select) = $GLOBALS['we_doc']->formTemplateDocuments();
-					$parts[] = array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[documents]') . ($cnt ? ' (' . $cnt . ')' : ''),
-						'html' => $select, 'space' => 140);
+					$parts[] = array(
+						'icon' => 'doc.gif',
+						'headline' => g_l('weClass', '[documents]') . ($cnt ? ' (' . $cnt . ')' : ''),
+						'html' => $select,
+						'space' => 140
+					);
+					list($cnt, $select) = $GLOBALS['we_doc']->formTemplatesUsed();
+					$parts[] = array(
+						'icon' => 'doc.gif',
+						'headline' => g_l('weClass', '[usedTemplates]') . ($cnt ? ' (' . $cnt . ')' : ''),
+						'html' => $select,
+						'space' => 140
+					);
+					list($cnt, $select) = $GLOBALS['we_doc']->formTemplateUsedByTemplate();
+					$parts[] = array(
+						'icon' => 'doc.gif',
+						'headline' => g_l('weClass', '[usedByTemplates]') . ($cnt ? ' (' . $cnt . ')' : ''),
+						'html' => $select,
+						'space' => 140
+					);
 					break;
 				case we_base_ContentTypes::IMAGE:
 					$_metaData = $GLOBALS['we_doc']->getMetaData();
