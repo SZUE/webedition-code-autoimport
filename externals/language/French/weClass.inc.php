@@ -242,6 +242,8 @@ To finally remove all unused elements from the search, you have to rebuild the i
 	'urlfield3'=>'Champ URL 3',
 	'use_meta_title'=>'Utiliser un titre-meta',
 	'use_object'=>'Utilise Object',
+	'usedByTemplates'=>'Used in other templates',
+	'usedTemplates'=>'Used Templates',
 	'users'=>'Utilisateur standard',
 	'validation'=>'Validation',
 	'variant_fields'=>'Champs',

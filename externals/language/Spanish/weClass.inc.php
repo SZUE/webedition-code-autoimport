@@ -242,6 +242,8 @@ To finally remove all unused elements from the search, you have to rebuild the i
 	'urlfield3'=>'URL field 3',
 	'use_meta_title'=>'Use el meta título',
 	'use_object'=>'Usar objeto',
+	'usedByTemplates'=>'Used in other templates',
+	'usedTemplates'=>'Used Templates',
 	'users'=>'Dueños predefinidos',
 	'validation'=>'Validación',
 	'variant_fields'=>'Campos',

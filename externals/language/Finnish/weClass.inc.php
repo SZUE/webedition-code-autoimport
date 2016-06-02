@@ -242,6 +242,8 @@ To finally remove all unused elements from the search, you have to rebuild the i
 	'urlfield3'=>'URL field 3',
 	'use_meta_title'=>'Käytä meta-otsikkoa',
 	'use_object'=>'Käytä objektia',
+	'usedByTemplates'=>'Used in other templates',
+	'usedTemplates'=>'Used Templates',
 	'users'=>'Oletusomistajat',
 	'validation'=>'Validointi',
 	'variant_fields'=>'Kentät',

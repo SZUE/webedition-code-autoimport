@@ -242,6 +242,8 @@ Um die obsoleten Elemente abschließend aus der Suche zu entfernen, führen Sie 
 	'urlfield3'=>'URL-Feld 3',
 	'use_meta_title'=>'Meta-Titel verwenden',
 	'use_object'=>'Benutze Objekt',
+	'usedByTemplates'=>'In anderen Vorlagen verwendet',
+	'usedTemplates'=>'Verwendete Vorlagen',
 	'users'=>'Default Besitzer',
 	'validation'=>'Validierung',
 	'variant_fields'=>'Feldern',
