@@ -204,7 +204,7 @@ for($i = 0; $i < count($aTopRssFeeds); $i++){
 
 $jsPrefs = "
 var oCfg={
-	iDlgWidth:" . $iDlgWidth . ",
+	iDlgWidth:" . intval($iDlgWidth) . ",
 	_noResizeTypes:['pad']
 };";
 
