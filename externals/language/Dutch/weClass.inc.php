@@ -224,6 +224,14 @@ Not shown: elements not matching the content type of the collection.',
 	'thumbnails'=>'Thumbnails',
 	'type_not_supported_hint'=>'De version van de GD bibliotheek - geïnstalleerd op deze server - ondersteunt niet de %s als output formaat! Converteer a.u.b. de afbeelding naar een compatibel formaat!',
 	'unusedElementsTab'=>'Obsolete elements',
+	
+	'unusedElements'=>array(
+		'description'=>'<strong>Experimental Feature</strong><br/>
+Each element shown below is contained in at least one document based on this template. Only elements which could not be identified by parsing the template are listed below.<br/>
+Beware the tag &lt;we:include&gt; is not treated and dynamic created elements are shown as unused.<br/>
+<strong>Remove ONLY elements you are really sure they are not needed any more. But before you proceed, you should better have an backup - just in case.</strong>
+To finally remove all unused elements from the search, you have to rebuild the index table.',
+	),
 	'upload'=>'Upload',
 	'upload_single_files'=>'ATTENTIE: Let er op dat u met deze functie alleen losse bestanden kunt uploaden. Gebruik om meerdere bestanden tegelijk te uploaden de import functie, welke bereikbaar is via het menu Bestand.',
 	'upload_will_replace'=>'Door gebruik van de "upload" knop kunt u het bestaande bestand vervangen. Als u een ander bestand of meerdere bestand tegelijk wilt uploaden, gebruik dan de import functie of ga opnieuw naar deze pagina via het menu Bestand.',

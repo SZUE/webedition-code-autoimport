@@ -224,6 +224,14 @@ Not shown: elements not matching the content type of the collection.',
 	'thumbnails'=>'Imagettes',
 	'type_not_supported_hint'=>'La version de la GD Library installée sur le serveur ne support pas %s comme format d`édition! S`il vous plaît convertez dabord la graphique dans un format compatible!',
 	'unusedElementsTab'=>'Obsolete elements',
+	
+	'unusedElements'=>array(
+		'description'=>'<strong>Experimental Feature</strong><br/>
+Each element shown below is contained in at least one document based on this template. Only elements which could not be identified by parsing the template are listed below.<br/>
+Beware the tag &lt;we:include&gt; is not treated and dynamic created elements are shown as unused.<br/>
+<strong>Remove ONLY elements you are really sure they are not needed any more. But before you proceed, you should better have an backup - just in case.</strong>
+To finally remove all unused elements from the search, you have to rebuild the index table.',
+	),
 	'upload'=>'télécharger',
 	'upload_single_files'=>'ATTENTION: Considerez, avec cette fonction vous pouvez télécharger seulement un fichier à la fois. Pour télécharger plusieurs utiliser la fonction import s`il vous plaît, que vous trouvez dans le menu Fichier->Import/Expor.',
 	'upload_will_replace'=>'Par le boutton "télécharger" vous pouvez remplacer le fichier actuel. Si vous voulez télécharger encore un autre ou plusieur fichiers, utilisez la fonction import, que vous trouvez dans le menu Fichier->Import/Expor, ou allez par ce dialogue de nouveau.',

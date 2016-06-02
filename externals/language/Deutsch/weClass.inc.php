@@ -224,6 +224,14 @@ Nicht aufgeführt: Elemente die nicht zu Sammlung passen.',
 	'thumbnails'=>'Miniaturansichten',
 	'type_not_supported_hint'=>'Die auf dem Server installierte Version der GD Library unterstützt nicht das %s als Ausgabeformat! Bitte konvertieren Sie die Grafik zuerst in ein kompatibles Format!',
 	'unusedElementsTab'=>'Obsolete Elemente',
+	
+	'unusedElements'=>array(
+		'description'=>'<strong>Experimentelles Feature</strong><br/>
+Alle hier angezeigten Elemente sind in Dokumenten basierend auf dieser Vorlage gefunden worden, konnten beim Parsen dieser Vorlage jedoch nicht mehr gefunden werden.<br/>
+Bitte beachten Sie, daß Elemente aus &lt;we:include&gt;, sowie Elemente deren Name dynamisch ermittelt werden, hier als obsolet angezeigt werden können!<br/>
+<strong>Entfernen Sie NUR Elemente bei denen Sie sich sicher sind das diese nicht mehr gebraucht werden. Sie sollten vorher unbedingt ein funktionierendes Backup erstellen!</strong>
+Um die obsoleten Elemente abschließend aus der Suche zu entfernen, führen Sie bitte im Anschluß einen Index-Rebuild durch!',
+	),
 	'upload'=>'Hochladen',
 	'upload_single_files'=>'ACHTUNG: Bitte beachten Sie, dass über diese Funktion nur einzelne Dateien hochgeladen werden können. Für den Upload mehrerer Dateien verwenden Sie bitte die Importfunktion, welche Sie über das Datei-Menü erreichen.',
 	'upload_will_replace'=>'Über den Button "Hochladen" können Sie nun die aktuelle Datei ersetzen. Wenn Sie eine weitere, andere Datei oder mehrere Dateien hochladen möchten, so verwenden Sie hierzu bitte die Importfunktion oder rufen diese Seite erneut über das Datei-Menü auf.',

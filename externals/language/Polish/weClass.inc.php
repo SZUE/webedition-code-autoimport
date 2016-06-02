@@ -224,6 +224,14 @@ Not shown: elements not matching the content type of the collection.',
 	'thumbnails'=>'Widoki miniatur',
 	'type_not_supported_hint'=>'Zainstalowana na serwerze wersja biblioteki GD nie wspiera  %s jako formatu wyjściowego! Przekonwertuj najpierw obrazek do kompatybilnego formatu!',
 	'unusedElementsTab'=>'Obsolete elements',
+	
+	'unusedElements'=>array(
+		'description'=>'<strong>Experimental Feature</strong><br/>
+Each element shown below is contained in at least one document based on this template. Only elements which could not be identified by parsing the template are listed below.<br/>
+Beware the tag &lt;we:include&gt; is not treated and dynamic created elements are shown as unused.<br/>
+<strong>Remove ONLY elements you are really sure they are not needed any more. But before you proceed, you should better have an backup - just in case.</strong>
+To finally remove all unused elements from the search, you have to rebuild the index table.',
+	),
 	'upload'=>'Załaduj',
 	'upload_single_files'=>'UWAGA: Zwróć uwagę, że poprzez tą funkcje tylko pojedyncze pliki mogą zostać załadowane. Do uploadu większej ilości plików należy użyć funkcji importu.',
 	'upload_will_replace'=>'Poprzez klawisz "Załaduj" można zastąpić aktualny plik. Jeżeli chcemy załadować kolejny lub wiecej plików, można w tym celu użyć funkcji importu lub przywołać stronę od nowa z poziomu menu.',

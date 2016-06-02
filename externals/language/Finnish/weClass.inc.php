@@ -224,6 +224,14 @@ Not shown: elements not matching the content type of the collection.',
 	'thumbnails'=>'Esikatselukuvat',
 	'type_not_supported_hint'=>'Palvelimelle asennettu GD-kirjasto ei tue %s kuvatyyppiä! Muunna kuvaformaatti yhteensopivaan muotoon!',
 	'unusedElementsTab'=>'Obsolete elements',
+	
+	'unusedElements'=>array(
+		'description'=>'<strong>Experimental Feature</strong><br/>
+Each element shown below is contained in at least one document based on this template. Only elements which could not be identified by parsing the template are listed below.<br/>
+Beware the tag &lt;we:include&gt; is not treated and dynamic created elements are shown as unused.<br/>
+<strong>Remove ONLY elements you are really sure they are not needed any more. But before you proceed, you should better have an backup - just in case.</strong>
+To finally remove all unused elements from the search, you have to rebuild the index table.',
+	),
 	'upload'=>'Lataa',
 	'upload_single_files'=>'HUOMIOITAVAA: Huomioi että voi ladata vain yksittäisiä tiedostoja tämän toiminnon kautta. Jos haluat ladata useita tiedostoja kerrallaan, käytä tuo toimintoa, Tiedosto -valikosta.',
 	'upload_will_replace'=>'Käyttämällä "Lataa" -painiketta voit korvata tämänhetkisen tiedoston. Jos haluat ladata muun tiedoston tai useita tiedostoja kerrallaan, käytä tuo -toimintoa  Tiedosto -valikosta.',

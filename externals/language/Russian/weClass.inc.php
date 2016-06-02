@@ -224,6 +224,14 @@ Not shown: elements not matching the content type of the collection.',
 	'thumbnails'=>'Иконки',
 	'type_not_supported_hint'=>'Установленная на сервере версия GD Library не поддерживает %s как формат вывода на экран! Рекомендуется конвертировать изображение в формат, поддерживаемый GD Library.',
 	'unusedElementsTab'=>'Obsolete elements',
+	
+	'unusedElements'=>array(
+		'description'=>'<strong>Experimental Feature</strong><br/>
+Each element shown below is contained in at least one document based on this template. Only elements which could not be identified by parsing the template are listed below.<br/>
+Beware the tag &lt;we:include&gt; is not treated and dynamic created elements are shown as unused.<br/>
+<strong>Remove ONLY elements you are really sure they are not needed any more. But before you proceed, you should better have an backup - just in case.</strong>
+To finally remove all unused elements from the search, you have to rebuild the index table.',
+	),
 	'upload'=>'Загрузить',
 	'upload_single_files'=>'ВНИМАНИЕ: возможна загрузка одного файла. Для одновременной загрузки нескольких файлов нужно воспользоваться командой импорта.',
 	'upload_will_replace'=>'При нажатии на кнопку «Загрузить» файл переписывается на новый. Для одновременной загрузки нескольких файлов нужно воспользоваться командой импорта или вернуться на текущую страницу с помощью команды меню «файл».',
