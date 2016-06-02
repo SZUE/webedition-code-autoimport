@@ -562,6 +562,58 @@ we_templateInit();?>';
 		));
 	}
 
+	function formTemplatesUsed(){
+		if($this->ID == 0 || empty($this->IncludedTemplates)){
+			return array(0, g_l('weClass', '[no_documents]'));
+		}
+		$this->DB_WE->query('SELECT ID,SUBSTRING_INDEX(Path,Text,1),CONCAT(Text," (ID: ",ID,")") FROM ' . TEMPLATES_TABLE . ' WHERE ID IN (' . trim($this->IncludedTemplates, ',') . ') ORDER BY Path');
+
+		$elems = $this->DB_WE->getAllFirst(true);
+
+		if(empty($elems)){
+			return array(0, g_l('weClass', '[no_documents]'));
+		}
+		$path = array();
+		$oldpath = '';
+		foreach($elems as $id => $data){
+			if($oldpath != $data[0]){
+				$path[$data[0]] = we_html_tools::OPTGROUP;
+				$oldpath = $data[0];
+			}
+			$path[$id] = $data[1];
+		}
+
+		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedTemplates', $path, 1, '', false, array('style' => 'margin-right: 20px;')), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
+				we_html_button::create_button(we_html_button::VIEW, "javascript:top.openBrowser(document.we_form.elements['TemplateUsedTemplates'].value);")
+		));
+	}
+
+	function formTemplateUsedByTemplate(){
+		if($this->ID == 0){
+			return array(0, g_l('weClass', '[no_documents]'));
+		}
+		$this->DB_WE->query('SELECT ID,SUBSTRING_INDEX(Path,Text,1),CONCAT(Text," (ID: ",ID,")") FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND FIND_IN_SET(' . $this->ID . ',IncludedTemplates) ORDER BY Path');
+
+		$elems = $this->DB_WE->getAllFirst(true);
+
+		if(empty($elems)){
+			return array(0, g_l('weClass', '[no_documents]'));
+		}
+		$path = array();
+		$oldpath = '';
+		foreach($elems as $id => $data){
+			if($oldpath != $data[0]){
+				$path[$data[0]] = we_html_tools::OPTGROUP;
+				$oldpath = $data[0];
+			}
+			$path[$id] = $data[1];
+		}
+
+		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedByTemplates', $path, 1, '', false, array('style' => 'margin-right: 20px;')), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
+				we_html_button::create_button(we_html_button::VIEW, "javascript:top.openBrowser(document.we_form.elements['TemplateUsedByTemplates'].value);")
+		));
+	}
+
 	/**
 	 * @desc 	this function returns the code of the unparsed template
 	 * @return	array with the filed names and attributes

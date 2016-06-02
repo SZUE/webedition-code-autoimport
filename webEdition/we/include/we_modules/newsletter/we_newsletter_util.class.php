@@ -236,6 +236,9 @@ abstract class we_newsletter_util{
 					$emailExistsInOneOfTheLists = true;
 				}
 				break;
+			case 'emailonly':
+				$lists = $abos;
+				break;
 		}
 		if($emailExistsInOneOfTheLists){
 			$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_EMAIL_EXISTS;
@@ -270,8 +273,7 @@ abstract class we_newsletter_util{
 
 			$cnt = 0;
 			$confirmLink = ($id ? id_to_path($id, FILE_TABLE) : $_SERVER['SCRIPT_NAME']) . '?confirmID=' . $confirmID . '&mail=' . rawurlencode($f['subscribe_mail']);
-			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true, true);
-			if($urlReplace){
+			if(($urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true, true))){
 				$confirmLink = str_replace('//', $protocol, preg_replace($urlReplace, array_keys($urlReplace), $confirmLink, -1, $cnt));
 			}
 
