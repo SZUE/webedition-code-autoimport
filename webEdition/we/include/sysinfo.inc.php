@@ -262,13 +262,12 @@ $_types = array(
 
 $buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
 
-$_space_size = 150;
 $_parts = array();
 foreach($_info as $_k => $_v){
 	$_parts[] = array(
 		'headline' => $_k,
 		'html' => getInfoTable($_v, strip_tags($_k)),
-		'space' => $_space_size
+		'space' => 150
 	);
 }
 

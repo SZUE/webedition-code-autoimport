@@ -23,8 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_voting_frames extends we_modules_frame{
-	var $_space_size = 150;
-	var $_width_size = 535;
 
 	public function __construct($frameset){
 		parent::__construct($frameset);

@@ -29,8 +29,6 @@ abstract class we_tool_frames extends we_modules_frame{
 	var $toolClassName;
 	var $toolDir;
 	var $toolUrl;
-	var $_space_size = 120;
-	var $_width_size = 520;
 	var $Model;
 
 	public function __construct($frameset){
