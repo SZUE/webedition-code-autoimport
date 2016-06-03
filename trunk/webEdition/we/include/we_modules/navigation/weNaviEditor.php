@@ -24,16 +24,9 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-
-$_space_size = 100;
-$_input_size = 440;
-
 $_path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1);
-
 $_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE, $GLOBALS['DB_WE']) : 0;
-
 $_navi = new we_navigation_navigation($_id);
-
 $_wrkNavi = array();
 $_db = new DB_WE();
 
@@ -62,20 +55,20 @@ while($_db->next_record()){
 $_parts = array(
 	array(
 		'headline' => g_l('navigation', '[name]'),
-		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width: ' . $_input_size . 'px;" onblur="setSaveState();" onkeyup="setSaveState();"'),
-		'space' => $_space_size,
+		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width:440px;" onblur="setSaveState();" onkeyup="setSaveState();"'),
+		'space' => 100,
 		'noline' => 1
 	),
 	array(
 		'headline' => g_l('navigation', '[group]'),
-		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, array('style' => 'width: ' . $_input_size . 'px;', 'onchange' => 'queryEntries(this.value);')),
-		'space' => $_space_size,
+		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, array('style' => 'width:440px;', 'onchange' => 'queryEntries(this.value);')),
+		'space' => 100,
 		'noline' => 1
 	),
 	array(
 		'headline' => '',
-		'html' => '<div id="details" class="blockWrapper" style="width: ' . $_input_size . 'px;height: 100px;"></div>',
-		'space' => $_space_size,
+		'html' => '<div id="details" class="blockWrapper" style="width: 440px;height: 100px;"></div>',
+		'space' => 100,
 		'noline' => 1
 	),
 	array(
@@ -83,7 +76,7 @@ $_parts = array(
 		'html' => we_html_element::htmlHidden('Ordn', $_navi->Ordn) .
 		we_html_tools::htmlTextInput('OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) .
 		we_html_tools::htmlSelect('OrdnSelect', array('begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')), 1, '', false, array('onchange' => 'changeOrder(this);'), 'value', 317),
-		'space' => $_space_size,
+		'space' => 100,
 		'noline' => 1
 	)
 );
@@ -101,6 +94,6 @@ $_body = we_html_element::htmlBody(
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
 	YAHOO_FILES .
-	we_html_element::jsElement('var WE_NAVIID='. intval($_id) .';').
-	we_html_element::jsScript(WE_JS_MODULES_DIR .'navigation/weNaviEditor.js')
+	we_html_element::jsElement('var WE_NAVIID=' . intval($_id) . ';') .
+	we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/weNaviEditor.js')
 	, $_body);

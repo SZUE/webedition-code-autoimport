@@ -26,8 +26,6 @@ we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 
 class we_export_frames extends we_modules_frame{
 	var $SelectionTree;
-	var $_space_size = 130;
-	var $_width_size = 535;
 
 	public function __construct($frameset){
 		parent::__construct($frameset);

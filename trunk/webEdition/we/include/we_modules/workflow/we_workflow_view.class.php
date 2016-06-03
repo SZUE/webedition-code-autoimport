@@ -123,16 +123,15 @@ class we_workflow_view extends we_modules_view{
 		} else {
 			switch($this->page){
 				case self::PAGE_PROPERTIES:
-					$_space = 143;
 					$parts = array(
-						$this->getWorkflowHeaderMultiboxParts($_space),
+						$this->getWorkflowHeaderMultiboxParts(143),
 						$parts[] = array(
 						'headline' => g_l('modules_workflow', '[type]'),
-						'space' => $_space - 25,
+						'space' => 118,
 						'html' => $this->getWorkflowTypeHTML()),
 						array(
 							'headline' => g_l('modules_workflow', '[specials]'),
-							'space' => $_space - 25,
+							'space' => 118,
 							'html' => '<br/>' .
 							we_html_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
 							we_html_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)

@@ -23,8 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_navigation_frames extends we_modules_frame{
-	var $_space_size = 120;
-	var $_width_size = 520;
 	var $Model;
 	public $Table = NAVIGATION_TABLE;
 
@@ -1368,8 +1366,6 @@ function showPreview() {
 	}
 
 	function getHTMLTab3(){
-		$_space_size = 50;
-
 		$_filter = new we_navigation_customerFilter();
 		$_filter->initByNavModel($this->Model);
 
@@ -1378,7 +1374,7 @@ function showPreview() {
 			array(
 				'headline' => '',
 				'html' => $_view->getFilterHTML($this->Model->IsFolder == 0 && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC),
-				'space' => $_space_size,
+				'space' => 50,
 				'noline' => 1
 		));
 	}

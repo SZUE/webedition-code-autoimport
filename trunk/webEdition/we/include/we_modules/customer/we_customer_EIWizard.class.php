@@ -178,11 +178,6 @@ switch (args[0]){
 	}
 
 	function getHTMLExportStep3(){
-		//	define different parts of the export wizard
-		$_space = 150;
-		$_input_size = 42;
-
-
 		//set defaults
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 		$filename = we_base_request::_(we_base_request::FILE, "filename", "weExport_" . time() . ($type == self::TYPE_CSV ? ".csv" : ".xml"));
@@ -202,8 +197,8 @@ switch (args[0]){
 			$parts = array(
 				array(
 					'headline' => g_l('modules_customer', '[filename]'),
-					'html' => we_html_tools::htmlTextInput('filename', $_input_size, $filename),
-					'space' => $_space
+					'html' => we_html_tools::htmlTextInput('filename', 42, $filename),
+					'space' => 150
 				),
 			);
 
@@ -215,7 +210,7 @@ switch (args[0]){
 					$table->setColContent(0, 0, we_html_forms::radiobutton(1, $cdata, "cdata", g_l('modules_customer', '[export_xml_cdata]'), true, "defaultfont", ""));
 					$table->setColContent(1, 0, we_html_forms::radiobutton(0, !$cdata, "cdata", g_l('modules_customer', '[export_xml_entities]'), true, "defaultfont", ""));
 
-					$parts[] = array("headline" => g_l('modules_customer', '[cdata]'), "html" => $table->getHtml(), 'space' => $_space);
+					$parts[] = array("headline" => g_l('modules_customer', '[cdata]'), "html" => $table->getHtml(), 'space' => 150);
 
 					break;
 				case self::TYPE_CSV:
@@ -233,12 +228,12 @@ switch (args[0]){
 
 					$fileformattable->setColContent(3, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
-					$parts[] = array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => $_space);
+					$parts[] = array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => 150);
 			}
 
 			$parts[] = array("headline" => g_l('modules_customer', '[export_to]'), "html" => "", 'noline' => 1);
 
-			$parts[] = array('space' => $_space, 'noline' => 1,
+			$parts[] = array('space' => 150, 'noline' => 1,
 				"headline" => we_html_element::htmlDiv(array('class' => 'default'), we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", "top.export_to='" . self::EXPORT_SERVER . "'")),
 				"html" =>
 				we_html_element::htmlBr() .
@@ -247,13 +242,13 @@ switch (args[0]){
 
 			$parts[] = array(
 				"headline" => we_html_forms::radiobutton(self::EXPORT_LOCAL, ($export_to == self::EXPORT_LOCAL), "export_to", g_l('modules_customer', '[export_to_local]'), true, "defaultfont", "top.export_to='" . self::EXPORT_LOCAL . "'"),
-				'space' => $_space,
+				'space' => 150,
 				'noline' => 1,
 				"html" => ""
 			);
 		} else {
 			$parts = array(
-				array('headline' => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', 'space' => $_space)
+				array('headline' => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', 'space' => 150)
 			);
 			$js = we_html_element::jsElement(
 					$this->bodyFrame . '.document.we_form.step.value--;
