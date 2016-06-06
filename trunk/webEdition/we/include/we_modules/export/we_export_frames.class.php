@@ -196,7 +196,7 @@ function addLog(text){
 		$parts = array(
 			array(
 				"headline" => g_l('export', '[property]'),
-				"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: ' . $this->_width_size . 'px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);" onchange="top.content.hot=1;"'), g_l('export', '[name]')) . '<br/>' .
+				"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: 520px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);" onchange="top.content.hot=1;"'), g_l('export', '[name]')) . '<br/>' .
 				$this->getHTMLDirChooser(),
 				'space' => $this->_space_size)
 		);
@@ -207,14 +207,14 @@ function addLog(text){
 
 		$parts[] = array(
 			"headline" => g_l('export', '[export_to]'),
-			"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: ' . $this->_width_size . 'px;" onchange="top.content.hot=1;"'), g_l('export', '[filename]')),
+			"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: 520px;" onchange="top.content.hot=1;"'), g_l('export', '[filename]')),
 			'space' => $this->_space_size,
 			'noline' => 1
 		);
 
 		$table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
-		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', array('local' => g_l('export', '[export_to_local]'), "server" => g_l('export', '[export_to_server]')), 1, $this->View->export->ExportTo, false, array('onchange' => 'toggle(\'save_to\');top.content.hot=1;'), 'value', $this->_width_size));
-		$table->setCol(1, 0, array("id" => "save_to", "style" => ($this->View->export->ExportTo === 'server' ? 'display:block' : 'display: none')), we_html_tools::htmlFormElementTable($this->formFileChooser(($this->_width_size - 120), "ServerPath", $this->View->export->ServerPath, "", "folder"), g_l('export', '[save_to]')));
+		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', array('local' => g_l('export', '[export_to_local]'), "server" => g_l('export', '[export_to_server]')), 1, $this->View->export->ExportTo, false, array('onchange' => 'toggle(\'save_to\');top.content.hot=1;'), 'value', 520));
+		$table->setCol(1, 0, array("id" => "save_to", "style" => ($this->View->export->ExportTo === 'server' ? 'display:block' : 'display: none')), we_html_tools::htmlFormElementTable($this->formFileChooser(400, "ServerPath", $this->View->export->ServerPath, "", "folder"), g_l('export', '[save_to]')));
 
 
 		$parts[] = array(
@@ -267,12 +267,12 @@ function closeAllType(){
 			$seltype['classname'] = g_l('export', '[classname]');
 		}
 
-		$table->setCol(0, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, array('onchange' => "closeAllType();toggle(this.value);top.content.hot=1;"), 'value', $this->_width_size));
-		$table->setCol(1, 0, array("id" => "doctype", "style" => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')), we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, array('onchange' => 'top.content.hot=1;'), 'value', $this->_width_size) .
-			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, ($this->_width_size - 120), 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
+		$table->setCol(0, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->View->export->SelectionType, false, array('onchange' => "closeAllType();toggle(this.value);top.content.hot=1;"), 'value', 520));
+		$table->setCol(1, 0, array("id" => "doctype", "style" => ($this->View->export->SelectionType === 'doctype' ? 'display:block' : 'display: none')), we_html_tools::htmlSelect('DocType', $docTypes, 1, $this->View->export->DocType, false, array('onchange' => 'top.content.hot=1;'), 'value', 520) .
+			we_html_tools::htmlFormElementTable($this->formWeChooser(FILE_TABLE, 400, 0, 'Folder', $this->View->export->Folder, 'FolderPath', $FolderPath), g_l('export', '[dir]'))
 		);
 		if(defined('OBJECT_TABLE')){
-			$table->setCol(2, 0, array("id" => "classname", "style" => ($this->View->export->SelectionType === "classname" ? "display:block" : "display: none")), we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, array('onchange' => 'top.content.hot=1;'), 'value', $this->_width_size)
+			$table->setCol(2, 0, array("id" => "classname", "style" => ($this->View->export->SelectionType === "classname" ? "display:block" : "display: none")), we_html_tools::htmlSelect('ClassName', $classNames, 1, $this->View->export->ClassName, false, array('onchange' => 'top.content.hot=1;'), 'value', 520)
 			);
 		}
 
@@ -281,13 +281,13 @@ function closeAllType(){
 		$selectionTypeHtml = $table->getHTML();
 
 		$table = new we_html_table(array('class' => 'default'), 3, 1);
-		$table->setCol(0, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlSelect('Selection', array('auto' => g_l('export', '[auto_selection]'), "manual" => g_l('export', '[manual_selection]')), 1, $this->View->export->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');top.content.hot=1;'), 'value', $this->_width_size));
-		$table->setCol(1, 0, array('id' => 'auto', 'style' => ($this->View->export->Selection === 'auto' ? 'display:block' : 'display: none')), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_auto_selection]'), we_html_tools::TYPE_INFO, $this->_width_size) .
+		$table->setCol(0, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlSelect('Selection', array('auto' => g_l('export', '[auto_selection]'), "manual" => g_l('export', '[manual_selection]')), 1, $this->View->export->Selection, false, array('onchange' => 'closeAllSelection();toggle(this.value);closeAllType();toggle(\'doctype\');top.content.hot=1;'), 'value', 520));
+		$table->setCol(1, 0, array('id' => 'auto', 'style' => ($this->View->export->Selection === 'auto' ? 'display:block' : 'display: none')), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_auto_selection]'), we_html_tools::TYPE_INFO, 520) .
 			$selectionTypeHtml
 		);
 
-		$table->setCol(2, 0, array('id' => 'manual', "style" => ($this->View->export->Selection === 'manual' ? "display:block" : "display: none")), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_manual_selection]') . " " . g_l('export', '[select_export]'), we_html_tools::TYPE_INFO, $this->_width_size) .
-			$this->SelectionTree->getHTMLMultiExplorer($this->_width_size, 200)
+		$table->setCol(2, 0, array('id' => 'manual', "style" => ($this->View->export->Selection === 'manual' ? "display:block" : "display: none")), we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_manual_selection]') . " " . g_l('export', '[select_export]'), we_html_tools::TYPE_INFO, 520) .
+			$this->SelectionTree->getHTMLMultiExplorer(520, 200)
 		);
 
 		$parts[] = array(
@@ -312,7 +312,7 @@ function closeAllType(){
 		$parts = array(
 			array(
 				"headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'),
-				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_document_options]'), we_html_tools::TYPE_INFO, $this->_width_size, true, 70) . $formattable->getHtml(),
+				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_document_options]'), we_html_tools::TYPE_INFO, 520, true, 70) . $formattable->getHtml(),
 				'space' => $this->_space_size)
 		);
 
@@ -322,7 +322,7 @@ function closeAllType(){
 			$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', '[handle_object_embeds]'), false, 'defaultfont', 'top.content.hot=1;'));
 			$parts[] = array(
 				"headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'),
-				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_object_options]'), we_html_tools::TYPE_INFO, $this->_width_size, true, 70) . $formattable->getHtml(),
+				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_object_options]'), we_html_tools::TYPE_INFO, 520, true, 70) . $formattable->getHtml(),
 				'space' => $this->_space_size
 			);
 		}
@@ -340,7 +340,7 @@ function closeAllType(){
 
 		$parts[] = array(
 			"headline" => g_l('export', '[export_depth]'),
-			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, $this->_width_size) . '<br/>' . we_html_element::htmlLabel(array('style' => 'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; top.content.hot=1;}\"", "text", 50),
+			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, 520) . '<br/>' . we_html_element::htmlLabel(array('style' => 'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; top.content.hot=1;}\"", "text", 50),
 			'space' => $this->_space_size
 		);
 
@@ -349,7 +349,7 @@ function closeAllType(){
 
 		$parts[] = array(
 			"headline" => g_l('export', '[handle_owners_option]'),
-			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_owners]'), we_html_tools::TYPE_INFO, $this->_width_size) . $formattable->getHtml(),
+			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_owners]'), we_html_tools::TYPE_INFO, 520) . $formattable->getHtml(),
 			'space' => $this->_space_size
 		);
 
@@ -382,7 +382,7 @@ function closeAllType(){
 		$yuiSuggest->setResult("ParentID", $this->View->export->ParentID);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(EXPORT_TABLE);
-		$yuiSuggest->setWidth($this->_width_size - 120);
+		$yuiSuggest->setWidth(400);
 		$yuiSuggest->setSelectButton($button);
 
 		return $yuiSuggest->getHTML();
@@ -752,7 +752,7 @@ if (top.content.editor.edbody.addLog){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot(); we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->View->export->Categorys) ? false : true));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.top.content.editor.edbody.we_cmd(\\'add_cat\\',top.allIDs);')");
 
-		$cats = new we_chooser_multiDir($this->_width_size, $this->View->export->Categorys, "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
+		$cats = new we_chooser_multiDir(520, $this->View->export->Categorys, "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
 
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){
 			$cats->isEditable = false;
