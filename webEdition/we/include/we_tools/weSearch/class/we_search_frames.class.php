@@ -238,7 +238,7 @@ function we_save() {
 		return array(
 			array(
 				'headline' => g_l('searchtool', '[general]'),
-				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->Model->Text, '', 'style="width: ' . $this->_width_size . 'px" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
+				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->Model->Text, '', 'style="width: 520px" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
 				'space' => $this->_space_size,
 				'noline' => 1
 		));
