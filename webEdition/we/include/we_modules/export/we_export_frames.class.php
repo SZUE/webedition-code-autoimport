@@ -198,7 +198,7 @@ function addLog(text){
 				"headline" => g_l('export', '[property]'),
 				"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: 520px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);" onchange="top.content.hot=1;"'), g_l('export', '[name]')) . '<br/>' .
 				$this->getHTMLDirChooser(),
-				'space' => $this->_space_size)
+				'space' => 120)
 		);
 
 		if($this->View->export->IsFolder == 1){
@@ -208,7 +208,7 @@ function addLog(text){
 		$parts[] = array(
 			"headline" => g_l('export', '[export_to]'),
 			"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: 520px;" onchange="top.content.hot=1;"'), g_l('export', '[filename]')),
-			'space' => $this->_space_size,
+			'space' => 120,
 			'noline' => 1
 		);
 
@@ -220,7 +220,7 @@ function addLog(text){
 		$parts[] = array(
 			"headline" => "",
 			"html" => $table->getHtml(),
-			'space' => $this->_space_size
+			'space' => 120
 		);
 
 		$js = we_html_element::jsElement('
@@ -293,7 +293,7 @@ function closeAllType(){
 		$parts[] = array(
 			"headline" => g_l('export', '[selection]'),
 			"html" => $js . $table->getHtml(),
-			'space' => $this->_space_size
+			'space' => 120
 		);
 
 		return $parts;
@@ -313,7 +313,7 @@ function closeAllType(){
 			array(
 				"headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_document_options]'), we_html_tools::TYPE_INFO, 520, true, 70) . $formattable->getHtml(),
-				'space' => $this->_space_size)
+				'space' => 120)
 		);
 
 		if(defined('OBJECT_TABLE')){
@@ -323,7 +323,7 @@ function closeAllType(){
 			$parts[] = array(
 				"headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_object_options]'), we_html_tools::TYPE_INFO, 520, true, 70) . $formattable->getHtml(),
-				'space' => $this->_space_size
+				'space' => 120
 			);
 		}
 
@@ -335,13 +335,13 @@ function closeAllType(){
 		$parts[] = array(
 			"headline" => g_l('export', '[handle_doctype_options]'),
 			"html" => $formattable->getHtml(),
-			'space' => $this->_space_size
+			'space' => 120
 		);
 
 		$parts[] = array(
 			"headline" => g_l('export', '[export_depth]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, 520) . '<br/>' . we_html_element::htmlLabel(array('style' => 'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; top.content.hot=1;}\"", "text", 50),
-			'space' => $this->_space_size
+			'space' => 120
 		);
 
 		$formattable = new we_html_table(array(), 1, 1);
@@ -350,7 +350,7 @@ function closeAllType(){
 		$parts[] = array(
 			"headline" => g_l('export', '[handle_owners_option]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_owners]'), we_html_tools::TYPE_INFO, 520) . $formattable->getHtml(),
-			'space' => $this->_space_size
+			'space' => 120
 		);
 
 
