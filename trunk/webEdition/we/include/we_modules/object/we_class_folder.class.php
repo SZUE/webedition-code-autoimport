@@ -305,10 +305,10 @@ class we_class_folder extends we_folder{
 		$javascriptAll = "";
 		$headline = array(
 			array('dat' => ''),
-			array('dat' => '<table class="default defaultfont"><tr><td>' . g_l('modules_objectClassfoldersearch', '[zeige]') . '</td><td></td></tr></table>'),
+			array('dat' => g_l('modules_objectClassfoldersearch', '[zeige]')),
 			array('dat' => ''),
-			array('dat' => '<table class="default defaultfont"><tr><td><span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . '</span></td><td> ' . $this->getSortImage('Path') . '</td></tr></table>'),
-			array('dat' => '<table class="default defaultfont"><tr><td><span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . '</span></td><td> ' . $this->getSortImage('ID') . '</td></tr></table>'),
+			array('dat' => '<span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . $this->getSortImage('Path') . '</span>'),
+			array('dat' => '<span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . $this->getSortImage('ID') . '</span>'),
 		);
 
 		$content = $head = $type = array();
@@ -324,20 +324,20 @@ class we_class_folder extends we_folder{
 							case "object":
 								$type[$i] = $regs[1];
 								$head[$i] = $regs[2];
-								$headline[$i]['dat'] = '<table class="default defaultfont"><tr><td>' . f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($regs[2]), "", $this->DB_WE) . '</td><td></td></tr></table>';
+								$headline[$i]['dat'] = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($regs[2]), "", $this->DB_WE);
 								$i++;
 								break;
 							case we_objectFile::TYPE_MULTIOBJECT:
 								$type[$i] = $regs[1];
 								$head[$i] = $regs[2];
-								$headline[$i]['dat'] = '<table class="default defaultfont"><tr><td>' . $regs[2] . '</td><td></td></tr></table>';
+								$headline[$i]['dat'] = $regs[2];
 								$i++;
 								break;
 							default:
 								if($regs[1] != 'OF'){
 									$type[$i] = $regs[1];
 									$head[$i] = $regs[2];
-									$headline[$i]['dat'] = '<table class="default defaultfont"><tr><td><a href="javascript:setOrder(\'' . $key . '\');">' . $regs[2] . '</a></td><td> ' . $this->getSortImage($key) . '</td></tr></table>';
+									$headline[$i]['dat'] = '<span onclick="setOrder(\'' . $key . '\');">' . $regs[2] . $this->getSortImage($key) . '</span>';
 									$i++;
 								}
 						}
