@@ -1290,7 +1290,7 @@ function CalendarChanged(calObject) {
 					'bid' => $_REQUEST['bid'],
 					'we_cmd[]' => 'save_order_customer'
 				)) .
-				we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]'), '', 560) .
+				we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]')) .
 				'</form>
 						</body>
 						</html>';

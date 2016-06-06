@@ -1058,7 +1058,7 @@ window.onload=extraInit;');
 			$counter++;
 		}
 
-		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30, "", -1, "", "", false);
+		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30);
 	}
 
 	function getHTMLNewsletterGroups(){
@@ -1150,7 +1150,7 @@ window.onload=extraInit;');
 			$parts[] = array("headline" => g_l('modules_newsletter', '[copy_newsletter]'), "html" => $this->getHTMLCopy(), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
 		}
 
-		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30, "", -1, "", "", false) .
+		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30) .
 			we_html_element::htmlBr();
 	}
 

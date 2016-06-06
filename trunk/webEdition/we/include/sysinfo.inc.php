@@ -284,7 +284,7 @@ echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', STYLESHEET .
 	<div id="info" style="display: block;">
 <?php
 echo we_html_multiIconBox::getJS() .
- we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+ we_html_multiIconBox::getHTML('', $_parts, 30, $buttons);
 ?>
 	</div>
 	<div id="more" style="display:none;">
@@ -301,7 +301,7 @@ $_parts = array(
 	),
 );
 
-echo we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false);
+echo we_html_multiIconBox::getHTML('', $_parts, 30, $buttons);
 ?>
 	</div>
 </body>

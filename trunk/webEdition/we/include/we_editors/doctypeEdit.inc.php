@@ -229,7 +229,7 @@ echo 'var docTypeNames = [' . implode(',', $GLOBALS['DB_WE']->getAll(true)) . ']
 
 
 		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("", $parts, 30, $buttons, -1, "", "", false, "", "", 630) .
+		we_html_multiIconBox::getHTML("", $parts, 30, $buttons) .
 		$yuiSuggest->getYuiJs();
 		?>
 	</form>

@@ -255,16 +255,14 @@ function setTab(tab) {
 				'headline' => '',
 				'html' => $this->getHTMLChooser(g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.top.content.mark()', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . '<table><tr><td>' . we_html_multiIconBox::getJS() .
 				we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
-						g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
-					g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
-					g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', ($wepos === 'down' ? '[icon_properties_out]' : '[icon_properties]')) . '</span></td></tr></table>',
+						g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', ($wepos === 'down' ? '[icon_properties_out]' : '[icon_properties]')) . '</span></td></tr></table>',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			),
 			array(
 				'headline' => '',
 				'html' => '<div id="table_' . $uniqname . '" style="display: ' . ($wepos === 'down' ? 'block' : 'none') . ';">' . $this->getHTMLImageAttributes() . '</div>',
-				'space' =>  we_html_multiIconBox::SPACE_BIG,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1
 			),
 		);
@@ -1106,8 +1104,9 @@ function showPreview() {
 				), we_html_element::htmlForm(
 					array(
 					'name' => 'we_form', 'onsubmit' => 'return false'
-					), we_html_multiIconBox::getHTML('', $_parts, 30, '<div style="float:right;">' . we_html_button::create_button(
-							'close', 'javascript:self.close();') . '</div>', -1, '', '', false, g_l('navigation', '[dyn_selection]'))));
+					), we_html_multiIconBox::getHTML('', $_parts, 30, '<div style="float:right;">' .
+						we_html_button::create_button('close', 'javascript:self.close();') .
+						'</div>', -1, '', '', false, g_l('navigation', '[dyn_selection]'))));
 
 		return $this->getHTMLDocument($_body, '');
 	}
