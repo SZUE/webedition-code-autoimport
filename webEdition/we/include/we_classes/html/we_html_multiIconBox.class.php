@@ -66,7 +66,7 @@ abstract class we_html_multiIconBox{
 					'<br/><table id="table_' . $uniqname . '" class="default" style="width:100%;' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>' : '') .
 				'<div class="weMultiIconBoxContent ' . ($i < (count($content) - 1) && (empty($c['noline'])) ? 'weMultiIconBoxLine' : '' ) . '" style="padding-left:' . $marginLeft . 'px;" id="div_' . $uniqname . '_' . $i . '">' .
 				($leftContent || $leftWidth ?
-					'<div class="multiiconleft largeicons leftSpace-"'.$leftWidth.'>' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
+					'<div class="multiiconleft largeicons leftSpace-'.$leftWidth.'">' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
 					'') .
 				//right
 				'<div class="multiIconRight">' . ($icon || !$leftContent || $forceRightHeadline ? $headline : '') . '<div>' . (!empty($c["html"]) ? $c["html"] : '') . '</div></div>' .
