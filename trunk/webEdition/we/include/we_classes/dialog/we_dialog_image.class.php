@@ -141,8 +141,8 @@ class we_dialog_image extends we_dialog_base{
 				$this->args['thumbnail'] = $thumb;
 				$this->args['fileSrc'] = id_to_path($fileID);
 				$this->args['src'] = $thumbpath . '?thumb=' . $fileID . ',' . $thumb;
-				$width = '';//$thumbObj->getOutputWidth();
-				$height = '';//$thumbObj->getOutputHeight();
+				$width = ''; //$thumbObj->getOutputWidth();
+				$height = ''; //$thumbObj->getOutputHeight();
 				unset($thumbObj);
 			} else {
 				$this->args['thumbnail'] = '';
@@ -486,8 +486,8 @@ if(top.document.we_form.tinyMCEInitRatioW !== undefined){
 					'<form name="tiny_form">' .
 					we_html_element::htmlHiddens(array(
 						"src" => (isset($args["src"]) ? $args["src"] : ''),
-						"width" => (intval($attribs["width"]) === 0 ? '' : $attribs["width"]),
-						"height" => (intval($attribs["height"]) === 0 ? '' : $attribs["height"]),
+						"width" => (empty($attribs["width"]) || intval($attribs["width"]) === 0 ? '' : $attribs["width"]),
+						"height" => (empty($attribs["height"]) || intval($attribs["height"]) === 0 ? '' : $attribs["height"]),
 						"hspace" => $attribs["hspace"],
 						"vspace" => $attribs["vspace"],
 						"border" => $attribs["border"],
