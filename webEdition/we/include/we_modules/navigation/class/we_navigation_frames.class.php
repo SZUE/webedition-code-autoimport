@@ -264,7 +264,7 @@ function setTab(tab) {
 			array(
 				'headline' => '',
 				'html' => '<div id="table_' . $uniqname . '" style="display: ' . ($wepos === 'down' ? 'block' : 'none') . ';">' . $this->getHTMLImageAttributes() . '</div>',
-				'space' => 170,
+				'space' =>  we_html_multiIconBox::SPACE_BIG,
 				'noline' => 1
 			),
 		);
@@ -1374,7 +1374,7 @@ function showPreview() {
 			array(
 				'headline' => '',
 				'html' => $_view->getFilterHTML($this->Model->IsFolder == 0 && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC),
-				'space' => 50,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 		));
 	}
