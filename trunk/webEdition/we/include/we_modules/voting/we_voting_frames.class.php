@@ -271,18 +271,18 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				weSuggest::getYuiFiles() . $yuiSuggest->getYuiJs() .
 				we_html_element::htmlBr() .
 				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]')) : ''),
-				'space' => $this->_space_size,
+				'space' => 120,
 				'noline' => 1),
 			array(
 				'headline' => '',
 				'html' => we_html_forms::checkboxWithHidden($this->View->voting->RestrictOwners ? true : false, 'RestrictOwners', g_l('modules_voting', '[limit_access]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'ownersTable\')'),
-				'space' => $this->_space_size,
+				'space' => 120,
 				'noline' => 1
 			),
 			array(
 				'headline' => '',
 				'html' => $table->getHtml(),
-				'space' => $this->_space_size
+				'space' => 120
 			)
 		);
 
@@ -290,7 +290,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			$parts[] = array(
 				'headline' => g_l('modules_voting', '[control]'),
 				'html' => we_html_button::formatButtons(we_html_button::create_button('logbook', "javascript:we_cmd('show_log')") . we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete_log')")),
-				'space' => $this->_space_size,
+				'space' => 120,
 				'noline' => 1
 			);
 
@@ -335,7 +335,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				"headline" => g_l('modules_voting', '[export]'),
 				"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[export_txt]'), we_html_tools::TYPE_INFO, 520) .
 				$export_box->getHtml(),
-				'space' => $this->_space_size
+				'space' => 120
 			);
 
 			return $parts;
@@ -360,7 +360,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		$parts[] = array(
 			'headline' => g_l('modules_voting', '[valid]'),
 			'html' => $table->getHtml(),
-			'space' => $this->_space_size,
+			'space' => 120,
 			'noline' => 1
 		);
 
@@ -387,7 +387,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Successor', '', $this->View->voting->Successor, '', 'style="width: 520px;display:' . $displaySuccessor . '" id="Successor" onchange="top.content.setHot();" '), '') .
 				we_html_forms::checkboxWithHidden($this->View->voting->AllowSuccessors ? true : false, 'AllowSuccessors', g_l('modules_voting', '[AllowSuccessors]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleSuccessors();')
 				,
-				'space' => $this->_space_size
+				'space' => 120
 			)
 		);
 
@@ -421,7 +421,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				'iptable_count' => 0)) .
 			$table->getHtml() .
 			we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();answers_edit.addItem()"),
-			'space' => $this->_space_size
+			'space' => 120
 		);
 
 		return $parts;
@@ -471,7 +471,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			we_html_tools::htmlFormElementTable($selectTime->getHtml(), g_l('modules_voting', '[time_after_voting_again]')) .
 			we_html_element::htmlBr() .
 			$table->getHtml(),
-			'space' => $this->_space_size
+			'space' => 120
 		);
 
 		$table = we_html_element::htmlDiv(array('id' => 'LogData', 'style' => 'display: ' . ($this->View->voting->Log ? 'block' : 'none') . ';'), we_html_button::formatButtons(we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_log\')') . we_html_button::create_button(we_html_button::DELETE, 'javascript:we_cmd(\'delete_log\')'))
@@ -481,14 +481,14 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			'headline' => g_l('modules_voting', '[control]'),
 			'html' => we_html_forms::checkboxWithHidden($this->View->voting->Log ? true : false, 'Log', g_l('modules_voting', '[voting_log]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'LogData\')') .
 			$table,
-			'space' => $this->_space_size,
+			'space' => 120,
 			'noline' => 1
 		);
 
 		$parts[] = array(
 			'headline' => '',
 			'html' => we_html_forms::checkboxWithHidden($this->View->voting->RestrictIP ? true : false, 'RestrictIP', g_l('modules_voting', '[forbid_ip]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'RestrictIPDiv\')'),
-			'space' => $this->_space_size,
+			'space' => 120,
 			'noline' => 1
 		);
 
@@ -544,7 +544,7 @@ function newIp(){
 		' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[not_valid_ip]'), we_message_reporting::WE_MESSAGE_ERROR) . '
 	}
 }') . $table->getHtml(),
-			'space' => $this->_space_size
+			'space' => 120
 		);
 
 		return $parts;
@@ -632,7 +632,7 @@ function refreshTexts(){
 			we_html_element::htmlHidden('scores_changed', 0) .
 			$table->getHTML() .
 			we_html_element::htmlBr() . $butt,
-			'space' => $this->_space_size
+			'space' => 120
 		);
 
 
@@ -669,7 +669,7 @@ function refreshTexts(){
 			"headline" => g_l('modules_voting', '[export]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[export_txt]'), we_html_tools::TYPE_INFO, 520) .
 			$export_box->getHtml(),
-			'space' => $this->_space_size
+			'space' => 120
 		);
 
 		return $parts;
