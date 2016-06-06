@@ -128,17 +128,17 @@ $parts = array(
 	array(
 		"headline" => g_l('cockpit', '[type]'),
 		"html" => $oDbTableType,
-		'space' => 80
+		'space' => we_html_multiIconBox::SPACE_MED
 	),
 	array(
 		"headline" => g_l('cockpit', '[date]'),
 		"html" => $oSctDate->getHTML(),
-		'space' => 80
+		'space' => we_html_multiIconBox::SPACE_MED
 	),
 	array(
 		"headline" => g_l('cockpit', '[display]'),
 		"html" => $show,
-		'space' => 80
+		'space' => we_html_multiIconBox::SPACE_MED
 	),
 	array(
 		"headline" => "",
