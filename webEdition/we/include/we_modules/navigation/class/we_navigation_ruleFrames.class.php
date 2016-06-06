@@ -72,7 +72,7 @@ class we_navigation_ruleFrames{
 		$parts = array(
 			array(
 				'headline' => g_l('navigation', '[rules][available_rules]'),
-				'space' => 200,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => weSuggest::getYuiFiles() . '<table class="default">
 	<tr><td>' . we_html_tools::htmlSelect('navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
 		<td style="vertical-align:top">' . we_html_button::create_button('new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>' . we_html_button::create_button('delete', 'javascript:we_cmd("delete_navigation_rule")') . '
@@ -82,7 +82,7 @@ class we_navigation_ruleFrames{
 			),
 			array(
 				'headline' => g_l('navigation', '[rules][rule_name]'),
-				'space' => 200,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_html_tools::htmlTextInput('NavigationName', 24, '', '', 'style="width: 275px;"'),
 				'noline' => 1
 			),
@@ -105,7 +105,7 @@ class we_navigation_ruleFrames{
 
 		$parts[] = array(
 			'headline' => g_l('navigation', '[rules][rule_navigation_link]'),
-			'space' => 200,
+			'space' => we_html_multiIconBox::SPACE_BIG,
 			'html' => $weAcSelector,
 			'noline' => 1
 		);
@@ -119,7 +119,7 @@ class we_navigation_ruleFrames{
 
 		$parts[] = array(
 			'headline' => g_l('navigation', '[rules][rule_applies_for]'),
-			'space' => 200,
+			'space' => we_html_multiIconBox::SPACE_BIG,
 			'html' => we_html_tools::htmlSelect(
 				'SelectionType', $selectionTypes, 1, 0, false, array('style' => "width: 275px;", 'onchange' => "switchType(this.value);"))
 		);

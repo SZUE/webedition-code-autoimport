@@ -579,7 +579,7 @@ abstract class we_base_variants{
 		}
 		$GLOBALS['we_editmode'] = true;
 
-		echo we_html_multiIconBox::getHTML('', ($isObject ? self::getVariantsEditorMultiBoxArrayObjectFile($we_doc) : self::getVariantsEditorMultiBoxArray($we_doc)), 30, '', -1, '', '', false);
+		echo we_html_multiIconBox::getHTML('', ($isObject ? self::getVariantsEditorMultiBoxArrayObjectFile($we_doc) : self::getVariantsEditorMultiBoxArray($we_doc)), 30);
 	}
 
 	public static function getTemplateCode(we_template $we_doc){
@@ -615,7 +615,7 @@ abstract class we_base_variants{
 		);
 
 		echo we_class::hiddenTrans() .
-		we_html_multiIconBox::getHTML('template_variant', $parts, 30, '', -1, '', '', false);
+		we_html_multiIconBox::getHTML('template_variant', $parts, 30);
 	}
 
 }

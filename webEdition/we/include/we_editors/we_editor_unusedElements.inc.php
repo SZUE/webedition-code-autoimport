@@ -110,27 +110,27 @@ if(!empty($remove)){
 			/* array(
 			  'headline' => 'Obsolete Elemente',
 			  'html' => '<pre>' . print_r($obsolete, true) . '</pre>',
-			  'space' => 140,
+			  'space' => we_html_multiIconBox::SPACE_MED2,
 			  ),
 			  array(
 			  'headline' => 'debug',
 			  'html' => '<pre>' . print_r($tp->getTagsWithAttributes(true), true) . '</pre>',
-			  'space' => 140,
+			  'space' => we_html_multiIconBox::SPACE_MED2,
 			  ),
 			  array(
 			  'headline' => 'Gefundene Elemente',
 			  'html' => '<pre>' . print_r($relevantTags, true) . '</pre>',
-			  'space' => 140,
+			  'space' => we_html_multiIconBox::SPACE_MED2,
 			  ),
 			  /* array(
 			  'headline' => 'Elemente in DB',
 			  'html' => '<pre>' . print_r($allFields, true) . '</pre>',
-			  'space' => 140,
+			  'space' => we_html_multiIconBox::SPACE_MED2,
 			  ), */
 		);
 
 
-		echo we_html_multiIconBox::getHTML('', $parts, 20, '', -1, '', '', false) .
+		echo we_html_multiIconBox::getHTML('', $parts, 20) .
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>

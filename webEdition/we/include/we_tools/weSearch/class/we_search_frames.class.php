@@ -239,7 +239,7 @@ function we_save() {
 			array(
 				'headline' => g_l('searchtool', '[general]'),
 				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->Model->Text, '', 'style="width: 520px" );"', '', '', '', '', $disabled), g_l('searchtool', '[dir]')),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 		));
 	}
@@ -265,20 +265,20 @@ function we_save() {
 			array(
 				'headline' => g_l('searchtool', '[text]'),
 				'html' => $_searchField_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $_searchDirChooser_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[optionen]'),
 				'html' => $_searchCheckboxes_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
-				'headline' => '', 'html' => $_searchResult_block, 'space' => 120
+				'headline' => '', 'html' => $_searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		));
 	}
 
@@ -301,20 +301,20 @@ function we_save() {
 			array(
 				'headline' => g_l('searchtool', '[text]'),
 				'html' => $_searchField_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $_searchDirChooser_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[optionen]'),
 				'html' => $_searchCheckboxes_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
-				'headline' => '', 'html' => $_searchResult_block, 'space' => 120
+				'headline' => '', 'html' => $_searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		));
 	}
 
@@ -339,30 +339,30 @@ function we_save() {
 			array(
 				'headline' => g_l('searchtool', '[text]'),
 				'html' => $_searchField_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[suchenIn]'),
 				'html' => $_searchDirChooser_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[optionen]'),
 				'html' => $_searchCheckboxes_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[anzeigen]'),
 				'html' => $_searchCheckboxMediaTyp_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => 'Filter', //g_l('searchtool', '[optionen]'),
 				'html' => $_searchFilter_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
-				'headline' => '', 'html' => $_searchResult_block, 'space' => 120
+				'headline' => '', 'html' => $_searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		));
 	}
 
@@ -383,15 +383,15 @@ function we_save() {
 			array(
 				'headline' => g_l('searchtool', '[text]'),
 				'html' => $_searchFields_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[anzeigen]'),
 				'html' => $_searchCheckboxes_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
-				'headline' => '', 'html' => $_searchResult_block, 'space' => 120
+				'headline' => '', 'html' => $_searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		));
 	}
 

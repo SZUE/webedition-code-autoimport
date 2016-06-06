@@ -267,14 +267,14 @@ foreach($_info as $_k => $_v){
 	$_parts[] = array(
 		'headline' => $_k,
 		'html' => getInfoTable($_v, strip_tags($_k)),
-		'space' => 150
+		'space' => we_html_multiIconBox::SPACE_MED2
 	);
 }
 
 $_parts[] = array(
 	'headline' => '',
 	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '&hellip;</a>',
-	'space' => 10
+	'space' => we_html_multiIconBox::SPACE_SMALL
 );
 echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'sysinfo.js')
@@ -297,7 +297,7 @@ $_parts = array(
 	array(
 		'headline' => '',
 		'html' => '<a href="javascript:showInfoTable();">' . g_l('sysinfo', '[back]') . '</a>',
-		'space' => 10
+		'space' => we_html_multiIconBox::SPACE_SMALL
 	),
 );
 

@@ -166,7 +166,7 @@ function we_save() {
 				'html' => we_html_element::htmlHidden('newone', ($this->Model->ID == 0 ? 1 : 0)) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: 520px;" onchange="top.content.mark();"'), g_l('tools', '[name]')) .
 				$this->getHTMLChooser(g_l('tools', '[group]'), $this->Table, 0, 'ParentID', $this->Model->ParentID, 'ParentPath', 'opener.top.content.mark()', ''),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			)
 		);

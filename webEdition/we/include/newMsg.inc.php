@@ -33,7 +33,7 @@ $parts = array(
 	array(
 		"headline" => we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, 500, false),
 		"html" => '',
-		'space' => 10,
+		'space' => we_html_multiIconBox::SPACE_SMALL,
 		'noline' => 1),
 );
 

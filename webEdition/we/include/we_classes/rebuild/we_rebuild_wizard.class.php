@@ -217,7 +217,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		return array(
 			we_html_element::jsScript(JS_DIR . 'rebuild0.js'),
 			$js,
-			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('rebuild', '[rebuild]'), '', 0, 'visible') .
+			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('rebuild', '[rebuild]')) .
 			$dthidden .
 			$thumbsHidden .
 			$metaFieldsHidden .

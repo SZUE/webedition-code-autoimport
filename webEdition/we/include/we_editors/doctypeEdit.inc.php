@@ -198,19 +198,19 @@ echo 'var docTypeNames = [' . implode(',', $GLOBALS['DB_WE']->getAll(true)) . ']
 			$parts = array(
 				array("headline" => g_l('weClass', '[doctypes]'),
 					"html" => $we_doc->formDocTypeHeader(),
-					'space' => 120
+					'space' => we_html_multiIconBox::SPACE_MED
 				),
 				array("headline" => g_l('weClass', '[name]'),
 					"html" => $we_doc->formName(),
-					'space' => 120
+					'space' => we_html_multiIconBox::SPACE_MED
 				),
 				array("headline" => g_l('global', '[templates]'),
 					"html" => $we_doc->formDocTypeTemplates(),
-					'space' => 120
+					'space' => we_html_multiIconBox::SPACE_MED
 				),
 				array("headline" => g_l('weClass', '[defaults]'),
 					"html" => $we_doc->formDocTypeDefaults(),
-					'space' => 120
+					'space' => we_html_multiIconBox::SPACE_MED
 				)
 			);
 		} else {

@@ -34,7 +34,7 @@ if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_E
 	$parts[] = array(
 		'headline' => g_l('modules_customerFilter', '[customerFilter]'),
 		'html' => $_view->getFilterHTML(),
-		'space' => 120
+		'space' => we_html_multiIconBox::SPACE_MED
 	);
 }
 
@@ -42,7 +42,7 @@ if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_E
 $parts[] = array(
 	'headline' => g_l('modules_customer', '[one_customer]'),
 	'html' => formWebuser(permissionhandler::hasPerm("CAN_CHANGE_DOCS_CUSTOMER"), 434),
-	'space' => 120
+	'space' => we_html_multiIconBox::SPACE_MED
 );
 
 

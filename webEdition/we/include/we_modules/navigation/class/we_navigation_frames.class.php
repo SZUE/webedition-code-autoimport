@@ -242,13 +242,13 @@ function setTab(tab) {
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', strtr($this->Model->Text, array_flip(get_html_translation_table(HTML_SPECIALCHARS))), '', 'style="width: 520px;" onchange="top.content.mark();"'), g_l('navigation', '[name]')) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Display', '', $this->Model->Display, '', 'style="width: 520px;" onchange="top.content.mark();"'), g_l('navigation', '[display]')) .
 				$this->getHTMLChooser(g_l('navigation', '[group]'), NAVIGATION_TABLE, 0, 'ParentID', $_parentid, 'ParentPath', 'opener.top.content.mark()', we_base_ContentTypes::FOLDER, ($this->Model->IsFolder == 0 && $this->Model->Depended == 1)),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			),
 			array(
 				'headline' => '',
 				'html' => $_table->getHtml(),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			),
 			array(
@@ -258,7 +258,7 @@ function setTab(tab) {
 						g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(
 					g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(
 					g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', ($wepos === 'down' ? '[icon_properties_out]' : '[icon_properties]')) . '</span></td></tr></table>',
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			),
 			array(
@@ -317,7 +317,7 @@ function setTab(tab) {
 			array(
 				'headline' => g_l('navigation', '[selection]'),
 				'html' => $selection_block,
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 		));
 	}
@@ -388,7 +388,7 @@ function setTab(tab) {
 			array(
 				'headline' => g_l('navigation', '[selection]'),
 				'html' => $_selection,
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 		));
 
@@ -396,7 +396,7 @@ function setTab(tab) {
 			$parts[] = array(
 				'headline' => g_l('navigation', '[charset]'),
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[charset_desc]'), we_html_tools::TYPE_INFO, 520) . $this->getHTMLCharsetTable(),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			);
 		}
@@ -418,7 +418,7 @@ var selfNaviId = '" . $this->Model->ID . "';") .
 					'CopyFolderID' => '',
 					'CopyFolderPath' => ''
 			)),
-			'space' => 120,
+			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 		);
 
@@ -631,7 +631,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			array(
 				'headline' => g_l('navigation', '[content]'),
 				'html' => $_selection_block,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 		));
 	}
 
@@ -719,7 +719,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			array(
 				'headline' => g_l('navigation', '[entries]'),
 				'html' => we_html_tools::htmlSelect('dynContent', $this->View->getItems($this->Model->ID), 20, '', false, array('style' => 'width:520px; height: 200px;  margin: 0px 0px 5px 0px;')),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 			),
 			array(
 				'headline' => '',
@@ -727,12 +727,12 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 				we_html_button::create_button(we_html_button::PREVIEW, 'javascript:top.content.we_cmd("dyn_preview");') .
 				we_html_button::create_button(we_html_button::REFRESH, 'javascript:top.content.we_cmd("populate");') .
 				we_html_button::create_button(we_html_button::DELETE_ALL, 'javascript:top.content.we_cmd("depopulate");'),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('navigation', '[content]'),
 				'html' => $_table->getHTML(),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 		);
 	}
@@ -1264,19 +1264,19 @@ function showPreview() {
 			array(
 				'headline' => '',
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('navigation', '[linkprops_desc]'), we_html_tools::TYPE_INFO, 520),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			),
 			array(
 				'headline' => g_l('navigation', '[attributes]'),
 				'html' => $_title . $_anchor . $_link . $_target,
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			),
 			array(
 				'headline' => g_l('navigation', '[language]'),
 				'html' => $_lang . $_hreflang,
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			)
 		);
@@ -1290,7 +1290,7 @@ function showPreview() {
 		$_parts[] = array(
 			'headline' => g_l('navigation', '[keyboard]'),
 			'html' => $_accesskey . $_tabindex,
-			'space' => 120,
+			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 		);
 
@@ -1300,7 +1300,7 @@ function showPreview() {
 		$_parts[] = array(
 			'headline' => g_l('navigation', '[relation]'),
 			'html' => $_relfield . $_revfield,
-			'space' => 120,
+			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 		);
 
@@ -1328,7 +1328,7 @@ function showPreview() {
 		$_parts[] = array(
 			'headline' => g_l('navigation', '[popup]'),
 			'html' => $_popup->getHTML(),
-			'space' => 120,
+			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 		);
 

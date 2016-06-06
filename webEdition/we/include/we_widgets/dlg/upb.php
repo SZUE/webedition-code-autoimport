@@ -34,12 +34,8 @@ $dbTableType = '<table><tr>' .
 	"</tr></table>";
 
 $parts = array(
-	array(
-		"headline" => g_l('cockpit', '[type]'), "html" => $dbTableType, 'space' => 80
-	),
-	array(
-		"headline" => "", "html" => $oSelCls->getHTML(),
-	),
+	array("headline" => g_l('cockpit', '[type]'), "html" => $dbTableType, 'space' => we_html_multiIconBox::SPACE_MED),
+	array("headline" => "", "html" => $oSelCls->getHTML(),),
 );
 
 $save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);

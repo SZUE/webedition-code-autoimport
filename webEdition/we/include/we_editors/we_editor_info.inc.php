@@ -60,7 +60,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 			array(
 				'headline' => '',
 				'html' => $_html,
-				'space' => 140,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'iconX' => we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $GLOBALS['we_doc']->ContentType . '",true,"' . (isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : '') . '"))')
 			)
 		);
@@ -91,7 +91,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 		$parts[] = array(
 			'headline' => '',
 			'html' => $_html,
-			'space' => 140,
+			'space' => we_html_multiIconBox::SPACE_MED2,
 			'icon' => 'cal.gif'
 		);
 
@@ -137,7 +137,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 					$parts[] = array(
 						'headline' => '',
 						'html' => $_html,
-						'space' => 140,
+						'space' => we_html_multiIconBox::SPACE_MED2,
 						'icon' => 'path.gif'
 					);
 			}
@@ -146,7 +146,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 				$parts[] = array(
 					'headline' => g_l('modules_workflow', '[workflow]'),
 					'html' => $anzeige,
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
 					'icon' => 'workflow.gif'
 				);
@@ -159,21 +159,21 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 						'icon' => 'doc.gif',
 						'headline' => g_l('weClass', '[documents]') . ($cnt ? ' (' . $cnt . ')' : ''),
 						'html' => $select,
-						'space' => 140
+						'space' => we_html_multiIconBox::SPACE_MED2
 					);
 					list($cnt, $select) = $GLOBALS['we_doc']->formTemplatesUsed();
 					$parts[] = array(
 						'icon' => 'doc.gif',
 						'headline' => g_l('weClass', '[usedTemplates]') . ($cnt ? ' (' . $cnt . ')' : ''),
 						'html' => $select,
-						'space' => 140
+						'space' => we_html_multiIconBox::SPACE_MED2
 					);
 					list($cnt, $select) = $GLOBALS['we_doc']->formTemplateUsedByTemplate();
 					$parts[] = array(
 						'icon' => 'doc.gif',
 						'headline' => g_l('weClass', '[usedByTemplates]') . ($cnt ? ' (' . $cnt . ')' : ''),
 						'html' => $select,
-						'space' => 140
+						'space' => we_html_multiIconBox::SPACE_MED2
 					);
 					break;
 				case we_base_ContentTypes::IMAGE:
@@ -225,7 +225,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 				$parts[] = array(
 					'headline' => g_l('weClass', '[isUsed]') . ' (' . $formReference['num'] . ')',
 					'html' => $formReference['form'],
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
 					'icon' => 'references.gif'
 				);
@@ -235,14 +235,14 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 				$parts[] = array(
 					'headline' => '',
 					'html' => $_metaDataTable,
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
 					'icon' => 'meta.gif'
 				);
 			}
 		}
 
-		echo we_html_multiIconBox::getHTML('', $parts, 20, '', -1, '', '', false);
+		echo we_html_multiIconBox::getHTML('', $parts, 20);
 		?>
 	</form>
 </body>

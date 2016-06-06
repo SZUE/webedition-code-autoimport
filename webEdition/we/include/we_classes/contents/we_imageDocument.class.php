@@ -990,13 +990,13 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 	public function getPropertyPage(){
 		return we_html_multiIconBox::getHTML('PropertyPage', array(
-				array('icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => 140),
-				array('icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => 140),
-				//array('icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => 140),
-				array('icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => 140),
-				array('icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => 140),
-				array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => 140),
-				array('icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => 140),
+				array('icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				//array('icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_MED2),
 		));
 	}
 

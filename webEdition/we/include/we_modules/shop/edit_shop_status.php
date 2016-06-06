@@ -114,7 +114,7 @@ foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
 $parts = array(
 	array(
 		'headline' => g_l('modules_shop', '[statusmails][AnzeigeDaten]'),
-		'space' => 100,
+		'space' => we_html_multiIconBox::SPACE_SMALL0,
 		'html' => '',
 		'noline' => 1
 	),
@@ -144,7 +144,7 @@ $tabEMail->setCol(3, 1, array("class" => "defaultfont", "width" => 340), g_l('mo
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[statusmails][EMailDaten]'),
 	'html' => '',
-	'space' => 110,
+	'space' => we_html_multiIconBox::SPACE_MED,
 	'noline' => 1
 );
 $parts[] = array(
@@ -152,7 +152,7 @@ $parts[] = array(
 	'noline' => 1
 );
 $parts[] = array(
-	'space' => 110,
+	'space' => we_html_multiIconBox::SPACE_MED,
 	'html' => $tabEMail->getHtml(),
 );
 
@@ -162,7 +162,7 @@ $tabSprache->setCol(0, 2, array("class" => "defaultfont", "width" => 220), g_l('
 
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[statusmails][Spracheinstellungen]'),
-	'space' => 110,
+	'space' => we_html_multiIconBox::SPACE_MED,
 	'html' => '',
 	'noline' => 1
 );
@@ -171,7 +171,7 @@ $parts[] = array(
 	'noline' => 1
 );
 $parts[] = array(
-	'space' => 110,
+	'space' => we_html_multiIconBox::SPACE_MED,
 	'html' => $tabSprache->getHtml(),
 	'noline' => 1
 );
@@ -208,7 +208,7 @@ foreach($frontendL as $langkey){
 
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[statusmails][Dokumente]'),
-	'space' => 100,
+	'space' => we_html_multiIconBox::SPACE_SMALL0,
 	'html' => '',
 	'noline' => 1
 );

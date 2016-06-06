@@ -105,7 +105,7 @@ $conditionReturn = we_class::htmlSelect('conditionalReturn[]', array('false' => 
 $parts = array(
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][defaultReturn]'),
-		'space' => 300,
+		'space' => we_html_multiIconBox::SPACE_BIG,
 		'html' => $defaultInput,
 		'noline' => 1
 	),
@@ -114,7 +114,7 @@ $parts = array(
 	),
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][stateField]') . ':',
-		'space' => 300,
+		'space' => we_html_multiIconBox::SPACE_BIG,
 		'html' => $countrySelect . $countrySelectISO,
 		'noline' => 1
 	),
@@ -123,7 +123,7 @@ $parts = array(
 	),
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][statesLiableToVat]') . ':',
-		'space' => 300,
+		'space' => we_html_multiIconBox::SPACE_BIG,
 		'html' => $textAreaLiableStates,
 		'noline' => 1
 	),
@@ -132,7 +132,7 @@ $parts = array(
 	),
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][statesNotLiableToVat]') . ':',
-		'space' => 300,
+		'space' => we_html_multiIconBox::SPACE_BIG,
 		'html' => $textAreaNotLiableStates,
 		'noline' => 1
 	),
@@ -141,7 +141,7 @@ $parts = array(
 	),
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][statesSpecialRules]') . ':',
-		'space' => 300,
+		'space' => we_html_multiIconBox::SPACE_BIG,
 		'html' => $conditionTextarea,
 		'noline' => 1
 	),
@@ -151,13 +151,13 @@ $parts = array(
 	),
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][statesSpecialRules_condition]'),
-		'space' => 300,
+		'space' => we_html_multiIconBox::SPACE_BIG,
 		'html' => $conditionField . ' ' . $conditionSelect,
 		'noline' => 1
 	),
 	array(
 		'headline' => g_l('modules_shop', '[vat_country][statesSpecialRules_result]'),
-		'space' => 300,
+		'space' => we_html_multiIconBox::SPACE_BIG,
 		'html' => $conditionReturn
 	)
 );
