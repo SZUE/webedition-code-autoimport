@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_html_multiIconBox{
-	const SPACE_SMALL = 10;
-	const SPACE_MED = 120;
-	const SPACE_MED2 = 140;
-	const SPACE_BIG = 200;
+	const SPACE_SMALL = 'small';
+	const SPACE_MED = 'med';
+	const SPACE_MED2 = 'med2';
+	const SPACE_BIG = 'big';
 
 	/**
 	 * @desc 	Get HTML-Code of the multibox
@@ -55,7 +55,7 @@ abstract class we_html_multiIconBox{
 			$forceRightHeadline = (!empty($c['forceRightHeadline']));
 			$icon = (empty($c["icon"]) ? '' : we_html_element::htmlImg(array('src' => ICON_DIR . $c['icon'], 'class' => 'multiIcon')) )? : (empty($c['iconX']) ? '' : $c['iconX']);
 			$headline = (empty($c["headline"]) ? '' : '<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</div>' );
-			$leftWidth = (!empty($c["space"]) ? abs($c["space"]) : 0);
+			$leftWidth = (!empty($c["space"]) ? $c["space"] : '');
 			$leftContent = $icon ? : (($leftWidth && (!$forceRightHeadline)) ? $headline : '');
 
 			$out.=(isset($c['class']) ? '<div class="' . $c['class'] . '">' : '') .
@@ -66,7 +66,7 @@ abstract class we_html_multiIconBox{
 					'<br/><table id="table_' . $uniqname . '" class="default" style="width:100%;' . ($displayAtStartup ? '' : 'display:none') . '"><tr><td>' : '') .
 				'<div class="weMultiIconBoxContent ' . ($i < (count($content) - 1) && (empty($c['noline'])) ? 'weMultiIconBoxLine' : '' ) . '" style="padding-left:' . $marginLeft . 'px;" id="div_' . $uniqname . '_' . $i . '">' .
 				($leftContent || $leftWidth ?
-					'<div style="' . ($leftWidth ? ' width:' . $leftWidth . 'px' : '') . '" class="multiiconleft largeicons">' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
+					'<div class="multiiconleft largeicons leftSpace-"'.$leftWidth.'>' . ((!$leftContent) && $leftWidth ? "&nbsp;" : $leftContent) . '</div>' :
 					'') .
 				//right
 				'<div class="multiIconRight">' . ($icon || !$leftContent || $forceRightHeadline ? $headline : '') . '<div>' . (!empty($c["html"]) ? $c["html"] : '') . '</div></div>' .
