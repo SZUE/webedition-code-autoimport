@@ -454,7 +454,9 @@ function startStep(){
 function delSelected(){
 	var sel = document.we_form.backup_select;
 	if(sel.selectedIndex>-1){
-		if(confirm("' . g_l('backup', '[del_backup_confirm]') . '")) top.cmd.location="' . $this->frameset . '&pnt=cmd&operation_mode=deletebackup&bfile="+sel.options[sel.selectedIndex].value;
+		if(confirm("' . g_l('backup', '[del_backup_confirm]') . '")){
+				top.cmd.location="' . $this->frameset . '&pnt=cmd&operation_mode=deletebackup&bfile="+sel.options[sel.selectedIndex].value;
+			}
 	} else {
 		' . we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_selected_fromlist]'), we_message_reporting::WE_MESSAGE_WARNING) . '
 	}
@@ -967,6 +969,9 @@ top.close();');
 
 		return we_html_element::jsElement('
 function setLocation(loc){
+	if(top.cmd.reloadTimer){
+		clearTimeout(top.cmd.reloadTimer);
+	}
 	location.href = loc;
 }
 
@@ -979,7 +984,7 @@ function reloadFrame(){
 	}
 }
 
-setTimeout(reloadFrame, ' . $_execute . ');');
+top.cmd.reloadTimer=setTimeout(reloadFrame, ' . $_execute . ');');
 	}
 
 	static function getDownloadLinkText(){
