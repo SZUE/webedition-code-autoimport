@@ -95,13 +95,13 @@ function refreshTree() {
 function checkFileinput() {
 	var prefix = "trash_";
 	var imgs = document.getElementsByTagName("IMG");
-	if (document.forms[document.forms.length - 1].name.substring(0, 14) == "we_upload_form" && document.forms[document.forms.length - 1].elements.we_File.value) {
+	if (document.forms[document.forms.length - 1].name.substring(0, 14) === "we_upload_form" && document.forms[document.forms.length - 1].elements.we_File.value) {
 		for (var i = 0; i < imgs.length; i++) {
-			if (imgs[i].id.length > prefix.length && imgs[i].id.substring(0, prefix.length) == prefix) {
+			if (imgs[i].id.length > prefix.length && imgs[i].id.substring(0, prefix.length) === prefix) {
 				imgs[i].style.display = "";
 			}
 		}
-		//weAppendMultiboxRow(we_fileinput.replace(/WEFORMNUM/g,weGetLastMultiboxNr()),\'' . g_l('importFiles', '[file]') . '\' + \' \' + (parseInt(weGetMultiboxLength())),80,1);
+
 		var fi = we_fileinput.replace(/WEFORMNUM/g, weGetLastMultiboxNr());
 		fi = fi.replace(/WE_FORM_NUM/g, (document.forms.length));
 		weAppendMultiboxRow(fi, "", 0, 1);

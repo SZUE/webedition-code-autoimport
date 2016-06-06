@@ -106,7 +106,7 @@ $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javasc
 $cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_html_multiIconBox::getHTML("shpProps", $parts, 30, $buttons, -1, "", "", "", "Shop", "", 390);
+$sTblWidget = we_html_multiIconBox::getHTML("shpProps", $parts, 30, $buttons, -1, "", "", "", "Shop");
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]'), '', '', STYLESHEET .
 	$jsFile .
