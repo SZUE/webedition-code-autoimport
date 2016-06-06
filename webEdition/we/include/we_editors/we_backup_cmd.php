@@ -146,6 +146,9 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			we_backup_util::addLog('Issuing next request.');
 			echo we_html_element::jsElement('
 function run(){' . we_backup_util::getProgressJS($percent, $description, true) . '
+	if(top.cmd.reloadTimer){
+		clearTimeout(top.cmd.reloadTimer);
+	}
 	top.cmd.location = "' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=export";
 }
 run();');
@@ -328,6 +331,9 @@ top.cmd.location = "about:blank";
 
 			echo we_html_element::jsElement('
 function run(){' . we_backup_util::getProgressJS(we_backup_util::getImportPercent(), $description, true) . '
+	if(top.cmd.reloadTimer){
+		clearTimeout(top.cmd.reloadTimer);
+	}
 	top.cmd.location="' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php?cmd=import";
 }
 
