@@ -373,6 +373,9 @@ $l_buttons_global=array(
 		'alt'=>'Luo uusi nimi',
 		'value'=>'Uusi nimi',
 	),
+	'new_collection'=>array(
+		'value'=>'New Collection',
+	),
 	'new_directory'=>array(
 		'alt'=>'Uusi hakemisto',
 		'value'=>'Uusi hakemisto',

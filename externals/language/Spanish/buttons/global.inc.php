@@ -373,6 +373,9 @@ $l_buttons_global=array(
 		'alt'=>'Insertar un nuevo nombre',
 		'value'=>'New name',
 	),
+	'new_collection'=>array(
+		'value'=>'New Collection',
+	),
 	'new_directory'=>array(
 		'alt'=>'Crear nuevo directorio',
 		'value'=>'New directory',
