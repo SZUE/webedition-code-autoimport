@@ -49,27 +49,31 @@ if(!empty($remove)){
 				$name = $tag['attribs']['name'] . ($isBlock ? implode('', $tag['attribs']['weblock']) : '');
 				$nHash = $isBlock ? $name : md5($name);
 
-				if(isset($relevantTags[$type][$nHash])){
-					$relevantTags[$type][$nHash]['types'][$tag['name']] = 1;
-				} else {
-					$relevantTags[$type][$nHash] = array(
-						'name' => $tag['attribs']['name'],
-						'types' => array($tag['name'] => 1),
-					);
+				if(!isset($relevantTags[$type][$nHash])){
+					$relevantTags[$type][$nHash] = $tag['attribs']['name'];
+					if(!$isBlock){
+						switch($tag['name']){
+							case 'href':
+								$relevantTags[$type][md5($tag['attribs']['name'].we_base_link::MAGIC_INT_LINK)] = $tag['attribs']['name'];
+								$relevantTags[$type][md5($tag['attribs']['name'].we_base_link::MAGIC_INT_LINK_ID)] = $tag['attribs']['name'];
+								$relevantTags[$type][md5($tag['attribs']['name'].we_base_link::MAGIC_INT_LINK_EXTPATH)] = $tag['attribs']['name'];
+						}
+					}
 				}
 			}
 		}
 
 		$db = $GLOBALS['DB_WE'];
-		$allFields = $db->getAllq('SELECT l.Type,l.Name,IF(c.BDID,c.BDID,c.Dat) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.Type!="attrib" GROUP BY l.nHash');
+		$allFields = $db->getAllq('SELECT l.Type,l.Name,IF(c.BDID,c.BDID,c.Dat) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') GROUP BY l.nHash');
 
-		if(!empty($relevantTags['normal']) || !empty($relevantTags['blocks'])){
-			$obsolete = $db->getAllq('SELECT l.Type,l.Name,HEX(l.nHash) AS nHash,IF(c.BDID,c.BDID, SUBSTR(c.Dat,1,150)) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.Type!="attrib" ' . (empty($relevantTags['normal']) ? '' : 'AND l.nHash NOT IN (x\'' . implode('\',x\'', array_keys($relevantTags['normal'])) . '\') ') . (empty($relevantTags['blocks']) ? '' : ' AND SUBSTRING_INDEX(l.Name,"__",1) NOT IN ("' . implode('","', array_keys($relevantTags['blocks'])) . '")') . ' GROUP BY l.nHash ORDER BY l.Name');
+		if(!empty($relevantTags['normal']) || !empty($relevantTags['block'])){
+			$obsolete = $db->getAllq('SELECT l.Type,l.Name,HEX(l.nHash) AS nHash,COUNT(1) AS no,IF(c.BDID,c.BDID, SUBSTR(c.Dat,1,150)) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') ' . (empty($relevantTags['normal']) ? '' : 'AND l.nHash NOT IN (x\'' . implode('\',x\'', array_keys($relevantTags['normal'])) . '\') ') . (empty($relevantTags['block']) ? '' : ' AND SUBSTRING_INDEX(l.Name,"__",1) NOT IN ("' . implode('","', array_keys($relevantTags['block'])) . '")') . ' GROUP BY l.nHash ORDER BY l.Name');
+
 			foreach($obsolete as &$ob){
 				$bl = explode('blk_', $ob['Name'], 2);
 				$cnt = 0;
 				$ob['real'] = $bl[0];
-				$ob['block'] = isset($bl[1]) ? preg_replace('|(__\d+)+$|', '', str_replace('blk_', ' -> ', $bl[1], $cnt)) : '';
+				$ob['block'] = isset($bl[1]) ? preg_replace('|(__\d+)+|', '', str_replace('blk_', ' -> ', $bl[1], $cnt)) : '';
 				$ob['blockcnt'] = isset($bl[1]) ? $cnt + 1 : $cnt;
 				$ob['content'] = oldHtmlspecialchars($ob['content']);
 			}
@@ -82,13 +86,14 @@ if(!empty($remove)){
 			$obsolete = array();
 		}
 
-		$table = new we_html_table(array('class' => 'default middlefont', 'width' => '100%'), count($obsolete) + 1, 5);
+		$table = new we_html_table(array('class' => 'default middlefont', 'width' => '100%'), count($obsolete) + 1, 6);
 		$table->setRowAttributes(0, array('class' => 'boxHeader'));
 		$table->setColContent(0, 0, '');
 		$table->setColContent(0, 1, 'Block');
 		$table->setColContent(0, 2, 'Name');
 		$table->setColContent(0, 3, 'Typ');
-		$table->setColContent(0, 4, 'Exemplarischer Inhalt');
+		$table->setColContent(0, 4, 'Anzahl');
+		$table->setColContent(0, 5, 'Exemplarischer Inhalt');
 		foreach($obsolete as $pos => $cur){
 			$row = $pos + 1;
 			$table->setRowAttributes($row, array('class' => 'htmlDialogBorder4Cell'));
@@ -96,7 +101,8 @@ if(!empty($remove)){
 			$table->setColContent($row, 1, $cur['block']);
 			$table->setColContent($row, 2, $cur['real']);
 			$table->setColContent($row, 3, $cur['Type']);
-			$table->setColContent($row, 4, $cur['content']);
+			$table->setColContent($row, 4, $cur['no']);
+			$table->setColContent($row, 5, $cur['content']);
 		}
 
 		$parts = array(
@@ -107,26 +113,23 @@ if(!empty($remove)){
 			array(
 				'html' => $table->getHtml(),
 			),
-			/* array(
-			  'headline' => 'Obsolete Elemente',
-			  'html' => '<pre>' . print_r($obsolete, true) . '</pre>',
-			  'space' => we_html_multiIconBox::SPACE_MED2,
-			  ),
-			  array(
-			  'headline' => 'debug',
-			  'html' => '<pre>' . print_r($tp->getTagsWithAttributes(true), true) . '</pre>',
-			  'space' => we_html_multiIconBox::SPACE_MED2,
-			  ),
-			  array(
-			  'headline' => 'Gefundene Elemente',
-			  'html' => '<pre>' . print_r($relevantTags, true) . '</pre>',
-			  'space' => we_html_multiIconBox::SPACE_MED2,
-			  ),
-			  /* array(
-			  'headline' => 'Elemente in DB',
-			  'html' => '<pre>' . print_r($allFields, true) . '</pre>',
-			  'space' => we_html_multiIconBox::SPACE_MED2,
-			  ), */
+			/*
+			array(
+				'headline' => 'Obsolete Elemente',
+				'html' => '<pre>' . print_r($obsolete, true) . '</pre>',
+			),
+			array(
+				'headline' => 'debug',
+				'html' => '<pre>' . print_r($tp->getTagsWithAttributes(true), true) . '</pre>',
+			),
+			array(
+				'headline' => 'Gefundene Elemente',
+				'html' => '<pre>' . print_r($relevantTags, true) . '</pre>',
+			),
+			array(
+				'headline' => 'Elemente in DB',
+				'html' => '<pre>' . print_r($allFields, true) . '</pre>',
+			),*/
 		);
 
 
