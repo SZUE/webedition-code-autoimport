@@ -118,16 +118,16 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 		$fileupload = new we_fileupload_ui_editor();
 		$fileupload->setFormElements(array(
 			'uploader' => array('set' => false),
-			'parentId' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false, 'noline' => true),
-			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false),
-			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false, 'noline' => true),
-			'categories' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false),
-			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false),
+			'parentId' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
+			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
+			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
+			'categories' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
+			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
 			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true),
-			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false),
-			'imageResize' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false, 'noline' => true),
-			'imageRotate' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false, 'noline' => true),
-			'imageQuality' => array('set' => true, 'multiIconBox' => true, 'space' => 150, 'rightHeadline' => false, 'noline' => true),
+			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
+			'imageResize' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
+			'imageRotate' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
+			'imageQuality' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
 		));
 		$fileupload->loadImageEditPropsFromSession();
 

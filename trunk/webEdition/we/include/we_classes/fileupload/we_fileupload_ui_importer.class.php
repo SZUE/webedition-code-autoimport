@@ -87,7 +87,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 		</div>
 		';
 
-		$topParts[] = array("headline" => g_l('importFiles', '[select_files]'), "html" => $fileselect, 'space' => 119);
+		$topParts[] = array("headline" => g_l('importFiles', '[select_files]'), "html" => $fileselect, 'space' => we_html_multiIconBox::SPACE_MED);
 
 		// TODO: throw out inline css and use we_html_element
 		$messageLayer = '
@@ -101,8 +101,8 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 					"name" => "we_startform",
 					"method" => "post"
 					), $hiddens) .
-				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", $topParts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'), "", 0, "hidden") . '</div>' .
-				'<div id="div_upload_files" style="height:310px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", array(), 30, "", -1, "", "", "", "") . '</div>' .
+				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", $topParts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]')) . '</div>' .
+				'<div id="div_upload_files" style="height:310px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", array(), 30) . '</div>' .
 				$messageLayer
 		);
 

@@ -63,6 +63,6 @@ $_parts = array(
 echo STYLESHEET .
  '</head>
 <body class="weEditorBody" onunload="doUnload()">' .
- we_html_multiIconBox::getHTML('', $_parts, 30, '', -1, '', '', false) .
+ we_html_multiIconBox::getHTML('', $_parts, 30) .
  '</body>
 </html>';

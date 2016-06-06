@@ -576,7 +576,7 @@ if($ok){
 	</tr>
 ' : '') . '
 </table>',
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1),
 			array('headline' => g_l('global', '[content]'),
 				'html' => '
@@ -595,18 +595,18 @@ if($ok){
 		<td style="padding-top:1em;">' . $imgProps . '</td>
 	</tr>
 </table><div></div>',
-				'space' => 150),
+				'space' => we_html_multiIconBox::SPACE_MED2),
 			array('headline' => g_l('linklistEdit', '[link_anchor]'),
 				'html' => $anchor,
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1),
 			array('headline' => g_l('linklistEdit', '[link_params]'),
 				'html' => $params,
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1),
 			array('headline' => g_l('linklistEdit', '[link_target]'),
 				'html' => $ctarget,
-				'space' => 150)
+				'space' => we_html_multiIconBox::SPACE_MED2)
 		);
 
 
@@ -620,12 +620,12 @@ if($ok){
 		<td>' . $hreflang . '</td>
 	</tr>
 </table>',
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('linklistEdit', '[title]'),
 				'html' => $title,
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('linklistEdit', '[keyboard]'),
@@ -640,24 +640,24 @@ if($ok){
 		<td>' . $tabindex . '</td>
 	</tr>
 </table>',
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('wysiwyg', '[relation]'),
 				'html' => '<span class="default" style="margin-right:20px;">' . $relfield . '</span>' . $revfield,
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1);
 
 			$_parts[] = array('headline' => g_l('linklistEdit', '[link_attr]'),
 				'html' => $cattribs,
-				'space' => 150);
+				'space' => we_html_multiIconBox::SPACE_MED2);
 		}
 
 
 		//   Pop-Up
 		$_parts[] = array('headline' => g_l('global', '[jswin]'),
 			'html' => $jswinonoff,
-			'space' => 150);
+			'space' => we_html_multiIconBox::SPACE_MED2);
 		?>
 		<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
 			<input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />

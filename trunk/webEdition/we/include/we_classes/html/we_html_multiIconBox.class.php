@@ -23,6 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_html_multiIconBox{
+	const SPACE_SMALL = 10;
+	const SPACE_MED = 120;
+	const SPACE_MED2 = 140;
+	const SPACE_BIG = 200;
 
 	/**
 	 * @desc 	Get HTML-Code of the multibox
@@ -78,7 +82,7 @@ abstract class we_html_multiIconBox{
 
 		return ($buttons ?
 				//ignore height, replace by bottom:
-				'<div class="weMultiIconBoxWithFooter" style="overflow:' . $overflow . ';' . ($height ? 'height:' . $height . 'px;bottom:auto;' : '') . '">' . $out . '</div>
+				'<div class="weMultiIconBoxWithFooter">' . $out . '</div>
 				<div class="editfooter">' . $buttons . '</div>' :
 				$out);
 	}

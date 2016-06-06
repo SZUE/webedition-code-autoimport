@@ -488,7 +488,7 @@ set_button_state(false);';
 				'noline' => 1,
 			),
 			array(
-				'headline' => "", 'html' => $doPublish, 'noline' => 1, 'space' => 1
+				'headline' => "", 'html' => $doPublish, 'noline' => 1
 			),
 		);
 

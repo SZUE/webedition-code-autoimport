@@ -27,14 +27,14 @@ if(permissionhandler::hasPerm("BACKUPLOG")){
 		array(
 			'headline' => g_l('backup', '[view_log]'),
 			'html' => '',
-			'space' => 10
+			'space' => we_html_multiIconBox::SPACE_SMALL
 		),
 		array(
 			'headline' => '',
 			'html' => (file_exists(BACKUP_PATH . we_backup_util::logFile) ?
 				'<pre>' . file_get_contents(BACKUP_PATH . we_backup_util::logFile) . '</pre>' :
 				'<p>' . g_l('backup', '[view_log_not_found]') . '</p>'),
-			'space' => 10
+			'space' => we_html_multiIconBox::SPACE_SMALL
 		)
 	);
 } else {
@@ -42,7 +42,7 @@ if(permissionhandler::hasPerm("BACKUPLOG")){
 		array(
 			'headline' => '',
 			'html' => '<p>' . g_l('backup', '[view_log_no_perm]') . '</p>',
-			'space' => 10
+			'space' => we_html_multiIconBox::SPACE_SMALL
 		)
 	);
 }

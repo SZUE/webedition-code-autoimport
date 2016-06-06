@@ -33,7 +33,7 @@ $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div
 $parts = array(
 	array("headline" => "",
 		"html" => $_html,
-		'space' => 140,
+		'space' => we_html_multiIconBox::SPACE_MED2,
 		'icon' =>"meta.gif"
 	)
 );
@@ -65,7 +65,7 @@ if($GLOBALS['we_doc']->ModifierID){
 
 $parts[] = array("headline" => "",
 	"html" => $_html,
-	'space' => 140,
+	'space' => we_html_multiIconBox::SPACE_MED2,
 	'icon' =>"cal.gif"
 );
 
@@ -76,7 +76,7 @@ echo STYLESHEET;
 <body class="weEditorBody">
 	<?php
 	echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false);
+		we_html_multiIconBox::getHTML("", $parts, 30);
 	?>
 </body>
 </html>

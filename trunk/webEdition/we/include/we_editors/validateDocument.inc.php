@@ -124,9 +124,9 @@ $parts = array(
 		. '</td><td>' .
 		we_html_button::create_button(we_html_button::OK, 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services)))
 		. '</td></tr></table>'
-		, 'space' => 95),
+		, 'space' =>we_html_multiIconBox::SPACE_MED),
 	array('html' => g_l('validation', '[result]'), 'noline' => 1,),
-	array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" style="width:680px;height:400px;"></iframe>', 'space' => 5),
+	array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" style="width:680px;height:400px;"></iframe>', 'space' => we_html_multiIconBox::SPACE_SMALL),
 );
 
 //  css for webSite
@@ -143,6 +143,6 @@ echo STYLESHEET . we_html_element::jsElement('
  '</head>' .
  we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), '<form name="we_form">'
 	. we_html_element::htmlHidden('we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))
-	. we_html_multiIconBox::getHTML('weDocValidation', $parts, 20, '', -1, '', '', false) .
+	. we_html_multiIconBox::getHTML('weDocValidation', $parts, 20) .
 	'</form>') .
  '</html>';

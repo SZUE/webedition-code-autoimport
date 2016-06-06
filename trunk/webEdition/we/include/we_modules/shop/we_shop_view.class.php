@@ -893,7 +893,7 @@ function CalendarChanged(calObject) {
 					($AMOUNT_ARTICLES > 0 ?
 						array(
 						'headline' => g_l('modules_shop', '[Artikel]'),
-						'space' => 100,
+						'space' => we_html_multiIconBox::SPACE_SMALL0,
 						'html' => '
 		<form name="we_intern_form">' . we_html_element::htmlHiddens(array(
 							'bid' => $_REQUEST['bid'],
@@ -913,7 +913,7 @@ function CalendarChanged(calObject) {
 						) :
 						array(
 						'headline' => g_l('modules_shop', '[Artikel]'),
-						'space' => 100,
+						'space' => we_html_multiIconBox::SPACE_SMALL0,
 						'html' => g_l('modules_shop', '[add_article][empty_articles]')
 						)
 					)
@@ -922,7 +922,7 @@ function CalendarChanged(calObject) {
 				if($AMOUNT_ARTICLES > 0 || isset($_REQUEST['searchArticle'])){
 					$parts[] = array(
 						'headline' => g_l('global', '[search]'),
-						'space' => 100,
+						'space' => we_html_multiIconBox::SPACE_SMALL0,
 						'html' => '
 			<table class="default">
 				<tr><td>' . we_class::htmlTextInput('searchArticle', 24, we_base_request::_(we_base_request::RAW, 'searchArticle', ''), '', 'id="searchArticle"', 'text', 380) . '</td>
@@ -958,7 +958,7 @@ function CalendarChanged(calObject) {
 
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[Artikel]'),
-						'space' => 100,
+						'space' => we_html_multiIconBox::SPACE_SMALL0,
 						'html' => '
 							<form name="we_form" target="edbody">' .
 						we_html_element::htmlHiddens(array(
@@ -972,21 +972,21 @@ function CalendarChanged(calObject) {
 
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[anzahl]'),
-						'space' => 100,
+						'space' => we_html_multiIconBox::SPACE_SMALL0,
 						'html' => we_class::htmlTextInput('anzahl', 24, '', '', 'min="1"', 'number', 380),
 						'noline' => 1
 					);
 
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[variant]'),
-						'space' => 100,
+						'space' => we_html_multiIconBox::SPACE_SMALL0,
 						'html' => we_class::htmlSelect(we_base_constants::WE_VARIANT_REQUEST, $variantOptions, 1, '', false, array(), 'value', 380),
 						'noline' => 1
 					);
 
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[customField]'),
-						'space' => 100,
+						'space' => we_html_multiIconBox::SPACE_SMALL0,
 						'html' => we_class::htmlTextInput('we_customField', 24, '', '', '', 'text', 380) .
 						'<br /><span class="small">Eingabe in der Form: <i>name1=wert1;name2=wert2</i></span></form>',
 						'noline' => 1
@@ -1066,13 +1066,13 @@ function CalendarChanged(calObject) {
 					array(
 						'headline' => g_l('modules_shop', '[field_name]'),
 						'html' => $fieldHtml,
-						'space' => 120,
+						'space' => we_html_multiIconBox::SPACE_MED,
 						'noline' => 1
 					),
 					array(
 						'headline' => g_l('modules_shop', '[field_value]'),
 						'html' => '<textarea name="cartfieldvalue" style="width: 350; height: 150">' . $val . '</textarea>',
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 					)
 				);
 
@@ -1127,19 +1127,19 @@ function CalendarChanged(calObject) {
 				$parts = array(
 					array(
 						'headline' => g_l('modules_shop', '[edit_order][shipping_costs]'),
-						'space' => 150,
+						'space' => we_html_multiIconBox::SPACE_MED2,
 						'html' => we_class::htmlTextInput('weShipping_costs', 24, $shippingCost),
 						'noline' => 1
 					),
 					array(
 						'headline' => g_l('modules_shop', '[edit_shipping_cost][isNet]'),
-						'space' => 150,
+						'space' => we_html_multiIconBox::SPACE_MED2,
 						'html' => we_class::htmlSelect('weShipping_isNet', array(1 => g_l('global', '[yes]'), 0 => g_l('global', '[no]')), 1, $shippingIsNet),
 						'noline' => 1
 					),
 					array(
 						'headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
-						'space' => 150,
+						'space' => we_html_multiIconBox::SPACE_MED2,
 						'html' => we_html_tools::htmlInputChoiceField('weShipping_vatRate', $shippingVat, $shippingVats, array(), '', true),
 						'noline' => 1
 					)
@@ -1194,13 +1194,13 @@ function CalendarChanged(calObject) {
 					),
 					array(
 						'headline' => g_l('modules_customer', '[Forname]') . ': ',
-						'space' => 150,
+						'space' => we_html_multiIconBox::SPACE_MED2,
 						'html' => we_class::htmlTextInput('weCustomerOrder[Forename]', 44, $_customer['Forename']),
 						'noline' => 1
 					),
 					array(
 						'headline' => g_l('modules_customer', '[Surname]') . ': ',
-						'space' => 150,
+						'space' => we_html_multiIconBox::SPACE_MED2,
 						'html' => we_class::htmlTextInput('weCustomerOrder[Surname]', 44, $_customer['Surname']),
 						'noline' => 1
 					)
@@ -1247,7 +1247,7 @@ function CalendarChanged(calObject) {
 
 							$parts[] = array(
 								'headline' => $k . ': ',
-								'space' => 150,
+								'space' => we_html_multiIconBox::SPACE_MED2,
 								'html' => $countryselect->getHtml(),
 								'noline' => 1
 							);
@@ -1267,14 +1267,14 @@ function CalendarChanged(calObject) {
 
 							$parts[] = array(
 								'headline' => $k . ': ',
-								'space' => 150,
+								'space' => we_html_multiIconBox::SPACE_MED2,
 								'html' => $languageselect->getHtml(),
 								'noline' => 1
 							);
 						} else {
 							$parts[] = array(
 								'headline' => $k . ': ',
-								'space' => 150,
+								'space' => we_html_multiIconBox::SPACE_MED2,
 								'html' => we_class::htmlTextInput('weCustomerOrder[' . $k . ']', 44, $v),
 								'noline' => 1
 							);

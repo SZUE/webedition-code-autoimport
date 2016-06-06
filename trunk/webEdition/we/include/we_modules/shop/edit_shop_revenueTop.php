@@ -135,19 +135,19 @@ $parts = array(
 	array(
 		'headline' => '<label for="ViewYear">' . g_l('modules_shop', '[selectYear]') . '</label>',
 		'html' => yearSelect("ViewYear"),
-		'space' => 150,
+		'space' => we_html_multiIconBox::SPACE_MED2,
 		'noline' => 1
 	),
 	array(
 		'headline' => '<label for="ViewMonth">' . g_l('modules_shop', '[selectMonth]') . '</label>',
 		'html' => monthSelect("ViewMonth", $selectedMonth),
-		'space' => 150,
+		'space' => we_html_multiIconBox::SPACE_MED2,
 		'noline' => 1
 	),
 	array(
 		'headline' => we_html_button::create_button(we_html_button::SELECT, "javascript:we_submitDateform();"),
 		'html' => '',
-		'space' => 150
+		'space' => we_html_multiIconBox::SPACE_MED2
 	)
 );
 

@@ -76,7 +76,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 					$parts[] = array(
 						'headline' => $thumbObj->getThumbName(),
-						'space' => 200,
+						'space' => we_html_multiIconBox::SPACE_BIG,
 						'noline' => true
 					);
 					$parts[] = array(

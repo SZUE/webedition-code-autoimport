@@ -113,7 +113,7 @@ class we_customer_EIWizard{
 			array(
 				"headline" => g_l('modules_customer', '[generic_export]'),
 				"html" => $generic->getHTML(),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1)
 		);
 
@@ -144,7 +144,7 @@ class we_customer_EIWizard{
 		$parts = array(array(
 				"headline" => "",
 				"html" => $generic->getHTML(),
-				'space' => 30,
+				'space' => we_html_multiIconBox::SPACE_SMALL,
 				'noline' => 1)
 		);
 
@@ -198,7 +198,7 @@ switch (args[0]){
 				array(
 					'headline' => g_l('modules_customer', '[filename]'),
 					'html' => we_html_tools::htmlTextInput('filename', 42, $filename),
-					'space' => 150
+					'space' => we_html_multiIconBox::SPACE_MED2
 				),
 			);
 
@@ -210,7 +210,7 @@ switch (args[0]){
 					$table->setColContent(0, 0, we_html_forms::radiobutton(1, $cdata, "cdata", g_l('modules_customer', '[export_xml_cdata]'), true, "defaultfont", ""));
 					$table->setColContent(1, 0, we_html_forms::radiobutton(0, !$cdata, "cdata", g_l('modules_customer', '[export_xml_entities]'), true, "defaultfont", ""));
 
-					$parts[] = array("headline" => g_l('modules_customer', '[cdata]'), "html" => $table->getHtml(), 'space' => 150);
+					$parts[] = array("headline" => g_l('modules_customer', '[cdata]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2);
 
 					break;
 				case self::TYPE_CSV:
@@ -228,12 +228,12 @@ switch (args[0]){
 
 					$fileformattable->setColContent(3, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
-					$parts[] = array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => 150);
+					$parts[] = array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2);
 			}
 
 			$parts[] = array("headline" => g_l('modules_customer', '[export_to]'), "html" => "", 'noline' => 1);
 
-			$parts[] = array('space' => 150, 'noline' => 1,
+			$parts[] = array('space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1,
 				"headline" => we_html_element::htmlDiv(array('class' => 'default'), we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", "top.export_to='" . self::EXPORT_SERVER . "'")),
 				"html" =>
 				we_html_element::htmlBr() .
@@ -242,13 +242,13 @@ switch (args[0]){
 
 			$parts[] = array(
 				"headline" => we_html_forms::radiobutton(self::EXPORT_LOCAL, ($export_to == self::EXPORT_LOCAL), "export_to", g_l('modules_customer', '[export_to_local]'), true, "defaultfont", "top.export_to='" . self::EXPORT_LOCAL . "'"),
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1,
 				"html" => ""
 			);
 		} else {
 			$parts = array(
-				array('headline' => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', 'space' => 150)
+				array('headline' => 'Fehler', "html" => '<b>Die Auswahl ist leer</b>', 'space' => we_html_multiIconBox::SPACE_MED2)
 			);
 			$js = we_html_element::jsElement(
 					$this->bodyFrame . '.document.we_form.step.value--;
@@ -522,7 +522,7 @@ switch (args[0]){
 			array(
 				"headline" => g_l('modules_customer', '[generic_import]'),
 				"html" => $generic->getHTML(),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1)
 		);
 
@@ -564,7 +564,7 @@ function callBack(){
 		$parts[] = array(
 			"headline" => g_l('modules_customer', '[source_file]'),
 			"html" => $table->getHtml(),
-			'space' => 120,
+			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 		);
 
@@ -583,7 +583,7 @@ function callBack(){
 		$parts[] = array(
 			"headline" => "",
 			"html" => $table->getHTML(),
-			'space' => 120,
+			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 		);
 
@@ -670,7 +670,7 @@ function callBack(){
 
 					$fileformattable->setColContent(4, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
-					$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => 150));
+					$parts = array(array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2));
 					break;
 				case we_import_functions::TYPE_GENERIC_XML:
 					//invoke parser
@@ -841,7 +841,7 @@ function callBack(){
 			array(
 				"headline" => g_l('modules_customer', '[import_step4]'),
 				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, $rows, $tableheader, "defaultfont"),
-				'space' => 150),
+				'space' => we_html_multiIconBox::SPACE_MED2),
 		);
 
 
@@ -872,7 +872,7 @@ function callBack(){
 			array(
 				"headline" => "",
 				"html" => $table->getHtml(),
-				'space' => 20
+				'space' => we_html_multiIconBox::SPACE_SMALL
 			)
 		);
 

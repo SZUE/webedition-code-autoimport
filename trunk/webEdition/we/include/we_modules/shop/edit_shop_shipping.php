@@ -187,24 +187,24 @@ function we_submitForm(url){
 		$parts = array(
 			array(
 				'headline' => g_l('modules_shop', '[vat_country][stateField]'),
-				'space' => 200,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_class::htmlSelect('stateField', $selectFieldsTbl, 1, $weShippingControl->stateField, false, array(), 'value', 280),
 				'noline' => 1
 			),
 			array(
 				'headline' => g_l('modules_shop', '[mwst]'),
-				'space' => 200,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_class::htmlSelect('vatId', $selectFieldsVat, 1, $weShippingControl->vatId, false, array(), 'value', 280),
 				'noline' => 1
 			),
 			array(
 				'headline' => g_l('modules_shop', '[shipping][prices_are_net]'),
-				'space' => 200,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_class::htmlSelect('isNet', array(1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')), 1, $weShippingControl->isNet, false, array(), 'value', 280)
 			),
 			array(
 				'headline' => g_l('modules_shop', '[shipping][insert_packaging]'),
-				'space' => 200,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => '<table class="default defaultfont">
 	<tr>
 		<td>' . we_class::htmlSelect('editShipping', $selectFieldsCtl, 4, we_base_request::_(we_base_request::RAW, 'weShippingId', ''), false, array('onchange' => 'document.location=\'' . $_SERVER['SCRIPT_NAME'] . '?we_cmd[0]=editShipping&weShippingId=\' + this.options[this.selectedIndex].value;'), 'value', 280) . '</td>
@@ -225,13 +225,13 @@ function we_submitForm(url){
 		if(isset($weShipping)){ // show the shipping which must be edited
 			$parts[] = array(
 				'headline' => g_l('modules_shop', '[shipping][name]'),
-				'space' => 200,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_class::htmlTextInput('weShipping_text', 24, $weShipping->text) . we_html_element::htmlHidden('weShippingId', $weShipping->id),
 				'noline' => 1
 			);
 			$parts[] = array(
 				'headline' => g_l('modules_shop', '[shipping][countries]'),
-				'space' => 200,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_class::htmlTextArea('weShipping_countries', 4, 21, implode("\n", $weShipping->countries)),
 				'noline' => 1
 			);
@@ -257,7 +257,7 @@ function we_submitForm(url){
 
 			$parts[] = array(
 				'headline' => g_l('modules_shop', '[shipping][costs]'),
-				'space' => 200,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' =>
 				'<table style="width:100%" class="default defaultfont" id="shippingCostTable">
 		<tr>
@@ -275,7 +275,7 @@ function we_submitForm(url){
 			);
 			$parts[] = array(
 				'headline' => 'Standard',
-				'space' => 200,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_class::htmlSelect('weShipping_default', array(1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')), 1, $weShipping->default),
 				'noline' => 1
 			);

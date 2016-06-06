@@ -657,16 +657,16 @@ class we_folder extends we_root{
 
 	public function getPropertyPage(){
 		$parts = array(
-			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140)
+			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2)
 		);
 
 		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
-				$parts[] = array('icon' => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), 'noline' => 1, 'space' => 140);
+				$parts[] = array('icon' => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2);
 				$parts[] = array(
 					"headline" => g_l('weClass', '[grant_language]'),
 					"html" => $this->formChangeLanguage(),
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					"forceRightHeadline" => true
 				);
 			} else if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
@@ -674,20 +674,20 @@ class we_folder extends we_root{
 					'icon' => "lang.gif",
 					"headline" => g_l('weClass', '[language]'),
 					"html" => $this->formLangLinks(),
-					'space' => 140
+					'space' => we_html_multiIconBox::SPACE_MED2
 				);
 			}
 		}
 
 		if($this->Table == FILE_TABLE && permissionhandler::hasPerm('CAN_COPY_FOLDERS') ||
 			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE && permissionhandler::hasPerm('CAN_COPY_OBJECTS'))){
-			$parts[] = array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyFolder]'), "html" => $this->formCopyDocument(), 'space' => 140);
+			$parts[] = array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyFolder]'), "html" => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2);
 		}
 
 		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
-			$parts[] = array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners() . "<br/>", 'noline' => 1, 'space' => 140);
+			$parts[] = array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners() . "<br/>", 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2);
 			if(permissionhandler::hasPerm("ADMINISTRATOR")){
-				$parts[] = array("headline" => g_l('modules_users', '[grant_owners]'), "html" => $this->formChangeOwners(), 'space' => 140, "forceRightHeadline" => 1);
+				$parts[] = array("headline" => g_l('modules_users', '[grant_owners]'), "html" => $this->formChangeOwners(), 'space' => we_html_multiIconBox::SPACE_MED2, "forceRightHeadline" => 1);
 			}
 		}
 

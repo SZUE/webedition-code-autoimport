@@ -99,19 +99,19 @@ class we_banner_view extends we_modules_view{
 					array(
 						'headline' => g_l('modules_banner', '[path]'),
 						'html' => $this->formPath(),
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 				));
 				$znr = -1;
 				if(!$this->banner->IsFolder){
 					$parts[] = array(
 						'headline' => g_l('modules_banner', '[banner]'),
 						'html' => $this->formBanner(),
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 					);
 					$parts[] = array(
 						'headline' => g_l('modules_banner', '[period]'),
 						'html' => $this->formPeriod(),
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 					);
 					$znr = 2;
 				}
@@ -119,7 +119,7 @@ class we_banner_view extends we_modules_view{
 					$parts[] = array(
 						'headline' => g_l('modules_banner', '[customers]'),
 						'html' => $this->formCustomer(),
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 					);
 				}
 				$headline = g_l('tabs', '[module][properties]');
@@ -138,27 +138,27 @@ class we_banner_view extends we_modules_view{
 					array(
 						'headline' => g_l('modules_banner', '[tagname]'),
 						'html' => $this->formTagName(),
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 					),
 					array(
 						'headline' => g_l('modules_banner', '[pages]'),
 						'html' => $this->formFiles(),
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 					),
 					array(
 						'headline' => g_l('modules_banner', '[dirs]'),
 						'html' => $this->formFolders(),
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 					),
 					array(
 						'headline' => g_l('modules_banner', '[categories]'),
 						'html' => $this->formCategories(),
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 					),
 					array(
 						'headline' => g_l('modules_banner', '[doctypes]'),
 						'html' => $this->formDoctypes(),
-						'space' => 120)
+						'space' => we_html_multiIconBox::SPACE_MED)
 				);
 				$headline = g_l('tabs', '[module][placement]');
 				$znr = 3;

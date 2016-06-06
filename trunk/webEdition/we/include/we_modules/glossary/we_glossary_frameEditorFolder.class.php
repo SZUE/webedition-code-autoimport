@@ -37,7 +37,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 		return self::buildBody($weGlossaryFrames, we_html_element::jsElement('
 top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=glossary_view_folder&cmdid=' . $cmdid . '";
 top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=glossary_view_folder&cmdid=' . $cmdid . '"') .
-				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_html_multiIconBox::getHTML('', self::getHTMLOverview($weGlossaryFrames), 30, '', -1, '', '', false)));
+				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_html_multiIconBox::getHTML('', self::getHTMLOverview($weGlossaryFrames), 30)));
 	}
 
 	function Footer($weGlossaryFrames){
@@ -70,7 +70,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 						<tr><td style="padding-bottom:2px;">' . g_l('modules_glossary', '[number_of_entries]') . ': ' . $items . '</td></tr>
 						<tr><td style="text-align:right">' . $button . '</td></tr>
 						</table>',
-				'space' => 120);
+				'space' => we_html_multiIconBox::SPACE_MED);
 		}
 
 		return $parts;

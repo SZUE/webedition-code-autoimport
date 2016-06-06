@@ -127,11 +127,11 @@ class we_workflow_view extends we_modules_view{
 						$this->getWorkflowHeaderMultiboxParts(143),
 						$parts[] = array(
 						'headline' => g_l('modules_workflow', '[type]'),
-						'space' => 118,
+						'space' => we_html_multiIconBox::SPACE_MED,
 						'html' => $this->getWorkflowTypeHTML()),
 						array(
 							'headline' => g_l('modules_workflow', '[specials]'),
-							'space' => 118,
+							'space' => we_html_multiIconBox::SPACE_MED,
 							'html' => '<br/>' .
 							we_html_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
 							we_html_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
@@ -726,7 +726,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			array(
 				'headline' => g_l('weEditorInfo', '[content_type]'),
 				'html' => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
-				'space' => 100,
+				'space' => we_html_multiIconBox::SPACE_SMALL0,
 				'noline' => (($this->documentDef->document->ContentType != we_base_ContentTypes::FOLDER && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT) ? 1 : 0)
 			)
 		);
@@ -736,7 +736,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[file_size]'),
 				'html' => we_base_file::getHumanFileSize($fs) . '&nbsp;KB&nbsp;(' . we_base_file::getHumanFileSize($fs, we_base_file::SZ_BYTE) . ')',
-				'space' => 100
+				'space' => we_html_multiIconBox::SPACE_SMALL0
 			);
 		}
 
@@ -744,7 +744,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[creation_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->CreationDate),
-			'space' => 100,
+			'space' => we_html_multiIconBox::SPACE_SMALL0,
 			'noline' => 1
 		);
 
@@ -754,7 +754,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$_parts[] = array(
 					'headline' => g_l('modules_users', '[created_by]'),
 					'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
-					'space' => 100,
+					'space' => we_html_multiIconBox::SPACE_SMALL0,
 					'noline' => 1
 				);
 			}
@@ -763,7 +763,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[changed_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->ModDate),
-			'space' => 100,
+			'space' => we_html_multiIconBox::SPACE_SMALL0,
 			'noline' => 1
 		);
 
@@ -773,7 +773,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$_parts[] = array(
 					'headline' => g_l('modules_users', '[changed_by]'),
 					'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
-					'space' => 100,
+					'space' => we_html_multiIconBox::SPACE_SMALL0,
 					'noline' => 1
 				);
 			}
@@ -783,7 +783,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[lastLive]'),
 				'html' => ($this->documentDef->document->Published ? date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->Published) : '-'),
-				'space' => 100
+				'space' => we_html_multiIconBox::SPACE_SMALL0
 			);
 		}
 
@@ -809,19 +809,19 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[local_path]'),
 				'html' => '<a href="#" style="text-decoration:none;cursor:text" class="defaultfont" onMouseOver="showtip(this,event,\'' . $rp . '\')" onMouseOut="hidetip()"  onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . we_base_util::shortenPath($rp, 74) . '</a>',
-				'space' => 100,
+				'space' => we_html_multiIconBox::SPACE_SMALL0,
 				'noline' => 1
 			);
 
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[http_path]'),
 				'html' => ($showlink ? '<a href="' . $http . '" target="_blank" onMouseOver="showtip(this,event,\'' . $http . '\')" onMouseOut="hidetip()">' : '') . we_base_util::shortenPath($http, 74) . ($showlink ? '</a>' : ''),
-				'space' => 100
+				'space' => we_html_multiIconBox::SPACE_SMALL0
 			);
 			$_parts[] = array(
 				'headline' => '',
 				'html' => '<a href="#" onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
-				'space' => 100
+				'space' => we_html_multiIconBox::SPACE_SMALL0
 			);
 		}
 
@@ -841,19 +841,19 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			array(
 				'headline' => 'ID',
 				'html' => $this->documentDef->document->ID,
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1
 			),
 			array(
 				'headline' => g_l('weEditorInfo', '[content_type]'),
 				'html' => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 			),
 			// publish information
 			array(
 				'headline' => g_l('weEditorInfo', '[creation_date]'),
 				'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->CreationDate),
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1
 			)
 		);
@@ -863,7 +863,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$_parts[] = array(
 				'headline' => g_l('modules_users', '[created_by]'),
 				'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1
 			);
 		}
@@ -871,7 +871,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[changed_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->ModDate),
-			'space' => 150,
+			'space' => we_html_multiIconBox::SPACE_MED2,
 			'noline' => 1
 		);
 
@@ -880,7 +880,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$_parts[] = array(
 				'headline' => g_l('modules_users', '[changed_by]'),
 				'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
-				'space' => 150,
+				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1
 			);
 		}
@@ -888,13 +888,13 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[lastLive]'),
 			'html' => ($this->documentDef->document->Published ? date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->Published) : '-'),
-			'space' => 150,
+			'space' => we_html_multiIconBox::SPACE_MED2,
 		);
 
 		$_parts[] = array(
 			'headline' => '',
 			'html' => '<a href="#" onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
-			'space' => 150
+			'space' => we_html_multiIconBox::SPACE_MED2
 		);
 
 		$_parts[] = array(
