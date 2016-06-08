@@ -67,7 +67,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 					</td>
 					<td style="width:300px">' .
 			we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), $this->getHtmlDropZone('preview', $thumbnailSmall) .
-				($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . $this->getFormImportMeta() : '')
+				($this->contentType === we_base_ContentTypes::IMAGE ? $this->getFormImageEditClientside() . $this->getFormImportMeta() : '')
 			) . '
 					</td>
 				</tr>
