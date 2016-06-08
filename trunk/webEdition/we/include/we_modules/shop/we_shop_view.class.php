@@ -893,7 +893,7 @@ function CalendarChanged(calObject) {
 					($AMOUNT_ARTICLES > 0 ?
 						array(
 						'headline' => g_l('modules_shop', '[Artikel]'),
-						'space' => we_html_multiIconBox::SPACE_SMALL0,
+						'space' => we_html_multiIconBox::SPACE_SMALL,
 						'html' => '
 		<form name="we_intern_form">' . we_html_element::htmlHiddens(array(
 							'bid' => $_REQUEST['bid'],
@@ -913,7 +913,7 @@ function CalendarChanged(calObject) {
 						) :
 						array(
 						'headline' => g_l('modules_shop', '[Artikel]'),
-						'space' => we_html_multiIconBox::SPACE_SMALL0,
+						'space' => we_html_multiIconBox::SPACE_SMALL,
 						'html' => g_l('modules_shop', '[add_article][empty_articles]')
 						)
 					)
@@ -922,7 +922,7 @@ function CalendarChanged(calObject) {
 				if($AMOUNT_ARTICLES > 0 || isset($_REQUEST['searchArticle'])){
 					$parts[] = array(
 						'headline' => g_l('global', '[search]'),
-						'space' => we_html_multiIconBox::SPACE_SMALL0,
+						'space' => we_html_multiIconBox::SPACE_SMALL,
 						'html' => '
 			<table class="default">
 				<tr><td>' . we_class::htmlTextInput('searchArticle', 24, we_base_request::_(we_base_request::RAW, 'searchArticle', ''), '', 'id="searchArticle"', 'text', 380) . '</td>
@@ -958,7 +958,7 @@ function CalendarChanged(calObject) {
 
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[Artikel]'),
-						'space' => we_html_multiIconBox::SPACE_SMALL0,
+						'space' => we_html_multiIconBox::SPACE_SMALL,
 						'html' => '
 							<form name="we_form" target="edbody">' .
 						we_html_element::htmlHiddens(array(
@@ -972,21 +972,21 @@ function CalendarChanged(calObject) {
 
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[anzahl]'),
-						'space' => we_html_multiIconBox::SPACE_SMALL0,
+						'space' => we_html_multiIconBox::SPACE_SMALL,
 						'html' => we_class::htmlTextInput('anzahl', 24, '', '', 'min="1"', 'number', 380),
 						'noline' => 1
 					);
 
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[variant]'),
-						'space' => we_html_multiIconBox::SPACE_SMALL0,
+						'space' => we_html_multiIconBox::SPACE_SMALL,
 						'html' => we_class::htmlSelect(we_base_constants::WE_VARIANT_REQUEST, $variantOptions, 1, '', false, array(), 'value', 380),
 						'noline' => 1
 					);
 
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[customField]'),
-						'space' => we_html_multiIconBox::SPACE_SMALL0,
+						'space' => we_html_multiIconBox::SPACE_SMALL,
 						'html' => we_class::htmlTextInput('we_customField', 24, '', '', '', 'text', 380) .
 						'<br /><span class="small">Eingabe in der Form: <i>name1=wert1;name2=wert2</i></span></form>',
 						'noline' => 1

@@ -305,11 +305,11 @@ function delete_thumbnail() {" .
 			// Build dialog
 			return create_dialog('settings_predefined', g_l('thumbnails', '[thumbnails]'), array(
 				array('html' => $_thumbnails_table->getHtml(),),
-				array('headline' => g_l('thumbnails', '[name]'), 'html' => $_thumbnail_name_input, 'space' => we_html_multiIconBox::SPACE_SMALL0),
-				array('headline' => g_l('thumbnails', '[description]'), 'html' => $_thumbnail_description_input, 'space' => we_html_multiIconBox::SPACE_SMALL0),
+				array('headline' => g_l('thumbnails', '[name]'), 'html' => $_thumbnail_name_input, 'space' => we_html_multiIconBox::SPACE_SMALL),
+				array('headline' => g_l('thumbnails', '[description]'), 'html' => $_thumbnail_description_input, 'space' => we_html_multiIconBox::SPACE_SMALL),
 				array('headline' => g_l('thumbnails', '[properties]'), 'html' => $_window_html->getHtml(), 'space' => we_html_multiIconBox::SPACE_SMALL),
 				array('headline' => 'Filter', 'html' => we_html_element::htmlDiv(array('class' => 'editorThumbnailsFilter'), $_thumbnail_option_table['filter']->getHtml())),
-				array('headline' => g_l('thumbnails', '[format]'), 'html' => $_thumbnail_format_select->getHtml(), 'space' => we_html_multiIconBox::SPACE_SMALL0),
+				array('headline' => g_l('thumbnails', '[format]'), 'html' => $_thumbnail_format_select->getHtml(), 'space' => we_html_multiIconBox::SPACE_SMALL),
 				), -1, '', '', false, $_needed_JavaScript);
 	}
 
