@@ -619,10 +619,10 @@ function setState(a) {
 		$formattable3->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_categorys ? true : false), "handle_categorys", g_l('export', '[handle_categorys]')));
 
 		$parts = array(
-			array("headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'), "html" => $formattable->getHtml(), 'space' => we_html_multiIconBox::SPACE_SMALL),
-			array("headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'), "html" => $formattable2->getHtml(), 'space' => we_html_multiIconBox::SPACE_SMALL),
-			array("headline" => g_l('export', '[handle_doctype_options]'), "html" => $formattable3->getHtml(), 'space' => we_html_multiIconBox::SPACE_SMALL),
-			array("headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(array('style' => 'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), 'space' => we_html_multiIconBox::SPACE_SMALL)
+			array("headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'), "html" => $formattable->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED),
+			array("headline" => g_l('export', '[handle_object_options]') . we_html_element::htmlBr() . g_l('export', '[handle_classes_options]'), "html" => $formattable2->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED),
+			array("headline" => g_l('export', '[handle_doctype_options]'), "html" => $formattable3->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED),
+			array("headline" => g_l('export', '[export_depth]'), "html" => we_html_element::htmlLabel(array('style' => 'padding-right:5px;'), g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("export_depth", 10, $export_depth, "", "", "text", 50), 'space' => we_html_multiIconBox::SPACE_MED)
 		);
 
 		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
