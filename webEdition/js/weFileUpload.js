@@ -70,6 +70,17 @@ var weFileUpload = (function () {
 		_.fileuploadType = 'abstract';
 		_.uiType = 'base';
 
+		_.debug = true;
+
+		_.EDIT_IMAGES_CLIENTSIDE = true;
+		_.picaOptions = {
+			quality: 3, // [0,3]
+			unsharpAmount: 0, // [0, 200]
+			unsharpRadius: 0.5, // [0.5, 2]
+			unsharpThreshold: 0, // [0, 255]
+			alpha: false
+		};
+
 		_.init_abstract = function (conf) {
 			var that = _.self, c = _.controller, s = _.sender, v = _.view, u = _.utils;
 
@@ -166,6 +177,19 @@ var weFileUpload = (function () {
 			this.elemFileDragClasses = 'we_file_drag';
 			this.outer = null;
 			this.isPreset = false;
+
+			this.DELETE_IMG_AFTER_READING = false;
+			this.IMG_NEXT = 0;
+			this.IMG_LOAD_CANVAS = 1;
+			this.IMG_EXTRACT_METADATA = 2;
+			this.IMG_SCALE = 3;
+			this.IMG_ROTATE = 4;
+			this.IMG_APPLY_FILTERS = 5;
+			this.IMG_WRITE_IMAGE = 6;
+			this.IMG_INSERT_METADATA = 7;
+			this.IMG_MAKE_PREVIEW = 8;
+			this.IMG_POSTPROCESS = 9;
+
 			this.fileselectOnclick = function () {
 			};
 
@@ -194,15 +218,17 @@ var weFileUpload = (function () {
 					}
 					_.controller.fileselectOnclick();
 
-					_.sender.imageFilesNotProcessed = [];
+					_.sender.imageFilesToProcess = [];
 					for (var f, i = 0; i < files.length; i++) {
 						if (!_.utils.contains(_.sender.preparedFiles, _.controller.selectedFiles[i])) {
 							f = _.controller.prepareFile(_.controller.selectedFiles[i]);
 							_.sender.preparedFiles.push(f);
 							_.view.addFile(f, _.sender.preparedFiles.length);
+							
 						}
 					}
-					if (_.sender.EDIT_IMAGES_CLIENTSIDE) {
+
+					if (_.sender.imageFilesToProcess.length){
 						_.controller.processImages();
 					}
 				}
@@ -213,24 +239,35 @@ var weFileUpload = (function () {
 					file: f,
 					fileNum: 0,
 					dataArray: null,
+					canvas: null, // maybe call it workingcanvas
+					img: {
+						workingCanvas: null, // maybe call it workingcanvas
+						previewCanvas: null,
+						editOptions: null,
+						originalPreviewCanvas: null,
+						originalSize: 0,
+						jpgCustomSegments: null,
+						pngTextChunks: null,
+					},
+					size: 0,
 					currentPos: 0,
 					partNum: 0,
 					currentWeightFile: 0,
 					mimePHP: 'none',
 					fileNameTemp: ''
 				},
-				transformables = ['image/jpeg', 'image/gif', 'image/png'], //TODO: add all transformable types
+				transformables = ['image/jpeg', 'image/gif', 'image/png'], //TODO: add all transformable types and make "global" (_.editables)
 								//TODO: make this OK-stuff more concise
-								type = f.type ? f.type : 'text/plain',
-								u = isUploadable || true,
-								isTypeOk = _.utils.checkFileType(type, f.name),
-								isSizeOk = (f.size <= _.sender.maxUploadSize || !_.sender.maxUploadSize) ? true : false,
-								errorMsg = [
-									_.utils.gl.errorNoFileSelected,
-									_.utils.gl.errorFileSize,
-									_.utils.gl.errorFileType,
-									_.utils.gl.errorFileSizeType
-								];
+				type = f.type ? f.type : 'text/plain',
+				u = isUploadable || true,
+				isTypeOk = _.utils.checkFileType(type, f.name),
+				isSizeOk = (f.size <= _.sender.maxUploadSize || !_.sender.maxUploadSize) ? true : false,
+				errorMsg = [
+					_.utils.gl.errorNoFileSelected,
+					_.utils.gl.errorFileSize,
+					_.utils.gl.errorFileType,
+					_.utils.gl.errorFileSizeType
+				];
 
 				fileObj.type = type;
 				fileObj.isUploadable = isTypeOk && isSizeOk && u; //maybe replace uploadConditionOk by this
@@ -243,243 +280,86 @@ var weFileUpload = (function () {
 				fileObj.lastChunkSize = f.size % _.sender.chunkSize;
 
 				if (transformables.indexOf(f.type) !== -1) {
-					_.sender.imageFilesNotProcessed.push(fileObj);
+					_.sender.imageFilesToProcess.push(fileObj);
 				}
 
 				return fileObj;
 			};
 
-			this.processImages = function () {
-				_.view.setImageEditMessage();
-				_.controller.processNextImage();
+			this.processImages = function() {
+				if (_.sender.imageFilesToProcess && _.sender.imageFilesToProcess.length) {
+					if(_.EDIT_IMAGES_CLIENTSIDE){
+						_.utils.setImageEditOptionsGeneral();
+					}
+					_.view.setImageEditMessage();
+					_.controller.processNextImage();
+				} else {
+					_.view.unsetImageEditMessage();
+				}
 			};
 
-			this.processNextImage = function () {
-				if (_.sender.imageFilesNotProcessed.length === 0) {
-					// unlock GUI
-					_.view.unsetImageEditMessage();
+			this.processNextImage = function() {
+				if (_.sender.imageFilesToProcess.length) {
+					var fileobj = _.sender.imageFilesToProcess.shift();
+					_.utils.logTimeFromStart('start edit image', true);
+
+					_.utils.setImageEditOptionsFile(fileobj);
+
+					_.controller.processImage(fileobj, this.IMG_LOAD_CANVAS);
+				} else {
+					_.controller.processImages();
+				}
+			};
+
+			this.processImage = function(fileobj, task) {
+				if(!fileobj){
+					_.controller.processNextImage();
 					return;
 				}
 
-				_.view.repaintImageEditMessage();
-
-				var fileObj = _.sender.imageFilesNotProcessed.shift(),
-								transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types;
-
-				if (transformables.indexOf(fileObj.type) !== -1) {
-					fileObj.exif = {};
-
-					/* ExifReader */
-					// we allways extract exif data: to check orientation (and fix it if neccessary)
-					var reader = new FileReader();
-					reader.onload = function (event) {
-						var exif, tags = {};
-
-						try {
-							exif = new ExifReader();
-							exif.load(event.target.result);
-							// The MakerNote tag can be really large. Remove it to lower memory usage.
-							exif.deleteTag('MakerNote');
-							fileObj.exif = exif.getAllTags();
-						} catch (error) {
-							top.console.debug('failed');
+				switch(task) {
+					case _.controller.IMG_LOAD_CANVAS: // TODO: make IMG_START
+						if(!fileobj.img.editOptions.doEdit && fileobj.dataArray && fileobj.dataArray.length){ // we reset an image already edited!
+							_.utils.processimageReset(fileobj, _.controller.IMG_POSTPROCESS);
+							return;
 						}
 
-						//_.controller.transformImage(fileObj);
-						/* START TRANSFORM IMAGE*/
-						var innerReader = new FileReader();
-						innerReader.onloadend = function () {
-							var tempImg = new Image(),
-											ratio = 1;
+						if(!fileobj.img.editOptions.doEdit && fileobj.size > 10485760){ // we do not edit and it is too big for preview
+							_.controller.processImage(fileobj, _.controller.IMG_NEXT);
+							return;
+						}
 
-							tempImg.src = innerReader.result;
-							tempImg.onload = function () {
-								var canvas = document.createElement('canvas'),
-												ctx = canvas.getContext("2d"),
-												deg = _.sender.transformAll.degrees,
-												x = 0, y = 0,
-												transformedCanvas;
-
-								if (_.sender.transformAll.width) {
-									ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
-								} else if (_.sender.transformAll.height) {
-									ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
-								} else {
-									ratio = 1;
-								}
-								ratio = ratio > 0 && ratio < 1 ? ratio : 1;
-
-								// correct landscape using exif data
-								if (fileObj.exif.Orientation && fileObj.exif.Orientation.value !== 1) {
-									switch (fileObj.exif.Orientation.value) {
-										case 3:
-											deg += 180;
-											break;
-										case 6:
-											deg += 270;
-											break;
-										case 8:
-											deg += 90;
-											break;
-
-									}
-								}
-								deg = deg > 360 ? deg - 360 : deg;
-
-								if (_.sender.transformAll.doTrans || deg !== 0) {
-									canvas.width = tempImg.width;
-									canvas.height = tempImg.height;
-
-									// prepare rotation
-									switch (deg) {
-										case 90:
-											canvas.width = tempImg.height;
-											canvas.height = tempImg.width;
-											x = -tempImg.width;
-											break;
-										case 270:
-											canvas.width = tempImg.height;
-											canvas.height = tempImg.width;
-											y = -tempImg.height;
-											break;
-										case 180:
-											x = -tempImg.width;
-											y = -tempImg.height;
-											break;
-										default:
-									}
-								} else {
-									// we use canvas only to downscale preview image
-									canvas.width = 100;
-									canvas.height = (100 / canvas.width) * tempImg.height;
-								}
-								ctx.rotate(-Math.PI * deg / 180);
-								ctx.drawImage(tempImg, x, y, tempImg.width, tempImg.height);// TODO: when not transformed use smaller width/height!
-
-								/* var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
-								//top.console.debug(_.sender.transformAll);
-								transformedCanvas = ratio !== 1 ? _.utils.downScaleCanvas(canvas, ratio) : canvas;
-								canvas = null;
-
-								fileObj.dataURL = transformedCanvas.toDataURL(fileObj.type, _.sender.transformAll.doTrans ? _.sender.transformAll.quality / 10 : 1);
-								if (_.sender.transformAll.doTrans || deg !== 0) {
-									fileObj.dataArray = _.utils.dataURLToUInt8Array(fileObj.dataURL);
-									fileObj.size = fileObj.dataArray.length;
-								} else {
-									// send original image
-									fileObj.dataArray = null;
-									fileObj.size = fileObj.file.size;
-								}
-
-								fileObj.totalParts = Math.ceil(fileObj.size / _.sender.chunkSize);
-								fileObj.lastChunkSize = fileObj.size % _.sender.chunkSize;
-								//TODO: check the following flags again
-								fileObj.isUploadable = true;
-								fileObj.isTypeOk = true;
-								fileObj.isSizeOk = true;
-								fileObj.uploadConditionsOk = true;
-
-								_.view.repaintEntry(fileObj);
-								_.controller.processNextImage();
-							};
-						};
-						innerReader.readAsDataURL(fileObj.file);
-						/* END */
-					};
-					reader.readAsArrayBuffer(fileObj.file.slice(0, 128 * 1024));
-					/* END */
-					return;
-				} else {
-					_.controller.processNextImage();
+						_.utils.processimageLoadCanvas(fileobj, fileobj.img.editOptions.doEdit ? _.controller.IMG_EXTRACT_METADATA : _.controller.IMG_MAKE_PREVIEW);
+						break;
+					case _.controller.IMG_EXTRACT_METADATA:
+						_.utils.processimageExtractMetadata(fileobj, _.controller.IMG_SCALE);
+						break;
+					case _.controller.IMG_SCALE:
+						_.utils.processimageScale(fileobj, _.controller.IMG_ROTATE);
+						break;
+					case _.controller.IMG_ROTATE:
+						_.utils.processimageRotate(fileobj, _.controller.IMG_APPLY_FILTERS);
+						break;							
+					case _.controller.IMG_APPLY_FILTERS:
+						_.utils.processimageApplyFilters(fileobj, _.controller.IMG_WRITE_IMAGE);
+						break;
+					case _.controller.IMG_WRITE_IMAGE:
+						_.utils.processimageWriteImage(fileobj, _.controller.IMG_INSERT_METADATA);
+						break;
+					case _.controller.IMG_INSERT_METADATA:
+						_.utils.processimagInsertMetadata(fileobj, _.controller.IMG_MAKE_PREVIEW);
+						break;
+					case _.controller.IMG_MAKE_PREVIEW:
+						_.utils.processimageMakePreview(fileobj, _.controller.IMG_POSTPROCESS);
+						break;
+					case _.controller.IMG_POSTPROCESS:
+						_.utils.processimagePostProcess(fileobj, _.controller.IMG_NEXT);
+						break;
+					case _.controller.IMG_NEXT:
+					default:
+						_.controller.processNextImage();
 				}
 			};
-
-			//TODO: maybe reintegrate into fn processNextImage()
-			/*
-			 this.transformImage = function(fileObj){
-			 var reader = new FileReader();
-			 reader.onloadend = function () {
-			 var tempImg = new Image(),
-			 ratio = 1;
-
-			 tempImg.src = reader.result;
-			 tempImg.onload = function () {
-			 var canvas = document.createElement('canvas'),
-			 ctx = canvas.getContext("2d"),
-			 deg = _.sender.transformAll.degrees,
-			 x = 0, y = 0,
-			 transformedCanvas, uInt8Array;
-
-			 if(_.sender.transformAll.width){
-			 ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
-			 } else if(_.sender.transformAll.height){
-			 ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
-			 }
-			 ratio = ratio < 1 ? ratio : 1;
-
-			 canvas.width = tempImg.width;
-			 canvas.height = tempImg.height;
-
-			 // correct landscape using exif data
-			 if(fileObj.exif.Orientation && fileObj.exif.Orientation.value !== 1){
-			 switch(fileObj.exif.Orientation.value) {
-			 case 3:
-			 deg += 180;
-			 break;
-			 case 6:
-			 deg += 270;
-			 break;
-			 case 8:
-			 deg += 90;
-			 break;
-
-			 }
-			 }
-			 deg = deg > 360 ? deg - 360 : deg;
-
-			 // prepare rotation
-			 switch (deg) {
-			 case 90:
-			 canvas.width = tempImg.height;
-			 canvas.height = tempImg.width;
-			 x = -tempImg.width;
-			 break;
-			 case 270:
-			 canvas.width = tempImg.height;
-			 canvas.height = tempImg.width;
-			 y = -tempImg.height;
-			 break;
-			 case 180:
-			 x = -tempImg.width;
-			 y = -tempImg.height;
-			 break;
-			 default:
-			 }
-			 ctx.rotate(-Math.PI * deg / 180);
-			 ctx.drawImage(tempImg, x, y, tempImg.width, tempImg.height);
-
-			 // var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
-			 transformedCanvas = _.utils.downScaleCanvas(canvas, ratio);
-			 canvas = null;
-
-			 fileObj.dataURL = transformedCanvas.toDataURL(fileObj.type, _.sender.transformAll.quality / 10);
-			 fileObj.dataArray = _.utils.dataURLToUInt8Array(fileObj.dataURL);
-			 fileObj.size = fileObj.dataArray.length;
-			 fileObj.totalParts = Math.ceil(fileObj.size / _.sender.chunkSize);
-			 fileObj.lastChunkSize = fileObj.size % _.sender.chunkSize;
-			 //TODO: check the following flags again
-			 fileObj.isUploadable = true;
-			 fileObj.isTypeOk = true;
-			 fileObj.isSizeOk = true;
-			 fileObj.uploadConditionsOk = true;
-
-			 _.view.repaintEntry(fileObj);
-			 _.controller.processNextImage();
-			 };
-			 };
-			 reader.readAsDataURL(fileObj.file);
-			 };
-			 */
 
 			this.fileDragHover = function (e) {
 				e.preventDefault();
@@ -497,6 +377,23 @@ var weFileUpload = (function () {
 						top.WE().layout.button[enable ? 'enable' : 'disable'](document, 'browse_btn');
 					}
 				}
+			};
+
+			this.reeditImage = function (fileobj, pos, all) {
+				var files = all ? _.sender.preparedFiles : (fileobj ? [fileobj] : (pos === undefined ? [] : [_.sender.preparedFiles[pos]]));
+
+				var transformables = ['image/jpeg', 'image/gif', 'image/png'];
+				for(var i = 0; i < files.length; i++){
+					if(files[i] && transformables.indexOf(files[i].type) !== -1){
+						_.sender.imageFilesToProcess.push(files[i]);
+					}
+				}
+
+				_.controller.processImages();
+			};
+
+			this.openImageEditor = function(pos){
+				// to be overridden
 			};
 
 		}
@@ -519,7 +416,7 @@ var weFileUpload = (function () {
 			this.isUploading = false;
 			this.isCancelled = false;
 			this.preparedFiles = [];
-			this.imageFilesNotProcessed = [];
+			this.imageFilesToProcess = [];
 			this.uploadFiles = [];
 			this.currentFile = -1;
 			this.totalFiles = 0;
@@ -527,18 +424,15 @@ var weFileUpload = (function () {
 			this.currentWeight = 0;
 			this.currentWeightTag = 0;//FIXME: find better name
 			this.isAutostartPermitted = false;
-			this.transformAll = {
-				doTrans: false,
-				width: 0,
-				height: 0,
-				widthSelect: 'pixel',
-				heightSelect: 'pixel',
-				keepRatio: true,
-				quality: 0.8,
-				degrees: 0
+			this.imageEditOptions = {
+				doEdit: false,
+				from: 'general',
+				scaleUnit: 'percent', // percent|pixel_w|pixel_h
+				scaleValue: 0,
+				rotateValue: 0,
+				quality: 90
 			};
 			this.moreFieldsToAppend = [];
-			this.EDIT_IMAGES_CLIENTSIDE = false;
 
 			this.resetParams = function () {
 			};
@@ -547,106 +441,9 @@ var weFileUpload = (function () {
 				return true;
 			};
 
-			//new client side image editing
-			/*
-			 this.transformAndSendFile = function (cur) {
-			 top.console.debug(this.transformAll);
-			 var reader = new FileReader();
-			 reader.onloadend = function () {
-			 var tempImg = new Image(),
-			 ratio = 1;
-
-			 tempImg.src = reader.result;
-			 tempImg.onload = function () {
-			 if(_.sender.transformAll.width){
-			 ratio = _.sender.transformAll.widthSelect === 'percent' ? _.sender.transformAll.width / 100 : _.sender.transformAll.width / tempImg.width;
-			 } else if(_.sender.transformAll.height){
-			 ratio = _.sender.transformAll.heightSelect === 'percent' ? _.sender.transformAll.height / 100 : _.sender.transformAll.height / tempImg.height;
-			 }
-			 ratio = ratio < 1 ? ratio : 1;
-
-			 // var 1: GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality
-			 var canv = document.createElement('canvas');
-			 canv.width = tempImg.width;
-			 canv.height = tempImg.height;
-			 canv.getContext('2d').drawImage(tempImg, 0, 0);
-			 var resulting_canvas = _.utils.downScaleCanvas(canv, ratio);
-			 var canvas = resulting_canvas;
-
-			 // var 2: K3N @ http://stackoverflow.com/questions/17861447/html5-canvas-drawimage-how-to-apply-antialiasing
-
-
-			 // var 3: simple resize + rotation
-
-			 var MAX_WIDTH = 600;
-			 var MAX_HEIGHT = 600;
-			 var tempW = tempImg.width;
-			 var tempH = tempImg.height;
-			 if (tempW > tempH) {
-			 if (tempW > MAX_WIDTH) {
-			 tempH *= MAX_WIDTH / tempW;
-			 tempW = MAX_WIDTH;
-			 }
-			 } else {
-			 if (tempH > MAX_HEIGHT) {
-			 tempW *= MAX_HEIGHT / tempH;
-			 tempH = MAX_HEIGHT;
-			 }
-			 }
-
-			 var canvas = document.createElement('canvas'),
-			 ctx = canvas.getContext("2d"),
-			 deg = 0,
-			 x = 0, y = 0;
-
-			 canvas.width = tempW;
-			 canvas.height = tempH;
-			 switch (deg) {
-			 case 90:
-			 canvas.width = tempH;
-			 canvas.height = tempW;
-			 x = -tempW;
-			 break;
-			 case 270:
-			 canvas.width = tempH;
-			 canvas.height = tempW;
-			 y = -tempH;
-			 break;
-			 case 180:
-			 x = -tempW;
-			 y = -tempH;
-			 break;
-			 default:
-			 }
-			 ctx.rotate(-Math.PI * deg / 180);
-			 ctx.drawImage(tempImg, x, y, tempW, tempH);
-
-			 canvas.toBlob(function (blob) {
-			 var arrayBufferNew = null;
-			 var fr = new FileReader();
-			 fr.onload = function (e) {
-			 arrayBufferNew = this.result;
-			 cur.dataArray = new Uint8Array(arrayBufferNew);
-			 _.sender.sendNextChunk(true);
-
-			 };
-			 cur.size = blob.size;
-			 //_.view.setInternalProgress(0);
-			 cur.totalParts = Math.ceil(blob.size / _.sender.chunkSize);
-			 cur.lastChunkSize = blob.size % _.sender.chunkSize;
-			 fr.readAsArrayBuffer(blob);
-			 }, "image/jpeg", 1.0
-			 );
-
-			 };
-			 };
-			 reader.readAsDataURL(cur.file);
-			 };
-			 */
-
 			this.sendNextFile = function () {
 				var cur, fr = null, cnt,
-								that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
+					that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
 
 				/* when using short syntax in line 1156 we must change some this to that = _.sender. FIXME: WHY?!
 				 if (that.uploadFiles.length > 0) {
@@ -658,23 +455,19 @@ var weFileUpload = (function () {
 						this.isUploading = true;
 						_.view.repaintGUI({what: 'startSendFile'});
 
-						if (cur.size <= this.chunkSize && !this.transformAll.doTrans) {//&& !cur.doTrans!
+						if (cur.size <= this.chunkSize && !this.imageEditOptions.doEdit) {// IMPORTANT !cur.doEdit!
 							this.sendNextChunk(false);
 						} else {
 							if (_.view.elems.fileSelect && _.view.elems.fileSelect.value) {
 								_.view.elems.fileSelect.value = '';
 							}
 							var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
-
-							//clientside editing disabled!
-							if (false && this.EDIT_IMAGES_CLIENTSIDE && this.transformAll.doTrans && transformables.indexOf(cur.type) !== -1) {//TODO: && !cur.doTrans!)
+							if (_.EDIT_IMAGES_CLIENTSIDE && transformables.indexOf(cur.type) !== -1 && cur.dataArray && cur.dataArray.length) {
 								that.sendNextChunk(true);
 							} else {
 								fr = new FileReader();
 								fr.onload = function (e) {
-									cnt = e.target.result;
-									cur.dataArray = new Uint8Array(cnt);
-									//from inside FileReader we must reference sender by that (or _.sender)
+									cur.dataArray = new Uint8Array(e.target.result);
 									that.sendNextChunk(true);
 								};
 								fr.readAsArrayBuffer(cur.file);
@@ -693,7 +486,7 @@ var weFileUpload = (function () {
 
 			this.sendNextChunk = function (split) {
 				var resp, oldPos, blob,
-								cur = this.currentFile; // when using short syntax in line 1156 we must change some this to that = _.sender. FIXME: WHY?!
+					cur = this.currentFile; // when using short syntax in line 1156 we must change some this to that = _.sender. FIXME: WHY?!
 
 				if (this.isCancelled) {
 					this.isCancelled = false;
@@ -708,15 +501,15 @@ var weFileUpload = (function () {
 						blob = new Blob([cur.dataArray.subarray(oldPos, cur.currentPos)]);
 
 						this.sendChunk(
-										blob,
-										cur.file.name,
-										(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
-										(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
-										cur.partNum,
-										cur.totalParts,
-										cur.fileNameTemp,
-										cur.size
-										);
+							blob,
+							cur.file.name,
+							(cur.mimePHP !== 'none' ? cur.mimePHP : cur.file.type),
+							(cur.partNum === cur.totalParts ? cur.lastChunkSize : this.chunkSize),
+							cur.partNum,
+							cur.totalParts,
+							cur.fileNameTemp,
+							cur.size
+						);
 					}
 				} else {
 					this.sendChunk(cur.file, cur.file.name, cur.file.type, cur.size, 1, 1, '', cur.size);
@@ -856,20 +649,21 @@ var weFileUpload = (function () {
 				create: false,
 				html: ''
 			};
+			this.previewSize = 100;
 
-			this.setImageEditMessage = function () {
+			this.setImageEditMessage = function (){
 			};
 
-			this.unsetImageEditMessage = function () {
+			this.unsetImageEditMessage = function (){
 			};
 
-			this.repaintImageEditMessage = function () {
+			this.repaintImageEditMessage = function (){
 			};
 
-			this.repaintGUI = function (arg) {
+			this.repaintGUI = function (arg){
 			};
 
-			this.repaintEntry = function (obj) {
+			this.repaintEntry = function (obj){
 			};
 
 			//TODO: adapt these progress fns to standard progressbars
@@ -880,8 +674,8 @@ var weFileUpload = (function () {
 
 			this.setInternalProgress = function (progress, index) {
 				var coef = this.intProgress.width / 100,
-								i = typeof index !== 'undefined' || index === false ? index : false,
-								p = i === false ? '' : '_' + i;
+					i = typeof index !== 'undefined' || index === false ? index : false,
+					p = i === false ? '' : '_' + i;
 
 				document.getElementById(_.fieldName + '_progress_image_bg' + p).style.width = ((coef * 100) - (coef * progress)) + "px";
 				document.getElementById(_.fieldName + '_progress_image' + p).style.width = coef * progress + "px";
@@ -902,6 +696,17 @@ var weFileUpload = (function () {
 				}
 			};
 
+			this.setDoEditGlobal = function (fileobj, checkox) {
+				// from inline
+			};
+
+			this.setUseGeneralOpts = function (fileobj, checkox) {
+				// to be overridden
+			};
+
+			this.setCustomEditOpts = function (fileobj, radio) {
+				// to be overridden
+			};
 		}
 
 		function AbstractUtils() {
@@ -921,6 +726,383 @@ var weFileUpload = (function () {
 				file: '',
 				btnClose: '',
 				btnCancel: ''
+			};
+
+			this.logTimeFromStart = function(text, resetStart){
+				if(_.debug){
+					var date = new Date();
+
+					this.start = resetStart ? date.getTime() : this.start;
+					top.console.log((text ? text : ''), (date.getTime() - this.start)/1000);
+				}
+			};
+
+			this.abstractSetImageEditOptionsGeneral = function (formname) {
+				var form = document.forms[(formname ? formname : 'we_form')],
+					resizeValue = form.fu_doc_resizeValue.value,
+					deg = form.fu_doc_rotate.value,
+					opts = _.sender.imageEditOptions;
+
+				opts.doEdit = false;
+
+				if(parseInt(form.fu_doc_doResize.value) === 1 && (resizeValue == '' && deg == 0 ? false : true)){
+					opts.doEdit = true;
+					opts.keepRatio = true;
+
+					opts.scaleUnit = form.fu_doc_unitSelect.value;
+					opts.scaleValue = resizeValue;
+					opts.rotateValue = deg;
+					opts.quality = form.fu_doc_quality.value;
+				}
+			};
+
+			this.setImageEditOptionsGeneral = function () {
+				_.utils.abstractSetImageEditOptionsGeneral();
+			};
+
+			this.setImageEditOptionsFile = function (fileobj) {
+				var type = 'general';
+
+				switch(type){
+					case 'general':
+						fileobj.img.editOptions = JSON.parse(JSON.stringify(_.sender.imageEditOptions));
+						break;
+					case 'expert':
+						// not implemented yet
+						break;
+				}
+				fileobj.img.editOptions.from = type;
+			};
+
+			this.processimageLoadCanvas = function(fileobj, nexttask) {
+				fileobj.img.workingCanvas = document.createElement('canvas');
+
+				if(fileobj.img.image && fileobj.img.image.src){
+					fileobj.img.workingCanvas.width = fileobj.img.image.width;
+					fileobj.img.workingCanvas.height = fileobj.img.image.height;
+					fileobj.img.workingCanvas.getContext("2d").drawImage(fileobj.img.image, 0, 0);
+
+					_.utils.logTimeFromStart('canvas loaded');
+					_.controller.processImage(fileobj, nexttask);
+					return;
+				}
+
+				var reader = new FileReader();
+				fileobj.img.image = new Image();
+				reader.onload = function() {
+					fileobj.img.image.onload = function() {
+						fileobj.img.workingCanvas.width = fileobj.img.image.width;
+						fileobj.img.workingCanvas.height = fileobj.img.image.height;
+						fileobj.img.workingCanvas.getContext("2d").drawImage(fileobj.img.image, 0, 0);
+						if(_.controller.DELETE_IMG_AFTER_READING){
+							fileobj.img.image = null;
+						}
+
+						_.utils.processimageMakePreview(fileobj, nexttask, 'originalPreviewCanvas');
+					};
+
+					_.utils.logTimeFromStart('canvas loaded');
+					_.view.repaintImageEditMessage(true);
+					fileobj.img.image.src = reader.result;
+				};
+				reader.readAsDataURL(fileobj.file);
+			};
+
+			this.processimageExtractMetadata = function(fileobj, nexttask) {
+				switch(fileobj.type){
+					case 'image/jpeg':
+						_.utils.processimageExtractMetadataJPG(fileobj, nexttask);
+						break;
+					case 'image/png':
+						_.utils.processimageExtractMetadataPNG(fileobj, nexttask);
+						break;
+					default:
+						_.controller.processImage(fileobj, nexttask);
+				}
+			};
+
+			this.processimageExtractMetadataJPG = function(fileobj, nexttask) {
+					var reader = new FileReader();
+
+					reader.onloadend = function () {
+						fileobj.img.jpgCustomSegments = _.utils.jpgGetSegmentsIfExist(new Uint8Array(reader.result), [225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239], true);
+						fileobj.img.exifParsed = _.utils.jpgGetExifParsed();
+
+						_.utils.logTimeFromStart('meta jpg exttracted');
+						_.view.repaintImageEditMessage(true);
+						_.controller.processImage(fileobj, nexttask);
+					};
+					reader.readAsArrayBuffer(fileobj.file.slice(0, 128 * 1024));
+			};
+
+			this.processimageExtractMetadataPNG = function(fileobj, nexttask) {
+				var reader = new FileReader();
+
+				reader.onloadend = function () {
+					fileobj.pngTextChunks = [];
+					try{
+						var chunks = extractChunks(new Uint8Array(reader.result));
+						for(var i = 0; i < chunks.length; i++){
+							if(chunks[i].name === 'iTXt' || chunks[i].name === 'tEXt' || chunks[i].name === 'zTXt'){
+								fileobj.pngTextChunks.push(chunks[i]);
+								/*
+								var decodedChunk = chunks[i].name !== 'iTXt' ? decodeChunk(chunks[i]) :
+										decodeURIComponent(escape(String.fromCharCode.apply(null, chunks[i].data)));
+								*/
+							}
+						}
+					} catch(e){
+						top.console.log('extracting png metadata failed');
+					}
+
+					_.utils.logTimeFromStart('meta png exttracted');
+					_.view.repaintImageEditMessage(true);
+					_.controller.processImage(fileobj, nexttask);
+				};
+				reader.readAsArrayBuffer(fileobj.file);
+			};
+
+			this.processimageScale = function(fileobj, nexttask){
+				if(!fileobj.img.editOptions.scaleValue){
+					_.utils.logTimeFromStart('scaling skipped');
+					_.controller.processImage(fileobj, nexttask);
+					return; // IMPORTANT! 
+				}
+
+				var ratio = fileobj.img.editOptions.scaleUnit === 'percent' ? parseInt(fileobj.img.editOptions.scaleValue)/100 :
+						(fileobj.img.editOptions.scaleUnit === 'pixel_w' ? fileobj.img.editOptions.scaleValue/fileobj.img.workingCanvas.width : 
+							fileobj.img.editOptions.scaleUnit/fileobj.img.workingCanvas.height);
+
+				if(ratio >= 1){
+					_.controller.processImage(nexttask); // we do not upscale!
+					return; // IMPORTANT! 
+				}
+
+				var targetCanvas = document.createElement('canvas');
+				targetCanvas.width = fileobj.img.workingCanvas.width * ratio;
+				targetCanvas.height = fileobj.img.workingCanvas.height * ratio;
+
+				window.pica.resizeCanvas(fileobj.img.workingCanvas, targetCanvas, _.picaOptions, function (err) {
+					if(err){
+						top.console.log('scaling image failded');
+					} else {
+						fileobj.img.workingCanvas = targetCanvas;
+						targetCanvas = null;
+					}
+
+					_.utils.logTimeFromStart('scaling done');
+					_.view.repaintImageEditMessage(true);
+					_.controller.processImage(fileobj, nexttask);
+				});
+			};
+
+			this.processimageRotate = function(fileobj, nexttask){
+				var deg = fileobj.img.editOptions.rotateValue;
+
+				// correct landscape using exif data
+				if(fileobj.img.exifParsed && fileobj.img.exifParsed.Orientation && fileobj.img.exifParsed.Orientation.value !== 1){
+					switch(fileobj.img.exifParsed.Orientation.value) {
+						case 3:
+							deg += 180;
+							break;
+						case 6:
+							deg += 270;
+							break;
+						case 8:
+							deg += 90;
+							break;
+					}
+				}
+				deg = parseInt(deg)%360;
+
+				var cw = fileobj.img.workingCanvas.width, ch = fileobj.img.workingCanvas.height, cx = 0, cy = 0;
+				switch(deg) {
+					case 90 :
+						cw = fileobj.img.workingCanvas.height;
+						ch = fileobj.img.workingCanvas.width;
+						cy = -fileobj.img.workingCanvas.height;
+						break;
+					case 180 :
+						cx = -fileobj.img.workingCanvas.width;
+						cy = -fileobj.img.workingCanvas.height;
+						break;
+					case 270 :
+					case -90 :
+						cw = fileobj.img.workingCanvas.height;
+						ch = fileobj.img.workingCanvas.width;
+						cx = -fileobj.img.workingCanvas.width;
+						break;
+					default:
+						_.utils.logTimeFromStart('rotation skipped');
+						_.controller.processImage(fileobj, nexttask);
+						return;
+				};
+
+				var targetCanvas = document.createElement('canvas'),
+					ctxTargetCanvas = targetCanvas.getContext("2d");
+					targetCanvas.width = cw;
+					targetCanvas.height = ch;
+
+				ctxTargetCanvas.rotate(deg * Math.PI / 180);
+				ctxTargetCanvas.drawImage(fileobj.img.workingCanvas, cx, cy);
+
+				fileobj.img.workingCanvas = targetCanvas;
+				targetCanvas = null;
+
+				_.utils.logTimeFromStart('rotation done');
+				_.view.repaintImageEditMessage(true);
+				_.controller.processImage(fileobj, nexttask);
+			};
+
+			this.processimageApplyFilters = function(fileobj, nexttask){
+				_.controller.processImage(fileobj, nexttask);
+			};
+
+			this.processimageWriteImage_2 = function(fileobj, nexttask){
+				fileobj.img.workingCanvas.toBlob(function (blob) { // DO WE NEED toBlob TO GET UINT(ARRAY?
+																	// THIS FN CAUASES PROBLEMS WITH PNG!
+					var reader = new FileReader();
+					reader.onload = function() {
+						fileobj.dataArray = new Uint8Array(reader.result);
+						_.utils.logTimeFromStart('image written');
+						_.controller.processImage(fileobj, nexttask);
+					};
+					reader.readAsArrayBuffer(blob);
+				}, fileobj.type, (fileobj.img.editOptions.quality/100));
+			};
+
+			this.processimageWriteImage = function(fileobj, nexttask){
+				fileobj.dataUrl = fileobj.img.workingCanvas.toDataURL(fileobj.type, (fileobj.img.editOptions.quality/100));
+				fileobj.dataArray = _.utils.dataURLToUInt8Array(fileobj.dataUrl);
+				_.utils.logTimeFromStart('image written fn 2');
+				_.controller.processImage(fileobj, nexttask);
+			};
+
+			this.processimagInsertMetadata = function(fileobj, nexttask) {
+				switch(fileobj.type){
+					case 'image/jpeg':
+						_.utils.processimagInsertMetadataJPG(fileobj, nexttask);
+						break;
+					case 'image/png':
+						_.utils.processimagInsertMetadataPNG(fileobj, nexttask);
+						break;
+					default:
+						_.utils.logTimeFromStart('no metadata to reinsert');
+						_.controller.processImage(fileobj, nexttask);
+				}
+			};
+
+			this.processimagInsertMetadataJPG = function(fileobj, nexttask) {
+				if(fileobj.img.jpgCustomSegments) {
+					fileobj.dataArray = _.utils.jpgInsertSegment(fileobj.dataArray, fileobj.img.jpgCustomSegments);
+					fileobj.size = fileobj.dataArray.length;
+					_.view.repaintImageEditMessage(true);
+				}
+
+				_.utils.logTimeFromStart('metadata reinserted');
+				_.controller.processImage(fileobj, nexttask);
+			};
+
+			this.processimagInsertMetadataPNG = function(fileobj, nexttask) {
+				_.utils.logTimeFromStart('metadata reinsert skipped');
+				_.controller.processImage(fileobj, nexttask);
+
+				if(fileobj.img.pngTextChunks && fileobj.img.pngTextChunks.length){
+					var combinedChuks = [];
+					try{
+						var chunks = extractChunks(fileobj.dataArray),
+							combinedChuks = [];
+
+						combinedChuks.push(chunks.shift()); // new IHDR
+						while(fileobj.pngTextChunks.length){
+							combinedChuks.push(fileobj.pngTextChunks.shift()); // all extracted text chunks
+						}
+						while(chunks.length){
+							combinedChuks.push(chunks.shift()); // all extracted text chunks
+						}
+					} catch(e){
+						combinedChuks = false;
+					}
+
+					var newUInt8Array = false;
+					if(combinedChuks){
+						try{
+							newUInt8Array = encodeChunks(combinedChuks);
+						} catch (e) {
+							newUInt8Array = false;
+						}
+					}
+
+					fileobj.dataArray = newUInt8Array ? newUInt8Array : fileobj.dataArray;
+					_.view.repaintImageEditMessage(true);
+				}
+
+				_.utils.logTimeFromStart('metadata reinserted');
+				_.controller.processImage(fileobj, nexttask);
+			};
+
+			this.processimageMakePreview = function(fileobj, nexttask, target){ // no synchronous action in here so we can normally go back
+				target = target ? target : 'previewCanvas';
+
+				if(fileobj && fileobj.img.workingCanvas){
+					var previewCanvas = document.createElement("canvas");
+					//fileobj.img.previewCanvas = document.createElement("canvas");
+					var ctxPreviewCanvas = previewCanvas.getContext("2d");
+					var previewSize = _.view.previewSize;
+
+					if(fileobj.img.workingCanvas.width > fileobj.img.workingCanvas.height){
+						previewCanvas.width = previewSize;
+						previewCanvas.height = previewSize / fileobj.img.workingCanvas.width * fileobj.img.workingCanvas.height;
+					} else {
+						previewCanvas.height = previewSize;
+						previewCanvas.width = previewSize / fileobj.img.workingCanvas.height * fileobj.img.workingCanvas.width;
+					}
+
+					ctxPreviewCanvas.drawImage(
+						fileobj.img.workingCanvas,
+						0,
+						0,
+						fileobj.img.workingCanvas.width,
+						fileobj.img.workingCanvas.height,
+						0,
+						0,
+						previewCanvas.width,
+						previewCanvas.height
+					);
+					fileobj.img[target] = previewCanvas;
+					_.view.repaintImageEditMessage(true);
+				}
+
+				_.utils.logTimeFromStart('preview done');
+				_.controller.processImage(fileobj, nexttask);
+
+				return;
+			};
+
+			this.processimageReset = function(fileobj, nexttask){
+				fileobj.dataArray = null;
+				fileobj.dataUrl = null;
+				fileobj.size = fileobj.img.originalSize;
+				fileobj.img.previewCanvas = fileobj.img.originalPreviewCanvas;
+				fileobj.isEdited = false;
+
+				_.controller.processImage(fileobj, nexttask);
+			};
+
+			this.processimagePostProcess = function(fileobj, nexttask){
+				if(fileobj.dataArray && fileobj.dataArray.length){
+					fileobj.img.originalSize = fileobj.file.size;
+					fileobj.size = fileobj.dataArray.length;
+					fileobj.isEdited = true;
+				}
+
+				fileobj.totalParts = Math.ceil(fileobj.size / _.sender.chunkSize);
+				fileobj.lastChunkSize = fileobj.size % _.sender.chunkSize;
+				_.view.repaintEntry(fileobj);
+
+				_.utils.logTimeFromStart('processing finished');
+				_.view.repaintImageEditMessage();
+				_.controller.processImage(fileobj, nexttask);
 			};
 
 			this.checkBrowserCompatibility = function () {
@@ -952,9 +1134,9 @@ var weFileUpload = (function () {
 
 			this.checkFileType = function (type, name) {
 				var n = name || '',
-								ext = n.split('.').pop().toLowerCase(),
-								tc = _.sender.typeCondition,
-								typeGroup = type.split('/').shift() + '/*';
+					ext = n.split('.').pop().toLowerCase(),
+					tc = _.sender.typeCondition,
+					typeGroup = type.split('/').shift() + '/*';
 
 				ext = ext ? '.' + ext : '';
 
@@ -992,142 +1174,14 @@ var weFileUpload = (function () {
 				return (size / 1024 > 1023 ? ((size / 1024) / 1024).toFixed(1) + ' MB' : (size / 1024).toFixed(1) + ' KB');
 			};
 
-			/* GameAlchemist @ http://stackoverflow.com/questions/18922880/html5-canvas-resize-downscale-image-high-quality */
-			//TODO: try to scale width and height by different ratio
-			this.downScaleCanvas = function (cv, scale) {
-				if (scale <= 0 || scale >= 1) {
-					throw new Error('scale must be a positive number <1 ');
-				}
-				var sqScale = scale * scale; // square scale = area of source pixel within target
-				var sw = cv.width; // source image width
-				var sh = cv.height; // source image height
-				var tw = Math.floor(sw * scale); // target image width
-				var th = Math.floor(sh * scale); // target image height
-				var sx = 0, sy = 0, sIndex = 0; // source x,y, index within source array
-				var tx = 0, ty = 0, yIndex = 0, tIndex = 0; // target x,y, x,y index within target array
-				var tX = 0, tY = 0; // rounded tx, ty
-				var w = 0, nw = 0, wx = 0, nwx = 0, wy = 0, nwy = 0; // weight / next weight x / y
-				// weight is weight of current source point within target.
-				// next weight is weight of current source point within next target's point.
-				var crossX = false; // does scaled px cross its current px right border ?
-				var crossY = false; // does scaled px cross its current px bottom border ?
-				var sBuffer = cv.getContext('2d').getImageData(0, 0, sw, sh).data; // source buffer 8 bit rgba
-				var tBuffer = new Float32Array(4 * sw * sh); // target buffer Float32 rgb
-				var sR = 0, sG = 0, sB = 0; // source's current point r,g,b
-				// untested !
-				var sA = 0;  //source alpha
-
-				for (sy = 0; sy < sh; sy++) {
-					ty = sy * scale; // y src position within target
-					tY = 0 | ty;     // rounded : target pixel's y
-					yIndex = 4 * tY * tw;  // line index within target array
-					crossY = (tY != (0 | ty + scale));
-					if (crossY) { // if pixel is crossing botton target pixel
-						wy = (tY + 1 - ty); // weight of point within target pixel
-						nwy = (ty + scale - tY - 1); // ... within y+1 target pixel
-					}
-					for (sx = 0; sx < sw; sx++, sIndex += 4) {
-						tx = sx * scale; // x src position within target
-						tX = 0 | tx;    // rounded : target pixel's x
-						tIndex = yIndex + tX * 4; // target pixel index within target array
-						crossX = (tX != (0 | tx + scale));
-						if (crossX) { // if pixel is crossing target pixel's right
-							wx = (tX + 1 - tx); // weight of point within target pixel
-							nwx = (tx + scale - tX - 1); // ... within x+1 target pixel
-						}
-						sR = sBuffer[sIndex    ];   // retrieving r,g,b for curr src px.
-						sG = sBuffer[sIndex + 1];
-						sB = sBuffer[sIndex + 2];
-						sA = sBuffer[sIndex + 3];
-
-						if (!crossX && !crossY) { // pixel does not cross
-							// just add components weighted by squared scale.
-							tBuffer[tIndex    ] += sR * sqScale;
-							tBuffer[tIndex + 1] += sG * sqScale;
-							tBuffer[tIndex + 2] += sB * sqScale;
-							tBuffer[tIndex + 3] += sA * sqScale;
-						} else if (crossX && !crossY) { // cross on X only
-							w = wx * scale;
-							// add weighted component for current px
-							tBuffer[tIndex    ] += sR * w;
-							tBuffer[tIndex + 1] += sG * w;
-							tBuffer[tIndex + 2] += sB * w;
-							tBuffer[tIndex + 3] += sA * w;
-							// add weighted component for next (tX+1) px
-							nw = nwx * scale;
-							tBuffer[tIndex + 4] += sR * nw; // not 3
-							tBuffer[tIndex + 5] += sG * nw; // not 4
-							tBuffer[tIndex + 6] += sB * nw; // not 5
-							tBuffer[tIndex + 7] += sA * nw; // not 6
-						} else if (crossY && !crossX) { // cross on Y only
-							w = wy * scale;
-							// add weighted component for current px
-							tBuffer[tIndex    ] += sR * w;
-							tBuffer[tIndex + 1] += sG * w;
-							tBuffer[tIndex + 2] += sB * w;
-							tBuffer[tIndex + 3] += sA * w;
-							// add weighted component for next (tY+1) px
-							nw = nwy * scale;
-							tBuffer[tIndex + 4 * tw    ] += sR * nw; // *4, not 3
-							tBuffer[tIndex + 4 * tw + 1] += sG * nw; // *4, not 3
-							tBuffer[tIndex + 4 * tw + 2] += sB * nw; // *4, not 3
-							tBuffer[tIndex + 4 * tw + 3] += sA * nw; // *4, not 3
-						} else { // crosses both x and y : four target points involved
-							// add weighted component for current px
-							w = wx * wy;
-							tBuffer[tIndex    ] += sR * w;
-							tBuffer[tIndex + 1] += sG * w;
-							tBuffer[tIndex + 2] += sB * w;
-							tBuffer[tIndex + 3] += sA * w;
-							// for tX + 1; tY px
-							nw = nwx * wy;
-							tBuffer[tIndex + 4] += sR * nw; // same for x
-							tBuffer[tIndex + 5] += sG * nw;
-							tBuffer[tIndex + 6] += sB * nw;
-							tBuffer[tIndex + 7] += sA * nw;
-							// for tX ; tY + 1 px
-							nw = wx * nwy;
-							tBuffer[tIndex + 4 * tw    ] += sR * nw; // same for mul
-							tBuffer[tIndex + 4 * tw + 1] += sG * nw;
-							tBuffer[tIndex + 4 * tw + 2] += sB * nw;
-							tBuffer[tIndex + 4 * tw + 3] += sA * nw;
-							// for tX + 1 ; tY +1 px
-							nw = nwx * nwy;
-							tBuffer[tIndex + 4 * tw + 4] += sR * nw; // same for both x and y
-							tBuffer[tIndex + 4 * tw + 5] += sG * nw;
-							tBuffer[tIndex + 4 * tw + 6] += sB * nw;
-							tBuffer[tIndex + 4 * tw + 7] += sA * nw;
-						}
-					} // end for sx
-				} // end for sy
-
-				// create result canvas
-				var resCV = document.createElement('canvas');
-				resCV.width = tw;
-				resCV.height = th;
-				var resCtx = resCV.getContext('2d');
-				var imgRes = resCtx.getImageData(0, 0, tw, th);
-				var tByteBuffer = imgRes.data;
-				// convert float32 array into a UInt8Clamped Array
-				var pxIndex = 0; //
-				for (sIndex = 0, tIndex = 0; pxIndex < tw * th; sIndex += 4, tIndex += 4, pxIndex++) {
-					tByteBuffer[tIndex] = Math.ceil(tBuffer[sIndex]);
-					tByteBuffer[tIndex + 1] = Math.ceil(tBuffer[sIndex + 1]);
-					tByteBuffer[tIndex + 2] = Math.ceil(tBuffer[sIndex + 2]);
-					tByteBuffer[tIndex + 3] = Math.ceil(tBuffer[sIndex + 3]);
-				}
-				// writing result to canvas.
-				resCtx.putImageData(imgRes, 0, 0);
-				return resCV;
-			};
-
+			// obsolete!
 			this.dataURLToUInt8Array = function (dataURL) {
 				var BASE64_MARKER = ';base64,',
-								parts = dataURL.split(BASE64_MARKER),
-								//contentType = parts[0].split(':')[1],
-								raw = window.atob(parts[1]),
-								rawLength = raw.length,
-								uInt8Array = new Uint8Array(rawLength);
+					parts = dataURL.split(BASE64_MARKER),
+					//contentType = parts[0].split(':')[1],
+					raw = window.atob(parts[1]),
+					rawLength = raw.length,
+					uInt8Array = new Uint8Array(rawLength);
 
 				for (var i = 0; i < rawLength; ++i) {
 					uInt8Array[i] = raw.charCodeAt(i);
@@ -1135,6 +1189,147 @@ var weFileUpload = (function () {
 
 				return uInt8Array;
 				//return new Blob([uInt8Array], {type: contentType});
+			};
+
+			this.jpgInsertSegment = function (uint8array, exifSegment) {
+				if(uint8array[0] == 255 && uint8array[1] == 216 && uint8array[2] == 255 && uint8array[3] == 224){
+					var pos = uint8array.indexOf(255, 4), 
+						head = uint8array.slice(0, pos),
+						segments = uint8array.slice(pos);
+
+					return this.concatTypedArrays(Uint8Array, [head, exifSegment, segments]);
+				}
+			};
+
+			this.jpgGetExifSegment = function (uint8array){
+				return this.jpgGetSegment(uint8array, 225);
+			};
+
+			// use this to extract a certain segment: not intended to be used several times in sequence
+			this.jpgGetSegment = function (uint8array, marker) {
+				var head = 0;
+
+				while (head < uint8array.length) {
+					if (uint8array[head] == 255 & uint8array[head + 1] == 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
+						break;
+					}
+
+					if (uint8array[head] == 255 & uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
+						head += 2;
+					} else {
+						var length = uint8array[head + 2] * 256 + uint8array[head + 3],
+							endPoint = head + length + 2;
+
+						if(uint8array[head + 1] == marker) {
+							return uint8array.slice(head, endPoint);;
+						}
+
+						head = endPoint;
+					}
+				}
+
+				return false;
+			};
+
+			this.jpgGetAllSegmentsUpToSOS = function(uint8array) {
+				var head = 0,
+					segments = {},
+					order = [];
+
+				while (head < uint8array.length) {
+					// each segment starts with 255 (FF) and its segment marker
+					if (uint8array[head] == 255 & uint8array[head + 1] == 218){ // 218 (DA): SOS = Start of Scan = image data (canvas works on)
+						//top.console.log('found SOS at pos', head, segments);
+						break;
+					}
+					if (uint8array[head] == 255 & uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
+						head += 2;
+					} else {
+						var length = uint8array[head + 2] * 256 + uint8array[head + 3],
+							endPoint = head + length + 2;
+
+						order.push(uint8array[head + 1]);
+						segments[uint8array[head + 1] + '_' + head] = uint8array.slice(head, endPoint);
+						head = endPoint;
+					}
+				}
+				
+				return {order: order, segments: segments};
+			};
+
+			this.jpgGetSegmentsIfExist = function (uint8array, segments, concat) {
+				var head = 0,
+					searchObj = {},
+					segmentsArr = [],
+					controllArr = [];
+			
+				for (var i = 0; i < segments.length; i++) {
+					searchObj[segments[i]] = true;
+				}
+
+				while (head < uint8array.length) {
+					if (uint8array[head] == 255 & uint8array[head + 1] == 218){ // SOI = Scan of Image = image data (eg. canvas works on)!
+						break;
+					}
+
+					if (uint8array[head] == 255 & uint8array[head + 1] == 216){ // omit 216 (D8): SOI = Start of Image (is empty so length = 2 bytes)
+						head += 2;
+					} else {
+						var length = uint8array[head + 2] * 256 + uint8array[head + 3],
+							endPoint = head + length + 2;
+
+						if(searchObj[uint8array[head + 1]] === true) {
+							segmentsArr.push(uint8array.slice(head, endPoint));
+							controllArr.push({marker: uint8array[head + 1], head: head, length: (endPoint-head)});
+
+							/*
+							delete searchObj[uint8array[head + 1]]; // there can be duplicate segemnst: we want o restore them as is!
+							if (searchObj === {}){ // nothing left to search for
+								break;
+							}
+							*/
+						}
+
+						head = endPoint;
+					}
+				}
+				//top.console.log('all custom segments', {list: controllArr, segments: segmentsArr});
+
+				return concat ? this.concatTypedArrays(Uint8Array, segmentsArr) : segmentsArr;
+			};
+
+			this.jpgGetExifParsed = function(uint8array) {
+				var exif;
+
+				try {
+					exif = new ExifReader();
+					exif.load(event.target.result);
+					// The MakerNote tag can be really large. Remove it to lower memory usage.
+					exif.deleteTag('MakerNote');
+
+					return exif.getAllTags();
+				} catch (error) {
+					top.console.debug('extract exif failed');
+					return false;
+				}
+			};
+
+			this.concatTypedArrays = function (resultConstructor, arrays) {
+				var size = 0,
+					pos = 0;
+
+				for (var i = 0; i < arrays.length; i++) {
+					size += arrays[i].length;
+				}
+
+				var result = new resultConstructor(size);
+
+				for (var i = 0; i < arrays.length; i++) {
+					result.set(arrays[i], pos);
+					pos += arrays[i].length;
+				}
+
+				return result;
 			};
 		}
 
@@ -1154,7 +1349,7 @@ var weFileUpload = (function () {
 			return new AbstractUtils();
 		};
 
-		//public functions
+		//public functions (accessible from outside)
 		this.startUpload = function () {
 			if (_.sender.prepareUpload()) {
 				//setTimeout(_.sender.sendNextFile, 100); // FIXME: check why this does not work!!
@@ -1171,11 +1366,24 @@ var weFileUpload = (function () {
 		};
 
 		this.reset = function () {
+			_.view.elems.fileSelect.value = null;
 			_.view.repaintGUI({what: 'resetGui'});
 		};
 
 		this.deleteRow = function (index, but) {
 			_.view.deleteRow(index, but);
+		};
+
+		this.setDoEditGlobal = function (fileobj, checkox) {
+			_.view.setDoEditGlobal(fileobj, checkox);
+		};
+
+		this.setUseGeneralOpts = function (fileobj, checkox) {
+			_.view.setUseGeneralOpts(fileobj, checkox);
+		};
+
+		this.setCustomEditOpts = function (fileobj, radio) {
+			_.view.setCustomEditOpts(fileobj, radio);
 		};
 
 		this.getType = function () {
@@ -1185,6 +1393,14 @@ var weFileUpload = (function () {
 		this.doUploadIfReady = function (callback) {
 			callback();
 			return;
+		};
+
+		this.reeditImage = function (fileObj, pos, all) {
+			_.controller.reeditImage(fileObj, pos, all);
+		};
+		
+		this.openImageEditor = function(pos){
+			_.controller.openImageEditor(pos);
 		};
 	}
 
@@ -1458,39 +1674,39 @@ var weFileUpload = (function () {
 			_.controller.setWeButtonText('next', 'upload');
 			_.controller.enableWeButton('next', false);
 
-			//init transformAll object
-			var sf = document.we_startform,
-							t = _.sender.transformAll;
-
-			t.width = sf.fu_doc_width.value ? parseInt(sf.fu_doc_width.value) : t.width;
-			t.height = sf.fu_doc_height.value ? parseInt(sf.fu_doc_height.value) : t.height;
-			t.degrees = sf.fu_doc_degrees.value ? parseInt(sf.fu_doc_degrees.value) : t.degrees;
-			t.doTrans = t.degrees || t.width || t.height ? true : false;
-			if (t.doTrans) {
-				t.widthSelect = sf.fu_doc_widthSelect.value ? sf.fu_doc_widthSelect.value : t.widthSelect;
-				t.heightSelect = sf.fu_doc_heightSelect.value ? sf.fu_doc_heightSelect.value : t.heightSelect;
-				t.keepRatio = sf.fu_doc_keepRatio.value ? true : t.fu_doc_keepRatio;
-				t.quality = sf.fu_doc_quality.value ? parseFloat(sf.fu_doc_quality.value) : t.quality;
-			}
+			/*
+			// add some listeners:
+			var generalform = document.getElementById('filechooser');
+			generalform.fu_doc_unitSelect.addEventListener('change', function(e) {_.view.syncCustomEditOpts(e.target);});
+			generalform.fu_doc_resizeValue.addEventListener('keyup', function(e) {_.view.syncCustomEditOpts(e.target);});
+			generalform.fu_doc_rotate.addEventListener('change', function(e) {_.view.syncCustomEditOpts(e.target);});
+			*/
 		};
 
 		function Controller() {
 			var that = _.controller;
 
 			this.replaceSelectionHandler = function (e) {
-				//FIXME: the code of this function is redundant: make new fn using parts of FileSelectHandler()
 				var files = e.target.files;
 				var f;
 				if (files[0] instanceof File && !_.utils.contains(_.sender.preparedFiles, files[0])) {
 					f = _.controller.prepareFile(files[0]);
-					var inputId = 'fileInput_uploadFiles_',
-									index = e.target.id.substring(inputId.length),
-									nameField = document.getElementById('name_uploadFiles_' + index),
-									sizeField = document.getElementById('size_uploadFiles_' + index);
+					_.controller.processImages(f);
 
-					_.sender.preparedFiles[index] = f.isSizeOk ? f : null;
-					nameField.value = f.file.name;
-					sizeField.innerHTML = f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red"> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>';
+
+					var inputId = 'fileInput_uploadFiles_',
+						index = e.target.id.substring(inputId.length),
+						entry = _.sender.preparedFiles[index].entry;
+
+					_.sender.preparedFiles[index] = f; //.isSizeOk ? f : null;
+					_.sender.preparedFiles[index].entry = entry;
+
+					var transformables = ['image/jpeg', 'image/gif', 'image/png']; //TODO: add all transformable types and make "global" (_.editables)
+					if (transformables.indexOf(f.type) !== -1) {
+						_.controller.processImages(_.sender.preparedFiles[index]);
+					} else {
+						_.view.repaintEntry(f);
+					}
 
 					if (f.isSizeOk) {
 						if (!_.view.isUploadEnabled) {
@@ -1524,6 +1740,40 @@ var weFileUpload = (function () {
 					top.WE().layout.button.setText(_.view.elems.footer.document, btn, replace);
 				}
 			};
+
+			this.resetImageEdit = function (fileobj) {
+				fileobj.dataArray = null;
+			};
+
+			this.openImageEditor = function(index){
+				if(_.sender.preparedFiles[index]){
+					// TODO: use WE().util.jsWindow
+					//var previewWin = new (WE().util.jsWindow)(this, '', "", -1, -1, 840, 400, true, false, true);
+					var previewWin = window.open('', '', 'width=700,height=500');
+					var img;
+
+					if(_.sender.preparedFiles[index].isEdited && _.sender.preparedFiles[index].dataUrl){
+						// IMPORTANT: try tpo load img from fileobj.dataArray to avoid saving dataUrl!!
+						img = previewWin.document.createElement("img");
+						img.src = _.sender.preparedFiles[index].dataUrl;
+						previewWin.document.write('<h3>image editet</h3>');
+						previewWin.document.write('<p>here we could edit/reedit image, applying filters, antialiasing and set focus!</p>');
+						previewWin.document.body.appendChild(img);
+						img = null;
+					} else {
+						var reader = new FileReader();
+						reader.onload = function() {
+							img = previewWin.document.createElement("img");
+							img.src = reader.result;
+							previewWin.document.write('<h3>image not editet</h3>');
+							previewWin.document.write('<p>here we could edit/reedit image, applying filters, antialiasing and set focus!</p>');
+							previewWin.document.body.appendChild(img);
+							img = null;
+						};
+						reader.readAsDataURL(_.sender.preparedFiles[index].file);
+					}
+				}
+			};
 		}
 
 		function Sender() {
@@ -1543,7 +1793,7 @@ var weFileUpload = (function () {
 							this.mapFiles.push(i);
 							this.totalWeight += this.preparedFiles[i].size;//size?
 							document.getElementById('div_rowButtons_' + i).style.display = 'none';
-							document.getElementById('div_rowProgress_' + i).style.display = '';
+							document.getElementById('div_rowProgress_' + i).style.display = 'block';
 						}
 					}
 					this.totalFiles = this.uploadFiles.length;
@@ -1589,7 +1839,7 @@ var weFileUpload = (function () {
 
 				var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
 				if (transformables.indexOf(cur.type) !== -1 && cur.partNum === cur.totalParts) {
-					if (!this.EDIT_IMAGES_CLIENTSIDE) {
+					if (!_.EDIT_IMAGES_CLIENTSIDE) {
 						fd.append('fu_doc_width', sf.fu_doc_width.value);
 						fd.append('fu_doc_height', sf.fu_doc_height.value);
 						fd.append('fu_doc_widthSelect', sf.fu_doc_widthSelect.value);
@@ -1615,7 +1865,6 @@ var weFileUpload = (function () {
 					_.view.elems.footer.setProgressText('progress_title', '');
 					top.we_showMessage(resp.completed.message, resp.completed.type, window);
 
-					//setTimeout(that.callback, 100, _); // FIXME: check if this works
 					setTimeout(function () {
 						that.callback(_);
 					}, 100);
@@ -1668,64 +1917,101 @@ var weFileUpload = (function () {
 			this.nextTitleNr = 1;
 			this.isUploadEnabled = false;
 			this.messageWindow = null;
+			this.previewSize = 110;
+			
 
 			this.addFile = function (f, index) {
-				this.appendRow(f, _.sender.preparedFiles.length - 1);
+				this.appendRow(f, _.sender.preparedFiles.length - 1);//document.getElementById('name_uploadFiles_0').innerHTML = 'juhu';
 			};
 
-			this.repaintEntry = function (fileObj) {
-				fileObj.entry.getElementsByClassName('weFileUploadEntry_size')[0].innerHTML = (fileObj.isSizeOk ? _.utils.computeSize(fileObj.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>');//style.backgroundColor = 'orange';
+			this.repaintEntry = function (fileobj) {
+				fileobj.entry.getElementsByClassName('elemSize')[0].innerHTML = (fileobj.isSizeOk ? _.utils.computeSize(fileobj.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>');
+				_.view.addTextCutLeft(fileobj.entry.getElementsByClassName('elemFilename')[0], fileobj.file.name, 220);
+
+				var transformables = ['image/jpeg', 'image/gif', 'image/png'];
+				if(transformables.indexOf(fileobj.type) !== -1){
+					fileobj.entry.getElementsByClassName('elemIcon')[0].style.display = 'none';
+					fileobj.entry.getElementsByClassName('elemPreview')[0].style.display = 'block';
+					fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.display = 'block';
+
+					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].innerHTML = '';
+					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].appendChild(fileobj.img.previewCanvas);
+					fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.backgroundColor = fileobj.isEdited ? 'rgb(216, 255, 216)' : '#ffffff';
+					this.formCustomOptsSync(fileobj);
+
+					// add mouseover listeners to preview
+					var classes = ['elemPreview', 'elemPreviewPreview', 'elemPreviewBtn'];
+					for(var i = 0; i < classes.length; i++){
+						fileobj.entry.getElementsByClassName(classes[i])[0].addEventListener('mouseover', function(){
+							fileobj.entry.getElementsByClassName('elemPreviewBtn')[0].style.display = 'block';
+						}, false);
+						fileobj.entry.getElementsByClassName(classes[i])[0].addEventListener('mouseout', function(){
+							fileobj.entry.getElementsByClassName('elemPreviewBtn')[0].style.display = 'none';
+						}, false);
+					}
+
+				} else {
+					fileobj.entry.getElementsByClassName('elemIcon')[0].style.display = 'block';
+					fileobj.entry.getElementsByClassName('elemPreview')[0].style.display = 'none';
+					fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.display = 'none';
+
+					var ext = fileobj.file.name.substr(fileobj.file.name.lastIndexOf('.') + 1).toUpperCase();
+					fileobj.entry.getElementsByClassName('elemIcon')[0].innerHTML = WE().util.getTreeIcon(fileobj.type) + ' ' + ext;
+				}
 			};
 
 			this.setImageEditMessage = function () {
-				document.getElementById('we_fileUpload_messageBg').style.display = 'block';
-				document.getElementById('we_fileUpload_message').style.display = 'block';
-
-				/* Popup-JS is blocked too
-				 var l = window.screenX + 200,
-				 t = window.screenY + 200, x = 17;
-				 this.messageWindow = window.open('', 'popwin', "left = " + l + ", top = " + t + ", width = 320, height = 210,  toolbar = no, location = no, directories = no, status = no, menubar = no, scrollbars = no, resizable = no");
-				 var content = "<!DOCTYPE html><html><head>";
-				 content += "<title>Example</title>";
-				 content += '<link href="/webEdition/lib/additional/fontawesome/css/font-awesome.min.css?e453b0856c5227f6105a807a734c492c" rel="styleSheet" type="text/css">';
-				 content += "</head><body bgcolor=”#ccc”>";
-				 content += "<p>Any HTML will work, just make sure to escape \"quotes\",";
-				 content += 'or use single-quotes instead.</p>';
-				 content += "<p>You can even pass parameters… (" + x + ")</p>";
-				 content += '<span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>';
-				 content += "</body></html>";
-				 this.messageWindow.document.open();
-				 this.messageWindow.document.write(content);
-				 this.messageWindow.document.close();
-				 */
+				var elem;
+				if((elem = document.getElementById('we_fileUpload_messageBg'))){
+					document.getElementById('we_fileUpload_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
+					document.getElementById('we_fileUpload_message').style.display = 'block';
+					elem.style.display = 'block';
+				}
 			};
 
 			this.unsetImageEditMessage = function () {
-				document.getElementById('we_fileUpload_messageBg').style.display = 'none';
-				document.getElementById('we_fileUpload_message').style.display = 'none';
+				var elem;
+				if((elem = document.getElementById('we_fileUpload_messageBg'))){
+					elem.style.display = 'none';
+					document.getElementById('we_fileUpload_message').style.display = 'none';
+				}
 			};
 
-			this.repaintImageEditMessage = function () {
-				document.getElementById('we_fileUpload_messageNr').innerHTML = _.sender.imageFilesNotProcessed.length;
+			this.repaintImageEditMessage = function(step) {
+				if(step){
+					
+				} else {
+					document.getElementById('we_fileUpload_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
+				}
 			};
 
 			this.appendRow = function (f, index) {
 				var div,
-								row = this.htmlFileRow.replace(/WEFORMNUM/g, index).
-								replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
-								replace(/FILENAME/g, (f.file.name)).
-								replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
+					entry,
+					row = this.htmlFileRow.replace(/WEFORMNUM/g, index).replace(/WE_FORM_NUM/g, (this.nextTitleNr++)).
+						replace(/FILENAME/g, (f.file.name)).
+						replace(/FILESIZE/g, (f.isSizeOk ? _.utils.computeSize(f.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>'));
 
 				weAppendMultiboxRow(row, '', 0, 0, 0, -1);
-				f.entry = document.getElementById('div_uploadFiles_' + index);
+				entry = document.getElementById('div_uploadFiles_' + index);
 
 				div = document.getElementById('div_upload_files');
-				div.scrollTop = div.scrollHeight;
+				//div.scrollTop = getElementById('div_upload_files').div.scrollHeight;
 				document.getElementById('fileInput_uploadFiles_' + index).addEventListener('change', _.controller.replaceSelectionHandler, false);
 
-				var el = document.getElementById('div_rowButtons_' + index);
-				//el.style.backgroundSize = 'contain';
-				//el.style.backgroundImage = "url(" + f.dataURL + ")";
+				_.view.addTextCutLeft(document.getElementById('name_uploadFiles_' + index), f.file.name, 220);
+
+				var transformables = ['image/jpeg', 'image/gif', 'image/png'];
+				if(transformables.indexOf(f.type) !== -1){
+					document.getElementById('icon_uploadFiles_' + index).style.display = 'none';
+					document.getElementById('preview_uploadFiles_' + index).style.display = 'block';
+					document.getElementById('editoptions_uploadFiles_' + index).style.display = 'block';
+				} else {
+					var ext = f.file.name.substr(f.file.name.lastIndexOf('.') + 1).toUpperCase();
+					document.getElementById('icon_uploadFiles_' + index).innerHTML = WE().util.getTreeIcon(f.type) + ' ' + ext;
+				}
+
+				
 
 				this.elems.extProgressDiv.style.display = 'none';
 				_.controller.setWeButtonText('cancel', 'cancel');
@@ -1740,15 +2026,17 @@ var weFileUpload = (function () {
 				} else {
 					_.sender.preparedFiles[index] = null;
 				}
+				f.index = index;
+				f.entry = document.getElementById('div_uploadFiles_' + index);
 			};
 
 			this.deleteRow = function (index, button) {
 				var prefix = 'div_uploadFiles_',
-								num = 0,
-								z = 1,
-								i,
-								sp,
-								divs = document.getElementsByTagName('DIV');
+					num = 0,
+					z = 1,
+					i,
+					sp,
+					divs = document.getElementsByTagName('DIV');
 
 				_.sender.preparedFiles[index] = null;
 				weDelMultiboxRow(index);
@@ -1891,13 +2179,168 @@ var weFileUpload = (function () {
 					}
 				}
 			};
+
+			this.setUseGeneralOpts = function (checkbox) { // USED
+				switch(checkbox.checked){
+					case true:
+						var radios = checkbox.form.editOpts;
+						for(var i = 0; i < radios.length; i++){
+							radios[i].disabled = true;
+							if((index = radios[i].nextSibling.className.split(' ').indexOf('disabled')) === -1){
+								radios[i].nextSibling.className += ' disabled';
+							}
+							
+						}
+						checkbox.form.unitSelect.disabled = true;
+						checkbox.form.resizeValue.disabled = true;
+						checkbox.form.rotateSelect.disabled = true;
+						checkbox.form.getElementsByClassName('weBtn')[0].disabled = true;
+						_.controller.reeditImage(null, checkbox.form.getAttribute('data-index'));
+						break;
+					default:
+						var radios = checkbox.form.editOpts;
+						var index, classes; 
+						for(var i = 0; i < radios.length; i++){
+							radios[i].disabled = false;
+							if((index = radios[i].nextSibling.className.split(' ').indexOf('disabled')) !== -1){
+								classes = radios[i].nextSibling.className.split(' ');
+								classes.splice(index, 1);
+								radios[i].nextSibling.className = classes.join(' ');
+							}
+						}
+						_.view.setCustomEditOpts(checkbox.form);
+						_.controller.reeditImage(null, checkbox.form.getAttribute('data-index'));
+						break;
+					
+				}
+			};
+
+			this.setCustomEditOpts = function(form){
+				switch(form.editOpts.value){
+					case 'custom':
+						form.unitSelect.disabled = false;
+						form.resizeValue.disabled = false;
+						form.rotateSelect.disabled = false;
+						_.view.formCustomOptsReset(form);
+						form.getElementsByClassName('weBtn')[0].disabled = false;
+						break;
+					case 'expert':
+						alert('not yet implemented');
+						form.editOpts.value = 'custom';
+						_.view.setCustomEditOpts(form);
+				}
+			};
+
+			this.formCustomOptsSync = function (fileobj) {
+				var form = document.getElementById('form_editOpts_' + fileobj.index);
+
+				if(form && fileobj.img.editOptions){
+					if(fileobj.img.editOptions.from === 'general' && !fileobj.img.editOptions.doEdit){
+						form.unitSelect.value = '';
+						form.resizeValue.value = '';
+						form.rotateSelect.value = '';
+					} else {
+						form.unitSelect.value = fileobj.img.editOptions.scaleUnit;
+						form.resizeValue.value = fileobj.img.editOptions.scaleValue;
+						form.rotateSelect.value = fileobj.img.editOptions.rotateValue;
+					}
+				}
+			};
+
+			
+			this.formCustomOptsReset = function (form) { // USED
+				form.unitSelect.value = 'percent';
+				form.resizeValue.value = '';
+				form.rotateSelect.value = '0';
+				form.quality.value = '90';
+			};
+
+			/*
+			this.syncCustomEditOpts = function (element){
+				return;
+				var optName = element.name,
+					optValue = element.value;
+
+				for(var i = 0; i < _.sender.preparedFiles.length; i++){
+					if(_.sender.preparedFiles[i]){
+						var form = document.getElementById('form_editOpts_' + i);
+
+						if(form.doEdit.checked && form.editOpts.value === 'general'){
+							switch(optName){
+								case 'fu_doc_unitSelect':
+									form.unitSelect.value = optValue;
+									break;
+								case 'fu_doc_resizeValue':
+									form.resizeValue.value = optValue;
+									break;
+								case 'fu_doc_rotate':
+									form.rotateSelect.value = optValue;
+									break;
+							}
+						}
+					}
+				}
+			};
+			*/
+
+			this.addTextCutLeft = function(elem, text, maxwidth){
+				if(!elem){
+					return;
+				}
+
+				maxwidth = maxwidth || 30;
+				text = text ? text : '';
+				var i = 200;
+				elem.innerHTML = text;
+				while(elem.offsetWidth > maxwidth && i > 0){
+					text = text.substr(4);
+					elem.innerHTML = '...' + text;
+					--i;
+				}
+				return;
+			};
 		}
 
 		function Utils() {
+			this.setImageEditOptionsGeneral = function () {
+				_.utils.abstractSetImageEditOptionsGeneral('filechooser');
+			};
+
+			this.setImageEditOptionsFile = function (fileobj) {
+				var form,
+					type = 'general';
+
+				if((form = document.getElementById('form_editOpts_' + fileobj.index))){
+										if(form.useGeneralOpts.checked === false){
+						type = form.editOpts.value;
+					}
+				}
+
+				switch(type){
+					case 'general':
+						fileobj.img.editOptions = JSON.parse(JSON.stringify(_.sender.imageEditOptions));
+						break;
+					case 'custom':
+						fileobj.img.editOptions.scaleUnit = form.unitSelect.value;
+						fileobj.img.editOptions.scaleValue = form.resizeValue.value;
+						fileobj.img.editOptions.rotateValue = form.rotateSelect.value;
+						fileobj.img.editOptions.quality = form.quality ? form.quality.value : 90;
+						fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scaleValue == '' && fileobj.img.editOptions.rotateValue == 0 ? false : true;
+						break;
+					case 'expert': 
+						fileobj.img.editOptions = {};
+						fileobj.img.editOptions.scaleUnit = '';
+						fileobj.img.editOptions.scaleValue = 0;
+						fileobj.img.editOptions.rotateValue = 0;
+						fileobj.img.editOptions.quality = 90;
+						fileobj.img.editOptions.doEdit = false;
+				}
+				fileobj.img.editOptions.from = type;
+			};
 		}
 	}
 
-	function weFileUpload_binDoc() {
+	function weFileUpload_binDoc() { // TODO: look for image edit params just onbefore processing files!
 		(function () {
 			weFileUpload_abstract.call(this);
 
@@ -1951,6 +2394,7 @@ var weFileUpload = (function () {
 			v.elems.txtFilename_1 = document.getElementById('span_fileDrag_inner_filename_1');//??
 			v.elems.txtSize = document.getElementById('span_fileDrag_inner_size');
 			v.elems.txtType = document.getElementById('span_fileDrag_inner_type');
+			v.elems.txtEdit= document.getElementById('span_fileDrag_inner_edit');
 			v.elems.divBtnReset = document.getElementById('div_fileupload_btnReset');
 			v.elems.divBtnCancel = document.getElementById('div_fileupload_btnCancel');
 			v.elems.divBtnUpload = document.getElementById('div_fileupload_btnUpload');
@@ -2085,13 +2529,13 @@ var weFileUpload = (function () {
 			this.STATE_PREVIEW_NOK = 2;
 			this.STATE_UPLOAD = 3;
 
-			this.addFile = function (f) {
+			this.addFile = function (f) { // TODO: start after scaling and omit scaling preview using canvas
 				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.size) + ', ' :
 								'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
 				var typeText = f.isTypeOk ? _.utils.gl.typeTextOk + (f.isTypeOk === 1 ? f.type : f.file.name.split('.').pop().toUpperCase()) :
 								'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
 
-				this.elems.fileDrag_state_1.style.backgroundColor = 'rgb(243, 247, 255)';
+				this.elems.fileDrag_state_1.style.backgroundColor = f.isEdited ? 'rgb(216, 255, 216)' : 'rgb(232, 232, 255)';
 
 				var fn = f.file.name;
 				var fe = '';
@@ -2106,6 +2550,24 @@ var weFileUpload = (function () {
 				this.elems.fileDrag_mask.title = f.file.name;
 				this.elems.txtSize.innerHTML = sizeText;
 				this.elems.txtType.innerHTML = typeText;
+				if(f.isEdited){
+					var edittext;
+					switch(f.img.editOptions.scaleUnit){
+						case 'percent':
+							edittext = f.img.editOptions.scaleValue + ' Prozent';
+							break;
+						case 'pixel_w':
+							edittext = 'Breite ' + f.img.editOptions.scaleValue + ' px';
+							break;
+						case 'pixel_w':
+							edittext = 'Höhe ' + f.img.editOptions.scaleValue + ' px';
+					}
+
+					this.elems.txtEdit.innerHTML = '<strong>Skaliert</strong> auf ' + edittext;
+					this.elems.txtEdit.style.display = 'block';
+				} else {
+					this.elems.txtEdit.style.display = 'none';
+				}
 				this.setDisplay('fileDrag_state_0', 'none');
 				this.setDisplay('fileDrag_state_1', 'block');
 				this.elems.dragInnerRight.innerHTML = '';
@@ -2117,69 +2579,10 @@ var weFileUpload = (function () {
 					_.sender.isAutostartPermitted = false;
 				}
 
-				if (f.type.search("image/") !== -1 && f.uploadConditionsOk && f.size < 4194304) {
-					//if (this.binDocType === 'image' && f.uploadConditionsOk && f.size < 4194304) {
-					var reader = new FileReader();
-					reader.onloadstart = function (e) {
-						_.view.elems.dragInnerRight.appendChild(_.view.spinner);
-					};
-
-					reader.onload = function (e) {
-						var maxSize = 100,
-										mode = 'resize',
-										image = new Image();
-
-						image.onload = function () {
-							if (mode !== 'resize') {
-								if (image.width > image.height) {
-									image.width = maxSize;
-								} else {
-									image.height = maxSize;
-								}
-								_.view.preview = image;
-								_.view.elems.dragInnerRight.innerHTML = '';
-								_.view.elems.dragInnerRight.appendChild(_.view.preview);
-							} else {
-								var width = image.width,
-												height = image.height,
-												cv = document.createElement('canvas');
-
-								if (width > height) {
-									if (width > maxSize) {
-										height *= maxSize / width;
-										width = maxSize;
-									}
-								} else {
-									if (height > maxSize) {
-										width *= maxSize / height;
-										height = maxSize;
-									}
-								}
-								cv.width = width;
-								cv.height = height;
-								cv.getContext('2d').drawImage(image, 0, 0, width, height);
-
-								_.view.preview = new Image();
-								_.view.preview.src = cv.toDataURL('image/png');
-								_.view.elems.dragInnerRight.innerHTML = '';
-								_.view.elems.dragInnerRight.appendChild(_.view.preview);
-							}
-							_.view.setGuiState(f.uploadConditionsOk ? _.view.STATE_PREVIEW_OK : _.view.STATE_PREVIEW_NOK);
-							image = reader = null;
-						};
-						image.src = e.target.result;
-					};
-
-					if (f.size < 4194304) {
-						reader.readAsDataURL(f.file);
-					} else {
-						this.preview = new Image();
-						this.preview.onload = function () {
-							_.view.elems.dragInnerRight.appendChild(_.view.preview);
-						};
-						this.preview.src = this.icon;
-						this.setGuiState(this.STATE_PREVIEW_OK);
-					}
+				if (f.type.search("image/") !== -1 && f.img.previewCanvas) {
+					_.view.preview = f.img.previewCanvas;
+					_.view.elems.dragInnerRight.innerHTML = '';
+					_.view.elems.dragInnerRight.appendChild(_.view.preview);
 				} else {
 					if (f.uploadConditionsOk) {
 						this.elems.dragInnerRight.innerHTML = '<div class="largeicons" style="margin:0 0 0 30px;height:62px;width:54px;">' + this.icon + '</div>';
@@ -2242,9 +2645,9 @@ var weFileUpload = (function () {
 
 			this.repaintGUI = function (arg) {
 				var cur = _.sender.currentFile,
-								fileProg = 0,
-								digits = 0,
-								opacity = 0;
+					fileProg = 0,
+					digits = 0,
+					opacity = 0;
 
 				switch (arg.what) {
 					case 'chunkOK' :
@@ -2299,9 +2702,46 @@ var weFileUpload = (function () {
 					this.elems[elem].style.display = val;
 				}
 			};
+			
+			this.setImageEditMessage = function () {
+				var mask = document.getElementById('div_we_File_fileDrag');
+				mask.style.backgroundColor = 'white';
+				mask.innerHTML = '<div style="margin:20px 0 10px 0;"><span style="font-size:2em;"><i class="fa fa-2x fa-spinner fa-pulse"></i></span></div><div style="font-size:1.6em;" id="image_edit_mask_text">Die Grafik wird bearbeitet</div>';
+			};
+
+			this.unsetImageEditMessage = function () {
+				var mask = document.getElementById('div_we_File_fileDrag');
+				mask.innerHTML = '';
+				mask.style.backgroundColor = 'transparent';
+			};
+
+			this.repaintImageEditMessage = function () {
+				var text = document.getElementById('image_edit_mask_text').innerHTML;
+				text += '.';
+				document.getElementById('image_edit_mask_text').innerHTML = text;
+				
+			};
+
+			this.repaintEntry = function (obj) {
+				this.addFile(obj);
+			};
 		}
 
-		function Utils() {}
+		function Utils() {
+			this.setImageEditOptionsFile = function (fileobj) {
+				var type = 'general';
+
+				switch(type){
+					case 'general':
+						fileobj.img.editOptions = JSON.parse(JSON.stringify(_.sender.imageEditOptions));
+						break;
+					case 'expert':
+						// not implemented yet
+						break;
+				}
+				fileobj.img.editOptions.from = type;
+			};
+		}
 
 		this.doUploadIfReady = function (callback) {
 			if (_.sender.isAutostartPermitted && _.sender.preparedFiles.length > 0 && _.sender.preparedFiles[0].uploadConditionsOk) {

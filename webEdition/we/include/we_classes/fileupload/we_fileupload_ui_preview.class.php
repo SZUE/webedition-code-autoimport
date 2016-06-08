@@ -122,23 +122,43 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		));
 	}
 
-	public function getFormImageEditClientside(){
-		$resizeCheckbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_doResize', 'Grafik vor dem Upload bearbeiten', false, 'defaultfont', 'document.getElementById(\'editImage\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){we_FileUpload.reeditImage(null, 0);}');
-		$valueInput = we_html_tools::htmlTextInput("fu_doc_resizeValue", 10, '', '', '', "text", 60);
-		$unitSelect = '<select class="weSelect" name="fu_doc_unitSelect" style="width:90px;"><option value="percent">' . g_l('weClass', '[percent]') . '</option><option value="pixel_w">' . g_l('weClass', '[pixel]') . ': Breite</option><option value="pixel_h">' . g_l('weClass', '[pixel]') . ': Höhe</option></select>';
-		$rotateSelect = '<select class="weSelect" name="fu_doc_rotate" style="width:153px;"><option value="0">' . g_l('weClass', '[rotate0]') . '</option><option value="180">' . g_l('weClass', '[rotate180]') . '</option><option value="270">' . g_l('weClass', '[rotate90l]') . '</option><option value="90">' . g_l('weClass', '[rotate90r]') . '</option></select>';
-		$btnRefresh = we_html_button::create_button(we_html_button::REFRESH_NOTEXT, "javascript:we_FileUpload.reeditImage(null, 0);", true, 0, 0, '', '', false, true, '', false, $title = 'Ausführen');
+	public static function getFormImageEditClientside($multimport = false, $disabled = false, $reeditCmd = 'we_FileUpload.reeditImage(null, 0);'){
+		$editCheckbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_doResize', $multimport ? g_l('importFiles', '[edit_imgsBeforeUpload]') : g_l('importFiles', '[edit_imgBeforeUpload]'), false, 'defaultfont', 'document.getElementById(\'editImage\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){' . $reeditCmd . '}');
+		$valueInput = we_html_tools::htmlTextInput('fu_doc_resizeValue', 10, '', '', '', "text", 54, 0, '', $disabled);
+		$unitSelect = we_html_tools::htmlSelect('fu_doc_unitSelect', array(
+				'percent' => g_l('weClass', '[percent]'),
+				'pixel_w' => g_l('importFiles', '[edit_pixel_width]'),
+				'pixel_h' => g_l('importFiles', '[edit_pixel_height]')
+			), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '', 0, 'weSelect optsUnitSelect');
+		$rotateSelect = we_html_tools::htmlSelect('fu_doc_rotate', array(
+				0 => g_l('weClass', '[rotate0]'),
+				180 => g_l('weClass', '[rotate180]'),
+				270 => g_l('weClass', '[rotate90l]'),
+				90 => g_l('weClass', '[rotate90r]'),
+			), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '', 0, 'weSelect optsRotateSelect');
+		$quality = we_html_element::htmlInput(array('type' => 'range', 'value' => 90, 'min' => 0, 'max' => 100, 'step' => 5, 'oninput' => 'this.form.qualityOutput.value = this.value', 'name' => 'fu_doc_quality'));
+		$qualityOutput = '<output name="qualityOutput" for="fu_doc_quality">90</output>';
+		$btnRefresh = we_html_button::create_button(we_html_button::REFRESH_NOTEXT, "javascript:" . $reeditCmd, true, 0, 0, '', '', false, true, '', false, $title = 'Ausführen');
 
-		return we_html_element::htmlDiv(array(), $resizeCheckbox) . 
-				we_html_element::htmlDiv(array('id' => 'editImage', 'style' => 'display:none; padding: 4px 0 6px 4px;'),
+		return we_html_element::htmlDiv(array(), $editCheckbox) . 
+				we_html_element::htmlDiv(array('id' => 'editImage'),
 					we_html_element::htmlDiv(array(),
 						we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Skalieren:') .
 						we_html_element::htmlDiv(array('style' => 'display:inline;'), $valueInput . ' ' . $unitSelect)
-					) . we_html_element::htmlDiv(array('style' => "margin-top: 4px;"),
+					) . 
+					we_html_element::htmlDiv(array('style' => "margin-top: 4px;"),
 						we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Drehen:') .
-						we_html_element::htmlDiv(array('style' => 'display:inline-block;'), $rotateSelect) .
-						we_html_element::htmlDiv(array('style' => 'width: 73px; text-align:right; display:inline-block;'), $btnRefresh)
-					)
+						we_html_element::htmlDiv(array('style' => 'display:inline-block;'), $rotateSelect)
+					) .
+					we_html_element::htmlDiv(array('style' => "margin-top: 2px;"),
+						we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Qualität:') .
+						we_html_element::htmlDiv(array('style' => 'display:inline-block;width: 130px;'), $quality) .
+						we_html_element::htmlDiv(array('style' => 'display:inline-block;padding: 0 0 0 10px; width: 35px;'), $qualityOutput) .
+						(!$multimport ? we_html_element::htmlDiv(array('style' => 'width: 53px; text-align:right; display:inline-block;'), $btnRefresh) : '')
+					) .
+					($multimport ? we_html_element::htmlDiv(array('style' => "margin-top: 12px;"),
+						we_html_element::htmlDiv(array('style' => 'position:absolute; left:178px;width: 53px; text-align:right; display:block;'), $btnRefresh)
+					) : '')
 				);
 
 		/*
