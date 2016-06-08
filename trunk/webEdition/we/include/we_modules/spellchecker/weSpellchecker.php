@@ -138,7 +138,7 @@ echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 		array(
 			'headline' => g_l('modules_spellchecker', '[dictionary]'),
 			'html' => $_selectCode,
-			'space' => we_html_multiIconBox::SPACE_SMALL
+			'space' => we_html_multiIconBox::SPACE_MED
 		)
 	);
 
