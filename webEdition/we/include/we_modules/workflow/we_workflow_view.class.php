@@ -726,7 +726,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			array(
 				'headline' => g_l('weEditorInfo', '[content_type]'),
 				'html' => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
-				'space' => we_html_multiIconBox::SPACE_SMALL0,
+				'space' => we_html_multiIconBox::SPACE_SMALL,
 				'noline' => (($this->documentDef->document->ContentType != we_base_ContentTypes::FOLDER && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT) ? 1 : 0)
 			)
 		);
@@ -736,7 +736,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[file_size]'),
 				'html' => we_base_file::getHumanFileSize($fs) . '&nbsp;KB&nbsp;(' . we_base_file::getHumanFileSize($fs, we_base_file::SZ_BYTE) . ')',
-				'space' => we_html_multiIconBox::SPACE_SMALL0
+				'space' => we_html_multiIconBox::SPACE_SMALL
 			);
 		}
 
@@ -744,7 +744,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[creation_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->CreationDate),
-			'space' => we_html_multiIconBox::SPACE_SMALL0,
+			'space' => we_html_multiIconBox::SPACE_SMALL,
 			'noline' => 1
 		);
 
@@ -754,7 +754,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$_parts[] = array(
 					'headline' => g_l('modules_users', '[created_by]'),
 					'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
-					'space' => we_html_multiIconBox::SPACE_SMALL0,
+					'space' => we_html_multiIconBox::SPACE_SMALL,
 					'noline' => 1
 				);
 			}
@@ -763,7 +763,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$_parts[] = array(
 			'headline' => g_l('weEditorInfo', '[changed_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->ModDate),
-			'space' => we_html_multiIconBox::SPACE_SMALL0,
+			'space' => we_html_multiIconBox::SPACE_SMALL,
 			'noline' => 1
 		);
 
@@ -773,7 +773,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$_parts[] = array(
 					'headline' => g_l('modules_users', '[changed_by]'),
 					'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
-					'space' => we_html_multiIconBox::SPACE_SMALL0,
+					'space' => we_html_multiIconBox::SPACE_SMALL,
 					'noline' => 1
 				);
 			}
@@ -783,7 +783,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[lastLive]'),
 				'html' => ($this->documentDef->document->Published ? date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->Published) : '-'),
-				'space' => we_html_multiIconBox::SPACE_SMALL0
+				'space' => we_html_multiIconBox::SPACE_SMALL
 			);
 		}
 
@@ -809,19 +809,19 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[local_path]'),
 				'html' => '<a href="#" style="text-decoration:none;cursor:text" class="defaultfont" onMouseOver="showtip(this,event,\'' . $rp . '\')" onMouseOut="hidetip()"  onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . we_base_util::shortenPath($rp, 74) . '</a>',
-				'space' => we_html_multiIconBox::SPACE_SMALL0,
+				'space' => we_html_multiIconBox::SPACE_SMALL,
 				'noline' => 1
 			);
 
 			$_parts[] = array(
 				'headline' => g_l('weEditorInfo', '[http_path]'),
 				'html' => ($showlink ? '<a href="' . $http . '" target="_blank" onMouseOver="showtip(this,event,\'' . $http . '\')" onMouseOut="hidetip()">' : '') . we_base_util::shortenPath($http, 74) . ($showlink ? '</a>' : ''),
-				'space' => we_html_multiIconBox::SPACE_SMALL0
+				'space' => we_html_multiIconBox::SPACE_SMALL
 			);
 			$_parts[] = array(
 				'headline' => '',
 				'html' => '<a href="#" onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
-				'space' => we_html_multiIconBox::SPACE_SMALL0
+				'space' => we_html_multiIconBox::SPACE_SMALL
 			);
 		}
 
