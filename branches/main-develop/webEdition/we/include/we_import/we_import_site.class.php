@@ -365,7 +365,7 @@ function doUnload() {
 				$i++;
 			}
 		}
-		return we_html_tools::htmlDialogBorder3(420, 270, $content, $headlines, "middlefont", "", "", "fields", "margin-top:5px;");
+		return we_html_tools::htmlDialogBorder3(420, $content, $headlines, "middlefont", "fields");
 	}
 
 	/**
@@ -699,12 +699,12 @@ function doUnload() {
 			array(
 				"headline" => g_l('siteimport', '[dirs_headline]'),
 				"html" => $_importFrom . $_importTo,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				"headline" => g_l('siteimport', '[import]'),
 				"html" => $_tableObj->getHtml(),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 		);
 
@@ -715,7 +715,7 @@ function doUnload() {
 		$parts[] = array(
 			"headline" => g_l('siteimport', '[limits]'),
 			"html" => $_tableObj->getHtml(),
-			'space' => 120
+			'space' => we_html_multiIconBox::SPACE_MED
 		);
 
 		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 410) .
@@ -727,21 +727,21 @@ function doUnload() {
 		$parts[] = array(
 			"headline" => g_l('importFiles', '[sameName_headline]'),
 			"html" => $content,
-			'space' => 120
+			'space' => we_html_multiIconBox::SPACE_MED
 		);
 
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts[] = array(
 				'headline' => g_l('importFiles', '[metadata]'),
 				'html' => we_html_forms::checkboxWithHidden($this->importMetadata == true, 'importMetadata', g_l('importFiles', '[import_metadata]')),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			);
 
 			if(we_base_imageEdit::gd_version() > 0){
 				$parts[] = array(
 					"headline" => g_l('importFiles', '[make_thumbs]'),
 					"html" => $_thumbs,
-					'space' => 120
+					'space' => we_html_multiIconBox::SPACE_MED
 				);
 
 				$widthInput = we_html_tools::htmlTextInput("width", 10, $this->width, "", '', "text", 60);
@@ -770,7 +770,7 @@ function doUnload() {
 			</table>';
 
 				$parts[] = array(
-					"headline" => g_l('weClass', '[resize]'), "html" => $_resize, 'space' => 120
+					"headline" => g_l('weClass', '[resize]'), "html" => $_resize, 'space' => we_html_multiIconBox::SPACE_MED
 				);
 
 				$_radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', '[rotate0]'));
@@ -781,13 +781,13 @@ function doUnload() {
 				$parts[] = array(
 					"headline" => g_l('weClass', '[rotate]'),
 					"html" => $_radio0 . $_radio180 . $_radio90l . $_radio90r,
-					'space' => 120
+					'space' => we_html_multiIconBox::SPACE_MED
 				);
 
 				$parts[] = array(
 					"headline" => g_l('weClass', '[quality]'),
 					"html" => we_base_imageEdit::qualitySelect("quality", $this->quality),
-					'space' => 120
+					'space' => we_html_multiIconBox::SPACE_MED
 				);
 			} else {
 				$parts[] = array(

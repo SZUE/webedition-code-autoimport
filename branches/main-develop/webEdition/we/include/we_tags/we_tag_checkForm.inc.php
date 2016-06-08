@@ -35,7 +35,7 @@ function we_parse_tag_checkForm($attribs, $content, array $arr){
  * @param array $attribs
  * @param string $content
  */
-function we_tag_checkForm($attribs, $content){
+function we_tag_checkForm(array $attribs, $content){
 	//  dont make this in editMode
 	if(!empty($GLOBALS["we_editmode"])){
 		return "";

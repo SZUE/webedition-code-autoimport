@@ -319,7 +319,7 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 		$tbl = defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : TBL_PREFIX . 'tblErrorLog';
 		$_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query(translate_error_type($type)) . '",
 			`Function`="' . escape_sql_query($_caller) . '",
-			File="' . escape_sql_query(str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), 'SECURITY_REPL_DOC_ROOT', $file)) . '",
+			File="' . escape_sql_query(str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), 'SECURITY_REPL_DOC_ROOT/', $file)) . '",
 			Line=' . intval($_line) . ',
 			Text="' . escape_sql_query(str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message)) . '",
 			Backtrace="' . escape_sql_query($_detailedError) . '"';

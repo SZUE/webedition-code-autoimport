@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_shopVat($attribs){
+function we_tag_shopVat(array $attribs){
 
 	if(!we_shop_category::isCategoryMode()){
 		$name = WE_SHOP_VAT_FIELD_NAME;

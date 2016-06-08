@@ -22,6 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifVotingFieldEmpty($attribs){
+function we_tag_ifVotingFieldEmpty(array $attribs){
 	return (we_tag('votingField', $attribs) == '');
 }

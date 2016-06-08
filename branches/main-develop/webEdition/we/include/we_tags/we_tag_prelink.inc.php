@@ -19,6 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //used in we:linkedlist
-function we_tag_prelink($attribs, $content){
+function we_tag_prelink(array $attribs, $content){
 	return (we_tag('ifPosition', array('type' => 'linklist', 'position' => 'first', 'operator' => 'equal')) ? '' : $content);
 }

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_shipping($attribs){
+function we_tag_shipping(array $attribs){
 	if(($foo = attributFehltError($attribs, "sum", __FUNCTION__))){
 		return $foo;
 	}

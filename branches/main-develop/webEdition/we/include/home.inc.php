@@ -204,7 +204,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}
 
-	$oTblWidgets = new we_html_table(array("class" => 'default'), 1, 1);
+	$oTblWidgets = new we_html_table(array('class' => 'default'), 1, 1);
 	$oTblWidgets->setCol(0, 0, array(), we_html_element::htmlDiv(array("id" => "modules"), '<table id="le_tblWidgets"><tr id="rowWidgets">' . $s1 . '</tr></table>'));
 
 	// this is the clone widget

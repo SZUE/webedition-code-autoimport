@@ -22,6 +22,6 @@ function we_parse_tag_ifNotPageLanguage($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifPageLanguage', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotPageLanguage($attribs){
+function we_tag_ifNotPageLanguage(array $attribs){
 	return !(we_tag('ifPageLanguage', $attribs));
 }

@@ -18,7 +18,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_pref($attribs){
+function we_tag_pref(array $attribs){
 	if(($foo = attributFehltError($attribs, array('type' => false, 'name' => false), __FUNCTION__))){
 		return $foo;
 	}

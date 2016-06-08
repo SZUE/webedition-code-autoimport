@@ -23,14 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //	build table for login screen.
-$_widthTotal = 432;
-$_space = 15;
-$_middlePart = ($_widthTotal - (2 * $_space));
-
-// widths of loginTable
-$_logoPart = 140;
-
-
+$_middlePart = (432 - 30);
 
 $we_version = '';
 if(!isset($GLOBALS['loginpage'])){

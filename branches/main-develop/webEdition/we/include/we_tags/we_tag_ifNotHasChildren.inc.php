@@ -22,6 +22,6 @@ function we_parse_tag_ifNotHasChildren($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifHasChildren', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotHasChildren($attribs){
+function we_tag_ifNotHasChildren(array $attribs){
 	return !we_tag('ifHasChildren', $attribs);
 }

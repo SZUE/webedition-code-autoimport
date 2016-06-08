@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_position($attribs){
+function we_tag_position(array $attribs){
 
 	//	type is required !!!
 	if(($missingAttrib = attributFehltError($attribs, "type", __FUNCTION__))){

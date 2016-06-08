@@ -29,8 +29,6 @@ abstract class we_tool_frames extends we_modules_frame{
 	var $toolClassName;
 	var $toolDir;
 	var $toolUrl;
-	var $_space_size = 120;
-	var $_width_size = 520;
 	var $Model;
 
 	public function __construct($frameset){
@@ -166,9 +164,9 @@ function we_save() {
 		return array(array(
 				'headline' => g_l('tools', '[general]'),
 				'html' => we_html_element::htmlHidden('newone', ($this->Model->ID == 0 ? 1 : 0)) .
-				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: ' . $this->_width_size . 'px;" onchange="top.content.mark();"'), g_l('tools', '[name]')) .
+				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: 520px;" onchange="top.content.mark();"'), g_l('tools', '[name]')) .
 				$this->getHTMLChooser(g_l('tools', '[group]'), $this->Table, 0, 'ParentID', $this->Model->ParentID, 'ParentPath', 'opener.top.content.mark()', ''),
-				'space' => $this->_space_size,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			)
 		);
@@ -222,7 +220,7 @@ function we_save() {
 		$cmd1 = "document.we_form.elements['" . $IDName . "'].value";
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "','" . $filter . "'," . $cmd1 . ");");
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', ($this->_width_size - 120), 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', 400, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	protected function getHTMLExitQuestion(){
@@ -258,7 +256,7 @@ function we_save() {
 			$_width = 120;
 		}
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($PathName, 58, $_path, '', 'readonly', 'text', ($this->_width_size - $_width), 0), $title, 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), $_button);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($PathName, 58, $_path, '', 'readonly', 'text', (520 - $_width), 0), $title, 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), $_button);
 	}
 
 }

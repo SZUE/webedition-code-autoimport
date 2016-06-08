@@ -42,15 +42,15 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$this->formElements = array_merge($this->formElements, array(
 			'uploader' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
 			'parentId' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false),
-			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false, 'noline' => true),
-			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false),
-			'categories' => array('set' => $permCat, 'multiIconBox' => true, 'space' => 120, 'rightHeadline' => false),
+			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false),
+			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false, 'noline' => true),
+			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false),
+			'categories' => array('set' => $permCat, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false),
 			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true),
 			'thumbnails' => array('set' => $permImageEdit, 'multiIconBox' => true, 'rightHeadline' => true),
-			'imageResize' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false, 'noline' => true),
-			'imageRotate' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false, 'noline' => true),
-			'imageQuality' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => 180, 'rightHeadline' => false, 'noline' => true),
+			'imageResize' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
+			'imageRotate' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
+			'imageQuality' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
 		));
 
 		$this->dimensions['dragWidth'] = 400;
@@ -138,7 +138,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			return $parts;
 		}
 
-		$box = we_html_multiIconBox::getHTML("", $parts, 20, '', $this->formElements['tableProperties']['foldAtNr'], $this->formElements['tableProperties']['foldAtOpen'], $this->formElements['tableProperties']['foldAtClose'], false);
+		$box = we_html_multiIconBox::getHTML("", $parts, 20, '', $this->formElements['tableProperties']['foldAtNr'], $this->formElements['tableProperties']['foldAtOpen'], $this->formElements['tableProperties']['foldAtClose']);
 
 		return we_html_multiIconBox::getJS() . $box . ($this->isExternalBtnUpload || $this->posBtnUpload === 'top' ? '' : $divBtnUpload);
 	}
@@ -207,7 +207,7 @@ doOnImportSuccess = function(importedDocument){
 			if(top.opener.document.we_form && top.opener.document.we_form.elements["we_dialog_args[fileSrc]"]){
 				top.opener.document.we_form.elements["we_dialog_args[fileSrc]"].value=importedDocument.path;
 				top.opener.document.we_form.elements["we_dialog_args[fileID]"].value=importedDocument.id;
-			} else if(WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form && 
+			} else if(WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form &&
 					WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form.elements["we_dialog_args[fileSrc]"]){
 				top.opener.document.we_form.elements["we_dialog_args[fileSrc]"].value=importedDocument.path;
 				top.opener.document.we_form.elements["we_dialog_args[fileID]"].value=importedDocument.id;

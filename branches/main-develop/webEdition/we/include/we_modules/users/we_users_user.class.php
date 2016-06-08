@@ -1300,12 +1300,12 @@ function comparePwd(f1,f2){
 			array(
 				'headline' => g_l('modules_users', '[group_data]'),
 				'html' => $_tableObj->getHtml(),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('modules_users', '[user]'),
 				'html' => $content,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			)
 		);
 
@@ -1362,7 +1362,7 @@ function comparePwd(f1,f2){
 			array(
 				'headline' => g_l('modules_users', '[general_data]'),
 				'html' => $_tableObj->getHtml(),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			)
 		);
 
@@ -1428,7 +1428,7 @@ function comparePwd(f1,f2){
 		$parts[] = array(
 			'headline' => g_l('modules_users', '[user_data]'),
 			'html' => $_tableObj->getHtml(),
-			'space' => 120
+			'space' => we_html_multiIconBox::SPACE_MED
 		);
 
 		return we_html_multiIconBox::getHTML('', $parts, 30);
@@ -1666,7 +1666,7 @@ function delElement(elvalues,elem) {
 			$parts[] = array(
 				'headline' => $title,
 				'html' => ($this->ParentID ? '<div id="info' . $setValue . '" style="' . ($showParent ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600, false) . '</div>' : '') . $content1,
-				'space' => 200
+				'space' => we_html_multiIconBox::SPACE_BIG
 			);
 		}
 
@@ -1691,7 +1691,7 @@ function delElement(elvalues,elem) {
 					'<div id="infoCUSTOMER" style="' . ($this->ParentWsCust ? '' : 'display:none;') . '">' . we_html_tools::htmlAlertAttentionBox($parent, we_html_tools::TYPE_INFO, 600) . '</div>' .
 					$this->formInherits('_ParentWsCust', $this->ParentWsCust, g_l('modules_users', '[inherit_cust]'), 'document.getElementById(\'infoCUSTOMER\').style.display=(this.checked?\'inline\':\'none\');') : '') .
 				$view->getFilterCustomers(),
-				'space' => 200
+				'space' => we_html_multiIconBox::SPACE_BIG
 			);
 		}
 
@@ -1736,7 +1736,7 @@ function delElement(elvalues,elem) {
 
 		// Build dialog if user has permission
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
-			$_settings[] = array('headline' => g_l('prefs', '[glossary_publishing]'), 'html' => $_table->getHtml(), 'space' => 200, 'noline' => 1);
+			$_settings[] = array('headline' => g_l('prefs', '[glossary_publishing]'), 'html' => $_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
 		}
 
 		return $_settings;
@@ -1773,7 +1773,7 @@ function delElement(elvalues,elem) {
 			}
 
 			// Build dialog
-			$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages->getHtml(), 'space' => 200, 'noline' => 1);
+			$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
 		}
 
 
@@ -1787,7 +1787,7 @@ function delElement(elvalues,elem) {
 		$_settings[] = array(
 			'headline' => g_l('prefs', '[choose_backendcharset]'),
 			'html' => $_charset->getHtml(),
-			'space' => 200
+			'space' => we_html_multiIconBox::SPACE_BIG
 		);
 
 		//AMOUNT Number of Columns
@@ -1805,7 +1805,7 @@ function delElement(elvalues,elem) {
 		$_settings[] = array(
 			'headline' => g_l('prefs', '[cockpit_amount_columns]'),
 			'html' => $_amount->getHtml(),
-			'space' => 200
+			'space' => we_html_multiIconBox::SPACE_BIG
 		);
 
 		//SEEM
@@ -1959,7 +1959,7 @@ function show_seem_chooser(val) {
 			$_settings[] = array(
 				'headline' => g_l('prefs', '[seem_startdocument]'),
 				'html' => $js . $_seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $_seem_start_type . '");'),
-				'space' => 200
+				'space' => we_html_multiIconBox::SPACE_BIG
 			);
 		}
 
@@ -2002,7 +2002,7 @@ function show_seem_chooser(val) {
 			$_file_tree_count->selectOption($_tree_count);
 		}
 
-		$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br/>' . $_file_tree_count->getHtml(), 'space' => 200);
+		$_settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br/>' . $_file_tree_count->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
 		// WINDOW DIMENSIONS
 
@@ -2039,7 +2039,7 @@ function show_seem_chooser(val) {
 		$_window_html->setCol(2, 0, null, $_window_current_dimension_table);
 
 		// Build dialog
-		$_settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), 'space' => 200);
+		$_settings[] = array("headline" => g_l('prefs', '[dimension]'), "html" => $_window_html->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
 		// Create predefined window dimension buttons
 		$_window_predefined_table = new we_html_table(array('class' => 'withBigSpace', 'style' => 'text-align:right'), 2, 1);
@@ -2049,7 +2049,7 @@ function show_seem_chooser(val) {
 		$_window_predefined_table->setCol(1, 0, null, we_html_button::create_button('res_1280', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1280';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '960';", true) . we_html_button::create_button('res_1600', "javascript:top.content.setHot();document.getElementsByName('" . $this->Name . "_Preference_sizeOpt')[1].checked = true;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_weWidth')[0].value = '1600';document.getElementsByName('" . $this->Name . "_Preference_weHeight')[0].value = '1200';", true));
 
 		// Build dialog
-		$_settings[] = array("headline" => g_l('prefs', '[predefined]'), "html" => $_window_predefined_table->getHtml(), 'space' => 200);
+		$_settings[] = array("headline" => g_l('prefs', '[predefined]'), "html" => $_window_predefined_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
 		return $_settings;
 	}
@@ -2063,7 +2063,7 @@ function show_seem_chooser(val) {
 		$_template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
 		$_template_editor_mode->selectOption($this->Preferences['editorMode']);
 		$_settings = array(
-			array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), 'space' => 150)
+			array("headline" => g_l('prefs', '[editor_mode]'), "html" => $_template_editor_mode->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2)
 		);
 //FIXME: use code from preferences for font-selection
 		$_template_fonts = array('Arial', 'Courier', 'Courier New', 'Helvetica', 'Monaco', 'Mono', 'Tahoma', 'Verdana', 'serif', 'sans-serif', 'none');
@@ -2126,7 +2126,7 @@ function show_seem_chooser(val) {
 		$_settings[] = array(
 			'headline' => g_l('prefs', '[editor_font]'),
 			'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table->getHtml(),
-			'space' => 200
+			'space' => we_html_multiIconBox::SPACE_BIG
 		);
 
 		return $_settings;
@@ -2186,14 +2186,14 @@ function show_seem_chooser(val) {
 			array(
 				"headline" => g_l('modules_users', '[alias_data]'),
 				"html" => $content,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			), array(
 				"headline" => g_l('modules_users', '[rights_and_workspaces]'),
 				"html" =>
 				$this->formInherits("_ParentPerms", $this->ParentPerms, g_l('modules_users', '[inherit]')) .
 				$this->formInherits("_ParentWs", $this->ParentWs, g_l('modules_users', '[inherit_ws]')) .
 				$this->formInherits("_ParentWst", $this->ParentWst, g_l('modules_users', '[inherit_wst]')),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			)
 		);
 

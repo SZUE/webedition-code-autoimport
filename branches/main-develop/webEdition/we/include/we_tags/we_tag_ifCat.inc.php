@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifCat($attribs){
+function we_tag_ifCat(array $attribs){
 	$categories = weTag_getAttribute('categories', $attribs, weTag_getAttribute('category', $attribs, array(), we_base_request::STRING_LIST), we_base_request::STRING_LIST);
 	$catids = weTag_getAttribute('categoryids', $attribs, array(), we_base_request::INTLISTA);
 	if(!$categories && !$catids){

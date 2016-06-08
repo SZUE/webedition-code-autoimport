@@ -22,6 +22,6 @@ function we_parse_tag_ifNotCat($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifCat', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotCat($attribs, $content){
+function we_tag_ifNotCat(array $attribs, $content){
 	return !we_tag('ifCat', $attribs, $content);
 }

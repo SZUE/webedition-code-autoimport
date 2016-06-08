@@ -150,12 +150,12 @@ class we_import_wizard extends we_import_wizardBase{
 			array(
 				'headline' => g_l('import', '[import_file]'),
 				'html' => $tblFiles->getHTML(),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1),
 			array(
 				'headline' => g_l('import', '[import_data]'),
 				'html' => $tblData->getHTML(),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1),
 		);
 		return array(
@@ -323,11 +323,11 @@ function handle_eventNext(){
 			array(
 				'headline' => g_l('import', '[import]'),
 				'html' => $importLocs->getHTML(),
-				'space' => 120),
+				'space' => we_html_multiIconBox::SPACE_MED),
 			array(
 				'headline' => g_l('import', '[file_collision]'),
 				'html' => $fn_colsn->getHTML(),
-				'space' => 120)
+				'space' => we_html_multiIconBox::SPACE_MED)
 		);
 
 		$wepos = weGetCookieVariable('but_wxml');
@@ -542,7 +542,7 @@ handle_event("previous");');
 			$parts[] = array(
 				"headline" => g_l('import', '[handle_document_options]') . '<br/>' . g_l('import', '[handle_template_options]'),
 				"html" => $tbl_extra->getHTML(),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			);
 
 
@@ -554,7 +554,7 @@ handle_event("previous");');
 				$parts[] = array(
 					"headline" => g_l('import', '[handle_object_options]') . '<br/>' . g_l('import', '[handle_class_options]'),
 					"html" => $tbl_extra->getHTML(),
-					'space' => 120
+					'space' => we_html_multiIconBox::SPACE_MED
 				);
 			}
 
@@ -594,7 +594,7 @@ handle_event("previous");');
 			$parts[] = array(
 				"headline" => g_l('import', '[handle_doctype_options]') . '<br/>' . g_l('import', '[handle_category_options]'),
 				"html" => '<input type="hidden" name="v[import_XMLencoding]" value="' . $xml_encoding . '" />' . $tbl_extra->getHTML(),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			);
 
 
@@ -603,27 +603,27 @@ handle_event("previous");');
 					$parts[] = array(
 						'headline' => g_l('import', '[encoding_headline]'),
 						'html' => we_html_forms::checkboxWithHidden((!empty($v['import_ChangeEncoding'])) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_change]') . $xml_encoding . g_l('import', '[encoding_to]') . DEFAULT_CHARSET . g_l('import', '[encoding_default]')) . we_html_element::htmlHiddens(array("v[import_XMLencoding]" => $xml_encoding, "v[import_TARGETencoding]" => DEFAULT_CHARSET)),
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 					);
 				}
 			} else {
 				$parts[] = array(
 					'headline' => g_l('import', '[encoding_headline]'),
 					'html' => we_html_forms::checkboxWithHidden((!empty($v['import_ChangeEncoding'])) ? true : false, 'v[import_ChangeEncoding]', g_l('import', '[encoding_noway]') . we_html_element::htmlHidden("v[import_XMLencoding]", $xml_encoding), false, "defaultfont", '', true),
-					'space' => 120
+					'space' => we_html_multiIconBox::SPACE_MED
 				);
 			}
 
 			$parts[] = array(
 				'headline' => g_l('import', '[handle_file_options]'),
 				'html' => we_html_forms::checkboxWithHidden((!empty($v['import_binarys'])) ? true : false, 'v[import_binarys]', g_l('import', '[import_files]')),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			);
 
 			$parts[] = array(
 				'headline' => g_l('import', '[rebuild]'),
 				'html' => we_html_forms::checkboxWithHidden((!empty($v['rebuild'])) ? true : false, 'v[rebuild]', g_l('import', '[rebuild_txt]')),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			);
 
 			$header = we_base_file::loadPart($_SERVER['DOCUMENT_ROOT'] . $v['import_from'], 0, 512);
@@ -657,7 +657,7 @@ handle_event("previous");');
 				$parts[] = array(
 					'headline' => g_l('import', '[handle_owners_option]'),
 					'html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[notexist_overwrite]'), we_html_tools::TYPE_ALERT, 530) . $tbl_extra->getHTML() . $tbl_extra2,
-					'space' => 120
+					'space' => we_html_multiIconBox::SPACE_MED
 				);
 			} else {
 				$hdns .= we_html_element::htmlHiddens(array(
@@ -669,7 +669,7 @@ handle_event("previous");');
 			$parts[] = array(
 				'headline' => g_l('import', '[xml_file]'),
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('import', '[invalid_wxml]'), we_html_tools::TYPE_ALERT, 530),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			);
 		}
 		$wepos = weGetCookieVariable('but_wxml');
@@ -1059,12 +1059,12 @@ HTS;
 			array(
 				'headline' => g_l('import', '[import]'),
 				'html' => $importLocs->getHTML(),
-				'space' => 120),
+				'space' => we_html_multiIconBox::SPACE_MED),
 			array(
 				'headline' => (defined('OBJECT_TABLE')) ? $radioDocs : g_l('import', '[documents]'),
 				'html' => weSuggest::getYuiFiles() . $doctypeElement . ' ' . $templateElement . ' ' . $storeTo . $yuiSuggest->getYuiJs() . ' ' . $specifyDoc->getHTML() . ' ' .
 				we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), 'left', 'defaultfont'),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1)
 		);
 
@@ -1073,7 +1073,7 @@ HTS;
 				'headline' => $radioObjs,
 				'html' => (defined('OBJECT_TABLE')) ? we_html_tools::htmlFormElementTable($CLselect->getHTML(), g_l('import', '[class]'), 'left', 'defaultfont') . ' ' .
 					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), 'left', 'defaultfont') : '',
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			);
 		}
@@ -1446,7 +1446,7 @@ function handle_event(evt) {
 
 		$parts = array(
 			array(
-				'html' => '<br/>' . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, 'defaultfont'),
+				'html' => '<br/>' . we_html_tools::htmlDialogBorder3(510, $rows, $th, 'defaultfont'),
 			)
 		);
 		if(!empty($dateFields)){
@@ -1460,7 +1460,7 @@ function handle_event(evt) {
 			$parts[] = array(
 				'headline' => g_l('import', '[format_date]'),
 				'html' => $tStamp->getHTML(),
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			);
 			if(!isset($v['dateFields'])){
 				$hdns .= we_html_element::htmlHidden('v[dateFields]', implode(',', $dateFields));
@@ -1470,7 +1470,7 @@ function handle_event(evt) {
 		$parts[] = array(
 			'headline' => g_l('import', '[name]'),
 			'html' => $fn->getHTML(),
-			'space' => 120,
+			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
 		);
 
@@ -1483,7 +1483,7 @@ function handle_event(evt) {
 		$parts[] = array(
 			'headline' => g_l('import', '[name_collision]'),
 			'html' => $fn_colsn->getHTML(),
-			'space' => 140
+			'space' => we_html_multiIconBox::SPACE_MED2
 		);
 
 		$wepos = weGetCookieVariable('but_xml');
@@ -1621,11 +1621,11 @@ function handle_eventNext(){
 			array(
 				'headline' => g_l('import', '[import]'),
 				'html' => $importLocs->getHTML(),
-				'space' => 120),
+				'space' => we_html_multiIconBox::SPACE_MED),
 			array(
 				'headline' => g_l('import', '[field_options]'),
 				'html' => $csvSettings->getHTML(),
-				'space' => 120,
+				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1)
 		);
 
@@ -2008,7 +2008,7 @@ HTS;
 					$seaPu->getHtml() .
 					we_html_tools::htmlFormElementTable($docCategories, g_l('import', '[categories]'), "left", "defaultfont") .
 					(defined('OBJECT_TABLE') ? '' : $yuiSuggest->getYuiJs()),
-					'space' => 120,
+					'space' => we_html_multiIconBox::SPACE_MED,
 					'noline' => 1
 				)
 			);
@@ -2020,7 +2020,7 @@ HTS;
 					$objSeaPu->getHtml() .
 					we_html_tools::htmlFormElementTable($objCategories, g_l('import', '[categories]'), "left", "defaultfont")
 					. $yuiSuggest->getYuiJs(),
-					'space' => 120,
+					'space' => we_html_multiIconBox::SPACE_MED,
 					'noline' => 1
 				);
 			}
@@ -2276,7 +2276,7 @@ function handle_event(evt) {
 
 		$parts = array(
 			array(
-				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, 255, $rows, $th, "defaultfont"),
+				"html" => "<br/>" . we_html_tools::htmlDialogBorder3(510, $rows, $th, "defaultfont"),
 			)
 		);
 
@@ -2292,7 +2292,7 @@ function handle_event(evt) {
 			$parts[] = array(
 				"headline" => g_l('import', '[format_date]'),
 				"html" => $tStamp->getHTML(),
-				'space' => 140
+				'space' => we_html_multiIconBox::SPACE_MED2
 			);
 			if(!isset($v["dateFields"])){
 				$hdns .= we_html_element::htmlHidden("v[dateFields]", implode(',', $dateFields));
@@ -2308,13 +2308,13 @@ function handle_event(evt) {
 		$parts[] = array(
 			'headline' => g_l('import', '[name_collision]'),
 			'html' => $fn_colsn->getHTML(),
-			'space' => 140
+			'space' => we_html_multiIconBox::SPACE_MED2
 		);
 
 		$parts[] = array(
 			'headline' => g_l('import', '[name]'),
 			'html' => $fn->getHTML(),
-			'space' => 140
+			'space' => we_html_multiIconBox::SPACE_MED2
 		);
 
 		$wepos = weGetCookieVariable('but_csv');

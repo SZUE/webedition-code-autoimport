@@ -18,7 +18,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_DID($attribs){
+function we_tag_DID(array $attribs){
 	$docAttr = weTag_getAttribute("doc", $attribs, '', we_base_request::STRING);
 	if(!$docAttr){
 		$docAttr = weTag_getAttribute("type", $attribs, '', we_base_request::STRING); // for Compatibility Reasons

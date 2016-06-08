@@ -24,7 +24,7 @@
  */
 we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
 
-function we_tag_showShopItemNumber($attribs){
+function we_tag_showShopItemNumber(array $attribs){
 	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
 		return $foo;
 	}

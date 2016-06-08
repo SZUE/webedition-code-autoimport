@@ -86,7 +86,7 @@ function we_condition_tag_block(&$block){
 	return true;
 }
 
-function we_tag_block($attribs){
+function we_tag_block(array $attribs){
 	$origName = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	$start = weTag_getAttribute('start', $attribs, 0, we_base_request::INT);

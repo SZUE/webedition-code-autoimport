@@ -33,7 +33,7 @@ function we_parse_tag_customer($attribs, $content, array $arr){
 		we_post_tag_listview(); ?>';
 }
 
-function we_tag_customer($attribs){
+function we_tag_customer(array $attribs){
 	if(!defined('WE_CUSTOMER_MODULE_PATH')){
 		echo modulFehltError('Customer', __FUNCTION__);
 		return false;

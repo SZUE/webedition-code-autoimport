@@ -204,17 +204,17 @@ for($i = 0; $i < count($aTopRssFeeds); $i++){
 
 $jsPrefs = "
 var oCfg={
-	iDlgWidth:" . $iDlgWidth . ",
+	iDlgWidth:" . intval($iDlgWidth) . ",
 	_noResizeTypes:['pad']
 };";
 
 foreach($aPrefs as $type => $_prefs){
 	$jsPrefs .= "oCfg." . $type . "_props_={
-		width:" . $_prefs["width"] . ",
-		height:" . $_prefs["height"] . ",
+		width:" . intval($_prefs["width"]) . ",
+		height:" . intval($_prefs["height"]) . ",
 		res:" . $_prefs["res"] . ",
 		cls:'" . $_prefs["cls"] . "',
-		iDlgHeight:" . $_prefs["dlgHeight"] . "
+		iDlgHeight:" . intval($_prefs["dlgHeight"]) . "
 };";
 }
 

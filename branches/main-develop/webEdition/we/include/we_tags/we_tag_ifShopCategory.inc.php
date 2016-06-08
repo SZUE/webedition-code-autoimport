@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifShopCategory($attribs){
+function we_tag_ifShopCategory(array $attribs){
 	$field = weTag_getAttribute('field', $attribs, 'id', we_base_request::STRING);
 	$match = intval(weTag_getAttribute('match', $attribs, false, we_base_request::INT));
 	$ignorefallbacks = weTag_getAttribute('ignorefallbacks', $attribs, false, we_base_request::BOOL);
@@ -56,7 +56,7 @@ function we_tag_ifShopCategory($attribs){
 			} else {
 				return $ignorefallbacks ? $catID === $match : $validID === $match;
 			}
-		default: 
+		default:
 			return false;
 	}
 }

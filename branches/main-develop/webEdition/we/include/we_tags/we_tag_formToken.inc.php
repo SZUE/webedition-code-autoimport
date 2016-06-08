@@ -18,7 +18,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_formToken($attribs){
+function we_tag_formToken(array $attribs){
 	// No token needen in editmode
 	if(!empty($GLOBALS['we_doc']->InWebEdition) || empty($GLOBALS['WE_MAIN_DOC']->IsDynamic)){
 		return;

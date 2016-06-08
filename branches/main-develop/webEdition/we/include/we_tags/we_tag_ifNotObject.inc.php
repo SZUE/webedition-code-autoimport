@@ -22,6 +22,6 @@ function we_parse_tag_ifNotObject($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifObject', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotObject($attribs){
+function we_tag_ifNotObject(array $attribs){
 	return !we_tag('ifObject', $attribs);
 }

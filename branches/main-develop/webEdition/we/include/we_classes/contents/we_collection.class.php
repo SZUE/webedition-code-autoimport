@@ -206,9 +206,9 @@ class we_collection extends we_root{
 	public function getPropertyPage(){
 		return we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
 			we_html_multiIconBox::getHTML('PropertyPage', array(
-				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
-				array('icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => 140),
-				array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => 140))
+				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2))
 		);
 	}
 
@@ -412,7 +412,6 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
 				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
 			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline collection-head'), g_l('weClass', '[collection][collectionTitle]')) .
-			//we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][attentionBox]'), we_html_tools::TYPE_INFO, 680)) .
 			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox($longtext . $ddtext, we_html_tools::TYPE_INFO, 850, false, 29)) .
 			we_html_element::htmlDiv(array('class' => 'collection-toolbar'), $toolbar->getHtml()) .
 			we_html_element::htmlDiv(array('id' => 'content_div_list', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
@@ -695,7 +694,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 
 		$itemsCsv = implode(',', array_keys($items));
-		$orCustomElement = ' OR (l.nHash=x\'' . md5('elemIMG') . '\'" AND (c.Dat!="" OR c.BDID != 0) )';
+		$orCustomElement = ' OR (l.nHash=x\'' . md5('elemIMG') . '\' AND (c.Dat!="" OR c.BDID != 0) )';
 		if($this->getRemTable() === stripTblPrefix(FILE_TABLE)){
 			$this->DB_WE->query('SELECT l.DID, l.Name, l.type, c.Dat, c.BDID FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID = c.ID
 				WHERE l.DocumentTable="tblFile" AND l.DID IN (' . rtrim($itemsCsv, ',') . ') AND ((l.type="attrib" AND l.nHash IN (x\'' . md5('title') . '\',x\'' . md5('alt') . '\') ) OR (l.type="txt" AND l.nHash IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\') ) ' . $orCustomElement . ')'

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_charset($attribs, $content){
+function we_tag_charset(array $attribs, $content){
 	$content = !empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $content;
 	if(!empty($GLOBALS['we_editmode']) && $GLOBALS['we_doc']->EditPageNr === we_base_constants::WE_EDITPAGE_PROPERTIES){
 		//set meta data & exit

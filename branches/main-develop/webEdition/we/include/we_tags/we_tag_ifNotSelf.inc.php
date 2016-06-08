@@ -22,6 +22,6 @@ function we_parse_tag_ifNotSelf($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifSelf', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotSelf($attribs){
+function we_tag_ifNotSelf(array $attribs){
 	return !we_tag('ifSelf', $attribs);
 }

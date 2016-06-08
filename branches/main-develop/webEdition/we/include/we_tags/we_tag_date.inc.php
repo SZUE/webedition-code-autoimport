@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_date($attribs){
+function we_tag_date(array $attribs){
 	$format = weTag_getAttribute('format', $attribs, g_l('date', '[format][default]'), we_base_request::RAW);
 
 	switch(strtolower(weTag_getAttribute('type', $attribs, 'php', we_base_request::STRING))){

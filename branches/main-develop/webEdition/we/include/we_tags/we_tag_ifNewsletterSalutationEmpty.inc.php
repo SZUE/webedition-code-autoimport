@@ -18,7 +18,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifNewsletterSalutationEmpty($attribs){
+function we_tag_ifNewsletterSalutationEmpty(array $attribs){
 	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__, true))){
 		echo $foo;
 		return false;

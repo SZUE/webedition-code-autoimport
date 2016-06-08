@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_path($attribs){
+function we_tag_path(array $attribs){
 	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){//listdir
 		return $GLOBALS['lv']->Path;
 	}

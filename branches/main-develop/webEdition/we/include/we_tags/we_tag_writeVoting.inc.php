@@ -22,8 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_writeVoting($attribs){
-
+function we_tag_writeVoting(array $attribs){
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$additionalFields = weTag_getAttribute('additionalfields', $attribs, array(), we_base_request::INTLISTA);
 	$allowredirect = weTag_getAttribute("allowredirect", $attribs, false, we_base_request::BOOL);

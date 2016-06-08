@@ -27,7 +27,7 @@ function we_parse_tag_calculate($a, $content, array $attribs){
 	return '<?php ' . we_tag_tagParser::printTag('calculate', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('calculate', $attribs) . ');?>';
 }
 
-function we_tag_calculate($attribs, $content){
+function we_tag_calculate(array $attribs, $content){
 	//internal Attribute
 	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		case 'start':

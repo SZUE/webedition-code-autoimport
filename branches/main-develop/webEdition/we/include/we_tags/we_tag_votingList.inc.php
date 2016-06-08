@@ -31,7 +31,7 @@ function we_parse_tag_votingList($a, $content, array $attribs){
 	return '<?php ' . we_tag_tagParser::printTag('votingList', $attribs) . '; ?>' . $content . '<?php ' . we_tag_tagParser::printTag('votingList', array('_type' => 'stop')) . ';?>';
 }
 
-function we_tag_votingList($attribs){
+function we_tag_votingList(array $attribs){
 	if(!defined('VOTING_TABLE')){
 		echo modulFehltError('Voting', __FUNCTION__);
 		return;

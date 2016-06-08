@@ -22,6 +22,6 @@ function we_parse_tag_ifNotNewsletterSalutation($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifNewsletterSalutation', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotNewsletterSalutation($attribs){
+function we_tag_ifNotNewsletterSalutation(array $attribs){
 	return !we_tag('ifNewsletterSalutation', $attribs);
 }

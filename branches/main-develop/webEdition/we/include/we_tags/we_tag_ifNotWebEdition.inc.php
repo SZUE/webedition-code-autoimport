@@ -22,6 +22,6 @@ function we_parse_tag_ifNotWebEdition($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifWebEdition', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotWebEdition($attribs){
+function we_tag_ifNotWebEdition(array $attribs){
 	return !we_tag('ifWebEdition', $attribs);
 }

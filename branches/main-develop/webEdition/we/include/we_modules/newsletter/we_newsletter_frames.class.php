@@ -943,7 +943,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$counter = 0;
 
 		$parts = array(
-			array("headline" => "", "html" => we_html_element::htmlHiddens(array("blocks" => count($this->View->newsletter->blocks))), 'space' => 140, 'noline' => 1)
+			array("headline" => "", "html" => we_html_element::htmlHiddens(array("blocks" => count($this->View->newsletter->blocks))), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1)
 		);
 
 		foreach($this->View->newsletter->blocks as $block){
@@ -1052,13 +1052,13 @@ window.onload=extraInit;');
 					''
 				) . '</div>';
 
-			$parts[] = array("headline" => sprintf(g_l('modules_newsletter', '[block]'), ($counter + 1)), "html" => $content, 'space' => 140);
-			$parts[] = array("headline" => "", "html" => $buttons, 'space' => 140);
+			$parts[] = array("headline" => sprintf(g_l('modules_newsletter', '[block]'), ($counter + 1)), "html" => $content, 'space' => we_html_multiIconBox::SPACE_MED2);
+			$parts[] = array("headline" => "", "html" => $buttons, 'space' => we_html_multiIconBox::SPACE_MED2);
 
 			$counter++;
 		}
 
-		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30, "", -1, "", "", false);
+		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30);
 	}
 
 	function getHTMLNewsletterGroups(){
@@ -1067,9 +1067,9 @@ window.onload=extraInit;');
 
 		for($i = 0; $i < $count; $i++){
 			$parts = array(
-				defined('CUSTOMER_TABLE') ? array("headline" => g_l('modules_newsletter', '[customers]'), "html" => $this->getHTMLCustomer($i), 'space' => 140) : null,
-				array("headline" => g_l('modules_newsletter', '[file_email]'), "html" => $this->getHTMLExtern($i), 'space' => 140),
-				array("headline" => g_l('modules_newsletter', '[emails]'), "html" => $this->getHTMLEmails($i), 'space' => 140)
+				defined('CUSTOMER_TABLE') ? array("headline" => g_l('modules_newsletter', '[customers]'), "html" => $this->getHTMLCustomer($i), 'space' => we_html_multiIconBox::SPACE_MED2) : null,
+				array("headline" => g_l('modules_newsletter', '[file_email]'), "html" => $this->getHTMLExtern($i), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array("headline" => g_l('modules_newsletter', '[emails]'), "html" => $this->getHTMLEmails($i), 'space' => we_html_multiIconBox::SPACE_MED2)
 			);
 
 
@@ -1120,8 +1120,8 @@ window.onload=extraInit;');
 
 		//$table->setCol(2,0,array(),we_html_tools::htmlFormElementTable($this->formWeDocChooser(NEWSLETTER_TABLE,320,0,"ParentID",$this->View->newsletter->ParentID,"Path",dirname($this->View->newsletter->Path),"opener.top.content.hot=1;","folder"),g_l('modules_newsletter','[dir]')));
 		$parts = array(
-			array("headline" => "", "html" => "", 'space' => 140, 'noline' => 1),
-			array("headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), 'space' => 140),
+			array("headline" => "", "html" => "", 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1),
+			array("headline" => g_l('modules_newsletter', '[path]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2),
 		);
 
 		if(!$this->View->newsletter->IsFolder){
@@ -1145,12 +1145,12 @@ window.onload=extraInit;');
 
 			$table->setCol(4, 0, array(), we_html_tools::htmlFormElementTable($_embedImagesHid . $_embedImagesChk . "&nbsp;" . $_embedImagesLab, ""));
 
-			$parts[] = array("headline" => g_l('modules_newsletter', '[newsletter][text]'), "html" => $table->getHtml(), 'space' => 140);
-			$parts[] = array("headline" => g_l('modules_newsletter', '[charset]'), "html" => $this->getHTMLCharsetTable(), 'space' => 140);
-			$parts[] = array("headline" => g_l('modules_newsletter', '[copy_newsletter]'), "html" => $this->getHTMLCopy(), 'space' => 140, 'noline' => 1);
+			$parts[] = array("headline" => g_l('modules_newsletter', '[newsletter][text]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2);
+			$parts[] = array("headline" => g_l('modules_newsletter', '[charset]'), "html" => $this->getHTMLCharsetTable(), 'space' => we_html_multiIconBox::SPACE_MED2);
+			$parts[] = array("headline" => g_l('modules_newsletter', '[copy_newsletter]'), "html" => $this->getHTMLCopy(), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
 		}
 
-		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30, "", -1, "", "", false) .
+		return we_html_multiIconBox::getHTML("newsletter_header", $parts, 30) .
 			we_html_element::htmlBr();
 	}
 
@@ -1206,7 +1206,7 @@ window.onload=extraInit;');
 					$this->View->getHiddensMailingPage() .
 					$this->View->getHiddensContentPage() .
 					we_html_element::htmlHiddens(array("fromPage" => 3, "blockid" => 0)) .
-					we_html_multiIconBox::getHTML('', $this->getHTMLReporting(), 30, '', -1, '', '', false) .
+					we_html_multiIconBox::getHTML('', $this->getHTMLReporting(), 30) .
 					$this->weAutoCompleter->getYuiJs();
 		}
 
@@ -1802,7 +1802,7 @@ self.focus();
 			$nextprev->setCol(0, 5, array("class" => "defaultfont", 'style' => 'padding-left:20px;'), $add);
 
 			$out = $nextprev->getHtml() .
-				we_html_tools::htmlDialogBorder3(850, 300, $content, $headlines) .
+				we_html_tools::htmlDialogBorder3(850, $content, $headlines) .
 				$end;
 		} else {
 			if(!$csv_file && empty($csv_file) && strlen($csv_file) < 4){

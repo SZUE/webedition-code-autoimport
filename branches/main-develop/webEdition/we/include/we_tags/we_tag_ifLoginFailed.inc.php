@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifLoginFailed($attribs){
+function we_tag_ifLoginFailed(array $attribs){
 	switch(weTag_getAttribute('type', $attribs, 'all', we_base_request::STRING)){
 		default:
 		case 'all':

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_pageLanguage($attribs){
+function we_tag_pageLanguage(array $attribs){
 	$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 
 	$lang = explode('_', $doc->Language);

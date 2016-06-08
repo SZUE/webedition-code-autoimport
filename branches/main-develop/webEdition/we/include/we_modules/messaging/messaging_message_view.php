@@ -60,32 +60,32 @@ echo we_html_tools::getHtmlTop() .
 			array("headline" => g_l('modules_messaging', '[subject]'),
 				"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
 				'noline' => 1,
-				'space' => 140
+				'space' => we_html_multiIconBox::SPACE_MED2
 			),
 			array("headline" => g_l('modules_messaging', '[deadline]'),
 				"html" => $format->get_deadline(),
 				'noline' => 1,
-				'space' => 140
+				'space' => we_html_multiIconBox::SPACE_MED2
 			),
 			array("headline" => g_l('modules_messaging', '[status]'),
 				"html" => '<table class="default"><tr><td class="defaultfont">' . $messaging->selected_message['hdrs']['status'] . '%</td>' .
 				($messaging->selected_message['hdrs']['status'] < 100 ? '<td>' . we_html_button::create_button('percent100', "javascript:todo_markdone()") . '</td>' : '') . '</tr></table>',
 				'noline' => 1,
-				'space' => 140
+				'space' => we_html_multiIconBox::SPACE_MED2
 			),
 			array("headline" => g_l('modules_messaging', '[created_by]'),
 				"html" => $format->get_from(),
 				'noline' => 1,
-				'space' => 140
+				'space' => we_html_multiIconBox::SPACE_MED2
 			),
 			array("headline" => g_l('modules_messaging', '[assigned_by]'),
 				"html" => $format->get_assigner(),
 				'noline' => 1,
-				'space' => 140
+				'space' => we_html_multiIconBox::SPACE_MED2
 			),
 			array("headline" => g_l('modules_messaging', '[creation_date]'),
 				"html" => $format->get_date(),
-				'space' => 140
+				'space' => we_html_multiIconBox::SPACE_MED2
 			),
 			array("headline" => "",
 				"html" => $format->get_msg_text(),
@@ -103,24 +103,24 @@ echo we_html_tools::getHtmlTop() .
 			array("headline" => g_l('modules_messaging', '[subject]'),
 				"html" => "<b>" . oldHtmlspecialchars($format->get_subject()) . "</b>",
 				'noline' => 1,
-				'space' => 80
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array("headline" => g_l('modules_messaging', '[from]'),
 				"html" => $format->get_from(),
 				'noline' => 1,
-				'space' => 80
+				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array("headline" => g_l('modules_messaging', '[date]'),
 				"html" => $format->get_date(),
 				'noline' => (empty($messaging->selected_message['hdrs']['To']) ? null : 1),
-				'space' => 80
+				'space' => we_html_multiIconBox::SPACE_MED
 			)
 		);
 
 		if(!empty($messaging->selected_message['hdrs']['To'])){
 			$parts[] = array("headline" => g_l('modules_messaging', '[recipients]'),
 				"html" => oldHtmlspecialchars($messaging->selected_message['hdrs']['To']),
-				'space' => 80
+				'space' => we_html_multiIconBox::SPACE_MED
 			);
 		}
 

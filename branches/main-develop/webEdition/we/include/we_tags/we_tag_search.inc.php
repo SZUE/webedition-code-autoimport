@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_search($attribs){
+function we_tag_search(array $attribs){
 	$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
 	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 	$value = weTag_getAttribute('value', $attribs, '', we_base_request::STRING);

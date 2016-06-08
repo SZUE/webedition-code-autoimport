@@ -22,6 +22,6 @@ function we_parse_tag_ifNotDoctype($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifDoctype', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotDoctype($attribs, $content){
+function we_tag_ifNotDoctype(array $attribs, $content){
 	return !we_tag('ifDoctype', $attribs, $content);
 }

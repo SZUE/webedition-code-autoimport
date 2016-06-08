@@ -22,6 +22,6 @@ function we_parse_tag_ifShopFieldNotEmpty($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifShopFieldEmpty', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifShopFieldNotEmpty($attribs){
+function we_tag_ifShopFieldNotEmpty(array $attribs){
 	return !we_tag('ifShopFieldEmpty', $attribs);
 }

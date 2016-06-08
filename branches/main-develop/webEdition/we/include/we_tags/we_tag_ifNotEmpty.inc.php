@@ -22,6 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifNotEmpty($attribs){
+function we_tag_ifNotEmpty(array $attribs){
 	return (!empty($GLOBALS['we_editmode'])) || !we_tag('ifEmpty', $attribs);
 }

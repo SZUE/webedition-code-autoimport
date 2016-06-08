@@ -22,6 +22,6 @@ function we_parse_tag_ifUserInputNotEmpty($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifUserInputEmpty', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifUserInputNotEmpty($attribs){
+function we_tag_ifUserInputNotEmpty(array $attribs){
 	return !we_tag('ifUserInputEmpty', $attribs);
 }

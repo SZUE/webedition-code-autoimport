@@ -262,20 +262,19 @@ $_types = array(
 
 $buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
 
-$_space_size = 150;
 $_parts = array();
 foreach($_info as $_k => $_v){
 	$_parts[] = array(
 		'headline' => $_k,
 		'html' => getInfoTable($_v, strip_tags($_k)),
-		'space' => $_space_size
+		'space' => we_html_multiIconBox::SPACE_MED2
 	);
 }
 
 $_parts[] = array(
 	'headline' => '',
 	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '&hellip;</a>',
-	'space' => 10
+	'space' => we_html_multiIconBox::SPACE_SMALL
 );
 echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'sysinfo.js')
@@ -285,7 +284,7 @@ echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', STYLESHEET .
 	<div id="info" style="display: block;">
 <?php
 echo we_html_multiIconBox::getJS() .
- we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false, "", "", 620, "auto");
+ we_html_multiIconBox::getHTML('', $_parts, 30, $buttons);
 ?>
 	</div>
 	<div id="more" style="display:none;">
@@ -298,11 +297,11 @@ $_parts = array(
 	array(
 		'headline' => '',
 		'html' => '<a href="javascript:showInfoTable();">' . g_l('sysinfo', '[back]') . '</a>',
-		'space' => 10
+		'space' => we_html_multiIconBox::SPACE_SMALL
 	),
 );
 
-echo we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false);
+echo we_html_multiIconBox::getHTML('', $_parts, 30, $buttons);
 ?>
 	</div>
 </body>

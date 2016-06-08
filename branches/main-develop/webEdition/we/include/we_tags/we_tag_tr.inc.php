@@ -27,7 +27,7 @@ function we_parse_tag_tr($attribs, $content){
 	return '<?php printElement(' . we_tag_tagParser::printTag('tr', array('_type' => 'start')) . ');?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('tr', array('_type' => 'end')) . ');?>';
 }
 
-function we_tag_tr($attribs){
+function we_tag_tr(array $attribs){
 	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		case 'start':
 			return ($GLOBALS["lv"]->shouldPrintStartTR() ? getHtmlTag('tr', removeAttribs($attribs, array('_type')), '', false, true) : '');

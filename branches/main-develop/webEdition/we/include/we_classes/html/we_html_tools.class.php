@@ -167,39 +167,32 @@ this.selectedIndex = 0;' .
 				), $marginLeft, ($buttons ? '<div class="htmlDialogLayoutButtons">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
-	static function htmlDialogBorder3($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
+	static function htmlDialogBorder3($w, array $content, array $headline, $class = "middlefont", $id = ""){
 		$anz = count($headline);
-		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ' style="width:' . $w . 'px;' . $style . '" class="default">
-		<tr>';
+		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . ' style="width:' . $w . 'px;" class="default">
+		<tr class="boxHeader">';
 		// HEADLINE
 		for($f = 0; $f < $anz; $f++){
-			$out .= '<td class="' . $class . ' boxHeader">' . $headline[$f]["dat"] . '</td>';
+			$out .= '<td class="' . $class . '">' . $headline[$f]["dat"] . '</td>';
 		}
 		$out .= '</tr>';
 
 		//CONTENT
 		foreach($content as $c){
-			$out .= '<tr>' . self::htmlDialogBorder4Row($c, $class, $bgColor) . '</tr>';
+			$out .= '<tr class="htmlDialogBorder4Cell">' . self::htmlDialogBorder4Row($c, $class) . '</tr>';
 		}
 		$out .= '</table>';
 
-		if($buttons){
-			$_table = new we_html_table(array('class' => 'default'), 3, 1, array(
-				array(array('colspan' => 2), $out),
-				array(array('class' => 'htmlDialogBorderButtons'), $buttons),
-			));
-			return $_table->getHtml();
-		}
 		return $out;
 	}
 
-	private static function htmlDialogBorder4Row($content, $class = 'middlefont', $bgColor = ''){
+	private static function htmlDialogBorder4Row($content, $class){
 		$anz = count($content);
 		$out = '';
 
 		for($f = 0; $f < $anz; $f++){
-			$bgcol = $bgColor ? : ((!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : '');
-			$out .= '<td class="htmlDialogBorder4Cell ' . $class . '" style="' . (($f == 0) ? '' : "border-left:1px solid silver;" ) . ($bgcol ? 'background-color:' . $bgcol . '; ' : '') .
+			$bgcol = (!empty($content[$f]["bgcolor"]) ) ? $content[$f]["bgcolor"] : '';
+			$out .= '<td class="' . $class . '" style="' . ($bgcol ? 'background-color:' . $bgcol . '; ' : '') .
 				(isset($content[$f]["align"]) ? 'text-align:' . $content[$f]["align"] . ';' : '') . ' ' .
 				(isset($content[$f]["height"]) ? 'height:' . $content[$f]["height"] . 'px;' : '') . '">' .
 				(!empty($content[$f]["dat"]) ? $content[$f]["dat"] : "&nbsp;") .
@@ -209,28 +202,21 @@ this.selectedIndex = 0;' .
 		return $out;
 	}
 
-	static function htmlDialogBorder4($w, $h, $content, $headline, $class = "middlefont", $bgColor = "", $buttons = "", $id = "", $style = ""){ //content && headline are arrays
-		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . 'style="width:' . $w . 'px;' . $style . '" class="default">
-		<tr>';
+	static function htmlDialogBorder4($w, $content, $headline, $class = "middlefont", $id = ""){ //content && headline are arrays
+		$out = '<table' . ($id ? ' id="' . $id . '"' : '') . 'style="width:' . $w . 'px;" class="default">
+		<tr class="boxHeader">';
 		// HEADLINE
 		foreach($headline as $h){
-			$out .= '<td class="' . $class . ' boxHeader">' . $h["dat"] . '</td>';
+			$out .= '<td class="' . $class . '">' . $h["dat"] . '</td>';
 		}
 		$out .= '</tr>';
 
 		//CONTENT
 		foreach($content as $c){
-			$out .= '<tr>' . self::htmlDialogBorder4Row($c, $class, $bgColor) . '</tr>';
+			$out .= '<tr class="htmlDialogBorder4Cell">' . self::htmlDialogBorder4Row($c, $class, '') . '</tr>';
 		}
 		$out .= '</table>';
 
-		if($buttons){
-			$_table = new we_html_table(array("class" => 'default'), 3, 1, array(
-				array(array("colspan" => 2), $out),
-				array(array('class' => 'htmlDialogBorderButtons'), $buttons)
-			));
-			return $_table->getHtml();
-		}
 		return $out;
 	}
 

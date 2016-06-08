@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifNotVote($attribs){
+function we_tag_ifNotVote(array $attribs){
 	if(isset($GLOBALS['_we_voting_status'])){
 		switch(weTag_getAttribute('type', $attribs, '', we_base_request::STRING)){
 			case 'error':

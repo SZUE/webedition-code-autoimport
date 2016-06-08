@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifNew($attribs){
+function we_tag_ifNew(array $attribs){
 	$type = weTag_getAttribute('type', $attribs);
 	return !we_base_request::_(we_base_request::BOOL, 'we_edit' . ($type === 'object' ? 'Object' : 'Document') . '_ID');
 }

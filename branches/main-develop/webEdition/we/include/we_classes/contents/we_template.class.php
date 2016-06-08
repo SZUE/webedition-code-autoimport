@@ -42,7 +42,7 @@ class we_template extends we_document{
 		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');
 		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
 		if(isWE()){
-			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS/*, we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS*/);
+			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS, we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS);
 		}
 		$this->Published = 1;
 		$this->InWebEdition = true;
@@ -562,12 +562,84 @@ we_templateInit();?>';
 		));
 	}
 
+	function formTemplatesUsed(){
+		if($this->ID == 0 || empty($this->IncludedTemplates)){
+			return array(0, g_l('weClass', '[no_documents]'));
+		}
+		$this->DB_WE->query('SELECT ID,SUBSTRING_INDEX(Path,Text,1),CONCAT(Text," (ID: ",ID,")") FROM ' . TEMPLATES_TABLE . ' WHERE ID IN (' . trim($this->IncludedTemplates, ',') . ') ORDER BY Path');
+
+		$elems = $this->DB_WE->getAllFirst(true);
+
+		if(empty($elems)){
+			return array(0, g_l('weClass', '[no_documents]'));
+		}
+		$path = array();
+		$oldpath = '';
+		foreach($elems as $id => $data){
+			if($oldpath != $data[0]){
+				$path[$data[0]] = we_html_tools::OPTGROUP;
+				$oldpath = $data[0];
+			}
+			$path[$id] = $data[1];
+		}
+
+		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedTemplates', $path, 1, '', false, array('style' => 'margin-right: 20px;')), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
+				we_html_button::create_button(we_html_button::VIEW, "javascript:top.openBrowser(document.we_form.elements['TemplateUsedTemplates'].value);")
+		));
+	}
+
+	function formTemplateUsedByTemplate(){
+		if($this->ID == 0){
+			return array(0, g_l('weClass', '[no_documents]'));
+		}
+		$this->DB_WE->query('SELECT ID,SUBSTRING_INDEX(Path,Text,1),CONCAT(Text," (ID: ",ID,")") FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND FIND_IN_SET(' . $this->ID . ',IncludedTemplates) ORDER BY Path');
+
+		$elems = $this->DB_WE->getAllFirst(true);
+
+		if(empty($elems)){
+			return array(0, g_l('weClass', '[no_documents]'));
+		}
+		$path = array();
+		$oldpath = '';
+		foreach($elems as $id => $data){
+			if($oldpath != $data[0]){
+				$path[$data[0]] = we_html_tools::OPTGROUP;
+				$oldpath = $data[0];
+			}
+			$path[$id] = $data[1];
+		}
+
+		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedByTemplates', $path, 1, '', false, array('style' => 'margin-right: 20px;')), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
+				we_html_button::create_button(we_html_button::VIEW, "javascript:top.openBrowser(document.we_form.elements['TemplateUsedByTemplates'].value);")
+		));
+	}
+
 	/**
 	 * @desc 	this function returns the code of the unparsed template
 	 * @return	array with the filed names and attributes
-	 * @param	boolean $completeCode if true then the function returns the code of the complete template (with master template and included templates)
+	 * @param	boolean $completeCode if true then the function returns the code of the complete template (with master template)
 	 */
-	function getTemplateCode($completeCode = true){
+	function getTemplateCode($completeCode = true, $fillIncluded = false){
+		if($fillIncluded){
+			$regs = $codes = array();
+			$max = 100;
+			$db = $GLOBALS['DB_WE'];
+			$code = $this->getElement('completeData');
+			while(( --$max) > 0 && preg_match('|<we:include ([^>]*type="template"[^>]*)/>|', $code, $regs)){
+				$parse = we_tag_tagParser::parseAttribs($regs[1], true);
+				if(!empty($parse['path'])){
+					$parse['id'] = path_to_id($parse['path'], TEMPLATES_TABLE, $db);
+				}
+				if(!empty($parse['id'])){
+					$id = intval($parse['id']);
+					if(!isset($codes[$id])){
+						$codes[$id] = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE DocumentTable="tblTemplates" AND nHash=x\'' . md5('completeData') . '\' AND l.DID=' . $id);
+					}
+					$code = str_replace($regs[0], $codes[$id], $code);
+				}
+			}
+			return $code;
+		}
 		return $completeCode ? $this->getElement('completeData') : $this->getElement('data');
 	}
 
@@ -699,7 +771,7 @@ we_templateInit();?>';
 				// get attributes of tag
 				$att = we_tag_tagParser::parseAttribs($regs[1], true);
 				// if type-attribute is equal to "template"
-				if(isset($att['type']) && $att['type'] === 'template'){
+				if(!empty($att['type']) && $att['type'] === 'template'){
 
 					// if path is set - look for the id of the template
 					if(!empty($att['path'])){
@@ -871,10 +943,10 @@ we_templateInit();?>';
 
 	public function getPropertyPage(){
 		return we_html_multiIconBox::getHTML('PropertyPage', array(
-				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
-				array('icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => 140),
-				array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => 140),
-				array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => 140)
+				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2)
 				)
 		);
 	}

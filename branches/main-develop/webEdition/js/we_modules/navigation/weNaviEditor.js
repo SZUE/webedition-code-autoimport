@@ -31,16 +31,12 @@ function save() {
 }
 
 function setSaveState() {
-	if (document.we_form.Text.value !== '') {
-		WE().layout.button.switch_button_state(document, 'save', 'enabled');
-	} else {
-		WE().layout.button.switch_button_state(document, 'save', 'disabled');
-	}
+	WE().layout.button.switch_button_state(document, 'save', (document.we_form.Text.value !== '' ? 'enabled' : 'disabled'));
 }
 
-function changeOrder(elem){
-	document.we_form.OrdnTxt.value=document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;
-	document.we_form.Ordn.value=elem.value;
+function changeOrder(elem) {
+	document.we_form.OrdnTxt.value = document.we_form.OrdnSelect.options[document.we_form.OrdnSelect.selectedIndex].text;
+	document.we_form.Ordn.value = elem.value;
 }
 
 var ajaxObj = {
@@ -51,11 +47,11 @@ var ajaxObj = {
 			eval(o.responseText);
 
 			var items = weResponse.data.split(",");
-			
+
 			for (var s in items) {
 				var row = items[s].split(":");
 				if (row.length > 1) {
-					document.getElementById("details").innerHTML += '<div style="width: 40px; float: left;">' + i + '</div><div style="width: 220px;">' + row[1] + "</div>";
+					document.getElementById("details").innerHTML += '<div style="width: 40px; float: left;">' + s + '</div><div style="width: 220px;">' + row[1] + "</div>";
 				}
 			}
 		}

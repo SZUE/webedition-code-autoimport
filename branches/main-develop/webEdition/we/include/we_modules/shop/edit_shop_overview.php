@@ -73,12 +73,12 @@ $stat = g_l('modules_shop', '[umsatzgesamt]') . ": <b>" . we_base_util::formatNu
 		array(
 			"headline" => g_l('modules_shop', '[month][' . $month . ']') . " " . $year,
 			"html" => $info,
-			'space' => 170
+			'space' => we_html_multiIconBox::SPACE_BIG
 		),
 		array(
 			"headline" => g_l('modules_shop', '[stat]'),
 			"html" => $stat,
-			'space' => 170
+			'space' => we_html_multiIconBox::SPACE_BIG
 		)
 	);
 

@@ -68,7 +68,7 @@ echo STYLESHEET;
 			echo we_html_element::htmlIFrame('preview', $we_doc->Path);
 		} else {
 			$parts = array(
-				array("headline" => g_l('weClass', '[preview]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[no_preview_available]'), we_html_tools::TYPE_ALERT), 'space' => 120)
+				array("headline" => g_l('weClass', '[preview]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[no_preview_available]'), we_html_tools::TYPE_ALERT), 'space' => we_html_multiIconBox::SPACE_MED)
 			);
 
 			if($we_doc->ID){
@@ -77,7 +77,7 @@ echo STYLESHEET;
 			} else {
 				$link = g_l('weClass', '[file_not_saved]');
 			}
-			$parts[] = array("headline" => g_l('weClass', '[download]'), "html" => $link, 'space' => 120);
+			$parts[] = array("headline" => g_l('weClass', '[download]'), "html" => $link, 'space' => we_html_multiIconBox::SPACE_MED);
 
 			echo we_html_multiIconBox::getHTML('weOtherDocPrev', $parts, 20);
 		}
