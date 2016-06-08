@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_shopField($attribs){
+function we_tag_shopField(array $attribs){
 	if(($foo = attributFehltError($attribs, array("name" => false, "reference" => false, "shopname" => false), __FUNCTION__))){
 		return $foo;
 	}

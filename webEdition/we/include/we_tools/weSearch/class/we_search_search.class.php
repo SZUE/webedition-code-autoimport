@@ -77,17 +77,17 @@ class we_search_search extends we_search_base{
 
 	function searchProperties($whichSearch, $model){
 		$DB_WE = new DB_WE();
-		$workspaces = $_result = $versionsFound = $saveArrayIds = array();
+		$workspaces = $result = $versionsFound = $saveArrayIds = array();
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0; // will be obsolete
 		$searchFields = $model->getProperty('currentSearchFields');
 		$searchText = $model->getProperty('currentSearch');
 		$location = $model->getProperty('currentLocation');
 		$folderID = $model->getProperty('currentFolderID');
-		$_order = $model->getProperty('currentOrder');
-		$_view = $model->getProperty('currentSetView');
-		$_searchstart = $model->getProperty('currentSearchstart');
-		$_anzahl = $model->getProperty('currentAnzahl');
-		$_tables = $model->getProperty('currentSearchTables');
+		$order = $model->getProperty('currentOrder');
+		$view = $model->getProperty('currentSetView');
+		$searchstart = $model->getProperty('currentSearchstart');
+		$anzahl = $model->getProperty('currentAnzahl');
+		$tables = $model->getProperty('currentSearchTables');
 		$searchForField = $model->getProperty('currentSearchForField');
 		$searchForContentType = $model->getProperty('currentSearchForContentType');
 
@@ -98,20 +98,20 @@ class we_search_search extends we_search_base{
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1)); //init activTab like this
 
 		if(isset($searchText[0]) && substr($searchText[0], 0, 4) === 'exp:'){
-			$_result = $this->View->searchclassExp->getSearchResults($searchText[0], $_tables);
-			if($_result){
-				foreach($_result as $k => $v){
+			$result = $this->View->searchclassExp->getSearchResults($searchText[0], $tables);
+			if($result){
+				foreach($result as $k => $v){
 					foreach($v as $key => $val){
 						switch($key){
 							case "Table":
 							case 'ID':
-								unset($_result[$k][$key]);
-								$_result[$k]['doc' . $key] = $val;
+								unset($result[$k][$key]);
+								$result[$k]['doc' . $key] = $val;
 						}
 					}
-					$_result[$k]['SiteTitle'] = "";
+					$result[$k]['SiteTitle'] = "";
 				}
-				$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($_result);
+				$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = count($result);
 			}
 		} elseif(
 			($model->IsFolder != 1 && ( ($whichSearch === we_search_view::SEARCH_DOCS && $tab === 1) || ($whichSearch === we_search_view::SEARCH_TMPL && $tab === 2) || ($whichSearch === we_search_view::SEARCH_ADV && $tab === 3)) || ($whichSearch === we_search_view::SEARCH_MEDIA && $tab === 5) ) ||
@@ -122,41 +122,41 @@ class we_search_search extends we_search_base{
 			$this->createTempTable();
 			$op = ($whichSearch === we_search_view::SEARCH_ADV || $whichSearch === we_search_view::SEARCH_MEDIA ? ' AND ' : ' OR ');
 
-			foreach($_tables as $_table){
+			foreach($tables as $table){
 				$where = '';
 				$where_OR = array();
-				$this->settable($_table);
+				$this->settable($table);
 
-				if(!defined('OBJECT_TABLE') || (defined('OBJECT_TABLE') && $_table != OBJECT_TABLE)){
-					$workspaces = get_ws($_table, true);
+				if(!defined('OBJECT_TABLE') || (defined('OBJECT_TABLE') && $table != OBJECT_TABLE)){
+					$workspaces = get_ws($table, true);
 				}
 
-				for($i = 0; $i < count($searchFields); $i++){
+				foreach($searchFields as $i => $curField){
 					$w = '';
 					$done = false;
-					$searchString = ($whichSearch === we_search_view::SEARCH_MEDIA && substr($searchFields[$i], 0, 6) === 'meta__' && $searchText[$i] === '' && $location[$i] === 'IS') ? '##EMPTY##' : $searchText[$i];
+					$searchString = ($whichSearch === we_search_view::SEARCH_MEDIA && substr($curField, 0, 6) === 'meta__' && $searchText[$i] === '' && $location[$i] === 'IS') ? '##EMPTY##' : $searchText[$i];
 
 					if(!empty($searchString)){
-						if(!in_array($searchFields[$i], array('Status', 'Speicherart', 'HasReferenceToID'))){
+						if(!in_array($curField, array('Status', 'Speicherart', 'HasReferenceToID'))){
 							$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
 						}
 
-						if($_table === FILE_TABLE && $whichSearch === we_search_view::SEARCH_MEDIA){
+						if($table === FILE_TABLE && $whichSearch === we_search_view::SEARCH_MEDIA){
 							$done = true;
-							switch($searchFields[$i]){
+							switch($curField){
 								case 'keyword':
 									foreach((array_filter($searchForField, function($var){
 										return ($var == 1);
 									})) as $field => $v){
 										switch($field){
 											case "title": // IMPORTANT: in media search options are generally AND-linked, but not "search in Title, Text, Meta!
-												$where_OR [] = ($this->searchInTitle($searchString, $_table)? : '');
+												$where_OR [] = ($this->searchInTitle($searchString, $table)? : '');
 												break;
 											case "text":
 												$where_OR [] = 'WETABLE.`Text` LIKE "%' . $DB_WE->escape(trim($searchString)) . '%" ';
 												break;
 											case "meta":
-												$where_OR [] = ($this->searchInAllMetas($searchString, $_table) ? : '');
+												$where_OR [] = ($this->searchInAllMetas($searchString, $table) ? : '');
 												break;
 										}
 									}
@@ -188,7 +188,7 @@ class we_search_search extends we_search_base{
 									$where .= ($where ? ' AND ' : '') . 'WETABLE.ContentType IN (' . $contentTypes . ')';
 									break;
 								case 'IsUsed':
-									$where .= $this->searchMediaLinks($searchString, $_view !== we_search_view::VIEW_ICONS, '', true);
+									$where .= $this->searchMediaLinks($searchString, $view !== we_search_view::VIEW_ICONS, '', true);
 									break;
 								case 'IsProtected':
 									switch($searchString){
@@ -202,19 +202,19 @@ class we_search_search extends we_search_base{
 									break;
 								default:
 									$done = false;
-									if(substr($searchFields[$i], 0, 6) === 'meta__'){
-										$where .= $this->searchInMeta($searchString, substr($searchFields[$i], 6), $location[$i], $_table);
+									if(substr($curField, 0, 6) === 'meta__'){
+										$where .= $this->searchInMeta($searchString, substr($curField, 6), $location[$i], $table);
 										$done = true;
 									}
 							}
 						}
 
 						if(!$done){
-							switch($searchFields[$i]){
+							switch($curField){
 								case 'Content':
 									$objectTable = defined('OBJECT_TABLE') ? OBJECT_TABLE : '';
-									if($objectTable == '' || $_table != $objectTable){
-										$w = $this->searchContent($searchString, $_table);
+									if($objectTable == '' || $table != $objectTable){
+										$w = $this->searchContent($searchString, $table);
 										if($where == '' && $w == ''){
 											$where .= ' AND 0 ';
 										} elseif($where == '' && $w != ''){
@@ -228,12 +228,12 @@ class we_search_search extends we_search_base{
 									$where .= $this->searchModifier($searchString);
 									break;
 								case 'allModsIn':
-									if($_table == VERSIONS_TABLE){
+									if($table == VERSIONS_TABLE){
 										$where .= $this->searchModFields($searchString);
 									}
 									break;
 								case 'Title':
-									$w = $this->searchInTitle($searchString, $_table);
+									$w = $this->searchInTitle($searchString, $table);
 									if($where == '' && $w == ''){
 										$where .= ' AND 0 ';
 									} elseif($where == '' && $w != ''){
@@ -244,12 +244,12 @@ class we_search_search extends we_search_base{
 									break;
 								case 'Status':
 								case 'Speicherart':
-									switch($_table){
+									switch($table){
 										case VERSIONS_TABLE:
-											$w = $this->getStatusFiles($searchString, $_table);
+											$w = $this->getStatusFiles($searchString, $table);
 
-											$docTableChecked = (in_array(FILE_TABLE, $_tables)) ? true : false;
-											$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $_tables))) ? true : false;
+											$docTableChecked = (in_array(FILE_TABLE, $tables)) ? true : false;
+											$objTableChecked = (defined('OBJECT_FILES_TABLE') && (in_array(OBJECT_FILES_TABLE, $tables))) ? true : false;
 											if($objTableChecked && $docTableChecked){
 												$w .= ' AND (v.documentTable IN ("' . stripTblPrefix(FILE_TABLE) . '","' . stripTblPrefix(OBJECT_FILES_TABLE) . '")) ';
 											} elseif($docTableChecked){
@@ -260,25 +260,25 @@ class we_search_search extends we_search_base{
 											break;
 										case FILE_TABLE:
 										case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-											$w = $this->getStatusFiles($searchString, $_table);
+											$w = $this->getStatusFiles($searchString, $table);
 									}
 									$where .= ($where ? ' AND ' : '') . $w;
 									break;
 								case 'CreatorName':
 								case 'WebUserName':
-									if(isset($searchFields[$i]) && isset($location[$i])){
-										$where .= $this->searchSpecial($searchString, $searchFields[$i], $location[$i]);
+									if(isset($curField) && isset($location[$i])){
+										$where .= $this->searchSpecial($searchString, $curField, $location[$i]);
 									}
 									break;
 								case 'temp_category':
-									$where .= $this->searchCategory($searchString, $_table, $searchFields[$i]);
+									$where .= $this->searchCategory($searchString, $table, $curField);
 									break;
 								case 'HasReferenceToID':
-									$where .=!$searchString ? 1 : (($searchId = path_to_id($searchString)) ? $this->searchHasReferenceToId($searchId, $_table) : 0);
+									$where .=$searchString ? (($searchId = path_to_id($searchString)) ? $this->searchHasReferenceToId($searchId, $table) : 0) : '';
 									break;
 								default:
 									//if($whichSearch != "AdvSearch"){
-									$where .= ($where ? '' : 1 ) . $this->searchfor($searchString, $searchFields[$i], $location[$i], $_table);
+									$where .= $this->searchfor($searchString, $curField, $location[$i], $table);
 								//}
 							}
 						}
@@ -289,10 +289,10 @@ class we_search_search extends we_search_base{
 
 					if(isset($folderID) && ($folderID != '' && $folderID != 0)){
 						// FIXME: search for Text shoukd come without AND!!
-						$where = ' AND (' . ($whichSearch === we_search_view::SEARCH_DOCS || $whichSearch === we_search_view::SEARCH_TMPL ? '1 ' : '') . $where . ')' . we_search_search::ofFolderAndChildsOnly($folderID, $_table);
+						$where = ' AND (' . ($whichSearch === we_search_view::SEARCH_DOCS || $whichSearch === we_search_view::SEARCH_TMPL ? '1 ' : '') . $where . ')' . we_search_search::ofFolderAndChildsOnly($folderID, $table);
 					}
 
-					if($_table === VERSIONS_TABLE){
+					if($table === VERSIONS_TABLE){
 						$workspacesTblFile = get_ws(FILE_TABLE, true);
 						if(defined('OBJECT_FILES_TABLE')){
 							$workspacesObjFile = get_ws(OBJECT_FILES_TABLE, true);
@@ -300,7 +300,7 @@ class we_search_search extends we_search_base{
 					}
 
 					if($workspaces){
-						$where = ' (' . $where . ')' . we_search_search::ofFolderAndChildsOnly($workspaces, $_table);
+						$where = ' (' . $where . ')' . we_search_search::ofFolderAndChildsOnly($workspaces, $table);
 					}
 
 					$whereQuery = $where;
@@ -308,7 +308,7 @@ class we_search_search extends we_search_base{
 					//query for restrict users for FILE_TABLE, VERSIONS_TABLE AND OBJECT_FILES_TABLE
 					$restrictUserQuery = ' AND (WETABLE.RestrictOwners IN(0,' . intval($_SESSION["user"]["ID"]) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Owners))';
 
-					switch($_table){
+					switch($table){
 						case FILE_TABLE:
 							if($where_OR){
 								$whereQuery .= ' AND (' . implode(' OR ', $where_OR) . ') ';
@@ -330,10 +330,10 @@ class we_search_search extends we_search_base{
 							$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION["user"]["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Owners))';
 							$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION["user"]["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Owners))';
 							if(!empty($workspacesTblFile)){
-								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= ($where = ' ' . we_search_search::ofFolderAndChildsOnly($workspacesTblFile[0], $_table));
+								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= ($where = ' ' . we_search_search::ofFolderAndChildsOnly($workspacesTblFile[0], $table));
 							}
 							if(isset($workspacesObjFile) && !empty($workspacesObjFile)){
-								$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] .= ($where = " " . we_search_search::ofFolderAndChildsOnly($workspacesObjFile[0], $_table));
+								$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] .= ($where = " " . we_search_search::ofFolderAndChildsOnly($workspacesObjFile[0], $table));
 							}
 
 							/* 	if(!$isCheckedFileTable && $isCheckedObjFileTable){
@@ -350,7 +350,7 @@ class we_search_search extends we_search_base{
 					}
 
 					$this->setwhere($whereQuery);
-					$this->insertInTempTable($whereQuery, $_table);
+					$this->insertInTempTable($whereQuery, $table);
 
 					// when MediaSearch add attrib_alt, attrib_title, IsUsed to SEARCH_TEMP_TABLE
 					if($whichSearch === we_search_view::SEARCH_MEDIA){
@@ -359,7 +359,7 @@ class we_search_search extends we_search_base{
 				}
 			}
 
-			$this->selectFromTempTable($_searchstart, $_anzahl, $_order);
+			$this->selectFromTempTable($searchstart, $anzahl, $order);
 
 			while($this->next_record()){
 				if(!empty($this->Record['VersionID'])){
@@ -373,26 +373,26 @@ class we_search_search extends we_search_base{
 				if(!isset($saveArrayIds[$this->Record['ContentType']][$this->Record['docID']])){
 					$saveArrayIds[$this->Record['ContentType']][$this->Record['docID']] = $this->Record['docID'];
 
-					$_result[] = array_merge(array('Table' => $_table), array('foundInVersions' => ""), $this->Record);
+					$result[] = array_merge(array('Table' => $table), array('foundInVersions' => ""), $this->Record);
 				}
 			}
 
 			foreach($versionsFound as $k => $v){
-				foreach($_result as $key => $val){
-					if(isset($_result[$key]['foundInVersions']) && isset($_result[$key]['docID']) && $_result[$key]['docID'] == $v[1] && isset($_result[$key]['ContentType']) && $_result[$key]['ContentType'] == $v[0]){
-						if($_result[$key]['foundInVersions'] != ""){
-							$_result[$key]['foundInVersions'] .= ",";
+				foreach($result as $key => $val){
+					if(isset($result[$key]['foundInVersions']) && isset($result[$key]['docID']) && $result[$key]['docID'] == $v[1] && isset($result[$key]['ContentType']) && $result[$key]['ContentType'] == $v[0]){
+						if($result[$key]['foundInVersions'] != ""){
+							$result[$key]['foundInVersions'] .= ",";
 						}
-						$_result[$key]['foundInVersions'] .= $v[2];
+						$result[$key]['foundInVersions'] .= $v[2];
 					}
 				}
 
-				$this->selectFromTempTable($_searchstart, $_anzahl, $_order);
+				$this->selectFromTempTable($searchstart, $anzahl, $order);
 				while($this->next_record()){
 					if(!isset($saveArrayIds[$this->Record['ContentType']][$this->Record['docID']])){
 						$saveArrayIds[$this->Record['ContentType']][$this->Record['docID']] = $this->Record['docID'];
-						$_result[] = array_merge(array(
-							'Table' => $_table
+						$result[] = array_merge(array(
+							'Table' => $table
 							), $this->Record);
 					}
 				}
@@ -405,32 +405,29 @@ class we_search_search extends we_search_base{
 			return array();
 		}
 
-		foreach($_result as $k => $v){
-			$_result[$k]["Description"] = '';
+		foreach($result as $k => $v){
+			$result[$k]["Description"] = '';
 
-			switch(addTblPrefix($_result[$k]['docTable'])){
+			switch(addTblPrefix($result[$k]['docTable'])){
 				case FILE_TABLE:
-					if($_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-						$DB_WE->query('SELECT l.DID, c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($_result[$k]["docID"]) . ' AND l.nHash=x\'' . md5('Description') . '\' AND l.DocumentTable="' . FILE_TABLE . '"');
-						while($DB_WE->next_record()){
-							$_result[$k]['Description'] = $DB_WE->f('Dat');
-						}
-					} else {
-						$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($_result[$k]["docID"]) . ' AND docTable="tblFile" AND Active = 1', '', $DB_WE);
-						if(!empty($tempDoc)){
-							$tempDoc = we_unserialize($tempDoc);
-							if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
-								$_result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
-							}
+					if($result[$k]['Published'] >= $result[$k]['ModDate'] && $result[$k]['Published'] != 0){
+						$result[$k]['Description'] = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($result[$k]["docID"]) . ' AND l.nHash=x\'' . md5('Description') . '\' AND l.DocumentTable="' . FILE_TABLE . '"', '', $DB_WE);
+						break;
+					}
+					$tempDoc = f('SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID =' . intval($result[$k]["docID"]) . ' AND docTable="tblFile" AND Active = 1', '', $DB_WE);
+					if(!empty($tempDoc)){
+						$tempDoc = we_unserialize($tempDoc);
+						if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat'] != ''){
+							$result[$k]["Description"] = $tempDoc[0]['elements']['Description']['dat'];
 						}
 					}
 					break;
 				default:
-					$_result[$k]['Description'] = '';
+					$result[$k]['Description'] = '';
 			}
 		}
 
-		return $this->View->makeContent($_result, $_view, $whichSearch);
+		return $this->View->makeContent($result, $view, $whichSearch);
 	}
 
 	function getModFields(){
@@ -609,38 +606,38 @@ class we_search_search extends we_search_base{
 	}
 
 	function getDoctypes(){
-		$_db = new DB_WE();
+		$db = new DB_WE();
 
-		$dtq = we_docTypes::getDoctypeQuery($_db);
-		$_db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
-		return $_db->getAllFirst(false);
+		$dtq = we_docTypes::getDoctypeQuery($db);
+		$db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
+		return $db->getAllFirst(false);
 	}
 
 	private function searchInTitle($keyword, $table){
-		$_db2 = new DB_WE();
+		$db2 = new DB_WE();
 		//first check published documents
 		$titles = array();
 
 		//check unpublished documents
-		$_db2->query('SELECT DocumentID, DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE docTable="tblFile" AND Active=1 AND DocumentObject LIKE "%' . $_db2->escape(trim($keyword)) . '%"');
-		while($_db2->next_record()){
-			$tempDoc = we_unserialize($_db2->f('DocumentObject'));
+		$db2->query('SELECT DocumentID, DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE docTable="tblFile" AND Active=1 AND DocumentObject LIKE "%' . $db2->escape(trim($keyword)) . '%"');
+		while($db2->next_record()){
+			$tempDoc = we_unserialize($db2->f('DocumentObject'));
 			if(!empty($tempDoc[0]['elements']['Title'])){
 				$keyword = str_replace(array('\_', '\%'), array('_', '%'), $keyword);
 				if(stristr($tempDoc[0]['elements']['Title']['dat'], $keyword)){
-					$titles[] = $_db2->f('DocumentID');
+					$titles[] = $db2->f('DocumentID');
 				}
 			}
 		}
 
-		return ' (WETABLE.ID IN (SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.nHash=x\'' . md5("Title") . '\' AND c.Dat LIKE "%' . $_db2->escape(trim($keyword)) . '%" AND l.DocumentTable="' . stripTblPrefix($table) . '") ' . ($titles ? ' OR WETABLE.ID IN (' . implode(',', $titles) . ')' : '') . ' )';
+		return ' (WETABLE.ID IN (SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.nHash=x\'' . md5("Title") . '\' AND c.Dat LIKE "%' . $db2->escape(trim($keyword)) . '%" AND l.DocumentTable="' . stripTblPrefix($table) . '") ' . ($titles ? ' OR WETABLE.ID IN (' . implode(',', $titles) . ')' : '') . ' )';
 	}
 
 	function searchCategory($keyword, $table){
 		if($table == TEMPLATES_TABLE){
 			return 'AND 0 ';
 		}
-		$_db = new DB_WE();
+		$db = new DB_WE();
 		switch($table){
 			case FILE_TABLE:
 				$field = 'temp_category';
@@ -662,29 +659,29 @@ class we_search_search extends we_search_base{
 		}
 		$res = $res2 = array();
 
-		$_db->query($query);
+		$db->query($query);
 
 		switch($table){
 			default:
-				while($_db->next_record()){
-					$res[$_db->f('ID')] = $_db->f($field);
+				while($db->next_record()){
+					$res[$db->f('ID')] = $db->f($field);
 				}
 				break;
 			case FILE_TABLE:
-				while($_db->next_record()){
-					$res[$_db->f('ID')] = ($_db->f($field) ? : $_db->f($field2));
+				while($db->next_record()){
+					$res[$db->f('ID')] = ($db->f($field) ? : $db->f($field2));
 				}
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				//search in public objects first and write them in the array
-				while($_db->next_record()){
-					$res[$_db->f('ID')] = $_db->f($field);
+				while($db->next_record()){
+					$res[$db->f('ID')] = $db->f($field);
 				}
 				//search in unpublic objects and write them in the array
 				$query2 = 'SELECT DocumentObject  FROM ' . TEMPORARY_DOC_TABLE . ' WHERE docTable="tblObjectFiles" AND Active=1';
-				$_db->query($query2);
-				while($_db->next_record()){
-					$tempObj = we_unserialize($_db->f('DocumentObject'));
+				$db->query($query2);
+				while($db->next_record()){
+					$tempObj = we_unserialize($db->f('DocumentObject'));
 					if(!empty($tempObj[0]['Category'])){
 						if(!array_key_exists($tempObj[0]['ID'], $res)){
 							$res[$tempObj[0]['ID']] = $tempObj[0]['Category'];
@@ -722,7 +719,7 @@ class we_search_search extends we_search_base{
 	}
 
 	function searchSpecial($keyword, $searchFields, $searchlocation){
-		$_db = new DB_WE();
+		$db = new DB_WE();
 		switch($searchFields){
 			case 'CreatorName':
 				$_table = USER_TABLE;
@@ -739,36 +736,36 @@ class we_search_search extends we_search_base{
 		if(isset($searchlocation)){
 			switch($searchlocation){
 				case 'END' :
-					$searching = ' LIKE "%' . $_db->escape($keyword) . '" ';
+					$searching = ' LIKE "%' . $db->escape($keyword) . '" ';
 					break;
 				case 'START' :
-					$searching = ' LIKE "' . $_db->escape($keyword) . '%" ';
+					$searching = ' LIKE "' . $db->escape($keyword) . '%" ';
 					break;
 				case 'IS' :
-					$searching = " = '" . $_db->escape($keyword) . "' ";
+					$searching = " = '" . $db->escape($keyword) . "' ";
 					break;
 				case 'IN':
 					$searching = ' IN ("' . implode('","', array_map('trim', explode(',', $keyword))) . '") ';
 					break;
 				case 'LO' :
-					$searching = ' < "' . $_db->escape($keyword) . '" ';
+					$searching = ' < "' . $db->escape($keyword) . '" ';
 					break;
 				case 'LEQ' :
-					$searching = ' <= "' . $_db->escape($keyword) . '" ';
+					$searching = ' <= "' . $db->escape($keyword) . '" ';
 					break;
 				case 'HI' :
-					$searching = ' > "' . $_db->escape($keyword) . '" ';
+					$searching = ' > "' . $db->escape($keyword) . '" ';
 					break;
 				case 'HEQ' :
-					$searching = ' >= "' . $_db->escape($keyword) . '" ';
+					$searching = ' >= "' . $db->escape($keyword) . '" ';
 					break;
 				default :
-					$searching = ' LIKE "%' . $_db->escape($keyword) . '%" ';
+					$searching = ' LIKE "%' . $db->escape($keyword) . '%" ';
 					break;
 			}
 		}
 
-		$userIDs = $_db->getAllq('SELECT ID FROM ' . $_db->escape($_table) . ' WHERE ' . $field . ' ' . $searching, true);
+		$userIDs = $db->getAllq('SELECT ID FROM ' . $db->escape($_table) . ' WHERE ' . $field . ' ' . $searching, true);
 
 		return ' AND ' . ($userIDs ? $fieldFileTable . ' IN (' . implode(',', $userIDs) . ')' : ' 0 ');
 	}
@@ -781,7 +778,7 @@ class we_search_search extends we_search_base{
 		if($table !== FILE_TABLE){// FIXME: actually no meta search on Versions or unpublished docs!!
 			return;
 		}
-		$_db = new DB_WE();
+		$db = new DB_WE();
 		$names = array();
 		foreach($this->getFieldsMeta() as $k => $v){
 			if($v[0] && $v[1]){
@@ -792,8 +789,8 @@ class we_search_search extends we_search_base{
 			return;
 		}
 		$n = array_map('md5', $names);
-		$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND (l.Name IN (x\'' . implode('\',x\'', $n) . '\') AND c.Dat LIKE "%' . $_db->escape($keyword) . '%")');
-		$IDs = $_db->getAll(true);
+		$db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND (l.Name IN (x\'' . implode('\',x\'', $n) . '\') AND c.Dat LIKE "%' . $db->escape($keyword) . '%")');
+		$IDs = $db->getAll(true);
 
 		return $IDs ? 'WETABLE.ID IN (' . implode(',', $IDs) . ')' : '0';
 	}
@@ -802,43 +799,43 @@ class we_search_search extends we_search_base{
 		if($table !== FILE_TABLE){// FIXME: actually no meta search on Versions or unpublished docs!!
 			return;
 		}
-		$_db = new DB_WE();
+		$db = new DB_WE();
 		$reverse = false;
 		if(isset($searchlocation)){
 			switch($searchlocation){
 				case 'END' :
-					$searching = ' LIKE "%' . $_db->escape($keyword) . '" ';
+					$searching = ' LIKE "%' . $db->escape($keyword) . '" ';
 					break;
 				case 'START' :
-					$searching = ' LIKE "' . $_db->escape($keyword) . '%" ';
+					$searching = ' LIKE "' . $db->escape($keyword) . '%" ';
 					break;
 				case 'IS' :
 					$reverse = $keyword === '##EMPTY##' ? : false;
-					$searching = " = '" . $_db->escape($keyword) . "' ";
+					$searching = " = '" . $db->escape($keyword) . "' ";
 					break;
 				case 'IN':
 					$searching = ' IN ("' . implode('","', array_map('trim', explode(',', $keyword))) . '") ';
 					break;
 				case 'LO' :
-					$searching = ' < "' . $_db->escape($keyword) . '" ';
+					$searching = ' < "' . $db->escape($keyword) . '" ';
 					break;
 				case 'LEQ' :
-					$searching = ' <= "' . $_db->escape($keyword) . '" ';
+					$searching = ' <= "' . $db->escape($keyword) . '" ';
 					break;
 				case 'HI' :
-					$searching = ' > "' . $_db->escape($keyword) . '" ';
+					$searching = ' > "' . $db->escape($keyword) . '" ';
 					break;
 				case 'HEQ' :
-					$searching = ' >= "' . $_db->escape($keyword) . '" ';
+					$searching = ' >= "' . $db->escape($keyword) . '" ';
 					break;
 				default :
-					$searching = ' LIKE "%' . $_db->escape(trim($keyword)) . '%" ';
+					$searching = ' LIKE "%' . $db->escape(trim($keyword)) . '%" ';
 					break;
 			}
 		}
 
-		$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.nHash=x\'' . md5($searchField) . '\' ' . ($reverse ? '' : 'AND c.Dat ' . $searching) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-		$IDs = $_db->getAll(true);
+		$db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.nHash=x\'' . md5($searchField) . '\' ' . ($reverse ? '' : 'AND c.Dat ' . $searching) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+		$IDs = $db->getAll(true);
 
 		return $IDs ? 'AND WETABLE.ID ' . ($reverse ? 'NOT' : '') . ' IN (' . implode(',', $IDs) . ')' : 'AND 0';
 	}
@@ -952,30 +949,30 @@ class we_search_search extends we_search_base{
 	}
 
 	function searchContent($keyword, $table){
-		$_db = new DB_WE();
+		$db = new DB_WE();
 		switch($table){
 			case FILE_TABLE:
-				$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.nHash!=x\'' . md5("completeData") . '\' AND l.DocumentTable="' . $_db->escape(stripTblPrefix(FILE_TABLE)) . '"');
-				$contents = $_db->getAll(true);
+				$db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.nHash!=x\'' . md5("completeData") . '\' AND l.DocumentTable="' . $db->escape(stripTblPrefix(FILE_TABLE)) . '"');
+				$contents = $db->getAll(true);
 
-				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $_db->escape(trim($keyword)) . '%" AND docTable="' . $this->db->escape(stripTblPrefix($table)) . '" AND Active=1');
-				$contents = array_unique(array_merge($contents, $_db->getAll(true)));
+				$db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $db->escape(trim($keyword)) . '%" AND docTable="' . $this->db->escape(stripTblPrefix($table)) . '" AND Active=1');
+				$contents = array_unique(array_merge($contents, $db->getAll(true)));
 
 				return ($contents ? ' WETABLE.ID IN(' . implode(',', $contents) . ')' : '');
 			case TEMPLATES_TABLE:
-				$_db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.nHash=x\'' . md5("data") . '\' AND l.DocumentTable="' . $_db->escape(stripTblPrefix(TEMPLATES_TABLE)) . '"');
-				$contents = $_db->getAll(true);
+				$db->query('SELECT l.DID FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE c.Dat LIKE "%' . $this->db->escape(trim($keyword)) . '%" AND l.nHash=x\'' . md5("data") . '\' AND l.DocumentTable="' . $db->escape(stripTblPrefix(TEMPLATES_TABLE)) . '"');
+				$contents = $db->getAll(true);
 
 				return ($contents ? ' WETABLE.ID IN(' . implode(',', $contents) . ')' : '');
 			case VERSIONS_TABLE:
 				//FIXME: versions are searched even if the field is not checked!
 				$contents = array();
 
-				$_db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE . ' WHERE documentElements!=""');
-				while($_db->next_record()){
-					$elements = we_unserialize((substr_compare($_db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
-							html_entity_decode(urldecode($_db->f('documentElements')), ENT_QUOTES) :
-							gzuncompress($_db->f('documentElements')))
+				$db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE . ' WHERE documentElements!=""');
+				while($db->next_record()){
+					$elements = we_unserialize((substr_compare($db->f('documentElements'), 'a%3A', 0, 4) == 0 ?
+							html_entity_decode(urldecode($db->f('documentElements')), ENT_QUOTES) :
+							gzuncompress($db->f('documentElements')))
 					);
 
 					if(is_array($elements)){
@@ -987,7 +984,7 @@ class we_search_search extends we_search_base{
 								default:
 									if(isset($v['dat']) &&
 										stristr((is_array($v['dat']) ? we_serialize($v['dat'], SERIALIZE_PHP) : $v['dat']), $keyword)){
-										$contents[] = $_db->f('ID');
+										$contents[] = $db->f('ID');
 									}
 							}
 						}
@@ -998,14 +995,14 @@ class we_search_search extends we_search_base{
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$Ids = $regs = array();
 
-				$_db->query('SELECT ID FROM ' . OBJECT_TABLE);
-				$_classes = $_db->getAll(true);
+				$db->query('SELECT ID FROM ' . OBJECT_TABLE);
+				$_classes = $db->getAll(true);
 
 				//published objects
 				foreach($_classes as $i){
 					$_obj_table = OBJECT_X_TABLE . intval($i);
 					//$_obj_table = strtolower($_obj_table);
-					$tableInfo = $_db->metadata($_obj_table);
+					$tableInfo = $db->metadata($_obj_table);
 					$fields = array();
 					for($c = 0; $c < count($tableInfo); $c++){
 						if(preg_match('/(.+?)_(.*)/', $tableInfo[$c]['name'], $regs)){
@@ -1023,15 +1020,15 @@ class we_search_search extends we_search_base{
 					}
 					$where = array();
 					foreach($fields as $v){
-						$where[] = $v['name'] . ' LIKE "%' . $_db->escape(trim($keyword)) . '%"';
+						$where[] = $v['name'] . ' LIKE "%' . $db->escape(trim($keyword)) . '%"';
 					}
 
-					$_db->query('SELECT OF_ID FROM ' . $_db->escape($_obj_table) . ' WHERE ' . implode(' OR ', $where));
-					$Ids = array_merge($Ids, $_db->getAll(true));
+					$db->query('SELECT OF_ID FROM ' . $db->escape($_obj_table) . ' WHERE ' . implode(' OR ', $where));
+					$Ids = array_merge($Ids, $db->getAll(true));
 				}
 				//only saved objects
-				$_db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $_db->escape(trim($keyword)) . '%" AND docTable="tblObjectFiles" AND Active=1');
-				$Ids = array_merge($Ids, $_db->getAll(true));
+				$db->query('SELECT DocumentID FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentObject LIKE "%' . $db->escape(trim($keyword)) . '%" AND docTable="tblObjectFiles" AND Active=1');
+				$Ids = array_merge($Ids, $db->getAll(true));
 
 				return ($Ids ? ' WETABLE.ID IN (' . implode(',', $Ids) . ')' : '');
 		}

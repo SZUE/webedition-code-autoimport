@@ -22,6 +22,6 @@ function we_parse_tag_ifNotTop($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifTop', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotTop($attribs){
+function we_tag_ifNotTop(array $attribs){
 	return !we_tag('ifTop', $attribs);
 }

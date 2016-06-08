@@ -46,7 +46,7 @@ unset(' . $unq . ');?>';
  * @param array $attribs
  * @param string $content
  */
-function we_tag_xmlnode($attribs){
+function we_tag_xmlnode(array $attribs){
 	if(($foo = attributFehltError($attribs, "xpath", __FUNCTION__))){
 		echo $foo;
 		return false;

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_img($attribs){
+function we_tag_img(array $attribs){
 	if(!($tagId = weTag_getAttribute('id', $attribs, 0, we_base_request::INT)) && ($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}

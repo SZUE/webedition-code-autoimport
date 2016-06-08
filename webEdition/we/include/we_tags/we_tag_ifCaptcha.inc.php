@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifCaptcha($attribs){
+function we_tag_ifCaptcha(array $attribs){
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	$formname = weTag_getAttribute('formname', $attribs, '', we_base_request::STRING);
 

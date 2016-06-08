@@ -22,6 +22,6 @@ function we_parse_tag_ifNotReturnPage($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifReturnPage', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotReturnPage($attribs){
+function we_tag_ifNotReturnPage(array $attribs){
 	return !we_tag('ifReturnPage', $attribs);
 }

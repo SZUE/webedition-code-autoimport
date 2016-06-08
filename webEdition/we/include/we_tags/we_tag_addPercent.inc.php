@@ -27,7 +27,7 @@ function we_parse_tag_addPercent($a, $content, array $attribs){
 	return '<?php ' . we_tag_tagParser::printTag('addPercent', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('addPercent', $attribs) . ');?>';
 }
 
-function we_tag_addPercent($attribs, $content){
+function we_tag_addPercent(array $attribs, $content){
 	//internal Attribute
 	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		case 'start':

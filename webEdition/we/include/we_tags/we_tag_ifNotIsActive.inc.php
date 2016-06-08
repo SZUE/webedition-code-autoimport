@@ -22,6 +22,6 @@ function we_parse_tag_ifNotIsActive($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifIsActive', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotIsActive($attribs){
+function we_tag_ifNotIsActive(array $attribs){
 	return !we_tag('ifIsActive', $attribs);
 }

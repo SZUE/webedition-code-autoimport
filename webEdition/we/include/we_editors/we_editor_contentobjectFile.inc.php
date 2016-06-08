@@ -92,7 +92,7 @@ echo STYLESHEET;
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 				$_msg = '';
 			}
-			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30, '', -1, '', '', false));
+			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30));
 		}
 		echo we_html_element::htmlHidden("we_complete_request", 1) .
 		$yuiSuggest->getYuiJs();

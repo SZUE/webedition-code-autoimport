@@ -111,7 +111,7 @@ function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
 	return -1;
 }
 
-function we_tag_ifPosition($attribs){
+function we_tag_ifPosition(array $attribs){
 	//	content is not needed in this tag
 	//Hack for linklist
 	if(isset($GLOBALS['we']['ll'])){

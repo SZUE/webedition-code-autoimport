@@ -143,7 +143,7 @@ abstract class we_customer_add{
 		$add_button = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort')") . we_html_element::htmlDiv(array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[add_sort_group]'));
 		$_parts[] = array('html' => $add_button);
 
-		$sort_code = we_html_multiIconBox::getHTML("", $_parts, 30, $_buttons, -1, "", "", false, "", "", 459) .
+		$sort_code = we_html_multiIconBox::getHTML("", $_parts, 30, $_buttons) .
 				we_html_element::htmlComment("hiddens start") .
 				we_html_element::htmlHiddens(array(
 					"pnt" => "sort_admin",

@@ -24,6 +24,7 @@ CREATE TABLE ###TBLPREFIX###tblTemplates (
   CacheType enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),
+	UNIQUE KEY Path(Path),
   KEY ParentID (ParentID,Filename(3)),
   KEY MasterTemplateID (MasterTemplateID),
   KEY IncludedTemplates (IncludedTemplates)

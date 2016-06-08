@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_sidebar($attribs, $content){
+function we_tag_sidebar(array $attribs, $content){
 	if(SIDEBAR_DISABLED || (we_tag('ifNotEditmode') && !defined('WE_SIDEBAR'))){
 		return '';
 	}

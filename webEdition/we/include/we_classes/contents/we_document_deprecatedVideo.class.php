@@ -26,9 +26,9 @@ class we_document_deprecatedVideo extends we_document_video{
 
 	public function getPropertyPage(){
 		return we_html_multiIconBox::getHTML('PropertyPage', array(
-			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => 140),
-			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsProtected(), 'space' => 140),
-			array('icon' => 'default.gif', 'headline' => g_l('weClass', '[other]'), 'html' => $this->formOther(), 'space' => 140)));
+			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2),
+			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2),
+			array('icon' => 'default.gif', 'headline' => g_l('weClass', '[other]'), 'html' => $this->formOther(), 'space' => we_html_multiIconBox::SPACE_MED2)));
 	}
 
 }

@@ -26,7 +26,7 @@ function we_parse_tag_sessionLogout($attribs, $content){
 	return '<?php printElement(' . we_tag_tagParser::printTag('sessionLogout', $attribs) . ');?>' . $content . '</a>';
 }
 
-function we_tag_sessionLogout($attribs, $content){
+function we_tag_sessionLogout(array $attribs, $content){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
 	}

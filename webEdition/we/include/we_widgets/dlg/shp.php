@@ -83,17 +83,17 @@ $parts = array(
 	array(
 		"headline" => g_l('cockpit', '[shop_dashboard][kpi]'),
 		"html" => $oDbTableType,
-		'space' => 80
+		'space' => we_html_multiIconBox::SPACE_MED
 	),
 	array(
 		"headline" => g_l('cockpit', '[shop_dashboard][revenue_target]'),
 		"html" => we_html_element::htmlDiv(array("style" => "display:block;"), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0) . "&nbsp;&euro;", '', "left", "defaultfont")),
-		'space' => 80
+		'space' => we_html_multiIconBox::SPACE_MED
 	),
 	array(
 		"headline" => g_l('cockpit', '[date]'),
 		"html" => $oSctDate->getHTML(),
-		'space' => 80
+		'space' => we_html_multiIconBox::SPACE_MED
 	),
 	array(
 		"headline" => g_l('cockpit', '[display]'),
@@ -106,7 +106,7 @@ $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javasc
 $cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-$sTblWidget = we_html_multiIconBox::getHTML("shpProps", $parts, 30, $buttons, -1, "", "", "", "Shop", "", 390);
+$sTblWidget = we_html_multiIconBox::getHTML("shpProps", $parts, 30, $buttons, -1, "", "", "", "Shop");
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]'), '', '', STYLESHEET .
 	$jsFile .

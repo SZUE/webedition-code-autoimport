@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_title($attribs, $content){
+function we_tag_title(array $attribs, $content){
 	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
 	$prefix = weTag_getAttribute('prefix', $attribs, '', we_base_request::RAW_CHECKED);
 	$suffix = weTag_getAttribute('suffix', $attribs, '', we_base_request::RAW_CHECKED);

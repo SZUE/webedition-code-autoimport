@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_categorySelect($attribs, $content){
+function we_tag_categorySelect(array $attribs, $content){
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	$isuserinput = empty($name);
 	$name = $isuserinput ? 'we_ui_' . $GLOBALS['WE_FORM'] . '_categories' : $name;

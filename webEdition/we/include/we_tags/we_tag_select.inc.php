@@ -27,7 +27,7 @@ function we_parse_tag_select($attribs, $content){
 		. 'printElement(' . we_tag_tagParser::printTag('select', $attribs, '$we_select_content', false, true) . ');?>';
 }
 
-function we_tag_select($attribs, $content){
+function we_tag_select(array $attribs, $content){
 	if(($foo = attributFehltError($attribs, 'name', __FUNCTION__))){
 		return $foo;
 	}

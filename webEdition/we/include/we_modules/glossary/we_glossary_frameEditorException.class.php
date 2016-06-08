@@ -40,7 +40,7 @@ class we_glossary_frameEditorException extends we_glossary_frameEditor{
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 
 		return self::buildBody($weGlossaryFrames, we_html_element::jsElement('top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=glossary_view_exception&cmdid=' . $cmdid . '";
-top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=glossary_view_exception&cmdid=' . $cmdid . '"') . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties(), 30, '', -1, '', '', false)));
+top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=glossary_view_exception&cmdid=' . $cmdid . '"') . we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties(), 30)));
 	}
 
 	private function getHTMLTabProperties(){
@@ -55,7 +55,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			array(
 				"headline" => g_l('modules_glossary', '[exception]'),
 				"html" => $content,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 		));
 	}
 

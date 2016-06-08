@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_docType($attribs){
+function we_tag_docType(array $attribs){
 	switch(weTag_getAttribute('doc', $attribs, '', we_base_request::STRING)){
 		case "self" :
 			if(!empty($GLOBALS['we_doc']->DocType)){

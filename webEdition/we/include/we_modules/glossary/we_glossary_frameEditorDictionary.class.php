@@ -42,7 +42,7 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 
 		return self::buildBody($weGlossaryFrames, we_html_element::jsElement('top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edheader&cmd=view_dictionary&cmdid=' . $cmdid . '";' .
 					'top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=glossary&pnt=edfooter&cmd=view_dictionary&cmdid=' . $cmdid . '"') .
-				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties(), 30, '', -1, '', '', false))
+				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties(), 30))
 		);
 	}
 
@@ -58,7 +58,7 @@ class we_glossary_frameEditorDictionary extends we_glossary_frameEditor{
 			array(
 				"headline" => g_l('modules_glossary', '[dictionary]'),
 				"html" => $content,
-				'space' => 120
+				'space' => we_html_multiIconBox::SPACE_MED
 			)
 		);
 	}

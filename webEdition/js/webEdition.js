@@ -246,7 +246,7 @@ function we_sbmtFrm(target, url, source) {
 	}
 
 	if (source) {
-		if (source.we_submitForm) {
+		if (source.we_submitForm !== undefined && source.we_submitForm) {
 			return source.we_submitForm(target.name, url);
 		}
 		if (source.contentWindow && source.contentWindow.we_submitForm) {

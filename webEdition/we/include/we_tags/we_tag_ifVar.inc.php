@@ -42,7 +42,7 @@ function _we_tag_ifVar_op($operator, $first, $match){
 	}
 }
 
-function we_tag_ifVar($attribs){
+function we_tag_ifVar(array $attribs){
 	if(($foo = attributFehltError($attribs, array('name' => false, 'match' => true), __FUNCTION__))){
 		echo $foo;
 		return false;

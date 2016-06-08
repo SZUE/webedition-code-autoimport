@@ -78,7 +78,7 @@ if(permissionhandler::hasPerm('administrator')){
 		$parts = array(
 			array(
 				'headline' => '',
-				'html' => we_html_tools::htmlDialogBorder3(730, 300, $content, $headline) . $nextprev,
+				'html' => we_html_tools::htmlDialogBorder3(730, $content, $headline) . $nextprev,
 				'noline' => 1
 			)
 		);
@@ -94,7 +94,7 @@ if(permissionhandler::hasPerm('administrator')){
 		);
 	}
 
-	$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::formatButtons($refresh . $close . $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'), "", 558)
+	$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::formatButtons($refresh . $close . $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'))
 	);
 
 

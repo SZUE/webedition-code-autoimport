@@ -22,6 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifVoteIsRequired($attribs, $content){
+function we_tag_ifVoteIsRequired(array $attribs, $content){
 	return $GLOBALS['_we_voting']->IsRequired;
 }

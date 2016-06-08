@@ -23,8 +23,6 @@
  */
 we_html_tools::protect();
 $parts = array();
-$_space_size = 120;
-
 
 if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER')){
 	$_filter = $we_doc->documentCustomerFilter;
@@ -36,7 +34,7 @@ if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_E
 	$parts[] = array(
 		'headline' => g_l('modules_customerFilter', '[customerFilter]'),
 		'html' => $_view->getFilterHTML(),
-		'space' => $_space_size
+		'space' => we_html_multiIconBox::SPACE_MED
 	);
 }
 
@@ -44,7 +42,7 @@ if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_E
 $parts[] = array(
 	'headline' => g_l('modules_customer', '[one_customer]'),
 	'html' => formWebuser(permissionhandler::hasPerm("CAN_CHANGE_DOCS_CUSTOMER"), 434),
-	'space' => $_space_size
+	'space' => we_html_multiIconBox::SPACE_MED
 );
 
 

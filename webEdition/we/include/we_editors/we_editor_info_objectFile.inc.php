@@ -33,7 +33,7 @@ $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div
 $parts = array(
 	array("headline" => "",
 		"html" => $_html,
-		'space' => 140,
+		'space' => we_html_multiIconBox::SPACE_MED2,
 		'icon' =>"meta.gif"
 	)
 );
@@ -70,7 +70,7 @@ $_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g
 
 $parts[] = array("headline" => "",
 	"html" => $_html,
-	'space' => 140,
+	'space' => we_html_multiIconBox::SPACE_MED2,
 	'icon' =>"cal.gif"
 );
 
@@ -82,7 +82,7 @@ if(defined('WORKFLOW_TABLE')){
 
 	$parts[] = array("headline" => g_l('modules_workflow', '[workflow]'),
 		"html" => $anzeige,
-		'space' => 140,
+		'space' => we_html_multiIconBox::SPACE_MED2,
 		"forceRightHeadline" => 1,
 		'icon' =>"workflow.gif"
 	);
@@ -95,7 +95,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 <body class="weEditorBody" onunload="doUnload()">
 	<?php
 	echo we_html_multiIconBox::getJS() .
-	we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false);
+	we_html_multiIconBox::getHTML("", $parts, 30);
 	?>
 </body>
 </html>

@@ -22,7 +22,7 @@ function we_parse_tag_ifNotVar($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifVar', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotVar($attribs){
+function we_tag_ifNotVar(array $attribs){
 	if(isset($attribs['_name_orig'])){
 		$attribs['name'] = $attribs['_name_orig'];
 	}

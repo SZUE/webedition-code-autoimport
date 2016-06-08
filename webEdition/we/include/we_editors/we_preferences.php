@@ -659,13 +659,13 @@ function build_dialog($selected_setting = 'ui'){
 </table>
 </div>';
 				// Build dialog
-				$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages->getHtml() . '<br/><br/>' . $langNote, 'space' => 200, 'noline' => 1);
+				$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages->getHtml() . '<br/><br/>' . $langNote, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
 			} else { // Just one Language Installed, no select box needed
 				foreach($_language as $key => $value){
 					$_languages = $value;
 				}
 				// Build dialog
-				$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages, 'space' => 200, 'noline' => 1);
+				$_settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
 			}
 
 			$BackendCharset = new we_html_select(array('name' => 'newconf[BackendCharset]', 'class' => 'weSelect', 'onchange' => "document.getElementById('langnote').style.display='block'"));
@@ -674,7 +674,7 @@ function build_dialog($selected_setting = 'ui'){
 				$BackendCharset->addOption($char, $char);
 			}
 			$BackendCharset->selectOption(get_value('BackendCharset'));
-			$_settings[] = array('headline' => g_l('prefs', '[choose_backendcharset]'), 'html' => $BackendCharset->getHtml() . '<br/><br/>' . $langNote, 'space' => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[choose_backendcharset]'), 'html' => $BackendCharset->getHtml() . '<br/><br/>' . $langNote, 'space' => we_html_multiIconBox::SPACE_BIG);
 
 
 			// DEFAULT CHARSET
@@ -689,7 +689,7 @@ function build_dialog($selected_setting = 'ui'){
 
 				$_settings[] = array(
 					'headline' => g_l('prefs', '[default_charset]'),
-					'space' => 200,
+					'space' => we_html_multiIconBox::SPACE_BIG,
 					'html' => $DEFAULT_CHARSET
 				);
 			}
@@ -700,7 +700,7 @@ function build_dialog($selected_setting = 'ui'){
 				$cockpit_amount_columns->addOption($i, $i);
 			}
 			$cockpit_amount_columns->selectOption(get_value('cockpit_amount_columns'));
-			$_settings[] = array('headline' => g_l('prefs', '[cockpit_amount_columns]'), 'html' => $cockpit_amount_columns->getHtml(), 'space' => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[cockpit_amount_columns]'), 'html' => $cockpit_amount_columns->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
 			/*			 * ***************************************************************
 			 * SEEM
@@ -711,7 +711,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_seem_disabler = we_html_forms::checkbox(1, get_value('WE_SEEM') == 0 ? 1 : 0, 'newconf[WE_SEEM]', g_l('prefs', '[seem_deactivate]'));
 
 				// Build dialog if user has permission
-				$_settings[] = array('headline' => g_l('prefs', '[seem]'), 'html' => $_seem_disabler, 'space' => 200);
+				$_settings[] = array('headline' => g_l('prefs', '[seem]'), 'html' => $_seem_disabler, 'space' => we_html_multiIconBox::SPACE_BIG);
 			}
 
 			// SEEM start document
@@ -845,7 +845,7 @@ function build_dialog($selected_setting = 'ui'){
 					$_seem_html = new we_html_table(array('class' => 'default'), 2, 1);
 					$_seem_html->setCol(0, 0, array('class' => 'defaultfont'), $_start_type->getHtml());
 					$_seem_html->setCol(1, 0, array('style' => 'padding-top:5px;'), $_seem_cockpit_selectordummy . $_seem_document_chooser . $_seem_object_chooser . $_seem_weapp_chooser);
-					$_settings[] = array('headline' => g_l('prefs', '[seem_startdocument]'), 'html' => $_seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $_seem_start_type . '");'), 'space' => 200);
+					$_settings[] = array('headline' => g_l('prefs', '[seem_startdocument]'), 'html' => $_seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $_seem_start_type . '");'), 'space' => we_html_multiIconBox::SPACE_BIG);
 				}
 
 				// Build dialog if user has permission
@@ -856,7 +856,7 @@ function build_dialog($selected_setting = 'ui'){
 				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $_val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
 				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $_val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
 
-			$_settings[] = array('headline' => g_l('prefs', '[message_reporting][headline]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_HELP, false, false), 'html' => $_html, 'space' => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[message_reporting][headline]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_HELP, false, false), 'html' => $_html, 'space' => we_html_multiIconBox::SPACE_BIG);
 
 			/*			 * *******************************************************
 			 * Sidebar
@@ -916,7 +916,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_sidebar_html2->setCol(7, 0, array('colspan' => 3), $yuiSuggest->getHTML());
 
 				// Build dialog if user has permission
-				$_settings[] = array('headline' => g_l('prefs', '[sidebar]'), 'html' => $_sidebar_html1->getHtml() . $_sidebar_html2->getHtml(), 'space' => 200);
+				$_settings[] = array('headline' => g_l('prefs', '[sidebar]'), 'html' => $_sidebar_html1->getHtml() . $_sidebar_html2->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 			}
 
 
@@ -941,7 +941,7 @@ function build_dialog($selected_setting = 'ui'){
 				$_file_tree_count->selectOption($_tree_count);
 			}
 
-			$_settings[] = array('headline' => g_l('prefs', '[tree_title]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_HELP), 'html' => $_file_tree_count->getHtml(), 'space' => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[tree_title]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_HELP), 'html' => $_file_tree_count->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
 
 			//WINDOW DIMENSIONS
@@ -979,7 +979,7 @@ function build_dialog($selected_setting = 'ui'){
 			$_window_html->setCol(4, 0, array('style' => 'padding-left:50px;'), $_window_current_dimension_table);
 
 			// Build dialog
-			$_settings[] = array('headline' => g_l('prefs', '[dimension]'), 'html' => $_window_html->getHtml(), 'space' => 200);
+			$_settings[] = array('headline' => g_l('prefs', '[dimension]'), 'html' => $_window_html->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 			return create_dialog('', $_settings, -1);
 
 		case 'defaultAttribs':
@@ -1018,17 +1018,17 @@ function build_dialog($selected_setting = 'ui'){
 			$yuiSuggest->setTrashButton($_acButton2, 4);
 
 			$_settings = array(
-				array('headline' => g_l('prefs', '[default_php_setting]'), 'html' => getTrueFalseSelect('WE_PHP_DEFAULT'), 'space' => 200),
-				array('headline' => g_l('prefs', '[xhtml_default]'), 'html' => getTrueFalseSelect('XHTML_DEFAULT'), 'space' => 200),
-				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => getTrueFalseSelect('INLINEEDIT_DEFAULT'), 'space' => 200),
-				array('headline' => g_l('prefs', '[imagestartid_default]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200),
-				array('headline' => g_l('prefs', '[commands_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => 200),
-				array('headline' => g_l('prefs', '[removefirstparagraph_default]'), 'html' => getTrueFalseSelect('REMOVEFIRSTPARAGRAPH_DEFAULT'), 'space' => 200),
-				array('headline' => g_l('prefs', '[showinputs_default]'), 'html' => getTrueFalseSelect('SHOWINPUTS_DEFAULT'), 'space' => 200),
-				array('headline' => g_l('prefs', '[hidenameattribinweimg_default]'), 'html' => getYesNoSelect('HIDENAMEATTRIBINWEIMG_DEFAULT'), 'space' => 200),
-				array('headline' => g_l('prefs', '[hidenameattribinweform_default]'), 'html' => getYesNoSelect('HIDENAMEATTRIBINWEFORM_DEFAULT'), 'space' => 200),
-				array('headline' => g_l('prefs', '[replaceacronym]'), 'html' => getYesNoSelect('REPLACEACRONYM'), 'space' => 200),
-				array('headline' => g_l('prefs', '[cssapplyto_default]'), 'html' => $CSSAPPLYTO_DEFAULT->getHtml(), 'space' => 200),
+				array('headline' => g_l('prefs', '[default_php_setting]'), 'html' => getTrueFalseSelect('WE_PHP_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[xhtml_default]'), 'html' => getTrueFalseSelect('XHTML_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[inlineedit_default]'), 'html' => getTrueFalseSelect('INLINEEDIT_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[imagestartid_default]'), 'html' => $yuiSuggest->getHTML(), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[commands_default]'), 'html' => '<div>' . $commands_default_tmp . '</div><div style="margin-top:4px">' . $COMMANDS_DEFAULT . '</div>', 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[removefirstparagraph_default]'), 'html' => getTrueFalseSelect('REMOVEFIRSTPARAGRAPH_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[showinputs_default]'), 'html' => getTrueFalseSelect('SHOWINPUTS_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[hidenameattribinweimg_default]'), 'html' => getYesNoSelect('HIDENAMEATTRIBINWEIMG_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[hidenameattribinweform_default]'), 'html' => getYesNoSelect('HIDENAMEATTRIBINWEFORM_DEFAULT'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[replaceacronym]'), 'html' => getYesNoSelect('REPLACEACRONYM'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[cssapplyto_default]'), 'html' => $CSSAPPLYTO_DEFAULT->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
 			);
 
 			return create_dialog('', $_settings, -1);
@@ -1067,7 +1067,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$_settings = array(
 				array('headline' => g_l('prefs', '[countries_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1),
-				array('headline' => g_l('prefs', '[countries_default]'), 'html' => $_countries_default, 'space' => 200, 'noline' => 1),
+				array('headline' => g_l('prefs', '[countries_default]'), 'html' => $_countries_default, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
 				array('headline' => '', 'html' => $tabC->getHtml(), 'noline' => 1),
 			);
 			// Build dialog element if user has permission
@@ -1161,9 +1161,9 @@ function build_dialog($selected_setting = 'ui'){
 			$_settings = array(
 				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[locale_information]'), we_html_tools::TYPE_INFO, 450, false),),
 				array('headline' => '', 'html' => $_editlist_table->getHtml(),),
-				array('headline' => g_l('prefs', '[locale_add]'), 'html' => $_add_html, 'space' => 200),
+				array('headline' => g_l('prefs', '[locale_add]'), 'html' => $_add_html, 'space' => we_html_multiIconBox::SPACE_BIG),
 				array('headline' => g_l('prefs', '[langlink_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1),
-				array('headline' => g_l('prefs', '[langlink_support]'), 'html' => getTrueFalseSelect('LANGLINK_SUPPORT'), 'space' => 200, 'noline' => 1),
+				array('headline' => g_l('prefs', '[langlink_support]'), 'html' => getTrueFalseSelect('LANGLINK_SUPPORT'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
 			);
 
 			return create_dialog('', $_settings) . $postJs;
@@ -1347,19 +1347,19 @@ for(i=0;i<elements.length; ++i){
 
 			$_settings = array(
 				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_information]'), we_html_tools::TYPE_INFO, 480, false),),
-				array('headline' => g_l('prefs', '[editor_mode]'), 'html' => $_template_editor_mode->getHtml(), 'space' => 150),
-				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_font]'), 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table, 'space' => 150),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_theme]'), 'html' => $_template_editor_theme->getHtml(), 'space' => 150),
-//				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => 150),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $_template_editor_linenumbers_code, 'space' => 150),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_highlightLine]'), 'html' => $_template_editor_highlightLine_code, 'space' => 150),
-				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('global', '[wrapcheck]'), 'html' => $_template_editor_Wrap_code, 'space' => 150),
-				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_tabstop]'), 'html' => $_template_editor_tabstop_code, 'space' => 150),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoindent]'), 'html' => $_template_editor_autoIndent_code, 'space' => 150),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $_template_editor_codecompletion_code, 'space' => 150),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . '<br/>' . $_template_editor_tooltip_font_specify_code . '<br/>' . $_template_editor_tooltip_font_specify_table, 'space' => 150),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoCloseTags]'), 'html' => $_template_editor_autoClose, 'space' => 150),
-				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => 150),
+				array('headline' => g_l('prefs', '[editor_mode]'), 'html' => $_template_editor_mode->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_font]'), 'html' => $_template_editor_font_specify_code . $_template_editor_font_specify_table, 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_theme]'), 'html' => $_template_editor_theme->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2),
+//				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $_template_editor_linenumbers_code, 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_highlightLine]'), 'html' => $_template_editor_highlightLine_code, 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('global', '[wrapcheck]'), 'html' => $_template_editor_Wrap_code, 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_tabstop]'), 'html' => $_template_editor_tabstop_code, 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoindent]'), 'html' => $_template_editor_autoIndent_code, 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $_template_editor_codecompletion_code, 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $_template_editor_tooltips_code . '<br/>' . $_template_editor_tooltip_font_specify_code . '<br/>' . $_template_editor_tooltip_font_specify_table, 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoCloseTags]'), 'html' => $_template_editor_autoClose, 'space' => we_html_multiIconBox::SPACE_MED2),
+				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => we_html_multiIconBox::SPACE_MED2),
 			);
 
 			return create_dialog("settings_editor_predefined", $_settings, count($_settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'));
@@ -1412,7 +1412,7 @@ for(i=0;i<elements.length; ++i){
 				$_formmail_confirm->addOption(0, g_l('prefs', '[off]'));
 				$_formmail_confirm->selectOption(get_value("FORMMAIL_CONFIRM") ? 1 : 0);
 
-				$_settings[] = array('html' => $_formmail_confirm->getHtml(), 'space' => 250, "headline" => g_l('prefs', '[formmailConfirm]'));
+				$_settings[] = array('html' => $_formmail_confirm->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailConfirm]'));
 
 				$_formmail_log = new we_html_select(array("name" => "newconf[FORMMAIL_LOG]", "onchange" => "formmailLogOnOff()", "style" => "width:88px;", "class" => "weSelect"));
 				$_formmail_log->addOption(1, g_l('prefs', '[yes]'));
@@ -1425,7 +1425,7 @@ for(i=0;i<elements.length; ++i){
 								<td style="padding-left:10px;">' . we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_formmail_log\')') . '</td>
 							</tr>
 						</table>';
-				$_settings[] = array('html' => $_html, 'space' => 250, "headline" => g_l('prefs', '[logFormmailRequests]'), 'noline' => 1);
+				$_settings[] = array('html' => $_html, 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[logFormmailRequests]'), 'noline' => 1);
 
 				$_isDisabled = (get_value("FORMMAIL_LOG") == 0);
 
@@ -1448,7 +1448,7 @@ for(i=0;i<elements.length; ++i){
 				$_formmail_emptylog->selectOption(get_value("FORMMAIL_EMPTYLOG"));
 
 
-				$_settings[] = array('html' => $_formmail_emptylog->getHtml(), 'space' => 250, "headline" => g_l('prefs', '[deleteEntriesOlder]'));
+				$_settings[] = array('html' => $_formmail_emptylog->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[deleteEntriesOlder]'));
 
 				// formmail only via we doc //
 				$_formmail_ViaWeDoc = new we_html_select(array("name" => "newconf[FORMMAIL_VIAWEDOC]", "style" => "width:88px;", "class" => "weSelect"));
@@ -1456,7 +1456,7 @@ for(i=0;i<elements.length; ++i){
 				$_formmail_ViaWeDoc->addOption(0, g_l('prefs', '[no]'));
 				$_formmail_ViaWeDoc->selectOption((get_value("FORMMAIL_VIAWEDOC") ? 1 : 0));
 
-				$_settings[] = array('html' => $_formmail_ViaWeDoc->getHtml(), 'space' => 250, "headline" => g_l('prefs', '[formmailViaWeDoc]'));
+				$_settings[] = array('html' => $_formmail_ViaWeDoc->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailViaWeDoc]'));
 
 				// limit formmail requests //
 				$_formmail_block = new we_html_select(array("name" => "newconf[FORMMAIL_BLOCK]", "onchange" => "formmailBlockOnOff()", "style" => "width:88px;", "class" => "weSelect"));
@@ -1474,7 +1474,7 @@ for(i=0;i<elements.length; ++i){
 							</tr>
 						</table>';
 
-				$_settings[] = array('html' => $_html, 'space' => 250, "headline" => g_l('prefs', '[blockFormmail]'), 'noline' => 1);
+				$_settings[] = array('html' => $_html, 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[blockFormmail]'), 'noline' => 1);
 
 				$_isDisabled = $_isDisabled || (get_value("FORMMAIL_BLOCK") == 0);
 
@@ -1483,7 +1483,7 @@ for(i=0;i<elements.length; ++i){
 					we_html_tools::htmlTextInput("newconf[FORMMAIL_TRIALS]", 24, get_value("FORMMAIL_TRIALS"), "", "", "text", 88, 0, "", $_isDisabled) .
 					'</td></tr></table>';
 
-				$_settings[] = array('html' => $_formmail_trials, 'space' => 250, "headline" => g_l('prefs', '[formmailTrials]'), 'noline' => 1);
+				$_settings[] = array('html' => $_formmail_trials, 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailTrials]'), 'noline' => 1);
 
 				if(!$_isDisabled){
 					$_isDisabled = (get_value("FORMMAIL_BLOCK") == 0);
@@ -1510,7 +1510,7 @@ for(i=0;i<elements.length; ++i){
 				$_formmail_span->selectOption(get_value("FORMMAIL_SPAN"));
 
 
-				$_settings[] = array('html' => $_formmail_span->getHtml(), 'space' => 250, "headline" => g_l('prefs', '[formmailSpan]'), 'noline' => 1);
+				$_settings[] = array('html' => $_formmail_span->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailSpan]'), 'noline' => 1);
 				$_formmail_blocktime = new we_html_select(array("name" => "newconf[FORMMAIL_BLOCKTIME]", "style" => "width:88px;", "class" => "weSelect"));
 				if($_isDisabled){
 					$_formmail_blocktime->setAttribute("disabled", "disabled");
@@ -1533,7 +1533,7 @@ for(i=0;i<elements.length; ++i){
 				$_formmail_blocktime->selectOption(get_value("FORMMAIL_BLOCKTIME"));
 
 
-				$_settings[] = array('html' => $_formmail_blocktime->getHtml(), 'space' => 250, "headline" => g_l('prefs', '[blockFor]'), 'noline' => 1);
+				$_settings[] = array('html' => $_formmail_blocktime->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[blockFor]'), 'noline' => 1);
 			}
 
 			return create_dialog("", $_settings, -1);
@@ -1564,7 +1564,7 @@ for(i=0;i<elements.length; ++i){
 
 			$_settings = array(
 				array('headline' => g_l('prefs', '[module_activation][headline]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[module_activation][information]'), we_html_tools::TYPE_HELP, false, false)
-					, "html" => $_html, 'space' => 200)
+					, "html" => $_html, 'space' => we_html_multiIconBox::SPACE_BIG)
 			);
 
 			return create_dialog('', $_settings, -1);
@@ -1589,11 +1589,11 @@ for(i=0;i<elements.length; ++i){
 
 			$_settings = array(
 				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[proxy_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1),
-				array("headline" => g_l('prefs', '[tab][proxy]'), "html" => $_use_proxy, 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[proxyaddr]'), "html" => $_proxyaddr, 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[proxyport]'), "html" => $_proxyport, 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[proxyuser]'), "html" => $_proxyuser, 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[proxypass]'), "html" => $_proxypass, 'space' => 200, 'noline' => 1),
+				array("headline" => g_l('prefs', '[tab][proxy]'), "html" => $_use_proxy, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[proxyaddr]'), "html" => $_proxyaddr, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[proxyport]'), "html" => $_proxyport, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[proxyuser]'), "html" => $_proxyuser, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[proxypass]'), "html" => $_proxypass, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
 			);
 			// Build dialog element if user has permission
 			return create_dialog("", $_settings, -1);
@@ -1613,7 +1613,7 @@ for(i=0;i<elements.length; ++i){
 			  $WYSIWYG_TYPE->addOption($key, $val);
 			  }
 			  $WYSIWYG_TYPE->selectOption(get_value("WYSIWYG_TYPE"));
-			  $_settings[] = array("headline" => g_l('prefs', '[wysiwyg_type]'), "html" => $WYSIWYG_TYPE->getHtml(), 'space' => 200);
+			  $_settings[] = array("headline" => g_l('prefs', '[wysiwyg_type]'), "html" => $WYSIWYG_TYPE->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
 			  $WYSIWYG_TYPE_FRONTEND = new we_html_select(array("name" => "newconf[WYSIWYG_TYPE_FRONTEND]", "class" => "weSelect"));
 			  $_options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
@@ -1621,7 +1621,7 @@ for(i=0;i<elements.length; ++i){
 			  $WYSIWYG_TYPE_FRONTEND->addOption($key, $val);
 			  }
 			  $WYSIWYG_TYPE_FRONTEND->selectOption(get_value("WYSIWYG_TYPE_FRONTEND"));
-			  $_settings[] = array("headline" => "Editor für textareas im Frontend", "html" => $WYSIWYG_TYPE_FRONTEND->getHtml(), 'space' => 200);
+			  $_settings[] = array("headline" => "Editor für textareas im Frontend", "html" => $WYSIWYG_TYPE_FRONTEND->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 			 */
 			$_we_doctype_workspace_behavior = get_value("WE_DOCTYPE_WORKSPACE_BEHAVIOR");
 			$_we_doctype_workspace_behavior_table = '<table class="default"><tr><td>' .
@@ -1630,7 +1630,7 @@ for(i=0;i<elements.length; ++i){
 				we_html_forms::radiobutton(1, $_we_doctype_workspace_behavior, "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_1]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint1]'), 0, 430) .
 				'</td></tr></table>';
 
-			$_settings[] = array("headline" => g_l('prefs', '[we_doctype_workspace_behavior]'), "html" => $_we_doctype_workspace_behavior_table, 'space' => 200);
+			$_settings[] = array("headline" => g_l('prefs', '[we_doctype_workspace_behavior]'), "html" => $_we_doctype_workspace_behavior_table, 'space' => we_html_multiIconBox::SPACE_BIG);
 
 			if(we_base_preferences::userIsAllowed('WE_LOGIN_HIDEWESTATUS')){
 				$_loginWEst_disabler = we_html_forms::checkbox(1, get_value('WE_LOGIN_HIDEWESTATUS') == 1 ? 1 : 0, 'newconf[WE_LOGIN_HIDEWESTATUS]', g_l('prefs', '[login][deactivateWEstatus]'));
@@ -1645,7 +1645,7 @@ for(i=0;i<elements.length; ++i){
 				}
 				$_we_windowtypeselect->selectOption(get_value('WE_LOGIN_WEWINDOW'));
 				// Build dialog if user has permission
-				$_settings[] = array('headline' => g_l('prefs', '[login][login]'), 'html' => $_loginWEst_disabler . we_html_element::htmlBr() . g_l('prefs', '[login][windowtypes]') . we_html_element::htmlBr() . $_we_windowtypeselect->getHtml(), 'space' => 200);
+				$_settings[] = array('headline' => g_l('prefs', '[login][login]'), 'html' => $_loginWEst_disabler . we_html_element::htmlBr() . g_l('prefs', '[login][windowtypes]') . we_html_element::htmlBr() . $_we_windowtypeselect->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 			}
 
 			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
@@ -1655,7 +1655,7 @@ for(i=0;i<elements.length; ++i){
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
 				$_Schedtrigger_setting->selectOption(get_value("SCHEDULER_TRIGGER"));
 				$tmp = $_Schedtrigger_setting->getHtml();
-				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_HELP), "html" => $tmp, 'space' => 200);
+				$_settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_HELP), "html" => $tmp, 'space' => we_html_multiIconBox::SPACE_BIG);
 			}
 			// Build select box
 			$NAVIGATION_ENTRIES_FROM_DOCUMENT = new we_html_select(array("name" => "newconf[NAVIGATION_ENTRIES_FROM_DOCUMENT]", "class" => "weSelect"));
@@ -1663,14 +1663,14 @@ for(i=0;i<elements.length; ++i){
 				$NAVIGATION_ENTRIES_FROM_DOCUMENT->addOption($i, g_l('prefs', $i == 0 ? '[navigation_entries_from_document_folder]' : '[navigation_entries_from_document_item]'));
 			}
 			$NAVIGATION_ENTRIES_FROM_DOCUMENT->selectOption(get_value("NAVIGATION_ENTRIES_FROM_DOCUMENT") ? 1 : 0);
-			$_settings[] = array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), 'space' => 200);
+			$_settings[] = array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
 
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH = new we_html_select(array("name" => "newconf[NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH]", "class" => "weSelect"));
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->addOption(0, g_l('prefs', '[no]'));
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->addOption(1, g_l('prefs', '[yes]'));
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->selectOption(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? 1 : 0);
-			$_settings[] = array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), 'space' => 200);
+			$_settings[] = array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
 			return create_dialog("", $_settings, -1);
 
@@ -1814,20 +1814,20 @@ for(i=0;i<elements.length; ++i){
 
 
 			$_settings = array(
-				array('headline' => g_l('prefs', '[we_extensions]'), 'html' => $_we_extensions_html, 'space' => 200),
-				array('headline' => g_l('prefs', '[html_extensions]'), 'html' => $_html_extensions_html, 'space' => 200),
-				array("headline" => g_l('prefs', '[upload][we_max_size]'), "html" => $_we_max_upload_size, 'space' => 200),
-				array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, 'space' => 200),
-				array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $_db_set_charset->getHtml() . $html_db_charset_information . $html_db_charset_warning, 'space' => 200),
-				array("headline" => g_l('prefs', '[auth]'), "html" => $_use_auth, 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[authuser]'), "html" => $_authuser, 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, 'space' => 200),
-				array("headline" => g_l('prefs', '[thumbnail_dir]'), "html" => $_thumbnail_dir, 'space' => 200),
-				array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, 'space' => 200),
-				array("headline" => g_l('prefs', '[session][title]'), "html" => $sessionHtml, 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[session][time]'), "html" => $sessionTime, 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[session][crypt][title]'), "html" => $cryptSession->getHtml(), 'space' => 200),
+				array('headline' => g_l('prefs', '[we_extensions]'), 'html' => $_we_extensions_html, 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[html_extensions]'), 'html' => $_html_extensions_html, 'space' => we_html_multiIconBox::SPACE_BIG),
+				array("headline" => g_l('prefs', '[upload][we_max_size]'), "html" => $_we_max_upload_size, 'space' => we_html_multiIconBox::SPACE_BIG),
+				array("headline" => g_l('prefs', '[we_new_folder_mod]'), "html" => $_we_new_folder_mod, 'space' => we_html_multiIconBox::SPACE_BIG),
+				array("headline" => g_l('prefs', '[db_connect]'), "html" => $_db_connect->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[db_set_charset]'), "html" => $_db_set_charset->getHtml() . $html_db_charset_information . $html_db_charset_warning, 'space' => we_html_multiIconBox::SPACE_BIG),
+				array("headline" => g_l('prefs', '[auth]'), "html" => $_use_auth, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[authuser]'), "html" => $_authuser, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[authpass]'), "html" => $_authpass, 'space' => we_html_multiIconBox::SPACE_BIG),
+				array("headline" => g_l('prefs', '[thumbnail_dir]'), "html" => $_thumbnail_dir, 'space' => we_html_multiIconBox::SPACE_BIG),
+				array("headline" => g_l('prefs', '[hooks]'), "html" => $hooksHtml, 'space' => we_html_multiIconBox::SPACE_BIG),
+				array("headline" => g_l('prefs', '[session][title]'), "html" => $sessionHtml, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[session][time]'), "html" => $sessionTime, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[session][crypt][title]'), "html" => $cryptSession->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
 			);
 			// Build dialog element if user has permission
 			return create_dialog("", $_settings, -1);
@@ -1859,26 +1859,26 @@ for(i=0;i<elements.length; ++i){
 			$yuiSuggest->setTrashButton($_acButton2, 4);
 
 			$_settings = array(
-				array("headline" => g_l('prefs', '[general_directoryindex_hide]'), "html" => "", 'space' => 480, 'noline' => 1),
+				array("headline" => g_l('prefs', '[general_directoryindex_hide]'), "html" => "", 'noline' => 1),
 				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[navigation_directoryindex_description]'), we_html_tools::TYPE_INFO, 480), 'noline' => 1),
-				array("headline" => g_l('prefs', '[navigation_directoryindex_hide]'), "html" => getTrueFalseSelect('NAVIGATION_DIRECTORYINDEX_HIDE'), 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[wysiwyglinks_directoryindex_hide]'), "html" => getTrueFalseSelect('WYSIWYGLINKS_DIRECTORYINDEX_HIDE'), 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[navigation_directoryindex_names]'), "html" => $_navigation_directoryindex_names, 'space' => 200, 'noline' => 1),
+				array("headline" => g_l('prefs', '[navigation_directoryindex_hide]'), "html" => getTrueFalseSelect('NAVIGATION_DIRECTORYINDEX_HIDE'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[wysiwyglinks_directoryindex_hide]'), "html" => getTrueFalseSelect('WYSIWYGLINKS_DIRECTORYINDEX_HIDE'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[navigation_directoryindex_names]'), "html" => $_navigation_directoryindex_names, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
 				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_directoryindex_hide_description]'), we_html_tools::TYPE_INFO, 480), 'noline' => 1),
-				array("headline" => g_l('prefs', '[taglinks_directoryindex_hide]'), "html" => getTrueFalseSelect('TAGLINKS_DIRECTORYINDEX_HIDE'), 'space' => 200),
-				array("headline" => g_l('prefs', '[general_objectseourls]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[objectseourls_lowercase_description]'), we_html_tools::TYPE_HELP), 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[objectseourls_lowercase]'), "html" => getTrueFalseSelect('OBJECTSEOURLS_LOWERCASE'), 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[navigation_objectseourls]'), "html" => getTrueFalseSelect('NAVIGATION_OBJECTSEOURLS'), 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[wysiwyglinks_objectseourls]'), "html" => getTrueFalseSelect('WYSIWYGLINKS_OBJECTSEOURLS'), 'space' => 200, 'noline' => 1),
+				array("headline" => g_l('prefs', '[taglinks_directoryindex_hide]'), "html" => getTrueFalseSelect('TAGLINKS_DIRECTORYINDEX_HIDE'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array("headline" => g_l('prefs', '[general_objectseourls]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[objectseourls_lowercase_description]'), we_html_tools::TYPE_HELP), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[objectseourls_lowercase]'), "html" => getTrueFalseSelect('OBJECTSEOURLS_LOWERCASE'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[navigation_objectseourls]'), "html" => getTrueFalseSelect('NAVIGATION_OBJECTSEOURLS'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[wysiwyglinks_objectseourls]'), "html" => getTrueFalseSelect('WYSIWYGLINKS_OBJECTSEOURLS'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
 				array("html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_objectseourls_description]'), we_html_tools::TYPE_INFO, 480), 'noline' => 1),
-				array("headline" => g_l('prefs', '[taglinks_objectseourls]'), "html" => getTrueFalseSelect('TAGLINKS_OBJECTSEOURLS'), 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[urlencode_objectseourls]'), "html" => getTrueFalseSelect('URLENCODE_OBJECTSEOURLS'), 'space' => 200),
-				array("headline" => g_l('prefs', '[general_seoinside]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), we_html_tools::TYPE_HELP), 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[seoinside_hideineditmode]'), "html" => getTrueFalseSelect('SEOINSIDE_HIDEINEDITMODE'), 'space' => 200, 'noline' => 1),
-				array("headline" => g_l('prefs', '[seoinside_hideinwebedition]'), "html" => getTrueFalseSelect('SEOINSIDE_HIDEINWEBEDITION'), 'space' => 200),
-				array('headline' => g_l('prefs', '[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => 200, 'noline' => 1),
-				array('headline' => g_l('prefs', '[suppress404code]'), 'html' => getTrueFalseSelect('SUPPRESS404CODE'), 'space' => 200),
-				array('headline' => g_l('prefs', '[force404redirect]'), 'html' => getTrueFalseSelect('FORCE404REDIRECT') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[force404redirect_description]'), we_html_tools::TYPE_HELP), 'space' => 200),
+				array("headline" => g_l('prefs', '[taglinks_objectseourls]'), "html" => getTrueFalseSelect('TAGLINKS_OBJECTSEOURLS'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[urlencode_objectseourls]'), "html" => getTrueFalseSelect('URLENCODE_OBJECTSEOURLS'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array("headline" => g_l('prefs', '[general_seoinside]'), "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[general_seoinside_description]'), we_html_tools::TYPE_HELP), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[seoinside_hideineditmode]'), "html" => getTrueFalseSelect('SEOINSIDE_HIDEINEDITMODE'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array("headline" => g_l('prefs', '[seoinside_hideinwebedition]'), "html" => getTrueFalseSelect('SEOINSIDE_HIDEINWEBEDITION'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[error_no_object_found]'), 'html' => $yuiSuggest->getHTML(), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
+				array('headline' => g_l('prefs', '[suppress404code]'), 'html' => getTrueFalseSelect('SUPPRESS404CODE'), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[force404redirect]'), 'html' => getTrueFalseSelect('FORCE404REDIRECT') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[force404redirect_description]'), we_html_tools::TYPE_HELP), 'space' => we_html_multiIconBox::SPACE_BIG),
 			);
 			return create_dialog('', $_settings, -1, '', '', null);
 
@@ -1921,10 +1921,10 @@ for(i=0;i<elements.length; ++i){
 			$_error_display_table->setCol(7, 0, null, $_error_mail_specify_table->getHtml());
 
 			$_settings = array(
-				//array('headline' => g_l('prefs', '[templates]'), 'html' => $_template_error_handling_table->getHtml(), 'space' => 200),
-				array('headline' => g_l('prefs', '[tab][error_handling]'), 'html' => $_we_error_handler, 'space' => 200),
-				array('headline' => g_l('prefs', '[error_types]'), 'html' => $_error_handling_table->getHtml(), 'space' => 200),
-				array('headline' => g_l('prefs', '[error_displaying]'), 'html' => $_error_display_table->getHtml(), 'space' => 200),
+				//array('headline' => g_l('prefs', '[templates]'), 'html' => $_template_error_handling_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[tab][error_handling]'), 'html' => $_we_error_handler, 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[error_types]'), 'html' => $_error_handling_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
+				array('headline' => g_l('prefs', '[error_displaying]'), 'html' => $_error_display_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
 			);
 
 			return create_dialog('settings_error_expert', $_settings, $_foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
@@ -2000,11 +2000,11 @@ for(i=0;i<elements.length; ++i){
 			$storeSessionPassword->selectOption(get_value('SECURITY_SESSION_PASSWORD'));
 
 			$settings = array(
-				array('headline' => g_l('perms_customer', '[perm_group_title]'), 'html' => $customer_table->getHtml(), 'space' => 120),
-				array('headline' => g_l('prefs', '[security][encryption][title]'), 'html' => $encryption->getHtml() . $encryptinfo, 'space' => 120, 'noline' => 1),
-				array('headline' => g_l('prefs', '[security][encryption][symmetricKey]'), 'html' => $encryptionKey, 'space' => 120),
-				array('headline' => g_l('prefs', '[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => 120),
-				array('headline' => g_l('prefs', '[security][userPassRegex][title]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_REGEX]', 0, get_value('SECURITY_USER_PASS_REGEX'), 100, '', 'text', '20em'), 'space' => 120),
+				array('headline' => g_l('perms_customer', '[perm_group_title]'), 'html' => $customer_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED),
+				array('headline' => g_l('prefs', '[security][encryption][title]'), 'html' => $encryption->getHtml() . $encryptinfo, 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1),
+				array('headline' => g_l('prefs', '[security][encryption][symmetricKey]'), 'html' => $encryptionKey, 'space' => we_html_multiIconBox::SPACE_MED),
+				array('headline' => g_l('prefs', '[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED),
+				array('headline' => g_l('prefs', '[security][userPassRegex][title]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_REGEX]', 0, get_value('SECURITY_USER_PASS_REGEX'), 100, '', 'text', '20em'), 'space' => we_html_multiIconBox::SPACE_MED),
 			);
 			return create_dialog('settings_security', $settings);
 
@@ -2039,9 +2039,9 @@ for(i=0;i<elements.length; ++i){
 				$_auth_table->setCol(1, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_password]'));
 				$_auth_table->setCol(1, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, get_value('SMTP_PASSWORD'), 105, 'placeholder="password"', 'password', 180));
 
-				$_settings[] = array('headline' => g_l('prefs', '[mailer_type]'), 'html' => $_emailSelect, 'space' => 120, 'noline' => 1);
-				$_settings[] = array('headline' => '', 'html' => $_smtp_table->getHtml(), 'space' => 120, 'noline' => 1);
-				$_settings[] = array('headline' => '', 'html' => $_auth_table->getHtml(), 'space' => 120, 'noline' => 1);
+				$_settings[] = array('headline' => g_l('prefs', '[mailer_type]'), 'html' => $_emailSelect, 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1);
+				$_settings[] = array('headline' => '', 'html' => $_smtp_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1);
+				$_settings[] = array('headline' => '', 'html' => $_auth_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1);
 			}
 
 			return create_dialog('settings_email', $_settings);
@@ -2196,23 +2196,23 @@ function checkAll(val) {
 			$_settings = array(
 				array(
 					'headline' => g_l('prefs', '[ContentType]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_activate_text]'), we_html_tools::TYPE_HELP),
-					'space' => 200,
+					'space' => we_html_multiIconBox::SPACE_BIG,
 					'html' => $checkboxes
 				),
 				array(
 					'html' => $_versions_time_days->getHtml() . ' ' . $_versions_time_weeks->getHtml() . ' ' . $_versions_time_years->getHtml(),
-					'space' => 200,
+					'space' => we_html_multiIconBox::SPACE_BIG,
 					'headline' => g_l('prefs', '[versioning_time]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_time_text]'), we_html_tools::TYPE_HELP)
 				),
 				array(
 					'headline' => g_l('prefs', '[versioning_anzahl]'),
 					'html' => $_versions_anzahl,
-					'space' => 200
+					'space' => we_html_multiIconBox::SPACE_BIG
 				),
 				array(
 					'headline' => g_l('prefs', '[versioning_create]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_create_text]'), we_html_tools::TYPE_HELP, false, false),
 					'html' => $_versions_create_publishing . '<br/>' . $_versions_create_always,
-					'space' => 200
+					'space' => we_html_multiIconBox::SPACE_BIG
 				),
 				array(
 					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_templates_text]'), we_html_tools::TYPE_INFO, 470, false),
@@ -2220,7 +2220,7 @@ function checkAll(val) {
 				),
 				array(
 					'html' => $_versions_time_days_tmpl->getHtml() . ' ' . $_versions_time_weeks_tmpl->getHtml() . ' ' . $_versions_time_years_tmpl->getHtml(),
-					'space' => 200,
+					'space' => we_html_multiIconBox::SPACE_BIG,
 					'noline' => 1,
 					'headline' => g_l('prefs', '[versioning_time]')
 				),
@@ -2228,17 +2228,17 @@ function checkAll(val) {
 					'headline' => g_l('prefs', '[versioning_anzahl]'),
 					'html' => $_versions_anzahl_tmpl,
 					'noline' => 1,
-					'space' => 200
+					'space' => we_html_multiIconBox::SPACE_BIG
 				),
 				array(
 					'headline' => g_l('prefs', '[versioning_create]'),
 					'html' => $_versions_create_tmpl_publishing . '<br/>' . $_versions_create_tmpl_always,
-					'space' => 200
+					'space' => we_html_multiIconBox::SPACE_BIG
 				),
 				array(
 					'headline' => g_l('prefs', '[versioning_wizard]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_wizard_text]'), we_html_tools::TYPE_HELP),
 					'html' => $_versions_wizard,
-					'space' => 200
+					'space' => we_html_multiIconBox::SPACE_BIG
 				),
 			);
 

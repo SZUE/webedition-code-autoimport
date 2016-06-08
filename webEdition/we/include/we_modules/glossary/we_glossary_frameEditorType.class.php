@@ -112,7 +112,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			),
 		);
 
-		$out = we_html_element::htmlDiv(array('id' => 'tab1'), we_html_multiIconBox::getHTML('', $parts, 30, '', -1, '', '', false));
+		$out = we_html_element::htmlDiv(array('id' => 'tab1'), we_html_multiIconBox::getHTML('', $parts, 30));
 
 		$content = $js . $out;
 
@@ -253,7 +253,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			$content[] = $temp;
 		}
 
-		$retVal .= we_html_tools::htmlDialogBorder3(636, 0, $content, $headline);
+		$retVal .= we_html_tools::htmlDialogBorder3(636, $content, $headline);
 
 		return $retVal;
 	}

@@ -28,7 +28,7 @@ function we_parse_tag_orderitem($attribs, $content){
 		we_post_tag_listview(); ?>';
 }
 
-function we_tag_orderitem($attribs){
+function we_tag_orderitem(array $attribs){
 
 	if(!defined('WE_SHOP_MODULE_PATH')){
 		echo modulFehltError('Shop', __FUNCTION__);

@@ -252,7 +252,7 @@ set_button_state(false);';
 			),
 			array(
 				'headline' => g_l('versions', '[ContentType]'),
-				'space' => 170,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $content,
 				'noline' => 1
 			)
@@ -327,7 +327,7 @@ set_button_state(false);';
 			'headline' => g_l('versions', '[time]'),
 			'html' => "<div style='padding-bottom:3px;'>" . g_l('versions', '[day]') . ":</div><div style='float:left;'>" . $versions_delete_date . "</div><div style='float:left;margin: 0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>" . g_l('versions', '[clocktime]') . ":</div>" . $reset_hours->getHtml() . " h : " . $reset_minutes->getHtml() . " m: " . $reset_seconds->getHtml() . " s",
 			'noline' => 1,
-			'space' => 170
+			'space' => we_html_multiIconBox::SPACE_BIG
 		);
 
 		//js
@@ -479,7 +479,7 @@ set_button_state(false);';
 			),
 			array(
 				'headline' => g_l('versions', '[ContentType]'),
-				'space' => 170,
+				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $content,
 				'noline' => 1
 			),
@@ -488,7 +488,7 @@ set_button_state(false);';
 				'noline' => 1,
 			),
 			array(
-				'headline' => "", 'html' => $doPublish, 'noline' => 1, 'space' => 1
+				'headline' => "", 'html' => $doPublish, 'noline' => 1
 			),
 		);
 
@@ -557,7 +557,7 @@ set_button_state(false);';
 			'headline' => g_l('versions', '[time]'),
 			'html' => "<div style='padding-bottom:3px;'>Tag:</div><div style='float:left;'>" . $versions_reset_date . "</div><div style='float:left;margin:0px 0px 10px 10px;'>" . $clearDate . "</div><br style='clear:left;' /><div style='padding-bottom:3px;'>Uhrzeit:</div>" . $reset_hours->getHtml() . " h : " . $reset_minutes->getHtml() . " m: " . $reset_seconds->getHtml() . " s ",
 			'noline' => 1,
-			'space' => 170
+			'space' => we_html_multiIconBox::SPACE_BIG
 		);
 
 		//js

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_newsletterUnsubscribeLink($attribs){
+function we_tag_newsletterUnsubscribeLink(array $attribs){
 	if(($foo = attributFehltError($attribs, "id", __FUNCTION__))){
 		return $foo;
 	}

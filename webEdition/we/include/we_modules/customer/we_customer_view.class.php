@@ -1004,7 +1004,7 @@ self.close();');
 		return array(
 			'headline' => g_l('modules_customer', ($isAll ? '[common]' : '[data]')),
 			'html' => $table->getHtml(),
-			'space' => 120
+			'space' => we_html_multiIconBox::SPACE_MED
 		);
 	}
 
@@ -1026,7 +1026,7 @@ self.close();');
 		return array(
 			'headline' => g_l('modules_customer', ($isAll ? '[other]' : '[data]')),
 			'html' => $table->getHtml(),
-			'space' => 120
+			'space' => we_html_multiIconBox::SPACE_MED
 		);
 	}
 
@@ -1157,7 +1157,7 @@ self.close();');
 					$parts[] = array(
 						"headline" => (isset($isAll) ? $bk : g_l('modules_customer', '[data]')),
 						"html" => $table->getHtml(),
-						'space' => 120
+						'space' => we_html_multiIconBox::SPACE_MED
 					);
 				}
 		}

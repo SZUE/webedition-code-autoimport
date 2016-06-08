@@ -30,7 +30,7 @@ we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
  *
  * @return         void
  */
-function we_tag_writeShopData($attribs){
+function we_tag_writeShopData(array $attribs){
 
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__))){

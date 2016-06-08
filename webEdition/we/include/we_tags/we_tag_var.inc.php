@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_var($attribs){
+function we_tag_var(array $attribs){
 	switch(weTag_getAttribute('type', $attribs)){ //Fix #9311
 		case 'shopVat':
 		case 'shopCategory': //shopVat and shopCategory need no attribute 'name'

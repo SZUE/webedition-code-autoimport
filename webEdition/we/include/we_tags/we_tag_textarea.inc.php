@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_textarea($attribs, $content){
+function we_tag_textarea(array $attribs, $content){
 	if(($foo = attributFehltError($attribs, "name", __FUNCTION__))){
 		return $foo;
 	}

@@ -22,6 +22,6 @@ function we_parse_tag_ifNotRegisteredUser($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifRegisteredUser', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotRegisteredUser($attribs){
+function we_tag_ifNotRegisteredUser(array $attribs){
 	return !we_tag('ifRegisteredUser', $attribs);
 }

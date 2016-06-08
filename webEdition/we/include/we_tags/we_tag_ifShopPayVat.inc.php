@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_ifShopPayVat($attribs){
+function we_tag_ifShopPayVat(array $attribs){
 	$namefrom = weTag_getAttribute("customerfrom", $attribs, '', we_base_request::STRING);
 	$usefallback = weTag_getAttribute("usefallback", $attribs);
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();

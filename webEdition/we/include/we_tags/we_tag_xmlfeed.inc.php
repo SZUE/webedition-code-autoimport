@@ -28,7 +28,7 @@
  * @param array $attribs
  * @param string $content
  */
-function we_tag_xmlfeed($attribs){
+function we_tag_xmlfeed(array $attribs){
 	if(($foo = attributFehltError($attribs, array('name' => false, 'url' => false), __FUNCTION__))){
 		return $foo;
 	}

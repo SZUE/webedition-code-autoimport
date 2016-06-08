@@ -19,7 +19,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_tag_ifIsNotDomain($attribs){
+function we_tag_ifIsNotDomain(array $attribs){
 	return (!empty($GLOBALS['we_editmode'])) || !we_tag('ifIsDomain', $attribs);
 }
 

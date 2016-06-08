@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_newsletterSalutation($attribs){
+function we_tag_newsletterSalutation(array $attribs){
 	$type = trim(weTag_getAttribute('type', $attribs, '', we_base_request::STRING));
 	switch($type){
 		case 'customerid':

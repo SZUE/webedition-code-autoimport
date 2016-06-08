@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_description($attribs, $content){
+function we_tag_description(array $attribs, $content){
 	$max = weTag_getAttribute('max', $attribs, 0, we_base_request::INT);
 
 	$descr = !empty($GLOBALS['DESCRIPTION']) ? $GLOBALS['DESCRIPTION'] : '';

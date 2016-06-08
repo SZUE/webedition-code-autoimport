@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_tag_navigationWrite($attribs){
+function we_tag_navigationWrite(array $attribs){
 	$name = weTag_getAttribute('navigationname', $attribs, 'default', we_base_request::STRING);
 	$depth = weTag_getAttribute('depth', $attribs, false, we_base_request::INT)? : false;
 

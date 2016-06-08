@@ -23,7 +23,7 @@ function we_parse_tag_collection($attribs, $content){
 	return '';
 }
 */
-function we_tag_collectionSelect($attribs){
+function we_tag_collectionSelect(array $attribs){
 	if($GLOBALS['we_editmode']){
 		$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
 		// FIXME: why does he return when condition "!$name" is missing?

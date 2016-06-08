@@ -32,7 +32,7 @@ unset($GLOBALS[\'we_position\'][\'listdir\']);
 we_post_tag_listview();?>';
 }
 
-function we_tag_listdir($attribs){
+function we_tag_listdir(array $attribs){
 	static $files = array();
 	if(weTag_getAttribute('_internal', $attribs, false, we_base_request::BOOL)){
 		$pos = $GLOBALS['we_position']['listdir']['position'];

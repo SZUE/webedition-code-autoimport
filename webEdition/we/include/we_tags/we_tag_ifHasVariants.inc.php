@@ -22,21 +22,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-/**
- * This function returns if an article has variants
- *
- * @param	$attribs array
- *
- * @return	boolean
- */
-function we_tag_ifHasVariants($attribs){
+function we_tag_ifHasVariants(array $attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self');
 
 	$model = (!empty($GLOBALS['lv']) && $docAttr === 'listview' ?
-					$GLOBALS['lv']->getFoundDocument() :
-					$GLOBALS['we_doc']
-			);
+			$GLOBALS['lv']->getFoundDocument() :
+			$GLOBALS['we_doc']
+		);
 
 	return (we_base_variants::getNumberOfVariants($model) > 0);
 }

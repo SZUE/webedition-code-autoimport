@@ -2353,31 +2353,31 @@ class we_object extends we_document{
 				array(
 					'headline' => g_l('weClass', '[path]'),
 					'html' => $this->formPath(),
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'path.gif'
 				),
 				array(
 					'headline' => g_l('modules_object', '[default]'),
 					'html' => $this->formDefault(),
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'default.gif'
 				),
 				array(
 					'headline' => g_l('weClass', '[Charset]'),
 					'html' => $this->formCharset(),
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'charset.gif'
 				),
 				array(
 					'headline' => g_l('weClass', '[CSS]'),
 					'html' => $this->formCSS(),
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'css.gif'
 				),
 				array(
 					'headline' => g_l('modules_object', '[copyClass]'),
 					'html' => $this->formCopyDocument(),
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'copy.gif'
 				)
 			);
@@ -2386,18 +2386,18 @@ class we_object extends we_document{
 				array(
 					'headline' => g_l('weClass', '[workspaces]'),
 					'html' => $this->formWorkspaces(),
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'workspace.gif'
 				),
 				array(
 					'headline' => g_l('modules_object', '[behaviour]'),
 					'html' => $this->formWorkspacesFlag(),
-					'space' => 140,
+					'space' => we_html_multiIconBox::SPACE_MED2,
 					'icon' => 'display.gif'
 				)
 			);
 		}
-		return we_html_multiIconBox::getHTML('PropertyPage', $parts, 0, '', -1, '', '', false);
+		return we_html_multiIconBox::getHTML('PropertyPage', $parts);
 	}
 
 }

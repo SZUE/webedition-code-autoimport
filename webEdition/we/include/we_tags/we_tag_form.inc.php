@@ -24,7 +24,7 @@ function we_parse_tag_form($attribs, $content){
 			'<?php printElement(' . we_tag_tagParser::printTag('form', array('_type' => 'stop')) . ');?>';
 }
 
-function we_tag_form($attribs){
+function we_tag_form(array $attribs){
 	if(!empty($GLOBALS['we_editmode'])){
 		return'';
 	}

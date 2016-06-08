@@ -22,6 +22,6 @@ function we_parse_tag_ifNotSendMail($attribs, $content){
 	return '<?php if(!' . we_tag_tagParser::printTag('ifSendMail', $attribs) . '){ ?>' . $content . '<?php } ?>';
 }
 
-function we_tag_ifNotSendMail($attribs){
+function we_tag_ifNotSendMail(array $attribs){
 	return !(we_tag('ifSendMail', $attribs));
 }

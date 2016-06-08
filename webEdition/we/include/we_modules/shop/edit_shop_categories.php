@@ -280,14 +280,14 @@ function we_cmd(){
 $parts = array(
 	array(
 		'headline' => g_l('modules_shop', '[shopcats][text_shopCatDir]'),
-		'space' => 200,
+		'space' => we_html_multiIconBox::SPACE_BIG,
 		'html' => $selCategoryDirs,
 	),
 );
 
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[shopcats][text_editShopCatDir]'),
-	'space' => 400,
+	'space' => we_html_multiIconBox::SPACE_BIG,
 	'html' => '',
 	'noline' => 1
 );
@@ -307,7 +307,7 @@ $parts[] = array(
 
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[shopcats][text_editShopCats]'),
-	'space' => 200,
+	'space' => we_html_multiIconBox::SPACE_BIG,
 	'html' => '',
 	'noline' => 1
 );
