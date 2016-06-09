@@ -62,7 +62,7 @@ class we_search_base{
 
 		$this->tablename = $tablename;
 		$i = 0;
-		$sql = '';
+		$sql = array();
 
 		for($i = 0; $i < count($searchfield); $i++){
 
@@ -83,10 +83,10 @@ class we_search_base{
 						case '<=':
 						case '>':
 						case '>=':
-							$sql .= $this->sqlwhere($searchfield[$i], ' ' . $searchlocation[$i] . ' ' . $from . ' ', null);
+							$sql[] = $this->sqlwhere($searchfield[$i], ' ' . $searchlocation[$i] . ' ' . $from . ' ');
 							break;
 						default :
-							$sql .= $this->sqlwhere($searchfield[$i], ' BETWEEN ' . $from . ' AND ' . $till . ' ', null);
+							$sql[] = $this->sqlwhere($searchfield[$i], ' BETWEEN ' . $from . ' AND ' . $till . ' ');
 							break;
 					}
 				} else {
@@ -94,51 +94,50 @@ class we_search_base{
 					switch($searchlocation[$i]){
 						case 'END':
 							$searching = ' LIKE "%' . $this->db->escape($searchname[$i]) . '" ';
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
 							break;
 						case 'START':
 							$searching = ' LIKE "' . $this->db->escape($searchname[$i]) . '%" ';
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
 							break;
 						case 'IN':
 							$tmp = array_map('trim', explode(',', $searchname[$i]));
 							$searching = ' IN ("' . implode('","', $tmp) . '") ';
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
 							break;
 						case 'IS':
 							$searching = '="' . $this->db->escape($searchname[$i]) . '" ';
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
 							break;
 						case 'LO':
 							$searching = ' < "' . $this->db->escape($searchname[$i]) . '" ';
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
 							break;
 						case 'LEQ':
 							$searching = ' <= "' . $this->db->escape($searchname[$i]) . '" ';
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
 							break;
 						case 'HI':
 							$searching = ' > "' . $this->db->escape($searchname[$i]) . '" ';
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
 							break;
 						case 'HEQ':
 							$searching = ' >= "' . $this->db->escape($searchname[$i]) . '" ';
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
 							break;
 						default :
 							$searching = ' LIKE "%' . $this->db->escape($searchname[$i]) . '%" ';
-							$sql .= $this->sqlwhere($searchfield[$i], $searching, null);
+							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
 							break;
 					}
 				}
 			}
 		}
 
-		return $sql;
+		return implode(' AND ', $sql);
 	}
 
-	function sqlwhere($we_SearchField, $searchlocation, $concat){
-		$concat = (isset($concat)) ? $concat : 'AND';
+	function sqlwhere($we_SearchField, $searchlocation){
 		if(strpos($we_SearchField, ',') !== false){
 			$foo = makeArrayFromCSV($we_SearchField);
 			$q = array();
@@ -149,14 +148,13 @@ class we_search_base{
 				}
 				$q[] = $tmp . '` ' . $searchlocation;
 			}
-			return ' ' . $concat . ' ( ' . implode(' OR ', $q) . ' ) ';
-		} else {
-			$tmp = str_replace('.', '.`', $we_SearchField);
-			if($tmp == $we_SearchField){
-				$tmp = '`' . $tmp;
-			}
-			return ' ' . $concat . ' ' . $tmp . '` ' . $searchlocation . ' ';
+			return ' ( ' . implode(' OR ', $q) . ' ) ';
 		}
+		$tmp = str_replace('.', '.`', $we_SearchField);
+		if($tmp == $we_SearchField){
+			$tmp = '`' . $tmp;
+		}
+		return $tmp . '` ' . $searchlocation . ' ';
 	}
 
 	function countitems($where = '', $table = ''){

@@ -396,13 +396,14 @@ function we_save() {
 	}
 
 	function getHTMLSearchtool($content){
+		//FIXME: why is this different to we_html_multiIconBox.class.php
 		$out = '';
 
 		foreach($content as $i => $c){
 			$_forceRightHeadline = (!empty($c['forceRightHeadline']));
 			$headline = (!empty($c['headline'])) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
 			$mainContent = (!empty($c['html'])) ? $c['html'] : '';
-			$leftWidth = (!empty($c['space'])) ? abs($c['space']) : 0;
+			$leftWidth = (empty($c['space'])) ? '' : $c['space'];
 			$leftContent = (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
 			$rightContent = '<div class="defaultfont">' . ((($leftContent === '') || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
@@ -410,7 +411,7 @@ function we_save() {
 				if((!$leftContent) && $leftWidth){
 					$leftContent = '&nbsp;';
 				}
-				$out .= '<div style="float:left;width:' . $leftWidth . 'px">' . $leftContent . '</div>';
+				$out .= '<div style="float:left" class="multiiconleft largeicons leftSpace-' . $leftWidth . '">' . $leftContent . '</div>';
 			}
 
 			$out .= $rightContent .
@@ -420,7 +421,7 @@ function we_save() {
 				) . '"></div>';
 		}
 
-		return $out;
+		return '<div class="multiIcon">' . $out . '</div>';
 	}
 
 }
