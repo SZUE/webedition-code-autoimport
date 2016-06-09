@@ -1267,11 +1267,7 @@ class we_search_search extends we_search_base{
 				$searching = " = '" . $this->db->escape($searchname) . "' ";
 
 				if(($cur['name'] === 'temp_template_id' && $this->table == FILE_TABLE) || ($cur['name'] === 'TemplateID' && $this->table == VERSIONS_TABLE)){
-					if($this->table == FILE_TABLE){
-						$sql[] = $this->sqlwhere('WETABLE.TemplateID', $searching, $operator . '( (Published >= ModDate AND Published !=0 AND ') .
-							$this->sqlwhere($searchfield, $searching, ' ) OR (Published < ModDate AND ') .
-							'))';
-					} elseif($this->table == VERSIONS_TABLE){
+					if($this->table == FILE_TABLE || $this->table == VERSIONS_TABLE){
 						$sql[] = $this->sqlwhere('WETABLE.TemplateID', $searching);
 					}
 				} else {
@@ -1576,7 +1572,7 @@ class we_search_search extends we_search_base{
 		if($where_OR){
 			$where[] = '(' . implode(' OR ', $where_OR) . ')';
 		}
-		return implode(' AND ', array_filter($where));
+		return array_filter($where);
 	}
 
 }
