@@ -54,8 +54,8 @@ abstract class we_html_multiIconBox{
 			}
 			$forceRightHeadline = (!empty($c['forceRightHeadline']));
 			$icon = (empty($c["icon"]) ? '' : we_html_element::htmlImg(array('src' => ICON_DIR . $c['icon'], 'class' => 'multiIcon')) )? : (empty($c['iconX']) ? '' : $c['iconX']);
-			$headline = (empty($c["headline"]) ? '' : '<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</div>' );
-			$leftWidth = (!empty($c["space"]) ? $c["space"] : '');
+			$headline = (empty($c['headline']) ? '' : '<div id="headline_' . $uniqname . '_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</div>' );
+			$leftWidth = (empty($c['space']) ? '' : $c["space"] );
 			$leftContent = $icon ? : (($leftWidth && (!$forceRightHeadline)) ? $headline : '');
 
 			$out.=(isset($c['class']) ? '<div class="' . $c['class'] . '">' : '') .
