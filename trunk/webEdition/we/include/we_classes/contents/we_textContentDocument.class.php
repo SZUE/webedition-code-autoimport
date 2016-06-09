@@ -394,7 +394,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)){
 			return false;
 		}
-		if(!$this->i_savePersistentSlotsToDB('Path,Text,Filename,Extension,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,Published,ModDate,temp_template_id,temp_category,DocType,WebUserID')){
+		if(!$this->i_savePersistentSlotsToDB('Path,Text,Filename,Extension,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,Published,ModDate,temp_template_id,temp_category,DocType,WebUserID,Language')){
 			return false;
 		}
 		return ($write ? $this->i_writeDocument() : true);
