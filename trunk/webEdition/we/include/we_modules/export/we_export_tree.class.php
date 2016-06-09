@@ -39,7 +39,7 @@ class we_export_tree extends we_tree_base{
 			foreach($item as $k => $v){
 				$elems.='"' . strtolower($k) . '":' .
 						(strtolower($k) === "checked" ?
-								'(WE().util.in_array("' . $item["id"] . '", ' . $this->topFrame . '.SelectedItems.' . $item['table'] . ')?
+								'(WE().util.in_array("' . $item["id"] . '", top.content.editor.edbody.SelectedItems.' . $item['table'] . ')?
 	\'1\':
 	\'' . $v . '\'),
 ' :
