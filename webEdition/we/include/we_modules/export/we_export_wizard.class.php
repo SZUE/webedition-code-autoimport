@@ -192,25 +192,7 @@ var dir="";
 var file_format="' . we_import_functions::TYPE_GENERIC_XML . '";
 var filename="";
 var export_to="server";
-var path="/";
-
-var SelectedItems= {
-"' . FILE_TABLE . '":[],
-"' . TEMPLATES_TABLE . '":[],' .
-				(defined('OBJECT_FILES_TABLE') ? (
-					'"' . OBJECT_FILES_TABLE . '":[],
-	"' . OBJECT_TABLE . '":[],
-	') : '') . '
-};
-
-var openFolders= {
-	"' . FILE_TABLE . '":"",
-	"' . TEMPLATES_TABLE . '":"",' .
-				(defined('OBJECT_FILES_TABLE') ? ('
-	"' . OBJECT_FILES_TABLE . '":"",
-	"' . OBJECT_TABLE . '":"",
-') : '') .
-				'};'
+var path="/";'
 		);
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => $this->bodyFrame . ".location='" . $this->frameset . '?pnt=body' . $args . "&step=' + step;")
@@ -495,10 +477,10 @@ function setHead(tab){
 }
 
 function we_submit(){
-	document.we_form.selDocs.value=' . $this->topFrame . '.SelectedItems["' . FILE_TABLE . '"].join(",");
-	document.we_form.selTempl.value=' . $this->topFrame . '.SelectedItems["' . TEMPLATES_TABLE . '"].join(",");' .
-				(defined('OBJECT_FILES_TABLE') ? 'document.we_form.selObjs.value=' . $this->topFrame . '.SelectedItems["' . OBJECT_FILES_TABLE . '"].join(",");' : '') .
-				(defined('OBJECT_TABLE') ? 'document.we_form.selClasses.value=' . $this->topFrame . '.SelectedItems["' . OBJECT_TABLE . '"].join(",");' : '') . '
+	document.we_form.selDocs.value=top.content.editor.edbody.SelectedItems["' . FILE_TABLE . '"].join(",");
+	document.we_form.selTempl.value=top.content.editor.edbody.SelectedItems["' . TEMPLATES_TABLE . '"].join(",");' .
+				(defined('OBJECT_FILES_TABLE') ? 'document.we_form.selObjs.value=top.content.editor.edbody.SelectedItems["' . OBJECT_FILES_TABLE . '"].join(",");' : '') .
+				(defined('OBJECT_TABLE') ? 'document.we_form.selClasses.value=top.content.editor.edbody.SelectedItems["' . OBJECT_TABLE . '"].join(",");' : '') . '
 	document.we_form.submit();
 }');
 
