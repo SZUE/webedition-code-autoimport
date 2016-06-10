@@ -43,7 +43,7 @@ function we_tag_addDelNewsletterEmail(array $attribs){
 	$abos = $paths = array();
 	$db = new DB_WE();
 
-	$_customerFieldPrefs = we_newsletter_view::getSettings();
+	$customerFieldPrefs = we_newsletter_view::getSettings();
 
 	if(!$useListsArray){
 		switch($type){
@@ -119,13 +119,13 @@ function we_tag_addDelNewsletterEmail(array $attribs){
 		}
 
 		if($doubleoptin && (empty($_REQUEST['confirmID']))){ // Direkte Anmeldung mit doubleoptin => zuerst confirmmail verschicken.
-			we_newsletter_util::addDoubleOptIn($db, $type, $_customerFieldPrefs['customer_email_field'], $f, $abos, $paths, weTag_getAttribute('mailid', $attribs, '', we_base_request::INT), $attribs);
+			we_newsletter_util::addDoubleOptIn($db, $type, $customerFieldPrefs['customer_email_field'], $f, $abos, $paths, weTag_getAttribute('mailid', $attribs, '', we_base_request::INT), $attribs);
 			return;
 		}
 		//confirmID wurde übermittelt, eine Bestätigung liegt also vor
 		switch($type){
 			case 'customer':
-				we_newsletter_util::addToDB($db, $_customerFieldPrefs, $f, $abos);
+				we_newsletter_util::addToDB($db, $customerFieldPrefs, $f, $abos);
 				break;
 			case 'emailonly':
 				//nicht in eine Liste eintragen sondern adminmail versenden
@@ -143,7 +143,7 @@ function we_tag_addDelNewsletterEmail(array $attribs){
 
 	//NEWSLETTER UNSUBSCTIPTION
 	if($isUnsubscribe){
-		if(!we_newsletter_util::unsubscribeNewsletter($db, $type === 'customer', $_customerFieldPrefs['customer_email_field'], $abos, $paths, we_base_request::_(we_base_request::EMAIL, 'we_unsubscribe_email__'))){
+		if(!we_newsletter_util::unsubscribeNewsletter($db, $type === 'customer', $customerFieldPrefs['customer_email_field'], $abos, $paths, we_base_request::_(we_base_request::EMAIL, 'we_unsubscribe_email__'))){
 			return;
 		}
 	}
