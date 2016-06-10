@@ -76,10 +76,10 @@ class liveUpdateHttp{
 
 	static function getCurlHttpResponse($server, $url, $parameters){
 
-		$_address = 'https://' . $server . $url;
+		$address = 'https://' . $server . $url;
 
 		$session = curl_init();
-		curl_setopt($session, CURLOPT_URL, $_address);
+		curl_setopt($session, CURLOPT_URL, $address);
 		curl_setopt($session, CURLOPT_RETURNTRANSFER, 1);
 
 		if($parameters){
@@ -88,25 +88,25 @@ class liveUpdateHttp{
 		}
 
 		if(defined('WE_PROXYHOST') && WE_PROXYHOST != ''){
-			$_proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : '';
-			$_proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : 80;
-			$_proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : '';
-			$_proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : '';
+			$proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : '';
+			$proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : 80;
+			$proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : '';
+			$proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : '';
 
-			if($_proxyhost != ''){
-				curl_setopt($session, CURLOPT_PROXY, $_proxyhost . ":" . $_proxyport);
-				if($_proxy_user != ''){
-					curl_setopt($session, CURLOPT_PROXYUSERPWD, $_proxy_user . ':' . $_proxy_pass);
+			if($proxyhost != ''){
+				curl_setopt($session, CURLOPT_PROXY, $proxyhost . ":" . $proxyport);
+				if($proxy_user != ''){
+					curl_setopt($session, CURLOPT_PROXYUSERPWD, $proxy_user . ':' . $proxy_pass);
 				}
 				curl_setopt($session, CURLOPT_SSL_VERIFYPEER, FALSE);
 			}
 		}
 
-		$_data = curl_exec($session);
+		$data = curl_exec($session);
 
 		curl_close($session);
 
-		return $_data;
+		return $data;
 	}
 
 	static function getHttpOption(){

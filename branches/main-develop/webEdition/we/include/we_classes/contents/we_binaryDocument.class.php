@@ -221,9 +221,9 @@ class we_binaryDocument extends we_document{
 	 * @return bool false if either no metadata is available or something went wrong
 	 */
 	function getMetaData(){
-		$_reader = $this->getMetaDataReader();
-		if($_reader){
-			$this->metaData = $_reader->getMetaData();
+		$reader = $this->getMetaDataReader();
+		if($reader){
+			$this->metaData = $reader->getMetaData();
 			if(!is_array($this->metaData)){
 				return false;
 			}
@@ -244,49 +244,49 @@ class we_binaryDocument extends we_document{
 	 */
 	function formMetaData(){
 		// first we fetch all defined metadata fields from tblMetadata:
-		$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
+		$defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
 
 		// show an alert if there are none
-		if(empty($_defined_fields)){
+		if(empty($defined_fields)){
 			return '';
 		}
 
 		// second we build all input fields for them and take
 		// the elements of this imageDocument as values:
-		$_fieldcount = count($_defined_fields);
-		$_content = new we_html_table(array("class" => 'default', "style" => "margin-top:4px;"), $_fieldcount, 5);
-		$_mdcontent = '';
-		for($i = 0; $i < $_fieldcount; $i++){
-			$_tagName = $_defined_fields[$i]["tag"];
-			if($_tagName != 'Title' && $_tagName != 'Description' && $_tagName != 'Keywords'){
-				$_type = $_defined_fields[$i]['type'];
-				//$_mode = $_defined_fields[$i]['mode'];
-				//$_csv = boolval($_defined_fields[$i]['csv']);
-				//$_closed = boolval($_defined_fields[$i]['closed']);
+		$fieldcount = count($defined_fields);
+		$content = new we_html_table(array("class" => 'default', "style" => "margin-top:4px;"), $fieldcount, 5);
+		$mdcontent = '';
+		for($i = 0; $i < $fieldcount; $i++){
+			$tagName = $defined_fields[$i]["tag"];
+			if($tagName != 'Title' && $tagName != 'Description' && $tagName != 'Keywords'){
+				$type = $defined_fields[$i]['type'];
+				//$mode = $defined_fields[$i]['mode'];
+				//$csv = boolval($defined_fields[$i]['csv']);
+				//$closed = boolval($defined_fields[$i]['closed']);
 
-				switch($_type){
+				switch($type){
 					case 'textarea':
-						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
+						$inp = $this->formTextArea('txt', $tagName, $tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
 						break;
 					case 'wysiwyg':
-						$_inp = $this->formTextArea('txt', $_tagName, $_tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
+						$inp = $this->formTextArea('txt', $tagName, $tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
 						break;
 					case 'date':
-						$_inp = we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('we_' . $this->Name . '_date[' . $_tagName . ']', abs($this->getElement($_tagName)), true), $_tagName);
+						$inp = we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('we_' . $this->Name . '_date[' . $tagName . ']', abs($this->getElement($tagName)), true), $tagName);
 						break;
 					case 'textfield':
 					default:
-						$_inp = $this->formMetaField($_tagName);
+						$inp = $this->formMetaField($tagName);
 				}
 
-				$_content->setCol($i, 0, array("colspan" => 5, 'style' => 'padding-bottom:5px;'), $_inp);
+				$content->setCol($i, 0, array("colspan" => 5, 'style' => 'padding-bottom:5px;'), $inp);
 			}
 		}
 
-		$_mdcontent.=$_content->getHtml();
+		$mdcontent.=$content->getHtml();
 
 		// Return HTML
-		return $_mdcontent;
+		return $mdcontent;
 	}
 
 	/**
@@ -295,18 +295,18 @@ class we_binaryDocument extends we_document{
 	function formUpload(){
 		$fs = $GLOBALS['we_doc']->getFilesize();
 		$fs = g_l('metadata', '[filesize]') . ": " . round(($fs / 1024), 2) . "&nbsp;KB";
-		$_metaData = $this->getMetaData();
-		$_mdtypes = array();
+		$metaData = $this->getMetaData();
+		$mdtypes = array();
 
-		if($_metaData){
-			if(!empty($_metaData["exif"])){
-				$_mdtypes[] = "Exif";
+		if($metaData){
+			if(!empty($metaData["exif"])){
+				$mdtypes[] = "Exif";
 			}
-			if(!empty($_metaData["iptc"])){
-				$_mdtypes[] = "IPTC";
+			if(!empty($metaData["iptc"])){
+				$mdtypes[] = "IPTC";
 			}
-			if(!empty($_metaData["pdf"])){
-				$_mdtypes[] = "PDF";
+			if(!empty($metaData["pdf"])){
+				$mdtypes[] = "PDF";
 			}
 		}
 
@@ -316,7 +316,7 @@ class we_binaryDocument extends we_document{
 				'' :
 				g_l('metadata', '[supported_types]') . ': ' .
 				'<a href="javascript:parent.frames.editHeader.weTabs.setActiveTab(\'tab_2\');we_cmd(\'switch_edit_page\',2,\'' . $GLOBALS['we_transaction'] . '\');">' .
-				(count($_mdtypes) > 0 ? implode(', ', $_mdtypes) : g_l('metadata', '[none]')) .
+				(count($mdtypes) > 0 ? implode(', ', $mdtypes) : g_l('metadata', '[none]')) .
 				'</a>');
 
 		$fileUpload = new we_fileupload_ui_wedoc($this->ContentType);
@@ -329,10 +329,10 @@ class we_binaryDocument extends we_document{
 	}
 
 	function savebinarydata(){
-		$_data = $this->getElement('data');
-		if($_data && (strlen($_data) > 512 || !@file_exists($_data))){ //assume data>512 = binary data
-			$_path = we_base_file::saveTemp($_data);
-			$this->setElement('data', $_path);
+		$data = $this->getElement('data');
+		if($data && (strlen($data) > 512 || !@file_exists($data))){ //assume data>512 = binary data
+			$path = we_base_file::saveTemp($data);
+			$this->setElement('data', $path);
 		}
 	}
 

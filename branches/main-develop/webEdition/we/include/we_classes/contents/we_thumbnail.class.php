@@ -243,7 +243,7 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function initByThumbID($thumbID, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
-		$_foo = getHash('SELECT Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? :
+		$foo = getHash('SELECT Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? :
 			array(
 			'Width' => 0,
 			'Height' => 0,
@@ -254,7 +254,7 @@ class we_thumbnail{
 			'Quality' => ''
 			)
 		;
-		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Options'], $_foo['Format'], $_foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $_foo['Date'], $_foo['Quality']);
+		$this->init($thumbID, $foo['Width'], $foo['Height'], $foo['Options'], $foo['Format'], $foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $foo['Date'], $foo['Quality']);
 	}
 
 	/**
@@ -272,7 +272,7 @@ class we_thumbnail{
 	 * @public
 	 */
 	public function initByThumbName($thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
-		$_foo = getHash('SELECT ID,Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db)? :
+		$foo = getHash('SELECT ID,Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db)? :
 			array(
 			'ID' => 0,
 			'Width' => 0,
@@ -283,7 +283,7 @@ class we_thumbnail{
 			'Date' => '',
 			'Quality' => ''
 		);
-		$this->init($_foo['ID'], $_foo['Width'], $_foo['Height'], $_foo['Options'], $_foo['Format'], $_foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $_foo['Date'], $_foo['Quality']);
+		$this->init($foo['ID'], $foo['Width'], $foo['Height'], $foo['Options'], $foo['Format'], $foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $foo['Date'], $foo['Quality']);
 		return ($this->thumbID && $this->thumbName);
 	}
 
@@ -302,7 +302,7 @@ class we_thumbnail{
 		if(!$this->getImageData($getBinary)){
 			return false;
 		}
-		$_foo = getHash('SELECT Width,Height,Options,Format,Name,Date FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? : array(
+		$foo = getHash('SELECT Width,Height,Options,Format,Name,Date FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? : array(
 			'Width' => 0,
 			'Height' => 0,
 			'Options' => false,
@@ -311,7 +311,7 @@ class we_thumbnail{
 			'Date' => '',
 		);
 
-		$this->init($thumbID, $_foo['Width'], $_foo['Height'], $_foo['Options'], $_foo['Format'], $_foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $_foo['Date']);
+		$this->init($thumbID, $foo['Width'], $foo['Height'], $foo['Options'], $foo['Format'], $foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $foo['Date']);
 
 		/* FIXME: the following code was missing here (and in several places where this function is called)!
 		 * Is this the right place to execute it? or should we move it to init() or some other place?
@@ -349,9 +349,9 @@ class we_thumbnail{
 			return self::INPUTFORMAT_NOT_SUPPORTED;
 		}
 
-		$_thumbdir = self::getThumbDirectory(true);
-		if(!file_exists($_thumbdir)){
-			we_base_file::createLocalFolderByPath($_thumbdir);
+		$thumbdir = self::getThumbDirectory(true);
+		if(!file_exists($thumbdir)){
+			we_base_file::createLocalFolderByPath($thumbdir);
 		}
 		$quality = max(10, min(100, intval($this->thumbQuality) * 10));
 		$outarr = we_base_imageEdit::edit_image($this->imageData ? : WEBEDITION_PATH . '../' . $this->imagePath, $this->outputFormat, WEBEDITION_PATH . '../' . $this->outputPath, $quality, $this->thumbWidth, $this->thumbHeight, $this->options, $this->focus, 0);

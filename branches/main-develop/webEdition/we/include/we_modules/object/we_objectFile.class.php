@@ -288,12 +288,12 @@ class we_objectFile extends we_document{
 		$processedWs = array();
 
 // loop throgh all default workspaces
-		foreach($defwsCSVArray as $i => $_defWs){
+		foreach($defwsCSVArray as $i => $defWs){
 // loop through each object workspace
 			foreach($owsCSVArray as $ows){
-				if((!in_array($_defWs, $processedWs)) && we_users_util::in_workspace($_defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
-					$processedWs[] = $_defWs;
-					$this->Workspaces[] = $_defWs;
+				if((!in_array($defWs, $processedWs)) && we_users_util::in_workspace($defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
+					$processedWs[] = $defWs;
+					$this->Workspaces[] = $defWs;
 					$this->Templates[] = $otmplsCSVArray[$i];
 				}
 			}
@@ -406,8 +406,8 @@ class we_objectFile extends we_document{
 						break;
 					case self::TYPE_MULTIOBJECT:
 						$temp = we_unserialize($this->getElement($name));
-						$_array = array_filter(isset($temp['objects']) ? $temp['objects'] : $temp);
-						$val = !empty($_array);
+						$array = array_filter(isset($temp['objects']) ? $temp['objects'] : $temp);
+						$val = !empty($array);
 						break;
 					case self::TYPE_CHECKBOX:
 						$val = $this->getElement($name);
@@ -532,22 +532,22 @@ class we_objectFile extends we_document{
 	 * @param	boolean
 	 */
 	function formCharset($withHeadline = false){
-		$_charsetHandler = new we_base_charsetHandler();
+		$charsetHandler = new we_base_charsetHandler();
 
-		$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
-		$_charsets[''] = '';
-		asort($_charsets);
-		reset($_charsets);
+		$charsets = $charsetHandler->getCharsetsForTagWizzard();
+		$charsets[''] = '';
+		asort($charsets);
+		reset($charsets);
 
 		$name = 'Charset';
 
 		$inputName = 'we_' . $this->Name . '_Charset';
 
-		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '');
+		$headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '');
 		return '
 			<table class="default">
-				' . $_headline . '
-				<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $this->Charset, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
+				' . $headline . '
+				<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $this->Charset, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
 			</table>';
 	}
 
@@ -1313,29 +1313,30 @@ class we_objectFile extends we_document{
 
 	private function getTextareaHTML($type, $name, array $attribs, $editable = true, $variant = false){
 		if(!$editable){
-			return $this->getPreviewView($name, $this->getFieldByVal($this->getElement($name), "txt", $attribs));
+			return $this->getPreviewView($name, $this->getFieldByVal($this->getElement($name), 'txt', $attribs));
 		}
 		//	send charset which might be determined in template
 		$charset = (isset($this->Charset) ? $this->Charset : DEFAULT_CHARSET);
 
 		$value = $this->getElement($name);
-		$attribs["width"] = isset($attribs["width"]) ? $attribs["width"] : 620;
-		$attribs["height"] = isset($attribs["height"]) ? $attribs["height"] : 200;
-		$attribs["rows"] = 10;
-		$attribs["cols"] = 60;
-		$attribs['tinyparams'] = isset($attribs["tinyparams"]) ? $attribs["tinyparams"] : "";
-		$attribs['templates'] = isset($attribs["templates"]) ? $attribs["templates"] : "";
-		$attribs["class"] = isset($attribs["class"]) ? $attribs["class"] : "";
-		if(isset($attribs["cssClasses"])){
-			$attribs["classes"] = $attribs["cssClasses"];
+		$attribs['width'] = isset($attribs['width']) ? $attribs['width'] : 620;
+		$attribs['height'] = isset($attribs['height']) ? $attribs['height'] : 200;
+		$attribs['rows'] = 10;
+		$attribs['cols'] = 60;
+		$attribs['commands'] = preg_replace('/ *, */', ',', isset($attribs['commands']) && $attribs['commands'] ? $attribs['commands'] : COMMANDS_DEFAULT);
+		$attribs['tinyparams'] = isset($attribs['tinyparams']) ? $attribs['tinyparams'] : '';
+		$attribs['templates'] = isset($attribs['templates']) ? $attribs['templates'] : '';
+		$attribs['class'] = isset($attribs['class']) ? $attribs['class'] : '';
+		if(isset($attribs['cssClasses'])){
+			$attribs['classes'] = $attribs['cssClasses'];
 		}
 
-		$removefirstparagraph = ((!isset($attribs["removefirstparagraph"])) || ($attribs["removefirstparagraph"] === "on")) ? true : false;
-		$xml = (isset($attribs["xml"]) && ($attribs["xml"] === "on")) ? true : false;
+		$removefirstparagraph = ((!isset($attribs['removefirstparagraph'])) || ($attribs['removefirstparagraph'] === 'on')) ? true : false;
+		$xml = (isset($attribs['xml']) && ($attribs['xml'] === 'on')) ? true : false;
 
-		$autobr = $this->getElement($name, "autobr") ? : (isset($attribs["autobr"]) ? $attribs["autobr"] : "");
+		$autobr = $this->getElement($name, 'autobr') ? : (isset($attribs['autobr']) ? $attribs['autobr'] : '');
 		$autobrName = 'we_' . $this->Name . '_text[' . $name . '#autobr]';
-		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", ((!empty($attribs["classes"])) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
+		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, '', ((!empty($attribs['classes'])) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
 
 		return ($variant ? '' : $this->getPreviewHeadline('text', $name) ) .
 			$textarea;

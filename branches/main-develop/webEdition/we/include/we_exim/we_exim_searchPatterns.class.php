@@ -77,7 +77,7 @@ class we_exim_searchPatterns{
 				'/(href\s*=\s*[\"\']' . we_base_link::TYPE_OBJ_PREFIX . ')(\d+)([^\"\']*[\"\'])/si'
 			)
 		);
-		$_pats = array(
+		$pats = array(
 			'a' => 'id',
 			'addDelNewsletterEmail' => array('id', 'mailid'),
 			'css' => 'id',
@@ -97,7 +97,7 @@ class we_exim_searchPatterns{
 			'field' => 'id'
 		);
 
-		foreach($_pats as $tag => $attribut){
+		foreach($pats as $tag => $attribut){
 			if(is_array($attribut)){
 				foreach($attribut as $attrib){
 					$this->doc_patterns['id'][] = '/<(we:' . $tag . '\s*[^>]*\s' . $attrib . '\s*=\s*[\"\'])(\d+)(["\'][^>]*)>/si';
@@ -108,35 +108,35 @@ class we_exim_searchPatterns{
 		}
 
 		// search for classes
-		$_pats = array(
+		$pats = array(
 			'form' => 'classid',
 			'object' => 'classid',
 			'listview' => 'classid'
 		);
-		foreach($_pats as $tag => $attribut){
+		foreach($pats as $tag => $attribut){
 			$this->class_patterns[] = '/<(we:' . $tag . '\s*[^>]*\s' . $attribut . '\s*=\s*[\"\'])(\d+)(["\'][^>]*)>/si';
 		}
 
 		// search for external files
-		$_pats = array(
+		$pats = array(
 			'img' => 'src',
 			'a' => 'href',
 			'body' => 'background',
 			'table' => 'background',
 			'td' => 'background'
 		);
-		foreach($_pats as $tag => $attribut){
+		foreach($pats as $tag => $attribut){
 			$this->ext_patterns[] = '/<(' . $tag . '\s*[^>]*' . $tag . '\s*=\s*[\"\'])([^\'\"> ? \\\]+)(["\'][^>]*)>/si';
 		}
 
 
 		// handle templates
-		$_tmpl_pats = array(
+		$tmpl_pats = array(
 			'ifTemplate' => 'id',
 			'ifNotTemplate' => 'id'
 		);
 
-		foreach($_tmpl_pats as $tag => $attribut){
+		foreach($tmpl_pats as $tag => $attribut){
 			$this->tmpl_patterns[] = '/<(we:' . $tag . '\s*[^>]*\s' . $attribut . '\s*=\s*[\"\'])(\d+)(["\'][^>]*)>/si';
 		}
 	}

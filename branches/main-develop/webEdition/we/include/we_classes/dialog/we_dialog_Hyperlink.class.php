@@ -331,14 +331,14 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$extHref = (!$this->args['extHref'] ? '' : ((substr($this->args['extHref'], 0, 1) === '#') ? '' : $this->args['extHref']));
 		if($this->noInternals || (isset($this->args['outsideWE']) && $this->args['outsideWE'] == 1)){
 			$noInternals = true;
-			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] !== we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
+			$select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] !== we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>';
 
-			$_external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'placeholder="http://"', 'url', 300);
+			$external_link = we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'placeholder="http://"', 'url', 300);
 			// E-MAIL LINK
-			$_email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300);
+			$email_link = we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300);
 		} else {
-			$_select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
+			$select_type = '<option value="' . we_base_link::TYPE_EXT . '"' . (($this->args["type"] == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($this->args["type"] == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>' .
 				((defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))) ?
@@ -348,10 +348,10 @@ class we_dialog_Hyperlink extends we_dialog_base{
 
 			// EXTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[extHref]'].value";
-			$_external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
+			$external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
 			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extHref]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){window.open(f.value);}", true, 0, 0, '', '', ($extHref && $extHref !== we_base_link::EMPTY_EXT ? false : true), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
 
-			$_external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? consts.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
+			$external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? consts.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
 if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 	document.getElementById(\'btn_edit_ext\').disabled=true;
 	checkMakeEmptyHrefExt();
@@ -364,12 +364,12 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 	}
 	if(x[5]!=undefined){
 		document.getElementsByName(\'we_dialog_args[anchor]\')[0].value=x[5];
-	}}"', "url", 300), "", "left", "defaultfont", $_external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
+	}}"', "url", 300), "", "left", "defaultfont", $external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
 
 			// INTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[fileID]'].value";
 			$wecmdenc3 = we_base_request::encCmd("if(currentID){opener.document.we_form.yuiAcResultCT.value = currentType;opener.document.getElementById(\"btn_edit_int\").disabled=false;}");
-			$_internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','" . $wecmdenc3 . "','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','" . $wecmdenc3 . "','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
 			$yuiSuggest->setInput("we_dialog_args[fileHref]", $this->args["fileHref"]);
@@ -378,19 +378,19 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 			$yuiSuggest->setResult("we_dialog_args[fileID]", ($this->args["fileID"] == 0 ? "" : $this->args["fileID"]));
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(300);
-			$yuiSuggest->setSelectButton($_internal_select_button, 10);
+			$yuiSuggest->setSelectButton($internal_select_button, 10);
 			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultPath'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultPath'].value, document.we_form.elements['yuiAcResultCT'].value, '" . FILE_TABLE . "'); }", true, 0, 0, '', '', ($this->args["fileID"] ? false : true), false, '_int'));
-			$_internal_link = $yuiSuggest->getHTML() . we_html_element::htmlHidden('yuiAcResultCT', ($this->args['fileCT'] ? $this->args['fileCT'] : we_base_ContentTypes::WEDOCUMENT));
+			$internal_link = $yuiSuggest->getHTML() . we_html_element::htmlHidden('yuiAcResultCT', ($this->args['fileCT'] ? $this->args['fileCT'] : we_base_ContentTypes::WEDOCUMENT));
 
 			// E-MAIL LINK
-			$_email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
+			$email_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[mailHref]", 30, $this->args["mailHref"], "", '', "email", 300), "", "left", "defaultfont", "", "", "", "", "", 0);
 
 			// OBJECT LINK
 			if(defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
 				$cmd1 = "document.we_form.elements['we_dialog_args[objID]'].value";
 				$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objHref]'].value");
 				$wecmdenc3 = we_base_request::encCmd("if(currentID){opener.document.getElementById(\"btn_edit_obj\").disabled=false;}");
-				$_object_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '" . $wecmdenc3 . "', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
+				$object_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '" . $wecmdenc3 . "', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
 				$yuiSuggest->setAcId("Obj");
 				$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 				$yuiSuggest->setInput("we_dialog_args[objHref]", $this->args["objHref"]);
@@ -400,39 +400,39 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 				$yuiSuggest->setSelector(weSuggest::DocSelector);
 				$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 				$yuiSuggest->setWidth(300);
-				$yuiSuggest->setSelectButton($_object_select_button, 10);
+				$yuiSuggest->setSelectButton($object_select_button, 10);
 				$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements['yuiAcResultObj'].value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements['yuiAcResultObj'].value,'" . we_base_ContentTypes::OBJECT_FILE . "','" . OBJECT_FILES_TABLE . "'); }", true, 0, 0, '', '', ($this->args["objID"] ? false : true), false, '_obj'));
-				$_object_link = $yuiSuggest->getHTML();
+				$object_link = $yuiSuggest->getHTML();
 				/*
-				  $_object_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, 0, "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")) .
-				  '<input type="hidden" name="we_dialog_args[objID]" value="'.$this->args["objID"].'" />', "", "left", "defaultfont", $_object_select_button, "", "","", "", 0);
+				  $object_link = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[objHref]",30,$this->args["objHref"],"",' readonly="readonly"',"text",300, 0, "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")) .
+				  '<input type="hidden" name="we_dialog_args[objID]" value="'.$this->args["objID"].'" />', "", "left", "defaultfont", $object_select_button, "", "","", "", 0);
 				 */
 			}
 		}
 
-		$_anchorSel = '<div id="anchorlistcontainer"></div>';
-		$_anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onkeyup="checkMakeEmptyHrefExt()" onblur="checkMakeEmptyHrefExt();checkAnchor(this)"', "text", 300);
+		$anchorSel = '<div id="anchorlistcontainer"></div>';
+		$anchorInput = we_html_tools::htmlTextInput("we_dialog_args[anchor]", 30, $this->args["anchor"], "", 'onkeyup="checkMakeEmptyHrefExt()" onblur="checkMakeEmptyHrefExt();checkAnchor(this)"', "text", 300);
 
-		$_anchor = we_html_tools::htmlFormElementTable($_anchorInput, "", "left", "defaultfont", $_anchorSel, '', "", "", "", 0);
+		$anchor = we_html_tools::htmlFormElementTable($anchorInput, "", "left", "defaultfont", $anchorSel, '', "", "", "", 0);
 
-		$_param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, htmlspecialchars(urldecode(utf8_decode($this->args["param"]))), '', 'onkeyup="checkMakeEmptyHrefExt()" onblur="checkMakeEmptyHrefExt();"', 'text', 300);
+		$param = we_html_tools::htmlTextInput("we_dialog_args[param]", 30, htmlspecialchars(urldecode(utf8_decode($this->args["param"]))), '', 'onkeyup="checkMakeEmptyHrefExt()" onblur="checkMakeEmptyHrefExt();"', 'text', 300);
 
 		// CSS STYLE
 		$classSelect = $this->getClassSelect();
 
 		// lang
-		$_lang = $this->getLangField("lang", g_l('wysiwyg', '[link_lang]'), 145);
-		$_hreflang = $this->getLangField("hreflang", g_l('wysiwyg', '[href_lang]'), 145);
+		$lang = $this->getLangField("lang", g_l('wysiwyg', '[link_lang]'), 145);
+		$hreflang = $this->getLangField("hreflang", g_l('wysiwyg', '[href_lang]'), 145);
 
-		$_title = we_html_tools::htmlTextInput("we_dialog_args[title]", 30, $this->args["title"], "", "", "text", 300);
-
-
-		$_accesskey = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[accesskey]", 30, $this->args["accesskey"], "", "", "text", 145), "accesskey");
-		$_tabindex = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[tabindex]", 30, $this->args["tabindex"], "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 145), "tabindex");
+		$title = we_html_tools::htmlTextInput("we_dialog_args[title]", 30, $this->args["title"], "", "", "text", 300);
 
 
-		$_rev = we_html_tools::htmlFormElementTable($this->getRevRelSelect("rev"), "rev");
-		$_rel = we_html_tools::htmlFormElementTable($this->getRevRelSelect("rel"), "rel");
+		$accesskey = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[accesskey]", 30, $this->args["accesskey"], "", "", "text", 145), "accesskey");
+		$tabindex = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[tabindex]", 30, $this->args["tabindex"], "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 145), "tabindex");
+
+
+		$rev = we_html_tools::htmlFormElementTable($this->getRevRelSelect("rev"), "rev");
+		$rel = we_html_tools::htmlFormElementTable($this->getRevRelSelect("rel"), "rel");
 
 		$show_accessible_class = (permissionhandler::hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS") ? '' : ' class="weHide"');
 
@@ -443,24 +443,24 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 				'<div style="position:relative; top:15px"><table class="default" style="height:65px">
 	<tr>
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;height:20px">' . g_l('weClass', '[linkType]') . '</td>
-		<td style="vertical-align:top"><select name="we_dialog_args[type]" class="defaultfont" id="weDialogType" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">' . $_select_type . '</select></td>
+		<td style="vertical-align:top"><select name="we_dialog_args[type]" class="defaultfont" id="weDialogType" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);">' . $select_type . '</select></td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_EXT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_EXT) || ($noInternals && $this->args["type"] !== we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
-		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;">' . g_l('linklistEdit', '[external_link]') . '</td><td style="vertical-align:top" >' . $_external_link . '</td>
+		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;">' . g_l('linklistEdit', '[external_link]') . '</td><td style="vertical-align:top" >' . $external_link . '</td>
 	</tr>' .
-				(isset($_internal_link) ? '
+				(isset($internal_link) ? '
 	<tr class="we_change ' . we_base_link::TYPE_INT . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_INT) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px"> ' . g_l('weClass', '[document]') . '</td>
-		<td style="vertical-align:top"> ' . $_internal_link . we_html_element::jsElement('document.we_form.onsubmit = function() {return false;}') . '</td>
+		<td style="vertical-align:top"> ' . $internal_link . we_html_element::jsElement('document.we_form.onsubmit = function() {return false;}') . '</td>
 	</tr>' : '') . '
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px">' . g_l('wysiwyg', '[emaillink]') . '</td>
-		<td style="vertical-align:top">' . $_email_link . '</td>
+		<td style="vertical-align:top">' . $email_link . '</td>
 	</tr>' .
-				(defined('OBJECT_TABLE') && isset($_object_link) ? '
+				(defined('OBJECT_TABLE') && isset($object_link) ? '
 	<tr class="we_change ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_OBJ) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;height:0px;">' . g_l('contentTypes', '[objectFile]') . '</td>
-		<td style="vertical-align:top">' . $_object_link . '</td>
+		<td style="vertical-align:top">' . $object_link . '</td>
 	</tr>' : '') . '
 </table></div>' .
 				weSuggest::getYuiFiles() .
@@ -469,7 +469,7 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 			array('html' => '<table class="default">
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px">' . g_l('wysiwyg', '[anchor]') . '</td>
-		<td>' . $_anchor . '</td>
+		<td>' . $anchor . '</td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px">' . g_l('modules_messaging', '[subject]') . '</td>
@@ -477,7 +477,7 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('linklistEdit', '[link_params]') . '</td>
-		<td>' . $_param . '</td>
+		<td>' . $param . '</td>
 	</tr>
 	<tr class="we_change ' . we_base_link::TYPE_MAIL . '" style="display:' . (($this->args["type"] == we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px">CC</td>
@@ -499,19 +499,19 @@ if(this.value === \'\' || this.value === consts.EMPTY_EXT){
 			array('html' => '<table class="default">
 	<tr' . $show_accessible_class . '>
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;">' . g_l('wysiwyg', '[language]') . '</td>
-		<td><table class="default"><tr><td style="padding-left:2px;">' . $_lang . '</td><td>' . $_hreflang . '</td></tr></table></td>
+		<td><table class="default"><tr><td style="padding-left:2px;">' . $lang . '</td><td>' . $hreflang . '</td></tr></table></td>
 	</tr>
 	<tr>
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('wysiwyg', '[title]') . '</td>
-		<td>' . $_title . '</td>
+		<td>' . $title . '</td>
 	</tr>
 	<tr' . $show_accessible_class . '>
 		<td class="defaultfont lowContrast" style="vertical-align:top;padding-top:10px;">' . g_l('wysiwyg', '[keyboard]') . '</td>
-		<td><table class="default"><tr><td style="padding-left:2px;">' . $_accesskey . '</td><td>' . $_tabindex . '</td></tr></table></td>
+		<td><table class="default"><tr><td style="padding-left:2px;">' . $accesskey . '</td><td>' . $tabindex . '</td></tr></table></td>
 	</tr>
 	<tr' . $show_accessible_class . '>
 		<td class="defaultfont lowContrast" style="vertical-align:top;padding:10px 0px;">' . g_l('wysiwyg', '[relation]') . '</td>
-		<td><table class="default"><tr><td style="padding-left:2px;">' . $_rel . '</td><td>' . $_rev . '</td></tr></table></td>
+		<td><table class="default"><tr><td style="padding-left:2px;">' . $rel . '</td><td>' . $rev . '</td></tr></table></td>
 	</tr>
 </table>'
 			)

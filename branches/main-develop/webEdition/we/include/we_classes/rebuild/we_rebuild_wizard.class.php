@@ -154,7 +154,7 @@ abstract class we_rebuild_wizard{
 			'html' => we_html_forms::radiobutton('rebuild_thumbnails', ($type === 'rebuild_thumbnails' && permissionhandler::hasPerm('REBUILD_THUMBS')), 'type', g_l('rebuild', '[thumbnails]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_thumbnails]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (we_base_imageEdit::gd_version() == 0 || (!permissionhandler::hasPerm('REBUILD_THUMBS')))),
 		);
 
-		$_navRebuildHTML = '<div>' .
+		$navRebuildHTML = '<div>' .
 				we_html_forms::radiobutton('rebuild_navigation', ($type === 'rebuild_navigation' && permissionhandler::hasPerm('REBUILD_NAVIGATION')), 'type', g_l('rebuild', '[navigation]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_navigation]'), we_html_tools::TYPE_HELP, false), false, 'defaultfont', 'setNavStatDocDisabled()', !permissionhandler::hasPerm('REBUILD_NAVIGATION')) .
 				'</div><div style="padding:10px 20px;">' .
 				we_html_forms::checkbox(1, false, 'rebuildStaticAfterNavi', g_l('rebuild', '[rebuildStaticAfterNaviCheck]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[rebuildStaticAfterNaviHint]'), we_html_tools::TYPE_HELP, false), false, 'defaultfont', '', true) .
@@ -162,22 +162,22 @@ abstract class we_rebuild_wizard{
 
 		$parts[] = array(
 			'headline' => '',
-			'html' => $_navRebuildHTML,
+			'html' => $navRebuildHTML,
 		);
 
 		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 
-		$_rebuildMetaDisabled = true;
+		$rebuildMetaDisabled = true;
 		foreach($metaDataFields as $md){
 			if($md['importFrom'] !== ''){
-				$_rebuildMetaDisabled = false;
+				$rebuildMetaDisabled = false;
 				break;
 			}
 		}
 
 		$parts[] = array(
 			'headline' => '',
-			'html' => we_html_forms::radiobutton('rebuild_metadata', ($type === 'rebuild_metadata' && permissionhandler::hasPerm('REBUILD_META')), 'type', g_l('rebuild', '[metadata]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_metadata]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_META')) || $_rebuildMetaDisabled),
+			'html' => we_html_forms::radiobutton('rebuild_metadata', ($type === 'rebuild_metadata' && permissionhandler::hasPerm('REBUILD_META')), 'type', g_l('rebuild', '[metadata]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_metadata]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_META')) || $rebuildMetaDisabled),
 		);
 
 		$parts[] = array(
@@ -210,8 +210,8 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		}
 
 		$metaFieldsHidden = "";
-		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $_key . ']', $_val);
+		foreach($metaFields as $key => $val){
+			$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $key . ']', $val);
 		}
 
 		return array(
@@ -430,7 +430,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	static function formMetadata($metaFields, $onlyEmpty){
 		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 
-		$_html = we_html_element::jsElement('document._errorMessage=' . (empty($metaFields) ? '"' . addslashes(g_l('rebuild', '[noFieldsChecked]')) . '"' : '""' )) .
+		$html = we_html_element::jsElement('document._errorMessage=' . (empty($metaFields) ? '"' . addslashes(g_l('rebuild', '[noFieldsChecked]')) . '"' : '""' )) .
 				we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[expl_rebuild_metadata]'), we_html_tools::TYPE_INFO, 520) .
 				'<div class="defaultfont" style="margin:10px 0 5px 0;">' . g_l('rebuild', '[metadata]') . ':</div>';
 
@@ -438,15 +438,15 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 
 		foreach($metaDataFields as $md){
 			if($md['importFrom']){
-				$_html .= we_html_forms::checkbox(1, (!empty($metaFields[$md['tag']])), "_field[" . $md['tag'] . "]", $md['tag'], false, "defaultfont", "checkForError()");
+				$html .= we_html_forms::checkbox(1, (!empty($metaFields[$md['tag']])), "_field[" . $md['tag'] . "]", $md['tag'], false, "defaultfont", "checkForError()");
 			}
 		}
 
-		$_html .= we_html_element::htmlSpan(array('style' => 'margin:10px 0 20px 0;'), $selAllBut) .
+		$html .= we_html_element::htmlSpan(array('style' => 'margin:10px 0 20px 0;'), $selAllBut) .
 				we_html_forms::checkbox(1, $onlyEmpty, 'onlyEmpty', g_l('rebuild', '[onlyEmpty]'));
 
 
-		return $_html;
+		return $html;
 	}
 
 	/**
@@ -508,8 +508,8 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 
 		$metaFieldsHidden = '';
 		if($metaFields){
-			foreach($metaFields as $_key => $_val){
-				$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $_key . ']', $_val);
+			foreach($metaFields as $key => $val){
+				$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $key . ']', $val);
 			}
 		}
 		return array(
@@ -584,8 +584,8 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			$dthidden .= we_html_element::htmlHidden('doctypes[' . $key . ']', $val);
 		}
 		$metaFieldsHidden = '';
-		foreach($metaFields as $_key => $_val){
-			$metaFieldsHidden .= we_html_element::htmlHidden("_field[$_key]", $_val);
+		foreach($metaFields as $key => $val){
+			$metaFieldsHidden .= we_html_element::htmlHidden("_field[$key]", $val);
 		}
 		return array(
 			we_html_element::jsScript(JS_DIR . 'rebuild2.js'),

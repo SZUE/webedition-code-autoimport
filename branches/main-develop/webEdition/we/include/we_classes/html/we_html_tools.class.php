@@ -97,7 +97,7 @@ abstract class we_html_tools{
 
 	static function targetBox($name, $size, $width = '', $id = '', $value = '', $onChange = '', $abstand = 8, $selectboxWidth = '', $disabled = false){
 		$jsvarname = str_replace(array('[', ']'), '_', $name);
-		$_inputs = array(
+		$inputs = array(
 			'class' => 'weSelect',
 			'name' => 'sel_' . $name,
 			'onfocus' => 'change' . $jsvarname . '=1;',
@@ -112,11 +112,11 @@ this.selectedIndex = 0;' .
 		);
 
 		if($disabled){
-			$_inputs['disabled'] = 'true';
+			$inputs['disabled'] = 'true';
 		}
 
-		$_target_box = new we_html_select($_inputs, 0);
-		$_target_box->addOptions(array(
+		$target_box = new we_html_select($inputs, 0);
+		$target_box->addOptions(array(
 			'' => '',
 			'_top' => '_top',
 			'_parent' => '_parent',
@@ -126,22 +126,22 @@ this.selectedIndex = 0;' .
 
 
 		if($width){
-			$_inputs['style'] = 'width: ' . $width . 'px;';
+			$inputs['style'] = 'width: ' . $width . 'px;';
 		}
 
 		if($id){
-			$_inputs['id'] = $id;
+			$inputs['id'] = $id;
 		}
 
 		if($value){
-			$_inputs['value'] = oldHtmlspecialchars($value);
+			$inputs['value'] = oldHtmlspecialchars($value);
 		}
 
 		if($onChange){
-			$_inputs['onchange'] = $onChange;
+			$inputs['onchange'] = $onChange;
 		}
 
-		return we_html_element::htmlSpan(array('class' => 'defaultfont', 'style' => 'margin-right:' . $abstand . 'px'), self::htmlTextInput($name, $size, $value, '', ($onChange ? 'onchange="' . $onChange . '"' : ''), 'text', $width, 0, '', $disabled)) . $_target_box->getHtml();
+		return we_html_element::htmlSpan(array('class' => 'defaultfont', 'style' => 'margin-right:' . $abstand . 'px'), self::htmlTextInput($name, $size, $value, '', ($onChange ? 'onchange="' . $onChange . '"' : ''), 'text', $width, 0, '', $disabled)) . $target_box->getHtml();
 	}
 
 	static function htmlTextInput($name, $size = 24, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0, $markHot = '', $disabled = false, $readonly = false){
@@ -322,9 +322,9 @@ this.selectedIndex = 0;' .
 		$attsOpts = array();
 
 		if($valuesIsHash){
-			foreach($values as $_val => $_text){
-				$attsOpts['value'] = oldHtmlspecialchars($_val);
-				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($_text));
+			foreach($values as $val => $text){
+				$attsOpts['value'] = oldHtmlspecialchars($val);
+				$opts .= getHtmlTag('option', $attsOpts, oldHtmlspecialchars($text));
 			}
 		} else {
 			// options of select Menu
@@ -371,8 +371,8 @@ this.selectedIndex = 0;' .
 			$out .= '</select></td></tr></table>';
 			return $out;
 		}
-		$_ext = $extensions[0];
-		return self::hidden($name, $_ext) . '<b class="defaultfont">' . $_ext . '</b>';
+		$ext = $extensions[0];
+		return self::hidden($name, $ext) . '<b class="defaultfont">' . $ext . '</b>';
 	}
 
 	static function we_getDayPos($format){
@@ -407,18 +407,18 @@ this.selectedIndex = 0;' .
 	}
 
 	public static function getDateInput($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = ''){
-		$_attsSelect = $_attsOption = $_attsHidden = $xml ? array('xml' => $xml) : array();
+		$attsSelect = $attsOption = $attsHidden = $xml ? array('xml' => $xml) : array();
 
 		if($class){
-			$_attsSelect['class'] = $class;
+			$attsSelect['class'] = $class;
 		}
 		if($style){
-			$_attsSelect['style'] = $style;
+			$attsSelect['style'] = $style;
 		}
-		$_attsSelect['size'] = 1;
+		$attsSelect['size'] = 1;
 
 		if($onchange || $setHot){
-			$_attsSelect['onchange'] = (($setHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);' : '') . $onchange);
+			$attsSelect['onchange'] = (($setHot ? 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);' : '') . $onchange);
 		}
 
 		if(is_object($time)){
@@ -436,42 +436,42 @@ this.selectedIndex = 0;' .
 			$minute = intval(date('i', $time));
 		}
 
-		$_dayPos = self::we_getDayPos($format);
-		$_monthPos = self::we_getMonthPos($format);
-		$_yearPos = self::we_getYearPos($format);
-		$_hourPos = self::we_getHourPos($format);
-		$_minutePos = self::we_getMinutePos($format);
+		$dayPos = self::we_getDayPos($format);
+		$monthPos = self::we_getMonthPos($format);
+		$yearPos = self::we_getYearPos($format);
+		$hourPos = self::we_getHourPos($format);
+		$minutePos = self::we_getMinutePos($format);
 
-		$_showDay = true;
-		$_showMonth = true;
-		$_showYear = true;
-		$_showHour = true;
-		$_showMinute = true;
+		$showDay = true;
+		$showMonth = true;
+		$showYear = true;
+		$showHour = true;
+		$showMinute = true;
 
 		$name = preg_replace('/^(.+)]$/', '${1}%s]', $name);
-		if(!$format || $_dayPos > -1){
-			$days = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');
+		if(!$format || $dayPos > -1){
+			$days = getHtmlTag('option', array_merge($attsOption, array('value' => 0)), '--');
 
 			for($i = 1; $i <= 31; $i++){
-				$_atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
-				$days .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
+				$atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
+				$days .= getHtmlTag('option', array_merge($attsOption, $atts2), sprintf('%02d', $i));
 			}
-			$daySelect = getHtmlTag('select', array_merge($_attsSelect, array(
+			$daySelect = getHtmlTag('select', array_merge($attsSelect, array(
 					'name' => sprintf($name, '_day'),
 					'id' => sprintf($name, '_day')
 					)), $days, true) . '&nbsp;';
 		} else {
-			$daySelect = getHtmlTag('input', array_merge($_attsHidden, array(
+			$daySelect = getHtmlTag('input', array_merge($attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_day'),
 				'id' => sprintf($name, '_day'),
 				'value' => $day
 			)));
-			$_showDay = false;
+			$showDay = false;
 		}
 
-		if(!$format || $_monthPos > -1){
-			$months = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');
+		if(!$format || $monthPos > -1){
+			$months = getHtmlTag('option', array_merge($attsOption, array('value' => 0)), '--');
 
 			$monthType = (strpos($format, 'F') ? 'F' : (strpos($format, 'M') ? 'M' : 0));
 			for($i = 1; $i <= 12; $i++){
@@ -485,24 +485,24 @@ this.selectedIndex = 0;' .
 					default:
 						$val = sprintf('%02d', $i);
 				}
-				$_atts2 = ($time && $month == $i) ? array('selected' => 'selected', 'value' => $i) : array('value' => $i);
-				$months .= getHtmlTag('option', array_merge($_attsOption, $_atts2), $val);
+				$atts2 = ($time && $month == $i) ? array('selected' => 'selected', 'value' => $i) : array('value' => $i);
+				$months .= getHtmlTag('option', array_merge($attsOption, $atts2), $val);
 			}
-			$monthSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+			$monthSelect = getHtmlTag('select', array_merge($attsSelect, array(
 					'name' => sprintf($name, '_month'),
 					'id' => sprintf($name, '_month')
 					)), $months, true) . '&nbsp;';
 		} else {
-			$monthSelect = getHtmlTag('input', array_merge($_attsHidden, array(
+			$monthSelect = getHtmlTag('input', array_merge($attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_month'),
 				'id' => sprintf($name, '_month'),
 				'value' => $month
 			)));
-			$_showMonth = false;
+			$showMonth = false;
 		}
-		if(!$format || $_yearPos > -1){
-			$years = getHtmlTag('option', array_merge($_attsOption, array('value' => 0)), '--');
+		if(!$format || $yearPos > -1){
+			$years = getHtmlTag('option', array_merge($attsOption, array('value' => 0)), '--');
 			if(!$minyear){
 				$minyear = 1970;
 			}
@@ -510,80 +510,80 @@ this.selectedIndex = 0;' .
 				$maxyear = abs(date('Y') + 100);
 			}
 			for($i = $minyear; $i <= $maxyear; $i++){
-				$_atts2 = ($time && $year == $i) ? array('selected' => 'selected') : array();
-				$years .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
+				$atts2 = ($time && $year == $i) ? array('selected' => 'selected') : array();
+				$years .= getHtmlTag('option', array_merge($attsOption, $atts2), sprintf('%02d', $i));
 			}
-			$yearSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+			$yearSelect = getHtmlTag('select', array_merge($attsSelect, array(
 					'name' => sprintf($name, '_year'),
 					'id' => sprintf($name, '_year')
 					)), $years, true) . '&nbsp;';
 		} else {
-			$yearSelect = getHtmlTag('input', array_merge($_attsHidden, array(
+			$yearSelect = getHtmlTag('input', array_merge($attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_year'),
 				'id' => sprintf($name, '_year'),
 				'value' => $year
 			)));
-			$_showYear = false;
+			$showYear = false;
 		}
 
-		if(!$format || $_hourPos > -1){
+		if(!$format || $hourPos > -1){
 			$hours = '';
 			for($i = 0; $i <= 23; $i++){
-				$_atts2 = ($time && $hour == $i) ? array('selected' => 'selected') : array();
-				$hours .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
+				$atts2 = ($time && $hour == $i) ? array('selected' => 'selected') : array();
+				$hours .= getHtmlTag('option', array_merge($attsOption, $atts2), sprintf('%02d', $i));
 			}
-			$hourSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+			$hourSelect = getHtmlTag('select', array_merge($attsSelect, array(
 					'name' => sprintf($name, '_hour'),
 					'id' => sprintf($name, '_hour')
 					)), $hours, true) . '&nbsp;';
 		} else {
-			$hourSelect = getHtmlTag('input', array_merge($_attsHidden, array(
+			$hourSelect = getHtmlTag('input', array_merge($attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_hour'),
 				'id' => sprintf($name, '_hour'),
 				'value' => isset($hour) ? $hour : 0
 			)));
-			$_showHour = false;
+			$showHour = false;
 		}
 
-		if(!$format || $_minutePos > -1){
+		if(!$format || $minutePos > -1){
 			$minutes = '';
 			for($i = 0; $i <= 59; $i++){
-				$_atts2 = ($time && $minute == $i) ? array('selected' => 'selected') : array();
-				$minutes .= getHtmlTag('option', array_merge($_attsOption, $_atts2), sprintf('%02d', $i));
+				$atts2 = ($time && $minute == $i) ? array('selected' => 'selected') : array();
+				$minutes .= getHtmlTag('option', array_merge($attsOption, $atts2), sprintf('%02d', $i));
 			}
-			$minSelect = getHtmlTag('select', array_merge($_attsSelect, array(
+			$minSelect = getHtmlTag('select', array_merge($attsSelect, array(
 					'name' => sprintf($name, '_minute'),
 					'id' => sprintf($name, '_minute')
 					)), $minutes, true) . '&nbsp;';
 		} else {
-			$minSelect = getHtmlTag('input', array_merge($_attsHidden, array(
+			$minSelect = getHtmlTag('input', array_merge($attsHidden, array(
 				'type' => 'hidden',
 				'name' => sprintf($name, '_minute'),
 				'id' => sprintf($name, '_minute'),
 				'value' => isset($minute) ? $minute : 0
 			)));
-			$_showMinute = false;
+			$showMinute = false;
 		}
 
-		$_datePosArray = array(
-			($_dayPos == -1) ? 'd' : $_dayPos => $daySelect,
-			($_monthPos == -1) ? 'm' : $_monthPos => $monthSelect,
-			($_yearPos == -1) ? 'y' : $_yearPos => $yearSelect
+		$datePosArray = array(
+			($dayPos == -1) ? 'd' : $dayPos => $daySelect,
+			($monthPos == -1) ? 'm' : $monthPos => $monthSelect,
+			($yearPos == -1) ? 'y' : $yearPos => $yearSelect
 		);
 
-		$_timePosArray = array(
-			($_hourPos == -1) ? 'h' : $_hourPos => $hourSelect, ($_minutePos == -1) ? 'i' : $_minutePos => $minSelect
+		$timePosArray = array(
+			($hourPos == -1) ? 'h' : $hourPos => $hourSelect, ($minutePos == -1) ? 'i' : $minutePos => $minSelect
 		);
 
-		ksort($_datePosArray);
-		ksort($_timePosArray);
+		ksort($datePosArray);
+		ksort($timePosArray);
 
 		return '<table class="default"><tr><td>' .
-			implode('', $_datePosArray) .
-			($_showHour || $_showMinute ? '</td></tr><tr><td>' : '') .
-			implode('', $_timePosArray) .
+			implode('', $datePosArray) .
+			($showHour || $showMinute ? '</td></tr><tr><td>' : '') .
+			implode('', $timePosArray) .
 			'</td></tr></table>';
 	}
 
@@ -785,10 +785,10 @@ this.selectedIndex = 0;' .
 	 * @abstract get code for calendar
 	 * @return html-code for calendar
 	 */
-	public static function getDateSelector($_name, $_btn, $value, $selWidth = 100, $btnClass = ''){
-		$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", false, 0, 0, '', '', false, false, $_btn, false, '', $btnClass);
-		$oSelector = new we_html_table(array("class" => 'default', "id" => $_name . "_cell"), 1, 5);
-		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, $value, 10, 'id="' . $_name . '" class="wetextinput" readonly="1"', "text", $selWidth));
+	public static function getDateSelector($name, $btn, $value, $selWidth = 100, $btnClass = ''){
+		$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", false, 0, 0, '', '', false, false, $btn, false, '', $btnClass);
+		$oSelector = new we_html_table(array("class" => 'default', "id" => $name . "_cell"), 1, 5);
+		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name, 55, $value, 10, 'id="' . $name . '" class="wetextinput" readonly="1"', "text", $selWidth));
 		$oSelector->setCol(0, 3, null, '');
 		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
 

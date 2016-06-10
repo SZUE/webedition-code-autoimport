@@ -115,27 +115,27 @@ abstract class we_listview_objectBase extends we_listview_base{
 
 		//get Metadata for class (default title, etc.)
 		//BugFix #4629
-		$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
-		$_selFields = '';
-		foreach($_fieldnames as $_key => $_val){
-			if(!$_val || $_val === '_'){ // bug #4657
+		$fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords,CreationDate,ModDate FROM ' . OBJECT_TABLE . ' WHERE ID=' . $classID, $this->DB_WE);
+		$selFields = '';
+		foreach($fieldnames as $key => $val){
+			if(!$val || $val === '_'){ // bug #4657
 				continue;
 			}
-			if(!is_numeric($_key) && $_val){
-				switch($_key){
+			if(!is_numeric($key) && $val){
+				switch($key){
 					case 'DefaultDesc':
-						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Description,`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS WE_Description,';
+						$selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS we_Description,`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS WE_Description,';
 						break;
 					case 'DefaultTitle':
-						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Title,`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS WE_Title,';
+						$selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS we_Title,`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS WE_Title,';
 						break;
 					case 'DefaultKeywords':
-						$_selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS we_Keywords,`' . OBJECT_X_TABLE . $classID . '`.`' . $_val . '` AS WE_Keywords,';
+						$selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS we_Keywords,`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS WE_Keywords,';
 						break;
 				}
 			}
 		}
-		$f = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language,' . $_selFields;
+		$f = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language,' . $selFields;
 		$charclass = '[\!\=%&\(\)\*\+\.\/<>|~, ]';
 		foreach($matrix as $n => $p){
 			$n2 = $n;

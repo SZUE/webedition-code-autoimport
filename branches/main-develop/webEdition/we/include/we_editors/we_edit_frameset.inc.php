@@ -77,18 +77,18 @@ if(!$we_doc->fileExists){
 
 switch($we_Table){
 	case TEMPLATES_TABLE:
-		$_needPerm = 'CAN_SEE_TEMPLATES';
+		$needPerm = 'CAN_SEE_TEMPLATES';
 		break;
 	case FILE_TABLE:
-		$_needPerm = 'CAN_SEE_DOCUMENTS';
+		$needPerm = 'CAN_SEE_DOCUMENTS';
 		break;
 	case VFILE_TABLE:
-		$_needPerm = 'CAN_SEE_COLLECTIONS';
+		$needPerm = 'CAN_SEE_COLLECTIONS';
 		break;
 	default:
-		$_needPerm = '';
+		$needPerm = '';
 }
-if($_needPerm && !permissionhandler::hasPerm($_needPerm)){
+if($needPerm && !permissionhandler::hasPerm($needPerm)){
 	include(WE_INCLUDES_PATH . 'weInfoPages/weNoPerms.inc.php');
 	exit();
 }

@@ -30,7 +30,7 @@ function getPreferencesFooterJS(){
 	foreach(array_keys($GLOBALS['tabs']) as $key){
 		$tmp.="document.getElementById('content').contentDocument.getElementById('setting_" . $key . "').style.display = 'none';";
 	}
-	$_javascript = <<< END_OF_SCRIPT
+	$javascript = <<< END_OF_SCRIPT
 var countSaveTrys = 0;
 function we_save() {
 		$tmp
@@ -54,7 +54,7 @@ function we_save() {
  }
 
 END_OF_SCRIPT;
-	return we_html_element::jsElement($_javascript);
+	return we_html_element::jsElement($javascript);
 }
 
 /* * ***************************************************************************

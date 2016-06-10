@@ -71,8 +71,8 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	/* gets the HTML for including in HTML-Docs */
 
 	function getHtml($dyn = false, $preload = false){
-		$_data = $this->getElement('data');
-		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
+		$data = $this->getElement('data');
+		if($this->ID || ($data && !is_dir($data) && is_readable($data))){
 			$pluginspage = $this->getElement('Pluginspage') ? : 'http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash';
 			$codebase = $this->getElement('Codebase') ? : 'http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,40,0';
 
@@ -214,21 +214,21 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	}
 
 	protected function getThumbnail($width = 150, $height = 100){
-		$_width = $this->getElement('width');
-		$_height = $this->getElement('height');
-		$_scale = $this->getElement('scale');
-		$_hspace = $this->getElement('hspace');
-		$_vspace = $this->getElement('vspace');
-		$_name = $this->getElement('name');
-		$_play = $this->getElement('play');
-		$_quality = $this->getElement('quality');
-		$_bgcolor = $this->getElement('bgcolor');
-		$_align = $this->getElement('align');
-		$_salign = $this->getElement('salign');
-		$_loop = $this->getElement('loop');
-		$_wmode = $this->getElement('wmode');
-		$_origwidth = $this->getElement('origwidth');
-		$_origheight = $this->getElement('origheight');
+		$elemWidth = $this->getElement('width');
+		$elemHeight = $this->getElement('height');
+		$scale = $this->getElement('scale');
+		$hspace = $this->getElement('hspace');
+		$vspace = $this->getElement('vspace');
+		$name = $this->getElement('name');
+		$play = $this->getElement('play');
+		$quality = $this->getElement('quality');
+		$bgcolor = $this->getElement('bgcolor');
+		$align = $this->getElement('align');
+		$salign = $this->getElement('salign');
+		$loop = $this->getElement('loop');
+		$wmode = $this->getElement('wmode');
+		$origwidth = $this->getElement('origwidth');
+		$origheight = $this->getElement('origheight');
 
 		$this->setElement('width', $width, 'attrib');
 		$this->setElement('height', $height, 'attrib');
@@ -247,21 +247,21 @@ class we_flashDocument extends we_document_deprecatedVideo{
 		$this->setElement('origheight', '', 'attrib');
 
 		$html = $this->getHtml(true);
-		$this->setElement('width', $_width, 'attrib');
-		$this->setElement('height', $_height, 'attrib');
-		$this->setElement('scale', $_scale, 'attrib');
-		$this->setElement('hspace', $_hspace, 'attrib');
-		$this->setElement('vspace', $_vspace, 'attrib');
-		$this->setElement('name', $_name, 'attrib');
-		$this->setElement('play', $_play, 'attrib');
-		$this->setElement('quality', $_quality, 'attrib');
-		$this->setElement('bgcolor', $_bgcolor, 'attrib');
-		$this->setElement('align', $_align, 'attrib');
-		$this->setElement('salign', $_salign, 'attrib');
-		$this->setElement('loop', $_loop, 'attrib');
-		$this->setElement('wmode', $_wmode, 'attrib');
-		$this->setElement('origwidth', $_origwidth, 'attrib');
-		$this->setElement('origheight', $_origheight, 'attrib');
+		$this->setElement('width', $elemWidth, 'attrib');
+		$this->setElement('height', $elemHeight, 'attrib');
+		$this->setElement('scale', $scale, 'attrib');
+		$this->setElement('hspace', $hspace, 'attrib');
+		$this->setElement('vspace', $vspace, 'attrib');
+		$this->setElement('name', $name, 'attrib');
+		$this->setElement('play', $play, 'attrib');
+		$this->setElement('quality', $quality, 'attrib');
+		$this->setElement('bgcolor', $bgcolor, 'attrib');
+		$this->setElement('align', $align, 'attrib');
+		$this->setElement('salign', $salign, 'attrib');
+		$this->setElement('loop', $loop, 'attrib');
+		$this->setElement('wmode', $wmode, 'attrib');
+		$this->setElement('origwidth', $origwidth, 'attrib');
+		$this->setElement('origheight', $origheight, 'attrib');
 
 		return $html;
 	}

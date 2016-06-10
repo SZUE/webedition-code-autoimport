@@ -48,9 +48,9 @@ class we_navigation_cache{
 		we_base_file::delete(self::getNavigationFilename($id));
 	}
 
-	static function saveCacheNavigation($id, $_naviItemes){
+	static function saveCacheNavigation($id, $naviItemes){
 		//FIMXE: currently we need the classes, so we are unable to serialize as json!
-		we_base_file::save(self::getNavigationFilename($id), we_serialize($_naviItemes->items, SERIALIZE_PHP, false, 9));
+		we_base_file::save(self::getNavigationFilename($id), we_serialize($naviItemes->items, SERIALIZE_PHP, false, 9));
 	}
 
 	static function getCacheFromFile($parentid){

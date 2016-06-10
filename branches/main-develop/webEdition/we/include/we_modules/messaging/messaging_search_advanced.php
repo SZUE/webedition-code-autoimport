@@ -75,9 +75,9 @@ if(we_base_request::_(we_base_request::BOOL, 'save')){
     </td>
 </table>';
 
-		$_buttontable = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:save_settings();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
+		$buttontable = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:save_settings();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
 
-		echo we_html_tools::htmlDialogLayout($table, "", $_buttontable, "90%");
+		echo we_html_tools::htmlDialogLayout($table, "", $buttontable, "90%");
 		?>
 
 	</form>

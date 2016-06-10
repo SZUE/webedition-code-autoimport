@@ -29,11 +29,11 @@ class rpcGetDocElementCmd extends we_rpc_cmd{
 	function execute(){
 		$resp = new we_rpc_response();
 
-		$_doc = new we_webEditionDocument();
+		$doc = new we_webEditionDocument();
 
-		$_doc->initByID(we_base_request::_(we_base_request::INT, 'docid', 0));
+		$doc->initByID(we_base_request::_(we_base_request::INT, 'docid', 0));
 		$what = we_base_request::_(we_base_request::STRING, 'element');
-		$resp->setData($what, $_doc->getElement($what));
+		$resp->setData($what, $doc->getElement($what));
 
 		return $resp;
 	}

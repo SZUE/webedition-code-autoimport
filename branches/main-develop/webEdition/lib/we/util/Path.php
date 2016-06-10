@@ -35,7 +35,7 @@ class we_util_Path{
 	 * @param string $dbTable name of table
 	 * @return string
 	 */
-	static function id2Path($id, $dbTable, $db = NULL){
+	static function id2Path($id, $dbTable, we_database_base $db = NULL){
 		return f('SELECT Path FROM ' . addslashes($dbTable) . ' WHERE ID=' . intval($id), '', $db? : $GLOBALS['DB_WE']);
 	}
 

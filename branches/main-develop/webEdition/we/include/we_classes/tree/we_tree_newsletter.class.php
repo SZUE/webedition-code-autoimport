@@ -33,18 +33,18 @@ class we_tree_newsletter extends we_tree_base{
 		$table = NEWSLETTER_TABLE;
 		$wsQuery = '';
 
-		$items = $_aWsQuery = $parentpaths = array();
+		$items = $aWsQuery = $parentpaths = array();
 
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
+				$aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
 				}
 			}
-			$wsQuery = $_aWsQuery ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
+			$wsQuery = $aWsQuery ? '(' . implode(' OR ', $aWsQuery) . ') AND ' : '';
 		}
 
 		$prevoffset = max(0, $offset - $segment);

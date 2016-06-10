@@ -926,17 +926,17 @@ abstract class we_SEEM{
 
 	/**
 	 * @return array
-	 * @param array $_docIDArray
+	 * @param array $docIDArray
 	 * @desc Searchs the contentTypes of the gibven document ids - saves them in an array and returns them
 	 */
-	static function getDocContentTypesByID(array $_docIDArray){
+	static function getDocContentTypesByID(array $docIDArray){
 
-		$_docContentTypes = array();
+		$docContentTypes = array();
 		$db = new DB_WE();
-		foreach($_docIDArray as $i => $cur){
-			$_docContentTypes[$i] = ($cur != -1 ? self::getDocContentTypeByID($cur, $db) : '');
+		foreach($docIDArray as $i => $cur){
+			$docContentTypes[$i] = ($cur != -1 ? self::getDocContentTypeByID($cur, $db) : '');
 		}
-		return $_docContentTypes;
+		return $docContentTypes;
 	}
 
 	/**

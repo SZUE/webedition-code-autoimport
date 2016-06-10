@@ -118,8 +118,8 @@ class we_metadata_metaData{
 
 		if($this->_setDatasource($source)){
 			if($this->_setDatatype()){
-				foreach($this->datatype as $_type){
-					$this->_getInstance($_type);
+				foreach($this->datatype as $type){
+					$this->_getInstance($type);
 				}
 			}
 		}
@@ -146,24 +146,24 @@ class we_metadata_metaData{
 		if(!$this->_valid){
 			return false;
 		}
-		foreach($this->datatype as $_type){
-			if(!in_array('read', $this->_instance[$_type]->accesstypes)){
+		foreach($this->datatype as $type){
+			if(!in_array('read', $this->_instance[$type]->accesstypes)){
 				return false;
 			}
-			$this->metadata[strToLower($_type)] = $this->_instance[$_type]->_getMetaData();
+			$this->metadata[strToLower($type)] = $this->_instance[$type]->_getMetaData();
 		}
 		return $this->metadata;
 	}
 
 	function setMetaData($data = '', $datatype = ''){
-		foreach($this->datatype as $_type){
-			if(!$this->_instance[$_type]->_valid){
+		foreach($this->datatype as $type){
+			if(!$this->_instance[$type]->_valid){
 				return false;
 			}
-			if(!in_array('write', $this->_instance[$_type]->accesstypes)){
+			if(!in_array('write', $this->_instance[$type]->accesstypes)){
 				return false;
 			}
-			$this->_instance[$_type]->_setMetaData($data = '');
+			$this->_instance[$type]->_setMetaData($data = '');
 		}
 		return true;
 	}
@@ -247,23 +247,23 @@ class we_metadata_metaData{
 		if(!$this->_valid){
 			return false;
 		}
-		$_filetype = (is_callable('exif_imagetype') ? @exif_imagetype($this->datasource) : '');
+		$filetype = (is_callable('exif_imagetype') ? @exif_imagetype($this->datasource) : '');
 		// if $_filetype is a numeric value, filetype should first be identified by
 		// Get fype for image-type returned by getimagesize, exif_read_data, exif_thumbnail, exif_imagetype
-		if(!empty($_filetype) && is_numeric($_filetype)){
-			if(isset($this->imageTypeMap[$_filetype]) && !empty($this->imageTypeMap[$_filetype])){
-				$this->filetype = $this->imageTypeMap[$_filetype];
+		if(!empty($filetype) && is_numeric($filetype)){
+			if(isset($this->imageTypeMap[$filetype]) && !empty($this->imageTypeMap[$filetype])){
+				$this->filetype = $this->imageTypeMap[$filetype];
 			} else {
 				$this->_valid = false;
-				$_filetype = '';
+				$filetype = '';
 			}
 		}
 		// if first check fails try to identify file extension:
-		if(empty($_filetype)){
+		if(empty($filetype)){
 			// try to identify type of file by its extension by checking substring after last point in $this->datasource
-			$_extension = strrchr($this->datasource, '.');
-			if($_extension && $_extension != '.'){
-				$this->filetype = substr($_extension, 1);
+			$extension = strrchr($this->datasource, '.');
+			if($extension && $extension != '.'){
+				$this->filetype = substr($extension, 1);
 			} else {
 				$this->_valid = false;
 				return false;
@@ -366,37 +366,37 @@ class we_metadata_metaData{
 
 	public static function getDefinedMetaValues($getAssoc = false, $leading = false, $field = '', $getDelete = false, $getDeleteLast = false){
 		// defined_values change more often than defined_fields, so we do not cache them!
-		$_defined_values = array();
+		$defined_values = array();
 		$GLOBALS['DB_WE']->query('SELECT * FROM ' . METAVALUES_TABLE . ($field ? ' WHERE tag = "' . $GLOBALS['DB_WE']->escape($field) . '"' : '') . ' ORDER BY value');
 		$isDel = false;
 
 		while($GLOBALS['DB_WE']->next_record()){
-			if(!isset($_defined_values[$GLOBALS['DB_WE']->f('tag')])){
+			if(!isset($defined_values[$GLOBALS['DB_WE']->f('tag')])){
 				if($leading){
-					$_defined_values[$GLOBALS['DB_WE']->f('tag')][] = $leading;
+					$defined_values[$GLOBALS['DB_WE']->f('tag')][] = $leading;
 				}
 				if($getAssoc){
 					if($getDelete){
-						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__del__'] = '-- ' . g_l('metadata', '[deleteEntry]') . ' --';
+						$defined_values[$GLOBALS['DB_WE']->f('tag')]['__del__'] = '-- ' . g_l('metadata', '[deleteEntry]') . ' --';
 						$isDel = true;
 					}
 					if($getDeleteLast){
-						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__del_last__'] = '-- ' . g_l('metadata', '[deleteLastEntry]') . ' --';
+						$defined_values[$GLOBALS['DB_WE']->f('tag')]['__del_last__'] = '-- ' . g_l('metadata', '[deleteLastEntry]') . ' --';
 						$isDel = true;
 					}
 					if($isDel){
-						$_defined_values[$GLOBALS['DB_WE']->f('tag')]['__empty__'] = '';
+						$defined_values[$GLOBALS['DB_WE']->f('tag')]['__empty__'] = '';
 					}
 				}
 			}
 			if($getAssoc){
-				$_defined_values[$GLOBALS['DB_WE']->f('tag')][$GLOBALS['DB_WE']->f('value')] = $GLOBALS['DB_WE']->f('value');
+				$defined_values[$GLOBALS['DB_WE']->f('tag')][$GLOBALS['DB_WE']->f('value')] = $GLOBALS['DB_WE']->f('value');
 			} else {
-				$_defined_values[$GLOBALS['DB_WE']->f('tag')][] = $GLOBALS['DB_WE']->f('value');
+				$defined_values[$GLOBALS['DB_WE']->f('tag')][] = $GLOBALS['DB_WE']->f('value');
 			}
 		}
 
-		return $field ? (isset($_defined_values[$field]) ? $_defined_values[$field] : array()) : $_defined_values;
+		return $field ? (isset($defined_values[$field]) ? $defined_values[$field] : array()) : $defined_values;
 	}
 
 }

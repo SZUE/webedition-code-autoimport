@@ -115,8 +115,8 @@ abstract class we_modules_frame{
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	protected function getHTMLHeader($_menuFile){
-		$menu = include($_menuFile);
+	protected function getHTMLHeader($menuFile){
+		$menu = include($menuFile);
 		$jmenu = new we_base_menu($menu, 'top.opener.top.load', '');
 		$menu = $jmenu->getCode(false);
 
@@ -126,13 +126,13 @@ abstract class we_modules_frame{
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){
-		$_incDecTree = '<div id="baumArrows">
+		$incDecTree = '<div id="baumArrows">
 	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
 	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>
 	<div class="baumArrow" onclick="top.content.toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-' . ($this->treeWidth <= 30 ? "right" : "left") . '" ></i></div>
 </div>';
 
-		$content = we_html_element::htmlDiv(array('id' => 'moduleContent'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('id' => 'vtabs'), $_incDecTree) .
+		$content = we_html_element::htmlDiv(array('id' => 'moduleContent'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('id' => 'vtabs'), $incDecTree) .
 								$this->getHTMLLeft()
 						) .
 						we_html_element::htmlDiv(array('id' => 'right', 'style' => 'left: ' . $this->treeWidth . 'px;'), we_html_element::htmlIFrame('editor', $this->frameset . '&pnt=editor' . $extraUrlParams, ' ', '', '', false)
@@ -227,33 +227,33 @@ function we_save() {
 
 	protected function getHTMLExitQuestion(){
 		if(($dc = we_base_request::_(we_base_request::RAW, 'delayCmd'))){
-			$_frame = 'opener.top.content';
-			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
-			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . $dc . '","' . we_base_request::_(we_base_request::INT, 'delayParam') . '");self.close();';
-			$_cancel = 'self.close();';
+			$frame = 'opener.top.content';
+			$yes = $frame . '.hot=0;' . $frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
+			$no = $frame . '.hot=0;' . $frame . '.we_cmd("' . $dc . '","' . we_base_request::_(we_base_request::INT, 'delayParam') . '");self.close();';
+			$cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
-							we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
+							we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $yes, $no, $cancel) .
 							'</body>');
 		}
 	}
 
 	function setTreeWidthFromCookie(){
-		$_tw = isset($_COOKIE["treewidth_modules"]) ? $_COOKIE["treewidth_modules"] : $this->treeDefaultWidth;
-		if(!is_numeric($_tw)){
-			$_tw = explode(',', trim($_tw, ' ,'));
-			$_twArr = array();
-			$_twJS = '{';
+		$tw = isset($_COOKIE["treewidth_modules"]) ? $_COOKIE["treewidth_modules"] : $this->treeDefaultWidth;
+		if(!is_numeric($tw)){
+			$tw = explode(',', trim($tw, ' ,'));
+			$twArr = array();
+			$twJS = '{';
 
-			foreach($_tw as $_v){
-				$entry = explode(':', trim($_v));
-				$_twArr[trim($entry[0])] = $entry[1];
-				$_twJS .= $entry[0] . ':' . $entry[1] . ',';
+			foreach($tw as $v){
+				$entry = explode(':', trim($v));
+				$twArr[trim($entry[0])] = $entry[1];
+				$twJS .= $entry[0] . ':' . $entry[1] . ',';
 			}
-			self::$treeWidthsJS = rtrim($_twJS, ',') . '}';
-			$this->treeWidth = isset($_twArr[$this->module]) ? $_twArr[$this->module] : $this->treeDefaultWidth;
+			self::$treeWidthsJS = rtrim($twJS, ',') . '}';
+			$this->treeWidth = isset($twArr[$this->module]) ? $twArr[$this->module] : $this->treeDefaultWidth;
 		} else {
-			$this->treeWidth = $_tw;
+			$this->treeWidth = $tw;
 		}
 	}
 

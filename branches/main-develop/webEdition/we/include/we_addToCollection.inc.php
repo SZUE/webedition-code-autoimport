@@ -123,7 +123,7 @@ $yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELEC
 
 $yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix($table) . "');", true, 0, 0, "", "", false, false), 0);
 $weAcSelector = $yuiSuggest->getHTML();
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button('quit_addToCollection', "javascript:weAddToCollection.we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
+$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button('quit_addToCollection', "javascript:weAddToCollection.we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
 
 $recursive = we_html_forms::checkboxWithHidden(1, 'InsertRecursive', g_l('weClass', '[collection][insertRecursive]'));
 
@@ -138,7 +138,7 @@ echo
 <h1 class="big" style="padding:0px;margin:0px;">' . g_l('weClass', '[collection][add]') . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('weClass', '[collection][add_help]') . '</span>
 <p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . $recursive . '</p></p>
-<div>' . $_buttons . '</div></div>
+<div>' . $buttons . '</div></div>
  </form>' .
  $yuiSuggest->getYuiJs() .
  '</body>

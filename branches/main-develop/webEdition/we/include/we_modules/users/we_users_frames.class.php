@@ -103,7 +103,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$js = $this->View->getJSProperty();
 		$tab = we_base_request::_(we_base_request::INT, 'tab', 0);
 		$permBranch = oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "perm_branch", 0));
-		$_content = we_html_element::htmlHiddens(array(
+		$content = we_html_element::htmlHiddens(array(
 				"ucmd" => "",
 				"tab" => $tab,
 				"oldtab" => $tab,
@@ -124,18 +124,18 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			if(($start = we_base_request::_(we_base_request::INT, 'seem_start_file')) !== false){
 				$_SESSION["save_user_seem_start_file"][we_base_request::_(we_base_request::INT, "uid")] = $start;
 			}
-			$_content .= $user_object->formDefinition($tab, $permBranch);
+			$content .= $user_object->formDefinition($tab, $permBranch);
 		}
 
-		$_content .= $yuiSuggest->getYuiJs();
+		$content .= $yuiSuggest->getYuiJs();
 
-		$_form = we_html_element::htmlForm(array(
+		$form = we_html_element::htmlForm(array(
 				'name' => 'we_form',
 				'method' => 'post',
 				'autocomplete' => 'off',
 				'onsubmit' => 'return false'
-				), $_content);
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $_form), $js);
+				), $content);
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $form), $js);
 	}
 
 	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){

@@ -73,14 +73,14 @@ abstract class we_textContentDocument extends we_textDocument{
 		} else {
 			$this->resetElements();
 			while((list($k, $v) = $this->nextElement('txt'))){
-				$_dat = (isset($v['dat']) && is_string($v['dat']) && isset($v['dat']) ? $v['dat'] : '');
-				if($k[0] === '$' || (isset($k[1]) && $k[1] === '$') || empty($_dat)){
+				$dat = (isset($v['dat']) && is_string($v['dat']) && isset($v['dat']) ? $v['dat'] : '');
+				if($k[0] === '$' || (isset($k[1]) && $k[1] === '$') || empty($dat)){
 					//skip elements whose names are variables or if element is empty
 					continue;
 				}
 
-				if(isset($v['type']) && $v['type'] === 'txt' && !preg_match('-^[asO]:\d+:|^[{\[].*[}\]]$-', $_dat)){
-					$text .= ' ' . $_dat;
+				if(isset($v['type']) && $v['type'] === 'txt' && !preg_match('-^[asO]:\d+:|^[{\[].*[}\]]$-', $dat)){
+					$text .= ' ' . $dat;
 				}
 			}
 			//variants are initialized, so nothing special to do
@@ -126,8 +126,8 @@ abstract class we_textContentDocument extends we_textDocument{
 				}
 				if($this->ContentType == we_base_ContentTypes::WEDOCUMENT){
 					// only switch template, when current template is not in Templates
-					$_templates = explode(',', $rec['Templates']);
-					if(!in_array($this->TemplateID, $_templates)){
+					$templates = explode(',', $rec['Templates']);
+					if(!in_array($this->TemplateID, $templates)){
 						$this->setTemplateID($rec['TemplateID']);
 					}
 					$this->IsDynamic = $rec['IsDynamic'];
@@ -135,16 +135,16 @@ abstract class we_textContentDocument extends we_textDocument{
 				$this->IsSearchable = $rec['IsSearchable'];
 				$this->Category = $rec['Category'];
 				$this->Language = $rec['Language'];
-				$_pathFirstPart = substr($this->ParentPath, -1) === '/' ? '' : '/';
+				$pathFirstPart = substr($this->ParentPath, -1) === '/' ? '' : '/';
 				switch($rec['SubDir']){
 					case self::SUB_DIR_YEAR:
-						$this->ParentPath .= $_pathFirstPart . date('Y');
+						$this->ParentPath .= $pathFirstPart . date('Y');
 						break;
 					case self::SUB_DIR_YEAR_MONTH:
-						$this->ParentPath .= $_pathFirstPart . date('Y') . '/' . date('m');
+						$this->ParentPath .= $pathFirstPart . date('Y') . '/' . date('m');
 						break;
 					case self::SUB_DIR_YEAR_MONTH_DAY:
-						$this->ParentPath .= $_pathFirstPart . date('Y') . '/' . date('m') . '/' . date('d');
+						$this->ParentPath .= $pathFirstPart . date('Y') . '/' . date('m') . '/' . date('d');
 						break;
 				}
 				$this->i_checkPathDiffAndCreate();
@@ -152,10 +152,10 @@ abstract class we_textContentDocument extends we_textDocument{
 
 				// get Customerfilter of parent
 				if(defined('CUSTOMER_TABLE') && isset($this->documentCustomerFilter)){
-					$_tmpFolder = new we_folder();
-					$_tmpFolder->initByID($this->ParentID, $this->Table);
-					$this->documentCustomerFilter = $_tmpFolder->documentCustomerFilter;
-					unset($_tmpFolder);
+					$tmpFolder = new we_folder();
+					$tmpFolder->initByID($this->ParentID, $this->Table);
+					$this->documentCustomerFilter = $tmpFolder->documentCustomerFilter;
+					unset($tmpFolder);
 				}
 			}
 		}
@@ -304,7 +304,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 		//Bug #5505
-//		if($_oldPublished == 0 || $this->isMoved() || $this->Category != $this->oldCategory || $oldDocType != $this->DocType){
+//		if($oldPublished == 0 || $this->isMoved() || $this->Category != $this->oldCategory || $oldDocType != $this->DocType){
 		//FIXME: changes of customerFilter are missing here
 		$this->rewriteNavigation();
 		//	}

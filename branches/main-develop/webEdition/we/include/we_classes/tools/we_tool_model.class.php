@@ -55,9 +55,9 @@ class we_tool_model extends we_base_model{
 	}
 
 	function hasRequiredFields(&$failed){
-		foreach($this->requiredFields as $_req){
-			if(empty($this->$_req)){
-				$failed[] = $_req;
+		foreach($this->requiredFields as $req){
+			if(empty($this->$req)){
+				$failed[] = $req;
 			}
 		}
 		return empty($failed);
@@ -75,15 +75,15 @@ class we_tool_model extends we_base_model{
 
 	function isSelf(){
 		if($this->ID){
-			$_count = 0;
-			$_parentid = $this->ParentID;
-			while($_parentid != 0){
-				if($_parentid == $this->ID){
+			$count = 0;
+			$parentid = $this->ParentID;
+			while($parentid != 0){
+				if($parentid == $this->ID){
 					return true;
 				}
-				$_parentid = f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($_parentid), 'ParentID', $this->db);
-				$_count++;
-				if($_count == 9999){
+				$parentid = f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($parentid), 'ParentID', $this->db);
+				$count++;
+				if($count == 9999){
 					return false;
 				}
 			}

@@ -78,9 +78,9 @@ class we_voting_list{
 
 
 		$this->CountAll = f('SELECT COUNT(1) FROM ' . VOTING_TABLE . ' WHERE IsFolder=0 ' . (!empty($childs_query) ? ' AND ' . $childs_query : '') . $order_sql, '', $this->db);
-		$_we_voting_query = 'SELECT ID FROM ' . VOTING_TABLE . ' WHERE IsFolder=0 ' . (!empty($childs_query) ? ' AND ' . $childs_query : '') . $order_sql . $limit;
+		$we_voting_query = 'SELECT ID FROM ' . VOTING_TABLE . ' WHERE IsFolder=0 ' . (!empty($childs_query) ? ' AND ' . $childs_query : '') . $order_sql . $limit;
 
-		$this->db->query($_we_voting_query);
+		$this->db->query($we_voting_query);
 	}
 
 	public function getNext(){

@@ -144,15 +144,15 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 		case TEMPLATES_TABLE:
 			// bugfix 0001643
 			foreach($ids as $id){
-				$_template = new we_template();
-				$_template->initByID($id, TEMPLATES_TABLE);
-				$_template->ParentID = $targetDirectoryID;
-				if(!$_template->save()){
+				$template = new we_template();
+				$template->initByID($id, TEMPLATES_TABLE);
+				$template->ParentID = $targetDirectoryID;
+				if(!$template->save()){
 					$notMovedItems[] = array(
-						'ID' => $_template->ID,
-						'Text' => $_template->Text,
-						'Path' => $_template->Path,
-						'ContentType' => $_template->ContentType
+						'ID' => $template->ID,
+						'Text' => $template->Text,
+						'Path' => $template->Path,
+						'ContentType' => $template->ContentType
 					);
 				}
 			}

@@ -26,14 +26,14 @@ class rpcGetNaviItemsCmd extends we_rpc_cmd{
 
 	function execute(){
 		$resp = new we_rpc_response();
-		$_navi = new we_navigation_navigation(we_base_request::_(we_base_request::INT, 'nid', 0));
-		$_items = $_navi->getChilds();
-		$_data = array();
+		$navi = new we_navigation_navigation(we_base_request::_(we_base_request::INT, 'nid', 0));
+		$items = $navi->getChilds();
+		$data = array();
 
-		foreach($_items as $_item){
-			$_data[] = $_item['id'] . ':' . $_item['text'];
+		foreach($items as $item){
+			$data[] = $item['id'] . ':' . $item['text'];
 		}
-		$resp->setData('data', implode(',', $_data));
+		$resp->setData('data', implode(',', $data));
 		return $resp;
 	}
 

@@ -582,39 +582,39 @@ class we_users_user{
 
 		// if no workspaces are set, take workspaces from creator
 		if(empty($this->workSpace)){
-			$_uws = get_ws(FILE_TABLE, true);
-			if(!empty($_uws)){
-				$this->workSpace = implode(',', $_uws);
-				$this->workspaces[FILE_TABLE] = $_uws;
+			$uws = get_ws(FILE_TABLE, true);
+			if(!empty($uws)){
+				$this->workSpace = implode(',', $uws);
+				$this->workspaces[FILE_TABLE] = $uws;
 			}
 		}
 		if(empty($this->workSpaceTmp)){
-			$_uws = get_ws(TEMPLATES_TABLE, true);
-			if(!empty($_uws)){
-				$this->workSpaceTmp = implode(',', $_uws);
-				$this->workspaces[TEMPLATES_TABLE] = $_uws;
+			$uws = get_ws(TEMPLATES_TABLE, true);
+			if(!empty($uws)){
+				$this->workSpaceTmp = implode(',', $uws);
+				$this->workspaces[TEMPLATES_TABLE] = $uws;
 			}
 		}
 		if(empty($this->workSpaceNav)){
-			$_uws = get_ws(NAVIGATION_TABLE, true);
-			if(!empty($_uws)){
-				$this->workSpaceNav = implode(',', $_uws);
-				$this->workspaces[NAVIGATION_TABLE] = $_uws;
+			$uws = get_ws(NAVIGATION_TABLE, true);
+			if(!empty($uws)){
+				$this->workSpaceNav = implode(',', $uws);
+				$this->workspaces[NAVIGATION_TABLE] = $uws;
 			}
 		}
 
 		if(defined('OBJECT_FILES_TABLE') && empty($this->workSpaceObj)){
-			$_uws = get_ws(OBJECT_FILES_TABLE, true);
-			if(!empty($_uws)){
-				$this->workSpaceObj = implode(',', $_uws);
-				$this->workspaces[OBJECT_FILES_TABLE] = $_uws;
+			$uws = get_ws(OBJECT_FILES_TABLE, true);
+			if(!empty($uws)){
+				$this->workSpaceObj = implode(',', $uws);
+				$this->workspaces[OBJECT_FILES_TABLE] = $uws;
 			}
 		}
 		if(defined('NEWSLETTER_TABLE') && empty($this->workSpaceNwl)){
-			$_uws = get_ws(NEWSLETTER_TABLE, true);
-			if(!empty($_uws)){
-				$this->workSpaceNwl = implode(',', $_uws);
-				$this->workspaces[NEWSLETTER_TABLE] = $_uws;
+			$uws = get_ws(NEWSLETTER_TABLE, true);
+			if(!empty($uws)){
+				$this->workSpaceNwl = implode(',', $uws);
+				$this->workspaces[NEWSLETTER_TABLE] = $uws;
 			}
 		}
 	}
@@ -796,15 +796,15 @@ _multiEditorreload = true;";
 
 				case 'weWidth':
 					if($_SESSION['prefs']['sizeOpt'] == 1){
-						$_generate_java_script = false;
+						$generate_java_script = false;
 
 						if($_SESSION['prefs']['weWidth'] != $settingvalue){
-							$_generate_java_script = true;
+							$generate_java_script = true;
 						}
 
 						$_SESSION['prefs']['weWidth'] = $settingvalue;
 
-						if($_generate_java_script){
+						if($generate_java_script){
 							$height = we_base_request::_(we_base_request::INT, 'weHeight');
 							$save_javascript = '
 								top.opener.top.resizeTo(' . $settingvalue . ', ' . $height . ');
@@ -1262,10 +1262,10 @@ function comparePwd(f1,f2){
 	}
 
 	function formGroupData(){
-		$_tableObj = new we_html_table(array(), 3, 1);
+		$tableObj = new we_html_table(array(), 3, 1);
 
-		$_username = $this->getUserfield("username", "group_name", "text", 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);"');
-		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
+		$username = $this->getUserfield("username", "group_name", "text", 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);"');
+		$description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
 		$parent_name = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE)? : '/';
 
 		$yuiSuggest = & weSuggest::getInstance();
@@ -1282,9 +1282,9 @@ function comparePwd(f1,f2){
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
-		$_tableObj->setCol(0, 0, null, $_username);
-		$_tableObj->setCol(1, 0, array('style' => 'padding-top:5px;'), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')));
-		$_tableObj->setCol(2, 0, array('style' => 'padding-top:10px;'), we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', '[group]')));
+		$tableObj->setCol(0, 0, null, $username);
+		$tableObj->setCol(1, 0, array('style' => 'padding-top:5px;'), we_html_tools::htmlFormElementTable($description, g_l('modules_users', '[description]')));
+		$tableObj->setCol(2, 0, array('style' => 'padding-top:10px;'), we_html_tools::htmlFormElementTable($weAcSelector, g_l('modules_users', '[group]')));
 
 		$content = '<select name="' . $this->Name . '_Users" size="8" style="width:560px" onchange="if(this.selectedIndex > -1){WE().layout.button.switch_button_state(document, \'edit\', \'enabled\');}else{WE().layout.button.switch_button_state(document, \'edit\', \'disabled\');}" ondblclick="top.content.we_cmd(\'display_user\',document.we_form.' . $this->Name . '_Users.value)">';
 		if($this->ID){
@@ -1299,7 +1299,7 @@ function comparePwd(f1,f2){
 		$parts = array(
 			array(
 				'headline' => g_l('modules_users', '[group_data]'),
-				'html' => $_tableObj->getHtml(),
+				'html' => $tableObj->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
@@ -1321,9 +1321,9 @@ function comparePwd(f1,f2){
 	}
 
 	function formUserData(){
-		$_description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:520px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
+		$description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:520px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
 
-		$_tableObj = new we_html_table(array('class' => 'withBigSpace'), 12, 2, array(
+		$tableObj = new we_html_table(array('class' => 'withBigSpace'), 12, 2, array(
 			array(array(null, $this->getUserfield('Salutation', 'salutation'))),
 			array(
 				array(null, $this->getUserfield('First', 'first_name')),
@@ -1354,22 +1354,22 @@ function comparePwd(f1,f2){
 				array(null, $this->getUserfield('Email', 'email', 'email', 255, false, 'required="required"'))
 			),
 			array(
-				array(array('colspan' => 2), we_html_tools::htmlFormElementTable($_description, g_l('modules_users', '[description]')))
+				array(array('colspan' => 2), we_html_tools::htmlFormElementTable($description, g_l('modules_users', '[description]')))
 			)
 		));
 
 		$parts = array(
 			array(
 				'headline' => g_l('modules_users', '[general_data]'),
-				'html' => $_tableObj->getHtml(),
+				'html' => $tableObj->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
 			)
 		);
 
 
-		$_username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);" required="required"');
+		$username = $this->getUserfield('username', 'username', 'text', 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);" required="required"');
 
-		$_password = '<div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' .
+		$password = '<div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' .
 			(!empty($_SESSION['user']['ID']) && $_SESSION['user']['ID'] == $this->ID && !permissionhandler::hasPerm('EDIT_PASSWD') ?
 				'****************' :
 				'<input type="hidden" name="' . $this->Name . '_clearpasswd" value="' . $this->clearpasswd . '" />' . we_html_tools::htmlTextInput('input_pass', 20, "", 255, 'onchange="if(comparePwd(\'input_pass\',\'input_pass\')){document.getElementById(\'badPwd\').style.display=\'block\';}else{document.getElementById(\'badPwd\').style.display=\'none\';}top.content.setHot();" autocomplete="off"', 'password', 240));
@@ -1403,10 +1403,10 @@ function comparePwd(f1,f2){
 						g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
 				) :
 				'-');
-		$_tableObj = new we_html_table(array(), 5, 2, array(
+		$tableObj = new we_html_table(array(), 5, 2, array(
 			array(
-				array(array('style' => 'padding-bottom:10px;width:280px;'), $_username),
-				array(array('style' => 'width:280px;'), we_html_tools::htmlFormElementTable($_password, g_l('modules_users', '[password]')))
+				array(array('style' => 'padding-bottom:10px;width:280px;'), $username),
+				array(array('style' => 'width:280px;'), we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]')))
 			),
 			array(
 				array(array('style' => 'padding-bottom:10px;'), we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))),
@@ -1427,7 +1427,7 @@ function comparePwd(f1,f2){
 
 		$parts[] = array(
 			'headline' => g_l('modules_users', '[user_data]'),
-			'html' => $_tableObj->getHtml(),
+			'html' => $tableObj->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
 		);
 

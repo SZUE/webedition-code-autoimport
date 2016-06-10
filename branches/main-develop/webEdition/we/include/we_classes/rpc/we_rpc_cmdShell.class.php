@@ -50,21 +50,21 @@ class we_rpc_cmdShell{
 
 	private function createCmd($cmd){
 		$this->CmdName = $cmd['cmd'];
-		$_classname = 'rpc' . $cmd['cmd'] . 'Cmd';
+		$classname = 'rpc' . $cmd['cmd'] . 'Cmd';
 
-		$_namespace = '/' . (isset($cmd['cns']) ? $cmd['cns'] . '/' : '');
+		$namespace = '/' . (isset($cmd['cns']) ? $cmd['cns'] . '/' : '');
 
-		$_cmdfile = (isset($cmd['tool']) && we_tool_lookup::isTool($cmd['tool']) ?
-				we_tool_lookup::getCmdInclude($_namespace, $cmd['tool'], $this->CmdName) :
-				'cmds' . $_namespace . $_classname . '.class.php');
+		$cmdfile = (isset($cmd['tool']) && we_tool_lookup::isTool($cmd['tool']) ?
+				we_tool_lookup::getCmdInclude($namespace, $cmd['tool'], $this->CmdName) :
+				'cmds' . $namespace . $classname . '.class.php');
 
-		if(include_once($_cmdfile)){
-			$_obj = new $_classname($this);
-			$_obj->executeRpcCmd($this);
+		if(include_once($cmdfile)){
+			$obj = new $classname($this);
+			$obj->executeRpcCmd($this);
 
-			$this->Status = $_obj->getStatus();
+			$this->Status = $obj->getStatus();
 
-			return $_obj;
+			return $obj;
 		}
 		$this->Status = we_rpc_cmd::STATUS_NO_CMD;
 
@@ -72,18 +72,18 @@ class we_rpc_cmdShell{
 	}
 
 	function getView($cmd){
-		$_classname = 'rpc' . $cmd["view"] . 'View';
+		$classname = 'rpc' . $cmd["view"] . 'View';
 		$namespace = '/' . (isset($cmd['vns']) ? $cmd['vns'] . '/' : (isset($cmd['cns']) ? $cmd['cns'] . '/' : ''));
 
-		$_viewfile = (isset($cmd['tool']) && we_tool_lookup::isTool($cmd['tool']) ?
+		$viewfile = (isset($cmd['tool']) && we_tool_lookup::isTool($cmd['tool']) ?
 				we_tool_lookup::getViewInclude($this->Protocol, $namespace, $cmd['tool'], $cmd["view"]) :
-				'views/' . $this->Protocol . $namespace . $_classname . '.class.php');
-		if(@include_once($_viewfile)){
-			$_obj = new $_classname($this, $this->Protocol);
+				'views/' . $this->Protocol . $namespace . $classname . '.class.php');
+		if(@include_once($viewfile)){
+			$obj = new $classname($this, $this->Protocol);
 		} else {
-			$_obj = new we_rpc_genericJSONView($this, $this->Protocol);
+			$obj = new we_rpc_genericJSONView($this, $this->Protocol);
 		}
-		return $_obj;
+		return $obj;
 	}
 
 	function setView(&$cmd){
@@ -116,8 +116,8 @@ class we_rpc_cmdShell{
 	}
 
 	function getInternalView($cmd){
-		$_View = $this->getView($cmd);
-		return $_View->getResponse($this->executeInternalCmd($cmd));
+		$View = $this->getView($cmd);
+		return $View->getResponse($this->executeInternalCmd($cmd));
 	}
 
 	function getErrorOut(){

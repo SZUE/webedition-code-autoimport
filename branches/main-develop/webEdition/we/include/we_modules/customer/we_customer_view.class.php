@@ -474,16 +474,16 @@ new (WE().util.jsWindow)(window, url,"sort_admin",-1,-1,750,500,true,true,true,t
 			case 'save_sort':
 
 				$this->settings->save();
-				$_sorting = 'opener.top.content.addSorting("' . g_l('modules_customer', '[no_sort]') . '");' . "\n";
-				foreach(array_keys($this->settings->SortView) as $_sort){
-					$_sorting .= 'opener.top.content.addSorting("' . $_sort . '");' . "\n";
+				$sorting = 'opener.top.content.addSorting("' . g_l('modules_customer', '[no_sort]') . '");' . "\n";
+				foreach(array_keys($this->settings->SortView) as $sort){
+					$sorting .= 'opener.top.content.addSorting("' . $sort . '");' . "\n";
 				}
 
 				echo we_html_element::jsScript(JS_DIR . "global.js", 'initWE();') .
 				we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[sort_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
 var selected = opener.top.content.document.we_form_treeheader.sort.selectedIndex;
 opener.top.content.document.we_form_treeheader.sort.options.length=0;
-' . $_sorting . '
+' . $sorting . '
 
 if(selected<opener.top.content.document.we_form_treeheader.sort.options.length){
 	opener.top.content.document.we_form_treeheader.sort.selectedIndex = selected;

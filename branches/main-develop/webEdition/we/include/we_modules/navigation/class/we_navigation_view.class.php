@@ -88,16 +88,16 @@ WE().consts.navigation={
 	}
 
 	function getJSProperty(){
-		$_objFields = array();
+		$objFields = array();
 		if($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS){
 			if(defined('OBJECT_TABLE')){
 
-				$_class = new we_object();
-				$_class->initByID($this->Model->ClassID, OBJECT_TABLE);
-				$_fields = $_class->getAllVariantFields();
+				$class = new we_object();
+				$class->initByID($this->Model->ClassID, OBJECT_TABLE);
+				$fields = $class->getAllVariantFields();
 
-				foreach(array_keys($_fields) as $_key){
-					$_objFields[] = '"' . substr($_key, strpos($_key, "_") + 1) . '": "' . $_key . '"';
+				foreach(array_keys($fields) as $key){
+					$objFields[] = '"' . substr($key, strpos($key, "_") + 1) . '": "' . $key . '"';
 				}
 			}
 		}
@@ -107,7 +107,7 @@ var data={
 	IsFolder:' . intval($this->Model->IsFolder) . ',
 };
 
-var weNavTitleField = [' . implode(',', $_objFields) . '];'
+var weNavTitleField = [' . implode(',', $objFields) . '];'
 			) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_view_prop.js');
 	}
 
@@ -185,15 +185,15 @@ if(top.content.treeData){
 				}
 
 				if($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS && $this->Model->TitleField != ""){
-					$_classFields = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . " WHERE ID=" . intval($this->Model->ClassID), "DefaultValues", $this->db));
-					if(is_array($_classFields) && count($_classFields) > 0){
-						$_fieldsByNamePart = array();
-						foreach(array_keys($_classFields) as $_key){
-							if(($_pos = strpos($_key, "_")) && (substr($_key, 0, $_pos) != "object")){
-								$_fieldsByNamePart[substr($_key, $_pos + 1)] = $_key;
+					$classFields = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . " WHERE ID=" . intval($this->Model->ClassID), "DefaultValues", $this->db));
+					if(is_array($classFields) && count($classFields) > 0){
+						$fieldsByNamePart = array();
+						foreach(array_keys($classFields) as $key){
+							if(($pos = strpos($key, "_")) && (substr($key, 0, $pos) != "object")){
+								$fieldsByNamePart[substr($key, $pos + 1)] = $key;
 							}
 						}
-						if(!key_exists($this->Model->TitleField, $_fieldsByNamePart) && !key_exists($this->Model->TitleField, $_classFields)){
+						if(!key_exists($this->Model->TitleField, $fieldsByNamePart) && !key_exists($this->Model->TitleField, $classFields)){
 							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR));
 							break;
 						}
@@ -205,9 +205,9 @@ if(top.content.treeData){
 
 				$newone = $this->Model->ID == 0;
 
-				$_dynamic = '';
+				$dynamic = '';
 				if($this->Model->ID && $this->Model->IsFolder){
-					$_dynamic = f('SELECT Selection FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'Selection', $this->Model->db);
+					$dynamic = f('SELECT Selection FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'Selection', $this->Model->db);
 				}
 
 				$this->Model->save();
@@ -225,23 +225,23 @@ if(top.content.treeData){
 						'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
 
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
-					$_old_items = array();
+					$old_items = array();
 					if($this->Model->hasDynChilds()){
-						$_old_items = $this->Model->depopulateGroup();
-						foreach($_old_items as $id){
+						$old_items = $this->Model->depopulateGroup();
+						foreach($old_items as $id){
 							$js .= 'top.content.treeData.deleteEntry(' . $id['ID'] . ');';
 						}
 					}
-					$_items = $this->Model->populateGroup($_old_items);
-					foreach($_items as $_k => $item){
-						$js .= 'top.content.treeData.makeNewEntry({id:\'' . $item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
+					$items = $this->Model->populateGroup($old_items);
+					foreach($items as $k => $item){
+						$js .= 'top.content.treeData.makeNewEntry({id:\'' . $item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $k . '});';
 					}
 				}
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_NODYNAMIC){
-					$_old_items = array();
+					$old_items = array();
 					if($this->Model->hasDynChilds()){
-						$_old_items = $this->Model->depopulateGroup();
-						foreach($_old_items as $id){
+						$old_items = $this->Model->depopulateGroup();
+						foreach($old_items as $id){
 							$js .= 'top.content.treeData.deleteEntry(' . $id['ID'] . ');';
 						}
 					}
@@ -313,30 +313,30 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 				break;
 			case 'move_down' :
 				if($this->Model->reorderDown()){
-					$_parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db);
-					$_num = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($_parentid), '', $this->db);
+					$parentid = f('SELECT ParentID FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($this->Model->ID), 'ParentID', $this->db);
+					$num = f('SELECT MAX(Ordn) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($parentid), '', $this->db);
 					$posVals = $this->getEditNaviPosition();
 					$posText = '';
 					foreach($posVals as $val => $text){
 						$posText.='<option value="' . $val . '"' . ($val == $this->Model->Ordn ? ' selected="selected"' : '') . '>' . $text . '</option>';
 					}
-					echo we_html_element::jsElement('top.content.moveDown(' . $this->Model->Ordn . ',' . $this->Model->ParentID . ',\'' . addcslashes($posText, '\'') . '\',' . $_num . ');');
+					echo we_html_element::jsElement('top.content.moveDown(' . $this->Model->Ordn . ',' . $this->Model->ParentID . ',\'' . addcslashes($posText, '\'') . '\',' . $num . ');');
 				}
 				break;
 			case 'populate':
-				$_items = $this->Model->populateGroup();
+				$items = $this->Model->populateGroup();
 				$js = '';
-				foreach($_items as $_k => $_item){
-					$js .= 'top.content.treeData.deleteEntry(' . $_item['id'] . ');
-						top.content.treeData.makeNewEntry({id:\'' . $_item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($_item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $_k . '});';
+				foreach($items as $k => $item){
+					$js .= 'top.content.treeData.deleteEntry(' . $item['id'] . ');
+						top.content.treeData.makeNewEntry({id:\'' . $item['id'] . '\',parentid:\'' . $this->Model->ID . '\',text:\'' . addslashes($item['text']) . '\',open:0,contenttype:\'we/navigation\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $k . '});';
 				}
 				echo we_html_element::jsElement($js . we_message_reporting::getShowMessageCall(g_l('navigation', '[populate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE)
 				);
 				break;
 			case 'depopulate':
-				$_items = $this->Model->depopulateGroup();
+				$items = $this->Model->depopulateGroup();
 				$js = '';
-				foreach($_items as $id){
+				foreach($items as $id){
 					$js .= 'top.content.treeData.deleteEntry(' . $id['ID'] . ');';
 				}
 				echo we_html_element::jsElement($js . we_message_reporting::getShowMessageCall(g_l('navigation', '[depopulate_msg]'), we_message_reporting::WE_MESSAGE_NOTICE));
@@ -356,65 +356,65 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 					');
 				break;
 			case 'populateFolderWs':
-				$_prefix = '';
-				$_values = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
-				$_js = '';
+				$prefix = '';
+				$values = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
+				$js = '';
 
-				if($_values){
-					foreach($_values as $_id => $_path){
-						$_js .= 'top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("' . $_path . '",' . $_id . ');';
+				if($values){
+					foreach($values as $id => $path){
+						$js .= 'top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("' . $path . '",' . $id . ');';
 					}
-					echo we_html_element::jsElement('top.content.populateFolderWs("values");' . $_js);
+					echo we_html_element::jsElement('top.content.populateFolderWs("values");' . $js);
 				} elseif(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
 					echo we_html_element::jsElement('top.content.populateFolderWs("workspace");');
 				} else {
-					echo we_html_element::jsElement('top.content.populateFolderWs("noWorkspace","' . $_prefix . '");');
+					echo we_html_element::jsElement('top.content.populateFolderWs("noWorkspace","' . $prefix . '");');
 				}
 
 				break;
 			case 'populateWorkspaces':
 
-				$_objFields = '';
+				$objFields = '';
 				if($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS){
 					if(defined('OBJECT_TABLE')){
 
-						$_class = new we_object();
-						$_class->initByID($this->Model->ClassID, OBJECT_TABLE);
-						$_fields = $_class->getAllVariantFields();
-						foreach($_fields as $_key => $val){
-							$_objFields .= 'top.content.editor.edbody.weNavTitleField["' . substr($_key, strpos($_key, "_") + 1) . '"] = "' . $_key . '";';
+						$class = new we_object();
+						$class->initByID($this->Model->ClassID, OBJECT_TABLE);
+						$fields = $class->getAllVariantFields();
+						foreach($fields as $key => $val){
+							$objFields .= 'top.content.editor.edbody.weNavTitleField["' . substr($key, strpos($key, "_") + 1) . '"] = "' . $key . '";';
 						}
 					}
 				}
 
 				if($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
-					$_values = we_navigation_dynList::getWorkspacesForClass($this->Model->ClassID);
-					$_prefix = 'Class';
+					$values = we_navigation_dynList::getWorkspacesForClass($this->Model->ClassID);
+					$prefix = 'Class';
 				} else {
-					$_values = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
-					$_prefix = '';
+					$values = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
+					$prefix = '';
 				}
 
-				if($_values){ // if the class has workspaces
+				if($values){ // if the class has workspaces
 					$js = '';
-					foreach($_values as $_id => $_path){
-						$js .= 'top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $_prefix . '.options.length] = new Option("' . $_path . '",' . $_id . ');';
+					foreach($values as $id => $path){
+						$js .= 'top.content.editor.edbody.document.we_form.WorkspaceID' . $prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $prefix . '.options.length] = new Option("' . $path . '",' . $id . ');';
 					}
-					echo we_html_element::jsElement($_objFields . 'top.content.populateWorkspaces("values","' . $_prefix . '");' . $js);
+					echo we_html_element::jsElement($objFields . 'top.content.populateWorkspaces("values","' . $prefix . '");' . $js);
 				} else // if the class has no workspaces
 				if(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
-					echo we_html_element::jsElement($_objFields . 'top.content.populateWorkspaces("workspace","' . $_prefix . '");');
+					echo we_html_element::jsElement($objFields . 'top.content.populateWorkspaces("workspace","' . $prefix . '");');
 				} else {
-					echo we_html_element::jsElement($_objFields . 'top.content.populateWorkspaces("noWorkspace","' . $_prefix . '");');
+					echo we_html_element::jsElement($objFields . 'top.content.populateWorkspaces("noWorkspace","' . $prefix . '");');
 				}
 				break;
 			case 'populateText':
 				if(!$this->Model->Text && $this->Model->Selection == we_navigation_navigation::SELECTION_STATIC && $this->Model->SelectionType == we_navigation_navigation::STYPE_CATLINK){
-					$_cat = new we_category();
-					$_cat->load($this->Model->LinkID);
+					$cat = new we_category();
+					$cat->load($this->Model->LinkID);
 
-					if(isset($_cat->Title)){
-						echo we_html_element::jsElement('top.content.editor.edbody.document.we_form.Text.value = "' . addslashes($_cat->Title) . '";');
+					if(isset($cat->Title)){
+						echo we_html_element::jsElement('top.content.editor.edbody.document.we_form.Text.value = "' . addslashes($cat->Title) . '";');
 					}
 				}
 				break;
@@ -440,15 +440,15 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 			$this->Model->UseDocumentFilter = we_navigation_customerFilter::getUseDocumentFilterFromRequest();
 		}
 
-		$_categories = array();
+		$categories = array();
 
 		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
 			for($i = 0; $i < $cnt; $i++){
 				if(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i)) !== false){
-					$_categories[] = $cat;
+					$categories[] = $cat;
 				}
 			}
-			$this->Model->Categories = $_categories;
+			$this->Model->Categories = $categories;
 		}
 
 		if(($field = we_base_request::_(we_base_request::STRING, 'SortField')) !== false){
@@ -504,10 +504,10 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 	}
 
 	function getItems($id){
-		$_db = new DB_WE();
+		$db = new DB_WE();
 
-		$_db->query('SELECT ID,Text FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($id) . ' AND Depended=1 ORDER BY Ordn;');
-		return $_db->getAllFirst(false);
+		$db->query('SELECT ID,Text FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($id) . ' AND Depended=1 ORDER BY Ordn;');
+		return $db->getAllFirst(false);
 	}
 
 	public function getHomeScreen(){

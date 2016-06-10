@@ -109,9 +109,9 @@ class we_backup_XMLParser{
 
 		$newNodes = array();
 
-		$_xpaths = array();
-		$_parent_xpaths = array();
-		$_element_counter = array();
+		$xpaths = array();
+		$parent_xpaths = array();
+		$element_counter = array();
 
 
 
@@ -140,25 +140,25 @@ class we_backup_XMLParser{
 				}
 
 				// xpath --------------------
-				$_parent = ($v['level'] > 1 ? $_parent_xpaths[$v['level'] - 1] : '') . '/';
+				$parent = ($v['level'] > 1 ? $parent_xpaths[$v['level'] - 1] : '') . '/';
 
-				if(!isset($_element_counter[$v['level']])){
-					$_element_counter[$v['level']] = array();
+				if(!isset($element_counter[$v['level']])){
+					$element_counter[$v['level']] = array();
 				}
 
-				if(isset($_element_counter[$v['level']][$v['tag']])){
-					$_element_counter[$v['level']][$v['tag']] ++;
+				if(isset($element_counter[$v['level']][$v['tag']])){
+					$element_counter[$v['level']][$v['tag']] ++;
 				} else {
-					$_element_counter[$v['level']][$v['tag']] = 1;
+					$element_counter[$v['level']][$v['tag']] = 1;
 				}
 
-				$_xpath = $_parent . $v['tag'] . '[' . $_element_counter[$v['level']][$v['tag']] . ']';
+				$xpath = $parent . $v['tag'] . '[' . $element_counter[$v['level']][$v['tag']] . ']';
 
-				//$_xpaths[$_xpath] = $count;
-				$_xpaths[$count] = $_xpath;
+				//$xpaths[$xpath] = $count;
+				$xpaths[$count] = $xpath;
 
 				if($v['type'] === 'open'){
-					$_parent_xpaths[$v['level']] = $_xpath;
+					$parent_xpaths[$v['level']] = $xpath;
 				}
 				// xpath ends -----------------------------
 
@@ -172,8 +172,8 @@ class we_backup_XMLParser{
 			if($v['type'] === 'close'){
 				array_pop($level);
 				// xpath --------------
-				array_pop($_parent_xpaths);
-				array_pop($_element_counter);
+				array_pop($parent_xpaths);
+				array_pop($element_counter);
 				// xpath ends ---------
 			}
 		}
@@ -266,24 +266,24 @@ class we_backup_XMLParser{
 
 	function hasChildren($node_id){
 
-		$_return = false;
+		$return = false;
 		$this->addMark('hasChildern');
 		$this->seek($node_id);
-		$_next_id = 0;
-		$_next_sibling_id = 0;
+		$next_id = 0;
+		$next_sibling_id = 0;
 
 
 		if($this->next()){
-			$_next_id = $this->Handle;
+			$next_id = $this->Handle;
 		}
 
 		$this->seek($node_id);
 		if($this->nextSibling()){
-			$_next_sibling_id = $this->Handle;
+			$next_sibling_id = $this->Handle;
 		}
 
-		if($_next_id != $_next_sibling_id){
-			$_return = true;
+		if($next_id != $next_sibling_id){
+			$return = true;
 		}
 
 		$this->gotoMark('hasChildern');

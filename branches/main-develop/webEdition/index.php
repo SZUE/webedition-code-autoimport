@@ -211,27 +211,27 @@ if(isset($GLOBALS['userLoginDenied'])){
 }
 
 function getError($reason, $cookie = false){
-	$_error_count = 0;
+	$error_count = 0;
 	$tmp = ini_get('session.save_path');
 
-	$_error = we_html_element::htmlB($reason) .
+	$error = we_html_element::htmlB($reason) .
 		(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp)))) ?
-			( ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
+			( ++$error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
 			'') .
 		(!ini_get('session.use_cookies') ?
-			( ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
+			( ++$error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
 			'') .
 		(ini_get('session.cookie_path') != '/' ?
-			( ++$_error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
+			( ++$error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
 			'') .
-		($cookie && $_error_count == 0 ?
-			( ++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
+		($cookie && $error_count == 0 ?
+			( ++$error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
 			'') .
-		we_html_element::htmlBr() . g_l('start', ($_error_count == 1 ? '[solution_one]' : '[solution_more]'));
+		we_html_element::htmlBr() . g_l('start', ($error_count == 1 ? '[solution_one]' : '[solution_more]'));
 
-	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
-	$_layout->setCol(0, 0, array('style' => 'text-align:center;vertical-align:middle'), we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]')));
-	return $_layout;
+	$layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
+	$layout->setCol(0, 0, array('style' => 'text-align:center;vertical-align:middle'), we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $error), g_l('alert', '[phpError]')));
+	return $layout;
 }
 
 /* * ***************************************************************************
@@ -239,22 +239,22 @@ function getError($reason, $cookie = false){
  * *************************************************************************** */
 
 if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
-	$_layout = getError(g_l('start', '[cookies_disabled]'));
+	$layout = getError(g_l('start', '[cookies_disabled]'));
 
 	printHeader($login, 400);
-	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
+	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $layout->getHtml()) . '</html>';
 } else if(!we_database_base::hasDB() || $GLOBALS['DB_WE']->Error === 'No database selected'){
-	$_layout = getError(g_l('start', '[no_db_connection]'));
+	$layout = getError(g_l('start', '[no_db_connection]'));
 
 	printHeader($login, 503);
-	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $_layout->getHtml()) . '</html>';
+	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $layout->getHtml()) . '</html>';
 } /* don't check for browsers anymore */ else {
 
 	/*	 * ***************************************************************************
 	 * GENERATE LOGIN
 	 * *************************************************************************** */
 
-	$_hidden_values = we_html_element::htmlHiddens(array(
+	$hidden_values = we_html_element::htmlHiddens(array(
 			'checkLogin' => session_id(),
 			'indexDate' => date('d.m.Y, H:i:s')));
 
@@ -274,7 +274,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	switch($login){
 		case LOGIN_OK:
 			$httpCode = 200;
-			$_body_javascript = '';
+			$body_javascript = '';
 
 			//	Here the mode - SEEM or normal is saved in the SESSION!
 			//	Perhaps this must move to another place later.
@@ -283,7 +283,7 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 				if(permissionhandler::isUserAllowedForAction('work_mode', we_base_constants::MODE_NORMAL)){
 					$_SESSION['weS']['we_mode'] = we_base_constants::MODE_NORMAL;
 				} else {
-					$_body_javascript = we_message_reporting::getShowMessageCall(g_l('SEEM', '[only_seem_mode_allowed]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$body_javascript = we_message_reporting::getShowMessageCall(g_l('SEEM', '[only_seem_mode_allowed]'), we_message_reporting::WE_MESSAGE_ERROR);
 					$_SESSION['weS']['we_mode'] = we_base_constants::MODE_SEE;
 				}
 			} else {
@@ -291,12 +291,12 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 			}
 
 			if((WE_LOGIN_WEWINDOW == 2 || WE_LOGIN_WEWINDOW == 0 && (!we_base_request::_(we_base_request::BOOL, 'popup')))){
-				if($_body_javascript){
-					$_body_javascript.='top.location="' . WEBEDITION_DIR . 'webEdition.php"';
+				if($body_javascript){
+					$body_javascript.='top.location="' . WEBEDITION_DIR . 'webEdition.php"';
 				} else {
 					$httpCode = 303;
 					header('Location: ' . WEBEDITION_DIR . 'webEdition.php');
-					$_body_javascript = 'alert("automatic redirect disabled");';
+					$body_javascript = 'alert("automatic redirect disabled");';
 				}
 				break;
 			}
@@ -313,15 +313,15 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 			//CHECK FOR FAILED LOGIN ATTEMPTS
 			$cnt = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate>(NOW() - INTERVAL ' . intval(we_base_constants::LOGIN_FAILED_TIME) . ' MINUTE)');
 
-			$_body_javascript = ($cnt >= we_base_constants::LOGIN_FAILED_NR ?
+			$body_javascript = ($cnt >= we_base_constants::LOGIN_FAILED_NR ?
 					we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR) :
 					we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed]'), we_message_reporting::WE_MESSAGE_ERROR));
 			break;
 		case 3:
-			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed_security]'), we_message_reporting::WE_MESSAGE_ERROR) . "document.location='" . WEBEDITION_DIR . "index.php';";
+			$body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_failed_security]'), we_message_reporting::WE_MESSAGE_ERROR) . "document.location='" . WEBEDITION_DIR . "index.php';";
 			break;
 		case LOGIN_DENIED:
-			$_body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_denied_for_user]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$body_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[login_denied_for_user]'), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		default:
 			$httpCode = 200;
@@ -329,11 +329,11 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 	}
 
 
-	$_layout = /* we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), */we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $_hidden_values . $dialogtable)/* ) */ .
+	$layout = /* we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), */we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $hidden_values . $dialogtable)/* ) */ .
 		we_html_element::htmlDiv(array('id' => 'picCopy'), 'Copyright &copy; nw7.eu / Fotolia.com');
 
 	printHeader($login, (isset($httpCode) ? $httpCode : 401), $headerjs);
-	echo we_html_element::htmlBody(array('id' => 'loginScreen', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")), $_layout . ((isset($_body_javascript)) ? we_html_element::jsElement($_body_javascript) : '')) . '</html>';
+	echo we_html_element::htmlBody(array('id' => 'loginScreen', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")), $layout . ((isset($body_javascript)) ? we_html_element::jsElement($body_javascript) : '')) . '</html>';
 }
 session_write_close();
 flush();

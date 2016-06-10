@@ -143,8 +143,8 @@ class we_navigation_item{
 		}
 
 		if(isset($weNavigationItems->items['id' . $this->parentid]) && $this->level != 0){
-			foreach($this->items as $_i){
-				$_i->unsetCurrent($weNavigationItems);
+			foreach($this->items as $i){
+				$i->unsetCurrent($weNavigationItems);
 			}
 			$this->containsCurrent = false;
 		}
@@ -224,9 +224,9 @@ class we_navigation_item{
 		$this->visible = $this->linkValid;
 
 		if(defined('CUSTOMER_TABLE') && $this->limitaccess){ // only init filter if access is limited
-			$_filter = new we_navigation_customerFilter();
-			$_filter->initByNavItem($this);
-			$this->customerAccess = $_filter->customerHasAccess();
+			$filter = new we_navigation_customerFilter();
+			$filter->initByNavItem($this);
+			$this->customerAccess = $filter->customerHasAccess();
 			$this->visible &=$this->customerAccess;
 		}
 		return $this->visible;
@@ -277,7 +277,7 @@ class we_navigation_item{
 
 	function getNavigationField($attribs){
 		$fieldname = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
-		$_compl = weTag_getAttribute('complete', $attribs, '', we_base_request::STRING);
+		$compl = weTag_getAttribute('complete', $attribs, '', we_base_request::STRING);
 		// name
 		if($fieldname){
 			$val = (!empty($this->$fieldname) ?
@@ -296,10 +296,10 @@ class we_navigation_item{
 		}
 
 		// complete
-		if($_compl){
+		if($compl){
 			unset($attribs['complete']);
-			$attribs['attributes'] = $_compl;
-			switch($_compl){
+			$attribs['attributes'] = $compl;
+			switch($compl){
 				case 'link':
 					if(empty($this->text)){
 						return '';
@@ -319,8 +319,8 @@ class we_navigation_item{
 		// attributes
 		$code = '';
 		if(isset($attribs['attributes'])){
-			$_attributes = $this->getNavigationFieldAttributes($attribs);
-			foreach($_attributes as $key => $value){
+			$attributes = $this->getNavigationFieldAttributes($attribs);
+			foreach($attributes as $key => $value){
 				switch($key){
 					case 'href':
 						if(!$this->linkValid){
@@ -337,13 +337,13 @@ class we_navigation_item{
 	function getNavigationFieldAttributes($attribs){
 		$attr = weTag_getAttribute('attributes', $attribs, '', we_base_request::STRING);
 		if($attr){
-			$_fields = makeArrayFromCSV($attr);
+			$fields = makeArrayFromCSV($attr);
 			unset($attribs['attributes']);
-			/* if(isset($_fields['link_attribute'])){
-			  $_link_attribute = $_fields['link_attribute'];
+			/* if(isset($fields['link_attribute'])){
+			  $link_attribute = $fields['link_attribute'];
 			  } */
-			foreach($_fields as $_field){
-				switch($_field){
+			foreach($fields as $field){
+				switch($field){
 					case 'link' :
 						$useFields = array(
 							'href',
@@ -374,8 +374,8 @@ class we_navigation_item{
 						}
 						break;
 					case 'image' :
-						$_iconid = path_to_id($this->icon, FILE_TABLE, $GLOBALS['DB_WE']);
-						if($_iconid){
+						$iconid = path_to_id($this->icon, FILE_TABLE, $GLOBALS['DB_WE']);
+						if($iconid){
 							$attribs['src'] = $this->icon;
 							$useFields = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'title');
 							foreach($useFields as $field){
@@ -383,25 +383,25 @@ class we_navigation_item{
 									$attribs[$field] = $this->attributes['icon_' . $field];
 								}
 							}
-							$_imgObj = new we_imageDocument();
-							$_imgObj->initByID($_iconid);
+							$imgObj = new we_imageDocument();
+							$imgObj->initByID($iconid);
 
-							$_js = preg_replace(array('|<[^>]+><!--|', '|//--><[^>]+>|', '-(\r\n|\n)-'), '', $_imgObj->getRollOverScript('', '', false));
+							$js = preg_replace(array('|<[^>]+><!--|', '|//--><[^>]+>|', '-(\r\n|\n)-'), '', $imgObj->getRollOverScript('', '', false));
 
-							$_arr = $_imgObj->getRollOverAttribsArr();
-							if(!empty($_arr)){
-								$_arr['onmouseover'] = $_js . $_arr['onmouseover'];
-								$_arr['onmouseout'] = $_js . $_arr['onmouseout'];
-								$_arr['name'] = $_imgObj->getElement('name');
-								$attribs = array_merge($attribs, $_arr);
+							$arr = $imgObj->getRollOverAttribsArr();
+							if(!empty($arr)){
+								$arr['onmouseover'] = $js . $arr['onmouseover'];
+								$arr['onmouseout'] = $js . $arr['onmouseout'];
+								$arr['name'] = $imgObj->getElement('name');
+								$attribs = array_merge($attribs, $arr);
 							}
 						}
 						break;
 					default :
-						if(!empty($this->$_field)){
-							$attribs[$_field] = oldHtmlspecialchars($this->$_field);
-						} elseif(!empty($this->attributes[$_field])){
-							$attribs[$_field] = oldHtmlspecialchars($this->attributes[$_field]);
+						if(!empty($this->$field)){
+							$attribs[$field] = oldHtmlspecialchars($this->$field);
+						} elseif(!empty($this->attributes[$field])){
+							$attribs[$field] = oldHtmlspecialchars($this->attributes[$field]);
 						}
 				}
 			}

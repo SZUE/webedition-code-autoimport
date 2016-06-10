@@ -243,14 +243,14 @@ abstract class we_root extends we_class{
 
 	function applyWeDocumentCustomerFilterFromFolder(){
 		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
-			$_tmpFolder = new we_folder();
-			$_tmpFolder->initByID($this->ParentID, $this->Table);
-			$this->documentCustomerFilter = $_tmpFolder->documentCustomerFilter;
+			$tmpFolder = new we_folder();
+			$tmpFolder->initByID($this->ParentID, $this->Table);
+			$this->documentCustomerFilter = $tmpFolder->documentCustomerFilter;
 
 			if($this->IsFolder && $this->ID != 0){
 				$this->ApplyWeDocumentCustomerFiltersToChilds = true;
 			}
-			unset($_tmpFolder);
+			unset($tmpFolder);
 		}
 	}
 
@@ -293,18 +293,18 @@ abstract class we_root extends we_class{
 		}
 
 		if($Pathname === 'ParentPath'){
-			$_parentPathChanged = 'if(opener.pathOfDocumentChanged) { opener.pathOfDocumentChanged(); }';
-			$_parentPathChangedBlur = 'if(pathOfDocumentChanged) { pathOfDocumentChanged(); }';
+			$parentPathChanged = 'if(opener.pathOfDocumentChanged) { opener.pathOfDocumentChanged(); }';
+			$parentPathChangedBlur = 'if(pathOfDocumentChanged) { pathOfDocumentChanged(); }';
 		} else {
-			$_parentPathChanged = $_parentPathChangedBlur = '';
+			$parentPathChanged = $parentPathChangedBlur = '';
 		}
 
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . $_parentPathChanged . str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . $parentPathChanged . str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
 
 		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
-		$yuiSuggest->setInput($textname, $path, array('onblur' => $_parentPathChangedBlur));
+		$yuiSuggest->setInput($textname, $path, array('onblur' => $parentPathChangedBlur));
 		$yuiSuggest->setLabel($label ? : '');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);
@@ -317,27 +317,27 @@ abstract class we_root extends we_class{
 	}
 
 	function htmlTextInput_formDirChooser($attribs = array(), $addAttribs = array()){
-		$_attribs = array(
+		$attribs = array(
 			'class' => 'wetextinput',
 			'size' => 30,
 			'value' => '',
 		);
 
 		foreach($addAttribs as $key => $value){
-			if(isset($_attribs[$key])){
-				$_attribs[$key] .= $value;
+			if(isset($attribs[$key])){
+				$attribs[$key] .= $value;
 			} else {
-				$_attribs[$key] = $value;
+				$attribs[$key] = $value;
 			}
 		}
 
 		foreach($attribs as $key => $value){
-			$_attribs[$key] = $value;
+			$attribs[$key] = $value;
 		}
 
-		$_attribs['type'] = 'text';
+		$attribs['type'] = 'text';
 
-		return getHtmlTag('input', $_attribs);
+		return getHtmlTag('input', $attribs);
 	}
 
 	function formCreator($canChange){
@@ -649,15 +649,15 @@ abstract class we_root extends we_class{
 	}
 
 	function formLangLinks($withHeadline = true){
-		$_defLang = self::getDefaultLanguage();
-		$value = ($this->Language ? : $_defLang);
+		$defLang = self::getDefaultLanguage();
+		$value = ($this->Language ? : $defLang);
 		$inputName = 'we_' . $this->Name . '_Language';
-		$_languages = getWeFrontendLanguagesForBackend();
-		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
+		$languages = getWeFrontendLanguagesForBackend();
+		$headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[language]') . '</td></tr>' : '');
 
 		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
-			foreach($_languages as $langkey => $lang){
+			foreach($languages as $langkey => $lang){
 				$divname = 'we_' . $this->Name . '_LanguageDocDiv[' . $langkey . ']';
 				$LDID = !empty($this->LangLinks[$langkey]['id']) && $this->LangLinks[$langkey]['id'] !== -1 ? $this->LangLinks[$langkey]['id'] : 0;
 				$path = $LDID ? $this->LangLinks[$langkey]['path'] : '';
@@ -667,16 +667,16 @@ abstract class we_root extends we_class{
 			}
 			return '
 <table class="default" style="margin-top:2px;">' .
-				$_headline . '
-	<tr><td style="padding-bottom:2px;">' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"), "value") . '</td></tr>
+				$headline . '
+	<tr><td style="padding-bottom:2px;">' . $this->htmlSelect($inputName, $languages, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"), "value") . '</td></tr>
 	<tr><td class="defaultfont" style="text-align:left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 </table>
 <br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
 		} else {
 			return '
 <table class="default" style="margin-top:2px;">' .
-				$_headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $_languages, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", 'onchange' => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"), "value") . '</td></tr>
+				$headline . '
+	<tr><td>' . $this->htmlSelect($inputName, $languages, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", 'onchange' => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"), "value") . '</td></tr>
 </table>';
 		}
 	}
@@ -835,24 +835,24 @@ abstract class we_root extends we_class{
 
 	protected static function getDefaultLanguage(){
 // get interface language of user
-		list($_userLanguage) = explode('_', isset($_SESSION['prefs']['Language']) ? $_SESSION['prefs']['Language'] : '');
+		list($userLanguage) = explode('_', isset($_SESSION['prefs']['Language']) ? $_SESSION['prefs']['Language'] : '');
 
 // trying to get locale string out of interface language
-		$_key = array_search($_userLanguage, getWELangs());
+		$key = array_search($userLanguage, getWELangs());
 
-		$_defLang = $GLOBALS['weDefaultFrontendLanguage'];
+		$defLang = $GLOBALS['weDefaultFrontendLanguage'];
 
 // if default language is not equal with frontend language
-		if(substr($_defLang, 0, strlen($_key)) !== $_key){
+		if(substr($defLang, 0, strlen($key)) !== $key){
 // get first language that fits
-			foreach(getWeFrontendLanguagesForBackend() as $_k => $_v){
-				$_parts = explode('_', $_k);
-				if($_parts[0] === $_key){
-					$_defLang = $_k;
+			foreach(array_keys(getWeFrontendLanguagesForBackend()) as $k){
+				$parts = explode('_', $k);
+				if($parts[0] === $key){
+					$defLang = $k;
 				}
 			}
 		}
-		return $_defLang;
+		return $defLang;
 	}
 
 	function editor(){
@@ -1281,17 +1281,17 @@ abstract class we_root extends we_class{
 			if(!$doctype->SubDir){
 				return false;
 			}
-			$_pathFirstPart = substr($this->getParentPath(), -1) === '/' ? '' : '/';
+			$pathFirstPart = substr($this->getParentPath(), -1) === '/' ? '' : '/';
 			$tail = '';
 			switch($doctype->SubDir){
 				case self::SUB_DIR_YEAR:
-					$tail = $_pathFirstPart . date('Y');
+					$tail = $pathFirstPart . date('Y');
 					break;
 				case self::SUB_DIR_YEAR_MONTH:
-					$tail = $_pathFirstPart . date('Y') . '/' . date('m');
+					$tail = $pathFirstPart . date('Y') . '/' . date('m');
 					break;
 				case self::SUB_DIR_YEAR_MONTH_DAY:
-					$tail = $_pathFirstPart . date('Y') . '/' . date('m') . '/' . date('d');
+					$tail = $pathFirstPart . date('Y') . '/' . date('m') . '/' . date('d');
 					break;
 			}
 			if($this->getParentPath() . $tail != $this->ParentPath){

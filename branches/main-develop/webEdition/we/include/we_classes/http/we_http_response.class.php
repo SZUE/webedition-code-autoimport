@@ -67,10 +67,10 @@ class we_http_response{
 			$headers = $matches = array();
 			foreach($headerList as $cur){
 
-				$_line = explode(':', $cur, 2);
+				$line = explode(':', $cur, 2);
 
-				if(isset($_line[1])){ //  normal header
-					$headers[trim($_line[0])] = trim($_line[1]);
+				if(isset($line[1])){ //  normal header
+					$headers[trim($line[0])] = trim($line[1]);
 				} else { //  this is first line with http answer
 					if(preg_match('/(.+) (.+) (.+)/si', $cur, $matches)){
 

@@ -26,7 +26,7 @@ abstract class we_rebuild_base{
 
 	public static function rebuild($data, $printIt = false){
 		if($printIt){
-			$_newLine = count($_SERVER['argv']) ? "\n" : "<br/>\n";
+			$newLine = count($_SERVER['argv']) ? "\n" : "<br/>\n";
 		}
 
 		switch($data['type']){
@@ -43,7 +43,7 @@ abstract class we_rebuild_base{
 				//clean AFTER rebuild to make sure all data is acurate afterwards!
 				we_navigation_cache::clean(true);
 				if($printIt){
-					echo ("   done$_newLine");
+					echo ("   done$newLine");
 					flush();
 				}
 				break;
@@ -60,7 +60,7 @@ abstract class we_rebuild_base{
 				$imgdoc->we_save(true);
 				unset($imgdoc);
 				if($printIt){
-					echo ("   done$_newLine");
+					echo ("   done$newLine");
 					flush();
 				}
 				break;
@@ -77,7 +77,7 @@ abstract class we_rebuild_base{
 				$imgdoc->we_save(true);
 				unset($imgdoc);
 				if($printIt){
-					echo ("   done$_newLine");
+					echo ("   done$newLine");
 					flush();
 				}
 				break;
@@ -133,7 +133,7 @@ abstract class we_rebuild_base{
 						unset($doc);
 				}
 				if($printIt){
-					echo ("   done$_newLine");
+					echo ("   done$newLine");
 					flush();
 				}
 				break;
@@ -197,7 +197,7 @@ abstract class we_rebuild_base{
 					}
 				}
 				if($printIt){
-					echo ("   done$_newLine");
+					echo ("   done$newLine");
 					flush();
 				}
 		}
@@ -471,27 +471,27 @@ abstract class we_rebuild_base{
 			return array();
 		}
 		$data = array();
-		$_cat_query = $_doctype_query = $_folders_query = $_template_query = '';
+		$cat_query = $doctype_query = $folders_query = $template_query = '';
 
 		if($categories){
-			$_foo = makeArrayFromCSV($categories);
+			$foo = makeArrayFromCSV($categories);
 			$tmp = array();
-			foreach($_foo as $catID){
+			foreach($foo as $catID){
 				$tmp[] = ' FIND_IN_SET(' . intval($catID) . ',Category)';
 			}
-			$_cat_query = '(' . implode(' ' . ($catAnd ? ' AND ' : ' OR ') . ' ', $tmp) . ')';
+			$cat_query = '(' . implode(' ' . ($catAnd ? ' AND ' : ' OR ') . ' ', $tmp) . ')';
 		}
 		if($doctypes){
-			$_foo = makeArrayFromCSV($doctypes);
-			$_doctype_query = 'Doctype IN (' . implode(',', $_foo) . ')';
+			$foo = makeArrayFromCSV($doctypes);
+			$doctype_query = 'Doctype IN (' . implode(',', $foo) . ')';
 		}
 		if($folders){
-			$_foo = makeArrayFromCSV($folders);
-			$_foldersList = array();
-			foreach($_foo as $folderID){
-				$_foldersList = array_merge($_foldersList, we_base_file::getFoldersInFolder($folderID));
+			$foo = makeArrayFromCSV($folders);
+			$foldersList = array();
+			foreach($foo as $folderID){
+				$foldersList = array_merge($foldersList, we_base_file::getFoldersInFolder($folderID));
 			}
-			$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . '))';
+			$folders_query = '( ParentID IN(' . implode(',', $foldersList) . '))';
 		}
 
 		if($templateID){
@@ -509,19 +509,19 @@ abstract class we_rebuild_base{
 
 				$tmp = $arr['templateIDs'];
 				$tmp[] = $templateID;
-				$_template_query = '(TemplateID IN (' . implode(',', $tmp) . '))';
+				$template_query = '(TemplateID IN (' . implode(',', $tmp) . '))';
 			} else {
-				$_template_query = '(TemplateID=' . intval($templateID) . ')';
+				$template_query = '(TemplateID=' . intval($templateID) . ')';
 			}
 		}
 
-		$query = ($_cat_query ? ' AND ' . $_cat_query . ' ' : '') .
-			($_doctype_query ? ' AND ' . $_doctype_query . ' ' : '') .
-			($_folders_query ? ' AND ' . $_folders_query . ' ' : '') .
-			($_template_query ? ' AND ' . $_template_query . ' ' : '');
+		$query = ($cat_query ? ' AND ' . $cat_query . ' ' : '') .
+			($doctype_query ? ' AND ' . $doctype_query . ' ' : '') .
+			($folders_query ? ' AND ' . $folders_query . ' ' : '') .
+			($template_query ? ' AND ' . $template_query . ' ' : '');
 
 		if(!$categories && !$catAnd && !$doctypes && !$folders && !$templateID){
-			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsFolder=1 ' . ($folders ? 'AND ' . $_folders_query : '') . 'ORDER BY IsFolder DESC, LENGTH(Path)');
+			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsFolder=1 ' . ($folders ? 'AND ' . $folders_query : '') . 'ORDER BY IsFolder DESC, LENGTH(Path)');
 			while($GLOBALS['DB_WE']->next_record()){
 				$data[] = array(
 					'id' => $GLOBALS['DB_WE']->f('ID'),
@@ -672,16 +672,16 @@ abstract class we_rebuild_base{
 		}
 		$data = array();
 		if($thumbsFolders){
-			$_foo = makeArrayFromCSV($thumbsFolders);
-			$_foldersList = array();
-			foreach($_foo as $folderID){
-				$_foldersList[] = implode(',', we_base_file::getFoldersInFolder($folderID));
+			$foo = makeArrayFromCSV($thumbsFolders);
+			$foldersList = array();
+			foreach($foo as $folderID){
+				$foldersList[] = implode(',', we_base_file::getFoldersInFolder($folderID));
 			}
-			$_folders_query = '( ParentID IN(' . implode(',', $_foldersList) . ') )';
+			$folders_query = '( ParentID IN(' . implode(',', $foldersList) . ') )';
 		} else {
-			$_folders_query = '';
+			$folders_query = '';
 		}
-		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,Extension FROM ' . FILE_TABLE . ' WHERE ContentType="' . we_base_ContentTypes::IMAGE . '"' . ($_folders_query ? ' AND ' . $_folders_query : '') . ' ORDER BY ID');
+		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,Extension FROM ' . FILE_TABLE . ' WHERE ContentType="' . we_base_ContentTypes::IMAGE . '"' . ($folders_query ? ' AND ' . $folders_query : '') . ' ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
 			$data[] = array(
 				'id' => $GLOBALS['DB_WE']->f('ID'),

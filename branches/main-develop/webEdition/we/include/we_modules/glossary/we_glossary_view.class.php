@@ -119,16 +119,16 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 			case 'populateWorkspaces':
 				$objectLinkID = we_base_request::_(we_base_request::INT, 'link', 0, 'Attributes', 'ObjectLinkID');
-				$_values = we_navigation_dynList::getWorkspacesForObject($objectLinkID);
+				$values = we_navigation_dynList::getWorkspacesForObject($objectLinkID);
 
-				if($_values){
-					$_js = '';
+				if($values){
+					$js = '';
 
-					foreach($_values as $_id => $_path){
-						$_js .= 'top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options[top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length] = new Option("' . $_path . '",' . $_id . ');
+					foreach($values as $id => $path){
+						$js .= 'top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options[top.content.editor.edbody.document.we_form.elements[\'link[Attributes][ObjectWorkspaceID]\'].options.length] = new Option("' . $path . '",' . $id . ');
 							';
 					}
-					echo we_html_element::jsElement('top.content.populateWorkspaces("values");' . $_js);
+					echo we_html_element::jsElement('top.content.populateWorkspaces("values");' . $js);
 				} elseif(we_navigation_dynList::getWorkspaceFlag($objectLinkID)){
 					echo we_html_element::jsElement('top.content.populateWorkspaces("workspace");');
 				} else {
@@ -321,14 +321,14 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_glossary', ($this->Glossary-
 
 	public function getHomeScreen(){
 
-		$_hidden = array(
+		$hidden = array(
 			'cmd' => 'home',
 			'pnt' => 'edbody',
 			'name' => 'home',
 			'value' => 0,
 		);
 
-		$_form = array(
+		$form = array(
 			'name' => 'we_form',
 		);
 
@@ -344,7 +344,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_glossary', ($this->Glossary-
 			$createLink . '<br/>' .
 			$createTextReplacement;
 
-		return parent::getActualHomeScreen("glossary", "glossary.gif", $content, we_html_element::htmlForm($_form, $this->getCommonHiddens($_hidden)));
+		return parent::getActualHomeScreen("glossary", "glossary.gif", $content, we_html_element::htmlForm($form, $this->getCommonHiddens($hidden)));
 	}
 
 }

@@ -48,8 +48,8 @@ class we_otherDocument extends we_binaryDocument{
 	/* gets the HTML for including in HTML-Docs */
 
 	function getHtml($dyn = false){
-		$_data = $this->getElement('data');
-		$this->html = ($this->ID || ($_data && !is_dir($_data) && is_readable($_data)) ?
+		$data = $this->getElement('data');
+		$this->html = ($this->ID || ($data && !is_dir($data) && is_readable($data)) ?
 				'<p class="defaultfont"><b>Datei</b>: ' . $this->Text . '</p>' :
 				g_l('global', '[no_file_uploaded]'));
 
@@ -178,13 +178,13 @@ class we_otherDocument extends we_binaryDocument{
 		if(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) &&
 			isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"])){
 			foreach($_FILES["we_ui_$formname"]["name"] as $binaryName => $filename){
-				$_binaryDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_BINARY_DATA_ID_' . $binaryName);
+				$binaryDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_BINARY_DATA_ID_' . $binaryName);
 
-				if($_binaryDataId !== false && isset($_SESSION[$_binaryDataId])){
-					$_SESSION[$_binaryDataId]['doDelete'] = false;
+				if($binaryDataId !== false && isset($_SESSION[$binaryDataId])){
+					$_SESSION[$binaryDataId]['doDelete'] = false;
 
 					if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $binaryName)){
-						$_SESSION[$_binaryDataId]['doDelete'] = true;
+						$_SESSION[$binaryDataId]['doDelete'] = true;
 					} elseif($filename){
 						// file is selected, check to see if it is an image
 						$ct = getContentTypeFromFile($filename);
@@ -192,20 +192,20 @@ class we_otherDocument extends we_binaryDocument{
 							$binaryId = intval($GLOBALS[$key][$formname]->getElement($binaryName));
 
 							// move document from upload location to tmp dir
-							$_SESSION[$_binaryDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
-							move_uploaded_file($_FILES["we_ui_$formname"]['tmp_name'][$binaryName], $_SESSION[$_binaryDataId]['serverPath']);
+							$_SESSION[$binaryDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
+							move_uploaded_file($_FILES["we_ui_$formname"]['tmp_name'][$binaryName], $_SESSION[$binaryDataId]['serverPath']);
 
 							$tmp_Filename = $binaryName . '_' . we_base_file::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES["we_ui_$formname"]['name'][$binaryName]);
 
 							if($binaryId){
-								$_SESSION[$_binaryDataId]['id'] = $binaryId;
+								$_SESSION[$binaryDataId]['id'] = $binaryId;
 							}
 
-							$_SESSION[$_binaryDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
-							$_SESSION[$_binaryDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
-							$_SESSION[$_binaryDataId]['text'] = $_SESSION[$_binaryDataId]['fileName'] . $_SESSION[$_binaryDataId]['extension'];
-							$_SESSION[$_binaryDataId]['type'] = $_FILES["we_ui_$formname"]['type'][$binaryName];
-							$_SESSION[$_binaryDataId]['size'] = $_FILES["we_ui_$formname"]['size'][$binaryName];
+							$_SESSION[$binaryDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
+							$_SESSION[$binaryDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
+							$_SESSION[$binaryDataId]['text'] = $_SESSION[$binaryDataId]['fileName'] . $_SESSION[$binaryDataId]['extension'];
+							$_SESSION[$binaryDataId]['type'] = $_FILES["we_ui_$formname"]['type'][$binaryName];
+							$_SESSION[$binaryDataId]['size'] = $_FILES["we_ui_$formname"]['size'][$binaryName];
 						}
 					}
 				}

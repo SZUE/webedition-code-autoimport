@@ -96,8 +96,8 @@ abstract class we_backup_util{
 		$match = array();
 		if(defined('OBJECT_X_TABLE') && preg_match('|^' . OBJECT_X_TABLE . '([0-9]*)$|i', $table, $match)){
 			if(isset($_SESSION['weS']['weBackupVars']['tables']['tblobject_'])){
-				$_max = f('SELECT MAX(ID) AS MaxTableID FROM ' . OBJECT_TABLE, 'MaxTableID', new DB_WE());
-				if($match[1] <= $_max){
+				$max = f('SELECT MAX(ID) AS MaxTableID FROM ' . OBJECT_TABLE, 'MaxTableID', new DB_WE());
+				if($match[1] <= $max){
 					return 'tblobject_' . $match[1];
 				}
 			}
@@ -105,16 +105,16 @@ abstract class we_backup_util{
 			return false;
 		}
 
-//$_def_table = array_search($table,$_SESSION['weS']['weBackupVars']['tables']);
-		foreach($_SESSION['weS']['weBackupVars']['tables'] as $_key => $_value){
-			if(strtolower($table) == strtolower($_value)){
-				$_def_table = $_key;
+//$def_table = array_search($table,$_SESSION['weS']['weBackupVars']['tables']);
+		foreach($_SESSION['weS']['weBackupVars']['tables'] as $key => $value){
+			if(strtolower($table) == strtolower($value)){
+				$def_table = $key;
 			}
 		}
 
 // return false or default table name
-		if(!empty($_def_table)){
-			return $_def_table;
+		if(!empty($def_table)){
+			return $def_table;
 		}
 
 		return false;
@@ -239,31 +239,31 @@ abstract class we_backup_util{
 
 	static function getNextTable(){
 		if(!isset($_SESSION['weS']['weBackupVars']['allTables'])){
-			$_db = new DB_WE();
-			$_SESSION['weS']['weBackupVars']['allTables'] = $_db->table_names();
+			$db = new DB_WE();
+			$_SESSION['weS']['weBackupVars']['allTables'] = $db->table_names();
 		}
 // get all table names from database
-		$_tables = $_SESSION['weS']['weBackupVars']['allTables'];
-		$_do = true;
+		$tables = $_SESSION['weS']['weBackupVars']['allTables'];
+		$do = true;
 
 		do{
-			if(++$_SESSION['weS']['weBackupVars']['current_table_id'] < count($_tables)){
+			if(++$_SESSION['weS']['weBackupVars']['current_table_id'] < count($tables)){
 // get real table name from database
-				$_table = $_tables[$_SESSION['weS']['weBackupVars']['current_table_id']]['table_name'];
+				$table = $tables[$_SESSION['weS']['weBackupVars']['current_table_id']]['table_name'];
 
-				$_def_table = self::getDefaultTableName($_table);
+				$def_table = self::getDefaultTableName($table);
 
-				if($_def_table !== false){
+				if($def_table !== false){
 
-					$_do = false;
+					$do = false;
 
-					$_SESSION['weS']['weBackupVars']['current_table'] = $_table;
+					$_SESSION['weS']['weBackupVars']['current_table'] = $table;
 				}
 			} else {
 				$_SESSION['weS']['weBackupVars']['current_table'] = false;
-				$_do = false;
+				$do = false;
 			}
-		} while($_do);
+		} while($do);
 
 		return $_SESSION['weS']['weBackupVars']['current_table'];
 	}
@@ -285,61 +285,61 @@ abstract class we_backup_util{
 	}
 
 	public static function getFormat($file, $iscompr = 0){
-		$_part = we_base_file::loadPart($file, 0, 512, $iscompr);
+		$part = we_base_file::loadPart($file, 0, 512, $iscompr);
 
-		return (preg_match('|<\?xml |i', $_part) ?
+		return (preg_match('|<\?xml |i', $part) ?
 				'xml' :
 				'unknown');
 	}
 
 	public static function getXMLImportType($file, $iscompr = 0, $end_off = 0){
-		$_found = 'unknown';
-		$_try = 0;
-		$_count = 30;
-		$_part_len = 16384;
-		$_part_skip_len = 204800;
+		$found = 'unknown';
+		$try = 0;
+		$count = 30;
+		$part_len = 16384;
+		$part_skip_len = 204800;
 
 		if($end_off == 0){
 			$end_off = self::getEndOffset($file, $iscompr);
 		}
 
-		$_start = $end_off - $_part_len;
+		$start = $end_off - $part_len;
 
-		$_part = we_base_file::loadPart($file, 0, $_part_len, $iscompr);
+		$part = we_base_file::loadPart($file, 0, $part_len, $iscompr);
 
-		if($_part === false){
+		if($part === false){
 			return 'unreadble';
 		}
 
-		if(stripos($_part, we_backup_util::weXmlExImHead) === false){
+		if(stripos($part, we_backup_util::weXmlExImHead) === false){
 			return 'unknown';
 		}
-		$_hasbinary = false;
-		while($_found === 'unknown' && $_try < $_count){
-			if(preg_match('/.*' . we_backup_util::weXmlExImHead . '.*type="backup".*>/', $_part)){
+		$hasbinary = false;
+		while($found === 'unknown' && $try < $count){
+			if(preg_match('/.*' . we_backup_util::weXmlExImHead . '.*type="backup".*>/', $part)){
 				return 'backup';
-			} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $_part)){
+			} elseif(preg_match('/<we:(document|template|class|object|info|navigation)/i', $part)){
 				return 'weimport';
-			} elseif(stripos($_part, '<we:table') !== false){
+			} elseif(stripos($part, '<we:table') !== false){
 				return 'backup';
-			} elseif(stripos($_part, '<we:binary') !== false){
-				$_hasbinary = true;
-			} elseif(stripos($_part, '<customer') !== false){
+			} elseif(stripos($part, '<we:binary') !== false){
+				$hasbinary = true;
+			} elseif(stripos($part, '<customer') !== false){
 				return 'customer';
 			}
 
-			$_part = we_base_file::loadPart($file, $_start, $_part_len, $iscompr);
+			$part = we_base_file::loadPart($file, $start, $part_len, $iscompr);
 
-			$_start = $_start - $_part_skip_len;
+			$start = $start - $part_skip_len;
 
-			$_try++;
+			$try++;
 		}
 
-		if($_found === 'unknown' && $_hasbinary){
+		if($found === 'unknown' && $hasbinary){
 			return 'weimport';
 		}
 
-		return $_found;
+		return $found;
 	}
 
 	public static function getEndOffset($filename, $iscompressed){
@@ -364,19 +364,19 @@ abstract class we_backup_util{
 	}
 
 	public static function hasNextTable(){
-		$_current_id = $_SESSION['weS']['weBackupVars']['current_table_id'];
-		$_current_id++;
+		$current_id = $_SESSION['weS']['weBackupVars']['current_table_id'];
+		$current_id++;
 
 		if(!isset($_SESSION['weS']['weBackupVars']['allTables'])){
-			$_db = new DB_WE();
-			$_SESSION['weS']['weBackupVars']['allTables'] = $_db->table_names();
+			$db = new DB_WE();
+			$_SESSION['weS']['weBackupVars']['allTables'] = $db->table_names();
 		}
 // get all table names from database
-		$_tables = $_SESSION['weS']['weBackupVars']['allTables'];
+		$tables = $_SESSION['weS']['weBackupVars']['allTables'];
 
-		if($_current_id < count($_tables)){
-			$_table = $_tables[$_current_id]['table_name'];
-			if(self::getDefaultTableName($_table) === false){
+		if($current_id < count($tables)){
+			$table = $tables[$current_id]['table_name'];
+			if(self::getDefaultTableName($table) === false){
 				return false;
 			}
 

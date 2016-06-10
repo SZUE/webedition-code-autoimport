@@ -211,13 +211,13 @@ switch (args[0]){
 				case self::TYPE_CSV:
 					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 4, 1);
 
-					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "defaultfont", "style" => "width: 254px;"));
-					$_file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
-					$_file_encoding->addOption("unix", g_l('modules_customer', '[unix]'));
-					$_file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
-					$_file_encoding->selectOption($csv_lineend);
+					$file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "defaultfont", "style" => "width: 254px;"));
+					$file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
+					$file_encoding->addOption("unix", g_l('modules_customer', '[unix]'));
+					$file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
+					$file_encoding->selectOption($csv_lineend);
 
-					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . "<br/>" . $_file_encoding->getHtml());
+					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . "<br/>" . $file_encoding->getHtml());
 					$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array("," => g_l('modules_customer', '[comma]'), ";" => g_l('modules_customer', '[semicolon]'), ":" => g_l('modules_customer', '[colon]'), "\\t" => g_l('modules_customer', '[tab]'), " " => g_l('modules_customer', '[space]')), g_l('modules_customer', '[csv_delimiter]')));
 					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array('"' => g_l('modules_customer', '[double_quote]'), "'" => g_l('modules_customer', '[single_quote]')), g_l('modules_customer', '[csv_enclose]')));
 
@@ -288,23 +288,23 @@ switch (args[0]){
 	}
 
 	function getHTMLExportStep5(){
-		if(($_filename = we_base_request::_(we_base_request::FILE, "exportfile"))){
+		if(($filename = we_base_request::_(we_base_request::FILE, "exportfile"))){
 
-			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
-				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
+			if(file_exists(TEMP_PATH . $filename) // Does file exist?
+				&& !preg_match('%p?html?%i', $filename) && stripos($filename, "inc") === false && !preg_match('%php3?%i', $filename)){ // Security check
 				session_write_close();
-				$_size = filesize(TEMP_PATH . $_filename);
+				$size = filesize(TEMP_PATH . $filename);
 
 				header("Pragma: public");
 				header("Expires: 0");
 				header("Cache-control: private, max-age=0, must-revalidate");
 
 				header('Content-Type: application/octet-stream');
-				header('Content-Disposition: attachment; filename="' . trim(htmlentities($_filename)) . '"');
+				header('Content-Disposition: attachment; filename="' . trim(htmlentities($filename)) . '"');
 				header('Content-Description: Customer-Export');
-				header('Content-Length: ' . $_size);
+				header('Content-Length: ' . $size);
 
-				readfile(TEMP_PATH . $_filename);
+				readfile(TEMP_PATH . $filename);
 
 				exit;
 			}
@@ -643,22 +643,22 @@ function callBack(){
 
 					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 5, 1);
 
-					$_file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "defaultfont", "style" => "width: 254px;"));
-					$_file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
-					$_file_encoding->addOption('unix', g_l('modules_customer', '[unix]'));
-					$_file_encoding->addOption('mac', g_l('modules_customer', '[mac]'));
-					$_file_encoding->selectOption($csv_lineend);
+					$file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "defaultfont", "style" => "width: 254px;"));
+					$file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
+					$file_encoding->addOption('unix', g_l('modules_customer', '[unix]'));
+					$file_encoding->addOption('mac', g_l('modules_customer', '[mac]'));
+					$file_encoding->selectOption($csv_lineend);
 
-					$_charsetHandler = new we_base_charsetHandler();
-					$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
+					$charsetHandler = new we_base_charsetHandler();
+					$charsets = $charsetHandler->getCharsetsForTagWizzard();
 					//$charset = $GLOBALS['WE_BACKENDCHARSET'];
 					//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
-					$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);
-					$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
-					$import_Charset = '<table class="default"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
+					$importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);
+					$importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $charsets, 1, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
+					$import_Charset = '<table class="default"><tr><td>' . $importCharset . '</td><td>' . $importCharsetChooser . '</td></tr></table>';
 
 
-					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . we_html_element::htmlBr() . $_file_encoding->getHtml());
+					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . we_html_element::htmlBr() . $file_encoding->getHtml());
 					$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[import_charset]') . we_html_element::htmlBr() . $import_Charset);
 					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, $csv_delimiters, g_l('modules_customer', '[csv_delimiter]')));
 					$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, $csv_encloses, g_l('modules_customer', '[csv_enclose]')));

@@ -944,10 +944,10 @@ class we_messaging_messaging extends we_class{
 			), self::array_hash_construct($this->available_folders, array('ID', 'Name'), $matchArray)
 		);
 
-		$_arr1 = array('ID', 'Name');
+		$arr1 = array('ID', 'Name');
 
-		$_ret = self::arr_hash_to_wesel_hash($mergedArray, $_arr1);
-		return $_ret;
+		$ret = self::arr_hash_to_wesel_hash($mergedArray, $arr1);
+		return $ret;
 	}
 
 	function get_wesel_folder_types(){
