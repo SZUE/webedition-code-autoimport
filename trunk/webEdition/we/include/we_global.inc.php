@@ -497,6 +497,7 @@ function p_r($val, $html = true, $useTA = false){
 function t_e($type = 'warning'){
 	$inc = false;
 	$data = array();
+	$values = func_get_args();
 	switch(is_string($type) ? strtolower($type) : -1){
 		case 'error':
 			$inc = true;
@@ -507,7 +508,8 @@ function t_e($type = 'warning'){
 			$type = E_USER_NOTICE;
 			break;
 		case 'deprecated':
-			$inc = true;
+			//$inc = true;
+			$values[0] = 'Deprecated';
 			$type = E_USER_NOTICE; //E_USER_DEPRECATED - seems not to work anymore
 			break;
 		case 'warning':
@@ -515,11 +517,10 @@ function t_e($type = 'warning'){
 		default:
 			$type = E_USER_WARNING;
 	}
-	foreach(func_get_args() as $value){
-		if($inc){
-			$inc = false;
-			continue;
-		}
+	if($inc){
+		array_shift($values);
+	}
+	foreach($values as $value){
 		if(is_array($value) || is_object($value)){
 			$data[] = @print_r($value, true);
 		} else {
