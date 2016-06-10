@@ -337,6 +337,10 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 
 		return we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
 				we_html_element::jsScript('/webEdition/lib/additional/ExifReader/ExifReader.js') .
+				we_html_element::jsScript('/webEdition/lib/additional/pngChunksEncode/index.js') .
+				we_html_element::jsScript('/webEdition/lib/additional/pngChunksExtract/index.js') .
+				we_html_element::jsScript('/webEdition/lib/additional/pngChunksExtract/crc32.js') .
+				we_html_element::jsScript('/webEdition/lib/additional/pica/pica.js') .
 				we_html_element::jsElement('
 we_FileUpload = new weFileUpload("' . $this->type . '");
 we_FileUpload.init({

@@ -29,26 +29,26 @@ class we_export_tree extends we_tree_base{
 	}
 
 	function getJSLoadTree($clear, array $treeItems){
-		$js = $this->topFrame . '.treeData.table=' . $this->topFrame . '.table;';
+		$js = $this->treeFrame . '.treeData.table=' .$this->treeFrame . '.table;';
 
 		foreach($treeItems as $item){
 
-			$js.=($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
-					$this->topFrame . '.treeData.add(new ' . $this->topFrame . '.node({';
+			$js.=($clear ? '' : 'if(' . $this->treeFrame . '.treeData.indexOfEntry("' . $item['id'] . '")<0){' ) .
+				$this->treeFrame . '.treeData.add(new ' . $this->treeFrame . '.node({';
 			$elems = '';
 			foreach($item as $k => $v){
-				$elems.='"' . strtolower($k) . '":' .
-						(strtolower($k) === "checked" ?
-								'(WE().util.in_array("' . $item["id"] . '", ' . $this->topFrame . '.SelectedItems.' . $item['table'] . ')?
+				$elems.=strtolower($k) . ':' .
+					(strtolower($k) === "checked" ?
+						'(WE().util.in_array("' . $item["id"] . '",' . $this->treeFrame . '.SelectedItems.' . $item['table'] . ')?
 	\'1\':
 	\'' . $v . '\'),
 ' :
-								'\'' . $v . '\',');
+						'\'' . $v . '\',');
 			}
 			$js.=rtrim($elems, ',') . '}));' . ($clear ? '' : '}');
 		}
-		$js.= $this->topFrame . '.treeData.setState(' . $this->topFrame . '.treeData.tree_states["select"]);' .
-				$this->topFrame . '.drawTree();';
+		$js.= $this->treeFrame . '.treeData.setState(' . $this->treeFrame . '.treeData.tree_states["select"]);' .
+			$this->treeFrame . '.drawTree();';
 
 		return $js;
 	}
@@ -60,7 +60,7 @@ class we_export_tree extends we_tree_base{
 		cmd:' . $this->cmdFrame . ',
 		tree:' . $this->treeFrame . '
 	};
-	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+treeData.frames.top.table+"&pid=0&openFolders="+openFolders[treeData.frames.top.treeData.table];
+	treeData.frames.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=load&cmd=load&tab="+treeData.frames.top.table+"&pid=0&openFolders="+openFolders[treeData.frames.tree.treeData.table];
 }';
 	}
 
@@ -69,21 +69,21 @@ class we_export_tree extends we_tree_base{
 var SelectedItems={
 	' . FILE_TABLE . ':[],
 	' . TEMPLATES_TABLE . ':[],' .
-						(defined('OBJECT_FILES_TABLE') ? ('
+				(defined('OBJECT_FILES_TABLE') ? ('
 	' . OBJECT_FILES_TABLE . ':[],
 	' . OBJECT_TABLE . ':[],
 	') : ''
-						) . '
+				) . '
 };
 
 var openFolders= {
 	' . FILE_TABLE . ':"",
 	' . TEMPLATES_TABLE . ':"",' .
-						(defined('OBJECT_FILES_TABLE') ? ('
+				(defined('OBJECT_FILES_TABLE') ? ('
 	' . OBJECT_FILES_TABLE . ':"",
 	' . OBJECT_TABLE . ':"",
 ') : ''
-						) . '
+				) . '
 };' . $this->getJSStartTree()) . we_html_element::cssLink(CSS_DIR . 'tree.css');
 
 		if($useSelector){
@@ -238,14 +238,14 @@ var openFolders= {
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement('
 if(!' . $this->topFrame . '.treeData) {' .
-						we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) . '
+				we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) . '
 }' .
-						($parentFolder ? '' :
-								$this->topFrame . '.treeData.clear();' .
-								$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
-						) .
-						$this->getJSLoadTree(!$parentFolder, $treeItems)
-				), we_html_element::htmlBody(array("bgcolor" => "#ffffff"))
+				($parentFolder ? '' :
+					$this->topFrame . '.treeData.clear();' .
+					$this->topFrame . '.treeData.add(' . $this->topFrame . '.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\'));'
+				) .
+				$this->getJSLoadTree(!$parentFolder, $treeItems)
+			), we_html_element::htmlBody(array("bgcolor" => "#ffffff"))
 		);
 	}
 

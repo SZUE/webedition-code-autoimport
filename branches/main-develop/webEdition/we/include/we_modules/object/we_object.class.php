@@ -1256,12 +1256,12 @@ class we_object extends we_document{
 		$db = new DB_WE();
 		$classPath = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $pid, 'Path', $db);
 		$textname = 'we_' . $this->Name . '_txt[' . $pid . '_path]';
-		$idname = 'we_' . $this->Name . "_input[" . $ObjectID . "default]";
-		$myid = $this->getElement($ObjectID . "default", "dat");
+		$idname = 'we_' . $this->Name . '_input[' . $ObjectID . 'default]';
+		$myid = $this->getElement($ObjectID . 'default', "dat");
 		$DoubleNames = $this->includedObjectHasDoubbleFieldNames($pid);
-		$path = $this->getElement("we_object_" . $pid . "_path");
-		$path = $path ? : ($myid ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . " WHERE ID=$myid", "Path", $db) : '');
-		$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($classPath) . '"', "ID", $db);
+		$path = $this->getElement('we_object_' . $pid . '_path');
+		$path = $path ? : ($myid ? f("SELECT Path FROM " . OBJECT_FILES_TABLE . ' WHERE ID=' . $myid, '', $db) : '');
+		$rootDir = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $db->escape($classPath) . '"', '', $db);
 		$table = OBJECT_FILES_TABLE;
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
@@ -2101,6 +2101,9 @@ class we_object extends we_document{
 		if(is_array($sort)){
 			for($i = 0; $i <= $count && $sort; $i++){
 				$foo = $this->getElement($this->getElement('wholename' . $this->getSortIndex($i)), 'dat');
+				if(empty($foo)){ //we don't allow field names evaluating to false, report them as double ;-)
+					return false;
+				}
 				if(!in_array($foo, $usedNames)){
 					$usedNames[] = $foo;
 					continue;

@@ -387,7 +387,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			}
 		}
 
-		$db->query('CREATE TEMPORARY TABLE tmp(b varchar(255) NOT NULL,KEY b (b))');
+		$db->addTable('tmp', 'b varchar(255) NOT NULL', array('KEY b (b)'), 'MYISAM', true);
 		$db->query('INSERT INTO tmp VALUES ("' . implode('"),("', $all) . '")');
 		//we add a limit since this file might not be executed to the end
 		$db->query('SELECT b FROM tmp LEFT JOIN ' . VERSIONS_TABLE . ' ON b=binaryPath WHERE ID IS NULL LIMIT 1000');
@@ -397,7 +397,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . VERSION_DIR . $cur);
 			}
 		}
-		$db->query('DROP TEMPORARY TABLE tmp');
+		$db->delTable('tmp', true);
 	}
 
 	public static function updateGlossar(){

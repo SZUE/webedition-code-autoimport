@@ -145,7 +145,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				}
 		}
 
-		foreach($selDocs as $k => $v){
+		foreach($selDocs as $v){
 			$this->RefTable->add2(array(
 				"ID" => $v,
 				"ContentType" => f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . intval($v), "", $this->db),
@@ -154,7 +154,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			);
 		}
 
-		foreach($selTempl as $k => $v){
+		foreach($selTempl as $v){
 			$this->RefTable->add2(array(
 				"ID" => $v,
 				"ContentType" => we_base_ContentTypes::TEMPLATE,
@@ -163,7 +163,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			);
 		}
 		if(is_array($selObjs)){
-			foreach($selObjs as $k => $v){
+			foreach($selObjs as $v){
 				$this->RefTable->add2(array(
 					"ID" => $v,
 					"ContentType" => we_base_ContentTypes::OBJECT_FILE,
@@ -173,7 +173,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			}
 		}
 		if(is_array($selClasses)){
-			foreach($selClasses as $k => $v){
+			foreach($selClasses as $v){
 				$this->RefTable->add2(array(
 					"ID" => $v,
 					"ContentType" => "object",

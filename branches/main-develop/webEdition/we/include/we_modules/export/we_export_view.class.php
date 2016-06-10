@@ -92,7 +92,7 @@ parent.document.title = "' . $title . '"
 		foreach($arr as $table => $elem){
 			$items = makeArrayFromCSV($this->export->$elem);
 			foreach($items as $item){
-				$selected .= 'treeData.frames.top.SelectedItems["' . $table . '"].push("' . $item . '");';
+				$selected .= 'top.content.editor.edbody.SelectedItems["' . $table . '"].push("' . $item . '");';
 			}
 
 			if(($open = we_base_request::_(we_base_request::STRING, $elem . '_open'))){

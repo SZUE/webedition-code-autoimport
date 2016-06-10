@@ -58,7 +58,7 @@ container.prototype.checkNode = function (imgName) {
 	var object_name = imgName.substring(4, imgName.length);
 	for (i = 1; i <= this.len; i++) {
 		if (this[i].id == object_name) {
-			treeData.frames.tree.populate(this[i].id, this.table);
+//			treeData.frames.tree.populate(this[i].id, this.table);
 			if (this[i].checked == 1) {
 				if (treeData.frames.tree.document.getElementsByName(imgName)) {
 					tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
@@ -66,9 +66,9 @@ container.prototype.checkNode = function (imgName) {
 					tmp.classList.add('fa-square-o');
 				}
 				this[i].checked = 0;
-				var pos = treeData.frames.top.SelectedItems[treeData.frames.top.table].indexOf(this[i].id);
+				var pos = top.content.editor.edbody.SelectedItems[treeData.frames.top.table].indexOf(this[i].id);
 				if (pos > -1) {
-					treeData.frames.top.SelectedItems[treeData.frames.top.table].splice(pos, 1);
+					top.content.editor.edbody.SelectedItems[treeData.frames.top.table].splice(pos, 1);
 				}
 
 				this[i].applylayout();
@@ -80,7 +80,7 @@ container.prototype.checkNode = function (imgName) {
 					tmp.classList.add('fa-check-square-o');
 				}
 				this[i].checked = 1;
-				treeData.frames.top.SelectedItems[treeData.frames.top.table].push(this[i].id);
+				top.content.editor.edbody.SelectedItems[treeData.frames.top.table].push(this[i].id);
 				this[i].applylayout();
 				break;
 			}
@@ -115,9 +115,6 @@ container.prototype.addSort = function (object) {
 		break;
 	}
 };
-
-function populate(id, table) {
-}
 
 function setHead(tab) {
 	treeData.frames.top.table = tab;

@@ -114,7 +114,7 @@ foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
 $parts = array(
 	array(
 		'headline' => g_l('modules_shop', '[statusmails][AnzeigeDaten]'),
-		'space' => we_html_multiIconBox::SPACE_SMALL,
+		'space' => we_html_multiIconBox::SPACE_MED,
 		'html' => '',
 		'noline' => 1
 	),
@@ -208,7 +208,7 @@ foreach($frontendL as $langkey){
 
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[statusmails][Dokumente]'),
-	'space' => we_html_multiIconBox::SPACE_SMALL,
+	'space' => we_html_multiIconBox::SPACE_MED,
 	'html' => '',
 	'noline' => 1
 );

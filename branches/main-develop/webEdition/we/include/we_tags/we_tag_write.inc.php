@@ -104,114 +104,76 @@ function we_tag_write(array $attribs){
 
 		$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ($admin/* only if this field is used */ ? $isAdmin : true) : false); //FR #8411
 
-		if($isAdmin || $isNew || $isOwner || $forceedit){
-			$doWrite = true;
-			//$newObject = ($GLOBALS['we_'.$type][$name]->ID) ? false : true;
-			if($protected){
-				if(!isset($_SESSION['webuser']['ID']) || !isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered']){
-					$GLOBALS['ERROR']['write'][$type][$name] = true;
-					return;
-				}
-				if(!$GLOBALS['we_' . $type][$name]->WebUserID){
-					$GLOBALS['we_' . $type][$name]->WebUserID = $_SESSION['webuser']['ID'];
-				}
-			} elseif($userid){
-				if(!isset($_SESSION['webuser']['ID']) || !isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered']){
-					$GLOBALS['ERROR']['write'][$type][$name] = true;
-					return;
-				}
-				if(!$GLOBALS['we_' . $type][$name]->getElement($userid)){
-					$GLOBALS['we_' . $type][$name]->setElement($userid, $_SESSION['webuser']['ID']);
-				}
-			}
-			$GLOBALS['ERROR']['write'][$type][$name] = false;
-			checkAndCreateBinary($name, ($type === 'document' ? 'we_document' : 'we_object'));
+		if(!($isAdmin || $isNew || $isOwner || $forceedit)){
+			$GLOBALS['ERROR']['write'][$type][$name] = 1;
+			return;
+		}
 
-			//FIXME: we should probably use checkFieldsOnSave?!
-			$GLOBALS['we_' . $type][$name]->i_checkPathDiffAndCreate();
-			if(!$objname){
-				$GLOBALS['we_' . $type][$name]->i_correctDoublePath();
+		$doWrite = true;
+		//$newObject = ($GLOBALS['we_'.$type][$name]->ID) ? false : true;
+		if($protected){
+			if(!isset($_SESSION['webuser']['ID']) || !isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered']){
+				$GLOBALS['ERROR']['write'][$type][$name] = true;
+				return;
 			}
-			if(isset($GLOBALS['we_doc'])){
-				$_WE_DOC_SAVE = $GLOBALS['we_doc'];
+			if(!$GLOBALS['we_' . $type][$name]->WebUserID){
+				$GLOBALS['we_' . $type][$name]->WebUserID = $_SESSION['webuser']['ID'];
 			}
-			$GLOBALS['we_doc'] = &$GLOBALS['we_' . $type][$name];
-			$GLOBALS['we_doc']->IsSearchable = $searchable;
-			switch($language){
-				case 'self':
-				case 'top':
-					$docLanguage = we_getDocForTag($language);
-					$language = $docLanguage->Language;
-					unset($docLanguage);
+		} elseif($userid){
+			if(!isset($_SESSION['webuser']['ID']) || !isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered']){
+				$GLOBALS['ERROR']['write'][$type][$name] = true;
+				return;
 			}
-			$GLOBALS['we_doc']->Language = $language;
-			if($workspaces && $type === 'object'){
-				$tmplArray = array();
-				foreach($workspaces as $wsId){
-					$tmplArray[] = $GLOBALS['we_' . $type][$name]->getTemplateFromWs($wsId);
-				}
-				$GLOBALS['we_' . $type][$name]->Workspaces = implode(',', $workspaces);
-				$GLOBALS['we_' . $type][$name]->Templates = implode(',', $tmplArray);
+			if(!$GLOBALS['we_' . $type][$name]->getElement($userid)){
+				$GLOBALS['we_' . $type][$name]->setElement($userid, $_SESSION['webuser']['ID']);
+			}
+		}
+		$GLOBALS['ERROR']['write'][$type][$name] = false;
+		checkAndCreateBinary($name, ($type === 'document' ? 'we_document' : 'we_object'));
+
+		//FIXME: we should probably use checkFieldsOnSave?!
+		$GLOBALS['we_' . $type][$name]->i_checkPathDiffAndCreate();
+		if(!$objname){
+			$GLOBALS['we_' . $type][$name]->i_correctDoublePath();
+		}
+		if(isset($GLOBALS['we_doc'])){
+			$_WE_DOC_SAVE = $GLOBALS['we_doc'];
+		}
+		$GLOBALS['we_doc'] = &$GLOBALS['we_' . $type][$name];
+		$GLOBALS['we_doc']->IsSearchable = $searchable;
+		switch($language){
+			case 'self':
+			case 'top':
+				$docLanguage = we_getDocForTag($language);
+				$language = $docLanguage->Language;
+				unset($docLanguage);
+		}
+		$GLOBALS['we_doc']->Language = $language;
+		if($workspaces && $type === 'object'){
+			$tmplArray = array();
+			foreach($workspaces as $wsId){
+				$tmplArray[] = $GLOBALS['we_' . $type][$name]->getTemplateFromWs($wsId);
+			}
+			$GLOBALS['we_' . $type][$name]->Workspaces = implode(',', $workspaces);
+			$GLOBALS['we_' . $type][$name]->Templates = implode(',', $tmplArray);
+		}
+
+		$GLOBALS['we_' . $type][$name]->Path = $GLOBALS['we_' . $type][$name]->getPath();
+
+		if(defined('OBJECT_FILES_TABLE') && $type === 'object'){
+			$objname = weTagWriteGetObjName($objname, $type, $name, $onpredefinedname);
+			$doWrite = weTagWriteCorrectObjName($objname, $type, $name, $onduplicate);
+		}
+
+		if($doWrite){
+			$ret = $GLOBALS['we_' . $type][$name]->we_save();
+			if($ret && $publish && !$doworkflow){
+				$ret = ($type === 'document' && (!$GLOBALS['we_' . $type][$name]->IsDynamic) && isset($GLOBALS['we_doc']) ? // on static HTML Documents we have to do it different
+						$GLOBALS['we_doc']->we_publish() :
+						$GLOBALS['we_' . $type][$name]->we_publish());
 			}
 
-			$GLOBALS['we_' . $type][$name]->Path = $GLOBALS['we_' . $type][$name]->getPath();
-
-			if(defined('OBJECT_FILES_TABLE') && $type === 'object'){
-				if($GLOBALS['we_' . $type][$name]->Text === ''){
-					if($objname === ''){
-						$objname = 1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE));
-					}
-				} else {
-					switch($onpredefinedname){
-						case 'appendto':
-							$objname = ($objname ? $GLOBALS['we_' . $type][$name]->Text . '_' . $objname : $GLOBALS['we_' . $type][$name]->Text);
-							break;
-						case 'infrontof':
-							$objname .= ($objname ? '_' . $GLOBALS['we_' . $type][$name]->Text : $GLOBALS['we_' . $type][$name]->Text);
-							break;
-						case 'overwrite':
-							if($objname === ''){
-								$objname = $GLOBALS['we_' . $type][$name]->Text;
-							}
-							break;
-					}
-				}
-				$objexists = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname)) . '"');
-				if(!$objexists){
-					$GLOBALS['we_' . $type][$name]->Text = $objname;
-					$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname);
-				} else {
-					switch($onduplicate){
-						case 'abort':
-							$GLOBALS['ERROR']['write'][$type][$name] = true;
-							$doWrite = false;
-							break;
-						case 'overwrite':
-							$GLOBALS['we_' . $type][$name]->ID = $objexists;
-							$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname);
-							$GLOBALS['we_' . $type][$name]->Text = $objname;
-							break;
-						case 'increment':
-							$z = 1;
-							$footext = $objname . '_' . $z;
-							while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $footext)) . '"')){
-								$z++;
-								$footext = $objname . '_' . $z;
-							}
-							$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . '/' . $footext);
-							$GLOBALS['we_' . $type][$name]->Text = $footext;
-							break;
-					}
-				}
-			}
-			if($doWrite){
-				$ret = $GLOBALS['we_' . $type][$name]->we_save();
-				if($publish && !$doworkflow){
-					$ret1 = ($type === 'document' && (!$GLOBALS['we_' . $type][$name]->IsDynamic) && isset($GLOBALS['we_doc']) ? // on static HTML Documents we have to do it different
-							$GLOBALS['we_doc']->we_publish() :
-							$GLOBALS['we_' . $type][$name]->we_publish());
-				}
-
+			if($ret){
 				if($doworkflow){
 					$wf_text = $workflowname . '  ';
 					switch($type){
@@ -240,46 +202,95 @@ function we_tag_write(array $attribs){
 				 */
 				$requestVarName = 'we_edit' . ucfirst($type) . '_ID';
 				$_REQUEST[$requestVarName] = $GLOBALS['we_doc']->ID;
+			} else {
+				//save or publish failed
+				$doWrite = false;
+				$GLOBALS['ERROR']['write'][$type][$name] = true;
 			}
+		}
 
-			unset($GLOBALS['we_doc']);
-			if(isset($_WE_DOC_SAVE)){
-				$GLOBALS['we_doc'] = $_WE_DOC_SAVE;
-				unset($_WE_DOC_SAVE);
-			}
-			$_REQUEST['we_returnpage'] = $GLOBALS['we_' . $type][$name]->getElement('we_returnpage');
+		unset($GLOBALS['we_doc']);
+		if(isset($_WE_DOC_SAVE)){
+			$GLOBALS['we_doc'] = $_WE_DOC_SAVE;
+			unset($_WE_DOC_SAVE);
+		}
+		$_REQUEST['we_returnpage'] = $GLOBALS['we_' . $type][$name]->getElement('we_returnpage');
 
-			if($doWrite && $mail){
-				if(!$mailfrom){
-					$mailfrom = 'dontReply@' . $_SERVER['SERVER_NAME'];
-				}
-				$path = $GLOBALS['we_' . $type][$name]->Path;
-				switch($type){
-					case 'object':
-						$classname = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid));
-						$mailtext = sprintf(g_l('global', '[std_mailtext_newObj]'), $path, $classname) . "\n" .
-							($triggerid ? id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') .
-							$GLOBALS['we_object'][$name]->ID;
-						$subject = g_l('global', '[std_subject_newObj]');
-						break;
-					default:
-					case 'document':
-						$mailtext = sprintf(g_l('global', '[std_mailtext_newDoc]'), $path) . "\n" . $GLOBALS['we_' . $type][$name]->getHttpPath();
-						$subject = g_l('global', '[std_subject_newDoc]');
-						break;
-				}
-				$phpmail = new we_mail_mail($mail, $subject, $mailfrom);
-				$phpmail->setCharSet($charset);
-				$phpmail->addTextPart($mailtext);
-				$phpmail->buildMessage();
-				$phpmail->Send();
+		if($doWrite && $mail){
+			if(!$mailfrom){
+				$mailfrom = 'dontReply@' . $_SERVER['SERVER_NAME'];
 			}
-		} else {
-			$GLOBALS['ERROR']['write'][$type][$name] = 1;
+			$path = $GLOBALS['we_' . $type][$name]->Path;
+			switch($type){
+				case 'object':
+					$classname = f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid));
+					$mailtext = sprintf(g_l('global', '[std_mailtext_newObj]'), $path, $classname) . "\n" .
+						($triggerid ? id_to_path($triggerid) . '?we_objectID=' : 'ObjectID: ') .
+						$GLOBALS['we_object'][$name]->ID;
+					$subject = g_l('global', '[std_subject_newObj]');
+					break;
+				default:
+				case 'document':
+					$mailtext = sprintf(g_l('global', '[std_mailtext_newDoc]'), $path) . "\n" . $GLOBALS['we_' . $type][$name]->getHttpPath();
+					$subject = g_l('global', '[std_subject_newDoc]');
+					break;
+			}
+			$phpmail = new we_mail_mail($mail, $subject, $mailfrom);
+			$phpmail->setCharSet($charset);
+			$phpmail->addTextPart($mailtext);
+			$phpmail->buildMessage();
+			$phpmail->Send();
 		}
 	}
 	if(!empty($GLOBALS['WE_SESSION_START'])){
 		unset($_SESSION['weS']['we_' . $type . '_session_' . $name]); //fix #8051
+	}
+}
+
+function weTagWriteGetObjName($objname, $type, $name, $onpredefinedname){
+	if($GLOBALS['we_' . $type][$name]->Text === ''){
+		return $objname? : (1 + intval(f('SELECT MAX(ID) AS ID FROM ' . OBJECT_FILES_TABLE)));
+	}
+	switch($onpredefinedname){
+		case 'appendto':
+			return ($objname ? $GLOBALS['we_' . $type][$name]->Text . '_' . $objname : $GLOBALS['we_' . $type][$name]->Text);
+		case 'infrontof':
+			return $objname . ($objname ? '_' . $GLOBALS['we_' . $type][$name]->Text : $GLOBALS['we_' . $type][$name]->Text);
+		case 'overwrite':
+			return $objname? : $GLOBALS['we_' . $type][$name]->Text;
+		default:
+			return $objname;
+	}
+}
+
+function weTagWriteCorrectObjName($objname, $type, $name, $onduplicate){
+	$objexists = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname)) . '"');
+
+	if(!$objexists){
+		$GLOBALS['we_' . $type][$name]->Text = $objname;
+		$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname);
+		return true;
+	}
+	switch($onduplicate){
+		default:
+		case 'abort':
+			$GLOBALS['ERROR']['write'][$type][$name] = true;
+			return false;
+		case 'overwrite':
+			$GLOBALS['we_' . $type][$name]->ID = $objexists;
+			$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $objname);
+			$GLOBALS['we_' . $type][$name]->Text = $objname;
+			return true;
+		case 'increment':
+			$z = 1;
+			$footext = $objname . '_' . $z;
+			while(f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(str_replace('//', '/', $GLOBALS['we_' . $type][$name]->Path . '/' . $footext)) . '"')){
+				$z++;
+				$footext = $objname . '_' . $z;
+			}
+			$GLOBALS['we_' . $type][$name]->Path = str_replace('//', '/', $GLOBALS["we_$type"][$name]->Path . '/' . $footext);
+			$GLOBALS['we_' . $type][$name]->Text = $footext;
+			return true;
 	}
 }
 

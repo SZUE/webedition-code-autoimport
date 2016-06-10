@@ -500,6 +500,7 @@ function p_r($val, $html = true, $useTA = false){
 function t_e($type = 'warning'){
 	$inc = false;
 	$data = array();
+	$values = func_get_args();
 	switch(is_string($type) ? strtolower($type) : -1){
 		case 'error':
 			$inc = true;
@@ -510,7 +511,8 @@ function t_e($type = 'warning'){
 			$type = E_USER_NOTICE;
 			break;
 		case 'deprecated':
-			$inc = true;
+			//$inc = true;
+			$values[0] = 'Deprecated';
 			$type = E_USER_NOTICE; //E_USER_DEPRECATED - seems not to work anymore
 			break;
 		case 'warning':
@@ -518,11 +520,10 @@ function t_e($type = 'warning'){
 		default:
 			$type = E_USER_WARNING;
 	}
-	foreach(func_get_args() as $value){
-		if($inc){
-			$inc = false;
-			continue;
-		}
+	if($inc){
+		array_shift($values);
+	}
+	foreach($values as $value){
 		if(is_array($value) || is_object($value)){
 			$data[] = @print_r($value, true);
 		} else {
@@ -915,7 +916,7 @@ function we_templateInit(){
 //check for Trigger
 		if(!isset($GLOBALS['we']['Scheduler_active']) && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['we_doc']->InWebEdition) &&
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
-			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0)) //on first call this variable is unset, so we're not inside an include
+			(empty($GLOBALS['we']['backVars'])) //on first call this variable is unset, so we're not inside an include
 		){
 			we_schedpro::trigger_schedule();
 		}
@@ -1032,7 +1033,7 @@ function we_templatePost(){
 		//check for Trigger
 		if(!isset($GLOBALS['we']['Scheduler_active']) && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['WE_MAIN_DOC']->InWebEdition) &&
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_POSTDOC) &&
-			(!isset($GLOBALS['we']['backVars']) || (isset($GLOBALS['we']['backVars']) && count($GLOBALS['we']['backVars']) == 0))//not inside an included Doc
+			(empty($GLOBALS['we']['backVars']))//not inside an included Doc
 		){ //is set to Post or not set (new default)
 			session_write_close();
 			flush();
