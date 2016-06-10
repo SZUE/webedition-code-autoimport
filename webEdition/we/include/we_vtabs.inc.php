@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$_treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= we_tree_base::MinWidth) ? $_COOKIE["treewidth_main"] : we_tree_base::DefaultWidth;
+$treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= we_tree_base::MinWidth) ? $_COOKIE["treewidth_main"] : we_tree_base::DefaultWidth;
 
 $vtab = array(
 	'FILE_TABLE' => array(
@@ -52,6 +52,6 @@ foreach($vtab as $tab => $val){
 }
 ?>
 <div id="baumArrows">
-	<div class="baumArrow" id="incBaum" title="<?php echo g_l('global', '[tree][grow]'); ?>" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
-	<div class="baumArrow" id="decBaum" title="<?php echo g_l('global', '[tree][reduce]'); ?>" <?php echo ($_treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
+	<div class="baumArrow" id="incBaum" title="<?php echo g_l('global', '[tree][grow]'); ?>" <?php echo ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
+	<div class="baumArrow" id="decBaum" title="<?php echo g_l('global', '[tree][reduce]'); ?>" <?php echo ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
 </div>

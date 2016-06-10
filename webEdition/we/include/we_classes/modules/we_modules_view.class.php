@@ -83,18 +83,18 @@ function submitForm(target,action,method,form) {
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? $modData['text'] : '';
 
-		$_row = 0;
-		$_starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
-		$_starttable->setCol($_row++, 0, array("class" => "defaultfont titleline", "colspan" => 3), $title);
-		$_starttable->setCol($_row++, 0, array("class" => "defaultfont", "colspan" => 3), "");
-		$_starttable->setCol($_row++, 0, array("style" => "text-align:center"), $content);
+		$row = 0;
+		$starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
+		$starttable->setCol($row++, 0, array("class" => "defaultfont titleline", "colspan" => 3), $title);
+		$starttable->setCol($row++, 0, array("class" => "defaultfont", "colspan" => 3), "");
+		$starttable->setCol($row++, 0, array("style" => "text-align:center"), $content);
 
 		ob_start();
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
 		?>
 		<body class="home" onload="loaded = true;
 				var we_is_home = 1;">
-			<div id="tabelle"><?php echo $_starttable->getHtml(); ?></div>
+			<div id="tabelle"><?php echo $starttable->getHtml(); ?></div>
 			<div id="modimage"><img src="<?php echo IMAGE_DIR . "startscreen/" . $icon; ?>" style="width:335px;height:329px;" /></div>
 				<?php echo $body; ?>
 		</body>

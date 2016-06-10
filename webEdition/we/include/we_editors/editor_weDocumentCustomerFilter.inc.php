@@ -25,15 +25,15 @@ we_html_tools::protect();
 $parts = array();
 
 if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER')){
-	$_filter = $we_doc->documentCustomerFilter;
-	if(!$_filter){
-		$_filter = we_customer_documentFilter::getEmptyDocumentCustomerFilter();
+	$filter = $we_doc->documentCustomerFilter;
+	if(!$filter){
+		$filter = we_customer_documentFilter::getEmptyDocumentCustomerFilter();
 	}
-	$_view = new we_customer_documentFilterView($_filter, '_EditorFrame.setEditorIsHot(true);', 520);
+	$view = new we_customer_documentFilterView($filter, '_EditorFrame.setEditorIsHot(true);', 520);
 
 	$parts[] = array(
 		'headline' => g_l('modules_customerFilter', '[customerFilter]'),
-		'html' => $_view->getFilterHTML(),
+		'html' => $view->getFilterHTML(),
 		'space' => we_html_multiIconBox::SPACE_MED
 	);
 }
@@ -83,7 +83,7 @@ function formWebuser($canChange, $width = 388){
 
 
 	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_customer_selector',document.we_form.elements." . $idname . ".value,WE().consts.tables.CUSTOMER_TABLE,'document.we_form.elements." . $idname . ".value','document.we_form.elements." . $textname . ".value');");
-	$_trashBut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements." . $idname . ".value=0;document.we_form.elements." . $textname . ".value='';_EditorFrame.setEditorIsHot(true);");
+	$trashBut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements." . $idname . ".value=0;document.we_form.elements." . $textname . ".value='';_EditorFrame.setEditorIsHot(true);");
 
 	$yuiSuggest = & weSuggest::getInstance();
 	$yuiSuggest->setAcId("Customer");
@@ -97,7 +97,7 @@ function formWebuser($canChange, $width = 388){
 	$yuiSuggest->setWidth(434);
 	$yuiSuggest->setSelectButton($button);
 	$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('customer_edit_ifthere', document.we_form.elements['yuiAcResultCustomer'].value);"));
-	$yuiSuggest->setTrashButton($_trashBut);
+	$yuiSuggest->setTrashButton($trashBut);
 	$yuiSuggest->setTable(CUSTOMER_TABLE);
 
 	return weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();

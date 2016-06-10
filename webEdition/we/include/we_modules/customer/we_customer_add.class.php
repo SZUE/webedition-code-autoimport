@@ -41,7 +41,7 @@ abstract class we_customer_add{
 		$counter = 0;
 		$fhidden = '';
 
-		$_parts = array();
+		$parts = array();
 		foreach($pob->View->settings->SortView as $k => $sorts){
 			$fcounter = 0;
 			$row_num = 0;
@@ -126,11 +126,11 @@ abstract class we_customer_add{
 
 			$fhidden.=we_html_element::htmlHidden("fcounter_" . $counter, "$fcounter");
 
-			$_htmlCode = $pob->getHTMLBox(we_html_element::htmlInput(array("name" => "sort_" . $counter, "value" => $k, "size" => 40)), g_l('modules_customer', '[name]'), 100, 50, 25, 0, 0, 50) .
+			$htmlCode = $pob->getHTMLBox(we_html_element::htmlInput(array("name" => "sort_" . $counter, "value" => $k, "size" => 40)), g_l('modules_customer', '[name]'), 100, 50, 25, 0, 0, 50) .
 					$sort_table->getHtml() .
 					we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_sort','" . $k . "')");
 
-			$_parts[] = array('html' => $_htmlCode, 'headline' => $k);
+			$parts[] = array('html' => $htmlCode, 'headline' => $k);
 
 			$counter++;
 		}
@@ -138,12 +138,12 @@ abstract class we_customer_add{
 		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_sort')");
 
-		$_buttons = we_html_button::position_yes_no_cancel($save, null, $cancel);
+		$buttons = we_html_button::position_yes_no_cancel($save, null, $cancel);
 
 		$add_button = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort')") . we_html_element::htmlDiv(array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[add_sort_group]'));
-		$_parts[] = array('html' => $add_button);
+		$parts[] = array('html' => $add_button);
 
-		$sort_code = we_html_multiIconBox::getHTML("", $_parts, 30, $_buttons) .
+		$sort_code = we_html_multiIconBox::getHTML("", $parts, 30, $buttons) .
 				we_html_element::htmlComment("hiddens start") .
 				we_html_element::htmlHiddens(array(
 					"pnt" => "sort_admin",

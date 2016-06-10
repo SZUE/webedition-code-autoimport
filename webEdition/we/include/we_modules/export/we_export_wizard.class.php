@@ -356,11 +356,11 @@ function we_cmd(){
 		if(!isset($this->exportVars["extype"]) || (isset($this->exportVars["extype"]) && $this->exportVars["extype"] != "csv")){
 			$doc_type = $this->getHTMLDocType();
 			$showdocs = true;
-			$_tmp = array("headline" => "", "html" => $doc_type, 'space' => we_html_multiIconBox::SPACE_SMALL);
+			$tmp = array("headline" => "", "html" => $doc_type, 'space' => we_html_multiIconBox::SPACE_SMALL);
 			if(defined('OBJECT_FILES_TABLE')){
-				$_tmp["noline"] = 1;
+				$tmp["noline"] = 1;
 			}
-			$parts[] = $_tmp;
+			$parts[] = $tmp;
 		}
 
 		if(!$showdocs){
@@ -644,13 +644,13 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 
 				$fileformattable = new we_html_table(array(), 4, 1);
 
-				$_file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "weSelect", "style" => "width: 254px"));
-				$_file_encoding->addOption("windows", g_l('export', '[windows]'));
-				$_file_encoding->addOption("unix", g_l('export', '[unix]'));
-				$_file_encoding->addOption("mac", g_l('export', '[mac]'));
-				$_file_encoding->selectOption($csv_lineend);
+				$file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "weSelect", "style" => "width: 254px"));
+				$file_encoding->addOption("windows", g_l('export', '[windows]'));
+				$file_encoding->addOption("unix", g_l('export', '[unix]'));
+				$file_encoding->addOption("mac", g_l('export', '[mac]'));
+				$file_encoding->selectOption($csv_lineend);
 
-				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('export', '[csv_lineend]') . "<br/>" . $_file_encoding->getHtml());
+				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('export', '[csv_lineend]') . "<br/>" . $file_encoding->getHtml());
 				$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array(";" => g_l('export', '[semicolon]'), "," => g_l('export', '[comma]'), ":" => g_l('export', '[colon]'), "\\t" => g_l('export', '[tab]'), " " => g_l('export', '[space]')), g_l('export', '[csv_delimiter]')));
 				$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array("\"" => g_l('export', '[double_quote]'), "'" => g_l('export', '[single_quote]')), g_l('export', '[csv_enclose]')));
 
@@ -703,22 +703,22 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 
 	private function getHTMLStep50(){
 		if(we_base_request::_(we_base_request::BOOL, "exportfile")){
-			$_filename = basename(urldecode(we_base_request::_(we_base_request::RAW, "exportfile")));
+			$filename = basename(urldecode(we_base_request::_(we_base_request::RAW, "exportfile")));
 
-			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
-				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
+			if(file_exists(TEMP_PATH . $filename) // Does file exist?
+				&& !preg_match('%p?html?%i', $filename) && stripos($filename, "inc") === false && !preg_match('%php3?%i', $filename)){ // Security check
 				session_write_close();
-				$_size = filesize(TEMP_PATH . $_filename);
+				$size = filesize(TEMP_PATH . $filename);
 
 				header("Pragma: public");
 				header("Expires: 0");
 				header("Cache-control: private, max-age=0, must-revalidate");
 				header("Content-Type: application/octet-stream");
-				header('Content-Disposition: attachment; filename="' . trim(htmlentities($_filename)) . '"');
-				header("Content-Description: " . trim(htmlentities($_filename)));
-				header("Content-Length: " . $_size);
+				header('Content-Disposition: attachment; filename="' . trim(htmlentities($filename)) . '"');
+				header("Content-Description: " . trim(htmlentities($filename)));
+				header("Content-Length: " . $size);
 
-				readfile(TEMP_PATH . $_filename);
+				readfile(TEMP_PATH . $filename);
 
 				exit;
 			} else {
@@ -1011,7 +1011,7 @@ if (top.footer.setProgress){
 
 				$percent = min(100, max(0, (int) ((($all - $exports + 2) / $all) * 100)));
 
-				$_progress_update = we_html_element::jsElement('
+				$progress_update = we_html_element::jsElement('
 							if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
 						');
 
@@ -1028,7 +1028,7 @@ if (top.footer.setProgress){
 						"all" => $all,
 						"cmd" => "do_export"));
 				if(($remaining_docs) || ($remaining_objs)){
-					return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $_progress_update
+					return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens) . $progress_update
 							)
 					);
 				}

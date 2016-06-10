@@ -51,28 +51,28 @@ class rpcChangeDocTypeCmd extends we_rpc_cmd{
 
 				$categories = strtr($categories, array("\r" => "", "\n" => ""));
 				if($ids_arr){
-					$_docTypeLayerDisplay = 'block';
-					$_noDocTypeLayerDisplay = 'none';
+					$docTypeLayerDisplay = 'block';
+					$noDocTypeLayerDisplay = 'none';
 				} else {
-					$_docTypeLayerDisplay = 'none';
-					$_noDocTypeLayerDisplay = 'block';
+					$docTypeLayerDisplay = 'none';
+					$noDocTypeLayerDisplay = 'block';
 				}
-				$_templateName = '';
+				$templateName = '';
 				if(!empty($values['TemplateID'])){
-					$_templateName = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($values['TemplateID']));
+					$templateName = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($values['TemplateID']));
 				}
 				$resp->setData('elements', array(
 					"self.document.we_form.elements['v[store_to_id]']" => array("value" => $values["ParentID"] | 0),
 					"self.document.we_form.elements['v[store_to_path]']" => array("value" => $values["ParentPath"] | "/"),
 					"self.document.we_form.elements['v[we_TemplateID]']" => array("value" => $values["TemplateID"] | 0),
-					"self.document.we_form.elements['v[we_TemplateName]']" => array("value" => $_templateName | ""),
+					"self.document.we_form.elements['v[we_TemplateName]']" => array("value" => $templateName | ""),
 					"self.document.we_form.elements['v[we_Extension]']" => array("value" => $values["Extension"] | ""),
 					"self.document.we_form.elements['v[is_dynamic]']" => array("value" => $values["IsDynamic"] | 0),
 					"self.document.we_form.elements['chbxIsDynamic']" => array("checked" => $values["IsDynamic"] | 0),
 					"self.document.we_form.elements['v[docCategories]']" => array("value" => $values["Category"] | ""),
 					"self.document.we_form.elements.noDocTypeTemplateId" => array("value" => 0),
-					"document.getElementById('docTypeLayer')" => array("innerHTML" => addslashes($templateElement), "style.display" => $_docTypeLayerDisplay),
-					"document.getElementById('noDocTypeLayer')" => array("style.display" => $_noDocTypeLayerDisplay),
+					"document.getElementById('docTypeLayer')" => array("innerHTML" => addslashes($templateElement), "style.display" => $docTypeLayerDisplay),
+					"document.getElementById('noDocTypeLayer')" => array("style.display" => $noDocTypeLayerDisplay),
 					"document.getElementById('docCatTable')" => array("innerHTML" => addslashes($categories)
 					)
 					)

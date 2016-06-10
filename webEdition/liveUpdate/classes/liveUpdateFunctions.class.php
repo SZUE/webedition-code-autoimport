@@ -132,13 +132,13 @@ class liveUpdateFunctions{
 			$dh = opendir($baseDir);
 			while(($entry = readdir($dh))){
 				if($entry != "" && $entry != "." && $entry != ".."){
-					$_entry = $baseDir . "/" . $entry;
-					if(!is_dir($_entry)){
-						$allFiles[] = $_entry;
+					$entry = $baseDir . "/" . $entry;
+					if(!is_dir($entry)){
+						$allFiles[] = $entry;
 					}
 
-					if(is_dir($_entry)){
-						$this->getFilesOfDir($allFiles, $_entry);
+					if(is_dir($entry)){
+						$this->getFilesOfDir($allFiles, $entry);
 					}
 				}
 			}
@@ -164,11 +164,11 @@ class liveUpdateFunctions{
 		if($dh){
 			while(($entry = readdir($dh))){
 				if($entry != '' && $entry != "." && $entry != '..'){
-					$_entry = $dir . '/' . $entry;
-					if(is_dir($_entry)){
-						$this->deleteDir($_entry);
+					$entry = $dir . '/' . $entry;
+					if(is_dir($entry)){
+						$this->deleteDir($entry);
 					} else {
-						$this->deleteFile($_entry);
+						$this->deleteFile($entry);
 					}
 				}
 			}
@@ -751,19 +751,19 @@ class liveUpdateFunctions{
 						// execute all queries
 						$success = true;
 						$duplicate = false;
-						foreach($alterQueries as $_query){
-							if(!trim($_query)){
+						foreach($alterQueries as $query){
+							if(!trim($query)){
 								continue;
 							}
-							if($db->query(trim($_query))){
-								$this->QueryLog['success'][] = $_query;
+							if($db->query(trim($query))){
+								$this->QueryLog['success'][] = $query;
 							} else {
 								//unknown why mysql don't show correct error
 								if($db->Errno == 1062 || $db->Errno == 0){
 									$duplicate = true;
 									$this->QueryLog['tableChanged'][] = $tableName;
 								} else {
-									$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $_query --";
+									$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
 								}
 								$success = false;
 							}
@@ -774,9 +774,9 @@ class liveUpdateFunctions{
 							if($db->query('RENAME TABLE ' . $db->escape($tableName) . ' TO ' . $db->escape($backupName))){
 								$db->query($orgTable);
 								$db->lock(array($tableName => 'write', $backupName => 'read'));
-								foreach($alterQueries as $_query){
-									if(trim($query) && !$db->query(trim($_query))){
-										$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $_query --";
+								foreach($alterQueries as $query){
+									if(trim($query) && !$db->query(trim($query))){
+										$this->QueryLog['error'][] = $db->Errno . ' ' . urlencode($db->Error) . "\n-- $query --";
 									}
 								}
 								$db->query('INSERT IGNORE INTO ' . $db->escape($tableName) . ' SELECT * FROM ' . $db->escape($backupName));
@@ -835,20 +835,20 @@ class liveUpdateFunctions{
 		clearstatcache();
 
 		//	Get all installed Languages
-		$_installedLanguages = array();
+		$installedLanguages = array();
 		//	Look which languages are installed
-		$_language_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language');
+		$language_directory = dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language');
 
-		while(false !== ($entry = $_language_directory->read())){
+		while(false !== ($entry = $language_directory->read())){
 			if($entry != '.' && $entry != '..'){
 				if(is_dir($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_language/' . $entry)){
-					$_installedLanguages[] = $entry;
+					$installedLanguages[] = $entry;
 				}
 			}
 		}
-		$_language_directory->close();
+		$language_directory->close();
 
-		return $_installedLanguages;
+		return $installedLanguages;
 	}
 
 	function removeObsoleteFiles($path){

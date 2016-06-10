@@ -238,7 +238,7 @@ if($size && $cur){
 
 $data = getInfoTable($cur);
 
-$_parts = array(
+$parts = array(
 	array(
 		'html' => ($size && $data ? $data : g_l('global', '[no_entries]')),
 		'space' => we_html_multiIconBox::SPACE_SMALL,
@@ -256,7 +256,7 @@ echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'), '', '',
 		<?php
 		echo we_html_multiIconBox::getJS() .
 		we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
-		we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', $_parts, 30, $buttons));
+		we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', $parts, 30, $buttons));
 		?>
 	</div>
 </body>

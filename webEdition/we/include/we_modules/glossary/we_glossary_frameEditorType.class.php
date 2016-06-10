@@ -33,7 +33,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 	}
 
 	function Body(we_glossary_frames $weGlossaryFrames){
-		$_js = '';
+		$js = '';
 
 		$Temp = explode("_", we_base_request::_(we_base_request::STRING, 'cmdid'));
 		$Language = $Temp[0] . "_" . $Temp[1];
@@ -44,8 +44,8 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 			switch(we_base_request::_(we_base_request::STRING, 'do')){
 				case 'delete':
 					if($GLOBALS['DB_WE']->query('DELETE FROM ' . GLOSSARY_TABLE . ' WHERE ID IN (' . implode(',', $id) . ')')){
-						foreach($id as $_id){
-							$_js .= 'top.content.treeData.deleteEntry(' . $_id . ');';
+						foreach($id as $id){
+							$js .= 'top.content.treeData.deleteEntry(' . $id . ');';
 						}
 					}
 					$Cache->write();
@@ -92,7 +92,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		// ---> Search End
 
-		$js = we_html_element::jsElement($_js) . we_html_element::jsScript(JS_DIR . 'we_modules/glossary/we_glossary_frameEditorType.js', "loadHeaderFooter('" . we_base_request::_(we_base_request::STRING, 'cmdid') . "');Rows=" . $Rows . ";");
+		$js = we_html_element::jsElement($js) . we_html_element::jsScript(JS_DIR . 'we_modules/glossary/we_glossary_frameEditorType.js', "loadHeaderFooter('" . we_base_request::_(we_base_request::STRING, 'cmdid') . "');Rows=" . $Rows . ";");
 
 		$content = self::getHTMLPreferences($Search, $Type, $Language) .
 			($Search->countItems() ?
@@ -263,7 +263,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$button = we_html_button::create_button(we_html_button::SEARCH, "javascript:SubmitForm();");
 		$newButton = we_html_button::create_button('new_entry', "javascript:we_cmd('new_glossary_" . $Type . "','" . $Language . "');", true, 100, 22, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));
 
-		$_rows = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
+		$rows = array(10 => 10, 25 => 25, 50 => 50, 100 => 100);
 
 		return we_html_element::htmlHiddens(array(
 				"we_transaction" => $GLOBALS['we_transaction'],
@@ -289,7 +289,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 	</tr>
 	<tr>
 		<td class="defaultfont lowContrast" style="padding-top:12px;">' . g_l('modules_glossary', '[view]') . '</td>
-		<td>' . we_html_tools::htmlSelect("Rows", $_rows, 1, $Search->Rows, "", array('onchange' => "SubmitForm();")) . '</td>
+		<td>' . we_html_tools::htmlSelect("Rows", $rows, 1, $Search->Rows, "", array('onchange' => "SubmitForm();")) . '</td>
 		<td>' . we_html_forms::checkboxWithHidden(we_base_request::_(we_base_request::BOOL, 'GreenOnly'), "GreenOnly", g_l('modules_glossary', '[show_only_visible_items]'), false, "defaultfont", "jump(0);") . '</td>
 		<td></td>
 		<td>' . $newButton . '</td>

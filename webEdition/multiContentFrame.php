@@ -25,13 +25,13 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-$_cmd_string = '';
+$cmd_string = '';
 
 if(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){
 	for($i = 1; $i < 4; $i++){
-		$_cmd_string .= ",'" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', $i) . "'";
+		$cmd_string .= ",'" . we_base_request::_(we_base_request::RAW, 'we_cmd', '', $i) . "'";
 	}
-	$_cmd_string .= ",'SEEM_edit_include'";
+	$cmd_string .= ",'SEEM_edit_include'";
 }
 
 echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
@@ -39,7 +39,7 @@ echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 	we_html_element::jsScript(JS_DIR . 'multiEditor/EditorFrameController.js')
 	);
 ?>
-<body onresize="if(WE().layout.multiTabs){WE().layout.multiTabs.setFrameSize()}" onload="startMultiEditor(<?php echo $_cmd_string; ?>);" style="overflow: hidden;">
+<body onresize="if(WE().layout.multiTabs){WE().layout.multiTabs.setFrameSize()}" onload="startMultiEditor(<?php echo $cmd_string; ?>);" style="overflow: hidden;">
 	<div id="multiEditorDocumentTabsFrameDiv">
 		<div id="weMultiTabs">
 			<div id="tabContainer" name="tabContainer"></div>

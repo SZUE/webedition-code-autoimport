@@ -54,13 +54,13 @@ if(!we_base_request::_(we_base_request::RAW, 'cmd')){
 }
 
 //FIXME: !this is not safe at all
-$_shell = new we_rpc_cmdShell($_REQUEST, $protocol);
+$shell = new we_rpc_cmdShell($_REQUEST, $protocol);
 
-if($_shell->getStatus() == we_rpc_cmd::STATUS_OK){
-	$_shell->executeCommand();
-	echo $_shell->getResponse();
+if($shell->getStatus() == we_rpc_cmd::STATUS_OK){
+	$shell->executeCommand();
+	echo $shell->getResponse();
 } else { // there was an error in initializing the command
-	dieWithError($_shell->getErrorOut(), $protocol);
+	dieWithError($shell->getErrorOut(), $protocol);
 }
 
-unset($_shell);
+unset($shell);

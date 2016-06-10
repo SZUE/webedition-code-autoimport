@@ -79,7 +79,7 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 		$heading = g_l('modules_messaging', '[reply_message]');
 	} else {
 		if(substr($mode, 0, 2) === 'u_'){
-			$_u = str_replace(substr($mode, 0, 2), '', $mode);
+			$u = str_replace(substr($mode, 0, 2), '', $mode);
 		}
 		$compose = new we_messaging_format('new');
 		$heading = g_l('modules_messaging', '[new_message]');
@@ -97,15 +97,15 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 
 		$tbl = '<table style="text-align:center;width:100%" cellpadding="6">
       <tr><td class="defaultfont lowContrast">' . g_l('modules_messaging', '[from]') . ':</td><td class="defaultfont">' . $compose->get_from() . '</td></tr>
-      <tr><td class="defaultfont lowContrast"><a href="javascript:selectRecipient()">' . g_l('modules_messaging', '[recipients]') . ':</a></td><td>' . we_html_tools::htmlTextInput('mn_recipients', 40, (!isset($_u) ? $compose->get_recipient_line() : $_u)) . '</td></tr>
+      <tr><td class="defaultfont lowContrast"><a href="javascript:selectRecipient()">' . g_l('modules_messaging', '[recipients]') . ':</a></td><td>' . we_html_tools::htmlTextInput('mn_recipients', 40, (!isset($u) ? $compose->get_recipient_line() : $u)) . '</td></tr>
       <tr><td class="defaultfont lowContrast">' . g_l('modules_messaging', '[subject]') . ':</td><td>' . we_html_tools::htmlTextInput('mn_subject', 40, $compose->get_subject()) . '</td></tr>
       <tr><td colspan="2"><textarea cols="68" rows="15" name="mn_body" style="width:605px">' . $compose->get_msg_text() . '</textarea></td></tr>
     </table>';
 
-		$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_send()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close()")
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_send()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close()")
 		);
 
-		echo we_html_tools::htmlDialogLayout($tbl, "<div style='padding:6px'>" . $heading . "</div>", $_buttons, "100%", 24, "", "hidden");
+		echo we_html_tools::htmlDialogLayout($tbl, "<div style='padding:6px'>" . $heading . "</div>", $buttons, "100%", 24, "", "hidden");
 		?>
 	</form>
 </body>

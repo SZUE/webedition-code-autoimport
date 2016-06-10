@@ -299,12 +299,12 @@ class we_object extends we_document{
 							$arrt[$nam]['meta'] = array();
 						}
 
-						$_val = $this->getElement($info['name'] . 'defaultvalue' . $f);
-						$_val = ($_val != $info['name'] . 'defaultvalue' . $f ? $_val : '');
+						$val = $this->getElement($info['name'] . 'defaultvalue' . $f);
+						$val = ($val != $info['name'] . 'defaultvalue' . $f ? $val : '');
 						if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
-							$arrt[$nam]['meta'][] = $_val;
+							$arrt[$nam]['meta'][] = $val;
 						} else {
-							$arrt[$nam]['meta'][$this->getElement($info['name'] . 'defaultkey' . $f)] = $_val;
+							$arrt[$nam]['meta'][$this->getElement($info['name'] . 'defaultkey' . $f)] = $val;
 						}
 					}
 				}
@@ -365,16 +365,16 @@ class we_object extends we_document{
 				}
 
 				for($f = 0; $f <= $this->getElement($cur . 'count', 'dat', 0); $f++){
-					$_val = $this->getElement($cur . 'defaultvalue' . $f);
+					$val = $this->getElement($cur . 'defaultvalue' . $f);
 					if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
 						$arrt[$nam]['meta'] = array();
 					}
 					if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
-						$arrt[$nam]['meta'][] = $_val;
+						$arrt[$nam]['meta'][] = $val;
 					} elseif(($key = $this->getElement($cur . 'defaultkey' . $f)) !== ''){ //Fix #9830
-						$arrt[$nam]['meta'][$key] = $_val;
+						$arrt[$nam]['meta'][$key] = $val;
 					} else {
-						$arrt[$nam]['meta'][''] = $_val;
+						$arrt[$nam]['meta'][''] = $val;
 					}
 				}
 
@@ -1387,7 +1387,7 @@ class we_object extends we_document{
 			"dhtmledit" => $this->getElement($name . "dhtmledit"),
 			"wysiwyg" => $this->getElement($name . "dhtmledit"),
 			"showmenus" => $this->getElement($name . "showmenus", "dat", "off"),
-			"commands" => $commands ? : COMMANDS_DEFAULT,
+			"commands" => preg_replace('/ *, */', ',', $commands ? : COMMANDS_DEFAULT),
 			"contextmenu" => $this->getElement($name . "contextmenu"),
 			"classes" => $this->getElement($name . "cssClasses"),
 			"fontnames" => $this->getElement($name . "fontnames"),
@@ -1772,24 +1772,24 @@ class we_object extends we_document{
 	function formWorkspaces(){
 //remove not existing workspaces - deal with templates as well
 		$arr = makeArrayFromCSV($this->Workspaces);
-		$_defaultArr = makeArrayFromCSV($this->DefaultWorkspaces);
-		$_tmplArr = makeArrayFromCSV($this->Templates);
-		$_newTmplArr = $_newDefaultArr = $newArr = array();
+		$defaultArr = makeArrayFromCSV($this->DefaultWorkspaces);
+		$tmplArr = makeArrayFromCSV($this->Templates);
+		$newTmplArr = $newDefaultArr = $newArr = array();
 
 //    check if workspace exists - correct templates if neccessary !!
 		for($i = 0; $i < count($arr); $i++){
 			if(we_base_file::isWeFile($arr[$i], FILE_TABLE, $this->DB_WE)){
 				$newArr[] = $arr[$i];
-				if(in_array($arr[$i], $_defaultArr)){
-					$_newDefaultArr[] = $arr[$i];
+				if(in_array($arr[$i], $defaultArr)){
+					$newDefaultArr[] = $arr[$i];
 				}
-				$_newTmplArr[] = (isset($_tmplArr[$i]) ? $_tmplArr[$i] : '');
+				$newTmplArr[] = (isset($tmplArr[$i]) ? $tmplArr[$i] : '');
 			}
 		}
 
 		$this->Workspaces = implode(',', $newArr);
-		$this->Templates = implode(',', $_newTmplArr);
-		$this->DefaultWorkspaces = implode(',', $_newDefaultArr);
+		$this->Templates = implode(',', $newTmplArr);
+		$this->DefaultWorkspaces = implode(',', $newDefaultArr);
 
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd('object_add_workspace',top.allIDs);");
 		$button = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");

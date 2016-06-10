@@ -62,19 +62,19 @@ class we_navigation_ruleFrames{
 
 		$allRules = we_navigation_ruleControl::getAllNavigationRules();
 
-		$_rules = array();
+		$rules = array();
 
-		foreach($allRules as $_navigationRule){
-			$_rules[$_navigationRule->ID] = $_navigationRule->NavigationName;
+		foreach($allRules as $navigationRule){
+			$rules[$navigationRule->ID] = $navigationRule->NavigationName;
 		}
-		asort($_rules);
+		asort($rules);
 
 		$parts = array(
 			array(
 				'headline' => g_l('navigation', '[rules][available_rules]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => weSuggest::getYuiFiles() . '<table class="default">
-	<tr><td>' . we_html_tools::htmlSelect('navigationRules', $_rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
+	<tr><td>' . we_html_tools::htmlSelect('navigationRules', $rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
 		<td style="vertical-align:top">' . we_html_button::create_button('new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>' . we_html_button::create_button('delete', 'javascript:we_cmd("delete_navigation_rule")') . '
 		</td>
 	</tr>

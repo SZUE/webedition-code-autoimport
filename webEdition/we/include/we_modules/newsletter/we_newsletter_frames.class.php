@@ -1136,14 +1136,14 @@ window.onload=extraInit;');
 			$table->setCol(2, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Reply", 37, $this->View->newsletter->Reply, "", "onKeyUp='top.content.hot=1;'") . "&nbsp;&nbsp;" . $chk . "&nbsp;" . we_html_element::htmlLabel(array("class" => "defaultfont", "onclick" => "top.content.hot=1;if(document.we_form.reply_same.checked){document.we_form.reply_same.checked=false;}else{document.we_form.Reply.value=document.we_form.Sender.value;document.we_form.reply_same.checked=true;}"), g_l('modules_newsletter', '[reply_same]')), g_l('modules_newsletter', '[reply]')));
 			$table->setCol(3, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Test", 37, $this->View->newsletter->Test, "", "onKeyUp='top.content.hot=1;'"), g_l('modules_newsletter', '[test_email]')));
 
-			$_embedImagesChk = ($this->View->newsletter->isEmbedImages ?
+			$embedImagesChk = ($this->View->newsletter->isEmbedImages ?
 					we_html_element::htmlInput(array("type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onclick" => "top.content.hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}", "checked" => null), g_l('modules_newsletter', '[isEmbedImages]')) :
 					we_html_element::htmlInput(array("type" => "checkbox", "value" => 1, "name" => "isEmbedImagesChk", "onclick" => "top.content.hot=1;if(document.we_form.isEmbedImagesChk.checked){document.we_form.isEmbedImages.value=1;}else{document.we_form.isEmbedImages.value=0;}"), g_l('modules_newsletter', '[isEmbedImages]'))
 				);
-			$_embedImagesHid = we_html_element::htmlHidden("isEmbedImages", $this->View->newsletter->isEmbedImages);
-			$_embedImagesLab = we_html_element::htmlLabel(array("class" => "defaultfont", "onclick" => "top.content.hot=1;if(document.we_form.isEmbedImagesChk.checked){ document.we_form.isEmbedImagesChk.checked=false; document.we_form.isEmbedImages.value=0; }else{document.we_form.isEmbedImagesChk.checked=true;document.we_form.isEmbedImages.value=1;}"), g_l('modules_newsletter', '[isEmbedImages]'));
+			$embedImagesHid = we_html_element::htmlHidden("isEmbedImages", $this->View->newsletter->isEmbedImages);
+			$embedImagesLab = we_html_element::htmlLabel(array("class" => "defaultfont", "onclick" => "top.content.hot=1;if(document.we_form.isEmbedImagesChk.checked){ document.we_form.isEmbedImagesChk.checked=false; document.we_form.isEmbedImages.value=0; }else{document.we_form.isEmbedImagesChk.checked=true;document.we_form.isEmbedImages.value=1;}"), g_l('modules_newsletter', '[isEmbedImages]'));
 
-			$table->setCol(4, 0, array(), we_html_tools::htmlFormElementTable($_embedImagesHid . $_embedImagesChk . "&nbsp;" . $_embedImagesLab, ""));
+			$table->setCol(4, 0, array(), we_html_tools::htmlFormElementTable($embedImagesHid . $embedImagesChk . "&nbsp;" . $embedImagesLab, ""));
 
 			$parts[] = array("headline" => g_l('modules_newsletter', '[newsletter][text]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2);
 			$parts[] = array("headline" => g_l('modules_newsletter', '[charset]'), "html" => $this->getHTMLCharsetTable(), 'space' => we_html_multiIconBox::SPACE_MED2);
@@ -1436,8 +1436,8 @@ self.focus();
 					$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, "rb");
 					if($fh){
 						while(($dat = fgetcsv($fh, 1000, $delimiter))){
-							$_alldat = implode("", $dat);
-							if(str_replace(" ", "", $_alldat) === ''){
+							$alldat = implode("", $dat);
+							if(str_replace(" ", "", $alldat) === ''){
 								continue;
 							}
 							$row[] = $dat[$col];
@@ -1806,19 +1806,19 @@ self.focus();
 				$end;
 		} else {
 			if(!$csv_file && empty($csv_file) && strlen($csv_file) < 4){
-				$_nlMessage = g_l('modules_newsletter', '[no_file_selected]');
+				$nlMessage = g_l('modules_newsletter', '[no_file_selected]');
 				$selectStatus2 = '';
 			} else {
 				if(we_base_request::_(we_base_request::INT, 'weEmailStatus') == 1){
-					$_nlMessage = g_l('modules_newsletter', '[file_all_ok]');
+					$nlMessage = g_l('modules_newsletter', '[file_all_ok]');
 					$selectStatus2 = "<br/>" . we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array("onchange" => 'listFile();'), "value", 150);
 				} else {
-					$_nlMessage = g_l('modules_newsletter', '[file_all_ok]');
+					$nlMessage = g_l('modules_newsletter', '[file_all_ok]');
 					$selectStatus2 = '';
 				}
 			}
 
-			$out = we_html_element::htmlDiv(array("class" => "middlefont lowContrast", 'style' => "text-align:center;padding-bottom:2em;"), "--&nbsp;" . $_nlMessage . "&nbsp;--" . $selectStatus2) .
+			$out = we_html_element::htmlDiv(array("class" => "middlefont lowContrast", 'style' => "text-align:center;padding-bottom:2em;"), "--&nbsp;" . $nlMessage . "&nbsp;--" . $selectStatus2) .
 				we_html_button::create_button(we_html_button::PLUS, "javascript:editEmailFile(" . count($emails) . ",'','','','','','')");
 		}
 
@@ -1911,18 +1911,18 @@ function clearLog(){
 		$ret = $this->View->cacheNewsletter();
 
 
-		$_offset = ($this->View->newsletter->Offset) ? ($this->View->newsletter->Offset + 1) : 0;
-		$_step = $this->View->newsletter->Step;
+		$offset = ($this->View->newsletter->Offset) ? ($this->View->newsletter->Offset + 1) : 0;
+		$step = $this->View->newsletter->Step;
 
-		if($this->View->settings['send_step'] <= $_offset){
-			$_step++;
-			$_offset = 0;
+		if($this->View->settings['send_step'] <= $offset){
+			$step++;
+			$offset = 0;
 		}
 
 
 		$head = we_html_element::jsElement('
 function yes(){
-	doSend(' . $_offset . ',' . $_step . ');
+	doSend(' . $offset . ',' . $step . ');
 }
 
 function no(){
@@ -1955,14 +1955,14 @@ self.focus();
 		$pb->setStudLen(400);
 		$pb->addText(g_l('modules_newsletter', '[sending]'), 0, "title");
 
-		$_footer = '<table style="width:580px;" class="default"><tr><td style="text-align:left">' .
+		$footer = '<table style="width:580px;" class="default"><tr><td style="text-align:left">' .
 			$pb->getHTML() . '</td><td style="text-align:right">' .
 			we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();") .
 			'</td></tr></table>';
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $pb->getJSCode() .
-						we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array("name" => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:280px;")), g_l('modules_newsletter', '[details]'), $_footer)
+						we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array("name" => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:280px;")), g_l('modules_newsletter', '[details]'), $footer)
 					) .
 					we_html_element::jsElement('
 									document.we_form.details.value="' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]')) . '";
@@ -2055,11 +2055,11 @@ self.focus();');
 					break;
 				}
 				if(file_exists(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc)){
-					$_buffer = we_unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc));
-					if(is_array($_buffer) && isset($_buffer['inlines'])){
-						foreach($_buffer['inlines'] as $_fn){
-							if(file_exists($_fn)){
-								we_base_file::delete($_fn);
+					$buffer = we_unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $blockcache . "_h_" . $cc));
+					if(is_array($buffer) && isset($buffer['inlines'])){
+						foreach($buffer['inlines'] as $fn){
+							if(file_exists($fn)){
+								we_base_file::delete($fn);
 							}
 						}
 					}
@@ -2226,7 +2226,7 @@ self.focus();');
 			// damd: Newsletter Platzhalter ersetzten
 			$this->replacePlaceholder($content, $content_plain, $emails[$j]);
 
-			//$_clean = $this->View->getCleanMail($this->View->newsletter->Reply);
+			//$clean = $this->View->getCleanMail($this->View->newsletter->Reply);
 
 			$not_black = !$this->View->isBlack($email); //Bug #5791 Prüfung muss vor der aufbereitung der Adresse erfolgen
 			if($lastname && $firstname || $title && $lastname){

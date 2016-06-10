@@ -71,10 +71,10 @@ class we_listview_object extends we_listview_objectBase{
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
-		$_obxTable = OBJECT_X_TABLE . $this->classID;
+		$obxTable = OBJECT_X_TABLE . $this->classID;
 
 		$where_lang = ($this->languages ?
-				' AND ' . $_obxTable . '.OF_Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
+				' AND ' . $obxTable . '.OF_Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
 				'');
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
@@ -111,7 +111,7 @@ class we_listview_object extends we_listview_objectBase{
 		$pid_tail = (isset($GLOBALS['we_doc']) ? we_objectFile::makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '1');
 
 		$cat_tail = ($this->cats || $this->categoryids ?
-				we_category::getCatSQLTail($this->cats, $_obxTable, $this->catOr, $this->DB_WE, 'OF_Category', $this->categoryids) : '');
+				we_category::getCatSQLTail($this->cats, $obxTable, $this->catOr, $this->DB_WE, 'OF_Category', $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
 				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID, $id) :
@@ -120,14 +120,14 @@ class we_listview_object extends we_listview_objectBase{
 		$webUserID_tail = '';
 		if($this->customers && $this->customers !== "*"){
 
-			$_wsql = ' ' . $_obxTable . '.OF_WebUserID IN(' . $this->customers . ') ';
+			$wsql = ' ' . $obxTable . '.OF_WebUserID IN(' . $this->customers . ') ';
 			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $this->customers . ')');
 			$encrypted = we_customer_customer::getEncryptedFields();
 			while($this->DB_WE->next_record()){
 				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = array_merge($this->DB_WE->getRecord(), $encrypted);
 			}
 
-			$webUserID_tail = ' AND (' . $_wsql . ') ';
+			$webUserID_tail = ' AND (' . $wsql . ') ';
 		}
 
 		if($sqlParts["tables"] || $we_predefinedSQL != ''){
@@ -137,21 +137,21 @@ class we_listview_object extends we_listview_objectBase{
 				$this->anz_all = $this->DB_WE->num_rows();
 				$q = $we_predefinedSQL . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			} else {
-				$_idTail = $this->getIdQuery($_obxTable . '.OF_ID');
+				$idTail = $this->getIdQuery($obxTable . '.OF_ID');
 
 				if($this->workspaceID != ''){
 					$workspaces = makeArrayFromCSV($this->workspaceID);
 					$cond = array();
 					foreach($workspaces as $wid){
 						$workspace = id_to_path($wid, OBJECT_FILES_TABLE, $this->DB_WE);
-						$cond[] = $_obxTable . '.OF_Path LIKE "' . $workspace . '/%"';
-						$cond[] = $_obxTable . '.OF_Path="' . $workspace . '"';
+						$cond[] = $obxTable . '.OF_Path LIKE "' . $workspace . '/%"';
+						$cond[] = $obxTable . '.OF_Path="' . $workspace . '"';
 					}
 					$ws_tail = empty($cond) ? '' : ' AND (' . implode(' OR ', $cond) . ') ';
 				} else {
 					$ws_tail = '';
 				}
-				$this->DB_WE->query('SELECT ' . $_obxTable . '.OF_ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts['publ_cond'] ? (' AND ' . $sqlParts['publ_cond']) : '') . ' ' . ($sqlParts['cond'] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy']);
+				$this->DB_WE->query('SELECT ' . $obxTable . '.OF_ID AS ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts['publ_cond'] ? (' AND ' . $sqlParts['publ_cond']) : '') . ' ' . ($sqlParts['cond'] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $idTail . $sqlParts['groupBy']);
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar){
 					while($this->DB_WE->next_record()){
@@ -159,28 +159,28 @@ class we_listview_object extends we_listview_objectBase{
 						$this->calendar_struct['storage'][$this->DB_WE->f('ID')] = (int) $this->DB_WE->f('Calendar');
 					}
 				}
-				$q = 'SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $_obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $_obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $_idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
+				$q = 'SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' ' . $obxTable . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . ' AND ' . $obxTable . '.OF_ID!=0 ' . $where_lang . ($join ? " AND ($join) " : "") . $cat_tail . " " . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			}
 			$this->DB_WE->query($q);
 			$this->anz = $this->DB_WE->num_rows();
 
 			if($this->customers === '*'){
-				$_idListArray = array();
+				$idListArray = array();
 				while($this->DB_WE->next_record()){
 					if(intval($this->DB_WE->f("OF_WebUserID")) > 0){
-						$_idListArray[] = $this->DB_WE->f("OF_WebUserID");
+						$idListArray[] = $this->DB_WE->f("OF_WebUserID");
 					}
 				}
-				if($_idListArray){
-					$_idlist = implode(',', array_unique($_idListArray));
+				if($idListArray){
+					$idlist = implode(',', array_unique($idListArray));
 					$db = new DB_WE();
-					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $_idlist . ')');
+					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $idlist . ')');
 					$encrypted = we_customer_customer::getEncryptedFields();
 					while($db->next_record()){
 						$this->customerArray['cid_' . $db->f('ID')] = array_merge($db->Record, $encrypted);
 					}
 				}
-				unset($_idListArray);
+				unset($idListArray);
 
 				$this->DB_WE->seek(0);
 			}

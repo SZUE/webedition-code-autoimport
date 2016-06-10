@@ -30,7 +30,7 @@ $table = isset($table) ? $table : FILE_TABLE;
 	<div id="treeControl">
 		<span id="treeName" class="middlefont"></span>
 		<span id="reloadTree" onclick="we_cmd('loadVTab', top.treeData.table, 0);"><i class="fa fa-refresh"></i></span>
-		<span id="toggleTree" onclick="toggleTree();" title="<?php echo g_l('global', '[tree][minimize]'); ?>"><i id="arrowImg" class="fa fa-lg fa-caret-<?php echo ($_treewidth <= 100) ? "right" : "left"; ?>" ></i></span>
+		<span id="toggleTree" onclick="toggleTree();" title="<?php echo g_l('global', '[tree][minimize]'); ?>"><i id="arrowImg" class="fa fa-lg fa-caret-<?php echo ($treewidth <= 100) ? "right" : "left"; ?>" ></i></span>
 	</div>
 	<div id="treeContent">
 		<div id="bm_treeheaderDiv">

@@ -234,11 +234,11 @@ class we_backup_tableItem extends we_base_model{
 		if($this->table == LINK_TABLE && empty($this->nHash)){
 			$this->nHash = md5($this->Name);
 		}
-		$_id_val = '';
-		foreach($this->keys as $_key){
-			$_id_val .= ':' . $this->$_key;
+		$id_val = '';
+		foreach($this->keys as $key){
+			$id_val .= ':' . $this->$key;
 		}
-		return $prefix . $this->table . $_id_val;
+		return $prefix . $this->table . $id_val;
 	}
 
 }

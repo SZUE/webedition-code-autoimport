@@ -722,7 +722,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 
 		//	Part - file-information
-		$_parts = array(
+		$parts = array(
 			array(
 				'headline' => g_l('weEditorInfo', '[content_type]'),
 				'html' => g_l('weEditorInfo', '[' . $this->documentDef->document->ContentType . ']'),
@@ -733,7 +733,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		if($this->documentDef->document->ContentType != we_base_ContentTypes::FOLDER && $this->documentDef->workflow->Type != we_workflow_workflow::OBJECT){
 			$GLOBALS['we_doc'] = $this->documentDef->document;
 			$fs = $this->documentDef->document->getFilesize($this->documentDef->document->Path);
-			$_parts[] = array(
+			$parts[] = array(
 				'headline' => g_l('weEditorInfo', '[file_size]'),
 				'html' => we_base_file::getHumanFileSize($fs) . '&nbsp;KB&nbsp;(' . we_base_file::getHumanFileSize($fs, we_base_file::SZ_BYTE) . ')',
 				'space' => we_html_multiIconBox::SPACE_MED
@@ -741,7 +741,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 
 		//	Part - publish-information
-		$_parts[] = array(
+		$parts[] = array(
 			'headline' => g_l('weEditorInfo', '[creation_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->CreationDate),
 			'space' => we_html_multiIconBox::SPACE_MED,
@@ -751,7 +751,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		if($this->documentDef->document->CreatorID){
 			$this->db->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $this->documentDef->document->CreatorID);
 			if($this->db->next_record()){
-				$_parts[] = array(
+				$parts[] = array(
 					'headline' => g_l('modules_users', '[created_by]'),
 					'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
 					'space' => we_html_multiIconBox::SPACE_MED,
@@ -760,7 +760,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			}
 		}
 
-		$_parts[] = array(
+		$parts[] = array(
 			'headline' => g_l('weEditorInfo', '[changed_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->ModDate),
 			'space' => we_html_multiIconBox::SPACE_MED,
@@ -770,7 +770,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		if($this->documentDef->document->ModifierID){
 			$this->db->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $this->documentDef->document->ModifierID);
 			if($this->db->next_record()){
-				$_parts[] = array(
+				$parts[] = array(
 					'headline' => g_l('modules_users', '[changed_by]'),
 					'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
 					'space' => we_html_multiIconBox::SPACE_MED,
@@ -780,7 +780,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 
 		if($this->documentDef->document->ContentType == we_base_ContentTypes::HTML || $this->documentDef->document->ContentType == we_base_ContentTypes::WEDOCUMENT){
-			$_parts[] = array(
+			$parts[] = array(
 				'headline' => g_l('weEditorInfo', '[lastLive]'),
 				'html' => ($this->documentDef->document->Published ? date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->Published) : '-'),
 				'space' => we_html_multiIconBox::SPACE_MED
@@ -806,19 +806,19 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$showlink = true;
 			}
 
-			$_parts[] = array(
+			$parts[] = array(
 				'headline' => g_l('weEditorInfo', '[local_path]'),
 				'html' => '<a href="#" style="text-decoration:none;cursor:text" class="defaultfont" onMouseOver="showtip(this,event,\'' . $rp . '\')" onMouseOut="hidetip()"  onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . we_base_util::shortenPath($rp, 74) . '</a>',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			);
 
-			$_parts[] = array(
+			$parts[] = array(
 				'headline' => g_l('weEditorInfo', '[http_path]'),
 				'html' => ($showlink ? '<a href="' . $http . '" target="_blank" onMouseOver="showtip(this,event,\'' . $http . '\')" onMouseOut="hidetip()">' : '') . we_base_util::shortenPath($http, 74) . ($showlink ? '</a>' : ''),
 				'space' => we_html_multiIconBox::SPACE_MED
 			);
-			$_parts[] = array(
+			$parts[] = array(
 				'headline' => '',
 				'html' => '<a href="#" onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
 				'space' => we_html_multiIconBox::SPACE_MED
@@ -826,18 +826,18 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 
 		//	Logbook
-		$_parts[] = array(
+		$parts[] = array(
 			'headline' => '',
 			'html' => self::getDocumentStatus($this->documentDef->ID),
 		);
 
 		return we_html_element::jsScript(JS_DIR . 'tooltip.js') .
-			we_html_multiIconBox::getHTML('', $_parts, 30);
+			we_html_multiIconBox::getHTML('', $parts, 30);
 	}
 
 	function getObjectInfo(){
 		//	Dokument properties
-		$_parts = array(
+		$parts = array(
 			array(
 				'headline' => 'ID',
 				'html' => $this->documentDef->document->ID,
@@ -860,7 +860,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		$this->db->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $this->documentDef->document->CreatorID);
 		if($this->db->next_record()){
-			$_parts[] = array(
+			$parts[] = array(
 				'headline' => g_l('modules_users', '[created_by]'),
 				'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
 				'space' => we_html_multiIconBox::SPACE_MED2,
@@ -868,7 +868,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			);
 		}
 
-		$_parts[] = array(
+		$parts[] = array(
 			'headline' => g_l('weEditorInfo', '[changed_date]'),
 			'html' => date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->ModDate),
 			'space' => we_html_multiIconBox::SPACE_MED2,
@@ -877,7 +877,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		$this->db->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $this->documentDef->document->ModifierID);
 		if($this->db->next_record()){
-			$_parts[] = array(
+			$parts[] = array(
 				'headline' => g_l('modules_users', '[changed_by]'),
 				'html' => $this->db->f('First') . ' ' . $this->db->f('Second') . ' (' . $this->db->f('username') . ')',
 				'space' => we_html_multiIconBox::SPACE_MED2,
@@ -885,19 +885,19 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			);
 		}
 
-		$_parts[] = array(
+		$parts[] = array(
 			'headline' => g_l('weEditorInfo', '[lastLive]'),
 			'html' => ($this->documentDef->document->Published ? date(g_l('weEditorInfo', '[date_format]'), $this->documentDef->document->Published) : '-'),
 			'space' => we_html_multiIconBox::SPACE_MED2,
 		);
 
-		$_parts[] = array(
+		$parts[] = array(
 			'headline' => '',
 			'html' => '<a href="#" onclick="WE().layout.openToEdit(\'' . $this->documentDef->document->Table . '\',\'' . $this->documentDef->document->ID . '\',\'' . $this->documentDef->document->ContentType . '\')" >' . g_l('weEditorInfo', '[openDocument]') . '</a>',
 			'space' => we_html_multiIconBox::SPACE_MED2
 		);
 
-		$_parts[] = array(
+		$parts[] = array(
 			'headline' => '',
 			'html' => self::getDocumentStatus($this->documentDef->ID),
 		);
@@ -910,7 +910,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			'</head>
 		<body class="weEditorBody" onunload="doUnload()">
 				<form name="we_form">' . we_class::hiddenTrans() . '<table>' .
-			we_html_multiIconBox::getHTML('', $_parts, 30) .
+			we_html_multiIconBox::getHTML('', $parts, 30) .
 			'</form></body></html>';
 	}
 
@@ -1145,39 +1145,39 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	static function showFooterForNormalMode($we_doc, $showPubl){
-		$_col = 0;
+		$col = 0;
 
-		$_footerTable = new we_html_table(array('class' => 'default'), 1, 0);
+		$footerTable = new we_html_table(array('class' => 'default'), 1, 0);
 
-		$_publishbutton = '';
+		$publishbutton = '';
 		//	decline
-		$_footerTable->addCol(2);
-		$_footerTable->setColContent(0, $_col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
+		$footerTable->addCol(2);
+		$footerTable->setColContent(0, $col++, we_html_button::create_button(self::BUTTON_DECLINE, "javascript:decline_workflow();"));
 
 		if(we_workflow_utility::isWorkflowFinished($we_doc->ID, $we_doc->Table) || ((1 + we_workflow_utility::findLastActiveStep($we_doc->ID, $we_doc->Table)) == count(we_workflow_utility::getNumberOfSteps($we_doc->ID, $we_doc->Table)) && permissionhandler::hasPerm("PUBLISH"))){
-			$_publishbutton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:workflow_finish();");
+			$publishbutton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:workflow_finish();");
 		} else {
-			$_footerTable->addCol(2);
-			$_footerTable->setColContent(0, $_col++, we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"));
+			$footerTable->addCol(2);
+			$footerTable->setColContent(0, $col++, we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"));
 		}
 
 		if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
-			$_footerTable->addCol(2);
-			$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::SAVE, "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
+			$footerTable->addCol(2);
+			$footerTable->setColContent(0, $col++, we_html_button::create_button(we_html_button::SAVE, "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 		}
 
-		if($_publishbutton){
-			$_footerTable->addCol(2);
-			$_footerTable->setColContent(0, $_col++, $_publishbutton);
+		if($publishbutton){
+			$footerTable->addCol(2);
+			$footerTable->setColContent(0, $col++, $publishbutton);
 		} elseif(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
 
 			if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
-				$_footerTable->addCol(2);
-				$_footerTable->setColContent(0, $_col++, we_html_button::create_button(we_html_button::PUBLISH, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
+				$footerTable->addCol(2);
+				$footerTable->setColContent(0, $col++, we_html_button::create_button(we_html_button::PUBLISH, "javascript:_EditorFrame.setEditorPublishWhenSave(true);we_save_document();"));
 			}
 		}
 
-		return $_footerTable->getHtml();
+		return $footerTable->getHtml();
 	}
 
 	static function showFooterForSEEMMode($we_doc, $showPubl){

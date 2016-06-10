@@ -29,7 +29,7 @@ class we_export_tree extends we_tree_base{
 	}
 
 	function getJSLoadTree($clear, array $treeItems){
-		$js = $this->treeFrame . '.treeData.table=' .$this->treeFrame . '.table;';
+		$js = $this->treeFrame . '.treeData.table=' . $this->treeFrame . '.table;';
 
 		foreach($treeItems as $item){
 
@@ -120,13 +120,12 @@ var openFolders= {
 		return $out ? implode(' OR ', $out) : '';
 	}
 
-	private static function getItems($table, $ParentID, array &$treeItems, $of = array(), we_database_base $DB_WE = null){
+	private static function getItems($table, $ParentID, array &$treeItems, $of, we_database_base $DB_WE){
 		static $openFolders = -1;
 		if($openFolders == -1){
 			$openFolders = $of;
 		}
 
-		$DB_WE = $DB_WE? : new DB_WE();
 		$elem = 'ID,ParentID,Path,Text,IsFolder,ModDate,ContentType';
 
 		switch($table){
@@ -153,10 +152,7 @@ var openFolders= {
 		$entries = $DB_WE->getAll();
 
 		foreach($entries as $entry){
-			$ID = $entry["ID"];
-			$IsFolder = $entry["IsFolder"];
-			$published = $entry["Published"];
-
+			$ID = $entry['ID'];
 			$OpenCloseStatus = in_array($ID, $openFolders);
 
 			$treeItems[] = array(
@@ -166,15 +162,15 @@ var openFolders= {
 				'contenttype' => $entry['ContentType'],
 				'isclassfolder' => $entry['IsClassFolder'],
 				'table' => $table,
-				'checked' => (isset($selDocs) && in_array($ID, $selDocs)),
-				'typ' => $IsFolder ? 'group' : 'item',
+				'checked' => (!empty($selDocs) && in_array($ID, $selDocs)),
+				'typ' => $entry['IsFolder'] ? 'group' : 'item',
 				'open' => $OpenCloseStatus,
-				'published' => ($published && ($published < $entry['ModDate'])) ? -1 : $published,
+				'published' => ($entry['Published'] && ($entry['Published'] < $entry['ModDate'])) ? -1 : $entry['Published'],
 				'disabled' => in_array($entry['Path'], $GLOBALS['parentpaths']),
 				'tooltip' => $ID
 			);
 
-			if($IsFolder && $OpenCloseStatus){
+			if($entry['IsFolder'] && $OpenCloseStatus){
 				self::getItems($table, $ID, $treeItems, $of, $DB_WE);
 			}
 		}
@@ -234,7 +230,7 @@ var openFolders= {
 
 		$treeItems = array();
 
-		self::getItems($table, $parentFolder, $treeItems, $openFolders);
+		self::getItems($table, $parentFolder, $treeItems, $openFolders, new DB_WE());
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement('
 if(!' . $this->topFrame . '.treeData) {' .

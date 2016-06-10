@@ -30,8 +30,8 @@ if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 if(defined('WORKFLOW_TABLE')){
 	echo we_workflow_utility::forceOverdueDocuments();
 }
-$_tooltasks = we_tool_lookup::getExternTriggeredTasks();
-foreach($_tooltasks as $task){
+$tooltasks = we_tool_lookup::getExternTriggeredTasks();
+foreach($tooltasks as $task){
 	include($task);
 }
 ?>OK

@@ -35,15 +35,15 @@ abstract class we_tool_lookup{
 			return $_SESSION['weS'][self::REGISTRY_NAME]['metaIncDis'];
 		}
 
-		$_tools = $_toolsDirs = array();
+		$tools = $toolsDirs = array();
 
-		$_bd = WE_APPS_PATH;
-		$_d = opendir($_bd);
+		$bd = WE_APPS_PATH;
+		$d = opendir($bd);
 
-		while(($_entry = readdir($_d))){
-			$_toolsDirs[] = $_bd . '/' . $_entry;
+		while(($entry = readdir($d))){
+			$toolsDirs[] = $bd . '/' . $entry;
 		}
-		closedir($_d);
+		closedir($d);
 
 		// include autoload function
 		require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_autoload.inc.php');
@@ -51,10 +51,10 @@ abstract class we_tool_lookup{
 		$lang = isset($GLOBALS['WE_LANGUAGE']) ? $GLOBALS['WE_LANGUAGE'] : we_core_Local::getComputedUILang();
 
 
-		foreach($_toolsDirs as $_toolDir){
-			$_metaFile = $_toolDir . '/conf/meta.conf.php';
-			if(is_dir($_toolDir) && file_exists($_metaFile)){
-				include($_metaFile);
+		foreach($toolsDirs as $toolDir){
+			$metaFile = $toolDir . '/conf/meta.conf.php';
+			if(is_dir($toolDir) && file_exists($metaFile)){
+				include($metaFile);
 				if(isset($metaInfo)){
 					$langStr = '';
 					if(isset($metaInfo['name'])){
@@ -64,7 +64,7 @@ abstract class we_tool_lookup{
 					if(!$includeDisabled && !empty($metaInfo['appdisabled'])){
 
 					} else {
-						$_tools[] = $metaInfo;
+						$tools[] = $metaInfo;
 					}
 					unset($metaInfo);
 				}
@@ -75,13 +75,13 @@ abstract class we_tool_lookup{
 			$internToolDir = WE_INCLUDES_PATH . 'we_tools/';
 			$internTools = array('weSearch', 'navigation');
 
-			foreach($internTools as $_toolName){
-				$_metaFile = $internToolDir . $_toolName . '/conf/meta.conf.php';
-				if(file_exists($_metaFile)){
-					include($_metaFile);
+			foreach($internTools as $toolName){
+				$metaFile = $internToolDir . $toolName . '/conf/meta.conf.php';
+				if(file_exists($metaFile)){
+					include($metaFile);
 					if(isset($metaInfo)){
 						$metaInfo['text'] = $metaInfo['name'];
-						$_tools[] = $metaInfo;
+						$tools[] = $metaInfo;
 						unset($metaInfo);
 					}
 				}
@@ -89,22 +89,22 @@ abstract class we_tool_lookup{
 		}
 
 		if(!defined('NO_SESS') && !$includeDisabled){
-			$_SESSION['weS'][self::REGISTRY_NAME]['meta'] = $_tools;
+			$_SESSION['weS'][self::REGISTRY_NAME]['meta'] = $tools;
 		}
 		if(!defined('NO_SESS') && $includeDisabled){
-			$_SESSION['weS'][self::REGISTRY_NAME]['metaIncDis'] = $_tools;
+			$_SESSION['weS'][self::REGISTRY_NAME]['metaIncDis'] = $tools;
 		}
 
-		return $_tools;
+		return $tools;
 	}
 
 	static function getToolProperties($name){
 
-		$_tools = self::getAllTools(true, false, true);
+		$tools = self::getAllTools(true, false, true);
 
-		foreach($_tools as $_tool){
-			if($_tool['name'] == $name){
-				return $_tool;
+		foreach($tools as $tool){
+			if($tool['name'] == $name){
+				return $tool;
 			}
 		}
 		return array();
@@ -126,13 +126,13 @@ abstract class we_tool_lookup{
 				$_REQUEST['mod'] = 'navigation';
 				return 'we_modules/navigation/hook/we_phpCmdHook_' . $tmps[1] . '.inc.php';
 		}
-		$_tools = self::getAllTools(true, true);
-		foreach($_tools as $_tool){
-			if(stripos($cmd0, 'tool_' . $_tool['name'] . '_') === 0){
-				$_REQUEST['tool'] = $_tool['name'];
-				return ($_tool['name'] === 'weSearch' || $_tool['name'] === 'navigation' ?
+		$tools = self::getAllTools(true, true);
+		foreach($tools as $tool){
+			if(stripos($cmd0, 'tool_' . $tool['name'] . '_') === 0){
+				$_REQUEST['tool'] = $tool['name'];
+				return ($tool['name'] === 'weSearch' || $tool['name'] === 'navigation' ?
 								'we_tools/' : 'apps/' ) .
-						$_tool['name'] . '/hook/we_phpCmdHook_' . $_tool['name'] . '.inc.php';
+						$tool['name'] . '/hook/we_phpCmdHook_' . $tool['name'] . '.inc.php';
 			}
 		}
 
@@ -140,25 +140,25 @@ abstract class we_tool_lookup{
 	}
 
 	static function getJsCmdInclude(array &$includes){
-		$_tools = self::getAllTools(true, true);
+		$tools = self::getAllTools(true, true);
 		$cmd = '';
 		//ob_start();
-		foreach($_tools as $_tool){
-			$cmd.='	 case "tool_' . $_tool['name'] . '_edit":
+		foreach($tools as $tool){
+			$cmd.='	 case "tool_' . $tool['name'] . '_edit":
  			new (WE().util.jsWindow)(window,url,"tool_window",-1,-1,1048,760,true,true,true,true);
 		break;
 ';
 
-			switch($_tool['name']){
+			switch($tool['name']){
 				case 'weSearch':
 					$path = WE_INCLUDES_DIR . 'we_tools/';
 					break;
 				default:
 					$path = WEBEDITION_DIR . 'apps/';
 			}
-			$path.=$_tool['name'] . '/hook/we_jsCmdHook_' . $_tool['name'];
+			$path.=$tool['name'] . '/hook/we_jsCmdHook_' . $tool['name'];
 			if(file_exists($_SERVER['DOCUMENT_ROOT'] . $path . '.js')){
-				$includes['tool_' . $_tool['name']] = $path . '.js';
+				$includes['tool_' . $tool['name']] = $path . '.js';
 			}
 		}
 
@@ -179,18 +179,18 @@ abstract class we_tool_lookup{
 			return $_SESSION['weS'][self::REGISTRY_NAME]['defineinclude'];
 		}
 
-		$_inc = array();
-		$_tools = self::getAllTools();
-		foreach($_tools as $_tool){
-			if(file_exists(WE_APPS_PATH . $_tool['name'] . '/conf/define.conf.php')){
-				$_inc[] = WE_APPS_PATH . $_tool['name'] . '/conf/define.conf.php';
+		$inc = array();
+		$tools = self::getAllTools();
+		foreach($tools as $tool){
+			if(file_exists(WE_APPS_PATH . $tool['name'] . '/conf/define.conf.php')){
+				$inc[] = WE_APPS_PATH . $tool['name'] . '/conf/define.conf.php';
 			}
 		}
 		if(!defined('NO_SESS')){
-			$_SESSION['weS'][self::REGISTRY_NAME]['defineinclude'] = $_inc;
+			$_SESSION['weS'][self::REGISTRY_NAME]['defineinclude'] = $inc;
 		}
 
-		return $_inc;
+		return $inc;
 	}
 
 	function getExternTriggeredTasks(){
@@ -199,18 +199,18 @@ abstract class we_tool_lookup{
 			//return $_SESSION['weS'][self::REGISTRY_NAME]['ExternTriggeredTasks'];
 		}
 
-		$_inc = array();
-		$_tools = self::getAllTools();
-		foreach($_tools as $_tool){
-			if(file_exists(WE_APPS_PATH . $_tool['name'] . '/externtriggered/tasks.php') && we_app_Common::isActive($_tool['name'])){
-				$_inc[] = WE_APPS_PATH . $_tool['name'] . '/externtriggered/tasks.php';
+		$inc = array();
+		$tools = self::getAllTools();
+		foreach($tools as $tool){
+			if(file_exists(WE_APPS_PATH . $tool['name'] . '/externtriggered/tasks.php') && we_app_Common::isActive($tool['name'])){
+				$inc[] = WE_APPS_PATH . $tool['name'] . '/externtriggered/tasks.php';
 			}
 		}
 		if(!defined('NO_SESS')){
-			$_SESSION['weS'][self::REGISTRY_NAME]['ExternTriggeredTasks'] = $_inc;
+			$_SESSION['weS'][self::REGISTRY_NAME]['ExternTriggeredTasks'] = $inc;
 		}
 
-		return $_inc;
+		return $inc;
 	}
 
 	static function getTagDirs(){
@@ -219,18 +219,18 @@ abstract class we_tool_lookup{
 			return $_SESSION['weS'][self::REGISTRY_NAME]['tagdirs'];
 		}
 
-		$_inc = array();
-		$_tools = self::getAllTools();
-		foreach($_tools as $_tool){
-			if(file_exists(WE_APPS_PATH . $_tool['name'] . '/tags')){
-				$_inc[] = WE_APPS_PATH . $_tool['name'] . '/tags';
+		$inc = array();
+		$tools = self::getAllTools();
+		foreach($tools as $tool){
+			if(file_exists(WE_APPS_PATH . $tool['name'] . '/tags')){
+				$inc[] = WE_APPS_PATH . $tool['name'] . '/tags';
 			}
 		}
 		if(!defined('NO_SESS')){
-			$_SESSION['weS'][self::REGISTRY_NAME]['tagdirs'] = $_inc;
+			$_SESSION['weS'][self::REGISTRY_NAME]['tagdirs'] = $inc;
 		}
 
-		return $_inc;
+		return $inc;
 	}
 
 	static function isActiveTag($filepath){
@@ -238,13 +238,13 @@ abstract class we_tool_lookup{
 	}
 
 	static function isTool($name, $includeDisabled = false){
-		$_tools = self::getAllTools(false, false, $includeDisabled);
-		foreach($_tools as $_tool){
-			if($_tool['name'] == $name){
+		$tools = self::getAllTools(false, false, $includeDisabled);
+		foreach($tools as $tool){
+			if($tool['name'] == $name){
 				return true;
 			}
 		}
-		return in_array($name, $_tools);
+		return in_array($name, $tools);
 	}
 
 	static function getCmdInclude($namespace, $name, $cmd){
@@ -268,42 +268,42 @@ abstract class we_tool_lookup{
 	}
 
 	static function getAllToolLanguages($toolname, $subdir = '/lang', $includeDisabled = false){
-		$_founds = array();
-		$_tooldir = WE_APPS_PATH . $toolname . $subdir;
+		$founds = array();
+		$tooldir = WE_APPS_PATH . $toolname . $subdir;
 		$langs = getWELangs();
-		if(self::isTool($toolname, $includeDisabled) && is_dir($_tooldir)){
-			$_d = opendir($_tooldir);
-			while(($_entry = readdir($_d))){
-				if(is_dir($_tooldir . '/' . $_entry) && stristr($_entry, '.') === FALSE){
-					$_founds[$langs[$_entry]] = $_tooldir . '/' . $_entry . '/default.xml';
+		if(self::isTool($toolname, $includeDisabled) && is_dir($tooldir)){
+			$d = opendir($tooldir);
+			while(($entry = readdir($d))){
+				if(is_dir($tooldir . '/' . $entry) && stristr($entry, '.') === FALSE){
+					$founds[$langs[$entry]] = $tooldir . '/' . $entry . '/default.xml';
 				}
 			}
-			closedir($_d);
+			closedir($d);
 		}
-		return $_founds;
+		return $founds;
 	}
 
 	static function getFileRegister($toolname, $subdir, $filematch, $rem_before = '', $rem_after = '', $includeDisabled = false){
-		$_founds = array();
-		$_tooldir = WE_APPS_PATH . $toolname . $subdir;
-		if(self::isTool($toolname, $includeDisabled) && is_dir($_tooldir)){
-			$_d = opendir($_tooldir);
-			while(($_entry = readdir($_d))){
-				if(!is_dir($_tooldir . '/' . $_entry) && stripos($_entry, $filematch) !== false){
-					$_tagname = str_replace(array($rem_before, $rem_after), '', $_entry);
-					$_founds[$_tagname] = $_tooldir . '/' . $_entry;
+		$founds = array();
+		$tooldir = WE_APPS_PATH . $toolname . $subdir;
+		if(self::isTool($toolname, $includeDisabled) && is_dir($tooldir)){
+			$d = opendir($tooldir);
+			while(($entry = readdir($d))){
+				if(!is_dir($tooldir . '/' . $entry) && stripos($entry, $filematch) !== false){
+					$tagname = str_replace(array($rem_before, $rem_after), '', $entry);
+					$founds[$tagname] = $tooldir . '/' . $entry;
 				}
 			}
-			closedir($_d);
+			closedir($d);
 		}
-		return $_founds;
+		return $founds;
 	}
 
 	static function getToolTag($name, &$include, $includeDisabled = false){
-		$_tools = self::getAllTools(false, false, $includeDisabled);
-		foreach($_tools as $_tool){
-			if(file_exists(WE_APPS_PATH . $_tool['name'] . '/tags/we_tag_' . $name . '.inc.php')){
-				$include = WE_APPS_PATH . $_tool['name'] . '/tags/we_tag_' . $name . '.inc.php';
+		$tools = self::getAllTools(false, false, $includeDisabled);
+		foreach($tools as $tool){
+			if(file_exists(WE_APPS_PATH . $tool['name'] . '/tags/we_tag_' . $name . '.inc.php')){
+				$include = WE_APPS_PATH . $tool['name'] . '/tags/we_tag_' . $name . '.inc.php';
 				return true;
 			}
 		}
@@ -311,10 +311,10 @@ abstract class we_tool_lookup{
 	}
 
 	static function getToolListviewTag($name, &$include, $includeDisabled = false){
-		$_tools = self::getAllTools(false, false, $includeDisabled);
-		foreach($_tools as $_tool){
-			if(file_exists(WE_APPS_PATH . $_tool['name'] . '/tags/we_listviewtag_' . $name . '.inc.php')){
-				$include = WE_APPS_PATH . $_tool['name'] . '/tags/we_listviewtag_' . $name . '.inc.php';
+		$tools = self::getAllTools(false, false, $includeDisabled);
+		foreach($tools as $tool){
+			if(file_exists(WE_APPS_PATH . $tool['name'] . '/tags/we_listviewtag_' . $name . '.inc.php')){
+				$include = WE_APPS_PATH . $tool['name'] . '/tags/we_listviewtag_' . $name . '.inc.php';
 				return true;
 			}
 		}
@@ -322,10 +322,10 @@ abstract class we_tool_lookup{
 	}
 
 	static function getToolListviewItemTag($name, &$include, $includeDisabled = false){
-		$_tools = self::getAllTools(false, false, $includeDisabled);
-		foreach($_tools as $_tool){
-			if(file_exists(WE_APPS_PATH . $_tool['name'] . '/tags/we_listviewitemtag_' . $name . '.inc.php')){
-				$include = WE_APPS_PATH . $_tool['name'] . '/tags/we_listviewitemtag_' . $name . '.inc.php';
+		$tools = self::getAllTools(false, false, $includeDisabled);
+		foreach($tools as $tool){
+			if(file_exists(WE_APPS_PATH . $tool['name'] . '/tags/we_listviewitemtag_' . $name . '.inc.php')){
+				$include = WE_APPS_PATH . $tool['name'] . '/tags/we_listviewitemtag_' . $name . '.inc.php';
 				return true;
 			}
 		}
@@ -333,10 +333,10 @@ abstract class we_tool_lookup{
 	}
 
 	static function getToolTagWizard($name, &$include, $includeDisabled = false){
-		$_tools = self::getAllTools(false, false, $includeDisabled);
-		foreach($_tools as $_tool){
-			if(file_exists(WE_APPS_PATH . $_tool['name'] . '/tagwizard/we_tag_' . $name . '.inc.php')){
-				$include = WE_APPS_PATH . $_tool['name'] . '/tagwizard/we_tag_' . $name . '.inc.php';
+		$tools = self::getAllTools(false, false, $includeDisabled);
+		foreach($tools as $tool){
+			if(file_exists(WE_APPS_PATH . $tool['name'] . '/tagwizard/we_tag_' . $name . '.inc.php')){
+				$include = WE_APPS_PATH . $tool['name'] . '/tagwizard/we_tag_' . $name . '.inc.php';
 				return true;
 			}
 		}
@@ -344,10 +344,10 @@ abstract class we_tool_lookup{
 	}
 
 	static function getToolListviewTagWizard($name, &$include, $includeDisabled = false){
-		$_tools = self::getAllTools(false, false, $includeDisabled);
-		foreach($_tools as $_tool){
-			if(file_exists(WE_APPS_PATH . $_tool['name'] . '/tagwizard/we_listviewtag_' . $name . '.inc.php')){
-				$include = WE_APPS_PATH . $_tool['name'] . '/tagwizard/we_listviewtag_' . $name . '.inc.php';
+		$tools = self::getAllTools(false, false, $includeDisabled);
+		foreach($tools as $tool){
+			if(file_exists(WE_APPS_PATH . $tool['name'] . '/tagwizard/we_listviewtag_' . $name . '.inc.php')){
+				$include = WE_APPS_PATH . $tool['name'] . '/tagwizard/we_listviewtag_' . $name . '.inc.php';
 				return true;
 			}
 		}
@@ -355,31 +355,31 @@ abstract class we_tool_lookup{
 	}
 
 	static function getPermissionIncludes($includeDisabled = false){
-		$_inc = array();
-		$_tools = self::getAllTools(false, false, $includeDisabled);
-		foreach($_tools as $_tool){
-			if(file_exists(WE_APPS_PATH . $_tool['name'] . '/conf/permission.conf.php')){
-				$_inc[] = WE_APPS_PATH . $_tool['name'] . '/conf/permission.conf.php';
+		$inc = array();
+		$tools = self::getAllTools(false, false, $includeDisabled);
+		foreach($tools as $tool){
+			if(file_exists(WE_APPS_PATH . $tool['name'] . '/conf/permission.conf.php')){
+				$inc[] = WE_APPS_PATH . $tool['name'] . '/conf/permission.conf.php';
 			}
 		}
 
-		return $_inc;
+		return $inc;
 	}
 
 	static function getToolsForBackup($includeDisabled = false){
-		$_inc = array();
-		$_tools = self::getAllTools(false, false, $includeDisabled);
-		foreach($_tools as $_tool){
-			if(file_exists(WE_APPS_PATH . $_tool['name'] . '/conf/backup.conf.php')){
-				if($_tool['maintable'] != ''){
-					$_inc[] = $_tool['name'];
+		$inc = array();
+		$tools = self::getAllTools(false, false, $includeDisabled);
+		foreach($tools as $tool){
+			if(file_exists(WE_APPS_PATH . $tool['name'] . '/conf/backup.conf.php')){
+				if($tool['maintable'] != ''){
+					$inc[] = $tool['name'];
 				}
 			}
 		}
-		$_inc[] = 'weSearch';
+		$inc[] = 'weSearch';
 
 
-		return $_inc;
+		return $inc;
 	}
 
 	static function getBackupTables($name){
@@ -404,14 +404,14 @@ abstract class we_tool_lookup{
 
 				if($entry != '' && $entry != '.' && $entry != '..'){
 
-					$_entry = $baseDir . '/' . $entry;
+					$entry = $baseDir . '/' . $entry;
 
-					if(!is_dir($_entry)){
-						$allFiles[] = $_entry;
+					if(!is_dir($entry)){
+						$allFiles[] = $entry;
 					}
 
-					if(is_dir($_entry)){
-						self::getFilesOfDir($allFiles, $_entry);
+					if(is_dir($entry)){
+						self::getFilesOfDir($allFiles, $entry);
 					}
 				}
 			}
@@ -428,11 +428,11 @@ abstract class we_tool_lookup{
 
 				if($entry != '' && $entry != '.' && $entry != '..'){
 
-					$_entry = $baseDir . '/' . $entry;
+					$entry = $baseDir . '/' . $entry;
 
-					if(is_dir($_entry)){
-						$allDirs[] = $_entry;
-						self::getDirsOfDir($allDirs, $_entry);
+					if(is_dir($entry)){
+						$allDirs[] = $entry;
+						self::getDirsOfDir($allDirs, $entry);
 					}
 				}
 			}
@@ -445,8 +445,8 @@ abstract class we_tool_lookup{
 	}
 
 	static function isInIgnoreList($toolname){
-		$_ignore = self::getIgnoreList();
-		return in_array($toolname, $_ignore);
+		$ignore = self::getIgnoreList();
+		return in_array($toolname, $ignore);
 	}
 
 	static function getModelClassName($name){
@@ -455,9 +455,9 @@ abstract class we_tool_lookup{
 			return $metaInfo['classname'];
 		}
 
-		$_tool = self::getToolProperties($name);
-		if(!empty($_tool)){
-			return $_tool['classname'];
+		$tool = self::getToolProperties($name);
+		if(!empty($tool)){
+			return $tool['classname'];
 		}
 
 		return '';

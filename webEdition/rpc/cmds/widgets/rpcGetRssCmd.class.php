@@ -151,11 +151,11 @@ class rpcGetRssCmd extends we_rpc_cmd{
 		$resp->setData('data', $sRssOut);
 
 		// title
-		$_title = implode(' - ', $aTb);
-		if(strlen($_title) > 50){
-			$_title = substr($_title, 0, 50) . '&hellip;';
+		$title = implode(' - ', $aTb);
+		if(strlen($title) > 50){
+			$title = substr($title, 0, 50) . '&hellip;';
 		}
-		$resp->setData('titel', $_title);
+		$resp->setData('titel', $title);
 		$resp->setData('widgetType', "rss");
 		$resp->setData('widgetId', we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5));
 

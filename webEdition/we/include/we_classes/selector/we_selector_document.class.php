@@ -110,9 +110,9 @@ class we_selector_document extends we_selector_directory{
 				$this->titles = $this->db->getAllFirst(false);
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$_path = $this->path;
-				while($_path !== '' && dirname($_path) != '\\' && dirname($_path) != '/'){
-					$_path = dirname($_path);
+				$path = $this->path;
+				while($path !== '' && dirname($path) != '\\' && dirname($path) != '/'){
+					$path = dirname($path);
 				}
 
 				$hash = getHash('SELECT o.DefaultTitle,o.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.ID=' . intval($this->dir), $this->db);
@@ -371,26 +371,26 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 						$metainfos = $this->db->getAllFirst(false);
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-						$_fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result['TableID']), $this->db, MYSQL_ASSOC);
-						$_selFields = array();
-						foreach($_fieldnames as $_key => $_val){
-							if(!$_val || $_val === '_'){ // bug #4657
+						$fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result['TableID']), $this->db, MYSQL_ASSOC);
+						$selFields = array();
+						foreach($fieldnames as $key => $val){
+							if(!$val || $val === '_'){ // bug #4657
 								continue;
 							}
-							switch($_key){
+							switch($key){
 								case "DefaultDesc":
-									$_selFields[] = $_val . ' AS Description';
+									$selFields[] = $val . ' AS Description';
 									break;
 								case "DefaultTitle":
-									$_selFields[] = $_val . ' AS Title';
+									$selFields[] = $val . ' AS Title';
 									break;
 								case "DefaultKeywords":
-									$_selFields[] = $_val . ' AS Keywords';
+									$selFields[] = $val . ' AS Keywords';
 									break;
 							}
 						}
-						if($_selFields){
-							$metainfos = getHash('SELECT ' . implode(',', $_selFields) . ' FROM ' . OBJECT_X_TABLE . intval($result['TableID']) . ' WHERE OF_ID=' . intval($result["ID"]), $this->db);
+						if($selFields){
+							$metainfos = getHash('SELECT ' . implode(',', $selFields) . ' FROM ' . OBJECT_X_TABLE . intval($result['TableID']) . ' WHERE OF_ID=' . intval($result["ID"]), $this->db);
 						}
 				}
 			}
@@ -409,16 +409,16 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 
 			$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']) : 0;
 
-			$_filesize = we_base_file::getHumanFileSize($fs);
+			$filesize = we_base_file::getHumanFileSize($fs);
 
 			if($result['ContentType'] == we_base_ContentTypes::IMAGE && file_exists($_SERVER['DOCUMENT_ROOT'] . $result['Path'])){
 				if($fs === 0){
-					$_imagesize = array(0, 0);
-					$_thumbpath = ICON_DIR . 'no_image.gif';
-					$_imagepreview = '<img src="' . $_thumbpath . '" id="previewpic"><p>' . g_l('fileselector', '[image_not_uploaded]') . '</p>';
+					$imagesize = array(0, 0);
+					$thumbpath = ICON_DIR . 'no_image.gif';
+					$imagepreview = '<img src="' . $thumbpath . '" id="previewpic"><p>' . g_l('fileselector', '[image_not_uploaded]') . '</p>';
 				} else {
-					$_imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
-					$_thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
+					$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
+					$thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
 							'id' => $this->id,
 							'size' => array(
 								'width' => 150,
@@ -427,11 +427,11 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 							'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
 							'extension' => $result['Extension'],
 					));
-					$_imagepreview = "<a href='" . $result['Path'] . "' target='_blank'><img src='" . $_thumbpath . "' border='0' id='previewpic'></a>";
+					$imagepreview = "<a href='" . $result['Path'] . "' target='_blank'><img src='" . $thumbpath . "' border='0' id='previewpic'></a>";
 				}
 			}
 
-			$_previewFields = array(
+			$previewFields = array(
 				"metainfos" => array("headline" => g_l('weClass', '[metainfo]'), "data" => array()),
 				"attributes" => array("headline" => g_l('weClass', '[attribs]'), "data" => array()),
 				"folders" => array("headline" => g_l('fileselector', '[folders]'), "data" => array()),
@@ -463,29 +463,29 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 					)),
 			);
 			if($result['CreationDate']){
-				$_previewFields["properies"]["data"][] = array(
+				$previewFields["properies"]["data"][] = array(
 					"caption" => g_l('fileselector', '[created]'),
 					"content" => is_int($result['CreationDate']) ? date(g_l('date', '[format][default]'), $result['CreationDate']) : $result['CreationDate']
 				);
 			}
 
 			if($result['ModDate']){
-				$_previewFields["properies"]["data"][] = array(
+				$previewFields["properies"]["data"][] = array(
 					"caption" => g_l('fileselector', '[modified]'),
 					"content" => is_int($result['ModDate']) ? date(g_l('date', '[format][default]'), $result['ModDate']) : $result['ModDate']
 				);
 			}
 
-			$_previewFields["properies"]["data"][] = array(
+			$previewFields["properies"]["data"][] = array(
 				"caption" => g_l('fileselector', '[type]'),
 				"content" => ((g_l('contentTypes', '[' . $result['ContentType'] . ']') !== false) ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType'])
 			);
 
 
-			if(isset($_imagesize)){
-				$_previewFields["properies"]["data"][] = array(
+			if(isset($imagesize)){
+				$previewFields["properies"]["data"][] = array(
 					"caption" => g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]'),
-					"content" => $_imagesize[0] . " x " . $_imagesize[1] . " px "
+					"content" => $imagesize[0] . " x " . $imagesize[1] . " px "
 				);
 			}
 
@@ -496,29 +496,29 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 				case we_base_ContentTypes::OBJECT_FILE:
 					break;
 				default:
-					$_previewFields["properies"]["data"][] = array(
+					$previewFields["properies"]["data"][] = array(
 						"caption" => g_l('fileselector', '[filesize]'),
-						"content" => $_filesize
+						"content" => $filesize
 					);
 			}
 
 
 			if(isset($metainfos['Title'])){
-				$_previewFields["metainfos"]["data"][] = array(
+				$previewFields["metainfos"]["data"][] = array(
 					"caption" => g_l('weClass', '[Title]'),
 					"content" => $metainfos['Title']
 				);
 			}
 
 			if(isset($metainfos['Description'])){
-				$_previewFields["metainfos"]["data"][] = array(
+				$previewFields["metainfos"]["data"][] = array(
 					"caption" => g_l('weClass', '[Description]'),
 					"content" => $metainfos['Description']
 				);
 			}
 
 			if(isset($metainfos['Keywords'])){
-				$_previewFields["metainfos"]["data"][] = array(
+				$previewFields["metainfos"]["data"][] = array(
 					"caption" => g_l('weClass', '[Keywords]'),
 					"content" => $metainfos['Keywords']
 				);
@@ -529,19 +529,19 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 					$name = (isset($metainfos['name']) ? $metainfos['name'] : '');
 					$alt = (isset($metainfos['alt']) ? $metainfos['alt'] : '');
 					if($Title !== ""){
-						$_previewFields["attributes"]["data"][] = array(
+						$previewFields["attributes"]["data"][] = array(
 							"caption" => g_l('weClass', '[Title]'),
 							"content" => oldHtmlspecialchars($Title)
 						);
 					}
 					if($name){
-						$_previewFields["attributes"]["data"][] = array(
+						$previewFields["attributes"]["data"][] = array(
 							"caption" => g_l('weClass', '[name]'),
 							"content" => $name
 						);
 					}
 					if($alt){
-						$_previewFields["attributes"]["data"][] = array(
+						$previewFields["attributes"]["data"][] = array(
 							"caption" => g_l('weClass', '[alt]'),
 							"content" => oldHtmlspecialchars($alt)
 						);
@@ -555,7 +555,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 					foreach($metaDataFields as $md){
 						if($md['tag'] != "Title" && $md['tag'] != "Description" && $md['tag'] != "Keywords"){
 							if(isset($metainfos[$md['tag']])){
-								$_previewFields["metainfos"]["data"][] = array(
+								$previewFields["metainfos"]["data"][] = array(
 									"caption" => $md['tag'],
 									"content" => $metainfos[$md['tag']]
 								);
@@ -567,7 +567,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 				case "folder":
 					if(isset($folderFolders) && is_array($folderFolders) && count($folderFolders)){
 						foreach($folderFolders as $fId => $fxVal){
-							$_previewFields["folders"]["data"][] = array(
+							$previewFields["folders"]["data"][] = array(
 								"caption" => $fId,
 								"content" => $fxVal
 							);
@@ -575,7 +575,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 					}
 					if(isset($folderFiles) && is_array($folderFiles) && count($folderFiles)){
 						foreach($folderFiles as $fId => $fxVal){
-							$_previewFields["files"]["data"][] = array(
+							$previewFields["files"]["data"][] = array(
 								"caption" => $fId,
 								"content" => $fxVal
 							);
@@ -586,11 +586,11 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 				case we_base_ContentTypes::TEMPLATE:
 					if(isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])){
 						$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($result['MasterTemplateID']), "Path", $this->db);
-						$_previewFields["masterTemplate"]["data"][] = array(
+						$previewFields["masterTemplate"]["data"][] = array(
 							"caption" => "ID",
 							"content" => $result['MasterTemplateID']
 						);
-						$_previewFields["masterTemplate"]["data"][] = array(
+						$previewFields["masterTemplate"]["data"][] = array(
 							"caption" => g_l('weClass', '[path]'),
 							"content" => $mastertemppath
 						);
@@ -599,16 +599,16 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 			}
 
 			$out .= '<table class="default" style="width:100%">';
-			if(!empty($_imagepreview)){
-				$out .= "<tr><td colspan='2' class='image'>" . $_imagepreview . "</td></tr>";
+			if(!empty($imagepreview)){
+				$out .= "<tr><td colspan='2' class='image'>" . $imagepreview . "</td></tr>";
 			}
 
-			foreach($_previewFields as $_part){
-				if(!empty($_part["data"])){
-					$out .= "<tr><td colspan='2' class='headline'>" . $_part["headline"] . "</td></tr>";
-					foreach($_part["data"] as $z => $_row){
-						$_class = (($z % 2) == 0) ? "odd" : "even";
-						$out .= "<tr class='" . $_class . "'><td>" . $_row['caption'] . ": </td><td>" . $_row['content'] . "</td></tr>";
+			foreach($previewFields as $part){
+				if(!empty($part["data"])){
+					$out .= "<tr><td colspan='2' class='headline'>" . $part["headline"] . "</td></tr>";
+					foreach($part["data"] as $z => $row){
+						$class = (($z % 2) == 0) ? "odd" : "even";
+						$out .= "<tr class='" . $class . "'><td>" . $row['caption'] . ": </td><td>" . $row['content'] . "</td></tr>";
 					}
 				}
 			}

@@ -26,20 +26,20 @@ class rpcGetCategoryCmd extends we_rpc_cmd{
 
 	function execute(){
 		$resp = new we_rpc_response();
-		$_error = array();
+		$error = array();
 		// check for necessory params
 		if(!($obj=we_base_request::_(we_base_request::STRING, 'obj'))){
-			$_error[] = "Missing field obj";
+			$error[] = "Missing field obj";
 		}
 		if(!we_base_request::_(we_base_request::STRING, 'cats')){
-			$_error[] = "Missing field cats";
+			$error[] = "Missing field cats";
 		}
 		if(we_base_request::_(we_base_request::STRING, 'part') === 'table' && (!we_base_request::_(we_base_request::BOOL, 'target'))){
-			$_error[] = "Missing target for table";
+			$error[] = "Missing target for table";
 		}
 
-		if($_error){
-			$resp->setData("error", $_error);
+		if($error){
+			$resp->setData("error", $error);
 		} else {
 			//$part = we_base_request::_(we_base_request::STRING, 'part',"rows");
 			$target = we_base_request::_(we_base_request::STRING, 'target', $obj . "CatTable");

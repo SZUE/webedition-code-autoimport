@@ -65,46 +65,46 @@ abstract class we_wizard_code{
 		$Snippets = array();
 
 		$Depth++;
-		$_dir = dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir);
-		while(false !== ($_entry = $_dir->read())){
+		$dir = dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir);
+		while(false !== ($entry = $dir->read())){
 
 			// ignore files . and ..
-			if($_entry === '.' || $_entry === '..'){
+			if($entry === '.' || $entry === '..'){
 				// ignore these
 				// get the snippets by file if extension is xml
-			} elseif(!is_dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $_entry) && substr_compare($_entry, '.xml', -4, 4, true) == 0){
+			} elseif(!is_dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $entry) && substr_compare($entry, '.xml', -4, 4, true) == 0){
 				// get the snippet
-				$_snippet = new we_wizard_codeSnippet(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $_entry);
-				$_item = array(
+				$snippet = new we_wizard_codeSnippet(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $entry);
+				$item = array(
 					'type' => 'option',
-					'name' => $_snippet->getName(),
-					'value' => $SnippetDir . '/' . $_entry
+					'name' => $snippet->getName(),
+					'value' => $SnippetDir . '/' . $entry
 				);
-				$Snippets[] = $_item;
+				$Snippets[] = $item;
 
 				// enter subdirectory only if depth is smaller than 2
-			} elseif(is_dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $_entry) && $Depth < 2){
+			} elseif(is_dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $entry) && $Depth < 2){
 
 				$information = array();
-				$_infoFile = WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $_entry . '/_information.inc.php';
-				if(file_exists($_infoFile) && is_file($_infoFile)){
-					include ($_infoFile);
+				$infoFile = WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $entry . '/_information.inc.php';
+				if(file_exists($infoFile) && is_file($infoFile)){
+					include ($infoFile);
 				}
 
-				$_foldername = $_entry;
+				$foldername = $entry;
 				if(isset($information['foldername'])){
-					$_foldername = $information['foldername'];
+					$foldername = $information['foldername'];
 				}
 
-				$_folder = array(
+				$folder = array(
 					'type' => 'optgroup',
-					'name' => $_foldername,
-					'value' => self::getSnippetsByDir($SnippetDir . '/' . $_entry, $Depth)
+					'name' => $foldername,
+					'value' => self::getSnippetsByDir($SnippetDir . '/' . $entry, $Depth)
 				);
-				$Snippets[] = $_folder;
+				$Snippets[] = $folder;
 			}
 		}
-		$_dir->close();
+		$dir->close();
 
 		$Depth--;
 
@@ -118,37 +118,37 @@ abstract class we_wizard_code{
 	 * @return string
 	 */
 	public static function getSelect($type = 'standard'){
-		$_options = array();
+		$options = array();
 
 		switch($type){
 			case 'custom' :
-				$_options = self::getCustomSnippets();
+				$options = self::getCustomSnippets();
 				break;
 
 			default :
-				$_options = self::getStandardSnippets();
+				$options = self::getStandardSnippets();
 				break;
 		}
 
-		$_select = "<select id=\"codesnippet_" . $type . "\" name=\"codesnippet_" . $type . "\"  size=\"7\" style=\"width:250px; height: 100px; display: none;\" ondblclick=\"YUIdoAjax(this.value);\" onchange=\"WE().layout.button.enable(document, 'btn_direction_right_applyCode')\">\n";
-		foreach($_options as $option){
+		$select = "<select id=\"codesnippet_" . $type . "\" name=\"codesnippet_" . $type . "\"  size=\"7\" style=\"width:250px; height: 100px; display: none;\" ondblclick=\"YUIdoAjax(this.value);\" onchange=\"WE().layout.button.enable(document, 'btn_direction_right_applyCode')\">\n";
+		foreach($options as $option){
 			if($option['type'] === 'optgroup' && count($option['value']) > 0){
-				$_select .= '<optgroup label="' . $option['name'] . '">';
+				$select .= '<optgroup label="' . $option['name'] . '">';
 
 				foreach($option['value'] as $optgroupoption){
 
 					if($optgroupoption['type'] === 'option'){
-						$_select .= '<option value="' . $optgroupoption['value'] . '">' . $optgroupoption['name'] . '</option>';
+						$select .= '<option value="' . $optgroupoption['value'] . '">' . $optgroupoption['name'] . '</option>';
 					}
 				}
-				$_select .= '</optgroup>';
+				$select .= '</optgroup>';
 			} elseif($option['type'] === 'option'){
-				$_select .= '<option value="' . $option['value'] . '">' . $option['name'] . '</option>';
+				$select .= '<option value="' . $option['value'] . '">' . $option['name'] . '</option>';
 			}
 		}
-		$_select .= '</select>';
+		$select .= '</select>';
 
-		return $_select;
+		return $select;
 	}
 
 	/**

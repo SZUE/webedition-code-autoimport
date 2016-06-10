@@ -46,15 +46,15 @@ class we_customer_documentFilterView extends we_customer_filterView{
 	 * @return string
 	 */
 	function getAccessControlHTML(){
-		$_filter = $this->getFilter();
+		$filter = $this->getFilter();
 
 		$yuiSuggest = & weSuggest::getInstance();
 
 		/*		 * ** AUTOSELECTOR FOR ErrorDocument, Customer is not logged in *** */
-		$_id_selectorNoLoginId = $_filter->getErrorDocNoLogin();
-		$_path_selectorNoLoginId = $_id_selectorNoLoginId ? id_to_path($_id_selectorNoLoginId) : "";
-		if(!$_path_selectorNoLoginId){
-			$_id_selectorNoLoginId = "";
+		$id_selectorNoLoginId = $filter->getErrorDocNoLogin();
+		$path_selectorNoLoginId = $id_selectorNoLoginId ? id_to_path($id_selectorNoLoginId) : "";
+		if(!$path_selectorNoLoginId){
+			$id_selectorNoLoginId = "";
 		}
 
 		$selectorNoLoginId = "wecf_noLoginId";
@@ -65,11 +65,11 @@ class we_customer_documentFilterView extends we_customer_filterView{
 
 		$yuiSuggest->setAcId("NoLogin");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
-		$yuiSuggest->setInput($selectorNoLoginText, $_path_selectorNoLoginId);
+		$yuiSuggest->setInput($selectorNoLoginText, $path_selectorNoLoginId);
 		$yuiSuggest->setLabel(g_l('modules_customerFilter', '[documentNoLogin]'));
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($selectorNoLoginId, $_id_selectorNoLoginId);
+		$yuiSuggest->setResult($selectorNoLoginId, $id_selectorNoLoginId);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(409);
 		$yuiSuggest->setSelectButton($selectorNoLoginButton);
@@ -77,10 +77,10 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		/*		 * ** AUTOSELECTOR FOR ErrorDocument, Customer might be logged in, but has no access *** */
-		$_id_selectorNoAccessId = $_filter->getErrorDocNoAccess();
-		$_path_selectorNoAccessId = $_id_selectorNoAccessId ? id_to_path($_id_selectorNoAccessId) : "";
-		if(!$_path_selectorNoAccessId){
-			$_id_selectorNoAccessId = "";
+		$id_selectorNoAccessId = $filter->getErrorDocNoAccess();
+		$path_selectorNoAccessId = $id_selectorNoAccessId ? id_to_path($id_selectorNoAccessId) : "";
+		if(!$path_selectorNoAccessId){
+			$id_selectorNoAccessId = "";
 		}
 
 		$selectorNoAccessId = "wecf_noAccessId";
@@ -91,31 +91,31 @@ class we_customer_documentFilterView extends we_customer_filterView{
 
 		$yuiSuggest->setAcId("NoAccess");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
-		$yuiSuggest->setInput($selectorNoAccessText, $_path_selectorNoAccessId);
+		$yuiSuggest->setInput($selectorNoAccessText, $path_selectorNoAccessId);
 		$yuiSuggest->setLabel(g_l('modules_customerFilter', '[documentNoAccess]'));
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setResult($selectorNoAccessId, $_id_selectorNoAccessId);
+		$yuiSuggest->setResult($selectorNoAccessId, $id_selectorNoAccessId);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(409);
 		$yuiSuggest->setSelectButton($selectorNoAccessButton);
 
 		$weAcSelector2 = $yuiSuggest->getHTML();
 
-		$_accesControl = '<div class="weMultiIconBoxHeadline">' .
+		$accesControl = '<div class="weMultiIconBoxHeadline">' .
 				g_l('modules_customerFilter', '[accessControl]') . '</div>' .
 				we_html_forms::radiobutton(
-						"onTemplate", $_filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnTemplate]'), true, "defaultfont", "updateView();" . $this->getHotScript()
+						"onTemplate", $filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnTemplate]'), true, "defaultfont", "updateView();" . $this->getHotScript()
 				) .
 				we_html_forms::radiobutton(
-						"errorDoc", !$_filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnErrorDoc]'), true, "defaultfont", "updateView();" . $this->getHotScript()
+						"errorDoc", !$filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnErrorDoc]'), true, "defaultfont", "updateView();" . $this->getHotScript()
 				) .
-				we_customer_documentFilterView::getDiv($weAcSelector . $weAcSelector2, 'accessControlSelectorDiv', (!$_filter->getAccessControlOnTemplate()), 25);
+				we_customer_documentFilterView::getDiv($weAcSelector . $weAcSelector2, 'accessControlSelectorDiv', (!$filter->getAccessControlOnTemplate()), 25);
 
 
 
 		return weSuggest::getYuiFiles() .
-				$this->getDiv($_accesControl, 'accessControlDiv', $_filter->getMode() !== we_customer_abstractFilter::OFF, 0);
+				$this->getDiv($accesControl, 'accessControlDiv', $filter->getMode() !== we_customer_abstractFilter::OFF, 0);
 	}
 
 	/**
@@ -124,14 +124,14 @@ class we_customer_documentFilterView extends we_customer_filterView{
 	 * @return string
 	 */
 	function getFolderApplyHTML(){
-		$_ok_button = we_html_button::create_button(we_html_button::OK, "javascript:if (_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', '[apply_filter_isHot]'), we_message_reporting::WE_MESSAGE_INFO) . " } else { we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "');}");
+		$ok_button = we_html_button::create_button(we_html_button::OK, "javascript:if (_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', '[apply_filter_isHot]'), we_message_reporting::WE_MESSAGE_INFO) . " } else { we_cmd('copyWeDocumentCustomerFilter', '" . $GLOBALS['we_doc']->ID . "', '" . $GLOBALS['we_doc']->Table . "');}");
 
 		return '
 <div class="weMultiIconBoxHeadline paddingVertical" style="padding-top: 10px;padding-bottom: 10px;">' . g_l('modules_customerFilter', '[apply_filter]') . '</div>
 <table>
 	<tr>
 		<td>' . we_html_tools::htmlAlertAttentionBox(g_l('modules_customerFilter', '[apply_filter_info]'), we_html_tools::TYPE_INFO, 432, false) . '</td>
-		<td style="padding-left:17px;">' . $_ok_button . '</td>
+		<td style="padding-left:17px;">' . $ok_button . '</td>
 	</tr>
 </table>';
 	}

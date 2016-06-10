@@ -140,16 +140,16 @@ abstract class permissionhandler{
 		if($row['RestrictOwners']){ //	check which user - group has permission
 			$userArray = makeArrayFromCSV($row['Owners']);
 
-			$_allowedGroup = false;
+			$allowedGroup = false;
 
 			//	check if usergroup is allowed
-			foreach($_SESSION['user']['groups'] as $nr => $_userGroup){
-				if(in_array($_userGroup, $userArray)){
-					$_allowedGroup = true;
+			foreach($_SESSION['user']['groups'] as $nr => $userGroup){
+				if(in_array($userGroup, $userArray)){
+					$allowedGroup = true;
 					break;
 				}
 			}
-			if(!in_array($_SESSION['user']['ID'], $userArray) && !$_allowedGroup){ //	user is no allowed user.
+			if(!in_array($_SESSION['user']['ID'], $userArray) && !$allowedGroup){ //	user is no allowed user.
 				return false;
 			}
 
@@ -166,11 +166,11 @@ abstract class permissionhandler{
 					}
 
 					//	check if group has rights to delete
-					foreach($_SESSION['user']['groups'] as $nr => $_userGroup){ //	user is directly in first group
-						if(!empty($arr[$_userGroup])){ //	group not allowed
+					foreach($_SESSION['user']['groups'] as $nr => $userGroup){ //	user is directly in first group
+						if(!empty($arr[$userGroup])){ //	group not allowed
 							return false;
 						}
-						if(in_array($_userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
+						if(in_array($userGroup, $userArray)){ //	group is NOT readonly and in restricted -> delete allowed
 							return true;
 						}
 					}

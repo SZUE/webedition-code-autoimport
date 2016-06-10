@@ -25,8 +25,6 @@
 class we_tag_tagParser{
 	private $lastpos = 0;
 	private $tags = array();
-	private static $CloseTags = array();
-	private static $AllKnownTags = array();
 	public static $curFile = '';
 
 	//private $AppListviewItemsTags = array();
@@ -37,17 +35,7 @@ class we_tag_tagParser{
 		if($content != ''){
 			$this->setAllTags($content);
 		}
-		/*
-		 * if(!is_array(self::$CloseTags)){
-		  self::$CloseTags = weTagWizard::getTagsWithEndTag();
-		  self::$AllKnownTags = weTagWizard::getExistingWeTags();
-		  } */
 	}
-
-	/* 	private function parseAppListviewItemsTags($tagname, $tag, $code, $attribs = "", $postName = ""){
-	  return $this->replaceTag($tag, $code, $php);
-	  }
-	 */
 
 	public function getAllTags(){
 		return $this->tags;
@@ -75,15 +63,10 @@ class we_tag_tagParser{
 	 * 			[2][x] = parameter as string
 	 */
 	public static function itemize_we_tag($tagname, $code){
-		$_matches = array();
-		preg_match_all('/(<' . $tagname . '([^>]*)>)/U', $code, $_matches);
-		return $_matches;
+		$matches = array();
+		preg_match_all('/(<' . $tagname . '([^>]*)>)/U', $code, $matches);
+		return $matches;
 	}
-
-	/* public function parseSpecificTags($tags, &$code, $postName = '', $ignore = array()){
-	  $this->tags = $tags;
-	  return $this->parseTags($code, ($postName == '' ? 0 : $postName), $ignore);
-	  } */
 
 	public function parseTags(&$code, $start = 0, $ende = FALSE){
 		if(is_string($start)){//old call
@@ -114,29 +97,23 @@ class we_tag_tagParser{
 	}
 
 	private function checkOpenCloseTags(&$code){
-		if(!is_array(self::$CloseTags)){
-			self::$AllKnownTags = we_wizard_tag::getExistingWeTags();
-			self::$CloseTags = we_wizard_tag::getTagsWithEndTag();
-		}
-
 		$Counter = array();
-
-		foreach($this->tags as $_tag){
-			$_matches = array();
-			if(preg_match_all('|<(/?)we:([[:alnum:]_-]+)([ \t\n\r]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t\n\r]*(/)?>?|smi', $_tag, $_matches)){
-				if(!is_null($_matches[2][0]) && in_array($_matches[2][0], self::$CloseTags)){
-					if(!isset($Counter[$_matches[2][0]])){
-						$Counter[$_matches[2][0]] = 0;
+		foreach($this->tags as $tag){
+			$matches = array();
+			if(preg_match_all('|<(/?)we:([[:alnum:]_-]+)([ \t\n\r]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t\n\r]*(/)?>?|smi', $tag, $matches)){
+				if(!is_null($matches[2][0])){
+					if(!isset($Counter[$matches[2][0]])){
+						$Counter[$matches[2][0]] = 0;
 					}
 
-					if($_matches[1][0] === '/'){
-						$Counter[$_matches[2][0]] --;
+					if($matches[1][0] === '/'){
+						$Counter[$matches[2][0]] --;
 					} else {
 						//selfclosing-Tag
-						if($_matches[4][0] === '/'){
+						if($matches[4][0] === '/'){
 							continue;
 						}
-						$Counter[$_matches[2][0]] ++;
+						$Counter[$matches[2][0]] ++;
 					}
 				}
 			}
@@ -145,15 +122,15 @@ class we_tag_tagParser{
 		$ErrorMsg = '';
 		$err = '';
 		$isError = false;
-		foreach($Counter as $_tag => $_counter){
-			if($_counter < 0){
-				$err.=sprintf(g_l('parser', '[missing_open_tag]'), 'we:' . $_tag);
-				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]') . ' (' . abs($_counter) . ')', 'we:' . $_tag));
+		foreach($Counter as $tag => $counter){
+			if($counter < 0){
+				$err.=sprintf(g_l('parser', '[missing_open_tag]'), 'we:' . $tag);
+				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_open_tag]') . ' (' . abs($counter) . ')', 'we:' . $tag));
 
 				$isError = true;
-			} elseif($_counter > 0){
-				$err.=sprintf(g_l('parser', '[missing_close_tag]'), 'we:' . $_tag);
-				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]') . ' (' . abs($_counter) . ')', 'we:' . $_tag));
+			} elseif($counter > 0){
+				$err.=sprintf(g_l('parser', '[missing_close_tag]'), 'we:' . $tag);
+				$ErrorMsg .= parseError(sprintf(g_l('parser', '[missing_close_tag]') . ' (' . abs($counter) . ')', 'we:' . $tag));
 				$isError = true;
 			}
 		}
@@ -308,22 +285,7 @@ class we_tag_tagParser{
 					}
 				}
 			} else {
-				//FIXME: remove in 6.4
-				//if it is not a selfclosing tag (<we:xx/>),
-				//there exists a tagWizzard file, and in this file this tag is stated to be selfclosing
-				//NOTE: most custom tags don't have a wizzard file - so this tag must be selfclosing, or have a corresponding closing-tag!
-				if(!$selfclose && in_array($tagname, self::$AllKnownTags) && !in_array($tagname, self::$CloseTags)){
-					//for now we'll correct this error and keep parsing
-					$selfclose = true;
-					$content = '';
-					unset($endeEndTagPos);
-					unset($endTagPos);
-					unset($endTagNo);
-					//don't break for now.
-					parseError(sprintf('Compatibility MODE of parser - Note this will soon be removed!' . "\n" . g_l('parser', '[start_endtag_missing]'), $tagname));
-				} else {
-					return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname), $tag);
-				}
+				return parseError(sprintf(g_l('parser', '[start_endtag_missing]'), $tagname), $tag);
 			}
 		}
 

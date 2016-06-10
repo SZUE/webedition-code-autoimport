@@ -798,19 +798,19 @@ foreach($allModules as $m){
 	}
 }
 // Extras > Tools > Custom tools
-$_tools = we_tool_lookup::getAllTools(true, false);
+$tools = we_tool_lookup::getAllTools(true, false);
 
-foreach($_tools as $_tool){
+foreach($tools as $tool){
 	$we_menu[] = array(
-		'text' => $_tool['text'] . '&hellip;',
+		'text' => $tool['text'] . '&hellip;',
 		'parent' => 'extras',
-		'cmd' => 'tool_' . $_tool['name'] . '_edit',
-		'perm' => $_tool['startpermission'],
+		'cmd' => 'tool_' . $tool['name'] . '_edit',
+		'perm' => $tool['startpermission'],
 	);
 }
 
-$_activeIntModules = we_base_moduleInfo::getIntegratedModules(true);
-we_base_moduleInfo::orderModuleArray($_activeIntModules);
+$activeIntModules = we_base_moduleInfo::getIntegratedModules(true);
+we_base_moduleInfo::orderModuleArray($activeIntModules);
 
 //add settings
 $we_menu[] = array(// separator
@@ -821,8 +821,8 @@ $we_menu['settings'] = array(// Extras > Einstellungen
 	'parent' => 'extras',
 );
 
-if($_activeIntModules){
-	foreach($_activeIntModules as $modInfo){
+if($activeIntModules){
+	foreach($activeIntModules as $modInfo){
 		if($modInfo['hasSettings']){
 			$we_menu[] = array(
 				'text' => $modInfo['text'] . '&hellip;',

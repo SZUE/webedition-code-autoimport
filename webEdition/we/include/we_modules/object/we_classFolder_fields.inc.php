@@ -55,14 +55,14 @@ echo we_html_tools::getHtmlTop() .
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
-$_parts = array(
-	array('html' => $we_doc->getSearchDialog()),
-	array('html' => $we_doc->getSearch()),
-);
 
 echo STYLESHEET .
  '</head>
 <body class="weEditorBody" onunload="doUnload()">' .
- we_html_multiIconBox::getHTML('', $_parts, 30) .
+ we_html_multiIconBox::getHTML('', array(
+	array('html' => $we_doc->getSearchDialog()),
+	array('html' => $we_doc->getSearch()),
+	)
+	, 30) .
  '</body>
 </html>';

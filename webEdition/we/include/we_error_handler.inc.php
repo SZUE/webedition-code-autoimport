@@ -90,15 +90,15 @@ function we_error_handler($in_webEdition = true){
 	}
 
 	if((defined('WE_ERROR_HANDLER') && WE_ERROR_HANDLER)){
-		$_error_level = 0 +
+		$error_level = 0 +
 			($GLOBALS['we']['errorhandler']['deprecated'] ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
 			($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE | E_STRICT : 0) +
 			($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
 			($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
-		error_reporting($_error_level);
-		ini_set('error_reporting', $_error_level);
+		error_reporting($error_level);
+		ini_set('error_reporting', $error_level);
 
-		set_error_handler('error_handler', $_error_level);
+		set_error_handler('error_handler', $error_level);
 		register_shutdown_function('shutdown_handler');
 		set_exception_handler('we_exception_handler');
 	} else {
@@ -153,15 +153,15 @@ function translate_error_type($type){
 }
 
 function getBacktrace(array $skip = array()){
-	$_detailedError = $_caller = $_file = $_line = '';
+	$detailedError = $caller = $file = $line = '';
 
-	$_backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+	$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 	$cnt = 0;
 	$found = false;
 	//error handler called directly caused by an error
-	foreach($_backtrace as $no => $arr){
+	foreach($backtrace as $no => $arr){
 		if($arr['function'] === 't_e'){
-			unset($_backtrace[$no - 1]);
+			unset($backtrace[$no - 1]);
 			$found = true;
 
 			break;
@@ -172,18 +172,18 @@ function getBacktrace(array $skip = array()){
 		unset($skip[$pos]);
 	}
 
-	foreach($_backtrace as $no => $arr){
+	foreach($backtrace as $no => $arr){
 		//NOTE: error_handler holds line no & filename of the callee if not called by t_e
 		if(in_array($arr['function'], $skip)){
 			continue;
 		} else if($cnt == 0){ //this is the caller
-			$_caller = $arr['function'];
-			$_file = (isset($arr['file']) ? str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), '', $arr['file']) : '');
-			$_line = (isset($arr['line']) ? $arr['line'] : '');
+			$caller = $arr['function'];
+			$file = (isset($arr['file']) ? str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), '', $arr['file']) : '');
+			$line = (isset($arr['line']) ? $arr['line'] : '');
 		}
-		$_detailedError .='#' . ($cnt++) . ' ' . $arr['function'] . ' called at [' . (isset($arr['file']) ? str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), '', $arr['file']) : '') . ':' . (isset($arr['line']) ? $arr['line'] : '') . "]\n";
+		$detailedError .='#' . ($cnt++) . ' ' . $arr['function'] . ' called at [' . (isset($arr['file']) ? str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), '', $arr['file']) : '') . ':' . (isset($arr['line']) ? $arr['line'] : '') . "]\n";
 	}
-	return array($_detailedError, $_caller, $_file, $_line);
+	return array($detailedError, $caller, $file, $line);
 }
 
 /**
@@ -194,9 +194,9 @@ function getBacktrace(array $skip = array()){
  * @return         bool
  */
 function display_error_message($type, $message, $file, $line, $skipBT = false){
-	$detailedError = $_caller = '-';
+	$detailedError = $caller = '-';
 	if($skipBT === false){
-		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'display_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'display_error_message')));
+		list($detailedError, $caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'display_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'display_error_message')));
 	} else if(is_string($skipBT)){
 		$detailedError = $skipBT;
 	}
@@ -299,34 +299,34 @@ function getVariableMax($var){
 	return $var . '="' . escape_sql_query($ret) . '"';
 }
 
-function log_error_message($type, $message, $file, $_line, $skipBT = false){
+function log_error_message($type, $message, $file, $line, $skipBT = false){
 	static $max = 500;
 	if(--$max < 0){
 		//don't log more messages per request
 		return;
 	}
 	require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we_db_tools.inc.php');
-	$_detailedError = $_caller = '-';
+	$detailedError = $caller = '-';
 	if($skipBT === false){
-		list($_detailedError, $_caller, $file, $_line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'log_error_message')));
+		list($detailedError, $caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'log_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'log_error_message')));
 	} else if(is_string($skipBT)){
-		$_detailedError = $skipBT;
+		$detailedError = $skipBT;
 	}
 
 	// Log the error
 	if(defined('DB_HOST') && defined('DB_USER') && defined('DB_PASSWORD') && defined('DB_DATABASE')){
 		$logVars = array('Request', 'Session', 'Server');
 		$tbl = defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : TBL_PREFIX . 'tblErrorLog';
-		$_query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query(translate_error_type($type)) . '",
-			`Function`="' . escape_sql_query($_caller) . '",
+		$query = 'INSERT INTO ' . $tbl . ' SET Type="' . escape_sql_query(translate_error_type($type)) . '",
+			`Function`="' . escape_sql_query($caller) . '",
 			File="' . escape_sql_query(str_replace(array(realpath($_SERVER['DOCUMENT_ROOT']) . '/', $_SERVER['DOCUMENT_ROOT'] . '/', $_SERVER['DOCUMENT_ROOT']), 'SECURITY_REPL_DOC_ROOT/', $file)) . '",
-			Line=' . intval($_line) . ',
+			Line=' . intval($line) . ',
 			Text="' . escape_sql_query(str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $message)) . '",
-			Backtrace="' . escape_sql_query($_detailedError) . '"';
+			Backtrace="' . escape_sql_query($detailedError) . '"';
 		if(isset($GLOBALS['DB_WE'])){
 			$db = new DB_WE();
-			if(!$db->query($_query)){
-				mail_error_message($type, 'Cannot log error! Query failed: ' . $message, $file, $_line, $skipBT);
+			if(!$db->query($query)){
+				mail_error_message($type, 'Cannot log error! Query failed: ' . $message, $file, $line, $skipBT);
 			} else {
 				$id = $db->getInsertId();
 				foreach($logVars as $var){
@@ -344,8 +344,8 @@ function log_error_message($type, $message, $file, $_line, $skipBT = false){
 
 			$link = $connect(DB_HOST, DB_USER, DB_PASSWORD) or die('Cannot log error! Could not connect: ' . $err());
 			$select($link, DB_DATABASE) or die('Cannot log error! Could not select database.');
-			if($query($link, $_query) === FALSE){
-				mail_error_message($type, 'Cannot log error! Query failed: ' . $message, $file, $_line, $skipBT);
+			if($query($link, $query) === FALSE){
+				mail_error_message($type, 'Cannot log error! Query failed: ' . $message, $file, $line, $skipBT);
 				//die('Cannot log error! Query failed: ' . mysql_error());
 			} else {
 				$id = $insert($link);
@@ -368,17 +368,17 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 		//don't mail more than this
 		return;
 	}
-	$detailedError = $_caller = '-';
+	$detailedError = $caller = '-';
 	if($skipBT === false){
-		list($detailedError, $_caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'mail_error_message')));
+		list($detailedError, $caller, $file, $line) = getBacktrace(($type == E_SQL ? array('error_showDevice', 'trigger_error', 'error_handler', 'getBacktrace', 'mail_error_message') : array('error_showDevice', 'error_handler', 'getBacktrace', 'mail_error_message')));
 	} else if(is_array($skipBT)){
-		list($detailedError, $_caller, $file, $line) = $skipBT;
+		list($detailedError, $caller, $file, $line) = $skipBT;
 	}
 
 	$ttype = translate_error_type($type);
 
 	// Build the error table
-	$_detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
+	$detailedError = "An error occurred while executing a script in webEdition.\n\n\n" .
 		($insertID && function_exists('getServerUrl') ?
 			getServerUrl() . WEBEDITION_DIR . 'errorlog.php?function=pos&ID=' . $insertID . "\n\n" : '') .
 // Domain
@@ -392,19 +392,19 @@ function mail_error_message($type, $message, $file, $line, $skipBT = false, $ins
 		'Script name: ' . str_replace($_SERVER['DOCUMENT_ROOT'], 'SECURITY_REPL_DOC_ROOT', $file) . "\n" .
 		// Line
 		'Line number: ' . $line . "\n" .
-		'Caller: ' . $_caller . "\n" .
+		'Caller: ' . $caller . "\n" .
 		'Backtrace: ' . $detailedError;
 
 	// Log the error
 	if(defined('WE_ERROR_MAIL_ADDRESS')){
-		if(!mail(WE_ERROR_MAIL_ADDRESS, $ttype . ': ' . $_SERVER['SERVER_NAME'] . '(webEdition)', $_detailedError)){
+		if(!mail(WE_ERROR_MAIL_ADDRESS, $ttype . ': ' . $_SERVER['SERVER_NAME'] . '(webEdition)', $detailedError)){
 			if(in_array($type, array('E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'))){
-				echo 'Cannot log error! Could not send e-mail: <pre>' . $_detailedError . '</pre>';
+				echo 'Cannot log error! Could not send e-mail: <pre>' . $detailedError . '</pre>';
 			}
 		}
 	} else {
 		if(in_array($type, array('E_ERROR', 'E_CORE_ERROR', 'E_COMPILE_ERROR', 'E_USER_ERROR'))){
-			echo 'Cannot log error! Could not send e-mail due to no known recipient: <pre>' . $_detailedError . '</pre>';
+			echo 'Cannot log error! Could not send e-mail due to no known recipient: <pre>' . $detailedError . '</pre>';
 		}
 	}
 }

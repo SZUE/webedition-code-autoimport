@@ -414,7 +414,7 @@ function closeAllType(){
 		}
 
 
-		$_progress_update = '';
+		$progress_update = '';
 		$exports = 0;
 		if(!isset($_SESSION['weS']['ExImRefTable'])){
 
@@ -478,7 +478,7 @@ function closeAllType(){
 
 
 			if(!$xmlExIm->prepare){
-				$_progress_update = we_html_element::jsElement('
+				$progress_update = we_html_element::jsElement('
 if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[start_export]') . ' - ' . date("d.m.Y H:i:s"))) . '");
 if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[prepare]'))) . '");
 if (top.content.editor.edfooter.doProgress){
@@ -500,7 +500,7 @@ if(top.content.editor.edbody.addLog){
 			} else {
 				$percent = round(max(min(($all ? (($xmlExIm->RefTable->current / $all) * 100) : 0), 100), 0), 2);
 
-				$_progress_update = we_html_element::jsElement('
+				$progress_update = we_html_element::jsElement('
 									if (top.content.editor.edfooter.doProgress) top.content.editor.edfooter.doProgress("' . $percent . '");
 									if(top.content.editor.edfooter.setProgressText) top.content.editor.edfooter.setProgressText("current_description","' . g_l('export', '[prepare]') . '");
 							');
@@ -513,7 +513,7 @@ if(top.content.editor.edbody.addLog){
 					"all" => $all,
 					"cmd" => "do_export"));
 
-			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $progress_update
 					)
 			);
 		}
@@ -535,47 +535,47 @@ if(top.content.editor.edbody.addLog){
 
 				switch($ref->ContentType){
 					case 'weBinary':
-						$_progress_update .= "\n" .
+						$progress_update .= "\n" .
 							we_html_element::jsElement('
 											if (top.content.editor.edbody.addLog) top.content.editor.edbody.addLog("' . addslashes(we_html_element::htmlB(g_l('export', '[weBinary]'))) . '&nbsp;&nbsp;' . $ref->ID . '");
 										') . "\n";
 						$proceed = false;
 						break;
 					case 'doctype':
-						$_path = f('SELECT DocType FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
+						$path = f('SELECT DocType FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 					case 'weNavigationRule':
-						$_path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
+						$path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 					case 'weThumbnail':
-						$_path = f('SELECT Name FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
+						$path = f('SELECT Name FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
 
 					default:
-						$_path = id_to_path($ref->ID, $table);
+						$path = id_to_path($ref->ID, $table);
 						$proceed = true;
 						break;
 				}
 				if($proceed){
-					$_progress_text = we_html_element::htmlB(g_l('contentTypes', '[' . $ref->ContentType . ']', true) !== false ? g_l('contentTypes', '[' . $ref->ContentType . ']') : (g_l('export', '[' . $ref->ContentType . ']', true) !== false ? g_l('export', '[' . $ref->ContentType . ']') : '')) . '&nbsp;&nbsp;' . $_path;
+					$progress_text = we_html_element::htmlB(g_l('contentTypes', '[' . $ref->ContentType . ']', true) !== false ? g_l('contentTypes', '[' . $ref->ContentType . ']') : (g_l('export', '[' . $ref->ContentType . ']', true) !== false ? g_l('export', '[' . $ref->ContentType . ']') : '')) . '&nbsp;&nbsp;' . $path;
 
-					if(strlen($_path) > 75){
-						$_progress_text = addslashes(substr($_progress_text, 0, 65) . '<abbr title="' . $_path . '">...</abbr>' . substr($_progress_text, -10));
+					if(strlen($path) > 75){
+						$progress_text = addslashes(substr($progress_text, 0, 65) . '<abbr title="' . $path . '">...</abbr>' . substr($progress_text, -10));
 					}
 
-					$_progress_update .= we_html_element::jsElement('
+					$progress_update .= we_html_element::jsElement('
 if (top.content.editor.edbody.addLog){
-	top.content.editor.edbody.addLog("' . addslashes($_progress_text) . '");
+	top.content.editor.edbody.addLog("' . addslashes($progress_text) . '");
 }');
 				}
 			}
 		}
 
 		$percent = round(max(min(($all ? intval(($exports / $all) * 100) : 0), 100), 0), 2);
-		$_progress_update .= we_html_element::jsElement('
+		$progress_update .= we_html_element::jsElement('
 if (top.content.editor.edfooter.doProgress){
 	top.content.editor.edfooter.doProgress(' . $percent . ');
 }');
@@ -587,14 +587,14 @@ if (top.content.editor.edfooter.doProgress){
 				"cmd" => "do_export"));
 
 		if($all > $exports){
-			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $_progress_update
+			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $progress_update
 					)
 			);
 		}
 		if(is_writable($this->View->export->ExportFilename)){
 			we_base_file::save($this->View->export->ExportFilename, we_exim_XMLExIm::getFooter(), "ab");
 		}
-		$_progress_update .= we_html_element::jsElement('
+		$progress_update .= we_html_element::jsElement('
 function showEndStatus(){
 	' . we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ';
 }
@@ -617,7 +617,7 @@ if (top.content.editor.edbody.addLog){
 				)
 		);
 
-		$out = we_html_tools::getHtmlTop('', '', '', $_progress_update, we_html_element::htmlBody(
+		$out = we_html_tools::getHtmlTop('', '', '', $progress_update, we_html_element::htmlBody(
 					array(
 						'style' => 'margin:5px;',
 						"onload" => ($this->View->export->ExportTo === 'local' ?
@@ -632,24 +632,24 @@ if (top.content.editor.edbody.addLog){
 	}
 
 	private function getUploadCode(){
-		if(($_filename = we_base_request::_(we_base_request::FILE, "exportfile"))){
-			$_filename = basename(urldecode($_filename));
+		if(($filename = we_base_request::_(we_base_request::FILE, "exportfile"))){
+			$filename = basename(urldecode($filename));
 
-			if(file_exists(TEMP_PATH . $_filename) // Does file exist?
-				&& !preg_match('%p?html?%i', $_filename) && stripos($_filename, "inc") === false && !preg_match('%php3?%i', $_filename)){ // Security check
+			if(file_exists(TEMP_PATH . $filename) // Does file exist?
+				&& !preg_match('%p?html?%i', $filename) && stripos($filename, "inc") === false && !preg_match('%php3?%i', $filename)){ // Security check
 				session_write_close();
-				$_size = filesize(TEMP_PATH . $_filename);
+				$size = filesize(TEMP_PATH . $filename);
 
 				header("Pragma: public");
 				header("Expires: 0");
 				header("Cache-control: private, max-age=0, must-revalidate");
 
 				header("Content-Type: application/octet-stream");
-				header('Content-Disposition: attachment; filename="' . trim(htmlentities($_filename)) . '"');
-				header("Content-Description: " . trim(htmlentities($_filename)));
-				header("Content-Length: " . $_size);
+				header('Content-Disposition: attachment; filename="' . trim(htmlentities($filename)) . '"');
+				header("Content-Description: " . trim(htmlentities($filename)));
+				header("Content-Length: " . $size);
 
-				readfile(TEMP_PATH . $_filename);
+				readfile(TEMP_PATH . $filename);
 			} else {
 				header("Location: " . WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=cmd&cmd=upload_failed');
 			}

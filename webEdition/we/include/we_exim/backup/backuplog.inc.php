@@ -23,7 +23,7 @@
  */
 
 if(permissionhandler::hasPerm("BACKUPLOG")){
-	$_parts = array(
+	$parts = array(
 		array(
 			'headline' => g_l('backup', '[view_log]'),
 			'html' => '',
@@ -38,7 +38,7 @@ if(permissionhandler::hasPerm("BACKUPLOG")){
 		)
 	);
 } else {
-	$_parts = array(
+	$parts = array(
 		array(
 			'headline' => '',
 			'html' => '<p>' . g_l('backup', '[view_log_no_perm]') . '</p>',
@@ -60,7 +60,7 @@ echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]')) .
 		$buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
 
 		echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML('', $_parts, 30, $buttons);
+		we_html_multiIconBox::getHTML('', $parts, 30, $buttons);
 		?>
 	</div>
 

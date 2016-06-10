@@ -57,7 +57,7 @@ class we_metadata_Exif extends we_metadata_metaData{
 		} else {
 // fetch all
 			if(@exif_imagetype($this->datasource)){
-				$_metadata = @exif_read_data($this->datasource);
+				$metadata = @exif_read_data($this->datasource);
 			} else {
 				$this->_valid = false;
 				return false;
@@ -65,8 +65,8 @@ class we_metadata_Exif extends we_metadata_metaData{
 		}
 
 		foreach(explode(',', self::usedFields) as $value){
-			if(isset($_metadata[$value])){
-				$this->metadata[$value] = $_metadata[$value];
+			if(isset($metadata[$value])){
+				$this->metadata[$value] = $metadata[$value];
 			}
 		}
 

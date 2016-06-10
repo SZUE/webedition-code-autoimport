@@ -36,12 +36,12 @@ class we_navigation_tree extends we_tree_base{
 	static function getItems($ParentID = 0, $offset = 0, $segment = 500){
 		$db = new DB_WE();
 
-		$items = $_aWsQuery = $parentpaths = array();
+		$items = $aWsQuery = $parentpaths = array();
 
 		if(($ws = get_ws(NAVIGATION_TABLE))){
 			$wsPathArray = id_to_path($ws, NAVIGATION_TABLE, $db, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
+				$aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
 				while($path != "/" && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
@@ -66,7 +66,7 @@ class we_navigation_tree extends we_tree_base{
 			);
 		}
 
-		$where = ($_aWsQuery ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '') . ' ParentID=' . intval($ParentID) . ' ';
+		$where = ($aWsQuery ? '(' . implode(' OR ', $aWsQuery) . ') AND ' : '') . ' ParentID=' . intval($ParentID) . ' ';
 
 		$db->query('SELECT ID,ParentID,Path,Text,IsFolder,Ordn,Depended,Charset,abs(text) as Nr, (text REGEXP "^[0-9]") AS isNr FROM ' . NAVIGATION_TABLE . ' WHERE ' . $where . ' ORDER BY Ordn, isNr DESC,Nr,Text ' . ($segment ? 'LIMIT ' . $offset . ',' . $segment : ''));
 
@@ -89,21 +89,21 @@ class we_navigation_tree extends we_tree_base{
 				$fileds[strtolower($k)] = $v;
 			}
 
-			$_charset = ($db->f('IsFolder') == 0 ?
+			$charset = ($db->f('IsFolder') == 0 ?
 							we_navigation_navigation::findCharset($db->f('ParentID')) :
 							$db->f('Charset'));
 
-			$_text = strip_tags(strtr($db->f('Text'), array(
+			$text = strip_tags(strtr($db->f('Text'), array(
 				'&amp;' => '&', "<br/>" => " ", "<br />" => " "
 			)));
-			$_path = str_replace('&amp;', '&', $db->f('Path'));
+			$path = str_replace('&amp;', '&', $db->f('Path'));
 
-			if(!empty($_charset) && function_exists('mb_convert_encoding')){
-				$typ['text'] = mb_convert_encoding($_text, 'HTML-ENTITIES', $_charset);
-				$typ['path'] = mb_convert_encoding($_path, 'HTML-ENTITIES', $_charset);
+			if(!empty($charset) && function_exists('mb_convert_encoding')){
+				$typ['text'] = mb_convert_encoding($text, 'HTML-ENTITIES', $charset);
+				$typ['path'] = mb_convert_encoding($path, 'HTML-ENTITIES', $charset);
 			} else {
-				$typ['text'] = $_text;
-				$typ['path'] = $_path;
+				$typ['text'] = $text;
+				$typ['path'] = $path;
 			}
 
 			$items[] = array_merge($fileds, $typ);

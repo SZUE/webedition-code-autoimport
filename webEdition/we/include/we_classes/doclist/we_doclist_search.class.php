@@ -34,7 +34,7 @@ class we_doclist_search extends we_search_search{
 	public function searchProperties($model, $table = ''){ // FIXME: handle model in like in other searches
 		$DB_WE = new DB_WE();
 		$foundItems = 0;
-		$_result = $saveArrayIds = $currentSearch = array();
+		$result = $saveArrayIds = $currentSearch = array();
 		$_SESSION['weS']['weSearch']['foundItems'] = 0;
 
 		$currentSearchFields = $model->getProperty('currentSearchFields');
@@ -42,7 +42,7 @@ class we_doclist_search extends we_search_search{
 		$table = $table ? : (($t = $model->getProperty('currentSearchTables')) ? $t[0] : FILE_TABLE);
 		$currentLocation = $model->getProperty('currentLocation');
 		$currentOrder = $model->getProperty('currentOrder');
-		//$_view = $model->getProperty('currentSetView');
+		//$view = $model->getProperty('currentSetView');
 		$currentSearchstart = $model->getProperty('currentSearchstart');
 		$currentAnzahl = $model->getProperty('currentAnzahl');
 		$currentFolderID = $model->getProperty('currentFolderID');
@@ -142,7 +142,7 @@ class we_doclist_search extends we_search_search{
 			while($this->next_record()){
 				if(!isset($saveArrayIds[$this->Record['ContentType']][$this->Record['docID']])){
 					$saveArrayIds[$this->Record['ContentType']][$this->Record['docID']] = $this->Record['docID'];
-					$_result[] = array_merge(array('Table' => $table), $this->Record);
+					$result[] = array_merge(array('Table' => $table), $this->Record);
 				}
 			}
 		}
@@ -152,21 +152,21 @@ class we_doclist_search extends we_search_search{
 		}
 		$this->createTempTable();
 
-		foreach($_result as $k => $v){
-			$_result[$k]['Description'] = '';
-			if($_result[$k]['Table'] == FILE_TABLE && $_result[$k]['Published'] >= $_result[$k]['ModDate'] && $_result[$k]['Published'] != 0){
-				$_result[$k]['Description'] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' f LEFT JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ID=' . intval($_result[$k]['docID']) . ' AND l.nHash=x\'' . md5("Description") . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"', '', $DB_WE);
+		foreach($result as $k => $v){
+			$result[$k]['Description'] = '';
+			if($result[$k]['Table'] == FILE_TABLE && $result[$k]['Published'] >= $result[$k]['ModDate'] && $result[$k]['Published'] != 0){
+				$result[$k]['Description'] = f('SELECT c.Dat FROM (' . FILE_TABLE . ' f LEFT JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID)) LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE f.ID=' . intval($result[$k]['docID']) . ' AND l.nHash=x\'' . md5("Description") . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"', '', $DB_WE);
 			} else {
-				if(($obj = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($_result[$k]["docID"]) . ' AND DocTable="tblFile" AND Active=1', '', $DB_WE))){
+				if(($obj = f('SELECT DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE DocumentID=' . intval($result[$k]["docID"]) . ' AND DocTable="tblFile" AND Active=1', '', $DB_WE))){
 					$tempDoc = we_unserialize($obj);
 					if(isset($tempDoc[0]['elements']['Description']) && $tempDoc[0]['elements']['Description']['dat']){
-						$_result[$k]['Description'] = $tempDoc[0]['elements']['Description']['dat'];
+						$result[$k]['Description'] = $tempDoc[0]['elements']['Description']['dat'];
 					}
 				}
 			}
 		}
 
-		return $_result;
+		return $result;
 	}
 
 }

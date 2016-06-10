@@ -67,12 +67,12 @@ class we_dialog_image extends we_dialog_base{
 				parse_str($tokkens[1], $foo);
 				if(isset($foo['id'])){
 					$id = $foo['id'];
-					$_fileScr = $tokkens[0];
+					$fileScr = $tokkens[0];
 				} else if(isset($foo['thumb'])){
 					$foo = explode(',', $foo['thumb']);
 					$id = $foo[0];
 					$thumb = $foo[1];
-					$_fileScr = id_to_path($id);
+					$fileScr = id_to_path($id);
 				}
 			}
 
@@ -80,7 +80,7 @@ class we_dialog_image extends we_dialog_base{
 				$this->args["type"] = we_base_link::TYPE_INT;
 				$this->args["extSrc"] = '';
 				$this->args["fileID"] = $id;
-				$this->args["fileSrc"] = $id == 0 ? '' : $_fileScr;
+				$this->args["fileSrc"] = $id == 0 ? '' : $fileScr;
 				$this->args["thumbnail"] = $thumb;
 			} else {
 				$this->args["type"] = we_base_link::TYPE_EXT;
@@ -245,7 +245,7 @@ class we_dialog_image extends we_dialog_base{
 			$intSrc = '';
 			$thumbnails = '';
 
-			$_longdesc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[longdesc]', 30, str_replace('"', '&quot;', (isset($this->args["longdesc"]) ? $this->args["longdesc"] : "")), "", '', "text", 520), g_l('weClass', '[longdesc_text]'));
+			$longdesc = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[longdesc]', 30, str_replace('"', '&quot;', (isset($this->args["longdesc"]) ? $this->args["longdesc"] : "")), "", '', "text", 520), g_l('weClass', '[longdesc_text]'));
 		} else {
 			/**
 			 * input for external image files
@@ -335,7 +335,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setTrashButton($but2);
 			$yuiSuggest->setAdditionalButton('');
 
-			$_longdesc = $yuiSuggest->getHTML();
+			$longdesc = $yuiSuggest->getHTML();
 		}
 
 
@@ -407,7 +407,7 @@ class we_dialog_image extends we_dialog_base{
 					<tr><td style="padding-bottom:15px;">' . $border . '</td><td style="padding-bottom:15px;">' . $hspace . '</td><td style="padding-bottom:15px;">' . $vspace . '</td></tr>
 					<tr><td colspan="3" style="padding-bottom:15px;">' . $alt . '</td></tr>
 					<tr><td colspan="3" style="padding-bottom:15px;">' . $title . '</td></tr>
-					<tr><td colspan="3" style="padding-bottom:15px;">' . $_longdesc . '</td></tr>
+					<tr><td colspan="3" style="padding-bottom:15px;">' . $longdesc . '</td></tr>
 				</table>
 				<div></div>' .
 			we_html_element::htmlHiddens(array(
@@ -429,10 +429,10 @@ class we_dialog_image extends we_dialog_base{
 	}
 
 	private function getDisplayThumbsSel(){
-		$_p = (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "");
-		$tmp = $_p ? explode('.', $_p) : array();
+		$p = (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "");
+		$tmp = $p ? explode('.', $p) : array();
 		$extension = count($tmp) > 1 ? '.' . $tmp[count($tmp) - 1] : '';
-		unset($_p);
+		unset($p);
 
 		return (we_base_imageEdit::gd_version() > 0 && we_base_imageEdit::is_imagetype_supported(isset(we_base_imageEdit::$GDIMAGE_TYPE[strtolower($extension)]) ? we_base_imageEdit::$GDIMAGE_TYPE[strtolower($extension)] : "") && isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT) ? "block" : "none";
 	}

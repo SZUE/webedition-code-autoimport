@@ -172,19 +172,19 @@ abstract class we_customer_abstractFilter{
 		$hasPermission = false;
 		$flag = false;
 		$invalidFields = array();
-		foreach($this->_filter as $_filter){
-			if(!isset($_SESSION['webuser'][$_filter['field']])){
-				$invalidFields[] = $_filter['field'];
+		foreach($this->_filter as $filter){
+			if(!isset($_SESSION['webuser'][$filter['field']])){
+				$invalidFields[] = $filter['field'];
 				continue;
 			}
-			if($flag && (trim($_filter['logic']) === 'AND')){
-				$hasPermission&=self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
+			if($flag && (trim($filter['logic']) === 'AND')){
+				$hasPermission&=self::evalSingleFilter($filter['operation'], $filter['field'], $filter['value']);
 			} else {
 				if($hasPermission){
 					$flag = true;
 					continue;
 				}
-				$hasPermission = self::evalSingleFilter($_filter['operation'], $_filter['field'], $_filter['value']);
+				$hasPermission = self::evalSingleFilter($filter['operation'], $filter['field'], $filter['value']);
 			}
 			$flag = true;
 		}
@@ -231,9 +231,9 @@ abstract class we_customer_abstractFilter{
 	public static function getQueryFromFilter(array $filter){
 		$flag = false;
 		$ret = '';
-		foreach($filter as $_filter){
+		foreach($filter as $filter){
 			//FIXME: read webuser table to check for nonexistent fields
-			$ret.=($flag ? ' ' . $_filter['logic'] . ' ' : '') . self::evalSingleFilterQuery($_filter['operation'], $_filter['field'], $_filter['value']);
+			$ret.=($flag ? ' ' . $filter['logic'] . ' ' : '') . self::evalSingleFilterQuery($filter['operation'], $filter['field'], $filter['value']);
 			$flag = true;
 		}
 		return $ret ? '(' . $ret . ')' : '';

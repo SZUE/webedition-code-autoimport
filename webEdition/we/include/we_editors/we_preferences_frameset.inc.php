@@ -53,7 +53,7 @@ echo we_html_tools::getHtmlTop() .
 $tabname = we_base_request::_(we_base_request::STRING, "tabname", we_base_request::_(we_base_request::STRING, 'we_cmd', "setting_ui", 1));
 
 // Define needed JS
-$_javascript = <<< END_OF_SCRIPT
+$javascript = <<< END_OF_SCRIPT
 var WE=opener.WE;
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
@@ -63,20 +63,20 @@ function we_cmd() {
 END_OF_SCRIPT;
 foreach(array_keys($GLOBALS['tabs']) as $name){
 	if(empty($perm) || permissionhandler::hasPerm($perm)){
-		$_javascript.='case "' . $name . '":
+		$javascript.='case "' . $name . '":
 ';
 	}
 }
-$_javascript.='default:
+$javascript.='default:
 ';
 foreach(array_keys($GLOBALS['tabs']) as $name){
-	$_javascript.="try{
+	$javascript.="try{
 		content.document.getElementById('setting_" . $name . "').style.display = 'none';
 	}catch(e){}
 ";
 }
 
-$_javascript .= "
+$javascript .= "
 		try{
 				content.document.getElementById('setting_' + args[0]).style.display = '';
 		}catch(e){}
@@ -97,7 +97,7 @@ function saveOnKeyBoard() {
 }";
 
 
-echo we_html_element::jsElement($_javascript) .
+echo we_html_element::jsElement($javascript) .
  "</head>";
 
 include(WE_INCLUDES_PATH . 'we_editors/we_preferences_footer.inc.php');
