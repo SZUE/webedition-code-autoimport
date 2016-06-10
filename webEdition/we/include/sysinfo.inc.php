@@ -33,10 +33,10 @@ function getInfoTable($infoArr, $name){
 
 	foreach($infoArr as $k => $v){
 
-		$_style = ($i % 2 ? '' : "background: #D4DBFA;");
+		$style = ($i % 2 ? '' : "background: #D4DBFA;");
 
 		$table->addRow(1);
-		$table->setRow($i, array("class" => "defaultfont", "style" => $_style . "height:20px;"));
+		$table->setRow($i, array("class" => "defaultfont", "style" => $style . "height:20px;"));
 		$table->setCol($i, 0, array("style" => "width: 200px; height: 20px; padding-left: 10px;", 'class' => 'bold'), $k);
 		$table->setCol($i, 1, array("style" => "width: 250px; height: 20px; padding-left: 10px;"), parseValue($k, $v));
 		$i++;
@@ -120,23 +120,23 @@ function convertToMb($value){
 }
 
 function getConnectionTypes(){
-	$_connectionTypes = array();
+	$connectionTypes = array();
 	if(ini_get('allow_url_fopen') == 1){
-		$_connectionTypes[] = "fopen";
-		$_connectionTypeUsed = "fopen";
+		$connectionTypes[] = "fopen";
+		$connectionTypeUsed = "fopen";
 	}
 	if(is_callable('curl_exec')){
-		$_connectionTypes[] = "curl";
-		if(count($_connectionTypes) == 1){
-			$_connectionTypeUsed = "curl";
+		$connectionTypes[] = "curl";
+		if(count($connectionTypes) == 1){
+			$connectionTypeUsed = "curl";
 		}
 	}
-	foreach($_connectionTypes as &$con){
-		if($con == $_connectionTypeUsed){
+	foreach($connectionTypes as &$con){
+		if($con == $connectionTypeUsed){
 			$con = '<u>' . $con . '</u>';
 		}
 	}
-	return $_connectionTypes;
+	return $connectionTypes;
 }
 
 function getWarning($message, $value){
@@ -157,7 +157,7 @@ function getOK($message = '', $value = ''){
 	return '<div class="sysinfoMsg" title="' . $message . '">' . $value . '<span class="ok fa fa-lg fa-check fa-ok"></span></div>';
 }
 
-$_install_dir = '<abbr title="' . $_SERVER['DOCUMENT_ROOT'] . '">' . we_base_util::shortenPath(WEBEDITION_PATH, 35) . '</abbr>';
+$install_dir = '<abbr title="' . $_SERVER['DOCUMENT_ROOT'] . '">' . we_base_util::shortenPath(WEBEDITION_PATH, 35) . '</abbr>';
 
 $weVersion = WE_VERSION .
 	(defined('WE_SVNREV') && WE_SVNREV != '0000' ? ' (SVN-Revision: ' . WE_SVNREV . (defined('WE_VERSION_HOTFIX_NR') && WE_VERSION_HOTFIX_NR ? ' , h' . WE_VERSION_HOTFIX_NR . ',' : '') . ((defined('WE_VERSION_BRANCH') && WE_VERSION_BRANCH != 'trunk') ? ' ' . WE_VERSION_BRANCH : '') . ')' : '') .
@@ -200,13 +200,13 @@ if(extension_loaded('suhosin')){
 
 $lockTables = $GLOBALS['DB_WE']->hasLock();
 //$allowTempTables = we_search_search::checkRightTempTable();
-$_info = array(
+$info = array(
 	'webEdition' => array(
 		g_l('sysinfo', '[we_version]') => $weVersion,
 		g_l('sysinfo', '[server_name]') => $_SERVER['SERVER_NAME'],
 		g_l('sysinfo', '[port]') => $_SERVER['SERVER_PORT'] ? : 80,
 		g_l('sysinfo', '[protocol]') => getServerProtocol(),
-		g_l('sysinfo', '[installation_folder]') => $_install_dir,
+		g_l('sysinfo', '[installation_folder]') => $install_dir,
 		g_l('sysinfo', '[we_max_upload_size]') => getUploadMaxFilesize(),
 		g_l('import', '[pfx]') => TBL_PREFIX
 	),
@@ -253,7 +253,7 @@ $_info = array(
 );
 
 
-$_types = array(
+$types = array(
 	'upload_max_filesize' => 'bytes',
 	'memory_limit' => 'bytes',
 	'max_allowed_packet' => 'bytes',
@@ -262,16 +262,16 @@ $_types = array(
 
 $buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
 
-$_parts = array();
-foreach($_info as $_k => $_v){
-	$_parts[] = array(
-		'headline' => $_k,
-		'html' => getInfoTable($_v, strip_tags($_k)),
+$parts = array();
+foreach($info as $k => $v){
+	$parts[] = array(
+		'headline' => $k,
+		'html' => getInfoTable($v, strip_tags($k)),
 		'space' => we_html_multiIconBox::SPACE_MED2
 	);
 }
 
-$_parts[] = array(
+$parts[] = array(
 	'headline' => '',
 	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '&hellip;</a>',
 	'space' => we_html_multiIconBox::SPACE_SMALL
@@ -284,12 +284,12 @@ echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', STYLESHEET .
 	<div id="info" style="display: block;">
 <?php
 echo we_html_multiIconBox::getJS() .
- we_html_multiIconBox::getHTML('', $_parts, 30, $buttons);
+ we_html_multiIconBox::getHTML('', $parts, 30, $buttons);
 ?>
 	</div>
 	<div id="more" style="display:none;">
 <?php
-$_parts = array(
+$parts = array(
 	array(
 		'headline' => '',
 		'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . ' &hellip;</iframe>',
@@ -301,7 +301,7 @@ $_parts = array(
 	),
 );
 
-echo we_html_multiIconBox::getHTML('', $_parts, 30, $buttons);
+echo we_html_multiIconBox::getHTML('', $parts, 30, $buttons);
 ?>
 	</div>
 </body>

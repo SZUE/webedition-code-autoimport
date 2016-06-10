@@ -1407,7 +1407,7 @@ class we_search_search extends we_search_base{
 	}
 
 	static function cleanOldEntries(){
-		$GLOBALS['DB_WE']->query('DELETE FROM ' . SEARCHRESULT_TABLE . ' WHERE UID IN (SELECT ID FROM ' . USER_TABLE . ' WHERE (Ping+INTERVAL ' . we_base_constants::PING_TOLERANZ . ' second)<NOW() )');
+		$GLOBALS['DB_WE']->query('DELETE FROM ' . SEARCHRESULT_TABLE . ' WHERE UID IN (SELECT ID FROM ' . USER_TABLE . ' WHERE Ping IS NULL OR (Ping+INTERVAL ' . we_base_constants::PING_TOLERANZ . ' second)<NOW() )');
 	}
 
 	private function getSearchString($table, $tables, $opAND, $searchFields, $whichSearch, $searchForField, $searchText, $location, $searchForContentType, $DB_WE, $view){
