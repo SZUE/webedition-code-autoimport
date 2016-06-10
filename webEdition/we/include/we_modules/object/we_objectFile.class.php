@@ -1312,29 +1312,30 @@ class we_objectFile extends we_document{
 
 	private function getTextareaHTML($type, $name, array $attribs, $editable = true, $variant = false){
 		if(!$editable){
-			return $this->getPreviewView($name, $this->getFieldByVal($this->getElement($name), "txt", $attribs));
+			return $this->getPreviewView($name, $this->getFieldByVal($this->getElement($name), 'txt', $attribs));
 		}
 		//	send charset which might be determined in template
 		$charset = (isset($this->Charset) ? $this->Charset : DEFAULT_CHARSET);
 
 		$value = $this->getElement($name);
-		$attribs["width"] = isset($attribs["width"]) ? $attribs["width"] : 620;
-		$attribs["height"] = isset($attribs["height"]) ? $attribs["height"] : 200;
-		$attribs["rows"] = 10;
-		$attribs["cols"] = 60;
-		$attribs['tinyparams'] = isset($attribs["tinyparams"]) ? $attribs["tinyparams"] : "";
-		$attribs['templates'] = isset($attribs["templates"]) ? $attribs["templates"] : "";
-		$attribs["class"] = isset($attribs["class"]) ? $attribs["class"] : "";
-		if(isset($attribs["cssClasses"])){
-			$attribs["classes"] = $attribs["cssClasses"];
+		$attribs['width'] = isset($attribs['width']) ? $attribs['width'] : 620;
+		$attribs['height'] = isset($attribs['height']) ? $attribs['height'] : 200;
+		$attribs['rows'] = 10;
+		$attribs['cols'] = 60;
+		$attribs['commands'] = preg_replace('/ *, */', ',', isset($attribs['commands']) && $attribs['commands'] ? $attribs['commands'] : COMMANDS_DEFAULT);
+		$attribs['tinyparams'] = isset($attribs['tinyparams']) ? $attribs['tinyparams'] : '';
+		$attribs['templates'] = isset($attribs['templates']) ? $attribs['templates'] : '';
+		$attribs['class'] = isset($attribs['class']) ? $attribs['class'] : '';
+		if(isset($attribs['cssClasses'])){
+			$attribs['classes'] = $attribs['cssClasses'];
 		}
 
-		$removefirstparagraph = ((!isset($attribs["removefirstparagraph"])) || ($attribs["removefirstparagraph"] === "on")) ? true : false;
-		$xml = (isset($attribs["xml"]) && ($attribs["xml"] === "on")) ? true : false;
+		$removefirstparagraph = ((!isset($attribs['removefirstparagraph'])) || ($attribs['removefirstparagraph'] === 'on')) ? true : false;
+		$xml = (isset($attribs['xml']) && ($attribs['xml'] === 'on')) ? true : false;
 
-		$autobr = $this->getElement($name, "autobr") ? : (isset($attribs["autobr"]) ? $attribs["autobr"] : "");
+		$autobr = $this->getElement($name, 'autobr') ? : (isset($attribs['autobr']) ? $attribs['autobr'] : '');
 		$autobrName = 'we_' . $this->Name . '_text[' . $name . '#autobr]';
-		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, "", ((!empty($attribs["classes"])) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
+		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, '', ((!empty($attribs['classes'])) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
 
 		return ($variant ? '' : $this->getPreviewHeadline('text', $name) ) .
 			$textarea;
