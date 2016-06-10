@@ -1387,7 +1387,7 @@ class we_object extends we_document{
 			"dhtmledit" => $this->getElement($name . "dhtmledit"),
 			"wysiwyg" => $this->getElement($name . "dhtmledit"),
 			"showmenus" => $this->getElement($name . "showmenus", "dat", "off"),
-			"commands" => $commands ? : COMMANDS_DEFAULT,
+			"commands" => preg_replace('/ *, */', ',', $commands ? : COMMANDS_DEFAULT),
 			"contextmenu" => $this->getElement($name . "contextmenu"),
 			"classes" => $this->getElement($name . "cssClasses"),
 			"fontnames" => $this->getElement($name . "fontnames"),
