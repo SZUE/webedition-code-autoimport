@@ -190,7 +190,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				// assign ParentID and ParentPath based on Path
 				if(isset($object->Table)){
 					$pathids = array();
-					$_old_pid = $object->ParentID;
+					$old_pid = $object->ParentID;
 					$owner = ($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']) ? $this->options['owners_overwrite_id'] : 0;
 					if(defined('OBJECT_TABLE') && $object->ClassName === 'we_objectFile'){
 						//dont create Path in objects if the class doesn't exist
@@ -216,7 +216,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 									'Path' => $h['Path'],
 									'Table' => $object->Table,
 									'ContentType' => 'folder',
-									'OldID' => ($pid == $object->ParentID) ? $_old_pid : null,
+									'OldID' => ($pid == $object->ParentID) ? $old_pid : null,
 									'OldParentID' => null,
 									'OldPath' => null,
 									'OldTemplatePath' => null,
@@ -234,14 +234,14 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 								$save = true;
 								break;
 							case 'rename':
-								$_c = 1;
+								$c = 1;
 								do{
-									$_path = $object->Path . '_' . $_c;
-									$_c++;
-								} while(is_file($_SERVER['DOCUMENT_ROOT'] . $_path));
-								$object->Path = $_path;
-								unset($_path);
-								unset($_c);
+									$path = $object->Path . '_' . $c;
+									$c++;
+								} while(is_file($_SERVER['DOCUMENT_ROOT'] . $path));
+								$object->Path = $path;
+								unset($path);
+								unset($c);
 								break;
 							default:
 								$save = false;
@@ -348,14 +348,14 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				return;
 		}
 		if(isset($object->Path)){
-			$_path = dirname($object->Path);
-			$_ref = $this->RefTable->getRef(array(
+			$path = dirname($object->Path);
+			$ref = $this->RefTable->getRef(array(
 				'OldID' => $object->ParentID,
 				'ContentType' => 'weNavigation'
 					));
-			if($_ref){
-				$object->ParentID = $_ref->ID;
-				$object->Path = $_ref->Path . '/' . $new_name;
+			if($ref){
+				$object->ParentID = $ref->ID;
+				$object->Path = $ref->Path . '/' . $new_name;
 			} else {
 				$object->Path = we_base_file::clearPath(dirname($object->Path) . '/' . $new_name);
 			}

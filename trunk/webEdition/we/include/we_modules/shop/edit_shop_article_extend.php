@@ -39,14 +39,14 @@ function orderBy($a, $b){
 }
 
 function getTitleLinkObj($text, $orderKey){
-	$_href = $_SERVER['SCRIPT_NAME'] .
+	$href = $_SERVER['SCRIPT_NAME'] .
 		'?typ=' . $GLOBALS['typeObj'] .
 		'&orderBy=' . $orderKey .
 		'&ViewClass=' . $GLOBALS['classid'] .
 		'&actPage=' . $GLOBALS['actPage'] .
 		( ($GLOBALS['orderBy'] == $orderKey && !we_base_request::_(we_base_request::BOOL, 'orderDesc')) ? '&orderDesc=1' : '' );
 
-	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-' . (we_base_request::_(we_base_request::BOOL, 'orderDesc') ? 'desc' : 'asc') . ' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
+	return '<a href="' . $href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-' . (we_base_request::_(we_base_request::BOOL, 'orderDesc') ? 'desc' : 'asc') . ' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
 }
 
 function getPagerLinkObj(){
@@ -61,7 +61,7 @@ function getPagerLinkObj(){
 
 function getTitleLinkDoc($text, $orderKey){
 
-	$_href = $_SERVER['SCRIPT_NAME'] .
+	$href = $_SERVER['SCRIPT_NAME'] .
 		'?typ=' . $GLOBALS['typeDoc'] .
 		'&orderBy=' . $orderKey .
 		'&actPage=' . $GLOBALS['actPage'] .
@@ -76,7 +76,7 @@ function getTitleLinkDoc($text, $orderKey){
 			'"></i>';
 	}
 
-	return '<a href="' . $_href . '">' . $text . '</a>' . $arrow;
+	return '<a href="' . $href . '">' . $text . '</a>' . $arrow;
 }
 
 function getPagerLinkDoc(){

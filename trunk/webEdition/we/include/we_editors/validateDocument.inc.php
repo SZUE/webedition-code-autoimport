@@ -41,16 +41,16 @@ if($we_doc->ContentType == we_base_ContentTypes::CSS || $we_doc->Extension === '
 $services = array();
 $js = '';
 
-foreach($validationService as $_service){
-	$services[$_service->art][$_service->category][] = $_service;
+foreach($validationService as $service){
+	$services[$service->art][$service->category][] = $service;
 }
 
 //  get custom services from database ..
 $customServices = validation::getValidationServices('use');
 
 if(!empty($customServices)){
-	foreach($customServices as $_cService){
-		$services['custom'][$_cService->category][] = $_cService;
+	foreach($customServices as $cService){
+		$services['custom'][$cService->category][] = $cService;
 	}
 }
 

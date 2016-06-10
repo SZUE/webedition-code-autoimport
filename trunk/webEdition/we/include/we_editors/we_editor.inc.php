@@ -35,7 +35,7 @@ $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS'][
 
 include(WE_INCLUDES_PATH . '/we_editors/we_init_doc.inc.php');
 
-$_insertReloadFooter = '';
+$insertReloadFooter = '';
 $wasNew = 0;
 $GLOBALS['we_responseJS'] = '';
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
@@ -58,7 +58,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->add_thumbnails(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1));
 		break;
 	case 'copyDocument':
-		$_insertReloadFooter = $we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
+		$insertReloadFooter = $we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		$we_doc->InWebEdition = true;
 		break;
 	case 'delete_list':
@@ -102,11 +102,11 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		break;
 	case 'doctype_changed':
 		$we_doc->changeDoctype('', true);
-		$_insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();parent.editHeader.location.reload();}catch(exception){};');
+		$insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();parent.editHeader.location.reload();}catch(exception){};');
 		break;
 	case 'template_changed':
 		$we_doc->changeTemplate();
-		$_insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();parent.editHeader.location.reload();}catch(exception){};');
+		$insertReloadFooter = we_html_element::jsElement('try{parent.editFooter.location.reload();parent.editHeader.location.reload();}catch(exception){};');
 		break;
 	case 'remove_image':
 		$we_doc->remove_image(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
@@ -159,7 +159,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$_SESSION['weS']['EditPageNr'] = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 		$we_doc->EditPageNr = $_SESSION['weS']['EditPageNr'];
 		if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-			$_insertReloadFooter = STYLESHEET . we_html_element::jsElement('try{parent.editFooter.location.reload();}catch(exception){};');
+			$insertReloadFooter = STYLESHEET . we_html_element::jsElement('try{parent.editFooter.location.reload();}catch(exception){};');
 		}
 		break;
 	case 'delete_link':
@@ -317,8 +317,8 @@ if(
 		$contents = we_SEEM::parseDocument($contents);
 
 		$contents = (strpos($contents, '</head>') ?
-				str_replace('</head>', $_insertReloadFooter . '</head>', $contents) :
-				$_insertReloadFooter . $contents);
+				str_replace('</head>', $insertReloadFooter . '</head>', $contents) :
+				$insertReloadFooter . $contents);
 	}
 	switch($we_doc->Extension){
 		case '.js':
@@ -680,8 +680,8 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 
 // insert $_reloadFooter at right place
 						$tmpCntnt = (strpos($tmpCntnt, '</head>')) ?
-							str_replace('</head>', $_insertReloadFooter . '</head>', $tmpCntnt) :
-							$_insertReloadFooter . $tmpCntnt;
+							str_replace('</head>', $insertReloadFooter . '</head>', $tmpCntnt) :
+							$insertReloadFooter . $tmpCntnt;
 
 // --> Start Glossary Replacement
 
@@ -691,7 +691,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 			} else {
 //  These files were edited only in source-code mode, so no seeMode is needed.
 				include((preg_match('#^' . WEBEDITION_DIR . 'we/#', $we_include) ? $_SERVER['DOCUMENT_ROOT'] : WE_INCLUDES_PATH) . $we_include);
-				echo $_insertReloadFooter;
+				echo $insertReloadFooter;
 			}
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			if(isset($GLOBALS['we_file_to_delete_after_include'])){

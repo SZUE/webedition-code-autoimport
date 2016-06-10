@@ -26,35 +26,35 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) == 'phpinfo'){
 	return;
 }
 
-function getInfoTable($_infoArr, $name){
+function getInfoTable($infoArr, $name){
 
-	$_table = new we_html_table(array("style" => "width: 500px;"), 1, 2);
-	$_i = 0;
+	$table = new we_html_table(array("style" => "width: 500px;"), 1, 2);
+	$i = 0;
 
-	foreach($_infoArr as $_k => $_v){
+	foreach($infoArr as $k => $v){
 
-		$_style = ($_i % 2 ? '' : "background: #D4DBFA;");
+		$_style = ($i % 2 ? '' : "background: #D4DBFA;");
 
-		$_table->addRow(1);
-		$_table->setRow($_i, array("class" => "defaultfont", "style" => $_style . "height:20px;"));
-		$_table->setCol($_i, 0, array("style" => "width: 200px; height: 20px; padding-left: 10px;", 'class' => 'bold'), $_k);
-		$_table->setCol($_i, 1, array("style" => "width: 250px; height: 20px; padding-left: 10px;"), parseValue($_k, $_v));
-		$_i++;
+		$table->addRow(1);
+		$table->setRow($i, array("class" => "defaultfont", "style" => $_style . "height:20px;"));
+		$table->setCol($i, 0, array("style" => "width: 200px; height: 20px; padding-left: 10px;", 'class' => 'bold'), $k);
+		$table->setCol($i, 1, array("style" => "width: 250px; height: 20px; padding-left: 10px;"), parseValue($k, $v));
+		$i++;
 
 		// highlight some values:
 		if($name === 'PHP'){
-			if($_i == 3 && ini_get_bool('register_globals')){
-				$_table->setColAttributes(2, 1, array("style" => "border:1px solid red;"));
+			if($i == 3 && ini_get_bool('register_globals')){
+				$table->setColAttributes(2, 1, array("style" => "border:1px solid red;"));
 			}
-			if($_i == 6 && ini_get_bool('short_open_tag')){
-				$_table->setColAttributes(5, 1, array("style" => "border:1px solid red;"));
+			if($i == 6 && ini_get_bool('short_open_tag')){
+				$table->setColAttributes(5, 1, array("style" => "border:1px solid red;"));
 			}
-			if($_i == 9 && ini_get_bool('safe_mode')){
-				$_table->setColAttributes(8, 1, array("style" => "border:1px solid grey;"));
+			if($i == 9 && ini_get_bool('safe_mode')){
+				$table->setColAttributes(8, 1, array("style" => "border:1px solid grey;"));
 			}
 		}
 	}
-	return $_table->getHtml();
+	return $table->getHtml();
 }
 
 function ini_get_bool($val){

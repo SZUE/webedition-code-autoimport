@@ -74,8 +74,8 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 		//    At the moment it is not possible to make this tag xhtml valid, so the output is only posible
 		//    non xhtml valid
 
-		$_data = $this->getElement('data');
-		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
+		$data = $this->getElement('data');
+		if($this->ID || ($data && !is_dir($data) && is_readable($data))){
 			$pluginspage = $this->getElement('Pluginspage') ? : 'http://www.apple.com/quicktime/download/';
 			$codebase = $this->getElement('Codebase') ? : 'http://www.apple.com/qtactivex/qtplugin.cab';
 
@@ -89,25 +89,25 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 			$this->resetElements();
 			while(list($k, $v) = $this->nextElement("attrib")){
 				if(in_array($k, $this->ObjectParamNames)){
-					$_objectAtts[$k] = $v["dat"];
+					$objectAtts[$k] = $v["dat"];
 				}
 			}
 
-			//  $_xml = $this->getElement("xml");
+			//  $xml = $this->getElement("xml");
 			//  xhtml output is not possible to work for IE and Mozilla
 			//  therefore it is deactivated
-			$_xml = 'false';
-			$_objectAtts['xml'] = $_xml;
+			$xml = 'false';
+			$objectAtts['xml'] = $xml;
 
 			//  <embed> for none xhtml
-			$_embed = '';
+			$embed = '';
 
 			//  <params>
-			$_params = "\n" . getHtmlTag('param', array('name' => 'src', 'value' => $src, 'xml' => $_xml)) . "\n";
+			$params = "\n" . getHtmlTag('param', array('name' => 'src', 'value' => $src, 'xml' => $xml)) . "\n";
 
-			if($_xml === 'true'){ //  only object tag
-				$_objectAtts['type'] = 'video/quicktime';
-				$_objectAtts['data'] = $src;
+			if($xml === 'true'){ //  only object tag
+				$objectAtts['type'] = 'video/quicktime';
+				$objectAtts['data'] = $src;
 
 				$this->resetElements();
 				while(list($k, $v) = $this->nextElement("attrib")){
@@ -115,37 +115,37 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 
 						if($v["dat"] != ""){ //  dont use empty params
 							if(!in_array($k, $noAtts)){
-								$_objectAtts[$k] = $v["dat"];
+								$objectAtts[$k] = $v["dat"];
 							}
-							$_params .= getHtmlTag('param', array('name' => $k, 'value' => $v["dat"], 'xml' => $_xml)) . "\n";
+							$params .= getHtmlTag('param', array('name' => $k, 'value' => $v["dat"], 'xml' => $xml)) . "\n";
 						}
 					}
 				}
 			} else { //  object tag and embed
-				$_objectAtts['classid'] = 'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B';
-				$_objectAtts['codebase'] = $codebase;
+				$objectAtts['classid'] = 'clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B';
+				$objectAtts['codebase'] = $codebase;
 				//   we need embed as well
 
-				$_embedAtts['type'] = 'video/quicktime';
-				$_embedAtts['pluginspace'] = $pluginspage;
-				$_embedAtts['xml'] = $_xml;
-				$_embedAtts['src'] = $src;
+				$embedAtts['type'] = 'video/quicktime';
+				$embedAtts['pluginspace'] = $pluginspage;
+				$embedAtts['xml'] = $xml;
+				$embedAtts['src'] = $src;
 
 				$this->resetElements();
 				while(list($k, $v) = $this->nextElement("attrib")){
 					if(!in_array($k, $filter) && $v["dat"] != ""){
 
 						if($v["dat"] != ""){ //  dont use empty params
-							$_params .= getHtmlTag('param', array('name' => $k, 'value' => $v["dat"], 'xml' => $_xml)) . "\n";
+							$params .= getHtmlTag('param', array('name' => $k, 'value' => $v["dat"], 'xml' => $xml)) . "\n";
 						}
 
-						$_embedAtts[$k] = $v["dat"];
+						$embedAtts[$k] = $v["dat"];
 					}
 				}
-				$_embed = "\n" . getHtmlTag('embed', $_embedAtts, '', true);
+				$embed = "\n" . getHtmlTag('embed', $embedAtts, '', true);
 			}
-			$_objectAtts = removeEmptyAttribs($_objectAtts);
-			$this->html = getHtmlTag('object', $_objectAtts, $_params . $_embed);
+			$objectAtts = removeEmptyAttribs($objectAtts);
+			$this->html = getHtmlTag('object', $objectAtts, $params . $embed);
 		} else {
 			$this->html = '';
 		}
@@ -193,18 +193,18 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 	}
 
 	function getThumbnail($width = 150, $height = 100){
-		$_width = $this->getElement('width');
-		$_height = $this->getElement('height');
-		$_scale = $this->getElement('scale');
-		$_hspace = $this->getElement('hspace');
-		$_vspace = $this->getElement('vspace');
-		$_name = $this->getElement('name');
-		$_autoplay = $this->getElement('autoplay');
-		$_controller = $this->getElement('controller');
-		$_bgcolor = $this->getElement('bgcolor');
-		$_volume = $this->getElement('volume');
-		$_hidden = $this->getElement('hidden');
-		$_loop = $this->getElement('loop');
+		$elemWidth = $this->getElement('width');
+		$elemHeight = $this->getElement('height');
+		$scale = $this->getElement('scale');
+		$hspace = $this->getElement('hspace');
+		$vspace = $this->getElement('vspace');
+		$name = $this->getElement('name');
+		$autoplay = $this->getElement('autoplay');
+		$controller = $this->getElement('controller');
+		$bgcolor = $this->getElement('bgcolor');
+		$volume = $this->getElement('volume');
+		$hidden = $this->getElement('hidden');
+		$loop = $this->getElement('loop');
 
 		$this->setElement('width', $width, 'attrib');
 		$this->setElement('height', $height, 'attrib');
@@ -219,18 +219,18 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 		$this->setElement('hidden', '', 'attrib');
 		$this->setElement('loop', '', 'attrib');
 		$html = $this->getHtml(true);
-		$this->setElement('width', $_width, 'attrib');
-		$this->setElement('height', $_height, 'attrib');
-		$this->setElement('scale', $_scale, 'attrib');
-		$this->setElement('hspace', $_hspace, 'attrib');
-		$this->setElement('vspace', $_vspace, 'attrib');
-		$this->setElement('name', $_name, 'attrib');
-		$this->setElement('autoplay', $_autoplay, 'attrib');
-		$this->setElement('controller', $_controller, 'attrib');
-		$this->setElement('bgcolor', $_bgcolor, 'attrib');
-		$this->setElement('volume', $_volume, 'attrib');
-		$this->setElement('hidden', $_hidden, 'attrib');
-		$this->setElement('loop', $_loop, 'attrib');
+		$this->setElement('width', $elemWidth, 'attrib');
+		$this->setElement('height', $elemHeight, 'attrib');
+		$this->setElement('scale', $scale, 'attrib');
+		$this->setElement('hspace', $hspace, 'attrib');
+		$this->setElement('vspace', $vspace, 'attrib');
+		$this->setElement('name', $name, 'attrib');
+		$this->setElement('autoplay', $autoplay, 'attrib');
+		$this->setElement('controller', $controller, 'attrib');
+		$this->setElement('bgcolor', $bgcolor, 'attrib');
+		$this->setElement('volume', $volume, 'attrib');
+		$this->setElement('hidden', $hidden, 'attrib');
+		$this->setElement('loop', $loop, 'attrib');
 		return $html;
 	}
 

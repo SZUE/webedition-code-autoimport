@@ -66,20 +66,20 @@ class we_navigation_rule extends we_base_model{
 
 	static function getWeNavigationRule($navigationName, $navigationId, $selectionType, $folderId, $doctype, $classId, $categories, $workspaceId, $href = '', $selfCurrent = true){
 
-		$_navigation = new self();
-		$_navigation->NavigationName = $navigationName;
-		$_navigation->NavigationID = $navigationId;
-		$_navigation->SelectionType = $selectionType;
-		$_navigation->FolderID = $folderId;
-		$_navigation->DoctypeID = $doctype;
-		$_navigation->ClassID = $classId;
-		$_navigation->Categories = $categories;
-		$_navigation->WorkspaceID = $workspaceId;
+		$navigation = new self();
+		$navigation->NavigationName = $navigationName;
+		$navigation->NavigationID = $navigationId;
+		$navigation->SelectionType = $selectionType;
+		$navigation->FolderID = $folderId;
+		$navigation->DoctypeID = $doctype;
+		$navigation->ClassID = $classId;
+		$navigation->Categories = $categories;
+		$navigation->WorkspaceID = $workspaceId;
 
-		$_navigation->Href = $href;
-		$_navigation->SelfCurrent = $selfCurrent;
+		$navigation->Href = $href;
+		$navigation->SelfCurrent = $selfCurrent;
 
-		return $_navigation;
+		return $navigation;
 	}
 
 	function we_load($id){
@@ -92,15 +92,15 @@ class we_navigation_rule extends we_base_model{
 
 	function processVariables(){
 		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
-			$_categories = array();
+			$categories = array();
 
 			for($i = 0; $i < $cnt; $i++){
 				if(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i)) !== false){
-					$_categories[] = $cat;
+					$categories[] = $cat;
 				}
 			}
 
-			$this->Categories = path_to_id($_categories, CATEGORY_TABLE, $GLOBALS['DB_WE']);
+			$this->Categories = path_to_id($categories, CATEGORY_TABLE, $GLOBALS['DB_WE']);
 		}
 
 		if(is_array($this->persistent_slots)){

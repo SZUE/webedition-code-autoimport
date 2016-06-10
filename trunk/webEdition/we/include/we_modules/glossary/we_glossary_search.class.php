@@ -221,11 +221,11 @@ class we_glossary_search{
 	 * @return array
 	 */
 	function getPages(){
-		$_count = $this->countItems();
-		$_pages = ceil($_count / $this->Rows);
+		$count = $this->countItems();
+		$pages = ceil($count / $this->Rows);
 
 		$pages = array();
-		for($i = 1; $i <= $_pages; $i++){
+		for($i = 1; $i <= $pages; $i++){
 			$pages[($i - 1) * $this->Rows] = $i;
 		}
 

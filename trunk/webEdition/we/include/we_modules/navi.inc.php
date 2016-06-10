@@ -31,14 +31,14 @@ we_base_moduleInfo::orderModuleArray($mods);
 //END TODO
 $mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 
-foreach($mods as $_menuItem){
-	if((!empty($_menuItem['inModuleMenu'])) || (!empty($_menuItem['inModuleWindow']))){
-		if(we_base_moduleInfo::isActive($_menuItem["name"])){ //	MODULE INSTALLED
-			if(we_users_util::canEditModule($_menuItem["name"])){
+foreach($mods as $menuItem){
+	if((!empty($menuItem['inModuleMenu'])) || (!empty($menuItem['inModuleWindow']))){
+		if(we_base_moduleInfo::isActive($menuItem["name"])){ //	MODULE INSTALLED
+			if(we_users_util::canEditModule($menuItem["name"])){
 				$we_tabs->addTab(new we_tab(
-						($_menuItem['icon'] ? '<i class="fa fa-lg ' . $_menuItem['icon'] . '"></i> ' : '') .
-						$_menuItem["text"]
-						, ( $mod == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openModule('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+						($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
+						$menuItem["text"]
+						, ( $mod == $menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openModule('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
 			}
 		}
 	}

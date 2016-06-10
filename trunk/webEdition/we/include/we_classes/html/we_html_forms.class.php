@@ -44,13 +44,13 @@ abstract class we_html_forms{
 	 */
 	static function checkbox($value, $checked, $name, $text, $uniqid = false, $class = 'defaultfont', $onClick = '', $disabled = false, $description = '', $type = we_html_tools::TYPE_NONE, $width = 0, $html = '', $style = '', $title = ''){
 		// Check if we have to create a uniqe id
-		$_id = ($uniqid ? $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name);
+		$id = ($uniqid ? $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name);
 
 		// Create HTML tags
 		return '
 			<span class="default checkbox" style="' . $style . '">
-						<input type="checkbox" name="' . $name . '" id="' . $_id . '" value="' . $value . '" ' . ($checked ? ' checked="checked"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($disabled ? ' disabled="disabled"' : "") . ' />
-					<div class="elementText ' . $class . '"><label id="label_' . $_id . '" for="' . $_id . '" class="' . ($disabled ? 'disabled ' : '') . ($title ? ' showhelp' : '') . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' . (false && $title ? we_html_tools::htmlAlertAttentionBox($title, we_html_tools::TYPE_HELP) : '') . ($description ? '<div class="extra">' . we_html_tools::htmlAlertAttentionBox($description, $type, $width) . '</div>' : "") . ($html ? : "") . '</div>
+						<input type="checkbox" name="' . $name . '" id="' . $id . '" value="' . $value . '" ' . ($checked ? ' checked="checked"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($disabled ? ' disabled="disabled"' : "") . ' />
+					<div class="elementText ' . $class . '"><label id="label_' . $id . '" for="' . $id . '" class="' . ($disabled ? 'disabled ' : '') . ($title ? ' showhelp' : '') . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' . (false && $title ? we_html_tools::htmlAlertAttentionBox($title, we_html_tools::TYPE_HELP) : '') . ($description ? '<div class="extra">' . we_html_tools::htmlAlertAttentionBox($description, $type, $width) . '</div>' : "") . ($html ? : "") . '</div>
 				</span>';
 	}
 
@@ -84,12 +84,12 @@ abstract class we_html_forms{
 	 */
 	static function radiobutton($value, $checked, $name, $text, $uniqid = true, $class = "defaultfont", $onClick = '', $disabled = false, $description = '', $type = we_html_tools::TYPE_NONE, $width = 0, $onMouseUp = '', $extra_content = '', $title = ''){
 		// Check if we have to create a uniqe id
-		$_id = $name . ($uniqid ? '_' . md5(uniqid(__FUNCTION__, true)) : '');
+		$id = $name . ($uniqid ? '_' . md5(uniqid(__FUNCTION__, true)) : '');
 
 		// Create HTML tags
 		return '
-<div class="radiobutton"><input type="radio" name="' . $name . '" id="' . $_id . '" value="' . $value . '" ' . ($checked ? ' checked="checked"' : '') . ($onMouseUp ? ' onmouseup="' . $onMouseUp . '"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : "") . ($disabled ? ' disabled="disabled"' : '') . ' />
-<label id="label_' . $_id . '" for="' . $_id . '" class="elementText ' . ($disabled ? 'disabled ' : '') . $class . ($title ? ' showhelp' : '') . '" ' . ($onMouseUp ? ' onmouseup="' . str_replace('this.', "document.getElementById('" . $_id . "').", $onMouseUp) . '"' : '') . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' .
+<div class="radiobutton"><input type="radio" name="' . $name . '" id="' . $id . '" value="' . $value . '" ' . ($checked ? ' checked="checked"' : '') . ($onMouseUp ? ' onmouseup="' . $onMouseUp . '"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : "") . ($disabled ? ' disabled="disabled"' : '') . ' />
+<label id="label_' . $id . '" for="' . $id . '" class="elementText ' . ($disabled ? 'disabled ' : '') . $class . ($title ? ' showhelp' : '') . '" ' . ($onMouseUp ? ' onmouseup="' . str_replace('this.', "document.getElementById('" . $id . "').", $onMouseUp) . '"' : '') . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' .
 			($description ? '<div class="extra">' . we_html_tools::htmlAlertAttentionBox($description, $type, $width) . '</div>' : "") .
 			($extra_content ? '<div class="extra">' . $extra_content . '</div>' : "") . '
 </div>';
@@ -196,7 +196,7 @@ abstract class we_html_forms{
 			$commands = ($showmenues ? $commands : str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())));
 			$commands = ($hidestylemenu ? str_replace('applystyle,', '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())) : $commands);
 			$out = we_wysiwyg_editor::getHeaderHTML(!$inwebedition, $isFrontendEdit);
-			$_lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
+			$lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
 			$buttonpos = $buttonpos ? : 'top';
 			$tinyParams = weTag_getAttribute('tinyparams', $attribs, '', we_base_request::RAW);
 			$templates = weTag_getAttribute('templates', $attribs, '', we_base_request::STRING);
@@ -204,10 +204,10 @@ abstract class we_html_forms{
 			$fontsizes = weTag_getAttribute('fontsizes', $attribs, '', we_base_request::STRING);
 
 			if($inlineedit){
-				$e = new we_wysiwyg_editor($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
+				$e = new we_wysiwyg_editor($name, $width, $height, $value, $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
 				return $out . $e->getHTML();
 			}
-			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $_lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
+			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
 
 			if(stripos($name, "we_ui") === false){//we are in backend
 				$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), we_wysiwyg_editor::parseInternalImageSrc($value));

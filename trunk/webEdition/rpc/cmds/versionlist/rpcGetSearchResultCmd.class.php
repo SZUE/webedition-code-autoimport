@@ -32,10 +32,10 @@ class rpcGetSearchResultCmd extends we_rpc_cmd{
 			$we_dt = isset($_SESSION['weS']['we_data'][$trans]) ? $_SESSION['weS']['we_data'][$trans] : '';
 		}
 		$class = $we_dt[0]['ClassName']; //we_base_request::_(we_base_request::STRING, 'classname');
-		$_document = new $class;
-		$_document->we_initSessDat($we_dt);
+		$document = new $class;
+		$document->we_initSessDat($we_dt);
 
-		$versionsView = new we_versions_view($_document->versionsModel);
+		$versionsView = new we_versions_view($document->versionsModel);
 
 		$GLOBALS['we_cmd_obj'] = 1;
 		$content = $versionsView->getVersionsOfDoc();

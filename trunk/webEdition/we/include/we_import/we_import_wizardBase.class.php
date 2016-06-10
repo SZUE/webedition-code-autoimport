@@ -82,8 +82,8 @@ var path='" . $this->path . "';") .
 			if($step == 1){
 				$a["enctype"] = 'multipart/form-data';
 			}
-			$_step = 'get' . $type . 'Step' . $step;
-			list($js, $content) = $this->$_step();
+			$step = 'get' . $type . 'Step' . $step;
+			list($js, $content) = $this->$step();
 			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
 			return we_html_tools::getHtmlTop('', '', '', STYLESHEET .
 							($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
@@ -392,53 +392,53 @@ setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 									$imported = $xmlExIm->import($chunk);
 									$xmlExIm->savePerserves();
 									if($imported){
-										$_status = g_l('import', '[import]');
+										$status = g_l('import', '[import]');
 										$ref = $xmlExIm->RefTable->getLast();
 
 										switch($ref->ContentType){
 											case 'weBinary':
 											case 'category':
 											case 'objectFile':
-												$_path_info = $ref->Path;
+												$path_info = $ref->Path;
 												break;
 											case 'doctype':
-												$_path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
+												$path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
 											case 'weNavigationRule':
-												$_path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
+												$path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
 											case 'weThumbnail':
-												$_path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
+												$path_info = f('SELECT Name FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
 											default:
-												$_path_info = id_to_path($ref->ID, $ref->Table);
+												$path_info = id_to_path($ref->ID, $ref->Table);
 												break;
 										}
-										$_progress_text = we_html_element::htmlB(
+										$progress_text = we_html_element::htmlB(
 														g_l('contentTypes', '[' . $ref->ContentType . ']', true) ?
 																g_l('contentTypes', '[' . $ref->ContentType . ']') :
 																(g_l('import', '[' . $ref->ContentType . ']', true) ?
 																		g_l('import', '[' . $ref->ContentType . ']') : ''
 																)
-												) . '  ' . $_path_info;
+												) . '  ' . $path_info;
 
 										echo we_html_element::jsElement(
 												'if (top.wizbody.addLog){
-												top.wizbody.addLog("' . addslashes($_progress_text) . '");
+												top.wizbody.addLog("' . addslashes($progress_text) . '");
 											}');
 										flush();
 									} else {
-										$_status = g_l('import', '[skip]');
+										$status = g_l('import', '[skip]');
 										echo we_html_element::jsElement(
 												'if (top.wizbody.addLog){
 												top.wizbody.addLog("' . addslashes(g_l('import', '[skip]')) . '<br/>");
 											}');
 									}
 
-									$_counter_text = g_l('import', '[item]') . ' ' . $v['cid'] . '/' . ($v['numFiles'] - 2);
+									$counter_text = g_l('import', '[item]') . ' ' . $v['cid'] . '/' . ($v['numFiles'] - 2);
 
 									$JScript = "
-top.wizbusy.setProgressText('pb1','" . $_status . " - " . $_counter_text . "');
+top.wizbusy.setProgressText('pb1','" . $status . " - " . $counter_text . "');
 top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));";
 
 

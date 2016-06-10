@@ -288,12 +288,12 @@ class we_objectFile extends we_document{
 		$processedWs = array();
 
 // loop throgh all default workspaces
-		foreach($defwsCSVArray as $i => $_defWs){
+		foreach($defwsCSVArray as $i => $defWs){
 // loop through each object workspace
 			foreach($owsCSVArray as $ows){
-				if((!in_array($_defWs, $processedWs)) && we_users_util::in_workspace($_defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
-					$processedWs[] = $_defWs;
-					$this->Workspaces[] = $_defWs;
+				if((!in_array($defWs, $processedWs)) && we_users_util::in_workspace($defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
+					$processedWs[] = $defWs;
+					$this->Workspaces[] = $defWs;
 					$this->Templates[] = $otmplsCSVArray[$i];
 				}
 			}
@@ -406,8 +406,8 @@ class we_objectFile extends we_document{
 						break;
 					case self::TYPE_MULTIOBJECT:
 						$temp = we_unserialize($this->getElement($name));
-						$_array = array_filter(isset($temp['objects']) ? $temp['objects'] : $temp);
-						$val = !empty($_array);
+						$array = array_filter(isset($temp['objects']) ? $temp['objects'] : $temp);
+						$val = !empty($array);
 						break;
 					case self::TYPE_CHECKBOX:
 						$val = $this->getElement($name);
@@ -532,22 +532,22 @@ class we_objectFile extends we_document{
 	 * @param	boolean
 	 */
 	function formCharset($withHeadline = false){
-		$_charsetHandler = new we_base_charsetHandler();
+		$charsetHandler = new we_base_charsetHandler();
 
-		$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
-		$_charsets[''] = '';
-		asort($_charsets);
-		reset($_charsets);
+		$charsets = $charsetHandler->getCharsetsForTagWizzard();
+		$charsets[''] = '';
+		asort($charsets);
+		reset($charsets);
 
 		$name = 'Charset';
 
 		$inputName = 'we_' . $this->Name . '_Charset';
 
-		$_headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '');
+		$headline = ($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '');
 		return '
 			<table class="default">
-				' . $_headline . '
-				<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $_charsets, 1, $this->Charset, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
+				' . $headline . '
+				<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $this->Charset, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
 			</table>';
 	}
 

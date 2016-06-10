@@ -29,68 +29,68 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		// init the fragment
 		// REQUEST[we_cmd][1] = id of folder
 		// REQUEST[we_cmd][2] = table
-		$_id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
-		$_table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
+		$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
 
 		// if we_cmd 3 is set, take filters of that folder as parent!!
-		$_idForFilter = we_base_request::_(we_base_request::INT, 'we_cmd', $_id, 3);
+		$idForFilter = we_base_request::_(we_base_request::INT, 'we_cmd', $id, 3);
 
-		if($_id == 0){
+		if($id == 0){
 			t_e('called function with invalid id');
 			die();
 		}
-		$_theFolder = new we_folder();
-		$_theFolder->initByID($_id, $_table);
+		$theFolder = new we_folder();
+		$theFolder->initByID($id, $table);
 
-		$_db = new DB_WE();
+		$db = new DB_WE();
 		// now get all childs of this folder
 
-		$_db->query('SELECT ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE	ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND PATH LIKE "' . $_theFolder->Path . '/%"');
+		$db->query('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE	ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND PATH LIKE "' . $theFolder->Path . '/%"');
 
 		$this->alldata = array();
 
-		while($_db->next_record()){
+		while($db->next_record()){
 
 			$this->alldata[] = array(
-				"folder_id" => $_id,
-				"table" => $_table,
-				"idForFilter" => $_idForFilter,
-				"id" => $_db->f("ID"),
-				"contenttype" => $_db->f("ContentType"),
+				"folder_id" => $id,
+				"table" => $table,
+				"idForFilter" => $idForFilter,
+				"id" => $db->f("ID"),
+				"contenttype" => $db->f("ContentType"),
 			);
 		}
 	}
 
 	function doTask(){
 		// getFilter of base-folder
-		$_theFolder = new we_folder();
-		$_theFolder->initByID($this->data["idForFilter"], $this->data["table"]);
+		$theFolder = new we_folder();
+		$theFolder->initByID($this->data["idForFilter"], $this->data["table"]);
 
 		// getTarget-Document
-		$_targetDoc = null;
+		$targetDoc = null;
 		switch($this->data["contenttype"]){
 			case "folder":
-				$_targetDoc = new we_folder();
+				$targetDoc = new we_folder();
 				break;
 			case we_base_ContentTypes::WEDOCUMENT:
-				$_targetDoc = new we_webEditionDocument();
+				$targetDoc = new we_webEditionDocument();
 				break;
 			case we_base_ContentTypes::OBJECT_FILE:
-				$_targetDoc = new we_objectFile();
+				$targetDoc = new we_objectFile();
 				break;
 		}
-		$_targetDoc->initById($this->data["id"], $this->data["table"]);
+		$targetDoc->initById($this->data["id"], $this->data["table"]);
 
-		$_targetDoc->documentCustomerFilter = ($_theFolder->documentCustomerFilter ?
-				$_theFolder->documentCustomerFilter :
+		$targetDoc->documentCustomerFilter = ($theFolder->documentCustomerFilter ?
+				$theFolder->documentCustomerFilter :
 				we_customer_documentFilter::getEmptyDocumentCustomerFilter());
 
 		// write filter to target document
 		// save filter
-		$_targetDoc->documentCustomerFilter->saveForModel($_targetDoc);
-		$_targetDoc->rewriteNavigation();
+		$targetDoc->documentCustomerFilter->saveForModel($targetDoc);
+		$targetDoc->rewriteNavigation();
 
-		echo we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_base_util::shortenPath($_targetDoc->Path, 55) . "');
+		echo we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_base_util::shortenPath($targetDoc->Path, 55) . "');
 parent.setProgress(" . number_format(( ( $this->currentTask ) / $this->numberOfTasks) * 100, 0) . ");");
 	}
 

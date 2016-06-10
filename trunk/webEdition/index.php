@@ -211,27 +211,27 @@ if(isset($GLOBALS['userLoginDenied'])){
 }
 
 function getError($reason, $cookie = false){
-	$_error_count = 0;
+	$error_count = 0;
 	$tmp = ini_get('session.save_path');
 
 	$_error = we_html_element::htmlB($reason) .
 		(!(is_dir($tmp) || (is_link($tmp) && is_dir(readlink($tmp)))) ?
-			( ++$_error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
+			( ++$error_count . ' - ' . sprintf(g_l('start', '[tmp_path]'), ini_get('session.save_path')) . we_html_element::htmlBr()) :
 			'') .
 		(!ini_get('session.use_cookies') ?
-			( ++$_error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
+			( ++$error_count . ' - ' . g_l('start', '[use_cookies]') . we_html_element::htmlBr()) :
 			'') .
 		(ini_get('session.cookie_path') != '/' ?
-			( ++$_error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
+			( ++$error_count . ' - ' . sprintf(g_l('start', '[cookie_path]'), ini_get('session.cookie_path')) . we_html_element::htmlBr()) :
 			'') .
-		($cookie && $_error_count == 0 ?
-			( ++$_error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
+		($cookie && $error_count == 0 ?
+			( ++$error_count . ' - ' . g_l('start', '[login_session_terminated]') . we_html_element::htmlBr()) :
 			'') .
-		we_html_element::htmlBr() . g_l('start', ($_error_count == 1 ? '[solution_one]' : '[solution_more]'));
+		we_html_element::htmlBr() . g_l('start', ($error_count == 1 ? '[solution_one]' : '[solution_more]'));
 
-	$_layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
-	$_layout->setCol(0, 0, array('style' => 'text-align:center;vertical-align:middle'), we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]')));
-	return $_layout;
+	$layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
+	$layout->setCol(0, 0, array('style' => 'text-align:center;vertical-align:middle'), we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $_error), g_l('alert', '[phpError]')));
+	return $layout;
 }
 
 /* * ***************************************************************************

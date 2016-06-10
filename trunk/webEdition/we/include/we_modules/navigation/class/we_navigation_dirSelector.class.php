@@ -66,12 +66,12 @@ class we_navigation_dirSelector extends we_selector_directory{
 		$ret = '';
 		$this->query();
 		while($this->db->next_record()){
-			$_text = $this->db->f('Text');
-			$_charset = $this->db->f('Charset');
-			if(function_exists('mb_convert_encoding') && $_charset){
-				$_text = mb_convert_encoding($this->db->f('Text'), 'HTML-ENTITIES', $_charset);
+			$text = $this->db->f('Text');
+			$charset = $this->db->f('Charset');
+			if(function_exists('mb_convert_encoding') && $charset){
+				$text = mb_convert_encoding($this->db->f('Text'), 'HTML-ENTITIES', $charset);
 			}
-			$ret.='top.addEntry(' . $this->db->f('ID') . ',"' . $_text . '",' . $this->db->f('IsFolder') . ',"' . $this->db->f('Path') . '");';
+			$ret.='top.addEntry(' . $this->db->f('ID') . ',"' . $text . '",' . $this->db->f('IsFolder') . ',"' . $this->db->f('Path') . '");';
 		}
 		return $ret;
 	}

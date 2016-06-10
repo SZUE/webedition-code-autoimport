@@ -442,15 +442,15 @@ abstract class we_html_element{
 		));
 	}
 
-	public static function htmlExIFrame($__name, $__src, $__style = '', $class = ''){
-		if(strpos($__src, $_SERVER['DOCUMENT_ROOT']) === 0){
+	public static function htmlExIFrame($name, $src, $style = '', $class = ''){
+		if(strpos($src, $_SERVER['DOCUMENT_ROOT']) === 0){
 			ob_start();
-			include $__src;
+			include $src;
 			$tmp = ob_get_clean();
 		} else {
-			$tmp = $__src;
+			$tmp = $src;
 		}
-		return self::htmlDiv(array('style' => $__style, 'name' => $__name . 'Div', 'id' => $__name . 'Div', 'class' => $class), $tmp);
+		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class), $tmp);
 	}
 
 }

@@ -221,15 +221,15 @@ function checkFooter(){
 					if($path === '/'){ //	impossible for documents
 						$path = $GLOBALS['we_doc']->RootDirPath;
 					}
-					$_rootDirID = $GLOBALS['we_doc']->rootDirID;
+					$rootDirID = $GLOBALS['we_doc']->rootDirID;
 				} else {
-					$_rootDirID = 0;
+					$rootDirID = 0;
 				}
 
 				$wecmdenc1 = we_base_request::encCmd('document.we_form.elements[\'' . $idname . '\'].value');
 				$wecmdenc2 = we_base_request::encCmd('document.we_form.elements[\'' . $textname . '\'].value');
 				$wecmdenc3 = we_base_request::encCmd('top.opener._EditorFrame.setEditorIsHot(true);');
-				$button = we_html_button::create_button(we_html_button::SELECT, 'javascript:we_cmd(\'we_selector_directory\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . $wecmdenc3 . '\',\'\',\'' . $_rootDirID . '\')');
+				$button = we_html_button::create_button(we_html_button::SELECT, 'javascript:we_cmd(\'we_selector_directory\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $wecmdenc1 . '\',\'' . $wecmdenc2 . '\',\'' . $wecmdenc3 . '\',\'\',\'' . $rootDirID . '\')');
 
 				$yuiSuggest = & weSuggest::getInstance();
 				$yuiSuggest->setAcId('WsDir');

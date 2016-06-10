@@ -220,7 +220,7 @@ var frameSet="' . $this->frameset . '";
 	}
 
 	function getJSProperty($load = ''){
-		$_mailCheck = (!empty($this->settings['reject_save_malformed']) ?
+		$mailCheck = (!empty($this->settings['reject_save_malformed']) ?
 				"WE().util.validate.email(email);" :
 				"true");
 
@@ -302,8 +302,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				if(($ngroup = we_base_request::_(we_base_request::STRING, 'ngroup')) !== false){
 					$arr = explode(',', $this->newsletter->groups[$ngroup]->Extern);
 					if(($nfile = we_base_request::_(we_base_request::FILE, "nfile")) !== false){
-						$_sd = str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']);
-						$arr[] = str_replace($_sd, (substr($_sd, -1) === '/' ? '/' : ''), $nfile);
+						$sd = str_replace("\\", "/", $_SERVER['DOCUMENT_ROOT']);
+						$arr[] = str_replace($sd, (substr($sd, -1) === '/' ? '/' : ''), $nfile);
 						$this->newsletter->groups[$ngroup]->Extern = implode(',', $arr);
 					}
 				}
@@ -645,15 +645,15 @@ edf.populateGroups();');
 						$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, 'rb');
 						$mailListArray = array();
 						if($fh){
-							$_mailListArray = explode("\n", $this->newsletter->groups[$importno]->Emails);
-							foreach($_mailListArray as $line){
+							$mailListArray = explode("\n", $this->newsletter->groups[$importno]->Emails);
+							foreach($mailListArray as $line){
 								$mailListArray[] = substr($line, 0, strpos($line, ','));
 							}
-							unset($_mailListArray);
+							unset($mailListArray);
 							while($dat = fgetcsv($fh, 1000, $delimiter)){
 								if(!isset($control[$dat[$col]])){
-									$_alldat = implode('', $dat);
-									if(str_replace(' ', '', $_alldat) === ""){
+									$alldat = implode('', $dat);
+									if(str_replace(' ', '', $alldat) === ""){
 										continue;
 									}
 									$mailrecip = (str_replace(' ', '', $dat[$col]) === '') ? '--- ' . g_l('modules_newsletter', '[email_missing]') . ' ---' : $dat[$col];
@@ -1208,7 +1208,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		}
 
 		$atts = $this->getAttachments($group);
-		//$_clean = $this->getCleanMail($this->newsletter->Reply);
+		//$clean = $this->getCleanMail($this->newsletter->Reply);
 		$phpmail = new we_helpers_mail($this->newsletter->Test, $this->newsletter->Subject, $this->newsletter->Sender, $this->newsletter->Reply, $this->newsletter->isEmbedImages);
 		if(!$this->settings["use_base_href"]){
 			$phpmail->setIsUseBaseHref($this->settings["use_base_href"]);
@@ -1234,11 +1234,11 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 
 			//if(file_exists(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"]."_h_".$cc)) weFile::delete(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"]."_h_".$cc);
 			if(file_exists(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc)){
-				$_buffer = we_unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc));
-				if(is_array($_buffer) && isset($_buffer['inlines'])){
-					foreach($_buffer['inlines'] as $_fn){
-						if(file_exists($_fn)){
-							we_base_file::delete($_fn);
+				$buffer = we_unserialize(we_base_file::load(WE_NEWSLETTER_CACHE_DIR . $ret["blockcache"] . "_h_" . $cc));
+				if(is_array($buffer) && isset($buffer['inlines'])){
+					foreach($buffer['inlines'] as $fn){
+						if(file_exists($fn)){
+							we_base_file::delete($fn);
 						}
 					}
 				}
@@ -1330,7 +1330,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 					implode(',', array_map('intval', explode(',', $this->newsletter->groups[$group - 1]->Customers))));
 
 
-			$_default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"', '', $this->db);
+			$default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"', '', $this->db);
 			$selectX = $this->settings['customer_email_field'] .
 				($emails_only ? '' :
 					',' . $this->settings['customer_html_field'] . ',' .
@@ -1346,7 +1346,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 					if($emails_only){
 						$customer_mail[] = $email;
 					} else {
-						$htmlmail = ($this->settings["customer_html_field"] != 'ID' && trim($this->db->f($this->settings["customer_html_field"])) != '') ? trim($this->db->f($this->settings["customer_html_field"])) : $_default_html;
+						$htmlmail = ($this->settings["customer_html_field"] != 'ID' && trim($this->db->f($this->settings["customer_html_field"])) != '') ? trim($this->db->f($this->settings["customer_html_field"])) : $default_html;
 						$salutation = $this->settings["customer_salutation_field"] != 'ID' ? $this->db->f($this->settings["customer_salutation_field"]) : '';
 						$title = $this->settings["customer_title_field"] != 'ID' ? $this->db->f($this->settings["customer_title_field"]) : '';
 						$firstname = $this->db->f($this->settings["customer_firstname_field"]);
@@ -1379,7 +1379,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	 */
 	static function getSettings(){
 		$db = new DB_WE();
-		$_domainName = str_replace("www.", "", $_SERVER['SERVER_NAME']);
+		$domainName = str_replace("www.", "", $_SERVER['SERVER_NAME']);
 		$ret = array(
 			'black_list' => '',
 			'customer_email_field' => 'Kontakt_Email',
@@ -1390,8 +1390,8 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			'customer_title_field' => '',
 			'default_htmlmail' => 0,
 			'isEmbedImages' => 0,
-			'default_reply' => 'replay@' . $_domainName,
-			'default_sender' => 'mailer@' . $_domainName,
+			'default_reply' => 'replay@' . $domainName,
+			'default_sender' => 'mailer@' . $domainName,
 			we_newsletter_newsletter::FEMALE_SALUTATION_FIELD => g_l('modules_newsletter', '[default][female]'),
 			'global_mailing_list' => '',
 			'log_sending' => 1,
@@ -1400,7 +1400,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			'reject_not_verified' => 1,
 			'send_step' => 20,
 			'send_wait' => 0,
-			'test_account' => 'test@' . $_domainName,
+			'test_account' => 'test@' . $domainName,
 			'title_or_salutation' => 0,
 			'use_port' => 0,
 			'use_https_refer' => 0,
@@ -1614,10 +1614,10 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	}
 
 	function getCleanMail($mail){
-		$_match = array();
-		$_pattern = '|[_\.0-9a-z-]+@([0-9a-z-]+\.)+[a-z]{2,6}|i';
-		if(preg_match($_pattern, $mail, $_match)){
-			return ($_match[0]);
+		$match = array();
+		$pattern = '|[_\.0-9a-z-]+@([0-9a-z-]+\.)+[a-z]{2,6}|i';
+		if(preg_match($pattern, $mail, $match)){
+			return ($match[0]);
 		}
 		return '';
 	}

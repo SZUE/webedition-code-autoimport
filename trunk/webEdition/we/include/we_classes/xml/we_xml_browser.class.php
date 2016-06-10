@@ -127,14 +127,14 @@ class we_xml_browser extends we_xml_parser{
 				$content = file_get_contents($file);
 				break;
 			case 'curl':
-				$_m = array();
-				$_pattern = '/^(((ht|f)tp(s?):\/\/)|(www\.))+(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(\/[a-zA-Z0-9\&amp;%_\.\/-~-]*)?/i';
-				if(!preg_match($_pattern, $file, $_m)){
+				$m = array();
+				$pattern = '/^(((ht|f)tp(s?):\/\/)|(www\.))+(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(\/[a-zA-Z0-9\&amp;%_\.\/-~-]*)?/i';
+				if(!preg_match($pattern, $file, $m)){
 					return false;
 				}
-				$_content = we_base_util::getCurlHttp(str_replace($_m[9], '', $file), $_m[9], array(), false, $timeout);
-				if($_content['status'] === 0){
-					$content = $_content['data'];
+				$content = we_base_util::getCurlHttp(str_replace($m[9], '', $file), $m[9], array(), false, $timeout);
+				if($content['status'] === 0){
+					$content = $content['data'];
 				} else {
 					return false;
 				}

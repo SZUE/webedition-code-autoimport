@@ -41,22 +41,22 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 	function initByNavModel(&$navModel){
 		// convert navigation data into data the filter model needs
 
-		$_custFilter = $navModel->CustomerFilter;
+		$custFilter = $navModel->CustomerFilter;
 
-		$this->updateCustomerFilter($_custFilter);
+		$this->updateCustomerFilter($custFilter);
 
-		$_specCust = (isset($navModel->Customers) && is_array($navModel->Customers)) ? $navModel->Customers : array();
+		$specCust = (isset($navModel->Customers) && is_array($navModel->Customers)) ? $navModel->Customers : array();
 
-		$_mode = we_customer_abstractFilter::OFF;
+		$mode = we_customer_abstractFilter::OFF;
 		if($navModel->LimitAccess){
 			if($navModel->LimitAccess == 2){
-				$_mode = we_customer_abstractFilter::NOT_LOGGED_IN_USERS;
+				$mode = we_customer_abstractFilter::NOT_LOGGED_IN_USERS;
 			} else if($navModel->LimitAccess == 1 && $navModel->ApplyFilter){
-				$_mode = we_customer_abstractFilter::FILTER;
+				$mode = we_customer_abstractFilter::FILTER;
 			} else if($navModel->AllCustomers == 1){
-				$_mode = we_customer_abstractFilter::ALL;
-			} else if(count($_specCust) > 0){
-				$_mode = we_customer_abstractFilter::SPECIFIC;
+				$mode = we_customer_abstractFilter::ALL;
+			} else if(count($specCust) > 0){
+				$mode = we_customer_abstractFilter::SPECIFIC;
 			}
 		}
 
@@ -64,10 +64,10 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 
 		$this->setBlackList(isset($navModel->BlackList) && is_array($navModel->BlackList) ? $navModel->BlackList : array());
 		$this->setWhiteList(isset($navModel->WhiteList) && is_array($navModel->WhiteList) ? $navModel->WhiteList : array());
-		$this->setSpecificCustomers($_specCust);
+		$this->setSpecificCustomers($specCust);
 
-		$this->setFilter($_custFilter);
-		$this->setMode($_mode);
+		$this->setFilter($custFilter);
+		$this->setMode($mode);
 		$this->setUseDocumentFilter($navModel->UseDocumentFilter);
 	}
 
@@ -88,9 +88,9 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 			default:
 				if(isset($navItem->customers['filter']) && is_array($navItem->customers['filter']) && count($navItem->customers['filter'])){
 					$this->setMode(we_customer_abstractFilter::FILTER);
-					$_custFilter = $navItem->customers['filter'];
-					$this->updateCustomerFilter($_custFilter);
-					$this->setFilter($_custFilter);
+					$custFilter = $navItem->customers['filter'];
+					$this->updateCustomerFilter($custFilter);
+					$this->setFilter($custFilter);
 
 					if(isset($navItem->customers['blacklist']) && is_array($navItem->customers['blacklist']) && count($navItem->customers['blacklist'])){
 						$this->setBlackList($navItem->customers['blacklist']);
@@ -110,28 +110,28 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 	/**
 	 * converts old style (prior we 5.1) navigation filters to new format
 	 *
-	 * @param array $_custFilter
+	 * @param array $custFilter
 	 */
-	function updateCustomerFilter(&$_custFilter){
-		if(isset($_custFilter['AND']) && isset($_custFilter['OR'])){ // old style filter => convert into new style
-			$_newFilter = array();
-			foreach($_custFilter['AND'] as $_f){
-				$_newFilter[] = array(
+	function updateCustomerFilter(&$custFilter){
+		if(isset($custFilter['AND']) && isset($custFilter['OR'])){ // old style filter => convert into new style
+			$newFilter = array();
+			foreach($custFilter['AND'] as $f){
+				$newFilter[] = array(
 					'logic' => 'AND',
-					'field' => $_f['operand1'],
-					'operation' => $_f['operator'],
-					'value' => $_f['operand2']
+					'field' => $f['operand1'],
+					'operation' => $f['operator'],
+					'value' => $f['operand2']
 				);
 			}
-			foreach($_custFilter['OR'] as $_f){
-				$_newFilter[] = array(
+			foreach($custFilter['OR'] as $f){
+				$newFilter[] = array(
 					'logic' => 'OR',
-					'field' => $_f['operand1'],
-					'operation' => $_f['operator'],
-					'value' => $_f['operand2']
+					'field' => $f['operand1'],
+					'operation' => $f['operator'],
+					'value' => $f['operand2']
 				);
 			}
-			$_custFilter = $_newFilter;
+			$custFilter = $newFilter;
 		}
 	}
 
@@ -182,41 +182,41 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 	function updateByFilter(&$filterObj, $id, $table){
 		switch($filterObj->getMode()){
 			case we_customer_abstractFilter::FILTER:
-				$_limitAccess = 1;
-				$_applyFilter = 1;
-				$_allCustomers = 1;
+				$limitAccess = 1;
+				$applyFilter = 1;
+				$allCustomers = 1;
 				break;
 
 			case we_customer_abstractFilter::SPECIFIC:
-				$_limitAccess = 1;
-				$_applyFilter = 0;
-				$_allCustomers = 0;
+				$limitAccess = 1;
+				$applyFilter = 0;
+				$allCustomers = 0;
 				break;
 
 			case we_customer_abstractFilter::ALL:
-				$_limitAccess = 1;
-				$_applyFilter = 0;
-				$_allCustomers = 1;
+				$limitAccess = 1;
+				$applyFilter = 0;
+				$allCustomers = 1;
 				break;
 
 			case we_customer_abstractFilter::NOT_LOGGED_IN_USERS:
-				$_limitAccess = 2;
-				$_applyFilter = 0;
-				$_allCustomers = 0;
+				$limitAccess = 2;
+				$applyFilter = 0;
+				$allCustomers = 0;
 				break;
 			default:
-				$_limitAccess = 0;
-				$_applyFilter = 0;
-				$_allCustomers = 0;
+				$limitAccess = 0;
+				$applyFilter = 0;
+				$allCustomers = 0;
 		}
 
 
 		$DB_WE = new DB_WE();
 		$DB_WE->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' .
 			we_database_base::arraySetter(array(
-				'LimitAccess' => $_limitAccess,
-				'ApplyFilter' => $_applyFilter,
-				'AllCustomers' => $_allCustomers,
+				'LimitAccess' => $limitAccess,
+				'ApplyFilter' => $applyFilter,
+				'AllCustomers' => $allCustomers,
 				'Customers' => implode(',', $filterObj->getSpecificCustomers()),
 				//FIXME: this is due to customerfilter
 				'CustomerFilter' => we_serialize($filterObj->getFilter(), SERIALIZE_JSON),

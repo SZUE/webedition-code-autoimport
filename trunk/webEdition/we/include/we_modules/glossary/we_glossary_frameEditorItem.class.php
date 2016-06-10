@@ -112,7 +112,7 @@ function we_save() {
 	}
 
 	private function getHTMLTabProperties(we_glossary_glossary $glossary){
-		$_types = array(
+		$types = array(
 			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
 			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
 			we_glossary_glossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
@@ -130,7 +130,7 @@ function we_save() {
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>
 	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, array("onchange" => "top.content.setHot();"), "value", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[type]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlSelect("Type", $_types, 1, $glossary->Type, false, array("onchange" => "top.content.setHot();showType(this.value);"), "value", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::htmlSelect("Type", $types, 1, $glossary->Type, false, array("onchange" => "top.content.setHot();showType(this.value);"), "value", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . we_html_forms::checkboxWithHidden((bool) $glossary->Fullword, 'Fullword', g_l('modules_glossary', '[Fullword]'), false, 'defaultfont', 'top.content.setHot();') . '</td></tr>
 </table>';
 		$parts = array(
@@ -177,74 +177,74 @@ function we_save() {
 
 	function getHTMLAcronym(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_ACRONYM){
-			$_text = html_entity_decode($glossary->Text);
-			$_title = html_entity_decode($glossary->Title);
-			$_language = $glossary->getAttribute('lang');
+			$text = html_entity_decode($glossary->Text);
+			$title = html_entity_decode($glossary->Title);
+			$language = $glossary->getAttribute('lang');
 		} else {
-			$_text = $_title = $_language = "";
+			$text = $title = $language = "";
 		}
 
 		return '<div id="type_acronym" style="display: none;">
 <table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[acronym]') . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("acronym[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("acronym[Text]", 24, $text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[announced_word]') . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("acronym[Title]", 24, $_title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
-	<tr><td>' . self::getLangField("acronym[Attributes][lang]", $_language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("acronym[Title]", 24, $title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td>' . self::getLangField("acronym[Attributes][lang]", $language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
 </table>
 </div>';
 	}
 
 	function getHTMLForeignWord(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_FOREIGNWORD){
-			$_text = html_entity_decode($glossary->Text);
-			$_language = $glossary->getAttribute('lang');
+			$text = html_entity_decode($glossary->Text);
+			$language = $glossary->getAttribute('lang');
 		} else {
-			$_text = $_language = "";
+			$text = $language = "";
 		}
 
 		return '<div id="type_foreignword" style="display: none;"><table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[foreignword]') . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("foreignword[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
-	<tr><td>' . self::getLangField("foreignword[Attributes][lang]", $_language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("foreignword[Text]", 24, $text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td>' . self::getLangField("foreignword[Attributes][lang]", $language, g_l('modules_glossary', '[language]'), 520) . '</td></tr>
 </table></div>';
 	}
 
 	function getHTMLTextReplacement(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_TEXTREPLACE){
-			$_text = html_entity_decode($glossary->Text, null, $GLOBALS["WE_BACKENDCHARSET"]);
-			$_title = html_entity_decode($glossary->Title, null, $GLOBALS["WE_BACKENDCHARSET"]);
+			$text = html_entity_decode($glossary->Text, null, $GLOBALS["WE_BACKENDCHARSET"]);
+			$title = html_entity_decode($glossary->Title, null, $GLOBALS["WE_BACKENDCHARSET"]);
 		} else {
-			$_title = $_text = "";
+			$title = $text = "";
 		}
 
 		return '<div id="type_textreplacement" style="display: none;"><table class="default">
 <tr><td class="defaultfont">' . g_l('modules_glossary', '[textreplacement]') . '</td></tr>
-<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("textreplacement[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("textreplacement[Text]", 24, $text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 <tr><td class="defaultfont">' . g_l('modules_glossary', '[textreplacement_Text]') . '</td></tr>
-<tr><td>' . we_html_tools::htmlTextInput("textreplacement[Title]", 24, $_title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+<tr><td>' . we_html_tools::htmlTextInput("textreplacement[Title]", 24, $title, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 </table></div>';
 	}
 
 	function getHTMLLink(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_LINK){
-			$_text = html_entity_decode($glossary->Text);
-			$_mode = $glossary->getAttribute('mode');
+			$text = html_entity_decode($glossary->Text);
+			$mode = $glossary->getAttribute('mode');
 		} else {
-			$_text = $_mode = "";
+			$text = $mode = "";
 		}
 
 		return
 			'<div id="type_link" style="display: none;">
 <table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[link]') . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("link[Text]", 24, $_text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlTextInput("link[Text]", 24, $text, 255, 'onchange="setHot();"', "text", 520) . '</td></tr>
 	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("link[Attributes][mode]", array(
 				'intern' => g_l('modules_glossary', '[link_intern]'),
 				'extern' => g_l('modules_glossary', '[link_extern]'),
 				'object' => g_l('modules_glossary', '[link_object]'),
 				'category' => g_l('modules_glossary', '[link_category]'),
-				), 1, $_mode, false, array("onchange" => "setHot();showLinkMode(this.value);"), "value", 520) . '</td></tr>
+				), 1, $mode, false, array("onchange" => "setHot();showLinkMode(this.value);"), "value", 520) . '</td></tr>
 </table>' .
 			self::getHTMLIntern($glossary) .
 			self::getHTMLExtern($glossary) .
@@ -255,26 +255,26 @@ function we_save() {
 
 	function getHTMLIntern(we_glossary_glossary $glossary){
 		$cmd1 = "document.we_form.elements['link[Attributes][InternLinkID]'].value";
-		$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkPath]'].value") . "','','','0')";
-		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
+		$cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkPath]'].value") . "','','','0')";
+		$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false);
 
 		if($glossary->Type === "link" && $glossary->getAttribute('mode') === "intern"){
-			//$_linkPath = $glossary->getAttribute('InternLinkPath');
-			$_linkID = $glossary->getAttribute('InternLinkID');
-			$_linkPath = id_to_path($_linkID);
-			$glossary->setAttribute('InternLinkPath', $_linkPath);
-			$_internParameter = $glossary->getAttribute('InternParameter');
+			//$linkPath = $glossary->getAttribute('InternLinkPath');
+			$linkID = $glossary->getAttribute('InternLinkID');
+			$linkPath = id_to_path($linkID);
+			$glossary->setAttribute('InternLinkPath', $linkPath);
+			$internParameter = $glossary->getAttribute('InternParameter');
 		} else {
-			$_linkPath = $_linkID = $_internParameter = "";
+			$linkPath = $linkID = $internParameter = "";
 		}
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId('docPath');
 		$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
-		$yuiSuggest->setInput('link[Attributes][InternLinkPath]', $_linkPath);
+		$yuiSuggest->setInput('link[Attributes][InternLinkPath]', $linkPath);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setSelectButton($_button);
-		$yuiSuggest->setResult('link[Attributes][InternLinkID]', $_linkID);
+		$yuiSuggest->setSelectButton($button);
+		$yuiSuggest->setResult('link[Attributes][InternLinkID]', $linkID);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(FILE_TABLE);
 		$yuiSuggest->setWidth(400);
@@ -283,55 +283,55 @@ function we_save() {
 			. '<table class="default">
 	<tr><td style="padding:2px 0px;">' . $yuiSuggest->getHTML() . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][InternParameter]', 58, $_internParameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
+	<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][InternParameter]', 58, $internParameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 </table></div>';
 	}
 
 	function getHTMLExtern(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_LINK && $glossary->getAttribute('mode') === "extern"){
-			$_url = $glossary->getAttribute('ExternUrl');
-			$_parameter = $glossary->getAttribute('ExternParameter');
+			$url = $glossary->getAttribute('ExternUrl');
+			$parameter = $glossary->getAttribute('ExternParameter');
 		} else {
-			$_url = we_base_link::EMPTY_EXT;
-			$_parameter = "";
+			$url = we_base_link::EMPTY_EXT;
+			$parameter = "";
 		}
 
 		return '<div id="mode_extern" style="display: none;">
 	<table class="default">
-		<tr><td style="padding:2px 0px;">' . we_html_tools::htmlTextInput('link[Attributes][ExternUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
+		<tr><td style="padding:2px 0px;">' . we_html_tools::htmlTextInput('link[Attributes][ExternUrl]', 58, $url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
 		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
-		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ExternParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
+		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ExternParameter]', 58, $parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 	</table>
 </div>';
 	}
 
 	function getHTMLObject(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_LINK && $glossary->getAttribute('mode') === "object"){
-			$_linkPath = $glossary->getAttribute('ObjectLinkPath');
-			$_linkID = $glossary->getAttribute('ObjectLinkID');
-			$_workspaceID = $glossary->getAttribute('ObjectWorkspaceID');
-			$_parameter = $glossary->getAttribute('ObjectParameter');
+			$linkPath = $glossary->getAttribute('ObjectLinkPath');
+			$linkID = $glossary->getAttribute('ObjectLinkID');
+			$workspaceID = $glossary->getAttribute('ObjectWorkspaceID');
+			$parameter = $glossary->getAttribute('ObjectParameter');
 		} else {
-			$_linkPath = $_linkID = $_workspaceID = $_parameter = "";
+			$linkPath = $linkID = $workspaceID = $parameter = "";
 		}
 
 		$cmd1 = "document.we_form.elements['link[Attributes][ObjectLinkID]'].value";
-		$_cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][ObjectLinkPath]'].value") . "','" . we_base_request::encCmd("opener.we_cmd('populateWorkspaces');") . "','','0','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
-		$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false);
+		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][ObjectLinkPath]'].value") . "','" . we_base_request::encCmd("opener.we_cmd('populateWorkspaces');") . "','','0','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
+		$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false);
 
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId('objPathLink');
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
-		$yuiSuggest->setInput('link[Attributes][ObjectLinkPath]', $_linkPath);
+		$yuiSuggest->setInput('link[Attributes][ObjectLinkPath]', $linkPath);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setSelectButton($_button);
-		$yuiSuggest->setResult('link[Attributes][ObjectLinkID]', $_linkID);
+		$yuiSuggest->setSelectButton($button);
+		$yuiSuggest->setResult('link[Attributes][ObjectLinkID]', $linkID);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 		$yuiSuggest->setWidth(400);
 
-		$_wsid = ($glossary->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($glossary->View->Glossary->getAttribute('ObjectLinkID')) : array());
+		$wsid = ($glossary->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($glossary->View->Glossary->getAttribute('ObjectLinkID')) : array());
 
 		return '<div id="mode_object" style="display: none;">
 	<table class="default">
@@ -340,46 +340,46 @@ function we_save() {
 	<div id="ObjectWorkspaceID" style="display: block;">
 		<table class="default">
 			<tr><td class="defaultfont">' . g_l('modules_glossary', '[workspace]') . '</td></tr>
-			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $_wsid, 0, $_workspaceID, false, array('style' => "width:520px; border: #AAAAAA solid 1px;", 'onchange' => "setHot();"), 'value') . '</td></tr>
+			<tr><td>' . we_html_tools::htmlSelect('link[Attributes][ObjectWorkspaceID]', $wsid, 0, $workspaceID, false, array('style' => "width:520px; border: #AAAAAA solid 1px;", 'onchange' => "setHot();"), 'value') . '</td></tr>
 		</table>
 	</div>
 	<table class="default">
 		<tr><td class="defaultfont" style="padding-top:2px;">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
-		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ObjectParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
+		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][ObjectParameter]', 58, $parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 	</table></div>';
 	}
 
 	function getHTMLCategory(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_LINK && $glossary->getAttribute('mode') === "category"){
-			$_linkPath = $glossary->getAttribute('CategoryLinkPath');
-			$_linkID = $glossary->getAttribute('CategoryLinkID');
-			$_internLinkPath = $glossary->getAttribute('CategoryInternLinkPath');
-			$_internLinkID = $glossary->getAttribute('CategoryInternLinkID');
-			$_modeCategory = $glossary->getAttribute('modeCategory');
-			$_url = $glossary->getAttribute('CategoryUrl');
-			$_catParameter = $glossary->getAttribute('CategoryCatParameter');
-			$_parameter = $glossary->getAttribute('CategoryParameter');
+			$linkPath = $glossary->getAttribute('CategoryLinkPath');
+			$linkID = $glossary->getAttribute('CategoryLinkID');
+			$internLinkPath = $glossary->getAttribute('CategoryInternLinkPath');
+			$internLinkID = $glossary->getAttribute('CategoryInternLinkID');
+			$modeCategory = $glossary->getAttribute('modeCategory');
+			$url = $glossary->getAttribute('CategoryUrl');
+			$catParameter = $glossary->getAttribute('CategoryCatParameter');
+			$parameter = $glossary->getAttribute('CategoryParameter');
 		} else {
-			$_linkPath = "/";
-			$_linkID = 0;
-			$_internLinkPath = "";
-			$_internLinkID = "";
-			$_modeCategory = 0;
-			$_url = "http://";
-			$_catParameter = "";
-			$_parameter = "";
+			$linkPath = "/";
+			$linkID = 0;
+			$internLinkPath = "";
+			$internLinkID = "";
+			$modeCategory = 0;
+			$url = "http://";
+			$catParameter = "";
+			$parameter = "";
 		}
 
 		$cmd1 = "document.we_form.elements['link[Attributes][CategoryLinkID]'].value";
 
-		$_cmd = "javascript:we_cmd('we_selector_category'," . $cmd1 . ",'" . CATEGORY_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryLinkPath]'].value") . "','" . we_base_request::encCmd("opener.setHot();") . "','','0')";
+		$cmd = "javascript:we_cmd('we_selector_category'," . $cmd1 . ",'" . CATEGORY_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryLinkPath]'].value") . "','" . we_base_request::encCmd("opener.setHot();") . "','','0')";
 
-		$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]', 58, $_linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryLinkID]', $_linkID), we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false));
+		$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]', 58, $linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryLinkID]', $linkID), we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false));
 
 		$cmd1 = "document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value";
-		$_cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryInternLinkPath]'].value") . "','','','0')";
+		$cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryInternLinkPath]'].value") . "','','','0')";
 
-		$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]', 58, $_internLinkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryInternLinkID]', $_internLinkID), we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', false)
+		$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]', 58, $internLinkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryInternLinkID]', $internLinkID), we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false)
 		);
 
 		return '<div id="mode_category" style="display: none;">
@@ -389,7 +389,7 @@ function we_save() {
 		<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("link[Attributes][modeCategory]", array(
 				'intern' => g_l('modules_glossary', '[link_intern]'),
 				'extern' => g_l('modules_glossary', '[link_extern]'),
-				), 1, $_modeCategory, false, array('onchange' => "setHot();showLinkModeCategory(this.value);"), "value", 520) . '</td></tr>
+				), 1, $modeCategory, false, array('onchange' => "setHot();showLinkModeCategory(this.value);"), "value", 520) . '</td></tr>
 	</table>
 	<div id="mode_category_intern" style="display: none;">
 	<table class="default">
@@ -398,14 +398,14 @@ function we_save() {
 	</div>
 	<div id="mode_category_extern" style="display: none;">
 		<table class="default">
-			<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryUrl]', 58, $_url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
+			<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryUrl]', 58, $url, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
 		</table>
 	</div>
 	<table class="default">
 		<tr><td class="defaultfont" style="padding:2px 0px;">' . g_l('modules_glossary', '[parameter_name]') . '</td></tr>
-		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryCatParameter]', 58, $_catParameter, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
+		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryCatParameter]', 58, $catParameter, '', 'onchange="setHot();"', 'text', 520) . '</td></tr>
 		<tr><td class="defaultfont">' . g_l('modules_glossary', '[parameter]') . '</td></tr>
-		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryParameter]', 58, $_parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
+		<tr><td>' . we_html_tools::htmlTextInput('link[Attributes][CategoryParameter]', 58, $parameter, '', 'onchange="setHot();"', 'text', 520, 0) . '</td></tr>
 	</table></div>';
 	}
 
@@ -415,9 +415,9 @@ function we_save() {
 
 	function getLangField($name, $value, $title, $width){
 
-		$_name = md5($name);
+		$name = md5($name);
 		//FIXME: these values should be obtained from global settings
-		$_options = array(
+		$options = array(
 			'' => '',
 			'de' => 'de',
 			'en' => 'en',
@@ -427,19 +427,19 @@ function we_save() {
 			'nl' => 'nl',
 			'pl' => 'pl',
 		);
-		$_width = 100;
+		$width = 100;
 
-		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $_width));
+		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $width));
 
-		$select = we_html_tools::htmlSelect($_name, $_options, 1, "", false, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), 'value', $_width);
+		$select = we_html_tools::htmlSelect($name, $options, 1, "", false, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), 'value', $width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
 
 	function getRevRel($name, $value, $title, $width){
 
-		$_name = md5($name);
-		$_options = array(
+		$name = md5($name);
+		$options = array(
 			'' => '',
 			'contents' => 'contents',
 			'chapter' => 'chapter',
@@ -458,38 +458,38 @@ function we_save() {
 			'alternate' => 'alternate',
 			'nofollow' => 'nofollow',
 		);
-		$_size = 1;
-		$_multiple = false;
-		$_compare = "value";
-		$_width = 100;
+		$size = 1;
+		$multiple = false;
+		$compare = "value";
+		$width = 100;
 
-		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $_width));
+		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $width));
 
-		$select = we_html_tools::htmlSelect($_name, $_options, $_size, "", $_multiple, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), $_compare, $_width);
+		$select = we_html_tools::htmlSelect($name, $options, $size, "", $multiple, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), $compare, $width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
 
 	private function getHTMLLinkAttributes(we_glossary_glossary $glossary){
-		$_input_width = 70;
-		$_popup = new we_html_table(array('cellpadding' => 5), 4, 4);
-		$_popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
-		$_popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));
+		$input_width = 70;
+		$popup = new we_html_table(array('cellpadding' => 5), 4, 4);
+		$popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
+		$popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));
 
-		$_popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_xposition]', 5, $glossary->getAttribute('popup_xposition'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_x]')));
-		$_popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_yposition]', 5, $glossary->getAttribute('popup_yposition'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_y]')));
-		$_popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_width]', 5, $glossary->getAttribute('popup_width'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_width]')));
+		$popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_xposition]', 5, $glossary->getAttribute('popup_xposition'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_x]')));
+		$popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_yposition]', 5, $glossary->getAttribute('popup_yposition'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_y]')));
+		$popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_width]', 5, $glossary->getAttribute('popup_width'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_width]')));
 
-		$_popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_height]', 5, $glossary->getAttribute('popup_height'), '', 'onchange="setHot();"', 'text', $_input_width), g_l('modules_glossary', '[popup_height]')));
+		$popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_height]', 5, $glossary->getAttribute('popup_height'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_height]')));
 
 
-		$_popup->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary', '[popup_status]')));
-		$_popup->setCol(2, 1, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary', '[popup_scrollbars]')));
-		$_popup->setCol(2, 2, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary', '[popup_menubar]')));
+		$popup->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary', '[popup_status]')));
+		$popup->setCol(2, 1, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary', '[popup_scrollbars]')));
+		$popup->setCol(2, 2, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary', '[popup_menubar]')));
 
-		$_popup->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary', '[popup_resizable]')));
-		$_popup->setCol(3, 1, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary', '[popup_location]')));
-		$_popup->setCol(3, 2, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]')));
+		$popup->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary', '[popup_resizable]')));
+		$popup->setCol(3, 1, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary', '[popup_location]')));
+		$popup->setCol(3, 2, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]')));
 
 
 		return array(
@@ -531,7 +531,7 @@ function we_save() {
 			),
 			array(
 				'headline' => g_l('modules_glossary', '[popup]'),
-				'html' => $_popup->getHTML(),
+				'html' => $popup->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			)

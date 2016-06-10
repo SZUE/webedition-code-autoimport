@@ -49,12 +49,12 @@ abstract class we_tool_frames extends we_modules_frame{
 	}
 
 	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		$_class = we_tool_lookup::getModelClassName($this->toolName);
-		$this->Model = $this->Model ? : new $_class();
+		$class = we_tool_lookup::getModelClassName($this->toolName);
+		$this->Model = $this->Model ? : new $class();
 		//$this->Model->clearSessionVars(); // why should we clear here?
 
 		if(($modelid = we_base_request::_(we_base_request::INT, 'modelid'))){
-			$this->Model = new $_class();
+			$this->Model = new $class();
 			$this->Model->load($modelid);
 			$this->Model->saveInSession();
 			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $modelid;
@@ -144,13 +144,13 @@ function setTab(tab) {
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 		}
 
-		$_but_table = we_html_element::htmlSpan(array('style' => 'margin-left: 15px;margin-top:10px;'), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION'))));
+		$but_table = we_html_element::htmlSpan(array('style' => 'margin-left: 15px;margin-top:10px;'), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION'))));
 
 		return $this->getHTMLDocument(we_html_element::jsElement('
 function we_save() {
 	top.content.we_cmd("tool_' . $this->toolName . '_save");
 }') .
-				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), $_but_table)
+				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), $but_table)
 				)
 		);
 	}
@@ -197,9 +197,9 @@ function we_save() {
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
-		$_class = $this->toolClassName . 'TreeDataSource';
+		$class = $this->toolClassName . 'TreeDataSource';
 
-		$_loader = new $_class($this->TreeSource);
+		$loader = new $class($this->TreeSource);
 
 		$rootjs = ($pid ?
 				'' :
@@ -211,7 +211,7 @@ function we_save() {
 				'cmd' => 'no_cmd'));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, $_loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
+						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, $loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
 					)
 		));
 	}
@@ -226,15 +226,15 @@ function we_save() {
 	protected function getHTMLExitQuestion(){
 		if(($dp = we_base_request::_(we_base_request::INT, 'delayParam'))){
 
-			$_frame = 'opener.top.content';
-//			$_form = $_frame . '.document.we_form';
+			$frame = 'opener.top.content';
+//			$form = $frame . '.document.we_form';
 
-			$_yes = $_frame . '.hot=0;' . $_frame . '.we_cmd("tool_' . $this->toolName . '_save");self.close();';
-			$_no = $_frame . '.hot=0;' . $_frame . '.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
-			$_cancel = 'self.close();';
+			$yes = $frame . '.hot=0;' . $frame . '.we_cmd("tool_' . $this->toolName . '_save");self.close();';
+			$no = $frame . '.hot=0;' . $frame . '.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
+			$cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
-					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $_yes, $_no, $_cancel) .
+					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $yes, $no, $cancel) .
 					'</body>');
 		}
 	}
@@ -244,19 +244,19 @@ function we_save() {
 	}
 
 	private function getHTMLChooser($title, $table = FILE_TABLE, $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $PathName = 'Path', $cmd = '', $filter = we_base_ContentTypes::WEDOCUMENT, $disabled = false, $showtrash = false){
-		$_path = id_to_path($this->Model->$IDName, $table);
-		$_cmd = "javascript:we_cmd('open" . $this->toolName . "Dirselector',document.we_form.elements['" . $IDName . "'].value,'document.we_form." . $IDName . ".value','document.we_form." . $PathName . ".value','" . $cmd . "')";
+		$path = id_to_path($this->Model->$IDName, $table);
+		$cmd = "javascript:we_cmd('open" . $this->toolName . "Dirselector',document.we_form.elements['" . $IDName . "'].value,'document.we_form." . $IDName . ".value','document.we_form." . $PathName . ".value','" . $cmd . "')";
 
 		if($showtrash){
-			$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', $disabled) .
+			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', $disabled) .
 				we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements["' . $IDName . '"].value=0;document.we_form.elements["' . $PathName . '"].value="/";', true, 27, 22);
-			$_width = 157;
+			$width = 157;
 		} else {
-			$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 100, 22, '', '', $disabled);
-			$_width = 120;
+			$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', $disabled);
+			$width = 120;
 		}
 
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($PathName, 58, $_path, '', 'readonly', 'text', (520 - $_width), 0), $title, 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), $_button);
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($PathName, 58, $path, '', 'readonly', 'text', (520 - $width), 0), $title, 'left', 'defaultfont', we_html_element::htmlHidden($IDName, $IDValue), $button);
 	}
 
 }

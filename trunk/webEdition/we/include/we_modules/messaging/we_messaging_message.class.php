@@ -83,9 +83,9 @@ class we_messaging_message extends we_messaging_proto{
 			return;
 		}
 		foreach($items as $key => $val){
-			$_items[$key] = intval($val);
+			$items[$key] = intval($val);
 		}
-		$id_str = 'ID IN ( ' . implode(',', $_items) . ')';
+		$id_str = 'ID IN ( ' . implode(',', $items) . ')';
 		$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->table) . ' SET ParentID=' . intval($target_fid) . ' WHERE (' . $id_str . ') AND UserID=' . intval($this->userid));
 
 		return 1;

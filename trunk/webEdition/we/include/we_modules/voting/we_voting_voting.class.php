@@ -190,9 +190,9 @@ class we_voting_voting extends we_base_model{
 			$this->Scores = we_serialize($this->Scores);
 		} elseif(we_base_request::_(we_base_request::BOOL, 'updateScores')){
 			$ic = we_base_request::_(we_base_request::INT, 'item_count');
-			for($_xcount = 0; $_xcount < $ic; $_xcount++){
-				if(($tmp = we_base_request::_(we_base_request::FLOAT, 'scores_' . $_xcount))){
-					$temp[$_xcount] = $tmp;
+			for($xcount = 0; $xcount < $ic; $xcount++){
+				if(($tmp = we_base_request::_(we_base_request::FLOAT, 'scores_' . $xcount))){
+					$temp[$xcount] = $tmp;
 				}
 				$this->Scores = we_serialize($temp);
 			}
@@ -314,8 +314,8 @@ class we_voting_voting extends we_base_model{
 				if($total <= 0){
 					return 0;
 				}
-				$_scores = isset($this->Scores[$this->answerCount]) ? $this->Scores[$this->answerCount] : 0;
-				$result = ($total > 0 && $this->answerCount >= 0 ? round((($_scores / $total) * 100), $precision) : 100);
+				$scores = isset($this->Scores[$this->answerCount]) ? $this->Scores[$this->answerCount] : 0;
+				$result = ($total > 0 && $this->answerCount >= 0 ? round((($scores / $total) * 100), $precision) : 100);
 				break;
 			case 'total':
 				$result = array_sum($this->Scores);

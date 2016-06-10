@@ -102,24 +102,24 @@ abstract class we_updater{
 		return true;
 	}
 
-	private static function updateObjectFilesX(we_database_base $_db = null){
+	private static function updateObjectFilesX(we_database_base $db = null){
 		//FIXME: this takes long, so try to remove this
 		if(defined('OBJECT_X_TABLE')){
 			//this is from 6.3.9
-			$_db = $_db? : new DB_WE();
+			$db = $db? : new DB_WE();
 
 			if(!f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0 LIMIT 1')){
 				return;
 			}
 			//correct folder properties
-			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET IsClassFolder=IF(ParentID=0,1,0)');
+			$db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET IsClassFolder=IF(ParentID=0,1,0)');
 
 			//all files should have a tableid
-			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path=f.Path) WHERE IsClassFolder=1 AND TableID=0');
-			$_db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE f.Path LIKE CONCAT(Path,"/%") ) WHERE IsClassFolder=0 AND IsFolder=1 AND TableID=0');
+			$db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path=f.Path) WHERE IsClassFolder=1 AND TableID=0');
+			$db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE f.Path LIKE CONCAT(Path,"/%") ) WHERE IsClassFolder=0 AND IsFolder=1 AND TableID=0');
 
 			//all files without a tableID can be deleted
-			$_db->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0');
+			$db->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0');
 		}
 		return true;
 	}

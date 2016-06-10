@@ -456,12 +456,12 @@ abstract class we_base_file{
 			if($gzfp){
 				do{
 					$data = fread($fp, 8192);
-					$_data_size = strlen($data);
-					if($_data_size == 0){
+					$data_size = strlen($data);
+					if($data_size == 0){
 						break;
 					}
-					$_written = $write($gzfp, $data, $_data_size);
-					if($_data_size != $_written){
+					$written = $write($gzfp, $data, $data_size);
+					if($data_size != $written){
 						return false;
 					}
 				} while(true);
@@ -515,10 +515,10 @@ abstract class we_base_file{
 		if(($fh = @fopen($file, 'rb'))){
 			if(fseek($fh, $offset, SEEK_SET) == 0){
 				// according to rfc1952 the first two bytes identify the format
-				$_id1 = fgets($fh, 2);
-				$_id2 = fgets($fh, 2);
+				$id1 = fgets($fh, 2);
+				$id2 = fgets($fh, 2);
 				fclose($fh);
-				return ((ord($_id1) == 31) && (ord($_id2) == 139));
+				return ((ord($id1) == 31) && (ord($id2) == 139));
 			}
 			fclose($fh);
 		}

@@ -88,22 +88,22 @@ if($allVats){
 			<td><strong>' . g_l('modules_shop', '[vat][vat_form_standard]') . '</strong></td>
 		</tr>';
 
-	foreach($allVats as $_weShopVat){
+	foreach($allVats as $weShopVat){
 		$vatJavaScript .='
-		allVats["vat_' . $_weShopVat->id . '"] = {"id":"' . $_weShopVat->id . '","text":"' . $_weShopVat->getNaturalizedText() . '", "vat":"' . $_weShopVat->vat . '", "standard":"' . ($_weShopVat->standard ? 1 : 0) . '", "territory":"' . $_weShopVat->territory . '", "country":"' . $_weShopVat->country . '", "province":"' . $_weShopVat->province . '", "textProvince":"' . $_weShopVat->textProvince . '"};';
+		allVats["vat_' . $weShopVat->id . '"] = {"id":"' . $weShopVat->id . '","text":"' . $weShopVat->getNaturalizedText() . '", "vat":"' . $weShopVat->vat . '", "standard":"' . ($weShopVat->standard ? 1 : 0) . '", "territory":"' . $weShopVat->territory . '", "country":"' . $weShopVat->country . '", "province":"' . $weShopVat->province . '", "textProvince":"' . $weShopVat->textProvince . '"};';
 
 		$vatTable .= '
 		<tr>
-			<td>' . $_weShopVat->id . '</td>
-			<td>' . oldHtmlspecialchars($_weShopVat->getNaturalizedText()) . '</td>
-			<td>' . $_weShopVat->vat . '%</td>
-			<td>' . $_weShopVat->textTerritory . '</td>
-			<td>' . $_weShopVat->territory . '</td>
-			<td>' . g_l('global', ($_weShopVat->standard ? '[yes]' : '[no]')) . '</td>
-			<td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:we_cmd(\'edit\',\'' . $_weShopVat->id . '\');') . '</td>
-			<td>' . we_html_button::create_button(we_html_button::TRASH, 'javascript:we_cmd(\'delete\',\'' . $_weShopVat->id . '\');') . '</td>
+			<td>' . $weShopVat->id . '</td>
+			<td>' . oldHtmlspecialchars($weShopVat->getNaturalizedText()) . '</td>
+			<td>' . $weShopVat->vat . '%</td>
+			<td>' . $weShopVat->textTerritory . '</td>
+			<td>' . $weShopVat->territory . '</td>
+			<td>' . g_l('global', ($weShopVat->standard ? '[yes]' : '[no]')) . '</td>
+			<td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:we_cmd(\'edit\',\'' . $weShopVat->id . '\');') . '</td>
+			<td>' . we_html_button::create_button(we_html_button::TRASH, 'javascript:we_cmd(\'delete\',\'' . $weShopVat->id . '\');') . '</td>
 		</tr>';
-		unset($_weShopVat);
+		unset($weShopVat);
 	}
 
 	$vatTable .= '</table>

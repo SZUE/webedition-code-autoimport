@@ -54,18 +54,18 @@ class we_metadata_IPTC extends we_metadata_metaData{
 		$this->metadata = array();
 		//$this->metadata = array("Copyright" => "/me","Make" => "Fuji");
 
-		$_iptcData = new Image_IPTC($this->datasource);
-		if($_iptcData->isValid()){
+		$iptcData = new Image_IPTC($this->datasource);
+		if($iptcData->isValid()){
 			if(is_array($selection)){
 				// fetch some tags
 				foreach($selection as $value){
-					$this->metadata[] = $_iptcData->getTag($value);
+					$this->metadata[] = $iptcData->getTag($value);
 				}
 			} else {
 				foreach(explode(',', self::usedFields) as $fieldName){
-					$_data = $_iptcData->getTag($fieldName);
-					if(!is_null($_data)){
-						$this->metadata[$fieldName] = $_data;
+					$data = $iptcData->getTag($fieldName);
+					if(!is_null($data)){
+						$this->metadata[$fieldName] = $data;
 					}
 				}
 			}

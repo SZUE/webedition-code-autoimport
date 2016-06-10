@@ -32,13 +32,13 @@ $path = we_base_request::_(we_base_request::URL, "filepath");
 if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_base_request::RAW, "paras", '')))) !== false){
 	echo we_SEEM::parseDocument($content);
 } else {
-	$_table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin-left:20px; margin-top:20px;'), 2, 1);
-	$_table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('SEEM', '[ext_doc_not_found]'), $path));
+	$table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin-left:20px; margin-top:20px;'), 2, 1);
+	$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('SEEM', '[ext_doc_not_found]'), $path));
 
 	//	there must be a navigation-history - so use it
-	$_table->setColContent(1, 0, we_html_button::create_button(we_html_button::BACK, "javascript:top.weNavigationHistory.navigateBack();"));
+	$table->setColContent(1, 0, we_html_button::create_button(we_html_button::BACK, "javascript:top.weNavigationHistory.navigateBack();"));
 
-	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("style" => 'background-color:#F3F7FF;'), $_table->getHtml())
+	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("style" => 'background-color:#F3F7FF;'), $table->getHtml())
 	);
 }
 

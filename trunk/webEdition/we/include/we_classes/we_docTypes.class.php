@@ -110,19 +110,19 @@ class we_docTypes extends we_class{
 	private function formLangLinks(){
 		$value = ($this->Language ? : $GLOBALS['weDefaultFrontendLanguage']);
 		$inputName = 'we_' . $this->Name . '_Language';
-		$_languages = getWeFrontendLanguagesForBackend();
+		$languages = getWeFrontendLanguagesForBackend();
 
 		if(LANGLINK_SUPPORT){
 			$htmlzw = '';
-			foreach($_languages as $langkey => $lang){
+			foreach($languages as $langkey => $lang){
 				$LDID = f('SELECT LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND DID=' . $this->ID . ' AND Locale="' . $langkey . '"', '', $this->DB_WE);
 				$htmlzw.= $this->formDocTypes3($lang, $langkey, ($LDID ? : 0));
 				$langkeys[] = $langkey;
 			}
-			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array('onchange' => 'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
+			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $languages, 1, $value, false, array('onchange' => 'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
 				we_html_element::htmlBr() . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $_languages, 1, $value, false, array(), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
+		return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $languages, 1, $value, false, array(), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 	}
 
 	private function formCategory(){

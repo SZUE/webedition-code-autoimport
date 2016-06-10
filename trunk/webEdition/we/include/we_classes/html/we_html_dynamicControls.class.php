@@ -32,8 +32,8 @@ class we_html_dynamicControls{
 	/*	 * ***********************************************************************
 	 * VARIABLES
 	 * *********************************************************************** */
-	var $_arrow_hint_closed;
-	var $_arrow_hint_opened;
+	var $arrow_hint_closed;
+	var $arrow_hint_opened;
 
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
@@ -47,8 +47,8 @@ class we_html_dynamicControls{
 	function __construct(){
 
 		// Set hint text for the groups arrows
-		$this->_arrow_hint_closed = g_l('dynamicControls', '[expand_group]');
-		$this->_arrow_hint_opened = g_l('dynamicControls', '[fold_group]');
+		$this->arrow_hint_closed = g_l('dynamicControls', '[expand_group]');
+		$this->arrow_hint_opened = g_l('dynamicControls', '[fold_group]');
 	}
 
 	/*	 * ***********************************************************************
@@ -68,29 +68,29 @@ class we_html_dynamicControls{
 	 */
 	private function js_fold_checkbox_groups($groups, $filter, $use_with_user_module){
 		// Initialize string representing the array of all groups
-		$_groups_array = "";
+		$groups_array = "";
 
 		// Initialize iterative counter
 		$i = 0;
 
 		// Build array of all groups
-		foreach(array_keys($groups) as $_groups_key){
+		foreach(array_keys($groups) as $groups_key){
 			// Filter out groups not to be shown
-			$_count_filters = count($filter);
-			$_show_group = true;
+			$count_filters = count($filter);
+			$show_group = true;
 
 			// Check, if current group is in groups not to be shown
-			for($count = 0; $count < $_count_filters; $count++){
+			for($count = 0; $count < $count_filters; $count++){
 				if(isset($filter[$count])){
-					if($_groups_key == $filter[$count]){
-						$_show_group = false;
+					if($groups_key == $filter[$count]){
+						$show_group = false;
 					}
 				}
 			}
 
 			// Now build string representing the array of all groups if this group is visible
-			if($_show_group){
-				$_groups_array .= '_all_groups[' . $i . '] = "' . $_groups_key . '";';
+			if($show_group){
+				$groups_array .= '_all_groups[' . $i . '] = "' . $groups_key . '";';
 
 				// Increase counter
 				$i++;
@@ -101,7 +101,7 @@ class we_html_dynamicControls{
 		$i--;
 
 		// Continue building JavaScript functions
-		$_JavaScript_functions = '
+		$JavaScript_functions = '
 /**
  * This function closes all groups
  *
@@ -115,7 +115,7 @@ function toggle_all() {
 	// Define all groups
 	_all_groups = [2];
 
-	' . $_groups_array . '
+	' . $groups_array . '
 
 	// Hide all groups
 	for (i = 0; i <= ' . $i . '; i++) {
@@ -128,7 +128,7 @@ function toggle_all() {
 }';
 
 		// Build string to be returned by the function
-		return we_html_element::jsScript(JS_DIR . 'dynamicControls.js') . we_html_element::jsElement($_JavaScript_functions);
+		return we_html_element::jsScript(JS_DIR . 'dynamicControls.js') . we_html_element::jsElement($JavaScript_functions);
 	}
 
 	/**
@@ -157,114 +157,114 @@ function toggle_all() {
 	 */
 	function fold_checkbox_groups($groups, $parentGroups, $main_titles, $titles, $item_names, $open_group = "", $filter = "", $check_permissions = false, $use_form = false, $form_name = "", $form_group_name = "", $display_check_all = false, $use_with_user_module = false, $width = 500, $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE"){
 		// Include the needed JavaScript
-		$_content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
+		$content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
 
 		// Count the number of groups to be displayed
-		$_visible_groups = count($groups) - count($filter);
+		$visible_groups = count($groups) - count($filter);
 
 		// Initialize the counter for number of seperators being painted later
-		$_seperator_counter = 0;
+		$seperator_counter = 0;
 
 		// Go through all groups to be displayed
-		foreach($groups as $_groups_key => $_groups_value){
+		foreach($groups as $groups_key => $groups_value){
 			// Filter out groups not to be shown
-			$_count_filters = count($filter);
-			$_show_group = true;
+			$count_filters = count($filter);
+			$show_group = true;
 
 			// Check, if current group is in groups not to be shown
-			for($i = 0; $i < $_count_filters; $i++){
-				if($_groups_key == $filter[$i]){
-					$_show_group = false;
+			for($i = 0; $i < $count_filters; $i++){
+				if($groups_key == $filter[$i]){
+					$show_group = false;
 				}
 			}
 
 			// Now only show the group if it was not found in the groups not to be shown
-			if($_show_group){
+			if($show_group){
 
 				// Set variable for painting of seperator
-				$_seperator_counter++;
+				$seperator_counter++;
 
 				// Set title of group
-				$_checkbox_title = $main_titles[$_groups_key];
+				$checkbox_title = $main_titles[$groups_key];
 
 				//	the different permission-groups shall be sorted alphabetically
 				//	therefore the content is first saved in an array.
 				// Build header of group
-				$_contentTable[$main_titles[$_groups_key]] = '<table class="default" style="width:' . $width . 'px;border-top:5px solid ' . $seperator_color . '">';
+				$contentTable[$main_titles[$groups_key]] = '<table class="default" style="width:' . $width . 'px;border-top:5px solid ' . $seperator_color . '">';
 
 				// Continue building header of group
-				$_contentTable[$main_titles[$_groups_key]] .= '
+				$contentTable[$main_titles[$groups_key]] .= '
 <tr style="vertical-align:middle;background-color:' . $bgcolor . ';line-height:24px;">
 	<td style="width:30px;padding-left:5px;">
-		<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
+		<a href="javascript:toggle(\'' . $groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $groups_key . '">';
 
 				// If a group is open display it unfolded
-				$_show_open = false;
+				$show_open = false;
 
 				// Check, if current group is in groups to be shown opened
-				if($_groups_key == $open_group){
-					$_show_open = true;
+				if($groups_key == $open_group){
+					$show_open = true;
 				}
 
-				if($_show_open){
+				if($show_open){
 					// Define various values for expanded groups
-					$_arrow_image = 'fa fa-lg fa-caret-down fa-fw';
-					$_arrow_hint = $this->_arrow_hint_opened;
-					$_style_display = "block";
+					$arrow_image = 'fa fa-lg fa-caret-down fa-fw';
+					$arrow_hint = $this->arrow_hint_opened;
+					$style_display = "block";
 				} else {
 					// Define various values for folded groups
-					$_arrow_image = 'fa fa-lg fa-caret-right fa-fw';
-					$_arrow_hint = $this->_arrow_hint_closed;
-					$_style_display = "none";
+					$arrow_image = 'fa fa-lg fa-caret-right fa-fw';
+					$arrow_hint = $this->arrow_hint_closed;
+					$style_display = "none";
 				}
 
 				// Build header for open group
-				$_contentTable[$main_titles[$_groups_key]] .= '
-			<i class="' . $_arrow_image . '" title="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '"></i></a></td>
-		<td class="defaultfont" colspan="3"><label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
+				$contentTable[$main_titles[$groups_key]] .= '
+			<i class="' . $arrow_image . '" title="' . $arrow_hint . '" name="arrow_' . $groups_key . '"></i></a></td>
+		<td class="defaultfont" colspan="3"><label for="arrow_link_' . $groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $checkbox_title . '</b></label></td>
 	</tr>
 </table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" style="width:' . $width . 'px;display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
+				$contentTable[$main_titles[$groups_key]] .= '<table class="default" style="width:' . $width . 'px;display: ' . $style_display . '" id="group_' . $groups_key . '">';
 
 				// first of all order all the entries
-				$_groups = array();
-				foreach($_groups_value as $_group_item_key => $_group_item_value){
+				$groups = array();
+				foreach($groups_value as $group_item_key => $group_item_value){
 
-					$_groups[$_groups_key][$titles[$_groups_key][$_group_item_key]] = array(
-						'perm' => $_group_item_key,
-						'value' => $_group_item_value
+					$groups[$groups_key][$titles[$groups_key][$group_item_key]] = array(
+						'perm' => $group_item_key,
+						'value' => $group_item_value
 					);
 				}
 
-				foreach($_groups as $_groups_key => $_group_item){
-					foreach($_group_item as $_group_item_values){
+				foreach($groups as $groups_key => $group_item){
+					foreach($group_item as $group_item_values){
 
-						$_group_item_key = $_group_item_values['perm'];
-						$_group_item_value = $_group_item_values['value'];
+						$group_item_key = $group_item_values['perm'];
+						$group_item_value = $group_item_values['value'];
 
-						if(($check_permissions && permissionhandler::hasPerm($_group_item_key)) || !$check_permissions){
+						if(($check_permissions && permissionhandler::hasPerm($group_item_key)) || !$check_permissions){
 							// Display the items of the group
-							$_contentTable[$main_titles[$_groups_key]] .= '
+							$contentTable[$main_titles[$groups_key]] .= '
 <tr>
-	<td>' . ($parentGroups === false ? '' : '<i class="showParentPerms fa fa-' . (isset($parentGroups[$_group_item_values['perm']]) ? 'check" style="color:lightgreen"' : 'close" style="color:red"') . '></i>') . '</td>
-	<td style="padding:5px 0;">		' . we_html_forms::checkbox(1, ($_group_item_value ? true : false), $item_names . '_Permission_' . $_group_item_key, $titles[$_groups_key][$_group_item_key], false, "defaultfont", "top.content.setHot();") . '</td></tr>';
+	<td>' . ($parentGroups === false ? '' : '<i class="showParentPerms fa fa-' . (isset($parentGroups[$group_item_values['perm']]) ? 'check" style="color:lightgreen"' : 'close" style="color:red"') . '></i>') . '</td>
+	<td style="padding:5px 0;">		' . we_html_forms::checkbox(1, ($group_item_value ? true : false), $item_names . '_Permission_' . $group_item_key, $titles[$groups_key][$group_item_key], false, "defaultfont", "top.content.setHot();") . '</td></tr>';
 						}
 					}
 				}
 
 				// Finish output of table
-				$_contentTable[$main_titles[$_groups_key]] .= '</table>';
+				$contentTable[$main_titles[$groups_key]] .= '</table>';
 			}
 		}
 		//	sort the permission-groups alphabetically (perm_group_name)
-		ksort($_contentTable);
-		foreach($_contentTable as $value){
+		ksort($contentTable);
+		foreach($contentTable as $value){
 
-			$_content .= $value;
+			$content .= $value;
 		}
-		return $_content;
+		return $content;
 	}
 
 	/**
@@ -290,81 +290,81 @@ function toggle_all() {
 	 */
 	function fold_multibox_groups($groups, $main_titles, $multiboxes, $open_group = "", $filter = "", $use_form = false, $form_name = "", $form_group_name = "", $use_with_user_module = false, $width = 500, $bgcolor = "#DDDDDD", $seperator_color = "#EEEEEE"){
 		// Include the needed JavaScript
-		$_content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
+		$content = $this->js_fold_checkbox_groups($groups, $filter, $use_with_user_module);
 
 		// Count the number of groups to be displayed
-		$_visible_groups = count($groups) - count($filter);
+		$visible_groups = count($groups) - count($filter);
 
 		// Initialize the counter for number of seperators being painted later
-		$_seperator_counter = 0;
+		$seperator_counter = 0;
 
 		// Go through all groups to be displayed
-		foreach($groups as $_groups_key => $_groups_value){
+		foreach($groups as $groups_key => $groups_value){
 			// Filter out groups not to be shown
-			$_count_filters = count($filter);
-			$_show_group = true;
+			$count_filters = count($filter);
+			$show_group = true;
 
 			// Check, if current group is in groups not to be shown
-			for($i = 0; $i < $_count_filters; $i++){
+			for($i = 0; $i < $count_filters; $i++){
 				if(isset($filter[$i])){
-					if($_groups_key == $filter[$i]){
-						$_show_group = false;
+					if($groups_key == $filter[$i]){
+						$show_group = false;
 					}
 				}
 			}
 
 			// Now only show the group if it was not found in the groups not to be shown
-			if($_show_group){
+			if($show_group){
 
 				// Set variable for painting of seperator
-				$_seperator_counter++;
+				$seperator_counter++;
 
 				// Set title of group
-				$_checkbox_title = $main_titles[$_groups_key];
+				$checkbox_title = $main_titles[$groups_key];
 
 				//	the different permission-groups shall be sorted alphabetically
 				//	therefore the content is first saved in an array.
 				// Build header of group
-				$_contentTable[$main_titles[$_groups_key]] = '
+				$contentTable[$main_titles[$groups_key]] = '
 					<table class="default" style="width:' . $width . 'px;">';
 
-				$_seperator_color = $seperator_color;
+				$seperator_color = $seperator_color;
 
 				// Output the seperator
-				$_contentTable[$main_titles[$_groups_key]] .= '
-					<tr><td colspan="2" style="border-bottom:10px solid ' . $_seperator_color . ';"></td></tr>';
+				$contentTable[$main_titles[$groups_key]] .= '
+					<tr><td colspan="2" style="border-bottom:10px solid ' . $seperator_color . ';"></td></tr>';
 
 				// Continue building header of group
-				$_contentTable[$main_titles[$_groups_key]] .= '
+				$contentTable[$main_titles[$groups_key]] .= '
 					<tr style="vertical-align:middle;background-color:' . $bgcolor . ';line-height:24px;">
 						<td style="width:30px;padding-left:5px;">
-							<a href="javascript:toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $_groups_key . '">';
+							<a href="javascript:toggle(\'' . $groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');" name="arrow_link' . $groups_key . '">';
 
 				// If a group is open display it unfolded
-				$_show_open = false;
+				$show_open = false;
 
 				// Check, if current group is in groups to be shown opened
-				if($_groups_key == $open_group){
-					$_show_open = true;
+				if($groups_key == $open_group){
+					$show_open = true;
 				}
 
-				if($_show_open){
+				if($show_open){
 					// Define various values for expanded groups
-					$_arrow_image = 'fa fa-lg fa-caret-down fa-fw';
-					$_arrow_hint = $this->_arrow_hint_opened;
-					$_style_display = "block";
+					$arrow_image = 'fa fa-lg fa-caret-down fa-fw';
+					$arrow_hint = $this->arrow_hint_opened;
+					$style_display = "block";
 				} else {
 					// Define various values for folded groups
-					$_arrow_image = 'fa fa-lg fa-caret-right fa-fw';
-					$_arrow_hint = $this->_arrow_hint_closed;
-					$_style_display = "none";
+					$arrow_image = 'fa fa-lg fa-caret-right fa-fw';
+					$arrow_hint = $this->arrow_hint_closed;
+					$style_display = "none";
 				}
 
 				// Build header for open group
-				$_contentTable[$main_titles[$_groups_key]] .= '
-			<i class="' . $_arrow_image . '" title="' . $_arrow_hint . '" name="arrow_' . $_groups_key . '"></i></a></td>
+				$contentTable[$main_titles[$groups_key]] .= '
+			<i class="' . $arrow_image . '" title="' . $arrow_hint . '" name="arrow_' . $groups_key . '"></i></a></td>
 		<td class="defaultfont" colspan="3">
-			<label for="arrow_link_' . $_groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $_groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $_checkbox_title . '</b></label></td>
+			<label for="arrow_link_' . $groups_key . '" style="cursor: pointer;" onclick="toggle(\'' . $groups_key . '\', \'show_single\', \'' . $use_form . '\', \'' . $form_name . '\', \'' . $form_group_name . '\');"><b>' . $checkbox_title . '</b></label></td>
 	</tr>
 	<tr>
 	<td colspan="2" style="border-bottom:10px solid ' . $bgcolor . '">
@@ -372,32 +372,32 @@ function toggle_all() {
 </table>';
 
 				// Now fill the group with content
-				$_contentTable[$main_titles[$_groups_key]] .= '<table class="default" style="width:' . $width . 'px;margin:10px 30px 0 0;display: ' . $_style_display . '" id="group_' . $_groups_key . '">';
+				$contentTable[$main_titles[$groups_key]] .= '<table class="default" style="width:' . $width . 'px;margin:10px 30px 0 0;display: ' . $style_display . '" id="group_' . $groups_key . '">';
 
 				// Go through all items of the group
-				foreach($multiboxes[$_groups_key] as $i => $c){
+				foreach($multiboxes[$groups_key] as $i => $c){
 
 					if(!isset($c["headline"])){
 						$c["headline"] = '';
 					}
-					$_contentTable[$main_titles[$_groups_key]] .= '
+					$contentTable[$main_titles[$groups_key]] .= '
 <tr>
 	<td style="text-align:left;vertical-align:top;padding-bottom:15px;"><span  id="headline_' . $i . '" class="weMultiIconBoxHeadline">' . $c["headline"] . '</span></td>
 	<td class="defaultfont">' . $c["html"] . '</td>
 </tr>';
-					if($i < (count($multiboxes[$_groups_key]) - 1) && (!isset($c["noline"]))){
-						$_contentTable[$main_titles[$_groups_key]] .= '<tr><td colspan="2"><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>';
+					if($i < (count($multiboxes[$groups_key]) - 1) && (!isset($c["noline"]))){
+						$contentTable[$main_titles[$groups_key]] .= '<tr><td colspan="2"><div style="border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;"></div></td></tr>';
 					}
 				}
-				$_contentTable[$main_titles[$_groups_key]] .= '</table>';
+				$contentTable[$main_titles[$groups_key]] .= '</table>';
 			}
 		}
 		//	sort the permission-groups alphabetically (perm_group_name)
-		ksort($_contentTable);
-		foreach($_contentTable as $value){
-			$_content .= $value;
+		ksort($contentTable);
+		foreach($contentTable as $value){
+			$content .= $value;
 		}
-		return $_content;
+		return $content;
 	}
 
 }

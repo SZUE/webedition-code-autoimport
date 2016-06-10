@@ -127,12 +127,12 @@ abstract class we_backup_import{
 							" - Converting Charset: " . $_SESSION['weS']['weBackupVars']['encoding'] . " -> " . DEFAULT_CHARSET :
 							" - Converting Charset: NO ");
 				}
-				$_prefix = 'Saving object ';
+				$prefix = 'Saving object ';
 				switch($classname){
 					case 'we_backup_tableAdv':
 					case 'we_backup_tableItem':
 					case 'we_backup_binary':
-						we_backup_util::addLog($object->getLogString($_prefix . $classname . ':') . $addtext);
+						we_backup_util::addLog($object->getLogString($prefix . $classname . ':') . $addtext);
 						break;
 				}
 				if(!empty($_SESSION['weS']['weBackupVars']['options']['convert_charset']) && method_exists($object, 'convertCharsetEncoding')){

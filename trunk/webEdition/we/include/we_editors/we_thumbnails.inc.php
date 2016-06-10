@@ -150,13 +150,13 @@ function build_dialog($selected_setting = 'ui'){
 		case 'dialog':
 			// Detect thumbnail names
 			$DB_WE->query('SELECT Name FROM ' . THUMBNAILS_TABLE);
-			$_thumbnail_names = $DB_WE->getAll(true);
+			$thumbnail_names = $DB_WE->getAll(true);
 
-			$_thumbnail_names = $_thumbnail_names ? '\'' . implode('\',\'', $_thumbnail_names) . '\'' : '';
+			$thumbnail_names = $thumbnail_names ? '\'' . implode('\',\'', $thumbnail_names) . '\'' : '';
 
 			// Generate needed JS
-			$_needed_JavaScript_Source = "
-var thumbnail_names = [" . $_thumbnail_names . "];
+			$needed_JavaScript_Source = "
+var thumbnail_names = [" . $thumbnail_names . "];
 function delete_thumbnail() {" .
 				(permissionhandler::hasPerm('ADMINISTRATOR') ?
 					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($id))) . "');
@@ -167,40 +167,40 @@ function delete_thumbnail() {" .
 					"") . "
 }";
 
-			$_needed_JavaScript = we_html_element::jsElement($_needed_JavaScript_Source);
+			$needed_JavaScript = we_html_element::jsElement($needed_JavaScript_Source);
 
-			$_enabled_buttons = false;
+			$enabled_buttons = false;
 
 			// Build language select box
-			$_thumbnails = new we_html_select(array('name' => 'Thumbnails', 'class' => 'weSelect', 'size' => 8, 'style' => 'width: 440px;', 'onchange' => "if(this.selectedIndex > -1){change_thumbnail(this.options[this.selectedIndex].value);}"));
+			$thumbnails = new we_html_select(array('name' => 'Thumbnails', 'class' => 'weSelect', 'size' => 8, 'style' => 'width: 440px;', 'onchange' => "if(this.selectedIndex > -1){change_thumbnail(this.options[this.selectedIndex].value);}"));
 
 			$DB_WE->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
-			$_thumbnail_counter_firsttime = true;
+			$thumbnail_counter_firsttime = true;
 			while($DB_WE->next_record()){
-				$_enabled_buttons = true;
+				$enabled_buttons = true;
 
-				$_thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'));
+				$thumbnails->addOption($DB_WE->f('ID'), $DB_WE->f('Name'));
 
-				if($_thumbnail_counter_firsttime && !$id){
+				if($thumbnail_counter_firsttime && !$id){
 					$id = $DB_WE->f('ID');
 
-					$_thumbnails->selectOption($DB_WE->f('ID'));
+					$thumbnails->selectOption($DB_WE->f('ID'));
 				} else if($id == $DB_WE->f('ID')){
-					$_thumbnails->selectOption($DB_WE->f('ID'));
+					$thumbnails->selectOption($DB_WE->f('ID'));
 				}
 
-				$_thumbnail_counter_firsttime = false;
+				$thumbnail_counter_firsttime = false;
 			}
 
 			// Create thumbnails list
-			$_thumbnails_table = new we_html_table(array('class' => 'default'), 1, 2);
+			$thumbnails_table = new we_html_table(array('class' => 'default'), 1, 2);
 
-			$_thumbnails_table->setCol(0, 0, array('style' => "padding-right:10px;"), we_html_element::htmlHidden('edited_id', $id) . $_thumbnails->getHtml());
-			$_thumbnails_table->setCol(0, 1, array('style' => 'vertical-align:top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') . '<br/>' . we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$_enabled_buttons, false));
+			$thumbnails_table->setCol(0, 0, array('style' => "padding-right:10px;"), we_html_element::htmlHidden('edited_id', $id) . $thumbnails->getHtml());
+			$thumbnails_table->setCol(0, 1, array('style' => 'vertical-align:top'), we_html_button::create_button(we_html_button::ADD, 'javascript:add_thumbnail();') . '<br/>' . we_html_button::create_button(we_html_button::DELETE, 'javascript:delete_thumbnail();', true, 100, 22, '', '', !$enabled_buttons, false));
 
 			// Build dialog
-			$_thumbs[] = array('headline' => '', 'html' => $_thumbnails_table->getHtml(),);
+			$thumbs[] = array('headline' => '', 'html' => $thumbnails_table->getHtml(),);
 
 			$allData = (getHash('SELECT Name,Width,Height,Quality,Format,Options,description FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $id)? :
 					array(
@@ -215,22 +215,22 @@ function delete_thumbnail() {" .
 
 			$allData['Options'] = explode(',', $allData['Options']);
 
-			$_thumbnail_name_input = we_html_tools::htmlTextInput('thumbnail_name', 22, ($id != -1 ? $allData['Name'] : ''), 255, ($id == -1 ? 'disabled="true"' : ''), 'text', 340);
-			$_thumbnail_description_input = we_html_tools::htmlTextInput('description', 22, ($id != -1 ? $allData['description'] : ''), 255, ($id == -1 ? 'disabled="true"' : ''), 'text', 340);
+			$thumbnail_name_input = we_html_tools::htmlTextInput('thumbnail_name', 22, ($id != -1 ? $allData['Name'] : ''), 255, ($id == -1 ? 'disabled="true"' : ''), 'text', 340);
+			$thumbnail_description_input = we_html_tools::htmlTextInput('description', 22, ($id != -1 ? $allData['description'] : ''), 255, ($id == -1 ? 'disabled="true"' : ''), 'text', 340);
 			/*			 * ***************************************************************
 			 * PROPERTIES
 			 * *************************************************************** */
 
 			// Create specify thumbnail dimension input
-			$_thumbnail_quality = ($id != -1) ? $allData['Quality'] : -1;
-			$_thumbnail_specify_table = new we_html_table(array('class' => 'default inputs'), 3, 2);
+			$thumbnail_quality = ($id != -1) ? $allData['Quality'] : -1;
+			$thumbnail_specify_table = new we_html_table(array('class' => 'default inputs'), 3, 2);
 
-			$_thumbnail_specify_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('thumbnails', '[width]') . ':');
-			$_thumbnail_specify_table->setCol(0, 1, null, we_html_tools::htmlTextInput('thumbnail_width', 6, ($id != -1 ? $allData['Width'] : ''), 4, ($id == -1 ? 'disabled="disabled"' : ''), 'text'));
-			$_thumbnail_specify_table->setCol(1, 0, array('class' => 'defaultfont'), g_l('thumbnails', '[height]') . ':');
-			$_thumbnail_specify_table->setCol(1, 1, null, we_html_tools::htmlTextInput('thumbnail_height', 6, ($id != -1 ? $allData['Height'] : ''), 4, ($id == -1 ? 'disabled="disabled"' : ''), 'text'));
-			$_thumbnail_specify_table->setCol(2, 0, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_text_cell'), g_l('thumbnails', '[quality]') . ':');
-			$_thumbnail_specify_table->setCol(2, 1, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_value_cell'), we_base_imageEdit::qualitySelect('thumbnail_quality', $_thumbnail_quality));
+			$thumbnail_specify_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('thumbnails', '[width]') . ':');
+			$thumbnail_specify_table->setCol(0, 1, null, we_html_tools::htmlTextInput('thumbnail_width', 6, ($id != -1 ? $allData['Width'] : ''), 4, ($id == -1 ? 'disabled="disabled"' : ''), 'text'));
+			$thumbnail_specify_table->setCol(1, 0, array('class' => 'defaultfont'), g_l('thumbnails', '[height]') . ':');
+			$thumbnail_specify_table->setCol(1, 1, null, we_html_tools::htmlTextInput('thumbnail_height', 6, ($id != -1 ? $allData['Height'] : ''), 4, ($id == -1 ? 'disabled="disabled"' : ''), 'text'));
+			$thumbnail_specify_table->setCol(2, 0, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_text_cell'), g_l('thumbnails', '[quality]') . ':');
+			$thumbnail_specify_table->setCol(2, 1, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_value_cell'), we_base_imageEdit::qualitySelect('thumbnail_quality', $thumbnail_quality));
 
 			// Create checkboxes for options for thumbnails
 			$options['opts'] = array(2, 1, array(
@@ -259,58 +259,58 @@ function delete_thumbnail() {" .
 					$v[2][we_thumbnail::OPTION_DEFAULT][0] = ($id == -1) || ((count(array_intersect(array_keys($v[2]), $allData['Options']))) === 0);
 				}
 
-				$_thumbnail_option_table[$k] = new we_html_table(array('class' => 'editorThumbnailsOptions'), $v[0], $v[1]);
+				$thumbnail_option_table[$k] = new we_html_table(array('class' => 'editorThumbnailsOptions'), $v[0], $v[1]);
 				$i = 0;
 				foreach($v[2] as $key => $val){
 					switch($k){
 						case 'opts':
 						case 'filter':
-							$_thumbnail_option_table[$k]->setCol(($i % $v[0]), intval($i++ / $v[0]), null, we_html_forms::checkbox($key, (intval($val[0]) > 0), 'Options[' . $key . ']', $val[1], false, 'defaultfont', '', (intval($val[0]) === -1), '', we_html_tools::TYPE_NONE, 0, '', '', (isset($val[2]) ? $val[2] : '')));
+							$thumbnail_option_table[$k]->setCol(($i % $v[0]), intval($i++ / $v[0]), null, we_html_forms::checkbox($key, (intval($val[0]) > 0), 'Options[' . $key . ']', $val[1], false, 'defaultfont', '', (intval($val[0]) === -1), '', we_html_tools::TYPE_NONE, 0, '', '', (isset($val[2]) ? $val[2] : '')));
 							break;
 						default:
-							$_thumbnail_option_table[$k]->setCol(($i % $v[0]), intval($i++ / $v[0]), null, we_html_forms::radiobutton($key, $val[0], 'Options[' . $k . ']', $val[1], true, "defaultfont", '', false, '', we_html_tools::TYPE_NONE, 0, '', '', (isset($val[2]) ? $val[2] : '')));
+							$thumbnail_option_table[$k]->setCol(($i % $v[0]), intval($i++ / $v[0]), null, we_html_forms::radiobutton($key, $val[0], 'Options[' . $k . ']', $val[1], true, "defaultfont", '', false, '', we_html_tools::TYPE_NONE, 0, '', '', (isset($val[2]) ? $val[2] : '')));
 					}
 				}
 			}
 
-			$_window_html = new we_html_table(array('class' => 'editorThumbnailsOptions'), 1, 4);
-			$_window_html->setCol(0, 0, null, $_thumbnail_specify_table->getHtml());
-			$_window_html->setCol(0, 1, null, we_html_element::htmlDiv(array(), g_l('thumbnails', '[output_options]') . ':') . we_html_element::htmlDiv(array(), $_thumbnail_option_table['opts']->getHtml()));
-			$_window_html->setCol(0, 2, null, we_html_element::htmlDiv(array(), g_l('thumbnails', '[cutting]') . ':') . we_html_element::htmlDiv(array(), $_thumbnail_option_table['cutting']->getHtml()));
+			$window_html = new we_html_table(array('class' => 'editorThumbnailsOptions'), 1, 4);
+			$window_html->setCol(0, 0, null, $thumbnail_specify_table->getHtml());
+			$window_html->setCol(0, 1, null, we_html_element::htmlDiv(array(), g_l('thumbnails', '[output_options]') . ':') . we_html_element::htmlDiv(array(), $thumbnail_option_table['opts']->getHtml()));
+			$window_html->setCol(0, 2, null, we_html_element::htmlDiv(array(), g_l('thumbnails', '[cutting]') . ':') . we_html_element::htmlDiv(array(), $thumbnail_option_table['cutting']->getHtml()));
 
 			// OUTPUT FORMAT
 
-			$_thumbnail_format = ($id != -1) ? $allData['Format'] : -1;
+			$thumbnail_format = ($id != -1) ? $allData['Format'] : -1;
 
 			// Define available formats
-			$_thumbnails_formats = array('none' => g_l('thumbnails', '[format_original]'), 'gif' => g_l('thumbnails', '[format_gif]'), 'jpg' => g_l('thumbnails', '[format_jpg]'), 'png' => g_l('thumbnails', '[format_png]'));
-			$_thumbnail_format_select_attribs = array('name' => 'Format', 'id' => 'Format', 'class' => 'weSelect', 'style' => 'width: 225px;', 'onchange' => 'changeFormat()');
+			$thumbnails_formats = array('none' => g_l('thumbnails', '[format_original]'), 'gif' => g_l('thumbnails', '[format_gif]'), 'jpg' => g_l('thumbnails', '[format_jpg]'), 'png' => g_l('thumbnails', '[format_png]'));
+			$thumbnail_format_select_attribs = array('name' => 'Format', 'id' => 'Format', 'class' => 'weSelect', 'style' => 'width: 225px;', 'onchange' => 'changeFormat()');
 
 			if($id == -1){
-				$_thumbnail_format_select_attribs['disabled'] = 'true'; //#6027
+				$thumbnail_format_select_attribs['disabled'] = 'true'; //#6027
 			}
-			$_thumbnail_format_select = new we_html_select($_thumbnail_format_select_attribs);
+			$thumbnail_format_select = new we_html_select($thumbnail_format_select_attribs);
 
-			foreach($_thumbnails_formats as $_k => $_v){
-				if(in_array($_k, we_base_imageEdit::supported_image_types()) || $_k === 'none'){
-					$_thumbnail_format_select->addOption($_k, $_v);
+			foreach($thumbnails_formats as $k => $v){
+				if(in_array($k, we_base_imageEdit::supported_image_types()) || $k === 'none'){
+					$thumbnail_format_select->addOption($k, $v);
 
 					// Check if added option is selected
-					if($_thumbnail_format == $_k || (!$_thumbnail_format && ($_k === 'none'))){
-						$_thumbnail_format_select->selectOption($_k);
+					if($thumbnail_format == $k || (!$thumbnail_format && ($k === 'none'))){
+						$thumbnail_format_select->selectOption($k);
 					}
 				}
 			}
 
 			// Build dialog
 			return create_dialog('settings_predefined', g_l('thumbnails', '[thumbnails]'), array(
-				array('html' => $_thumbnails_table->getHtml(),),
-				array('headline' => g_l('thumbnails', '[name]'), 'html' => $_thumbnail_name_input, 'space' => we_html_multiIconBox::SPACE_MED),
-				array('headline' => g_l('thumbnails', '[description]'), 'html' => $_thumbnail_description_input, 'space' => we_html_multiIconBox::SPACE_MED),
-				array('headline' => g_l('thumbnails', '[properties]'), 'html' => $_window_html->getHtml(), 'space' => we_html_multiIconBox::SPACE_SMALL),
-				array('headline' => 'Filter', 'html' => we_html_element::htmlDiv(array('class' => 'editorThumbnailsFilter'), $_thumbnail_option_table['filter']->getHtml())),
-				array('headline' => g_l('thumbnails', '[format]'), 'html' => $_thumbnail_format_select->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED),
-				), -1, '', '', false, $_needed_JavaScript);
+				array('html' => $thumbnails_table->getHtml(),),
+				array('headline' => g_l('thumbnails', '[name]'), 'html' => $thumbnail_name_input, 'space' => we_html_multiIconBox::SPACE_MED),
+				array('headline' => g_l('thumbnails', '[description]'), 'html' => $thumbnail_description_input, 'space' => we_html_multiIconBox::SPACE_MED),
+				array('headline' => g_l('thumbnails', '[properties]'), 'html' => $window_html->getHtml(), 'space' => we_html_multiIconBox::SPACE_SMALL),
+				array('headline' => 'Filter', 'html' => we_html_element::htmlDiv(array('class' => 'editorThumbnailsFilter'), $thumbnail_option_table['filter']->getHtml())),
+				array('headline' => g_l('thumbnails', '[format]'), 'html' => $thumbnail_format_select->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED),
+				), -1, '', '', false, $needed_JavaScript);
 	}
 
 	return '';
