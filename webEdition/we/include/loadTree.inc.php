@@ -29,7 +29,7 @@ $tree = new we_export_tree("export_frameset.php", $topFrame, $topFrame . ".body"
 
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 
-if($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+if($table === FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
 		$table = TEMPLATES_TABLE;
 	} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
@@ -41,6 +41,5 @@ if($table == FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 
 $parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $openFolders = array_filter(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 3));
-
 
 $tree->loadHTML($table, $parentFolder, $openFolders);

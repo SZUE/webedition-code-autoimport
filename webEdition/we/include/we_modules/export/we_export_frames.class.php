@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-//TEST: was it ok to abandon treefooter?
 we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT);
 
 class we_export_frames extends we_modules_frame{

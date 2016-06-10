@@ -134,9 +134,9 @@ function getHTMLCategory(){
 		we_html_element::jsElement($variant_js);
 }
 
-$_seltype = array('doctype' => g_l('cockpit', '[documents]'));
+$seltype = array('doctype' => g_l('cockpit', '[documents]'));
 if(defined('OBJECT_TABLE')){
-	$_seltype['classname'] = g_l('cockpit', '[objects]');
+	$seltype['classname'] = g_l('cockpit', '[objects]');
 }
 
 $tree = new we_export_tree('treeCmd.php', 'top', 'top', 'cmd');
