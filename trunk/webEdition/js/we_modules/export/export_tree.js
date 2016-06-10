@@ -58,7 +58,7 @@ container.prototype.checkNode = function (imgName) {
 	var object_name = imgName.substring(4, imgName.length);
 	for (i = 1; i <= this.len; i++) {
 		if (this[i].id == object_name) {
-			treeData.frames.tree.populate(this[i].id, this.table);
+//			treeData.frames.tree.populate(this[i].id, this.table);
 			if (this[i].checked == 1) {
 				if (treeData.frames.tree.document.getElementsByName(imgName)) {
 					tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
@@ -115,9 +115,6 @@ container.prototype.addSort = function (object) {
 		break;
 	}
 };
-
-function populate(id, table) {
-}
 
 function setHead(tab) {
 	treeData.frames.top.table = tab;
