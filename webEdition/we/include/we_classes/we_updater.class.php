@@ -387,7 +387,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			}
 		}
 
-		$db->addTable('tmp', 'b varchar(255) NOT NULL', array('KEY b (b)'), 'MYISAM', true);
+		$db->addTable('tmp', array('b' => 'varchar(255) NOT NULL'), array('KEY b (b)'), 'MYISAM', true);
 		$db->query('INSERT INTO tmp VALUES ("' . implode('"),("', $all) . '")');
 		//we add a limit since this file might not be executed to the end
 		$db->query('SELECT b FROM tmp LEFT JOIN ' . VERSIONS_TABLE . ' ON b=binaryPath WHERE ID IS NULL LIMIT 1000');

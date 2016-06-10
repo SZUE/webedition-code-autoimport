@@ -841,12 +841,12 @@ abstract class we_database_base{
 	 * @param array $keys
 	 * @return type
 	 */
-	public function addTable($tab, $cols, array $keys = array(), $engine = 'MYISAM', $temporary = false){
+	public function addTable($tab, array $cols, array $keys = array(), $engine = 'MYISAM', $temporary = false){
 		if(!is_array($cols) || empty($cols)){
 			t_e('create table needs an array');
 			return;
 		}
-		if($engine == 'MYISAM'){
+		if($engine === 'MYISAM'){
 			$defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value');
 			$engine = (in_array(strtolower($defaultEngine), array('myisam', 'aria')) ? $defaultEngine : 'myisam');
 		}
