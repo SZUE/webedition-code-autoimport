@@ -419,18 +419,18 @@ class we_folder extends we_root{
 	}
 
 	function formChangeOwners(){
-		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
+		$disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
-		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', '[grant_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
-			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
+		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('modules_users', '[grant_owners_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
+			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('users_changeR','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($disabledNote)) . '</td></tr>
 					</table>';
 	}
 
 	function formChangeLanguage(){
-		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
+		$disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 
-		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
-			we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($_disabledNote)) . '</td></tr>
+		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_language_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 390, false) . '</td><td>' .
+			we_html_button::create_button(we_html_button::OK, "javascript:if(_EditorFrame.getEditorIsHot()) { " . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeLanguageRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', !empty($disabledNote)) . '</td></tr>
 					</table>';
 	}
 
@@ -438,7 +438,7 @@ class we_folder extends we_root{
 		$idname = 'we_' . $this->Name . '_CopyID';
 		$parents = array(0, $this->ID);
 		we_getParentIDs(FILE_TABLE, $this->ID, $parents);
-		$_disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
+		$disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		//FIXME: give JS an array!
 		$wecmdenc3 = we_base_request::encCmd("var parents=[" . implode(',', $parents) . "];if(parents.indexOf(currentID) > -1){
@@ -449,9 +449,9 @@ class we_folder extends we_root{
 		$but = we_html_button::create_button(we_html_button::SELECT, ($this->ID ?
 					"javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . $this->Table . "', '" . we_base_request::encCmd($cmd1) . "', '', '" . $wecmdenc3 . "')" :
 					"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
-				, true, 100, 22, "", "", !empty($_disabledNote));
+				, true, 100, 22, "", "", !empty($disabledNote));
 
-		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $_disabledNote, we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
+		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
 			we_html_element::htmlHidden($idname, $this->CopyID) . $but . '</td></tr>
 					</table>';
 	}

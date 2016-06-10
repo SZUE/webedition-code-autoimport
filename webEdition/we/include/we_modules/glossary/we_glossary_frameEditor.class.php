@@ -42,28 +42,28 @@ function setTab(tab) {
 
 	function buildBody(we_glossary_frames $weGlossaryFrames, $content = ""){
 
-		$_hidden = array(
+		$hidden = array(
 			'cmd' => we_base_request::_(we_base_request::RAW, 'cmd', ''),
 			'cmdid' => we_base_request::_(we_base_request::STRING, 'cmdid', ''),
 			'pnt' => 'edbody',
 		);
 
-		$_form = array(
+		$form = array(
 			'name' => 'we_form',
 			'onsubmit' => 'return false',
 		);
 
-		$hidden = $weGlossaryFrames->View->getCommonHiddens($_hidden);
+		$hidden = $weGlossaryFrames->View->getCommonHiddens($hidden);
 
-		$form = we_html_element::htmlForm($_form, $hidden . $content);
+		$form = we_html_element::htmlForm($form, $hidden . $content);
 
-		$_body = array(
+		$body = array(
 			'class' => 'weEditorBody',
 			'onload' => 'loaded=1;',
 			'onunload' => "doUnload()"
 		);
 
-		$body = we_html_element::htmlBody($_body, $form);
+		$body = we_html_element::htmlBody($body, $form);
 
 		return $weGlossaryFrames->getHTMLDocument($body, $weGlossaryFrames->View->getJSProperty());
 	}

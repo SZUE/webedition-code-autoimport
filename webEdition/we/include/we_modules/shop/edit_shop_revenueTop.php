@@ -43,14 +43,14 @@ function orderBy($a, $b){
 
 function getTitleLink($text, $orderKey){
 	$desc = we_base_request::_(we_base_request::BOOL, "orderDesc");
-	$_href = $_SERVER['SCRIPT_NAME'] .
+	$href = $_SERVER['SCRIPT_NAME'] .
 		'?ViewYear=' . $GLOBALS['selectedYear'] .
 		'&ViewMonth=' . $GLOBALS['selectedMonth'] .
 		'&orderBy=' . $orderKey .
 		'&actPage=' . $GLOBALS['actPage'] .
 		( ($GLOBALS['orderBy'] == $orderKey && !$desc) ? '&orderDesc=true' : '' );
 
-	return '<a href="' . $_href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-' . ($desc ? 'desc' : 'asc') . ' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
+	return '<a href="' . $href . '">' . $text . '</a>' . ($GLOBALS['orderBy'] == $orderKey ? ' <i class="fa fa-sort-' . ($desc ? 'desc' : 'asc') . ' fa-lg"></i>' : '<i class="fa fa-sort fa-lg"></i>');
 }
 
 function getPagerLink(){
@@ -279,12 +279,12 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 			<tr>
 				<td colspan="7" class="shopContentfontR" style="padding-top:10px;">' . g_l('modules_shop', '[includedVat]') . ':</td>
 			</tr>';
-		foreach($articleVatArray as $_vat => $_amount){
+		foreach($articleVatArray as $vat => $amount){
 			$vatTable .= '
 				<tr>
 					<td colspan="5"></td>
-					<td class="shopContentfontR">' . $_vat . '&nbsp;%</td>
-					<td class="shopContentfontR">' . we_base_util::formatNumber($_amount) . $waehr . '</td>
+					<td class="shopContentfontR">' . $vat . '&nbsp;%</td>
+					<td class="shopContentfontR">' . we_base_util::formatNumber($amount) . $waehr . '</td>
 				</tr>' . "\n";
 		}
 	}

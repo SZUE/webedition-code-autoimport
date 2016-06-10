@@ -241,12 +241,12 @@ function doUnload() {
 	 */
 	private function _updateSiteImportTable(){
 
-		$_templateFields = self::_getFieldsFromTemplate(we_base_request::_(we_base_request::INT, "tid"));
+		$templateFields = self::_getFieldsFromTemplate(we_base_request::_(we_base_request::INT, "tid"));
 		$hasDateFields = false;
 
 		$values = array();
 
-		foreach($_templateFields as $name => $type){
+		foreach($templateFields as $name => $type){
 			if($type === 'date'){
 				$hasDateFields = true;
 			}
@@ -295,7 +295,7 @@ function doUnload() {
 		return $this->_getHtmlPage('', we_html_element::jsElement('
 		var tableDivObj = parent.document.getElementById("tablediv");
 		tableDivObj.innerHTML = "' .
-					str_replace(array("\r", "\n"), array('\r', '\n'), addslashes($this->_getSiteImportTableHTML($_templateFields, $values))) . '"
+					str_replace(array("\r", "\n"), array('\r', '\n'), addslashes($this->_getSiteImportTableHTML($templateFields, $values))) . '"
 		parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFields ? "block" : "none") . '";'
 		));
 	}
@@ -393,18 +393,18 @@ function doUnload() {
 	private function _getCreateWePageSettingsHTML(){
 		$data = (isset($_SESSION["prefs"]["siteImportPrefs"])) ? we_unserialize($_SESSION["prefs"]["siteImportPrefs"]) : array();
 
-		$_valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
-		$_valueTemplateId = isset($data["valueTemplateId"]) ? $data["valueTemplateId"] : 0;
-		$_valueUseRegex = isset($data["valueUseRegex"]) ? $data["valueUseRegex"] : 0;
-		$_valueFieldValues = isset($data["valueFieldValues"]) ? we_unserialize($data["valueFieldValues"]) : array();
-		$_valueDateFormat = isset($data["valueDateFormat"]) ? $data["valueDateFormat"] : "unix";
-		$_valueDateFormatField = isset($data["valueDateFormatField"]) ? $data["valueDateFormatField"] : g_l('siteimport', '[dateFormatString]');
-		$_valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : str_replace(' ', '', g_l('siteimport', '[newTemplate]'));
-		$_valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : "0";
+		$valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
+		$valueTemplateId = isset($data["valueTemplateId"]) ? $data["valueTemplateId"] : 0;
+		$valueUseRegex = isset($data["valueUseRegex"]) ? $data["valueUseRegex"] : 0;
+		$valueFieldValues = isset($data["valueFieldValues"]) ? we_unserialize($data["valueFieldValues"]) : array();
+		$valueDateFormat = isset($data["valueDateFormat"]) ? $data["valueDateFormat"] : "unix";
+		$valueDateFormatField = isset($data["valueDateFormatField"]) ? $data["valueDateFormatField"] : g_l('siteimport', '[dateFormatString]');
+		$valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : str_replace(' ', '', g_l('siteimport', '[newTemplate]'));
+		$valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : "0";
 
-		$_templateFields = self::_getFieldsFromTemplate($_valueTemplateId);
+		$templateFields = self::_getFieldsFromTemplate($valueTemplateId);
 		$hasDateFields = false;
-		foreach($_templateFields as $type){
+		foreach($templateFields as $type){
 			if($type === "date"){
 				$hasDateFields = true;
 				break;
@@ -416,31 +416,31 @@ function doUnload() {
 			"gmt" => g_l('import', '[gts]'),
 			"own" => g_l('import', '[fts]')
 		);
-		$_dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
+		$dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
 				g_l('siteimport', '[dateFormat]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
-				"dateFormat", $dateformatvals, 1, $_valueDateFormat, false, array('onchange' => "dateFormatChanged(this);")) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($_valueDateFormat === "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
-				"dateformatField", 20, $_valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($_valueDateFormat === "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
+				"dateFormat", $dateformatvals, 1, $valueDateFormat, false, array('onchange' => "dateFormatChanged(this);")) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
+				"dateformatField", 20, $valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
 
-		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->_getSiteImportTableHTML($_templateFields, $_valueFieldValues) . '</div></div>';
+		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->_getSiteImportTableHTML($templateFields, $valueFieldValues) . '</div></div>';
 
-		$_regExCheckbox = we_html_forms::checkboxWithHidden($_valueUseRegex, "useRegEx", oldHtmlspecialchars(g_l('siteimport', '[useRegEx]'), ENT_QUOTES));
-		$specifyHTML = $this->_getTemplateSelectHTML($_valueTemplateId) . '<div id="specifyParam" style="padding-top:10px;display:' . ($_valueTemplateId ? 'block' : 'none') . '">' . $_dateFormatHTML . $_regExCheckbox . $table . '</div>';
+		$regExCheckbox = we_html_forms::checkboxWithHidden($valueUseRegex, "useRegEx", oldHtmlspecialchars(g_l('siteimport', '[useRegEx]'), ENT_QUOTES));
+		$specifyHTML = $this->_getTemplateSelectHTML($valueTemplateId) . '<div id="specifyParam" style="padding-top:10px;display:' . ($valueTemplateId ? 'block' : 'none') . '">' . $dateFormatHTML . $regExCheckbox . $table . '</div>';
 
 		$vals = array(
 			"auto" => oldHtmlspecialchars(g_l('siteimport', '[cresteAutoTemplate]'), ENT_QUOTES),
 			"specify" => oldHtmlspecialchars(g_l('siteimport', '[useSpecifiedTemplate]'), ENT_QUOTES)
 		);
 
-		$_html = '<table style="margin-bottom:10px" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
+		$html = '<table style="margin-bottom:10px" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
 				g_l('siteimport', '[importKind]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
-				"createType", $vals, 1, $_valueCreateType, false, array('onchange' => "createTypeChanged(this);")) . '</td></tr></table><div id="ctauto" style="display:' . (($_valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
-				g_l('siteimport', '[autoExpl]'), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($_valueTemplateName, $_valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($_valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
+				"createType", $vals, 1, $valueCreateType, false, array('onchange' => "createTypeChanged(this);")) . '</td></tr></table><div id="ctauto" style="display:' . (($valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
+				g_l('siteimport', '[autoExpl]'), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($valueTemplateName, $valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
 
-		$_html = '<div style="height:480px">' . $_html . '</div>';
+		$html = '<div style="height:480px">' . $html . '</div>';
 
 		$parts = array(
 			array(
-				"headline" => "", "html" => $_html,
+				"headline" => "", "html" => $html,
 		));
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:if(checkForm()){document.we_form.submit();}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
 
@@ -578,20 +578,20 @@ function doUnload() {
 		// Suorce Directory
 
 		$cmd1 = "document.we_form.elements.from.value";
-		$_from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
+		$from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
 			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "','" . we_base_ContentTypes::FOLDER . "'," . $cmd1 . ")") :
 			"";
 
-		$_input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
-		$_importFrom = we_html_tools::htmlFormElementTable($_input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", $_from_button, '', "", "", "", 0);
+		$input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
+		$importFrom = we_html_tools::htmlFormElementTable($input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", $from_button, '', "", "", "", 0);
 
 		// Destination Directory
 		$cmd1 = "document.we_form.elements.to.value";
-		$_to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.toPath.value") . "','','','0')");
+		$to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.toPath.value") . "','','','0')");
 
-		//$_hidden = we_html_element::htmlHidden("to",$this->to);
-		//$_input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
-		//$_importTo = we_html_tools::htmlFormElementTable($_input, g_l('siteimport',"[importTo]"), "left", "defaultfont", $_to_button, $_hidden, "", "", 0);
+		//$hidden = we_html_element::htmlHidden("to",$this->to);
+		//$input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
+		//$importTo = we_html_tools::htmlFormElementTable($input, g_l('siteimport',"[importTo]"), "left", "defaultfont", $to_button, $hidden, "", "", 0);
 
 
 		$yuiSuggest = & weSuggest::getInstance();
@@ -604,29 +604,29 @@ function doUnload() {
 		$yuiSuggest->setResult("to", $this->to);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth(300);
-		$yuiSuggest->setSelectButton($_to_button, 10);
+		$yuiSuggest->setSelectButton($to_button, 10);
 
-		$_importTo = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
+		$importTo = weSuggest::getYuiFiles() . $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs();
 
 		// Checkboxes
 		$weoncklick = "if(this.checked && (!this.form.elements.htmlPages.checked)){this.form.elements.htmlPages.checked = true;}";
 		$weoncklick .= ((!permissionhandler::hasPerm("NEW_HTML")) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")) ? "if((!this.checked) && this.form.elements.htmlPages.checked){this.form.elements.htmlPages.checked = false;}" : "";
 
-		$_images = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', '[importImages]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_GRAFIK"));
+		$images = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_GRAFIK") ? $this->images : false, "images", g_l('siteimport', '[importImages]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_GRAFIK"));
 
-		$_htmlPages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', '[importHtmlPages]'), false, "defaultfont", "if(this.checked){this.form.elements.check_createWePages.disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements.check_createWePages.disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
-		$_createWePages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', '[createWePages]') . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !permissionhandler::hasPerm("NEW_WEBEDITIONSITE"));
-		$_flashmovies = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', '[importFlashmovies]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_FLASH"));
-		$_quicktime = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_QUICKTIME") ? $this->quicktime : false, "quicktime", g_l('siteimport', '[importQuicktime]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_QUICKTIME"));
-		$_jss = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', '[importJS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_JS"));
-		$_css = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', '[importCSS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_CSS"));
-		$_text = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', '[importText]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_TEXT"));
-		$_htaccess = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', '[importHTACCESS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_HTACCESS"));
-		$_others = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', '[importOther]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_SONSTIGE"));
+		$htmlPages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', '[importHtmlPages]'), false, "defaultfont", "if(this.checked){this.form.elements.check_createWePages.disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements.check_createWePages.disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
+		$createWePages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', '[createWePages]') . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !permissionhandler::hasPerm("NEW_WEBEDITIONSITE"));
+		$flashmovies = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', '[importFlashmovies]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_FLASH"));
+		$quicktime = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_QUICKTIME") ? $this->quicktime : false, "quicktime", g_l('siteimport', '[importQuicktime]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_QUICKTIME"));
+		$jss = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', '[importJS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_JS"));
+		$css = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', '[importCSS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_CSS"));
+		$text = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', '[importText]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_TEXT"));
+		$htaccess = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTACCESS") ? $this->text : false, "htacsess", g_l('siteimport', '[importHTACCESS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_HTACCESS"));
+		$others = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_SONSTIGE") ? $this->other : false, "other", g_l('siteimport', '[importOther]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_SONSTIGE"));
 
-		$_wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", true, 150, 22, "", "", false, true, "", true);
+		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", true, 150, 22, "", "", false, true, "", true);
 		// Depth
-		$_select = we_html_tools::htmlSelect(
+		$select = we_html_tools::htmlSelect(
 				"depth", array(
 				"-1" => g_l('siteimport', '[nolimit]'),
 				0,
@@ -662,7 +662,7 @@ function doUnload() {
 				30
 				), 1, $this->depth, false, array(), "value", 150);
 
-		$_depth = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', '[depth]'));
+		$depth = we_html_tools::htmlFormElementTable($select, g_l('siteimport', '[depth]'));
 		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024)) ? : 20;
 		$maxarray = array(
 			"0" => g_l('siteimport', '[nolimit]'), "0.5" => "0.5"
@@ -672,49 +672,49 @@ function doUnload() {
 		}
 
 		// maxSize
-		$_select = we_html_tools::htmlSelect("maxSize", $maxarray, 1, $this->maxSize, false, array(), "value", 150);
-		$_maxSize = we_html_tools::htmlFormElementTable($_select, g_l('siteimport', '[maxSize]'));
+		$select = we_html_tools::htmlSelect("maxSize", $maxarray, 1, $this->maxSize, false, array(), "value", 150);
+		$maxSize = we_html_tools::htmlFormElementTable($select, g_l('siteimport', '[maxSize]'));
 
 		$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 		$thumbsarray = $GLOBALS['DB_WE']->getAllFirst(false);
-		$_select = we_html_tools::htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, array(), "value", 150);
-		$_thumbs = we_html_tools::htmlFormElementTable($_select, g_l('importFiles', '[thumbnails]'));
+		$select = we_html_tools::htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, array(), "value", 150);
+		$thumbs = we_html_tools::htmlFormElementTable($select, g_l('importFiles', '[thumbnails]'));
 
 		/* Create Main Table */
-		$_tableObj = new we_html_table(array('class' => 'default'), 5, 3);
-		$_tableObj->setCol(0, 0, array("colspan" => 2,), $_images);
-		$_tableObj->setCol(0, 2, null, $_jss);
-		$_tableObj->setCol(1, 0, array("colspan" => 2), $_flashmovies);
-		$_tableObj->setCol(1, 2, null, $_css);
-		$_tableObj->setCol(2, 0, array("colspan" => 2), $_htmlPages);
-		$_tableObj->setCol(2, 2, null, $_text);
-		$_tableObj->setCol(3, 0, array('style' => 'width:20px;'), "");
-		$_tableObj->setCol(3, 1, array('style' => 'width:200px;'), $_createWePages);
-		$_tableObj->setCol(3, 2, array('style' => 'width:180px;'), $_others);
-		$_tableObj->setCol(4, 1, null, $_wePagesOptionButton);
-		$_tableObj->setCol(4, 2, array('style' => 'vertical-align:top;'), $_quicktime);
+		$tableObj = new we_html_table(array('class' => 'default'), 5, 3);
+		$tableObj->setCol(0, 0, array("colspan" => 2,), $images);
+		$tableObj->setCol(0, 2, null, $jss);
+		$tableObj->setCol(1, 0, array("colspan" => 2), $flashmovies);
+		$tableObj->setCol(1, 2, null, $css);
+		$tableObj->setCol(2, 0, array("colspan" => 2), $htmlPages);
+		$tableObj->setCol(2, 2, null, $text);
+		$tableObj->setCol(3, 0, array('style' => 'width:20px;'), "");
+		$tableObj->setCol(3, 1, array('style' => 'width:200px;'), $createWePages);
+		$tableObj->setCol(3, 2, array('style' => 'width:180px;'), $others);
+		$tableObj->setCol(4, 1, null, $wePagesOptionButton);
+		$tableObj->setCol(4, 2, array('style' => 'vertical-align:top;'), $quicktime);
 
 
 		$parts = array(
 			array(
 				"headline" => g_l('siteimport', '[dirs_headline]'),
-				"html" => $_importFrom . $_importTo,
+				"html" => $importFrom . $importTo,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				"headline" => g_l('siteimport', '[import]'),
-				"html" => $_tableObj->getHtml(),
+				"html" => $tableObj->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 		);
 
-		$_tableObj = new we_html_table(array('class' => 'default'), 1, 2);
-		$_tableObj->setCol(0, 0, array('style' => 'width:220px;'), $_depth);
-		$_tableObj->setCol(0, 1, array('style' => 'width:180px;'), $_maxSize);
+		$tableObj = new we_html_table(array('class' => 'default'), 1, 2);
+		$tableObj->setCol(0, 0, array('style' => 'width:220px;'), $depth);
+		$tableObj->setCol(0, 1, array('style' => 'width:180px;'), $maxSize);
 
 		$parts[] = array(
 			"headline" => g_l('siteimport', '[limits]'),
-			"html" => $_tableObj->getHtml(),
+			"html" => $tableObj->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
 		);
 
@@ -740,7 +740,7 @@ function doUnload() {
 			if(we_base_imageEdit::gd_version() > 0){
 				$parts[] = array(
 					"headline" => g_l('importFiles', '[make_thumbs]'),
-					"html" => $_thumbs,
+					"html" => $thumbs,
 					'space' => we_html_multiIconBox::SPACE_MED
 				);
 
@@ -753,7 +753,7 @@ function doUnload() {
 				$ratio_checkbox = we_html_forms::checkbox(
 						1, $this->keepRatio, "keepRatio", g_l('thumbnails', '[ratio]'));
 
-				$_resize = '<table>
+				$resize = '<table>
 				<tr>
 					<td class="defaultfont">' . g_l('weClass', '[width]') . ':</td>
 					<td>' . $widthInput . '</td>
@@ -770,17 +770,17 @@ function doUnload() {
 			</table>';
 
 				$parts[] = array(
-					"headline" => g_l('weClass', '[resize]'), "html" => $_resize, 'space' => we_html_multiIconBox::SPACE_MED
+					"headline" => g_l('weClass', '[resize]'), "html" => $resize, 'space' => we_html_multiIconBox::SPACE_MED
 				);
 
-				$_radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', '[rotate0]'));
-				$_radio180 = we_html_forms::radiobutton(180, $this->degrees == 180, "degrees", g_l('weClass', '[rotate180]'));
-				$_radio90l = we_html_forms::radiobutton(90, $this->degrees == 90, "degrees", g_l('weClass', '[rotate90l]'));
-				$_radio90r = we_html_forms::radiobutton(270, $this->degrees == 270, "degrees", g_l('weClass', '[rotate90r]'));
+				$radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', '[rotate0]'));
+				$radio180 = we_html_forms::radiobutton(180, $this->degrees == 180, "degrees", g_l('weClass', '[rotate180]'));
+				$radio90l = we_html_forms::radiobutton(90, $this->degrees == 90, "degrees", g_l('weClass', '[rotate90l]'));
+				$radio90r = we_html_forms::radiobutton(270, $this->degrees == 270, "degrees", g_l('weClass', '[rotate90r]'));
 
 				$parts[] = array(
 					"headline" => g_l('weClass', '[rotate]'),
-					"html" => $_radio0 . $_radio180 . $_radio90l . $_radio90r,
+					"html" => $radio0 . $radio180 . $radio90l . $radio90r,
 					'space' => we_html_multiIconBox::SPACE_MED
 				);
 
@@ -912,21 +912,21 @@ function doUnload() {
 	private static function _importWebEditionPage($content, &$we_doc, $sourcePath){
 		$data = (isset($_SESSION["prefs"]["siteImportPrefs"])) ? we_unserialize($_SESSION["prefs"]["siteImportPrefs"]) : array();
 
-		$_valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
-		$_valueTemplateId = isset($data["valueTemplateId"]) ? $data["valueTemplateId"] : 0;
-		$_valueUseRegex = isset($data["valueUseRegex"]) ? $data["valueUseRegex"] : 0;
-		$_valueFieldValues = isset($data["valueFieldValues"]) ? we_unserialize($data["valueFieldValues"]) : array();
-		$_valueDateFormat = isset($data["valueDateFormat"]) ? $data["valueDateFormat"] : "unix";
-		$_valueDateFormatField = isset($data["valueDateFormatField"]) ? $data["valueDateFormatField"] : "d.m.Y";
-		$_valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : g_l('siteimport', '[newTemplate]');
-		$_valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : "";
+		$valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
+		$valueTemplateId = isset($data["valueTemplateId"]) ? $data["valueTemplateId"] : 0;
+		$valueUseRegex = isset($data["valueUseRegex"]) ? $data["valueUseRegex"] : 0;
+		$valueFieldValues = isset($data["valueFieldValues"]) ? we_unserialize($data["valueFieldValues"]) : array();
+		$valueDateFormat = isset($data["valueDateFormat"]) ? $data["valueDateFormat"] : "unix";
+		$valueDateFormatField = isset($data["valueDateFormatField"]) ? $data["valueDateFormatField"] : "d.m.Y";
+		$valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : g_l('siteimport', '[newTemplate]');
+		$valueTemplateParentID = isset($data["valueTemplateParentID"]) ? $data["valueTemplateParentID"] : "";
 
 		$content = self::_makeAbsolutPathOfContent($content, $sourcePath, $we_doc->ParentPath);
 
-		if($_valueCreateType === "auto"){
-			self::_importAuto($content, $we_doc, $_valueTemplateName, $_valueTemplateParentID);
+		if($valueCreateType === "auto"){
+			self::_importAuto($content, $we_doc, $valueTemplateName, $valueTemplateParentID);
 		} else {
-			self::_importSpecify($content, $we_doc, $_valueTemplateId, $_valueUseRegex, $_valueFieldValues, $_valueDateFormat, $_valueDateFormatField);
+			self::_importSpecify($content, $we_doc, $valueTemplateId, $valueUseRegex, $valueFieldValues, $valueDateFormat, $valueDateFormatField);
 		}
 	}
 
@@ -1312,7 +1312,7 @@ function doUnload() {
 
 		// TODO width & height of image
 		// get field infos of template
-		$_templateFields = self::_getFieldsFromTemplate($templateId);
+		$templateFields = self::_getFieldsFromTemplate($templateId);
 
 		foreach($fieldValues as $field){
 			if(!empty($field["pre"]) && !empty($field["post"]) && !empty($field["name"])){
@@ -1333,9 +1333,9 @@ function doUnload() {
 					}
 				}
 				// only set field if field exists in template
-				if(isset($_templateFields[$field["name"]])){
+				if(isset($templateFields[$field["name"]])){
 
-					if($_templateFields[$field["name"]] === "date"){ // import date fields
+					if($templateFields[$field["name"]] === "date"){ // import date fields
 						switch($dateFormat){
 							case "unix" :
 								$fieldval = abs($fieldval);
@@ -1350,7 +1350,7 @@ function doUnload() {
 								break;
 						}
 						$we_doc->setElement($field["name"], abs($fieldval), "date");
-					} elseif($_templateFields[$field["name"]] === "img"){ // import image fields
+					} elseif($templateFields[$field["name"]] === "img"){ // import image fields
 						if(preg_match('/<[^>]+src=["\']?([^"\' >]+)[^"\'>]?[^>]*>/i', $fieldval, $regs)){ // only if image tag has a src attribute
 							$src = $regs[1];
 							$imgId = path_to_id($src);

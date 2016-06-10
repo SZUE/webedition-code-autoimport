@@ -150,10 +150,10 @@ function submitForm(target,action,method) {
 			$fields = array();
 		}
 
-		$_customer = $this->getOrderCustomerData(we_base_request::_(we_base_request::INT, 'bid', 0), $fields);
+		$customer = $this->getOrderCustomerData(we_base_request::_(we_base_request::INT, 'bid', 0), $fields);
 
 		if(isset($_REQUEST['SendMail'])){
-			$weShopStatusMails->sendEMail($_REQUEST['SendMail'], $_REQUEST['bid'], $_customer);
+			$weShopStatusMails->sendEMail($_REQUEST['SendMail'], $_REQUEST['bid'], $customer);
 		}
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 		foreach(we_shop_statusMails::$StatusFields as $field){
@@ -161,7 +161,7 @@ function submitForm(target,action,method) {
 				list($day, $month, $year) = explode('.', $_REQUEST[$field]);
 				$DateOrder = $year . '-' . $month . '-' . $day . ' 00:00:00';
 				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET ' . $field . '="' . $this->db->escape($DateOrder) . '" WHERE IntOrderID=' . $bid);
-				$weShopStatusMails->checkAutoMailAndSend(substr($field, 4), $_REQUEST['bid'], $_customer);
+				$weShopStatusMails->checkAutoMailAndSend(substr($field, 4), $_REQUEST['bid'], $customer);
 			}
 		}
 
@@ -257,26 +257,26 @@ function submitForm(target,action,method) {
 			$customerFieldTable = '';
 
 			// first show fields Forename and surname
-			if(isset($_customer['Forename'])){
+			if(isset($customer['Forename'])){
 				$customerFieldTable .='
 		<tr style="height:25px">
 			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px">' . g_l('modules_customer', '[Forname]') . ':</td>
 			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"></td>
 			<td style="width:20px;height:25px;"></td>
-			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $_customer['Forename'] . '</td>
+			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $customer['Forename'] . '</td>
 		</tr>';
 			}
-			if(isset($_customer['Surname'])){
+			if(isset($customer['Surname'])){
 				$customerFieldTable .='
 		<tr style="height:25px">
 			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px;">' . g_l('modules_customer', '[Surname]') . ':</td>
 			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"></td>
 			<td style="width:20px;height:25px;"></td>
-			<td class="defaultfont" style="vertical-align:top;height:25px;" colspan="6">' . $_customer['Surname'] . '</td>
+			<td class="defaultfont" style="vertical-align:top;height:25px;" colspan="6">' . $customer['Surname'] . '</td>
 		</tr>';
 			}
 
-			foreach($_customer as $key => $value){
+			foreach($customer as $key => $value){
 				if(in_array($key, $fields['customerFields'])){
 					switch($key){
 						case $this->CLFields['stateField']:
@@ -829,11 +829,11 @@ function CalendarChanged(calObject) {
 
 				if(defined('OBJECT_TABLE')){
 					// now get all shop objects
-					foreach($this->classIds as $_classId){
-						$_classId = intval($_classId);
-						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId FROM ' . OBJECT_X_TABLE . $_classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID ' .
+					foreach($this->classIds as $classId){
+						$classId = intval($classId);
+						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId FROM ' . OBJECT_X_TABLE . $classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID ' .
 							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
-								' WHERE ' . OBJECT_X_TABLE . $_classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
+								' WHERE ' . OBJECT_X_TABLE . $classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
 								'')
 						);
 
@@ -1298,10 +1298,10 @@ function CalendarChanged(calObject) {
 
 			case 'save_order_customer':
 				// just get this order and save this userdata in there.
-				$_orderData = we_unserialize($this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder'));
-				$_orderData[WE_SHOP_CART_CUSTOMER_FIELD] = $_REQUEST['weCustomerOrder'];
+				$orderData = we_unserialize($this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder'));
+				$orderData[WE_SHOP_CART_CUSTOMER_FIELD] = $_REQUEST['weCustomerOrder'];
 
-				if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($_orderData))){
+				if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($orderData))){
 					$alertMessage = g_l('modules_shop', '[edit_order][js_saved_customer_success]');
 					$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
 				} else {

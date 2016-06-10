@@ -65,8 +65,8 @@ class we_document_video extends we_binaryDocument{
 	}
 
 	public function getHtml($dyn = false, $preload = false){
-		$_data = $this->getElement('data');
-		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
+		$data = $this->getElement('data');
+		if($this->ID || ($data && !is_dir($data) && is_readable($data))){
 
 			if(($bdid = $this->getElement('poster', 'bdid'))){
 				$poster = id_to_path($bdid);

@@ -607,9 +607,9 @@ abstract class we_listview_base{
 	 *       it should set one
 	 */
 	function close_a(){
-		$_close = $this->close_a;
+		$close = $this->close_a;
 		$this->close_a = true;
-		return $_close;
+		return $close;
 	}
 
 	/**

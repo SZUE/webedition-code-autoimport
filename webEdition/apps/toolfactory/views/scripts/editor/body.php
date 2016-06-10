@@ -428,8 +428,8 @@ if(!empty($this->model->ID)){
 
 	$rowServices = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Services')));
 	$html = '';
-	foreach($this->model->services as $_service => $_incfile){
-		$html .= '<strong>' . $_service . '</strong>';
+	foreach($this->model->services as $service => $_incfile){
+		$html .= '<strong>' . $service . '</strong>';
 		$html .= '<br/>';
 		$html .= str_replace($_SERVER['DOCUMENT_ROOT'], '', $_incfile);
 		$html .= '<br/><br/>';

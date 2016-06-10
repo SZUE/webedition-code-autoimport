@@ -42,8 +42,8 @@ class we_document_audio extends we_binaryDocument{
 	}
 
 	public function getHtml($dyn = false){
-		$_data = $this->getElement('data');
-		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
+		$data = $this->getElement('data');
+		if($this->ID || ($data && !is_dir($data) && is_readable($data))){
 
 			return '<audio controls preload="none" style="margin-left:2em;">
 							<source src="' . ( $dyn ?

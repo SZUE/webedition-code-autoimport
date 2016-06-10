@@ -50,9 +50,9 @@ class we_import_files{
 	const CHUNK_SIZE = 256;
 
 	function __construct(){
-		if(($_catarray = we_base_request::_(we_base_request::STRING_LIST, 'fu_doc_categories'))){
+		if(($catarray = we_base_request::_(we_base_request::STRING_LIST, 'fu_doc_categories'))){
 			$cats = array();
-			foreach($_catarray as $cat){
+			foreach($catarray as $cat){
 				// bugfix Workarround #700
 				$cats[] = (is_numeric($cat) ?
 								$cat :
@@ -104,9 +104,9 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 	}
 
 	function _getContent(){
-		$_funct = 'getStep' . we_base_request::_(we_base_request::INT, 'step', 1);
+		$funct = 'getStep' . we_base_request::_(we_base_request::INT, 'step', 1);
 
-		return $this->$_funct();
+		return $this->$funct();
 	}
 
 	function getStep1(){
@@ -362,11 +362,11 @@ function next() {
 	}
 
 	function _getFrameset(){
-		$_step = we_base_request::_(we_base_request::INT, 'step', -1);
+		$step = we_base_request::_(we_base_request::INT, 'step', -1);
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody')
-						, we_html_element::htmlIFrame('imgimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&we_cmd[1]=" . $this->parentID . "&cmd=content" . ($_step > -1 ? '&step=' . $_step : '') . '&we_cmd[2]=' . $this->callBack, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
-						we_html_element::htmlIFrame('imgimportbuttons', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons" . ($_step > -1 ? '&step=' . $_step : '') . '&we_cmd[2]=' . $this->callBack, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
+						, we_html_element::htmlIFrame('imgimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&we_cmd[1]=" . $this->parentID . "&cmd=content" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->callBack, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+						we_html_element::htmlIFrame('imgimportbuttons', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->callBack, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
 		);
 
 		return $this->_getHtmlPage($body);
@@ -379,21 +379,21 @@ function next() {
 	/*
 	function savePropsInSession(){
 		$_SESSION['weS']['_we_import_files'] = array();
-		$_vars = get_object_vars($this);
-		foreach($_vars as $_name => $_value){
-			$_SESSION['weS']['_we_import_files'][$_name] = $_value;
+		$vars = get_object_vars($this);
+		foreach($vars as $name => $value){
+			$_SESSION['weS']['_we_import_files'][$name] = $value;
 		}
 	}
 
-	
+
 	function loadPropsFromSession(){
 		if(isset($_SESSION['weS']['_we_import_files'])){
-			foreach($_SESSION['weS']['_we_import_files'] as $_name => $_var){
-				$this->$_name = $_var;
+			foreach($_SESSION['weS']['_we_import_files'] as $name => $var){
+				$this->$name = $var;
 			}
 		}
 	}
-	 * 
+	 *
 	 */
 
 }

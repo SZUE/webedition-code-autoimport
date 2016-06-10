@@ -46,7 +46,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	function getHTMLOverview($weGlossaryFrames){
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
-		$_list = array(
+		$list = array(
 			we_glossary_glossary::TYPE_ABBREVATION,
 			we_glossary_glossary::TYPE_ACRONYM,
 			we_glossary_glossary::TYPE_FOREIGNWORD,
@@ -58,7 +58,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		$parts = array();
 
-		foreach($_list as $key){
+		foreach($list as $key){
 			$items = f('SELECT COUNT(1) FROM ' . GLOSSARY_TABLE . ' WHERE Language="' . $language . '" AND Type="' . $key . '"');
 //FIXME createbuttontable?
 			$button = we_html_button::create_button('new_glossary_' . $key, "javascript:top.opener.top.we_cmd('new_glossary_" . $key . "', '" . $cmdid . "');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_GLOSSARY"));

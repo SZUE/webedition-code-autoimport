@@ -78,7 +78,7 @@ abstract class validation{
 	}
 
 	static function getValidationServices($mode = 'edit'){
-		$_ret = array();
+		$ret = array();
 
 		switch($mode){
 			case 'edit':
@@ -91,9 +91,9 @@ abstract class validation{
 
 		$GLOBALS['DB_WE']->query($query);
 		while($GLOBALS['DB_WE']->next_record()){
-			$_ret[] = new validationService($GLOBALS['DB_WE']->f('PK_tblvalidationservices'), 'custom', $GLOBALS['DB_WE']->f('category'), $GLOBALS['DB_WE']->f('name'), $GLOBALS['DB_WE']->f('host'), $GLOBALS['DB_WE']->f('path'), $GLOBALS['DB_WE']->f('method'), $GLOBALS['DB_WE']->f('varname'), $GLOBALS['DB_WE']->f('checkvia'), $GLOBALS['DB_WE']->f('ctype'), $GLOBALS['DB_WE']->f('additionalVars'), $GLOBALS['DB_WE']->f('fileEndings'), $GLOBALS['DB_WE']->f('active'));
+			$ret[] = new validationService($GLOBALS['DB_WE']->f('PK_tblvalidationservices'), 'custom', $GLOBALS['DB_WE']->f('category'), $GLOBALS['DB_WE']->f('name'), $GLOBALS['DB_WE']->f('host'), $GLOBALS['DB_WE']->f('path'), $GLOBALS['DB_WE']->f('method'), $GLOBALS['DB_WE']->f('varname'), $GLOBALS['DB_WE']->f('checkvia'), $GLOBALS['DB_WE']->f('ctype'), $GLOBALS['DB_WE']->f('additionalVars'), $GLOBALS['DB_WE']->f('fileEndings'), $GLOBALS['DB_WE']->f('active'));
 		}
-		return $_ret;
+		return $ret;
 	}
 
 	/**
@@ -108,16 +108,16 @@ abstract class validation{
 
 		if($xhtmlType === 'transitional'){ //	use xml-transitional
 			include(WE_INCLUDES_PATH . 'validation/xhtml_10_transitional.inc.php');
-			//   the array $_validAtts and $_reqAtts are set inside this include-file
+			//   the array $validAtts and $reqAtts are set inside this include-file
 		} else { //	use xml-strict
 			include(WE_INCLUDES_PATH . 'validation/xhtml_10_strict.inc.php');
-			//   the array $_validAtts and $_reqAtts are set inside this include-file
+			//   the array $validAtts and $reqAtts are set inside this include-file
 		}
 
-		if(isset($_validAtts[$element])){ //	element exists
+		if(isset($validAtts[$element])){ //	element exists
 			//	check if all parameters are allowed.
 			foreach($attribs as $k => $v){
-				if(!in_array($k, $_validAtts[$element]) && !in_array(str_replace('pass_', '', $k), $_validAtts[$element])){
+				if(!in_array($k, $validAtts[$element]) && !in_array(str_replace('pass_', '', $k), $validAtts[$element])){
 
 					$removeText = '';
 
@@ -141,8 +141,8 @@ abstract class validation{
 			}
 
 			//	check if all required parameters are there.
-			if(array_key_exists($element, $_reqAtts)){
-				foreach($_reqAtts[$element] as $required){
+			if(array_key_exists($element, $reqAtts)){
+				foreach($reqAtts[$element] as $required){
 
 					if(!array_key_exists($required, $attribs)){
 

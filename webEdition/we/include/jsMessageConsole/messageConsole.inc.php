@@ -27,7 +27,7 @@ echo we_html_tools::getHtmlTop(g_l('messageConsole', '[headline]')) .
 $deleteAllButton = we_html_button::create_button(we_html_button::DELETE, "javascript:msgWin.removeMessages();");
 $closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:window.close();");
 
-$_buttons = we_html_button::formatButtons($deleteAllButton . $closeButton);
+$buttons = we_html_button::formatButtons($deleteAllButton . $closeButton);
 
 echo
 we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
@@ -45,7 +45,7 @@ we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
 		<ul id="jsMessageUl" class="fa-ul"></ul>
 	</div>
 	<div class="dialogButtonDiv">
-			<?php echo $_buttons; ?>
+			<?php echo $buttons; ?>
 	</div>
 </body>
 </html>

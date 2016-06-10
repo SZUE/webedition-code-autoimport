@@ -131,11 +131,11 @@ abstract class we_newsletter_util{
 	static function getNewsletterFields($confirmid, &$errorcode, $mail, $subscribe_mail){
 		$errorcode = we_newsletter_base::STATUS_SUCCESS;
 		if($confirmid){
-			$_h = getHash('SELECT * FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE confirmID="' . $GLOBALS['DB_WE']->escape($confirmid) . '" AND LOWER(subscribe_mail)="' . $GLOBALS['DB_WE']->escape(strtolower($mail)) . '"');
-			if(!$_h){
+			$h = getHash('SELECT * FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE confirmID="' . $GLOBALS['DB_WE']->escape($confirmid) . '" AND LOWER(subscribe_mail)="' . $GLOBALS['DB_WE']->escape(strtolower($mail)) . '"');
+			if(!$h){
 				$errorcode = we_newsletter_base::STATUS_CONFIRM_FAILED;
 			}
-			return $_h;
+			return $h;
 		}
 
 		$subscribe_mail = trim(preg_replace("|[\r\n,]|", '', $subscribe_mail));
@@ -427,8 +427,8 @@ abstract class we_newsletter_util{
 		}
 	}
 
-	static function addToDB(we_database_base $db, array $_customerFieldPrefs, array $f, array $abos){
-		$uid = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $db->escape($f['subscribe_mail']) . '"', '', $db);
+	static function addToDB(we_database_base $db, array $customerFieldPrefs, array $f, array $abos){
+		$uid = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE ' . $customerFieldPrefs['customer_email_field'] . '="' . $db->escape($f['subscribe_mail']) . '"', '', $db);
 		if(!$uid){
 			$GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'] = substr(md5(time()), 4, 8);
 			$GLOBALS['WE_NEWSUBSCRIBER_USERNAME'] = $f['subscribe_mail'];
@@ -443,12 +443,12 @@ abstract class we_newsletter_util{
 				'LoginDenied' => 0,
 				'LastLogin' => 0,
 				'LastAccess' => 0,
-				($_customerFieldPrefs['customer_salutation_field'] != 'ID' ? $_customerFieldPrefs['customer_salutation_field'] : '') => $f['subscribe_salutation'],
-				($_customerFieldPrefs['customer_title_field'] != 'ID' ? $_customerFieldPrefs['customer_title_field'] : '') => $f['subscribe_title'],
-				($_customerFieldPrefs['customer_firstname_field'] != 'ID' ? $_customerFieldPrefs['customer_firstname_field'] : '') => $f['subscribe_firstname'],
-				($_customerFieldPrefs['customer_lastname_field'] != 'ID' ? $_customerFieldPrefs['customer_lastname_field'] : '') => $f['subscribe_lastname'],
-				($_customerFieldPrefs['customer_email_field'] != 'ID' ? $_customerFieldPrefs['customer_email_field'] : '') => $f['subscribe_mail'],
-				($_customerFieldPrefs['customer_html_field'] != 'ID' ? $_customerFieldPrefs['customer_html_field'] : '') => $f['subscribe_html'],
+				($customerFieldPrefs['customer_salutation_field'] != 'ID' ? $customerFieldPrefs['customer_salutation_field'] : '') => $f['subscribe_salutation'],
+				($customerFieldPrefs['customer_title_field'] != 'ID' ? $customerFieldPrefs['customer_title_field'] : '') => $f['subscribe_title'],
+				($customerFieldPrefs['customer_firstname_field'] != 'ID' ? $customerFieldPrefs['customer_firstname_field'] : '') => $f['subscribe_firstname'],
+				($customerFieldPrefs['customer_lastname_field'] != 'ID' ? $customerFieldPrefs['customer_lastname_field'] : '') => $f['subscribe_lastname'],
+				($customerFieldPrefs['customer_email_field'] != 'ID' ? $customerFieldPrefs['customer_email_field'] : '') => $f['subscribe_mail'],
+				($customerFieldPrefs['customer_html_field'] != 'ID' ? $customerFieldPrefs['customer_html_field'] : '') => $f['subscribe_html'],
 				) : array(
 				'ModifyDate' => time(),
 				'ModifiedBy' => 'frontend',
@@ -500,13 +500,13 @@ abstract class we_newsletter_util{
 			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET pref_value="' . $db->escape(we_serialize($customerFields, SERIALIZE_JSON)) . '" WHERE tool="webadmin" AND pref_name="FieldAdds"');
 		}
 
-		if($_customerFieldPrefs['customer_html_field'] === 'ID'){
+		if($customerFieldPrefs['customer_html_field'] === 'ID'){
 			t_e('warning', 'missing newsletter customer settings', 'no customer html field found in settings: field "ID" is not allowed');
 		} else {
-			$set[$_customerFieldPrefs['customer_html_field']] = $f['subscribe_html'];
+			$set[$customerFieldPrefs['customer_html_field']] = $f['subscribe_html'];
 		}
 
-		$db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set) . ' WHERE ' . $_customerFieldPrefs['customer_email_field'] . '="' . $db->escape($f["subscribe_mail"]) . '"');
+		$db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($set) . ' WHERE ' . $customerFieldPrefs['customer_email_field'] . '="' . $db->escape($f["subscribe_mail"]) . '"');
 	}
 
 }

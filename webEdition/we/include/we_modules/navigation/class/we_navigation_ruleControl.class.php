@@ -86,15 +86,15 @@ doc.weInput.setValue('ID', 0);";
 				$NavigationIDPath = htmlspecialchars_decode($this->NavigationRule->NavigationID ? id_to_path($this->NavigationRule->NavigationID, NAVIGATION_TABLE) : '', ENT_NOQUOTES);
 
 				// workspaces:
-				$_workspaceList = array('{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}');
-				$_selectWorkspace = '';
+				$workspaceList = array('{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}');
+				$selectWorkspace = '';
 				if(defined('OBJECT_TABLE') && $this->NavigationRule->ClassID){
-					$_workspaces = $this->getWorkspacesByClassID($this->NavigationRule->ClassID);
+					$workspaces = $this->getWorkspacesByClassID($this->NavigationRule->ClassID);
 
-					foreach($_workspaces as $key => $value){
-						$_workspaceList[] = '{"text":"' . $value . '","value":"' . $key . '"}';
+					foreach($workspaces as $key => $value){
+						$workspaceList[] = '{"text":"' . $value . '","value":"' . $key . '"}';
 					}
-					$_selectWorkspace = 'doc.weSelect.selectOption("WorkspaceID", "' . $this->NavigationRule->WorkspaceID . '" );';
+					$selectWorkspace = 'doc.weSelect.selectOption("WorkspaceID", "' . $this->NavigationRule->WorkspaceID . '" );';
 				}
 
 				// categories
@@ -139,18 +139,18 @@ doc.categories_edit.showVariant(0);
 doc.weInput.setValue('CategoriesCount', doc.categories_edit.itemCount);
 
 
-var optionList = [" . implode(',', $_workspaceList) . "];
+var optionList = [" . implode(',', $workspaceList) . "];
 doc.weSelect.setOptions('WorkspaceID', optionList);
-$_selectWorkspace";
+$selectWorkspace";
 				break;
 
 			case "get_workspaces" :
 
 				if(defined('OBJECT_TABLE') && ($classid = we_base_request::_(we_base_request::INT, 'ClassID'))){
-					$_workspaces = $this->getWorkspacesByClassID($classid);
+					$workspaces = $this->getWorkspacesByClassID($classid);
 					$optionList = array('{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}');
 
-					foreach($_workspaces as $key => $value){
+					foreach($workspaces as $key => $value){
 						$optionList[]= '{"text":"' . $value . '","value":"' . $key . '"}';
 					}
 
@@ -171,13 +171,13 @@ doc.weSelect.setOptions("WorkspaceID", optionList);
 	}
 
 	function getWorkspacesByClassID($classId){
-		$_workspaces = array();
+		$workspaces = array();
 
 		if($classId){
-			$_workspaces = we_navigation_dynList::getWorkspacesForClass($classId);
-			asort($_workspaces);
+			$workspaces = we_navigation_dynList::getWorkspacesForClass($classId);
+			asort($workspaces);
 		}
-		return $_workspaces;
+		return $workspaces;
 	}
 
 	function processVariables(){

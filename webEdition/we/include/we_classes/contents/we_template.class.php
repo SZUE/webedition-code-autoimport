@@ -659,36 +659,36 @@ we_templateInit();?>';
 
 	static function getUsedTemplatesOfTemplate($id, &$arr){
 		$hash = getHash('SELECT IncludedTemplates, MasterTemplateID FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($id));
-		$_tmplCSV = ($hash ? $hash['IncludedTemplates'] : '');
-		$_masterTemplateID = ($hash ? $hash['MasterTemplateID'] : 0);
+		$tmplCSV = ($hash ? $hash['IncludedTemplates'] : '');
+		$masterTemplateID = ($hash ? $hash['MasterTemplateID'] : 0);
 
-		$_tmpArr = makeArrayFromCSV($_tmplCSV);
-		foreach($_tmpArr as $_tid){
-			if(!in_array($_tid, $arr) && $_tid != $id){
-				$arr[] = $_tid;
+		$tmpArr = makeArrayFromCSV($tmplCSV);
+		foreach($tmpArr as $tid){
+			if(!in_array($tid, $arr) && $tid != $id){
+				$arr[] = $tid;
 			}
 		}
-		foreach($_tmpArr as $_tid){
-			if($id != $_tid){
-				self::getUsedTemplatesOfTemplate($_tid, $arr);
-			}
-		}
-
-		$_tmpArr = makeArrayFromCSV($_tmplCSV);
-		foreach($_tmpArr as $_tid){
-			if(!in_array($_tid, $arr) && $_tid != $id){
-				$arr[] = $_tid;
-			}
-		}
-		if($_masterTemplateID && !in_array($_masterTemplateID, $arr)){
-			if($_masterTemplateID != $id){
-				self::getUsedTemplatesOfTemplate($_masterTemplateID, $arr);
+		foreach($tmpArr as $tid){
+			if($id != $tid){
+				self::getUsedTemplatesOfTemplate($tid, $arr);
 			}
 		}
 
-		foreach($_tmpArr as $_tid){
-			if($id != $_tid){
-				self::getUsedTemplatesOfTemplate($_tid, $arr);
+		$tmpArr = makeArrayFromCSV($tmplCSV);
+		foreach($tmpArr as $tid){
+			if(!in_array($tid, $arr) && $tid != $id){
+				$arr[] = $tid;
+			}
+		}
+		if($masterTemplateID && !in_array($masterTemplateID, $arr)){
+			if($masterTemplateID != $id){
+				self::getUsedTemplatesOfTemplate($masterTemplateID, $arr);
+			}
+		}
+
+		foreach($tmpArr as $tid){
+			if($id != $tid){
+				self::getUsedTemplatesOfTemplate($tid, $arr);
 			}
 		}
 	}
@@ -728,11 +728,11 @@ we_templateInit();?>';
 
 		if($this->MasterTemplateID != 0){
 
-			$_templates = array();
-			self::getUsedTemplatesOfTemplate($this->MasterTemplateID, $_templates);
-			if(in_array($this->ID, $_templates) || $this->ID == $this->MasterTemplateID || in_array($this->MasterTemplateID, $recursiveTemplates)){
+			$templates = array();
+			self::getUsedTemplatesOfTemplate($this->MasterTemplateID, $templates);
+			if(in_array($this->ID, $templates) || $this->ID == $this->MasterTemplateID || in_array($this->MasterTemplateID, $recursiveTemplates)){
 				$code = g_l('parser', '[template_recursion_error]');
-				t_e(g_l('parser', '[template_recursion_error]'), 'Template ' . $this->ID, 'Mastertemplate: ' . $this->MasterTemplateID, 'Templates of Master: ' . implode(',', $_templates), 'already processed: ' . implode(',', $recursiveTemplates));
+				t_e(g_l('parser', '[template_recursion_error]'), 'Template ' . $this->ID, 'Mastertemplate: ' . $this->MasterTemplateID, 'Templates of Master: ' . implode(',', $templates), 'already processed: ' . implode(',', $recursiveTemplates));
 			} else {
 				// we have a master template. => surround current template with it
 				// first get template code
@@ -786,11 +786,11 @@ we_templateInit();?>';
 
 					// if id attribute is set and greater 0
 					if(isset($att['id']) && intval($att['id']) != 0){
-						$_templates = array();
-						self::getUsedTemplatesOfTemplate($att['id'], $_templates);
-						if(in_array($this->ID, $_templates) || $att['id'] == $this->ID || in_array($att['id'], $recursiveTemplates)){
+						$templates = array();
+						self::getUsedTemplatesOfTemplate($att['id'], $templates);
+						if(in_array($this->ID, $templates) || $att['id'] == $this->ID || in_array($att['id'], $recursiveTemplates)){
 							$code = str_replace($tag, g_l('parser', '[template_recursion_error]'), $code);
-							t_e(g_l('parser', '[template_recursion_error]'), 'Template ' . $this->ID, 'Included Template: ' . $att['id'], 'Templates of include: ' . implode(',', $_templates), 'already processed: ' . implode(',', $recursiveTemplates));
+							t_e(g_l('parser', '[template_recursion_error]'), 'Template ' . $this->ID, 'Included Template: ' . $att['id'], 'Templates of include: ' . implode(',', $templates), 'already processed: ' . implode(',', $recursiveTemplates));
 						} else {
 							// get code of template
 							$recursiveTemplates[] = $att['id'];
@@ -824,20 +824,20 @@ we_templateInit();?>';
 		} else {
 			$this->doUpdateCode = false;
 		}
-		$_ret = parent::we_save($resave);
-		if($_ret){
+		$ret = parent::we_save($resave);
+		if($ret){
 			$tmplPathWithTmplExt = parent::getRealPath();
 			if(file_exists($tmplPathWithTmplExt)){
 				unlink($tmplPathWithTmplExt);
 			}
 			$this->unregisterMediaLinks();
-			$_ret = $this->registerMediaLinks();
+			$ret = $this->registerMediaLinks();
 		} else {
 			t_e('save template failed', $this->Path);
 		}
 
 		$this->setElement('allVariants', we_unserialize($this->getElement('allVariants')), 'variants');
-		return $_ret;
+		return $ret;
 	}
 
 	public function we_publish(){

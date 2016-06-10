@@ -155,31 +155,31 @@ class we_http_request{
 
 		$this->getHttpRequest();
 
-		$_header[] = $this->http_method . ' ' . $path . ' ' . $this->http_protocol;
+		$header[] = $this->http_method . ' ' . $path . ' ' . $this->http_protocol;
 		foreach($this->http_headers as $k => $v){
-			$_header[] = "$k: $v";
+			$header[] = "$k: $v";
 		}
-		$_header[] = $this->http_body;
+		$header[] = $this->http_body;
 
-		$_session = curl_init();
-		curl_setopt($_session, CURLOPT_URL, 'http://' . $this->http_host . ($this->http_method === 'GET' ? $path : $this->http_path));
-		curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($_session, CURLOPT_CUSTOMREQUEST, $this->http_method);
-		curl_setopt($_session, CURLOPT_HEADER, 1);
-		curl_setopt($_session, CURLOPT_HTTPHEADER, $_header);
-		curl_setopt($_session, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($_session, CURLOPT_MAXREDIRS, 5);
+		$session = curl_init();
+		curl_setopt($session, CURLOPT_URL, 'http://' . $this->http_host . ($this->http_method === 'GET' ? $path : $this->http_path));
+		curl_setopt($session, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($session, CURLOPT_CUSTOMREQUEST, $this->http_method);
+		curl_setopt($session, CURLOPT_HEADER, 1);
+		curl_setopt($session, CURLOPT_HTTPHEADER, $header);
+		curl_setopt($session, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($session, CURLOPT_MAXREDIRS, 5);
 
-		$_data = curl_exec($_session);
+		$data = curl_exec($session);
 
-		if(curl_errno($_session)){
+		if(curl_errno($session)){
 			$this->error = true;
 			$this->errno = 1;
-			$this->errstr = curl_error($_session);
+			$this->errstr = curl_error($session);
 		} else {
-			$this->http_response = $_data;
+			$this->http_response = $data;
 			$this->error = false;
-			curl_close($_session);
+			curl_close($session);
 		}
 	}
 
@@ -189,9 +189,9 @@ class we_http_request{
 	 */
 	function executeHttpRequest(){
 
-		$_http_opt = getHttpOption();
+		$http_opt = getHttpOption();
 
-		switch($_http_opt){
+		switch($http_opt){
 			case 'fopen':
 				$req = $this->getHttpRequest();
 				$socket = @fsockopen($this->http_host, $this->http_port, $errno, $errstr, 1);
@@ -232,12 +232,12 @@ class we_http_request{
 		//  first build body of request, then headers
 		$body = '';
 
-		$_sizeFiles = count($this->files);
-		$_sizeVars = count($this->vars);
+		$sizeFiles = count($this->files);
+		$sizeVars = count($this->vars);
 
 		$path = $this->http_path;
 
-		if($_sizeFiles || $_sizeVars){
+		if($sizeFiles || $sizeVars){
 
 			//  it is necessary to differ from POST/GET requests
 			if($this->http_method === 'POST'){ //  method 'POST'

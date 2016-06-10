@@ -384,7 +384,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	 * @return string
 	 */
 	private function getCharsetSelect(){
-		$_charsetHandler = new we_base_charsetHandler();
+		$charsetHandler = new we_base_charsetHandler();
 
 		if(isset($GLOBALS['meta']['Charset'])){ //	charset-tag available
 			$name = 'Charset';
@@ -404,18 +404,18 @@ class we_webEditionDocument extends we_textContentDocument{
 
 			//	menu for all possible charsets
 
-			$_defaultInChars = false;
+			$defaultInChars = false;
 			foreach($chars as $set){ //	check if default value is already in array
 				if(strtolower($set) == strtolower(DEFAULT_CHARSET)){
-					$_defaultInChars = true;
+					$defaultInChars = true;
 				}
 			}
-			if(!$_defaultInChars){
+			if(!$defaultInChars){
 				$chars[] = DEFAULT_CHARSET;
 			}
 
 			//	Last step: get Information about the charsets
-			$retSelect = $this->htmlSelect('we_tmp_' . $name, $_charsetHandler->getCharsetsByArray($chars), 1, $value, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'), 'value', 254);
+			$retSelect = $this->htmlSelect('we_tmp_' . $name, $charsetHandler->getCharsetsByArray($chars), 1, $value, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'), 'value', 254);
 		} else {
 			//	charset-tag NOT available
 			$retInput = we_html_tools::htmlTextInput("dummi", 40, g_l('charset', '[error][no_charset_tag]'), '', ' readonly disabled', 'text', 254);
@@ -869,13 +869,13 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	public function setDocumentControlElements(){
 		////FIXME: use Tagparser & save this to DB
 		//	get code of the matching template
-		$_templateCode = $this->getTemplateCode();
+		$templateCode = $this->getTemplateCode();
 
 		//	First set hidePages from document ...
-		$this->setHidePages($_templateCode);
+		$this->setHidePages($templateCode);
 
 		//	now set information about buttons of document
-		$this->setControlElements($_templateCode);
+		$this->setControlElements($templateCode);
 	}
 
 	public function executeDocumentControlElements(){
@@ -899,10 +899,10 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			return;
 		}
 // tag we:control exists
-		$_tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
+		$tags = we_tag_tagParser::itemize_we_tag('we:controlElement', $templatecode);
 		//	we need all given tags ...
 
-		if($_tags[0]){
+		if($tags[0]){
 
 			if(!in_array('controlElement', $this->persistent_slots)){
 				$this->persistent_slots[] = 'controlElement';
@@ -910,32 +910,32 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				unset($this->controlElement);
 			}
 
-			$_ctrlArray = array();
+			$ctrlArray = array();
 
-			foreach($_tags[2] as $cur){ //	go through all matches
-				$_tagAttribs = we_tag_tagParser::makeArrayFromAttribs($cur);
+			foreach($tags[2] as $cur){ //	go through all matches
+				$tagAttribs = we_tag_tagParser::makeArrayFromAttribs($cur);
 
-				$_type = weTag_getAttribute('type', $_tagAttribs, '', we_base_request::STRING);
-				$_name = weTag_getAttribute('name', $_tagAttribs, '', we_base_request::STRING);
-				$_hide = weTag_getAttribute('hide', $_tagAttribs, false, we_base_request::BOOL);
+				$type = weTag_getAttribute('type', $tagAttribs, '', we_base_request::STRING);
+				$name = weTag_getAttribute('name', $tagAttribs, '', we_base_request::STRING);
+				$hide = weTag_getAttribute('hide', $tagAttribs, false, we_base_request::BOOL);
 
-				if($_type && $_name){
-					switch($_type){
+				if($type && $name){
+					switch($type){
 						case 'button': //	only look, if the button shall be hidden or not
-							$_ctrlArray['button'][$_name] = array('hide' => ( $_hide ? 1 : 0 ));
+							$ctrlArray['button'][$name] = array('hide' => ( $hide ? 1 : 0 ));
 							break;
 						case 'checkbox':
-							$_ctrlArray['checkbox'][$_name] = array(
-								'hide' => ( $_hide ? 1 : 0 ),
-								'readonly' => ( weTag_getAttribute('readonly', $_tagAttribs, true, we_base_request::BOOL) ? 1 : 0 ),
-								'checked' => ( weTag_getAttribute('checked', $_tagAttribs, false, we_base_request::BOOL) ? 1 : 0 )
+							$ctrlArray['checkbox'][$name] = array(
+								'hide' => ( $hide ? 1 : 0 ),
+								'readonly' => ( weTag_getAttribute('readonly', $tagAttribs, true, we_base_request::BOOL) ? 1 : 0 ),
+								'checked' => ( weTag_getAttribute('checked', $tagAttribs, false, we_base_request::BOOL) ? 1 : 0 )
 							);
 							break;
 					}
 				}
 			}
 		}
-		$this->controlElement = $_ctrlArray;
+		$this->controlElement = $ctrlArray;
 	}
 
 	/**
@@ -952,19 +952,19 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			}
 
 			if(strpos($templatecode, '<we:hidePages') !== false){ //	tag hidePages exists
-				$_tags = we_tag_tagParser::itemize_we_tag('we:hidePages', $templatecode);
+				$tags = we_tag_tagParser::itemize_we_tag('we:hidePages', $templatecode);
 
 				// here we only take the FIRST tag
-				$_tagAttribs = we_tag_tagParser::makeArrayFromAttribs($_tags[2][0]);
+				$tagAttribs = we_tag_tagParser::makeArrayFromAttribs($tags[2][0]);
 
-				$_pages = weTag_getAttribute('pages', $_tagAttribs, '', we_base_request::STRING);
+				$pages = weTag_getAttribute('pages', $tagAttribs, '', we_base_request::STRING);
 
 				if(!in_array('hidePages', $this->persistent_slots)){
 					$this->persistent_slots[] = 'hidePages';
 				} else {
 					unset($this->hidePages);
 				}
-				$this->hidePages = $_pages;
+				$this->hidePages = $pages;
 
 				$this->disableHidePages();
 			}
@@ -991,14 +991,14 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			we_base_constants::WE_EDITPAGE_WEBUSER => 'customer',
 		);
 
-		$_hidePagesArr = explode(',', $this->hidePages); //	get pages which shall be disabled
+		$hidePagesArr = explode(',', $this->hidePages); //	get pages which shall be disabled
 
-		if(in_array('all', $_hidePagesArr)){
+		if(in_array('all', $hidePagesArr)){
 			$this->EditPageNrs = array();
 			return;
 		}
 		foreach($this->EditPageNrs as $key => $editPage){
-			if(array_key_exists($editPage, $MNEMONIC_EDITPAGES) && in_array($MNEMONIC_EDITPAGES[$editPage], $_hidePagesArr)){
+			if(array_key_exists($editPage, $MNEMONIC_EDITPAGES) && in_array($MNEMONIC_EDITPAGES[$editPage], $hidePagesArr)){
 				unset($this->EditPageNrs[$key]);
 			}
 		}
@@ -1060,8 +1060,8 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			$this->setElement(we_base_constants::WE_VARIANTS_ELEMENT_NAME, we_serialize($tmp), 'variant');
 			return ($this->hasVariants = !empty($tmp));
 		}
-		$_vars = we_unserialize($tmp);
-		return ($this->hasVariants = (is_array($_vars) && $_vars));
+		$vars = we_unserialize($tmp);
+		return ($this->hasVariants = (is_array($vars) && $vars));
 	}
 
 	function correctVariantFields(){

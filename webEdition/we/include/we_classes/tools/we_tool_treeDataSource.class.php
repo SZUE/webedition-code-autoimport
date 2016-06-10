@@ -28,10 +28,10 @@ class we_tool_treeDataSource{
 
 	function __construct($ds){
 
-		$_dsd = explode(':', $ds);
-		if(isset($_dsd[0]) && isset($_dsd[1])){
-			$this->SourceType = $_dsd[0];
-			$this->SourceName = $_dsd[1];
+		$dsd = explode(':', $ds);
+		if(isset($dsd[0]) && isset($dsd[1])){
+			$this->SourceType = $dsd[0];
+			$this->SourceName = $dsd[1];
 		}
 	}
 
@@ -64,19 +64,19 @@ class we_tool_treeDataSource{
 		$items = array();
 
 		$wsQuery = '';
-		$_aWsQuery = array();
+		$aWsQuery = array();
 		$parentpaths = array();
 
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
-				$_aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . self::getQueryParents($path);
+				$aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . self::getQueryParents($path);
 				while($path != '/' && $path != "\\" && $path){
 					$parentpaths[] = $path;
 					$path = dirname($path);
 				}
 			}
-			$wsQuery = !empty($_aWsQuery) ? '(' . implode(' OR ', $_aWsQuery) . ') AND ' : '';
+			$wsQuery = !empty($aWsQuery) ? '(' . implode(' OR ', $aWsQuery) . ') AND ' : '';
 		}
 
 		$prevoffset = max(0, $offset - $segment);

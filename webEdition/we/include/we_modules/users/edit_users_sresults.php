@@ -27,8 +27,8 @@ we_html_tools::protect($protect);
 
 echo we_html_tools::getHtmlTop(g_l('modules_users', '[search_result]'), $GLOBALS['WE_BACKENDCHARSET']) . STYLESHEET;
 
-$_kwd = we_base_request::_(we_base_request::RAW, "kwd", "");
-$arr = explode(" ", strToLower($_kwd));
+$kwd = we_base_request::_(we_base_request::RAW, "kwd", "");
+$arr = explode(" ", strToLower($kwd));
 $sWhere = "";
 $ranking = "0";
 
@@ -79,28 +79,28 @@ foreach($array_not as $k => $value){
 
 $DB_WE->query('SELECT ID,Text FROM ' . USER_TABLE . ($condition ? ' WHERE ' . $condition . ' ORDER BY Text' : ''));
 
-$_select = '<div style="background-color:white;width:520px;height:220px;"/>';
+$select = '<div style="background-color:white;width:520px;height:220px;"/>';
 if($DB_WE->num_rows()){
-	$_select = '<select name="search_results" size="20" style="width:520px;height:220px;" ondblclick="top.opener.top.we_cmd(\'check_user_display\',document.we_form.search_results.value); top.close();">';
+	$select = '<select name="search_results" size="20" style="width:520px;height:220px;" ondblclick="top.opener.top.we_cmd(\'check_user_display\',document.we_form.search_results.value); top.close();">';
 	while($DB_WE->next_record()){
-		$_select.='<option value="' . $DB_WE->f("ID") . '">' . $DB_WE->f("Text") . '</option>';
+		$select.='<option value="' . $DB_WE->f("ID") . '">' . $DB_WE->f("Text") . '</option>';
 	}
-	$_select.='</select>';
+	$select.='</select>';
 }
 
-$_buttons = we_html_button::position_yes_no_cancel(
+$buttons = we_html_button::position_yes_no_cancel(
 		we_html_button::create_button(we_html_button::EDIT, "javascript:top.opener.top.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 );
 
-$_content = we_html_tools::htmlFormElementTable(
-		we_html_tools::htmlTextInput('kwd', 24, $_kwd, "", "", "text", 485), g_l('modules_users', '[search_for]'), "left", "defaultfont", we_html_button::create_button(we_html_button::SEARCH, "javascript:document.we_form.submit();")
+$content = we_html_tools::htmlFormElementTable(
+		we_html_tools::htmlTextInput('kwd', 24, $kwd, "", "", "text", 485), g_l('modules_users', '[search_for]'), "left", "defaultfont", we_html_button::create_button(we_html_button::SEARCH, "javascript:document.we_form.submit();")
 	) . '<div style="height:20px;"></div>' .
-	we_html_tools::htmlFormElementTable($_select, g_l('modules_users', '[search_result]'));
+	we_html_tools::htmlFormElementTable($select, g_l('modules_users', '[search_result]'));
 ?>
 </head>
 <body class="weEditorBody" style="margin:10px 20px;">
 	<form name="we_form" method="post">
-		<?php echo we_html_tools::htmlDialogLayout($_content, g_l('modules_users', '[search]'), $_buttons); ?>
+		<?php echo we_html_tools::htmlDialogLayout($content, g_l('modules_users', '[search]'), $buttons); ?>
 	</form>
 </body>
 </html>

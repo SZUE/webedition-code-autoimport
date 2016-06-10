@@ -258,18 +258,18 @@ abstract class we_base_util{
 		$base = count($chars);
 
 //	get some information about the numbers:
-		$_rest = $value % $base;
-		$_result = ($value - $_rest) / $base;
+		$rest = $value % $base;
+		$result = ($value - $rest) / $base;
 
 //	1. Deal with the rest
-		$str = $chars[$_rest] . $str;
+		$str = $chars[$rest] . $str;
 
 //	2. Deal with remaining result
-		return ($_result > 0 ? self::number2System($_result, $chars, $str) : $str);
+		return ($result > 0 ? self::number2System($result, $chars, $str) : $str);
 	}
 
 	static function getCurlHttp($server, $path = '', $files = array(), $header = false, $timeout = 0){
-		$_response = array(
+		$response = array(
 			'data' => '', // data if successful
 			'status' => 0, // 0=ok otherwise error
 			'error' => '' // error string
@@ -280,81 +280,81 @@ abstract class we_base_util{
 				'http://');
 
 		$port = (isset($parsedurl['port']) ? ':' . $parsedurl['port'] : '');
-		$_pathA = explode('?', $path);
-		$_url = $protocol . $parsedurl['host'] . $port . $_pathA[0];
-		if(isset($_pathA[1]) && strlen($_url . $_pathA[1]) < 2000){
+		$pathA = explode('?', $path);
+		$url = $protocol . $parsedurl['host'] . $port . $pathA[0];
+		if(isset($pathA[1]) && strlen($url . $pathA[1]) < 2000){
 //it is safe to have uri's lower than 2k chars - so no need to do a post which servers (e.g. twitter) do not accept.
-			$_url.='?' . $_pathA[1];
-			unset($_pathA[1]);
+			$url.='?' . $pathA[1];
+			unset($pathA[1]);
 		}
-		$_params = array();
+		$params = array();
 
-		$_session = curl_init();
-		curl_setopt($_session, CURLOPT_URL, $_url);
-		curl_setopt($_session, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($_session, CURLOPT_FOLLOWLOCATION, true);
-		curl_setopt($_session, CURLOPT_MAXREDIRS, 5);
+		$session = curl_init();
+		curl_setopt($session, CURLOPT_URL, $url);
+		curl_setopt($session, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($session, CURLOPT_FOLLOWLOCATION, true);
+		curl_setopt($session, CURLOPT_MAXREDIRS, 5);
 
 		if($timeout){
-			curl_setopt($_session, CURLOPT_CONNECTTIMEOUT, $timeout);
+			curl_setopt($session, CURLOPT_CONNECTTIMEOUT, $timeout);
 		}
 
 		/* 	if($username != ''){
-		  curl_setopt($_session, CURLOPT_USERPWD, $username . ':' . $password);
+		  curl_setopt($session, CURLOPT_USERPWD, $username . ':' . $password);
 		  } */
 
-		if(!empty($_pathA[1])){
-			$_url_param = explode('&', $_pathA[1]);
-			foreach($_url_param as $cur){
-				$_param_split = explode('=', $cur);
-				$_params[$_param_split[0]] = isset($_param_split[1]) ? $_param_split[1] : '';
+		if(!empty($pathA[1])){
+			$url_param = explode('&', $pathA[1]);
+			foreach($url_param as $cur){
+				$param_split = explode('=', $cur);
+				$params[$param_split[0]] = isset($param_split[1]) ? $param_split[1] : '';
 			}
 		}
 
 		if($files){
 			foreach($files as $k => $v){
-				$_params[$k] = '@' . $v;
+				$params[$k] = '@' . $v;
 			}
 		}
 
-		if($_params){
-			curl_setopt($_session, CURLOPT_POST, 1);
-			curl_setopt($_session, CURLOPT_POSTFIELDS, $_params);
+		if($params){
+			curl_setopt($session, CURLOPT_POST, 1);
+			curl_setopt($session, CURLOPT_POSTFIELDS, $params);
 		}
 
 		if($header){
-			curl_setopt($_session, CURLOPT_HEADER, 1);
+			curl_setopt($session, CURLOPT_HEADER, 1);
 		}
 
 		if(defined('WE_PROXYHOST') && WE_PROXYHOST != ''){
 
-			$_proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : '';
-			$_proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : '80';
-			$_proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : '';
-			$_proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : '';
+			$proxyhost = defined('WE_PROXYHOST') ? WE_PROXYHOST : '';
+			$proxyport = (defined('WE_PROXYPORT') && WE_PROXYPORT) ? WE_PROXYPORT : '80';
+			$proxy_user = defined('WE_PROXYUSER') ? WE_PROXYUSER : '';
+			$proxy_pass = defined('WE_PROXYPASSWORD') ? WE_PROXYPASSWORD : '';
 
-			if($_proxyhost != ''){
-				curl_setopt($_session, CURLOPT_PROXY, $_proxyhost . ':' . $_proxyport);
-				if($_proxy_user != ''){
-					curl_setopt($_session, CURLOPT_PROXYUSERPWD, $_proxy_user . ':' . $_proxy_pass);
+			if($proxyhost != ''){
+				curl_setopt($session, CURLOPT_PROXY, $proxyhost . ':' . $proxyport);
+				if($proxy_user != ''){
+					curl_setopt($session, CURLOPT_PROXYUSERPWD, $proxy_user . ':' . $proxy_pass);
 				}
-				curl_setopt($_session, CURLOPT_SSL_VERIFYPEER, FALSE);
+				curl_setopt($session, CURLOPT_SSL_VERIFYPEER, FALSE);
 			}
 		}
 
-		$_data = curl_exec($_session);
+		$data = curl_exec($session);
 
-		if(curl_errno($_session)){
-			$_response['status'] = 1;
-			$_response['error'] = curl_error($_session);
+		if(curl_errno($session)){
+			$response['status'] = 1;
+			$response['error'] = curl_error($session);
 			return false;
 		}
-		$_response['status'] = 0;
-		$_response['data'] = $_data;
-		curl_close($_session);
+		$response['status'] = 0;
+		$response['data'] = $data;
+		curl_close($session);
 
 
-		return $_response;
+		return $response;
 	}
 
 	function convertDateInRequest(array &$req, $asInt = false){

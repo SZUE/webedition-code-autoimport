@@ -36,13 +36,13 @@ if(!$weTag){
 
 // needed javascript for the individual tags
 // #1 - all attributes of this we:tag (ids of attributes)
-$_attributes = $weTag->getAllAttributes(true);
+$attributes = $weTag->getAllAttributes(true);
 
 // #2 all required attributes
-$_reqAttributes = $weTag->getRequiredAttributes();
+$reqAttributes = $weTag->getRequiredAttributes();
 $jsReqAttributes = array();
-foreach($_reqAttributes as $_attribName){
-	$jsReqAttributes[] = '"' . $_attribName . '": 1';
+foreach($reqAttributes as $attribName){
+	$jsReqAttributes[] = '"' . $attribName . '": 1';
 }
 
 // #3 all neccessary stuff for typeAttribute
@@ -52,27 +52,27 @@ if(($typeAttribute = $weTag->getTypeAttribute())){
 	$typeAttributeJs = 'var typeAttributeId = "' . $typeAttribute->getIdName() . '";';
 
 	// allowed attributes
-	$_typeOptions = $weTag->getTypeAttributeOptions();
+	$typeOptions = $weTag->getTypeAttributeOptions();
 
-	if($_typeOptions){
+	if($typeOptions){
 		$typeAttributeJs .= '
 var typeAttributeAllows = {};
 var typeAttributeRequires = {};';
 
-		foreach($_typeOptions as $option){
-			$_allowedAttribs = $option->getAllowedAttributes();
-			if(empty($_allowedAttribs)){
+		foreach($typeOptions as $option){
+			$allowedAttribs = $option->getAllowedAttributes();
+			if(empty($allowedAttribs)){
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = [];';
 			} else {
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = ["' .
-						implode('","', $_allowedAttribs) .
+						implode('","', $allowedAttribs) .
 						'"];';
 			}
 
-			$_reqAttribs = $option->getRequiredAttributes($_attributes);
-			if($_reqAttribs){
+			$reqAttribs = $option->getRequiredAttributes($attributes);
+			if($reqAttribs){
 				$typeAttributeJs .= 'typeAttributeRequires["' . $option->getName() . '"] = ["' .
-						implode('","', $_reqAttribs) .
+						implode('","', $reqAttribs) .
 						'"];';
 			} else {
 				$typeAttributeJs .= 'typeAttributeRequires["' . $option->getName() . '"] = [];';
@@ -94,7 +94,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 		we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
 		we_html_element::jsElement('
 weTagWizard = new weTagWizard("' . $weTag->getName() . '");
-weTagWizard.allAttributes = [' . ($_attributes ? '"' . implode('", "', $_attributes) . '"' : '') . '];
+weTagWizard.allAttributes = [' . ($attributes ? '"' . implode('", "', $attributes) . '"' : '') . '];
 weTagWizard.reqAttributes = {' . implode(',', $jsReqAttributes) . '};
 weTagWizard.needsEndTag = ' . ($weTag->needsEndTag() ? 'true' : 'false') . ';
 
@@ -193,7 +193,7 @@ function we_cmd(){
 				'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
 				$defaultValueCode;
 
-		$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:we_cmd('saveTag');"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:we_cmd('saveTag');"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 		);
 		?>
 		<div id="divTagName">
@@ -205,7 +205,7 @@ function we_cmd(){
 		</div>
 		<div id="divButtons">
 			<div style="padding-top: 8px;">
-<?php echo $_buttons; ?>
+<?php echo $buttons; ?>
 			</div>
 		</div>
 		<input type="submit" style="width:1px; height:1px; padding:0px; margin:0px; color:#fff; background-color:#fff; border:0px;" />

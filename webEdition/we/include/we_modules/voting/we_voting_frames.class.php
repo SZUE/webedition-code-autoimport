@@ -141,7 +141,7 @@ function setTab(tab) {
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top . content . setHot(); #####placeHolder#####'));
 		$del_but1 = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();if(answers_edit.itemCount>answers_edit.minCount) #####placeHolder#####; else callAnswerLimit();'));
 
-		$_Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener.top.content.mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
+		$Imagecmd = addslashes("we_cmd('we_selector_document',document.we_form.elements['" . $prefix . "UrlID'].value,'" . FILE_TABLE . "','document.we_form.elements[\\'" . $prefix . "UrlID\\'].value','document.we_form.elements[\\'" . $prefix . "UrlIDPath\\'].value','opener.top.content.mark()','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," .
 			(permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') ? 0 : 1) . ')');
 
 		$sel_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();'));
@@ -306,11 +306,11 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			$lineend->addOption('unix', g_l('export', '[unix]'));
 			$lineend->addOption('mac', g_l('export', '[mac]'));
 
-			$_charsetHandler = new we_base_charsetHandler();
-			$_charsets = $_charsetHandler->getCharsetsForTagWizzard();
-			$_importCharset = we_html_tools::htmlTextInput('the_charset', 8, '', 255, "", "text", 200);
-			$_importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $_charsets, 1, '', false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 325, "defaultfont", false);
-			$import_Charset = '<table class="default"><tr><td>' . $_importCharset . '</td><td>' . $_importCharsetChooser . '</td></tr></table>';
+			$charsetHandler = new we_base_charsetHandler();
+			$charsets = $charsetHandler->getCharsetsForTagWizzard();
+			$importCharset = we_html_tools::htmlTextInput('the_charset', 8, '', 255, "", "text", 200);
+			$importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $charsets, 1, '', false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 325, "defaultfont", false);
+			$import_Charset = '<table class="default"><tr><td>' . $importCharset . '</td><td>' . $importCharsetChooser . '</td></tr></table>';
 
 
 

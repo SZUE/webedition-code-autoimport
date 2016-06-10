@@ -78,11 +78,11 @@ class we_listview_langlink extends we_listview_base{
 		$this->ownlanguage = $ownlanguage;
 		$this->linkType = $linkType;
 
-		$_languages = getWeFrontendLanguagesForBackend();
+		$languages = getWeFrontendLanguagesForBackend();
 
 		// if !$showself: remove the pagelanguage (choosen by using attribute pagelanguage) from the languages-list, so the link to this language won't be found in DB
-		if(isset($_languages[$this->pagelanguage]) && !$showself){
-			unset($_languages[$this->pagelanguage]);
+		if(isset($languages[$this->pagelanguage]) && !$showself){
+			unset($languages[$this->pagelanguage]);
 		}
 
 		if(stripos($this->order, ' desc') !== false){//was #3849
@@ -94,9 +94,9 @@ class we_listview_langlink extends we_listview_base{
 
 		if($this->order === 'Locale'){
 			if($this->desc){
-				krsort($_languages);
+				krsort($languages);
 			} else {
-				ksort($_languages);
+				ksort($languages);
 			}
 		}
 
@@ -107,7 +107,7 @@ class we_listview_langlink extends we_listview_base{
 			return;
 		}
 
-		$langs = array_keys($_languages);
+		$langs = array_keys($languages);
 
 		if($this->linkType === 'tblFile'){
 			$this->dirsearchtable = FILE_TABLE;

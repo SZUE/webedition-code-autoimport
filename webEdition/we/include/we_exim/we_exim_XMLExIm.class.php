@@ -211,8 +211,8 @@ class we_exim_XMLExIm{
 	//FIXME given parameter is not used in the call stack!
 	function prepareExport(array $ids = array()){
 		$this->RefTable = new we_exim_refTable();
-		$_preparer = new we_export_preparer($this->options, $this->RefTable);
-		$_preparer->prepareExport($ids);
+		$preparer = new we_export_preparer($this->options, $this->RefTable);
+		$preparer->prepareExport($ids);
 	}
 
 	static function getHeader($encoding = '', $type = '', $skipWE = false){

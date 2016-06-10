@@ -296,17 +296,17 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 		$quality = ($quality > 10 ? 10 : max($quality, 0)) * 10;
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
-		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, array($ratio ? we_thumbnail::OPTION_RATIO : 0));
-		if(!$_resized_image[0]){
+		$resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, array($ratio ? we_thumbnail::OPTION_RATIO : 0));
+		if(!$resized_image[0]){
 			return false;
 		}
 		$this->setElement('data', $dataPath);
 
-		$this->setElement('width', $_resized_image[1], 'attrib');
-		$this->setElement('origwidth', $_resized_image[1], 'attrib');
+		$this->setElement('width', $resized_image[1], 'attrib');
+		$this->setElement('origwidth', $resized_image[1], 'attrib');
 
-		$this->setElement('height', $_resized_image[2], 'attrib');
-		$this->setElement('origheight', $_resized_image[2], 'attrib');
+		$this->setElement('height', $resized_image[2], 'attrib');
+		$this->setElement('origheight', $resized_image[2], 'attrib');
 
 		$this->DocChanged = true;
 		return true;
@@ -328,18 +328,18 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$quality = max(min($quality, 10), 0) * 10;
 
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
-		$_resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, array(we_thumbnail::OPTION_INTERLACE), array(0, 0), $rotation);
+		$resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, array(we_thumbnail::OPTION_INTERLACE), array(0, 0), $rotation);
 
-		if(!$_resized_image[0]){
+		if(!$resized_image[0]){
 			return false;
 		}
 		$this->setElement('data', $dataPath);
 
-		$this->setElement('width', $_resized_image[1], 'attrib');
-		$this->setElement('origwidth', $_resized_image[1], 'attrib');
+		$this->setElement('width', $resized_image[1], 'attrib');
+		$this->setElement('origwidth', $resized_image[1], 'attrib');
 
-		$this->setElement('height', $_resized_image[2], 'attrib');
-		$this->setElement('origheight', $_resized_image[2], 'attrib');
+		$this->setElement('height', $resized_image[2], 'attrib');
+		$this->setElement('origheight', $resized_image[2], 'attrib');
 
 		$this->DocChanged = true;
 		return true;
@@ -355,7 +355,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	 * @param string $inc_href
 	 */
 	function getHtml($dyn = false, $inc_href = true, $pathOnly = false){
-		$_data = $this->getElement('data');
+		$data = $this->getElement('data');
 		//if path only - we need to get a possible thumbnail if selected
 		$only = ($this->getElement('pathonly') ? 'src' : ($pathOnly ? 'path' : $this->getElement('only')));
 		$thumbname = $this->getElement('thumbnail');
@@ -369,7 +369,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 				}
 		}
 
-		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
+		if($this->ID || ($data && !is_dir($data) && is_readable($data))){
 			$img_path = $this->Path;
 
 			// we need to create a thumbnail - check if image exists
@@ -608,33 +608,33 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	 */
 	function formProperties(){
 		// Create table
-		$_content = new we_html_table(array('class' => 'default propertydualtable'), 5, 3);
+		$content = new we_html_table(array('class' => 'default propertydualtable'), 5, 3);
 		$row = 0;
 		// Row 1
-		$_content->setCol($row, 0, null, $this->formInputInfo2(148, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
-		$_content->setCol($row, 1, null, $this->formInputInfo2(148, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
-		$_content->setCol($row++, 2, null, $this->formInput2(148, 'border', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$content->setCol($row, 0, null, $this->formInputInfo2(148, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
+		$content->setCol($row, 1, null, $this->formInputInfo2(148, 'height', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight"));
+		$content->setCol($row++, 2, null, $this->formInput2(148, 'border', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 
 		// Row 2
-		$_content->setCol($row, 0, null, $this->formInput2(148, 'align', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol($row, 1, null, $this->formInput2(148, 'hspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol($row++, 2, null, $this->formInput2(148, 'vspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$content->setCol($row, 0, null, $this->formInput2(148, 'align', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$content->setCol($row, 1, null, $this->formInput2(148, 'hspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$content->setCol($row++, 2, null, $this->formInput2(148, 'vspace', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 
 		// Row 3
-		$_content->setCol($row, 0, array('colspan' => 2), $this->formInput2(332, 'alt', 23, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
-		$_content->setCol($row++, 2, null, $this->formInput2(148, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$content->setCol($row, 0, array('colspan' => 2), $this->formInput2(332, 'alt', 23, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$content->setCol($row++, 2, null, $this->formInput2(148, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 
 		//	Row 4
-		$_content->setCol($row, 0, array('colspan' => 2), $this->formInput2(332, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
+		$content->setCol($row, 0, array('colspan' => 2), $this->formInput2(332, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
 
-		$_titleField = 'we_' . $this->Name . '_attrib[title]';
-		//$_metaTitleField = 'we_' . $this->Name . '_txt[Title]';
+		$titleField = 'we_' . $this->Name . '_attrib[title]';
+		//$metaTitleField = 'we_' . $this->Name . '_txt[Title]';
 		$useMetaTitle = 'we_' . $this->Name . '_attrib[useMetaTitle]';
-		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$_titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$_titleField'].value='' added to fix bug #5814
-		$_content->setCol($row++, 2, array('style' => 'vertical-align:bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $_titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $_titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $_titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $_titleField . "'].value='';}_EditorFrame.setEditorIsHot(true);"));
+		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$titleField'].value='' added to fix bug #5814
+		$content->setCol($row++, 2, array('style' => 'vertical-align:bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $titleField . "'].value='';}_EditorFrame.setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path
@@ -657,10 +657,10 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $longdesc_text_name . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
 		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $longdesc_id_name . "'].value='-1';document.we_form.elements['" . $longdesc_text_name . "'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
-		$_content->setCol($row, 0, array('style' => 'vertical-align:bottom', 'colspan' => 5), $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs());
+		$content->setCol($row, 0, array('style' => 'vertical-align:bottom', 'colspan' => 5), $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs());
 
 		// Return HTML
-		return $_content->getHtml();
+		return $content->getHtml();
 	}
 
 	/**
@@ -736,45 +736,46 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			return;
 		}
 
-		$_fields = array();
+		$fields = array();
 
 		// first we fetch all defined metadata fields from tblMetadata:
 		$GLOBALS['DB_WE']->query('SELECT tag,type,importFrom FROM ' . METADATA_TABLE);
 		while($GLOBALS['DB_WE']->next_record()){
-			list($_fieldName, $_fieldType, $_importFrom) = $GLOBALS['DB_WE']->getRecord();
-			$_fieldType = $_fieldType ? : 'textfield';
+			list($fieldName, $fieldType, $importFrom) = $GLOBALS['DB_WE']->getRecord();
+			$fieldType = $fieldType ? : 'textfield';
 
-			$_parts = explode(',', $_importFrom);
-			foreach($_parts as $_part){
-				$_part = trim($_part);
-				$_fieldParts = explode('/', $_part);
-				if(count($_fieldParts) > 1){
-					$_tagType = strtolower(trim($_fieldParts[0]));
-					$_tagName = trim($_fieldParts[1]);
-					if(!(isset($_fields[$_fieldName]) && is_array($_fields[$_fieldName]))){
-						$_fields[$_fieldName] = array();
+			$parts = explode(',', $importFrom);
+			foreach($parts as $part){
+				$part = trim($part);
+				$fieldParts = explode('/', $part);
+				if(count($fieldParts) > 1){
+					$tagType = strtolower(trim($fieldParts[0]));
+					$tagName = trim($fieldParts[1]);
+					if(!(isset($fields[$fieldName]) && is_array($fields[$fieldName]))){
+						$fields[$fieldName] = array();
 					}
-					$_fields[$_fieldName][] = array($_tagType, $_tagName, $_fieldType);
+					$fields[$fieldName][] = array($tagType, $tagName, $fieldType);
 				}
 			}
 		}
 
-		$_typeMap = array('textfield' => 'txt', 'wysiwyg' => 'txt', 'textarea' => 'txt', 'date' => 'date');
+		$typeMap = array('textfield' => 'txt', 'wysiwyg' => 'txt', 'textarea' => 'txt', 'date' => 'date');
+		$regs = array();
 
-		foreach($_fields as $fieldName => $_arr){
-			$_fieldVal = $this->getElement($fieldName);
+		foreach($fields as $fieldName => $arr){
+			$fieldVal = $this->getElement($fieldName);
 
-			if((is_null($fieldsToImport) || in_array($fieldName, array_keys($fieldsToImport))) && ($importOnlyEmptyFields == false || $_fieldVal === '')){
-				foreach($_arr as $_impFr){
-					if(isset($this->metaData[$_impFr[0]][$_impFr[1]]) && !empty($this->metaData[$_impFr[0]][$_impFr[1]])){
-						$_val = $this->metaData[$_impFr[0]][$_impFr[1]];
-						if($_impFr[2] === 'date'){
+			if((is_null($fieldsToImport) || in_array($fieldName, array_keys($fieldsToImport))) && ($importOnlyEmptyFields == false || $fieldVal === '')){
+				foreach($arr as $impFr){
+					if(isset($this->metaData[$impFr[0]][$impFr[1]]) && !empty($this->metaData[$impFr[0]][$impFr[1]])){
+						$val = $this->metaData[$impFr[0]][$impFr[1]];
+						if($impFr[2] === 'date'){
 							// here we need to parse the date
-							if(preg_match('|^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$|', $_val, $regs)){
-								$_val = sprintf('%016d', mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]));
+							if(preg_match('|^(\d{4}):(\d{2}):(\d{2}) (\d{2}):(\d{2}):(\d{2})$|', $val, $regs)){
+								$val = sprintf('%016d', mktime($regs[4], $regs[5], $regs[6], $regs[2], $regs[3], $regs[1]));
 							}
 						}
-						$this->setElement($fieldName, trim($_val), $_typeMap[$_impFr[2]]);
+						$this->setElement($fieldName, trim($val), $typeMap[$impFr[2]]);
 						break;
 					}
 				}
@@ -824,22 +825,22 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 
 		// Create table
-		$_content = new we_html_table(array('class' => 'default'), (defined('OBJECT_TABLE') ? 11 : 9), 2);
+		$content = new we_html_table(array('class' => 'default'), (defined('OBJECT_TABLE') ? 11 : 9), 2);
 		$row = 0;
 		// No link
-		$_content->setCol($row, 0, array('style' => 'vertical-align:top;padding-bottom:10px;'), we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
-		$_content->setCol($row++, 1, null, '');
+		$content->setCol($row, 0, array('style' => 'vertical-align:top;padding-bottom:10px;'), we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$content->setCol($row++, 1, null, '');
 
 		// External link
-		$_ext_link_table = new we_html_table(array('class' => 'default'), 1, 2);
+		$ext_link_table = new we_html_table(array('class' => 'default'), 1, 2);
 
-		$_ext_link_table->setCol(0, 0, null, we_html_tools::htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
-		$_ext_link_table->setCol(0, 1, null, $butExt);
+		$ext_link_table->setCol(0, 0, null, we_html_tools::htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
+		$ext_link_table->setCol(0, 1, null, $butExt);
 
-		$_ext_link = "href" . we_html_element::htmlBr() . $_ext_link_table->getHtml();
+		$ext_link = "href" . we_html_element::htmlBr() . $ext_link_table->getHtml();
 
-		$_content->setCol($row, 0, array('style' => 'vertical-align:top;padding-bottom:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
-		$_content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $_ext_link);
+		$content->setCol($row, 0, array('style' => 'vertical-align:top;padding-bottom:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
+		$content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $ext_link);
 
 
 		// Internal link
@@ -854,10 +855,10 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setWidth(280);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setLabel('href');
-		$_int_link = $yuiSuggest->getHTML();
+		$int_link = $yuiSuggest->getHTML();
 
-		$_content->setCol($row, 0, array('style' => 'vertical-align:top'), we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
-		$_content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $_int_link);
+		$content->setCol($row, 0, array('style' => 'vertical-align:top'), we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $int_link);
 
 		// Object link
 		if(defined('OBJECT_TABLE')){
@@ -872,15 +873,15 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			$yuiSuggest->setWidth(280);
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setLabel('href');
-			$_obj_link = $yuiSuggest->getHTML();
+			$obj_link = $yuiSuggest->getHTML();
 
 
-			$_content->setCol($row, 0, array('style' => 'vertical-align:top;padding-top:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
-			$_content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $_obj_link);
+			$content->setCol($row, 0, array('style' => 'vertical-align:top;padding-top:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+			$content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $obj_link);
 		}
 
 		// Target
-		$_content->setCol($row++, 0, array('colspan' => 2, 'class' => 'defaultfont', 'style' => 'vertical-align:top;padding:20px 0px;'), g_l('weClass', '[target]') . we_html_element::htmlBr() . we_html_tools::targetBox('we_' . $this->Name . '_txt[LinkTarget]', 33, 0, '', $this->getElement('LinkTarget'), '_EditorFrame.setEditorIsHot(true);', 20, 97));
+		$content->setCol($row++, 0, array('colspan' => 2, 'class' => 'defaultfont', 'style' => 'vertical-align:top;padding:20px 0px;'), g_l('weClass', '[target]') . we_html_element::htmlBr() . we_html_tools::targetBox('we_' . $this->Name . '_txt[LinkTarget]', 33, 0, '', $this->getElement('LinkTarget'), '_EditorFrame.setEditorIsHot(true);', 20, 97));
 
 
 		// Rollover image
@@ -895,17 +896,17 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setWidth(280);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setLabel('href');
-		$_rollover = $yuiSuggest->getHTML();
+		$rollover = $yuiSuggest->getHTML();
 
-		$_content->setCol($row, 0, array('style' => 'vertical-align:top'), we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['" . $RollOverFlagName . "'].value = (this.checked ? 1 : 0); ") . we_html_element::htmlHidden($RollOverFlagName, $RollOverFlag));
-		$_content->setCol($row, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $_rollover);
+		$content->setCol($row, 0, array('style' => 'vertical-align:top'), we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['" . $RollOverFlagName . "'].value = (this.checked ? 1 : 0); ") . we_html_element::htmlHidden($RollOverFlagName, $RollOverFlag));
+		$content->setCol($row, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $rollover);
 
-		return $_content->getHtml();
+		return $content->getHtml();
 	}
 
 	function hasMetaField($name){
-		$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
-		foreach($_defined_fields as $field){
+		$defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
+		foreach($defined_fields as $field){
 			if($field['tag'] === $name){
 				return true;
 			}
@@ -924,17 +925,17 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 
 		foreach($_FILES['we_ui_' . $formname]['name'] as $imgName => $filename){
-			$_imgDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_IMG_DATA_ID_' . $imgName);
+			$imgDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_IMG_DATA_ID_' . $imgName);
 
-			if($_imgDataId === false || !isset($_SESSION[$_imgDataId])){
+			if($imgDataId === false || !isset($_SESSION[$imgDataId])){
 				continue;
 			}
 
-			$_SESSION[$_imgDataId]['doDelete'] = false;
+			$_SESSION[$imgDataId]['doDelete'] = false;
 
 			if(we_base_request::_(we_base_request::BOOL, 'WE_UI_DEL_CHECKBOX_' . $imgName)){
-				$_SESSION[$_imgDataId]['doDelete'] = true;
-				$_SESSION[$_imgDataId]['id'] = $_SESSION[$_imgDataId]['id'] ? : (intval($GLOBALS[$key][$formname]->getElement($imgName)) ? : 0);
+				$_SESSION[$imgDataId]['doDelete'] = true;
+				$_SESSION[$imgDataId]['id'] = $_SESSION[$imgDataId]['id'] ? : (intval($GLOBALS[$key][$formname]->getElement($imgName)) ? : 0);
 			} elseif($filename){
 				// file is selected, check to see if it is an image
 				$ct = getContentTypeFromFile($filename);
@@ -942,13 +943,13 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
 
 					// move document from upload location to tmp dir
-					$_SESSION[$_imgDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
-					move_uploaded_file($_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$_imgDataId]['serverPath']);
+					$_SESSION[$imgDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
+					move_uploaded_file($_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$imgDataId]['serverPath']);
 
-					$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
+					$we_size = we_thumbnail::getimagesize($_SESSION[$imgDataId]['serverPath']);
 
 					if(empty($we_size)){
-						unset($_SESSION[$_imgDataId]);
+						unset($_SESSION[$imgDataId]);
 						return;
 					}
 
@@ -956,32 +957,32 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 						preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
 
 					if($imgId){
-						$_SESSION[$_imgDataId]['id'] = $imgId;
+						$_SESSION[$imgDataId]['id'] = $imgId;
 					}
 
-					$_SESSION[$_imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
-					$_SESSION[$_imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
-					$_SESSION[$_imgDataId]['text'] = $_SESSION[$_imgDataId]['fileName'] . $_SESSION[$_imgDataId]['extension'];
+					$_SESSION[$imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
+					$_SESSION[$imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
+					$_SESSION[$imgDataId]['text'] = $_SESSION[$imgDataId]['fileName'] . $_SESSION[$imgDataId]['extension'];
 
 					//image needs to be scaled
-					if(!empty($_SESSION[$_imgDataId]['width']) ||
-						!empty($_SESSION[$_imgDataId]['height'])){
-						$imageData = we_base_file::load($_SESSION[$_imgDataId]['serverPath']);
+					if(!empty($_SESSION[$imgDataId]['width']) ||
+						!empty($_SESSION[$imgDataId]['height'])){
+						$imageData = we_base_file::load($_SESSION[$imgDataId]['serverPath']);
 						$thumb = new we_thumbnail();
-						$thumb->init('dummy', $_SESSION[$_imgDataId]['width'], $_SESSION[$_imgDataId]['height'], array($_SESSION[$_imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION[$_imgDataId]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_SESSION[$_imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$_imgDataId]['quality']);
+						$thumb->init('dummy', $_SESSION[$imgDataId]['width'], $_SESSION[$imgDataId]['height'], array($_SESSION[$imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION[$imgDataId]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_SESSION[$imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$imgDataId]['quality']);
 
 						$imgData = '';
 						$thumb->getThumb($imgData);
 
-						we_base_file::save($_SESSION[$_imgDataId]['serverPath'], $imageData);
+						we_base_file::save($_SESSION[$imgDataId]['serverPath'], $imageData);
 
-						$we_size = we_thumbnail::getimagesize($_SESSION[$_imgDataId]['serverPath']);
+						$we_size = we_thumbnail::getimagesize($_SESSION[$imgDataId]['serverPath']);
 					}
 
-					$_SESSION[$_imgDataId]['imgwidth'] = $we_size[0];
-					$_SESSION[$_imgDataId]['imgheight'] = $we_size[1];
-					$_SESSION[$_imgDataId]['type'] = $_FILES['we_ui_' . $formname]['type'][$imgName];
-					$_SESSION[$_imgDataId]['size'] = $_FILES['we_ui_' . $formname]['size'][$imgName];
+					$_SESSION[$imgDataId]['imgwidth'] = $we_size[0];
+					$_SESSION[$imgDataId]['imgheight'] = $we_size[1];
+					$_SESSION[$imgDataId]['type'] = $_FILES['we_ui_' . $formname]['type'][$imgName];
+					$_SESSION[$imgDataId]['size'] = $_FILES['we_ui_' . $formname]['size'][$imgName];
 				}
 			}
 		}

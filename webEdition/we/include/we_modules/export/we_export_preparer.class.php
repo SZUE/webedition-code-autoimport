@@ -39,8 +39,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 
 		foreach($this->PatternSearch->doc_patterns["id"] as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
-				foreach($match[2] as $_i => $include){
-					if(stripos($match[0][$_i], 'type="template"') === false){
+				foreach($match[2] as $i => $include){
+					if(stripos($match[0][$i], 'type="template"') === false){
 						$this->addToDepArray($level, $include);
 					}
 				}
@@ -104,14 +104,14 @@ class we_export_preparer extends we_exim_XMLExIm{
 				if(!is_numeric($value)){
 					continue;
 				}
-				$_path = ($value ?
+				$path = ($value ?
 						f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), '', $this->db) :
 						'');
 
 				$this->addToDepArray($level, $value, 'weNavigation', NAVIGATION_TABLE);
 				$navrules[] = $value;
 
-				$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $this->db->escape($_path) . '/%"');
+				$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '/%"');
 				while($this->db->next_record()){
 					$this->addToDepArray($level, $this->db->f('ID'), 'weNavigation', NAVIGATION_TABLE);
 					$navrules[] = $this->db->f('ID');
@@ -151,17 +151,17 @@ class we_export_preparer extends we_exim_XMLExIm{
 		$match = array();
 
 		if(is_array($text)){ // shop exception - handle array in the content
-			foreach($text as $_item1){
-				if(!is_array($_item1)){
+			foreach($text as $item1){
+				if(!is_array($item1)){
 					continue;
 				}
-				foreach($_item1 as $_item2){
-					if(!is_array($_item2)){
+				foreach($item1 as $item2){
+					if(!is_array($item2)){
 						continue;
 					}
-					foreach($_item2 as $_item3){
-						if(is_array($_item3) && in_array('bdid', array_keys($_item3)) && !empty($_item3['bdid'])){
-							$this->addToDepArray($level, $_item3['bdid']);
+					foreach($item2 as $item3){
+						if(is_array($item3) && in_array('bdid', array_keys($item3)) && !empty($item3['bdid'])){
+							$this->addToDepArray($level, $item3['bdid']);
 						}
 					}
 				}
@@ -284,27 +284,27 @@ class we_export_preparer extends we_exim_XMLExIm{
 			if($this->options["handle_def_templates"] && $object->MasterTemplateID){
 				$this->addToDepArray($level, $object->MasterTemplateID, we_base_ContentTypes::TEMPLATE, TEMPLATES_TABLE);
 			}
-			$_data = $object->getElement("data");
+			$data = $object->getElement("data");
 			if($this->options["handle_document_includes"]){
-				$this->getDocumentIncludes($_data, $level);
+				$this->getDocumentIncludes($data, $level);
 			}
 			if($this->options["handle_object_includes"] && defined('OBJECT_FILES_TABLE')){
-				$this->getObjectIncludes($_data, $level);
+				$this->getObjectIncludes($data, $level);
 			}
 			if($this->options["handle_document_linked"]){
-				$this->getExternalLinked($_data, $level);
+				$this->getExternalLinked($data, $level);
 			}
 			if($this->options['handle_navigation']){
-				$this->getNavigation($_data, $level);
+				$this->getNavigation($data, $level);
 			}
 			if($this->options['handle_thumbnails']){
-				$this->getThumbnail($_data, $level);
+				$this->getThumbnail($data, $level);
 			}
 
 			$match = array();
 			if($this->options['handle_def_templates']){
-				foreach($this->PatternSearch->tmpl_patterns as $_include_pattern){
-					if(preg_match_all($_include_pattern, $_data, $match)){
+				foreach($this->PatternSearch->tmpl_patterns as $include_pattern){
+					if(preg_match_all($include_pattern, $data, $match)){
 						foreach($match[2] as $key => $value){
 							$this->addToDepArray($level, $value, we_base_ContentTypes::TEMPLATE, TEMPLATES_TABLE);
 						}
@@ -356,7 +356,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	private function makeExportList(){
 		$searchCT = array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::TEMPLATE, 'doctype', 'category', we_base_ContentTypes::OBJECT, we_base_ContentTypes::OBJECT_FILE, we_base_ContentTypes::IMAGE);
 
-		$_step = 0;
+		$step = 0;
 		while(($id = $this->RefTable->getNext())){
 			$search = in_array($id->ContentType, $searchCT);
 			if($search || $this->options['handle_owners']){
@@ -387,8 +387,8 @@ class we_export_preparer extends we_exim_XMLExIm{
 				}
 			}
 
-			$_step++;
-			if(10 < $_step){ //FIXME: removed BACKUP_STEPS, should be handled equal to backup
+			$step++;
+			if(10 < $step){ //FIXME: removed BACKUP_STEPS, should be handled equal to backup
 				break;
 			}
 		}
