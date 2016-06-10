@@ -551,7 +551,7 @@ abstract class we_base_imageEdit{
 					break;
 				case 'png':
 					imagealphablending($output_gdimg, false);
-					//$transparent = imagecolorallocatealpha($_output_gdimg, 0, 0, 0, 127);
+					//$transparent = imagecolorallocatealpha($output_gdimg, 0, 0, 0, 127);
 					$transparent = imagecolorallocatealpha($output_gdimg, 255, 255, 255, 127);
 					imagefill($output_gdimg, 0, 0, $transparent);
 					imagesavealpha($output_gdimg, true);
