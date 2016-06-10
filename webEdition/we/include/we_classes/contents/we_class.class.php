@@ -363,12 +363,13 @@ abstract class we_class{
 			if(in_array($fieldName, $feldArr)){
 				$val = isset($this->$fieldName) ? $this->$fieldName : '';
 
-				if($fieldName != 'ID'){
+				if($fieldName === 'ID'){
+					if(!$this->wasUpdate && $this->insertID){//for Apps to be able to manipulate Insert-ID
+						$fields['ID'] = $this->insertID;
+						$this->insertID = 0;
+					}
+				} else {
 					$fields[$fieldName] = $val;
-				}
-				if(!$this->wasUpdate && $this->insertID && $fieldName === 'ID'){//for Apps to be able to manipulate Insert-ID
-					$fields['ID'] = $this->insertID;
-					$this->insertID = 0;
 				}
 			}
 		}

@@ -507,13 +507,6 @@ WE().consts.weSearch= {
 		return '<div id="mouseOverDivs_' . $whichSearch . '"></div><table class="default">
 <tbody>
 <tr>
- <td></td>
- <td></td>
- <td></td>
- <td></td>
- <td></td>
-</tr>
-<tr>
  <td style="padding-right:20px;">' . $searchInput . ($whichSearch == self::SEARCH_MEDIA ? ' ' . we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_HELP, false) : '') . '</td>
  <td>' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
  <td>' . we_html_element::htmlHiddens(array(

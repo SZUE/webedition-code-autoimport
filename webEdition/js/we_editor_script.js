@@ -406,7 +406,7 @@ function fields_are_valid() {
 }
 
 function we_checkObjFieldname(i) {
-	if (i.value.search(/^([a-zA-Z0-9_+-])*$/)) {
+	if (i.value.search(/^([a-zA-Z0-9_+-])*$/) || i.value === "0") {
 		top.we_showMessage(WE().consts.g_l.editorScript.fieldNameNotValid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		i.focus();
 		i.select();

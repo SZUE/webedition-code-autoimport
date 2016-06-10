@@ -139,3 +139,168 @@ table.importer_files{
 		vertical-align: middle;
 	}
 }
+
+
+#editImage{
+	display: none;
+	padding: 4px 0 6px 4px;
+
+	.optsUnitSelect{
+		width: 96px;
+	}
+	.optsRotateSelect{
+		width: 153px;
+	}
+	.optsQuality{
+		width: 115px;
+	}
+}
+
+button.importerBrowseHarddisk{
+	margin-left: 0;
+	width: 213px;
+}
+div.importerElem{
+	div.elemNum{
+		width: 39px;
+		margin-top: 18px; 
+		float:left;
+	}
+
+	div.elemContainer{
+		position: relative;
+		width: 526px;
+		margin-top: 4px;
+		border:1px solid #aaaaaa;
+		display: inline-block;
+
+		div.elemPreview{
+			display: none;
+			position: relative;
+			height: 110px;
+			width: 110px;
+			float: left;
+			background-color: lightgrey;
+			background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
+			background-size: 6px 6px;
+
+			div.elemPreviewPreview{
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			div.elemPreviewBtn{
+				display: none;
+				position: absolute;
+				width: 110px;
+				height: 32px;
+				background-color: white;
+				bottom: 0; 
+				padding: 5px 2px 0 0;
+			}
+		}
+		div.elemIcon{
+			position: relative;
+			height: 30px;
+			width: 110px;
+			float: left;
+
+			font-size: 14px;
+			padding: 10px 0 0 12px;
+		}
+		div.elemContent{
+			position: relative;
+			width: 416px;
+			left: 110px;
+
+			div.elemContentTop{
+				position: relative;
+				height: 36px;
+
+				div.elemFilename{
+					padding: 12px 0 0 6px;
+					width: auto;
+					position: absolute;
+					display: block;
+				}
+				div.elemContentTopRight{
+					width: 170px;
+					left: 240px;
+					position: absolute;
+					display: block;
+
+					div.elemSize{
+						padding: 12px 0 0 0;
+						width: 76px;
+						height: 50px;
+						position: absolute;
+					}
+					div.elemButtons{
+						padding: 4px 0 0 0;
+						width: 96px;
+						left: 76px;
+						height: 36px;
+						position: absolute;
+
+						.elemFileinput{
+							width: 40px;
+							height: 26px;
+						}
+					}
+				}
+				div.elemProgress{
+					width: 180px;
+					left: 240px;
+					height: 40px;
+					padding-top: 6px;
+					position: absolute;
+					display: none;
+				}
+			}
+			div.elemContentBottom{
+				display: none;
+				position: relative;
+				height: 74px;
+				border-top: 1px solid #bbbbbb;
+
+				div.elemWhatOpts{
+					position: absolute;
+					width: 120px;
+					padding: 2px 0 0 4px;
+				}
+				div.elemOpts{
+					position: absolute;
+					left: 190px;
+					padding-top: 2px;
+
+					.optsUnitSelect{
+						width: 110px;
+						height: 20px;
+						padding: 0;
+					}
+					.optsRotateSelect{
+						width: 170px;
+						height: 20px;
+						padding: 0;
+					}
+					.optsQuality{
+						width: 115px;
+						height: 20px;
+					}
+					.optsRowTop,
+					.optsRowMiddle,
+					.optsRowBottom{
+						padding: 2px 0 0 0;
+					}
+				}
+				div.btnRefresh{
+					display: inline-block;
+					position: absolute;
+					left: 364px;
+					bottom: 0;
+				}
+			}
+		}
+	}
+	
+}

@@ -56,19 +56,19 @@ $_parts = array(
 	array(
 		'headline' => g_l('navigation', '[name]'),
 		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width:440px;" onblur="setSaveState();" onkeyup="setSaveState();"'),
-		'space' => we_html_multiIconBox::SPACE_SMALL,
+		'space' => we_html_multiIconBox::SPACE_MED,
 		'noline' => 1
 	),
 	array(
 		'headline' => g_l('navigation', '[group]'),
 		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, array('style' => 'width:440px;', 'onchange' => 'queryEntries(this.value);')),
-		'space' => we_html_multiIconBox::SPACE_SMALL,
+		'space' => we_html_multiIconBox::SPACE_MED,
 		'noline' => 1
 	),
 	array(
 		'headline' => '',
 		'html' => '<div id="details" class="blockWrapper" style="width: 440px;height: 100px;"></div>',
-		'space' => we_html_multiIconBox::SPACE_SMALL,
+		'space' => we_html_multiIconBox::SPACE_MED,
 		'noline' => 1
 	),
 	array(
@@ -76,7 +76,7 @@ $_parts = array(
 		'html' => we_html_element::htmlHidden('Ordn', $_navi->Ordn) .
 		we_html_tools::htmlTextInput('OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) .
 		we_html_tools::htmlSelect('OrdnSelect', array('begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')), 1, '', false, array('onchange' => 'changeOrder(this);'), 'value', 317),
-		'space' => we_html_multiIconBox::SPACE_SMALL,
+		'space' => we_html_multiIconBox::SPACE_MED,
 		'noline' => 1
 	)
 );

@@ -357,17 +357,58 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	function getHtml($dyn = false, $inc_href = true, $pathOnly = false){
 		$_data = $this->getElement('data');
 		//if path only - we need to get a possible thumbnail if selected
-		$only = $pathOnly ? '' : $this->getElement('only');
-		if($this->getElement('pathonly')){
-			$only = 'path';
-		}
+		$only = ($this->getElement('pathonly') ? 'src' : ($pathOnly ? 'path' : $this->getElement('only')));
+		$thumbname = $this->getElement('thumbnail');
+
 		switch($only){
 			case'id':
 				return $this->ID;
 			case 'path':
-				return $this->Path;
+				if(!$thumbname){
+					return $this->Path;
+				}
 		}
+
 		if($this->ID || ($_data && !is_dir($_data) && is_readable($_data))){
+			$img_path = $this->Path;
+
+			// we need to create a thumbnail - check if image exists
+			if($thumbname && ($img_path && file_exists(WEBEDITION_PATH . '../' . $img_path))){
+				$thumbObj = new we_thumbnail();
+				if($thumbObj->initByThumbName($thumbname, $this->ID, $this->Filename, $this->Path, $this->Extension, 0, 0)){
+					$img_path = $thumbObj->getOutputPath();
+
+					if($thumbObj->isOriginal()){
+//						$create = false;
+					} elseif((!$thumbObj->isOriginal()) && file_exists(WEBEDITION_PATH . '../' . $img_path) &&
+						// open a file
+						intval(filectime(WEBEDITION_PATH . '../' . $img_path)) > intval($thumbObj->getDate())){
+//						$create = false;
+						//picture created after thumbnail definition was changed, so all is up-to-date
+					} else {
+						$thumbObj->createThumb();
+					}
+
+					if($this->getElement('width') != ''){//if width set to empty skip width attribute
+						$this->setElement('width', $thumbObj->getOutputWidth(), 'attrib');
+					}
+					if($this->getElement('height') != ''){//if height set to empty skip height attribute
+						$this->setElement('height', $thumbObj->getOutputHeight(), 'attrib');
+					}
+				}
+			}
+
+			$src = $dyn ?
+				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . microtime() :
+				$img_path . '?m=' . $this->Published;
+
+			switch($only){
+				case 'path':
+					return $img_path;
+				case 'src:':
+					return $src;
+			}
+
 			switch($this->getElement('LinkType')){
 				case we_base_link::TYPE_INT:
 					$href = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('LinkID')), '', $this->DB_WE);
@@ -395,44 +436,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					break;
 			}
 
-			$img_path = $this->Path;
-
-
-			// we need to create a thumbnail - check if image exists
-			if(($thumbname = $this->getElement('thumbnail')) && ($img_path && file_exists(WEBEDITION_PATH . '../' . $img_path))){
-				$thumbObj = new we_thumbnail();
-				if($thumbObj->initByThumbName($thumbname, $this->ID, $this->Filename, $this->Path, $this->Extension, 0, 0)){
-					$img_path = $thumbObj->getOutputPath();
-
-					if($thumbObj->isOriginal()){
-//						$create = false;
-					} elseif((!$thumbObj->isOriginal()) && file_exists(WEBEDITION_PATH . '../' . $img_path) &&
-						// open a file
-						intval(filectime(WEBEDITION_PATH . '../' . $img_path)) > intval($thumbObj->getDate())){
-//						$create = false;
-						//picture created after thumbnail definition was changed, so all is up-to-date
-					} else {
-						$thumbObj->createThumb();
-					}
-
-					if($this->getElement('width') != ''){//if width set to empty skip width attribute
-						$this->setElement('width', $thumbObj->getOutputWidth(), 'attrib');
-					}
-					if($this->getElement('height') != ''){//if height set to empty skip height attribute
-						$this->setElement('height', $thumbObj->getOutputHeight(), 'attrib');
-					}
-				}
-			}
-
-			if($pathOnly){
-				return $img_path;
-			}
-
 			$target = $this->getElement('LinkTarget');
-
-			$src = $dyn ?
-				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . microtime() :
-				$img_path . '?m=' . $this->Published;
 
 			if($this->issetElement('sizingrel')){
 				$this->setElement('width', round($this->getElement('width') * $this->getElement('sizingrel')), 'attrib');
@@ -500,12 +504,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 				}
 			}
 
-			$showAttrOnly = (!empty($attribs['only'])) ?
-				$attribs['only'] :
-				((!empty($attribs['pathonly'])) ?
-					'src' :
-					''
-				);
+			$showAttrOnly = (!empty($attribs['only']) ? $attribs['only'] : '' );
 
 			switch($showAttrOnly){
 				default:
