@@ -45,7 +45,7 @@ class we_metadata_IPTC extends we_metadata_metaData{
 		return explode(',', self::usedFields);
 	}
 
-	protected function _getMetaData($selection = ""){
+	protected function getInstMetaData($selection = ""){
 		if(!$this->valid){
 			return false;
 		}

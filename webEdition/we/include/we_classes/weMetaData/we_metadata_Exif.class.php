@@ -48,7 +48,7 @@ class we_metadata_Exif extends we_metadata_metaData{
 		return (is_callable("exif_read_data"));
 	}
 
-	protected function _getMetaData($selection = ""){
+	protected function getInstMetaData($selection = ""){
 		if(!$this->valid){
 			return false;
 		}
