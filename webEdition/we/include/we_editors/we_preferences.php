@@ -636,14 +636,14 @@ function build_dialog($selected_setting = 'ui'){
 					}
 				}
 			}
-			global $_languages;
+			global $languages;
 
 			if(!empty($language)){ // Build language select box
-				$_languages = new we_html_select(array('name' => 'newconf[Language]', 'class' => 'weSelect', 'onchange' => "document.getElementById('langnote').style.display='block'"));
+				$languages = new we_html_select(array('name' => 'newconf[Language]', 'class' => 'weSelect', 'onchange' => "document.getElementById('langnote').style.display='block'"));
 				foreach($language as $key => $value){
-					$_languages->addOption($key, $value);
+					$languages->addOption($key, $value);
 				}
-				$_languages->selectOption(get_value('Language'));
+				$languages->selectOption(get_value('Language'));
 				// Lang notice
 				$langNote = '<div id="langnote" style="padding: 5px; background-color: rgb(221, 221, 221); width: 190px; display:none">
 <table style="width:100%">
@@ -659,13 +659,13 @@ function build_dialog($selected_setting = 'ui'){
 </table>
 </div>';
 				// Build dialog
-				$settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages->getHtml() . '<br/><br/>' . $langNote, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
+				$settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $languages->getHtml() . '<br/><br/>' . $langNote, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
 			} else { // Just one Language Installed, no select box needed
 				foreach($language as $key => $value){
-					$_languages = $value;
+					$languages = $value;
 				}
 				// Build dialog
-				$settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $_languages, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
+				$settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $languages, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
 			}
 
 			$BackendCharset = new we_html_select(array('name' => 'newconf[BackendCharset]', 'class' => 'weSelect', 'onchange' => "document.getElementById('langnote').style.display='block'"));
@@ -1121,8 +1121,8 @@ function build_dialog($selected_setting = 'ui'){
 			$TopLanguages[''] = '---';
 			$Languages = array_merge($TopLanguages, $Languages);
 
-			$_languages = new we_html_select(array('name' => 'newconf[locale_language]', 'id' => 'locale_language', 'style' => 'width: 139px', 'class' => 'weSelect'));
-			$_languages->addOptions($Languages);
+			$languages = new we_html_select(array('name' => 'newconf[locale_language]', 'id' => 'locale_language', 'style' => 'width: 139px', 'class' => 'weSelect'));
+			$languages->addOptions($Languages);
 
 			// Countries
 			$Countries = g_l('countries', '');
@@ -1152,7 +1152,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			// Build final HTML code
 			$add_html = g_l('prefs', '[locale_languages]') . '<br />' .
-				$_languages->getHtml() . '<br /><br />' .
+				$languages->getHtml() . '<br /><br />' .
 				g_l('prefs', '[locale_countries]') . '<br />' .
 				$countries->getHtml() . '<br /><br />' .
 				$add_button;
@@ -1213,15 +1213,15 @@ function build_dialog($selected_setting = 'ui'){
 
 			$template_editor_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontname]', 'style' => 'width: 135px;', ($template_editor_font_specify ? 'enabled' : 'disabled') => ($template_editor_font_specify ? 'enabled' : 'disabled')));
 
-			/* 			$_colorsDisabled = true;
+			/* 			$colorsDisabled = true;
 
-			  $_template_editor_fontcolor_selector = getColorInput('newconf[editorFontcolor]', get_value('editorFontcolor'), $_colorsDisabled);
-			  $_template_editor_we_tag_fontcolor_selector = getColorInput('newconf[editorWeTagFontcolor]', get_value('editorWeTagFontcolor'), $_colorsDisabled);
-			  $_template_editor_we_attribute_fontcolor_selector = getColorInput('newconf[editorWeAttributeFontcolor]', get_value('editorWeAttributeFontcolor'), $_colorsDisabled);
-			  $_template_editor_html_tag_fontcolor_selector = getColorInput('newconf[editorHTMLTagFontcolor]', get_value('editorHTMLTagFontcolor'), $_colorsDisabled);
-			  $_template_editor_html_attribute_fontcolor_selector = getColorInput('newconf[editorHTMLAttributeFontcolor]', get_value('editorHTMLAttributeFontcolor'), $_colorsDisabled);
-			  $_template_editor_pi_tag_fontcolor_selector = getColorInput('newconf[editorPiTagFontcolor]', get_value('editorPiTagFontcolor'), $_colorsDisabled);
-			  $_template_editor_comment_fontcolor_selector = getColorInput('newconf[editorCommentFontcolor]', get_value('editorCommentFontcolor'), $_colorsDisabled);
+			  $template_editor_fontcolor_selector = getColorInput('newconf[editorFontcolor]', get_value('editorFontcolor'), $colorsDisabled);
+			  $template_editor_we_tag_fontcolor_selector = getColorInput('newconf[editorWeTagFontcolor]', get_value('editorWeTagFontcolor'), $colorsDisabled);
+			  $template_editor_we_attribute_fontcolor_selector = getColorInput('newconf[editorWeAttributeFontcolor]', get_value('editorWeAttributeFontcolor'), $colorsDisabled);
+			  $template_editor_html_tag_fontcolor_selector = getColorInput('newconf[editorHTMLTagFontcolor]', get_value('editorHTMLTagFontcolor'), $colorsDisabled);
+			  $template_editor_html_attribute_fontcolor_selector = getColorInput('newconf[editorHTMLAttributeFontcolor]', get_value('editorHTMLAttributeFontcolor'), $colorsDisabled);
+			  $template_editor_pi_tag_fontcolor_selector = getColorInput('newconf[editorPiTagFontcolor]', get_value('editorPiTagFontcolor'), $colorsDisabled);
+			  $template_editor_comment_fontcolor_selector = getColorInput('newconf[editorCommentFontcolor]', get_value('editorCommentFontcolor'), $colorsDisabled);
 			 */
 			foreach($template_fonts as $font){
 				$template_editor_font_select_box->addOption($font, $font);
@@ -1242,16 +1242,16 @@ function build_dialog($selected_setting = 'ui'){
 	<tr><td' . $attr . '>' . g_l('prefs', '[editor_fontsize]') . '</td><td>' . $template_editor_font_sizes_select_box->getHtml() . '</td></tr>
 </table>';
 			/*
-			  $_template_editor_font_color_checkbox = we_html_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "newconf[specify_jeditor_colors]", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);");
-			  $attr = ($_colorsDisabled ? $_attr_dis : $_attr);
-			  $_template_editor_font_color_table = '<table id="editorColorTable" style="margin: 10px 0px 0px 50px;" class="default">
-			  <tr><td id="label_editorFontcolor" ' . $attr . '>' . g_l('prefs', '[editor_normal_font_color]') . '</td><td>' . $_template_editor_fontcolor_selector . '</td></tr>
-			  <tr><td id="label_editorWeTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_tag_font_color]') . '</td><td>' . $_template_editor_we_tag_fontcolor_selector . '</td></tr>
-			  <tr><td id="label_editorWeAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_attribute_font_color]') . '</td><td>' . $_template_editor_we_attribute_fontcolor_selector . '</td></tr>
-			  <tr><td id="label_editorHTMLTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_tag_font_color]') . '</td><td>' . $_template_editor_html_tag_fontcolor_selector . '</td></tr>
-			  <tr><td id="label_editorHTMLAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_attribute_font_color]') . '</td><td>' . $_template_editor_html_attribute_fontcolor_selector . '</td></tr>
-			  <tr><td id="label_editorPiTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_pi_tag_font_color]') . '</td><td>' . $_template_editor_pi_tag_fontcolor_selector . '</td></tr>
-			  <tr><td id="label_editorCommentFontcolor"' . $attr . '>' . g_l('prefs', '[editor_comment_font_color]') . '</td><td>' . $_template_editor_comment_fontcolor_selector . '</td></tr>
+			  $template_editor_font_color_checkbox = we_html_forms::checkboxWithHidden(get_value('specify_jeditor_colors'), "newconf[specify_jeditor_colors]", g_l('prefs', '[editor_font_colors]'), false, "defaultfont", "setEditorColorsDisabled(!this.checked);");
+			  $attr = ($colorsDisabled ? $attr_dis : $attr);
+			  $template_editor_font_color_table = '<table id="editorColorTable" style="margin: 10px 0px 0px 50px;" class="default">
+			  <tr><td id="label_editorFontcolor" ' . $attr . '>' . g_l('prefs', '[editor_normal_font_color]') . '</td><td>' . $template_editor_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorWeTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_tag_font_color]') . '</td><td>' . $template_editor_we_tag_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorWeAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_we_attribute_font_color]') . '</td><td>' . $template_editor_we_attribute_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorHTMLTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_tag_font_color]') . '</td><td>' . $template_editor_html_tag_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorHTMLAttributeFontcolor"' . $attr . '>' . g_l('prefs', '[editor_html_attribute_font_color]') . '</td><td>' . $template_editor_html_attribute_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorPiTagFontcolor"' . $attr . '>' . g_l('prefs', '[editor_pi_tag_font_color]') . '</td><td>' . $template_editor_pi_tag_fontcolor_selector . '</td></tr>
+			  <tr><td id="label_editorCommentFontcolor"' . $attr . '>' . g_l('prefs', '[editor_comment_font_color]') . '</td><td>' . $template_editor_comment_fontcolor_selector . '</td></tr>
 			  </table>';
 			 */
 			$template_editor_theme = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTheme]'));
@@ -1350,7 +1350,7 @@ for(i=0;i<elements.length; ++i){
 				array('headline' => g_l('prefs', '[editor_mode]'), 'html' => $template_editor_mode->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_font]'), 'html' => $template_editor_font_specify_code . $template_editor_font_specify_table, 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_theme]'), 'html' => $template_editor_theme->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2),
-//				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $_template_editor_font_color_checkbox . $_template_editor_font_color_table, 'space' => we_html_multiIconBox::SPACE_MED2),
+//				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $template_editor_font_color_checkbox . $template_editor_font_color_table, 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $template_editor_linenumbers_code, 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_highlightLine]'), 'html' => $template_editor_highlightLine_code, 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('global', '[wrapcheck]'), 'html' => $template_editor_Wrap_code, 'space' => we_html_multiIconBox::SPACE_MED2),
@@ -1359,7 +1359,7 @@ for(i=0;i<elements.length; ++i){
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $template_editor_codecompletion_code, 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $template_editor_tooltips_code . '<br/>' . $template_editor_tooltip_font_specify_code . '<br/>' . $template_editor_tooltip_font_specify_table, 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoCloseTags]'), 'html' => $template_editor_autoClose, 'space' => we_html_multiIconBox::SPACE_MED2),
-				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $_template_editor_docuintegration_code, 'space' => we_html_multiIconBox::SPACE_MED2),
+				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $template_editor_docuintegration_code, 'space' => we_html_multiIconBox::SPACE_MED2),
 			);
 
 			return create_dialog("settings_editor_predefined", $settings, count($settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'));
@@ -1608,20 +1608,20 @@ for(i=0;i<elements.length; ++i){
 			}
 			/*
 			  $WYSIWYG_TYPE = new we_html_select(array("name" => "newconf[WYSIWYG_TYPE]", "class" => "weSelect"));
-			  $_options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
-			  foreach($_options as $key => $val){
+			  $options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
+			  foreach($options as $key => $val){
 			  $WYSIWYG_TYPE->addOption($key, $val);
 			  }
 			  $WYSIWYG_TYPE->selectOption(get_value("WYSIWYG_TYPE"));
-			  $_settings[] = array("headline" => g_l('prefs', '[wysiwyg_type]'), "html" => $WYSIWYG_TYPE->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+			  $settings[] = array("headline" => g_l('prefs', '[wysiwyg_type]'), "html" => $WYSIWYG_TYPE->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
 			  $WYSIWYG_TYPE_FRONTEND = new we_html_select(array("name" => "newconf[WYSIWYG_TYPE_FRONTEND]", "class" => "weSelect"));
-			  $_options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
-			  foreach($_options as $key => $val){
+			  $options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
+			  foreach($options as $key => $val){
 			  $WYSIWYG_TYPE_FRONTEND->addOption($key, $val);
 			  }
 			  $WYSIWYG_TYPE_FRONTEND->selectOption(get_value("WYSIWYG_TYPE_FRONTEND"));
-			  $_settings[] = array("headline" => "Editor für textareas im Frontend", "html" => $WYSIWYG_TYPE_FRONTEND->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+			  $settings[] = array("headline" => "Editor für textareas im Frontend", "html" => $WYSIWYG_TYPE_FRONTEND->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 			 */
 			$we_doctype_workspace_behavior = get_value("WE_DOCTYPE_WORKSPACE_BEHAVIOR");
 			$we_doctype_workspace_behavior_table = '<table class="default"><tr><td>' .
@@ -1921,7 +1921,7 @@ for(i=0;i<elements.length; ++i){
 			$error_display_table->setCol(7, 0, null, $error_mail_specify_table->getHtml());
 
 			$settings = array(
-				//array('headline' => g_l('prefs', '[templates]'), 'html' => $_template_error_handling_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
+				//array('headline' => g_l('prefs', '[templates]'), 'html' => $template_error_handling_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
 				array('headline' => g_l('prefs', '[tab][error_handling]'), 'html' => $we_error_handler, 'space' => we_html_multiIconBox::SPACE_BIG),
 				array('headline' => g_l('prefs', '[error_types]'), 'html' => $error_handling_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
 				array('headline' => g_l('prefs', '[error_displaying]'), 'html' => $error_display_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
@@ -2403,9 +2403,9 @@ for(i=1;i<childs.length;++i){
 	'</head>' .
 	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'doClose()'), build_dialog('saved')) . '</html>';
 } else {
-	$_form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden('save_settings', 0) . render_dialog());
+	$form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden('save_settings', 0) . render_dialog());
 
-	$_we_cmd_js = we_html_element::jsElement('function we_cmd(){
+	$we_cmd_js = we_html_element::jsElement('function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
@@ -2438,8 +2438,8 @@ document.getElementById("color_" + name).style.backgroundColor=document.we_form.
 }' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
 
 
-	echo $_we_cmd_js . '</head>' .
-	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'startPrefs();'), $_form) .
+	echo $we_cmd_js . '</head>' .
+	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'startPrefs();'), $form) .
 	$yuiSuggest->getYuiJs() .
 	'</html>';
 }

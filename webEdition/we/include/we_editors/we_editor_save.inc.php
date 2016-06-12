@@ -103,7 +103,7 @@ for (frameId in _usedEditors) {
 echo (isset($we_JavaScript) ? $we_JavaScript : "");
 
 if($we_responseText){
-	$_jsCommand = "";
+	$jsCommand = "";
 	echo 'self.focus();
 showAlert = 0;
 var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();';
@@ -117,14 +117,14 @@ var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 } catch(e) {}';
 	}
 
-	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && (!isset($_showAlert) || !$_showAlert)){ //	Confirm Box or alert in seeMode
+	if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && (!isset($showAlert) || !$showAlert)){ //	Confirm Box or alert in seeMode
 		if(!empty($GLOBALS["publish_doc"])){ //	edit include and pulish then close window and reload
-			$_jsCommand .='
+			$jsCommand .='
 if(isEditInclude){
 	showAlert = 1;
 }';
 		}
-		$_jsCommand .=
+		$jsCommand .=
 			(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW ? //	alert or confirm
 				"
 if(!showAlert){
@@ -153,12 +153,12 @@ if(isEditInclude){
 				''
 			);
 	} else { //	alert in normal mode
-		$_jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
+		$jsCommand .= we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) .
 			//	JavaScript: generated in we_editor.inc.php
 			(isset($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : '') . //fixme: isset only because of workflow_finish as command
 			we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5); //should be empty
 	}
-	echo $_jsCommand;
+	echo $jsCommand;
 }
 ?>
 //-->

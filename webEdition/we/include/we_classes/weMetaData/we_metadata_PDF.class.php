@@ -34,7 +34,7 @@ class we_metadata_PDF extends we_metadata_metaData{
 	}
 
 	protected function _getMetaData($selection = ''){
-		if(!$this->_valid){
+		if(!$this->valid){
 			return false;
 		}
 		if(is_array($selection)){

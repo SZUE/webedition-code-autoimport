@@ -95,32 +95,32 @@ function we_tag_userInput(array $attribs, $content){
 			case 'quicktime':
 				break;
 			default:
-				$_hidden = getHtmlTag('input', array(
+				$hidden = getHtmlTag('input', array(
 					'type' => 'hidden', 'name' => $fieldname, 'value' => oldHtmlspecialchars($orgVal), 'xml' => $xml
 				));
-				return (($type != 'hidden') ? $content : '') . $_hidden;
+				return (($type != 'hidden') ? $content : '') . $hidden;
 		}
 	}
 	switch($type){
 		case 'img' :
-			$_imgDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_IMG_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+			$imgDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_IMG_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 			if($editable){
 				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
 					return $foo;
 				}
 
-				if(!isset($_SESSION[$_imgDataId])){
-					$_SESSION[$_imgDataId] = array();
+				if(!isset($_SESSION[$imgDataId])){
+					$_SESSION[$imgDataId] = array();
 				}
-				$_SESSION[$_imgDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
-				//$_SESSION[$_imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
-				$_SESSION[$_imgDataId]['width'] = weTag_getAttribute('width', $attribs, 0, we_base_request::INT);
-				$_SESSION[$_imgDataId]['height'] = weTag_getAttribute('height', $attribs, 0, we_base_request::INT);
-				$_SESSION[$_imgDataId]['quality'] = weTag_getAttribute('quality', $attribs, 8, we_base_request::INT);
-				$_SESSION[$_imgDataId]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, we_base_request::BOOL);
-				$_SESSION[$_imgDataId]['maximize'] = weTag_getAttribute('maximize', $attribs, false, we_base_request::BOOL);
-				$_SESSION[$_imgDataId]['id'] = $orgVal ? : '';
+				$_SESSION[$imgDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
+				//$_SESSION[$imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
+				$_SESSION[$imgDataId]['width'] = weTag_getAttribute('width', $attribs, 0, we_base_request::INT);
+				$_SESSION[$imgDataId]['height'] = weTag_getAttribute('height', $attribs, 0, we_base_request::INT);
+				$_SESSION[$imgDataId]['quality'] = weTag_getAttribute('quality', $attribs, 8, we_base_request::INT);
+				$_SESSION[$imgDataId]['keepratio'] = weTag_getAttribute('keepratio', $attribs, true, we_base_request::BOOL);
+				$_SESSION[$imgDataId]['maximize'] = weTag_getAttribute('maximize', $attribs, false, we_base_request::BOOL);
+				$_SESSION[$imgDataId]['id'] = $orgVal ? : '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8', we_base_request::STRING);
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs, '', we_base_request::STRING);
@@ -129,26 +129,26 @@ function we_tag_userInput(array $attribs, $content){
 				$inputclass = weTag_getAttribute('inputclass', $attribs, '', we_base_request::STRING);
 				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'), we_base_request::STRING);
 
-				if($_SESSION[$_imgDataId]['id']){
-					$attribs['id'] = $_SESSION[$_imgDataId]['id'];
+				if($_SESSION[$imgDataId]['id']){
+					$attribs['id'] = $_SESSION[$imgDataId]['id'];
 				}
 
-				if(isset($_SESSION[$_imgDataId]['serverPath']) && strpos($_SESSION[$_imgDataId]['serverPath'], TEMP_PATH) === false){
-					$src = '/' . ltrim(substr($_SESSION[$_imgDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+				if(isset($_SESSION[$imgDataId]['serverPath']) && strpos($_SESSION[$imgDataId]['serverPath'], TEMP_PATH) === false){
+					$src = '/' . ltrim(substr($_SESSION[$imgDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 
-					$imgTag = '<img src="' . $src . '" alt="" width="' . $_SESSION[$_imgDataId]["imgwidth"] . '" height="' . $_SESSION[$_imgDataId]["imgheight"] . '" />';
+					$imgTag = '<img src="' . $src . '" alt="" width="' . $_SESSION[$imgDataId]["imgwidth"] . '" height="' . $_SESSION[$imgDataId]["imgheight"] . '" />';
 				} else {
 					unset($attribs['width']);
 					unset($attribs['height']);
 					$imgTag = $GLOBALS['we_doc']->getField($attribs, 'img');
 				}
 
-				$checked = (!empty($_SESSION[$_imgDataId]['doDelete'])) ? ' checked' : '';
+				$checked = (!empty($_SESSION[$imgDataId]['doDelete'])) ? ' checked' : '';
 				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $imgTag . '
-			<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" /></td>
+			<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $imgDataId . '" /></td>
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
@@ -168,47 +168,47 @@ function we_tag_userInput(array $attribs, $content){
 </table>';
 			}
 
-			$hidden = '<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $_imgDataId . '" />';
+			$hidden = '<input type="hidden" name="WE_UI_IMG_DATA_ID_' . $name . '" value="' . $imgDataId . '" />';
 
-			if(isset($_SESSION[$_imgDataId]['serverPath'])){
-				$src = '/' . ltrim(substr($_SESSION[$_imgDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+			if(isset($_SESSION[$imgDataId]['serverPath'])){
+				$src = '/' . ltrim(substr($_SESSION[$imgDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 
 				return getHtmlTag('img', array(
 						'src' => $src,
 						'alt' => "",
-						'style' => 'width:' . $_SESSION[$_imgDataId]["imgwidth"] . 'px;height:' . $_SESSION[$_imgDataId]["imgheight"] . 'px',
+						'style' => 'width:' . $_SESSION[$imgDataId]["imgwidth"] . 'px;height:' . $_SESSION[$imgDataId]["imgheight"] . 'px',
 					)) . $hidden;
 			}
 
-			if(!empty($_SESSION[$_imgDataId]['doDelete'])){
+			if(!empty($_SESSION[$imgDataId]['doDelete'])){
 				return $hidden;
 			}
 
-			if((!empty($_SESSION[$_imgDataId]['id'])) || (isset($orgVal) && $orgVal)){//Fix #9835
+			if((!empty($_SESSION[$imgDataId]['id'])) || (isset($orgVal) && $orgVal)){//Fix #9835
 				unset($attribs['width']);
 				unset($attribs['height']);
-				$attribs['id'] = $_SESSION[$_imgDataId]['id'] ? $_SESSION[$_imgDataId]['id'] : $orgVal;
+				$attribs['id'] = $_SESSION[$imgDataId]['id'] ? $_SESSION[$imgDataId]['id'] : $orgVal;
 				return $GLOBALS['we_doc']->getField($attribs, 'img') . $hidden;
 			}
 
 			return '';
 
 		case 'flashmovie' :
-			$_flashmovieDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_FLASHMOVIE_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+			$flashmovieDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_FLASHMOVIE_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 			if($editable){
 				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
 					return $foo;
 				}
 
-				if(!isset($_SESSION[$_flashmovieDataId])){
-					$_SESSION[$_flashmovieDataId] = array();
+				if(!isset($_SESSION[$flashmovieDataId])){
+					$_SESSION[$flashmovieDataId] = array();
 				}
-				$_SESSION[$_flashmovieDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
-				//$_SESSION[$_imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
-				$_SESSION[$_flashmovieDataId]['width'] = weTag_getAttribute('width', $attribs, 0, we_base_request::INT);
-				$_SESSION[$_flashmovieDataId]['height'] = weTag_getAttribute('height', $attribs, 0, we_base_request::INT);
-				$_SESSION[$_flashmovieDataId]['id'] = $orgVal ? : '';
+				$_SESSION[$flashmovieDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
+				//$_SESSION[$imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
+				$_SESSION[$flashmovieDataId]['width'] = weTag_getAttribute('width', $attribs, 0, we_base_request::INT);
+				$_SESSION[$flashmovieDataId]['height'] = weTag_getAttribute('height', $attribs, 0, we_base_request::INT);
+				$_SESSION[$flashmovieDataId]['id'] = $orgVal ? : '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8', we_base_request::STRING);
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs, '', we_base_request::STRING);
@@ -217,12 +217,12 @@ function we_tag_userInput(array $attribs, $content){
 				$inputclass = weTag_getAttribute('inputclass', $attribs, '', we_base_request::STRING);
 				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'), we_base_request::RAW);
 
-				if($_SESSION[$_flashmovieDataId]['id']){
-					$attribs['id'] = $_SESSION[$_flashmovieDataId]['id'];
+				if($_SESSION[$flashmovieDataId]['id']){
+					$attribs['id'] = $_SESSION[$flashmovieDataId]['id'];
 				}
 
-				if(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
-					$src = '/' . ltrim(substr($_SESSION[$_flashmovieDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+				if(isset($_SESSION[$flashmovieDataId]['serverPath'])){
+					$src = '/' . ltrim(substr($_SESSION[$flashmovieDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 					$flashmovieTag = '';
 				} else {
 					$attribs = removeAttribs($attribs, array('width', 'height'));
@@ -232,11 +232,11 @@ function we_tag_userInput(array $attribs, $content){
 							'<img src="' . ICON_DIR . 'no_flashmovie.gif" alt="" width="64" height="64" />');
 				}
 
-				$checked = (!empty($_SESSION[$_flashmovieDataId]['doDelete']) ? ' checked' : '');
+				$checked = (!empty($_SESSION[$flashmovieDataId]['doDelete']) ? ' checked' : '');
 				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
-		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $flashmovieTag . '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" /></td>
+		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $flashmovieTag . '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $flashmovieDataId . '" /></td>
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:left"><input name="' . $fieldname . '" type="file" accept="application/x-shockwave-flash"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/></td>
@@ -253,26 +253,26 @@ function we_tag_userInput(array $attribs, $content){
 	</tr>
 </table>';
 			}
-			$hidden = '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $_flashmovieDataId . '" />';
+			$hidden = '<input type="hidden" name="WE_UI_FLASHMOVIE_DATA_ID_' . $name . '" value="' . $flashmovieDataId . '" />';
 
-			if(isset($_SESSION[$_flashmovieDataId]['serverPath'])){
-				$src = '/' . ltrim(substr($_SESSION[$_flashmovieDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+			if(isset($_SESSION[$flashmovieDataId]['serverPath'])){
+				$src = '/' . ltrim(substr($_SESSION[$flashmovieDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 
 				return $hidden;
 			}
-			if(!empty($_SESSION[$_flashmovieDataId]['id'])){
+			if(!empty($_SESSION[$flashmovieDataId]['id'])){
 
-				if(!empty($_SESSION[$_flashmovieDataId]['doDelete'])){
+				if(!empty($_SESSION[$flashmovieDataId]['doDelete'])){
 					return $hidden;
 				}
 				$attribs = removeAttribs($attribs, array('width', 'height'));
-				$attribs['id'] = $_SESSION[$_flashmovieDataId]['id'];
+				$attribs['id'] = $_SESSION[$flashmovieDataId]['id'];
 				return $GLOBALS['we_doc']->getField($attribs, 'flashmovie') . $hidden;
 			}
 
 			return '';
 		case 'quicktime' :
-			$_quicktimeDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_QUICKTIME_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+			$quicktimeDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_QUICKTIME_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 
 			if($editable){
@@ -280,14 +280,14 @@ function we_tag_userInput(array $attribs, $content){
 					return $foo;
 				}
 
-				if(!isset($_SESSION[$_quicktimeDataId])){
-					$_SESSION[$_quicktimeDataId] = array();
+				if(!isset($_SESSION[$quicktimeDataId])){
+					$_SESSION[$quicktimeDataId] = array();
 				}
-				$_SESSION[$_quicktimeDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
-				//$_SESSION[$_quicktimeDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
-				$_SESSION[$_quicktimeDataId]['width'] = weTag_getAttribute('width', $attribs, 0, we_base_request::INT);
-				$_SESSION[$_quicktimeDataId]['height'] = weTag_getAttribute('height', $attribs, 0, we_base_request::INT);
-				$_SESSION[$_quicktimeDataId]['id'] = $orgVal ? : '';
+				$_SESSION[$quicktimeDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
+				//$_SESSION[$quicktimeDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
+				$_SESSION[$quicktimeDataId]['width'] = weTag_getAttribute('width', $attribs, 0, we_base_request::INT);
+				$_SESSION[$quicktimeDataId]['height'] = weTag_getAttribute('height', $attribs, 0, we_base_request::INT);
+				$_SESSION[$quicktimeDataId]['id'] = $orgVal ? : '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8', we_base_request::STRING);
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs, '', we_base_request::STRING);
@@ -296,12 +296,12 @@ function we_tag_userInput(array $attribs, $content){
 				$inputclass = weTag_getAttribute('inputclass', $attribs, '', we_base_request::STRING);
 				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'), we_base_request::RAW);
 
-				if($_SESSION[$_quicktimeDataId]['id']){
-					$attribs['id'] = $_SESSION[$_quicktimeDataId]['id'];
+				if($_SESSION[$quicktimeDataId]['id']){
+					$attribs['id'] = $_SESSION[$quicktimeDataId]['id'];
 				}
 
-				if(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
-					$src = '/' . ltrim(substr($_SESSION[$_quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+				if(isset($_SESSION[$quicktimeDataId]['serverPath'])){
+					$src = '/' . ltrim(substr($_SESSION[$quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 					$quicktimeTag = '';
 				} else {
 					unset($attribs['width']);
@@ -311,12 +311,12 @@ function we_tag_userInput(array $attribs, $content){
 							'<img src="' . ICON_DIR . 'no_quicktime.gif" alt="" width="64" height="64" />');
 				}
 
-				$checked = (!empty($_SESSION[$_quicktimeDataId]["doDelete"]) ? ' checked' : '');
+				$checked = (!empty($_SESSION[$quicktimeDataId]["doDelete"]) ? ' checked' : '');
 				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $quicktimeTag . '
-			<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" /></td>
+			<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $quicktimeDataId . '" /></td>
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
@@ -339,40 +339,40 @@ function we_tag_userInput(array $attribs, $content){
 	</tr>
 </table>';
 			}
-			$hidden = '<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $_quicktimeDataId . '" />';
+			$hidden = '<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $quicktimeDataId . '" />';
 
-			if(isset($_SESSION[$_quicktimeDataId]['serverPath'])){
-				$src = '/' . ltrim(substr($_SESSION[$_quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+			if(isset($_SESSION[$quicktimeDataId]['serverPath'])){
+				$src = '/' . ltrim(substr($_SESSION[$quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 				return $hidden;
 			}
-			if(empty($_SESSION[$_quicktimeDataId]['id'])){
+			if(empty($_SESSION[$quicktimeDataId]['id'])){
 				return '';
 			}
 
-			if(!empty($_SESSION[$_quicktimeDataId]['doDelete'])){
+			if(!empty($_SESSION[$quicktimeDataId]['doDelete'])){
 				return $hidden;
 			}
 
 			unset($attribs['width']);
 			unset($attribs['height']);
-			$attribs['id'] = $_SESSION[$_quicktimeDataId]['id'];
+			$attribs['id'] = $_SESSION[$quicktimeDataId]['id'];
 			return $GLOBALS['we_doc']->getField($attribs, 'quicktime') . $hidden;
 
 		case 'binary' :
-			$_binaryDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_BINARY_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
+			$binaryDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_BINARY_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
 
 			if($editable){
 				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
 					return $foo;
 				}
 
-				if(!isset($_SESSION[$_binaryDataId])){
-					$_SESSION[$_binaryDataId] = array();
+				if(!isset($_SESSION[$binaryDataId])){
+					$_SESSION[$binaryDataId] = array();
 				}
-				$_SESSION[$_binaryDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
-				//$_SESSION[$_binaryDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
+				$_SESSION[$binaryDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
+				//$_SESSION[$binaryDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
 
-				$_SESSION[$_binaryDataId]['id'] = $orgVal ? : '';
+				$_SESSION[$binaryDataId]['id'] = $orgVal ? : '';
 
 				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8', we_base_request::STRING);
 				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs, '', we_base_request::STRING);
@@ -381,12 +381,12 @@ function we_tag_userInput(array $attribs, $content){
 				$inputclass = weTag_getAttribute('inputclass', $attribs, '', we_base_request::STRING);
 				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'), we_base_request::RAW);
 
-				if($_SESSION[$_binaryDataId]['id']){
-					$attribs['id'] = $_SESSION[$_binaryDataId]['id'];
+				if($_SESSION[$binaryDataId]['id']){
+					$attribs['id'] = $_SESSION[$binaryDataId]['id'];
 				}
 
-				if(isset($_SESSION[$_binaryDataId]['serverPath'])){
-					$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+				if(isset($_SESSION[$binaryDataId]['serverPath'])){
+					$src = '/' . ltrim(substr($_SESSION[$binaryDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 					$imgTag = 'imgTag';
 				} else {
 					$binaryTag = $GLOBALS['we_doc']->getField($attribs, 'binary');
@@ -397,12 +397,12 @@ function we_tag_userInput(array $attribs, $content){
 					$imgTag = '<a href="' . $binaryTag[1] . '" target="_blank">' . $fn . '</a>';
 				}
 
-				$checked = (!empty($_SESSION[$_binaryDataId]['doDelete']) ? ' checked' : '');
+				$checked = (!empty($_SESSION[$binaryDataId]['doDelete']) ? ' checked' : '');
 				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $imgTag . '
-			<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" /></td>
+			<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $binaryDataId . '" /></td>
 	</tr>
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
@@ -421,27 +421,27 @@ function we_tag_userInput(array $attribs, $content){
 	</tr>
 </table>';
 			}
-			if(!isset($_SESSION[$_binaryDataId])){
-				$_SESSION[$_binaryDataId] = array();
+			if(!isset($_SESSION[$binaryDataId])){
+				$_SESSION[$binaryDataId] = array();
 			}
-			$_SESSION[$_binaryDataId]['id'] = $orgVal ? : '';
-			if($_SESSION[$_binaryDataId]['id']){
-				$attribs['id'] = $_SESSION[$_binaryDataId]['id'];
+			$_SESSION[$binaryDataId]['id'] = $orgVal ? : '';
+			if($_SESSION[$binaryDataId]['id']){
+				$attribs['id'] = $_SESSION[$binaryDataId]['id'];
 			}
-			$hidden = '<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $_binaryDataId . '" />';
+			$hidden = '<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $binaryDataId . '" />';
 
-			if(isset($_SESSION[$_binaryDataId]["serverPath"])){
-				$src = '/' . ltrim(substr($_SESSION[$_binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+			if(isset($_SESSION[$binaryDataId]["serverPath"])){
+				$src = '/' . ltrim(substr($_SESSION[$binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 				return $hidden;
 			}
-			if(empty($_SESSION[$_binaryDataId]["id"])){
+			if(empty($_SESSION[$binaryDataId]["id"])){
 				return '';
 			}
-			if(!empty($_SESSION[$_binaryDataId]["doDelete"])){
+			if(!empty($_SESSION[$binaryDataId]["doDelete"])){
 				return $hidden;
 			}
 
-			$attribs["id"] = $_SESSION[$_binaryDataId]["id"];
+			$attribs["id"] = $_SESSION[$binaryDataId]["id"];
 			$binaryTag = $GLOBALS['we_doc']->getField($attribs, "binary");
 			$t = explode('_', $binaryTag[0]);
 			unset($t[1]);

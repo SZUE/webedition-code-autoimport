@@ -75,12 +75,12 @@ $showGlossaryCheck = 0; /* (!empty($_SESSION['prefs']['force_glossary_check']) &
   ( $we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType === we_base_ContentTypes::OBJECT_FILE ) ? 1 : 0);
  */
 //	added for we:controlElement type="button" name="save" hide="true"
-$_ctrlElem = getControlElement('button', 'save');
+$ctrlElem = getControlElement('button', 'save');
 
 $canWeSave = $we_doc->userCanSave();
 
 if($canWeSave &&
-	(($_ctrlElem && $_ctrlElem['hide']) ||
+	(($ctrlElem && $ctrlElem['hide']) ||
 	(defined('WORKFLOW_TABLE') && inWorkflow($we_doc) && (!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])))
 	)){
 	$canWeSave = false;
@@ -104,14 +104,14 @@ function generatedSaveDoc(addCmd){
 	}
 }';
 
-if(($we_doc->IsTextContentDoc /* || $we_doc->IsFolder */) && $haspermNew && //	$_js_permnew
+if(($we_doc->IsTextContentDoc /* || $we_doc->IsFolder */) && $haspermNew && //	$js_permnew
 	($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
-	$_ctrlElem = getControlElement('checkbox', 'makeSameDoc');
-	$_js_permnew = ($_ctrlElem ? //	changes for we:controlElement
-			'setTextDocument(true,' . ($_ctrlElem["checked"] ? "true" : "false") . ');' :
+	$ctrlElem = getControlElement('checkbox', 'makeSameDoc');
+	$js_permnew = ($ctrlElem ? //	changes for we:controlElement
+			'setTextDocument(true,' . ($ctrlElem["checked"] ? "true" : "false") . ');' :
 			'setTextDocument(false);');
 } else {
-	$_js_permnew = '';
+	$js_permnew = '';
 }
 
 echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsElement('
@@ -135,7 +135,7 @@ function we_footerLoaded(){
 	if(doc.isTemplate && !doc.isFolder){
 		setTemplate();
 	}' .
-		$_js_permnew . '
+		$js_permnew . '
 	setPath();
 }' .
 		$js) .
@@ -171,13 +171,13 @@ if(inWorkflow($we_doc)){
 						}
 					} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
-						$_noPermTable = new we_html_table(array("class" => 'default footertable'), 1, 2);
+						$noPermTable = new we_html_table(array("class" => 'default footertable'), 1, 2);
 
-						$_noPermTable->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:10px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
-						$_noPermTable->setColContent(0, 1, g_l('SEEM', '[no_permission_to_edit_document]'));
+						$noPermTable->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:10px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
+						$noPermTable->setColContent(0, 1, g_l('SEEM', '[no_permission_to_edit_document]'));
 
 
-						echo $_noPermTable->getHtml();
+						echo $noPermTable->getHtml();
 					}
 					?>
 	</form>

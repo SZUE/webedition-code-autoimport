@@ -236,16 +236,16 @@ function we_tag_field(array $attribs){
 			}
 		case 'img' :
 			if($src){
-				$_imgAtts = array(
+				$imgAtts = array(
 					'alt' => '', //  alt must be set
 					'src' => $src,
 					'xml' => $xml,
 				);
 
-				$_imgAtts = array_merge($_imgAtts, useAttribs($attribs, array('alt', 'width', 'height', 'border', 'hspace', 'align', 'vspace'))); //  use some atts form attribs array
-				$_imgAtts = removeEmptyAttribs($_imgAtts, array('alt'));
+				$imgAtts = array_merge($imgAtts, useAttribs($attribs, array('alt', 'width', 'height', 'border', 'hspace', 'align', 'vspace'))); //  use some atts form attribs array
+				$imgAtts = removeEmptyAttribs($imgAtts, array('alt'));
 
-				$out = getHtmlTag('img', $_imgAtts);
+				$out = getHtmlTag('img', $imgAtts);
 				if(!$out){
 					//we have no image, so we don't generate an link
 					return '';
@@ -397,9 +397,9 @@ function we_tag_field(array $attribs){
 			if($type === 'select' && $normVal === ''){
 				//FIXME: remove getDBRecord
 				$dbRecord = array_keys($GLOBALS['lv']->getDBRecord()); // bugfix #6399
-				foreach($dbRecord as $_glob_key){
-					if(substr($_glob_key, 0, 13) === 'we_we_object_'){
-						$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($_glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+				foreach($dbRecord as $glob_key){
+					if(substr($glob_key, 0, 13) === 'we_we_object_'){
+						$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}
 
 					if($normVal != ''){
@@ -435,19 +435,19 @@ function we_tag_field(array $attribs){
 
 	if($hyperlink || $name === 'we_href'){
 
-		$_linkAttribs = array('xml' => $xml);
+		$linkAttribs = array('xml' => $xml);
 		if($target && !$winprops){ //  save atts in array
-			$_linkAttribs['target'] = $target;
+			$linkAttribs['target'] = $target;
 		}
 		if($class){
-			$_linkAttribs['class'] = $class;
+			$linkAttribs['class'] = $class;
 		}
 		if($style){
-			$_linkAttribs['style'] = $style;
+			$linkAttribs['style'] = $style;
 		}
 		foreach($attribs as $key => $val){
 			if(strpos($key, 'pass_') === 0){
-				$_linkAttribs[$key] = $val;
+				$linkAttribs[$key] = $val;
 			}
 		}
 
@@ -503,8 +503,8 @@ function we_tag_field(array $attribs){
 					}
 				}
 
-				$_linkAttribs['onclick'] = $js . ';var we_win = window.open(\'\',\'win_' . $name . '\',\'' . implode(',', $newWinProps) . '\');';
-				$_linkAttribs['target'] = 'win_' . $name;
+				$linkAttribs['onclick'] = $js . ';var we_win = window.open(\'\',\'win_' . $name . '\',\'' . implode(',', $newWinProps) . '\');';
+				$linkAttribs['target'] = 'win_' . $name;
 			} else { // we are in webEdition
 				if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){ //	we are in seeMode -> open in edit_include ?....
 				}
@@ -512,8 +512,8 @@ function we_tag_field(array $attribs){
 		}
 
 		if($href){
-			$_linkAttribs['href'] = $href;
-			return getHtmlTag('a', $_linkAttribs, $out, true);
+			$linkAttribs['href'] = $href;
+			return getHtmlTag('a', $linkAttribs, $out, true);
 		}
 
 		if($id && $isCalendar){
@@ -524,7 +524,7 @@ function we_tag_field(array $attribs){
 						$show = ($GLOBALS['lv']->calendar_struct['calendar'] === 'year' ? 'month' : 'day');
 						$listviewname = weTag_getAttribute('listviewname', $attribs, $lvname, we_base_request::STRING);
 
-						$_linkAttribs['href'] = id_to_path($id) . '?' .
+						$linkAttribs['href'] = id_to_path($id) . '?' .
 							(!empty($GLOBALS['lv']->contentTypes) ? ('we_lv_ct_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->contentTypes) . '&amp;') : '') .
 							($GLOBALS['lv']->order ? ('we_lv_order_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->order) . '&amp;') : '') .
 							($GLOBALS['lv']->desc ? ('we_lv_desc_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->desc) . '&amp;') : '') .
@@ -536,12 +536,12 @@ function we_tag_field(array $attribs){
 							($GLOBALS['lv']->calendar_struct['datefield'] ? ('we_lv_datefield_' . $listviewname . '=' . rawurlencode($GLOBALS['lv']->calendar_struct['datefield']) . '&amp;') : '') .
 							($GLOBALS['lv']->calendar_struct['date'] >= 0 ? ('we_lv_date_' . $listviewname . '=' . rawurlencode(date('Y-m-d', $GLOBALS['lv']->calendar_struct['date']))) : '');
 
-						return getHtmlTag('a', $_linkAttribs, $out, true);
+						return getHtmlTag('a', $linkAttribs, $out, true);
 					}
 				}
 			}
 		} elseif($id && $isImageDoc){
-			$_linkAttribs['href'] = id_to_path($id) . '?' .
+			$linkAttribs['href'] = id_to_path($id) . '?' .
 				($GLOBALS['lv']->contentTypes ? ('we_lv_ct_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->contentTypes) . '&amp;') : '') .
 				($GLOBALS['lv']->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->order) . '&amp;') : '') .
 				($GLOBALS['lv']->desc ? ('we_lv_desc_' . $lvname . '=' . rawurlencode($GLOBALS['lv']->desc) . '&amp;') : '') .
@@ -554,7 +554,7 @@ function we_tag_field(array $attribs){
 				'&amp;we_lv_pend_' . $lvname . '=' . ($GLOBALS['lv']->start + $GLOBALS['lv']->anz) .
 				'&amp;we_lv_pstart_' . $lvname . '=' . ($GLOBALS['lv']->start);
 
-			return getHtmlTag('a', $_linkAttribs, $out, true);
+			return getHtmlTag('a', $linkAttribs, $out, true);
 		}
 
 		if($tid){
@@ -575,7 +575,7 @@ function we_tag_field(array $attribs){
 			}
 
 			$pidstr = '?pid=' . intval($GLOBALS['lv']->f('WorkspaceID'));
-			$_linkAttribs['href'] = (!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($path_parts['basename']) ?
+			$linkAttribs['href'] = (!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($path_parts['basename']) ?
 					($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 					($GLOBALS['lv']->objectseourls && $objecturl ? $objecturl . '?' : '?we_objectID=' . $GLOBALS['lv']->f('OID') . '&') .
 					$pidstr :
@@ -584,20 +584,20 @@ function we_tag_field(array $attribs){
 						$_SERVER['SCRIPT_NAME'] . '?we_objectID=' . $GLOBALS['lv']->f('OID') . '&'
 					) . $pidstr);
 
-			$_linkAttribs['href'] .= $tail;
+			$linkAttribs['href'] .= $tail;
 
 			return ($name === 'we_href' ?
-					$_linkAttribs['href'] :
-					getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
+					$linkAttribs['href'] :
+					getHtmlTag('a', $linkAttribs, $out, true) //  output of link-tag
 				);
 		}
 		if(($GLOBALS['lv'] instanceof we_listview_category) && we_tag('ifHasChildren')){
 			$parentidname = weTag_getAttribute('parentidname', $attribs, 'we_parentid', we_base_request::STRING);
-			$_linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
+			$linkAttribs['href'] = $_SERVER['SCRIPT_NAME'] . '?' . $parentidname . '=' . $GLOBALS['lv']->f('ID');
 
 			return ($name === 'we_href' ?
-					$_linkAttribs['href'] :
-					getHtmlTag('a', $_linkAttribs, $out, true) //  output of link-tag
+					$linkAttribs['href'] :
+					getHtmlTag('a', $linkAttribs, $out, true) //  output of link-tag
 				);
 		}
 		$showlink = false;
@@ -636,14 +636,14 @@ function we_tag_field(array $attribs){
 		$tail = ($tid && ($GLOBALS['lv'] instanceof we_listview_object) ? '&amp;we_objectTID=' . $tid : '');
 
 		if(isset($GLOBALS['we_doc']->OF_ID) && ($GLOBALS['we_doc']->InWebEdition)){
-			$_linkAttribs['href'] = $GLOBALS['lv']->f('wedoc_lastPath') . $tail;
+			$linkAttribs['href'] = $GLOBALS['lv']->f('wedoc_lastPath') . $tail;
 		} else {
 			$path_parts = pathinfo($GLOBALS['lv']->f('WE_PATH'));
 			if($triggerid){
 				$triggerpath = id_to_path($triggerid);
 				$triggerpath_parts = pathinfo($triggerpath);
 
-				$_linkAttribs['href'] = (!empty($GLOBALS['lv']->objectseourls)) ? // objectseourls=true
+				$linkAttribs['href'] = (!empty($GLOBALS['lv']->objectseourls)) ? // objectseourls=true
 					rtrim($triggerpath_parts['dirname'], '/') . '/' .
 					((!$GLOBALS['WE_MAIN_DOC']->InWebEdition && !empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($triggerpath_parts['basename'])) ? //hidedirindex of triggerID
 						$GLOBALS['lv']->f('WE_URL') . $tail : //Fix #8708 do not hidedirindex of triggerID
@@ -653,7 +653,7 @@ function we_tag_field(array $attribs){
 
 				/* End Fix '7771 */
 			} else {
-				$_linkAttribs['href'] = (!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($path_parts['basename']) ?
+				$linkAttribs['href'] = (!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($path_parts['basename']) ?
 						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
 						$GLOBALS['lv']->f('WE_PATH') . $tail
 					);
@@ -661,8 +661,8 @@ function we_tag_field(array $attribs){
 		}
 
 		return ($name === 'we_href' ? //  return href for this object
-				$_linkAttribs['href'] :
-				$out = getHtmlTag('a', $_linkAttribs, $out, true));
+				$linkAttribs['href'] :
+				$out = getHtmlTag('a', $linkAttribs, $out, true));
 	}
 
 	return $out;

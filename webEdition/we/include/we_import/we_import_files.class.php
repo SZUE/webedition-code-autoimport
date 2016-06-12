@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_import_files{
-
 	var $parentID = 0;
 	var $step = 0;
 	var $sameName = "overwrite";
@@ -55,8 +54,8 @@ class we_import_files{
 			foreach($catarray as $cat){
 				// bugfix Workarround #700
 				$cats[] = (is_numeric($cat) ?
-								$cat :
-								path_to_id($cat, CATEGORY_TABLE, $GLOBALS['DB_WE']));
+						$cat :
+						path_to_id($cat, CATEGORY_TABLE, $GLOBALS['DB_WE']));
 			}
 			$this->categories = implode(',', $cats);
 		} else {
@@ -100,7 +99,7 @@ class we_import_files{
 		return we_html_element::jsElement('
 var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n", "\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
 ') .
-				we_html_element::jsScript(JS_DIR . 'import_files.js');
+			we_html_element::jsScript(JS_DIR . 'import_files.js');
 	}
 
 	function _getContent(){
@@ -171,27 +170,27 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 
 		$wepos = weGetCookieVariable("but_weimportfiles");
 		$content = we_html_element::htmlHiddens(array(
-					'we_cmd[0]' => 'import_files',
-					'callBack' => $this->callBack,
-					'cmd' => 'content',
-					'step' => '2'
-				)) .
-				we_html_multiIconBox::getJS() .
-				we_html_multiIconBox::getHTML("weimportfiles", $parts, 30, "", $foldAt, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('importFiles', '[step1]'));
+				'we_cmd[0]' => 'import_files',
+				'callBack' => $this->callBack,
+				'cmd' => 'content',
+				'step' => '2'
+			)) .
+			we_html_multiIconBox::getJS() .
+			we_html_multiIconBox::getHTML("weimportfiles", $parts, 30, "", $foldAt, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('importFiles', '[step1]'));
 
 		$startsrceen = we_html_element::htmlDiv(
-						array(
-					"id" => "start"
-						), we_html_element::htmlForm(
-								array(
-							"action" => WEBEDITION_DIR . "we_cmd.php",
-							"name" => "we_startform",
-							"method" => "post"
-								), $content));
+				array(
+				"id" => "start"
+				), we_html_element::htmlForm(
+					array(
+					"action" => WEBEDITION_DIR . "we_cmd.php",
+					"name" => "we_startform",
+					"method" => "post"
+					), $content));
 
 		$body = we_html_element::htmlBody(array(
-					"class" => "weDialogBody"
-						), $startsrceen);
+				"class" => "weDialogBody"
+				), $startsrceen);
 
 		return $this->_getHtmlPage($body, $this->_getJS(''));
 	}
@@ -242,14 +241,14 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 		}
 
 		$content = we_html_element::htmlForm(array(
-					"action" => WEBEDITION_DIR . "we_cmd.php",
-					"name" => "we_startform", "method" => "post"
-						), we_html_element::htmlHidden('step', 3) .
-						we_html_multiIconBox::getHTML("uploadFiles", $parts, 30, "", -1, "", "", "", g_l('importFiles', '[step3]'))); // bugfix 1001
+				"action" => WEBEDITION_DIR . "we_cmd.php",
+				"name" => "we_startform", "method" => "post"
+				), we_html_element::htmlHidden('step', 3) .
+				we_html_multiIconBox::getHTML("uploadFiles", $parts, 30, "", -1, "", "", "", g_l('importFiles', '[step3]'))); // bugfix 1001
 
 		$body = we_html_element::htmlBody(array(
-					"class" => "weDialogBody"
-						), $content);
+				"class" => "weDialogBody"
+				), $content);
 		return $this->_getHtmlPage($body);
 	}
 
@@ -325,14 +324,14 @@ function next() {
 		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$table->setCol(0, 0, null, $progressbar);
 		$table->setCol(0, 1, array("styke" => "text-align:right"), we_html_element::htmlDiv(array(
-					'id' => 'normButton'
-						), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)));
+				'id' => 'normButton'
+				), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)));
 
 		if($this->step == 3){
 			$table->setCol(0, 0, null, '');
 			$table->setCol(0, 1, array("style" => "text-align:right"), we_html_element::htmlDiv(array(
-						'id' => 'normButton'
-							), we_html_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
+					'id' => 'normButton'
+					), we_html_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
 		}
 
 		$content = $table->getHtml();
@@ -343,21 +342,21 @@ function next() {
 
 	function _getHiddens($noCmd = false){
 		return ($noCmd ? '' : we_html_element::htmlHidden('cmd', 'buttons')) . we_html_element::htmlHiddens(array(
-					'step' => 1,
-					// these are used by we_fileupload to grasp these values AND by editor to have when going back one step
-					'fu_file_parentID' => $this->parentID,
-					'fu_file_sameName' => $this->sameName,
-					'fu_doc_thumbs' => $this->thumbs,
-					'fu_doc_width' => $this->width,
-					'fu_doc_height' => $this->height,
-					'fu_doc_widthSelect' => $this->widthSelect,
-					'fu_doc_heightSelect' => $this->heightSelect,
-					'fu_doc_keepRatio' => $this->keepRatio,
-					'fu_doc_degrees' => $this->degrees,
-					'fu_doc_quality' => $this->quality,
-					'fu_doc_categories' => $this->categories,
-					'fu_doc_isSearchable' => $this->imgsSearchable,
-					'fu_doc_importMetadata' => $this->importMetadata,
+				'step' => 1,
+				// these are used by we_fileupload to grasp these values AND by editor to have when going back one step
+				'fu_file_parentID' => $this->parentID,
+				'fu_file_sameName' => $this->sameName,
+				'fu_doc_thumbs' => $this->thumbs,
+				'fu_doc_width' => $this->width,
+				'fu_doc_height' => $this->height,
+				'fu_doc_widthSelect' => $this->widthSelect,
+				'fu_doc_heightSelect' => $this->heightSelect,
+				'fu_doc_keepRatio' => $this->keepRatio,
+				'fu_doc_degrees' => $this->degrees,
+				'fu_doc_quality' => $this->quality,
+				'fu_doc_categories' => $this->categories,
+				'fu_doc_isSearchable' => $this->imgsSearchable,
+				'fu_doc_importMetadata' => $this->importMetadata,
 		));
 	}
 
@@ -365,8 +364,8 @@ function next() {
 		$step = we_base_request::_(we_base_request::INT, 'step', -1);
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody')
-						, we_html_element::htmlIFrame('imgimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&we_cmd[1]=" . $this->parentID . "&cmd=content" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->callBack, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
-						we_html_element::htmlIFrame('imgimportbuttons', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->callBack, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
+				, we_html_element::htmlIFrame('imgimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&we_cmd[1]=" . $this->parentID . "&cmd=content" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->callBack, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+				we_html_element::htmlIFrame('imgimportbuttons', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->callBack, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
 		);
 
 		return $this->_getHtmlPage($body);
@@ -375,25 +374,5 @@ function next() {
 	function _getHtmlPage($body, $js = ""){
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . weSuggest::getYuiFiles() . $js, $body);
 	}
-
-	/*
-	function savePropsInSession(){
-		$_SESSION['weS']['_we_import_files'] = array();
-		$vars = get_object_vars($this);
-		foreach($vars as $name => $value){
-			$_SESSION['weS']['_we_import_files'][$name] = $value;
-		}
-	}
-
-
-	function loadPropsFromSession(){
-		if(isset($_SESSION['weS']['_we_import_files'])){
-			foreach($_SESSION['weS']['_we_import_files'] as $name => $var){
-				$this->$name = $var;
-			}
-		}
-	}
-	 *
-	 */
 
 }

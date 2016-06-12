@@ -23,12 +23,12 @@
  */
 
 if(defined('MESSAGING_SYSTEM')){
-	$_transact = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
-	$_SESSION['weS']['we_data'][$_transact] = array();
+	$transact = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+	$_SESSION['weS']['we_data'][$transact] = array();
 
-	$_we_messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$_transact]);
-	$_we_messaging->add_msgobj('we_message');
-	$_we_messaging->saveInSession($_SESSION['weS']['we_data'][$_transact]);
+	$we_messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transact]);
+	$we_messaging->add_msgobj('we_message');
+	$we_messaging->saveInSession($_SESSION['weS']['we_data'][$transact]);
 	$messaging_text = g_l('javaMenu_moduleInformation', '[messaging][text]') . ":";
 	$new_messages = g_l('modules_messaging', '[new_messages]');
 	$new_tasks = g_l('modules_messaging', '[new_tasks]');

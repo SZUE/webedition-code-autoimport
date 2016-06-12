@@ -22,30 +22,30 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragment
-	$_theFrag = new we_customer_copyWeDocumentFilterFrag('copyWeDocumentCustomerFilter', 1, 200);
+	$theFrag = new we_customer_copyWeDocumentFilterFrag('copyWeDocumentCustomerFilter', 1, 200);
 } else { // print the window
 	// if any childs of the folder are open - bring message to close them
 	// REQUEST[we_cmd][1] = id of folder
 	// REQUEST[we_cmd][2] = table
-	$_id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
-	$_table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
+	$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
+	$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 2);
 
 	// if we_cmd 3 is set, take filters of that folder as parent!!
-	$_idForFilter = we_base_request::_(we_base_request::INT, 'we_cmd', $_id, 3);
+	$idForFilter = we_base_request::_(we_base_request::INT, 'we_cmd', $id, 3);
 
 
-	$_theFolder = new we_folder();
-	$_theFolder->initByID($_id, $_table);
+	$theFolder = new we_folder();
+	$theFolder->initByID($id, $table);
 
 	// now get all childs of this folder
-	$_db = new DB_WE();
+	$db = new DB_WE();
 
-	$_db->query('SELECT ID,ContentType FROM ' . $_db->escape($_table) . ' WHERE ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '" ) AND PATH LIKE "' . $_theFolder->Path . '/%"');
+	$db->query('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '" ) AND PATH LIKE "' . $theFolder->Path . '/%"');
 
-	$_allChildsJS = 'var _allChilds = {};';
+	$allChildsJS = 'var _allChilds = {};';
 
-	while($_db->next_record()){
-		$_allChildsJS .= "_allChilds['id_" . $_db->f("ID") . "'] = '" . $_db->f("ContentType") . "';";
+	while($db->next_record()){
+		$allChildsJS .= "_allChilds['id_" . $db->f("ID") . "'] = '" . $db->f("ContentType") . "';";
 	}
 
 	$pb = new we_progressBar(0, true);
@@ -60,20 +60,20 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 	$buttonBar = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 	$cmd3 = we_base_request::_(we_base_request::INT, 'we_cmd', false, 3);
 
-	$_iframeLocation = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=' . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2) . ($cmd3 !== false ? "&we_cmd[3]=" . $cmd3 : "" ) . '&startCopy=1';
+	$iframeLocation = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=' . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2) . ($cmd3 !== false ? "&we_cmd[3]=" . $cmd3 : "" ) . '&startCopy=1';
 
 	echo we_html_tools::getHtmlTop(g_l('modules_customerFilter', '[apply_filter]')) .
 	STYLESHEET .
 	we_html_element::jsElement('
 function checkForOpenChilds() {
-	' . $_allChildsJS . '
+	' . $allChildsJS . '
 	var _openChilds = [];
 	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 
 	for (frameId in _usedEditors) {
 
 		// table muss FILE_TABLE sein
-		if ( _usedEditors[frameId].getEditorEditorTable() == "' . $_table . '" ) {
+		if ( _usedEditors[frameId].getEditorEditorTable() == "' . $table . '" ) {
 			if ( _allChilds["id_" + _usedEditors[frameId].getEditorDocumentId()] && _allChilds["id_" + _usedEditors[frameId].getEditorDocumentId()] == _usedEditors[frameId].getEditorContentType() ) {
 				_openChilds.push( frameId );
 			}
@@ -93,7 +93,7 @@ function checkForOpenChilds() {
 		}
 
 	}
-	document.getElementById("iframeCopyWeDocumentCustomerFilter").src="' . $_iframeLocation . '";
+	document.getElementById("iframeCopyWeDocumentCustomerFilter").src="' . $iframeLocation . '";
 }');
 	echo '</head><body class="weDialogBody" onload="checkForOpenChilds()">' .
 	$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', '[apply_filter]'), $buttonBar) .

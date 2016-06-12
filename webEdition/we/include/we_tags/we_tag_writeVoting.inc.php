@@ -32,15 +32,15 @@ function we_tag_writeVoting(array $attribs){
 	$pattern = '/_we_voting_answer_(' . ($id ? : '[0-9]+') . ')_?([0-9]+)?/';
 
 	$vars = implode(',', array_keys($_REQUEST));
-	$_voting = $matches = array();
+	$voting = $matches = array();
 	if(preg_match_all($pattern, $vars, $matches)){
 		foreach($matches[0] as $key => $value){
 			$id = $matches[1][$key];
-			if(!isset($_voting[$id]) || !is_array($_voting[$id])){
-				$_voting[$id] = array();
+			if(!isset($voting[$id]) || !is_array($voting[$id])){
+				$voting[$id] = array();
 			}
 			if(($dat = we_base_request::_(we_base_request::HTML, $value)) !== false && $dat !== ''){// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
-				$_voting[$id][] = $dat;
+				$voting[$id][] = $dat;
 			}
 		}
 	}
@@ -57,7 +57,7 @@ function we_tag_writeVoting(array $attribs){
 	}
 
 
-	foreach($_voting as $id => $value){
+	foreach($voting as $id => $value){
 		$voting = new we_voting_voting($id);
 		if($voting->IsRequired && implode('', $value) == ''){
 

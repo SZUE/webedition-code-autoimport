@@ -703,7 +703,7 @@ class we_voting_voting extends we_base_model{
 		if(is_null($additionalfields)){
 			$additionalfields = '';
 		}
-		$_cookieStatus = $this->cookieDisabled() ? 0 : 1;
+		$cookieStatus = $this->cookieDisabled() ? 0 : 1;
 		$userid = (defined('CUSTOMER_TABLE') && !empty($_SESSION["webuser"]["registered"]) && !empty($_SESSION["webuser"]["ID"]) ?
 				$_SESSION["webuser"]["ID"] : 0);
 		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
@@ -713,7 +713,7 @@ class we_voting_voting extends we_base_model{
 				'ip' => $_SERVER['REMOTE_ADDR'],
 				'agent' => $_SERVER['HTTP_USER_AGENT'],
 				'userid' => $userid,
-				'cookie' => $_cookieStatus,
+				'cookie' => $cookieStatus,
 				'fallback' => $this->FallbackActive,
 				'answer' => $answer,
 				'answertext' => $answertext,

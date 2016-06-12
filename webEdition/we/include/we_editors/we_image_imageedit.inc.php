@@ -49,14 +49,14 @@ echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15
 	<form name="we_form" method="post" onsubmit="return false;">
 		<?php
 		echo we_class::hiddenTrans();
-		$_headline = g_l('weClass', '[image]');
+		$headline = g_l('weClass', '[image]');
 
-		$_gdtype = $we_doc->getGDType();
+		$gdtype = $we_doc->getGDType();
 
 		$supported = we_base_imageEdit::supported_image_types();
 		$focus = we_unserialize($GLOBALS['we_doc']->getElement('focus', 'dat'), array(0, 0));
 		echo we_html_element::htmlDiv(array(), '
-<select name="editmenue" onchange="changeOption(this);"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($_gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
+<select name="editmenue" onchange="changeOption(this);"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
 <option value="imageEditTools_reset" selected="selected" style="color:grey"></option>
 <optgroup label="' . g_l('weClass', '[edit]') . '">
 <option value="image_resize">' . g_l('weClass', '[resize]') . '&hellip;</option>
@@ -66,8 +66,8 @@ echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15
 </optgroup>
 <optgroup label="' . g_l('weClass', '[convert]') . '">' .
 			((in_array('jpg', $supported)) ? '<option value="image_convertJPEG">' . g_l('weClass', '[convert_jpg]') . '...</option>' : '') .
-			(($_gdtype != "gif" && in_array('gif', $supported)) ? '<option value="doImage_convertGIF">' . g_l('weClass', '[convert_gif]') . '</option>' : '') .
-			(($_gdtype != "png" && in_array('png', $supported)) ? '<option value="doImage_convertPNG">' . g_l('weClass', '[convert_png]') . '</option>' : '') .
+			(($gdtype != "gif" && in_array('gif', $supported)) ? '<option value="doImage_convertGIF">' . g_l('weClass', '[convert_gif]') . '</option>' : '') .
+			(($gdtype != "png" && in_array('png', $supported)) ? '<option value="doImage_convertPNG">' . g_l('weClass', '[convert_png]') . '</option>' : '') .
 			'</optgroup>
 </select>'
 		) .

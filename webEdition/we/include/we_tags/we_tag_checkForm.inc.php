@@ -75,9 +75,9 @@ if(self.' . $onError . '){' .
 
 	//  Generate mandatory array
 	if($mandatory){
-		$_fields = explode(',', $mandatory);
+		$fields = explode(',', $mandatory);
 		$jsMandatory = '//  check mandatory
-        var required = ["' . implode('", "', $_fields) . '"];
+        var required = ["' . implode('", "', $fields) . '"];
         missingReq = weCheckFormMandatory(formular, required);';
 	} else {
 		$jsMandatory = '';
@@ -91,13 +91,13 @@ if(self.' . $onError . '){' .
 
 
 	if($password){
-		$_pwFields = explode(',', $password);
-		if(count($_pwFields) != 3){
+		$pwFields = explode(',', $password);
+		if(count($pwFields) != 3){
 			$jsPasword = '';
 			return parseError(g_l('parser', '[checkForm_password]'));
 		}
 		$jsPasword = '//  check passwords
-        var password = ["' . implode('", "', $_pwFields) . '"];
+        var password = ["' . implode('", "', $pwFields) . '"];
         pwError = weCheckFormPassword(formular, password);
         ';
 	} else {

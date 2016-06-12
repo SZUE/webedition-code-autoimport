@@ -26,7 +26,7 @@ function we_parse_tag_xmlnode($attribs, $content, array $arr){
 	$to = weTag_getParserAttribute('to', $arr, 'screen');
 	$nameTo = weTag_getParserAttribute('nameto', $arr);
 
-	$unq = '$_xmlnode' . md5(uniqid(__FUNCTION__, true));
+	$unq = '$xmlnode' . md5(uniqid(__FUNCTION__, true));
 	return '<?php ' . $unq . '=' . we_tag_tagParser::printTag('xmlnode', $attribs) . ';
 while(' . $unq . '->next()){
 	if(  ' . $unq . '->hasChild() ){

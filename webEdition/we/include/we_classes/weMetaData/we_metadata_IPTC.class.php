@@ -46,7 +46,7 @@ class we_metadata_IPTC extends we_metadata_metaData{
 	}
 
 	protected function _getMetaData($selection = ""){
-		if(!$this->_valid){
+		if(!$this->valid){
 			return false;
 		}
 

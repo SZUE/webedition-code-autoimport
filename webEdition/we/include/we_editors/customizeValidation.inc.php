@@ -84,7 +84,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 
 
 	//  table with new and delete
-	$_table = '<table>
+	$table = '<table>
     <tr><td style="padding-right:10px;">' . we_html_tools::htmlSelect('validationService', $selectArr, 5, (isset($selectedService) ? $selectedService->getName() : ''), false, array('onchange' => 'we_cmd(\'customValidationService\',\'selectService\');'), "value", 320) . '</td>
         <td style="vertical-align:top">' . we_html_button::create_button('new_service', 'javascript:we_cmd(\'customValidationService\',\'newService\');')
 		. '<div style="height:10px;"></div>'
@@ -95,7 +95,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 		$hiddenFields;
 
 	$parts = array(
-		array('headline' => g_l('validation', '[available_services]'), 'html' => $_table, 'space' => we_html_multiIconBox::SPACE_MED2)
+		array('headline' => g_l('validation', '[available_services]'), 'html' => $table, 'space' => we_html_multiIconBox::SPACE_MED2)
 	);
 
 	if($services){

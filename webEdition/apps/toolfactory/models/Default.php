@@ -190,20 +190,20 @@ class toolfactory_models_Default extends we_app_Model{
 
 		$myid = $this->realNameToIntern($id);
 
-		$_props = we_tool_lookup::getToolProperties($myid);
+		$props = we_tool_lookup::getToolProperties($myid);
 
-		if(empty($_props)){
-			$_props = we_tool_lookup::getToolProperties($id);
+		if(empty($props)){
+			$props = we_tool_lookup::getToolProperties($id);
 			$myid = $id;
 		}
 
-		foreach($_props as $_key => $_prop){
-			$this->$_key = $_prop;
+		foreach($props as $key => $prop){
+			$this->$key = $prop;
 		}
 
 		$this->appconfig = we_app_Common::getManifest($myid);
 
-		$name = isset($_props['text']) ? $_props['text'] : $_props['classname'];
+		$name = isset($props['text']) ? $props['text'] : $props['classname'];
 
 		$this->Text = htmlspecialchars_decode($name);
 
@@ -222,7 +222,7 @@ class toolfactory_models_Default extends we_app_Model{
 
 		$appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
 
-		$permFile = WE_APPS_PATH . $_props['name'] . '/conf/permission.conf.php';
+		$permFile = WE_APPS_PATH . $props['name'] . '/conf/permission.conf.php';
 
 		if(file_exists($permFile)){
 			include ($permFile);

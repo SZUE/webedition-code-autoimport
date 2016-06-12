@@ -31,22 +31,22 @@ function we_tag_position(array $attribs){
 	}
 
 	//	here we get the needed attributes
-	$_reference = weTag_getAttribute("reference", $attribs, '', we_base_request::STRING);
+	$reference = weTag_getAttribute("reference", $attribs, '', we_base_request::STRING);
 	//	this value we will return later
-	$_retPos = "";
+	$retPos = "";
 
 	switch(($type = weTag_getAttribute("type", $attribs, '', we_base_request::STRING))){
 
 		case "listview" : //	inside a listview, we take direct global listview object
-			$_retPos = ($GLOBALS['lv']->start + $GLOBALS['lv']->count);
+			$retPos = ($GLOBALS['lv']->start + $GLOBALS['lv']->count);
 			break;
 
 		case "listdir" : //	inside a listview
 			if(isset($GLOBALS['we_position']['listdir'])){
-				$_content = $GLOBALS['we_position']['listdir'];
+				$content = $GLOBALS['we_position']['listdir'];
 			}
-			if(isset($_content) && $_content['position']){
-				$_retPos = $_content['position'];
+			if(isset($content) && $content['position']){
+				$retPos = $content['position'];
 			}
 			break;
 
@@ -58,14 +58,14 @@ function we_tag_position(array $attribs){
 			}
 			foreach($GLOBALS['we_position'][$type] as $name => $arr){
 
-				if(strpos($name, $_reference) === 0){
+				if(strpos($name, $reference) === 0){
 					if(is_array($arr)){
-						$_content = $arr;
+						$content = $arr;
 					}
 				}
 			}
-			if(isset($_content) && isset($_content['position'])){
-				$_retPos = $_content['position']; //  #6890
+			if(isset($content) && isset($content['position'])){
+				$retPos = $content['position']; //  #6890
 			}
 			break;
 
@@ -78,14 +78,14 @@ function we_tag_position(array $attribs){
 			}
 			foreach($GLOBALS['we_position'][$type] as $name => $arr){
 
-				if(strpos($name, $_reference) === 0){
+				if(strpos($name, $reference) === 0){
 					if(is_array($arr)){
-						$_content = $arr;
+						$content = $arr;
 					}
 				}
 			}
-			if(isset($_content) && $_content['position']){
-				$_retPos = $_content['position'];
+			if(isset($content) && $content['position']){
+				$retPos = $content['position'];
 			}
 			break;
 	}
@@ -93,10 +93,10 @@ function we_tag_position(array $attribs){
 	//	convert to desired format
 	switch(weTag_getAttribute("format", $attribs, 1, we_base_request::STRING)){
 		case 'a' :
-			return we_base_util::number2System($_retPos);
+			return we_base_util::number2System($retPos);
 		case 'A' :
-			return strtoupper(we_base_util::number2System($_retPos));
+			return strtoupper(we_base_util::number2System($retPos));
 		default :
-			return $_retPos;
+			return $retPos;
 	}
 }

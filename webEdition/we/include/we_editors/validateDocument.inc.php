@@ -57,34 +57,33 @@ if(!empty($customServices)){
 //  Generate Select-Menu with optgroups
 krsort($services);
 
-$_select = '';
-$_lastArt = '';
-$_lastCat = '';
-$_hiddens = '';
-$_js = '';
+$select = '';
+$lastArt = '';
+$lastCat = '';
+$hiddens = '';
 if($services){
-	$_select = '<select name="service" class="weSelect" style="width:350px;" onchange="switchPredefinedService(this.options[this.selectedIndex].value);">';
+	$select = '<select name="service" class="weSelect" style="width:350px;" onchange="switchPredefinedService(this.options[this.selectedIndex].value);">';
 	foreach($services as $art => $arr){
 		foreach($arr as $cat => $arrServices){
 			foreach($arrServices as $service){
 
-				if($_lastArt != $art){
-					if($_lastArt != ''){
-						$_select .= '</optgroup>';
-						$_lastCat = '1';
+				if($lastArt != $art){
+					if($lastArt != ''){
+						$select .= '</optgroup>';
+						$lastCat = '1';
 					}
-					$_lastArt = $art;
-					$_select .= '<optgroup class="lvl1" label="' . g_l('validation', '[art_' . $art . ']') . '">';
+					$lastArt = $art;
+					$select .= '<optgroup class="lvl1" label="' . g_l('validation', '[art_' . $art . ']') . '">';
 				}
-				if($_lastCat != $cat){
-					if($_lastCat != ''){
-						$_select .= '</optgroup>';
+				if($lastCat != $cat){
+					if($lastCat != ''){
+						$select .= '</optgroup>';
 					}
-					$_lastCat = $cat;
+					$lastCat = $cat;
 
-					$_select .= '<optgroup class="lvl2" label="-- ' . g_l('validation', '[category_' . $cat . ']') . '">';
+					$select .= '<optgroup class="lvl2" label="-- ' . g_l('validation', '[category_' . $cat . ']') . '">';
 				}
-				$_select .= '<option value="' . $service->getName() . '">' . oldHtmlspecialchars($service->name) . '</option>';
+				$select .= '<option value="' . $service->getName() . '">' . oldHtmlspecialchars($service->name) . '</option>';
 				$js .= '				host["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->host) . '";
                         path["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->path) . '";
                         s_method["' . $service->getName() . '"] = "' . $service->method . '";
@@ -95,9 +94,9 @@ if($services){
 			}
 		}
 	}
-	$_select .= '</optgroup></optgroup></select>';
+	$select .= '</optgroup></optgroup></select>';
 	$selectedService = $validationService[0];
-	$_hiddens = we_html_element::htmlHiddens(array(
+	$hiddens = we_html_element::htmlHiddens(array(
 			'host' => $selectedService->host,
 			'path' => $selectedService->path,
 			'ctype' => $selectedService->ctype,
@@ -107,7 +106,7 @@ if($services){
 			'additionalVars' => $selectedService->additionalVars
 	));
 } else {
-	$_select = g_l('validation', '[no_services_available]');
+	$select = g_l('validation', '[no_services_available]');
 }
 
 //  generate Body of page
@@ -117,8 +116,8 @@ $parts = array(
 		'html' =>
 		'<table class="default">
 <tr><td class="defaultfont" style="padding-right:20px;">' .
-		$_select .
-		$_hiddens .
+		$select .
+		$hiddens .
 		'</td><td style="padding-right:20px;">' .
 		we_html_button::create_button(we_html_button::EDIT, 'javascript:we_cmd(\'customValidationService\')', true, 100, 22, "", "", !permissionhandler::hasPerm("CAN_EDIT_VALIDATION"))
 		. '</td><td>' .

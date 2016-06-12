@@ -26,17 +26,17 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 //	Header for a none webEdition document opened with webEdition
 
-$_webEditionSiteUrl = getServerUrl() . SITE_DIR;
+$webEditionSiteUrl = getServerUrl() . SITE_DIR;
 $url = we_base_request::_(we_base_request::URL, 'url');
-$_errormsg = (strpos($url, $_webEditionSiteUrl) === 0 ?
+$errormsg = (strpos($url, $webEditionSiteUrl) === 0 ?
 		g_l('SEEM', '[ext_doc_tmp]') :
 		sprintf(g_l('SEEM', '[ext_doc]'), $url));
 
 
-$_table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin:5px 0 20px 0'), 1, 2);
-$_table->setColContent(0, 1, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
-$_table->setCol(0, 1, array("class" => "middlefont highlightElementChanged", 'style' => 'padding-left:9px;'), $_errormsg);
+$table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin:5px 0 20px 0'), 1, 2);
+$table->setColContent(0, 1, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
+$table->setCol(0, 1, array("class" => "middlefont highlightElementChanged", 'style' => 'padding-left:9px;'), $errormsg);
 
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("id" => 'eHeaderBody',), $_table->getHtml())
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("id" => 'eHeaderBody',), $table->getHtml())
 );

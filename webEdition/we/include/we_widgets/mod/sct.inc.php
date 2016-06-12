@@ -22,30 +22,30 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $aCols = explode(';', isset($aProps) ? $aProps[3] : we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
-$_disableNew = true;
-$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "');";
+$disableNew = true;
+$cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "');";
 if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 	if(permissionhandler::hasPerm("NO_DOCTYPE")){
-		$_disableNew = false;
+		$disableNew = false;
 	} else {
 		$dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
 		$id = f('SELECT dt.ID FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'] . ' LIMIT 1');
 		if($id){
-			$_disableNew = false;
-			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $id . "')";
+			$disableNew = false;
+			$cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $id . "')";
 		} else {
-			$_disableNew = true;
+			$disableNew = true;
 		}
 	}
 } else {
-	$_disableNew = true;
+	$disableNew = true;
 }
 
-$_disableObjects = false;
+$disableObjects = false;
 if(defined('OBJECT_TABLE')){
 	$allClasses = we_users_util::getAllowedClasses();
 	if(empty($allClasses)){
-		$_disableObjects = true;
+		$disableObjects = true;
 	}
 }
 
@@ -54,8 +54,8 @@ $js = array();
 if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$js["open_document"] = "top.we_cmd('open_document');";
 }
-if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS") && permissionhandler::hasPerm("CAN_SEE_PROPERTIES") && !$_disableNew){
-	$js["new_document"] = $_cmdNew;
+if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS") && permissionhandler::hasPerm("CAN_SEE_PROPERTIES") && !$disableNew){
+	$js["new_document"] = $cmdNew;
 }
 if(defined('TEMPLATES_TABLE') && permissionhandler::hasPerm("NEW_TEMPLATE") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
 	$js["new_template"] = "top.we_cmd('new','" . TEMPLATES_TABLE . "','','" . we_base_ContentTypes::TEMPLATE . "');";
@@ -66,10 +66,10 @@ if(permissionhandler::hasPerm("NEW_DOC_FOLDER")){
 if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$js["unpublished_pages"] = "top.we_cmd('openUnpublishedPages');";
 }
-if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") && !$_disableObjects){
+if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES") && !$disableObjects){
 	$js["unpublished_objects"] = "top.we_cmd('openUnpublishedObjects');";
 }
-if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("NEW_OBJECTFILE") && permissionhandler::hasPerm("CAN_SEE_PROPERTIES") && !$_disableObjects){
+if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("NEW_OBJECTFILE") && permissionhandler::hasPerm("CAN_SEE_PROPERTIES") && !$disableObjects){
 	$js["new_object"] = "top.we_cmd('new_objectFile');";
 }
 if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("NEW_OBJECT") && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
@@ -89,15 +89,15 @@ foreach($aCols as $sCol){
 }
 
 $sSctOut = '';
-$_col = 0;
+$col = 0;
 
 foreach($shortcuts as $sctCol){
 	$sSctOut .= '<div class="sct_row" style="display: block; margin-right: 1em; float: left;"><table class="default" style="width:100%;">';
 	$iCurrSctRow = 0;
-	foreach($sctCol as $_label){
-		if(isset($js[$_label])){
+	foreach($sctCol as $label){
+		if(isset($js[$label])){
 			$icon = '';
-			switch($_label){
+			switch($label){
 				case 'new_directory':
 					$icon = 'folder';
 					break;
@@ -124,12 +124,12 @@ foreach($shortcuts as $sctCol){
 					break;
 			}
 
-			$sSctOut .= '<tr onclick="' . $js[$_label] . '"><td class="sctFileIcon" data-contenttype="' . $icon . '"></td><td class="middlefont sctText">' . g_l('button', '[' . $_label . '][value]') . '</tr>';
+			$sSctOut .= '<tr onclick="' . $js[$label] . '"><td class="sctFileIcon" data-contenttype="' . $icon . '"></td><td class="middlefont sctText">' . g_l('button', '[' . $label . '][value]') . '</tr>';
 		}
 		$iCurrSctRow++;
 	}
 	$sSctOut .= '</table></div>';
-	$_col++;
+	$col++;
 }
 
 $sc = $sSctOut . we_html_element::jsElement('WE().util.setIconOfDocClass(document,"sctFileIcon");');

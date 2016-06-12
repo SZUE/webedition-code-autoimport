@@ -45,7 +45,7 @@ $pos++;
 
 $iDate = intval($aCols[1]);
 
-$doctable = $where = $_users_where = $workspace = array();
+$doctable = $where = $workspace = array();
 
 switch($iDate){
 	case 1 :

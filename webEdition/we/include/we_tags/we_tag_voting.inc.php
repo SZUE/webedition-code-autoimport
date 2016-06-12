@@ -38,16 +38,16 @@ function we_tag_voting(array $attribs){
 		return $foo;
 	}
 
-	$GLOBALS["_we_voting_namespace"] = $name;
+	$GLOBALS['_we_voting_namespace'] = $name;
 
 	if($GLOBALS['we_doc']->issetElement($name)){
 		$GLOBALS['_we_voting'] = new we_voting_voting($GLOBALS['we_doc']->getElement($name));
 	} else if($id != 0){
 		$GLOBALS['_we_voting'] = new we_voting_voting($id);
 	} else {
-		$__voting_matches = array();
-		$GLOBALS['_we_voting'] = (preg_match_all('/_we_voting_answer_([0-9]+)_?([0-9]+)?/', implode(',', array_keys($_REQUEST)), $__voting_matches) ?
-				new we_voting_voting($__voting_matches[1][0]) :
+		$voting_matches = array();
+		$GLOBALS['_we_voting'] = (preg_match_all('/_we_voting_answer_([0-9]+)_?([0-9]+)?/', implode(',', array_keys($_REQUEST)), $voting_matches) ?
+				new we_voting_voting($voting_matches[1][0]) :
 				new we_voting_voting());
 	}
 
