@@ -95,8 +95,8 @@ class weSuggest{
 	var $createButton = '';
 	var $table = FILE_TABLE;
 	var $width = 280;
-	var $doOnItemSelect = '';
-	var $doOnTextfieldBlur = '';
+	var $doOnItemSelectTxt = '';
+	var $doOnTextfieldBlurTxt = '';
 	protected $isDropFromTree = false;
 	protected $isDropFromExt = false;
 	protected $doOnDropFromTree = '';
@@ -320,8 +320,8 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 			$this->selector = self::DirSelector; //FIXME:self::Dirselector??
 			$this->table = FILE_TABLE;
 			$this->width = 280;
-			$this->doOnItemSelect = '';
-			$this->doOnTextfieldBlur = '';
+			$this->doOnItemSelectTxt = '';
+			$this->doOnTextfieldBlurTxt = '';
 		}
 		$this->acId = '';
 		$this->maxResults = 20;
@@ -377,11 +377,11 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 	}
 
 	function setDoOnItemSelect($val){
-		$this->doOnItemSelect = $val;
+		$this->doOnItemSelectTxt = $val;
 	}
 
 	function setDoOnTextfieldBlur($val){
-		$this->doOnTextfieldBlur = $val;
+		$this->doOnTextfieldBlurTxt = $val;
 	}
 
 	function setDoOnDropFromExt($val = ''){
@@ -592,10 +592,10 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 		  }
 		 *
 		 */
-		$this->doOnItemSelect[] = $this->doOnItemSelect;
-		$this->doOnItemSelect = '';
-		$this->doOnTextfieldBlur[] = $this->doOnTextfieldBlur;
-		$this->doOnTextfieldBlur = '';
+		$this->doOnItemSelect[] = $this->doOnItemSelectTxt;
+		$this->doOnItemSelectTxt = '';
+		$this->doOnTextfieldBlur[] = $this->doOnTextfieldBlurTxt;
+		$this->doOnTextfieldBlurTxt = '';
 	}
 
 	/**

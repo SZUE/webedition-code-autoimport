@@ -150,7 +150,7 @@ class we_metadata_metaData{
 			if(!in_array('read', $this->instance[$type]->accesstypes)){
 				return false;
 			}
-			$this->metadata[strToLower($type)] = $this->instance[$type]->_getMetaData();
+			$this->metadata[strToLower($type)] = $this->instance[$type]->getInstMetaData();
 		}
 		return $this->metadata;
 	}
@@ -163,7 +163,7 @@ class we_metadata_metaData{
 			if(!in_array('write', $this->instance[$type]->accesstypes)){
 				return false;
 			}
-			$this->instance[$type]->setMetaData($data = '');
+			$this->instance[$type]->setInstMetaData($data = '');
 		}
 		return true;
 	}
@@ -308,7 +308,7 @@ class we_metadata_metaData{
 	 * 			a selection is specified as an array of metadata tags/fields
 	 * @return array metadata according to $selection
 	 */
-	protected function _getMetaData($selection = ''){
+	protected function getInstMetaData($selection = ''){
 		// override!
 		return $this->metadata;
 	}
@@ -319,7 +319,7 @@ class we_metadata_metaData{
 	 * 			a selection is specified as an array of metadata tags/fields
 	 * @return array metadata according to $selection
 	 */
-	protected function setMetaData($data = '', $datatype = ''){
+	protected function setInstMetaData($data = '', $datatype = ''){
 		return true;
 		// override!
 	}

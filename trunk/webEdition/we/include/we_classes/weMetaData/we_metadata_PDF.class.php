@@ -33,7 +33,7 @@ class we_metadata_PDF extends we_metadata_metaData{
 		$this->accesstypes = array('read');
 	}
 
-	protected function _getMetaData($selection = ''){
+	protected function getInstMetaData($selection = ''){
 		if(!$this->valid){
 			return false;
 		}
