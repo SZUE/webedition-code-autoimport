@@ -111,25 +111,25 @@ function we_tag_include(array $attribs){//FIXME: include doesn't work in editmod
 	if(we_tag('ifEditmode')){
 		if($name && !($id || $path)){
 			$type = weTag_getAttribute('kind', $attribs, we_base_link::TYPE_ALL, we_base_request::STRING);
-			$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+			$nameOrig = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'), we_base_request::RAW);
 
 			echo '<table class="weEditTable" style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;color:white;">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
-			we_tag('href', array('name' => $_name, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE), 'startid' => weTag_getAttribute('startid', $attribs, 0, we_base_request::INT), 'type' => $type, 'size' => weTag_getAttribute('size', $attribs, 50, we_base_request::UNIT))) .
+			we_tag('href', array('name' => $nameOrig, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE), 'startid' => weTag_getAttribute('startid', $attribs, 0, we_base_request::INT), 'type' => $type, 'size' => weTag_getAttribute('size', $attribs, 50, we_base_request::UNIT))) .
 			'</td></tr></table>';
 			return '';
 		}
 	} else //notEditmode
 	if($name && !($id || $path)){
 		$type = weTag_getAttribute('kind', $attribs, we_base_link::TYPE_ALL, we_base_request::STRING);
-		$_name = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+		$nameOrig = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 		$nint = $name . we_base_link::MAGIC_INT_LINK;
 		$int = intval($GLOBALS['we_doc']->getElement($nint));
 		if($int && ($intID = intval($GLOBALS['we_doc']->getElement($nint . 'ID')))){
 			$id = $intID;
 			$path = '';
 		} else {
-			$path = we_tag('href', array('name' => $_name, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
+			$path = we_tag('href', array('name' => $nameOrig, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
 		}
 	}
 

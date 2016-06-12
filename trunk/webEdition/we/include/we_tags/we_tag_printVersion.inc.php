@@ -36,7 +36,7 @@ function we_tag_printVersion(array $attribs, $content){
 
 	$id = isset($GLOBALS['we_obj']) ? $GLOBALS['we_obj']->ID : $doc->ID;
 
-	$_query_string = array();
+	$query_string = array();
 
 	$hideQuery = array('we_objectID', 'tid', 'id', 'pv_tid', 'pv_id', 'we_cmd', 'responseText', 'we_mode', 'btype', SESSION_NAME, 'PHPSESSID');
 	if(isset($_SESSION)){
@@ -46,32 +46,32 @@ function we_tag_printVersion(array $attribs, $content){
 		$tmp = filterXss(array_merge($_GET, $_POST));
 		foreach($tmp as $k => $v){
 			if((!is_array($v)) && (!in_array($k, $hideQuery))){
-				$_query_string[$k] = $v;
+				$query_string[$k] = $v;
 			}
 		}
 	}
 
 	if($doc instanceof we_objectFile){
 		//objects are always shown by a dynamic page
-		$_query_string['we_objectID'] = $id;
-		$_query_string['tid'] = $tid;
+		$query_string['we_objectID'] = $id;
+		$query_string['tid'] = $tid;
 	} else {
 		$triggerID = $triggerID ? : ($doc->IsDynamic ? $doc->ID : 0);
 		if($triggerID || $doc->IsDynamic){
-			$_query_string['pv_id'] = $id;
-			$_query_string['pv_tid'] = $tid;
+			$query_string['pv_id'] = $id;
+			$query_string['pv_tid'] = $tid;
 		} else {
 			return $content;
 			/*
-			  $_query_string['we_cmd[0]'] = 'show';
-			  $_query_string['we_cmd[1]'] = $id;
-			  $_query_string['we_cmd[4]'] = $tid;
+			  $query_string['we_cmd[0]'] = 'show';
+			  $query_string['we_cmd[1]'] = $id;
+			  $query_string['we_cmd[4]'] = $tid;
 			  $url = WEBEDITION_DIR . 'we_cmd.php';
 			 */
 		}
 	}
 
-	$attribs['href'] = ($triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'])) . '?' . http_build_query($_query_string);
+	$attribs['href'] = ($triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'])) . '?' . http_build_query($query_string);
 
 	return ($link ?
 			getHtmlTag('a', removeAttribs($attribs, array('tid', 'triggerID', 'triggerid', 'doc', 'type', 'link', 'Link')), $content, true) :

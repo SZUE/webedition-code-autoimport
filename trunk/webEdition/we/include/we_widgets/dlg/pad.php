@@ -114,13 +114,13 @@ list($pad_header_enc, ) = explode(',', we_base_request::_(we_base_request::STRIN
 $pad_header = base64_decode($pad_header_enc);
 $DB_WE = new DB_WE();
 $DB_WE->query('SELECT	distinct(WidgetName) FROM ' . NOTEPAD_TABLE . ' WHERE UserID=' . intval($_SESSION['user']['ID']));
-$_options = array(
+$options = array(
 	$pad_header => $pad_header, g_l('cockpit', '[change]') => g_l('cockpit', '[change]')
 );
 while($DB_WE->next_record()){
-	$_options[$DB_WE->f('WidgetName')] = $DB_WE->f('WidgetName');
+	$options[$DB_WE->f('WidgetName')] = $DB_WE->f('WidgetName');
 }
-$oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($_options), 1, "", false, array('id' => "title", 'onchange' => ""), 'value');
+$oSctTitle = we_html_tools::htmlSelect("sct_title", array_unique($options), 1, "", false, array('id' => "title", 'onchange' => ""), 'value');
 $parts[] = array(
 	"headline" => g_l('cockpit', '[title]'), "html" => $oSctTitle, 'space' => we_html_multiIconBox::SPACE_MED
 );

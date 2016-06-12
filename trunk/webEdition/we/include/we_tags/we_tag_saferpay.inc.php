@@ -59,10 +59,10 @@ function we_tag_saferpay(array $attribs){
 	$useVat = weTag_getAttribute('usevat', $attribs, false, we_base_request::BOOL);
 
 	if($useVat){
-		$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
+		$customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
 
 		$weShopVatRule = we_shop_vatRule::getShopVatRule();
-		$calcVat = $weShopVatRule->executeVatRule($_customer);
+		$calcVat = $weShopVatRule->executeVatRule($customer);
 	}
 
 	// var_dump($attribs);

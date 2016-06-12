@@ -104,8 +104,8 @@ function ini_get_message($val){
 }
 
 function parseValue($name, $value){
-	if(in_array($name, array_keys($GLOBALS['_types']))){
-		if($GLOBALS['_types'][$name] === 'bytes' && $value){
+	if(in_array($name, array_keys($GLOBALS['types']))){
+		if($GLOBALS['types'][$name] === 'bytes' && $value){
 
 			$value = we_convertIniSizes($value);
 			return convertToMb($value) . ' (' . $value . ' Bytes)';

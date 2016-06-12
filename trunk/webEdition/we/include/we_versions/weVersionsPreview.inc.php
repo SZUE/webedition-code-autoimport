@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //FIXME make this a class
-$_db = $GLOBALS['DB_WE'];
+$db = $GLOBALS['DB_WE'];
 
 function doNotShowFields($k){
 	$notshow = array(
@@ -65,7 +65,7 @@ $newDoc = we_versions_version::loadVersion(' WHERE ID=' . intval($ID));
 $compareID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $oldDoc = we_versions_version::loadVersion(($compareID ?
 			' WHERE ID=' . $compareID :
-			' WHERE version<' . intval($newDoc['version']) . ' AND documentTable="' . $_db->escape($newDoc['documentTable']) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1'));
+			' WHERE version<' . intval($newDoc['version']) . ' AND documentTable="' . $db->escape($newDoc['documentTable']) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1'));
 
 
 $isObj = false;
@@ -82,13 +82,13 @@ if(!($isObj OR $isTempl)){
 	//get path of preview-file
 	$binaryPathNew = $newDoc['binaryPath'];
 	if(!$binaryPathNew){
-		$binaryPathNew = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($newDoc['version']) . ' AND documentTable="' . $_db->escape($newDoc['documentTable']) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
+		$binaryPathNew = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($newDoc['version']) . ' AND documentTable="' . $db->escape($newDoc['documentTable']) . '" AND documentID=' . intval($newDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 	}
 
 	if($oldDoc){
 		$binaryPathOld = $oldDoc['binaryPath'];
 		if(!$binaryPathOld){
-			$binaryPathOld = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($oldDoc['version']) . ' AND documentTable="' . $_db->escape($oldDoc['documentTable']) . '" AND documentID=' . intval($oldDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
+			$binaryPathOld = f('SELECT binaryPath FROM ' . VERSIONS_TABLE . " WHERE binaryPath!='' AND version<" . intval($oldDoc['version']) . ' AND documentTable="' . $db->escape($oldDoc['documentTable']) . '" AND documentID=' . intval($oldDoc['documentID']) . ' ORDER BY version DESC LIMIT 1');
 		}
 	}
 
@@ -148,7 +148,7 @@ if(!empty($oldDoc) && $isTempl){
 			array());
 	$contentOld = '<textarea style="width:99%;height:99%">' . ($oDocElements ? $oDocElements['data']['dat'] : '') . '</textarea>';
 }
-$_versions_time_days = new we_html_select(array(
+$versions_time_days = new we_html_select(array(
 	'name' => 'versions_time_days',
 	'style' => '',
 	'class' => 'weSelect',
@@ -160,17 +160,17 @@ $versionOld = '';
 if(!empty($oldDoc)){
 	$versionOld = ' AND version!=' . intval($oldDoc['version']);
 }
-$_db->query('SELECT ID,version, FROM_UNIXTIME(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . ' AND documentTable="' . $_db->escape($newDoc['documentTable']) . '" AND version!=' . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
-$versions = $_db->getAllFirst(true, MYSQL_ASSOC);
+$db->query('SELECT ID,version, FROM_UNIXTIME(timestamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS timestamp FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($newDoc['documentID']) . ' AND documentTable="' . $db->escape($newDoc['documentTable']) . '" AND version!=' . intval($newDoc['version']) . ' ' . $versionOld . "  ORDER BY version ASC");
+$versions = $db->getAllFirst(true, MYSQL_ASSOC);
 
-$_versions_time_days->addOption('', g_l('versions', '[pleaseChoose]'));
+$versions_time_days->addOption('', g_l('versions', '[pleaseChoose]'));
 foreach($versions as $k => $v){
 	$txt = g_l('versions', '[version]') . ' ' . $v['version'] . " " . g_l('versions', '[from]') . ' ' . $v['timestamp'];
-	$_versions_time_days->addOption($k, $txt);
+	$versions_time_days->addOption($k, $txt);
 }
 
 $contentDiff = '<div id="top">' . g_l('versions', '[VersionChangeTxt]') . '<br/><br/>' .
-	g_l('versions', '[VersionNumber]') . " " . $_versions_time_days->getHtml() . '
+	g_l('versions', '[VersionNumber]') . " " . $versions_time_days->getHtml() . '
 			<div style="margin:20px 0px 0px 0px;" class="defaultfont"><a href="javascript:window.print()">' . g_l('versions', '[printPage]') . '</a></div>
 			</div>
 			<div id="topPrint">
@@ -544,14 +544,14 @@ if(empty($newCustomFilter) && empty($oldCustomFilter)){
 }
 
 $contentDiff .= '</table>';
-$_tab_1 = $contentDiff;
+$tab_1 = $contentDiff;
 
 if(!$isObj){
-	$_tab_2 = $contentNew;
-	$_tab_3 = $contentOld;
+	$tab_2 = $contentNew;
+	$tab_3 = $contentOld;
 } else {
-	$_tab_2 = "";
-	$_tab_3 = "";
+	$tab_2 = "";
+	$tab_3 = "";
 }
 
 echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($newDoc['Charset'] ? : DEFAULT_CHARSET)) .
@@ -585,13 +585,13 @@ echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]')
 	</div>
 	<div id="content">
 		<div id="tab1" style="display:block;width:100%;">
-			<?php echo $_tab_1 ?>
+			<?php echo $tab_1 ?>
 		</div>
 		<div id="tab2" style="display:none;height:100%;width:100%">
-			<?php echo $_tab_2 ?>
+			<?php echo $tab_2 ?>
 		</div>
 		<div id="tab3" style="display:none;height:100%;width:100%">
-			<?php echo $_tab_3 ?>
+			<?php echo $tab_3 ?>
 		</div>
 	</div>
 

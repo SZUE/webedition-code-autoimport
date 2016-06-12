@@ -360,57 +360,57 @@ WE().consts.weSearch= {
 	}
 
 	function getSearchDialogOptions($whichSearch){
-		$_table = new we_html_table(array('style' => 'width:500px',), 2, 3);
+		$table = new we_html_table(array('style' => 'width:500px',), 2, 3);
 		$row = 0;
 		$currentSearchForField = $this->Model->getProperty('currentSearchForField');
 
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
-				$_table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol($row++, 1, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$_table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$table->setCol($row++, 1, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_TMPL :
-				$_table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_MEDIA :
-				$_table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$_table->setCol($row++, 1, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$_table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['meta']) ? false : true, 'searchForMeta' . $whichSearch, g_l('searchtool', '[onlyMetadata]'), false, 'defaultfont', ''));
+				$table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$table->setCol($row++, 1, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['meta']) ? false : true, 'searchForMeta' . $whichSearch, g_l('searchtool', '[onlyMetadata]'), false, 'defaultfont', ''));
 
-				return $_table->getHtml();
+				return $table->getHtml();
 		}
-		$_table->setCol($row++, 2, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$table->setCol($row++, 2, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
-		return $_table->getHtml();
+		return $table->getHtml();
 	}
 
 	function getSearchDialogMediaType($whichSearch){
-		$_table = new we_html_table(array('style' => 'width:400px',), 2, 2);
+		$table = new we_html_table(array('style' => 'width:400px',), 2, 2);
 		$currentSearchForContentType = $this->Model->getProperty('currentSearchForContentType');
 
 		switch($whichSearch){
 			case self::SEARCH_MEDIA :
 				$n = 1;
-				$_table->setCol(0, 0, array('style' => 'width:200px;'), we_html_element::htmlHiddens(array(
+				$table->setCol(0, 0, array('style' => 'width:200px;'), we_html_element::htmlHiddens(array(
 						'searchFields' . $whichSearch . '[' . $n . ']' => 'ContentType',
 						'search' . $whichSearch . '[' . $n . ']' => 1,
 						'location' . $whichSearch . '[' . $n++ . ']' => 'IN')) .
 					we_html_forms::checkboxWithHidden($currentSearchForContentType['image'] ? true : false, 'searchForImage' . $whichSearch, g_l('contentTypes', '[image/*]'), false, 'defaultfont withSpace', ''));
-				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['audio'] ? true : false, 'searchForAudio' . $whichSearch, g_l('contentTypes', '[audio/*]'), false, 'defaultfont', ''));
-				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['video'] ? true : false, 'searchForVideo' . $whichSearch, g_l('contentTypes', '[video/*]'), false, 'defaultfont', ''));
-				$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['other'] ? true : false, 'searchForOther' . $whichSearch, g_l('contentTypes', '[media/*]'), false, 'defaultfont', '', false));
+				$table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['audio'] ? true : false, 'searchForAudio' . $whichSearch, g_l('contentTypes', '[audio/*]'), false, 'defaultfont', ''));
+				$table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['video'] ? true : false, 'searchForVideo' . $whichSearch, g_l('contentTypes', '[video/*]'), false, 'defaultfont', ''));
+				$table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['other'] ? true : false, 'searchForOther' . $whichSearch, g_l('contentTypes', '[media/*]'), false, 'defaultfont', '', false));
 				break;
 			default:
 				return;
 		}
 
-		return $_table->getHtml();
+		return $table->getHtml();
 	}
 
 	function getSearchDialogFilter($whichSearch){
-		$_table = new we_html_table(array(
+		$table = new we_html_table(array(
 			'width' => 400,
 			), 4, 4);
 
@@ -419,18 +419,18 @@ WE().consts.weSearch= {
 		switch($whichSearch){
 			case self::SEARCH_MEDIA :
 				$n = 2;
-				$_table->setCol(0, 0, array(), g_l('searchtool', '[usage_state]') . ': ');
-				$_table->setCol(0, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
+				$table->setCol(0, 0, array(), g_l('searchtool', '[usage_state]') . ': ');
+				$table->setCol(0, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
 						'searchFields' . $whichSearch . '[' . $n . ']' => 'IsUsed',
 						'location' . $whichSearch . '[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', array(
 						0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_unsed]'),
 						2 => g_l('searchtool', '[only_unused]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, array(), 'value', 228));
-				$_table->setCol(0, 3, array(), we_html_tools::htmlAlertAttentionBox(g_l('searchtool', '[media_do_rebuild]'), we_html_tools::TYPE_HELP, false));
+				$table->setCol(0, 3, array(), we_html_tools::htmlAlertAttentionBox(g_l('searchtool', '[media_do_rebuild]'), we_html_tools::TYPE_HELP, false));
 
-				$_table->setCol(1, 0, array(), g_l('searchtool', '[protection]') . ': ');
-				$_table->setCol(1, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
+				$table->setCol(1, 0, array(), g_l('searchtool', '[protection]') . ': ');
+				$table->setCol(1, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
 						'searchFields' . $whichSearch . '[' . ++$n . ']' => 'IsProtected',
 						'location' . $whichSearch . '[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', array(
@@ -443,10 +443,10 @@ WE().consts.weSearch= {
 			default:
 				return;
 		}
-		$_table->setCol(2, 0, array('colspan' => 4), $this->getSearchDialogOptionalFields($whichSearch));
-		$_table->setCol(3, 3, array(), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$table->setCol(2, 0, array('colspan' => 4), $this->getSearchDialogOptionalFields($whichSearch));
+		$table->setCol(3, 3, array(), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
-		return $_table->getHtml();
+		return $table->getHtml();
 	}
 
 	function getSearchDialogCheckboxesAdvSearch(){
@@ -458,33 +458,33 @@ WE().consts.weSearch= {
 		 *
 		 */
 
-		$_table = new we_html_table(array('style' => 'width:550px',), 4, 3);
+		$table = new we_html_table(array('style' => 'width:550px',), 4, 3);
 		$currentSearchTables = $this->Model->getProperty('currentSearchTables');
 
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-			$_table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(in_array(FILE_TABLE, $currentSearchTables), 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
+			$table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(in_array(FILE_TABLE, $currentSearchTables), 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
 		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-			$_table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden(in_array(TEMPLATES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
+			$table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden(in_array(TEMPLATES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
 		}
 
 		if(defined('OBJECT_TABLE')){
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
-				$_table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden(in_array(OBJECT_FILES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
+				$table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden(in_array(OBJECT_FILES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-				$_table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden(in_array(OBJECT_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
+				$table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden(in_array(OBJECT_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
 			}
 		}
 
 		if(permissionhandler::hasPerm('SEE_VERSIONS')){
-			$_table->setCol(0, 2, array(), we_html_forms::checkboxWithHidden(in_array(VERSIONS_TABLE, $currentSearchTables), 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
+			$table->setCol(0, 2, array(), we_html_forms::checkboxWithHidden(in_array(VERSIONS_TABLE, $currentSearchTables), 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
-		$_table->setCol(1, 2, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$table->setCol(1, 2, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
-		return $_table->getHtml();
+		return $table->getHtml();
 	}
 
 	function getSearchDialog($whichSearch = ''){
@@ -738,17 +738,17 @@ WE().consts.weSearch= {
 					$templateText = '';
 				}
 
-				$_defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
+				$defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
 				$metafields = array();
-				$_fieldcount = min(count($_defined_fields), 6);
-				for($i = 0; $i < $_fieldcount; $i++){
-					$_tagName = $_defined_fields[$i]["tag"];
+				$fieldcount = min(count($defined_fields), 6);
+				for($i = 0; $i < $fieldcount; $i++){
+					$tagName = $defined_fields[$i]["tag"];
 
 					if(we_exim_contentProvider::isBinary($result[$f]["docID"])){
-						$DB_WE->query('SELECT a.ID,c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($result[$f]["docID"]) . ' AND b.Name="' . escape_sql_query($_tagName) . '" AND b.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
-						$metafields[$_tagName] = '';
+						$DB_WE->query('SELECT a.ID,c.Dat FROM (' . FILE_TABLE . ' a LEFT JOIN ' . LINK_TABLE . ' b ON (a.ID=b.DID)) LEFT JOIN ' . CONTENT_TABLE . " c ON (b.CID=c.ID) WHERE b.DID=" . intval($result[$f]["docID"]) . ' AND b.Name="' . escape_sql_query($tagName) . '" AND b.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
+						$metafields[$tagName] = '';
 						while($DB_WE->next_record()){
-							$metafields[$_tagName] = we_base_util::shortenPath($DB_WE->f('Dat'), 45);
+							$metafields[$tagName] = we_base_util::shortenPath($DB_WE->f('Dat'), 45);
 						}
 					}
 				}
@@ -906,7 +906,7 @@ WE().consts.weSearch= {
 		return we_html_element::htmlHiddens(array(
 				'setView' . $whichSearch => $currentSetView,
 				'Order' . $whichSearch => $currentOrder,
-				'mode' => $_mode = $this->Model->mode,
+				'mode' => $mode = $this->Model->mode,
 				'searchstart' . $whichSearch => $currentSearchstart,
 				'newSearch' => 1,
 				'position' => '',
@@ -1021,47 +1021,47 @@ WE().consts.weSearch= {
 					case 'ParentIDDoc':
 					case 'ParentIDObj':
 					case 'ParentIDTmpl':
-						$_linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
+						$linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 
-						$_rootDirID = 0;
+						$rootDirID = 0;
 						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value");
 						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "[" . $i . "]'].value");
-						$_cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','')";
-						$_button = we_html_button::create_button(we_html_button::SELECT, $_cmd, true, 60, 22, '', '', false);
-						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ""), $_button);
+						$cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "','','')";
+						$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 60, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ""), $button);
 
 						$searchInput = $selector;
 						break;
 					case 'HasReferenceToID':
-						$_linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
+						$linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 
-						$_rootDirID = 0;
+						$rootDirID = 0;
 						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value");
 						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "[" . $i . "]'].value");
 
-						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','" . we_base_ContentTypes::IMAGE . "')", true, 60, 22, '', '', false);
-						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $_button);
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','" . we_base_ContentTypes::IMAGE . "')", true, 60, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $button);
 
 						$searchInput = $selector;
 						break;
 					case 'MasterTemplateID':
 					case 'temp_template_id':
-						$_linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
+						$linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 
-						$_rootDirID = 0;
+						$rootDirID = 0;
 						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value");
 						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "[" . $i . "]'].value");
 
-						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $_rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')", true, 60, 22, '', '', false);
-						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $_button);
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')", true, 60, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $button);
 
 						$searchInput = $selector;
 						break;
 					case 'temp_category':
-						$_linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
-						$_rootDirID = 0;
-						$_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'search" . $whichSearch . "ParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search" . $whichSearch . "[" . $i . "]\\'].value','','','" . $_rootDirID . "','','')", true, 60, 22, '', '', false);
-						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $_linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $_button);
+						$linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
+						$rootDirID = 0;
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . CATEGORY_TABLE . "','document.we_form.elements[\\'search" . $whichSearch . "ParentID[" . $i . "]\\'].value','document.we_form.elements[\\'search" . $whichSearch . "[" . $i . "]\\'].value','','','" . $rootDirID . "','','')", true, 60, 22, '', '', false);
+						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $button);
 
 						$searchInput = $selector;
 				}
@@ -1362,12 +1362,12 @@ WE().consts.weSearch= {
 		}
 		$yuiSuggest->setWidth(380);
 		$currentFolderID = $this->Model->getProperty('currentFolderID');
-		$_path = id_to_path($currentFolderID, $table, $this->db);
+		$path = id_to_path($currentFolderID, $table, $this->db);
 
 
 		$yuiSuggest->setAcId($ACname);
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput($nameFolderPath, $_path);
+		$yuiSuggest->setInput($nameFolderPath, $path);
 		$yuiSuggest->setLabel("");
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);

@@ -92,17 +92,17 @@ $GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=NULL WHERE Ping<(NO
 
 
 if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
-	$_table_to_load = FILE_TABLE;
+	$table_to_load = FILE_TABLE;
 } else if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
-	$_table_to_load = TEMPLATES_TABLE;
+	$table_to_load = TEMPLATES_TABLE;
 } else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
-	$_table_to_load = OBJECT_FILES_TABLE;
+	$table_to_load = OBJECT_FILES_TABLE;
 } else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
-	$_table_to_load = OBJECT_TABLE;
+	$table_to_load = OBJECT_TABLE;
 } else if(permissionhandler::hasPerm("CAN_SEE_COLLECTIONS")){
-	$_table_to_load = VFILE_TABLE;
+	$table_to_load = VFILE_TABLE;
 } else {
-	$_table_to_load = "";
+	$table_to_load = "";
 }
 
 $jsCmd = array();
@@ -498,7 +498,7 @@ if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailabl
 //-->
 </script>
 </head>
-<body id="weMainBody" onload="initWE(); top.start('<?php echo $_table_to_load; ?>'); startMsg(); updateCheck();" onbeforeunload ="return doUnload();">
+<body id="weMainBody" onload="initWE(); top.start('<?php echo $table_to_load; ?>'); startMsg(); updateCheck();" onbeforeunload ="return doUnload();">
 	<div id="headerDiv"><?php
 		$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
 		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
@@ -509,7 +509,7 @@ if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailabl
 		</div>
 	</div>
 	<div id="resizeFrame"><?php
-		$_sidebarwidth = getSidebarWidth();
+		$sidebarwidth = getSidebarWidth();
 		switch($_SESSION['weS']['we_mode']){
 			default:
 			case we_base_constants::MODE_NORMAL:
@@ -529,13 +529,13 @@ if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailabl
 		<div style="width:<?php echo $treewidth; ?>px;<?php echo $treeStyle; ?>" id="bframeDiv">
 			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
 		</div>
-		<div style="right:<?php echo $_sidebarwidth; ?>px;left:<?php echo $treewidth; ?>px;" id="bm_content_frameDiv">
+		<div style="right:<?php echo $sidebarwidth; ?>px;left:<?php echo $treewidth; ?>px;" id="bm_content_frameDiv">
 			<iframe src="<?php echo WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame"></iframe>
 		</div>
 		<?php
 		if(!(SIDEBAR_DISABLED == 1)){
 			?>
-			<div style="width:<?php echo $_sidebarwidth; ?>px;" id="sidebarDiv">
+			<div style="width:<?php echo $sidebarwidth; ?>px;" id="sidebarDiv">
 				<?php
 				$weFrame = new we_sidebar_frames();
 				$weFrame->getHTML('');

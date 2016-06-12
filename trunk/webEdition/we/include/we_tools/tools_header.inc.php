@@ -25,40 +25,40 @@ $we_tabs = new we_tabs();
 
 $name = array();
 
-$_menuItems = we_tool_lookup::getAllTools(true, false);
+$menuItems = we_tool_lookup::getAllTools(true, false);
 $tool = we_base_request::_(we_base_request::STRING, 'tool');
 
 // temporarily show search-tab (on first position)
-foreach($_menuItems as $_menuItem){
-	if($_menuItem["name"] === 'weSearch'){
+foreach($menuItems as $menuItem){
+	if($menuItem["name"] === 'weSearch'){
 		$text = g_l('searchtool', '[weSearch]');
-		if(permissionhandler::hasPerm($_menuItem['startpermission'])){
-			$we_tabs->addTab(new we_tab($text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+		if(permissionhandler::hasPerm($menuItem['startpermission'])){
+			$we_tabs->addTab(new we_tab($text, ($tool == $menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
 		}
 	}
 }
 
-foreach($_menuItems as $_menuItem){
-	$text = $_menuItem["text"];
-	if($_menuItem["name"] === 'toolfactory'){
-		if(permissionhandler::hasPerm($_menuItem['startpermission'])){
-			$we_tabs->addTab(new we_tab($text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+foreach($menuItems as $menuItem){
+	$text = $menuItem["text"];
+	if($menuItem["name"] === 'toolfactory'){
+		if(permissionhandler::hasPerm($menuItem['startpermission'])){
+			$we_tabs->addTab(new we_tab($text, ($tool == $menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
 		}
 	}
 }
 
-foreach($_menuItems as $_menuItem){
-	switch($_menuItem["name"]){
+foreach($menuItems as $menuItem){
+	switch($menuItem["name"]){
 		case "weSearch":
 			$text = g_l('searchtool', '[weSearch]');
 			break;
 		case 'toolfactory':
-			$text = $_menuItem["text"];
+			$text = $menuItem["text"];
 			break;
 		default:
-			$text = $_menuItem["text"];
-			if(permissionhandler::hasPerm($_menuItem['startpermission'])){
-				$we_tabs->addTab(new we_tab($text, ($tool == $_menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $_menuItem["name"] . "');", array("id" => $_menuItem["name"])));
+			$text = $menuItem["text"];
+			if(permissionhandler::hasPerm($menuItem['startpermission'])){
+				$we_tabs->addTab(new we_tab($text, ($tool == $menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
 			}
 	}
 }

@@ -110,7 +110,7 @@ class we_versions_search{
 				}
 				if($modConst){
 					$ids = array();
-					$_ids = array();
+					$ids = array();
 					$this->db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications!=""');
 					$modifications = array_map('makeArrayFromCSV', $this->db->getAllFirst(false));
 
@@ -125,18 +125,18 @@ class we_versions_search{
 
 					if(!empty($ids)){
 						foreach($ids as $key => $val){
-							$_ids[] = $val;
+							$ids[] = $val;
 						}
 						$arr = array();
-						if(!empty($_ids[0])){
+						if(!empty($ids[0])){
 							//more then one field
 							$mtof = false;
-							foreach($_ids as $k => $v){
+							foreach($ids as $k => $v){
 								if($k != 0){
 									$mtof = true;
 									foreach($v as $key => $val){
-										if(!in_array($val, $_ids[0])){
-											unset($_ids[0][$val]);
+										if(!in_array($val, $ids[0])){
+											unset($ids[0][$val]);
 										} else {
 											$arr[] = $val;
 										}
@@ -145,8 +145,8 @@ class we_versions_search{
 							}
 							if($mtof){
 								$where .= ' AND ID IN (' . implode(',', $arr) . ') ';
-							} elseif(!empty($_ids[0])){
-								$where .= ' AND ID IN (' . implode(',', $_ids[0]) . ') ';
+							} elseif(!empty($ids[0])){
+								$where .= ' AND ID IN (' . implode(',', $ids[0]) . ') ';
 							} else {
 								$where .= ' AND 0';
 							}

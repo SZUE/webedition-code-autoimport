@@ -208,13 +208,13 @@ var oCfg={
 	_noResizeTypes:['pad']
 };";
 
-foreach($aPrefs as $type => $_prefs){
+foreach($aPrefs as $type => $prefs){
 	$jsPrefs .= "oCfg." . $type . "_props_={
-		width:" . intval($_prefs["width"]) . ",
-		height:" . intval($_prefs["height"]) . ",
-		res:" . $_prefs["res"] . ",
-		cls:'" . $_prefs["cls"] . "',
-		iDlgHeight:" . intval($_prefs["dlgHeight"]) . "
+		width:" . intval($prefs["width"]) . ",
+		height:" . intval($prefs["height"]) . ",
+		res:" . $prefs["res"] . ",
+		cls:'" . $prefs["cls"] . "',
+		iDlgHeight:" . intval($prefs["dlgHeight"]) . "
 };";
 }
 

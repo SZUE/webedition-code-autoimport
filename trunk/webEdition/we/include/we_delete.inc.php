@@ -277,17 +277,17 @@ function confirmDel(){' .
 						$deleted_objects = array();
 
 						if(defined('OBJECT_TABLE') && $table == OBJECT_TABLE){ // close all open objects, if a class is deleted
-							$_deletedItems = array();
+							$localDeletedItems = array();
 
 							// if its deleted and not selected, it must be an object
 							foreach($deletedItems as $cur){
 								if(in_array($cur, $selectedItems)){
-									$_deletedItems[] = $cur;
+									$localDeletedItems[] = $cur;
 								} else {
 									$deleted_objects[] = $cur; // deleted objects when classes are deleted
 								}
 							}
-							$deletedItems = $_deletedItems;
+							$deletedItems = $localDeletedItems;
 							$class_condition = ' || (_usedEditors[frameId].getEditorEditorTable() == "' . OBJECT_FILES_TABLE . '" && (_delete_objects.indexOf( "," + _usedEditors[frameId].getEditorDocumentId() + "," ) != -1) ) ';
 						}
 
@@ -474,7 +474,7 @@ $delete_confirm = g_l('alert', '[delete]');
 
 $content = '<span class="middlefont">' . $delete_text . '</span>';
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:if(confirm('" . $delete_confirm . "')) we_cmd('do_delete','','" . $table . "')"), "", we_html_button::create_button('quit_delete', "javascript:we_cmd('exit_delete','','" . $table . "')"), 10, "left");
+$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:if(confirm('" . $delete_confirm . "')) we_cmd('do_delete','','" . $table . "')"), "", we_html_button::create_button('quit_delete', "javascript:we_cmd('exit_delete','','" . $table . "')"), 10, "left");
 
 $form = '<form name="we_form" method="post">' . we_html_element::htmlHidden('sel', '') . '</form>';
 
@@ -482,6 +482,6 @@ echo '</head><body class="weTreeHeader">
 <div>
 <h1 class="big" style="padding:0px;margin:0px;">' . oldHtmlspecialchars(g_l('newFile', '[title_delete]')) . '</h1>
 <p class="small">' . $content . '</p>
-<div>' . $_buttons . '</div></div>' . $form . '
+<div>' . $buttons . '</div></div>' . $form . '
 </body>
 </html>';

@@ -98,12 +98,12 @@ class we_metadata_metaData{
 	 * @var array of objects instance of the implementation class for reading/writing metadata
 	 * 			has to be an array because multiple metadata readers/writers can be specified for a fileformat.
 	 */
-	var $_instance = array();
+	protected $instance = array();
 
 	/**
 	 * @var bool flag for validity checks within these classes
 	 */
-	var $_valid = true;
+	public $valid = true;
 
 	/**
 	 * @abstract constructor for PHP4
@@ -112,14 +112,14 @@ class we_metadata_metaData{
 	 */
 	public function __construct($source = ''){
 		if(empty($source)){
-			$this->_valid = false;
+			$this->valid = false;
 			return false;
 		}
 
-		if($this->_setDatasource($source)){
-			if($this->_setDatatype()){
+		if($this->setDatasource($source)){
+			if($this->setDatatype()){
 				foreach($this->datatype as $type){
-					$this->_getInstance($type);
+					$this->getInstance($type);
 				}
 			}
 		}
@@ -137,33 +137,33 @@ class we_metadata_metaData{
 	 * @return array of all valid metadata types or false if there are none
 	 */
 	function getImplementations(){
-		return (!$this->_valid || !$this->datatype ?
+		return (!$this->valid || !$this->datatype ?
 						false :
 						$this->datatype);
 	}
 
 	function getMetaData($selection = ''){
-		if(!$this->_valid){
+		if(!$this->valid){
 			return false;
 		}
 		foreach($this->datatype as $type){
-			if(!in_array('read', $this->_instance[$type]->accesstypes)){
+			if(!in_array('read', $this->instance[$type]->accesstypes)){
 				return false;
 			}
-			$this->metadata[strToLower($type)] = $this->_instance[$type]->_getMetaData();
+			$this->metadata[strToLower($type)] = $this->instance[$type]->_getMetaData();
 		}
 		return $this->metadata;
 	}
 
 	function setMetaData($data = '', $datatype = ''){
 		foreach($this->datatype as $type){
-			if(!$this->_instance[$type]->_valid){
+			if(!$this->instance[$type]->valid){
 				return false;
 			}
-			if(!in_array('write', $this->_instance[$type]->accesstypes)){
+			if(!in_array('write', $this->instance[$type]->accesstypes)){
 				return false;
 			}
-			$this->_instance[$type]->_setMetaData($data = '');
+			$this->instance[$type]->setMetaData($data = '');
 		}
 		return true;
 	}
@@ -173,7 +173,7 @@ class we_metadata_metaData{
 	 * @return bool false if fails, else true
 	 */
 	function saveToDatabase($id = ''){
-		if(!$this->_valid){
+		if(!$this->valid){
 			return false;
 		}
 		// table name: CONTENT_TABLE
@@ -194,24 +194,24 @@ class we_metadata_metaData{
 	 * @param string datasource id of webEdition document
 	 * @return bool returns false if datasource is not valid
 	 */
-	protected function _setDatasource($datasource = ''){
+	protected function setDatasource($datasource = ''){
 		// determines if given datasource is valid. will be assignet to instances later:
-		if(!$this->_valid){
+		if(!$this->valid){
 			return false;
 		}
 		if(empty($datasource)){
-			$this->_valid = false;
+			$this->valid = false;
 			return false;
 		}
 		if(is_numeric($datasource)){
 			// TODO: get path to file from database (tblFile)
-			$datasource = $this->_getDatasourceFromDatabase($datasource);
+			$datasource = $this->getDatasourceFromDatabase($datasource);
 		} else if(is_file($datasource)){
-			$this->_valid = true;
+			$this->valid = true;
 			if(is_readable($datasource)){
 				$this->datasourcePerms[] = 'read';
 			} else {
-				$this->_valid = false;
+				$this->valid = false;
 			}
 			if(is_writable($datasource)){
 				$this->datasourcePerms[] = 'write';
@@ -219,7 +219,7 @@ class we_metadata_metaData{
 		} else {
 			// check if it is a temporary file (i.e. an uploaded image that has not been saved yet):
 			if(!is_readable(TEMP_PATH, $datasource)){
-				$this->_valid = false;
+				$this->valid = false;
 				return false;
 			}
 		}
@@ -230,31 +230,31 @@ class we_metadata_metaData{
 	/**
 	 * @abstract internal (private) function for obtaining path/name of the media file from database (tblFile)
 	 */
-	protected function _getDatasourceFromDatabase(){
-		$this->_valid = false;
+	protected function getDatasourceFromDatabase(){
+		$this->valid = false;
 		return false;
 	}
 
 	/**
 	 * @abstract method for detecting type of current file needed, for identifying correct metadata implementation class
 	 */
-	protected function _setDatatype(){
+	protected function setDatatype(){
 		/*
 		 * detecting filetype in this order:
 		 * 1. exif_imagetype()
 		 * 2. file extension
 		 */
-		if(!$this->_valid){
+		if(!$this->valid){
 			return false;
 		}
 		$filetype = (is_callable('exif_imagetype') ? @exif_imagetype($this->datasource) : '');
-		// if $_filetype is a numeric value, filetype should first be identified by
+		// if $filetype is a numeric value, filetype should first be identified by
 		// Get fype for image-type returned by getimagesize, exif_read_data, exif_thumbnail, exif_imagetype
 		if(!empty($filetype) && is_numeric($filetype)){
 			if(isset($this->imageTypeMap[$filetype]) && !empty($this->imageTypeMap[$filetype])){
 				$this->filetype = $this->imageTypeMap[$filetype];
 			} else {
-				$this->_valid = false;
+				$this->valid = false;
 				$filetype = '';
 			}
 		}
@@ -265,17 +265,17 @@ class we_metadata_metaData{
 			if($extension && $extension != '.'){
 				$this->filetype = substr($extension, 1);
 			} else {
-				$this->_valid = false;
+				$this->valid = false;
 				return false;
 			}
 		}
 
 		if(array_key_exists(strtolower($this->filetype), $this->dataTypeMapping)){
 			$this->datatype = $this->dataTypeMapping[strtolower($this->filetype)];
-			$this->_valid = true;
+			$this->valid = true;
 			return true;
 		}
-		$this->_valid = false;
+		$this->valid = false;
 		return false;
 	}
 
@@ -283,22 +283,22 @@ class we_metadata_metaData{
 	 * @return object instance of the metadata implementation class
 	 * @return bool returns false if no or invalid datatype specified
 	 */
-	protected function _getInstance($value = ''){
-		if(!$this->_valid){
+	protected function getInstance($value = ''){
+		if(!$this->valid){
 			return false;
 		}
 		$className = 'we_metadata_' . $value;
 		if(class_exists($className, true)){
-			$this->_instance[$value] = new $className($this->filetype);
-			if(!$this->_instance[$value]->_checkDependencies()){
-				$this->_instance[$value]->_valid = false;
+			$this->instance[$value] = new $className($this->filetype);
+			if(!$this->instance[$value]->checkDependencies()){
+				$this->instance[$value]->valid = false;
 			} else {
-				$this->_instance[$value]->_valid = true;
-				$this->_instance[$value]->datasource = $this->datasource;
+				$this->instance[$value]->valid = true;
+				$this->instance[$value]->datasource = $this->datasource;
 			}
 			return true;
 		}
-		$this->_instance[$value]->_valid = false;
+		$this->instance[$value]->valid = false;
 		return false;
 	}
 
@@ -319,7 +319,7 @@ class we_metadata_metaData{
 	 * 			a selection is specified as an array of metadata tags/fields
 	 * @return array metadata according to $selection
 	 */
-	protected function _setMetaData($data = '', $datatype = ''){
+	protected function setMetaData($data = '', $datatype = ''){
 		return true;
 		// override!
 	}
@@ -329,7 +329,7 @@ class we_metadata_metaData{
 	 * 			(i.e. if needed libraries, php extensions or classes are available)
 	 * @return bool returns true if all dependencies are met and false if not
 	 */
-	protected function _checkDependencies(){
+	protected function checkDependencies(){
 		// override!
 		return true;
 	}

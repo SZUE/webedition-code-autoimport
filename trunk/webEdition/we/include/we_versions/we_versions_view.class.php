@@ -186,7 +186,7 @@ var searchClass={
 		$order = $this->Model->getProperty('currentOrder');
 		$mode = $this->Model->mode;
 		$height = $this->Model->height;
-		$_anzahl = $this->Model->getProperty('currentAnzahl');
+		$anzahl = $this->Model->getProperty('currentAnzahl');
 		$we_transaction = $this->Model->transaction;
 
 		// FIXME: move to model or init view
@@ -214,7 +214,7 @@ var searchClass={
 	<td></td>
 	<td id="eintraege_pro_seite" style="font-size:12px;width:130px;">' . g_l('versions', '[eintraege_pro_seite]') . ':</td>
 	<td class="defaultfont lowContrast" style="width:70px;">' .
-			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $_anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '
+			we_html_tools::htmlSelect('anzahl', $anzahl_all, 1, $anzahl, "", array('id' => "anzahl", 'onchange' => 'this.form.elements.searchstart.value=0;search(false);')) . '
 	</td>
 	<td class="defaultfont" id="eintraege">' . g_l('versions', '[eintraege]') . '</td>
 	<td>' . $this->getNextPrev($foundItems) . '</td>
@@ -288,21 +288,21 @@ var searchClass={
 		$id = we_base_request::_(we_base_request::INT, 'id', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->ID : 0);
 		$table = we_base_request::_(we_base_request::TABLE, 'table', isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Table : FILE_TABLE);
 
-		$_order = $this->Model->getProperty('currentOrder');
+		$order = $this->Model->getProperty('currentOrder');
 
 		$content = array();
 		$modificationText = '';
 
 		$where = $this->searchclass->getWhere($this->Model);
 
-		$_versions = we_versions_version::loadVersionsOfId($id, $table, $where);
-		$resultCount = count($_versions);
+		$versions = we_versions_version::loadVersionsOfId($id, $table, $where);
+		$resultCount = count($versions);
 		$_SESSION['weS']['versions']['foundItems'] = $resultCount;
 
 		if($resultCount > 0){
-			$sortierung = explode(' ', $_order);
+			$sortierung = explode(' ', $order);
 
-			foreach($_versions as $v){
+			foreach($versions as $v){
 				$_Result[] = $v;
 			}
 
@@ -328,36 +328,36 @@ var searchClass={
 				array_multisort($sort1, $sortHow, $_Result);
 			}
 
-			$_versions = $_Result;
+			$versions = $_Result;
 		}
 
 		for($f = 0; $f < $resultCount; $f++){
 
-			$modificationText = $this->getTextForMod($_versions[$f]["modifications"], $_versions[$f]["status"]);
-			$user = $_versions[$f]["modifierID"] ? id_to_path($_versions[$f]["modifierID"], USER_TABLE, $this->db) : g_l('versions', '[unknown]');
-			$vers = $_versions[$f]["version"];
-			$disabledReset = ($_versions[$f]["active"] == 1) ? true : false;
+			$modificationText = $this->getTextForMod($versions[$f]["modifications"], $versions[$f]["status"]);
+			$user = $versions[$f]["modifierID"] ? id_to_path($versions[$f]["modifierID"], USER_TABLE, $this->db) : g_l('versions', '[unknown]');
+			$vers = $versions[$f]["version"];
+			$disabledReset = ($versions[$f]["active"] == 1) ? true : false;
 			if(!permissionhandler::hasPerm("ADMINISTRATOR") && !permissionhandler::hasPerm("RESET_VERSIONS")){
 				$disabledReset = true;
 			}
-			$fromScheduler = ($_versions[$f]["fromScheduler"]) ? g_l('versions', '[fromScheduler]') : "";
-			$fromImport = ($_versions[$f]["fromImport"]) ? g_l('versions', '[fromImport]') : "";
-			$resetFromVersion = ($_versions[$f]["resetFromVersion"]) ? "--" . g_l('versions', '[resetFromVersion]') . $_versions[$f]["resetFromVersion"] . "--" : "";
+			$fromScheduler = ($versions[$f]["fromScheduler"]) ? g_l('versions', '[fromScheduler]') : "";
+			$fromImport = ($versions[$f]["fromImport"]) ? g_l('versions', '[fromImport]') : "";
+			$resetFromVersion = ($versions[$f]["resetFromVersion"]) ? "--" . g_l('versions', '[resetFromVersion]') . $versions[$f]["resetFromVersion"] . "--" : "";
 
 			$content[] = array(
 				array("dat" => '<nobr>' . $vers . '</nobr>'),
 				array("dat" => '<nobr>' . we_base_util::shortenPath($user, 30) . '</nobr>'),
-				array("dat" => '<nobr>' . ($_versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $_versions[$f]["timestamp"]) : "-") . ' </nobr>'),
+				array("dat" => '<nobr>' . ($versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $versions[$f]["timestamp"]) : "-") . ' </nobr>'),
 				array("dat" => (($modificationText != '') ? $modificationText : '') .
 					($fromScheduler ? : '') .
 					($fromImport ? : '') .
 					($resetFromVersion ? : '')),
-				array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_html_forms::checkbox($_versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
-				array("dat" => "<span class='printShow'>" . we_html_button::create_button('reset', "javascript:resetVersion('" . $_versions[$f]["ID"] . "','" . $_versions[$f]["documentID"] . "','" . $_versions[$f]["version"] . "','" . $_versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
-				array("dat" => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $_versions[$f]["ID"] . "');") . "</span>"),
+				array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_html_forms::checkbox($versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
+				array("dat" => "<span class='printShow'>" . we_html_button::create_button('reset', "javascript:resetVersion('" . $versions[$f]["ID"] . "','" . $versions[$f]["documentID"] . "','" . $versions[$f]["version"] . "','" . $versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
+				array("dat" => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $versions[$f]["ID"] . "');") . "</span>"),
 				array("dat" => "<span class='printShow'>" .
-					(($_versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $_versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $_versions[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
-						we_html_forms::checkbox($_versions[$f]["ID"], 0, "publishVersion_" . $_versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
+					(($versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $versions[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
+						we_html_forms::checkbox($versions[$f]["ID"], 0, "publishVersion_" . $versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
 						'') .
 					'</span>'),
 			);

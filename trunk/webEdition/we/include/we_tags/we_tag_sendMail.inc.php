@@ -78,7 +78,7 @@ function we_tag_sendMail(array $attribs, $content){
 	if($useFormmailBlock){
 		$useFormmailLog = true;
 	}
-	$_blocked = false;
+	$blocked = false;
 
 
 	$we_recipient = _getMails(explode(',', $recipient));
@@ -93,17 +93,17 @@ function we_tag_sendMail(array $attribs, $content){
 		}
 
 		if($useFormmailBlock){
-			$_trials = FORMMAIL_TRIALS;
+			$trials = FORMMAIL_TRIALS;
 			// first delete all entries from blocktable which are older then now - blocktime
 			$GLOBALS['DB_WE']->query('DELETE FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE blockedUntil!=-1 AND blockedUntil<UNIX_TIMESTAMP()');
 
 			// check if ip is allready blocked
 			if(f('SELECT 1 FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" LIMIT 1')){
-				$_blocked = true;
+				$blocked = true;
 			} else {
 				// ip is not blocked, so see if we need to block it
-				if(f('SELECT COUNT(1) FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(NOW()- INTERVAL ' . intval(FORMMAIL_SPAN) . ' SECOND) AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"') > $_trials){
-					$_blocked = true;
+				if(f('SELECT COUNT(1) FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(NOW()- INTERVAL ' . intval(FORMMAIL_SPAN) . ' SECOND) AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"') > $trials){
+					$blocked = true;
 					// insert in block table
 					$blockedUntil = (FORMMAIL_BLOCKTIME == -1) ? -1 : '(UNIX_TIMESTAMP()+' . FORMMAIL_BLOCKTIME . ')';
 					$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . " (ip, blockedUntil) VALUES('" . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . "', " . $blockedUntil . ")");
@@ -111,7 +111,7 @@ function we_tag_sendMail(array $attribs, $content){
 			}
 		}
 	}
-	if($_blocked){
+	if($blocked){
 		$headline = "Fehler / Error";
 		$content = g_l('global', '[formmailerror]') . getHtmlTag("br") . "&#8226; " . "Email dispatch blocked / Email Versand blockiert!";
 

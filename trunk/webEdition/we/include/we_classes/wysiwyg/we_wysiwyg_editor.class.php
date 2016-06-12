@@ -56,8 +56,8 @@ class we_wysiwyg_editor{
 	private $cssClassesJS = '';
 	private $tinyCssClasses = '';
 	var $Language = '';
-	private $_imagePath;
-	private $_image_languagePath;
+	private $imagePath;
+	private $image_languagePath;
 	private $baseHref = '';
 	private $showSpell = true;
 	private $isFrontendEdit = false;
@@ -173,8 +173,8 @@ class we_wysiwyg_editor{
 		$this->htmlSpecialchars = $oldHtmlspecialchars;
 		$this->isFrontendEdit = $isFrontendEdit;
 
-		$this->_imagePath = IMAGE_DIR . 'wysiwyg/';
-		$this->_image_languagePath = WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/wysiwyg/';
+		$this->imagePath = IMAGE_DIR . 'wysiwyg/';
+		$this->image_languagePath = WE_INCLUDES_DIR . 'we_language/' . $GLOBALS['WE_LANGUAGE'] . '/wysiwyg/';
 
 		$this->baseHref = $baseHref ? : we_base_util::getGlobalPath();
 		$this->charset = $charset;

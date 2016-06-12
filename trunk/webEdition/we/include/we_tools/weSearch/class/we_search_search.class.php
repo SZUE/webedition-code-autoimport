@@ -181,12 +181,12 @@ class we_search_search extends we_search_base{
 
 							/* 	if(!$isCheckedFileTable && $isCheckedObjFileTable){
 							  $_SESSION['weS']['weSearch']['onlyDocs'] = false;
-							  $whereQuery .= ' AND ' . escape_sql_query($_table) . '.documentTable="' . OBJECT_FILES_TABLE . '" ';
+							  $whereQuery .= ' AND ' . escape_sql_query($table) . '.documentTable="' . OBJECT_FILES_TABLE . '" ';
 							  $_SESSION['weS']['weSearch']['ObjectsAndDocs'] = false;
 							  }
 							  if($isCheckedFileTable && !$isCheckedObjFileTable){
 							  $_SESSION['weS']['weSearch']['onlyObjects'] = false;
-							  $whereQuery .= ' AND ' . escape_sql_query($_table) . '.documentTable="' . FILE_TABLE . '" ';
+							  $whereQuery .= ' AND ' . escape_sql_query($table) . '.documentTable="' . FILE_TABLE . '" ';
 							  $_SESSION['weS']['weSearch']['ObjectsAndDocs'] = false;
 							  } */
 							break;
@@ -286,8 +286,8 @@ class we_search_search extends we_search_base{
 	}
 
 	function getUsers(){
-		$_db = new DB_WE();
-		return $_db->getAllFirstq('SELECT ID, Text FROM ' . USER_TABLE, false);
+		$db = new DB_WE();
+		return $db->getAllFirstq('SELECT ID, Text FROM ' . USER_TABLE, false);
 	}
 
 	function getFields($row = 0, $whichSearch = ''){
@@ -367,15 +367,15 @@ class we_search_search extends we_search_base{
 	}
 
 	function getFieldsMeta($usePrefix = false, $getTypes = false){
-		$_db = new DB_WE();
-		$_db->query('SELECT tag,type FROM ' . METADATA_TABLE);
+		$db = new DB_WE();
+		$db->query('SELECT tag,type FROM ' . METADATA_TABLE);
 		$ret = array(
 			($usePrefix ? 'meta__' : '') . 'Title' => ($getTypes ? 'text' : g_l('searchtool', '[metadata][field]')),
 			($usePrefix ? 'meta__' : '') . 'Description' => ($getTypes ? 'text' : g_l('searchtool', '[metadata][description]')),
 			($usePrefix ? 'meta__' : '') . 'Keywords' => ($getTypes ? 'text' : g_l('searchtool', '[metadata][keyword]')),
 		);
-		while($_db->next_record()){
-			$ret[($usePrefix ? 'meta__' : '') . $_db->f('tag')] = $getTypes ? $_db->f('type') : 'Metadaten: ' . $_db->f('tag');
+		while($db->next_record()){
+			$ret[($usePrefix ? 'meta__' : '') . $db->f('tag')] = $getTypes ? $db->f('type') : 'Metadaten: ' . $db->f('tag');
 		}
 
 		return $ret;
@@ -565,12 +565,12 @@ class we_search_search extends we_search_base{
 		$db = new DB_WE();
 		switch($searchFields){
 			case 'CreatorName':
-				$_table = USER_TABLE;
+				$table = USER_TABLE;
 				$field = 'Text';
 				$fieldFileTable = 'CreatorID';
 				break;
 			case 'WebUserName':
-				$_table = CUSTOMER_TABLE;
+				$table = CUSTOMER_TABLE;
 				$field = 'Username';
 				$fieldFileTable = 'WebUserID';
 				break;
@@ -608,7 +608,7 @@ class we_search_search extends we_search_base{
 			}
 		}
 
-		$userIDs = $db->getAllq('SELECT ID FROM ' . $db->escape($_table) . ' WHERE ' . $field . ' ' . $searching, true);
+		$userIDs = $db->getAllq('SELECT ID FROM ' . $db->escape($table) . ' WHERE ' . $field . ' ' . $searching, true);
 
 		return ($userIDs ? $fieldFileTable . ' IN (' . implode(',', $userIDs) . ')' : ' 0 ');
 	}
@@ -741,7 +741,7 @@ class we_search_search extends we_search_base{
 		$modConst[] = $versions->modFields[$text]['const'];
 
 		if($modConst){
-			$modifications = $ids = $_ids = array();
+			$modifications = $ids = $myIds = array();
 			$db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications!=""');
 
 			while($db->next_record()){
@@ -759,18 +759,18 @@ class we_search_search extends we_search_base{
 
 			if($ids){
 				foreach($ids as $key => $val){
-					$_ids[] = $val;
+					$myIds[] = $val;
 				}
 				$arr = array();
-				if($_ids[0]){
+				if($myIds[0]){
 					//more then one field
 					$mtof = false;
-					foreach($_ids as $k => $v){
+					foreach($myIds as $k => $v){
 						if($k != 0){
 							$mtof = true;
 							foreach($v as $key => $val){
-								if(!in_array($val, $_ids[0])){
-									unset($_ids[0][$val]);
+								if(!in_array($val, $myIds[0])){
+									unset($myIds[0][$val]);
 								} else {
 									$arr[] = $val;
 								}
@@ -779,8 +779,8 @@ class we_search_search extends we_search_base{
 					}
 					$where[] = ($mtof ?
 							'WETABLE.ID IN (' . implode(',', $arr) . ') ' :
-							($_ids[0] ?
-								'WETABLE.ID IN (' . implode(',', $_ids[0]) . ') ' :
+							($myIds[0] ?
+								'WETABLE.ID IN (' . implode(',', $myIds[0]) . ') ' :
 								' 0 '));
 				}
 			}
@@ -837,13 +837,13 @@ class we_search_search extends we_search_base{
 				$Ids = $regs = array();
 
 				$db->query('SELECT ID FROM ' . OBJECT_TABLE);
-				$_classes = $db->getAll(true);
+				$classes = $db->getAll(true);
 
 				//published objects
-				foreach($_classes as $i){
-					$_obj_table = OBJECT_X_TABLE . intval($i);
-					//$_obj_table = strtolower($_obj_table);
-					$tableInfo = $db->metadata($_obj_table);
+				foreach($classes as $i){
+					$obj_table = OBJECT_X_TABLE . intval($i);
+					//$obj_table = strtolower($obj_table);
+					$tableInfo = $db->metadata($obj_table);
 					$fields = array();
 					for($c = 0; $c < count($tableInfo); $c++){
 						if(preg_match('/(.+?)_(.*)/', $tableInfo[$c]['name'], $regs)){
@@ -864,7 +864,7 @@ class we_search_search extends we_search_base{
 						$where[] = $v['name'] . ' LIKE "%' . $db->escape(trim($keyword)) . '%"';
 					}
 
-					$db->query('SELECT OF_ID FROM ' . $db->escape($_obj_table) . ' WHERE ' . implode(' OR ', $where));
+					$db->query('SELECT OF_ID FROM ' . $db->escape($obj_table) . ' WHERE ' . implode(' OR ', $where));
 					$Ids = array_merge($Ids, $db->getAll(true));
 				}
 				//only saved objects

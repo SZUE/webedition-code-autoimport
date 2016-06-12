@@ -389,7 +389,7 @@ if($ok){
 	<?php
 	if(!$ok){
 
-		$_select_type = '<select name="type" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
+		$select_type = '<select name="type" style="margin-bottom:5px;width:300px;" onchange="changeTypeSelect(this);" class="big">
 <option value="' . we_base_link::TYPE_EXT . '"' . (($type == we_base_link::TYPE_EXT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[external_link]') . '</option>
 <option value="' . we_base_link::TYPE_INT . '"' . (($type == we_base_link::TYPE_INT) ? ' selected="selected"' : '') . '>' . g_l('linklistEdit', '[internal_link]') . '</option>
 <option value="' . we_base_link::TYPE_MAIL . '"' . (($type == we_base_link::TYPE_MAIL) ? ' selected="selected"' : '') . '>' . g_l('wysiwyg', '[emaillink]') . '</option>
@@ -490,7 +490,7 @@ if($ok){
 		$jswinonoff = we_html_tools::htmlFormElementTable($jsWinProps, $foo, "left", "defaultfont", '', "", "", "", "", 0);
 
 
-		$_content_select = '<select name="ctype" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
+		$content_select = '<select name="ctype" style="margin-bottom:5px;width:300px;" onchange="changeCTypeSelect(this);" class="big">
 <option value="' . we_base_link::CONTENT_TEXT . '"' . (($ctype == we_base_link::CONTENT_TEXT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[text]')) . '</option>
 <option value="' . we_base_link::CONTENT_EXT . '"' . (($ctype == we_base_link::CONTENT_EXT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[external_image]')) . '</option>
 <option value="' . we_base_link::CONTENT_INT . '"' . (($ctype == we_base_link::CONTENT_INT) ? ' selected="selected"' : '') . '>' . oldHtmlspecialchars(g_l('linklistEdit', '[internal_image]')) . '</option>
@@ -554,12 +554,12 @@ if($ok){
 </table>';
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit()"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
 
-		$_parts = array(
+		$parts = array(
 			array('headline' => 'URL',
 				'html' => '
 <table class="default">
 	<tr>
-		<td>' . $_select_type . '</td>
+		<td>' . $select_type . '</td>
 	</tr>
 	<tr id="ext_tr" style="display:' . (($type == we_base_link::TYPE_EXT) ? "table-row" : "none") . ';">
 		<td height="35" style="vertical-align:top"><div style="margin-top:1px;">' . $extLink . '</div></td>
@@ -581,7 +581,7 @@ if($ok){
 			array('headline' => g_l('global', '[content]'),
 				'html' => '
 <table class="default">
-	<tr><td>' . $_content_select . '</td></tr>
+	<tr><td>' . $content_select . '</td></tr>
 	<tr id="ctext_tr" style="display:' . (($ctype == we_base_link::CONTENT_TEXT) ? "table-row" : "none") . ';">
 		<td>' . $ctext . '</td>
 	</tr>
@@ -612,7 +612,7 @@ if($ok){
 
 		if(permissionhandler::hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS")){
 			//   start of accessible parameters
-			$_parts[] = array('headline' => g_l('linklistEdit', '[language]'),
+			$parts[] = array('headline' => g_l('linklistEdit', '[language]'),
 				'html' => '
 <table class="default">
 	<tr>
@@ -623,12 +623,12 @@ if($ok){
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1);
 
-			$_parts[] = array('headline' => g_l('linklistEdit', '[title]'),
+			$parts[] = array('headline' => g_l('linklistEdit', '[title]'),
 				'html' => $title,
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1);
 
-			$_parts[] = array('headline' => g_l('linklistEdit', '[keyboard]'),
+			$parts[] = array('headline' => g_l('linklistEdit', '[keyboard]'),
 				'html' => '
 <table class="default">
 	<tr>
@@ -643,19 +643,19 @@ if($ok){
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1);
 
-			$_parts[] = array('headline' => g_l('wysiwyg', '[relation]'),
+			$parts[] = array('headline' => g_l('wysiwyg', '[relation]'),
 				'html' => '<span class="default" style="margin-right:20px;">' . $relfield . '</span>' . $revfield,
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'noline' => 1);
 
-			$_parts[] = array('headline' => g_l('linklistEdit', '[link_attr]'),
+			$parts[] = array('headline' => g_l('linklistEdit', '[link_attr]'),
 				'html' => $cattribs,
 				'space' => we_html_multiIconBox::SPACE_MED2);
 		}
 
 
 		//   Pop-Up
-		$_parts[] = array('headline' => g_l('global', '[jswin]'),
+		$parts[] = array('headline' => g_l('global', '[jswin]'),
 			'html' => $jswinonoff,
 			'space' => we_html_multiIconBox::SPACE_MED2);
 		?>
@@ -675,7 +675,7 @@ if($ok){
 				"we_transaction" => $we_transaction,
 				"we_field" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3)
 			)) .
-			we_html_multiIconBox::getHTML('', $_parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
+			we_html_multiIconBox::getHTML('', $parts, 30, $buttons, -1, '', '', false, g_l('linklistEdit', '[edit_link]')) .
 			$yuiSuggest->getYuiJs();
 			?>
 		</form>

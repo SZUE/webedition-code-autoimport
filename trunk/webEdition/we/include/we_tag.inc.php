@@ -471,17 +471,17 @@ function we_getInputCheckboxField($name, $value, array $attr){
 	$attr['value'] = 1;
 	$attr['name'] = $tmpname;
 	$attr['onclick'] = 'this.form.elements[\'' . $name . '\'].value=(this.checked) ? 1 : 0';
-	$_attsHidden = array();
+	$attsHidden = array();
 
 	// hiddenField
 	if(isset($attr['xml'])){
-		$_attsHidden['xml'] = $attr['xml'];
+		$attsHidden['xml'] = $attr['xml'];
 	}
-	$_attsHidden['type'] = 'hidden';
-	$_attsHidden['name'] = $name;
-	$_attsHidden['value'] = oldHtmlspecialchars($value);
+	$attsHidden['type'] = 'hidden';
+	$attsHidden['name'] = $name;
+	$attsHidden['value'] = oldHtmlspecialchars($value);
 
-	return getHtmlTag('input', $attr) . getHtmlTag('input', $_attsHidden);
+	return getHtmlTag('input', $attr) . getHtmlTag('input', $attsHidden);
 }
 
 function we_getSelectField($name, $value, $values, array $attribs = array(), $addMissing = true){

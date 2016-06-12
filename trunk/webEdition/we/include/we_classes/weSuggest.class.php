@@ -30,9 +30,9 @@
  * echo $yuiSuggest->createAutocompleter(																								// GUI-Element mit Input-Feld und Auswahl-Button
  * 			"Doc", 																														// AC-Id
  * 			we_button::create_button(we_html_button::SELECT, "javascript:select_seem_start()", true, 100, 22, "", "", false, false),					// Auswahl-Button
- * 			we_html_tools::htmlTextInput("seem_start_document_name", 11, $_document_path, "", " id='yuiAcInputDoc'", "text", 190, 0, "", false),		// Input-Feld
+ * 			we_html_tools::htmlTextInput("seem_start_document_name", 11, $document_path, "", " id='yuiAcInputDoc'", "text", 190, 0, "", false),		// Input-Feld
  * 			'yuiAcInputDoc',																											// Input-Feld-Id. Die Id besteht aus 'yuiAcInput' und AC-Id
- * 			rray("name" => "seem_start_document", "value" => $_document_id, "id"=>"yuiAcResultDoc")),		// Result-Field (hidden) für die Document-, Folder-, Object-,...ID
+ * 			rray("name" => "seem_start_document", "value" => $document_id, "id"=>"yuiAcResultDoc")),		// Result-Field (hidden) für die Document-, Folder-, Object-,...ID
  * 			'yuiAcResultDoc', 																											// Result-Feld-Id. Die Id besteht aus 'yuiAcResult' und AC-Id
  * 			'',																															// Label: steht über dem Inputfeld
  * 			FILE_TABLE, 																												// Name der Tabele in für die Query
@@ -67,8 +67,8 @@ class weSuggest{
 	var $selectors = array();
 	var $ct = array();
 	var $inputMayBeEmpty = array();
-	var $_doOnItemSelect = array();
-	var $_doOnTextfieldBlur = array();
+	var $doOnItemSelect = array();
+	var $doOnTextfieldBlur = array();
 	/*	 * ************************************* */
 	var $acId = '';
 	var $checkFieldValue = true;
@@ -166,11 +166,11 @@ class weSuggest{
 	fields_val: [document.getElementById('" . implode("').value,document.getElementById('", $this->setOnSelectFields[$i]) . "').value]";
 					}
 				}
-				if($this->_doOnItemSelect[$i]){
-					$current .=',itemSelect:function(param1,param2,param,params){' . $this->_doOnItemSelect[$i] . '}';
+				if($this->doOnItemSelect[$i]){
+					$current .=',itemSelect:function(param1,param2,param,params){' . $this->doOnItemSelect[$i] . '}';
 				}
-				if($this->_doOnTextfieldBlur[$i]){
-					$current .=',blur:function(){' . $this->_doOnTextfieldBlur[$i] . '}';
+				if($this->doOnTextfieldBlur[$i]){
+					$current .=',blur:function(){' . $this->doOnTextfieldBlur[$i] . '}';
 				}
 				if(!empty($this->checkFieldsValues[$i])){
 					$additionalFields = "";
@@ -592,9 +592,9 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 		  }
 		 *
 		 */
-		$this->_doOnItemSelect[] = $this->doOnItemSelect;
+		$this->doOnItemSelect[] = $this->doOnItemSelect;
 		$this->doOnItemSelect = '';
-		$this->_doOnTextfieldBlur[] = $this->doOnTextfieldBlur;
+		$this->doOnTextfieldBlur[] = $this->doOnTextfieldBlur;
 		$this->doOnTextfieldBlur = '';
 	}
 

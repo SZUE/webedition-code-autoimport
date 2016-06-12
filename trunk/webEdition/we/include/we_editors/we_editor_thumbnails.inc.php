@@ -30,10 +30,10 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	<form name="we_form"><?php echo we_class::hiddenTrans(); ?>
 		<?php
 		if(we_base_imageEdit::gd_version() > 0){
-			$_doc = $we_doc->getDocument();
-			$imgType = we_base_imageEdit::detect_image_type('', $_doc);
+			$doc = $we_doc->getDocument();
+			$imgType = we_base_imageEdit::detect_image_type('', $doc);
 
-			if(!$_doc){
+			if(!$doc){
 				$parts = array(
 					array("headline" => "",
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[no_image_uploaded]'), we_html_tools::TYPE_INFO, 700),
@@ -53,7 +53,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 				foreach($thumbs as $thumbid){
 
 					$thumbObj = new we_thumbnail();
-					$thumbObj->initByThumbID($thumbid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement('origwidth'), $we_doc->getElement('origheight'), $_doc);
+					$thumbObj->initByThumbID($thumbid, $we_doc->ID, $we_doc->Filename, $we_doc->Path, $we_doc->Extension, $we_doc->getElement('origwidth'), $we_doc->getElement('origheight'), $doc);
 
 					srand((double) microtime() * 1000000);
 					$randval = rand();

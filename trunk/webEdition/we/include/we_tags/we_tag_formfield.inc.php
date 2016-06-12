@@ -238,13 +238,13 @@ function we_tag_formfield(array $attribs){
 			$selected = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
 			$foo = explode("<_BR_>", str_replace(array("\r\n", "\r", "\n",), '<_BR_>', $GLOBALS['we_doc']->getElement($name, 'ffvalues')));
 			foreach($foo as $v){
-				$_atts = array(
+				$atts = array(
 					'value' => oldHtmlspecialchars(trim($v))
 				);
 				if($selected == $v){
-					$_atts['selected'] = 'selected';
+					$atts['selected'] = 'selected';
 				}
-				$tagContent .= getHtmlTag('option', $_atts, oldHtmlspecialchars($v));
+				$tagContent .= getHtmlTag('option', $atts, oldHtmlspecialchars($v));
 			}
 			break;
 		case 'country':

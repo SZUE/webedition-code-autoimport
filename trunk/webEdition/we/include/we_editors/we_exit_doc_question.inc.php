@@ -53,16 +53,16 @@ if(!$nextCmdOk){
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 	case we_base_ContentTypes::TEMPLATE:
-		$_documentTable = TEMPLATES_TABLE;
+		$documentTable = TEMPLATES_TABLE;
 		break;
 	case we_base_ContentTypes::OBJECT:
 		if(defined('OBJECT_TABLE')){
-			$_documentTable = OBJECT_TABLE;
+			$documentTable = OBJECT_TABLE;
 		}
 		break;
 	case we_base_ContentTypes::OBJECT_FILE:
 		if(defined('OBJECT_FILES_TABLE')){
-			$_documentTable = OBJECT_FILES_TABLE;
+			$documentTable = OBJECT_FILES_TABLE;
 		}
 		break;
 	case "folder":
@@ -73,7 +73,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 	case we_base_ContentTypes::IMAGE:
 	case we_base_ContentTypes::APPLICATION:
 	default:
-		$_documentTable = FILE_TABLE;
+		$documentTable = FILE_TABLE;
 		break;
 }
 
@@ -130,7 +130,7 @@ echo STYLESHEET;
 </head>
 
 <body onunload="window_closed();" class="weEditorBody" onload="self.focus();" onblur="self.focus();">
-	<?php echo we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($_documentTable) . '][exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, "pressed_yes();", "pressed_no();", "pressed_cancel();"); ?>
+	<?php echo we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($documentTable) . '][exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, "pressed_yes();", "pressed_no();", "pressed_cancel();"); ?>
 </body>
 
 </html>

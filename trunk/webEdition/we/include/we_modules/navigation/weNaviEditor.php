@@ -24,44 +24,43 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-$_path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1);
-$_id = (!empty($_path)) ? path_to_id($_path, NAVIGATION_TABLE, $GLOBALS['DB_WE']) : 0;
-$_navi = new we_navigation_navigation($_id);
-$_wrkNavi = array();
-$_db = new DB_WE();
+$path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1);
+$id = (!empty($path)) ? path_to_id($path, NAVIGATION_TABLE, $GLOBALS['DB_WE']) : 0;
+$navi = new we_navigation_navigation($id);
+$db = new DB_WE();
 
 if(permissionhandler::hasPerm('ADMINISTRATOR')){
-	$_dirs = array(
+	$dirs = array(
 		'0' => '/'
 	);
-	$_def = 0;
+	$def = 0;
 } else {
-	$_dirs = array();
-	$_def = null;
+	$dirs = array();
+	$def = null;
 }
 
-if($_id){
-	$_def = $_navi->ParentID;
+if($id){
+	$def = $navi->ParentID;
 }
 
-$_db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . we_navigation_navigation::getWSQuery() . ' ORDER BY Path');
-while($_db->next_record()){
-	if($_def === null){
-		$_def = $_db->f('ID');
+$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=1 ' . we_navigation_navigation::getWSQuery() . ' ORDER BY Path');
+while($db->next_record()){
+	if($def === null){
+		$def = $db->f('ID');
 	}
-	$_dirs[$_db->f('ID')] = $_db->f('Path');
+	$dirs[$db->f('ID')] = $db->f('Path');
 }
 
-$_parts = array(
+$parts = array(
 	array(
 		'headline' => g_l('navigation', '[name]'),
-		'html' => we_html_tools::htmlTextInput('Text', 24, $_navi->Text, '', 'style="width:440px;" onblur="setSaveState();" onkeyup="setSaveState();"'),
+		'html' => we_html_tools::htmlTextInput('Text', 24, $navi->Text, '', 'style="width:440px;" onblur="setSaveState();" onkeyup="setSaveState();"'),
 		'space' => we_html_multiIconBox::SPACE_MED,
 		'noline' => 1
 	),
 	array(
 		'headline' => g_l('navigation', '[group]'),
-		'html' => we_html_tools::htmlSelect('ParentID', $_dirs, 1, $_navi->ParentID, false, array('style' => 'width:440px;', 'onchange' => 'queryEntries(this.value);')),
+		'html' => we_html_tools::htmlSelect('ParentID', $dirs, 1, $navi->ParentID, false, array('style' => 'width:440px;', 'onchange' => 'queryEntries(this.value);')),
 		'space' => we_html_multiIconBox::SPACE_MED,
 		'noline' => 1
 	),
@@ -73,8 +72,8 @@ $_parts = array(
 	),
 	array(
 		'headline' => g_l('navigation', '[order]'),
-		'html' => we_html_element::htmlHidden('Ordn', $_navi->Ordn) .
-		we_html_tools::htmlTextInput('OrdnTxt', 8, ($_navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) .
+		'html' => we_html_element::htmlHidden('Ordn', $navi->Ordn) .
+		we_html_tools::htmlTextInput('OrdnTxt', 8, ($navi->Ordn + 1), '', 'onchange="document.we_form.Ordn.value=(document.we_form.OrdnTxt.value-1);"', 'text', 117) .
 		we_html_tools::htmlSelect('OrdnSelect', array('begin' => g_l('navigation', '[begin]'), 'end' => g_l('navigation', '[end]')), 1, '', false, array('onchange' => 'changeOrder(this);'), 'value', 317),
 		'space' => we_html_multiIconBox::SPACE_MED,
 		'noline' => 1
@@ -82,18 +81,18 @@ $_parts = array(
 );
 
 $buttonsBottom = '<div style="float:right">' .
-	we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:save();', true, 100, 22, '', '', ($_id ? false : true), false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')) . '</div>';
+	we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:save();', true, 100, 22, '', '', ($id ? false : true), false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')) . '</div>';
 
-$_body = we_html_element::htmlBody(
+$body = we_html_element::htmlBody(
 		array(
-		"class" => "weDialogBody", "onload" => 'loaded=1;queryEntries(' . $_def . ')'
+		"class" => "weDialogBody", "onload" => 'loaded=1;queryEntries(' . $def . ')'
 		), we_html_element::htmlForm(
 			array(
 			"name" => "we_form", "onsubmit" => "return false"
-			), we_html_multiIconBox::getHTML('', $_parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'))));
+			), we_html_multiIconBox::getHTML('', $parts, 30, $buttonsBottom, -1, '', '', false, g_l('navigation', '[add_navigation]'))));
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
 	YAHOO_FILES .
-	we_html_element::jsElement('var WE_NAVIID=' . intval($_id) . ';') .
+	we_html_element::jsElement('var WE_NAVIID=' . intval($id) . ';') .
 	we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/weNaviEditor.js')
-	, $_body);
+	, $body);

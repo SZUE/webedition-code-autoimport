@@ -1358,12 +1358,12 @@ class we_objectFile extends we_document{
 // creating thumbnail only if it really exists:
 		if($thumbID){
 			if($img->ID){
-				$_imgSrc = WEBEDITION_DIR . 'thumbnail.php?id=' . $id . '&thumbID=' . $thumbID;
-				$_imgHeight = $_imgWight = 0;
+				$imgSrc = WEBEDITION_DIR . 'thumbnail.php?id=' . $id . '&thumbID=' . $thumbID;
+				$imgHeight = $imgWight = 0;
 			} else {
-				$_imgSrc = ICON_DIR . 'no_image.gif';
-				$_imgHeight = 64;
-				$_imgWight = 64;
+				$imgSrc = ICON_DIR . 'no_image.gif';
+				$imgHeight = 64;
+				$imgWight = 64;
 			}
 		}
 
@@ -1378,7 +1378,7 @@ class we_objectFile extends we_document{
 			'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 // show thumbnail of image if there exists one:
 			($thumbID ?
-				'<img src="' . $_imgSrc . '" ' . ($_imgHeight ? 'style="height:' . $_imgHeight . 'px;width:' . $_imgWight . 'px"' : '') . '/>' :
+				'<img src="' . $imgSrc . '" ' . ($imgHeight ? 'style="height:' . $imgHeight . 'px;width:' . $imgWight . 'px"' : '') . '/>' :
 				$img->getHtml()) .
 			we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect(" . ($id? : 0) . ",'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )", true, 0, 0, '', '', ($id ? false : true)) .
 			we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image','" . ($id ? : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
@@ -2142,7 +2142,7 @@ class we_objectFile extends we_document{
 				$this->TriggerID = $foo['DefaultTriggerID'];
 			}
 		}
-		$_resaveWeDocumentCustomerFilter = true;
+		$resaveWeDocumentCustomerFilter = true;
 		$this->correctWorkspaces();
 		$this->correctMultiObject();
 
@@ -2156,7 +2156,7 @@ class we_objectFile extends we_document{
 		}
 
 		if((!$this->ID || $resave)){
-			$_resaveWeDocumentCustomerFilter = false;
+			$resaveWeDocumentCustomerFilter = false;
 			if((!parent::we_save($resave, true)) || ($resave) || (!$this->we_republish())){
 				return false;
 			}
@@ -2170,7 +2170,7 @@ class we_objectFile extends we_document{
 		$this->parseTextareaFields('temp');
 		$this->registerMediaLinks(true);
 
-		if(!$resave && $_resaveWeDocumentCustomerFilter){
+		if(!$resave && $resaveWeDocumentCustomerFilter){
 			$this->resaveWeDocumentCustomerFilter();
 		}
 
@@ -2471,7 +2471,7 @@ class we_objectFile extends we_document{
 					$this->restoreDefaults($makeSameNewFlag);
 				}
 			} else {
-				$_initWeDocumentCustomerFilter = ($this->ParentID ? false : true);
+				$initWeDocumentCustomerFilter = ($this->ParentID ? false : true);
 
 				if(!$this->Charset && isset($this->DefArray['elements']['Charset'])){
 					$this->Charset = $this->DefArray['elements']['Charset']['dat'];
@@ -2484,12 +2484,12 @@ class we_objectFile extends we_document{
 				  }
 				 */
 				$this->checkAndCorrectParent();
-				if($_initWeDocumentCustomerFilter){
+				if($initWeDocumentCustomerFilter){
 // get customerFilter of parent Folder
-					$_tmpFolder = new we_class_folder();
-					$_tmpFolder->initByID($this->rootDirID, $this->Table);
-					$this->documentCustomerFilter = $_tmpFolder->documentCustomerFilter;
-					unset($_tmpFolder);
+					$tmpFolder = new we_class_folder();
+					$tmpFolder->initByID($this->rootDirID, $this->Table);
+					$this->documentCustomerFilter = $tmpFolder->documentCustomerFilter;
+					unset($tmpFolder);
 				}
 			}
 		}
@@ -3113,15 +3113,15 @@ class we_objectFile extends we_document{
 					'icon' => "class.gif"
 				);
 			} elseif($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	Link to class in normal mode
-				$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $this->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
+				$html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;"><a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_TABLE . '\',' . $this->TableID . ',\'object\');">' . g_l('modules_object', '[class]') . '</a></div>' .
 					'<div style="margin-bottom:12px;">' . $this->formClass() . '</div>';
-				$_html .= '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">' . g_l('modules_object', '[class_id]') . '</div>' .
+				$html .= '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">' . g_l('modules_object', '[class_id]') . '</div>' .
 					'<div style="margin-bottom:12px;">' . $this->formClassId() . '</div>';
 
 
 				$parts[] = array(
 					"headline" => "",
-					"html" => $_html,
+					"html" => $html,
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					"forceRightHeadline" => 1,
 					'icon' => "class.gif"
