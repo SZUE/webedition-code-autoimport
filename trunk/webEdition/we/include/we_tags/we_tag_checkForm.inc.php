@@ -77,8 +77,8 @@ if(self.' . $onError . '){' .
 	if($mandatory){
 		$fields = explode(',', $mandatory);
 		$jsMandatory = '//  check mandatory
-        var required = ["' . implode('", "', $fields) . '"];
-        missingReq = weCheckFormMandatory(formular, required);';
+var required = ["' . implode('", "', $fields) . '"];
+missingReq = weCheckFormMandatory(formular, required);';
 	} else {
 		$jsMandatory = '';
 	}
@@ -97,9 +97,9 @@ if(self.' . $onError . '){' .
 			return parseError(g_l('parser', '[checkForm_password]'));
 		}
 		$jsPasword = '//  check passwords
-        var password = ["' . implode('", "', $pwFields) . '"];
-        pwError = weCheckFormPassword(formular, password);
-        ';
+var password = ["' . implode('", "', $pwFields) . '"];
+pwError = weCheckFormPassword(formular, password);
+';
 	} else {
 		$jsPasword = '';
 	}
