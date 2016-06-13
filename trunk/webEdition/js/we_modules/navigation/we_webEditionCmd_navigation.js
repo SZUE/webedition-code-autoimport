@@ -47,7 +47,7 @@ function we_cmd_navigation(args, url) {
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=ruleFrameset", "tool_navigation_rules", -1, -1, 680, 580, true, true, true, true);
 			return true;
 		case "module_navigation_edit_navi":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WE_MODULES_DIR + "navigation/weNaviEditor.php?we_cmd[1]=" + args[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=weNaviEditor&we_cmd[1]=" + args[1], "we_navieditor", -1, -1, 600, 350, true, false, true, true);
 			return true;
 		case "module_navigation_do_reset_customer_filter":
 			we_repl(self.load, url, args[0]);
