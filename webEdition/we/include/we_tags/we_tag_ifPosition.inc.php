@@ -25,31 +25,31 @@
 
 /**
  *
- * @param mixed $position position-value of position-Array (first,last,even,odd,#)
+ * @param int $position position-value of position-Array (first,last,even,odd,#)
  * @param int $size size of position Array
  * @param string $operator operator (equal,less,greater,less|equal,greater|equal)
- * @param int $position position of comparable
- * @param int $size size of comparable
+ * @param int $LVposition position of comparable
+ * @param int $LVsize size of comparable
  * @return mixed (true,false,-1) -1 if no decission is made yet - pass next element of position array
  */
-function _we_tag_ifPosition_op($position, $size, $operator, $position, $size){
+function _we_tag_ifPosition_op($position, $size, $operator, $LVposition, $LVsize){
 	switch($position){
 		case 'first' :
 			if($size == 1 && $operator != ''){
 				switch($operator){
 					case 'equal':
-						return $position == 1;
+						return $LVposition == 1;
 					case 'less':
-						return $position < 1;
+						return $LVposition < 1;
 					case 'less|equal':
-						return $position <= 1;
+						return $LVposition <= 1;
 					case 'greater':
-						return $position > 1;
+						return $LVposition > 1;
 					case 'greater|equal':
-						return $position >= 1;
+						return $LVposition >= 1;
 				}
 			} else {
-				if($position == 1){
+				if($LVposition == 1){
 					return true;
 				}
 			}
@@ -58,27 +58,27 @@ function _we_tag_ifPosition_op($position, $size, $operator, $position, $size){
 			if($size == 1 && $operator != ''){
 				switch($operator){
 					case 'equal':
-						return $position == $size;
+						return $LVposition == $LVsize;
 					case 'less':
-						return $position < $size;
+						return $LVposition < $LVsize;
 					case 'less|equal':
-						return $position <= $size;
+						return $LVposition <= $LVsize;
 					case 'greater|equal':
-						return $position >= $size;
+						return $LVposition >= $LVsize;
 				}
 			} else {
-				if($position == $size){
+				if($LVposition == $LVsize){
 					return true;
 				}
 			}
 			break;
 		case 'odd' :
-			if($position % 2 != 0){
+			if($LVposition % 2 != 0){
 				return true;
 			}
 			break;
 		case 'even' :
-			if($position % 2 == 0){
+			if($LVposition % 2 == 0){
 				return true;
 			}
 			break;
@@ -88,20 +88,20 @@ function _we_tag_ifPosition_op($position, $size, $operator, $position, $size){
 			if($size == 1 && $operator != ''){
 				switch($operator){
 					case 'equal':
-						return $position == $position;
+						return $LVposition == $position;
 					case 'less':
-						return $position < $position;
+						return $LVposition < $position;
 					case 'less|equal':
-						return $position <= $position;
+						return $LVposition <= $position;
 					case 'greater':
-						return $position > $position;
+						return $LVposition > $position;
 					case 'greater|equal':
-						return $position >= $position;
+						return $LVposition >= $position;
 					case 'every':
-						return ($position % $position == 0);
+						return ($LVposition % $position == 0);
 				}
 			} else {
-				if(($operator === 'every' && ($position % $position == 0)) || $position == $position){
+				if(($operator === 'every' && ($LVposition % $position == 0)) || $LVposition == $position){
 					return true;
 				}
 			}
@@ -140,9 +140,9 @@ function we_tag_ifPosition(array $attribs){
 
 		case 'linklist' :
 			//	first we must get right array !!!
-			$reference = $GLOBALS['we']['ll']->getName();
+			$llName = $GLOBALS['we']['ll']->getName();
 
-			$reference = $GLOBALS['we_position']['linklist'][$reference];
+			$reference = $GLOBALS['we_position']['linklist'][$llName];
 
 			if(is_array($reference) && isset($reference['position'])){
 				foreach($positionArray as $position){
