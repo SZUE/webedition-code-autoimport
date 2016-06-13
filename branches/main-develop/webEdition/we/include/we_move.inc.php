@@ -132,13 +132,13 @@ if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
 switch($table){
 	case TEMPLATES_TABLE:
-		$_type = g_l('global', '[templates]');
+		$type = g_l('global', '[templates]');
 		break;
 	case defined('OBJECT_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE':
-		$_type = g_l('global', '[objects]');
+		$type = g_l('global', '[objects]');
 		break;
 	default:
-		$_type = g_l('global', '[documents]');
+		$type = g_l('global', '[documents]');
 		break;
 }
 
@@ -173,7 +173,7 @@ $yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELEC
 
 $weAcSelector = $yuiSuggest->getHTML();
 
-$_buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:press_ok_move('" . $_type . "');"), '', we_html_button::create_button('quit_move', "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left");
+$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:press_ok_move('" . $type . "');"), '', we_html_button::create_button('quit_move', "javascript:we_cmd('exit_move','','" . $table . "')"), 10, "left");
 
 echo
 '</head><body class="weTreeHeaderMove">
@@ -183,7 +183,7 @@ echo
 	g_l('newFile', '[title_move]')) . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('newFile', '[move_text]') . '</span>
 			<p style="margin:0px 0px 10px 0px;padding:0px;">' . $weAcSelector . '</p></p>
-<div>' . $_buttons . '</div></div>' . we_html_element::htmlHidden("sel", "") .
+<div>' . $buttons . '</div></div>' . we_html_element::htmlHidden("sel", "") .
  '</form>' .
  $yuiSuggest->getYuiJs() .
  '</body>

@@ -70,19 +70,19 @@ $table->setCol(0, 4, array('style' => 'vertical-align:top', 'class' => 'small'),
 
 $_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 
-$_i = 0;
+$i = 0;
 while(false !== ($entry = $_dir->read())){
 	if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
-		$_i++;
+		$i++;
 		$table->addRow();
 
 		$_name = str_replace('.zip', '', $entry);
 
-		$table->setCol($_i, 0, array('style' => 'vertical-align:top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
-		$table->setCol($_i, 1, array('style' => 'vertical-align:top', 'class' => 'defaultfont'), $_name);
-		$table->setCol($_i, 2, array('style' => 'vertical-align:top;text-align:right'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
-		$table->setCol($_i, 3, array('style' => 'vertical-align:top;text-align:right'), we_html_button::create_button(we_html_button::RELOAD, 'javascript: updateDict("' . $_name . '");'));
-		$table->setCol($_i, 4, array('style' => 'vertical-align:top;text-align:right'), we_html_button::create_button(we_html_button::TRASH, 'javascript: deleteDict("' . $_name . '");'));
+		$table->setCol($i, 0, array('style' => 'vertical-align:top'), we_html_forms::radiobutton($_name, (($spellcheckerConf['default'] == $_name) ? true : false), 'default', '', true, 'defaultfont', 'document.we_form.enable_' . $_name . '.value=1;document.we_form._enable_' . $_name . '.checked=true;'));
+		$table->setCol($i, 1, array('style' => 'vertical-align:top', 'class' => 'defaultfont'), $_name);
+		$table->setCol($i, 2, array('style' => 'vertical-align:top;text-align:right'), we_html_forms::checkboxWithHidden(in_array($_name, $spellcheckerConf['active']), 'enable_' . $_name, '', false, 'defaultfont', ''));
+		$table->setCol($i, 3, array('style' => 'vertical-align:top;text-align:right'), we_html_button::create_button(we_html_button::RELOAD, 'javascript: updateDict("' . $_name . '");'));
+		$table->setCol($i, 4, array('style' => 'vertical-align:top;text-align:right'), we_html_button::create_button(we_html_button::TRASH, 'javascript: deleteDict("' . $_name . '");'));
 	}
 }
 $_dir->close();
@@ -90,7 +90,7 @@ $_dir->close();
 $_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 $tabsBody = $we_tabs->getHTML() . we_html_element::jsElement('if(!activ_tab) activ_tab = 1; document.getElementById("tab_"+activ_tab).className="tabActive";');
 
-$_tab_1 = we_html_tools::htmlDialogLayout('
+$tab_1 = we_html_tools::htmlDialogLayout('
 	 <form name="we_form" target="hiddenCmd" method="post" action="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php">
 	 <input type="hidden" name="cmd[0]" value="saveSettings" />
 	 <div id="dictTable">
@@ -104,7 +104,7 @@ $_tab_1 = we_html_tools::htmlDialogLayout('
 	 ', '', '');
 
 
-$_tab_2 = we_html_tools::htmlDialogLayout('
+$tab_2 = we_html_tools::htmlDialogLayout('
 					<textarea class="defaultfont" name="defaultDict" style="width: 400px; padding:5px;height: 320px; border: 1px solid #AFB0AF;margin-bottom: 5px;background-color:white ! important;">' . (file_exists(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') ? ((filesize(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') > 0) ? we_base_file::load(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php') : '') : '') . '</textarea>
 					<div>' . we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit()") . '</div>
 	</form>
@@ -113,8 +113,8 @@ $_tab_2 = we_html_tools::htmlDialogLayout('
 
 $_username = $_SESSION['user']['Username'];
 $_replacement = array('\\', '/', ':', '*', '?', '<', '>', '|', '"');
-for($_i = 0; $_i < count($_replacement); $_i++){
-	$_username = str_replace($_replacement[$_i], 'MASK' . $_i, $_username);
+for($i = 0; $i < count($_replacement); $i++){
+	$_username = str_replace($_replacement[$i], 'MASK' . $i, $_username);
 }
 
 $_applet_code = we_html_element::htmlApplet(array(
@@ -197,11 +197,11 @@ echo $js .
 
 	<div id="content" style="margin: 10px; width: 450px;">
 		<div id="tab1" style="display:block;">
-			<?php echo $_tab_1 ?>
+			<?php echo $tab_1 ?>
 
 		</div>
 		<div id="tab2" style="display:none;">
-			<?php echo $_tab_2 ?>
+			<?php echo $tab_2 ?>
 		</div>
 
 	</div>

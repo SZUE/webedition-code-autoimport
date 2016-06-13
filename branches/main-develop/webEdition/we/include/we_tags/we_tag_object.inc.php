@@ -60,13 +60,13 @@ function we_tag_object(array $attribs){
 		$we_doc = $GLOBALS['we_doc'];
 		//handle listview of documents
 		$we_oid = (isset($GLOBALS['lv']) && is_object($GLOBALS['lv']) && $GLOBALS['lv']->f($name) ?
-						$GLOBALS['lv']->f($name) :
-						($we_doc->getElement($name, 'bdid') ?
-								$we_doc->getElement($name, 'bdid') :
-								($we_doc->getElement($name) ?
-										$we_doc->getElement($name) :
-										$we_oid)
-						));
+				$GLOBALS['lv']->f($name) :
+				($we_doc->getElement($name, 'bdid') ?
+					$we_doc->getElement($name, 'bdid') :
+					($we_doc->getElement($name) ?
+						$we_doc->getElement($name) :
+						$we_oid)
+				));
 		$rootDirID = ($classid ? f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path=(SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($classid) . ')') : 0);
 
 		$path = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $we_oid);
@@ -106,18 +106,16 @@ function we_tag_object(array $attribs){
 		}
 	}
 
-	if(!$we_oid){//Fix #10526 check if objectID is given by request
-		$id = ($oid = we_base_request::_(we_base_request::INT, 'we_objectID')) ? $oid : we_base_request::_(we_base_request::INT, 'we_oid', 0);
-	}else{
-		$id = $we_oid;
-	}
+	$we_oid = $we_oid? :
+//Fix #10526 check if objectID is given by request
+		(we_base_request::_(we_base_request::INT, 'we_objectID') ? : we_base_request::_(we_base_request::INT, 'we_oid', 0));
 
 	//Fix #10609 we need classID now!
-	$classid = $classid ? : ($id ? f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($id), '', $GLOBALS['DB_WE']) : 0);
+	$classid = $classid ? : ($we_oid ? f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND ID=' . intval($we_oid)) : 0);
 
-	if($id && $classid){
+	if($we_oid && $classid){
 		$unique = md5(uniqid(__FUNCTION__, true));
-		$GLOBALS['lv'] = new we_listview_object($unique, 1, 0, '', 0, $classid, '', '', '(' . OBJECT_X_TABLE . $classid . '.OF_ID="' . intval($id) . '")' . ($condition ? ' AND ' . $condition : ''), $triggerid, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+		$GLOBALS['lv'] = new we_listview_object($unique, 1, 0, '', 0, $classid, '', '', '(' . OBJECT_X_TABLE . $classid . '.OF_ID="' . intval($we_oid) . '")' . ($condition ? ' AND ' . $condition : ''), $triggerid, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
 		$avail = $GLOBALS['lv']->next_record();
 
 		if($avail){

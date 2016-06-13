@@ -23,20 +23,20 @@
  */
 //	frameset called when opened a none webEdition-document from webEdition
 //	here all parameters are dealt and submitted to the document
-$_text = we_base_request::_(we_base_request::URL, 'we_cmd', '', 1); // Path
+$text = we_base_request::_(we_base_request::URL, 'we_cmd', '', 1); // Path
 $param = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
-$_url = $_text . $param; // + Parameters
+$url = $text . $param; // + Parameters
 
-if(!$_url || (substr($_url, 0, 7) != 'http://' && substr($_url, 0, 8) != 'https://')){
+if(!$url || (substr($url, 0, 7) != 'http://' && substr($url, 0, 8) != 'https://')){
 
 	$serveradress = getServerUrl();
 
-	$_url = (!$_url || $_url{0} != '/' ?
-			$serveradress . '/' . $_url :
-			$serveradress . $_url);
+	$url = (!$url || $url{0} != '/' ?
+			$serveradress . '/' . $url :
+			$serveradress . $url);
 }
 //  extract the path to the file without parameters for file_exists -> we_SEEM_openExtDoc_content.php
-$arr = parse_url($_url);
+$arr = parse_url($url);
 $newUrl = $arr['scheme'] . '://' . $arr['host'] . ( isset($arr['port']) ? (':' . $arr['port']) : '' ) . (isset($arr['path']) ? $arr['path'] : '' );
 
 
@@ -51,7 +51,7 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 		EditorDocumentText: "<?php echo str_replace('"', '', $arr["path"]); ?>",
 		EditorDocumentPath: "<?php echo str_replace('"', '', $newUrl); ?>",
 		EditorContentType: "none_webedition",
-		EditorUrl: "<?php echo str_replace('"', '', $_text); ?>",
+		EditorUrl: "<?php echo str_replace('"', '', $text); ?>",
 		EditorDocumentParameters: "<?php echo str_replace('"', '', $param); ?>"
 	});
 
@@ -97,8 +97,8 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 <body onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});">
 	<?php
 	$headerSize = 35;
-	echo we_html_element::htmlIFrame('extDocHeader', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_header.php?filepath=" . urlencode($_url) . "&url=" . $newUrl), 'position:absolute;top:0px;left:0px;right:0px;height:' . $headerSize . 'px;', '', '', false) .
-	we_html_element::htmlIFrame('extDocContent', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_content.php?filepath=" . urlencode($_url) . '&url=' . $newUrl . '&paras=' . (isset($parastr) ? urlencode($parastr) : "") . '&we_complete_request=1'), 'position:absolute;top:' . $headerSize . 'px;left:0px;right:0px;bottom:40px;', '', 'if (openedWithWE==false) {checkDocument();}openedWithWE=false;') .
+	echo we_html_element::htmlIFrame('extDocHeader', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_header.php?filepath=" . urlencode($url) . "&url=" . $newUrl), 'position:absolute;top:0px;left:0px;right:0px;height:' . $headerSize . 'px;', '', '', false) .
+	we_html_element::htmlIFrame('extDocContent', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_content.php?filepath=" . urlencode($url) . '&url=' . $newUrl . '&paras=' . (isset($parastr) ? urlencode($parastr) : "") . '&we_complete_request=1'), 'position:absolute;top:' . $headerSize . 'px;left:0px;right:0px;bottom:40px;', '', 'if (openedWithWE==false) {checkDocument();}openedWithWE=false;') .
 	we_html_element::htmlIFrame('extDocFooter', we_class::url(WEBEDITION_DIR . "we/include/we_seem/we_SEEM_openExtDoc_footer.php"), 'position:absolute;bottom:0px;left:0px;right:0px;height:40px;', '', '', false);
 	?>
 </body>

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 //	build table for login screen.
-$_middlePart = (432 - 30);
 
 $we_version = '';
 if(!isset($GLOBALS['loginpage'])){
@@ -61,58 +60,58 @@ if(isset($GLOBALS['loginpage']) && WE_LOGIN_HIDEWESTATUS){
 			break;
 	}
 }
-$_table = new we_html_table(array('id' => 'mainTable'), 8, 1);
-$_actRow = 0;
+$table = new we_html_table(array('id' => 'mainTable'), 8, 1);
+$actRow = 0;
 //	First row with background
-$_table->setCol($_actRow++, 0, array('class' => 'logo'), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org"><img src="' . IMAGE_DIR . 'webedition.svg"/></a>' . (isset($extra) ? '<div id="versionSpec">' . $extra . '</div>' : ''));
+$table->setCol($actRow++, 0, array('class' => 'logo'), '<a href="http://www.webedition.org" target="_blank"  title="www.webedition.org"><img src="' . IMAGE_DIR . 'webedition.svg"/></a>' . (isset($extra) ? '<div id="versionSpec">' . $extra . '</div>' : ''));
 
 if($we_version){
 //	3rd Version
-	$_table->setCol($_actRow++, 0, array("class" => 'small row5'), "Version: " . $we_version);
+	$table->setCol($actRow++, 0, array("class" => 'small row5'), "Version: " . $we_version);
 }
 
 
 //	5th credits
-$_table->setCol($_actRow++, 0, array("class" => "defaultfont small row5"), '<div id="credits">' .
+$table->setCol($actRow++, 0, array("class" => "defaultfont small row5"), '<div id="credits">' .
 		g_l('global', '[developed_further_by]') . ': <a href="http://www.webedition.org/" target="_blank" ><strong>webEdition e.V.</strong></a>' /* .
 		  g_l('global', '[with]') . ' <b><a href="http://credits.webedition.org/?language=' . $GLOBALS["WE_LANGUAGE"] . '" target="_blank" >' . g_l('global', '[credits_team]') . '</a></b>' */);
 
 //	7th agency
 if(is_readable(WEBEDITION_PATH . 'agency.php')){
 	include_once(WEBEDITION_PATH . 'agency.php');
-	$_table->setCol($_actRow++, 0, array("class" => "defaultfont small row10"), $_agency);
+	$table->setCol($actRow++, 0, array("class" => "defaultfont small row10"), $_agency);
 }
 
 $loginRow = 0;
 
 if(!empty($GLOBALS["loginpage"])){
-	$_loginTable = new we_html_table(array("class" => "plainTable"), 4, 1);
-	$_loginTable->setCol($loginRow++, 0, array("class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
-	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" placeholder="' . g_l('global', '[username]') . '" ', 'text', 0, 0));
-	$_loginTable->setCol($loginRow++, 0, array("class" => "small row5"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
-	$_loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" placeholder="' . g_l('global', '[password]') . '" ', 'password', 0, 0));
-	$_loginTable->setCol($loginRow++, 0, array(), '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
+	$loginTable = new we_html_table(array("class" => "plainTable"), 4, 1);
+	$loginTable->setCol($loginRow++, 0, array("class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
+	$loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" placeholder="' . g_l('global', '[username]') . '" ', 'text', 0, 0));
+	$loginTable->setCol($loginRow++, 0, array("class" => "small row5"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
+	$loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" placeholder="' . g_l('global', '[password]') . '" ', 'password', 0, 0));
+	$loginTable->setCol($loginRow++, 0, array(), '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
 
-	$_table->addRow(2);
-	$_table->setCol($_actRow++, 0, array('class' => 'spaceTable'), $_loginTable->getHtml());
+	$table->addRow(2);
+	$table->setCol($actRow++, 0, array('class' => 'spaceTable'), $loginTable->getHtml());
 
 
 	//	mode-table
-	$_modetable = new we_html_table(array('class' => 'plainTable modeTable'), 1, 3);
+	$modetable = new we_html_table(array('class' => 'plainTable modeTable'), 1, 3);
 
 	$loginButton = we_html_button::create_button('fat:login,fa-lg fa-sign-in', we_html_button::WE_FORM . ':loginForm', true, 0, 0, 'this.style.display=\'none\';');
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
-			$_modetable->setCol(0, 0, array(), '');
-			$_modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2), (WE_LOGIN_WEWINDOW == 1 ? '<input type="hidden" name="popup" value="popup"/>' : '') . $loginButton);
+			$modetable->setCol(0, 0, array(), '');
+			$modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2), (WE_LOGIN_WEWINDOW == 1 ? '<input type="hidden" name="popup" value="popup"/>' : '') . $loginButton);
 		} else {
-			$_modetable->setCol(0, 0, array(), we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
-			$_modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2), we_html_element::htmlHidden("mode", "normal") . $loginButton);
+			$modetable->setCol(0, 0, array(), we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
+			$modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2), we_html_element::htmlHidden("mode", "normal") . $loginButton);
 		}
 	} else { //	normal login
 		if(WE_SEEM){
 //	15th Mode
-			$_table->setCol($_actRow++, 0, array("class" => "small"), g_l('SEEM', '[start_mode]'));
+			$table->setCol($actRow++, 0, array("class" => "small"), g_l('SEEM', '[start_mode]'));
 		}
 		switch(WE_LOGIN_WEWINDOW){
 			case 0:
@@ -126,29 +125,29 @@ if(!empty($GLOBALS["loginpage"])){
 		}
 
 		// if button is between these radio boces, they can not be reachable with <tab>
-		$_modetable->setCol(0, 0, array(), '<table class="default">
+		$modetable->setCol(0, 0, array(), '<table class="default">
 		<tr><td>' . $we_login_type . '</td></tr>' .
 				'<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
 				'</td></tr>
 		<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_SEE, getValueLoginMode(we_base_constants::MODE_SEE), 'mode', '<abbr title="' . g_l('SEEM', '[start_mode_seem_acronym]') . '">' . g_l('SEEM', '[start_mode_seem]') . '</abbr>', true, "small") .
 				'</td></tr>
 		</table>');
-		$_modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom', 'rowspan' => 3), $loginButton);
+		$modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom', 'rowspan' => 3), $loginButton);
 	}
 
 	//	16th
-	$_table->setCol($_actRow++, 0, array("class" => "small"), $_modetable->getHtml());
+	$table->setCol($actRow++, 0, array("class" => "small"), $modetable->getHtml());
 } else if(isset($GLOBALS["loginpage"]) && !$GLOBALS["loginpage"]){
 	srand((double) microtime() * 1000000);
 	$r = rand();
 
-	$_table->addRow(2);
+	$table->addRow(2);
 
 	//	9th Login ok
-	$_table->setCol($_actRow++, 0, array("class" => "small spaceTable"), g_l('global', '[loginok]'));
+	$table->setCol($actRow++, 0, array("class" => "small spaceTable"), g_l('global', '[loginok]'));
 
 	//	11th back button
-	$_table->setCol($_actRow++, 0, array("width" => $_middlePart, "class" => "small", 'style' => 'text-align:right;padding-bottom:15px'), we_html_button::create_button('back_to_login', WEBEDITION_DIR . 'index.php?r=' . $r));
+	$table->setCol($actRow++, 0, array("width" => (432 - 30), "class" => "small", 'style' => 'text-align:right;padding-bottom:15px'), we_html_button::create_button('back_to_login', WEBEDITION_DIR . 'index.php?r=' . $r));
 }
 
-return $_table->getHtml();
+return $table->getHtml();

@@ -404,7 +404,7 @@ class we_customer_customer extends we_base_model{
 		if(is_array($fields)){
 			return $fields;
 		}
-		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $GLOBALS['DB_WE']));
+		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"'));
 		$fields = array();
 		if(!$customerFields){
 			return $fields;
@@ -424,7 +424,7 @@ class we_customer_customer extends we_base_model{
 		if(is_array($fields)){
 			return $fields;
 		}
-		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $GLOBALS['DB_WE']));
+		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"'));
 		$fields = array();
 		if(!$customerFields){
 			return $fields;

@@ -287,7 +287,7 @@ function findInclude($cmd){
 				return $INCLUDE;
 			}
 			//	In we.inc.php all names of the installed modules have already been searched
-			//	so we only have to use the array $_we_active_integrated_modules
+			//	so we only have to use the array $we_active_integrated_modules
 
 			$mods = we_base_moduleInfo::getIntegratedModules(false);
 			foreach($mods as $m){

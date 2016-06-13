@@ -199,10 +199,10 @@ function we_saveCustomerImages(){
 			// file is selected, check to see if it is an image
 			if(getContentTypeFromFile($filename) === we_base_ContentTypes::IMAGE){
 
-				$_serverPath = TEMP_PATH . we_base_file::getUniqueId();
-				move_uploaded_file($_FILES['WE_SF_IMG_DATA']['tmp_name'][$imgName], $_serverPath);
+				$serverPath = TEMP_PATH . we_base_file::getUniqueId();
+				move_uploaded_file($_FILES['WE_SF_IMG_DATA']['tmp_name'][$imgName], $serverPath);
 
-				$we_size = we_thumbnail::getimagesize($_serverPath);
+				$we_size = we_thumbnail::getimagesize($serverPath);
 
 				if(empty($we_size)){
 					continue;
@@ -210,29 +210,29 @@ function we_saveCustomerImages(){
 
 				$tmp_Filename = $imgName . '_' . we_base_file::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['WE_SF_IMG_DATA']['name'][$imgName]);
 				$tmp = explode('.', $tmp_Filename);
-				$_extension = '.' . $tmp[count($tmp) - 1];
+				$extension = '.' . $tmp[count($tmp) - 1];
 				unset($tmp[count($tmp) - 1]);
-				$_fileName = implode('.', $tmp);
-				$_text = $_fileName . $_extension;
+				$fileName = implode('.', $tmp);
+				$text = $fileName . $extension;
 
 				//image needs to be scaled
 				if((!empty($_SESSION['webuser']['imgtmp'][$imgName]['width'])) ||
 					(!empty($_SESSION['webuser']['imgtmp'][$imgName]['height']))){
-					$imageData = we_base_file::load($_serverPath);
+					$imageData = we_base_file::load($serverPath);
 					$thumb = new we_thumbnail();
-					$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], array($_SESSION['webuser']['imgtmp'][$imgName]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION['webuser']['imgtmp'][$imgName]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
+					$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], array($_SESSION['webuser']['imgtmp'][$imgName]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION['webuser']['imgtmp'][$imgName]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
 
 					$imgData = '';
 					$thumb->getThumb($imgData);
 
-					we_base_file::save($_serverPath, $imgData);
-					$we_size = we_thumbnail::getimagesize($_serverPath);
+					we_base_file::save($serverPath, $imgData);
+					$we_size = we_thumbnail::getimagesize($serverPath);
 				}
 
-				$_imgwidth = $we_size[0];
-				$_imgheight = $we_size[1];
-				//$_type = $_FILES['WE_SF_IMG_DATA']['type'][$imgName];
-				$_size = $_FILES['WE_SF_IMG_DATA']['size'][$imgName];
+				$imgwidth = $we_size[0];
+				$imgheight = $we_size[1];
+				//$type = $_FILES['WE_SF_IMG_DATA']['type'][$imgName];
+				$size = $_FILES['WE_SF_IMG_DATA']['size'][$imgName];
 
 				$imgDocument = new we_imageDocument();
 
@@ -242,21 +242,21 @@ function we_saveCustomerImages(){
 					$imgDocument->setParentID($_SESSION['webuser']['imgtmp'][$imgName]['parentid']);
 				}
 
-				$imgDocument->Filename = $_fileName;
-				$imgDocument->Extension = $_extension;
-				$imgDocument->Text = $_text;
+				$imgDocument->Filename = $fileName;
+				$imgDocument->Extension = $extension;
+				$imgDocument->Text = $text;
 
 				$imgDocument->Path = $imgDocument->getParentPath() . (($imgDocument->getParentPath() != '/') ? '/' : '') . $imgDocument->Text;
 
-				$imgDocument->setElement('width', $_imgwidth, 'attrib');
-				$imgDocument->setElement('height', $_imgheight, 'attrib');
-				$imgDocument->setElement('origwidth', $_imgwidth, 'attrib');
-				$imgDocument->setElement('origheight', $_imgheight, 'attrib');
+				$imgDocument->setElement('width', $imgwidth, 'attrib');
+				$imgDocument->setElement('height', $imgheight, 'attrib');
+				$imgDocument->setElement('origwidth', $imgwidth, 'attrib');
+				$imgDocument->setElement('origheight', $imgheight, 'attrib');
 				$imgDocument->setElement('type', we_base_ContentTypes::IMAGE, 'attrib');
 
-				$imgDocument->setElement('data', $_serverPath, 'image');
+				$imgDocument->setElement('data', $serverPath, 'image');
 
-				$imgDocument->setElement('filesize', $_size, 'attrib');
+				$imgDocument->setElement('filesize', $size, 'attrib');
 
 				$imgDocument->Table = FILE_TABLE;
 				$imgDocument->Published = time();

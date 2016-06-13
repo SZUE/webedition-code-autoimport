@@ -109,8 +109,8 @@ function we_tag_var(array $attribs){
 
 			if(isset($doc->DefArray) && is_array($doc->DefArray)){
 				$keys = array_keys($doc->DefArray);
-				foreach($keys as $_glob_key){
-					if((strpos($_glob_key, we_object::QUERY_PREFIX) === 0 && ($rest = substr($_glob_key, strlen(we_object::QUERY_PREFIX)))) || (strpos($_glob_key, 'we_object_') === 0 && ($rest = substr($_glob_key, 10)))){
+				foreach($keys as $glob_key){
+					if((strpos($glob_key, we_object::QUERY_PREFIX) === 0 && ($rest = substr($glob_key, strlen(we_object::QUERY_PREFIX)))) || (strpos($glob_key, 'we_object_') === 0 && ($rest = substr($glob_key, 10)))){
 						$normVal = $doc->getFieldByVal($doc->getElement($name), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $rest);
 					}
 

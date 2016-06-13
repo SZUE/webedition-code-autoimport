@@ -59,7 +59,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 			case 'pad':
 				break;
 			case 'msg':
-				$_transact = md5(uniqid(__FUNCTION__, true));
+				$transact = md5(uniqid(__FUNCTION__, true));
 			default:
 				include_once (WE_INCLUDES_PATH . 'we_widgets/mod/' . $aProps[0] . '.inc.php');
 		}

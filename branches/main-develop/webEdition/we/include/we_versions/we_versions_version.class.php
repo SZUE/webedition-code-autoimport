@@ -1236,9 +1236,9 @@ class we_versions_version{
 														if(isset($lastEntryField[$k]['dat'])){
 															$lastEntryField[$k]['dat'] = is_array($lastEntryField[$k]['dat']) ? we_serialize($lastEntryField[$k]['dat']) : $lastEntryField[$k]['dat'];
 														}
-														$_diff = array_diff_assoc($vl, $lastEntryField[$k]);
-														if(!empty($_diff) && isset($_diff['dat'])){
-															$diff[] = $_diff;
+														$diff = array_diff_assoc($vl, $lastEntryField[$k]);
+														if(!empty($diff) && isset($diff['dat'])){
+															$diff[] = $diff;
 														}
 													}
 												}
@@ -1252,16 +1252,16 @@ class we_versions_version{
 												$newData = $document["schedArr"];
 												foreach($newData as $k => $vl){
 													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
-														$_tmpArr1 = $_tmpArr2 = array();
-														foreach($vl as $_k => $_v){
-															$_tmpArr1[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
+														$tmpArr1 = $tmpArr2 = array();
+														foreach($vl as $k => $v){
+															$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
 														}
-														foreach($lastEntryField[$k] as $_k => $_v){
-															$_tmpArr2[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
+														foreach($lastEntryField[$k] as $k => $v){
+															$tmpArr2[$k] = is_array($v) ? we_serialize($v) : $v;
 														}
-														$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
-														if(!empty($_diff)){
-															$diff = $_diff;
+														$diff = array_diff_assoc($tmpArr1, $tmpArr2);
+														if(!empty($diff)){
+															$diff = $diff;
 														}
 													}
 												}
@@ -1270,16 +1270,16 @@ class we_versions_version{
 										case 'documentCustomFilter':
 //TODO: imi: check if we need both foreach
 											if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"]) && is_array($lastEntryField)){
-												$_tmpArr1 = $_tmpArr2 = array();
-												foreach($document["documentCustomerFilter"] as $_k => $_v){
-													$_tmpArr1[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
+												$tmpArr1 = $tmpArr2 = array();
+												foreach($document["documentCustomerFilter"] as $k => $v){
+													$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
 												}
-												foreach($lastEntryField as $_k => $_v){
-													$_tmpArr2[$_k] = is_array($_v) ? we_serialize($_v) : $_v;
+												foreach($lastEntryField as $k => $v){
+													$tmpArr2[$k] = is_array($v) ? we_serialize($v) : $v;
 												}
-												$_diff = array_diff_assoc($_tmpArr1, $_tmpArr2);
-												if(!empty($_diff)){
-													$diff['documentCustomerFilter'] = $_diff;
+												$diff = array_diff_assoc($tmpArr1, $tmpArr2);
+												if(!empty($diff)){
+													$diff['documentCustomerFilter'] = $diff;
 												}
 											}
 
@@ -1992,9 +1992,9 @@ class we_versions_version{
 	 */
 	private static function objectToArray($obj){
 		$arr = array();
-		$_arr = is_object($obj) ? get_object_vars($obj) : $obj;
+		$arr = is_object($obj) ? get_object_vars($obj) : $obj;
 
-		foreach($_arr as $key => $val){
+		foreach($arr as $key => $val){
 			//$val = (is_array($val) || is_object($val)) ? self::objectToArray($val) : $val;
 			$arr[$key] = (is_array($val) ? self::objectToArray($val) : (is_object($val) ? we_serialize($val) : $val));
 		}

@@ -39,8 +39,8 @@ function we_tag_repeatShopItem(array $attribs){
 	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING);
 
 	//internal Attribute
-	$_type = weTag_getAttribute('_type', $attribs, '', we_base_request::STRING);
-	switch($_type){
+	$intType = weTag_getAttribute('_type', $attribs, '', we_base_request::STRING);
+	switch($intType){
 		case 'start':
 			if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
 				echo $foo;

@@ -80,22 +80,22 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 	 */
 	public static function doCustom(){
 		$items = array();
-		$_tools = we_tool_lookup::getAllTools(false, false, true);
+		$tools = we_tool_lookup::getAllTools(false, false, true);
 
-		foreach($_tools as $_k => $_tool){
-			if(!we_tool_lookup::isInIgnoreList($_tool['name'])){
-				if(isset($_tool['text'])){
-					$name = $_tool['text'];
+		foreach($tools as $tool){
+			if(!we_tool_lookup::isInIgnoreList($tool['name'])){
+				if(isset($tool['text'])){
+					$name = $tool['text'];
 				} else {
-					$name = $_tool['name'];
+					$name = $tool['name'];
 				}
 				$items[] = array(
-					'ID' => $_tool['name'],
+					'ID' => $tool['name'],
 					'ParentID' => 0,
 					'Text' => $name,
 					'ContentType' => 'toolfactory/item',
 					'IsFolder' => 0,
-					'Published' => !$_tool['appdisabled'],
+					'Published' => !$tool['appdisabled'],
 					'Status' => ''
 				);
 			}

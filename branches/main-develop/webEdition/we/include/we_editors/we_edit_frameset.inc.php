@@ -157,8 +157,8 @@ if($we_doc->ID){
 			}
 		}
 	}
-	$_access = $we_doc->userHasAccess();
-	if(($_access !== we_root::USER_HASACCESS && $_access !== we_root::FILE_LOCKED)){ //   user has no access to object/document - bugfix #2481
+	$access = $we_doc->userHasAccess();
+	if(($access !== we_root::USER_HASACCESS && $access !== we_root::FILE_LOCKED)){ //   user has no access to object/document - bugfix #2481
 		if($we_ContentType != we_base_ContentTypes::OBJECT){
 			$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
 		} else {
@@ -197,12 +197,12 @@ if($we_doc->EditPageNr === -1){ //	there is no view available for this document
 if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 	//update already offline users
 
-	$_userID = $we_doc->isLockedByUser(); //	Check if file is locked.
+	$userID = $we_doc->isLockedByUser(); //	Check if file is locked.
 	$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=NULL WHERE Ping<(NOW()- INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND)');
 
-	$_filelocked = ($_userID != 0 && $_userID != $_SESSION['user']['ID']);
+	$filelocked = ($userID != 0 && $userID != $_SESSION['user']['ID']);
 
-	if(!$_filelocked){ // file can be edited
+	if(!$filelocked){ // file can be edited
 		//	#####	Lock the new file
 		//	before lock - check if user can edit the file.
 		if($we_doc->userHasAccess() == we_root::USER_HASACCESS){ //	only when user has access to file

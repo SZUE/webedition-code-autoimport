@@ -44,46 +44,46 @@ if(!isset($aCsv)){
 	$aCsv = explode(';', $aProps[3]);
 }
 if($aCsv && count($aCsv) == 3){
-	$_binary = $aCsv[1];
-	$_csv = $aCsv[2];
-	$_table = ($_binary{1}) ? OBJECT_FILES_TABLE : FILE_TABLE;
+	$binary = $aCsv[1];
+	$csv = $aCsv[2];
+	$table = ($binary{1}) ? OBJECT_FILES_TABLE : FILE_TABLE;
 } else {
-	$_csv = '';
+	$csv = '';
 }
 
-if($_csv){
-	if($_binary{0}){
-		$_ids = explode(',', $_csv);
-		$_paths = makeArrayFromCSV(id_to_path($_ids, $_table));
-		$_where = array();
-		foreach($_paths as $_path){
-			$_where[] = 'Path LIKE "' . $_path . '%" ';
+if($csv){
+	if($binary{0}){
+		$ids = explode(',', $csv);
+		$paths = makeArrayFromCSV(id_to_path($ids, $table));
+		$where = array();
+		foreach($paths as $path){
+			$where[] = 'Path LIKE "' . $path . '%" ';
 		}
-		$_query = ($_where ?
-				'SELECT ID,Path,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE (' . implode(' OR ', $_where) . ') AND IsFolder=0' :
+		$query = ($where ?
+				'SELECT ID,Path,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE (' . implode(' OR ', $where) . ') AND IsFolder=0' :
 				false);
 	} else {
-		list($folderID, $folderPath) = explode(",", $_csv);
+		list($folderID, $folderPath) = explode(",", $csv);
 		$q_path = 'Path LIKE "' . $folderPath . '%"';
-		$q_dtTid = ($aCsv[3] != 0) ? (!$_binary{1} ? 'DocType' : 'TableID') . '="' . $aCsv[3] . '"' : '';
+		$q_dtTid = ($aCsv[3] != 0) ? (!$binary{1} ? 'DocType' : 'TableID') . '="' . $aCsv[3] . '"' : '';
 		if($aCsv[4] != ""){
-			$_cats = explode(",", $aCsv[4]);
-			$_categories = array();
-			foreach($_cats as $_myCat){
-				$_id = f('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(base64_decode($_myCat)) . '"', 'ID', $GLOBALS['DB_WE']);
-				$_categories[] = 'Category LIKE ",' . intval($_id) . ',"';
+			$cats = explode(",", $aCsv[4]);
+			$categories = array();
+			foreach($cats as $myCat){
+				$id = f('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(base64_decode($myCat)) . '"', 'ID', $GLOBALS['DB_WE']);
+				$categories[] = 'Category LIKE ",' . intval($id) . ',"';
 			}
 		}
-		$_query = 'SELECT ID,Path,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($_table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(
-				$_categories)) ? ' AND (' . implode(' OR ', $_categories) . ')' : '') . ' AND IsFolder=0;';
+		$query = 'SELECT ID,Path,Text,ContentType FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ' . $q_path . (($q_dtTid) ? ' AND ' . $q_dtTid : '') . ((isset(
+				$categories)) ? ' AND (' . implode(' OR ', $categories) . ')' : '') . ' AND IsFolder=0;';
 	}
 
-	if($_query && $DB_WE->query($_query)){
+	if($query && $DB_WE->query($query)){
 		$mdc .= '<table class="default">';
 		while($DB_WE->next_record()){
 			$mdc .= '<tr><td class="mdcIcon" data-contenttype="' . $DB_WE->f('ContentType') . '"></td><td style="vertical-align:middle" class="middlefont">' . we_html_element::htmlA(
 					array(
-					"href" => 'javascript:WE().layout.weEditorFrameController.openDocument(\'' . $_table . '\',\'' . $DB_WE->f('ID') . '\',\'' . $DB_WE->f('ContentType') . '\');',
+					"href" => 'javascript:WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',\'' . $DB_WE->f('ID') . '\',\'' . $DB_WE->f('ContentType') . '\');',
 					"title" => $DB_WE->f("Path"),
 					"style" => "color:#000000;text-decoration:none;"
 					), $DB_WE->f("Path")) . '</td></tr>';
@@ -98,7 +98,7 @@ if(!isset($aProps)){//preview requested
 	$js = "
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
 var _sType='mdc';
-var _sTb='" . ($cmd4 ? : g_l('cockpit', (($_binary{1} ? '[my_objects]' : '[my_documents]')))) . "';
+var _sTb='" . ($cmd4 ? : g_l('cockpit', (($binary{1} ? '[my_objects]' : '[my_documents]')))) . "';
 
 function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);

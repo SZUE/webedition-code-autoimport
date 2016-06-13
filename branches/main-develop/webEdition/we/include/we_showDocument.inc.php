@@ -66,17 +66,17 @@ if(we_base_request::_(we_base_request::BOOL, 'vers_we_obj')){
 		new we_base_sessionHandler();
 	}
 
-	if(($_visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc->ID, $we_doc->ContentType))){
+	if(($visitorHasAccess = $we_doc->documentCustomerFilter->accessForVisitor($we_doc->ID, $we_doc->ContentType))){
 
-		if(!($_visitorHasAccess == we_customer_documentFilter::ACCESS || $_visitorHasAccess == we_customer_documentFilter::CONTROLONTEMPLATE)){
+		if(!($visitorHasAccess == we_customer_documentFilter::ACCESS || $visitorHasAccess == we_customer_documentFilter::CONTROLONTEMPLATE)){
 			// user has NO ACCESS => show errordocument
-			$_errorDocId = $we_doc->documentCustomerFilter->getErrorDoc($_visitorHasAccess);
-			if(($_errorDocPath = id_to_path($_errorDocId, FILE_TABLE))){ // use given document instead !
-				if($_errorDocId){
+			$errorDocId = $we_doc->documentCustomerFilter->getErrorDoc($visitorHasAccess);
+			if(($errorDocPath = id_to_path($errorDocId, FILE_TABLE))){ // use given document instead !
+				if($errorDocId){
 					we_html_tools::setHttpCode(401);
-					unset($_errorDocId);
-					@include($_SERVER['DOCUMENT_ROOT'] . $_errorDocPath);
-					unset($_errorDocPath);
+					unset($errorDocId);
+					@include($_SERVER['DOCUMENT_ROOT'] . $errorDocPath);
+					unset($errorDocPath);
 				}
 				return;
 			}

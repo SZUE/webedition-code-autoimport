@@ -2238,7 +2238,8 @@ self.focus();');
 				$emailName = $email;
 			}
 			$phpmail = new we_mail_mail($emailName, $this->View->newsletter->Subject, $this->View->newsletter->Sender, $this->View->newsletter->Reply, $this->View->newsletter->isEmbedImages);
-			$phpmail->setCharSet($this->View->newsletter->Charset ? : $GLOBALS["_language"]["charset"]);
+			//FIXME: where is $GLOBALS["language"]["charset"] set?
+			$phpmail->setCharSet($this->View->newsletter->Charset ? : $GLOBALS["language"]["charset"]);
 
 			if($htmlmail){
 				$phpmail->addHTMLPart($content);

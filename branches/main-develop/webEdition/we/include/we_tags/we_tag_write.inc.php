@@ -105,7 +105,7 @@ function we_tag_write(array $attribs){
 		$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ($admin/* only if this field is used */ ? $isAdmin : true) : false); //FR #8411
 
 		if(!($isAdmin || $isNew || $isOwner || $forceedit)){
-			$GLOBALS['ERROR']['write'][$type][$name] = 1;
+			$GLOBALS['ERROR']['write'][$type][$name] = true;
 			return;
 		}
 

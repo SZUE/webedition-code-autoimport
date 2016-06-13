@@ -42,7 +42,7 @@ function we_tag_customer(array $attribs){
 	$condition = weTag_getAttribute('condition', $attribs, 0, we_base_request::RAW);
 	$we_cid = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
-	$_showName = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
+	$showName = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 	$size = weTag_getAttribute('size', $attribs, 30, we_base_request::UNIT);
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 
@@ -71,7 +71,7 @@ function we_tag_customer(array $attribs){
 			?>
 			<table style="border-style:none;" class="weEditTable spacing0 padding0">
 				<tr>
-					<td style="padding:0 6px;"><b><?php echo $_showName; ?></b></td>
+					<td style="padding:0 6px;"><b><?php echo $showName; ?></b></td>
 					<td><?php echo we_html_element::htmlHidden($idname, $we_cid) ?></td>
 					<td style="padding-left:6px;"><?php echo we_html_tools::htmlTextInput($textname, $size, $path, '', ' readonly', 'text', 0, 0); ?></td>
 					<td style="padding-left:6px;"><?php echo $button; ?></td>

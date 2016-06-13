@@ -27,12 +27,12 @@ function we_tag_ifClient(array $attribs){
 
 	if(($browser = weTag_getAttribute('browser', $attribs, '', we_base_request::STRING))){
 		$bro = explode(',', $browser);
-		$_browserOfClient = $br->getBrowser();
-		$browserMatched = in_array($_browserOfClient, $bro);
+		$browserOfClient = $br->getBrowser();
+		$browserMatched = in_array($browserOfClient, $bro);
 		// for backwards compatibility
 		if(!$browserMatched){
 			$browserMatched = ((we_base_browserDetect::isNN() && in_array('mozilla', $bro)) ||
-				($_browserOfClient == we_base_browserDetect::APPLE && in_array('safari', $bro)));
+				($browserOfClient == we_base_browserDetect::APPLE && in_array('safari', $bro)));
 		}
 		if(!$browserMatched){
 			return false;

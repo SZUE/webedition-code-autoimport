@@ -24,42 +24,42 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
-$_disableNew = true;
-$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "');";
+$disableNew = true;
+$cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "');";
 if(permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
 	if(permissionhandler::hasPerm("NO_DOCTYPE")){
-		$_disableNew = false;
+		$disableNew = false;
 	} else {
 		$dtq = we_docTypes::getDoctypeQuery($GLOBALS['DB_WE']);
 		$id = f('SELECT dt.ID FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where'] . ' LIMIT 1');
 
 		if($id){
-			$_disableNew = false;
-			$_cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $id . "')";
+			$disableNew = false;
+			$cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','" . $id . "')";
 		} else {
-			$_disableNew = true;
+			$disableNew = true;
 		}
 	}
 } else {
-	$_disableNew = true;
+	$disableNew = true;
 }
 
-$_disableObjects = false;
+$disableObjects = false;
 if(defined('OBJECT_TABLE')){
 	$allClasses = we_users_util::getAllowedClasses();
 	if(empty($allClasses)){
-		$_disableObjects = true;
+		$disableObjects = true;
 	}
 }
 
 $shortcuts = array_filter(array(
 	'open_document' => (defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') ? g_l('button', '[open_document][value]') : ''),
-	'new_document' => (defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && !$_disableNew ? g_l('button', '[new_document][value]') : ''),
+	'new_document' => (defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && !$disableNew ? g_l('button', '[new_document][value]') : ''),
 	'new_template' => (defined('TEMPLATES_TABLE') && permissionhandler::hasPerm('NEW_TEMPLATE') ? g_l('button', '[new_template][value]') : ''),
 	'new_directory' => (permissionhandler::hasPerm('NEW_DOC_FOLDER') ? g_l('button', '[new_directory][value]') : ''),
 	'unpublished_pages' => (defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') ? g_l('button', '[unpublished_pages][value]') : ''),
-	'unpublished_objects' => (defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && !$_disableObjects ? g_l('button', '[unpublished_objects][value]') : ''),
-	'new_object' => (defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('NEW_OBJECTFILE') && !$_disableObjects ? g_l('button', '[new_object][value]') : ''),
+	'unpublished_objects' => (defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES') && !$disableObjects ? g_l('button', '[unpublished_objects][value]') : ''),
+	'new_object' => (defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('NEW_OBJECTFILE') && !$disableObjects ? g_l('button', '[new_object][value]') : ''),
 	'new_class' => (defined('OBJECT_TABLE') && permissionhandler::hasPerm('NEW_OBJECT') ? g_l('button', '[new_class][value]') : ''),
 	'preferences' => (permissionhandler::hasPerm('EDIT_SETTINGS') ? g_l('button', '[preferences][value]') : ''),
 	'btn_add_image' => (permissionhandler::hasPerm('NEW_GRAFIK') ? g_l('button', '[btn_add_image][alt]') : '')

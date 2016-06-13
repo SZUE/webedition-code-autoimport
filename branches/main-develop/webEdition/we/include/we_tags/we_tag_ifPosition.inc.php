@@ -25,83 +25,83 @@
 
 /**
  *
- * @param mixed $_position position-value of position-Array (first,last,even,odd,#)
- * @param int $_size size of position Array
+ * @param int $position position-value of position-Array (first,last,even,odd,#)
+ * @param int $size size of position Array
  * @param string $operator operator (equal,less,greater,less|equal,greater|equal)
- * @param int $position position of comparable
- * @param int $size size of comparable
+ * @param int $LVposition position of comparable
+ * @param int $LVsize size of comparable
  * @return mixed (true,false,-1) -1 if no decission is made yet - pass next element of position array
  */
-function _we_tag_ifPosition_op($_position, $_size, $operator, $position, $size){
-	switch($_position){
+function _we_tag_ifPosition_op($position, $size, $operator, $LVposition, $LVsize){
+	switch($position){
 		case 'first' :
-			if($_size == 1 && $operator != ''){
+			if($size == 1 && $operator != ''){
 				switch($operator){
 					case 'equal':
-						return $position == 1;
+						return $LVposition == 1;
 					case 'less':
-						return $position < 1;
+						return $LVposition < 1;
 					case 'less|equal':
-						return $position <= 1;
+						return $LVposition <= 1;
 					case 'greater':
-						return $position > 1;
+						return $LVposition > 1;
 					case 'greater|equal':
-						return $position >= 1;
+						return $LVposition >= 1;
 				}
 			} else {
-				if($position == 1){
+				if($LVposition == 1){
 					return true;
 				}
 			}
 			break;
 		case 'last' :
-			if($_size == 1 && $operator != ''){
+			if($size == 1 && $operator != ''){
 				switch($operator){
 					case 'equal':
-						return $position == $size;
+						return $LVposition == $LVsize;
 					case 'less':
-						return $position < $size;
+						return $LVposition < $LVsize;
 					case 'less|equal':
-						return $position <= $size;
+						return $LVposition <= $LVsize;
 					case 'greater|equal':
-						return $position >= $size;
+						return $LVposition >= $LVsize;
 				}
 			} else {
-				if($position == $size){
+				if($LVposition == $LVsize){
 					return true;
 				}
 			}
 			break;
 		case 'odd' :
-			if($position % 2 != 0){
+			if($LVposition % 2 != 0){
 				return true;
 			}
 			break;
 		case 'even' :
-			if($position % 2 == 0){
+			if($LVposition % 2 == 0){
 				return true;
 			}
 			break;
 
 		default :
-			$_position = intval($_position); // Umwandeln in integer
-			if($_size == 1 && $operator != ''){
+			$position = intval($position); // Umwandeln in integer
+			if($size == 1 && $operator != ''){
 				switch($operator){
 					case 'equal':
-						return $position == $_position;
+						return $LVposition == $position;
 					case 'less':
-						return $position < $_position;
+						return $LVposition < $position;
 					case 'less|equal':
-						return $position <= $_position;
+						return $LVposition <= $position;
 					case 'greater':
-						return $position > $_position;
+						return $LVposition > $position;
 					case 'greater|equal':
-						return $position >= $_position;
+						return $LVposition >= $position;
 					case 'every':
-						return ($position % $_position == 0);
+						return ($LVposition % $position == 0);
 				}
 			} else {
-				if(($operator === 'every' && ($position % $_position == 0)) || $position == $_position){
+				if(($operator === 'every' && ($LVposition % $position == 0)) || $LVposition == $position){
 					return true;
 				}
 			}
@@ -125,13 +125,13 @@ function we_tag_ifPosition(array $attribs){
 
 	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);
 	$positionArray = explode(',', weTag_getAttribute('position', $attribs, '', we_base_request::STRING));
-	$_size = count($positionArray);
+	$size = count($positionArray);
 	$operator = weTag_getAttribute('operator', $attribs, '', we_base_request::STRING);
 
 	switch($type){
 		case 'listview' : //	inside a listview, we take direct global listview object
-			foreach($positionArray as $_position){
-				$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $GLOBALS['lv']->count, $GLOBALS['lv']->anz);
+			foreach($positionArray as $position){
+				$tmp = _we_tag_ifPosition_op($position, $size, $operator, $GLOBALS['lv']->count, $GLOBALS['lv']->anz);
 				if($tmp !== -1){
 					return $tmp;
 				}
@@ -140,13 +140,13 @@ function we_tag_ifPosition(array $attribs){
 
 		case 'linklist' :
 			//	first we must get right array !!!
-			$_reference = $GLOBALS['we']['ll']->getName();
+			$llName = $GLOBALS['we']['ll']->getName();
 
-			$_reference = $GLOBALS['we_position']['linklist'][$_reference];
+			$reference = $GLOBALS['we_position']['linklist'][$llName];
 
-			if(is_array($_reference) && isset($_reference['position'])){
-				foreach($positionArray as $_position){
-					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_reference['position'] + 1, $_reference['size']);
+			if(is_array($reference) && isset($reference['position'])){
+				foreach($positionArray as $position){
+					$tmp = _we_tag_ifPosition_op($position, $size, $operator, $reference['position'] + 1, $reference['size']);
 					if($tmp !== -1){
 						return $tmp;
 					}
@@ -156,12 +156,12 @@ function we_tag_ifPosition(array $attribs){
 			break;
 
 		case 'block' : //	look in function we_tag_block for details
-			$_reference = substr($GLOBALS['postTagName'], 4, strrpos($GLOBALS['postTagName'], '__') - 4); //strip leading blk_ and trailing __NO
-			$_reference = $GLOBALS['we_position']['block'][$_reference];
+			$reference = substr($GLOBALS['postTagName'], 4, strrpos($GLOBALS['postTagName'], '__') - 4); //strip leading blk_ and trailing __NO
+			$reference = $GLOBALS['we_position']['block'][$reference];
 
-			if(is_array($_reference) && isset($_reference['position'])){
-				foreach($positionArray as $_position){
-					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_reference['position'], $_reference['size']);
+			if(is_array($reference) && isset($reference['position'])){
+				foreach($positionArray as $position){
+					$tmp = _we_tag_ifPosition_op($position, $size, $operator, $reference['position'], $reference['size']);
 					if($tmp !== -1){
 						return $tmp;
 					}
@@ -171,11 +171,11 @@ function we_tag_ifPosition(array $attribs){
 
 		case 'listdir' : //	inside a listview
 			if(isset($GLOBALS['we_position']['listdir'])){
-				$_content = $GLOBALS['we_position']['listdir'];
+				$content = $GLOBALS['we_position']['listdir'];
 			}
-			if(isset($_content) && $_content['position']){
-				foreach($positionArray as $_position){
-					$tmp = _we_tag_ifPosition_op($_position, $_size, $operator, $_content['position'], $_content['size']);
+			if(isset($content) && $content['position']){
+				foreach($positionArray as $position){
+					$tmp = _we_tag_ifPosition_op($position, $size, $operator, $content['position'], $content['size']);
 					if($tmp !== -1){
 						return $tmp;
 					}

@@ -75,10 +75,10 @@ if(self.' . $onError . '){' .
 
 	//  Generate mandatory array
 	if($mandatory){
-		$_fields = explode(',', $mandatory);
+		$fields = explode(',', $mandatory);
 		$jsMandatory = '//  check mandatory
-        var required = ["' . implode('", "', $_fields) . '"];
-        missingReq = weCheckFormMandatory(formular, required);';
+var required = ["' . implode('", "', $fields) . '"];
+missingReq = weCheckFormMandatory(formular, required);';
 	} else {
 		$jsMandatory = '';
 	}
@@ -91,15 +91,15 @@ if(self.' . $onError . '){' .
 
 
 	if($password){
-		$_pwFields = explode(',', $password);
-		if(count($_pwFields) != 3){
+		$pwFields = explode(',', $password);
+		if(count($pwFields) != 3){
 			$jsPasword = '';
 			return parseError(g_l('parser', '[checkForm_password]'));
 		}
 		$jsPasword = '//  check passwords
-        var password = ["' . implode('", "', $_pwFields) . '"];
-        pwError = weCheckFormPassword(formular, password);
-        ';
+var password = ["' . implode('", "', $pwFields) . '"];
+pwError = weCheckFormPassword(formular, password);
+';
 	} else {
 		$jsPasword = '';
 	}
@@ -121,13 +121,13 @@ if(self.' . $onError . '){' .
 
 	switch($type){
 		case "id" : //  id of formular is given
-			$function = we_html_element::jsElement(
-					'weCheckFormEvent.addEvent(window, "load", function(){
+			$function = we_html_element::jsElement(					'
+weCheckFormEvent.addEvent(window, "load", function(){
 	initWeCheckForm_by_id(weCheckForm_id_' . $match . ',"' . $match . '");
- });
- function weCheckForm_id_' . $match . '(ev){
-	var missingReq = [0];
-	var wrongEmail = [0];
+});
+function weCheckForm_id_' . $match . '(ev){
+	var missingReq = [];
+	var wrongEmail = [];
 	var pwError    = false;
 
 	formular = document.forms.' . $match . ';
@@ -137,7 +137,6 @@ if(self.' . $onError . '){' .
 
 	//  return true or false depending on errors
 	if( (wrongEmail.length>0) || (missingReq.length>0) || pwError){
-
 			' . $jsOnError . '
 			weCheckFormEvent.stopEvent(ev);
 			return false;
@@ -148,28 +147,26 @@ if(self.' . $onError . '){' .
 			break;
 
 		case "name" : //  name of formular is given
-			$function = we_html_element::jsElement(
-					'weCheckFormEvent.addEvent( window, "load", function(){
-        initWeCheckForm_by_name(weCheckForm_n_' . $match . ',"' . $match . '");
-        }
-    );
+			$function = we_html_element::jsElement(					'
+weCheckFormEvent.addEvent( window, "load", function(){
+	initWeCheckForm_by_name(weCheckForm_n_' . $match . ',"' . $match . '");
+});
 function weCheckForm_n_' . $match . '(ev){
-		var missingReq = [0];
-		var wrongEmail = [0];
-		var pwError    = false;
+	var missingReq = [];
+	var wrongEmail = [];
+	var pwError    = false;
 
-		formular = document.forms.' . $match . ';
-		' . $jsMandatory . '
-		' . $jsEmail . '
-		' . $jsPasword . '
+	formular = document.forms.' . $match . ';
+	' . $jsMandatory . '
+	' . $jsEmail . '
+	' . $jsPasword . '
 
-		//  return true or false depending on errors
-		if( wrongEmail.length || missingReq.length || pwError){
-
-				' . $jsOnError . '
-				weCheckFormEvent.stopEvent(ev);
-				return false;
-		}
+	//  return true or false depending on errors
+	if( wrongEmail.length || missingReq.length || pwError){
+		' . $jsOnError . '
+		weCheckFormEvent.stopEvent(ev);
+		return false;
+	}
 	return true;
 }');
 

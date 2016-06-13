@@ -92,8 +92,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 			throw $ex;
 		}
 		// check all required fields
-		$_miss = array();
-		if(!$model->hasRequiredFields($_miss)){
+		$miss = array();
+		if(!$model->hasRequiredFields($miss)){
 			$ex = new we_service_Exception(
 				$translate->_('Required fields are empty!'), we_service_ErrorCodes::kModelTextEmpty);
 			$ex->setType('warning');
@@ -302,7 +302,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		$inst = new toolfactory_service_Install();
 		$appdataArray = $inst->getApplist();
 		$appdata = $appdataArray[$args[0]];
-		we_util_File::decompressDirectory($appdata['source'], $_app_directory_string = WE_APPS_PATH . '/' . $appdata['classname']);
+		we_util_File::decompressDirectory($appdata['source'], WE_APPS_PATH . '/' . $appdata['classname']);
 
 		we_base_file::delete($appdata['source']);
 

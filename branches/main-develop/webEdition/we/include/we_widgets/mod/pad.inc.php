@@ -29,16 +29,16 @@ function convertDate($date){
 /**
  * Creates the HTML code for the date picker button
  *
- * @param unknown_type $_label
- * @param unknown_type $_name
- * @param unknown_type $_btn
+ * @param unknown_type $label
+ * @param unknown_type $name
+ * @param unknown_type $btn
  * @return unknown
  */
-function getDateSelector($_label, $_name, $_btn){
-	$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, 'javascript:', null, null, null, null, null, null, false, $_btn);
-	$oSelector = new we_html_table(array('class' => 'default', 'id' => $_name . '_cell'), 1, 5);
-	$oSelector->setCol(0, 0, array('class' => 'middlefont'), $_label);
-	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($_name, 55, '', 10, 'id="' . $_name . '" readonly="1"', "text", 70, 0));
+function getDateSelector($label, $name, $btn){
+	$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, 'javascript:', null, null, null, null, null, null, false, $btn);
+	$oSelector = new we_html_table(array('class' => 'default', 'id' => $name . '_cell'), 1, 5);
+	$oSelector->setCol(0, 0, array('class' => 'middlefont'), $label);
+	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name, 55, '', 10, 'id="' . $name . '" readonly="1"', "text", 70, 0));
 	$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
 	return $oSelector->getHTML();
 }
@@ -46,16 +46,16 @@ function getDateSelector($_label, $_name, $_btn){
 /**
  * Creates the HTML code with the note list
  *
- * @param unknown_type $_sql
+ * @param unknown_type $sql
  * @param unknown_type $bDate
  * @return unknown
  */
-function getNoteList($_sql, $bDate, $bDisplay){
+function getNoteList($sql, $bDate, $bDisplay){
 	global $DB_WE;
-	$DB_WE->query($_sql);
-	$_notes = '<table style="width:100%;padding:0px 5px;" class="default">';
-	$_rcd = 0;
-	$_fields = array(
+	$DB_WE->query($sql);
+	$notes = '<table style="width:100%;padding:0px 5px;" class="default">';
+	$rcd = 0;
+	$fields = array(
 		'ID',
 		'WidgetName',
 		'UserID',
@@ -68,11 +68,11 @@ function getNoteList($_sql, $bDate, $bDisplay){
 		'ValidUntil'
 	);
 	while($DB_WE->next_record()){
-		foreach($_fields as $_fld){
-			$dbf = $DB_WE->f($_fld);
+		foreach($fields as $fld){
+			$dbf = $DB_WE->f($fld);
 
-			$_fldValue = CheckAndConvertISObackend(str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), ($_fld === 'ValidUntil' && ($dbf === '3000-01-01' || $dbf === '0000-00-00' || !$dbf) ? '' : $dbf)));
-			$_notes .= we_html_element::htmlHidden($_rcd . '_' . $_fld, $_fldValue, $_rcd . '_' . $_fld);
+			$fldValue = CheckAndConvertISObackend(str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), ($fld === 'ValidUntil' && ($dbf === '3000-01-01' || $dbf === '0000-00-00' || !$dbf) ? '' : $dbf)));
+			$notes .= we_html_element::htmlHidden($rcd . '_' . $fld, $fldValue, $rcd . '_' . $fld);
 		}
 
 		$validity = $DB_WE->f("Valid");
@@ -113,15 +113,15 @@ function getNoteList($_sql, $bDate, $bDisplay){
 				$color = 'green';
 				break;
 		}
-		$_notes .= '<tr style="cursor:pointer;" id="' . $_rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $_rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $_rcd . ');">
+		$notes .= '<tr style="cursor:pointer;" id="' . $rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $rcd . ');">
 		<td style="width:15px;height:20px;vertical-align:middle"><i class="fa fa-dot-circle-o" style="color:' . $color . '"></i></td>
 		<td style="width:60px;padding-left:5px;vertical-align:middle;text-align:center" class="middlefont">' . $showDate . '</td>
 		<td style="padding-left:5px;vertical-align:middle" class="middlefont">' . CheckAndConvertISObackend($showTitle) . '</td>
 		</tr>';
-		$_rcd++;
+		$rcd++;
 	}
-	$_notes .= '</table>';
-	return $_notes;
+	$notes .= '</table>';
+	return $notes;
 }
 
 we_html_tools::protect();
@@ -129,12 +129,12 @@ we_html_tools::protect();
  * Table with the notes
  * @var string
  */
-$_sInitProps = substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), -5); //binary data
-$bSort = $_sInitProps{0};
-$bDisplay = $_sInitProps{1};
-$bDate = $_sInitProps{2};
-$bPrio = $_sInitProps{3};
-$bValid = $_sInitProps{4};
+$sInitProps = substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), -5); //binary data
+$bSort = $sInitProps{0};
+$bDisplay = $sInitProps{1};
+$bDate = $sInitProps{2};
+$bPrio = $sInitProps{3};
+$bValid = $sInitProps{4};
 $title = base64_decode(we_base_request::_(we_base_request::RAW, 'we_cmd', '', 4));
 $command = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 
@@ -199,7 +199,7 @@ switch($bSort){
 		$q_sort = 'CreationDate, Title';
 }
 
-$_sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
+$sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
 		UserID = " . intval($_SESSION['user']['ID']) .
 	($bDisplay ?
@@ -271,9 +271,9 @@ $oPad = new we_html_table(
 
 $oPad->setCol(0, 0, array("colspan" => 3, "class" => "cl_notes"), we_html_element::htmlDiv(array(
 		"id" => "notices"
-		), getNoteList($_sql, $bDate, $bDisplay)));
+		), getNoteList($sql, $bDate, $bDisplay)));
 
-$_notepad = $oPad->getHTML() .
+$notepad = $oPad->getHTML() .
 	we_html_element::htmlDiv(array("id" => "props"), $oTblProps->getHTML()) .
 	we_html_element::htmlDiv(array("id" => "view"), $oTblBtnProps);
 
@@ -286,7 +286,7 @@ var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "
 " .
 		(($command === "home") ? "
 var _sTb='" . $title . "';
-var _sInitProps='" . $_sInitProps . "';
+var _sInitProps='" . $sInitProps . "';
 " : "
 var _sCls_=parent.document.getElementById(_sObjId+'_cls').value;
 var _sType='pad';
@@ -303,6 +303,6 @@ var _ttlB64Esc=escape(WE().util.Base64.encode(_sTb));
 		array(
 		"onload" => (($command !== "home") ? "if(parent!=self)init();" : "") . 'calendarSetup();toggleTblValidity();'
 		), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
-				array("id" => "pad"), $_notepad .
+				array("id" => "pad"), $notepad .
 				we_html_element::htmlHidden("mark", "")
 ))));
