@@ -738,7 +738,7 @@ function CalendarChanged(calObject) {
 				if(we_base_request::_(we_base_request::FLOAT, 'anzahl') > 0){
 
 					// add complete article / object here - inclusive request fields
-					$_strSerialOrder = $this->getFieldFromOrder(we_base_request::_(we_base_request::INT, 'bid'), 'strSerialOrder');
+					$strSerialOrder = $this->getFieldFromOrder(we_base_request::_(we_base_request::INT, 'bid'), 'strSerialOrder');
 
 					$tmp = explode('_', $_REQUEST['add_article']);
 					$isObj = ($tmp[1] == we_shop_shop::OBJECT);
@@ -765,7 +765,7 @@ function CalendarChanged(calObject) {
 					$serialDoc = we_shop_Basket::getserial($id, ($isObj ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT), $variant, $customFieldsTmp);
 
 					// shop vats must be calculated
-					$orderArray = we_unserialize($_strSerialOrder);
+					$orderArray = we_unserialize($strSerialOrder);
 					$standardVat = we_shop_vats::getStandardShopVat();
 
 					if(we_shop_category::isCategoryMode()){
@@ -801,7 +801,7 @@ function CalendarChanged(calObject) {
 							'Datepayment' => $row['Datepayment'],
 							'IntPayment_Type' => $row['IntPayment_Type'],
 							'strSerial' => we_serialize($serialDoc, SERIALIZE_JSON),
-							'strSerialOrder' => $_strSerialOrder
+							'strSerialOrder' => $strSerialOrder
 					))));
 				} else {
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true));
@@ -1183,8 +1183,8 @@ function CalendarChanged(calObject) {
 				$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:document.we_form.submit();self.close();');
 				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
 				// 1st get the customer for this order
-				$_customer = $this->getOrderCustomerData($_REQUEST['bid']);
-				ksort($_customer);
+				$customer = $this->getOrderCustomerData($_REQUEST['bid']);
+				ksort($customer);
 
 				$dontEdit = explode(',', we_shop_shop::ignoredEditFields);
 
@@ -1195,19 +1195,19 @@ function CalendarChanged(calObject) {
 					array(
 						'headline' => g_l('modules_customer', '[Forname]') . ': ',
 						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_class::htmlTextInput('weCustomerOrder[Forename]', 44, $_customer['Forename']),
+						'html' => we_class::htmlTextInput('weCustomerOrder[Forename]', 44, $customer['Forename']),
 						'noline' => 1
 					),
 					array(
 						'headline' => g_l('modules_customer', '[Surname]') . ': ',
 						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_class::htmlTextInput('weCustomerOrder[Surname]', 44, $_customer['Surname']),
+						'html' => we_class::htmlTextInput('weCustomerOrder[Surname]', 44, $customer['Surname']),
 						'noline' => 1
 					)
 				);
 				$editFields = array('Forename', 'Surname');
 
-				foreach($_customer as $k => $v){
+				foreach($customer as $k => $v){
 					if(!in_array($k, $dontEdit) && !is_numeric($k)){
 						if(isset($this->CLFields['stateField']) && !empty($this->CLFields['stateFieldIsISO']) && $k == $this->CLFields['stateField']){
 							$lang = explode('_', $GLOBALS['WE_LANGUAGE']);

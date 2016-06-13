@@ -44,12 +44,12 @@ class we_metadata_Exif extends we_metadata_metaData{
 		return explode(',', self::usedFields);
 	}
 
-	protected function _checkDependencies(){
+	protected function checkDependencies(){
 		return (is_callable("exif_read_data"));
 	}
 
-	protected function _getMetaData($selection = ""){
-		if(!$this->_valid){
+	protected function getInstMetaData($selection = ""){
+		if(!$this->valid){
 			return false;
 		}
 		if(is_array($selection)){
@@ -59,7 +59,7 @@ class we_metadata_Exif extends we_metadata_metaData{
 			if(@exif_imagetype($this->datasource)){
 				$metadata = @exif_read_data($this->datasource);
 			} else {
-				$this->_valid = false;
+				$this->valid = false;
 				return false;
 			}
 		}

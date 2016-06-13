@@ -50,11 +50,11 @@ function we_tag_writeShopData(array $attribs){
 	$netprices = weTag_getAttribute('netprices', $attribs, true, we_base_request::BOOL);
 	$useVat = weTag_getAttribute('usevat', $attribs, false, we_base_request::BOOL);
 
-	$_customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
+	$customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
 
 	if($useVat){
 		$weShopVatRule = we_shop_vatRule::getShopVatRule();
-		$calcVat = $weShopVatRule->executeVatRule($_customer);
+		$calcVat = $weShopVatRule->executeVatRule($customer);
 	}
 
 	// Check for Shop being set
@@ -148,11 +148,11 @@ function we_tag_writeShopData(array $attribs){
 	$cartField = array(
 		WE_SHOP_CART_CUSTOM_FIELD => $cartFields, // add custom cart fields to article
 		WE_SHOP_PRICE_IS_NET_NAME => $netprices, // add netprice flag to article
-		WE_SHOP_CART_CUSTOMER_FIELD => $_customer, // add netprice flag to article
+		WE_SHOP_CART_CUSTOMER_FIELD => $customer, // add netprice flag to article
 		WE_SHOP_PRICENAME => $pricename,
 		WE_SHOP_SHIPPING => ($shipping === '' ?
 			array(
-			'costs' => $weShippingControl->getShippingCostByOrderValue($totPrice, $_customer),
+			'costs' => $weShippingControl->getShippingCostByOrderValue($totPrice, $customer),
 			'isNet' => $weShippingControl->isNet,
 			'vatRate' => $weShippingControl->vatRate
 			) :
@@ -175,5 +175,5 @@ function we_tag_writeShopData(array $attribs){
 	$doc = we_getDocForTag('top');
 	$lang = substr($doc->Language, 0, 2);
 	$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
-	$weShopStatusMails->checkAutoMailAndSend('Order', $orderID, $_customer, $lang);
+	$weShopStatusMails->checkAutoMailAndSend('Order', $orderID, $customer, $lang);
 }

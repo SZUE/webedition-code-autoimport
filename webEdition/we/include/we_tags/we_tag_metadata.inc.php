@@ -35,7 +35,7 @@ function we_tag_metadata(array $attribs){
 
 	if(!$id && $name){
 		$unique = md5(uniqid(__FILE__, true));
-		$_value = (isset($GLOBALS["lv"]) ?
+		$value = (isset($GLOBALS["lv"]) ?
 						$GLOBALS['lv']->f($name) :
 						// determine the id of the element
 						($GLOBALS['we_doc']->getElement($name, 'bdid')? :
@@ -44,7 +44,7 @@ function we_tag_metadata(array $attribs){
 				);
 
 		// it is an id
-		$id = (is_numeric($_value) ? $_value : 0);
+		$id = (is_numeric($value) ? $value : 0);
 	}
 
 	if($id){

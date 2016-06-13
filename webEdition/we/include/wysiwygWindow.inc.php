@@ -21,9 +21,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$_charsetHandler = new we_base_charsetHandler();
+$charsetHandler = new we_base_charsetHandler();
 $whiteList = array();
-$_charsets = $_charsetHandler->charsets;
+$charsets = $charsetHandler->charsets;
 
 $fields = array(
 	'cmd' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
@@ -58,10 +58,10 @@ $fields = array(
 );
 
 
-if($fields['charset'] != DEFAULT_CHARSET && $_charsets && is_array($_charsets)){
+if($fields['charset'] != DEFAULT_CHARSET && $charsets && is_array($charsets)){
 	$found = false;
 	$tmp = strtolower($fields['charset']);
-	foreach($_charsets as $v){
+	foreach($charsets as $v){
 		if(!empty($v['charset'])){
 			if(strtolower($v['charset']) == $tmp){
 				$found = true;

@@ -24,7 +24,7 @@
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop();
 
-$_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .
+$html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .
 	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? : "-") . '</div>
 	<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[content_type]') . '</div>' .
 	'<div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
@@ -32,39 +32,39 @@ $_html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div
 
 $parts = array(
 	array("headline" => "",
-		"html" => $_html,
+		"html" => $html,
 		'space' => we_html_multiIconBox::SPACE_MED2,
 		'icon' =>"meta.gif"
 	)
 );
 
-$_html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[creation_date]') . '</div>' .
+$html = '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[creation_date]') . '</div>' .
 	'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->CreationDate) . '</div>';
 
 
 if($GLOBALS['we_doc']->CreatorID){
 	$GLOBALS['DB_WE']->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $GLOBALS['we_doc']->CreatorID);
 	if($GLOBALS['DB_WE']->next_record()){
-		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[created_by]') . '</div>' .
+		$html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[created_by]') . '</div>' .
 			'<div style="margin-bottom:10px;">' . $GLOBALS['DB_WE']->f("First") . ' ' . $GLOBALS['DB_WE']->f("Second") . ' (' . $GLOBALS['DB_WE']->f("username") . ')</div>';
 	}
 }
 
-$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[changed_date]') . '</div>' .
+$html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[changed_date]') . '</div>' .
 	'<div style="margin-bottom:10px;">' . date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->ModDate) . '</div>';
 
 
 if($GLOBALS['we_doc']->ModifierID){
 	$GLOBALS['DB_WE']->query('SELECT First,Second,username FROM ' . USER_TABLE . ' WHERE ID=' . $GLOBALS['we_doc']->ModifierID);
 	if($GLOBALS['DB_WE']->next_record()){
-		$_html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>' .
+		$html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>' .
 			'<div style="margin-bottom:10px;">' . $GLOBALS['DB_WE']->f("First") . ' ' . $GLOBALS['DB_WE']->f("Second") . ' (' . $GLOBALS['DB_WE']->f("username") . ')</div>';
 	}
 }
 
 
 $parts[] = array("headline" => "",
-	"html" => $_html,
+	"html" => $html,
 	'space' => we_html_multiIconBox::SPACE_MED2,
 	'icon' =>"cal.gif"
 );

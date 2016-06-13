@@ -40,9 +40,8 @@ class we_import_site{
 	var $maxSize = 1; // in Mb
 	var $sameName = 'overwrite';
 	var $importMetadata = true;
-	var $_files;
-	var $_depth = 0;
-	var $_slash = DIRECTORY_SEPARATOR;
+	public $files;
+	private $depth = 0;
 	var $thumbs = '';
 	var $width = '';
 	var $height = '';
@@ -51,7 +50,7 @@ class we_import_site{
 	var $keepRatio = 1;
 	var $quality = 8;
 	var $degrees = 0;
-	var $_postProcess;
+	private $postProcess;
 	var $excludeddirs = array(WEBEDITION_DIR, WE_THUMBNAIL_DIRECTORY);
 	private static $DB = null;
 
@@ -90,7 +89,7 @@ class we_import_site{
 		$this->quality = we_base_request::_(we_base_request::INT, 'quality', $this->quality);
 		$this->degrees = we_base_request::_(we_base_request::INT, 'degrees', $this->degrees);
 
-		$this->_files = array();
+		$this->files = array();
 
 		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			case 'siteImportSaveWePageSettings' :
@@ -830,7 +829,7 @@ function doUnload() {
 
 		if($this->step == 1){
 			$this->_fillFiles();
-			if(count($this->_files) == 0){
+			if(count($this->files) == 0){
 				$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
 				if(count(scandir($importDirectory)) <= 2){
 					return we_html_element::jsElement('alert(\'' . addslashes(g_l('importFiles', '[emptyDir]')) . '\');top.close()');
@@ -1755,34 +1754,34 @@ function doUnload() {
 		// directory from which we import (real path)
 		// when running on windows we have to change slashes to backslashes
 		$importDirectory = str_replace('/', DIRECTORY_SEPARATOR, rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/'));
-		$this->_files = array();
-		$this->_depth = 0;
-		$this->_postProcess = array();
+		$this->files = array();
+		$this->depth = 0;
+		$this->postProcess = array();
 		$this->_fillDirectories($importDirectory);
 		// sort it so that webEdition files are at the end (that templates know about css and js files)
 
 
 		$tmp = array();
-		foreach($this->_files as $e){
+		foreach($this->files as $e){
 			if($e["contentType"] === "folder"){
 				$tmp[] = $e;
 			}
 		}
-		foreach($this->_files as $e){
+		foreach($this->files as $e){
 			if($e["contentType"] != "folder" && $e["contentType"] != we_base_ContentTypes::WEDOCUMENT){
 				$tmp[] = $e;
 			}
 		}
-		foreach($this->_files as $e){
+		foreach($this->files as $e){
 			if($e["contentType"] == we_base_ContentTypes::WEDOCUMENT){
 				$tmp[] = $e;
 			}
 		}
 
-		$this->_files = $tmp;
+		$this->files = $tmp;
 
-		foreach($this->_postProcess as $e){
-			$this->_files[] = $e;
+		foreach($this->postProcess as $e){
+			$this->files[] = $e;
 		}
 	}
 
@@ -1812,7 +1811,7 @@ function doUnload() {
 					continue 2;
 			}
 			// now we have to check if the file should be imported
-			$PathOfEntry = $importDirectory . $this->_slash . $entry;
+			$PathOfEntry = $importDirectory . DIRECTORY_SEPARATOR. $entry;
 
 			if((strpos($PathOfEntry, $weDirectory) !== false) ||
 				(!is_dir($PathOfEntry) && ($this->maxSize && (filesize($PathOfEntry) > (abs($this->maxSize) * 1024 * 1024))))){
@@ -1832,7 +1831,7 @@ function doUnload() {
 						if($this->createWePages){
 							$contentType = we_base_ContentTypes::WEDOCUMENT;
 							// webEdition files needs to be post processed (external links => internal links)
-							$this->_postProcess[] = array(
+							$this->postProcess[] = array(
 								"path" => $PathOfEntry,
 								"contentType" => "post/process",
 								"sourceDir" => $this->from,
@@ -1888,7 +1887,7 @@ function doUnload() {
 			}
 
 			if($importIt){
-				$this->_files[] = array(
+				$this->files[] = array(
 					"path" => $PathOfEntry,
 					"contentType" => $contentType,
 					"sourceDir" => $this->from,
@@ -1906,8 +1905,8 @@ function doUnload() {
 				);
 			}
 			if($contentType === "folder"){
-				if(($this->depth == -1) || (abs($this->depth) > $this->_depth)){
-					$this->_files[] = array(
+				if(($this->depth == -1) || (abs($this->depth) > $this->depth)){
+					$this->files[] = array(
 						"path" => $PathOfEntry,
 						"contentType" => $contentType,
 						"sourceDir" => $this->from,
@@ -1923,9 +1922,9 @@ function doUnload() {
 						"degrees" => "",
 						"importMetadata" => 0
 					);
-					$this->_depth++;
+					$this->depth++;
 					$this->_fillDirectories($PathOfEntry);
-					$this->_depth--;
+					$this->depth--;
 				}
 			}
 		}

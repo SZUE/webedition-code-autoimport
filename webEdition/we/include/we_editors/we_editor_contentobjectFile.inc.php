@@ -31,12 +31,12 @@ $charset = (!empty($GLOBALS['we_doc']->Charset) ? //	send charset which might be
 
 we_html_tools::headerCtCharset('text/html', $charset);
 
-$_editMode = (isset($_previewMode) && $_previewMode == 1 ? 0 : 1);
-$parts = $GLOBALS['we_doc']->getFieldsHTML($_editMode);
+$editMode = (isset($previewMode) && $previewMode == 1 ? 0 : 1);
+$parts = $GLOBALS['we_doc']->getFieldsHTML($editMode);
 if(is_array($GLOBALS['we_doc']->DefArray)){
 	foreach($GLOBALS['we_doc']->DefArray as $n => $v){
 		if(is_array($v)){
-			if(!empty($v["required"]) && $_editMode){
+			if(!empty($v["required"]) && $editMode){
 				$parts[] = array(
 					"headline" => "",
 					"html" => '*' . g_l('global', '[required_fields]'),
@@ -73,7 +73,7 @@ echo STYLESHEET;
 	<form name="we_form" method="post"><?php
 		echo we_class::hiddenTrans();
 
-		if($_editMode){
+		if($editMode){
 			echo we_html_multiIconBox::_getBoxStart(g_l('weClass', '[edit]'), md5(uniqid(__FILE__, true)), 30) .
 			$jsGUI->getContainer() .
 			we_html_multiIconBox::_getBoxEnd();
@@ -89,9 +89,9 @@ echo STYLESHEET;
 			}
 			echo we_html_element::jsElement($js);
 		} else {
-			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-				$_msg = '';
-			}
+			/*if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+				$msg = '';
+			}*/
 			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30));
 		}
 		echo we_html_element::htmlHidden("we_complete_request", 1) .

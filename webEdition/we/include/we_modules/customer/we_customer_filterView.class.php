@@ -32,21 +32,21 @@ class we_customer_filterView{
 	 *
 	 * @var we_customer_abstractFilter
 	 */
-	var $_filter = null;
+	protected $filter = null;
 
 	/**
 	 * Javascript call for making the document hot
 	 *
 	 * @var string
 	 */
-	var $_hotScript = '';
+	protected $hotScript = '';
 
 	/**
 	 * width of filter
 	 *
 	 * @var integer
 	 */
-	var $_width = 0;
+	protected $width = 0;
 
 	/**
 	 * Constructor
@@ -72,13 +72,13 @@ class we_customer_filterView{
 	function getFilterHTML($ShowModeNone = false){
 		$script = '
 function wecf_hot() {' .
-			$this->_hotScript . '
+			$this->hotScript . '
 }
 
 function updateView() {' .
 			$this->createUpdateViewScript() . '
 }';
-		$mode = $this->_filter->getMode();
+		$mode = $this->filter->getMode();
 
 		// ################# Radio buttons ###############
 		$modeRadioOff = we_html_forms::radiobutton(we_customer_abstractFilter::OFF, $mode === we_customer_abstractFilter::OFF, 'wecf_mode', g_l('modules_customerFilter', '[mode_off]'), true, "defaultfont", "wecf_hot();updateView();");
@@ -91,15 +91,15 @@ function updateView() {' .
 		$modeRadioFilter = we_html_forms::radiobutton(we_customer_abstractFilter::FILTER, $mode === we_customer_abstractFilter::FILTER, 'wecf_mode', g_l('modules_customerFilter', '[mode_filter]'), true, "defaultfont", "wecf_hot();updateView();");
 
 		// ################# Selector for specific customers ###############
-		list($specificCustomersSelect, $myscript) = $this->getMultiEdit('specificCustomersEdit', $this->_filter->getSpecificCustomers(), "", $mode === we_customer_abstractFilter::SPECIFIC);
+		list($specificCustomersSelect, $myscript) = $this->getMultiEdit('specificCustomersEdit', $this->filter->getSpecificCustomers(), "", $mode === we_customer_abstractFilter::SPECIFIC);
 		$script.=$myscript;
 		// ################# Selector blacklist ###############
 
-		list($blackListSelect, $myscript) = $this->getMultiEdit('blackListEdit', $this->_filter->getBlackList(), g_l('modules_customerFilter', '[black_list]'), $mode === we_customer_abstractFilter::FILTER);
+		list($blackListSelect, $myscript) = $this->getMultiEdit('blackListEdit', $this->filter->getBlackList(), g_l('modules_customerFilter', '[black_list]'), $mode === we_customer_abstractFilter::FILTER);
 		$script.=$myscript;
 		// ################# Selector for whitelist ###############
 
-		list($whiteListSelect, $myscript) = $this->getMultiEdit('whiteListEdit', $this->_filter->getWhiteList(), g_l('modules_customerFilter', '[white_list]'), $mode === we_customer_abstractFilter::FILTER);
+		list($whiteListSelect, $myscript) = $this->getMultiEdit('whiteListEdit', $this->filter->getWhiteList(), g_l('modules_customerFilter', '[white_list]'), $mode === we_customer_abstractFilter::FILTER);
 		$script.=$myscript;
 		// ################# customer filter ###############
 
@@ -114,7 +114,7 @@ function updateView() {' .
 	}
 
 	public function getFilterCustomers(){
-		$this->_filter->setMode(we_customer_abstractFilter::FILTER);
+		$this->filter->setMode(we_customer_abstractFilter::FILTER);
 
 		return we_html_element::jsElement('
 function $(id) {
@@ -126,7 +126,7 @@ function updateView() {' .
 }
 
 function wecf_hot() {' .
-				$this->_hotScript . '
+				$this->hotScript . '
 }') .
 			we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
 	}
@@ -189,7 +189,7 @@ EOS;
 		$delBut = addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;wecf_hot();"));
 		$script = <<<EO_SCRIPT
 
-var $name = new multi_edit("{$name}MultiEdit",document.we_form,0,"$delBut",$this->_width,false);
+var $name = new multi_edit("{$name}MultiEdit",document.we_form,0,"$delBut",$this->width,false);
 $name.addVariant();
 $name.addVariant();
 document.we_form.{$name}Control.value = $name.name;
@@ -218,8 +218,8 @@ EO_SCRIPT;
 				$name . 'Count' => (isset($data) ? count($data) : '0')
 			)) .
 			($headline ? '<div class="defaultfont">' . $headline . '</div>' : '') .
-			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . $this->_width . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
-			'<div style="width:' . ($this->_width + 13) . 'px;text-align:right">' . $buttonTable . '</div>';
+			'<div id="' . $name . 'MultiEdit" style="overflow:auto;background-color:white;padding:5px;width:' . $this->width . 'px; height: 120px; border: #AAAAAA solid 1px;margin-bottom:5px;"></div>' .
+			'<div style="width:' . ($this->width + 13) . 'px;text-align:right">' . $buttonTable . '</div>';
 		return array(self::getDiv($select, $name . 'Div', $isVisible, 22), $script);
 	}
 
@@ -251,7 +251,7 @@ EO_SCRIPT;
 			'OR' => g_l('modules_customerFilter', '[OR]')
 		);
 
-		$filter = $this->_filter->getFilter();
+		$filter = $this->filter->getFilter();
 
 		if(!$startEmpty && empty($filter)){
 			$filter = array(
@@ -262,7 +262,7 @@ EO_SCRIPT;
 					'value' => ''
 				)
 			);
-			$this->_filter->setFilter($filter);
+			$this->filter->setFilter($filter);
 		}
 
 		$i = 0;
@@ -306,7 +306,7 @@ var buttons={
 	trash:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__CNT__)") . '\'
 };') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_filter.js') . '
-<table class="default" style="width:' . $this->_width . 'px;height:50px;">
+<table class="default" style="width:' . $this->width . 'px;height:50px;">
 	<tbody id="filterTable">
 		' . $adv_row . '
 	</tbody>
@@ -324,7 +324,7 @@ var buttons={
 	 * @return we_customer_abstractFilter
 	 */
 	function getFilter(){
-		return $this->_filter;
+		return $this->filter;
 	}
 
 	/**
@@ -333,7 +333,7 @@ var buttons={
 	 * @param we_customer_abstractFilter $filter
 	 */
 	function setFilter(&$filter){
-		$this->_filter = $filter;
+		$this->filter = $filter;
 	}
 
 	/**
@@ -342,7 +342,7 @@ var buttons={
 	 * @return string
 	 */
 	function getHotScript(){
-		return $this->_hotScript;
+		return $this->hotScript;
 	}
 
 	/**
@@ -351,7 +351,7 @@ var buttons={
 	 * @param string $hotScript
 	 */
 	function setHotScript($hotScript){
-		$this->_hotScript = $hotScript;
+		$this->hotScript = $hotScript;
 	}
 
 	/**
@@ -360,7 +360,7 @@ var buttons={
 	 * @return integer
 	 */
 	function getWidth(){
-		return $this->_width;
+		return $this->width;
 	}
 
 	/**
@@ -369,7 +369,7 @@ var buttons={
 	 * @param integer $width
 	 */
 	function setWidth($width){
-		$this->_width = $width;
+		$this->width = $width;
 	}
 
 }

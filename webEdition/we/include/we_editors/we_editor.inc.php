@@ -253,8 +253,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 }
 
 //	if document is locked - only Preview mode is possible. otherwise show warning.
-$_userID = $we_doc->isLockedByUser();
-if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // document is locked
+$userID = $we_doc->isLockedByUser();
+if($userID != 0 && $userID != $_SESSION['user']['ID'] && $we_doc->ID){ // document is locked
 	if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs) && !$we_doc instanceof we_template){
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
@@ -263,9 +263,9 @@ if($_userID != 0 && $_userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docu
 		$we_doc->EditPageNr = $target;
 		$_SESSION['weS']['EditPageNr'] = $target;
 	} else {
-		$we_doc->showLockedWarning($_userID);
+		$we_doc->showLockedWarning($userID);
 	}
-} elseif($_userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){
+} elseif($userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){
 // lock document, if in seeMode and EditMode !!, don't lock when already locked
 	$we_doc->lockDocument();
 }
@@ -579,7 +579,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 //	switch to propertiy page, when user is allowed to do so.
 						switch($_SESSION['weS']['we_mode']){
 							case we_base_constants::MODE_SEE:
-								$_showAlert = true; //	don't show confirm box in editor_save.inc
+								$showAlert = true; //	don't show confirm box in editor_save.inc
 								$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page",' . (permissionhandler::hasPerm('CAN_SEE_PROPERTIES') ? we_base_constants::WE_EDITPAGE_PROPERTIES : $we_doc->EditPageNr) . ',"' . $we_transaction . '");';
 								break;
 							case we_base_constants::MODE_NORMAL:
@@ -678,7 +678,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 					default:
 						$tmpCntnt = we_SEEM::parseDocument($contents);
 
-// insert $_reloadFooter at right place
+// insert $reloadFooter at right place
 						$tmpCntnt = (strpos($tmpCntnt, '</head>')) ?
 							str_replace('</head>', $insertReloadFooter . '</head>', $tmpCntnt) :
 							$insertReloadFooter . $tmpCntnt;

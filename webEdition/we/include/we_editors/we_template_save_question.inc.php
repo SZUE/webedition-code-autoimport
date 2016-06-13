@@ -25,7 +25,7 @@ we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
  STYLESHEET;
 
-$_we_cmd6 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6);
+$we_cmd6 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6);
 
 $alerttext = ($isTemplatesUsedByThisTemplate ?
 				g_l('alert', '[template_save_warning2]') :
@@ -47,13 +47,13 @@ $alerttext = ($isTemplatesUsedByThisTemplate ?
 	}
 
 	function pressed_yes_button() {
-		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 1, '<?php echo str_replace("'", "\\'", $GLOBALS['we_responseJS']); ?>', "<?php echo $_we_cmd6; ?>");
+		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 1, '<?php echo str_replace("'", "\\'", $GLOBALS['we_responseJS']); ?>', "<?php echo $we_cmd6; ?>");
 		self.close();
 
 	}
 
 	function pressed_no_button() {
-		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 0, '<?php echo str_replace("'", "\\'", $GLOBALS['we_responseJS']) ?>', "<?php echo $_we_cmd6; ?>");
+		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 0, '<?php echo str_replace("'", "\\'", $GLOBALS['we_responseJS']) ?>', "<?php echo $we_cmd6; ?>");
 		self.close();
 
 	}

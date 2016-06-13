@@ -19,8 +19,8 @@ if(!isset($_SESSION['weS']['dictLang'])){
 
 $_username = $_SESSION['user']['Username'];
 $_replacement = array('\\', '/', ':', '*', '?', '<', '>', '|', '"');
-for($_i = 0; $_i < count($_replacement); $_i++){
-	$_username = str_replace($_replacement[$_i], 'MASK' . $_i, $_username);
+for($i = 0; $i < count($_replacement); $i++){
+	$_username = str_replace($_replacement[$i], 'MASK' . $i, $_username);
 }
 
 $_user_dict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_username . '@' . $_SERVER['SERVER_NAME'] . '.dict';
@@ -104,16 +104,16 @@ echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 
 	$_applet = '<div id="appletPanel" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height: 0px;"></div>';
 
-	$_buttons = array(
+	$buttons = array(
 		we_html_button::create_button('apply', "javascript:apply();self.close();"),
 		we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
 	);
-	$_buttons_bottom = we_html_button::position_yes_no_cancel($_buttons[0], null, $_buttons[1]);
+	$_buttons_bottom = we_html_button::position_yes_no_cancel($buttons[0], null, $buttons[1]);
 
 	$_selectCode = '<select name="dictSelect" id="dictSelect" onchange="selectDict(this.value)">';
 
 	$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
-	$_i = 0;
+	$i = 0;
 	while(false !== ($entry = $_dir->read())){
 		if($entry != '.' && $entry != '..' && strpos($entry, '.zip') !== false){
 			$_name = str_replace('.zip', '', $entry);
@@ -126,7 +126,7 @@ echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 
 	$_selectCode .= '</select>';
 
-	$_parts = array(
+	$parts = array(
 		array(
 			'headline' => '',
 			'html' => $_preview,
@@ -154,7 +154,7 @@ echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
 
 	<input name="' . ($_mode === 'wysiwyg' ? 'we_dialog_args[editname]' : 'editname') . '" value="' . $editname . '" type="hidden" />
 	<div id="mainPanel">' .
-	we_html_multiIconBox::getHTML('', $_parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]')) . '
+	we_html_multiIconBox::getHTML('', $parts, 30, $_buttons_bottom, -1, '', '', false, g_l('modules_spellchecker', '[spellchecker]')) . '
 	</div>
 	</form>' .
 	$_applet .

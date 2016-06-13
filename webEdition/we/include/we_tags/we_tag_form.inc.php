@@ -192,13 +192,13 @@ function we_tag_form(array $attribs){
 
 			//  now prepare all needed hidden-fields:
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
-				$_recipientArray = explode(',', $recipient);
-				foreach($_recipientArray as $key => $val){
-					$_recipientArray[$key] = '"' . trim($val) . '"';
+				$recipientArray = explode(',', $recipient);
+				foreach($recipientArray as $key => $val){
+					$recipientArray[$key] = '"' . trim($val) . '"';
 				}
 
-				$GLOBALS['DB_WE']->query('SELECT ID FROM ' . RECIPIENTS_TABLE . ' WHERE Email IN(' . implode(',', $_recipientArray) . ')');
-				$_ids = $GLOBALS['DB_WE']->getAll(true);
+				$GLOBALS['DB_WE']->query('SELECT ID FROM ' . RECIPIENTS_TABLE . ' WHERE Email IN(' . implode(',', $recipientArray) . ')');
+				$ids = $GLOBALS['DB_WE']->getAll(true);
 
 				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
 						'<div class="weHide" style="display: none;">';
@@ -206,7 +206,7 @@ function we_tag_form(array $attribs){
 			'order' => weTag_getAttribute('order', $attribs, '', we_base_request::STRING),
 			'required' => weTag_getAttribute('required', $attribs, '', we_base_request::STRING),
 			'subject' => weTag_getAttribute('subject', $attribs, '', we_base_request::STRING),
-			'recipient' => ($_ids ? implode(',', $_ids) : ''),
+			'recipient' => ($ids ? implode(',', $ids) : ''),
 			'mimetype' => weTag_getAttribute('mimetype', $attribs, '', we_base_request::STRING),
 			'from' => weTag_getAttribute('from', $attribs, '', we_base_request::EMAIL),
 			'error_page' => $onerror ? we_folder::getUrlFromID($onerror) : '',

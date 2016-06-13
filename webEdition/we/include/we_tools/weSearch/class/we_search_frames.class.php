@@ -30,13 +30,13 @@ class we_search_frames extends we_tool_frames{
 		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/';
 		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
 
-		$_frameset = $this->toolUrl . 'edit_' . $this->module . '_frameset.php?mod=' . $this->module;
-		parent::__construct($_frameset);
+		$frameset = $this->toolUrl . 'edit_' . $this->module . '_frameset.php?mod=' . $this->module;
+		parent::__construct($frameset);
 		$this->Table = SUCHE_TABLE;
 		$this->TreeSource = 'table:' . $this->Table;
 		$this->Tree = new we_search_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
 
-		$this->View = new we_search_view($_frameset, 'top.content');
+		$this->View = new we_search_view($frameset, 'top.content');
 		//$this->Model = &$this->View->Model;
 	}
 
@@ -202,13 +202,13 @@ function setTab(tab) {
 	}
 
 	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
-		$_but_table = we_html_button::create_button('save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')));
+		$but_table = we_html_button::create_button('save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')));
 
 		return $this->getHTMLDocument(we_html_element::jsElement('
 function we_save() {
 	top.content.we_cmd("tool_' . $this->module . '_save");
 }') . we_html_element::htmlBody(
-					array('id' => 'footerBody'), we_html_element::htmlForm(array(), $_but_table)));
+					array('id' => 'footerBody'), we_html_element::htmlForm(array(), $but_table)));
 	}
 
 	function getHTMLProperties($preselect = ''){
@@ -248,51 +248,51 @@ function we_save() {
 		//parameter: search of the tab (load only search dependent model data in the view)
 		$innerSearch = we_search_view::SEARCH_DOCS;
 
-		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
-		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
-		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
+		$searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
+		$searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
+		$searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
 
 		//$this->View->searchProperties($innerSearch);
 		$content = $this->View->searchclass->searchProperties($innerSearch, $this->View->Model);
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch];
 
-		$_searchResult_block = '<div>
+		$searchResult_block = '<div>
 		<div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_' . $innerSearch . '">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
 
 		return array(
 			array(
 				'headline' => g_l('searchtool', '[text]'),
-				'html' => $_searchField_block,
+				'html' => $searchField_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[suchenIn]'),
-				'html' => $_searchDirChooser_block,
+				'html' => $searchDirChooser_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[optionen]'),
-				'html' => $_searchCheckboxes_block,
+				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
-				'headline' => '', 'html' => $_searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+				'headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		));
 	}
 
 	function getHTMLTabTemplates(){
 		$innerSearch = we_search_view::SEARCH_TMPL;
 
-		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
-		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
-		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
+		$searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
+		$searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
+		$searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
 		$content = $this->View->searchclass->searchProperties($innerSearch, $this->View->Model);
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItemsTmplSearch'];
 
-		$_searchResult_block = '<div>
+		$searchResult_block = '<div>
 		<div id="parametersTop_' . $innerSearch . '">' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' .
 			$this->View->tblList($content, $headline, $innerSearch) . '<div id="parametersBottom_TmplSearch">' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
@@ -300,81 +300,81 @@ function we_save() {
 		return array(
 			array(
 				'headline' => g_l('searchtool', '[text]'),
-				'html' => $_searchField_block,
+				'html' => $searchField_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[suchenIn]'),
-				'html' => $_searchDirChooser_block,
+				'html' => $searchDirChooser_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[optionen]'),
-				'html' => $_searchCheckboxes_block,
+				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
-				'headline' => '', 'html' => $_searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+				'headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		));
 	}
 
 	function getHTMLTabMedia(){
 		$innerSearch = we_search_view::SEARCH_MEDIA;
 
-		$_searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
-		$_searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
-		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
-		$_searchCheckboxMediaTyp_block = '<div>' . $this->View->getSearchDialogMediaType($innerSearch) . '</div>';
-		$_searchFilter_block = '<div>' . $this->View->getSearchDialogFilter($innerSearch) . '</div>';
+		$searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
+		$searchField_block = '<div>' . $this->View->getSearchDialog($innerSearch) . '</div>';
+		$searchCheckboxes_block = '<div>' . $this->View->getSearchDialogOptions($innerSearch) . '</div>';
+		$searchCheckboxMediaTyp_block = '<div>' . $this->View->getSearchDialogMediaType($innerSearch) . '</div>';
+		$searchFilter_block = '<div>' . $this->View->getSearchDialogFilter($innerSearch) . '</div>';
 
 		$content = $this->View->searchclass->searchProperties($innerSearch, $this->View->Model);
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch];
 
-		$_searchResult_block = '<div>
+		$searchResult_block = '<div>
 		<div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' . $this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
 		</div>';
 
 		return array(
 			array(
 				'headline' => g_l('searchtool', '[text]'),
-				'html' => $_searchField_block,
+				'html' => $searchField_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[suchenIn]'),
-				'html' => $_searchDirChooser_block,
+				'html' => $searchDirChooser_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[optionen]'),
-				'html' => $_searchCheckboxes_block,
+				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[anzeigen]'),
-				'html' => $_searchCheckboxMediaTyp_block,
+				'html' => $searchCheckboxMediaTyp_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => 'Filter', //g_l('searchtool', '[optionen]'),
-				'html' => $_searchFilter_block,
+				'html' => $searchFilter_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
-				'headline' => '', 'html' => $_searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+				'headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		));
 	}
 
 	function getHTMLTabAdvanced(){
 		$innerSearch = 'AdvSearch';
-		$_searchFields_block = '<div>' . $this->View->getSearchDialogOptionalFields($innerSearch) . '</div>';
-		$_searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxesAdvSearch() . '</div>';
+		$searchFields_block = '<div>' . $this->View->getSearchDialogOptionalFields($innerSearch) . '</div>';
+		$searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxesAdvSearch() . '</div>';
 		$content = $this->View->searchclass->searchProperties($innerSearch, $this->View->Model);
 		$headline = $this->View->makeHeadLines($innerSearch);
 		$foundItems = $_SESSION['weS']['weSearch']['foundItems' . $innerSearch];
 
-		$_searchResult_block = '<div>
+		$searchResult_block = '<div>
       <div id=\'parametersTop_' . $innerSearch . '\'>' . $this->View->getSearchParameterTop($foundItems, $innerSearch) . '</div>' .
 			$this->View->tblList($content, $headline, $innerSearch) . '<div id=\'parametersBottom_' . $innerSearch . '\'>' . $this->View->getSearchParameterBottom($foundItems, $innerSearch) . '</div>
       </div>';
@@ -382,16 +382,16 @@ function we_save() {
 		return array(
 			array(
 				'headline' => g_l('searchtool', '[text]'),
-				'html' => $_searchFields_block,
+				'html' => $searchFields_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
 				'headline' => g_l('searchtool', '[anzeigen]'),
-				'html' => $_searchCheckboxes_block,
+				'html' => $searchCheckboxes_block,
 				'space' => we_html_multiIconBox::SPACE_MED
 			),
 			array(
-				'headline' => '', 'html' => $_searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
+				'headline' => '', 'html' => $searchResult_block, 'space' => we_html_multiIconBox::SPACE_MED
 		));
 	}
 
@@ -400,12 +400,12 @@ function we_save() {
 		$out = '';
 
 		foreach($content as $i => $c){
-			$_forceRightHeadline = (!empty($c['forceRightHeadline']));
+			$forceRightHeadline = (!empty($c['forceRightHeadline']));
 			$headline = (!empty($c['headline'])) ? ('<div  class="weMultiIconBoxHeadline" style="margin-bottom:10px;margin-left:30px;">' . $c["headline"] . '</div>') : "";
 			$mainContent = (!empty($c['html'])) ? $c['html'] : '';
 			$leftWidth = (empty($c['space'])) ? '' : $c['space'];
-			$leftContent = (($leftWidth && (!$_forceRightHeadline)) ? $headline : '');
-			$rightContent = '<div class="defaultfont">' . ((($leftContent === '') || $_forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
+			$leftContent = (($leftWidth && (!$forceRightHeadline)) ? $headline : '');
+			$rightContent = '<div class="defaultfont">' . ((($leftContent === '') || $forceRightHeadline) ? ($headline . '<div>' . $mainContent . '</div>') : '<div>' . $mainContent . '</div>') . '</div>';
 
 			if($leftContent || $leftWidth && $leftContent != ''){
 				if((!$leftContent) && $leftWidth){

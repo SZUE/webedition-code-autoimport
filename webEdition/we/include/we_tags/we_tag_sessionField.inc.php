@@ -235,7 +235,7 @@ function we_tag_sessionField(array $attribs, $content){
 			$usevalue = weTag_getAttribute('usevalue', $attribs, false, we_base_request::BOOL);
 			$languageautofill = weTag_getAttribute('languageautofill', $attribs, false, we_base_request::BOOL);
 			$v = ($usevalue ? $value : $orgVal);
-			$_hidden = array(
+			$hidden = array(
 				'type' => 'hidden',
 				'name' => 's[' . $name . ']',
 				'value' => weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL) ? oldHtmlspecialchars($v) : $v,
@@ -244,9 +244,9 @@ function we_tag_sessionField(array $attribs, $content){
 				$doc = we_getDocForTag(weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING));
 				$lang = $doc->Language;
 				$langcode = substr($lang, 0, 2);
-				$_hidden['value'] = $langcode;
+				$hidden['value'] = $langcode;
 			}
-			return getHtmlTag('input', array_merge(removeAttribs($attribs, array('doc', 'usevalue', 'languageautofill', 'htmlspecialchars', 'xml')), $_hidden));
+			return getHtmlTag('input', array_merge(removeAttribs($attribs, array('doc', 'usevalue', 'languageautofill', 'htmlspecialchars', 'xml')), $hidden));
 		case 'img':
 			if(!isset($_SESSION['webuser']['imgtmp'])){
 				$_SESSION['webuser']['imgtmp'] = array();
@@ -263,8 +263,8 @@ function we_tag_sessionField(array $attribs, $content){
 			$_SESSION['webuser']['imgtmp'][$name]['maximize'] = weTag_getAttribute('maximize', $attribs, false, we_base_request::BOOL);
 			$_SESSION['webuser']['imgtmp'][$name]['id'] = $orgVal ? : '';
 
-			$_foo = id_to_path($_SESSION['webuser']['imgtmp'][$name]['id']);
-			if(!$_foo){
+			$foo = id_to_path($_SESSION['webuser']['imgtmp'][$name]['id']);
+			if(!$foo){
 				$_SESSION['webuser']['imgtmp'][$name]['id'] = 0;
 			}
 

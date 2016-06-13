@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -337,33 +336,33 @@ if(!empty($this->model->ID)){
 				if($we_version < $this->model->appconfig->dependencies->version){
 					$html .= $translate->_('MinWeVersion') . ': <strong><span style="color:red">' . $this->model->appconfig->dependencies->version . '</span></strong> ' . $translate->_('AktWeVersion') . ' <strong>' . WE_VERSION . '</strong>';
 				} else {
-					$html .= $translate->_('MinWeVersion') . ': <strong>' .$this->model->appconfig->dependencies->version . '</strong>';
+					$html .= $translate->_('MinWeVersion') . ': <strong>' . $this->model->appconfig->dependencies->version . '</strong>';
 				}
 			}
 			if(!empty($this->model->appconfig->dependencies->sdkversion)){
-				$html .= '<br/>' . $translate->_('SdkVersion') . ': <strong>' . $this->model->appconfig->dependencies->sdkversion. '</strong>';
+				$html .= '<br/>' . $translate->_('SdkVersion') . ': <strong>' . $this->model->appconfig->dependencies->sdkversion . '</strong>';
 			}
 			$html .= '<br/>' . ($this->model->appconfig ?
-							$translate->_('The application manifest is available') :
-							$translate->_('The application manifest is not available')
-					) .
-					'<br/>' . ($this->model->appconfig->info->deactivatable === 'true' ?
-							$translate->_('The application can be deactivated.') :
-							$translate->_('The application can not be deactivated!')
-					) .
-					'<br/>' . ($this->model->appconfig->info->deinstallable === 'true' ?
-							$translate->_('The application is deletable.') :
-							$translate->_('The application can not be deleted!')
-					) .
-					'<br/>' . ($this->model->appconfig->info->updatable === 'true' ?
-							$translate->_('The application can be updated.') :
-							$translate->_('The application can not be updated.')
-					) .
-					'<br/>' . $translate->_('AppStatus') . ': <strong>' .
-					(!we_app_Common::isActive($this->model->classname) ?
-							$translate->_('AppStatusDiabled') :
-							$translate->_('AppStatusActive')
-					) . '</strong>';
+					$translate->_('The application manifest is available') :
+					$translate->_('The application manifest is not available')
+				) .
+				'<br/>' . ($this->model->appconfig->info->deactivatable === 'true' ?
+					$translate->_('The application can be deactivated.') :
+					$translate->_('The application can not be deactivated!')
+				) .
+				'<br/>' . ($this->model->appconfig->info->deinstallable === 'true' ?
+					$translate->_('The application is deletable.') :
+					$translate->_('The application can not be deleted!')
+				) .
+				'<br/>' . ($this->model->appconfig->info->updatable === 'true' ?
+					$translate->_('The application can be updated.') :
+					$translate->_('The application can not be updated.')
+				) .
+				'<br/>' . $translate->_('AppStatus') . ': <strong>' .
+				(!we_app_Common::isActive($this->model->classname) ?
+					$translate->_('AppStatusDiabled') :
+					$translate->_('AppStatusActive')
+				) . '</strong>';
 
 			//$html .= we_util_Strings::p_r($this->model->appconfig,true);
 			$rowVersion->addHTML($html);
@@ -413,11 +412,11 @@ if(!empty($this->model->ID)){
 	}
 	$rowTags = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Tags')));
 	$html = '';
-	foreach($this->model->tags as $_tag => $_incfile){
-		$html .= '<strong>' . $_tag . '</strong>';
-		$html .= '<br/>';
-		$html .= str_replace($_SERVER['DOCUMENT_ROOT'], '', $_incfile);
-		$html .= '<br/><br/>';
+	foreach($this->model->tags as $tag => $incfile){
+		$html .= '<strong>' . $tag . '</strong>' .
+			'<br/>' .
+			str_replace($_SERVER['DOCUMENT_ROOT'], '', $incfile) .
+			'<br/><br/>';
 	}
 	$rowTags->addHTML($html);
 	$tableTags = new we_ui_layout_HeadlineIconTable();
@@ -428,11 +427,11 @@ if(!empty($this->model->ID)){
 
 	$rowServices = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Services')));
 	$html = '';
-	foreach($this->model->services as $service => $_incfile){
-		$html .= '<strong>' . $service . '</strong>';
-		$html .= '<br/>';
-		$html .= str_replace($_SERVER['DOCUMENT_ROOT'], '', $_incfile);
-		$html .= '<br/><br/>';
+	foreach($this->model->services as $service => $incfile){
+		$html .= '<strong>' . $service . '</strong>' .
+			'<br/>' .
+			str_replace($_SERVER['DOCUMENT_ROOT'], '', $incfile) .
+			'<br/><br/>';
 	}
 	$rowServices->addHTML($html);
 	$tableServices = new we_ui_layout_HeadlineIconTable();
@@ -443,11 +442,11 @@ if(!empty($this->model->ID)){
 
 	$rowLanguage = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Language')));
 	$html = '';
-	foreach($this->model->languages as $_lan => $_incfile){
-		$html .= '<strong>' . $_lan . '</strong>';
-		$html .= '<br/>';
-		$html .= str_replace($_SERVER['DOCUMENT_ROOT'], '', $_incfile);
-		$html .= '<br/><br/>';
+	foreach($this->model->languages as $lan => $incfile){
+		$html .= '<strong>' . $lan . '</strong>' .
+			'<br/>' .
+			str_replace($_SERVER['DOCUMENT_ROOT'], '', $incfile) .
+			'<br/><br/>';
 	}
 	$rowLanguage->addHTML($html);
 	$tableLanguage = new we_ui_layout_HeadlineIconTable();
@@ -458,11 +457,11 @@ if(!empty($this->model->ID)){
 
 	$rowPermissions = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Permissions')));
 	$html = '';
-	foreach($this->model->permissions as $_key => $_value){
-		$html .= '<strong>' . $_key . '</strong>';
-		$html .= '<br/>';
-		$html .= $translate->_('default') . ':&nbsp;' . $_value;
-		$html .= '<br/><br/>';
+	foreach($this->model->permissions as $key => $value){
+		$html .= '<strong>' . $key . '</strong>'.
+			'<br/>'.
+			$translate->_('default') . ':&nbsp;' . $value.
+			'<br/><br/>';
 	}
 	$rowPermissions->addHTML($html);
 	$tablePermissions = new we_ui_layout_HeadlineIconTable();
@@ -473,9 +472,9 @@ if(!empty($this->model->ID)){
 
 	$rowBackupTable = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Backup table')));
 	$html = '';
-	foreach($this->model->backupTables as $_table){
-		$html .= $_table;
-		$html .= '<br/>';
+	foreach($this->model->backupTables as $table){
+		$html .= $table.
+			'<br/>';
 	}
 	$rowBackupTable->addHTML($html);
 	$tableBackupTable = new we_ui_layout_HeadlineIconTable();
@@ -498,17 +497,17 @@ $htmlPage->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
 
 $filenameEmptyMessage = we_util_Strings::quoteForJSString($translate->_('The name must not be empty!'), false);
 $filenameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$filenameEmptyMessage, we_core_MessageReporting::kMessageWarning
+		$filenameEmptyMessage, we_core_MessageReporting::kMessageWarning
 );
 
 $classnameEmptyMessage = we_util_Strings::quoteForJSString($translate->_('The name of the model class could not be empty!'), false);
 $classnameEmptyMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$classnameEmptyMessage, we_core_MessageReporting::kMessageWarning
+		$classnameEmptyMessage, we_core_MessageReporting::kMessageWarning
 );
 
 $noTablenameMessage = we_util_Strings::quoteForJSString($translate->_('The tablename is missing.'), false);
 $noTablenameMessageCall = we_core_MessageReporting::getShowMessageCall(
-				$noTablenameMessage, we_core_MessageReporting::kMessageWarning
+		$noTablenameMessage, we_core_MessageReporting::kMessageWarning
 );
 
 

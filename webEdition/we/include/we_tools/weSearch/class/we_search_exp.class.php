@@ -47,45 +47,45 @@ class we_search_exp extends we_search_base{
 
 	function getSearchResults($keyword, $options, $res_num = 0){
 
-		$_exp_pos = strpos($keyword, 'exp:');
-		$_items = array();
+		$exp_pos = strpos($keyword, 'exp:');
+		$items = array();
 
 		$keyword = trim($keyword);
 
-		if($_exp_pos !== false){
-			$_items = $this->evaluateExp(substr($keyword, $_exp_pos + 4), $options, $res_num);
-			$keyword = trim(substr($keyword, 0, $_exp_pos));
+		if($exp_pos !== false){
+			$items = $this->evaluateExp(substr($keyword, $exp_pos + 4), $options, $res_num);
+			$keyword = trim(substr($keyword, 0, $exp_pos));
 		}
 
-		return $_items;
+		return $items;
 	}
 
 	function evaluateExp($keyword, $options, $res_num = 0){
 		$keyword = $this->normalize($keyword);
-		$_tokens = $this->translateOperators($this->tokenize($keyword));
-		$_tables = $options;
-		$_condition = $this->constructCondition($_tokens);
+		$tokens = $this->translateOperators($this->tokenize($keyword));
+		$tables = $options;
+		$condition = $this->constructCondition($tokens);
 
-		$_result = array();
+		$result = array();
 
-		foreach($_tables as $_table){
-			$this->db->query('SELECT * FROM ' . $_table . ' ' . $_condition);
+		foreach($tables as $table){
+			$this->db->query('SELECT * FROM ' . $table . ' ' . $condition);
 
 			while($this->next_record()){
-				$_result[] = array_merge(array(
-					'Table' => $_table
+				$result[] = array_merge(array(
+					'Table' => $table
 					), $this->db->Record);
 			}
 		}
 
-		return $_result;
+		return $result;
 	}
 
 	function fixFieldNames($name){
 
-		foreach($this->FieldMap as $_k => $_v){
-			if(preg_match('%^' . $_k . '$%i', $name)){
-				return $_v;
+		foreach($this->FieldMap as $k => $v){
+			if(preg_match('%^' . $k . '$%i', $name)){
+				return $v;
 			}
 		}
 
@@ -93,8 +93,8 @@ class we_search_exp extends we_search_base{
 	}
 
 	function normalize($keyword){
-		foreach($this->Operators as $_operator){
-			$keyword = preg_replace('/[ ]*' . $_operator . '[ ]*/i', $_operator, $keyword);
+		foreach($this->Operators as $operator){
+			$keyword = preg_replace('/[ ]*' . $operator . '[ ]*/i', $operator, $keyword);
 		}
 		return $keyword;
 	}
@@ -134,8 +134,8 @@ class we_search_exp extends we_search_base{
 						$array[$ident][] = '';
 						break;
 					default :
-						$_count = count($array[$ident]) - 1;
-						$array[$ident][$_count] .= $word;
+						$count = count($array[$ident]) - 1;
+						$array[$ident][$count] .= $word;
 				}
 				$word = '';
 			}
@@ -148,10 +148,10 @@ class we_search_exp extends we_search_base{
 
 	function translateOperators($tokens){
 
-		$_tokens = $tokens;
-		foreach($_tokens as $_lop => $_slots){
-			foreach($_slots as $_key => $_value){
-				$tokens[$_lop][$_key] = $this->getExpression($_value);
+		$tokens = $tokens;
+		foreach($tokens as $lop => $slots){
+			foreach($slots as $key => $value){
+				$tokens[$lop][$key] = $this->getExpression($value);
 			}
 		}
 		return $tokens;
@@ -162,75 +162,75 @@ class we_search_exp extends we_search_base{
 	}
 
 	function getExpression($string){
-		$_arr = array();
+		$arr = array();
 
-		foreach($this->Operators as $_k => $_v){
-			if(preg_match('_' . $_k . '_', $string)){
-				$_arr = explode($_k, $string);
-				$_expr = array(
-					'operand1' => trim($this->fixFieldNames($_arr[0])),
-					'operator' => trim($_v),
-					'operand2' => trim($this->replaceSpecChars(stripslashes($_arr[1])))
+		foreach($this->Operators as $k => $v){
+			if(preg_match('_' . $k . '_', $string)){
+				$arr = explode($k, $string);
+				$expr = array(
+					'operand1' => trim($this->fixFieldNames($arr[0])),
+					'operator' => trim($v),
+					'operand2' => trim($this->replaceSpecChars(stripslashes($arr[1])))
 				);
 
-				if($_expr['operator'] === '=' && strpos($_expr['operand2'], '%') !== false){
-					$_expr['operator'] = 'LIKE';
+				if($expr['operator'] === '=' && strpos($expr['operand2'], '%') !== false){
+					$expr['operator'] = 'LIKE';
 				}
 
-				if(($_expr['operator'] === '!=' || $_expr['operator'] === '<>') && strpos($_expr['operand2'], '%') !== false){
-					$_expr['operator'] = 'NOT LIKE';
+				if(($expr['operator'] === '!=' || $expr['operator'] === '<>') && strpos($expr['operand2'], '%') !== false){
+					$expr['operator'] = 'NOT LIKE';
 				}
 
-				$this->getTransaltedExpression($_expr);
+				$this->getTransaltedExpression($expr);
 
-				if(!$this->isField($_expr['operand1'])){
-					$_expr['operand1'] = implode('', $_expr);
-					unset($_expr['operator']);
-					unset($_expr['operand2']);
+				if(!$this->isField($expr['operand1'])){
+					$expr['operand1'] = implode('', $expr);
+					unset($expr['operator']);
+					unset($expr['operand2']);
 				}
 
 				break;
 			}
 		}
 
-		if(!isset($_expr)){
-			$_expr['operand1'] = $string;
+		if(!isset($expr)){
+			$expr['operand1'] = $string;
 		}
 
-		return $_expr;
+		return $expr;
 	}
 
-	function getTransaltedExpression(&$_expr){
+	function getTransaltedExpression(&$expr){
 
-		if(($_expr['operand1'] === 'DocType')){
-			if(strpos($_expr['operand2'], '\*') !== false){
-				$_expr['operand2'] = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . str_replace("*", "%", $_expr['operand2']) . '"', 'ID', new DB_WE());
+		if(($expr['operand1'] === 'DocType')){
+			if(strpos($expr['operand2'], '\*') !== false){
+				$expr['operand2'] = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . str_replace("*", "%", $expr['operand2']) . '"', 'ID', new DB_WE());
 			} else {
-				$_expr['operand2'] = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $_expr['operand2'] . '"', 'ID', new DB_WE());
+				$expr['operand2'] = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $expr['operand2'] . '"', 'ID', new DB_WE());
 			}
 			// if operand2 is empty make some impossible condition
-			if(empty($_expr['operand2']) && ($_expr['operator'] === 'LIKE' || $_expr['operator'] === '=')){
-				$_expr['operand2'] = md5(uniqid(__FUNCTION__, true));
+			if(empty($expr['operand2']) && ($expr['operator'] === 'LIKE' || $expr['operator'] === '=')){
+				$expr['operand2'] = md5(uniqid(__FUNCTION__, true));
 			}
 		}
 
-		if(($_expr['operand1'] === 'Category')){
-			$_expr['operand2'] = ',' . f('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Text="' . $_expr['operand2'] . '"', 'ID', new DB_WE()) . ',';
-			if($_expr['operator'] === '='){
-				$_expr['operator'] = 'LIKE';
+		if(($expr['operand1'] === 'Category')){
+			$expr['operand2'] = ',' . f('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Text="' . $expr['operand2'] . '"', 'ID', new DB_WE()) . ',';
+			if($expr['operator'] === '='){
+				$expr['operator'] = 'LIKE';
 			}
-			if($_expr['operator'] === '!='){
-				$_expr['operator'] = 'NOT LIKE';
+			if($expr['operator'] === '!='){
+				$expr['operator'] = 'NOT LIKE';
 			}
 			// if operand2 is empty make some impossible condition
-			if(empty($_expr['operand2']) && $_expr['operator'] === 'LIKE'){
-				$_expr['operand2'] = md5(uniqid(__FUNCTION__, true));
+			if(empty($expr['operand2']) && $expr['operator'] === 'LIKE'){
+				$expr['operand2'] = md5(uniqid(__FUNCTION__, true));
 			}
 		}
 
-		if(strpos($_expr['operand2'], '\*') !== false){
-			$_expr['operator'] = 'LIKE';
-			$_expr['operand2'] = str_replace("*", "%", $_expr['operand2']);
+		if(strpos($expr['operand2'], '\*') !== false){
+			$expr['operator'] = 'LIKE';
+			$expr['operand2'] = str_replace("*", "%", $expr['operand2']);
 		}
 	}
 
@@ -239,51 +239,51 @@ class we_search_exp extends we_search_base{
 	}
 
 	function getTables($options){
-		$_tables = array();
+		$tables = array();
 		foreach($options as $option => $value){
 			if($value && $option == FILE_TABLE && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-				$_tables[] = FILE_TABLE;
+				$tables[] = FILE_TABLE;
 			}
 			if($value && $option == TEMPLATES_TABLE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-				$_tables[] = TEMPLATES_TABLE;
+				$tables[] = TEMPLATES_TABLE;
 			}
 			if(defined('OBJECT_FILES_TABLE') && $value && $option == OBJECT_FILES_TABLE && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
-				$_tables[] = OBJECT_FILES_TABLE;
+				$tables[] = OBJECT_FILES_TABLE;
 			}
 			if(defined('OBJECT_TABLE') && $value && $option == OBJECT_TABLE && permissionhandler::hasPerm('CAN_SEE_OBJECTS')){
-				$_tables[] = OBJECT_TABLE;
+				$tables[] = OBJECT_TABLE;
 			}
 		}
-		return $_tables;
+		return $tables;
 	}
 
-	function constructCondition(&$_tokens){
+	function constructCondition(&$tokens){
 
-		$_condition = '';
-		foreach($_tokens as $_log => $_token){
-			$_word = array();
-			$_conditions = array();
-			foreach($_token as $_op){
-				if(count($_op) < 3){
-					$_word[] = ' ' . $_op['operand1'] . ' ';
+		$condition = '';
+		foreach($tokens as $log => $token){
+			$word = array();
+			$conditions = array();
+			foreach($token as $op){
+				if(count($op) < 3){
+					$word[] = ' ' . $op['operand1'] . ' ';
 				} else {
-					$_word[] = $_op['operand1'] . ' ' . $_op['operator'] . ' "' . addslashes($_op['operand2']) . '"';
+					$word[] = $op['operand1'] . ' ' . $op['operator'] . ' "' . addslashes($op['operand2']) . '"';
 				}
 			}
-			if(!empty($_word)){
-				$_conditions[] = implode(' ' . $_log . ' ', $_word);
+			if(!empty($word)){
+				$conditions[] = implode(' ' . $log . ' ', $word);
 			}
 
-			if(!empty($_conditions)){
-				if(empty($_condition)){
-					$_condition .= implode(' ' . $_log . ' ', $_conditions);
+			if(!empty($conditions)){
+				if(empty($condition)){
+					$condition .= implode(' ' . $log . ' ', $conditions);
 				} else {
-					$_condition .= ' ' . $_log . ' ' . implode(' ' . $_log . ' ', $_conditions);
+					$condition .= ' ' . $log . ' ' . implode(' ' . $log . ' ', $conditions);
 				}
 			}
 		}
 
-		return ($_condition ? ' WHERE ' . $_condition . ' ' : '');
+		return ($condition ? ' WHERE ' . $condition . ' ' : '');
 	}
 
 }

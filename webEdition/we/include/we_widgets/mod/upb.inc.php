@@ -34,7 +34,7 @@ if($preview){
 // widget UNPUBLISHED
 $bTypeDoc = (bool) $aProps[3]{0};
 $bTypeObj = (bool) $aProps[3]{1};
-$_objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "";
+$objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "";
 $numRows = 25;
 
 $tbls = array();
@@ -54,11 +54,11 @@ if($bTypeDoc && $bTypeObj){
 	}
 }
 
-$_cont = array();
+$cont = array();
 $db = $GLOBALS['DB_WE'];
 foreach($tbls as $table){
 	if(defined('WORKFLOW_TABLE')){
-		$myWfDocsArray = we_workflow_utility::getWorkflowDocsForUser($_SESSION['user']['ID'], $table, permissionhandler::hasPerm('ADMINISTRATOR'), permissionhandler::hasPerm("PUBLISH"), ($table == $_objectFilesTable) ? '' : get_ws($table));
+		$myWfDocsArray = we_workflow_utility::getWorkflowDocsForUser($_SESSION['user']['ID'], $table, permissionhandler::hasPerm('ADMINISTRATOR'), permissionhandler::hasPerm("PUBLISH"), ($table == $objectFilesTable) ? '' : get_ws($table));
 		$myWfDocsCSV = implode(',', $myWfDocsArray);
 		$wfDocsArray = we_workflow_utility::getAllWorkflowDocs($table, $db);
 		$wfDocsCSV = implode(',', $wfDocsArray);
@@ -115,7 +115,7 @@ foreach($tbls as $table){
 	$content = array();
 
 	while($db->next_record()){
-		$_cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" data-contenttype="' . $db->f('ContentType') . '"></td><td class="upbEntry middlefont '.($db->f("Published") != '-' ? 'changed' : "notpublished").'" onclick="WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '">' . $db->f("Path") . '</td></tr>';
+		$cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" data-contenttype="' . $db->f('ContentType') . '"></td><td class="upbEntry middlefont '.($db->f("Published") != '-' ? 'changed' : "notpublished").'" onclick="WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '">' . $db->f("Path") . '</td></tr>';
 		$row = array(
 			array("dat" => $path),
 			/* array("dat" => $db->f("Creator") ? : '-'),
@@ -137,8 +137,8 @@ foreach($tbls as $table){
 	}
 }
 
-asort($_cont);
-$ct = '<table class="default">' . implode('', $_cont) . '</table>';
+asort($cont);
+$ct = '<table class="default">' . implode('', $cont) . '</table>';
 
 if($preview){
 	$sTb = g_l('cockpit', ($bTypeDoc && $bTypeObj ? '[upb_docs_and_objs]' : ($bTypeDoc ? '[upb_docs]' : ($bTypeObj ? '[upb_objs]' : '[upb_docs_and_objs]'))));

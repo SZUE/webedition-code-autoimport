@@ -26,7 +26,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 define('WE_DEFAULT_EMAIL', 'mailserver@' . $_SERVER['SERVER_NAME']);
 define('WE_DEFAULT_SUBJECT', 'webEdition mailform');
 
-$_blocked = false;
+$blocked = false;
 
 
 // check to see if we need to lock or block the formmail request
@@ -44,11 +44,11 @@ if(FORMMAIL_LOG){
 
 		// check if ip is allready blocked
 		if(f('SELECT 1 FROM ' . FORMMAIL_BLOCK_TABLE . ' WHERE ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" LIMIT 1')){
-			$_blocked = true;
+			$blocked = true;
 		} else {
 			// ip is not blocked, so see if we need to block it
 			if(f('SELECT COUNT(1) FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(NOW()- INTERVAL ' . intval(FORMMAIL_SPAN) . ' SECOND) AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"') > FORMMAIL_TRIALS){
-				$_blocked = true;
+				$blocked = true;
 				// insert in block table
 				$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . ' SET ' . we_database_base::arraySetter(array(
 						'ip' => $_SERVER['REMOTE_ADDR'],
@@ -59,9 +59,9 @@ if(FORMMAIL_LOG){
 	}
 }
 
-$_blocked |= (FORMMAIL_VIAWEDOC && $_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . basename(__FILE__));
+$blocked |= (FORMMAIL_VIAWEDOC && $_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . basename(__FILE__));
 
-if($_blocked){
+if($blocked){
 	print_error('Email dispatch blocked / Email Versand blockiert!');
 }
 
@@ -146,9 +146,9 @@ function ok_page(){
 	}
 }
 
-function redirect($url, $_emosScontact = ''){
-	if($_emosScontact != ''){
-		$url = $url . (strpos($url, '?') ? '&' : '?') . 'emosScontact=' . urlencode($_emosScontact);
+function redirect($url, $emosScontact = ''){
+	if($emosScontact != ''){
+		$url = $url . (strpos($url, '?') ? '&' : '?') . 'emosScontact=' . urlencode($emosScontact);
 	}
 	header('Location: ' . $url);
 	exit();
@@ -172,9 +172,9 @@ if(!check_captcha()){
 	}
 }
 
-$_req = we_base_request::_(we_base_request::RAW, 'required', '');
+$req = we_base_request::_(we_base_request::RAW, 'required', '');
 
-if(!check_required($_req)){
+if(!check_required($req)){
 	error_page();
 }
 
@@ -196,8 +196,8 @@ $we_reserved = array_merge(array('from', 'we_remove', 'captchaname', 'we_mode', 
 $we_txt = '';
 $we_html = '<table>';
 
-if(($_order = we_base_request::_(we_base_request::STRING, 'order', ''))){
-	$we_orderarray = explode(',', $_order);
+if(($order = we_base_request::_(we_base_request::STRING, 'order', ''))){
+	$we_orderarray = explode(',', $order);
 
 	foreach($we_orderarray as $cur){
 		if(!in_array($cur, $we_reserved)){
