@@ -147,7 +147,7 @@ function toggleShowVisible(c) {
 	function greenOnly($GreenOnly, $pid, $cid){
 		if($GreenOnly){
 			$pid_tail = we_objectFile::makePIDTail($pid, $cid, $GLOBALS['DB_WE']);
-			return ' AND ' . OBJECT_X_TABLE . intval($cid) . '.OF_Published > 0 AND ' . $pid_tail;
+			return ' AND ' . OBJECT_X_TABLE . intval($cid) . '.OF_Published>0 AND ' . $pid_tail;
 		}
 	}
 
@@ -200,12 +200,12 @@ function toggleShowVisible(c) {
 		return $out . '</table>';
 	}
 
-	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
-		for($i = 0; $i < count($searchname); $i++){
+	function searchfor($searchnames, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
+		foreach($searchnames as $i => $searchname){
 			$filteredFields = '';
 			$fieldsToFilterOut = array();
 
-			$type = !preg_match('/^[-+]?\d*\.?\d+$/', $searchname[$i]) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname[$i]) ? 2 : 0);
+			$type = !preg_match('/^[-+]?\d*\.?\d+$/', $searchname) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname) ? 2 : 0);
 			switch($type){
 				case 1:
 					$fieldsToFilterOut = array_merge($fieldsToFilterOut, $this->getRealFields($tablename));
@@ -225,7 +225,7 @@ function toggleShowVisible(c) {
 			}
 		}
 
-		return parent::searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows, $start, $order, $desc);
+		return parent::searchfor($searchnames, $searchfield, $searchlocation, $tablename, $rows, $start, $order, $desc);
 	}
 
 	private function getIntFields($tablename){
