@@ -49,7 +49,6 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 		echo we_html_element::jsElement('top.we_cmd("switch_edit_page",' . (isset($go) ? $go : $we_doc->EditPageNr ) . ');');
 		break;
 	case 'delete':
-
 		if($we_doc->searchclass->height == 0){
 			$we_doc->searchclass->objsearch = '';
 			$we_doc->searchclass->objsearchField = '';
