@@ -251,7 +251,6 @@ abstract class we_base_imageEdit{
 	}
 
 	private static function calculate_image_size($origwidth, $origheight, $newwidth, $newheight, $keep_aspect_ratio = true, $maxsize = true, $fitinside = false){
-t_e('hier?', $origwidth, $origheight, $newwidth, $newheight, $maxsize, $fitinside);
 		if(self::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, $fitinside)){
 			return array('width' => $origwidth, 'height' => $origheight, 'useorig' => 1);
 		}
@@ -287,7 +286,7 @@ t_e('hier?', $origwidth, $origheight, $newwidth, $newheight, $maxsize, $fitinsid
 			$outsize['width'] = $newwidth;
 			$outsize['height'] = $newheight;
 		}
-t_e('end', $outsize['width'], $outsize['height']);
+
 		return array('width' => $outsize['width'], 'height' => $outsize['height'], 'useorig' => 0);
 	}
 
@@ -312,7 +311,6 @@ t_e('end', $outsize['width'], $outsize['height']);
 			}
 		}
 
-t_e('end fit', $outsize['width'], $outsize['height']);
 		return array('width' => $outsize['width'], 'height' => $outsize['height'], 'useorig' => 0);
 	}
 
@@ -489,7 +487,6 @@ t_e('end fit', $outsize['width'], $outsize['height']);
 	}
 
 	public static function edit_image($imagedata, $output_format = 'jpg', $output_filename = '', $output_quality = 75, $width = '', $height = '', array $options = array(we_thumbnail::OPTION_RATIO, we_thumbnail::OPTION_INTERLACE), array $crop = array(0, 0), $rotate_angle = 0){
-t_e('start', $output_format, $output_filename, $output_quality, $width, $height, $options, $crop, $rotate_angle);
 		if($output_format === 'jpeg'){
 			$output_format = 'jpg';
 		}
