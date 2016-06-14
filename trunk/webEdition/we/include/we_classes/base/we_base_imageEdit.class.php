@@ -251,6 +251,7 @@ abstract class we_base_imageEdit{
 	}
 
 	private static function calculate_image_size($origwidth, $origheight, $newwidth, $newheight, $keep_aspect_ratio = true, $maxsize = true, $fitinside = false){
+t_e('hier?', $origwidth, $origheight, $newwidth, $newheight, $maxsize, $fitinside);
 		if(self::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, $fitinside)){
 			return array('width' => $origwidth, 'height' => $origheight, 'useorig' => 1);
 		}
@@ -286,7 +287,7 @@ abstract class we_base_imageEdit{
 			$outsize['width'] = $newwidth;
 			$outsize['height'] = $newheight;
 		}
-
+t_e('end', $outsize['width'], $outsize['height']);
 		return array('width' => $outsize['width'], 'height' => $outsize['height'], 'useorig' => 0);
 	}
 
@@ -311,7 +312,7 @@ abstract class we_base_imageEdit{
 			}
 		}
 
-
+t_e('end fit', $outsize['width'], $outsize['height']);
 		return array('width' => $outsize['width'], 'height' => $outsize['height'], 'useorig' => 0);
 	}
 
@@ -488,7 +489,7 @@ abstract class we_base_imageEdit{
 	}
 
 	public static function edit_image($imagedata, $output_format = 'jpg', $output_filename = '', $output_quality = 75, $width = '', $height = '', array $options = array(we_thumbnail::OPTION_RATIO, we_thumbnail::OPTION_INTERLACE), array $crop = array(0, 0), $rotate_angle = 0){
-		$output_format = strtolower($output_format);
+t_e('start', $output_format, $output_filename, $output_quality, $width, $height, $options, $crop, $rotate_angle);
 		if($output_format === 'jpeg'){
 			$output_format = 'jpg';
 		}
@@ -510,8 +511,8 @@ abstract class we_base_imageEdit{
 		// Now we need to ensure that we could read the file
 		if($gdimg){
 			// Detect dimension of image
-			$width = ImageSX($gdimg);
-			$height = ImageSY($gdimg);
+			$gdWidth = ImageSX($gdimg);
+			$gdHeight = ImageSY($gdimg);
 
 			if(($rotate_angle != 0) && function_exists('ImageRotate')){
 				$rotate_angle = floatval($rotate_angle);
@@ -523,12 +524,12 @@ abstract class we_base_imageEdit{
 
 				if($rotate_angle > 0){
 					$gdimg = ImageRotate($gdimg, $rotate_angle, 0);
-					$width = ImageSX($gdimg);
-					$height = ImageSY($gdimg);
+					$gdWidth = ImageSX($gdimg);
+					$gdHeight = ImageSY($gdimg);
 				}
 			}
 
-			$outsize = self::calculate_image_size($width, $height, $width, $height, in_array(we_thumbnail::OPTION_RATIO, $options), true, in_array(we_thumbnail::OPTION_FITINSIDE, $options));
+			$outsize = self::calculate_image_size($gdWidth, $gdHeight, $width, $height, in_array(we_thumbnail::OPTION_RATIO, $options), true, in_array(we_thumbnail::OPTION_FITINSIDE, $options));
 
 			// Decide, which functions to use (depends on version of GD library)
 			$image_create_function = (self::gd_version() >= 2.0 ? 'imagecreatetruecolor' : 'imagecreate');
@@ -561,44 +562,44 @@ abstract class we_base_imageEdit{
 
 			if((in_array(we_thumbnail::OPTION_FITINSIDE, $options) || in_array(we_thumbnail::OPTION_CROP, $options)) && $width && $height){
 				if(in_array(we_thumbnail::OPTION_FITINSIDE, $options)){
-					$wratio = $width / $width;
-					$hratio = $height / $height;
-					$ratio = max($width / $width, $height / $height);
+					$wratio = $width / $gdWidth;
+					$hratio = $height / $gdHeight;
+					$ratio = max($width / $gdWidth, $height / $gdHeight);
 					$h = $height / $ratio;
 					$w = $width / $ratio;
 
 					if($wratio < $hratio){
-						$x = ($width - $w) / 2;
+						$x = ($gdWidth - $w) / 2;
 						$y = 0;
 					} else {
 						$x = 0;
-						$y = ($height - $h) / 2;
+						$y = ($gdHeight - $h) / 2;
 					}
 				} else {
 					$h = $height;
 					$w = $width;
-					$x = ($width - $w) / 2;
-					$y = ($height - $h) / 2;
+					$x = ($gdWidth - $w) / 2;
+					$y = ($gdHeight - $h) / 2;
 				}
 
 				if(array_filter($crop)){
 					$xNew = $x + ($w / 2); // x + origthumbwidth/2 => x-Mittelpunkt
 					$x = $xNew + ($xNew * $crop[0]) - ($w / 2); // Mittelpunkt + Bildfokus - origthumbwidth/2 => Neuer x-Punkt
-					if($x + $w > $width){
-						$x = $width - $w;
+					if($x + $w > $gdWidth){
+						$x = $gdWidth - $w;
 					}
 					$x = max(0, $x);
 					$yNew = $y + ($h / 2); // y + origthumbheight/2 => y-Mittelpunkt
 					$y = $yNew + ($yNew * $crop[1]) - ($h / 2); // Mittelpunkt + Bildfokus - origthumbheight/2 => Neuer y-Punkt
-					if($y + $h > $height){
-						$y = $height - $h;
+					if($y + $h > $gdHeight){
+						$y = $gdHeight - $h;
 					}
 					$y = max(0, $y);
 				}
 
 				$image_resize_function($output_gdimg, $gdimg, 0, 0, $x, $y, $width, $height, $w, $h);
 			} else {
-				$image_resize_function($output_gdimg, $gdimg, 0, 0, 0, 0, $outsize['width'], $outsize['height'], $width, $height);
+				$image_resize_function($output_gdimg, $gdimg, 0, 0, 0, 0, $outsize['width'], $outsize['height'], $gdWidth, $gdHeight);
 			}
 
 			// PHP 4.4.1 GDLIB-Bug/Safemode - Workarround
