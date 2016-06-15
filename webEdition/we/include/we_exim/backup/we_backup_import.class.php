@@ -45,14 +45,14 @@ abstract class we_backup_import{
 		return true;
 	}
 
-	private static function transfer(&$data, $charset = 'ISO-8859-1'){
+	private static function transfer(&$data, $charset){
 		we_backup_util::addLog('Parsing data');
 
 		$parser = new we_backup_XMLParser();
 
-		$parser->parse($data, (DEFAULT_CHARSET ? : 'ISO-8859-1')); // Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
+		$parser->parse($data, $charset); // Fix f�r 4092, in Verbindung mit alter Version f�r bug 3412 l�st das beide Situationen
 		if($parser->parseError){
-			t_e('encountered parse error during import', $parser->parseError);
+			t_e('encountered parse error during import', $parser->parseError, $charset);
 		}
 		// free some memory
 		unset($data);
