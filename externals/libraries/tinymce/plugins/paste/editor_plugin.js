@@ -102,6 +102,7 @@
 				// Serialize content
 				o.content = ed.serializer.serialize(o.node, {getInner : 1, forced_root_block : ''});
 
+
 				// Plain text option active?
 				if ((!force_rich) && (ed.pasteAsPlainText)) {
 					t._insertPlainText(o.content);
@@ -150,15 +151,9 @@
 			function grabContent(e) {
 				var n, or, rng, oldRng, sel = ed.selection, dom = ed.dom, body = ed.getBody(), posY, textContent;
 
-				// Check if browser supports direct plaintext access
+				// Check if browser supports direct plaintext access: MOVE TO WHERE CONTENT SOURCE IS KNOWN
 				if (e.clipboardData || dom.doc.dataTransfer) {
 					textContent = (e.clipboardData || dom.doc.dataTransfer).getData('Text');
-
-					if (ed.pasteAsPlainText) {
-						e.preventDefault();
-						process({content : dom.encode(textContent).replace(/\r?\n/g, '<br />')});
-						return;
-					}
 				}
 
 				if (dom.get('_mcePaste'))
@@ -208,12 +203,28 @@
 					sel.setRng(oldRng);
 					sel.setContent('');
 
+					// WE: content is ready so we can check source
+					if (!isFromInsideTinymce(n.innerHTML) && ed.pasteAsPlainText && textContent) {
+						// this is what we would have done from the beginning when ed.pasteAsPlainText
+						//e.preventDefault();
+						tinymce.dom.Event.cancel(e);
+						process({content : dom.encode(textContent).replace(/\r?\n/g, '<br />')});
+						return;
+					}
+
 					// For some odd reason we need to detach the the mceInsertContent call from the paste event
 					// It's like IE has a reference to the parent element that you paste in and the selection gets messed up
 					// when it tries to restore the selection
 					setTimeout(function() {
-						// Process contents
-						process({content : n.innerHTML});
+						if(isFromInsideTinymce(n.innerHTML)){
+							var tmp = ed.pasteAsPlainText;
+							ed.pasteAsPlainText = false;
+							var cnt = unmarkContentFromInside(n.innerHTML);
+							process({content : cnt});
+							ed.pasteAsPlainText = tmp;
+						} else {
+							process({content : n.innerHTML});
+						}
 					}, 0);
 
 					// Block the real paste event
@@ -282,13 +293,52 @@
 						if (or)
 							sel.setRng(or);
 
-						process({content : h});
+						// WE: content is ready so here content is ready so we can check source: if from tiny we set pasteAsPlainText=false
+						if (!isFromInsideTinymce(h) && ed.pasteAsPlainText && textContent) {
+							dom.unbind(ed.getDoc(), 'mousedown', block);
+							dom.unbind(ed.getDoc(), 'keydown', block);
 
-						// Unblock events ones we got the contents
-						dom.unbind(ed.getDoc(), 'mousedown', block);
-						dom.unbind(ed.getDoc(), 'keydown', block);
+							// this is what we would have done from the beginning when ed.pasteAsPlainText
+							e.preventDefault();
+							process({content : dom.encode(textContent).replace(/\r?\n/g, '<br />')});
+							return;
+						} else {
+							if(isFromInsideTinymce(h)){
+								var tmp = ed.pasteAsPlainText;
+								ed.pasteAsPlainText = false;
+								h = unmarkContentFromInside(h);
+								process({content : h});
+								ed.pasteAsPlainText = tmp;
+							} else {
+								process({content : h});
+							}
+
+							// Unblock events ones we got the contents
+							dom.unbind(ed.getDoc(), 'mousedown', block);
+							dom.unbind(ed.getDoc(), 'keydown', block);
+						}
 					}, 0);
 				}
+			}
+
+			// WE: check for marker: ##FROM_INSIDE_TINYMCE##
+			function isFromInsideTinymce(content) {
+				var ret = content.search('##FROM_INSIDE_TINYMCE##') !== -1;
+				return ret;
+			}
+
+			// WE: unmark content from inside tinymce
+			function unmarkContentFromInside(content) {
+				content = content.replace(/##FROM_INSIDE_TINYMCE##/, '');
+
+				var tmpDiv = document.createElement('DIV');
+				tmpDiv.innerHTML = content;
+				if(tmpDiv.firstChild.tagName === 'DIV' && tmpDiv.firstChild.className === 'FROM_INSIDE_TINYMCE'){
+					content = tmpDiv.firstChild.innerHTML;
+				}
+				tmpDiv = null;
+
+				return content;
 			}
 
 			// Check if we should use the new auto process method
