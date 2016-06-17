@@ -49,6 +49,7 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'sameName_rename'=>'Zapisać pod inna nazwą',
 	'same_name'=>'Błąd: Plik już istnieje',
 	'save_error'=>'Błąd przy zapisie',
+	'searchable_label'=>'Set documents searchable',
 	'select_files'=>'Select files',
 	'step1'=>'Importownie lokalnych plików - krok 1 z 2',
 	'step2'=>'Importownie lokalnych plików - krok 2 z 2',

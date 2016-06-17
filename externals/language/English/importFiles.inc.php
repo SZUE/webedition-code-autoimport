@@ -49,6 +49,7 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'sameName_rename'=>'Rename the new file',
 	'same_name'=>'Error: file exists',
 	'save_error'=>'Error while saving',
+	'searchable_label'=>'Set documents searchable',
 	'select_files'=>'Select files',
 	'step1'=>'Import local files - Step 1 of 2',
 	'step2'=>'Import local files - Step 2 of 3',

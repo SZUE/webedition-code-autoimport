@@ -49,6 +49,7 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'sameName_rename'=>'Uudelleennimeää uuden tiedoston',
 	'same_name'=>'Virhe: file exists',
 	'save_error'=>'Virhe tallennettaessa tiedostoa',
+	'searchable_label'=>'Set documents searchable',
 	'select_files'=>'Select files',
 	'step1'=>'Tuo paikallisia tiedostoja - Vaihe 1 / 3',
 	'step2'=>'Tuo paikallisia tiedostoja - Vaihe 2 / 3',

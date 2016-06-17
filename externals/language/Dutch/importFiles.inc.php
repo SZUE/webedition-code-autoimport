@@ -49,6 +49,7 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'sameName_rename'=>'Hernoem het nieuwe bestand',
 	'same_name'=>'Foutmelding: bestand bestaat al',
 	'save_error'=>'Fout tijdens bewaren',
+	'searchable_label'=>'Set documents searchable',
 	'select_files'=>'Select files',
 	'step1'=>'Importeer lokale bestanden - Stap 1 van 2',
 	'step2'=>'Importeer lokale bestanden - Stap 2 van 2',

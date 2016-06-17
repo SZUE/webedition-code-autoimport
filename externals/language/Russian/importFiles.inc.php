@@ -49,6 +49,7 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'sameName_rename'=>'Переименовать новый файл',
 	'same_name'=>'Ошибка: файл существует',
 	'save_error'=>'Ошибка при сохранении',
+	'searchable_label'=>'Set documents searchable',
 	'select_files'=>'Select files',
 	'step1'=>'Импорт локальных файлов - шаг 1 из 2',
 	'step2'=>'Импорт локальных файлов - шаг 2 из 2',
