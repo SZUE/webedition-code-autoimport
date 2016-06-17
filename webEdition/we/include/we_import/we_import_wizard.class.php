@@ -797,15 +797,11 @@ function handle_event(evt) {
 }
 function handle_eventNext(){
 	var f = self.document.we_form;
-	if(f.elements['v[docType]'].value == -1) {
-		f.elements['v[we_TemplateID]'].value = f.elements.noDocTypeTemplateId.value;
-	} else {
-		f.elements['v[we_TemplateID]'].value = f.elements.docTypeTemplateId.value;
-	}
+	f.elements['v[we_TemplateID]'].value = f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value : f.elements.docTypeTemplateId.value;
+
 	var fs = f.elements['v[fserver]'].value;
 	var fl = we_FileUpload !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
 	var ext = '';
-
 
 	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
 		if (fs.match(/\.\./)=='..') {
@@ -851,20 +847,26 @@ var ajaxUrl = "/webEdition/rpc.php";
 
 var handleSuccess = function(o){
 	if(o.responseText !== undefined){
-		var json = JSON.parse(o.responseText);
-
-		for(var elemNr in json.elems){
-			for(var propNr in json.elems[elemNr].props){
-				var propval = json.elems[elemNr].props[propNr].val;
-				propval = propval.replace(/\\\'/g,"'");
-				propval = propval.replace(/'/g,"\\\'");
-				var e;
-				if(e = json.elems[elemNr].elem) {
-					e[json.elems[elemNr].props[propNr].prop]=propval;
+		var elems = JSON.parse(o.responseText).elems;
+		var node, prop;
+		for(var i = 0; i < elems.length; i++){
+			if((node = elems[i].type === 'formelement' ? self.document.we_form.elements[elems[i].name] : document.getElementById(elems[i].name))){
+				for(var j = 0; j < elems[i].props.length; j++){
+					prop = elems[i].props[j];
+					switch(prop.type){
+						case 'attrib':
+							node.setAttribute(prop.name, prop.val);
+							break;
+						case 'style':
+							node.style[prop.name] = prop.val;
+							break;
+						case 'innerHTML':
+							node.innerHTML = prop.val;
+							break;
+					}
 				}
 			}
 		}
-
 		switchExt();
 	}
 }
@@ -1685,6 +1687,7 @@ function handle_eventNext(){
 				'v[docCategories]' => (isset($v['docCategories']) ? $v['docCategories'] : ''),
 				'v[objCategories]' => (isset($v['objCategories']) ? $v['objCategories'] : ''),
 				//rray('name' => 'v[store_to_id]', 'value' => (isset($v['store_to_id']) ? $v['store_to_id'] : 0))).
+				'v[we_TemplateID]' => (isset($v['we_TemplateID']) ? $v['we_TemplateID'] : 0),
 				'v[is_dynamic]' => (isset($v['is_dynamic']) ? $v['is_dynamic'] : 0),
 				'doctypeChanged' => 0,
 				'v[file_format]' => $v['file_format'],
@@ -1718,50 +1721,38 @@ function switchExt() {
 }
 function handle_event(evt) {
 	var f = self.document.we_form;
-	if(f.elements['v[import_type]']== 'documents'){
-	if(f.elements['v[docType]'].value == -1) {
-		f.elements['v[we_TemplateID]'].value = f.elements.noDocTypeTemplateId.value;
-	} else {
-		f.elements['v[we_TemplateID]'].value = f.elements.docTypeTemplateId.value;
+	if(f.elements['v[import_type]'].value == 'documents'){
+		f.elements['v[we_TemplateID]'].value = f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value : f.elements.docTypeTemplateId.value;
 	}
-}
-	switch(evt) {
-	case 'previous':
-		f.step.value = 1;
-		we_submit_form(f, 'wizbody', '" . $this->path . "');
-		break;
-	case 'next':
-		if(f.elements['v[import_type]']== 'documents'){
-		if(f.elements['v[docType]'].value == -1) {
-			f.elements['v[we_TemplateID]'].value = f.elements.noDocTypeTemplateId.value;
-		} else {
-			f.elements['v[we_TemplateID]'].value = f.elements.docTypeTemplateId.value;
-	}}
-	}
+
 	switch(evt) {
 		case 'previous':
 			f.step.value = 1;
 			we_submit_form(f, 'wizbody', '" . $this->path . "');
 			break;
 		case 'next':
-			if(f.elements['v[import_type]']== 'documents'){
-					if(!f.elements['v[we_TemplateID]'].value ) f.elements['v[we_TemplateID]'].value =f.elements.DocTypeTemplateId.value;
-					}" . (defined('OBJECT_TABLE') ?
+			if(f.elements['v[import_type]'].value == 'documents'){
+				if(!f.elements['v[we_TemplateID]'].value ) {
+					f.elements['v[we_TemplateID]'].value =f.elements.DocTypeTemplateId.value;
+				}
+			}" . (defined('OBJECT_TABLE') ?
 				"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)))" :
 				"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0)") . "
 			{
 				f.step.value = 3;
 				we_submit_form(f, 'wizbody', '" . $this->path . "');
-			}else {
-				if(f.elements['v[import_from]'].value == '/') " . we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR) .
+			} else {
+				if(f.elements['v[import_from]'].value == '/') {
+					" . we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR) .
+				'}' .
 			(defined('OBJECT_TABLE') ?
-				"				else if(f.elements['v[import_type]'][0].checked == true) " . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR) :
-				"				else " . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR)) . "
+				"				else if(f.elements['v[import_type]'][0].checked == true) {" . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR) . '}' :
+				"				else {" . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR)) . "
 			}
 			break;
-	case 'cancel':
-		top.close();
-		break;
+		case 'cancel':
+			top.close();
+			break;
 	}
 }";
 
@@ -1774,7 +1765,7 @@ function deleteCategory(obj,cat){
 		document.getElementById(obj+"Cat"+cat).parentNode.removeChild(document.getElementById(obj+"Cat"+cat));
 		if(document.we_form.elements['v['+obj+'Categories]'].value == ',') {
 			document.we_form.elements['v['+obj+'Categories]'].value = '';
-			document.getElementById(obj+"CatTable").innerHTML = "<tr><td style='font-size:8px'>&nbsp;</td></tr>";
+			document.getzzElementById(obj+"CatTable").innerHTML = "<tr><td style='font-size:8px'>&nbsp;</td></tr>";
 		}
 	}
 }
@@ -1782,15 +1773,23 @@ var ajaxUrl = "/webEdition/rpc.php";
 
 var handleSuccess = function(o){
 	if(o.responseText !== undefined){
-		var json = JSON.parse(o.responseText);
-		for(var elemNr in json.elems){
-			for(var propNr in json.elems[elemNr].props){
-				var propval = json.elems[elemNr].props[propNr].val;
-				propval = propval.replace(/\\\'/g,"'");
-				propval = propval.replace(/'/g,"\\\'");
-				var e;
-				if(e = json.elems[elemNr].elem) {
-					e[json.elems[elemNr].props[propNr].prop]=propval;
+		var elems = JSON.parse(o.responseText).elems;
+		var node, prop;
+		for(var i = 0; i < elems.length; i++){
+			if((node = elems[i].type === 'formelement' ? self.document.we_form.elements[elems[i].name] : document.getElementById(elems[i].name))){
+				for(var j = 0; j < elems[i].props.length; j++){
+					prop = elems[i].props[j];
+					switch(prop.type){
+						case 'attrib':
+							node.setAttribute(prop.name, prop.val);
+							break;
+						case 'style':
+							node.style[prop.name] = prop.val;
+							break;
+						case 'innerHTML':
+							node.innerHTML = prop.val;
+							break;
+					}
 				}
 			}
 		}
@@ -1853,14 +1852,14 @@ HTS;
 
 		$myid = (isset($v["we_TemplateID"])) ? $v["we_TemplateID"] : 0;
 		//$path = f('SELECT Path FROM ' . $DB_WE->escape(TEMPLATES_TABLE) . " WHERE ID=" . intval($myid), "Path", $DB_WE);
-		$cmd1 = "top.wizbody.document.we_form.elements['v[we_TemplateID]'].value";
+		$cmd1 = "top.wizbody.document.we_form.elements['noDocTypeTemplateId'].value";
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("top.wizbody.document.we_form.elements['v[we_TemplateName]'].value") . "','" . we_base_request::encCmd("opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$TPLselect = new we_html_select(array(
-			"name" => "v[we_TemplateID]",
+			"name" => "docTypeTemplateId",
 			"class" => "weSelect",
 			"onclick" => "self.document.we_form.elements['v[import_type]'][0].checked=true;",
 			"style" => "width: 300px")
@@ -1889,7 +1888,7 @@ HTS;
 		$yuiSuggest->setInput("v[we_TemplateName]", (isset($v["we_TemplateName"]) ? $v["we_TemplateName"] : ""), array("onFocus" => "self.document.we_form.elements['v[import_type]'][0].checked=true;"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);
-		$yuiSuggest->setResult('v[we_TemplateID]', $myid);
+		$yuiSuggest->setResult('noDocTypeTemplateId', $myid);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(TEMPLATES_TABLE);
 		$yuiSuggest->setWidth(300);
@@ -2096,7 +2095,7 @@ function handle_event(evt) {
 	var f = self.document.we_form;
 	switch(evt) {
 	case 'previous':
-		f.step.value = 2;
+		f.step.value = 1;
 		we_submit_form(f, 'wizbody', '" . $this->path . "');
 		break;
 	case 'next':

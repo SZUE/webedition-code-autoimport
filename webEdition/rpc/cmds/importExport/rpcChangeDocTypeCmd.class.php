@@ -61,37 +61,36 @@ class rpcChangeDocTypeCmd extends we_rpc_cmd{
 				if(!empty($values['TemplateID'])){
 					$templateName = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($values['TemplateID']));
 				}
+
 				$resp->setData('elements', array(
-					"self.document.we_form.elements['v[store_to_id]']" => array("value" => $values["ParentID"] | 0),
-					"self.document.we_form.elements['v[store_to_path]']" => array("value" => $values["ParentPath"] | "/"),
-					"self.document.we_form.elements['v[we_TemplateID]']" => array("value" => $values["TemplateID"] | 0),
-					"self.document.we_form.elements['v[we_TemplateName]']" => array("value" => $templateName | ""),
-					"self.document.we_form.elements['v[we_Extension]']" => array("value" => $values["Extension"] | ""),
-					"self.document.we_form.elements['v[is_dynamic]']" => array("value" => $values["IsDynamic"] | 0),
-					"self.document.we_form.elements['chbxIsDynamic']" => array("checked" => $values["IsDynamic"] | 0),
-					"self.document.we_form.elements['v[docCategories]']" => array("value" => $values["Category"] | ""),
-					"self.document.we_form.elements.noDocTypeTemplateId" => array("value" => 0),
-					"document.getElementById('docTypeLayer')" => array("innerHTML" => addslashes($templateElement), "style.display" => $docTypeLayerDisplay),
-					"document.getElementById('noDocTypeLayer')" => array("style.display" => $noDocTypeLayerDisplay),
-					"document.getElementById('docCatTable')" => array("innerHTML" => addslashes($categories)
-					)
+						array('name' => 'v[store_to_id]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => ($values["ParentID"] | 0)))),
+						array('name' => 'v[store_to_path]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => ($values["ParentPath"] | "/")))),
+						array('name' => 'v[we_TemplateID]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => ($values["TemplateID"] | 0)))),
+						array('name' => 'v[we_TemplateName]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => ($templateName | "")))),
+						array('name' => 'v[we_Extension]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => ($values["Extension"] | "")))),
+						array('name' => 'v[is_dynamic]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => ($values["IsDynamic"] | 0)))),
+						array('name' => 'chbxIsDynamic', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => ($values["IsDynamic"] | 0)))),
+						array('name' => 'v[docCategories]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => ($values["Category"] | "")))),
+						array('name' => 'noDocTypeTemplateId', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => 0))),
+						array('name' => 'docTypeLayer', 'type' => 'node', 'props' => array(array('type' => 'innerHTML', 'val' => $templateElement), array('type' => 'style', 'name' => 'display', 'val' => $docTypeLayerDisplay))),
+						array('name' => 'noDocTypeLayer', 'type' => 'node', 'props' => array(array('type' => 'style', 'name' => 'display', 'val' => $noDocTypeLayerDisplay))),
+						array('name' => 'docCatTable', 'type' => 'node', 'props' => array(array('type' => 'innerHTML', 'val' => addslashes($categories)))),
 					)
 				);
 			} else {
-				$resp->setData("elements", array(
-					"self.document.we_form.elements['v[store_to_id]']" => array("value" => 0),
-					"self.document.we_form.elements['v[store_to_path]']" => array("value" => "/"),
-					"self.document.we_form.elements['v[we_TemplateID]']" => array("value" => 0),
-					"self.document.we_form.elements['v[we_TemplateName]']" => array("value" => "/"),
-					"self.document.we_form.elements['v[we_Extension]']" => array("value" => ""),
-					"self.document.we_form.elements['v[is_dynamic]']" => array("value" => 0),
-					"self.document.we_form.elements['chbxIsDynamic']" => array("checked" => 0),
-					"self.document.we_form.elements['v[docCategories]']" => array("value" => ""),
-					"self.document.we_form.elements.noDocTypeTemplateId" => array("value" => 0),
-					"document.getElementById('docTypeLayer')" => array("innerHTML" => "", "style.display" => "none"),
-					"document.getElementById('noDocTypeLayer')" => array("style.display" => "block"),
-					"document.getElementById('docCatTable')" => array("innerHTML" => $categories
-					)
+				$resp->setData('elements', array(
+						array('name' => 'v[store_to_id]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => 0))),
+						array('name' => 'v[store_to_path]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => "/"))),
+						array('name' => 'v[we_TemplateID]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => 0))),
+						array('name' => 'v[we_TemplateName]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => "/"))),
+						array('name' => 'v[we_Extension]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => ""))),
+						array('name' => 'v[is_dynamic]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => 0))),
+						array('name' => 'chbxIsDynamic', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => 0))),
+						array('name' => 'v[docCategories]', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => ""))),
+						array('name' => 'noDocTypeTemplateId', 'type' => 'formelement', 'props' => array(array('type' => 'attrib', 'name' => 'value', 'val' => 0))),
+						array('name' => 'docTypeLayer', 'type' => 'node', 'props' => array(array('type' => 'innerHTML', 'val' => ""), array('type' => 'style', 'name' => 'display', 'val' => "none"))),
+						array('name' => 'noDocTypeLayer', 'type' => 'node', 'props' => array(array('type' => 'style', 'name' => 'display', 'val' => "block"))),
+						array('name' => 'docCatTable', 'type' => 'node', 'props' => array(array('type' => 'innerHTML', 'val' => $categories))),
 					)
 				);
 			}

@@ -25,36 +25,7 @@
 class rpcChangeDocTypeView extends we_rpc_view{
 
 	function getResponse($response){
-		$elems = "";
-		$i = 0;
-
-		foreach($response->getData("elements") as $element => $property){
-			$elems .=($i > 0 ? ", " : "") . "
-		" . $i . ':{
-			elem: ' . $element . ',
-			props: {';
-			$loop = 0;
-			foreach($property as $propertyName => $propertyValue){
-				$elems .= ($loop > 0 ? ", " : "") . "
-				" . $loop . ':{
-					prop:"' . $propertyName . '",
-					val: "' . $propertyValue . '"
-				}';
-				$loop++;
-			}
-			$elems .= '
-			}
-		}';
-			$i++;
-		}
-
-		$json = <<<HTS1
-{
-	elems: { $elems
-	}
-}
-HTS1;
-		return $json;
+		return json_encode(array('elems' => $response->getData("elements")));
 	}
 
 }
