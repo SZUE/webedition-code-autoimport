@@ -27,7 +27,6 @@ class we_import_site{
 	var $cmd = '';
 	var $from = '/';
 	var $to = '';
-	var $depth = -1;
 	var $images = 1;
 	var $htmlPages = 1;
 	var $createWePages = 1;
@@ -41,7 +40,7 @@ class we_import_site{
 	var $sameName = 'overwrite';
 	var $importMetadata = true;
 	public $files;
-	private $depth = 0;
+	private $depth = 1;
 	var $thumbs = '';
 	var $width = '';
 	var $height = '';
