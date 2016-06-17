@@ -1166,9 +1166,9 @@ HTS;
 				$tblSelect->setCol(0, 1, array(), $rcdSelect->getHtml());
 				$tblSelect->setCol(0, 2, array('width' => 20));
 				$tblSelect->setCol(0, 3, array('class' => 'defaultfont'), g_l('import', '[num_data_sets]'));
-				$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput('v[from_iElem]', 4, 1, 5, 'align=right', 'text', 30, '', '', ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
+				$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput('v[from_iElem]', 4, 1, 5, 'align=right', 'text', 50, '', '', ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 				$tblSelect->setCol(0, 5, array('class' => 'defaultfont'), g_l('import', '[to]'));
-				$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput('v[to_iElem]', 4, $firstOptVal, 5, 'align=right', 'text', 30, '', '', ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
+				$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput('v[to_iElem]', 4, $firstOptVal, 5, 'align=right', 'text', 50, '', '', ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 
 				$tblFrame = new we_html_table(array(), 3, 2);
 				$tblFrame->setCol(0, 0, array('colspan' => 2, 'class' => 'defaultfont'), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('import', '[well_formed]') . ' ' . g_l('import', '[select_elements]'), we_html_tools::TYPE_INFO, 530) :
