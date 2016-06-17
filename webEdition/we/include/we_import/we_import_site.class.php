@@ -38,6 +38,7 @@ class we_import_site{
 	var $other = 1;
 	var $maxSize = 1; // in Mb
 	var $sameName = 'overwrite';
+	var $isSearchable = true;
 	var $importMetadata = true;
 	public $files;
 	private $depth = 1;
@@ -78,6 +79,7 @@ class we_import_site{
 		$this->maxSize = we_base_request::_(we_base_request::INT, 'maxSize', $this->maxSize);
 		$this->step = we_base_request::_(we_base_request::INT, 'step', $this->step);
 		$this->sameName = we_base_request::_(we_base_request::STRING, 'sameName', $this->sameName);
+		$this->isSearchable = we_base_request::_(we_base_request::BOOL, 'isSearchable', $this->isSearchable);
 		$this->importMetadata = we_base_request::_(we_base_request::BOOL, 'importMetadata', $this->importMetadata);
 		$this->thumbs = ($thumbs = we_base_request::_(we_base_request::INT, 'thumbs')) !== false ? implode(',', $thumbs) : $this->thumbs;
 		$this->width = we_base_request::_(we_base_request::INT, 'width', $this->width);
@@ -728,6 +730,12 @@ function doUnload() {
 			'space' => we_html_multiIconBox::SPACE_MED
 		);
 
+		$parts[] = array(
+			'headline' => g_l('importFiles', '[imgsSearchable]'),
+			'html' => we_html_forms::checkboxWithHidden($this->isSearchable === true, 'isSearchable', g_l('importFiles', '	[searchable_label]')),
+			'space' => we_html_multiIconBox::SPACE_MED
+		);
+
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
 			$parts[] = array(
 				'headline' => g_l('importFiles', '[metadata]'),
@@ -794,7 +802,7 @@ function doUnload() {
 						g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, ""),
 				);
 			}
-			$foldAT = 4;
+			$foldAT = 5;
 		} else {
 			$foldAT = -1;
 		}
@@ -1580,7 +1588,7 @@ function doUnload() {
 	 * @return array
 	 * @static
 	 */
-	public function importFile($path, $contentType, $sourcePath, $destinationDirID, $sameName, $thumbs, $width, $height, $widthSelect, $heightSelect, $keepRatio, $quality, $degrees, $importMetadata = true){
+	public static function importFile($path, $contentType, $sourcePath, $destinationDirID, $sameName, $thumbs, $width, $height, $widthSelect, $heightSelect, $keepRatio, $quality, $degrees, $importMetadata = true, $isSearchable = true){
 		$we_docSave = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : null;
 
 		// preparing Paths
@@ -1665,7 +1673,7 @@ function doUnload() {
 		switch($contentType){
 			case we_base_ContentTypes::WEDOCUMENT :
 				self::_importWebEditionPage($data, $GLOBALS["we_doc"], $sourcePath);
-				$GLOBALS["we_doc"]->IsSearchable = 1;
+				$GLOBALS["we_doc"]->IsSearchable = $isSearchable;
 				break;
 			case "folder" :
 				break;
@@ -1683,13 +1691,15 @@ function doUnload() {
 			case we_base_ContentTypes::VIDEO:
 				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'image');
+				$GLOBALS["we_doc"]->IsSearchable = $isSearchable;
 				break;
 			case we_base_ContentTypes::AUDIO:
 				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'audio');
+				$GLOBALS["we_doc"]->IsSearchable = $isSearchable;
 				break;
 			case we_base_ContentTypes::HTML :
-				$GLOBALS["we_doc"]->IsSearchable = 1;
+				$GLOBALS["we_doc"]->IsSearchable = $isSearchable;
 			case we_base_ContentTypes::TEXT:
 			case we_base_ContentTypes::JS:
 			case we_base_ContentTypes::CSS:
@@ -1900,6 +1910,7 @@ function doUnload() {
 					"keepRatio" => $this->keepRatio,
 					"quality" => $this->quality,
 					"degrees" => $this->degrees,
+					"isSearchable" => $this->isSearchable,
 					"importMetadata" => $this->importMetadata
 				);
 			}
@@ -1919,6 +1930,7 @@ function doUnload() {
 						"keepRatio" => "",
 						"quality" => "",
 						"degrees" => "",
+						"isSearchable" => false,
 						"importMetadata" => 0
 					);
 					$this->depth++;
