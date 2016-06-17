@@ -38,7 +38,7 @@ class we_wysiwyg_editor{
 	var $value = '';
 	var $restrictContextmenu = '';
 	private $tinyPlugins = array();
-	private $wePlugins = array('weadaptunlink', 'weadaptbold', 'weadaptitalic', 'weimage', 'advhr', 'weabbr', 'weacronym', 'welang', 'wevisualaid', 'weinsertbreak', 'wespellchecker', 'welink', 'wefullscreen', 'wegallery');
+	private $wePlugins = array('wetable', 'weadaptunlink', 'weadaptbold', 'weadaptitalic', 'weimage', 'advhr', 'weabbr', 'weacronym', 'welang', 'wevisualaid', 'weinsertbreak', 'wespellchecker', 'welink', 'wefullscreen', 'wegallery');
 	private $createContextmenu = true;
 	private $filteredElements = array();
 	private $bgcol = '';
@@ -840,6 +840,7 @@ return {
 				($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
 				($this->wePlugins ? $this->wePlugins . ',' : '') .
 				(in_array('wevisualaid', $allCommands) ? 'visualblocks,' : '') .
+				(in_array('table', $allCommands) ? 'wetable,' : '') .
 				'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 
 		$height = we_base_util::convertUnits($this->height);

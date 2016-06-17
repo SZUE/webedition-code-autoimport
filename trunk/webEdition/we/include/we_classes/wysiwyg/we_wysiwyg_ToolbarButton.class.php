@@ -120,7 +120,7 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 			case 'decreasecolspan':
 			case 'editrow':
 			case 'deletetable':
-				return $this->editor->setPlugin('table', parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu));
+				return parent::hasProp('', $contextMenu) || parent::hasProp('table', $contextMenu);
 			case 'cut':
 			case 'copy':
 			case 'paste':
