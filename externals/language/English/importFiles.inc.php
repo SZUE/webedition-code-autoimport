@@ -9,6 +9,7 @@ $l_importFiles=array(
 	'edit_imgBeforeUpload'=>'Edit images before uploading',
 	'edit_imgsBeforeUpload'=>'Edit image before uploading',
 	'edit_pixel_height'=>'px: Height',
+	'edit_pixel_longest'=>'Longest Side',
 	'edit_pixel_width'=>'px: Width',
 	'edit_useCustom'=>'Simple edit',
 	'edit_useExpert'=>'Expert mode',
