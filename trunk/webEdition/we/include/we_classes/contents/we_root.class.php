@@ -451,17 +451,19 @@ abstract class we_root extends we_class{
 		return (permissionhandler::hasPerm('ADMINISTRATOR') || we_users_util::isOwner($this->CreatorID));
 	}
 
-	function userCanSave(){
+	function userCanSave($ctConditionOk = false){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}
-		if(defined('OBJECT_TABLE') && ($this->Table == OBJECT_FILES_TABLE)){
-			if(!(permissionhandler::hasPerm('NEW_OBJECTFILE_FOLDER') || permissionhandler::hasPerm('NEW_OBJECTFILE'))){
-				return false;
-			}
-		} else {
-			if(!permissionhandler::hasPerm('SAVE_DOCUMENT_TEMPLATE')){
-				return false;
+		if(!$ctConditionOk){ // check table condition in respective subclasses: eg in we_collection we check SAVE_COLLECTION
+			if(defined('OBJECT_TABLE') && ($this->Table == OBJECT_FILES_TABLE)){
+				if(!(permissionhandler::hasPerm('NEW_OBJECTFILE_FOLDER') || permissionhandler::hasPerm('NEW_OBJECTFILE'))){
+					return false;
+				}
+			} else {
+				if(!permissionhandler::hasPerm('SAVE_DOCUMENT_TEMPLATE')){
+					return false;
+				}
 			}
 		}
 		if(!$this->RestrictOwners){
