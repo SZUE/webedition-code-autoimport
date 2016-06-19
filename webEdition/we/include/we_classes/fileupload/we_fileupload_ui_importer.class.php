@@ -94,24 +94,26 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 
 		$topParts[] = array("html" => $fileselect, 'space' => 0);
 
-		// TODO: finish GUI of message layer, throw out inline css and use we_html_element
-		$messageLayer = '
-			<div id="we_fileUpload_messageBg" style="display:none;position:absolute;top:0; left:0; right:0; bottom:0; background-color:gray;opacity: 0.8;"></div>
-			<div id="we_fileUpload_message" style="display:none;padding: 20px; background-color:white; width: 400px; height: 180px;position:absolute; top:70px;left:100px;opacity:1.0">
-			<p>Please wait: <span id="we_fileUpload_messageNr"></span> images left to process</p><p>(add progressbar here)</p>
-			<p><i class="fa fa-2x fa-spinner fa-pulse"></i></p></div>
-		';
+		// TODO: finish GUI
+		$divMask = we_html_element::htmlDiv(array('id' => 'we_fileUploadImporter_mask', 'class' => 'editorMask'));
+		$divBusyMessage = we_html_element::htmlDiv(array('id' => 'we_fileUploadImporter_message', 'class' => 'editorMessage'), 
+			we_html_element::htmlP(array(), 'Please wait: ' . we_html_element::htmlSpan(array('id' => 'we_fileUploadImporter_messageNr')) . ' images left to process') .
+			we_html_element::htmlP(array(), '<i class="fa fa-2x fa-spinner fa-pulse"></i>')
+		);
+		$loupe = we_fileupload_ui_preview::getHtmlLoup();
 
-		$content = we_html_element::htmlDiv(array("id" => "forms", "style" => "display:block"), we_html_element::htmlForm(array(
-					"action" => WEBEDITION_DIR . "we_cmd.php",
-					"name" => "we_startform",
-					"method" => "post"
+		$content = we_html_element::htmlDiv(array('id' => 'forms', 'class' => 'fileuploadImporter', 'style' => 'display:block'), we_html_element::htmlForm(array(
+					'action' => WEBEDITION_DIR . 'we_cmd.php',
+					'name' => 'we_startform',
+					'method' => 'post'
 					), $hiddens) .
 				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", $topParts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'), "", 0, "hidden") . '</div>' .
 				'<div id="div_upload_files" style="height:410px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", array(), 30, "", -1, "", "", "", "") . '</div>' .
-				$messageLayer
+				$divMask .
+				$loupe .
+				$divBusyMessage
 		);
-
+//<div id="imgfocus_point" style="display:none;" draggable="false"></div>
 		return we_html_element::htmlBody(array("class" => "weDialogBody"), $content);
 	}
 
@@ -154,11 +156,11 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 			we_html_element::htmlDiv(array(), we_html_forms::radiobutton('custom', true, 'editOpts', g_l('importFiles', '[edit_useCustom]'), true, 'defaultfont', 'we_FileUpload.setCustomEditOpts(this.form);', true)) .
 			we_html_element::htmlDiv(array(), we_html_forms::radiobutton('expert', false, 'editOpts', g_l('importFiles', '[edit_useExpert]'), true, 'defaultfont', 'we_FileUpload.setCustomEditOpts(this.form);', true))
 		);
-		$valueInput = we_html_tools::htmlTextInput('resizeValue', 11, '', '', '', "text", 57, 20, '', true);
+		$valueInput = we_html_tools::htmlTextInput('resizeValue', 11, '', '', '', "text", 54, 20, '', true);
 		$unitSelect = we_html_tools::htmlSelect('unitSelect', array(
-				'percent' => g_l('weClass', '[percent]'),
 				'pixel_w' => g_l('importFiles', '[edit_pixel_width]'),
-				'pixel_h' => g_l('importFiles', '[edit_pixel_height]')
+				'pixel_h' => g_l('importFiles', '[edit_pixel_height]'),
+				'pixel_l' => g_l('importFiles', '[edit_pixel_longest]'),
 			), 1, 0, false, array('disabled' => 'disabled'), '', 0, 'weSelect optsUnitSelect');
 		$rotateSelect = we_html_tools::htmlSelect('rotateSelect', array(
 				0 => g_l('weClass', '[rotate0]'),
@@ -166,11 +168,11 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 				270 => g_l('weClass', '[rotate90l]'),
 				90 => g_l('weClass', '[rotate90r]'),
 			), 1, 0, false, array('disabled' => 'disabled'), '', 0, 'weSelect optsRotateSelect');
-		$quality = we_html_element::htmlInput(array('class' => 'optsQuality', 'type' => 'range', 'title' => 'test', 'value' => 90, 'min' => 0, 'max' => 100, 'step' => 5, 'oninput' => 'this.form.qualityOutput.value = this.value', 'name' => 'quality'));
-		$qualityOutput = we_html_baseElement::getHtmlCode(new we_html_baseElement('output', true, array('name' => 'qualityOutput', 'for' => "fu_doc_quality"), 90));
-		$inputs = we_html_element::htmlDiv(array('class' => 'optsRowTop'), $valueInput . ' ' .  $unitSelect) . we_html_element::htmlDiv(array('class' => 'optsRowMiddle'), $rotateSelect) . we_html_element::htmlDiv(array('class' => 'optsRowBottom'), $quality . $qualityOutput);
+		$quality = we_html_element::htmlInput(array('class' => 'optsQuality', 'type' => 'range', 'title' => 'test', 'value' => 0, 'min' => 0, 'max' => 100, 'step' => 5, 'oninput' => 'this.form.qualityOutput.value = this.value', 'name' => 'quality'));
+		$qualityOutput = we_html_baseElement::getHtmlCode(new we_html_baseElement('output', true, array('name' => 'qualityOutput', 'for' => "fu_doc_quality"), 0));
+		$inputs = we_html_element::htmlDiv(array('class' => 'optsRowTop'), $unitSelect . ' ' . $valueInput) . we_html_element::htmlDiv(array('class' => 'optsRowMiddle'), $rotateSelect) . we_html_element::htmlDiv(array('class' => 'optsRowBottom'), $quality . $qualityOutput);
 		$divEditCustom = we_html_element::htmlDiv(array('class' => 'elemOpts'), $inputs);//$btnRefresh
-		$btnRefresh = we_html_element::htmlDiv(array('class' => 'btnRefresh'), we_html_button::create_button(we_html_button::REFRESH_NOTEXT, "javascript:if(!this.form.useGeneralOpts.checked && this.form.editOpts){we_FileUpload.reeditImage(null, WEFORMNUM);}", true, 0, 0, '', '', true, true, '', false, $title = 'Ausf�hren'));
+		$btnRefresh = we_html_element::htmlDiv(array('class' => 'btnRefresh'), we_html_button::create_button(we_html_button::REFRESH_NOTEXT, "javascript:if(!this.form.useGeneralOpts.checked && this.form.editOpts){we_FileUpload.reeditImage(null, WEFORMNUM);}", true, 0, 0, '', '', true, true, '', false, $title = 'Ausf�hren', 'weFileupload_btnImgEditRefresh'));
 
 		return str_replace(array("\r", "\n"), "", we_html_element::htmlDiv(array('class' => 'importerElem'), we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline elemNum'), 'Nr. WE_FORM_NUM') .
 		we_html_element::htmlDiv(array('class' => 'elemContainer'),

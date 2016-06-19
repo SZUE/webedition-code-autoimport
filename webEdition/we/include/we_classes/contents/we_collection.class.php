@@ -206,14 +206,14 @@ class we_collection extends we_root{
 	public function getPropertyPage(){
 		return we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
 			we_html_multiIconBox::getHTML('PropertyPage', array(
-				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(!permissionhandler::hasPerm('MOVE_COLLECTION')), 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2))
 		);
 	}
 
 	function formContent($fixedRemTable = false){
-		$fixedRemTable = true;
+		$fixedRemTable = true || !permissionhandler::hasPerm('NEW_COLLECTION');
 		$this->remTable = stripTblPrefix(FILE_TABLE); // FIXME: remove this line when object collections are implemented
 
 		$valsRemTable = array(
@@ -236,8 +236,9 @@ class we_collection extends we_root{
 			}
 		}
 		$this->remCT = $tmpRemCT;
-		$mimeListFrom = we_html_tools::htmlSelect('mimeListFrom', $unselectedMime, 13, '', true, array("id" => "mimeListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListFrom'],this.form['mimeListTo'],true, 'document');"), 'value', 175);
-		$mimeListTo = we_html_tools::htmlSelect('mimeListTo', $selectedMime, 13, '', true, array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');"), 'value', 175);
+		$attribsFrom = $attribsTo = !permissionhandler::hasPerm('NEW_COLLECTION') ? array('disabled' => 'disabled') : array();
+		$mimeListFrom = we_html_tools::htmlSelect('mimeListFrom', $unselectedMime, 13, '', true, array_merge($attribsFrom, array("id" => "mimeListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListFrom'],this.form['mimeListTo'],true, 'document');")), 'value', 175);
+		$mimeListTo = we_html_tools::htmlSelect('mimeListTo', $selectedMime, 13, '', true, array_merge($attribsTo, array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');")), 'value', 175);
 		$mimeTable = new we_html_table(array('class' => 'collection_props-mime default'), 1, 3);
 		$mimeTable->setCol(0, 0, array(), $mimeListFrom);
 		$mimeTable->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle'), we_html_element::htmlA(array(
@@ -266,8 +267,8 @@ class we_collection extends we_root{
 				}
 			}
 		}
-		$classListFrom = we_html_tools::htmlSelect('classListFrom', $unselectedClasses, max(count($allClasses), 5), '', true, array("id" => "classListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListFrom'],this.form['classListTo'],true, 'object');"), 'value', 184);
-		$classListTo = we_html_tools::htmlSelect('classListTo', $selectedClasses, max(count($allClasses), 5), '', true, array("id" => "classListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListTo'],this.form['classListFrom'],true, 'object');"), 'value', 184);
+		$classListFrom = we_html_tools::htmlSelect('classListFrom', $unselectedClasses, max(count($allClasses), 5), '', true, array_merge($attribsFrom, array("id" => "classListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListFrom'],this.form['classListTo'],true, 'object');")), 'value', 184);
+		$classListTo = we_html_tools::htmlSelect('classListTo', $selectedClasses, max(count($allClasses), 5), '', true, array_merge($attribsTo, array("id" => "classListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListTo'],this.form['classListFrom'],true, 'object');")), 'value', 184);
 
 		$classTable = new we_html_table(array("class" => 'collection_props-classes default'), 1, 3);
 		$classTable->setCol(0, 0, null, $classListFrom);
@@ -289,11 +290,11 @@ class we_collection extends we_root{
 			we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][selector_remTable]'), we_html_tools::TYPE_HELP, false);
 
 
-		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'));
+		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'),false, 'defaultfont', '', !permissionhandler::hasPerm('NEW_COLLECTION'));
 
 		$this->DefaultDir = $this->DefaultDir ? : (IMAGESTARTID_DEFAULT ? : 0);
 		$this->DefaultPath = $this->DefaultDir ? id_to_path($this->DefaultDir, FILE_TABLE) : '';
-		$defDir = $this->formDirChooser(360, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), false);
+		$defDir = $this->formDirChooser(360, 0, FILE_TABLE, 'DefaultPath', 'DefaultDir', '', g_l('weClass', '[collection][label_defaultDir]'), !permissionhandler::hasPerm('NEW_COLLECTION'));
 
 		$html = $selRemTable .
 			'<div id="collection_props-mime_class">
@@ -761,6 +762,11 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$this->Filename = $this->Text;
 	}
 
+	function userCanSave(){
+
+		return permissionhandler::hasPerm('SAVE_COLLECTION') && parent::userCanSave(true);
+	}
+
 	public function we_save($resave = 0, $skipHook = 0){
 		$this->errMsg = '';
 
@@ -817,6 +823,25 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$this->persistent_slots[] = 'CreationDate';
 
 		return $ret;
+	}
+
+	protected function i_setElementsFromHTTP(){
+		if(!permissionhandler::hasPerm('NEW_COLLECTION')){
+			unset($_REQUEST['we_' . $this->Name . '_remTable']);
+			unset($_REQUEST['we_' . $this->Name . '_remCT']);
+			unset($_REQUEST['we_' . $this->Name . '_remClass']);
+			unset($_REQUEST['we_' . $this->Name . '_IsDuplicates']);
+			unset($_REQUEST['we_' . $this->Name . '_DefaultDir']);
+			unset($_REQUEST['we_' . $this->Name . '_DefaultPath']);
+		}
+
+		if(!permissionhandler::hasPerm('MOVE_COLLECTION')){
+			//unset($_REQUEST['we_' . $this->Name . '_Filename']);
+			unset($_REQUEST['we_' . $this->Name . '_ParentID']);
+			unset($_REQUEST['we_' . $this->Name . '_ParentPath']);
+		}
+
+		parent::i_setElementsFromHTTP();
 	}
 
 	function writeCollectionToDB($collection){// FIXME: is there a standard function called by some parent to save non-persistent data?
