@@ -395,7 +395,7 @@ abstract class we_newsletter_util{
 	static function addToFile(array $paths, $f){
 		$emailwritten = false;
 		foreach($paths as $p){
-			$realPath = realpath($_SERVER['DOCUMENT_ROOT'] . ltrim($p, '/') . '/' . $p);
+			$realPath = realpath($_SERVER['DOCUMENT_ROOT'] . '/' . ltrim($p, '/'));
 			if(!file_exists(dirname($realPath)) || strpos(realpath($realPath), realpath($_SERVER['DOCUMENT_ROOT'])) === FALSE){
 				$GLOBALS['WE_WRITENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
 				$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = we_newsletter_base::STATUS_ERROR; // FATAL ERROR
