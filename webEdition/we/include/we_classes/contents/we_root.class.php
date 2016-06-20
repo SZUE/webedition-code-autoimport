@@ -621,7 +621,7 @@ abstract class we_root extends we_class{
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd('opener.WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);');
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','" . $ctype . "',1)");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','" . $ctype . "',1,0,0,'" . $langkey . "')");
 		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput" . $ackeyshort . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", true, 27, 22);
 		$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . $ctype . "','" . $etype . "'); }");
 		if(!empty($this->DocType) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){
@@ -674,13 +674,12 @@ abstract class we_root extends we_class{
 	<tr><td class="defaultfont" style="text-align:left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 </table>
 <br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
-		} else {
-			return '
+		}
+		return '
 <table class="default" style="margin-top:2px;">' .
-				$headline . '
+			$headline . '
 	<tr><td>' . $this->htmlSelect($inputName, $languages, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", 'onchange' => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"), "value") . '</td></tr>
 </table>';
-		}
 	}
 
 	#################### Function for getting and setting the $elements Array #########################################################################
