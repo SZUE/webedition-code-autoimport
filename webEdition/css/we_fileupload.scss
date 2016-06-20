@@ -195,6 +195,17 @@ div.editorLoupe{
 		overflow: hidden;
 		position: absolute;
 		background-color: transparent;
+	}
+	div.editorLoupeInfo{
+		top: 0px;
+		left: 0px;
+		border: 1px solid black;
+		width: auto;
+		height: auto;
+		padding: 2px;
+		z-index: 2200;
+		position: absolute;
+		background-color: white;
 		display: none;
 	}
 }

@@ -705,7 +705,21 @@ var weFileUpload = (function () {
 			this.setPreviewLoupe = function(fileobj, pt){
 				pt = pt ? pt : 0;
 				if(pt === 1){
+					var info = '',
+						dimension = fileobj.img.fullPrev.height + 'x' + fileobj.img.fullPrev.width + ' px';
+					if(fileobj.img.editOptions.doEdit){
+						var deg = parseInt(fileobj.img.editOptions.rotateValue),
+							degText = deg === 0 ? '' : (deg === 90 ? '90&deg; ' + _.utils.gl.editRotationRight : (deg === 270 ? '90&deg; ' + _.utils.gl.editRotationLeft : '180&deg;'));
+						info += (fileobj.img.editOptions.scaleValue ? _.utils.gl.editScaled + ' ' : '') + dimension;
+						info += deg ? (info ? ', ' : '') + _.utils.gl.editRotation + ': ' + degText : '';
+						info += fileobj.img.editOptions.quality && fileobj.type === 'image/jpeg' ? (info ? ', ' : '') + _.utils.gl.editQuality + ': ' + fileobj.img.editOptions.quality + '%' : '';
+					} else {
+						info = _.utils.gl.editNotEdited + ': ' + dimension;
+					}
+					document.getElementById('we_fileUpload_loupeInfo').innerHTML = info;
+
 					fileobj.loupInner.appendChild(fileobj.img.fullPrev);
+					document.getElementById('we_fileUpload_loupeInfo').style.display = 'block';
 					document.getElementById('we_fileUpload_spinner').style.display = 'none';
 					document.getElementsByClassName('editorCrosshairH')[0].style.display = 'block';
 					document.getElementsByClassName('editorCrosshairV')[0].style.display = 'block';
@@ -778,6 +792,7 @@ var weFileUpload = (function () {
 			this.unsetPreviewLoupe = function(fileobj){
 				fileobj.loupInner.style.display = 'none';
 				fileobj.loupInner.parentNode.style.display = 'none';
+				document.getElementById('we_fileUpload_loupeInfo').style.display = 'none';
 				document.getElementsByClassName('editorCrosshairH')[0].style.display = 'none';
 				document.getElementsByClassName('editorCrosshairV')[0].style.display = 'none';
 				fileobj.focusPoint.style.display = 'none';
@@ -2790,6 +2805,7 @@ var weFileUpload = (function () {
 				this.elems.txtSize.innerHTML = sizeText;
 				this.elems.txtType.innerHTML = typeText;
 				if(f.isEdited){
+					/*
 					var edittext;
 					switch(f.img.editOptions.scaleUnit){
 						case 'pixel_w':
@@ -2804,6 +2820,7 @@ var weFileUpload = (function () {
 
 					this.elems.txtEdit.innerHTML = '<strong>Skaliert</strong> auf ' + edittext;
 					this.elems.txtEdit.style.display = 'block';
+					*/
 				} else {
 					this.elems.txtEdit.style.display = 'none';
 				}
