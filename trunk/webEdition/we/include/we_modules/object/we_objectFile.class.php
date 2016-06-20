@@ -566,20 +566,24 @@ class we_objectFile extends we_document{
 			return array();
 		}
 		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableID), '', $db));
-		$ctable = OBJECT_X_TABLE . intval($tableID);
-		$tableInfo = $db->metadata($ctable);
-		$fields = $regs = array();
+		$tableInfo = $db->metadata(OBJECT_X_TABLE . intval($tableID));
+		$regs = array();
+		$fields = 0;
 		foreach($tableInfo as $info){
 			if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
-				if($regs[1] != 'OF' && $regs[1] != 'variant'){
-					$fields[] = array("name" => $regs[2], "type" => $regs[1], "length" => $info["len"]);
+				switch($regs[1]){
+					case 'OF':
+					case 'variant':
+						break;
+					default:
+						$fields++;
 				}
 			}
 		}
 
-		if((count($order) != count($fields)) || !in_array(0, $order)){
+		if((count($order) != $fields) || !in_array(0, $order)){
 			$order = array();
-			for($y = 0; $y < count($fields); $y++){
+			for($y = 0; $y < $fields; $y++){
 				$order[$y] = $y;
 			}
 		}
@@ -587,21 +591,18 @@ class we_objectFile extends we_document{
 		return $order;
 	}
 
-	static function getSortedTableInfo($tableID, $contentOnly = false, we_database_base $db = null, $checkVariants = false){
+	static function getSortedTableInfo($tableID, $contentOnly, we_database_base $db, $checkVariants = false){
 		if(!$tableID){
 			return array();
 		}
-		$db = ($db ? : new DB_WE());
 
 		$tableInfo = $db->metadata(OBJECT_X_TABLE . $tableID);
 		$tableInfo2 = array();
-		//FIXME: this is not going to work ever - the name is "input_name"
 		foreach($tableInfo as $arr){
 			$names = explode('_', $arr['name']);
 			switch($names[0]){
 				case 'variant':
-					if($names[1] != we_base_constants::WE_VARIANTS_ELEMENT_NAME){
-						$tableInfo2[] = $arr;
+					if($names[1] == we_base_constants::WE_VARIANTS_ELEMENT_NAME){
 						break;
 					}
 				//no break
