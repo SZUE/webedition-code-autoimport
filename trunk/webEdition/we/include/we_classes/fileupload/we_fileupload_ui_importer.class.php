@@ -172,7 +172,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		$qualityOutput = we_html_baseElement::getHtmlCode(new we_html_baseElement('output', true, array('name' => 'qualityOutput', 'for' => "fu_doc_quality"), 0));
 		$inputs = we_html_element::htmlDiv(array('class' => 'optsRowTop'), $unitSelect . ' ' . $valueInput) . we_html_element::htmlDiv(array('class' => 'optsRowMiddle'), $rotateSelect) . we_html_element::htmlDiv(array('class' => 'optsRowBottom'), $quality . $qualityOutput);
 		$divEditCustom = we_html_element::htmlDiv(array('class' => 'elemOpts'), $inputs);//$btnRefresh
-		$btnRefresh = we_html_element::htmlDiv(array('class' => 'btnRefresh'), we_html_button::create_button(we_html_button::REFRESH_NOTEXT, "javascript:if(!this.form.useGeneralOpts.checked && this.form.editOpts){we_FileUpload.reeditImage(null, WEFORMNUM);}", true, 0, 0, '', '', true, true, '', false, $title = 'Ausf�hren', 'weFileupload_btnImgEditRefresh'));
+		$btnRefresh = we_html_element::htmlDiv(array('class' => 'btnRefresh'), we_html_button::create_button(we_html_button::PROCESS, "javascript:if(!this.form.useGeneralOpts.checked && this.form.editOpts){we_FileUpload.reeditImage(null, WEFORMNUM);}", true, 0, 0, '', '', true, true, '', false, $title = 'Ausf�hren', 'weFileupload_btnImgEditRefresh'));
 
 		return str_replace(array("\r", "\n"), "", we_html_element::htmlDiv(array('class' => 'importerElem'), we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline elemNum'), 'Nr. WE_FORM_NUM') .
 		we_html_element::htmlDiv(array('class' => 'elemContainer'),
