@@ -395,7 +395,13 @@ we_FileUpload.init({
 	maskReadImage: "' . g_l('importFiles', '[maskReadImage]') . '",
 	maskProcessImage: "' . g_l('importFiles', '[maskProcessImage]') . '",
 	maskImporterReadImages: "' . g_l('importFiles', '[maskImporterReadImages]') . '",
-	maskImporterProcessImages: "' . g_l('importFiles', '[maskImporterProcessImages]') . '"
+	maskImporterProcessImages: "' . g_l('importFiles', '[maskImporterProcessImages]') . '",
+	editScaled: "' . g_l('importFiles', '[scaled_to]') . '",
+	editRotation: "' . g_l('importFiles', '[rotation]') . '",
+	editRotationLeft: "' . g_l('global', '[left]') . '",
+	editRotationRight: "' . g_l('global', '[right]') . '",
+	editQuality: "' . g_l('weClass', '[quality]') . '",
+	editNotEdited: "' . g_l('importFiles', '[not_edited]') . '"
 }';
 	}
 

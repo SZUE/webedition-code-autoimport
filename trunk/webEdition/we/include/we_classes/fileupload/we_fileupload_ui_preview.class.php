@@ -480,6 +480,7 @@ function selectCategories() {
 	public static function getHtmlLoup(){
 		$divLoupe = we_html_element::htmlDiv(array('id' => 'we_fileUpload_loupe', 'class' => 'editorLoupe'),
 			we_html_element::htmlDiv(array('id' => 'we_fileUpload_loupeInner', 'class' => 'editorLoupeInner')) .
+			we_html_element::htmlDiv(array('id' => 'we_fileUpload_loupeInfo', 'class' => 'editorLoupeInfo')) .
 			we_html_element::htmlDiv(array('id' => 'we_fileUpload_focusPoint', 'class' => 'editorFocusPoint'))
 		);
 		$divLoupeCrosshairH = we_html_element::htmlDiv(array('class' => 'editorCrosshairH'));
