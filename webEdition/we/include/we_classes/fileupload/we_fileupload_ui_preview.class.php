@@ -114,7 +114,10 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				) .
 				we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'), '')
 			) .
-			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_mask', 'class' => 'we_file_drag_mask'));
+			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_mask', 'class' => 'we_file_drag_mask'),
+				we_html_element::htmlDiv(array('class' => 'we_file_drag_maskSpinner'), '<i class="fa fa-2x fa-spinner fa-pulse"></i></span>') . 
+				we_html_element::htmlDiv(array('id' => 'image_edit_mask_text', 'class' => 'we_file_drag_maskBusyText'))
+			);
 
 		return self::getHtmlLoup() . ($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag'), $content) : $content);
 	}

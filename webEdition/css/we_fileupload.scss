@@ -154,6 +154,14 @@ table.importer_files{
 	}
 }
 
+.we_file_drag_maskSpinner{
+	margin: 20px 0 10px 0;
+	font-size: 2em;
+}
+.we_file_drag_maskBusyText{
+	font-size:1.6em;
+}
+
 #editImage{
 	display: none;
 	padding: 4px 0 6px 4px;
@@ -313,6 +321,14 @@ div.fileuploadImporter{
 		bottom: 0;
 		background-color: gray;
 		opacity: 0.8;
+	}
+	div.we_file_drag_maskSpinner{
+		padding-top: 12px;
+		text-align: center;
+	}
+	div.we_file_drag_maskBusyText{
+		padding-top: 18px;
+		text-align: center;
 	}
 	div.editorLoupe{
 		top: initial;

@@ -390,7 +390,12 @@ we_FileUpload.init({
 	file : "' . g_l('importFiles', '[file]') . '",
 	btnClose : "' . g_l('button', '[close][value]') . '",
 	btnCancel : "' . g_l('button', '[cancel][value]') . '",
-	btnUpload : "' . g_l('button', '[upload][value]') . '"
+	btnUpload : "' . g_l('button', '[upload][value]') . '",
+	btnProcess: "Ausführen",
+	maskReadImage: "Die Grafik wird eingelesen",
+	maskProcessImage: "Die Grafik wird bearbeitet",
+	maskImporterReadImages: "Noch <span id=\"we_fileUploadImporter_messageNr\"></span> Grafiken einzulesen",
+	maskImporterProcessImages: "Noch <span id=\"we_fileUploadImporter_messageNr\"></span> Grafiken zu bearbeiten"
 }';
 	}
 

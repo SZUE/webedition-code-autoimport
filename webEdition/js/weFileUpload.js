@@ -888,7 +888,7 @@ var weFileUpload = (function () {
 				var form = document.forms[(formname ? formname : 'we_form')],
 					resizeValue = form.fu_doc_resizeValue.value,
 					deg = form.fu_doc_rotate.value,
-					quality = form.fu_doc_quality;
+					quality = form.fu_doc_quality,
 					opts = _.sender.imageEditOptions;
 
 				opts.doEdit = false;
@@ -957,7 +957,7 @@ var weFileUpload = (function () {
 					};
 
 					_.utils.logTimeFromStart('canvas loaded');
-					_.view.repaintImageEditMessage(true);
+					_.view.repaintImageEditMessage(true, true);
 					//fileobj.img.dataUrl = 
 					fileobj.img.image.src = reader.result;
 				};
@@ -2154,9 +2154,12 @@ var weFileUpload = (function () {
 			this.setImageEditMessage = function () {
 				var elem;
 				if((elem = document.getElementById('we_fileUploadImporter_mask'))){
-					document.getElementById('we_fileUploadImporter_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
-					document.getElementById('we_fileUploadImporter_message').style.display = 'block';
-					document.getElementById('we_fileUploadImporter_message').style.zIndex = 800;
+					document.getElementById('we_fileUploadImporter_busyText').innerHTML = _.sender.imageEditOptions.doEdit ? _.utils.gl.maskImporterProcessImages : _.utils.gl.maskImporterReadImages;
+					try{
+						document.getElementById('we_fileUploadImporter_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
+					} catch(e){};
+					document.getElementById('we_fileUploadImporter_busyMessage').style.display = 'block';
+					document.getElementById('we_fileUploadImporter_busyMessage').style.zIndex = 800;
 					elem.style.display = 'block';
 				}
 			};
@@ -2165,15 +2168,18 @@ var weFileUpload = (function () {
 				var elem;
 				if((elem = document.getElementById('we_fileUploadImporter_mask'))){
 					elem.style.display = 'none';
-					document.getElementById('we_fileUploadImporter_message').style.display = 'none';
+					document.getElementById('we_fileUploadImporter_busyMessage').style.display = 'none';
 				}
 			};
 
 			this.repaintImageEditMessage = function(step) {
 				if(step){
-					
+					document.getElementById('we_fileUploadImporter_busyText').innerHTML += _.sender.imageEditOptions.doEdit ? '.' : '';
 				} else {
-					document.getElementById('we_fileUploadImporter_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
+					document.getElementById('we_fileUploadImporter_busyText').innerHTML = _.sender.imageEditOptions.doEdit ? _.utils.gl.maskImporterProcessImages : _.utils.gl.maskImporterReadImages;
+					try{
+						document.getElementById('we_fileUploadImporter_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
+					} catch(e){};
 				}
 			};
 
@@ -2948,9 +2954,11 @@ var weFileUpload = (function () {
 			};
 			
 			this.setImageEditMessage = function () {
-				var mask = document.getElementById('div_fileupload_fileDrag_mask');
+				var mask = document.getElementById('div_fileupload_fileDrag_mask'),
+					text = document.getElementById('image_edit_mask_text');
+
 				mask.style.display = 'block';
-				mask.innerHTML = '<div style="margin:20px 0 10px 0;"><span style="font-size:2em;"><i class="fa fa-2x fa-spinner fa-pulse"></i></span></div><div style="font-size:1.6em;" id="image_edit_mask_text">Die Grafik wird bearbeitet</div>';
+				text.innerHTML = _.utils.gl.maskReadImage;
 			};
 
 			this.unsetImageEditMessage = function () {
@@ -2958,8 +2966,9 @@ var weFileUpload = (function () {
 				mask.style.display = 'none';
 			};
 
-			this.repaintImageEditMessage = function () {
+			this.repaintImageEditMessage = function (empty, changeText) {
 				var text = document.getElementById('image_edit_mask_text').innerHTML;
+				text = (changeText ? _.utils.gl.maskProcessImage : text) + '.';
 				text += '.';
 				document.getElementById('image_edit_mask_text').innerHTML = text;
 				

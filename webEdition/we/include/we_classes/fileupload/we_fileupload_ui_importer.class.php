@@ -96,9 +96,9 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 
 		// TODO: finish GUI
 		$divMask = we_html_element::htmlDiv(array('id' => 'we_fileUploadImporter_mask', 'class' => 'editorMask'));
-		$divBusyMessage = we_html_element::htmlDiv(array('id' => 'we_fileUploadImporter_message', 'class' => 'editorMessage'), 
-			we_html_element::htmlP(array(), 'Please wait: ' . we_html_element::htmlSpan(array('id' => 'we_fileUploadImporter_messageNr')) . ' images left to process') .
-			we_html_element::htmlP(array(), '<i class="fa fa-2x fa-spinner fa-pulse"></i>')
+		$divBusyMessage = we_html_element::htmlDiv(array('id' => 'we_fileUploadImporter_busyMessage', 'class' => 'editorMessage'), 
+			we_html_element::htmlDiv(array('class' => 'we_file_drag_maskSpinner'), '<i class="fa fa-2x fa-spinner fa-pulse"></i>') .
+			we_html_element::htmlDiv(array('id' => 'we_fileUploadImporter_busyText', 'class' => 'we_file_drag_maskBusyText'))
 		);
 		$loupe = we_fileupload_ui_preview::getHtmlLoup();
 
