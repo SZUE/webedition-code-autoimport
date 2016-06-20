@@ -67,7 +67,6 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			array('fu_file_sameName', 'text'),
 			array('fu_doc_focusX', 'text'),
 			array('fu_doc_focusY', 'text'),
-			fu_doc_focusX
 		));
 		$this->loadImageEditPropsFromSession();
 	}
