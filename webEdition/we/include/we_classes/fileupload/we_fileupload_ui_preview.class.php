@@ -147,8 +147,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				270 => g_l('weClass', '[rotate90l]'),
 				90 => g_l('weClass', '[rotate90r]'),
 			), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '', 150, 'weSelect optsRotateSelect');
-		$quality = we_html_element::htmlInput(array('type' => 'range', 'value' => 0, 'min' => 0, 'max' => 100, 'step' => 5, 'oninput' => 'this.form.qualityOutput.value = this.value', 'name' => 'fu_doc_quality'));
-		$qualityOutput = '<output name="qualityOutput" for="fu_doc_quality">0</output>';
+		$quality = we_html_element::htmlInput(array('type' => 'range', 'value' => 0, 'min' => 0, 'max' => 100, 'step' => 5, 'oninput' => "document.getElementById('qualityValue').innerHTML = this.value", 'name' => 'fu_doc_quality'));
 		$btnRefresh = we_html_button::create_button(we_html_button::PROCESS, "javascript:" . $reeditCmd, true, 0, 0, '', '', true, false, '_weFileupload', false, $title = 'Ausführen', 'weFileupload_btnImgEditRefresh');
 
 		return we_html_element::htmlDiv(array(), $editCheckbox) .
@@ -164,7 +163,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 					we_html_element::htmlDiv(array('style' => "margin-top: 2px;"),
 						we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Qualität:') .
 						we_html_element::htmlDiv(array('style' => 'display:inline-block;width: 130px;'), $quality) .
-						we_html_element::htmlDiv(array('style' => 'display:inline-block;padding: 0 0 0 10px; width: 35px;'), $qualityOutput) .
+						we_html_element::htmlDiv(array('id' => 'qualityValue', 'style' => 'display:inline-block;padding: 0 0 0 10px; width: 35px;'), '0') .
 						(!$multimport ? we_html_element::htmlDiv(array('style' => 'width: 53px; text-align:right; display:inline-block;'), $btnRefresh) : '')
 					) .
 					($multimport ? we_html_element::htmlDiv(array('style' => "margin-top: 12px;"),

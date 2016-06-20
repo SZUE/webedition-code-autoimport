@@ -70,7 +70,7 @@ var weFileUpload = (function () {
 		_.fileuploadType = 'abstract';
 		_.uiType = 'base';
 
-		_.debug = true;
+		_.debug = false;
 
 		_.EDIT_IMAGES_CLIENTSIDE = true;
 		_.picaOptions = {
@@ -420,11 +420,11 @@ var weFileUpload = (function () {
 
 				if(resizeValue === '' && !parseInt(rotateValue)){
 					target.form.elements[qualityName].value = 0;
-					target.form.qualityOutput.value = 0;
+					document.getElementById('qualityValue').innerHTML = '0';
 					btnRefresh.disabled = true;
 				} else if(!parseInt(qualityValue)) {
 					target.form.elements[qualityName].value = 90;
-					target.form.qualityOutput.value = 90;
+					document.getElementById('qualityValue').innerHTML = '90';
 					btnRefresh.disabled = _.sender.preparedFiles.length === 0;
 				}
 			};
@@ -996,7 +996,7 @@ var weFileUpload = (function () {
 
 					reader.onloadend = function () {
 						fileobj.img.jpgCustomSegments = _.utils.jpgGetSegmentsIfExist(new Uint8Array(reader.result), [225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239], true);
-						fileobj.img.exifParsed = _.utils.jpgGetExifParsed();
+						//fileobj.img.exifParsed = _.utils.jpgGetExifParsed();
 
 						_.utils.logTimeFromStart('meta jpg exttracted');
 						_.view.repaintImageEditMessage(true);
@@ -1142,9 +1142,11 @@ var weFileUpload = (function () {
 			};
 
 			this.processimageWriteImage = function(fileobj, nexttask){
+				/*
 				if(fileobj.type !== 'image/png'){
 					_.utils.processimageWriteImage_2(fileobj, nexttask);
 				}
+				*/
 				fileobj.dataUrl = fileobj.img.workingCanvas.toDataURL(fileobj.type, (fileobj.img.editOptions.quality/100));
 				fileobj.dataArray = _.utils.dataURLToUInt8Array(fileobj.dataUrl);
 				_.utils.logTimeFromStart('image written fn 2');
@@ -2471,7 +2473,7 @@ var weFileUpload = (function () {
 				form.resizeValue.value = '';
 				form.rotateSelect.value = '0';
 				form.quality.value = '0';
-				qualityOutput.value = '0';
+				form.qualityOutput.value = '0';
 			};
 
 			/*
