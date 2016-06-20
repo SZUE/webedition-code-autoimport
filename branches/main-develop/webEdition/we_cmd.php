@@ -146,6 +146,8 @@ function findInclude($cmd){
 		case 'do_import':
 			return 'we_editors/we_import_editor.inc.php';
 		//case 'delete_alias':
+		case 'weNaviEditor':
+			return 'we_modules/navigation/weNaviEditor.inc.php';
 		case 'add_cat':
 		case 'add_entry_to_list':
 		case 'add_link_to_linklist':

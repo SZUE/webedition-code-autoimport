@@ -838,7 +838,6 @@ function we_cmd_base(args, url) {
 			WE().layout.weEditorFrameController.closeAllDocuments();
 			break;
 		case "close_all_but_active_document":
-
 			activeId = null;
 			if (args[1]) {
 				activeId = args[1];

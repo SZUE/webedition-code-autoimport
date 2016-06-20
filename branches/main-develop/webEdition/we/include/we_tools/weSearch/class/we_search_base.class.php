@@ -58,82 +58,82 @@ class we_search_base{
 	//																("OR","XOR")
 	//									Searchid["type"] => "START"
 	//																("IS","END","CONTAIN","<","<=",">",..)
-	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
-
+	function searchfor($searchname, $searchfields, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
 		$this->tablename = $tablename;
-		$i = 0;
 		$sql = array();
+		foreach($searchfields as $i => $searchfield){
+			$regs = explode('_', $searchfield, 2);
+			switch(count($regs) == 2 ? $regs[0] : ''){
+				case 'checkbox':
+					$sql[] = $this->sqlwhere($searchfield, '=' . intval($this->db->escape($searchname[$i])) . ' ');
+					break;
+				case 'date':
+					if($searchname[$i]){
+						$year = ($searchname[$i]['year'] && $searchname[$i]['year'] ? $searchname[$i]['year'] : date('Y'));
+						$month = ($searchname[$i]['month'] && $searchname[$i]['month'] ? $searchname[$i]['month'] : '');
+						$day = ($searchname[$i]['day'] && $searchname[$i]['day'] ? $searchname[$i]['day'] : '');
+						$hour = ($searchname[$i]['hour'] && $searchname[$i]['hour'] ? $searchname[$i]['hour'] : '');
+						$minute = ($searchname[$i]['minute'] && $searchname[$i]['minute'] ? $searchname[$i]['minute'] : '');
 
-		for($i = 0; $i < count($searchfield); $i++){
+						$from = mktime(($hour ? : 0), ($minute ? : 0), 0, ($month ? : 1), ($day ? : 1), $year);
+						$till = mktime(($hour ? : 23), ($minute ? : 59), 59, ($month ? : 12), ($day ? : date('t', mktime(0, 0, 0, ($month ? : 12), 1, $year))), $year);
 
-			if($searchname[$i]){
-				$regs = explode('_', $searchfield[$i], 2); //bug #3694
-				if((count($regs) == 2) && $regs[0] === 'date'){ //bug #3694
-					$year = ($searchname[$i]['year'] && $searchname[$i]['year'] ? $searchname[$i]['year'] : date('Y'));
-					$month = ($searchname[$i]['month'] && $searchname[$i]['month'] ? $searchname[$i]['month'] : '');
-					$day = ($searchname[$i]['day'] && $searchname[$i]['day'] ? $searchname[$i]['day'] : '');
-					$hour = ($searchname[$i]['hour'] && $searchname[$i]['hour'] ? $searchname[$i]['hour'] : '');
-					$minute = ($searchname[$i]['minute'] && $searchname[$i]['minute'] ? $searchname[$i]['minute'] : '');
-
-					$from = mktime(($hour ? : 0), ($minute ? : 0), 0, ($month ? : 1), ($day ? : 1), $year);
-					$till = mktime(($hour ? : 23), ($minute ? : 59), 59, ($month ? : 12), ($day ? : date('t', mktime(0, 0, 0, ($month ? : 12), 1, $year))), $year);
-
-					switch($searchlocation[$i]){
-						case '<':
-						case '<=':
-						case '>':
-						case '>=':
-							$sql[] = $this->sqlwhere($searchfield[$i], ' ' . $searchlocation[$i] . ' ' . $from . ' ');
-							break;
-						default :
-							$sql[] = $this->sqlwhere($searchfield[$i], ' BETWEEN ' . $from . ' AND ' . $till . ' ');
-							break;
+						switch($searchlocation[$i]){
+							case '<':
+							case '<=':
+							case '>':
+							case '>=':
+								$sql[] = $this->sqlwhere($searchfield, ' ' . $searchlocation[$i] . ' ' . $from . ' ');
+								break;
+							default :
+								$sql[] = $this->sqlwhere($searchfield, ' BETWEEN ' . $from . ' AND ' . $till . ' ');
+								break;
+						}
 					}
-				} else {
-
-					switch($searchlocation[$i]){
-						case 'END':
-							$searching = ' LIKE "%' . $this->db->escape($searchname[$i]) . '" ';
-							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
-							break;
-						case 'START':
-							$searching = ' LIKE "' . $this->db->escape($searchname[$i]) . '%" ';
-							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
-							break;
-						case 'IN':
-							$tmp = array_map('trim', explode(',', $searchname[$i]));
-							$searching = ' IN ("' . implode('","', $tmp) . '") ';
-							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
-							break;
-						case 'IS':
-							$searching = '="' . $this->db->escape($searchname[$i]) . '" ';
-							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
-							break;
-						case 'LO':
-							$searching = ' < "' . $this->db->escape($searchname[$i]) . '" ';
-							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
-							break;
-						case 'LEQ':
-							$searching = ' <= "' . $this->db->escape($searchname[$i]) . '" ';
-							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
-							break;
-						case 'HI':
-							$searching = ' > "' . $this->db->escape($searchname[$i]) . '" ';
-							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
-							break;
-						case 'HEQ':
-							$searching = ' >= "' . $this->db->escape($searchname[$i]) . '" ';
-							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
-							break;
-						default :
-							$searching = ' LIKE "%' . $this->db->escape($searchname[$i]) . '%" ';
-							$sql[] = $this->sqlwhere($searchfield[$i], $searching);
-							break;
+					break;
+				default:
+					if($searchname[$i]){
+						switch($searchlocation[$i]){
+							case 'END':
+								$searching = ' LIKE "%' . $this->db->escape($searchname[$i]) . '" ';
+								$sql[] = $this->sqlwhere($searchfield, $searching);
+								break;
+							case 'START':
+								$searching = ' LIKE "' . $this->db->escape($searchname[$i]) . '%" ';
+								$sql[] = $this->sqlwhere($searchfield, $searching);
+								break;
+							case 'IN':
+								$tmp = array_map('trim', explode(',', $searchname[$i]));
+								$searching = ' IN ("' . implode('","', $tmp) . '") ';
+								$sql[] = $this->sqlwhere($searchfield, $searching);
+								break;
+							case 'IS':
+								$sql[] = $this->sqlwhere($searchfield, '="' . $this->db->escape($searchname[$i]) . '" ');
+								break;
+							case 'LO':
+								$searching = ' < "' . $this->db->escape($searchname[$i]) . '" ';
+								$sql[] = $this->sqlwhere($searchfield, $searching);
+								break;
+							case 'LEQ':
+								$searching = ' <= "' . $this->db->escape($searchname[$i]) . '" ';
+								$sql[] = $this->sqlwhere($searchfield, $searching);
+								break;
+							case 'HI':
+								$searching = ' > "' . $this->db->escape($searchname[$i]) . '" ';
+								$sql[] = $this->sqlwhere($searchfield, $searching);
+								break;
+							case 'HEQ':
+								$searching = ' >= "' . $this->db->escape($searchname[$i]) . '" ';
+								$sql[] = $this->sqlwhere($searchfield, $searching);
+								break;
+							default :
+								$searching = ' LIKE "%' . $this->db->escape($searchname[$i]) . '%" ';
+								$sql[] = $this->sqlwhere($searchfield, $searching);
+								break;
+						}
 					}
-				}
 			}
 		}
-
 		return implode(' AND ', $sql);
 	}
 

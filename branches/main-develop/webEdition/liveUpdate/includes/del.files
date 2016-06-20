@@ -237,6 +237,7 @@ we/include/we_modules/newsletter/mod_home.inc.php
 we/include/we_modules/newsletter/edit_newsletter_frameset.php
 we/include/we_modules/navigation/we_webEditionCmd_navigation.inc.php
 we/include/we_modules/navigation/we_navigationDirSelect.php
+we/include/we_modules/navigation/weNaviEditor.php
 we/include/we_modules/navigation/hook/we_phpCmdHook_navigation.inc.php
 we/include/we_modules/navigation/hook/we_jsCmdHook_navigation.inc.php
 we/include/we_modules/navigation/home.inc.php

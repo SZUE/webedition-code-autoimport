@@ -331,7 +331,7 @@ function we_save() {
 		$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 		$yuiSuggest->setWidth(400);
 
-		$wsid = ($glossary->View->Glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($glossary->View->Glossary->getAttribute('ObjectLinkID')) : array());
+		$wsid = ($glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($glossary->getAttribute('ObjectLinkID')) : array());
 
 		return '<div id="mode_object" style="display: none;">
 	<table class="default">

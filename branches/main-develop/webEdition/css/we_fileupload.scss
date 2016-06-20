@@ -37,19 +37,21 @@ div.we_file_drag{
 	box-shadow: none;
 }
 div.we_file_drag_mask{
+	display: none;
 	position: absolute;
-	background: transparent;
+	background: white;
 	margin: 0 0 10px 0;
+	width: 300px;
+	height: 116px;
 }
 div.we_file_drag_content{
 	float: left;
 	margin: 0 0 10px 0;
-	border: 2px dotted gray;
 }
 div.we_file_drag_preview{
+	position: relative;
 	float: left;
 	margin: 0 0 10px 0;
-	border: 2px dotted gray;
 	display: none;
 }
 div.we_file_drag_hover{
@@ -99,31 +101,43 @@ div.filedrag_content_right{
 	width: 120px;
 	vertical-align: middle;
 	text-align: center;
+	z-index:200;
 	img{
 		max-height: 100px;
 		max-width: 100px;
+		z-index:90;
 	}
 }
 div.filedrag_preview_left{
+	
 	display: table-cell;
 	width: 178px;
 	height: 116px;
-	padding-left: 10px;
-	vertical-align: middle;
 	text-align: left;
+	vertical-align: middle;
 	color: #333;
 	font-weight: normal;
 	font-size: $medfont;
+	background: transparent;
 }
 div.filedrag_preview_right{
-	display: table-cell;
-	height: 116px;
-	width: 120px;
-	vertical-align: middle;
-	text-align: center;
+	position:absolute;
+	left: 184px;
+	width:116px;
+	top: 0;
+	bottom:0;
+	display: block;
+	right:0;
+	/*height: 116px;*/
+	//width: 116px;
+	/*vertical-align: middle;*/
+	text-align: left;
+	background-color: lightgrey;
+	background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
+	background-size: 6px 6px;
 	img{
-		max-height: 100px;
-		max-width: 100px;
+		max-height: 116px;
+		max-width: 116px;
 	}
 }
 #weImageDialog{
@@ -140,7 +154,6 @@ table.importer_files{
 	}
 }
 
-
 #editImage{
 	display: none;
 	padding: 4px 0 6px 4px;
@@ -156,151 +169,343 @@ table.importer_files{
 	}
 }
 
-button.importerBrowseHarddisk{
-	margin-left: 0;
-	width: 213px;
+div.editorLoupe{
+	display: none;
+	position: absolute;
+	z-index: 1000;
+	overflow: hidden;
+	width: 370px;
+	height: 370px;
+	top: 0px;
+	left: -202px; 
+	background-color: lightgrey;
+	background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
+	background-size: 12px 12px;
+
+	div.editorLoupeInner{
+		display: none;
+		overflow: hidden;
+		position: absolute;
+		background-color: transparent;
+		display: none;
+	}
 }
-div.importerElem{
-	div.elemNum{
-		width: 39px;
-		margin-top: 18px; 
-		float:left;
+div.editorCrosshairH{
+	display: none;
+	position: absolute;
+	z-index: 1010;
+	top: 185px;
+	left: -62px;
+	width: 90px;
+	height: 1px;
+	border-top: 1px dashed white;
+	border-bottom: 1px dashed black;
+}
+div.editorCrosshairV{
+	display: none;
+	position: absolute;
+	z-index: 1010;
+	top: 140px;
+	left: -16px;
+	width: 1px;
+	height: 100px;
+	border-right: 1px dashed white;
+	border-left: 1px dashed black;
+}
+div.editorLoupeSpinner{
+	position:absolute;
+	top: 161px;
+	bottom: initial;
+	left: -40px;
+	z-index:1200;
+	display: none;
+
+	span{
+		font-size: 2em;
+		color: white;
+	}
+}
+div.editorFocusPoint{
+	display: none;
+	width: 0px;
+	height: 0px;
+	position: absolute;
+	border: 1px solid white;
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px black;
+	z-index: 10;
+}
+div.editorFocusPoint:before {
+	content: "";
+	display: block;
+	position: absolute;
+	left: -16px;
+	top: -16px;
+	width: 30px;
+	height: 30px;
+	border: 1px solid white;
+	border-radius: 50%;
+	box-shadow: 0 0 0 1px black;
+}
+
+div.focusPointOnSet{
+	top: 185px;
+	left: -17px;
+	z-index:1020;
+}
+div.focusPointOnSet:before{
+	border: 2px solid white;
+	box-shadow: 0 0 0 2px black;
+}
+
+#we_fileupload_editor{
+	div.filedrag_preview_left{
+		width: 260px;
+	}
+	div.filedrag_preview_right{
+		left: 260px;
+	}
+	div.we_file_drag_mask{
+		width: 376px;
+	}
+	div.editorLoupe{
+		top: 124px;
+		bottom: 20px;
+		left: 0;
+		width: 380px;
+		height: 380px;
+	}
+	div.editorLoupeSpinner{
+		position:absolute;
+		top: 292px;
+		bottom: initial;
+		left: 166px;
+		z-index:1200;
+	}
+	div.editorCrosshairH{
+		top: 316px;
+		bottom: initial;
+		left: 140px;
+		width: 100px;
+		height: 1px;
+	}
+	div.editorCrosshairV{
+		top: 264px;
+		bottom: initial;
+		left: 189px;
+		width: 1px;
+		height: 100px;
+	}
+	div.focusPointOnSet{
+		left: 190px;
+		top: 314px;
+	}
+}
+
+/* importer => TODO: clean out redundant definitions */
+div.fileuploadImporter{
+	div.editorMask{
+		display: none;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background-color: gray;
+		opacity: 0.8;
+	}
+	div.editorLoupe{
+		top: initial;
+		bottom: 20px;
+		left: 198px;
+		width: 400px;
+		height: 400px;
+	}
+	div.editorCrosshairH{
+		top: initial;
+		bottom: 219px;
+		left: 348px;
+		width: 100px;
+		height: 1px;
+	}
+	div.editorCrosshairV{
+		top: initial;
+		bottom: 170px;
+		left: 398px;
+		width: 1px;
+		height: 100px;
+	}
+	div.focusPointOnSet{
+		left: 398px;
+		top: initial;
+		bottom: 219px;
+	}
+	div.editorLoupeSpinner{
+		left: 374px;
+		top: initial;
+		bottom: 195px;
+	}
+	div.editorMessage{
+		display: none;
+		padding: 20px;
+		background-color: white;
+		width: 400px;
+		height: 180px;
+		position: absolute;
+		top: 70px;
+		left: 100px;
+		opacity: 1.0;
+	}
+	button.importerBrowseHarddisk{
+		margin-left: 0;
+		width: 213px;
 	}
 
-	div.elemContainer{
-		position: relative;
-		width: 526px;
-		margin-top: 4px;
-		border:1px solid #aaaaaa;
-		display: inline-block;
+	div.importerElem{
+		div.elemNum{
+			width: 39px;
+			margin-top: 18px; 
+			float:left;
+		}
 
-		div.elemPreview{
-			display: none;
+		div.elemContainer{
 			position: relative;
-			height: 110px;
-			width: 110px;
-			float: left;
-			background-color: lightgrey;
-			background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
-			background-size: 6px 6px;
+			width: 526px;
+			margin-top: 4px;
+			border:1px solid #aaaaaa;
+			display: inline-block;
 
-			div.elemPreviewPreview{
-				position: absolute;
-				top: 0;
-				left: 0;
-			}
-			div.elemPreviewBtn{
+			div.elemPreview{
 				display: none;
-				position: absolute;
-				width: 110px;
-				height: 32px;
-				background-color: white;
-				bottom: 0; 
-				padding: 5px 2px 0 0;
-			}
-		}
-		div.elemIcon{
-			position: relative;
-			height: 30px;
-			width: 110px;
-			float: left;
-
-			font-size: 14px;
-			padding: 10px 0 0 12px;
-		}
-		div.elemContent{
-			position: relative;
-			width: 416px;
-			left: 110px;
-
-			div.elemContentTop{
 				position: relative;
-				height: 36px;
+				height: 110px;
+				width: 110px;
+				float: left;
+				background-color: lightgrey;
+				background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
+				background-size: 6px 6px;
+				z-index: 998;
 
-				div.elemFilename{
-					padding: 12px 0 0 6px;
-					width: auto;
+				div.elemPreviewPreview{
+					height: 110px;
+					width: 110px;
 					position: absolute;
-					display: block;
+					top: 0;
+					left: 0;
+					z-index: 999;
 				}
-				div.elemContentTopRight{
-					width: 170px;
-					left: 240px;
+				div.elemPreviewBtn{
+					display: none;
 					position: absolute;
-					display: block;
+					width: 110px;
+					height: 32px;
+					background-color: white;
+					bottom: 0; 
+					padding: 5px 2px 0 0;
+				}
+			}
+			div.elemIcon{
+				position: relative;
+				height: 30px;
+				width: 110px;
+				float: left;
 
-					div.elemSize{
-						padding: 12px 0 0 0;
-						width: 76px;
-						height: 50px;
+				font-size: 14px;
+				padding: 10px 0 0 12px;
+			}
+			div.elemContent{
+				position: relative;
+				width: 416px;
+				left: 110px;
+
+				div.elemContentTop{
+					position: relative;
+					height: 36px;
+
+					div.elemFilename{
+						padding: 12px 0 0 6px;
+						width: auto;
 						position: absolute;
+						display: block;
 					}
-					div.elemButtons{
-						padding: 4px 0 0 0;
-						width: 96px;
-						left: 76px;
-						height: 36px;
+					div.elemContentTopRight{
+						width: 170px;
+						left: 240px;
 						position: absolute;
+						display: block;
 
-						.elemFileinput{
-							width: 40px;
-							height: 26px;
+						div.elemSize{
+							padding: 12px 0 0 0;
+							width: 76px;
+							height: 50px;
+							position: absolute;
+						}
+						div.elemButtons{
+							padding: 4px 0 0 0;
+							width: 96px;
+							left: 76px;
+							height: 36px;
+							position: absolute;
+
+							.elemFileinput{
+								width: 40px;
+								height: 26px;
+							}
 						}
 					}
+					div.elemProgress{
+						width: 180px;
+						left: 240px;
+						height: 40px;
+						padding-top: 6px;
+						position: absolute;
+						display: none;
+					}
 				}
-				div.elemProgress{
-					width: 180px;
-					left: 240px;
-					height: 40px;
-					padding-top: 6px;
-					position: absolute;
+				div.elemContentBottom{
 					display: none;
-				}
-			}
-			div.elemContentBottom{
-				display: none;
-				position: relative;
-				height: 74px;
-				border-top: 1px solid #bbbbbb;
+					position: relative;
+					height: 74px;
+					border-top: 1px solid #bbbbbb;
 
-				div.elemWhatOpts{
-					position: absolute;
-					width: 120px;
-					padding: 2px 0 0 4px;
-				}
-				div.elemOpts{
-					position: absolute;
-					left: 190px;
-					padding-top: 2px;
+					div.elemWhatOpts{
+						position: absolute;
+						width: 120px;
+						padding: 2px 0 0 4px;
+					}
+					div.elemOpts{
+						position: absolute;
+						left: 190px;
+						padding-top: 2px;
 
-					.optsUnitSelect{
-						width: 110px;
-						height: 20px;
-						padding: 0;
+						.optsUnitSelect{
+							width: 110px;
+							height: 20px;
+							padding: 0;
+						}
+						.optsRotateSelect{
+							width: 170px;
+							height: 20px;
+							padding: 0;
+						}
+						.optsQuality{
+							width: 115px;
+							height: 20px;
+						}
+						.optsRowTop,
+						.optsRowMiddle,
+						.optsRowBottom{
+							padding: 2px 0 0 0;
+						}
 					}
-					.optsRotateSelect{
-						width: 170px;
-						height: 20px;
-						padding: 0;
+					div.btnRefresh{
+						display: inline-block;
+						position: absolute;
+						left: 364px;
+						bottom: 0;
 					}
-					.optsQuality{
-						width: 115px;
-						height: 20px;
-					}
-					.optsRowTop,
-					.optsRowMiddle,
-					.optsRowBottom{
-						padding: 2px 0 0 0;
-					}
-				}
-				div.btnRefresh{
-					display: inline-block;
-					position: absolute;
-					left: 364px;
-					bottom: 0;
 				}
 			}
 		}
 	}
-	
 }

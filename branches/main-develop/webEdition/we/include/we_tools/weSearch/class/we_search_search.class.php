@@ -1218,9 +1218,8 @@ class we_search_search extends we_search_base{
 					});
 					if(empty($arr)){
 						return '0';
-					} else {
-						$searchname = implode(',', $arr);
 					}
+					$searchname = implode(',', $arr);
 				}
 				break;
 		}
