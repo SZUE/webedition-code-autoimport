@@ -1264,7 +1264,6 @@ function handle_event(evt) {
 				'v[pfx_fn]' => ((!isset($v['pfx_fn'])) ? 0 : $v['pfx_fn']),
 				(isset($v['rdo_timestamp']) ? 'v[sTimeStamp]' : '') => $v['rdo_timestamp']));
 
-
 		$functions = "
 function set_button_state() {
 	top.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');
@@ -1298,8 +1297,7 @@ function handle_event(evt) {
 
 		$db = new DB_WE();
 
-		$records = array();
-		$dateFields = array();
+		$records = $dateFields = array();
 
 		if($v['import_type'] === 'documents'){
 			$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($v['we_TemplateID']) . ' AND l.nHash=x\'' . md5("completeData") . '\'', '', $db);
@@ -1315,8 +1313,9 @@ function handle_event(evt) {
 						switch($tagname){
 							// tags with text content, links and hrefs
 							case 'input':
-								if(in_array('date', we_tag_tagParser::makeArrayFromAttribs($tag)))
+								if(in_array('date', we_tag_tagParser::makeArrayFromAttribs($tag))){
 									$dateFields[] = $name;
+								}
 							case 'textarea':
 							case 'href':
 							case 'link':
@@ -1330,7 +1329,8 @@ function handle_event(evt) {
 			$records[] = 'Description';
 			$records[] = 'Keywords';
 			$records[] = 'Charset';
-		}else {
+			$records = array_unique($records);
+		} else {
 			$classFields = self::getClassFields($v['classID']);
 			foreach($classFields as $classField){
 				if(self::isTextField($classField['type']) || self::isNumericField($classField['type']) || self::isDateField($classField['type'])){
@@ -1422,7 +1422,7 @@ function handle_event(evt) {
 			'onclick' => "self.document.we_form.elements['v[pfx_fn]'].value=1;self.document.we_form.elements['v[rdo_filename]'][1].checked=true;",
 			'style' => 'width: 150px')
 		);
-		reset($val_nodes);
+
 		foreach($val_nodes as $value => $text){
 			$rcdPfxSelect->addOption(oldHtmlspecialchars($value), $text);
 			if(isset($v['rcd_pfx'])){
@@ -1744,7 +1744,7 @@ function handle_event(evt) {
 			} else {
 				if(f.elements['v[import_from]'].value == '/') {
 					" . we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR) .
-				'}' .
+			'}' .
 			(defined('OBJECT_TABLE') ?
 				"				else if(f.elements['v[import_type]'][0].checked == true) {" . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR) . '}' :
 				"				else {" . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR)) . "
@@ -2144,6 +2144,7 @@ function handle_event(evt) {
 						}
 					}
 				}
+				$records = array_unique($records);
 			} else {
 				$records[] = "Title";
 				$records[] = "Description";
@@ -2254,7 +2255,6 @@ function handle_event(evt) {
 			"style" => "width: 150px")
 		);
 
-		reset($val_nodes);
 		foreach($val_nodes as $value => $text){
 			$rcdPfxSelect->addOption(oldHtmlspecialchars($value), $text);
 			if($value == we_base_request::_(we_base_request::STRING, 'v', '', "rcd_pfx")){
