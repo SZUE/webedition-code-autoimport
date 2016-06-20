@@ -413,9 +413,8 @@ var weFileUpload = (function () {
 				var rotateValue = target.form.elements[rotateName].value;
 				var qualityValue = target.form.elements[qualityName].value;
 				var btnRefresh = target.form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
-
 				if(target.name == qualityName){
-					btnRefresh.disabled = !parseInt(qualityValue);
+					btnRefresh.disabled = _.sender.preparedFiles.length === 0 || !parseInt(qualityValue);
 					return;
 				}
 
@@ -426,7 +425,7 @@ var weFileUpload = (function () {
 				} else if(!parseInt(qualityValue)) {
 					target.form.elements[qualityName].value = 90;
 					target.form.qualityOutput.value = 90;
-					btnRefresh.disabled = false;
+					btnRefresh.disabled = _.sender.preparedFiles.length === 0;
 				}
 			};
 
@@ -2872,6 +2871,7 @@ var weFileUpload = (function () {
 						this.setDisplay('divProgressBar', 'none');
 						this.setDisplay('divBtnCancel', 'none');
 						this.setDisplay('dragInnerRight', '');
+						document.getElementById('refresh_weFileupload').disabled = true;//make same as following
 						_.controller.setWeButtonState(_.view.uploadBtnName, false);
 						_.controller.setWeButtonState('browse_harddisk_btn', true);
 						return;
