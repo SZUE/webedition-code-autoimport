@@ -149,7 +149,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '', 150, 'weSelect optsRotateSelect');
 		$quality = we_html_element::htmlInput(array('type' => 'range', 'value' => 0, 'min' => 0, 'max' => 100, 'step' => 5, 'oninput' => 'this.form.qualityOutput.value = this.value', 'name' => 'fu_doc_quality'));
 		$qualityOutput = '<output name="qualityOutput" for="fu_doc_quality">0</output>';
-		$btnRefresh = we_html_button::create_button(we_html_button::REFRESH_NOTEXT, "javascript:" . $reeditCmd, true, 0, 0, '', '', true, false, '_weFileupload', false, $title = 'Ausführen', 'weFileupload_btnImgEditRefresh');
+		$btnRefresh = we_html_button::create_button(we_html_button::PROCESS, "javascript:" . $reeditCmd, true, 0, 0, '', '', true, false, '_weFileupload', false, $title = 'Ausführen', 'weFileupload_btnImgEditRefresh');
 
 		return we_html_element::htmlDiv(array(), $editCheckbox) .
 				we_html_element::htmlDiv(array('id' => 'editImage'),
