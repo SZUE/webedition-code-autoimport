@@ -777,42 +777,62 @@ for ( frameId in _usedEditors ) {
 		$this->setClassProp();
 		$IDs = array_map('intval', array_keys(array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()))));
 
-		if(count($IDs)){
-			switch($property){
-				case 'IsSearchable':
-					$value = intval($value);
-					$set = array($property => $value, 'OF_' . $property => $value);
-					break;
-				case 'TriggerID':
-					$value = intval(f('SELECT DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
-					$set = array($property => $value, 'OF_' . $property => $value);
-					break;
-				case 'Charset':
-					$class = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
-					$value = (isset($class["elements"]["Charset"]['dat']) ? $class["elements"]["Charset"]['dat'] : DEFAULT_CHARSET );
-					$set = array($property => $value, 'OF_' . $property => $value);
-					break;
-				case 'Workspaces':
-					$class = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-					$set = array(
-						'Workspaces' => $class["Workspaces"],
-						'ExtraWorkspaces' => '',
-						'ExtraWorkspacesSelected' => '',
-						'Templates' => $class["Templates"],
-						'ExtraTemplates' => '',
-						'OF_Workspaces' => $class["Workspaces"],
-						'OF_ExtraWorkspaces' => '',
-						'OF_ExtraWorkspacesSelected' => '',
-						'OF_Templates' => $class["Templates"],
-						'OF_ExtraTemplates' => '',
-					);
-					break;
-				default:
-					return '';
-			}
+		if(!$IDs){
+			return '';
+		}
+		switch($property){
+			case 'IsSearchable':
+				$value = intval($value);
+				$set = array($property => $value, 'OF_' . $property => $value);
+				break;
+			case 'TriggerID':
+				$value = intval(f('SELECT DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
+				$set = array($property => $value, 'OF_' . $property => $value);
+				break;
+			case 'Charset':
+				$class = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
+				$value = (isset($class["elements"]["Charset"]['dat']) ? $class["elements"]["Charset"]['dat'] : DEFAULT_CHARSET );
+				$set = array($property => $value, 'OF_' . $property => $value);
+				break;
+			case 'Workspaces':
+				$class = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
+				$set = array(
+					'Workspaces' => $class['Workspaces'],
+					'ExtraWorkspaces' => '',
+					'ExtraWorkspacesSelected' => '',
+					'Templates' => $class['Templates'],
+					'ExtraTemplates' => '',
+					'OF_Workspaces' => $class['Workspaces'],
+					'OF_ExtraWorkspaces' => '',
+					'OF_ExtraWorkspacesSelected' => '',
+					'OF_Templates' => $class['Templates'],
+					'OF_ExtraTemplates' => '',
+				);
+				break;
+			default:
+				return '';
+		}
 
-			$whereRestrictOwners = ' AND (o.RestrictOwners=0 OR o.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',o.Owners))';
-			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' o JOIN ' . OBJECT_X_TABLE . intval($this->TableID) . ' of ON o.ID = of.OF_ID SET ' . we_database_base::arraySetter($set) . ' WHERE o.ID IN(' . implode(',', $IDs) . ') AND o.IsFolder=0' . $whereRestrictOwners);
+		$whereRestrictOwners = ' AND (o.RestrictOwners=0 OR o.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',o.Owners))';
+		$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' o JOIN ' . OBJECT_X_TABLE . intval($this->TableID) . ' of ON o.ID = of.OF_ID SET ' . we_database_base::arraySetter($set) . ' WHERE o.ID IN(' . implode(',', $IDs) . ') AND o.IsFolder=0' . $whereRestrictOwners);
+
+		//change tblIndex
+		switch($property){
+			case 'IsSearchable':
+				$value = intval($value);
+				if($value){
+					//FIXME: we have to add new entries
+				} else {
+					$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID IN(' . implode(',', $IDs) . ') AND IsFolder=0' . $whereRestrictOwners);
+				}
+				return;
+			case 'Workspaces':
+				//FIXME: we have to add entries for all workspaces - in general we have to call we_objectFile::insertAtIndex - but this will be slow....
+				//delete all unneeded workspaces
+				if($class['Workspaces']){
+					$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID IN(' . implode(',', $IDs) . ') AND IsFolder=0 AND WorkspaceID NOT IN(' . $class['Workspaces'] . ')' . $whereRestrictOwners);
+				}
+				return;
 		}
 
 		return '';
