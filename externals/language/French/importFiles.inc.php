@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_importFiles=array(
 	'add_description_nogdlib'=>'Pour que vous puisse profiter des fonctions des imagettes, il est nécéssaire que la GD Library soit installée!',
+	'btnProcess'=>'Process',
 	'cancelled'=>'File upload aborted. To import this file you must reselect it.',
 	'destination_dir'=>'Répertoire cible',
 	'do_import'=>'Importing file',
@@ -33,6 +34,10 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'import_file'=>'Import du fichier %s',
 	'import_metadata'=>'Import meta data from file',
 	'make_thumbs'=>'Créer des<br/>Imagettes',
+	'maskImporterProcessImages'=>'<span id="we_fileUploadImporter_messageNr"></span> images left to process',
+	'maskImporterReadImages'=>'<span id="we_fileUploadImporter_messageNr"></span> images left to read',
+	'maskProcessImage'=>'Process image',
+	'maskReadImage'=>'Read image',
 	'metadata'=>'Meta data',
 	'move_file_error'=>'Erreur: move_uploaded_file()',
 	'noFiles'=>'No files exist in the specified source directory which correspond with the given import settings!',

@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_importFiles=array(
 	'add_description_nogdlib'=>'GD -kirjasto pitää olla asennettuna palvelimelle, jotta voit käyttää kuvatoimintoja!',
+	'btnProcess'=>'Process',
 	'cancelled'=>'File upload aborted. To import this file you must reselect it.',
 	'destination_dir'=>'Kohdehakemisto',
 	'do_import'=>'Importing file',
@@ -33,6 +34,10 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'import_file'=>'Tuodaan tiedostoa %s',
 	'import_metadata'=>'Tuo metatiedot tiedostosta',
 	'make_thumbs'=>'Luo<br/>esikatselukivia',
+	'maskImporterProcessImages'=>'<span id="we_fileUploadImporter_messageNr"></span> images left to process',
+	'maskImporterReadImages'=>'<span id="we_fileUploadImporter_messageNr"></span> images left to read',
+	'maskProcessImage'=>'Process image',
+	'maskReadImage'=>'Read image',
 	'metadata'=>'Metatiedot',
 	'move_file_error'=>'Virhe: move_uploaded_file()',
 	'noFiles'=>'Lähdehakemistossa ei ole tuontiehtojen mukaisia tiedostoja!',

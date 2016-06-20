@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_importFiles=array(
 	'add_description_nogdlib'=>'De GD Bibliotheek moet geïnstalleerd worden op uw server om de afbeeldings functies goed te laten functioneren.!',
+	'btnProcess'=>'Process',
 	'cancelled'=>'File upload aborted. To import this file you must reselect it.',
 	'destination_dir'=>'Doel directorie',
 	'do_import'=>'Importing file',
@@ -33,6 +34,10 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'import_file'=>'Bezig met importeren van %s',
 	'import_metadata'=>'Import meta data from file',
 	'make_thumbs'=>'Maak<br/>Thumbnails aan',
+	'maskImporterProcessImages'=>'<span id="we_fileUploadImporter_messageNr"></span> images left to process',
+	'maskImporterReadImages'=>'<span id="we_fileUploadImporter_messageNr"></span> images left to read',
+	'maskProcessImage'=>'Process image',
+	'maskReadImage'=>'Read image',
 	'metadata'=>'Meta data',
 	'move_file_error'=>'Foutmelding: verplaats_ge-uploade_bestand()',
 	'noFiles'=>'Er bevinden zich geen bestanden in de opgegeven bron directory welke correspondeert met de opgegeven importeer instellingen!',

@@ -2,6 +2,7 @@
 /** Generated language file of webEdition CMS */
 $l_importFiles=array(
 	'add_description_nogdlib'=>'Damit Ihnen die Grafikfunktionen zur Verfügung stehen, muß die GD Library auf Ihrem Server installiert sein!',
+	'btnProcess'=>'Anwenden',
 	'cancelled'=>'Upload abgebrochen. Um die Datei dennoch zu importieren, muss sie neu ausgewählt werden.',
 	'destination_dir'=>'Zielverzeichnis',
 	'do_import'=>'Importiere Datei',
@@ -31,6 +32,10 @@ $l_importFiles=array(
 	'import_file'=>'Importiere Datei %s',
 	'import_metadata'=>'Vorhandene Metadaten importieren',
 	'make_thumbs'=>'Erzeuge<br/>Miniaturansichten',
+	'maskImporterProcessImages'=>'Noch <span id="we_fileUploadImporter_messageNr"></span> Grafiken zu bearbeiten',
+	'maskImporterReadImages'=>'Noch <span id="we_fileUploadImporter_messageNr"></span> Grafiken einzulesen',
+	'maskProcessImage'=>'Die Grafik wird bearbeitet',
+	'maskReadImage'=>'Die Grafik wird eingelesen',
 	'metadata'=>'Metadaten',
 	'move_file_error'=>'Fehler: move_uploaded_file()',
 	'noFiles'=>'Im angegebenen Quellverzeichnis existieren keine Dateien, welche den Importeinstellungen entsprechen!',
