@@ -44,6 +44,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$categories = we_base_request::_(we_base_request::INTLIST, 'fu_doc_categories', we_base_request::NOT_VALID);
 		}
 
+		// FIXME: beim überschreiben bestehender grafiken mit einem neuen bild bleiben width und height in der db unveraendert, so dass beim bearbeiten verzerrt wird
 		$this->docVars = array_filter(array(
 			'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
 			'importMetadata' => we_base_request::_(we_base_request::BOOL, 'fu_doc_importMetadata', $this->docVars['importMetadata']),
@@ -53,7 +54,9 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			'quality' => we_base_request::_(we_base_request::INT, 'fu_doc_quality', $this->docVars['quality']),
 			'keepRatio' => we_base_request::_(we_base_request::BOOL, 'fu_doc_keepRatio', $this->docVars['keepRatio']),
 			'degrees' => we_base_request::_(we_base_request::INT, 'fu_doc_degrees', $this->docVars['degrees']),
-			// unset the followng entries when not in request!
+			'focusX' => we_base_request::_(we_base_request::FLOAT, 'fu_doc_focusX', $this->docVars['focusX']),
+			'focusY' => we_base_request::_(we_base_request::FLOAT, 'fu_doc_focusY', $this->docVars['focusY']),
+			// unset the following entries when not in request!
 			'categories' => $categories,
 			'title' => we_base_request::_(we_base_request::STRING, 'fu_doc_title', we_base_request::NOT_VALID),
 			'alt' => we_base_request::_(we_base_request::STRING, 'fu_doc_alt', we_base_request::NOT_VALID),
@@ -317,6 +320,9 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			case we_base_ContentTypes::IMAGE:
 				if($this->docVars['importMetadata']){
 					$we_doc->importMetaData();
+				}
+				if($this->docVars['focusX'] || $this->docVars['focusY']){
+					$we_doc->setElement('focus', '[' . $this->docVars['focusX'] . ',' .$this->docVars['focusY']. ']', 'input');
 				}
 			// no break
 			case we_base_ContentTypes::FLASH:

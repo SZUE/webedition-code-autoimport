@@ -21,9 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-we_html_tools::protect();
-
 $path = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 1);
 $id = (!empty($path)) ? path_to_id($path, NAVIGATION_TABLE, $GLOBALS['DB_WE']) : 0;
 $navi = new we_navigation_navigation($id);
@@ -81,7 +78,7 @@ $parts = array(
 );
 
 $buttonsBottom = '<div style="float:right">' .
-	we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:save();', true, 100, 22, '', '', ($id ? false : true), false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')) . '</div>';
+	we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:top.save();', true, 100, 22, '', '', ($id ? false : true), false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();')) . '</div>';
 
 $body = we_html_element::htmlBody(
 		array(

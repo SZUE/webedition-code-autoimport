@@ -212,8 +212,8 @@ var weFileUpload = (function () {
 						if (e.type === 'drop') {
 							e.stopPropagation();
 							e.preventDefault();
-							e.target.className = _.controller.elemFileDragClasses;
-							//_.controller.fileselectOnclick();
+							_.sender.resetParams();
+							_.controller.fileDragHover(e);
 						}
 					}
 					_.controller.fileselectOnclick();
@@ -243,11 +243,14 @@ var weFileUpload = (function () {
 					img: {
 						workingCanvas: null, // maybe call it workingcanvas
 						previewCanvas: null,
+						previewImg: null, // created only for edited images: unedited images can be very large...
 						editOptions: null,
 						originalPreviewCanvas: null,
 						originalSize: 0,
 						jpgCustomSegments: null,
 						pngTextChunks: null,
+						focusX: 0,
+						focusY: 0
 					},
 					size: 0,
 					currentPos: 0,
@@ -319,16 +322,14 @@ var weFileUpload = (function () {
 
 				switch(task) {
 					case _.controller.IMG_LOAD_CANVAS: // TODO: make IMG_START
-						if(!fileobj.img.editOptions.doEdit && fileobj.dataArray && fileobj.dataArray.length){ // we reset an image already edited!
+						if(!fileobj.img.editOptions.doEdit && fileobj.dataArray && fileobj.dataArray.length){ // we reset an image edited before!
 							_.utils.processimageReset(fileobj, _.controller.IMG_POSTPROCESS);
 							return;
 						}
-
-						if(!fileobj.img.editOptions.doEdit && fileobj.size > 10485760){ // we do not edit and it is too big for preview
+						if(!fileobj.img.editOptions.doEdit && fileobj.size > 10485760){ // nothing to edit and image is too big for preview (>10MB)
 							_.controller.processImage(fileobj, _.controller.IMG_NEXT);
 							return;
 						}
-
 						_.utils.processimageLoadCanvas(fileobj, fileobj.img.editOptions.doEdit ? _.controller.IMG_EXTRACT_METADATA : _.controller.IMG_MAKE_PREVIEW);
 						break;
 					case _.controller.IMG_EXTRACT_METADATA:
@@ -396,6 +397,39 @@ var weFileUpload = (function () {
 				// to be overridden
 			};
 
+			this.editOptionsOnChange = function(target){
+				var resizeName = 'fu_doc_resizeValue',
+					rotateName = 'fu_doc_rotate',
+					qualityName = 'fu_doc_quality';
+
+				var altNames = ['resizeValue', 'rotateSelect', 'quality']; // TODO: unifiy names or classes
+				if(altNames.indexOf(target.name) !== -1){
+					resizeName = 'resizeValue';
+					rotateName = 'rotateSelect';
+					qualityName = 'quality';
+				}
+				
+				var resizeValue = target.form.elements[resizeName].value;
+				var rotateValue = target.form.elements[rotateName].value;
+				var qualityValue = target.form.elements[qualityName].value;
+				var btnRefresh = target.form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
+
+				if(target.name == qualityName){
+					btnRefresh.disabled = !parseInt(qualityValue);
+					return;
+				}
+
+				if(resizeValue === '' && !parseInt(rotateValue)){
+					target.form.elements[qualityName].value = 0;
+					target.form.qualityOutput.value = 0;
+					btnRefresh.disabled = true;
+				} else if(!parseInt(qualityValue)) {
+					target.form.elements[qualityName].value = 90;
+					target.form.qualityOutput.value = 90;
+					btnRefresh.disabled = false;
+				}
+			};
+
 		}
 
 		function AbstractSender() {
@@ -427,7 +461,7 @@ var weFileUpload = (function () {
 			this.imageEditOptions = {
 				doEdit: false,
 				from: 'general',
-				scaleUnit: 'percent', // percent|pixel_w|pixel_h
+				scaleUnit: 'pixel_l', // percent|pixel_w|pixel_h
 				scaleValue: 0,
 				rotateValue: 0,
 				quality: 90
@@ -518,9 +552,9 @@ var weFileUpload = (function () {
 
 			this.sendChunk = function (part, fileName, fileCt, partSize, partNum, totalParts, fileNameTemp, fileSize) {
 				var xhr = new XMLHttpRequest(),
-								fd = new FormData(),
-								fsize = fileSize || 1,
-								that = this;
+					fd = new FormData(),
+					fsize = fileSize || 1,
+					that = this;
 
 				xhr.onreadystatechange = function () {
 					if (xhr.readyState === 4) {
@@ -649,7 +683,9 @@ var weFileUpload = (function () {
 				create: false,
 				html: ''
 			};
-			this.previewSize = 100;
+			this.previewSize = 116;
+			this.useOriginalAsPreviewIfNotEdited = false;
+			this.lastLoupIndex = -1;
 
 			this.setImageEditMessage = function (){
 			};
@@ -664,6 +700,117 @@ var weFileUpload = (function () {
 			};
 
 			this.repaintEntry = function (obj){
+			};
+
+			this.setPreviewLoupe = function(fileobj, pt){
+				pt = pt ? pt : 0;
+				if(pt === 1){
+					fileobj.loupInner.appendChild(fileobj.img.fullPrev);
+					document.getElementById('we_fileUpload_spinner').style.display = 'none';
+					document.getElementsByClassName('editorCrosshairH')[0].style.display = 'block';
+					document.getElementsByClassName('editorCrosshairV')[0].style.display = 'block';
+					fileobj.focusPoint = document.getElementById('we_fileUpload_focusPoint');
+					fileobj.focusPointFixed = document.getElementById('editorFocuspointFixed');
+					fileobj.focusPoint.style.display = 'block';
+					return;
+				}
+
+				if(!_.view.useOriginalAsPreviewIfNotEdited && _.view.lastLoupIndex !== -1 && _.view.lastLoupIndex !== fileobj.index){
+					// in importer we delete fullPreview when moving to an other file
+					_.sender.preparedFiles[fileobj.index].img.fullPrev = null;
+				}
+
+				fileobj.loupInner = document.getElementById('we_fileUpload_loupeInner');
+				fileobj.loupInner.style.display = 'block';
+				document.getElementById('we_fileUpload_loupe').style.display = 'block';
+				document.getElementById('we_fileUpload_spinner').style.display = 'block';
+
+				var mask;
+				if((mask = document.getElementById('we_fileUploadImporter_mask'))){
+					mask.style.display = 'block';
+				}
+
+				if(fileobj.img.fullPrev){
+					_.view.setPreviewLoupe(fileobj, 1);
+				} else if(fileobj.dataUrl || (fileobj.img.previewImg && fileobj.img.previewImg.src)){
+					fileobj.img.fullPrev = new Image();
+					fileobj.img.fullPrev.onload = function(){
+						_.view.setPreviewLoupe(fileobj, 1);
+					};
+					setTimeout(function () {
+						fileobj.img.fullPrev.src = fileobj.dataUrl ? fileobj.dataUrl : fileobj.img.previewImg.src;
+					}, 0);
+				} else { // in importer we do actually not load images for preview when not edited!
+					var reader = new FileReader();
+					reader.onload = function() {
+						fileobj.img.fullPrev = new Image();
+						fileobj.img.fullPrev.onload = function(){
+							_.view.lastLoupIndex = fileobj.index;
+							_.view.setPreviewLoupe(fileobj, 1);
+						};
+						fileobj.img.fullPrev.src = reader.result;
+					};
+					reader.readAsDataURL(fileobj.file);
+				}
+			};
+
+			this.movePreviewLoupe = function(e, fileobj){
+				if(e.timeStamp - _.view.lastklick < 10){
+					// in Chrome onclick fires mosemove too: this causes the nely set focuspoint to be slightly wrong...
+					return;
+				}
+				
+				if(fileobj.loupInner.firstChild){
+					var offsetLeft = (-fileobj.loupInner.firstChild.width / fileobj.img.previewWidth * e.offsetX) + (fileobj.loupInner.parentNode.offsetWidth / 2);
+					var offsetTop = (-fileobj.loupInner.firstChild.height / fileobj.img.previewHeight * e.offsetY) + (fileobj.loupInner.parentNode.offsetHeight / 2);
+					
+					_.view.offesetLeft = offsetLeft;
+					_.view.offsetTop = offsetTop;
+
+					fileobj.loupInner.style.left = Math.round(offsetLeft) + 'px';
+					fileobj.loupInner.style.top = Math.round(offsetTop) + 'px';
+
+					fileobj.focusPoint.style.left = Math.round(offsetLeft + ((parseFloat(fileobj.img.focusX) + 1) / 2) * fileobj.img.fullPrev.width) + 'px';
+					fileobj.focusPoint.style.top = Math.round(offsetTop + ((parseFloat(fileobj.img.focusY) + 1) / 2) * fileobj.img.fullPrev.height) + 'px';
+				}
+			};
+
+			this.unsetPreviewLoupe = function(fileobj){
+				fileobj.loupInner.style.display = 'none';
+				fileobj.loupInner.parentNode.style.display = 'none';
+				document.getElementsByClassName('editorCrosshairH')[0].style.display = 'none';
+				document.getElementsByClassName('editorCrosshairV')[0].style.display = 'none';
+				fileobj.focusPoint.style.display = 'none';
+				fileobj.focusPointFixed.style.display = 'none';
+				fileobj.loupInner.innerHTML = null;
+//				fileobj.loupInner = null;
+				var mask;
+				if((mask = document.getElementById('we_fileUploadImporter_mask'))){
+					mask.style.display = 'none';
+				}
+			};
+
+			this.grabFocusPoint = function(e, fileobj){
+				_.view.lastklick = e.timeStamp;
+				if(fileobj.img.previewWidth && fileobj.img.previewHeight){
+					fileobj.focusPoint.style.display = 'none';
+					fileobj.focusPointFixed.style.display = 'block';
+					var focusX = ((e.offsetX / fileobj.img.previewWidth) * 2) - 1;
+					var focusY = ((e.offsetY / fileobj.img.previewHeight) * 2) - 1;
+					fileobj.img.focusX = focusX.toFixed(2);
+					fileobj.img.focusY = focusY.toFixed(2);
+					_.view.writeFocusToForm(fileobj);
+					setTimeout(function () {
+						fileobj.focusPoint.style.top = (fileobj.loupInner.parentNode.offsetHeight / 2) + 'px';
+						fileobj.focusPoint.style.left = (fileobj.loupInner.parentNode.offsetWidth / 2) + 'px';
+						fileobj.focusPoint.style.display = 'block';
+						fileobj.focusPointFixed.style.display = 'none';
+					}, 400);
+				}
+			};
+
+			this.writeFocusToForm = function(filobj){
+				// to be overridden
 			};
 
 			//TODO: adapt these progress fns to standard progressbars
@@ -741,11 +888,12 @@ var weFileUpload = (function () {
 				var form = document.forms[(formname ? formname : 'we_form')],
 					resizeValue = form.fu_doc_resizeValue.value,
 					deg = form.fu_doc_rotate.value,
+					quality = form.fu_doc_quality;
 					opts = _.sender.imageEditOptions;
 
 				opts.doEdit = false;
 
-				if(parseInt(form.fu_doc_doResize.value) === 1 && (resizeValue == '' && deg == 0 ? false : true)){
+				if(parseInt(form.fu_doc_doResize.value) === 1 && ((resizeValue == '' && deg == 0 && quality == 0) ? false : true)){
 					opts.doEdit = true;
 					opts.keepRatio = true;
 
@@ -775,8 +923,14 @@ var weFileUpload = (function () {
 			};
 
 			this.processimageLoadCanvas = function(fileobj, nexttask) {
+				if(!fileobj.isEdited){
+					//top.console.log('loadcanvas: must load img');
+					fileobj.img.image = null;
+				}
+
 				fileobj.img.workingCanvas = document.createElement('canvas');
 
+				// we have loaded original image before and have it still stored in fileobj.img.image
 				if(fileobj.img.image && fileobj.img.image.src){
 					fileobj.img.workingCanvas.width = fileobj.img.image.width;
 					fileobj.img.workingCanvas.height = fileobj.img.image.height;
@@ -787,6 +941,7 @@ var weFileUpload = (function () {
 					return;
 				}
 
+				// we are here for the first time or have cleared earlier fileobj.img.image to free memory
 				var reader = new FileReader();
 				fileobj.img.image = new Image();
 				reader.onload = function() {
@@ -803,6 +958,7 @@ var weFileUpload = (function () {
 
 					_.utils.logTimeFromStart('canvas loaded');
 					_.view.repaintImageEditMessage(true);
+					//fileobj.img.dataUrl = 
 					fileobj.img.image.src = reader.result;
 				};
 				reader.readAsDataURL(fileobj.file);
@@ -869,10 +1025,10 @@ var weFileUpload = (function () {
 					return; // IMPORTANT! 
 				}
 
-				var ratio = fileobj.img.editOptions.scaleUnit === 'percent' ? parseInt(fileobj.img.editOptions.scaleValue)/100 :
-						(fileobj.img.editOptions.scaleUnit === 'pixel_w' ? fileobj.img.editOptions.scaleValue/fileobj.img.workingCanvas.width : 
-							fileobj.img.editOptions.scaleUnit/fileobj.img.workingCanvas.height);
-
+				var scaleUnit = fileobj.img.editOptions.scaleUnit !== 'pixel_l' ? fileobj.img.editOptions.scaleUnit : 
+						(fileobj.img.workingCanvas.width >= fileobj.img.workingCanvas.height ? 'pixel_w' : 'pixel_h');
+				var ratio = scaleUnit === 'pixel_w' ? fileobj.img.editOptions.scaleValue/fileobj.img.workingCanvas.width : 
+							fileobj.img.editOptions.scaleValue/fileobj.img.workingCanvas.height;
 				if(ratio >= 1){
 					_.controller.processImage(nexttask); // we do not upscale!
 					return; // IMPORTANT! 
@@ -884,7 +1040,7 @@ var weFileUpload = (function () {
 
 				window.pica.resizeCanvas(fileobj.img.workingCanvas, targetCanvas, _.picaOptions, function (err) {
 					if(err){
-						top.console.log('scaling image failded');
+						top.console.log('scaling image failed');
 					} else {
 						fileobj.img.workingCanvas = targetCanvas;
 						targetCanvas = null;
@@ -959,7 +1115,7 @@ var weFileUpload = (function () {
 			};
 
 			this.processimageWriteImage_2 = function(fileobj, nexttask){
-				fileobj.img.workingCanvas.toBlob(function (blob) { // DO WE NEED toBlob TO GET UINT(ARRAY?
+				fileobj.img.workingCanvas.toBlob(function (blob) { // DO WE NEED toBlob TO GET UINT8ARRAY?
 																	// THIS FN CAUASES PROBLEMS WITH PNG!
 					var reader = new FileReader();
 					reader.onload = function() {
@@ -972,6 +1128,9 @@ var weFileUpload = (function () {
 			};
 
 			this.processimageWriteImage = function(fileobj, nexttask){
+				if(fileobj.type !== 'image/png'){
+					_.utils.processimageWriteImage_2(fileobj, nexttask);
+				}
 				fileobj.dataUrl = fileobj.img.workingCanvas.toDataURL(fileobj.type, (fileobj.img.editOptions.quality/100));
 				fileobj.dataArray = _.utils.dataURLToUInt8Array(fileobj.dataUrl);
 				_.utils.logTimeFromStart('image written fn 2');
@@ -1045,34 +1204,55 @@ var weFileUpload = (function () {
 				target = target ? target : 'previewCanvas';
 
 				if(fileobj && fileobj.img.workingCanvas){
-					var previewCanvas = document.createElement("canvas");
-					//fileobj.img.previewCanvas = document.createElement("canvas");
-					var ctxPreviewCanvas = previewCanvas.getContext("2d");
-					var previewSize = _.view.previewSize;
+					var previewCanvas = document.createElement("canvas"),
+						previewMaxSize = _.view.previewSize,
+						previewWidth = 0,
+						previewHeight = 0;
+				
+						
 
 					if(fileobj.img.workingCanvas.width > fileobj.img.workingCanvas.height){
-						previewCanvas.width = previewSize;
-						previewCanvas.height = previewSize / fileobj.img.workingCanvas.width * fileobj.img.workingCanvas.height;
+						previewWidth = previewMaxSize;
+						previewHeight = previewMaxSize / fileobj.img.workingCanvas.width * fileobj.img.workingCanvas.height;
+						
 					} else {
-						previewCanvas.height = previewSize;
-						previewCanvas.width = previewSize / fileobj.img.workingCanvas.height * fileobj.img.workingCanvas.width;
+						previewHeight = previewMaxSize;
+						previewWidth = previewMaxSize / fileobj.img.workingCanvas.height * fileobj.img.workingCanvas.width;
 					}
+					fileobj.img.previewWidth = Math.round(previewWidth);
+					fileobj.img.previewHeight = Math.round(previewHeight);
+					previewCanvas.width = fileobj.img.previewWidth;
+					previewCanvas.height = fileobj.img.previewHeight;
 
-					ctxPreviewCanvas.drawImage(
-						fileobj.img.workingCanvas,
-						0,
-						0,
-						fileobj.img.workingCanvas.width,
-						fileobj.img.workingCanvas.height,
-						0,
-						0,
-						previewCanvas.width,
-						previewCanvas.height
-					);
-					fileobj.img[target] = previewCanvas;
+					if(target === 'previewCanvas' && ((_.view.useOriginalAsPreviewIfNotEdited && fileobj.img.image && fileobj.img.image.src) || fileobj.dataUrl)){
+						// preview of edited image (or original if not edited)
+						if(fileobj.dataUrl){ // image is edited and saved to dataArray
+							fileobj.img.previewImg = document.createElement('img');
+							fileobj.img.previewImg.src = fileobj.dataUrl;
+							//top.console.log('we use dataUrl');
+						} else {
+							fileobj.img.previewImg = fileobj.img.image;
+							//top.console.log('we use img.image');
+						}
+						fileobj.img.previewImg.width = fileobj.img.previewWidth;
+						fileobj.img.previewImg.height = fileobj.img.previewHeight;
+					} else { // preview of original image => we downscale it the fast way, so we can use it for fast resetting GUI
+						var ctxPreviewCanvas = previewCanvas.getContext("2d");
+						ctxPreviewCanvas.drawImage(
+							fileobj.img.workingCanvas,
+							0,
+							0,
+							fileobj.img.workingCanvas.width,
+							fileobj.img.workingCanvas.height,
+							0,
+							0,
+							fileobj.img.previewWidth,
+							fileobj.img.previewHeight
+						);
+						fileobj.img[target] = previewCanvas;
+					}
 					_.view.repaintImageEditMessage(true);
 				}
-
 				_.utils.logTimeFromStart('preview done');
 				_.controller.processImage(fileobj, nexttask);
 
@@ -1083,7 +1263,9 @@ var weFileUpload = (function () {
 				fileobj.dataArray = null;
 				fileobj.dataUrl = null;
 				fileobj.size = fileobj.img.originalSize;
-				fileobj.img.previewCanvas = fileobj.img.originalPreviewCanvas;
+				fileobj.img.previewImg = null;
+				fileobj.img.fullPrev = null;
+				fileobj.img.previewCanvas = fileobj.img.originalPreviewCanvas;// always use poorly scaled canvas for preview of NOT edited images!
 				fileobj.isEdited = false;
 
 				_.controller.processImage(fileobj, nexttask);
@@ -1095,7 +1277,7 @@ var weFileUpload = (function () {
 					fileobj.size = fileobj.dataArray.length;
 					fileobj.isEdited = true;
 				}
-
+				fileobj.img.fullPrev = null;
 				fileobj.totalParts = Math.ceil(fileobj.size / _.sender.chunkSize);
 				fileobj.lastChunkSize = fileobj.size % _.sender.chunkSize;
 				_.view.repaintEntry(fileobj);
@@ -1674,13 +1856,15 @@ var weFileUpload = (function () {
 			_.controller.setWeButtonText('next', 'upload');
 			_.controller.enableWeButton('next', false);
 
-			/*
 			// add some listeners:
 			var generalform = document.getElementById('filechooser');
+			/*
 			generalform.fu_doc_unitSelect.addEventListener('change', function(e) {_.view.syncCustomEditOpts(e.target);});
 			generalform.fu_doc_resizeValue.addEventListener('keyup', function(e) {_.view.syncCustomEditOpts(e.target);});
 			generalform.fu_doc_rotate.addEventListener('change', function(e) {_.view.syncCustomEditOpts(e.target);});
 			*/
+			generalform.fu_doc_resizeValue.addEventListener('keyup', function(e) {_.controller.editOptionsOnChange(e.target);});
+			generalform.fu_doc_rotate.addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
 		};
 
 		function Controller() {
@@ -1824,7 +2008,7 @@ var weFileUpload = (function () {
 
 			this.appendMoreData = function (fd) { // TODO: set additional fields oninit
 				var sf = document.we_startform,
-								cur = this.currentFile;
+					cur = this.currentFile;
 
 				fd.append('weFormNum', cur.fileNum + 1);
 				fd.append('weFormCount', this.totalFiles);
@@ -1848,7 +2032,9 @@ var weFileUpload = (function () {
 						fd.append('fu_doc_quality', sf.fu_doc_quality.value);
 						fd.append('fu_doc_degrees', sf.fu_doc_degrees.value);
 					} else {
-						fd.append('exif', JSON.stringify(cur.exif));
+						//fd.append('exif', JSON.stringify(cur.exif));
+						fd.append('fu_doc_focusX', cur.img.focusX);
+						fd.append('fu_doc_focusX', cur.img.focusY);
 					}
 					fd.append('fu_doc_thumbs', sf.fu_doc_thumbs.value);
 				}
@@ -1918,7 +2104,7 @@ var weFileUpload = (function () {
 			this.isUploadEnabled = false;
 			this.messageWindow = null;
 			this.previewSize = 110;
-			
+			//this.useOriginalAsPreviewIfNotEdited = true;
 
 			this.addFile = function (f, index) {
 				this.appendRow(f, _.sender.preparedFiles.length - 1);//document.getElementById('name_uploadFiles_0').innerHTML = 'juhu';
@@ -1933,9 +2119,14 @@ var weFileUpload = (function () {
 					fileobj.entry.getElementsByClassName('elemIcon')[0].style.display = 'none';
 					fileobj.entry.getElementsByClassName('elemPreview')[0].style.display = 'block';
 					fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.display = 'block';
-
 					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].innerHTML = '';
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].appendChild(fileobj.img.previewCanvas);
+					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].appendChild(fileobj.img.previewImg ? fileobj.img.previewImg : fileobj.img.previewCanvas);
+
+					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
+					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
+					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
+					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
+
 					fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.backgroundColor = fileobj.isEdited ? 'rgb(216, 255, 216)' : '#ffffff';
 					this.formCustomOptsSync(fileobj);
 
@@ -1943,10 +2134,10 @@ var weFileUpload = (function () {
 					var classes = ['elemPreview', 'elemPreviewPreview', 'elemPreviewBtn'];
 					for(var i = 0; i < classes.length; i++){
 						fileobj.entry.getElementsByClassName(classes[i])[0].addEventListener('mouseover', function(){
-							fileobj.entry.getElementsByClassName('elemPreviewBtn')[0].style.display = 'block';
+							//fileobj.entry.getElementsByClassName('elemPreviewBtn')[0].style.display = 'block';
 						}, false);
 						fileobj.entry.getElementsByClassName(classes[i])[0].addEventListener('mouseout', function(){
-							fileobj.entry.getElementsByClassName('elemPreviewBtn')[0].style.display = 'none';
+							//fileobj.entry.getElementsByClassName('elemPreviewBtn')[0].style.display = 'none';
 						}, false);
 					}
 
@@ -1962,18 +2153,19 @@ var weFileUpload = (function () {
 
 			this.setImageEditMessage = function () {
 				var elem;
-				if((elem = document.getElementById('we_fileUpload_messageBg'))){
-					document.getElementById('we_fileUpload_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
-					document.getElementById('we_fileUpload_message').style.display = 'block';
+				if((elem = document.getElementById('we_fileUploadImporter_mask'))){
+					document.getElementById('we_fileUploadImporter_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
+					document.getElementById('we_fileUploadImporter_message').style.display = 'block';
+					document.getElementById('we_fileUploadImporter_message').style.zIndex = 800;
 					elem.style.display = 'block';
 				}
 			};
 
 			this.unsetImageEditMessage = function () {
 				var elem;
-				if((elem = document.getElementById('we_fileUpload_messageBg'))){
+				if((elem = document.getElementById('we_fileUploadImporter_mask'))){
 					elem.style.display = 'none';
-					document.getElementById('we_fileUpload_message').style.display = 'none';
+					document.getElementById('we_fileUploadImporter_message').style.display = 'none';
 				}
 			};
 
@@ -1981,7 +2173,7 @@ var weFileUpload = (function () {
 				if(step){
 					
 				} else {
-					document.getElementById('we_fileUpload_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
+					document.getElementById('we_fileUploadImporter_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
 				}
 			};
 
@@ -2028,6 +2220,12 @@ var weFileUpload = (function () {
 				}
 				f.index = index;
 				f.entry = document.getElementById('div_uploadFiles_' + index);
+
+				var form = document.getElementById('form_editOpts_' + index);
+				form.elements['resizeValue'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				form.elements['rotateSelect'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				form.elements['quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+
 			};
 
 			this.deleteRow = function (index, button) {
@@ -2180,7 +2378,7 @@ var weFileUpload = (function () {
 				}
 			};
 
-			this.setUseGeneralOpts = function (checkbox) { // USED
+			this.setUseGeneralOpts = function (checkbox) {
 				switch(checkbox.checked){
 					case true:
 						var radios = checkbox.form.editOpts;
@@ -2222,7 +2420,7 @@ var weFileUpload = (function () {
 						form.resizeValue.disabled = false;
 						form.rotateSelect.disabled = false;
 						_.view.formCustomOptsReset(form);
-						form.getElementsByClassName('weBtn')[0].disabled = false;
+						//form.getElementsByClassName('weBtn')[0].disabled = false;
 						break;
 					case 'expert':
 						alert('not yet implemented');
@@ -2249,10 +2447,11 @@ var weFileUpload = (function () {
 
 			
 			this.formCustomOptsReset = function (form) { // USED
-				form.unitSelect.value = 'percent';
+				form.unitSelect.value = 'pixel_w';
 				form.resizeValue.value = '';
 				form.rotateSelect.value = '0';
-				form.quality.value = '90';
+				form.quality.value = '0';
+				qualityOutput.value = '0';
 			};
 
 			/*
@@ -2325,7 +2524,7 @@ var weFileUpload = (function () {
 						fileobj.img.editOptions.scaleValue = form.resizeValue.value;
 						fileobj.img.editOptions.rotateValue = form.rotateSelect.value;
 						fileobj.img.editOptions.quality = form.quality ? form.quality.value : 90;
-						fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scaleValue == '' && fileobj.img.editOptions.rotateValue == 0 ? false : true;
+						fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scaleValue == '' && fileobj.img.editOptions.rotateValue == 0 && fileobj.img.editOptions.quality == 0 ? false : true;
 						break;
 					case 'expert': 
 						fileobj.img.editOptions = {};
@@ -2385,6 +2584,11 @@ var weFileUpload = (function () {
 					inputs[i].addEventListener('change', _.controller.fileSelectHandler, false);
 				}
 			}
+
+			document.we_form.elements['fu_doc_resizeValue'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+			document.we_form.elements['fu_doc_rotate'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+			document.we_form.elements['fu_doc_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+
 			v.elems.fileDrag_state_0 = document.getElementById('div_fileupload_fileDrag_state_0');
 			v.elems.fileDrag_state_1 = document.getElementById('div_fileupload_fileDrag_state_1');
 			v.elems.fileDrag_mask = document.getElementById('div_' + _.fieldName + '_fileDrag');
@@ -2401,6 +2605,28 @@ var weFileUpload = (function () {
 			v.elems.divProgressBar = document.getElementById('div_fileupload_progressBar');
 			v.elems.divButtons = document.getElementById('div_fileupload_buttons');
 
+			var ids = [
+				'div_we_File_fileDrag',
+				/*
+				'div_fileupload_fileDrag_state_0',
+				'div_filedrag_content_left',
+				'div_filedrag_content_right',
+				'div_fileupload_fileDrag_state_1',
+				'div_upload_fileDrag_innerLeft',
+				'span_fileDrag_inner_filename',
+				'span_fileDrag_inner_size',
+				'span_fileDrag_inner_type',
+				'span_fileDrag_inner_edit',
+				'div_upload_fileDrag_innerRight'
+				*/
+			];
+			for(var i = 0; i < ids.length; i++){
+				document.getElementById(ids[i]).addEventListener('dragover', _.controller.fileDragHover, false);
+				document.getElementById(ids[i]).addEventListener('dragleave', _.controller.fileDragHover, false);
+				document.getElementById(ids[i]).addEventListener('drop', _.controller.fileSelectHandler, false);
+			}
+
+
 			v.spinner = document.createElement("i");
 			v.spinner.className = "fa fa-2x fa-spinner fa-pulse";
 
@@ -2408,8 +2634,13 @@ var weFileUpload = (function () {
 		};
 
 		function Controller() {
-			this.elemFileDragClasses = 'we_file_drag we_file_drag_mask';
+			this.elemFileDragClasses = 'we_file_drag';
 			this.doSubmit = false;
+
+			this.fileDragHover = function (e) {
+				e.preventDefault();
+				_.view.elems.fileDrag.className = (e.type === 'dragover' ? _.controller.elemFileDragClasses + ' we_file_drag_hover' : _.controller.elemFileDragClasses);
+			};
 
 			this.setEditorIsHot = function () {
 				if (_.uiType !== 'wedoc') {
@@ -2523,19 +2754,21 @@ var weFileUpload = (function () {
 			this.uploadBtnName = '';
 			this.icon = '';
 			this.binDocType = 'other';
+			this.previewSize = 116;
+			this.useOriginalAsPreviewIfNotEdited = true;
 			this.preview = null;
 			this.STATE_RESET = 0;
 			this.STATE_PREVIEW_OK = 1;
 			this.STATE_PREVIEW_NOK = 2;
 			this.STATE_UPLOAD = 3;
 
-			this.addFile = function (f) { // TODO: start after scaling and omit scaling preview using canvas
+			this.addFile = function (f) {
 				var sizeText = f.isSizeOk ? _.utils.gl.sizeTextOk + _.utils.computeSize(f.size) + ', ' :
-								'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
+						'<span style="color:red;">' + _.utils.gl.sizeTextNok + '</span>';
 				var typeText = f.isTypeOk ? _.utils.gl.typeTextOk + (f.isTypeOk === 1 ? f.type : f.file.name.split('.').pop().toUpperCase()) :
-								'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
+						'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
 
-				this.elems.fileDrag_state_1.style.backgroundColor = f.isEdited ? 'rgb(216, 255, 216)' : 'rgb(232, 232, 255)';
+				_.view.elems.fileDrag.style.backgroundColor = f.isEdited ? 'rgb(216, 255, 216)' : 'rgb(232, 232, 255)';
 
 				var fn = f.file.name;
 				var fe = '';
@@ -2547,19 +2780,19 @@ var weFileUpload = (function () {
 				}
 
 				this.elems.txtFilename.innerHTML = fn + fe;
-				this.elems.fileDrag_mask.title = f.file.name;
+				//this.elems.fileDrag_mask.title = f.file.name;
 				this.elems.txtSize.innerHTML = sizeText;
 				this.elems.txtType.innerHTML = typeText;
 				if(f.isEdited){
 					var edittext;
 					switch(f.img.editOptions.scaleUnit){
-						case 'percent':
+						case 'pixel_w':
 							edittext = f.img.editOptions.scaleValue + ' Prozent';
 							break;
-						case 'pixel_w':
-							edittext = 'Breite ' + f.img.editOptions.scaleValue + ' px';
+						case 'pixel_l':
+							edittext = 'Längere Seite ' + f.img.editOptions.scaleValue + ' px';
 							break;
-						case 'pixel_w':
+						case 'pixel_h':
 							edittext = 'Höhe ' + f.img.editOptions.scaleValue + ' px';
 					}
 
@@ -2579,16 +2812,23 @@ var weFileUpload = (function () {
 					_.sender.isAutostartPermitted = false;
 				}
 
-				if (f.type.search("image/") !== -1 && f.img.previewCanvas) {
-					_.view.preview = f.img.previewCanvas;
-					_.view.elems.dragInnerRight.innerHTML = '';
-					_.view.elems.dragInnerRight.appendChild(_.view.preview);
+				if (f.type.search("image/") !== -1){
+					if(f.img.previewImg){
+						_.view.preview = f.img.previewImg;
+						_.view.elems.dragInnerRight.innerHTML = '';
+						_.view.elems.dragInnerRight.appendChild(_.view.preview);
+					} else if(f.img.previewCanvas){
+						_.view.preview = f.img.previewCanvas;
+						_.view.elems.dragInnerRight.innerHTML = '';
+						_.view.elems.dragInnerRight.appendChild(_.view.preview);
+					}
+					this.setGuiState(f.uploadConditionsOk ? this.STATE_PREVIEW_OK : this.STATE_PREVIEW_NOK);
 				} else {
 					if (f.uploadConditionsOk) {
-						this.elems.dragInnerRight.innerHTML = '<div class="largeicons" style="margin:0 0 0 30px;height:62px;width:54px;">' + this.icon + '</div>';
+						this.elems.dragInnerRight.innerHTML = '<div class="largeicons" style="margin:24px 0 0 26px;height:62px;width:54px;">' + this.icon + '</div>';
 						this.setGuiState(this.STATE_PREVIEW_OK);
 					} else {
-						this.elems.dragInnerRight.innerHTML = '<div class="bold" style="margin:0px 0 0 30px;height:62px;width:54px;border:dotted 1px gray;padding-top:14px;text-align:center;background-color:#f9f9f9;color:#ddd;font-size:32px;">!?</div>';
+						this.elems.dragInnerRight.innerHTML = '<div class="bold" style="margin:18px 0 0 30px;height:62px;width:54px;border:dotted 1px gray;padding-top:14px;text-align:center;background-color:#f9f9f9;color:#ddd;font-size:32px;">!?</div>';
 						this.setGuiState(this.STATE_PREVIEW_NOK);
 					}
 				}
@@ -2599,11 +2839,10 @@ var weFileUpload = (function () {
 					case this.STATE_RESET:
 						this.setDisplay('fileDrag_state_0', 'block');
 						this.setDisplay('fileDrag_state_1', 'none');
-						this.elems.fileDrag_mask.title = '';
+						this.elems.fileDrag.style.backgroundColor = 'transparent';
 						this.setDisplay('fileInputWrapper', 'block');
 						if (this.isDragAndDrop && this.elems.fileDrag) {
 							this.setDisplay('fileDrag', 'block');
-							//this.elems.fileDrag.className = 'we_file_drag we_file_drag_mask';
 						}
 						this.setDisplay('divBtnReset', 'none');
 						this.setDisplay('divBtnUpload', '');
@@ -2687,10 +2926,15 @@ var weFileUpload = (function () {
 				}
 			};
 
+			this.writeFocusToForm = function(fileobj){
+				document.we_form.elements['fu_doc_focusX'].value = fileobj.img.focusX;
+				document.we_form.elements['fu_doc_focusY'].value = fileobj.img.focusY;
+			};
+
 			//TODO: use progress fns from abstract after adapting them to standard progress
 			this.setInternalProgress = function (progress, index) {
 				var coef = this.intProgress.width / 100,
-								mt = typeof _.sender.currentFile === 'object' ? ' / ' + _.utils.computeSize(_.sender.currentFile.size) : '';
+					mt = typeof _.sender.currentFile === 'object' ? ' / ' + _.utils.computeSize(_.sender.currentFile.size) : '';
 
 				document.getElementById('progress_image_fileupload').style.width = coef * progress + "px";
 				document.getElementById('progress_image_bg_fileupload').style.width = (coef * 100) - (coef * progress) + "px";
@@ -2704,15 +2948,14 @@ var weFileUpload = (function () {
 			};
 			
 			this.setImageEditMessage = function () {
-				var mask = document.getElementById('div_we_File_fileDrag');
-				mask.style.backgroundColor = 'white';
+				var mask = document.getElementById('div_fileupload_fileDrag_mask');
+				mask.style.display = 'block';
 				mask.innerHTML = '<div style="margin:20px 0 10px 0;"><span style="font-size:2em;"><i class="fa fa-2x fa-spinner fa-pulse"></i></span></div><div style="font-size:1.6em;" id="image_edit_mask_text">Die Grafik wird bearbeitet</div>';
 			};
 
 			this.unsetImageEditMessage = function () {
-				var mask = document.getElementById('div_we_File_fileDrag');
-				mask.innerHTML = '';
-				mask.style.backgroundColor = 'transparent';
+				var mask = document.getElementById('div_fileupload_fileDrag_mask');
+				mask.style.display = 'none';
 			};
 
 			this.repaintImageEditMessage = function () {
@@ -2722,8 +2965,12 @@ var weFileUpload = (function () {
 				
 			};
 
-			this.repaintEntry = function (obj) {
-				this.addFile(obj);
+			this.repaintEntry = function (fileobj) {
+				this.addFile(fileobj);
+				this.elems.dragInnerRight.firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
+				this.elems.dragInnerRight.firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
+				this.elems.dragInnerRight.firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
+				this.elems.dragInnerRight.firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
 			};
 		}
 

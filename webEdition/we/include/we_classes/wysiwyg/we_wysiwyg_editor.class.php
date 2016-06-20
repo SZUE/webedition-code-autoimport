@@ -38,7 +38,7 @@ class we_wysiwyg_editor{
 	var $value = '';
 	var $restrictContextmenu = '';
 	private $tinyPlugins = array();
-	private $wePlugins = array('weadaptunlink', 'weadaptbold', 'weadaptitalic', 'weimage', 'advhr', 'weabbr', 'weacronym', 'welang', 'wevisualaid', 'weinsertbreak', 'wespellchecker', 'welink', 'wefullscreen', 'wegallery');
+	private $wePlugins = array('wetable', 'weadaptunlink', 'weadaptbold', 'weadaptitalic', 'weimage', 'advhr', 'weabbr', 'weacronym', 'welang', 'wevisualaid', 'weinsertbreak', 'wespellchecker', 'welink', 'wefullscreen', 'wegallery');
 	private $createContextmenu = true;
 	private $filteredElements = array();
 	private $bgcol = '';
@@ -840,7 +840,8 @@ return {
 				($this->tinyPlugins ? $this->tinyPlugins . ',' : '') .
 				($this->wePlugins ? $this->wePlugins . ',' : '') .
 				(in_array('wevisualaid', $allCommands) ? 'visualblocks,' : '') .
-				'weutil,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
+				(in_array('table', $allCommands) ? 'wetable,' : '') .
+				'weutil,paste,autolink,template,wewordcount'; //TODO: load "templates" on demand as we do it with other plugins
 
 		$height = we_base_util::convertUnits($this->height);
 		$width = we_base_util::convertUnits($this->width);
@@ -1040,8 +1041,7 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 		var patScript=/<script[^>]*.*< ?\/script[^>]*>/gi;
 		o.content.replace(patScript, "");
 		var patStyle=/<style[^>]*.*< ?\/style[^>]*>/gi;
-		o.content.replace(patStyle, "");
-
+		//o.content.replace(patStyle, "");
 	},
 
 	setup : function(ed){
@@ -1101,11 +1101,19 @@ var tinyMceConfObject__' . $this->fieldName_clean . ' = {
 				return false;
 			});
 
+			ed.dom.bind(ed.getWin(), ["copy"], function(e) {
+				tinyOnCopyCut(ed, false);
+			});
+
+			ed.dom.bind(ed.getWin(), ["cut"], function(e) {
+				tinyOnCopyCut(ed, true);
+			});
+
 			//ed.execCommand("mceWevisualaid", true);
 
 			//TODO: clean up the mess in here!
-			ed.pasteAsPlainText = 0;
-			ed.controlManager.setActive("pastetext", 0);
+			ed.pasteAsPlainText = 1;
+			ed.controlManager.setActive("pastetext", 1);
 			var openerDocument = ' . (!$this->isInPopup ? '""' : ($this->isFrontendEdit ? 'top.opener.document' : 'WE().layout.weEditorFrameController.getVisibleEditorFrame().document')) . ';
 			' . ($this->isInPopup ? '
 			try{
