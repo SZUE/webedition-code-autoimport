@@ -132,9 +132,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 	public static function getFormImageEditClientside($multimport = false, $disabled = false, $reeditCmd = 'we_FileUpload.reeditImage(null, 0);'){
 		$editCheckbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_doResize', $multimport ? g_l('importFiles', '[edit_imgsBeforeUpload]') : g_l('importFiles', '[edit_imgBeforeUpload]'), false, 'defaultfont', 'document.getElementById(\'editImage\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){' . $reeditCmd . '}');
-
-		$valueInputAttribs = array('onkeyup="alert(\"reto\")"');
-		$valueInput = we_html_tools::htmlTextInput('fu_doc_resizeValue', 10, '', '', $valueInputAttribs, "text", $multimport ? 50 : 68, 0, '', $disabled);
+		$valueInput = we_html_tools::htmlTextInput('fu_doc_resizeValue', 10, '', '', '', "text", $multimport ? 50 : 68, 0, '', $disabled);
 		$unitSelect = we_html_tools::htmlSelect('fu_doc_unitSelect', array(
 				'pixel_w' => g_l('importFiles', '[edit_pixel_width]'),
 				'pixel_h' => g_l('importFiles', '[edit_pixel_height]'),
