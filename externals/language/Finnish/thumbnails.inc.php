@@ -21,7 +21,7 @@ $l_thumbnails=array(
 	'format_not_supported'=>'Asennettu gd- kirjasto ei tue kuvatyypiä. Ota yhteyttä järjestelmän ylläpitäjään korjataksesi ongelmatilanteen.',
 	'format_original'=>'Alkuperäinen tyyppi',
 	'format_png'=>'PNG -tiedosto',
-	'gauss'=>'Gaussian Filter',
+	'gauss'=>'Blur',
 	'gauss_desc'=>'Gaussian blur filter',
 	'gray'=>'Grayscale',
 	'height'=>'Korkeus',
@@ -47,7 +47,7 @@ $l_thumbnails=array(
 	'saved_successfully'=>'Asetukset tallennettu',
 	'sepia'=>'Sepia Filter',
 	'thumbnails'=>'Esikatselukuvat',
-	'unsharp'=>'Unsharpen Mask',
+	'unsharp'=>'Sharpen',
 	'unsharp_desc'=>'With this filter the image looks more sharp.',
 	'width'=>'Leveys',
 );

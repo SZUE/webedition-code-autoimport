@@ -21,7 +21,7 @@ $l_thumbnails=array(
 	'format_not_supported'=>'Das Format der Grafik wird leider nicht von der auf dem Server installierten GD Library unterstützt!',
 	'format_original'=>'Originales Format',
 	'format_png'=>'PNG Datei',
-	'gauss'=>'Gaußfilter',
+	'gauss'=>'Weichzeichner',
 	'gauss_desc'=>'Gauß-Weichzeichner.',
 	'gray'=>'Graustufen',
 	'height'=>'Höhe',
@@ -47,7 +47,7 @@ $l_thumbnails=array(
 	'saved_successfully'=>'Einstellungen gespeichert',
 	'sepia'=>'Sepia',
 	'thumbnails'=>'Miniaturansichten',
-	'unsharp'=>'Unscharf maskieren',
+	'unsharp'=>'Schärfen',
 	'unsharp_desc'=>'Die Miniaturansicht erhält über diese Maske mehr Schärfe und das Bild sieht nicht mehr so verwaschen aus.',
 	'width'=>'Breite',
 );

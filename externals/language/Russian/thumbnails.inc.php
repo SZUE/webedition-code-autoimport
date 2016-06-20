@@ -21,7 +21,7 @@ $l_thumbnails=array(
 	'format_not_supported'=>'Формат графики не поддерживается GD Library, установленной на сервере.',
 	'format_original'=>'Первоначальный формат',
 	'format_png'=>'Файл PNG',
-	'gauss'=>'Gaussian Filter',
+	'gauss'=>'Blur',
 	'gauss_desc'=>'Gaussian blur filter',
 	'gray'=>'Grayscale',
 	'height'=>'Высота',
@@ -47,7 +47,7 @@ $l_thumbnails=array(
 	'saved_successfully'=>'Настройки сохранены',
 	'sepia'=>'Sepia Filter',
 	'thumbnails'=>'Иконки',
-	'unsharp'=>'Unsharpen Mask',
+	'unsharp'=>'Sharpen',
 	'unsharp_desc'=>'With this filter the image looks more sharp.',
 	'width'=>'Ширина',
 );

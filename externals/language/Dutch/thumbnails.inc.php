@@ -21,7 +21,7 @@ $l_thumbnails=array(
 	'format_not_supported'=>'De gd bibliotheek die geïnstalleerd is op uw server ondersteunt het afbeeldings formaat niet. Neem a.u.b. contact op met uw server administrator voor informatie over deze bibliotheek.',
 	'format_original'=>'Origineel formaat',
 	'format_png'=>'PNG bestand',
-	'gauss'=>'Gaussian Filter',
+	'gauss'=>'Blur',
 	'gauss_desc'=>'Gaussian blur filter',
 	'gray'=>'Grayscale',
 	'height'=>'Hoogte',
@@ -47,7 +47,7 @@ $l_thumbnails=array(
 	'saved_successfully'=>'Voorkeuren bewaard',
 	'sepia'=>'Sepia Filter',
 	'thumbnails'=>'Thumbnails',
-	'unsharp'=>'Unsharpen Mask',
+	'unsharp'=>'Sharpen',
 	'unsharp_desc'=>'With this filter the image looks more sharp.',
 	'width'=>'Breedte',
 );
