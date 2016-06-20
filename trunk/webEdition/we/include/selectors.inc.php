@@ -185,6 +185,7 @@ switch($class){
 			$open_doc = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 9);
 			$multiple = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 10);
 			$canSelectDir = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 11);
+			$lang = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 12);
 			if($filter === we_base_ContentTypes::IMAGE){
 				t_e('notice', 'called incorrect selector');
 			}
@@ -197,8 +198,9 @@ switch($class){
 			$open_doc = we_base_request::_(we_base_request::BOOL, 'open_doc');
 			$multiple = we_base_request::_(we_base_request::BOOL, 'multiple');
 			$canSelectDir = we_base_request::_(we_base_request::BOOL, 'canSelectDir');
+			$lang = we_base_request::_(we_base_request::STRING, 'lang');
 		}
-		$fs = new we_selector_document($id, $table, $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::STRING, 'order', ''), 0, we_base_request::_(we_base_request::INT, 'we_editDirID', 0), we_base_request::_(we_base_request::STRING, 'we_FolderText', ''), $filter, $rootDirID, $open_doc ? ($table == (defined('FILE_TABLE') ? FILE_TABLE : 'FF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') : ($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') : false)) : false, $multiple, $canSelectDir);
+		$fs = new we_selector_document($id, $table, $JSIDName, $JSTextName, $JSCommand, we_base_request::_(we_base_request::STRING, 'order', ''), 0, we_base_request::_(we_base_request::INT, 'we_editDirID', 0), we_base_request::_(we_base_request::STRING, 'we_FolderText', ''), $filter, $rootDirID, $open_doc ? ($table == (defined('FILE_TABLE') ? FILE_TABLE : 'FF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_FILES') : ($table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OF') ? permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') : false)) : false, $multiple, $canSelectDir, 0, $lang);
 		break;
 	case 'we_selector_directory':
 		if(($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2))){
