@@ -448,6 +448,10 @@ $l_buttons_global=array(
 		'alt'=>'Toon voorvertoning',
 		'value'=>'Preview',
 	),
+	'process'=>array(
+		'alt'=>'Process',
+		'value'=>'Process',
+	),
 	'properties'=>array(
 		'alt'=>'Toon eigenschappen',
 		'value'=>'Properties',

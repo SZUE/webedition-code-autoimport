@@ -448,6 +448,10 @@ $l_buttons_global=array(
 		'alt'=>'Включить предварительный просмотр',
 		'value'=>'Preview',
 	),
+	'process'=>array(
+		'alt'=>'Process',
+		'value'=>'Process',
+	),
 	'properties'=>array(
 		'alt'=>'Показать свойства',
 		'value'=>'Properties',

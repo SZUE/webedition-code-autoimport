@@ -448,6 +448,10 @@ $l_buttons_global=array(
 		'alt'=>'Pokazuje podgląd',
 		'value'=>'Preview',
 	),
+	'process'=>array(
+		'alt'=>'Process',
+		'value'=>'Process',
+	),
 	'properties'=>array(
 		'alt'=>'Pokazuje właściwości',
 		'value'=>'Properties',

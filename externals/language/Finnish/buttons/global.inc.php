@@ -448,6 +448,10 @@ $l_buttons_global=array(
 		'alt'=>'Esikatsele',
 		'value'=>'Esikatsele',
 	),
+	'process'=>array(
+		'alt'=>'Process',
+		'value'=>'Process',
+	),
 	'properties'=>array(
 		'alt'=>'Ominaisuudet',
 		'value'=>'Ominaisuudet',
