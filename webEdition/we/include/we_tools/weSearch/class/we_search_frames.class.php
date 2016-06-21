@@ -29,20 +29,14 @@ class we_search_frames extends we_tool_frames{
 	const TAB_ADVANCED = 3;
 	const TAB_PROPERTIES = 4;
 
-	function __construct(){
-		$this->toolName = 'weSearch';
+	public function __construct(){
 		$this->module = 'weSearch';
-		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/';
-		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
-
-		$frameset = $this->toolUrl . 'edit_' . $this->module . '_frameset.php?mod=' . $this->module;
+		$this->toolName = $this->module;
+		$frameset = WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/edit_' . $this->module . '_frameset.php?mod=' . $this->module;
 		parent::__construct($frameset);
-		$this->Table = SUCHE_TABLE;
-		$this->TreeSource = 'table:' . $this->Table;
 		$this->Tree = new we_search_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
 
 		$this->View = new we_search_view($frameset, 'top.content');
-		//$this->Model = &$this->View->Model;
 	}
 
 	protected function getHTMLCmd(){
@@ -76,24 +70,16 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		return $this->getHTMLDocument($out);
 	}
 
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset('', ($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
-	}
-
-	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
-		return parent::getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
-	}
-
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		$we_tabs = new we_tabs();
-
-		//folders and entries have different tabs to display
-		$displayEntry = 'none';
-		$displayFolder = 'inline';
 
 		if($this->View->Model->IsFolder == 0){
 			$displayEntry = 'inline';
 			$displayFolder = 'none';
+		} else {
+			//folders and entries have different tabs to display
+			$displayEntry = 'none';
+			$displayFolder = 'inline';
 		}
 
 		//tabs for entries
@@ -109,12 +95,10 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search-plus"></i> ' . g_l('searchtool', '[advSearch]'), we_tab::NORMAL, "setTab(" . self::TAB_ADVANCED . ");", array('id' => 'tab_3', 'style' => 'display:' . $displayEntry)));
 
 		//tabs for folders
-		$we_tabs->addTab(new we_tab(g_l('searchtool', '[properties]'), we_tab::NORMAL, "setTab(" . self::TAB_PROPERTIES . ");", array(
-			'id' => 'tab_4', 'style' => 'display:' . $displayFolder)));
+		$we_tabs->addTab(new we_tab(g_l('searchtool', '[properties]'), we_tab::NORMAL, "setTab(" . self::TAB_PROPERTIES . ");", array('id' => 'tab_4', 'style' => 'display:' . $displayFolder)));
 
 		$tabNr = $this->getTab();
-		$activeTabJS = 'top.content.activ_tab = ' . $tabNr . ';';
-		$tabsHead = we_tabs::getHeader($activeTabJS . '
+		$tabsHead = we_tabs::getHeader('top.content.activ_tab = ' . $tabNr . ';
 function setTab(tab) {
 	switch (tab) {
 		default: // just toggle content to show
@@ -127,18 +111,16 @@ function setTab(tab) {
 	top.content.activ_tab=tab;
 }');
 
-		$setActiveTabJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 		$Text = we_search_model::getLangText($this->View->Model->Path, $this->View->Model->Text);
 		$body = we_html_element::htmlBody(
 				array(
 				'id' => 'eHeaderBody',
-				'onload' => 'weTabs.setFrameSize()',
+				'onload' => "weTabs.setFrameSize();document.getElementById('tab_'+top.content.activ_tab).className='tabActive';",
 				'onresize' => 'weTabs.setFrameSize()'
 				), '<div id="main"><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('searchtool', ($this->View->Model->IsFolder ? '[topDir]' : '[topSuche]')) . ':&nbsp;' .
 					$Text . '<div id="mark" style="display: none;">*</div>') . '</div>' .
 				$we_tabs->getHTML() .
-				'</div>' .
-				we_html_element::jsElement($setActiveTabJS));
+				'</div>');
 
 		return $this->getHTMLDocument($body, $tabsHead);
 	}
@@ -152,8 +134,10 @@ function setTab(tab) {
 				'onresize' => 'weSearch.sizeScrollContent();'
 				), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 				we_html_element::htmlForm(array(
-					'name' => 'we_form', 'onsubmit' => 'return false'
-					), $this->getHTMLProperties() . we_html_element::htmlHiddens(array(
+					'name' => 'we_form',
+					'onsubmit' => 'return false'
+					), $this->getHTMLProperties() .
+					we_html_element::htmlHiddens(array(
 						'predefined' => $this->View->Model->predefined,
 						'savedSearchName' => $this->View->Model->Text
 				)))
@@ -200,22 +184,20 @@ function setTab(tab) {
 		return $this->getHTMLDocument(we_html_element::jsElement('
 function we_save() {
 	top.content.we_cmd("tool_' . $this->module . '_save");
-}') . we_html_element::htmlBody(
-					array('id' => 'footerBody'), we_html_element::htmlForm(array(), $but_table)));
+}') .
+				we_html_element::htmlBody(array('id' => 'footerBody'), we_html_element::htmlForm(array(), $but_table)));
 	}
 
 	function getHTMLProperties($preselect = ''){
 		$tabNr = $this->getTab();
 
-		$hiddens = array(
-			'cmd' => '',
-			'pnt' => 'edbody',
-			'tabnr' => $tabNr,
-			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
-			'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', '')
-		);
-
-		return $this->View->getCommonHiddens($hiddens) .
+		return $this->View->getCommonHiddens(array(
+				'cmd' => '',
+				'pnt' => 'edbody',
+				'tabnr' => $tabNr,
+				'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
+				'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', '')
+			)) .
 			we_html_element::htmlHidden('newone', ($this->View->Model->ID == 0 ? 1 : 0)) .
 			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == self::TAB_DOCUMENTS ? 'display: block;' : 'display: none')), $tabNr == self::TAB_DOCUMENTS ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .
 			we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == self::TAB_TEMPLATES ? 'display: block;' : 'display: none')), $tabNr == self::TAB_TEMPLATES ? $this->getHTMLSearchtool($this->getHTMLTabTemplates()) : '') .
@@ -415,6 +397,17 @@ function we_save() {
 		}
 
 		return '<div class="multiIcon">' . $out . '</div>';
+	}
+
+	function getHTML($what = '', $mode = '', $step = 0){
+		switch($what){
+			case 'frameset':
+				return $this->getHTMLFrameset('', ($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
+			case 'editor':
+				return $this->getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
+			default:
+				return parent::getHTML($what, $mode, $step);
+		}
 	}
 
 }
