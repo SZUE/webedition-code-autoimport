@@ -2070,6 +2070,10 @@ div.collection-content{
 				}
 			}
 		}
+
+		div.divBtnEditTextOnly{
+			display:none;
+		}
 	}
 
 	table.minimalListItem{
@@ -2091,9 +2095,18 @@ div.collection-content{
 		td.colContent {
 			width: 520px;
 			padding: 2px 0 0 0;
+
+			div.divContent{
+				width:520px;
+			}
+			div.colContentTextOnly{
+				display: none;
+				padding: 9px 0 0 4px;
+				white-space: nowrap;
+			}
 		}
 		td.colControls {
-			width: 120px;
+			width: 180px;
 			padding: 4px 0 0 0;
 		}
 		div.previewDiv{

@@ -534,14 +534,18 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
 		$yuiSuggest->setInput($textname, $item['path'], array('title' => $item['path'] . ' (ID: ' . $item['id'] . ')'));
 		$yuiSuggest->setResult($idname, $item['id']);
-		$yuiSuggest->setWidth(440);
+		$yuiSuggest->setWidth(500);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
-		$yuiSuggest->setSelectButton($editButton, 0);
+		$yuiSuggest->setSelectButton(null, 0);
 		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 		$yuiSuggest->setAdditionalButton('', 0);
+		$divRowContent =  we_html_element::htmlDiv(array('class' => 'divContent'), 
+				we_html_element::htmlDiv(array('class' => 'colContentInput'), $yuiSuggest->getHTML()) .
+				we_html_element::htmlDiv(array('class' => 'colContentTextOnly'))
+		);
 
-		$rowControlls = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);", true, 50, 22) .
+		$rowControlls = we_html_element::htmlDiv(array('class' => 'divBtnEditTextOnly'), $editButton) . we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);", true, 50, 22) .
 			we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
 
 		$rowHtml = new we_html_table(array('class' => $item['class'], 'draggable' => 'false'), 1, 4);
@@ -553,7 +557,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				), we_html_element::htmlDiv(array('class' => 'divBtnSelect'), $selectButton));
 		$rowHtml->setCol(0, 0, array('class' => 'colNum weMultiIconBoxHeadline'), '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
 		$rowHtml->setCol(0, 1, array('class' => 'colPreview'), $imgDiv);
-		$rowHtml->setCol(0, 2, array('class' => 'colContent'), $yuiSuggest->getHTML());
+		$rowHtml->setCol(0, 2, array('class' => 'colContent'), $divRowContent);
 		$rowHtml->setCol(0, 3, array('class' => 'colControls weMultiIconBoxHeadline'), $rowControlls);
 
 		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'), $rowHtml->getHtml());
