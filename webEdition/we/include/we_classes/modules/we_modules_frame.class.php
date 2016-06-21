@@ -125,6 +125,7 @@ abstract class we_modules_frame{
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){
+		t_e($extraUrlParams);
 		$incDecTree = '<div id="baumArrows">
 	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
 	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>

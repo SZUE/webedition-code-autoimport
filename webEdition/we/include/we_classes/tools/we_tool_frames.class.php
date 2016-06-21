@@ -60,7 +60,7 @@ abstract class we_tool_frames extends we_modules_frame{
 			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $modelid;
 		}
 
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode(), ($modelid ? '&modelid=' . $modelid : ''));
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $extraHead, ($modelid ? '&modelid=' . $modelid : '') . $extraUrlParams);
 	}
 
 	/**
@@ -80,7 +80,6 @@ abstract class we_tool_frames extends we_modules_frame{
 function mark() {
 	var elem = document.getElementById("mark");
 	elem.style.display = "inline";
-
 }
 
 function unmark() {
