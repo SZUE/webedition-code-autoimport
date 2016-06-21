@@ -100,17 +100,17 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab(g_l('navigation', '[property]'), we_tab::NORMAL, "setTab(" . self::TAB_PROPERTIES . ");", array("id" => "tab_" . self::TAB_PROPERTIES)));
+		$we_tabs->addTab(new we_tab(g_l('navigation', '[property]'), false, "setTab(" . self::TAB_PROPERTIES . ");", array("id" => "tab_" . self::TAB_PROPERTIES)));
 		if($this->Model->IsFolder && permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION')){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[content]'), we_tab::NORMAL, "setTab(" . self::TAB_CONTENT . ");", array("id" => "tab_" . self::TAB_CONTENT)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[content]'), false, "setTab(" . self::TAB_CONTENT . ");", array("id" => "tab_" . self::TAB_CONTENT)));
 		}
 
 		if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_EDIT_CUSTOMERFILTER")){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[customers]'), we_tab::NORMAL, "setTab(" . self::TAB_CUSTOMER . ");", array("id" => "tab_" . self::TAB_CUSTOMER)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[customers]'), false, "setTab(" . self::TAB_CUSTOMER . ");", array("id" => "tab_" . self::TAB_CUSTOMER)));
 		}
 
 		if($this->Model->IsFolder){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[preview]'), we_tab::NORMAL, "setTab('" . self::TAB_PREVIEW . "');", array("id" => "tab_" . self::TAB_PREVIEW)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[preview]'), false, "setTab('" . self::TAB_PREVIEW . "');", array("id" => "tab_" . self::TAB_PREVIEW)));
 		}
 
 		$tabsHead = we_tabs::getHeader(

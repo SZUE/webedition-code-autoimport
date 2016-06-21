@@ -33,7 +33,7 @@ foreach($menuItems as $menuItem){
 	if($menuItem["name"] === 'weSearch'){
 		$text = g_l('searchtool', '[weSearch]');
 		if(permissionhandler::hasPerm($menuItem['startpermission'])){
-			$we_tabs->addTab(new we_tab($text, ($tool == $menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
+			$we_tabs->addTab(new we_tab($text, ($tool == $menuItem["name"]), "openTool('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
 		}
 	}
 }
@@ -42,7 +42,7 @@ foreach($menuItems as $menuItem){
 	$text = $menuItem["text"];
 	if($menuItem["name"] === 'toolfactory'){
 		if(permissionhandler::hasPerm($menuItem['startpermission'])){
-			$we_tabs->addTab(new we_tab($text, ($tool == $menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
+			$we_tabs->addTab(new we_tab($text, ($tool == $menuItem["name"]), "openTool('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
 		}
 	}
 }
@@ -58,7 +58,7 @@ foreach($menuItems as $menuItem){
 		default:
 			$text = $menuItem["text"];
 			if(permissionhandler::hasPerm($menuItem['startpermission'])){
-				$we_tabs->addTab(new we_tab($text, ($tool == $menuItem["name"] ? we_tab::ACTIVE : we_tab::NORMAL), "openTool('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
+				$we_tabs->addTab(new we_tab($text, ($tool == $menuItem["name"]), "openTool('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
 			}
 	}
 }
