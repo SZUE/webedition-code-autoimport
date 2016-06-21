@@ -72,11 +72,11 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	}
 
 	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset('', ($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '');
+		return parent::getHTMLFrameset('', ($tab = we_base_request::_(we_base_request::INT, 'tab') !== false) ? '&tab=' . $tab : '');
 	}
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
-		return parent::getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '');
+		return parent::getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab') !== false) ? '&tab=' . $tab : '');
 	}
 
 	protected function getHTMLEditorHeader(){
@@ -121,7 +121,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$tabsHead = we_tabs::getHeader($activeTabJS . '
 function setTab(tab) {
 	switch (tab) {
-		// Add new tab handlers here
+
 		default: // just toggle content to show
 			parent.edbody.document.we_form.pnt.value = "edbody";
 			parent.edbody.document.we_form.tabnr.value = tab;

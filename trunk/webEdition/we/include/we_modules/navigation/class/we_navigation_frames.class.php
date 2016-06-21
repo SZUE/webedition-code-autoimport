@@ -126,8 +126,8 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$tabsHead = we_tabs::getHeader(
 				($this->Model->IsFolder == 0 ? '
-if(top.content.activ_tab!=1 && top.content.activ_tab!=3) {
-	top.content.activ_tab=1;
+if(top.content.activ_tab!=' . self::TAB_PROPERTIES . ' && top.content.activ_tab!=' . self::TAB_CUSTOMER . ') {
+	top.content.activ_tab=' . self::TAB_PROPERTIES . ';
 }' : ''
 				) . '
 function mark() {
@@ -142,10 +142,10 @@ function unmark() {
 
 function setTab(tab) {
 	switch (tab) {
-		case "preview":	// submit the information to preview screen
+		case "' . self::TAB_PREVIEW . '":	// submit the information to preview screen
 			parent.edbody.document.we_form.cmd.value="";
 			if (top.content.activ_tab != tab || (top.content.activ_tab=="' . self::TAB_PREVIEW . '" && tab=="' . self::TAB_PREVIEW . '")) {
-				parent.edbody.document.we_form.pnt.value = "preview";
+				parent.edbody.document.we_form.pnt.value = "' . self::TAB_PREVIEW . '";
 				parent.edbody.document.we_form.tabnr.value = "' . self::TAB_PREVIEW . '";
 				parent.edbody.submitForm();
 			}
@@ -168,11 +168,10 @@ function setTab(tab) {
 	top.content.activ_tab=tab;
 }');
 
-
 		$body = we_html_element::htmlBody(
 				array(
 				"id" => "eHeaderBody",
-				"onload" => ($this->Model->ID ? '' : 'top.content.activ_tab=1;') .
+				"onload" => ($this->Model->ID ? '' : 'top.content.activ_tab=' . self::TAB_PROPERTIES . ';') .
 				"weTabs.setFrameSize();document.getElementById('tab_'+top.content.activ_tab).className='tabActive';",
 				"onresize" => "weTabs.setFrameSize()"
 				), we_html_element::htmlDiv(array('id' => "main"), we_html_element::htmlDiv(array('id' => 'headrow'), '&nbsp;' .
