@@ -328,8 +328,7 @@ function setTab(tab) {
 	}
 
 	protected function getHTMLCmd(){
-		$p = we_base_request::_(we_base_request::RAW, 'pid');
-		if($p === false){
+		if(($p = we_base_request::_(we_base_request::RAW, 'pid')) === false){
 			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 		$pid = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8') ?
@@ -348,12 +347,10 @@ function setTab(tab) {
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 
-		$hiddens = we_html_element::htmlHiddens(array(
-				"pnt" => "cmd",
-				"cmd" => "no_cmd"));
-
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+							"pnt" => "cmd",
+							"cmd" => "no_cmd")) .
 						we_html_element::jsElement(
 							(we_base_request::_(we_base_request::STRING, 'error') ?
 								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .

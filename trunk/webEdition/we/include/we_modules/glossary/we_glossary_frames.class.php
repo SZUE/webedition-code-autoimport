@@ -125,19 +125,16 @@ class we_glossary_frames extends we_modules_frame{
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
-		$rootjs = "";
-		if(!$pid){
-			$rootjs.=
-				'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
-		}
-		$hiddens = we_html_element::htmlHiddens(array(
-				"pnt" => "cmd",
-				"cmd" => "no_cmd"));
-
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, we_glossary_tree::getItems($pid, $offset, $this->Tree->default_segment)))
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+							"pnt" => "cmd",
+							"cmd" => "no_cmd")) .
+						we_html_element::jsElement(
+							($pid ?
+								'' :
+								'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
+							) . $this->Tree->getJSLoadTree(!$pid, we_glossary_tree::getItems($pid, $offset, $this->Tree->default_segment)))
 					)
 				)
 		);
