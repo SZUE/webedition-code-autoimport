@@ -80,7 +80,6 @@ function we_tag_sendMail(array $attribs, $content){
 	}
 	$blocked = false;
 
-
 	$we_recipient = _getMails(explode(',', $recipient));
 	$we_recipientCC = _getMails(explode(',', $recipientCC));
 	$we_recipientBCC = _getMails(explode(',', $recipientBCC));
