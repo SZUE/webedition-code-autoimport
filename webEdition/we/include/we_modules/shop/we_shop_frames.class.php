@@ -209,10 +209,10 @@ function we_cmd() {
 		$we_tabs = new we_tabs();
 
 		if(!empty($_REQUEST["mid"]) && $_REQUEST["mid"] != '00'){
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), we_tab::ACTIVE, 0));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), true, 0));
 		} else {
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][orderdata]'), we_tab::ACTIVE, "setTab(" . self::TAB_OVERVIEW . ");"));
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][orderlist]'), we_tab::NORMAL, "setTab(" . self::TAB_ORDERLIST . ");"));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][orderdata]'), true, "setTab(" . self::TAB_OVERVIEW . ");"));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][orderlist]'), false, "setTab(" . self::TAB_ORDERLIST . ");"));
 		}
 
 		$textPre = g_l('modules_shop', $bid > 0 ? '[orderList][order]' : '[order_view]');
@@ -261,16 +261,16 @@ function setTab(tab) {
 
 		$we_tabs = new we_tabs();
 		if(!empty($_REQUEST["mid"])){
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), we_tab::ACTIVE, "//"));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), true, "//"));
 		} else {
 			switch(true){
 				default:
 				case ($resultD):
-					$we_tabs->addTab(new we_tab(g_l('tabs', '[module][admin_1]'), we_tab::ACTIVE, "setTab(" . self::TAB_ADMIN1 . ");"));
+					$we_tabs->addTab(new we_tab(g_l('tabs', '[module][admin_1]'), true, "setTab(" . self::TAB_ADMIN1 . ");"));
 				case ($resultO):
-					$we_tabs->addTab(new we_tab(g_l('tabs', '[module][admin_2]'), ($resultD ? we_tab::NORMAL : we_tab::ACTIVE), "setTab(" . self::TAB_ADMIN2 . ");"));
+					$we_tabs->addTab(new we_tab(g_l('tabs', '[module][admin_2]'), (!$resultD), "setTab(" . self::TAB_ADMIN2 . ");"));
 				case (isset($yearTrans) && $yearTrans != 0):
-					$we_tabs->addTab(new we_tab(g_l('tabs', '[module][admin_3]'), we_tab::NORMAL, "setTab(" . self::TAB_ADMIN3 . ");"));
+					$we_tabs->addTab(new we_tab(g_l('tabs', '[module][admin_3]'), false, "setTab(" . self::TAB_ADMIN3 . ");"));
 					break;
 			}
 		}
