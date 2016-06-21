@@ -1327,7 +1327,7 @@ class we_object extends we_document{
 
 		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiJs();
 		 */
-		$buttons = $btnSelect . $btnNewCollection . $btnDelete;
+		$buttons = $btnSelect . (permissionhandler::hasPerm('NEW_COLLECTION') ? $btnNewCollection : '') . $btnDelete;
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 216, 0), "", "left", "defaultfont", we_html_element::htmlHidden($idname, $collectionID), $buttons);
 	}
