@@ -29,6 +29,8 @@ class we_search_frames extends we_modules_frame{
 	const TAB_ADVANCED = 3;
 	const TAB_PROPERTIES = 4;
 
+	var $Model;
+	
 	public function __construct(){
 		$this->module = 'weSearch';
 		parent::__construct(WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/edit_' . $this->module . '_frameset.php?mod=' . $this->module);
@@ -405,14 +407,13 @@ function we_save() {
 	}
 
 	protected function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		$class = we_tool_lookup::getModelClassName($this->toolName);
-		$this->Model = $this->Model ? : new $class();
-
 		if(($modelid = we_base_request::_(we_base_request::INT, 'modelid'))){
-			$this->Model = new $class();
+			$this->Model = new we_search_model();
 			$this->Model->load($modelid);
 			$this->Model->saveInSession();
 			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $modelid;
+		} else {
+			$this->Model = $this->Model ? : new we_search_model();
 		}
 
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $extraHead, ($modelid ? '&modelid=' . $modelid : '') . $extraUrlParams);

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -21,8 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
-
 class we_search_search extends we_search_base{
 	//for doclist!
 	/**

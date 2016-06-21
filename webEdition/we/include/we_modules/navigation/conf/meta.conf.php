@@ -22,6 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+//FIXME: remove this file
 $metaInfo = array(
 	'name' => 'navigation',
 	'maintable' => NAVIGATION_TABLE,

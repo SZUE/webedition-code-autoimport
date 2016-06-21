@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/meta.conf.php');
 
 return array(
 	'search' => array(
@@ -34,28 +33,28 @@ return array(
 	array(
 		'text' => g_l('searchtool', '[forDocuments]'),
 		'parent' => 'new',
-		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forDocuments',
+		'cmd' => 'tool_weSearch_new_forDocuments',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'hide' => !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')
 	),
 	array(
 		'text' => g_l('searchtool', '[forTemplates]'),
 		'parent' => 'new',
-		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forTemplates',
+		'cmd' => 'tool_weSearch_new_forTemplates',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'hide' => !($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES'))
 	),
 	array(
 		'text' => g_l('searchtool', '[forObjects]'),
 		'parent' => 'new',
-		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forObjects',
+		'cmd' => 'tool_weSearch_new_forObjects',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'hide' => (defined('OBJECT_FILES_TABLE') && defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))
 	),
 	array(
 		'text' => g_l('searchtool', '[forMedia]'),
 		'parent' => 'new',
-		'cmd' => 'tool_' . $metaInfo['name'] . '_new_forMedia',
+		'cmd' => 'tool_weSearch_new_forMedia',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 		'enabled' => 1,
 		'hide' => !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')
@@ -63,24 +62,24 @@ return array(
 	array(
 		'text' => g_l('searchtool', '[menu_advSearch]'),
 		'parent' => 'new',
-		'cmd' => 'tool_' . $metaInfo['name'] . '_new_advSearch',
+		'cmd' => 'tool_weSearch_new_advSearch',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
 	),
 	array(
 		'text' => g_l('searchtool', '[menu_save]'),
 		'parent' => 'search',
-		'cmd' => 'tool_' . $metaInfo['name'] . '_save',
+		'cmd' => 'tool_weSearch_save',
 	),
 	array(
 		'text' => g_l('searchtool', '[menu_delete]'),
 		'parent' => 'search',
-		'cmd' => 'tool_' . $metaInfo['name'] . '_delete',
+		'cmd' => 'tool_weSearch_delete',
 	),
 	array('parent' => 'search'), // separator
 	array(
 		'text' => g_l('searchtool', '[menu_exit]'),
 		'parent' => 'search',
-		'cmd' => 'tool_' . $metaInfo['name'] . '_exit',
+		'cmd' => 'tool_weSearch_exit',
 	),
 	'help' => array(
 		'text' => g_l('searchtool', '[menu_help]'),
