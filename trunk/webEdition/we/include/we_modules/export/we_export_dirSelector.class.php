@@ -80,44 +80,40 @@ class we_export_dirSelector extends we_selector_directory{
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
 
-		echo we_html_tools::getHtmlTop() .
-		'<script><!--
-top.clearEntries();
-';
+		$js = 'top.clearEntries();
+top.makeNewFolder=false;';
 		if(!$txt){
-			echo we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$js.=we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
 			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '"', '', $this->db)){
-				echo we_message_reporting::getShowMessageCall(g_l('export', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$js.= we_message_reporting::getShowMessageCall(g_l('export', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(we_export_export::filenameNotValid($folder->Text)){
-				echo we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$js.= we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
-				echo 'var ref;
+				$js.= 'var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
-}
-';
-				if($this->canSelectDir){
-					echo 'top.currentPath = "' . $folder->Path . '";
+}' .
+					($this->canSelectDir ?
+						'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-';
-				}
+' : '');
 			}
 		}
 
-
-		echo $this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.makeNewFolder = 0;
-top.selectFile(top.currentID);
-//-->
-</script>
-</head><body></body></html>';
+		echo we_html_tools::getHtmlTop() .
+		we_html_element::jsElement(
+			$js .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.selectFile(top.currentID);'
+		) .
+		'</head><body></body></html>';
 	}
 
 	function query(){
@@ -128,12 +124,10 @@ top.selectFile(top.currentID);
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 
-		echo we_html_tools::getHtmlTop() .
-		'<script><!--
-top.clearEntries();
-';
+		$js = 'top.clearEntries();
+top.makeNewFolder=false;';
 		if(!$txt){
-			echo we_message_reporting::getShowMessageCall(g_l('export', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$js.= we_message_reporting::getShowMessageCall(g_l('export', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -142,39 +136,36 @@ top.clearEntries();
 			$folder->Path = $folder->getPath();
 			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '" AND ID!=' . intval($this->we_editDirID));
 			if($this->db->next_record()){
-				$we_responseText = sprintf(g_l('export', '[folder_exists]'), $folder->Path);
-				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+				$js.= we_message_reporting::getShowMessageCall(sprintf(g_l('export', '[folder_exists]'), $folder->Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				if(preg_match('/[%/\\"\']/', $folder->Text)){
-					$we_responseText = g_l('export', '[wrongtext]');
-					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+					$js.=we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), '', $this->db) != $txt){
 						$folder->we_save();
-						echo 'var ref;
+						$js.='var ref;
 if(top.opener.top.content.treeData.updateEntry){
 	ref = top.opener.top.content;
 	ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
-}
-';
-						if($this->canSelectDir){
-							echo 'top.currentPath = "' . $folder->Path . '";
+}' .
+							($this->canSelectDir ?
+								'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-';
-						}
+top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' :
+								'');
 					}
 				}
 			}
 		}
 
-		echo $this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.makeNewFolder = 0;
-top.selectFile(top.currentID);
-//-->
-</script>
-</head><body></body></html>';
+		echo we_html_tools::getHtmlTop() .
+		we_html_element::jsElement(
+			$js .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.selectFile(top.currentID);'
+		) .
+		'</head><body></body></html>';
 	}
 
 	protected function getFramesetJavaScriptDef(){

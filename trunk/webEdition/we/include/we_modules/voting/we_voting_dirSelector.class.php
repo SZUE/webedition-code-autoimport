@@ -75,46 +75,44 @@ class we_voting_dirSelector extends we_selector_directory{
 	}
 
 	function printCreateFolderHTML(){
-		echo we_html_tools::getHtmlTop() .
-		'<script><!--
-top.clearEntries();
-';
+		$js = 'top.clearEntries();
+top.makeNewFolder=false;';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
 
 		if(!$txt){
-			echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$js.=we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
 			$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '"');
 			if($this->db->next_record()){
-				echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$js.= we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(we_voting_voting::filenameNotValid($folder->Text)){
-				echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$js.=we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
-				echo 'var ref;
+				$js.='var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:1});
 }
 ' . ($this->canSelectDir ?
-					'top.currentPath = "' . $folder->Path . '";
+						'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 			}
 		}
 
-		echo
-		$this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.makeNewFolder = 0;
-top.selectFile(top.currentID);
-//-->
-</script>
-</head><body></body></html>';
+		echo we_html_tools::getHtmlTop() .
+		we_html_element::jsElement(
+			$js .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.selectFile(top.currentID);'
+		) .
+		'</head><body></body></html>';
 	}
 
 	function query(){
@@ -148,12 +146,10 @@ top.selectFile(top.currentID);
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 
-		echo we_html_tools::getHtmlTop() .
-		'<script><!--
-top.clearEntries();
-';
+		$js = 'top.clearEntries();
+top.makeNewFolder=false;';
 		if(!$txt){
-			echo we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$js.= we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -162,34 +158,32 @@ top.clearEntries();
 			$folder->Path = $folder->getPath();
 			$exists = f('SELECT 1 FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE Path="' . $folder->Path . '" AND ID!=' . $this->we_editDirID . ' LIMIT 1', '', $this->db);
 			if($exists){
-				$we_responseText = sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path);
-				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+				$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(preg_match('/[%/\\"\']/', $folder->Text)){
-				$we_responseText = g_l('modules_voting', '[wrongtext]');
-				echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
+				$js.= we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(f('SELECT Text FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE ID=' . intval($this->we_editDirID), "", $this->db) != $txt){
 				$folder->we_save();
-				echo 'var ref;
+				$js.= 'var ref;
 if(top.opener.top.content.treeData){
 	ref = top.opener.top.content;
 	ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
 }
 ' . ($this->canSelectDir ?
-					'top.currentPath = "' . $folder->Path . '";
+						'top.currentPath = "' . $folder->Path . '";
 top.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 			}
 		}
 
-		echo
-		$this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() .
-		'top.makeNewFolder = 0;
-top.selectFile(top.currentID);
-//-->
-</script>
-</head><body></body></html>';
+		echo we_html_tools::getHtmlTop() .
+		we_html_element::jsElement(
+			$js .
+			$this->printCmdAddEntriesHTML() .
+			$this->printCMDWriteAndFillSelectorHTML() .
+			'top.selectFile(top.currentID);'
+		) .
+		'</head><body></body></html>';
 	}
 
 	protected function getFramesetJavaScriptDef(){
