@@ -45,18 +45,16 @@ class we_workflow_frames extends we_modules_frame{
 				return $this->getHTMLLog($mode, $type);
 			case 'edit':
 				return $this->getHTMLEditorBody();
+			case 'frameset':
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode() . $this->getJSCmdCode());
 			default:
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $type);
 		}
-	}
-
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $this->getJSCmdCode());
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		$page = we_base_request::_(we_base_request::INT, 'page', 0);

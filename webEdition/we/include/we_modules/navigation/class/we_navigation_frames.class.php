@@ -53,20 +53,11 @@ class we_navigation_frames extends we_modules_frame{
 				return $this->getHTMLFieldSelector();
 			case 'dyn_preview' :
 				return $this->getHTMLDynPreview();
+			case 'frameset':
+				return $this->getHTMLFrameset($this->getJSCmdCode() . $this->Tree->getJSTreeCode(), (($tab = we_base_request::_(we_base_request::STRING, 'tab')) !== false ? '&tab=' . $tab : '' ) . (($sid = we_base_request::_(we_base_request::STRING, 'sid', false)) !== false ? '&sid=' . $sid : ''));
 			default :
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $step);
 		}
-	}
-
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		$extraHead = $this->getJSCmdCode() .
-			$this->Tree->getJSTreeCode();
-
-		$tab = we_base_request::_(we_base_request::STRING, 'tab');
-		$sid = we_base_request::_(we_base_request::STRING, 'sid', false);
-		$extraUrlParams = ($tab !== false ? '&tab=' . $tab : '' ) . ($sid !== false ? '&sid=' . $sid : '');
-
-		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
 
 	protected function getHTMLTreeFooter(){
@@ -104,24 +95,24 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	 *
 	 * @return string
 	 */
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab(g_l('navigation', '[property]'), '((top.content.activ_tab==' . self::TAB_PROPERTIES . ') ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab(" . self::TAB_PROPERTIES . ");", array("id" => "tab_" . self::TAB_PROPERTIES)));
+		$we_tabs->addTab(new we_tab(g_l('navigation', '[property]'), we_tab::NORMAL, "setTab(" . self::TAB_PROPERTIES . ");", array("id" => "tab_" . self::TAB_PROPERTIES)));
 		if($this->Model->IsFolder && permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION')){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[content]'), '((top.content.activ_tab=="' . self::TAB_CONTENT . '") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab(" . self::TAB_CONTENT . ");", array("id" => "tab_" . self::TAB_CONTENT)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[content]'), we_tab::NORMAL, "setTab(" . self::TAB_CONTENT . ");", array("id" => "tab_" . self::TAB_CONTENT)));
 		}
 
 		if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_EDIT_CUSTOMERFILTER")){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[customers]'), '((top.content.activ_tab=="' . self::TAB_CUSTOMER . '") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab(" . self::TAB_CUSTOMER . ");", array("id" => "tab_" . self::TAB_CUSTOMER)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[customers]'), we_tab::NORMAL, "setTab(" . self::TAB_CUSTOMER . ");", array("id" => "tab_" . self::TAB_CUSTOMER)));
 		}
 
 		if($this->Model->IsFolder){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[preview]'), '((top.content.activ_tab=="' . self::TAB_PREVIEW . '") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('" . self::TAB_PREVIEW . "');", array("id" => "tab_" . self::TAB_PREVIEW)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[preview]'), we_tab::NORMAL, "setTab('" . self::TAB_PREVIEW . "');", array("id" => "tab_" . self::TAB_PREVIEW)));
 		}
 
 		$tabsHead = we_tabs::getHeader(
@@ -1396,12 +1387,6 @@ function we_save() {
 					"id" => "footerBody",
 					"onload" => "document.we_form.makeNewDoc.checked=top.content.makeNewDoc;"
 					), we_html_element::htmlForm(array(), $table2->getHtml())));
-	}
-
-	//TODO: function comes from weToolFrames: do we need it in navigation?
-	function getPercent($total, $value, $precision = 0){
-		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
-		return we_base_util::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
 	}
 
 }

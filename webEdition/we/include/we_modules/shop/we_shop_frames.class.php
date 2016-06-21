@@ -38,14 +38,6 @@ class we_shop_frames extends we_modules_frame{
 		$this->View = new we_shop_view($frameset, 'top.content');
 	}
 
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		if(($bid = we_base_request::_(we_base_request::INT, 'bid')) === -1){
-			$bid = intval(f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE, '', $this->db));
-		}
-
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode(), ($bid > 0 ? '&bid=' . $bid : '&top=1&home=1'));
-	}
-
 	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();
 		$extraHead = we_html_element::jsElement('
 function doUnload() {
@@ -194,10 +186,10 @@ function we_cmd() {
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
 	}
 
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		$DB_WE = $this->db;
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		if(we_base_request::_(we_base_request::BOOL, 'top')){
@@ -312,8 +304,11 @@ function setTab(tab) {
 		switch($what){
 			case 'iconbar':
 				return $this->getHTMLIconbar();
+			case 'frameset':
+				$bid = we_base_request::_(we_base_request::INT, 'bid');
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode(), ($bid > 0 ? '&bid=' . ($bid === -1 ? intval(f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE, '', $this->db)) : $bid) : '&top=1&home=1'));
 			default:
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $step);
 		}
 	}
 
