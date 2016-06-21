@@ -884,7 +884,7 @@ class we_objectFile extends we_document{
 		$btnEdit = we_html_button::create_button(we_html_button::VIEW, ("javascript:var cid=document.we_form.elements['" . $idname . "'].value;if(cid != '0'){top.console.log(cid);top.doClickDirect(cid,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "');}"), true, 0, 0, '', '', ($collectionID ? false : false)); // FIXME: set disabled=true|false on select
 		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $collectionID . "')");
 
-		$buttons = $btnSelect . $btnNewCollection . $btnEdit . $btnTrash;
+		$buttons = $btnSelect . (permissionhandler::hasPerm('NEW_COLLECTION') ? $btnNewCollection : '') . $btnEdit . $btnTrash;
 
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setNoAutoInit(true); // autosuggest is deactivated
