@@ -21,11 +21,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 /**
  * class representing the model data of the search
  */
-require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
-
 class we_search_modelBase extends we_tool_model{
 	/**
 	 * @var string: classname

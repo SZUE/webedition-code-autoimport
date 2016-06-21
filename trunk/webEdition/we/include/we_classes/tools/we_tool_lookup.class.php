@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_tool_lookup{
-
 	const REGISTRY_NAME = 'weToolsRegistry';
 
 	static function getAllTools($force = false, $addInternTools = false, $includeDisabled = false){
@@ -50,20 +49,12 @@ abstract class we_tool_lookup{
 
 		$lang = isset($GLOBALS['WE_LANGUAGE']) ? $GLOBALS['WE_LANGUAGE'] : we_core_Local::getComputedUILang();
 
-
 		foreach($toolsDirs as $toolDir){
 			$metaFile = $toolDir . '/conf/meta.conf.php';
 			if(is_dir($toolDir) && file_exists($metaFile)){
 				include($metaFile);
 				if(isset($metaInfo)){
-					$langStr = '';
-					if(isset($metaInfo['name'])){
-						/* $translate = we_core_Local::addTranslation('default.xml', $metaInfo['name']);
-						  if(is_object($translate)){
-						  $langStr = $translate->_($metaInfo['name']);
-						  } */
-						$langStr = $metaInfo['name'];
-					}
+					$langStr = empty($metaInfo['name']) ? '' : $metaInfo['name'];
 					$metaInfo['text'] = oldHtmlspecialchars($langStr);
 					if(!$includeDisabled && !empty($metaInfo['appdisabled'])){
 
@@ -103,7 +94,6 @@ abstract class we_tool_lookup{
 	}
 
 	static function getToolProperties($name){
-
 		$tools = self::getAllTools(true, false, true);
 
 		foreach($tools as $tool){
@@ -135,8 +125,8 @@ abstract class we_tool_lookup{
 			if(stripos($cmd0, 'tool_' . $tool['name'] . '_') === 0){
 				$_REQUEST['tool'] = $tool['name'];
 				return ($tool['name'] === 'weSearch' || $tool['name'] === 'navigation' ?
-								'we_tools/' : 'apps/' ) .
-						$tool['name'] . '/hook/we_phpCmdHook_' . $tool['name'] . '.inc.php';
+						'we_tools/' : 'apps/' ) .
+					$tool['name'] . '/hook/we_phpCmdHook_' . $tool['name'] . '.inc.php';
 			}
 		}
 
@@ -388,8 +378,8 @@ abstract class we_tool_lookup{
 
 	static function getBackupTables($name){
 		$toolFolder = (($name === 'weSearch' || $name === 'navigation') ?
-						WE_INCLUDES_PATH . 'we_tools/' :
-						WE_APPS_PATH);
+				WE_INCLUDES_PATH . 'we_tools/' :
+				WE_APPS_PATH);
 		if(file_exists($toolFolder . $name . '/conf/backup.conf.php')){
 			include($toolFolder . $name . '/conf/backup.conf.php');
 			if(!empty($toolTables)){
@@ -454,22 +444,12 @@ abstract class we_tool_lookup{
 	}
 
 	static function getModelClassName($name){
-		if($name === 'weSearch' || $name === 'navigation'){
-			include(WE_INCLUDES_PATH . 'we_tools/' . $name . '/conf/meta.conf.php');
-			return $metaInfo['classname'];
-		}
-
 		$tool = self::getToolProperties($name);
-		if(!empty($tool)){
-			return $tool['classname'];
-		}
-
-		return '';
+		return (empty($tool) ? '' : $tool['classname']);
 	}
 
 }
 
-abstract
-		class weToolLookup extends we_tool_lookup{
+abstract class weToolLookup extends we_tool_lookup{
 
 }

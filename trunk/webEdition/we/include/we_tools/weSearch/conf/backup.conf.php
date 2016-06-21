@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,10 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
+$toolTables = array(
+	'tblsearchtool' => SUCHE_TABLE
+);
 
-$toolTables = array();
-$toolTables['tblsearchtool'] = SUCHE_TABLE;
-// additional table can be specified here
-// $toolTables['tool_table_TestTool_2'] = '';
-// $toolTables['tool_table_TestTool_3'] = '';
