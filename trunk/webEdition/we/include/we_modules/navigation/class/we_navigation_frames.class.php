@@ -838,7 +838,7 @@ function showPreview() {
 		$disabled = !(($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS && $this->Model->ClassID != 0) || ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCTYPE && $this->Model->DocTypeID != 0));
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:fieldChooserBut('" . $cmd . "');", true, 100, 22, '', '', $disabled, false, '_' . $name);
 		if(!$extraField){
-			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
+			$showValue = ($type === we_navigation_navigation::STYPE_CLASS && stristr($value, "_")) ? substr($value, strpos($value, "_") + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
 					we_html_element::htmlHidden($name, $value) . we_html_tools::htmlTextInput(
 						"__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); top.content.mark();"', 'text', 400, 0), $title, 'left', 'defaultfont', '', $button);
