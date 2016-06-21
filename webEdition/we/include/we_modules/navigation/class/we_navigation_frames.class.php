@@ -65,23 +65,21 @@ class we_navigation_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLCmd(){
-		$pid = we_base_request::_(we_base_request::INT, 'pid');
-		if($pid === false){
+		if(($pid = we_base_request::_(we_base_request::INT, 'pid')) === false){
 			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
-		$rootjs = (!$pid ?
-				'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' : '');
-
-		$hiddens = we_html_element::htmlHiddens(array(
-				'pnt' => 'cmd',
-				'cmd' => 'no_cmd'));
-
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, we_navigation_tree::getItems($pid, $offset, $this->Tree->default_segment)))
+		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
+							'pnt' => 'cmd',
+							'cmd' => 'no_cmd')) .
+						we_html_element::jsElement(
+							($pid ?
+								'' :
+								'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
+							) . $this->Tree->getJSLoadTree(!$pid, we_navigation_tree::getItems($pid, $offset, $this->Tree->default_segment)))
 					)
 		));
 	}
@@ -191,7 +189,7 @@ function setTab(tab) {
 				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_frame.js'));
 	}
 
-	function getHTMLGeneral(){
+	private function getHTMLGeneral(){
 		$table = new we_html_table(
 			array('class' => 'default',
 			'style' => 'margin-top: 5px;'

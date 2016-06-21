@@ -96,23 +96,20 @@ class we_messaging_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLCmd(){
-
 		$head = $this->View->processCommands();
-		$tree = '';
-		if(($pid = we_base_request::_(we_base_request::INT, 'pnt')) !== false){
 
+		if(($pid = we_base_request::_(we_base_request::INT, 'pnt')) !== false){
 			$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
-			$rootjs = ($pid ? '' :
-					'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(' . $pid . ',\'root\',\'root\'));'
-				);
-
-
 			$tree = we_html_element::jsElement(
-					$rootjs .
+					($pid ? '' :
+						'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(' . $pid . ',\'root\',\'root\'));'
+					) .
 					$this->Tree->getJSLoadTree(!$pid, we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging()))
 			);
+		} else {
+			$tree = '';
 		}
 		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $tree), $head);
 	}
@@ -125,7 +122,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(' . $pid . ',\'roo
 		return $this->getHTMLDocument($body);
 	}
 
-	protected function getHTMLEditorHeader($mode=0){
+	protected function getHTMLEditorHeader($mode = 0){
 		$extraHead = we_html_element::jsElement('
 WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
 WE().consts.g_l.messaging={
