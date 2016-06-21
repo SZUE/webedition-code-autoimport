@@ -72,7 +72,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	}
 
 	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset(($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '');
+		return parent::getHTMLFrameset('', ($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '');
 	}
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
@@ -130,9 +130,7 @@ function setTab(tab) {
 	}
 	self.focus();
 	top.content.activ_tab=tab;
-}
-		');
-
+}');
 
 		$setActiveTabJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 		$Text = we_search_model::getLangText($this->View->Model->Path, $this->View->Model->Text);

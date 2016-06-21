@@ -25,7 +25,6 @@
 //TODO in modulesFrames: set module-settings as class properties instead of looping them through as method parameters!
 
 abstract class we_modules_frame{
-
 	var $module;
 	var $db;
 	var $frameset;
@@ -54,10 +53,10 @@ abstract class we_modules_frame{
 
 	function getHTMLDocument($body, $extraHead = ''){
 		return $this->getHTMLDocumentHeader() .
-				$extraHead .
-				(empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']) .
-				YAHOO_FILES .
-				'</head>' . $body . '</html>';
+			$extraHead .
+			(empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']) .
+			YAHOO_FILES .
+			'</head>' . $body . '</html>';
 	}
 
 	function getJSCmdCode(){
@@ -86,9 +85,9 @@ abstract class we_modules_frame{
 				return $this->getHTMLExitQuestion();
 			default:
 				$ret = (empty($GLOBALS['extraJS']) ?
-								'' :
-								$this->getHTMLDocument('<body></body>', $GLOBALS['extraJS'])
-						);
+						'' :
+						$this->getHTMLDocument('<body></body>', $GLOBALS['extraJS'])
+					);
 				unset($GLOBALS['extraJS']);
 				t_e(__FILE__ . ' unknown reference: ' . $what, ($ret ? 'generated emergency document' : ''));
 				return $ret;
@@ -99,17 +98,17 @@ abstract class we_modules_frame{
 		$this->setTreeWidthFromCookie();
 
 		$extraHead = $this->getJSCmdCode() .
-				self::getJSToggleTreeCode($this->module) .
-				we_main_headermenu::css() .
-				$extraHead;
+			self::getJSToggleTreeCode($this->module) .
+			we_main_headermenu::css() .
+			$extraHead;
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();'), we_html_element::htmlExIFrame('header', self::getHTMLHeader(
-										(isset($this->toolDir) ?
-												$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
-												WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
-						($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '&pnt=iconbar' . $extraUrlParams, '', '', '', false) : '') .
-						$this->getHTMLResize($extraUrlParams) .
-						we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . $extraUrlParams)
+						(isset($this->toolDir) ?
+							$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
+							WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
+				($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '&pnt=iconbar' . $extraUrlParams, '', '', '', false) : '') .
+				$this->getHTMLResize($extraUrlParams) .
+				we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . $extraUrlParams)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -121,8 +120,8 @@ abstract class we_modules_frame{
 		$menu = $jmenu->getCode(false);
 
 		return we_html_element::jsElement(we_main_headermenu::createMessageConsole('moduleFrame', true)) .
-				we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu) .
-				we_html_element::htmlDiv(array('id' => 'moduleMessageConsole'), we_main_headermenu::createMessageConsole('moduleFrame', false));
+			we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu) .
+			we_html_element::htmlDiv(array('id' => 'moduleMessageConsole'), we_main_headermenu::createMessageConsole('moduleFrame', false));
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){
@@ -133,10 +132,10 @@ abstract class we_modules_frame{
 </div>';
 
 		$content = we_html_element::htmlDiv(array('id' => 'moduleContent'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('id' => 'vtabs'), $incDecTree) .
-								$this->getHTMLLeft()
-						) .
-						we_html_element::htmlDiv(array('id' => 'right', 'style' => 'left: ' . $this->treeWidth . 'px;'), we_html_element::htmlIFrame('editor', $this->frameset . '&pnt=editor' . $extraUrlParams, ' ', '', '', false)
-						)
+					$this->getHTMLLeft()
+				) .
+				we_html_element::htmlDiv(array('id' => 'right', 'style' => 'left: ' . $this->treeWidth . 'px;'), we_html_element::htmlIFrame('editor', $this->frameset . '&pnt=editor' . $extraUrlParams, ' ', '', '', false)
+				)
 		);
 
 		return we_html_element::htmlDiv(array('id' => 'resize', 'name' => 'resize', 'class' => ($this->hasIconbar ? 'withIconBar' : ''), 'style' => 'overflow:hidden'), $content);
@@ -146,19 +145,19 @@ abstract class we_modules_frame{
 		//we load tree in iFrame, because the complete tree JS is based on document.open() and document.write()
 		//it makes not much sense, to rewrite trees before abandoning them anyway
 		return we_html_element::htmlDiv(array(
-					'id' => 'left', 'name' => 'left'), we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => ($this->showTreeHeader ? 'display:block;' : '')), $this->getHTMLTreeheader()) .
-						$this->getHTMLTree() .
-						($this->showTreeFooter ? we_html_element::htmlDiv(array('id' => 'treefooter', 'class' => 'editfooter'), $this->getHTMLTreefooter()) :
-								''
-						)
+				'id' => 'left', 'name' => 'left'), we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => ($this->showTreeHeader ? 'display:block;' : '')), $this->getHTMLTreeheader()) .
+				$this->getHTMLTree() .
+				($this->showTreeFooter ? we_html_element::htmlDiv(array('id' => 'treefooter', 'class' => 'editfooter'), $this->getHTMLTreefooter()) :
+					''
+				)
 		);
 	}
 
 	protected function getHTMLTree($extraHead = ''){
 		return we_html_element::htmlDiv(array(
-					'id' => 'tree',
-					'class' => ($this->showTreeHeader ? ' withHeader' : '') . ($this->showTreeFooter ? ' withFooter' : '')
-						), $extraHead . $this->Tree->getHTMLContruct()
+				'id' => 'tree',
+				'class' => ($this->showTreeHeader ? ' withHeader' : '') . ($this->showTreeFooter ? ' withFooter' : '')
+				), $extraHead . $this->Tree->getHTMLContruct()
 		);
 	}
 
@@ -175,8 +174,8 @@ abstract class we_modules_frame{
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
 		$sid = we_base_request::_(we_base_request::STRING, 'sid');
 		$body = we_html_element::htmlBody(array('class' => 'moduleEditor'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorHeader') .
-						we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'border:0px;width:100%;height:100%;', '', true, 'editorBody') .
-						we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorButtonFrame')
+				we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'border:0px;width:100%;height:100%;', '', true, 'editorBody') .
+				we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorButtonFrame')
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -233,8 +232,8 @@ function we_save() {
 			$cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
-							we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $yes, $no, $cancel) .
-							'</body>');
+					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $yes, $no, $cancel) .
+					'</body>');
 		}
 	}
 
