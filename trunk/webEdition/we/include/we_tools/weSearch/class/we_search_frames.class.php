@@ -33,7 +33,7 @@ class we_search_frames extends we_modules_frame{
 		$this->module = 'weSearch';
 		parent::__construct(WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/edit_' . $this->module . '_frameset.php?mod=' . $this->module);
 		$this->Tree = new we_search_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
-		$this->View = new we_search_view($frameset, 'top.content');
+		$this->View = new we_search_view($this->frameset, 'top.content');
 	}
 
 	protected function getHTMLCmd(){
