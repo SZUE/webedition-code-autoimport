@@ -1298,11 +1298,18 @@ class we_object extends we_document{
 		$path = id_to_path($defaultID, VFILE_TABLE);
 		$rootDir = 0;
 		$table = VFILE_TABLE;
+
 		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("top.opener._EditorFrame.setEditorIsHot(true);");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDir . "','" . we_base_ContentTypes::COLLECTION . "'," . (permissionhandler::hasPerm("CAN_SEE_COLLECTIONS") ? 0 : 1) . ")");
-		$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value=''");
+		$btnSelect = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDir . "','" . we_base_ContentTypes::COLLECTION . "'," . (permissionhandler::hasPerm("CAN_SEE_COLLECTIONS") ? 0 : 1) . ")");
+
+		$btnDelete = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value=''");
+
+		$wecmdenc1 = we_base_request::encCmd("WE().layout.weEditorFrameController.getVisibleEditorFrame().we_form.elements['" . $idname . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("WE().layout.weEditorFrameController.getVisibleEditorFrame().we_form.elements['" . $textname . "'].value");
+		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix($table) . "');", true, 0, 0, "", "", false, false);
+
 		/*
 		  DAMD: der Autocompleter funktioniert hier nicht...
 		  $yuiSuggest =& weSuggest::getInstance();
@@ -1315,12 +1322,14 @@ class we_object extends we_document{
 		  $yuiSuggest->setSelector(weSuggest::DocSelector);
 		  $yuiSuggest->setTable($table);
 		  $yuiSuggest->setWidth(246);
-		  $yuiSuggest->setSelectButton($button,10);
-		  $yuiSuggest->setTrashButton($delbutton,5);
+		  $yuiSuggest->setSelectButton($btnSelect,10);
+		  $yuiSuggest->setTrashButton($btnDelete,5);
 
 		  return weSuggest::getYuiFiles().$yuiSuggest->getHTML().$yuiSuggest->getYuiJs();
 		 */
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 246, 0), "", "left", "defaultfont", we_html_element::htmlHidden($idname, $collectionID), $button, $delbutton);
+		$buttons = $btnSelect . $btnNewCollection . $btnDelete;
+
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", 216, 0), "", "left", "defaultfont", we_html_element::htmlHidden($idname, $collectionID), $buttons);
 	}
 
 	private function getMultiObjectFieldHTML($name, $i, $f){
