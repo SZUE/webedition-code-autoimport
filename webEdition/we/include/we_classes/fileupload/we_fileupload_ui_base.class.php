@@ -390,7 +390,18 @@ we_FileUpload.init({
 	file : "' . g_l('importFiles', '[file]') . '",
 	btnClose : "' . g_l('button', '[close][value]') . '",
 	btnCancel : "' . g_l('button', '[cancel][value]') . '",
-	btnUpload : "' . g_l('button', '[upload][value]') . '"
+	btnUpload : "' . g_l('button', '[upload][value]') . '",
+	btnProcess: "' . g_l('importFiles', '[btnProcess]') . '",
+	maskReadImage: "' . g_l('importFiles', '[maskReadImage]') . '",
+	maskProcessImage: "' . g_l('importFiles', '[maskProcessImage]') . '",
+	maskImporterReadImages: "' . addslashes(g_l('importFiles', '[maskImporterReadImages]')) . '",
+	maskImporterProcessImages: "' . addslashes(g_l('importFiles', '[maskImporterProcessImages]')) . '",
+	editScaled: "' . g_l('importFiles', '[scaled_to]') . '",
+	editRotation: "' . g_l('importFiles', '[rotation]') . '",
+	editRotationLeft: "' . g_l('global', '[left]') . '",
+	editRotationRight: "' . g_l('global', '[right]') . '",
+	editQuality: "' . g_l('weClass', '[quality]') . '",
+	editNotEdited: "' . g_l('importFiles', '[not_edited]') . '"
 }';
 	}
 

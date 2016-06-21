@@ -479,7 +479,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if($this->ContentType === we_base_ContentTypes::WEDOCUMENT){
 			$only = $this->getUsedElements(true);
 			//FIXME:needed for rebuild, since tags are unintialized
-			$only = $only ? array_shift($only, 'Title', 'Description', 'Keywords') : null;
+			$only = $only ? array_unshift($only, 'Title', 'Description', 'Keywords') : null;
 		}
 		return parent::insertAtIndex($only, $fieldTypes);
 	}

@@ -33,10 +33,6 @@ class we_users_frames extends we_modules_frame{
 		$this->View = new we_users_view($frameset, 'top.content');
 	}
 
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
-	}
-
 	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
 			//use this to get js code
@@ -45,19 +41,15 @@ class we_users_frames extends we_modules_frame{
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
-		$rootjs = "";
-		if(!$pid){
-			$rootjs.=
-				'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
-		}
-		$hiddens = we_html_element::htmlHiddens(array(
-				"pnt" => "cmd",
-				"cmd" => "no_cmd"));
-
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						we_html_element::jsElement($rootjs .
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+							"pnt" => "cmd",
+							"cmd" => "no_cmd")) .
+						we_html_element::jsElement(
+							($pid ?
+								'' :
+								'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));') .
 							$this->Tree->getJSLoadTree(!$pid, we_tree_users::getItems($pid, $offset, $this->Tree->default_segment))
 						)
 					)
@@ -82,9 +74,9 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		return we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) . we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table);
 	}
 
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){//FIXME: find one working condition
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 		$user_object = $_SESSION["user_session_data"];
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody')), $user_object->formHeader(we_base_request::_(we_base_request::INT, "tab", 0)));
@@ -138,8 +130,15 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $form), $js);
 	}
 
-	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
-		return parent::getHTMLEditorFooter('save_user');
+	function getHTML($what = '', $mode = '', $step = 0){
+		switch($what){
+			case 'edfooter':
+				return $this->getHTMLEditorFooter('save_user');
+			case 'frameset':
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
+			default:
+				return parent::getHTML($what, $mode, $step);
+		}
 	}
 
 }

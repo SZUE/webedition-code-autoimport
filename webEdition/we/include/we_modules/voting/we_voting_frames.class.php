@@ -48,30 +48,28 @@ class we_voting_frames extends we_modules_frame{
 					);
 			case "delete_log":
 				return $this->getHTMLDeleteLog();
+			case 'frameset':
+				$this->View->voting->clearSessionVars();
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
 			default:
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $step);
 		}
 	}
 
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		$this->View->voting->clearSessionVars();
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
-	}
-
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab(g_l('modules_voting', '[property]'), '((top.content.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
+		$we_tabs->addTab(new we_tab(g_l('modules_voting', '[property]'), we_tab::NORMAL, "setTab(1);", array("id" => "tab_1")));
 		if(!$this->View->voting->IsFolder){
-			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[inquiry]'), '((top.content.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
-			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[options]'), '((top.content.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
+			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[inquiry]'), we_tab::NORMAL, "setTab(2);", array("id" => "tab_2")));
+			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[options]'), we_tab::NORMAL, "setTab(3);", array("id" => "tab_3")));
 
 			if($this->View->voting->ID){
-				$we_tabs->addTab(new we_tab(g_l('modules_voting', '[result]'), '((top.content.activ_tab==4) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('4');", array("id" => "tab_4")));
+				$we_tabs->addTab(new we_tab(g_l('modules_voting', '[result]'), we_tab::NORMAL, "setTab(4);", array("id" => "tab_4")));
 			}
 		}
 
@@ -118,7 +116,7 @@ function setTab(tab) {
 
 	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
+			return parent::getHTMLEditorFooter('');
 		}
 
 		return $this->getHTMLDocument(
@@ -131,7 +129,7 @@ function setTab(tab) {
 		);
 	}
 
-	function getPercent($total, $value, $precision = 0){
+	private function getPercent($total, $value, $precision = 0){
 		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
 		return we_base_util::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
 	}
@@ -568,7 +566,7 @@ function newIp(){
 					$this->View->voting->Scores[$key] = 0;
 				}
 
-				$percent = we_voting_frames::getPercent($total_score, $this->View->voting->Scores[$key], 2);
+				$percent = self::getPercent($total_score, $this->View->voting->Scores[$key], 2);
 
 				$pb = new we_progressBar($percent);
 				$pb->setName('item' . $key);
@@ -734,20 +732,17 @@ function setVisible(id,visible){
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
-		$rootjs = '';
-		if(!$pid){
-			$rootjs.=
-				'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
-		}
-
-		$hiddens = we_html_element::htmlHiddens(array(
-				"pnt" => "cmd",
-				"cmd" => "no_cmd"));
-
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array(), we_html_element::htmlForm(
-						array("name" => "we_form"), $hiddens . we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, we_voting_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)))
+						array("name" => "we_form"), we_html_element::htmlHiddens(array(
+							"pnt" => "cmd",
+							"cmd" => "no_cmd")
+						) . we_html_element::jsElement(
+							($pid ?
+								'' :
+								'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
+							) . $this->Tree->getJSLoadTree(!$pid, we_voting_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)))
 					)
 				)
 		);
@@ -798,13 +793,6 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		);
 
 		return $this->getHTMLDocument($body);
-	}
-
-	private function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
-
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, "", 'readonly onchange="top.content.setHot();"', "text", $width, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	private function getHTMLResetIPData(){

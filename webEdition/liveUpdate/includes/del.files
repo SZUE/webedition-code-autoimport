@@ -985,6 +985,8 @@ apps/toolfactory/lang/no/default.xml
 apps/toolfactory/hook/we_jsCmdHook_toolfactory.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
 apps/toolfactory/hook/custom_hooks/dummy
+!lib/additional/tinymce/plugins/paste
+!lib/additional/tinymce/plugins/table
 !wysiwyg
 !webEdition/lib/we/xml
 !webEdition/lib/we/net/LiveUpdate

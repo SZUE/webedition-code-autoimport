@@ -60,21 +60,13 @@ class we_customer_frames extends we_modules_frame{
 				return $this->getHTMLSearch();
 			case 'settings':
 				return $this->getHTMLSettings();
+			case 'frameset':
+				$this->View->customer->clearSessionVars();
+				$this->View->settings->load(false);
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode() . $this->View->getJSTreeHeader(), ($sid = we_base_request::_(we_base_request::RAW, 'sid', false)) !== false ? '&sid=' . $sid : '');
 			default:
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $step);
 		}
-	}
-
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		$this->View->customer->clearSessionVars();
-		$this->View->settings->load(false);
-		$extraHead = $this->Tree->getJSTreeCode() .
-			$this->View->getJSTreeHeader();
-
-		$sid = we_base_request::_(we_base_request::RAW, 'sid', false);
-		$extraUrlParams = $sid !== false ? '&sid=' . $sid : '';
-
-		return parent::getHTMLFrameset($extraHead, $extraUrlParams);
 	}
 
 	//TODO: move editor-body relatetd stuff to weCustomerView! => note dependencies on jsOut_fieldTypesByName
@@ -99,11 +91,11 @@ class we_customer_frames extends we_modules_frame{
 		return $select;
 	}
 
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		$extraJS = 'var aTabs={';
 
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		$tabs = new we_tabs();
@@ -327,9 +319,16 @@ function setTab(tab) {
 		);
 	}
 
+	function getHTMLBox($content, $headline = "", $width = 100, $height = 50, $w = 25, $vh = 0, $ident = 0, $space = 5, $headline_align = "left", $content_align = "left"){
+		$table = new we_html_table(array("width" => $width, "height" => $height, "class" => 'default', 'style' => 'margin-left:' . intval($ident) . 'px;margin-top:' . intval($vh) . 'px;margin-bottom:' . ($w && $headline ? $vh : 0) . 'px;'), 1, 2);
+
+		$table->setCol(0, 0, array("style" => 'vertical-align:middle;text-align:' . $headline_align . ';padding-right:' . $space . 'px;', "class" => "defaultfont lowContrast"), str_replace(" ", "&nbsp;", $headline));
+		$table->setCol(0, 1, array("style" => 'vertical-align:middle;text-align:' . $content_align), $content);
+		return $table->getHtml();
+	}
+
 	protected function getHTMLCmd(){
-		$p = we_base_request::_(we_base_request::RAW, 'pid');
-		if($p === false){
+		if(($p = we_base_request::_(we_base_request::RAW, 'pid')) === false){
 			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 		$pid = ($GLOBALS['WE_BACKENDCHARSET'] === 'UTF-8') ?
@@ -348,12 +347,10 @@ function setTab(tab) {
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 
-		$hiddens = we_html_element::htmlHiddens(array(
-				"pnt" => "cmd",
-				"cmd" => "no_cmd"));
-
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+							"pnt" => "cmd",
+							"cmd" => "no_cmd")) .
 						we_html_element::jsElement(
 							(we_base_request::_(we_base_request::STRING, 'error') ?
 								we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .

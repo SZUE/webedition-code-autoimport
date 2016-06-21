@@ -127,7 +127,7 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 				return false;
 			case 'pastetext':
 			case 'pasteword':
-				return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('copypaste', $contextMenu));
+				return parent::hasProp('', $contextMenu) || parent::hasProp('copypaste', $contextMenu);
 			case 'absolute':
 			case 'insertlayer':
 			case 'movebackward':
@@ -139,7 +139,7 @@ class we_wysiwyg_ToolbarButton extends we_wysiwyg_ToolbarElement{
 			case 'visibleborders':
 				return parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu);
 			case 'selectall':
-				return $this->editor->setPlugin('paste', parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
+				return parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu);
 			case 'search':
 			case 'replace':
 				return $this->editor->setPlugin('searchreplace', parent::hasProp('', $contextMenu) || parent::hasProp('essential', $contextMenu));
