@@ -111,13 +111,13 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab(g_l('navigation', '[property]'), '((top.content.activ_tab==' . self::TAB_PROPERTIES . ') ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('" . self::TAB_PROPERTIES . "');", array("id" => "tab_" . self::TAB_PROPERTIES)));
+		$we_tabs->addTab(new we_tab(g_l('navigation', '[property]'), '((top.content.activ_tab==' . self::TAB_PROPERTIES . ') ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab(" . self::TAB_PROPERTIES . ");", array("id" => "tab_" . self::TAB_PROPERTIES)));
 		if($this->Model->IsFolder && permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION')){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[content]'), '((top.content.activ_tab=="' . self::TAB_CONTENT . '") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('" . self::TAB_CONTENT . "');", array("id" => "tab_" . self::TAB_CONTENT)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[content]'), '((top.content.activ_tab=="' . self::TAB_CONTENT . '") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab(" . self::TAB_CONTENT . ");", array("id" => "tab_" . self::TAB_CONTENT)));
 		}
 
 		if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_EDIT_CUSTOMERFILTER")){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[customers]'), '((top.content.activ_tab=="' . self::TAB_CUSTOMER . '") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('" . self::TAB_CUSTOMER . "');", array("id" => "tab_" . self::TAB_CUSTOMER)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[customers]'), '((top.content.activ_tab=="' . self::TAB_CUSTOMER . '") ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab(" . self::TAB_CUSTOMER . ");", array("id" => "tab_" . self::TAB_CUSTOMER)));
 		}
 
 		if($this->Model->IsFolder){
@@ -1379,7 +1379,7 @@ function showPreview() {
 
 	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorFooter('');
 		}
 
 		$table2 = new we_html_table(array('class' => 'default', "style" => 'width:400px;'), 1, 2);

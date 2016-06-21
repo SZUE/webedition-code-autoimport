@@ -65,13 +65,13 @@ class we_voting_frames extends we_modules_frame{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab(g_l('modules_voting', '[property]'), '((top.content.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
+		$we_tabs->addTab(new we_tab(g_l('modules_voting', '[property]'), '((top.content.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab(1);", array("id" => "tab_1")));
 		if(!$this->View->voting->IsFolder){
-			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[inquiry]'), '((top.content.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
-			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[options]'), '((top.content.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
+			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[inquiry]'), '((top.content.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab(2);", array("id" => "tab_2")));
+			$we_tabs->addTab(new we_tab(g_l('modules_voting', '[options]'), '((top.content.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab(3);", array("id" => "tab_3")));
 
 			if($this->View->voting->ID){
-				$we_tabs->addTab(new we_tab(g_l('modules_voting', '[result]'), '((top.content.activ_tab==4) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('4');", array("id" => "tab_4")));
+				$we_tabs->addTab(new we_tab(g_l('modules_voting', '[result]'), '((top.content.activ_tab==4) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab(4);", array("id" => "tab_4")));
 			}
 		}
 
@@ -118,7 +118,7 @@ function setTab(tab) {
 
 	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
+			return parent::getHTMLEditorFooter('');
 		}
 
 		return $this->getHTMLDocument(

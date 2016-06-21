@@ -105,13 +105,13 @@ if(!($isObj OR $isTempl)){
 
 $we_tabs = new we_tabs();
 
-$we_tabs->addTab(new we_tab(g_l('versions', '[versionDiffs]'), '((activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
+$we_tabs->addTab(new we_tab(g_l('versions', '[versionDiffs]'), we_tab::NORMAL, "setTab(1);", array("id" => "tab_1")));
 
 if(!$isObj){
-	$we_tabs->addTab(new we_tab(g_l('versions', '[previewVersionNew]'), '((activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
+	$we_tabs->addTab(new we_tab(g_l('versions', '[previewVersionNew]'), we_tab::NORMAL, "setTab(2);", array("id" => "tab_2")));
 }
 if(!empty($oldDoc) && !$isObj){
-	$we_tabs->addTab(new we_tab(g_l('versions', '[previewVersionOld]'), '((activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
+	$we_tabs->addTab(new we_tab(g_l('versions', '[previewVersionOld]'), we_tab::NORMAL, "setTab(3);", array("id" => "tab_3")));
 }
 
 $pathLength = 40;

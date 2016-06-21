@@ -38,7 +38,7 @@ class we_banner_frames extends we_modules_frame{
 			case "edheader":
 				return $this->getHTMLEditorHeader($mode);
 			case "edfooter":
-				return $this->getHTMLEditorFooter($mode);
+				return $this->getHTMLEditorFooter('save_banner', we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
 			default:
 				return parent::getHTML($what);
 		}
@@ -100,10 +100,6 @@ function setTab(tab){
 			return $this->View->getHomeScreen();
 		}
 		return $this->getHTMLDocument($this->View->getProperties());
-	}
-
-	protected function getHTMLEditorFooter($mode = 0, $extraHead = ''){
-		return parent::getHTMLEditorFooter('save_banner', we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
 	}
 
 	protected function getHTMLCmd(){

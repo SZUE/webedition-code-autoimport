@@ -138,8 +138,13 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $form), $js);
 	}
 
-	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
-		return parent::getHTMLEditorFooter('save_user');
+	function getHTML($what = '', $mode = '', $step = 0){
+		switch($what){
+			case 'edfooter':
+				return $this->getHTMLEditorFooter('save_user');
+			default:
+				return parent::getHTML($what);
+		}
 	}
 
 }
