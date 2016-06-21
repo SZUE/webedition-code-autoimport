@@ -22,15 +22,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
+require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 define('WE_DEFAULT_EMAIL', 'mailserver@' . $_SERVER['SERVER_NAME']);
 define('WE_DEFAULT_SUBJECT', 'webEdition mailform');
 
-$blocked = false;
-
+$blocked = !we_tag('ifFormToken');
 
 // check to see if we need to lock or block the formmail request
-
 if(FORMMAIL_LOG){
 	// insert into log
 	$GLOBALS['DB_WE']->query('INSERT INTO ' . FORMMAIL_LOG_TABLE . ' SET ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"');
