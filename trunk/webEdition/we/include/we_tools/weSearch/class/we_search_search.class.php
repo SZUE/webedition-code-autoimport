@@ -191,7 +191,7 @@ class we_search_search extends we_search_base{
 							  } */
 							break;
 					}
-					$whereQuery = implode(' AND ', $whereQuery);
+					$whereQuery = implode(' AND ', array_filter($whereQuery));
 					$this->setwhere($whereQuery);
 					$this->insertInTempTable($whereQuery, $table);
 
@@ -1031,7 +1031,7 @@ class we_search_search extends we_search_base{
 			return;
 		}
 
-		return $this->usedMedia ? (' AND WETABLE.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $this->usedMedia) . ')') : ($useState === 2 ? '' : ' AND 0');
+		return $this->usedMedia ? ('WETABLE.ID ' . ($useState === 2 ? 'NOT ' : ' ') . 'IN(' . implode(',', $this->usedMedia) . ')') : ($useState === 2 ? '' : ' 0 ');
 	}
 
 	function searchHasReferenceToId($id, $table){
