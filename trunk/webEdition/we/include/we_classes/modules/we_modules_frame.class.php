@@ -83,6 +83,10 @@ abstract class we_modules_frame{
 				return $this->getHTMLSearch();
 			case 'exit_doc_question':
 				return $this->getHTMLExitQuestion();
+			case 'treeheader':
+				return $this->getHTMLTreeHeader();
+			case 'treefooter':
+				return $this->getHTMLTreeFooter();
 			default:
 				$ret = (empty($GLOBALS['extraJS']) ?
 						'' :
@@ -94,7 +98,7 @@ abstract class we_modules_frame{
 		}
 	}
 
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
+	protected function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$this->setTreeWidthFromCookie();
 
 		$extraHead = $this->getJSCmdCode() .
@@ -115,8 +119,8 @@ abstract class we_modules_frame{
 	}
 
 	protected function getHTMLHeader($menuFile){
-		$menu = include($menuFile);
-		$jmenu = new we_base_menu($menu, 'top.opener.top.load', '');
+		$inc = include($menuFile);
+		$jmenu = new we_base_menu($inc, 'top.opener.top.load', '');
 		$menu = $jmenu->getCode(false);
 
 		return we_html_element::jsElement(we_main_headermenu::createMessageConsole('moduleFrame', true)) .
@@ -125,7 +129,6 @@ abstract class we_modules_frame{
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){
-		t_e($extraUrlParams);
 		$incDecTree = '<div id="baumArrows">
 	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
 	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>
@@ -142,7 +145,7 @@ abstract class we_modules_frame{
 		return we_html_element::htmlDiv(array('id' => 'resize', 'name' => 'resize', 'class' => ($this->hasIconbar ? 'withIconBar' : ''), 'style' => 'overflow:hidden'), $content);
 	}
 
-	function getHTMLLeft(){
+	protected function getHTMLLeft(){
 		//we load tree in iFrame, because the complete tree JS is based on document.open() and document.write()
 		//it makes not much sense, to rewrite trees before abandoning them anyway
 		return we_html_element::htmlDiv(array(
@@ -182,9 +185,9 @@ abstract class we_modules_frame{
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#F0EFF0"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 		}
 	}
 
@@ -217,19 +220,10 @@ function we_save() {
 		// to be overridden
 	}
 
-	function getHTMLBox($content, $headline = "", $width = 100, $height = 50, $w = 25, $vh = 0, $ident = 0, $space = 5, $headline_align = "left", $content_align = "left"){
-		$table = new we_html_table(array("width" => $width, "height" => $height, "class" => 'default', 'style' => 'margin-left:' . intval($ident) . 'px;margin-top:' . intval($vh) . 'px;margin-bottom:' . ($w && $headline ? $vh : 0) . 'px;'), 1, 2);
-
-		$table->setCol(0, 0, array("style" => 'vertical-align:middle;text-align:' . $headline_align . ';padding-right:' . $space . 'px;', "class" => "defaultfont lowContrast"), str_replace(" ", "&nbsp;", $headline));
-		$table->setCol(0, 1, array("style" => 'vertical-align:middle;text-align:' . $content_align), $content);
-		return $table->getHtml();
-	}
-
 	protected function getHTMLExitQuestion(){
 		if(($dc = we_base_request::_(we_base_request::RAW, 'delayCmd'))){
-			$frame = 'opener.top.content';
-			$yes = $frame . '.hot=0;' . $frame . '.we_cmd("module_' . $this->module . '_save");self.close();';
-			$no = $frame . '.hot=0;' . $frame . '.we_cmd("' . $dc . '","' . we_base_request::_(we_base_request::INT, 'delayParam') . '");self.close();';
+			$yes =  'opener.top.content.hot=0;opener.top.content.we_cmd("module_' . $this->module . '_save");self.close();';
+			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd("' . $dc . '","' . we_base_request::_(we_base_request::INT, 'delayParam') . '");self.close();';
 			$cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
@@ -238,7 +232,7 @@ function we_save() {
 		}
 	}
 
-	function setTreeWidthFromCookie(){
+	private function setTreeWidthFromCookie(){
 		$tw = isset($_COOKIE["treewidth_modules"]) ? $_COOKIE["treewidth_modules"] : $this->treeDefaultWidth;
 		if(!is_numeric($tw)){
 			$tw = explode(',', trim($tw, ' ,'));
@@ -263,6 +257,13 @@ function we_save() {
 var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
 var currentModule="' . $module . '";
 ') . we_html_element::jsScript(JS_DIR . 'modules_tree.js');
+	}
+
+	protected function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
+		$cmd1 = "document.we_form.elements['" . $IDName . "'].value";
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "','" . $filter . "'," . $cmd1 . ");");
+
+		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', 400, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	/* process vars & commands

@@ -33,14 +33,19 @@ class we_glossary_frames extends we_modules_frame{
 		$this->View = new we_glossary_view($frameset);
 	}
 
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
+	function getHTML($what = '', $mode = '', $step = 0){
+		switch($what){
+			case 'frameset':
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
+			default:
+				return parent::getHTML($what, $mode, $step);
+		}
 	}
 
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			//FIXME: remove
-			return parent::getHTMLEditorHeader();
+			return parent::getHTMLEditorHeader(0);
 		}
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		if($cmdid && !is_numeric($cmdid)){

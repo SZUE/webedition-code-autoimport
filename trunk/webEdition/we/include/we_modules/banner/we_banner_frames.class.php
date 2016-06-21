@@ -39,18 +39,16 @@ class we_banner_frames extends we_modules_frame{
 				return $this->getHTMLEditorHeader($mode);
 			case "edfooter":
 				return $this->getHTMLEditorFooter('save_banner', we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
+			case 'frameset':
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
 			default:
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $step);
 		}
-	}
-
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		$isFolder = we_base_request::_(we_base_request::BOOL, "isFolder");

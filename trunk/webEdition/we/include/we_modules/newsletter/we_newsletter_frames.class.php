@@ -101,13 +101,11 @@ class we_newsletter_frames extends we_modules_frame{
 				return $this->getHTMLSendCmd();
 			case 'send_control':
 				return $this->getHTMLSendControl();
+			case 'frameset':
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
 			default:
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $step);
 		}
-	}
-
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 
 	/**
@@ -120,7 +118,7 @@ class we_newsletter_frames extends we_modules_frame{
 	 */
 	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		$group = we_base_request::_(we_base_request::BOOL, "group");
@@ -319,12 +317,6 @@ function afterLoad(){
 	 */
 
 	function getHTMLReporting(){
-
-		function getPercent($total, $value, $precision = 0){
-			$result = ($total ? round(($value * 100) / $total, $precision) : 0);
-			return we_base_util::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
-		}
-
 		$this->View->db->query('SELECT Log,stamp,DATE_FORMAT(stamp,"' . g_l('weEditorInfo', '[mysql_date_format]') . '") AS LogTime FROM ' . NEWSLETTER_LOG_TABLE . ' WHERE NewsletterID=' . $this->View->newsletter->ID . ' AND Log IN(\'log_start_send\', \'log_end_send\') ORDER BY stamp ASC');
 
 		$newsletterMailOrders = array();
@@ -546,16 +538,6 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 					)
 		)));
 		flush();
-	}
-
-	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
-
-	private function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = '', $acObject = null, $contentType = ''){
-		$cmd1 = "document.we_form.elements['" . $IDName . "'].value";
-
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "','" . $filter . "'," . $cmd1 . ",'" . we_base_request::encCmd($cmd) . "');");
-
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', $width, 0), '', 'left', 'defaultfont', '', permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? $button : '');
 	}
 
 	function getHTMLSettings(){

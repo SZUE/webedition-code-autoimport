@@ -48,23 +48,19 @@ class we_messaging_frames extends we_modules_frame{
 	function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			default:
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $step);
 			case "msg_fv_headers":
 				return $this->getHTMLFvHeaders();
 			case 'iconbar':
 				return $this->getHTMLIconbar();
+			case 'tree':
+				return $this->getHTMLTree(we_html_element::jsScript(JS_DIR . 'tree.js') .
+						we_html_element::jsScript(JS_DIR . 'messaging_tree.js'));
 		}
 		exit();
 	}
 
-	protected function getHTMLTree($extraHead = ''){
-		return parent::getHTMLTree(
-				we_html_element::jsScript(JS_DIR . 'tree.js') .
-				we_html_element::jsScript(JS_DIR . 'messaging_tree.js')
-		);
-	}
-
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
+	protected function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$this->transaction = $this->weTransaction;
 
 		$this->messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$this->transaction]);
@@ -129,7 +125,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(' . $pid . ',\'roo
 		return $this->getHTMLDocument($body);
 	}
 
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode=0){
 		$extraHead = we_html_element::jsElement('
 WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
 WE().consts.g_l.messaging={
@@ -223,7 +219,7 @@ function clearSearch() {
 		return $this->getHTMLDocument(we_html_element::htmlBody($attribs = array('id' => 'eHeaderBody'), $table->getHTML()), $extraHead);
 	}
 
-	protected function getHTMLEditorFooter($btn_cmd='', $extraHead = ''){
+	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
 
 	}
 
