@@ -41,7 +41,8 @@ class we_newsletter_dirSelector extends we_selector_directory{
 
 		echo we_html_tools::getHtmlTop() .
 		we_html_element::jsElement('
-top.clearEntries();' .
+top.clearEntries();
+top.makeNewFolder=false;' .
 			($msg ?
 				we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
 				'var ref;
@@ -58,8 +59,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 			) .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = 0;
-top.selectFile(top.currentID);') . '
+			'top.selectFile(top.currentID);') . '
 </head><body></body></html>';
 	}
 
@@ -80,7 +80,8 @@ top.selectFile(top.currentID);') . '
 
 		echo we_html_tools::getHtmlTop() .
 		we_html_element::jsElement('
-top.clearEntries();' .
+top.clearEntries();
+top.makeNewFolder=false;' .
 			($msg ?
 				we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
 				'var ref;
@@ -100,8 +101,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 			) .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.makeNewFolder = 0;
-top.selectFile(top.currentID);') . '
+			'top.selectFile(top.currentID);') . '
 </head><body></body></html>';
 	}
 

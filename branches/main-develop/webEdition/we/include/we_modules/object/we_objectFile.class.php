@@ -566,20 +566,24 @@ class we_objectFile extends we_document{
 			return array();
 		}
 		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableID), '', $db));
-		$ctable = OBJECT_X_TABLE . intval($tableID);
-		$tableInfo = $db->metadata($ctable);
-		$fields = $regs = array();
+		$tableInfo = $db->metadata(OBJECT_X_TABLE . intval($tableID));
+		$regs = array();
+		$fields = 0;
 		foreach($tableInfo as $info){
 			if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
-				if($regs[1] != 'OF' && $regs[1] != 'variant'){
-					$fields[] = array("name" => $regs[2], "type" => $regs[1], "length" => $info["len"]);
+				switch($regs[1]){
+					case 'OF':
+					case 'variant':
+						break;
+					default:
+						$fields++;
 				}
 			}
 		}
 
-		if((count($order) != count($fields)) || !in_array(0, $order)){
+		if((count($order) != $fields) || !in_array(0, $order)){
 			$order = array();
-			for($y = 0; $y < count($fields); $y++){
+			for($y = 0; $y < $fields; $y++){
 				$order[$y] = $y;
 			}
 		}
@@ -587,21 +591,18 @@ class we_objectFile extends we_document{
 		return $order;
 	}
 
-	static function getSortedTableInfo($tableID, $contentOnly = false, we_database_base $db = null, $checkVariants = false){
+	static function getSortedTableInfo($tableID, $contentOnly, we_database_base $db, $checkVariants = false){
 		if(!$tableID){
 			return array();
 		}
-		$db = ($db ? : new DB_WE());
 
 		$tableInfo = $db->metadata(OBJECT_X_TABLE . $tableID);
 		$tableInfo2 = array();
-		//FIXME: this is not going to work ever - the name is "input_name"
 		foreach($tableInfo as $arr){
 			$names = explode('_', $arr['name']);
 			switch($names[0]){
 				case 'variant':
-					if($names[1] != we_base_constants::WE_VARIANTS_ELEMENT_NAME){
-						$tableInfo2[] = $arr;
+					if($names[1] == we_base_constants::WE_VARIANTS_ELEMENT_NAME){
 						break;
 					}
 				//no break
@@ -875,11 +876,16 @@ class we_objectFile extends we_document{
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('object_change_objectlink','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $ObjectID . "');");
+		$btnSelect = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . VFILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . 0 . "','" . we_base_ContentTypes::COLLECTION . "'," . (permissionhandler::hasPerm("CAN_SEE_COLLECTIONS") ? 0 : 1) . ')');
 
-		$editCollectionButton = we_html_button::create_button(we_html_button::VIEW, ("javascript:var cid=document.we_form.elements['" . $idname . "'].value;if(cid != '0'){top.console.log(cid);top.doClickDirect(cid,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "');}"), true, 0, 0, '', '', ($collectionID ? false : false)); // FIXME: set disabled=true|false on select
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . VFILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . 0 . "','" . we_base_ContentTypes::COLLECTION . "'," . (permissionhandler::hasPerm("CAN_SEE_COLLECTIONS") ? 0 : 1) . ')') .
-			$editCollectionButton .
-			we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $collectionID . "')");
+		$wecmdenc1 = we_base_request::encCmd("WE().layout.weEditorFrameController.getVisibleEditorFrame().we_form.elements['" . $idname . "'].value");
+		$wecmdenc2 = we_base_request::encCmd("WE().layout.weEditorFrameController.getVisibleEditorFrame().we_form.elements['" . $textname . "'].value");
+		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix($table) . "');", true, 0, 0, "", "", false, false);
+
+		$btnEdit = we_html_button::create_button(we_html_button::VIEW, ("javascript:var cid=document.we_form.elements['" . $idname . "'].value;if(cid != '0'){top.console.log(cid);top.doClickDirect(cid,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "');}"), true, 0, 0, '', '', ($collectionID ? false : false)); // FIXME: set disabled=true|false on select
+		$btnTrash = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value=0;document.we_form.elements['" . $textname . "'].value='';_EditorFrame.setEditorIsHot(true);top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','" . we_object::QUERY_PREFIX . $collectionID . "')");
+
+		$buttons = $btnSelect . (permissionhandler::hasPerm('NEW_COLLECTION') ? $btnNewCollection : '') . $btnEdit . $btnTrash;
 
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setNoAutoInit(true); // autosuggest is deactivated
@@ -891,9 +897,10 @@ class we_objectFile extends we_document{
 		$yuiSuggest->setResult($idname, $collectionID);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(VFILES_TABLE);
-		$yuiSuggest->setWidth(443);
+		$yuiSuggest->setWidth(396);
+		
 
-		return we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), $this->getPreviewHeadline('collection', $name), "left", "defaultfont", $button);
+		return we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), $this->getPreviewHeadline('collection', $name), "left", "defaultfont", $buttons);
 	}
 
 	private function getMultiObjectFieldHTML($type, $name, array $attribs, $editable = true){

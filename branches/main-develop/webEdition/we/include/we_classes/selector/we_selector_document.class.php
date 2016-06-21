@@ -43,7 +43,7 @@ class we_selector_document extends we_selector_directory{
 		we_base_ContentTypes::COLLECTION => 'fa:btn_add_collection,fa-plus,fa-lg fa-archive',
 	);
 
-	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startID = 0){
+	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startID = 0, $lang = ''){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter, $startID);
 		$this->fields .= ',RestrictOwners,Owners,OwnersReadOnly,CreatorID';
 		switch($this->table){
@@ -64,6 +64,7 @@ class we_selector_document extends we_selector_directory{
 		}
 
 		$this->canSelectDir = $canSelectDir;
+		$this->language = $lang;
 
 		$this->title = g_l('fileselector', '[docSelector][title]');
 		$this->userCanMakeNewFile = $this->_userCanMakeNewFile();
@@ -78,12 +79,11 @@ class we_selector_document extends we_selector_directory{
 	function query(){
 		$filterQuery = '';
 		if($this->filter){
-			if(strpos($this->filter, ',')){
-				$contentTypes = explode(',', $this->filter);
-				$filterQuery .= ' AND (  ' . ($contentTypes ? 'ContentType IN ("' . implode('","', $contentTypes) . '") OR ' : '') . ' isFolder=1)';
-			} else {
-				$filterQuery = ' AND (ContentType="' . $this->db->escape($this->filter) . '" OR IsFolder=1 ) ';
-			}
+			$contentTypes = explode(',', $this->filter);
+			$filterQuery .= ' AND (  ' . ($contentTypes ? 'ContentType IN ("' . implode('","', $contentTypes) . '") OR ' : '') . ' isFolder=1)';
+		}
+		if($this->language){
+			$filterQuery .=' AND (Language="' . $this->language . '" OR isFolder=1)';
 		}
 		// deal with workspaces
 		$wsQuery = '';
@@ -181,7 +181,7 @@ function exit_open() {
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . "what=$what&rootDirID=" . $this->rootDirID . "&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&startID=" . $this->startID . "&filter=" . $this->filter . "&open_doc=" . $this->open_doc;
+		return $_SERVER['SCRIPT_NAME'] . 'what=' . $what . '&rootDirID=' . $this->rootDirID . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter . '&open_doc=' . $this->open_doc . '&lang=' . $this->language;
 	}
 
 	protected function printCmdAddEntriesHTML(){
@@ -340,17 +340,17 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 			STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
 			we_html_element::jsElement('
-	function setInfoSize() {
-		infoSize = document.body.clientHeight;
-		if(infoElem=document.getElementById("info")) {
-			infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0 )+"px";
-		}
+function setInfoSize() {
+	infoSize = document.body.clientHeight;
+	if(infoElem=document.getElementById("info")) {
+		infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0 )+"px";
 	}
-	function weWriteBreadCrumb(BreadCrumb){
-		if(top.document.getElementById("fspath")){
-			top.document.getElementById("fspath").innerHTML = BreadCrumb;
-		}
-	}') . '
+}
+function weWriteBreadCrumb(BreadCrumb){
+	if(top.document.getElementById("fspath")){
+		top.document.getElementById("fspath").innerHTML = BreadCrumb;
+	}
+}') . '
 </head>
 <body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';
 		if((isset($result['ContentType']) && !empty($result['ContentType'])) || ($this->table == VFILE_TABLE )){//FIXME: this check should be obsolete, remove in 6.6
@@ -442,37 +442,27 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 							"caption" => g_l('fileselector', '[name]'),
 							"content" => (
 							$showPreview ?
-								"<div style='float:left; vertical-align:baseline; margin-right:4px;'><a href='" . $result['Path'] . "' target='_blank' style='color:black'><i class='fa fa-external-link fa-lg'></i></a></div>" :
-								""
-							) . "<div style='margin-right:14px'>" .
-							($showPreview ?
-								"<a href='" . $result['Path'] . "' target='_blank' style='color:black'>" . $result['Text'] . "</a>" :
+								"<a href='" . $result['Path'] . "' target='_blank' style='color:black'><i style='margin-right:4px' class='fa fa-external-link fa-lg'></i>" . $result['Text'] . "</a>" :
 								$result['Text']
-							) . "</div>"
+							)
 						),
 						array(
 							"caption" => "ID",
-							"content" => "<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
-					<div style='float:left; vertical-align:baseline; margin-right:4px;'>
-					<i class='fa fa-edit fa-lg'></i>
-					</div></a>
-					<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'>
-						<div>" . $this->id . "</div>
-					</a>"
+							"content" => "<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><i style='margin-right:4px' class='fa fa-edit fa-lg'></i>" . $this->id . "</a>"
 						)
 					)),
 			);
 			if($result['CreationDate']){
 				$previewFields["properies"]["data"][] = array(
-					"caption" => g_l('fileselector', '[created]'),
-					"content" => is_int($result['CreationDate']) ? date(g_l('date', '[format][default]'), $result['CreationDate']) : $result['CreationDate']
+					'caption' => g_l('fileselector', '[created]'),
+					'content' => is_numeric($result['CreationDate']) ? date(g_l('date', '[format][default]'), $result['CreationDate']) : $result['CreationDate']
 				);
 			}
 
 			if($result['ModDate']){
 				$previewFields["properies"]["data"][] = array(
 					"caption" => g_l('fileselector', '[modified]'),
-					"content" => is_int($result['ModDate']) ? date(g_l('date', '[format][default]'), $result['ModDate']) : $result['ModDate']
+					"content" => is_numeric($result['ModDate']) ? date(g_l('date', '[format][default]'), $result['ModDate']) : $result['ModDate']
 				);
 			}
 
@@ -480,6 +470,14 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 				"caption" => g_l('fileselector', '[type]'),
 				"content" => ((g_l('contentTypes', '[' . $result['ContentType'] . ']') !== false) ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType'])
 			);
+
+			if(isset($result['Language'])){
+				$langs = getWeFrontendLanguagesForBackend();
+				$previewFields['properies']['data'][] = array(
+					'caption' => g_l('weClass', '[language]'),
+					'content' => $result['Language'] ? $langs[$result['Language']] : '-'
+				);
+			}
 
 
 			if(isset($imagesize)){

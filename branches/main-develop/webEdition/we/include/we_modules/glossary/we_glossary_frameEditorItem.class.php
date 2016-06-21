@@ -27,7 +27,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	function Header(we_glossary_frames $weGlossaryFrames){
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(new we_tab(g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab('1');"));
+		$we_tabs->addTab(new we_tab(g_l('modules_glossary', '[property]'), we_tab::ACTIVE, "setTab(1);"));
 
 		switch($weGlossaryFrames->View->Glossary->Type){
 			case we_glossary_glossary::TYPE_ABBREVATION:

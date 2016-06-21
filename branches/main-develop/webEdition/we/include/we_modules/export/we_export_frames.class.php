@@ -46,31 +46,27 @@ class we_export_frames extends we_modules_frame{
 		switch($what){
 			case "load":
 				return $this->getHTMLCmd();
+			case 'frameset':
+				$this->View->export->clearSessionVars();
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
 			case "treeheader":
 			case "treefooter":
 				return '';
 			default:
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $step);
 		}
 	}
 
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		$this->View->export->clearSessionVars();
-		$extraHead = $this->Tree->getJSTreeCode();
-
-		return parent::getHTMLFrameset($extraHead);
-	}
-
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(new we_tab(g_l('export', '[property]'), '((top.content.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
+		$we_tabs->addTab(new we_tab(g_l('export', '[property]'), we_tab::NORMAL, "setTab(1);", array("id" => "tab_1")));
 		if($this->View->export->IsFolder == 0){
-			$we_tabs->addTab(new we_tab(g_l('export', '[options]'), '((top.content.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array("id" => "tab_2")));
-			$we_tabs->addTab(new we_tab(g_l('export', '[log]'), '((top.content.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array("id" => "tab_3")));
+			$we_tabs->addTab(new we_tab(g_l('export', '[options]'), we_tab::NORMAL, "setTab(2);", array("id" => "tab_2")));
+			$we_tabs->addTab(new we_tab(g_l('export', '[log]'), we_tab::NORMAL, "setTab(3);", array("id" => "tab_3")));
 		}
 
 		$tabsHead = we_tabs::getHeader('
@@ -118,7 +114,7 @@ function setTab(tab) {
 
 	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("bgcolor" => "#EFF0EF"), ""));
+			return parent::getHTMLEditorFooter('');
 		}
 
 		$col = 0;
@@ -678,15 +674,6 @@ if (top.content.editor.edbody.addLog){
 			default:
 				return '';
 		}
-	}
-
-	/* creates the FileChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
-
-	private function formFileChooser($width = "", $IDName = "ParentID", $IDValue = "/", $cmd = "", $filter = ""){
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();formFileChooser('browse_server','" . $wecmdenc1 . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
-
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 42, $IDValue, "", ' readonly onchange="top.content.hot=1;"', "text", $width, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}
 
 	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){

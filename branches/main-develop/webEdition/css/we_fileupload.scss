@@ -154,6 +154,14 @@ table.importer_files{
 	}
 }
 
+.we_file_drag_maskSpinner{
+	margin: 20px 0 10px 0;
+	font-size: 2em;
+}
+.we_file_drag_maskBusyText{
+	font-size:1.6em;
+}
+
 #editImage{
 	display: none;
 	padding: 4px 0 6px 4px;
@@ -187,6 +195,17 @@ div.editorLoupe{
 		overflow: hidden;
 		position: absolute;
 		background-color: transparent;
+	}
+	div.editorLoupeInfo{
+		top: 0px;
+		left: 0px;
+		border: 1px solid black;
+		width: auto;
+		height: auto;
+		padding: 2px;
+		z-index: 2200;
+		position: absolute;
+		background-color: white;
 		display: none;
 	}
 }
@@ -313,6 +332,14 @@ div.fileuploadImporter{
 		bottom: 0;
 		background-color: gray;
 		opacity: 0.8;
+	}
+	div.we_file_drag_maskSpinner{
+		padding-top: 12px;
+		text-align: center;
+	}
+	div.we_file_drag_maskBusyText{
+		padding-top: 18px;
+		text-align: center;
 	}
 	div.editorLoupe{
 		top: initial;

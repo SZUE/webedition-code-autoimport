@@ -38,19 +38,17 @@ class we_banner_frames extends we_modules_frame{
 			case "edheader":
 				return $this->getHTMLEditorHeader($mode);
 			case "edfooter":
-				return $this->getHTMLEditorFooter($mode);
+				return $this->getHTMLEditorFooter('save_banner', we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
+			case 'frameset':
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
 			default:
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $step);
 		}
-	}
-
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode());
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		$isFolder = we_base_request::_(we_base_request::BOOL, "isFolder");
@@ -63,11 +61,11 @@ class we_banner_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if($isFolder){
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), we_tab::ACTIVE, "setTab(0);"));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), we_tab::ACTIVE, "setTab(" . we_banner_banner::PAGE_PROPERTY . ");"));
 		} else {
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), ($page == 0 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(0);"));
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][placement]'), ($page == 1 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(1);"));
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][statistics]'), ($page == 2 ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(2);"));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), ($page == we_banner_banner::PAGE_PROPERTY ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(" . we_banner_banner::PAGE_PROPERTY . ");"));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][placement]'), ($page == we_banner_banner::PAGE_PLACEMENT ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(" . we_banner_banner::PAGE_PLACEMENT . ");"));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][statistics]'), ($page == we_banner_banner::PAGE_STATISTICS ? we_tab::ACTIVE : we_tab::NORMAL), "setTab(" . we_banner_banner::PAGE_STATISTICS . ");"));
 		}
 
 		$extraHead = we_tabs::getHeader('
@@ -102,10 +100,6 @@ function setTab(tab){
 		return $this->getHTMLDocument($this->View->getProperties());
 	}
 
-	protected function getHTMLEditorFooter($mode = 0, $extraHead = ''){
-		return parent::getHTMLEditorFooter('save_banner', we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
-	}
-
 	protected function getHTMLCmd(){
 		if(($pid = we_base_request::_(we_base_request::RAW, "pid")) === false){
 			return $this->getHTMLDocument(we_html_element::htmlBody());
@@ -113,18 +107,13 @@ function setTab(tab){
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
-		$rootjs = "";
-		if(!$pid){
-			$rootjs.= 'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));';
-		}
-		$hiddens = we_html_element::htmlHiddens(array(
-				"pnt" => "cmd",
-				"cmd" => "no_cmd"));
-
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
-						we_html_element::jsElement($rootjs .
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+							"pnt" => "cmd",
+							"cmd" => "no_cmd")) .
+						we_html_element::jsElement(($pid ? '' : 'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
+							) .
 							$this->Tree->getJSLoadTree(!$pid, we_banner_tree::getItems($pid, $offset, $this->Tree->default_segment))
 						)
 					)

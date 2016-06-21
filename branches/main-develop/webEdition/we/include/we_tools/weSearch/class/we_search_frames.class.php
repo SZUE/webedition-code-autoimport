@@ -22,22 +22,18 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class we_search_frames extends we_tool_frames{
+class we_search_frames extends we_modules_frame{
+	const TAB_DOCUMENTS = 1;
+	const TAB_TEMPLATES = 2;
+	const TAB_MEDIA = 5;
+	const TAB_ADVANCED = 3;
+	const TAB_PROPERTIES = 4;
 
-	function __construct(){
-		$this->toolName = 'weSearch';
+	public function __construct(){
 		$this->module = 'weSearch';
-		$this->toolUrl = WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/';
-		$this->toolDir = $_SERVER['DOCUMENT_ROOT'] . $this->toolUrl;
-
-		$frameset = $this->toolUrl . 'edit_' . $this->module . '_frameset.php?mod=' . $this->module;
-		parent::__construct($frameset);
-		$this->Table = SUCHE_TABLE;
-		$this->TreeSource = 'table:' . $this->Table;
+		parent::__construct(WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/edit_' . $this->module . '_frameset.php?mod=' . $this->module);
 		$this->Tree = new we_search_tree($this->frameset, 'top.content', 'top.content', 'top.content.cmd');
-
-		$this->View = new we_search_view($frameset, 'top.content');
-		//$this->Model = &$this->View->Model;
+		$this->View = new we_search_view($this->frameset, 'top.content');
 	}
 
 	protected function getHTMLCmd(){
@@ -46,82 +42,59 @@ class we_search_frames extends we_tool_frames{
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
+		$attr = array();
 
-		$rootjs = (!$pid ?
-				'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));' :
-				'');
-
-
-		$hiddens = we_html_element::htmlHiddens(array(
-				'pnt' => 'cmd',
-				'cmd' => 'no_cmd'));
-
-		$out = we_html_element::htmlBody(array(), we_html_element::htmlForm(array(
-					'name' => 'we_form'
-					), $hiddens .
-					we_html_element::jsElement($rootjs .
-						$this->Tree->getJSLoadTree(!$pid, we_search_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)))));
-
-		if(isset($_SESSION['weS']['weSearch']['modelidForTree'])){
-			$out .= we_html_element::jsElement('top.content.treeData.selectNode("' . ($_SESSION['weS']['weSearch']["modelidForTree"]) . '");');
+		if(!empty($_SESSION['weS']['weSearch']['modelidForTree'])){
+			$attr['onload'] = "top.content.treeData.selectNode('" . ($_SESSION['weS']['weSearch']['modelidForTree']) . "');";
 			unset($_SESSION['weS']['weSearch']['modelidForTree']);
 		}
 
-		return $this->getHTMLDocument($out);
+		return $this->getHTMLDocument(
+				we_html_element::htmlBody($attr, we_html_element::htmlForm(array(
+						'name' => 'we_form'
+						), we_html_element::htmlHiddens(array(
+							'pnt' => 'cmd',
+							'cmd' => 'no_cmd')) .
+						we_html_element::jsElement(
+							($pid ?
+								'' :
+								'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
+							) . $this->Tree->getJSLoadTree(!$pid, we_search_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)))))
+		);
 	}
 
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset(($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '');
-	}
-
-	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
-		return parent::getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) ? '&tab=' . $tab : '');
-	}
-
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		$we_tabs = new we_tabs();
-
-		//folders and entries have different tabs to display
-		$displayEntry = 'none';
-		$displayFolder = 'inline';
 
 		if($this->View->Model->IsFolder == 0){
 			$displayEntry = 'inline';
 			$displayFolder = 'none';
+		} else {
+			//folders and entries have different tabs to display
+			$displayEntry = 'none';
+			$displayFolder = 'inline';
 		}
 
 		//tabs for entries
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-o"></i> ' . g_l('searchtool', '[documents]'), '((top.content.activ_tab==1) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('1');", array(
-				'id' => 'tab_1', 'style' => "display:$displayEntry"
-			)));
+			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-o"></i> ' . g_l('searchtool', '[documents]'), we_tab::NORMAL, "setTab(" . self::TAB_DOCUMENTS . ");", array('id' => 'tab_1', 'style' => 'display:' . $displayEntry)));
 		}
 		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-code-o"></i> ' . g_l('searchtool', '[templates]'), '((top.content.activ_tab==2) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('2');", array(
-				'id' => 'tab_2', 'style' => "display:$displayEntry"
-			)));
+			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-code-o"></i> ' . g_l('searchtool', '[templates]'), we_tab::NORMAL, "setTab(" . self::TAB_TEMPLATES . ");", array('id' => 'tab_2', 'style' => 'display:' . $displayEntry)));
 		}
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){// FIXME: add some media related perm
-			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-image"></i> ' . g_l('searchtool', '[media]'), '((top.content.activ_tab==5) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('5');", array(
-				'id' => 'tab_5', 'style' => "display:$displayEntry"
-			)));
+			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-image"></i> ' . g_l('searchtool', '[media]'), we_tab::NORMAL, "setTab(" . self::TAB_MEDIA . ");", array('id' => 'tab_5', 'style' => 'display:' . $displayEntry)));
 		}
-		$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search-plus"></i> ' . g_l('searchtool', '[advSearch]'), '((top.content.activ_tab==3) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('3');", array(
-			'id' => 'tab_3', 'style' => "display:$displayEntry"
-		)));
+		$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search-plus"></i> ' . g_l('searchtool', '[advSearch]'), we_tab::NORMAL, "setTab(" . self::TAB_ADVANCED . ");", array('id' => 'tab_3', 'style' => 'display:' . $displayEntry)));
 
 		//tabs for folders
-		$we_tabs->addTab(new we_tab(g_l('searchtool', '[properties]'), '((top.content.activ_tab==4) ? ' . we_tab::ACTIVE . ' : ' . we_tab::NORMAL . ')', "setTab('4');", array(
-			'id' => 'tab_4', 'style' => "display:$displayFolder"
-		)));
+		$we_tabs->addTab(new we_tab(g_l('searchtool', '[properties]'), we_tab::NORMAL, "setTab(" . self::TAB_PROPERTIES . ");", array('id' => 'tab_4', 'style' => 'display:' . $displayFolder)));
 
 		$tabNr = $this->getTab();
-		$activeTabJS = 'top.content.activ_tab = ' . $tabNr . ';';
-		$tabsHead = we_tabs::getHeader($activeTabJS . '
+		$tabsHead = we_tabs::getHeader('top.content.activ_tab = ' . $tabNr . ';
 function setTab(tab) {
 	switch (tab) {
-		// Add new tab handlers here
 		default: // just toggle content to show
 			parent.edbody.document.we_form.pnt.value = "edbody";
 			parent.edbody.document.we_form.tabnr.value = tab;
@@ -130,22 +103,18 @@ function setTab(tab) {
 	}
 	self.focus();
 	top.content.activ_tab=tab;
-}
-		');
+}');
 
-
-		$setActiveTabJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 		$Text = we_search_model::getLangText($this->View->Model->Path, $this->View->Model->Text);
 		$body = we_html_element::htmlBody(
 				array(
 				'id' => 'eHeaderBody',
-				'onload' => 'weTabs.setFrameSize()',
+				'onload' => "weTabs.setFrameSize();document.getElementById('tab_'+top.content.activ_tab).className='tabActive';",
 				'onresize' => 'weTabs.setFrameSize()'
 				), '<div id="main"><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('searchtool', ($this->View->Model->IsFolder ? '[topDir]' : '[topSuche]')) . ':&nbsp;' .
 					$Text . '<div id="mark" style="display: none;">*</div>') . '</div>' .
 				$we_tabs->getHTML() .
-				'</div>' .
-				we_html_element::jsElement($setActiveTabJS));
+				'</div>');
 
 		return $this->getHTMLDocument($body, $tabsHead);
 	}
@@ -154,13 +123,15 @@ function setTab(tab) {
 		$body = we_html_element::htmlBody(
 				array(
 				'class' => 'weEditorBody',
-				'onkeypress' => 'javascript:if(event.keyCode==13 || event.keyCode==3){weSearch.search(true);}',
+				'onkeypress' => 'if(event.keyCode==13 || event.keyCode==3){weSearch.search(true);}',
 				'onload' => 'loaded=1;setTimeout(weSearch.init,200);',
 				'onresize' => 'weSearch.sizeScrollContent();'
 				), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 				we_html_element::htmlForm(array(
-					'name' => 'we_form', 'onsubmit' => 'return false'
-					), $this->getHTMLProperties() . we_html_element::htmlHiddens(array(
+					'name' => 'we_form',
+					'onsubmit' => 'return false'
+					), $this->getHTMLProperties() .
+					we_html_element::htmlHiddens(array(
 						'predefined' => $this->View->Model->predefined,
 						'savedSearchName' => $this->View->Model->Text
 				)))
@@ -170,16 +141,16 @@ function setTab(tab) {
 		$tabNr = $this->getTab();
 
 		switch($tabNr){
-			case 1 :
+			case self::TAB_DOCUMENTS:
 				$whichSearch = we_search_view::SEARCH_DOCS;
 				break;
-			case 2 :
+			case self::TAB_TEMPLATES:
 				$whichSearch = we_search_view::SEARCH_TMPL;
 				break;
-			case 3 :
+			case self::TAB_ADVANCED:
 				$whichSearch = we_search_view::SEARCH_ADV;
 				break;
-			case 5 :
+			case self::TAB_MEDIA:
 				$whichSearch = we_search_view::SEARCH_MEDIA;
 				break;
 		}
@@ -187,7 +158,7 @@ function setTab(tab) {
 		return $this->getHTMLDocument($body, we_html_tools::getCalendarFiles() . $this->View->getJSProperty() . $this->View->getSearchJS($whichSearch));
 	}
 
-	function getTab(){
+	private function getTab(){
 		$cmdid = we_base_request::_(we_base_request::INT, 'cmdid', '');
 		if($cmdid != ''){
 			$_REQUEST['searchstartAdvSearch'] = 0;
@@ -198,7 +169,7 @@ function setTab(tab) {
 		if($cmdid != ''){
 			return $this->View->Model->activTab;
 		}
-		return we_base_request::_(we_base_request::INT, 'tabnr', 1);
+		return we_base_request::_(we_base_request::INT, 'tabnr', self::TAB_DOCUMENTS);
 	}
 
 	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
@@ -207,31 +178,29 @@ function setTab(tab) {
 		return $this->getHTMLDocument(we_html_element::jsElement('
 function we_save() {
 	top.content.we_cmd("tool_' . $this->module . '_save");
-}') . we_html_element::htmlBody(
-					array('id' => 'footerBody'), we_html_element::htmlForm(array(), $but_table)));
+}') .
+				we_html_element::htmlBody(array('id' => 'footerBody'), we_html_element::htmlForm(array(), $but_table)));
 	}
 
-	function getHTMLProperties($preselect = ''){
+	private function getHTMLProperties($preselect = ''){
 		$tabNr = $this->getTab();
 
-		$hiddens = array(
-			'cmd' => '',
-			'pnt' => 'edbody',
-			'tabnr' => $tabNr,
-			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
-			'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', '')
-		);
-
-		return $this->View->getCommonHiddens($hiddens) .
+		return $this->View->getCommonHiddens(array(
+				'cmd' => '',
+				'pnt' => 'edbody',
+				'tabnr' => $tabNr,
+				'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
+				'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', '')
+			)) .
 			we_html_element::htmlHidden('newone', ($this->View->Model->ID == 0 ? 1 : 0)) .
-			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? 'display: block;' : 'display: none')), $tabNr == 1 ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .
-			we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == 2 ? 'display: block;' : 'display: none')), $tabNr == 2 ? $this->getHTMLSearchtool($this->getHTMLTabTemplates()) : '') .
-			we_html_element::htmlDiv(array('id' => 'tab5', 'style' => ($tabNr == 5 ? 'display: block;' : 'display: none')), $tabNr == 5 ? $this->getHTMLSearchtool($this->getHTMLTabMedia()) : '') .
-			we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == 3 ? 'display: block;' : 'display: none')), $tabNr == 3 ? $this->getHTMLSearchtool($this->getHTMLTabAdvanced()) : '') .
-			we_html_element::htmlDiv(array('id' => 'tab4', 'style' => ($tabNr == 4 ? 'display: block;' : 'display: none')), $this->getHTMLSearchtool($this->getHTMLGeneral()));
+			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == self::TAB_DOCUMENTS ? 'display: block;' : 'display: none')), $tabNr == self::TAB_DOCUMENTS ? $this->getHTMLSearchtool($this->getHTMLTabDocuments()) : '') .
+			we_html_element::htmlDiv(array('id' => 'tab2', 'style' => ($tabNr == self::TAB_TEMPLATES ? 'display: block;' : 'display: none')), $tabNr == self::TAB_TEMPLATES ? $this->getHTMLSearchtool($this->getHTMLTabTemplates()) : '') .
+			we_html_element::htmlDiv(array('id' => 'tab5', 'style' => ($tabNr == self::TAB_MEDIA ? 'display: block;' : 'display: none')), $tabNr == self::TAB_MEDIA ? $this->getHTMLSearchtool($this->getHTMLTabMedia()) : '') .
+			we_html_element::htmlDiv(array('id' => 'tab3', 'style' => ($tabNr == self::TAB_ADVANCED ? 'display: block;' : 'display: none')), $tabNr == self::TAB_ADVANCED ? $this->getHTMLSearchtool($this->getHTMLTabAdvanced()) : '') .
+			we_html_element::htmlDiv(array('id' => 'tab4', 'style' => ($tabNr == self::TAB_PROPERTIES ? 'display: block;' : 'display: none')), $this->getHTMLSearchtool($this->getHTMLGeneral()));
 	}
 
-	function getHTMLGeneral(){
+	private function getHTMLGeneral(){
 		$disabled = true;
 		$this->View->Model->Text = we_search_model::getLangText($this->View->Model->Path, $this->View->Model->Text);
 
@@ -244,7 +213,7 @@ function we_save() {
 		));
 	}
 
-	function getHTMLTabDocuments(){
+	private function getHTMLTabDocuments(){
 		//parameter: search of the tab (load only search dependent model data in the view)
 		$innerSearch = we_search_view::SEARCH_DOCS;
 
@@ -282,7 +251,7 @@ function we_save() {
 		));
 	}
 
-	function getHTMLTabTemplates(){
+	private function getHTMLTabTemplates(){
 		$innerSearch = we_search_view::SEARCH_TMPL;
 
 		$searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
@@ -318,7 +287,7 @@ function we_save() {
 		));
 	}
 
-	function getHTMLTabMedia(){
+	private function getHTMLTabMedia(){
 		$innerSearch = we_search_view::SEARCH_MEDIA;
 
 		$searchDirChooser_block = '<div>' . $this->View->getDirSelector($innerSearch) . '</div>';
@@ -366,7 +335,7 @@ function we_save() {
 		));
 	}
 
-	function getHTMLTabAdvanced(){
+	private function getHTMLTabAdvanced(){
 		$innerSearch = 'AdvSearch';
 		$searchFields_block = '<div>' . $this->View->getSearchDialogOptionalFields($innerSearch) . '</div>';
 		$searchCheckboxes_block = '<div>' . $this->View->getSearchDialogCheckboxesAdvSearch() . '</div>';
@@ -395,7 +364,7 @@ function we_save() {
 		));
 	}
 
-	function getHTMLSearchtool($content){
+	private function getHTMLSearchtool($content){
 		//FIXME: why is this different to we_html_multiIconBox.class.php
 		$out = '';
 
@@ -422,6 +391,31 @@ function we_save() {
 		}
 
 		return '<div class="multiIcon">' . $out . '</div>';
+	}
+
+	function getHTML($what = '', $mode = '', $step = 0){
+		switch($what){
+			case 'frameset':
+				return $this->getHTMLFrameset('', ($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
+			case 'editor':
+				return $this->getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
+			default:
+				return parent::getHTML($what, $mode, $step);
+		}
+	}
+
+	protected function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
+		$class = we_tool_lookup::getModelClassName($this->toolName);
+		$this->Model = $this->Model ? : new $class();
+
+		if(($modelid = we_base_request::_(we_base_request::INT, 'modelid'))){
+			$this->Model = new $class();
+			$this->Model->load($modelid);
+			$this->Model->saveInSession();
+			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $modelid;
+		}
+
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $extraHead, ($modelid ? '&modelid=' . $modelid : '') . $extraUrlParams);
 	}
 
 }

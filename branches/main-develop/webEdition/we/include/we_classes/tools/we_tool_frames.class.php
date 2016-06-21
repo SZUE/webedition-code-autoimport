@@ -37,18 +37,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		$this->treeWidth = 200;
 	}
 
-	function getHTML($what = '', $mode = '', $step = 0){
-		switch($what){
-			case 'treeheader':
-				return $this->getHTMLTreeHeader();
-			case 'treefooter':
-				return $this->getHTMLTreeFooter();
-			default:
-				return parent::getHTML($what);
-		}
-	}
-
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
+	protected function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$class = we_tool_lookup::getModelClassName($this->toolName);
 		$this->Model = $this->Model ? : new $class();
 		//$this->Model->clearSessionVars(); // why should we clear here?
@@ -60,7 +49,7 @@ abstract class we_tool_frames extends we_modules_frame{
 			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $modelid;
 		}
 
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode(), ($modelid ? '&modelid=' . $modelid : ''));
+		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $extraHead, ($modelid ? '&modelid=' . $modelid : '') . $extraUrlParams);
 	}
 
 	/**
@@ -68,19 +57,18 @@ abstract class we_tool_frames extends we_modules_frame{
 	 *
 	 * @return string
 	 */
-	protected function getHTMLEditorHeader(){
+	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(new we_tab(g_l('tools', '[properties]'), '((top.content.activ_tab==1) ? ' . we_tab::ACTIVE . ': ' . we_tab::NORMAL . ')', "setTab('1');", array("id" => "tab_1")));
+		$we_tabs->addTab(new we_tab(g_l('tools', '[properties]'), we_tab::NORMAL, "setTab(1);", array("id" => "tab_1")));
 
 		$tabsHead = we_tabs::getHeader('
 function mark() {
 	var elem = document.getElementById("mark");
 	elem.style.display = "inline";
-
 }
 
 function unmark() {
@@ -144,7 +132,7 @@ function setTab(tab) {
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 		}
 
-		$but_table = we_html_element::htmlSpan(array('style' => 'margin-left: 15px;margin-top:10px;'), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION'))));
+		$but_table = we_html_element::htmlSpan(array('style' => 'margin-left: 15px;margin-top:10px;'), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', ''));
 
 		return $this->getHTMLDocument(we_html_element::jsElement('
 function we_save() {
@@ -153,11 +141,6 @@ function we_save() {
 				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), $but_table)
 				)
 		);
-	}
-
-	function getPercent($total, $value, $precision = 0){
-		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
-		return we_base_util::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']), 2);
 	}
 
 	function getHTMLGeneral(){
@@ -186,13 +169,8 @@ function we_save() {
 			we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30);
 	}
 
-	/* 	protected function getHTMLTreeFooter(){
-	  return '<div id="infoField" class="defaultfont"></div>';
-	  } */
-
 	protected function getHTMLCmd(){
-		$pid = we_base_request::_(we_base_request::STRING, "pid");
-		if($pid === false){
+		if(($pid = we_base_request::_(we_base_request::STRING, "pid")) === false){
 			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
@@ -201,36 +179,23 @@ function we_save() {
 
 		$loader = new $class($this->TreeSource);
 
-		$rootjs = ($pid ?
-				'' :
-				'top.content.treeData.clear();' .
-				'top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
-
-		$hiddens = we_html_element::htmlHiddens(array(
-				'pnt' => 'cmd',
-				'cmd' => 'no_cmd'));
-
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
-						we_html_element::jsElement($rootjs . $this->Tree->getJSLoadTree(!$pid, $loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
+		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
+							'pnt' => 'cmd',
+							'cmd' => 'no_cmd')) .
+						we_html_element::jsElement(
+							($pid ?
+								'' :
+								'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
+							) . $this->Tree->getJSLoadTree(!$pid, $loader->getItems($pid, $offset, $this->Tree->default_segment, '')))
 					)
 		));
 	}
 
-	function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
-		$cmd1 = "document.we_form.elements['" . $IDName . "'].value";
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "','" . $filter . "'," . $cmd1 . ");");
-
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', 400, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
-	}
-
 	protected function getHTMLExitQuestion(){
 		if(($dp = we_base_request::_(we_base_request::INT, 'delayParam'))){
-
-			$frame = 'opener.top.content';
-//			$form = $frame . '.document.we_form';
-
-			$yes = $frame . '.hot=0;' . $frame . '.we_cmd("tool_' . $this->toolName . '_save");self.close();';
-			$no = $frame . '.hot=0;' . $frame . '.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
+			$yes = 'opener.top.content.hot=0;opener.top.content.we_cmd("tool_' . $this->toolName . '_save");self.close();';
+			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
 			$cancel = 'self.close();';
 
 			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .

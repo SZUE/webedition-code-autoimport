@@ -72,7 +72,7 @@ class we_selector_category extends we_selector_file{
 	}
 
 	protected function getFsQueryString($what){
-		return $_SERVER["SCRIPT_NAME"] . "what=$what&table=" . $this->table . "&id=" . $this->id . "&order=" . $this->order . "&noChoose=" . $this->noChoose;
+		return $_SERVER['SCRIPT_NAME'] . 'what=' . $what . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&noChoose=' . $this->noChoose;
 	}
 
 	protected function printHeaderTable($extra = ''){
@@ -148,15 +148,15 @@ top.hot = 1; // this is hot for category edit!!
 if(top.currentID){
 	top.enableDelBut();
 	top.showPref(top.currentID);
-}';
+}
+top.makeNewFolder = false;';
 		}
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.makeNewFolder = false;
-top.selectFile(top.currentID);'), we_html_element::htmlBody());
+				'top.selectFile(top.currentID);'), we_html_element::htmlBody());
 	}
 
 	function printHeaderHeadlines(){
@@ -294,12 +294,12 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;'), we_html_el
 			$Text = $hash['Text'];
 
 			echo we_html_element::jsElement(
-				'top.clearEntries();' .
+				'top.clearEntries();
+top.makeNewFolder = false;' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.makeNewFolder = false;
-top.currentPath = "' . $Path . '";
-top.currentID = "' . $this->id . '";
+				'top.currentPath="' . $Path . '";
+top.currentID="' . $this->id . '";
 top.selectFile(' . $this->id . ');
 if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 	top.enableDelBut();

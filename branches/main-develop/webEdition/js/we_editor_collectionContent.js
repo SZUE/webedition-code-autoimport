@@ -388,7 +388,7 @@ weCollectionEdit = {
 			this.ct.grid.children[i].style.width = this.ct.grid.children[i].style.height = this.gridItemDimension.item + 'px';
 			//this.ct['grid'].children[i].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
 
-			attribDivs[i].style.display = this.itemsPerRow > 5 ? 'none' : 'block';top.console.log(iconDivs[i].firstChild.tagName);
+			attribDivs[i].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
 			if(iconDivs[i].firstChild.tagName === 'BUTTON'){
 				iconDivs[i].firstChild.style.fontSize = this.gridItemDimension.btnFontsize + 'px';
 				iconDivs[i].firstChild.style.height = this.gridItemDimension.btnHeight + 'px';
@@ -455,6 +455,7 @@ weCollectionEdit = {
 	insertItem: function (elem, repaint, item, scope, color, last) {
 		var t = scope ? scope : this,
 			el = elem ? t.getItem(elem) : null,
+			mustInsertPathCutLeft = false,
 			div, newItem, cmd1, cmd2, cmd3, blank, elPreview, btn;
 
 		color = color ? color : false;
@@ -467,6 +468,7 @@ weCollectionEdit = {
 		}
 
 		div = document.createElement("div");
+		document.body.appendChild(div); // we must append temporary div to a visible element to get offsetWidth of some sub elems
 
 		// FIXME: reduce obsolete replacements for listMinimal
 
@@ -501,6 +503,12 @@ weCollectionEdit = {
 				div.getElementsByClassName('divBtnSelect')[0].style.display = 'block';
 			} else {
 				div.getElementsByClassName('previewDiv')[0].innerHTML = '';
+				if (this.viewSub === 'minimal'){
+					div.getElementsByClassName('colContentInput')[0].style.display = 'none';
+					div.getElementsByClassName('colContentTextOnly')[0].style.display = 'inline-block';
+					div.getElementsByClassName('divBtnEditTextOnly')[0].style.display = 'inline-block';
+					mustInsertPathCutLeft = true;
+				}
 			}
 
 			if ((this.viewSub === 'minimal' || item.ct !== 'image/*') && item.id !== -1) {
@@ -550,7 +558,15 @@ weCollectionEdit = {
 			}
 		}
 
+		document.body.removeChild(div);
 		newItem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
+
+		if(mustInsertPathCutLeft){
+			var colContentText = newItem.getElementsByClassName('colContentTextOnly')[0];
+			this.addTextCutLeft(colContentText, item.path, colContentText.parentNode.offsetWidth - 10);
+		}
+
+
 		if(last){
 			newItem.setAttribute("name", "last");
 		}
@@ -717,6 +733,22 @@ weCollectionEdit = {
 				el.firstChild.style.backgroundColor = set.backgroundColor;
 				break;
 		}
+	},
+	addTextCutLeft: function(elem, text, maxwidth){
+		if(!elem){
+			return;
+		}
+
+		maxwidth = maxwidth || 400;
+		text = text ? text : '';
+		var i = 2000;
+		elem.innerHTML = text;
+		while(elem.offsetWidth > maxwidth && i > 0){
+			text = text.substr(4);
+			elem.innerHTML = '...' + text;
+			--i;
+		}
+		return;
 	},
 	dblClick: function (type, view, evt, elem) {
 		switch (type) {

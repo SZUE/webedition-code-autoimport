@@ -23,6 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_workflow_frames extends we_modules_frame{
+	const TAB_PROPERTIES = 0;
+	const TAB_OVERVIEW = 1;
 
 	public function __construct($frameset){
 		parent::__construct($frameset);
@@ -43,18 +45,16 @@ class we_workflow_frames extends we_modules_frame{
 				return $this->getHTMLLog($mode, $type);
 			case 'edit':
 				return $this->getHTMLEditorBody();
+			case 'frameset':
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode() . $this->getJSCmdCode());
 			default:
-				return parent::getHTML($what);
+				return parent::getHTML($what, $mode, $type);
 		}
-	}
-
-	function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $this->getJSCmdCode());
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return parent::getHTMLEditorHeader(0);
 		}
 
 		$page = we_base_request::_(we_base_request::INT, 'page', 0);
@@ -63,8 +63,8 @@ class we_workflow_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if($mode == 0){
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), we_tab::NORMAL, "setTab(0);", array("id" => "tab_0")));
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), we_tab::NORMAL, "setTab(1);", array("id" => "tab_1")));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), we_tab::NORMAL, "setTab(" . self::TAB_PROPERTIES . ");", array("id" => "tab_0")));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), we_tab::NORMAL, "setTab(" . self::TAB_OVERVIEW . ");", array("id" => "tab_1")));
 		} else {
 			$we_tabs->addTab(new we_tab(g_l('tabs', '[editor][information]'), we_tab::ACTIVE, "//", array("id" => "tab_0")));
 		}
@@ -75,11 +75,11 @@ class we_workflow_frames extends we_modules_frame{
 		$extraHead = we_tabs::getHeader('
 function setTab(tab){
 	switch(tab){
-		case 0:
-			top.content.editor.edbody.we_cmd("switchPage",0);
+		case ' . self::TAB_PROPERTIES . ':
+			top.content.editor.edbody.we_cmd("switchPage",' . self::TAB_PROPERTIES . ');
 			break;
-		case 1:
-			top.content.editor.edbody.we_cmd("switchPage",1);
+		case ' . self::TAB_OVERVIEW . ':
+			top.content.editor.edbody.we_cmd("switchPage",' . self::TAB_OVERVIEW . ');
 			break;
 	}
 }');
@@ -150,18 +150,16 @@ function we_save() {
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
-		$rootjs = ($pid ? '' :
-				 'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));');
-
-		$hiddens = we_html_element::htmlHiddens(array(
-				"wcmd" => "",
-				"wopt" => ""));
-
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), $hiddens .
+				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+							'wcmd' => '',
+							'wopt' => '')) .
 						$this->View->getCmdJS() .
-						we_html_element::jsElement($rootjs .
+						we_html_element::jsElement(
+							($pid ?
+								'' :
+								'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));') .
 							$this->Tree->getJSLoadTree(!$pid, we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment))
 						)
 					)

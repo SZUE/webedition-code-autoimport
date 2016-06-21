@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function getObjectTags($id, $isField = false){
-	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
+	$tableInfo = we_objectFile::getSortedTableInfo($id, true, new DB_WE());
 	$content = '<table style="border:1px solid black;width:400px">';
 	$regs = array();
 	foreach($tableInfo as $cur){
@@ -41,7 +41,7 @@ function getMultiObjectTags($name){
 		return '';
 	}
 	$id = $_SESSION['weS']['we_data'][$cmd3][0]["elements"][we_objectFile::TYPE_MULTIOBJECT . '_' . $name . "class"]["dat"];
-	$tableInfo = we_objectFile::getSortedTableInfo($id, true);
+	$tableInfo = we_objectFile::getSortedTableInfo($id, true, new DB_WE());
 	$content = '<table style="border:1px solid black;width:400px">';
 
 	//FIXME: causes internal server error

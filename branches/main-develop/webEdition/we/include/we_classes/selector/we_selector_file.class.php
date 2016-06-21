@@ -66,6 +66,7 @@ class we_selector_file{
 	var $openerFormName = 'we_form';
 	protected $order = 'Text';
 	protected $canSelectDir = true;
+	protected $language = '';
 	var $rootDirID = 0;
 	protected $filter = '';
 	protected $useID;
@@ -232,7 +233,7 @@ var mk=null;
 var options={
   rootDirID:' . $this->rootDirID . ',
 	table:"' . $this->table . '",
-	formtarget:"' . $_SERVER["SCRIPT_NAME"] . '",
+	formtarget:"' . $_SERVER['SCRIPT_NAME'] . '",
 	multiple:' . intval($this->multiple) . ',
 	needIEEscape:' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ',
 	open_doc:"' . $this->open_doc . '"

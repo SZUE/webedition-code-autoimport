@@ -42,30 +42,22 @@ function setTab(tab) {
 
 	function buildBody(we_glossary_frames $weGlossaryFrames, $content = ""){
 
-		$hidden = array(
+		$hidden = $weGlossaryFrames->View->getCommonHiddens(array(
 			'cmd' => we_base_request::_(we_base_request::RAW, 'cmd', ''),
 			'cmdid' => we_base_request::_(we_base_request::STRING, 'cmdid', ''),
 			'pnt' => 'edbody',
-		);
+		));
 
-		$form = array(
-			'name' => 'we_form',
-			'onsubmit' => 'return false',
-		);
+		$form = we_html_element::htmlForm(array(
+				'name' => 'we_form',
+				'onsubmit' => 'return false',
+				), $hidden . $content);
 
-		$hidden = $weGlossaryFrames->View->getCommonHiddens($hidden);
-
-		$form = we_html_element::htmlForm($form, $hidden . $content);
-
-		$body = array(
-			'class' => 'weEditorBody',
-			'onload' => 'loaded=1;',
-			'onunload' => "doUnload()"
-		);
-
-		$body = we_html_element::htmlBody($body, $form);
-
-		return $weGlossaryFrames->getHTMLDocument($body, $weGlossaryFrames->View->getJSProperty());
+		return $weGlossaryFrames->getHTMLDocument(we_html_element::htmlBody(array(
+					'class' => 'weEditorBody',
+					'onload' => 'loaded=1;',
+					'onunload' => "doUnload()"
+					), $form), $weGlossaryFrames->View->getJSProperty());
 	}
 
 	function buildFooter(we_glossary_frames $weGlossaryFrames, $content = ""){
