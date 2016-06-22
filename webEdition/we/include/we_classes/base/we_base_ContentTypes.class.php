@@ -33,7 +33,6 @@ class we_base_ContentTypes{
 	const HTACESS = 'text/htaccess';
 	const TEXT = 'text/plain';
 	const FLASH = 'application/x-shockwave-flash';
-	const QUICKTIME = 'video/quicktime';
 	const VIDEO = 'video/*';
 	const AUDIO = 'audio/*';
 	const APPLICATION = 'application/*';
@@ -195,16 +194,6 @@ class we_base_ContentTypes{
 				'IsWebEditionFile' => true,
 				'Table' => array(FILE_TABLE),
 				'Class' => 'we_flashDocument'
-			),
-			self::QUICKTIME => array(
-				'Extension' => array('.mov', '.moov', '.qt'),
-				'ExtensionIsFilename' => false,
-				'Permission' => 'NEW_QUICKTIME',
-				'DefaultCode' => '',
-				'IsRealFile' => true,
-				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
-				'Class' => 'we_quicktimeDocument'
 			),
 			self::VIDEO => array(
 				'Extension' => array('.mp4', '.m4v', '.ogg', '.webm'),

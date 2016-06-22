@@ -51,7 +51,7 @@ $we_menu = array(
 	'file_new_media' => array(
 		'text' => g_l('javaMenu_global', '[media]'),
 		'parent' => 'file_new',
-		'perm' => 'ADMINISTRATOR || NEW_GRAFIK || NEW_FLASH || NEW_QUICKTIME || NEW_SONSTIGE',
+		'perm' => 'ADMINISTRATOR || NEW_GRAFIK || NEW_FLASH || NEW_SONSTIGE',
 	),
 	array(// File > Image
 		'text' => g_l('javaMenu_global', '[image]'),
@@ -70,12 +70,6 @@ $we_menu = array(
 		'parent' => 'file_new_media',
 		'cmd' => 'new_flash_movie',
 		'perm' => 'NEW_FLASH',
-	),
-	array(// File > New Other > quicktime
-		'text' => g_l('javaMenu_global', '[quicktime_movie]'),
-		'parent' => 'file_new_media',
-		'cmd' => 'new_quicktime_movie',
-		'perm' => 'NEW_QUICKTIME',
 	),
 	array(// File > New Other > video
 		'text' => g_l('contentTypes', '[' . we_base_ContentTypes::VIDEO . ']'),
@@ -371,12 +365,12 @@ $we_menu = array(
 	array(// separator
 		'parent' => 'file'
 	),
-	/*array(
-		'text' => g_l('javaMenu_glossary', '[glossary_check]'),
-		'parent' => 'file',
-		'cmd' => 'glossary_check',
-		'hide' => !(defined('GLOSSARY_TABLE'))
-	),*/
+	/* array(
+	  'text' => g_l('javaMenu_glossary', '[glossary_check]'),
+	  'parent' => 'file',
+	  'cmd' => 'glossary_check',
+	  'hide' => !(defined('GLOSSARY_TABLE'))
+	  ), */
 	array(// File > Delete Active Document
 		'text' => g_l('javaMenu_global', '[delete_active_document]'),
 		'parent' => 'file',

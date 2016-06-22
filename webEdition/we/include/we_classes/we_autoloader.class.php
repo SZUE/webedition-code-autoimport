@@ -32,7 +32,6 @@
  */
 
 abstract class we_autoloader{
-
 	private static $domains = array(
 		'backup' => 'we_exim/backup',
 		'banner' => 'we_modules/banner',
@@ -111,7 +110,6 @@ abstract class we_autoloader{
 			'we_htmlDocument' => 'we_htmlDocument.class.php',
 			'we_imageDocument' => 'we_imageDocument.class.php',
 			'we_otherDocument' => 'we_otherDocument.class.php',
-			'we_quicktimeDocument' => 'we_quicktimeDocument.class.php',
 			'we_root' => 'we_root.class.php',
 			'we_template' => 'we_template.class.php',
 			'we_temporaryDocument' => 'we_temporaryDocument.class.php',

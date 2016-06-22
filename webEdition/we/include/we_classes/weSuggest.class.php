@@ -36,7 +36,7 @@
  * 			'yuiAcResultDoc', 																											// Result-Feld-Id. Die Id besteht aus 'yuiAcResult' und AC-Id
  * 			'',																															// Label: steht über dem Inputfeld
  * 			FILE_TABLE, 																												// Name der Tabele in für die Query
- * 			"folder,text/webedition,image/*,text/js,text/css,text/html,application/*,video/quicktime", 													// ContentTypen für die Query: sie entsprechende Tabele
+ * 			"folder,text/webedition,image/*,text/js,text/css,text/html,application/*", 													// ContentTypen für die Query: sie entsprechende Tabele
  * 			"docSelector", 																												// docSelector | dirSelector : ob nach folder oder doc gesucht wird
  * 			20, 																														// Anzahl der Vorschläge
  * 			0, 																															// Verzögerung für das auslösen des AutoCompletion

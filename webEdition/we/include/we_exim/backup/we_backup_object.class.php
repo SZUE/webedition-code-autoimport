@@ -183,7 +183,6 @@ class we_backup_object extends we_object{
 				return 'real';
 			case 'img':
 			case 'flashmovie':
-			case 'quicktime':
 			case 'binary':
 			case 'object':
 			case 'date':
@@ -214,7 +213,6 @@ class we_backup_object extends we_object{
 				return " LONGTEXT NOT NULL ";
 			case "img":
 			case "flashmovie":
-			case "quicktime":
 			case "binary":
 				return " INT(11) DEFAULT '0' NOT NULL ";
 			case "checkbox":

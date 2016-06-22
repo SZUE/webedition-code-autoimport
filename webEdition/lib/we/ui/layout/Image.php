@@ -70,8 +70,6 @@ abstract class we_ui_layout_Image{
 				return "text_xml";
 			case we_base_ContentTypes::FLASH:
 				return "flash";
-			case we_base_ContentTypes::QUICKTIME:
-				return "quicktime";
 			case we_base_ContentTypes::OBJECT:
 				return "object";
 			case we_base_ContentTypes::OBJECT_FILE:

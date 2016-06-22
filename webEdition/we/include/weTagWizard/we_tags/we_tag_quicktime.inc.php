@@ -15,7 +15,6 @@ if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('parentid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '');
 }
 $this->Attributes[] = new weTagData_selectAttribute('showcontrol', weTagData_selectAttribute::getTrueFalse(), false, '');
-$this->Attributes[] = new weTagData_selectAttribute('showquicktime', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes[] = new weTagData_textAttribute('sizingrel', false, '');
 $this->Attributes[] = new weTagData_selectAttribute('sizingstyle', array(new weTagDataOption('none'),

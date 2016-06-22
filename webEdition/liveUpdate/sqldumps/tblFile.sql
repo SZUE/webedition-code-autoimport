@@ -6,6 +6,8 @@
 /* query separator */
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblFile)###
 /* query separator */
+UPDATE ###TBLPREFIX###tblFile SET ClassName="we_otherDocument",ContentType="application/*" WHERE ClassName="we_quicktimeDocument"
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblFile (
   ID int unsigned NOT NULL auto_increment,
@@ -13,7 +15,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
   `Text` varchar(255) NOT NULL default '',
   IsFolder tinyint unsigned NOT NULL default '0',
   IsProtected tinyint unsigned NOT NULL default '0',
-  ContentType enum('','image/*','text/html','text/webedition','text/js','text/css','text/htaccess','text/plain','folder','application/x-shockwave-flash','application/*','video/quicktime','text/xml','video/*','audio/*') NOT NULL default '',
+  ContentType enum('','image/*','text/html','text/webedition','text/js','text/css','text/htaccess','text/plain','folder','application/x-shockwave-flash','application/*','text/xml','video/*','audio/*') NOT NULL default '',
   CreationDate int unsigned NOT NULL default '0',
   ModDate int unsigned NOT NULL default '0',
   RebuildDate int unsigned NOT NULL default '0',
@@ -26,7 +28,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
   IsDynamic tinyint unsigned NOT NULL default '0',
   IsSearchable tinyint unsigned NOT NULL default '0',
   DocType smallint unsigned NOT NULL,
-  ClassName ENUM('we_flashDocument','we_folder','we_htmlDocument','we_imageDocument','we_otherDocument','we_textDocument','we_webEditionDocument','we_quicktimeDocument','we_document_video','we_document_audio') NOT NULL default 'we_textDocument',
+  ClassName ENUM('we_flashDocument','we_folder','we_htmlDocument','we_imageDocument','we_otherDocument','we_textDocument','we_webEditionDocument','we_document_video','we_document_audio') NOT NULL default 'we_textDocument',
   Category text NOT NULL,
   temp_category text NOT NULL,
   Published int unsigned NOT NULL default '0',

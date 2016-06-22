@@ -288,7 +288,7 @@ WE().consts.weSearch= {
 	SEARCH_TMPL: "' . self::SEARCH_TMPL . '",
 	SEARCH_MEDIA: "' . self::SEARCH_MEDIA . '",
 	SEARCH_ADV: "' . self::SEARCH_ADV . '",
-	MEDIA_CONTENTTYPES_CSV: "' . we_base_ContentTypes::APPLICATION . "," . we_base_ContentTypes::AUDIO . "," . we_base_ContentTypes::FLASH . "," . we_base_ContentTypes::IMAGE . "," . we_base_ContentTypes::QUICKTIME . "," . we_base_ContentTypes::VIDEO . '"
+	MEDIA_CONTENTTYPES_CSV: "' . we_base_ContentTypes::APPLICATION . "," . we_base_ContentTypes::AUDIO . "," . we_base_ContentTypes::FLASH . "," . we_base_ContentTypes::IMAGE . "," . we_base_ContentTypes::VIDEO . '"
 };
 ');
 	}
@@ -636,7 +636,6 @@ WE().consts.weSearch= {
 						case we_base_ContentTypes::IMAGE:
 						case we_base_ContentTypes::AUDIO:
 						case we_base_ContentTypes::VIDEO:
-						case we_base_ContentTypes::QUICKTIME:
 						case we_base_ContentTypes::FLASH:
 						case we_base_ContentTypes::APPLICATION:
 							$actionCheckbox = '';
@@ -1211,7 +1210,6 @@ WE().consts.weSearch= {
 				case we_base_ContentTypes::AUDIO:
 				case we_base_ContentTypes::VIDEO:
 				case we_base_ContentTypes::FLASH:
-				case we_base_ContentTypes::QUICKTIME:
 				case we_base_ContentTypes::APPLICATION:
 					if($whichSearch === self::SEARCH_MEDIA){
 						$outDivs .= '<tr><td style="vertical-align:top">' . g_l('searchtool', '[protection]') . ': </td><td>' . ($content[$n][19]["dat"] ? g_l('global', '[true]') : g_l('global', '[false]')) . '</td></tr>';

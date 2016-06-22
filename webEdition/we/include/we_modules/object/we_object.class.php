@@ -803,7 +803,6 @@ class we_object extends we_document{
 			we_objectFile::TYPE_HREF => g_l('modules_object', '[href_field]'),
 			we_objectFile::TYPE_BINARY => g_l('modules_object', '[binary_field]'),
 			we_objectFile::TYPE_FLASHMOVIE => g_l('modules_object', '[flashmovie_field]'),
-			we_objectFile::TYPE_QUICKTIME => g_l('modules_object', '[quicktime_field]'),
 			we_objectFile::TYPE_COUNTRY => g_l('modules_object', '[country_field]'),
 			we_objectFile::TYPE_LANGUAGE => g_l('modules_object', '[language_field]'),
 			we_objectFile::TYPE_OBJECT => g_l('modules_object', '[objectFile_field]'),
@@ -968,19 +967,6 @@ class we_object extends we_document{
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_QUICKTIME:
-				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
-					'<td class="defaultfont" style="vertical-align:top">' .
-					$this->formDirChooser(267, 0, FILE_TABLE, "ParentPath", "input[" . $name . "rootdir]", "", $this->getElement($name . "rootdir", "dat"), $identifier) .
-					'</td></tr>' .
-					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[defaultdir]') . '</td>' .
-					'<td class="defaultfont" style="vertical-align:top">' .
-					$this->formDirChooser(267, 0, FILE_TABLE, "StartPath", "input[" . $name . "defaultdir]", "", $this->getElement($name . "defaultdir", "dat"), $identifier) .
-					'</td></tr>' .
-					'<tr><td  width="100" class="weMultiIconBoxHeadlineThin" style="vertical-align:top">' . g_l('modules_object', '[default]') . '</td>' .
-					'<td class="defaultfont" style="vertical-align:top">' .
-					$this->getQuicktimeHTML($name . "default", $this->getElement($name . "default", "dat"), $identifier) .
-					'</td></tr>';
-				break;
 			case we_objectFile::TYPE_BINARY:
 				$content .= '<tr><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[rootdir]') . '</td>' .
 					'<td class="defaultfont" style="vertical-align:top">' .
@@ -1599,25 +1585,6 @@ class we_object extends we_document{
 			'<br/>' . $img->getHtml();
 	}
 
-	private function getQuicktimeHTML($name, $defaultname, $i = 0){
-		$img = new we_quicktimeDocument();
-		$id = $defaultname;
-		if($id){
-			$img->initByID($id, FILE_TABLE, false);
-		} else {
-			$img->we_new();
-		}
-
-		$fname = 'we_' . $this->Name . '_input[' . $name . ']';
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $fname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('object_reload_entry_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "');opener._EditorFrame.setEditorIsHot(true);");
-
-		return '<input type=hidden name="' . $fname . '" value="' . $defaultname . '" />' .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . $id . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::QUICKTIME . "')") .
-			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_class','" . $GLOBALS['we_transaction'] . "','" . $i . "','" . $name . "')") .
-			'<br/>' . $img->getHtml();
-	}
-
 	private function getBinaryHTML($name, $defaultname, $i = 0){
 		$other = new we_otherDocument();
 		$id = $defaultname; //$this->getElement($defaultname);
@@ -2223,7 +2190,6 @@ class we_object extends we_document{
 					case 'binary':
 					case 'flashmovie':
 					case 'img':
-					case 'quicktime':
 						if($v['default']){
 							$this->MediaLinks[$typeName[0] . '[name=' . $typeName[1] . ']'] = $v['default'];
 						}

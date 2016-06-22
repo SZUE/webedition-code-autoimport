@@ -1450,7 +1450,6 @@ class we_search_search extends we_search_base{
 											break;
 										case 'video':
 											$contentTypes[] = we_base_ContentTypes::VIDEO;
-											$contentTypes[] = we_base_ContentTypes::QUICKTIME;
 											$contentTypes[] = we_base_ContentTypes::FLASH;
 											break;
 										case 'audio':
@@ -1463,7 +1462,7 @@ class we_search_search extends we_search_base{
 								}
 							}
 							$contentTypes = $contentTypes ? :
-								array(we_base_ContentTypes::IMAGE, we_base_ContentTypes::VIDEO, we_base_ContentTypes::QUICKTIME, we_base_ContentTypes::FLASH, we_base_ContentTypes::AUDIO, we_base_ContentTypes::APPLICATION);
+								array(we_base_ContentTypes::IMAGE, we_base_ContentTypes::VIDEO, we_base_ContentTypes::FLASH, we_base_ContentTypes::AUDIO, we_base_ContentTypes::APPLICATION);
 							$where[] = 'WETABLE.ContentType IN ("' . implode('","', $contentTypes) . '")';
 							break;
 						case 'IsUsed':

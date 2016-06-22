@@ -82,6 +82,7 @@ we/include/we_tools/MultiDirChooser.inc.php
 we/include/we_tools/MultiDirAndTemplateChooser.inc.php
 we/include/we_tags/we_tag_tracker.inc.php
 we/include/we_tags/we_tag_redirectObjectSeoUrls.inc.php
+we/include/we_tags/we_tag_quicktime.inc.php
 we/include/we_tags/we_tag_onlinemonitor.inc.php
 we/include/we_tags/we_tag_makeMail.inc.php
 we/include/we_tags/we_tag_list.inc.php
@@ -582,6 +583,7 @@ we/include/we_classes/dialog/we_dialog_importRtf.class.php
 we/include/we_classes/dialog/we_dialog_color.class.php
 we/include/we_classes/dialog/we_dialog_cell.class.php
 we/include/we_classes/csv.inc.php
+we/include/we_classes/contents/we_quicktimeDocument.class.php
 we/include/we_classes/charsetHandler.class.php
 we/include/we_classes/captcha/we_captcha_memory.class.php
 we/include/we_classes/captcha/captchaMemory.class.php

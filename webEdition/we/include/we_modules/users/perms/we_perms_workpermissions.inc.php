@@ -30,7 +30,6 @@ $perm_defaults[$perm_group_name] = array(
 	'NEW_GRAFIK' => 1,
 	'NEW_HTML' => 1,
 	'NEW_FLASH' => 1,
-	'NEW_QUICKTIME' => 1,
 	'NEW_JS' => 1,
 	'NEW_CSS' => 1,
 	'NEW_TEXT' => 1,

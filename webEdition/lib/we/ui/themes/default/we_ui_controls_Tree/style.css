@@ -119,7 +119,7 @@ body {
 .ygtvloading {
 	width: 16px;
 	height: 16px;
-/*	background: url(../../../../../../images/busy2.gif) 0 0 no-repeat;*/
+	/*	background: url(../../../../../../images/busy2.gif) 0 0 no-repeat;*/
 }
 
 /* the style for the empty cells that are used for rendering the depth
@@ -250,14 +250,6 @@ body {
 	padding-left: 20px;
 	background: transparent
 		url(../../../../../../images/tree/icons/flashmovie.gif) 0 0px no-repeat;
-}
-
-.quicktime {
-	display: block;
-	height: 18px;
-	padding-left: 20px;
-	background: transparent
-		url(../../../../../../images/tree/icons/quicktime.gif) 0 0px no-repeat;
 }
 
 .xml {

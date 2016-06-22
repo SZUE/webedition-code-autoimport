@@ -540,7 +540,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$yuiSuggest->setSelectButton(null, 0);
 		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 		$yuiSuggest->setAdditionalButton('', 0);
-		$divRowContent =  we_html_element::htmlDiv(array('class' => 'divContent'), 
+		$divRowContent =  we_html_element::htmlDiv(array('class' => 'divContent'),
 				we_html_element::htmlDiv(array('class' => 'colContentInput'), $yuiSuggest->getHTML()) .
 				we_html_element::htmlDiv(array('class' => 'colContentTextOnly'))
 		);
@@ -723,7 +723,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 			// mark the first 2 set elements of each item in an ordered way
 			$elements = array('attrib_title', 'attrib_alt', 'meta_title', 'meta_description');
-			$hasMeta = array('application/*', 'application/x-shockwave-flash', 'audio/*', 'image/*', 'text/webedition', 'video/quicktime', 'video/*');
+			$hasMeta = array('application/*', 'application/x-shockwave-flash', 'audio/*', 'image/*', 'text/webedition', 'video/*');
 			foreach($items as $k => $v){
 				$c = 0;
 				foreach($elements as $name){

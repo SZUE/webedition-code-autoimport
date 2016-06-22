@@ -870,7 +870,6 @@ we_templateInit();?>';
 				case 'icon':
 				case 'img':
 				case 'flashmovie':
-				case 'quicktime':
 				case 'video':
 					if(isset($tag['attribs']['id']) && is_numeric($tag['attribs']['id'])){
 						$this->MediaLinks[$element] = intval($tag['attribs']['id']);

@@ -11,7 +11,7 @@
 
 CREATE TABLE ###TBLPREFIX###tblcustomerfilter (
   modelId bigint unsigned NOT NULL,
-  modelType enum('objectFile','image/*','text/html','text/webedition','folder','application/x-shockwave-flash','application/*','video/quicktime','video/*','audio/*')  NOT NULL,
+  modelType enum('objectFile','image/*','text/html','text/webedition','folder','application/x-shockwave-flash','application/*','video/*','audio/*')  NOT NULL default 'application/*',
   modelTable enum('tblFile','tblObjectFiles') NOT NULL,
   accessControlOnTemplate tinyint unsigned NOT NULL default '0',
   errorDocNoLogin int unsigned NOT NULL default '0',

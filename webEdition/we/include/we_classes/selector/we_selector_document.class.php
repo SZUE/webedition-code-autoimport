@@ -29,7 +29,6 @@ class we_selector_document extends we_selector_directory{
 	protected $startPath;
 	protected $ctp = array(//FIXME: add audio button
 		we_base_ContentTypes::IMAGE => "NEW_GRAFIK",
-		we_base_ContentTypes::QUICKTIME => "NEW_QUICKTIME", //FIXME: remove quicktime
 		we_base_ContentTypes::FLASH => "NEW_FLASH",
 		we_base_ContentTypes::VIDEO => "NEW_VIDEO",
 		we_base_ContentTypes::COLLECTION => "NEW_COLLECTION"
@@ -37,7 +36,6 @@ class we_selector_document extends we_selector_directory{
 	protected $ctb = array(
 		"" => "btn_add_file",
 		we_base_ContentTypes::IMAGE => 'fa:btn_add_image,fa-upload,fa-lg fa-file-image-o',
-		we_base_ContentTypes::QUICKTIME => 'fa:btn_add_quicktime,fa-upload,fa-lg fa-fire',
 		we_base_ContentTypes::FLASH => 'fa:btn_add_flash,fa-upload,fa-lg fa-flash',
 		we_base_ContentTypes::VIDEO => 'fa:btn_add_video,fa-upload,fa-lg fa-file-video-o',
 		we_base_ContentTypes::COLLECTION => 'fa:btn_add_collection,fa-plus,fa-lg fa-archive',
@@ -263,7 +261,6 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 		} elseif(!
 			(
 			permissionhandler::hasPerm("NEW_GRAFIK") ||
-			permissionhandler::hasPerm("NEW_QUICKTIME") ||
 			permissionhandler::hasPerm("NEW_HTML") ||
 			permissionhandler::hasPerm("NEW_JS") ||
 			permissionhandler::hasPerm("NEW_CSS") ||
@@ -546,7 +543,6 @@ function weWriteBreadCrumb(BreadCrumb){
 					}
 				//no break!
 				case we_base_ContentTypes::FLASH:
-				case we_base_ContentTypes::QUICKTIME:
 				case we_base_ContentTypes::APPLICATION:
 					// only binary data have additional metadata
 					$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();

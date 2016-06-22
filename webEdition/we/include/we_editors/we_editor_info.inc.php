@@ -120,7 +120,6 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 						case we_base_ContentTypes::HTML:
 						case we_base_ContentTypes::IMAGE:
 						case we_base_ContentTypes::FLASH:
-						case we_base_ContentTypes::QUICKTIME:
 						case we_base_ContentTypes::VIDEO:
 						case we_base_ContentTypes::AUDIO:
 							$showlink = true;

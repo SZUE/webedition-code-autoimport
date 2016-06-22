@@ -38,7 +38,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	const kIconAddLink = 'kIconAddLink';
 	const kIconAddListElement = 'kIconAddListElement';
 	const kIconAddNote = 'kIconAddNote';
-	const kIconAddQuicktime = 'kIconAddQuicktime';
 	const kIconAddSchedule = 'kIconAddSchedule';
 	const kIconAddTemplate = 'kIconAddTemplate';
 	const kIconAddThumbnail = 'kIconAddThumbnail';
@@ -55,7 +54,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	const kIconEditList = 'kIconEditList';
 	const kIconEditObject = 'kIconEditObject';
 	const kIconEditPDF = 'kIconEditPDF';
-	const kIconEditQuicktime = 'kIconEditQuicktime';
 	const kIconFolderBack = 'kIconFolderBack';
 	const kIconPlus = 'kIconPlus';
 	const kIconPublish = 'kIconPublish';
@@ -240,7 +238,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	 * @var string
 	 */
 	protected $_onClick = '';
-	
+
 	protected $_isTextReady = false;
 
 	/**
@@ -434,8 +432,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 					return '';
 				case self::kIconAddNote:
 					return '';
-				case self::kIconAddQuicktime:
-					return '';
 				case self::kIconAddSchedule:
 					return '';
 				case self::kIconAddTemplate:
@@ -467,8 +463,6 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 				case self::kIconEditObject:
 					return '';
 				case self::kIconEditPDF:
-					return '';
-				case self::kIconEditQuicktime:
 					return '';
 				case self::kIconFolderBack:
 					return '';
