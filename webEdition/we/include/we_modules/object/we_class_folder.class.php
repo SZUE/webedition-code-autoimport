@@ -290,7 +290,7 @@ class we_class_folder extends we_folder{
 		$whereRestrictOwners = ' AND (o.RestrictOwners=0 OR o.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',o.Owners)) ';
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' of JOIN ' . OBJECT_FILES_TABLE . ' o ON of.OF_ID=o.ID');
-		$this->searchclass->setwhere($where . ' AND o.Path LIKE "' . $this->Path . '/%" AND o.ID!=0 AND o.IsFolder=0 ' . $whereRestrictOwners);
+		$this->searchclass->setwhere(($where ? $where . ' AND ' : '') . 'o.Path LIKE "' . $this->Path . '/%" AND o.ID!=0 AND o.IsFolder=0 ' . $whereRestrictOwners);
 		$this->searchclass->searchquery('', 'of.*, o.ID, o.Text, o.Path, o.ParentID, o.Workspaces, o.ExtraWorkspaces, o.ExtraWorkspacesSelected, o.Published, o.IsSearchable, o.Charset, o.Language, o.Url, o.TriggerID, o.ModDate, o.WebUserID');
 
 		$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));

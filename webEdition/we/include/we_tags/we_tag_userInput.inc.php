@@ -388,9 +388,9 @@ function we_tag_userInput(array $attribs, $content){
 					$attribs['id'] = $_SESSION[$binaryDataId]['id'];
 				}
 
-				if(isset($_SESSION[$binaryDataId]['serverPath'])){
+				if(isset($_SESSION[$binaryDataId]['serverPath']) && strpos($_SESSION[$binaryDataId]['serverPath'], TEMP_PATH) === false){
 					$src = '/' . ltrim(substr($_SESSION[$binaryDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
-					$imgTag = 'imgTag';
+					$imgTag = '<a href="' . $src . '" target="_blank">' . $src . '</a>';
 				} else {
 					$binaryTag = $GLOBALS['we_doc']->getField($attribs, 'binary');
 					$t = explode('_', $binaryTag[0]);
