@@ -408,7 +408,7 @@ var weFileUpload = (function () {
 					rotateName = 'rotateSelect';
 					qualityName = 'quality';
 				}
-				
+
 				var resizeValue = target.form.elements[resizeName].value;
 				var rotateValue = target.form.elements[rotateName].value;
 				var qualityValue = target.form.elements[qualityName].value;
@@ -416,6 +416,13 @@ var weFileUpload = (function () {
 				if(target.name == qualityName){
 					btnRefresh.disabled = _.sender.preparedFiles.length === 0 || !parseInt(qualityValue);
 					return;
+				}
+
+				if(target.name === 'check_fu_doc_doResize'){
+					target.form.elements[qualityName].value = 0;
+					document.getElementById('qualityValue').innerHTML = '0';
+					target.form.elements[rotateName].value = 0;
+					target.form.elements[resizeName].value = '';
 				}
 
 				if(resizeValue === '' && !parseInt(rotateValue)){
@@ -901,13 +908,12 @@ var weFileUpload = (function () {
 			this.abstractSetImageEditOptionsGeneral = function (formname) {
 				var form = document.forms[(formname ? formname : 'we_form')],
 					resizeValue = form.fu_doc_resizeValue.value,
-					deg = form.fu_doc_rotate.value,
-					quality = form.fu_doc_quality,
+					deg = parseInt(form.fu_doc_rotate.value),
+					quality = parseInt(form.fu_doc_quality.value),
 					opts = _.sender.imageEditOptions;
 
 				opts.doEdit = false;
-
-				if(parseInt(form.fu_doc_doResize.value) === 1 && ((resizeValue == '' && deg == 0 && quality == 0) ? false : true)){
+				if(parseInt(form.fu_doc_doResize.value) === 1 && (resizeValue || deg || quality)){
 					opts.doEdit = true;
 					opts.keepRatio = true;
 
@@ -979,6 +985,11 @@ var weFileUpload = (function () {
 			};
 
 			this.processimageExtractMetadata = function(fileobj, nexttask) {
+
+				if (!Uint8Array.prototype.slice) { // TODO: must fix loupe for IE11: has no Uint8Array.prototype.slice!!
+					_.controller.processImage(fileobj, nexttask);
+				}
+
 				switch(fileobj.type){
 					case 'image/jpeg':
 						_.utils.processimageExtractMetadataJPG(fileobj, nexttask);
@@ -1881,6 +1892,7 @@ var weFileUpload = (function () {
 			*/
 			generalform.fu_doc_resizeValue.addEventListener('keyup', function(e) {_.controller.editOptionsOnChange(e.target);});
 			generalform.fu_doc_rotate.addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+			generalform.check_fu_doc_doResize.addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
 		};
 
 		function Controller() {
@@ -2127,6 +2139,13 @@ var weFileUpload = (function () {
 			};
 
 			this.repaintEntry = function (fileobj) {
+				if(!fileobj.entry){
+					fileobj.entry = document.getElementById('div_uploadFiles_' + fileobj.index);
+					if(!fileobj.entry){
+						top.console.log('an error occured: fileobj.entry is undefined');
+						return;
+					}
+				}
 				fileobj.entry.getElementsByClassName('elemSize')[0].innerHTML = (fileobj.isSizeOk ? _.utils.computeSize(fileobj.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>');
 				_.view.addTextCutLeft(fileobj.entry.getElementsByClassName('elemFilename')[0], fileobj.file.name, 220);
 
@@ -2138,10 +2157,12 @@ var weFileUpload = (function () {
 					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].innerHTML = '';
 					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].appendChild(fileobj.img.previewImg ? fileobj.img.previewImg : fileobj.img.previewCanvas);
 
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
+					if(Uint8Array.prototype.slice){ // TODO: must fix loupe for IE11: has no offsetWidth!!
+						fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
+						fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
+						fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
+						fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
+					}
 
 					fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.backgroundColor = fileobj.isEdited ? 'rgb(216, 255, 216)' : '#ffffff';
 					this.formCustomOptsSync(fileobj);
@@ -2532,7 +2553,7 @@ var weFileUpload = (function () {
 					type = 'general';
 
 				if((form = document.getElementById('form_editOpts_' + fileobj.index))){
-										if(form.useGeneralOpts.checked === false){
+					if(form.useGeneralOpts.checked === false){
 						type = form.editOpts.value;
 					}
 				}
@@ -2544,9 +2565,9 @@ var weFileUpload = (function () {
 					case 'custom':
 						fileobj.img.editOptions.scaleUnit = form.unitSelect.value;
 						fileobj.img.editOptions.scaleValue = form.resizeValue.value;
-						fileobj.img.editOptions.rotateValue = form.rotateSelect.value;
-						fileobj.img.editOptions.quality = form.quality ? form.quality.value : 90;
-						fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scaleValue == '' && fileobj.img.editOptions.rotateValue == 0 && fileobj.img.editOptions.quality == 0 ? false : true;
+						fileobj.img.editOptions.rotateValue = parseInt(form.rotateSelect.value);
+						fileobj.img.editOptions.quality = parseInt(form.quality);// ? form.quality.value : 90;
+						fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scaleValue || fileobj.img.editOptions.rotateValue || fileobj.img.editOptions.quality;
 						break;
 					case 'expert': 
 						fileobj.img.editOptions = {};
@@ -2607,6 +2628,7 @@ var weFileUpload = (function () {
 				}
 			}
 
+			document.we_form.elements['check_fu_doc_doResize'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
 			document.we_form.elements['fu_doc_resizeValue'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
 			document.we_form.elements['fu_doc_rotate'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
 			document.we_form.elements['fu_doc_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
@@ -2995,10 +3017,12 @@ var weFileUpload = (function () {
 
 			this.repaintEntry = function (fileobj) {
 				this.addFile(fileobj);
-				this.elems.dragInnerRight.firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
-				this.elems.dragInnerRight.firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
-				this.elems.dragInnerRight.firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
-				this.elems.dragInnerRight.firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
+				if(Uint8Array.prototype.slice){ // TODO: must fix loupe for IE11: has no offsetWidth!!
+					this.elems.dragInnerRight.firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
+					this.elems.dragInnerRight.firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
+					this.elems.dragInnerRight.firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
+					this.elems.dragInnerRight.firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
+				}
 			};
 		}
 

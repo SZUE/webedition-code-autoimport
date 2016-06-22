@@ -158,11 +158,6 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				($multimport ? we_html_element::htmlDiv(array('style' => "margin-top: 12px;"), we_html_element::htmlDiv(array('style' => 'position:absolute; left:178px;width: 53px; text-align:right; display:block;'), $btnRefresh)
 					) : '')
 		);
-
-		/*
-		  $resizeCheckbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_doResize', 'Grafik vor dem Upload proportional skalieren', false, 'defaultfont', 'document.getElementById(\'editImageResize\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){we_FileUpload.reeditImage(null, 0);}');
-		  return we_html_element::htmlDiv(array(), $resizeCheckbox) . we_html_element::htmlDiv(array('id' => 'editImageResize', 'style' => 'display:none; padding: 0 0 4px 28px;'), $valueInput . ' ' . $unitSelect . $btnRefresh);
-		 */
 	}
 
 	public function getFormImportMeta(){
