@@ -988,7 +988,46 @@
 				});
 
 				ed.onKeyDown.add(function (ed, e) {
-					fixTableCellSelection(ed);
+					// WE 7.0.1.0
+					if (e.keyCode == 9 && ed.dom.getParent(ed.selection.getNode(), 'TABLE')) {
+						try {
+							var tdElm = ed.dom.getParent(ed.selection.getNode(), 'th,td');
+							var tableElm = ed.dom.getParent(ed.selection.getNode(), 'table');
+							var direction = e.shiftKey ? 'prev' : 'next';
+							var nextCell = getNeighboringCell(tableElm, tdElm, direction);
+							
+
+							if (!nextCell) {
+								if(direction === 'prev'){
+									ed.selection.collapse(true);
+									return tinymce.dom.Event.cancel(e);
+								}
+								//nextCell = tableElm.rows[0].cells[0];
+								ed.execCommand("mceTableInsertRowAfter", tdElm);
+								nextCell = getNeighboringCell(tableElm, tdElm, direction);
+							}
+
+							//old WE-Fix
+							if (tinymce.isIE8 || tinymce.isIE9){
+								ed.selection.select(nextCell);
+							} else {
+								ed.selection.select(nextCell.firstChild);
+							}
+							//END WE-Fix
+							//Original: inst.selection.select(nextCell.firstChild);
+
+							ed.selection.collapse(true);
+							return tinymce.dom.Event.cancel(e);
+						} catch(e){
+							fixTableCellSelection(ed);
+						}
+
+						//ed.undoManager.add();
+					} 
+					// END WE
+						else {
+						fixTableCellSelection(ed);
+					}
 				});
 
 				ed.onMouseDown.add(function (ed, e) {
@@ -996,6 +1035,7 @@
 						fixTableCellSelection(ed);
 					}
 				});
+
 				function tableCellSelected(ed, rng, n, currentCell) {
 					// The decision of when a table cell is selected is somewhat involved.  The fact that this code is
 					// required is actually a pointer to the root cause of this bug. A cell is selected when the start 
@@ -1014,7 +1054,30 @@
 					return  allOfCellSelected || tableCellSelection;
 					// return false;
 				}
-				
+
+				// WE 7.0.1.0: added together with tabs
+				function getNeighboringCell(table, cell, direction) {
+					var cells = [], x = 0, i, j, cell, nextCell;
+					direction = direction || 'next';
+
+					for (i = 0; i < table.rows.length; i++){
+						for (j = 0; j < table.rows[i].cells.length; j++, x++){
+							cells[x] = table.rows[i].cells[j];
+						}
+					}
+
+					for (i = 0; i < cells.length; i++){
+						if (cells[i] == cell){
+							nextCell = direction == 'next' ? cells[i+1] : cells[i-1];
+							if (nextCell){
+								return nextCell;
+							}
+						}
+					}
+					return null;
+				}
+				// END WE
+
 				// this nasty hack is here to work around some WebKit selection bugs.
 				function fixTableCellSelection(ed) {
 					if (!tinymce.isWebKit)
@@ -1322,6 +1385,42 @@
 
 			// Register action commands
 			each({
+				mceTableMoveToNextRow: function(grid) {
+var tdElm = ed.dom.getParent(ed.selection.getNode(), 'th,td');
+var tableElm = ed.dom.getParent(ed.selection.getNode(), 'table');
+
+					var nextCell = null;
+	var cells = [], x = 0, i, j, cell;
+
+	for (i = 0; i < tableElm.rows.length; i++)
+		for (j = 0; j < tableElm.rows[i].cells.length; j++, x++)
+			cells[x] = tableElm.rows[i].cells[j];
+
+	for (i = 0; i < cells.length; i++){
+		if (cells[i] == tdElm){
+			if (nextCell = cells[i+1]){
+				return nextCell;
+			}
+		}
+	}
+					
+
+					if (!nextCell) {
+						//ed.execCommand("mceTableInsertRowAfter", tdElm);
+						//nextCell = getNextCell(tableElm, tdElm);
+					}
+					//WE-Fix
+					if (tinymce.isIE8 || tinymce.isIE9){
+						ed.selection.select(nextCell);
+					} else {
+						ed.selection.select(nextCell.firstChild);
+					}
+					//END WE-Fix
+					//Original: inst.selection.select(nextCell.firstChild);
+					
+					ed.selection.collapse(true);
+				},
+
 				mceTableSplitCells : function(grid) {
 					grid.split();
 				},

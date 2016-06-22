@@ -216,7 +216,8 @@ div.editorCrosshairH{
 	top: 185px;
 	left: -62px;
 	width: 90px;
-	height: 1px;
+	height: 2px;
+	box-sizing: border-box;
 	border-top: 1px dashed white;
 	border-bottom: 1px dashed black;
 }
@@ -226,7 +227,8 @@ div.editorCrosshairV{
 	z-index: 1010;
 	top: 140px;
 	left: -16px;
-	width: 1px;
+	width: 2px;
+	box-sizing: border-box;
 	height: 100px;
 	border-right: 1px dashed white;
 	border-left: 1px dashed black;
@@ -306,13 +308,11 @@ div.focusPointOnSet:before{
 		bottom: initial;
 		left: 140px;
 		width: 100px;
-		height: 1px;
 	}
 	div.editorCrosshairV{
 		top: 264px;
 		bottom: initial;
 		left: 189px;
-		width: 1px;
 		height: 100px;
 	}
 	div.focusPointOnSet{
@@ -353,13 +353,11 @@ div.fileuploadImporter{
 		bottom: 219px;
 		left: 348px;
 		width: 100px;
-		height: 1px;
 	}
 	div.editorCrosshairV{
 		top: initial;
 		bottom: 170px;
 		left: 398px;
-		width: 1px;
 		height: 100px;
 	}
 	div.focusPointOnSet{
