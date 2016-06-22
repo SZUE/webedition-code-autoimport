@@ -31,7 +31,6 @@ class we_import_site{
 	var $htmlPages = 1;
 	var $createWePages = 1;
 	var $flashmovies = 1;
-	var $quicktime = 1;
 	var $js = 1;
 	var $css = 1;
 	var $text = 1;
@@ -71,7 +70,6 @@ class we_import_site{
 		$this->htmlPages = we_base_request::_(we_base_request::BOOL, 'htmlPages', $this->htmlPages);
 		$this->createWePages = we_base_request::_(we_base_request::BOOL, 'createWePages', $this->createWePages);
 		$this->flashmovies = we_base_request::_(we_base_request::BOOL, 'flashmovies', $this->flashmovies);
-		$this->quicktime = we_base_request::_(we_base_request::BOOL, 'quicktime', $this->quicktime);
 		$this->js = we_base_request::_(we_base_request::BOOL, 'js', $this->js);
 		$this->css = we_base_request::_(we_base_request::BOOL, 'css', $this->css);
 		$this->text = we_base_request::_(we_base_request::BOOL, 'text', $this->text);
@@ -617,7 +615,6 @@ function doUnload() {
 		$htmlPages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_HTML") ? $this->htmlPages : ((permissionhandler::hasPerm("NEW_WEBEDITIONSITE") && $this->createWePages) ? true : false), "htmlPages", g_l('siteimport', '[importHtmlPages]'), false, "defaultfont", "if(this.checked){this.form.elements.check_createWePages.disabled=false;document.getElementById('label__createWePages').style.color='black';}else{this.form.elements.check_createWePages.disabled=true;document.getElementById('label__createWePages').style.color='grey';}", !permissionhandler::hasPerm("NEW_HTML"));
 		$createWePages = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_WEBEDITIONSITE") ? $this->createWePages : false, "createWePages", g_l('siteimport', '[createWePages]') . "&nbsp;&nbsp;", false, "defaultfont", $weoncklick, !permissionhandler::hasPerm("NEW_WEBEDITIONSITE"));
 		$flashmovies = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_FLASH") ? $this->flashmovies : false, "flashmovies", g_l('siteimport', '[importFlashmovies]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_FLASH"));
-		$quicktime = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_QUICKTIME") ? $this->quicktime : false, "quicktime", g_l('siteimport', '[importQuicktime]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_QUICKTIME"));
 		$jss = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_JS") ? $this->js : false, "j", g_l('siteimport', '[importJS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_JS"));
 		$css = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_CSS") ? $this->css : false, "css", g_l('siteimport', '[importCSS]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_CSS"));
 		$text = we_html_forms::checkboxWithHidden(permissionhandler::hasPerm("NEW_TEXT") ? $this->text : false, "text", g_l('siteimport', '[importText]'), false, "defaultfont", "", !permissionhandler::hasPerm("NEW_TEXT"));
@@ -692,8 +689,6 @@ function doUnload() {
 		$tableObj->setCol(3, 1, array('style' => 'width:200px;'), $createWePages);
 		$tableObj->setCol(3, 2, array('style' => 'width:180px;'), $others);
 		$tableObj->setCol(4, 1, null, $wePagesOptionButton);
-		$tableObj->setCol(4, 2, array('style' => 'vertical-align:top;'), $quicktime);
-
 
 		$parts = array(
 			array(
@@ -1621,7 +1616,6 @@ function doUnload() {
 			case we_base_ContentTypes::IMAGE:
 			case we_base_ContentTypes::APPLICATION:
 			case we_base_ContentTypes::FLASH:
-			case we_base_ContentTypes::QUICKTIME:
 			case we_base_ContentTypes::VIDEO:
 			case we_base_ContentTypes::AUDIO:
 				$filesize = !is_dir($path) && ($filesize = filesize($path)) ? $filesize : 0;
@@ -1687,7 +1681,6 @@ function doUnload() {
 			// no break!! because we need to do the same after the following case
 			case we_base_ContentTypes::APPLICATION:
 			case we_base_ContentTypes::FLASH:
-			case we_base_ContentTypes::QUICKTIME:
 			case we_base_ContentTypes::VIDEO:
 				$GLOBALS["we_doc"]->setElement('filesize', $filesize, 'attrib');
 				$GLOBALS["we_doc"]->setElement('data', $path, 'image');
@@ -1820,7 +1813,7 @@ function doUnload() {
 					continue 2;
 			}
 			// now we have to check if the file should be imported
-			$PathOfEntry = $importDirectory . DIRECTORY_SEPARATOR. $entry;
+			$PathOfEntry = $importDirectory . DIRECTORY_SEPARATOR . $entry;
 
 			if((strpos($PathOfEntry, $weDirectory) !== false) ||
 				(!is_dir($PathOfEntry) && ($this->maxSize && (filesize($PathOfEntry) > (abs($this->maxSize) * 1024 * 1024))))){
@@ -1862,11 +1855,6 @@ function doUnload() {
 					break;
 				case we_base_ContentTypes::FLASH:
 					if($this->flashmovies){
-						$importIt = true;
-					}
-					break;
-				case we_base_ContentTypes::QUICKTIME:
-					if($this->quicktime){
 						$importIt = true;
 					}
 					break;

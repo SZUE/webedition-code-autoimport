@@ -252,11 +252,6 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					$error = true;
 				}
 				break;
-			case we_base_ContentTypes::QUICKTIME:
-				if(!permissionhandler::hasPerm('NEW_QUICKTIME')){
-					$error = true;
-				}
-				break;
 			case we_base_ContentTypes::JS:
 				if(!permissionhandler::hasPerm('NEW_JS')){
 					$error = true;

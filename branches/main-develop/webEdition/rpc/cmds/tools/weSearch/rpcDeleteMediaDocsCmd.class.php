@@ -62,7 +62,6 @@ class rpcDeleteMediaDocsCmd extends we_rpc_cmd{
 					we_base_ContentTypes::AUDIO,
 					we_base_ContentTypes::VIDEO,
 					we_base_ContentTypes::FLASH,
-					we_base_ContentTypes::QUICKTIME,
 					we_base_ContentTypes::APPLICATION,)
 				);
 		});

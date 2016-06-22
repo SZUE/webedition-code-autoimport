@@ -79,7 +79,6 @@ function we_isFieldNotEmpty(array $attribs){
 		case 'binary' :
 		case 'img' :
 		case 'flashmovie' :
-		case 'quicktime' :
 		case 'collection':
 			return (bool) $GLOBALS['lv']->f($match);
 		case 'float':

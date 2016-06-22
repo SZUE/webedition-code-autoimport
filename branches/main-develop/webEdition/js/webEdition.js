@@ -1332,7 +1332,6 @@ WE().util.getTreeIcon = function (contentType, open, extension) {
 		case 'text/html':
 			return pre + '<i class="fa fa-file-code-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'application/x-shockwave-flash':
-		case 'video/quicktime':
 		case 'video/*':
 			return pre + '<i class="fa fa-file-video-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
 		case 'audio/*':

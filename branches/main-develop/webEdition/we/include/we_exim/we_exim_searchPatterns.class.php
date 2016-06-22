@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_searchPatterns{
-
 	public $doc_patterns = array(
 		'id' => array(
 			'/<(we:include\s*[^>]*\stype\s*=\s*[\"\']document[\"\'][^>]*\sid\s*=\s*[\"\'])(\d+)([\"\'][^>]*)>/si',
@@ -85,7 +84,6 @@ class we_exim_searchPatterns{
 			'icon' => 'id',
 			'img' => array('id', 'startid', 'parentid'),
 			'flashmovie' => array('startid', 'parentid'),
-			'quicktime' => array('startid', 'parentid'),
 			'video' => array('id', 'startid', 'parentid'),
 			'js' => 'id',
 			'linkToSeeMode' => 'id',

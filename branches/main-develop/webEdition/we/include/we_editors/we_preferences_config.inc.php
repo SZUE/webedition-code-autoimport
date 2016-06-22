@@ -80,8 +80,8 @@ $GLOBALS['configs'] = array(
 		'EXECUTE_HOOKS' => array('Default setting for hook execution', we_base_request::BOOL, false),
 // xhtml
 		'XHTML_DEFAULT' => array('Default setting for xml attribute', we_base_request::BOOL, true),
-		/*'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),
-		'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', we_base_request::BOOL, false),
+		/* 'XHTML_DEBUG' => array('Enable XHTML debug', we_base_request::BOOL, false),
+		  'XHTML_REMOVE_WRONG' => array('Remove wrong xhtml attributes from we:tags', we_base_request::BOOL, false),
 		 */
 //system
 		'FILE_UPLOAD_MAX_UPLOAD_SIZE' => array('Set the maximum size a file can have', we_base_request::INT, 128),
@@ -157,7 +157,6 @@ $GLOBALS['configs'] = array(
 		'VERSIONING_VIDEO' => array('Versioning status for ContentType video/*', we_base_request::BOOL, false),
 		'VERSIONING_AUDIO' => array('Versioning status for ContentType audio/*', we_base_request::BOOL, false),
 		'VERSIONING_FLASH' => array('Versioning status for ContentType application/x-shockwave-flash', we_base_request::BOOL, false),
-		'VERSIONING_QUICKTIME' => array('Versioning status for ContentType video/quicktime', we_base_request::BOOL, false),
 		'VERSIONING_SONSTIGE' => array('Versioning status for ContentType application/*', we_base_request::BOOL, false),
 		'VERSIONING_TEXT_XML' => array('Versioning status for ContentType text/xml', we_base_request::BOOL, false),
 		'VERSIONING_OBJECT' => array('Versioning status for ContentType objectFile', we_base_request::BOOL, false),
@@ -222,10 +221,10 @@ $GLOBALS['configs'] = array(
 		'editorTooltipFontsize' => array(we_base_request::INT, 0),
 		'editorWrap' => array(we_base_request::BOOL, false),
 		'message_reporting' => array(we_base_request::INT, we_message_reporting::WE_MESSAGE_WARNING | we_message_reporting::WE_MESSAGE_ERROR),
-		/*'xhtml_show_wrong' => array(we_base_request::BOOL, false),
-		'xhtml_show_wrong_text' => array(we_base_request::BOOL, false),
-		'xhtml_show_wrong_js' => array(we_base_request::BOOL, false),
-		'xhtml_show_wrong_error_log' => array(we_base_request::BOOL, false),*/
+		/* 'xhtml_show_wrong' => array(we_base_request::BOOL, false),
+		  'xhtml_show_wrong_text' => array(we_base_request::BOOL, false),
+		  'xhtml_show_wrong_js' => array(we_base_request::BOOL, false),
+		  'xhtml_show_wrong_error_log' => array(we_base_request::BOOL, false), */
 		'specify_jeditor_colors' => array(we_base_request::BOOL, false),
 		'seem_start_type' => array(we_base_request::STRING, 'cockpit', 'CHANGE_START_DOCUMENT'),
 		'seem_start_file' => array(we_base_request::INT, 0),

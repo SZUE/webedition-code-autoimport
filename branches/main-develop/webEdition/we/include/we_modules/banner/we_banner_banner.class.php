@@ -184,7 +184,7 @@ class we_banner_banner extends we_banner_base{
 
 		// the following would be obsolete, when class was based on we_modelBase
 		if(!empty($this->MediaLinks)){
-			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::QUICKTIME . '","' . we_base_ContentTypes::VIDEO . '")';
+			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::VIDEO . '")';
 			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->MediaLinks)) . ') ' . $whereType);
 			$this->MediaLinks = array();
 			while($this->db->next_record()){
@@ -283,7 +283,7 @@ class we_banner_banner extends we_banner_base{
 		$weight = rand(0, intval($maxweight));
 		$anz = 0;
 		while($anz == 0 && $weight <= $maxweight){
-			$db->query('SELECT ID, bannerID FROM ' . BANNER_TABLE . ' WHERE '.$where.' AND weight<='.$weight.' AND (TagName="" OR TagName="' . $db->escape($bannername) . '")');
+			$db->query('SELECT ID, bannerID FROM ' . BANNER_TABLE . ' WHERE ' . $where . ' AND weight<=' . $weight . ' AND (TagName="" OR TagName="' . $db->escape($bannername) . '")');
 			$anz = $db->num_rows();
 			if($anz == 0){
 				++$weight;

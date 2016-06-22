@@ -92,7 +92,6 @@ function we_tag_userInput(array $attribs, $content){
 			case 'img':
 			case 'binary':
 			case 'flashmovie':
-			case 'quicktime':
 				break;
 			default:
 				$hidden = getHtmlTag('input', array(
@@ -274,92 +273,6 @@ function we_tag_userInput(array $attribs, $content){
 			}
 
 			return '';
-		case 'quicktime' :
-			$quicktimeDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_QUICKTIME_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));
-
-
-			if($editable){
-				if(($foo = attributFehltError($attribs, 'parentid', __FUNCTION__))){
-					return $foo;
-				}
-
-				if(!isset($_SESSION[$quicktimeDataId])){
-					$_SESSION[$quicktimeDataId] = array();
-				}
-				$_SESSION[$quicktimeDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
-				//$_SESSION[$quicktimeDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
-				$_SESSION[$quicktimeDataId]['width'] = weTag_getAttribute('width', $attribs, 0, we_base_request::INT);
-				$_SESSION[$quicktimeDataId]['height'] = weTag_getAttribute('height', $attribs, 0, we_base_request::INT);
-				$_SESSION[$quicktimeDataId]['id'] = $orgVal ? : '';
-
-				$bordercolor = weTag_getAttribute('bordercolor', $attribs, '#006DB8', we_base_request::STRING);
-				$checkboxstyle = weTag_getAttribute('checkboxstyle', $attribs, '', we_base_request::STRING);
-				$inputstyle = weTag_getAttribute('inputstyle', $attribs, '', we_base_request::STRING);
-				$checkboxclass = weTag_getAttribute('checkboxclass', $attribs, '', we_base_request::STRING);
-				$inputclass = weTag_getAttribute('inputclass', $attribs, '', we_base_request::STRING);
-				$checkboxtext = weTag_getAttribute('checkboxtext', $attribs, g_l('parser', '[delete]'), we_base_request::RAW);
-
-				if($_SESSION[$quicktimeDataId]['id']){
-					$attribs['id'] = $_SESSION[$quicktimeDataId]['id'];
-				}
-
-				if(isset($_SESSION[$quicktimeDataId]['serverPath'])){
-					$src = '/' . ltrim(substr($_SESSION[$quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
-					$quicktimeTag = '';
-				} else {
-					unset($attribs['width']);
-					unset($attribs['height']);
-					$quicktimeTag = (!empty($attribs['id']) ?
-							$GLOBALS['we_doc']->getField($attribs, 'quicktime') :
-							'<img src="' . ICON_DIR . 'no_quicktime.gif" alt="" width="64" height="64" />');
-				}
-
-				$checked = (!empty($_SESSION[$quicktimeDataId]["doDelete"]) ? ' checked' : '');
-				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
-				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
-	<tr>
-		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $quicktimeTag . '
-			<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $quicktimeDataId . '" /></td>
-	</tr>
-	<tr>
-		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
-			<input name="' . $fieldname . '" type="file" accept="video/quicktime"' . ($inputstyle ? (' style="' . $inputstyle . '"') : '') . ($inputclass ? (' class="' . $inputclass . '"') : '') . '/>
-		</td>
-	</tr>
-	<tr>
-		<td class="weEditmodeStyle" colspan="2" style="text-align:left">
-			<table class="weEditTable padding0 spacing0 border0">
-				<tr>
-					<td style="padding-right: 5px;">
-						<input style="border:0px solid black;" type="checkbox" id="WE_UI_DEL_CHECKBOX_' . $name . '" name="WE_UI_DEL_CHECKBOX_' . $name . '" value="1" ' . $checked . '/>
-					</td>
-					<td>
-						<label for="WE_UI_DEL_CHECKBOX_' . $name . '"' . ($checkboxstyle ? (' style="' . $checkboxstyle . '"') : '') . ($checkboxclass ? (' class="' . $checkboxclass . '"') : '') . '>' . $checkboxtext . '</label>
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
-</table>';
-			}
-			$hidden = '<input type="hidden" name="WE_UI_QUICKTIME_DATA_ID_' . $name . '" value="' . $quicktimeDataId . '" />';
-
-			if(isset($_SESSION[$quicktimeDataId]['serverPath'])){
-				$src = '/' . ltrim(substr($_SESSION[$quicktimeDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
-				return $hidden;
-			}
-			if(empty($_SESSION[$quicktimeDataId]['id'])){
-				return '';
-			}
-
-			if(!empty($_SESSION[$quicktimeDataId]['doDelete'])){
-				return $hidden;
-			}
-
-			unset($attribs['width']);
-			unset($attribs['height']);
-			$attribs['id'] = $_SESSION[$quicktimeDataId]['id'];
-			return $GLOBALS['we_doc']->getField($attribs, 'quicktime') . $hidden;
 
 		case 'binary' :
 			$binaryDataId = we_base_request::_(we_base_request::HTML, 'WE_UI_BINARY_DATA_ID_' . $name, md5(uniqid(__FUNCTION__, true)));

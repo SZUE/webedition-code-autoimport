@@ -40,9 +40,6 @@ function we_lcmd(par) {
 		case 'new_flash_movie':
 			top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.FLASH);
 			return;
-		case 'new_quicktime_movie':
-			top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.QUICKTIME);
-			return;
 		case 'new_video_movie':
 			top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.VIDEO);
 			return;

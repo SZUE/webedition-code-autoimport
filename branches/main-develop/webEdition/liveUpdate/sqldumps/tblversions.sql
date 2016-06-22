@@ -14,6 +14,8 @@
 /* query separator */
 ###ONTAB(###TBLPREFIX###tblversions)UPDATE ###TBLPREFIX###tblversions SET documentTable=REPLACE(documentTable,"###TBLPREFIX###","") WHERE documentTable LIKE "###TBLPREFIX###%";###
 /* query separator */
+UPDATE ###TBLPREFIX###tblversions SET ClassName="we_otherDocument",ContentType="application/*" WHERE ClassName="we_quicktimeDocument"
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblversions (
   documentID int unsigned NOT NULL,
@@ -27,7 +29,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   binaryPath varchar(255) NOT NULL,
   modifications tinytext NOT NULL,
   modifierID int unsigned NOT NULL,
-  ContentType enum('image/*','text/html','text/webedition','text/weTmpl','text/js','text/css','text/htaccess','text/plain','folder','class_folder','application/x-shockwave-flash','video/quicktime','application/*','text/xml','object','objectFile','video/*','audio/*') NOT NULL,
+  ContentType enum('image/*','text/html','text/webedition','text/weTmpl','text/js','text/css','text/htaccess','text/plain','folder','class_folder','application/x-shockwave-flash','application/*','text/xml','object','objectFile','video/*','audio/*') NOT NULL,
   Text tinytext NOT NULL,
   ParentID int unsigned NOT NULL,
   CreationDate int unsigned NOT NULL,
@@ -38,7 +40,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   Extension tinytext NOT NULL,
   IsDynamic tinyint unsigned NOT NULL,
   IsSearchable tinyint unsigned NOT NULL,
-  ClassName ENUM('we_flashDocument','we_folder','we_htmlDocument','we_imageDocument','we_otherDocument','we_textDocument','we_webEditionDocument','we_quicktimeDocument','we_document_video','we_document_audio','we_class_folder','we_objectFile','we_object','we_template') NOT NULL,
+  ClassName ENUM('we_flashDocument','we_folder','we_htmlDocument','we_imageDocument','we_otherDocument','we_textDocument','we_webEditionDocument','we_document_video','we_document_audio','we_class_folder','we_objectFile','we_object','we_template') NOT NULL,
   DocType smallint unsigned NOT NULL,
   Category text NOT NULL,
   RestrictOwners tinyint unsigned NOT NULL,

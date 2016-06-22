@@ -164,7 +164,6 @@ var WebEdition = {
 			IMAGE: "<?php echo we_base_ContentTypes::IMAGE; ?>",
 			HTML: "<?php echo we_base_ContentTypes::HTML; ?>",
 			FLASH: "<?php echo we_base_ContentTypes::FLASH; ?>",
-			QUICKTIME: "<?php echo we_base_ContentTypes::QUICKTIME; ?>",
 			VIDEO: "<?php echo we_base_ContentTypes::VIDEO; ?>",
 			AUDIO: "<?php echo we_base_ContentTypes::AUDIO; ?>",
 			JS: "<?php echo we_base_ContentTypes::JS; ?>",

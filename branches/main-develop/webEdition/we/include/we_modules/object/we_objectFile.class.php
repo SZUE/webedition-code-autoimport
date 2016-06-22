@@ -180,7 +180,6 @@ class we_objectFile extends we_document{
 
 		we_imageDocument::checkAndPrepare($formname, 'we_object');
 		we_flashDocument::checkAndPrepare($formname, 'we_object');
-		we_quicktimeDocument::checkAndPrepare($formname, 'we_object');
 		we_otherDocument::checkAndPrepare($formname, 'we_object');
 
 		if($session){
@@ -665,12 +664,11 @@ class we_objectFile extends we_document{
 				return $this->getTextareaHTML($type, $name, $attribs, $editable, $variant);
 			case self::TYPE_IMG:
 				return $this->getImageHTML($type, $name, $attribs, $editable, $variant);
+			case self::TYPE_QUICKTIME:
 			case self::TYPE_BINARY:
 				return $this->getBinaryHTML($type, $name, $attribs, $editable);
 			case self::TYPE_FLASHMOVIE:
 				return $this->getFlashmovieHTML($type, $name, $attribs, $editable);
-			case self::TYPE_QUICKTIME:
-				return $this->getQuicktimeHTML($type, $name, $attribs, $editable);
 			case self::TYPE_DATE:
 				return $this->getDateFieldHTML($type, $name, $attribs, $editable, $variant);
 			case self::TYPE_CHECKBOX:
@@ -776,7 +774,6 @@ class we_objectFile extends we_document{
 		return ($variant ?
 				$this->htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $element) :
 				$this->formSelectFromArray('meta', $name, $vals, $this->getPreviewHeadline('meta', $name), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
-
 	}
 
 	private function getObjectFieldHTML($type, $ObjectID, array $attribs, $editable = true){
@@ -1136,7 +1133,7 @@ class we_objectFile extends we_document{
 				);
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId($int_elem_Name . we_base_file::getUniqueId());
-			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::QUICKTIME)));
+			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION)));
 			$yuiSuggest->setInput($Path_elem_Name, $path, array('onchange' => ($showRadio ? "document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "")));
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(1);
@@ -1432,24 +1429,6 @@ class we_objectFile extends we_document{
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "')");
 		return $this->getPreviewHeadline('flashmovie', $name) .
 			$content;
-	}
-
-	private function getQuicktimeHTML($type, $name, array $attribs, $editable = true){
-		$img = new we_quicktimeDocument();
-		$id = $this->getElement($name);
-		$img->initByID($id, FILE_TABLE, false);
-
-		if(!$editable){
-			return $this->getPreviewView($name, $img->getHtml());
-		}
-		$fname = 'we_' . $this->Name . '_img[' . $name . ']';
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $fname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','quicktime_" . $name . "');opener._EditorFrame.setEditorIsHot(true);");
-
-		return $this->getPreviewHeadline('quicktime', $name) .
-			'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' . $img->getHtml() .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["quicktime_$name"]['defaultdir']) ? $this->DefArray["quicktime_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $wecmdenc1 . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["quicktime_$name"]['rootdir']) ? $this->DefArray["quicktime_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::QUICKTIME . "')") .
-			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "',quicktime_" . $name . "')");
 	}
 
 	public function getDefaultValueArray(){
@@ -3053,9 +3032,8 @@ class we_objectFile extends we_document{
 				if($objectdaten['TriggerID']){
 					$path_parts = pathinfo(id_to_path($objectdaten['TriggerID']));
 
-				if($objectdaten['Url']){
-					return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-
+					if($objectdaten['Url']){
+						return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 							($hidedirindex && seoIndexHide($path_parts['basename']) ?
 								'' :
 								$path_parts['filename'] . '/' ) .

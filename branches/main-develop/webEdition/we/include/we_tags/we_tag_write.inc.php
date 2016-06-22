@@ -318,13 +318,6 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 				'origheight' => 'imgheight'
 			)
 		),
-		'QUICKTIME' => array(
-			'we_quicktimeDocument',
-			we_base_ContentTypes::QUICKTIME,
-			we_base_ContentTypes::QUICKTIME,
-			'image',
-			array()
-		),
 		'IMG' => array(
 			'we_imageDocument',
 			'image/',

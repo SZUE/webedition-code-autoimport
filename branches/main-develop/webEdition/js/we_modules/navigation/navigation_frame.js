@@ -66,7 +66,7 @@ function onFolderSelectionChangeJS(value) {
 	var linktype = value === WE().consts.navigation.STYPE_DOCLINK ? WE().consts.navigation.STYPE_DOCLINK : (value === WE().consts.navigation.STYPE_CATLINK ? WE().consts.navigation.STYPE_CATLINK : (value === WE().consts.navigation.STYPE_OBJLINK ? WE().consts.navigation.STYPE_OBJLINK : WE().consts.navigation.STYPE_DOCLINK));
 	YAHOO.autocoml.modifySetById("yuiAcInputLinkPath", {
 		table: linktype === WE().consts.navigation.STYPE_DOCLINK ? WE().consts.tables.FILE_TABLE : (linktype === WE().consts.navigation.STYPE_OBJLINK ? WE().consts.tables.OBJECT_FILES_TABLE : (linktype === WE().consts.navigation.STYPE_CATLINK ? WE().consts.tables.CATEGORY_TABLE : "")),
-		cTypes: linktype === WE().consts.navigation.STYPE_DOCLINK ? [WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.XML, WE().consts.contentTypes.WEDOCUMENT, WE().consts.contentTypes.IMAGE, WE().consts.contentTypes.HTML, WE().consts.contentTypes.APPLICATION, WE().consts.contentTypes.FLASH, WE().consts.contentTypes.QUICKTIME].join(",") : (linktype === WE().consts.navigation.STYPE_OBJLINK ? [WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.OBJECT_FILE].join(",") : "")
+		cTypes: linktype === WE().consts.navigation.STYPE_DOCLINK ? [WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.XML, WE().consts.contentTypes.WEDOCUMENT, WE().consts.contentTypes.IMAGE, WE().consts.contentTypes.HTML, WE().consts.contentTypes.APPLICATION, WE().consts.contentTypes.FLASH].join(",") : (linktype === WE().consts.navigation.STYPE_OBJLINK ? [WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.OBJECT_FILE].join(",") : "")
 	}
 	);
 }

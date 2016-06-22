@@ -447,7 +447,6 @@ class we_fragment_copyFolder extends we_fragment_base{
 			'linkToSeeMode' => array('id'),
 			'listdir' => array('id'),
 			'printVersion' => array('triggerid'),
-			'quicktime' => array('id'),
 			'sendMail' => array('id'),
 			'write' => array('triggerid'),
 			'flashmovie' => array('id'),

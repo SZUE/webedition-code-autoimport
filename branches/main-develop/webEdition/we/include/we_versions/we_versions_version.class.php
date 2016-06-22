@@ -919,8 +919,6 @@ class we_versions_version{
 				return VERSIONING_AUDIO;
 			case we_base_ContentTypes::FLASH:
 				return VERSIONING_FLASH;
-			case we_base_ContentTypes::QUICKTIME:
-				return VERSIONING_QUICKTIME;
 			case we_base_ContentTypes::APPLICATION:
 				return VERSIONING_SONSTIGE;
 			case we_base_ContentTypes::XML:

@@ -492,14 +492,12 @@ class we_document extends we_root{
 				return VERSIONING_AUDIO;
 			case we_base_ContentTypes::VIDEO:
 				return VERSIONING_VIDEO;
-			case we_base_ContentTypes::FLASH://FIXME: remove flash/quicktime, replace by video
+			case we_base_ContentTypes::FLASH://FIXME: remove flash, replace by video
 				return VERSIONING_FLASH;
 			case we_base_ContentTypes::IMAGE:
 				return VERSIONING_IMAGE;
 			case we_base_ContentTypes::TEMPLATE:
 				return VERSIONING_TEXT_WETMPL;
-			case we_base_ContentTypes::QUICKTIME:
-				return VERSIONING_QUICKTIME;
 			case we_base_ContentTypes::JS:
 				return VERSIONING_TEXT_JS;
 			case we_base_ContentTypes::CSS:
@@ -599,7 +597,6 @@ class we_document extends we_root{
 								case 'flashmovie':
 								case 'href':
 								case 'img':
-								case 'quicktime':
 								case 'video':
 									if(!empty($v['bdid']) && is_numeric($v['bdid'])){
 										$this->MediaLinks[$element] = $v['bdid'];
@@ -925,19 +922,6 @@ class we_document extends we_root{
 					$fl->initByAttribs($attribs);
 				}
 				return $pathOnly ? $fl->Path : $fl->getHtml();
-			case 'quicktime':
-				$fl = new we_quicktimeDocument();
-				if(isset($attribs['name'])){
-					$fl->Name = $attribs['name'];
-				}
-				if(!$val && isset($attribs['id'])){
-					$val = $attribs['id'];
-				}
-				$fl->initByID($val, FILE_TABLE);
-				if(!empty($attribs)){
-					$fl->initByAttribs($attribs);
-				}
-				return $pathOnly ? $fl->Path : $fl->getHtml();
 			case 'link':
 				return self::getFieldLink($val, $db, $attribs, $pathOnly, $parentID, $path);
 			case 'date':
@@ -1041,7 +1025,6 @@ class we_document extends we_root{
 		switch($type){
 			case 'img':
 			case 'flashmovie':
-			case 'quicktime':
 			case 'video':
 				if(isset($attribs['showcontrol']) && !$attribs['showcontrol'] && isset($attribs['id']) && $attribs['id']){//bug 6433: siehe korrespondierende Änderung in we_tag_img
 					unset($attribs['showcontrol']);

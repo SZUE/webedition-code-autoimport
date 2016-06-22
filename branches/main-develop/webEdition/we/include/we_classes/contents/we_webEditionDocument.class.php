@@ -145,7 +145,6 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		we_imageDocument::checkAndPrepare($formname, 'we_document');
 		we_flashDocument::checkAndPrepare($formname, 'we_document');
-		we_quicktimeDocument::checkAndPrepare($formname, 'we_document');
 		we_otherDocument::checkAndPrepare($formname, 'we_document');
 
 		if($session){

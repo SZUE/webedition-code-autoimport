@@ -44,11 +44,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
 		$contenttype = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 		break;
-	case we_base_ContentTypes::QUICKTIME:
-		$we_doc = new we_quicktimeDocument();
-		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
-		$contenttype = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
-		break;
 	case we_base_ContentTypes::APPLICATION:
 		$we_doc = new we_otherDocument();
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$cmd2]);
