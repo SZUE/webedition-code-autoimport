@@ -97,7 +97,7 @@ function we_tag_formfield(array $attribs){
 </colgroup>
 	<tr>
 		<td>' . g_l('global', '[name]') . ':</td>
-		<td><input type="text" name="' . $nameprefix . 'ffname]" value="' . $ffname . '" /></td>
+		<td><input type="text" name="' . $nameprefix . 'ffname]" value="' . $ffname . '" required="required"/></td>
 	</tr>
 	<tr>
 		<td>' . g_l('global', '[type]') . ':</td>
