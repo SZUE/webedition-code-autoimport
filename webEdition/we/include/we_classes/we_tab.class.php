@@ -23,14 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_tab{
-
-	const ACTIVE = 'TAB_ACTIVE';
-	const NORMAL = 'TAB_NORMAL';
-
 	private $tab;
 
-	function __construct($text, $status = self::NORMAL, $jscmd = '', $attribs = array()){
-		$class = ($status == self::ACTIVE ? 'tabActive' : 'tabNormal');
+	function __construct($text, $isActive = false, $jscmd = '', $attribs = array()){
+		$class = ($isActive ? 'tabActive' : 'tabNormal');
 		$att = '';
 		if(isset($attribs) && is_array($attribs)){
 			foreach($attribs as $key => $val){

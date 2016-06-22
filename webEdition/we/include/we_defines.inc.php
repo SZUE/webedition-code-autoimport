@@ -105,6 +105,8 @@ define('LOCK_TABLE', TBL_PREFIX . 'tblLock');
 define('SETTINGS_TABLE', TBL_PREFIX . 'tblSettings');
 define('VFILE_TABLE', TBL_PREFIX . 'tblVFile');
 define('FILELINK_TABLE', TBL_PREFIX . 'tblFileLink');
+define('SUCHE_TABLE', TBL_PREFIX . 'tblsearchtool');
+define('SEARCHRESULT_TABLE', TBL_PREFIX . 'tblSearchResult');
 
 //NOTE: you have to register the tables at we.inc!
 

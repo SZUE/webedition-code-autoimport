@@ -29,6 +29,8 @@ class we_search_frames extends we_modules_frame{
 	const TAB_ADVANCED = 3;
 	const TAB_PROPERTIES = 4;
 
+	var $Model;
+	
 	public function __construct(){
 		$this->module = 'weSearch';
 		parent::__construct(WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/edit_' . $this->module . '_frameset.php?mod=' . $this->module);
@@ -78,18 +80,18 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		//tabs for entries
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-o"></i> ' . g_l('searchtool', '[documents]'), we_tab::NORMAL, "setTab(" . self::TAB_DOCUMENTS . ");", array('id' => 'tab_1', 'style' => 'display:' . $displayEntry)));
+			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-o"></i> ' . g_l('searchtool', '[documents]'), false, "setTab(" . self::TAB_DOCUMENTS . ");", array('id' => 'tab_1', 'style' => 'display:' . $displayEntry)));
 		}
 		if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE && permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
-			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-code-o"></i> ' . g_l('searchtool', '[templates]'), we_tab::NORMAL, "setTab(" . self::TAB_TEMPLATES . ");", array('id' => 'tab_2', 'style' => 'display:' . $displayEntry)));
+			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-file-code-o"></i> ' . g_l('searchtool', '[templates]'), false, "setTab(" . self::TAB_TEMPLATES . ");", array('id' => 'tab_2', 'style' => 'display:' . $displayEntry)));
 		}
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){// FIXME: add some media related perm
-			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-image"></i> ' . g_l('searchtool', '[media]'), we_tab::NORMAL, "setTab(" . self::TAB_MEDIA . ");", array('id' => 'tab_5', 'style' => 'display:' . $displayEntry)));
+			$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-image"></i> ' . g_l('searchtool', '[media]'), false, "setTab(" . self::TAB_MEDIA . ");", array('id' => 'tab_5', 'style' => 'display:' . $displayEntry)));
 		}
-		$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search-plus"></i> ' . g_l('searchtool', '[advSearch]'), we_tab::NORMAL, "setTab(" . self::TAB_ADVANCED . ");", array('id' => 'tab_3', 'style' => 'display:' . $displayEntry)));
+		$we_tabs->addTab(new we_tab('<i class="fa fa-lg fa-search-plus"></i> ' . g_l('searchtool', '[advSearch]'), false, "setTab(" . self::TAB_ADVANCED . ");", array('id' => 'tab_3', 'style' => 'display:' . $displayEntry)));
 
 		//tabs for folders
-		$we_tabs->addTab(new we_tab(g_l('searchtool', '[properties]'), we_tab::NORMAL, "setTab(" . self::TAB_PROPERTIES . ");", array('id' => 'tab_4', 'style' => 'display:' . $displayFolder)));
+		$we_tabs->addTab(new we_tab(g_l('searchtool', '[properties]'), false, "setTab(" . self::TAB_PROPERTIES . ");", array('id' => 'tab_4', 'style' => 'display:' . $displayFolder)));
 
 		$tabNr = $this->getTab();
 		$tabsHead = we_tabs::getHeader('top.content.activ_tab = ' . $tabNr . ';
@@ -405,14 +407,13 @@ function we_save() {
 	}
 
 	protected function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
-		$class = we_tool_lookup::getModelClassName($this->toolName);
-		$this->Model = $this->Model ? : new $class();
-
 		if(($modelid = we_base_request::_(we_base_request::INT, 'modelid'))){
-			$this->Model = new $class();
+			$this->Model = new we_search_model();
 			$this->Model->load($modelid);
 			$this->Model->saveInSession();
 			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $modelid;
+		} else {
+			$this->Model = $this->Model ? : new we_search_model();
 		}
 
 		return parent::getHTMLFrameset($this->Tree->getJSTreeCode() . $extraHead, ($modelid ? '&modelid=' . $modelid : '') . $extraUrlParams);

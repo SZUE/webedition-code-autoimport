@@ -21,11 +21,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
 /**
  * class representing the model data of the search
  */
-require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
-
 class we_search_model extends we_search_modelBase{
 	/**
 	 * @var integer: default ParentId in which own searches are saved
@@ -144,7 +143,6 @@ class we_search_model extends we_search_modelBase{
 	protected $searchTablesTmplSearch = array();
 	protected $searchTablesMediaSearch = array();
 	protected $searchTablesAdvSearch = array();
-
 	protected $searchForFieldTmplSearch = array(
 		'text' => 0,
 		'title' => 0,

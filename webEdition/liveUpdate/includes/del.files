@@ -53,7 +53,10 @@ we/include/we_versions/weVersionsSearch.class.inc.php
 we/include/we_versions/weVersionsPreview.php
 we/include/we_versions/weVersions.class.php
 we/include/we_versions/weVersions.class.inc.php
+we/include/we_tools/weSearch/hook/we_phpCmdHook_weSearch.inc.php
 we/include/we_tools/weSearch/hook/we_jsCmdHook_weSearch.inc.php
+we/include/we_tools/weSearch/conf/we_menu_weSearch.conf.php
+we/include/we_tools/weSearch/conf/define.conf.php
 we/include/we_tools/weSearch/class/we_search_treeDataSource.class.php
 we/include/we_tools/weSearch/class/searchtoolView.class.php
 we/include/we_tools/weSearch/class/searchtoolTreeDataSource.class.php
@@ -985,8 +988,6 @@ apps/toolfactory/lang/no/default.xml
 apps/toolfactory/hook/we_jsCmdHook_toolfactory.inc.php
 apps/toolfactory/hook/custom_hooks/weCustomHook_toolfactory_save.inc.php
 apps/toolfactory/hook/custom_hooks/dummy
-!lib/additional/tinymce/plugins/paste
-!lib/additional/tinymce/plugins/table
 !wysiwyg
 !webEdition/lib/we/xml
 !webEdition/lib/we/net/LiveUpdate
@@ -1052,6 +1053,8 @@ apps/toolfactory/hook/custom_hooks/dummy
 !lib/samples
 !lib/phpMailer/language
 !lib/phpMailer
+!lib/additional/tinymce/plugins/table
+!lib/additional/tinymce/plugins/paste
 !jupload
 !js/libs/yui
 !js/libs/we
