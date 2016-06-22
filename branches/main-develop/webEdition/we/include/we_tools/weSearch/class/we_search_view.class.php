@@ -123,7 +123,7 @@ WE().consts.g_l.weSearch = {
 				$keyword = we_base_request::_(we_base_request::STRING, 'keyword');
 				$this->Model->setPredefinedSearch($tab, $keyword, $tables);
 				$this->Model->prepareModelForSearch();
-				$this->Model->setIsFolder(/* $cmd == 'tool_weSearch_new_group' ? 1 : */ 0);
+				$this->Model->setIsFolder(0);
 
 				echo we_html_element::jsElement('if(top.content.editor){' .
 					$this->editorHeaderFrame . '.location="' . $this->frameset . '&pnt=edheader' .

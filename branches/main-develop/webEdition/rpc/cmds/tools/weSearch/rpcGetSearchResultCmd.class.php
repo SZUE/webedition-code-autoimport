@@ -22,8 +22,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once(WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
-
 class rpcGetSearchResultCmd extends we_rpc_cmd{
 
 	function execute(){

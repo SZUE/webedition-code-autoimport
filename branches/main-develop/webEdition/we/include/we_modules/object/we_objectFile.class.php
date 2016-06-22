@@ -898,7 +898,7 @@ class we_objectFile extends we_document{
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable(VFILES_TABLE);
 		$yuiSuggest->setWidth(396);
-		
+
 
 		return we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), $this->getPreviewHeadline('collection', $name), "left", "defaultfont", $buttons);
 	}
@@ -1130,8 +1130,8 @@ class we_objectFile extends we_document{
 			$cmd1 = "document.we_form.elements['" . $intID_elem_Name . "'].value";
 			$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Path_elem_Name . "'].value");
 			$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "") . str_replace('\\', '', $extraCmd));
-			$but = (($directory && $file) || $file ?
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 0 : 1) . ");") :
+			$but = ( $file ?
+					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");") :
 					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0);")
 				);
 			$yuiSuggest = &weSuggest::getInstance();

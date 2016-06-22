@@ -147,7 +147,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 		return we_base_request::_(we_base_request::BOOL, 'wecf_useDocumentFilter');
 	}
 
-	function translateModeToNavModel($mode, &$model){
+	static function translateModeToNavModel($mode, &$model){
 		switch($mode){
 
 			case we_customer_abstractFilter::FILTER:

@@ -100,17 +100,17 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab(g_l('navigation', '[property]'), we_tab::NORMAL, "setTab(" . self::TAB_PROPERTIES . ");", array("id" => "tab_" . self::TAB_PROPERTIES)));
+		$we_tabs->addTab(new we_tab(g_l('navigation', '[property]'), false, "setTab(" . self::TAB_PROPERTIES . ");", array("id" => "tab_" . self::TAB_PROPERTIES)));
 		if($this->Model->IsFolder && permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION')){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[content]'), we_tab::NORMAL, "setTab(" . self::TAB_CONTENT . ");", array("id" => "tab_" . self::TAB_CONTENT)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[content]'), false, "setTab(" . self::TAB_CONTENT . ");", array("id" => "tab_" . self::TAB_CONTENT)));
 		}
 
 		if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_EDIT_CUSTOMERFILTER")){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[customers]'), we_tab::NORMAL, "setTab(" . self::TAB_CUSTOMER . ");", array("id" => "tab_" . self::TAB_CUSTOMER)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[customers]'), false, "setTab(" . self::TAB_CUSTOMER . ");", array("id" => "tab_" . self::TAB_CUSTOMER)));
 		}
 
 		if($this->Model->IsFolder){
-			$we_tabs->addTab(new we_tab(g_l('navigation', '[preview]'), we_tab::NORMAL, "setTab('" . self::TAB_PREVIEW . "');", array("id" => "tab_" . self::TAB_PREVIEW)));
+			$we_tabs->addTab(new we_tab(g_l('navigation', '[preview]'), false, "setTab('" . self::TAB_PREVIEW . "');", array("id" => "tab_" . self::TAB_PREVIEW)));
 		}
 
 		$tabsHead = we_tabs::getHeader(
@@ -838,7 +838,7 @@ function showPreview() {
 		$disabled = !(($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS && $this->Model->ClassID != 0) || ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCTYPE && $this->Model->DocTypeID != 0));
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:fieldChooserBut('" . $cmd . "');", true, 100, 22, '', '', $disabled, false, '_' . $name);
 		if(!$extraField){
-			$showValue = stristr($value, "_") ? substr($value, strpos($value, "_") + 1) : $value;
+			$showValue = ($type === we_navigation_navigation::STYPE_CLASS && stristr($value, "_")) ? substr($value, strpos($value, "_") + 1) : $value;
 			return we_html_tools::htmlFormElementTable(
 					we_html_element::htmlHidden($name, $value) . we_html_tools::htmlTextInput(
 						"__" . $name, 58, $showValue, '', 'onchange="setFieldValue(\'' . $name . '\',this); top.content.mark();"', 'text', 400, 0), $title, 'left', 'defaultfont', '', $button);

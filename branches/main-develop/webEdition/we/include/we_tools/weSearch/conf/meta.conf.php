@@ -22,8 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-require_once (WE_INCLUDES_PATH . 'we_tools/weSearch/conf/define.conf.php');
-
+//FIXME: remove this file
 $metaInfo = array(
 	'name' => 'weSearch',
 	'classname' => 'we_search_model',

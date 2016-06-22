@@ -273,6 +273,9 @@ function findInclude($cmd){
 			return 'we_editors/customizeValidation.inc.php'; //  edit parameters
 		case 'widget_cmd':
 			return 'we_widgets/cmd.inc.php';
+		case 'tool_weSearch_edit':
+			$_REQUEST['tool'] = 'weSearch';
+			return 'we_tools/tools_frameset.php';
 
 		default:
 			//	In we.inc.php all names of the active modules have already been searched
