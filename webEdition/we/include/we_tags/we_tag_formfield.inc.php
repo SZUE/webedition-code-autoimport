@@ -97,7 +97,7 @@ function we_tag_formfield(array $attribs){
 </colgroup>
 	<tr>
 		<td>' . g_l('global', '[name]') . ':</td>
-		<td><input type="text" name="' . $nameprefix . 'ffname]" value="' . $ffname . '" /></td>
+		<td><input type="text" name="' . $nameprefix . 'ffname]" value="' . $ffname . '" required="required"/></td>
 	</tr>
 	<tr>
 		<td>' . g_l('global', '[type]') . ':</td>
@@ -120,7 +120,7 @@ function we_tag_formfield(array $attribs){
 				if($m['change'] == 1){
 					if(count($default) > 1){
 						$valselect = '<select name="' . $name . 'tmp" onchange="this.form.elements[\'' . $nameprefix . 'ff_' . $type_sel . '_' . $f . ']\'].value=this.options[this.selectedIndex].value;">' .
-								'<option value=""></option>';
+							'<option value=""></option>';
 						foreach($default as $v){
 							$valselect .= '<option value="' . $v . '">' . $v . '</option>';
 						}
@@ -318,12 +318,10 @@ function we_tag_formfield(array $attribs){
 			$tagName = 'select';
 			break;
 		case 'file':
-			$ret = getHtmlTag(
-					'input', array(
+			$ret = getHtmlTag('input', array(
 				'type' => 'hidden',
 				'name' => 'MAX_FILE_SIZE',
-				'value' => oldHtmlspecialchars(
-						$GLOBALS['we_doc']->getElement($name, 'ffmaxfilesize')),
+				'value' => oldHtmlspecialchars($GLOBALS['we_doc']->getElement($name, 'ffmaxfilesize')),
 				'xml' => $xml
 			));
 			break;

@@ -1148,7 +1148,8 @@ abstract class we_root extends we_class{
 
 			switch($v['type']){
 				case 'formfield':
-					$dat = we_serialize($v, SERIALIZE_JSON);
+					//remove empty fields on serialize
+					$dat = we_serialize(array_filter($v), SERIALIZE_JSON);
 					break;
 				case 'date':
 					$dat = sprintf('%016d', $dat);

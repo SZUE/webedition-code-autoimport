@@ -385,7 +385,7 @@ function closeAllType(){
 
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid")) !== false){
-			return we_html_element::jsElement("self.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=top.content.editor.edbody'");
+			return we_html_element::jsElement("self.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::INTLIST, "openFolders", "") . "&we_cmd[4]=top.content.editor.edbody&we_cmd[5]=top.content.editor.edbody&we_cmd[6]=top.content.cmd'");
 		}
 		return '';
 	}
