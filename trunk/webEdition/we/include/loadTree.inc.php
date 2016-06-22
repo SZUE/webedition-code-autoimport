@@ -21,11 +21,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 //$_SESSION["prefs"]["FileFilter"] = we_base_request::_(we_base_request::RAW, 'we_cmd', $_SESSION["prefs"]["FileFilter"], 5);
 
 $topFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', "top", 4);
-$tree = new we_export_tree("export_frameset.php", $topFrame, $topFrame . ".body", $topFrame . ".cmd");
+//added for export module.
+$treeFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', $topFrame . '.body', 5);
+$cmdFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', $topFrame . '.cmd', 6);
+$tree = new we_export_tree("export_frameset.php", $topFrame, $treeFrame, $cmdFrame);
 
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 
