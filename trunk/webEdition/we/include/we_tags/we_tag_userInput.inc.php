@@ -53,7 +53,7 @@ function we_tag_userInput(array $attribs, $content){
 			''
 		) . '[' . $name . ']');
 
-	$objekt = (isset($GLOBALS['WE_FORM']) ?
+	$object = (isset($GLOBALS['WE_FORM']) ?
 			(isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
 				$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
 				(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
@@ -63,21 +63,21 @@ function we_tag_userInput(array $attribs, $content){
 						false))) :
 			'');
 
-	if($objekt){
+	if($object){
 		if($property){
-			$isset = isset($objekt->{$name});
-			$orgVal = $isset ? $objekt->{$name} : $value;
+			$isset = isset($object->{$name});
+			$orgVal = $isset ? $object->{$name} : $value;
 		} else {
-			$isset = (!$objekt->ID && $objekt->getElement($name) === '' ?
+			$isset = (!$object->ID && $object->getElement($name) === '' ?
 					false :
-					$objekt->issetElement($name));
+					$object->issetElement($name));
 
-			$orgVal = $isset ? $objekt->getElement($name) : $value;
+			$orgVal = $isset ? $object->getElement($name) : $value;
 		}
-		$object_pid = $objekt->ParentID;
-		$object_path = $objekt->Path;
-		$object_tableID = $objekt instanceof we_objectFile ? $objekt->TableID : '';
-		$content = $objekt->getFieldByVal($orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
+		$object_pid = $object->ParentID;
+		$object_path = $object->Path;
+		$object_tableID = $object instanceof we_objectFile ? $object->TableID : '';
+		$content = $object->getFieldByVal($orgVal, $type, $attribs, true, $object_pid, $object_path, $GLOBALS['DB_WE'], $object_tableID);
 	} else {
 		$orgVal = $value;
 		$object_pid = 0;
@@ -96,7 +96,10 @@ function we_tag_userInput(array $attribs, $content){
 				break;
 			default:
 				$hidden = getHtmlTag('input', array(
-					'type' => 'hidden', 'name' => $fieldname, 'value' => oldHtmlspecialchars($orgVal), 'xml' => $xml
+					'type' => 'hidden',
+					'name' => $fieldname,
+					'value' => oldHtmlspecialchars($orgVal),
+					'xml' => $xml
 				));
 				return (($type != 'hidden') ? $content : '') . $hidden;
 		}
@@ -398,7 +401,7 @@ function we_tag_userInput(array $attribs, $content){
 				}
 
 				$checked = (!empty($_SESSION[$binaryDataId]['doDelete']) ? ' checked' : '');
-				$inputstyle = ($size ? 'width:' . $size . 'em;' . $inputstyle : $inputstyle);
+				$inputstyle = ($size ? 'width:' . $size . 'em;' : '') . $inputstyle;
 				return '<table class="weEditTable padding2 spacing2" style="border: solid ' . $bordercolor . ' 1px;">
 	<tr>
 		<td class="weEditmodeStyle" colspan="2" style="text-align:center">' . $imgTag . '
@@ -431,18 +434,18 @@ function we_tag_userInput(array $attribs, $content){
 			$hidden = '<input type="hidden" name="WE_UI_BINARY_DATA_ID_' . $name . '" value="' . $binaryDataId . '" />';
 
 			if(isset($_SESSION[$binaryDataId]["serverPath"])){
-				$src = '/' . ltrim(substr($_SESSION[$binaryDataId]["serverPath"], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
+				$src = '/' . ltrim(substr($_SESSION[$binaryDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 				return $hidden;
 			}
-			if(empty($_SESSION[$binaryDataId]["id"])){
+			if(empty($_SESSION[$binaryDataId]['id'])){
 				return '';
 			}
-			if(!empty($_SESSION[$binaryDataId]["doDelete"])){
+			if(!empty($_SESSION[$binaryDataId]['doDelete'])){
 				return $hidden;
 			}
 
-			$attribs["id"] = $_SESSION[$binaryDataId]["id"];
-			$binaryTag = $GLOBALS['we_doc']->getField($attribs, "binary");
+			$attribs['id'] = $_SESSION[$binaryDataId]['id'];
+			$binaryTag = $GLOBALS['we_doc']->getField($attribs, 'binary');
 			$t = explode('_', $binaryTag[0]);
 			unset($t[1]);
 			unset($t[0]);
@@ -676,8 +679,8 @@ function we_tag_userInput(array $attribs, $content){
 
 					$options .= getHtmlTag('option', $attsOption, trim($txt), true);
 				}
-			} elseif($objekt && isset($objekt->DefArray["meta_" . $name])){
-				foreach($objekt->DefArray["meta_" . $name]["meta"] as $key => $val){
+			} elseif($object && isset($object->DefArray["meta_" . $name])){
+				foreach($object->DefArray["meta_" . $name]["meta"] as $key => $val){
 
 					if($orgVal == $key){
 						$atts2 = array(
