@@ -66,6 +66,11 @@ class we_imageDocument extends we_binaryDocument{
 		$this->setElement('origwidth', isset($arr[0]) ? $arr[0] : 0, 'attrib');
 		$this->setElement('origheight', isset($arr[1]) ? $arr[1] : 0, 'attrib');
 		$docChanged = $this->DocChanged; // will be reseted in parent::we_save()
+		//if focus changed, rebuild thumbs
+		if($this->ID && ($focus = $this->getElement('focus'))){
+			$oldFocus = f('SELECT c.Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DocumentTable="tblFile" AND l.DID=' . $this->ID . ' AND l.nHash=x\'' . md5('focus') . '\'');
+			$docChanged|=($focus == '[0,0]' && !$oldFocus ? false : ($oldFocus != $focus));
+		}
 		if(parent::we_save($resave, $skipHook)){
 			$this->unregisterMediaLinks();
 			$ret = $this->registerMediaLinks();
