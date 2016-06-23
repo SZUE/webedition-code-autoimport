@@ -442,7 +442,7 @@ abstract class we_html_element{
 		));
 	}
 
-	public static function htmlExIFrame($name, $src, $style = '', $class = ''){
+	public static function htmlExIFrame($divname, $src, $style = '', $class = ''){
 		if(strpos($src, $_SERVER['DOCUMENT_ROOT']) === 0){
 			ob_start();
 			include $src;
@@ -450,7 +450,7 @@ abstract class we_html_element{
 		} else {
 			$tmp = $src;
 		}
-		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class), $tmp);
+		return self::htmlDiv(array('style' => $style, 'name' => $divname . 'Div', 'id' => $divname . 'Div', 'class' => $class), $tmp);
 	}
 
 }
