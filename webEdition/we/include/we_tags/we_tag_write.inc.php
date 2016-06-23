@@ -79,12 +79,12 @@ function we_tag_write(array $attribs){
 					if(!$id || f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $id . ' AND TableID=' . intval($classid))){
 						$ok = we_objectFile::initObject(intval($classid), $name, $categories, intval($parentid), $id, true);
 					} else {
-						$GLOBALS['ERROR']['write']['object'][$name] = true;
+						$GLOBALS['ERROR']['write']['object'][$name] = 1;
 						t_e('Object ' . $id . ' is no element of class ' . intval($classid) . '!');
 						return;
 					}
 				} else {
-					$GLOBALS['ERROR']['write']['object'][$name] = true;
+					$GLOBALS['ERROR']['write']['object'][$name] = 2;
 					t_e('Table ' . intval($classid) . ' does not exist!');
 					return;
 				}
@@ -92,7 +92,7 @@ function we_tag_write(array $attribs){
 		}
 
 		if(!$ok){
-			$GLOBALS['ERROR']['write']['object'][$name] = true;
+			$GLOBALS['ERROR']['write']['object'][$name] = 3;
 			return;
 		}
 		$isOwner = !empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser']['ID']) && (
@@ -105,7 +105,7 @@ function we_tag_write(array $attribs){
 		$isNew = (($GLOBALS['we_' . $type][$name]->ID == 0) ? ($admin/* only if this field is used */ ? $isAdmin : true) : false); //FR #8411
 
 		if(!($isAdmin || $isNew || $isOwner || $forceedit)){
-			$GLOBALS['ERROR']['write'][$type][$name] = true;
+			$GLOBALS['ERROR']['write'][$type][$name] = 4;
 			return;
 		}
 
@@ -113,7 +113,7 @@ function we_tag_write(array $attribs){
 		//$newObject = ($GLOBALS['we_'.$type][$name]->ID) ? false : true;
 		if($protected){
 			if(!isset($_SESSION['webuser']['ID']) || !isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered']){
-				$GLOBALS['ERROR']['write'][$type][$name] = true;
+				$GLOBALS['ERROR']['write'][$type][$name] = 5;
 				return;
 			}
 			if(!$GLOBALS['we_' . $type][$name]->WebUserID){
@@ -121,7 +121,7 @@ function we_tag_write(array $attribs){
 			}
 		} elseif($userid){
 			if(!isset($_SESSION['webuser']['ID']) || !isset($_SESSION['webuser']['registered']) || !$_SESSION['webuser']['registered']){
-				$GLOBALS['ERROR']['write'][$type][$name] = true;
+				$GLOBALS['ERROR']['write'][$type][$name] = 6;
 				return;
 			}
 			if(!$GLOBALS['we_' . $type][$name]->getElement($userid)){
@@ -205,7 +205,7 @@ function we_tag_write(array $attribs){
 			} else {
 				//save or publish failed
 				$doWrite = false;
-				$GLOBALS['ERROR']['write'][$type][$name] = true;
+				$GLOBALS['ERROR']['write'][$type][$name] = 7;
 			}
 		}
 
@@ -274,7 +274,7 @@ function weTagWriteCorrectObjName($objname, $type, $name, $onduplicate){
 	switch($onduplicate){
 		default:
 		case 'abort':
-			$GLOBALS['ERROR']['write'][$type][$name] = true;
+			$GLOBALS['ERROR']['write'][$type][$name] = 8;
 			return false;
 		case 'overwrite':
 			$GLOBALS['we_' . $type][$name]->ID = $objexists;
