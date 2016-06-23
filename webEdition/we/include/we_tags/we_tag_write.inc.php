@@ -60,7 +60,7 @@ function we_tag_write(array $attribs){
 	$workflowuserid = weTag_getAttribute('workflowuserid', $attribs, 0, we_base_request::INT);
 	$doworkflow = ($workflowname != '' && $workflowuserid != 0);
 	$searchable = weTag_getAttribute('searchable', $attribs, true, we_base_request::BOOL);
-	$language = weTag_getAttribute('language', $attribs, '', we_base_request::STRING);
+	$language = weTag_getAttribute('language', $attribs, -1, we_base_request::STRING);
 
 	if(we_base_request::_(we_base_request::BOOL, 'edit_' . $type)){
 
@@ -148,7 +148,9 @@ function we_tag_write(array $attribs){
 				$language = $docLanguage->Language;
 				unset($docLanguage);
 		}
-		$GLOBALS['we_doc']->Language = $language;
+		if($language !== -1){
+			$GLOBALS['we_doc']->Language = $language;
+		}
 		if($workspaces && $type === 'object'){
 			$tmplArray = array();
 			foreach($workspaces as $wsId){
