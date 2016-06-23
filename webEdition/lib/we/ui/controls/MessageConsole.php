@@ -100,7 +100,7 @@ EOS;
 		<span class="$headerClass" id="messageConsoleMessage$this->_consoleName" style="display: none;">--</span>
 		</td>
 		<td>
-			<div onclick="_console_$this->_consoleName.openMessageConsole();" class="$iconClassNormal" onmouseover="this.className=&quot;$iconClassOver&quot;" onmouseout="this.className=&quot;$iconClassNormal&quot;"><i id="messageConsoleImage$this->_consoleName" class="fa fa-lg fa-bell"></i></div>
+			<div onclick="_console_$this->_consoleName.openMessageConsole();" class="$iconClassNormal" onmouseover="this.className='$iconClassOver'" onmouseout="this.className='$iconClassNormal'"><i id="messageConsoleImage$this->_consoleName" class="fa fa-lg fa-bell"></i></div>
 		</td>
 	</tr>
 	</table>

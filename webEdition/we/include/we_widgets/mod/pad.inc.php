@@ -113,7 +113,7 @@ function getNoteList($sql, $bDate, $bDisplay){
 				$color = 'green';
 				break;
 		}
-		$notes .= '<tr style="cursor:pointer;" id="' . $rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $rcd . ',\'#EDEDED\');}" onmouseout="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $rcd . ');">
+		$notes .= '<tr style="cursor:pointer;" id="' . $rcd . '_tr" onmouseover="fo=document.forms[0];if(fo.elements.mark.value==\'\'){setColor(this,' . $rcd . ',\'#EDEDED\');}" onmouseout="if(document.forms[0].elements.mark.value==\'\'){setColor(this,' . $rcd . ',\'#FFFFFF\');}" onmousedown="selectNote(' . $rcd . ');">
 		<td style="width:15px;height:20px;vertical-align:middle"><i class="fa fa-dot-circle-o" style="color:' . $color . '"></i></td>
 		<td style="width:60px;padding-left:5px;vertical-align:middle;text-align:center" class="middlefont">' . $showDate . '</td>
 		<td style="padding-left:5px;vertical-align:middle" class="middlefont">' . CheckAndConvertISObackend($showTitle) . '</td>
