@@ -1,7 +1,7 @@
 <?php
 
 $this->NeedsEndTag = true;
-$this->Groups = array();
+$this->Groups = [];
 $this->Module = 'customer';
 
 $this->Attributes = array(

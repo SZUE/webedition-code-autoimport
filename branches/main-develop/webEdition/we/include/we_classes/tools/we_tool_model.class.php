@@ -30,7 +30,7 @@ class we_tool_model extends we_base_model{
 	var $IsFolder;
 	var $ModelClassName = __CLASS__;
 	var $toolName = '';
-	var $requiredFields = array();
+	var $requiredFields = [];
 
 	function __construct($table){
 		parent::__construct($table);

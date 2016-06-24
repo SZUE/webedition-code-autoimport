@@ -34,7 +34,7 @@ abstract class we_tool_lookup{
 			return $_SESSION['weS'][self::REGISTRY_NAME]['metaIncDis'];
 		}
 
-		$tools = $toolsDirs = array();
+		$tools = $toolsDirs = [];
 
 		$bd = WE_APPS_PATH;
 		$d = opendir($bd);
@@ -101,7 +101,7 @@ abstract class we_tool_lookup{
 				return $tool;
 			}
 		}
-		return array();
+		return [];
 	}
 
 	static function getPhpCmdInclude(){
@@ -173,7 +173,7 @@ abstract class we_tool_lookup{
 			return $_SESSION['weS'][self::REGISTRY_NAME]['defineinclude'];
 		}
 
-		$inc = array();
+		$inc = [];
 		$tools = self::getAllTools();
 		foreach($tools as $tool){
 			if(file_exists(WE_APPS_PATH . $tool['name'] . '/conf/define.conf.php')){
@@ -193,7 +193,7 @@ abstract class we_tool_lookup{
 			//return $_SESSION['weS'][self::REGISTRY_NAME]['ExternTriggeredTasks'];
 		}
 
-		$inc = array();
+		$inc = [];
 		$tools = self::getAllTools();
 		foreach($tools as $tool){
 			if(file_exists(WE_APPS_PATH . $tool['name'] . '/externtriggered/tasks.php') && we_app_Common::isActive($tool['name'])){
@@ -213,7 +213,7 @@ abstract class we_tool_lookup{
 			return $_SESSION['weS'][self::REGISTRY_NAME]['tagdirs'];
 		}
 
-		$inc = array();
+		$inc = [];
 		$tools = self::getAllTools();
 		foreach($tools as $tool){
 			if(file_exists(WE_APPS_PATH . $tool['name'] . '/tags')){
@@ -262,7 +262,7 @@ abstract class we_tool_lookup{
 	}
 
 	static function getAllToolLanguages($toolname, $subdir = '/lang', $includeDisabled = false){
-		$founds = array();
+		$founds = [];
 		$tooldir = WE_APPS_PATH . $toolname . $subdir;
 		$langs = getWELangs();
 		if(self::isTool($toolname, $includeDisabled) && is_dir($tooldir)){
@@ -278,7 +278,7 @@ abstract class we_tool_lookup{
 	}
 
 	static function getFileRegister($toolname, $subdir, $filematch, $rem_before = '', $rem_after = '', $includeDisabled = false){
-		$founds = array();
+		$founds = [];
 		$tooldir = WE_APPS_PATH . $toolname . $subdir;
 		if(self::isTool($toolname, $includeDisabled) && is_dir($tooldir)){
 			$d = opendir($tooldir);
@@ -349,7 +349,7 @@ abstract class we_tool_lookup{
 	}
 
 	static function getPermissionIncludes($includeDisabled = false){
-		$inc = array();
+		$inc = [];
 		$tools = self::getAllTools(false, false, $includeDisabled);
 		foreach($tools as $tool){
 			if(file_exists(WE_APPS_PATH . $tool['name'] . '/conf/permission.conf.php')){
@@ -361,7 +361,7 @@ abstract class we_tool_lookup{
 	}
 
 	static function getToolsForBackup($includeDisabled = false){
-		$inc = array();
+		$inc = [];
 		$tools = self::getAllTools(false, false, $includeDisabled);
 		foreach($tools as $tool){
 			if(file_exists(WE_APPS_PATH . $tool['name'] . '/conf/backup.conf.php')){
@@ -386,7 +386,7 @@ abstract class we_tool_lookup{
 				return $toolTables;
 			}
 		}
-		return array();
+		return [];
 	}
 
 	static function getFilesOfDir(&$allFiles, $baseDir){

@@ -43,7 +43,7 @@ class we_xml_rss extends XML_Parser2{
 	/**
 	 * @var array
 	 */
-	var $insideTagStack = array();
+	var $insideTagStack = [];
 
 	/**
 	 * @var string
@@ -53,32 +53,32 @@ class we_xml_rss extends XML_Parser2{
 	/**
 	 * @var array
 	 */
-	var $channel = array();
+	var $channel = [];
 
 	/**
 	 * @var array
 	 */
-	var $items = array();
+	var $items = [];
 
 	/**
 	 * @var array
 	 */
-	var $item = array();
+	var $item = [];
 
 	/**
 	 * @var array
 	 */
-	var $image = array();
+	var $image = [];
 
 	/**
 	 * @var array
 	 */
-	var $textinput = array();
+	var $textinput = [];
 
 	/**
 	 * @var array
 	 */
-	var $textinputs = array();
+	var $textinputs = [];
 
 	/**
 	 * @var array
@@ -241,11 +241,11 @@ class we_xml_rss extends XML_Parser2{
 
 			case 'ENCLOSURE':
 				if(!isset($this->item['enclosures'])){
-					$this->item['enclosures'] = array();
+					$this->item['enclosures'] = [];
 				}
 
 				$this->item['enclosures'][] = array_change_key_case($this->attribs, CASE_LOWER);
-				$this->attribs = array();
+				$this->attribs = [];
 				break;
 		}
 

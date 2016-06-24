@@ -155,7 +155,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		$headline[] = array('dat' => g_l('modules_glossary', '[date_published]'),);
 		$headline[] = array('dat' => g_l('modules_glossary', '[date_modified]'),);
 
-		$content = array();
+		$content = [];
 		while($Search->next()){
 			$show = '<i class="fa fa-lg fa-circle" style="color:#006DB8;"></i>';
 			/* if($Search->getField('Published')) {

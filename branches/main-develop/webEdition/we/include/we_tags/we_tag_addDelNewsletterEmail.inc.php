@@ -40,7 +40,7 @@ function we_tag_addDelNewsletterEmail(array $attribs){
 	$adminsubject = weTag_getAttribute('adminsubject', $attribs, '', we_base_request::STRING);
 	$adminemail = weTag_getAttribute('adminemail', $attribs, '', we_base_request::STRING);
 	$fieldGroup = weTag_getAttribute('fieldGroup', $attribs, 'Newsletter', we_base_request::STRING);
-	$abos = $paths = array();
+	$abos = $paths = [];
 	$db = new DB_WE();
 
 	$customerFieldPrefs = we_newsletter_view::getSettings();
@@ -70,7 +70,7 @@ function we_tag_addDelNewsletterEmail(array $attribs){
 				}
 				break;
 			default:
-				$tmpPaths = weTag_getAttribute('path', $attribs, array(), we_base_request::FILELISTA);
+				$tmpPaths = weTag_getAttribute('path', $attribs, [], we_base_request::FILELISTA);
 				foreach($subList as $nr){
 					$paths[] = $tmpPaths[intval($nr)];
 				}

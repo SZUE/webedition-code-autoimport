@@ -40,12 +40,7 @@ class we_mail_exception extends Exception{
 	 * @return void
 	 */
 	public function __construct($msg = '', $code = 0, Exception $previous = null){
-		if(version_compare(PHP_VERSION, '5.3.0', '<')){
-			parent::__construct($msg, (int) $code);
-			$this->_previous = $previous;
-		} else {
-			parent::__construct($msg, (int) $code, $previous);
-		}
+		parent::__construct($msg, (int) $code, $previous);
 	}
 
 	/**
@@ -62,22 +57,6 @@ class we_mail_exception extends Exception{
 			return $this->_getPrevious();
 		}
 		return null;
-	}
-
-	/**
-	 * String representation of the exception
-	 *
-	 * @return string
-	 */
-	public function __toString(){
-		if(version_compare(PHP_VERSION, '5.3.0', '<')){
-			if(null !== ($e = $this->getPrevious())){
-				return $e->__toString()
-					. "\n\nNext "
-					. parent::__toString();
-			}
-		}
-		return parent::__toString();
 	}
 
 	/**

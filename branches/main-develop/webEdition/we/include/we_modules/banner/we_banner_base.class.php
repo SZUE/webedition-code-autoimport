@@ -29,7 +29,7 @@
 abstract class we_banner_base{ // FIXME: base on we_ModelBase to us registerFileLink()
 
 	protected $db;
-	public $persistents = array();
+	public $persistents = [];
 	protected $table = "";
 	var $ClassName = __CLASS__;
 
@@ -52,7 +52,7 @@ abstract class we_banner_base{ // FIXME: base on we_ModelBase to us registerFile
 	}
 
 	public function save(){
-		$sets = array();
+		$sets = [];
 		foreach(array_keys($this->persistents) as $val){
 			if($val != 'ID'){
 				$sets[$val] = $this->$val;

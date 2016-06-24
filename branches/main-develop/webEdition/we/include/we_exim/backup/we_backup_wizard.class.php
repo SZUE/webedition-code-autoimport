@@ -173,7 +173,7 @@ self.focus();
 		if(isset($_SESSION['weS']['weBackupVars'])){
 			// workaround for php bug #18071
 			// bug: session has been restarted
-			$_SESSION['weS']['weBackupVars'] = array();
+			$_SESSION['weS']['weBackupVars'] = [];
 			// workaround end
 			unset($_SESSION['weS']['weBackupVars']);
 		}
@@ -210,8 +210,8 @@ function setLocation(loc){
 extra_files=[];
 extra_files_desc=[];';
 			$select = new we_html_select(array("name" => "backup_select", "size" => 7, "style" => "width: 600px;"));
-			$files = array();
-			$extra_files = array();
+			$files = [];
+			$extra_files = [];
 			$dateformat = g_l('date', '[format][default]');
 			for($i = 0; $i <= 1; $i++){
 				$adddatadir = ($i == 0 ? '' : 'data/');
@@ -248,7 +248,7 @@ extra_files_desc=[];';
 					}
 
 					if(substr_count($ts, '_') > 5){
-						$matches = array();
+						$matches = [];
 						if(preg_match('|([^_]*)_(\d{4})_(\d{1,2})_(\d{1,2})__(\d{1,2})_(\d{1,2})_?([\d-]*)|', $ts, $matches)){
 							list(, $url, $year, $month, $day, $hour, $min, $wever) = $matches;
 							$filedate = date($dateformat, mktime($hour, $min, 0, $month, $day, $year));
@@ -488,7 +488,7 @@ function delSelected(){
 		if(isset($_SESSION['weS']['weBackupVars'])){
 			// workaround for php bug #18071
 			// bug: session has been restarted
-			$_SESSION['weS']['weBackupVars'] = array();
+			$_SESSION['weS']['weBackupVars'] = [];
 			// workaround end
 			unset($_SESSION['weS']['weBackupVars']);
 		}
@@ -520,7 +520,7 @@ self.focus();');
 		if(isset($_SESSION['weS']['weBackupVars'])){
 			// workaround for php bug #18071
 			// bug: session has been restarted
-			$_SESSION['weS']['weBackupVars'] = array();
+			$_SESSION['weS']['weBackupVars'] = [];
 			// workaround end
 			unset($_SESSION['weS']['weBackupVars']);
 		}
@@ -706,7 +706,7 @@ function setLocation(loc){
 						we_html_element::htmlA(array('href' => $link, 'download' => basename($down)), g_l('backup', '[download_file]'))
 				);
 			} else {
-				$content.=we_html_element::htmlDiv(array(), g_l('backup', '[download_failed]'));
+				$content.=we_html_element::htmlDiv([], g_l('backup', '[download_failed]'));
 			}
 		}
 
@@ -768,7 +768,7 @@ function startStep(){
 		if(isset($_SESSION['weS']['weBackupVars'])){
 			// workaround for php bug #18071
 			// bug: session has been restarted
-			$_SESSION['weS']['weBackupVars'] = array();
+			$_SESSION['weS']['weBackupVars'] = [];
 			// workaround end
 			unset($_SESSION['weS']['weBackupVars']);
 		}
@@ -933,7 +933,7 @@ top.opener.top.openWindow(WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=
 top.close();');
 			case "deleteall":
 				$_SESSION['weS']['backup_delete'] = 1;
-				$_SESSION['weS']['delete_files_nok'] = array();
+				$_SESSION['weS']['delete_files_nok'] = [];
 				$_SESSION['weS']["delete_files_info"] = g_l('backup', '[files_not_deleted]');
 				return we_html_element::jsElement('new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"delFrag.php?currentID=-1", "we_del", -1, -1, 600, 130, true, true, true);');
 			case "deletebackup":

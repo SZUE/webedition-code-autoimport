@@ -35,7 +35,7 @@ $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[search_advanced]')) .
  STYLESHEET;
 if(we_base_request::_(we_base_request::BOOL, 'save')){
-	$messaging->set_search_settings(we_base_request::_(we_base_request::STRING, 'search_fields'), we_base_request::_(we_base_request::INT, 'search_folders', array()));
+	$messaging->set_search_settings(we_base_request::_(we_base_request::STRING, 'search_fields'), we_base_request::_(we_base_request::INT, 'search_folders', []));
 	$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 	?>
 	</head>

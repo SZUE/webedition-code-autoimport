@@ -78,7 +78,7 @@ abstract class validation{
 	}
 
 	static function getValidationServices($mode = 'edit'){
-		$ret = array();
+		$ret = [];
 
 		switch($mode){
 			case 'edit':

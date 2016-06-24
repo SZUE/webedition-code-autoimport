@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifSelf(array $attribs){
-	$ids = weTag_getAttribute('id', $attribs, array(), we_base_request::INTLISTA)? :
+	$ids = weTag_getAttribute('id', $attribs, [], we_base_request::INTLISTA)? :
 		(explode(',', isset($GLOBALS['we_obj']) ?
 				$GLOBALS['we_obj']->ID :
 				(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass ?

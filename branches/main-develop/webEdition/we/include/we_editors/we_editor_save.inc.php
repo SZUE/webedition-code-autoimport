@@ -41,7 +41,7 @@ if(!empty($wasSaved)){
 	?>
 		_EditorFrame.setEditorIsHot(false);
 	<?php
-	$reload = array();
+	$reload = [];
 	switch($GLOBALS['we_doc']->ContentType){
 		case we_base_ContentTypes::FOLDER:
 			if($GLOBALS['we_doc']->wasMoved()){

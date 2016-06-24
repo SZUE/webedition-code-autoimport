@@ -65,11 +65,11 @@ class we_fileupload_ui_base extends we_fileupload{
 	);
 	protected $isPreset = false;
 	protected $fileTable = '';
-	protected $binDocProperties = array();
+	protected $binDocProperties = [];
 	protected $isInternalBtnUpload = false; // used in we_fileupload_inc only
 	protected $location = '';
 	protected $layout = 'horizontal';
-	public $moreFieldsToAppend = array();
+	public $moreFieldsToAppend = [];
 	protected $fileNameTemp = "";
 
 	public function __construct($name){
@@ -84,7 +84,7 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->responseClass = class_exists($responseClass) ? $responseClass : $this->responseClass;
 	}
 
-	public function setForm($form = array()){
+	public function setForm($form = []){
 		$this->form['name'] = isset($form['name']) ? $form['name'] : $this->form['name'];
 		$this->form['action'] = isset($form['action']) ? $form['action'] : $this->form['action'];
 		$this->form['action'] = isset($form['additionalParams']) ? $this->form['action'] . '&' . $form['additionalParams'] : $this->form['action'];
@@ -114,7 +114,7 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->genericFilename = $genericFileName ? : TEMP_DIR . self::REPLACE_BY_UNIQUEID;
 	}
 
-	public function setDimensions($dimensions = array()){
+	public function setDimensions($dimensions = []){
 		$this->dimensions = array_merge($this->dimensions, $dimensions);
 	}
 
@@ -122,19 +122,19 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->doCommitFile = boolval($doCommitFile);
 	}
 
-	public function setInternalProgress($internalProgress = array()){
+	public function setInternalProgress($internalProgress = []){
 		$this->internalProgress = array_merge($this->internalProgress, $internalProgress);
 	}
 
-	public function setExternalProgress($externalProgress = array()){
+	public function setExternalProgress($externalProgress = []){
 		$this->externalProgress = array_merge($this->externalProgress, $externalProgress);
 	}
 
-	public function setExternalUiElements($externalUiElements = array()){
+	public function setExternalUiElements($externalUiElements = []){
 		$this->externalUiElements = array_merge($this->externalUiElements, $externalUiElements);
 	}
 
-	public function setMoreFieldsToAppend($fields = array()){
+	public function setMoreFieldsToAppend($fields = []){
 		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, $fields);
 	}
 
@@ -142,7 +142,7 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->isInternalBtnUpload = $flag;
 	}
 
-	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', array $contentType = array(), $callback = array(), $writebackId = '', $writebackTarget = '', $predefinedCallbackInt = '', $predefinedCallbackExt = '', $dropFromTree = true, $dropFromExt = true, $table = ''){
+	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', array $contentType = [], $callback = [], $writebackId = '', $writebackTarget = '', $predefinedCallbackInt = '', $predefinedCallbackExt = '', $dropFromTree = true, $dropFromExt = true, $table = ''){
 		// FIXME: replace all PHP in JS by JS-params (to avoid "indexed" function names for hadleDrop(), doDragFromExternal() and doDragFromTree)
 		// => then move this JS to separate file to be included in edit headers once!
 
@@ -253,7 +253,7 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 		$btnUpload = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', $this->getButtonWrapped('upload', true, ($isIE10 ? 84 : 100)));
 		$btnCancel = str_replace(array("\n\r", "\r\n", "\r", "\n"), ' ', $this->getButtonWrapped('cancel', false, ($isIE10 ? 84 : 100)));
 
-		return we_html_element::htmlDiv(array('id' => 'div_' . $this->name, 'style' => 'float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottom:' . $this->dimensions['marginBottom'] . 'px;'), we_html_element::htmlDiv(array(), $this->getButtonWrapped('browse', false, $isIE10 ? 84 : ($this->dimensions['width'] - 110)) .
+		return we_html_element::htmlDiv(array('id' => 'div_' . $this->name, 'style' => 'float:left;margin-top:' . $this->dimensions['marginTop'] . 'px;margin-bottom:' . $this->dimensions['marginBottom'] . 'px;'), we_html_element::htmlDiv([], $this->getButtonWrapped('browse', false, $isIE10 ? 84 : ($this->dimensions['width'] - 110)) .
 								we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_btnResetUpload', 'style' => 'vertical-align: top; display: inline-block; height: 22px;'), ($this->isInternalBtnUpload ? $btnUpload : $butReset)
 								) .
 								($this->isInternalBtnUpload ? we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_btnCancel', 'style' => 'vertical-align: top; display: none; height: 22px;'), $btnCancel

@@ -47,7 +47,7 @@ function getDataType($dat){
 }
 
 function readFiles($dir){
-	$arDir = $arFile = $ordDir = $ordFile = $final = array();
+	$arDir = $arFile = $ordDir = $ordFile = $final = [];
 	@chdir($dir);
 	$dir_obj = @dir($dir);
 

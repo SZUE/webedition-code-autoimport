@@ -24,13 +24,13 @@
  */
 class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 
-	public function __construct($contentType = array()){
+	public function __construct($contentType = []){
 		parent::__construct($contentType);
 
 		//Fix #10418
 		if($contentType === we_base_ContentTypes::APPLICATION){
-			$this->setTypeCondition('accepted', array());
-			$this->setTypeCondition('forbidden', array(), we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::IMAGE));
+			$this->setTypeCondition('accepted', []);
+			$this->setTypeCondition('forbidden', [], we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::IMAGE));
 		}
 
 		$this->formElements = array_merge($this->formElements, array(
@@ -53,7 +53,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 		$progress->setProgressTextPlace(0);
 		$progress->setName('_fileupload');
 		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML('', 'font-size:11px;'));
-		$divFileInfo = we_html_element::htmlDiv(array(), $fs . '<br />' . $ft . '<br />' . $md);
+		$divFileInfo = we_html_element::htmlDiv([], $fs . '<br />' . $ft . '<br />' . $md);
 		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:180px'), $this->getDivBtnInputReset($isIE10 ? 84 : 170) .
 				$divProgressbar .
 				$this->getDivBtnUploadCancel($isIE10 ? 84 : 170)

@@ -35,7 +35,7 @@ class we_export_view extends we_modules_view{
 		$this->export = new we_export_export();
 	}
 
-	function getCommonHiddens($cmds = array()){
+	function getCommonHiddens($cmds = []){
 		return
 			parent::getCommonHiddens($cmds) .
 			we_html_element::htmlHiddens(array(

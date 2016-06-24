@@ -30,7 +30,7 @@ class we_shop_functions{
 		// get orderdata of user here
 		$da = ( $GLOBALS['WE_LANGUAGE'] === 'Deutsch') ? '%d.%m.%Y' : '%m/%d/%Y';
 
-		$format = array();
+		$format = [];
 		foreach(we_shop_statusMails::$StatusFields as $field){
 			$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS format' . $field;
 		}

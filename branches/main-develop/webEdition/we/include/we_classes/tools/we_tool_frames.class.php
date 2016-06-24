@@ -138,7 +138,7 @@ function setTab(tab) {
 function we_save() {
 	top.content.we_cmd("tool_' . $this->toolName . '_save");
 }') .
-				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), $but_table)
+				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm([], $but_table)
 				)
 		);
 	}
@@ -179,7 +179,7 @@ function we_save() {
 
 		$loader = new $class($this->TreeSource);
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
+		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
 							'pnt' => 'cmd',
 							'cmd' => 'no_cmd')) .
 						we_html_element::jsElement(

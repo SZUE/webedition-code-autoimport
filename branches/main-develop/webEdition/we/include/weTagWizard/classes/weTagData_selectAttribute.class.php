@@ -34,7 +34,7 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function __construct($name, $options = array(), $required = false, $module = '', $description = '', $deprecated = false){
+	function __construct($name, $options = [], $required = false, $module = '', $description = '', $deprecated = false){
 		if(!is_array($options)){
 			return;
 		}
@@ -60,7 +60,7 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 		}
 
 		foreach($this->Options as $option){
-			$select->addOption($option->Value, $option->getName(), $option->Disabled ? array('disabled' => 'disabled') : array());
+			$select->addOption($option->Value, $option->getName(), $option->Disabled ? array('disabled' => 'disabled') : []);
 		}
 		$select->selectOption($this->Value);
 

@@ -55,7 +55,7 @@ function we_tag_textarea(array $attribs, $content){
 	}
 
 	/* we are in wysiwyg and have at least one we-gallery */
-	$galleryAttribs = $regs = array();
+	$galleryAttribs = $regs = [];
 	if(preg_match_all('/<we-gallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/we-gallery>/i', $fieldVal, $regs, PREG_SET_ORDER)){
 		for($i = 0; $i < count($regs); $i++){
 			array_shift($regs[$i]);

@@ -41,7 +41,7 @@ class we_collection extends we_root{
 	protected $objectCollection = '';
 	protected $jsFormCollection = '';
 	protected $insertPrefs;
-	//private $tmpFoldersDone = array();
+	//private $tmpFoldersDone = [];
 	protected $view = 'grid';
 	private $gridItemDimensions = array(
 		2 => array('item' => 400, 'icon' => 56, 'font' => 30, 'btnFontsize' => 30, 'btnHeight' => 60),
@@ -125,7 +125,7 @@ class we_collection extends we_root{
 		$this->$activeCollectionName = !trim($this->$activeCollectionName, ',') ? ',-1,' : $this->$activeCollectionName;
 
 		$this->DB_WE->query('SELECT ' . $fields . ' FROM ' . $table . ' WHERE ID IN (' . trim($this->$activeCollectionName, ',') . ') AND NOT IsFolder');
-		$verifiedItems = array();
+		$verifiedItems = [];
 		while($this->DB_WE->next_record()){
 			if(!trim($this->$prop, ',') || in_array($this->DB_WE->f($cField), makeArrayFromCSV($this->$prop))){
 				if($full){
@@ -140,7 +140,7 @@ class we_collection extends we_root{
 			$verifiedItems = $this->setItemElements($verifiedItems);
 		}
 
-		$ret = array();
+		$ret = [];
 		$tempCollection = ',';
 		$emptyItem = array('id' => -1, 'path' => '', 'type' => '', 'name' => '', 'ext' => '', 'elements' => array('attrib_title' => array('Dat' => '', 'state' => self::CLASS_NONE), 'attrib_alt' => array('Dat' => '', 'state' => self::CLASS_NONE), 'meta_title' => array('Dat' => '', 'state' => self::CLASS_NONE), 'meta_description' => array('Dat' => '', 'state' => self::CLASS_NONE), 'custom' => array('type' => '', 'Dat' => '', 'BDID' => 0)), 'icon' => array('imageView' => '', 'imageViewPopup' => '', 'sizeX' => 0, 'sizeY' => 0, 'url' => '', 'urlPopup' => ''));
 
@@ -226,7 +226,7 @@ class we_collection extends we_root{
 		$allMime = we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true);
 		$remCtArr = makeArrayFromCSV($this->remCT);
 		$tmpRemCT = ',';
-		$selectedMime = $unselectedMime = array();
+		$selectedMime = $unselectedMime = [];
 		foreach($allMime as $mime){
 			if(in_array($mime, $remCtArr)){
 				$selectedMime[$mime] = g_l('contentTypes', '[' . $mime . ']');
@@ -236,11 +236,11 @@ class we_collection extends we_root{
 			}
 		}
 		$this->remCT = $tmpRemCT;
-		$attribsFrom = $attribsTo = !permissionhandler::hasPerm('NEW_COLLECTION') ? array('disabled' => 'disabled') : array();
+		$attribsFrom = $attribsTo = !permissionhandler::hasPerm('NEW_COLLECTION') ? array('disabled' => 'disabled') : [];
 		$mimeListFrom = we_html_tools::htmlSelect('mimeListFrom', $unselectedMime, 13, '', true, array_merge($attribsFrom, array("id" => "mimeListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListFrom'],this.form['mimeListTo'],true, 'document');")), 'value', 175);
 		$mimeListTo = we_html_tools::htmlSelect('mimeListTo', $selectedMime, 13, '', true, array_merge($attribsTo, array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');")), 'value', 175);
 		$mimeTable = new we_html_table(array('class' => 'collection_props-mime default'), 1, 3);
-		$mimeTable->setCol(0, 0, array(), $mimeListFrom);
+		$mimeTable->setCol(0, 0, [], $mimeListFrom);
 		$mimeTable->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle'), we_html_element::htmlA(array(
 				"href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('mimeListFrom'),document.getElementById('mimeListTo'),true, 'document');return false;"
@@ -249,11 +249,11 @@ class we_collection extends we_root{
 				"href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('mimeListTo'),document.getElementById('mimeListFrom'),true, 'document');return false;"
 				), '<i class="fa fa-lg fa-caret-left"></i>'));
-		$mimeTable->setCol(0, 2, array(), $mimeListTo);
+		$mimeTable->setCol(0, 2, [], $mimeListTo);
 
-		$selectedClasses = array();
-		$unselectedClasses = array();
-		$allClasses = array();
+		$selectedClasses = [];
+		$unselectedClasses = [];
+		$allClasses = [];
 		$allowedClasses = we_users_util::getAllowedClasses($this->DB_WE);
 		if(defined('OBJECT_TABLE')){
 			$this->DB_WE->query('SELECT ID,Text FROM ' . OBJECT_TABLE);
@@ -310,7 +310,7 @@ class we_collection extends we_root{
 			'</div>
 </div>' .
 			we_html_element::htmlDiv(array('class' => 'collection_props-dublettes'), $dublettes) .
-			we_html_element::htmlDiv(array(), $defDir);
+			we_html_element::htmlDiv([], $defDir);
 
 		return $html;
 	}
@@ -329,7 +329,7 @@ class we_collection extends we_root{
 		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', "javascript:weCollectionEdit.doClickAddItems();", true, 62, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
 
 		//TODO: use tables and some padding
-		$toolbar = new we_html_table(array(), 1, 8);
+		$toolbar = new we_html_table([], 1, 8);
 		$toolbar->setCol(0, 0, array('class' => 'toolbarRecursive'), $recursive);
 		$toolbar->setCol(0, 1, array('class' => 'toolbarSlider'), $slider);
 		$toolbar->setCol(0, 2, array('class' => 'toolbarView'), $btnGridview);
@@ -495,7 +495,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				'title' => ($item['elements']['meta_description']['Dat'])
 				), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i> ' . $item['elements']['meta_description']['write']);
 
-		$rowInnerTable->setCol(1, 0, array(), $attrTitle . $attrAlt . $metaTitle . $metaDesc);
+		$rowInnerTable->setCol(1, 0, [], $attrTitle . $attrAlt . $metaTitle . $metaDesc);
 		$rowInnerTable->setRowAttributes(1, array('class' => 'rowAttribsMeta'));
 
 		$rowHtml->setCol(0, 2, array('class' => 'colContent'), $rowInnerTable->getHtml());
@@ -866,7 +866,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		return $ret;
 	}
 
-	function registerMediaLinks($collection = array()){
+	function registerMediaLinks($collection = []){
 		$this->MediaLinks = $collection ? : $this->getValidCollection();
 
 		parent::registerMediaLinks(false, true);
@@ -891,7 +891,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 		$tmpColl = array_slice($coll, $pos);
 		$newColl = array_slice($coll, 0, $pos);
-		$result = array(array(), array());
+		$result = array([], []);
 		$isFirstSet = false;
 		foreach($items as $item){
 			if($this->IsDuplicates || !in_array($item, $coll)){
@@ -909,7 +909,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		return $result;
 	}
 
-	public function getValidItemsFromIDs($IDs = array(), $returnFull = false, $recursive = -1, $table = '', $recursion = 0, $foldersDone = array(), $checkWs = true, $wspaces = array()){
+	public function getValidItemsFromIDs($IDs = [], $returnFull = false, $recursive = -1, $table = '', $recursion = 0, $foldersDone = [], $checkWs = true, $wspaces = []){
 		$IDs = is_array($IDs) ? $IDs : array($IDs);
 		if(empty($IDs)){
 			return -1;
@@ -941,7 +941,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 		$wsQuery = ($checkWs && $wspaces[0] !== false ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
 
-		$result = $resultRoot = $todo = array();
+		$result = $resultRoot = $todo = [];
 
 		if($this->getRemTable() === stripTblPrefix(OBJECT_FILES_TABLE)){
 			$typeField = 'TableID';
@@ -1003,7 +1003,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		if($recursion++ === 0){ // when finishing the initial call, sort complete result (on root level folders first, then items and set items' elements)
 			ksort($result);
-			$tmpResult = array();
+			$tmpResult = [];
 			foreach($result as $res){
 				$tmpResult[$res['id']] = $returnFull ? $res : $res['id'];
 			}

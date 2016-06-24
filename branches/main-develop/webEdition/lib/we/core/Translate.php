@@ -49,7 +49,7 @@ class we_core_Translate extends Zend_Translate{
 	 * @param  array               $options  OPTIONAL options for the adapter
 	 * @throws Zend_Translate_Exception
 	 */
-	public function __construct($adapter, $data, $locale = null, array $options = array()){
+	public function __construct($adapter, $data, $locale = null, array $options = []){
 		$this->setAdapter($adapter, $data, $locale, $options);
 	}
 
@@ -62,7 +62,7 @@ class we_core_Translate extends Zend_Translate{
 	 * @param  array               $options  OPTIONAL Options to use
 	 * @throws Zend_Translate_Exception
 	 */
-	public function setAdapter($adapter, $data, $locale = null, array $options = array()){
+	public function setAdapter($adapter, $data, $locale = null, array $options = []){
 		switch(strtolower($adapter)){
 			case 'array' :
 				$adapter = 'Zend_Translate_Adapter_Array';

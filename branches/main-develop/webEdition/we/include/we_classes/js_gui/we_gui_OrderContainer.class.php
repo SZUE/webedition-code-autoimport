@@ -44,7 +44,7 @@ class we_gui_OrderContainer{
 			we_html_element::jsElement('var ' . $this->containerId . ' = new weOrderContainer("' . $this->containerId . '");');
 	}
 
-	function getContainer($attribs = array()){
+	function getContainer($attribs = []){
 
 		$attrib = '';
 		foreach($attribs as $name => $value){

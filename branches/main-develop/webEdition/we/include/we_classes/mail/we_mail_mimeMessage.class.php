@@ -29,7 +29,7 @@ class we_mail_mimeMessage{
 	 *
 	 * @var array
 	 */
-	protected $_parts = array();
+	protected $_parts = [];
 
 	/**
 	 * The Mime object for the message
@@ -152,7 +152,7 @@ class we_mail_mimeMessage{
 	 * @return array
 	 */
 	public function getPartHeadersArray($partnum){
-		return $this->_parts[$partnum]->getHeadersArray();
+		return $this->_parts[$partnum]->getHeaders[];
 	}
 
 	/**
@@ -189,14 +189,14 @@ class we_mail_mimeMessage{
 	 */
 	protected static function _disassembleMime($body, $boundary){
 		$start = 0;
-		$res = array();
+		$res = [];
 		// find every mime part limiter and cut out the
 		// string before it.
 		// the part before the first boundary string is discarded:
 		$p = strpos($body, '--' . $boundary . "\n", $start);
 		if($p === false){
 			// no parts found!
-			return array();
+			return [];
 		}
 
 		// position after first boundary line

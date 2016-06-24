@@ -36,7 +36,7 @@ class we_navigation_tree extends we_tree_base{
 	static function getItems($ParentID = 0, $offset = 0, $segment = 500){
 		$db = new DB_WE();
 
-		$items = $aWsQuery = $parentpaths = array();
+		$items = $aWsQuery = $parentpaths = [];
 
 		if(($ws = get_ws(NAVIGATION_TABLE))){
 			$wsPathArray = id_to_path($ws, NAVIGATION_TABLE, $db, true);
@@ -83,7 +83,7 @@ class we_navigation_tree extends we_tree_base{
 				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/navigation'),
 			);
 
-			$fileds = array();
+			$fileds = [];
 
 			foreach($db->Record as $k => $v){
 				$fileds[strtolower($k)] = $v;

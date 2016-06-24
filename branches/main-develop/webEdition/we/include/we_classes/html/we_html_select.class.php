@@ -39,7 +39,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return		we_html_select
 	 */
-	function __construct(array $attribs = array(), $opt_num = 0){
+	function __construct(array $attribs = [], $opt_num = 0){
 		parent::__construct('select', true, $attribs);
 		for($i = 0; $i < $opt_num; $i++){
 			$this->addOption();
@@ -72,7 +72,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function addOption($value, $text, array $attribs = array()){
+	function addOption($value, $text, array $attribs = []){
 		$attribs["value"] = $value;
 		$this->childs[] = new we_html_baseElement("option", true, $attribs, $text);
 	}
@@ -86,7 +86,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function addOptions(array $entries = array()){
+	function addOptions(array $entries = []){
 		foreach($entries as $value => $text){
 			$this->childs[] = new we_html_baseElement("option", true, array("value" => $value), $text);
 		}
@@ -117,7 +117,7 @@ class we_html_select extends we_html_baseCollection{
 	 * @return		void
 	 */
 	function delAllOptions(){
-		$this->childs = array();
+		$this->childs = [];
 	}
 
 	/**
@@ -161,7 +161,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return		void
 	 */
-	function setOption($optid, array $attribs = array(), $content = null){
+	function setOption($optid, array $attribs = [], $content = null){
 		$opt = & $this->getChild($optid);
 		$opt->setAttributes($attribs);
 		if($content != null){
@@ -229,7 +229,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return  void
 	 */
-	function addOptionGroup(array $attribs = array()){
+	function addOptionGroup(array $attribs = []){
 		$this->childs[] = new we_html_baseCollection("optgroup", true, $attribs);
 	}
 
@@ -252,7 +252,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return  we_html_baseElement
 	 */
-	function getNewOptionGroup(array $attribs = array()){
+	function getNewOptionGroup(array $attribs = []){
 		return new we_html_baseCollection("optgroup", true, $attribs);
 	}
 

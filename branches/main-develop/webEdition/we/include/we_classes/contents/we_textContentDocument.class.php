@@ -55,7 +55,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 	}
 
-	public function makeSameNew(array $keep = array()){
+	public function makeSameNew(array $keep = []){
 		parent::makeSameNew(array_merge($keep, array('Category', 'ContentType', 'DocType', 'IsSearchable', 'Extension')));
 	}
 
@@ -104,7 +104,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	/* publish a document */
 
 	function getMetas($code){
-		$regs = array();
+		$regs = [];
 		$title = (preg_match('|< ?title[^>]*>(.*)< ?/ ?title[^>]*>|i', $code, $regs) ? $regs[1] : '');
 		$tempname = we_base_file::saveTemp($code);
 		$metas = get_meta_tags($tempname);
@@ -171,7 +171,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		return $this->formSelect2(0, 'DocType', DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'], 'ID', 'DocType', g_l('weClass', '[doctype]'), 'dt.ID,dt.DocType', $dtq['where'], 1, $this->DocType, false, (($this->DocType !== '') ?
 					"if(confirm('" . g_l('weClass', '[doctype_changed_question]') . "')){we_cmd('doctype_changed');};" :
 					"we_cmd('doctype_changed');") .
-				"_EditorFrame.setEditorIsHot(true);", array(), 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", false, 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? array('', g_l('weClass', '[nodoctype]')) : '');
+				"_EditorFrame.setEditorIsHot(true);", [], 'left', "defaultfont", "", we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_cmd('doctypes')", false, 0, 0, "", "", (!permissionhandler::hasPerm('EDIT_DOCTYPE'))), ((permissionhandler::hasPerm('NO_DOCTYPE') || ($this->ID && empty($this->DocType)) ) ) ? array('', g_l('weClass', '[nodoctype]')) : '');
 	}
 
 	function formDocTypeTempl(){
@@ -366,7 +366,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	}
 
 	function we_resaveTemporaryTable(){
-		$saveArr = array();
+		$saveArr = [];
 		$this->saveInSession($saveArr, true);
 		if(($this->ModDate > $this->Published) && $this->Published){
 			return (!we_temporaryDocument::isInTempDB($this->ID, $this->Table, $this->DB_WE) ?
@@ -390,7 +390,7 @@ abstract class we_textContentDocument extends we_textDocument{
 ### private ####
 
 	private function i_saveTmp($write = true){
-		$saveArr = array();
+		$saveArr = [];
 		$this->saveInSession($saveArr, true);
 		if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)){
 			return false;
@@ -411,7 +411,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		$realPath = $this->getRealPath();
 		$parent = str_replace('\\', '/', dirname($realPath));
-		$cf = array();
+		$cf = [];
 		while(!we_base_file::checkAndMakeFolder($parent, true)){
 			$cf[] = $parent;
 			$parent = str_replace('\\', '/', dirname($parent));

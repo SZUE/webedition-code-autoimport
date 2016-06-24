@@ -57,7 +57,7 @@ abstract class we_mail_TransportAbstract{
 	 * @var array
 	 * @access protected
 	 */
-	protected $_headers = array();
+	protected $_headers = [];
 
 	/**
 	 * Message is a multipart message
@@ -78,7 +78,7 @@ abstract class we_mail_TransportAbstract{
 	 * @var array
 	 * @access protected
 	 */
-	protected $_parts = array();
+	protected $_parts = [];
 
 	/**
 	 * Recipients string

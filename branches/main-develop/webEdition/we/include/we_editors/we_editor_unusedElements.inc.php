@@ -37,8 +37,8 @@ if(!empty($remove)){
 
 		$tp = new we_tag_tagParser($GLOBALS['we_doc']->getTemplateCode(true, true));
 		$relevantTags = array(
-			'normal' => array(),
-			'block' => array(),
+			'normal' => [],
+			'block' => [],
 		);
 		//FIXME: we need to get the names of blocks
 		$context = '';
@@ -83,7 +83,7 @@ if(!empty($remove)){
 					strcmp($a['block'], $b['block']);
 			});
 		} else {
-			$obsolete = array();
+			$obsolete = [];
 		}
 
 		$table = new we_html_table(array('class' => 'default middlefont', 'width' => '100%'), count($obsolete) + 1, 6);

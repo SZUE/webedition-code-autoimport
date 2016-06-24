@@ -32,12 +32,12 @@ class we_app_Hook{
 	/**
 	 * @var array for storing all application code hooks that have already been read.
 	 */
-	protected $_hooks = array();
+	protected $_hooks = [];
 
 	/**
 	 * @var array for storing all reader objects that are used by this hook object instance
 	 */
-	protected $_readers = array();
+	protected $_readers = [];
 
 	/**
 	 * constructor method for hook parser

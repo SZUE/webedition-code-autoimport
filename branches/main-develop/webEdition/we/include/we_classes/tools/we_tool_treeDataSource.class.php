@@ -47,7 +47,7 @@ class we_tool_treeDataSource{
 	}
 
 	public static function getQueryParents($path){
-		$out = array();
+		$out = [];
 		$db = $GLOBALS['DB_WE'];
 		while($path != '/' && $path != '\\' && $path){
 			$out[] = '"' . $db->escape($path) . '"';
@@ -61,11 +61,11 @@ class we_tool_treeDataSource{
 		$db = new DB_WE();
 		$table = $this->SourceName;
 
-		$items = array();
+		$items = [];
 
 		$wsQuery = '';
-		$aWsQuery = array();
-		$parentpaths = array();
+		$aWsQuery = [];
+		$parentpaths = [];
 
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
@@ -113,7 +113,7 @@ class we_tool_treeDataSource{
 				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'item'),
 			);
 
-			$fileds = array();
+			$fileds = [];
 
 			foreach($db->Record as $k => $v){
 				if(!is_numeric($k)){

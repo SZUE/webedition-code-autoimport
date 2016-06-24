@@ -34,7 +34,7 @@ class weTagData_cmdAttribute extends weTagDataAttribute{
 	 * @param string $name
 	 * @param boolean $required
 	 */
-	function __construct($name, $required = false, $module = '', array $Options = array(), $Text = '', $description = '', $deprecated = false){
+	function __construct($name, $required = false, $module = '', array $Options = [], $Text = '', $description = '', $deprecated = false){
 		parent::__construct($name, $required, $module, $description, $deprecated);
 		$this->Options = $Options;
 		$this->Text = $Text;

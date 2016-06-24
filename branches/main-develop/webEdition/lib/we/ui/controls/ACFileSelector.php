@@ -409,7 +409,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		//$onChange = '"opener.weEventController.fire(\'docChanged\')"';
 		$onChange = '""';
 
-		//$contentTypes = array();
+		//$contentTypes = [];
 		$contentTypesString = $this->getContentType();
 		$contentTypesArray = explode(",", $contentTypesString);
 		$countCTs = count($contentTypesArray);

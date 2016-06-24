@@ -35,7 +35,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	private function getDocumentIncludes($text, $level){
-		$match = array();
+		$match = [];
 
 		foreach($this->PatternSearch->doc_patterns["id"] as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
@@ -58,7 +58,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	private function getObjectIncludes($text, $level){
-		$match = array();
+		$match = [];
 
 		foreach($this->PatternSearch->obj_patterns["id"] as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
@@ -78,7 +78,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	private function getExternalLinked($text, $level){
-		$match = array();
+		$match = [];
 		if(!is_array($text)){
 			foreach($this->PatternSearch->ext_patterns as $pattern){
 				if(preg_match_all($pattern, $text, $match)){
@@ -95,7 +95,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	private function getNavigation($text, $level){
-		$navrules = $match = array();
+		$navrules = $match = [];
 		foreach($this->PatternSearch->navigation_patterns as $pattern){
 			if(!preg_match_all($pattern, $text, $match)){
 				continue;
@@ -131,7 +131,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	private function getThumbnail($text, $level){
-		$match = $values = array();
+		$match = $values = [];
 		foreach($this->PatternSearch->thumbnail_patterns as $pattern){
 			if(preg_match_all($pattern, $text, $match)){
 				foreach($match[2] as $value){
@@ -148,7 +148,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	private function getIncludesFromWysiwyg($text, $level){
-		$match = array();
+		$match = [];
 
 		if(is_array($text)){ // shop exception - handle array in the content
 			foreach($text as $item1){
@@ -207,7 +207,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	}
 
 	private function getDepFromArray($array){
-		$ret = array("docs" => array(), "objs" => array());
+		$ret = array("docs" => [], "objs" => []);
 
 		if(!empty($array['id'])){
 			$ret["docs"][] = $array['id'];
@@ -259,7 +259,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 							$this->addToDepArray($level, $ev['dat']);
 						}
 					} else if(isset($ev["dat"])){
-						$dat = we_unserialize($ev["dat"], array(), true);
+						$dat = we_unserialize($ev["dat"], [], true);
 						if(is_array($dat)){
 							$elarray = $this->getDepFromArray($dat);
 							foreach($elarray as $elk => $elv){
@@ -301,7 +301,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 				$this->getThumbnail($data, $level);
 			}
 
-			$match = array();
+			$match = [];
 			if($this->options['handle_def_templates']){
 				foreach($this->PatternSearch->tmpl_patterns as $include_pattern){
 					if(preg_match_all($include_pattern, $data, $match)){
@@ -365,7 +365,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 
 			if($search && $this->options['export_depth'] > $id->level){
 				if(!isset($this->analyzed[$id->ContentType])){
-					$this->analyzed[$id->ContentType] = array();
+					$this->analyzed[$id->ContentType] = [];
 				}
 				if(!in_array($id->ID, $this->analyzed[$id->ContentType])){
 					$l = $id->level + 1;
@@ -375,7 +375,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 			}
 			// collect owners info
 			if($this->options["handle_owners"]){
-				$uids = array();
+				$uids = [];
 				if(isset($doc->CreatorID) && !in_array($doc->CreatorID, $this->RefTable->Users)){
 					$uids = array($doc->CreatorID);
 				}
@@ -398,7 +398,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 		}
 	}
 
-	public function prepareExport(array $ids = array()){
+	public function prepareExport(array $ids = []){
 		we_updater::fixInconsistentTables();
 
 		if($this->options['handle_def_templates'] ||

@@ -19,5 +19,5 @@ if(defined('OBJECT_FILES_TABLE')){
 }
 $this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 if(defined('CUSTOMER_TABLE')){
-	$this->Attributes[] = new weTagData_sqlColAttribute('permission', CUSTOMER_TABLE, false, array(), '');
+	$this->Attributes[] = new weTagData_sqlColAttribute('permission', CUSTOMER_TABLE, false, [], '');
 }

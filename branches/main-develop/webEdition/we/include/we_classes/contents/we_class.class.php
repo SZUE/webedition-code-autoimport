@@ -48,7 +48,7 @@ abstract class we_class{
 
 	/* database table in which the object is stored */
 	var $Table = '';
-	protected $LangLinks = array();
+	protected $LangLinks = [];
 
 	/* Database Object */
 	protected $DB_WE;
@@ -151,11 +151,11 @@ abstract class we_class{
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_' . $this->Name . '_' . ($elementtype ? $elementtype . '[' . $name . ']' : $name), $size, ($elementtype && ($elVal = $this->getElement($name)) ? $elVal : (isset($GLOBALS['meta'][$name]) ? $GLOBALS['meta'][$name]['default'] : (isset($ps) ? $ps : '') )), $maxlength, $attribs, 'text', $width), $text, $textalign, $textclass);
 	}
 
-	function formTextArea($elementtype, $name, $text, $rows = 10, $cols = 30, array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont'){
+	function formTextArea($elementtype, $name, $text, $rows = 10, $cols = 30, array $attribs = [], $textalign = 'left', $textclass = 'defaultfont'){
 		return we_html_tools::htmlFormElementTable(self::htmlTextArea(($elementtype ? ('we_' . $this->Name . '_' . $elementtype . "[$name]") : ('we_' . $this->Name . '_' . $name)), $rows, $cols, $this->getElement($name), $attribs), $text, $textalign, $textclass);
 	}
 
-	function formSelectFromArray($elementtype, $name, array $vals, $text, $size = 1, $multiple = false, array $attribs = array()){
+	function formSelectFromArray($elementtype, $name, array $vals, $text, $size = 1, $multiple = false, array $attribs = []){
 		$pop = $this->htmlSelect('we_' . $this->Name . '_' . ($elementtype ? $elementtype . '[' . $name . ']' : $name), $vals, $size, ($elementtype ? $this->getElement($name) : $this->$name), $multiple, $attribs);
 		return we_html_tools::htmlFormElementTable($pop, $text, 'left', 'defaultfont');
 	}
@@ -165,7 +165,7 @@ abstract class we_class{
 		return we_html_tools::htmlTextInput($name, 0, $value, $maxlength, $attribs, $type, $width, $height);
 	}
 
-	static function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', array $attribs = array()){
+	static function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', array $attribs = []){
 		return we_html_element::htmlTextArea(array_merge(array(
 				'name' => trim($name),
 				'class' => 'defaultfont wetextarea',
@@ -176,7 +176,7 @@ abstract class we_class{
 	}
 
 	//fixme: add auto-grouping, add format
-	function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $classes = array()){
+	function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = [], $compare = 'value', $width = 0, $classes = []){
 		$optgroup = false;
 		$selIndex = $multiple ? explode(',', $selectedIndex) : array($selectedIndex);
 		$ret = '';
@@ -206,7 +206,7 @@ abstract class we_class{
 	############## new fns
 	/* creates a select field for entering Data that will be stored at the $elements Array */
 
-	function formSelectElement($width, $name, $values, $type = 'txt', $size = 1, array $attribs = array()){
+	function formSelectElement($width, $name, $values, $type = 'txt', $size = 1, array $attribs = []){
 		return we_html_tools::htmlFormElementTable(
 				we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(array(
 					'class' => 'defaultfont',
@@ -226,8 +226,8 @@ abstract class we_class{
 		return $this->formInputField($type, $name, (g_l('weClass', '[' . $name . ']', true) ? : $name) . $infotext, $size, $width, '', $attribs);
 	}
 
-	function formSelect2($width, $name, $table, $val, $txt, $text, $sqlFrom = '', $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
-		$vals = array();
+	function formSelect2($width, $name, $table, $val, $txt, $text, $sqlFrom = '', $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = [], $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
+		$vals = [];
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
@@ -252,8 +252,8 @@ abstract class we_class{
 		return ($multiple ? we_html_element::htmlHidden($myname, $selectedIndex) : '') . we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
 
-	function formSelect4($width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = array(), $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
-		$vals = array();
+	function formSelect4($width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = [], $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
+		$vals = [];
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
@@ -329,7 +329,7 @@ abstract class we_class{
 			if(($cmd0 === 'switch_edit_page' && we_base_request::_(we_base_request::STRING, 'we_cmd', false, 3)) || ($cmd0 === 'save_document' && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7) === 'save_document')){
 				return true;
 			}
-			$regs = array();
+			$regs = [];
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('#^we_' . preg_quote($this->Name, '#') . '_([^\[]+)$#', $n, $regs) && in_array($regs[1], $this->persistent_slots)){
 					$this->$regs[1] = $v;
@@ -354,7 +354,7 @@ abstract class we_class{
 	protected function i_savePersistentSlotsToDB($felder = ''){
 		$tableInfo = $this->DB_WE->metadata($this->Table);
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
-		$fields = array();
+		$fields = [];
 		if(!$this->wasUpdate && $this->insertID && f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->insertID) . ' LIMIT 1', '', $this->DB_WE)){
 			return false;
 		}
@@ -437,9 +437,9 @@ abstract class we_class{
 		if(!$newLang){
 			return false;
 		}
-		$LangLinkArray = array();
+		$LangLinkArray = [];
 		if($type !== 'tblDocTypes'){
-			$LangLinkArray = array();
+			$LangLinkArray = [];
 			foreach($LinkArray as $lang => $link){
 				$LangLinkArray[$lang] = $link['id'];
 			}
@@ -450,7 +450,7 @@ abstract class we_class{
 		$db = new DB_WE();
 		$documentTable = ($type === 'tblObjectFile') ? 'tblObjectFiles' : $type;
 		$ownDocumentTable = ($isfolder && $isobject) ? FILE_TABLE : addTblPrefix($documentTable);
-		$origLinks = array();
+		$origLinks = [];
 
 		if(!$isfolder){
 			$oldLang = f('SELECT Language FROM ' . $db->escape($ownDocumentTable) . ' WHERE ID=' . intval($this->ID), '', $db);
@@ -502,13 +502,13 @@ abstract class we_class{
 
 		if(in_array(0, $LangLinkArray) || in_array('', $LangLinkArray)){
 			if(!$langChange){
-				$origLinks = array();
+				$origLinks = [];
 				$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DID=' . intval($this->ID) . ' AND IsObject=' . ($isobject ? 1 : 0) . ' AND IsFolder=' . ($isfolder ? 1 : 0));
 				while($this->DB_WE->next_record()){
 					$origLinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record['LDID'];
 				}
 			}
-			$tmpLangLinkArray = array();
+			$tmpLangLinkArray = [];
 			foreach($LangLinkArray as $locale => $LDID){
 
 				if(!($LDID == '' || $LDID == 0 || $LDID == -1)){
@@ -583,7 +583,7 @@ abstract class we_class{
 							echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[languageLinksConflicts]'), $locale), we_message_reporting::WE_MESSAGE_NOTICE)));
 							return true;
 						}
-						$actualLinks = array();
+						$actualLinks = [];
 						$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DID=' . intval($this->ID) . ' AND IsObject=' . ($isobject ? 1 : 0) . ' AND IsFolder=' . ($isfolder ? 1 : 0));
 						while($this->DB_WE->next_record()){
 							$actualLinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record['LDID'];
@@ -594,7 +594,7 @@ abstract class we_class{
 				}
 			}// end of new or changed link
 			else {//delete links
-				$actualLinks = array();
+				$actualLinks = [];
 				$this->DB_WE->query('SELECT Locale,LDID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DID=' . intval($this->ID) . " AND IsObject = " . intval($isobject) . " AND IsFolder = " . intval($isfolder));
 				while($this->DB_WE->next_record()){
 					$actualLinks[$this->DB_WE->Record['Locale']] = $this->DB_WE->Record['LDID'];
@@ -615,7 +615,7 @@ abstract class we_class{
 		$this->DB_WE->query('SELECT * FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DID=' . intval($this->ID) . ' AND IsFolder=' . ($isfolder ? 1 : 0) . ' AND IsObject=' . ($isobject ? 1 : 0));
 		$orig = $this->DB_WE->getAll();
 		if(!$isfolder){//folders never have backlinks BUT the document linked to the folder CAN have them if linked to another document
-			$lids = array();
+			$lids = [];
 			foreach($orig as $cur){
 				$lids[] = $cur['LDID'];
 			}

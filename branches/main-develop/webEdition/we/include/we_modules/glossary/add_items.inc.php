@@ -164,7 +164,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 			$ExceptionList[] = $Value['Text'];
 		}
 		$UnpublishedEntries = we_glossary_glossary::getEntries($Language, 'unpublished');
-		$List = array();
+		$List = [];
 		foreach($UnpublishedEntries as $Key => $Value){
 			if($UnpublishedEntries[$Key]['Type'] != we_glossary_glossary::TYPE_LINK){
 				$List[] = $Value;
@@ -227,7 +227,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 					'pl' => 'pl',
 				);
 
-				$Modes = array();
+				$Modes = [];
 				if((
 					empty($_SESSION['prefs']['force_glossary_action'])
 					) && $cmd3 != "checkOnly"
@@ -440,7 +440,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 						$Buttons .= we_html_element::jsElement("WE().layout.button.hide(document, 'publish');");
 					}
 
-					$Parts = array();
+					$Parts = [];
 					$Part = array(
 						"headline" => "",
 						"html" => $Content,

@@ -141,7 +141,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 	  }
 
 	  private static function removeDoppel($tags){
-	  $out = array();
+	  $out = [];
 	  foreach($tags as $tag){
 	  if(!in_array($tag, $out))
 	  $out[] = $tag;
@@ -153,8 +153,8 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		if($nr == 0){
 			return -1;
 		}
-		$foo = array();
-		$regs = array();
+		$foo = [];
+		$regs = [];
 		for($i = $nr; $i >= 0; $i--){
 			if(preg_match('%<(/?)we:if([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $tags[$i], $regs)){
 				if($regs[1] === '/'){
@@ -177,8 +177,8 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 		if($nr == count($tags)){
 			return -1;
 		}
-		$foo = array();
-		$regs = array();
+		$foo = [];
+		$regs = [];
 		for($i = $nr; $i < count($tags); $i++){
 			if(preg_match('%<(/?)we:if([[:alpha:]]+)( *[[:alpha:]]+ *= *"[^"]*")* */?>?%i', $tags[$i], $regs)){
 				if($regs[1] != '/'){
@@ -327,7 +327,7 @@ we_templateInit();?>';
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
 		//get clean variants
-		$regs = array();
+		$regs = [];
 		foreach($_REQUEST as $n => $v){
 			if(is_array($v) && preg_match('|^we_' . $this->Name . '_variant|', $n, $regs)){
 				foreach($v as $n2 => $v2){
@@ -379,10 +379,10 @@ we_templateInit();?>';
 	 * @param	none
 	 */
 	function getVariantFields(){
-		$ret = array();
+		$ret = [];
 		$fields = $this->getAllVariantFields();
 		if(!$fields){
-			return array();
+			return [];
 		}
 		foreach(array_keys($fields)as $name){
 			if($this->getElement('variant_' . $name)){
@@ -400,7 +400,7 @@ we_templateInit();?>';
 	 */
 	function getVariantFieldNames(){
 		$fields = $this->getAllVariantFields();
-		return (is_array($fields) ? array_keys($fields) : array());
+		return (is_array($fields) ? array_keys($fields) : []);
 	}
 
 	/**
@@ -410,7 +410,7 @@ we_templateInit();?>';
 	 * @param	none
 	 */
 	function getAllVariantFields(){
-		return ($this->getElement('allVariants') ? : array());
+		return ($this->getElement('allVariants') ? : []);
 	}
 
 	/**
@@ -424,7 +424,7 @@ we_templateInit();?>';
 		$tp = new we_tag_tagParser($templateCode, $this->getPath());
 		$tags = $tp->getAllTags();
 
-		$blocks = $out = $regs = array();
+		$blocks = $out = $regs = [];
 
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){ // starttag found
@@ -460,7 +460,7 @@ we_templateInit();?>';
 						//additional parsing for selects
 						if($tagname === 'select'){
 							$spacer = '\s*';
-							$selregs = array();
+							$selregs = [];
 							//FIXME: this regex is not correct [^name] will not match any of those chars
 							if(preg_match('-(<we:select [^name]*name' . $spacer . '[\=\"|\=\'|\=\\\\|\=]*' . $spacer . preg_quote($att['name'], '-') . '[\'\"]*[^>]*>)(.*)<' . $spacer . '/' . $spacer . 'we:select' . $spacer . '>-i', $templateCode, $selregs)){
 								$out[$name]['content'] = $selregs[2];
@@ -530,7 +530,7 @@ we_templateInit();?>';
 
 	private function isUsedByDocuments(){
 		if($this->ID == 0){
-			return array(0, array());
+			return array(0, []);
 		}
 		$where = ' WHERE temp_template_id=' . intval($this->ID) . ' OR TemplateID=' . intval($this->ID);
 		$cnt = f('SELECT COUNT(1) FROM ' . FILE_TABLE . $where);
@@ -546,7 +546,7 @@ we_templateInit();?>';
 		if(!$count){
 			return array(0, g_l('weClass', '[no_documents]'));
 		}
-		$path = $elemAttribs = array();
+		$path = $elemAttribs = [];
 		$oldpath = '';
 		foreach($elems as $id => $data){
 			if($oldpath != $data[0]){
@@ -573,7 +573,7 @@ we_templateInit();?>';
 		if(empty($elems)){
 			return array(0, g_l('weClass', '[no_documents]'));
 		}
-		$path = array();
+		$path = [];
 		$oldpath = '';
 		foreach($elems as $id => $data){
 			if($oldpath != $data[0]){
@@ -599,7 +599,7 @@ we_templateInit();?>';
 		if(empty($elems)){
 			return array(0, g_l('weClass', '[no_documents]'));
 		}
-		$path = array();
+		$path = [];
 		$oldpath = '';
 		foreach($elems as $id => $data){
 			if($oldpath != $data[0]){
@@ -621,7 +621,7 @@ we_templateInit();?>';
 	 */
 	function getTemplateCode($completeCode = true, $fillIncluded = false){
 		if($fillIncluded){
-			$regs = $codes = array();
+			$regs = $codes = [];
 			$max = 100;
 			$db = $GLOBALS['DB_WE'];
 			$code = $this->getElement('completeData');
@@ -700,7 +700,7 @@ we_templateInit();?>';
 		static $cnt = 0;
 		static $recursiveTemplates;
 		if($cnt == 0){
-			$recursiveTemplates = array();
+			$recursiveTemplates = [];
 		}
 		if(empty($recursiveTemplates)){
 			$recursiveTemplates[] = $this->ID;
@@ -709,7 +709,7 @@ we_templateInit();?>';
 		$code = $this->getTemplateCode(false);
 
 		// find all we:master Tags
-		$masterTags = $regs = array();
+		$masterTags = $regs = [];
 
 		preg_match_all('|(<we:master([^>+]*)>)\n?([\\s\\S]*?)</we:master>\n?|', $code, $regs, PREG_SET_ORDER);
 
@@ -728,7 +728,7 @@ we_templateInit();?>';
 
 		if($this->MasterTemplateID != 0){
 
-			$templates = array();
+			$templates = [];
 			self::getUsedTemplatesOfTemplate($this->MasterTemplateID, $templates);
 			if(in_array($this->ID, $templates) || $this->ID == $this->MasterTemplateID || in_array($this->MasterTemplateID, $recursiveTemplates)){
 				$code = g_l('parser', '[template_recursion_error]');
@@ -742,7 +742,7 @@ we_templateInit();?>';
 				$masterTemplateCode = $templObj->getTemplateCode(true);
 				array_pop($recursiveTemplates);
 
-				$contentTags = array();
+				$contentTags = [];
 				preg_match_all('|<we:content ?([^>+]*)/?>\n?|', $masterTemplateCode, $contentTags, PREG_SET_ORDER);
 
 				foreach($contentTags as $reg){
@@ -764,7 +764,7 @@ we_templateInit();?>';
 		$tp = new we_tag_tagParser($code, $this->getPath());
 		$tags = $tp->getAllTags();
 		// go through all tags
-		$regs = array();
+		$regs = [];
 		foreach($tags as $tag){
 			// search for include tag
 			if(preg_match('|^<we:include ([^>]+)>$|mi', $tag, $regs)){ // include found
@@ -786,7 +786,7 @@ we_templateInit();?>';
 
 					// if id attribute is set and greater 0
 					if(isset($att['id']) && intval($att['id']) != 0){
-						$templates = array();
+						$templates = [];
 						self::getUsedTemplatesOfTemplate($att['id'], $templates);
 						if(in_array($this->ID, $templates) || $att['id'] == $this->ID || in_array($att['id'], $recursiveTemplates)){
 							$code = str_replace($tag, g_l('parser', '[template_recursion_error]'), $code);
@@ -952,7 +952,7 @@ we_templateInit();?>';
 
 	public static function we_getCodeMirror2Tags($css, $setting, $weTags = true){
 		$ret = '';
-		$allTags = array();
+		$allTags = [];
 		if($weTags && ($css || $setting['WE'])){
 			$allWeTags = we_wizard_tag::getExistingWeTags($css); //only load deprecated tags if css is requested
 			foreach($allWeTags as $tagName){
@@ -970,7 +970,7 @@ we_templateInit();?>';
 		}
 
 		$all = include(WE_INCLUDES_PATH . 'accessibility/htmlTags.inc.php');
-		$allTags = array_merge($allTags, ($setting['htmlTag'] ? $all['html'] : array()), ($setting['html5Tag'] ? $all['html5'] : array()));
+		$allTags = array_merge($allTags, ($setting['htmlTag'] ? $all['html'] : []), ($setting['html5Tag'] ? $all['html5'] : []));
 		if(!$allTags){
 			return '';
 		}
@@ -979,7 +979,7 @@ we_templateInit();?>';
 
 		ksort($allTags);
 		foreach($allTags as $tagName => $cur){
-			$attribs = array();
+			$attribs = [];
 			foreach($cur as $type => $attribList){
 				switch($type){
 					case 'we':

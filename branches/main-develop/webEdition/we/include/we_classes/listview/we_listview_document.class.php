@@ -31,7 +31,7 @@
 class we_listview_document extends we_listview_base{
 
 	var $docType = ''; /* doctype string */
-	var $IDs = array(); /* array of ids with pages which are found */
+	var $IDs = []; /* array of ids with pages which are found */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
 	var $contentTypes = '';
 	var $searchable = true;
@@ -41,8 +41,8 @@ class we_listview_document extends we_listview_base{
 	var $languages = ''; //string of Languages, separated by ,
 	var $numorder = false; // #3846
 	public $triggerID = 0;
-	protected $joins = array();
-	protected $orderWhere = array();
+	protected $joins = [];
+	protected $orderWhere = [];
 	protected $table = FILE_TABLE;
 	protected $group = '';
 
@@ -79,7 +79,7 @@ class we_listview_document extends we_listview_base{
 		$this->searchable = $searchable;
 		$this->subfolders = $subfolders;
 		$this->customers = $customers;
-		$this->customerArray = array();
+		$this->customerArray = [];
 		if($this->table == VFILE_TABLE){
 			$id = $this->id = 0;
 		}
@@ -117,7 +117,7 @@ class we_listview_document extends we_listview_base{
 		$this->triggerID = $triggerID;
 		$random = false;
 
-		$order = array();
+		$order = [];
 		$tmpOrder = explode(',', $this->order);
 		foreach($tmpOrder as $ord){
 			switch(trim($ord)){
@@ -211,7 +211,7 @@ class we_listview_document extends we_listview_base{
 				if(preg_match('|^[-\+]|', $v1)){
 					$not = (preg_match('^-', $v1));
 					$bed = preg_replace('/^[-\+]/', '', $v1);
-					$klammer = array();
+					$klammer = [];
 					reset($spalten);
 					foreach($spalten as $v){
 						$klammer[] = sprintf('%s LIKE "%%%s%%"', $v, addslashes($bed));
@@ -222,7 +222,7 @@ class we_listview_document extends we_listview_base{
 						$bedingungen_sql[] = '(' . implode(' OR ', $klammer) . ')';
 					}
 				} else {
-					$klammer = array();
+					$klammer = [];
 					foreach($spalten as $v){
 						$klammer[] = sprintf('%s LIKE "%%%s%%"', $v, addslashes($v1));
 					}
@@ -245,7 +245,7 @@ class we_listview_document extends we_listview_base{
 			if($this->workspaceID){
 				$workspaces = explode(',', $this->workspaceID);
 				if($this->subfolders){ // all entries with given parentIds
-					$cond = array();
+					$cond = [];
 					$workspacePaths = id_to_path($workspaces, FILE_TABLE, $this->DB_WE, true);
 					foreach($workspacePaths as $workspace){
 						$cond[] = 'Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';
@@ -288,7 +288,7 @@ class we_listview_document extends we_listview_base{
 
 		$this->anz = $this->DB_WE->num_rows();
 
-		$idListArray = array();
+		$idListArray = [];
 
 		while($this->DB_WE->next_record()){
 			$this->IDs[] = $this->DB_WE->f('ID');
@@ -386,7 +386,7 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 
 				$this->Record['WE_SHOPVARIANTS'] = 0; //check this for global variants
 				if(!empty($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
-					$variants = is_string($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) ? we_unserialize($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) : array();
+					$variants = is_string($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) ? we_unserialize($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) : [];
 					if(is_array($variants) && count($variants) > 0){
 						$this->Record['WE_SHOPVARIANTS'] = count($variants);
 					}
@@ -407,7 +407,7 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 		}
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-			$this->Record = array();
+			$this->Record = [];
 			$this->DB_WE->Record = array(
 				'WE_PATH' => '',
 				'WE_TEXT' => '',

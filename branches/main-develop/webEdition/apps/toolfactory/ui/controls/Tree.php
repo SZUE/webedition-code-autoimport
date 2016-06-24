@@ -79,7 +79,7 @@ class toolfactory_ui_controls_Tree extends we_ui_controls_Tree{
 	 * @return array
 	 */
 	public static function doCustom(){
-		$items = array();
+		$items = [];
 		$tools = we_tool_lookup::getAllTools(false, false, true);
 
 		foreach($tools as $tool){

@@ -44,7 +44,7 @@ class we_search_frames extends we_modules_frame{
 		}
 
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
-		$attr = array();
+		$attr = [];
 
 		if(!empty($_SESSION['weS']['weSearch']['modelidForTree'])){
 			$attr['onload'] = "top.content.treeData.selectNode('" . ($_SESSION['weS']['weSearch']['modelidForTree']) . "');";
@@ -181,7 +181,7 @@ function setTab(tab) {
 function we_save() {
 	top.content.we_cmd("tool_' . $this->module . '_save");
 }') .
-				we_html_element::htmlBody(array('id' => 'footerBody'), we_html_element::htmlForm(array(), $but_table)));
+				we_html_element::htmlBody(array('id' => 'footerBody'), we_html_element::htmlForm([], $but_table)));
 	}
 
 	private function getHTMLProperties($preselect = ''){

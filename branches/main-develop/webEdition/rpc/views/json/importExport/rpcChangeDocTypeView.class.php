@@ -25,7 +25,7 @@
 class rpcChangeDocTypeView extends we_rpc_view{
 
 	function getResponse($response){
-		return json_encode(array('elems' => $response->getData("elements")));
+		return json_encode(['elems' => $response->getData("elements")]);
 	}
 
 }

@@ -25,7 +25,7 @@
 class we_tab{
 	private $tab;
 
-	function __construct($text, $isActive = false, $jscmd = '', $attribs = array()){
+	function __construct($text, $isActive = false, $jscmd = '', $attribs = []){
 		$class = ($isActive ? 'tabActive' : 'tabNormal');
 		$att = '';
 		if(isset($attribs) && is_array($attribs)){

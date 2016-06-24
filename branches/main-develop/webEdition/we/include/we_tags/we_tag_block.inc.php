@@ -101,14 +101,14 @@ function we_tag_block(array $attribs){
 		$list = $GLOBALS['we_doc']->getElement($name);
 	}
 
-	if(($list = we_unserialize($list, array(), true))){
+	if(($list = we_unserialize($list, [], true))){
 		if(is_array($list) && count($list) && ((count($list) - 1) != max(array_keys($list)))){
 			//reorder list!
 			$list = array_values($list);
 			$GLOBALS['we_doc']->setElement($name, we_serialize($list, SERIALIZE_JSON, true, 0, true));
 		}
 	} else if($start){
-		$list = array();
+		$list = [];
 		if($limit > 0){
 			$start = min($start, $limit);
 		}

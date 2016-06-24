@@ -128,7 +128,7 @@ if(isset($varies)){
 }
 
 /* * ************ some config  ************** */
-$parts = array();
+$parts = [];
 $daten = "";
 if(isset($daten)){
 
@@ -151,7 +151,7 @@ if(isset($daten)){
 
 		$fe = (isset($shopConfig[3]) ?
 				array_map('intval', array_filter(explode(',', $shopConfig[3]))) : //determine more than just one class-ID
-				array());
+				[]);
 
 		$selVal = we_base_request::_(we_base_request::STRING, $select_name);
 
@@ -242,7 +242,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 					array('dat' => getTitleLinkObj(g_l('modules_shop', '[artMod]'), 'cMob')),
 				);
 
-				$content = array();
+				$content = [];
 
 				for($nr = 0, $i = ($actPage * $nrOfPage); $i < count($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
 					$isPublished = $orderRows[$i]['cPub'] > 0 ? true : false;
@@ -313,7 +313,7 @@ ORDER BY o.OF_ID'); // get the shop-objects from DB;
 					array('dat' => getTitleLinkDoc(g_l('modules_shop', '[artMod]'), 'dMod')),
 				);
 
-				$content = array();
+				$content = [];
 				for($nr = 0, $i = ($actPage * $nrOfPage); $i < count($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
 					$isPublished = $orderRows[$i]['dPub'] > 0 ? true : false;
 					$publishedStylePre = $isPublished ? '<span>' : '<span style="color: red">';

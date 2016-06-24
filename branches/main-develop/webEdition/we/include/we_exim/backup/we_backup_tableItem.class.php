@@ -29,7 +29,7 @@
  */
 class we_backup_tableItem extends we_base_model{
 	var $ClassName = __CLASS__;
-	var $attribute_slots = array();
+	var $attribute_slots = [];
 
 	public function __construct($table){
 		if($GLOBALS['DB_WE']->isTabExist($table)){
@@ -50,7 +50,7 @@ class we_backup_tableItem extends we_base_model{
 	}
 
 	static function getTableKey($table){
-		static $cache = array();
+		static $cache = [];
 		if(isset($cache[$table])){
 			return $cache[$table];
 		}
@@ -66,17 +66,17 @@ class we_backup_tableItem extends we_base_model{
 	}
 
 	function getFieldType($fieldname){
-		$regs = array();
+		$regs = [];
 		return (preg_match('/(.+?)_(.*)/', $fieldname, $regs) ? $regs[1] : '');
 	}
 
 	function isObjectXTable($tablename){
-		$regs = array();
+		$regs = [];
 		return (preg_match('/(.+?)_(.*)/', $tablename, $regs) && isset($regs[1]) && $regs[1] . '_' == OBJECT_X_TABLE);
 	}
 
 	function doConvertCharset($was){ //dies konvertiert die Daten, die binary im backup waren
-		$tables = array();
+		$tables = [];
 		$tables[CONTENT_TABLE] = array('Dat');
 
 		if(defined('OBJECT_TABLE')){
@@ -89,7 +89,7 @@ class we_backup_tableItem extends we_base_model{
 	}
 
 	function doCorrectExactCharsetString($was){
-		$tables = array();
+		$tables = [];
 		$table = $this->table;
 		$tables[NAVIGATION_TABLE] = array('Charset');
 		if(defined('OBJECT_TABLE')){
@@ -108,7 +108,7 @@ class we_backup_tableItem extends we_base_model{
 	}
 
 	function doCorrectSerializedLenghtValues($was){
-		$tables = array();
+		$tables = [];
 		$table = $this->table;
 		$tables[NAVIGATION_TABLE] = array('Attributes');
 		if(defined('OBJECT_TABLE')){
@@ -127,13 +127,13 @@ class we_backup_tableItem extends we_base_model{
 	}
 
 	function doPrepareCorrectSerializedLenghtValues($was){
-		$tables = array();
+		$tables = [];
 		$table = $this->table;
 		return (array_key_exists($table, $tables) && in_array($was, $tables[$table]));
 	}
 
 	function doCorrectSerializedExactCharsetString($was){
-		$tables = array();
+		$tables = [];
 		if(defined('OBJECT_TABLE')){
 			$tables[OBJECT_TABLE] = array('DefaultValues');
 		}

@@ -69,7 +69,7 @@ function we_tag_form(array $attribs){
 					($action ? : $_SERVER['SCRIPT_NAME']));
 
 	if($type != 'search'){
-		$regs = array();
+		$regs = [];
 		if(preg_match('/^(.*)return (.+)$/i', $onsubmit, $regs)){
 			$onsubmit = $regs[1] . ';return ' . $regs[2];
 		} else {

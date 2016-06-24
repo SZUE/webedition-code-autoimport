@@ -42,9 +42,9 @@ class we_schedpro{
 
 	var $task = self::SCHEDULE_FROM;
 	var $type = self::TYPE_ONCE;
-	var $months = array();
-	var $days = array();
-	var $weekdays = array();
+	var $months = [];
+	var $days = [];
+	var $weekdays = [];
 	var $time = 0;
 	var $nr = 0;
 	var $CategoryIDs = '';
@@ -52,7 +52,7 @@ class we_schedpro{
 	var $ParentID = 0;
 	var $active = 1;
 	var $doctypeAll = 0;
-	private static $extraCont = array();
+	private static $extraCont = [];
 
 	function __construct($s = '', $nr = 0){
 		if(is_array($s)){
@@ -729,7 +729,7 @@ function checkFooter(){
 	static function publInScheduleTable($object, we_database_base $db = null){
 		$db = $db ? : new DB_WE();
 		$db->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($object->ID) . ' AND ClassName="' . $db->escape($object->ClassName) . '"');
-		$makeSched = array();
+		$makeSched = [];
 		foreach($object->schedArr as $s){
 			$serializedDoc = ($s['task'] == self::SCHEDULE_FROM && $s['active'] ?
 					we_temporaryDocument::load($object->ID, $object->Table, $db, true) : // nicht noch mal unten beim Speichern serialisieren, ist bereits serialisiert #5743

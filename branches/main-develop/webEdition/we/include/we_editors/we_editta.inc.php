@@ -45,10 +45,10 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->setElement($name . 'width', we_base_request::_(we_base_request::INT, 'width', 200));
 	$we_doc->setElement($name . 'bgcolor', we_base_request::_(we_base_request::STRING, 'bgcolor', ''));
 	$we_doc->setElement($name . 'class', we_base_request::_(we_base_request::STRING, 'class', ''));
-	$we_doc->setElement($name . 'cssClasses', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'cssClasses', array())));
-	$we_doc->setElement($name . 'fontnames', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'fontnames', array())));
-	$we_doc->setElement($name . 'fontsizes', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'fontsizes', array())));
-	$we_doc->setElement($name . 'formats', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'formats', array())));
+	$we_doc->setElement($name . 'cssClasses', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'cssClasses', [])));
+	$we_doc->setElement($name . 'fontnames', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'fontnames', [])));
+	$we_doc->setElement($name . 'fontsizes', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'fontsizes', [])));
+	$we_doc->setElement($name . 'formats', implode(',', we_base_request::_(we_base_request::STRING_LIST, 'formats', [])));
 	$we_doc->setElement($name . 'tinyparams', we_base_request::_(we_base_request::RAW_CHECKED, 'tinyparams', ''));
 	$we_doc->setElement($name . 'templates', we_base_request::_(we_base_request::INTLIST, 'templates', ''));
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);

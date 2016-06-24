@@ -48,21 +48,21 @@ $enctype = new weTagData_selectAttribute('enctype', array(new weTagDataOption('a
 
 if(defined('FORMMAIL_VIAWEDOC') && FORMMAIL_VIAWEDOC == 1){
 	$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-		new weTagDataOption('-', false, '', array($id, $name, $nameid, $method, $target, $enctype), array()),
+		new weTagDataOption('-', false, '', array($id, $name, $nameid, $method, $target, $enctype), []),
 		new weTagDataOption('document', false, '', array($id, $name, $nameid, $method, $target, $doctype, $tid, $enctype), array($doctype)),
 		new weTagDataOption('formmail', false, '', array($id, $name, $nameid, $method, $target, $recipient, $onsuccess, $onerror, $onmailerror, $onrecipienterror, $from, $subject, $charset, $order, $required, $remove, $mimetype, $confirmmail, $forcefrom, $preconfirm, $postconfirm), array($recipient)),
 		new weTagDataOption('object', false, 'object', array($id, $name, $nameid, $method, $target, $categories, $classid, $parentid, $enctype), array($classid)),
-		new weTagDataOption('search', false, '', array($id, $name, $nameid, $method, $target), array()),
-		new weTagDataOption('shopliste', false, '', array($id, $nameid, $method, $target), array())
+		new weTagDataOption('search', false, '', array($id, $name, $nameid, $method, $target), []),
+		new weTagDataOption('shopliste', false, '', array($id, $nameid, $method, $target), [])
 		), false, '');
 } else {
 	$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-		new weTagDataOption('-', false, '', array($id, $name, $nameid, $method, $target, $enctype), array()),
+		new weTagDataOption('-', false, '', array($id, $name, $nameid, $method, $target, $enctype), []),
 		new weTagDataOption('document', false, '', array($id, $name, $nameid, $method, $target, $doctype, $tid, $enctype), array($doctype)),
 		new weTagDataOption('formmail', false, '', array($name, $nameid, $method, $target, $recipient, $onsuccess, $onerror, $onmailerror, $onrecipienterror, $from, $subject, $charset, $order, $required, $remove, $mimetype, $confirmmail, $forcefrom, $preconfirm, $postconfirm), array($recipient)),
 		new weTagDataOption('object', false, 'object', array($id, $name, $nameid, $method, $target, $categories, $classid, $parentid, $enctype), array($classid)),
-		new weTagDataOption('search', false, '', array($id, $name, $nameid, $method, $target), array()),
-		new weTagDataOption('shopliste', false, '', array($id, $nameid, $method, $target), array())
+		new weTagDataOption('search', false, '', array($id, $name, $nameid, $method, $target), []),
+		new weTagDataOption('shopliste', false, '', array($id, $nameid, $method, $target), [])
 		), false, '');
 }
 

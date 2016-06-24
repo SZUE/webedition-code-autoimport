@@ -39,7 +39,7 @@ function we_tag_conditionAdd(array $attribs){
 	// end initialize possible Attributes
 
 
-	$regs = array();
+	$regs = [];
 	if($var && strtolower($compare) === 'like'){
 		if(preg_match('/^(%)?([^%]+)(%)?$/', $var, $regs)){
 			$var = $regs[2];

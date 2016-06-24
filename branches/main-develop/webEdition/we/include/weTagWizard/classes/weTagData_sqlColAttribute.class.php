@@ -35,14 +35,14 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute{
 	 * @param boolean $required
 	 * @param array $filter
 	 */
-	function __construct($name, $table, $required = false, $filter = array(), $module = '', $description = '', $deprecated = false){
+	function __construct($name, $table, $required = false, $filter = [], $module = '', $description = '', $deprecated = false){
 
 		$this->Table = $table;
 
-		$options = array();
+		$options = [];
 
 		// get options from choosen table
-		$items = array();
+		$items = [];
 		$tableInfo = $GLOBALS['DB_WE']->metadata($this->Table);
 		sort($tableInfo); // #3490
 

@@ -26,7 +26,7 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 
 	function init(){
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
-			$this->alldata = array();
+			$this->alldata = [];
 			foreach($_SESSION['weS']['WE_CREATE_TEMPLATE'] as $id){
 				$this->alldata[] = $id;
 			}
@@ -54,7 +54,7 @@ parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 
 		$templ->initByID($this->data, TEMPLATES_TABLE);
 		$content = $templ->getElement("data");
-		$regs = array();
+		$regs = [];
 		if(preg_match_all('/##WEPATH##([^ ]+) ###WEPATH###/i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $cur){
 				$path = $cur[1];

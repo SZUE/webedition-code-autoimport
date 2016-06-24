@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_request{
-	private static $allTables = array();
+	private static $allTables = [];
 
 	const NOT_VALID = '__NOT_VALID__'; // to be used as default just for indicating that is IS an default
 
@@ -101,7 +101,7 @@ class we_base_request{
 					$var;
 				return;
 			case self::UNIT:
-				$regs = array(); //FIMXE: check for %d[em,ex,pt,%...]?
+				$regs = []; //FIMXE: check for %d[em,ex,pt,%...]?
 				$var = (preg_match('/(\d+\.?\d*) ?(em|ex|pt|px|in|mm|cm|pc|ch|rem|vw|vh|vmin|vmax|%)?/', $var, $regs) ? $regs[1] . (isset($regs[2]) ? $regs[2] : '') : '' );
 				return;
 			case self::INT:
@@ -140,7 +140,7 @@ class we_base_request{
 				//FIXME we need to improve this for "test, x" <a@b.de>, "test2, x" <b@d.de>
 				//preg_match_all('/("[\S\s]+"\s*|[^,"<>@]*\s+|)<?([^@<>,]*)@([a-zA-Z\d.-]+)>?/', $mail, $regs,PREG_SET_ORDER);
 				$mails = array_map('trim', explode(',', str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var)));
-				$regs = array();
+				$regs = [];
 				foreach($mails as &$mail){
 					if(!preg_match('-(["\'][\S\s]+["\']\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 						//if format didn't match, filter the whole var as one address
@@ -160,7 +160,7 @@ class we_base_request{
 				$var = ($type == self::EMAILLISTA ? $mails : implode(',', $mails));
 				return;
 			case self::EMAIL://removes mailto:
-				$regs = array();
+				$regs = [];
 				$mail = trim(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var));
 				if(!preg_match('-(["\'][\S\s]+["\']\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 					//if format didn't match, filter the whole var as one address
@@ -276,7 +276,7 @@ class we_base_request{
 		if(false && !empty($_SESSION['user']['isWeSession']) && WE_VERSION_SUPP){
 			$argname = implode('.', $args);
 			//reduce duplicate requests on the same global scope
-			static $requests = array();
+			static $requests = [];
 			$requests[$name][$argname][] = getBacktrace(array('error_showDevice', 'error_handler', 'getBacktrace', 'display_error_message'));
 			if(count($requests[$name][$argname]) > 1){
 				t_e('rerequest ', $name, $args, $requests[$name][$argname]);

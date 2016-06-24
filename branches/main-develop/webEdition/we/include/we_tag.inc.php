@@ -67,8 +67,7 @@ function we_tag_getPostName($var){
 function we_profiler($start = true){
 	if($start){
 		define('WE_PROFILER', microtime(true));
-		define('WE_PROFILER_54', version_compare(PHP_VERSION, '5.4.0', '>='));
-		$GLOBALS['we_profile'] = array();
+		$GLOBALS['we_profile'] = [];
 	} else {
 		echo 'tag,line,file,time,mem<br/>';
 		foreach($GLOBALS['we_profile'] as $line){
@@ -77,13 +76,13 @@ function we_profiler($start = true){
 	}
 }
 
-function we_tag($name, $attribs = array(), $content = '', $internal = false){
+function we_tag($name, $attribs = [], $content = '', $internal = false){
 	//keep track of editmode
 	$edMerk = isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : '';
 	//FIXME: do we support this????
-	$user = weTag_getAttribute('user', $attribs, array(), we_base_request::STRING_LIST);
+	$user = weTag_getAttribute('user', $attribs, [], we_base_request::STRING_LIST);
 	if(defined('WE_PROFILER')){
-		$bt = WE_PROFILER_54 ? debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1) : debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+		$bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
 		$prof = array('tag' => $name, 'line' => $bt[0]['line'], 'file' => $bt[0]['file'], 'time' => round((microtime(true) - WE_PROFILER), 5) . ' s', 'mem' => round(((memory_get_usage() / 1024))) . ' kB');
 		$GLOBALS['we_profile'][] = $prof;
 		//annotate tag, if possible
@@ -153,7 +152,7 @@ function we_setVarArray(&$arr, $string, $value){
 	}
 	$current = &$arr;
 
-	/* 	$arr_matches = array();
+	/* 	$arr_matches = [];
 	  preg_match('/[^\[\]]+/', $string, $arr_matches);
 	  $first = $arr_matches[0];
 	  preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
@@ -171,7 +170,7 @@ function we_setVarArray(&$arr, $string, $value){
 			return;
 		}
 		if(!isset($current[$dimension])){
-			$current[$dimension] = array();
+			$current[$dimension] = [];
 		}
 		$current = &$current[$dimension];
 	}
@@ -273,7 +272,7 @@ function weTag_getParserAttribute($name, $attribs, $default = '', $type = we_bas
 function weTag_getAttribute($name, $attribs, $default = '', $type = we_base_request::RAW, $useGlobal = true){
 	//FIXME: add an array holding attributes accessed for removal!
 	$value = isset($attribs[$name]) ? $attribs[$name] : $default;
-	$regs = array();
+	$regs = [];
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?
 				getArrayValue($GLOBALS, $regs[1], $regs[2]) :
@@ -321,7 +320,7 @@ function cutText($text, $max = 0, $striphtml = false){
 	}
 
 	$ret = '';
-	$tags = $foo = array();
+	$tags = $foo = [];
 	//split text on tags, entities and "rest"
 	preg_match_all('%(&#?[[:alnum:]]+;)|([^<&]*)|<(/?)([[:alnum:]]+)([ \t\r\n]+[[:alnum:]]+[ \t\r\n]*=[ \t\r\n]*"[^"]*")*[ \t\r\n]*(/?)>%sm', $text, $foo, PREG_SET_ORDER);
 
@@ -411,7 +410,7 @@ function attributFehltError($attribs, $attrs, $tag, $canBeEmpty = false){
  * @param array $ignore
  * @desc Removes all empty values from assoc array without the in $ignore given
  */
-function removeEmptyAttribs($atts, $ignore = array()){
+function removeEmptyAttribs($atts, $ignore = []){
 	foreach($atts as $k => $v){
 		if($v === '' && !in_array($k, $ignore)){
 			unset($atts[$k]);
@@ -471,7 +470,7 @@ function we_getInputCheckboxField($name, $value, array $attr){
 	$attr['value'] = 1;
 	$attr['name'] = $tmpname;
 	$attr['onclick'] = 'this.form.elements[\'' . $name . '\'].value=(this.checked) ? 1 : 0';
-	$attsHidden = array();
+	$attsHidden = [];
 
 	// hiddenField
 	if(isset($attr['xml'])){
@@ -484,7 +483,7 @@ function we_getInputCheckboxField($name, $value, array $attr){
 	return getHtmlTag('input', $attr) . getHtmlTag('input', $attsHidden);
 }
 
-function we_getSelectField($name, $value, $values, array $attribs = array(), $addMissing = true){
+function we_getSelectField($name, $value, $values, array $attribs = [], $addMissing = true){
 	$options = makeArrayFromCSV($values);
 	$attribs['name'] = $name;
 	$content = '';
@@ -509,7 +508,7 @@ function we_getSelectField($name, $value, $values, array $attribs = array(), $ad
 function we_pre_tag_listview(){
 	//prevent error if $GLOBALS["we_lv_array"] is no array
 	if(!isset($GLOBALS['we_lv_array']) || !is_array($GLOBALS['we_lv_array'])){
-		$GLOBALS['we_lv_array'] = array();
+		$GLOBALS['we_lv_array'] = [];
 	}
 
 	//FIXME: check why we need cloning here

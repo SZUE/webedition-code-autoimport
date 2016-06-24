@@ -45,7 +45,7 @@ class we_docTypes extends we_class{
 
 	public function we_save($resave = false){
 		$idArr = makeArrayFromCSV($this->Templates);
-		$newIdArr = array();
+		$newIdArr = [];
 		foreach($idArr as $id){
 			$path = id_to_path($id, TEMPLATES_TABLE);
 			if($id && $path){
@@ -71,7 +71,7 @@ class we_docTypes extends we_class{
 	}
 
 	function saveInSession(&$save, $toFile = false){
-		$save = array(array());
+		$save = array([]);
 		foreach($this->persistent_slots as $cur){
 			$save[0][$cur] = $this->{$cur};
 		}
@@ -122,7 +122,7 @@ class we_docTypes extends we_class{
 			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $languages, 1, $value, false, array('onchange' => 'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
 				we_html_element::htmlBr() . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 		}
-		return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $languages, 1, $value, false, array(), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
+		return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $languages, 1, $value, false, [], "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");
 	}
 
 	private function formCategory(){
@@ -195,8 +195,8 @@ class we_docTypes extends we_class{
 	 * @desc   returns HTML-Code for a doctype select-box without doctypes given in $array
 	 * @return string
 	 */
-	private function formDocTypes2($arrHide = array()){
-		$vals = array();
+	private function formDocTypes2($arrHide = []){
+		$vals = [];
 		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
 		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 
@@ -251,7 +251,7 @@ class we_docTypes extends we_class{
 	/* creates the Template PopupMenue */
 
 	private function formTemplatePopup($width = 100){
-		$tlist = array();
+		$tlist = [];
 		if($this->TemplateID){
 			$tlist[] = $this->TemplateID;
 		}
@@ -260,7 +260,7 @@ class we_docTypes extends we_class{
 		}
 		$tlist = array_filter(array_unique($tlist));
 		$sqlTail = 'IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
-		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), '', $sqlTail, 1, $this->TemplateID, false, '', array(), 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
+		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[standard_template]'), '', $sqlTail, 1, $this->TemplateID, false, '', [], 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
 	}
 
 	private function formIsDynamic(){
@@ -284,7 +284,7 @@ function switchExt(){
 	}
 
 	private function formSubDir($width = 100){
-		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), 1, $this->SubDir, false, array(), 'value', $width), g_l('weClass', '[subdirectory]'));
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), 1, $this->SubDir, false, [], 'value', $width), g_l('weClass', '[subdirectory]'));
 	}
 
 	/**
@@ -298,7 +298,7 @@ function switchExt(){
 	public static function getDoctypeQuery(we_database_base $db = null){
 		$db = $db ? : new DB_WE();
 
-		$paths = array();
+		$paths = [];
 		$ws = get_ws(FILE_TABLE, true);
 		if(!$ws){
 			return array(

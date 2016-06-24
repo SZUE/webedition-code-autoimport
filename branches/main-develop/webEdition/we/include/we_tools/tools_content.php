@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 $tools = we_tool_lookup::getAllTools(true, true);
 
-$whiteList = array();
+$whiteList = [];
 foreach($tools as $k => $v){
 	if(isset($v['name'])){
 		$whiteList[] = $v['name'];

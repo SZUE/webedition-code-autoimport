@@ -89,7 +89,7 @@ WegalleryDialog.insert();
 			foreach($tempArr as $k => $v){
 				$templatesArr[$k] = $v;
 			}
-			$input = we_html_tools::htmlSelect('we_dialog_args[tmpl]', $templatesArr, 1, (isset($this->args['tmpl']) ? id_to_path($this->args['tmpl'], TEMPLATES_TABLE) : '----'), false, array(), '', 430);
+			$input = we_html_tools::htmlSelect('we_dialog_args[tmpl]', $templatesArr, 1, (isset($this->args['tmpl']) ? id_to_path($this->args['tmpl'], TEMPLATES_TABLE) : '----'), false, [], '', 430);
 		} else {
 			$input = we_html_element::htmlHidden('we_dialog_args[tmpl]', 0) .
 				we_html_tools::htmlAlertAttentionBox(g_l('wysiwyg', '[gallery_alert_no_template]'), we_html_tools::TYPE_ALERT, 410, false);

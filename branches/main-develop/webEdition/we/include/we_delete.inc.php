@@ -29,10 +29,10 @@ function getObjectsForDocWorkspace($id, we_database_base $db){
 	$ids = (is_array($id)) ? $id : array($id);
 
 	if(!defined('OBJECT_FILES_TABLE')){
-		return array();
+		return [];
 	}
 
-	$where = array();
+	$where = [];
 	foreach($ids as $id){
 		$where[] = 'FIND_IN_SET(' . $id . ',Workspaces)';
 		$where[] = 'FIND_IN_SET(' . $id . ',ExtraWorkspaces)';
@@ -51,7 +51,7 @@ $wfchk_html = '';
 $script = '';
 
 if(!$wfchk){
-	if(($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
+	if(($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', []))){
 		$found = false;
 		foreach($selectedItems as $selectedItem){
 			if(we_workflow_utility::inWorkflow($selectedItem, $table)){
@@ -72,7 +72,7 @@ function confirmDel(){' .
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
 		we_html_element::htmlHidden("sel", implode(',', $selectedItems)) . "</form>";
 } elseif(in_array($wecmd0, array("do_delete", 'delete_single_document'))){
-	if(($selectedItems = we_base_request::_(we_base_request::INTLISTA, "sel", array()))){
+	if(($selectedItems = we_base_request::_(we_base_request::INTLISTA, "sel", []))){
 		//	look which documents must be deleted.
 		$retVal = 1;
 		$idInfos = array(
@@ -147,10 +147,10 @@ function confirmDel(){' .
 					}
 
 					// check if childrenfolders are workspaces
-					$childs = array();
+					$childs = [];
 
 					pushChilds($childs, $selectedItem, $table, 1, $GLOBALS['DB_WE']);
-					$users = array();
+					$users = [];
 					foreach($childs as $ch){
 						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs));
 					}
@@ -170,10 +170,10 @@ function confirmDel(){' .
 					}
 
 					// check if childrenfolders are workspaces
-					$childs = array();
+					$childs = [];
 
 					pushChilds($childs, $selectedItem, $table, 1, $GLOBALS['DB_WE']);
-					$users = array();
+					$users = [];
 					foreach($childs as $ch){
 						$users = array_merge($users, we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs, "workSpaceTmp"));
 					}
@@ -193,7 +193,7 @@ function confirmDel(){' .
 						break;
 					}
 
-					$childs = array();
+					$childs = [];
 
 					pushChilds($childs, $selectedItem, $table, 1, $GLOBALS['DB_WE']);
 					$users = we_users_util::getUsersForDocWorkspace($GLOBALS['DB_WE'], $childs, "workSpaceObj");
@@ -210,7 +210,7 @@ function confirmDel(){' .
 						break;
 					}
 
-					$childs = array();
+					$childs = [];
 
 					pushChilds($childs, $selectedItem, $table, 1, $GLOBALS['DB_WE']);
 					$objects = getObjectsForDocWorkspace($childs, $GLOBALS['DB_WE']);
@@ -260,9 +260,9 @@ function confirmDel(){' .
 				break;
 			default:
 				if($retVal){ //	user may delete -> delete files !
-					$GLOBALS["we_folder_not_del"] = array();
+					$GLOBALS["we_folder_not_del"] = [];
 
-					$deletedItems = array();
+					$deletedItems = [];
 
 					foreach($selectedItems as $sel){
 						we_base_delete::deleteEntry($sel, $table, true, false, $GLOBALS['DB_WE']);
@@ -274,10 +274,10 @@ function confirmDel(){' .
 
 					if(!empty($deletedItems)){
 						$class_condition = '';
-						$deleted_objects = array();
+						$deleted_objects = [];
 
 						if(defined('OBJECT_TABLE') && $table == OBJECT_TABLE){ // close all open objects, if a class is deleted
-							$localDeletedItems = array();
+							$localDeletedItems = [];
 
 							// if its deleted and not selected, it must be an object
 							foreach($deletedItems as $cur){
@@ -332,7 +332,7 @@ for ( frameId in _usedEditors ) {
 
 					if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	different messages in normal or seeMode
 						if(!empty($GLOBALS['we_folder_not_del'])){
-							$_SESSION['weS']['delete_files_nok'] = array();
+							$_SESSION['weS']['delete_files_nok'] = [];
 							$_SESSION['weS']['delete_files_info'] = str_replace('\n', '', sprintf(g_l('alert', '[folder_not_empty]'), ''));
 							foreach($GLOBALS["we_folder_not_del"] as $datafile){
 								$_SESSION['weS']['delete_files_nok'][] = array(

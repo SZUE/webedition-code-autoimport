@@ -64,7 +64,7 @@ class we_listview_object extends we_listview_objectBase{
 		$this->searchable = $searchable;
 		$this->docID = $docID;
 		$this->customers = $customers;
-		$this->customerArray = array();
+		$this->customerArray = [];
 
 		$this->condition = $condition;
 		$this->languages = $languages ? : (isset($GLOBALS["we_lv_languages"]) ? $GLOBALS["we_lv_languages"] : '');
@@ -95,7 +95,7 @@ class we_listview_object extends we_listview_objectBase{
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '');
 
-		$matrix = array();
+		$matrix = [];
 		$join = $this->fillMatrix($matrix, $this->classID, true);
 
 		$calendar_select = '';
@@ -141,7 +141,7 @@ class we_listview_object extends we_listview_objectBase{
 
 				if($this->workspaceID != ''){
 					$workspaces = makeArrayFromCSV($this->workspaceID);
-					$cond = array();
+					$cond = [];
 					foreach($workspaces as $wid){
 						$workspace = id_to_path($wid, OBJECT_FILES_TABLE, $this->DB_WE);
 						$cond[] = $obxTable . '.OF_Path LIKE "' . $workspace . '/%"';
@@ -165,7 +165,7 @@ class we_listview_object extends we_listview_objectBase{
 			$this->anz = $this->DB_WE->num_rows();
 
 			if($this->customers === '*'){
-				$idListArray = array();
+				$idListArray = [];
 				while($this->DB_WE->next_record()){
 					if(intval($this->DB_WE->f("OF_WebUserID")) > 0){
 						$idListArray[] = $this->DB_WE->f("OF_WebUserID");
@@ -203,7 +203,7 @@ class we_listview_object extends we_listview_objectBase{
 			parent::next_record();
 			$count = $this->calendar_struct['count'];
 			$fetch = $this->calendar_struct['forceFetch'];
-			$this->DB_WE->Record = array();
+			$this->DB_WE->Record = [];
 			if(!$fetch){
 				return !empty($this->calendar_struct['calendar']);
 			}

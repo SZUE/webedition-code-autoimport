@@ -64,7 +64,7 @@ class we_base_preferences{
 			$config['contentDef'] = we_base_file::load($config['filename'] . '.default')? : '<?php ';
 		}
 		//finally add old session prefs
-		$GLOBALS['config_files']['oldPrefs'] = isset($_SESSION['prefs']) ? $_SESSION['prefs'] : array();
+		$GLOBALS['config_files']['oldPrefs'] = isset($_SESSION['prefs']) ? $_SESSION['prefs'] : [];
 	}
 
 	static function setConfigContent($type, $content){
@@ -83,7 +83,7 @@ class we_base_preferences{
 	 *
 	 * @return         void
 	 */
-	static function check_global_config($updateVersion = false, $file = '', $leave = array()){
+	static function check_global_config($updateVersion = false, $file = '', $leave = []){
 		self::loadConfigs();
 		$processedConfigs = ($file ?
 						array('global' => 'contentBak') :
@@ -145,7 +145,7 @@ class we_base_preferences{
 			}
 		}
 
-		$tmp = isset($_SESSION['prefs']) && is_array($_SESSION['prefs']) ? array_diff_assoc($_SESSION['prefs'], $GLOBALS['config_files']['oldPrefs']) : array();
+		$tmp = isset($_SESSION['prefs']) && is_array($_SESSION['prefs']) ? array_diff_assoc($_SESSION['prefs'], $GLOBALS['config_files']['oldPrefs']) : [];
 		if(!empty($tmp)){
 			we_users_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
 		}
@@ -177,7 +177,7 @@ class we_base_preferences{
 				return trim($text, "\n\t ") . "\n\n" .
 						self::makeDefine($key, $value, $active, $comment, $encode);
 			case 'define':
-				$match = array();
+				$match = [];
 				if(preg_match('|/?/?define\(\s*(["\']' . preg_quote($key) . '["\'])\s*,\s*([^\r\n]+)\);[\r\n]?|Ui', $text, $match)){
 					return str_replace($match[0], self::makeDefine($key, $value, $active), $text);
 				}
@@ -232,7 +232,7 @@ class we_base_preferences{
 		return false;
 	}
 
-	public static function we_writeLanguageConfig($default, $available = array()){
+	public static function we_writeLanguageConfig($default, $available = []){
 		$locales = '';
 		sort($available);
 		foreach($available as $Locale){

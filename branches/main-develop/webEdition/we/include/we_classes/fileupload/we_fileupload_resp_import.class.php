@@ -24,7 +24,7 @@
  */
 class we_fileupload_resp_import extends we_fileupload_resp_base{
 
-	public function __construct($name = '', $contentType = '', $FILE = array(), $fileVars = array(), $controlVars = array(), $docVars = array()){
+	public function __construct($name = '', $contentType = '', $FILE = [], $fileVars = [], $controlVars = [], $docVars = []){
 		parent::__construct($name, $contentType, $FILE, $fileVars, $controlVars, $docVars);
 	}
 
@@ -32,7 +32,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		parent::initByHttp();
 
 		if(($catarray = we_base_request::_(we_base_request::STRING_LIST, 'fu_doc_categories', false))){
-			$cats = array();
+			$cats = [];
 			foreach($catarray as $cat){
 				// bugfix Workarround #700
 				$cats[] = (is_numeric($cat) ?
@@ -183,7 +183,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 		// set filename, ext and path
 		$filename = we_import_functions::correctFilename($this->fileVars['weFileName']);
-		$matches = array();
+		$matches = [];
 		preg_match('#^(.*)(\..+)$#', $filename, $matches);
 		if(!$matches){
 			return array(
@@ -399,7 +399,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		}
 
 		return array(
-			'error' => array(),
+			'error' => [],
 			'success' => true,
 			'weDoc' => array('id' => $we_doc->ID, 'path' => $we_doc->Path, 'text' => $we_doc->Text)
 		);

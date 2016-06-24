@@ -79,9 +79,6 @@ function we_tag_ifEmpty(array $attribs){
 			}
 		//   end of #3938
 	}
-	//FIXMe: remove as end of php 5.3
-	$tmp = $doc->getElement($match);
-	$tmp2 = $doc->getElement($match, 'bdid');
 
-	return empty($tmp) && empty($tmp2);
+	return empty($doc->getElement($match)) && empty($doc->getElement($match, 'bdid'));
 }

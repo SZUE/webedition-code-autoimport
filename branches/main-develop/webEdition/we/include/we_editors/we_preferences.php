@@ -420,7 +420,7 @@ _multiEditorreload = true;";
 		case 'active_integrated_modules':
 			$GLOBALS['config_files']['conf_active_integrated_modules']['content'] = '<?php
 $GLOBALS[\'_we_active_integrated_modules\'] = array(
-\'' . implode("',\n'", we_base_request::_(we_base_request::STRING, 'newconf', array(), 'active_integrated_modules')) . '\'
+\'' . implode("',\n'", we_base_request::_(we_base_request::STRING, 'newconf', [], 'active_integrated_modules')) . '\'
 );';
 			return;
 
@@ -572,7 +572,7 @@ function save_all_values(){
 		}
 	}
 	if(isset($_SESSION['weS']['versions']) && isset($_SESSION['weS']['versions']['logPrefs'])){
-		$_SESSION['weS']['versions']['logPrefsChanged'] = array();
+		$_SESSION['weS']['versions']['logPrefsChanged'] = [];
 		foreach(array_keys($_SESSION['weS']['versions']['logPrefs']) as $k){
 			if(isset($_REQUEST['newconf'][$k])){
 				if($_SESSION['weS']['versions']['logPrefs'][$k] != $_REQUEST['newconf'][$k]){
@@ -624,7 +624,7 @@ function build_dialog($selected_setting = 'ui'){
 
 		case 'ui':
 			//LANGUAGE
-			$settings = array();
+			$settings = [];
 
 			//	Look which languages are installed ...
 			$language_directory = dir(WE_INCLUDES_PATH . 'we_language');
@@ -1368,7 +1368,7 @@ for(i=0;i<elements.length; ++i){
 			if(!we_base_preferences::userIsAllowed('FORMMAIL_VIAWEDOC')){
 				break;
 			}
-			$settings = array();
+			$settings = [];
 			//FORMMAIL RECIPIENTS
 			if(we_base_preferences::userIsAllowed('FORMMAIL_BLOCK')){
 				// Build dialog if user has permission
@@ -1940,15 +1940,15 @@ for(i=0;i<elements.length; ++i){
 			$customer_table->setCol($row, 6, array('width' => 300));
 			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, array('width' => '20px'));
-			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
+			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
-			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
+			$customer_table->setCol($row, 5, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
 			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
-			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
+			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
-			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
+			$customer_table->setCol($row, 5, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
 			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
@@ -1970,12 +1970,12 @@ for(i=0;i<elements.length; ++i){
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
 			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
-			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
-			$customer_table->setCol($row, 4, array(), 's');
+			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
+			$customer_table->setCol($row, 4, [], 's');
 
 			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
 
-			$customer_table->setCol($row, 3, array(), we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
+			$customer_table->setCol($row, 3, [], we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 
 			$encryption = new we_html_select(array('name' => 'newconf[SECURITY_ENCRYPTION_TYPE_PASSWORD]', 'class' => 'weSelect'));
 			$encryption->addOption(we_customer_customer::ENCRYPT_NONE, g_l('prefs', '[security][encryption][type][0]'));
@@ -1984,7 +1984,7 @@ for(i=0;i<elements.length; ++i){
 				mcrypt_module_close($res);
 			}
 
-			$encryption->addOption(we_customer_customer::ENCRYPT_HASH, g_l('prefs', '[security][encryption][type][2]'), array());
+			$encryption->addOption(we_customer_customer::ENCRYPT_HASH, g_l('prefs', '[security][encryption][type][2]'), []);
 			$encryption->selectOption(get_value('SECURITY_ENCRYPTION_TYPE_PASSWORD'));
 
 
@@ -2026,7 +2026,7 @@ for(i=0;i<elements.length; ++i){
 				$smtp_table->setCol(1, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PORT]', 24, get_value('SMTP_PORT'), 180, '', 'text', 180));
 
 
-				$encryptSelect = we_html_tools::htmlSelect('newconf[SMTP_ENCRYPTION]', array(0 => g_l('prefs', '[smtp_encryption_none]'), 'ssl' => g_l('prefs', '[smtp_encryption_ssl]'), 'tls' => g_l('prefs', '[smtp_encryption_tls]')), 1, get_value('SMTP_ENCRYPTION'), false, array(), 'value', 180, 'defaultfont');
+				$encryptSelect = we_html_tools::htmlSelect('newconf[SMTP_ENCRYPTION]', array(0 => g_l('prefs', '[smtp_encryption_none]'), 'ssl' => g_l('prefs', '[smtp_encryption_ssl]'), 'tls' => g_l('prefs', '[smtp_encryption_tls]')), 1, get_value('SMTP_ENCRYPTION'), false, [], 'value', 180, 'defaultfont');
 
 				$smtp_table->setCol(2, 0, array('class' => 'defaultfont'), g_l('prefs', '[smtp_encryption]'));
 				$smtp_table->setCol(2, 1, array('style' => 'text-align:right'), $encryptSelect);
@@ -2089,7 +2089,7 @@ for(i=0;i<elements.length; ++i){
 				$jsCheckboxCheckAll .= 'document.getElementById("newconf[' . $v . ']").checked = checked;';
 			}
 
-			$_SESSION['weS']['versions']['logPrefs'] = array();
+			$_SESSION['weS']['versions']['logPrefs'] = [];
 			foreach($versionsPrefs as $v){
 				foreach($v as $val){
 					$_SESSION['weS']['versions']['logPrefs'][$val] = get_value($val);

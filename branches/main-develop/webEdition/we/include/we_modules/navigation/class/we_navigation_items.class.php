@@ -31,14 +31,14 @@ class we_navigation_items{
 	const TEMPLATE_DEFAULT_POSITION = 'defaultPosition';
 	const TEMPLATE_DEFAULT_LEVEL = 'defaultLevel';
 
-	private static $cache = array();
+	private static $cache = [];
 	var $items;
 	var $templates;
 	var $rootItem = 0;
 	var $hasCurrent = false;
-	var $currentRules = array();
+	var $currentRules = [];
 	private static $Storage = array(
-		'items' => array(),
+		'items' => [],
 		'ids' => array(0 => '/'),
 	);
 
@@ -62,10 +62,10 @@ class we_navigation_items{
 
 		return ($navi->LimitAccess ?
 				array(
-				'id' => $navi->AllCustomers == 0 ? $navi->Customers : array(),
-				'filter' => $navi->ApplyFilter == 1 ? $navi->CustomerFilter : array(),
-				'blacklist' => $navi->ApplyFilter == 1 ? $navi->BlackList : array(),
-				'whitelist' => $navi->ApplyFilter == 1 ? $navi->WhiteList : array(),
+				'id' => $navi->AllCustomers == 0 ? $navi->Customers : [],
+				'filter' => $navi->ApplyFilter == 1 ? $navi->CustomerFilter : [],
+				'blacklist' => $navi->ApplyFilter == 1 ? $navi->BlackList : [],
+				'whitelist' => $navi->ApplyFilter == 1 ? $navi->WhiteList : [],
 				'usedocumentfilter' => $navi->UseDocumentFilter ? 1 : 0
 				) :
 				array(
@@ -107,7 +107,7 @@ class we_navigation_items{
 		if(isset(self::$cache[$parentid])){
 			$this->items = self::$cache[$parentid];
 		} elseif(($this->items = we_navigation_cache::getCacheFromFile($parentid)) === false){
-			$this->items = array();
+			$this->items = [];
 			return false;
 		} else {
 			self::$cache[$parentid] = $this->items;
@@ -118,7 +118,7 @@ class we_navigation_items{
 		}
 		$this->currentRules = we_navigation_cache::getCachedRule();
 		if($this->currentRules === false){
-			$this->currentRules = array();
+			$this->currentRules = [];
 			$this->initRulesFromDB();
 		}
 
@@ -133,7 +133,7 @@ class we_navigation_items{
 	}
 
 	private function initById($parentid = 0, $showRoot = true){
-		$this->items = array();
+		$this->items = [];
 		$this->rootItem = intval($parentid);
 		$navigation = new we_navigation_navigation();
 		$this->readItemsFromDb($this->rootItem);
@@ -175,7 +175,7 @@ class we_navigation_items{
 		self::$cache[$parentid] = $this->items;
 
 //reduce Memory consumption!
-		self::$Storage['items'] = array();
+		self::$Storage['items'] = [];
 	}
 
 	private function checkCategories(array $idsRule, array $idDoc){
@@ -377,7 +377,7 @@ class we_navigation_items{
 // this is to make it equal init by id, parentid
 				$depth--;
 			}
-			we_navigation_item::$currentPosition = array();
+			we_navigation_item::$currentPosition = [];
 			return $this->items['id' . $this->rootItem]->writeItem($this, $depth);
 		}
 
@@ -396,7 +396,7 @@ class we_navigation_items{
 		$path = id_to_path($id, NAVIGATION_TABLE, $db);
 		$path = we_base_file::clearPath($path . '/%');
 
-		$ids = array();
+		$ids = [];
 
 		$db->query('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($path) . '" ' . ($id ? ' OR ID=' . intval($id) : '') . ' ORDER BY Ordn');
 		while($db->next_record()){
@@ -416,7 +416,7 @@ class we_navigation_items{
 				$ids[] = $db->Record['IconID'];
 			}
 		}
-		$ids = $ids ? array_diff(array_unique($ids), array_keys(self::$Storage['ids'])) : array();
+		$ids = $ids ? array_diff(array_unique($ids), array_keys(self::$Storage['ids'])) : [];
 		if($ids){
 			$db->query('SELECT ID,IF(Published>0,Path,"") FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $ids) . ') ORDER BY ID');
 			//keep array index

@@ -30,7 +30,7 @@
  * Description: Provides functions for creating html tags
  */
 class we_html_baseCollection extends we_html_baseElement{
-	var $childs = array();
+	var $childs = [];
 
 	/**
 	 * Constructor
@@ -42,7 +42,7 @@ class we_html_baseCollection extends we_html_baseElement{
 	 *
 	 * @return		we_html_baseCollection
 	 */
-	function __construct($tagname = '', $need_end_tag = true, array $attribs = array(), $childs_num = 0){
+	function __construct($tagname = '', $need_end_tag = true, array $attribs = [], $childs_num = 0){
 		parent::__construct($tagname, $need_end_tag, $attribs);
 
 		for($i = 0; $i < $childs_num; $i++){

@@ -24,7 +24,7 @@
  */
 class we_base_charsetHandler{
 
-	var $charsets = array();
+	var $charsets = [];
 
 	/**
 	 * @return charsetHandler
@@ -126,7 +126,7 @@ class we_base_charsetHandler{
 	 * @desc This function returns an array(key = charset / value = charset - name(international) (name(national)))
 	 */
 	function getCharsetsForTagWizzard(){
-		$retArr = array();
+		$retArr = [];
 		foreach($this->charsets as $val){
 
 			$retArr[$val['charset']] = $val['charset'] . ' - ' . $val['international'] . ' (' . $val['national'] . ')';
@@ -156,8 +156,8 @@ class we_base_charsetHandler{
 	 * @desc This function returns an array for the property page of a webEdition document
 	 */
 	function getCharsetsByArray($availableChars){
-		$tmpCharArray = array();
-		$retArr = array();
+		$tmpCharArray = [];
+		$retArr = [];
 
 		foreach($availableChars as $char){
 			$tmpCharArray[] = ($this->getCharsetArrByCharset($char) ? : array('charset' => $char));

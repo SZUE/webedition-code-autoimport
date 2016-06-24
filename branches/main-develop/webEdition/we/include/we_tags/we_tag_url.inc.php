@@ -26,7 +26,7 @@ function we_tag_url(array $attribs){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
 		return $foo;
 	}
-	static $urls = array();
+	static $urls = [];
 	$type = weTag_getAttribute('type', $attribs, 'document', we_base_request::STRING);
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::STRING);
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);

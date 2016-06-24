@@ -36,12 +36,12 @@ class we_fileupload_resp_multiimport extends we_fileupload_resp_import{
 
 		if($response['status'] === 'failure'){
 			if(!isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
-				$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] = array();
+				$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'] = [];
 			}
 			$_SESSION['weS']['WE_IMPORT_FILES_ERRORs'][] = array('filename' => $this->fileVars['weFileName'], 'error' => $response['message']);
 		} else {
-			$_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] = isset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']) ? $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] : array();
-			$_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'] = isset($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']) ? $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'] : array();
+			$_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] = isset($_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS']) ? $_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'] : [];
+			$_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'] = isset($_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS']) ? $_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'] : [];
 
 			$_SESSION['weS']['WE_IMPORT_FILES_SUCCESS_IDS'][] = $response['weDoc']['id'];
 			$_SESSION['weS']['WE_IMPORT_FILES_DOCUMENTS'][] = $response['weDoc'];

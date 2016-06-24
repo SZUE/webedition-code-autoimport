@@ -106,9 +106,9 @@ abstract class we_fileupload{
 		return $this->maxUploadSizeBytes;
 	}
 
-	public function setTypeCondition($field = 'accepted', $weCts = array(), $exts = array()){
+	public function setTypeCondition($field = 'accepted', $weCts = [], $exts = []){
 		// new vars for js
-		$cts = $exts4cts = array();
+		$cts = $exts4cts = [];
 		foreach($weCts as $ct){
 			$ct = strtolower($ct);
 			if(in_array($ct, we_base_ContentTypes::inst()->getContentTypes(FILE_TABLE, true))){
@@ -133,7 +133,7 @@ abstract class we_fileupload{
 		$this->predefinedConfig = $predefinedConfig;
 	}
 
-	public function setImageEditProps($props = array()){
+	public function setImageEditProps($props = []){
 		$this->imageEditProps = array_merge($this->imageEditProps, $props);
 	}
 

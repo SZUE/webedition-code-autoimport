@@ -92,7 +92,7 @@ abstract class we_backup_export{
 		);
 
 		while($db->next_record()){
-			$keyvalue = array();
+			$keyvalue = [];
 			foreach($keys as $key){
 				$keyvalue[$key] = $db->f($key);
 			}

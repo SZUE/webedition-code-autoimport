@@ -26,9 +26,9 @@ class we_shop_shipping{
 
 	var $id = '';
 	var $text = '';
-	var $countries = array();
-	var $cartValue = array();
-	var $shipping = array();
+	var $countries = [];
+	var $cartValue = [];
+	var $shipping = [];
 	var $default = false;
 
 	public function __construct($id, $text, $countries, $cartValue, $shipping, $default){

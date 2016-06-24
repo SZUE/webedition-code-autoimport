@@ -34,7 +34,7 @@ class we_document extends we_root{
 	var $Language = '';
 //If the file should only be saved in the db
 	var $IsDynamic = 0;
-	var $schedArr = array();
+	var $schedArr = [];
 //Categories of the document
 	var $Category = '';
 	protected $oldCategory = '';
@@ -45,9 +45,9 @@ class we_document extends we_root{
 	public $parseFile = 1;
 // persistent in we_object*, since saved in class
 // temporary in document, holds Paths to stylesheets from we:css-tags that are user by tinyMCE
-	var $CSS = array();
+	var $CSS = [];
 	/* this array is used, to store document specific data for a page */
-	protected $editorSaves = array();
+	protected $editorSaves = [];
 	public $versionsModel; // FIXME: set protected and make getter
 
 	function __construct(){
@@ -391,7 +391,7 @@ class we_document extends we_root{
 			}
 			unset($listarray[$nr]);
 		} else {
-			$listarray = array();
+			$listarray = [];
 		}
 		$this->setElement($name, we_serialize($listarray, SERIALIZE_JSON, true, 0, true), 'block');
 	}
@@ -443,7 +443,7 @@ class we_document extends we_root{
 	}
 
 	function getNamesFromContent($content){
-		$arr = $result = array();
+		$arr = $result = [];
 		preg_match_all('/< ?we:[^>]+name="([^"]+)"[^>]*>/i', $content, $result, PREG_SET_ORDER);
 		foreach($result as $val){
 			$arr[] = $val[1];
@@ -481,7 +481,7 @@ class we_document extends we_root{
 	private function i_setExtensions(){
 		if($this->ContentType){
 			$exts = we_base_ContentTypes::inst()->getExtension($this->ContentType);
-			$this->Extensions = is_array($exts) && $exts ? $exts : array();
+			$this->Extensions = is_array($exts) && $exts ? $exts : [];
 			$this->Extension = $this->Extension? : (!is_array($exts) ? $exts : '');
 		}
 	}
@@ -612,7 +612,7 @@ class we_document extends we_root{
 									 * objectfiles: here the default defined in class is stored in tblObject_X:
 									 * it is no "dynamic" default and belongs to the object: so we register it as medialink of the object (and class)
 									 */
-									if(isset($v['dat']) && ($link = we_unserialize($v['dat'], array(), true)) && is_array($link)){
+									if(isset($v['dat']) && ($link = we_unserialize($v['dat'], [], true)) && is_array($link)){
 										if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){
 											if($link['type'] === 'int' && $link['id']){
 												$this->MediaLinks[$element] = $link['id'];
@@ -746,7 +746,7 @@ class we_document extends we_root{
 		return f('SELECT 1 FROM ' . escape_sql_query($this->Table) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Filename="' . escape_sql_query($this->Filename) . '" AND Extension="' . escape_sql_query($this->Extension) . '" AND ID!=' . intval($this->ID), "", $this->DB_WE);
 	}
 
-	public static function getFieldLink($val, we_database_base $db, array $attribs = array(), $pathOnly = false, $parentID = 0, $path = ''){
+	public static function getFieldLink($val, we_database_base $db, array $attribs = [], $pathOnly = false, $parentID = 0, $path = ''){
 		$link = we_unserialize($val);
 
 		$only = weTag_getAttribute('only', $attribs, '', we_base_request::STRING);
@@ -796,13 +796,13 @@ class we_document extends we_root{
 //FIXME: parameter $attrib should be: array $attribs=array()
 //FIXME: check if we can rid of this function, since it causes problems every change of tags since it also uses the given attribs array!
 	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', we_database_base $db = null, $classID = '', $fn = 'this'){
-		$attribs = is_array($attribs) ? $attribs : array();
+		$attribs = is_array($attribs) ? $attribs : [];
 		if(isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);
 		}
 		$db = ($db ? : new DB_WE());
 		if((!$attribs) || (!is_array($attribs))){
-			$attribs = array();
+			$attribs = [];
 		}
 		switch($type){
 			case 'img':
@@ -1188,7 +1188,7 @@ class we_document extends we_root{
 //    these are already handled dont get them in output
 			$we_linkAtts = array('id');
 
-			$linkAttribs = array();
+			$linkAttribs = [];
 
 // define image-if necessary - handle with image-attribs
 			$img = ($img ? : new we_imageDocument());
@@ -1211,7 +1211,7 @@ class we_document extends we_root{
 				$rollOverAttribsArr = $img->getRollOverAttribsArr();
 			} else {
 				$rollOverScript = '';
-				$rollOverAttribsArr = array();
+				$rollOverAttribsArr = [];
 			}
 
 // Link-Attribs
@@ -1247,7 +1247,7 @@ class we_document extends we_root{
 			$linkAttribs['href'] = $l_href . str_replace('&', '&amp;', $linkAdds);
 
 // The pop-up-window                              */
-			$popUpCtrl = array();
+			$popUpCtrl = [];
 			foreach($popUpAtts as $n){
 				if(isset($link[$n])){
 					$popUpCtrl[$n] = $link[$n];
@@ -1304,14 +1304,14 @@ class we_document extends we_root{
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
 		if($_REQUEST){
-			$dates = $regs = array();
+			$dates = $regs = [];
 			foreach($_REQUEST as $n => $v){
 				if(preg_match('/^we_schedule_([^\[]+)$/', $n, $regs)){//make this an array
 					$rest = $regs[1];
 					$sw = explode('_', $rest);
 					$nr = end($sw);
 					if(!isset($this->schedArr[$nr])){
-						$this->schedArr[$nr] = array();
+						$this->schedArr[$nr] = [];
 					}
 					switch($sw[0]){
 						case 'task':
@@ -1334,7 +1334,7 @@ class we_document extends we_root{
 							break;
 						case 'time':
 							if((!isset($dates[$nr]) || !is_array($dates[$nr]))){
-								$dates[$nr] = array();
+								$dates[$nr] = [];
 							}
 							$dates[$nr][$sw[1]] = $v;
 							break;
@@ -1379,7 +1379,7 @@ class we_document extends we_root{
 
 // returns the next date when the document gets published
 	function getNextPublishDate(){
-		$times = array();
+		$times = [];
 		foreach($this->schedArr as $s){
 			if($s['task'] == we_schedpro::SCHEDULE_FROM && $s['active']){
 				$times[] = we_schedpro::getNextTimestamp($s, time());
@@ -1396,7 +1396,7 @@ class we_document extends we_root{
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			$this->DB_WE->query('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE DID=' . intval($this->ID) . ' AND ClassName="' . $this->DB_WE->escape($this->ClassName) . '"');
 			if($this->DB_WE->num_rows()){
-				$this->schedArr = array();
+				$this->schedArr = [];
 			}
 			while($this->DB_WE->next_record()){
 				$s = we_unserialize($this->DB_WE->f('Schedpro'));
@@ -1490,7 +1490,7 @@ class we_document extends we_root{
 	 */
 	function getVariantFields(){
 // overwrite
-		return array();
+		return [];
 	}
 
 	/**
@@ -1541,9 +1541,9 @@ class we_document extends we_root{
 
 	public static function parseInternalLinks(&$text, $pid, $path = '', $returnAllFileIDs = false){
 		$DB_WE = new DB_WE();
-		$regs = array();
+		$regs = [];
 		if(preg_match_all('/(href|src)="(' . we_base_link::TYPE_INT_PREFIX . '|\?id=)(\\d+)(&amp;|&)?("|[^"]+")/i', $text, $regs, PREG_SET_ORDER)){
-			$allIds = array();
+			$allIds = [];
 			foreach($regs as $reg){
 				$allIds[] = intval($reg[3]);
 			}
@@ -1617,7 +1617,7 @@ class we_document extends we_root{
 			$this->DB_WE->query('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STYPE_DOCLINK . '")) AND LinkID=' . intval($this->ID));
 			return $this->DB_WE->getAll(true);
 		}
-		return array();
+		return [];
 	}
 
 	/**

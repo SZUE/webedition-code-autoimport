@@ -48,14 +48,14 @@ class we_xml_parser{
 	 * DTD-declaration and the XML nodes.
 	 * @var        array
 	 */
-	var $nodes = array();
+	var $nodes = [];
 
 	/**
 	 * This array contains the absolute location paths of all nodes with
 	 * different names and the number of nodes with the same name.
 	 * @var        array
 	 */
-	var $nodeIds = array();
+	var $nodeIds = [];
 
 	/**
 	 * The current location path.
@@ -425,7 +425,7 @@ class we_xml_parser{
 
 			// Check if the attribute exists.
 			if(isset($this->nodes[$parent]['attributes'][$attribute])){
-				$new = array();
+				$new = [];
 
 				// Run through the existing attributes.
 				foreach($this->nodes[$parent]['attributes'] as $key => $value){
@@ -441,7 +441,7 @@ class we_xml_parser{
 			}
 		} else {
 			// Nodes to be renamed.
-			$rename = array();
+			$rename = [];
 
 			// Get the name, the parent and the siblings of the current node.
 			$name = $this->nodes[$node]['name'];
@@ -470,7 +470,7 @@ class we_xml_parser{
 				}
 			}
 
-			$nodes = array();
+			$nodes = [];
 
 			// Run through the existing nodes.
 			foreach($this->nodes as $name => $values){
@@ -691,7 +691,7 @@ class we_xml_parser{
 		// Split the paths that are separated by a '|' character.
 		$xPaths = $this->splitPaths($xPath);
 
-		$nodeSet = array();
+		$nodeSet = [];
 
 		// Run through all paths.
 		foreach($xPaths as $xPath){
@@ -735,7 +735,7 @@ class we_xml_parser{
 	 * @see        evaluate(), inString()
 	 */
 	function splitPaths($expression){
-		$paths = array();
+		$paths = [];
 
 		// Define the position of the pipe '|'. The expression will be split into
 		// a left and right part at this position.
@@ -775,7 +775,7 @@ class we_xml_parser{
 	 * @see        evaluate(), inString()
 	 */
 	function splitSteps($expression){
-		$steps = array();
+		$steps = [];
 
 		// Replace double slashes.
 		$expression = str_replace("//@", "/descendant::*/@", $expression);
@@ -994,7 +994,7 @@ class we_xml_parser{
 	 * @see
 	 */
 	function evaluateStep($context, $steps){
-		$nodes = array();
+		$nodes = [];
 
 		// Check if the context is an array of contexts.
 		if(is_array($context)){
@@ -1007,7 +1007,7 @@ class we_xml_parser{
 			// Get this step.
 			$step = array_shift($steps);
 
-			$contexts = array();
+			$contexts = [];
 
 			// Get the axis of the current step.
 			$axis = $this->getAxis($step, $context);
@@ -1306,7 +1306,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), evaluatePredicate(), execMethod_position()
 	 */
 	function checkPredicates($nodes, $predicates){
-		$result = array();
+		$result = [];
 
 		// Run through the list of nodes.
 		foreach($nodes as $node){
@@ -1452,7 +1452,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), checkNodeTest()
 	 */
 	function execAxis_self($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Check if the context matches the node-test.
 		if($this->checkNodeTest($contextNode, $axis['node-test'])){
@@ -1473,7 +1473,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), checkNodeTest()
 	 */
 	function execAxis_parent($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Check if the parent matches the node-test.
 		if($this->checkNodeTest($this->nodes[$contextNode]['parent'], $axis['node-test'])){
@@ -1494,7 +1494,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), checkNodeTest()
 	 */
 	function execAxis_child($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Get a list of all children.
 
@@ -1532,7 +1532,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), checkNodeTest()
 	 */
 	function execAxis_attribute($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Check if all nodes should be selected.
 		if($axis['node-test'] === '*'){
@@ -1564,7 +1564,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), checkNodeTest(), execAxis_ancestor()
 	 */
 	function execAxis_ancestor($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Get the parent of the current node.
 		$parent = $this->nodes[$contextNode]['parent'];
@@ -1595,7 +1595,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), checkNodeTest(), execAxis_descendant()
 	 */
 	function execAxis_descendant($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Check if the current node has children.
 		if($this->hasChildNodes($contextNode)){
@@ -1666,7 +1666,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), checkNodeTest()
 	 */
 	function execAxis_following_sibling($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Get all children from the parent.
 		$siblings = $this->execAxis_child($axis, $this->nodes[$contextNode]['parent']);
@@ -1711,7 +1711,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), checkNodeTest()
 	 */
 	function execAxis_preceding_sibling($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Get all children from the parent.
 		$siblings = $this->execAxis_child($axis, $this->nodes[$contextNode]['parent']);
@@ -1756,7 +1756,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), checkNodeTest()
 	 */
 	function execAxis_following($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Get the current document position.
 		$position = $this->nodes[$contextNode]['document-position'];
@@ -1798,7 +1798,7 @@ class we_xml_parser{
 	 * @see        evaluateStep(), checkNodeTest()
 	 */
 	function execAxis_preceding($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Get the current document position.
 		$position = $this->nodes[$contextNode]['document-position'];
@@ -1840,7 +1840,7 @@ class we_xml_parser{
 	 * @see        evaluateStep()
 	 */
 	function execAxis_namespace($axis, $contextNode){
-		$selectedNodes = array();
+		$selectedNodes = [];
 
 		// Check if all nodes should be selected.
 		if(!empty($this->nodes[$contextNode]['namespace'])){
@@ -1888,7 +1888,7 @@ class we_xml_parser{
 		// Save the arguments to an array.
 		$args = explode(' ', $args);
 
-		$nodes = array();
+		$nodes = [];
 
 		// Run through all document nodes.
 		foreach($this->nodes as $node => $position){
@@ -2442,8 +2442,8 @@ class we_xml_parser{
 	function resetParser(){
 		$this->fileName = '';
 		$this->root = '';
-		$this->nodes = array();
-		$this->nodeIds = array();
+		$this->nodes = [];
+		$this->nodeIds = [];
 		$this->path = '';
 		$this->position = 0;
 		$this->xPath = '';
@@ -2484,7 +2484,7 @@ class we_xml_parser{
 		$data = substr($data, 0, 256);
 
 
-		$match = array();
+		$match = [];
 		$encoding = 'ISO-8859-1';
 		$trenner = "\s*";
 		$pattern = "%(encoding" . $trenner . "=" . $trenner . "[\"\'\\\\]" . $trenner . ")([^\'\"> ? \\\]*)%i";

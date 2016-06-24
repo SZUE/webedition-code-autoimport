@@ -28,8 +28,8 @@ class we_base_linklist{
 	private $listArray;
 	private $db;
 	private $rollScript = "";
-	private $rollAttribs = array();
-	private $cache = array();
+	private $rollAttribs = [];
+	private $cache = [];
 	private $hidedirindex = false;
 	private $objectseourls = false;
 	private $docName;
@@ -39,7 +39,7 @@ class we_base_linklist{
 	private $pos = -1;
 	private $editmode = false;
 
-	function __construct(array $listArray, $hidedirindex = false, $objectseourls = false, $docName = '', $attribs = array()){
+	function __construct(array $listArray, $hidedirindex = false, $objectseourls = false, $docName = '', $attribs = []){
 		$this->hidedirindex = $hidedirindex;
 		$this->objectseourls = $objectseourls;
 		$this->docName = $docName;
@@ -224,7 +224,7 @@ class we_base_linklist{
 
 	function getImageAttribs($nr = -1){
 		$cur = ($nr != -1 ? $this->listArray[$nr] : current($this->listArray));
-		return (isset($cur['img_attribs']) ? $cur['img_attribs'] : array());
+		return (isset($cur['img_attribs']) ? $cur['img_attribs'] : []);
 	}
 
 	function getImageAttrib($nr, $key){
@@ -239,7 +239,7 @@ class we_base_linklist{
 
 	function getJsWinAttribs($nr = -1){
 		$cur = ($nr != -1 ? $this->listArray[$nr] : current($this->listArray));
-		return (isset($cur["jswin_attribs"]) ? $cur["jswin_attribs"] : array());
+		return (isset($cur["jswin_attribs"]) ? $cur["jswin_attribs"] : []);
 	}
 
 	function getImageSrc($nr = -1){
@@ -551,7 +551,7 @@ class we_base_linklist{
 
 	function removeLink($nr, $names = '', $name = ''){
 		$realNr = $this->listArray[$nr]['nr'];
-		$namesArray = $names ? explode(',', $names) : array();
+		$namesArray = $names ? explode(',', $names) : [];
 		foreach($namesArray as $n){
 			$GLOBALS['we_doc']->delElement($n . $name . '_TAGS_' . $realNr);
 		}

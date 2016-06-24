@@ -60,14 +60,14 @@ class we_ui_controls_Select extends we_ui_abstract_AbstractFormElement{
 	 *
 	 * @var array
 	 */
-	protected $_options = array();
+	protected $_options = [];
 
 	/**
 	 * option groups of select
 	 *
 	 * @var array
 	 */
-	protected $_optgroups = array();
+	protected $_optgroups = [];
 
 	/**
 	 * selected value of select

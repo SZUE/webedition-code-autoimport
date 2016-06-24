@@ -42,11 +42,11 @@ class we_workflow_workflow extends we_workflow_base{
 	var $Type = self::FOLDER;
 	var $Folders = array(0);
 	var $FolderPath = '';
-	var $DocType = array();
-	var $Objects = array();
-	var $Categories = array();
+	var $DocType = [];
+	var $Objects = [];
+	var $Categories = [];
 	var $ObjectFileFolders = array(0);
-	var $ObjCategories = array();
+	var $ObjCategories = [];
 	var $Status = self::STATE_INACTIVE;
 	var $EmailPath = 0;
 	var $LastStepAutoPublish = 0;
@@ -55,12 +55,12 @@ class we_workflow_workflow extends we_workflow_base{
 	 * steps for WorkFlow Definition
 	 * this is array of we_workflow_step objects
 	 */
-	var $steps = array();
+	var $steps = [];
 	// default document object
 	var $documentDef;
 	// documents array; format document[documentID]=document_name
 	// don't create array of objects 'cos whant to save some memory
-	var $documents = array();
+	var $documents = [];
 
 	/**
 	 * Default Constructor
@@ -156,7 +156,7 @@ class we_workflow_workflow extends we_workflow_base{
 
 		// save all steps also
 
-		$stepsList = array();
+		$stepsList = [];
 
 		foreach($this->steps as &$step){
 			$step->workflowID = $this->ID;
@@ -219,7 +219,7 @@ class we_workflow_workflow extends we_workflow_base{
 	 */
 	static function getDocumentWorkflow($doctype, $categories, $folder, we_database_base $db, array &$all){
 
-		$wfIDs = array();
+		$wfIDs = [];
 		$workflowID = 0;
 		/**
 		 * find by document type (has to be together with category)
@@ -273,7 +273,7 @@ class we_workflow_workflow extends we_workflow_base{
 			$folderID = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($folderID), '', $db);
 			$folders[] = $folderID;
 		}
-		$db->addTable('TMP_WF', array('ID' => 'BIGINT(20) NOT NULL'), array(), 'MEMORY', true);
+		$db->addTable('TMP_WF', array('ID' => 'BIGINT(20) NOT NULL'), [], 'MEMORY', true);
 		$db->query('INSERT INTO TMP_WF (ID) VALUES (' . implode('),(', $folders) . ')');
 		$db->query('SELECT DISTINCT(w.ID) FROM ' . WORKFLOW_TABLE . ' w JOIN TMP_WF WHERE FIND_IN_SET(TMP_WF.ID,w.Folders) AND w.Type=' . self::FOLDER . ' AND w.Status=' . self::STATE_ACTIVE);
 		$all = $db->getAll(true);
@@ -286,7 +286,7 @@ class we_workflow_workflow extends we_workflow_base{
 	 */
 	function getObjectWorkflow($object, $categories, $folderID, we_database_base $db, array &$all){
 		$workflowID = 0;
-		$wfIDs = array();
+		$wfIDs = [];
 		$tail = ($folderID ? ' AND (FIND_IN_SET(' . intval($folderID) . ',ObjectFileFolders) OR FIND_IN_SET(0,ObjectFileFolders) OR ObjectFileFolders="")' : '');
 
 		$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' WHERE FIND_IN_SET(' . intval($object) . ',Objects) AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_ACTIVE . $tail);

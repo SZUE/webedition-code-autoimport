@@ -62,7 +62,7 @@ class we_fileupload_resp_base extends we_fileupload{
 		'focusX' => 0,
 		'focusY' => 0
 	);
-	protected $FILES = array();
+	protected $FILES = [];
 	protected $maxChunkCount = 0;
 	protected $uploadError = '';
 
@@ -72,7 +72,7 @@ class we_fileupload_resp_base extends we_fileupload{
 	const MISSING_DOC_ROOT = true;
 	const USE_FILENAME_FROM_UPLOAD = true;
 
-	public function __construct($name = '', $contentType = '', $FILE = array(), $fileVars = array(), $controlVars = array(), $docVars = ''){
+	public function __construct($name = '', $contentType = '', $FILE = [], $fileVars = [], $controlVars = [], $docVars = ''){
 		$this->name = $name ? : $this->name;
 		$this->contentType = $contentType ? : $this->contentType; // => this is alloud ct, not ct of uploaded file! loop from ui through js to rpc!!
 		$this->initByHttp();
@@ -188,7 +188,7 @@ class we_fileupload_resp_base extends we_fileupload{
 					break;
 				case 'rename':
 					$z = 0;
-					$regs = array();
+					$regs = [];
 					if(preg_match('|^(.+)(\.[^\.]+)$|', $this->fileVars['weFileName'], $regs)){
 						$ext = $regs[2];
 						$name = $regs[1];

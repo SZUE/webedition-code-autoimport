@@ -209,7 +209,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		session_regenerate_id(true);
 		if($destroy){
 			session_destroy();
-			$_SESSION = array();
+			$_SESSION = [];
 		} else {
 			//we need a new lock on the generated id, since partial data is sent to the browser, subsequent calls with the new sessionid might happen
 			session_write_close();

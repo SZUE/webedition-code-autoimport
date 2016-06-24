@@ -53,22 +53,22 @@ class weSuggest{
 	const USE_DRAG_AND_DROP = true;
 
 	private $noautoinit = false;
-	private $noAutoInits = array();
-	var $inputfields = array();
-	var $containerwidth = array();
-	var $tables = array();
-	var $rootDirs = array();
-	var $contentTypes = array();
-	var $weMaxResults = array();
-	var $queryDelay = array();
-	var $layer = array();
-	var $setOnSelectFields = array();
-	var $checkFieldsValues = array();
-	var $selectors = array();
-	var $ct = array();
-	var $inputMayBeEmpty = array();
-	var $doOnItemSelect = array();
-	var $doOnTextfieldBlur = array();
+	private $noAutoInits = [];
+	var $inputfields = [];
+	var $containerwidth = [];
+	var $tables = [];
+	var $rootDirs = [];
+	var $contentTypes = [];
+	var $weMaxResults = [];
+	var $queryDelay = [];
+	var $layer = [];
+	var $setOnSelectFields = [];
+	var $checkFieldsValues = [];
+	var $selectors = [];
+	var $ct = [];
+	var $inputMayBeEmpty = [];
+	var $doOnItemSelect = [];
+	var $doOnTextfieldBlur = [];
 	/*	 * ************************************* */
 	var $acId = '';
 	var $checkFieldValue = true;
@@ -129,7 +129,7 @@ class weSuggest{
 
 	//use this, if you need to add fields dynamically
 	public function getyuiAcFields(){
-		$fildsObj = array();
+		$fildsObj = [];
 
 		// loop fields
 		for($i = 0; $i < count($this->inputfields); $i++){
@@ -212,11 +212,11 @@ class weSuggest{
 		}
 
 		// WORKSPACES
-		//$weFieldWS = array();
+		//$weFieldWS = [];
 		// AC-FIEDS
 		$fildsObj = $this->getyuiAcFields();
 		// AC-FIEDS BY ID
-		$fildsById = array();
+		$fildsById = [];
 		foreach(array_keys($fildsObj) as $i => $key){
 			$fildsById[] = '"' . $key . '":' . $i;
 		}
@@ -304,7 +304,7 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->contentTypes, array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->table);
 
 
-			$html = we_html_element::htmlDiv(array(), we_html_element::htmlDiv(array(), $html) .
+			$html = we_html_element::htmlDiv([], we_html_element::htmlDiv([], $html) .
 					we_html_element::htmlDiv(array('style' => 'margin-top:-4px;'), $dropzone)
 			);
 			$this->isDropFromTree = $this->isDropFromExt = false; //reset default for other instances on the same site

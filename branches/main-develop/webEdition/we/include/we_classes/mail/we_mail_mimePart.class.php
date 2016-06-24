@@ -219,7 +219,7 @@ class we_mail_mimePart{
 	 * @return array
 	 */
 	public function getHeadersArray($EOL = we_mail_mime::LINEEND){
-		$headers = array();
+		$headers = [];
 
 		$contentType = $this->type;
 		if($this->charset){

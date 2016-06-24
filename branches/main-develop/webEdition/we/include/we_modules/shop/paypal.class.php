@@ -71,8 +71,8 @@ class paypal_class{
 	var $ipn_log;					// bool: log IPN results to text file?
 	var $ipn_log_file;				// filename of the IPN log
 	var $ipn_response;				// holds the IPN response from paypal
-	var $ipn_data = array();		 // array contains the POST values for IPN
-	var $fields = array();			// array holds the fields to submit to paypal
+	var $ipn_data = [];		 // array contains the POST values for IPN
+	var $fields = [];			// array holds the fields to submit to paypal
 
 	function __construct(){
 

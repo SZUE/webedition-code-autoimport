@@ -43,7 +43,7 @@ class we_glossary_search{
 	 *
 	 * @var array
 	 */
-	var $Fields = array();
+	var $Fields = [];
 
 	/**
 	 * where clause
@@ -101,7 +101,7 @@ class we_glossary_search{
 	 *
 	 * @param array $fields
 	 */
-	function setFields($fields = array()){
+	function setFields($fields = []){
 
 		$this->Fields = $fields;
 	}
@@ -224,7 +224,7 @@ class we_glossary_search{
 		$count = $this->countItems();
 		$pages = ceil($count / $this->Rows);
 
-		$pages = array();
+		$pages = [];
 		for($i = 1; $i <= $pages; $i++){
 			$pages[($i - 1) * $this->Rows] = $i;
 		}

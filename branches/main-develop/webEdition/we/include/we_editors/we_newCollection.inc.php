@@ -50,7 +50,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	$collection->remClass = we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remClass');
 	$collection->IsDuplicates = we_base_request::_(we_base_request::INT, 'we_' . $name . 'IsDuplicates', 1);
 	$collection->InsertRecursive = 1;
-	$writeBack = array();
+	$writeBack = [];
 
 	if(($jsMessage = $collection->checkFieldsOnSave())){
 		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;

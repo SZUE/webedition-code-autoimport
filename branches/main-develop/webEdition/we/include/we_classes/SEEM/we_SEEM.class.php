@@ -252,7 +252,7 @@ abstract class we_SEEM{
 	 * @return  code        string only with the "we_form", needed to edit the page
 	 */
 	static function changeSubmitToButton($code){
-		$allInputs = array();
+		$allInputs = [];
 		//  Searchpattern for all <input ..> in the code
 		$pattern = "/<input[^>]*type=[\"']?submit[\"']?[^>]*>/si";
 		preg_match_all($pattern, $code, $allInputs);
@@ -365,8 +365,8 @@ abstract class we_SEEM{
 	 * @return   $newArray   array with the SEEM-Links
 	 */
 	static function getSEEM_Links(array $oldArray){
-		$newArray = array();
-		$seem_attrib = array();
+		$newArray = [];
+		$seem_attrib = [];
 		for($i = 0; $i < count($oldArray[0]); $i++){
 			if(preg_match('/ seem="(.*)"/', $oldArray[0][$i], $seem_attrib)){
 
@@ -501,7 +501,7 @@ abstract class we_SEEM{
 	 * @return   allLinks    array containing all <a href ...>-Tags, the targets and parameters
 	 */
 	static function getAllHrefs($code){
-		$allLinks = array();
+		$allLinks = [];
 		//  <a href="(Ziele)(?Parameter)" ...> Ziele und Parameter eines Links ermitteln.
 		preg_match_all('/<(a\s*[^>]+href\s*=["\'])([^\'\"> ? \\\]*)([^\"\' \\\\>]*)([^>]*)>/sie', $code, $allLinks);
 		return $allLinks;
@@ -518,7 +518,7 @@ abstract class we_SEEM{
 	 */
 	static function findRelativePaths(array $foundPaths){
 
-		$relativePaths = array();
+		$relativePaths = [];
 		$url = getServerUrl();
 		foreach($foundPaths as $i => $path){
 			$relativePaths[$i] = self::translateRelativePath(str_replace($url, '', $path));
@@ -564,7 +564,7 @@ abstract class we_SEEM{
 	 *
 	 */
 	static function getDocIDsByPaths(array $docPaths){
-		$docIds = array();
+		$docIds = [];
 		$db = new DB_WE();
 		foreach($docPaths as $path){
 
@@ -603,7 +603,7 @@ abstract class we_SEEM{
 	 * @return   array
 	 */
 	static function removeSEEMLinks(array $oldArray){
-		$newArray = array();
+		$newArray = [];
 
 		for($i = 0, $j = 0; $i < count($oldArray[2]); $i++){
 			if(preg_match('/ seem="(.*)"/', $oldArray[0][$i])){
@@ -629,7 +629,7 @@ abstract class we_SEEM{
 	 * @return   newArray        array - false if all links were removed or array of hyperlinks
 	 */
 	static function onlyUseHyperlinks(array $oldArray){
-		$newArray = array();
+		$newArray = [];
 		foreach($oldArray[2] as $i => $cur){
 			if(
 				$cur &&
@@ -661,7 +661,7 @@ abstract class we_SEEM{
 	 * @return  allForms    array with all found form-tags
 	 */
 	static function getAllForms($code){
-		$allForms = array();
+		$allForms = [];
 		$pattern = '/<form[^>]*>/sie';
 
 		preg_match_all($pattern, $code, $allForms);
@@ -678,7 +678,7 @@ abstract class we_SEEM{
 	 * @return  thePaths    array with all actions of the given form-tags
 	 */
 	static function getPathsFromForms($formArray){
-		$thePaths = array();
+		$thePaths = [];
 
 		for($i = 0; $i < count($formArray[0]); $i++){
 			$theAttribs = self::getAttributesFromTag($formArray[0][$i]);
@@ -702,7 +702,7 @@ abstract class we_SEEM{
 	 */
 	static function getAttributesFromGet($paraStr, $ignor){
 
-		$attribs = array();
+		$attribs = [];
 
 		if($paraStr{0} === '?'){
 			$paraStr = "&" . substr($paraStr, 1) . "&";
@@ -730,9 +730,9 @@ abstract class we_SEEM{
 	 * @return  attribs     array (assoziative) with name/value pairs of the Parameters in the form
 	 */
 	static function getAttributesFromTag($tag){
-		$attribs = array();
+		$attribs = [];
 		$trenner = '\s*';
-		$parameters = array();
+		$parameters = [];
 
 		preg_match_all('/(\w+)' . $trenner . '=' . $trenner . "[\"\']?([^\"\' >]*)[\"\']?/i", $tag, $parameters);
 
@@ -931,7 +931,7 @@ abstract class we_SEEM{
 	 */
 	static function getDocContentTypesByID(array $docIDArray){
 
-		$docContentTypes = array();
+		$docContentTypes = [];
 		$db = new DB_WE();
 		foreach($docIDArray as $i => $cur){
 			$docContentTypes[$i] = ($cur != -1 ? self::getDocContentTypeByID($cur, $db) : '');

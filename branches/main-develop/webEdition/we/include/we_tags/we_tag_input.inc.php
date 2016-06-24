@@ -115,7 +115,7 @@ function we_tag_input(array $attribs, $content){
 					$lccode = explode('_', $lcvalue);
 					$lcvalue = $lccode[0];
 				}
-				$frontendLL = array();
+				$frontendLL = [];
 				foreach($frontendL as &$lcvalue){
 					$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 				}

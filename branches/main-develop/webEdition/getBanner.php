@@ -52,7 +52,7 @@ if($type && $type != 'pixel'){
 }
 switch($type){
 	case 'js':
-		$jsarr = explode("\n", str_replace(array("\r", "'"), array("\n", "\\'"), $code));
+		$jsarr = explode("\n", str_replace(["\r", "'"], ["\n", "\\'"], $code));
 		header("Content-type: application/x-javascript");
 
 		foreach($jsarr as $line){
@@ -77,13 +77,13 @@ switch($type){
 		$bannerpath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($bid));
 
 		if(($type === 'pixel' || (!$nocount) && $id && $c)){
-			$GLOBALS['DB_WE']->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			$GLOBALS['DB_WE']->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter([
 					'ID' => intval($id),
 					'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
 					'IP' => $_SERVER['REMOTE_ADDR'],
 					'Referer' => ($referer ? : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '')),
 					'DID' => intval($did),
-					'Page' => $page)));
+					'Page' => $page]));
 
 			$GLOBALS['DB_WE']->query('UPDATE ' . BANNER_TABLE . ' SET views=views+1 WHERE ID=' . intval($id));
 			setcookie("webid_$bannername", intval($id));

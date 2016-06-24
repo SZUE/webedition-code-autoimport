@@ -24,7 +24,7 @@
  */
 class rpcGetDocElementCmd extends we_rpc_cmd{
 
-	var $Parameters = array('docid', 'element');
+	var $Parameters = ['docid', 'element'];
 
 	function execute(){
 		$resp = new we_rpc_response();

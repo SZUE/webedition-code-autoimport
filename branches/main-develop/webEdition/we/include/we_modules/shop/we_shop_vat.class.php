@@ -137,7 +137,7 @@ class we_shop_vat{
 		if(!$translated){
 			return self::$predefinedNames;
 		} else {
-			$ret = array();
+			$ret = [];
 			foreach(self::$predefinedNames as $name){
 				$ret[$name] = g_l('modules_shop', '[vat][name_' . $name . ']');
 			}

@@ -69,7 +69,7 @@ class we_backup_object extends we_object{
 			);
 
 			$this->SerializedArray = we_unserialize($this->DefaultValues);
-			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
+			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : [];
 
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 			foreach($this->SerializedArray as $key => $value){
@@ -105,12 +105,12 @@ class we_backup_object extends we_object{
 ////// resave the line O to O.....
 		} else {
 			$this->SerializedArray = we_unserialize($this->DefaultValues);
-			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
+			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : [];
 
 			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
 			$tableInfo = $this->DB_WE->metadata($ctable, true);
 
-			$add = $drop = $alter = $addKey = array();
+			$add = $drop = $alter = $addKey = [];
 
 			foreach($this->SerializedArray as $fieldname => $value){
 				$arr = explode('_', $fieldname);
@@ -480,7 +480,7 @@ class we_backup_object extends we_object{
 			$metas = array_keys($metadata['meta']);
 			$consider = array_diff($metas, $this->_ObjectBaseElements);
 			$consider = array_combine(range(0, count($consider) - 1), $consider);
-			$neworder = array();
+			$neworder = [];
 			foreach($order as $oval){
 				$zw = $this->getFieldPrefix($oval) . '_' . $oval;
 				if($zw){
@@ -499,7 +499,7 @@ class we_backup_object extends we_object{
 				}
 			} else {
 				$neworder = array_flip($neworder);
-				$theorder = array();
+				$theorder = [];
 				foreach($consider as $ck => $cv){
 					$theorder[str_replace('.', '', uniqid(__FUNCTION__, true))] = $neworder[$cv];
 				}
@@ -524,7 +524,7 @@ class we_backup_object extends we_object{
 		if(!empty($consider)){
 			$consider = array_values($consider);
 			$akeys = explode(',', $this->strOrder);
-			$order = array();
+			$order = [];
 			foreach($akeys as $k => $v){
 				$order[] = $consider[$v];
 			}

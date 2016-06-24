@@ -201,7 +201,7 @@ function build_dialog($selected_setting = 'ui'){
 			$adv_row = '';
 
 			// add standard meta field Keywords
-			$standardFields = array();
+			$standardFields = [];
 			$standardFieldNames = explode(',', we_metadata_metaData::STANDARD_FIELDS);
 			foreach($standardFieldNames as $name){
 				$field = we_metadata_metaData::getMetaDataField($name) ? :

@@ -35,7 +35,7 @@ class we_messaging_view extends we_modules_view{
 		$this->weTransaction = &$weTransaction;
 	}
 
-	function getCommonHiddens($cmds = array()){
+	function getCommonHiddens($cmds = []){
 		return
 			parent::getCommonHiddens($cmds) .
 			we_html_element::htmlHiddens(array(
@@ -63,7 +63,7 @@ class we_messaging_view extends we_modules_view{
 		switch(($mcmd = we_base_request::_(we_base_request::STRING, "mcmd", "goToDefaultCase"))){
 			case 'search_messages':
 			case 'show_folder_content':
-				return $this->get_folder_content(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ""), we_base_request::_(we_base_request::INTLISTA, 'entrsel', array()), we_base_request::_(we_base_request::RAW, 'searchterm', ""), 1) .
+				return $this->get_folder_content(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ""), we_base_request::_(we_base_request::INTLISTA, 'entrsel', []), we_base_request::_(we_base_request::RAW, 'searchterm', ""), 1) .
 					$this->print_fc_html() .
 					$this->update_treeview();
 			case 'launch':
@@ -79,7 +79,7 @@ class we_messaging_view extends we_modules_view{
 						break 2;
 				}
 
-				return $this->get_folder_content($f['ID'], '', array(), '', 0) .
+				return $this->get_folder_content($f['ID'], '', [], '', 0) .
 					$this->print_fc_html() .
 					$this->update_treeview() .
 					we_html_element::jsElement('
@@ -128,15 +128,15 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank"
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				return $out;
 			case 'copy_msg':
-				$this->messaging->set_clipboard(we_base_request::_(we_base_request::INTLISTA, 'entrsel', array()), 'copy');
+				$this->messaging->set_clipboard(we_base_request::_(we_base_request::INTLISTA, 'entrsel', []), 'copy');
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				break;
 			case 'cut_msg':
-				$this->messaging->set_clipboard(we_base_request::_(we_base_request::INTLISTA, 'entrsel', array()), 'cut');
+				$this->messaging->set_clipboard(we_base_request::_(we_base_request::INTLISTA, 'entrsel', []), 'cut');
 				$this->messaging->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 				break;
 			case 'paste_msg':
-				$errs = array();
+				$errs = [];
 				$this->messaging->clipboard_paste($errs);
 				$this->messaging->reset_ids_selected();
 				$this->messaging->get_fc_data($this->messaging->Folder_ID, '', '', 0);
@@ -159,7 +159,7 @@ top.content.editor.edbody.messaging_msg_view.location="about:blank";
 
 				return $this->update_treeview($js_out);
 			case 'delete_msg':
-				$this->messaging->set_ids_selected(we_base_request::_(we_base_request::INTLISTA, 'entrsel', array()));
+				$this->messaging->set_ids_selected(we_base_request::_(we_base_request::INTLISTA, 'entrsel', []));
 				$this->messaging->delete_items();
 				$this->messaging->reset_ids_selected();
 				$this->messaging->get_fc_data(we_base_request::_(we_base_request::INT, 'id', 0), we_base_request::_(we_base_request::STRING, 'sort', ''), we_base_request::_(we_base_request::RAW, 'searchterm', ''), 1);
@@ -184,7 +184,7 @@ top.content.treeData.updateEntry({id:' . $aid . ',parentid: -1, text:"' . $this-
 				$id = $this->messaging->Folder_ID;
 				$blank = isset($blank) ? $blank : true;
 				if(($this->messaging->cont_from_folder != 1) && ($id != -1)){
-					if(($ids = we_base_request::_(we_base_request::INTLISTA, 'entrsel', array()))){
+					if(($ids = we_base_request::_(we_base_request::INTLISTA, 'entrsel', []))){
 						$this->messaging->set_ids_selected($ids);
 					}
 
@@ -303,7 +303,7 @@ if (top.content.editor.edbody.messaging_messages_overview) {
 	}
 
 	private function refresh_work($blank = false){
-		if(($eSel = we_base_request::_(we_base_request::INTLISTA, "entrsel", array()))){
+		if(($eSel = we_base_request::_(we_base_request::INTLISTA, "entrsel", []))){
 			$this->messaging->set_ids_selected($eSel);
 		}
 
@@ -311,7 +311,7 @@ if (top.content.editor.edbody.messaging_messages_overview) {
 		return $this->print_fc_html($blank) . $this->update_treeview();
 	}
 
-	private function get_folder_content($id, $sort = '', array $entrsel = array(), $searchterm = '', $usecache = 1){
+	private function get_folder_content($id, $sort = '', array $entrsel = [], $searchterm = '', $usecache = 1){
 
 		if($entrsel){
 			$this->messaging->set_ids_selected($entrsel);

@@ -48,7 +48,7 @@ function we_tag_createShop(array $attribs){
 		unset($_SESSION[$shopname . '_save']);
 	}
 
-	$GLOBALS[$shopname] = new we_shop_Basket((isset($_SESSION[$shopname . '_save']) ? $_SESSION[$shopname . '_save'] : array()));
+	$GLOBALS[$shopname] = new we_shop_Basket((isset($_SESSION[$shopname . '_save']) ? $_SESSION[$shopname . '_save'] : []));
 	$GLOBALS[$shopname]->initCartFields();
 	$_SESSION[$shopname . '_save'] = $GLOBALS[$shopname]->getCartProperties();
 }

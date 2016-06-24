@@ -29,7 +29,7 @@ class rpcProcessFileuploadCmd extends we_rpc_cmd{
 		$fileinputName = we_base_request::_(we_base_request::STRING, 'fileinputName', '');
 		$fileuploadRespClass = we_base_request::_(we_base_request::STRING, 'weResponseClass', 'we_fileupload_resp_base');
 
-		$FILES = $controlVars = $fileVars = $docVars = array();
+		$FILES = $controlVars = $fileVars = $docVars = [];
 
 		/*
 		$controlVars = array(

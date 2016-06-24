@@ -97,7 +97,7 @@ abstract class we_mail_ProtocolAbstract{
 	 * Log of mail requests and server responses for a session
 	 * @var array
 	 */
-	private $_log = array();
+	private $_log = [];
 
 	/**
 	 * Constructor.
@@ -180,7 +180,7 @@ abstract class we_mail_ProtocolAbstract{
 	 * @return void
 	 */
 	public function resetLog(){
-		$this->_log = array();
+		$this->_log = [];
 	}
 
 	/**
@@ -312,7 +312,7 @@ abstract class we_mail_ProtocolAbstract{
 	 * @return string Last line of response string
 	 */
 	protected function _expect($code, $timeout = null){
-		$this->_response = array();
+		$this->_response = [];
 		$cmd = '';
 		$more = '';
 		$msg = '';

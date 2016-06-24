@@ -229,7 +229,7 @@ function toggle_all() {
 				$contentTable[$main_titles[$groups_key]] .= '<table class="default" style="width:' . $width . 'px;display: ' . $style_display . '" id="group_' . $groups_key . '">';
 
 				// first of all order all the entries
-				$groups = array();
+				$groups = [];
 				foreach($groups_value as $group_item_key => $group_item_value){
 
 					$groups[$groups_key][$titles[$groups_key][$group_item_key]] = array(

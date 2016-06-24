@@ -148,7 +148,7 @@ class we_users_user{
 	// Description
 	var $Description = '';
 	// User Prefrences
-	var $Preferences = array();
+	var $Preferences = [];
 	var $Text = '';
 	var $Path = '';
 	var $Alias = '';
@@ -194,19 +194,19 @@ class we_users_user{
 	 */
 	// Workspace array
 	var $workspaces = array(
-		FILE_TABLE => array(),
-		TEMPLATES_TABLE => array(),
-		NAVIGATION_TABLE => array(),
+		FILE_TABLE => [],
+		TEMPLATES_TABLE => [],
+		NAVIGATION_TABLE => [],
 	);
 	// Permissions headers array
-	var $permissions_main_titles = array();
+	var $permissions_main_titles = [];
 	// Permissions values array
-	var $permissions_slots = array();
+	var $permissions_slots = [];
 	// Permissions titles
-	var $permissions_titles = array();
+	var $permissions_titles = [];
 	// Extensions array
-	var $extensions_slots = array();
-	private $permissions_defaults = array();
+	var $extensions_slots = [];
+	private $permissions_defaults = [];
 	// Preferences array
 	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', /* 'force_glossary_action', 'force_glossary_check', */ 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'editorMode');
 
@@ -218,14 +218,14 @@ class we_users_user{
 
 		$this->DB_WE = new DB_WE();
 		if(defined('OBJECT_TABLE')){
-			$this->workspaces[OBJECT_FILES_TABLE] = array();
+			$this->workspaces[OBJECT_FILES_TABLE] = [];
 		}
 		if(defined('NEWSLETTER_TABLE')){
-			$this->workspaces[NEWSLETTER_TABLE] = array();
+			$this->workspaces[NEWSLETTER_TABLE] = [];
 		}
 
 		if(defined('CUSTOMER_TABLE')){
-			$this->workspaces[CUSTOMER_TABLE] = array();
+			$this->workspaces[CUSTOMER_TABLE] = [];
 		}
 
 		foreach($this->preference_slots as $val){
@@ -275,7 +275,7 @@ class we_users_user{
 			$this->passwd = self::makeSaltedPassword($this->clearpasswd);
 		}
 
-		$updt = array();
+		$updt = [];
 
 		foreach($tableInfo as $t){
 			$fieldName = $t['name'];
@@ -313,7 +313,7 @@ class we_users_user{
 	}
 
 	function getPersistentSlotsFromDB(){
-		$slots = array();
+		$slots = [];
 		foreach(array_keys($this->persistent_slots) as $slot){
 			switch($slot){
 				case 'altID':
@@ -451,10 +451,10 @@ class we_users_user{
 	}
 
 	function mapPermissions(){
-		$this->permissions_main_titles = array();
-		$this->permissions_slots = array();
-		$this->permissions_titles = array();
-		$this->permissions_defaults = array();
+		$this->permissions_main_titles = [];
+		$this->permissions_slots = [];
+		$this->permissions_titles = [];
+		$this->permissions_defaults = [];
 		$permissions = we_unserialize($this->Permissions);
 
 		$entries = we_tool_lookup::getPermissionIncludes();
@@ -470,7 +470,7 @@ class we_users_user{
 		foreach($entries as $entry){
 
 			$perm_group_name = '';
-			$perm_values = $perm_titles = $perm_group_title = array();
+			$perm_values = $perm_titles = $perm_group_title = [];
 
 			include($entry);
 			if(!($perm_group_name === 'administrator' && $this->Type != self::TYPE_USER) && $perm_group_name){
@@ -478,13 +478,13 @@ class we_users_user{
 					$this->permissions_main_titles[$perm_group_name] = '';
 				}
 				if(!isset($this->permissions_slots[$perm_group_name])){
-					$this->permissions_slots[$perm_group_name] = array();
+					$this->permissions_slots[$perm_group_name] = [];
 				}
 				if(!isset($this->permissions_titles[$perm_group_name])){
 					$this->permissions_titles[$perm_group_name] = '';
 				}
 				if(is_array($perm_values[$perm_group_name])){
-					$this->permissions_defaults[$perm_group_name] = is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name] : array();
+					$this->permissions_defaults[$perm_group_name] = is_array($perm_defaults[$perm_group_name]) ? $perm_defaults[$perm_group_name] : [];
 					foreach($perm_values[$perm_group_name] as $v){
 						$this->permissions_slots[$perm_group_name][$v] = (is_array($permissions) && isset($permissions[$v]) ?
 								$permissions[$v] :
@@ -522,7 +522,7 @@ class we_users_user{
 	}
 
 	function savePermissions(){
-		$permissions = array();
+		$permissions = [];
 		foreach($this->permissions_slots as $val){
 			foreach($val as $k => $v){
 				$permissions[$k] = $v;
@@ -557,7 +557,7 @@ class we_users_user{
 			if(defined('CUSTOMER_TABLE') && $k == CUSTOMER_TABLE){
 				continue;
 			}
-			$new_array = array();
+			$new_array = [];
 
 			foreach($v as $key => $val){
 				if($val != 0){
@@ -1173,7 +1173,7 @@ _multiEditorreload = true;';
 	}
 
 	public static function getAllPermissions($uid, $onlyParent = false){
-		$user_permissions = array();
+		$user_permissions = [];
 
 		$db = $GLOBALS['DB_WE'];
 		$db_tmp = new DB_WE();
@@ -1262,7 +1262,7 @@ function comparePwd(f1,f2){
 	}
 
 	function formGroupData(){
-		$tableObj = new we_html_table(array(), 3, 1);
+		$tableObj = new we_html_table([], 3, 1);
 
 		$username = $this->getUserfield("username", "group_name", "text", 255, false, 'id="yuiAcInputPathName" onblur="parent.frames[0].weTabs.setTitlePath(this.value);"');
 		$description = '<textarea name="' . $this->Name . '_Description" cols="25" rows="5" style="width:560px" class="defaultfont" onchange="top.content.setHot();">' . $this->Description . '</textarea>';
@@ -1403,7 +1403,7 @@ function comparePwd(f1,f2){
 						g_l('modules_users', '[lostID]') . $this->ModifierID . g_l('modules_users', '[lostID2]'))
 				) :
 				'-');
-		$tableObj = new we_html_table(array(), 5, 2, array(
+		$tableObj = new we_html_table([], 5, 2, array(
 			array(
 				array(array('style' => 'padding-bottom:10px;width:280px;'), $username),
 				array(array('style' => 'width:280px;'), we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]')))
@@ -1551,7 +1551,7 @@ showParentPerms(' . ($this->ParentPerms ? 1 : 0) . ');') .
 
 	function formWorkspace(){
 		$parentWsp = self::setEffectiveWorkspaces($this->ID, $this->DB_WE, true);
-		$parts = array();
+		$parts = [];
 		$content = we_html_element::jsElement('
 function addElement(elvalues) {
 	elvalues.value="new";
@@ -1671,7 +1671,7 @@ function delElement(elvalues,elem) {
 		}
 
 		if(defined('CUSTOMER_TABLE')){
-			$filter = new we_navigation_customerFilter(we_customer_abstractFilter::FILTER, array(), array(), array(), $this->workspaces[CUSTOMER_TABLE]);
+			$filter = new we_navigation_customerFilter(we_customer_abstractFilter::FILTER, [], [], [], $this->workspaces[CUSTOMER_TABLE]);
 			$view = new we_customer_filterView($filter, 'top.content.setHot();', 520);
 			if($parentWsp[CUSTOMER_TABLE]){
 
@@ -1725,8 +1725,8 @@ function delElement(elvalues,elem) {
 	}
 
 	function formPreferencesGlossary(){
-		$settings = array();
-		return array();
+		$settings = [];
+		return [];
 		// Create checkboxes
 		$table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
 //FIXME: where is the difference between force_glossary_check + force_glossary_action?!
@@ -1743,7 +1743,7 @@ function delElement(elvalues,elem) {
 	}
 
 	function formPreferencesUI(){
-		$settings = array();
+		$settings = [];
 		// LANGUAGE
 		//	Look which languages are installed ...
 		$language_directory = dir(WE_INCLUDES_PATH . 'we_language');
@@ -2055,7 +2055,7 @@ function show_seem_chooser(val) {
 	}
 
 	function formPreferencesEditor(){
-		return array();
+		return [];
 		//FIXME: this is not correct!
 		//Editor Mode
 		$template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
@@ -2285,21 +2285,21 @@ function resetTabs(){
 
 	static function setEffectiveWorkspaces($user, we_database_base $db, $onlyParent = false){
 		$workspaces = array(
-			FILE_TABLE => array('key' => 'workSpace', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWs', 'explodeValue' => true),
-			TEMPLATES_TABLE => array('key' => 'workSpaceTmp', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWst', 'explodeValue' => true),
-			NAVIGATION_TABLE => array('key' => 'workSpaceNav', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsn', 'explodeValue' => true),
+			FILE_TABLE => array('key' => 'workSpace', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWs', 'explodeValue' => true),
+			TEMPLATES_TABLE => array('key' => 'workSpaceTmp', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWst', 'explodeValue' => true),
+			NAVIGATION_TABLE => array('key' => 'workSpaceNav', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWsn', 'explodeValue' => true),
 		);
 
 		if(defined('OBJECT_FILES_TABLE')){
-			$workspaces[OBJECT_FILES_TABLE] = array('key' => 'workSpaceObj', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWso', 'explodeValue' => true);
+			$workspaces[OBJECT_FILES_TABLE] = array('key' => 'workSpaceObj', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWso', 'explodeValue' => true);
 		}
 
 		if(defined('NEWSLETTER_TABLE')){
-			$workspaces[NEWSLETTER_TABLE] = array('key' => 'workSpaceNwl', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsnl', 'explodeValue' => true);
+			$workspaces[NEWSLETTER_TABLE] = array('key' => 'workSpaceNwl', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWsnl', 'explodeValue' => true);
 		}
 
 		if(defined('CUSTOMER_TABLE')){
-			$workspaces[CUSTOMER_TABLE] = array('key' => 'workSpaceCust', 'value' => array(), 'parent' => 0, 'parentKey' => 'ParentWsCust', 'explodeValue' => false);
+			$workspaces[CUSTOMER_TABLE] = array('key' => 'workSpaceCust', 'value' => [], 'parent' => 0, 'parentKey' => 'ParentWsCust', 'explodeValue' => false);
 		}
 
 //FIXME: onlyParent doesn't work correctly
@@ -2310,9 +2310,9 @@ function resetTabs(){
 		}
 		$fields = implode(',', $fields);
 
-		$userGroups = array(); //	Get Groups user belongs to.
+		$userGroups = []; //	Get Groups user belongs to.
 
-		$pids = array();
+		$pids = [];
 		$db->query('SELECT ' . $fields . ' FROM ' . USER_TABLE . ' WHERE ID=' . intval($user) . ($onlyParent ? '' : ' OR Alias=' . intval($user)));
 		while($db->next_record()){
 			$pids[] = $db->f('ParentID');
@@ -2369,7 +2369,7 @@ function resetTabs(){
 
 		if(defined('CUSTOMER_TABLE') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE]){
 			//setup customer
-			$filter = array();
+			$filter = [];
 			foreach($_SESSION['user']['workSpace'][CUSTOMER_TABLE] as $cur){
 				$filter[] = we_customer_abstractFilter::getQueryFromFilter(we_unserialize($cur));
 			}
@@ -2387,7 +2387,7 @@ function resetTabs(){
 	 * @param type $clearPassword //posted password
 	 */
 	static function comparePasswords($username, $storedPassword, $clearPassword){
-		$matches = array();
+		$matches = [];
 		$useSalt = (!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $storedPassword, $matches) ?
 				//old md5
 				self::SALT_MD5 :
@@ -2450,7 +2450,7 @@ function resetTabs(){
 	 * @db socket database connection
 	 * @data array optional if empty settings of current session are used.
 	 */
-	static function writePrefs($id, $db, array $data = array()){
+	static function writePrefs($id, $db, array $data = []){
 		$id = intval($id);
 		if($data){
 			$old = array('userID' => $id);
@@ -2465,7 +2465,7 @@ function resetTabs(){
 			$old = self::readPrefs($id, $db);
 			$data = $_SESSION['prefs'];
 		}
-		$upd = array();
+		$upd = [];
 		foreach($old as $key => $val){
 			if($key != 'userID' && (!isset($data[$key]) || $data[$key] != $val)){
 				$upd[] = '(' . $id . ',"' . $db->escape($key) . '","' . $db->escape((isset($data[$key]) ? $data[$key] : $val)) . '")';

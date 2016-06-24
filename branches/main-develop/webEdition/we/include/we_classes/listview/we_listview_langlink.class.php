@@ -31,8 +31,8 @@
 class we_listview_langlink extends we_listview_base{
 
 	var $docType = ''; /* doctype string */
-	var $IDs = array(); /* array of ids with pages which are found */
-	var $foundlinks = array();
+	var $IDs = []; /* array of ids with pages which are found */
+	var $foundlinks = [];
 	var $linkType = '';
 	var $searchable = true;
 	var $condition = ''; /* condition string (like SQL) */
@@ -165,7 +165,7 @@ class we_listview_langlink extends we_listview_base{
 			default:
 				if(strpos($this->order, '_') > 0){ //csv: ordered list of locales
 					$orderArr = explode(',', trim($this->order));
-					$orderedLinks = array();
+					$orderedLinks = [];
 					foreach($orderArr as $orderLocale){
 						if(isset($this->foundlinks[$orderLocale])){
 							$orderedLinks[$orderLocale] = $this->foundlinks[$orderLocale];
@@ -182,7 +182,7 @@ class we_listview_langlink extends we_listview_base{
 		}
 
 		// to go on with $this->foundlinks it must not be associative!
-		$tmpFoundlinks = array();
+		$tmpFoundlinks = [];
 		foreach($this->foundlinks as $foundlink){
 			$tmpFoundlinks[] = $foundlink;
 		}

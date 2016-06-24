@@ -83,7 +83,7 @@ class we_mail_mail extends we_mail_znd{
 	 *
 	 * @var array
 	 */
-	protected $inlineAtt = array();
+	protected $inlineAtt = [];
 
 	/**
 	 * Internal storage for the subject to survive change of charset
@@ -106,7 +106,7 @@ class we_mail_mail extends we_mail_znd{
 		switch(WE_MAILER){
 			case 'smtp' :
 				if(SMTP_SERVER != ''){
-					$smtp_config = array();
+					$smtp_config = [];
 					if(SMTP_PORT != ''){
 						$smtp_config['port'] = SMTP_PORT;
 					}
@@ -204,7 +204,7 @@ class we_mail_mail extends we_mail_znd{
 			$email = trim($user['email']);
 			$name = (isset($user['name']) ? $user['name'] : '');
 		} else {
-			$_user = array();
+			$_user = [];
 			if(preg_match('/<(.)*>/', $user, $_user)){
 				$email = substr($_user[0], 1, strpos($_user[0], ">") - 1);
 				$name = substr($user, 0, strpos($user, "<"));
@@ -241,7 +241,7 @@ class we_mail_mail extends we_mail_znd{
 	public function buildMessage(){
 		if($this->Body){
 			if($this->isEmbedImages){
-				$binParts = $images = array();
+				$binParts = $images = [];
 				preg_match_all('/(src|background)="(.*)"/Ui', $this->Body, $images);
 				$images[2] = array_unique($images[2]); //entfernt doppelte Bildereinfügungen #3725
 

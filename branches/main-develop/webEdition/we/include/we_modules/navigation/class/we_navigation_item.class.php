@@ -38,7 +38,7 @@ class we_navigation_item{
 	var $type;
 	var $level;
 	var $position;
-	static $currentPosition = array();
+	static $currentPosition = [];
 	var $current = false;
 	var $containsCurrent = false;
 	private $visible = -1;
@@ -60,7 +60,7 @@ class we_navigation_item{
 	var $rev;
 	var $limitaccess = 0;
 	var $customers;
-	var $items = array();
+	var $items = [];
 
 	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = '', $CurrentOnUrlPar = 0, $CurrentOnAnker = 0, $currentOnCat = 0, $catParam = ''){
 		$this->id = $id;
@@ -164,8 +164,8 @@ class we_navigation_item{
 
 		if(isset($_SERVER['REQUEST_URI']) && isset($id) && ($this->docid == $id)){
 			static $uri = null;
-			static $uriarrq = array();
-			$refarrq = array();
+			static $uriarrq = [];
+			$refarrq = [];
 
 			$uri = ($uri === null ? parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI'])) : $uri);
 			$ref = parse_url(str_replace('&amp;', '&', $this->href));
@@ -177,7 +177,7 @@ class we_navigation_item{
 			}
 			if(($this->CurrentOnAnker || $this->currentOnCat) && !$this->CurrentOnUrlPar){
 				//remove other param tha "anchors" or catParams respectively
-				$tmpUriarrq = $tmpRefarrq = array();
+				$tmpUriarrq = $tmpRefarrq = [];
 				if($this->CurrentOnAnker){
 					$tmpUriarrq['we_anchor'] = isset($uriarrq['we_anchor']) ? $uriarrq['we_anchor'] : '#';
 					$tmpRefarrq['we_anchor'] = isset($refarrq['we_anchor']) ? $refarrq['we_anchor'] : '#';

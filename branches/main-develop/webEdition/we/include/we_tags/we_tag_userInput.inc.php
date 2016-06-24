@@ -113,7 +113,7 @@ function we_tag_userInput(array $attribs, $content){
 				}
 
 				if(!isset($_SESSION[$imgDataId])){
-					$_SESSION[$imgDataId] = array();
+					$_SESSION[$imgDataId] = [];
 				}
 				$_SESSION[$imgDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 				//$_SESSION[$imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
@@ -204,7 +204,7 @@ function we_tag_userInput(array $attribs, $content){
 				}
 
 				if(!isset($_SESSION[$flashmovieDataId])){
-					$_SESSION[$flashmovieDataId] = array();
+					$_SESSION[$flashmovieDataId] = [];
 				}
 				$_SESSION[$flashmovieDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 				//$_SESSION[$imgDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
@@ -283,7 +283,7 @@ function we_tag_userInput(array $attribs, $content){
 				}
 
 				if(!isset($_SESSION[$binaryDataId])){
-					$_SESSION[$binaryDataId] = array();
+					$_SESSION[$binaryDataId] = [];
 				}
 				$_SESSION[$binaryDataId]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 				//$_SESSION[$binaryDataId]['maxfilesize'] = weTag_getAttribute('maxfilesize',$attribs);
@@ -338,7 +338,7 @@ function we_tag_userInput(array $attribs, $content){
 </table>';
 			}
 			if(!isset($_SESSION[$binaryDataId])){
-				$_SESSION[$binaryDataId] = array();
+				$_SESSION[$binaryDataId] = [];
 			}
 			$_SESSION[$binaryDataId]['id'] = $orgVal ? : '';
 			if($_SESSION[$binaryDataId]['id']){
@@ -537,7 +537,7 @@ function we_tag_userInput(array $attribs, $content){
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
 			}
-			$frontendLL = array();
+			$frontendLL = [];
 			foreach($frontendL as &$lcvalue){
 				$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 			}
@@ -588,7 +588,7 @@ function we_tag_userInput(array $attribs, $content){
 							array(
 							'selected' => 'selected'
 							) :
-							array());
+							[]);
 
 					$options .= getHtmlTag('option', $attsOption, trim($txt), true);
 				}

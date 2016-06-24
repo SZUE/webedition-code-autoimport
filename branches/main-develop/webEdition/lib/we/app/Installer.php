@@ -71,7 +71,7 @@ class we_app_Installer{
 	 * @var array with an application's config files that need special treatment (i.e. on uninstall)
 	 * 		filled by constructor method
 	 */
-	protected $_configFiles = array();
+	protected $_configFiles = [];
 
 	/**
 	 * constructor method for installer class
@@ -91,7 +91,7 @@ class we_app_Installer{
 		}
 
 		// identify all available installer classes:
-		$validInstallerClasses = array();
+		$validInstallerClasses = [];
 		$classdir = __DIR__ . DIRECTORY_SEPARATOR . 'Installer' . DIRECTORY_SEPARATOR;
 		$installerList = scandir($classdir);
 		foreach($installerList as $installerClass){
@@ -447,7 +447,7 @@ class we_app_Installer{
 	 */
 	protected function _installFiles(){
 		error_log("installing application files.");
-		$filesNotInstallable = array();
+		$filesNotInstallable = [];
 		foreach($this->_files->file as $entry){
 			if(!isset($entry->destination) || empty($entry->destination)){
 				$filesNotInstallable[] = $entry->source;
@@ -475,7 +475,7 @@ class we_app_Installer{
 		}
 
 		error_log("installing sql files.");
-		$filesNotInstallable = array();
+		$filesNotInstallable = [];
 		foreach($this->_files->sql as $entry){
 			$entry->destination = we_app_Common::getConfigElement("applicationpath");
 
@@ -527,7 +527,7 @@ class we_app_Installer{
 		// executes all queries from toc.xml defined for specified operation
 		error_log("executing sql queries for operation \"$operation\"");
 
-		$failedQueries = array();
+		$failedQueries = [];
 		$validOperations = array("install", "update", "uninstall");
 		if(!in_array($operation, $validOperations) || is_null($this->_files)){
 			return false;
@@ -584,7 +584,7 @@ class we_app_Installer{
 	 * - conf/toc.xml
 	 */
 	protected function _removeAppConfig(){
-		$filesNotRemovable = array();
+		$filesNotRemovable = [];
 		$path = we_app_Common::getConfigElement("applicationpath") . $this->_appname . "/";
 		foreach($this->_configFiles as $file){
 			if(!@unlink($file)){
@@ -607,7 +607,7 @@ class we_app_Installer{
 	 */
 	protected function _uninstallFiles(){
 		error_log("removing application files.");
-		$filesNotRemovable = array();
+		$filesNotRemovable = [];
 		$weApplicationPath = we_app_Common::getConfigElement("applicationpath");
 		$applicationPath = $weApplicationPath . $this->_appname . "/";
 		// the following files are needed in later steps during installation

@@ -33,7 +33,7 @@ class we_versions_log{
 	public $table = VERSIONSLOG_TABLE;
 	public $userID;
 	public $timestamp;
-	public $persistent_slots = array();
+	public $persistent_slots = [];
 
 	public function __construct(){
 		$this->db = new DB_WE();
@@ -56,7 +56,7 @@ class we_versions_log{
 
 	function load(){
 
-		$content = array();
+		$content = [];
 		$tableInfo = $this->db->metadata($this->table);
 		$this->db->query('SELECT ID,timestamp,typ,userID FROM ' . $this->db->escape($this->table) . ' ORDER BY timestamp DESC');
 		$m = 0;
@@ -74,7 +74,7 @@ class we_versions_log{
 	}
 
 	function saveLog(){
-		$set = array();
+		$set = [];
 
 		foreach($this->persistent_slots as $val){
 			if(isset($this->$val)){

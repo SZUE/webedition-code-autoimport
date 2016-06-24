@@ -1,6 +1,6 @@
 <?php
 
-$spellcheckerConf = array();
+$spellcheckerConf = [];
 
 $spellcheckerConf['default'] = 'Deutsch';
 $spellcheckerConf['active'] = array('Deutsch', 'English');

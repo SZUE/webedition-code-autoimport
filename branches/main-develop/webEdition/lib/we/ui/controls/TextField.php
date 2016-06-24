@@ -142,8 +142,8 @@ class we_ui_controls_TextField extends we_ui_abstract_AbstractInputElement{
 		}
 		return '<input' . $this->_getNonBooleanAttribs('id,name,value,maxlength,size,type,onChange,title') .
 			$this->_getBooleanAttribs('disabled,readonly') .
-			//$this->_getComputedStyleAttrib(array(), -4, -5) .
-			$this->_getComputedStyleAttrib(array()) .
+			//$this->_getComputedStyleAttrib([], -4, -5) .
+			$this->_getComputedStyleAttrib([]) .
 			$this->_getComputedClassAttrib(self::kTextInputClassNormal) .
 			$this->_getComputedOnFocusAttrib() .
 			$this->_getComputedOnBlurAttrib() . '/>';

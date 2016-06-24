@@ -51,16 +51,16 @@ abstract class we_messaging_proto /* extends we_class */{
 	var $Folder_ID = -1;
 	var $userid = -1;
 	var $username = '';
-	var $selected_message = array();
-	var $selected_set = array();
-	var $search_ids = array();
+	var $selected_message = [];
+	var $selected_set = [];
+	var $search_ids = [];
 	var $search_fields = array('headerSubject', 'headerFrom', 'MessageText');
-	var $search_folder_ids = array();
+	var $search_folder_ids = [];
 	var $sortfield = 'headerDate';
 	var $last_sortfield = '';
 	var $sortorder = 'desc';
-	var $ids_selected = array();
-	var $available_folders = array();
+	var $ids_selected = [];
+	var $available_folders = [];
 	var $cached = array(
 		'sortorder' => 0,
 		'sortfield' => 0);
@@ -110,7 +110,7 @@ abstract class we_messaging_proto /* extends we_class */{
 	}
 
 	function reset_entries_selected(){
-		$this->ids_selected = array();
+		$this->ids_selected = [];
 	}
 
 	function set_login_data($userid, $username){
@@ -145,8 +145,8 @@ abstract class we_messaging_proto /* extends we_class */{
 	}
 
 	function set_search_settings($search_fields, $search_folder_ids){
-		$this->search_fields = array();
-		$this->search_folder_ids = array();
+		$this->search_fields = [];
+		$this->search_folder_ids = [];
 
 		if(isset($search_fields)){
 			foreach($search_fields as $elem){
@@ -191,19 +191,19 @@ abstract class we_messaging_proto /* extends we_class */{
 	}
 
 	function saveInSession(&$save){
-		$save = array();
-		$save[0] = array();
+		$save = [];
+		$save[0] = [];
 
 
 		foreach($this->persistent_slots as $cur){
 			$save[0][$cur] = $this->{$cur};
 		}
 
-		$save[1] = isset($this->elements) ? $this->elements : array();
+		$save[1] = isset($this->elements) ? $this->elements : [];
 	}
 
 	function get_available_folders(){
-		$this->available_folders = array();
+		$this->available_folders = [];
 
 		$this->DB_WE->query('SELECT ID,ParentID,Name,obj_type FROM  ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid));
 		while($this->DB_WE->next_record(MYSQL_ASSOC)){
@@ -343,7 +343,7 @@ abstract class we_messaging_proto /* extends we_class */{
 			return -1;
 		}
 
-		$cond = array();
+		$cond = [];
 		foreach($i_headers as $ih){
 			$cond[] = 'ID=' . intval($ih['_ID']);
 		}

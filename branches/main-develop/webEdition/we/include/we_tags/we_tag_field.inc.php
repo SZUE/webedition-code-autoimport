@@ -351,7 +351,7 @@ function we_tag_field(array $attribs){
 					case 'we_listview_shopOrderitem': //Fix #7816
 						$hrefArr = we_unserialize($GLOBALS['lv']->f($name));
 						if(!is_array($hrefArr)){
-							$hrefArr = array();
+							$hrefArr = [];
 						}
 						break;
 				}
@@ -456,7 +456,7 @@ function we_tag_field(array $attribs){
 
 			if(!$GLOBALS['we_doc']->InWebEdition){ //	we are NOT in webEdition open new window
 				$js = '';
-				$newWinProps = $winpropsArray = array();
+				$newWinProps = $winpropsArray = [];
 				$probsPairs = makeArrayFromCSV($winprops);
 
 				foreach($probsPairs as $pair){

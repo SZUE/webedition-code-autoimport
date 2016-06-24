@@ -52,7 +52,7 @@ class we_captcha_image{
 	 * @var array
 	 * @desc all informations about the used font
 	 */
-	var $font = array();
+	var $font = [];
 
 	/**
 	 * @var string
@@ -64,7 +64,7 @@ class we_captcha_image{
 	 * @var array
 	 * @desc range of the angle
 	 */
-	var $angle = array();
+	var $angle = [];
 
 	/**
 	 * @var string
@@ -82,13 +82,13 @@ class we_captcha_image{
 	 * @var array
 	 * @desc strikeout
 	 */
-	var $style = array();
+	var $style = [];
 
 	/**
 	 * @var array
 	 * @desc ranges of the charactersubset
 	 */
-	var $charactersubset = array();
+	var $charactersubset = [];
 
 	/**
 	 * @var boolean
@@ -118,7 +118,7 @@ class we_captcha_image{
 		$this->setCharacterSubset();
 
 		// no signs to skip
-		$this->skip = array();
+		$this->skip = [];
 
 		// init the anglerange
 		$this->setAngleRange();
@@ -166,12 +166,12 @@ class we_captcha_image{
 	 * @return void
 	 */
 	function setFont($family = "Times", $size = "15,20", $color = "#000000"){
-		$this->font = array();
+		$this->font = [];
 
 		// set the font families
 		$families = array_filter(explode(",", $family));
 		if($families){
-			$this->font['family'] = array();
+			$this->font['family'] = [];
 			foreach($families as $family){
 				$this->font['family'][] = $family;
 			}
@@ -196,7 +196,7 @@ class we_captcha_image{
 
 		// set the font colors
 		$colors = explode(",", $color);
-		$this->font['color'] = array();
+		$this->font['color'] = [];
 		foreach($colors as $color){
 			$this->font['color'][] = $this->_hex2rgb($color);
 		}
@@ -260,7 +260,7 @@ class we_captcha_image{
 				break;
 		}
 		$skips = explode(",", $skip);
-		$this->skip = array();
+		$this->skip = [];
 		foreach($skips as $skip){
 			$this->skip[] = ord($skip);
 		}
@@ -276,7 +276,7 @@ class we_captcha_image{
 	 */
 	function setAngleRange($angle = '0'){
 		$angles = explode(",", $angle);
-		$this->angle = array();
+		$this->angle = [];
 		if(count($angles) > 1){
 			$this->angle['left'] = (-1) * $angles[0];
 			$this->angle['right'] = $angles[1];
@@ -422,7 +422,7 @@ class we_captcha_image{
 	 */
 	function _hex2rgb($hex){
 		$hex = preg_replace("/[^a-fA-F0-9]/", "", $hex);
-		$rgb = array();
+		$rgb = [];
 		if(strlen($hex) == 3){
 			$rgb[0] = hexdec($hex[0] . $hex[0]);
 			$rgb[1] = hexdec($hex[1] . $hex[1]);
@@ -525,7 +525,7 @@ class we_captcha_image{
 
 			$counter = rand($this->style['number']['min'], $this->style['number']['max']);
 
-			$random = array();
+			$random = [];
 			if($this->style['outlinecircle']){
 				$random[] = 'outlinecircle';
 			}
@@ -584,7 +584,7 @@ class we_captcha_image{
 		$code = "";
 		$sumwidth = $xpos = 0;
 
-		$signs = array();
+		$signs = [];
 
 
 		for($counter = 0; $counter < $this->textlength; $counter++){

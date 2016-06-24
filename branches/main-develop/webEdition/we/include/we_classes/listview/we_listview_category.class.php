@@ -102,7 +102,7 @@ class we_listview_category extends we_listview_base{
 		}
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-			$this->Record = array();
+			$this->Record = [];
 			$this->DB_WE->Record = array(
 				"WE_PATH" => '',
 				"WE_TEXT" => '',

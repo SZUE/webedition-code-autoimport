@@ -24,7 +24,7 @@
 include_once(WE_LIB_PATH . 'additional/scssphp/scss.inc.php');
 
 class we_helpers_scss extends \Leafo\ScssPhp\Compiler{
-	public static $includedFiles = array();
+	public static $includedFiles = [];
 
 	protected function importFile($path, $out){
 		if(!is_numeric($path)){
@@ -54,7 +54,7 @@ class we_helpers_scss extends \Leafo\ScssPhp\Compiler{
 
 	// results the file path for an import url if it exists
 	public function findImport($url){
-		$matches = array();
+		$matches = [];
 		if(preg_match('|#WE:(\d+)#|', $url, $matches)){
 			$url = intval($matches[1]);
 			return (f('SELECT Extension FROM ' . FILE_TABLE . ' WHERE ID=' . $url) === '.scss' ? $url : null);

@@ -48,7 +48,7 @@ class rpcSelectorGetFilesOfDirCmd extends we_rpc_cmd{
 		if(($types = we_base_request::_(we_base_request::STRING, "types"))){
 			$types = explode(",", $types);
 		} else {
-			$types = array();
+			$types = [];
 		}
 		$queryClass->queryFolderContents($id, $table, $types, null);
 		$entries = $queryClass->getResult();

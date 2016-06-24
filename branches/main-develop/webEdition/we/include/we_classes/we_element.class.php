@@ -41,7 +41,7 @@ class we_element{
 	var $linked = false;
 	static $db = '';
 
-	function __construct($link_props = true, $options = array()){
+	function __construct($link_props = true, $options = []){
 		if(!is_object(self::$db)){
 			self::$db = new DB_WE();
 		}
@@ -65,7 +65,7 @@ class we_element{
 		}
 	}
 
-	function fetchOptions($options = array()){
+	function fetchOptions($options = []){
 		foreach($options as $k => $v){
 			if(!is_numeric($k) && property_exists($this, $k)){
 				$this->$k = $options[$k];
@@ -73,7 +73,7 @@ class we_element{
 		}
 	}
 
-	function fetchLinkedOptions($options = array()){
+	function fetchLinkedOptions($options = []){
 		if(is_array($options)){
 			foreach($options as $k => $v){
 				foreach($this->link_attribs as $k => $v){

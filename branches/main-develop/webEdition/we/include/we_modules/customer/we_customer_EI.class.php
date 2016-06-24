@@ -24,7 +24,7 @@
  */
 abstract class we_customer_EI{
 
-	public static function exportCustomers($options = array()){
+	public static function exportCustomers($options = []){
 		$code = '';
 		switch($options['format']){
 			case we_import_functions::TYPE_GENERIC_XML:
@@ -40,7 +40,7 @@ abstract class we_customer_EI{
 				false);
 	}
 
-	public static function getDataset($type, $filename, $arrgs = array()){
+	public static function getDataset($type, $filename, $arrgs = []){
 		switch($type){
 			case we_import_functions::TYPE_GENERIC_XML:
 				return self::getXMLDataset($filename, $arrgs['dataset']);
@@ -58,7 +58,7 @@ abstract class we_customer_EI{
 		return $customer->getFieldset();
 	}
 
-	public static function exportXML(array $options = array()){
+	public static function exportXML(array $options = []){
 		if(isset($options['customers']) && is_array($options['customers'])){
 
 			$customer = new we_customer_customer();
@@ -111,11 +111,11 @@ abstract class we_customer_EI{
 	function getXMLDataset($filename, $dataset){
 		$xp = new we_xml_parser($_SERVER['DOCUMENT_ROOT'] . $filename);
 		$nodeSet = $xp->evaluate($xp->root . '/' . $dataset . '[1]/child::*');
-		$nodes = $attrs = array();
+		$nodes = $attrs = [];
 
 		foreach($nodeSet as $node){
 			$nodeName = $xp->nodeName($node);
-			$nodeattribs = array();
+			$nodeattribs = [];
 			if($xp->hasAttributes($node)){
 				$attrs = $attrs + array('@n:' => g_l('modules_customer', '[none]'));
 				$attributes = $xp->getAttributes($node);
@@ -128,16 +128,16 @@ abstract class we_customer_EI{
 		return $nodes;
 	}
 
-	function exportCSV(array $options = array()){
+	function exportCSV(array $options = []){
 		if(isset($options['customers']) && is_array($options['customers'])){
-			$customer_csv = array();
+			$customer_csv = [];
 			$customer = new we_customer_customer();
 			$fields = $customer->getFieldsDbProperties();
 			foreach($options['customers'] as $cid){
 				if($cid){
 					$customer = new we_customer_customer($cid);
 					if($customer->ID){
-						$customer_csv[$cid] = array();
+						$customer_csv[$cid] = [];
 						foreach($fields as $k => $v){
 							if(!$customer->isProtected($k)){
 								$value = $customer->{$k};
@@ -148,7 +148,7 @@ abstract class we_customer_EI{
 				}
 			}
 
-			$field_names = array();
+			$field_names = [];
 			foreach($fields as $k => $v){
 				if(!$customer->isProtected($k)){
 					$field_names[] = $k;
@@ -191,10 +191,10 @@ abstract class we_customer_EI{
 			$delimiter = "\t";
 		}
 		$csvFile = $_SERVER['DOCUMENT_ROOT'] . $filename;
-		$nodes = array();
+		$nodes = [];
 
 		if(file_exists($csvFile) && is_readable($csvFile)){
-			$recs = array();
+			$recs = [];
 
 			if($lineend === 'mac'){
 				we_base_file::replaceInFile("\r", "\n", $csvFile);
@@ -207,15 +207,15 @@ abstract class we_customer_EI{
 			$cp->setEnclosure(($enclose === '') ? '"' : $enclose);
 			$cp->parseCSV();
 			$num = count($cp->FieldNames);
-			$recs = array();
+			$recs = [];
 			for($c = 0; $c < $num; $c++){
 				$recs[$c] = $cp->CSVFieldName($c);
 			}
 			for($i = 0; $i < count($recs); $i++){
 				if($fieldnames){
-					$nodes[$recs[$i]] = array();
+					$nodes[$recs[$i]] = [];
 				} else {
-					$nodes[g_l('modules_customer', '[record_field]') . ' ' . ($i + 1)] = array();
+					$nodes[g_l('modules_customer', '[record_field]') . ' ' . ($i + 1)] = [];
 				}
 			}
 		}
@@ -286,7 +286,7 @@ abstract class we_customer_EI{
 					$csv->setToCharset('UTF-8');
 					$csv->parseCSV();
 					while(($data = $csv->CSVFetchRow()) != FALSE){
-						$rootnode['content'] = array();
+						$rootnode['content'] = [];
 						foreach($data as $kdat => $vdat){
 							$rootnode['content'][] = array(
 								'name' => ($csv_fields ? $csv->FieldNames[$kdat] : (str_replace(' ', '', g_l('modules_customer', '[record_field]')) . ($kdat + 1))),
@@ -309,11 +309,11 @@ abstract class we_customer_EI{
 		return $ret;
 	}
 
-	function importCustomers($options = array()){
+	function importCustomers($options = []){
 		$ret = false;
 		$xmlfile = isset($options['xmlfile']) ? $options['xmlfile'] : '';
-		$field_mappings = isset($options['field_mappings']) ? $options['field_mappings'] : array();
-		//$attrib_mappings = isset($options['attrib_mappings']) ? $options['attrib_mappings'] : array();
+		$field_mappings = isset($options['field_mappings']) ? $options['field_mappings'] : [];
+		//$attrib_mappings = isset($options['attrib_mappings']) ? $options['attrib_mappings'] : [];
 
 		$same = isset($options['same']) ? $options['same'] : '';
 		$logfile = isset($options['logfile']) ? $options['logfile'] : '';

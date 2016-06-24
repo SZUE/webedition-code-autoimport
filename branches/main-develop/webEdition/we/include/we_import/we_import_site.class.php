@@ -88,7 +88,7 @@ class we_import_site{
 		$this->quality = we_base_request::_(we_base_request::INT, 'quality', $this->quality);
 		$this->degrees = we_base_request::_(we_base_request::INT, 'degrees', $this->degrees);
 
-		$this->files = array();
+		$this->files = [];
 
 		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			case 'siteImportSaveWePageSettings' :
@@ -186,7 +186,7 @@ function doUnload() {
 		$templateCode = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($tid) . ' AND l.nHash=x\'' . md5("completeData") . '\'');
 		$tp = new we_tag_tagParser($templateCode);
 		$tags = $tp->getAllTags();
-		$records = $regs = array();
+		$records = $regs = [];
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){
 				$tagname = $regs[1];
@@ -242,7 +242,7 @@ function doUnload() {
 		$templateFields = self::_getFieldsFromTemplate(we_base_request::_(we_base_request::INT, "tid"));
 		$hasDateFields = false;
 
-		$values = array();
+		$values = [];
 
 		foreach($templateFields as $name => $type){
 			if($type === 'date'){
@@ -311,7 +311,7 @@ function doUnload() {
 				'valueCreateType' => $ct,
 				'valueTemplateId' => we_base_request::_(we_base_request::INT, 'templateID', 0),
 				'valueUseRegex' => we_base_request::_(we_base_request::BOOL, 'useRegEx'),
-				'valueFieldValues' => serialize(we_base_request::_(we_base_request::RAW, 'fields', array())),
+				'valueFieldValues' => serialize(we_base_request::_(we_base_request::RAW, 'fields', [])),
 				'valueDateFormat' => we_base_request::_(we_base_request::STRING, 'dateFormat', 'unix'),
 				'valueDateFormatField' => we_base_request::_(we_base_request::RAW, 'dateformatField', ''),
 				'valueTemplateName' => g_l('siteimport', '[newTemplate]'),
@@ -321,7 +321,7 @@ function doUnload() {
 				'valueCreateType' => $ct,
 				'valueTemplateId' => 0,
 				'valueUseRegex' => false,
-				'valueFieldValues' => serialize(array()),
+				'valueFieldValues' => serialize([]),
 				'valueDateFormat' => 'unix',
 				'valueDateFormatField' => '',
 				'valueTemplateName' => we_base_request::_(we_base_request::STRING, 'templateName', g_l('siteimport', '[newTemplate]')),
@@ -342,7 +342,7 @@ function doUnload() {
 	 *
 	 * @return	string
 	 */
-	private function _getSiteImportTableHTML($fields, $values = array()){
+	private function _getSiteImportTableHTML($fields, $values = []){
 
 		$headlines = array(
 			array('dat' => g_l('siteimport', '[fieldName]')),
@@ -350,7 +350,7 @@ function doUnload() {
 			array('dat' => g_l('siteimport', '[endMark]'))
 		);
 
-		$content = array();
+		$content = [];
 		if(count($fields) > 0){
 			$i = 0;
 			foreach(array_keys($fields) as $name){
@@ -389,12 +389,12 @@ function doUnload() {
 	 * @return	string
 	 */
 	private function _getCreateWePageSettingsHTML(){
-		$data = (isset($_SESSION["prefs"]["siteImportPrefs"])) ? we_unserialize($_SESSION["prefs"]["siteImportPrefs"]) : array();
+		$data = (isset($_SESSION["prefs"]["siteImportPrefs"])) ? we_unserialize($_SESSION["prefs"]["siteImportPrefs"]) : [];
 
 		$valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
 		$valueTemplateId = isset($data["valueTemplateId"]) ? $data["valueTemplateId"] : 0;
 		$valueUseRegex = isset($data["valueUseRegex"]) ? $data["valueUseRegex"] : 0;
-		$valueFieldValues = isset($data["valueFieldValues"]) ? we_unserialize($data["valueFieldValues"]) : array();
+		$valueFieldValues = isset($data["valueFieldValues"]) ? we_unserialize($data["valueFieldValues"]) : [];
 		$valueDateFormat = isset($data["valueDateFormat"]) ? $data["valueDateFormat"] : "unix";
 		$valueDateFormatField = isset($data["valueDateFormatField"]) ? $data["valueDateFormatField"] : g_l('siteimport', '[dateFormatString]');
 		$valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : str_replace(' ', '', g_l('siteimport', '[newTemplate]'));
@@ -657,7 +657,7 @@ function doUnload() {
 				28,
 				29,
 				30
-				), 1, $this->depth, false, array(), "value", 150);
+				), 1, $this->depth, false, [], "value", 150);
 
 		$depth = we_html_tools::htmlFormElementTable($select, g_l('siteimport', '[depth]'));
 		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024)) ? : 20;
@@ -669,12 +669,12 @@ function doUnload() {
 		}
 
 		// maxSize
-		$select = we_html_tools::htmlSelect("maxSize", $maxarray, 1, $this->maxSize, false, array(), "value", 150);
+		$select = we_html_tools::htmlSelect("maxSize", $maxarray, 1, $this->maxSize, false, [], "value", 150);
 		$maxSize = we_html_tools::htmlFormElementTable($select, g_l('siteimport', '[maxSize]'));
 
 		$GLOBALS['DB_WE']->query('SELECT ID,Name FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 		$thumbsarray = $GLOBALS['DB_WE']->getAllFirst(false);
-		$select = we_html_tools::htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, array(), "value", 150);
+		$select = we_html_tools::htmlSelect("thumbs[]", $thumbsarray, 5, $this->thumbs, true, [], "value", 150);
 		$thumbs = we_html_tools::htmlFormElementTable($select, g_l('importFiles', '[thumbnails]'));
 
 		/* Create Main Table */
@@ -896,7 +896,7 @@ function doUnload() {
 		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
 		$table->setCol(0, 1, array("style" => "text-align:right"
-			), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10));
+			), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10));
 
 
 		return $this->_getHtmlPage(we_html_element::htmlBody($bodyAttribs, $table->getHtml()), $js);
@@ -911,12 +911,12 @@ function doUnload() {
 	 * @static
 	 */
 	private static function _importWebEditionPage($content, &$we_doc, $sourcePath){
-		$data = (isset($_SESSION["prefs"]["siteImportPrefs"])) ? we_unserialize($_SESSION["prefs"]["siteImportPrefs"]) : array();
+		$data = (isset($_SESSION["prefs"]["siteImportPrefs"])) ? we_unserialize($_SESSION["prefs"]["siteImportPrefs"]) : [];
 
 		$valueCreateType = isset($data["valueCreateType"]) ? $data["valueCreateType"] : "auto";
 		$valueTemplateId = isset($data["valueTemplateId"]) ? $data["valueTemplateId"] : 0;
 		$valueUseRegex = isset($data["valueUseRegex"]) ? $data["valueUseRegex"] : 0;
-		$valueFieldValues = isset($data["valueFieldValues"]) ? we_unserialize($data["valueFieldValues"]) : array();
+		$valueFieldValues = isset($data["valueFieldValues"]) ? we_unserialize($data["valueFieldValues"]) : [];
 		$valueDateFormat = isset($data["valueDateFormat"]) ? $data["valueDateFormat"] : "unix";
 		$valueDateFormatField = isset($data["valueDateFormatField"]) ? $data["valueDateFormatField"] : "d.m.Y";
 		$valueTemplateName = isset($data["valueTemplateName"]) ? $data["valueTemplateName"] : g_l('siteimport', '[newTemplate]');
@@ -1052,7 +1052,7 @@ function doUnload() {
 		if(substr($sourcePath, 0, 1) != "/"){
 			$sourcePath = "/" . $sourcePath;
 		}
-		$regs = $regs2 = array();
+		$regs = $regs2 = [];
 		// replace hrefs
 		preg_match_all('/(<[^>]+href=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
 		if($regs != null){
@@ -1167,7 +1167,7 @@ function doUnload() {
 		$keywordsCode = "<we:keywords />";
 
 		$title = $description = $keywords = $charset = '';
-		$attr = $regs = array();
+		$attr = $regs = [];
 
 		// check if we have a body start and end tag
 		if(preg_match('/<body[^>]*>(.*)<\/body>/is', $content, $regs)){
@@ -1201,7 +1201,7 @@ function doUnload() {
 		}
 		if(preg_match('/<meta ([^>]*)http-equiv="content-type"([^>]*)>/is', $content, $regs)){
 			if(preg_match('/content="([^"]+)"/is', $regs[1], $attr)){
-				$cs = array();
+				$cs = [];
 				if(preg_match('/charset=([^ "\']+)/is', $attr[1], $cs)){
 					$charset = $cs[1];
 				}
@@ -1218,7 +1218,7 @@ function doUnload() {
 		// replace external css (link rel=stylesheet)
 		preg_match_all('/<link ([^>]+)>/i', $templateCode, $regs, PREG_PATTERN_ORDER);
 		if($regs != null){
-			$regs2 = array();
+			$regs2 = [];
 			for($i = 0; $i < count($regs[1]); $i++){
 				preg_match_all('/([^= ]+)=[\'"]?([^\'" ]+)[\'"]?/is', $regs[1][$i], $regs2, PREG_PATTERN_ORDER);
 				if($regs2 != null){
@@ -1261,7 +1261,7 @@ function doUnload() {
 
 			$newTemplateFilename = $templateFilename;
 			$GLOBALS['DB_WE']->query("SELECT Filename FROM " . TEMPLATES_TABLE . " WHERE ParentID=" . abs($templateParentID) . ' AND Filename LIKE "' . $GLOBALS['DB_WE']->escape($templateFilename) . '%"');
-			$result = array();
+			$result = [];
 			if($GLOBALS['DB_WE']->num_rows()){
 				while($GLOBALS['DB_WE']->next_record()){
 					$result[] = $GLOBALS['DB_WE']->f("Filename");
@@ -1328,7 +1328,7 @@ function doUnload() {
 						$fieldval = substr($content, $prepos, $postpos - $prepos);
 					}
 				} else {
-					$regs = array();
+					$regs = [];
 					if(preg_match('/' . preg_quote($field["pre"], '/') . '(.+)' . preg_quote($field["post"], '/') . '/isU', $content, $regs)){
 						$fieldval = $regs[1];
 					}
@@ -1403,7 +1403,7 @@ function doUnload() {
 	 */
 	private static function _external_to_internal($content){
 		// replace hrefs
-		$regs = $regs2 = array();
+		$regs = $regs2 = [];
 		preg_match_all('/(<[^>]+href=["\']?)([^"\' >]+)([^"\'>]?[^>]*>)/i', $content, $regs, PREG_PATTERN_ORDER);
 		if($regs != null){
 			for($i = 0; $i < count($regs[2]); $i++){
@@ -1561,7 +1561,7 @@ function doUnload() {
 		}
 
 		$GLOBALS['we_doc'] = $we_docSave;
-		return array();
+		return [];
 	}
 
 	/**
@@ -1625,7 +1625,7 @@ function doUnload() {
 					$data = we_base_file::load($path);
 				}
 		}
-		$regs = array();
+		$regs = [];
 		if($contentType === "folder"){
 			$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Text;
 		} elseif(preg_match('|^(.+)(\.[^\.]+)$|', $GLOBALS["we_doc"]->Text, $regs)){
@@ -1745,7 +1745,7 @@ function doUnload() {
 			);
 		}
 		$GLOBALS["we_doc"] = $we_docSave;
-		return array();
+		return [];
 	}
 
 	/**
@@ -1756,14 +1756,14 @@ function doUnload() {
 		// directory from which we import (real path)
 		// when running on windows we have to change slashes to backslashes
 		$importDirectory = str_replace('/', DIRECTORY_SEPARATOR, rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/'));
-		$this->files = array();
+		$this->files = [];
 		$this->depth = 0;
-		$this->postProcess = array();
+		$this->postProcess = [];
 		$this->_fillDirectories($importDirectory);
 		// sort it so that webEdition files are at the end (that templates know about css and js files)
 
 
-		$tmp = array();
+		$tmp = [];
 		foreach($this->files as $e){
 			if($e["contentType"] === "folder"){
 				$tmp[] = $e;

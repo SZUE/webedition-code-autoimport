@@ -40,7 +40,7 @@ class we_object extends we_document{
 	var $DefaultWorkspaces = '';
 	var $WorkspaceFlag = 1;
 	var $Templates = '';
-	var $SerializedArray = array(); // #3931
+	var $SerializedArray = []; // #3931
 	var $DefaultValues = '';
 	protected static $urlFields = array(
 		'urlfield1' => 64,
@@ -212,14 +212,14 @@ class we_object extends we_document{
 
 //dummy eintrag schreiben
 			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
-			$q = $indexe = array();
+			$q = $indexe = [];
 			$this->wasUpdate = true;
 		}
 
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$tableInfo = $this->DB_WE->metadata($ctable);
-		$q = $regs = array();
-		$fieldsToDelete = ($fD = $this->getElement('felderloeschen')) ? explode(',', $fD) : array();
+		$q = $regs = [];
+		$fieldsToDelete = ($fD = $this->getElement('felderloeschen')) ? explode(',', $fD) : [];
 		foreach($tableInfo as $info){
 			if(!preg_match('/(.+?)_(.*)/', $info['name'], $regs)){
 				continue;
@@ -296,7 +296,7 @@ class we_object extends we_document{
 
 					if($this->issetElement($info['name'] . 'defaultkey' . $f)){
 						if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
-							$arrt[$nam]['meta'] = array();
+							$arrt[$nam]['meta'] = [];
 						}
 
 						$val = $this->getElement($info['name'] . 'defaultvalue' . $f);
@@ -367,7 +367,7 @@ class we_object extends we_document{
 				for($f = 0; $f <= $this->getElement($cur . 'count', 'dat', 0); $f++){
 					$val = $this->getElement($cur . 'defaultvalue' . $f);
 					if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
-						$arrt[$nam]['meta'] = array();
+						$arrt[$nam]['meta'] = [];
 					}
 					if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
 						$arrt[$nam]['meta'][] = $val;
@@ -491,7 +491,7 @@ class we_object extends we_document{
 			return;
 		}
 		$t = we_objectFile::getSortArray($this->ID, $this->DB_WE);
-		$sort = array();
+		$sort = [];
 		foreach($t as $v){
 			if($v < 0){
 				$v = 0;
@@ -552,7 +552,7 @@ class we_object extends we_document{
 		$sort = $this->getElement("we_sort");
 		$pos = $sort[$identifier];
 
-		$t = array();
+		$t = [];
 		$i = 0;
 		$position = count($sort);
 		foreach($sort as $ident => $identpos){
@@ -577,7 +577,7 @@ class we_object extends we_document{
 		$pos = $sort[$identifier];
 		$reversed = array_reverse($sort, true);
 
-		$t = array();
+		$t = [];
 		$i = 0;
 		$position = count($reversed);
 		foreach($reversed as $ident => $identpos){
@@ -616,7 +616,7 @@ class we_object extends we_document{
 
 		if(isset($after) && in_array($after, array_keys($sort))){
 			$pos = $sort[$after];
-			$t = array();
+			$t = [];
 			foreach($sort as $ident => $identpos){
 				if($pos > $identpos){
 					$t[$ident] = $identpos;
@@ -670,7 +670,7 @@ class we_object extends we_document{
 		$this->setElement("Sortgesamt", count($sort));
 ### end move elements ####
 
-		$this->setElement("we_sort", ($sort ? : array()));
+		$this->setElement("we_sort", ($sort ? : []));
 	}
 
 	function downMetaAtClass($name, $i){
@@ -752,7 +752,7 @@ class we_object extends we_document{
 
 		switch($type){
 			case we_objectFile::TYPE_OBJECT:
-				$regs = $vals = array();
+				$regs = $vals = [];
 				$all = $this->DB_WE->table_names(OBJECT_X_TABLE . '%');
 				$count = 0;
 				while($count < count($all)){
@@ -869,7 +869,7 @@ class we_object extends we_document{
 		switch($type){
 			case we_objectFile::TYPE_MULTIOBJECT:
 				$content .= '<tr><td class="weMultiIconBoxHeadlineThin" style="width:100px;vertical-align:top" >' . g_l('contentTypes', '[object]') . '</td><td class="defaultfont" style="vertical-align:top">';
-				$vals = array();
+				$vals = [];
 				$all = $this->DB_WE->table_names(OBJECT_X_TABLE . "%");
 				$count = 0;
 				while($count < count($all)){
@@ -1056,7 +1056,7 @@ class we_object extends we_document{
 					'</td></tr>';
 				break;
 			case we_objectFile::TYPE_SHOPVAT:
-				$values = array();
+				$values = [];
 				if(defined('SHOP_TABLE')){
 					$allVats = we_shop_vats::getAllShopVATs();
 					foreach($allVats as $id => $shopVat){
@@ -1082,7 +1082,7 @@ class we_object extends we_document{
 					$textRootdir = self::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'shopcatRootdir]', 24, $value = $this->getElement($name . 'shopcatRootdir', 'dat'));
 
 					$values = array('0' => ' ') + we_shop_category::getShopCatFieldsFromDir('Path', true); //Fix #9355 don't use array_merge() because numeric keys will be renumbered!
-					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', $values, 1, $this->getElement($name . 'default', 'dat'), false, array(), 'value', 388);
+					$selectCategories = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . 'default]', $values, 1, $this->getElement($name . 'default', 'dat'), false, [], 'value', 388);
 					$selectLimitChoice = we_html_forms::checkboxWithHidden((abs($this->getElement($name . 'shopcatLimitChoice', 'dat')) == '1' ? true : false), 'we_' . $this->Name . '_input[' . $name . 'shopcatLimitChoice]', 'use default only', false, 'defaultfont', '_EditorFrame.setEditorIsHot(true);');
 
 					$content .= '<tr style="vertical-align:top"><td  width="100" class="defaultfont" style="vertical-align:top"></td><td class="defaultfont">' .
@@ -1215,7 +1215,7 @@ class we_object extends we_document{
 			'name' => $n
 		);
 		$elem = $this->getElement($n);
-		$link = ($elem ? (is_array($elem) ? $elem : we_unserialize($elem)) : array())? :
+		$link = ($elem ? (is_array($elem) ? $elem : we_unserialize($elem)) : [])? :
 			array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]'));
 
 		$img = new we_imageDocument();
@@ -1425,7 +1425,7 @@ class we_object extends we_document{
 	}
 
 	function formUsers1($name, $nr = 0){
-		$users = $this->getElement($name . 'users') ? explode(',', $this->getElement($name . 'users')) : array();
+		$users = $this->getElement($name . 'users') ? explode(',', $this->getElement($name . 'users')) : [];
 		$content = '<table class="default" style="width:388px;margin:5px;" >';
 		if($users){
 			$this->DB_WE->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN (' . implode(',', $users) . ')');
@@ -1619,7 +1619,7 @@ class we_object extends we_document{
 
 		$all = $this->DefaultText;
 		$zahl = 0;
-		$regs = array();
+		$regs = [];
 
 		while($all){
 			if(preg_match('/^%([^%]+)%/', $all, $regs)){
@@ -1750,7 +1750,7 @@ class we_object extends we_document{
 		$arr = makeArrayFromCSV($this->Workspaces);
 		$defaultArr = makeArrayFromCSV($this->DefaultWorkspaces);
 		$tmplArr = makeArrayFromCSV($this->Templates);
-		$newTmplArr = $newDefaultArr = $newArr = array();
+		$newTmplArr = $newDefaultArr = $newArr = [];
 
 //    check if workspace exists - correct templates if neccessary !!
 		for($i = 0; $i < count($arr); $i++){
@@ -2073,7 +2073,7 @@ class we_object extends we_document{
 	protected function i_hasDoubbleFieldNames(){
 		$sort = $this->getElement('we_sort');
 		$count = $this->getElement('Sortgesamt');
-		$usedNames = array();
+		$usedNames = [];
 		if(is_array($sort)){
 			for($i = 0; $i <= $count && $sort; $i++){
 				$foo = $this->getElement($this->getElement('wholename' . $this->getSortIndex($i)), 'dat');
@@ -2106,8 +2106,8 @@ class we_object extends we_document{
 	function includedObjectHasDoubbleFieldNames($incClass){
 		$sort = $this->getElement('we_sort');
 		$count = $this->getElement('Sortgesamt');
-		$usedNames = array();
-		$doubleNames = array();
+		$usedNames = [];
+		$doubleNames = [];
 		if(is_array($sort)){
 			for($i = 0; $i <= $count && $sort; $i++){
 				$foo = $this->getElement($this->getElement('wholename' . $this->getSortIndex($i)), 'dat');
@@ -2138,7 +2138,7 @@ class we_object extends we_document{
 		if(!$_REQUEST){
 			return;
 		}
-		$regs = array();
+		$regs = [];
 		$hrefFields = false;
 
 		foreach(array_keys($_REQUEST) as $n){
@@ -2149,7 +2149,7 @@ class we_object extends we_document{
 
 		if($hrefFields){
 			$empty = array('int' => 1, 'intID' => '', 'intPath' => '', 'extPath' => '');
-			$hrefs = $match = array();
+			$hrefs = $match = [];
 			foreach($_REQUEST['we_' . $this->Name . '_' . we_objectFile::TYPE_HREF] as $k => $val){
 				if(preg_match('|^(.+)' . we_base_link::MAGIC_INFIX . '(.+)$|', $k, $match)){
 					$hrefs[$match[1]][$match[2]] = $val;
@@ -2183,7 +2183,7 @@ class we_object extends we_document{
 	}
 
 	function registerMediaLinks($temp = false, $linksReady = false){// FIXME: publish is obsolete for classes
-		$serializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : array();
+		$serializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : [];
 		foreach($serializedArray as $k => $v){
 			if(count(($typeName = explode('_', $k, 2))) > 1){
 				switch($typeName[0]){
@@ -2260,7 +2260,7 @@ class we_object extends we_document{
 	 * @return	array with the filed names and attributes
 	 */
 	function getAllVariantFields(){
-		$return = array();
+		$return = [];
 		$this->loadDefaultsValues();
 		$fields = we_unserialize($this->DefaultValues);
 		foreach($fields as $name => $field){
@@ -2276,7 +2276,7 @@ class we_object extends we_document{
 	 * @param	none
 	 */
 	function getVariantFields(){
-		$return = array();
+		$return = [];
 		$fields = $this->getAllVariantFields();
 		foreach($fields as $name => $field){
 			if(isset($field['variant']) && $field['variant'] == 1){
@@ -2308,7 +2308,7 @@ class we_object extends we_document{
 			return true;
 		}
 		$ownersReadOnly = we_unserialize($this->UsersReadOnly);
-		$readers = array();
+		$readers = [];
 		foreach(array_keys($ownersReadOnly) as $key){
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1){
 				$readers[] = $key;

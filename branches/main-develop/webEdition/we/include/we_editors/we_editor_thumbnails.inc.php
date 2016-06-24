@@ -39,7 +39,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 						"html" => we_html_tools::htmlAlertAttentionBox(g_l('thumbnails', '[no_image_uploaded]'), we_html_tools::TYPE_INFO, 700),
 				));
 			} else if(we_base_imageEdit::is_imagetype_read_supported($imgType)){
-				$parts = array();
+				$parts = [];
 
 				// look if the fields origwidth & origheight exixts. If not get and set the values
 				if((!$we_doc->issetElement('origwidth')) || (!$we_doc->issetElement('origheight'))){

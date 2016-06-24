@@ -25,7 +25,7 @@
 abstract class we_wizard_tag{
 
 	static function getExistingWeTags($useDeprecated = true){
-		$retTags = array();
+		$retTags = [];
 		$main = self::getMainTagModules($useDeprecated);
 		foreach($main as $modulename => $tags){
 
@@ -44,7 +44,7 @@ abstract class we_wizard_tag{
 		return array_values($retTags);
 	}
 
-	static function getWeTagGroups($allTags = array()){
+	static function getWeTagGroups($allTags = []){
 		if(($data = we_cache_file::load('TagWizard_groups')) === false){
 			self::getExistingWeTags();
 			$data = we_cache_file::load('TagWizard_groups');
@@ -52,7 +52,7 @@ abstract class we_wizard_tag{
 		return $data;
 
 		/*
-		  $taggroups = array();
+		  $taggroups = [];
 		  $main = self::getMainTagModules();
 		  // 1st make grps based on modules
 		  foreach($main as $modulename => $tags){
@@ -100,7 +100,7 @@ abstract class we_wizard_tag{
 
 	static function getMainTagModules($useDeprecated = true){
 		if(!($main = we_cache_file::load('TagWizard_mainTags'))){
-			$main = array();
+			$main = [];
 			$tags = self::getTagsFromDir(WE_INCLUDES_PATH . 'weTagWizard/we_tags/');
 			foreach($tags as $tagname){
 				$tag = weTagData::getTagData($tagname);
@@ -120,9 +120,9 @@ abstract class we_wizard_tag{
 		if(($count = we_cache_file::load('TagWizard_tagCount')) && (count($tags) == $count[0])){
 			return;
 		}
-		$endTags = array();
-		$modules = array();
-		$groups = array();
+		$endTags = [];
+		$modules = [];
+		$groups = [];
 		foreach($tags as $tagname){
 			$tag = weTagData::getTagData($tagname);
 			if(!is_object($tag)){
@@ -166,7 +166,7 @@ abstract class we_wizard_tag{
 	}
 
 	static function getTagsFromDir($dir){
-		$match = $ret = array();
+		$match = $ret = [];
 		if(is_dir($dir)){
 
 			// get the custom tag-descriptions
@@ -186,8 +186,8 @@ abstract class we_wizard_tag{
 
 		if(!isset($GLOBALS['weTagWizard_applicationTags'])){
 
-			$GLOBALS['weTagWizard_applicationTags'] = array();
-			$apptags = array();
+			$GLOBALS['weTagWizard_applicationTags'] = [];
+			$apptags = [];
 			$alltools = we_tool_lookup::getAllTools(true);
 			foreach($alltools as $tool){
 				$apptags = we_tool_lookup::getAllToolTagWizards($tool['name']);

@@ -27,7 +27,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 	var $tmplSelectName = "";
 	var $mustTemplateIDs = "";
 	var $tmplArr = "";
-	var $tmplVals = array();
+	var $tmplVals = [];
 	var $tmplWs = "";
 	var $mustTemplateIDsArr;
 	var $mustPaths;

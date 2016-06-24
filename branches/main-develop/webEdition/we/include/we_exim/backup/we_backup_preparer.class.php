@@ -41,8 +41,8 @@ abstract class we_backup_preparer{
 		$execTime = ini_get('max_execution_time');
 
 		$_SESSION['weS']['weBackupVars'] = array(
-			'options' => array(),
-			'handle_options' => array(),
+			'options' => [],
+			'handle_options' => [],
 			'offset' => 0,
 			'current_table' => '',
 			'backup_steps' => 5,
@@ -91,7 +91,7 @@ abstract class we_backup_preparer{
 		$_SESSION['weS']['weBackupVars']['current_table_id'] = -1;
 
 		if($_SESSION['weS']['weBackupVars']['options']['backup_extern']){
-			$_SESSION['weS']['weBackupVars']['extern_files'] = array();
+			$_SESSION['weS']['weBackupVars']['extern_files'] = [];
 			self::getFileList($_SESSION['weS']['weBackupVars']['extern_files']);
 			$_SESSION['weS']['weBackupVars']['extern_files_count'] = count($_SESSION['weS']['weBackupVars']['extern_files']);
 		}
@@ -194,7 +194,7 @@ abstract class we_backup_preparer{
 			'voting' => we_base_request::_(we_base_request::BOOL, 'handle_voting'),
 			'versions' => we_base_request::_(we_base_request::BOOL, 'handle_versions'),
 			'versions_binarys' => we_base_request::_(we_base_request::BOOL, 'handle_versions_binarys'),
-			'tools' => array(),
+			'tools' => [],
 			//'spellchecker' => we_base_request::_(we_base_request::BOOL, 'handle_spellchecker'),
 			'glossary' => we_base_request::_(we_base_request::BOOL, 'handle_glossary'),
 			'hooks' => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
@@ -219,7 +219,7 @@ abstract class we_backup_preparer{
 	static function getTables($options){
 		include(WE_INCLUDES_PATH . 'we_exim/backup/weTableMap.inc.php');
 
-		$tables = array();
+		$tables = [];
 		foreach($options as $group => $enabled){
 			if($enabled && isset($tableMap[$group])){
 				$tables = array_merge($tables, $tableMap[$group]);
@@ -253,13 +253,13 @@ abstract class we_backup_preparer{
 	}
 
 	static function getExternalFiles(){
-		$list = array();
+		$list = [];
 		self::getFileList($list, TEMPLATES_PATH, true, false);
 		return $list;
 	}
 
 	static function getFileLists(){//FIXME:unused??
-		$list = array();
+		$list = [];
 		self::getFileList($list, TEMPLATES_PATH, true, false);
 		self::getFileList($list, WE_CACHE_PATH, true, false);
 		self::getSiteFiles($list);
@@ -310,7 +310,7 @@ abstract class we_backup_preparer{
 	static function getSiteFiles(array &$out){
 		global $DB_WE;
 
-		$list = array();
+		$list = [];
 		self::getFileList($list, $_SERVER['DOCUMENT_ROOT'] . SITE_DIR, true, false);
 		foreach($list as $file){
 			//don't use f/getHash since RAM usage
@@ -368,7 +368,7 @@ abstract class we_backup_preparer{
 	static function getEncoding($file, $iscompressed){
 		if(!empty($file)){
 			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
-			$match = array();
+			$match = [];
 			$pattern = "%(encoding\s*=\s*[\"\'\\\\]\s*)([^\'\"> ? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){
@@ -384,7 +384,7 @@ abstract class we_backup_preparer{
 	static function getWeVersion($file, $iscompressed){
 		if(!empty($file)){
 			$data = we_base_file::loadPart($file, 0, 256, $iscompressed);
-			$match = array();
+			$match = [];
 			$pattern = "%webEdition\s*version\s*=\s*[\"\'\\\\]\s*([^\'\"> ? \\\]*)%";
 
 			if(preg_match($pattern, $data, $match)){

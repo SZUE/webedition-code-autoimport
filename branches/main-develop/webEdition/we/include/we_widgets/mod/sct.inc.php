@@ -49,7 +49,7 @@ if(defined('OBJECT_TABLE')){
 	}
 }
 
-$js = array();
+$js = [];
 
 if(defined('FILE_TABLE') && permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$js["open_document"] = "top.we_cmd('open_document');";
@@ -83,7 +83,7 @@ if(permissionhandler::hasPerm('NEW_GRAFIK')){
 }
 
 
-$shortcuts = array();
+$shortcuts = [];
 foreach($aCols as $sCol){
 	$shortcuts[] = explode(',', $sCol);
 }

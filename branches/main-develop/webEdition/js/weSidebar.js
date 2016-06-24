@@ -126,7 +126,7 @@ WE().layout.sidebar = {
 //
 
 	openNavigation: function () {
-		var cmd = Array();
+		var cmd = [];
 		cmd[0] = 'navigation_edit';
 		top.we_cmd(cmd[0]);
 	},
@@ -135,7 +135,7 @@ WE().layout.sidebar = {
 //
 
 	openDoctypes: function () {
-		var cmd = Array();
+		var cmd = [];
 		cmd[0] = 'doctypes';
 		top.we_cmd(cmd[0]);
 	},

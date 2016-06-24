@@ -48,7 +48,7 @@ function comparePwd(f1,f2){
 function defaultReset(){
 	$_SESSION['resetTok'] = md5(uniqid(__FILE__, true));
 	echo
-	we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'), '
+	we_html_element::htmlDiv(['style' => 'float: left;height: 50%;width: 1px;']) . we_html_element::htmlDiv(['style' => 'clear:left;position:relative;top:-25%;'], we_html_element::htmlForm(["action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'], '
 	<table id="mainTable">
 		<tr><td colspan="2"><h2>' . g_l('global', '[changePass]') . '</h2></td></tr>
 		<tr><td>' . g_l('global', '[username]') . '</td><td><input type="text" name="s[username]" placeholder="' . g_l('global', '[username]') . '"/></td></tr>
@@ -64,7 +64,7 @@ function resetPwd(){
 	$uid = we_base_request::_(we_base_request::INT, 'user', 0);
 	$token = we_base_request::_(we_base_request::STRING, 'token', 0);
 	$_SESSION['resetTok'] = md5(uniqid(__FILE__, true));
-	echo we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'), '
+	echo we_html_element::htmlDiv(['style' => 'float: left;height: 50%;width: 1px;']) . we_html_element::htmlDiv(['style' => 'clear:left;position:relative;top:-25%;'], we_html_element::htmlForm(["action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'], '
 	<table id="mainTable">
 		<tr><td colspan="2"><h2>' . g_l('global', '[changePass]') . '</h2></td></tr>
 		<tr><td>' . g_l('global', '[newPass]') . '</td><td><input type="password" name="s[Password]" onchange="comparePwd(\'s[Password]\',\'s[Password2]\')" placeholder="' . g_l('global', '[newPass]') . '"/></td></tr>
@@ -88,15 +88,15 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 			showError(g_l('global', '[CSRF][tokenInvalid]'));
 			break;
 		}
-		echo we_tag('customerResetPassword', array('type' => "resetFromMail", 'passwordRule' => SECURITY_USER_PASS_REGEX), '', true);
+		echo we_tag('customerResetPassword', ['type' => "resetFromMail", 'passwordRule' => SECURITY_USER_PASS_REGEX], '', true);
 
 		if(we_tag('ifNotCustomerResetPassword')){
 			showError(g_l('global', '[pwd][changeFailed]') . '<br/>');
-			if(we_tag('ifNotCustomerResetPassword', array('type' => "passwordMismatch"))){
+			if(we_tag('ifNotCustomerResetPassword', ['type' => "passwordMismatch"])){
 				showError(g_l('global', '[pass_not_confirmed]'));
-			} elseif(we_tag('ifNotCustomerResetPassword', array('type' => "passwordRule"))){
+			} elseif(we_tag('ifNotCustomerResetPassword', ['type' => "passwordRule"])){
 				showError(g_l('global', '[pass_to_short]'));
-			} else if(we_tag('ifNotCustomerResetPassword', array('type' => 'token'))){
+			} else if(we_tag('ifNotCustomerResetPassword', ['type' => 'token'])){
 				showError(g_l('global', '[pwd][invalidToken]'));
 				unset($_REQUEST['user']);
 				defaultReset();
@@ -120,11 +120,11 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 			showError(g_l('global', '[CSRF][tokenInvalid]'));
 			break;
 		}
-		echo we_tag('customerResetPassword', array('type' => "email", 'required' => "username,Email", 'customerEmailField' => "Email", 'loadFields' => "First,Second,username"), '', true);
+		echo we_tag('customerResetPassword', ['type' => "email", 'required' => "username,Email", 'customerEmailField' => "Email", 'loadFields' => "First,Second,username"], '', true);
 
 		if(we_tag('ifNotCustomerResetPassword')){
 			showError(g_l('global', '[pwd][changeFailed]') . '<br/>');
-			if(we_tag('ifNotCustomerResetPassword', array('type' => "userNotExists"))){
+			if(we_tag('ifNotCustomerResetPassword', ['type' => "userNotExists"])){
 				showError(g_l('global', '[pwd][noSuchUser]'));
 			}
 			defaultReset();
@@ -133,7 +133,7 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 
 			we_mail($_SESSION['webuser']['Email'], g_l('global', '[pwd][mailSubject]'), $_SESSION['webuser']['First'] . ' ' . $_SESSION['webuser']['Second'] . ' (' . $_SESSION['webuser']['username'] . '),
 ' . sprintf(g_l('global', '[pwd][resetMail]'), getServerUrl()) . "\n" .
-				we_tag('customerResetPasswordLink', array('plain' => true), '', true)
+				we_tag('customerResetPasswordLink', ['plain' => true], '', true)
 			);
 
 			unset($_SESSION['webuser']);

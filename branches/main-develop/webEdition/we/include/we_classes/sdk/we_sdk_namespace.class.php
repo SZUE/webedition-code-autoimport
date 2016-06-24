@@ -29,7 +29,7 @@ class we_sdk_namespace implements ArrayAccess,  Countable{
 
 	public function __construct($name){
 		if(!isset($_SESSION['weS']['apps'][$name])){
-			$_SESSION['weS']['apps'][$name] = array();
+			$_SESSION['weS']['apps'][$name] = [];
 		}
 		$this->container = &$_SESSION['weS']['apps'][$name];
 	}

@@ -41,7 +41,7 @@ if(is_array($_SESSION['weS']['we_data'][$transaction])){
 
 	$res = $messaging->send($arr);
 } else {
-	$errs = array();
+	$errs = [];
 	$rcpts = array(urldecode(we_base_request::_(we_base_request::STRING, 'rcpts_string'))); /* user names */
 	$res = we_messaging_message::newMessage($rcpts, we_base_request::_(we_base_request::STRING, 'mn_subject'), we_base_request::_(we_base_request::STRING, 'mn_body'), $errs);
 }

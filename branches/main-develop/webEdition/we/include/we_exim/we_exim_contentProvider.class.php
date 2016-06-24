@@ -256,7 +256,7 @@ class we_exim_contentProvider{
 	}
 
 	private static function objectMetadata($obj){
-		static $hash = array();
+		static $hash = [];
 		if(isset($hash[$obj])){
 			return $hash[$obj];
 		}
@@ -265,7 +265,7 @@ class we_exim_contentProvider{
 		return $hash[$obj];
 	}
 
-	static function object2xml($object, $file, array $attribs = array(), $fwrite = 'fwrite'){
+	static function object2xml($object, $file, array $attribs = [], $fwrite = 'fwrite'){
 		$classname = get_class($object);
 
 		switch($classname){

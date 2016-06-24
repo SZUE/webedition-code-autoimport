@@ -25,7 +25,7 @@ $includeimages = new weTagData_selectAttribute('includeimages', weTagData_select
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('csv', false, '', array($path, $doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages), array($path)),
-	new weTagDataOption('customer', false, 'customer', array($doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $fieldGroup, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages), array()),
+	new weTagDataOption('customer', false, 'customer', array($doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $fieldGroup, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages), []),
 	new weTagDataOption('emailonly', false, '', array($doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $adminmailid, $adminsubject, $adminemail, $includeimages), array($adminmailid, $adminsubject, $adminemail))), false, 'newsletter');
 
 

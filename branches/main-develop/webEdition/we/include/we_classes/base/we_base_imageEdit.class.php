@@ -44,7 +44,7 @@ abstract class we_base_imageEdit{
 	 * @return     array
 	 */
 	private static function php_info(){
-		static $phpinfo = array();
+		static $phpinfo = [];
 
 		// Check if need to get the requested information
 		if(empty($phpinfo)){
@@ -64,7 +64,7 @@ abstract class we_base_imageEdit{
 	}
 
 	public static function supported_image_types(){
-		$output_formats = array();
+		$output_formats = [];
 
 		if(function_exists('ImageTypes')){
 			$imagetypes = ImageTypes();
@@ -107,7 +107,7 @@ abstract class we_base_imageEdit{
 	private static function gd_info(){
 		// Check if we need to emulate this function since it is built into PHP v4.3.0+ (with bundled GD2 library)
 		if(!function_exists('gd_info')){
-			static $gdinfo = array();
+			static $gdinfo = [];
 
 			// Check if need to get the requested information
 			if(empty($gdinfo)){
@@ -338,7 +338,7 @@ abstract class we_base_imageEdit{
 			$h = ImageSY($gdimg);
 			return array($w, $h, $ct, 'width="' . $w . '" height="' . $h . '"');
 		}
-		return array();
+		return [];
 	}
 
 	public static function is_imagetype_supported($type){

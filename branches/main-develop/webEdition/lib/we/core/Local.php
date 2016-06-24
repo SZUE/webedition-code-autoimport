@@ -61,7 +61,7 @@ class we_core_Local{
 	 *
 	 * @var array
 	 */
-	public static $_translationSources = array();
+	public static $_translationSources = [];
 
 	/**
 	 * return localisation string

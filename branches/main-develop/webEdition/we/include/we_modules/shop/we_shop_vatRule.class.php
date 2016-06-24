@@ -98,9 +98,9 @@ class we_shop_vatRule{
 			//FIX old class names
 			return we_unserialize(strtr($strFelder, array('O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":', 'O:13:"weshopvatrule":' => 'O:15:"we_shop_vatRule":')));
 		}
-		return new self('true', '', array(), array(), array(
+		return new self('true', '', [], [], array(
 			array(
-				'states' => array(),
+				'states' => [],
 				'customerField' => '',
 				'condition' => '',
 				'returnValue' => 1
@@ -116,7 +116,7 @@ class we_shop_vatRule{
 	}
 
 	private static function makeArrayFromConditionField(){
-		$retArr = array();
+		$retArr = [];
 		$conditionalStates = we_base_request::_(we_base_request::STRING, 'conditionalStates');
 		$conditionalCustomerField = we_base_request::_(we_base_request::STRING, 'conditionalCustomerField');
 		$conditionalCondition = we_base_request::_(we_base_request::STRING, 'conditionalCondition');

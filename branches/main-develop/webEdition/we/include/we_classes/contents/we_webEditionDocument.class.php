@@ -32,7 +32,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	// Path from the template
 	var $TemplatePath = '';
 	var $hasVariants = null;
-	protected $usedElementNames = array();
+	protected $usedElementNames = [];
 
 	/**
 	 * @var we_customer_documentFilter
@@ -81,12 +81,12 @@ class we_webEditionDocument extends we_textContentDocument{
 		$session = !empty($GLOBALS['WE_SESSION_START']);
 
 		if(!(isset($GLOBALS['we_document']) && is_array($GLOBALS['we_document']))){
-			$GLOBALS['we_document'] = array();
+			$GLOBALS['we_document'] = [];
 		}
 		$GLOBALS['we_document'][$formname] = new we_webEditionDocument();
 		if((!$session) || (!isset($_SESSION['weS']['we_document_session_' . $formname])) || $wewrite){
 			if($session){
-				$_SESSION['weS']['we_document_session_' . $formname] = array();
+				$_SESSION['weS']['we_document_session_' . $formname] = [];
 			}
 			$GLOBALS['we_document'][$formname]->we_new();
 			if($docID){
@@ -153,7 +153,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		return $GLOBALS['we_document'][$formname];
 	}
 
-	public function makeSameNew(array $keep = array()){
+	public function makeSameNew(array $keep = []){
 		parent::makeSameNew(array_merge($keep, array('TemplateID', 'TemplatePath', 'IsDynamic')));
 	}
 
@@ -316,7 +316,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if($tlist){
 			$temps = array_filter(explode(',', $tlist));
 		} else {
-			$temps = array();
+			$temps = [];
 			foreach($ws as $wid){
 				pushChilds($temps, $wid, TEMPLATES_TABLE, 0, $this->DB_WE);
 			}
@@ -331,7 +331,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$openButton = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ? we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements[\'' . $fieldname . '\'].options[document.we_form.elements[\'' . $fieldname . '\'].selectedIndex].value)') : '');
 
 		if($tlist){
-			$foo = array();
+			$foo = [];
 			foreach($tlist as $tid){
 				if(($tid == $this->TemplateID) || we_users_util::in_workspace($tid, $ws, TEMPLATES_TABLE)){
 					$foo[] = $tid;
@@ -339,9 +339,9 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 
 
-			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . ($foo ? implode(',', $foo) : -1) . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", array(), 'left', 'defaultfont', '', $openButton, array(0, ''));
+			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . ($foo ? implode(',', $foo) : -1) . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", [], 'left', 'defaultfont', '', $openButton, array(0, ''));
 		}
-		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), '', 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', array(), 'left', 'defaultfont', '', $openButton);
+		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), '', 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', [], 'left', 'defaultfont', '', $openButton);
 	}
 
 	/**
@@ -474,7 +474,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 	}
 
-	public function insertAtIndex(array $only = null, array $fieldTypes = array()){
+	public function insertAtIndex(array $only = null, array $fieldTypes = []){
 		if($this->ContentType === we_base_ContentTypes::WEDOCUMENT){
 			$only = $this->getUsedElements(true);
 			//FIXME:needed for rebuild, since tags are unintialized
@@ -492,10 +492,10 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	protected function getFieldTypes($templateCode, $useTextarea = false){
-		$blocks = $fieldTypes = $regs = array();
+		$blocks = $fieldTypes = $regs = [];
 		$tp = new we_tag_tagParser($templateCode, $this->getPath());
 		$tags = $tp->getAllTags();
-		//$xmlInputs = array();
+		//$xmlInputs = [];
 		foreach($tags as $tag){
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){ // starttag found
 				$tagname = $regs[1];
@@ -548,7 +548,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	public function correctFields(){
 		// this is new for shop-variants
 		$this->correctVariantFields();
-		$regs = array();
+		$regs = [];
 		$allElements = $this->getUsedElements();
 		if(isset($allElements['textarea'])){
 			foreach($allElements['textarea'] as $name){
@@ -806,9 +806,9 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	protected function i_getDocumentToSave(){
-		static $cache = array();
+		static $cache = [];
 		if($this->IsDynamic){
-			//$data = array();
+			//$data = [];
 
 			we_base_variants::setVariantDataForModel($this, true);
 
@@ -909,7 +909,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				unset($this->controlElement);
 			}
 
-			$ctrlArray = array();
+			$ctrlArray = [];
 
 			foreach($tags[2] as $cur){ //	go through all matches
 				$tagAttribs = we_tag_tagParser::makeArrayFromAttribs($cur);
@@ -993,7 +993,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		$hidePagesArr = explode(',', $this->hidePages); //	get pages which shall be disabled
 
 		if(in_array('all', $hidePagesArr)){
-			$this->EditPageNrs = array();
+			$this->EditPageNrs = [];
 			return;
 		}
 		foreach($this->EditPageNrs as $key => $editPage){
@@ -1082,7 +1082,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 	function getVariantFields(){
 		if($this->TemplateID == 0){
-			return array();
+			return [];
 		}
 		$template = new we_template();
 		$template->initByID($this->TemplateID, TEMPLATES_TABLE);
@@ -1103,7 +1103,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	}
 
 	public function resetUsedElements(){
-		$this->usedElementNames = array();
+		$this->usedElementNames = [];
 	}
 
 	public function addUsedElement($type, $name){
@@ -1117,7 +1117,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 
 	protected function getUsedElements($txtNamesOnly = false){
 		if($txtNamesOnly){
-			return array_unique(array_merge((isset($this->usedElementNames['txt']) ? $this->usedElementNames['txt'] : array()), isset($this->usedElementNames['textarea']) ? $this->usedElementNames['textarea'] : array()));
+			return array_unique(array_merge((isset($this->usedElementNames['txt']) ? $this->usedElementNames['txt'] : []), isset($this->usedElementNames['textarea']) ? $this->usedElementNames['textarea'] : []));
 		}
 		return $this->usedElementNames;
 	}

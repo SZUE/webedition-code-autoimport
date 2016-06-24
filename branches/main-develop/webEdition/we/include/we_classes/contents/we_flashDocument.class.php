@@ -84,7 +84,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 			$src = $dyn ?
 				WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . we_base_file::getUniqueId() :
 				$this->Path;
-			$attribs = $params = array();
+			$attribs = $params = [];
 			$this->html = '';
 
 			/*			 * ****************************************************************************

@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_XMLExIm{
-	var $destination = array();
+	var $destination = [];
 	var $RefTable;
 	var $chunk_count;
 	var $chunk_number;
-	var $analyzed = array();
+	var $analyzed = [];
 	var $level = 0;
 	//var $recover_mode=0; // 0 -	save all to selected folder; 1 - save with given path
 
@@ -209,7 +209,7 @@ class we_exim_XMLExIm{
 	}
 
 	//FIXME given parameter is not used in the call stack!
-	function prepareExport(array $ids = array()){
+	function prepareExport(array $ids = []){
 		$this->RefTable = new we_exim_refTable();
 		$preparer = new we_export_preparer($this->options, $this->RefTable);
 		$preparer->prepareExport($ids);
@@ -225,7 +225,7 @@ class we_exim_XMLExIm{
 	}
 
 	function getIDs($selIDs, $table, $with_dirs = false){
-		$tmp = array();
+		$tmp = [];
 		$db = new DB_WE();
 		$allow = $this->queryForAllowed($table);
 		if($selIDs){
@@ -255,7 +255,7 @@ class we_exim_XMLExIm{
 
 		function queryForAllowed($table){
 		$db = new DB_WE();
-		$parentpaths = $wsQuery = array();
+		$parentpaths = $wsQuery = [];
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){

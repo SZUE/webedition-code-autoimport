@@ -30,7 +30,7 @@ class rpcPublishDocsCmd extends we_rpc_cmd{
 
 		we_html_tools::protect();
 
-		$docs = array();
+		$docs = [];
 
 		$arr = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 		if($arr){

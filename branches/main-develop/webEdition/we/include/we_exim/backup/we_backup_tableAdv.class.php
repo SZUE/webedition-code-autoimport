@@ -27,13 +27,13 @@ class we_backup_tableAdv{
 	var $db;
 	var $table = "";
 	var $elements;
-	var $persistent_slots = array();
-	var $attribute_slots = array();
+	var $persistent_slots = [];
+	var $attribute_slots = [];
 
 	public function __construct($table, $force_columns = false){
 		$this->db = new DB_WE();
 		$this->table = $table;
-		$this->elements = array();
+		$this->elements = [];
 
 		$this->attribute_slots["name"] = stripTblPrefix($table);
 
@@ -105,7 +105,7 @@ class we_backup_tableAdv{
 
 	function save(){
 		if(!(isset($_SESSION['weS']['weBackupVars']['tablekeys']) && is_array($_SESSION['weS']['weBackupVars']['tablekeys']))){
-			$_SESSION['weS']['weBackupVars']['tablekeys'] = array();
+			$_SESSION['weS']['weBackupVars']['tablekeys'] = [];
 		}
 		if(!empty($_SESSION['weS']['weBackupVars']['options']['convert_charset'])){
 			$doConvert = true;

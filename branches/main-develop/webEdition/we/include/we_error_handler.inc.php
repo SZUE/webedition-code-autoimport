@@ -152,7 +152,7 @@ function translate_error_type($type){
 	}
 }
 
-function getBacktrace(array $skip = array()){
+function getBacktrace(array $skip = []){
 	$detailedError = $caller = $file = $line = '';
 
 	$backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
@@ -277,7 +277,7 @@ function getVariableMax($var){
 			}
 			$ignore = array('GLOBALS', '_GET', '_POST', '_REQUEST', '_COOKIE', '_FILES', '_SERVER', '_SESSION',
 				'we', 'DB_WE', 'we_doc', 'WE_MAIN_DOC', 'loader', 'WE_MAIN_DOC_REF');
-			$clone = array();
+			$clone = [];
 			foreach($GLOBALS as $key => $val){
 				if(!in_array($key, $ignore)){
 					$clone[] = $val;

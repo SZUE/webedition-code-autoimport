@@ -47,10 +47,10 @@ abstract class we_listview_base{
 	var $anz = 0; /* number of rows in page */
 	var $workspaceID = ''; /* commaseperated string of id's of workspace */
 	var $count = 0; /* internal counter */
-	var $Record = array(); /* array to store results */
+	var $Record = []; /* array to store results */
 	private $close_a = true; /* close </a> when endtag used */
 	var $customerFilterType = false; // shall we control customer-filter?
-	var $calendar_struct = array();
+	var $calendar_struct = [];
 	var $id = 0;
 	public $hidedirindex = false; //since $lv->hidedirindex is accessed at output
 
@@ -102,7 +102,7 @@ abstract class we_listview_base{
 			'datefield' => '',
 			'start_date' => '',
 			'end_date' => '',
-			'storage' => array(),
+			'storage' => [],
 			'forceFetch' => false,
 			'count' => 0,
 			'weekstart' => 0
@@ -188,7 +188,7 @@ abstract class we_listview_base{
 			if(!$this->calendar_struct['forceFetch']){
 				$this->count++;
 			}
-			$this->Record = array();
+			$this->Record = [];
 		}
 	}
 
@@ -301,7 +301,7 @@ abstract class we_listview_base{
 	}
 
 	static function we_makeQueryString($queryString = '', $filter = ''){
-		$usedKeys = array();
+		$usedKeys = [];
 		//remove potential Cookies and filter from query
 		$filterArr = array_merge(array(//filter special variables
 			'edit_object',
@@ -315,7 +315,7 @@ abstract class we_listview_base{
 			'pv_tid',
 			'bsuniquevid',
 			's'//password-form
-				), ($filter ? explode(',', $filter) : array()), array_keys($_COOKIE));
+				), ($filter ? explode(',', $filter) : []), array_keys($_COOKIE));
 		if(TAGLINKS_OBJECTSEOURLS && !empty($GLOBALS['WE_MAIN_DOC']->Url) && show_SeoLinks()){
 			$filterArr[] = 'we_objectID';
 			$filterArr[] = 'we_oid';
@@ -490,7 +490,7 @@ abstract class we_listview_base{
 		return in_array($type, array('day', 'dayname', 'dayname_long', 'dayname_short', 'month', 'monthname', 'monthname_long', 'monthname_short', 'year', 'hour'));
 	}
 
-	protected function fetchCalendar(&$condition, &$calendar_select, &$calendar_where, $matrix = array()){
+	protected function fetchCalendar(&$condition, &$calendar_select, &$calendar_where, $matrix = []){
 		if(!$this->calendar_struct['calendar']){
 			return;
 		}

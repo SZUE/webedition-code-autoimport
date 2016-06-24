@@ -41,7 +41,7 @@ function checkRequired(array $required, array $loadFields, $emailfield = '', $in
 		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_FIELD_NOT_SET;
 		return false;
 	}
-	$where = array();
+	$where = [];
 	foreach($required as $cur){
 		if(($var = we_base_request::_(we_base_request::STRING, 's', false, $cur))){
 			$where[] = '`' . $GLOBALS['DB_WE']->escape($cur) . '`="' . $GLOBALS['DB_WE']->escape($var) . '"';

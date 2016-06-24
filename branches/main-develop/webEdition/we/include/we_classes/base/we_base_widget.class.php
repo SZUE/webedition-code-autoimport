@@ -52,23 +52,23 @@ abstract class we_base_widget{
 		$oDrag = new we_html_table(array("id" => $iId . "_h", "style" => "width:100%"), 1, 1);
 		$oDrag->setCol(0, 0, array('style' => 'width:' . self::w_icon . 'px;height:16px;'));
 
-		$oIco_prc = new we_html_table(array(), 1, 3);
-		$oIco_prc->setCol(0, 0, array(), '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
+		$oIco_prc = new we_html_table([], 1, 3);
+		$oIco_prc->setCol(0, 0, [], '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
 		  <i class="fa fa-align-justify"></i>
 		  </span>'
 		);
-		$oIco_prc->setCol(0, 1, array(), '<span id="' . $iId . '_icon_resize" class="fa-stack" title="' . g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]')) . '" onclick="resizeWidget(\'' . $iId . '\');this.blur();">
+		$oIco_prc->setCol(0, 1, [], '<span id="' . $iId . '_icon_resize" class="fa-stack" title="' . g_l('cockpit', ($iRes == 0 ? '[increase_size]' : '[reduce_size]')) . '" onclick="resizeWidget(\'' . $iId . '\');this.blur();">
 		  <i class="fa fa-expand"></i>
 		  </span>'
 		);
-		$oIco_prc->setCol(0, 2, array(), '<span class="" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		$oIco_prc->setCol(0, 2, [], '<span class="" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
 		  <i class="fa fa-close"></i>
 		  </span>');
-		$oIco_pc = new we_html_table(array(), 1, 2);
-		$oIco_pc->setCol(0, 0, array(), '<span class="" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
+		$oIco_pc = new we_html_table([], 1, 2);
+		$oIco_pc->setCol(0, 0, [], '<span class="" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
 		  <i class="fa fa-align-justify"></i>
 		  </span>');
-		$oIco_pc->setCol(0, 1, array(), '<span class="" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
+		$oIco_pc->setCol(0, 1, [], '<span class="" title="' . g_l('cockpit', '[close]') . '" onclick="removeWidget(\'' . $iId . '\');this.blur();">
 		  <i class="fa fa-close"></i>
 		  </span>');
 
@@ -77,7 +77,7 @@ abstract class we_base_widget{
 			we_html_element::htmlDiv(array("id" => $iId . "_ico_pc", "style" => "display:none;"), $oIco_pc->getHtml());
 
 		$oTb = new we_html_table(array("id" => $iId . "_tb", 'class' => 'widget_controls'), 1, 2);
-		$oTb->setCol(0, 0, array(), $oDrag->getHtml());
+		$oTb->setCol(0, 0, [], $oDrag->getHtml());
 		$oTb->setCol(0, 1, array("width" => self::w_icon), $sIco);
 
 		if($iId != 'clone'){

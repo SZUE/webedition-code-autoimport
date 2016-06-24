@@ -71,7 +71,7 @@ class we_navigation_frames extends we_modules_frame{
 
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
+		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
 							'pnt' => 'cmd',
 							'cmd' => 'no_cmd')) .
 						we_html_element::jsElement(
@@ -462,7 +462,7 @@ var selfNaviId = '" . $this->Model->ID . "';") .
 		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 		$docTypes = array(g_l('navigation', '[no_entry]')) + $this->db->getAllFirst(false);
 
-		$classID2Name = $classID2Dir = $classDirs = $classDirsJS = $classHasSubDirsJS = $classPathsJS = array();
+		$classID2Name = $classID2Dir = $classDirs = $classDirsJS = $classHasSubDirsJS = $classPathsJS = [];
 		$allowedClasses = we_users_util::getAllowedClasses($this->db);
 
 		$firstClass = 0;
@@ -489,7 +489,7 @@ var selfNaviId = '" . $this->Model->ID . "';") .
 
 		/* $wsid = ($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK && $this->Model->LinkID ?
 		  we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID) :
-		  array());
+		  []);
 		 */
 
 		$sortVal = isset($this->Model->Sort[0]['field']) ? $this->Model->Sort[0]['field'] : '';
@@ -622,7 +622,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 	}
 
 	function getHTMLContentInfo(){
-		$sort = array();
+		$sort = [];
 		foreach($this->Model->Sort as $i){
 			$sort[] = $i['field'] . '&nbsp;(' . g_l('navigation', ($i['order'] === 'DESC' ? '[descending]' : '[ascending]')) . ')';
 		}
@@ -958,7 +958,7 @@ function showPreview() {
 
 		switch($type){
 			case we_navigation_navigation::STYPE_DOCTYPE:
-				$fields = array();
+				$fields = [];
 				$templates = f('SELECT Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . intval($selection));
 				$ids = makeArrayFromCSV($templates);
 
@@ -971,7 +971,7 @@ function showPreview() {
 				$fields = array_combine($f, $f);
 				break;
 			default:
-				$fields = array();
+				$fields = [];
 				if(defined('OBJECT_TABLE')){
 
 					$class = new we_object();
@@ -1114,7 +1114,7 @@ function showPreview() {
 				) . '</div>';
 		}
 
-		$wsid = array();
+		$wsid = [];
 
 		if($field === 'WorkspaceID'){
 			if($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK && $this->Model->LinkID){
@@ -1298,19 +1298,19 @@ function showPreview() {
 		$popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_open'), 'Attributes[popup_open]', g_l('navigation', '[popup_open]'), false, "defaultfont", 'top.content.mark();"'));
 		$popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_center'), 'Attributes[popup_center]', g_l('navigation', '[popup_center]'), false, "defaultfont", 'top.content.mark();"'));
 
-		$popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_xposition]', 5, $this->Model->getAttribute('popup_xposition'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[popup_x]')));
-		$popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_yposition]', 5, $this->Model->getAttribute('popup_yposition'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[popup_y]')));
-		$popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_width]', 5, $this->Model->getAttribute('popup_width'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[popup_width]')));
+		$popup->setCol(1, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_xposition]', 5, $this->Model->getAttribute('popup_xposition'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[popup_x]')));
+		$popup->setCol(1, 1, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_yposition]', 5, $this->Model->getAttribute('popup_yposition'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[popup_y]')));
+		$popup->setCol(1, 2, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_width]', 5, $this->Model->getAttribute('popup_width'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[popup_width]')));
 
-		$popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_height]', 5, $this->Model->getAttribute('popup_height'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[popup_height]')));
+		$popup->setCol(1, 3, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[popup_height]', 5, $this->Model->getAttribute('popup_height'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[popup_height]')));
 
-		$popup->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_status'), 'Attributes[popup_status]', g_l('navigation', '[popup_status]'), false, "defaultfont", 'top.content.mark();"'));
-		$popup->setCol(2, 1, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_scrollbars'), 'Attributes[popup_scrollbars]', g_l('navigation', '[popup_scrollbars]'), false, "defaultfont", 'top.content.mark();"'));
-		$popup->setCol(2, 2, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_menubar'), 'Attributes[popup_menubar]', g_l('navigation', '[popup_menubar]'), false, "defaultfont", 'top.content.mark();"'));
+		$popup->setCol(2, 0, [], we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_status'), 'Attributes[popup_status]', g_l('navigation', '[popup_status]'), false, "defaultfont", 'top.content.mark();"'));
+		$popup->setCol(2, 1, [], we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_scrollbars'), 'Attributes[popup_scrollbars]', g_l('navigation', '[popup_scrollbars]'), false, "defaultfont", 'top.content.mark();"'));
+		$popup->setCol(2, 2, [], we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_menubar'), 'Attributes[popup_menubar]', g_l('navigation', '[popup_menubar]'), false, "defaultfont", 'top.content.mark();"'));
 
-		$popup->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_resizable'), 'Attributes[popup_resizable]', g_l('navigation', '[popup_resizable]'), false, "defaultfont", 'top.content.mark();"'));
-		$popup->setCol(3, 1, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_location'), 'Attributes[popup_location]', g_l('navigation', '[popup_location]'), false, "defaultfont", 'top.content.mark();"'));
-		$popup->setCol(3, 2, array(), we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_toolbar'), 'Attributes[popup_toolbar]', g_l('navigation', '[popup_toolbar]'), false, "defaultfont", 'top.content.mark();"'));
+		$popup->setCol(3, 0, [], we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_resizable'), 'Attributes[popup_resizable]', g_l('navigation', '[popup_resizable]'), false, "defaultfont", 'top.content.mark();"'));
+		$popup->setCol(3, 1, [], we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_location'), 'Attributes[popup_location]', g_l('navigation', '[popup_location]'), false, "defaultfont", 'top.content.mark();"'));
+		$popup->setCol(3, 2, [], we_html_forms::checkboxWithHidden($this->Model->getAttribute('popup_toolbar'), 'Attributes[popup_toolbar]', g_l('navigation', '[popup_toolbar]'), false, "defaultfont", 'top.content.mark();"'));
 
 		$parts[] = array(
 			'headline' => g_l('navigation', '[popup]'),
@@ -1327,11 +1327,11 @@ function showPreview() {
 		$input_width = 70;
 		$img_props = new we_html_table(array('cellpadding' => 5), 4, 5);
 
-		$img_props->setCol(0, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_width]', 5, $this->Model->getAttribute('icon_width'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[icon_width]')));
-		$img_props->setCol(0, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_height]', 5, $this->Model->getAttribute('icon_height'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[icon_height]')));
-		$img_props->setCol(0, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_border]', 5, $this->Model->getAttribute('icon_border'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[icon_border]')));
-		$img_props->setCol(0, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_hspace]', 5, $this->Model->getAttribute('icon_hspace'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[icon_hspace]')));
-		$img_props->setCol(0, 4, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_vspace]', 5, $this->Model->getAttribute('icon_vspace'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[icon_vspace]')));
+		$img_props->setCol(0, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_width]', 5, $this->Model->getAttribute('icon_width'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[icon_width]')));
+		$img_props->setCol(0, 1, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_height]', 5, $this->Model->getAttribute('icon_height'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[icon_height]')));
+		$img_props->setCol(0, 2, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_border]', 5, $this->Model->getAttribute('icon_border'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[icon_border]')));
+		$img_props->setCol(0, 3, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_hspace]', 5, $this->Model->getAttribute('icon_hspace'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[icon_hspace]')));
+		$img_props->setCol(0, 4, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Attributes[icon_vspace]', 5, $this->Model->getAttribute('icon_vspace'), '', 'onchange="top.content.mark();"', 'text', $input_width), g_l('navigation', '[icon_vspace]')));
 		$img_props->setCol(1, 0, array('colspan' => 5), we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect(
 					'Attributes[icon_align]', array(
@@ -1384,7 +1384,7 @@ function we_save() {
 					array(
 					"id" => "footerBody",
 					"onload" => "document.we_form.makeNewDoc.checked=top.content.makeNewDoc;"
-					), we_html_element::htmlForm(array(), $table2->getHtml())));
+					), we_html_element::htmlForm([], $table2->getHtml())));
 	}
 
 }

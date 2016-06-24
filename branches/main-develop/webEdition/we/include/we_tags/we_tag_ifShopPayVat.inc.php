@@ -27,11 +27,11 @@ function we_tag_ifShopPayVat(array $attribs){
 	$usefallback = weTag_getAttribute("usefallback", $attribs);
 	$weShopVatRule = we_shop_vatRule::getShopVatRule();
 
-	if(we_tag('ifRegisteredUser', array(), '')){
+	if(we_tag('ifRegisteredUser', [], '')){
 		$customer = $_SESSION['webuser'];
 	} elseif(!empty($GLOBALS[$namefrom])){
 		$customer = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($GLOBALS[$namefrom]));
-		$customer = $customer ? array_merge($customer, we_customer_customer::getEncryptedFields()) : array();
+		$customer = $customer ? array_merge($customer, we_customer_customer::getEncryptedFields()) : [];
 	} else {
 		$customer = false;
 	}

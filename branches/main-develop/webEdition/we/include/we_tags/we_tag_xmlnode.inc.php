@@ -55,10 +55,10 @@ function we_tag_xmlnode(array $attribs){
 	$url = weTag_getAttribute('url', $attribs, '', we_base_request::URL);
 
 	if(!isset($GLOBALS["xpaths"])){
-		$GLOBALS["xpaths"] = array();
+		$GLOBALS["xpaths"] = [];
 	}
 	if(!isset($GLOBALS["xstack"])){
-		$GLOBALS["xstack"] = array();
+		$GLOBALS["xstack"] = [];
 	}
 	$pind_name = count($GLOBALS["xstack"]) - 1;
 	if($pind_name < 0){
@@ -105,7 +105,7 @@ function we_tag_xmlnode(array $attribs){
 			}
 		}
 	}
-	$nodes_name = array();
+	$nodes_name = [];
 	if($got_name){
 		if(isset($GLOBALS["xsuperparent"])){
 			$nodes_name = $feed_name->evaluate($GLOBALS["xsuperparent"] . "/" . $GLOBALS["xpaths"][$ind_name]["xpath"]);

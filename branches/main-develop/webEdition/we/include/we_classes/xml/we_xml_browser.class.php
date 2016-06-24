@@ -71,7 +71,7 @@ class we_xml_browser extends we_xml_parser{
 	function getNodeDataset($xpath = "*"){
 		$nodeSet = $this->getNodeset($xpath);
 		foreach($nodeSet as $node){
-			$nodeattribs = array();
+			$nodeattribs = [];
 			if($this->hasAttributes($node)){
 				$attrs = $attrs + array("@n:" => g_l('modules_customer', '[none]'));
 				$attributes = $this->getAttributes($node);
@@ -88,7 +88,7 @@ class we_xml_browser extends we_xml_parser{
 	}
 
 	function getSet($search){
-		$ret = array();
+		$ret = [];
 		foreach($this->nodes as $key => $val){
 			if($key != "" && $key != $search && strpos($key, $search) !== false){
 				$ret[] = $key;
@@ -127,12 +127,12 @@ class we_xml_browser extends we_xml_parser{
 				$content = file_get_contents($file);
 				break;
 			case 'curl':
-				$m = array();
+				$m = [];
 				$pattern = '/^(((ht|f)tp(s?):\/\/)|(www\.))+(([a-zA-Z0-9\._-]+\.[a-zA-Z]{2,6})|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(\/[a-zA-Z0-9\&amp;%_\.\/-~-]*)?/i';
 				if(!preg_match($pattern, $file, $m)){
 					return false;
 				}
-				$content = we_base_util::getCurlHttp(str_replace($m[9], '', $file), $m[9], array(), false, $timeout);
+				$content = we_base_util::getCurlHttp(str_replace($m[9], '', $file), $m[9], [], false, $timeout);
 				if($content['status'] === 0){
 					$content = $content['data'];
 				} else {

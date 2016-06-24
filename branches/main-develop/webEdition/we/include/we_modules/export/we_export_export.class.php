@@ -59,7 +59,7 @@ class we_export_export extends we_base_model{
 	var $HandleNavigation;
 	var $HandleThumbnails;
 	var $ExportDepth;
-	var $Log = array();
+	var $Log = [];
 	var $ExportFilename;
 	var $protected = array('ID', 'ParentID', 'IsFolder', 'Path', 'Text');
 
@@ -88,7 +88,7 @@ class we_export_export extends we_base_model{
 
 	function clearExpired($ids, $table, $idfield = 'ID'){
 		$idsarr = makeArrayFromCSV($ids);
-		$new = array();
+		$new = [];
 		$db = new DB_WE();
 		foreach($idsarr as $id){
 			if(f('SELECT ' . $db->escape($idfield) . ' FROM ' . $db->escape($table) . ' WHERE ' . $db->escape($idfield) . '=\'' . (is_numeric($id) ? $id : $db->escape($id)) . '\'', $idfield, $db)){
@@ -99,8 +99,8 @@ class we_export_export extends we_base_model{
 	}
 
 	function save($force_new = false, $isAdvanced = false, $jsonSer = false){
-		$sets = array();
-		$wheres = array();
+		$sets = [];
+		$wheres = [];
 		foreach($this->persistent_slots as $val){
 			//if(!in_array($val,$this->keys))
 			if(isset($this->{$val})){

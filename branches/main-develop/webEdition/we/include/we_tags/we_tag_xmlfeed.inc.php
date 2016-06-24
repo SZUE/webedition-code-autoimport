@@ -39,7 +39,7 @@ function we_tag_xmlfeed(array $attribs){
 	$timeout = abs(weTag_getAttribute('timeout', $attribs, 0, we_base_request::INT));
 
 	if(!isset($GLOBALS['xmlfeeds'])){
-		$GLOBALS['xmlfeeds'] = array();
+		$GLOBALS['xmlfeeds'] = [];
 	}
 
 	$GLOBALS['xmlfeeds'][$name] = new we_xml_browser();

@@ -123,7 +123,7 @@ function save_all_values(){
 		remember_value($setArray, we_base_request::_(we_base_request::INT, 'thumbnail_quality', null), 'Quality');
 		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'Format', null), 'Format');
 		remember_value($setArray, we_base_request::_(we_base_request::STRING, 'description', null), 'description');
-		$setArray['Options'] = implode(',', array_filter(we_base_request::_(we_base_request::STRING, 'Options', array()), function($v){
+		$setArray['Options'] = implode(',', array_filter(we_base_request::_(we_base_request::STRING, 'Options', []), function($v){
 				return $v !== we_thumbnail::OPTION_DEFAULT;
 			}));
 		$DB_WE->query('UPDATE ' . THUMBNAILS_TABLE . ' SET ' . we_database_base::arraySetter($setArray) . ' WHERE ID=' . we_base_request::_(we_base_request::INT, 'edited_id', 0));
@@ -275,8 +275,8 @@ function delete_thumbnail() {" .
 
 			$window_html = new we_html_table(array('class' => 'editorThumbnailsOptions'), 1, 4);
 			$window_html->setCol(0, 0, null, $thumbnail_specify_table->getHtml());
-			$window_html->setCol(0, 1, null, we_html_element::htmlDiv(array(), g_l('thumbnails', '[output_options]') . ':') . we_html_element::htmlDiv(array(), $thumbnail_option_table['opts']->getHtml()));
-			$window_html->setCol(0, 2, null, we_html_element::htmlDiv(array(), g_l('thumbnails', '[cutting]') . ':') . we_html_element::htmlDiv(array(), $thumbnail_option_table['cutting']->getHtml()));
+			$window_html->setCol(0, 1, null, we_html_element::htmlDiv([], g_l('thumbnails', '[output_options]') . ':') . we_html_element::htmlDiv([], $thumbnail_option_table['opts']->getHtml()));
+			$window_html->setCol(0, 2, null, we_html_element::htmlDiv([], g_l('thumbnails', '[cutting]') . ':') . we_html_element::htmlDiv([], $thumbnail_option_table['cutting']->getHtml()));
 
 			// OUTPUT FORMAT
 

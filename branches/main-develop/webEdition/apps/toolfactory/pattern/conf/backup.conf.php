@@ -1,7 +1,7 @@
 
 include_once('define.conf.php');
 
-$toolTables = array();
+$toolTables = [];
 <?php if(!empty($TABLECONSTANT)) {?>
 $toolTables['tool_table_<?php echo $TOOLNAME;?>_1'] = <?php echo $TABLECONSTANT;?>;
 <?php }?>

@@ -101,15 +101,15 @@ abstract class we_rebuild_wizard{
 		$dws = get_def_ws();
 		$btype = we_base_request::_(we_base_request::STRING, 'btype', 'rebuild_all');
 		$categories = we_base_request::_(we_base_request::STRING, 'categories', '');
-		$doctypes = implode(',', we_base_request::_(we_base_request::STRING, 'doctypes', array()));
+		$doctypes = implode(',', we_base_request::_(we_base_request::STRING, 'doctypes', []));
 		$folders = we_base_request::_(we_base_request::INTLIST, 'folders', ($dws ? : ''));
 		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
 		$tmptable = false; //we_base_request::_(we_base_request::INT, 'tmptable', 0);
 		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', ($dws ? : ''));
-		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', array()));
+		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', []));
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
 		$metaFolders = we_base_request::_(we_base_request::STRING, 'metaFolders', ($dws ? : ''));
-		$metaFields = we_base_request::_(we_base_request::RAW, '_field', array());
+		$metaFields = we_base_request::_(we_base_request::RAW, '_field', []);
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 
 		if(($type = we_base_request::_(we_base_request::STRING, 'type'))){
@@ -260,15 +260,15 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	static function getStep2(){
 		$btype = we_base_request::_(we_base_request::STRING, "btype", "rebuild_all");
 		$categories = we_base_request::_(we_base_request::INTLIST, "categories", "");
-		$doctypes = implode(',', we_base_request::_(we_base_request::INT, "doctypes", array()));
+		$doctypes = implode(',', we_base_request::_(we_base_request::INT, "doctypes", []));
 		$folders = we_base_request::_(we_base_request::INTLIST, "folders", "");
 		$maintable = we_base_request::_(we_base_request::BOOL, "maintable", 0);
 		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, "thumbsFolders", "");
-		$thumbs = implode(',', we_base_request::_(we_base_request::STRING, "thumbs", array()));
+		$thumbs = implode(',', we_base_request::_(we_base_request::STRING, "thumbs", []));
 		$catAnd = we_base_request::_(we_base_request::BOOL, "catAnd");
 		$templateID = we_base_request::_(we_base_request::INT, "templateID", 0);
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, "metaFolders", (get_def_ws() ? : ""));
-		$metaFields = we_base_request::_(we_base_request::INT, "_field", array());
+		$metaFields = we_base_request::_(we_base_request::INT, "_field", []);
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
 
 		$taskname = md5(session_id() . '_rebuild');
@@ -315,9 +315,9 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 					break;
 			}
 			if($data){
-				$fr = new we_rebuild_fragment($taskname, 1, 0, array(), $data);
+				$fr = new we_rebuild_fragment($taskname, 1, 0, [], $data);
 
-				return array();
+				return [];
 			}
 			return array(
 				'',
@@ -350,9 +350,9 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				break;
 		}
 
-		$fr = new we_rebuild_fragment($taskname, $count, 0, array());
+		$fr = new we_rebuild_fragment($taskname, $count, 0, []);
 
-		return array();
+		return [];
 	}
 
 	/**
@@ -458,11 +458,11 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, 'metaFolders', '');
 		$metaFields = we_base_request::_(we_base_request::INT, '_field', '');
-		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', array()));
+		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', []));
 		$type = we_base_request::_(we_base_request::STRING, 'type', 'rebuild_documents');
 		$btype = we_base_request::_(we_base_request::STRING, 'btype', 'rebuild_all');
 		$categories = we_base_request::_(we_base_request::INTLIST, 'categories', '');
-		$doctypes = implode(',', we_base_request::_(we_base_request::INT, 'doctypes', array()));
+		$doctypes = implode(',', we_base_request::_(we_base_request::INT, 'doctypes', []));
 		$folders = we_base_request::_(we_base_request::INTLIST, 'folders', '');
 		$maintable = we_base_request::_(we_base_request::BOOL, 'maintable');
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
@@ -540,11 +540,11 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 
 		$thumbsFolders = we_base_request::_(we_base_request::INTLIST, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, 'metaFolders', '');
-		$metaFields = we_base_request::_(we_base_request::INT, '_field', array());
-		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', array()));
+		$metaFields = we_base_request::_(we_base_request::INT, '_field', []);
+		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', []));
 		$type = we_base_request::_(we_base_request::STRING, 'type', 'rebuild_documents');
 		$categories = we_base_request::_(we_base_request::INTLIST, 'categories', '');
-		$doctypes = implode(',', we_base_request::_(we_base_request::INT, 'doctypes', array()));
+		$doctypes = implode(',', we_base_request::_(we_base_request::INT, 'doctypes', []));
 		$folders = we_base_request::_(we_base_request::INTLIST, 'folders', '');
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd', 0);
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty', 0);
@@ -554,7 +554,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		// check if folers are in Workspace of User
 
 		if($ws && $folders){
-			$newFolders = array();
+			$newFolders = [];
 			$foldersArray = makeArrayFromCSV($folders);
 			foreach($foldersArray as $folder){
 				if(we_users_util::in_workspace($folder, $ws)){
@@ -567,7 +567,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		if($ws && !in_array(0, $ws) && ($thumbsFolders == '' || $thumbsFolders == '0')){
 			$thumbsFolders = get_def_ws(FILE_TABLE);
 		}
-		$parts = array();
+		$parts = [];
 
 		$content = we_rebuild_wizard::formThumbs($thumbs) .
 				'<br/><br/>' .
@@ -610,11 +610,11 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		$thumbsFolders = we_base_request::_(we_base_request::RAW, 'thumbsFolders', '');
 		$metaFolders = we_base_request::_(we_base_request::INTLIST, 'metaFolders', '');
 		$onlyEmpty = we_base_request::_(we_base_request::BOOL, 'onlyEmpty');
-		$metaFields = we_base_request::_(we_base_request::RAW, '_field', array());
-		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', array()));
+		$metaFields = we_base_request::_(we_base_request::RAW, '_field', []);
+		$thumbs = implode(',', we_base_request::_(we_base_request::INT, 'thumbs', []));
 		$type = we_base_request::_(we_base_request::STRING, 'type', 'rebuild_documents');
 		$categories = we_base_request::_(we_base_request::RAW, 'categories', '');
-		$doctypes = implode(',', we_base_request::_(we_base_request::RAW, 'doctypes', array()));
+		$doctypes = implode(',', we_base_request::_(we_base_request::RAW, 'doctypes', []));
 		$folders = we_base_request::_(we_base_request::RAW, 'folders', '');
 		$catAnd = we_base_request::_(we_base_request::BOOL, 'catAnd');
 
@@ -623,7 +623,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		// check if folers are in Workspace of User
 
 		if($ws && $folders){
-			$newFolders = array();
+			$newFolders = [];
 			//$wsArray = makeArrayFromCSV($ws);
 			$foldersArray = makeArrayFromCSV($folders);
 			for($i = 0; $i < count($foldersArray); $i++){

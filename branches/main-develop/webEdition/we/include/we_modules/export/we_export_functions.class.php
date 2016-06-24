@@ -460,7 +460,7 @@ abstract class we_export_functions{
 			$template_code = f('SELECT c.Dat FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND l.DID=' . intval($we_doc->TemplateID) . ' AND l.nHash=x\'' . md5("completeData") . '\'', '', $DB_WE);
 			$tag_parser = new we_tag_tagParser($template_code);
 			$tags = $tag_parser->getAllTags();
-			$regs = $records = array();
+			$regs = $records = [];
 
 			foreach($tags as $tag){
 				if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){
@@ -480,7 +480,7 @@ abstract class we_export_functions{
 				}
 			}
 
-			$hrefs = array();
+			$hrefs = [];
 
 			$file_values = self::fileInit($format, $filename, $path, ((isset($we_doc->DocType) && ($we_doc->DocType != "") && ($we_doc->DocType != 0)) ? $we_doc->DocType : "document"));
 
@@ -608,12 +608,12 @@ abstract class we_export_functions{
 		$dv = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($we_obj->TableID), '', $DB_WE);
 		$dv = we_unserialize($dv);
 		if(!is_array($dv)){
-			$dv = array();
+			$dv = [];
 		}
 
 		$tableInfo_sorted = $we_obj->getSortedTableInfo($we_obj->TableID, true, $DB_WE);
 
-		$fields = $regs = array();
+		$fields = $regs = [];
 		foreach($tableInfo_sorted as $cur){
 			// bugfix 8141
 			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){

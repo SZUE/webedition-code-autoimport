@@ -24,10 +24,10 @@
  */
 class we_tag_tagParser{
 	private $lastpos = 0;
-	private $tags = array();
+	private $tags = [];
 	public static $curFile = '';
 
-	//private $AppListviewItemsTags = array();
+	//private $AppListviewItemsTags = [];
 
 	public function __construct($content = '', $curFile = ''){
 		self::$curFile = $curFile;
@@ -42,8 +42,8 @@ class we_tag_tagParser{
 	}
 
 	private function setAllTags($code){
-		$this->tags = array();
-		$foo = array();
+		$this->tags = [];
+		$foo = [];
 		preg_match_all('%</?we:([[:alnum:]_-]+)([ \t\n\r]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t\n\r]*/?>?%i', $code, $foo, PREG_SET_ORDER);
 		foreach($foo as $f){
 			$this->tags[] = $f[0];
@@ -63,7 +63,7 @@ class we_tag_tagParser{
 	 * 			[2][x] = parameter as string
 	 */
 	public static function itemize_we_tag($tagname, $code){
-		$matches = array();
+		$matches = [];
 		preg_match_all('/(<' . $tagname . '([^>]*)>)/U', $code, $matches);
 		return $matches;
 	}
@@ -97,9 +97,9 @@ class we_tag_tagParser{
 	}
 
 	private function checkOpenCloseTags(&$code){
-		$Counter = array();
+		$Counter = [];
 		foreach($this->tags as $tag){
-			$matches = array();
+			$matches = [];
 			if(preg_match_all('|<(/?)we:([[:alnum:]_-]+)([ \t\n\r]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t\n\r]*(/)?>?|smi', $tag, $matches)){
 				if(!is_null($matches[2][0])){
 					if(!isset($Counter[$matches[2][0]])){
@@ -142,10 +142,10 @@ class we_tag_tagParser{
 
 	private function searchEndtag($tagname, $code, $tagPos, $ipos){
 		$tagcount = 0;
-		$endtags = array();
+		$endtags = [];
 
 		$endtagpos = $tagPos;
-		$regs = array();
+		$regs = [];
 		for($i = $ipos + 1; $i < count($this->tags); $i++){
 			if(preg_match('|(< ?/ ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i], $regs)){
 				$endtags[] = $regs[1];
@@ -173,7 +173,7 @@ class we_tag_tagParser{
 		@eval('$arr = array(' . $attribs . ');'); //FIXME: can we remove this eval?
 		if(!isset($arr) || !is_array($arr)){
 			t_e($attr, $attribs);
-			return array();
+			return [];
 		}
 		return $arr;
 	}
@@ -181,8 +181,8 @@ class we_tag_tagParser{
 	public static function parseAttribs($attr, $asArray){
 		//remove comment-attribute (should never be seen), and obsolete cachelifetime
 		$removeAttribs = array('cachelifetime', 'comment');
-		$attribs = array();
-		$regs = array();
+		$attribs = [];
+		$regs = [];
 		preg_match_all('/([^=]+)=[ \t]*"([^"]*)"/', $attr, $regs, PREG_SET_ORDER);
 
 		if(!empty($regs)){
@@ -201,13 +201,13 @@ class we_tag_tagParser{
 	}
 
 	public function getTagsWithAttributes($withBlocknames = false){
-		$regs = array();
-		$blocks = $ret = array();
+		$regs = [];
+		$blocks = $ret = [];
 
 		foreach($this->tags as $tag){
 			if(preg_match('%<we:([[:alnum:]_-]+)[ \t\n\r]*(.*)/?>?%msi', $tag, $regs)){
-				$attribs = (isset($regs[2]) ? self::parseAttribs($regs[2], true) : array());
-				$ret[] = array('name' => $regs[1], 'attribs' => $attribs + ($withBlocknames ? array('weblock' => $blocks) : array()));
+				$attribs = (isset($regs[2]) ? self::parseAttribs($regs[2], true) : []);
+				$ret[] = array('name' => $regs[1], 'attribs' => $attribs + ($withBlocknames ? array('weblock' => $blocks) : []));
 				if($withBlocknames && $regs[1] === 'block' && !empty($attribs['name'])){
 					array_unshift($blocks, 'blk_' . $attribs['name']);
 				}
@@ -220,7 +220,7 @@ class we_tag_tagParser{
 
 	private function parseTag(&$code, $ipos){
 		$tag = $this->tags[$ipos];
-		$regs = array();
+		$regs = [];
 		//$endTag = false;
 		preg_match('%<(/?)we:([[:alnum:]_-]+)([ \t\n\r]*[[:alnum:]_-]+[ \t]*=[ \t]*"[^"]*")*[ \t\n\r]*(/?)(>?)%mi', $tag, $regs);
 		$endTag = ($regs[1] === '/');
@@ -335,7 +335,7 @@ class we_tag_tagParser{
 	}
 
 	public static function printArray(array $array, $printEmpty = true){
-		$ret = array();
+		$ret = [];
 		foreach($array as $key => $val){
 			switch($key){
 				case 'comment':
@@ -346,8 +346,8 @@ class we_tag_tagParser{
 					$ret[] = '\'' . $key . '\'=>' . ((is_numeric($val) && $val{0} != '+') || $val == 'true' || $val == 'false' ? $val : $quotes . $val . $quotes);
 			}
 		}
-		$newTag = PHP_VERSION_ID >= 50400;
-		return ($ret || (!$ret && $printEmpty) ? ($newTag ? '[' : 'array(') . implode(',', $ret) . ($newTag ? ']' : ')') : '');
+
+		return ($ret || (!$ret && $printEmpty) ? '[' . implode(',', $ret) . ']' : '');
 	}
 
 }

@@ -33,7 +33,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $condition = ''; /* condition string (like SQL) */
 	var $Path = ''; /* internal: Path of document which to use for displaying thr detail page */
-	var $IDs = array();
+	var $IDs = [];
 	var $searchable = true;
 	var $languages = ''; //string of Languages, separated by ,
 	var $objectseourls = false;
@@ -56,7 +56,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 	}
 
 	protected function fillMatrix(&$matrix, $classID, $withVariant = false){
-		$joinWhere = $regs = array();
+		$joinWhere = $regs = [];
 		$table = OBJECT_X_TABLE . $classID;
 		$tableInfo = we_objectFile::getSortedTableInfo($classID, true, $this->DB_WE, $withVariant);
 		foreach($tableInfo as $fieldInfo){
@@ -94,7 +94,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 			t_e('no classid given!');
 			return;
 		}
-		$from = $orderArr = $descArr = $ordertmp = array();
+		$from = $orderArr = $descArr = $ordertmp = [];
 
 		$cond = ' ' . preg_replace_callback("/'([^']*)'/", function (array $match){
 				$in = $match[1];
@@ -200,7 +200,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.CreationDate' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'random()':
-					$ordertmp = array();
+					$ordertmp = [];
 					$order = 'RANDOM ';
 					break 2;
 			}
@@ -211,7 +211,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 		}
 		$tb = array_unique($from);
 
-		$publ_cond = array();
+		$publ_cond = [];
 		foreach($tb as &$t){
 			$t = '`' . $t . '`';
 			$publ_cond[] = '(' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0)';

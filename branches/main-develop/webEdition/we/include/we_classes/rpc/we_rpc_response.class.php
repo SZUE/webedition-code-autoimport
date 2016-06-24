@@ -26,7 +26,7 @@ class we_rpc_response{
 
 	var $Success = true;
 	var $Reason = '';
-	var $DataArray = array();
+	var $DataArray = [];
 
 	function __construct(){
 
@@ -67,7 +67,7 @@ class we_rpc_response{
 	function merge($response){
 		$this->setStatus($response->getStatus());
 		$this->setReason($response->getReason());
-		$this->DataArray = array_merge($this->DataArray, $response->getDataArray());
+		$this->DataArray = array_merge($this->DataArray, $response->getData[]);
 	}
 
 }

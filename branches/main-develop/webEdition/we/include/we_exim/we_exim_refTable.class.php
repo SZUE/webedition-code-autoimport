@@ -23,11 +23,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_exim_refTable{
-	private $Storage = array();
+	private $Storage = [];
 	var $current = 0;
-	var $Users = array(); // username => id
+	var $Users = []; // username => id
 
-	function add($object, $extra = array()){
+	function add($object, $extra = []){
 		$rd = new we_exim_refData();
 		$rd->init($object, $extra);
 		if($this->hasPerms($rd)){
@@ -98,7 +98,7 @@ class we_exim_refTable{
 	}
 
 	function moveItemsToEnd($ct){
-		$regular = $moved = array();
+		$regular = $moved = [];
 		foreach($this->Storage as $elem){
 			if($elem->ContentType == $ct){
 				$moved[] = $elem;

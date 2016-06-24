@@ -120,7 +120,7 @@ function convertToMb($value){
 }
 
 function getConnectionTypes(){
-	$connectionTypes = array();
+	$connectionTypes = [];
 	if(ini_get('allow_url_fopen') == 1){
 		$connectionTypes[] = "fopen";
 		$connectionTypeUsed = "fopen";
@@ -172,7 +172,7 @@ $phpextensions = get_loaded_extensions();
 foreach($phpextensions as &$extens){
 	$extens = strtolower($extens);
 }
-$phpextensionsMissing = array();
+$phpextensionsMissing = [];
 $phpextensionsMin = array('ctype', 'date', 'dom', 'filter', 'iconv', 'libxml', 'mysql', 'pcre', 'Reflection', 'session', 'SimpleXML', 'SPL', 'standard', 'tokenizer', 'xml', 'zlib');
 
 if(count($phpextensions) > 3){
@@ -211,7 +211,7 @@ $info = array(
 		g_l('import', '[pfx]') => TBL_PREFIX
 	),
 	'<a href="javascript:showPhpInfo();">PHP</a>' => array(
-		g_l('sysinfo', '[php_version]') => /* version_compare(PHP_VERSION, '5.3.8', '<') ? getWarning('>5.3.8', PHP_VERSION) : */ PHP_VERSION,
+		g_l('sysinfo', '[php_version]') => PHP_VERSION,
 		'register_globals' => (ini_get_bool('register_globals')) ? getWarning(g_l('sysinfo', '[register_globals warning]'), ini_get('register_globals')) : getOK('', ini_get_message('register_globals')),
 		'max_execution_time' => ini_get('max_execution_time'),
 		'memory_limit' => we_convertIniSizes(ini_get('memory_limit')),
@@ -262,7 +262,7 @@ $types = array(
 
 $buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
 
-$parts = array();
+$parts = [];
 foreach($info as $k => $v){
 	$parts[] = array(
 		'headline' => $k,

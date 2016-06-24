@@ -29,7 +29,7 @@ class we_workflow_view extends we_modules_view{
 	const BUTTON_FORWARD = 'fat:forward,fa-lg fa-mail-forward';
 
 	// workflow array; format workflow[workflowID]=workflow_name
-	var $workflows = array();
+	var $workflows = [];
 	//default workflow
 	var $workflowDef;
 	//default document
@@ -38,7 +38,7 @@ class we_workflow_view extends we_modules_view{
 	var $show = 0;
 	//wat page is currentlly displed 0-properties(default);1-overview;
 	var $page = self::PAGE_PROPERTIES;
-	var $hiddens = array();
+	var $hiddens = [];
 	var $uid;
 
 	function __construct($framset){
@@ -239,7 +239,7 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getStepsHTML(){
-		$content = array();
+		$content = [];
 
 		$ids = '';
 
@@ -364,7 +364,7 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getDocTypeHTML($width = 498){
-		$vals = array();
+		$vals = [];
 		$dtq = we_docTypes::getDoctypeQuery($this->db);
 		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 		while($this->db->next_record()){
@@ -450,7 +450,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case 'add_cat':
 				$arr = $this->workflowDef->Categories;
-				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wcat', array()))){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wcat', []))){
 					foreach($ids as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							array_push($arr, $id);
@@ -470,11 +470,11 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 				break;
 			case 'del_all_cats':
-				$this->workflowDef->Categories = array();
+				$this->workflowDef->Categories = [];
 				break;
 			case 'add_objcat':
 				$arr = $this->workflowDef->ObjCategories;
-				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wocat', array()))){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, 'wocat', []))){
 					foreach($ids as $id){
 						if((!in_array($id, $arr))){
 							$arr[] = $id;
@@ -494,7 +494,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 				break;
 			case 'del_all_objcats':
-				$this->workflowDef->ObjCategories = array();
+				$this->workflowDef->ObjCategories = [];
 				break;
 			case 'add_folder':
 				$arr = $this->workflowDef->Folders;
@@ -518,7 +518,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 				break;
 			case 'del_all_folders':
-				$this->workflowDef->Folders = array();
+				$this->workflowDef->Folders = [];
 				break;
 			case 'add_object_file_folder':
 				$arr = $this->workflowDef->ObjectFileFolders;
@@ -542,7 +542,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 				break;
 			case 'del_all_object_file_folders':
-				$this->workflowDef->ObjectFileFolders = array();
+				$this->workflowDef->ObjectFileFolders = [];
 				break;
 			case 'add_object':
 				$arr = $this->workflowDef->Objects;
@@ -562,7 +562,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 				break;
 			case 'del_all_objects':
-				$this->workflowDef->Objects = array();
+				$this->workflowDef->Objects = [];
 				break;
 			case 'reload':
 				echo we_html_element::jsElement('
@@ -654,7 +654,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case 'empty_log':
 				$stamp = 0;
-				if(($t = we_base_request::_(we_base_request::INTLISTA, 'wopt', array()))){
+				if(($t = we_base_request::_(we_base_request::INTLISTA, 'wopt', []))){
 					$stamp = mktime($t[3], $t[4], 0, $t[1], $t[0], $t[2]);
 				}
 				$this->Log->clearLog($stamp);
@@ -678,7 +678,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$this->page = we_base_request::_(we_base_request::INT, 'page', self::PAGE_PROPERTIES);
 
 
-		$this->workflowDef->steps = array();
+		$this->workflowDef->steps = [];
 		if($wsteps == 0){
 			$this->workflowDef->addNewStep();
 			$this->workflowDef->addNewTask();
@@ -1039,7 +1039,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	static function getLogForDocument($docID, $type = 0){//type is an string-array
 		$db = new DB_WE();
 
-		$content = array();
+		$content = [];
 
 		$headlines = array(
 			array('dat' => g_l('modules_workflow', '[action]')),

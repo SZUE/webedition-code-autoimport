@@ -257,7 +257,7 @@ var searchClass={
 				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
 			'</td><td>';
 
-		$pages = array();
+		$pages = [];
 		for($i = 0; $i < ceil($we_search_anzahl / $anzahl); $i++){
 			$pages[($i * $anzahl)] = ($i + 1);
 		}
@@ -290,7 +290,7 @@ var searchClass={
 
 		$order = $this->Model->getProperty('currentOrder');
 
-		$content = array();
+		$content = [];
 		$modificationText = '';
 
 		$where = $this->searchclass->getWhere($this->Model);
@@ -317,7 +317,7 @@ var searchClass={
 			} else {
 				$sortText = $sortierung[0];
 				$sortHow = SORT_ASC;
-				$sort1 = array();
+				$sort1 = [];
 				if(isset($sortierung[1])){
 					$sortHow = SORT_DESC;
 				}

@@ -38,7 +38,7 @@ function we_tag_blockControls(array $attribs){
 	}
 
 	if($attribs['pos'] < $attribs['listSize']){
-		$tabArray = array();
+		$tabArray = [];
 		if($showSelect && $attribs['ctlShow'] > 0){
 			$jsSelector = $attribs['pos'] . ",document.we_form.elements['" . $attribs['ctlName'] . "_" . $attribs['pos'] . "'].options[document.we_form.elements['" . $attribs['ctlName'] . '_' . $attribs['pos'] . "'].selectedIndex].text";
 			$tabArray[] = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:setScrollTo();_EditorFrame.setEditorIsHot(true);we_cmd('insert_entry_at_list','" . $attribs['name'] . "'," . $jsSelector . ")", true, 100, 22, '', '', !($attribs['ctlShow'] > 0));

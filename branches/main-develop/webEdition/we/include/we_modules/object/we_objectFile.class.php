@@ -50,13 +50,13 @@ class we_objectFile extends we_document{
 	var $Workspaces = '';
 	var $ExtraWorkspaces = '';
 	var $ExtraWorkspacesSelected = '';
-	var $AllowedWorkspaces = array();
+	var $AllowedWorkspaces = [];
 	var $AllowedClasses = '';
 	var $Charset = '';
 	var $Language = '';
 	var $Templates = '';
 	var $ExtraTemplates = '';
-	var $DefArray = array();
+	var $DefArray = [];
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 	var $Url = '';
 	var $TriggerID = 0;
@@ -91,12 +91,12 @@ class we_objectFile extends we_document{
 		$session = !empty($GLOBALS['WE_SESSION_START']);
 
 		if(!(isset($GLOBALS['we_object']) && is_array($GLOBALS['we_object']))){
-			$GLOBALS['we_object'] = array();
+			$GLOBALS['we_object'] = [];
 		}
 		$GLOBALS['we_object'][$formname] = $wof = new we_objectFile();
 		if((!$session) || (!isset($_SESSION['weS']['we_object_session_' . $formname])) || $wewrite){
 			if($session){
-				$_SESSION['weS']['we_object_session_' . $formname] = array();
+				$_SESSION['weS']['we_object_session_' . $formname] = [];
 			}
 			$wof->we_new();
 			if($objID){
@@ -146,7 +146,7 @@ class we_objectFile extends we_document{
 			}
 		}
 
-		$wof->DefArray = $wof->DefArray ? : $wof->getDefaultValueArray(); //bug #7426
+		$wof->DefArray = $wof->DefArray ? : $wof->getDefaultValue[]; //bug #7426
 
 		if(($ret = we_base_request::_(we_base_request::URL, 'we_returnpage'))){
 			$wof->setElement('we_returnpage', $ret);
@@ -188,7 +188,7 @@ class we_objectFile extends we_document{
 		return $wof;
 	}
 
-	function makeSameNew(array $keep = array()){
+	function makeSameNew(array $keep = []){
 		$this->DefaultInit = true;
 		we_root::makeSameNew(array_merge($keep, array('Category', 'TableID', 'rootDirID', 'RootDirPath', 'Workspaces', 'ExtraWorkspaces', 'ExtraWorkspacesSelected', 'IsSearchable', 'Charset', 'Url', 'TriggerID')));
 		$this->i_objectFileInit(true);
@@ -211,7 +211,7 @@ class we_objectFile extends we_document{
 		$classDir = rtrim($classDir, '/');
 		$rootId = $classId;
 		$cnt = 1;
-		$all = array();
+		$all = [];
 		$slash = PHP_INT_MAX;
 		$ws = get_ws(OBJECT_FILES_TABLE, true);
 		$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 AND (Path="' . $db->escape($classDir) . '" OR Path LIKE "' . $db->escape($classDir) . '/%")');
@@ -280,11 +280,11 @@ class we_objectFile extends we_document{
 		$defwsCSVArray = makeArrayFromCSV(isset($foo['DefaultWorkspaces']) ? $foo['DefaultWorkspaces'] : '');
 		$owsCSVArray = makeArrayFromCSV(isset($foo['Workspaces']) ? $foo['Workspaces'] : '');
 		$otmplsCSVArray = makeArrayFromCSV(isset($foo['Templates']) ? $foo['Templates'] : '');
-		$this->Workspaces = array();
-		$this->Templates = array();
+		$this->Workspaces = [];
+		$this->Templates = [];
 		$this->ExtraWorkspaces = '';
 		$this->ExtraTemplates = '';
-		$processedWs = array();
+		$processedWs = [];
 
 // loop throgh all default workspaces
 		foreach($defwsCSVArray as $i => $defWs){
@@ -334,7 +334,7 @@ class we_objectFile extends we_document{
 		$this->IsSearchable = 1;
 		$this->Charset = '';
 		$this->restoreWorkspaces();
-		$this->elements = array();
+		$this->elements = [];
 		$hash = getHash('SELECT Users,UsersReadOnly,RestrictUsers,DefaultCategory,DefaultText,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		if($hash){
 // fix - the class access permissions should not be applied
@@ -342,7 +342,7 @@ class we_objectFile extends we_document{
 			$this->Category = $hash['DefaultCategory'] ? : '';
 			if($hash['DefaultText']){
 				$text = $hash['DefaultText'];
-				$regs = array();
+				$regs = [];
 				if(preg_match('/%unique([^%]*)%/', $text, $regs)){
 					$anz = ($regs[1] ? abs($regs[1]) : 16);
 					$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
@@ -562,11 +562,11 @@ class we_objectFile extends we_document{
 
 	static function getSortArray($tableID, we_database_base $db){
 		if(!$tableID){
-			return array();
+			return [];
 		}
 		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableID), '', $db));
 		$tableInfo = $db->metadata(OBJECT_X_TABLE . intval($tableID));
-		$regs = array();
+		$regs = [];
 		$fields = 0;
 		foreach($tableInfo as $info){
 			if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
@@ -581,7 +581,7 @@ class we_objectFile extends we_document{
 		}
 
 		if((count($order) != $fields) || !in_array(0, $order)){
-			$order = array();
+			$order = [];
 			for($y = 0; $y < $fields; $y++){
 				$order[$y] = $y;
 			}
@@ -592,11 +592,11 @@ class we_objectFile extends we_document{
 
 	static function getSortedTableInfo($tableID, $contentOnly, we_database_base $db, $checkVariants = false){
 		if(!$tableID){
-			return array();
+			return [];
 		}
 
 		$tableInfo = $db->metadata(OBJECT_X_TABLE . $tableID);
-		$tableInfo2 = array();
+		$tableInfo2 = [];
 		foreach($tableInfo as $arr){
 			$names = explode('_', $arr['name']);
 			switch($names[0]){
@@ -625,7 +625,7 @@ class we_objectFile extends we_document{
 		if($contentOnly == false){
 			return $tableInfo2;
 		}
-		$tableInfo_sorted = array();
+		$tableInfo_sorted = [];
 
 		$order = self::getSortArray(intval($tableID), $db);
 		$start = self::getFirstTableInfoEntry($tableInfo2);
@@ -719,7 +719,7 @@ class we_objectFile extends we_document{
 		$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 
 		$tableInfo_sorted = $this->getSortedTableInfo($this->TableID, true, $this->DB_WE);
-		$fields = $regs = array();
+		$fields = $regs = [];
 		foreach($tableInfo_sorted as $cur){
 			if(preg_match('/(.+?)_(.*)/', $cur['name'], $regs)){
 				$fields[] = array('name' => $regs[2], 'type' => $regs[1]);
@@ -727,7 +727,7 @@ class we_objectFile extends we_document{
 		}
 
 		$c = '';
-		$parts = array();
+		$parts = [];
 		foreach($fields as $field){
 
 			$realName = $field['type'] . '_' . $field['name'];
@@ -737,12 +737,12 @@ class we_objectFile extends we_document{
 			}
 
 			if($asString){
-				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : array()), $editable);
+				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : []), $editable);
 				if($c2){
 					$c .= $c2 . we_html_element::htmlBr() . we_html_element::htmlBr();
 				}
 			} else {
-				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : array()), $editable);
+				$c2 = $this->getFieldHTML($field['name'], $field['type'], (isset($dv[$realName]) ? $dv[$realName] : []), $editable);
 				$parts[] = array(
 					'headline' => '',
 					'html' => $c2,
@@ -800,7 +800,7 @@ class we_objectFile extends we_document{
 		$ob = new we_objectFile();
 		if($myid){
 			$ob->initByID($myid, OBJECT_FILES_TABLE);
-			$ob->DefArray = $ob->getDefaultValueArray();
+			$ob->DefArray = $ob->getDefaultValue[];
 		}
 		$table = OBJECT_FILES_TABLE;
 
@@ -948,7 +948,7 @@ class we_objectFile extends we_document{
 				if($isSEEM){
 					/* $ob = new we_objectFile();
 					  $ob->initByID($myid, OBJECT_FILES_TABLE);
-					  $ob->DefArray = $ob->getDefaultValueArray(); */
+					  $ob->DefArray = $ob->getDefaultValue[]; */
 					$uniq = md5(uniqid(__FUNCTION__, true));
 					$openCloseButton = we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','','')", "right", g_l('global', '[openCloseBox]'));
 					$reloadEntry = "opener.top.we_cmd('object_change_objectlink','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "');";
@@ -984,7 +984,7 @@ class we_objectFile extends we_document{
 				if($isSEEM && $myid){
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
-					$ob->DefArray = $ob->getDefaultValueArray();
+					$ob->DefArray = $ob->getDefaultValue[];
 
 					$content .= '<div id="text_' . $uniq . '"></div><div id="table_' . $uniq . '" style="display:none; padding: 10px 0px 20px 30px;">' .
 						$ob->getFieldsHTML(0, true) .
@@ -1008,7 +1008,7 @@ class we_objectFile extends we_document{
 				$uniq = md5(uniqid(__FUNCTION__, true));
 				$ob = new we_objectFile();
 				$ob->initByID($myid, OBJECT_FILES_TABLE);
-				$ob->DefArray = $ob->getDefaultValueArray();
+				$ob->DefArray = $ob->getDefaultValue[];
 				$txt = $ob->Text;
 
 				$but = we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','" . $txt . "','" . $txt . "')", "right", g_l('global', '[openCloseBox]'));
@@ -1031,7 +1031,7 @@ class we_objectFile extends we_document{
 
 			$shopVats = we_shop_vats::getAllShopVATs();
 
-			$values = array();
+			$values = [];
 			foreach($shopVats as $shopVat){
 				$values[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 			}
@@ -1055,7 +1055,7 @@ class we_objectFile extends we_document{
 
 	private function getShopCategoryFieldHtml($type, $name, array $attribs, $we_editmode = true){
 		if($we_editmode){
-			$values = array();
+			$values = [];
 
 			if($attribs['shopcatLimitChoice']){
 				$values[] = we_category::we_getCatsFromIDs(intval($attribs['default']), ',', true, $this->DB_WE, '', 'Path');
@@ -1080,7 +1080,7 @@ class we_objectFile extends we_document{
 	private function getHrefFieldHTML($type, $n, array $attribs, $we_editmode = true, $variant = false){
 		$hrefArr = we_unserialize($this->getElement($n));
 		if(!is_array($hrefArr)){
-			$hrefArr = array();
+			$hrefArr = [];
 		}
 		if(!$we_editmode){
 			return $this->getPreviewView($n, parent::getHrefByArray($hrefArr));
@@ -1173,7 +1173,7 @@ class we_objectFile extends we_document{
 		$img = new we_imageDocument();
 		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
-		$startTag = $this->getLinkStartTag($link, array(), $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
+		$startTag = $this->getLinkStartTag($link, [], $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
 
 		$editbut = we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_link_at_object','" . $n . "')");
 		$delbut = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_delete_link_at_object','" . $GLOBALS['we_transaction'] . "', 'link_" . $n . "')");
@@ -1357,7 +1357,7 @@ class we_objectFile extends we_document{
 
 // handling thumbnails for this image
 // identifying default thumbnail of class:
-		$defvals = $this->getDefaultValueArray();
+		$defvals = $this->getDefaultValue[];
 		$thumbID = isset($defvals['img_' . $name]['defaultThumb']) ? $defvals['img_' . $name]['defaultThumb'] : 0;
 		$thumbID = $thumbID ? f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $thumbID) : 0;
 // creating thumbnail only if it really exists:
@@ -1435,7 +1435,7 @@ class we_objectFile extends we_document{
 		if($this->TableID){
 			return we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 		}
-		return array();
+		return [];
 	}
 
 	public function canMakeNew(){
@@ -1455,7 +1455,7 @@ class we_objectFile extends we_document{
 //$foo = makeArrayFromCSV($ClassWs);
 			$paths = id_to_path($ClassWs, FILE_TABLE, $this->DB_WE, true);
 			if(!empty($paths)){
-				$where = array();
+				$where = [];
 				if(is_array($paths)){
 					foreach($paths as $path){
 						if($path != '/'){
@@ -1475,7 +1475,7 @@ class we_objectFile extends we_document{
 			}
 		} else {
 // alle UserWs, welche sich in einem der ClassWs befinden zur�ckgeben
-			$out = array();
+			$out = [];
 			foreach($userWs as $ws){
 				if(we_users_util::in_workspace($ws, $ClassWs, FILE_TABLE, $this->DB_WE)){
 					$out[] = $ws;
@@ -1484,7 +1484,7 @@ class we_objectFile extends we_document{
 			$paths = id_to_path($out, FILE_TABLE, $this->DB_WE, true);
 			if(!empty($paths)){
 				$ClassWs = '';
-				$where = array();
+				$where = [];
 				foreach($paths as $path){
 					if($path != '/'){
 						$where[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path="' . $this->DB_WE->escape($path) . "'";
@@ -1518,8 +1518,8 @@ class we_objectFile extends we_document{
 		$arr = makeArrayFromCSV($this->Workspaces);
 		$tmpls = makeArrayFromCSV($this->Templates);
 
-		$newArr = $newTmpls = array();
-//$newDefaultArr = array();
+		$newArr = $newTmpls = [];
+//$newDefaultArr = [];
 		foreach($arr as $nr => $id){
 			if(we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE)){
 				$newArr[] = $id;
@@ -1531,7 +1531,7 @@ class we_objectFile extends we_document{
 		$this->Templates = implode(',', $newTmpls);
 
 		$arr = makeArrayFromCSV($this->ExtraWorkspaces);
-		$newArr = array();
+		$newArr = [];
 		foreach($arr as $nr => $id){
 			if(we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE)){
 				$newArr[] = $id;
@@ -1687,7 +1687,7 @@ class we_objectFile extends we_document{
 				break;
 			}
 		}
-		$tempArr = array();
+		$tempArr = [];
 
 		foreach($ExtraWorkspaces as $ws){
 			$tempArr[] = $ws;
@@ -1695,7 +1695,7 @@ class we_objectFile extends we_document{
 
 		$this->ExtraWorkspaces = implode(',', $tempArr);
 
-		$tempArr = array();
+		$tempArr = [];
 
 		foreach($ExtraTemplates as $t){
 			$tempArr[] = $t;
@@ -1755,7 +1755,7 @@ class we_objectFile extends we_document{
 			case self::TYPE_HREF:
 				$hrefArr = we_unserialize($elem);
 				if(!is_array($hrefArr)){
-					$hrefArr = array();
+					$hrefArr = [];
 				}
 				return parent::getHrefByArray($hrefArr);
 			case self::TYPE_LINK:
@@ -1768,7 +1768,7 @@ class we_objectFile extends we_document{
 				}
 			case self::TYPE_META:
 				if(!$this->DefArray || !is_array($this->DefArray)){
-					$this->DefArray = $this->getDefaultValueArray();
+					$this->DefArray = $this->getDefaultValue[];
 				}
 				$vals = $this->DefArray["meta_" . $t]["meta"];
 				return empty($vals[$this->getElement($t)]) ? '' : $vals[$this->getElement($t)];
@@ -1795,9 +1795,9 @@ class we_objectFile extends we_document{
 	function setUrl(){
 		$foo = getHash('SELECT DefaultUrl,DefaultUrlfield0, DefaultUrlfield1, DefaultUrlfield2, DefaultUrlfield3 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		$max = 3;
-		$urlfield = array();
+		$urlfield = [];
 		if(!empty($foo["DefaultUrl"])){
-			$regs = array();
+			$regs = [];
 			$text = $foo["DefaultUrl"];
 			for($i = 0; $i <= $max; ++$i){
 				$cur = '';
@@ -2040,7 +2040,7 @@ class we_objectFile extends we_document{
 
 	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
-		$this->DefArray = $this->getDefaultValueArray();
+		$this->DefArray = $this->getDefaultValue[];
 		$this->i_objectFileInit();
 	}
 
@@ -2055,7 +2055,7 @@ class we_objectFile extends we_document{
 	function correctWorkspaces(){
 		if($this->Workspaces){
 			$ws = makeArrayFromCSV($this->Workspaces);
-			$newWs = array();
+			$newWs = [];
 			foreach($ws as $wsID){
 				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
 					$newWs[] = $wsID;
@@ -2067,7 +2067,7 @@ class we_objectFile extends we_document{
 		}
 		if($this->ExtraWorkspaces){
 			$ws = makeArrayFromCSV($this->ExtraWorkspaces);
-			$newWs = array();
+			$newWs = [];
 			foreach($ws as $wsID){
 				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
 					$newWs[] = $wsID;
@@ -2077,7 +2077,7 @@ class we_objectFile extends we_document{
 		}
 		if($this->ExtraWorkspacesSelected){
 			$ws = makeArrayFromCSV($this->ExtraWorkspacesSelected);
-			$newWs = array();
+			$newWs = [];
 			foreach($ws as $wsID){
 				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
 					$newWs[] = $wsID;
@@ -2177,7 +2177,7 @@ class we_objectFile extends we_document{
 		}
 		if(LANGLINK_SUPPORT){
 			if(!is_array($this->LangLinks)){
-				$this->LangLinks = array();
+				$this->LangLinks = [];
 			}
 			$this->setLanguageLink($this->LangLinks, stripTblPrefix(OBJECT_FILES_TABLE), false, true);
 		} else {
@@ -2206,7 +2206,7 @@ class we_objectFile extends we_document{
 				if(strpos($k, 'link_') === 0){
 					$name = str_replace('link_', '', $k);
 					$link = $this->getElement($name);
-					$link = is_array($link) ? $link : we_unserialize($link, array(), true);
+					$link = is_array($link) ? $link : we_unserialize($link, [], true);
 					if(isset($link['type']) && isset($link['id']) && isset($link['img_id'])){ //FIXME: $link should be an object so we can check class
 						if($link['type'] === 'int' && $link['id']){
 							$this->MediaLinks['link[name=' . $name . ']'] = $link['id'];
@@ -2243,7 +2243,7 @@ class we_objectFile extends we_document{
 		$DataTable = OBJECT_X_TABLE . intval($this->TableID);
 		$db = $this->DB_WE;
 		$tableInfo = $db->metadata($DataTable);
-		$regs = array();
+		$regs = [];
 		foreach($tableInfo as $cur){
 			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 				if($regs[1] != 'OF'){
@@ -2310,7 +2310,7 @@ class we_objectFile extends we_document{
 
 	private function i_getUniqueIDsAndFixNames(){
 		if(is_array($this->DefArray) && count($this->DefArray)){
-			$newDefArr = $this->getDefaultValueArray();
+			$newDefArr = $this->getDefaultValue[];
 			foreach($newDefArr as $n => $v){
 				if(is_array($v) && isset($v["uniqueID"])){
 					if(($oldName = $this->i_DefArrayNameNotEqual($n, $v["uniqueID"]))){
@@ -2516,14 +2516,14 @@ class we_objectFile extends we_document{
 		if(!$this->TableID || $this->IsFolder){
 			return;
 		}
-		static $recursiveObjects = array();
+		static $recursiveObjects = [];
 		if(empty($recursiveObjects)){
 			$recursiveObjects[] = $this->ID;
 		}
 
-		$linkObjects = array();
+		$linkObjects = [];
 		$tableInfo = $this->getSortedTableInfo($this->TableID, false, $this->DB_WE);
-		$regs = array();
+		$regs = [];
 		foreach($tableInfo as $cur){
 			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 				if($regs[1] != 'OF'){
@@ -2670,7 +2670,7 @@ class we_objectFile extends we_document{
 		if($this->wasUpdate && $this->ExtraWorkspacesSelected){
 			$ews = makeArrayFromCSV($this->ExtraWorkspacesSelected);
 			$ew = makeArrayFromCSV($this->ExtraWorkspaces);
-			$newews = array();
+			$newews = [];
 			foreach($ews as $ws){
 				if(in_array($ws, $ew)){
 					$newews[] = $ws;
@@ -2682,7 +2682,7 @@ class we_objectFile extends we_document{
 			$this->CreatorID = $this->CreatorID ? : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0);
 		}
 
-		$data = $regs = array();
+		$data = $regs = [];
 		foreach($tableInfo as $cur){
 			$regs = explode('_', $cur['name'], 2);
 			if(count($regs) > 1){
@@ -2702,7 +2702,7 @@ class we_objectFile extends we_document{
 	}
 
 	private function i_saveTmp(){
-		$saveArr = array();
+		$saveArr = [];
 		$this->saveInSession($saveArr);
 		if(($this->ModDate > $this->Published) && $this->Published){
 			if(!we_temporaryDocument::save($this->ID, $this->Table, $saveArr, $this->DB_WE)){
@@ -2761,7 +2761,7 @@ class we_objectFile extends we_document{
 	protected function i_setElementsFromHTTP(){
 		parent::i_setElementsFromHTTP();
 		if($_REQUEST){
-			$regs = array();
+			$regs = [];
 			$hrefFields = false;
 			$multiobjectFields = false;
 			$imgFields = false;
@@ -2773,7 +2773,7 @@ class we_objectFile extends we_document{
 			}
 			if($hrefFields){
 				$empty = array('int' => 1, 'intID' => '', 'intPath' => '', 'extPath' => '');
-				$hrefs = $match = array();
+				$hrefs = $match = [];
 				foreach($_REQUEST['we_' . $this->Name . '_' . self::TYPE_HREF] as $k => $val){
 					if(preg_match('|^(.+)' . we_base_link::MAGIC_INFIX . '(.+)$|', $k, $match)){
 						$hrefs[$match[1]][$match[2]] = $val;
@@ -2794,12 +2794,12 @@ class we_objectFile extends we_document{
 
 			if($multiobjectFields){
 				$this->resetElements();
-				$multiobjects = array();
+				$multiobjects = [];
 				while((list($k, $v) = $this->nextElement(self::TYPE_MULTIOBJECT))){
-					$multiobjects[$k] = array();
+					$multiobjects[$k] = [];
 				}
 
-				$match = array();
+				$match = [];
 				foreach($_REQUEST['we_' . $this->Name . '_' . self::TYPE_MULTIOBJECT] as $k => $val){
 					if(preg_match('|^(.+)_default(.+)$|', $k, $match)){
 						$multiobjects[$match[1]][$match[2]] = $val;
@@ -2827,7 +2827,7 @@ class we_objectFile extends we_document{
 		}
 
 		$ownersReadOnly = we_unserialize($this->OwnersReadOnly);
-		$readers = array();
+		$readers = [];
 		foreach(array_keys($ownersReadOnly) as $key){
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1){
 				$readers[] = $key;
@@ -2893,7 +2893,7 @@ class we_objectFile extends we_document{
 	 */
 	function getVariantFields(){
 		if($this->IsFolder){
-			return array();
+			return [];
 		}
 		$object = new we_object();
 		$object->initByID($this->TableID, OBJECT_TABLE);
@@ -3202,7 +3202,7 @@ class we_objectFile extends we_document{
 			return '1';
 		}
 
-		$parentIDs = array();
+		$parentIDs = [];
 		$pid = intval($pid);
 		$parentIDs[] = $pid;
 		while($pid != 0){
@@ -3213,7 +3213,7 @@ class we_objectFile extends we_document{
 		$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db);
 		$fooArr = we_unserialize($foo);
 		$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
-		$pid_tail = array();
+		$pid_tail = [];
 		if($flag){
 			$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';
 		}

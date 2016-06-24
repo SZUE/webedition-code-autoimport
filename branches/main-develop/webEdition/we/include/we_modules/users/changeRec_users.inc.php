@@ -32,7 +32,7 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
 
-	$childs = array();
+	$childs = [];
 	pushChilds($childs, $we_doc->ID, $we_doc->Table, '', $GLOBALS['DB_WE']);
 	if($childs){
 		$q = 'UPDATE ' . $we_doc->Table . ' SET ' .

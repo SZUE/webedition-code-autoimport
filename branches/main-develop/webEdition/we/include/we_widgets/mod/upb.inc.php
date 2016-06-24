@@ -37,7 +37,7 @@ $bTypeObj = (bool) $aProps[3]{1};
 $objectFilesTable = defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "";
 $numRows = 25;
 
-$tbls = array();
+$tbls = [];
 if($bTypeDoc && $bTypeObj){
 	if(defined('FILE_TABLE')){
 		$tbls[] = FILE_TABLE;
@@ -54,7 +54,7 @@ if($bTypeDoc && $bTypeObj){
 	}
 }
 
-$cont = array();
+$cont = [];
 $db = $GLOBALS['DB_WE'];
 foreach($tbls as $table){
 	if(defined('WORKFLOW_TABLE')){
@@ -72,7 +72,7 @@ foreach($tbls as $table){
 	#### get workspace query ###
 
 
-	$parents = $childs = array();
+	$parents = $childs = [];
 	$parentlist = $childlist = '';
 
 	if($table == FILE_TABLE){
@@ -112,7 +112,7 @@ foreach($tbls as $table){
 	$anz = f('SELECT COUNT(1) ' . $q, '', $db);
 
 	$db->query($s . $q . $order . ' LIMIT ' . intval($offset) . ',' . intval($numRows));
-	$content = array();
+	$content = [];
 
 	while($db->next_record()){
 		$cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" data-contenttype="' . $db->f('ContentType') . '"></td><td class="upbEntry middlefont '.($db->f("Published") != '-' ? 'changed' : "notpublished").'" onclick="WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '">' . $db->f("Path") . '</td></tr>';

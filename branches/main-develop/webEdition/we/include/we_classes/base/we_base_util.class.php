@@ -151,7 +151,7 @@ abstract class we_base_util{
 		if(strpos($number, 'E')){ //  when number is too big, it is shown with E+xx
 			$number = number_format($number, 2, '.', '');
 		}
-		$match = array();
+		$match = [];
 		if(preg_match('|([0-9]*\.?[0-9]*),([0-9]*)|', $number, $match)){ // deutsche schreibweise
 			return floatval(str_replace('.', '', $match[1]) . '.' . $match[2]);
 		}
@@ -250,7 +250,7 @@ abstract class we_base_util{
 	 * @param array[optional] $chars
 	 * @param string[optional] $str
 	 */
-	public static function number2System($value, $chars = array(), $str = ''){
+	public static function number2System($value, $chars = [], $str = ''){
 
 		if(!(is_array($chars) && count($chars) > 1)){ //	in case of error take default-array
 			$chars = array('^', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
@@ -268,7 +268,7 @@ abstract class we_base_util{
 		return ($result > 0 ? self::number2System($result, $chars, $str) : $str);
 	}
 
-	static function getCurlHttp($server, $path = '', $files = array(), $header = false, $timeout = 0){
+	static function getCurlHttp($server, $path = '', $files = [], $header = false, $timeout = 0){
 		$response = array(
 			'data' => '', // data if successful
 			'status' => 0, // 0=ok otherwise error
@@ -287,7 +287,7 @@ abstract class we_base_util{
 			$url.='?' . $pathA[1];
 			unset($pathA[1]);
 		}
-		$params = array();
+		$params = [];
 
 		$session = curl_init();
 		curl_setopt($session, CURLOPT_URL, $url);
@@ -359,7 +359,7 @@ abstract class we_base_util{
 	}
 
 	function convertDateInRequest(array &$req, $asInt = false){
-		$dates = $regs = array();
+		$dates = $regs = [];
 
 		foreach($req as $key => $value){
 			if(preg_match('/^we_date_([a-zA-Z0-9_]+)_(day|month|year|minute|hour)$/', $key, $regs)){
@@ -467,7 +467,7 @@ abstract class we_base_util{
 
 	public static function mime2extensions($mime, $retCsv = false){
 		$mime = str_replace('/*', '/', trim($mime));
-		$extensions = array();
+		$extensions = [];
 		foreach(self::$mimetypes as $k => $v){
 			if(is_array($v)){
 				foreach($v as $cur){
@@ -485,7 +485,7 @@ abstract class we_base_util{
 
 	public static function mimegroup2mimes($mimegroup, $retCsv = false){
 		$mimegroup = str_replace('/*', '/', trim($mimegroup));
-		$mimes = array();
+		$mimes = [];
 		foreach(self::$mimetypes as $v){
 			if(is_array($v)){
 				foreach($v as $cur){
@@ -517,7 +517,7 @@ abstract class we_base_util{
 
 	static function convertUnits($string, $base = 16){
 		//FIXME: what to do with % ??
-		$regs = array();
+		$regs = [];
 		if(!preg_match('/(\d+\.?\d*) ?(em|ex|pt|px|in|mm|cm|pc|ch|rem|vw|vh|vmin|vmax|%)?/', $string, $regs)){
 			$regs[1] = intval($string);
 			$regs[2] = 'px';

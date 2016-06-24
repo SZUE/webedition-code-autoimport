@@ -183,7 +183,7 @@ function we_cmd() {
 
 		$body = we_html_element::htmlIFrame('edheader', WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edheader&top=1&home=' . $home . '&mid=' . $mid . '&bid=' . $bid . '&typ=object&ViewClass=' . $classid, 'position:absolute;top:0px;height:40px;left:0px;right:0px;', '', '', false) .
 			we_html_element::htmlIFrame('edbody', $bodyURL, 'position:absolute;top:40px;bottom:0px;left:0px;right:0px;', '', '', true);
-		return $this->getHTMLDocument(we_html_element::htmlBody(array(), $body));
+		return $this->getHTMLDocument(we_html_element::htmlBody([], $body));
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){

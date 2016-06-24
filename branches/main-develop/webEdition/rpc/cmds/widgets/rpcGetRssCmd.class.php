@@ -86,14 +86,14 @@ class rpcGetRssCmd extends we_rpc_cmd{
 			$bShowCategory = ($bCfgCategory && isset($item['category']));
 
 			$sLink = (($bCfgLink && isset($item['link'])) && !$bShowTitle) ? " &nbsp;" .
-				we_html_element::htmlA(array("href" => $item['link'], "target" => "_blank", "style" => "text-decoration:underline;"), g_l('cockpit', '[more]')) : "";
+				we_html_element::htmlA(["href" => $item['link'], "target" => "_blank", "style" => "text-decoration:underline;"], g_l('cockpit', '[more]')) : "";
 			if($bShowContEnc){
-				$contEnc = new we_html_table(array("class" => 'default'), 1, 1);
+				$contEnc = new we_html_table(["class" => 'default'], 1, 1);
 				$contEnc->setCol(0, 0, null, $item['content:encoded'] . ((!$bCfgDesc) ? $sLink : ""));
 			}
 
 			$sRssOut .= ($bShowTitle ?
-					($bShowLink ? we_html_element::htmlA(array("href" => $item['link'], "target" => "_blank"), we_html_element::htmlB($item['title'])) :
+					($bShowLink ? we_html_element::htmlA(["href" => $item['link'], "target" => "_blank"], we_html_element::htmlB($item['title'])) :
 						we_html_element::htmlB($item['title'])) .
 					($bShowPubdate ? ' ' : we_html_element::htmlBr()) :
 					'') .
@@ -127,7 +127,7 @@ class rpcGetRssCmd extends we_rpc_cmd{
 			}
 		}
 
-		$aTb = array();
+		$aTb = [];
 		if($bTbLabel){
 			$aTb[] = g_l('cockpit', '[rss_feed]');
 		}
@@ -136,7 +136,7 @@ class rpcGetRssCmd extends we_rpc_cmd{
 				((isset($oRssParser->channel["title"])) ? $oRssParser->channel["title"] : "");
 		}
 		if($bTbDesc){
-			$aTb[] = (isset($oRssParser->channel["description"])) ? str_replace(array("\n", "\r"), '', $oRssParser->channel["description"]) : '';
+			$aTb[] = (isset($oRssParser->channel["description"])) ? str_replace(["\n", "\r"], '', $oRssParser->channel["description"]) : '';
 		}
 		if($bTbLink){
 			$aTb[] = (isset($oRssParser->channel["link"])) ? $oRssParser->channel["link"] : '';

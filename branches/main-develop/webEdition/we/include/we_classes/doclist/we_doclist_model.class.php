@@ -40,12 +40,12 @@ class we_doclist_model extends we_search_modelBase{
 	/**
 	 * @var array: includes the text to search for
 	 */
-	protected $searchDoclistSearch = array();
+	protected $searchDoclistSearch = [];
 
 	/**
 	 * @var array: includes the operators
 	 */
-	protected $locationDoclistSearch = array();
+	protected $locationDoclistSearch = [];
 
 	/**
 	 * @var integer: folder-ids of the docsearch and the tmplsearch
@@ -66,12 +66,12 @@ class we_doclist_model extends we_search_modelBase{
 	 * @var string: gives the order
 	 */
 	protected $OrderDoclistSearch = 'Text';
-	protected $searchTablesDoclistSearch = array();
+	protected $searchTablesDoclistSearch = [];
 
 	/**
 	 * @var array: includes the searchfiels which you are searching in
 	 */
-	protected $searchFieldsDoclistSearch = array();
+	protected $searchFieldsDoclistSearch = [];
 
 	/**
 	 * Default Constructor
@@ -104,7 +104,7 @@ class we_doclist_model extends we_search_modelBase{
 		if(isset($_REQUEST['searchstart' . $this->whichSearch]) || isset($request['searchstart' . $this->whichSearch])){
 			if(isset($_REQUEST['searchFields' . $this->whichSearch])){
 				$_REQUEST['we_cmd']['searchFields' . $this->whichSearch] = $_REQUEST['searchFields' . $this->whichSearch];
-				$_REQUEST['we_cmd']['location' . $this->whichSearch] = isset($_REQUEST['location' . $this->whichSearch]) ? $_REQUEST['location' . $this->whichSearch] : array();
+				$_REQUEST['we_cmd']['location' . $this->whichSearch] = isset($_REQUEST['location' . $this->whichSearch]) ? $_REQUEST['location' . $this->whichSearch] : [];
 				$_REQUEST['we_cmd']['search' . $this->whichSearch] = $_REQUEST['search' . $this->whichSearch];
 			} else {
 				foreach($request as $k => $v){

@@ -51,7 +51,7 @@ function we_tag_categorySelect(array $attribs, $content){
 		$valuesArray = id_to_path($values, CATEGORY_TABLE, $GLOBALS['DB_WE'], true);
 	} elseif($type === 'request'){
 		// Bug Fix #750
-		$valuesArray = we_base_request::_(we_base_request::STRING_LIST, $name, array());
+		$valuesArray = we_base_request::_(we_base_request::STRING_LIST, $name, []);
 	} else {
 		// Bug Fix #750
 		$valuesArray = (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) ?

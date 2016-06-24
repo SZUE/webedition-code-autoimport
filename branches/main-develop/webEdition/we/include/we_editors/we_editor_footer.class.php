@@ -91,7 +91,7 @@ abstract class we_editor_footer{
 		$ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
 		if(!$ctrlElem || !$ctrlElem['hide']){
 			$table->addCol(2);
-			$table->setCol(0, $pos++, array(), we_html_button::create_button(we_html_button::TRASH, "javascript:if(confirm(WE().consts.g_l.main.delete_single_confirm_delete+'" . $we_doc->Path . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
+			$table->setCol(0, $pos++, [], we_html_button::create_button(we_html_button::TRASH, "javascript:if(confirm(WE().consts.g_l.main.delete_single_confirm_delete+'" . $we_doc->Path . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
 		}
 	}
 
@@ -251,33 +251,33 @@ abstract class we_editor_footer{
 		//	Always button preview
 		if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){ // first button is always - preview, when exists
 			$seeModeTable->addCol(2);
-			$seeModeTable->setCol(0, $pos++, array(), we_html_button::create_button('fat:preview,fa-lg fa-eye', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
+			$seeModeTable->setCol(0, $pos++, [], we_html_button::create_button('fat:preview,fa-lg fa-eye', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 		// shop variants
 		if(defined('SHOP_TABLE')){
 			if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && in_array(we_base_constants::WE_EDITPAGE_VARIANTS, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->canHaveVariants(true) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_VARIANTS){ // first button is always - preview, when exists
 				$seeModeTable->addCol(2);
-				$seeModeTable->setCol(0, $pos++, array(), we_html_button::create_button('shopVariants', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_VARIANTS . ",'" . $GLOBALS["we_transaction"] . "');"));
+				$seeModeTable->setCol(0, $pos++, [], we_html_button::create_button('shopVariants', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_VARIANTS . ",'" . $GLOBALS["we_transaction"] . "');"));
 			}
 		}
 
 		//	image-documents have no preview but thumbnailview instead ...
 		if($GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_THUMBNAILS && in_array(we_base_constants::WE_EDITPAGE_THUMBNAILS, $GLOBALS['we_doc']->EditPageNrs)){
 			$seeModeTable->addCol(2);
-			$seeModeTable->setCol(0, $pos++, array(), we_html_button::create_button('thumbnails', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_THUMBNAILS . ",'" . $GLOBALS["we_transaction"] . "');"));
+			$seeModeTable->setCol(0, $pos++, [], we_html_button::create_button('thumbnails', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_THUMBNAILS . ",'" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 		//	Button edit !!!
 		if($GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_CONTENT && in_array(we_base_constants::WE_EDITPAGE_CONTENT, $GLOBALS['we_doc']->EditPageNrs)){ // then button "edit"
 			$seeModeTable->addCol(2);
-			$seeModeTable->setCol(0, $pos++, array(), we_html_button::create_button(we_html_button::EDIT, "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_CONTENT . ", '" . $GLOBALS["we_transaction"] . "');"));
+			$seeModeTable->setCol(0, $pos++, [], we_html_button::create_button(we_html_button::EDIT, "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_CONTENT . ", '" . $GLOBALS["we_transaction"] . "');"));
 		}
 		//	Button properties
 		if(in_array(we_base_constants::WE_EDITPAGE_PROPERTIES, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_SCHEDULER)){
 			if(permissionhandler::isUserAllowedForAction("switch_edit_page", we_base_constants::WE_EDITPAGE_PROPERTIES)){
 				$seeModeTable->addCol(2);
-				$seeModeTable->setCol(0, $pos++, array(), we_html_button::create_button('properties', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));
+				$seeModeTable->setCol(0, $pos++, [], we_html_button::create_button('properties', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_PROPERTIES . ", '" . $GLOBALS["we_transaction"] . "');"));
 			}
 		}
 

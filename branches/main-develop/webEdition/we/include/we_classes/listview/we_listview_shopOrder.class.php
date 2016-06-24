@@ -99,7 +99,7 @@ class we_listview_shopOrder extends we_listview_base{
 		$where = ($this->condition ? (' WHERE ' . $this->condition) : '') . ' GROUP BY IntOrderID';
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_TABLE . $where, '', $this->DB_WE);
-		$format = array();
+		$format = [];
 		foreach(we_shop_statusMails::$StatusFields as $field){
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}

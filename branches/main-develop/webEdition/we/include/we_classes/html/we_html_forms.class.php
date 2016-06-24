@@ -142,13 +142,13 @@ abstract class we_html_forms{
 		$cssClasses = weTag_getAttribute('classes', $attribs, '', we_base_request::STRING);
 		$buttonTop = false;
 		$buttonBottom = false;
-		$editorcss = weTag_getAttribute('editorcss', $attribs, array(), we_base_request::INTLISTA);
+		$editorcss = weTag_getAttribute('editorcss', $attribs, [], we_base_request::INTLISTA);
 		$imagestartid = weTag_getAttribute('imagestartid', $attribs, 0, we_base_request::INT);
 		$galleryTemplates = weTag_getAttribute('gallerytemplates', $attribs, 0, we_base_request::INTLIST);
 
 		//first prepare stylesheets from textarea-attribute editorcss (templates) or class-css (classes): csv of ids. then (if document) get document-css, defined by we:css
 
-		$contentCss = array_filter((isset($GLOBALS['we_doc']) && is_object($GLOBALS['we_doc']) && !$ignoredocumentcss ? $GLOBALS['we_doc']->getDocumentCss() : array()));
+		$contentCss = array_filter((isset($GLOBALS['we_doc']) && is_object($GLOBALS['we_doc']) && !$ignoredocumentcss ? $GLOBALS['we_doc']->getDocumentCss() : []));
 		if($editorcss){
 			$contentCss = $contentCss + $GLOBALS['DB_WE']->getAllq('SELECT CONCAT(Path,"?",Published) FROM ' . FILE_TABLE . ' WHERE Published>0 AND ID IN (' . implode(',', $editorcss) . ')', true);
 		}
@@ -173,7 +173,7 @@ abstract class we_html_forms{
 		}
 
 		//FIXME: don't remove style width/height in no wysiwyg if no width is given!
-		$style = ($style ? explode(';', trim(preg_replace(array('/width:[^;"]+[;"]?/i', '/height:[^;"]+[;"]?/i'), '', $style), ' ;')) : array());
+		$style = ($style ? explode(';', trim(preg_replace(array('/width:[^;"]+[;"]?/i', '/height:[^;"]+[;"]?/i'), '', $style), ' ;')) : []);
 
 		$fontnames = weTag_getAttribute('fontnames', $attribs, '', we_base_request::STRING);
 		$showmenues = (
@@ -254,7 +254,7 @@ abstract class we_html_forms{
 
 	static function removeBrokenInternalLinksAndImages(&$text){
 		$DB_WE = new DB_WE();
-		$regs = array();
+		$regs = [];
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)([" \?#])/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				if(!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]), '', $DB_WE)){

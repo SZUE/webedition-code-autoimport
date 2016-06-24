@@ -44,7 +44,7 @@ class we_binaryDocument extends we_document{
 	/**
 	 * @var array for metadata read via $metaDataReader
 	 */
-	var $metaData = array();
+	var $metaData = [];
 
 	/** Constructor
 	 * @return we_binaryDocument
@@ -296,7 +296,7 @@ class we_binaryDocument extends we_document{
 		$fs = $GLOBALS['we_doc']->getFilesize();
 		$fs = g_l('metadata', '[filesize]') . ": " . round(($fs / 1024), 2) . "&nbsp;KB";
 		$metaData = $this->getMetaData();
-		$mdtypes = array();
+		$mdtypes = [];
 
 		if($metaData){
 			if(!empty($metaData["exif"])){
@@ -352,16 +352,16 @@ class we_binaryDocument extends we_document{
 		$search = new we_search_search();
 		$search->searchMediaLinks(0, true, $this->ID);
 		$ml = $search->getUsedMediaLinks();
-		$accessibles = isset($ml['accessible']['mediaID_' . $this->ID]) ? $ml['accessible']['mediaID_' . $this->ID] : array();
-		$notaccessibles = isset($ml['notaccessible']['mediaID_' . $this->ID]) ? $ml['notaccessible']['mediaID_' . $this->ID] : array();
-		$groups = isset($ml['groups']['mediaID_' . $this->ID]) ? $ml['groups']['mediaID_' . $this->ID] : array();
+		$accessibles = isset($ml['accessible']['mediaID_' . $this->ID]) ? $ml['accessible']['mediaID_' . $this->ID] : [];
+		$notaccessibles = isset($ml['notaccessible']['mediaID_' . $this->ID]) ? $ml['notaccessible']['mediaID_' . $this->ID] : [];
+		$groups = isset($ml['groups']['mediaID_' . $this->ID]) ? $ml['groups']['mediaID_' . $this->ID] : [];
 
 		if(empty($groups)){
 			return array('form' => g_l('weClass', '[notReferenced]'), 'num' => 0);
 		}
 
 		$js = "";
-		$values = array();
+		$values = [];
 		$c = 0;
 		$num = 0;
 		$limit = 20;
@@ -371,7 +371,7 @@ class we_binaryDocument extends we_document{
 			$num += $ca;
 			$values[$group . ' (' . ($ca) . ($cna ? ', davon ' . $cna . ' ' . g_l('weClass', '[medialinks_unaccessible]') . '' : '') . ')'] = we_html_tools::OPTGROUP;
 			$cc = 0;
-			foreach((isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : array()) as $v){
+			foreach((isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : []) as $v){
 				if($cc++ >= $limit){
 					$values[-1] = '[ + ' . (count($accessibles[$group]) - $limit) . ' ' . g_l('weClass', '[medialinks_more]') . ' ]';
 					break;
@@ -383,7 +383,7 @@ class we_binaryDocument extends we_document{
 		}
 		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:top.we_openMediaReference(document.getElementById('MediaReferences').value);");
 
-		$form = we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, array(), 'value', 388), '', 'left', 'defaultfont', '', $button);
+		$form = we_html_element::jsElement("top.we_mediaReferences = {" . $js . "};") . we_html_tools::htmlFormElementTable($this->htmlSelect('MediaReferences', $values, 1, '', false, [], 'value', 388), '', 'left', 'defaultfont', '', $button);
 
 		return array('form' => $form, 'num' => $num);
 	}

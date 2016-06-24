@@ -32,7 +32,7 @@ class we_navigation_view extends we_modules_view{
 		$this->Model = new we_navigation_navigation();
 	}
 
-	function getCommonHiddens($cmds = array()){
+	function getCommonHiddens($cmds = []){
 		return
 			parent::getCommonHiddens($cmds) .
 			we_html_element::htmlHiddens(array(
@@ -88,7 +88,7 @@ WE().consts.navigation={
 	}
 
 	function getJSProperty(){
-		$objFields = array();
+		$objFields = [];
 		if($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS){
 			if(defined('OBJECT_TABLE')){
 
@@ -187,7 +187,7 @@ if(top.content.treeData){
 				if($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS && $this->Model->TitleField != ""){
 					$classFields = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . " WHERE ID=" . intval($this->Model->ClassID), "DefaultValues", $this->db));
 					if(is_array($classFields) && count($classFields) > 0){
-						$fieldsByNamePart = array();
+						$fieldsByNamePart = [];
 						foreach(array_keys($classFields) as $key){
 							if(($pos = strpos($key, "_")) && (substr($key, 0, $pos) != "object")){
 								$fieldsByNamePart[substr($key, $pos + 1)] = $key;
@@ -225,7 +225,7 @@ if(top.content.treeData){
 						'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
 
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){
-					$old_items = array();
+					$old_items = [];
 					if($this->Model->hasDynChilds()){
 						$old_items = $this->Model->depopulateGroup();
 						foreach($old_items as $id){
@@ -238,7 +238,7 @@ if(top.content.treeData){
 					}
 				}
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_NODYNAMIC){
-					$old_items = array();
+					$old_items = [];
 					if($this->Model->hasDynChilds()){
 						$old_items = $this->Model->depopulateGroup();
 						foreach($old_items as $id){
@@ -440,7 +440,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 			$this->Model->UseDocumentFilter = we_navigation_customerFilter::getUseDocumentFilterFromRequest();
 		}
 
-		$categories = array();
+		$categories = [];
 
 		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
 			for($i = 0; $i < $cnt; $i++){

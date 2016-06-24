@@ -26,7 +26,7 @@ class rpcGetCategoryCmd extends we_rpc_cmd{
 
 	function execute(){
 		$resp = new we_rpc_response();
-		$error = array();
+		$error = [];
 		// check for necessory params
 		if(!($obj=we_base_request::_(we_base_request::STRING, 'obj'))){
 			$error[] = "Missing field obj";

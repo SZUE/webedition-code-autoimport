@@ -24,10 +24,10 @@
  */
 class we_backup_XMLParser{
 	var $parseError;
-	var $Nodes = array();
+	var $Nodes = [];
 	var $Handle = 0;
 	var $Mark;
-	var $XPaths = array();
+	var $XPaths = [];
 
 	function parse(&$data, $encoding = 'ISO-8859-1'){
 		if(empty($data)){
@@ -64,17 +64,17 @@ class we_backup_XMLParser{
 
 	function normalize(){
 
-		$newNodes = array();
+		$newNodes = [];
 
 		$count = 0;
-		$level = array();
+		$level = [];
 		$level_prefix = 'l';
 
 		foreach($this->Nodes as $k => $v){
 
 			if($v['type'] === 'open' || $v['type'] === 'complete'){
 
-				$new = array();
+				$new = [];
 
 				$new['name'] = $v['tag'];
 
@@ -107,22 +107,22 @@ class we_backup_XMLParser{
 
 	function normalizeWithXpaths(){
 
-		$newNodes = array();
+		$newNodes = [];
 
-		$xpaths = array();
-		$parent_xpaths = array();
-		$element_counter = array();
+		$xpaths = [];
+		$parent_xpaths = [];
+		$element_counter = [];
 
 
 
 		$count = 0;
-		$level = array();
+		$level = [];
 
 		foreach($this->Nodes as $k => $v){
 
 			if($v['type'] === 'open' || $v['type'] === 'complete'){
 
-				$new = array();
+				$new = [];
 
 				$new['name'] = $v['tag'];
 
@@ -143,7 +143,7 @@ class we_backup_XMLParser{
 				$parent = ($v['level'] > 1 ? $parent_xpaths[$v['level'] - 1] : '') . '/';
 
 				if(!isset($element_counter[$v['level']])){
-					$element_counter[$v['level']] = array();
+					$element_counter[$v['level']] = [];
 				}
 
 				if(isset($element_counter[$v['level']][$v['tag']])){

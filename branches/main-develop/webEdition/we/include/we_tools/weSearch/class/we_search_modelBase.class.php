@@ -38,10 +38,10 @@ class we_search_modelBase extends we_tool_model{
 	public $mode = 0;
 	// in these variables we hold data of actual search (= whichSearch) after initByHttp();
 	protected $currentSearchstart = 0;
-	protected $currentSearch = array();
-	protected $currentLocation = array();
-	protected $currentSearchTables = array();
-	protected $currentSearchFields = array();
+	protected $currentSearch = [];
+	protected $currentLocation = [];
+	protected $currentSearchTables = [];
+	protected $currentSearchFields = [];
 	protected $currentOrder = 'Text';
 	protected $currentAnzahl = 10;
 	protected $currentAnzahlMedialinks = 0;

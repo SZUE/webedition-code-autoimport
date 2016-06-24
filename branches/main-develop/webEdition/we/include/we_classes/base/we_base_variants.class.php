@@ -79,7 +79,7 @@ abstract class we_base_variants{
 
 		// all variant fields must be stored in one single field of the content table
 		// store variationfields in one array
-		$variationElements = array();
+		$variationElements = [];
 
 		foreach($elements as $element => $elemArr){
 			if(strpos($element, we_base_constants::WE_VARIANTS_PREFIX) !== false){
@@ -99,8 +99,8 @@ abstract class we_base_variants{
 		// enough to build blocks of data of a single variant.
 		ksort($variationElements);
 
-		$variationElement = array();
-		$nameOfPosition = array();
+		$variationElement = [];
+		$nameOfPosition = [];
 
 		// :ATTENTION: if nr of variants is > 10 a ksort of the elements is not
 		// enough to build blocks of data of a single variant.
@@ -110,7 +110,7 @@ abstract class we_base_variants{
 
 			if(!isset($nameOfPosition["nameof_$elemNr"])){
 				$nameOfPosition["nameof_$elemNr"] = $data['dat'];
-				$variationElement[$elemNr][$nameOfPosition["nameof_$elemNr"]] = array();
+				$variationElement[$elemNr][$nameOfPosition["nameof_$elemNr"]] = [];
 			} else {
 				$fieldName = self::getFieldNameFromElemName($element);
 				$variationElement[$elemNr][$nameOfPosition["nameof_$elemNr"]][$fieldName] = $data;
@@ -189,8 +189,8 @@ abstract class we_base_variants{
 		// init model->elements if neccessary
 
 		if(!isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) || !isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat']) || !is_array($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'])){
-			$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME] = array();
-			$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'] = array();
+			$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME] = [];
+			$model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'] = [];
 		}
 
 		// add new element at end of array, move it when neccesary
@@ -208,12 +208,12 @@ abstract class we_base_variants{
 	private static function createNewVariantElement(&$model){
 
 		// :TODO: improve me
-		return array();
+		return [];
 	}
 
 	public static function getAllVariationFields($model, $pos = false){
 		$elements = $model->elements;
-		$variationElements = array();
+		$variationElements = [];
 
 		foreach($elements as $element => $elemArr){
 			if(strpos($element, we_base_constants::WE_VARIANTS_PREFIX) !== false){
@@ -253,7 +253,7 @@ abstract class we_base_variants{
 		$variationElements_2 = we_base_variants::getAllVariationFields($model, $pos2);
 
 		// backup pos 1
-		$tmp = array();
+		$tmp = [];
 		foreach($variationElements_1 as $name => $arr){
 			$tmp[$name] = $arr;
 			unset($model->elements[$name]);
@@ -301,7 +301,7 @@ abstract class we_base_variants{
 
 		$count = we_base_variants::getNumberOfVariants($model);
 
-		$parts = $regs = array();
+		$parts = $regs = [];
 
 		if($count){
 			for($i = 0; $i < $count; $i++){
@@ -315,7 +315,7 @@ abstract class we_base_variants{
 		<td style="width:200px"><span class="defaultfont"><b>Name</b></span></td>
 </tr>
 <tr>
-		<td>' . $model->getFieldHTML(we_base_constants::WE_VARIANTS_PREFIX . $i, 'input', array(), true, true) . '</td>
+		<td>' . $model->getFieldHTML(we_base_constants::WE_VARIANTS_PREFIX . $i, 'input', [], true, true) . '</td>
 		<td>
 			<table class="defaultfont lowContrast" style="text-align:right;width:120px">
 				<tr>
@@ -365,7 +365,7 @@ abstract class we_base_variants{
 
 		$count = we_base_variants::getNumberOfVariants($model);
 
-		$parts = array();
+		$parts = [];
 
 		if($count){
 			for($i = 0; $i < $count; $i++){
@@ -503,7 +503,7 @@ abstract class we_base_variants{
 
 	public static function getVariantData($model, $defaultname){
 		if(!isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
-			return array();
+			return [];
 		}
 
 		// add default data to listview
@@ -593,7 +593,7 @@ abstract class we_base_variants{
 		);
 
 
-		$content = array();
+		$content = [];
 		foreach($fields as $ind => $field){
 			$element = $we_doc->getElement('variant_' . $field);
 			$content[$ind] = array(array(

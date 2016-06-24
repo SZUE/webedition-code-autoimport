@@ -57,8 +57,8 @@ class we_category extends we_base_model{
 		$pre = ' FIND_IN_SET("';
 		$post = '",' . $table . '.' . $fieldName . ') ';
 
-		$idarray = array();
-		$folders = array();
+		$idarray = [];
+		$folders = [];
 		if($categoryids){
 			$idarray2 = array_unique(array_map('trim', explode(',', trim($categoryids, ','))));
 			$db->query('SELECT ID,1 AS IsFolder,Path FROM ' . CATEGORY_TABLE . ' WHERE ID IN(' . implode(',', $idarray2) . ')');
@@ -77,7 +77,7 @@ class we_category extends we_base_model{
 			foreach($idarray1 as $cat){
 				$cat = '/' . trim($cat, '/ ');
 				$isFolder = 0;
-				$tmp = array();
+				$tmp = [];
 				$db->query('SELECT ID, 1 AS IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
 				while($db->next_record()){
 					$tmp[] = $db->f('ID');
@@ -94,7 +94,7 @@ class we_category extends we_base_model{
 			return '';
 		}
 
-		$where = array();
+		$where = [];
 		if(!empty($idarray)){
 			$where[] = $pre . implode($post . ($catOr ? ' OR ' : ' AND ') . $pre, array_unique($idarray)) . $post;
 		}
@@ -134,7 +134,7 @@ class we_category extends we_base_model{
 
 	static function we_getCategories($catIDs, $tokken = ',', $showpath = false, we_database_base $db = null, $rootdir = '/', $catfield = '', $onlyindir = '', $asArray = false, $assoc = false, $complete = false, $includeDir = false, $order = ''){
 		$db = ($db ? : new DB_WE());
-		$cats = array();
+		$cats = [];
 		$whereIDs = trim($catIDs, ',') ? ' ID IN(' . trim($catIDs, ',') . ')' : 1;
 		$whereDir = ' AND Path LIKE "' . $db->escape($onlyindir) . '/%"';
 		$whereIncludeDir = $onlyindir && $includeDir !== false ? ' OR (Path = "' . $db->escape($onlyindir) . '")' : '';

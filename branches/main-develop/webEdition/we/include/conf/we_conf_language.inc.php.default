@@ -5,8 +5,8 @@
  * NOTE: this file is regenerated, so any extra contents will be overwritten
  */
 
-$GLOBALS['weFrontendLanguages'] = array(
+$GLOBALS['weFrontendLanguages'] = [
 	'de_DE'
-);
+];
 
 $GLOBALS["weDefaultFrontendLanguage"] = "de_DE";

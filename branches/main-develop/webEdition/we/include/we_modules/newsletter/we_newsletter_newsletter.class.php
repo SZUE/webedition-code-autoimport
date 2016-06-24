@@ -58,11 +58,11 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	var $Step = 0;
 	var $Offset = 0;
 	var $Charset = '';
-	var $log = array();
-	var $blocks = array();
-	var $groups = array();
+	var $log = [];
+	var $blocks = [];
+	var $groups = [];
 	var $isEmbedImages = '';
-	protected $MediaLinks = array();
+	protected $MediaLinks = [];
 
 	/**
 	 * Default Constructor
@@ -155,7 +155,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			$group->save();
 		}
 		$count_group = count($this->groups);
-		$groups = array();
+		$groups = [];
 		foreach($this->blocks as $block){
 			$groups = makeArrayFromCSV($block->Groups);
 			foreach($groups as $k => $v){
@@ -203,7 +203,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 
 		// FIXME: inherit from we_base_model and call parent::registerMediaLinks();
 		// filter MediaLinks by media contenttype
-		$verifiedIDs = array();
+		$verifiedIDs = [];
 		if(!empty($this->MediaLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::VIDEO . '")';
 			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique(array_values($this->MediaLinks))) . ') ' . $whereType);
@@ -298,7 +298,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 			if($where > count($this->blocks) - 1){
 				$this->blocks[] = new we_newsletter_block();
 			} else {
-				$temp = array();
+				$temp = [];
 				foreach($this->blocks as $k => $v){
 					if($k == $where){
 						$temp[] = new we_newsletter_block();

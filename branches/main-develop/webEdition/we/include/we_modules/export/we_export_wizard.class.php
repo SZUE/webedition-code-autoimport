@@ -39,8 +39,8 @@ class we_export_wizard{
 		'selTempl' => '',
 		'selObjs' => '',
 		'selClasses' => '',
-		'finalDocs' => array(),
-		'finalObjs' => array(),
+		'finalDocs' => [],
+		'finalObjs' => [],
 		'file_name' => '',
 		'export_to' => 'local',
 		'path' => '',
@@ -51,7 +51,7 @@ class we_export_wizard{
 		'csv_fieldnames' => '',
 		'csv_fields' => 0,
 		'cdata' => 'true',
-		'RefTable' => array(),
+		'RefTable' => [],
 		'CurrentRef' => 0,
 		'step' => 0,
 		'handle_def_templates' => 0,
@@ -163,7 +163,7 @@ class we_export_wizard{
 
 	private function getHTMLFrameset(){
 		$args = "";
-		$_SESSION['weS']['exportVars_session'] = array();
+		$_SESSION['weS']['exportVars_session'] = [];
 		if(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1))){
 			$args .= "&we_cmd[1]=" . $cmd1;
 		}
@@ -351,7 +351,7 @@ function we_cmd(){
 }');
 		$js.=we_html_element::jsElement('top.footer.location="' . $this->frameset . '?pnt=footer&step=2";');
 
-		$parts = array();
+		$parts = [];
 		$showdocs = false;
 		if(!isset($this->exportVars["extype"]) || (isset($this->exportVars["extype"]) && $this->exportVars["extype"] != "csv")){
 			$doc_type = $this->getHTMLDocType();
@@ -583,18 +583,18 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=4";');
 
 
 
-		$formattable = new we_html_table(array(), 4, 1);
+		$formattable = new we_html_table([], 4, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden($handle_def_templates, "handle_def_templates", g_l('export', '[handle_def_templates]')));
 		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_document_includes ? true : false), "handle_document_includes", g_l('export', '[handle_document_includes]')));
 		$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($handle_object_includes ? true : false), "handle_object_includes", g_l('export', '[handle_object_includes]')));
 		$formattable->setCol(3, 0, null, we_html_forms::checkboxWithHidden(($handle_document_linked ? true : false), "handle_document_linked", g_l('export', '[handle_document_linked]')));
 
-		$formattable2 = new we_html_table(array(), 3, 1);
+		$formattable2 = new we_html_table([], 3, 1);
 		$formattable2->setCol(0, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden(($handle_def_classes ? true : false), "handle_def_classes", g_l('export', '[handle_def_classes]')));
 		$formattable2->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_object_embeds ? true : false), "handle_object_embeds", g_l('export', '[handle_object_embeds]')));
 //$formattable2->setCol(2,0,null,we_html_forms::checkboxWithHidden(($handle_class_defs ? true : false),"handle_class_defs",g_l('export',"[handle_class_defs]")));
 
-		$formattable3 = new we_html_table(array(), 2, 1);
+		$formattable3 = new we_html_table([], 2, 1);
 		$formattable3->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($handle_doctypes ? true : false), "handle_doctypes", g_l('export', '[handle_doctypes]')));
 		$formattable3->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($handle_categorys ? true : false), "handle_categorys", g_l('export', '[handle_categorys]')));
 
@@ -642,7 +642,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 			case "csv":
 //$csv_input_size = 3;
 
-				$fileformattable = new we_html_table(array(), 4, 1);
+				$fileformattable = new we_html_table([], 4, 1);
 
 				$file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "weSelect", "style" => "width: 254px"));
 				$file_encoding->addOption("windows", g_l('export', '[windows]'));
@@ -1067,7 +1067,7 @@ if (top.footer.setProgress){
 					$finalObjs = $this->exportVars["finalObjs"];
 					$finalClasses = $this->exportVars["finalClasses"];
 
-					$ids = array();
+					$ids = [];
 					foreach($finalDocs as $k => $v){
 						$ct = f('SELECT ContentType FROM ' . FILE_TABLE . ' WHERE ID=' . $v, '', $this->db);
 						$ids[] = array(
@@ -1253,7 +1253,7 @@ switch (args[0]) {
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->exportVars["categories"]);
-				if(($cat = we_base_request::_(we_base_request::INTLISTA, "cat", array()))){
+				if(($cat = we_base_request::_(we_base_request::INTLISTA, "cat", []))){
 					foreach($cat as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							$arr[] = $id;

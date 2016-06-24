@@ -75,12 +75,12 @@ function we_tag_sessionField(array $attribs, $content){
 					substr($lang, 0, 2) :
 					array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
 
-			$topCountries = WE_COUNTRIES_TOP ? array_flip(explode(',', WE_COUNTRIES_TOP)) : array();
+			$topCountries = WE_COUNTRIES_TOP ? array_flip(explode(',', WE_COUNTRIES_TOP)) : [];
 			foreach($topCountries as $countrykey => &$countryvalue){
 				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
 
-			$shownCountries = WE_COUNTRIES_SHOWN ? array_flip(explode(',', WE_COUNTRIES_SHOWN)) : array();
+			$shownCountries = WE_COUNTRIES_SHOWN ? array_flip(explode(',', WE_COUNTRIES_SHOWN)) : [];
 			foreach($shownCountries as $countrykey => &$countryvalue){
 				$countryvalue = we_base_country::getTranslation($countrykey, we_base_country::TERRITORY, $langcode);
 			}
@@ -120,7 +120,7 @@ function we_tag_sessionField(array $attribs, $content){
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
 			}
-			$frontendLL = array();
+			$frontendLL = [];
 			foreach($frontendL as &$lcvalue){
 				$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 			}
@@ -249,10 +249,10 @@ function we_tag_sessionField(array $attribs, $content){
 			return getHtmlTag('input', array_merge(removeAttribs($attribs, array('doc', 'usevalue', 'languageautofill', 'htmlspecialchars', 'xml')), $hidden));
 		case 'img':
 			if(!isset($_SESSION['webuser']['imgtmp'])){
-				$_SESSION['webuser']['imgtmp'] = array();
+				$_SESSION['webuser']['imgtmp'] = [];
 			}
 			if(!isset($_SESSION['webuser']['imgtmp'][$name])){
-				$_SESSION['webuser']['imgtmp'][$name] = array();
+				$_SESSION['webuser']['imgtmp'][$name] = [];
 			}
 
 			$_SESSION['webuser']['imgtmp'][$name]['parentid'] = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);

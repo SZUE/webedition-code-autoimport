@@ -109,4 +109,4 @@ $body = we_html_element::htmlBody(array('id' => 'weMainBody', 'onload' => 'weTab
 			we_html_element::htmlExIFrame('we_preferences_footer', getPreferencesFooter(), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')
 	));
 
-echo we_html_element::htmlBody(array(), $body) . getPreferencesFooterJS() . '</html>';
+echo we_html_element::htmlBody([], $body) . getPreferencesFooterJS() . '</html>';

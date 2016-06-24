@@ -24,7 +24,7 @@
  */
 class rpcGetAllDocElementsCmd extends we_rpc_cmd{
 
-	var $Parameters = array('docid');
+	var $Parameters = ['docid'];
 
 	function execute(){
 

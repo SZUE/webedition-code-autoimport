@@ -23,7 +23,7 @@
  */
 $we_tabs = new we_tabs();
 
-$name = array();
+$name = [];
 
 $menuItems = we_tool_lookup::getAllTools(true, false);
 $tool = we_base_request::_(we_base_request::STRING, 'tool');

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_search_tree extends we_tree_base{
-	static $treeItems = array();
+	static $treeItems = [];
 
 	function getJSTreeCode(){
 		return parent::getJSTreeCode() .
@@ -36,7 +36,7 @@ class we_search_tree extends we_tree_base{
 
 	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500){
 		$db = new DB_WE();
-		$openFolders = array();
+		$openFolders = [];
 
 		if(isset($_SESSION['weS']['weSearch']["modelidForTree"])){
 			$id = $_SESSION['weS']['weSearch']["modelidForTree"];
@@ -92,7 +92,7 @@ class we_search_tree extends we_tree_base{
 					'disabled' => 0,
 					'text' => oldHtmlspecialchars(we_search_model::getLangText($db->f('Path'), $db->f('Text'))),
 				);
-				$fields = array();
+				$fields = [];
 
 				foreach($db->Record as $k => $v){
 					$fields[strtolower($k)] = $v;

@@ -34,7 +34,7 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function __construct($name, $options = array(), $required = true, $module = '', $description = '', $deprecated = false){
+	function __construct($name, $options = [], $required = true, $module = '', $description = '', $deprecated = false){
 		if(!is_array($options)){
 			return;
 		}

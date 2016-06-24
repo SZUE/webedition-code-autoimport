@@ -109,7 +109,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 					"disabled" => 0,
 					"tooltip" => "",
 					"offset" => $prevoffset
-				)) : array());
+				)) : []);
 
 
 		$settings = new we_customer_settings();
@@ -134,7 +134,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 			);
 
 			$tt = $db->f('treeFormat');
-			$fileds = array();
+			$fileds = [];
 			foreach($db->Record as $k => $v){
 				$fileds[strtolower($k)] = $v;
 			}
@@ -166,7 +166,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 	private static function getSortFromDB($pid, $sort, $offset = 0, $segment = 500){
 		$db = new DB_WE();
 
-		$havingarr = $sort_defs = $pidarr = $check = array();
+		$havingarr = $sort_defs = $pidarr = $check = [];
 
 		$notroot = (preg_match('|\{.\}|', $pid)) ? true : false;
 
@@ -183,7 +183,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 			$sort_defs = $settings->SortView[$sort];
 		}
 
-		$select = $grouparr = $orderarr = array();
+		$select = $grouparr = $orderarr = [];
 
 		$total = f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE);
 
@@ -224,7 +224,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 			(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
 			' GROUP BY ' . $grp . (count($grouparr) ? ($level ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
-		$items = $foo = array();
+		$items = $foo = [];
 		$gname = '';
 		$old = '0';
 		$first = true;
@@ -253,7 +253,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 				);
 				$check[$gname] = 1;
 			} else {
-				$foo = array();
+				$foo = [];
 				for($i = 0; $i < $levelcount; $i++){
 					$foo[] = ($i == 0 ?
 							('{' . ($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')) . '}') :

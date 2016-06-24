@@ -108,7 +108,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 					'method' => 'post'
 					), $hiddens) .
 				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", $topParts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'), "", 0, "hidden") . '</div>' .
-				'<div id="div_upload_files" style="height:410px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", array(), 30, "", -1, "", "", "", "") . '</div>' .
+				'<div id="div_upload_files" style="height:410px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", [], 30, "", -1, "", "", "", "") . '</div>' .
 				$divMask .
 				$loupe .
 				$divBusyMessage
@@ -125,13 +125,13 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 	protected function _getHtmlFileRow(){
 		$btnTable = new we_html_table(array('class' => 'default') , 1, 2);
 		$btnTable->addCol(we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);"));
-		$btnTable->setCol(0, 0, array(), we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);"));
+		$btnTable->setCol(0, 0, [], we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);"));
 		$divBtnSelect = we_html_element::htmlDiv(
 			array('class' => 'fileInputWrapper', 'style' => 'overflow:hidden;vertical-align: bottom; display: inline-block;'),
 			we_html_element::htmlInput(array('type' => 'file', 'id' => 'fileInput_uploadFiles_WEFORMNUM', 'class' => 'fileInput fileInputList fileInputHidden elemFileinput')) .
 			we_html_button::create_button('fa:, fa-lg fa-hdd-o', 'javascript:void(0)')
 		);
-		$btnTable->setCol(0, 1, array(), $divBtnSelect);
+		$btnTable->setCol(0, 1, [], $divBtnSelect);
 
 		// TODO: replace by we_progressBar
 		$progressbar = '<table class="default"><tbody><tr>
@@ -152,9 +152,9 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		$btnPreview = we_html_element::htmlDiv(array('class' => 'btnRefresh'), we_html_button::create_button(we_html_button::VIEW, "javascript:we_FileUpload.openImageEditor(WEFORMNUM);", true, 0, 0, '', '', false, true, '', false, $title = 'Vollansicht'));
 
 		$divWhatOptions = we_html_element::htmlDiv(array('class' => 'elemWhatOpts'),
-			we_html_element::htmlDiv(array(), we_html_forms::checkbox(0, true, 'useGeneralOpts', g_l('importFiles', '[edit_useGlobalOpts]'), true, 'defaultfont', 'we_FileUpload.setUseGeneralOpts(this);')) .
-			we_html_element::htmlDiv(array(), we_html_forms::radiobutton('custom', true, 'editOpts', g_l('importFiles', '[edit_useCustom]'), true, 'defaultfont', 'we_FileUpload.setCustomEditOpts(this.form);', true)) .
-			we_html_element::htmlDiv(array(), we_html_forms::radiobutton('expert', false, 'editOpts', g_l('importFiles', '[edit_useExpert]'), true, 'defaultfont', 'we_FileUpload.setCustomEditOpts(this.form);', true))
+			we_html_element::htmlDiv([], we_html_forms::checkbox(0, true, 'useGeneralOpts', g_l('importFiles', '[edit_useGlobalOpts]'), true, 'defaultfont', 'we_FileUpload.setUseGeneralOpts(this);')) .
+			we_html_element::htmlDiv([], we_html_forms::radiobutton('custom', true, 'editOpts', g_l('importFiles', '[edit_useCustom]'), true, 'defaultfont', 'we_FileUpload.setCustomEditOpts(this.form);', true)) .
+			we_html_element::htmlDiv([], we_html_forms::radiobutton('expert', false, 'editOpts', g_l('importFiles', '[edit_useExpert]'), true, 'defaultfont', 'we_FileUpload.setCustomEditOpts(this.form);', true))
 		);
 		$valueInput = we_html_tools::htmlTextInput('resizeValue', 11, '', '', '', "text", 54, 20, '', true);
 		$unitSelect = we_html_tools::htmlSelect('unitSelect', array(

@@ -88,7 +88,7 @@ class we_app_Model extends we_core_AbstractModel{
 	 *
 	 * @var array
 	 */
-	protected $_requiredFields = array();
+	protected $_requiredFields = [];
 
 	/**
 	 * Constructor

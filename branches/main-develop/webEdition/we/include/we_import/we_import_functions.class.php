@@ -204,7 +204,7 @@ abstract class we_import_functions{
 			return strtotime($datestring);
 		}
 
-		$replaceorder = array();
+		$replaceorder = [];
 
 		$formatchars = array("Y", "y", "m", "n", "d", "j", "H", "G", "i", "s");
 
@@ -213,7 +213,7 @@ abstract class we_import_functions{
 		foreach($formatchars as $char){
 			$format = str_replace("\\" . $char, "###we###" . ord($char) . "###we###", $format);
 		}
-		$matches = array();
+		$matches = [];
 		if(preg_match_all('/[' . $eregchars . ']/', $format, $matches, PREG_SET_ORDER)){
 			foreach($matches as $match){
 				if(is_array($match) && isset($match[0])){

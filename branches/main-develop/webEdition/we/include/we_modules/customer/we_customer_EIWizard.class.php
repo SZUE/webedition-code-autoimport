@@ -101,8 +101,8 @@ class we_customer_EIWizard{
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
 		$generic = new we_html_table(array('class' => 'default withSpace'), 2, 1);
-		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked){top.type='" . we_import_functions::TYPE_GENERIC_XML . "';}", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
-		$generic->setCol(1, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
+		$generic->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked){top.type='" . we_import_functions::TYPE_GENERIC_XML . "';}", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
+		$generic->setCol(1, 0, [], we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
 
 		$parts = array(
 			array(
@@ -313,7 +313,7 @@ switch (args[0]){
 		exit;
 	}
 
-	function getHiddens($options = array()){
+	function getHiddens($options = []){
 		switch($options["art"]){
 			case self::ART_IMPORT:
 				$filename = we_base_request::_(we_base_request::FILE, 'filename');
@@ -510,8 +510,8 @@ switch (args[0]){
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
 		$generic = new we_html_table(array('class' => 'default withSpace'), 2, 1);
-		$generic->setCol(0, 0, array(), we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) top.type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
-		$generic->setCol(1, 0, array(), we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_import]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
+		$generic->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) top.type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
+		$generic->setCol(1, 0, [], we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_import]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
 
 		$parts = array(
 			array(
@@ -543,7 +543,7 @@ switch (args[0]){
 		$fileUploader->setDisableUploadBtnOnInit(false);
 		$fileUploader->setDimensions(array('width' => 369, 'alertBoxWidth' => 430, 'marginTop' => 10));
 
-		$parts = array();
+		$parts = [];
 		$js = we_html_element::jsElement('
 
 function callBack(){
@@ -565,8 +565,8 @@ function callBack(){
 
 		//upload table
 		$tmptable = new we_html_table(array('class' => 'default withSpace'), 2, 1);
-		//$tmptable->setCol(0, 0, array(), we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
-		$tmptable->setCol(0, 0, array(), $fileUploader->getHtmlAlertBoxes());
+		//$tmptable->setCol(0, 0, [], we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
+		$tmptable->setCol(0, 0, [], $fileUploader->getHtmlAlertBoxes());
 
 		//$tmptable->setCol(2, 0, array('style'=>'vertical-align:middle;'), we_html_tools::htmlTextInput("upload", 35, "", 255, "onclick=\"document.we_form.import_from[1].checked=true;\"", "file"));
 		$tmptable->setCol(1, 0, array('style' => 'vertical-align:middle;'), $fileUploader->getHTML());
@@ -603,7 +603,7 @@ function callBack(){
 		}
 		$filesource = $filename ? $_SERVER['DOCUMENT_ROOT'] . $filename : '';
 
-		$parts = array();
+		$parts = [];
 		if(is_file($filesource) && is_readable($filesource)){
 			$js = "";
 			switch($type){
@@ -677,7 +677,7 @@ function callBack(){
 						$node_set = $xp->evaluate("*/child::*");
 						$children = $xp->nodes[$xp->root]["children"];
 
-						$recs = array();
+						$recs = [];
 						foreach($children as $key => $value){
 							$flag = true;
 							for($k = 1; $k < ($value + 1); $k++){
@@ -713,19 +713,19 @@ function callBack(){
 							$optid++;
 						}
 
-						$tblSelect = new we_html_table(array(), 1, 7);
-						$tblSelect->setCol(0, 1, array(), $rcdSelect->getHtml());
+						$tblSelect = new we_html_table([], 1, 7);
+						$tblSelect->setCol(0, 1, [], $rcdSelect->getHtml());
 						$tblSelect->setCol(0, 2, array("width" => 20));
 						$tblSelect->setCol(0, 3, array("class" => "defaultfont"), g_l('modules_customer', '[num_data_sets]'));
-						$tblSelect->setCol(0, 4, array(), we_html_tools::htmlTextInput("xml_from", 4, 1, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
+						$tblSelect->setCol(0, 4, [], we_html_tools::htmlTextInput("xml_from", 4, 1, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 						$tblSelect->setCol(0, 5, array("class" => "defaultfont"), g_l('modules_customer', '[to]'));
-						$tblSelect->setCol(0, 6, array(), we_html_tools::htmlTextInput("xml_to", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
+						$tblSelect->setCol(0, 6, [], we_html_tools::htmlTextInput("xml_to", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 
-						$tblFrame = new we_html_table(array(), 3, 2);
+						$tblFrame = new we_html_table([], 3, 2);
 						$tblFrame->setCol(0, 0, array("colspan" => 2, "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), we_html_tools::TYPE_INFO, 570) :
 								we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[xml_valid_1]') . " $optid " . g_l('modules_customer', '[xml_valid_m2]'), we_html_tools::TYPE_INFO, 570));
 						$tblFrame->setCol(1, 0, array("colspan" => 2));
-						$tblFrame->setCol(2, 1, array(), $tblSelect->getHtml());
+						$tblFrame->setCol(2, 1, [], $tblSelect->getHtml());
 
 						$_REQUEST["dataset"] = $firstItem;
 						$parts = array(array("html" => $tblFrame->getHtml(), 'noline' => 1));
@@ -783,7 +783,7 @@ function callBack(){
 			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')));
 		}
 
-		$rows = array();
+		$rows = [];
 		$i = 0;
 
 		foreach($records as $record){
@@ -851,7 +851,7 @@ function callBack(){
 		$tmpdir = we_base_request::_(we_base_request::FILE, "tmpdir");
 		$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
-		$table = new we_html_table(array(), 3, 1);
+		$table = new we_html_table([], 3, 1);
 		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_customer', '[import_finished_desc]'), $impno));
 
 		if($tmpdir && is_file(TEMP_PATH . $tmpdir . '/' . $tmpdir . '.log') && is_readable(TEMP_PATH . "$tmpdir/$tmpdir.log")){
@@ -1088,7 +1088,7 @@ function doNext(){
 	}
 
 	private function getDoExportCode(){
-		$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
+		$customers = we_base_request::_(we_base_request::INTLISTA, "customers", []);
 		$file_format = we_base_request::_(we_base_request::STRING, "file_format", '');
 		$export_to = we_base_request::_(we_base_request::STRING, "export_to", self::EXPORT_SERVER);
 		$path = ($export_to == self::EXPORT_SERVER ? we_base_request::_(we_base_request::FILE, 'path', '') : TEMP_DIR);
@@ -1123,7 +1123,7 @@ function doNext(){
 		}
 		if($customers){
 			$options = array(
-				"customers" => array(),
+				"customers" => [],
 				"filename" => $_SERVER['DOCUMENT_ROOT'] . $path . "/" . $filename,
 				"format" => $file_format,
 				"firstexec" => $firstexec,
@@ -1254,10 +1254,10 @@ function doNext(){
 
 		$same = we_base_request::_(we_base_request::STRING, "same", "rename");
 
-		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", array());
-		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", array());
+		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", []);
+		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", []);
 
-		$options = array();
+		$options = [];
 		$options["type"] = $type;
 		$options["filename"] = $filename;
 		$options["exim"] = $this->exim_number;
@@ -1308,8 +1308,8 @@ function doNext(){
 		$tmpdir = we_base_request::_(we_base_request::FILE, "tmpdir", "");
 		$fstart = we_base_request::_(we_base_request::INT, "fstart", 0);
 		$fcount = we_base_request::_(we_base_request::INT, "fcount", "");
-		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", array());
-		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", array());
+		$field_mappings = we_base_request::_(we_base_request::RAW, "field_mappings", []);
+		$att_mappings = we_base_request::_(we_base_request::RAW, "att_mappings", []);
 		$same = we_base_request::_(we_base_request::STRING, "same", "rename");
 		$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
@@ -1464,11 +1464,11 @@ function formDirChooser() {
 
 		switch(we_base_request::_(we_base_request::STRING, "wcmd")){
 			case "add_customer":
-				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
-				$customers = array_unique(array_merge($customers, we_base_request::_(we_base_request::INTLISTA, "cus", array())));
+				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", []);
+				$customers = array_unique(array_merge($customers, we_base_request::_(we_base_request::INTLISTA, "cus", [])));
 				break;
 			case "del_customer":
-				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
+				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", []);
 				if(($id = we_base_request::_(we_base_request::INT, "cus"))){
 					foreach($customers as $k => $v){
 						if($v == $id){
@@ -1478,10 +1478,10 @@ function formDirChooser() {
 				}
 				break;
 			case "del_all_customers":
-				$customers = array();
+				$customers = [];
 				break;
 			default:
-				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", array());
+				$customers = we_base_request::_(we_base_request::INTLISTA, "customers", []);
 		}
 		$customers = array_filter($customers);
 		$js = we_html_element::jsElement('
@@ -1509,7 +1509,7 @@ top.customers="' . implode(',', $customers) . '";');
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.top.body.selector_cmd(\'add_customer\',top.allIDs);')");
-		$custs = new we_chooser_multiDir(400, ($customers ? : array()), "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
+		$custs = new we_chooser_multiDir(400, ($customers ? : []), "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 
 		$custs->isEditable = permissionhandler::hasPerm("EDIT_CUSTOMER");
 		return $js . $hiddens . $custs->get();
@@ -1562,7 +1562,7 @@ function filter_cmd(what){
 }
 document.we_form.filter_count.value="' . $count . '";');
 
-		$custfields = array();
+		$custfields = [];
 		$this->db->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 		while($this->db->next_record()){
 			$fv = $this->db->f("Field");
@@ -1595,7 +1595,7 @@ document.we_form.filter_count.value="' . $count . '";');
 			}
 			if($i != 0){
 				$table->addRow();
-				$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("filter_logic_" . $i, $logic, 1, $new["logic"], false, array(), "value", 70));
+				$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("filter_logic_" . $i, $logic, 1, $new["logic"], false, [], "value", 70));
 				$c++;
 			} else {
 				$table->addRow();
@@ -1604,9 +1604,9 @@ document.we_form.filter_count.value="' . $count . '";');
 			}
 
 			$table->addRow();
-			$table->setCol($c, 0, array(), we_html_tools::htmlSelect("filter_fieldname_" . $i, $custfields, 1, $new["fieldname"], false, array(), "value", 200));
-			$table->setCol($c, 1, array(), we_html_tools::htmlSelect("filter_operator_" . $i, $operators, 1, $new["operator"], false, array(), "value", 70));
-			$table->setCol($c, 2, array(), we_html_tools::htmlTextInput("filter_fieldvalue_" . $i, 16, $new["fieldvalue"]));
+			$table->setCol($c, 0, [], we_html_tools::htmlSelect("filter_fieldname_" . $i, $custfields, 1, $new["fieldname"], false, [], "value", 200));
+			$table->setCol($c, 1, [], we_html_tools::htmlSelect("filter_operator_" . $i, $operators, 1, $new["operator"], false, [], "value", 70));
+			$table->setCol($c, 2, [], we_html_tools::htmlTextInput("filter_fieldvalue_" . $i, 16, $new["fieldvalue"]));
 			$c++;
 		}
 
@@ -1645,10 +1645,10 @@ document.we_form.filter_count.value="' . $count . '";');
 	private function getExportCustomers(){
 		switch(we_base_request::_(we_base_request::STRING, 'selection')){
 			case self::SELECTION_MANUAL:
-				return we_base_request::_(we_base_request::INTLISTA, 'customers', array());
+				return we_base_request::_(we_base_request::INTLISTA, 'customers', []);
 			default:
 				$filter_count = we_base_request::_(we_base_request::INT, 'filter_count', 0);
-				$filter_fieldname = $filter_operator = $filter_fieldvalue = $filter_logic = array();
+				$filter_fieldname = $filter_operator = $filter_fieldvalue = $filter_logic = [];
 
 				$fields_names = array('fieldname', 'operator', 'fieldvalue', 'logic');
 				for($i = 0; $i < $filter_count; $i++){
@@ -1657,7 +1657,7 @@ document.we_form.filter_count.value="' . $count . '";');
 						${$var}[] = we_base_request::_(we_base_request::STRING, $var . '_' . $i, 0);
 					}
 				}
-				$filterarr = array();
+				$filterarr = [];
 				foreach($filter_fieldname as $k => $v){
 					$filterarr[] = ($k ? (' ' . $filter_logic[$k] . ' ') : '') . $v . ' ' . $this->getOperator($filter_operator[$k]) . " '" . (is_numeric($filter_fieldvalue[$k]) ? $filter_fieldvalue[$k] : $this->db->escape($filter_fieldvalue[$k])) . "'";
 				}

@@ -31,7 +31,7 @@ define('DATE_ONLY_FORMAT', 'Y-m-d');
 class we_customer_settings{
 	private $db;
 	public $customer;
-	public $properties = array();
+	public $properties = [];
 	private $changedFieldTypes = array(
 		'dateTime' => 'varchar(24)',
 		'country' => 'varchar(4)',
@@ -55,8 +55,8 @@ class we_customer_settings{
 		'select' => 'enum',
 		'multiselect' => 'set',
 	);
-	public $FieldAdds = array();
-	public $SortView = array();
+	public $FieldAdds = [];
+	public $SortView = [];
 	private $Prefs = array(
 		'treetext_format' => '#Username (#Forename #Surname)',
 		'start_year' => 1900,
@@ -100,7 +100,7 @@ class we_customer_settings{
 		'MONTHNAME' => 'date',
 		'QUARTER' => 'date'
 	);
-	private $PropertyTitle = array();
+	private $PropertyTitle = [];
 	private $MaxSearchResults = 99999;
 	private $reservedWords = array('select', 'straight_join', 'sql_small_result', 'sql_buffer_result',
 		'sql_cache', 'sql_no_cache', 'sql_cals_found_rows', 'high_priority', 'distinct', 'distinctrow', 'all', 'into',
@@ -113,7 +113,7 @@ class we_customer_settings{
 		'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied', 'autologin', 'autologindenied'
 	);
 	public $treeTextFormatSQL = '';
-	public $formatFields = array();
+	public $formatFields = [];
 
 	function __construct(){
 		$this->db = new DB_WE();
@@ -148,7 +148,7 @@ class we_customer_settings{
 			$this->SortView = we_unserialize($this->properties['SortView']);
 		}
 		if(!is_array($this->SortView)){
-			$this->SortView = array();
+			$this->SortView = [];
 		}
 
 		if(isset($this->properties['EditSort'])){

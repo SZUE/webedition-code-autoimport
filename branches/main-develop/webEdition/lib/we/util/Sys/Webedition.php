@@ -89,7 +89,7 @@ class we_util_Sys_Webedition extends we_util_Sys{
 	public static function modulesInstalled(){
 t_e('deprecated',__FUNCTION__);
 		// not implemented yet
-		return array();
+		return [];
 	}
 
 
@@ -164,7 +164,7 @@ t_e('deprecated',__FUNCTION__);
 
 	public static function toolsInstalled(){
 		// not implemented yet
-		return array();
+		return [];
 	}
 
 }

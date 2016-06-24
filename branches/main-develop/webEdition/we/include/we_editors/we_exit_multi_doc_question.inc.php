@@ -35,7 +35,7 @@ if(!in_array($nextCmd, $allowedCmds)){
 }
 
 
-$ctLngs = array();
+$ctLngs = [];
 
 foreach(g_l('contentTypes', '') as $key => $lng){
 	$ctLngs [] = '"' . $key . '": "' . $lng . '"';

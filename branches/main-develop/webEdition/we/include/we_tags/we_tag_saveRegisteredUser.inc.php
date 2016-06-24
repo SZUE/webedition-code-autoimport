@@ -288,7 +288,7 @@ function we_tag_saveRegisteredUser_keepInput($merge = false){
 }
 
 function we_tag_saveRegisteredUser_processRequest(array $protected, array $allowed){
-	$set = array();
+	$set = [];
 	$allEncryptedFields = we_customer_customer::getEncryptedFields();
 
 	foreach($_REQUEST['s'] as $name => $val){

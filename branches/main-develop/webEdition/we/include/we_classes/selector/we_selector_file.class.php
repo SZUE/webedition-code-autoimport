@@ -62,7 +62,7 @@ class we_selector_file{
 	protected $db;
 	var $sessionID = '';
 	protected $fields = '';
-	var $values = array();
+	var $values = [];
 	var $openerFormName = 'we_form';
 	protected $order = 'Text';
 	protected $canSelectDir = true;

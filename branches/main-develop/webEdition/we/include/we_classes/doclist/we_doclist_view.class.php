@@ -198,13 +198,13 @@ WE().consts.g_l.weSearch = {
 		);
 	}
 
-	public function makeContent(array $result = array(), $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){
+	public function makeContent(array $result = [], $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){
 		$DB_WE = new DB_WE();
 		$currentSetView = $this->Model->getProperty('currentSetView');
 		$we_PathLength = 30;
 
 		$resultCount = count($result);
-		$content = array();
+		$content = [];
 
 		for($f = 0; $f < $resultCount; $f++){
 			$fontColor = '';
@@ -296,7 +296,7 @@ WE().consts.g_l.weSearch = {
 				}
 
 				$defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
-				$metafields = array();
+				$metafields = [];
 				$fieldcount = min(6, count($defined_fields));
 				for($i = 0; $i < $fieldcount; $i++){
 					$tagName = $defined_fields[$i]["tag"];

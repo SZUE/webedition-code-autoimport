@@ -109,7 +109,7 @@ abstract class we_base_file{
 		$close = $prefix . 'close';
 
 		$buffer = '';
-		$lines = array();
+		$lines = [];
 		$line = 0;
 		if(($fp = $open($filename, 'rb'))){
 			while((($buffer = $gets($fp, 4096)) !== false) && ++$line < $to){
@@ -770,7 +770,7 @@ abstract class we_base_file{
 		);
 		$db = ($db ? : new DB_WE());
 		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
-		$new = array();
+		$new = [];
 		while($db->next_record()){
 			$new[] = $db->f('ID');
 		}

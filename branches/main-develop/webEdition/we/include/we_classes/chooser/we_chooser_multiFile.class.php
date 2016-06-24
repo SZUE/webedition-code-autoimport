@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_chooser_multiFile extends we_chooser_multiDir{
-	private $disabledDelItems = array();
+	private $disabledDelItems = [];
 	private $disabledDelReason = '';
 
 	public function __construct($width, $ids, $cmd_del, $addbut, $cmd_edit){
@@ -92,7 +92,7 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 
 		$table2 = new we_html_table(array("class" => 'default', "width" => $this->width), 1, 1);
 
-		$table2->setCol(0, 0, array(), we_html_element::htmlDiv(array("style" => "background-color:white;", "class" => "multichooser", "id" => "multi_selector"), $table->getHtml()));
+		$table2->setCol(0, 0, [], we_html_element::htmlDiv(array("style" => "background-color:white;", "class" => "multichooser", "id" => "multi_selector"), $table->getHtml()));
 
 		if($this->addbut){
 			$table2->addRow(1);

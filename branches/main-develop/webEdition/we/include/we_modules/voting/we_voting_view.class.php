@@ -32,7 +32,7 @@ class we_voting_view extends we_modules_view{
 		$this->voting = new we_voting_voting();
 	}
 
-	function getCommonHiddens($cmds = array()){
+	function getCommonHiddens($cmds = []){
 		return
 			parent::getCommonHiddens($cmds) .
 			we_html_element::htmlHiddens(array(
@@ -253,7 +253,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 						break;
 				}
 
-				$content = array();
+				$content = [];
 				$questName = we_base_request::_(we_base_request::STRING, 'question_name');
 				if($questName && ($data = we_base_request::_(we_base_request::STRING, $questName . '_item0'))){
 					$content[] = $enclose . addslashes($data) . $enclose . $delimiter;
@@ -388,7 +388,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 			$this->page = $_REQUEST["page"];
 		}
 
-		$qaset = $qaADDset = array();
+		$qaset = $qaADDset = [];
 		$qname = we_base_request::_(we_base_request::STRING, 'question_name');
 		$vcount = we_base_request::_(we_base_request::INT, 'variant_count');
 		$aname = we_base_request::_(we_base_request::STRING, 'answers_name');
@@ -398,14 +398,14 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 				if(($quest = we_base_request::_(we_base_request::STRING, $qname . '_variant' . $i . '_' . $qname . '_item0')) !== false){
 					$set = array(
 						'question' => addslashes($quest),
-						'answers' => array(),
+						'answers' => [],
 					);
 
 					$an = $aname . '_variant' . $i . '_' . $aname . '_item';
 					$anImage = $an . 'ImageID';
 					$anMedia = $an . 'MediaID';
 					$anSuccessor = $an . 'SuccessorID';
-					$addset = array();
+					$addset = [];
 					for($j = 0; $j < $icount; $j++){
 						if(($tmp = we_base_request::_(we_base_request::STRING, $an . $j)) !== false){
 							$set['answers'][] = addslashes($tmp);
@@ -431,7 +431,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 
 		/* FIXME: this doesn't work! multi_edit assumes the value is the same as the displayed item, so you get an image-tag & textual user here which is really not what we need. To fix this, multi_edit.js must distinguish between "label" & value!
 		 * if(($on = we_base_request::_(we_base_request::STRING, 'owners_name')) && ($oc = we_base_request::_(we_base_request::INT, 'owners_count'))){
-		  $this->voting->Owners = array();
+		  $this->voting->Owners = [];
 		  $an = $on . '_variant0_' . $on . '_item';
 		  for($i = 0; $i < $oc; $i++){
 		  if(($tmp = we_base_request::_(we_base_request::STRING, $an . $i))){
@@ -443,7 +443,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 		  }
 		 */
 
-		$ipset = array();
+		$ipset = [];
 		if(($in = we_base_request::_(we_base_request::STRING, 'iptable_name')) && ($ic = we_base_request::_(we_base_request::INT, 'iptable_count'))){
 			$in = $in . '_variant0_' . $in . '_item';
 			for($i = 0; $i < $ic; $i++){
@@ -464,7 +464,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 		}
 
 		if(we_base_request::_(we_base_request::FLOAT, 'scores_0') !== false && ($ic = we_base_request::_(we_base_request::INT, 'item_count')) && we_base_request::_(we_base_request::BOOL, 'scores_changed')){
-			$this->voting->Scores = array();
+			$this->voting->Scores = [];
 			for($j = 0; $j < $ic; $j++){
 				if(($tmp = we_base_request::_(we_base_request::FLOAT, 'scores_' . $j))){
 					$this->voting->Scores[] = $tmp;

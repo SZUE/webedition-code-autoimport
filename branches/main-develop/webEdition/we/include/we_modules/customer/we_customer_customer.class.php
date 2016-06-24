@@ -80,7 +80,7 @@ class we_customer_customer extends we_base_model{
 	}
 
 	public function loadPresistents(){
-		$this->persistent_slots = array();
+		$this->persistent_slots = [];
 		$tableInfo = $this->db->metadata($this->table);
 		foreach($tableInfo as $t){
 			$fname = $t["name"];
@@ -176,7 +176,7 @@ class we_customer_customer extends we_base_model{
 		$orderedarray = array_combine($sortarray, $this->persistent_slots);
 		ksort($orderedarray);
 
-		$branche = array();
+		$branche = [];
 		foreach($orderedarray as $per){
 			$var_value = (isset($this->$per) ? $this->$per : null);
 			$field = $this->transFieldName($per, $branche);
@@ -192,17 +192,17 @@ class we_customer_customer extends we_base_model{
 	}
 
 	function getBranchesNames(){
-		$branches = $common = $other = array();
+		$branches = $common = $other = [];
 		$this->getBranches($branches, $common, $other);
 		return array_keys($branches);
 	}
 
 	function getFieldsNames($branch, $mysort = ''){
-		$branches = $common = $other = array();
+		$branches = $common = $other = [];
 
 		$this->getBranches($branches, $common, $other, $mysort);
 
-		$arr = array();
+		$arr = [];
 
 		$branch = $branch? : g_l('modules_customer', '[other]');
 
@@ -224,7 +224,7 @@ class we_customer_customer extends we_base_model{
 				}
 		}
 
-		$ret = array();
+		$ret = [];
 		$other = g_l('modules_customer', '[other]');
 		foreach(array_keys($arr) as $b){
 			if($branch === $other){
@@ -245,11 +245,11 @@ class we_customer_customer extends we_base_model{
 			}
 		}
 
-		return array();
+		return [];
 	}
 
 	function getFieldsDbProperties(){
-		$ret = array();
+		$ret = [];
 		$this->db->query('SHOW COLUMNS FROM ' . $this->db->escape($this->table));
 		while($this->db->next_record()){
 			$record = $this->db->Record;
@@ -315,7 +315,7 @@ class we_customer_customer extends we_base_model{
 	}
 
 	function getFieldset(){
-		$result = array();
+		$result = [];
 		$fields = $this->getFieldsDbProperties();
 		foreach(array_keys($fields) as $k){
 			if(!$this->isProtected($k)){
@@ -344,7 +344,7 @@ class we_customer_customer extends we_base_model{
 		if(!$storedPassword || !$clearPassword){
 			return false;
 		}
-		$matches = array();
+		$matches = [];
 		if(!preg_match('|^\$([^$]{2,4})\$([^$]+)\$(.+)$|', $storedPassword, $matches)){
 			return $storedPassword === $clearPassword;
 		}
@@ -377,7 +377,7 @@ class we_customer_customer extends we_base_model{
 	}
 
 	public static function decryptData($data, $key = SECURITY_ENCRYPTION_KEY){
-		$matches = array();
+		$matches = [];
 		if(!preg_match('|^\$([^$]{2,4})\$([a-f0-9]{16,32})\$|', $data, $matches)){
 			return '';
 		}
@@ -405,7 +405,7 @@ class we_customer_customer extends we_base_model{
 			return $fields;
 		}
 		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"'));
-		$fields = array();
+		$fields = [];
 		if(!$customerFields){
 			return $fields;
 		}
@@ -425,7 +425,7 @@ class we_customer_customer extends we_base_model{
 			return $fields;
 		}
 		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"'));
-		$fields = array();
+		$fields = [];
 		if(!$customerFields){
 			return $fields;
 		}

@@ -38,7 +38,7 @@ class we_newsletter_group extends we_newsletter_base{
 	var $settings;
 // properties end
 
-	private $aFilter = array();
+	private $aFilter = [];
 
 	/*	 * *****************************************************
 	 * Default Constructor
@@ -177,7 +177,7 @@ class we_newsletter_group extends we_newsletter_base{
 
 	function delallFilter(){
 		$this->Filter = '';
-		$this->aFilter = array();
+		$this->aFilter = [];
 	}
 
 //---------------------------------- STATIC FUNCTIONS -------------------------------
@@ -188,7 +188,7 @@ class we_newsletter_group extends we_newsletter_base{
 	 * ***************************************************** */
 	static function __getAllGroups($newsletterID, we_database_base $db){
 		$db->query('SELECT ID FROM ' . NEWSLETTER_GROUP_TABLE . ' WHERE NewsletterID=' . intval($newsletterID) . ' ORDER BY ID');
-		$ret = array();
+		$ret = [];
 		while($db->next_record()){
 			$ret[] = new self($db->f('ID'));
 		}

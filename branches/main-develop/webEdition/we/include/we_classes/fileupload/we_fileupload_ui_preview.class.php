@@ -89,7 +89,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	}
 
 	public function getDivBtnUploadCancel($width = 170){
-		return we_html_element::htmlDiv(array(), $this->getButtonWrapped('upload', true, $width) . $this->getButtonWrapped('cancel'), false, $width);
+		return we_html_element::htmlDiv([], $this->getButtonWrapped('upload', true, $width) . $this->getButtonWrapped('cancel'), false, $width);
 	}
 
 	protected function getDivBtnInputReset($width){
@@ -132,17 +132,17 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				'pixel_w' => g_l('importFiles', '[edit_pixel_width]'),
 				'pixel_h' => g_l('importFiles', '[edit_pixel_height]'),
 				'pixel_l' => g_l('importFiles', '[edit_pixel_longest]'),
-				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '', $multimport ? 94 : 150, 'weSelect optsUnitSelect');
+				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : []), '', $multimport ? 94 : 150, 'weSelect optsUnitSelect');
 		$rotateSelect = we_html_tools::htmlSelect('fu_doc_rotate', array(
 				0 => g_l('weClass', '[rotate0]'),
 				180 => g_l('weClass', '[rotate180]'),
 				270 => g_l('weClass', '[rotate90l]'),
 				90 => g_l('weClass', '[rotate90r]'),
-				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '', 150, 'weSelect optsRotateSelect');
+				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : []), '', 150, 'weSelect optsRotateSelect');
 		$quality = we_html_element::htmlInput(array('type' => 'range', 'value' => 0, 'min' => 0, 'max' => 100, 'step' => 5, 'onchange' => "document.getElementById('qualityValue').innerHTML = this.value", 'oninput' => "document.getElementById('qualityValue').innerHTML = this.value", 'name' => 'fu_doc_quality', 'class' => 'optsQuality'));
 		$btnProcess = we_html_button::create_button(we_html_button::PROCESS, "javascript:" . $reeditCmd, true, 0, 0, '', '', true, false, '_weFileupload', false, $title = '', 'weFileupload_btnImgEditRefresh');
 
-		return we_html_element::htmlDiv(array(), $editCheckbox) .
+		return we_html_element::htmlDiv([], $editCheckbox) .
 			we_html_element::htmlDiv(array('class' => 'imgEditOpts', 'id' => 'editImage'), 
 				we_html_element::htmlDiv(array('class' => 'scaleDiv'), 
 					we_html_element::htmlDiv(array('class' => 'labelContainer'), g_l('importFiles', '[scale_label]') .':') .
@@ -262,7 +262,7 @@ function selectCategories() {
 			return;
 		}
 
-		$html = we_html_element::htmlDiv(array(), we_html_forms::checkboxWithHidden(($this->imageEditProps['isSearchable'] ? true : false), 'fu_doc_isSearchable', g_l('importFiles', '[imgsSearchable_label]'), false, 'defaultfont', ''));
+		$html = we_html_element::htmlDiv([], we_html_forms::checkboxWithHidden(($this->imageEditProps['isSearchable'] ? true : false), 'fu_doc_isSearchable', g_l('importFiles', '[imgsSearchable_label]'), false, 'defaultfont', ''));
 		$headline = g_l('importFiles', '[imgsSearchable]');
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
@@ -394,8 +394,8 @@ function selectCategories() {
 			return;
 		}
 
-		$html = we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Alternativ Text') . '<br>' . we_html_tools::htmlTextInput('fu_doc_alt', 24, '', '', '', 'text', 378)) .
-			we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Titel') . '<div>' . we_html_tools::htmlTextInput('fu_doc_title', 24, '', '', '', 'text', 378) . '</div>');
+		$html = we_html_element::htmlDiv([], we_html_element::htmlLabel([], 'Alternativ Text') . '<br>' . we_html_tools::htmlTextInput('fu_doc_alt', 24, '', '', '', 'text', 378)) .
+			we_html_element::htmlDiv([], we_html_element::htmlLabel([], 'Titel') . '<div>' . we_html_tools::htmlTextInput('fu_doc_title', 24, '', '', '', 'text', 378) . '</div>');
 		$headline = 'Attribute';
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
@@ -472,7 +472,7 @@ function selectCategories() {
 		$divLoupeCrosshairH = we_html_element::htmlDiv(array('class' => 'editorCrosshairH'));
 		$divLoupeCrosshairV = we_html_element::htmlDiv(array('class' => 'editorCrosshairV'));
 		$divFixedFocusPoint = we_html_element::htmlDiv(array('id' => 'editorFocuspointFixed', 'class' => 'editorFocusPoint focusPointOnSet'));
-		$divLoupeSpinner = we_html_element::htmlDiv(array('id' => 'we_fileUpload_spinner', 'class' => 'editorLoupeSpinner'), we_html_element::htmlSpan(array(), '<i class="fa fa-2x fa-spinner fa-pulse"></i>'));
+		$divLoupeSpinner = we_html_element::htmlDiv(array('id' => 'we_fileUpload_spinner', 'class' => 'editorLoupeSpinner'), we_html_element::htmlSpan([], '<i class="fa fa-2x fa-spinner fa-pulse"></i>'));
 
 		return $divLoupe . $divLoupeCrosshairH . $divLoupeCrosshairV . $divFixedFocusPoint . $divLoupeSpinner;
 	}
@@ -512,11 +512,11 @@ function selectCategories() {
 		$this->isExternalBtnUpload = $isExternal;
 	}
 
-	public function setFieldParentID($parentID = array()){
+	public function setFieldParentID($parentID = []){
 		$this->parentID = array_merge($this->parentID, $parentID);
 	}
 
-	public function setFormElements($formElements = array()){
+	public function setFormElements($formElements = []){
 		$this->formElements = array_merge($this->formElements, $formElements);
 	}
 

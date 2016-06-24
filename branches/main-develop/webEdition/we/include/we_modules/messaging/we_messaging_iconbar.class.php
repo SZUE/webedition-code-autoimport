@@ -74,10 +74,10 @@ var transaction="' . $this->weTransaction . '";
 		$j = 0;
 		$table = new we_html_table(array('class' => 'iconBar'), 1, count($buttons));
 		foreach($buttons as $button){
-			$table->setCol(0, $j++, array(), we_html_button::create_button($button[0], $button[1], true));
+			$table->setCol(0, $j++, [], we_html_button::create_button($button[0], $button[1], true));
 			if($button[2]){
 				$table->addCol();
-				$table->setCol(0, $j++, array(), '');
+				$table->setCol(0, $j++, [], '');
 			}
 		}
 

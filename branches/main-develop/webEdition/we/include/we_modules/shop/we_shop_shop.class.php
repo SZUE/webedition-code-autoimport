@@ -28,9 +28,9 @@ class we_shop_shop{
 	const OBJECT = 'o';
 
 	var $DB_WE;
-	var $IDs = array();
+	var $IDs = [];
 	var $count = 0;
-	var $Record = array();
+	var $Record = [];
 	var $anz = 0;
 	var $type;
 	var $ShoppingCart;
@@ -63,7 +63,7 @@ class we_shop_shop{
 			$shoppingItem = $shoppingCartItems[$cartKey];
 			$this->ActItem = $shoppingItem;
 
-			$this->Record = array();
+			$this->Record = [];
 			foreach($shoppingItem['serial'] as $key => $value){
 				if(!is_int($key)){
 					$this->Record[(($key == WE_SHOP_VAT_FIELD_NAME || $key == WE_SHOP_CATEGORY_FIELD_NAME) ? $key : preg_replace('#^we_#', '', $key))] = $value;
@@ -88,7 +88,7 @@ class we_shop_shop{
 	}
 
 	public function getDBRecord(){
-		return (is_object($this->DB_WE) ? $this->DB_WE->getRecord() : array());
+		return (is_object($this->DB_WE) ? $this->DB_WE->getRecord() : []);
 	}
 
 	public function getDBf($field){

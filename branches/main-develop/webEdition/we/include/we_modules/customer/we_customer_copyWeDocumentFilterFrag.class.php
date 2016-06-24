@@ -47,7 +47,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 
 		$db->query('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE	ContentType IN("folder","' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::OBJECT_FILE . '") AND PATH LIKE "' . $theFolder->Path . '/%"');
 
-		$this->alldata = array();
+		$this->alldata = [];
 
 		while($db->next_record()){
 

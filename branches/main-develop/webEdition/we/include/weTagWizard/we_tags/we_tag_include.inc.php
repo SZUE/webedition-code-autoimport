@@ -7,7 +7,7 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$included = new weTagData_selectAttribute('included', array(), false, '');
+$included = new weTagData_selectAttribute('included', [], false, '');
 $id = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null);
 $path = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('path', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '', true) : null);
 //$path = new weTagData_textAttribute('path', false, '');
@@ -23,7 +23,7 @@ $rootdir = new weTagData_textAttribute('rootdir', false, '');
 $startid = new weTagData_selectorAttribute('startid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array($id, $path, $gethttp, $seeMode, $kind, $name, $rootdir, $startid, $description), array()),
-	new weTagDataOption('template', false, '', array($path_temp, $id_temp, $once), array())), false, '');
+	new weTagDataOption('document', false, '', array($id, $path, $gethttp, $seeMode, $kind, $name, $rootdir, $startid, $description), []),
+	new weTagDataOption('template', false, '', array($path_temp, $id_temp, $once), [])), false, '');
 
 $this->Attributes = array($included, $id, $path, $path_temp, $gethttp, $seeMode, $kind, $name, $id_temp, $once, $rootdir, $startid, $description);

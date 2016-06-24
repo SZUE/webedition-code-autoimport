@@ -56,7 +56,7 @@ echo we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js');
 function we_getCSSIds(){
 	$tp = new we_tag_tagParser($GLOBALS['we_doc']->getElement('data'));
 	$tags = $tp->getTagsWithAttributes();
-	$query = array('document' => array(), 'template' => array(), 'object' => array());
+	$query = array('document' => [], 'template' => [], 'object' => []);
 
 	foreach($tags as $tag){
 		if(isset($tag['attribs']['id']) && intval($tag['attribs']['id'])){
@@ -78,7 +78,7 @@ function we_getCSSIds(){
 				break;
 			case 'object':
 				if(!defined('OBJECT_FILES_TABLE')){
-					$ids = array();
+					$ids = [];
 					continue;
 				}
 				$table = OBJECT_FILES_TABLE;
@@ -98,7 +98,7 @@ function we_getCSSIds(){
 
 function we_getCodeMirror2Code(){
 	$maineditor = '';
-	$parser_js = array();
+	$parser_js = [];
 	$parser_css = array('theme/' . $_SESSION['prefs']['editorTheme'] . '.css');
 	$useCompletion = false;
 	switch($GLOBALS['we_doc']->ContentType){ // Depending on content type we use different parsers and css files
@@ -185,7 +185,7 @@ function we_getCodeMirror2Code(){
 
 		$tmp = we_unserialize($_SESSION['prefs']['editorCodecompletion']);
 		$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
-		$settings = http_build_query(array('settings' => is_array($tmp) ? $tmp : array()));
+		$settings = http_build_query(array('settings' => is_array($tmp) ? $tmp : []));
 
 		$maineditor.=
 			($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ?
@@ -385,7 +385,7 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 	  </tr>
 	  </table> */
 	$parts = array(
-		array(),
+		[],
 		array("headline" => "", "html" => $tagWizardHtml,)
 	);
 	$wepos = weGetCookieVariable("but_weTMPLDocEdit");

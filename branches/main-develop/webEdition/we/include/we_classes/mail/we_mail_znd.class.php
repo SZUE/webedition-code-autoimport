@@ -59,7 +59,7 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * Mail headers
 	 * @var array
 	 */
-	protected $_headers = array();
+	protected $_headers = [];
 
 	/**
 	 * Encoding of Mail headers
@@ -77,13 +77,13 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * To: addresses
 	 * @var array
 	 */
-	protected $_to = array();
+	protected $_to = [];
 
 	/**
 	 * Array of all recipients
 	 * @var array
 	 */
-	protected $_recipients = array();
+	protected $_recipients = [];
 
 	/**
 	 * Reply-To header
@@ -590,8 +590,8 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * @return we_mail_znd Provides fluent interface
 	 */
 	public function clearRecipients(){
-		$this->_recipients = array();
-		$this->_to = array();
+		$this->_recipients = [];
+		$this->_to = [];
 
 		$this->clearHeader('To');
 		$this->clearHeader('Cc');
@@ -998,7 +998,7 @@ class we_mail_znd extends we_mail_mimeMessage{
 
 		$rand = mt_rand();
 
-		if($this->_recipients !== array()){
+		if($this->_recipients !== []){
 			$recipient = array_rand($this->_recipients);
 		} else {
 			$recipient = 'unknown';

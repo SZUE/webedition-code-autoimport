@@ -26,9 +26,9 @@ abstract class we_users_util{
 
 	private static function getGroupList($id){
 		if(!$id){
-			return array();
+			return [];
 		}
-		$ret = array();
+		$ret = [];
 		$db_tmp = new DB_WE();
 		$db_tmp->query('SELECT ID,username WHERE ParentID=' . intval($id) . ' AND Type=1');
 		while($db_tmp->next_record()){
@@ -40,7 +40,7 @@ abstract class we_users_util{
 	}
 
 	private static function getUserTree($id){
-		$ret = array();
+		$ret = [];
 		$db_tmp = new DB_WE();
 		$db_tmp->query('SELECT ID,username,Type WHERE ParentID=' . intval($id));
 		while($db_tmp->next_record()){
@@ -133,7 +133,7 @@ abstract class we_users_util{
 	static function getUsersForDocWorkspace(we_database_base $db, $id, $wsField = "workSpace"){
 		$ids = (is_array($id) ? $id : array($id));
 
-		$where = array();
+		$where = [];
 		foreach($ids as $id){
 			$where[] = 'FIND_IN_SET(' . intval($id) . ',' . $wsField . ')';
 		}
@@ -192,7 +192,7 @@ abstract class we_users_util{
 		}
 		$aliases = self::getAliases($_SESSION['user']['ID'], $GLOBALS['DB_WE']);
 		$aliases[] = $_SESSION['user']['ID'];
-		$q = array();
+		$q = [];
 		if($useCreatorID){
 			$q[] = 'CreatorID IN ("' . implode('","', $aliases) . '")';
 		}
@@ -213,10 +213,10 @@ abstract class we_users_util{
 
 	public static function getAllowedClasses(we_database_base $db = null){
 		if(!defined('OBJECT_FILES_TABLE')){
-			return array();
+			return [];
 		}
 		$db = ($db ? : new DB_WE());
-		$out = array();
+		$out = [];
 		//FIXME: why do we need the Workspaces of documents do determine allowed classes??
 //		$ws = get_ws(FILE_TABLE, true);
 		$ofWs = get_ws(OBJECT_FILES_TABLE, true);

@@ -37,7 +37,7 @@ class we_workflow_document extends we_workflow_base{
 	//accossiations
 	var $workflow = false;
 	var $document = false;
-	var $steps = array();
+	var $steps = [];
 
 	/**
 	 * Default Constructor

@@ -29,7 +29,7 @@ class we_navigation_cache{
 	}
 
 	static function delNavigationTree($id){
-		static $deleted = array();
+		static $deleted = [];
 		if(in_array($id, $deleted)){
 			return;
 		}

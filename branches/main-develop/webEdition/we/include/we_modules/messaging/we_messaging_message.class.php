@@ -27,15 +27,15 @@
 class we_messaging_message extends we_messaging_proto{
 	/* Flag which is set when the file is not new */
 
-	var $selected_message = array();
-	var $selected_set = array();
+	var $selected_message = [];
+	var $selected_set = [];
 	var $search_fields = array('m.headerSubject', 'm.headerFrom', 'm.MessageText');
-	var $search_folder_ids = array();
+	var $search_folder_ids = [];
 	var $sortfield = 'm.headerDate';
 	var $last_sortfield = '';
 	var $sortorder = 'desc';
-	var $ids_selected = array();
-	var $available_folders = array();
+	var $ids_selected = [];
+	var $available_folders = [];
 	var $sql_class_nr = 1;
 	var $Short_Description = 'webEdition Message';
 	var $view_class = 'message';
@@ -58,7 +58,7 @@ class we_messaging_message extends we_messaging_proto{
 	}
 
 	function init($sessDat = ''){
-		$init_folders = array();
+		$init_folders = [];
 
 		if($sessDat){
 			$this->initSessionDat($sessDat);
@@ -97,7 +97,7 @@ class we_messaging_message extends we_messaging_proto{
 		}
 
 		foreach($items as $item){
-			$tmp = array();
+			$tmp = [];
 			$this->DB_WE->query('SELECT ParentID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerFrom, Priority, MessageText, seenStatus, tag FROM ' . $this->DB_WE->escape($this->table) . ' WHERE ID=' . intval($item) . ' AND UserID=' . intval($this->userid));
 			while($this->DB_WE->next_record()){
 				$tmp['ParentID'] = isset($this->DB_WE->Record['ParentID']) ? $this->DB_WE->Record['ParentID'] : 'NULL';
@@ -136,9 +136,9 @@ class we_messaging_message extends we_messaging_proto{
 
 	function send(&$rcpts, &$data){
 		$results = array(
-			'err' => array(),
-			'ok' => array(),
-			'failed' => array(),
+			'err' => [],
+			'ok' => [],
+			'failed' => [],
 		);
 		$db = new DB_WE();
 
@@ -220,7 +220,7 @@ class we_messaging_message extends we_messaging_proto{
 			$message_ids_cond = implode(' OR m.ID = ', $criteria['message_ids']);
 		}
 
-		$this->selected_set = array();
+		$this->selected_set = [];
 		$this->DB_WE->query('SELECT m.ID, m.ParentID, m.headerDate, m.headerSubject, m.headerUserID, m.Priority, m.seenStatus, u.username
 		FROM ' . $this->DB_WE->escape($this->table) . ' AS m, ' . USER_TABLE . ' AS u
 		WHERE ((m.msg_type = ' . intval($this->sql_class_nr) . ' AND m.obj_type = ' . we_messaging_proto::MESSAGE_NR . ') ' . ($sfield_cond ? " AND ($sfield_cond)" : '') . ($folders_cond ? " AND (m.ParentID=$folders_cond)" : '') . ( !empty($message_ids_cond) ? " AND (m.ID=$message_ids_cond)" : '') . ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
@@ -228,7 +228,7 @@ class we_messaging_message extends we_messaging_proto{
 
 		$i = isset($criteria['start_id']) ? $criteria['start_id'] + 1 : 0;
 
-		$seen_ids = array();
+		$seen_ids = [];
 
 		while($this->DB_WE->next_record()){
 			if(!($this->DB_WE->f('seenStatus') & we_messaging_proto::STATUS_SEEN)){
@@ -257,7 +257,7 @@ class we_messaging_message extends we_messaging_proto{
 	}
 
 	function retrieve_items($int_hdrs){
-		$ret = array();
+		$ret = [];
 		$i = 0;
 
 		if(!$int_hdrs){
@@ -271,7 +271,7 @@ class we_messaging_message extends we_messaging_proto{
 
 		$this->DB_WE->query('SELECT m.ID, m.headerDate, m.headerSubject, m.headerUserID, m.headerTo, m.MessageText, m.seenStatus, u.username, u.First, u.Second FROM ' . $this->DB_WE->escape($this->table) . " as m, " . USER_TABLE . " as u WHERE ($id_str) AND u.ID=m.headerUserID AND m.UserID=" . intval($this->userid));
 
-		$read_ids = array();
+		$read_ids = [];
 
 		while($this->DB_WE->next_record()){
 			if(!($this->DB_WE->f('seenStatus') & we_messaging_proto::STATUS_READ)){

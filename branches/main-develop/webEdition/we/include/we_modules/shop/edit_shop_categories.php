@@ -30,15 +30,15 @@ we_html_tools::protect($protect);
 //FIXME: mak sowme view class for this editor and use processVariables() and processCommands()?
 //process request
 $shopCategoriesDir = ($val = we_base_request::_(we_base_request::INT, 'weShopCatDir', false)) !== false ? $val : we_shop_category::getShopCatDir(); //(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_dir"', '', $DB_WE, -1));
-$relations = array();
+$relations = [];
 $saveSuccess = false;
 $onsaveClose = we_base_request::_(we_base_request::BOOL, 'onsaveclose', false);
 
 if($shopCategoriesDir !== -1 && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'saveShopCatRels'){
 	$saveSuccess = we_shop_category::saveShopCatsDir($shopCategoriesDir);
 
-	$destPrincipleIds = array();
-	foreach(we_base_request::_(we_base_request::INT, 'weShopCatDestPrinciple', array()) as $k => $v){
+	$destPrincipleIds = [];
+	foreach(we_base_request::_(we_base_request::INT, 'weShopCatDestPrinciple', []) as $k => $v){
 		if($v){
 			$destPrincipleIds[] = intval($k);
 		}
@@ -46,20 +46,20 @@ if($shopCategoriesDir !== -1 && we_base_request::_(we_base_request::STRING, 'we_
 	$saveSuccess &= we_shop_category::saveSettingDestPrinciple(implode(',', $destPrincipleIds));
 
 	//FIXME: get destPrinciple and isActive from db at once
-	$isInactiveIds = array();
-	foreach(we_base_request::_(we_base_request::INT, 'weShopCatIsActive', array()) as $k => $v){
+	$isInactiveIds = [];
+	foreach(we_base_request::_(we_base_request::INT, 'weShopCatIsActive', []) as $k => $v){
 		if(!$v){
 			$isInactiveIds[] = intval($k);
 		}
 	}
 	$saveSuccess &= we_shop_category::saveSettingIsInactive(implode(',', $isInactiveIds));
 
-	$saveCatIds = array();
+	$saveCatIds = [];
 	$relations = we_base_request::_(we_base_request::STRING, 'weShopCatRels');
 	foreach($relations as $k => $v){
 		foreach($v as $id){
 			if(!isset($saveCatIds[$id])){
-				$saveCatIds[$id] = array();
+				$saveCatIds[$id] = [];
 			}
 			$saveCatIds[$id][] = intval($k);
 		}
@@ -93,12 +93,12 @@ $selCategoryDirs = we_html_tools::htmlSelect('weShopCatDir', $allCategoryDirs, 1
 
 if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 	$allVats = we_shop_vats::getAllShopVATs();
-	$vatGroups = array();
+	$vatGroups = [];
 	if(count($allVats) > 0){
 		$doWriteRelations = !$relations ? true : false;
 		foreach($allVats as $vatObj){
 			if(!isset($vatGroups[$vatObj->territory])){
-				$vatGroups[$vatObj->territory] = array();
+				$vatGroups[$vatObj->territory] = [];
 				$vatGroups[$vatObj->territory]['selOptions'] = array(0 => ' ');
 			}
 			$vatGroups[$vatObj->territory]['textTerritory'] = $vatObj->textTerritory;
@@ -108,7 +108,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 				foreach($catArr = explode(',', $vatObj->categories) as $cat){
 					if($cat){
 						if(!isset($relations[$cat])){
-							$relations[$cat] = array();
+							$relations[$cat] = [];
 						}
 						$relations[$cat][$vatObj->territory] = $vatObj->id;
 					}

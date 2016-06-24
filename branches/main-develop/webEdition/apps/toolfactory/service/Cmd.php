@@ -92,7 +92,7 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 			throw $ex;
 		}
 		// check all required fields
-		$miss = array();
+		$miss = [];
 		if(!$model->hasRequiredFields($miss)){
 			$ex = new we_service_Exception(
 				$translate->_('Required fields are empty!'), we_service_ErrorCodes::kModelTextEmpty);

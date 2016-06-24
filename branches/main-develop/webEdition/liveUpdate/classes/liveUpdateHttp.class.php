@@ -28,7 +28,7 @@ class liveUpdateHttp{
 		return getServerProtocol($addslashes);
 	}
 
-	static function connectFopen($server, $url, $parameters = array()){
+	static function connectFopen($server, $url, $parameters = []){
 		// try fopen first
 		$address = 'https://' . $server . $url . ($parameters ? '?' . http_build_query($parameters, '', '&') : '');
 		return file_get_contents($address);
@@ -123,7 +123,7 @@ class liveUpdateHttp{
 		return 'fopen';
 	}
 
-	static function getHttpResponse($server, $url, $parameters = array()){
+	static function getHttpResponse($server, $url, $parameters = []){
 		switch(liveUpdateHttp::getHttpOption()){
 			case 'fopen':
 				return liveUpdateHttp::getFopenHttpResponse($server, $url, $parameters);
@@ -135,7 +135,7 @@ class liveUpdateHttp{
 		}
 	}
 
-	static function getFopenHttpResponse($server, $url, $parameters = array()){
+	static function getFopenHttpResponse($server, $url, $parameters = []){
 		return (defined("WE_PROXYHOST") && WE_PROXYHOST ?
 				liveUpdateHttp::connectProxy($server, $url, $parameters) :
 				liveUpdateHttp::connectFopen($server, $url, $parameters)
@@ -156,11 +156,11 @@ class liveUpdateHttp{
 		return we_html_tools::getHtmlTop('', '', '', LIVEUPDATE_CSS, '
 <body onload="document.getElementById(\'liveUpdateForm\').submit();">
 <form id="liveUpdateForm" action="https://' . LIVEUPDATE_SERVER . LIVEUPDATE_SERVER_SCRIPT . '" method="post">' .
-				we_html_element::htmlHiddens(array(
+				we_html_element::htmlHiddens([
 					"update_cmd" => "startSession",
 					"next_cmd" => we_base_request::_(we_base_request::STRING, 'update_cmd'),
 					"detail" => we_base_request::_(we_base_request::STRING, 'detail')
-				)) . $params . '
+				]) . $params . '
 </form>
 </body>
 ');

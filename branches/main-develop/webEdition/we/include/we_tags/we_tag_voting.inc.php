@@ -45,7 +45,7 @@ function we_tag_voting(array $attribs){
 	} else if($id != 0){
 		$GLOBALS['_we_voting'] = new we_voting_voting($id);
 	} else {
-		$voting_matches = array();
+		$voting_matches = [];
 		$GLOBALS['_we_voting'] = (preg_match_all('/_we_voting_answer_([0-9]+)_?([0-9]+)?/', implode(',', array_keys($_REQUEST)), $voting_matches) ?
 				new we_voting_voting($voting_matches[1][0]) :
 				new we_voting_voting());

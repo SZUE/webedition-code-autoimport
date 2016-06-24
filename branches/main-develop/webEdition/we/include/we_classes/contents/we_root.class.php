@@ -70,13 +70,13 @@ abstract class we_root extends we_class{
 	public $ContentType = '';
 
 	/* array which holds the content of the Object */
-	var $elements = array();
+	var $elements = [];
 	private $wasMoved = false;
 
 	/* Number of the EditPage when editor() is called */
 	public $EditPageNr = we_base_constants::WE_EDITPAGE_CONTENT;
 	var $CopyID;
-	var $EditPageNrs = array();
+	var $EditPageNrs = [];
 	var $Owners = '';
 	var $OwnersReadOnly = '';
 	var $WebUserID = '';
@@ -88,8 +88,8 @@ abstract class we_root extends we_class{
 	var $ModifierID = 0;
 	var $RestrictOwners = 0;
 	protected $LockUser = 0;
-	protected $MediaLinks = array();
-	protected $LangLinks = array();
+	protected $MediaLinks = [];
+	protected $LangLinks = [];
 
 	/* Constructor */
 
@@ -100,7 +100,7 @@ abstract class we_root extends we_class{
 		array_push($this->persistent_slots, 'OwnersReadOnly', 'ParentID', 'ParentPath', 'Text', 'Filename', 'Path', 'Filehash', 'OldPath', 'CreationDate', 'ModDate', 'RebuildDate', 'IsFolder', 'ContentType', 'elements', 'EditPageNr', 'CopyID', 'Owners', 'CreatorID', 'ModifierID', 'RestrictOwners', 'WebUserID', 'LockUser', 'LangLinks');
 	}
 
-	public function makeSameNew(array $keep = array()){
+	public function makeSameNew(array $keep = []){
 		$keep = array_merge($keep, array('ParentID', 'ParentPath', 'EditPageNr',));
 		$tempDoc = $this->ClassName;
 		$tempDoc = new $tempDoc();
@@ -179,7 +179,7 @@ abstract class we_root extends we_class{
 	function saveInSession(&$save, $toFile = false){
 		//NOTE: this is used for temporary documents! so be carefull when changing
 		$save = array(
-			array(),
+			[],
 			$this->elements
 		);
 		foreach($this->persistent_slots as $slot){
@@ -316,7 +316,7 @@ abstract class we_root extends we_class{
 		return $yuiSuggest->getHTML();
 	}
 
-	function htmlTextInput_formDirChooser($attribs = array(), $addAttribs = array()){
+	function htmlTextInput_formDirChooser($attribs = [], $addAttribs = []){
 		$attribs = array(
 			'class' => 'wetextinput',
 			'size' => 30,
@@ -473,7 +473,7 @@ abstract class we_root extends we_class{
 			return false;
 		}
 		$ownersReadOnly = we_unserialize($this->OwnersReadOnly);
-		$readers = array();
+		$readers = [];
 		foreach(array_keys($ownersReadOnly) as $key){
 			if(isset($ownersReadOnly[$key]) && $ownersReadOnly[$key] == 1){
 				$readers[] = $key;
@@ -1026,7 +1026,7 @@ abstract class we_root extends we_class{
 	}
 
 	private function setRequestData(){
-		$regs = $dates = array();
+		$regs = $dates = [];
 		foreach($_REQUEST as $n => $v){
 			if(preg_match('/^we_' . preg_quote($this->Name) . '_([^\[]+)$/', $n, $regs)){
 				if(is_array($v)){
@@ -1129,7 +1129,7 @@ abstract class we_root extends we_class{
 			return we_base_delete::deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
 		}
 		//don't stress index:
-		$replace = $this->getLinkReplaceArray();
+		$replace = $this->getLinkReplace[];
 		foreach($this->elements as $k => $v){
 			if(!$this->i_isElement($k) ||
 				//ignore fields which result in empty entry
@@ -1380,7 +1380,7 @@ abstract class we_root extends we_class{
 		});
 
 		// filter MediaLinks by media contenttype
-		$verifiedIDs = array();
+		$verifiedIDs = [];
 		if(!empty($this->MediaLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::VIDEO . '")';
 			$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique(array_values($this->MediaLinks))) . ') ' . $whereType);
@@ -1394,7 +1394,7 @@ abstract class we_root extends we_class{
 			return true;
 		}
 
-		$sets = array();
+		$sets = [];
 		foreach($this->MediaLinks as $k => $remObj){
 			$sets[] = we_database_base::arraySetter(array(
 					'ID' => $this->ID,
@@ -1500,7 +1500,7 @@ abstract class we_root extends we_class{
 	 */
 	protected function getNavigationFoldersForDoc(){
 		if($this->Table !== FILE_TABLE){
-			return array();
+			return [];
 		}
 		$category = property_exists($this, 'Category') ? array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory))))) : '';
 		$queries = array('(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STYPE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',

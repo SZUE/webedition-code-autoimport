@@ -44,7 +44,7 @@ if(permissionhandler::hasPerm("administrator")){
 	);
 
 
-	$content = array();
+	$content = [];
 
 	$count = 15;
 	$start = max(we_base_request::_(we_base_request::INT, 'start', 0), 0);
@@ -57,7 +57,7 @@ if(permissionhandler::hasPerm("administrator")){
 		$ind = 0;
 		while($GLOBALS['DB_WE']->next_record()){
 
-			$content[$ind] = array();
+			$content[$ind] = [];
 			$content[$ind][0]['dat'] = $GLOBALS['DB_WE']->f("ip");
 			$content[$ind][1]['dat'] = ($GLOBALS['DB_WE']->f("blockedUntil") == -1 ?
 					oldHtmlspecialchars(g_l('prefs', '[forever]')) :

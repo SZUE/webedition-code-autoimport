@@ -52,20 +52,20 @@ class we_search_search extends we_search_base{
 	/**
 	 * @var array with fields to search in
 	 */
-	var $searchFields = array();
+	var $searchFields = [];
 
 	/**
 	 * @var array with operators
 	 */
-	var $location = array();
+	var $location = [];
 
 	/**
 	 * @var array with fields to search for
 	 */
-	var $search = array();
-	private $collectionMetaSearches = array();
-	private $usedMedia = array();
-	private $usedMediaLinks = array();
+	var $search = [];
+	private $collectionMetaSearches = [];
+	private $usedMedia = [];
+	private $usedMediaLinks = [];
 	public $founditems = 0;
 	public $View;
 
@@ -76,7 +76,7 @@ class we_search_search extends we_search_base{
 
 	function searchProperties($whichSearch, $model){
 		$DB_WE = new DB_WE();
-		$workspaces = $result = $versionsFound = $saveArrayIds = array();
+		$workspaces = $result = $versionsFound = $saveArrayIds = [];
 		$_SESSION['weS']['weSearch']['foundItems' . $whichSearch] = 0; // will be obsolete
 		$searchFields = $model->getProperty('currentSearchFields');
 		$searchText = $model->getProperty('currentSearch');
@@ -92,7 +92,7 @@ class we_search_search extends we_search_base{
 
 		$searchText = (is_array($searchText) ?
 				array_map('trim', $searchText) :
-				array());
+				[]);
 
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1)); //init activTab like this
 
@@ -244,7 +244,7 @@ class we_search_search extends we_search_base{
 		}
 
 		if($_SESSION['weS']['weSearch']['foundItems' . $whichSearch] == 0){
-			return array();
+			return [];
 		}
 
 		foreach($result as $k => $v){
@@ -273,7 +273,7 @@ class we_search_search extends we_search_base{
 	}
 
 	function getModFields(){
-		$modFields = array();
+		$modFields = [];
 		$versions = new we_versions_version();
 		foreach(array_keys($versions->modFields) as $k){
 			if($k != 'status'){
@@ -458,7 +458,7 @@ class we_search_search extends we_search_base{
 	private function searchInTitle($keyword, $table){
 		$db2 = new DB_WE();
 		//first check published documents
-		$titles = array();
+		$titles = [];
 
 		//check unpublished documents
 		$db2->query('SELECT DocumentID, DocumentObject FROM ' . TEMPORARY_DOC_TABLE . ' WHERE docTable="tblFile" AND Active=1 AND DocumentObject LIKE "%' . $db2->escape(trim($keyword)) . '%"');
@@ -499,7 +499,7 @@ class we_search_search extends we_search_base{
 				$query = 'SELECT ID,' . $field . '  FROM ' . $table . ' WHERE ' . $field . ' != NULL OR ' . $field . " != '' AND Published >= ModDate AND Published !=0";
 				break;
 		}
-		$res = $res2 = array();
+		$res = $res2 = [];
 
 		$db->query($query);
 
@@ -537,7 +537,7 @@ class we_search_search extends we_search_base{
 			$res2[$k] = array_filter(explode(',', $v));
 		}
 
-		$where = $whereIn = array();
+		$where = $whereIn = [];
 
 		$keyword = path_to_id($keyword, CATEGORY_TABLE);
 
@@ -621,7 +621,7 @@ class we_search_search extends we_search_base{
 			return;
 		}
 		$db = new DB_WE();
-		$names = array();
+		$names = [];
 		foreach($this->getFieldsMeta() as $k => $v){
 			if($v[0] && $v[1]){
 				$names[] = $k;
@@ -734,13 +734,13 @@ class we_search_search extends we_search_base{
 	}
 
 	private function searchModFields($text, $db){
-		$where = array();
+		$where = [];
 		$versions = new we_versions_version();
 
 		$modConst[] = $versions->modFields[$text]['const'];
 
 		if($modConst){
-			$modifications = $ids = $myIds = array();
+			$modifications = $ids = $myIds = [];
 			$db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications!=""');
 
 			while($db->next_record()){
@@ -760,7 +760,7 @@ class we_search_search extends we_search_base{
 				foreach($ids as $key => $val){
 					$myIds[] = $val;
 				}
-				$arr = array();
+				$arr = [];
 				if($myIds[0]){
 					//more then one field
 					$mtof = false;
@@ -806,7 +806,7 @@ class we_search_search extends we_search_base{
 				return ($contents ? ' WETABLE.ID IN(' . implode(',', $contents) . ')' : '');
 			case VERSIONS_TABLE:
 				//FIXME: versions are searched even if the field is not checked!
-				$contents = array();
+				$contents = [];
 
 				$db->query('SELECT ID,documentElements  FROM ' . VERSIONS_TABLE . ' WHERE documentElements!=""');
 				while($db->next_record()){
@@ -833,7 +833,7 @@ class we_search_search extends we_search_base{
 
 				return ($contents ? ' WETABLE.ID IN (' . implode(',', $contents) . ')' : '');
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
-				$Ids = $regs = array();
+				$Ids = $regs = [];
 
 				$db->query('SELECT ID FROM ' . OBJECT_TABLE);
 				$classes = $db->getAll(true);
@@ -843,7 +843,7 @@ class we_search_search extends we_search_base{
 					$obj_table = OBJECT_X_TABLE . intval($i);
 					//$obj_table = strtolower($obj_table);
 					$tableInfo = $db->metadata($obj_table);
-					$fields = array();
+					$fields = [];
 					for($c = 0; $c < count($tableInfo); $c++){
 						if(preg_match('/(.+?)_(.*)/', $tableInfo[$c]['name'], $regs)){
 							if($regs[1] != 'OF' && $regs[1] != 'variant'){
@@ -858,7 +858,7 @@ class we_search_search extends we_search_base{
 					if(!$fields){
 						continue;
 					}
-					$where = array();
+					$where = [];
 					foreach($fields as $v){
 						$where[] = $v['name'] . ' LIKE "%' . $db->escape(trim($keyword)) . '%"';
 					}
@@ -879,7 +879,7 @@ class we_search_search extends we_search_base{
 	function searchMediaLinks($useState = 0, $holdAllLinks = true, $inIDs = '', $returnQuery = false){
 		$db = new DB_WE();
 		$useState = intval($useState);
-		$this->usedMedia = $this->usedMediaLinks = $tmpMediaLinks = $groups = $paths = array();
+		$this->usedMedia = $this->usedMediaLinks = $tmpMediaLinks = $groups = $paths = [];
 
 		$fields = $holdAllLinks ? 'ID,DocumentTable,remObj,isTemp,element' : 'DISTINCT remObj';
 		$db->query('SELECT ' . $fields . ' FROM ' . FILELINK_TABLE . ' WHERE type="media" AND remTable="' . stripTblPrefix(FILE_TABLE) . '" ' . ($inIDs ? 'AND remObj IN (' . trim($db->escape($inIDs), ',') . ')' : '') . ' AND position=0');
@@ -907,7 +907,7 @@ class we_search_search extends we_search_base{
 			}
 
 			// get some more information about referencing objects
-			$accessible = $paths = $isModified = $isUnpublished = $ct = $onclick = $type = $mod = $isTmpPossible = array(); // TODO: make these arrays elements of one array
+			$accessible = $paths = $isModified = $isUnpublished = $ct = $onclick = $type = $mod = $isTmpPossible = []; // TODO: make these arrays elements of one array
 			foreach($groups as $k => $v){// FIXME: ct is obslete?
 				switch(addTblPrefix($k)){
 					case FILE_TABLE:
@@ -988,8 +988,8 @@ class we_search_search extends we_search_base{
 			}
 
 			foreach($tmpMediaLinks as $m_id => $v){
-				$this->usedMediaLinks['accessible']['mediaID_' . $m_id] = array();
-				$this->usedMediaLinks['notaccessible']['mediaID_' . $m_id] = array();
+				$this->usedMediaLinks['accessible']['mediaID_' . $m_id] = [];
+				$this->usedMediaLinks['notaccessible']['mediaID_' . $m_id] = [];
 				foreach($v as $val){// FIXME: table, ct are obsolete when onclick works
 					if(!isset($this->usedMediaLinks['accessible']['mediaID_' . $m_id][$types[addTblPrefix($val[1])]][$val[0] . $val[3]])){
 						if(isset($accessible[$val[1]][$val[0]])){
@@ -1085,7 +1085,7 @@ class we_search_search extends we_search_base{
 					' WHERE sr.UID=' . $_SESSION['user']['ID'] . ' AND l.nHash=x\'' . md5("Title") . '\' AND l.DocumentTable!="' . stripTblPrefix(TEMPLATES_TABLE) . '"' . ($path ? ' AND l.DID IN ' . $tmpTableWhere : ' AND ' . $where));
 
 				//check unpublished documents
-				$titles = array();
+				$titles = [];
 				$this->db->query('SELECT td.DocumentID, td.DocumentObject FROM `' . TEMPORARY_DOC_TABLE . '` td ' . ($path ? '' : ' JOIN ' . FILE_TABLE . ' f ON f.ID=td.DocumentID') . ' WHERE td.docTable="tblFile" AND td.Active=1 ' . ($path ? ' AND td.DocumentID IN ' . $tmpTableWhere : ' AND ' . $where));
 				while($this->db->next_record()){
 					$tempDoc = we_unserialize($this->db->f('DocumentObject'));
@@ -1197,7 +1197,7 @@ class we_search_search extends we_search_base{
 	function searchfor($searchname, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
 		$operator = ' AND ';
 		$this->table = $tablename;
-		$sql = array();
+		$sql = [];
 		$tableInfo = $GLOBALS['DB_WE']->metadata($this->table);
 
 		$whatParentID = '';
@@ -1345,7 +1345,7 @@ class we_search_search extends we_search_base{
 
 	private static function ofFolderAndChildsOnly($folderID, $table){//move this to view class; or verse visa
 		$DB_WE = new DB_WE();
-		$_SESSION['weS']['weSearch']['countChilds'] = array();
+		$_SESSION['weS']['weSearch']['countChilds'] = [];
 		//fix #2940
 		if(is_array($folderID)){
 			foreach($folderID as $k){
@@ -1382,7 +1382,7 @@ class we_search_search extends we_search_base{
 
 	/* static function checkRightTempTable(){
 	  $db = new DB_WE();
-	  $db->addTable('test_SEARCH_TEMP_TABLE', array('test' => 'VARCHAR(1) NOT NULL'), array(), 'MEMORY', true);
+	  $db->addTable('test_SEARCH_TEMP_TABLE', array('test' => 'VARCHAR(1) NOT NULL'), [], 'MEMORY', true);
 
 	  $db->next_record();
 
@@ -1395,7 +1395,7 @@ class we_search_search extends we_search_base{
 
 	/* static function checkRightDropTable(){
 	  $db = new DB_WE();
-	  $db->addTable('test_SEARCH_TEMP_TABLE', array('test' => 'VARCHAR(1) NOT NULL'), array(), 'MEMORY');
+	  $db->addTable('test_SEARCH_TEMP_TABLE', array('test' => 'VARCHAR(1) NOT NULL'), [], 'MEMORY');
 	  $db->delTable('test_SEARCH_TEMP_TABLE');
 	  return (stristr($db->Error, 'command denied') ? false : true);
 	  } */
@@ -1409,8 +1409,8 @@ class we_search_search extends we_search_base{
 	}
 
 	private function getSearchString($table, $tables, $opAND, $searchFields, $whichSearch, $searchForField, $searchText, $location, $searchForContentType, $DB_WE, $view){
-		$where = array();
-		$where_OR = array();
+		$where = [];
+		$where_OR = [];
 		foreach($searchFields as $i => $curField){
 			$done = false;
 			$searchString = ($whichSearch === we_search_view::SEARCH_MEDIA && substr($curField, 0, 6) === 'meta__' && $searchText[$i] === '' && $location[$i] === 'IS') ? '##EMPTY##' : $searchText[$i];
@@ -1441,7 +1441,7 @@ class we_search_search extends we_search_base{
 							}
 							break;
 						case 'ContentType':
-							$contentTypes = array();
+							$contentTypes = [];
 							foreach($searchForContentType as $type => $v){
 								if($v){
 									switch($type){

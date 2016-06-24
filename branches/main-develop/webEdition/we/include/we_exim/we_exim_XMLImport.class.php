@@ -24,7 +24,7 @@
  */
 class we_exim_XMLImport extends we_exim_XMLExIm{
 
-	var $nodehierarchy = array();
+	var $nodehierarchy = [];
 
 	function __construct(){
 		parent::__construct();
@@ -34,14 +34,14 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 		$db = new DB_WE();
 		update_time_limit(0);
 
-		$objects = array();
+		$objects = [];
 
 		$data = we_base_file::load($chunk_file);
 		$this->xmlBrowser = new we_backup_XMLParser();
 		$this->xmlBrowser->parse($data, $this->options['xml_encoding']);
 		unset($data);
 		$this->xmlBrowser->normalize();
-		$node_set = array();
+		$node_set = [];
 		if($this->xmlBrowser->getChildren(0, $node_set)){
 
 			foreach($node_set as $node){
@@ -189,12 +189,12 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 				// assign ParentID and ParentPath based on Path
 				if(isset($object->Table)){
-					$pathids = array();
+					$pathids = [];
 					$old_pid = $object->ParentID;
 					$owner = ($this->options['owners_overwrite'] && $this->options['owners_overwrite_id']) ? $this->options['owners_overwrite_id'] : 0;
 					if(defined('OBJECT_TABLE') && $object->ClassName === 'we_objectFile'){
 						//dont create Path in objects if the class doesn't exist
-						$match = array();
+						$match = [];
 						preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
 						if(isset($match[0]) && !f('SELECT 1 FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '" LIMIT 1', '', $db)){
 							return false;
@@ -271,7 +271,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				} else {
 					//assign TableID based on Path
 					// evaluate root dir for object
-					$match = array();
+					$match = [];
 					preg_match('|(/+[a-zA-Z0-9_+-\.]*)|', $object->Path, $match);
 					if(isset($match[0])){
 						$object->TableID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $db->escape($match[0]) . '"', '', $db);
@@ -371,7 +371,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 	function importNodeSet($node_id){
 		$i = 0;
 		$object = '';
-		$node_props = $node_data = $node_coding = array();
+		$node_props = $node_data = $node_coding = [];
 
 		if($this->xmlBrowser->getChildren($node_id, $node_props)){
 
@@ -524,7 +524,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 
 		if(isset($object->Owners) && ($this->options['handle_owners'] || $this->options['owners_overwrite'])){
 			$owners = makeArrayFromCSV($object->Owners);
-			$newowners = array();
+			$newowners = [];
 			foreach($owners as $owner){
 				if($this->options['handle_owners']){
 					$own = $this->RefTable->getNewOwnerID($owner);
@@ -547,7 +547,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			$object->Owners = implode(',', $newowners);
 			if(isset($object->OwnersReadOnly)){
 				$readonly = we_unserialize($object->OwnersReadOnly);
-				$readonly_new = array();
+				$readonly_new = [];
 				if(is_array($readonly)){
 					foreach($readonly as $key => $value){
 						if($this->options['handle_owners']){
@@ -573,7 +573,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 				$object->RestrictOwners = 0;
 			}
 			if(isset($object->OwnersReadOnly)){
-				$object->OwnersReadOnly = serialize(array());
+				$object->OwnersReadOnly = serialize([]);
 			}
 		}
 	}

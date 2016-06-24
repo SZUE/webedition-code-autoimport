@@ -29,12 +29,12 @@ class we_shop_category extends we_category{
 	//FIXME: move some of these static vars to session
 	private static $isCategoryMode = -1;
 	private static $shopCatDir = false;
-	private static $shopCatIDs = array();
-	private static $shopVatsByCategoryCountry = array();
-	private static $shopCatMapping = array();
+	private static $shopCatIDs = [];
+	private static $shopVatsByCategoryCountry = [];
+	private static $shopCatMapping = [];
 	private static $mustCheckIsInactive = -1;
-	private static $destPrinciples = array();
-	private static $activeShopCats = array();
+	private static $destPrinciples = [];
+	private static $activeShopCats = [];
 
 	const IS_CAT_FALLBACK_TO_STANDARD = 1;
 	const IS_CAT_FALLBACK_TO_ACTIVE = 2;
@@ -307,7 +307,7 @@ class we_shop_category extends we_category{
 
 		//debug
 		/*
-		  $arr = array();
+		  $arr = [];
 		  foreach(self::$shopCatMapping as $id => $val){
 		  $arr[$id] = !in_array($val, $inactives) ? "ok" : "bad";
 		  }
@@ -328,7 +328,7 @@ class we_shop_category extends we_category{
 	 */
 	public static function getAllShopCats($incCatsDir = true, $assoc = false, $dir = 0){
 		$ids = self::getAllShopCatIDs($incCatsDir, $dir);
-		$ret = array();
+		$ret = [];
 		foreach($ids as $id){
 			$cat = self::getShopCatById($id);
 			if($assoc){
@@ -393,7 +393,7 @@ class we_shop_category extends we_category{
 		//$interimsID = $id;
 
 		if(self::USE_IS_ACTIVE && $id !== self::getShopCatDir()){
-			$inactives = array();
+			$inactives = [];
 			if(self::$mustCheckIsInactive === -1){
 				$inactives = self::getIsInactiveFromDB(true);
 				$numCats = count(self::getAllShopCatIDs(false));
@@ -449,7 +449,7 @@ class we_shop_category extends we_category{
 	 */
 	static function getShopCatFieldsFromDir($field = '', $activeOnly = false, $allFields = false, $dir = 0, $includeDir = true, $assoc = true, $showpath = false, $rootdir = '', $order = ''){
 		if(!($path = (id_to_path(($dir ? : self::getShopCatDir()), CATEGORY_TABLE)))){
-			return array();
+			return [];
 		}
 
 		if($field === 'DestPrinciple' || $allFields){
@@ -553,7 +553,7 @@ class we_shop_category extends we_category{
 		}
 
 		if(!isset(self::$shopVatsByCategoryCountry[$this->ID])){
-			self::$shopVatsByCategoryCountry[$this->ID] = array();
+			self::$shopVatsByCategoryCountry[$this->ID] = [];
 		}
 
 		$vatID = f('SELECT id FROM ' . WE_SHOP_VAT_TABLE . ' WHERE territory="' . $this->db->escape($country) . '" AND FIND_IN_SET(' . intval($this->ID) . ', categories)', '', $this->db, -1);

@@ -55,7 +55,7 @@ echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15
 
 		$supported = we_base_imageEdit::supported_image_types();
 		$focus = we_unserialize($GLOBALS['we_doc']->getElement('focus', 'dat'), array(0, 0));
-		echo we_html_element::htmlDiv(array(), '
+		echo we_html_element::htmlDiv([], '
 <select name="editmenue" onchange="changeOption(this);"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
 <option value="imageEditTools_reset" selected="selected" style="color:grey"></option>
 <optgroup label="' . g_l('weClass', '[edit]') . '">

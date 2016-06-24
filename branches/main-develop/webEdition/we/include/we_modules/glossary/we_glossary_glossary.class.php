@@ -88,7 +88,7 @@ class we_glossary_glossary extends we_base_model{
 	 *
 	 * @var array
 	 */
-	var $Attributes = array();
+	var $Attributes = [];
 
 	/**
 	 * should the item be linked to a detailed description
@@ -147,7 +147,7 @@ class we_glossary_glossary extends we_base_model{
 	 *
 	 * @var array
 	 */
-	var $_Serialized = array();
+	var $_Serialized = [];
 
 	/**
 	 * @param integer $GlossaryId
@@ -200,7 +200,7 @@ class we_glossary_glossary extends we_base_model{
 
 		$GLOBALS['DB_WE']->query($Query);
 
-		$ReturnValue = array();
+		$ReturnValue = [];
 		while($GLOBALS['DB_WE']->next_record()){
 			$Item = array(
 				'Type' => $GLOBALS['DB_WE']->f("Type"),
@@ -437,7 +437,7 @@ class we_glossary_glossary extends we_base_model{
 			return file($fileName);
 		}
 
-		return array();
+		return [];
 	}
 
 	function getExceptionFilename($language){

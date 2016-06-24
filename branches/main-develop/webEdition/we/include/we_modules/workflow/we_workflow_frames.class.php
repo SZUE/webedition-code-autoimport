@@ -125,13 +125,13 @@ function we_save() {
 }');
 
 		$table2 = new we_html_table(array('class' => 'default', 'width' => 300), 1, 2);
-		$table2->setCol(0, 0, array(), we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save()'));
+		$table2->setCol(0, 0, [], we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save()'));
 		$table2->setCol(0, 1, array('class' => 'defaultfont'), $this->View->getStatusHTML());
 
 		$body = we_html_element::htmlBody(array(
 				'id' => 'footerBody',
 				'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
-				), we_html_element::htmlForm($attribs = array(), $table2->getHtml())
+				), we_html_element::htmlForm($attribs = [], $table2->getHtml())
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -151,7 +151,7 @@ function we_save() {
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody([], we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
 							'wcmd' => '',
 							'wopt' => '')) .
 						$this->View->getCmdJS() .
@@ -169,7 +169,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 	function getHTMLLogQuestion(){
 		$form = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getLogQuestion());
-		$body = we_html_element::htmlBody(array(), $form);
+		$body = we_html_element::htmlBody([], $form);
 
 		return $this->getHTMLDocument($body);
 	}

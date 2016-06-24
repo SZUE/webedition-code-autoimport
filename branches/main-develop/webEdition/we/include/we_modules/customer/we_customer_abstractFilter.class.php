@@ -62,28 +62,28 @@ abstract class we_customer_abstractFilter{
 	 *
 	 * @var array
 	 */
-	var $_specificCustomers = array();
+	var $_specificCustomers = [];
 
 	/**
 	 * Array with customer ids. Only relevant when $_mode is FILTER
 	 *
 	 * @var array
 	 */
-	private $_blackList = array();
+	private $_blackList = [];
 
 	/**
 	 * Array with customer ids. Only relevant when $_mode is FILTER
 	 *
 	 * @var array
 	 */
-	private $_whiteList = array();
+	private $_whiteList = [];
 
 	/**
 	 * Array with filter Settings
 	 *
 	 * @var array
 	 */
-	private $_filter = array();
+	private $_filter = [];
 
 	/**
 	 *
@@ -94,7 +94,7 @@ abstract class we_customer_abstractFilter{
 	 * @param array $filter
 	 * @return we_customer_abstractFilter
 	 */
-	protected function __construct($mode = self::OFF, array $specificCustomers = array(), array $blackList = array(), array $whiteList = array(), array $filter = array()){
+	protected function __construct($mode = self::OFF, array $specificCustomers = [], array $blackList = [], array $whiteList = [], array $filter = []){
 		$this->setMode($mode);
 		$this->setSpecificCustomers($specificCustomers);
 		$this->setBlackList($blackList);
@@ -171,7 +171,7 @@ abstract class we_customer_abstractFilter{
 
 		$hasPermission = false;
 		$flag = false;
-		$invalidFields = array();
+		$invalidFields = [];
 		foreach($this->_filter as $filter){
 			if(!isset($_SESSION['webuser'][$filter['field']])){
 				$invalidFields[] = $filter['field'];
@@ -247,10 +247,10 @@ abstract class we_customer_abstractFilter{
 	 */
 	static function getFilterFromRequest(){
 		if(we_base_request::_(we_base_request::STRING, 'filterSelect_0') === false){
-			return array();
+			return [];
 		}
 		$count = 0;
-		$filter = array();
+		$filter = [];
 		while(($field = we_base_request::_(we_base_request::STRING, 'filterSelect_' . $count))){
 			if(trim(($val = we_base_request::_(we_base_request::STRING, 'filterValue_' . $count)))){
 				$filter[] = array(
@@ -273,9 +273,9 @@ abstract class we_customer_abstractFilter{
 	 */
 	static function getSpecificCustomersFromRequest(){
 		if(!($name = we_base_request::_(we_base_request::STRING, 'specificCustomersEditControl'))){
-			return array();
+			return [];
 		}
-		$customers = array();
+		$customers = [];
 		$i = 0;
 		while(($val = we_base_request::_(we_base_request::STRING, $name . '_variant1_' . $name . '_item' . $i))){
 			$customers[] = $val;
@@ -292,9 +292,9 @@ abstract class we_customer_abstractFilter{
 	 */
 	static function getBlackListFromRequest(){
 		if(!($name = we_base_request::_(we_base_request::STRING, 'blackListEditControl'))){
-			return array();
+			return [];
 		}
-		$blackList = array();
+		$blackList = [];
 		$i = 0;
 		while(($val = we_base_request::_(we_base_request::STRING, $name . '_variant1_' . $name . '_item' . $i))){
 			$blackList[] = $val;
@@ -311,9 +311,9 @@ abstract class we_customer_abstractFilter{
 	 */
 	static function getWhiteListFromRequest(){
 		if(!($name = we_base_request::_(we_base_request::STRING, 'whiteListEditControl'))){
-			return array();
+			return [];
 		}
-		$whiteList = array();
+		$whiteList = [];
 		$i = 0;
 		while(($val = we_base_request::_(we_base_request::STRING, $name . '_variant1_' . $name . '_item' . $i))){
 			$whiteList[] = $val;

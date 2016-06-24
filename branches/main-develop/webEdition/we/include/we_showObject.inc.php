@@ -67,7 +67,7 @@ if(($userID && $userID != $_SESSION['user']['ID']) || (we_base_request::_(we_bas
 		$tmpDB = new DB_WE();
 
 		//	determine Path from last opened wE-Document
-		$lastDoc = isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document'] : array();
+		$lastDoc = isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document'] : [];
 		if(isset($lastDoc['Path'])){
 			if($workspaces){ // get the correct template
 				//	Select a matching workspace.

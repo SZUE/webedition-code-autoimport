@@ -38,7 +38,7 @@ class rpcSelectorSuggestCmd extends we_rpc_cmd{
 		$cmd5 = we_base_request::_(we_base_request::INT, 'we_cmd', '', 5);
 		if($cmd4 && $cmd5){
 			if($cmd2 == (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : '-1') && $cmd4 == we_base_ContentTypes::TEMPLATE){
-				$selectorSuggest->addCondition(array('AND', '!=', 'ID', $cmd5));
+				$selectorSuggest->addCondition(['AND', '!=', 'ID', $cmd5]);
 			}
 		}
 		$selectorSuggest->search($cmd1, $cmd2, $contentTypes, "", we_base_request::_(we_base_request::FILE, 'we_cmd', '', 6));

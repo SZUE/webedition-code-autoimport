@@ -31,11 +31,11 @@ class rpcResetVersionCmd extends we_rpc_cmd{
 
 		$ids = (stristr($id, ',') ?
 				explode(',', $id) :
-				array($id)
-			);
+				[$id]
+		);
 
 		$specVersion = we_base_request::_(we_base_request::INT, 'version', false);
-		$_SESSION['weS']['versions']['logResetIds'] = array();
+		$_SESSION['weS']['versions']['logResetIds'] = [];
 
 		foreach($ids as $documents){
 			$parts = explode('___', $documents);

@@ -124,7 +124,7 @@ function setTab(tab) {
 					function we_save() {
 						top.content.we_cmd("save_voting");
 					}') .
-				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm(array(), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_VOTING') && !permissionhandler::hasPerm('EDIT_VOTING'))))
+				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm([], we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_VOTING') && !permissionhandler::hasPerm('EDIT_VOTING'))))
 				)
 		);
 	}
@@ -327,7 +327,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			$export_box->setCol(5, 0, array("class" => "defaultfont", 'style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($import_Charset, g_l('modules_voting', '[csv_charset]')));
 			$export_box->setCol(7, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($delimiter->getHtml(), g_l('export', '[csv_delimiter]')));
 			$export_box->setCol(9, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($enclose->getHtml(), g_l('export', '[csv_enclose]')));
-			$export_box->setCol(11, 0, array(), $ok);
+			$export_box->setCol(11, 0, [], $ok);
 
 			$parts[] = array(
 				"headline" => g_l('modules_voting', '[export]'),
@@ -344,7 +344,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		$activeTime->addOption((1), g_l('modules_voting', '[until]'));
 		$activeTime->selectOption($this->View->voting->ActiveTime);
 
-		$table = new we_html_table(array(), 4, 2);
+		$table = new we_html_table([], 4, 2);
 		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[valid_txt]'), we_html_tools::TYPE_INFO, 520, false, 133));
 		$table->setCol(1, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($this->View->voting->Active ? true : false, 'Active', g_l('modules_voting', '[active_till]'), false, 'defaultfont', 'toggle(\'activetime\');if(!this.checked) setVisible(\'valid\',false); else if(document.we_form.ActiveTime.value==1) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
 
@@ -368,7 +368,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 
 	function getHTMLTab2(){
 		$successor_box = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;'), 2, 1);
-		$successor_box->setCol(1, 0, array(), we_html_tools::htmlFormElementTable($this->formFileChooser(400, 'Successor', '/', '', ''), g_l('modules_voting', '[voting-successor]')));
+		$successor_box->setCol(1, 0, [], we_html_tools::htmlFormElementTable($this->formFileChooser(400, 'Successor', '/', '', ''), g_l('modules_voting', '[voting-successor]')));
 
 
 		$displaySuccessor = ($this->View->voting->AllowSuccessor ? 'block' : 'none');
@@ -426,7 +426,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 	}
 
 	function getHTMLTab3(){
-		$parts = array();
+		$parts = [];
 
 
 		$selectTime = new we_html_select(array('name' => 'RevoteTime', 'class' => 'weSelect', 'style' => 'width:200', 'onchange' => 'top.content.setHot(); if(this.value==0) setVisible(\'method_table\',false); else setVisible(\'method_table\',true);'));
@@ -549,7 +549,7 @@ function newIp(){
 	}
 
 	function getHTMLTab4(){
-		$parts = array();
+		$parts = [];
 
 		$total_score = array_sum($this->View->voting->Scores);
 
@@ -733,7 +733,7 @@ function setVisible(id,visible){
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array(), we_html_element::htmlForm(
+				we_html_element::htmlBody([], we_html_element::htmlForm(
 						array("name" => "we_form"), we_html_element::htmlHiddens(array(
 							"pnt" => "cmd",
 							"cmd" => "no_cmd")
@@ -829,7 +829,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		if(!is_array($voting->LogData)){
 			$log = we_unserialize($voting->LogData);
 		} else {
-			$log = array();
+			$log = [];
 		}
 
 		$headline = array(
@@ -841,7 +841,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			array('dat' => we_html_element::htmlB(g_l('modules_voting', '[status]'))),
 		);
 
-		$content = array();
+		$content = [];
 
 		$count = 15;
 		$size = count($log);
@@ -953,7 +953,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			array('dat' => we_html_element::htmlB(g_l('modules_voting', '[voting-additionalfields]'))),
 		);
 
-		$content = array();
+		$content = [];
 
 		$count = 15;
 		$size = count($log);
@@ -1075,7 +1075,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			array('dat' => we_html_element::htmlB(g_l('modules_voting', '[answerText]'))),
 		);
 
-		$content = array();
+		$content = [];
 
 		$count = 15;
 		$size = count($log);

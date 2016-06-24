@@ -64,7 +64,7 @@ class weTagDataOption{
 	 * @param array $allowedAttributes
 	 * @param array $requiredAttributes
 	 */
-	function __construct($name, $value = false, $module = '', $allowedAttributes = array(), $requiredAttributes = array(), $disabled = false){
+	function __construct($name, $value = false, $module = '', $allowedAttributes = [], $requiredAttributes = [], $disabled = false){
 		$this->Name = $name;
 		$this->Value = ($value === false) ? $name : $value;
 		$this->Disabled = $disabled;
@@ -95,7 +95,7 @@ class weTagDataOption{
 	 * @return array
 	 */
 	function getAllowedAttributes(){
-		$arr = array();
+		$arr = [];
 		foreach($this->AllowedAttributes as $attribute){
 			if(empty($attribute)){
 				continue;
@@ -115,7 +115,7 @@ class weTagDataOption{
 	 * @return array
 	 */
 	function getRequiredAttributes(){
-		$arr = array();
+		$arr = [];
 		foreach($this->RequiredAttributes as $attribute){
 			if($attribute->useAttribute()){
 				$arr[] = $attribute->getIdName();

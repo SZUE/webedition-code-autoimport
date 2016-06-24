@@ -450,7 +450,7 @@ top.selectFile(top.currentID);'
 				case VFILE_TABLE:
 					if($result['ContentType'] == we_base_ContentTypes::FOLDER){
 						$query = $this->db->query('SELECT ID,Text,IsFolder FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->id));
-						$folderFolders = $folderFiles = array();
+						$folderFolders = $folderFiles = [];
 						while($this->db->next_record()){
 							if($this->db->f('IsFolder')){
 								$folderFolders[$this->db->f('ID')] = $this->db->f('Text');
