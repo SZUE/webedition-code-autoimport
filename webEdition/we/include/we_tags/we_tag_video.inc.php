@@ -41,7 +41,7 @@ function we_tag_video(array $attribs){
 
 	$out = ($GLOBALS['we_editmode'] && !$showvideo ?
 			'' :
-			$GLOBALS['we_doc']->getField(removeAttribs($attribs, array('showvideo', 'parentid', 'startid')), 'video') );
+			$GLOBALS['we_doc']->getField(removeAttribs($attribs, array('showvideo', 'parentid', 'startid','showcontrol')), 'video') );
 
 	if($showcontrol && $GLOBALS['we_editmode']){
 		$startid = weTag_getAttribute('startid', $attribs, 0, we_base_request::INT);
