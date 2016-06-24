@@ -147,7 +147,7 @@ class we_fragment_base{
 		$nextTask = $this->currentTask + $this->taskPerFragment;
 		$tmp = $_REQUEST;
 		$tmp['fr_' . $this->name . '_ct'] = ($nextTask);
-		$tail = http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
+		$tail = defined('PHP_QUERY_RFC3986') ? http_build_query($tmp, null, '&', PHP_QUERY_RFC3986) : http_build_query($tmp, null, '&');
 
 		$onload = "document.location='" . $_SERVER["SCRIPT_NAME"] . '?' . $tail . "';";
 
