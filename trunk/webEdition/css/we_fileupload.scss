@@ -162,18 +162,76 @@ table.importer_files{
 	font-size:1.6em;
 }
 
-#editImage{
+div.imgEditOpts{
 	display: none;
 	padding: 4px 0 6px 4px;
 
-	.optsUnitSelect{
-		width: 96px;
+	div.scaleDiv{
+		margin: 4px 0 0 0;
+
+		div.labelContainer{
+			display: inline-block; 
+			width: 70px;
+		}
+		div.inputContainer{
+			display: inline-block;
+
+			.optsUnitSelect{
+				width: 96px;
+			}
+		}
 	}
-	.optsRotateSelect{
-		width: 153px;
+	div.rotationDiv{
+		margin: 4px 0 0 0;
+
+		div.labelContainer{
+			display: inline-block; 
+			width: 70px;
+		}
+		div.inputContainer{
+			display: inline-block;
+
+			.optsRotateSelect{
+				width: 153px;
+			}
+		}
 	}
-	.optsQuality{
-		width: 115px;
+	div.qualityDiv{
+		margin: 2px 0 0 0;
+
+		div.labelContainer{
+			display: inline-block;
+			width: 70px;
+		}
+		div.inputContainer{
+			display: inline-block;
+			width: 130px;
+
+			input.optsQuality{
+				width: 124px;
+			}
+		}
+		div.valueContainer{
+			display: inline-block;
+			padding: 0 0 0 10px;
+			width: 35px;
+		}
+		div.btnContainer{
+			width: 53px;
+			text-align: right;
+			display: inline-block;
+		}
+	}
+	div.btnDiv{
+		margin: 12px 0 0 0;
+
+		div.btnContainer{
+			position: absolute;
+			left: 178px;
+			width: 53px;
+			text-align: right;
+			display: block;
+		}
 	}
 }
 
