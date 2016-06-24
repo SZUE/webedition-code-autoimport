@@ -31,6 +31,7 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 
 	$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+	//$we_doc = we_document::initDoc('', $we_dt);
 	session_write_close();
 
 	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);

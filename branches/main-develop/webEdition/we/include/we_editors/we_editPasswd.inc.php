@@ -96,12 +96,13 @@ function comparePwd(f1,f2){
 			pwd2.classList.remove("weMarkInputError");
 		}
 	}
+	return 0;
 }
 function setPwdErr(status){
 	switch(status){
 		case 0:
 		document.getElementById(\'badPwd\').style.display=\'none\';
-		document.getElementById(\'badPwd\').style.display=\'none\';
+		document.getElementById(\'badPwd2\').style.display=\'none\';
 		break;
 		case 1:
 		document.getElementById(\'badPwd\').style.display=\'block\';

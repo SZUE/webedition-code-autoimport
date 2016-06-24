@@ -139,29 +139,29 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				270 => g_l('weClass', '[rotate90l]'),
 				90 => g_l('weClass', '[rotate90r]'),
 				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '', 150, 'weSelect optsRotateSelect');
-		$quality = we_html_element::htmlInput(array('type' => 'range', 'value' => 0, 'min' => 0, 'max' => 100, 'step' => 5, 'oninput' => "document.getElementById('qualityValue').innerHTML = this.value", 'name' => 'fu_doc_quality'));
-		$btnRefresh = we_html_button::create_button(we_html_button::PROCESS, "javascript:" . $reeditCmd, true, 0, 0, '', '', true, false, '_weFileupload', false, $title = 'Ausführen', 'weFileupload_btnImgEditRefresh');
+		$quality = we_html_element::htmlInput(array('type' => 'range', 'value' => 0, 'min' => 0, 'max' => 100, 'step' => 5, 'onchange' => "document.getElementById('qualityValue').innerHTML = this.value", 'oninput' => "document.getElementById('qualityValue').innerHTML = this.value", 'name' => 'fu_doc_quality', 'class' => 'optsQuality'));
+		$btnProcess = we_html_button::create_button(we_html_button::PROCESS, "javascript:" . $reeditCmd, true, 0, 0, '', '', true, false, '_weFileupload', false, $title = '', 'weFileupload_btnImgEditRefresh');
 
 		return we_html_element::htmlDiv(array(), $editCheckbox) .
-			we_html_element::htmlDiv(array('id' => 'editImage'), we_html_element::htmlDiv(array(), we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Skalieren:') .
-					we_html_element::htmlDiv(array('style' => 'display:inline;'), $unitSelect . ' ' . $valueInput)
+			we_html_element::htmlDiv(array('class' => 'imgEditOpts', 'id' => 'editImage'), 
+				we_html_element::htmlDiv(array('class' => 'scaleDiv'), 
+					we_html_element::htmlDiv(array('class' => 'labelContainer'), g_l('importFiles', '[scale_label]') .':') .
+					we_html_element::htmlDiv(array('class' => 'inputContainer'), $unitSelect . ' ' . $valueInput)
 				) .
-				we_html_element::htmlDiv(array('style' => "margin-top: 4px;"), we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Drehen:') .
-					we_html_element::htmlDiv(array('style' => 'display:inline-block;'), $rotateSelect)
+				we_html_element::htmlDiv(array('class' => 'rotationDiv'),
+					we_html_element::htmlDiv(array('class' => 'labelContainer'), g_l('importFiles', '[rotate_label]') .':') .
+					we_html_element::htmlDiv(array('class' => 'inputContainer'), $rotateSelect)
 				) .
-				we_html_element::htmlDiv(array('style' => "margin-top: 2px;"), we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Qualität:') .
-					we_html_element::htmlDiv(array('style' => 'display:inline-block;width: 130px;'), $quality) .
-					we_html_element::htmlDiv(array('id' => 'qualityValue', 'style' => 'display:inline-block;padding: 0 0 0 10px; width: 35px;'), '0') .
-					(!$multimport ? we_html_element::htmlDiv(array('style' => 'width: 53px; text-align:right; display:inline-block;'), $btnRefresh) : '')
+				we_html_element::htmlDiv(array('class' => 'qualityDiv'), 
+					we_html_element::htmlDiv(array('class' => 'labelContainer'), g_l('weClass', '[quality]') . ':') .
+					we_html_element::htmlDiv(array('class' => 'inputContainer'), $quality) .
+					we_html_element::htmlDiv(array('id' => 'qualityValue', 'class' => 'valueContainer'), '0') .
+					(!$multimport ? we_html_element::htmlDiv(array('class' => 'btnContainer'), $btnProcess) : '')
 				) .
-				($multimport ? we_html_element::htmlDiv(array('style' => "margin-top: 12px;"), we_html_element::htmlDiv(array('style' => 'position:absolute; left:178px;width: 53px; text-align:right; display:block;'), $btnRefresh)
-					) : '')
+				($multimport ? we_html_element::htmlDiv(array('class' => 'btnDiv'), 
+					we_html_element::htmlDiv(array('class' => 'btnContainer'), $btnProcess)
+				) : '')
 		);
-
-		/*
-		  $resizeCheckbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_doResize', 'Grafik vor dem Upload proportional skalieren', false, 'defaultfont', 'document.getElementById(\'editImageResize\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){we_FileUpload.reeditImage(null, 0);}');
-		  return we_html_element::htmlDiv(array(), $resizeCheckbox) . we_html_element::htmlDiv(array('id' => 'editImageResize', 'style' => 'display:none; padding: 0 0 4px 28px;'), $valueInput . ' ' . $unitSelect . $btnRefresh);
-		 */
 	}
 
 	public function getFormImportMeta(){
@@ -171,7 +171,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		}
 
 		$html = we_html_forms::checkboxWithHidden(($this->imageEditProps['importMetadata'] ? true : false), 'fu_doc_importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '');
-		$headline = 'Metadaten';
+		$headline = g_l('importFiles', '[metadata]');
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
