@@ -75,7 +75,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
 		echo $we_doc->getEmptyDefaultFields() . we_html_multiIconBox::_getBoxStart($uniquename) .
-		$jsGUI->getContainer(array()) .
+		$jsGUI->getContainer([]) .
 		'<div id="' . $uniquename . '_div">
  <table style="margin-left:30px;margin-bottom:15px;" class="default">
  <tr>

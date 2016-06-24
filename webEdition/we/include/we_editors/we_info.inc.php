@@ -87,10 +87,10 @@ $loginRow = 0;
 if(!empty($GLOBALS["loginpage"])){
 	$loginTable = new we_html_table(array("class" => "plainTable"), 4, 1);
 	$loginTable->setCol($loginRow++, 0, array("class" => "small"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => "username"), g_l('global', '[username]'))));
-	$loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" placeholder="' . g_l('global', '[username]') . '" ', 'text', 0, 0));
+	$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_username', 25, '', 255, 'id="username" placeholder="' . g_l('global', '[username]') . '" ', 'text', 0, 0));
 	$loginTable->setCol($loginRow++, 0, array("class" => "small row5"), we_html_baseElement::getHtmlCode(new we_html_baseElement("label", true, array("for" => 'password'), g_l('global', '[password]'))));
-	$loginTable->setCol($loginRow++, 0, array(), we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" placeholder="' . g_l('global', '[password]') . '" ', 'password', 0, 0));
-	$loginTable->setCol($loginRow++, 0, array(), '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
+	$loginTable->setCol($loginRow++, 0, [], we_html_tools::htmlTextInput('WE_LOGIN_password', 25, '', 255, 'id="password" placeholder="' . g_l('global', '[password]') . '" ', 'password', 0, 0));
+	$loginTable->setCol($loginRow++, 0, [], '<a href="' . WEBEDITION_DIR . 'resetpwd.php">' . g_l('global', '[pwd][forgotten]') . '</a>');
 
 	$table->addRow(2);
 	$table->setCol($actRow++, 0, array('class' => 'spaceTable'), $loginTable->getHtml());
@@ -102,10 +102,10 @@ if(!empty($GLOBALS["loginpage"])){
 	$loginButton = we_html_button::create_button('fat:login,fa-lg fa-sign-in', we_html_button::WE_FORM . ':loginForm', true, 0, 0, 'this.style.display=\'none\';');
 	if(!WE_SEEM){ //	deactivate See-Mode
 		if(WE_LOGIN_WEWINDOW){
-			$modetable->setCol(0, 0, array(), '');
+			$modetable->setCol(0, 0, [], '');
 			$modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2), (WE_LOGIN_WEWINDOW == 1 ? '<input type="hidden" name="popup" value="popup"/>' : '') . $loginButton);
 		} else {
-			$modetable->setCol(0, 0, array(), we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
+			$modetable->setCol(0, 0, [], we_html_forms::checkbox('popup', getValueLoginMode('popup'), 'popup', g_l('SEEM', '[popup]')));
 			$modetable->setCol(0, 1, array('style' => 'text-align:right;vertical-align:bottom;', "rowspan" => 2), we_html_element::htmlHidden("mode", "normal") . $loginButton);
 		}
 	} else { //	normal login
@@ -125,7 +125,7 @@ if(!empty($GLOBALS["loginpage"])){
 		}
 
 		// if button is between these radio boces, they can not be reachable with <tab>
-		$modetable->setCol(0, 0, array(), '<table class="default">
+		$modetable->setCol(0, 0, [], '<table class="default">
 		<tr><td>' . $we_login_type . '</td></tr>' .
 				'<tr><td>' . we_html_forms::radiobutton(we_base_constants::MODE_NORMAL, getValueLoginMode(we_base_constants::MODE_NORMAL), 'mode', g_l('SEEM', '[start_mode_normal]'), true, 'small') .
 				'</td></tr>

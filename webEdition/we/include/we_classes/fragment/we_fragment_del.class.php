@@ -40,15 +40,15 @@ class we_fragment_del extends we_fragment_base{
 		$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . $filesToDel . ') ORDER BY IsFolder, LENGTH(Path) DESC');
 		$this->alldata = $this->db->getAll(true);
 
-		$_SESSION['weS']['we_not_deleted_entries'] = array();
+		$_SESSION['weS']['we_not_deleted_entries'] = [];
 		$_SESSION['weS']['we_go_seem_start'] = false;
 	}
 
 	function doTask(){
 		$p = addslashes(we_base_util::shortenPath(id_to_path($this->data, $this->table, $this->db), 70));
-		$GLOBALS['we_folder_not_del'] = array();
+		$GLOBALS['we_folder_not_del'] = [];
 		$currentID = we_base_request::_(we_base_request::INT, 'currentID', 0);
-		$currentParents = array();
+		$currentParents = [];
 		we_readParents($currentID, $currentParents, $this->table);
 
 		we_base_delete::deleteEntry($this->data, $this->table, false);

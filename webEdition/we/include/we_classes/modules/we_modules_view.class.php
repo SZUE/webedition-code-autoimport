@@ -37,7 +37,7 @@ class we_modules_view implements we_modules_viewIF{
 		$this->topFrame = $topframe;
 	}
 
-	function getCommonHiddens($cmds = array()){
+	function getCommonHiddens($cmds = []){
 		return we_html_element::htmlHiddens(array(
 				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
 				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),

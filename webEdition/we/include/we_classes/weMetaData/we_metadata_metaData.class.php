@@ -77,28 +77,28 @@ class we_metadata_metaData{
 	 * @var array access permissions to datasource (read and/or write). Other permissions can
 	 * 			be implemented by subclasses (i.e. 'modify')
 	 */
-	var $datasourcePerms = array();
+	var $datasourcePerms = [];
 
 	/**
 	 * @var string filetype of the file that has to be read/written (i.e. 'jpg')
 	 */
-	var $filetype = array();
+	var $filetype = [];
 
 	/**
 	 * @var string array of metadata types that have to be read/written from/to the file
 	 */
-	var $datatype = array();
+	var $datatype = [];
 
 	/**
 	 * @var array containing all metadata fetched from datasource
 	 */
-	var $metadata = array();
+	var $metadata = [];
 
 	/**
 	 * @var array of objects instance of the implementation class for reading/writing metadata
 	 * 			has to be an array because multiple metadata readers/writers can be specified for a fileformat.
 	 */
-	protected $instance = array();
+	protected $instance = [];
 
 	/**
 	 * @var bool flag for validity checks within these classes
@@ -361,12 +361,12 @@ class we_metadata_metaData{
 	public static function getMetaDataField($field = ''){
 		$fields = self::getDefinedMetaDataFields(self::ALL_FIELDS, true);
 
-		return isset($fields[$field]) ? $fields[$field] : array();
+		return isset($fields[$field]) ? $fields[$field] : [];
 	}
 
 	public static function getDefinedMetaValues($getAssoc = false, $leading = false, $field = '', $getDelete = false, $getDeleteLast = false){
 		// defined_values change more often than defined_fields, so we do not cache them!
-		$defined_values = array();
+		$defined_values = [];
 		$GLOBALS['DB_WE']->query('SELECT * FROM ' . METAVALUES_TABLE . ($field ? ' WHERE tag = "' . $GLOBALS['DB_WE']->escape($field) . '"' : '') . ' ORDER BY value');
 		$isDel = false;
 
@@ -396,7 +396,7 @@ class we_metadata_metaData{
 			}
 		}
 
-		return $field ? (isset($defined_values[$field]) ? $defined_values[$field] : array()) : $defined_values;
+		return $field ? (isset($defined_values[$field]) ? $defined_values[$field] : []) : $defined_values;
 	}
 
 }

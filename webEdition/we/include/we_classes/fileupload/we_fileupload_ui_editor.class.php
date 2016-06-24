@@ -28,10 +28,10 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		'editorCallback' => '',
 	);
 	protected $doImport = true;
-	protected $contentType = array();
+	protected $contentType = [];
 	protected $posBtnUpload = 'bottom';
 
-	//protected $predefinedConfigs = array();
+	//protected $predefinedConfigs = [];
 
 	public function __construct($contentType = '', $extensions = '', $doImport = true){
 		parent::__construct($contentType, $extensions);
@@ -111,13 +111,13 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 				) .
 				we_html_element::htmlDiv(array('style' => 'width:400px'), we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), 
 						$this->getHtmlDropZone('preview', $noImage) .
-						we_html_element::htmlDiv(array(), $this->getFormImageEditClientside())
+						we_html_element::htmlDiv([], $this->getFormImageEditClientside())
 					)
 				) .
 				$divProgressbar . ($this->posBtnUpload === 'top' && !$this->isExternalBtnUpload ? $divBtnUpload : '')
 		);
 
-		$parts = array();
+		$parts = [];
 		$parts = is_array($form = $this->makeMultiIconRow('uploader', 'Dateiauswahl', $formUploader)) ? array_merge($parts, array($form)) : $parts;
 		if($this->parentID['setField']){
 			$parts = is_array($form = $this->getFormParentID()) ? array_merge($parts, array($form)) : $parts;
@@ -241,7 +241,7 @@ documentWriteback = function(importedDocument){
 ');
 	}
 
-	public function setEditorJS($editorJS = array()){
+	public function setEditorJS($editorJS = []){
 		$this->editorJS = array_merge($this->editorJS, $editorJS);
 	}
 

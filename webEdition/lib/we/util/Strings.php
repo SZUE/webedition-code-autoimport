@@ -174,7 +174,7 @@ abstract class we_util_Strings{
 		t_e('deprecated');
 
 		$mynumber = "$number";
-		$numbers = array();
+		$numbers = [];
 
 		if($isApp){
 			if($number < 1){

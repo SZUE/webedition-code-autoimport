@@ -46,13 +46,13 @@ switch($cmd0){
 			$script = we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
 			break;
 		}
-		if(!($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
+		if(!($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', []))){
 			$script = 'top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_ERROR, window);';
 			break;
 		}
 
 		// list of all item names which should be moved
-		$items2move = array();
+		$items2move = [];
 
 		// list of the selected items
 		$retVal = 1;
@@ -91,7 +91,7 @@ switch($cmd0){
 		if($retVal == -1){ //	not allowed to move document
 			$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToMove]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif($retVal){ //	move files !
-			$notMovedItems = array();
+			$notMovedItems = [];
 			moveItems($targetDirectroy, $selectedItems, $table, $notMovedItems);
 
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	only update tree when in normal mode
@@ -100,7 +100,7 @@ switch($cmd0){
 
 			if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){ //	different messages in normal or seeMode
 				if($notMovedItems){
-					$_SESSION['weS']['move_files_nok'] = array();
+					$_SESSION['weS']['move_files_nok'] = [];
 					foreach($notMovedItems as $item){
 						$_SESSION['weS']['move_files_nok'][] = array(
 							"ContentType" => $item['ContentType'],

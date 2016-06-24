@@ -73,7 +73,7 @@ class we_thumbnail{
 	 * options of the thumbnail
 	 * @var array
 	 */
-	private $options = array();
+	private $options = [];
 
 	/**
 	 * Format (jpg, png or gif) of the thumbnail
@@ -634,7 +634,7 @@ class we_thumbnail{
 	public static function deleteByThumbID($id){
 		$thumbsdir = self::getThumbDirectory(true);
 		$dir_obj = @dir($thumbsdir);
-		$filestodelete = array();
+		$filestodelete = [];
 		if($dir_obj){
 			while(false !== ($entry = $dir_obj->read())){
 				if($entry != '.' && $entry != '..' && preg_match('|^[0-9]+_' . intval($id) . '_(.+)|', $entry)){
@@ -650,7 +650,7 @@ class we_thumbnail{
 	public static function deleteByImageID($id){
 		$thumbsdir = self::getThumbDirectory(true);
 		$dir_obj = @dir($thumbsdir);
-		$filestodelete = array();
+		$filestodelete = [];
 		if($dir_obj){
 			while(false !== ($entry = $dir_obj->read())){
 				switch($entry){

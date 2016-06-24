@@ -31,7 +31,7 @@ $step = we_base_request::_(we_base_request::INT, "step", 0);
 $mode = we_base_request::_(we_base_request::INT, "mode", 0);
 
 if($type && ($step == 1 || $step == 2) && $what === 'wizbody'){
-	$acceptedMime = $acceptedExt = array();
+	$acceptedMime = $acceptedExt = [];
 	switch($type){
 		case we_import_functions::TYPE_GENERIC_XML:
 			$name = 'uploaded_xml_file';

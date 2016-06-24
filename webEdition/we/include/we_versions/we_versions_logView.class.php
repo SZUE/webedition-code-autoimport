@@ -277,7 +277,7 @@ function back(id) {
 
 				$anzGesamt = count($data);
 
-				$orderedArray = array();
+				$orderedArray = [];
 				foreach($data as $k => $v){
 					$orderedArray[] = $v;
 				}

@@ -224,7 +224,7 @@ EO_SCRIPT;
 	}
 
 	function getHTMLCustomerFilter($startEmpty = false){
-		$filter_args = array();
+		$filter_args = [];
 
 		$GLOBALS['DB_WE']->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 		while($GLOBALS['DB_WE']->next_record()){

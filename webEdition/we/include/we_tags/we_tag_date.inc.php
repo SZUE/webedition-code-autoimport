@@ -65,7 +65,7 @@ function getDateWord(f,dateObj){
 	}
 }';
 
-			$ret = $js_arr = array();
+			$ret = $js_arr = [];
 
 			for($i = 0; $i < strlen($format); $i++){
 				$skip = false;

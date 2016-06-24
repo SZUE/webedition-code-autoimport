@@ -60,18 +60,18 @@ class we_banner_banner extends we_banner_base{
 	var $Customers = '';
 	var $TagName = '';
 	var $weight = 4;
-	protected $MediaLinks = array();
+	protected $MediaLinks = [];
 
 	/**
 	 * steps for WorkFlow Definition
 	 * this is array of weBannerStep objects
 	 */
-	var $steps = array();
+	var $steps = [];
 	// default document object
 	var $documentDef;
 	// documents array; format document[documentID]=document_name
 	// don't create array of objects 'cos whant to save some memory
-	var $documents = array();
+	var $documents = [];
 
 	/**
 	 * Default Constructor
@@ -145,7 +145,7 @@ class we_banner_banner extends we_banner_base{
 		//FIXME: check for e.g. group by, having, ..
 		$this->db->query('SELECT ID FROM ' . $this->table . ' ORDER BY (text REGEXP "^[0-9]") DESC,abs(text),Text');
 
-		$out = array();
+		$out = [];
 		while($this->db->next_record()){
 			$out[] = new we_banner_banner($this->db->f("ID"));
 		}
@@ -186,7 +186,7 @@ class we_banner_banner extends we_banner_base{
 		if(!empty($this->MediaLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::VIDEO . '")';
 			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique($this->MediaLinks)) . ') ' . $whereType);
-			$this->MediaLinks = array();
+			$this->MediaLinks = [];
 			while($this->db->next_record()){
 				$this->MediaLinks[] = $this->db->f('ID');
 			}
@@ -223,7 +223,7 @@ class we_banner_banner extends we_banner_base{
 		if($this->IsFolder){
 			$path = (substr($this->Path, -1) === "/") ? $this->Path : $this->Path . "/";
 			$this->db->query('SELECT ID FROM ' . BANNER_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '%"');
-			$ids = array();
+			$ids = [];
 			while($this->db->next_record()){
 				$ids[] = $this->db->f("ID");
 			}
@@ -240,7 +240,7 @@ class we_banner_banner extends we_banner_base{
 	}
 
 	static function getBannerData($did, $paths, $dt, $cats, $bannername, we_database_base $db){
-		$parents = array();
+		$parents = [];
 
 		we_readParents($did, $parents, FILE_TABLE, 'ContentType', 'folder', $db);
 
@@ -267,7 +267,7 @@ class we_banner_banner extends we_banner_base{
 		$where .= ' AND (' . $foo . ' CategoryIDs="" OR CategoryIDs="0") ';
 
 		if($paths){
-			$foo = array();
+			$foo = [];
 			$pathsArray = makeArrayFromCsv($paths);
 			foreach($pathsArray as $p){
 				$foo[] = 'Path LIKE "' . $db->escape($p) . '/%" OR Path = "' . $db->escape($p) . '"';

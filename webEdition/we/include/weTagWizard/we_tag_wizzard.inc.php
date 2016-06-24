@@ -40,7 +40,7 @@ $attributes = $weTag->getAllAttributes(true);
 
 // #2 all required attributes
 $reqAttributes = $weTag->getRequiredAttributes();
-$jsReqAttributes = array();
+$jsReqAttributes = [];
 foreach($reqAttributes as $attribName){
 	$jsReqAttributes[] = '"' . $attribName . '": 1';
 }

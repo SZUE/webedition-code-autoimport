@@ -123,13 +123,13 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			$content = '
 <div id="' . $identifier . '" class="objectFileElement">
 	<div id="f' . $identifier . '" class="default defaultfont">
-	' . $we_doc->getFieldHTML($name, $type, array()) . '
+	' . $we_doc->getFieldHTML($name, $type, []) . '
 	</div>
 </div>';
 			$yuiSuggest = &weSuggest::getInstance();
 			$fildsObj = $yuiSuggest->getyuiAcFields();
 			// AC-FIEDS BY ID
-			$fildsById = array();
+			$fildsById = [];
 			foreach(array_keys($fildsObj) as $i => $key){
 				$fildsById[] = '"' . $key . '":' . $i;
 			}

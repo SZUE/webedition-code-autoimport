@@ -31,7 +31,7 @@ class rpcDeleteMediaDocsCmd extends we_rpc_cmd{
 			//return 'no perms';
 		}
 
-		$selectedItems = array();
+		$selectedItems = [];
 		$csv = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 		if($csv){
 			$allDocs = explode(",", $csv);
@@ -47,9 +47,9 @@ class rpcDeleteMediaDocsCmd extends we_rpc_cmd{
 		return $resp;
 	}
 
-	function delete($selectedItems = array()){
+	function delete($selectedItems = []){
 		if(!$selectedItems){
-			return array('message' => g_l('alert', '[nothing_to_delete]'), 'rewriteMain' => false);
+			return ['message' => g_l('alert', '[nothing_to_delete]'), 'rewriteMain' => false];
 		}
 
 		$db = $GLOBALS['DB_WE'];
@@ -57,13 +57,13 @@ class rpcDeleteMediaDocsCmd extends we_rpc_cmd{
 		// check if docs are media documents and not protected
 		$db->query('SELECT ID, ContentType, IsProtected, ParentID, Path FROM ' . FILE_TABLE . ' WHERE ID IN (' . (implode(',', $selectedItems)) . ')');
 		$docsToDelete = array_filter($db->getAllFirst(true), function($var){
-			return !$var[1] && in_array($var[0], array(
+			return !$var[1] && in_array($var[0], [
 					we_base_ContentTypes::IMAGE,
 					we_base_ContentTypes::AUDIO,
 					we_base_ContentTypes::VIDEO,
 					we_base_ContentTypes::FLASH,
-					we_base_ContentTypes::APPLICATION,)
-				);
+					we_base_ContentTypes::APPLICATION,]
+			);
 		});
 
 		// check if docs are used
@@ -87,9 +87,9 @@ class rpcDeleteMediaDocsCmd extends we_rpc_cmd{
 			}
 			we_history::deleteFromHistory($GLOBALS['deletedItems'], FILE_TABLE);
 
-			return array('message' => g_l('alert', '[delete_ok]'), 'rewriteMain' => true, 'deletedItems' => $GLOBALS['deletedItems']);
+			return ['message' => g_l('alert', '[delete_ok]'), 'rewriteMain' => true, 'deletedItems' => $GLOBALS['deletedItems']];
 		}
-		return array('message' => g_l('alert', '[nothing_to_delete]'), 'rewriteMain' => false);
+		return ['message' => g_l('alert', '[nothing_to_delete]'), 'rewriteMain' => false];
 	}
 
 }

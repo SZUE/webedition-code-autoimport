@@ -262,7 +262,7 @@ if($ok){
 	$src_int = $ll->getImageSrcInt($nr);
 	$ctype = $ll->getCType($nr);
 } else {
-	$link = $we_doc->getElement($name) ? we_unserialize($we_doc->getElement($name)) : array();
+	$link = $we_doc->getElement($name) ? we_unserialize($we_doc->getElement($name)) : [];
 	$link = ($link ? : array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
 	$href = isset($link['href']) ? $link['href'] : '';
 	if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){

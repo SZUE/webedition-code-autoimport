@@ -37,16 +37,16 @@ function we_tag_formfield(array $attribs){
 	$nameprefix = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#';
 
 	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
-	$ff = array();
+	$ff = [];
 
 	// here add some mandatory fields
-	$mandatoryFields = array();
+	$mandatoryFields = [];
 	if($xml){
 		$mandatoryFields = array(
 			'textarea_cols', 'textarea_rows'
 		);
 	}
-	$m = array();
+	$m = [];
 	foreach($attribs as $k => $v){
 		if(preg_match('/^([^_]+)_([^_]+)$/', $k, $m) && ($m[1] == $type_sel)){
 			if(in_array($k, $attrs)){
@@ -115,7 +115,7 @@ function we_tag_formfield(array $attribs){
 				$tbl .= '<td style="color: black; margin-left:5px;"><nobr><span class="small bold">' . $f . ':</span>&nbsp;';
 				$val = isset($m['value']) ? $m['value'] : '';
 
-				$default = isset($m['default']) ? makeArrayFromCSV($m['default']) : array();
+				$default = isset($m['default']) ? makeArrayFromCSV($m['default']) : [];
 
 				if($m['change'] == 1){
 					if(count($default) > 1){

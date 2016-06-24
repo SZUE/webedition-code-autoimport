@@ -93,7 +93,7 @@ class we_glossary_cache{
 		$DB_WE = new DB_WE();
 
 		$DB_WE->query('SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length,Fullword FROM ' . GLOSSARY_TABLE . ' WHERE Language="' . $DB_WE->escape($this->language) . '" AND Published>0 ORDER BY Length DESC');
-		$Items = array();
+		$Items = [];
 
 		while($DB_WE->next_record()){
 			$Type = $DB_WE->f('Type');
@@ -126,7 +126,7 @@ class we_glossary_cache{
 
 			// Language
 			if($Type == we_glossary_glossary::TYPE_LINK){
-				$urladd = array();
+				$urladd = [];
 
 				if(isset($Attributes['mode'])){
 					$Attributes['mode'] = $Attributes['mode'];
@@ -305,11 +305,11 @@ if (window.screen) {
 		}
 
 		$content = array(
-			we_glossary_glossary::TYPE_LINK => array(),
-			we_glossary_glossary::TYPE_ACRONYM => array(),
-			we_glossary_glossary::TYPE_ABBREVATION => array(),
-			we_glossary_glossary::TYPE_FOREIGNWORD => array(),
-			we_glossary_glossary::TYPE_TEXTREPLACE => array(),
+			we_glossary_glossary::TYPE_LINK => [],
+			we_glossary_glossary::TYPE_ACRONYM => [],
+			we_glossary_glossary::TYPE_ABBREVATION => [],
+			we_glossary_glossary::TYPE_FOREIGNWORD => [],
+			we_glossary_glossary::TYPE_TEXTREPLACE => [],
 		);
 
 		foreach($Items as $Text => $Value){
@@ -384,7 +384,7 @@ if (window.screen) {
 
 			if(!file_exists($cacheFilename) || !is_file($cacheFilename)){
 				if(!self::write()){
-					return array();
+					return [];
 				}
 			}
 			$data = we_base_file::load($cacheFilename);
@@ -392,7 +392,7 @@ if (window.screen) {
 		}
 		return ($this->content && !empty($this->content[$type]) ?
 				$this->content[$type] :
-				array());
+				[]);
 	}
 
 }

@@ -271,7 +271,7 @@ class we_base_ContentTypes{
 
 	public function getContentTypes($filter = '', $filterOmitFolder = false){
 		if($filter){
-			$ret = array();
+			$ret = [];
 			foreach($this->ct as $k => $v){
 				if(in_array($filter, $v['Table']) && !($filterOmitFolder && ($k === self::FOLDER || $k === self::CLASS_FOLDER))){
 					$ret[] = $k;
@@ -292,7 +292,7 @@ class we_base_ContentTypes{
 	}
 
 	public function getWETypes(){
-		$ret = array();
+		$ret = [];
 		foreach($this->ct as $name => $type){
 			if($type['IsWebEditionFile']){
 				$ret[] = $name;
@@ -338,11 +338,11 @@ class we_base_ContentTypes{
 	}
 
 	public function getRealContentTypes($type){
-		return (isset($this->ct[$type]['ContentTypes'])) ? $this->ct[$type]['ContentTypes'] : array();
+		return (isset($this->ct[$type]['ContentTypes'])) ? $this->ct[$type]['ContentTypes'] : [];
 	}
 
 	public function getFiles(){
-		$ret = array();
+		$ret = [];
 		foreach($this->ct as $type => $val){
 			if($val['IsRealFile']){
 				$ret[] = $type;

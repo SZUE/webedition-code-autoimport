@@ -87,7 +87,7 @@ var openFolders= {
 };' . $this->getJSStartTree()) . we_html_element::cssLink(CSS_DIR . 'tree.css');
 
 		if($useSelector){
-			$captions = array();
+			$captions = [];
 			if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 				$captions[FILE_TABLE] = g_l('export', '[documents]');
 			}
@@ -112,7 +112,7 @@ var openFolders= {
 	}
 
 	private static function getQueryParents($path){
-		$out = array();
+		$out = [];
 		while($path != '/' && $path){
 			$out[] = 'Path="' . $path . '"';
 			$path = dirname($path);
@@ -130,19 +130,19 @@ var openFolders= {
 
 		switch($table){
 			case FILE_TABLE :
-				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selDocs) : array();
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selDocs) : [];
 				$elem.=',Published,0 AS IsClassFolder';
 				break;
 			case (defined('TEMPLATES_TABLE') ? TEMPLATES_TABLE : 'TEMPLATES_TABLE'):
-				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selTempl) : array();
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selTempl) : [];
 				$elem.=',ModDate AS Published,0 AS IsClassFolder';
 				break;
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$elem.=',Published,IsClassFolder';
-				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selObjs) : array();
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selObjs) : [];
 				break;
 			case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selClasses) : array();
+				$selDocs = isset($_SESSION['weS']['export_session']) ? explode(',', $_SESSION['weS']['export_session']->selClasses) : [];
 				$elem.=',ModDate AS Published,0 AS IsClassFolder';
 				break;
 		}
@@ -177,7 +177,7 @@ var openFolders= {
 	}
 
 	public function loadHTML($table, $parentFolder, $openFolders){
-		$GLOBALS['parentpaths'] = $wsQuery = array();
+		$GLOBALS['parentpaths'] = $wsQuery = [];
 
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $GLOBALS['DB_WE'], true);
@@ -228,7 +228,7 @@ var openFolders= {
 
 		$GLOBALS['wsQuery'] = ' ' . ($wsQuery ? ' OR (' . implode(' OR ', $wsQuery) . ')' : '');
 
-		$treeItems = array();
+		$treeItems = [];
 
 		self::getItems($table, $parentFolder, $treeItems, $openFolders, new DB_WE());
 

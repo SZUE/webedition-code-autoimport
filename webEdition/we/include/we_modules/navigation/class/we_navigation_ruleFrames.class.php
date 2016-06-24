@@ -62,7 +62,7 @@ class we_navigation_ruleFrames{
 
 		$allRules = we_navigation_ruleControl::getAllNavigationRules();
 
-		$rules = array();
+		$rules = [];
 
 		foreach($allRules as $navigationRule){
 			$rules[$navigationRule->ID] = $navigationRule->NavigationName;
@@ -182,7 +182,7 @@ class we_navigation_ruleFrames{
 <tr id="trWorkspaceID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_workspace]') . '</td>
 	<td>' . we_html_tools::htmlSelect(
-					'WorkspaceID', array(), 1, '', false, array('style' => "width: 275px;")) . '</td>
+					'WorkspaceID', [], 1, '', false, array('style' => "width: 275px;")) . '</td>
 </tr>';
 		}
 		$formTable .= '

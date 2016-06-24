@@ -19,10 +19,10 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-we_html_tools::protect(array('ADMINISTRATOR'));
-$trans = array('Error type' => 'Type', 'Error message' => 'Text', 'Script name' => 'File', 'Line number' => 'Line', 'Backtrace' => 'Backtrace',
+we_html_tools::protect(['ADMINISTRATOR']);
+$trans = ['Error type' => 'Type', 'Error message' => 'Text', 'Script name' => 'File', 'Line number' => 'Line', 'Backtrace' => 'Backtrace',
 	'Source code around' => 'posData',
-	'Request' => 'Request', 'Server' => 'Server', 'Session' => 'Session', 'Global' => 'Global');
+	'Request' => 'Request', 'Server' => 'Server', 'Session' => 'Session', 'Global' => 'Global'];
 
 function getInfoTable($infoArr){
 	if(!$infoArr){
@@ -40,9 +40,9 @@ function getInfoTable($infoArr){
 				//FIXME: check if we can ommit realpath, since logging was changed
 				//FIXME2: what about SECURITY_REPL_DOC_ROOT
 				if(strpos($tmp, TEMPLATES_PATH) === 0 || strpos($tmp, $realTemplate) === 0 || strpos($tmp, $redTdir) === 0){
-					$id = path_to_id(str_replace(array(TEMPLATES_PATH, $realTemplate, $redTdir, '.php'), array('', '', '', '.tmpl'), $tmp), TEMPLATES_TABLE, $GLOBALS['DB_WE']);
+					$id = path_to_id(str_replace([TEMPLATES_PATH, $realTemplate, $redTdir, '.php'], ['', '', '', '.tmpl'], $tmp), TEMPLATES_TABLE, $GLOBALS['DB_WE']);
 					$extra = $id ? we_html_button::create_button(we_html_button::EDIT, 'javascript:WE().layout.weEditorFrameController.openDocument(WE().consts.tables.TEMPLATES_TABLE, ' . $id . ', WE().consts.contentTypes.TEMPLATE);') : '';
-				} elseif(($id = path_to_id(str_replace(array($realDroot, $droot), '', $tmp), FILE_TABLE, $GLOBALS['DB_WE']))){
+				} elseif(($id = path_to_id(str_replace([$realDroot, $droot], '', $tmp), FILE_TABLE, $GLOBALS['DB_WE']))){
 					$extra = $id ? we_html_button::create_button(we_html_button::EDIT, 'javascript:WE().layout.weEditorFrameController.openDocument(WE().consts.tables.FILE_TABLE, ' . $id . ');') : '';
 				}
 		}
@@ -110,13 +110,13 @@ function getNavButtons($size, $pos, $id){
 
 function getPosData($bt, $file, $lineNo){
 	$ret = '';
-	$matches = array();
+	$matches = [];
 
 	if(!$bt || $bt == '-' || !preg_match_all('|#\d+ [^\]]*\[([^:\]]*):(\d+)|', $bt, $matches)){
-		$matches = array(
-			1 => array(0 => str_replace('SECURITY_REPL_DOC_ROOT/', '', $file)),
-			2 => array(0 => $lineNo)
-		);
+		$matches = [
+			1 => [0 => str_replace('SECURITY_REPL_DOC_ROOT/', '', $file)],
+			2 => [0 => $lineNo]
+		];
 	}
 
 	$max = 8;
@@ -156,7 +156,7 @@ $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 	case 'deleteEqual':
-		$db->addTable('del', array('ID' => 'bigint(20) unsigned NOT NULL'), array('PRIMARY KEY (ID)'), 'MEMORY', true);
+		$db->addTable('del', ['ID' => 'bigint(20) unsigned NOT NULL'], ['PRIMARY KEY (ID)'], 'MEMORY', true);
 		$db->query('INSERT INTO del SELECT ID FROM `' . ERROR_LOG_TABLE . '` WHERE (Text,File,Type,Function,Line) IN (SELECT Text,File,Type,Function,Line FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ')');
 		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID IN (SELECT ID FROM del)');
 		$db->delTable('del', true);
@@ -238,12 +238,12 @@ if($size && $cur){
 
 $data = getInfoTable($cur);
 
-$parts = array(
-	array(
+$parts = [
+	[
 		'html' => ($size && $data ? $data : g_l('global', '[no_entries]')),
 		'space' => we_html_multiIconBox::SPACE_SMALL,
-	)
-);
+	]
+];
 
 echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'), '', '', we_html_element::jsElement('function closeOnEscape() {
 		return true;
@@ -255,8 +255,8 @@ echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'), '', '',
 	<div id="info" style="display: block;">
 		<?php
 		echo we_html_multiIconBox::getJS() .
-		we_html_element::htmlDiv(array('style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'), $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
-		we_html_element::htmlDiv(array('style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'), we_html_multiIconBox::getHTML('', $parts, 30, $buttons));
+		we_html_element::htmlDiv(['style' => 'position:absolute; top:0px; left:30px;right:30px;height:60px;'], $size && $data ? getNavButtons($size, $pos, isset($cur['ID']) ? $cur['ID'] : 0) : '') .
+		we_html_element::htmlDiv(['style' => 'position:absolute;top:60px;bottom:0px;left:0px;right:0px;'], we_html_multiIconBox::getHTML('', $parts, 30, $buttons));
 		?>
 	</div>
 </body>

@@ -17,6 +17,6 @@ $values = new weTagData_textAttribute('values', false, '');
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('', false, '', array($name, $size, $reload)),
 	new weTagDataOption('html', false, '', array($name, $size, $reload)),
-	new weTagDataOption('csv', false, '', array($name, $size, $reload, $values), array())), false, '');
+	new weTagDataOption('csv', false, '', array($name, $size, $reload, $values), [])), false, '');
 
 $this->Attributes = array($name, $size, $reload, $values);

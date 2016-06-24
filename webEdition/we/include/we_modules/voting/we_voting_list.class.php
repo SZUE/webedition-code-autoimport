@@ -55,7 +55,7 @@ class we_voting_list{
 		if($groupid != 0){
 			$childs_query = '(ParentID=' . intval($groupid);
 			if($subgroup){
-				$childs = array();
+				$childs = [];
 				we_readChilds($groupid, $childs, VOTING_TABLE, true, '', 'IsFolder', 1);
 				$childs_query .= ' OR ParentID=' . implode(' OR ParentID=', $childs);
 			}

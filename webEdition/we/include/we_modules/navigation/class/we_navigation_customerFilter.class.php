@@ -29,7 +29,7 @@
 class we_navigation_customerFilter extends we_customer_abstractFilter{
 	var $_useDocumentFilter = true;
 
-	public function __construct($mode = self::OFF, array $specificCustomers = array(), array $blackList = array(), array $whiteList = array(), array $filter = array()){
+	public function __construct($mode = self::OFF, array $specificCustomers = [], array $blackList = [], array $whiteList = [], array $filter = []){
 		parent::__construct($mode, $specificCustomers, $blackList, $whiteList, $filter);
 	}
 
@@ -45,7 +45,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 
 		$this->updateCustomerFilter($custFilter);
 
-		$specCust = (isset($navModel->Customers) && is_array($navModel->Customers)) ? $navModel->Customers : array();
+		$specCust = (isset($navModel->Customers) && is_array($navModel->Customers)) ? $navModel->Customers : [];
 
 		$mode = we_customer_abstractFilter::OFF;
 		if($navModel->LimitAccess){
@@ -62,8 +62,8 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 
 		// end convert data
 
-		$this->setBlackList(isset($navModel->BlackList) && is_array($navModel->BlackList) ? $navModel->BlackList : array());
-		$this->setWhiteList(isset($navModel->WhiteList) && is_array($navModel->WhiteList) ? $navModel->WhiteList : array());
+		$this->setBlackList(isset($navModel->BlackList) && is_array($navModel->BlackList) ? $navModel->BlackList : []);
+		$this->setWhiteList(isset($navModel->WhiteList) && is_array($navModel->WhiteList) ? $navModel->WhiteList : []);
 		$this->setSpecificCustomers($specCust);
 
 		$this->setFilter($custFilter);
@@ -114,7 +114,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 	 */
 	function updateCustomerFilter(&$custFilter){
 		if(isset($custFilter['AND']) && isset($custFilter['OR'])){ // old style filter => convert into new style
-			$newFilter = array();
+			$newFilter = [];
 			foreach($custFilter['AND'] as $f){
 				$newFilter[] = array(
 					'logic' => 'AND',

@@ -174,7 +174,7 @@ if(!empty($this->model->ID)){
 			$tableTitle = new we_ui_layout_HeadlineIconTable();
 			$tableTitle->setId('tabTitle');
 			$tableTitle->setMarginLeft(30);
-			$rowsTitle = array();
+			$rowsTitle = [];
 			$rowTitle = new we_ui_layout_HeadlineIconTableRow(array('title' => ''));
 			$lang = we_core_Local::getLocale();
 
@@ -199,7 +199,7 @@ if(!empty($this->model->ID)){
 			$tableAuthor = new we_ui_layout_HeadlineIconTable();
 			$tableAuthor->setId('tabAuthor');
 			$tableAuthor->setMarginLeft(30);
-			$rowsAuthor = array();
+			$rowsAuthor = [];
 			if(!empty($this->model->appconfig->creator)){
 				$cm = $this->model->appconfig->creator;
 				$rowAuthor = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Author')));
@@ -210,17 +210,17 @@ if(!empty($this->model->ID)){
 				}
 				if(!empty($cm->authors->author)){
 					if(is_object($cm->authors->author)){
-						$authornames = $cm->authors->author->toArray();
+						$authornames = $cm->authors->author->to[];
 					} else {
 						$authornames = $cm->authors->author;
 					}
 					if(!empty($cm->authorlinks->www) && is_object($cm->authorlinks->www)){
-						$authorlinks = $cm->authorlinks->www->toArray();
+						$authorlinks = $cm->authorlinks->www->to[];
 					} else {
 						$authorlinks = $cm->authorlinks->www;
 					}
 					if(is_array($authornames)){
-						$authorentry = array();
+						$authorentry = [];
 						for($i = 0; $i < count($authornames); $i++){
 							$htmla = '';
 							if(!empty($authorlinks[$i])){
@@ -263,17 +263,17 @@ if(!empty($this->model->ID)){
 				}
 				if(!empty($cm->authors->author)){
 					if(is_array($cm->authors->author)){
-						$authornames = $cm->authors->author->toArray();
+						$authornames = $cm->authors->author->to[];
 					} else {
 						$authornames = $cm->authors->author;
 					}
 					if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www)){
-						$authorlinks = $cm->authorlinks->www->toArray();
+						$authorlinks = $cm->authorlinks->www->to[];
 					} else {
 						$authorlinks = $cm->authorlinks->www;
 					}
 					if(is_array($authornames)){
-						$authorentry = array();
+						$authorentry = [];
 						for($i = 0; $i < count($authornames); $i++){
 							$htmla = '';
 							if(!empty($authorlinks[$i])){
@@ -376,7 +376,7 @@ if(!empty($this->model->ID)){
 			$tableExTool = new we_ui_layout_HeadlineIconTable();
 			$tableExTool->setId('tabExTool');
 			$tableExTool->setMarginLeft(30);
-			$rowsExTool = array();
+			$rowsExTool = [];
 			$html = '';
 			$rowExTool = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('ExTool')));
 			if(!empty($this->model->appconfig->thirdparty->www)){

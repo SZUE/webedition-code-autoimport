@@ -83,7 +83,7 @@ if (!empty($appconfig->thirdparty)){
 $tableExTool = new we_ui_layout_HeadlineIconTable();
 $tableExTool->setId('tabExTool');
 $tableExTool->setMarginLeft(30);
-$rowsExTool=array();
+$rowsExTool=[];
 $html = '';
 $rowExTool = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('ExTool')));
 $rowExTool->setLeftWidth(100);
@@ -113,7 +113,7 @@ if (!empty($appconfig->creator) || !empty($appconfig->maintainer)){
 $tableAuthor = new we_ui_layout_HeadlineIconTable();
 $tableAuthor->setId('tabAuthor');
 $tableAuthor->setMarginLeft(30);
-$rowsAuthor=array();
+$rowsAuthor=[];
 if(!empty($appconfig->creator)){
 $cm = $appconfig->creator;
 $rowAuthor = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Author')));
@@ -125,13 +125,13 @@ $html .= '<strong>'.$cm->company.'</strong><br/>';
 }
 if(!empty($cm->authors->author)){
 if(is_array($cm->authors->author) ){
-$authornames= $cm->authors->author->toArray();
+$authornames= $cm->authors->author->to[];
 } else {$authornames = $cm->authors->author;}
 if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www) ){
-$authorlinks= $cm->authorlinks->www->toArray();
+$authorlinks= $cm->authorlinks->www->to[];
 } else {$authorlinks= $cm->authorlinks->www;}
 if (is_array($authornames)){
-$authorentry = array();
+$authorentry = [];
 for ($i=0; $i < count($authornames);$i++){
 $htmla = '';
 if(!empty($authorlinks[$i])){
@@ -175,13 +175,13 @@ $html .= '<strong>'.$cm->company.'</strong><br/>';
 }
 if(!empty($cm->authors->author)){
 if(is_array($cm->authors->author)){
-$authornames= $cm->authors->author->toArray();
+$authornames= $cm->authors->author->to[];
 } else {$authornames= $cm->authors->author;}
 if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www)){
-$authorlinks= $cm->authorlinks->www->toArray();
+$authorlinks= $cm->authorlinks->www->to[];
 } else {$authorlinks= $cm->authorlinks->www;}
 if (is_array($authornames)){
-$authorentry = array();
+$authorentry = [];
 for ($i=0; $i < count($authornames);$i++){
 $htmla = '';
 if(!empty($authorlinks[$i])){

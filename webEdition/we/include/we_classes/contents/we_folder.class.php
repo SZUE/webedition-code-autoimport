@@ -160,7 +160,7 @@ class we_folder extends we_root{
 
 			$spl = explode('/', $path);
 			$folderName = array_pop($spl);
-			$p = array();
+			$p = [];
 			$anz = count($spl);
 			$last_pid = 0;
 			while($spl){
@@ -618,9 +618,9 @@ class we_folder extends we_root{
 	public static function getUrlReplacements(we_database_base $db, $onlyUrl = false, $hostMatch = false){
 		static $ret = -1;
 		if($ret == -1){
-			$ret = array('full' => array(), 'url' => array(), 'full_host' => array(), 'url_host' => array(),);
+			$ret = array('full' => [], 'url' => [], 'full_host' => [], 'url_host' => [],);
 			$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!="" ORDER BY Path DESC');
-			$lastRules = array();
+			$lastRules = [];
 			while($db->next_record(MYSQL_NUM)){
 				$host = trim(str_replace(array('https://', 'http://'), '', $db->f(1)), '/');
 				$rep1 = '-((href\s*=|src\s*=|action\s*=|location\s*=|content\s*=|url)\s*["\'\(])(' . preg_quote($db->f(0), '-') . ')(/[^"\'\)]*["\'\)])-';

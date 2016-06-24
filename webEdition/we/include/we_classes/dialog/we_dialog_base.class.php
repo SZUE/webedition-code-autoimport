@@ -28,10 +28,10 @@ class we_dialog_base{
 	 * *********************************************************************** */
 	var $db = '';
 	var $what = '';
-	var $args = array();
+	var $args = [];
 	var $dialogTitle = '';
 	var $ClassName = __CLASS__;
-	var $changeableArgs = array();
+	var $changeableArgs = [];
 	var $pageNr = 1;
 	var $numPages = 1;
 	var $JsOnly = false;
@@ -40,7 +40,7 @@ class we_dialog_base{
 	var $tinyMCEPopupManagment = true;
 	protected $bodyId = 'weDialog';
 	protected $noInternals = false;
-	protected $we_cmd = array();
+	protected $we_cmd = [];
 
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
@@ -65,7 +65,7 @@ class we_dialog_base{
 
 	function initByHttp(){
 		$this->what = we_base_request::_(we_base_request::STRING, 'we_what', '');
-		$this->we_cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', array());
+		$this->we_cmd = we_base_request::_(we_base_request::RAW, 'we_cmd', []);
 
 		if(($args = we_base_request::_(we_base_request::STRING, 'we_dialog_args'))){//assume no tags are allowed
 			$this->args = $args;
@@ -92,7 +92,7 @@ class we_dialog_base{
 	}
 
 	function getCmdHTML(){
-		$send = array();
+		$send = [];
 
 		// " quote for correct work within ""
 		foreach($this->args as $k => $v){

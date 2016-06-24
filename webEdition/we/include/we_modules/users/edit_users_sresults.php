@@ -33,9 +33,9 @@ $sWhere = "";
 $ranking = "0";
 
 $first = "";
-$array_and = array();
-$array_or = array();
-$array_not = array();
+$array_and = [];
+$array_or = [];
+$array_not = [];
 $array_and[0] = $arr[0];
 
 for($i = 1; $i < count($arr); $i++){

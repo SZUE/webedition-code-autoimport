@@ -170,7 +170,7 @@ function we_submitForm(url){
 // first show fields: country, vat, isNet?
 
 		$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
-		$selectFieldsCtl = $selectFieldsVat = $selectFieldsTbl = array();
+		$selectFieldsCtl = $selectFieldsVat = $selectFieldsTbl = [];
 		foreach($customerTableFields as $tblField){
 			$selectFieldsTbl[$tblField['name']] = $tblField['name'];
 		}
@@ -188,19 +188,19 @@ function we_submitForm(url){
 			array(
 				'headline' => g_l('modules_shop', '[vat_country][stateField]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
-				'html' => we_class::htmlSelect('stateField', $selectFieldsTbl, 1, $weShippingControl->stateField, false, array(), 'value', 280),
+				'html' => we_class::htmlSelect('stateField', $selectFieldsTbl, 1, $weShippingControl->stateField, false, [], 'value', 280),
 				'noline' => 1
 			),
 			array(
 				'headline' => g_l('modules_shop', '[mwst]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
-				'html' => we_class::htmlSelect('vatId', $selectFieldsVat, 1, $weShippingControl->vatId, false, array(), 'value', 280),
+				'html' => we_class::htmlSelect('vatId', $selectFieldsVat, 1, $weShippingControl->vatId, false, [], 'value', 280),
 				'noline' => 1
 			),
 			array(
 				'headline' => g_l('modules_shop', '[shipping][prices_are_net]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
-				'html' => we_class::htmlSelect('isNet', array(1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')), 1, $weShippingControl->isNet, false, array(), 'value', 280)
+				'html' => we_class::htmlSelect('isNet', array(1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')), 1, $weShippingControl->isNet, false, [], 'value', 280)
 			),
 			array(
 				'headline' => g_l('modules_shop', '[shipping][insert_packaging]'),

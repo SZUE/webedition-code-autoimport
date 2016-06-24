@@ -41,7 +41,7 @@ abstract class we_customer_add{
 		$counter = 0;
 		$fhidden = '';
 
-		$parts = array();
+		$parts = [];
 		foreach($pob->View->settings->SortView as $k => $sorts){
 			$fcounter = 0;
 			$row_num = 0;
@@ -194,7 +194,7 @@ function setScrollTo(){
 
 		$logic = array('AND' => 'AND', 'OR' => 'OR');
 
-		$search_arr = array();
+		$search_arr = [];
 
 		$search_but = we_html_button::create_button(we_html_button::SEARCH, "javascript:we_cmd('search')");
 		$colspan = 4;
@@ -210,7 +210,7 @@ function setScrollTo(){
 		}
 
 
-		$advsearch = new we_html_table(array(), 1, 4);
+		$advsearch = new we_html_table([], 1, 4);
 		$branch = $pob->View->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
 
@@ -236,16 +236,16 @@ function setScrollTo(){
 
 			if($i != 0){
 				$advsearch->addRow();
-				$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("logic_" . $i, $logic, 1, (isset($search_arr["logic_" . $i]) ? $search_arr["logic_" . $i] : ""), false, array(), "value", 70));
+				$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("logic_" . $i, $logic, 1, (isset($search_arr["logic_" . $i]) ? $search_arr["logic_" . $i] : ""), false, [], "value", 70));
 				++$c;
 			}
 			$value_i = we_html_tools::htmlTextInput("value_" . $i, 20, (isset($search_arr["value_" . $i]) ? $search_arr["value_" . $i] : ""), "", "id='value_$i'", "text", 185);
 			$value_date_i = we_html_tools::htmlTextInput("value_date_$i", 20, "", "", "id='value_date_$i' style='display:none; width:150' readonly", "text", ""); // empty field to display the timestemp in date formate - handeld on the client in js
 			$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, "_$i");
 			$advsearch->addRow();
-			$advsearch->setCol($c, 0, array(), $branch->getHtml());
-			$advsearch->setCol($c, 1, array(), $field->getHtml());
-			$advsearch->setCol($c, 2, array(), we_html_tools::htmlSelect("operator_" . $i, self::$operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, array(), "value", 60));
+			$advsearch->setCol($c, 0, [], $branch->getHtml());
+			$advsearch->setCol($c, 1, [], $field->getHtml());
+			$advsearch->setCol($c, 2, [], we_html_tools::htmlSelect("operator_" . $i, self::$operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, [], "value", 60));
 			$advsearch->setCol($c, 3, array("width" => 190), "<table class='default'><tr><td>" . $value_i . $value_date_i . "</td><td id='dpzell_$i' style='display:none; padding-left:5px;text-align:right'>$btnDatePicker</td></tr></table>");
 			++$c;
 		}
@@ -255,7 +255,7 @@ function setScrollTo(){
 				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_search')")
 		);
 
-		$search->setCol(1, 0, array(), we_html_element::htmlHidden("count", $count) . $advsearch->getHtml());
+		$search->setCol(1, 0, [], we_html_element::htmlHidden("count", $count) . $advsearch->getHtml());
 		$search->setCol(3, 0, array("colspan" => $colspan, 'style' => 'text-align:right;padding-top:5px;'), "<table class='default'><tr><td>" .
 				we_html_element::htmlDiv(array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[simple_search]')) .
 				we_html_button::create_button('fa:btn_direction_left,fa-lg fa-caret-left', "javascript:we_cmd('switchToSimple')") .
@@ -263,7 +263,7 @@ function setScrollTo(){
 				. '</td><td>&nbsp;</td></tr></table>'
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
-		$result = ($search_arr && we_base_request::_(we_base_request::BOOL, 'search') ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : array());
+		$result = ($search_arr && we_base_request::_(we_base_request::BOOL, 'search') ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : []);
 
 		$GLOBALS['advSearchFoundItems'] = count($result);
 

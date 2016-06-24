@@ -32,7 +32,7 @@ class we_backup_version{
 
 	var $db;
 	var $ClassName = __CLASS__;
-	var $attribute_slots = array();
+	var $attribute_slots = [];
 	var $persistent_slots = array("ID", "ClassName", "Path", "Data", "SeqN");
 	var $ID = 0;
 	var $Path = '';

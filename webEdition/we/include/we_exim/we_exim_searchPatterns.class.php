@@ -42,9 +42,9 @@ class we_exim_searchPatterns{
 			'/<(we:form\s*[^>]*\stype\s*=\s*[\"\']object[\"\'][^>]*\sid\s*=\s*[\"\'])(\d+)([\"\'][^>]*)>/si',
 			'/<(we:form\s*[^>]*\sid\s*=\s*[\"\'])(\d+)([\"\'][^>]*\stype\s*=\s*[\"\']object[\"\'][^>]*)>/si',
 		),
-		'path' => array());
-	public $class_patterns = array();
-	public $ext_patterns = array();
+		'path' => []);
+	public $class_patterns = [];
+	public $ext_patterns = [];
 	public $wysiwyg_patterns;
 	public $navigation_patterns = array(
 		'/<(we:navigation\s*[^>]*\sid\s*=["\'])(\d+)(["\'][^>]*)>/si',

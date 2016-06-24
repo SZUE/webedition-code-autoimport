@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,7 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $id = we_base_request::_(we_base_request::INT, 'id', 0);
 $did = we_base_request::_(we_base_request::INT, 'did', 0);
 $page = we_base_request::_(we_base_request::STRING, 'page', 0);
-$referer = we_base_request::_(we_base_request::URL, 'referer',0);
+$referer = we_base_request::_(we_base_request::URL, 'referer', 0);
 $nocount = we_base_request::_(we_base_request::BOOL, 'nocount', false);
 $db = $GLOBALS['DB_WE'];
 
@@ -47,14 +46,14 @@ if(!$id){
 if($id && is_numeric($id) && $did > 0){
 	$url = we_banner_banner::getBannerURL($id);
 	if(!$nocount){
-		$db->query('INSERT INTO ' . BANNER_CLICKS_TABLE . ' SET ' . we_database_base::arraySetter(array(
+		$db->query('INSERT INTO ' . BANNER_CLICKS_TABLE . ' SET ' . we_database_base::arraySetter([
 				'ID' => $id,
 				'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
 				'IP' => $_SERVER['REMOTE_ADDR'],
 				'Referer' => ($referer ? : (isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '')),
 				'DID' => $did,
 				'Page' => $page
-		)));
+		]));
 
 		$db->query('UPDATE ' . BANNER_TABLE . ' SET clicks=clicks+1 WHERE ID=' . intval($id));
 	}

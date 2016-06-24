@@ -33,7 +33,7 @@ class we_html_baseElement{
 	var $uid;
 	var $tag_name = '';
 	var $need_end_tag = true;
-	var $attribs = array('style' => array());
+	var $attribs = array('style' => []);
 	var $content = '';
 	private $rfc = 'html4';
 

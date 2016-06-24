@@ -56,7 +56,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		$language = $GLOBALS['DB_WE']->escape(substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5));
 
-		$parts = array();
+		$parts = [];
 
 		foreach($list as $key){
 			$items = f('SELECT COUNT(1) FROM ' . GLOSSARY_TABLE . ' WHERE Language="' . $language . '" AND Type="' . $key . '"');

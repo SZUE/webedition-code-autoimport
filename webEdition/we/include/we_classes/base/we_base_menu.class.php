@@ -45,7 +45,7 @@ class we_base_menu{
 
 	public function getHTML(){
 		$out = '<ul id="nav">';
-		$menus = array();
+		$menus = [];
 		foreach($this->entries as $id => $e){
 			if(empty($e['parent'])){
 				if(isset($e['perm']) ? self::isEnabled($e['perm']) : 1){
@@ -72,7 +72,7 @@ class we_base_menu{
 	}
 
 	private static function h_search($men, $p){
-		$container = array();
+		$container = [];
 		foreach($men as $id => $e){
 			if(isset($e['parent']) && $e['parent'] == $p){
 				$container[$id] = $e;

@@ -73,7 +73,7 @@ class we_ui_controls_Tabs extends we_ui_abstract_AbstractElement{
 	 *
 	 * @var array
 	 */
-	protected $_tabs = array();
+	protected $_tabs = [];
 
 	/**
 	 * name of the frame where the content is displayed

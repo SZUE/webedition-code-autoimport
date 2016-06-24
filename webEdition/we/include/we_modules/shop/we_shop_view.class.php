@@ -28,8 +28,8 @@ class we_shop_view extends we_modules_view{
 	var $frameset;
 	var $topFrame;
 	var $raw;
-	private $CLFields = array(); //
-	private $classIds = array();
+	private $CLFields = []; //
+	private $classIds = [];
 
 	function getJSTop(){
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
@@ -147,7 +147,7 @@ function submitForm(target,action,method) {
 		} else {
 			//unsupported
 			t_e('unsupported Shop-Settings found. Please open settings and readjust the settings of the shop module.');
-			$fields = array();
+			$fields = [];
 		}
 
 		$customer = $this->getOrderCustomerData(we_base_request::_(we_base_request::INT, 'bid', 0), $fields);
@@ -184,7 +184,7 @@ function submitForm(target,action,method) {
 			// first get all information about orders, we need this for the rest of the page
 			//
 
-			$format = array();
+			$format = [];
 			foreach(we_shop_statusMails::$StatusFields as $field){
 				$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS ' . $field;
 			}
@@ -236,10 +236,10 @@ function submitForm(target,action,method) {
 				// first unserialize order-data
 				if($SerialOrder[0]){
 					$orderData = we_unserialize($SerialOrder[0]);
-					$customCartFields = isset($orderData[WE_SHOP_CART_CUSTOM_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOM_FIELD] : array();
+					$customCartFields = isset($orderData[WE_SHOP_CART_CUSTOM_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOM_FIELD] : [];
 				} else {
-					$orderData = array();
-					$customCartFields = array();
+					$orderData = [];
+					$customCartFields = [];
 				}
 
 				// prices are net?
@@ -376,7 +376,7 @@ function submitForm(target,action,method) {
 
 
 			$articlePrice = $totalPrice = 0;
-			$articleVatArray = array();
+			$articleVatArray = [];
 			// now loop through all articles in this order
 			foreach($ArticleId as $i => $currentArticle){
 
@@ -746,7 +746,7 @@ function CalendarChanged(calObject) {
 					$id = intval($tmp[0]);
 
 					// check for variant or customfields
-					$customFieldsTmp = array();
+					$customFieldsTmp = [];
 					if(strlen($_REQUEST['we_customField'])){
 
 						$fields = explode(';', trim($_REQUEST['we_customField']));
@@ -810,7 +810,7 @@ function CalendarChanged(calObject) {
 				break;
 
 			case 'add_new_article':
-				$shopArticles = array();
+				$shopArticles = [];
 
 				$saveBut = '';
 				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:window.close();');
@@ -980,7 +980,7 @@ function CalendarChanged(calObject) {
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[variant]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => we_class::htmlSelect(we_base_constants::WE_VARIANT_REQUEST, $variantOptions, 1, '', false, array(), 'value', 380),
+						'html' => we_class::htmlSelect(we_base_constants::WE_VARIANT_REQUEST, $variantOptions, 1, '', false, [], 'value', 380),
 						'noline' => 1
 					);
 
@@ -1103,7 +1103,7 @@ function CalendarChanged(calObject) {
 
 			case 'edit_shipping_cost':
 				$shopVats = we_shop_vats::getAllShopVATs();
-				$shippingVats = array();
+				$shippingVats = [];
 
 				foreach($shopVats as $k => $shopVat){
 					$shippingVats[$shopVat->vat] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
@@ -1140,7 +1140,7 @@ function CalendarChanged(calObject) {
 					array(
 						'headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
 						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_html_tools::htmlInputChoiceField('weShipping_vatRate', $shippingVat, $shippingVats, array(), '', true),
+						'html' => we_html_tools::htmlInputChoiceField('weShipping_vatRate', $shippingVat, $shippingVats, [], '', true),
 						'noline' => 1
 					)
 				);
@@ -1342,7 +1342,7 @@ function CalendarChanged(calObject) {
 			$val;
 	}
 
-	private function getOrderCustomerData($orderId, array $strFelder = array()){
+	private function getOrderCustomerData($orderId, array $strFelder = []){
 		$hash = getHash('SELECT IntCustomerID,strSerialOrder FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($orderId) . ' LIMIT 1', $this->db);
 		$customerId = $hash['IntCustomerID'];
 		$tmp = $hash['strSerialOrder'];
@@ -1350,7 +1350,7 @@ function CalendarChanged(calObject) {
 		$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerId), $this->db, MYSQL_ASSOC);
 
 		$orderData = we_unserialize($tmp);
-		$customerOrder = (isset($orderData[WE_SHOP_CART_CUSTOMER_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOMER_FIELD] : array());
+		$customerOrder = (isset($orderData[WE_SHOP_CART_CUSTOMER_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOMER_FIELD] : []);
 
 		if(empty($strFelder)){ //used only if edit customer data is selected!!!
 			//only data from order - return all fields, fill in unknown fields from customer-db

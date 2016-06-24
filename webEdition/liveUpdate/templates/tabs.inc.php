@@ -40,9 +40,9 @@ $bodyContent = '<div id="main">' .
 	$tabs->getHTML() .
 	'</div>';
 
-$body = we_html_element::htmlBody(array(
+$body = we_html_element::htmlBody([
 		'id' => 'eHeaderBody',
 		'onload' => 'weTabs.setFrameSize();',
-		'onresize' => 'weTabs.setFrameSize()'), $bodyContent);
+		'onresize' => 'weTabs.setFrameSize()'], $bodyContent);
 
 echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_tabs::getHeader(), $body);

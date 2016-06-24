@@ -25,7 +25,7 @@
 class we_versions_fragment extends we_fragment_base{
 
 	public function __construct($name, $initdata = ''){
-		parent::__construct($name, 1, 0, array(), $initdata);
+		parent::__construct($name, 1, 0, [], $initdata);
 	}
 
 	function doTask(){
@@ -116,7 +116,7 @@ class we_versions_fragment extends we_fragment_base{
 	 * @param boolean $tmptable if the tmp table should be rebuilded
 	 */
 	private static function getDocumentsDelete($version){
-		$data = array();
+		$data = [];
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 
 			$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
@@ -140,7 +140,7 @@ class we_versions_fragment extends we_fragment_base{
 	}
 
 	private static function getDocumentsReset($version){
-		$data = array();
+		$data = [];
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 
 			$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);

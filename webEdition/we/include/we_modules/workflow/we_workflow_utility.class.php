@@ -220,7 +220,7 @@ abstract class we_workflow_utility{
 		if($isAdmin){
 			return self::getAllWorkflowDocs($table, $db);
 		}
-		$ids = ($permPublish ? self::getWorkflowDocsFromWorkspace($table, $ws, $db) : array());
+		$ids = ($permPublish ? self::getWorkflowDocsFromWorkspace($table, $ws, $db) : []);
 		$wids = self::getAllWorkflowDocs($table, $db);
 
 		foreach($wids as $id){
@@ -241,7 +241,7 @@ abstract class we_workflow_utility{
 
 	private static function getWorkflowDocsFromWorkspace($table, $ws, we_database_base $db){
 		$wids = self::getAllWorkflowDocs($table, $db);
-		$ids = array();
+		$ids = [];
 		foreach($wids as $id){
 			if(!in_array($id, $ids)){
 				if(is_array($ws) && !empty($ws)){

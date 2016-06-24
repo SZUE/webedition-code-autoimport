@@ -36,7 +36,7 @@ function we_tag_printVersion(array $attribs, $content){
 
 	$id = isset($GLOBALS['we_obj']) ? $GLOBALS['we_obj']->ID : $doc->ID;
 
-	$query_string = array();
+	$query_string = [];
 
 	$hideQuery = array('we_objectID', 'tid', 'id', 'pv_tid', 'pv_id', 'we_cmd', 'responseText', 'we_mode', 'btype', SESSION_NAME, 'PHPSESSID');
 	if(isset($_SESSION)){

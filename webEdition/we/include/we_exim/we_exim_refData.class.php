@@ -40,7 +40,7 @@ class we_exim_refData{
 	var $elements = 0;
 	private $slots = array('ID', 'ParentID', 'Path', 'Table', 'ContentType', 'TemplateID', 'DocType', 'Category');
 
-	function init($object, $extra = array()){
+	function init($object, $extra = []){
 		foreach($this->slots as $slot){
 			if(isset($object->$slot)){
 				$this->$slot = $object->$slot;
@@ -67,7 +67,7 @@ class we_exim_refData{
 	}
 /*
 	public function __debugInfo(){
-		$ret = array();
+		$ret = [];
 		foreach($this->slots as $slot){
 			$ret[$slot] = $this->$slot;
 		}

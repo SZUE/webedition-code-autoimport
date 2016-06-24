@@ -109,7 +109,7 @@ class we_workflow_documentTask extends we_workflow_base{
 
 		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_TASK_TABLE . " WHERE documentStepID=" . intval($workflowDocumentStep) . " ORDER BY ID");
 
-		$docTasks = array();
+		$docTasks = [];
 
 		while($db->next_record()){
 			$docTasks[] = new self($db->f("ID"));
@@ -125,7 +125,7 @@ class we_workflow_documentTask extends we_workflow_base{
 		$db = new DB_WE();
 
 		$db->query('SELECT ID FROM ' . WORKFLOW_TASK_TABLE . ' WHERE stepID=' . intval($workflowStepID) . ' ORDER BY ID');
-		$docTasks = array();
+		$docTasks = [];
 		while($db->next_record()){
 			$docTasks[] = self::createTask($db->f("ID"));
 		}

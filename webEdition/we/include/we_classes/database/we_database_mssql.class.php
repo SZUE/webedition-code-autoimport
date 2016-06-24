@@ -133,7 +133,7 @@ class DB_WE extends we_database_base{
 	}
 
 	public function getInfo(){
-		return array();
+		return [];
 	}
 
 	protected function errno(){

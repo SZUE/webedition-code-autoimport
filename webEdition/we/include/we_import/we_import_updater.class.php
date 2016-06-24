@@ -27,7 +27,7 @@ class we_import_updater extends we_exim_XMLExIm{
 	var $UpdateItemsCount = 1;
 	var $Patterns;
 	var $debug = false;
-	private $processedPatterns = array();
+	private $processedPatterns = [];
 
 	public function __construct(){
 		parent::__construct();
@@ -38,7 +38,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		if($this->debug){
 			t_e('Updating object', $object->ID, (isset($object->Path) ? $object->Path : ''), (isset($object->Table) ? $object->Table : ''));
 		}
-		$this->processedPatterns = array();
+		$this->processedPatterns = [];
 		if(!empty($object->MasterTemplateID)){
 			$ref = $this->RefTable->getRef(
 				array(
@@ -120,7 +120,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		}
 		if(isset($object->Category) && $object->ClassName != "we_category"){
 			$cats = makeArrayFromCSV($object->Category);
-			$newcats = array();
+			$newcats = [];
 			foreach($cats as $cat){
 				$ref = $this->RefTable->getRef(
 					array(
@@ -167,11 +167,11 @@ class we_import_updater extends we_exim_XMLExIm{
 			t_e("Updating elements");
 		}
 		if(isset($object->ClassName) && $object->ClassName === "we_objectFile"){
-			$regs = array();
-			$del_elements = array();
-			$new_elements = array();
-			$new_defs = array();
-			$del_defs = array();
+			$regs = [];
+			$del_elements = [];
+			$new_elements = [];
+			$new_defs = [];
+			$del_defs = [];
 		}
 
 		foreach($object->elements as $k => &$element){
@@ -376,7 +376,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		if($this->debug){
 			t_e("Updating object module data...\n");
 		}
-		$new = $del = $regs = array();
+		$new = $del = $regs = [];
 		foreach($object->SerializedArray as $elkey => $elvalue){
 			if(preg_match('|' . we_object::QUERY_PREFIX . '([0-9])+|', $elkey, $regs)){
 				if(count($regs) > 1){
@@ -418,7 +418,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		if(isset($object->Templates) && strlen($object->Templates) > 0){
 
 			$tids = makeArrayFromCSV($object->Templates);
-			$new_tids = array();
+			$new_tids = [];
 			foreach($tids as $tid){
 				$ref = $this->RefTable->getRef(
 					array(
@@ -507,9 +507,9 @@ class we_import_updater extends we_exim_XMLExIm{
 
 		$cats = (isset($object->Categories) ?
 				(is_array($object->Categories) ? $object->Categories : makeArrayFromCSV($object->Categories)) :
-				array());
+				[]);
 
-		$new_cats = array();
+		$new_cats = [];
 		foreach($cats as $cat){
 			$ref = $this->RefTable->getRef(
 				array(
@@ -581,7 +581,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			}
 			return;
 		}
-		$match = array();
+		$match = [];
 		foreach($patterns as $pattern){
 			if(!preg_match_all($pattern, $source, $match)){
 				continue;

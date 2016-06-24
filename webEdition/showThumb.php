@@ -27,7 +27,7 @@ we_html_tools::protect();
 
 if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 	($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 't', $we_transaction)) &&
-	($thumbIDs = we_base_request::_(we_base_request::INTLISTA, 'id', array()))){
+	($thumbIDs = we_base_request::_(we_base_request::INTLISTA, 'id', []))){
 
 	$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
@@ -52,15 +52,15 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 		if((!$useOrig) && $we_doc->ID && ($we_doc->DocChanged == false) && file_exists($thumbObj->getOutputPath(true))){
 			$src = $thumbObj->getOutputPath(false, true);
 		} else {
-			$src = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(
-					array('we_cmd' => array(
-							0 => 'show_binaryDoc',
-							1 => $we_doc->ContentType,
-							2 => $we_transaction,
-							3 => ($useOrig ? '' : $thumbid),
-						),
-						'rand' => $randval
-			));
+			$src = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query([
+					'we_cmd' => [
+						0 => 'show_binaryDoc',
+						1 => $we_doc->ContentType,
+						2 => $we_transaction,
+						3 => ($useOrig ? '' : $thumbid),
+					],
+					'rand' => $randval
+			]);
 		}
 
 		$table .= '<td><image src="' . $src . '" style="width:' . $thumbObj->getOutputWidth() . 'px;height:' . $thumbObj->getOutputHeight() . 'px"/></td>';
@@ -68,5 +68,5 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 
 	$table .= '</tr></table>';
 
-	echo we_html_element::htmlBody(array('style' => 'margin: 5px;'), $table) . '</html>';
+	echo we_html_element::htmlBody(['style' => 'margin: 5px;'], $table) . '</html>';
 }

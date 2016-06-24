@@ -44,14 +44,14 @@ class we_helpers_pdf2text{
 	const INFO_PORTION = 10240;
 
 	private static $space = 0;
-	private static $encodings = array();
-	private static $mapping = array();
+	private static $encodings = [];
+	private static $mapping = [];
 	private $root = '';
-	private $data = array();
-	private $fonts = array();
-	private $unset = array();
-	private $objects = array();
-	private $currentFontRessource = array();
+	private $data = [];
+	private $fonts = [];
+	private $unset = [];
+	private $objects = [];
+	private $currentFontRessource = [];
 	private $text = '';
 	private $file = '';
 
@@ -68,7 +68,7 @@ class we_helpers_pdf2text{
 		defined('DEBUG') && $this->mem();
 		$this->fillData($this->file);
 		defined('DEBUG') && $this->mem();
-		$this->unset = array();
+		$this->unset = [];
 		if(defined('DEBUG') && strstr(DEBUG, 'tree')){
 			print_r($this->data);
 		}
@@ -102,7 +102,7 @@ class we_helpers_pdf2text{
 		//best data is in the end, so try this first!
 		$data = fread($file, self::INFO_PORTION) . $data;
 		fclose($file);
-		$match = array();
+		$match = [];
 		$info = '';
 		if(preg_match('#trailer[\r\n ]*<<(.*)>>#s', $data, $match)){
 			preg_match_all('#/(\w+)[ \r\n]{0,2}(\d+ \d+) R[\r\n]*#s', $match[1], $match, PREG_SET_ORDER);
@@ -116,13 +116,13 @@ class we_helpers_pdf2text{
 
 			$data = $this->searchObjInFile($info);
 			if(!$data){
-				return array();
+				return [];
 			}
 			$this->parsePDF($data);
 			$info = isset($this->data[$info]) ? $this->data[$info] : '';
-			$this->data = array();
+			$this->data = [];
 			if(!is_array($info)){
-				return array();
+				return [];
 			}
 			foreach($info as $key => &$cur){
 				$cur = self::getStringContent($cur);
@@ -134,7 +134,7 @@ class we_helpers_pdf2text{
 			}
 			return $info;
 		}
-		return array();
+		return [];
 	}
 
 	private static function getStringContent($str){
@@ -155,7 +155,7 @@ class we_helpers_pdf2text{
 	private function setFontTables(){
 		foreach($this->fonts as $cur){
 			$elem = &$this->data[$cur];
-			$elem['charMap'] = array();
+			$elem['charMap'] = [];
 			$encoding = (isset($elem['Encoding']) ? $elem['Encoding'] : '');
 			if(substr($encoding, -1) === 'R'){
 				$id = rtrim($encoding, self::TRIM_REF);
@@ -178,7 +178,7 @@ class we_helpers_pdf2text{
 		$this->setDefaultFontTable(isset($dict['BaseEncoding']) ? $dict['BaseEncoding'] : '', $elem);
 		//print_r($elem);
 		if(isset($dict['Differences'])){
-			$matches = array();
+			$matches = [];
 			$diff = $dict['Differences'];
 			preg_match_all('#(\d+)(([\r\n ]*\/\w+)*)#s', $diff, $matches, PREG_SET_ORDER);
 			foreach($matches as $m){
@@ -405,7 +405,7 @@ class we_helpers_pdf2text{
 		// initialize dictionary index
 		$dix = 258;
 		// initialize the dictionary (with the first 256 entries).
-		$dictionary = array();
+		$dictionary = [];
 		for($i = 0; $i < 256; ++$i){
 			$dictionary[$i] = chr($i);
 		}
@@ -424,7 +424,7 @@ class we_helpers_pdf2text{
 				$dix = 258;
 				$prev_index = 256;
 				// reset the dictionary (with the first 256 entries).
-				$dictionary = array();
+				$dictionary = [];
 				for($i = 0; $i < 256; ++$i){
 					$dictionary[$i] = chr($i);
 				}
@@ -491,7 +491,7 @@ class we_helpers_pdf2text{
 	}
 
 	private static function applyToUnicode($data, &$table){
-		$match = array();
+		$match = [];
 		if(preg_match('#beginbfchar(.*)endbfchar#s', $data, $match)){
 			preg_match_all('#<([[:alnum:]]*)>[ ]*<([[:alnum:]]*)>#s', $match[1], $match);
 			//print_r($match);
@@ -564,9 +564,9 @@ class we_helpers_pdf2text{
 		}
 		unset($cur);
 
-		$newEnc = array();
+		$newEnc = [];
 		foreach($encodings as $type => $myenc){
-			$newEnc[$type] = array();
+			$newEnc[$type] = [];
 			foreach($myenc as $key => $char){
 				if($char != NULL){
 					$char = $nameToUnicodeTab[$char];
@@ -619,7 +619,7 @@ class we_helpers_pdf2text{
 	private function searchObjInFile($objName){
 		$file = fopen($this->file, 'r');
 		$data = '';
-		$match = array();
+		$match = [];
 
 		while(($read = fread($file, self::READPORTION))){
 			if(($pos = strpos($read, $objName . ' ' . self::OBJ)) !== FALSE){
@@ -636,7 +636,7 @@ class we_helpers_pdf2text{
 	}
 
 	private function parsePDF($data){
-		$matches = $matches2 = $matches3 = array();
+		$matches = $matches2 = $matches3 = [];
 		preg_match_all('#(\d+ \d+) ' . self::OBJ . '[\r\n]?(.*)endobj#Us', $data, $matches, PREG_SET_ORDER);
 		defined('DEBUG') && $this->mem();
 		unset($data);
@@ -646,7 +646,7 @@ class we_helpers_pdf2text{
 			if(in_array($m[1], $this->unset)){
 				continue;
 			}
-			$values = array();
+			$values = [];
 			if(!preg_match('#(xxxx\d+xxx)|<<(.*)>>[\r\n ]*stream[\r\n]+(.*)endstream#s', $m[2], $matches2)){
 				if(!preg_match('#(\d+)|<<(.*)>>#s', $m[2], $matches2)){
 					continue;
@@ -737,7 +737,7 @@ class we_helpers_pdf2text{
 					if(defined('DEBUG') && strstr(DEBUG, 'page')){
 						print_r($elem);
 					}
-					$fonts = array();
+					$fonts = [];
 					$this->getPageFonts($fonts, $elem);
 					if(isset($elem['Font'])){
 						$tmp = rtrim($elem['Font'], self::TRIM_REF);
@@ -780,7 +780,7 @@ class we_helpers_pdf2text{
 	}
 
 	private function getText(){
-		$texts = $lines = array();
+		$texts = $lines = [];
 		foreach($this->objects as $cur){
 			if(!isset($this->data[$cur])){
 				continue;
@@ -805,7 +805,7 @@ class we_helpers_pdf2text{
 		$tmpText = '';
 		$fs = 10;
 		$hasData = false;
-		$lines = array();
+		$lines = [];
 		preg_match_all('#'
 			. '(?(?=\[.*\])'//if [] is found
 			. '(\[[^\r\n\[\]]*\])'//use this pattern for []
@@ -896,7 +896,7 @@ class we_helpers_pdf2text{
 
 	private function extractPSTextElement($string, $fs){
 		self::$space = -4 * $fs;
-		$parts = array();
+		$parts = [];
 		preg_match_all('#\(((?:\\\\.|[^\\\\\\)])+)\)(-?\d+\.\d{1,7})?#', $string, $parts);
 
 		//add spaces only if size is bigger than a certain amount
@@ -917,7 +917,7 @@ class we_helpers_pdf2text{
 		foreach($this->unset as $cur){
 			unset($this->data[$cur]);
 		}
-		$this->unset = array();
+		$this->unset = [];
 	}
 
 	private function mem($last = false){

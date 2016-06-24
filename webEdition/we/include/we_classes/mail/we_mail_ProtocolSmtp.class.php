@@ -95,7 +95,7 @@ class we_mail_ProtocolSmtp extends we_mail_ProtocolAbstract{
 	 * @return void
 	 * @throws Mail_Protocol_Exception
 	 */
-	public function __construct($host = '127.0.0.1', $port = null, array $config = array()){
+	public function __construct($host = '127.0.0.1', $port = null, array $config = []){
 		if(isset($config['ssl'])){
 			switch(strtolower($config['ssl'])){
 				case 'tls':

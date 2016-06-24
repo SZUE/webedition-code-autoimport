@@ -64,7 +64,7 @@ class we_customer_selector extends we_users_selector{
 			$sort = '';
 		}
 		if($sort){
-			$havingarr = $sort_defs = $pidarr = $check = array();
+			$havingarr = $sort_defs = $pidarr = $check = [];
 
 			if($pid){
 				$pidarr = explode('-|-', $pid);
@@ -75,7 +75,7 @@ class we_customer_selector extends we_users_selector{
 				$sort_defs = $settings->SortView[$sort];
 			}
 
-			$select = $grouparr = $orderarr = array();
+			$select = $grouparr = $orderarr = [];
 
 			foreach($sort_defs as $c => $sortdef){
 				if(!empty($sortdef['function'])){

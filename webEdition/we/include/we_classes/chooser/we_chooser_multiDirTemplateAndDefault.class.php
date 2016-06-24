@@ -24,7 +24,7 @@
  */
 class we_chooser_multiDirTemplateAndDefault extends we_chooser_multiDirAndTemplate{
 	private $defaultName = '';
-	private $defaultArr = array();
+	private $defaultArr = [];
 
 	public function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $tmplcsv = "", $tmplSelectName = "", $mustTemplateIDs = "", $tmplWs = "", $defaultName = "", $defaultCSV = "", $fields = "Path", $table = FILE_TABLE, $css = "defaultfont"){
 		$this->defaultName = $defaultName;

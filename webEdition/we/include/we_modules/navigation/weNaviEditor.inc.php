@@ -32,7 +32,7 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	);
 	$def = 0;
 } else {
-	$dirs = array();
+	$dirs = [];
 	$def = null;
 }
 

@@ -49,7 +49,7 @@ function _buildJsCommand($cmdArray = array('', '', 'cockpit', 'open_cockpit', ''
 $jsCommand = '';
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_include'){ // Edit-Include-Mode
 // in multiEditorFrameset we_cmd[1] can be set to reach this
-	$directCmd = array();
+	$directCmd = [];
 	for($i = 1; $i < 4; $i++){
 		$directCmd[] = we_base_request::_(we_base_request::STRING, 'we_cmd', '', $i);
 	}

@@ -30,7 +30,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 //Check some critical PHP Setings #7243
 //FIXME: implement class sysinfo.class, for not analysing the same php settings twice (here and in sysinfo.php)
 if(permissionhandler::hasPerm('ADMINISTRATOR')){
-	$suhosinMsg = (extension_loaded('suhosin') && !in_array(ini_get('suhosin.simulation'), array(1, 'on', 'yes', 'true', true))) ? 'suhosin=on\n' : '';
+	$suhosinMsg = (extension_loaded('suhosin') && !in_array(ini_get('suhosin.simulation'), [1, 'on', 'yes', 'true', true])) ? 'suhosin=on\n' : '';
 
 	$maxInputMsg = (!ini_get('max_input_vars') ? 'max_input_vars = 1000 (PHP default value)' :
 			(ini_get('max_input_vars') < 2000 ? 'max_input_vars = ' . ini_get('max_input_vars') : ''));
@@ -81,11 +81,11 @@ function printHeader($login, $status = 200, $js = ''){
 	we_html_element::jsElement(we_message_reporting::jsString());
 
 	if($login != LOGIN_OK){
-		echo we_html_element::linkElement(array('rel' => 'home', 'href' => WEBEDITION_DIR)) .
-		we_html_element::linkElement(array('rel' => 'author', 'href' => g_l('start', '[we_homepage]')));
+		echo we_html_element::linkElement(['rel' => 'home', 'href' => WEBEDITION_DIR]) .
+		we_html_element::linkElement(['rel' => 'author', 'href' => g_l('start', '[we_homepage]')]);
 	}
 
-	echo we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico')) .
+	echo we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']) .
 	we_html_element::jsElement('
 	isLoginScreen = true;
 	cookieBackup = document.cookie;
@@ -148,13 +148,13 @@ function showMessage(message, prio, win){
 /* * ***************************************************************************
  * CLEAN Temporary Data left over from last logout  bug #4240
  * *************************************************************************** */
-$removePaths = array(
+$removePaths = [
 	WEBEDITION_PATH . 'we/include/we_modules/navigation/cache', //old navi-cache
 	$_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller',
 	$_SERVER['DOCUMENT_ROOT'] . '/OnlineInstaller.php',
 	WEBEDITION_PATH . 'we/zendcache',
 	WEBEDITION_PATH . 'preview',
-);
+];
 
 foreach($removePaths as $path){
 	if(is_dir($path)){
@@ -229,8 +229,8 @@ function getError($reason, $cookie = false){
 			'') .
 		we_html_element::htmlBr() . g_l('start', ($error_count == 1 ? '[solution_one]' : '[solution_more]'));
 
-	$layout = new we_html_table(array('style' => 'width: 100%; height: 75%;'), 1, 1);
-	$layout->setCol(0, 0, array('style' => 'text-align:center;vertical-align:middle'), we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(array('class' => 'defaultfont'), $error), g_l('alert', '[phpError]')));
+	$layout = new we_html_table(['style' => 'width: 100%; height: 75%;'], 1, 1);
+	$layout->setCol(0, 0, ['style' => 'text-align:center;vertical-align:middle'], we_html_tools::htmlMessageBox(500, 250, we_html_element::htmlP(['class' => 'defaultfont'], $error), g_l('alert', '[phpError]')));
 	return $layout;
 }
 
@@ -242,21 +242,21 @@ if(we_base_request::_(we_base_request::STRING, 'checkLogin') && !$_COOKIE){
 	$layout = getError(g_l('start', '[cookies_disabled]'));
 
 	printHeader($login, 400);
-	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $layout->getHtml()) . '</html>';
+	echo we_html_element::htmlBody(['style' => 'background-color:#FFFFFF;'], $layout->getHtml()) . '</html>';
 } else if(!we_database_base::hasDB() || $GLOBALS['DB_WE']->Error === 'No database selected'){
 	$layout = getError(g_l('start', '[no_db_connection]'));
 
 	printHeader($login, 503);
-	echo we_html_element::htmlBody(array('style' => 'background-color:#FFFFFF;'), $layout->getHtml()) . '</html>';
+	echo we_html_element::htmlBody(['style' => 'background-color:#FFFFFF;'], $layout->getHtml()) . '</html>';
 } /* don't check for browsers anymore */ else {
 
 	/*	 * ***************************************************************************
 	 * GENERATE LOGIN
 	 * *************************************************************************** */
 
-	$hidden_values = we_html_element::htmlHiddens(array(
+	$hidden_values = we_html_element::htmlHiddens([
 			'checkLogin' => session_id(),
-			'indexDate' => date('d.m.Y, H:i:s')));
+			'indexDate' => date('d.m.Y, H:i:s')]);
 
 	/*	 * ***********************************************************************
 	 * BUILD DIALOG
@@ -329,11 +329,11 @@ win = new jsWindow(top.window, "' . WEBEDITION_DIR . "webEdition.php?h='+ah+'&w=
 	}
 
 
-	$layout = /* we_html_element::htmlDiv(array('style' => 'float: left;height: 50%;width: 1px;')) . we_html_element::htmlDiv(array('style' => 'clear:left;position:relative;top:-25%;'), */we_html_element::htmlForm(array("action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'), $hidden_values . $dialogtable)/* ) */ .
-		we_html_element::htmlDiv(array('id' => 'picCopy'), 'Copyright &copy; nw7.eu / Fotolia.com');
+	$layout = we_html_element::htmlForm(["action" => WEBEDITION_DIR . 'index.php', 'method' => 'post', 'name' => 'loginForm'], $hidden_values . $dialogtable) .
+		we_html_element::htmlDiv(['id' => 'picCopy'], 'Copyright &copy; nw7.eu / Fotolia.com');
 
 	printHeader($login, (isset($httpCode) ? $httpCode : 401), $headerjs);
-	echo we_html_element::htmlBody(array('id' => 'loginScreen', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")), $layout . ((isset($body_javascript)) ? we_html_element::jsElement($body_javascript) : '')) . '</html>';
+	echo we_html_element::htmlBody(['id' => 'loginScreen', "onload" => (($login == LOGIN_OK) ? "open_we();" : "document.loginForm.WE_LOGIN_username.focus();document.loginForm.WE_LOGIN_username.select();")], $layout . ((isset($body_javascript)) ? we_html_element::jsElement($body_javascript) : '')) . '</html>';
 }
 session_write_close();
 flush();

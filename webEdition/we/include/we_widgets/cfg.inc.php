@@ -28,11 +28,11 @@ $small = 202;
 $large = 432;
 $iDlgWidth = 480;
 
-$sc1 = $sc2 = array();
+$sc1 = $sc2 = [];
 
 // define shortcuts
-$shortCuts_left = array();
-$shortCuts_right = array();
+$shortCuts_left = [];
+$shortCuts_right = [];
 
 if(defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$shortCuts_left[] = 'open_document';

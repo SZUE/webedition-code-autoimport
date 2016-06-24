@@ -76,7 +76,7 @@ class we_ui_layout_Frameset extends we_ui_abstract_AbstractElement{
 	 *
 	 * @var array
 	 */
-	protected $_frames = array();
+	protected $_frames = [];
 
 	/**
 	 * add frame

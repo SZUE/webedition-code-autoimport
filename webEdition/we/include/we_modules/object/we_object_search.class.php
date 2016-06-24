@@ -28,8 +28,8 @@ class we_object_search extends we_search_base{
 	var $searchlocation;
 	var $searchfield;
 	var $show;
-	private static $intFields = array();
-	private static $realFields = array();
+	private static $intFields = [];
+	private static $realFields = [];
 
 	function __construct(){
 		parent::__construct();
@@ -58,7 +58,7 @@ class we_object_search extends we_search_base{
 			return '';
 		}
 		$opts = '';
-		$all = array();
+		$all = [];
 		$tableInfoFields = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
 		$tableInfoProperties = $GLOBALS['DB_WE']->metadata(OBJECT_FILES_TABLE);
 
@@ -203,7 +203,7 @@ function toggleShowVisible(c) {
 	function searchfor($searchnames, $searchfield, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
 		foreach($searchnames as $i => $searchname){
 			$filteredFields = '';
-			$fieldsToFilterOut = array();
+			$fieldsToFilterOut = [];
 
 			$type = !preg_match('/^[-+]?\d*\.?\d+$/', $searchname) ? 1 : (!preg_match('/^[-+]?\d+$/', $searchname) ? 2 : 0);
 			switch($type){

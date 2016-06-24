@@ -36,7 +36,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 		$CreateTemplateInFolderID = we_base_request::_(we_base_request::INT, 'CreateTemplateInFolderID', 0);
 		$OverwriteCategories = we_base_request::_(we_base_request::BOOL, 'OverwriteCategories', false);
-		$vals = array();
+		$vals = [];
 		foreach($_REQUEST as $name => $val){
 			if(!is_array($val)){
 				if(preg_match('%^me(.*)variant0_me(.*)_item%i', $name)){
@@ -59,7 +59,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 			$fromPath = id_to_path($fromID);
 			$db = new DB_WE();
-			$this->alldata = array();
+			$this->alldata = [];
 			$merge = array(
 				"CopyToId" => $toID,
 				"CopyFromId" => $fromID,
@@ -95,7 +95,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				$qfolders = ($ObjectCopyNoFolders ? ' ParentID=' . $fromID . ' AND IsFolder=0 AND ' : '');
 
 				$db = new DB_WE();
-				$this->alldata = array();
+				$this->alldata = [];
 				$merge = array(
 					"CopyToId" => $toID,
 					"CopyFromId" => $fromID,
@@ -288,7 +288,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 							if($dt->Templates){
 								$templArray = makeArrayFromCSV($dt->Templates);
-								$newTemplateIDs = array();
+								$newTemplateIDs = [];
 								foreach($templArray as $id){
 									if($id == $oldTemplateID){
 										$newTemplateIDs[] = $GLOBALS['we_doc']->TemplateID;
@@ -304,7 +304,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 							$newID = $dt->ID;
 
 							if(!isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
-								$_SESSION['weS']['WE_CREATE_DOCTYPE'] = array();
+								$_SESSION['weS']['WE_CREATE_DOCTYPE'] = [];
 							}
 							$_SESSION['weS']['WE_CREATE_DOCTYPE'][$GLOBALS['we_doc']->DocType] = $newID;
 						}
@@ -339,9 +339,9 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 	function copyTemplate($templateID, $parentID, $CreateMasterTemplate = false, $CreateIncludedTemplate = false, $counter = 0){
 		$counter++;
-		$templVars = array();
+		$templVars = [];
 		if(!isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
-			$_SESSION['weS']['WE_CREATE_TEMPLATE'] = array();
+			$_SESSION['weS']['WE_CREATE_TEMPLATE'] = [];
 		}
 		if(!isset($_SESSION['weS']['WE_CREATE_TEMPLATE'][$templateID])){
 
@@ -395,11 +395,11 @@ class we_fragment_copyFolder extends we_fragment_base{
 							$tp = new we_tag_tagParser($code);
 							$tags = $tp->getAllTags();
 							foreach($tags as $tag){
-								$regs = array();
+								$regs = [];
 								$xid = 0;
 								if(preg_match('|^<we:include ([^>]+)>$|i', $tag, $regs)){
 									if(preg_match('|type *= *" *template *"|i', $regs[1])){
-										$foo = array();
+										$foo = [];
 
 										$attributes = $regs[1];
 										preg_match_all('/([^=]+)= *("[^"]*")/', $attributes, $foo, PREG_PATTERN_ORDER);
@@ -454,7 +454,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		);
 
 		$changed = false;
-		$regs = array();
+		$regs = [];
 		$tp = new we_tag_tagParser($we_doc->getElement('data'));
 		$tags = $tp->getAllTags();
 		foreach($tags as $tag){
@@ -487,13 +487,13 @@ class we_fragment_copyFolder extends we_fragment_base{
 	private function parseWeDocument(we_document &$we_doc){
 		$DB_WE = new DB_WE();
 
-		$hrefs = array();
+		$hrefs = [];
 		foreach($we_doc->elements as $k => $v){
 
 			switch(isset($v['type']) ? $v['type'] : ''){
 				case 'txt' :
 				case 'link'://since old fields are txt we have to handle it here
-					$regs = array();
+					$regs = [];
 					$elem = $we_doc->getElement($k);
 					if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs)){ // is a we:href field
 						$v['type'] = 'href';
@@ -516,7 +516,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 						break;
 					}//fall through to correct field
 				case 'href':
-					$regs = array();
+					$regs = [];
 					if(preg_match('|(.+)' . we_base_link::MAGIC_INFIX . '(.+)|', $k, $regs) && // is a we:href field
 						!in_array($regs[1], $hrefs)){//already scanned?
 						$hrefs[] = $regs[1];
@@ -590,7 +590,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 	//FIXME: check why this is different to we_document::parseInternalLinks
 	private function parseInternalLinks(&$text, we_database_base $DB_WE){
-		$regs = array();
+		$regs = [];
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '([^" ]+)/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$id = $reg[2];

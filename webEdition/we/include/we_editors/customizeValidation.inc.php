@@ -79,7 +79,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET 
 		));
 	} else {
 		$hiddenFields = we_html_element::htmlHidden('art', 'custom');
-		$selectArr = array();
+		$selectArr = [];
 	}
 
 

@@ -39,7 +39,7 @@ class weTagData{
 	/**
 	 * @var array
 	 */
-	private $Attributes = array();
+	private $Attributes = [];
 	private $UsedAttributes = null;
 
 	/**
@@ -57,7 +57,7 @@ class weTagData{
 	 */
 	private $NeedsEndTag = false;
 	private $Module = 'basis';
-	private $Groups = array();
+	private $Groups = [];
 	private $Deprecated = false;
 	private $noDocuLink = false;
 
@@ -75,7 +75,7 @@ class weTagData{
 				$this->noDocuLink = true;
 			} else {
 				//Application Tags
-				$apptags = $allapptags = $allapptagnames = array();
+				$apptags = $allapptags = $allapptagnames = [];
 				$alltools = we_tool_lookup::getAllTools(true);
 				foreach($alltools as $tool){
 					$apptags = we_tool_lookup::getAllToolTagWizards($tool['name']);
@@ -154,7 +154,7 @@ class weTagData{
 	}
 
 	private function updateUsedAttributes(){
-		$this->UsedAttributes = array();
+		$this->UsedAttributes = [];
 		if($this->TypeAttribute){
 			$this->UsedAttributes[] = $this->TypeAttribute;
 		}
@@ -201,7 +201,7 @@ class weTagData{
 	 * @return weTagData
 	 */
 	static function getTagData($tagName){
-		static $tags = array();
+		static $tags = [];
 		if(isset($tags[$tagName])){
 			$tag = $tags[$tagName];
 		} else {
@@ -226,7 +226,7 @@ class weTagData{
 	 * @return array
 	 */
 	function getAllAttributes($idPrefix = false){
-		$attribs = array();
+		$attribs = [];
 		foreach($this->UsedAttributes as $attrib){
 			$attribs[] = ($idPrefix ?
 							$attrib->getIdName() :
@@ -247,7 +247,7 @@ class weTagData{
 	 * @return array
 	 */
 	function getRequiredAttributes(){
-		$req = array();
+		$req = [];
 
 		foreach($this->UsedAttributes as $attrib){
 			if($attrib->IsRequired()){
@@ -268,7 +268,7 @@ class weTagData{
 	}
 
 	function getAttributesForCM(){
-		$attr = array();
+		$attr = [];
 
 		foreach($this->UsedAttributes as $attribute){
 			if(!$attribute->IsDeprecated() && $attribute->useAttribute() && !($attribute instanceof weTagData_linkAttribute) && !($attribute instanceof weTagData_cmdAttribute)){

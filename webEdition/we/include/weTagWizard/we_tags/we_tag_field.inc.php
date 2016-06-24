@@ -118,29 +118,29 @@ $vatfield = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('is_country_fallback_to_prefs')
 	), false, '');
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('-', false, '', array(), array()),
+	new weTagDataOption('-', false, '', [], []),
 	new weTagDataOption('text', false, '', array($name, $hyperlink, $href, $target, $num_format, $alt, $max, $striphtml, $htmlspecialchars, $triggerid), array($name)),
 	new weTagDataOption('date', false, '', array($name, $hyperlink, $href, $target, $format, $alt, $max, $htmlspecialchars, $triggerid), array($name)),
 	new weTagDataOption('img', false, '', array($name, $hyperlink, $href, $target, $thumbnail, $src, $width, $height, $border, $hspace, $vspace, $align, $onlyImg, $triggerid), array($name)),
 	new weTagDataOption('flashmovie', false, '', array($name, $width, $height, $triggerid), array($name)),
 	new weTagDataOption('href', false, '', array($name), array($name)),
 	new weTagDataOption('link', false, '', array($name), array($name)),
-	new weTagDataOption('day', false, '', array(), array()),
-	new weTagDataOption('dayname', false, '', array(), array()),
-	new weTagDataOption('week', false, '', array(), array()),
-	new weTagDataOption('month', false, '', array(), array()),
-	new weTagDataOption('monthname', false, '', array(), array()),
-	new weTagDataOption('year', false, '', array(), array()),
+	new weTagDataOption('day', false, '', [], []),
+	new weTagDataOption('dayname', false, '', [], []),
+	new weTagDataOption('week', false, '', [], []),
+	new weTagDataOption('month', false, '', [], []),
+	new weTagDataOption('monthname', false, '', [], []),
+	new weTagDataOption('year', false, '', [], []),
 	new weTagDataOption('select', false, 'object', array($name, $usekey, $htmlspecialchars, $triggerid), array($name)),
 	new weTagDataOption('binary', false, 'object', array($name, $hyperlink, $href, $target, $only), array($name)),
 	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid), array($name)),
 	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid), array($name)),
 	new weTagDataOption('collection', false, '', array($name), array($name)),
-	new weTagDataOption('shopVat', false, '', array($vatfield), array()),
-	new weTagDataOption('shopCategory', false, '', array($catfield, $showpath, $rootdir), array()),
+	new weTagDataOption('shopVat', false, '', array($vatfield), []),
+	new weTagDataOption('shopCategory', false, '', array($catfield, $showpath, $rootdir), []),
 	new weTagDataOption('checkbox', false, '', array($name), array($name)),
-	new weTagDataOption('country', false, '', array($outputlanguage, $doc), array()),
-	new weTagDataOption('language', false, '', array($outputlanguage, $doc), array())
+	new weTagDataOption('country', false, '', array($outputlanguage, $doc), []),
+	new weTagDataOption('language', false, '', array($outputlanguage, $doc), [])
 	), false, '');
 
 $this->Attributes = array($name, $classid, $hyperlink, $tid, $href, $target, $class, $style, $format, $num_format, $thumbnail, $id, $parentidname, $winprops, $alt, $max, $src,

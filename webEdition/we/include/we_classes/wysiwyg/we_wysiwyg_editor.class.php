@@ -34,13 +34,13 @@ class we_wysiwyg_editor{
 	var $height = 400;
 	var $ref = '';
 	var $propstring = '';
-	var $elements = array();
+	var $elements = [];
 	var $value = '';
 	var $restrictContextmenu = '';
-	private $tinyPlugins = array();
+	private $tinyPlugins = [];
 	private $wePlugins = array('wetable', 'weadaptunlink', 'weadaptbold', 'weadaptitalic', 'weimage', 'advhr', 'weabbr', 'weacronym', 'welang', 'wevisualaid', 'weinsertbreak', 'wespellchecker', 'welink', 'wefullscreen', 'wegallery');
 	private $createContextmenu = true;
-	private $filteredElements = array();
+	private $filteredElements = [];
 	private $bgcol = '';
 	private $buttonpos = '';
 	private $tinyParams = '';
@@ -575,11 +575,11 @@ return {
 	static function parseInternalImageSrc($value){
 		static $t = 0;
 		$t = ($t ? : time());
-		$regs = array();
+		$regs = [];
 
 		// IMPORTANT: we process tiny content both from db and session: the latter uses paths?id=xy instead of document:xy
 		if(preg_match_all('/<img [^>]*(src="(' . we_base_link::TYPE_INT_PREFIX . '|[^" >]*\?id=)(\d+)[^"]*")[^>]*>/i', $value, $regs, PREG_SET_ORDER)){
-			$ids = array();
+			$ids = [];
 			foreach($regs as $reg){
 				$ids[] = intval($reg[3]);
 			}
@@ -588,7 +588,7 @@ return {
 				$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', $ids) . ')');
 				$lookup = $GLOBALS['DB_WE']->getAllFirst(false);
 			} else {
-				$lookup = array();
+				$lookup = [];
 			}
 
 			foreach($regs as $reg){
@@ -618,7 +618,7 @@ return {
 	 */
 
 	public static function reparseInternalLinks(&$origContent, $replace = false, $name = ''){// FIXME: move to we_document?
-		$regs = $internalIDs = array();
+		$regs = $internalIDs = [];
 		$content = $origContent;
 
 		// replace real links by internals when necessery (in documents links are parsed already, in modules not)
@@ -646,7 +646,7 @@ return {
 			}
 		}
 
-		$ret = array();
+		$ret = [];
 		$c = 0;
 		foreach($internalIDs as $id){
 			$ret['textarea[name=' . $name . '] [src/href ' . ++$c . ']'] = $id;
@@ -665,7 +665,7 @@ return {
 		foreach($tmpElements as $elem){
 			if($elem->classname === "we_wysiwyg_ToolbarSeparator"){
 				$rownr++;
-				$rows[$rownr] = array();
+				$rows[$rownr] = [];
 				continue;
 			}
 			$rows[$rownr][] = $elem;
@@ -790,7 +790,7 @@ return {
 		$GLOBALS['DB_WE']->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE (ID IN (' . $templates . ') OR ParentID IN (' . $templates . ') ) AND Published!=0 AND isFolder=0');
 		$tmplArr = $GLOBALS['DB_WE']->getAll(true);
 
-		$templates = array();
+		$templates = [];
 		foreach($tmplArr as $i => $cur){
 			$tmplDoc = new we_document();
 			$tmplDoc->initByID(intval($cur));
@@ -816,7 +816,7 @@ return {
 
 		//write theme_advanced_buttons_X
 		$tinyRows = '';
-		$allCommands = array();
+		$allCommands = [];
 		$k = 1;
 		foreach($rows as $outer){
 			$tinyRows .= 'theme_advanced_buttons' . $k . ' : "';

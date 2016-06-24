@@ -53,7 +53,7 @@ class we_ui_layout_HeadlineIconTable extends we_ui_abstract_AbstractElement{
 	/*
 	 * Array to hold the rows of the table
 	 */
-	protected $_rows = array();
+	protected $_rows = [];
 
 	/*
 	 * Button Table object; will be inserted direct under the table

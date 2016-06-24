@@ -348,7 +348,7 @@ function setTab(tab) {
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody([], we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
 							"pnt" => "cmd",
 							"cmd" => "no_cmd")) .
 						we_html_element::jsElement(
@@ -396,7 +396,7 @@ function setTab(tab) {
 			$hiddens.=we_html_element::htmlHidden('count', 1);
 
 			$max_res = $this->View->settings->getMaxSearchResults();
-			$result = array();
+			$result = [];
 			if(($k = we_base_request::_(we_base_request::STRING, 'keyword')) && we_base_request::_(we_base_request::BOOL, 'search')){
 				$result = $this->View->getSearchResults($k, $max_res);
 			}
@@ -409,9 +409,9 @@ function setTab(tab) {
 		}
 
 		$table = new we_html_table(array('width' => 550, 'height' => 50), 3, 1);
-		$table->setCol(0, 0, array(), $search->getHtml());
+		$table->setCol(0, 0, [], $search->getHtml());
 		$table->setCol(1, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[num_data_sets]') . ($foundItems ? ' (' . $foundItems . ')' : ''));
-		$table->setCol(2, 0, array(), $select->getHtml());
+		$table->setCol(2, 0, [], $select->getHtml());
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => ($mode ? '' : 'document.we_form.keyword.focus();')), we_html_element::jsScript(JS_DIR . 'utils/weDate.js') .

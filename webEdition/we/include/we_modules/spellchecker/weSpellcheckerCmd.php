@@ -6,7 +6,7 @@ we_html_tools::protect($protect);
 
 echo we_html_tools::getHtmlTop();
 
-function saveSettings($default, $active, $langs = array()){
+function saveSettings($default, $active, $langs = []){
 	//FIXME: move to tblsettings
 	$_lang = '';
 
@@ -48,7 +48,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 	case 'addWords' :
 		if($cmd1 !== false){
 
-			$_words = array();
+			$_words = [];
 			$_str = explode(',', $cmd1);
 			foreach($_str as $_s){
 				if(!empty($_s)){
@@ -105,7 +105,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 	case 'saveSettings':
 
 		$_default = we_base_request::_(we_base_request::STRING, 'default');
-		$_active = array();
+		$_active = [];
 		foreach($_REQUEST as $key => $value){
 			if(strpos($key, 'enable_') === 0 && $value == 1){
 				$_active[] = str_replace('enable_', '', $key);
@@ -119,7 +119,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 
 		$_langs = we_base_request::_(we_base_request::STRING, 'lang');
 
-		saveSettings($_default, array_unique($_active), is_array($_langs) ? $_langs : array());
+		saveSettings($_default, array_unique($_active), is_array($_langs) ? $_langs : []);
 
 		we_base_file::save(WE_SPELLCHECKER_MODULE_PATH . 'dict/default.inc.php', we_base_request::_(we_base_request::STRING, 'defaultDict'));
 
@@ -138,7 +138,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 			if($GLOBALS['spellcheckerConf']['default'] == $cmd1){ // if the default dict has been deleted
 				if(!empty($GLOBALS['spellcheckerConf']['active']) && isset($GLOBALS['spellcheckerConf']['active'][0])){
 					// take the firts active dictionary
-					$_new_ac = array();
+					$_new_ac = [];
 					foreach($GLOBALS['spellcheckerConf']['active'] as $ac){
 						if($ac != $cmd1){
 							$_new_ac[] = $ac;
@@ -174,7 +174,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 			$_lanSelect->addOption($klan, $vlan);
 		}
 
-		$_langs = (isset($spellcheckerConf['lang']) && is_array($spellcheckerConf['lang'])) ? $spellcheckerConf['lang'] : array();
+		$_langs = (isset($spellcheckerConf['lang']) && is_array($spellcheckerConf['lang'])) ? $spellcheckerConf['lang'] : [];
 
 		$_dir = dir(WE_SPELLCHECKER_MODULE_PATH . 'dict');
 

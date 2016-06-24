@@ -73,7 +73,7 @@ echo STYLESHEET;
 	<div style="text-align:center">
 		<?php
 		if($cmd != 'ok'){
-			$all = array();
+			$all = [];
 			$wfDoc = ($we_doc->Table == FILE_TABLE ?
 					we_workflow_utility::getWorkflowDocumentForDoc($GLOBALS['DB_WE'], $we_doc->DocType, $we_doc->Category, $we_doc->ParentID, $all) :
 					we_workflow_utility::getWorkflowDocumentForObject($GLOBALS['DB_WE'], $we_doc->TableID, $we_doc->Category, $we_doc->ParentID, $all));

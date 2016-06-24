@@ -33,7 +33,7 @@ we_post_tag_listview();?>';
 }
 
 function we_tag_listdir(array $attribs){
-	static $files = array();
+	static $files = [];
 	if(weTag_getAttribute('_internal', $attribs, false, we_base_request::BOOL)){
 		$pos = $GLOBALS['we_position']['listdir']['position'];
 		if(!isset($files[$pos])){
@@ -51,7 +51,7 @@ function we_tag_listdir(array $attribs){
 			'path' => $we_locfile['Path']);
 		return true;
 	}
-	$files = array();
+	$files = [];
 
 	$dirID = weTag_getAttribute('id', $attribs, $GLOBALS['we_doc']->ParentID, we_base_request::INT);
 	$index = explode(',', weTag_getAttribute('index', $attribs, 'index.html,index.htm,index.php,default.htm,default.html,default.php', we_base_request::STRING));

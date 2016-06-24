@@ -139,7 +139,7 @@ $formVat = '
 
 <tr>
 	<td>' . g_l('modules_shop', '[vat][vat_edit_form_state]') . ':</td>
-	<td>' . we_html_tools::htmlSelectCountry('weShopVatCountry', '', 1, array(), false, array('id' => 'weShopVatCountry'), 200) . '</td>
+	<td>' . we_html_tools::htmlSelectCountry('weShopVatCountry', '', 1, [], false, array('id' => 'weShopVatCountry'), 200) . '</td>
 </tr>
 <tr>
 	<td>' . g_l('modules_shop', '[vat][vat_edit_form_province]') . ':</td>

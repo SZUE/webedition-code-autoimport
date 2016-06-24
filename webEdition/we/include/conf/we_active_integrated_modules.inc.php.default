@@ -4,7 +4,7 @@
  * NOTE: this file is regenerated, so any extra contents will be overwritten
  */
 
-$GLOBALS['_we_active_integrated_modules'] = array(
+$GLOBALS['_we_active_integrated_modules'] = [
 	'users',
 	'customer',
 	'collection',
@@ -21,4 +21,4 @@ $GLOBALS['_we_active_integrated_modules'] = array(
 //	'spellchecker',
 	'glossary',
 	'navigation'
-);
+];

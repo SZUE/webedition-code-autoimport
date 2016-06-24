@@ -30,7 +30,7 @@ if(defined('SHOP_TABLE')){
 		new weTagDataOption('is_fallback_to_active')
 		), false, '');
 
-	$options = array();
+	$options = [];
 	$opts = we_shop_category::getShopCatFieldsFromDir('Path', true);
 	foreach($opts as $k => $v){
 		$options[] = new weTagDataOption($v, $k);
@@ -45,7 +45,7 @@ if(defined('SHOP_TABLE')){
 		new weTagDataOption('is_country_fallback_to_prefs')
 		), false, '');
 
-	$options = array();
+	$options = [];
 	$vats = we_shop_vats::getAllShopVATs();
 	foreach($vats as $vat){
 		$options[] = new weTagDataOption($vat->vat . '% - ' . $vat->getNaturalizedText() . ' (' . $vat->territory . ')', $vat->id);
@@ -71,8 +71,8 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('float', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
 	new weTagDataOption('int', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
 	new weTagDataOption('collection', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('shopCategory', false, 'shop', (defined('SHOP_TABLE') ? array($catfield, $catmatch, $ignorefallbacks,) : array()), array()),
-	new weTagDataOption('shopVat', false, 'shop', isset($shopVatAttributes) ? $shopVatAttributes : array(), defined('SHOP_TABLE') && !we_shop_category::isCategoryMode() ? array($name, $match) : array()),
+	new weTagDataOption('shopCategory', false, 'shop', (defined('SHOP_TABLE') ? array($catfield, $catmatch, $ignorefallbacks,) : []), []),
+	new weTagDataOption('shopVat', false, 'shop', isset($shopVatAttributes) ? $shopVatAttributes : [], defined('SHOP_TABLE') && !we_shop_category::isCategoryMode() ? array($name, $match) : []),
 	new weTagDataOption('checkbox', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
 	), true, '');
 

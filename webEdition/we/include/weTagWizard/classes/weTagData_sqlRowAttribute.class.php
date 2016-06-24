@@ -56,7 +56,7 @@ class weTagData_sqlRowAttribute extends weTagData_selectAttribute{
 
 
 		// get options from choosen table
-		$options = array();
+		$options = [];
 
 		$DB_WE->query('SELECT ' . $DB_WE->escape($this->ValueName) . ',' . $DB_WE->escape($this->TextName) . ' FROM ' . $DB_WE->escape($this->Table) . ' ' . ($order ? 'ORDER BY ' . $order : ''));
 

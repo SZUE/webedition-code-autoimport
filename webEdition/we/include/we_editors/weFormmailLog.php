@@ -40,7 +40,7 @@ if(permissionhandler::hasPerm('administrator')){
 		array('dat' => we_html_element::htmlB("Datum/Uhrzeit"))
 	);
 
-	$content = array();
+	$content = [];
 
 	$count = 15;
 	$start = max(we_base_request::_(we_base_request::INT, 'start', 0), 0);

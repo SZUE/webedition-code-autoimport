@@ -33,7 +33,7 @@ class we_workflow_step extends we_workflow_base{
 	var $Worktime = 10;
 	var $timeAction = 0;
 	var $stepCondition = 0;
-	var $tasks = array(); # array of we_workflow_task objects
+	var $tasks = []; # array of we_workflow_task objects
 
 	/**
 	 * Default Constructor
@@ -67,7 +67,7 @@ class we_workflow_step extends we_workflow_base{
 
 		$db->query('SELECT ID FROM ' . WORKFLOW_STEP_TABLE . ' WHERE workflowID=' . intval($workflowID) . ' ORDER BY ID');
 
-		$steps = array();
+		$steps = [];
 
 		while($db->next_record()){
 			$steps[] = new self($db->f("ID"));
@@ -101,7 +101,7 @@ class we_workflow_step extends we_workflow_base{
 
 		## save all steps also ##
 
-		$tasksList = array();
+		$tasksList = [];
 		for($i = 0; $i < count($this->tasks); $i++){
 			$this->tasks[$i]->stepID = intval($this->ID);
 			$this->tasks[$i]->save();

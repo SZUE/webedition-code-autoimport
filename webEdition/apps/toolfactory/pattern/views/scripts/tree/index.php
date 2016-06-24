@@ -5,7 +5,7 @@ $appName = $controller->getParam('appName');
 
 $page = we_ui_layout_HTMLPage::getInstance();
 
-$nodes = array();
+$nodes = [];
 $table = <?php echo (!empty($TABLECONSTANT) && $TABLEEXISTS) ? $TABLECONSTANT : "''"; ?>;
 
 $TreeDiv = new we_ui_layout_Div();

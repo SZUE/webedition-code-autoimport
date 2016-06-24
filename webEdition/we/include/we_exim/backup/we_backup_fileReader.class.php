@@ -25,7 +25,7 @@
 abstract class we_backup_fileReader extends we_backup_XMLFileReader{
 
 	static function preParse(&$content){
-		$match = array();
+		$match = [];
 
 		if(preg_match('|<we:table(item)?([^>]*)|i', $content, $match)){
 

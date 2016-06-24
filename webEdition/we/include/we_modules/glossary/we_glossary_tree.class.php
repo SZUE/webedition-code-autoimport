@@ -51,7 +51,7 @@ class we_glossary_tree extends we_tree_base{
 	}
 
 	private static function getLanguages(){
-		$Items = array();
+		$Items = [];
 
 		foreach(getWeFrontendLanguagesForBackend() as $Key => $Val){
 			$Items[] = array(
@@ -74,7 +74,7 @@ class we_glossary_tree extends we_tree_base{
 
 	private static function getTypes($Language){
 
-		$Items = array();
+		$Items = [];
 
 		$Types = array(
 			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
@@ -121,7 +121,7 @@ class we_glossary_tree extends we_tree_base{
 
 	private static function getItemsFromDB($Language, $Type, $Offset = 0, $Segment = 500){
 		$Db = new DB_WE();
-		$Items = array();
+		$Items = [];
 		$PrevOffset = max(0, $Offset - $Segment);
 
 		if($Offset && $Segment){

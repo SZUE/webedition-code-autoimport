@@ -39,7 +39,7 @@ abstract class we_tree_base{
 	var $treeFrame;
 	var $cmdFrame;
 	var $frameset = '';
-	var $styles = array();
+	var $styles = [];
 	var $tree_states = array(
 		'edit' => 0,
 		'select' => 1,

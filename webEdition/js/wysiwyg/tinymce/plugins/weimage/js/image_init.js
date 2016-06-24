@@ -127,7 +127,7 @@ var ImageDialog = {
 	},
 	/*unused
 	 analyseSrc : function(src) {
-	 src_vars = Array();
+	 src_vars = [];
 	 if(src.split('?id=',2)[1] || src.split(WE().consts.linkPrefix.TYPE_INT_PREFIX',2)[1]){//internal Document, no thumbnail
 	 src_vars[0] = false; // type = ext
 	 src_vars[1] = ''; // external src

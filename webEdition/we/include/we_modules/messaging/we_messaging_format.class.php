@@ -39,7 +39,7 @@ class we_messaging_format extends we_class{
 	var $quote_levels = 3;
 	var $attribution_line;
 	var $quoting_prefix = '> ';
-	var $selected_cc = array();
+	var $selected_cc = [];
 
 	function __construct($mode, $sel_msg = NULL){
 		parent::__construct();
@@ -100,7 +100,7 @@ class we_messaging_format extends we_class{
 
 	function saveInSession(&$save, $toFile = false){
 		$save = array(
-			array(),
+			[],
 			$this->elements
 		);
 		foreach($this->persistent_slots as $cur){

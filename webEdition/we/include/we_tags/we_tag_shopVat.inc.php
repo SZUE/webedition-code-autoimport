@@ -29,7 +29,7 @@ function we_tag_shopVat(array $attribs){
 
 		// in webEdition - EditMode
 		$allVats = we_shop_vats::getAllShopVATs();
-		$values = array();
+		$values = [];
 
 		$standardVal = '';
 		$standardId = 0;

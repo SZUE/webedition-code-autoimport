@@ -31,7 +31,7 @@ class we_newsletter_view extends we_modules_view{
 	const MAILS_FILE = 3;
 
 	// settings array; format settings[setting_name]=settings_value
-	var $settings = array();
+	var $settings = [];
 	//default newsletter
 	var $newsletter;
 	//wat page is currentlly displayed 0-properties(default);1-overview;
@@ -51,7 +51,7 @@ class we_newsletter_view extends we_modules_view{
 		//FIXME: add types for settings
 
 		if(defined('CUSTOMER_TABLE')){
-			$this->customers_fields = array();
+			$this->customers_fields = [];
 			$this->db->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 			while($this->db->next_record()){
 				$this->customers_fields[] = $this->db->f('Field');
@@ -64,7 +64,7 @@ class we_newsletter_view extends we_modules_view{
 		$this->newsletter->isEmbedImages = $this->settings['isEmbedImages'];
 	}
 
-	function getHiddens($predefs = array()){
+	function getHiddens($predefs = []){
 		return we_html_element::htmlHiddens(array(
 				'mod' => 'newsletter',
 				'ncmd' => (isset($predefs['ncmd']) ? $predefs['ncmd'] : 'new_newsletter'),
@@ -168,7 +168,7 @@ class we_newsletter_view extends we_modules_view{
 
 	function getFields($id, $table){
 		$ClassName = f('SELECT ClassName FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($id), 'ClassName', $this->db);
-		$foo = array();
+		$foo = [];
 
 		if($ClassName){
 			$ent = new $ClassName();
@@ -281,7 +281,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 
 			case "del_customer":
-				$arr = array();
+				$arr = [];
 				$ngroup = we_base_request::_(we_base_request::STRING, 'ngroup');
 				if($ngroup !== false){
 					$arr = makeArrayFromCSV($this->newsletter->groups[$ngroup]->Customers);
@@ -298,7 +298,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 
 			case "add_file":
-				$arr = array();
+				$arr = [];
 				if(($ngroup = we_base_request::_(we_base_request::STRING, 'ngroup')) !== false){
 					$arr = explode(',', $this->newsletter->groups[$ngroup]->Extern);
 					if(($nfile = we_base_request::_(we_base_request::FILE, "nfile")) !== false){
@@ -310,7 +310,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 
 			case "del_file":
-				$arr = array();
+				$arr = [];
 				if(($ngroup = we_base_request::_(we_base_request::STRING, 'ngroup')) !== false){
 					$arr = explode(',', $this->newsletter->groups[$ngroup]->Extern);
 					if(($nfile = we_base_request::_(we_base_request::FILE, "nfile")) !== false){
@@ -623,11 +623,11 @@ edf.populateGroups();');
 					$col = max(0, we_base_request::_(we_base_request::INT, 'csv_col' . $importno, 1) - 1);
 
 					$imports = array(
-						'hmcol' => array(),
-						'salutationcol' => array(),
-						'titlecol' => array(),
-						'firstnamecol' => array(),
-						'lastnamecol' => array(),
+						'hmcol' => [],
+						'salutationcol' => [],
+						'titlecol' => [],
+						'firstnamecol' => [],
+						'lastnamecol' => [],
 					);
 					foreach($imports as $key => &$vals){
 						$vals['val'] = we_base_request::_(we_base_request::INT, 'csv_' . $key . $importno, 0);
@@ -640,10 +640,10 @@ edf.populateGroups();');
 					if(strpos($filepath, '..') !== false){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_newsletter', '[path_not_valid]'), we_message_reporting::WE_MESSAGE_ERROR));
 					} else {
-						$row = array();
-						$control = array();
+						$row = [];
+						$control = [];
 						$fh = @fopen($_SERVER['DOCUMENT_ROOT'] . $filepath, 'rb');
-						$mailListArray = array();
+						$mailListArray = [];
 						if($fh){
 							$mailListArray = explode("\n", $this->newsletter->groups[$importno]->Emails);
 							foreach($mailListArray as $line){
@@ -728,7 +728,7 @@ self.close();');
 				$firstname = we_base_request::_(we_base_request::STRING, "firstname", '');
 				$lastname = we_base_request::_(we_base_request::STRING, "lastname", '');
 
-				$emails = ($csv_file ? we_newsletter_newsletter::getEmailsFromExtern($csv_file) : array());
+				$emails = ($csv_file ? we_newsletter_newsletter::getEmailsFromExtern($csv_file) : []);
 
 				$emails[$nrid] = array($email, $htmlmail, $salutation, $title, $firstname, $lastname);
 				$emails_out = "";
@@ -745,7 +745,7 @@ self.close();');
 			case "delete_email_file":
 				$nrid = we_base_request::_(we_base_request::INT, "nrid", false);
 				$csv_file = we_base_request::_(we_base_request::FILE, "csv_file", '');
-				$emails = ($csv_file ? we_newsletter_newsletter::getEmailsFromExtern($csv_file, 2) : array());
+				$emails = ($csv_file ? we_newsletter_newsletter::getEmailsFromExtern($csv_file, 2) : []);
 
 				if($nrid !== false){
 					unset($emails[$nrid]);
@@ -790,7 +790,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		$this->page = we_base_request::_(we_base_request::INT, 'page', $this->page);
 		if(($groups = we_base_request::_(we_base_request::INT, 'groups')) !== false){
 
-			$this->newsletter->groups = array();
+			$this->newsletter->groups = [];
 
 			if($groups == 0){
 				$this->newsletter->addGroup();
@@ -815,7 +815,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 				$count = (isset($_REQUEST['filter_' . $gkey]) ? $_REQUEST['filter_' . $gkey] ++ : 0);
 				if($count){
 					for($i = 0; $i < $count; $i++){
-						$new = array();
+						$new = [];
 
 						foreach($fields_names as $field){
 							$varname = 'filter_' . $field . '_' . $gkey . '_' . $i;
@@ -836,7 +836,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		}
 		if(($blocks = we_base_request::_(we_base_request::INT, 'blocks')) !== false){
 
-			$this->newsletter->blocks = array();
+			$this->newsletter->blocks = [];
 
 			if($blocks == 0){
 				$this->newsletter->addBlock();
@@ -935,7 +935,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		$GLOBALS['WE_FIRSTNAME'] = $firstname;
 		$GLOBALS['WE_LASTNAME'] = $lastname;
 		$GLOBALS['WE_CUSTOMERID'] = $customerid;
-		$patterns = array();
+		$patterns = [];
 
 		switch($block->Type){
 			case we_newsletter_block::DOCUMENT:
@@ -1015,7 +1015,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 					$trenner = '\s*';
 					$patterns[] = "/<(img" . $trenner . "[^>]+src" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\"> ? \\\]*)([^\"\' \\\\>]*)(" . $trenner . "[^>]*)>/sie";
 					$patterns[] = "/<(link" . $trenner . "[^>]+href" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\"> ? \\\]*)([^\"\' \\\\>]*)(" . $trenner . "[^>]*)>/sie";
-					$match = array();
+					$match = [];
 
 					foreach($patterns as $pattern){
 						if(preg_match_all($pattern, $content, $match)){
@@ -1089,7 +1089,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	}
 
 	function getBlockContents(){
-		$content = array();
+		$content = [];
 		$keys = array_keys($this->newsletter->blocks);
 		foreach($keys as $kblock){
 			$blockid = $kblock + 1;
@@ -1136,7 +1136,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	}
 
 	function getGroupBlocks($group){
-		$content = array();
+		$content = [];
 		$count = count($this->newsletter->blocks);
 		if($group == 0){
 			for($i = 0; $i < $count; $i++){
@@ -1153,7 +1153,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	}
 
 	function getGroupsForEmail($email){
-		$ret = array();
+		$ret = [];
 
 		if(is_array($this->newsletter->groups)){
 			$keys = array_keys($this->newsletter->groups);
@@ -1170,7 +1170,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	}
 
 	function getAttachments($group){
-		$atts = array();
+		$atts = [];
 		$dbtmp = new DB_WE();
 		$this->db->query('SELECT LinkID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . $this->newsletter->ID . ' AND Type=' . we_newsletter_block::ATTACHMENT . ($group ? ' AND FIND_IN_SET("' . $this->db->escape($group) . '",Groups)' : ''));
 
@@ -1189,7 +1189,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	function sendTestMail($group, $hm){
 		$plain = "";
 		$content = "";
-		$inlines = array();
+		$inlines = [];
 
 		$ret = $this->cacheNewsletter($this->newsletter->ID, false);
 		$blocks = $this->getGroupBlocks($group);
@@ -1301,21 +1301,21 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		update_time_limit(0);
 		update_mem_limit(128);
 
-		$extern = ($select == self::MAILS_ALL || $select == self::MAILS_FILE) ? we_newsletter_base::getEmailsFromExtern($this->newsletter->groups[$group - 1]->Extern, $emails_only, $group, $this->getGroupBlocks($group)) : array();
+		$extern = ($select == self::MAILS_ALL || $select == self::MAILS_FILE) ? we_newsletter_base::getEmailsFromExtern($this->newsletter->groups[$group - 1]->Extern, $emails_only, $group, $this->getGroupBlocks($group)) : [];
 
 		if($select == self::MAILS_FILE){
 			return $extern;
 		}
 
-		$list = ($select == self::MAILS_ALL || $select == self::MAILS_EMAILS) ? we_newsletter_base::getEmailsFromList($this->newsletter->groups[$group - 1]->Emails, $emails_only, $group, $this->getGroupBlocks($group)) : array();
+		$list = ($select == self::MAILS_ALL || $select == self::MAILS_EMAILS) ? we_newsletter_base::getEmailsFromList($this->newsletter->groups[$group - 1]->Emails, $emails_only, $group, $this->getGroupBlocks($group)) : [];
 		if($select == self::MAILS_EMAILS){
 			return $list;
 		}
 
-		$customer_mail = $customers = array();
+		$customer_mail = $customers = [];
 
 		if(defined('CUSTOMER_TABLE')){
-			$filterarr = array();
+			$filterarr = [];
 			$filtera = $this->newsletter->groups[$group - 1]->getFilter();
 			if($filtera){
 				foreach($filtera as $k => $filter){
@@ -1438,7 +1438,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	}
 
 	function getBlackList(){
-		return array();
+		return [];
 	}
 
 	function isBlack($email){
@@ -1461,7 +1461,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	 * @return Array
 	 */
 	function cacheNewsletter($nid = 0, $cachemails = true){
-		$ret = array();
+		$ret = [];
 		if($nid){
 			$this->newsletter = new we_newsletter_newsletter($nid);
 		}
@@ -1472,7 +1472,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			$groupcount = count($this->newsletter->groups) + 1;
 
 			$ret["emailcache"] = $emailcache;
-			$buffer = array();
+			$buffer = [];
 
 			for($groupid = 1; $groupid < $groupcount; $groupid++){
 				$tmp = $this->getEmails($groupid);
@@ -1501,7 +1501,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			$ret["ecount"] = count($buffer);
 
 			$groups = 0;
-			$tmp = array();
+			$tmp = [];
 			$go = true;
 			$offset = 0;
 
@@ -1565,7 +1565,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 				'firstname_lastname' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '###LASTNAME###', ''),
 				'firstname' => $this->getContent($blockid, 0, 1, '', '', '###FIRSTNAME###', '', ''),
 				'lastname' => $this->getContent($blockid, 0, 1, '', '', '', '###LASTNAME###', ''),
-				'inlines' => ($this->newsletter->blocks[$blockid]->Pack ? $this->cacheInlines($buffer) : array()),
+				'inlines' => ($this->newsletter->blocks[$blockid]->Pack ? $this->cacheInlines($buffer) : []),
 				)), $blockcache . '_h_' . $blockid);
 		}
 		// END cache newlsetter blocks
@@ -1585,8 +1585,8 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 			"/background-image" . $trenner . ":" . $trenner . "([^url]*url" . $trenner . "\([\"|\'|\\\\])?(.[^\)|^\"|^\'|^\\\\]+)([\"|\'|\\\\])?/sie",
 		);
 
-		$match = array();
-		$inlines = array();
+		$match = [];
+		$inlines = [];
 
 		foreach($buffer as $v){
 			foreach($patterns as $pattern){
@@ -1614,7 +1614,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 	}
 
 	function getCleanMail($mail){
-		$match = array();
+		$match = [];
 		$pattern = '|[_\.0-9a-z-]+@([0-9a-z-]+\.)+[a-z]{2,6}|i';
 		if(preg_match($pattern, $mail, $match)){
 			return ($match[0]);

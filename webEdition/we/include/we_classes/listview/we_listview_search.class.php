@@ -68,7 +68,7 @@ class we_listview_search extends we_listview_base{
 		$where_lang = ($this->languages ? ' AND i.Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '") ' : '');
 
 		// correct order
-		$orderArr = array();
+		$orderArr = [];
 
 		$orderArr1 = array_map('trim', explode(',', $this->order));
 		$random = (in_array('random()', $orderArr1));
@@ -140,7 +140,7 @@ class we_listview_search extends we_listview_base{
 		//FIXME: use fulltext index: MATCH(Text) AGAINST([+-]words* IN BINARY MODE)
 
 		$spalte = ($this->casesensitive ? 'BINARY ' : '') . 'i.Text';
-		$bOR = $bAND = array();
+		$bOR = $bAND = [];
 		foreach(preg_split('/ +/', $this->search) as $v1){
 			if(preg_match('|^[-\+]|', $v1)){
 				$bAND[] = (preg_match('|^-|', $v1) ? 'NOT ' : '') .

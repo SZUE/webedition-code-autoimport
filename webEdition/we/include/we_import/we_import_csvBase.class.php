@@ -34,9 +34,9 @@ class we_import_csvBase{
 	var $Filter;
 
 	function __construct(){
-		$this->CSVError = array();
+		$this->CSVError = [];
 		$this->CSVData = "";
-		$this->Filter = array();
+		$this->Filter = [];
 	}
 
 	function setFile($file){
@@ -51,9 +51,9 @@ class we_import_csvBase{
 
 	function setData($string){
 		$this->CSVData = $string;
-		$this->Fields = array();
-		$this->FieldTypes = array();
-		$this->FieldNames = array();
+		$this->Fields = [];
+		$this->FieldTypes = [];
+		$this->FieldNames = [];
 	}
 
 	function CSVFetchRow(){
@@ -151,10 +151,10 @@ class we_import_csvBase{
 
 	function array_merge_better($a1, $a2){
 		if(!is_array($a1)){
-			$a1 = array();
+			$a1 = [];
 		}
 		if(!is_array($a2)){
-			$a2 = array();
+			$a2 = [];
 		}
 
 

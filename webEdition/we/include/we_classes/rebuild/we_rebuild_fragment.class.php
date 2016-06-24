@@ -64,7 +64,7 @@ parent.wizbusy.setProgress(' . $percent . ');');
 			top.close();');
 	}
 
-	function printBodyTag(array $attributes = array()){
+	function printBodyTag(array $attributes = []){
 		//note we need to subtract this, since it was already added in constructor loop.
 		//$this->currentTask = $this->currentTask - $this->taskPerFragment + 1;
 		parent::printBodyTag($attributes);

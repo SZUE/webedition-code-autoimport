@@ -49,7 +49,7 @@ define('LIVEUPDATE_CLIENT_DOCUMENT_DIR', $_SERVER['DOCUMENT_ROOT'] . '/webEditio
 define('LIVEUPDATE_TABLE_PREFIX', TBL_PREFIX);
 
 // liveupdater contains the following actions
-$updatecmds = array('update', 'languages', 'updatelog', 'connect', 'beta');
+$updatecmds = ['update', 'languages', 'updatelog', 'connect', 'beta'];
 if(is_callable("set_time_limit") && strtolower(ini_get("safe_mode")) != "on" && ini_get("safe_mode") != 1){
 	@set_time_limit(180);
 }

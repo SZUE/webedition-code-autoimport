@@ -65,7 +65,7 @@ $shortcuts = array_filter(array(
 	'btn_add_image' => (permissionhandler::hasPerm('NEW_GRAFIK') ? g_l('button', '[btn_add_image][alt]') : '')
 	));
 
-$jsLang = array();
+$jsLang = [];
 foreach($shortcuts as $k => $v){
 	$jsLang [] = "'" . $k . "':'" . $v . "'";
 }

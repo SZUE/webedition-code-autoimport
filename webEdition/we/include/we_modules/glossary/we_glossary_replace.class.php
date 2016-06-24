@@ -53,7 +53,7 @@ abstract class we_glossary_replace{
 		if(!$language){
 			$language = $GLOBALS['weDefaultFrontendLanguage'];
 		}
-		$matches = array();
+		$matches = [];
 		// get the words to replace
 		$cache = new we_glossary_cache($language);
 		$replace = array(
@@ -89,7 +89,7 @@ abstract class we_glossary_replace{
 		$pieces = preg_split('|(<[^>]*>)|', $replBody, -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
 		// replace words in non-tag pieces
 		$lastHtmlTag = '';
-		$tagMatch = array();
+		$tagMatch = [];
 		$ignoreTags = array('script' => 0, 'style' => 0, 'textarea' => 0, 'select' => 0);
 		foreach($pieces as &$piece){
 			if(preg_match('|^<(/)?([[:alnum:]]+)|', $piece, $tagMatch)){//is a tag

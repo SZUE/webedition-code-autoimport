@@ -25,7 +25,7 @@
 abstract class we_backup_XMLFileReader{
 	const READ_SIZE = 32768;
 
-	static $file = array();
+	static $file = [];
 
 	static function readLine($filename, &$offset, $lines = 1, $iscompressed = 0){
 		$data = '';
@@ -112,7 +112,7 @@ abstract class we_backup_XMLFileReader{
 			return;
 		}
 		gzclose(self::$file['fp']);
-		self::$file = array();
+		self::$file = [];
 	}
 
 }

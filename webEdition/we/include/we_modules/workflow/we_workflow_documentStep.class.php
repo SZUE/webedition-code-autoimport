@@ -42,7 +42,7 @@ class we_workflow_documentStep extends we_workflow_base{
 	/**
 	 * list of document tasks
 	 */
-	var $tasks = array();
+	var $tasks = [];
 
 	/**
 	 * Default Constructor
@@ -302,7 +302,7 @@ class we_workflow_documentStep extends we_workflow_base{
 	 */
 	static function __getAllSteps($workflowDocumentID, we_database_base $db){
 		$db->query('SELECT ID FROM ' . WORKFLOW_DOC_STEP_TABLE . ' WHERE workflowDocID=' . intval($workflowDocumentID) . ' ORDER BY ID');
-		$docSteps = array();
+		$docSteps = [];
 		while($db->next_record()){
 			$docSteps[] = new self($db->f("ID"));
 		}
@@ -316,7 +316,7 @@ class we_workflow_documentStep extends we_workflow_base{
 	static function __createAllSteps($workflowID){
 		$db = new DB_WE();
 		$db->query('SELECT ID FROM ' . WORKFLOW_STEP_TABLE . ' WHERE workflowID =' . intval($workflowID) . ' ORDER BY ID');
-		$docSteps = array();
+		$docSteps = [];
 		while($db->next_record()){
 			$docSteps[] = self::__createStep($db->f("ID"));
 		}

@@ -14,7 +14,7 @@ $this->Attributes[] = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('is_fallback_to_standard'),
 	new weTagDataOption('is_fallback_to_active')
 ), false, '');
-$options = array();
+$options = [];
 $opts = we_shop_category::getShopCatFieldsFromDir('Path', true);
 foreach($opts as $k => $v){
 	$options[] = new weTagDataOption($v, $k);

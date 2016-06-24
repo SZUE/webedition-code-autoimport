@@ -35,7 +35,7 @@ class weHook{
 	private $func;
 	private $errStr = '';
 
-	function __construct($action, $appName = '', $param = array()){
+	function __construct($action, $appName = '', $param = []){
 		if(!EXECUTE_HOOKS){
 			return;
 		}

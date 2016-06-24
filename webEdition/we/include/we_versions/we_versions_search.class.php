@@ -24,9 +24,9 @@
  */
 class we_versions_search{
 	public $db;
-	public $searchFields = array();
-	public $location = array();
-	public $search = array();
+	public $searchFields = [];
+	public $location = [];
+	public $search = [];
 	public $mode = 0;
 	public $order = "version DESC";
 	public $anzahl = 25;
@@ -51,7 +51,7 @@ class we_versions_search{
 	 */
 	function getWhere($model){
 		$where = "";
-		$modConst = array();
+		$modConst = [];
 		$currentSearch = $model->getProperty('currentSearch');
 		$currentSearchFields = $model->getProperty('currentSearchFields');
 		$currentLocation = $model->getProperty('currentLocation');
@@ -109,8 +109,8 @@ class we_versions_search{
 					}
 				}
 				if($modConst){
-					$ids = array();
-					$ids = array();
+					$ids = [];
+					$ids = [];
 					$this->db->query('SELECT ID, modifications FROM ' . VERSIONS_TABLE . ' WHERE modifications!=""');
 					$modifications = array_map('makeArrayFromCSV', $this->db->getAllFirst(false));
 
@@ -127,7 +127,7 @@ class we_versions_search{
 						foreach($ids as $key => $val){
 							$ids[] = $val;
 						}
-						$arr = array();
+						$arr = [];
 						if(!empty($ids[0])){
 							//more then one field
 							$mtof = false;
@@ -166,7 +166,7 @@ class we_versions_search{
 	 * @return array of modification-fields
 	 */
 	function getModFields(){
-		$modFields = array();
+		$modFields = [];
 
 		foreach($this->version->modFields as $k => $v){
 			if($k != "status"){

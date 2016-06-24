@@ -28,7 +28,7 @@ class we_chooser_multiDir{
 	protected $db;
 	var $ids = '';
 	var $ws = '';
-	var $wsArr = array();
+	var $wsArr = [];
 	var $cmd_del = '';
 	var $addbut = '';
 	var $css = '';
@@ -39,7 +39,7 @@ class we_chooser_multiDir{
 	var $isEditable = true;
 	var $extraDelFn = '';
 	var $thirdDelPar = '';
-	protected $Record = array();
+	protected $Record = [];
 	protected $onchangeSetHot = true;
 
 	public function __construct($width, $ids, $cmd_del, $addbut, $ws = "", $ct = 'ContentType', $table = FILE_TABLE, $css = "defaultfont", $thirdDelPar = "", $extraDelFn = ""){

@@ -69,7 +69,7 @@ if(($cmd === 'export' || $cmd === 'import') && isset($_SESSION['weS']['weBackupV
 switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 	case 'export':
 		if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupVars'])){
-			$_SESSION['weS']['weBackupVars'] = array();
+			$_SESSION['weS']['weBackupVars'] = [];
 
 			if(we_backup_preparer::prepareExport() === true){
 				we_backup_util::limitsReached('', 1);
@@ -155,7 +155,7 @@ run();');
 			flush();
 		} else {
 
-			$files = array();
+			$files = [];
 // export spellchecker files
 			/* if(defined('SPELLCHECKER') && $_SESSION['weS']['weBackupVars']['handle_options']['spellchecker']){
 			  we_backup_util::addLog('Exporting data for spellchecker');

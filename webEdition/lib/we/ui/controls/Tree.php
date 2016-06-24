@@ -33,14 +33,14 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	 *
 	 * @var array
 	 */
-	protected $_nodes = array();
+	protected $_nodes = [];
 
 	/**
 	 * _openNodes attribute
 	 *
 	 * @var array
 	 */
-	protected $_openNodes = array();
+	protected $_openNodes = [];
 
 	/**
 	 * _sessionName attribute
@@ -224,7 +224,7 @@ class we_ui_controls_Tree extends we_ui_abstract_AbstractElement{
 	public function getNodeObject($id, $text, $Published = 1, $Status = ''){
 		//$doOnClick = "alert(&quot;".$id."&quot;);";
 		$doOnClick = "alert(&quot;" . $Published . "&quot;);";
-		$outClasses = array();
+		$outClasses = [];
 		if($Published == 0){
 			$outClasses[] = 'unpublished';
 		}

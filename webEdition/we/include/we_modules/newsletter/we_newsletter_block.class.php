@@ -54,7 +54,7 @@ class we_newsletter_block extends we_newsletter_base{
 	var $Field = '';
 	var $Source = '';
 	var $Html = '';
-	public $GroupsA = array();
+	public $GroupsA = [];
 	public $Pack = '';
 
 	/*	 * *****************************************************
@@ -114,7 +114,7 @@ class we_newsletter_block extends we_newsletter_base{
 	 * ***************************************************** */
 	static function __getAllBlocks($newsletterID, we_database_base $db){
 		$db->query('SELECT ID FROM ' . NEWSLETTER_BLOCK_TABLE . ' WHERE NewsletterID=' . intval($newsletterID) . ' ORDER BY ID');
-		$ret = array();
+		$ret = [];
 		while($db->next_record()){
 			$ret[] = new we_newsletter_block($db->f("ID"));
 		}

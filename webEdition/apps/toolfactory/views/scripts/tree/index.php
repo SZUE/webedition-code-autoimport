@@ -27,7 +27,7 @@ $appName = $controller->getParam('appName');
 
 $page = we_ui_layout_HTMLPage::getInstance();
 
-$nodes = array();
+$nodes = [];
 
 $TreeDiv = new we_ui_layout_Div();
 $TreeDiv->setId('TreeDiv');

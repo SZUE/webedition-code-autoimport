@@ -50,7 +50,7 @@ function we_tag_a(array $attribs, $content){
 	$delarticle = weTag_getAttribute('delarticle', $attribs, false, we_base_request::BOOL);
 	$delshop = weTag_getAttribute('delshop', $attribs, false, we_base_request::BOOL);
 	$urladd = weTag_getAttribute('params', $attribs);
-	$param = ($urladd ? array(preg_replace('|^\?|', '', $urladd)) : array());
+	$param = ($urladd ? array(preg_replace('|^\?|', '', $urladd)) : []);
 
 	$edit = weTag_getAttribute('edit', $attribs);
 

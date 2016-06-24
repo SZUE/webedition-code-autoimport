@@ -62,7 +62,7 @@ abstract class we_wizard_code{
 	 */
 	private static function getSnippetsByDir($SnippetDir, $Depth = 0){
 
-		$Snippets = array();
+		$Snippets = [];
 
 		$Depth++;
 		$dir = dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir);
@@ -85,7 +85,7 @@ abstract class we_wizard_code{
 				// enter subdirectory only if depth is smaller than 2
 			} elseif(is_dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $entry) && $Depth < 2){
 
-				$information = array();
+				$information = [];
 				$infoFile = WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $entry . '/_information.inc.php';
 				if(file_exists($infoFile) && is_file($infoFile)){
 					include ($infoFile);
@@ -118,7 +118,7 @@ abstract class we_wizard_code{
 	 * @return string
 	 */
 	public static function getSelect($type = 'standard'){
-		$options = array();
+		$options = [];
 
 		switch($type){
 			case 'custom' :

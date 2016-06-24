@@ -512,7 +512,7 @@ class we_ui_controls_DateTime extends we_ui_abstract_AbstractInputElement{
 
 
 		$OnChange = 'we_ui_controls_DateTime.setDateTimeValueOnChange(\'' . $this->getId() . '\');';
-		$codes = array();
+		$codes = [];
 		$code = '<input type="hidden" name="' . $this->getName() . '" id="' . $this->getId() . '" value="' . $this->getValue() . '"/><table class="default" id="' . $this->getContainerId() . '"' . $this->_getComputedClassAttrib($class) . $this->_getNonBooleanAttribs('onchange') . $this->_getBooleanAttribs('disabled') . ' ><tr> ';
 		if($this->_getYearPos()){
 			$codes[$this->_getYearPos()] = '<td><select id="' . $this->getYearsId() . '" onchange="' . $OnChange . '" ' . $this->_getComputedClassAttrib($class) . $this->_getBooleanAttribs('disabled') . ' >';

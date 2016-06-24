@@ -23,7 +23,7 @@
  */
 $we_tabs = new we_tabs();
 
-$name = array();
+$name = [];
 
 //TODO: remove when implemented completely
 $mods = we_base_moduleInfo::getAllModules();

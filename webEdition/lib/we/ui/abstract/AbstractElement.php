@@ -133,14 +133,14 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 	 *
 	 * @var array
 	 */
-	protected $_JSFiles = array();
+	protected $_JSFiles = [];
 
 	/**
 	 * array to hold all needed CSS files
 	 *
 	 * @var array
 	 */
-	protected $_CSSFiles = array();
+	protected $_CSSFiles = [];
 
 	/**
 	 * Computes the default JavaScript URL for the given Class Name
@@ -190,7 +190,7 @@ abstract class we_ui_abstract_AbstractElement extends we_core_AbstractObject{
 	 * @param integer $heightOffset value to add to height, can also be negative. Used for box model problems
 	 * @return string
 	 */
-	protected function _getComputedStyleAttrib($additionalStyles = array(), $widthOffset = 0, $heightOffset = 0, $leftOffset = 0, $topOffset = 0){
+	protected function _getComputedStyleAttrib($additionalStyles = [], $widthOffset = 0, $heightOffset = 0, $leftOffset = 0, $topOffset = 0){
 		$w = abs($this->_width) + $widthOffset;
 		$wUnit = (strpos($this->_width, "%") === false) ? 'px' : '%';
 

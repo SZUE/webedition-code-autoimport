@@ -24,7 +24,7 @@
 
 if(defined('MESSAGING_SYSTEM')){
 	$transact = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
-	$_SESSION['weS']['we_data'][$transact] = array();
+	$_SESSION['weS']['we_data'][$transact] = [];
 
 	$we_messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transact]);
 	$we_messaging->add_msgobj('we_message');

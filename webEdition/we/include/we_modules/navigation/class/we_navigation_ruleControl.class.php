@@ -171,7 +171,7 @@ doc.weSelect.setOptions("WorkspaceID", optionList);
 	}
 
 	function getWorkspacesByClassID($classId){
-		$workspaces = array();
+		$workspaces = [];
 
 		if($classId){
 			$workspaces = we_navigation_dynList::getWorkspacesForClass($classId);
@@ -189,7 +189,7 @@ doc.weSelect.setOptions("WorkspaceID", optionList);
 		$db = new DB_WE();
 		$db->query('SELECT * FROM ' . NAVIGATION_RULE_TABLE . ' ORDER BY ID');
 
-		$navigationRules = array();
+		$navigationRules = [];
 
 		while($db->next_record()){
 			$navigationRules[] = new we_navigation_rule($db->Record);

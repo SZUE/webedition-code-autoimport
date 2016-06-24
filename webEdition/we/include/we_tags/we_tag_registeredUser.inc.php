@@ -27,7 +27,7 @@ function we_tag_registeredUser(array $attribs){
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$show = weTag_getAttribute('show', $attribs, '', we_base_request::STRING);
 	$docAttr = weTag_getAttribute('doc', $attribs, '', we_base_request::STRING);
-	$regs = array();
+	$regs = [];
 	if(preg_match('|^field:(.+)$|', $id, $regs)){
 		$doc = we_getDocForTag($docAttr);
 		$field = $regs[1];
@@ -43,7 +43,7 @@ function we_tag_registeredUser(array $attribs){
 		unset($h['Password']);
 		$h = array_merge($h, we_customer_customer::getEncryptedFields());
 		if($show){
-			$foo = array();
+			$foo = [];
 			preg_match_all('|%([^ ]+) ?|i', $show, $foo, PREG_SET_ORDER);
 			foreach($foo as $f){
 				$show = str_replace('%' . $f[1], $h[$f[1]], $show);

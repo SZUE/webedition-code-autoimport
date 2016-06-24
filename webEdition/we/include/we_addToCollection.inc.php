@@ -45,7 +45,7 @@ $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 if($cmd0 === 'do_addToCollection'){
 	if(($targetCollection = we_base_request::_(we_base_request::INT, 'we_target', 0)) === 0){
 		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
-	} elseif(!($sel = we_base_request::_(we_base_request::INTLISTA, 'sel', array()))){
+	} elseif(!($sel = we_base_request::_(we_base_request::INTLISTA, 'sel', []))){
 		$script .= 'top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_ERROR, window);';
 	} else {
 		$collection = new we_collection();

@@ -29,12 +29,12 @@
 class we_base_model{
 	var $db;
 	var $table = '';
-	var $persistent_slots = array();
+	var $persistent_slots = [];
 	var $keys = array('ID');
 	var $isnew = true;
-	protected $MediaLinks = array();
+	protected $MediaLinks = [];
 	protected $isAdvanced = false;
-	protected $binFields = array();
+	protected $binFields = [];
 
 	/**
 	 * Default Constructor
@@ -49,7 +49,7 @@ class we_base_model{
 	}
 
 	function loadPresistents(){//fixme: set datatype from db
-		$this->persistent_slots = array();
+		$this->persistent_slots = [];
 		$tableInfo = $this->db->metadata($this->table);
 		foreach($tableInfo as $info){
 			$fname = $info["name"];
@@ -101,7 +101,7 @@ class we_base_model{
 	 * save entry in database
 	 */
 	function save($force_new = false, $isAdvanced = false, $jsonSer = false){
-		$sets = array();
+		$sets = [];
 		if($force_new){
 			$this->isnew = true;
 		}
@@ -163,7 +163,7 @@ class we_base_model{
 		});
 
 		// filter MediaLinks by media contenttype
-		$verifiedIDs = array();
+		$verifiedIDs = [];
 		if(!empty($this->MediaLinks)){
 			$whereType = 'AND ContentType IN ("' . we_base_ContentTypes::APPLICATION . '","' . we_base_ContentTypes::FLASH . '","' . we_base_ContentTypes::IMAGE . '","' . we_base_ContentTypes::VIDEO . '")';
 			$this->db->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', array_unique(array_values($this->MediaLinks))) . ') ' . $whereType);
@@ -196,7 +196,7 @@ class we_base_model{
 	}
 
 	function getKeyWhere(){
-		$wheres = array();
+		$wheres = [];
 		foreach($this->keys as $f){
 			$wheres[] = '`' . $f . '`="' . escape_sql_query($this->$f) . '"';
 		}

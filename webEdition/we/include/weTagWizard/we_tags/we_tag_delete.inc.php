@@ -21,7 +21,7 @@ $charset = new weTagData_textAttribute('charset', false, '');
 $userid = new weTagData_textAttribute('userid', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array($doctype, $pid, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $protected, $id), array()),
-	new weTagDataOption('object', false, '', array($classid, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $pidO, $protected, $id), array())), false, '');
+	new weTagDataOption('document', false, '', array($doctype, $pid, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $protected, $id), []),
+	new weTagDataOption('object', false, '', array($classid, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $pidO, $protected, $id), [])), false, '');
 
 $this->Attributes = array($doctype, $classid, $pid, $pidO, $protected, $admin, $forceedit, $mail, $mailfrom, $charset, $userid, $id);

@@ -50,7 +50,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 *
 	 * @var array
 	 */
-	protected $_inlineCSS = array();
+	protected $_inlineCSS = [];
 
 	/*
 	 * Holds the HTML for a frameset
@@ -64,7 +64,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 *
 	 * @var array
 	 */
-	protected $_inlineJS = array();
+	protected $_inlineJS = [];
 
 	/**
 	 * string with innerHTML of the <body> Tag
@@ -92,7 +92,7 @@ class we_ui_layout_HTMLPage extends we_ui_abstract_AbstractElement{
 	 *
 	 * @var string
 	 */
-	protected $_bodyAttributes = array();
+	protected $_bodyAttributes = [];
 	protected $_isTopFrame = false;
 
 	/**

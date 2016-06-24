@@ -39,15 +39,15 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[sel_rcpts]')) .
 <script><!--
 <?php
 if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
-	$addrbook = array();
-	$t_arr = array();
+	$addrbook = [];
+	$t_arr = [];
 	$addrbook_arr = we_base_request::_(we_base_request::STRING, 'addrbook_arr');
 	if($addrbook_arr != ''){
 		$t_arr = explode("\t", $addrbook_arr);
 	}
 	$i = 0;
 	foreach($t_arr as $elem){
-		$addrbook[$i] = array();
+		$addrbook[$i] = [];
 		$entry = explode(',', $elem);
 		foreach($entry as $val){
 			$val = urldecode($val);
@@ -72,14 +72,14 @@ if(we_base_request::_(we_base_request::STRING, 'mode') === 'save_addrbook'){
 
 $t_arr = $messaging->get_addresses();
 
-$addrbook_str = array();
+$addrbook_str = [];
 if($t_arr){
 	foreach($t_arr as $elem){
 		$addrbook_str[] = '["' . $elem[0] . '","' . $elem[1] . '","' . $elem[2] . '"]';
 	}
 }
 
-$rcpts_str = array();
+$rcpts_str = [];
 $rcpts = explode(',', we_base_request::_(we_base_request::RAW, "rs", ''));
 $db = new DB_WE();
 foreach($rcpts as $rcpt){

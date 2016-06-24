@@ -120,10 +120,10 @@ function setTab(tab) {
 		$col = 0;
 		$table2 = new we_html_table(array('style' => 'margin-top:10px;', 'class' => 'default', "width" => 210), 1, 5);
 		$table2->setRow(0, array('style' => 'vertical-align:middle;'));
-		$table2->setCol(0, $col++, array(), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()"));
+		$table2->setCol(0, $col++, [], we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()"));
 
 		if($this->View->export->IsFolder == 0){
-			$table2->setCol(0, $col++, array(), we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
+			$table2->setCol(0, $col++, [], we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
 			);
 		}
 
@@ -156,7 +156,7 @@ function hideProgress() {
 		$table2->setCol(0, 4, array("id" => "progress", "style" => "display: none"), $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('id' => 'footerBody'), we_html_element::htmlForm(array(), $table2->getHtml())
+				we_html_element::htmlBody(array('id' => 'footerBody'), we_html_element::htmlForm([], $table2->getHtml())
 				), (isset($progressbar) ? $progressbar->getJSCode() : "") . $js
 		);
 	}
@@ -295,7 +295,7 @@ function closeAllType(){
 	}
 
 	function getHTMLTab2(){
-		$formattable = new we_html_table(array(), 5, 1);
+		$formattable = new we_html_table([], 5, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden($this->View->export->HandleDefTemplates, "HandleDefTemplates", g_l('export', '[handle_def_templates]'), false, 'defaultfont', 'top.content.hot=1;'));
 		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocIncludes ? true : false), "HandleDocIncludes", g_l('export', '[handle_document_includes]'), false, 'defaultfont', 'top.content.hot=1;'));
 		if(defined('OBJECT_TABLE')){
@@ -312,7 +312,7 @@ function closeAllType(){
 		);
 
 		if(defined('OBJECT_TABLE')){
-			$formattable = new we_html_table(array(), 3, 1);
+			$formattable = new we_html_table([], 3, 1);
 			$formattable->setCol(0, 0, array("colspan" => 2), we_html_forms::checkboxWithHidden(($this->View->export->HandleDefClasses ? true : false), "HandleDefClasses", g_l('export', '[handle_def_classes]'), false, 'defaultfont', 'top.content.hot=1;'));
 			$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleObjEmbeds ? true : false), "HandleObjEmbeds", g_l('export', '[handle_object_embeds]'), false, 'defaultfont', 'top.content.hot=1;'));
 			$parts[] = array(
@@ -322,7 +322,7 @@ function closeAllType(){
 			);
 		}
 
-		$formattable = new we_html_table(array(), 3, 1);
+		$formattable = new we_html_table([], 3, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDoctypes ? true : false), "HandleDoctypes", g_l('export', '[handle_doctypes]'), false, 'defaultfont', 'top.content.hot=1;'));
 		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleCategorys ? true : false), "HandleCategorys", g_l('export', '[handle_categorys]'), false, 'defaultfont', 'top.content.hot=1;'));
 		$formattable->setCol(2, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleNavigation ? true : false), "HandleNavigation", g_l('export', '[handle_navigation]'), false, 'defaultfont', 'top.content.hot=1;', false, g_l('export', '[navigation_hint]'), 1, 509));
@@ -339,7 +339,7 @@ function closeAllType(){
 			'space' => we_html_multiIconBox::SPACE_MED
 		);
 
-		$formattable = new we_html_table(array(), 1, 1);
+		$formattable = new we_html_table([], 1, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleOwners ? true : false), "HandleOwners", g_l('export', '[handle_owners]'), false, 'defaultfont', 'top.content.hot=1;'));
 
 		$parts[] = array(
@@ -420,10 +420,10 @@ function closeAllType(){
 				$finalObjs = makeArrayFromCSV($this->View->export->selObjs);
 				$finalClasses = makeArrayFromCSV($this->View->export->selClasses);
 			} else {
-				$finalDocs = array();
-				$finalTempl = array();
-				$finalObjs = array();
-				$finalClasses = array();
+				$finalDocs = [];
+				$finalTempl = [];
+				$finalObjs = [];
+				$finalClasses = [];
 			}
 			$xmlExIm = new we_exim_XMLExport();
 			$xmlExIm->getSelectedItems($this->View->export->Selection, we_import_functions::TYPE_WE_XML, "", $this->View->export->SelectionType, $this->View->export->DocType, $this->View->export->ClassName, $this->View->export->Categorys, $this->View->export->Folder, $finalDocs, $finalTempl, $finalObjs, $finalClasses);
@@ -702,7 +702,7 @@ if (top.content.editor.edbody.addLog){
 		switch(we_base_request::_(we_base_request::STRING, "cmd")){
 			case 'add_cat':
 				$arr = makeArrayFromCSV($this->View->export->Categorys);
-				if(($cat = we_base_request::_(we_base_request::INTLISTA, "cat", array()))){
+				if(($cat = we_base_request::_(we_base_request::INTLISTA, "cat", []))){
 					foreach($cat as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							$arr[] = $id;

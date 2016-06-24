@@ -69,8 +69,8 @@ class we_versions_version{
 	protected $fromScheduler;
 	protected $fromImport;
 	protected $resetFromVersion;
-	public $contentTypes = array();
-	public $persistent_slots = array();
+	public $contentTypes = [];
+	public $persistent_slots = [];
 
 	/**
 	 * fields from tblFile and tblObjectFiles which can be modified
@@ -1068,7 +1068,7 @@ class we_versions_version{
 
 		$tblversionsFields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
 
-		$set = array();
+		$set = [];
 
 		foreach($tblversionsFields as $fieldName){
 			if($fieldName != 'ID'){
@@ -1173,7 +1173,7 @@ class we_versions_version{
 				$entry = $binaryPath;
 				break;
 			case 'modifications':
-				$modifications = array();
+				$modifications = [];
 
 				/* get fields which can be changed */
 				$fields = self::getFieldsFromTable(VERSIONS_TABLE, $db);
@@ -1210,10 +1210,10 @@ class we_versions_version{
 								case 'documentElements':
 								case 'documentScheduler':
 								case 'documentCustomFilter':
-									$newData = array();
-									$diff = array();
+									$newData = [];
+									$diff = [];
 									if(!$lastEntryField){
-										$lastEntryField = array();
+										$lastEntryField = [];
 									} else {
 										$lastEntryField = we_unserialize(
 											(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
@@ -1250,7 +1250,7 @@ class we_versions_version{
 												$newData = $document["schedArr"];
 												foreach($newData as $k => $vl){
 													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
-														$tmpArr1 = $tmpArr2 = array();
+														$tmpArr1 = $tmpArr2 = [];
 														foreach($vl as $k => $v){
 															$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
 														}
@@ -1268,7 +1268,7 @@ class we_versions_version{
 										case 'documentCustomFilter':
 //TODO: imi: check if we need both foreach
 											if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"]) && is_array($lastEntryField)){
-												$tmpArr1 = $tmpArr2 = array();
+												$tmpArr1 = $tmpArr2 = [];
 												foreach($document["documentCustomerFilter"] as $k => $v){
 													$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
 												}
@@ -1373,7 +1373,7 @@ class we_versions_version{
 			$GLOBALS['WE_IS_DYN'] = 1;
 			$we_transaction = '';
 			$we_ContentType = $we_doc->ContentType;
-			$_REQUEST['we_cmd'] = array();
+			$_REQUEST['we_cmd'] = [];
 			$_REQUEST['we_cmd'][1] = $we_doc->ID;
 			$FROM_WE_SHOW_DOC = true;
 			include(WE_INCLUDES_PATH . 'we_showDocument.inc.php');
@@ -1476,7 +1476,7 @@ class we_versions_version{
 			return;
 		}
 		$db = new DB_WE();
-		$resetArray = $tblFields = array();
+		$resetArray = $tblFields = [];
 		$tableInfo = $db->metadata(VERSIONS_TABLE);
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
 
@@ -1844,7 +1844,7 @@ class we_versions_version{
 			case 'active':
 				return g_l('versions', ($v == 1) ? '[yes]' : '[no]');
 			case 'months':
-				$months = array();
+				$months = [];
 				if(is_array($v) && !empty($v)){
 					foreach($v as $k => $v){
 						if($v == 1){
@@ -1854,7 +1854,7 @@ class we_versions_version{
 				}
 				return implode(', ', $months);
 			case 'days':
-				$days = array();
+				$days = [];
 				if(is_array($v) && !empty($v)){
 					foreach($v as $k => $v){
 						if($v == 1){
@@ -1868,7 +1868,7 @@ class we_versions_version{
 				}
 				return implode(', ', $days);
 			case 'weekdays':
-				$weekdays = array();
+				$weekdays = [];
 				if(is_array($v) && !empty($v)){
 					foreach($v as $k => $v){
 						if($v == 1){
@@ -1974,7 +1974,7 @@ class we_versions_version{
 	 * @return array of fieldnames
 	 */
 	private static function getFieldsFromTable($table, we_database_base $db){
-		$fieldNames = array();
+		$fieldNames = [];
 
 		$tableInfo = $db->metadata($table);
 		foreach($tableInfo as $cur){
@@ -1989,7 +1989,7 @@ class we_versions_version{
 	 * @return array
 	 */
 	private static function objectToArray($obj){
-		$arr = array();
+		$arr = [];
 		$arr = is_object($obj) ? get_object_vars($obj) : $obj;
 
 		foreach($arr as $key => $val){
@@ -2044,7 +2044,7 @@ class we_versions_version{
 	 * @return array with fields and values
 	 */
 	function getConstantsOfMod($modArray){
-		$const = array();
+		$const = [];
 		foreach($modArray as $v){
 			if(isset($this->modFields[$v])){
 				$const[] = $this->modFields[$v];

@@ -332,7 +332,7 @@ class we_shop_pager{
 	 * 	@access private
 	 * 	@var (mixed)
 	 */
-	var $links = array();
+	var $links = [];
 
 	/** Erstellt einen normalen webEdition pager f�r den Shop
 	 *
@@ -395,7 +395,7 @@ class we_shop_pager{
 
 
 		// Array neu initialisieren
-		$links = array();
+		$links = [];
 
 		// Erst einmal testen, ob die Werte okay sind
 		if($entries == 0){

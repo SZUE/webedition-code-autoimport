@@ -89,7 +89,7 @@ class we_mail_TransportSmtp extends we_mail_TransportAbstract{
 	 * @todo Someone please make this compatible
 	 *       with the SendMail transport class.
 	 */
-	public function __construct($host = '127.0.0.1', Array $config = array()){
+	public function __construct($host = '127.0.0.1', Array $config = []){
 		if(isset($config['name'])){
 			$this->_name = $config['name'];
 		}

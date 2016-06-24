@@ -28,7 +28,7 @@
 class we_workflow_base{
 	var $uid;
 	var $db;
-	var $persistents = array();
+	var $persistents = [];
 	var $table = "";
 	var $ClassName = __CLASS__;
 
@@ -55,7 +55,7 @@ class we_workflow_base{
 	}
 
 	function save(){
-		$sets = $wheres = array();
+		$sets = $wheres = [];
 		foreach(array_keys($this->persistents) as $val){
 			if($val === 'ID'){
 				$wheres[] = 'ID=' . intval($this->{$val});
@@ -84,7 +84,7 @@ class we_workflow_base{
 	}
 
 	function sendMessage($userID, $subject, $description){
-		$errs = array();
+		$errs = [];
 		$rcpts = array(f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db));
 		we_messaging_message::newMessage($rcpts, $subject, $description, $errs);
 	}
@@ -101,7 +101,7 @@ class we_workflow_base{
 	/* return the ID of the created To Do, 0 on error */
 
 	function sendTodo($userID, $subject, $description, $deadline){
-		$errs = array();
+		$errs = [];
 		$foo = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db);
 		$rcpts = array($foo); /* user names */
 		$m = new we_messaging_todo();

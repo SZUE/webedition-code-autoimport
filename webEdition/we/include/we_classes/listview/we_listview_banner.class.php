@@ -58,10 +58,10 @@ class we_listview_banner extends we_listview_base{
 		$this->allviews = 0;
 		$this->allclicks = 0;
 		$this->count = $this->start;
-		$this->docs = array();
+		$this->docs = [];
 
-		$tempArray = array();
-		$tempArray2 = array();
+		$tempArray = [];
+		$tempArray2 = [];
 
 		$ord = stripos($this->order, "views") === 0 ? 'ORDER BY ' . $this->order : '';
 		$this->DB_WE->query('SELECT DID, COUNT(ID) AS views FROM ' . BANNER_VIEWS_TABLE . ' WHERE DID!=0 AND (Page="" OR page="0") AND ID=' . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp BETWEEN ' . intval($this->FilterDate) . ' AND ' . intval($this->FilterDateEnd) . ')' : '') . ' GROUP  BY DID');

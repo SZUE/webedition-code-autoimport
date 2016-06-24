@@ -51,18 +51,18 @@ class we_search_model extends we_search_modelBase{
 	/**
 	 * @var array: includes the text to search for
 	 */
-	protected $searchDocSearch = array();
-	protected $searchTmplSearch = array();
-	protected $searchMediaSearch = array();
-	protected $searchAdvSearch = array();
+	protected $searchDocSearch = [];
+	protected $searchTmplSearch = [];
+	protected $searchMediaSearch = [];
+	protected $searchAdvSearch = [];
 
 	/**
 	 * @var array: includes the operators
 	 */
-	protected $locationDocSearch = array();
-	protected $locationTmplSearch = array();
-	protected $locationMediaSearch = array();
-	protected $locationAdvSearch = array();
+	protected $locationDocSearch = [];
+	protected $locationTmplSearch = [];
+	protected $locationMediaSearch = [];
+	protected $locationAdvSearch = [];
 
 	/**
 	 * @var tinyint: flag that shows what you are searching for in the docsearch
@@ -91,7 +91,7 @@ class we_search_model extends we_search_modelBase{
 	/**
 	 * @var array: shows which tables you have to search in in the advsearch
 	 */
-	protected $search_tables_advSearch = array();
+	protected $search_tables_advSearch = [];
 
 	/**
 	 * @var integer: folder-ids of the docsearch and the tmplsearch
@@ -135,14 +135,14 @@ class we_search_model extends we_search_modelBase{
 	/**
 	 * @var array: includes the searchfiels which you are searching in
 	 */
-	protected $searchFieldsDocSearch = array();
-	protected $searchFieldsTmplSearch = array();
-	protected $searchFieldsMediaSearch = array();
-	protected $searchFieldsAdvSearch = array();
-	protected $searchTablesDocSearch = array();
-	protected $searchTablesTmplSearch = array();
-	protected $searchTablesMediaSearch = array();
-	protected $searchTablesAdvSearch = array();
+	protected $searchFieldsDocSearch = [];
+	protected $searchFieldsTmplSearch = [];
+	protected $searchFieldsMediaSearch = [];
+	protected $searchFieldsAdvSearch = [];
+	protected $searchTablesDocSearch = [];
+	protected $searchTablesTmplSearch = [];
+	protected $searchTablesMediaSearch = [];
+	protected $searchTablesAdvSearch = [];
 	protected $searchForFieldTmplSearch = array(
 		'text' => 0,
 		'title' => 0,
@@ -231,7 +231,7 @@ class we_search_model extends we_search_modelBase{
 				'searchstartDocSearch',
 				'searchstartTmplSearch',
 				'searchstartMediaSearch',
-				'searchstartAdvSearch'), (is_array($this->persistent_slots) ? $this->persistent_slots : array()));
+				'searchstartAdvSearch'), (is_array($this->persistent_slots) ? $this->persistent_slots : []));
 
 			/* was nice before 7.0, but it's not typed!
 			  foreach($modelVars as $val){
@@ -287,9 +287,9 @@ class we_search_model extends we_search_modelBase{
 			$this->anzahlMediaSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlMediaSearch, 'anzahlMediaSearch');
 			$this->anzahlMedialinksMediaSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlMedialinksMediaSearch, 'anzahlMedialinksMediaSearch');
 			$this->searchstartMediaSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstartMediaSearch, 'searchstartMediaSearch');
-			$this->searchMediaSearch = array_merge(is_array($this->searchMediaSearch) ? $this->searchMediaSearch : array());
-			$this->locationMediaSearch = array_merge(is_array($this->locationMediaSearch) ? $this->locationMediaSearch : array());
-			$this->searchFieldsMediaSearch = array_merge(is_array($this->searchFieldsMediaSearch) ? $this->searchFieldsMediaSearch : array());
+			$this->searchMediaSearch = array_merge(is_array($this->searchMediaSearch) ? $this->searchMediaSearch : []);
+			$this->locationMediaSearch = array_merge(is_array($this->locationMediaSearch) ? $this->locationMediaSearch : []);
+			$this->searchFieldsMediaSearch = array_merge(is_array($this->searchFieldsMediaSearch) ? $this->searchFieldsMediaSearch : []);
 		}
 		if(!$isWeCmd || $whichSearch === we_search_view::SEARCH_ADV){
 			$this->anzahlAdvSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlAdvSearch, 'anzahlAdvSearch');
@@ -300,9 +300,9 @@ class we_search_model extends we_search_modelBase{
 			$this->searchFieldsAdvSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->searchFieldsAdvSearch, 'searchFieldsAdvSearch');
 			$this->search_tables_advSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->search_tables_advSearch, 'search_tables_advSearch');
 			$this->searchstartAdvSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstartAdvSearch, 'searchstartAdvSearch');
-			$this->searchAdvSearch = array_merge(is_array($this->searchAdvSearch) ? $this->searchAdvSearch : array());
-			$this->locationAdvSearch = array_merge(is_array($this->locationAdvSearch) ? $this->locationAdvSearch : array());
-			$this->searchFieldsAdvSearch = array_merge(is_array($this->searchFieldsAdvSearch) ? $this->searchFieldsAdvSearch : array());
+			$this->searchAdvSearch = array_merge(is_array($this->searchAdvSearch) ? $this->searchAdvSearch : []);
+			$this->locationAdvSearch = array_merge(is_array($this->locationAdvSearch) ? $this->locationAdvSearch : []);
+			$this->searchFieldsAdvSearch = array_merge(is_array($this->searchFieldsAdvSearch) ? $this->searchFieldsAdvSearch : []);
 		}
 
 		$this->prepareModelForSearch($whichSearch);
@@ -329,7 +329,7 @@ class we_search_model extends we_search_modelBase{
 			case we_search_view::SEARCH_DOCS:
 				// process some SEARCH_DOCS specialties
 				if(count(($tmpSearch = $this->searchDocSearch))){
-					$this->searchFieldsDocSearch = $this->locationDocSearch = $this->searchDocSearch = array();
+					$this->searchFieldsDocSearch = $this->locationDocSearch = $this->searchDocSearch = [];
 					foreach(array('Text' => $this->searchForTextDocSearch, 'Title' => $this->searchForTitleDocSearch, 'Content' => $this->searchForContentDocSearch) as $field => $val){
 						if($val){
 							$this->searchFieldsDocSearch[] = $field;
@@ -359,7 +359,7 @@ class we_search_model extends we_search_modelBase{
 				break;
 			case we_search_view::SEARCH_TMPL:
 				if(count(($tmpSearch = $this->searchTmplSearch))){
-					$this->searchFieldsTmplSearch = $this->locationTmplSearch = $this->searchTmplSearch = array();
+					$this->searchFieldsTmplSearch = $this->locationTmplSearch = $this->searchTmplSearch = [];
 					foreach(array('Text' => $this->searchForTextTmplSearch, 'Content' => $this->searchForContentTmplSearch) as $field => $val){
 						if($val){
 							$this->searchFieldsTmplSearch[] = $field;
@@ -426,7 +426,7 @@ class we_search_model extends we_search_modelBase{
 					addTblPrefix('tblversions') => 0,
 				);
 
-				$this->searchTablesAdvSearch = array();
+				$this->searchTablesAdvSearch = [];
 				foreach($this->search_tables_advSearch as $k => $v){
 					switch($k){
 						case FILE_TABLE:

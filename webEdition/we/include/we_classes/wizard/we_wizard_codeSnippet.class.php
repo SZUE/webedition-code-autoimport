@@ -90,7 +90,7 @@ class we_wizard_codeSnippet{
 		// set the code
 		if($Parser->execMethod_count("/topic[1]/body[1]", "p") > 0){
 			$this->Code = $Parser->getData("/topic[1]/body[1]/p[1]");
-			$matches = array();
+			$matches = [];
 			if(preg_match_all('|__GL\(([^)]+)\)__|', $this->Code, $matches)){
 				foreach($matches[1] as $match){
 					$this->Code = str_replace('__GL(' . $match . ')__', g_l('snippet', $match), $this->Code);

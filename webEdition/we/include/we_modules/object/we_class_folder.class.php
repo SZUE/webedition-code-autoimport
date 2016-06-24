@@ -45,7 +45,7 @@ class we_class_folder extends we_folder{
 		$this->ContentType = we_base_ContentTypes::FOLDER;
 	}
 
-	public function makeSameNew(array $keep = array()){
+	public function makeSameNew(array $keep = []){
 		parent::makeSameNew(array_merge($keep, array('TableID', 'TriggerID', 'ClassPath', 'RootfolderID', 'ParentID', 'Table')));
 	}
 
@@ -101,7 +101,7 @@ class we_class_folder extends we_folder{
 		## Folder does not exist, so we have to create it (if user has permissons to create folders)
 		$spl = explode('/', $path);
 		$folderName = array_pop($spl);
-		$p = array();
+		$p = [];
 		$anz = count($spl);
 		$last_pid = 0;
 		for($i = 0; $i < $anz; $i++){
@@ -234,7 +234,7 @@ class we_class_folder extends we_folder{
 			array('dat' => '<span onclick="setOrder(\'WebUserID\');">' . g_l('modules_objectClassfoldersearch', '[WebUser]') . $this->getSortImage('WebUserID') . '</span>'),
 		);
 
-		$content = array();
+		$content = [];
 
 		while($this->searchclass->next_record()){
 			$stateclass = !$this->searchclass->f("Published") ? 'notpublished' : ($this->searchclass->f("ModDate") > $this->searchclass->f("Published") ? 'changed' : '');
@@ -276,7 +276,7 @@ class we_class_folder extends we_folder{
 		$this->setDefaultWorkspaces();
 
 		if(we_base_request::_(we_base_request::STRING, 'do') === 'delete'){
-			$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
+			$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', []));
 			foreach(array_keys($weg) as $ofid){//FIXME: this is not save
 				if(permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){
 					we_base_delete::deleteEntry($ofid, OBJECT_FILES_TABLE, $this->DB_WE);
@@ -305,13 +305,13 @@ class we_class_folder extends we_folder{
 			array('dat' => '<span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . $this->getSortImage('ID') . '</span>'),
 		);
 
-		$content = $head = $type = array();
+		$content = $head = $type = [];
 		$f = 0;
 		while($this->searchclass->next_record()){
 			$stateclass = !$this->searchclass->f("Published") ? 'notpublished' : ($this->searchclass->f("ModDate") > $this->searchclass->f("Published") ? 'changed' : '');
 			if($f == 0){
 				$i = 5;
-				$regs = array();
+				$regs = [];
 				foreach(array_keys($this->searchclass->getRecord()) as $key){
 					if(preg_match('/(.+?)_(.*)/', $key, $regs)){
 						switch($regs[1]){
@@ -730,7 +730,7 @@ EOF;
 		parent::saveInSession($save, $toFile);
 
 		if(!isset($_SESSION['weS']['we_objectSearch'])){
-			$_SESSION['weS']['we_objectSearch'] = array();
+			$_SESSION['weS']['we_objectSearch'] = [];
 		}
 		$_SESSION['weS']['we_objectSearch'][$this->ID] = array(
 			'Searchclass' => $this->searchclass,
@@ -744,9 +744,9 @@ EOF;
 	public function deleteObjects(){
 		$this->setClassProp(); //4076
 		$javascript = '';
-		$deletedItems = array();
+		$deletedItems = [];
 
-		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
+		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', []));
 		foreach(array_keys($weg) as $tid){
 			if(permissionhandler::checkIfRestrictUserIsAllowed($tid, OBJECT_FILES_TABLE, $this->DB_WE)){
 				we_base_delete::deleteEntry($tid, OBJECT_FILES_TABLE, $this->DB_WE);
@@ -775,7 +775,7 @@ for ( frameId in _usedEditors ) {
 
 	function setObjectProperty($property = '', $value = false){
 		$this->setClassProp();
-		$IDs = array_map('intval', array_keys(array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()))));
+		$IDs = array_map('intval', array_keys(array_filter(we_base_request::_(we_base_request::BOOL, 'weg', []))));
 
 		if(!$IDs){
 			return '';
@@ -841,7 +841,7 @@ for ( frameId in _usedEditors ) {
 	function publishObjects($publish = true){
 		$this->setClassProp();
 		$javascript = "";
-		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', array()));
+		$weg = array_filter(we_base_request::_(we_base_request::BOOL, 'weg', []));
 
 		foreach(array_keys($weg) as $ofid){//FIXME: this is not save
 			if(!permissionhandler::checkIfRestrictUserIsAllowed($ofid, OBJECT_FILES_TABLE, $this->DB_WE)){

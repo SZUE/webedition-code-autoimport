@@ -73,10 +73,10 @@ class we_navigation_navigation extends we_base_model{
 	var $FolderID = 0;
 	var $DocTypeID = 0;
 	var $ClassID = 0;
-	var $Categories = array();
+	var $Categories = [];
 	var $CatAnd = 1;
 	var $CategoryIDs = '';
-	var $Sort = array();
+	var $Sort = [];
 	var $ShowCount = 5;
 	var $LinkID = 0;
 	var $CurrentOnUrlPar = 0;
@@ -93,7 +93,7 @@ class we_navigation_navigation extends we_base_model{
 	var $previewCode = '';
 	var $ClassName = __CLASS__;
 	var $ContentType = 'weNavigation';
-	var $Attributes = array();
+	var $Attributes = [];
 	var $FolderSelection = self::STYPE_DOCLINK;
 	var $FolderParameter = '';
 	var $FolderWsID = -1;
@@ -102,10 +102,10 @@ class we_navigation_navigation extends we_base_model{
 	var $LimitAccess = 0;
 	var $AllCustomers = 1;
 	var $ApplyFilter = 0;
-	var $Customers = array();
-	var $CustomerFilter = array();
-	var $BlackList = array();
-	var $WhiteList = array();
+	var $Customers = [];
+	var $CustomerFilter = [];
+	var $BlackList = [];
+	var $WhiteList = [];
 	var $UseDocumentFilter = true;
 	var $serializedFields = array('Sort', 'Attributes', 'CustomerFilter');
 
@@ -275,7 +275,7 @@ class we_navigation_navigation extends we_base_model{
 			$this->BlackList = implode(',', $this->BlackList);
 			$this->Customers = implode(',', $this->Customers);
 		} else {
-			$save = array(array(), array(), array());
+			$save = array([], [], []);
 			$this->Customers = $this->WhiteList = $this->BlackList = $this->CustomerFilter = '';
 		}
 		if(is_array($this->Attributes)){
@@ -325,10 +325,10 @@ class we_navigation_navigation extends we_base_model{
 
 	function convertToPaths($ids, $table){
 		if(!is_array($ids)){
-			return array();
+			return [];
 		}
 		$ids = array_unique($ids);
-		$paths = array();
+		$paths = [];
 		foreach($ids as $id){
 			$paths[] = id_to_path($id, $table);
 		}
@@ -455,13 +455,13 @@ class we_navigation_navigation extends we_base_model{
 				default:
 					return $this->ClassID > 0 ?
 							we_navigation_dynList::getObjects($this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) :
-							array();
+							[];
 			}
 		}
 	}
 
 	function getChilds(){
-		$items = array();
+		$items = [];
 
 		$this->db->query('SELECT ID,Path,Text,Ordn FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ID) . ' ORDER BY Ordn');
 
@@ -484,7 +484,7 @@ class we_navigation_navigation extends we_base_model{
 
 	function populateGroup($items){
 		$info = $this->getDynamicEntries();
-		$new_items = array();
+		$new_items = [];
 
 		foreach($info as $k => $item){
 
@@ -549,7 +549,7 @@ class we_navigation_navigation extends we_base_model{
 	}
 
 	function getDynamicPreview(array $sitem, $rules = false){
-		$items = array();
+		$items = [];
 
 		foreach($sitem as $item){
 			if($item['ParentID'] == $this->ID){
@@ -906,7 +906,7 @@ class we_navigation_navigation extends we_base_model{
 		$ids = explode(',', $ws);
 		$wrkNavi = id_to_path($ids, NAVIGATION_TABLE, null, true);
 
-		$condition = array();
+		$condition = [];
 		foreach($wrkNavi as $nav){
 			$condition[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($nav) . '/%"';
 		}

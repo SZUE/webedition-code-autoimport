@@ -80,7 +80,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 		//FIXME: can we use defaultsArray?!
 		$this->classID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID IN (' . implode(',', $objects) . ') LIMIT 1');
 		if(!$this->classID){
-			$this->Record = array();
+			$this->Record = [];
 			$this->anz_all = 0;
 			return;
 		}
@@ -113,7 +113,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 		// IMPORTANT for seeMode !!!! #5317
 		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document']) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '');
 
-		$matrix = array();
+		$matrix = [];
 		$join = $this->fillMatrix($matrix, $this->classID);
 
 		$calendar_select = '';
@@ -135,7 +135,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 
 		if($sqlParts["tables"]){
 			$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($obxTable) . '.OF_ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->objects ? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . ' AND ' . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
-			$mapping = array(); // KEY = ID -> VALUE = ROWID
+			$mapping = []; // KEY = ID -> VALUE = ROWID
 			$i = 0;
 			while($this->DB_WE->next_record()){
 				$mapping[$this->DB_WE->Record["ID"]] = $i++;
@@ -161,7 +161,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 
 			$this->DB_WE->query('SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->objects ? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . $weDocumentCustomerFilter_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order) ? (' LIMIT ' . $this->start . ',' . $this->rows) : ''));
 
-			$mapping = array(); // KEY = ID -> VALUE = ROWID
+			$mapping = []; // KEY = ID -> VALUE = ROWID
 			$i = 0;
 			while($this->DB_WE->next_record()){
 				$mapping[$this->DB_WE->Record["OF_ID"]] = $i++;
@@ -198,7 +198,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 			}
 			parent::next_record();
 			$fetch = $this->calendar_struct['forceFetch'];
-			$this->DB_WE->Record = array();
+			$this->DB_WE->Record = [];
 		} else {
 			$fetch = false;
 		}

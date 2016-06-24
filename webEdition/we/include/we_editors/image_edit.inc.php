@@ -131,7 +131,7 @@ function we_getImageRotateDialogJS(){
 function we_getImageResizeDialog(){
 	list($width, $height) = $GLOBALS['we_doc']->getOrigSize();
 
-	$content = array();
+	$content = [];
 
 	$okbut = we_html_button::create_button(we_html_button::OK, "javascript:doOK();");
 	$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
@@ -169,7 +169,7 @@ function we_getImageResizeDialog(){
 }
 
 function we_getImageConvertDialog(){
-	$content = array();
+	$content = [];
 
 	$okbut = we_html_button::create_button(we_html_button::OK, "javascript:doOK();");
 	$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
@@ -182,7 +182,7 @@ function we_getImageConvertDialog(){
 }
 
 function we_getImageRotateDialog(){
-	$content = array();
+	$content = [];
 
 	$okbut = we_html_button::create_button(we_html_button::OK, "javascript:doOK();");
 	$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");

@@ -66,7 +66,7 @@ class we_base_browserDetect{
 		}
 		self::$detected = true;
 		self::$ua = $ua ? : (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
-		$regs = array();
+		$regs = [];
 		if(preg_match('|^([^ ]+) ([^(]*)(\([^)]+\))(.*)$|', self::$ua, $regs)){
 			$pre = $regs[1];
 			//$mid = $regs[2];
@@ -129,7 +129,7 @@ class we_base_browserDetect{
 								self::$v = $regs[1];
 							}
 						} elseif(preg_match('|opera ([^ ]+)|i', $post, $regs)){
-							$reg = array();
+							$reg = [];
 							if(stristr($post, 'chrome')){
 								self::$v = (preg_match('|chrome/([0-9]+\.[0-9]+)|i', $post, $regs) ? $regs[1] : '1');
 								self::$br = self::CHROME;
@@ -271,7 +271,7 @@ class we_base_browserDetect{
 	}
 
 	public function getWebKitVersion(){
-		$regs = array();
+		$regs = [];
 		if(preg_match('|AppleWebKit/([^ ]+)|i', self::$ua, $regs)){
 			return intval($regs[1]);
 		}

@@ -44,9 +44,9 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('get', false, '', array($name, $varType, $htmlspecialchars, $format, $num_format, $sql), array($name)),
 	new weTagDataOption('select', false, '', array($name, $doc, $htmlspecialchars, $key, $sql), array($name)),
 	new weTagDataOption('session', false, '', array($name, $htmlspecialchars, $format, $num_format, $sql), array($name)),
-	//new weTagDataOption('shopCategory', false, '', array($doc), array()),
-	new weTagDataOption('shopCategory', false, '', array(), array()),
-	new weTagDataOption('shopVat', false, '', array($doc), array())
+	//new weTagDataOption('shopCategory', false, '', array($doc), []),
+	new weTagDataOption('shopCategory', false, '', [], []),
+	new weTagDataOption('shopVat', false, '', array($doc), [])
 	), true, '');
 
 

@@ -87,13 +87,13 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		$table2 = new we_html_table(array('class' => 'default'), 1, 6);
 		$table2->setRow(0, array('style' => 'vertical-align:middle;'));
 		if($ShowUnpublish){
-			$table2->setCol(0, $col++, array(), $UnpublishButton);
+			$table2->setCol(0, $col++, [], $UnpublishButton);
 		}
-		$table2->setCol(0, $col++, array(), $SaveButton);
+		$table2->setCol(0, $col++, [], $SaveButton);
 		if(!$ShowUnpublish){
-			$table2->setCol(0, $col++, array(), $PublishWhenSaved);
+			$table2->setCol(0, $col++, [], $PublishWhenSaved);
 		}
-		$table2->setCol(0, $col++, array(), $NewEntry);
+		$table2->setCol(0, $col++, [], $NewEntry);
 
 		$js = we_html_element::jsElement('
 if(top.makeNewEntryCheck==1) {
@@ -106,7 +106,7 @@ function we_save() {
 	top.content.we_cmd("save_glossary");
 }');
 
-		$form = we_html_element::htmlForm(array(), $table2->getHtml() . $js);
+		$form = we_html_element::htmlForm([], $table2->getHtml() . $js);
 
 		return self::buildFooter($weGlossaryFrames, $form);
 	}
@@ -331,7 +331,7 @@ function we_save() {
 		$yuiSuggest->setTable(OBJECT_FILES_TABLE);
 		$yuiSuggest->setWidth(400);
 
-		$wsid = ($glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($glossary->getAttribute('ObjectLinkID')) : array());
+		$wsid = ($glossary->getAttribute('ObjectLinkID') ? we_navigation_dynList::getWorkspacesForObject($glossary->getAttribute('ObjectLinkID')) : []);
 
 		return '<div id="mode_object" style="display: none;">
 	<table class="default">
@@ -476,20 +476,20 @@ function we_save() {
 		$popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
 		$popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));
 
-		$popup->setCol(1, 0, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_xposition]', 5, $glossary->getAttribute('popup_xposition'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_x]')));
-		$popup->setCol(1, 1, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_yposition]', 5, $glossary->getAttribute('popup_yposition'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_y]')));
-		$popup->setCol(1, 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_width]', 5, $glossary->getAttribute('popup_width'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_width]')));
+		$popup->setCol(1, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_xposition]', 5, $glossary->getAttribute('popup_xposition'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_x]')));
+		$popup->setCol(1, 1, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_yposition]', 5, $glossary->getAttribute('popup_yposition'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_y]')));
+		$popup->setCol(1, 2, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_width]', 5, $glossary->getAttribute('popup_width'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_width]')));
 
-		$popup->setCol(1, 3, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_height]', 5, $glossary->getAttribute('popup_height'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_height]')));
+		$popup->setCol(1, 3, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_height]', 5, $glossary->getAttribute('popup_height'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_height]')));
 
 
-		$popup->setCol(2, 0, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary', '[popup_status]')));
-		$popup->setCol(2, 1, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary', '[popup_scrollbars]')));
-		$popup->setCol(2, 2, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary', '[popup_menubar]')));
+		$popup->setCol(2, 0, [], we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_status'), 'link[Attributes][popup_status]', g_l('modules_glossary', '[popup_status]')));
+		$popup->setCol(2, 1, [], we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_scrollbars'), 'link[Attributes][popup_scrollbars]', g_l('modules_glossary', '[popup_scrollbars]')));
+		$popup->setCol(2, 2, [], we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_menubar'), 'link[Attributes][popup_menubar]', g_l('modules_glossary', '[popup_menubar]')));
 
-		$popup->setCol(3, 0, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary', '[popup_resizable]')));
-		$popup->setCol(3, 1, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary', '[popup_location]')));
-		$popup->setCol(3, 2, array(), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]')));
+		$popup->setCol(3, 0, [], we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_resizable'), 'link[Attributes][popup_resizable]', g_l('modules_glossary', '[popup_resizable]')));
+		$popup->setCol(3, 1, [], we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_location'), 'link[Attributes][popup_location]', g_l('modules_glossary', '[popup_location]')));
+		$popup->setCol(3, 2, [], we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_toolbar'), 'link[Attributes][popup_toolbar]', g_l('modules_glossary', '[popup_toolbar]')));
 
 
 		return array(

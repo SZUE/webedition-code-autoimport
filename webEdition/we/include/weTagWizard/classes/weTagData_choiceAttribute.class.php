@@ -39,7 +39,7 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 	 * @param array $options
 	 * @param boolean $required
 	 */
-	function __construct($name, $options = array(), $required = false, $multiple = true, $module = '', $description = '', $deprecated = false){
+	function __construct($name, $options = [], $required = false, $multiple = true, $module = '', $description = '', $deprecated = false){
 		if(!is_array($options)){
 			return;
 		}
@@ -69,7 +69,7 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 			if($option->Value == we_html_tools::OPTGROUP){
 				$select->addOptions($entries);
 				$select->addOptionGroup(array('label' => htmlentities($option->Name)));
-				$entries = array();
+				$entries = [];
 			} else {
 				$entries[htmlspecialchars($option->Value)] = $option->getName();
 			}

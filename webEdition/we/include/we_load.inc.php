@@ -27,7 +27,7 @@ $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
 
-function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = array(), $collections = array()){
+function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs = [], $collections = []){
 	global $openFolders, $parentpaths, $wsQuery, $treeItems;
 	if(($table === TEMPLATES_TABLE && !permissionhandler::hasPerm('CAN_SEE_TEMPLATES')) ||
 		($table === FILE_TABLE && !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')) ||
@@ -39,7 +39,7 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 	if($table == VFILE_TABLE){// TODO: permision
 		$DB_WE->query('SELECT ID,remObj,remTable,position FROM ' . FILELINK_TABLE . ' WHERE DocumentTable="' . stripTblPrefix(VFILE_TABLE) . '" ORDER BY ID,position ASC');
 
-		$docCollections = $docCollectionIDs = $objCollections = $objCollectionIDs = array();
+		$docCollections = $docCollectionIDs = $objCollections = $objCollectionIDs = [];
 		while($DB_WE->next_record()){
 			if($DB_WE->f('remTable') === stripTblPrefix(FILE_TABLE)){
 				$docCollections[$DB_WE->f('ID')] = !isset($docCollections[$DB_WE->f('ID')]) ? array() : $docCollections[$DB_WE->f('ID')];
@@ -107,7 +107,7 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 		' WHERE ID!=' . intval($ParentID) . ' AND ParentID IN(' . implode(',', $tmp) . ') AND ((1' . we_users_util::makeOwnersSql() . ') ' . $wsQuery . ')';
 	$DB_WE->query('SELECT ' . $elem . ' FROM ' . $queryTable . ' ' . $where . ' ORDER BY IsFolder DESC,(Text REGEXP "^[0-9]") DESC,ABS(REPLACE(Text,"info","")),Text' . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
-	$tmpItems = array();
+	$tmpItems = [];
 	$tree_count = 0;
 	while($DB_WE->next_record()){
 		$tree_count++;
@@ -185,7 +185,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 	$openDirs = array_keys($openDirs);
 	$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = implode(',', $openDirs);
 } else {
-	$counts = $parents = $childs = $parentpaths = $wspaces = array();
+	$counts = $parents = $childs = $parentpaths = $wspaces = [];
 	$parentlist = $childlist = "";
 
 	if(($ws = get_ws($table))){
@@ -217,7 +217,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 
 	$openFolders = (isset($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) ?
 			explode(',', $_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]) :
-			array());
+			[]);
 
 
 	if($parentFolder){
@@ -231,7 +231,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		$js = '';
 	} else {
 		$Tree = new we_tree_main("webEdition.php", "top", "top", "top.load");
-		$treeItems = array();
+		$treeItems = [];
 		getItems($table, $parentFolder, $offset, $Tree->default_segment);
 
 		switch($table){

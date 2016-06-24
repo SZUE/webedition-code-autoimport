@@ -32,12 +32,12 @@ abstract class we_navigation_dynList{
 			CONTENT_TABLE . '.Dat as FieldData'
 		);
 
-		$fieldset = self::getDocData($select, $doctypeid, id_to_path($dirid), $categories, $catlogic, array(), array(), 0);
-		$docs = $txt = $fields = $ids = array();
+		$fieldset = self::getDocData($select, $doctypeid, id_to_path($dirid), $categories, $catlogic, [], [], 0);
+		$docs = $txt = $fields = $ids = [];
 
 		foreach($fieldset as $data){
 			if(!isset($docs[$data['ID']])){
-				$docs[$data['ID']] = array();
+				$docs[$data['ID']] = [];
 			}
 			$docs[$data['ID']][$data['FieldName']] = $data['FieldData'];
 
@@ -52,11 +52,11 @@ abstract class we_navigation_dynList{
 
 		unset($fieldset);
 
-		$arr = array();
-		$sort = is_array($sort) ? $sort : array();
+		$arr = [];
+		$sort = is_array($sort) ? $sort : [];
 
 		foreach($sort as $k => $sort){
-			$arr[$k] = array();
+			$arr[$k] = [];
 			foreach($docs as $id => $doc){
 				$arr[$k]['id_' . $id] = (in_array($sort['field'], array_keys($doc)) ?
 						$doc[$sort['field']] :
@@ -73,7 +73,7 @@ abstract class we_navigation_dynList{
 		if($arr){
 			$ids_tmp = array_keys($arr[0]);
 
-			$ids = array();
+			$ids = [];
 
 			for($i = 0; $i < $count; $i++){
 				if(isset($ids_tmp[$i])){
@@ -106,11 +106,11 @@ abstract class we_navigation_dynList{
 		return $ids;
 	}
 
-	private static function getDocData(array $select, $doctype, $dirpath = '/', $categories = array(), $catlogic = 'AND', $condition = array(), $order = array(), $offset = 0, $count = 100){
+	private static function getDocData(array $select, $doctype, $dirpath = '/', $categories = [], $catlogic = 'AND', $condition = [], $order = [], $offset = 0, $count = 100){
 
 		$db = new DB_WE();
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
-		$cats = array();
+		$cats = [];
 		foreach($categories as $cat){
 			$cat = is_numeric($cat) ? $cat : $db->escape(path_to_id($cat, CATEGORY_TABLE, $GLOBALS['DB_WE']));
 			$cats[] = 'FIND_IN_SET(' . $cat . ',Category)'; //bug #6729
@@ -138,15 +138,15 @@ abstract class we_navigation_dynList{
 			$select[] = $field;
 		}
 
-		$sort = is_array($sort) ? $sort : array();
+		$sort = is_array($sort) ? $sort : [];
 
-		$order = array();
+		$order = [];
 		foreach($sort as $sort){
 			$order[] = $sort['field'] . ' ' . $sort['order'];
 		}
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
-		$fieldset = self::getObjData($select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, array(), $order, 0, $count);
-		$ids = array();
+		$fieldset = self::getObjData($select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, [], $order, 0, $count);
+		$ids = [];
 
 		foreach($fieldset as $data){
 			$ids[] = array(
@@ -159,16 +159,16 @@ abstract class we_navigation_dynList{
 		return $ids;
 	}
 
-	private static function getObjData(array $select, $classid, $dirpath = '/', array $categories = array(), $catlogic = 'AND', array $condition = array(), array $order = array(), $offset = 0, $count = 100){
+	private static function getObjData(array $select, $classid, $dirpath = '/', array $categories = [], $catlogic = 'AND', array $condition = [], array $order = [], $offset = 0, $count = 100){
 		$db = new DB_WE();
 		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
-		$cats = array();
+		$cats = [];
 		foreach($categories as $cat){
 			$cat = is_numeric($cat) ? $cat : $db->escape(path_to_id($cat, CATEGORY_TABLE));
 			$cats[] = 'FIND_IN_SET(' . $cat . ',OF_Category)'; //bug #6729
 		}
 
-		$where = array();
+		$where = [];
 
 		if($cats){
 			$where[] = '(' . implode(" $catlogic ", $cats) . ')';
@@ -188,7 +188,7 @@ abstract class we_navigation_dynList{
 	}
 
 	public static function getCatgories($dirid, $count){
-		$ids = array();
+		$ids = [];
 		$db = new DB_WE();
 		$db->query('SELECT ID,Text,Title FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($dirid) . ' LIMIT ' . $count);
 
@@ -210,7 +210,7 @@ abstract class we_navigation_dynList{
 		$values = array_merge(makeArrayFromCSV($obj->Workspaces), makeArrayFromCSV($obj->ExtraWorkspaces));
 
 		$all = makeArrayFromCSV($obj->getPossibleWorkspaces(false));
-		$ret = array();
+		$ret = [];
 		$db = new DB_WE();
 		foreach($values as $k => $id){
 			if(!we_base_file::isWeFile($id, FILE_TABLE, $db) || !in_array($id, $all)){
@@ -228,7 +228,7 @@ abstract class we_navigation_dynList{
 
 		$values = makeArrayFromCSV($obj->Workspaces);
 		$db = new DB_WE();
-		$ret = array();
+		$ret = [];
 		foreach($values as $k => $id){
 			if(!we_base_file::isWeFile($id, FILE_TABLE, $db)){
 				unset($values[$k]);
@@ -240,7 +240,7 @@ abstract class we_navigation_dynList{
 	}
 
 	/* 	function getDocumentsWithWorkspacePath($ws){
-	  $ret = array();
+	  $ret = [];
 	  $db = new DB_WE();
 	  foreach($ws as $id => $path){
 	  $ret[self::getFirstDynDocument($id, $db)] = $path;

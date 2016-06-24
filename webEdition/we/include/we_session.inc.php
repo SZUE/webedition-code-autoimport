@@ -29,7 +29,7 @@ if(!isset($_SESSION)){
 }
 
 if(!isset($_SESSION['weS'])){
-	$_SESSION['weS'] = array();
+	$_SESSION['weS'] = [];
 	$_SESSION['user'] = array(
 		'ID' => '', 'Username' => '', 'workSpace' => '', 'isWeSession' => false
 	);
@@ -84,7 +84,7 @@ if(!preg_match('/' . addcslashes(SECURITY_USER_PASS_REGEX, '/') . '/', $_POST['W
 }
 
 if(!(isset($_SESSION['user']) && is_array($_SESSION['user']))){
-	$_SESSION['user'] = array();
+	$_SESSION['user'] = [];
 }
 
 $_SESSION['user']['Username'] = $userdata['username'];

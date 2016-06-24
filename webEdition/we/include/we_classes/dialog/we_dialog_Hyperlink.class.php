@@ -101,7 +101,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					break;
 				case we_base_link::TYPE_MAIL_PREFIX:
 					$this->args['type'] = we_base_link::TYPE_MAIL;
-					$match = array();
+					$match = [];
 					preg_match('|^([^\?#]+).*$|', $ref, $match);
 					$this->args['mailHref'] = trim($match[1], '/');
 					$this->args['extHref'] = '';
@@ -222,7 +222,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 		$this->args['tabindex'] = $tabindex;
 		$this->args['rel'] = $rel;
 		$this->args['rev'] = $rev;
-		$match = array();
+		$match = [];
 		preg_match('|(subject=([^&]*)&?)?(cc=([^&]*)&?)?(bcc=([^&]*)&?)?|', $this->args['param'], $match);
 		$this->args['mailsubject'] = isset($match[2]) ? urldecode($match[2]) : '';
 		$this->args['mailcc'] = isset($match[4]) ? $match[4] : '';
@@ -567,17 +567,16 @@ var consts={
 		$param = trim($args['param'], '?& ');
 		$anchor = trim($args['anchor'], '# ');
 		if(!empty($param)){
-			$tmp = array();
+			$tmp = [];
 			parse_str($param, $tmp);
-			//FIXME remove as of php 5.3 support ends
-			$param = '?' . (defined('PHP_QUERY_RFC3986') ? http_build_query($tmp, null, '&', PHP_QUERY_RFC3986) : http_build_query($tmp, null, '&'));
+			$param = '?' . http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
 		}
 		// TODO: $args['href'] comes from weHyperlinkDialog with params and anchor: strip these elements there, not here!
 		$href = (strpos($args['href'], '?') !== false ? substr($args['href'], 0, strpos($args['href'], '?')) :
 				(strpos($args['href'], '#') === false ? $args['href'] : substr($args['href'], 0, strpos($args['href'], '#')))) . $param . ($anchor ? '#' . $anchor : '');
 
 		if(strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
-			$query = array();
+			$query = [];
 			if(!empty($args['mail_subject'])){
 				$query['subject'] = $args['mail_subject'];
 			}
@@ -587,8 +586,8 @@ var consts={
 			if(!empty($args['mail_bcc'])){
 				$query['bcc'] = $args['mail_bcc'];
 			}
-			//FIXME remove as of php 5.3 support ends
-			$href = $args['href'] . (empty($query) ? '' : '?' . (defined('PHP_QUERY_RFC3986') ? http_build_query($query, null, '&', PHP_QUERY_RFC3986) : http_build_query($query, null, '&')));
+
+			$href = $args['href'] . (empty($query) ? '' : '?' . http_build_query($query, null, '&', PHP_QUERY_RFC3986) );
 
 			$tmpClass = $args['class'];
 			foreach($args as &$val){

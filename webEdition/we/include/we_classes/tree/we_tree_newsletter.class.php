@@ -33,7 +33,7 @@ class we_tree_newsletter extends we_tree_base{
 		$table = NEWSLETTER_TABLE;
 		$wsQuery = '';
 
-		$items = $aWsQuery = $parentpaths = array();
+		$items = $aWsQuery = $parentpaths = [];
 
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
@@ -82,7 +82,7 @@ class we_tree_newsletter extends we_tree_base{
 				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/newsletter'),
 			);
 
-			$fileds = array();
+			$fileds = [];
 
 			foreach($db->Record as $k => $v){
 				if(!is_numeric($k)){

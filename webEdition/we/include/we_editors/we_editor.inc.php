@@ -55,7 +55,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->del_thumbnails(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
 	case 'do_add_thumbnails':
-		$we_doc->add_thumbnails(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1));
+		$we_doc->add_thumbnails(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 1));
 		break;
 	case 'copyDocument':
 		$insertReloadFooter = $we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
@@ -117,13 +117,13 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_CONTENT;
 		break;
 	case 'users_add_owner':
-		$we_doc->add_owner(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1));
+		$we_doc->add_owner(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 1));
 		break;
 	case 'users_del_owner':
 		$we_doc->del_owner(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 		break;
 	case 'users_add_user':
-		$we_doc->add_user(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1));
+		$we_doc->add_user(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 1));
 		break;
 	case 'users_del_user':
 		$we_doc->del_user(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
@@ -141,7 +141,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		break;
 
 	case 'object_add_workspace':
-		$we_doc->add_workspace(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 1));
+		$we_doc->add_workspace(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 1));
 		break;
 	case 'object_del_workspace':
 		$we_doc->del_workspace(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
@@ -348,7 +348,7 @@ if(
 	}
 
 	if(!empty($GLOBALS['we_editmode'])){
-		$matches = array();
+		$matches = [];
 		preg_match_all('|<form( name="we_form")|i', $contents, $matches, PREG_PATTERN_ORDER);
 		if($matches && count($matches[0])/* >2 */){
 			//find the number of we-forms

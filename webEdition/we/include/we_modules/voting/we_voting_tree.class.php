@@ -32,7 +32,7 @@ class we_voting_tree extends we_tree_base{
 		$db = new DB_WE();
 		$table = VOTING_TABLE;
 
-		$items = array();
+		$items = [];
 
 		$owners_sql = we_voting_voting::getOwnersSql();
 
@@ -71,7 +71,7 @@ class we_voting_tree extends we_tree_base{
 			if($db->f('IsFolder') == 0){
 				$typ['published'] = ($db->f('Active') && ($db->f('ActiveTime') == 0 || ($now < $db->f('Valid')))) ? 1 : 0;
 			}
-			$fileds = array();
+			$fileds = [];
 
 			foreach($db->Record as $k => $v){
 				if(!is_numeric($k)){

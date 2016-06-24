@@ -52,7 +52,7 @@ function we_tag_write(array $attribs){
 	$mail = weTag_getAttribute('mail', $attribs, '', we_base_request::STRING); //FIXME: email_list
 	$mailfrom = weTag_getAttribute('mailfrom', $attribs, '', we_base_request::EMAIL);
 	$forceedit = weTag_getAttribute('forceedit', $attribs, false, we_base_request::BOOL) && !empty($_SESSION['webuser']['registered']);
-	$workspaces = weTag_getAttribute('workspaces', $attribs, array(), we_base_request::INTLISTA);
+	$workspaces = weTag_getAttribute('workspaces', $attribs, [], we_base_request::INTLISTA);
 	$objname = preg_replace('/[^a-z0-9_-]/i', '', weTag_getAttribute('name', $attribs, '', we_base_request::STRING));
 	$onduplicate = ($objname === '' ? 'overwrite' : weTag_getAttribute('onduplicate', $attribs, 'increment', we_base_request::STRING));
 	$onpredefinedname = weTag_getAttribute('onpredefinedname', $attribs, 'appendto', we_base_request::STRING);
@@ -152,7 +152,7 @@ function we_tag_write(array $attribs){
 			$GLOBALS['we_doc']->Language = $language;
 		}
 		if($workspaces && $type === 'object'){
-			$tmplArray = array();
+			$tmplArray = [];
 			foreach($workspaces as $wsId){
 				$tmplArray[] = $GLOBALS['we_' . $type][$name]->getTemplateFromWs($wsId);
 			}
@@ -298,7 +298,7 @@ function weTagWriteCorrectObjName($objname, $type, $name, $onduplicate){
 
 function checkAndCreateBinary($formname, $type = 'we_document'){
 	$webuserId = !empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
-	$regs = array();
+	$regs = [];
 
 	$checks = array(
 		'BINARY' => array(

@@ -28,15 +28,15 @@ we_base_moduleInfo::isActive(we_base_moduleInfo::MESSAGING);
 class we_messaging_todo extends we_messaging_proto{
 	/* Flag which is set when the file is not new */
 
-	var $selected_message = array();
-	var $selected_set = array();
+	var $selected_message = [];
+	var $selected_set = [];
 	var $search_fields = array('m.headerSubject', 'm.headerCreator', 'm.MessageText');
-	var $search_folder_ids = array();
+	var $search_folder_ids = [];
 	var $sortfield = 'm.headerDeadline';
 	var $last_sortfield = '';
 	var $sortorder = 'desc';
-	var $ids_selected = array();
-	var $available_folders = array();
+	var $ids_selected = [];
+	var $available_folders = [];
 	var $sql_class_nr = 2;
 	var $Short_Description = 'webEdition TODO';
 	var $table = MSG_TODO_TABLE;
@@ -62,7 +62,7 @@ class we_messaging_todo extends we_messaging_proto{
 	}
 
 	function init($sessDat = ''){
-		$init_folders = array();
+		$init_folders = [];
 
 		if($sessDat){
 			$this->initSessionDat($sessDat);
@@ -98,8 +98,8 @@ class we_messaging_todo extends we_messaging_proto{
 	}
 
 	function saveInSession(&$save){
-		$save = array();
-		$save[0] = array();
+		$save = [];
+		$save[0] = [];
 		foreach($this->persistent_slots as $pers){
 			$save[0][$pers] = $this->{$pers};
 		}
@@ -144,7 +144,7 @@ class we_messaging_todo extends we_messaging_proto{
 			return -1;
 		}
 
-		$ids = array();
+		$ids = [];
 		foreach($i_headers as $ih){
 			$ids [] = intval($ih['_ID']);
 		}
@@ -185,7 +185,7 @@ class we_messaging_todo extends we_messaging_proto{
 			);
 		}
 
-		$set_query = array();
+		$set_query = [];
 
 		$ret = array(
 			'changed' => 0,
@@ -245,10 +245,10 @@ class we_messaging_todo extends we_messaging_proto{
 	/* Forward is actually "reassign", so no copy is made */
 
 	function forward(&$rcpts, &$data, &$msg){
-		$results = array();
-		$results['err'] = array();
-		$results['ok'] = array();
-		$results['failed'] = array();
+		$results = [];
+		$results['err'] = [];
+		$results['ok'] = [];
+		$results['failed'] = [];
 		$in_folder = '';
 
 		$rcpt = $rcpts[0];
@@ -285,10 +285,10 @@ class we_messaging_todo extends we_messaging_proto{
 	}
 
 	function reject(&$msg, &$data){
-		$results = array();
-		$results['err'] = array();
-		$results['ok'] = array();
-		$results['failed'] = array();
+		$results = [];
+		$results['err'] = [];
+		$results['ok'] = [];
+		$results['failed'] = [];
 
 
 		$rej_folder = f('SELECT ID FROM ' . MSG_FOLDERS_TABLE . ' WHERE obj_type=' . we_messaging_proto::FOLDER_REJECT . ' AND UserID=' . intval($msg['int_hdrs']['_from_userid']), 'ID', $this->DB_WE);
@@ -326,7 +326,7 @@ class we_messaging_todo extends we_messaging_proto{
 	}
 
 	function clipboard_copy($items, $target_fid){
-		$tmp_msgs = array();
+		$tmp_msgs = [];
 
 		if(empty($items)){
 			return;
@@ -360,9 +360,9 @@ class we_messaging_todo extends we_messaging_proto{
 
 	function send($rcpts, $data){
 		$results = array(
-			'err' => array(),
-			'ok' => array(),
-			'failed' => array(),
+			'err' => [],
+			'ok' => [],
+			'failed' => [],
 		);
 		$db = new DB_WE();
 
@@ -453,7 +453,7 @@ class we_messaging_todo extends we_messaging_proto{
 			$message_ids_cond = implode(' OR m.ID=', $criteria['message_ids']);
 		}
 
-		$this->selected_set = array();
+		$this->selected_set = [];
 		$this->DB_WE->query('SELECT m.ID, m.ParentID, m.headerDeadline, m.headerSubject, m.headerCreator, m.Priority, m.seenStatus, m.headerStatus, u.username
 		FROM ' . $this->table . ' as m, ' . USER_TABLE . ' as u
 		WHERE ((m.msg_type=' . intval($this->sql_class_nr) . ' AND m.obj_type=' . we_messaging_proto::TODO_NR . ') ' . ($sfield_cond ? " AND ($sfield_cond)" : '') . ($folders_cond ? " AND (m.ParentID=$folders_cond)" : '') . ( (!isset($message_ids_cond) || !$message_ids_cond ) ? '' : " AND (m.ID=$message_ids_cond)") . ") AND m.UserID=" . $this->userid . " AND m.headerCreator=u.ID
@@ -461,7 +461,7 @@ class we_messaging_todo extends we_messaging_proto{
 
 		$i = isset($criteria['start_id']) ? $criteria['start_id'] + 1 : 0;
 
-		$seen_ids = array();
+		$seen_ids = [];
 
 		while($this->DB_WE->next_record()){
 			if(!($this->DB_WE->f('seenStatus') & we_messaging_proto::STATUS_SEEN)){
@@ -491,10 +491,10 @@ class we_messaging_todo extends we_messaging_proto{
 
 	function retrieve_items($int_hdrs){
 		if(!$int_hdrs){
-			return array();
+			return [];
 		}
 
-		$ids = array();
+		$ids = [];
 		foreach($int_hdrs as $ih){
 			$ids[] = intval($ih['_ID']);
 		}
@@ -504,16 +504,16 @@ class we_messaging_todo extends we_messaging_proto{
 
 		$entries = $this->DB_WE->getAll();
 
-		$read_ids = array();
+		$read_ids = [];
 
-		$ret = array();
+		$ret = [];
 		$i = 0;
 		foreach($entries as $entry){
 			if(!($entry['seenStatus'] && we_messaging_proto::STATUS_READ)){
 				$read_ids[] = $entry['ID'];
 			}
 
-			$history = array();
+			$history = [];
 			/* FIXME: get the ids; use one query outside of the loop; */
 			$this->DB_WE->query('SELECT u.username,t.Comment,t.Created,t.action,t.fromUserID FROM ' . MSG_TODOHISTORY_TABLE . ' AS t, ' . USER_TABLE . ' AS u WHERE t.ParentID=' . $entry['ID'] . ' AND t.UserID=u.ID ORDER BY Created');
 			while($this->DB_WE->next_record()){

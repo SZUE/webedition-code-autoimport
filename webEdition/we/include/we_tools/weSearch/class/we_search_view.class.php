@@ -306,7 +306,7 @@ WE().consts.weSearch= {
 			(($we_search_anzahl - $currentSearchstart) < $currentAnzahl ? $we_search_anzahl : $currentSearchstart + $currentAnzahl) .
 			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl;
 
-		$pages = array();
+		$pages = [];
 		if($currentAnzahl){
 			for($i = 0; $i < ceil($we_search_anzahl / $currentAnzahl); $i++){
 				$pages[($i * $currentAnzahl)] = ($i + 1);
@@ -337,10 +337,10 @@ WE().consts.weSearch= {
 		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('onchange' => "this.form.elements.searchstart" . $whichSearch . ".value = this.value; weSearch.search(false);"), 'value', 0, 'selectSearchPages');
 
 		$tbl = new we_html_table(array('style' => 'margin-top:-2px;'), 1, 4);
-		$tbl->setCol(0, 0, array(), $btnBack);
+		$tbl->setCol(0, 0, [], $btnBack);
 		$tbl->setCol(0, 1, array('class' => 'defaultfont', 'style' => 'padding-top:6px;'), we_html_element::htmlSpan(array('class' => 'spanSearchText bold'), $text));
-		$tbl->setCol(0, 2, array(), $btnNext);
-		$tbl->setCol(0, 3, array(), $select);
+		$tbl->setCol(0, 2, [], $btnNext);
+		$tbl->setCol(0, 3, [], $select);
 
 		return $tbl->getHtml();
 	}
@@ -367,17 +367,17 @@ WE().consts.weSearch= {
 		switch($whichSearch){
 			case self::SEARCH_DOCS :
 				$table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$table->setCol($row++, 1, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$table->setCol($row++, 1, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$table->setCol($row, 0, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_TMPL :
-				$table->setCol($row++, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
+				$table->setCol($row++, 0, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$table->setCol($row, 0, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_MEDIA :
 				$table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
-				$table->setCol($row++, 1, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
-				$table->setCol($row, 0, array(), we_html_forms::checkboxWithHidden(empty($currentSearchForField['meta']) ? false : true, 'searchForMeta' . $whichSearch, g_l('searchtool', '[onlyMetadata]'), false, 'defaultfont', ''));
+				$table->setCol($row++, 1, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
+				$table->setCol($row, 0, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['meta']) ? false : true, 'searchForMeta' . $whichSearch, g_l('searchtool', '[onlyMetadata]'), false, 'defaultfont', ''));
 
 				return $table->getHtml();
 		}
@@ -398,9 +398,9 @@ WE().consts.weSearch= {
 						'search' . $whichSearch . '[' . $n . ']' => 1,
 						'location' . $whichSearch . '[' . $n++ . ']' => 'IN')) .
 					we_html_forms::checkboxWithHidden($currentSearchForContentType['image'] ? true : false, 'searchForImage' . $whichSearch, g_l('contentTypes', '[image/*]'), false, 'defaultfont withSpace', ''));
-				$table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['audio'] ? true : false, 'searchForAudio' . $whichSearch, g_l('contentTypes', '[audio/*]'), false, 'defaultfont', ''));
-				$table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['video'] ? true : false, 'searchForVideo' . $whichSearch, g_l('contentTypes', '[video/*]'), false, 'defaultfont', ''));
-				$table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden($currentSearchForContentType['other'] ? true : false, 'searchForOther' . $whichSearch, g_l('contentTypes', '[media/*]'), false, 'defaultfont', '', false));
+				$table->setCol(0, 1, [], we_html_forms::checkboxWithHidden($currentSearchForContentType['audio'] ? true : false, 'searchForAudio' . $whichSearch, g_l('contentTypes', '[audio/*]'), false, 'defaultfont', ''));
+				$table->setCol(1, 1, [], we_html_forms::checkboxWithHidden($currentSearchForContentType['video'] ? true : false, 'searchForVideo' . $whichSearch, g_l('contentTypes', '[video/*]'), false, 'defaultfont', ''));
+				$table->setCol(1, 0, [], we_html_forms::checkboxWithHidden($currentSearchForContentType['other'] ? true : false, 'searchForOther' . $whichSearch, g_l('contentTypes', '[media/*]'), false, 'defaultfont', '', false));
 				break;
 			default:
 				return;
@@ -419,24 +419,24 @@ WE().consts.weSearch= {
 		switch($whichSearch){
 			case self::SEARCH_MEDIA :
 				$n = 2;
-				$table->setCol(0, 0, array(), g_l('searchtool', '[usage_state]') . ': ');
+				$table->setCol(0, 0, [], g_l('searchtool', '[usage_state]') . ': ');
 				$table->setCol(0, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
 						'searchFields' . $whichSearch . '[' . $n . ']' => 'IsUsed',
 						'location' . $whichSearch . '[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', array(
 						0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_unsed]'),
-						2 => g_l('searchtool', '[only_unused]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, array(), 'value', 228));
-				$table->setCol(0, 3, array(), we_html_tools::htmlAlertAttentionBox(g_l('searchtool', '[media_do_rebuild]'), we_html_tools::TYPE_HELP, false));
+						2 => g_l('searchtool', '[only_unused]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, [], 'value', 228));
+				$table->setCol(0, 3, [], we_html_tools::htmlAlertAttentionBox(g_l('searchtool', '[media_do_rebuild]'), we_html_tools::TYPE_HELP, false));
 
-				$table->setCol(1, 0, array(), g_l('searchtool', '[protection]') . ': ');
+				$table->setCol(1, 0, [], g_l('searchtool', '[protection]') . ': ');
 				$table->setCol(1, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
 						'searchFields' . $whichSearch . '[' . ++$n . ']' => 'IsProtected',
 						'location' . $whichSearch . '[' . $n . ']' => 'IS')) .
 					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', array(
 						0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_protected]'),
-						2 => g_l('searchtool', '[only_unprotected]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, array(), 'value', 228));
+						2 => g_l('searchtool', '[only_unprotected]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, [], 'value', 228));
 
 				$this->searchMediaOptFieldIndex = ++$n; // FIXME: do we need this (or can we handle it as simple param?)
 				break;
@@ -444,7 +444,7 @@ WE().consts.weSearch= {
 				return;
 		}
 		$table->setCol(2, 0, array('colspan' => 4), $this->getSearchDialogOptionalFields($whichSearch));
-		$table->setCol(3, 3, array(), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$table->setCol(3, 3, [], we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $table->getHtml();
 	}
@@ -462,24 +462,24 @@ WE().consts.weSearch= {
 		$currentSearchTables = $this->Model->getProperty('currentSearchTables');
 
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
-			$table->setCol(0, 0, array(), we_html_forms::checkboxWithHidden(in_array(FILE_TABLE, $currentSearchTables), 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
+			$table->setCol(0, 0, [], we_html_forms::checkboxWithHidden(in_array(FILE_TABLE, $currentSearchTables), 'search_tables_advSearch[' . FILE_TABLE . ']', g_l('searchtool', '[documents]'), false, 'defaultfont', ''));
 		}
 
 		if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-			$table->setCol(1, 0, array(), we_html_forms::checkboxWithHidden(in_array(TEMPLATES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
+			$table->setCol(1, 0, [], we_html_forms::checkboxWithHidden(in_array(TEMPLATES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . TEMPLATES_TABLE . ']', g_l('searchtool', '[templates]'), false, 'defaultfont', ''));
 		}
 
 		if(defined('OBJECT_TABLE')){
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
-				$table->setCol(0, 1, array(), we_html_forms::checkboxWithHidden(in_array(OBJECT_FILES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
+				$table->setCol(0, 1, [], we_html_forms::checkboxWithHidden(in_array(OBJECT_FILES_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_FILES_TABLE . ']', g_l('searchtool', '[objects]'), false, 'defaultfont', ''));
 			}
 			if(permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-				$table->setCol(1, 1, array(), we_html_forms::checkboxWithHidden(in_array(OBJECT_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
+				$table->setCol(1, 1, [], we_html_forms::checkboxWithHidden(in_array(OBJECT_TABLE, $currentSearchTables), 'search_tables_advSearch[' . OBJECT_TABLE . ']', g_l('searchtool', '[classes]'), false, 'defaultfont', ''));
 			}
 		}
 
 		if(permissionhandler::hasPerm('SEE_VERSIONS')){
-			$table->setCol(0, 2, array(), we_html_forms::checkboxWithHidden(in_array(VERSIONS_TABLE, $currentSearchTables), 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
+			$table->setCol(0, 2, [], we_html_forms::checkboxWithHidden(in_array(VERSIONS_TABLE, $currentSearchTables), 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
 		$table->setCol(1, 2, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
@@ -541,10 +541,10 @@ WE().consts.weSearch= {
 		);
 	}
 
-	public function makeContent(array $result = array(), $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){
+	public function makeContent(array $result = [], $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){
 		$DB_WE = new DB_WE();
 
-		$content = array();
+		$content = [];
 		$resultCount = count($result);
 
 		for($f = 0; $f < $resultCount; $f++){
@@ -738,7 +738,7 @@ WE().consts.weSearch= {
 				}
 
 				$defined_fields = we_metadata_metaData::getDefinedMetaDataFields();
-				$metafields = array();
+				$metafields = [];
 				$fieldcount = min(count($defined_fields), 6);
 				for($i = 0; $i < $fieldcount; $i++){
 					$tagName = $defined_fields[$i]["tag"];
@@ -784,9 +784,9 @@ WE().consts.weSearch= {
 	function makeAdditionalContentMedia($result){
 		$usedMediaLinks = $this->searchclass->getUsedMediaLinks();
 		$mediaLinks = $this->searchclass->getUsedMediaLinks();
-		$accessibles = isset($mediaLinks['accessible']['mediaID_' . $result['docID']]) ? $mediaLinks['accessible']['mediaID_' . $result['docID']] : array();
-		$notaccessibles = isset($mediaLinks['notaccessible']['mediaID_' . $result['docID']]) ? $mediaLinks['notaccessible']['mediaID_' . $result['docID']] : array();
-		$groups = isset($mediaLinks['groups']['mediaID_' . $result['docID']]) ? $mediaLinks['groups']['mediaID_' . $result['docID']] : array();
+		$accessibles = isset($mediaLinks['accessible']['mediaID_' . $result['docID']]) ? $mediaLinks['accessible']['mediaID_' . $result['docID']] : [];
+		$notaccessibles = isset($mediaLinks['notaccessible']['mediaID_' . $result['docID']]) ? $mediaLinks['notaccessible']['mediaID_' . $result['docID']] : [];
+		$groups = isset($mediaLinks['groups']['mediaID_' . $result['docID']]) ? $mediaLinks['groups']['mediaID_' . $result['docID']] : [];
 
 		if(!empty($groups)){
 			$out = '<table style="font-weight:normal; background-color:#eeeeee;width:480px"><tr><td colspan="2" style="padding:4px 0 0 6px;"><strong>' . g_l('searchtool', '[mediaRef][title]') . ':</stong></td></tr>'; // FIXME: G_L()
@@ -795,7 +795,7 @@ WE().consts.weSearch= {
 				$numAccessibles = isset($accessibles[$group]) && is_array($accessibles[$group]) ? count($accessibles[$group]) : 0;
 				$out .= '<tr><td style="padding:4px 0 0 6px;"><em>' . $group . ' (' . ($numNotaccessible + $numAccessibles) . ($numNotaccessible ? ', davon ' . $numNotaccessible . ' ' . g_l('weClass', '[medialinks_unaccessible]') : '') . '):</em></td></tr>';
 
-				$references = isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : array();
+				$references = isset($accessibles[$group]) && is_array($accessibles[$group]) ? $accessibles[$group] : [];
 				ksort($references);
 				$limit = $this->Model->getProperty('currentAnzahlMedialinks');
 				$c = 0;
@@ -882,13 +882,13 @@ WE().consts.weSearch= {
 		$tbl = new we_html_table(array('class' => 'default', 'style' => 'margin:12px 0px 12px 19px;'), 1, 9);
 		$tbl->setCol(0, ($c = 0), array('style' => 'font-size:12px; padding:6px 6px 0 0;'), g_l('searchtool', '[eintraege_pro_seite]') . ':');
 		$tbl->setCol(0, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'padding:0 10px 0 0;'), $selectAnzahl);
-		$tbl->setCol(0, ++$c, array(), $this->getNextPrev($foundItems, $whichSearch));
+		$tbl->setCol(0, ++$c, [], $this->getNextPrev($foundItems, $whichSearch));
 		if($whichSearch === self::SEARCH_MEDIA){
 			$tbl->setCol(0, ++$c, array('style' => 'font-size:12px; padding:6px 6px 0 12px;'), 'Medialinks:');
 			$tbl->setCol(0, ++$c, array('class' => 'defaultfont lowContrast', 'style' => 'padding:0 12px 0 0;'), $selectAnzahlMedialinks);
 		}
-		$tbl->setCol(0, ++$c, array(), we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:weSearch.setView('" . we_search_view::VIEW_ICONS . "');", true, 40, '', '', '', false));
-		$tbl->setCol(0, ++$c, array(), we_html_button::create_button('fa:listview,fa-lg fa-align-justify', "javascript:weSearch.setView('" . we_search_view::VIEW_LIST . "');", true, 40, '', '', '', false));
+		$tbl->setCol(0, ++$c, [], we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:weSearch.setView('" . we_search_view::VIEW_ICONS . "');", true, 40, '', '', '', false));
+		$tbl->setCol(0, ++$c, [], we_html_button::create_button('fa:listview,fa-lg fa-align-justify', "javascript:weSearch.setView('" . we_search_view::VIEW_LIST . "');", true, 40, '', '', '', false));
 		if($whichSearch === self::SEARCH_DOCLIST){
 			if($currentFolderID && $currentSearchTables[0] === FILE_TABLE){
 				$tbl->setCol(0, ++$c, array('style' => 'width:50px;'), we_fileupload_ui_importer::getBtnImportFiles($currentFolderID));
@@ -945,7 +945,7 @@ WE().consts.weSearch= {
 			$c = 0;
 		}
 
-		$tbl->setCol($k, ++$c, array(), $this::getNextPrev($foundItems, $whichSearch, false));
+		$tbl->setCol($k, ++$c, [], $this::getNextPrev($foundItems, $whichSearch, false));
 
 		return $tbl->getHtml();
 	}
@@ -1382,7 +1382,7 @@ WE().consts.weSearch= {
 			$yuiSuggest->getYuiJs();
 	}
 
-	function getCommonHiddens($cmds = array()){
+	function getCommonHiddens($cmds = []){
 		return we_html_element::htmlHiddens(array(
 				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
 				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
@@ -1449,7 +1449,7 @@ function submitForm(target,action,method) {
 			'searchstartDocSearch',
 			'searchstartTmplSearch',
 			'searchstartMediaSearch',
-			'searchstartAdvSearch'), (is_array($this->Model->persistent_slots) ? $this->Model->persistent_slots : array()));
+			'searchstartAdvSearch'), (is_array($this->Model->persistent_slots) ? $this->Model->persistent_slots : []));
 
 		$doInitModelByHttp = false;
 		foreach($modelVars as $val){

@@ -44,7 +44,7 @@ class we_customer_generatePassword{
 
 	function PassGen(){ // Function to Generate Random Passowrd
 		$i = 1;
-		$password = array();
+		$password = [];
 		while($i < $this->PasswordLength){
 			if($i < $this->minLen){
 				if($i < $this->condition['specs']){

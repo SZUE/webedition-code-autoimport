@@ -46,8 +46,8 @@ if(!$urlLookingFor){
  * we need this in some we_tag() and to avoid dublicate content
  */
 $urlLookingFor = (URLENCODE_OBJECTSEOURLS ?
-	strtr(urlencode($urlLookingFor), array('%2F' => '/', '//' => '/')) :
-	strtr($urlLookingFor, array('//' => '/'))
+	strtr(urlencode($urlLookingFor), ['%2F' => '/', '//' => '/']) :
+	strtr($urlLookingFor, ['//' => '/'])
 );
 
 define('WE_REDIRECTED_SEO', $urlLookingFor);
@@ -86,10 +86,10 @@ while($urlLookingFor){// first we try to get the object
  */
 if($object && $object['ID']){
 	$docPathOfUrl = substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $urlLookingFor)); //cut the known seo-url from object of the whole URL
-	
+
 	//get trigger document by url and/or (extra) workspaces by object properties
 	$triggerDocPath = we_objectFile::getNextDynDoc(($path = rtrim($docPathOfUrl, "/") . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim($docPathOfUrl, "/")), $object['Workspaces'], $object['ExtraWorkspacesSelected'], $GLOBALS['DB_WE']);
-	
+
 	if(!$triggerDocPath){//fallback
 		if(NAVIGATION_DIRECTORYINDEX_NAMES){ //now we try to get trigger doc by the given SEO-URL and NAVIGATION_DIRECTORYINDEX_NAMES from preferences
 			$dirIndexArray = array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES));
@@ -98,12 +98,12 @@ if($object && $object['ID']){
 					$triggerDocPath = id_to_path($triggerID, FILE_TABLE);
 					break;
 				}
-			}	
+			}
 		}
-		
+
 		$triggerDocPath = $triggerDocPath ? : //we use the default trigger document of object class
-			(($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))) ? 
-				id_to_path($object['TriggerID'], FILE_TABLE) : 
+			(($object['TriggerID'] && ($isDynamic = f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($object['TriggerID'])))) ?
+				id_to_path($object['TriggerID'], FILE_TABLE) :
 				false);
 	}
 
@@ -112,7 +112,7 @@ if($object && $object['ID']){
 		$_REQUEST = array_merge($_GET, $_POST);
 
 		//get query string if there
-		$urlQueryString = array();
+		$urlQueryString = [];
 		if(!empty($_SERVER['REDIRECT_QUERY_STRING'])){
 			parse_str($_SERVER['REDIRECT_QUERY_STRING'], $urlQueryString);
 		} elseif(!empty($_SERVER['QUERY_STRING'])){

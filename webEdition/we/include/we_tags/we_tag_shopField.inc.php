@@ -180,7 +180,7 @@ function we_tag_shopField(array $attribs){
 				$lccode = explode('_', $lcvalue);
 				$lcvalue = $lccode[0];
 			}
-			$frontendLL = array();
+			$frontendLL = [];
 			foreach($frontendL as &$lcvalue){
 				$frontendLL[$lcvalue] = we_base_country::getTranslation($lcvalue, we_base_country::LANGUAGE, $langcode);
 			}

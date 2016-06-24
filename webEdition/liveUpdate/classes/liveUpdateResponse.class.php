@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class liveUpdateResponse{
-
 	var $Type;
 	var $Headline;
 	var $Content;
@@ -77,12 +76,12 @@ class liveUpdateResponse{
 				return liveUpdateFunctionsServer::executeAllPatches();
 			case 'eval':
 				//t_e($this->Code);
-				$c = strtr($this->Code, array(
+				$c = strtr($this->Code, [
 					'we_forms' => 'we_html_forms',
 					'$we_button->' => 'we_html_button::',
 					'new we_button()' => '""',
 					'getMysqlVer' => 'we_database_base::getMysqlVer',
-				));
+				]);
 //FIXME:eval
 				//t_e($c);
 				return eval('?>' . $c);

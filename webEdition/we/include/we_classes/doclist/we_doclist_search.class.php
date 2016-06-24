@@ -34,7 +34,7 @@ class we_doclist_search extends we_search_search{
 	public function searchProperties($model, $table = ''){ // FIXME: handle model in like in other searches
 		$DB_WE = new DB_WE();
 		$foundItems = 0;
-		$result = $saveArrayIds = $currentSearch = array();
+		$result = $saveArrayIds = $currentSearch = [];
 		$_SESSION['weS']['weSearch']['foundItems'] = 0;
 
 		$currentSearchFields = $model->getProperty('currentSearchFields');
@@ -47,7 +47,7 @@ class we_doclist_search extends we_search_search{
 		$currentAnzahl = $model->getProperty('currentAnzahl');
 		$currentFolderID = $model->getProperty('currentFolderID');
 
-		$where = array();
+		$where = [];
 		$this->settable($table);
 
 		if($currentFolderID){
@@ -148,7 +148,7 @@ class we_doclist_search extends we_search_search{
 		}
 
 		if(!$this->founditems){
-			return array();
+			return [];
 		}
 		$this->createTempTable();
 

@@ -138,7 +138,7 @@ class we_imageDocument extends we_binaryDocument{
 			return array_filter(explode(',', $this->Thumbs));
 		}
 
-		$thumbs = array();
+		$thumbs = [];
 		$this->DB_WE->query('SELECT * FROM ' . THUMBNAILS_TABLE);
 		$thumbObj = new we_thumbnail();
 
@@ -196,7 +196,7 @@ class we_imageDocument extends we_binaryDocument{
 	 */
 	function del_thumbnails($thumbnailID){
 		$thumbsArray = ($this->Thumbs == -1) ? array() : makeArrayFromCSV($this->Thumbs);
-		$newArray = array();
+		$newArray = [];
 
 		foreach($thumbsArray as $t){
 			if($t != $thumbnailID){
@@ -283,7 +283,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			'onmouseover' => ($child ? 'if(this.firstChild){ this.firstChild' : '{this') . '.src = img' . self::$imgCnt . 'Over.src; }',
 			'onmouseout' => ($child ? 'if(this.firstChild){ this.firstChild' : '{this') . '.src = img' . self::$imgCnt . 'Out.src;}',
 			) :
-			array();
+			[];
 	}
 
 	/**
@@ -588,7 +588,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 	private function getSvgSize($filename){
 		$line = we_base_file::load($filename, 'rb', 1000, 1);
-		$match = array();
+		$match = [];
 		return array(
 			(preg_match('|<svg[^>]*width="([^"]*)"[^>]*>|i', $line, $match) ? intval($match[1]) : ''),
 			(preg_match('|<svg[^>]*height="([^"]*)"[^>]*>|i', $line, $match) ? intval($match[1]) : ''),
@@ -741,7 +741,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			return;
 		}
 
-		$fields = array();
+		$fields = [];
 
 		// first we fetch all defined metadata fields from tblMetadata:
 		$GLOBALS['DB_WE']->query('SELECT tag,type,importFrom FROM ' . METADATA_TABLE);
@@ -757,7 +757,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					$tagType = strtolower(trim($fieldParts[0]));
 					$tagName = trim($fieldParts[1]);
 					if(!(isset($fields[$fieldName]) && is_array($fields[$fieldName]))){
-						$fields[$fieldName] = array();
+						$fields[$fieldName] = [];
 					}
 					$fields[$fieldName][] = array($tagType, $tagName, $fieldType);
 				}
@@ -765,7 +765,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 
 		$typeMap = array('textfield' => 'txt', 'wysiwyg' => 'txt', 'textarea' => 'txt', 'date' => 'date');
-		$regs = array();
+		$regs = [];
 
 		foreach($fields as $fieldName => $arr){
 			$fieldVal = $this->getElement($fieldName);

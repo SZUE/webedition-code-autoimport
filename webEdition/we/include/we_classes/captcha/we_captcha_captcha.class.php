@@ -61,7 +61,7 @@ abstract class we_captcha_captcha{
 	}
 
 	static function check($captcha, $type = 'captcha'){
-		static $valid = array();
+		static $valid = [];
 		if(isset($valid[$captcha])){
 			return true;
 		}

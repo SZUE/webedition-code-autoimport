@@ -16,8 +16,8 @@ $error = new weTagData_selectAttribute('onerror', array(
 	), false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array(), array()),
-	new weTagDataOption('object', false, 'object', array(), array()),
+	new weTagDataOption('document', false, '', [], []),
+	new weTagDataOption('object', false, 'object', [], []),
 	new weTagDataOption('customer', false, 'customer', array($error), array($error)))
 	, false, '');
 

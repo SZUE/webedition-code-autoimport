@@ -256,8 +256,8 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;'), we_html_el
 	function printDoDelEntryHTML(){
 		echo we_html_tools::getHtmlTop();
 
-		if(($catsToDel = we_base_request::_(we_base_request::INTLISTA, 'todel', array()))){
-			$finalDelete = array();
+		if(($catsToDel = we_base_request::_(we_base_request::INTLISTA, 'todel', []))){
+			$finalDelete = [];
 			$catlistNotDeleted = "";
 			$changeToParent = false;
 			foreach($catsToDel as $id){

@@ -29,7 +29,7 @@ class we_http_response{
 		'prot' => '',
 		'code' => 0,
 		'msg' => ''); // possibility to check the answercode
-	var $http_headers = array(); // http headers in associative array
+	var $http_headers = []; // http headers in associative array
 	var $http_body = ""; // http body
 	var $error = false;
 
@@ -64,7 +64,7 @@ class we_http_response{
 			$headerstr = substr($response, 0, $pos); //  string containing the whole header
 			$headerList = explode($lbr, $headerstr); //  each headerline is entry in array
 
-			$headers = $matches = array();
+			$headers = $matches = [];
 			foreach($headerList as $cur){
 
 				$line = explode(':', $cur, 2);

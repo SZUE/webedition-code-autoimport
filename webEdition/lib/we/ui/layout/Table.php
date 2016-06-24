@@ -34,14 +34,14 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 	 *
 	 * @var array
 	 */
-	protected $_cellHTML = array();
+	protected $_cellHTML = [];
 
 	/**
 	 * Two dimensional array to hold the attributes for the cells
 	 *
 	 * @var array
 	 */
-	protected $_cellAttributes = array();
+	protected $_cellAttributes = [];
 
 	/**
 	 * Pointer to the current row
@@ -83,7 +83,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 			$this->_row = $row;
 		}
 		if(!isset($this->_cellHTML[$row])){
-			$this->_cellHTML[$row] = array();
+			$this->_cellHTML[$row] = [];
 		}
 		if(!isset($this->_cellHTML[$row][$column])){
 			$this->_cellHTML[$row][$column] = $elem->getHTML();
@@ -115,7 +115,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 			$this->_row = $row;
 		}
 		if(!isset($this->_cellHTML[$row])){
-			$this->_cellHTML[$row] = array();
+			$this->_cellHTML[$row] = [];
 		}
 		if(!isset($this->_cellHTML[$row][$column])){
 			$this->_cellHTML[$row][$column] = $html;
@@ -147,7 +147,7 @@ class we_ui_layout_Table extends we_ui_abstract_AbstractElement{
 			$this->_row = $row;
 		}
 		if(!isset($this->_cellAttributes[$row])){
-			$this->_cellAttributes[$row] = array();
+			$this->_cellAttributes[$row] = [];
 		}
 		if(!isset($this->_cellAttributes[$row][$column])){
 			$this->_cellAttributes[$row][$column] = $attributes;

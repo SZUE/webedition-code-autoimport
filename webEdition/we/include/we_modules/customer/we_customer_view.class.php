@@ -42,7 +42,7 @@ class we_customer_view extends we_modules_view{
 		$this->settings->load();
 	}
 
-	function getCommonHiddens($cmds = array()){
+	function getCommonHiddens($cmds = []){
 		return we_html_element::htmlHiddens(array(
 				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
 				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : 'edbody'),
@@ -451,7 +451,7 @@ new (WE().util.jsWindow)(window, url,"sort_admin",-1,-1,750,500,true,true,true,t
 					}
 					$cout++;
 				}
-				$this->settings->SortView[$cname] = array();
+				$this->settings->SortView[$cname] = [];
 
 				break;
 			case 'del_sort':
@@ -588,7 +588,7 @@ self.close();');
 			$counter = we_base_request::_(we_base_request::INT, 'counter');
 
 			if($counter !== false){
-				$this->settings->SortView = array();
+				$this->settings->SortView = [];
 
 				for($i = 0; $i < $counter; $i++){
 					$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i)? :
@@ -598,10 +598,10 @@ self.close();');
 					$fcounter = we_base_request::_(we_base_request::INT, 'fcounter_' . $i, 1);
 
 					if($fcounter > -1){
-						$this->settings->SortView[$sort_name] = array();
+						$this->settings->SortView[$sort_name] = [];
 					}
 					for($j = 0; $j < $fcounter; $j++){
-						$new = array();
+						$new = [];
 						if(($b = we_base_request::_(we_base_request::STRING, 'branch_' . $i . '_' . $j))){
 							$new['branch'] = $b;
 						}
@@ -730,7 +730,7 @@ self.close();');
 		$arr = explode(' ', strToLower($keyword));
 		$array = array(
 			'AND' => array($arr[0]),
-			'OR' => array(),
+			'OR' => [],
 			'AND NOT' => array()
 		);
 
@@ -756,7 +756,7 @@ self.close();');
 
 		foreach($array as $ak => $av){
 			foreach($av as $value){
-				$conditionarr = array();
+				$conditionarr = [];
 				foreach($this->customer->persistent_slots as $field){
 					if(!$this->customer->isProtected($field) && $field != "Password"){
 						$conditionarr[] = $field . ' LIKE "%' . $value . '%"';
@@ -978,11 +978,11 @@ self.close();');
 						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'Password':
-						$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', 'onchange="top.content.setHot();" autocomplete="off" ', 'password', "240px"), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', 'onchange="top.content.setHot();" autocomplete="off" ', 'password', "240px"), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'Username':
 						$inputattribs = ' id="yuiAcInputPathName" onblur="parent.edheader.weTabs.setTitlePath(this.value);"';
-						$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', 'onchange="top.content.setHot();" ' . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', 'onchange="top.content.setHot();" ' . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'failedLogins':
 						$table->setCol($c / 2, $c % 2, array('class' => 'defaultfont'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast', 'id' => 'FailedCustomerLogins'), intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
@@ -993,7 +993,7 @@ self.close();');
 						break;
 					default:
 						$inputattribs = '';
-						$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', "onchange=\"top.content.setHot();\" " . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
 				}
 			}
 			if(++$c % 2 == 0){
@@ -1016,7 +1016,7 @@ self.close();');
 			$isEncField = $this->settings->retriveFieldAdd($k, 'encrypt');
 			$control = $this->getHTMLFieldControl($k, $v, $isEncField);
 			if($control){
-				$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable($control, $k . ($isEncField ? $this->getEncryptionHandling($k, $v != '') : '')));
+				$table->setCol($c / 2, $c % 2, [], we_html_tools::htmlFormElementTable($control, $k . ($isEncField ? $this->getEncryptionHandling($k, $v != '') : '')));
 				if(++$c % 2 == 0){
 					$table->addRow();
 					$table->setRow($c / 2, array('style' => 'vertical-align:top'));
@@ -1035,7 +1035,7 @@ self.close();');
 	}
 
 	function getHTMLProperties($preselect = ''){
-		$other = $parts = $branches = array();
+		$other = $parts = $branches = [];
 		$common = array(
 			'ID' => $this->customer->ID,
 		);
@@ -1147,7 +1147,7 @@ self.close();');
 						if(!$control){
 							continue;
 						}
-						$table->setCol($c / 2, $c % 2, array(), we_html_tools::htmlFormElementTable($control, $k . ($isEncField ? $this->getEncryptionHandling($bk . '_' . $k, $v != '') : '')));
+						$table->setCol($c / 2, $c % 2, [], we_html_tools::htmlFormElementTable($control, $k . ($isEncField ? $this->getEncryptionHandling($bk . '_' . $k, $v != '') : '')));
 
 						if(++$c % 2 == 1){
 							$table->addRow();

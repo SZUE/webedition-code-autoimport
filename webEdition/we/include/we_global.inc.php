@@ -71,7 +71,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = '', &$st
 			  }
 			 */
 			$fh = @fopen($server . $url, 'rb');
-			$matches = array();
+			$matches = [];
 			preg_match('#HTTP/\d+\.\d+ (\d+)#', $http_response_header[0], $matches);
 			$status = $matches[1];
 
@@ -87,7 +87,7 @@ function getHTTP($server, $url, $port = '', $username = '', $password = '', &$st
 			}
 			return ($fh ? $page : 'Server Error: Failed opening URL: ' . $server . $url);
 		case 'curl':
-			$response = we_base_util::getCurlHttp($server, $url, array());
+			$response = we_base_util::getCurlHttp($server, $url, []);
 			$status = $response['status']? : 200;
 			return ($response['status'] ? $response['error'] : $response['data']);
 		default:
@@ -155,7 +155,7 @@ function filterXss($var, $type = 'string'){
 	if(!is_array($var)){
 		return ($type === 'string' ? oldHtmlspecialchars(strip_tags($var)) : intval($var));
 	}
-	$ret = array();
+	$ret = [];
 	foreach($var as $key => $val){
 		$ret[oldHtmlspecialchars(strip_tags($key))] = filterXss($val, $type);
 	}
@@ -201,7 +201,7 @@ function makeArrayFromCSV($csv){
 	$csv = trim($csv, ',');
 
 	if($csv === ''){
-		return array();
+		return [];
 	}
 
 	return explode(',', $csv);
@@ -244,7 +244,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 	}
 	$db = $db ? : new DB_WE();
 
-	$found = array();
+	$found = [];
 	$p = intval($id);
 	do{
 		if($p == $pid){
@@ -271,7 +271,7 @@ function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $as
 	}
 	$db = ($db ? : new DB_WE());
 	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path IN ("' . implode('","', array_map('escape_sql_query', array_map('trim', $path))) . '")');
-	$ret = (in_array('/', $path) ? array(0) : array()) + $db->getAll(true);
+	$ret = (in_array('/', $path) ? array(0) : []) + $db->getAll(true);
 	return $asArray ? $ret : implode(',', $ret);
 }
 
@@ -295,7 +295,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asA
 					'Path');
 	}
 
-	$foo = (in_array(0, $IDs) ? array(0 => '/') : array()) +
+	$foo = (in_array(0, $IDs) ? array(0 => '/') : []) +
 		($IDs ?
 			$db->getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false) :
 			array()
@@ -314,12 +314,12 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asA
  */
 function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db){
 	if(!$csv){
-		return array();
+		return [];
 	}
 	$IDArr = makeArrayFromCSV($csv);
 	$out = ($firstEntry ? array(
 			0 => $firstEntry
-			) : array()) +
+			) : []) +
 		id_to_path($IDArr, FILE_TABLE, $db, true);
 
 	return $out;
@@ -327,18 +327,18 @@ function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db){
 
 function getPathsFromTable($table, we_database_base $db, $type = we_base_constants::FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
 	$limitCSV = trim($limitCSV, ',');
-	$query = array();
+	$query = [];
 	if($wsIDs){
 		$idArr = makeArrayFromCSV($wsIDs);
 		$wsPaths = makeArrayFromCSV(id_to_path($wsIDs, $table, $db));
-		$qfoo = array();
+		$qfoo = [];
 		for($i = 0; $i < count($wsPaths); $i++){
 			if((!$limitCSV) || we_users_util::in_workspace($idArr[$i], $limitCSV, FILE_TABLE, $db)){
 				$qfoo[] = ' Path LIKE "' . $db->escape($wsPaths[$i]) . '%" ';
 			}
 		}
 		if(!count($qfoo)){
-			return array();
+			return [];
 		}
 		$query[] = ' (' . implode(' OR ', $qfoo) . ' )';
 	}
@@ -350,7 +350,7 @@ function getPathsFromTable($table, we_database_base $db, $type = we_base_constan
 			$query[] = ' IsFolder=1 ';
 			break;
 	}
-	$out = $first ? array(0 => $first) : array();
+	$out = $first ? array(0 => $first) : [];
 
 	$db->query('SELECT ID,Path FROM ' . $db->escape($table) . (count($query) ? ' WHERE ' . implode(' AND ', $query) : '') . ' ORDER BY ' . $order);
 	while($db->next_record()){
@@ -361,7 +361,7 @@ function getPathsFromTable($table, we_database_base $db, $type = we_base_constan
 
 function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = ''){
 	$tmpArr = $arr;
-	$tmpArr2 = array();
+	$tmpArr2 = [];
 	foreach($arr as $id){
 		pushChilds($tmpArr, $id, $table, $isFolder);
 	}
@@ -411,7 +411,7 @@ function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '',
 	}
 	$db = $db ? : new DB_WE();
 	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID IN (' . (is_array($pid) ? implode(',', $pid) : intval($pid)) . ') ' . $where);
-	$todo = array();
+	$todo = [];
 	while($db->next_record()){
 		if($db->f($match) == $matchvalue){
 			$todo[] = $db->f('ID');
@@ -432,7 +432,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 		return (($tab == NAVIGATION_TABLE || (defined('NEWSLETTER_TABLE') && $tab == NEWSLETTER_TABLE)) ? '' : ' OR RestrictOwners=0 ');
 	}
 	$paths = id_to_path($ws, $tab, null, true);
-	$wsQuery = array();
+	$wsQuery = [];
 	foreach($paths as $path){
 		$parts = explode('/', $path);
 		array_shift($parts);
@@ -499,7 +499,7 @@ function p_r($val, $html = true, $useTA = false){
  */
 function t_e($type = 'warning'){
 	$inc = false;
-	$data = array();
+	$data = [];
 	$values = func_get_args();
 	switch(is_string($type) ? strtolower($type) : -1){
 		case 'error':
@@ -580,7 +580,7 @@ function weMemDebug(){
 
 function weGetCookieVariable($name){
 	$c = isset($_COOKIE['we' . session_id()]) ? $_COOKIE['we' . session_id()] : '';
-	$vals = array();
+	$vals = [];
 	if($c){
 		$parts = explode('&', $c);
 		foreach($parts as $p){
@@ -621,7 +621,7 @@ function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 }
 
 function we_convertIniSizes($in){
-	$regs = array();
+	$regs = [];
 	if(preg_match('#^([0-9]+)M$#i', $in, $regs)){
 		return 1024 * 1024 * intval($regs[1]);
 	}
@@ -710,7 +710,7 @@ function we_check_email($email){
  * @desc	returns the html element with the given attribs.attr[pass_*] is replaced by "*" to loop some
  *          attribs through the tagParser.
  */
-function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = false, $onlyStartTag = false){
+function getHtmlTag($element, $attribs = [], $content = '', $forceEndTag = false, $onlyStartTag = false){
 	require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 
 //	take values given from the tag - later from preferences.
@@ -758,7 +758,7 @@ function getHtmlTag($element, $attribs = array(), $content = '', $forceEndTag = 
  * @param array $remove
  * @desc removes all entries of $attribs, where the key from attribs is in values of $remove
  */
-function removeAttribs($attribs, array $remove = array()){
+function removeAttribs($attribs, array $remove = []){
 	foreach($remove as $r){
 		if(isset($attribs[$r])){
 			unset($attribs[$r]);
@@ -768,9 +768,9 @@ function removeAttribs($attribs, array $remove = array()){
 }
 
 function getWeFrontendLanguagesForBackend(){
-	$la = array();
+	$la = [];
 	if(!isset($GLOBALS['weFrontendLanguages'])){
-		return array();
+		return [];
 	}
 	$targetLang = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
@@ -790,7 +790,7 @@ function getVarArray($arr, $string){
 	if(!isset($arr)){
 		return false;
 	}
-	$arr_matches = array();
+	$arr_matches = [];
 	preg_match_all('/\[([^\]]*)\]/', $string, $arr_matches, PREG_PATTERN_ORDER);
 	$return = $arr;
 	foreach($arr_matches[1] as $dimension){
@@ -815,7 +815,7 @@ function CheckAndConvertISObackend($utf8data){
 
 function register_g_l_dir($dir){
 	if(empty($_SESSION['weS']['gl'])){
-		$_SESSION['weS']['gl'] = array();
+		$_SESSION['weS']['gl'] = [];
 	}
 	if(strpos($dir, $_SERVER['DOCUMENT_ROOT']) !== 0){
 		$dir = $_SERVER['DOCUMENT_ROOT'] . $dir;
@@ -850,7 +850,7 @@ function g_l($name, $specific, $omitErrors = false){
 			(!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
 //	return $name.$specific;
 //cache last accessed lang var
-	static $cache = array();
+	static $cache = [];
 //echo $name.$specific;
 	if(isset($cache['l_' . $name])){
 		$tmp = getVarArray($cache['l_' . $name], $specific);
@@ -1128,7 +1128,7 @@ function getMysqlVer($nodots = true){
 	return we_database_base::getMysqlVer($nodots);
 }
 
-function we_unserialize($string, $default = array(), $quiet = false){
+function we_unserialize($string, $default = [], $quiet = false){
 	//already unserialized
 	if(is_array($string) || is_object($string)){
 		return $string;

@@ -45,7 +45,7 @@ echo we_html_element::jsElement('
 	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 	?><table style="width:99%" class="default"><?php
-		$passed_dls = array();
+		$passed_dls = [];
 		foreach($messaging->selected_set as $key => $val){
 			echo '<tr onclick="check(\'' . $val['ID'] . '\')" style="cursor:pointer">
 		<td id="td_' . $val['ID'] . '_cb" class="defaultfont" style="width:18px;text-align:left;padding-bottom:3px;"></td>';

@@ -18,14 +18,14 @@ $checked = new weTagData_selectAttribute('checked', weTagData_selectAttribute::g
 $xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('email', false, 'newsletter', array($size, $maxlength, $value, $class, $style, $onchange), array()),
-	new weTagDataOption('htmlCheckbox', false, 'newsletter', array($class, $style, $checked), array()),
-	new weTagDataOption('htmlSelect', false, 'newsletter', array($value, $values, $class, $style), array()),
-	new weTagDataOption('firstname', false, 'newsletter', array($size, $maxlength, $value, $class, $style, $onchange), array()),
-	new weTagDataOption('lastname', false, 'newsletter', array($size, $maxlength, $value, $class, $style, $onchange), array()),
-	new weTagDataOption('salutation', false, 'newsletter', array($size, $maxlength, $value, $values, $class, $style, $onchange), array()),
-	new weTagDataOption('title', false, 'newsletter', array($size, $maxlength, $value, $values, $class, $style, $onchange), array()),
-	new weTagDataOption('listCheckbox', false, 'newsletter', array($class, $style, $checked), array()),
-	new weTagDataOption('listSelect', false, 'newsletter', array($size, $values, $class, $style), array())), false, '');
+	new weTagDataOption('email', false, 'newsletter', array($size, $maxlength, $value, $class, $style, $onchange), []),
+	new weTagDataOption('htmlCheckbox', false, 'newsletter', array($class, $style, $checked), []),
+	new weTagDataOption('htmlSelect', false, 'newsletter', array($value, $values, $class, $style), []),
+	new weTagDataOption('firstname', false, 'newsletter', array($size, $maxlength, $value, $class, $style, $onchange), []),
+	new weTagDataOption('lastname', false, 'newsletter', array($size, $maxlength, $value, $class, $style, $onchange), []),
+	new weTagDataOption('salutation', false, 'newsletter', array($size, $maxlength, $value, $values, $class, $style, $onchange), []),
+	new weTagDataOption('title', false, 'newsletter', array($size, $maxlength, $value, $values, $class, $style, $onchange), []),
+	new weTagDataOption('listCheckbox', false, 'newsletter', array($class, $style, $checked), []),
+	new weTagDataOption('listSelect', false, 'newsletter', array($size, $values, $class, $style), [])), false, '');
 
 $this->Attributes = array($size, $maxlength, $value, $values, $class, $style, $onchange, $checked, $xml);

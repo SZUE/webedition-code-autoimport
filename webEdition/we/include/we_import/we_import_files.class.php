@@ -50,7 +50,7 @@ class we_import_files{
 
 	function __construct(){
 		if(($catarray = we_base_request::_(we_base_request::STRING_LIST, 'fu_doc_categories'))){
-			$cats = array();
+			$cats = [];
 			foreach($catarray as $cat){
 				// bugfix Workarround #700
 				$cats[] = (is_numeric($cat) ?
@@ -143,7 +143,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 		));
 
 		// create Start Screen ##############################################################################
-		$parts = array();
+		$parts = [];
 		$parts = is_array($form = $fileupload->getFormParentID('we_startform')) ? array_merge($parts, array($form)) : $parts;
 		$parts = is_array($form = $fileupload->getFormSameName()) ? array_merge($parts, array($form)) : $parts;
 		$parts = is_array($form = $fileupload->getFormCategories()) ? array_merge($parts, array($form)) : $parts;
@@ -221,7 +221,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 
 	function getStep3(){
 		// create Second Screen ##############################################################################
-		$parts = array();
+		$parts = [];
 
 		if(isset($_SESSION['weS']['WE_IMPORT_FILES_ERRORs'])){
 
@@ -325,13 +325,13 @@ function next() {
 		$table->setCol(0, 0, null, $progressbar);
 		$table->setCol(0, 1, array("styke" => "text-align:right"), we_html_element::htmlDiv(array(
 				'id' => 'normButton'
-				), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', array(), 10)));
+				), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10)));
 
 		if($this->step == 3){
 			$table->setCol(0, 0, null, '');
 			$table->setCol(0, 1, array("style" => "text-align:right"), we_html_element::htmlDiv(array(
 					'id' => 'normButton'
-					), we_html_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', array(), 10)));
+					), we_html_button::position_yes_no_cancel($prevButton2, null, $closeButton, 10, '', [], 10)));
 		}
 
 		$content = $table->getHtml();

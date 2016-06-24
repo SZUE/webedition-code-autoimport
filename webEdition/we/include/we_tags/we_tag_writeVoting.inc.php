@@ -24,7 +24,7 @@
  */
 function we_tag_writeVoting(array $attribs){
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-	$additionalFields = weTag_getAttribute('additionalfields', $attribs, array(), we_base_request::INTLISTA);
+	$additionalFields = weTag_getAttribute('additionalfields', $attribs, [], we_base_request::INTLISTA);
 	$allowredirect = weTag_getAttribute("allowredirect", $attribs, false, we_base_request::BOOL);
 	$deletesessiondata = weTag_getAttribute("deletesessiondata", $attribs, false, we_base_request::BOOL);
 	$writeto = weTag_getAttribute("writeto", $attribs, "voting", we_base_request::STRING);
@@ -32,19 +32,19 @@ function we_tag_writeVoting(array $attribs){
 	$pattern = '/_we_voting_answer_(' . ($id ? : '[0-9]+') . ')_?([0-9]+)?/';
 
 	$vars = implode(',', array_keys($_REQUEST));
-	$voting = $matches = array();
+	$voting = $matches = [];
 	if(preg_match_all($pattern, $vars, $matches)){
 		foreach($matches[0] as $key => $value){
 			$id = $matches[1][$key];
 			if(!isset($voting[$id]) || !is_array($voting[$id])){
-				$voting[$id] = array();
+				$voting[$id] = [];
 			}
 			if(($dat = we_base_request::_(we_base_request::HTML, $value)) !== false && $dat !== ''){// Bug #6118: !empty geht hier nicht, da es die 0 nicht durch lässt
 				$voting[$id][] = $dat;
 			}
 		}
 	}
-	$addFields = array();
+	$addFields = [];
 	foreach($additionalFields as $field){
 		if(($dat = we_base_request::_(we_base_request::HTML, $field)) !== false){
 			$addFields[$field] = $dat;

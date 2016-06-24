@@ -25,8 +25,7 @@
  * map needed variables for the program here, for example map version number
  */
 
-$LU_Variables = array(
-	// always needed variables
+$LU_Variables = [
 	'clientVersion' => WE_VERSION,
 	'clientSubVersion' => WE_SVNREV,
 	'clientVersionName' => (defined('WE_VERSION_NAME')) ? WE_VERSION_NAME : '',
@@ -54,14 +53,14 @@ $LU_Variables = array(
 	'clientSessionName' => session_name(),
 	'clientSessionID' => session_id(),
 	'testUpdate' => empty($_SESSION['weS']['testUpdate']) ? 0 : $_SESSION['weS']['testUpdate'],
-);
+];
 
 // These request variables listed here are NOT submitted to the server - fill it
 // to keep requests small
-$LU_IgnoreRequestParameters = array(
+$LU_IgnoreRequestParameters = [
 	'we_mode',
 	'cookie',
 	'treewidth_main',
 	session_name(),
 	'we' . session_id()
-);
+ ];

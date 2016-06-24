@@ -42,10 +42,10 @@ abstract class we_rpc_cmd{
 	const STATUS_NO_VIEW = 8;
 
 	protected $CmdShell;
-	protected $ExtraViews = array();
-	protected $Permissions = array();
+	protected $ExtraViews = [];
+	protected $Permissions = [];
 	protected $Status = self::STATUS_OK;
-	protected $Parameters = array();
+	protected $Parameters = [];
 
 	function executeRpcCmd($shell){
 		$this->checkSession();

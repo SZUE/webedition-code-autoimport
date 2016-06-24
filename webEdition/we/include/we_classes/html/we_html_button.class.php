@@ -88,7 +88,7 @@ abstract class we_html_button{
 	 * @param boolean $important
 	 * @static
 	 */
-	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = '', $dimensions = array()){
+	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = '', $dimensions = []){
 		// $dimensions: to be used only when calling this function from app
 		$style = isset($dimensions['width']) || isset($dimensions['height']) ? ' style="' . (isset($dimensions['width']) ? 'width:' . $dimensions['width'] . 'px;' : '') . (isset($dimensions['height']) ? 'height:' . $dimensions['height'] . 'px;' : '') . '"' : '';
 
@@ -116,7 +116,7 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, $dimensions = array()){
+	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, $dimensions = []){
 		$cmd = '';
 
 		// Check width
@@ -244,7 +244,7 @@ abstract class we_html_button{
 	 * @return     string
 	 */
 	//FIXME: this function is used at many places where yes buttons contains more than one button!!
-	static function position_yes_no_cancel($yes_button, $no_button = '', $cancel_button = '', $gap = 10, $align = '', $attribs = array(), $aligngap = 0){
+	static function position_yes_no_cancel($yes_button, $no_button = '', $cancel_button = '', $gap = 10, $align = '', $attribs = [], $aligngap = 0){
 		//	Create default attributes for table
 		$align = /* $align ? 'right' : */ 'right';
 		$attr = array(

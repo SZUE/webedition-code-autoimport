@@ -30,9 +30,9 @@ class we_selector_query{
 	 * VARIABLES
 	 * *********************************************************************** */
 	private $db;
-	var $result = array();
+	var $result = [];
 	var $fields;
-	var $condition = array();
+	var $condition = [];
 
 	/*	 * ***********************************************************************
 	 * CONSTRUCTOR
@@ -86,7 +86,7 @@ class we_selector_query{
 
 		$types = array_unique(array_filter($types));
 
-		$q = array();
+		$q = [];
 		foreach($types as $type){
 			$type = str_replace(" ", "", $type);
 			if($type == we_base_ContentTypes::FOLDER){
@@ -159,7 +159,7 @@ class we_selector_query{
 
 		$types = array_unique($types);
 
-		$q = array();
+		$q = [];
 		foreach($types as $type){
 			$type = str_replace(" ", "", $type);
 			if($type == we_base_ContentTypes::FOLDER){
@@ -281,7 +281,7 @@ class we_selector_query{
 	 */
 	function getResult(){
 		$i = 0;
-		$result = array();
+		$result = [];
 		while($this->db->next_record()){
 			foreach($this->fields as $val){
 				$result[$i][$val] = htmlspecialchars_decode($this->db->f($val));
@@ -345,7 +345,7 @@ class we_selector_query{
 		if(get_ws($table)){
 			$userExtraSQL .= getWsQueryForSelector($table);
 		} else if(defined('OBJECT_FILES_TABLE') && $table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm('ADMINISTRATOR'))){
-			$wsQuery = array();
+			$wsQuery = [];
 			$ac = we_users_util::getAllowedClasses($this->db);
 			foreach($ac as $cid){
 				$path = id_to_path($cid, OBJECT_TABLE);

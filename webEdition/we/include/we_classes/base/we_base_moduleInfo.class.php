@@ -53,7 +53,7 @@ abstract class we_base_moduleInfo{
 	 */
 	static function getIntegratedModules($active){
 		self::init();
-		$retArr = array();
+		$retArr = [];
 
 		foreach(self::$we_available_modules as $key => $modInfo){
 			if(self::isActive($key) == $active){

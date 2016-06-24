@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 include_once ('define.conf.php');
-$toolTables = array();
+$toolTables = [];
 
 // additional table can be specified here
 // $toolTables['tool_table_toolfactory_1'] = '';

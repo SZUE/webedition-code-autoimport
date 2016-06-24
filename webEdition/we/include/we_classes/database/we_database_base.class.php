@@ -30,7 +30,7 @@ if(!defined('DB_DATABASE')){
 }
 
 abstract class we_database_base{
-	private static $pool = array(); //fixme: don't repool temporary tables - they require the same connection
+	private static $pool = []; //fixme: don't repool temporary tables - they require the same connection
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
 	//states if we have lost connection and try again
@@ -44,7 +44,7 @@ abstract class we_database_base{
 	/*	 * true, if first query failed due to some server conditions */
 
 	/** result array */
-	public $Record = array();
+	public $Record = [];
 
 	/** current row number */
 	public $Row = 0;
@@ -213,7 +213,7 @@ abstract class we_database_base{
 	 */
 	public function __sleep(){
 		$this->close();
-		return array();
+		return [];
 	}
 
 	/**
@@ -312,9 +312,7 @@ abstract class we_database_base{
 
 			for($i = 0; $i < strlen($queryToCheck); $i++){
 				$char = $queryToCheck[$i];
-				$active = array_filter($quotes);
-				//support old php 5.3
-				$active = !empty($active);
+				$active = !empty(array_filter($quotes));
 				switch($char){
 					case '/':
 						if(!$active && $queryToCheck[$i + 1] === '*'){
@@ -412,7 +410,7 @@ abstract class we_database_base{
 			$this->hasTempTable = true;
 			$repool = false;
 		}
-		$matches = array();
+		$matches = [];
 		if(preg_match('/^[[:space:]]*alter[[:space:]]*table[[:space:]]*(`?([[:alpha:]]|[[:punct:]])+`?)[[:space:]]*(add|change|modify|drop)/i', $Query_String, $matches)){
 			$this->_query('ANALYZE TABLE `' . $matches[1] . '`');
 			$repool = true;
@@ -485,7 +483,7 @@ abstract class we_database_base{
 		$this->hasTempTable = false;
 		$this->repool();
 		$this->Query_ID = 0;
-		$this->Record = array();
+		$this->Record = [];
 	}
 
 	/** shorthand notation for num_rows */
@@ -522,7 +520,7 @@ abstract class we_database_base{
 	 * @return array in order of the query, all fields are added with their name, having one name per row
 	 */
 	public function fieldNames(){
-		$res = array();
+		$res = [];
 		if(!($this->Query_ID)){
 			return $res;
 		}
@@ -540,7 +538,7 @@ abstract class we_database_base{
 	 */
 	public function table_names($like = ''){
 		$this->query('SHOW TABLES' . (($like != '') ? ' LIKE "' . $like . '"' : ''));
-		$return = array();
+		$return = [];
 		while($this->next_record()){
 			$return[] = array(
 				"table_name" => $this->f(0),
@@ -614,7 +612,7 @@ abstract class we_database_base{
 	 * @return array
 	 */
 	public function getAll($single = false, $resultType = MYSQL_ASSOC){
-		$ret = array();
+		$ret = [];
 		while($this->next_record($resultType)){
 			$ret[] = ($single ? current($this->Record) : $this->Record);
 		}
@@ -622,7 +620,7 @@ abstract class we_database_base{
 	}
 
 	public function getAllFirst($useArray = true, $resultType = MYSQL_NUM){
-		$ret = array();
+		$ret = [];
 		while($this->next_record($resultType)){
 			$ret[array_shift($this->Record)] = ($useArray ? $this->Record : current($this->Record));
 		}
@@ -645,7 +643,7 @@ abstract class we_database_base{
 	 * @param forValues set to true if used in VALUES (...)
 	 */
 	static function arraySetter(array $arr, $imp = ',', $forValues = false){
-		$ret = array();
+		$ret = [];
 		foreach($arr as $key => $val){
 			if($key === ''){
 				continue;
@@ -668,7 +666,7 @@ abstract class we_database_base{
 	/* public: return table metadata */
 
 	public function metadata($table = '', $full = false){
-		$res = array();
+		$res = [];
 
 		/*
 		 * Due to compatibility problems with Table we changed the behavior
@@ -756,7 +754,7 @@ abstract class we_database_base{
 			return false;
 		}
 		if(is_array($table)){
-			$query = array();
+			$query = [];
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
 						$value . ' ' . $mode :
@@ -841,7 +839,7 @@ abstract class we_database_base{
 	 * @param array $keys
 	 * @return type
 	 */
-	public function addTable($tab, array $cols, array $keys = array(), $engine = 'MYISAM', $temporary = false){
+	public function addTable($tab, array $cols, array $keys = [], $engine = 'MYISAM', $temporary = false){
 		if(!is_array($cols) || empty($cols)){
 			t_e('create table needs an array');
 			return;
@@ -850,7 +848,7 @@ abstract class we_database_base{
 			$defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value');
 			$engine = (in_array(strtolower($defaultEngine), array('myisam', 'aria')) ? $defaultEngine : 'myisam');
 		}
-		$cols_sql = array();
+		$cols_sql = [];
 		foreach($cols as $name => $type){
 			$cols_sql[] = "`" . $name . "` " . $type;
 		}
@@ -913,7 +911,7 @@ abstract class we_database_base{
 	}
 
 	public function getTableKeyArray($tab){
-		$myarray = array();
+		$myarray = [];
 		$zw = $this->getTableCreateArray($tab);
 		if(!$zw){
 			return false;
@@ -930,12 +928,12 @@ abstract class we_database_base{
 		return $myarray;
 	}
 
-	public function getPrimaryKeys($tab, array $create = array()){
+	public function getPrimaryKeys($tab, array $create = []){
 		$zw = $create ? : $this->getTableCreateArray($tab);
 		if(!$zw){
 			return false;
 		}
-		$matches = $mm = array();
+		$matches = $mm = [];
 		foreach($zw as $v){
 			if(preg_match('|PRIMARY KEY\s*\((.*)\)|', $v, $matches)){//be greedy
 				$matches = explode(',', $matches[1]);
@@ -1122,9 +1120,9 @@ abstract class we_database_base{
 	 * @return array
 	 */
 	public function getHash($query = '', $resultType = MYSQL_ASSOC){
-		static $cache = array();
+		static $cache = [];
 		if(!$query){
-			$cache = array();
+			$cache = [];
 			return $cache;
 		}
 		$hash = $resultType . md5($query, true);
@@ -1132,7 +1130,7 @@ abstract class we_database_base{
 			return $cache[$hash];
 		}
 		$this->query($query);
-		$data = ($this->next_record($resultType) ? $this->Record : array());
+		$data = ($this->next_record($resultType) ? $this->Record : []);
 		if($data){
 			$cache[$hash] = $data;
 		}

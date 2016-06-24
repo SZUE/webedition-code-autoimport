@@ -199,7 +199,7 @@ function we_tag_include(array $attribs){//FIXME: include doesn't work in editmod
 	if(!empty($GLOBALS['we']['backVars'])){
 		end($GLOBALS['we']['backVars']);
 		$we_unique = key($GLOBALS['we']['backVars']) + 1;
-		$GLOBALS['we']['backVars'][$we_unique] = array();
+		$GLOBALS['we']['backVars'][$we_unique] = [];
 	} else {
 		$we_unique = 1;
 		$GLOBALS['we']['backVars'] = array(

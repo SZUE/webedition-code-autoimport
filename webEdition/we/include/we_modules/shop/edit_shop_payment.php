@@ -50,13 +50,13 @@ for($i = 0; $i <= 18; $i++){
 
 $row = 0;
 //hier
-$Parts = array();
+$Parts = [];
 
 if(defined('CUSTOMER_TABLE')){
 	$htmlTable = new we_html_table(array('class' => 'default withSpace', 'width' => "100%"), 4, 3);
 	$htmlTable->setCol($row++, 0, array('colspan' => 4, 'class' => 'defaultfont'), g_l('modules_shop', '[FormFieldsTxt]'));
 
-	$custfields = array();
+	$custfields = [];
 
 
 	$DB_WE->query("SHOW FIELDS FROM " . CUSTOMER_TABLE);

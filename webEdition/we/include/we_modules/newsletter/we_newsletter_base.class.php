@@ -38,7 +38,7 @@ class we_newsletter_base{
 
 	var $db;
 	var $table;
-	var $persistents = array();
+	var $persistents = [];
 
 	/**
 	 * Default Constructor
@@ -78,7 +78,7 @@ class we_newsletter_base{
 	 * save entry in database
 	 */
 	function save(){
-		$sets = $wheres = array();
+		$sets = $wheres = [];
 		foreach(array_keys($this->persistents) as $val){
 			$sets[$val] = $this->$val;
 		}
@@ -135,19 +135,19 @@ class we_newsletter_base{
 
 	static function get_domain($email){
 		$exp = "/[[:space:]\<_\.0-9A-Za-z-]+@([0-9a-zA-Z][0-9a-zA-Z-\.]+)(\>)?/";
-		$out = array();
+		$out = [];
 		if(preg_match_all($exp, $email, $out, PREG_PATTERN_ORDER)){
 			return $out[1][0];
 		}
 		return false;
 	}
 
-	function getEmailsFromList($emails, $emails_only = 0, $group = 0, array $blocks = array()){
+	function getEmailsFromList($emails, $emails_only = 0, $group = 0, array $blocks = []){
 		$arr = explode("\n", $emails);
 		if(!$arr){
-			return array();
+			return [];
 		}
-		$ret = array();
+		$ret = [];
 		$default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail";', '', new DB_WE());
 
 		foreach($arr as $row){
@@ -164,13 +164,13 @@ class we_newsletter_base{
 		return $ret;
 	}
 
-	function getEmailsFromExtern($files, $emails_only = 0, $group = 0, array $blocks = array()){
+	function getEmailsFromExtern($files, $emails_only = 0, $group = 0, array $blocks = []){
 		$arr = makeArrayFromCSV($files);
 		if(!$arr){
-			return array();
+			return [];
 		}
 		$default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"');
-		$ret = array();
+		$ret = [];
 		foreach($arr as $file){
 			if(strpos($file, '..') === false){
 				$data = str_replace("\r\n", "\n", we_base_file::load($_SERVER['DOCUMENT_ROOT'] . $file));
@@ -213,9 +213,9 @@ class we_newsletter_base{
 	function getEmailsFromExtern2($files, $emails_only, $group, array $blocks, $status, &$emailkey){
 		$arr = makeArrayFromCSV($files);
 		if(!$arr){
-			return array();
+			return [];
 		}
-		$ret = array();
+		$ret = [];
 		$countEMails = 0;
 		$default_html = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="newsletter" AND pref_name="default_htmlmail"');
 		foreach($arr as $file){

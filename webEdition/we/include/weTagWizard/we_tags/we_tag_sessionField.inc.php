@@ -6,7 +6,7 @@ $this->NeedsEndTag = false;
 $this->Module = 'customer';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 if(defined('CUSTOMER_TABLE')){
-	$name = new weTagData_sqlColAttribute('name', CUSTOMER_TABLE, true, array(), '');
+	$name = new weTagData_sqlColAttribute('name', CUSTOMER_TABLE, true, [], '');
 	$size = new weTagData_textAttribute('size', false, '');
 	$maxlength = new weTagData_textAttribute('maxlength', false, '');
 	$rows = new weTagData_textAttribute('rows', false, '');

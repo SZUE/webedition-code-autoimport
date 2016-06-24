@@ -67,7 +67,7 @@ function menuaction(cmd) {
 
 	function getHTMLMenu($old = true){
 		$out = '<ul id="nav">';
-		$menus = array();
+		$menus = [];
 
 		foreach($this->entries as $id => $e){
 			if($e['parent'] == 0){
@@ -96,7 +96,7 @@ function menuaction(cmd) {
 	}
 
 	function h_search($men, $p){
-		$container = array();
+		$container = [];
 		foreach($men as $id => $e){
 			if($e["parent"] == $p){
 				$container[$id] = $e;

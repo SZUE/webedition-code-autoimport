@@ -42,10 +42,10 @@ class rpcCopyNavigationFolderCmd extends we_rpc_cmd{
 
 			$folders = array($targetFolderID);
 			$mapedId = array($sourceFolderID => array($targetFolderID, $targetFolder));
-			$itemsQuery = array();
+			$itemsQuery = [];
 
 			foreach($result as $row){
-				$querySet = array();
+				$querySet = [];
 				foreach($row as $key => $val){
 					switch($key){
 						case 'ID' :

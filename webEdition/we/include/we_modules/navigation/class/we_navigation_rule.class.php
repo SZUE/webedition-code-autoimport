@@ -49,7 +49,7 @@ class we_navigation_rule extends we_base_model{
 		'WorkspaceID' => we_base_request::INT
 	);
 
-	public function __construct($persData = array()){
+	public function __construct($persData = []){
 		parent::__construct(NAVIGATION_RULE_TABLE, null, false, true);
 		if($persData){
 			foreach(array_keys($this->persistent_slots) as $val){
@@ -92,7 +92,7 @@ class we_navigation_rule extends we_base_model{
 
 	function processVariables(){
 		if(($name = we_base_request::_(we_base_request::STRING, 'CategoriesControl')) && ($cnt = we_base_request::_(we_base_request::INT, 'CategoriesCount')) !== false){
-			$categories = array();
+			$categories = [];
 
 			for($i = 0; $i < $cnt; $i++){
 				if(($cat = we_base_request::_(we_base_request::STRING, $name . '_variant0_' . $name . '_item' . $i)) !== false){

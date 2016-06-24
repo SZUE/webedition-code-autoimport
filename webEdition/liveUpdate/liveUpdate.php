@@ -44,7 +44,7 @@ if(isset($_REQUEST['update_cmd'])){
 	/*
 	 * Gather all needed Variables for the update-Request
 	 */
-	$parameters = array();
+	$parameters = [];
 	foreach($LU_ParameterNames as $parameterName){
 		if(isset($_REQUEST[$parameterName])){
 			$parameters[$parameterName] = $_REQUEST[$parameterName];
@@ -88,7 +88,7 @@ if(isset($_REQUEST['update_cmd'])){
 	 */
 
 	// add all other request parameters to the request
-	$reqVars = array();
+	$reqVars = [];
 	foreach($_REQUEST as $key => $value){
 		if(!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters) && !array_key_exists($key, $_COOKIE)){
 			$reqVars[$key] = $value;

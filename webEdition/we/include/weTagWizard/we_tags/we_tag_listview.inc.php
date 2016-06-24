@@ -123,7 +123,7 @@ $customers = (defined('CUSTOMER_TABLE') ? new weTagData_textAttribute('customers
 $id = new weTagData_textAttribute('id', false, '');
 $predefinedSQL = new weTagData_textAttribute('predefinedSQL', false, '');
 $numorder = new weTagData_selectAttribute('numorder', weTagData_selectAttribute::getTrueFalse(), false, '');
-$locales = array();
+$locales = [];
 foreach($GLOBALS["weFrontendLanguages"] as $lv){
 	$locales[] = new weTagDataOption($lv);
 }
@@ -142,20 +142,20 @@ $showself = new weTagData_selectAttribute('showself', weTagData_selectAttribute:
 $orderid = new weTagData_textAttribute('orderid', false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('-', false, '', array(), array()),
-	new weTagDataOption('document', false, '', array($name, $doctype, $categories, $catOr, $rows, $cols, $order_document, $desc, $offset, $languages, $searchable, $workspaceID_document, $cfilter, $recursive, $customers, $contenttypes, $id, $calendar, $numorder, $categoryids, $condition, $hidedirindex), array()),
-	new weTagDataOption('search', false, '', array($name, $doctype, $categories, $catOr, $languages, $rows, $cols, $order_search, $desc, $casesensitive, $classid, $workspaceID_document, $cfilter, $numorder, $triggerid, $objectseourls, $hidedirindex), array()),
-	new weTagDataOption('category', false, '', array($name, $categories, $rows, $cols, $order_category, $desc, $offset, $parentid, $parentidname, $categoryids), array()),
-	new weTagDataOption('object', false, '', array($name, $categories, $catOr, $rows, $cols, $order_document, $desc, $offset, $classid, $condition, $triggerid, $languages, $searchable, $workspaceID_object, $cfilter, $docid, $customers, $id, $calendar, $predefinedSQL, $categoryids, $objectseourls, $hidedirindex), array()),
-	new weTagDataOption('multiobject', false, '', array($name, $categories, $catOr, $rows, $cols, $order_document, $desc, $offset, $classid, $condition, $triggerid, $languages, $searchable, $cfilter, $calendar, $objectseourls, $hidedirindex), array()),
-	new weTagDataOption('collectionitems', false, 'collection', array($collectionid, $name, $doctype, $categories, $catOr, $rows, $cols, $order_document, $desc, $offset, $languages, $searchable, $workspaceID_document, $cfilter, $recursive, $customers, $contenttypes, $calendar, $numorder, $categoryids, $condition, $hidedirindex), array()),
-	new weTagDataOption('banner', false, 'banner', array($name, $rows, $cols, $order_banner, $custBanner), array()),
-	new weTagDataOption('variant', false, '', array($name, $defaultname, $documentid, $objectid, $objectseourls, $hidedirindex), array()),
-	new weTagDataOption('customer', false, 'customer', array($name, $rows, $cols, $order_customer, $desc, $offset, $condition, $docid), array()),
-	new weTagDataOption('onlinemonitor', false, 'customer', array($name, $rows, $cols, $order_onlinemonitor, $desc, $offset, $condition, $docid, $lastaccesslimit, $lastloginlimit), array()),
-	new weTagDataOption('languagelink', false, '', array($name, $rows, $cols, $order_languagelink, $desc, $offset, $pagelanguage, $showself, $objectseourls, $hidedirindex), array()),
-	new weTagDataOption('order', false, '', array($name, $rows, $cols, $order_document, $desc, $offset, $condition, $docid), array()),
-	new weTagDataOption('orderitem', false, 'shop', array($name, $rows, $cols, $order_document, $desc, $offset, $condition, $docid, $orderid), array()),
+	new weTagDataOption('-', false, '', [], []),
+	new weTagDataOption('document', false, '', array($name, $doctype, $categories, $catOr, $rows, $cols, $order_document, $desc, $offset, $languages, $searchable, $workspaceID_document, $cfilter, $recursive, $customers, $contenttypes, $id, $calendar, $numorder, $categoryids, $condition, $hidedirindex), []),
+	new weTagDataOption('search', false, '', array($name, $doctype, $categories, $catOr, $languages, $rows, $cols, $order_search, $desc, $casesensitive, $classid, $workspaceID_document, $cfilter, $numorder, $triggerid, $objectseourls, $hidedirindex), []),
+	new weTagDataOption('category', false, '', array($name, $categories, $rows, $cols, $order_category, $desc, $offset, $parentid, $parentidname, $categoryids), []),
+	new weTagDataOption('object', false, '', array($name, $categories, $catOr, $rows, $cols, $order_document, $desc, $offset, $classid, $condition, $triggerid, $languages, $searchable, $workspaceID_object, $cfilter, $docid, $customers, $id, $calendar, $predefinedSQL, $categoryids, $objectseourls, $hidedirindex), []),
+	new weTagDataOption('multiobject', false, '', array($name, $categories, $catOr, $rows, $cols, $order_document, $desc, $offset, $classid, $condition, $triggerid, $languages, $searchable, $cfilter, $calendar, $objectseourls, $hidedirindex), []),
+	new weTagDataOption('collectionitems', false, 'collection', array($collectionid, $name, $doctype, $categories, $catOr, $rows, $cols, $order_document, $desc, $offset, $languages, $searchable, $workspaceID_document, $cfilter, $recursive, $customers, $contenttypes, $calendar, $numorder, $categoryids, $condition, $hidedirindex), []),
+	new weTagDataOption('banner', false, 'banner', array($name, $rows, $cols, $order_banner, $custBanner), []),
+	new weTagDataOption('variant', false, '', array($name, $defaultname, $documentid, $objectid, $objectseourls, $hidedirindex), []),
+	new weTagDataOption('customer', false, 'customer', array($name, $rows, $cols, $order_customer, $desc, $offset, $condition, $docid), []),
+	new weTagDataOption('onlinemonitor', false, 'customer', array($name, $rows, $cols, $order_onlinemonitor, $desc, $offset, $condition, $docid, $lastaccesslimit, $lastloginlimit), []),
+	new weTagDataOption('languagelink', false, '', array($name, $rows, $cols, $order_languagelink, $desc, $offset, $pagelanguage, $showself, $objectseourls, $hidedirindex), []),
+	new weTagDataOption('order', false, '', array($name, $rows, $cols, $order_document, $desc, $offset, $condition, $docid), []),
+	new weTagDataOption('orderitem', false, 'shop', array($name, $rows, $cols, $order_document, $desc, $offset, $condition, $docid, $orderid), []),
 	), false, '');
 
 $this->Attributes = array($MultiSelector, $collectionid, $name, $doctype, $categories, $catOr, $rows, $cols, $order_document, $order_search, $order_category,

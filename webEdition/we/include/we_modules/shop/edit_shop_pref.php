@@ -66,8 +66,8 @@ if(($format = we_base_request::_(we_base_request::RAW, "format"))){ //	save data
 			'pref_value' => we_base_request::_(we_base_request::STRING, "waehr") . '|' . we_base_request::_(we_base_request::STRING, "mwst") . '|' . $format . '|' . we_base_request::_(we_base_request::STRING, "classID", 0) . '|' . we_base_request::_(we_base_request::STRING, "pag")
 	)));
 
-	$fields['customerFields'] = we_base_request::_(we_base_request::STRING, 'orderfields', array());
-	$fields['orderCustomerFields'] = we_base_request::_(we_base_request::STRING, 'ordercustomerfields', array());
+	$fields['customerFields'] = we_base_request::_(we_base_request::STRING, 'orderfields', []);
+	$fields['orderCustomerFields'] = we_base_request::_(we_base_request::STRING, 'ordercustomerfields', []);
 
 	// check if field exists
 	$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
@@ -117,14 +117,14 @@ $htmlTable = new we_html_table(array('class' => 'default withBigSpace', 'width' 
 //	NumberFormat - currency and taxes
 $feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
 
-$fe = (isset($feldnamen[3]) ? explode(',', $feldnamen[3]) : array());
+$fe = (isset($feldnamen[3]) ? explode(',', $feldnamen[3]) : []);
 
 if(!isset($feldnamen[4])){
 	$feldnamen[4] = '-';
 }
 
 $row = 0;
-//we_html_tools::htmlSelectCountry('weShopVatCountry', '', 1, array(), false, array('id' => 'weShopVatCountry'), 200)
+//we_html_tools::htmlSelectCountry('weShopVatCountry', '', 1, [], false, array('id' => 'weShopVatCountry'), 200)
 
 $htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][use_shopCats]'));
 $htmlTable->setCol($row, 1, array('style' => 'width:10px;'));
@@ -163,7 +163,7 @@ if(defined('OBJECT_TABLE')){
 $DB_WE->query('SHOW FIELDS FROM ' . CUSTOMER_TABLE);
 
 $extraIgnore = explode(',', we_shop_shop::ignoredExtraShowFields);
-$showFields = array();
+$showFields = [];
 
 while($DB_WE->next_record()){
 	if(!in_array($DB_WE->f('Field'), $ignoreFields)){
@@ -190,10 +190,10 @@ if(($fields = we_unserialize($entry))){
 }
 
 $htmlTable->setCol($row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][customerFields]'));
-$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, (count($showFields) > 5 ? 5 : count($showFields)), implode(',', $fields['customerFields']), true, array(), 'value', 280));
+$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('orderfields[]', $showFields, (count($showFields) > 5 ? 5 : count($showFields)), implode(',', $fields['customerFields']), true, [], 'value', 280));
 
 $htmlTable->setCol($row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][orderCustomerFields]'));
-$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, min(count($orderFields), 5), implode(',', $fields['orderCustomerFields']), true, array(), 'value', 280));
+$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('ordercustomerfields[]', $orderFields, min(count($orderFields), 5), implode(',', $fields['orderCustomerFields']), true, [], 'value', 280));
 
 $htmlTable->setCol($row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[preferences][CountryField]'));
 

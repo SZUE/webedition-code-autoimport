@@ -133,7 +133,7 @@ if($isTempl){
 					html_entity_decode(urldecode($newDoc['documentElements']), ENT_QUOTES) :
 					$newDoc['documentElements'])
 			) :
-			array());
+			[]);
 	$contentNew = '<textarea style="width:99%;height:99%">' . ($nDocElements ? $nDocElements['data']['dat'] : '') . '</textarea>';
 }
 if(!empty($oldDoc) && !($isObj || $isTempl)){
@@ -145,7 +145,7 @@ if(!empty($oldDoc) && $isTempl){
 					html_entity_decode(urldecode($oldDoc['documentElements']), ENT_QUOTES) :
 					$oldDoc['documentElements'])
 			) :
-			array());
+			[]);
 	$contentOld = '<textarea style="width:99%;height:99%">' . ($oDocElements ? $oDocElements['data']['dat'] : '') . '</textarea>';
 }
 $versions_time_days = new we_html_select(array(
@@ -242,7 +242,7 @@ if($newDoc['documentElements']){
 			$newDoc['documentElements'])
 	);
 } else {
-	$newDocElements = array();
+	$newDocElements = [];
 }
 
 if(isset($oldDoc['documentElements'])){
@@ -252,7 +252,7 @@ if(isset($oldDoc['documentElements'])){
 				$oldDoc['documentElements'])
 		);
 	} else {
-		$oldDocElements = array();
+		$oldDocElements = [];
 	}
 }
 if($newDocElements){
@@ -314,7 +314,7 @@ if($newDocElements){
 		if($pre){
 			$oldVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $oldVal)));
 			$newVal = explode("\n", str_replace("\r", "\n", str_replace("\r\n", "\n", $newVal)));
-			$diff = new Horde_Text_Diff('Native', array(($oldVersion ? $oldVal : array()), is_array($newVal) ? $newVal : array()));
+			$diff = new Horde_Text_Diff('Native', array(($oldVersion ? $oldVal : []), is_array($newVal) ? $newVal : []));
 			$renderer = new Horde_Text_Diff_Renderer_Inline(array('ins_prefix' => '<span class="insA">+<span class="bold insB">', 'ins_suffix' => '</span>+</span>',
 				'del_prefix' => '<span class="delA">-<span class="bold delB">-', 'del_suffix' => '</span>-</span>',));
 
@@ -350,9 +350,9 @@ if($newDoc['documentScheduler']){
 				html_entity_decode(urldecode($newDoc['documentScheduler']), ENT_QUOTES) :
 				$newDoc['documentScheduler'])
 		) :
-		array();
+		[];
 } else {
-	$newDocScheduler = array();
+	$newDocScheduler = [];
 }
 if(isset($oldDoc['documentScheduler'])){
 	if($oldDoc['documentScheduler']){
@@ -360,9 +360,9 @@ if(isset($oldDoc['documentScheduler'])){
 					html_entity_decode(urldecode($oldDoc['documentScheduler']), ENT_QUOTES) :
 					$oldDoc['documentScheduler'])
 			) :
-			array();
+			[];
 	} else {
-		$oldDocScheduler = array();
+		$oldDocScheduler = [];
 	}
 }
 
@@ -463,7 +463,7 @@ if($newDoc['documentCustomFilter']){
 			$newDoc['documentCustomFilter'])
 	);
 } else {
-	$newCustomFilter = array();
+	$newCustomFilter = [];
 }
 if(isset($oldDoc['documentCustomFilter'])){
 	if($oldDoc['documentCustomFilter']){
@@ -472,7 +472,7 @@ if(isset($oldDoc['documentCustomFilter'])){
 				$oldDoc['documentCustomFilter'])
 		);
 	} else {
-		$oldCustomFilter = array();
+		$oldCustomFilter = [];
 	}
 }
 

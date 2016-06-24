@@ -52,7 +52,7 @@ class we_fragment_base{
 	 * Array of the data.
 	 * @var        array
 	 */
-	var $alldata = array();
+	var $alldata = [];
 
 	/**
 	 * Data for the current task.
@@ -88,7 +88,7 @@ class we_fragment_base{
 	 * @param      int $bodyAttributes
 	 * @param      array $initdata
 	 */
-	public function __construct($name, $taskPerFragment, $pause = 1, array $bodyAttributes = array(), $initdata = ""){
+	public function __construct($name, $taskPerFragment, $pause = 1, array $bodyAttributes = [], $initdata = ""){
 		$this->name = $name;
 		$this->taskPerFragment = $taskPerFragment;
 		$this->pause = $pause;
@@ -134,7 +134,7 @@ class we_fragment_base{
 	 *
 	 * @param      array $attributes
 	 */
-	function printBodyTag(array $attributes = array()){
+	function printBodyTag(array $attributes = []){
 		$attr = "";
 		foreach($attributes as $k => $v){
 			$attr .= " $k=\"$v\"";
@@ -147,9 +147,9 @@ class we_fragment_base{
 		$nextTask = $this->currentTask + $this->taskPerFragment;
 		$tmp = $_REQUEST;
 		$tmp['fr_' . $this->name . '_ct'] = ($nextTask);
-		$tail = defined('PHP_QUERY_RFC3986') ? http_build_query($tmp, null, '&', PHP_QUERY_RFC3986) : http_build_query($tmp, null, '&');
+		$tail = http_build_query($tmp, null, '&', PHP_QUERY_RFC3986);
 
-		$onload = "document.location='" . $_SERVER["SCRIPT_NAME"] . '?' . $tail . "';";
+		$onload = "document.location='" . $_SERVER['SCRIPT_NAME'] . '?' . $tail . "';";
 
 		$onload = ($this->pause ?
 				'setTimeout(function(){' . $onload . '},' . $this->pause . ');' :

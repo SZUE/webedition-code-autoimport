@@ -26,7 +26,7 @@
 
 class we_banner_view extends we_modules_view{
 	// settings array; format settings[setting_name]=settings_value
-	var $settings = array();
+	var $settings = [];
 	//default banner
 	var $banner;
 	//wat page is currentlly displed 0-properties(default);1-stat;
@@ -35,7 +35,7 @@ class we_banner_view extends we_modules_view{
 	var $FilterDate = -1;
 	var $FilterDateEnd = -1;
 	var $Order = "views";
-	var $pageFields = array();
+	var $pageFields = [];
 	var $uid;
 
 	public function __construct($frameset){
@@ -45,7 +45,7 @@ class we_banner_view extends we_modules_view{
 		$this->settings = $this->getSettings();
 		$this->pageFields[we_banner_banner::PAGE_PROPERTY] = array("Text", "ParentID", "bannerID", "bannerUrl", "bannerIntID", "IntHref", "IsDefault", "IsActive", "StartOk", "EndOk", "StartDate", "EndDate");
 		$this->pageFields[we_banner_banner::PAGE_PLACEMENT] = array("DoctypeIDs", "TagName");
-		$this->pageFields[we_banner_banner::PAGE_STATISTICS] = array();
+		$this->pageFields[we_banner_banner::PAGE_STATISTICS] = [];
 		$this->uid = "ba_" . md5(uniqid(__FILE__, true));
 	}
 
@@ -177,7 +177,7 @@ class we_banner_view extends we_modules_view{
 				);
 				break;
 			default:
-				$parts = array();
+				$parts = [];
 		}
 
 		$out.= we_html_multiIconBox::getJS() .
@@ -265,7 +265,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case "add_cat":
 				$arr = makeArrayFromCSV($this->banner->CategoryIDs);
-				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", []))){
 					foreach($ids as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
@@ -290,7 +290,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case "add_file":
 				$arr = makeArrayFromCSV($this->banner->FileIDs);
-				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", []))){
 					foreach($ids as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
@@ -313,7 +313,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case "add_folder":
 				$arr = makeArrayFromCSV($this->banner->FolderIDs);
-				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", []))){
 					foreach($ids as $id){
 						if(strlen($id) && (!in_array($id, $arr))){
 							$arr[] = $id;
@@ -324,7 +324,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case "add_customer":
 				$arr = makeArrayFromCSV($this->banner->Customers);
-				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", array()))){
+				if(($ids = we_base_request::_(we_base_request::INTLISTA, "ncmdvalue", []))){
 					foreach($ids as $id){
 						if($id && (!in_array($id, $arr))){
 							$arr[] = $id;
@@ -516,9 +516,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	function formTagName(){
 
-		$tagnames = array();
+		$tagnames = [];
 		$this->db->query('SELECT c.Dat AS templateCode, l.DID AS DID FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON l.CID=c.ID WHERE l.DocumentTable="' . stripTblPrefix(TEMPLATES_TABLE) . '" AND c.Dat LIKE "%<we:banner %"');
-		$foo = array();
+		$foo = [];
 		while($this->db->next_record()){
 			preg_match_all('|(<we:banner [^>]+>)|U', $this->db->f('templateCode'), $foo, PREG_SET_ORDER);
 			foreach($foo as $cur){

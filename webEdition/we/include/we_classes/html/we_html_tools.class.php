@@ -220,11 +220,11 @@ this.selectedIndex = 0;' .
 		return $out;
 	}
 
-	static function html_select($name, $size, $vals, $value = '', array $attribs = array()){
+	static function html_select($name, $size, $vals, $value = '', array $attribs = []){
 		return self::htmlSelect($name, $vals, $size, $value, false, $attribs, 'value');
 	}
 
-	static function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = array(), $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
+	static function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = [], $compare = 'value', $width = 0, $cls = 'defaultfont', $oldHtmlspecialchars = true){
 		$ret = '';
 		$selIndex = is_array($selectedIndex) ? $selectedIndex : makeArrayFromCSV($selectedIndex);
 		$optgroup = false;
@@ -253,7 +253,7 @@ this.selectedIndex = 0;' .
 	}
 
 	//FIXME: make fn more concise and make base all country selects on it
-	static function htmlSelectCountry($name = '', $id = '', $size = 1, $selected = array(), $multiple = false, array $attribs = array(), $width = 50, $cls = 'defaultfont', $oldHtmlspecialchars = true, $optsOnly = false){
+	static function htmlSelectCountry($name = '', $id = '', $size = 1, $selected = [], $multiple = false, array $attribs = [], $width = 50, $cls = 'defaultfont', $oldHtmlspecialchars = true, $optsOnly = false){
 		$langcode = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 		$countrycode = array_search($langcode, getWECountries());
 
@@ -319,7 +319,7 @@ this.selectedIndex = 0;' .
 		$textField = getHtmlTag('input', array_merge($atts, array('type' => 'text', 'name' => $name, 'value' => oldHtmlspecialchars($value))));
 
 		$opts = getHtmlTag('option', array('value' => ''), '', true);
-		$attsOpts = array();
+		$attsOpts = [];
 
 		if($valuesIsHash){
 			foreach($values as $val => $text){
@@ -407,7 +407,7 @@ this.selectedIndex = 0;' .
 	}
 
 	public static function getDateInput($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = ''){
-		$attsSelect = $attsOption = $attsHidden = $xml ? array('xml' => $xml) : array();
+		$attsSelect = $attsOption = $attsHidden = $xml ? array('xml' => $xml) : [];
 
 		if($class){
 			$attsSelect['class'] = $class;
@@ -453,7 +453,7 @@ this.selectedIndex = 0;' .
 			$days = getHtmlTag('option', array_merge($attsOption, array('value' => 0)), '--');
 
 			for($i = 1; $i <= 31; $i++){
-				$atts2 = ($time && $day == $i) ? array('selected' => 'selected') : array();
+				$atts2 = ($time && $day == $i) ? array('selected' => 'selected') : [];
 				$days .= getHtmlTag('option', array_merge($attsOption, $atts2), sprintf('%02d', $i));
 			}
 			$daySelect = getHtmlTag('select', array_merge($attsSelect, array(
@@ -510,7 +510,7 @@ this.selectedIndex = 0;' .
 				$maxyear = abs(date('Y') + 100);
 			}
 			for($i = $minyear; $i <= $maxyear; $i++){
-				$atts2 = ($time && $year == $i) ? array('selected' => 'selected') : array();
+				$atts2 = ($time && $year == $i) ? array('selected' => 'selected') : [];
 				$years .= getHtmlTag('option', array_merge($attsOption, $atts2), sprintf('%02d', $i));
 			}
 			$yearSelect = getHtmlTag('select', array_merge($attsSelect, array(
@@ -530,7 +530,7 @@ this.selectedIndex = 0;' .
 		if(!$format || $hourPos > -1){
 			$hours = '';
 			for($i = 0; $i <= 23; $i++){
-				$atts2 = ($time && $hour == $i) ? array('selected' => 'selected') : array();
+				$atts2 = ($time && $hour == $i) ? array('selected' => 'selected') : [];
 				$hours .= getHtmlTag('option', array_merge($attsOption, $atts2), sprintf('%02d', $i));
 			}
 			$hourSelect = getHtmlTag('select', array_merge($attsSelect, array(
@@ -550,7 +550,7 @@ this.selectedIndex = 0;' .
 		if(!$format || $minutePos > -1){
 			$minutes = '';
 			for($i = 0; $i <= 59; $i++){
-				$atts2 = ($time && $minute == $i) ? array('selected' => 'selected') : array();
+				$atts2 = ($time && $minute == $i) ? array('selected' => 'selected') : [];
 				$minutes .= getHtmlTag('option', array_merge($attsOption, $atts2), sprintf('%02d', $i));
 			}
 			$minSelect = getHtmlTag('select', array_merge($attsSelect, array(
@@ -660,7 +660,7 @@ this.selectedIndex = 0;' .
 	}
 
 	static function groupArray(array $arr, $sort = true, $len = 1){
-		$tmp = array();
+		$tmp = [];
 		if($sort){
 			asort($arr, SORT_STRING);
 		}

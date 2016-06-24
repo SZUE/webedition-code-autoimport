@@ -33,8 +33,8 @@ function we_tag_dateSelect(array $attribs){
 	$tmp_from = weTag_getAttribute('start', $attribs, '', we_base_request::STRING);
 	$tmp_to = weTag_getAttribute('end', $attribs, '', we_base_request::STRING);
 
-	$from = array();
-	$to = array();
+	$from = [];
+	$to = [];
 	$js = $checkDate = $minyear = $maxyear = '';
 	if(!empty($tmp_from) && !empty($tmp_to)){
 		$from = date_parse($tmp_from);

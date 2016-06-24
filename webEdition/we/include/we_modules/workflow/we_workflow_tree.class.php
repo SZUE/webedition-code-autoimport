@@ -29,7 +29,7 @@ class we_workflow_tree extends we_tree_base{
 	}
 
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
-		$items = array();
+		$items = [];
 		$db = new DB_WE();
 		$db->query('SELECT ID FROM ' . WORKFLOW_TABLE . ' ORDER BY Text ASC');
 		$ids = $db->getAll(true);

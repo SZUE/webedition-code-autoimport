@@ -30,7 +30,7 @@ abstract class we_base_country{
 	const MONTH = 'months';
 	const DAY = 'days';
 
-	static $last = array();
+	static $last = [];
 
 	private static function loadLang($langcode){
 		$file = WE_INCLUDES_PATH . 'country/' . $langcode . '.inc.php';
@@ -56,7 +56,7 @@ abstract class we_base_country{
 	public static function getTranslationList($type, $langcode){
 		list($langcode) = explode('_', strtolower($langcode), 2);
 		if(!isset(self::$last[$langcode]) && !self::loadLang($langcode)){
-			return array();
+			return [];
 		}
 		return empty(self::$last[$langcode][$type]) ? '' : self::$last[$langcode][$type];
 	}

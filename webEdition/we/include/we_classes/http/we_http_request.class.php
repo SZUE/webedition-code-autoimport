@@ -34,12 +34,12 @@ class we_http_request{
 	var $http_method = '';
 	var $http_protocol = '';
 	var $http_port = 80;
-	var $http_headers = array();
+	var $http_headers = [];
 	var $http_body = '';
 	var $http_response = '';
 	//  datas to submit
-	var $files = array(); //  files array
-	var $vars = array(); //  array with variables
+	var $files = []; //  files array
+	var $vars = []; //  array with variables
 	// in case something went wrong with the connection
 	var $error = false;
 	var $errno = 0;
@@ -147,7 +147,7 @@ class we_http_request{
 	 */
 	function executeCurlHttpRequest(){
 
-		$tmp = array();
+		$tmp = [];
 		foreach($this->vars as $var){
 			$tmp[] = $var['name'] . '=' . $var['value'];
 		}
@@ -266,7 +266,7 @@ class we_http_request{
 				$this->http_headers['Content-Length'] = strlen($body);
 			} else { //  method 'GET'
 				//  all variables are joined to the path
-				$tmp = array();
+				$tmp = [];
 				foreach($this->vars as $var){
 					$tmp[] = $var['name'] . '=' . $var['value'];
 				}

@@ -280,7 +280,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 
 	public static function meassure($name){
 		static $last = 0;
-		static $times = array();
+		static $times = [];
 		$last = $last? : microtime(true);
 		if($name == -1){
 			t_e('notice', 'time for updates', $times);
@@ -297,7 +297,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			return true;
 		}
 		if(($all = file($path . 'del.files', FILE_IGNORE_NEW_LINES))){
-			$delFiles = array();
+			$delFiles = [];
 			foreach($all as $cur){
 				$recursive = false;
 				if($cur{0} === '!'){
@@ -375,7 +375,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	private static function cleanUnreferencedVersions(we_database_base $db){
-		$all = array();
+		$all = [];
 		$d = dir(rtrim($_SERVER['DOCUMENT_ROOT'] . VERSION_DIR, '/'));
 		while($d && false !== ($entry = $d->read())){
 			switch($entry){

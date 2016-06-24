@@ -46,14 +46,14 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 	 *
 	 * @var array
 	 */
-	public $_persistentSlots = array();
+	public $_persistentSlots = [];
 
 	/**
 	 * metadata attribute
 	 *
 	 * @var array
 	 */
-	protected $_metadata = array();
+	protected $_metadata = [];
 
 	/**
 	 * Constructor
@@ -78,7 +78,7 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 	protected function loadPersistents(){
 		$db = we_io_DB::sharedAdapter();
 
-		$this->_persistentSlots = array();
+		$this->_persistentSlots = [];
 
 		// fetch all column names
 		$this->_metadata = $db->describeTable($this->_table);
@@ -132,7 +132,7 @@ class we_core_AbstractModel extends we_core_AbstractObject{
 		if(f('SELECT 1 FROM ' . $this->_table . ' WHERE Text="' . $db->escape($this->Text) . '" AND ParentID=' . intval($this->ParentID) . ' AND IsFolder=' . intval($this->IsFolder) . ' AND ID !=' . intval($this->ID), '', $db)){
 			throw new we_core_ModelException('Error saving model. Path already exists!', we_service_ErrorCodes::kPathExists);
 		}
-		$updateArray = array();
+		$updateArray = [];
 		foreach($this->_persistentSlots as $key){
 			if($key !== $this->_primaryKey){
 				$updateArray[$key] = $this->$key;

@@ -59,7 +59,7 @@ class we_app_Common{
 	 * returns an array with the name of all installed applications
 	 */
 	public static function getAllApplications(){
-		$retval = array();
+		$retval = [];
 		$tocZC = self::readAppTOC();
 		foreach($tocZC->applications as $app){
 			$retval[] = $app->name;
@@ -71,7 +71,7 @@ class we_app_Common{
 	 * returns an array with all currently activated applications
 	 */
 	public static function getActiveApplications(){
-		$retval = array();
+		$retval = [];
 		$tocZC = self::readAppTOC();
 		foreach($tocZC->applications as $app){
 			if($app->active === "true"){
@@ -192,8 +192,8 @@ class we_app_Common{
 		 */
 		self::readConfig();
 		$dir = self::$_config->applicationpath;
-		$skiplist = array(".", "..", "cache", "first_steps_wizard", "CVS", ".svn");
-		$applist = array();
+		$skiplist = [".", "..", "cache", "first_steps_wizard", "CVS", ".svn"];
+		$applist = [];
 		foreach(scandir($dir) as $entry){
 			if(is_dir($dir . $entry) && !in_array($entry, $skiplist)){
 				if(is_readable($dir . $entry . "/conf/manifest.xml")){

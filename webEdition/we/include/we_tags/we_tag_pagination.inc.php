@@ -52,7 +52,7 @@ function we_tag_pagination(array $attribs, $content){
 
 	$ln_varName = $ln_pages . '_' . md5(print_r($attribs,true));
 
-	static $cache = array();
+	static $cache = [];
 
 	/* only start, if output doesn't exist in global var */
 	if(isset($cache[$ln_varName])){
@@ -218,7 +218,7 @@ function we_tag_pagination(array $attribs, $content){
 
 		/* generate array with pagenr/offset mapping */
 
-		$ln_output_array = array();
+		$ln_output_array = [];
 
 		if($ln_start_circle !== false){
 			for($i = $ln_start_circle - 1; $i >= 0; $i--){

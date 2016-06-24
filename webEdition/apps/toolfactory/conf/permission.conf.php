@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,25 +30,22 @@ $translate = we_core_Local::addTranslation('default.xml', 'toolfactory');
 $perm_group_name = "toolfactory";
 $perm_group_title[$perm_group_name] = $isUTF8 ? $translate->_('toolfactory') : utf8_decode($translate->_('toolfactory'));
 
-$perm_values[$perm_group_name] = array(
-	"USE_APP_TOOLFACTORY", "NEW_APP_TOOLFACTORY", "DELETE_APP_TOOLFACTORY", "EDIT_APP_TOOLFACTORY", "PUBLISH_APP_TOOLFACTORY", "GENTOC_APP_TOOLFACTORY"
-);
+$perm_values[$perm_group_name] = ["USE_APP_TOOLFACTORY", "NEW_APP_TOOLFACTORY", "DELETE_APP_TOOLFACTORY", "EDIT_APP_TOOLFACTORY", "PUBLISH_APP_TOOLFACTORY", "GENTOC_APP_TOOLFACTORY"];
 
-$perm_titles[$perm_group_name] = array();
+$perm_titles[$perm_group_name] = [];
 
-$translated = array(
+$translated = [
 	$translate->_('The user is allowed to use toolfactory'),
 	$translate->_('The user is allowed to create new items in toolfactory'),
 	$translate->_('The user is allowed to delete items from toolfactory'),
 	$translate->_('The user is allowed to edit items toolfactory'),
 	$translate->_('The user is allowed to publish items toolfactory'),
 	$translate->_('The user is allowed to regenerate the application toc.xml')
-);
+];
 
 foreach($translated as $i => $value){
 	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = $isUTF8 ? $value : utf8_decode($value);
 }
 
-$perm_defaults[$perm_group_name] = array(
-	"USE_APP_TOOLFACTORY" => 1, "NEW_APP_TOOLFACTORY" => 1, "DELETE_APP_TOOLFACTORY" => 0, "EDIT_APP_TOOLFACTORY" => 0, "PUBLISH_APP_TOOLFACTORY" => 0, "GENTOC_APP_TOOLFACTORY" => 0
-);
+$perm_defaults[$perm_group_name] = ["USE_APP_TOOLFACTORY" => 1, "NEW_APP_TOOLFACTORY" => 1, "DELETE_APP_TOOLFACTORY" => 0, "EDIT_APP_TOOLFACTORY" => 0, "PUBLISH_APP_TOOLFACTORY" => 0, "GENTOC_APP_TOOLFACTORY" => 0
+];

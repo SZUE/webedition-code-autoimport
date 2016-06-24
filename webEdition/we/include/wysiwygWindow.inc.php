@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $charsetHandler = new we_base_charsetHandler();
-$whiteList = array();
+$whiteList = [];
 $charsets = $charsetHandler->charsets;
 
 $fields = array(

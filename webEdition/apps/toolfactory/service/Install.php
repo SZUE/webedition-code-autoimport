@@ -34,7 +34,7 @@ class toolfactory_service_Install extends we_app_service_AbstractCmd{
 		$appName = Zend_Controller_Front::getInstance()->getParam('appName');
 		$app_directory = dir(WE_APPS_PATH);
 		$app_directory_string = WE_APPS_PATH;
-		$apparray = array();
+		$apparray = [];
 		while(false !== ($entry = $app_directory->read())){
 			if($entry != "." && $entry != ".."){
 				$path_parts = pathinfo($entry);

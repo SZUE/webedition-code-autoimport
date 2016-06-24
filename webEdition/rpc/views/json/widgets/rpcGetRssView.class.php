@@ -32,7 +32,7 @@ class rpcGetRssView extends we_rpc_jsonView{
 		return
 			'var weResponse = {
 			"type":"' . ($response->Success ? "response" : "error") . '",
-			"data":"' . addslashes(str_replace(array("\n", "\r"), " ", $response->getData("data"))) . '",
+			"data":"' . addslashes(str_replace(["\n", "\r"], " ", $response->getData("data"))) . '",
 			"titel":"' . addslashes($response->getData("titel")) . '",
 			"widgetType":"' . addslashes($response->getData("widgetType")) . '",
 			"widgetId":"' . addslashes($response->getData("widgetId")) . '"

@@ -8,7 +8,7 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Module = 'shop';
 
 if(defined('WE_SHOP_VAT_TABLE')){
-	$options = array();
+	$options = [];
 	$options[] = new weTagDataOption('', 0);
 	$vats = we_shop_vats::getAllShopVATs();
 	foreach($vats as $vat){

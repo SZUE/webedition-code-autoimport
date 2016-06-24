@@ -55,7 +55,7 @@ if($csv){
 	if($binary{0}){
 		$ids = explode(',', $csv);
 		$paths = makeArrayFromCSV(id_to_path($ids, $table));
-		$where = array();
+		$where = [];
 		foreach($paths as $path){
 			$where[] = 'Path LIKE "' . $path . '%" ';
 		}
@@ -68,7 +68,7 @@ if($csv){
 		$q_dtTid = ($aCsv[3] != 0) ? (!$binary{1} ? 'DocType' : 'TableID') . '="' . $aCsv[3] . '"' : '';
 		if($aCsv[4] != ""){
 			$cats = explode(",", $aCsv[4]);
-			$categories = array();
+			$categories = [];
 			foreach($cats as $myCat){
 				$id = f('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape(base64_decode($myCat)) . '"', 'ID', $GLOBALS['DB_WE']);
 				$categories[] = 'Category LIKE ",' . intval($id) . ',"';

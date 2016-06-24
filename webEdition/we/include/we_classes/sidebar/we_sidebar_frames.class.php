@@ -79,7 +79,7 @@ class we_sidebar_frames{
 		}
 
 		//manipulate GET/REQUEST for document
-		$_GET = array();
+		$_GET = [];
 		parse_str($params, $_GET);
 		$_REQUEST = $_GET;
 		ob_start();

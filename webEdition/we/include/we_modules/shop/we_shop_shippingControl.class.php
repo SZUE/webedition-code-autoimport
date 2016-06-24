@@ -26,7 +26,7 @@ class we_shop_shippingControl{
 	var $stateField = '';
 	var $isNet = true;
 	var $vatId = 0;
-	var $shippings = array();
+	var $shippings = [];
 	var $vatRate = 0;
 
 	private function __construct($stateField, $isNet, $vatId, $shippings){
@@ -53,7 +53,7 @@ class we_shop_shippingControl{
 				return $shippingControl;
 			}
 		}
-		return new self('', 1, 1, array());
+		return new self('', 1, 1, []);
 	}
 
 	function setByRequest($req){//FIXME: bad this is unchecked

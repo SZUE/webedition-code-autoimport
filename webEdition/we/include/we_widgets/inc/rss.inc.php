@@ -32,7 +32,7 @@ if($aProps[3]){
 }
 
 list($bTbLabel, $bTbTitel, $bTbDesc, $bTbLink, $bTbPubDate, $bTbCopyright) = $rssTb;
-$aLabelPrefix = array();
+$aLabelPrefix = [];
 
 if($bTbTitel && $rssTitle){
 	$feed = (isset($aTrf)) ? $aTrf : $aTopRssFeeds;

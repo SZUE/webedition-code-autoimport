@@ -43,8 +43,8 @@ class we_voting_voting extends we_base_model{
 	var $IsFolder;
 	var $Text;
 	var $PublishDate = 0;
-	var $QASet = array();
-	var $QASetAdditions = array();
+	var $QASet = [];
+	var $QASetAdditions = [];
 	var $IsRequired = false;
 	var $AllowFreeText = false;
 	var $AllowImages = false;
@@ -55,7 +55,7 @@ class we_voting_voting extends we_base_model{
 	var $Scores;
 	var $RevoteControl = 0;
 	var $RevoteTime = -1;
-	var $Owners = array();
+	var $Owners = [];
 	var $RestrictOwners = false;
 	var $Revote = '';
 	var $RevoteUserAgent = '';
@@ -66,9 +66,9 @@ class we_voting_voting extends we_base_model{
 	var $UserAgent = false;
 	var $FallbackUserID = false;
 	var $Log = false;
-	var $LogData = array();
+	var $LogData = [];
 	var $RestrictIP = false;
-	var $BlackList = array();
+	var $BlackList = [];
 	var $answerCount = -1;
 	var $defVersion = 0;
 	var $LogDB = 0;
@@ -137,7 +137,7 @@ class we_voting_voting extends we_base_model{
 
 		$this->Valid = ($this->Valid? : time() + 31536000); //365 days
 		$this->Active = ($this->Valid < time() && $this->ActiveTime ? 0 : $this->Active);
-		$this->Scores = ($this->Scores? : array());
+		$this->Scores = ($this->Scores? : []);
 		$this->PublishDate = ($this->PublishDate ? : time());
 	}
 
@@ -350,7 +350,7 @@ class we_voting_voting extends we_base_model{
 			return true;
 		}
 
-		$userids = array();
+		$userids = [];
 		we_readParents($_SESSION['user']['ID'], $userids, USER_TABLE, 'IsFolder', 1, $this->db);
 
 		return array_intersect($userids, $this->Owners) ? true : false;
@@ -364,7 +364,7 @@ class we_voting_voting extends we_base_model{
 			);
 			we_readParents($_SESSION['user']['ID'], $userids, USER_TABLE, 'IsFolder', 1);
 
-			$sqlarr = array();
+			$sqlarr = [];
 			foreach($userids as $uid){
 				$sqlarr[] = 'FIND_IN_SET(' . $uid . ',Owners)';
 			}
@@ -454,14 +454,14 @@ class we_voting_voting extends we_base_model{
 				setcookie(md5('_we_voting_' . $this->ID), time(), time() + $revotetime);
 			} else {
 				if(!is_array($this->Revote)){
-					$this->Revote = array();
+					$this->Revote = [];
 				}
 				$this->Revote[$_SERVER['REMOTE_ADDR']] = time();
 				$this->saveField('Revote', true);
 				if($this->UserAgent){
 					$this->RevoteUserAgent = we_unserialize($this->RevoteUserAgent);
 					if(!isset($this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']]) || !is_array($this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']])){
-						$this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']] = array();
+						$this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']] = [];
 					}
 					$this->RevoteUserAgent[$_SERVER['REMOTE_ADDR']][] = $_SERVER['HTTP_USER_AGENT'];
 					$this->saveField('RevoteUserAgent', true);
@@ -659,7 +659,7 @@ class we_voting_voting extends we_base_model{
 			);
 
 		$this->db->query($logQuery);
-		$this->LogData = array();
+		$this->LogData = [];
 		while($this->db->next_record()){
 			$this->LogData[] = array('votingsession' => $this->db->f('votingsession'), 'voting' => $this->db->f('voting'),
 				'time' => $this->db->f('time'),

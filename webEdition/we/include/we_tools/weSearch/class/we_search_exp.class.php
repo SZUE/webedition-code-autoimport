@@ -48,7 +48,7 @@ class we_search_exp extends we_search_base{
 	function getSearchResults($keyword, $options, $res_num = 0){
 
 		$exp_pos = strpos($keyword, 'exp:');
-		$items = array();
+		$items = [];
 
 		$keyword = trim($keyword);
 
@@ -66,7 +66,7 @@ class we_search_exp extends we_search_base{
 		$tables = $options;
 		$condition = $this->constructCondition($tokens);
 
-		$result = array();
+		$result = [];
 
 		foreach($tables as $table){
 			$this->db->query('SELECT * FROM ' . $table . ' ' . $condition);
@@ -101,11 +101,11 @@ class we_search_exp extends we_search_base{
 
 	function tokenize($keyword){
 
-		$array = array();
+		$array = [];
 
-		$array['AND'] = array();
-		$array['OR'] = array();
-		$array['AND NOT'] = array();
+		$array['AND'] = [];
+		$array['OR'] = [];
+		$array['AND NOT'] = [];
 
 		$ident = 'AND';
 		$array[$ident][0] = '';
@@ -162,7 +162,7 @@ class we_search_exp extends we_search_base{
 	}
 
 	function getExpression($string){
-		$arr = array();
+		$arr = [];
 
 		foreach($this->Operators as $k => $v){
 			if(preg_match('_' . $k . '_', $string)){
@@ -239,7 +239,7 @@ class we_search_exp extends we_search_base{
 	}
 
 	function getTables($options){
-		$tables = array();
+		$tables = [];
 		foreach($options as $option => $value){
 			if($value && $option == FILE_TABLE && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 				$tables[] = FILE_TABLE;
@@ -261,8 +261,8 @@ class we_search_exp extends we_search_base{
 
 		$condition = '';
 		foreach($tokens as $log => $token){
-			$word = array();
-			$conditions = array();
+			$word = [];
+			$conditions = [];
 			foreach($token as $op){
 				if(count($op) < 3){
 					$word[] = ' ' . $op['operand1'] . ' ';

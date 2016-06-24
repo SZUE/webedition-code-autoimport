@@ -25,7 +25,7 @@
 /*
  * this file contains constants needed for the liveUpdater
  */
-$LU_ParameterNames = array(
+$LU_ParameterNames = [
 	'liveUpdateSession',
 	'update_cmd',
 	'detail',
@@ -34,4 +34,4 @@ $LU_ParameterNames = array(
 	'clientLng',
 	'clientTargetVersionNumber',
 	'decreaseSpeed'
-);
+ ];

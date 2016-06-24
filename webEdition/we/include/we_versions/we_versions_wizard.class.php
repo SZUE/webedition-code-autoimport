@@ -702,8 +702,8 @@ set_button_state(false);';
 
 		$type = we_base_request::_(we_base_request::STRING, "type", self::DELETE_VERSIONS);
 
-		$version_delete = array();
-		$version_reset = array();
+		$version_delete = [];
+		$version_reset = [];
 
 		foreach($version->contentTypes as $k){
 			$version_delete[$k] = we_base_request::_(we_base_request::BOOL, "version_delete_" . $k);
@@ -740,7 +740,7 @@ set_button_state(false);';
 			if(count($data)){
 				$fr = new we_versions_fragment($taskname, $data);
 
-				return array();
+				return [];
 			}
 			return array(
 				$js . we_message_reporting::getShowMessageCall(g_l('versions', '[deleteNothingFound]'), 1) . 'top.wizbusy.showPrevNextButton();',
@@ -748,7 +748,7 @@ set_button_state(false);';
 			);
 		}
 		$fr = new we_versions_fragment($taskname);
-		return array();
+		return [];
 	}
 
 	/**
@@ -787,9 +787,9 @@ set_button_state(false);';
 			$timestampWhere = ' timestamp<' . $timestamp . ' ';
 		}
 
-		$parts = array();
+		$parts = [];
 
-		$whereCtA = array();
+		$whereCtA = [];
 		foreach($version_delete as $k => $v){
 			switch($k){
 				case 'all':
@@ -806,10 +806,10 @@ set_button_state(false);';
 		}
 		$whereCt = ($whereCt ? ' ContentType IN (' . implode(',', $whereCtA) . ')' : '1');
 
-		$cont = $docIds = array();
+		$cont = $docIds = [];
 		$_SESSION['weS']['versions']['deleteWizardWhere'] = $whereCt . ' AND ' . $timestampWhere;
 		$GLOBALS['DB_WE']->query('SELECT ID,documentID,documentTable,Text AS text,Path AS path,ContentType,binaryPath,timestamp,version FROM ' . VERSIONS_TABLE . ' WHERE ' . $whereCt . ' AND ' . $timestampWhere . ' ORDER BY ID');
-		$_SESSION['weS']['versions']['logDeleteIds'] = array();
+		$_SESSION['weS']['versions']['logDeleteIds'] = [];
 		while($GLOBALS['DB_WE']->next_record(MYSQL_ASSOC)){
 			if(!in_array($GLOBALS['DB_WE']->f('documentID'), $docIds)){
 				$docIds[$GLOBALS['DB_WE']->f('documentID')] = array(
@@ -881,7 +881,7 @@ set_button_state(false);';
 	static function getReset2(){
 		$type = we_base_request::_(we_base_request::RAW, "type", self::RESET_VERSIONS);
 
-		$_SESSION['weS']['versions']['logResetIds'] = array();
+		$_SESSION['weS']['versions']['logResetIds'] = [];
 
 		$version_reset = array(
 			'reset_date' => we_base_request::_(we_base_request::STRING, "reset_date", ""),
@@ -913,7 +913,7 @@ set_button_state(false);';
 		}
 
 
-		$w = array();
+		$w = [];
 		foreach($version_reset as $k => $v){
 			switch($k){
 				case "all":
@@ -938,7 +938,7 @@ set_button_state(false);';
 			}
 		}
 
-		$cont = $docIds = array();
+		$cont = $docIds = [];
 
 		$_SESSION['weS']['versions']['query'] = 'SELECT ID,documentID,documentTable,Text,Path,ContentType,timestamp,MAX(version) as version FROM ' . VERSIONS_TABLE . ' WHERE timestamp<=' . $timestamp . ($w ? ' AND (' . implode(' OR ', $w) . ') ' : '') . ' GROUP BY documentTable,documentID ORDER BY version DESC';
 		$GLOBALS['DB_WE']->query($_SESSION['weS']['versions']['query']);
@@ -1007,7 +1007,7 @@ set_button_state(false);';
 	 * @return string
 	 */
 	static function getFrameset(){
-		$query = array();
+		$query = [];
 		if(($btype = we_base_request::_(we_base_request::STRING, "btype")) !== false){
 			$query['btype'] = $btype;
 		}

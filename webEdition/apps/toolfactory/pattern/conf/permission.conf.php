@@ -12,7 +12,7 @@ $perm_values[$perm_group_name] = array(
 "USE_APP_<?php echo strtoupper($TOOLNAME); ?>", "NEW_APP_<?php echo strtoupper($TOOLNAME); ?>", "DELETE_APP_<?php echo strtoupper($TOOLNAME); ?>", "EDIT_APP_<?php echo strtoupper($TOOLNAME); ?>", "PUBLISH_APP_<?php echo strtoupper($TOOLNAME); ?>"
 );
 
-$perm_titles[$perm_group_name] = array();
+$perm_titles[$perm_group_name] = [];
 
 $translated = array(
 $translate->_('The user is allowed to use <?php echo $TOOLNAME; ?>'),

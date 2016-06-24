@@ -38,7 +38,7 @@ if($we_doc->ContentType == we_base_ContentTypes::CSS || $we_doc->Extension === '
 	require_once(WE_INCLUDES_PATH . 'accessibility/services_html.inc.php');
 }
 
-$services = array();
+$services = [];
 $js = '';
 
 foreach($validationService as $service){

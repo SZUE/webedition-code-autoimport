@@ -146,7 +146,7 @@ if($sessionName && $id){
 			$m = 0;
 			foreach($nodes as $k => $v){
 				$m++;
-				$outClasses = array();
+				$outClasses = [];
 				if($v['Published'] == 0){
 					$outClasses[] = 'unpublished';
 				}

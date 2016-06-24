@@ -125,8 +125,8 @@ class liveUpdateFrames{
 	}
 
 	function processDeleteLanguages(){
-		$deletedLngs = array();
-		$notDeletedLngs = array();
+		$deletedLngs = [];
+		$notDeletedLngs = [];
 
 		if(($langs = we_base_request::_(we_base_request::STRING, 'deleteLanguages'))){
 			// update prefs_table
@@ -152,12 +152,12 @@ class liveUpdateFrames{
 	function processUpdateLogVariables(){
 
 		$this->Data['amountPerPage'] = 5;
-		$show = array(
+		$show = [
 			'msg' => we_base_request::_(we_base_request::BOOL, 'messages', false),
 			'err' => we_base_request::_(we_base_request::BOOL, 'errors', false),
 			'notice' => we_base_request::_(we_base_request::BOOL, 'notices', false),
-		);
-		$errors = array();
+		];
+		$errors = [];
 		$tmp = 0;
 		foreach($show as $cur){
 			if($cur){
@@ -225,16 +225,16 @@ class liveUpdateFrames{
 			/*
 			 * There are entries available, get them
 			 */
-			$this->Data['logEntries'] = array();
+			$this->Data['logEntries'] = [];
 			$GLOBALS['DB_WE']->query('SELECT DATE_FORMAT(datum, "' . str_replace(' ', '&nbsp;/&nbsp;', g_l('date', '[format][mysql]')) . '") AS date, aktion, versionsnummer, error FROM ' . UPDATE_LOG_TABLE . ' ' . $condition . ' ORDER BY datum DESC LIMIT ' . $this->Data['start'] . ',' . abs($this->Data['amountPerPage']));
 
 			while(($row = $GLOBALS['DB_WE']->next_record())){
-				$this->Data['logEntries'][] = array(
+				$this->Data['logEntries'][] = [
 					'date' => $GLOBALS['DB_WE']->f('date'),
 					'action' => $GLOBALS['DB_WE']->f('aktion'),
 					'version' => $GLOBALS['DB_WE']->f('versionsnummer'),
 					'state' => $GLOBALS['DB_WE']->f('error'),
-				);
+				];
 			}
 		}
 	}

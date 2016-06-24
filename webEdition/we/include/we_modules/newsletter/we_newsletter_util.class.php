@@ -50,14 +50,14 @@ abstract class we_newsletter_util{
 	private static function removeFromDB(we_database_base $db, $emailField, $unsubscribe_mail, array $abos){
 		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $db));
 
-		$tmp = array();
+		$tmp = [];
 		foreach($abos as $abo){
 			$tmp[] = '"' . $db->escape($abo) . '"';
 		}
 		$where = ' WHERE ' . $emailField . '="' . $db->escape($unsubscribe_mail) . '"';
 		$hash = getHash('SELECT ' . implode(',', $tmp) . ' FROM ' . CUSTOMER_TABLE . $where, $db);
 		unset($tmp);
-		$update = array();
+		$update = [];
 		if(!$hash){
 			return false;
 		}
@@ -141,12 +141,12 @@ abstract class we_newsletter_util{
 		$subscribe_mail = trim(preg_replace("|[\r\n,]|", '', $subscribe_mail));
 		if(!$subscribe_mail){
 			$errorcode = we_newsletter_base::STATUS_EMAIL_INVALID;
-			return array();
+			return [];
 		}
 
 		if(!we_check_email($subscribe_mail)){
 			$errorcode = we_newsletter_base::STATUS_EMAIL_INVALID; // E-Mail ungueltig
-			return array();
+			return [];
 		}
 
 		return array(
@@ -188,7 +188,7 @@ abstract class we_newsletter_util{
 
 	static function addDoubleOptIn(we_database_base $db, $type, $customer_email_field, $f, array $abos, array $paths, $mailid, $attribs){
 		$confirmID = md5(uniqid(__FUNCTION__, true));
-		$lists = array();
+		$lists = [];
 		$emailExistsInOneOfTheLists = false;
 		switch($type){
 			case 'customer':
@@ -308,7 +308,7 @@ abstract class we_newsletter_util{
 			$mailtext = $mailid && we_base_file::isWeFile($mailid, FILE_TABLE, $db) ? we_getDocumentByID($mailid, '', $db, $charset) : '';
 			$mailtext = str_replace('###TITLE###', $f['subscribe_title'], ($f['subscribe_title'] ? preg_replace('%([^ ])###TITLE###%', '${1} ' . $f['subscribe_title'], $mailtext) : $mailtext));
 
-			$placeholderfieldsmatches = array();
+			$placeholderfieldsmatches = [];
 			if(preg_match_all('/####PLACEHOLDER:DB::CUSTOMER_TABLE:(.[^#]{1,200})####/', $mailtext, $placeholderfieldsmatches)){
 				$placeholderfields = $placeholderfieldsmatches[1];
 				unset($placeholderfieldsmatches);
@@ -324,10 +324,10 @@ abstract class we_newsletter_util{
 					$mailtextHTML = str_replace('####PLACEHOLDER:DB::CUSTOMER_TABLE:' . $phf . '####', $placeholderReplaceValue, $mailtextHTML);
 				}
 			}
-			$toCC = weTag_getAttribute('recipientCC', $attribs, array(), we_base_request::EMAILLISTA);
-			$toBCC = weTag_getAttribute('recipientBCC', $attribs, array(), we_base_request::EMAILLISTA);
+			$toCC = weTag_getAttribute('recipientCC', $attribs, [], we_base_request::EMAILLISTA);
+			$toBCC = weTag_getAttribute('recipientBCC', $attribs, [], we_base_request::EMAILLISTA);
 			$includeimages = weTag_getAttribute('includeimages', $attribs, false, we_base_request::BOOL);
-			$we_recipientCC = array();
+			$we_recipientCC = [];
 			foreach($toCC as $cc){
 				if(strpos($cc, '@') === false){
 					if(!empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$cc]) && strpos($_SESSION['webuser'][$cc], '@') !== false){ //wenn man registrierten Usern was senden moechte
@@ -343,7 +343,7 @@ abstract class we_newsletter_util{
 					$we_recipientCC[] = $cc;
 				}
 			}
-			$we_recipientBCC = array();
+			$we_recipientBCC = [];
 			foreach($toBCC as $bcc){
 				if(strpos($bcc, '@') === false){
 					if(!empty($_SESSION['webuser']['registered']) && isset($_SESSION['webuser'][$bcc]) && strpos('@', $_SESSION['webuser'][$bcc]) !== false){ //wenn man registrierte Usern was senden moechte
@@ -460,7 +460,7 @@ abstract class we_newsletter_util{
 				'UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields) . ' WHERE ID=' . $uid :
 				'INSERT INTO ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter($fields));
 
-		$set = array();
+		$set = [];
 		$customerFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="FieldAdds"', '', $db));
 		$updateCustomerFields = false;
 		foreach($abos as $abo){

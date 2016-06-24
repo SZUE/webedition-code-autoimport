@@ -367,7 +367,7 @@ class we_dialog_image extends we_dialog_base{
 
 		$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect('width: 140px;'), g_l('wysiwyg', '[css_style]'), 'left', 'defaultfont', '', '', '', '', '', '', 0);
 
-		$parts = array();
+		$parts = [];
 		$parts[] = array(
 			'html' => '<table class="default" style="margin-bottom:4px;">
 <tr><td style="width:200px"><div style="display:inline;float:left">' . ($intSrc ? $radioButtonInt : '') . '</div></td><td><div style="display:inline;float:right">' . /* $radioButtonUpload */ (isset($radioButtonExt) ? $radioButtonExt : '') . '</div></td></tr>' .
@@ -390,7 +390,7 @@ class we_dialog_image extends we_dialog_base{
 		  );
 		 *
 		 */
-		$parts[] = array();
+		$parts[] = [];
 		$parts[] = array('headline' => g_l('wysiwyg', '[image][formatting]'),
 			'html' => '<table class="default" style="width:530px">
 					<tr>
@@ -430,7 +430,7 @@ class we_dialog_image extends we_dialog_base{
 
 	private function getDisplayThumbsSel(){
 		$p = (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "");
-		$tmp = $p ? explode('.', $p) : array();
+		$tmp = $p ? explode('.', $p) : [];
 		$extension = count($tmp) > 1 ? '.' . $tmp[count($tmp) - 1] : '';
 		unset($p);
 
@@ -503,7 +503,7 @@ if(top.document.we_form.tinyMCEInitRatioW !== undefined){
 
 	function getJs(){
 		$yuiSuggest = & weSuggest::getInstance();
-		$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : array();
+		$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : [];
 		return parent::getJs() . we_html_element::jsElement('
 var classNames=' . ($css ? '["' . implode('","', $css) . '"]' : 'top.opener.weclassNames_tinyMce') . ' ;
 var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : 0) . ';

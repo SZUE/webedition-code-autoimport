@@ -33,7 +33,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	<form name="we_form" onsubmit="return false"><?php
 		echo we_class::hiddenTrans();
 
-		$parts = array();
+		$parts = [];
 
 		foreach($we_doc->schedArr as $i => $sched){
 			$schedObj = new we_schedpro($sched, $i);

@@ -51,7 +51,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			return -1;
 		}
 
-		$params = array();
+		$params = [];
 		if(isset($doc->ID)){
 			$params["ID"] = $doc->ID;
 		}
@@ -65,7 +65,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 
 		$classname = $doc->ClassName;
 
-		$attribute = (isset($doc->attribute_slots) ? $doc->attribute_slots : array());
+		$attribute = (isset($doc->attribute_slots) ? $doc->attribute_slots : []);
 
 		switch($classname){
 			case 'we_backup_tableAdv':
@@ -94,7 +94,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			strtolower($doc->table) == strtolower(FILE_TABLE) &&
 			($doc->ContentType == we_base_ContentTypes::IMAGE || stripos($doc->ContentType, "application/") !== false)){
 			$bin = we_exim_contentProvider::getInstance("we_backup_binary", $doc->ID);
-			$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : array());
+			$attribute = (isset($bin->attribute_slots) ? $bin->attribute_slots : []);
 			we_exim_contentProvider::binary2file($bin, $fh);
 		}
 
@@ -185,7 +185,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 
 	function queryForAllowed($table){
 		$db = new DB_WE();
-		$parentpaths = array();
+		$parentpaths = [];
 		$wsQuery = '';
 		if(($ws = get_ws($table))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
@@ -215,9 +215,9 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 
 	function getIDs($selIDs, $table, $with_dirs = false){
 		if(empty($selIDs)){
-			return array();
+			return [];
 		}
-		$tmp = array();
+		$tmp = [];
 		$db = new DB_WE();
 		$allow = $this->queryForAllowed($table);
 		$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ID IN (' . implode(',', $selIDs) . ') AND IsFolder=1');
@@ -243,7 +243,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 		return $db->getAll(true);
 	}
 
-	function prepareExport(array $ids = array()){
+	function prepareExport(array $ids = []){
 		//$this->RefTable = new RefTable();
 		$preparer = new we_export_preparer($this->options, $this->RefTable);
 		$preparer->prepareExport();

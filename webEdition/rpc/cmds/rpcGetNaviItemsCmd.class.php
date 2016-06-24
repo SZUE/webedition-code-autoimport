@@ -28,7 +28,7 @@ class rpcGetNaviItemsCmd extends we_rpc_cmd{
 		$resp = new we_rpc_response();
 		$navi = new we_navigation_navigation(we_base_request::_(we_base_request::INT, 'nid', 0));
 		$items = $navi->getChilds();
-		$data = array();
+		$data = [];
 
 		foreach($items as $item){
 			$data[] = $item['id'] . ':' . $item['text'];

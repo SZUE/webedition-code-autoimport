@@ -32,7 +32,7 @@ if(!isset($aCols[5])){
 	$isRefresh = false;
 }
 
-$sKPIs = $aCols[0] ? : array();
+$sKPIs = $aCols[0] ? : [];
 $bOrders = !empty($sKPIs[0]);
 $bCustomer = !empty($sKPIs[1]);
 $bAverageOrder = !empty($sKPIs[2]);

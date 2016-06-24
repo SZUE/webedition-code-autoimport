@@ -143,7 +143,7 @@ $tree = new we_export_tree('treeCmd.php', 'top', 'top', 'cmd');
 
 $divStatic = we_html_element::htmlDiv(array("id" => "static", "style" => ($selection ? "display:block;" : "display:none;")), we_html_element::htmlDiv(array("id" => "treeContainer"), $tree->getHTMLMultiExplorer(420, 180, false)) . '<iframe name="cmd" src="about:blank" style="visibility:hidden; width: 0px; height: 0px;"></iframe>');
 
-$captions = array();
+$captions = [];
 if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$captions[FILE_TABLE] = g_l('export', '[documents]');
 }

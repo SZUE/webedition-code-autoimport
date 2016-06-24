@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_helpers_lessParser extends Less_Parser{
-	public static $includedFiles = array();
+	public static $includedFiles = [];
 
 	public function __construct($env = null){
 		if(!is_object($env)){
@@ -33,7 +33,7 @@ class we_helpers_lessParser extends Less_Parser{
 	}
 
 	public static function importCallBack($env){
-		$matches = array();
+		$matches = [];
 		if($env->path->value && preg_match('|#WE:(\d+)#|', $env->path->value, $matches)){
 			$hash = getHash('SELECT Path,ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($matches[1]), null, MYSQL_NUM);
 			list($path, $parentid) = ($hash? : array(0, 0));

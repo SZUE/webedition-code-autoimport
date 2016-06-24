@@ -24,7 +24,7 @@
  */
 class we_selector_document extends we_selector_directory{
 	protected $userCanMakeNewFile = true;
-	protected $titles = array();
+	protected $titles = [];
 	protected $titleName = '';
 	protected $startPath;
 	protected $ctp = array(//FIXME: add audio button
@@ -92,7 +92,7 @@ class we_selector_document extends we_selector_directory{
 				$wsQuery = getWsQueryForSelector($this->table);
 			} else if(defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE && (!permissionhandler::hasPerm("ADMINISTRATOR"))){
 				$ac = we_users_util::getAllowedClasses($this->db);
-				$wsQueryA = array();
+				$wsQueryA = [];
 				foreach($ac as $cid){
 					$path = id_to_path($cid, OBJECT_TABLE);
 					$wsQueryA[] = ' Path LIKE "' . $this->db->escape($path) . '/%" OR Path="' . $this->db->escape($path) . '"';
@@ -369,7 +369,7 @@ function weWriteBreadCrumb(BreadCrumb){
 						break;
 					case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 						$fieldnames = getHash('SELECT DefaultDesc,DefaultTitle,DefaultKeywords FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($result['TableID']), $this->db, MYSQL_ASSOC);
-						$selFields = array();
+						$selFields = [];
 						foreach($fieldnames as $key => $val){
 							if(!$val || $val === '_'){ // bug #4657
 								continue;
@@ -429,11 +429,11 @@ function weWriteBreadCrumb(BreadCrumb){
 			}
 
 			$previewFields = array(
-				"metainfos" => array("headline" => g_l('weClass', '[metainfo]'), "data" => array()),
-				"attributes" => array("headline" => g_l('weClass', '[attribs]'), "data" => array()),
-				"folders" => array("headline" => g_l('fileselector', '[folders]'), "data" => array()),
-				"files" => array("headline" => g_l('fileselector', '[files]'), "data" => array()),
-				"masterTemplate" => array("headline" => g_l('weClass', '[master_template]'), "data" => array()),
+				"metainfos" => array("headline" => g_l('weClass', '[metainfo]'), "data" => []),
+				"attributes" => array("headline" => g_l('weClass', '[attribs]'), "data" => []),
+				"folders" => array("headline" => g_l('fileselector', '[folders]'), "data" => []),
+				"files" => array("headline" => g_l('fileselector', '[files]'), "data" => []),
+				"masterTemplate" => array("headline" => g_l('weClass', '[master_template]'), "data" => []),
 				"properies" => array("headline" => g_l('weClass', '[tab_properties]'), "data" => array(
 						array(
 							"caption" => g_l('fileselector', '[name]'),
@@ -613,7 +613,7 @@ function weWriteBreadCrumb(BreadCrumb){
 	}
 
 	protected function getFramesetJavaScriptDef(){
-		/* $ctypes = array();
+		/* $ctypes = [];
 		  $ct = we_base_ContentTypes::inst();
 		  foreach($ct->getContentTypes() as $ctype){
 		  if(g_l('contentTypes', '[' . $ctype . ']') !== false){

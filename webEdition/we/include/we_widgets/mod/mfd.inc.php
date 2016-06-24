@@ -45,7 +45,7 @@ $pos++;
 
 $iDate = intval($aCols[1]);
 
-$doctable = $where = $workspace = array();
+$doctable = $where = $workspace = [];
 
 switch($iDate){
 	case 1 :
@@ -103,12 +103,12 @@ if($aUsers){
 	$where[] = 'h.UID IN (' . $aUsers . ')';
 }
 
-$join = $tables = array();
+$join = $tables = [];
 $admin = permissionhandler::hasPerm('ADMINISTRATOR');
 
 if($bTypeDoc){
 	$doctable[] = '"' . stripTblPrefix(FILE_TABLE) . '"';
-	$paths = array();
+	$paths = [];
 	$t = stripTblPrefix(FILE_TABLE);
 	foreach(get_ws(FILE_TABLE, true) as $id){
 		$paths[] = 'f.Path LIKE ("' . $db->escape(id_to_path($id, FILE_TABLE)) . '%")';
@@ -120,7 +120,7 @@ if($bTypeDoc){
 }
 if($bTypeObj){
 	$doctable[] = '"' . stripTblPrefix(OBJECT_FILES_TABLE) . '"';
-	$paths = array();
+	$paths = [];
 	$t = stripTblPrefix(OBJECT_FILES_TABLE);
 	foreach(get_ws(OBJECT_FILES_TABLE, true) as $id){
 		$paths[] = 'of.Path LIKE ("' . $db->escape(id_to_path($id, OBJECT_FILES_TABLE)) . '%")';

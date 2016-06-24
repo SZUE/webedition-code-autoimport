@@ -24,7 +24,7 @@
  */
 include_once('define.conf.php');
 
-$metaInfo = array(
+$metaInfo = [
 	'name' => 'toolfactory',
 	'classname' => 'toolfactory',
 	'maintable' => '',
@@ -32,4 +32,4 @@ $metaInfo = array(
 	'startpermission' => 'USE_APP_TOOLFACTORY',
 	'supportshooks' => 1,
 	'appdisabled' => 0
-);
+ ];

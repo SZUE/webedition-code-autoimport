@@ -79,7 +79,7 @@ class we_textDocument extends we_document{
 
 	function replaceWEIDs($doc = '', $registerOnly = false){
 		$doc = $doc ? : parent::i_getDocumentToSave();
-		$matches = array();
+		$matches = [];
 		if(preg_match_all('|#WE:(\d+)#|', $doc, $matches)){
 			$matches = array_unique($matches[1], SORT_NUMERIC);
 			$this->MediaLinks = $matches;
@@ -153,7 +153,7 @@ class we_textDocument extends we_document{
 					case '.less':
 						if($this->parseFile){
 							$less = new lessc();
-							we_helpers_lessParser::$includedFiles = array();
+							we_helpers_lessParser::$includedFiles = [];
 							$less->setImportDir(array(
 								$_SERVER['DOCUMENT_ROOT'],
 								$_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(),
@@ -171,7 +171,7 @@ class we_textDocument extends we_document{
 					case '.scss':
 						if($this->parseFile){
 							$scss = new we_helpers_scss();
-							we_helpers_scss::$includedFiles = array(); //due to rebuild!
+							we_helpers_scss::$includedFiles = []; //due to rebuild!
 							$scss->setImportPaths(array_unique(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT'] . '/')));
 							try{
 								$doc = $scss->compile($doc);

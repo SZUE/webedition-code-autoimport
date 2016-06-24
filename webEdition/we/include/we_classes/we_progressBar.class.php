@@ -24,7 +24,7 @@
  */
 class we_progressBar{
 	var $progress = 0;
-	var $texts = array();
+	var $texts = [];
 	var $stud_width = 10;
 	var $stud_len = 100;
 	var $showProgressText = true;
@@ -122,7 +122,7 @@ function setProgress' . $this->name . '(progress){
 	}
 
 	function emptyTexts(){
-		$this->texts = array();
+		$this->texts = [];
 	}
 
 	public function getHTML($class = '', $style = ''){

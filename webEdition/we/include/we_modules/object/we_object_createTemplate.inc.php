@@ -25,7 +25,7 @@
 function getObjectTags($id, $isField = false){
 	$tableInfo = we_objectFile::getSortedTableInfo($id, true, new DB_WE());
 	$content = '<table style="border:1px solid black;width:400px">';
-	$regs = array();
+	$regs = [];
 	foreach($tableInfo as $cur){
 		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 			$content .= getTmplTableRow($regs[1], $regs[2], $isField);
@@ -45,7 +45,7 @@ function getMultiObjectTags($name){
 	$content = '<table style="border:1px solid black;width:400px">';
 
 	//FIXME: causes internal server error
-	$regs = array();
+	$regs = [];
 	foreach($tableInfo as $cur){
 		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
 //			$content .= getTmplTableRow($regs[1], $regs[2], true);

@@ -78,7 +78,7 @@ window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . 
 
 // all available elements
 		$jmenu = self::getMenu();
-		$navigationButtons = array();
+		$navigationButtons = [];
 
 		if(!we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')){ // there is only a menu when not in seem_edit_include!
 			if(isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){

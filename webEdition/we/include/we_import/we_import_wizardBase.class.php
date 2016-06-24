@@ -143,7 +143,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 		$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
 		$content->setCol(0, 0, null, $pb);
 		$content->setCol(0, 1, array("style" => "text-align:right"), '
-<div id="standardDiv">' . we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", array(), 10) . '</div>
+<div id="standardDiv">' . we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", [], 10) . '</div>
 <div id="closeDiv" style="display:none;">' . $closeButton . '</div>'
 		);
 
@@ -165,10 +165,10 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 		$v["import_TARGETencoding"] = isset($v["import_TARGETencoding"]) ? $v["import_TARGETencoding"] : '';
 
 		if(isset($v["mode"]) && $v["mode"] == 1){
-			$records = we_base_request::_(we_base_request::RAW, "records", array());
-			$we_flds = we_base_request::_(we_base_request::RAW, "we_flds", array());
-			$attrs = we_base_request::_(we_base_request::RAW, 'attrs', array());
-			$attributes = we_base_request::_(we_base_request::RAW, 'attributes', array());
+			$records = we_base_request::_(we_base_request::RAW, "records", []);
+			$we_flds = we_base_request::_(we_base_request::RAW, "we_flds", []);
+			$attrs = we_base_request::_(we_base_request::RAW, 'attrs', []);
+			$attributes = we_base_request::_(we_base_request::RAW, 'attributes', []);
 
 			switch($v['cid']){
 				case -2:
@@ -286,7 +286,7 @@ if (top.wizbody && top.wizbody.addLog){
 					$out.=self::importFinished($v, $type);
 					break;
 				default:
-					$fields = array();
+					$fields = [];
 					switch($v["type"]){
 						case we_import_functions::TYPE_WE_XML:
 							$hiddens = $this->getHdns("v", $v);
@@ -505,8 +505,8 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 							$cp->setEnclosure($encl);
 							$cp->setFromCharset($v['encoding']);
 							$cp->parseCSV();
-							$recs = array();
-							$names = array();
+							$recs = [];
+							$names = [];
 							for($i = 0; $i < $cp->CSVNumFields(); $i++){
 								$names[$i] = $cp->CSVFieldName($i);
 								$recs[$names[$i]] = $cp->Fields[0][$i];

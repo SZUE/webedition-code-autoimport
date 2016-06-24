@@ -40,12 +40,12 @@ class we_versions_model extends we_search_modelBase{
 	/**
 	 * @var array: includes the text to search for
 	 */
-	protected $searchVersionSearch = array();
+	protected $searchVersionSearch = [];
 
 	/**
 	 * @var array: includes the operators
 	 */
-	protected $locationVersionSearch = array();
+	protected $locationVersionSearch = [];
 
 	/**
 	 * @var integer: folder-ids of the docsearch and the tmplsearch
@@ -66,12 +66,12 @@ class we_versions_model extends we_search_modelBase{
 	 * @var string: gives the order
 	 */
 	protected $OrderVersionSearch = 'ID';
-	protected $searchTablesVersionSearch = array();
+	protected $searchTablesVersionSearch = [];
 
 	/**
 	 * @var array: includes the searchfiels which you are searching in
 	 */
-	protected $searchFieldsVersionSearch = array();
+	protected $searchFieldsVersionSearch = [];
 
 	/**
 	 * Default Constructor
@@ -118,10 +118,10 @@ class we_versions_model extends we_search_modelBase{
 				$this->OrderVersionSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->OrderVersionSearch, 'order');
 				$this->searchstartVersionSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->searchstartVersionSearch, 'searchstart');
 				$this->anzahlVersionSearch = we_base_request::_(we_base_request::INT, 'we_cmd', $this->anzahlVersionSearch, 'anzahl');
-				$this->searchFieldsVersionSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', array(), 'searchFields');
+				$this->searchFieldsVersionSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', [], 'searchFields');
 				$this->height = count($this->searchFieldsVersionSearch);
-				$this->searchVersionSearch = array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', array(), 'search'));
-				$this->locationVersionSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', array(), 'location');
+				$this->searchVersionSearch = array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', [], 'search'));
+				$this->locationVersionSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', [], 'location');
 			}
 		}
 

@@ -112,35 +112,35 @@ class toolfactory_models_Default extends we_app_Model{
 	 *
 	 * @var array
 	 */
-	public $tags = array();
+	public $tags = [];
 
 	/**
 	 * services attribute
 	 *
 	 * @var array
 	 */
-	public $services = array();
+	public $services = [];
 
 	/**
 	 * languages attribute
 	 *
 	 * @var array
 	 */
-	public $languages = array();
+	public $languages = [];
 
 	/**
 	 * permissions attribute
 	 *
 	 * @var array
 	 */
-	public $permissions = array();
+	public $permissions = [];
 
 	/**
 	 * backupTables attribute
 	 *
 	 * @var array
 	 */
-	public $backupTables = array();
+	public $backupTables = [];
 
 	/**
 	 * Constructor
@@ -283,7 +283,7 @@ class toolfactory_models_Default extends we_app_Model{
 
 		$_toolDir = WE_APPS_DIR . $TOOLNAME . '/';
 
-		$_files = array();
+		$_files = [];
 
 		we_tool_lookup::getFilesOfDir($_files, $_templateDir);
 

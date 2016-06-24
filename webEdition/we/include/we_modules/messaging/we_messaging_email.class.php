@@ -41,9 +41,9 @@ class we_messaging_email extends we_messaging_proto{
 
 	function send(&$rcpts, &$data){
 		$results = array(
-			'err' => array(),
-			'ok' => array(),
-			'failed' => array(),
+			'err' => [],
+			'ok' => [],
+			'failed' => [],
 		);
 
 		$from = we_messaging_format::get_nameline($this->userid, 'email');

@@ -236,7 +236,7 @@ abstract class we_rebuild_base{
 	 */
 	private static function getAllDocuments($maintable, $tmptable){
 		if(!permissionhandler::hasPerm('REBUILD_ALL')){
-			return array();
+			return [];
 		}
 		$data = self::getTemplates(true, $maintable, $tmptable);
 
@@ -279,7 +279,7 @@ abstract class we_rebuild_base{
 		if(!is_array($metaFolders)){
 			$metaFolders = makeArrayFromCSV($metaFolders);
 		}
-		$data = array();
+		$data = [];
 		if(permissionhandler::hasPerm('REBUILD_META')){
 			$foldersQuery = count($metaFolders) ? ' AND ParentId IN(' . implode(',', $metaFolders) . ') ' : '';
 			$GLOBALS['DB_WE']->query('SELECT ID,path FROM ' . FILE_TABLE . ' WHERE ContentType="' . we_base_ContentTypes::IMAGE . '" AND Extension IN (".jpg","jpeg","wbmp") ' . $foldersQuery);
@@ -302,7 +302,7 @@ abstract class we_rebuild_base{
 
 
 		//FIXME: add permission
-		$data = array();
+		$data = [];
 		//FIXME: add classes and templates
 		//FIXME: pack this queries into the loop too
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,ModDate,Published FROM ' . FILE_TABLE . ' WHERE
@@ -401,7 +401,7 @@ abstract class we_rebuild_base{
 		//get other, these have to be processed in php
 		$db->query('SELECT ID,ClassName,Path,MasterTemplateID,IncludedTemplates FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND ID NOT IN (' . ($done ? implode(',', $done) : 0) . ') ORDER BY (`IncludedTemplates` = "") DESC');
 
-		$todo = array();
+		$todo = [];
 		while($db->next_record(MYSQL_ASSOC)){
 			$rec = $db->getRecord();
 			$tmp = trim($rec['IncludedTemplates'], ',');
@@ -411,7 +411,7 @@ abstract class we_rebuild_base{
 
 		$round = 0;
 		while(!empty($todo) && ++$round < 100){
-			$preDone = array();
+			$preDone = [];
 			foreach($todo as $key => &$rec){
 				$rec['IncludedTemplates'] = empty($rec['IncludedTemplates']) ? $rec['IncludedTemplates'] : array_diff($rec['IncludedTemplates'], $done);
 				if(empty($rec['IncludedTemplates']) && ($rec['MasterTemplateID'] == 0 || (array_search($rec['MasterTemplateID'], $done) !== FALSE))){
@@ -437,9 +437,9 @@ abstract class we_rebuild_base{
 	 */
 	private static function getTemplates($all = false, $mt = 0, $tt = 0){
 		if(!($all || permissionhandler::hasPerm('REBUILD_TEMPLATES'))){
-			return array();
+			return [];
 		}
-		$data = array();
+		$data = [];
 		$db = $GLOBALS['DB_WE'];
 		//get all folders + easy templates
 		$db->query('(SELECT ID,ClassName,Path FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=1 ORDER BY ID) UNION
@@ -468,14 +468,14 @@ abstract class we_rebuild_base{
 	 */
 	private static function getFilteredDocuments($categories, $catAnd, $doctypes, $folders, $templateID){
 		if(!permissionhandler::hasPerm('REBUILD_FILTERD')){
-			return array();
+			return [];
 		}
-		$data = array();
+		$data = [];
 		$cat_query = $doctype_query = $folders_query = $template_query = '';
 
 		if($categories){
 			$foo = makeArrayFromCSV($categories);
-			$tmp = array();
+			$tmp = [];
 			foreach($foo as $catID){
 				$tmp[] = ' FIND_IN_SET(' . intval($catID) . ',Category)';
 			}
@@ -487,7 +487,7 @@ abstract class we_rebuild_base{
 		}
 		if($folders){
 			$foo = makeArrayFromCSV($folders);
-			$foldersList = array();
+			$foldersList = [];
 			foreach($foo as $folderID){
 				$foldersList = array_merge($foldersList, we_base_file::getFoldersInFolder($folderID));
 			}
@@ -555,7 +555,7 @@ abstract class we_rebuild_base{
 	 * @return array
 	 */
 	public static function getObjects(){
-		$data = array();
+		$data = [];
 		if(permissionhandler::hasPerm('REBUILD_OBJECTS')){
 			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
@@ -589,7 +589,7 @@ abstract class we_rebuild_base{
 	 * @return array
 	 */
 	public static function getNavigation(){
-		$data = array();
+		$data = [];
 		if(permissionhandler::hasPerm('REBUILD_NAVIGATION')){
 			$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
@@ -628,9 +628,9 @@ abstract class we_rebuild_base{
 	 */
 	public static function getIndex(){
 		if(!permissionhandler::hasPerm('REBUILD_INDEX')){
-			return array();
+			return [];
 		}
-		$data = array();
+		$data = [];
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND IsSearchable=1 ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
 			$data[] = array(
@@ -668,12 +668,12 @@ abstract class we_rebuild_base{
 	 */
 	public static function getThumbnails($thumbs = '', $thumbsFolders = ''){
 		if(!permissionhandler::hasPerm('REBUILD_THUMBS')){
-			return array();
+			return [];
 		}
-		$data = array();
+		$data = [];
 		if($thumbsFolders){
 			$foo = makeArrayFromCSV($thumbsFolders);
-			$foldersList = array();
+			$foldersList = [];
 			foreach($foo as $folderID){
 				$foldersList[] = implode(',', we_base_file::getFoldersInFolder($folderID));
 			}
@@ -721,8 +721,8 @@ abstract class we_rebuild_base{
 		}
 
 		$returnIDs = array(
-			'templateIDs' => array(),
-			'documentIDs' => array(),
+			'templateIDs' => [],
+			'documentIDs' => [],
 		);
 
 		self::getTemplatesOfTemplate($id, $returnIDs['templateIDs']);

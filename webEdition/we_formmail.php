@@ -187,7 +187,7 @@ if(!empty($_REQUEST['email'])){//fixme: note this mail can be in "abc" <cc@de.de
 	}
 }
 
-$output = array();
+$output = [];
 
 $removeArr = array_map('trim', array_filter(explode(',', we_base_request::_(we_base_request::STRING, 'we_remove'))));
 $we_reserved = array_merge(array('from', 'we_remove', 'captchaname', 'we_mode', 'charset', 'required', 'order', 'ok_page', 'error_page', 'captcha_error_page', 'mail_error_page', 'recipient', 'subject', 'mimetype', 'confirm_mail', 'pre_confirm', 'post_confirm', 'MAX_FILE_SIZE', session_name(), 'cookie', 'recipient_error_page', 'forcefrom'), $removeArr);
@@ -204,7 +204,7 @@ if(($order = we_base_request::_(we_base_request::STRING, 'order', ''))){
 		}
 	}
 } else {
-	$we_orderarray = array();
+	$we_orderarray = [];
 }
 
 if(isset($_POST)){
@@ -296,7 +296,7 @@ $sender = ($senderForename != '' || $senderSurname ? $senderForename . ' ' . $se
 $phpmail = new we_mail_mail('', $subject, $sender);
 $phpmail->setCharSet($charset);
 
-$recipientsList = array();
+$recipientsList = [];
 
 foreach($recipients as $recipientID){
 	$recipient = preg_replace("/(\\n+|\\r+)/", '', (is_numeric($recipientID) ?

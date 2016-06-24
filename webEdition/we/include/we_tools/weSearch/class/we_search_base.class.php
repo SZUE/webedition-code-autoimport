@@ -37,7 +37,7 @@ class we_search_base{
 	var $anzahl = 10;
 	var $maxItems = 0;
 	var $searchstart = 0;
-	public $Record = array();
+	public $Record = [];
 
 	function __construct(){
 		$this->db = new DB_WE();
@@ -60,7 +60,7 @@ class we_search_base{
 	//																("IS","END","CONTAIN","<","<=",">",..)
 	function searchfor($searchname, $searchfields, $searchlocation, $tablename, $rows = -1, $start = 0, $order = '', $desc = 0){
 		$this->tablename = $tablename;
-		$sql = array();
+		$sql = [];
 		foreach($searchfields as $i => $searchfield){
 			$regs = explode('_', $searchfield, 2);
 			switch(count($regs) == 2 ? $regs[0] : ''){
@@ -140,7 +140,7 @@ class we_search_base{
 	function sqlwhere($we_SearchField, $searchlocation){
 		if(strpos($we_SearchField, ',') !== false){
 			$foo = makeArrayFromCSV($we_SearchField);
-			$q = array();
+			$q = [];
 			foreach($foo as $f){
 				$tmp = str_replace('.', '.`', $f);
 				if($tmp == $f){
@@ -248,7 +248,7 @@ class we_search_base{
 			'</td>
 	<td>';
 
-		$pages = array();
+		$pages = [];
 		$maxPages = ceil($we_search_anzahl / $this->anzahl);
 		for($i = 0; $i < $maxPages; $i++){
 			$pages[($i * $this->anzahl)] = ($i + 1);

@@ -51,7 +51,7 @@ class we_metadata_IPTC extends we_metadata_metaData{
 		}
 
 		// seems not to work correctly so only an empty array is returned to caller:
-		$this->metadata = array();
+		$this->metadata = [];
 		//$this->metadata = array("Copyright" => "/me","Make" => "Fuji");
 
 		$iptcData = new Image_IPTC($this->datasource);

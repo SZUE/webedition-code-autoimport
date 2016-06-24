@@ -27,9 +27,9 @@ class rpcGetItemsFromDBCmd extends we_rpc_cmd{
 	function execute(){
 		$resp = new we_rpc_response();
 
-		$IDs = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', array(), 'id');
+		$IDs = we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 'id');
 		if(empty($IDs)){
-			$resp->setData("error", array("Missing field id"));
+			$resp->setData("error", ["Missing field id"]);
 			return $resp;
 		}
 
@@ -40,7 +40,7 @@ class rpcGetItemsFromDBCmd extends we_rpc_cmd{
 		} else if(($collectionID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 'collection'))){
 			$collection->initByID($collectionID);
 		} else {
-			$resp->setData("error", array("no collection error"));
+			$resp->setData("error", ["no collection error"]);
 			return $resp;
 		}
 

@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function _getMails($to){
-	$we_recipient = array();
+	$we_recipient = [];
 	foreach($to as $mail){
 		if(strpos($mail, '@') === false){
 			if((

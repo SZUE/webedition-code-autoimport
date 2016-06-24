@@ -54,7 +54,7 @@ session_set_cookie_params($cookie['lifetime'], $cookie['path'], $cookie['domain'
 
 //prepare space for we-variables; $_SESSION['weS'] is set in we_session
 if(!isset($GLOBALS['we'])){
-	$GLOBALS['we'] = array();
+	$GLOBALS['we'] = [];
 }
 
 if(!(defined('SYSTEM_WE_SESSION') && SYSTEM_WE_SESSION) && ini_get('session.gc_probability') != '0'){

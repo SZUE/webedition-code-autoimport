@@ -45,7 +45,7 @@ function startTree(){
 		$db = new DB_WE();
 		$table = EXPORT_TABLE;
 
-		$items = array();
+		$items = [];
 
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
@@ -79,7 +79,7 @@ function startTree(){
 			);
 			$tt = '';
 
-			$fileds = array();
+			$fileds = [];
 
 			foreach($db->Record as $k => $v){
 				if(!is_numeric($k)){
