@@ -67,37 +67,37 @@ document.write ("<" + "script src=\"' . $getscript . '?r="+r+"&amp;bannername=' 
 <script><!--
 	function checkForm(f) {
 		if (f.tagname.value == "") {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_tagname_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_tagname_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.tagname.focus();
 			f.tagname.select();
 			return false;
 		}
 		if (f.page.value == "") {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_page_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_page_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.page.focus();
 			f.page.select();
 			return false;
 		}
 		if (f.width.value == "") {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_width_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_width_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.width.focus();
 			f.width.select();
 			return false;
 		}
 		if (f.height.value == "") {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_height_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_height_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.height.focus();
 			f.height.select();
 			return false;
 		}
 		if (f.getscript.value == "") {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_getscript_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_getscript_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.getscript.focus();
 			f.getscript.select();
 			return false;
 		}
 		if (f.clickscript.value == "") {
-<?php echo we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_clickscript_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
+<?= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[error_clickscript_empty]'), we_message_reporting::WE_MESSAGE_ERROR); ?>
 			f.clickscript.focus();
 			f.clickscript.select();
 			return false;
@@ -115,7 +115,7 @@ document.write ("<" + "script src=\"' . $getscript . '?r="+r+"&amp;bannername=' 
 <body class="weDialogBody"<?php if($ok){ ?> onload="self.focus();
 			document.we_form.code.focus();
 			document.we_form.code.select();"<?php } ?>>
-	<form onsubmit="return checkForm(this);" name="we_form" action="<?php echo $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
+	<form onsubmit="return checkForm(this);" name="we_form" action="<?= $_SERVER["SCRIPT_NAME"]; ?>" method="get"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?= we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 		<?php
 		$typeselect = '<select name="type">
 <option' . (($type === "js") ? " selected" : "") . '>js</option>

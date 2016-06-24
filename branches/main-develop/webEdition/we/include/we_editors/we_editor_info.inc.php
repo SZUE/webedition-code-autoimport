@@ -27,15 +27,15 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 ?>
 <script><!--
 	function revertToPublished() {
-		if (confirm("<?php echo addslashes(g_l('weEditorInfo', '[revert_publish_question]')); ?>")) {
+		if (confirm("<?= addslashes(g_l('weEditorInfo', '[revert_publish_question]')); ?>")) {
 			top.we_cmd("revert_published");
 		}
 	}
 
 <?php if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'revert_published'){ ?>
-		var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("<?php echo $we_transaction; ?>");
+		var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("<?= $we_transaction; ?>");
 		_EditorFrame.setEditorIsHot(false);
-	<?php echo $GLOBALS['we_doc']->getUpdateTreeScript(true); ?>
+	<?= $GLOBALS['we_doc']->getUpdateTreeScript(true); ?>
 		_EditorFrame.getDocumentReference().frames.editFooter.location.reload();
 <?php } ?>
 //-->

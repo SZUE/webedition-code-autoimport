@@ -27,7 +27,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 </head>
 <body class="weEditorBody" onload="doScrollTo();">
-	<form name="we_form"><?php echo we_class::hiddenTrans(); ?>
+	<form name="we_form"><?= we_class::hiddenTrans(); ?>
 		<?php
 		if(we_base_imageEdit::gd_version() > 0){
 			$doc = $we_doc->getDocument();

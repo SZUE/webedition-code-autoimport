@@ -113,31 +113,31 @@ function printFrameSet(){
 	$selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
 	?>
 	<script><!--
-		var rootDir = "<?php echo $rootDir; ?>";
-		var currentID = "<?php echo $currentID; ?>";
-		var currentDir = "<?php echo str_replace($rootDir, '', $currentDir); ?>";
-		var currentName = "<?php echo $currentName; ?>";
-		var currentFilter = "<?php echo str_replace(' ', '%20', g_l('contentTypes', '[' . $filter . ']', true) !== false ? g_l('contentTypes', '[' . $filter . ']') : ''); ?>";
-		var filter = '<?php echo $filter; ?>';
-		var browseServer = <?php echo $cmd1 ? 'false' : 'true'; ?>
+		var rootDir = "<?= $rootDir; ?>";
+		var currentID = "<?= $currentID; ?>";
+		var currentDir = "<?= str_replace($rootDir, '', $currentDir); ?>";
+		var currentName = "<?= $currentName; ?>";
+		var currentFilter = "<?= str_replace(' ', '%20', g_l('contentTypes', '[' . $filter . ']', true) !== false ? g_l('contentTypes', '[' . $filter . ']') : ''); ?>";
+		var filter = '<?= $filter; ?>';
+		var browseServer = <?= $cmd1 ? 'false' : 'true'; ?>
 
-		var currentType = "<?php echo ($filter == we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : ''; ?>";
-		var sitepath = "<?php echo $docroot; ?>";
+		var currentType = "<?= ($filter == we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : ''; ?>";
+		var sitepath = "<?= $docroot; ?>";
 		var dirsel = 1;
 		var scrollToVal = 0;
 		var allentries = [];
 		WE().consts.g_l.sfselector = {
-			edit_file_nok: "<?php echo we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')); ?>",
-			edit_file_is_folder: "<?php echo we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')); ?>",
-			already_root: "<?php echo we_message_reporting::prepareMsgForJS(g_l('fileselector', '[already_root]')); ?>",
+			edit_file_nok: "<?= we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')); ?>",
+			edit_file_is_folder: "<?= we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')); ?>",
+			already_root: "<?= we_message_reporting::prepareMsgForJS(g_l('fileselector', '[already_root]')); ?>",
 		};
 		function exit_close() {
 			if (!browseServer) {
 				var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
 
-				opener.<?php echo $cmd1? : 'x'; ?> = foo;
+				opener.<?= $cmd1? : 'x'; ?> = foo;
 			}
-	<?php echo we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4); ?>;
+	<?= we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4); ?>;
 			close();
 		}
 

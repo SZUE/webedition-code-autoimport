@@ -51,8 +51,8 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'save_folder_settings
 
 		$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 		?>
-		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=save_folder_settings&name=<?php echo $foldername; ?>&id=<?php echo $ID ?>&mode=<?php echo $mode; ?>&parent_id=<?php echo $parentfolder; ?>&type=<?php echo $types; ?>';
-		top.content.we_cmd('messaging_start_view', '', '<?php echo we_base_request::_(we_base_request::TABLE, 'table', ""); ?>');
+		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?= $transaction ?>&mcmd=save_folder_settings&name=<?= $foldername; ?>&id=<?= $ID ?>&mode=<?= $mode; ?>&parent_id=<?= $parentfolder; ?>&type=<?= $types; ?>';
+		top.content.we_cmd('messaging_start_view', '', '<?= we_base_request::_(we_base_request::TABLE, 'table', ""); ?>');
 		//-->
 		</script>
 		</head>
@@ -72,7 +72,7 @@ document.edit_folder.submit();
 </script>
 
 <body class="weDialogBody" style="border-top: 1px solid black;">
-	<form name="edit_folder" action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php" method="post">
+	<form name="edit_folder" action="<?= WE_MESSAGING_MODULE_DIR; ?>messaging_edit_folder.php" method="post">
 		<?php
 		$fid = we_base_request::_(we_base_request::INT, 'fid');
 		echo

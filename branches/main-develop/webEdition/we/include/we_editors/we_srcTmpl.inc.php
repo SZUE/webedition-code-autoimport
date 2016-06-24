@@ -41,11 +41,11 @@ if(!isset($_SESSION['weS']['we_wrapcheck'])){
 echo we_html_multiIconBox::getJS();
 ?>
 <script><!--
-	var docName = "<?php echo $we_doc->Name; ?>";
-	var docCharSet = "<?php echo ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']); ?>";
-	var editorHighlightCurrentLine =<?php echo intval($_SESSION['prefs']['editorHighlightCurrentLine']); ?>;
+	var docName = "<?= $we_doc->Name; ?>";
+	var docCharSet = "<?= ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']); ?>";
+	var editorHighlightCurrentLine =<?= intval($_SESSION['prefs']['editorHighlightCurrentLine']); ?>;
 	var g_l = {
-		insert_tagname: "<?php echo g_l('weTagWizard', '[insert_tagname]'); ?>",
+		insert_tagname: "<?= g_l('weTagWizard', '[insert_tagname]'); ?>",
 		insert_tagname_not_exist: "<?php sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"_wrongTag\"') . '\n\n'; ?>",
 	}
 //-->
@@ -393,7 +393,7 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 }
 ?>
 </head>
-<body class="weEditorBody" style="overflow:hidden;" onload="<?php echo $initEditor; ?>" onunload="doUnload();
+<body class="weEditorBody" style="overflow:hidden;" onload="<?= $initEditor; ?>" onunload="doUnload();
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" onresize="sizeEditor();">
 	<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php

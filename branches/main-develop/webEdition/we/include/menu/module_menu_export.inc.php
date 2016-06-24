@@ -21,57 +21,55 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-return array(
-	'export' => array(
+return [
+	'export' => [
 		'text' => g_l('export', '[export]'),
-	),
-	'new' => array(
+	],
+	'new' => [
 		'text' => g_l('export', '[new]'),
 		'parent' => 'export',
-	),
-	array(
+	],
+	[
 		'text' => g_l('export', '[export]'),
 		'cmd' => 'new_export',
 		'perm' => 'NEW_EXPORT || ADMINISTRATOR',
 		'parent' => 'new',
-	),
-	array(
+	],
+	[
 		'text' => g_l('export', '[group]'),
 		'cmd' => 'new_export_group',
 		'perm' => 'NEW_EXPORT || ADMINISTRATOR',
 		'parent' => 'new',
-	),
-	array(
+	],
+	[
 		'text' => g_l('export', '[save]'),
 		'parent' => 'export',
 		'cmd' => 'save_export',
 		'perm' => 'NEW_EXPORT || EDIT_EXPORT || ADMINISTRATOR',
-	),
-	array(
+	],
+	[
 		'text' => g_l('export', '[delete]'),
 		'parent' => 'export',
 		'cmd' => 'delete_export',
 		'perm' => 'DELETE_EXPORT || ADMINISTRATOR',
-	),
-	array(
-		'parent' => 'export', // separator
-	),
-	array(
+	],
+	['parent' => 'export',],
+	[
 		'text' => g_l('export', '[quit]'),
 		'parent' => 'export',
 		'cmd' => 'exit_export',
-	),
-	'help' => array(
+	],
+	'help' => [
 		'text' => g_l('export', '[help]'),
-	),
-	array(
+	],
+	[
 		'text' => g_l('export', '[help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',
-	),
-	array(
+	],
+	[
 		'text' => g_l('export', '[info]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'info_modules',
-	),
-);
+	],
+];

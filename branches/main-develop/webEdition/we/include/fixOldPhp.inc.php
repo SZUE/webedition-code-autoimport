@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -24,7 +23,7 @@
  */
 //FIXME: remove with PHP 5.5.... but currently some hosters have this still enabled.
 if(get_magic_quotes_gpc()){
-	$process = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
+	$process = [&$_GET, &$_POST, &$_COOKIE, &$_REQUEST];
 	while(list($key, $val) = each($process)){
 		foreach($val as $k => $v){
 			unset($process[$key][$k]);
@@ -46,9 +45,4 @@ if(!function_exists('boolval')){
 		return $val ? true : false;
 	}
 
-}
-
-//FIXME: for php 5.3
-if(!defined('JSON_UNESCAPED_UNICODE')){
-	define('JSON_UNESCAPED_UNICODE', 0);
 }

@@ -100,7 +100,7 @@ $content = we_html_tools::htmlFormElementTable(
 </head>
 <body class="weEditorBody" style="margin:10px 20px;">
 	<form name="we_form" method="post">
-		<?php echo we_html_tools::htmlDialogLayout($content, g_l('modules_users', '[search]'), $buttons); ?>
+		<?= we_html_tools::htmlDialogLayout($content, g_l('modules_users', '[search]'), $buttons); ?>
 	</form>
 </body>
 </html>

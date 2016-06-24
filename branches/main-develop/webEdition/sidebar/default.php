@@ -59,9 +59,9 @@ echo we_html_tools::getHtmlTop('sideBar') .
 					?>
 					<tr>
 						<td class="defaultfont" style="vertical-align:top;padding-top:5px;" colspan="2">
-							<strong><?php echo $headline; ?></strong><br />
+							<strong><?= $headline; ?></strong><br />
 							<br />
-							<?php echo $text['text']; ?>
+							<?= $text['text']; ?>
 						</td>
 
 					</tr>

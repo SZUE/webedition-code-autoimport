@@ -1,8 +1,8 @@
 <?php
 
 if(!empty($TABLECONSTANT) && !empty($TABLENAME)) {?>
-define("<?php echo $TABLECONSTANT;?>","<?php echo $TABLENAME;?>");
+define("<?= $TABLECONSTANT;?>","<?= $TABLENAME;?>");
 
 <?php }?>
 
-define("<?php echo $ACTIVECONSTANT;?>",true);
+define("<?= $ACTIVECONSTANT;?>",true);

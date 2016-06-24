@@ -42,5 +42,5 @@ if(($id = we_base_request::_(we_base_request::INT, 'url'))){
 header('Location: ' . $loc);
 echo we_html_tools::getHtmlTop();
 ?>
-<meta http-equiv="refresh" content="1; url=<?php echo $loc; ?>">
+<meta http-equiv="refresh" content="1; url=<?= $loc; ?>">
 </head><body></body></html>

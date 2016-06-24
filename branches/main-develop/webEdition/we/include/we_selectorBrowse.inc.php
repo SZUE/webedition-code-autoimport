@@ -150,9 +150,9 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 				?>
 				<tr style="background-color:#DFE9F5;">
 					<td class="selector treeIcon" data-contenttype="folder" data-extension=""></td>
-					<td class="selector filename"><?php echo we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
-					<td class="selector filetype"><?php echo g_l('fileselector', '[folder]') ?></td>
-					<td class="selector moddate"><?php echo date("d.m.Y H:i:s") ?></td>
+					<td class="selector filename"><?= we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
+					<td class="selector filetype"><?= g_l('fileselector', '[folder]') ?></td>
+					<td class="selector moddate"><?= date("d.m.Y H:i:s") ?></td>
 					<td class="selector filesize"></td>
 				</tr>
 				<?php
@@ -280,7 +280,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 	if($nf === "new_folder" || (( $nf === "rename_folder" || $nf === "rename_file") && $set_rename)){
 		?>
 		<script><!--
-			initSelector("<?php echo $nf; ?>");
+			initSelector("<?= $nf; ?>");
 			//-->
 		</script>
 		<?php

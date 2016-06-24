@@ -90,8 +90,8 @@ foreach($rcpts as $rcpt){
 ?>
 
 delta_sel = [];
-addrbook_sel = [<?php echo implode(',', $addrbook_str); ?>];
-current_sel = [<?php echo implode(',', $rcpts_str); ?>];
+addrbook_sel = [<?= implode(',', $addrbook_str); ?>];
+current_sel = [<?= implode(',', $rcpts_str); ?>];
 
 function init() {
 	var i;
@@ -108,7 +108,7 @@ function init() {
 }
 
 function browse_users_window() {
-	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel_browse_frameset.php?we_transaction=<?php echo $transaction; ?>", "messaging_usel_browse", -1, -1, 350, 330, true, false, true, false);
+	new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel_browse_frameset.php?we_transaction=<?= $transaction; ?>", "messaging_usel_browse", -1, -1, 350, 330, true, false, true, false);
 }
 
 function save_addrbook() {
@@ -240,7 +240,7 @@ function doUnload() {
 }
 //-->
 </script>
-<?php echo STYLESHEET; ?>
+<?= STYLESHEET; ?>
 </head>
 <body class="weDialogBody" onload="doOnLoad();
 		init();" onunload="doUnload();">
@@ -271,7 +271,7 @@ function doUnload() {
 		echo we_html_tools::htmlDialogLayout($tbl, g_l('modules_messaging', '[sel_rcpts]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:ok()"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close();")));
 		?>
 	</form>
-	<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">
+	<form action="<?= WE_MESSAGING_MODULE_DIR; ?>messaging_usel.php" method="post" name="addrbook_data">
 		<?php
 		echo we_html_element::htmlHiddens(array(
 			'mode' => 'save_addrbook',

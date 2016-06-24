@@ -15,7 +15,7 @@ class HomeController extends Zend_Controller_Action
 	 */
 	public function indexAction()
 	{
-		$homePage = new <?php echo $TOOLNAME;?>_app_HomePage();
+		$homePage = new <?= $TOOLNAME;?>_app_HomePage();
 		$homePage->setBodyAttributes(array('class'=>'weAppHome'));
 		echo $homePage->getHTML();
 	}

@@ -418,9 +418,9 @@ if($wecmd0 != "delete_single_document"){ // no select mode in delete_single_docu
 	}
 }
 ?>
-if (top.treeData.table != "<?php echo $table; ?>") {
-	top.treeData.table = "<?php echo $table; ?>";
-	we_cmd("load", "<?php echo $table; ?>");
+if (top.treeData.table != "<?= $table; ?>") {
+	top.treeData.table = "<?= $table; ?>";
+	we_cmd("load", "<?= $table; ?>");
 } else {
 	top.drawTree();
 }

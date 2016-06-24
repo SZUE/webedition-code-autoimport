@@ -47,13 +47,13 @@ $alerttext = ($isTemplatesUsedByThisTemplate ?
 	}
 
 	function pressed_yes_button() {
-		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 1, '<?php echo str_replace("'", "\\'", $GLOBALS['we_responseJS']); ?>', "<?php echo $we_cmd6; ?>");
+		opener.top.we_cmd('save_document', '<?= $we_transaction; ?>', 0, 1, 1, '<?= str_replace("'", "\\'", $GLOBALS['we_responseJS']); ?>', "<?= $we_cmd6; ?>");
 		self.close();
 
 	}
 
 	function pressed_no_button() {
-		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 0, '<?php echo str_replace("'", "\\'", $GLOBALS['we_responseJS']) ?>', "<?php echo $we_cmd6; ?>");
+		opener.top.we_cmd('save_document', '<?= $we_transaction; ?>', 0, 1, 0, '<?= str_replace("'", "\\'", $GLOBALS['we_responseJS']) ?>', "<?= $we_cmd6; ?>");
 		self.close();
 
 	}
@@ -65,7 +65,7 @@ $alerttext = ($isTemplatesUsedByThisTemplate ?
 </script>
 </head>
 <body class="weEditorBody" onload="self.focus();" onblur="self.focus()">
-	<?php echo we_html_tools::htmlYesNoCancelDialog($alerttext, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, 'pressed_yes_button()', 'pressed_no_button()', 'pressed_cancel_button()'); ?>
+	<?= we_html_tools::htmlYesNoCancelDialog($alerttext, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, 'pressed_yes_button()', 'pressed_no_button()', 'pressed_cancel_button()'); ?>
 </body>
 
 </html>

@@ -103,7 +103,7 @@ window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . 
 		}
 		?>
 		<div>
-			<div id="home" class="navigation" onclick="top.we_cmd('start_multi_editor');"><i class="fa fa-home" title="<?php echo g_l('javaMenu_global', '[home]'); ?>"></i></div>
+			<div id="home" class="navigation" onclick="top.we_cmd('start_multi_editor');"><i class="fa fa-home" title="<?= g_l('javaMenu_global', '[home]'); ?>"></i></div>
 			<div id="weMainMenu">
 				<?php
 				if($jmenu){

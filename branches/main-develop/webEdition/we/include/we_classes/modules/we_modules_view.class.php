@@ -94,9 +94,9 @@ function submitForm(target,action,method,form) {
 		?>
 		<body class="home" onload="loaded = true;
 				var we_is_home = 1;">
-			<div id="tabelle"><?php echo $starttable->getHtml(); ?></div>
-			<div id="modimage"><img src="<?php echo IMAGE_DIR . "startscreen/" . $icon; ?>" style="width:335px;height:329px;" /></div>
-				<?php echo $body; ?>
+			<div id="tabelle"><?= $starttable->getHtml(); ?></div>
+			<div id="modimage"><img src="<?= IMAGE_DIR . "startscreen/" . $icon; ?>" style="width:335px;height:329px;" /></div>
+				<?= $body; ?>
 		</body>
 		</html>
 		<?php

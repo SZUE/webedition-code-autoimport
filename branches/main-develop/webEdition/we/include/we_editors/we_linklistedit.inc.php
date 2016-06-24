@@ -353,28 +353,28 @@ if($ok){
 		//FIXME: we_field XSS
 		?>
 			opener.setScrollTo();
-			opener.we_cmd("object_change_link_at_class", "<?php echo $trans; ?>", "<?php echo we_base_request::_(we_base_request::STRING, "we_field"); ?>", "<?php echo $name; ?>");
+			opener.we_cmd("object_change_link_at_class", "<?= $trans; ?>", "<?= we_base_request::_(we_base_request::STRING, "we_field"); ?>", "<?= $name; ?>");
 			top.close();
 		<?php
 	} else if($cmd === "edit_link_at_object"){
 		$_SESSION['weS']['WE_LINK'] = array_filter($link);
 		?>
 			opener.setScrollTo();
-			opener.we_cmd("object_change_link_at_object", "<?php echo $trans; ?>", "link_<?php echo $name; ?>");
+			opener.we_cmd("object_change_link_at_object", "<?= $trans; ?>", "link_<?= $name; ?>");
 			top.close();
 		<?php
 	} else if(!empty($linklist)){
 		$_SESSION['weS']["WE_LINKLIST"] = $linklist;
 		?>
 			opener.setScrollTo();
-			opener.we_cmd("change_linklist", "<?php echo $name; ?>", "");
+			opener.we_cmd("change_linklist", "<?= $name; ?>", "");
 			top.close();
 		<?php
 	} else if(!empty($link)){
 		$_SESSION['weS']['WE_LINK'] = array_filter($link);
 		?>
 			opener.setScrollTo();
-			opener.we_cmd("change_link", "<?php echo $name; ?>", "");
+			opener.we_cmd("change_link", "<?= $name; ?>", "");
 			top.close();
 		<?php
 	}
@@ -382,7 +382,7 @@ if($ok){
 ?>
 //-->
 </script>
-<?php echo STYLESHEET; ?>
+<?= STYLESHEET; ?>
 </head>
 
 <body class="weDialogBody" onload="self.focus();" style="overflow:hidden;">
@@ -659,13 +659,13 @@ if($ok){
 			'html' => $jswinonoff,
 			'space' => we_html_multiIconBox::SPACE_MED2);
 		?>
-		<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
-			<input type="hidden" name="we_cmd[0]" value="<?php echo we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
+		<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post" onsubmit="return false">
+			<input type="hidden" name="we_cmd[0]" value="<?= we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 			<?php
 			if(!empty($ll)){
 				$ll->cleanup(0);
 				?>
-				<input type="hidden" name="linklist" value="<?php echo oldHtmlspecialchars($ll->getString()); ?>" />
+				<input type="hidden" name="linklist" value="<?= oldHtmlspecialchars($ll->getString()); ?>" />
 				<?php
 			}
 			echo we_html_element::htmlHiddens(array(

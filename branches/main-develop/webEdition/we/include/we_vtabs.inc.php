@@ -52,6 +52,6 @@ foreach($vtab as $tab => $val){
 }
 ?>
 <div id="baumArrows">
-	<div class="baumArrow" id="incBaum" title="<?php echo g_l('global', '[tree][grow]'); ?>" <?php echo ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
-	<div class="baumArrow" id="decBaum" title="<?php echo g_l('global', '[tree][reduce]'); ?>" <?php echo ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
+	<div class="baumArrow" id="incBaum" title="<?= g_l('global', '[tree][grow]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
+	<div class="baumArrow" id="decBaum" title="<?= g_l('global', '[tree][reduce]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
 </div>
