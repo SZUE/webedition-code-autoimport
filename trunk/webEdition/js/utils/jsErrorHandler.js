@@ -36,10 +36,11 @@ function errorHandler(msg, file, line, col, errObj) {
 		}
 	}
 	try {//we don' want to raise errors inside
+		var loc = (this.location ? this.location : document.location);
 		postData = 'we_cmd[msg]=' + encodeURIComponent(msg) +
 						'&we_cmd[file]=' + encodeURIComponent(file) +
 						'&we_cmd[line]=' + encodeURIComponent(line) +
-						'&we_cmd[url]=' + encodeURIComponent(this.location.pathname + this.location.search) +
+						'&we_cmd[url]=' + encodeURIComponent(loc.pathname + loc.search) +
 						'&we_cmd[App]=' + encodeURIComponent(navigator.appName) +
 						'&we_cmd[Ver]=' + encodeURIComponent(navigator.appVersion) +
 						'&we_cmd[UA]=' + encodeURIComponent(navigator.userAgent) +
