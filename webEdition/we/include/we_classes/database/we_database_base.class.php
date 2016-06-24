@@ -312,7 +312,8 @@ abstract class we_database_base{
 
 			for($i = 0; $i < strlen($queryToCheck); $i++){
 				$char = $queryToCheck[$i];
-				$active = !empty(array_filter($quotes));
+				$active=array_filter($quotes);
+				$active = !empty($active);
 				switch($char){
 					case '/':
 						if(!$active && $queryToCheck[$i + 1] === '*'){
