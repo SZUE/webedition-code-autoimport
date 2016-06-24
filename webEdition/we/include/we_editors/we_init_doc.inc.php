@@ -23,6 +23,8 @@
  */
 // exit if script called directly
 //FIXME: make this a function!
+//replace by we_document::initDoc()
+//$we_ContentType is only local!
 if(isset($GLOBALS['we_ContentType']) && !isset($we_ContentType)){
 	$we_ContentType = $GLOBALS['we_ContentType'];
 }
@@ -35,7 +37,7 @@ if(!isset($we_ContentType)){
 	}
 }
 
-switch(isset($we_ContentType) ? $we_ContentType : ''){
+switch(empty($we_ContentType) ? '' : $we_ContentType){
 	/*
 	  case we_base_ContentTypes::WEDOCUMENT:
 	  $showDoc = !empty($GLOBALS['FROM_WE_SHOW_DOC']);

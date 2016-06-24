@@ -57,7 +57,7 @@ abstract class we_html_button{
 	const NEXT = 'fat:next,fa-lg fa-step-forward';
 	const BACK = 'fat:back,fa-lg fa-step-backward';
 	const REFRESH = 'fat:refresh,fa-lg fa-refresh';
-	const PROCESS = 'fa:refresh,fa-lg fa-refresh';
+	const PROCESS = 'fa:process,fa-lg fa-refresh';
 	const SEARCH = 'fa:btn_function_search,fa-lg fa-search';
 	const CLOSE = 'fat:close,fa-lg fa-close fa-cancel';
 	const CANCEL = 'fat:cancel,fa-lg fa-ban fa-cancel';

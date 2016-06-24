@@ -102,7 +102,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 				$changesessiondata = true;
 			}
 		}
-	} else if($uid == $_SESSION['webuser']['ID'] && $_SESSION['webuser']['registered']){ // existing user
+	} else if(!empty($_SESSION['webuser']['registered']) && ($uid == $_SESSION['webuser']['ID'])){ // existing user
 		// existierender User (Daten werden von User geaendert)!!
 		$weUsername = $username? : $_SESSION['webuser']['Username'];
 
