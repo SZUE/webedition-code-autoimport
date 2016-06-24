@@ -124,10 +124,13 @@ class we_document_video extends we_binaryDocument{
 	 * @param array $attribs
 	 */
 	function initByAttribs($attribs){
-		t_e($attribs);
 		foreach($attribs as $a => $b){
-			if(strtolower($a) != 'id' && $b != ''){
-				$this->setElement($a, $b, 'attrib');
+			switch($a){
+				case 'id':
+				case 'name':
+					break;
+				default:
+					$this->setElement($a, $b, 'attrib');
 			}
 		}
 		$this->checkDisableEditpages();

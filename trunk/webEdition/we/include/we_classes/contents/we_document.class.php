@@ -908,9 +908,9 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 				}
 				$video->initByID($val, FILE_TABLE);
-				/* if(!empty($attribs)){
-				  $video->initByAttribs($attribs);
-				  } */
+				if(!empty($attribs)){
+					$video->initByAttribs($attribs);
+				}
 				return $pathOnly ? $video->Path : $video->getHtml(false, $GLOBALS['we_editmode']);
 			case 'flashmovie':
 				$fl = new we_flashDocument();
