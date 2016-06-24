@@ -178,7 +178,7 @@ if (!$success) {
 	 *
 	 * @return string
 	 */
-	function getFinishInstallationResponse(){
+	static function getFinishInstallationResponse(){
 		$versionnumber = updateUtilBase::version2number($_SESSION['clientTargetVersion']);
 		$zf_version = update::getZFversion($versionnumber);
 

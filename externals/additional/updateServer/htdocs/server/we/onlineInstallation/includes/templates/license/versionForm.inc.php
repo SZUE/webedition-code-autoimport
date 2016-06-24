@@ -4,7 +4,7 @@ $Output = '<br /><br />';
 $AvailableVersions = $GLOBALS['updateServerTemplateData']['AvailableVersions'];
 $MatchingVersions = $GLOBALS['updateServerTemplateData']['MatchingVersions'];
 $VersionsMissingLanguage = $GLOBALS['updateServerTemplateData']['VersionsMissingLanguage'];
-$NotLiveVersions = $GLOBALS['updateServerTemplateData']['NotLiveVersions'];
+//$NotLiveVersions = $GLOBALS['updateServerTemplateData']['NotLiveVersions'];
 $SubVersions = $GLOBALS['updateServerTemplateData']['SubVersions'];
 $VersionNames = $GLOBALS['updateServerTemplateData']['VersionNames'];
 $AlphaBetaVersions = $GLOBALS['updateServerTemplateData']['AlphaBetaVersions'];
@@ -27,7 +27,6 @@ if(!empty($VersionsMissingLanguage) && !empty($MatchingVersions)){
 	} else {
 		if(isset($_SESSION['testUpdate']) && empty($NotLiveVersions)){
 			$Output .= '### . $this->Language[\'noNotLiveVersion\'] . ###<br /><br />';
-			;
 		} else {
 			$Output .= '### . $this->Language[\'highestVersionRecommended\'] . ###<br /><br />';
 		}

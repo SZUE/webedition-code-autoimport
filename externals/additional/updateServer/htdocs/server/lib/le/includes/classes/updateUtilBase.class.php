@@ -294,24 +294,20 @@ print $newResponse->getOutput();
 	static function getOverwriteClassesCode(){
 
 		$retString = '
-
 if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php")){
 		require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php");
-	} else {
-		if(!class_exists("liveUpdateFunctionsServer", false)){
-			class_alias("liveUpdateFunctions","liveUpdateFunctionsServer");
-		}
-	}
-	if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php")){
-		require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php");
-	} else {
-		if(!class_exists("liveUpdateResponseServer", false)){
-			class_alias("liveUpdateResponse","liveUpdateResponseServer");
-		}
-	}
-	$liveUpdateFnc = new liveUpdateFunctionsServer();
-	$liveUpdateRsp = new liveUpdateResponseServer();
+} elseif(!class_exists("liveUpdateFunctionsServer", false)){
+		class_alias("liveUpdateFunctions","liveUpdateFunctionsServer");
+}
 
+if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php")){
+		require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateResponseServer.class.php");
+} elseif(!class_exists("liveUpdateResponseServer", false)){
+		class_alias("liveUpdateResponse","liveUpdateResponseServer");
+}
+
+$liveUpdateFnc = new liveUpdateFunctionsServer();
+$liveUpdateRsp = new liveUpdateResponseServer();
 
 if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\')) {
 	require_once(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\');
@@ -321,8 +317,7 @@ function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errconte
 	liveUpdateFunctionsServer::liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext);
 }
 set_error_handler("liveUpdateErrorHandler");
-
-		';
+';
 		return $retString;
 	}
 

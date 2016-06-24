@@ -51,7 +51,9 @@ class SoftwareRequirements extends leStep{
 		}
 
 		// identify webEdition version that has to be installed
-		if($_SESSION["le_version"] >= "6391"){
+		if($_SESSION["le_version"] >= "7080"){
+			$phpVersionMin = "5.4.0";
+		}elseif($_SESSION["le_version"] >= "6391"){
 			$phpVersionMin = "5.3.7";
 		} else if($_SESSION["le_version"] >= "6000"){
 			$phpVersionMin = "5.2.4";

@@ -37,6 +37,8 @@ $verStr = "rel";
 if(!empty($_REQUEST["beta"]) && $_REQUEST["beta"] == "true"){
 	$beta = true;
 	$branch = !empty($_REQUEST["branch"]) ? $_REQUEST["branch"] : "beta";
+} else {
+	$branch = 'beta';
 }
 // check cache:
 if($format == "json"){
@@ -65,15 +67,15 @@ require_once './include/we_db_tools.inc.php';
 $GLOBALS['DB_WE'] = new DB_WE();
 
 $latest = $GLOBALS['DB_WE']->getHash('SELECT DISTINCT(version), date,(type="release") AS islive,svnrevision FROM ' . VERSION_TABLE . ' WHERE ' . ($beta === true ? 'branch="' . $GLOBALS['DB_WE']->escape($branch) . '" AND type IN ("live","alpha","beta","rc")' : 'type="release"') . ' ORDER BY version DESC LIMIT 1');
-$latestVersion = $latest["version"];
+$latestVersion = $latest ? $latest["version"] : 0;
 
 // create dotted version
 $dotted = "";
-for($i = 0; $i < strlen($latest["version"]); $i++){
-	if($i < (strlen($latest["version"]) - 1)){
-		$dotted .= $latest["version"][$i] . ".";
+for($i = 0; $i < strlen($latestVersion); $i++){
+	if($i < (strlen($latestVersion) - 1)){
+		$dotted .= $latestVersion[$i] . ".";
 	} else {
-		$dotted .= $latest["version"][$i];
+		$dotted .= $latestVersion[$i];
 	}
 }
 //$latest["dotted"] = substr($dotted,-1);
@@ -86,7 +88,7 @@ if(!empty($latestVersion)){
 		$row = $GLOBALS['DB_WE']->getRecord();
 		if(substr($row['language'], -6) == "_UTF-8"){
 			$name = substr($row['language'], 0, -6);
-			$charset = "UTF-8";
+			$charset = 'UTF-8';
 		} else {
 			$name = $row['language'];
 			$charset = "ISO-8859-1";

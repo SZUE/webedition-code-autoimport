@@ -42,7 +42,7 @@ class languages extends languagesBase{
 	/**
 	 * @return string
 	 */
-	function getNoLanguageSelectedResponse(){
+	static function getNoLanguageSelectedResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/noLanguageSelected.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -50,7 +50,7 @@ class languages extends languagesBase{
 	/**
 	 * @return string
 	 */
-	function getConfirmLanguagesResponse(){
+	static function getConfirmLanguagesResponse(){
 		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(LIVEUPDATE_SERVER_TEMPLATE_DIR . '/languages/confirmLanguages.inc.php');
 		return updateUtil::getResponseString($ret);
 	}
@@ -83,7 +83,7 @@ class languages extends languagesBase{
 	 *
 	 * @return string
 	 */
-	function getFinishInstallationResponse(){
+	static function getFinishInstallationResponse(){
 
 		$message = '<ul>';
 		for($i = 0; $i < sizeof($_SESSION['clientDesiredLanguages']); $i++){
