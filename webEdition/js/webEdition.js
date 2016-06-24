@@ -95,6 +95,14 @@ WE().util.weGetCookie = function (doc, name) {
 	return null;
 };
 
+WE().t_e = function () {
+	var msg = '';
+	for (var i = 0; i < arguments.length; i++) {
+		msg += JSON.stringify(arguments[i]) + (i < (arguments.length - 1) ? "\n" : "");
+	}
+	WE().handler.errorHandler(msg);
+};
+
 function treeResized() {
 	var treeWidth = getTreeWidth();
 	if (treeWidth <= WE().consts.size.tree.hidden) {
