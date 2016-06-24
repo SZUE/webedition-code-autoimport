@@ -80,5 +80,7 @@ function we_tag_ifEmpty(array $attribs){
 		//   end of #3938
 	}
 
-	return empty($doc->getElement($match)) && empty($doc->getElement($match, 'bdid'));
+	$val1 = $doc->getElement($match);
+	$val2 = $doc->getElement($match, 'bdid');
+	return empty($val1) && empty($val2);
 }
