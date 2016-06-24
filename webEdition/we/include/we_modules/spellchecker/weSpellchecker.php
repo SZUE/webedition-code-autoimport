@@ -59,19 +59,19 @@ if($editname !== false){
 }
 ?>
 <script><!--
-	var mode = "<?php echo $_mode; ?>";
-	var editname = "<?php echo $editname; ?>";
+	var mode = "<?= $_mode; ?>";
+	var editname = "<?= $editname; ?>";
 	var g_l = {
-		checking: "<?php echo g_l('modules_spellchecker', '[checking]'); ?>",
-		no_java: "<?php echo we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[no_java]')); ?>",
-		finished: "<?php echo we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
+		checking: "<?= g_l('modules_spellchecker', '[checking]'); ?>",
+		no_java: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[no_java]')); ?>",
+		finished: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[finished]')); ?>"
 
 	};
 	var retryjava = 0;
 
 	function setAppletCode() {
 		retryjava = 0;
-		document.getElementById('appletPanel').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code), '\'') ?>';
+		document.getElementById('appletPanel').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code), '\'') ?>';
 		setTimeout(spellcheck, 1000);
 	}
 

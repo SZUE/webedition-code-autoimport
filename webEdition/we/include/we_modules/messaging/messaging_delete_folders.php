@@ -79,8 +79,8 @@ if(we_base_request::_(we_base_request::STRING, 'mcmd') === 'delete_folders'){
 		if($v > 0){
 			$messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
 			?>
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?php echo $transaction ?>&mcmd=delete_folders&folders=<?php echo implode(',', $v) ?>';
-				top.content.we_cmd('messaging_start_view', '', '<?php echo we_base_request::_(we_base_request::TABLE, 'table', ''); ?>');
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + 'we_showMod.php?mod=messaging&pnt=cmd&we_transaction=<?= $transaction ?>&mcmd=delete_folders&folders=<?= implode(',', $v) ?>';
+				top.content.we_cmd('messaging_start_view', '', '<?= we_base_request::_(we_base_request::TABLE, 'table', ''); ?>');
 				//-->
 			</script>
 			</head>

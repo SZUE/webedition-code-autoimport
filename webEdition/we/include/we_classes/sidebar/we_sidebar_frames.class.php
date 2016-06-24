@@ -41,7 +41,7 @@ class we_sidebar_frames{
 		?>
 		<div id="weSidebarBody">
 			<div id="weSidebarHeader">
-				<div id="Headline"><?php echo g_l('sidebar', '[headline]'); ?></div>
+				<div id="Headline"><?= g_l('sidebar', '[headline]'); ?></div>
 				<div id="CloseButton">
 					<span class="close" onclick="WE().layout.sidebar.close();">
 						<i class="fa fa-close fa-lg "></i>
@@ -50,7 +50,7 @@ class we_sidebar_frames{
 				</div>
 			</div>
 			<div id="weSidebarContentDiv">
-				<iframe id="weSidebarContent" src="<?php echo WEBEDITION_DIR; ?>sideBarFrame.php?pnt=content" name="weSidebarContent"></iframe>
+				<iframe id="weSidebarContent" src="<?= WEBEDITION_DIR; ?>sideBarFrame.php?pnt=content" name="weSidebarContent"></iframe>
 			</div>
 		</div>
 		<?php

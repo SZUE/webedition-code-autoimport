@@ -21,86 +21,86 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-return array(
-	'customer' => array(
+return [
+	'customer' => [
 		'text' => g_l('modules_customer', '[menu_customer]'),
-	),
-	array(
+	],
+	[
 		'text' => g_l('modules_customer', '[menu_new]'),
 		'parent' => 'customer',
 		'cmd' => 'new_customer',
 		'perm' => 'NEW_CUSTOMER || ADMINISTRATOR',
-	),
-	array(
+	],
+	[
 		'text' => g_l('modules_customer', '[menu_save]'),
 		'parent' => 'customer',
 		'cmd' => 'save_customer',
 		'perm' => 'EDIT_CUSTOMER || NEW_CUSTOMER || ADMINISTRATOR',
-	),
-	array(
+	],
+	[
 		'text' => g_l('modules_customer', '[menu_delete]'),
 		'parent' => 'customer',
 		'cmd' => 'delete_customer',
 		'perm' => 'DELETE_CUSTOMER || ADMINISTRATOR',
-	),
-	array('parent' => 'customer',), // separator
-	'admin' => array(
+	],
+	['parent' => 'customer',], // separator
+	'admin' => [
 		'text' => g_l('modules_customer', '[menu_admin]'),
 		'parent' => 'customer',
-	),
-	array(
+	],
+	[
 		'text' => g_l('modules_customer', '[field_admin]') . '&hellip;',
 		'parent' => 'admin',
 		'cmd' => 'show_admin',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
-	),
-	array(
+	],
+	[
 		'text' => g_l('modules_customer', '[sort_admin]') . '&hellip;',
 		'parent' => 'admin',
 		'cmd' => 'show_sort_admin',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
-	),
-	array('parent' => 'customer',), // separator
-	array(
+	],
+	['parent' => 'customer',], // separator
+	[
 		'text' => g_l('modules_customer', '[import]') . '&hellip;',
 		'parent' => 'customer',
 		'cmd' => 'import_customer',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
-	),
-	array(
+	],
+	[
 		'text' => g_l('modules_customer', '[export]') . '&hellip;',
 		'parent' => 'customer',
 		'cmd' => 'export_customer',
 		'perm' => 'SHOW_CUSTOMER_ADMIN || ADMINISTRATOR',
-	),
-	array('parent' => 'customer',), // separator
-	array(
+	],
+	['parent' => 'customer',], // separator
+	[
 		'text' => g_l('modules_customer', '[search]') . '&hellip;',
 		'parent' => 'customer',
 		'cmd' => 'show_search',
-	),
-	array(
+	],
+	[
 		'text' => g_l('modules_customer', '[settings]') . '&hellip;',
 		'parent' => 'customer',
 		'cmd' => 'show_customer_settings',
-	),
-	array('parent' => 'customer',), // separator
-	array(
+	],
+	['parent' => 'customer',], // separator
+	[
 		'text' => g_l('modules_customer', '[menu_exit]'),
 		'parent' => 'customer',
 		'cmd' => 'exit_customer',
-	),
-	'help' => array(
+	],
+	'help' => [
 		'text' => g_l('modules_customer', '[menu_help]'),
-	),
-	array(
+	],
+	[
 		'text' => g_l('modules_customer', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',
-	),
-	array(
+	],
+	[
 		'text' => g_l('modules_customer', '[menu_info]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'info_modules',
-	),
-);
+	],
+];

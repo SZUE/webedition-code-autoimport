@@ -53,7 +53,7 @@ function do_confirm() {
 	$compose = new we_messaging_format('update', $messaging->selected_message);
 	$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	?>
-	<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>todo_update.php" name="update_todo_form" method="post">
+	<form action="<?= WE_MESSAGING_MODULE_DIR; ?>todo_update.php" name="update_todo_form" method="post">
 		<?php
 		echo we_html_element::htmlHiddens(array(
 			'we_transaction' => $transaction,

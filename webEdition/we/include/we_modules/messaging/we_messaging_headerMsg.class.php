@@ -46,12 +46,12 @@ class we_messaging_headerMsg{
 		?>
 		<table>
 			<tr>
-				<td id="msgCount" class="middlefont"><div onclick="we_cmd('messaging_start', <?php echo we_messaging_frames::TYPE_MESSAGE; ?>);">0</div></td>
-				<td style="vertical-align: bottom;padding-left:1ex;"><i class="fa fa-envelope-o" onclick="we_cmd('messaging_start', <?php echo we_messaging_frames::TYPE_MESSAGE; ?>);"></i></td>
+				<td id="msgCount" class="middlefont"><div onclick="we_cmd('messaging_start', <?= we_messaging_frames::TYPE_MESSAGE; ?>);">0</div></td>
+				<td style="vertical-align: bottom;padding-left:1ex;"><i class="fa fa-envelope-o" onclick="we_cmd('messaging_start', <?= we_messaging_frames::TYPE_MESSAGE; ?>);"></i></td>
 			</tr>
 			<tr>
-				<td id="todoCount" class="middlefont"><div onclick="we_cmd('messaging_start', <?php echo we_messaging_frames::TYPE_TODO; ?>);">0</div></td>
-				<td style="vertical-align: bottom;padding-left:1ex;"><i class="fa fa-tasks" alt="" onclick="we_cmd('messaging_start', <?php echo we_messaging_frames::TYPE_TODO; ?>);"></i></td>
+				<td id="todoCount" class="middlefont"><div onclick="we_cmd('messaging_start', <?= we_messaging_frames::TYPE_TODO; ?>);">0</div></td>
+				<td style="vertical-align: bottom;padding-left:1ex;"><i class="fa fa-tasks" alt="" onclick="we_cmd('messaging_start', <?= we_messaging_frames::TYPE_TODO; ?>);"></i></td>
 			</tr>
 		</table>
 		<?php

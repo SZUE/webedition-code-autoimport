@@ -63,7 +63,7 @@ if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_trans
 	} else { //  submit via onlinecheck - site must be available online
 		// when it is a dynamic document, remove <?xml when short_open_tags are allowed.
 		if(ini_get("short_open_tag") == 1 && $GLOBALS['we_doc']->IsDynamic && $contentType === 'text/html'){
-			$content = str_replace("<?xml", '<?php echo "<?xml"; ?>', $content);
+			$content = str_replace("<?xml", '<?= "<?xml"; ?>', $content);
 		}
 
 		//  save file - submit URL to service

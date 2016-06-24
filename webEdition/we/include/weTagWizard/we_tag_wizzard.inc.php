@@ -197,15 +197,15 @@ function we_cmd(){
 		);
 		?>
 		<div id="divTagName">
-			<h1>&lt;we:<?php echo $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (' . g_l('taged', '[deprecated][title]') . ')' : ''); ?></h1>
+			<h1>&lt;we:<?= $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (' . g_l('taged', '[deprecated][title]') . ')' : ''); ?></h1>
 		</div>
 		<div id="divContent">
-<?php echo $code; ?>
+<?= $code; ?>
 			<br/>
 		</div>
 		<div id="divButtons">
 			<div style="padding-top: 8px;">
-<?php echo $buttons; ?>
+<?= $buttons; ?>
 			</div>
 		</div>
 		<input type="submit" style="width:1px; height:1px; padding:0px; margin:0px; color:#fff; background-color:#fff; border:0px;" />

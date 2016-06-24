@@ -51,7 +51,7 @@ window.close();');
 		?>
 	</head>
 	<body class="weDialogBody" onload="top.focus()">
-		<form action="<?php echo $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
+		<form action="<?= $_SERVER['SCRIPT_NAME']; ?>" name="we_form" method="post">
 			<?php
 			echo we_html_element::htmlHidden("we_okpressed", 1);
 			foreach(we_base_request::_(we_base_request::STRING, 'we_cmd') as $i => $v){

@@ -52,7 +52,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 
 	function selectRecipient() {
 		var rs = encodeURI(document.compose_form.mn_recipients.value);
-		new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel.php?we_transaction=<?php echo $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
+		new (WE().util.jsWindow)(window, WE().consts.dirs.WE_MESSAGING_MODULE_DIR + "messaging_usel.php?we_transaction=<?= $transaction; ?>&maxsel=1&rs=" + rs, "messaging_usel", -1, -1, 530, 420, true, false, true, false);
 	}
 
 	function do_send() {
@@ -70,7 +70,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 </script>
 </head>
 
-<body class="weDialogBody" <?php echo ($mode === 'reject' ? '' : 'onload="document.compose_form.mn_subject.focus()"') ?> onunload="doUnload();">
+<body class="weDialogBody" <?= ($mode === 'reject' ? '' : 'onload="document.compose_form.mn_subject.focus()"') ?> onunload="doUnload();">
 	<?php
 	switch($mode){
 		case 'forward':
@@ -87,7 +87,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 	}
 	$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
 	?>
-	<form action="<?php echo WE_MESSAGING_MODULE_DIR; ?>todo_send_ntodo.php" name="compose_form" method="post">
+	<form action="<?= WE_MESSAGING_MODULE_DIR; ?>todo_send_ntodo.php" name="compose_form" method="post">
 		<?php
 		echo we_html_element::htmlHiddens(array(
 			'we_transaction' => $transaction,

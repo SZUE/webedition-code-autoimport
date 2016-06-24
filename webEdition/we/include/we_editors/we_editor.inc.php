@@ -337,7 +337,7 @@ if(
 
 	ob_start();
 	//FIXME: eval, document was included, what needs to evaluated
-	eval('?>' . str_replace('<?xml', '<?php echo \'<?xml\'; ?>', $contents));
+	eval('?>' . str_replace('<?xml', '<?= \'<?xml\'; ?>', $contents));
 	$contents = ob_get_clean();
 //
 // --> Glossary Replacement

@@ -225,7 +225,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 </head>
 
 <body>
-	<form name="dispatcherForm" method="post" target="_self" action="<?php echo WE_SPELLCHECKER_MODULE_DIR ?>weSpellcheckerCmd.php">
+	<form name="dispatcherForm" method="post" target="_self" action="<?= WE_SPELLCHECKER_MODULE_DIR ?>weSpellcheckerCmd.php">
 		<input type="hidden" name="cmd[0]" value="" />
 		<input type="hidden" name="cmd[1]" value="" />
 	</form>

@@ -48,11 +48,11 @@ echo we_html_tools::getHtmlTop('', '', 'frameset');
 
 	_EditorFrame.initEditorFrameData({
 		EditorType: "none_webedition",
-		EditorDocumentText: "<?php echo str_replace('"', '', $arr["path"]); ?>",
-		EditorDocumentPath: "<?php echo str_replace('"', '', $newUrl); ?>",
+		EditorDocumentText: "<?= str_replace('"', '', $arr["path"]); ?>",
+		EditorDocumentPath: "<?= str_replace('"', '', $newUrl); ?>",
 		EditorContentType: "none_webedition",
-		EditorUrl: "<?php echo str_replace('"', '', $text); ?>",
-		EditorDocumentParameters: "<?php echo str_replace('"', '', $param); ?>"
+		EditorUrl: "<?= str_replace('"', '', $text); ?>",
+		EditorDocumentParameters: "<?= str_replace('"', '', $param); ?>"
 	});
 
 	function checkDocument() {

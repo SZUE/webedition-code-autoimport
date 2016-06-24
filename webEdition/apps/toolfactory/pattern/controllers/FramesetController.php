@@ -17,7 +17,7 @@ class FramesetController extends we_app_controller_FramesetAction
 	 */
 	public function indexAction()
 	{
-		$this->view = new <?php echo $TOOLNAME;?>_views_TopFrameView();
+		$this->view = new <?= $TOOLNAME;?>_views_TopFrameView();
 		$this->view->appDir = $this->getFrontController()->getParam('appDir');
 		$this->view->appName = $this->getFrontController()->getParam('appName');
 		$this->view->modelId = $this->getRequest()->getParam('modelId', 0);

@@ -63,18 +63,18 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
 		_EditorFrame.initEditorFrameData({
 			EditorType: "cockpit",
-			EditorDocumentText: "<?php echo g_l('cockpit', '[cockpit]'); ?>",
+			EditorDocumentText: "<?= g_l('cockpit', '[cockpit]'); ?>",
 			EditorDocumentPath: "Cockpit",
 			EditorContentType: "cockpit",
 			EditorEditCmd: "open_cockpit"
 		});
 
-		var _iInitCols = _iLayoutCols =<?php echo intval($iLayoutCols); ?>;
+		var _iInitCols = _iLayoutCols =<?= intval($iLayoutCols); ?>;
 		var quickstart = true;
 		var _bDgSave = false;
 		var bInitDrag = false;
 		var oTblWidgets = null;
-		WE().layout.cockpitFrame.transact = "<?php echo md5(uniqid(__FILE__, true)); ?>";
+		WE().layout.cockpitFrame.transact = "<?= md5(uniqid(__FILE__, true)); ?>";
 
 	<?php
 	echo $jsPrefs;

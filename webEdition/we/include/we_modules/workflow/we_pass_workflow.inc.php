@@ -71,7 +71,7 @@ WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFoot
 	<?php
 	if($cmd !== "ok"){
 		?>
-		<form action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post">
+		<form action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post">
 			<?php
 			$okbut = we_html_button::create_button(we_html_button::OK, "javascript:document.forms[0].submit()");
 			$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");

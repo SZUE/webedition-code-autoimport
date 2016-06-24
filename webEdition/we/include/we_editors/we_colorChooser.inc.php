@@ -31,7 +31,7 @@ $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 
 	function setColor() {
 <?php if($isA){ ?>
-			opener.document.we_form.elements["<?php echo we_base_request::_(we_base_request::RAW, 'we_cmd', 0, 1); ?>"].value = document.we_form.colorvalue.value;
+			opener.document.we_form.elements["<?= we_base_request::_(we_base_request::RAW, 'we_cmd', 0, 1); ?>"].value = document.we_form.colorvalue.value;
 
 	<?php
 	if(($js = we_base_request::_(we_base_request::JS, 'we_cmd', '', 3))){
@@ -53,7 +53,7 @@ $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 </script>
 </head>
 
-<body class="weDialogBody"<?php echo 'onload="init(' . ($isA ? '"' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) . '"' : 'window.dialogArguments["bgcolor"]') . ')"'; ?>>
+<body class="weDialogBody"<?= 'onload="init(' . ($isA ? '"' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) . '"' : 'window.dialogArguments["bgcolor"]') . ')"'; ?>>
 	<form name="we_form" action="" onsubmit="<?php if(!$isA){ ?>setColor();<?php } ?>return
 			false;">
 					<?php

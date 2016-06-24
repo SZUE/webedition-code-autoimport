@@ -73,7 +73,7 @@ we-gallery:before {
 
 we-gallery:after {
 	font-family: Helvetica;
-	content: "<?php echo g_l('contentTypes', '[text/weCollection]'); ?>";
+	content: "<?= g_l('contentTypes', '[text/weCollection]'); ?>";
 	color: #164F94;
 	border: 1px dotted gray;
 }

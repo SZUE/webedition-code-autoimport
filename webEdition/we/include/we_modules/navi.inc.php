@@ -64,4 +64,4 @@ echo we_html_element::jsElement('
 
 	}');
 ?>
-<div id="main" ><?php echo $we_tabs->getHTML(); ?> </div>
+<div id="main" ><?= $we_tabs->getHTML(); ?> </div>

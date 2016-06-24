@@ -96,7 +96,7 @@ echo we_html_tools::getHtmlTop($title, '', 'frameset') .
  we_tabs::getHeader();
 ?>
 </head>
-<body style="overflow:hidden;" <?php echo ($showHeader ? 'onload="weTabs.setFrameSize();"' : ''); ?>><?php
+<body style="overflow:hidden;" <?= ($showHeader ? 'onload="weTabs.setFrameSize();"' : ''); ?>><?php
 	$_REQUEST['tool'] = $tool;
 	echo ($showHeader ?
 			we_html_element::htmlExIFrame('navi', WE_INCLUDES_PATH . 'we_tools/tools_header.inc.php', 'right:0px;') : '') .

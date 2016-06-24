@@ -33,7 +33,7 @@
  * @package none
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-class <?php echo $TOOLNAME;?>_app_HomePage extends we_app_HomePage
+class <?= $TOOLNAME;?>_app_HomePage extends we_app_HomePage
 {
 
 }

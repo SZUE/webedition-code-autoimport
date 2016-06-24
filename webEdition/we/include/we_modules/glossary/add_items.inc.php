@@ -190,7 +190,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 			$Text = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Value, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}${3}', $Text);
 		}
 		?>
-				orginal = "<?php echo $Text; ?>";
+				orginal = "<?= $Text; ?>";
 				window.setTimeout(spellcheck, 1000);
 
 			}
@@ -200,7 +200,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		</head>
 
 		<body style="margin:0px;padding:0px;">
-			<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post">
+			<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post">
 				<?php
 				if(($cnt = count($_REQUEST['we_cmd'])) > 3){
 					for($i = 3; $i < $cnt; $i++){
@@ -247,7 +247,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				$Modes['correct'] = g_l('modules_glossary', '[correct_word]');
 				$Modes['dictionary'] = g_l('modules_glossary', '[to_dictionary]');
 				?>
-				<?php echo we_html_element::jsScript(JS_DIR . 'weCombobox.js'); ?>
+				<?= we_html_element::jsScript(JS_DIR . 'weCombobox.js'); ?>
 				<script><!--
 			Combobox = new weCombobox();
 
@@ -326,7 +326,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		<?php
 		if($cmd3 != "checkOnly"){
 			?>
-							document.getElementById('execute').innerHTML = '<?php echo str_replace("'", "\'", we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
+							document.getElementById('execute').innerHTML = '<?= str_replace("'", "\'", we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", true, 120, 22, "", "", true, false)); ?>';
 							WE().layout.button.enable(document, 'publish');
 			<?php
 		}
@@ -388,11 +388,11 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 				<div id="spinner">
 					<div id="statusImage"><i class="fa fa-2x fa-spinner fa-pulse"></i></div>
-					<div id="statusText" class="small" style="color: black;"><?php echo g_l('modules_glossary', '[download]'); ?></div>
+					<div id="statusText" class="small" style="color: black;"><?= g_l('modules_glossary', '[download]'); ?></div>
 				</div>
 
 
-				<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck"><?php
+				<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck"><?php
 					echo we_html_element::htmlHiddens(array(
 						'ItemsToPublish' => '',
 						'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
@@ -538,7 +538,7 @@ top.add();' .
 					?>
 					</head>
 					<body class="weDialogBody">
-						<form name="we_form" action="<?php echo WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
+						<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
 					}
 					?>
 				</form>

@@ -22,5 +22,5 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-$TOOLNAME = '<?php echo $TOOLNAME;?>';
+$TOOLNAME = '<?= $TOOLNAME;?>';
 require_once('../index.inc.php');

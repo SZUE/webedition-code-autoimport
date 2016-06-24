@@ -50,7 +50,7 @@ var nextCmd="' . $nextCmd . '";
 ?>
 </head>
 <body class="weEditorBody" onload="setHotDocuments();" onBlur="self.focus();">
-	<?php echo we_html_tools::htmlYesNoCancelDialog('
+	<?= we_html_tools::htmlYesNoCancelDialog('
 <div>
 	' . g_l('alert', '[exit_multi_doc_question]') . '
 	<br />

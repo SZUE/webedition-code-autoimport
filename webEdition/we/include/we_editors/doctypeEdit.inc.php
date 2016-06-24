@@ -157,10 +157,10 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
 <script><!--
 	var countSaveLoop = 0;
 	WE().consts.g_l.doctypeEdit = {
-		newDocTypeName: "<?php echo g_l('weClass', '[newDocTypeName]'); ?>",
-		doctype_hochkomma: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_hochkomma]')); ?>",
-		doctype_empty: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_empty]')); ?>",
-		doctype_exists: "<?php echo we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_exists]')); ?>",
+		newDocTypeName: "<?= g_l('weClass', '[newDocTypeName]'); ?>",
+		doctype_hochkomma: "<?= we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_hochkomma]')); ?>",
+		doctype_empty: "<?= we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_empty]')); ?>",
+		doctype_exists: "<?= we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_exists]')); ?>",
 	};
 <?php
 echo (empty($we_JavaScript) ? '' : $we_JavaScript . ';') .
@@ -174,7 +174,7 @@ switch($wecmd0){
 		}
 		?>
 			if (confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
-				we_cmd("deleteDocTypeok", "<?php echo we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
+				we_cmd("deleteDocTypeok", "<?= we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
 			}
 		<?php
 		break;

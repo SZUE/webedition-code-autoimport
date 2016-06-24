@@ -155,13 +155,13 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 	var activ_tab = 1;
 	var appletActiv = false;
 	var g_l = {
-		"dict_saved": "<?php echo we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
-		"ask_dict_del": "<?php echo g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
+		"dict_saved": "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
+		"ask_dict_del": "<?= g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
 	};
 
 	function setAppletCode() {
 		if (!appletActiv) {
-			document.getElementById('appletPanel').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code), '\''); ?>';
+			document.getElementById('appletPanel').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code), '\''); ?>';
 		}
 		appletActiv = true;
 		setTimeout(checkApplet, 2000);
@@ -172,7 +172,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 		setVisible("updateBut_" + dict, false);
 		setVisible("updateIcon_" + dict, true);
-		document.getElementById('appletPanel2').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
+		document.getElementById('appletPanel2').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
 		setTimeout(selectDict, 1000, dict);
 	}
 
@@ -180,7 +180,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 
 		setVisible("updateBut_" + dict, false);
 		setVisible("updateIcon_" + dict, true);
-		document.getElementById('appletPanel2').innerHTML = '<?php echo addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
+		document.getElementById('appletPanel2').innerHTML = '<?= addcslashes(str_replace("\n", '', $_applet_code2), '\''); ?>';
 		setTimeout(selectDict, 1000, dict);
 	}
 //-->
@@ -193,22 +193,22 @@ echo $js .
 
 <body onload="loadTable()" class="weDialogBody">
 
-	<?php echo $tabsBody; ?>
+	<?= $tabsBody; ?>
 
 	<div id="content" style="margin: 10px; width: 450px;">
 		<div id="tab1" style="display:block;">
-			<?php echo $tab_1 ?>
+			<?= $tab_1 ?>
 
 		</div>
 		<div id="tab2" style="display:none;">
-			<?php echo $tab_2 ?>
+			<?= $tab_2 ?>
 		</div>
 
 	</div>
 
-	<div class="editfooter"><?php echo $_button; ?></div>
+	<div class="editfooter"><?= $_button; ?></div>
 
-	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height: 0px;" src="<?php echo WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php'; ?>"></iframe>
+	<iframe name="hiddenCmd" id="hiddenCmd" style="position: absolute; left:0px; top:800px; display: block; border: 0px; width: 0px; height: 0px;" src="<?= WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php'; ?>"></iframe>
 
 	<div id="appletPanel2" style="position: absolute; left:0px; top:900px; display: block; border: 0px; width: 0px; height: 0px;">
 	</div>

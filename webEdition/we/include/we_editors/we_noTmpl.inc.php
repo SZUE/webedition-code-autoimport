@@ -34,14 +34,14 @@ echo we_html_element::htmlDocType();
 		}
 		if($we_doc->getElement('Keywords')){
 			?>
-			<meta name="keywords" content="<?php echo $we_doc->getElement('Keywords') ?>">
+			<meta name="keywords" content="<?= $we_doc->getElement('Keywords') ?>">
 			<?php
 		}
 		if($we_doc->getElement('Description')){
 			?>
-			<meta name="description" content="<?php echo $we_doc->getElement('Description') ?>">
+			<meta name="description" content="<?= $we_doc->getElement('Description') ?>">
 		<?php } ?>
-		<title><?php echo $we_doc->getElement('Title') ?></title>
+		<title><?= $we_doc->getElement('Title') ?></title>
 		<?php
 		if(!empty($GLOBALS['we_editmode'])){
 			echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
@@ -77,7 +77,7 @@ echo we_html_element::htmlDocType();
 			</form>
 		</body>
 	<?php } else { ?>
-		<body <?php echo we_tag('input', array('name' => 'BODYTAG')); ?>>
+		<body <?= we_tag('input', array('name' => 'BODYTAG')); ?>>
 			<?php printElement(we_tag('textarea', array('name' => 'BODY'), '')); ?>
 		</body>
 	<?php } ?>

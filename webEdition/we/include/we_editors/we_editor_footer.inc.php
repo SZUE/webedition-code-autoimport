@@ -148,7 +148,7 @@ if(inWorkflow($we_doc)){
 }
 ?>
 
-<body id="footerBody" onload="we_footerLoaded();"<?php echo $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER); ?>>
+<body id="footerBody" onload="we_footerLoaded();"<?= $we_doc->getEditorBodyAttributes(we_root::EDITOR_FOOTER); ?>>
 	<form name="we_form" action=""<?php if(!empty($we_doc->IsClassFolder)){ ?> onsubmit="sub();
 				return false;"<?php } ?>>
 					<?php

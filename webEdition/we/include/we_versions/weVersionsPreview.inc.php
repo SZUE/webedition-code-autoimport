@@ -581,20 +581,20 @@ echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]')
 
 <body class="weDialogBody">
 	<div id="eHeaderBody">
-		<?php echo $tabsBody; ?>
+		<?= $tabsBody; ?>
 	</div>
 	<div id="content">
 		<div id="tab1" style="display:block;width:100%;">
-			<?php echo $tab_1 ?>
+			<?= $tab_1 ?>
 		</div>
 		<div id="tab2" style="display:none;height:100%;width:100%">
-			<?php echo $tab_2 ?>
+			<?= $tab_2 ?>
 		</div>
 		<div id="tab3" style="display:none;height:100%;width:100%">
-			<?php echo $tab_3 ?>
+			<?= $tab_3 ?>
 		</div>
 	</div>
 
-	<div class="editfooter"><?php echo we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();"); ?></div>
+	<div class="editfooter"><?= we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();"); ?></div>
 </body>
 </html>

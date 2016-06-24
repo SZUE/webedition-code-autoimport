@@ -52,7 +52,7 @@ function changeTypeSelect(s) {
 	//added for #7269
 	var emailTable = document.getElementById("emailOptions");
 	if (emailTable) {
-		if (s.value == "<?php echo we_base_link::TYPE_MAIL; ?>") {
+		if (s.value == "<?= we_base_link::TYPE_MAIL; ?>") {
 			emailTable.style.display = "block";
 		} else {
 			emailTable.style.display = "none";
@@ -71,7 +71,7 @@ function changeCTypeSelect(s) {
 			trObj.style.display = "";
 		}
 	}
-	if (s.options[s.selectedIndex].value == "<?php echo we_base_link::CONTENT_TEXT; ?>") {
+	if (s.options[s.selectedIndex].value == "<?= we_base_link::CONTENT_TEXT; ?>") {
 		imgPropsObj.style.display = "none";
 	} else {
 		imgPropsObj.style.display = "";
