@@ -182,7 +182,7 @@ function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insert
 
 	static function _getButton($name, $cmd, $state = "right", $title = ""){
 		return we_html_element::jsElement('weSetCookieVariable("but_' . $name . '","' . $state . '");') .
-			we_html_button::create_button('fa:btn_direction,fa-lg fa-caret-' . $state, "javascript:" . $cmd . ";toggleButton(this,'" . $name . "');", true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, true, $name, false, $title);
+			we_html_button::create_button('fa:btn_direction,fa-lg fa-caret-' . $state, "javascript:" . $cmd . ";toggleButton(this,'" . $name . "');", true, 0, 0, '', '', false, true, $name, false, $title);
 	}
 
 }

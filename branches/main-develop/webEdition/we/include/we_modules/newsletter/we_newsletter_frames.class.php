@@ -1529,7 +1529,7 @@ self.focus();
 		$weFileupload->setExternalUiElements(array('btnUploadName' => 'upload_footer'));
 		$weFileupload->setDimensions(array('width' => 330, 'marginTop' => 6));
 		$cancel = we_html_button::create_button(we_html_button::CANCEL, "javascript:" . $weFileupload->getJsBtnCmd('cancel'));
-		$upload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, we_html_button::WIDTH, we_html_button::HEIGHT, '', '', false, false, '_footer');
+		$upload = we_html_button::create_button(we_html_button::UPLOAD, "javascript:" . $weFileupload->getJsBtnCmd('upload'), true, 0, 0, '', '', false, false, '_footer');
 
 		$buttons = $cancel . $upload;
 		$footerTable = new we_html_table(array('class' => 'default', 'style' => 'width:100%;'), 1, 2);

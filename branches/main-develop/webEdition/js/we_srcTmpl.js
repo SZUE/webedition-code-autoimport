@@ -114,9 +114,9 @@ function scrollToPosition() {
 	}
 }
 
-function wedoKeyDown(ta, keycode) {
-	modifiers = (event.altKey || event.ctrlKey || event.shiftKey);
-	if (!modifiers && keycode == 9) { // TAB
+function wedoKeyDown(ta, ev) {
+	modifiers = (ev.altKey || ev.ctrlKey || ev.shiftKey);
+	if (!modifiers && ev.keycode == 9) { // TAB
 		if (ta.setSelectionRange) {
 			var selectionStart = ta.selectionStart;
 			var selectionEnd = ta.selectionEnd;
