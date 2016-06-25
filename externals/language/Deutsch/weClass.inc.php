@@ -226,6 +226,7 @@ Nicht aufgeführt: Elemente die nicht zu Sammlung passen.',
 	'unusedElementsTab'=>'Obsolete Elemente',
 	
 	'unusedElements'=>array(
+		'delete'=>'Möchten Sie die ausgewählten Elemente löschen? Beachten Sie, daß dies irreversibel ist.',
 		'description'=>'<strong>Experimentelles Feature</strong><br/>
 Alle hier angezeigten Elemente sind in Dokumenten basierend auf dieser Vorlage gefunden worden, konnten beim Parsen dieser Vorlage jedoch nicht mehr gefunden werden.<br/>
 Bitte beachten Sie, daß Elemente aus &lt;we:include&gt;, sowie Elemente deren Name dynamisch ermittelt werden, hier als obsolet angezeigt werden können!<br/>

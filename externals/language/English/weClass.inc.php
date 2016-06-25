@@ -226,6 +226,7 @@ Not shown: elements not matching the content type of the collection.',
 	'unusedElementsTab'=>'Obsolete elements',
 	
 	'unusedElements'=>array(
+		'delete'=>'Do you want to delete the seleted elements? Beware, there is no undo for this operation.',
 		'description'=>'<strong>Experimental Feature</strong><br/>
 Each element shown below is contained in at least one document based on this template. Only elements which could not be identified by parsing the template are listed below.<br/>
 Beware the tag &lt;we:include&gt; is not treated and dynamic created elements are shown as unused.<br/>
