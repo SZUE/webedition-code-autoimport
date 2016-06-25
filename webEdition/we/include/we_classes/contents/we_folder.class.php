@@ -369,12 +369,6 @@ class we_folder extends we_root{
 	/* must be called from the editor-script. Returns a filename which has to be included from the global-Script */
 
 	function editor(){
-		/*
-		 * if($we_Table == FILE_TABLE && $we_ContentType === we_base_ContentTypes::FOLDER && $we_ID){
-		  $we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_DOCLIST;
-		  $_SESSION['weS']['EditPageNr'] = getTabs($we_doc->ClassName, we_base_constants::WE_EDITPAGE_DOCLIST);
-		  }
-		 */
 		switch($this->EditPageNr){
 			default:
 				$_SESSION['weS']['EditPageNr'] = $this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
