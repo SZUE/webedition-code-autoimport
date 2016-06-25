@@ -28,9 +28,6 @@
  * Provides functions for creating webEdition buttons.
  */
 abstract class we_html_button{
-	const HEIGHT = 22;
-	const WIDTH = 100;
-	const AUTO_WIDTH = -1;
 	const WE_IMAGE_BUTTON_IDENTIFY = 'image';
 	//simple button with icon
 	const WE_FA_BUTTON_IDENTIFY = 'fa';
@@ -116,11 +113,9 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-	static function create_button($name, $href, $alt = true, $width = self::WIDTH, $height = self::HEIGHT, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, $dimensions = []){
-		$cmd = '';
 
-		// Check width
-		//$width = ($width ? : self::WIDTH);
+	static function create_button($name, $href, $unused3 = 0, $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, $dimensions = []){
+		$cmd = '';
 
 		restart:
 		$all = explode(':', $name, 2);
@@ -148,8 +143,6 @@ abstract class we_html_button{
 						$name = str_replace(self::WE_IMAGE_BUTTON_IDENTIFY, 'fa', $name) . self::NOT_FOUND;
 				}
 			case self::WE_FASTACK_BUTTON_IDENTIFY://fixme: add stack class
-				//set width for image button if given width has not default value
-				//$width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
@@ -163,10 +156,6 @@ abstract class we_html_button{
 			case self::WE_FATEXT_BUTTON_IDENTIFY:
 				$class.=' weIconTextButton';
 			case self::WE_FA_BUTTON_IDENTIFY:
-				//set width for image button if given width has not default value
-				/* 				if($type == self::WE_FA_BUTTON_IDENTIFY){
-				  $width = ($width == self::WIDTH ? self::AUTO_WIDTH : $width);
-				  } */
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
