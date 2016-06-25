@@ -50,53 +50,33 @@ function we_tag_textarea(array $attribs, $content){
 	}
 
 	$fieldVal = we_document::parseInternalLinks($GLOBALS['we_doc']->getField($attribs), 0, '');
-	if(!weTag_getAttribute('wysiwyg', $attribs, false, we_base_request::BOOL) && strpos($fieldVal, '</we-gallery>') === false){
+	if(!strpos($fieldVal, '</we-gallery>')){
 		return $fieldVal;
 	}
 
+	$gallery = false;
 	/* we are in wysiwyg and have at least one we-gallery */
-	$galleryAttribs = $regs = array();
-	if(preg_match_all('/<we-gallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/we-gallery>/i', $fieldVal, $regs, PREG_SET_ORDER)){
-		for($i = 0; $i < count($regs); $i++){
-			array_shift($regs[$i]);
-			foreach($regs[$i] as $reg){
-				if(($pos = strpos($reg, '=')) !== false){
-					$galleryAttribs[$i][substr($reg, 0, $pos)] = substr($reg, $pos + 2, -1);
+	$splitVal = preg_split('&(<we-gallery)([^>]*)></we-gallery>&i', $fieldVal, -1, PREG_SPLIT_DELIM_CAPTURE);
+	ob_start();
+	foreach($splitVal as $split){
+		if($split === '<we-gallery'){
+			$gallery = true;
+			continue;
+		}
+		if($gallery){
+			$gallery = false;
+			$galleryAttribs = we_tag_tagParser::parseAttribs($split, true);
+			if($galleryAttribs['id'] && $galleryAttribs['tmpl']){
+				$GLOBALS['WE_COLLECTION_ID'] = $galleryAttribs['id'];
+				if(($we_inc = we_tag('include', array('type' => 'template', 'id' => intval($galleryAttribs['tmpl']), '_parsed' => true)))){
+					include($we_inc);
 				}
+				unset($GLOBALS['WE_COLLECTION_ID']);
 			}
+			continue;
 		}
+		printElement($split);
 	}
 
-	$splitVal = preg_split('/<we-gallery *((id|tmpl)="\d+")* *((id|tmpl)="\d+")* *><\/we-gallery>/i', $fieldVal);
-	printElement(array_shift($splitVal));
-	foreach($splitVal as $i => $cur){
-		if($galleryAttribs[$i]['id'] && $galleryAttribs[$i]['tmpl']){
-			$GLOBALS['WE_COLLECTION_ID'] = $galleryAttribs[$i]['id'];
-			if(($we_inc = we_tag('include', array('type' => 'template', 'id' => intval($galleryAttribs[$i]['tmpl']), '_parsed' => true)))){
-				include($we_inc);
-			}
-			unset($GLOBALS['WE_COLLECTION_ID']);
-		}
-		printElement($cur);
-	}
-
-	return;
-
-	/*
-	  $fieldVal = array_shift($splitVal);
-	  for($i = 0; $i < count($splitVal); $i++){
-	  if($galleryAttribs[$i]['id'] && $galleryAttribs[$i]['tmpl']){t_e("ga", $galleryAttribs[$i]['id'], $galleryAttribs[$i]['tmpl']);
-	  $GLOBALS['WE_COLLECTION_ID'] = $galleryAttribs[$i]['id'];
-	  ob_start();
-	  if(($we_inc = we_tag('include', array('type' => 'template', 'id' => intval($galleryAttribs[$i]['tmpl']), '_parsed' => true)))){
-	  include($we_inc);
-	  }
-	  $fieldVal .= ob_get_clean();
-	  }
-	  $fieldVal .= $splitVal[$i];
-	  }
-
-	  return $fieldVal;
-	 *
-	 */
+	return ob_get_clean();
 }
