@@ -21,17 +21,32 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+$db = $GLOBALS['DB_WE'];
 echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+ STYLESHEET .
+ we_html_element::jsScript(JS_DIR . 'we_editor_script.js');
+
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
 $remove = we_base_request::_(we_base_request::INT, 'weg');
-if(!empty($remove)){
-	t_e($remove);
+if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remove)){
+	$delS = array();
+	foreach($remove as $rem => $blockcnt){
+		if($blockcnt){
+			//FIXME: todo
+		} else {
+			$delS[] = $rem;
+		}
+	}
+	if($delS){
+		$db->query(
+			'DELETE l,c FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash IN (x\'' . implode('\',x\'', $delS) . '\')'
+		);
+	}
 }
 ?>
 </head>
 <body class="weEditorBody">
-	<form name="we_form" method="post" action="" onsubmit="return false;">
+	<form name="we_form" method="post">
 		<?php
 		echo we_class::hiddenTrans();
 
@@ -54,20 +69,19 @@ if(!empty($remove)){
 					if(!$isBlock){
 						switch($tag['name']){
 							case 'href':
-								$relevantTags[$type][md5($tag['attribs']['name'].we_base_link::MAGIC_INT_LINK)] = $tag['attribs']['name'];
-								$relevantTags[$type][md5($tag['attribs']['name'].we_base_link::MAGIC_INT_LINK_ID)] = $tag['attribs']['name'];
-								$relevantTags[$type][md5($tag['attribs']['name'].we_base_link::MAGIC_INT_LINK_EXTPATH)] = $tag['attribs']['name'];
+								$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK)] = $tag['attribs']['name'];
+								$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK_ID)] = $tag['attribs']['name'];
+								$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK_EXTPATH)] = $tag['attribs']['name'];
 						}
 					}
 				}
 			}
 		}
 
-		$db = $GLOBALS['DB_WE'];
-		$allFields = $db->getAllq('SELECT l.Type,l.Name,IF(c.BDID,c.BDID,c.Dat) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') GROUP BY l.nHash');
+		$allFields = $db->getAllq('SELECT l.Type,l.Name,IF(c.BDID,c.BDID,c.Dat) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') GROUP BY l.nHash');
 
 		if(!empty($relevantTags['normal']) || !empty($relevantTags['block'])){
-			$obsolete = $db->getAllq('SELECT l.Type,l.Name,HEX(l.nHash) AS nHash,COUNT(1) AS no,IF(c.BDID,c.BDID, SUBSTR(c.Dat,1,150)) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') ' . (empty($relevantTags['normal']) ? '' : 'AND l.nHash NOT IN (x\'' . implode('\',x\'', array_keys($relevantTags['normal'])) . '\') ') . (empty($relevantTags['block']) ? '' : ' AND SUBSTRING_INDEX(l.Name,"__",1) NOT IN ("' . implode('","', array_keys($relevantTags['block'])) . '")') . ' GROUP BY l.nHash ORDER BY l.Name');
+			$obsolete = $db->getAllq('SELECT l.Type,l.Name,HEX(l.nHash) AS nHash,COUNT(1) AS no,IF(c.BDID,c.BDID, SUBSTR(c.Dat,1,150)) AS content FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash NOT IN (x\'' . md5('Title') . '\',x\'' . md5('Description') . '\',x\'' . md5('Keywords') . '\') ' . (empty($relevantTags['normal']) ? '' : 'AND l.nHash NOT IN (x\'' . implode('\',x\'', array_keys($relevantTags['normal'])) . '\') ') . (empty($relevantTags['block']) ? '' : ' AND SUBSTRING_INDEX(l.Name,"__",1) NOT IN ("' . implode('","', array_keys($relevantTags['block'])) . '")') . ' GROUP BY l.nHash ORDER BY l.Name');
 
 			foreach($obsolete as &$ob){
 				$bl = explode('blk_', $ob['Name'], 2);
@@ -111,30 +125,34 @@ if(!empty($remove)){
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[unusedElements][description]'), we_html_tools::TYPE_ALERT, 850, false)
 			),
 			array(
-				'html' => $table->getHtml(),
+				'html' => $table->getHtml() .
+				($obsolete ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('weClass', '[unusedElements][delete]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") : ''),
 			),
 			/*
-			array(
-				'headline' => 'Obsolete Elemente',
-				'html' => '<pre>' . print_r($obsolete, true) . '</pre>',
-			),
-			array(
-				'headline' => 'debug',
-				'html' => '<pre>' . print_r($tp->getTagsWithAttributes(true), true) . '</pre>',
-			),
-			array(
-				'headline' => 'Gefundene Elemente',
-				'html' => '<pre>' . print_r($relevantTags, true) . '</pre>',
-			),
-			array(
-				'headline' => 'Elemente in DB',
-				'html' => '<pre>' . print_r($allFields, true) . '</pre>',
-			),*/
+			  array(
+			  'headline' => 'Obsolete Elemente',
+			  'html' => '<pre>' . print_r($obsolete, true) . '</pre>',
+			  ),
+			  array(
+			  'headline' => 'debug',
+			  'html' => '<pre>' . print_r($tp->getTagsWithAttributes(true), true) . '</pre>',
+			  ),
+			  array(
+			  'headline' => 'Gefundene Elemente',
+			  'html' => '<pre>' . print_r($relevantTags, true) . '</pre>',
+			  ),
+			  array(
+			  'headline' => 'Elemente in DB',
+			  'html' => '<pre>' . print_r($allFields, true) . '</pre>',
+			  ), */
 		);
 
 
 		echo we_html_multiIconBox::getHTML('', $parts, 20) .
-		we_html_element::htmlHidden("we_complete_request", 1);
+		we_html_element::htmlHiddens(array(
+			'we_complete_request' => 1,
+			'do' => ''
+		));
 		?>
 	</form>
 </body>
