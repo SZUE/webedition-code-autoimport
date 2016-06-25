@@ -37,7 +37,7 @@ function we_tag_hidden(array $attribs){
 			$value = getArrayValue($_SESSION, null, $name);
 			break;
 		case 'request' :
-			$value = we_base_util::rmPhp(we_base_request::filterVar(getArrayValue($_REQUEST, null, $name), $varType))
+			$value = we_base_util::rmPhp(we_base_request::filterVar(getArrayValue($_REQUEST, null, $name), $varType));
 			break;
 		default :
 			$value = getArrayValue($GLOBALS, null, $name);
