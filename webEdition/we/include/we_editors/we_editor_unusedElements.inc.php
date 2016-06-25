@@ -29,10 +29,10 @@ echo we_html_tools::getHtmlTop() .
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
 $remove = we_base_request::_(we_base_request::INT, 'weg');
 if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remove)){
-	$delS = array();
+	$delS = $delB = array();
 	foreach($remove as $rem => $blockcnt){
 		if($blockcnt){
-			//FIXME: todo
+			$delB[] = $rem;
 		} else {
 			$delS[] = $rem;
 		}
@@ -40,6 +40,12 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 	if($delS){
 		$db->query(
 			'DELETE l,c FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash IN (x\'' . implode('\',x\'', $delS) . '\')'
+		);
+	}
+	if($delB){
+		$strs = $db->getAllq('SELECT DISTINCT SUBSTRING_INDEX(l.Name,"__",1) FROM ' . LINK_TABLE . ' l WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND l.nHash IN (x\'' . implode('\',x\'', $delB) . '\')', true);
+		$db->query(
+			'DELETE l,c FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID IN (SELECT ID FROM ' . FILE_TABLE . ' WHERE TemplateID=' . $GLOBALS['we_doc']->ID . ') AND l.DocumentTable="tblFile" AND l.Type!="attrib" AND SUBSTRING_INDEX(l.Name,"__",1) IN ("' . implode('","', $strs) . '")'
 		);
 	}
 }
