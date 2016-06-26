@@ -69,7 +69,7 @@ if(isset($_SESSION['weS']['we_data'][$we_transaction])){
 }
 
 // init document
-include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+$we_doc = we_document::initDoc($we_ContentType, $we_dt, $we_ID, $we_Table);
 if(!$we_doc->fileExists){
 	include(WE_INCLUDES_PATH . 'weInfoPages/weNoResource.inc.php');
 	exit();

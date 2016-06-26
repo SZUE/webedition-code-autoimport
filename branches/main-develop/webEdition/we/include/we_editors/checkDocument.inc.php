@@ -25,7 +25,7 @@ we_html_tools::protect();
 
 if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'))){ //  initialise Document
 	$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
-	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+	$we_doc = we_document::initDoc('', $we_dt);
 
 	$GLOBALS['we_doc']->InWebEdition = false;
 

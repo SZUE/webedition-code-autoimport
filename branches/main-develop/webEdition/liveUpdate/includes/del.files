@@ -437,6 +437,7 @@ we/include/we_editors/we_preferences_header.php
 we/include/we_editors/we_preferences_header.inc.php
 we/include/we_editors/we_preferences_footer.php
 we/include/we_editors/we_make_backup.php
+we/include/we_editors/we_init_doc.inc.php
 we/include/we_editors/we_file_locked.inc.php
 we/include/we_editors/file_restricted_footer.inc.php
 we/include/we_editors/file_no_save_footer.inc.php

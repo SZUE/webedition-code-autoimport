@@ -615,8 +615,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 	function getDocument(){
 		$we_ContentType = $this->data['ContentType'];
-		include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-		return $we_doc;
+		return we_document::initDoc($we_ContentType);
 	}
 
 	function finish(){

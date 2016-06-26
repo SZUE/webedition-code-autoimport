@@ -29,7 +29,7 @@ $name = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 3);
 
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
-include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+$we_doc = we_document::initDoc('', $we_dt);
 
 if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$we_doc->setElement($name . 'inlineedit', (we_base_request::_(we_base_request::BOOL, 'inlineedit') ? 'on' : 'off'));

@@ -122,7 +122,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			}
 
 			$we_dt = $_SESSION['weS']['we_data'][$this->docVars['transaction']];
-			include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+			$we_doc = we_document::initDoc('', $we_dt);
 			if(!$this->isParentIdOk($we_doc->ParentID)){
 				return array(
 					'error' => 'workspace not ok',
@@ -168,7 +168,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 		// make new we_doc
 		$we_ContentType = getContentTypeFromFile($this->fileVars['weFileName']);
-		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+		$we_doc = we_document::initDoc($we_ContentType, $we_dt);
 
 		//TODO: check if $we_doc exists: depends on perms!!
 		/*
@@ -317,7 +317,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					$we_doc->importMetaData();
 				}
 				if($this->docVars['focusX'] || $this->docVars['focusY']){
-					$we_doc->setElement('focus', '[' . $this->docVars['focusX'] . ',' .$this->docVars['focusY']. ']', 'input');
+					$we_doc->setElement('focus', '[' . $this->docVars['focusX'] . ',' . $this->docVars['focusY'] . ']', 'input');
 				}
 			// no break
 			case we_base_ContentTypes::FLASH:

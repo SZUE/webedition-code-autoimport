@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -32,8 +31,7 @@ $wf_text = we_base_request::_(we_base_request::STRING, 'wf_text', '');
 
 ###### init document #########
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
-include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-
+$we_doc = we_document::initDoc('', $we_dt);
 
 echo we_html_tools::getHtmlTop();
 
