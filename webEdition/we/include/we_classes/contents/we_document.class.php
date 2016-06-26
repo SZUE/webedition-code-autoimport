@@ -1650,15 +1650,15 @@ class we_document extends we_root{
 		return str_replace('####BLOCKNR####', '[0-9]+', preg_quote($field . $block . '_TAGS_') . '[0-9]+');
 	}
 
-	public static function initDoc($we_ContentType, $we_dt, $we_ID = 0, $we_Table = '', $dontMakeGlobal = false){
+	public static function initDoc($we_dt, $we_ContentType = '', $we_ID = 0, $we_Table = '', $dontMakeGlobal = false){
 		if(isset($GLOBALS['we_ContentType']) && empty($we_ContentType)){
 			$we_ContentType = $GLOBALS['we_ContentType'];
 		}
 
 		if(empty($we_ContentType)){
-			if($we_dt && is_array($we_dt) && !empty($we_dt[0]['ContentType'])){
+			if(!empty($we_dt) && !empty($we_dt[0]['ContentType'])){
 				$we_ContentType = $we_dt[0]['ContentType'];
-			} else if((empty($we_dt) || !is_array($we_dt) || empty($we_dt[0]['ClassName'])) && $we_ID && $we_Table){
+			} else if((empty($we_dt) || empty($we_dt[0]['ClassName'])) && $we_ID && $we_Table){
 				$we_ContentType = f('SELECT ContentType FROM ' . $GLOBALS['DB_WE']->escape($we_Table) . ' WHERE ID=' . intval($we_ID));
 			}
 		}

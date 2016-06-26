@@ -25,7 +25,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
-$we_doc = we_document::initDoc('', $we_dt);
+$we_doc = we_document::initDoc($we_dt);
 
 function inWorkflow(we_root $doc){
 	if(!defined('WORKFLOW_TABLE') || !$doc->IsTextContentDoc){

@@ -109,7 +109,7 @@ class we_exim_contentProvider{
 			default:
 				$we_Table = FILE_TABLE;
 		}
-		return we_document::initDoc($we_ContentType, '', $we_ID, $we_Table, true);
+		return we_document::initDoc([], $we_ContentType, $we_ID, $we_Table, true);
 	}
 
 	static function populateInstance(&$object, $content){

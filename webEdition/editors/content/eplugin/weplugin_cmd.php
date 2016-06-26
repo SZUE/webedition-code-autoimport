@@ -62,7 +62,7 @@ if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "f
 		break;
 	case "editFile":
 		$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
-		$we_doc = we_document::initDoc('', $we_dt);
+		$we_doc = we_document::initDoc($we_dt);
 		$we_doc->we_initSessDat($we_dt);
 
 		$filename = $we_doc->Path;
@@ -113,7 +113,7 @@ switch(_EditorFrame.getEditorEditPageNr()){
 		if(isset($_FILES['uploadfile']) && ($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))){
 			$we_ContentType = we_base_request::_(we_base_request::STRING, 'contenttype');
 			$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
-			$we_doc = we_document::initDoc($we_ContentType, $we_dt);
+			$we_doc = we_document::initDoc($we_dt, $we_ContentType);
 
 			$tempName = TEMP_PATH . we_base_file::getUniqueId();
 			move_uploaded_file($_FILES['uploadfile']["tmp_name"], $tempName);

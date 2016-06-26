@@ -29,7 +29,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 
 
 // init document
 $we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : "";
-$we_doc = we_document::initDoc('', $we_dt);
+$we_doc = we_document::initDoc($we_dt);
 
 if(!($we_doc instanceof we_imageDocument)){
 	exit("ERROR: Couldn't initialize we_imageDocument object");

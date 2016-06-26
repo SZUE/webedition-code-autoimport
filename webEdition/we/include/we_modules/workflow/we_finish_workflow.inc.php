@@ -25,7 +25,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
-$we_doc = we_document::initDoc('', $we_dt);
+$we_doc = we_document::initDoc($we_dt);
 
 if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '', true)){
 	if(($time = $we_doc->i_publInScheduleTable())){

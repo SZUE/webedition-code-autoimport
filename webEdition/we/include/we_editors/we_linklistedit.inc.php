@@ -67,7 +67,7 @@ function getRevRelSelect($type, $value){
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
-$we_doc = we_document::initDoc('', $we_dt);
+$we_doc = we_document::initDoc($we_dt);
 
 if(($charset = $we_doc->getElement('Charset'))){ //	send charset which might be determined in template
 	we_html_tools::headerCtCharset('text/html', $charset);
