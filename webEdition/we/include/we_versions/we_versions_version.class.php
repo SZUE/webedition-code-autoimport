@@ -1122,8 +1122,7 @@ class we_versions_version{
 				}
 				break;
 			case 'timestamp':
-				$lastEntryVersion = f('SELECT ID FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document['Table']) . '" ORDER BY ID Desc LIMIT 1', '', $db);
-				$entry = ($lastEntryVersion ? sql_function('UNIX_TIMESTAMP()') : $document['CreationDate']);
+				$entry = (f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document['Table']) . '" ORDER BY ID Desc LIMIT 1', '', $db) ? sql_function('UNIX_TIMESTAMP()') : $document['CreationDate']);
 				break;
 			case 'status':
 				$this->setStatus($status);
@@ -1135,7 +1134,7 @@ class we_versions_version{
 				}
 				break;
 			case 'version':
-				$lastEntryVersion = f('SELECT MAX(version) AS version FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document["Table"]) . '"', 'version', $db);
+				$lastEntryVersion = f('SELECT MAX(version) FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document["Table"]) . '"', '', $db);
 				if($lastEntryVersion){
 					$newVersion = $lastEntryVersion + 1;
 					$this->setVersion($newVersion);

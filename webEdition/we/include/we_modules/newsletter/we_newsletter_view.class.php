@@ -1010,7 +1010,8 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 					}
 
 					$url = parse_url($block->Field);
-					$content = getHTTP($url["host"], (isset($url["path"]) ? $url["path"] : '/'), "", defined('HTTP_USERNAME') ? HTTP_USERNAME : "", defined('HTTP_PASSWORD') ? HTTP_PASSWORD : "");
+					$st = '';
+					$content = getHTTP($url["host"], (isset($url["path"]) ? $url["path"] : '/'), $st, "", defined('HTTP_USERNAME') ? HTTP_USERNAME : "", defined('HTTP_PASSWORD') ? HTTP_PASSWORD : "");
 
 					$trenner = '\s*';
 					$patterns[] = "/<(img" . $trenner . "[^>]+src" . $trenner . "[\=\"|\=\'|\=\\\\|\=]*" . $trenner . ")([^\'\"> ? \\\]*)([^\"\' \\\\>]*)(" . $trenner . "[^>]*)>/sie";

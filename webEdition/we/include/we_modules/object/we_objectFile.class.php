@@ -146,7 +146,7 @@ class we_objectFile extends we_document{
 			}
 		}
 
-		$wof->DefArray = $wof->DefArray ? : $wof->getDefaultValue[]; //bug #7426
+		$wof->DefArray = $wof->DefArray ? : $wof->getDefaultValueArray(); //bug #7426
 
 		if(($ret = we_base_request::_(we_base_request::URL, 'we_returnpage'))){
 			$wof->setElement('we_returnpage', $ret);
@@ -800,7 +800,7 @@ class we_objectFile extends we_document{
 		$ob = new we_objectFile();
 		if($myid){
 			$ob->initByID($myid, OBJECT_FILES_TABLE);
-			$ob->DefArray = $ob->getDefaultValue[];
+			$ob->DefArray = $ob->getDefaultValueArray();
 		}
 		$table = OBJECT_FILES_TABLE;
 
@@ -948,7 +948,7 @@ class we_objectFile extends we_document{
 				if($isSEEM){
 					/* $ob = new we_objectFile();
 					  $ob->initByID($myid, OBJECT_FILES_TABLE);
-					  $ob->DefArray = $ob->getDefaultValue[]; */
+					  $ob->DefArray = $ob->getDefaultValueArray(); */
 					$uniq = md5(uniqid(__FUNCTION__, true));
 					$openCloseButton = we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','','')", "right", g_l('global', '[openCloseBox]'));
 					$reloadEntry = "opener.top.we_cmd('object_change_objectlink','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "');";
@@ -984,7 +984,7 @@ class we_objectFile extends we_document{
 				if($isSEEM && $myid){
 					$ob = new we_objectFile();
 					$ob->initByID($myid, OBJECT_FILES_TABLE);
-					$ob->DefArray = $ob->getDefaultValue[];
+					$ob->DefArray = $ob->getDefaultValueArray();
 
 					$content .= '<div id="text_' . $uniq . '"></div><div id="table_' . $uniq . '" style="display:none; padding: 10px 0px 20px 30px;">' .
 						$ob->getFieldsHTML(0, true) .
@@ -1008,7 +1008,7 @@ class we_objectFile extends we_document{
 				$uniq = md5(uniqid(__FUNCTION__, true));
 				$ob = new we_objectFile();
 				$ob->initByID($myid, OBJECT_FILES_TABLE);
-				$ob->DefArray = $ob->getDefaultValue[];
+				$ob->DefArray = $ob->getDefaultValueArray();
 				$txt = $ob->Text;
 
 				$but = we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','" . $txt . "','" . $txt . "')", "right", g_l('global', '[openCloseBox]'));
@@ -1357,7 +1357,7 @@ class we_objectFile extends we_document{
 
 // handling thumbnails for this image
 // identifying default thumbnail of class:
-		$defvals = $this->getDefaultValue[];
+		$defvals = $this->getDefaultValueArray();
 		$thumbID = isset($defvals['img_' . $name]['defaultThumb']) ? $defvals['img_' . $name]['defaultThumb'] : 0;
 		$thumbID = $thumbID ? f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . $thumbID) : 0;
 // creating thumbnail only if it really exists:
@@ -1768,7 +1768,7 @@ class we_objectFile extends we_document{
 				}
 			case self::TYPE_META:
 				if(!$this->DefArray || !is_array($this->DefArray)){
-					$this->DefArray = $this->getDefaultValue[];
+					$this->DefArray = $this->getDefaultValueArray();
 				}
 				$vals = $this->DefArray["meta_" . $t]["meta"];
 				return empty($vals[$this->getElement($t)]) ? '' : $vals[$this->getElement($t)];
@@ -2310,7 +2310,7 @@ class we_objectFile extends we_document{
 
 	private function i_getUniqueIDsAndFixNames(){
 		if(is_array($this->DefArray) && count($this->DefArray)){
-			$newDefArr = $this->getDefaultValue[];
+			$newDefArr = $this->getDefaultValueArray();
 			foreach($newDefArr as $n => $v){
 				if(is_array($v) && isset($v["uniqueID"])){
 					if(($oldName = $this->i_DefArrayNameNotEqual($n, $v["uniqueID"]))){

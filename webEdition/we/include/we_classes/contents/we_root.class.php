@@ -1129,7 +1129,7 @@ abstract class we_root extends we_class{
 			return we_base_delete::deleteContentFromDB($this->ID, $this->Table, $this->DB_WE);
 		}
 		//don't stress index:
-		$replace = $this->getLinkReplace[];
+		$replace = $this->getLinkReplaceArray();
 		foreach($this->elements as $k => $v){
 			if(!$this->i_isElement($k) ||
 				//ignore fields which result in empty entry

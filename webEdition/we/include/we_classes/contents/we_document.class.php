@@ -1697,7 +1697,7 @@ class we_document extends we_root{
 
 		if($we_ID){
 			$we_doc->initByID($we_ID, $we_Table, ( (!empty($GLOBALS['FROM_WE_SHOW_DOC'])) || (isset($GLOBALS['WE_RESAVE']) && $GLOBALS['WE_RESAVE']) ) ? we_class::LOAD_MAID_DB : we_class::LOAD_TEMP_DB);
-		} else if(isset($we_dt)){
+		} else if(!empty($we_dt)){
 			$we_doc->we_initSessDat($we_dt);
 
 //	in some templates we must disable some EDIT_PAGES and disable some buttons
@@ -1708,7 +1708,7 @@ class we_document extends we_root{
 			$we_doc->we_new();
 		}
 
-		if(!isset($dontMakeGlobal)){
+		if($dontMakeGlobal){
 //FIXME: remove this clone => where do we need this?!
 			$GLOBALS['we_doc'] = clone($we_doc);
 		}
@@ -1716,7 +1716,7 @@ class we_document extends we_root{
 //if document opens get initial object for versioning if no versions exist
 		if(in_array(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), array('load_edit_footer', 'switch_edit_page')) && $we_doc->Table !== VFILE_TABLE){
 			$version = new we_versions_version();
-			$version->setInitialDocObject($GLOBALS['we_doc']);
+			$version->setInitialDocObject($we_doc);
 		}
 		return $we_doc;
 	}
