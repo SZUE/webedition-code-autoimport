@@ -152,7 +152,7 @@ class we_mail_mimeMessage{
 	 * @return array
 	 */
 	public function getPartHeadersArray($partnum){
-		return $this->_parts[$partnum]->getHeaders[];
+		return $this->_parts[$partnum]->getHeadersArray();
 	}
 
 	/**

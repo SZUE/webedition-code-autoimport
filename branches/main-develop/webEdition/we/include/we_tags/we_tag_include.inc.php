@@ -176,7 +176,7 @@ function we_tag_include(array $attribs){//FIXME: include doesn't work in editmod
 	$isSeemode = (we_tag('ifSeeMode'));
 	// check early if there is a document - if not the rest is never needed
 	if($gethttp){
-		$content = 'echo getHTTP(getServerUrl(true), \'' . $realPath . '\');';
+		$content = '$st=0;echo getHTTP(getServerUrl(true), \'' . $realPath . '\',$st);';
 	} else {
 		$realPath = WEBEDITION_PATH . '..' . $realPath; //(symlink) webEdition always points to the REAL DOC-Root!
 		if(!file_exists($realPath) || !is_file($realPath)){

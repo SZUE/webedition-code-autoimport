@@ -488,7 +488,7 @@ class we_mail_mail extends we_mail_znd{
 				$img = $images->item($i);
 				$url = $img->getAttribute('src');
 				//FIXME: do we really have to get all files by http?
-				$image_content = getHTTP($url, '', '', '', '', $status);
+				$image_content = getHTTP($url, '', $status);
 
 				if($status == 200){
 					$pathinfo = pathinfo($url);

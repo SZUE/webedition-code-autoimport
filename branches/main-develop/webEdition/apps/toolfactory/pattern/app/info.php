@@ -125,10 +125,10 @@ $html .= '<strong>'.$cm->company.'</strong><br/>';
 }
 if(!empty($cm->authors->author)){
 if(is_array($cm->authors->author) ){
-$authornames= $cm->authors->author->to[];
+$authornames= $cm->authors->author->toArray();
 } else {$authornames = $cm->authors->author;}
 if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www) ){
-$authorlinks= $cm->authorlinks->www->to[];
+$authorlinks= $cm->authorlinks->www->toArray();
 } else {$authorlinks= $cm->authorlinks->www;}
 if (is_array($authornames)){
 $authorentry = [];
@@ -175,10 +175,10 @@ $html .= '<strong>'.$cm->company.'</strong><br/>';
 }
 if(!empty($cm->authors->author)){
 if(is_array($cm->authors->author)){
-$authornames= $cm->authors->author->to[];
+$authornames= $cm->authors->author->toArray();
 } else {$authornames= $cm->authors->author;}
 if(!empty($cm->authorlinks->www) && is_array($cm->authorlinks->www)){
-$authorlinks= $cm->authorlinks->www->to[];
+$authorlinks= $cm->authorlinks->www->toArray();
 } else {$authorlinks= $cm->authorlinks->www;}
 if (is_array($authornames)){
 $authorentry = [];

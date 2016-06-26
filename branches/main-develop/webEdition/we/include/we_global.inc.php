@@ -53,7 +53,7 @@ function getHttpOption(){
 	return 'fopen';
 }
 
-function getHTTP($server, $url, $port = '', $username = '', $password = '', &$status){
+function getHTTP($server, $url, &$status, $port = '', $username = '', $password = ''){
 //FIXME: add code for proxy, see weXMLBrowser
 	if(strpos($server, '://') === FALSE){
 		$server = 'http' . ($port == 443 ? 's' : '') . '://' . (($username && $password) ? "$username:$password@" : '') . $server . ( $port !== '' ? ':' . $port : '');
