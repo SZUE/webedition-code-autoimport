@@ -1604,7 +1604,7 @@ function doUnload() {
 		$we_ContentType = $contentType;
 
 		// initializing $we_doc
-		include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+		$we_doc = we_document::initDoc($we_ContentType);
 
 		// initialize Path Information
 		$GLOBALS["we_doc"]->we_new();

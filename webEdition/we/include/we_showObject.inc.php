@@ -109,7 +109,7 @@ if(($userID && $userID != $_SESSION['user']['ID']) || (we_base_request::_(we_bas
 	$tid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 	// init document
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
-	include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+	$we_doc = we_document::initDoc('', $we_dt);
 } else { //	view with template
 	$tid = we_base_request::_(we_base_request::INT, 'we_cmd', (isset($we_objectTID) ? $we_objectTID : 0), 2);
 

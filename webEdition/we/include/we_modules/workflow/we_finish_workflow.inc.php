@@ -21,15 +21,14 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 1);
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
-include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+$we_doc = we_document::initDoc('', $we_dt);
 
 if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['ID'], '', true)){
-	if(($time=$we_doc->i_publInScheduleTable())){
+	if(($time = $we_doc->i_publInScheduleTable())){
 		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][autoschedule]'), date(g_l('date', '[format][default]'), $time));
 
 		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
@@ -40,7 +39,7 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['
 		if(($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)){
 			$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 		}
-			$we_JavaScript .= 'if(opener){
+		$we_JavaScript .= 'if(opener){
 WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');
 }else{
 WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');

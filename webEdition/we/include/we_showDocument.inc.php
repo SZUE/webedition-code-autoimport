@@ -40,7 +40,7 @@ $we_Table = FILE_TABLE;
 $we_dt = isset($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]) ? $_SESSION['weS']['we_data'][$GLOBALS['we_transaction']] : '';
 
 // init document
-include (WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+$we_doc = we_document::initDoc('', $we_dt);
 $cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 if($cmd && $cmd != 'ResetVersion' && $cmd != 'PublishDocs'){
 	if(!empty($FROM_WE_SHOW_DOC)){ // when called showDoc.php

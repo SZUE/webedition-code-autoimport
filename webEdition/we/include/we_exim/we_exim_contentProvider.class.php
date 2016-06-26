@@ -109,10 +109,7 @@ class we_exim_contentProvider{
 			default:
 				$we_Table = FILE_TABLE;
 		}
-		$dontMakeGlobal = true;
-		include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
-
-		return $we_doc;
+		return we_document::initDoc($we_ContentType, '', $we_ID, $we_Table, true);
 	}
 
 	static function populateInstance(&$object, $content){

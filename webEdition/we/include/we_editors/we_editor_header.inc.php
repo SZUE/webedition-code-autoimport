@@ -26,7 +26,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$GLOBALS['we_transaction']];
-include(WE_INCLUDES_PATH . 'we_editors/we_init_doc.inc.php');
+$we_doc = we_document::initDoc('', $we_dt);
 
 $z = 0;
 
