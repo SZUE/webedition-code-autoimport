@@ -29,7 +29,7 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 
 	// init document
 	$we_dt = $_SESSION['weS']['we_data'][$we_transaction];
-	$we_doc = we_document::initDoc('', $we_dt);
+	$we_doc = we_document::initDoc($we_dt);
 
 	$childs = [];
 	pushChilds($childs, $we_doc->ID, $we_doc->Table, '', $GLOBALS['DB_WE']);

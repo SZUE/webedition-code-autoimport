@@ -925,7 +925,7 @@ abstract class we_root extends we_class{
 
 	public function we_initSessDat($sessDat){//FIXME: use __wakeup
 		parent::we_initSessDat($sessDat);
-		if(is_array($sessDat)){
+		if(!empty($sessDat)){
 			foreach($this->persistent_slots as $cur){
 				if(isset($sessDat[0][$cur])){
 					$this->{$cur} = $sessDat[0][$cur];

@@ -615,7 +615,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 	function getDocument(){
 		$we_ContentType = $this->data['ContentType'];
-		return we_document::initDoc($we_ContentType);
+		return we_document::initDoc([], $we_ContentType);
 	}
 
 	function finish(){

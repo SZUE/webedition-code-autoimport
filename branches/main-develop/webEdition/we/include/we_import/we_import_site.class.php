@@ -1604,7 +1604,7 @@ function doUnload() {
 		$we_ContentType = $contentType;
 
 		// initializing $we_doc
-		$we_doc = we_document::initDoc($we_ContentType);
+		$we_doc = we_document::initDoc([], $we_ContentType);
 
 		// initialize Path Information
 		$GLOBALS["we_doc"]->we_new();

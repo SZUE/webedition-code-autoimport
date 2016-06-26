@@ -122,7 +122,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			}
 
 			$we_dt = $_SESSION['weS']['we_data'][$this->docVars['transaction']];
-			$we_doc = we_document::initDoc('', $we_dt);
+			$we_doc = we_document::initDoc($we_dt);
 			if(!$this->isParentIdOk($we_doc->ParentID)){
 				return array(
 					'error' => 'workspace not ok',
@@ -168,7 +168,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 		// make new we_doc
 		$we_ContentType = getContentTypeFromFile($this->fileVars['weFileName']);
-		$we_doc = we_document::initDoc($we_ContentType, $we_dt);
+		$we_doc = we_document::initDoc($we_dt, $we_ContentType);
 
 		//TODO: check if $we_doc exists: depends on perms!!
 		/*

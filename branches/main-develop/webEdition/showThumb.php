@@ -30,8 +30,7 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 	($thumbIDs = we_base_request::_(we_base_request::INTLISTA, 'id', []))){
 
 	$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
-	$we_doc=  we_document::initDoc('', $we_dt);
-	//$we_doc = we_document::initDoc('', $we_dt);
+	$we_doc = we_document::initDoc($we_dt);
 	session_write_close();
 
 	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
