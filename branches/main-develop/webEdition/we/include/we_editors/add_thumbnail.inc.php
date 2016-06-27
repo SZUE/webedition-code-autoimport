@@ -39,9 +39,8 @@ if(!($we_doc instanceof we_imageDocument)){
 echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]')) .
  we_html_element::jsElement('
 var transaction="' . $we_transaction . '";
-');
-
-echo STYLESHEET .
+').
+	STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'add_thumb.js') .
  "</head>";
 

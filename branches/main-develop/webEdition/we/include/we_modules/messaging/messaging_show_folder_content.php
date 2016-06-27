@@ -68,7 +68,7 @@ echo we_html_element::jsElement('
 				<td id="td_' . $val['ID'] . '_0" style="width:200px;text-align:left" class="defaultfont">' . oldHtmlspecialchars($val['hdrs']['Subject']) . '</td>
 				<td id="td_' . $val['ID'] . '_1" style="width:170px;text-align:left" class="defaultfont">' . date(g_l('date', '[format][default]'), $val['hdrs']['Date']) . '</td>
 				<td id="td_' . $val['ID'] . '_2" style="width:140px;text-align:left" class="defaultfont">' . $val['hdrs']['From'] . '</td>
-				<td id="td_' . $val['ID'] . '_3" style="width:40px;text-align:left" class="defaultfont"><span class="fa fa-circle '.($val['hdrs']['seenStatus'] & we_messaging_proto::STATUS_READ ? 'msgRead' : 'msgUnRead').'" name="read_' . $val['ID'] . '"></span></td>
+				<td id="td_' . $val['ID'] . '_3" style="width:40px;text-align:left" class="defaultfont"><span class="fa fa-circle ' . ($val['hdrs']['seenStatus'] & we_messaging_proto::STATUS_READ ? 'msgRead' : 'msgUnRead') . '" name="read_' . $val['ID'] . '"></span></td>
 			</tr>';
 			}
 		}
@@ -84,9 +84,7 @@ echo we_html_element::jsElement('
 		if (parent.entries_selected.length > 0)
 			showContent(parent.entries_selected[parent.entries_selected.length - 1]);
 
-<?php
-echo 'passed_dls = [' . implode(',', $passed_dls) . '];';
-?>
+<?= 'passed_dls = [' . implode(',', $passed_dls) . '];'; ?>
 //-->
 	</script>
 </body>

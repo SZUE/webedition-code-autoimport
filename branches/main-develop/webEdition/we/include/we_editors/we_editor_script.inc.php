@@ -80,8 +80,7 @@ window.addEventListener("load", we_rpc_dw_onload);
 	var isWEObject =<?= intval(isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT/* FIXME: only supported for type object || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE */)); ?>;
 	var WE_EDIT_IMAGE =<?= intval(defined('WE_EDIT_IMAGE')); ?>;
 	//-->
-</script><?php
-echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
+</script><?= we_html_element::cssLink(CSS_DIR . 'editor.css') .
  we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
  we_html_element::jsScript(JS_DIR . 'we_editor_script.js') .
  ($js ? we_html_element::jsElement($js) : '');

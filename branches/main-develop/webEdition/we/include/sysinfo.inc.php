@@ -282,8 +282,7 @@ echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', STYLESHEET .
 ?>
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">
-<?php
-echo we_html_multiIconBox::getJS() .
+<?= we_html_multiIconBox::getJS() .
  we_html_multiIconBox::getHTML('', $parts, 30, $buttons);
 ?>
 	</div>

@@ -892,9 +892,6 @@ function we_cmd_base(args, url) {
 		case "recover_backup":
 			new (WE().util.jsWindow)(this, url, "recover_backup", -1, -1, 680, 600, true, true, true);
 			break;
-		case "import_docs":
-			new (WE().util.jsWindow)(this, url, "import_docs", -1, -1, 480, 390, true, false, true);
-			break;
 		case "import":
 			new (WE().util.jsWindow)(this, url, "import", -1, -1, 650, 720, true, false, true);
 			break;

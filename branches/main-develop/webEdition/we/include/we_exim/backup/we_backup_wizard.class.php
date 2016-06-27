@@ -1008,4 +1008,93 @@ top.cmd.reloadTimer=setTimeout(reloadFrame, ' . $execute . ');');
 		return nl2br(oldHtmlspecialchars(preg_replace('#<br\s*/?\s*>#i', "\n", $out)));
 	}
 
+	public static function showLog(){
+		if(permissionhandler::hasPerm("BACKUPLOG")){
+			$parts = [
+				[
+					'headline' => g_l('backup', '[view_log]'),
+					'html' => '',
+					'space' => we_html_multiIconBox::SPACE_SMALL
+				],
+				[
+					'headline' => '',
+					'html' => (file_exists(BACKUP_PATH . we_backup_util::logFile) ?
+						'<pre>' . file_get_contents(BACKUP_PATH . we_backup_util::logFile) . '</pre>' :
+						'<p>' . g_l('backup', '[view_log_not_found]') . '</p>'),
+					'space' => we_html_multiIconBox::SPACE_SMALL
+				]
+			];
+		} else {
+			$parts = [
+				[
+					'headline' => '',
+					'html' => '<p>' . g_l('backup', '[view_log_no_perm]') . '</p>',
+					'space' => we_html_multiIconBox::SPACE_SMALL
+				]
+			];
+		}
+		$buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
+		echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]'), '', '', we_html_element::jsElement('
+	function closeOnEscape() {
+		return true;
+	}
+') .
+			STYLESHEET, we_html_element::htmlBody(['class' => "weDialogBody", 'style' => "overflow:hidden;", 'onload' => "self.focus();"], '
+	<div id="info">' .
+				we_html_multiIconBox::getJS() .
+				we_html_multiIconBox::getHTML('', $parts, 30, $buttons) .
+				'</div>')
+		);
+	}
+
+	public static function showBackupFrameset(){
+		$weBackupWizard = new self(we_backup_wizard::BACKUP);
+
+		switch($what = we_base_request::_(we_base_request::STRING, "pnt", 'frameset')){
+			case "frameset":
+				echo $weBackupWizard->getHTMLFrameset();
+				break;
+			case "body":
+				echo $weBackupWizard->getHTMLStep(we_base_request::_(we_base_request::INT, "step", 1));
+				break;
+			case "cmd":
+				echo we_html_tools::getHtmlTop('webEdition', '', '', $weBackupWizard->getHTMLCmd(), we_html_element::htmlBody());
+				flush();
+			case "busy":
+				echo $weBackupWizard->getHTMLBusy();
+				break;
+			case "extern":
+				echo $weBackupWizard->getHTMLExtern();
+				break;
+			default:
+				t_e(__FILE__ . ' unknown reference: ' . $what);
+		}
+	}
+
+	public static function showRecoverFrameset(){
+		$what = we_base_request::_(we_base_request::STRING, 'pnt', 'frameset');
+		$step = we_base_request::_(we_base_request::INT, 'step', 1);
+		$weBackupWizard = new self(we_backup_wizard::RECOVER);
+
+		switch($what){
+			case 'frameset':
+				echo $weBackupWizard->getHTMLFrameset();
+				break;
+			case 'body':
+				echo $weBackupWizard->getHTMLStep($step);
+				break;
+			case 'cmd':
+				echo we_html_tools::getHtmlTop('', '', '', $weBackupWizard->getHTMLCmd(), we_html_element::htmlBody());
+				break;
+			case 'busy':
+				echo $weBackupWizard->getHTMLBusy();
+				break;
+			case 'extern':
+				echo $weBackupWizard->getHTMLExtern();
+				break;
+			default:
+				t_e(__FILE__ . ' unknown reference: ' . $what);
+		}
+	}
+
 }

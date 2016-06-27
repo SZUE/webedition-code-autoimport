@@ -109,8 +109,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 				$this->getHiddens() .
 				we_html_element::htmlDiv(array('style' => 'width:200px'), $divButtons
 				) .
-				we_html_element::htmlDiv(array('style' => 'width:400px'), we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), 
-						$this->getHtmlDropZone('preview', $noImage) .
+				we_html_element::htmlDiv(array('style' => 'width:400px'), we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), $this->getHtmlDropZone('preview', $noImage) .
 						we_html_element::htmlDiv([], $this->getFormImageEditClientside())
 					)
 				) .
@@ -252,6 +251,43 @@ documentWriteback = function(importedDocument){
 
 	public function setPositionBtnUpload($pos = 'bottom'){
 		$this->posBtnUpload = $pos;
+	}
+
+	public static function showFrameset(){
+		$contentType = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1));
+		$doImport = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', true, 2));
+		$predefinedConfig = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
+		$writebackTarget = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4));
+		$customCallback = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5));
+		$importToID = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 6);
+		$setFixedImportTo = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 7);
+		$predefinedCallback = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 8);
+		$isPreset = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', false, 9));
+
+		$fileUpload = new we_fileupload_ui_editor($contentType, '', $doImport);
+		$fileUpload->setPredefinedConfig($predefinedConfig);
+		$fileUpload->setCallback('top.doOnImportSuccess(scope.weDoc);');
+		$fileUpload->setDimensions(array('dragWidth' => 374, 'inputWidth' => 378));
+		$fileUpload->setIsPreset($isPreset);
+		$fileUpload->setIsExternalBtnUpload(true);
+		$fileUpload->setFieldParentID(array('setField' => true, 'preset' => $importToID, 'setFixed' => $setFixedImportTo));
+		$fileUpload->setEditorJS(array(
+			'writebackTarget' => $writebackTarget,
+			'customCallback' => $customCallback,
+			'predefinedCallback' => $predefinedCallback
+		));
+		$yuiSuggest = &weSuggest::getInstance();
+
+		echo we_html_tools::getHtmlTop('fileupload', '', '', STYLESHEET . $fileUpload->getEditorJS() .
+			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+			we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js'), we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm([], we_html_element::htmlDiv(array('id' => 'we_fileupload_editor', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'), $fileUpload->getHtml()) .
+					we_html_element::htmlDiv(array('id' => 'we_fileupload_footer', 'class' => '', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'), $fileUpload->getHtmlFooter())
+				) .
+				weSuggest::getYuiFiles() .
+				$yuiSuggest->getYuiJs()
+			)
+		);
 	}
 
 }

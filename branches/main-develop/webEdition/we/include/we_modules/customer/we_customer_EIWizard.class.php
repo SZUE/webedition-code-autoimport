@@ -1293,11 +1293,10 @@ function doNext(){
 		}
 
 		$head = we_html_element::jsElement('
-							function doNext(){
-								top.step++;
-								document.we_form.submit();
-							}
-					');
+function doNext(){
+	top.step++;
+	document.we_form.submit();
+}');
 
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNext()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 				)

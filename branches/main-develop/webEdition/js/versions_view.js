@@ -117,8 +117,8 @@ function deleteVersionAjax() {
 	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDeleteVersion, "protocol=json&cns=versionlist&cmd=DeleteVersion&" + args + "");
 }
 
-function previewVersion(ID) {
-	top.we_cmd("versions_preview", ID, 0);
+function previewVersion(table, ID, version) {
+	top.we_cmd("versions_preview", table, ID, version, 0);
 }
 
 var msBack = 0;

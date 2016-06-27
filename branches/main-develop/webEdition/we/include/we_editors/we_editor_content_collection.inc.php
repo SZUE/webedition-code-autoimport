@@ -55,8 +55,7 @@ weCollectionEdit.view = "grid";
 
 </head>
 <body class="weEditorBody" style="height:100%;overflow:hidden;" onload="weCollectionEdit.init();">
-	<form name="we_form"><?php
-echo we_class::hiddenTrans() .
+	<form name="we_form"><?= we_class::hiddenTrans() .
  $GLOBALS['we_doc']->formCollection() .
  we_html_element::htmlHidden("we_complete_request", 1);
 ?>

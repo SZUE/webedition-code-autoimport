@@ -342,19 +342,19 @@ var searchClass={
 			}
 			$fromScheduler = ($versions[$f]["fromScheduler"]) ? g_l('versions', '[fromScheduler]') : "";
 			$fromImport = ($versions[$f]["fromImport"]) ? g_l('versions', '[fromImport]') : "";
-			$resetFromVersion = ($versions[$f]["resetFromVersion"]) ? "--" . g_l('versions', '[resetFromVersion]') . $versions[$f]["resetFromVersion"] . "--" : "";
+			$resetFromVersion = ($versions[$f]["resetFromVersion"]) ? "--" . g_l('versions', '[resetFromVersion]') . $versions[$f]['resetFromVersion'] . "--" : "";
 
 			$content[] = array(
 				array("dat" => '<nobr>' . $vers . '</nobr>'),
 				array("dat" => '<nobr>' . we_base_util::shortenPath($user, 30) . '</nobr>'),
-				array("dat" => '<nobr>' . ($versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $versions[$f]["timestamp"]) : "-") . ' </nobr>'),
+				array("dat" => '<nobr>' . ($versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $versions[$f]['timestamp']) : "-") . ' </nobr>'),
 				array("dat" => (($modificationText != '') ? $modificationText : '') .
 					($fromScheduler ? : '') .
 					($fromImport ? : '') .
 					($resetFromVersion ? : '')),
 				array("dat" => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_html_forms::checkbox($versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
 				array("dat" => "<span class='printShow'>" . we_html_button::create_button('reset', "javascript:resetVersion('" . $versions[$f]["ID"] . "','" . $versions[$f]["documentID"] . "','" . $versions[$f]["version"] . "','" . $versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
-				array("dat" => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $versions[$f]["ID"] . "');") . "</span>"),
+				array("dat" => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $table . "'," . $id . "," . $versions[$f]["version"] . ");") . "</span>"),
 				array("dat" => "<span class='printShow'>" .
 					(($versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $versions[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
 						we_html_forms::checkbox($versions[$f]["ID"], 0, "publishVersion_" . $versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :

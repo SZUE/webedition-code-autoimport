@@ -237,7 +237,7 @@ weSearch = {
 		}
 
 		if (Checks.length !== 0) {
-			if(!sameRange){
+			if (!sameRange) {
 				window.document.we_form.elements['searchstart' + this.conf.whichsearch].value = 0;
 			}
 			window.document.we_form.elements.newSearch.value = newSearch ? 1 : 0;
@@ -961,9 +961,8 @@ weSearch = {
 		top.YAHOO.util.Connect.asyncRequest("POST", this.conf.ajaxURL, this.ajaxCallbackPublishDocs, "protocol=json&cns=tools/weSearch&cmd=PublishDocs&" + args + "");
 
 	},
-	previewVersion: function (ID) {
-		top.we_cmd("versions_preview", ID, 0);
-		//new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we/include/we_versions/weVersionsPreview.php?ID="+ID+"", "version_preview",-1,-1,1000,750,true,true,true,true);
+	previewVersion: function (table, ID, version) {
+		top.we_cmd("versions_preview", table, ID, version, 0);
 	},
 	calendarSetup: function (x) {
 		for (i = 0; i < x; i++) {

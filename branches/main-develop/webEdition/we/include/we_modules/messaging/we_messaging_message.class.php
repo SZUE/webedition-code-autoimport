@@ -26,7 +26,6 @@
 
 class we_messaging_message extends we_messaging_proto{
 	/* Flag which is set when the file is not new */
-
 	var $selected_message = [];
 	var $selected_set = [];
 	var $search_fields = array('m.headerSubject', 'm.headerFrom', 'm.MessageText');
@@ -114,18 +113,18 @@ class we_messaging_message extends we_messaging_proto{
 			}
 
 			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
-						'ParentID' => intval($target_fid),
-						'UserID' => $this->userid,
-						'msg_type' => $tmp['msg_type'],
-						'obj_type' => $tmp['obj_type'],
-						'headerDate' => $tmp['headerDate'],
-						'headerSubject' => $tmp['headerSubject'],
-						'headerUserID' => $tmp['headerUserID'],
-						'headerFrom' => $tmp['headerFrom'],
-						'Priority' => $tmp['Priority'],
-						'MessageText' => $tmp['MessageText'],
-						'seenStatus' => $tmp['seenStatus'],
-						'tag' => $tmp['tag'],
+					'ParentID' => intval($target_fid),
+					'UserID' => $this->userid,
+					'msg_type' => $tmp['msg_type'],
+					'obj_type' => $tmp['obj_type'],
+					'headerDate' => $tmp['headerDate'],
+					'headerSubject' => $tmp['headerSubject'],
+					'headerUserID' => $tmp['headerUserID'],
+					'headerFrom' => $tmp['headerFrom'],
+					'Priority' => $tmp['Priority'],
+					'MessageText' => $tmp['MessageText'],
+					'seenStatus' => $tmp['seenStatus'],
+					'tag' => $tmp['tag'],
 			)));
 
 			//$pending_ids[] = $this->DB_WE->getInsertId();
@@ -223,7 +222,7 @@ class we_messaging_message extends we_messaging_proto{
 		$this->selected_set = [];
 		$this->DB_WE->query('SELECT m.ID, m.ParentID, m.headerDate, m.headerSubject, m.headerUserID, m.Priority, m.seenStatus, u.username
 		FROM ' . $this->DB_WE->escape($this->table) . ' AS m, ' . USER_TABLE . ' AS u
-		WHERE ((m.msg_type = ' . intval($this->sql_class_nr) . ' AND m.obj_type = ' . we_messaging_proto::MESSAGE_NR . ') ' . ($sfield_cond ? " AND ($sfield_cond)" : '') . ($folders_cond ? " AND (m.ParentID=$folders_cond)" : '') . ( !empty($message_ids_cond) ? " AND (m.ID=$message_ids_cond)" : '') . ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
+		WHERE ((m.msg_type = ' . intval($this->sql_class_nr) . ' AND m.obj_type = ' . we_messaging_proto::MESSAGE_NR . ') ' . ($sfield_cond ? " AND ($sfield_cond)" : '') . ($folders_cond ? " AND (m.ParentID=$folders_cond)" : '') . (!empty($message_ids_cond) ? " AND (m.ID=$message_ids_cond)" : '') . ") AND m.UserID=" . $this->userid . " AND m.headerUserID=u.ID
 		ORDER BY " . $this->sortfield . ' ' . $this->so2sqlso[$this->sortorder]);
 
 		$i = isset($criteria['start_id']) ? $criteria['start_id'] + 1 : 0;
@@ -314,6 +313,25 @@ class we_messaging_message extends we_messaging_proto{
 		}
 
 		return $res;
+	}
+
+	static function showNewMsg(){
+		$msg = we_base_request::_(we_base_request::INT, 'msg', 0) - we_base_request::_(we_base_request::INT, 'omsg', 0);
+		$todo = we_base_request::_(we_base_request::INT, 'todo', 0) - we_base_request::_(we_base_request::INT, 'otodo', 0);
+
+		$text = ($msg > 0 ? sprintf(g_l('modules_messaging', '[newHeaderMsg]'), '<a href="' . "javascript:top.opener.we_cmd('messaging_start', " . we_messaging_frames::TYPE_MESSAGE . ');">' . $msg, '</a>') . '<br/>' : '') .
+			($todo > 0 ? sprintf(g_l('modules_messaging', '[newHeaderTodo]'), '<a href="' . "javascript:top.opener.we_cmd('messaging_start', " . we_messaging_frames::TYPE_TODO . ');">' . $todo, '</a>') . '<br/>' : '');
+		$parts = [
+			[
+				"headline" => we_html_tools::htmlAlertAttentionBox($text, we_html_tools::TYPE_INFO, 500, false),
+				"html" => '',
+				'space' => we_html_multiIconBox::SPACE_SMALL,
+				'noline' => 1],
+		];
+
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_multiIconBox::getHTML("", $parts, 30, '<div style="width:100%;text-align:right;">' . we_html_button::create_button(we_html_button::OK, "javascript:self.close();") . '</div>')
+			)
+		);
 	}
 
 }
