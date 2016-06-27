@@ -37,13 +37,11 @@ $alerttext = ($isTemplatesUsedByThisTemplate ?
 	// functions for keyBoard Listener
 	function applyOnEnter() {
 		pressed_yes_button();
-
 	}
 
 	// functions for keyBoard Listener
 	function closeOnEscape() {
 		pressed_cancel_button();
-
 	}
 
 	function pressed_yes_button() {
@@ -55,7 +53,6 @@ $alerttext = ($isTemplatesUsedByThisTemplate ?
 	function pressed_no_button() {
 		opener.top.we_cmd('save_document', '<?php echo $we_transaction; ?>', 0, 1, 0, '<?php echo str_replace("'", "\\'", $GLOBALS['we_responseJS']) ?>', "<?php echo $we_cmd6; ?>");
 		self.close();
-
 	}
 
 	function pressed_cancel_button() {
