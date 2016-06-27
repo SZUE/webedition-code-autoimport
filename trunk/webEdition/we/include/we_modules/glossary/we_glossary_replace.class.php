@@ -58,10 +58,10 @@ abstract class we_glossary_replace{
 		$cache = new we_glossary_cache($language);
 		$replace = array(
 			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE), //text replacement must come first, since other might generate iritation annotations
-			'<span ' => $cache->get(we_glossary_glossary::TYPE_FOREIGNWORD),
-			'<abbr ' => (REPLACEACRONYM ? array_merge($cache->get(we_glossary_glossary::TYPE_ABBREVATION), $cache->get(we_glossary_glossary::TYPE_ACRONYM)) : $cache->get(we_glossary_glossary::TYPE_ABBREVATION)),
-			'<acronym ' => (REPLACEACRONYM ? array() : $cache->get(we_glossary_glossary::TYPE_ACRONYM)),
-			'<a ' => $cache->get(we_glossary_glossary::TYPE_LINK),
+			'span' => $cache->get(we_glossary_glossary::TYPE_FOREIGNWORD),
+			'abbr' => (REPLACEACRONYM ? array_merge($cache->get(we_glossary_glossary::TYPE_ABBREVATION), $cache->get(we_glossary_glossary::TYPE_ACRONYM)) : $cache->get(we_glossary_glossary::TYPE_ABBREVATION)),
+			'acronym' => (REPLACEACRONYM ? array() : $cache->get(we_glossary_glossary::TYPE_ACRONYM)),
+			'a' => $cache->get(we_glossary_glossary::TYPE_LINK),
 		);
 		unset($cache);
 
@@ -90,12 +90,16 @@ abstract class we_glossary_replace{
 		// replace words in non-tag pieces
 		$lastHtmlTag = '';
 		$tagMatch = array();
-		$ignoreTags = array('script' => 0, 'style' => 0, 'textarea' => 0, 'select' => 0);
+		$ignoreTags = array('script' => 0, 'style' => 0, 'textarea' => 0, 'select' => 0, 'abbr' => 0, 'acronym' => 0, 'we-no-glossar' => 0);
 		foreach($pieces as &$piece){
 			if(preg_match('|^<(/)?([[:alnum:]]+)|', $piece, $tagMatch)){//is a tag
 				list(, $not, $lastHtmlTag) = $tagMatch;
+				$lastHtmlTag = strtolower($lastHtmlTag);
 				if(isset($ignoreTags[$lastHtmlTag])){
 					$ignoreTags[$lastHtmlTag]+=($not ? -1 : 1);
+					if($lastHtmlTag === 'we-no-glossar'){
+						$piece = '';
+					}
 				}
 			} elseif(!array_sum($ignoreTags)){//only if no ignored tag is open!
 				//this will generate invalid code: $piece = str_replace('&quot;', '"', $piece);
