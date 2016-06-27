@@ -342,7 +342,10 @@ if(function_exists('fastcgi_finish_request')){
 }
 ignore_user_abort(true);
 if(!file_exists(WE_CACHE_PATH . 'newwe_version.json')){
-	$stat = '';
-	we_base_file::save(WE_CACHE_PATH . 'newwe_version.json', getHTTP('https://update.webedition.org', '/server/we/latest.php' . (WE_VERSION_BRANCH ? '?beta=true&branch=' . WE_VERSION_BRANCH : ''), $stat));
+	we_base_file::save(WE_CACHE_PATH . 'newwe_version.json', getHTTP('https://update.webedition.org', '/server/we/latest.php?vers=' .
+			WE_VERSION .
+			'&supp=' . WE_VERSION_SUPP .
+			'&branch=' . WE_VERSION_BRANCH .
+			(WE_VERSION_SUPP != "release" ? '&beta=true' : ''), $stat));
 	we_base_file::insertIntoCleanUp(WE_CACHE_DIR . 'newwe_version.json', 7 * 86400);
 }

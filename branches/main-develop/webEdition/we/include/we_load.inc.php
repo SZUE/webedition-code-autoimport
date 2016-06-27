@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::protect();
 
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
