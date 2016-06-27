@@ -335,5 +335,4 @@ function printFramesetSelectFileHTML(){
 }
 
 
-<?php
-echo '}';
+<?= '}';

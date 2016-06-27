@@ -50,7 +50,7 @@ class we_search_view extends we_modules_view{
 	public function __construct($frameset = ''){
 		parent::__construct($frameset);
 		$this->editorBodyFrame = 'top.content.editor.edbody';
-		$this->editorHeaderFrame =  'top.content.editor.edheader';
+		$this->editorHeaderFrame = 'top.content.editor.edheader';
 		$this->Model = !isset($_SESSION['weS'][$this->toolName . '_session']) ? new we_search_model() :
 			$_SESSION['weS'][$this->toolName . '_session'];
 		//$this->Model = new we_search_model();
@@ -581,9 +581,9 @@ WE().consts.weSearch= {
 							$resetDisabled = true;
 						}
 
-						list($ID, $timestamp, $version, $active) = getHash('SELECT ID,timestamp,version,active FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($k), $DB_WE, MYSQL_NUM)? : array(0, 0, 0, 0);
+						list($table, $ID, $timestamp, $version, $active) = getHash('SELECT documentTable,documentID,timestamp,version,active FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($k), $DB_WE, MYSQL_NUM)? : array(0, 0, 0, 0);
 
-						$previewButton = we_html_button::create_button(we_html_button::PREVIEW, "javascript:weSearch.previewVersion('" . $ID . "');");
+						$previewButton = we_html_button::create_button(we_html_button::PREVIEW, "javascript:weSearch.previewVersion('" . $table . "'," . $ID . "," . $version . ");");
 
 						$fileExists = f('SELECT 1 FROM ' . escape_sql_query(addTblPrefix($result[$f]['docTable'])) . ' WHERE ID=' . intval($result[$f]['docID']), '', $DB_WE);
 

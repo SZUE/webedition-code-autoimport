@@ -362,4 +362,23 @@ function back(id) {
 		return $out;
 	}
 
+	public static function showFrameset(){
+		$versionsLogView = new self();
+
+		echo we_html_tools::getHtmlTop(g_l('versions', '[versions_log]'), '', '', STYLESHEET .
+			YAHOO_FILES .
+			$versionsLogView->getJS() .
+			we_html_element::cssLink(CSS_DIR . 'messageConsole.css'), we_html_element::htmlBody(['class' => 'weDialogBody messageConsoleWindow'], '
+	<div id="headlineDiv">
+		<div class="weDialogHeadline">' . g_l('versions', '[versions_log]') . '
+		</div>
+	</div>
+	<div id="versionsDiv">' . $versionsLogView->printContent() . '</div>
+	<div class="dialogButtonDiv">
+		<div style="position:absolute;top:10px;right:20px;">' . we_html_button::create_button(we_html_button::CLOSE, "javascript:window.close();") . '</div>
+	</div>
+	')
+		);
+	}
+
 }

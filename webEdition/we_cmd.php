@@ -53,32 +53,42 @@ function findInclude($cmd){
 		case 'selectorBrowseCmd':
 			return 'we_selectorBrowseCmd.inc.php';
 		case 'we_fileupload_editor':
-			return 'we_editors/we_fileupload.inc.php';
+			we_fileupload_ui_editor::showFrameset();
+			return true;
 		case 'backupLog':
-			return 'we_exim/backup/backuplog.inc.php';
+			we_backup_wizard::showLog();
+			return true;
 		case 'newMsg':
-			return 'newMsg.inc.php';
+			we_messaging_message::showNewMsg();
+			return true;
 		case 'phpinfo':
 		case 'sysinfo':
 			return 'sysinfo.inc.php';
 		case 'versions_preview':
-			return 'we_versions/weVersionsPreview.inc.php';
+			$ver=new we_versions_preview();
+			$ver->showHtml();
+			return true;
 		case 'versions_wizard':
-			return 'we_versions/we_versions.inc.php';
+			we_versions_wizard::showFrameset();
+			return true;
 		case 'versioning_log':
-			return 'we_versions/versionsLog.inc.php';
+			we_versions_logView::showFrameset();
+			return true;
 		case 'import_files':
-			return 'we_import_files.inc.php';
-		case 'reset_home':
-		case 'mod_home':
-			return 'we_modules/home.inc.php';
+			$import_object = new we_import_files();
+			echo $import_object->getHTML();
+			return true;
 		case 'loadSidebarDocument':
-			return 'sidebar.inc.php';
+			$weFrame = new we_sidebar_frames();
+			$weFrame->getHTMLContent();
+			return true;
 		case 'siteImport':
 		case 'siteImportCreateWePageSettings':
 		case 'siteImportSaveWePageSettings':
 		case 'updateSiteImportTable':
-			return 'we_siteimport.inc.php';
+			$import_object = new we_import_site();
+			echo $import_object->getHTML();
+			return true;
 		case 'loadTree':
 			return 'loadTree.inc.php';
 		case 'open_tag_wizzard':
@@ -88,6 +98,7 @@ function findInclude($cmd){
 		case 'exit_delete':
 		case 'exit_move':
 		case 'home':
+		case 'reset_home':
 		case 'open_cockpit':
 			return 'home.inc.php';
 		case 'logout':
@@ -106,7 +117,8 @@ function findInclude($cmd){
 		case 'save_docType':
 			return 'we_editors/doctypeEdit.inc.php';
 		case 'rebuild':
-			return 'we_editors/we_rebuild.inc.php';
+			we_rebuild_wizard::showFrameset();
+			return true;
 		case 'help':
 			return '';
 		case 'info':
@@ -123,9 +135,11 @@ function findInclude($cmd){
 			$GLOBALS['FROM_WE_SHOW_DOC'] = true;
 			return 'we_showDocument.inc.php';
 		case 'open_url_in_editor': // Beim ungewollten Verlassen (Klick auf Link im Bearbeitenmodus) des Editors wird die Location auf diese Seite weitergeleitet. Hier wird dann ein Kommando gebildet
-			return 'we_seem/open_url_in_editor.inc.php';
+			echo we_html_element::jsElement(we_SEEM::getJavaScriptCommandForOneLink('<a href="' . we_base_request::_(we_base_request::URL, 'we_cmd', '', 1) . '">l</a>'));
+			return true;
 		case 'open_form_in_editor': // Formular wird an dieses Skript umgeleitet, hier wird ein Kommando daraus gebaut, um das Dokument korrekt zu �ffnen
-			return 'we_seem/open_form_in_editor.inc.php';
+			we_SEEM::openFormInEditor();
+			return true;
 		case 'open_extern_document'; // wird ben�tigt um ein externes Dokument aufzurufen
 			return 'we_seem/we_SEEM_openExtDoc_frameset.inc.php';
 		case 'edit_document_with_parameters':
@@ -136,18 +150,20 @@ function findInclude($cmd){
 		case 'new_folder':
 			return 'we_editors/we_edit_frameset.inc.php';
 		case 'edit_include_document':
-			return 'we_editors/SEEM_edit_include_document.inc.php';
+			$SEEM_edit_include = true;
+			require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/webEdition.php');
+			return true;
 		case 'load_edit_header':
 			return 'we_editors/we_editor_header.inc.php';
 		case 'load_edit_footer':
 		case 'reload_editfooter':
 			return 'we_editors/we_editor_footer.inc.php';
-		case 'load_import':
 		case 'do_import':
 			return 'we_editors/we_import_editor.inc.php';
 		//case 'delete_alias':
 		case 'weNaviEditor':
-			return 'we_modules/navigation/weNaviEditor.inc.php';
+			we_navigation_navigation::naviEditor();
+			return true;
 		case 'add_cat':
 		case 'add_entry_to_list':
 		case 'add_link_to_linklist':
@@ -226,9 +242,8 @@ function findInclude($cmd){
 		case 'do_addToCollection':
 			return 'we_addToCollection.inc.php';
 		case 'show_binaryDoc':
-			return 'we_editors/we_showBinaryDoc.inc.php';
-		case 'pref_ext_changed':
-			return 'we_prefs.inc.php';
+			we_binaryDocument::showBinaryDoc();
+			return true;
 		case 'exit_doc_question':
 			return 'we_editors/we_exit_doc_question.inc.php';
 		case 'exit_multi_doc_question':
@@ -236,17 +251,18 @@ function findInclude($cmd){
 		case 'browse_server':
 			return 'we_editors/we_sfileselector_frameset.inc.php';
 		case 'make_backup':
-			return 'we_editors/we_make_backup.inc.php';
+			we_backup_wizard::showBackupFrameset();
+			return true;
 		case 'recover_backup':
-			return 'we_editors/we_recover_backup.inc.php';
+			we_backup_wizard::showRecoverFrameset();
+			return true;
 		case 'messageConsole':
 			return 'jsMessageConsole/messageConsole.inc.php';
-		case 'import_docs':
-			return 'we_editors/we_import_documents.inc.php';
 		case 'start_multi_editor':
 			return 'multiEditor/start_multi_editor.inc.php';
 		case 'import':
-			return 'we_import/we_import_frameset.inc.php';
+			we_import_wizard::getFrameset();
+			return true;
 		case 'export':
 			return 'we_modules/export/export_frameset.php';
 		case 'copyFolder':
@@ -321,7 +337,6 @@ if(($inc = findInclude($cmd))){
 	//  This statement prevents the page from being reloaded
 	switch($cmd){
 		case 'siteImport':
-		case 'mod_home':
 		case 'import_images':
 		case 'getWeDocFromID':
 		case 'rebuild':

@@ -162,8 +162,7 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
 		doctype_empty: "<?= we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_empty]')); ?>",
 		doctype_exists: "<?= we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_exists]')); ?>",
 	};
-<?php
-echo (empty($we_JavaScript) ? '' : $we_JavaScript . ';') .
+<?= (empty($we_JavaScript) ? '' : $we_JavaScript . ';') .
  ($we_show_response && $we_responseText ? we_message_reporting::getShowMessageCall($we_responseText, $we_response_type) : '');
 
 switch($wecmd0){

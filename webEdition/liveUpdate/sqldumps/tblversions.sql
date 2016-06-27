@@ -2,10 +2,6 @@
 /* query separator */
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblversions)###
 /* query separator */
-/*###UPDATEDROPCOL(ID,###TBLPREFIX###tblversions)###*/
-/* query separator */
-/*###UPDATEDROPKEY(documentID,###TBLPREFIX###tblversions)###*/
-/* query separator */
 ###UPDATEDROPCOL(Filehash,###TBLPREFIX###tblversions)###
 /* query separator */
 ###UPDATEDROPCOL(IP,###TBLPREFIX###tblversions)###
@@ -18,6 +14,7 @@ UPDATE ###TBLPREFIX###tblversions SET ClassName="we_otherDocument",ContentType="
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblversions (
+  ID bigint unsigned NOT NULL auto_increment,
   documentID int unsigned NOT NULL,
   documentTable enum('tblFile','tblObjectFiles','tblTemplates','tblObject') NOT NULL default 'tblFile',
   documentElements longblob NOT NULL,
@@ -63,11 +60,9 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   fromImport tinyint unsigned NOT NULL,
   resetFromVersion bigint unsigned NOT NULL,
   InGlossar tinyint unsigned NOT NULL,
-  PRIMARY KEY (documentID,documentTable,version),
+  PRIMARY KEY (ID),
+  UNIQUE KEY documentID (documentID,documentTable,version),
   KEY timestamp (timestamp,CreationDate),
   KEY binaryPath (binaryPath),
   KEY version (version)
 ) ENGINE=MyISAM ;
-
-/* query separator */
-/*###ONKEYFAILED(PRIMARY,###TBLPREFIX###tblversions)ALTER IGNORE TABLE ###TBLPREFIX###tblversions ADD PRIMARY KEY (documentID,documentTable,version);###*/

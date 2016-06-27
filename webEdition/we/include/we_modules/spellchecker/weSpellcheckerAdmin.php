@@ -185,8 +185,7 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 	}
 //-->
 </script>
-<?php
-echo $js .
+<?= $js .
  we_html_element::jsScript(JS_DIR . 'we_modules/spellchecker/weSpellcheckerAdmin.js');
 ?>
 </head>

@@ -354,8 +354,7 @@ foreach(we_base_request::getAllTables() as $k => $v){
 			TYPE_THUMB_PREFIX: '<?= we_base_link::TYPE_THUMB_PREFIX; ?>',
 		},
 		graphic:{
-			gdSupportedTypes:{<?php
-echo implode(',', array_map(function($v){
+			gdSupportedTypes:{<?= implode(',', array_map(function($v){
 return '"' . $v . '" : true';
 }, we_base_imageEdit::supported_image_types()));
 ?>},
@@ -482,9 +481,7 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 	}
 
 	function startMsg(){
-<?php
-echo we_main_headermenu::createMessageConsole('mainWindow', true);
-?>
+<?= we_main_headermenu::createMessageConsole('mainWindow', true); ?>
 	}
 	function updateCheck(){
 <?php

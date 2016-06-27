@@ -77,8 +77,7 @@ if($editname !== false){
 
 //-->
 </script>
-<?php
-echo we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
+<?= we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
  we_html_element::jsScript(JS_DIR . 'we_modules/spellchecker/weSpellchecker.js');
 ?>
 </head>

@@ -1122,7 +1122,7 @@ class we_versions_version{
 				}
 				break;
 			case 'timestamp':
-				$entry = (f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document['Table']) . '" ORDER BY ID Desc LIMIT 1', '', $db) ? sql_function('UNIX_TIMESTAMP()') : $document['CreationDate']);
+				$entry = (f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document['Table']) . '" LIMIT 1', '', $db) ? sql_function('UNIX_TIMESTAMP()') : $document['CreationDate']);
 				break;
 			case 'status':
 				$this->setStatus($status);

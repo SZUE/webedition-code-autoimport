@@ -24,16 +24,4 @@
  */
 we_html_tools::protect();
 
-switch(we_base_request::_(we_base_request::STRING, "fr", '')){
-	case "body" :
-		echo we_versions_wizard::getBody();
-		break;
-	case "busy" :
-		echo we_versions_wizard::getBusy();
-		break;
-	case "cmd" :
-		echo we_versions_wizard::getCmd();
-		break;
-	default :
-		echo we_versions_wizard::getFrameset();
-}
+

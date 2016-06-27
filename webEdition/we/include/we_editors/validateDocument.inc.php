@@ -27,11 +27,9 @@
 //  when the server is accessible via web
 
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop();
 
 //  for predefined services include properties file, depending on content-Type
 //  and depending on fileending.
-
 if($we_doc->ContentType == we_base_ContentTypes::CSS || $we_doc->Extension === '.css'){
 	require_once(WE_INCLUDES_PATH . 'accessibility/services_css.inc.php');
 } else {
@@ -57,10 +55,7 @@ if(!empty($customServices)){
 //  Generate Select-Menu with optgroups
 krsort($services);
 
-$select = '';
-$lastArt = '';
-$lastCat = '';
-$hiddens = '';
+$select = $lastArt = $lastCat = $hiddens = '';
 if($services){
 	$select = '<select name="service" class="weSelect" style="width:350px;" onchange="switchPredefinedService(this.options[this.selectedIndex].value);">';
 	foreach($services as $art => $arr){
@@ -110,9 +105,9 @@ if($services){
 }
 
 //  generate Body of page
-$parts = array(
-	array('html' => g_l('validation', '[description]'),),
-	array('headline' => g_l('validation', '[service]'),
+$parts = [
+	['html' => g_l('validation', '[description]'),],
+	['headline' => g_l('validation', '[service]'),
 		'html' =>
 		'<table class="default">
 <tr><td class="defaultfont" style="padding-right:20px;">' .
@@ -123,25 +118,23 @@ $parts = array(
 		. '</td><td>' .
 		we_html_button::create_button(we_html_button::OK, 'javascript:we_cmd(\'checkDocument\')', true, 100, 22, '', '', (empty($services)))
 		. '</td></tr></table>'
-		, 'space' =>we_html_multiIconBox::SPACE_MED),
-	array('html' => g_l('validation', '[result]'), 'noline' => 1,),
-	array('html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" style="width:680px;height:400px;"></iframe>', 'space' => we_html_multiIconBox::SPACE_SMALL),
-);
+		, 'space' => we_html_multiIconBox::SPACE_MED],
+	['html' => g_l('validation', '[result]'), 'noline' => 1,],
+	['html' => '<iframe name="validation" id="validation" src="' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=checkDocument" style="width:680px;height:400px;"></iframe>', 'space' => we_html_multiIconBox::SPACE_SMALL],
+];
 
 //  css for webSite
-echo STYLESHEET . we_html_element::jsElement('
-	host = {};
-	path = {};
-	varname = {};
-	checkvia = {};
-	ctype = {};
-	s_method = {};
-	additionalVars = {};' .
-	$js) .
- we_html_element::jsScript(JS_DIR . 'validateDocument.js') .
- '</head>' .
- we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'), '<form name="we_form">'
-	. we_html_element::htmlHidden('we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))
-	. we_html_multiIconBox::getHTML('weDocValidation', $parts, 20) .
-	'</form>') .
- '</html>';
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsElement('
+host = {};
+path = {};
+varname = {};
+checkvia = {};
+ctype = {};
+s_method = {};
+additionalVars = {};' .
+		$js) .
+	we_html_element::jsScript(JS_DIR . 'validateDocument.js'), we_html_element::htmlBody(
+		['class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'], '<form name="we_form">'
+		. we_html_element::htmlHidden('we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))
+		. we_html_multiIconBox::getHTML('weDocValidation', $parts, 20) .
+		'</form>'));

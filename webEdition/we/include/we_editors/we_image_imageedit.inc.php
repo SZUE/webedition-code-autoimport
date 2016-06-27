@@ -41,21 +41,20 @@ echo we_html_tools::getHtmlTop() .
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
-<body class="weEditorBody" style="padding:20px;" onload="<?php
-echo (substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
-	'WE().layout.we_setPath(_EditorFrame,"' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");' :
-	'');
-?>">
-	<form name="we_form" method="post" onsubmit="return false;">
-		<?php
-		echo we_class::hiddenTrans();
+<body class="weEditorBody" style="padding:20px;" onload="<?=
+			(substr(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), 0, 15) === 'doImage_convert' ?
+				'WE().layout.we_setPath(_EditorFrame,"' . $we_doc->Path . '","' . $we_doc->Text . '", ' . intval($we_doc->ID) . ',"published");' :
+				'');
+			?>">
+	<form name="we_form" method="post" onsubmit="return false;"><?php
 		$headline = g_l('weClass', '[image]');
-
 		$gdtype = $we_doc->getGDType();
-
 		$supported = we_base_imageEdit::supported_image_types();
 		$focus = we_unserialize($GLOBALS['we_doc']->getElement('focus', 'dat'), array(0, 0));
-		echo we_html_element::htmlDiv([], '
+
+		echo
+		we_class::hiddenTrans() .
+		we_html_element::htmlDiv([], '
 <select name="editmenue" onchange="changeOption(this);"' . (($we_doc->getElement("data") && we_base_imageEdit::is_imagetype_read_supported($gdtype) && we_base_imageEdit::gd_version() > 0) ? "" : ' disabled="disabled"') . '>
 <option value="imageEditTools_reset" selected="selected" style="color:grey"></option>
 <optgroup label="' . g_l('weClass', '[edit]') . '">
