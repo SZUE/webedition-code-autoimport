@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+/* global _EditorFrame */
+
 var editor = null;
 var weIsTextEditor = true;
 var reloadContent = false;
@@ -373,4 +375,13 @@ function addCursorPosition(tagText) {
 	} else {
 		weForm.value += tagText;
 	}
+}
+
+function refreshContentCompare() {
+	window.orignalTemplateContent = document.getElementById("editarea").value.replace(/\r/g, "\n");
+	;
+}
+
+function editorChanged() {
+	_EditorFrame.setEditorIsHot(window.orignalTemplateContent !== document.getElementById("editarea").value.replace(/\r/g, "\n"));
 }
