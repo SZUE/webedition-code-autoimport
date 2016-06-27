@@ -34,7 +34,7 @@ if(!isset($_REQUEST["format"]) || !in_array($_REQUEST["format"], $formats)){
 }
 $beta = false;
 $verStr = "rel";
-if(!empty($_REQUEST["beta"]) && $_REQUEST["beta"] == "true"){
+if(!empty($_REQUEST["beta"]) && $_REQUEST["beta"] == "true" && !empty($_REQUEST["supp"])){
 	$beta = true;
 	$branch = !empty($_REQUEST["branch"]) ? $_REQUEST["branch"] : "beta";
 } else {

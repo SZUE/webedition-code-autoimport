@@ -51,11 +51,9 @@ if(isset($_REQUEST['update_cmd'])){
 
 		if($liveUpdateResponse->initByHttpResponse($response)){
 
-			if($liveUpdateResponse->isError()){
-				print liveUpdateFrames::htmlConnectionSuccess($liveUpdateResponse->getField('Message'));
-			} else {
-				print liveUpdateFrames::htmlConnectionSuccess();
-			}
+			print ($liveUpdateResponse->isError() ?
+					liveUpdateFrames::htmlConnectionSuccess($liveUpdateResponse->getField('Message')) :
+					liveUpdateFrames::htmlConnectionSuccess());
 		} else {
 			print liveUpdateFrames::htmlConnectionError();
 		}
@@ -79,24 +77,23 @@ if(isset($_REQUEST['update_cmd'])){
 			 */
 			print liveUpdateHttp::getServerSessionForm();
 			exit;
-		} else {
-			/*
-			 * $_REQUEST['liveUpdateSession'] exists => Session on server is up
-			 * prepare all needed variables to submit to the updateServer
-			 * These are stored in $LU_ParameterNames
-			 */
-
-			// add all other request parameters to the request
-			$reqVars = array();
-			foreach($_REQUEST as $key => $value){
-				if(!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters)){
-					$reqVars[$key] = $value;
-				}
-			}
-			$parameters['reqArray'] = base64_encode(serialize($reqVars));
-
-			$response = liveUpdateHttp::getHttpResponse(LIVEUPDATE_SERVER, LIVEUPDATE_SERVER_SCRIPT, $parameters);
 		}
+		/*
+		 * $_REQUEST['liveUpdateSession'] exists => Session on server is up
+		 * prepare all needed variables to submit to the updateServer
+		 * These are stored in $LU_ParameterNames
+		 */
+
+		// add all other request parameters to the request
+		$reqVars = array();
+		foreach($_REQUEST as $key => $value){
+			if(!isset($parameters[$key]) && !in_array($key, $LU_IgnoreRequestParameters)){
+				$reqVars[$key] = $value;
+			}
+		}
+		$parameters['reqArray'] = base64_encode(serialize($reqVars));
+
+		$response = liveUpdateHttp::getHttpResponse(LIVEUPDATE_SERVER, LIVEUPDATE_SERVER_SCRIPT, $parameters);
 	}
 
 	/*
@@ -106,12 +103,9 @@ if(isset($_REQUEST['update_cmd'])){
 
 		$liveUpdateResponse = new liveUpdateResponse();
 
-		if($liveUpdateResponse->initByHttpResponse($response)){
-
-			print $liveUpdateResponse->getOutput();
-		} else {
-			print liveUpdateFrames::htmlConnectionError();
-		}
+		print ($liveUpdateResponse->initByHttpResponse($response) ?
+				$liveUpdateResponse->getOutput() :
+				liveUpdateFrames::htmlConnectionError());
 	} else {
 		/*
 		 * No response from the update-server. Error message
