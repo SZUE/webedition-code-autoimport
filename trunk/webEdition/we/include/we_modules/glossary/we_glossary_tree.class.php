@@ -65,7 +65,7 @@ class we_glossary_tree extends we_tree_base{
 				'offset' => 0,
 				'published' => 1,
 				'cmd' => "glossary_view_folder",
-				'contentType'=>'folder'
+				'contentType' => 'folder'
 			);
 		}
 
@@ -149,13 +149,13 @@ class we_glossary_tree extends we_tree_base{
 			$Item = array(
 				'id' => $Db->f('ID'),
 				'parentid' => $Language . '_' . $Type,
-				'text' => $Db->f('Text'),
+				'text' => oldHtmlspecialchars($Db->f('Text')),
 				'typ' => 'item',
 				'open' => 0,
 				'disabled' => 0,
-				'tooltip' => $Db->f('ID'),
+				'tooltip' => intval($Db->f('ID')),
 				'offset' => $Offset,
-				'published' => ($Db->f('Published') > 0 ? true : false),
+				'published' => ($Db->f('Published') > 0 ? 1 : 0),
 				'contentType' => ($Db->f('IsFolder') ? 'folder' : 'we/glossar'),
 			);
 
@@ -177,31 +177,26 @@ class we_glossary_tree extends we_tree_base{
 					break;
 			}
 
-			foreach($Db->Record as $Key => $Val){
-				$Item[strtolower($Key)] = (strtolower($Key) === 'text' ? oldHtmlspecialchars($Val) : $Val);
-			}
-
 			$Items[] = $Item;
 		}
 
-		$Total = f('SELECT COUNT(1) FROM ' . $Db->escape(GLOSSARY_TABLE)/* . ' ' . $Where*/, '', $Db);
+		$Total = f('SELECT COUNT(1) FROM ' . $Db->escape(GLOSSARY_TABLE)/* . ' ' . $Where */, '', $Db);
 
 		$NextOffset = $Offset + $Segment;
 		if($Segment && ($Total > $NextOffset)){
 			$Items[] = array(
-				"id" => 'next_' . $Language . "_" . $Type,
-				"parentid" => $Language . "_" . $Type,
-				"text" => "display (" . $NextOffset . "-" . ($NextOffset + $Segment) . ")",
-				"contenttype" => "arrowdown",
-				"table" => GLOSSARY_TABLE,
-				"typ" => "threedots",
-				"open" => 0,
-				"disabled" => 0,
-				"tooltip" => "",
-				"offset" => $NextOffset,
+				'id' => 'next_' . $Language . '_' . $Type,
+				'parentid' => $Language . '_' . $Type,
+				'text' => 'display (' . $NextOffset . '-' . ($NextOffset + $Segment) . ')',
+				'contenttype' => 'arrowdown',
+				'table' => GLOSSARY_TABLE,
+				'typ' => 'threedots',
+				'open' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $NextOffset,
 			);
 		}
-
 		return $Items;
 	}
 
