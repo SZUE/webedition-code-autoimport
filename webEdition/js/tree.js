@@ -416,7 +416,8 @@ node.prototype = {
 		});
 	},
 	getLayout: function () {
-		var layout_key = (this.typ === "group" ? "group" : "item");
+		var layout_key = (this.typ === "group" ? "group" : "item") +
+						(this.typ === "item" && this.published === 0 ? "Notpublished" : "");
 		return treeData.node_layouts[layout_key];
 	},
 	showSegment: function () {
