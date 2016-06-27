@@ -310,7 +310,9 @@ function findInclude($cmd){
 }
 
 if(($inc = findInclude($cmd))){
-	require((substr($inc, 0, 5) === 'apps/' ? WEBEDITION_PATH : WE_INCLUDES_PATH) . $inc);
+	if($inc !== true){
+		require((substr($inc, 0, 5) === 'apps/' ? WEBEDITION_PATH : WE_INCLUDES_PATH) . $inc);
+	}
 	//  When pressing a link in edit-mode, the page is being reloaded from
 	//  webedition. If a webedition link was pressed this page shall not be
 	//  reloaded. All entries in this array represent values for we_cmd[0]
