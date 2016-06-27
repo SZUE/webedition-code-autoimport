@@ -630,6 +630,9 @@ Users can only change document-type includes where the name attribute is set. In
 	'noCache'=>array(
 		'description'=>'PHP-Code enclosed by this tag will be executed each time the cached document will be requested (Exception: Full-Cache)',
 	),
+	'noGlossary'=>array(
+		'description'=>'Everything between the start and end tags of this tag is not handled by the glossary replacement.',
+	),
 	'objectLanguage'=>array(
 		'description'=>'Shows the language of the object',
 	),

@@ -629,6 +629,9 @@ $l_weTag=array(
 	'noCache'=>array(
 		'description'=>'PHP-Code omsloten door deze tag wordt elke keer uitgevoerd als het ge-cachde document opgevraagd wordt (Uitzondering: Volledige-Cache)',
 	),
+	'noGlossary'=>array(
+		'description'=>'Everything between the start and end tags of this tag is not handled by the glossary replacement.',
+	),
 	'objectLanguage'=>array(
 		'description'=>'Shows the language of the object',
 	),

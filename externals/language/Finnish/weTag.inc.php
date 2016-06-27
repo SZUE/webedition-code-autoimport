@@ -629,6 +629,9 @@ $l_weTag=array(
 	'noCache'=>array(
 		'description'=>'PHP-koodi ajetaan aina kun välimuistissa olevaa dokumenttia kutsutaan.',
 	),
+	'noGlossary'=>array(
+		'description'=>'Everything between the start and end tags of this tag is not handled by the glossary replacement.',
+	),
 	'objectLanguage'=>array(
 		'description'=>'Shows the language of the object',
 	),

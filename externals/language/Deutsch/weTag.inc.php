@@ -631,6 +631,9 @@ In der Benutzereingabe können lediglich Dokumente geändert werden, sofern das 
 	'noCache'=>array(
 		'description'=>'Innerhalb dieses Tags kann PHP-Code stehen, welcher bei einer gecachten Vorlage (Ausnahme: Full-Cache) immer ausgeführt werden soll.',
 	),
+	'noGlossary'=>array(
+		'description'=>'Alles was innerhalb dieses Tags steht, wird bei der Glossarersetzung nicht berücksichtigt.',
+	),
 	'objectLanguage'=>array(
 		'description'=>'Gibt die dem Objekt zugewiesene Sprache aus',
 	),
