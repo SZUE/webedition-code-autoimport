@@ -379,7 +379,6 @@ function addCursorPosition(tagText) {
 
 function refreshContentCompare() {
 	window.orignalTemplateContent = document.getElementById("editarea").value.replace(/\r/g, "\n");
-	;
 }
 
 function editorChanged() {

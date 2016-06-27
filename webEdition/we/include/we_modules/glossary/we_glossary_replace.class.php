@@ -23,6 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_glossary_replace{
+	const NO_GLOSSAR_TAG = 'no-glossar';
 
 	public static function useAutomatic(){
 		return f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="glossary" AND pref_name="GlossaryAutomaticReplacement"', '', new DB_WE(), 1);
@@ -90,14 +91,14 @@ abstract class we_glossary_replace{
 		// replace words in non-tag pieces
 		$lastHtmlTag = '';
 		$tagMatch = array();
-		$ignoreTags = array('script' => 0, 'style' => 0, 'textarea' => 0, 'select' => 0, 'abbr' => 0, 'acronym' => 0, 'we-no-glossar' => 0);
+		$ignoreTags = array('script' => 0, 'style' => 0, 'textarea' => 0, 'select' => 0, 'abbr' => 0, 'acronym' => 0, self::NO_GLOSSAR_TAG => 0);
 		foreach($pieces as &$piece){
-			if(preg_match('|^<(/)?([[:alnum:]]+)|', $piece, $tagMatch)){//is a tag
+			if(preg_match('|^<(/)?([[:alnum:]-]+)|', $piece, $tagMatch)){//is a tag
 				list(, $not, $lastHtmlTag) = $tagMatch;
 				$lastHtmlTag = strtolower($lastHtmlTag);
 				if(isset($ignoreTags[$lastHtmlTag])){
 					$ignoreTags[$lastHtmlTag]+=($not ? -1 : 1);
-					if($lastHtmlTag === 'we-no-glossar'){
+					if($lastHtmlTag === self::NO_GLOSSAR_TAG){
 						$piece = '';
 					}
 				}
