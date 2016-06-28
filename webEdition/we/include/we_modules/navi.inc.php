@@ -28,6 +28,7 @@ $name = array();
 //TODO: remove when implemented completely
 $mods = we_base_moduleInfo::getAllModules();
 we_base_moduleInfo::orderModuleArray($mods);
+$mod = we_base_request::_(we_base_request::STRING, 'mod');
 //END TODO
 
 foreach($mods as $menuItem){
@@ -35,9 +36,9 @@ foreach($mods as $menuItem){
 		if(we_base_moduleInfo::isActive($menuItem["name"])){ //	MODULE INSTALLED
 			if(we_users_util::canEditModule($menuItem["name"])){
 				$we_tabs->addTab(new we_tab(
-						($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
-						$menuItem["text"]
-						, ( $mod == $menuItem["name"]), "openModule('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
+					($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
+					$menuItem["text"]
+					, ( $mod == $menuItem["name"]), "openModule('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
 			}
 		}
 	}
