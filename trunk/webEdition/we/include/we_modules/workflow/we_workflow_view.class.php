@@ -414,17 +414,6 @@ WE().consts.g_l.workflow.prop={
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js');
 	}
 
-	function getCmdJS(){
-		return we_html_element::jsElement('
-function submitForm(){
-	var f = self.document.we_form;
-	f.target = "cmd";
-	f.method = "post";
-	f.submit();
-}
-');
-	}
-
 	function getJSProperty(){
 		return we_html_element::jsElement('
 var loaded;

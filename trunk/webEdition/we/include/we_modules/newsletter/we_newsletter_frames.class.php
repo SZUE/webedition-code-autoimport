@@ -415,15 +415,14 @@ function afterLoad(){
 							'mod' => 'newsletter',
 							"pnt" => "cmd",
 							"ncmd" => "",
-							"nopt" => "")) .
-						we_html_element::jsElement(
-							($pid ?
-								'' :
-								'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
-							) . $this->Tree->getJSLoadTree(!$pid, we_tree_newsletter::getItemsFromDB($pid)))
+							"nopt" => ""))
 					)
-		));
+				), we_html_element::jsElement(
+					($pid ?
+						'' :
+						'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
+					) . $this->Tree->getJSLoadTree(!$pid, we_tree_newsletter::getItemsFromDB($pid))));
 	}
 
 	function getHTMLSendQuestion(){
