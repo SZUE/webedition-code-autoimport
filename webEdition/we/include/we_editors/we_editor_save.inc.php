@@ -31,7 +31,7 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 
 <?php
 if($we_responseText && $we_responseTextType == we_message_reporting::WE_MESSAGE_ERROR){
-	echo "_EditorFrame.setEditorIsHot(true);";
+	echo '_EditorFrame.setEditorIsHot(true);';
 }
 
 if(!empty($wasSaved)){
@@ -40,6 +40,9 @@ if(!empty($wasSaved)){
 	// was saved - not hot anymore
 	?>
 		_EditorFrame.setEditorIsHot(false);
+		if (_EditorFrame.getContentFrame().refreshContentCompare !== undefined) {
+			_EditorFrame.getContentFrame().refreshContentCompare();
+		}
 	<?php
 	$reload = [];
 	switch($GLOBALS['we_doc']->ContentType){
@@ -146,9 +149,9 @@ if(!showAlert){
 				"
 if(isEditInclude){
 	" . we_message_reporting::getShowMessageCall(g_l('SEEM', '[alert][changed_include]'), we_message_reporting::WE_MESSAGE_NOTICE) . '
-			weWindow.top.we_cmd("reload_editpage");
-			weWindow.edit_include.close();
-			top.close();
+	weWindow.top.we_cmd("reload_editpage");
+	weWindow.edit_include.close();
+	top.close();
 }' :
 				''
 			);

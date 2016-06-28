@@ -41,26 +41,22 @@ foreach($menuItems as $menuItem){
 	}
 }
 
-echo we_tabs::getHeader();
-?>
-<div id="main" ><?= $we_tabs->getHTML(); ?></div>
-<script><!--
-	var current = "<?= $tool; ?>";
-	function openTool(tool) {
-		if (top.content.hot === 1) {
-			if (confirm("<?= g_l('alert', '[discard_changed_data]') ?>")) {
-				top.content.hot = 0;
-				current = tool;
-				top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
-			} else {
-				top.navi.weTabs.setActiveTab(current);
-			}
-		} else {
+echo we_tabs::getHeader('
+var current = "' . $tool . '";
+function openTool(tool) {
+	if (top.content.hot === 1) {
+		if (confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
 			top.content.hot = 0;
 			current = tool;
 			top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
+		} else {
+			top.navi.weTabs.setActiveTab(current);
 		}
+	} else {
+		top.content.hot = 0;
+		current = tool;
+		top.content.location.replace(WE().consts.dirs.WE_INCLUDES_DIR + "we_tools/tools_content.php?tool=" + tool);
 	}
-
-	//-->
-</script>
+}');
+?>
+<div id="main" ><?= $we_tabs->getHTML(); ?></div>

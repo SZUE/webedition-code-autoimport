@@ -49,8 +49,7 @@ $step = we_base_request::_(we_base_request::INT, 'step', 0);
 if($what === 'show_frameset'){ //old call to show_frameset.php
 	echo we_html_tools::getHtmlTop() .
 	STYLESHEET .
-	we_tabs::getHeader() .
-	we_html_element::jsElement('
+	we_tabs::getHeader('
 var makeNewEntryCheck = 0;
 var publishWhenSave = 0;
 var weModuleWindow = true;
@@ -58,7 +57,22 @@ var weModuleWindow = true;
 function we_cmd() {
 	top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 }
-');
+var current = "' . $mod . '";
+function openModule(module) {
+	if(top.content.hot =="1") {
+		if(confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
+			if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
+			current = module;
+			top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
+		} else {
+			weTabs.setActiveTab(current);
+		}
+	} else {
+		if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
+		current = module;
+		top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
+	}
+}');
 	?>
 	</head>
 	<body id="weMainBody" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
@@ -71,7 +85,7 @@ function we_cmd() {
 		$bid = $mod === 'shop' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'bid');
 
 		echo we_html_element::htmlExIFrame('navi', WE_MODULES_PATH . 'navi.inc.php', 'right:0px;') .
-		we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), 'position:absolute;top:21px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false)
+		we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), ' ', '', '', false)
 		;
 		?></body></html><?php
 	return;
