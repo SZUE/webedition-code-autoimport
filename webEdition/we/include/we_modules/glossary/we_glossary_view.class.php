@@ -59,20 +59,13 @@ WE().consts.g_l.glossary.view={
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_save]')) . '",
 	no_workspace:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_workspace]')) . '",
 };
-var data={
-	frameset:"' . $this->frameset . '",
-};
 parent.document.title = "' . $title . '";
 ') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view.js');
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsElement('
-var data={
-	frameset:"' . $this->frameset . '"
-};
-') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view_prop.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view_prop.js');
 	}
 
 	public function processCommands(){

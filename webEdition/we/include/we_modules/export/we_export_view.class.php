@@ -101,11 +101,7 @@ parent.document.title = "' . $title . '"
 		}
 
 		return we_html_element::jsElement('
-
 var table = "' . we_base_request::_(we_base_request::TABLE, "table", FILE_TABLE) . '";
-var data={
-	frameset:"' . $this->frameset . '"
-};
 
 function start() {
 	' . $selected . $opened . ( $this->export->IsFolder == 0 ? '
