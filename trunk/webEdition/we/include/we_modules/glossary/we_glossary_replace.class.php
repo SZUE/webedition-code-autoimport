@@ -67,9 +67,9 @@ abstract class we_glossary_replace{
 		unset($cache);
 
 		//forbid self-reference links
-		foreach($replace['<a '] as $k => $rep){
+		foreach($replace['a'] as $k => $rep){
 			if(stripos($rep, $GLOBALS['we_doc']->Path) !== FALSE){
-				unset($replace['<a '][$k]);
+				unset($replace['a'][$k]);
 			}
 		}
 		//remove empty elements
