@@ -30,7 +30,7 @@ class we_search_frames extends we_modules_frame{
 	const TAB_PROPERTIES = 4;
 
 	var $Model;
-	
+
 	public function __construct(){
 		$this->module = 'weSearch';
 		parent::__construct(WE_INCLUDES_DIR . 'we_tools/' . $this->module . '/edit_' . $this->module . '_frameset.php?mod=' . $this->module);
@@ -56,13 +56,13 @@ class we_search_frames extends we_modules_frame{
 						'name' => 'we_form'
 						), we_html_element::htmlHiddens(array(
 							'pnt' => 'cmd',
-							'cmd' => 'no_cmd')) .
-						we_html_element::jsElement(
-							($pid ?
-								'' :
-								'top.content.treeData.clear();
+							'cmd' => 'no_cmd'))
+				)), we_html_element::jsElement(
+					($pid ?
+						'' :
+						'top.content.treeData.clear();
 top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
-							) . $this->Tree->getJSLoadTree(!$pid, we_search_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)))))
+					) . $this->Tree->getJSLoadTree(!$pid, we_search_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)))
 		);
 	}
 

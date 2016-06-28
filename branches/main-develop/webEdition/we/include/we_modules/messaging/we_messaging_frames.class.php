@@ -111,7 +111,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(' . $pid . ',\'roo
 		} else {
 			$tree = '';
 		}
-		return $this->getHTMLDocument(we_html_element::htmlBody([], $tree), $head);
+		return $this->getHTMLDocument(we_html_element::htmlBody(), $head . $tree);
 	}
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){

@@ -737,14 +737,14 @@ function setVisible(id,visible){
 						array("name" => "we_form"), we_html_element::htmlHiddens(array(
 							"pnt" => "cmd",
 							"cmd" => "no_cmd")
-						) . we_html_element::jsElement(
-							($pid ?
-								'' :
-								'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
-							) . $this->Tree->getJSLoadTree(!$pid, we_voting_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)))
+						)
 					)
-				)
+				), we_html_element::jsElement(
+					($pid ?
+						'' :
+						'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
+					) . $this->Tree->getJSLoadTree(!$pid, we_voting_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)))
 		);
 	}
 
