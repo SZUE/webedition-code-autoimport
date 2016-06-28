@@ -119,7 +119,7 @@ class we_selector_document extends we_selector_directory{
 
 				$this->titleName = ($hash ? $hash['DefaultTitle'] : '');
 				if($this->titleName && strpos($this->titleName, '_')){
-					$this->db->query('SELECT OF_ID, o.' . $this->titleName . ' FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=o.OF_ID WHERE of.ParentID=' . intval($this->dir));
+					$this->db->query('SELECT OF_ID, o.`' . $this->titleName . '` FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=o.OF_ID WHERE of.ParentID=' . intval($this->dir));
 					$this->titles = $this->db->getAllFirst(false);
 				}
 				break;
@@ -379,13 +379,13 @@ function weWriteBreadCrumb(BreadCrumb){
 							}
 							switch($key){
 								case "DefaultDesc":
-									$selFields[] = $val . ' AS Description';
+									$selFields[] = '`' . $val . '` AS Description';
 									break;
 								case "DefaultTitle":
-									$selFields[] = $val . ' AS Title';
+									$selFields[] = '`' . $val . '` AS Title';
 									break;
 								case "DefaultKeywords":
-									$selFields[] = $val . ' AS Keywords';
+									$selFields[] = '`' . $val . '` AS Keywords';
 									break;
 							}
 						}
