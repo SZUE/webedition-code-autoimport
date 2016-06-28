@@ -21,9 +21,6 @@
  * @param		$content
  * @return		string
  */
-/* function we_parse_tag_a($attribs, $content){
-  return '<?php printElement(' . we_tag_tagParser::printTag('a', $attribs, $content, true) . ');?>';
-  } */
 
 function we_tag_a(array $attribs, $content){
 	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){
