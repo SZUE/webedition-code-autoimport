@@ -54,7 +54,7 @@ class we_navigation_frames extends we_modules_frame{
 			case 'dyn_preview' :
 				return $this->getHTMLDynPreview();
 			case 'frameset':
-				return $this->getHTMLFrameset($this->getJSCmdCode() . $this->Tree->getJSTreeCode(), (($tab = we_base_request::_(we_base_request::STRING, 'tab')) !== false ? '&tab=' . $tab : '' ) . (($sid = we_base_request::_(we_base_request::STRING, 'sid', false)) !== false ? '&sid=' . $sid : ''));
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode(), (($tab = we_base_request::_(we_base_request::STRING, 'tab')) !== false ? '&tab=' . $tab : '' ) . (($sid = we_base_request::_(we_base_request::STRING, 'sid', false)) !== false ? '&sid=' . $sid : ''));
 			default :
 				return parent::getHTML($what, $mode, $step);
 		}

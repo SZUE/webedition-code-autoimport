@@ -21,7 +21,6 @@
  * @param		$content
  * @return		string
  */
-
 function we_tag_a(array $attribs, $content){
 	if(isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof stdClass){
 		$id = $GLOBALS['lv']->ID;
@@ -49,11 +48,7 @@ function we_tag_a(array $attribs, $content){
 	$urladd = weTag_getAttribute('params', $attribs);
 	$param = ($urladd ? array(preg_replace('|^\?|', '', $urladd)) : array());
 
-	$edit = weTag_getAttribute('edit', $attribs);
-
-	if(!$edit && ($shop || $delarticle || $delshop)){
-		$edit = 'shop';
-	}
+	$edit = weTag_getAttribute('edit', $attribs)? : ($shop || $delarticle || $delshop ? 'shop' : '');
 
 	if($edit){
 		$delete = weTag_getAttribute('delete', $attribs, false, true);
@@ -170,8 +165,8 @@ function we_tag_a(array $attribs, $content){
 
 		case 'object':
 			$oid = ($listview ?
-					(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ? $GLOBALS['lv']->f('WE_ID') : 0) :
-					(isset($GLOBALS['we_obj']) && isset($GLOBALS['we_obj']->ID) && $editself ? $GLOBALS['we_obj']->ID : 0));
+					(!empty($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ? $GLOBALS['lv']->f('WE_ID') : 0) :
+					(!empty($GLOBALS['we_obj']) && isset($GLOBALS['we_obj']->ID) && $editself ? $GLOBALS['we_obj']->ID : 0));
 
 			if($delete){
 				if($oid){
