@@ -123,9 +123,10 @@ abstract class we_modules_frame{
 		$jmenu = new we_base_menu($inc, 'top.opener.top.load', '');
 		$menu = $jmenu->getCode(false);
 
-		return we_html_element::jsElement(we_main_headermenu::createMessageConsole('moduleFrame', true)) .
-			we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu) .
-			we_html_element::htmlDiv(array('id' => 'moduleMessageConsole'), we_main_headermenu::createMessageConsole('moduleFrame', false));
+		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu .
+				we_html_element::htmlDiv(array('id' => 'moduleMessageConsole'), we_main_headermenu::createMessageConsole('moduleFrame', false))
+			) .
+			we_html_element::jsElement(we_main_headermenu::createMessageConsole('moduleFrame', true));
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){
@@ -222,7 +223,7 @@ function we_save() {
 
 	protected function getHTMLExitQuestion(){
 		if(($dc = we_base_request::_(we_base_request::RAW, 'delayCmd'))){
-			$yes =  'opener.top.content.hot=0;opener.top.content.we_cmd("module_' . $this->module . '_save");self.close();';
+			$yes = 'opener.top.content.hot=0;opener.top.content.we_cmd("module_' . $this->module . '_save");self.close();';
 			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd("' . $dc . '","' . we_base_request::_(we_base_request::INT, 'delayParam') . '");self.close();';
 			$cancel = 'self.close();';
 

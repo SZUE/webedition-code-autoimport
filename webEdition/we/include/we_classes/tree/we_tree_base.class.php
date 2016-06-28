@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_tree_base{
-
 	const DefaultWidth = 300;
 	const MinWidth = 200;
 	const MaxWidth = 1000;
@@ -89,8 +88,8 @@ function startTree(pid,offset){
 
 	function getJSTreeCode(){
 		return we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
-				$this->customJSFile() .
-				we_html_element::jsElement('
+			$this->customJSFile() .
+			we_html_element::jsElement('
 var treeData = new container();
 var we_scrollY = {};
 container.prototype.topFrame="' . $this->topFrame . '";
@@ -108,11 +107,11 @@ container.prototype.frames={
 
 	function getHTMLContruct($classes = ''){
 		return
-				we_html_element::cssLink(CSS_DIR . 'tree.css') .
-				we_html_element::htmlDiv(array(
-					'id' => 'treetable',
-					'class' => 'tree' . ($classes ? ' ' . $classes : ''),
-						), ''
+			we_html_element::cssLink(CSS_DIR . 'tree.css') .
+			we_html_element::htmlDiv(array(
+				'id' => 'treetable',
+				'class' => 'tree' . ($classes ? ' ' . $classes : ''),
+				), ''
 		);
 	}
 
@@ -121,11 +120,11 @@ container.prototype.frames={
 		foreach($treeItems as $item){
 			$item['id'] = (is_numeric($item['id'])) ? $item['id'] : '"' . $item['id'] . '"';
 			$js.=($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry(' . $item['id'] . ')<0){' ) .
-					$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
+				$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
 			foreach($item as $k => $v){
 				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-								intval($v) :
-								'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') . ',';
+						intval($v) :
+						'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') . ',';
 			}
 			$js.='}));' . ($clear ? '' : '}');
 		}
