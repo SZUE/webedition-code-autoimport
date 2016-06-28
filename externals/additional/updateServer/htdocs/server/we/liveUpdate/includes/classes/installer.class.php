@@ -638,9 +638,9 @@ if ($success) {
 		$installerVersionDir = $availableInstallers[updateUtil::getNearestVersion($availableInstallers, $suchInstallerVersion)];
 		$installerDir = LIVEUPDATE_SERVER_DOWNLOAD_DIR . '/' . $installerVersionDir;
 
-		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateServer.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateServer.php', true);
-		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateFunctionsServer.class.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateFunctionsServer.class.php', true);
-		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateResponseServer.class.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateResponseServer.class.php', true);
+		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateServer.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateServer.php');
+		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateFunctionsServer.class.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateFunctionsServer.class.php');
+		$fileArray["LIVEUPDATE_CLIENT_DOCUMENT_DIR . '/updateClient/liveUpdateResponseServer.class.php'"] = updateUtil::getFileContentEncoded($installerDir . '/updateClient/liveUpdateResponseServer.class.php');
 
 		return $fileArray;
 	}

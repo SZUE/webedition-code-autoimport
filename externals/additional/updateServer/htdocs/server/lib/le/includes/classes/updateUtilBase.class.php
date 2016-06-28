@@ -229,12 +229,9 @@ print $newResponse->getOutput();
 	 * @param string $filePath
 	 * @return string
 	 */
-	static function getFileContentEncoded($filePath, $replaceExtension = false){
+	static function getFileContentEncoded($filePath){
 		$content = updateUtil::getFileContent($filePath);
 
-		if($replaceExtension){
-			$content = self::replaceExtensionInContent($content);
-		}
 		return updateUtil::encodeCode($content);
 	}
 
