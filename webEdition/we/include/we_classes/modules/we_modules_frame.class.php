@@ -104,6 +104,7 @@ abstract class we_modules_frame{
 		$extraHead = $this->getJSCmdCode() .
 			self::getJSToggleTreeCode($this->module) .
 			we_main_headermenu::css() .
+			we_base_menu::getJS() .
 			$extraHead;
 
 		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();'), we_html_element::htmlExIFrame('header', self::getHTMLHeader(
@@ -121,12 +122,11 @@ abstract class we_modules_frame{
 	protected function getHTMLHeader($menuFile){
 		$inc = include($menuFile);
 		$jmenu = new we_base_menu($inc, 'top.opener.top.load', '');
-		$menu = $jmenu->getCode(false);
+		$menu = $jmenu->getHTML();
 
 		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu .
 				we_html_element::htmlDiv(array('id' => 'moduleMessageConsole'), we_main_headermenu::createMessageConsole('moduleFrame', false))
-			) .
-			we_html_element::jsElement(we_main_headermenu::createMessageConsole('moduleFrame', true));
+			) . we_html_element::jsElement(we_main_headermenu::createMessageConsole('moduleFrame', true));
 	}
 
 	private function getHTMLResize($extraUrlParams = ''){

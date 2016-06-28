@@ -22,6 +22,7 @@
  */
 
 /* global top, WE */
+var loaded=0;
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);

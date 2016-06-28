@@ -60,8 +60,3 @@ function openTool(tool) {
 }');
 ?>
 <div id="main" ><?php echo $we_tabs->getHTML(); ?></div>
-<script><!--
-
-
-	//-->
-</script>

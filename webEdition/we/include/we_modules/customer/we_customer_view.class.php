@@ -90,8 +90,6 @@ var frameUrl="' . $this->frameset . '";
 
 	function getJSProperty(){
 		return we_html_element::jsElement('
-var loaded=0;
-
 function refreshForm(){
 	if(document.we_form.cmd.value!="home"){
 		we_cmd("switchPage",top.content.activ_tab);

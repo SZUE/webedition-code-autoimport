@@ -153,16 +153,20 @@ function we_save() {
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array(), we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
 							'wcmd' => '',
-							'wopt' => '')) .
-						$this->View->getCmdJS() .
-						we_html_element::jsElement(
-							($pid ?
-								'' :
-								'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));') .
-							$this->Tree->getJSLoadTree(!$pid, we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment))
-						)
+							'wopt' => ''))
 					)
+				), we_html_element::jsElement('
+function submitForm(){
+	var f = self.document.we_form;
+	f.target = "cmd";
+	f.method = "post";
+	f.submit();
+}' .
+					($pid ?
+						'' :
+						'top.content.treeData.clear();
+top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));') .
+					$this->Tree->getJSLoadTree(!$pid, we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment))
 				)
 		);
 	}
