@@ -27,7 +27,7 @@ function we_parse_tag_checkForm($attribs, $content, array $arr){
 		return $foo;
 	}
 
-	return '<?php printElement(' . we_tag_tagParser::printTag('checkForm', $attribs, $content, true) . '); ?>';
+	return '<?php ob_start();?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('checkForm', $attribs, ob_get_clean(), false, true) . '); ?>';
 }
 
 /**
@@ -46,11 +46,6 @@ function we_tag_checkForm(array $attribs, $content){
 		echo $missingAttrib;
 		return '';
 	}
-
-	ob_start();
-	//FIXME:eval
-	eval('?>' . $content);
-	$content = ob_get_clean();
 
 	// get fields of $attribs
 	$match = weTag_getAttribute("match", $attribs, '', we_base_request::STRING);
@@ -121,7 +116,7 @@ pwError = weCheckFormPassword(formular, password);
 
 	switch($type){
 		case "id" : //  id of formular is given
-			$function = we_html_element::jsElement(					'
+			$function = we_html_element::jsElement('
 weCheckFormEvent.addEvent(window, "load", function(){
 	initWeCheckForm_by_id(weCheckForm_id_' . $match . ',"' . $match . '");
 });
@@ -147,7 +142,7 @@ function weCheckForm_id_' . $match . '(ev){
 			break;
 
 		case "name" : //  name of formular is given
-			$function = we_html_element::jsElement(					'
+			$function = we_html_element::jsElement('
 weCheckFormEvent.addEvent( window, "load", function(){
 	initWeCheckForm_by_name(weCheckForm_n_' . $match . ',"' . $match . '");
 });
