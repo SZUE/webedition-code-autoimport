@@ -482,7 +482,7 @@ var selfNaviId = '" . $this->Model->ID . "';") .
 			if($classDirs){
 				$this->db->query('SELECT ID,ParentID FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID IN (' . implode(',', $allowedClasses) . ') AND IsFolder=1');
 				while($this->db->next_record()){
-					$classHasSubDirsJS[$classID2Dir[$this->db->f('ParentID')]] = $classID2Dir[$this->db->f('ParentID')] . ':true';
+					$classHasSubDirsJS[$classID2Dir[$this->db->f('ParentID')]] = intval($classID2Dir[$this->db->f('ParentID')]) . ':true';
 				}
 			}
 		}
