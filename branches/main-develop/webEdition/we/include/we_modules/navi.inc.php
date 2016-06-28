@@ -28,40 +28,20 @@ $name = [];
 //TODO: remove when implemented completely
 $mods = we_base_moduleInfo::getAllModules();
 we_base_moduleInfo::orderModuleArray($mods);
+$mod = we_base_request::_(we_base_request::STRING, 'mod');
 //END TODO
-$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 
 foreach($mods as $menuItem){
 	if((!empty($menuItem['inModuleMenu'])) || (!empty($menuItem['inModuleWindow']))){
 		if(we_base_moduleInfo::isActive($menuItem["name"])){ //	MODULE INSTALLED
 			if(we_users_util::canEditModule($menuItem["name"])){
 				$we_tabs->addTab(new we_tab(
-						($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
-						$menuItem["text"]
-						, ( $mod == $menuItem["name"]), "openModule('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
+					($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
+					$menuItem["text"]
+					, ( $mod == $menuItem["name"]), "openModule('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
 			}
 		}
 	}
 }
-
-echo we_html_element::jsElement('
-	var current = "' . $mod . '";
-	function openModule(module) {
-		if(top.content.hot =="1") {
-			if(confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
-				if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
-				current = module;
-				top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
-			} else {
-				weTabs.setActiveTab(current);
-			}
-		} else {
-			if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
-			current = module;
-			top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
-
-		}
-
-	}');
 ?>
 <div id="main" ><?= $we_tabs->getHTML(); ?> </div>

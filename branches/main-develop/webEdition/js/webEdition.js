@@ -95,6 +95,13 @@ WE().util.weGetCookie = function (doc, name) {
 	return null;
 };
 
+WE().util.hashCode = function (s) {
+	return s.split("").reduce(function (a, b) {
+		a = ((a << 5) - a) + b.charCodeAt(0);
+		return a & a;
+	}, 0);
+};
+
 WE().t_e = function () {
 	var msg = '';
 	for (var i = 0; i < arguments.length; i++) {

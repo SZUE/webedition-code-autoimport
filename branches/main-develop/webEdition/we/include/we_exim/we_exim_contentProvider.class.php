@@ -168,8 +168,7 @@ class we_exim_contentProvider{
 		if($prop === 'schedArr'){
 			return true;
 		}
-// \x7F-\xFF
-		return preg_match('!(^[asO]:\d+:)|([\x0-\x08\x0e-\x19\x11\x12<>&])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
+		return preg_match('!(^[asO]:\d+:)|([\x0-\x08\x0e-\x19\x11\x12<>&\x7F-\xFF])!', $data); //exclude x9:\t,x10:\n,x13:\r,x20:space
 	}
 
 	static function needCdata($content){

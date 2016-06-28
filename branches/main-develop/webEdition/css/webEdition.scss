@@ -275,6 +275,14 @@ body.radient{
 	right:0px;
 	bottom:0px;
 	border:0px none;
+	#contentDiv{
+		position:absolute;
+		top:$defaultEditorTabHeight;
+		bottom:0px;
+		left:0px;
+		right:0px;
+		overflow: hidden;
+	}
 }
 
 #weMainHeader{
@@ -1769,7 +1777,7 @@ span.checkbox{
 	}
 	div.elementText{
 		display:inline-block;
-		padding-left:4px;
+		padding-right:1ex;
 		white-space:nowrap;
 	}
 }
