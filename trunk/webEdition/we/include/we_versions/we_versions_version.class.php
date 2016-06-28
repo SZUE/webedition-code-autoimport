@@ -1473,7 +1473,7 @@ class we_versions_version{
 	/**
 	 * @abstract reset version
 	 */
-	function resetVersion($ID, $version, $publish){
+	static function resetVersion($ID, $version, $publish){
 		if(!isset($_SESSION['user']['ID'])){
 			return;
 		}
