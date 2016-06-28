@@ -325,11 +325,15 @@ class we_tag_tagParser{
 	//FIXME: GLOBALS as "\$xx" should be set here directly? using isset??
 	public static function printTag($name, $attribs = '', $content = '', $cslash = false, $directContent = false){
 		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs === 'array()' || $attribs === '[]' ? '' : $attribs));
+		static $no = 0;
 		return 'we_tag(\'' . $name . '\'' .
 			($attr ? ',' . $attr : ($content ? ',array()' : '')) .
 			($content ?
 				($directContent ? ',' . $content :
-					(',\'' . ($cslash ? addcslashes($content, '\'') : $content) . '\'' )
+					(',' . ($cslash && strpos($content, '\'') !== false ? '<<<\'WE' . $no . 'EOS\'
+' . $content . '
+WE' . ($no++) . 'EOS
+' : '\'' . $content . '\'') )
 				) : '')
 			. ')';
 	}
