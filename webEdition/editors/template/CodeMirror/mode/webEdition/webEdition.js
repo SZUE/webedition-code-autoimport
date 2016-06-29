@@ -66,7 +66,16 @@ CodeMirror.defineMode("text/weTmpl", function (config, parserConfig) {
 										switch (state.attrName) {
 											case "id":
 												if (state.typeName === "") {
-													state.typeName = (state.tagName === "object" ? "object" : "document");
+													switch (state.tagName) {
+														case "object":
+															state.typeName = "object";
+															break;
+														case 'ifTemplate':
+															state.typeName = "template";
+															break;
+														default:
+															state.typeName = "document";
+													}
 												}
 												return ((value - 0 == value) ? ("number" + " we" + state.typeName + "ID-" + value) + " WEID" : "string");
 											case "type":
