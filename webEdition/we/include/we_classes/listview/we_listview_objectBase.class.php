@@ -135,7 +135,12 @@ abstract class we_listview_objectBase extends we_listview_base{
 				}
 			}
 		}
-		$f = '`' . OBJECT_X_TABLE . $classID . '`.OF_ID AS ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Templates,`' . OBJECT_X_TABLE . $classID . '`.OF_ID,`' . OBJECT_X_TABLE . $classID . '`.OF_Category,`' . OBJECT_X_TABLE . $classID . '`.OF_Text,`' . OBJECT_X_TABLE . $classID . '`.OF_Url,`' . OBJECT_X_TABLE . $classID . '`.OF_TriggerID,`' . OBJECT_X_TABLE . $classID . '`.OF_WebUserID,`' . OBJECT_X_TABLE . $classID . '`.OF_Language,' . $selFields;
+		$fields = array_keys(getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' LIMIT 1'));
+		$extraFields = '';
+		foreach($fields as $cur){
+			$extraFields.=',`' . OBJECT_FILES_TABLE . '`.' . $cur . ' AS we_wedoc_' . $cur;
+		}
+		$f = '`' . OBJECT_FILES_TABLE . '`.ID,`' . OBJECT_FILES_TABLE . '`.Templates AS OF_Templates,`' . OBJECT_FILES_TABLE . '`.ID AS OF_ID,`' . OBJECT_FILES_TABLE . '`.Category AS OF_Category,`' . OBJECT_FILES_TABLE . '`.Text AS OF_Text,`' . OBJECT_FILES_TABLE . '`.Url AS OF_Url,`' . OBJECT_FILES_TABLE . '`.TriggerID AS OF_TriggerID,`' . OBJECT_FILES_TABLE . '`.WebUserID AS OF_WebUserID,`' . OBJECT_FILES_TABLE . '`.Language AS OF_Language' . $extraFields . ($selFields ? ',' . $selFields : '');
 		$charclass = '[\!\=%&\(\)\*\+\.\/<>|~, ]';
 		foreach($matrix as $n => $p){
 			$n2 = $n;
@@ -150,7 +155,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 			if(($pos = array_search($n, $orderArr)) !== false){
 				$ordertmp[$pos] = '`' . $p['table'] . '`.`' . $p['type'] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 			}
-			$cond = preg_replace("/($charclass)$n($charclass)/", '${1}' . $p['table'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
+			$cond = preg_replace('/(' . $charclass . ')' . $n . '(' . $charclass . ')/', '${1}' . $p['table'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
 		}
 		$cond = preg_replace_callback("/'([^']*)'/", function (array $match){
 			return "'" . preg_replace_callback("/&([^;]+);/", function (array $match){

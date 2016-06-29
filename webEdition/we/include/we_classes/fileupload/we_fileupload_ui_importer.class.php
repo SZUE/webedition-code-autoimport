@@ -51,6 +51,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		$this->fileTable = FILE_TABLE;
 		$this->footerName = 'imgimportbuttons';
 		$this->contentName = 'imgimportcontent';
+		$this->cliensideImageEditing = true;
 	}
 
 	public function getCss(){
@@ -156,7 +157,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 			we_html_element::htmlDiv([], we_html_forms::radiobutton('custom', true, 'editOpts', g_l('importFiles', '[edit_useCustom]'), true, 'defaultfont', 'we_FileUpload.setCustomEditOpts(this.form);', true)) .
 			we_html_element::htmlDiv([], we_html_forms::radiobutton('expert', false, 'editOpts', g_l('importFiles', '[edit_useExpert]'), true, 'defaultfont', 'we_FileUpload.setCustomEditOpts(this.form);', true))
 		);
-		$valueInput = we_html_tools::htmlTextInput('resizeValue', 11, '', '', '', "text", 54, 20, '', true);
+		$valueInput = we_html_tools::htmlTextInput('resizeValue', 11, '', '', '', "text", 54, 22, '', true);
 		$unitSelect = we_html_tools::htmlSelect('unitSelect', array(
 				'pixel_w' => g_l('importFiles', '[edit_pixel_width]'),
 				'pixel_h' => g_l('importFiles', '[edit_pixel_height]'),

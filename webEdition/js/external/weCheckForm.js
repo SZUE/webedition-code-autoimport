@@ -57,38 +57,53 @@ function initWeCheckForm_by_id(func, id) {
 	weCheckFormEvent.addEvent(formular, "submit", func);
 }
 
-function weCheckFormMandatory(form, reqFields) { //  return name of not set mandatory fields
+/*return name of not set mandatory fields
+ */
+function weCheckFormMandatory(form, reqFields) {
 	//  check required fields
 	var missingFields = [];
+	var formname = form.name;
+	var elemType = '';
+	var ok;
 
 	for (i = 0; i < reqFields.length; i++) {
-
-		ok = true;
 		elem = form[reqFields[i]];
+		//test if userinput fields are used, format: we_ui_FORM[elemname]
+		if (elem === undefined) {
+			elem = form["we_ui_" + formname + "[" + reqFields[i] + "]"];
+		}
 
-		if (elem && elem.type && elem.type == "checkbox") { // for checkbox
-			if (!elem.checked) {
-				ok = false;
-			}
-		} else if (elem && elem.type && (elem.type == "select-one" || elem.type == "select-multi")) {
-			if (elem.selectedIndex === undefined || elem.options[elem.selectedIndex].value === "") { // select
-				ok = false;
-			}
-		} else if (!elem || !elem.value) {        //  text, password, select
-			ok = false;
-			if (elem && elem.length) {    //  perhaps it is a radio-button
-				for (j = 0; j < elem.length; j++) {
-					if (elem[j].checked) {
-						ok = true;
+		elemType = elem && elem.type ? elem.type : 'none';
+		switch (elemType) {
+			case "checkbox":
+				if (!elem.checked) {
+					missingFields.push(reqFields[i]);
+				}
+				break;
+			case "select-one":
+			case "select-multi":
+				if (elem.selectedIndex === undefined || elem.options[elem.selectedIndex].value === "") { // select
+					missingFields.push(reqFields[i]);
+				}
+				break;
+			default:
+				if (!elem || !elem.value) {        //  text, password, select
+					ok = false;
+					//  perhaps it is a radio-button
+					if (elem && elem.length) {
+						for (j = 0; j < elem.length; j++) {
+							if (elem[j].checked) {
+								ok = true;
+							}
+						}
+
+					}
+					if (!ok) {
+						missingFields.push(reqFields[i]);
 					}
 				}
-
-			}
 		}
 
-		if (!ok) {
-			missingFields.push(reqFields[i]);
-		}
 	}
 	return missingFields;
 }

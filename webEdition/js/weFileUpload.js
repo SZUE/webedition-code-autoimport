@@ -72,7 +72,7 @@ var weFileUpload = (function () {
 
 		_.debug = false;
 
-		_.EDIT_IMAGES_CLIENTSIDE = true;
+		_.EDIT_IMAGES_CLIENTSIDE = false;
 		_.picaOptions = {
 			quality: 3, // [0,3]
 			unsharpAmount: 0, // [0, 200]
@@ -103,6 +103,7 @@ var weFileUpload = (function () {
 				_.fieldName = conf.fieldName || _.fieldName;
 				_.uiType = conf.uiType || _.uiType;
 				_.genericFilename = conf.genericFilename || _.genericFilename;
+				_.EDIT_IMAGES_CLIENTSIDE = conf.clientsideImageEditing ? true : false;
 				c.fileselectOnclick = conf.fileselectOnclick || _.controller.fileselectOnclick;
 				c.isPreset = conf.isPreset || c.isPreset;
 				s.doCommitFile = conf.doCommitFile !== undefined ? conf.doCommitFile : s.doCommitFile;
@@ -224,11 +225,10 @@ var weFileUpload = (function () {
 							f = _.controller.prepareFile(_.controller.selectedFiles[i]);
 							_.sender.preparedFiles.push(f);
 							_.view.addFile(f, _.sender.preparedFiles.length);
-							
 						}
 					}
 
-					if (_.sender.imageFilesToProcess.length){
+					if (_.EDIT_IMAGES_CLIENTSIDE && _.sender.imageFilesToProcess.length) {
 						_.controller.processImages();
 					}
 				}
@@ -282,7 +282,7 @@ var weFileUpload = (function () {
 				fileObj.totalParts = Math.ceil(f.size / _.sender.chunkSize);
 				fileObj.lastChunkSize = f.size % _.sender.chunkSize;
 
-				if (transformables.indexOf(f.type) !== -1) {
+				if (_.EDIT_IMAGES_CLIENTSIDE && transformables.indexOf(f.type) !== -1) {
 					_.sender.imageFilesToProcess.push(fileObj);
 				}
 
@@ -291,9 +291,7 @@ var weFileUpload = (function () {
 
 			this.processImages = function() {
 				if (_.sender.imageFilesToProcess && _.sender.imageFilesToProcess.length) {
-					if(_.EDIT_IMAGES_CLIENTSIDE){
-						_.utils.setImageEditOptionsGeneral();
-					}
+					_.utils.setImageEditOptionsGeneral();
 					_.view.setImageEditMessage();
 					_.controller.processNextImage();
 				} else {
@@ -1907,9 +1905,11 @@ var weFileUpload = (function () {
 			generalform.fu_doc_resizeValue.addEventListener('keyup', function(e) {_.view.syncCustomEditOpts(e.target);});
 			generalform.fu_doc_rotate.addEventListener('change', function(e) {_.view.syncCustomEditOpts(e.target);});
 			*/
-			generalform.fu_doc_resizeValue.addEventListener('keyup', function(e) {_.controller.editOptionsOnChange(e.target);});
-			generalform.fu_doc_rotate.addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-			generalform.check_fu_doc_doResize.addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+			if (_.EDIT_IMAGES_CLIENTSIDE) {
+				generalform.elements['fu_doc_resizeValue'].addEventListener('keyup', function(e) {_.controller.editOptionsOnChange(e.target);});
+				generalform.elements['fu_doc_rotate'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+				generalform.elements['check_fu_doc_doResize'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+			}
 		};
 
 		function Controller() {
@@ -2644,11 +2644,13 @@ var weFileUpload = (function () {
 					inputs[i].addEventListener('change', _.controller.fileSelectHandler, false);
 				}
 			}
-
-			document.we_form.elements['check_fu_doc_doResize'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-			document.we_form.elements['fu_doc_resizeValue'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-			document.we_form.elements['fu_doc_rotate'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-			document.we_form.elements['fu_doc_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+			
+			if (_.EDIT_IMAGES_CLIENTSIDE) {
+				document.we_form.elements['check_fu_doc_doResize'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.elements['fu_doc_resizeValue'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.elements['fu_doc_rotate'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.elements['fu_doc_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+			}
 
 			v.elems.fileDrag_state_0 = document.getElementById('div_fileupload_fileDrag_state_0');
 			v.elems.fileDrag_state_1 = document.getElementById('div_fileupload_fileDrag_state_1');
@@ -2667,7 +2669,7 @@ var weFileUpload = (function () {
 			v.elems.divButtons = document.getElementById('div_fileupload_buttons');
 
 			var ids = [
-				'div_we_File_fileDrag',
+				'div_we_File_fileDrag'
 				/*
 				'div_fileupload_fileDrag_state_0',
 				'div_filedrag_content_left',
@@ -2912,7 +2914,9 @@ var weFileUpload = (function () {
 						this.setDisplay('divProgressBar', 'none');
 						this.setDisplay('divBtnCancel', 'none');
 						this.setDisplay('dragInnerRight', '');
-						document.getElementById('process_weFileupload').disabled = true;//make same as following
+						if (_.EDIT_IMAGES_CLIENTSIDE) {
+							document.getElementById('process_weFileupload').disabled = true;//make same as following
+						}
 						_.controller.setWeButtonState(_.view.uploadBtnName, false);
 						_.controller.setWeButtonState('browse_harddisk_btn', true);
 						return;
@@ -2991,6 +2995,9 @@ var weFileUpload = (function () {
 			};
 
 			this.writeFocusToForm = function(fileobj){
+				if (!_.EDIT_IMAGES_CLIENTSIDE) {
+					return;
+				}
 				document.we_form.elements['fu_doc_focusX'].value = fileobj.img.focusX;
 				document.we_form.elements['fu_doc_focusY'].value = fileobj.img.focusY;
 			};
@@ -3010,8 +3017,12 @@ var weFileUpload = (function () {
 					this.elems[elem].style.display = val;
 				}
 			};
-			
+
 			this.setImageEditMessage = function () {
+				if (!_.EDIT_IMAGES_CLIENTSIDE) {
+					return;
+				}
+
 				var mask = document.getElementById('div_fileupload_fileDrag_mask'),
 					text = document.getElementById('image_edit_mask_text');
 
@@ -3020,11 +3031,18 @@ var weFileUpload = (function () {
 			};
 
 			this.unsetImageEditMessage = function () {
+				if (!_.EDIT_IMAGES_CLIENTSIDE) {
+					return;
+				}
 				var mask = document.getElementById('div_fileupload_fileDrag_mask');
 				mask.style.display = 'none';
 			};
 
 			this.repaintImageEditMessage = function (empty, changeText) {
+				if (!_.EDIT_IMAGES_CLIENTSIDE) {
+					return;
+				}
+
 				var text = document.getElementById('image_edit_mask_text').innerHTML;
 				text = (changeText ? _.utils.gl.maskProcessImage : text) + '.';
 				text += '.';
@@ -3034,12 +3052,14 @@ var weFileUpload = (function () {
 
 			this.repaintEntry = function (fileobj) {
 				this.addFile(fileobj);
-//				if(Uint8Array.prototype.slice){ // TODO: must fix loupe for IE11: has no offsetWidth!!
-					this.elems.dragInnerRight.firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
-					this.elems.dragInnerRight.firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
-					this.elems.dragInnerRight.firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
-					this.elems.dragInnerRight.firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
-//				}
+				if (!_.EDIT_IMAGES_CLIENTSIDE) {
+					return;
+				}
+
+				this.elems.dragInnerRight.firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
+				this.elems.dragInnerRight.firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
+				this.elems.dragInnerRight.firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
+				this.elems.dragInnerRight.firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
 			};
 		}
 
