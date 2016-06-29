@@ -375,23 +375,23 @@ this.selectedIndex = 0;' .
 		return self::hidden($name, $ext) . '<b class="defaultfont">' . $ext . '</b>';
 	}
 
-	static function we_getDayPos($format){
-		return max(self::findChar($format, 'd'), self::findChar($format, 'D'), self::findChar($format, 'j'));
+	private static function we_getDayPos($format){
+		return max(array(self::findChar($format, 'd'), self::findChar($format, 'D'), self::findChar($format, 'j')));
 	}
 
-	static function we_getMonthPos($format){
-		return max(self::findChar($format, 'm'), self::findChar($format, 'M'), self::findChar($format, 'n'), self::findChar($format, 'F'));
+	private static function we_getMonthPos($format){
+		return max(array(self::findChar($format, 'm'), self::findChar($format, 'M'), self::findChar($format, 'n'), self::findChar($format, 'F')));
 	}
 
-	static function we_getYearPos($format){
-		return max(self::findChar($format, 'y'), self::findChar($format, 'Y'));
+	private static function we_getYearPos($format){
+		return max(array(self::findChar($format, 'y'), self::findChar($format, 'Y')));
 	}
 
-	static function we_getHourPos($format){
-		return max(self::findChar($format, 'g'), self::findChar($format, 'G'), self::findChar($format, 'h'), self::findChar($format, 'H'));
+	private static function we_getHourPos($format){
+		return max(array(self::findChar($format, 'g'), self::findChar($format, 'G'), self::findChar($format, 'h'), self::findChar($format, 'H')));
 	}
 
-	static function we_getMinutePos($format){
+	private static function we_getMinutePos($format){
 		return self::findChar($format, 'i');
 	}
 
@@ -406,6 +406,7 @@ this.selectedIndex = 0;' .
 		return -1;
 	}
 
+	//note it is possible to set "no date"
 	public static function getDateInput($name, $time = 0, $setHot = false, $format = '', $onchange = '', $class = 'weSelect', $xml = false, $minyear = 0, $maxyear = 0, $style = ''){
 		$attsSelect = $attsOption = $attsHidden = $xml ? array('xml' => $xml) : array();
 
@@ -427,8 +428,8 @@ this.selectedIndex = 0;' .
 			$year = $time->format('Y');
 			$hour = $time->format('G');
 			$minute = $time->format('i');
-		} else if($time){
-			$time = intval($time);
+		} else {
+			$time = $time > 2 ? $time : 0;
 			$day = intval(date('j', $time));
 			$month = intval(date('n', $time));
 			$year = intval(date('Y', $time));
@@ -442,9 +443,6 @@ this.selectedIndex = 0;' .
 		$hourPos = self::we_getHourPos($format);
 		$minutePos = self::we_getMinutePos($format);
 
-		$showDay = true;
-		$showMonth = true;
-		$showYear = true;
 		$showHour = true;
 		$showMinute = true;
 
@@ -465,9 +463,8 @@ this.selectedIndex = 0;' .
 				'type' => 'hidden',
 				'name' => sprintf($name, '_day'),
 				'id' => sprintf($name, '_day'),
-				'value' => $day
+				'value' => $time ? $day : 0
 			)));
-			$showDay = false;
 		}
 
 		if(!$format || $monthPos > -1){
@@ -497,9 +494,8 @@ this.selectedIndex = 0;' .
 				'type' => 'hidden',
 				'name' => sprintf($name, '_month'),
 				'id' => sprintf($name, '_month'),
-				'value' => $month
+				'value' => $time ? $month : 0
 			)));
-			$showMonth = false;
 		}
 		if(!$format || $yearPos > -1){
 			$years = getHtmlTag('option', array_merge($attsOption, array('value' => 0)), '--');
@@ -522,9 +518,8 @@ this.selectedIndex = 0;' .
 				'type' => 'hidden',
 				'name' => sprintf($name, '_year'),
 				'id' => sprintf($name, '_year'),
-				'value' => $year
+				'value' => $time ? $year : 0
 			)));
-			$showYear = false;
 		}
 
 		if(!$format || $hourPos > -1){
@@ -542,7 +537,7 @@ this.selectedIndex = 0;' .
 				'type' => 'hidden',
 				'name' => sprintf($name, '_hour'),
 				'id' => sprintf($name, '_hour'),
-				'value' => isset($hour) ? $hour : 0
+				'value' => $time ? $hour : 0
 			)));
 			$showHour = false;
 		}
@@ -562,7 +557,7 @@ this.selectedIndex = 0;' .
 				'type' => 'hidden',
 				'name' => sprintf($name, '_minute'),
 				'id' => sprintf($name, '_minute'),
-				'value' => isset($minute) ? $minute : 0
+				'value' => $time ? $minute : 0,
 			)));
 			$showMinute = false;
 		}
@@ -574,7 +569,8 @@ this.selectedIndex = 0;' .
 		);
 
 		$timePosArray = array(
-			($hourPos == -1) ? 'h' : $hourPos => $hourSelect, ($minutePos == -1) ? 'i' : $minutePos => $minSelect
+			($hourPos == -1) ? 'h' : $hourPos => $hourSelect,
+			($minutePos == -1) ? 'i' : $minutePos => $minSelect
 		);
 
 		ksort($datePosArray);
