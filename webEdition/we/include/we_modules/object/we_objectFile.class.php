@@ -60,6 +60,7 @@ class we_objectFile extends we_document{
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 	var $Url = '';
 	var $TriggerID = 0;
+	private $classData = [];
 	private $DefaultInit = false; // this flag is set when the document was first initialized with default values e.g. from Doc-Types
 
 	/* Constructor */
@@ -552,7 +553,7 @@ class we_objectFile extends we_document{
 
 	public function formClass(){
 		return ($this->ID ?
-				'<span class="defaultfont">' . f('SELECT Text FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE) . '</span>' :
+				'<span class="defaultfont">' . $this->classData['Text'] . '</span>' :
 				$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID', 'Text', '', '', 'IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
 	}
 
@@ -716,7 +717,7 @@ class we_objectFile extends we_document{
 	}
 
 	function getFieldsHTML($editable, $asString = false){
-		$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
+		$dv = we_unserialize($this->classData['DefaultValues']);
 
 		$tableInfo_sorted = $this->getSortedTableInfo($this->TableID, true, $this->DB_WE);
 		$fields = $regs = [];
@@ -1433,7 +1434,7 @@ class we_objectFile extends we_document{
 
 	public function getDefaultValueArray(){
 		if($this->TableID){
-			return we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
+			return we_unserialize($this->classData['DefaultValues']);
 		}
 		return [];
 	}
@@ -1447,7 +1448,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function getPossibleWorkspaces($ClassWs, $all = false){
-		$ClassWs = $ClassWs ? : f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
+		$ClassWs = $ClassWs ? : $this->classData['Workspaces'];
 		$userWs = get_ws(FILE_TABLE, true);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
@@ -1504,9 +1505,8 @@ class we_objectFile extends we_document{
 	}
 
 	function formWorkspaces(){
-		$hash = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-		$ws = $hash['Workspaces'];
-		$ts = $hash['Templates'];
+		$ws = $this->classData['Workspaces'];
+		$ts = $this->classData['Templates'];
 
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws), '', $this->DB_WE);
 		foreach($values as $id => $val){
@@ -1565,12 +1565,11 @@ class we_objectFile extends we_document{
 	}
 
 	function getTemplateFromWs($wsID){
-		$foo = getHash('SELECT Templates,Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 
 		$mwsp = id_to_path($wsID, FILE_TABLE, $this->DB_WE);
 
-		$tarr = explode(',', $foo["Templates"]);
-		$warr = explode(',', $foo["Workspaces"]);
+		$tarr = explode(',', $this->classData["Templates"]);
+		$warr = explode(',', $this->classData["Workspaces"]);
 
 		if(($pos = array_search($wsID, $warr, false)) === false){
 			foreach($warr as $wsi){
@@ -1617,18 +1616,16 @@ class we_objectFile extends we_document{
 	}
 
 	function ws_from_class(){
-		$foo = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-		$this->Workspaces = $foo["Workspaces"];
-		$this->Templates = $foo["Templates"];
+		$this->Workspaces = $this->classData["Workspaces"];
+		$this->Templates = $this->classData["Templates"];
 		$this->ExtraTemplates = "";
 		$this->ExtraWorkspaces = "";
 		$this->ExtraWorkspacesSelected = "";
 	}
 
 	function formExtraWorkspaces(){
-		$hash = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-		$ws = $hash['Workspaces'];
-		$ts = $hash['Templates'];
+		$ws = $this->classData['Workspaces'];
+		$ts = $this->classData['Templates'];
 
 // values bekommen aller workspaces, welche hinzugef�gt werden d�rfen.
 		$values = getHashArrayFromCSV($this->getPossibleWorkspaces($ws, true), '', $this->DB_WE);
@@ -1741,7 +1738,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		if(!$tid){
-			$foo = makeArrayFromCSV(f('SELECT Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', new DB_WE()));
+			$foo = makeArrayFromCSV($this->classData['Templates']);
 			if(!empty($foo)){
 				$tid = $foo[0];
 			}
@@ -1779,11 +1776,10 @@ class we_objectFile extends we_document{
 
 	function setTitleAndDescription(){
 		$fields = array('Description' => 'DefaultDesc', 'Title' => 'DefaultTitle', 'Keywords' => 'DefaultKeywords');
-		$foo = getHash('SELECT ' . implode(',', $fields) . ' FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 
 		foreach($fields as $key => $field){
-			if(!empty($foo[$field])){
-				$regs = explode('_', $foo[$field], 2);
+			if(!empty($this->classData[$field])){
+				$regs = explode('_', $this->classData[$field], 2);
 				if(isset($regs[0]) && $regs[0] !== '' && isset($regs[1]) && $regs[1] !== ''){
 					$elem = $this->geFieldValue($regs[1], $regs[0]);
 					$this->setElement($key, $elem);
@@ -1793,16 +1789,15 @@ class we_objectFile extends we_document{
 	}
 
 	function setUrl(){
-		$foo = getHash('SELECT DefaultUrl,DefaultUrlfield0, DefaultUrlfield1, DefaultUrlfield2, DefaultUrlfield3 FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		$max = 3;
 		$urlfield = [];
-		if(!empty($foo["DefaultUrl"])){
+		if(!empty($this->classData["DefaultUrl"])){
 			$regs = [];
-			$text = $foo["DefaultUrl"];
+			$text = $this->classData["DefaultUrl"];
 			for($i = 0; $i <= $max; ++$i){
 				$cur = '';
-				if(!empty($foo['DefaultUrlfield' . $i])){
-					preg_match('/(.+?)_(.*)/', $foo['DefaultUrlfield' . $i], $regs);
+				if(!empty($this->classData['DefaultUrlfield' . $i])){
+					preg_match('/(.+?)_(.*)/', $this->classData['DefaultUrlfield' . $i], $regs);
 					$cur = $urlfield[$i] = (isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '' ?
 							$this->geFieldValue($regs[2], $regs[1]) : '');
 				}
@@ -1873,7 +1868,7 @@ class we_objectFile extends we_document{
 			}
 			if(strpos($text, '%PathNoC%') !== false){
 				$zwtext = str_replace($this->Text, '', $this->Path);
-				$classN = f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE);
+				$classN = $this->classData['Path'];
 				$zwtext = ltrim(str_replace($classN, '', $zwtext), '/');
 				$text = str_replace('%PathNoC%', $zwtext, $text);
 			}
@@ -2040,7 +2035,7 @@ class we_objectFile extends we_document{
 
 	public function we_initSessDat($sessDat){
 		parent::we_initSessDat($sessDat);
-		$this->DefArray = $this->getDefaultValue[];
+		$this->DefArray = $this->getDefaultValueArray();
 		$this->i_objectFileInit();
 	}
 
@@ -2109,9 +2104,7 @@ class we_objectFile extends we_document{
 			return false;
 		}
 
-		$foo = getHash('SELECT strOrder,DefaultValues,DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-		//$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), "DefaultValues", $this->DB_WE));
-		$dv = we_unserialize($foo['DefaultValues']);
+		$dv = we_unserialize($this->classData['DefaultValues']);
 		foreach($this->elements as $n => $elem){
 			if(isset($elem["type"]) && $elem["type"] == self::TYPE_TEXT){
 				if(isset($dv["text_$n"]["xml"]) && $dv["text_$n"]["xml"] === "on"){
@@ -2126,7 +2119,7 @@ class we_objectFile extends we_document{
 		if(!$this->TriggerID){
 			$this->TriggerID = f('SELECT TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ParentID), '', $this->DB_WE);
 			if(!$this->TriggerID){
-				$this->TriggerID = $foo['DefaultTriggerID'];
+				$this->TriggerID = $this->classData['DefaultTriggerID'];
 			}
 		}
 		$resaveWeDocumentCustomerFilter = true;
@@ -2201,7 +2194,7 @@ class we_objectFile extends we_document{
 	function registerMediaLinks($temp = false, $linksReady = false){
 		//register media in fields type link
 		if(!$linksReady){
-			$dv = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), "DefaultValues", $this->DB_WE));
+			$dv = we_unserialize($this->classData['DefaultValues']);
 			foreach($dv as $k => $v){
 				if(strpos($k, 'link_') === 0){
 					$name = str_replace('link_', '', $k);
@@ -2233,16 +2226,15 @@ class we_objectFile extends we_document{
 	}
 
 	function hasWorkspaces(){
-		return f('SELECT Workspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE) !== '';
+		return $this->classData['Workspaces'] !== '';
 	}
 
 	function setTypeAndLength(){
 		if(!$this->TableID || $this->IsFolder){
 			return;
 		}
-		$DataTable = OBJECT_X_TABLE . intval($this->TableID);
 		$db = $this->DB_WE;
-		$tableInfo = $db->metadata($DataTable);
+		$tableInfo = $db->metadata(OBJECT_X_TABLE . intval($this->TableID));
 		$regs = [];
 		foreach($tableInfo as $cur){
 			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
@@ -2298,6 +2290,7 @@ class we_objectFile extends we_document{
 				$this->setTypeAndLength();
 				break;
 		}
+		$this->classData = getHash('SELECT * FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		$this->loadSchedule();
 		$this->setTitleAndDescription();
 		$this->i_getLinkedObjects();
@@ -2557,11 +2550,10 @@ class we_objectFile extends we_document{
 		if(!$this->TableID || $this->IsFolder){
 			return;
 		}
-		$DataTable = OBJECT_X_TABLE . intval($this->TableID);
 		$db = $this->DB_WE;
 		$tableInfo = $this->getSortedTableInfo($this->TableID, false, $db);
 
-		$db->query('SELECT * FROM ' . $DataTable . ' WHERE OF_ID=' . intval($this->ID));
+		$db->query('SELECT * FROM ' . OBJECT_X_TABLE . intval($this->TableID) . ' WHERE OF_ID=' . intval($this->ID));
 		if($db->next_record()){
 			foreach($tableInfo as $cur){
 				$regs = explode('_', $cur["name"], 2);
