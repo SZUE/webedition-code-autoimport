@@ -379,7 +379,8 @@ var weFileUpload = (function () {
 			};
 
 			this.reeditImage = function (fileobj, pos, all) {
-				var files = all ? _.sender.preparedFiles : (fileobj ? [fileobj] : (pos === undefined ? [] : [_.sender.preparedFiles[pos]]));
+				pos = pos === undefined ? -1 : pos;
+				var files = all ? _.sender.preparedFiles : (fileobj ? [fileobj] : (pos !== -1 ? [_.sender.preparedFiles[pos]] : []));
 
 				var transformables = ['image/jpeg', 'image/gif', 'image/png'];
 				for(var i = 0; i < files.length; i++){
@@ -398,42 +399,50 @@ var weFileUpload = (function () {
 			this.editOptionsOnChange = function(target){
 				var resizeName = 'fu_doc_resizeValue',
 					rotateName = 'fu_doc_rotate',
-					qualityName = 'fu_doc_quality';
+					qualityName = 'fu_doc_quality',
+					pos = -1;
 
 				var altNames = ['resizeValue', 'rotateSelect', 'quality']; // TODO: unifiy names or classes
-				if(altNames.indexOf(target.name) !== -1){
+				if(altNames.indexOf(target.name) !== -1){ // we are in custom opts of an importer entry
 					resizeName = 'resizeValue';
 					rotateName = 'rotateSelect';
 					qualityName = 'quality';
+					pos = parseInt(target.form.id.substring(14));//form_editOpts_0
 				}
 
-				var resizeValue = target.form.elements[resizeName].value;
-				var rotateValue = target.form.elements[rotateName].value;
-				var qualityValue = target.form.elements[qualityName].value;
-				var btnRefresh = target.form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
-				if(target.name == qualityName){
-					btnRefresh.disabled = _.sender.preparedFiles.length === 0 || !parseInt(qualityValue);
-					return;
-				}
+				var resizeValue = target.form.elements[resizeName].value,
+					rotateValue = parseInt(target.form.elements[rotateName].value),
+					qualityValue = parseInt(target.form.elements[qualityName].value),
+					btnRefresh = target.form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
 
-				if(target.name === 'check_fu_doc_doResize'){
-					target.form.elements[qualityName].value = 0;
-					document.getElementById('qualityValue').innerHTML = '0';
-					target.form.elements[rotateName].value = 0;
-					target.form.elements[resizeName].value = '';
-				}
+				btnRefresh.disabled = _.sender.preparedFiles.length === 0 || !(resizeValue || rotateValue || qualityValue);
 
-				if(resizeValue === '' && !parseInt(rotateValue)){
-					target.form.elements[qualityName].value = 0;
-					document.getElementById('qualityValue').innerHTML = '0';
-					btnRefresh.disabled = true;
-				} else if(!parseInt(qualityValue)) {
-					target.form.elements[qualityName].value = 90;
-					document.getElementById('qualityValue').innerHTML = '90';
-					btnRefresh.disabled = _.sender.preparedFiles.length === 0;
+				switch (target.name){
+					case resizeName:
+					case rotateName:
+						if(resizeValue || rotateValue){
+							if(!qualityValue){
+								target.form.elements[qualityName].value = 90;
+								document.getElementById('qualityValue').innerHTML = '90';
+								target.form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '90';
+							}
+						} else {
+							target.form.elements[qualityName].value = 0;
+							target.form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '0';
+							_.controller.reeditImage(null, pos, pos === -1 ? true : false);
+						}
+						break;
+					case qualityName:
+						break;
+					case 'check_fu_doc_doResize':
+						// whenever we change this reset all vals and disable button // TODO: make or apply some resize function
+						target.form.elements[qualityName].value = 0;
+						target.form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '0';
+						target.form.elements[rotateName].value = 0;
+						target.form.elements[resizeName].value = '';
+						btnRefresh.disabled = true;
 				}
 			};
-
 		}
 
 		function AbstractSender() {
@@ -908,20 +917,20 @@ var weFileUpload = (function () {
 
 			this.abstractSetImageEditOptionsGeneral = function (formname) {
 				var form = document.forms[(formname ? formname : 'we_form')],
-					resizeValue = form.fu_doc_resizeValue.value,
-					deg = parseInt(form.fu_doc_rotate.value),
-					quality = parseInt(form.fu_doc_quality.value),
+					resizeValue = form.elements['fu_doc_resizeValue'].value,
+					deg = parseInt(form.elements['fu_doc_rotate'].value),
+					quality = parseInt(form.elements['fu_doc_quality'].value),
 					opts = _.sender.imageEditOptions;
 
 				opts.doEdit = false;
-				if(parseInt(form.fu_doc_doResize.value) === 1 && (resizeValue || deg || quality)){
+				if(parseInt(form.elements['fu_doc_doResize'].value) === 1 && (resizeValue || deg || quality)){
 					opts.doEdit = true;
 					opts.keepRatio = true;
 
-					opts.scaleUnit = form.fu_doc_unitSelect.value;
+					opts.scaleUnit = form.elements['fu_doc_unitSelect'].value;
 					opts.scaleValue = resizeValue;
 					opts.rotateValue = deg;
-					opts.quality = form.fu_doc_quality.value;
+					opts.quality = form.elements['fu_doc_quality'].value;
 				}
 			};
 
@@ -1899,16 +1908,12 @@ var weFileUpload = (function () {
 			_.controller.enableWeButton('next', false);
 
 			// add some listeners:
-			var generalform = document.getElementById('filechooser');
-			/*
-			generalform.fu_doc_unitSelect.addEventListener('change', function(e) {_.view.syncCustomEditOpts(e.target);});
-			generalform.fu_doc_resizeValue.addEventListener('keyup', function(e) {_.view.syncCustomEditOpts(e.target);});
-			generalform.fu_doc_rotate.addEventListener('change', function(e) {_.view.syncCustomEditOpts(e.target);});
-			*/
 			if (_.EDIT_IMAGES_CLIENTSIDE) {
+				var generalform = document.getElementById('filechooser');
 				generalform.elements['fu_doc_resizeValue'].addEventListener('keyup', function(e) {_.controller.editOptionsOnChange(e.target);});
 				generalform.elements['fu_doc_rotate'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
 				generalform.elements['check_fu_doc_doResize'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+				generalform.elements['fu_doc_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
 			}
 		};
 
@@ -1982,7 +1987,7 @@ var weFileUpload = (function () {
 					var img;
 
 					if(_.sender.preparedFiles[index].isEdited && _.sender.preparedFiles[index].dataUrl){
-						// IMPORTANT: try tpo load img from fileobj.dataArray to avoid saving dataUrl!!
+						// IMPORTANT: try to load img from fileobj.dataArray to avoid saving dataUrl!!
 						img = previewWin.document.createElement("img");
 						img.src = _.sender.preparedFiles[index].dataUrl;
 						previewWin.document.write('<h3>image editet</h3>');
@@ -2449,14 +2454,15 @@ var weFileUpload = (function () {
 							}
 							
 						}
-						checkbox.form.unitSelect.disabled = true;
-						checkbox.form.resizeValue.disabled = true;
-						checkbox.form.rotateSelect.disabled = true;
+						checkbox.form.elements['unitSelect'].disabled = true;
+						checkbox.form.elements['resizeValue'].disabled = true;
+						checkbox.form.elements['rotateSelect'].disabled = true;
+						checkbox.form.elements['quality'].disabled = true;
 						checkbox.form.getElementsByClassName('weBtn')[0].disabled = true;
 						_.controller.reeditImage(null, checkbox.form.getAttribute('data-index'));
 						break;
 					default:
-						var radios = checkbox.form.editOpts;
+						var radios = checkbox.form.elements['editOpts'];
 						var index, classes; 
 						for(var i = 0; i < radios.length; i++){
 							radios[i].disabled = false;
@@ -2474,17 +2480,20 @@ var weFileUpload = (function () {
 			};
 
 			this.setCustomEditOpts = function(form){
-				switch(form.editOpts.value){
+				var value = form.elements['editOpts'][0].checked = 'checked' ? 'custom' : 'expert';
+
+				switch(value){
 					case 'custom':
-						form.unitSelect.disabled = false;
-						form.resizeValue.disabled = false;
-						form.rotateSelect.disabled = false;
+						form.elements['unitSelect'].disabled = false;
+						form.elements['resizeValue'].disabled = false;
+						form.elements['rotateSelect'].disabled = false;
+						form.elements['quality'].disabled = false;
 						_.view.formCustomOptsReset(form);
 						//form.getElementsByClassName('weBtn')[0].disabled = false;
 						break;
 					case 'expert':
 						alert('not yet implemented');
-						form.editOpts.value = 'custom';
+						form.elements['editOpts'].value = 'custom';
 						_.view.setCustomEditOpts(form);
 				}
 			};
@@ -2493,25 +2502,31 @@ var weFileUpload = (function () {
 				var form = document.getElementById('form_editOpts_' + fileobj.index);
 
 				if(form && fileobj.img.editOptions){
-					if(fileobj.img.editOptions.from === 'general' && !fileobj.img.editOptions.doEdit){
-						form.unitSelect.value = '';
-						form.resizeValue.value = '';
-						form.rotateSelect.value = '';
+					if(fileobj.img.editOptions.from === 'general' && fileobj.img.editOptions.doEdit){
+						form.elements['unitSelect'].value = fileobj.img.editOptions.scaleUnit;
+						form.elements['resizeValue'].value = fileobj.img.editOptions.scaleValue;
+						form.elements['rotateSelect'].value = fileobj.img.editOptions.rotateValue;
+						form.elements['quality'].value = fileobj.img.editOptions.quality;
+						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = fileobj.img.editOptions.quality;
 					} else {
-						form.unitSelect.value = fileobj.img.editOptions.scaleUnit;
-						form.resizeValue.value = fileobj.img.editOptions.scaleValue;
-						form.rotateSelect.value = fileobj.img.editOptions.rotateValue;
+						/*
+						form.elements['unitSelect'].value = '';
+						form.elements['resizeValue'].value = '';
+						form.elements['rotateSelect'].value = '';
+						form.elements['quality'].value = 0;
+						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '0';
+						*/
 					}
 				}
 			};
 
 			
 			this.formCustomOptsReset = function (form) { // USED
-				form.unitSelect.value = 'pixel_w';
-				form.resizeValue.value = '';
-				form.rotateSelect.value = '0';
-				form.quality.value = '0';
-				form.qualityOutput.value = '0';
+				form.elements['unitSelect'].value = 'pixel_w';
+				form.elements['resizeValue'].value = '';
+				form.elements['rotateSelect'].value = '0';
+				form.elements['quality'].value = '0';
+				form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '0';
 			};
 
 			/*
@@ -2570,8 +2585,9 @@ var weFileUpload = (function () {
 					type = 'general';
 
 				if((form = document.getElementById('form_editOpts_' + fileobj.index))){
-					if(form.useGeneralOpts.checked === false){
-						type = form.editOpts.value;
+					if(form.useGeneralOpts.checked == false){
+						//type = form.editOpts.value; // does not work in edge!!
+						var type = form.elements['editOpts'][0].checked = 'checked' ? 'custom' : 'expert';
 					}
 				}
 
@@ -2580,11 +2596,11 @@ var weFileUpload = (function () {
 						fileobj.img.editOptions = JSON.parse(JSON.stringify(_.sender.imageEditOptions));
 						break;
 					case 'custom':
-						fileobj.img.editOptions.scaleUnit = form.unitSelect.value;
-						fileobj.img.editOptions.scaleValue = form.resizeValue.value;
-						fileobj.img.editOptions.rotateValue = parseInt(form.rotateSelect.value);
-						fileobj.img.editOptions.quality = parseInt(form.quality);// ? form.quality.value : 90;
-						fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scaleValue || fileobj.img.editOptions.rotateValue || fileobj.img.editOptions.quality;
+						fileobj.img.editOptions.scaleUnit = form.elements['unitSelect'].value;
+						fileobj.img.editOptions.scaleValue = form.elements['resizeValue'].value;
+						fileobj.img.editOptions.rotateValue = parseInt(form.elements['rotateSelect'].value);
+						fileobj.img.editOptions.quality = parseInt(form.elements['quality'].value);
+						fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scaleValue || fileobj.img.editOptions.rotateValue || fileobj.img.editOptions.quality ? true : false;
 						break;
 					case 'expert': 
 						fileobj.img.editOptions = {};

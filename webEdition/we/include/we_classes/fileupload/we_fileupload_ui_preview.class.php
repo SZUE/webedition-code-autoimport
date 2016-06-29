@@ -157,7 +157,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				we_html_element::htmlDiv(array('class' => 'qualityDiv'), 
 					we_html_element::htmlDiv(array('class' => 'labelContainer'), g_l('weClass', '[quality]') . ':') .
 					we_html_element::htmlDiv(array('class' => 'inputContainer'), $quality) .
-					we_html_element::htmlDiv(array('id' => 'qualityValue', 'class' => 'valueContainer'), '0') .
+					we_html_element::htmlDiv(array('id' => 'qualityValue', 'class' => 'qualityValueContainer'), '0') .
 					(!$multimport ? we_html_element::htmlDiv(array('class' => 'btnContainer'), $btnProcess) : '')
 				) .
 				($multimport ? we_html_element::htmlDiv(array('class' => 'btnDiv'), 

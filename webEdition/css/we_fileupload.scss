@@ -197,7 +197,7 @@ div.imgEditOpts{
 		}
 	}
 	div.qualityDiv{
-		margin: 2px 0 0 0;
+		margin: 4px 0 0 0;
 
 		div.labelContainer{
 			display: inline-block;
@@ -209,11 +209,12 @@ div.imgEditOpts{
 
 			input.optsQuality{
 				width: 124px;
+				margin: 0;
 			}
 		}
-		div.valueContainer{
+		div.qualityValueContainer{
 			display: inline-block;
-			padding: 0 0 0 10px;
+			padding: 0 0 0 6px;
 			width: 35px;
 		}
 		div.btnContainer{
@@ -571,16 +572,50 @@ div.fileuploadImporter{
 							height: 22px;
 							padding: 0;
 						}
-						.optsQuality{
-							width: 115px;
-							height: 20px;
-						}
+
 						.optsRowTop,
 						.optsRowMiddle,
 						.optsRowBottom{
 							padding: 2px 0 0 0;
+							margin: 0;
+							div.qualityInputContainer{
+								display: inline-block;
+								padding-top: 4px;
+
+								.optsQuality{
+									width: 130px;
+									height: 10px;
+									margin: 0;
+								}
+							}
+
+							div.qualityValueContainer{
+								display: inline-block;
+								padding: 0 0 0 6px;
+								/*vertical-align: top;*/
+								width: 20px;
+							}
 						}
 					}
+					div.elemOptsIE{
+						.optsRowTop{
+							margin-top: 0px;
+							.optsUnitSelect{
+								display:inline-block;
+								height:22px;
+								padding-top:3px;
+							}
+							input[type=text]{
+								padding-top:3px;
+								margin:0;
+							}
+						}
+						.optsRowBottom{
+							margin-top: -12px;
+							padding-top: 0;
+						}
+					}
+
 					div.btnRefresh{
 						display: inline-block;
 						position: absolute;
