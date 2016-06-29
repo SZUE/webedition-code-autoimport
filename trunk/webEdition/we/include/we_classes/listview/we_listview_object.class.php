@@ -210,22 +210,14 @@ class we_listview_object extends we_listview_objectBase{
 		}
 
 		if($this->DB_WE->next_record()){
-			$tmp = getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . $this->DB_WE->f('OF_ID'));
-			foreach($tmp as $key => $val){
-				$this->DB_WE->Record['we_wedoc_' . $key] = $val;
-			}
-
 			$paramName = $this->docID ? 'we_oid' : 'we_objectID';
 			$this->DB_WE->Record['we_wedoc_Path'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
-			$this->DB_WE->Record['we_wedoc_WebUserID'] = isset($this->DB_WE->Record['OF_WebUserID']) ? $this->DB_WE->Record['OF_WebUserID'] : 0; // needed for ifRegisteredUserCanChange tag
 			$this->DB_WE->Record['we_WE_CUSTOMER_ID'] = $this->DB_WE->Record['we_wedoc_WebUserID'];
 			$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f('OF_TriggerID')));
 			$this->DB_WE->Record['we_WE_URL'] = $this->DB_WE->f('OF_Url');
 			$this->DB_WE->Record['we_WE_TEXT'] = $this->DB_WE->f('OF_Text');
 			$this->DB_WE->Record['we_WE_ID'] = $this->DB_WE->f('OF_ID');
-			$this->DB_WE->Record['we_wedoc_Category'] = $this->DB_WE->f('OF_Category');
 			$this->DB_WE->Record['we_WE_SHOPVARIANTS'] = 0; //check this for global variants
-
 
 			$path_parts = pathinfo($this->Path);
 			if($this->objectseourls && $this->DB_WE->Record['OF_Url'] && show_SeoLinks()){
