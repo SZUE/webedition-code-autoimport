@@ -60,6 +60,7 @@ class we_objectFile extends we_document{
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 	var $Url = '';
 	var $TriggerID = 0;
+	private $classData = array();
 	private $DefaultInit = false; // this flag is set when the document was first initialized with default values e.g. from Doc-Types
 
 	/* Constructor */
@@ -2260,9 +2261,9 @@ class we_objectFile extends we_document{
 		if(!$this->TableID || $this->IsFolder){
 			return;
 		}
-		$DataTable = OBJECT_X_TABLE . intval($this->TableID);
+
 		$db = $this->DB_WE;
-		$tableInfo = $db->metadata($DataTable);
+		$tableInfo = $db->metadata(OBJECT_X_TABLE . intval($this->TableID));
 		$regs = array();
 		foreach($tableInfo as $cur){
 			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
@@ -2318,6 +2319,7 @@ class we_objectFile extends we_document{
 				$this->setTypeAndLength();
 				break;
 		}
+		$this->classData = getHash('SELECT * FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
 		$this->loadSchedule();
 		$this->setTitleAndDescription();
 		$this->i_getLinkedObjects();
@@ -2577,11 +2579,10 @@ class we_objectFile extends we_document{
 		if(!$this->TableID || $this->IsFolder){
 			return;
 		}
-		$DataTable = OBJECT_X_TABLE . intval($this->TableID);
 		$db = $this->DB_WE;
 		$tableInfo = $this->getSortedTableInfo($this->TableID, false, $db);
 
-		$db->query('SELECT * FROM ' . $DataTable . ' WHERE OF_ID=' . intval($this->ID));
+		$db->query('SELECT * FROM ' . OBJECT_X_TABLE . intval($this->TableID) . ' WHERE OF_ID=' . intval($this->ID));
 		if($db->next_record()){
 			foreach($tableInfo as $cur){
 				$regs = explode('_', $cur["name"], 2);
