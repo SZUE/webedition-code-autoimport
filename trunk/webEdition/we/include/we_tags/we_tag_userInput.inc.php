@@ -486,10 +486,13 @@ function we_tag_userInput(array $attribs, $content){
 			$autobr = $autobrAttr ? 'on' : 'off';
 			$showAutobr = isset($attribs['autobr']);
 			$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1', we_base_request::STRING);
-
-			return we_html_element::jsElement('weFrontpageEdit=true;') .
-				we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-				we_html_element::jsScript(JS_DIR . 'windows.js') .
+			$ret = '';
+			if(!defined('WE_TEXTAREA_JS')){
+				define('WE_TEXTAREA_JS', 1);
+				$ret = we_html_element::jsScript(JS_DIR . 'windows.js') .
+					we_html_element::jsScript(JS_DIR . 'we_textarea.js');
+			}
+			return $ret .
 				(!$inlineedit ?
 					//FIXME: does tiny really use weButtons?!
 					STYLESHEET_MINIMAL .

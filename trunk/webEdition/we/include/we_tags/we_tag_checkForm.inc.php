@@ -27,7 +27,7 @@ function we_parse_tag_checkForm($attribs, $content, array $arr){
 		return $foo;
 	}
 
-	return '<?php ob_start();?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('checkForm', $attribs, ob_get_clean(), false, true) . '); ?>';
+	return '<?php ob_start();?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('checkForm', $attribs, 'ob_get_clean()', false, true) . '); ?>';
 }
 
 /**
