@@ -219,20 +219,17 @@ var weFileUpload = (function () {
 					}
 					_.controller.fileselectOnclick();
 
+					_.sender.imageFilesToProcess = [];
 					for (var f, i = 0; i < files.length; i++) {
 						if (!_.utils.contains(_.sender.preparedFiles, _.controller.selectedFiles[i])) {
 							f = _.controller.prepareFile(_.controller.selectedFiles[i]);
 							_.sender.preparedFiles.push(f);
 							_.view.addFile(f, _.sender.preparedFiles.length);
-
 						}
 					}
 
-					_.sender.imageFilesToProcess = [];
-					if (_.EDIT_IMAGES_CLIENTSIDE) {
-						if (_.sender.imageFilesToProcess.length){
-							_.controller.processImages();
-						}
+					if (_.EDIT_IMAGES_CLIENTSIDE && _.sender.imageFilesToProcess.length) {
+						_.controller.processImages();
 					}
 				}
 			};
@@ -285,7 +282,7 @@ var weFileUpload = (function () {
 				fileObj.totalParts = Math.ceil(f.size / _.sender.chunkSize);
 				fileObj.lastChunkSize = f.size % _.sender.chunkSize;
 
-				if (transformables.indexOf(f.type) !== -1) {
+				if (_.EDIT_IMAGES_CLIENTSIDE && transformables.indexOf(f.type) !== -1) {
 					_.sender.imageFilesToProcess.push(fileObj);
 				}
 
@@ -294,9 +291,7 @@ var weFileUpload = (function () {
 
 			this.processImages = function() {
 				if (_.sender.imageFilesToProcess && _.sender.imageFilesToProcess.length) {
-					if(_.EDIT_IMAGES_CLIENTSIDE){
-						_.utils.setImageEditOptionsGeneral();
-					}
+					_.utils.setImageEditOptionsGeneral();
 					_.view.setImageEditMessage();
 					_.controller.processNextImage();
 				} else {
