@@ -113,7 +113,7 @@ class we_base_ContentTypes{
 <body>
 	<article style="width:400px">
 		<h1><we:input type="text" name="Headline" style="width:60em"/></h1>
-		<p><b><we:input type="date" name="Date" format="d.m.Y"/></b></p>
+		<p><b><we:input type="date" name="Date" currentdate="true" format="d.m.Y"/></b></p>
 		<we:ifNotEmpty match="Image">
 			<p><we:img name="Image" showthumbcontrol="true"/></p>
 		</we:ifNotEmpty>

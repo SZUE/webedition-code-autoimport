@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -26,11 +25,12 @@ $user = new weTagData_multiSelectorAttribute('user', USER_TABLE, 'user,folder', 
 $spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
 $outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
 $doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self', false, ''), new weTagDataOption('top', false, '')), false, '');
+$currentdate = new weTagData_selectAttribute('currentdate', weTagData_selectAttribute::getTrueFalse(), false, '');
 
 $this->TypeAttribute = new weTagData_typeAttribute('type', array(
 	new weTagDataOption('text', false, '', array($name, $size, $maxlength, $value, $html, $php, $num_format, $precision, $user, $htmlspecialchars, $spellcheck,), array($name)),
 	new weTagDataOption('checkbox', false, '', array($name, $value, $reload, $user, $htmlspecialchars,), array($name)),
-	new weTagDataOption('date', false, '', array($name, $format, $user, $htmlspecialchars,), array($name)),
+	new weTagDataOption('date', false, '', array($name, $format, $currentdate, $user, $htmlspecialchars,), array($name)),
 	new weTagDataOption('choice', false, '', array($name, $size, $maxlength, $mode, $values, $reload, $seperator, $user, $htmlspecialchars,), array($name)),
 	new weTagDataOption('select', false, '', array($name, $values, $htmlspecialchars,), array($name)),
 	new weTagDataOption('country', false, '', array($name, $outputlanguage, $doc,), array($name)),
