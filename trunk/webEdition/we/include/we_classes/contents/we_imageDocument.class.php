@@ -239,17 +239,6 @@ class we_imageDocument extends we_binaryDocument{
 		return false;
 	}
 
-	private function checkDisableEditpages(){
-		if($this->isSvg()){
-			if(($pos = array_search(we_base_constants::WE_EDITPAGE_IMAGEEDIT, $this->EditPageNrs)) !== false){
-				unset($this->EditPageNrs[$pos]);
-			}
-			if(($pos = array_search(we_base_constants::WE_EDITPAGE_THUMBNAILS, $this->EditPageNrs)) !== false){
-				unset($this->EditPageNrs[$pos]);
-			}
-		}
-	}
-
 	/**
 	 * returns the javascript for the rollover function
 	 *
@@ -1003,6 +992,17 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 				array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_MED2),
 		));
+	}
+
+	private function checkDisableEditpages(){
+		if($this->isSvg()){
+			if(($pos = array_search(we_base_constants::WE_EDITPAGE_IMAGEEDIT, $this->EditPageNrs)) !== false){
+				unset($this->EditPageNrs[$pos]);
+			}
+			if(($pos = array_search(we_base_constants::WE_EDITPAGE_THUMBNAILS, $this->EditPageNrs)) !== false){
+				unset($this->EditPageNrs[$pos]);
+			}
+		}
 	}
 
 }
