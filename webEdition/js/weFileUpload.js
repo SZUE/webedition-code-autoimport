@@ -219,20 +219,20 @@ var weFileUpload = (function () {
 					}
 					_.controller.fileselectOnclick();
 
-					_.sender.imageFilesToProcess = [];
-					if (_.EDIT_IMAGES_CLIENTSIDE) {
-						for (var f, i = 0; i < files.length; i++) {
-							if (!_.utils.contains(_.sender.preparedFiles, _.controller.selectedFiles[i])) {
-								f = _.controller.prepareFile(_.controller.selectedFiles[i]);
-								_.sender.preparedFiles.push(f);
-								_.view.addFile(f, _.sender.preparedFiles.length);
+					for (var f, i = 0; i < files.length; i++) {
+						if (!_.utils.contains(_.sender.preparedFiles, _.controller.selectedFiles[i])) {
+							f = _.controller.prepareFile(_.controller.selectedFiles[i]);
+							_.sender.preparedFiles.push(f);
+							_.view.addFile(f, _.sender.preparedFiles.length);
 
-							}
 						}
 					}
 
-					if (_.sender.imageFilesToProcess.length){
-						_.controller.processImages();
+					_.sender.imageFilesToProcess = [];
+					if (_.EDIT_IMAGES_CLIENTSIDE) {
+						if (_.sender.imageFilesToProcess.length){
+							_.controller.processImages();
+						}
 					}
 				}
 			};
