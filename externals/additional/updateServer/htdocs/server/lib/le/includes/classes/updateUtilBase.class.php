@@ -220,7 +220,7 @@ print $newResponse->getOutput();
 	}
 
 	static function replaceExtensionInContent($content){
-		return str_replace('.php', $_SESSION['clientExtension'], $content);
+		return $content;
 	}
 
 	/**

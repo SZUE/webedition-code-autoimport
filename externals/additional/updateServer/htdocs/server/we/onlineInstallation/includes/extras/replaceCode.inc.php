@@ -541,7 +541,6 @@ define("LANGLINK_SUPPORT", 1);
 // Flag if automatic backlinks should be generated
 define("LANGLINK_SUPPORT_BACKLINKS", 1);
 
-
 // top countries
 define("WE_COUNTRIES_TOP", "DE,AT,CH");
 

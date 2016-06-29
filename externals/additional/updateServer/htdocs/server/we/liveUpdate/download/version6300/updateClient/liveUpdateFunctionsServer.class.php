@@ -61,8 +61,6 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return string
 	 */
 	function preparePhpCode($content, $needle, $replace){
-
-		$content = $this->replaceExtensionInContent($content, $needle, $replace);
 		return $this->checkReplaceDocRoot($content);
 	}
 
@@ -75,7 +73,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return unknown
 	 */
 	function replaceExtensionInContent($content, $needle, $replace){
-		return str_replace($needle, $replace, $content);
+		return $content;
 	}
 
 	/**

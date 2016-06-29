@@ -468,7 +468,7 @@ for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success &&
 	if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
 		$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
 		if ($success) {
-			$success = rename($allFiles[$i], $liveUpdateFnc->replaceExtensionInContent($allFiles[$i], ".php", "' . $_SESSION['clientExtension'] . '"));
+			$success = rename($allFiles[$i], $allFiles[$i]);
 		}
 	}
 }

@@ -64,21 +64,21 @@ class upgrade{
 $success = true;
 
 // we_version
-if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/we_version' . $_SESSION['clientExtension'] . '", $liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($we_version['replace']) . '") )) {
+if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/we_version.php", $liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($we_version['replace']) . '") )) {
 	$success = false;
 	' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesVersionError']) . '
 }
 
 // we_conf.inc
-$confContent = $liveUpdateFnc->getFileContent(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/conf/we_conf.inc' . $_SESSION['clientExtension'] . '");
-if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/conf/we_conf.inc' . $_SESSION['clientExtension'] . '", $confContent)) {
+$confContent = $liveUpdateFnc->getFileContent(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/conf/we_conf.inc.php");
+if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/conf/we_conf.inc.php", $confContent)) {
 	$success = false;
 	' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesConfError']) . '
 }
 
 // we_conf_global.inc
-$confGlobalContent = $liveUpdateFnc->getFileContent(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/conf/we_conf_global.inc' . $_SESSION['clientExtension'] . '");
-if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/conf/we_conf_global.inc' . $_SESSION['clientExtension'] . '", $confGlobalContent)) {
+$confGlobalContent = $liveUpdateFnc->getFileContent(LIVEUPDATE_SOFTWARE_DIR . "/webEdition/we/include/conf/we_conf_global.inc.php");
+if (!$liveUpdateFnc->filePutContent( LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/files/webEdition/we/include/conf/we_conf_global.inc.php", $confGlobalContent)) {
 	$success = false;
 	' . installer::getErrorMessageResponsePart('', $GLOBALS['lang']['upgrade']['copyFilesConfError']) . '
 }
