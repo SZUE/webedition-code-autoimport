@@ -68,6 +68,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			array('fu_doc_focusX', 'text'),
 			array('fu_doc_focusY', 'text'),
 		));
+		$this->cliensideImageEditing = true;
 	}
 
 	public function getCss(){

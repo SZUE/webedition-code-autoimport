@@ -177,12 +177,16 @@ function we_tag_sessionField(array $attribs, $content){
 				$attribs = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'size', 'wysiwyg'));
 				return we_getTextareaField('s[' . $name . ']', $orgVal, $attribs);
 			}
-			echo we_html_element::jsElement('weFrontpageEdit=true;') .
-			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-			we_html_element::jsScript(JS_DIR . 'windows.js');
 			$autobr = $autobrAttr ? 'on' : 'off';
 			$showAutobr = isset($attribs['autobr']);
-			return we_html_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');
+			$ret = '';
+			if(!defined('WE_TEXTAREA_JS')){
+				define('WE_TEXTAREA_JS', 1);
+				$ret = we_html_element::jsScript(JS_DIR . 'windows.js') .
+					we_html_element::jsScript(JS_DIR . 'we_textarea.js');
+			}
+			return $ret .
+				we_html_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');
 
 		case 'radio':
 			if((!isset($_SESSION['webuser'][$name])) && $checked){

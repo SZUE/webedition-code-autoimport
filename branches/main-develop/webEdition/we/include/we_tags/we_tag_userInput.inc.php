@@ -399,10 +399,13 @@ function we_tag_userInput(array $attribs, $content){
 			$autobr = $autobrAttr ? 'on' : 'off';
 			$showAutobr = isset($attribs['autobr']);
 			$charset = weTag_getAttribute('charset', $attribs, 'iso-8859-1', we_base_request::STRING);
-
-			return we_html_element::jsElement('weFrontpageEdit=true;') .
-				we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-				we_html_element::jsScript(JS_DIR . 'windows.js') .
+			$ret = '';
+			if(!defined('WE_TEXTAREA_JS')){
+				define('WE_TEXTAREA_JS', 1);
+				$ret = we_html_element::jsScript(JS_DIR . 'windows.js') .
+					we_html_element::jsScript(JS_DIR . 'we_textarea.js');
+			}
+			return $ret .
 				(!$inlineedit ?
 					//FIXME: does tiny really use weButtons?!
 					STYLESHEET_MINIMAL .
@@ -438,10 +441,6 @@ function we_tag_userInput(array $attribs, $content){
 			}
 			return we_getInputCheckboxField($fieldname, $content, $atts);
 		case 'date' :
-			$currentdate = weTag_getAttribute('currentdate', $attribs, false, we_base_request::BOOL);
-			if($orgVal == 0 || $currentdate){
-				$orgVal = time();
-			}
 			if($hidden){
 				$attsHidden = array(
 					'type' => 'hidden',
@@ -451,6 +450,8 @@ function we_tag_userInput(array $attribs, $content){
 				);
 				return getHtmlTag('input', $attsHidden);
 			}
+			$currentdate = weTag_getAttribute('currentdate', $attribs, false, we_base_request::BOOL);
+			$orgVal = $orgVal ? : ($currentdate ? time() : 0);
 			$year = date('Y');
 			$minyear = weTag_getAttribute('minyear', $attribs, 0, we_base_request::INT);
 			switch($minyear ? $minyear{0} : ''){
@@ -476,7 +477,7 @@ function we_tag_userInput(array $attribs, $content){
 					$maxyear = intval($maxyear);
 					break;
 			}
-			return we_html_tools::getDateInput('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', ($orgVal ? : time()), false, $format, '', '', $xml, $minyear, $maxyear);
+			return we_html_tools::getDateInput('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', $orgVal, false, $format, '', '', $xml, $minyear, $maxyear);
 
 		case 'country':
 			$newAtts = removeAttribs($attribs, array('wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength'));

@@ -133,7 +133,6 @@ class we_document_video extends we_binaryDocument{
 					$this->setElement($a, $b, 'attrib');
 			}
 		}
-		$this->checkDisableEditpages();
 	}
 
 }
