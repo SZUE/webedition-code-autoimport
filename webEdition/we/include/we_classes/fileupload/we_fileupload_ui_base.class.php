@@ -71,6 +71,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	protected $layout = 'horizontal';
 	public $moreFieldsToAppend = array();
 	protected $fileNameTemp = "";
+	protected $cliensideImageEditing = false;
 
 	public function __construct($name){
 		parent::__construct($name);
@@ -368,40 +369,41 @@ we_FileUpload.init({
 	disableUploadBtnOnInit : ' . ($this->disableUploadBtnOnInit ? 'true' : 'false') . ',
 	moreFieldsToAppend : ' . json_encode($this->moreFieldsToAppend) . ',
 	isInternalBtnUpload : ' . ($this->isInternalBtnUpload ? 'true' : 'false') . ',
-	responseClass : "' . $this->responseClass . '"
+	responseClass : "' . $this->responseClass . '",
+	clientsideImageEditing : ' . ($this->cliensideImageEditing ? 1 : 0) . '
 });
 			') . ($this->externalProgress['create'] ? $progressbar->getJSCode() : '');
 	}
 
 	protected function _getJsGl(){
 		return '{
-	dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
-	sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
-	sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
-	typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
-	typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
-	errorNoFileSelected : "' . g_l('newFile', '[error_no_file]') . '",
-	errorFileSize : "' . g_l('newFile', '[error_file_size]') . '",
-	errorFileType : "' . g_l('newFile', '[error_file_type]') . '",
-	errorFileSizeType : "' . g_l('newFile', '[error_size_type]') . '",
-	uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
-	cancelled : "' . g_l('importFiles', '[cancelled]') . '",
-	doImport : "' . g_l('importFiles', '[do_import]') . '",
-	file : "' . g_l('importFiles', '[file]') . '",
-	btnClose : "' . g_l('button', '[close][value]') . '",
-	btnCancel : "' . g_l('button', '[cancel][value]') . '",
-	btnUpload : "' . g_l('button', '[upload][value]') . '",
-	btnProcess: "' . g_l('importFiles', '[btnProcess]') . '",
-	maskReadImage: "' . g_l('importFiles', '[maskReadImage]') . '",
-	maskProcessImage: "' . g_l('importFiles', '[maskProcessImage]') . '",
-	maskImporterReadImages: "' . addslashes(g_l('importFiles', '[maskImporterReadImages]')) . '",
-	maskImporterProcessImages: "' . addslashes(g_l('importFiles', '[maskImporterProcessImages]')) . '",
-	editScaled: "' . g_l('importFiles', '[scaled_to]') . '",
-	editRotation: "' . g_l('importFiles', '[rotation]') . '",
-	editRotationLeft: "' . g_l('global', '[left]') . '",
-	editRotationRight: "' . g_l('global', '[right]') . '",
-	editQuality: "' . g_l('weClass', '[quality]') . '",
-	editNotEdited: "' . g_l('importFiles', '[not_edited]') . '"
+		dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
+		sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
+		sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
+		typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
+		typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
+		errorNoFileSelected : "' . g_l('newFile', '[error_no_file]') . '",
+		errorFileSize : "' . g_l('newFile', '[error_file_size]') . '",
+		errorFileType : "' . g_l('newFile', '[error_file_type]') . '",
+		errorFileSizeType : "' . g_l('newFile', '[error_size_type]') . '",
+		uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
+		cancelled : "' . g_l('importFiles', '[cancelled]') . '",
+		doImport : "' . g_l('importFiles', '[do_import]') . '",
+		file : "' . g_l('importFiles', '[file]') . '",
+		btnClose : "' . g_l('button', '[close][value]') . '",
+		btnCancel : "' . g_l('button', '[cancel][value]') . '",
+		btnUpload : "' . g_l('button', '[upload][value]') . '",
+		btnProcess: "' . g_l('importFiles', '[btnProcess]') . '",
+		maskReadImage: "' . g_l('importFiles', '[maskReadImage]') . '",
+		maskProcessImage: "' . g_l('importFiles', '[maskProcessImage]') . '",
+		maskImporterReadImages: "' . addslashes(g_l('importFiles', '[maskImporterReadImages]')) . '",
+		maskImporterProcessImages: "' . addslashes(g_l('importFiles', '[maskImporterProcessImages]')) . '",
+		editScaled: "' . g_l('importFiles', '[scaled_to]') . '",
+		editRotation: "' . g_l('importFiles', '[rotation]') . '",
+		editRotationLeft: "' . g_l('global', '[left]') . '",
+		editRotationRight: "' . g_l('global', '[right]') . '",
+		editQuality: "' . g_l('weClass', '[quality]') . '",
+		editNotEdited: "' . g_l('importFiles', '[not_edited]') . '"
 }';
 	}
 
