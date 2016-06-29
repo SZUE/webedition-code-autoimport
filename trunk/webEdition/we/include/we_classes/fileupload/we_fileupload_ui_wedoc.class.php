@@ -43,6 +43,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 			array('we_doc_ct', 'text'),
 			array('we_doc_ext', 'text')
 		));
+		$this->cliensideImageEditing = $this->contentType === we_base_ContentTypes::IMAGE ? true : false;
 	}
 
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){

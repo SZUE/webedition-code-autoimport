@@ -51,6 +51,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		$this->fileTable = FILE_TABLE;
 		$this->footerName = 'imgimportbuttons';
 		$this->contentName = 'imgimportcontent';
+		$this->cliensideImageEditing = true;
 	}
 
 	public function getCss(){
