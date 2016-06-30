@@ -400,9 +400,10 @@ var weFileUpload = (function () {
 				var resizeName = 'fu_doc_resizeValue',
 					rotateName = 'fu_doc_rotate',
 					qualityName = 'fu_doc_quality',
-					pos = -1;
+					pos = -1,
+					btnRefresh = target.form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
 
-				var altNames = ['resizeValue', 'rotateSelect', 'quality']; // TODO: unifiy names or classes
+				var altNames = ['resizeValue', 'rotateSelect', 'quality']; // TODO: unifiy names!! all fields are uniquely identified by surrounding form
 				if(altNames.indexOf(target.name) !== -1){ // we are in custom opts of an importer entry
 					resizeName = 'resizeValue';
 					rotateName = 'rotateSelect';
@@ -412,10 +413,7 @@ var weFileUpload = (function () {
 
 				var resizeValue = target.form.elements[resizeName].value,
 					rotateValue = parseInt(target.form.elements[rotateName].value),
-					qualityValue = parseInt(target.form.elements[qualityName].value),
-					btnRefresh = target.form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
-
-				btnRefresh.disabled = _.sender.preparedFiles.length === 0 || !(resizeValue || rotateValue || qualityValue);
+					qualityValue = parseInt(target.form.elements[qualityName].value);
 
 				switch (target.name){
 					case resizeName:
@@ -431,8 +429,24 @@ var weFileUpload = (function () {
 							target.form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '0';
 							_.controller.reeditImage(null, pos, pos === -1 ? true : false);
 						}
+						btnRefresh.disabled = _.sender.preparedFiles.length === 0 || !(resizeValue || rotateValue || qualityValue);
 						break;
-					case qualityName:
+					case 'scaleValuePropsositions':
+						target.form.elements[resizeName].value = target.value;
+						target.form.elements[resizeName].focus();
+						target.value = 0;
+						target.form.elements['fu_doc_resizeValue'].focus();
+						_.controller.editOptionsOnChange(target.form.elements['fu_doc_resizeValue']);
+						break;
+					case qualityName:top.console.log('q', qualityValue, resizeValue, rotateValue);
+						if(!qualityValue && !resizeValue && !rotateValue){
+							btnRefresh.disabled = false;
+							if(_.sender.preparedFiles.length){
+								_.controller.reeditImage(null, pos, pos === -1 ? true : false);
+							}
+						} else {
+							btnRefresh.disabled = _.sender.preparedFiles.length === 0;
+						}
 						break;
 					case 'check_fu_doc_doResize':
 						// whenever we change this reset all vals and disable button // TODO: make or apply some resize function
@@ -1911,6 +1925,7 @@ var weFileUpload = (function () {
 			if (_.EDIT_IMAGES_CLIENTSIDE) {
 				var generalform = document.getElementById('filechooser');
 				generalform.elements['fu_doc_resizeValue'].addEventListener('keyup', function(e) {_.controller.editOptionsOnChange(e.target);});
+				generalform.elements['scaleValuePropsositions'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
 				generalform.elements['fu_doc_rotate'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
 				generalform.elements['check_fu_doc_doResize'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
 				generalform.elements['fu_doc_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
@@ -2663,6 +2678,7 @@ var weFileUpload = (function () {
 			
 			if (_.EDIT_IMAGES_CLIENTSIDE) {
 				document.we_form.elements['check_fu_doc_doResize'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.elements['scaleValuePropsositions'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
 				document.we_form.elements['fu_doc_resizeValue'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
 				document.we_form.elements['fu_doc_rotate'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
 				document.we_form.elements['fu_doc_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
