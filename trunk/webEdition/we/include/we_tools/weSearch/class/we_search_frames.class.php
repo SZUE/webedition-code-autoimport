@@ -411,7 +411,7 @@ function we_save() {
 			$this->Model = new we_search_model();
 			$this->Model->load($modelid);
 			$this->Model->saveInSession();
-			$_SESSION['weS'][$this->toolName]["modelidForTree"] = $modelid;
+			$_SESSION['weS']['weSearch']["modelidForTree"] = $modelid;
 		} else {
 			$this->Model = $this->Model ? : new we_search_model();
 		}
