@@ -167,7 +167,7 @@ class we_listview_object extends we_listview_objectBase{
 			if($this->customers === '*'){
 				$idListArray = array();
 				while($this->DB_WE->next_record()){
-					if(intval($this->DB_WE->f("OF_WebUserID")) > 0){
+					if(intval($this->DB_WE->f('OF_WebUserID')) > 0){
 						$idListArray[] = $this->DB_WE->f("OF_WebUserID");
 					}
 				}

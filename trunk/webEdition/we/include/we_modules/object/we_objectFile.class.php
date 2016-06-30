@@ -3222,18 +3222,23 @@ class we_objectFile extends we_document{
 		if($table != FILE_TABLE){
 			return '1';
 		}
-
+		static $wsFlag = array();
 		$parentIDs = array();
 		$pid = intval($pid);
+		$cid = intval($cid);
+
 		$parentIDs[] = $pid;
 		while($pid != 0){
 			$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pid), '', $db);
 			$parentIDs[] = $pid;
 		}
-		$cid = intval($cid);
-		$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db);
-		$fooArr = we_unserialize($foo);
-		$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
+		if(isset($wsFlag[$cid])){
+			$flag = $wsFlag[$cid];
+		} else {
+			$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db);
+			$fooArr = we_unserialize($foo);
+			$wsFlag[$cid] = $flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
+		}
 		$pid_tail = array();
 		if($flag){
 			$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';
