@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,6 @@
  *
  */
 class we_listview_document extends we_listview_base{
-
 	var $docType = ''; /* doctype string */
 	var $IDs = array(); /* array of ids with pages which are found */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
@@ -95,16 +93,16 @@ class we_listview_document extends we_listview_base{
 		$this->condition = $condition;
 
 		$cond_where = // #3763
-				($this->condition != '' && ($condition_sql = $this->makeConditionSql($this->condition)) ?
-						' AND (' . $condition_sql . ')' :
-						'');
+			($this->condition != '' && ($condition_sql = $this->makeConditionSql($this->condition)) ?
+				' AND (' . $condition_sql . ')' :
+				'');
 
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 		$langArray = $this->languages ? array_filter(array_map('trim', explode(',', $this->languages))) : '';
 
 		$where_lang = ($langArray ?
-						' AND ' . FILE_TABLE . '.Language IN("","' . implode('","', array_map('escape_sql_query', $langArray)) . '") ' :
-						'');
+				' AND ' . FILE_TABLE . '.Language IN("","' . implode('","', array_map('escape_sql_query', $langArray)) . '") ' :
+				'');
 
 		if(stripos($this->order, ' desc') !== false){//was #3849
 			$this->order = str_ireplace(' desc', '', $this->order);
@@ -193,9 +191,9 @@ class we_listview_document extends we_listview_base{
 		if($this->search){
 			if($this->workspaceID){
 				$cond = array(
-					'i.WorkspaceID IN(' . implode(',', $this->workspaceID) . ')'
+					'i.WorkspaceID IN(' . $this->workspaceID . ')'
 				);
-				$workspaces = array_map('escape_sql_query', id_to_path(explode(',', $this->workspaceID), FILE_TABLE, $this->DB_WE));
+				$workspaces = array_map('escape_sql_query', id_to_path((is_numeric($this->workspaceID) ? $this->workspaceID : explode(',', $this->workspaceID)), FILE_TABLE, $this->DB_WE));
 
 				foreach($workspaces as $workspace){
 					$cond[] = 'wsp.Path LIKE "' . $workspace . '/%"';
@@ -243,7 +241,7 @@ class we_listview_document extends we_listview_base{
 			$limit = (($this->maxItemsPerPage) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
 		} else {
 			if($this->workspaceID){
-				$workspaces = explode(',', $this->workspaceID);
+				$workspaces = is_numeric($this->workspaceID) ? array($this->workspaceID) : explode(',', $this->workspaceID);
 				if($this->subfolders){ // all entries with given parentIds
 					$cond = array();
 					$workspacePaths = id_to_path($workspaces, FILE_TABLE, $this->DB_WE, true);
@@ -263,27 +261,27 @@ class we_listview_document extends we_listview_base{
 			$limit = (($rows > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : "");
 		}
 		$this->DB_WE->query(
-				'SELECT ' . FILE_TABLE . '.ID, ' . FILE_TABLE . '.WebUserID' . $extraSelect .
-				' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' l ON (' . FILE_TABLE . '.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' . $joinstring .
-				($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0) LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' : '') .
-				' WHERE ' . $orderwhereString .
-				($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' .
-				$where_lang . ' ' .
-				$cond_where . ' ' .
-				$ws_where . ' AND ' .
-				FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 ' .
-				(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
-				($this->docType ?
-						($dt ?
-								' AND ' . FILE_TABLE . '.DocType=' . intval($dt) :
-								' AND FALSE '//invalid DT => no results
-						) :
-						''
-				) . ' ' .
-				$sql_tail .
-				$calendar_where .
-				' GROUP BY ' . $this->group . ' ' . $orderstring .
-				$limit
+			'SELECT ' . FILE_TABLE . '.ID, ' . FILE_TABLE . '.WebUserID' . $extraSelect .
+			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' l ON (' . FILE_TABLE . '.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' . $joinstring .
+			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0) LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' : '') .
+			' WHERE ' . $orderwhereString .
+			($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' .
+			$where_lang . ' ' .
+			$cond_where . ' ' .
+			$ws_where . ' AND ' .
+			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 ' .
+			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
+			($this->docType ?
+				($dt ?
+					' AND ' . FILE_TABLE . '.DocType=' . intval($dt) :
+					' AND FALSE '//invalid DT => no results
+				) :
+				''
+			) . ' ' .
+			$sql_tail .
+			$calendar_where .
+			' GROUP BY ' . $this->group . ' ' . $orderstring .
+			$limit
 		);
 
 		$this->anz = $this->DB_WE->num_rows();
@@ -309,29 +307,29 @@ class we_listview_document extends we_listview_base{
 		}
 
 		$this->DB_WE->query(
-				'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' .
-				($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking' : '')) .
-				' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' l ON ' . FILE_TABLE . '.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID' .
-				($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0)' : '') .
-				$joinstring .
-				' WHERE ' .
-				$orderwhereString .
-				($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : '1') . ' ' .
-				$where_lang . ' ' .
-				$cond_where . ' ' .
-				$ws_where .
-				' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
-				($this->search ? ' AND ' . $bedingung_sql : '') .
-				($this->docType ?
-						($dt ?
-								' AND ' . FILE_TABLE . '.DocType=' . intval($dt) :
-								' AND FALSE ' //invalid DT => no results
-						) :
-						''
-				) . ' ' .
-				$sql_tail .
-				$calendar_where .
-				' GROUP BY ' . $this->group . ' ' . $orderstring);
+			'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' .
+			($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking' : '')) .
+			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' l ON ' . FILE_TABLE . '.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID' .
+			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0)' : '') .
+			$joinstring .
+			' WHERE ' .
+			$orderwhereString .
+			($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : '1') . ' ' .
+			$where_lang . ' ' .
+			$cond_where . ' ' .
+			$ws_where .
+			' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
+			($this->search ? ' AND ' . $bedingung_sql : '') .
+			($this->docType ?
+				($dt ?
+					' AND ' . FILE_TABLE . '.DocType=' . intval($dt) :
+					' AND FALSE ' //invalid DT => no results
+				) :
+				''
+			) . ' ' .
+			$sql_tail .
+			$calendar_where .
+			' GROUP BY ' . $this->group . ' ' . $orderstring);
 
 		$this->anz_all = $this->DB_WE->num_rows();
 		if($calendar != ''){
@@ -442,8 +440,8 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 
 	private function makeFieldCondition($name, $operation, $value){
 		return (strpos($name, 'WE_') === 0) ? //Fix: #9389
-				'(' . FILE_TABLE . '.' . substr($name, 3) . ' ' . $operation . ' ' . $value . ')' :
-				'(l.nHash=x\'' . md5($name) . '\' AND c.Dat ' . $operation . ' ' . $value . ')';
+			'(' . FILE_TABLE . '.' . substr($name, 3) . ' ' . $operation . ' ' . $value . ')' :
+			'(l.nHash=x\'' . md5($name) . '\' AND c.Dat ' . $operation . ' ' . $value . ')';
 	}
 
 	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){
