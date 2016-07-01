@@ -96,7 +96,9 @@ function we_tag_shopField(array $attribs){
 
 		case 'hidden':
 			$atts = removeAttribs($atts, array('reference'));
-			return we_html_element::htmlHidden($fieldname, $savedVal, $atts);
+			$atts['name'] = $fieldname;
+			$atts['value'] = $savedVal;
+			return getHtmlTag('hidden', $atts);
 
 		case 'print':
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, we_base_request::BOOL);

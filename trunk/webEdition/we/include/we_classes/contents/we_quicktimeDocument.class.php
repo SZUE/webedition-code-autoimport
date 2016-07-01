@@ -50,7 +50,7 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 			$sizingstyle = false;
 		}
 
-		$removeAttribs = array('sizingrel', 'sizingbase', 'sizingstyle', 'xml');
+		$removeAttribs = array('sizingrel', 'sizingbase', 'sizingstyle', 'xml', '_name_orig');
 		if($sizingstyle){
 			$style_width = round($attribs['width'] / $sizingbase, 6);
 			$style_height = round($attribs['height'] / $sizingbase, 6);
@@ -59,7 +59,7 @@ class we_quicktimeDocument extends we_document_deprecatedVideo{
 			$removeAttribs[] = 'height';
 		}
 		$this->setElement('xml', weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL));
-		$attribs = removeAttribs($attribs, $removeAttribs, 'attrib');
+		$attribs = removeAttribs($attribs, $removeAttribs);
 
 		foreach($attribs as $a => $b){
 			if($b != ''){
