@@ -193,7 +193,7 @@ class we_listview_document extends we_listview_base{
 				$cond = array(
 					'i.WorkspaceID IN(' . $this->workspaceID . ')'
 				);
-				$workspaces = array_map('escape_sql_query', id_to_path((is_numeric($this->workspaceID) ? $this->workspaceID : explode(',', $this->workspaceID)), FILE_TABLE, $this->DB_WE));
+				$workspaces = array_map('escape_sql_query', id_to_path((is_numeric($this->workspaceID) ? array($this->workspaceID) : explode(',', $this->workspaceID)), FILE_TABLE, $this->DB_WE));
 
 				foreach($workspaces as $workspace){
 					$cond[] = 'wsp.Path LIKE "' . $workspace . '/%"';
