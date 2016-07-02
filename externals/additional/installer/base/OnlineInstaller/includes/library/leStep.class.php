@@ -177,7 +177,6 @@ class leStep{
 		$_REQUEST['update_cmd'] = ($UpdateCmd != "" ? $UpdateCmd : $this->Wizard->Name);
 		$_REQUEST['detail'] = ($UpdateCmdDetail != "" ? $UpdateCmdDetail : $this->Name);
 
-
 		$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
 
 		if($this->liveUpdateHttpResponse){

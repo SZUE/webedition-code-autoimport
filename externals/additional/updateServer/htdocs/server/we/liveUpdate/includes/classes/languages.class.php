@@ -11,15 +11,15 @@ class languages extends languagesBase{
 		$installAbleLanguages = $_SESSION['clientInstalledLanguages'];
 
 		// get all possible languages
-		$versionLngs = update::getVersionsLanguageArray(false);
+		$vers = substr($_SESSION['clientVersionNumber'], 0, -1) . '0';
+		$versionLngs = update::getVersionsLanguageArray(false, $vers);
 		if(!is_array($installAbleLanguages)){
 			$installAbleLanguages = unserialize(urldecode(base64_decode($installAbleLanguages)));
 		}
-		if(isset($versionLngs[$_SESSION['clientVersionNumber']])){
-			$versionLngCount = sizeof($versionLngs[$_SESSION['clientVersionNumber']]);
-			for($i = 0; $i < $versionLngCount; $i++){
-				if(!in_array($versionLngs[$_SESSION['clientVersionNumber']][$i], $installAbleLanguages)){
-					$installAbleLanguages[] = $versionLngs[$_SESSION['clientVersionNumber']][$i];
+		if(isset($versionLngs[$vers])){
+			foreach($versionLngs[$vers] as $cur){
+				if(!in_array($cur, $installAbleLanguages)){
+					$installAbleLanguages[] = $cur;
 				}
 			}
 		}
@@ -29,7 +29,7 @@ class languages extends languagesBase{
 		$allLanguages = languages::getExistingLanguages();
 		foreach($allLanguages as $lang){
 			if(!in_array($lang, $installAbleLanguages)){
-					$missingLanguages[] = $lang;
+				$missingLanguages[] = $lang;
 			}
 		}
 

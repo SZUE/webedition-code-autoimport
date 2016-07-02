@@ -34,7 +34,7 @@ define('INSTALLATIONLOG_TABLE', 'we6_installation_log');
 /**
  * Special stuff for modules
  */
-define('MIN_INSTALLER_V', '2.9.3.0');
+define('MIN_INSTALLER_V', '2.9.4.0');
 
 /*
  * Needed constants and parameters

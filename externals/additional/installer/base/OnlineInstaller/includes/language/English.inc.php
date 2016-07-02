@@ -13,11 +13,6 @@ $lang["Template"]["autocontinue"] = "You will be redirected in %s seconds.";
 // ---> Applications
 //
 
-$lang["Application"]["webEdition5"]["name"] = "webEdition 5";
-$lang["Application"]["webEdition5"]["description"] = "Professional web content management system.";
-$lang["Application"]["webEdition5"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
-$lang["Application"]["webEdition5"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
-
 $lang["Application"]["webEdition"]["name"] = "webEdition stable releases";
 $lang["Application"]["webEdition"]["description"] = "Professional open source web content management system.";
 $lang["Application"]["webEdition"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
@@ -193,4 +188,3 @@ $lang["Step"]["ConfigureInstaller"]["content"] = "Now the installation package w
 $lang["errors"]["writeFile"] = "No Write Permissions!<br /><br />Could not write to %s<br /><br />In order for
 		webEdition to be installed, the root directory (DOCUMENT_ROOT) must be writable for the web server (Apache, IIS, ..)
 		at least during installation.";
-?>

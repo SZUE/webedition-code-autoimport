@@ -41,7 +41,6 @@ if($_SESSION['clientVersionNumber'] >= LANGUAGELIMIT){
 }
 $installLanguages = '';
 for($i = 0; $i < sizeof($newinstallAbleLanguages); $i++){
-
 	$installLanguages .= getCheckBox('lng_' . $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], false);
 }
 
@@ -75,7 +74,7 @@ $content = \'
 <form name="we_form">
 ' . updateUtil::getCommonFormFields('languages', 'confirmLanguages') . '
 
-' . $GLOBALS['lang']['languages']['installLamguages'] . '
+' . $GLOBALS['lang']['languages']['installLamguages'] . '<br/>
 
 ' . $installLanguages . '
 

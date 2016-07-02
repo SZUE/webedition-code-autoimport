@@ -13,7 +13,7 @@ class DatabasePermissions extends leStep{
 
 			// Database does not exist
 			$this->EnabledButtons = array('back');
-			$Template->addError(sprintf($this->Language["AccessDenied"], $_SESSION['le_db_database']));
+			$Template->addError(sprintf($this->Language['AccessDenied'], $_SESSION['le_db_database']));
 			return LE_STEP_ERROR;
 		}
 
@@ -52,7 +52,6 @@ class DatabasePermissions extends leStep{
 		}
 
 		// Check if webEdition is already installed
-		$Query2 = "SELECT * FROM {$_SESSION["le_db_prefix"]}tblPrefs";
 
 		$Checked = true;
 		if($ReturnValue == LE_STEP_ERROR){
@@ -62,7 +61,7 @@ class DatabasePermissions extends leStep{
 			return $ReturnValue;
 
 			// webEdition seems to be installed
-		} else if(mysqli_query($Resource, $Query2)){
+		} else if(mysqli_query($Resource, "SELECT * FROM {$_SESSION["le_db_prefix"]}tblPrefs LIMIT 1")){
 
 			$Name = 'continue';
 			$Value = 1;
@@ -95,43 +94,39 @@ EOF;
 		$_SESSION['le_db_version'] = mysqli_get_client_info();
 		$_SESSION['le_dbserver_version'] = mysqli_get_server_info($Resource);
 		$_REQUEST["le_dbserver_version"] = $_SESSION['le_dbserver_version'];
-		if(version_compare("4.1.0", $_SESSION['le_db_version']) < 1){
-			$Result = mysqli_query($Resource, "SHOW COLLATION  ");
 
-			if(mysqli_connect_errno()){
-				$Charsets = array();
-			} else {
-				$Charsets = array();
-				while($Row = mysqli_fetch_array($Result)){
-					$Charsets[$Row['Charset']][] = $Row['Collation'];
-				}
-			}
+		$Result = mysqli_query($Resource, 'SHOW COLLATION WHERE Charset="utf8" OR Charset LIKE "latin%"');
 
-			$SelectedCollation = (isset($_SESSION["le_db_collation"]) ?
-					$_SESSION['le_db_collation'] :
-					'utf8_general_ci');
-
-			ksort($Charsets);
-			$Select = "<select name=\"le_db_collation\" id=\"le_db_collation\" class=\"textselect\" style=\"width: 293px;\" onblur=\"this.className='textselect';\" onfocus=\"this.className='textselectselected'\"" . ($Checked ? '' : ' disabled=\"disabled\"') . ">";
-			$Select .= "<option value=\"-1\"" . ($SelectedCollation == "-1" ? "selected=\"selected\"" : "") . ">" . $this->Language['defaultCollation'] . "</option>";
-			foreach($Charsets as $Charset => $Collations){
-				$Select .= "<optgroup label=\"" . $Charset . "\">";
-
-				asort($Collations);
-				foreach($Collations as $Collation){
-					$Select .= "<option value=\"" . $Collation . "\"" . ($SelectedCollation == $Collation ? "selected=\"selected\"" : "") . ">" . $Collation . "</option>";
-				}
-				$Select .= "</optgroup>";
-			}
-			$Select .= "</select>";
-			$Content .= "<br />"
-				. "<b>" . $this->Language['Collation'] . "</b><br />"
-				. $Select;
+		if(mysqli_connect_errno()){
+			$Charsets = array();
 		} else {
-			$this->AutoContinue = 5;
+			$Charsets = array();
+			while(($Row = mysqli_fetch_array($Result))){
+				$Charsets[$Row['Charset']][] = $Row['Collation'];
+			}
 		}
 
-		$this->closeConnection($Resource);
+		$SelectedCollation = (isset($_SESSION['we_db_collation']) ?
+				$_SESSION['we_db_collation'] :
+				'utf8_unicode_ci');
+
+		ksort($Charsets);
+		$Select = '<select name="le_db_collation" id="le_db_collation" class="textselect" style="width: 293px;" onblur="this.className=\'textselect\';" onfocus="this.className=\'textselectselected\'"' . ($Checked ? '' : ' disabled="disabled"') . ">";
+		$Select .= '<option value="-1"' . ($SelectedCollation == "-1" ? 'selected="selected"' : "") . ">" . $this->Language['defaultCollation'] . '</option>';
+		foreach($Charsets as $Charset => $Collations){
+			$Select .= '<optgroup label="' . $Charset . '">';
+
+			asort($Collations);
+			foreach($Collations as $Collation){
+				$Select .= '<option value="' . $Collation . '"' . ($SelectedCollation == $Collation ? 'selected="selected"' : '') . '>' . $Collation . '</option>';
+			}
+			$Select .= '</optgroup>';
+		}
+		$Select .= '</select>';
+		$Content .= '<br /><b>' . $this->Language['Collation'] . '</b><br />' . $Select;
+
+
+		//$this->closeConnection($Resource);
 
 		$this->setContent($Content);
 
@@ -140,32 +135,25 @@ EOF;
 
 	function check(&$Template = ''){
 
-		$_SESSION["le_db_overwrite"] = false;
-		if(isset($_REQUEST["continue"])){
-			$_SESSION["le_db_overwrite"] = true;
-		}
+		$_SESSION["le_db_overwrite"] = (isset($_REQUEST["continue"]));
 
-		$_SESSION["le_db_charset"] = "";
-		$_SESSION["le_db_collation"] = "";
 		if(isset($_REQUEST["le_db_collation"]) && $_REQUEST["le_db_collation"] != "-1"){
 			$tmp = explode("_", $_REQUEST['le_db_collation']);
-			$_SESSION["le_db_charset"] = $tmp[0];
-			$_SESSION["le_db_collation"] = $_REQUEST['le_db_collation'];
-			$_SESSION["le_db_set_charset"] = $_SESSION["le_db_charset"];
-
+			$_SESSION["we_db_charset"] = $tmp[0];
+			$_SESSION["we_db_collation"] = $_REQUEST['le_db_collation'];
 
 			// Database was created with this installer, so change the collation
-			if(isset($_SESSION['le_db_exists']) && !$_SESSION['le_db_exists']){
+			//if(isset($_SESSION['we_db_exists']) && !$_SESSION['we_db_exists']){
 
-				$Resource = $this->openConnection();
+			$Resource = $this->openConnection();
 
-				$result = mysqli_query($Resource, "ALTER DATABASE " . $_SESSION['le_db_database'] . " DEFAULT CHARACTER SET " . $_SESSION["le_db_charset"] . " COLLATE " . $_SESSION["le_db_collation"]);
-				if(!$result){
-					// Can't change the collation
-				}
-
-				$this->closeConnection($Resource);
+			$result = mysqli_query($Resource, 'ALTER DATABASE ' . $_SESSION['le_db_database'] . ' DEFAULT CHARACTER SET ' . $_SESSION['we_db_charset'] . ' COLLATE ' . $_SESSION['we_db_collation']);
+			if(!$result){
+				// Can't change the collation
 			}
+
+			$this->closeConnection($Resource);
+			//}
 		}
 		return true;
 	}

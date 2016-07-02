@@ -83,7 +83,7 @@ $latest["dotted"] = $dotted;
 
 // fetch languages:
 if(!empty($latestVersion)){
-	$GLOBALS['DB_WE']->query("SELECT DISTINCT(language) FROM " . SOFTWARE_LANGUAGE_TABLE . ' WHERE version=' . $latestVersion);
+	$GLOBALS['DB_WE']->query('SELECT DISTINCT(language) FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE version=' . $latestVersion);
 	while($GLOBALS['DB_WE']->next_record()){
 		$row = $GLOBALS['DB_WE']->getRecord();
 		if(substr($row['language'], -6) == "_UTF-8"){

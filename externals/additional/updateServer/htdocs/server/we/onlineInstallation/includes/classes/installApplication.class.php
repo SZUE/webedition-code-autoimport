@@ -532,7 +532,7 @@ class installApplication extends installer{
 		$replaceVersionDemo = updateUtil::getReplaceCode('we_version_demo');
 		// folder we_conf, we_conf.inc.php we_conf_global.inc.php
 		$replaceWeConfDemo = updateUtil::getReplaceCode('we_conf_demo');
-		$replaceWeConfGlobalDemo = updateUtil::getReplaceCode('we_conf_global_demo');
+		$replaceWeConfGlobalDemo = updateUtil::getReplaceCode('we_conf_global_demo', [$_SESSION['we_charset']]);
 		$replaceWeActiveModules = updateUtil::getReplaceCode('we_activeModules');
 
 		// proxy settings
@@ -577,8 +577,8 @@ class installApplication extends installer{
 			!$liveUpdateFnc->checkMakeDir( $_SESSION["le_installationDirectory"] . "/webEdition/site", 0770 ) ||
 
 			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceVersionDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceVersionDemo['replace']) . '"), "' . $version . '", "' . $version_type . '", "' . $zf_version . '", "' . $subversion . '", "' . $version_type_version . '", "' . $version_branch . '", "' . $version_name . '"), ".php","' . $_SESSION['clientExtension'] . '"))  ||
-			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceWeConfDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeConfDemo['replace']) . '"), $_SESSION["le_db_host"], $_SESSION["le_db_database"], base64_encode($_SESSION["le_db_user"]), base64_encode($_SESSION["le_db_password"]), $_SESSION["le_db_connect"], $_SESSION["le_db_prefix"], $_SESSION["le_db_charset"], $_SESSION["le_db_collation"], "' . $licenceName . '", "' . $_SESSION['clientSyslngNEW'] . '", "' . $_SESSION['client_backend_charset'] . '"), ".php","' . $_SESSION['clientExtension'] . '"))  ||
-			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceWeConfGlobalDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeConfGlobalDemo['replace']) . '"), "' . $_SESSION['client_default_charset'] . '", $_SESSION["le_db_charset"]), ".php","' . $_SESSION['clientExtension'] . '")) ||
+			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceWeConfDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeConfDemo['replace']) . '"), $_SESSION["le_db_host"], $_SESSION["le_db_database"], base64_encode($_SESSION["le_db_user"]), base64_encode($_SESSION["le_db_password"]), $_SESSION["le_db_connect"], $_SESSION["le_db_prefix"], $_SESSION["we_db_charset"], $_SESSION["we_db_collation"], "' . $licenceName . '", "' . $_SESSION['clientSyslngNEW'] . '", "' . $_SESSION['client_backend_charset'] . '"), ".php","' . $_SESSION['clientExtension'] . '"))  ||
+			!$liveUpdateFnc->filePutContent( $_SESSION["le_installationDirectory"] . "' . $replaceWeConfGlobalDemo['path'] . '", $liveUpdateFnc->preparePhpCode( sprintf($liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeConfGlobalDemo['replace']) . '"), "' . $_SESSION['client_default_charset'] . '", $_SESSION["we_db_charset"]), ".php","' . $_SESSION['clientExtension'] . '")) ||
 
 			!$liveUpdateFnc->filePutContent($_SESSION["le_installationDirectory"] . "/webEdition/we/include/conf/we_active_integrated_modules.inc' . $_SESSION['clientExtension'] . '", $liveUpdateFnc->decodeCode("' . updateUtil::encodeCode($replaceWeActiveModules['replace']) . '")) ||
 

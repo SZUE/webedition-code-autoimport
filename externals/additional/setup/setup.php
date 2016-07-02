@@ -715,9 +715,9 @@ function step_summary(){
 	$dbcharsetparts = explode('_', $_SESSION["we_db_collation"]);
 	$_SESSION["we_db_charset"] = $dbcharsetparts[0];
 	if($_SESSION["we_db_charset"] == "utf8"){
-		$_SESSION["we_charset"] = "UTF-8";
+		$_SESSION['we_charset'] = 'UTF-8';
 	} else {
-		$_SESSION["we_charset"] = "ISO-8859-1";
+		$_SESSION['we_charset'] = 'ISO-8859-1';
 	}
 
 	// webEdition settings:
@@ -907,7 +907,7 @@ function step_installation(){
 
 		//define DB_SET_CHARSET in we_config_global due to old versions, will be corrected on we startup
 		$we_config_global .= "define('DB_SET_CHARSET','" . $_SESSION["we_db_charset"] . "');\n" .
-			"define('DEFAULT_CHARSET','" . $_SESSION["we_charset"] . "');\n" .
+			"define('DEFAULT_CHARSET','" . $_SESSION['we_charset'] . "');\n" .
 			"";
 
 		$output .= tpl_ok("Changed the system's default language to " . $_SESSION["we_charset"]);

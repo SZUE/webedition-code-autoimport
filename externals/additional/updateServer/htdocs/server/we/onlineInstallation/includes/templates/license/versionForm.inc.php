@@ -43,7 +43,11 @@ if(!empty($MatchingVersions)){
 		} else {
 			$branchText = '';
 		}
-		$value = ($VersionNames[$key] ? $VersionNames[$key] : $value) . ' (' . $value . ' ' . $GLOBALS['lang']['installer'][$AlphaBetaVersions[$key]['type']] . ($AlphaBetaVersions[$key]['typeversion'] ? ' ' . $AlphaBetaVersions[$key]['typeversion'] : '') . ', SVN-Revision:' . $SubVersions[$key] . $branchText . ')';
+		$value = ($VersionNames[$key] ? $VersionNames[$key] : $value) .
+			' (' . $value . ' ' .
+			$GLOBALS['lang']['installer'][$AlphaBetaVersions[$key]['type']] .
+			($AlphaBetaVersions[$key]['typeversion'] ? ' ' . $AlphaBetaVersions[$key]['typeversion'] : '') .
+			', SVN-Revision:' . $SubVersions[$key] . $branchText . ')';
 	}
 	$flippedVers = array_flip($MatchingVersions);
 

@@ -148,7 +148,6 @@ define("DATETIME_INITIALIZED",'1'); // to prevent additional initialization in w
 //define ("WE_SQL_DEBUG", 1);
 define('LIVEUPDATE_INSTALLED_WITH_CONTENT', true);
 
-?>
 weConfDemoSaveCodeBoundary;
 
 $replaceCode['we_conf_demo']['replace'][6391] = <<< weConfDemoSaveCodeBoundary
@@ -216,8 +215,6 @@ define("WE_LANGUAGE",'%s');
 
 // Original backend charset of this version of webEdition, used for login-screen
 define("WE_BACKENDCHARSET",'%s');
-
-?>
 weConfDemoSaveCodeBoundary;
 
 $replaceCode['we_conf_global_demo']['path'][4900] = '/webEdition/we/include/conf/we_conf_global.inc%s';
@@ -583,9 +580,8 @@ define("SEOINSIDE_HIDEINWEBEDITION", 0);
 // Flag if should be displayed in Editmode
 define("SEOINSIDE_HIDEINEDITMODE", 1);
 
-?>
 weConfGlobalDemoSaveCodeBoundary;
-$replaceCode['we_conf_global_demo']['replace'][6380] = <<< weConfDemoSaveCodeBoundary
+$replaceCode['we_conf_global_demo']['replace'][6380] = <<<'CODE'
 <?php
 
 /**
@@ -605,9 +601,9 @@ $replaceCode['we_conf_global_demo']['replace'][6380] = <<< weConfDemoSaveCodeBou
  */
 
 //Default Charset
-define('DEFAULT_CHARSET', "UTF-8");
+define('DEFAULT_CHARSET', "%s");
 ?>
-weConfDemoSaveCodeBoundary;
+CODE;
 
 // add version and uid
 $replaceCode['we_version_demo']['path'][4900] = '/webEdition/we/include/we_version%s';
@@ -619,8 +615,7 @@ define("WE_SVNREV","%s");
 define("WE_VERSION_SUPP_VERSION","%s");
 define("WE_VERSION_BRANCH","%s");
 define("WE_VERSION_NAME","%s");
-
-?>';
+';
 $replaceCode['we_activeModules']['path'][6380] = '/webEdition/we/include/conf/we_active_integrated_modules.inc%s';
 $replaceCode['we_activeModules']['replace'][6380] = '<?php
 /**
@@ -632,24 +627,8 @@ $GLOBALS[\'_we_active_integrated_modules\'] = array();';
 
 $replaceCode['we_activeModules']['path'][LANGUAGELIMIT] = '/webEdition/we/include/conf/we_active_integrated_modules.inc%s';
 $replaceCode['we_activeModules']['replace'][LANGUAGELIMIT] = '<?php
-$_we_active_integrated_modules = array();
-
-$_we_active_integrated_modules[] = "users";
-$_we_active_integrated_modules[] = "customer";
-$_we_active_integrated_modules[] = "schedule";
-$_we_active_integrated_modules[] = "shop";
-$_we_active_integrated_modules[] = "editor";
-$_we_active_integrated_modules[] = "object";
-$_we_active_integrated_modules[] = "messaging";
-$_we_active_integrated_modules[] = "workflow";
-$_we_active_integrated_modules[] = "newsletter";
-$_we_active_integrated_modules[] = "banner";
-$_we_active_integrated_modules[] = "export";
-$_we_active_integrated_modules[] = "voting";
-$_we_active_integrated_modules[] = "spellchecker";
-$_we_active_integrated_modules[] = "glossary";
-
-?>';
+$_we_active_integrated_modules = array("users","customer","schedule","shop","editor","object","messaging","workflow","newsletter","banner","export","voting","spellchecker","glossary");
+';
 
 
 // Proxysettings
@@ -659,14 +638,13 @@ $replaceCode['we_proxysettings']['replace'][4900] = '<?php
 	define("WE_PROXYPORT", "%s");
 	define("WE_PROXYUSER", "%s");
 	define("WE_PROXYPASSWORD", "%s");
-?>';
+';
 
 // insert tblPrefs
 $replaceCode['insert_tblPrefs']['path'][4900] = '';
 
 $replaceCode['insert_tblPrefs']['replace'][4900] = 'UPDATE %s' . 'tblPrefs set Language = \'%s\' where userID = \'1\'';
 $replaceCode['insert_tblPrefs']['replace'][LANGUAGELIMIT] = 'UPDATE %s' . 'tblPrefs set Language = \'%s\',BackendCharset = \'%s\'  where userID = \'1\'';
-
 
 // insert tblUser
 $replaceCode['insert_tblUser']['path'][4900] = '';

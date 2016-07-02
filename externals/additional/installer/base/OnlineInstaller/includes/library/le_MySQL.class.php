@@ -1,10 +1,5 @@
 <?php
 /*
- * Session Management for PHP3
- *
- * Copyright (c) 1998,1999 SH Online Dienst GmbH
- *                    Boris Erdmann, Kristian Koehntopp
- *
  * $Id: mysql.php,v 1.1.1.1 2004/07/21 14:22:04 holger.meyer Exp $
  *
  */
@@ -411,8 +406,8 @@ class le_MySQL_DB extends le_MySQL{
 		$this->User = $_SESSION["le_db_user"];
 		$this->Password = $_SESSION["le_db_password"];
 		$this->Database = $_SESSION["le_db_database"];
-		if(isset($_SESSION["le_db_charset"])){
-			$this->Charset = $_SESSION["le_db_charset"];
+		if(isset($_SESSION["we_db_charset"])){
+			$this->Charset = $_SESSION["we_db_charset"];
 		} else {
 			$this->Charset = '';
 		}

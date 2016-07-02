@@ -29,7 +29,7 @@ abstract class updateBase{
 	 * @return array
 	 */
 	static function getPossibleLanguagesArray(){
-		$GLOBALS['DB_WE']->query('SELECT distinct(language) FROM ' . SOFTWARE_LANGUAGE_TABLE . ' ORDER BY language ASC');
+		$GLOBALS['DB_WE']->query('SELECT DISTINCT (language) FROM ' . SOFTWARE_LANGUAGE_TABLE . ' WHERE version>=7000 ORDER BY language ASC');
 
 		return $GLOBALS['DB_WE']->getAll(true);
 	}
@@ -139,7 +139,7 @@ abstract class updateBase{
 	 *
 	 * @return array
 	 */
-	static function getVersionsLanguageArray($installedLanguagesOnly = true){
+	static function getVersionsLanguageArray($installedLanguagesOnly = true, $vers = 0){
 		//error_log(print_r(urldecode(base64_decode($_SESSION['clientInstalledLanguages'])),1));
 		if(isset($_SESSION['clientInstalledLanguages']) && !is_array($_SESSION['clientInstalledLanguages'])){
 			//$_SESSION['clientInstalledLanguages'] = unserialize(urldecode(($_SESSION['clientInstalledLanguages'])));
@@ -151,15 +151,9 @@ abstract class updateBase{
 			}
 		}
 
-		$versionLanguages = array();
-		$GLOBALS['DB_WE']->query('SELECT v.version,l.language FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . (isset($_SESSION['testUpdate']) ? '' : ' AND v.type="release"') . ' ORDER BY v.version DESC,l.language');
+		$GLOBALS['DB_WE']->query('SELECT v.version,l.language FROM ' . VERSION_TABLE . ' v JOIN ' . SOFTWARE_LANGUAGE_TABLE . ' l ON v.version=l.version WHERE 1 ' . ($installedLanguagesOnly ? ' AND l.language IN ("' . implode('", "', $_SESSION['clientInstalledLanguages']) . '")' : '') . ' ' . (isset($_SESSION['testUpdate']) ? '' : ' AND v.type="release"') . ($vers ? ' AND v.version=' . $vers : '') . ' ORDER BY v.version DESC,l.language');
 
-		while($GLOBALS['DB_WE']->next_record()){
-			$row = $GLOBALS['DB_WE']->getRecord();
-			$versionLanguages[$row['version']][] = $row['language'];
-		}
-
-		return $versionLanguages;
+		return $GLOBALS['DB_WE']->getAllFirst(false);
 	}
 
 }

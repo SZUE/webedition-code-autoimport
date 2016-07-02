@@ -26,10 +26,10 @@ class Summary extends leStep{
 			)
 		);
 
-		if(version_compare("4.1.0", $_SESSION['le_db_version']) < 1){
-			$Summary[$this->Language['databaseConnection']][$this->Language['databaseCharset']] = ($_SESSION['le_db_charset'] != "" ? $_SESSION['le_db_charset'] : $this->Language['databaseDefault']);
-			$Summary[$this->Language['databaseConnection']][$this->Language['databaseCollation']] = ($_SESSION['le_db_collation'] != "" ? $_SESSION['le_db_collation'] : $this->Language['databaseDefault']);
-		}
+
+		$Summary[$this->Language['databaseConnection']][$this->Language['databaseCharset']] = ($_SESSION['we_db_charset'] ? $_SESSION['we_db_charset'] : $this->Language['databaseDefault']);
+		$Summary[$this->Language['databaseConnection']][$this->Language['databaseCollation']] = ($_SESSION['we_db_collation'] ? $_SESSION['we_db_collation'] : $this->Language['databaseDefault']);
+
 
 		$passwordFields = array(
 			$this->Language['webEditionPassword'],
@@ -66,8 +66,8 @@ class Summary extends leStep{
 		$Content = "";
 		$temp = 0;
 		foreach($Summary as $Head => $Table){
-			$Content .= "<p><strong>" . $Head . "</strong></p>";
-			$Content .= "<table id=\"leSummary\">";
+			$Content .= '<p><strong>' . $Head . '</strong></p>' .
+				'<table id="leSummary">';
 			foreach($Table as $Key => $Value){
 				$temp++;
 				$Content .= "<tr><td class=\"left\">" . $Key . "</td><td class=\"middle\">:</td><td><input id=\"field_" . $temp . "\" name=\"field_" . $temp . "\" type=\"" . (in_array($Key, $passwordFields) ? "password" : "text") . "\" value=\"" . stripslashes(htmlspecialchars($Value)) . "\" class=\"right\" readonly=\"readonly\"/>" . (in_array($Key, $passwordFields) ? "<input type=\"text\" id=\"field_" . $temp . "_2\" name=\"field_" . $temp . "_2\" class=\"right\" value=\"" . stripslashes(htmlspecialchars($Value)) . "\" readonly=\"readonly\" style=\"display: none;\" />" : "") . "</td></tr>";

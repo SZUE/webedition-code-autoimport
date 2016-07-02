@@ -23,8 +23,7 @@ define("WE_SVNREV","%s");
 define("WE_VERSION_SUPP_VERSION","%s");
 define("WE_VERSION_BRANCH","%s");
 define("WE_VERSION_NAME","%s");
-
-?>';
+';
 
 // remove demo pop-up webEdition.php
 $replaceCode['webEdition']['path']['3900'] = '/webEdition/webEdition%s';

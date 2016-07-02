@@ -13,11 +13,6 @@ $lang["Template"]["autocontinue"] = "Sie werden automatisch in %s Sekunden weite
 // ---> Applications
 //
 
-$lang["Application"]["webEdition5"]["name"] = "webEdition 5";
-$lang["Application"]["webEdition5"]["description"] = "Professionelles Web Content Management System.";
-$lang["Application"]["webEdition5"]["longdescription"] = "The webEdition web CMS (content management system) is a CMS based on PHP and MySQL. It is the perfect CMS for users, who wish to manage their website comfortably with a CMS. The webEdition CMS has a large function spectrum and can be customized easily.";
-$lang["Application"]["webEdition5"]["link"] = "http://www.living-e.de/produkte/webEdition/index.php";
-
 $lang["Application"]["webEdition"]["name"] = "webEdition stabile Versionen";
 $lang["Application"]["webEdition"]["description"] = "Professionelles Open Source Web Content Management System.";
 $lang["Application"]["webEdition"]["longdescription"] = "Das webEdition Web CMS (Content-Management-System) ist ein OpenSource CMS das auf PHP und MySQL basiert. Es ist das perfekte CMS für Nutzer, die Ihre Website komfortabel selbst verwalten wollen. Das webEdition CMS hat ein großes Funktionsspektrum und kann einfach an individuelle Bedürfnisse angepasst werden";
@@ -193,4 +188,3 @@ $lang["Step"]["ConfigureInstaller"]["content"] = "Das Installationspaket wird ko
 $lang["errors"]["writeFile"] = "Keine Schreibrechte!<br /><br />Konnte %s nicht beschreiben.<br /><br />Um webEdition
 		installieren zu können, muss das Eurzelverzeichnis (DOCUMENT_ROOT) für den Webserver (Apache, IIS...)
 		zumindest während der Installation beschreibbar sein.";
-?>

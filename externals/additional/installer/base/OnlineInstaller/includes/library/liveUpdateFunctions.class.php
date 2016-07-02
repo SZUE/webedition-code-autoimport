@@ -79,8 +79,6 @@ class liveUpdateFunctions{
 	 * @return string
 	 */
 	function preparePhpCode($content, $needle, $replace){
-
-		$content = $this->replaceExtensionInContent($content, $needle, $replace);
 		return $this->checkReplaceDocRoot($content);
 	}
 
@@ -93,8 +91,7 @@ class liveUpdateFunctions{
 	 * @return unknown
 	 */
 	function replaceExtensionInContent($content, $needle, $replace){
-
-		return str_replace($needle, $replace, $content);
+		return $content;
 	}
 
 	function replaceDocRootNeeded(){
@@ -685,11 +682,11 @@ class liveUpdateFunctions{
 					if(empty($query))
 						continue;
 					// second, we need to check if there is a collation
-					if(isset($_SESSION['le_db_collation']) && $_SESSION['le_db_collation'] != ""){
+					if(isset($_SESSION['we_db_collation']) && $_SESSION['we_db_collation'] != ""){
 						//if(eregi("^CREATE TABLE ", $query)) {
 						if(preg_match("/^CREATE TABLE /", $query)){
-							$Charset = $_SESSION['le_db_charset'];
-							$Collation = $_SESSION['le_db_collation'];
+							$Charset = $_SESSION['we_db_charset'];
+							$Collation = $_SESSION['we_db_collation'];
 							$query = preg_replace("/;$/", " CHARACTER SET " . $Charset . " COLLATE " . $Collation . ";", $query, 1);
 						}
 					}
