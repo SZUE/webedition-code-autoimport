@@ -30,8 +30,6 @@ class installerDownload extends installer{
 		// - queryfiles/queries per step
 		// - all files to prepare/prepareFiles per step
 
-		$installationStepsTotal = 0;
-
 		// each step
 		$installationSteps = static::getInstallationStepNames();
 		$installationStepsTotal = sizeof($installationSteps);
@@ -61,7 +59,6 @@ class installerDownload extends installer{
 				break;
 			case 'copyInstallerFiles':
 				return 100;
-				break;
 		}
 
 		return number_format(($currentStep / $installationStepsTotal * 100), 0);
@@ -231,15 +228,13 @@ class installerDownload extends installer{
 		for ($i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
 			$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
 
-			$text = basename($allFiles[$i]);
-			$text = substr($text, -40);
+			$text = substr(basename($allFiles[$i]), -40);
 			$message .= "<li>$text</li>";
 
 			if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
 				$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
 				if ($success) {
 					$success = rename($allFiles[$i], $allFiles[$i]);
-
 				}
 
 			}
@@ -294,8 +289,7 @@ class installerDownload extends installer{
 		$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
 
 		for ($i=0;$success && $i<sizeof($allFiles);$i++) {
-			$text = basename($allFiles[$i]);
-			$text = substr($text, -40);
+			$text = substr(basename($allFiles[$i]), -40);
 			$message .= "<li>$text</li>";
 			$success = $liveUpdateFnc->moveFile($allFiles[$i], LE_INSTALLER_PATH . substr($allFiles[$i], $preLength));
 
@@ -309,9 +303,7 @@ class installerDownload extends installer{
 			$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesCopied'] . '\', $endFile, $maxFile) . "</p>";
 
 			?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
-
 		} else {
-
 			' . static::getErrorMessageResponsePart('', $GLOBALS['lang']['installer']['errorMoveFile']) . '
 		}
 		?>';

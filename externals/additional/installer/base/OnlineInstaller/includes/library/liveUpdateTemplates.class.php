@@ -51,11 +51,10 @@ class liveUpdateTemplates{
 	 */
 	function getHtml($headline, $content, $header = '', $append = false){
 
-		if($append){
-			$PushJs = 'top.leContent.appendElement(document.getElementById("leContent"));';
-		} else {
-			$PushJs = 'top.leContent.replaceElement(document.getElementById("leContent"));';
-		}
+		$PushJs = ($append ?
+				'top.leContent.appendElement(document.getElementById("leContent"));' :
+				'top.leContent.replaceElement(document.getElementById("leContent"));'
+			);
 
 		return '<html>
 	<head>
@@ -64,7 +63,7 @@ class liveUpdateTemplates{
 	</head>
 	<body>
 	' . liveUpdateTemplates::getContainer($headline, $content) . '
-	<script type="text/javascript">
+	<script>
 	' . $PushJs . '
 	</script>
 	</body>

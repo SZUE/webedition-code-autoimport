@@ -705,7 +705,7 @@ class liveUpdateFunctions{
 
 					switch($db->Errno){
 
-						case '1050': // this table already exists
+						case 1050: // this table already exists
 							// the table already exists,
 							// make tmptable and check these tables ...
 							$namePattern = "/CREATE TABLE (\w+) \(/";

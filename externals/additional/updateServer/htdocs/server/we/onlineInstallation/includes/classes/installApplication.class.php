@@ -206,7 +206,6 @@ class installApplication extends installer{
 	}
 
 	function getPrepareApplicationInstallationResponse(){
-
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		// generate code to drop existing webEdition tables
@@ -217,47 +216,41 @@ class installApplication extends installer{
 			$dropTablesCode .= '$dropQueries[] = "DROP TABLE IF EXISTS ' . $table . '";' . "\n";
 		}
 		$dropTablesCode .= '
-			if (!$liveUpdateFnc->executeDropQueries($dropQueries)) {
-			' . static::getErrorMessageResponsePart('', '<h1 class=\"error\">' . $GLOBALS['lang']['installer']['tableNotDrop'] . '</h1>') . '
-			exit;
-		}
+if (!$liveUpdateFnc->executeDropQueries($dropQueries)) {
+	' . static::getErrorMessageResponsePart('', '<h1 class=\"error\">' . $GLOBALS['lang']['installer']['tableNotDrop'] . '</h1>') . '
+	exit;
+}
 		';
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
+' . updateUtil::getOverwriteClassesCode() . '
 
-		' . updateUtil::getOverwriteClassesCode() . '
+$message = "<h1>' . $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST["detail"]] . '</h1>";
 
-		$message = "<h1>' . $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST["detail"]] . '</h1>";
+$success = true;
 
-		$success = true;
+// move webEdition if needed:
+if (isset($_SESSION["le_verifyWebEdition"])) { // move webEdition
+	$newFolder .= $_SESSION["le_installationDirectory"] . "/webEdition_backup_" . time();
+	do {
+		$newFolder = $_SESSION["le_installationDirectory"] . "/webEdition_backup_" . time();
+	} while (is_dir($newFolder));
 
-		// move webEdition if needed:
-		if (isset($_SESSION["le_verifyWebEdition"])) { // move webEdition
-			$newFolder .= $_SESSION["le_installationDirectory"] . "/webEdition_backup_" . time();
-			do {
-				$newFolder = $_SESSION["le_installationDirectory"] . "/webEdition_backup_" . time();
-
-			} while (is_dir($newFolder));
-
-			if (file_exists($_SESSION["le_installationDirectory"] . "/webEdition")) {
-				if (!rename($_SESSION["le_installationDirectory"] . "/webEdition", $newFolder)) {
-					' . static::getErrorMessageResponsePart() . '
-					exit;
-
-				}
-
-			}
-
+	if (file_exists($_SESSION["le_installationDirectory"] . "/webEdition")) {
+		if (!rename($_SESSION["le_installationDirectory"] . "/webEdition", $newFolder)) {
+			' . static::getErrorMessageResponsePart() . '
+			exit;
 		}
+	}
+}
 
-		if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
-			' . $dropTablesCode . '
+if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
+	' . $dropTablesCode . '
+}
 
-		}
-
-		?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message ?>') . '<?php
-		';
+?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message ?>') . '<?php
+';
 		return updateUtil::getResponseString($retArray);
 	}
 
@@ -270,24 +263,21 @@ class installApplication extends installer{
 
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
-		$message = '<p>'
-			. sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges']))
-			. '</p>'
-			. '<ul>'
-			. '<li>' . sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '</li>'
-			. '<li>' . sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '</li>'
-			. '</ul>';
+		$message = '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '</p>
+<ul>
+	<li>' . sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '</li>
+	<li>' . sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '</li>
+</ul>';
 
 		$progress = self::getInstallerProgressPercent();
 
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
+	' . updateUtil::getOverwriteClassesCode() . '
+	$filesDir = LE_INSTALLER_TEMP_PATH;
+	$liveUpdateFnc->deleteDir($filesDir);
 
-		' . updateUtil::getOverwriteClassesCode() . '
-		$filesDir = LE_INSTALLER_TEMP_PATH;
-		$liveUpdateFnc->deleteDir($filesDir);
-
-		?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, $message);
+?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, $message);
 
 		return updateUtil::getResponseString($retArray);
 	}
@@ -324,8 +314,7 @@ class installApplication extends installer{
 
 			// execute queries in each file
 			if ($liveUpdateFnc->executeQueriesInFiles($allFiles[$i])) {
-				$text = basename($allFiles[$i]);
-				$text = substr($text, -40);
+				$text = substr( basename($allFiles[$i]), -40);
 				$message .= "<li>$text</li>";
 
 			} else {
@@ -365,8 +354,7 @@ class installApplication extends installer{
 		$endFile = min(sizeof($allFiles), ' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']) . ');
 		$maxFile = sizeof($allFiles);
 
-		$message	.=	"</ul>"
-					.	"<p>" . sprintf("' . $GLOBALS['lang']['installer']['amountDatabaseQueries'] . '", $endFile, $maxFile) . "</p>";
+		$message	.=	"</ul><p>" . sprintf("' . $GLOBALS['lang']['installer']['amountDatabaseQueries'] . '", $endFile, $maxFile) . "</p>";
 
 		if ( sizeof($allFiles) > ' . ( $_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP'] ) . ' ) { // continue with DB steps
 			?>' . static::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
@@ -463,41 +451,40 @@ class installApplication extends installer{
 		$retArray['Type'] = 'eval';
 		$retArray['Code'] = '<?php
 
-		' . updateUtil::getOverwriteClassesCode() . '
+' . updateUtil::getOverwriteClassesCode() . '
 
-		$filesDir = LE_INSTALLER_TEMP_PATH . "/tmp/files/";
-		$preLength = strlen($filesDir);
+$filesDir = LE_INSTALLER_TEMP_PATH . "/tmp/files/";
+$preLength = strlen($filesDir);
 
-		$success = true;
+$success = true;
 
-		$message = "<ul>";
-		$allFiles = array();
-		$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
+$message = "<ul>";
+$allFiles = array();
+$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
 
-		for ($i=0; $success && $i<sizeof($allFiles); $i++) {
-			$text = basename($allFiles[$i]);
-			$text = substr($text, -40);
-			$message .= "<li>$text</li>";
+for ($i=0; $success && $i<sizeof($allFiles); $i++) {
+	$text = substr(basename($allFiles[$i]), -40);
+	$message .= "<li>$text</li>";
 
-			//$success = $liveUpdateFnc->moveFile($allFiles[$i], $_SESSION["le_installationDirectory"] . substr($allFiles[$i], $preLength));
+	//$success = $liveUpdateFnc->moveFile($allFiles[$i], $_SESSION["le_installationDirectory"] . substr($allFiles[$i], $preLength));
 
-		}
-		$message .= "</ul>";
-		$docRoot = isset($_SESSION["le_documentRoot"]) ? $_SESSION["le_documentRoot"] : $_SERVER["DOCUMENT_ROOT"];
-		$success = rename($filesDir."webEdition", $docRoot ."/webEdition");
+}
+$message .= "</ul>";
+$docRoot = isset($_SESSION["le_documentRoot"]) ? $_SESSION["le_documentRoot"] : $_SERVER["DOCUMENT_ROOT"];
+$success = rename($filesDir."webEdition", $docRoot ."/webEdition");
 
-		if ($success) {
-			$endFile = sizeof($allFiles);
-			$maxFile = sizeof($allFiles);
+if ($success) {
+	$endFile = sizeof($allFiles);
+	$maxFile = sizeof($allFiles);
 
-			$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesCopied'] . '\', $endFile, $maxFile) . "</p>";
+	$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesCopied'] . '\', $endFile, $maxFile) . "</p>";
 
-			?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
-		} else {
-			' . static::getErrorMessageResponsePart('', $GLOBALS['lang']['installer']['errorMoveFile']) . '
-		}
-		?>';
+} else {
+	' . static::getErrorMessageResponsePart('', $GLOBALS['lang']['installer']['errorMoveFile']) . '
+}
+?>';
 
 		return updateUtil::getResponseString($retArray);
 	}
@@ -528,11 +515,19 @@ class installApplication extends installer{
 
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
+		if($_SESSION["we_db_charset"] == "utf8"){
+			$_SESSION['client_default_charset'] = 'UTF-8';
+			$_SESSION['client_backend_charset'] = 'UTF-8';
+		} else {
+			$_SESSION['client_default_charset'] = '';
+			$_SESSION['client_backend_charset'] = 'ISO-8859-1';
+		}
+
 		// 1st step: missing files
 		$replaceVersionDemo = updateUtil::getReplaceCode('we_version_demo');
 		// folder we_conf, we_conf.inc.php we_conf_global.inc.php
 		$replaceWeConfDemo = updateUtil::getReplaceCode('we_conf_demo');
-		$replaceWeConfGlobalDemo = updateUtil::getReplaceCode('we_conf_global_demo', [$_SESSION['we_charset']]);
+		$replaceWeConfGlobalDemo = updateUtil::getReplaceCode('we_conf_global_demo', [$_SESSION['client_default_charset']]);
 		$replaceWeActiveModules = updateUtil::getReplaceCode('we_activeModules');
 
 		// proxy settings
@@ -551,13 +546,6 @@ class installApplication extends installer{
 		$version_branch = update::getOnlyVersionBranch($versionnumber);
 		$version_name = update::getVersionName($versionnumber); //imi
 
-		if(stristr($_SESSION['clientSyslng'], 'UTF-8')){
-			$_SESSION['client_default_charset'] = 'UTF-8';
-			$_SESSION['client_backend_charset'] = 'UTF-8';
-		} else {
-			$_SESSION['client_default_charset'] = '';
-			$_SESSION['client_backend_charset'] = 'ISO-8859-1';
-		}
 		$_SESSION['clientSyslngNEW'] = $_SESSION['clientSyslng'];
 		if($_SESSION['clientTargetVersionNumber'] >= LANGUAGELIMIT){
 			$_SESSION['clientSyslngNEW'] = str_replace('_UTF-8', '', $_SESSION['clientSyslngNEW']);

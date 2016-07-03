@@ -56,12 +56,13 @@ class updateUtilBase{
 
 			include_once($file);
 		} else {
-			$liveUpdateResponse['Type'] = 'template';
-			$liveUpdateResponse['headline'] = 'Error';
-			$liveUpdateResponse['Content'] = '
+			$liveUpdateResponse = [
+				'Type' => 'template',
+				'headline' => 'Error',
+				'Content' => '
 			<div class="errorDiv">
 				 Can\'t find template
-			</div>';
+		</div>'];
 		}
 		if(isset($_SESSION["displayAnnouncement"]) && $_SESSION["displayAnnouncement"] === true){
 			$liveUpdateResponse["Code"] = str_replace('$content = \'', '$content = \'<div class="messageDiv">' . $GLOBALS["lang"]['notification']['importantAnnouncement'] . '</div>', $liveUpdateResponse["Code"]);
@@ -289,8 +290,7 @@ print $newResponse->getOutput();
 	 * @return string
 	 */
 	static function getOverwriteClassesCode(){
-
-		$retString = '
+		return '
 if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php")){
 		require_once(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php");
 } elseif(!class_exists("liveUpdateFunctionsServer", false)){
@@ -315,7 +315,6 @@ function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errconte
 }
 set_error_handler("liveUpdateErrorHandler");
 ';
-		return $retString;
 	}
 
 }

@@ -103,7 +103,7 @@ class leTemplate{
 
 	function getOutput(&$CurrentStep){
 		if($CurrentStep->liveUpdateHttpResponse){
-			$Output = "<script type=\"text/javascript\">"
+			$Output = "<script>"
 				. $this->getButtonJs($CurrentStep)
 				. $this->getProgressBarJs($CurrentStep)
 				. "</script>"
@@ -136,7 +136,7 @@ class leTemplate{
 
 			if(!empty($this->_Javascripts)){
 				$this->_Javascripts = array_reverse($this->_Javascripts);
-				$this->Javascript .= '<script type="text/javascript">';
+				$this->Javascript .= '<script>';
 				foreach($this->_Javascripts as $Javascript){
 					$this->Javascript .= $Javascript . "\n";
 				}

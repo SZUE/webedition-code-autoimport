@@ -84,7 +84,7 @@ class leButton{
 
 		//	First some Javascript to the button
 		$_buttonString = "
-<script type=\"text/javascript\" language=\"JavaScript\">
+<script>
 var " . $_button_name . "_mouse_event;var " . $_button_name . "_enabled = " . ($disabled ? "false" : "true") . ";
 </script>";
 

@@ -4,10 +4,7 @@ $lang['update']['headline'] = 'Update';
 $lang['notification']['headline'] = 'Meldung vom LiveUpdate Server';
 $lang['notification']['lostSession'] = 'Es gab ein Problem mit der Session';
 $lang['notification']['databaseFailure'] = 'Die Datenbank ist momentan nicht einsatzbereit';
-$lang['notification']['highload'] = 'Im Augenblick ist unser Update-Server leider &uuml;berlastet und ein Update kann mit diesem Installer nicht durchgef&uuml;hrt werden.';
-$lang['notification']['highloadSourceforge'] = 'Im Augenblick ist unser Update-Server leider &uuml;berlastet und ein Update kann mit diesem Installer nicht durchgef&uuml;hrt werden. Bitte verwenden Sie das vollst&auml;ndige Installations-Archiv "Manuelle Installation" von unserer <a href="http://sourceforge.net/projects/webedition/" target="_blank">sourcforge.net Projektseite</a>.';
 $lang['notification']['maintenance'] = 'Wegen Wartungsarbeiten ist ein Update der webEdition Version 6 derzeit nicht m&ouml;glich.';
-$lang['notification']['maintenance_15'] = 'Der Update- und Installationsserver f&uuml;r webEdition steht derzeit wegen Wartungsarbeiten bis ca. 15.00 Uhr nicht zur Verf&uuml;gung. Bitte entschuldigen Sie die Unannehmlichkeiten.';
 $lang['notification']['updateNotPossibleUntilRelease'] = 'webEdition kann erst ab dem 03.11.2008 upgedated werden.';
 $lang['notification']['betaExpired'] = 'Sie verwenden derzeit eine Beta-Version. Das Beta-Programm der Version %s ist beendet. Bitte installieren sie eine regul&auml;re webEdition Version.';
 

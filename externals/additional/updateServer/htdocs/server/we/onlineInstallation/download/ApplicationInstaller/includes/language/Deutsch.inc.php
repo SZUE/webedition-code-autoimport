@@ -178,6 +178,7 @@ $lang["Step"]["ChooseVersion"]["version"] = "Version";
 $lang["Step"]["ChooseVersion"]["noNotLiveVersion"] = "Zur Zeit sind keine Alpha- oder Betaversionen verfügbar. Installieren Sie die aktuellste offizielle Version.";
 
 $lang["Step"]["ChooseVersion"]['nightly-build'] = 'nightly Build';
+$lang["Step"]["ChooseVersion"]['nightly'] = 'nightly Build';
 $lang["Step"]["ChooseVersion"]['alpha'] = 'Alpha';
 $lang["Step"]["ChooseVersion"]['beta'] = 'Beta';
 $lang["Step"]["ChooseVersion"]['rc'] = 'RC';

@@ -9,4 +9,4 @@ $liveUpdateResponse['Content'] = '
 	</script>
 </div>
 ';
-// maintenance, maintenance_15
+// maintenance

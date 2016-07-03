@@ -11,14 +11,3 @@ if ( !isset($_SESSION['testUpdate']) ) {
 	exit;
 }
 */
-
-// use this template to print a notification with a link to the sourceforge download page:
-/*
-print notification::getHighloadSourceforgeResponse();
-exit;
-*/
-// or without a link to sourceforge:
-/*
-print notification::getHighloadResponse();
-exit;
-*/

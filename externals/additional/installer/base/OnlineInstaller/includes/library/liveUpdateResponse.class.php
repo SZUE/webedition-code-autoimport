@@ -59,11 +59,7 @@ class liveUpdateResponse{
 		if(!is_array($respArray)){
 			$respArray = @unserialize($response);
 		}
-		if(is_array($respArray)){
-			return $respArray;
-		} else {
-			return false;
-		}
+		return (is_array($respArray) ? $respArray : false);
 	}
 
 	function getOutput(){

@@ -396,7 +396,7 @@ function getErrorScreen(\$headline, \$content, \$showForm = true) {
 </form>
 EOFORM;
 		\$js = <<<EOFORM
-	<script type="text/JavaScript">
+	<script>
 	function checkCheckBox(field) {
 		if(field.checked) {
 			document.forms.hint.submit();

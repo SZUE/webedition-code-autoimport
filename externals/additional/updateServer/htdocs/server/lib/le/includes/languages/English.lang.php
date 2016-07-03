@@ -4,10 +4,7 @@ $lang['update']['headline'] = 'Update';
 $lang['notification']['headline'] = 'Message from Live Update Server';
 $lang['notification']['lostSession'] = 'There was a problem with the session';
 $lang['notification']['databaseFailure'] = 'Could not connect to database';
-$lang['notification']['highload'] = 'Dear webEdition User,<br />Unfortunately, we are experiencing some bottlenecks with our server at the moment due to the huge interest in webEdition Open Source. As a result, an installation with the online installer might not be possible at the moment.<br />We apologize for any inconvenience and hope you enjoy webEdition.';
-$lang['notification']['highloadSourceforge'] = 'Dear webEdition User,<br />Unfortunately, we are experiencing some bottlenecks with our server at the moment due to the huge interest in webEdition Open Source. As a result, an installation with the online installer might not be possible at the moment.<br />Please use the complete installation archives for the "manual installation" from our <a href="http://sourceforge.net/projects/webedition/" target="_blank">sourcforge.net project site</a>instead.<br />We apologize for any inconvenience and hope you enjoy webEdition.';
 $lang['notification']['maintenance'] = 'Due to maintenance, the update functions of webEdition are not available at the moment.';
-$lang['notification']['maintenance_15'] = 'Due to maintenance work, the webEdition update and installation server is not available at the moment until approx 15.00. Please, excuse the inconvenience.';
 $lang['notification']['updateNotPossibleUntilRelease'] = 'The update functions for webEdition are disabled until 2008-11-03.';
 $lang['notification']['betaExpired'] = 'You are currently running a beta version of webEdition. The beta programme of version %s is completed. Please install a regurlar version of webEdition.';
 

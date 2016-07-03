@@ -461,7 +461,7 @@ function step_database(){
 	;
 
 	foreach($input_host->getJSFiles() as $jsFile){
-		$header .= '<script src="' . $jsFile . '" language="JavaScript" type="text/javascript"></script>';
+		$header .= '<script src="' . $jsFile . '"></script>';
 	}
 	foreach($input_host->getCSSFiles() as $cssFile){
 		$header .= '<link href="' . $cssFile["path"] . '" media = "' . $cssFile["media"] . '" rel="styleSheet" type="text/css" />';
@@ -1054,7 +1054,7 @@ function tpl_navigation($step = "1"){
 	$buttonPrev->setTextPosition('left');
 
 	foreach($buttonNext->getJSFiles() as $jsFile){
-		$header .= '<script src="' . $jsFile . '" language="JavaScript" type="text/javascript"></script>';
+		$header .= '<script src="' . $jsFile . '"></script>';
 	}
 	foreach($buttonNext->getCSSFiles() as $cssFile){
 		$header .= '<link href="' . $cssFile["path"] . '" media = "' . $cssFile["media"] . '" rel="styleSheet" type="text/css" />';

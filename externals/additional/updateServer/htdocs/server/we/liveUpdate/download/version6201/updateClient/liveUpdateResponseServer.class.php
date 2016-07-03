@@ -1,7 +1,5 @@
-<?php 
+<?php
 
-class liveUpdateResponseServer extends liveUpdateResponse {
+class liveUpdateResponseServer extends liveUpdateResponse{
 
 }
-
-?>

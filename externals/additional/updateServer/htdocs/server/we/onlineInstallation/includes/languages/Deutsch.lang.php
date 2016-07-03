@@ -98,6 +98,7 @@ $lang["installerDownload"]["copyInstallerFilesError"] = $lang["installer"]["erro
 
 
 $lang["installer"]['nightly-build'] = 'nightly Build';
+$lang["installer"]['nightly'] = 'nightly Build';
 $lang["installer"]['alpha'] = 'Alpha';
 $lang["installer"]['beta'] = 'Beta';
 $lang["installer"]['rc'] = 'RC';

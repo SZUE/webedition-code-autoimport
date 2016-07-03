@@ -22,15 +22,6 @@ abstract class notificationBase{
 		return updateUtil::getResponseString($ret);
 	}
 
-	static function getHighloadResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/highload.inc.php');
-		return updateUtil::getResponseString($ret);
-	}
-
-	static function getHighloadSourceforgeResponse(){
-		$ret = updateUtil::getLiveUpdateResponseArrayFromFile(SHARED_TEMPLATE_DIR . '/notification/highloadSourceforge.inc.php');
-		return updateUtil::getResponseString($ret);
-	}
 
 	/**
 	 * Feature not available
@@ -88,13 +79,11 @@ abstract class notificationBase{
 	 * @return string
 	 */
 	static function getStateResponseString($state = 'success', $message = 'no message'){
-
-		$ret = array(
-			'Type' => 'state',
-			'State' => $state,
-			'Message' => $message
-		);
-		return updateUtil::getResponseString($ret);
+		return updateUtil::getResponseString([
+				'Type' => 'state',
+				'State' => $state,
+				'Message' => $message
+		]);
 	}
 
 }
