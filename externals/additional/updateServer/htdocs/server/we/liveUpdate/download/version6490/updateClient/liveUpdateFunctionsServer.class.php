@@ -557,7 +557,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 			$db->next_record();
 			$defaultEngine = $db->f('Value');
 			if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
-				$defaultEngine = 'myisam';
+				$defaultEngine = 'MyISAM';
 			}
 		}
 

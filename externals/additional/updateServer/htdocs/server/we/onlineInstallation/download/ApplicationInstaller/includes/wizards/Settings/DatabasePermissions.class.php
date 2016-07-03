@@ -174,14 +174,12 @@ EOF;
 	}
 
 	function checkCreateTable($Resource, &$TableName){
-
 		$TableExists = false;
 		$Result = null;
 
 		// try to create a non existing table
 		do{
-			$Query = "CREATE TABLE {$TableName} ( mytext varchar(255) NOT NULL, myText2 varchar(255) NOT NULL) ENGINE=MyISAM";
-			$Result = mysqli_query($Resource, $Query);
+			$Result = mysqli_query($Resource, "CREATE TABLE {$TableName} ( mytext varchar(255) NOT NULL, myText2 varchar(255) NOT NULL) ENGINE=MyISAM");
 
 			// Table already exists
 			if(!$Result && mysqli_errno($Resource) == 1050){

@@ -531,7 +531,7 @@ function step_databasecheck(){
 	// check connection to db server using the entered data
 	$conn = mysqli_connect($_SESSION["db_host"], $_SESSION["db_username"], $_SESSION["db_password"], $_SESSION['db_database']);
 	if(!$conn){
-		$output .= tpl_error("Could not connect to MySQL database server: ".mysqli_connect_error());
+		$output .= tpl_error("Could not connect to MySQL database server: " . mysqli_connect_error());
 		$errors = true;
 		return $output . '</ul>';
 	} else {
@@ -545,23 +545,23 @@ function step_databasecheck(){
 	//$dblist = mysql_fetch_array($result);
 	//$output .= print_r($dblist,true);
 	//if(!in_array($_SESSION["db_database"],$dblist)) {
-	/*if(!$result){
-		$output .= tpl_info("The database \"" . $_SESSION["db_database"] . "\" does not exist yet. Will try to create it.");
-		$op_createdb = true;
-	} else {
-		$output .= tpl_ok("The database \"" . $_SESSION["db_database"] . "\" exists already");
-		$op_createdb = false;
-	}
+	/* if(!$result){
+	  $output .= tpl_info("The database \"" . $_SESSION["db_database"] . "\" does not exist yet. Will try to create it.");
+	  $op_createdb = true;
+	  } else {
+	  $output .= tpl_ok("The database \"" . $_SESSION["db_database"] . "\" exists already");
+	  $op_createdb = false;
+	  }
 
-	// try to create db:
-	if($op_createdb === true){
-		if(!mysqli_query($conn, "USE " . $_SESSION['db_database'])){
-			$output .= tpl_error("Could not create the database. Message from the server: " . mysqli_error($conn));
-			$errors = true;
-			return $output . '</ul>';
-		}
-	}
-	$result = mysqli_query($conn, "USE " . $_SESSION['db_database']);
+	  // try to create db:
+	  if($op_createdb === true){
+	  if(!mysqli_query($conn, "USE " . $_SESSION['db_database'])){
+	  $output .= tpl_error("Could not create the database. Message from the server: " . mysqli_error($conn));
+	  $errors = true;
+	  return $output . '</ul>';
+	  }
+	  }
+	  $result = mysqli_query($conn, "USE " . $_SESSION['db_database']);
 	 */
 	// check if there is already a webEdition installation present:
 
@@ -807,35 +807,31 @@ function step_installation(){
 	// insert table prefix and install all tables from sql dump:
 	$queryErrors = false;
 
-	$res = mysqli_query($conn, 'show variables LIKE "default_storage_engine"');
+	$res = mysqli_query($conn, 'SHOW variables LIKE "default_storage_engine"');
 	$tmp = mysqli_fetch_array($res);
-	$defaultEngine = $tmp[0];
+	$defaultEngine = $tmp[1];
 	if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
 		$defaultEngine = 'myisam';
 	}
-	$charset_collation = "";
-	if(isset($_SESSION["we_db_charset"]) && $_SESSION["we_db_charset"] != "" && isset($_SESSION["we_db_collation"]) && $_SESSION["we_db_collation"] != ""){
-		$Charset = $_SESSION["we_db_charset"];
-		$Collation = $_SESSION["we_db_collation"];
-		$charset_collation = " CHARACTER SET " . $Charset . " COLLATE " . $Collation . " ENGINE=" . $defaultEngine;
-	} else {
-		$charset_collation = "ENGINE=" . $defaultEngine;
-	}
+	$charset_collation = (!empty($_SESSION["we_db_charset"]) && !empty($_SESSION["we_db_collation"]) ?
+			" CHARACTER SET " . $_SESSION["we_db_charset"] . " COLLATE " . $_SESSION["we_db_collation"] :
+			'') .
+		' ENGINE=' . $defaultEngine;
 	mysqli_query($conn, " SET NAMES '" . $_SESSION["we_db_charset"] . "' ");
 	foreach($dbqueries as $dbquery){
-		if(isset($_SESSION["db_tableprefix"]) && !empty($_SESSION["db_tableprefix"])){
-			$dbquery = str_replace('###TBLPREFIX###', $_SESSION["db_tableprefix"], $dbquery);
-		} else {
-			$dbquery = str_replace('###TBLPREFIX###', '', $dbquery);
+		if(strpos($dbquery, '###UPDATEONLY###') !== false ||
+			strpos($dbquery, '###UPDATEDROPCOL') !== false){
+			$dbquery = '';
+			continue;
 		}
-		$dbquery = str_replace('###INSTALLONLY###', '', $dbquery);
 
-		$dbquery = str_replace("ENGINE=MyISAM", $charset_collation, $dbquery);
-		if(strpos($dbquery, '###UPDATEONLY###') !== false){
-			$dbquery = '';
-		} else if(strpos($dbquery, '###UPDATEDROPCOL') !== false){
-			$dbquery = '';
-		}
+		$dbquery = strtr($dbquery, array(
+			'###TBLPREFIX###' => (empty($_SESSION["db_tableprefix"]) ? '' : $_SESSION["db_tableprefix"]),
+			'###INSTALLONLY###' => '',
+			'ENGINE=MyISAM' => $charset_collation
+			)
+		);
+
 		if(!empty($dbquery)){
 			if(!mysqli_query($conn, $dbquery)){
 				if(mysqli_errno($conn) != "1065"){
@@ -849,18 +845,19 @@ function step_installation(){
 			}
 		}
 	}
-	if($queryErrors === true){
-		$output .= tpl_error("There were some errors while executing the database queries.");
-		$errors = true;
-	} else {
-		$output .= tpl_ok("Executed all queries successfully to the selected database.");
-	}
+	$errors|=$queryErrors;
+
+	$output .= ($queryErrors === true ?
+			tpl_error("There were some errors while executing the database queries.") :
+			tpl_ok("Executed all queries successfully to the selected database.")
+		);
+
 	//print("<pre>".$dbdata."</pre>");
 	$output .= "<br /><b>Writing webEdition configuration:</b><br /><br />";
 
 	//$output .= "<li><i>under construction ...</i></li>";
 	// set the language and backendcharset of the default user
-	if(!mysqli_query($conn, 'INSERT INTO ' . $_SESSION["db_tableprefix"] . 'tblPrefs (`userID`,`key`,`value`) VALUES("1","Language","' . $_SESSION["we_language"] . '")') || !mysqli_query($conn, 'INSERT INTO ' . $_SESSION["db_tableprefix"] . 'tblPrefs (`userID`,`key`,`value`) VALUES("1","BackendCharset","' . $_SESSION["we_charset"] . '")')){
+	if(!mysqli_query($conn, 'INSERT INTO ' . $_SESSION['db_tableprefix'] . 'tblPrefs (`userID`,`key`,`value`) VALUES("1","Language","' . $_SESSION["we_language"] . '")') || !mysqli_query($conn, 'INSERT INTO ' . $_SESSION["db_tableprefix"] . 'tblPrefs (`userID`,`key`,`value`) VALUES("1","BackendCharset","' . $_SESSION["we_charset"] . '")')){
 		$output .= tpl_warning("Could not change the default user's language settings. Message from server: " . mysqli_error($conn));
 		print("<pre>" . $dbquery . "</pre><hr />");
 		$queryErrors = true;

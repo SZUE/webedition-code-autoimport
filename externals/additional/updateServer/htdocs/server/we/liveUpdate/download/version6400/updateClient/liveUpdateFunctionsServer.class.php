@@ -543,11 +543,11 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function executeQueriesInFiles($path){
 		static $db = null;
 		$db = $db? : new DB_WE();
-		$db->query('show variables LIKE "default_storage_engine"');
+		$db->query('SHOW variables LIKE "default_storage_engine"');
 		$db->next_record();
 		$defaultEngine = $db->f('Value');
 		if(!in_array(strtolower($defaultEngine), array('myisam', 'aria'))){
-			$defaultEngine = 'myisam';
+			$defaultEngine = 'MyISAM';
 		}
 
 		$content = str_replace("ENGINE=MyISAM", 'ENGINE=' . $defaultEngine, $this->getFileContent($path));
