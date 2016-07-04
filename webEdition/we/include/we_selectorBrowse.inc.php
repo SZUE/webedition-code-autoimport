@@ -21,16 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
-
-$nf = we_base_request::_(we_base_request::RAW, 'nf');
-$sid = we_base_request::_(we_base_request::RAW, "sid");
-$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
-$org = we_base_request::_(we_base_request::FILE, "dir", '/');
-$contentFilter = we_base_request::_(we_base_request::STRING, 'file'); //FIXME: totaler nonsense!!
-$curID = we_base_request::_(we_base_request::FILE, 'curID');
-
 if(file_exists(($supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php'))){
 	include($supportDebuggingFile);
 	if(defined('SUPPORT_IP') && defined('SUPPORT_DURATION') && defined('SUPPORT_START')){
@@ -39,6 +30,13 @@ if(file_exists(($supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php'
 		}
 	}
 }
+
+$nf = we_base_request::_(we_base_request::RAW, 'nf');
+$sid = we_base_request::_(we_base_request::RAW, "sid");
+$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
+$org = we_base_request::_(we_base_request::FILE, 'dir', '/');
+$contentFilter = we_base_request::_(we_base_request::STRING, 'file'); //FIXME: totaler nonsense!!
+$curID = we_base_request::_(we_base_request::FILE, 'curID');
 
 function getDataType($dat){
 	$ct = getContentTypeFromFile($dat);
@@ -54,48 +52,49 @@ function readFiles($dir){
 	$ord = we_base_request::_(we_base_request::INT, "ord", 10);
 
 	if($dir_obj){
-		while(false !== ($entry = $dir_obj->read())){
-			if($entry != '.' && $entry != '..'){
-				if(is_link($dir . '/' . $entry) || is_dir($dir . '/' . $entry)){
-					$arDir[] = $entry;
-					switch($ord){
-						case 10:
-						case 11:
-							$ordDir[] = $entry;
-							break;
-						case 20:
-						case 21:
-							$ordDir[] = getDataType($dir . '/' . $entry);
-							break;
-						case 30:
-						case 31:
-							$ordDir[] = filectime($dir . '/' . $entry);
-							break;
-						case 40:
-						case 41:
-							$ordDir[] = filesize($dir . '/' . $entry);
-							break;
-					}
-				} else {
-					$arFile[] = $entry;
-					switch($ord){
-						case 10:
-						case 11:
-							$ordFile[] = $entry;
-							break;
-						case 20:
-						case 21:
-							$ordFile[] = getDataType($dir . '/' . $entry);
-							break;
-						case 30:
-						case 31:
-							$ordFile[] = filectime($dir . '/' . $entry);
-							break;
-						case 40:
-						case 41:
-							$ordFile[] = filesize($dir . '/' . $entry);
-							break;
-					}
+		while(($entry = $dir_obj->read()) !== false){
+			if($entry == '.' || $entry == '..'){
+				continue;
+			}
+			if(is_link($dir . '/' . $entry) || is_dir($dir . '/' . $entry)){
+				$arDir[] = $entry;
+				switch($ord){
+					case 10:
+					case 11:
+						$ordDir[] = $entry;
+						break;
+					case 20:
+					case 21:
+						$ordDir[] = getDataType($dir . '/' . $entry);
+						break;
+					case 30:
+					case 31:
+						$ordDir[] = filectime($dir . '/' . $entry);
+						break;
+					case 40:
+					case 41:
+						$ordDir[] = filesize($dir . '/' . $entry);
+						break;
+				}
+			} else {
+				$arFile[] = $entry;
+				switch($ord){
+					case 10:
+					case 11:
+						$ordFile[] = $entry;
+						break;
+					case 20:
+					case 21:
+						$ordFile[] = getDataType($dir . '/' . $entry);
+						break;
+					case 30:
+					case 31:
+						$ordFile[] = filectime($dir . '/' . $entry);
+						break;
+					case 40:
+					case 41:
+						$ordFile[] = filesize($dir . '/' . $entry);
+						break;
 				}
 			}
 		}
@@ -109,15 +108,15 @@ function readFiles($dir){
 		case 20:
 		case 30:
 		case 40:
-			asort($ordDir);
-			asort($ordFile);
+			asort($ordDir,SORT_NATURAL|SORT_FLAG_CASE);
+			asort($ordFile,SORT_NATURAL|SORT_FLAG_CASE);
 			break;
 		case 11:
 		case 21:
 		case 31:
 		case 41:
-			arsort($ordDir);
-			arsort($ordFile);
+			arsort($ordDir,SORT_NATURAL|SORT_FLAG_CASE);
+			arsort($ordFile,SORT_NATURAL|SORT_FLAG_CASE);
 			break;
 	}
 
@@ -140,7 +139,6 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'selectors.css') .
  we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js') .
  we_html_element::jsElement('top.allentries=' . ($files ? '["' . (implode('","', $files)) . '"]' : '[]') . ';');
-
 ?>
 </head>
 <body onload="WE().util.setIconOfDocClass(document, 'treeIcon');doScrollTo();">
@@ -165,28 +163,25 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 				$type = $isfolder ? g_l('contentTypes', '[folder]') : getDataType($dir . '/' . $entry);
 				$ext = strrchr($name, '.');
 
-				if(defined('supportDebugging')){
-					$indb = false;
-				} else {
-					switch($entry){
-						case 'webEdition':
-						case WE_THUMBNAIL_DIRECTORY:
-						case $thumbFold:
+				switch($entry){
+					case 'webEdition':
+					case WE_THUMBNAIL_DIRECTORY:
+					case $thumbFold:
+						$indb = 'folder';
+						break;
+					default:
+						if((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry === "download")){
 							$indb = 'folder';
-							break;
-						default:
-							if((preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/|', $dir) || preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition$|', $dir)) && (!preg_match('|^' . $_SERVER['DOCUMENT_ROOT'] . '/?webEdition/we_backup|', $dir) || $entry === "download")){
-								$indb = 'folder';
-							} else {
-								$indb = isset($fileContentTypes[$entry]) ? $fileContentTypes[$entry] : false;
-							}
-					}
+						} else {
+							$indb = isset($fileContentTypes[$entry]) ? $fileContentTypes[$entry] : false;
+						}
 				}
+				$indb = defined('supportDebugging') ? false : $indb;
 				switch($entry){
 					case '.':
 					case '..':
 						$show = false;
-						break;
+						continue;
 					default:
 						switch($contentFilter){
 							case '':
@@ -211,7 +206,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(old);}},500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 							$cursor = 'cursor:pointer;';
 						}
-					} else if(!$indb){
+					} else {
 						if($isfolder){
 							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEdit(old);}},500); old=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
 							$ondblclick = 'onDblClick="wasdblclick=true;clearTimeout(tout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
