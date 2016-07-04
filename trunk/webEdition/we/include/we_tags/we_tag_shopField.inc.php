@@ -27,8 +27,7 @@ function we_tag_shopField(array $attribs){
 		return $foo;
 	}
 
-
-	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
+	$name = weTag_getAttribute("_name_orig", $attribs, '', we_base_request::STRING);
 	$reference = weTag_getAttribute("reference", $attribs, '', we_base_request::STRING);
 	$shopname = weTag_getAttribute("shopname", $attribs, '', we_base_request::STRING);
 
