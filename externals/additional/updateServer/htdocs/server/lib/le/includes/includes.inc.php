@@ -8,6 +8,7 @@ require_once(LIVEUPDATE_SERVER_DIR . "/../conf/define.inc.php");
 // include the PEAR Db class
 require_once(LIVEUPDATE_SERVER_DIR.'/../database/we_database_base.class.php');
 require_once(LIVEUPDATE_SERVER_DIR.'/../database/we_database_mysqli.class.php');
+require_once(LIVEUPDATE_SERVER_DIR.'/../include/we_db_tools.inc.php');
 
 // include system classes
 require_once(SHARED_DIR . '/includes/classes/bannerBase.class.php');

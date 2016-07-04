@@ -233,9 +233,6 @@ class installerDownload extends installer{
 
 			if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
 				$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
-				if ($success) {
-					$success = rename($allFiles[$i], $allFiles[$i]);
-				}
 
 			}
 

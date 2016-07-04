@@ -289,6 +289,7 @@ print $newResponse->getOutput();
 	 *
 	 * @return string
 	 */
+	//FIXME: this should be obsolete, as it is moved to liveUpdateResponseServer.class.php
 	static function getOverwriteClassesCode(){
 		return '
 if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . "updateClient/liveUpdateFunctionsServer.class.php")){
@@ -310,10 +311,12 @@ if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . \'updateClient/live
 	require_once(LIVEUPDATE_DIR . \'updateClient/liveUpdateServer.class.php\');
 }
 
-function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
-	liveUpdateFunctionsServer::liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext);
+if(!function_exists("liveUpdateErrorHandler")){
+	function liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext) {
+		liveUpdateFunctionsServer::liveUpdateErrorHandler($errno, $errstr , $errfile , $errline, $errcontext);
+	}
+	set_error_handler("liveUpdateErrorHandler");
 }
-set_error_handler("liveUpdateErrorHandler");
 ';
 	}
 

@@ -1,7 +1,6 @@
 <?php
 
 class installer extends installerBase{
-
 	static $LanguageIndex = "installer";
 
 	/**
@@ -42,7 +41,7 @@ class installer extends installerBase{
 			top.decreaseSpeed = false;
 			top.nextUrl = "' . $nextUrl . '";
 			top.leProgressBar.set("leProgress", "' . $progress . '");
-			top.leContent.' . $appendMessageLogJs . '("' . $message . '\n");
+			top.leContent.' . $appendMessageLogJs . '("' . str_replace(["\r", "\n"], '', $message) . '\n");
 			' . $activateStep . '
 			window.setTimeout("top.leForm.proceedUrl();", 500);
 		</script>';
@@ -58,7 +57,7 @@ class installer extends installerBase{
 	static function getErrorMessage($headline = '', $message = ''){
 
 		if(!$headline){
-			$headline = "<br /><strong class=\'errorText\'>" . (empty($GLOBALS['lang'][self::$LanguageIndex][$_REQUEST['detail'] . 'Error'])?$_REQUEST['detail']:$GLOBALS['lang'][self::$LanguageIndex][$_REQUEST['detail'] . 'Error']) . '</strong>';
+			$headline = "<br /><strong class=\'errorText\'>" . (empty($GLOBALS['lang'][self::$LanguageIndex][$_REQUEST['detail'] . 'Error']) ? $_REQUEST['detail'] : $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST['detail'] . 'Error']) . '</strong>';
 		}
 
 		if($message){

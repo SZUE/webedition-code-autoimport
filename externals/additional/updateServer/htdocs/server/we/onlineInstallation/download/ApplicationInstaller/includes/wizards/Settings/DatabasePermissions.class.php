@@ -97,9 +97,8 @@ EOF;
 
 		$Result = mysqli_query($Resource, 'SHOW COLLATION WHERE Charset="utf8" OR Charset LIKE "latin%"');
 
-		if(mysqli_connect_errno()){
-			$Charsets = array();
-		} else {
+		$Charsets = array();
+		if(!mysqli_connect_errno()){
 			$Charsets = array();
 			while(($Row = mysqli_fetch_array($Result))){
 				$Charsets[$Row['Charset']][] = $Row['Collation'];
@@ -112,7 +111,7 @@ EOF;
 
 		ksort($Charsets);
 		$Select = '<select name="le_db_collation" id="le_db_collation" class="textselect" style="width: 293px;" onblur="this.className=\'textselect\';" onfocus="this.className=\'textselectselected\'"' . ($Checked ? '' : ' disabled="disabled"') . ">";
-		$Select .= '<option value="-1"' . ($SelectedCollation == "-1" ? 'selected="selected"' : "") . ">" . $this->Language['defaultCollation'] . '</option>';
+		//$Select .= '<option value="-1"' . ($SelectedCollation == "-1" ? 'selected="selected"' : "") . ">" . $this->Language['defaultCollation'] . '</option>';
 		foreach($Charsets as $Charset => $Collations){
 			$Select .= '<optgroup label="' . $Charset . '">';
 

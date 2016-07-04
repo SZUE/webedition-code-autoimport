@@ -409,10 +409,6 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 
 			if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
 				$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
-				if ($success) {
-					$success = rename($allFiles[$i], $allFiles[$i]);
-
-				}
 			}
 		}
 		$message .= "</ul>";
@@ -515,11 +511,11 @@ if ($success) {
 
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
-		if($_SESSION["we_db_charset"] == "utf8"){
+		if(empty($_SESSION["we_db_charset"]) || $_SESSION["we_db_charset"] == "utf8"){
 			$_SESSION['client_default_charset'] = 'UTF-8';
 			$_SESSION['client_backend_charset'] = 'UTF-8';
 		} else {
-			$_SESSION['client_default_charset'] = '';
+			$_SESSION['client_default_charset'] = 'ISO-8859-15';
 			$_SESSION['client_backend_charset'] = 'ISO-8859-1';
 		}
 

@@ -179,12 +179,10 @@ class leStep{
 
 		$this->liveUpdateHttpResponse = $this->getLiveUpdateHttpResponse();
 
-		if($this->liveUpdateHttpResponse){
-			if($this->liveUpdateHttpResponse->Type == "executeOnline"){
-				$code = $this->liveUpdateHttpResponse->Code;
-				$this->liveUpdateHttpResponse = null;
-				return eval('?>' . $code);
-			}
+		if($this->liveUpdateHttpResponse && $this->liveUpdateHttpResponse->Type == 'executeOnline'){
+			$code = $this->liveUpdateHttpResponse->Code;
+			$this->liveUpdateHttpResponse = null;
+			return eval('?>' . $code);
 		}
 
 		return LE_STEP_NEXT;

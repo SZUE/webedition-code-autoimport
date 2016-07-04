@@ -285,8 +285,9 @@ if ($success) {
 				$files[' . $path . '] = "' . $content . '";';
 		}
 
-		$retArray['Type'] = 'eval';
-		$retArray['Code'] = '<?php
+		return array(
+			'Type' => 'eval',
+			'Code' => '<?php
 
 ' . updateUtil::getOverwriteClassesCode() . '
 
@@ -327,9 +328,7 @@ if ($success) {
 } else {
 	' . installer::getErrorMessageResponsePart() . '
 }
-?>';
-
-		return $retArray;
+?>');
 	}
 
 	/**
@@ -467,9 +466,6 @@ for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success &&
 
 	if ($liveUpdateFnc->isPhpFile($allFiles[$i])) {
 		$success = $liveUpdateFnc->filePutContent($allFiles[$i], $liveUpdateFnc->preparePhpCode($content, ".php", "' . $_SESSION['clientExtension'] . '"));
-		if ($success) {
-			$success = rename($allFiles[$i], $allFiles[$i]);
-		}
 	}
 }
 
@@ -622,9 +618,12 @@ if ($success) {
 
 		$d = dir(LIVEUPDATE_SERVER_DOWNLOAD_DIR);
 		while($entry = $d->read()){
-
-			if(!($entry == '.' || $entry == '..')){
-				$availableInstallers[str_replace('version', '', $entry)] = $entry;
+			switch($entry){
+				case '.':
+				case '..':
+					continue;
+				default:
+					$availableInstallers[str_replace('version', '', $entry)] = $entry;
 			}
 		}
 		$d->close();
@@ -684,7 +683,7 @@ if ($success) {
 top.frames["updatecontent"].decreaseSpeed = false;
 top.frames["updatecontent"].nextUrl = "' . $nextUrl . '";
 top.frames["updatecontent"].setProgressBar("' . $progress . '");
-top.frames["updatecontent"].appendMessageLog("' . $message . '\n");
+top.frames["updatecontent"].appendMessageLog("' . str_replace(["\n", "\r"], '', $message) . '\n");
 ' . $activateStep . '
 window.setTimeout("top.frames[\"updatecontent\"].proceedUrl();", 50);
 </script>';

@@ -3,45 +3,61 @@
 class update extends updateBase{
 
 	static function updateLogStart(){
-		$GLOBALS['DB_WE']->query("INSERT INTO " . UPDATELOG_TABLE . " SET " .
-			" date=NOW(),installedVersion='" . updateUtil::version2number($_SESSION['clientVersion']) . "'" .
-			(isset($_SESSION['clientSubVersion']) ? ",installedSvnRevision='" . $_SESSION['clientSubVersion'] . "'" : '') .
-			(isset($_SESSION['clientVersionBranch']) ? ",installedVersionBranch='" . $_SESSION['clientVersionBranch'] . "'" : '') .
-			(isset($_SESSION['clientPhpVersion']) ? ",clientPhpVersion='" . $_SESSION['clientPhpVersion'] . "'" : '') .
-			(isset($_SESSION['clientPhpExtensions']) ? ",clientPhpExtensions='" . $_SESSION['clientPhpExtensions'] . "'" : '') .
-			(isset($_SESSION['clientPcreVersion']) ? ",clientPcreVersion='" . $_SESSION['clientPcreVersion'] . "'" : '') .
-			(isset($_SESSION['clientMySQLVersion']) ? ",clientMySqlVersion='" . $_SESSION['clientMySQLVersion'] . "'" : '') .
-			(isset($_SESSION['clientServerSoftware']) ? ",clientServerSoftware='" . $_SESSION['clientServerSoftware'] . "'" : '') .
-			(isset($_SESSION['clientEncoding']) ? ",clientEncoding='" . $_SESSION['clientEncoding'] . "'" : '') .
-			(isset($_SESSION['clientSyslng']) ? ",clientSysLng='" . $_SESSION['clientSyslng'] . "'" : '') .
-			(isset($_SESSION['clientLng']) ? ",clientLng='" . $_SESSION['clientLng'] . "'" : '') .
-			(isset($_SESSION['clientExtension']) ? ",clientExtension='" . $_SESSION['clientExtension'] . "'" : '') .
-			(isset($_SESSION['clientDomain']) ? ",clientDomain='" . base64_encode($_SESSION['clientDomain']) . "'" : '') .
-			(isset($_SESSION['clientInstalledLanguages']) ? ",installedLanguages='" . implode(',', $_SESSION['clientInstalledLanguages']) . "'" : '') .
-			(isset($_SESSION['clientInstalledModules']) ? ",installedModules='" . implode(',', $_SESSION['clientInstalledModules']) . "'" : '') .
-			(isset($_SESSION['clientInstalledAppMeta']) ? ",installedAppMeta='" . print_r($_SESSION['clientInstalledAppMeta'], true) . "'" : '') .
-			(isset($_SESSION['clientDBcharset']) ? ",installedDbCharset='" . $_SESSION['clientDBcharset'] . "'" : '') .
-			(isset($_SESSION['clientDBcollation']) ? ",installedDbCollation='" . $_SESSION['clientDBcollation'] . "'" : '') .
-			(isset($_SESSION['testUpdate']) ? ",testUpdate='" . $_SESSION['testUpdate'] . "'" : '')
+		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATELOG_TABLE . ' SET date=NOW(),' .
+			we_database_base::arraySetter([
+				"installedVersion" => updateUtil::version2number($_SESSION['clientVersion']),
+				'installedSvnRevision' => (isset($_SESSION['clientSubVersion']) ? $_SESSION['clientSubVersion'] : ''),
+				'installedVersionBranch' => (isset($_SESSION['clientVersionBranch']) ? $_SESSION['clientVersionBranch'] : ''),
+				'clientPhpVersion' => (isset($_SESSION['clientPhpVersion']) ? $_SESSION['clientPhpVersion'] : ''),
+				'clientPhpExtensions' => (isset($_SESSION['clientPhpExtensions']) ? $_SESSION['clientPhpExtensions'] : ''),
+				'clientPcreVersion' => (isset($_SESSION['clientPcreVersion']) ? $_SESSION['clientPcreVersion'] : ''),
+				'clientMySqlVersion' => (isset($_SESSION['clientMySQLVersion']) ? $_SESSION['clientMySQLVersion'] : ''),
+				'clientServerSoftware' => (isset($_SESSION['clientServerSoftware']) ? $_SESSION['clientServerSoftware'] : ''),
+				'clientEncoding' => (isset($_SESSION['clientEncoding']) ? $_SESSION['clientEncoding'] : ''),
+				'clientSysLng' => (isset($_SESSION['clientSyslng']) ? $_SESSION['clientSyslng'] : ''),
+				'clientLng' => (isset($_SESSION['clientLng']) ? $_SESSION['clientLng'] : ''),
+				'clientExtension' => (isset($_SESSION['clientExtension']) ? $_SESSION['clientExtension'] : ''),
+				'clientDomain' => (isset($_SESSION['clientDomain']) ? base64_encode($_SESSION['clientDomain']) : ''),
+				'installedLanguages' => (isset($_SESSION['clientInstalledLanguages']) ? implode(',', $_SESSION['clientInstalledLanguages']) : ''),
+				'installedModules' => (isset($_SESSION['clientInstalledModules']) ? implode(',', $_SESSION['clientInstalledModules']) : ''),
+				'installedAppMeta' => (isset($_SESSION['clientInstalledAppMeta']) ? print_r($_SESSION['clientInstalledAppMeta'], true) : ''),
+				'installedDbCharset' => (isset($_SESSION['clientDBcharset']) ? $_SESSION['clientDBcharset'] : ''),
+				'installedDbCollation' => (isset($_SESSION['clientDBcollation']) ? $_SESSION['clientDBcollation'] : ''),
+				'testUpdate' => (isset($_SESSION['testUpdate']) ? $_SESSION['testUpdate'] : '')
+			])
 		);
 		$_SESSION['db_log_id'] = $GLOBALS['DB_WE']->getInsertId();
 	}
 
 	static function updateLogAvail($verarray){
-		$GLOBALS['DB_WE']->query("UPDATE " . UPDATELOG_TABLE . " SET installedSvnRevisionDB='" . (empty($verarray['svnrevisionDB']) ? '' : $verarray['svnrevisionDB']) . "', newestVersion='" . $verarray['version'] . "', newestVersionStatus='" . $verarray['type'] . "', newestSvnRevision='" . $verarray['svnrevision'] . "', newestVersionBranch='" . (empty($verarray['versionBranch']) ? '' : $verarray['versionBranch']) . "' WHERE id='" . $_SESSION['db_log_id'] . "'");
+		$GLOBALS['DB_WE']->query('UPDATE ' . UPDATELOG_TABLE . ' SET ' .
+			we_database_base::arraySetter([
+				'installedSvnRevisionDB' => (empty($verarray['svnrevisionDB']) ? '' : $verarray['svnrevisionDB']),
+				'newestVersion' => $verarray['version'],
+				'newestVersionStatus' => $verarray['type'],
+				'newestSvnRevision' => $verarray['svnrevision'],
+				'newestVersionBranch' => (empty($verarray['versionBranch']) ? '' : $verarray['versionBranch'])
+			]) .
+			' WHERE id=' . intval($_SESSION['db_log_id']));
 	}
 
 	static function updateLogTarget(){
 		$version = $_SESSION['clientTargetVersionNumber'];
-		$versionname = update::getVersionName($version);
-		$svnrevision = update::getSubVersion($version);
-		$versiontype = update::getVersionType($version);
-		$versionbranch = update::getOnlyVersionBranch($version);
-		$GLOBALS['DB_WE']->query("UPDATE " . UPDATELOG_TABLE . " SET updatedVersion = '" . $version . "', updatedVersionName = '" . $versionname . "', updatedVersionStatus = '" . $versiontype . "', updatedSvnRevision = '" . $svnrevision . "', updatedVersionBranch = '" . $versionbranch . "', success = '1' WHERE id='" . $_SESSION['db_log_id'] . "'");
+
+		$GLOBALS['DB_WE']->query('UPDATE ' . UPDATELOG_TABLE . ' SET ' .
+			we_database_base::arraySetter([
+				'updatedVersion' => $version,
+				'updatedVersionName' => update::getVersionName($version),
+				'updatedVersionStatus' => update::getVersionType($version),
+				'updatedSvnRevision' => update::getSubVersion($version),
+				'updatedVersionBranch' => update::getOnlyVersionBranch($version),
+				'success' => 1,
+			]) .
+			'WHERE id=' . intval($_SESSION['db_log_id']));
 	}
 
 	static function updateLogFinish($success){
-		$GLOBALS['DB_WE']->query('UPDATE ' . UPDATELOG_TABLE . " SET success='" . $success . "' WHERE id='" . $_SESSION['db_log_id'] . "'");
+		$GLOBALS['DB_WE']->query('UPDATE ' . UPDATELOG_TABLE . ' SET success=' . intval($success) . ' WHERE id=' . intval($_SESSION['db_log_id']));
 	}
 
 	static function checkRequirements(&$output, $pcreV, $phpextensionsstring, $phpV, $mysqlV = ''){
@@ -247,7 +263,7 @@ class update extends updateBase{
 		$versionQuery = '';
 		if($_SESSION['clientVersionNumber'] == $_SESSION['clientTargetVersionNumber']){ // repeat Update
 			$startversion = updateUtil::getLastSnapShot($_SESSION['clientTargetVersionNumber']);
-			$versionQuery = '( version >= ' . $startversion . ' AND version <= ' . $_SESSION['clientTargetVersionNumber'] . ' )';
+			$versionQuery = '(version >= ' . $startversion . ' AND version <= ' . $_SESSION['clientTargetVersionNumber'] . ' )';
 		} else { // normal update
 			$versionQuery = '(version > ' . $_SESSION['clientVersionNumber'] . ' AND version <= ' . $_SESSION['clientTargetVersionNumber'] . ')';
 		}
