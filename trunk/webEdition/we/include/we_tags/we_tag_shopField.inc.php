@@ -47,7 +47,7 @@ function we_tag_shopField(array $attribs){
 	$mode = weTag_getAttribute('mode', $attribs, '', we_base_request::STRING);
 
 	$fieldname = ($reference === 'article' ? WE_SHOP_ARTICLE_CUSTOM_FIELD : WE_SHOP_CART_CUSTOM_FIELD) . '[' . $name . ']';
-	$savedVal = '';
+	
 	$isFieldForCheckBox = false;
 
 	if($reference === 'article'){ // name depends on value
