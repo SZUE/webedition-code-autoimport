@@ -280,12 +280,14 @@ function we_tag_listview(array $attribs){
 			 */
 			$id = !empty($GLOBALS['WE_COLLECTION_ID']) ? $GLOBALS['WE_COLLECTION_ID'] :
 				((isset($GLOBALS['lv']) && (intval($GLOBALS['lv']->f($name)) > 0)) ? intval($GLOBALS['lv']->f($name)) :
-				((isset($GLOBALS['we_doc']) && ($collectionID = $GLOBALS['we_doc']->getElement($name, 'bdid'))) ? $collectionID : $id));
+					((isset($GLOBALS['we_doc']) && ($collectionID = $GLOBALS['we_doc']->getElement($name, 'bdid'))) ? $collectionID : $id));
 
 			$GLOBALS['lv'] = new we_listview_collectionItems($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $doctype, $we_lv_cats, $we_lv_catOr, $casesensitive, $we_lv_ws, $we_lv_ct, $cols, $we_lv_se, $cond, $we_lv_calendar, $we_lv_datefield, $we_lv_date, $we_lv_weekstart, $we_lv_categoryids, $cfilter, $we_lv_subfolders, $customers, $id, $we_lv_languages, $we_lv_numorder, $hidedirindex, $triggerid);
 			break;
 
 		default:
+			echo parseError('Unknown type ' . $type);
+			return;
 	}
 
 	we_pre_tag_listview();
