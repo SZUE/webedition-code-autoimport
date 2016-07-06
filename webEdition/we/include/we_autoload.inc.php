@@ -37,7 +37,7 @@ if(ini_set('include_path', WE_LIB_PATH . PATH_SEPARATOR . WE_APPS_PATH . PATH_SE
 	t_e('unable to add webEdition to include path! Expect Problems!');
 }
 
-include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/fixOldPhp.inc.php');
+//include_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/fixOldPhp.inc.php');
 
 //make we_autoloader the first autoloader
 $ret = spl_autoload_register('we_autoloader::autoload', false, true);

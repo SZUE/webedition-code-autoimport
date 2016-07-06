@@ -1216,14 +1216,6 @@ function we_serialize($array, $target = SERIALIZE_PHP, $numeric = false, $compre
 	return $compression ? gzcompress($ret, $compression) : $ret;
 }
 
-if(!function_exists('hex2bin')){//FIXME: remove if php >= 5.4
-
-	function hex2bin($hex_string){
-		return pack("H*", $hex_string);
-	}
-
-}
-
 function updateAvailable(){
 	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json')? : ''), true);
 	if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 /* ||
