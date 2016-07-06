@@ -41,6 +41,10 @@
  */
 $LU_Version = "###VERSION###";
 
+if(version_compare(PHP_VERSION, '5.3.0', '<')){
+	die('PHP Version 5.3 or newer required.');
+}
+
 function le_errorhandler($type, $message, $file, $line, $context){
 	$_backtrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
 	$data = array(
@@ -143,15 +147,6 @@ $_SESSION['testUpdate'] = $leApplicationList[$_SESSION['leApplication']]['testUp
  *
  */
 $OnlineInstaller->initialize();
-
-
-if(version_compare(phpversion(), '5.0') < 0){
-	eval('
-			function clone($object) {
-				return $object;
-			}
-		');
-}
 
 function _getServerProtocol(){
 

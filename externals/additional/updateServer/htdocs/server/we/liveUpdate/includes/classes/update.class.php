@@ -6,9 +6,12 @@ class update extends updateBase{
 		$apps = [];
 		if(isset($_SESSION['clientInstalledAppMeta'])){
 			foreach($_SESSION['clientInstalledAppMeta'] as $cur){
-				$apps[] = $cur['name'];
+				if($cur['name'] !== 'toolfactory'){
+					$apps[] = $cur['name'];
+				}
 			}
 		}
+		sort($apps);
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATELOG_TABLE . ' SET date=NOW(),' .
 			we_database_base::arraySetter([
 				"installedVersion" => updateUtil::version2number($_SESSION['clientVersion']),

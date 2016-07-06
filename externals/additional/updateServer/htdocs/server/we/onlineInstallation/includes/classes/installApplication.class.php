@@ -613,6 +613,7 @@ if ($success) {
 			$retArray['Code'] .= '$query = sprintf("' . $tblPrefsQuery['replace'] . '", $_SESSION[\'le_db_prefix\'], "' . $_SESSION['clientSyslngNEW'] . '", "' . $backendCH . '");';
 		} else {
 			$retArray['Code'] .= '$query = sprintf("' . $tblPrefsQuery['replace'] . '", $_SESSION[\'le_db_prefix\'], "' . $_SESSION['clientSyslngNEW'] . '", "' . $GLOBALS["lang"]["installApplication"]["rss_feed_url"] . '");';
+			$backendCH = '';
 		}
 		$retArray['Code'] .= '
 		if (!$leDB->query($query)) {
