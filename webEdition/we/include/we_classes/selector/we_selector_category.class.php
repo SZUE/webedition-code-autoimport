@@ -113,7 +113,10 @@ var we_editCatID="";
 var old=0;
 var noChoose=' . intval($this->noChoose) . ';
 
-g_l.new_cat_name="' . g_l('fileselector', '[new_cat_name]') . '";
+WE().consts.g_l.selectors.category={
+	new_cat_name:"' . g_l('fileselector', '[new_cat_name]') . '",
+	we_filename_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('weEditor', '[category][we_filename_notValid]')) . '",
+};
 
 options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 ');
@@ -420,20 +423,15 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 		$_SESSION['weS']["we_catVariant"] = $variant;
 		$description = "";
 		if($showPrefs){
-			$db = new DB_WE();
-			$result = getHash('SELECT ID,Category,Title,Description,Path,ParentID FROM ' . CATEGORY_TABLE . ' WHERE ID=' . $showPrefs, $db);
+			$result = getHash('SELECT c.ID,c.Category,c.Title,c.Description,c.Path,c.ParentID,cc.Path AS PPath FROM ' . CATEGORY_TABLE . ' c LEFT JOIN ' . CATEGORY_TABLE . ' cc ON c.ParentID=cc.ParentID WHERE c.ID=' . $showPrefs);
 
-			$path = ($result["ParentID"] ?
-					(f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($result["ParentID"]), '', $db)? :
-						'/'
-					) :
-					'/');
+			$path = ($result['ParentID'] ? ($result['PPath']? : '/' ) : '/');
 
-			$parentId = $result ? $result["ParentID"] : 0;
-			$category = $result ? $result["Category"] : '';
-			$catID = $result ? intval($result["ID"]) : 0;
+			$parentId = $result ? $result['ParentID'] : 0;
+			$category = $result ? $result['Category'] : '';
+			$catID = $result ? intval($result['ID']) : 0;
 			$title = $result ? $result['Title'] : '';
-			$description = $result ? $result["Description"] : '';
+			$description = $result ? $result['Description'] : '';
 
 			$dir_chooser = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file', document.we_form.elements.FolderID.value, '" . CATEGORY_TABLE . "', 'document.we_form.elements.FolderID.value', 'document.we_form.elements.FolderIDPath.value', '', '', '', '1', '', 'false', 1)");
 
@@ -450,13 +448,13 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$yuiSuggest->setSelectButton($dir_chooser, 10);
 			$yuiSuggest->setContainerWidth(350);
 
-			$table = new we_html_table(array("class" => 'default'), 6, 3);
+			$table = new we_html_table(array('class' => 'default'), 6, 3);
 
-			$table->setCol(0, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), '<b>' . g_l('weClass', '[category]') . '</b>');
-			$table->setCol(0, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("Category", 50, $category, "", ' id="category"', "text", 360));
+			$table->setCol(0, 0, array('style' => 'width:100px; padding: 0px 0px 10px 0px;', "class" => "defaultfont"), '<b>' . g_l('weClass', '[category]') . '</b>');
+			$table->setCol(0, 1, array('colspan' => 2, 'style' => 'width:350px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'), we_html_tools::htmlTextInput("Category", 50, $category, "", ' id="category"', "text", 360));
 
-			$table->setCol(1, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), "<b>ID</b>");
-			$table->setCol(1, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), $catID);
+			$table->setCol(1, 0, array('style' => 'width:100px; padding: 0px 0px 10px 0px;', "class" => "defaultfont"), "<b>ID</b>");
+			$table->setCol(1, 1, array('colspan' => 2, 'style' => 'width:350px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'), $catID);
 
 			$table->setCol(2, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), '<b>' . g_l('weClass', '[dir]') . '</b>');
 			$table->setCol(2, 1, array("style" => "width:240px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), $yuiSuggest->getHTML());
@@ -465,13 +463,13 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
 			$table->setCol(4, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), "<b>" . g_l('global', '[description]') . "</b>");
 			$table->setCol(4, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_forms::weTextarea("catDescription", $description, array(
-				"bgcolor" => "white",
-				"inlineedit" => "true",
-				"wysiwyg" => "true",
-				"width" => 450,
-				"height" => 130,
-				'commands'=>'prop,fontsize,xhtmlxtras,color,justify,list,link,table,insert,fullscreen,visibleborders,editsource'
-				), true, 'autobr', true, true, true, true, true, ""));
+					"bgcolor" => "white",
+					"inlineedit" => "true",
+					"wysiwyg" => "true",
+					"width" => 450,
+					"height" => 130,
+					'commands' => 'prop,fontsize,xhtmlxtras,color,justify,list,link,table,insert,fullscreen,visibleborders,editsource'
+					), true, 'autobr', true, true, true, true, true, ""));
 			$table->setCol(5, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
 		}
 
@@ -493,8 +491,8 @@ function we_cmd(){
 }
 function we_checkName() {
 	var regExp = /\'|"|>|<|\\\|\\//;
-	if(regExp.test(document.getElementById("category").value)) {' .
-				we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $path), we_message_reporting::WE_MESSAGE_ERROR) . '
+	if(regExp.test(document.getElementById("category").value)) {
+	top.we_showMessage(WE().util.sprintf(WE().consts.g_l.selectors.category.we_filename_notValid,"' . $path . '"), WE().consts.message.WE_MESSAGE_ERROR, this);
 	} else {
 		document.we_form.submit();
 	}

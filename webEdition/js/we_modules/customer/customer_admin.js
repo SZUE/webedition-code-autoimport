@@ -21,6 +21,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+/* global WE */
+
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
