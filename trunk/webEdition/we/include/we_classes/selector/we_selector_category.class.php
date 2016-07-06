@@ -450,7 +450,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$yuiSuggest->setSelectButton($dir_chooser, 10);
 			$yuiSuggest->setContainerWidth(350);
 
-			$table = new we_html_table(array("class" => 'default'), 4, 3);
+			$table = new we_html_table(array("class" => 'default'), 6, 3);
 
 			$table->setCol(0, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), '<b>' . g_l('weClass', '[category]') . '</b>');
 			$table->setCol(0, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("Category", 50, $category, "", ' id="category"', "text", 360));
@@ -463,9 +463,16 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 
 			$table->setCol(3, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), "<b>" . g_l('global', '[title]') . "</b>");
 			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
-
-			$ta = we_html_tools::htmlFormElementTable(we_html_forms::weTextarea("catDescription", $description, array("bgcolor" => "white", "inlineedit" => "true", "wysiwyg" => "true", "width" => 450, "height" => 130), true, 'autobr', true, "", true, true, true, true, ""), "<b>" . g_l('global', '[description]') . "</b>", "left", "defaultfont", "", "", "", "", "", 0);
-			$saveBut = we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();");
+			$table->setCol(4, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), "<b>" . g_l('global', '[description]') . "</b>");
+			$table->setCol(4, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_forms::weTextarea("catDescription", $description, array(
+				"bgcolor" => "white",
+				"inlineedit" => "true",
+				"wysiwyg" => "true",
+				"width" => 450,
+				"height" => 130,
+				'commands'=>'prop,fontsize,xhtmlxtras,color,justify,list,link,table,insert,fullscreen,visibleborders,editsource'
+				), true, 'autobr', true, true, true, true, true, ""));
+			$table->setCol(5, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
 		}
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
@@ -495,8 +502,8 @@ function we_checkName() {
 			weSuggest::getYuiFiles(), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
 ' . ($showPrefs ? '
 	<form action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
-		' . $table->getHtml() . "<br/>" . $ta . "<br/>" . $saveBut . '
-	</div></form>' : '' ) .
+		' . $table->getHtml() .
+				'</div></form>' : '' ) .
 			(isset($yuiSuggest) ?
 				$yuiSuggest->getYuiJs() : '') .
 			'</body>');
