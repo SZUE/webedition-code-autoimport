@@ -17,7 +17,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
   CreationDate int unsigned NOT NULL default '0',
   ModDate int unsigned NOT NULL default '0',
   RebuildDate int unsigned NOT NULL default '0',
-  `Path` varchar(1000) NOT NULL default '',
+  `Path` varchar(1023) NOT NULL default '',
   Filehash char(40) NOT NULL default '',
   TemplateID int unsigned NOT NULL default '0',
   temp_template_id int unsigned NOT NULL default '0',
