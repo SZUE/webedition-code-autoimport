@@ -140,8 +140,9 @@ abstract class we_listview_objectBase extends we_listview_base{
 		foreach($fields as $cur){
 			$extraFields.=',`' . OBJECT_FILES_TABLE . '`.' . $cur . ' AS we_wedoc_' . $cur;
 		}
-		$f = '`' . OBJECT_FILES_TABLE . '`.ID,`' . OBJECT_FILES_TABLE . '`.Templates AS OF_Templates,`' . OBJECT_FILES_TABLE . '`.ID AS OF_ID,`' . OBJECT_FILES_TABLE . '`.Category AS OF_Category,`' . OBJECT_FILES_TABLE . '`.Text AS OF_Text,`' . OBJECT_FILES_TABLE . '`.Url AS OF_Url,`' . OBJECT_FILES_TABLE . '`.TriggerID AS OF_TriggerID,`' . OBJECT_FILES_TABLE . '`.WebUserID AS OF_WebUserID,`' . OBJECT_FILES_TABLE . '`.Language AS OF_Language' . $extraFields . ($selFields ? ',' . $selFields : '');
-		$charclass = '[\!\=%&\(\)\*\+\.\/<>|~, ]';
+		$f = '`' . OBJECT_FILES_TABLE . '`.ID,`' . OBJECT_FILES_TABLE . '`.Templates AS OF_Templates,`' . OBJECT_FILES_TABLE . '`.ID AS OF_ID,`' . OBJECT_FILES_TABLE . '`.Category AS OF_Category,`' . OBJECT_FILES_TABLE . '`.Text AS OF_Text,`' . OBJECT_FILES_TABLE . '`.Url AS OF_Url,`' . OBJECT_FILES_TABLE . '`.TriggerID AS OF_TriggerID,`' . OBJECT_FILES_TABLE . '`.WebUserID AS OF_WebUserID,`' . OBJECT_FILES_TABLE . '`.Language AS OF_Language' .
+			$extraFields . ',' . ($selFields ? $selFields : '');
+		$charclass = '[\!\=%&\(\)\*\+\.\/<>\|~, ]';
 		foreach($matrix as $n => $p){
 			$n2 = $n;
 			if(strpos($n, 'we_object_') === 0){

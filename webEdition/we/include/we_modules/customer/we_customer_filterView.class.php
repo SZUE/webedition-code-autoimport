@@ -269,6 +269,9 @@ EO_SCRIPT;
 		$adv_row = '';
 
 		foreach($filter as $key => $value){
+			if(!is_array($value)||empty($value)){
+				continue;
+			}
 			$value['logic'] = trim($value['logic']);
 			$adv_row .= '
 <tr id="filterRow_' . $i . '">

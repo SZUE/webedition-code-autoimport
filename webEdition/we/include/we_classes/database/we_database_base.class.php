@@ -60,6 +60,7 @@ abstract class we_database_base{
 	/** public: connection parameters */
 	protected $Database = DB_DATABASE;
 	private static $Trigger_cnt = 0;
+	private static $queryCache = array();
 
 	/** Connects to the database, which this is done by the constructor
 	 *
@@ -403,7 +404,7 @@ abstract class we_database_base{
 			//don't kill query cache if we add errors
 			if(!strpos($Query_String, defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : 'ERROR_LOG_TABLE') || (stripos($Query_String, 'DELETE') === 0)){
 // delete getHash DB Cache
-				$this->getHash();
+				self::$queryCache = array();
 			}
 			$repool = true;
 		} elseif(preg_match('/CREATE TEMPORARY/i', $Query_String)){
@@ -668,7 +669,7 @@ abstract class we_database_base{
 
 	public function metadata($table = '', $full = false){
 		$res = [];
-
+		$hash = 'metaData' . md5($table, true) . ($full ? ' X' : '');
 		/*
 		 * Due to compatibility problems with Table we changed the behavior
 		 * of metadata();
@@ -698,6 +699,9 @@ abstract class we_database_base{
 // if no $table specified, assume that we are working with a query
 // result
 		if($table){
+			if(isset(self::$queryCache[$hash])){
+				return self::$queryCache[$hash];
+			}
 			if(!$this->query('SELECT * FROM `' . $table . '` LIMIT 1')){
 				$this->halt('Metadata query failed.');
 			}
@@ -719,12 +723,12 @@ abstract class we_database_base{
 			);
 		}
 		if($full){
-			$res["num_fields"] = $count;
+			$res['num_fields'] = $count;
 			for($i = 0; $i < $count; $i++){
-				$res["meta"][$res[$i]["name"]] = $i;
+				$res['meta'][$res[$i]['name']] = $i;
 			}
 		}
-
+		self::$queryCache[$hash] = $res;
 		$this->free();
 		return $res;
 	}
@@ -1123,17 +1127,17 @@ abstract class we_database_base{
 	public function getHash($query = '', $resultType = MYSQL_ASSOC){
 		static $cache = [];
 		if(!$query){
-			$cache = [];
-			return $cache;
+			self::$queryCache = array();
+			return array();
 		}
 		$hash = $resultType . md5($query, true);
-		if(isset($cache[$hash])){
-			return $cache[$hash];
+		if(isset(self::$queryCache[$hash])){
+			return self::$queryCache[$hash];
 		}
 		$this->query($query);
 		$data = ($this->next_record($resultType) ? $this->Record : []);
 		if($data){
-			$cache[$hash] = $data;
+			self::$queryCache[$hash] = $data;
 		}
 		$this->free();
 		return $data;

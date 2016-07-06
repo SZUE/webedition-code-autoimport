@@ -412,7 +412,7 @@ function we_tag_userInput(array $attribs, $content){
 					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') :
 					''
 				) .
-				we_html_forms::weTextarea($fieldname, ($content ? : $value), $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
+				we_html_forms::weTextarea($fieldname, ($content ? : $value), $attribs, $autobr, 'autobr', $showAutobr, false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
 
 		case 'checkbox' :
 			$atts = removeAttribs($attribs, array(

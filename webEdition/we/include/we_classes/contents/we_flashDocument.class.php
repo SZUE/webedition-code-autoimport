@@ -49,7 +49,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 		if($sizingstyle === 'none'){
 			$sizingstyle = false;
 		}
-		$removeAttribs = array('sizingrel', 'sizingbase', 'sizingstyle', 'xml');
+		$removeAttribs = array('sizingrel', 'sizingbase', 'sizingstyle', 'xml', '_name_orig');
 		if($sizingstyle){
 			$style_width = round($attribs['width'] / $sizingbase, 6);
 			$style_height = round($attribs['height'] / $sizingbase, 6);
@@ -59,7 +59,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 		}
 
 		$this->setElement('xml', weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL));
-		$attribs = removeAttribs($attribs, $removeAttribs, 'attrib');
+		$attribs = removeAttribs($attribs, $removeAttribs);
 
 		foreach($attribs as $a => $b){
 			if($b != ''){
@@ -141,7 +141,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 
 			//   handle with params
 			$params['movie'] = $src; //  always needed
-			$params = removeAttribs($params, array('xml', 'to', 'nameto'));
+			$params = removeAttribs($params, array('xml', 'to', 'nameto', '_name_orig'));
 
 			foreach($params as $k => $v){
 				if($v !== ''){

@@ -52,15 +52,15 @@ function we_tag_ifCat(array $attribs){
 		}
 	}
 
-	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $GLOBALS['DB_WE'], !$parent);
+	$DocCatsPaths = id_to_path($cat, CATEGORY_TABLE, $GLOBALS['DB_WE'], true);
+	$DocCatsPathsStr = implode(',', $DocCatsPaths);
 
 	foreach($categories as $match){
 		$match = '/' . trim($match, '/');
-		if($parent){
-			if(strpos($DocCatsPaths, $match . '/') !== false){
-				return true;
-			}
-		} else if(in_array($match, $DocCatsPaths)){
+		if(in_array($match, $DocCatsPaths)){
+			return true;
+		}
+		if($parent && strpos($DocCatsPathsStr, $match . '/') !== false){
 			return true;
 		}
 	}

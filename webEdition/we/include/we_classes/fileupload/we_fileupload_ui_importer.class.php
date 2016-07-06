@@ -169,10 +169,11 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 				270 => g_l('weClass', '[rotate90l]'),
 				90 => g_l('weClass', '[rotate90r]'),
 			), 1, 0, false, array('disabled' => 'disabled'), '', 0, 'weSelect optsRotateSelect');
-		$quality = we_html_element::htmlInput(array('class' => 'optsQuality', 'type' => 'range', 'title' => 'test', 'value' => 0, 'min' => 0, 'max' => 100, 'step' => 5, 'oninput' => 'this.form.qualityOutput.value = this.value', 'name' => 'quality'));
-		$qualityOutput = we_html_baseElement::getHtmlCode(new we_html_baseElement('output', true, array('name' => 'qualityOutput', 'for' => "fu_doc_quality"), 0));
+		$quality = we_html_element::htmlDiv(array('class' => 'qualityInputContainer'), we_html_element::htmlInput(array('disabled' => true, 'class' => 'optsQuality', 'type' => 'range', 'title' => 'test', 'value' => 0, 'min' => 0, 'max' => 100, 'step' => 5, 'oninput' => 'this.parentNode.nextSibling.innerHTML = this.value', 'name' => 'quality')));
+		$qualityOutput = we_html_element::htmlDiv(array('class' => 'qualityValueContainer'), '0');
+
 		$inputs = we_html_element::htmlDiv(array('class' => 'optsRowTop'), $unitSelect . ' ' . $valueInput) . we_html_element::htmlDiv(array('class' => 'optsRowMiddle'), $rotateSelect) . we_html_element::htmlDiv(array('class' => 'optsRowBottom'), $quality . $qualityOutput);
-		$divEditCustom = we_html_element::htmlDiv(array('class' => 'elemOpts'), $inputs);//$btnRefresh
+		$divEditCustom = we_html_element::htmlDiv(array('class' => 'elemOpts' . (we_base_browserDetect::isIE() ? ' elemOptsIE' : '')), $inputs);
 		$btnRefresh = we_html_element::htmlDiv(array('class' => 'btnRefresh'), we_html_button::create_button(we_html_button::PROCESS, "javascript:if(!this.form.useGeneralOpts.checked && this.form.editOpts){we_FileUpload.reeditImage(null, WEFORMNUM);}", true, 0, 0, '', '', true, true, '', false, $title = 'Ausf�hren', 'weFileupload_btnImgEditRefresh'));
 
 		return str_replace(array("\r", "\n"), "", we_html_element::htmlDiv(array('class' => 'importerElem'), we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline elemNum'), 'Nr. WE_FORM_NUM') .

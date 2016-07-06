@@ -62,6 +62,7 @@ class we_selector_query{
 	 */
 	function queryTable($search, $table, array $types, $limit = null){
 		$userExtraSQL = $this->getUserExtraQuery($table);
+		$isFolder = 1;
 
 		switch($table){
 			case USER_TABLE:
@@ -69,11 +70,13 @@ class we_selector_query{
 				$typeField = "Type";
 				break;
 			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
-				$typeField = "ContentType";
+				$typeField = 'ContentType';
 				$userExtraSQL = '';
 				break;
-			case VFILE_TABLE:
 			case CATEGORY_TABLE:
+				$isFolder = 1;
+				break;
+			case VFILE_TABLE:
 			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
 				break;
 			default:
@@ -81,7 +84,7 @@ class we_selector_query{
 		}
 
 		$where = 'Path="' . $this->db->escape($search) . '"';
-		$isFolder = 1;
+
 		$addCT = 0;
 
 		$types = array_unique(array_filter($types));

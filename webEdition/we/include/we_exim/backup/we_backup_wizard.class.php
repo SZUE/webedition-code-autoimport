@@ -804,9 +804,7 @@ function startStep(){
 			$progress->setStudLen(200);
 			$progress->addText($text, 0, "current_description");
 			$head.=$progress->getJSCode('top.busy');
-			$pg = $progress->getHtml('', 'margin-left:15px');
-		} else {
-			$pg = '';
+			$table->setCol(0, 0, array('style' => 'text-align:left;'), $progress->getHtml('', 'margin-left:15px'));
 		}
 
 
@@ -916,7 +914,7 @@ function press_yes() {
 				break;
 		}
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $head, we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), $pg . $table->getHtml())
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $head, we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), $table->getHtml())
 		);
 	}
 

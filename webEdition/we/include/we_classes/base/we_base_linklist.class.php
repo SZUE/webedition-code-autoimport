@@ -175,7 +175,7 @@ class we_base_linklist{
 					'\';';
 			$foo = $js . "var we_win = window.open('','we_ll_" . key($this->listArray) . "',we_winOpts);";
 
-			$lattribs = removeAttribs($lattribs, array('name', 'href', 'onClick'));
+			$lattribs = removeAttribs($lattribs, array('name', 'href', 'onClick','onclick'));
 
 			$lattribs['target'] = 'we_ll_' . key($this->listArray);
 			$lattribs['onclick'] = $foo;

@@ -401,7 +401,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	public static function updateGlossar(){
-		if(is_dir(WE_GLOSSARY_MODULE_PATH . 'cache')){
+		if(defined('WE_GLOSSARY_MODULE_PATH') && is_dir(WE_GLOSSARY_MODULE_PATH . 'cache')){
 			foreach(glob(WE_GLOSSARY_MODULE_PATH . 'cache/cache_*' . '.php') as $file){
 				$name = str_replace('cache_', '', basename($file, '.php'));
 				rename($file, we_glossary_cache::cacheIdToFilename($name));

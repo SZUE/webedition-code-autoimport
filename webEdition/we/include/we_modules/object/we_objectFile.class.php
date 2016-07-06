@@ -1341,7 +1341,7 @@ class we_objectFile extends we_document{
 
 		$autobr = $this->getElement($name, 'autobr') ? : (isset($attribs['autobr']) ? $attribs['autobr'] : '');
 		$autobrName = 'we_' . $this->Name . '_text[' . $name . '#autobr]';
-		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, '', ((!empty($attribs['classes'])) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
+		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, ((!empty($attribs['classes'])) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
 
 		return ($variant ? '' : $this->getPreviewHeadline('text', $name) ) .
 			$textarea;
@@ -3193,18 +3193,23 @@ class we_objectFile extends we_document{
 		if($table != FILE_TABLE){
 			return '1';
 		}
-
+		static $wsFlag = array();
 		$parentIDs = [];
 		$pid = intval($pid);
+		$cid = intval($cid);
+
 		$parentIDs[] = $pid;
 		while($pid != 0){
 			$pid = f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($pid), '', $db);
 			$parentIDs[] = $pid;
 		}
-		$cid = intval($cid);
-		$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db);
-		$fooArr = we_unserialize($foo);
-		$flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
+		if(isset($wsFlag[$cid])){
+			$flag = $wsFlag[$cid];
+		} else {
+			$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db);
+			$fooArr = we_unserialize($foo);
+			$wsFlag[$cid] = $flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
+		}
 		$pid_tail = [];
 		if($flag){
 			$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';

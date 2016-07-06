@@ -927,7 +927,7 @@ class we_document extends we_root{
 			case 'date':
 				$val = $val ? : time();
 				$format = !empty($attribs['format']) ? $attribs['format'] : g_l('date', '[format][default]');
-				$langcode = (isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->Language ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage']);
+				$langcode = (isset($GLOBALS['WE_MAIN_DOC']) && strlen($GLOBALS['WE_MAIN_DOC']->Language) == 5 ? $GLOBALS['WE_MAIN_DOC']->Language : $GLOBALS['weDefaultFrontendLanguage']);
 
 				$date = (is_numeric($val) ? new DateTime('@' . $val) : new DateTime($val));
 				//we need to set it explicitly

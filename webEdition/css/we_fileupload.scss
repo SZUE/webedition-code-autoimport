@@ -165,6 +165,16 @@ table.importer_files{
 div.imgEditOpts{
 	display: none;
 	padding: 4px 0 6px 4px;
+	
+	div{
+		position: relative;
+		height: 30px;
+
+		div{
+			position:absolute;
+			height: 30px;
+		}
+	}
 
 	div.scaleDiv{
 		margin: 4px 0 0 0;
@@ -172,24 +182,62 @@ div.imgEditOpts{
 		div.labelContainer{
 			display: inline-block; 
 			width: 70px;
+			top: 6px;;
+			left: 0;
+
 		}
 		div.inputContainer{
 			display: inline-block;
+			top: 0;
+			left: 70px;
 
 			.optsUnitSelect{
-				width: 96px;
+				width: 104px;
+				position: absolute;
+				left: 0;
+			}
+			.optsScaleInput{
+				width: 50px;
+				position: absolute;
+				left: 154px;
+				height: 29px;
+				border-right: 0 none;
+			}
+			.optsScalePropositions{
+				position: absolute;
+				left: 185px;
+				top: 0;
+				padding: 5px 1px 5px 0px;
+				background-color: transparent;
+				height: 29px;
+				width: 40px;
+			}
+			.multiimport.optsScaleInput{
+				left: 80px;
+			}
+			.multiimport.optsScalePropositions{
+				left: 111px;
+			}
+
+		.optsScalePropositions:focus{
+				outline: none;
 			}
 		}
 	}
+
 	div.rotationDiv{
 		margin: 4px 0 0 0;
 
 		div.labelContainer{
 			display: inline-block; 
 			width: 70px;
+			top: 6px;
+			left: 0;
 		}
 		div.inputContainer{
 			display: inline-block;
+			top: 0;
+			left: 70px;
 
 			.optsRotateSelect{
 				width: 153px;
@@ -197,29 +245,37 @@ div.imgEditOpts{
 		}
 	}
 	div.qualityDiv{
-		margin: 2px 0 0 0;
+		margin: 4px 0 0 0;
 
 		div.labelContainer{
 			display: inline-block;
 			width: 70px;
+			top: 4px;
+			left: 0;
 		}
 		div.inputContainer{
 			display: inline-block;
+			top: 0;
+			left: 70px;
 			width: 130px;
 
 			input.optsQuality{
 				width: 124px;
+				margin: 0;
 			}
 		}
-		div.valueContainer{
+		div.qualityValueContainer{
 			display: inline-block;
-			padding: 0 0 0 10px;
+			padding: 0 0 0 6px;
 			width: 35px;
+			left: 200px;
+			top:4px;
 		}
 		div.btnContainer{
 			width: 53px;
 			text-align: right;
 			display: inline-block;
+			left: 247px;
 		}
 	}
 	div.btnDiv{
@@ -571,16 +627,50 @@ div.fileuploadImporter{
 							height: 22px;
 							padding: 0;
 						}
-						.optsQuality{
-							width: 115px;
-							height: 20px;
-						}
+
 						.optsRowTop,
 						.optsRowMiddle,
 						.optsRowBottom{
 							padding: 2px 0 0 0;
+							margin: 0;
+							div.qualityInputContainer{
+								display: inline-block;
+								padding-top: 4px;
+
+								.optsQuality{
+									width: 130px;
+									height: 10px;
+									margin: 0;
+								}
+							}
+
+							div.qualityValueContainer{
+								display: inline-block;
+								padding: 0 0 0 6px;
+								/*vertical-align: top;*/
+								width: 20px;
+							}
 						}
 					}
+					div.elemOptsIE{
+						.optsRowTop{
+							margin-top: 0px;
+							.optsUnitSelect{
+								display:inline-block;
+								height:22px;
+								padding-top:3px;
+							}
+							input[type=text]{
+								padding-top:3px;
+								margin:0;
+							}
+						}
+						.optsRowBottom{
+							margin-top: -12px;
+							padding-top: 0;
+						}
+					}
+
 					div.btnRefresh{
 						display: inline-block;
 						position: absolute;
