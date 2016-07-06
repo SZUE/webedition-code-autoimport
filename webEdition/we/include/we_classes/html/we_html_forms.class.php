@@ -113,7 +113,7 @@ abstract class we_html_forms{
 	 * @param string $charset
 	 *
 	 */
-	static function weTextarea($name, $value, $attribs, $autobr, $autobrName, $showAutobr = true, $path = "", $hidestylemenu = false, $forceinwebedition = false, $xml = false, $removeFirstParagraph = true, $charset = "", $showSpell = true, $isFrontendEdit = false, $origName = ""){
+	static function weTextarea($name, $value, $attribs, $autobr, $autobrName, $showAutobr = true, $hidestylemenu = false, $forceinwebedition = false, $xml = false, $removeFirstParagraph = true, $charset = "", $showSpell = true, $isFrontendEdit = false, $origName = ""){
 		if(!$charset){
 			if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->getElement('Charset')){
 				$charset = $GLOBALS['we_doc']->getElement('Charset');

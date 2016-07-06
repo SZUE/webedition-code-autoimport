@@ -1343,7 +1343,7 @@ class we_objectFile extends we_document{
 
 		$autobr = $this->getElement($name, 'autobr') ? : (isset($attribs['autobr']) ? $attribs['autobr'] : '');
 		$autobrName = 'we_' . $this->Name . '_text[' . $name . '#autobr]';
-		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, '', ((!empty($attribs['classes'])) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
+		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, ((!empty($attribs['classes'])) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
 
 		return ($variant ? '' : $this->getPreviewHeadline('text', $name) ) .
 			$textarea;

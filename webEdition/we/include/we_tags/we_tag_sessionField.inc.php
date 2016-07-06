@@ -186,7 +186,7 @@ function we_tag_sessionField(array $attribs, $content){
 					we_html_element::jsScript(JS_DIR . 'we_textarea.js');
 			}
 			return $ret .
-				we_html_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '');
+				we_html_forms::weTextarea('s[' . $name . ']', $orgVal, $attribs, $autobr, 'autobr', $showAutobr, false, false, $xml, $removeFirstParagraph, '');
 
 		case 'radio':
 			if((!isset($_SESSION['webuser'][$name])) && $checked){
