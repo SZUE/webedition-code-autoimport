@@ -455,14 +455,14 @@ $success = true;
 $allFiles = array();
 $liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
 
-for ($i=0; $success && $i<count($allFiles); $i++) {
-	/*$text = substr(basename($allFiles[$i]), -40);
+/*for ($i=0; $success && $i<count($allFiles); $i++) {
+	$text = substr(basename($allFiles[$i]), -40);
 	$message .= "<li>$text</li>";
-*/
+
 	//$success = $liveUpdateFnc->moveFile($allFiles[$i], $_SESSION["le_installationDirectory"] . substr($allFiles[$i], $preLength));
 
 }
-//$message .= "</ul>";
+$message .= "</ul>";*/
 $docRoot = isset($_SESSION["le_documentRoot"]) ? $_SESSION["le_documentRoot"] : $_SERVER["DOCUMENT_ROOT"];
 $success = rename($filesDir."webEdition", $docRoot ."/webEdition");
 
