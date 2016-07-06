@@ -139,7 +139,7 @@ abstract class we_import_functions{
 			$name_exists = false;
 			$filename = we_import_functions::correctFilename($filename);
 			$object->Text = $filename;
-			$object->Path = $object->getParentPath() . (($object->getParentPath() != "/") ? "/" : "") . $object->Text;
+			$object->Path = $object->getParentPath() . (($object->getParentPath() != '/') ? '/' : '') . $object->Text;
 			// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
 			if(($file_id = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($object->Path) . '"'))){
 				$name_exists = true;
@@ -183,8 +183,16 @@ abstract class we_import_functions{
 	 * @desc corrects the filename if it contains invalid chars
 	 */
 	static function correctFilename($filename, $allowPath = false){
-		$filename = strtr($filename, array(' ' => '-', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
-		$filename = trim(preg_replace('%[^a-z0-9\._+\-@' . ($allowPath ? '/' : '') . ']%i', '', $filename), '/');
+		$filename = preg_replace('%[^a-z0-9\._+\-@' . ($allowPath ? '/' : '') . ']%i', '', trim(strtr($filename, array(
+			' ' => '-',
+			'ä' => 'ae',
+			'ö' => 'oe',
+			'ü' => 'ue',
+			'Ä' => 'Ae',
+			'Ö' => 'Oe',
+			'Ü' => 'Ue',
+			'ß' => 'ss'
+				)), '/'));
 
 		if(!$allowPath && strlen($filename) > 100){
 			$pos = strrpos($filename, '.');
