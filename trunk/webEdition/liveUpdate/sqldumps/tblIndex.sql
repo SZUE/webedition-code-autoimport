@@ -38,7 +38,7 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   Doctype smallint unsigned NOT NULL default '0',
   Title varchar(255) NOT NULL default '',
   Description text NOT NULL,
-  Path varchar(255) NOT NULL default '',
+  Path varchar(1023) NOT NULL default '',
   Language varchar(5) default NULL,
   PRIMARY KEY (ID,ClassID,WorkspaceID),
 	FULLTEXT Text (Text)
