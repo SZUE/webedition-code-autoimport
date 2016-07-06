@@ -17,9 +17,6 @@ class liveUpdateResponseServer extends liveUpdateResponse{
 			class_alias("liveUpdateResponse", "liveUpdateResponseServer");
 		}
 
-		$liveUpdateFnc = new liveUpdateFunctionsServer();
-		$liveUpdateRsp = new liveUpdateResponseServer();
-
 		if(defined("LIVEUPDATE_DIR") && is_readable(LIVEUPDATE_DIR . 'updateClient/liveUpdateServer.class.php')){
 			require_once(LIVEUPDATE_DIR . 'updateClient/liveUpdateServer.class.php');
 		}

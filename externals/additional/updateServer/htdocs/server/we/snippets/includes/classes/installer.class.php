@@ -80,7 +80,7 @@ class installer extends installerBase{
 		if((isset($_REQUEST['part']) && $_REQUEST['part'] > 0) || $FileSize > $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
 
 			// Check which part have to be transfered
-			$Part = isset($_REQUEST['part']) ? $_REQUEST['part'] : 0;
+			$Part = empty($_REQUEST['part']) ? 0 : intval($_REQUEST['part']);
 
 			// get offset and length of the substr from the file
 			$Start = ($Part * $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);

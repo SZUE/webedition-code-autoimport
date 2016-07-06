@@ -3,6 +3,12 @@
 class update extends updateBase{
 
 	static function updateLogStart(){
+		$apps = [];
+		if(isset($_SESSION['clientInstalledAppMeta'])){
+			foreach($_SESSION['clientInstalledAppMeta'] as $cur){
+				$apps[] = $cur['name'];
+			}
+		}
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . UPDATELOG_TABLE . ' SET date=NOW(),' .
 			we_database_base::arraySetter([
 				"installedVersion" => updateUtil::version2number($_SESSION['clientVersion']),
@@ -20,7 +26,7 @@ class update extends updateBase{
 				'clientDomain' => (isset($_SESSION['clientDomain']) ? base64_encode($_SESSION['clientDomain']) : ''),
 				'installedLanguages' => (isset($_SESSION['clientInstalledLanguages']) ? implode(',', $_SESSION['clientInstalledLanguages']) : ''),
 				'installedModules' => (isset($_SESSION['clientInstalledModules']) ? implode(',', $_SESSION['clientInstalledModules']) : ''),
-				'installedAppMeta' => (isset($_SESSION['clientInstalledAppMeta']) ? print_r($_SESSION['clientInstalledAppMeta'], true) : ''),
+				'installedAppMeta' => implode(',', $apps),
 				'installedDbCharset' => (isset($_SESSION['clientDBcharset']) ? $_SESSION['clientDBcharset'] : ''),
 				'installedDbCollation' => (isset($_SESSION['clientDBcollation']) ? $_SESSION['clientDBcollation'] : ''),
 				'testUpdate' => (isset($_SESSION['testUpdate']) ? $_SESSION['testUpdate'] : '')

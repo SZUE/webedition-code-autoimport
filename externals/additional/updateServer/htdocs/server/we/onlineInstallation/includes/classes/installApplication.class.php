@@ -100,18 +100,16 @@ class installApplication extends installer{
 		// If file is too large to transfer in one request, split it!
 		// when first part(s) are transfered do the next part until complete
 		// file is transfered
-		if((isset($_REQUEST['part']) && $_REQUEST['part'] > 0) || $FileSize > $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
+		if((!empty($_REQUEST['part'])) || $FileSize > $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024){
 
 			// Check which part have to be transfered
-			$Part = isset($_REQUEST['part']) ? $_REQUEST['part'] : 0;
+			$Part = empty($_REQUEST['part']) ? 0 : intval($_REQUEST['part']);
 
 			// get offset and length of the substr from the file
 			$Start = ($Part * $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 			$Length = ($_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 			// filename on the client
-			$Index = $Paths[$Position] . ".part" . $Part;
-
 			// value of the part -> must be base64_encoded
 			$Value = updateUtil::encodeCode(substr($Content, $Start, $Length));
 
@@ -162,11 +160,10 @@ class installApplication extends installer{
 			}
 		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
-		if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
-			$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
-		} else {
-			$nextUrl = '?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position";
-		}
+		$nextUrl = '?' . ($Position >= sizeof($_SESSION['clientChanges']['allChanges']) ?
+				updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true) :
+				updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
+			);
 
 		// :IMPORTANT:
 		return updateUtil::getResponseString(installApplication::_getDownloadFilesResponse($fileArray, $nextUrl, installApplication::getInstallerProgressPercent()));
