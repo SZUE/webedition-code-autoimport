@@ -1239,7 +1239,7 @@ TabView.prototype = {
 	setTextClass: function (frameId, classname) {
 		text = this.myDoc.getElementById('text_' + frameId);
 		if (classname) {
-			text.className = "text " + classname;
+			text.className = "cutText text " + classname;
 		}
 	},
 	/**
