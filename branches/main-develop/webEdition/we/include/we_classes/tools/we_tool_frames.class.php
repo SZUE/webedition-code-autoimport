@@ -40,7 +40,6 @@ abstract class we_tool_frames extends we_modules_frame{
 	protected function getHTMLFrameset($extraHead = '', $extraUrlParams = ''){
 		$class = we_tool_lookup::getModelClassName($this->toolName);
 		$this->Model = $this->Model ? : new $class();
-		//$this->Model->clearSessionVars(); // why should we clear here?
 
 		if(($modelid = we_base_request::_(we_base_request::INT, 'modelid'))){
 			$this->Model = new $class();

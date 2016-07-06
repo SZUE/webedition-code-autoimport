@@ -27,8 +27,7 @@ function we_tag_shopField(array $attribs){
 		return $foo;
 	}
 
-
-	$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
+	$name = weTag_getAttribute("_name_orig", $attribs, '', we_base_request::STRING);
 	$reference = weTag_getAttribute("reference", $attribs, '', we_base_request::STRING);
 	$shopname = weTag_getAttribute("shopname", $attribs, '', we_base_request::STRING);
 
@@ -48,7 +47,7 @@ function we_tag_shopField(array $attribs){
 	$mode = weTag_getAttribute('mode', $attribs, '', we_base_request::STRING);
 
 	$fieldname = ($reference === 'article' ? WE_SHOP_ARTICLE_CUSTOM_FIELD : WE_SHOP_CART_CUSTOM_FIELD) . '[' . $name . ']';
-	$savedVal = '';
+	
 	$isFieldForCheckBox = false;
 
 	if($reference === 'article'){ // name depends on value
@@ -96,7 +95,9 @@ function we_tag_shopField(array $attribs){
 
 		case 'hidden':
 			$atts = removeAttribs($atts, array('reference'));
-			return we_html_element::htmlHidden($fieldname, $savedVal, $atts);
+			$atts['name'] = $fieldname;
+			$atts['value'] = $savedVal;
+			return getHtmlTag('hidden', $atts);
 
 		case 'print':
 			$ascountry = weTag_getAttribute('ascountry', $attribs, false, we_base_request::BOOL);

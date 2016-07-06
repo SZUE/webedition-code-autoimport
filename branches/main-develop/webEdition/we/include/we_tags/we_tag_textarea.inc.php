@@ -46,7 +46,7 @@ function we_tag_textarea(array $attribs, $content){
 			$GLOBALS['we_doc']->setElement($name, $value);
 			$GLOBALS['we_doc']->saveInSession($_SESSION['weS']['we_data'][$GLOBALS['we_transaction']]);
 		}
-		return we_html_forms::weTextarea('we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']', $value, $attribs, $autobr, 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#autobr]', $showAutobr, $GLOBALS['we_doc']->getHttpPath(), false, false, $xml, $removeFirstParagraph, '', $spellcheck, false, $name);
+		return we_html_forms::weTextarea('we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']', $value, $attribs, $autobr, 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#autobr]', $showAutobr, false, false, $xml, $removeFirstParagraph, '', $spellcheck, false, $name);
 	}
 
 	$fieldVal = we_document::parseInternalLinks($GLOBALS['we_doc']->getField($attribs), 0, '');
