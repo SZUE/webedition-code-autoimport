@@ -259,6 +259,8 @@ var WebEdition = {
 				fieldNameNotTitleDesc: '<?php echo g_l('modules_object', '[fieldNameNotTitleDesc]'); ?>',
 				fieldNameEmpty: '<?php echo g_l('modules_object', '[fieldNameEmpty]'); ?>'
 			},
+			selectors:{
+			},
 			tinyMceTranslationObject: {
 				<?php echo array_search($GLOBALS['WE_LANGUAGE'], getWELangs()); ?>:{
 					we:{

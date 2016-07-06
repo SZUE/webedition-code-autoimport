@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_import_functions{
-
 	const TYPE_CSV = 'CSVImport';
 	const TYPE_GENERIC_XML = 'GXMLImport';
 	const TYPE_WE_XML = 'WXMLImport';
@@ -101,9 +100,9 @@ abstract class we_import_functions{
 		}
 		// PUBLISH OR EXIT
 		return ($publish ?
-						$GLOBALS['we_doc']->we_publish() :
-						true
-				);
+				$GLOBALS['we_doc']->we_publish() :
+				true
+			);
 	}
 
 	/**
@@ -174,8 +173,8 @@ abstract class we_import_functions{
 		}
 		// PUBLISH OR EXIT
 		return ($publish ?
-						$object->we_publish() :
-						true);
+				$object->we_publish() :
+				true);
 	}
 
 	/**
@@ -185,11 +184,14 @@ abstract class we_import_functions{
 	 */
 	static function correctFilename($filename, $allowPath = false){
 		$filename = strtr($filename, array(' ' => '-', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
-		$filename = preg_replace('%[^a-z0-9\._+\-@' . ($allowPath ? '/' : '') . ']%i', '', $filename);
+		$filename = trim(preg_replace('%[^a-z0-9\._+\-@' . ($allowPath ? '/' : '') . ']%i', '', $filename), '/');
+
 		if(!$allowPath && strlen($filename) > 100){
-			$filename = substr($filename, 0, 100);
+			$pos = strrpos($filename, '.');
+			$ext = substr($filename, $pos + 1, 16);
+			$name = substr($filename, 0, min($pos, 100 - strlen($ext)));
+			$filename = $name . '.' . $ext;
 		}
-		$filename = trim($filename, '/');
 		return $filename ? : 'newfile';
 	}
 
