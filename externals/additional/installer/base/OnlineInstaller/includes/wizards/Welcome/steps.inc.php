@@ -11,7 +11,7 @@ $leInstallerSteps[] = 'HintAboutOnlineInstallation';
 //$leInstallerSteps[] = 'VersionCheck';
 // if more than one application could be installed and no default application is set
 // then show screen to choose the application
-if(sizeof($GLOBALS['leApplicationList']) > 1 && !defined("LE_DEFAULT_APPLICATION")){
+if(count($GLOBALS['leApplicationList']) > 1 && !defined("LE_DEFAULT_APPLICATION")){
 	$leInstallerSteps[] = 'ChooseApplication';
 }
 

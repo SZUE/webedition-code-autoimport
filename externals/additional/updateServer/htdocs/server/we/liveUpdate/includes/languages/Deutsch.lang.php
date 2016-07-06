@@ -107,6 +107,9 @@ $lang['installer']['confirmInstallation'] = 'ACHTUNG !<br>W&auml;hrend des Updat
 $lang['installer']['downloadInstaller'] = 'Installer herunterladen';
 $lang['installer']['getChanges'] = 'Ben&ouml;tigte Dateien ermitteln';
 $lang['installer']['downloadChanges'] = 'Dateien herunterladen';
+// installer::_getDownloadFilesResponse()
+$lang["installer"]["amountFilesDownloaded"] = "%s von %s Dateien wurden heruntergeladen.";
+
 $lang['installer']['prepareChanges'] = 'Dateien vorbereiten';
 $lang['installer']['updateDatabase'] = 'Datenbank aktualisieren';
 $lang['installer']['copyFiles'] = 'Dateien installieren';

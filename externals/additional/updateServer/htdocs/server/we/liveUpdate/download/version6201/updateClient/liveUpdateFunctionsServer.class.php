@@ -362,7 +362,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 									continue;
 								}
 
-								for($i = 1; $i < sizeof($indexes); $i++){
+								for($i = 1; $i < count($indexes); $i++){
 									if(!in_array($indexes[$i], $origTableKeys[$keyName])){
 										$changedKeys[$keyName] = $indexes;
 										break;

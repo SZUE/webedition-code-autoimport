@@ -47,7 +47,7 @@ class downloadSnippet extends installer{
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(self::getNextUpdateDetail(), true);
 
 		$message = '$this->Language[\'headline\']'
-			. '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '</p>';
+			. '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], count($_SESSION['clientChanges']['allChanges'])) . '</p>';
 
 		$progress = self::getInstallerProgressPercent();
 

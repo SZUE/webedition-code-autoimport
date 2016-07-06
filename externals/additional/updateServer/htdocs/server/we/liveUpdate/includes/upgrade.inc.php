@@ -36,7 +36,7 @@ switch($_REQUEST['detail']){
 		$lngVersions = array();
 		foreach($versionLngs as $version => $lngArray){
 
-			for($i = 0; $i < sizeof($lngArray); $i++){
+			for($i = 0; $i < count($lngArray); $i++){
 
 				if(!isset($lngVersions[$lngArray[$i]])){
 

@@ -114,7 +114,7 @@ function setSelected(id) {
 $Output = "<input type=\"hidden\" name=\"import\" id=\"import\" value=\"" . (isset($_SESSION['clientSelectedImport']) ? $_SESSION['clientSelectedImport'] : "") . "\">"
 	. "<table class=\"table\">";
 
-$size = sizeof($AvailableImports);
+$size = count($AvailableImports);
 for($i = 0; $i < $size; $i++){
 	$Import = array_shift($AvailableImports);
 
@@ -143,7 +143,7 @@ for($i = 0; $i < $size; $i++){
 		. '<td colspan="2" valign="top" align="left" style="height: 40px;"><div style="height: 40px; padding: 2px; overflow: auto; background-color: #F1F6FB;">' . ($Import['Description'] != "" ? $Import['Description'] : "") . '</div></td>'
 		. '</tr>'
 		. '<tr>'
-		. '<td width="50%" align="left">~~~ . ' . getButtonForTemplates('preview', 'top.frames[\'leLoadFrame\'].showPreview(\'' . $Import['ID'] . '\');', (sizeof($Import['Preview']) > 0 ? false : true)) . ' . ~~~</td>'
+		. '<td width="50%" align="left">~~~ . ' . getButtonForTemplates('preview', 'top.frames[\'leLoadFrame\'].showPreview(\'' . $Import['ID'] . '\');', (count($Import['Preview']) > 0 ? false : true)) . ' . ~~~</td>'
 		. '<td width="50%" align="right">~~~ . ' . getButtonForTemplates('select', 'top.frames[\'leLoadFrame\'].setSelected(\'' . $Import['ID'] . '\');') . ' . ~~~</td>'
 		. '</tr>'
 		. '</table>'

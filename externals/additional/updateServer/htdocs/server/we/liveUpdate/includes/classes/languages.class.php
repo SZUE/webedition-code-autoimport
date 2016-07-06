@@ -86,7 +86,7 @@ class languages extends languagesBase{
 	static function getFinishInstallationResponse(){
 
 		$message = '<ul>';
-		for($i = 0; $i < sizeof($_SESSION['clientDesiredLanguages']); $i++){
+		for($i = 0; $i < count($_SESSION['clientDesiredLanguages']); $i++){
 			$message .= "<li>" . $_SESSION['clientDesiredLanguages'][$i] . "</li>";
 		}
 		$message .= '</ul>';

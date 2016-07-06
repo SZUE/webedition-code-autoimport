@@ -40,7 +40,7 @@ if($_SESSION['clientVersionNumber'] >= LANGUAGELIMIT){
 	$newinstallAbleLanguages = $installAbleLanguages;
 }
 $installLanguages = '';
-for($i = 0; $i < sizeof($newinstallAbleLanguages); $i++){
+for($i = 0; $i < count($newinstallAbleLanguages); $i++){
 	$installLanguages .= getCheckBox('lng_' . $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], $newinstallAbleLanguages[$i], false);
 }
 
@@ -49,7 +49,7 @@ $missingStr = '';
 if(!empty($missingLanguages)){
 
 	$missingStr = "<ul>";
-	for($i = 0; $i < sizeof($missingLanguages); $i++){
+	for($i = 0; $i < count($missingLanguages); $i++){
 
 		$missingStr .= "<li>" . $missingLanguages[$i] . "</li>";
 	}

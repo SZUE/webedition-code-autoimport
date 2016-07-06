@@ -1998,7 +1998,7 @@ class XML_Parser{
 		$args = explode(',', $args);
 
 		// Evaluate each argument.
-		for($i = 0; $i < sizeof($args); $i++){
+		for($i = 0; $i < count($args); $i++){
 			// Trim each argument.
 			$args[$i] = trim($args[$i]);
 
@@ -2145,7 +2145,7 @@ class XML_Parser{
 		$args = explode(',', $args);
 
 		// Run through all arguments.
-		for($i = 0; $i < sizeof($args); $i++){
+		for($i = 0; $i < count($args); $i++){
 			// Trim the string.
 			$args[$i] = trim($args[$i]);
 
@@ -2233,7 +2233,7 @@ class XML_Parser{
 		$args = explode(',', $args);
 
 		// Run through all arguments.
-		for($i = 0; $i < sizeof($args); $i++){
+		for($i = 0; $i < count($args); $i++){
 			// Trim the argument.
 			$args[$i] = trim($args[$i]);
 
@@ -2564,7 +2564,7 @@ class XML_Parser{
 			$str = "\$errtxt = sprintf(\$errtxt, ";
 
 			// run through the array of arguments
-			for($i = 1; $i < sizeof($args); $i++){
+			for($i = 1; $i < count($args); $i++){
 				// add arguments to the format string
 				$str .= "\$args[" . $i . "], ";
 			}

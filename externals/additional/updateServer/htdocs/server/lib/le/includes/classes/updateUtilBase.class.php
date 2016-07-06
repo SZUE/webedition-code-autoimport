@@ -174,7 +174,7 @@ class updateUtilBase{
 	 * @return string
 	 */
 	static function getNearestVersion($array, $version){
-		if(sizeof($array) == 1){
+		if(count($array) == 1){
 			return key($array);
 		}
 

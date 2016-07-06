@@ -37,10 +37,10 @@ class installer extends installerBase{
 
 		// each step
 		$installationSteps = self::getInstallationStepNames();
-		$installationStepsTotal = sizeof($installationSteps);
+		$installationStepsTotal = count($installationSteps);
 
 		// downloads
-		$dlSteps = floor(sizeof($_SESSION['clientChanges']['allChanges']) / 100);
+		$dlSteps = floor(count($_SESSION['clientChanges']['allChanges']) / 100);
 		$installationStepsTotal += $dlSteps;
 
 		$currentStep = 0;
@@ -52,7 +52,7 @@ class installer extends installerBase{
 				break;
 			case 'downloadFiles':
 				$currentStep = 2;
-				$currentStep += ($_REQUEST['position'] / sizeof($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
+				$currentStep += ($_REQUEST['position'] / count($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
 				break;
 		}
 
@@ -95,7 +95,7 @@ class installer extends installerBase{
 			$fileArray[$Paths[$Position] . ".'part" . $Part . "'"] = $Value;
 
 			if($Start + $Length >= $FileSize){
-				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
+				if($Position >= count($_SESSION['clientChanges']['allChanges'])){
 					$nextUrl = '?' . updateUtil::getCommonHrefParameters(self::getNextUpdateDetail(), true);
 
 					// :IMPORTANT:
@@ -120,7 +120,7 @@ class installer extends installerBase{
 		$ResponseSize = 0;
 		do{
 
-			if($Position >= sizeof($Paths)){
+			if($Position >= count($Paths)){
 				break;
 			}
 
@@ -137,7 +137,7 @@ class installer extends installerBase{
 			}
 		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
-		$nextUrl = ($Position >= sizeof($_SESSION['clientChanges']['allChanges']) ?
+		$nextUrl = ($Position >= count($_SESSION['clientChanges']['allChanges']) ?
 				'?' . updateUtil::getCommonHrefParameters(self::getNextUpdateDetail(), true) :
 				'?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
 			);
@@ -237,7 +237,7 @@ class installer extends installerBase{
 
 		$steps = self::getInstallationStepNames();
 
-		for($i = 0; $i < sizeof($steps); $i++){
+		for($i = 0; $i < count($steps); $i++){
 
 			if($currentStep == $steps[$i]){
 				return $i;

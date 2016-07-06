@@ -107,7 +107,7 @@ class installer extends installerBase{
 
 		$steps = static::getInstallationStepNames();
 
-		for($i = 0; $i < sizeof($steps); $i++){
+		for($i = 0; $i < count($steps); $i++){
 
 			if($currentStep == $steps[$i]){
 				return $i;
@@ -161,18 +161,18 @@ class installer extends installerBase{
 		}
 
 		if ($success) {
-			$message = "<ul>";
+			$endFile = ' . ($_REQUEST['position'] + count($filesArray)) . ';
+			$maxFile = ' . count($_SESSION['clientChanges']['allChanges']) . ';
+		/*	$message = "<ul>";
 			foreach ($successFiles as $path) {
 				$text = basename($path);
 				$text = substr($text, -40);
 				$message .= "<li>$text</li>";
 
 			}
-			$endFile = ' . ($_REQUEST['position'] + sizeof($filesArray)) . ';
-			$maxFile = ' . sizeof($_SESSION['clientChanges']['allChanges']) . ';
 
-			$message	.=	"</ul>"
-						.	"<p>" . sprintf("' . $GLOBALS['lang']['installer']['amountFilesDownloaded'] . '", $endFile, $maxFile) . "</p>";
+			$message	.=	"</ul>".*/
+			$message= sprintf("' . $GLOBALS['lang']['installer']['amountFilesDownloaded'] . '", $endFile, $maxFile) . "<br/>";
 			?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
 
 		} else {
@@ -239,18 +239,19 @@ class installer extends installerBase{
 		}
 
 		if ($success) {
-			$message = "<ul>";
+			$endFile = ' . ($_REQUEST['position'] + count($filesArray)) . ';
+			$maxFile = ' . count($_SESSION['clientChanges']['allChanges']) . ';
+
+			/*$message = "<ul>";
 			foreach ($successFiles as $path) {
 				$text = basename($path);
 				$text = substr($text, -40);
 				$message .= "<li>$text</li>";
 
 			}
-			$endFile = ' . ($_REQUEST['position'] + sizeof($filesArray)) . ';
-			$maxFile = ' . sizeof($_SESSION['clientChanges']['allChanges']) . ';
 
-			$message	.=	"</ul>"
-						.	"<p>" . sprintf("' . $GLOBALS['lang']['installer']['amountFilesDownloaded'] . '", $endFile, $maxFile) . "</p>";
+			$message	.=	"</ul>".*/
+				$message =	 sprintf("' . $GLOBALS['lang']['installer']['amountFilesDownloaded'] . '", $endFile, $maxFile) . "<br/>";
 			?>' . static::getProceedNextCommandResponsePart($nextUrl, $progress, '<?php print $message; ?>') . '<?php
 
 		} else {

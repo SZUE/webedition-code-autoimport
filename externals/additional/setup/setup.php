@@ -134,7 +134,7 @@ $steps = array(
 );
 
 // identify current step:
-if(isset($_REQUEST["step"]) && !empty($_REQUEST["step"]) && intval($_REQUEST) >= "1" && intval($_REQUEST) <= sizeof($steps)){
+if(isset($_REQUEST["step"]) && !empty($_REQUEST["step"]) && intval($_REQUEST) >= "1" && intval($_REQUEST) <= count($steps)){
 	$currentStep = $steps[intval($_REQUEST["step"]) - 1];
 } else {
 	$currentStep = $steps[0];
@@ -781,7 +781,7 @@ function step_installation(){
 		}
 	}
 
-	echo sizeof($dbqueries) . ' queries found.';
+	echo count($dbqueries) . ' queries found.';
 	$conn = mysqli_connect($_SESSION["db_host"], $_SESSION["db_username"], $_SESSION["db_password"]);
 	if(!$conn){
 		$output .= tpl_error("Could not connect to database server. Message from server: " . mysqli_error());
@@ -1017,7 +1017,7 @@ function tpl_navigation($step = "1"){
 	$buttonNext->setWidth(120);
 	$buttonNext->setTextPosition('right');
 	/*
-	  if($step == sizeof($steps)) {
+	  if($step == count($steps)) {
 	  $buttonNext->setHref('./webEdition/');
 	  $buttonNext->setTarget('_blank');
 	  $buttonNext->setText('start webEdition');
@@ -1025,7 +1025,7 @@ function tpl_navigation($step = "1"){
 	  } else {
 	 */
 	$buttonNext->setTitle('next step');
-	if($step == (sizeof($steps) - 1)){
+	if($step == (count($steps) - 1)){
 		$buttonNext->setText('cleanup');
 	} else {
 		$buttonNext->setText('next');
@@ -1033,7 +1033,7 @@ function tpl_navigation($step = "1"){
 
 	$buttonNext->setTarget('_self');
 	$buttonNext->setType('submit');
-	if($step >= sizeof($steps) || $errors === true){
+	if($step >= count($steps) || $errors === true){
 		$buttonNext->setDisabled(true);
 	} else {
 		$buttonNext->setHref('?step=' . $nextID);
@@ -1045,7 +1045,7 @@ function tpl_navigation($step = "1"){
 	$buttonPrev->setText('back');
 	$buttonPrev->setType('href');
 	$buttonPrev->setTarget('_self');
-	if($step == "1" || $step >= (sizeof($steps) - 1)){
+	if($step == "1" || $step >= (count($steps) - 1)){
 		$buttonPrev->setDisabled(true);
 	} else {
 		$buttonPrev->setHref('?step=' . $prevID);

@@ -126,7 +126,7 @@ $leApplicationList = array(
 
 // choose the application which have to be installed
 if(!isset($_SESSION['leApplication'])){
-	if(sizeof($GLOBALS['leApplicationList']) >= 1){
+	if(count($GLOBALS['leApplicationList']) >= 1){
 		$temp = array_keys($leApplicationList);
 		$_SESSION['leApplication'] = $temp[0];
 	} elseif(defined("LE_DEFAULT_APPLICATION")){

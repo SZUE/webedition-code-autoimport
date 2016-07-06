@@ -38,16 +38,16 @@ class installApplication extends installer{
 
 		// each step
 		$installationSteps = static::getInstallationStepNames();
-		$installationStepsTotal = sizeof($installationSteps);
+		$installationStepsTotal = count($installationSteps);
 
 		// downloads
-		$dlSteps = floor(sizeof($_SESSION['clientChanges']['allChanges']) / 100);
+		$dlSteps = floor(count($_SESSION['clientChanges']['allChanges']) / 100);
 		$installationStepsTotal += $dlSteps;
 		// queries
-		$querySteps = sizeof($_SESSION['clientChanges']['queries']) / EXECUTE_QUERIES_PER_STEP;
+		$querySteps = count($_SESSION['clientChanges']['queries']) / EXECUTE_QUERIES_PER_STEP;
 		$installationStepsTotal += $querySteps;
 		// prepare files
-		$prepareSteps = sizeof($_SESSION['clientChanges']['allChanges']) / PREPARE_FILES_PER_STEP;
+		$prepareSteps = count($_SESSION['clientChanges']['allChanges']) / PREPARE_FILES_PER_STEP;
 		$installationStepsTotal += $prepareSteps;
 
 		$currentStep = 0;
@@ -60,7 +60,7 @@ class installApplication extends installer{
 
 			case 'downloadApplicationFiles':
 				$currentStep = 3;
-				$currentStep += ($_REQUEST['position'] / sizeof($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
+				$currentStep += ($_REQUEST['position'] / count($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
 				break;
 
 			case 'updateApplicationDatabase':
@@ -116,7 +116,7 @@ class installApplication extends installer{
 			$fileArray[$Paths[$Position] . ".'part" . $Part . "'"] = $Value;
 
 			if($Start + $Length >= $FileSize){
-				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
+				if($Position >= count($_SESSION['clientChanges']['allChanges'])){
 					$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 					// :IMPORTANT:
@@ -141,7 +141,7 @@ class installApplication extends installer{
 		$ResponseSize = 0;
 		do{
 
-			if($Position >= sizeof($Paths)){
+			if($Position >= count($Paths)){
 				break;
 			}
 			if(!is_readable($_SESSION['clientChanges']['allChanges'][$Paths[$Position]])){
@@ -160,7 +160,7 @@ class installApplication extends installer{
 			}
 		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
-		$nextUrl = '?' . ($Position >= sizeof($_SESSION['clientChanges']['allChanges']) ?
+		$nextUrl = '?' . ($Position >= count($_SESSION['clientChanges']['allChanges']) ?
 				updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true) :
 				updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
 			);
@@ -260,10 +260,10 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
-		$message = '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '</p>
+		$message = '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], count($_SESSION['clientChanges']['allChanges'])) . '</p>
 <ul>
-	<li>' . sizeof($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '</li>
-	<li>' . sizeof($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '</li>
+	<li>' . count($_SESSION['clientChanges']['files']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesFiles'] . '</li>
+	<li>' . count($_SESSION['clientChanges']['queries']) . ' ' . $GLOBALS['lang']['installer']['downloadFilesQueries'] . '</li>
 </ul>';
 
 		$progress = self::getInstallerProgressPercent();
@@ -307,7 +307,7 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 		$message = "<ul>";
 
 		$liveUpdateFnc->clearQueryLog();
-		for ($i=' . $_REQUEST['position'] . '; $i<sizeof($allFiles) && $i<' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']) . '; $i++) {
+		for ($i=' . $_REQUEST['position'] . '; $i<count($allFiles) && $i<' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']) . '; $i++) {
 
 			// execute queries in each file
 			if ($liveUpdateFnc->executeQueriesInFiles($allFiles[$i])) {
@@ -348,12 +348,12 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 
 		}
 
-		$endFile = min(sizeof($allFiles), ' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']) . ');
-		$maxFile = sizeof($allFiles);
+		$endFile = min(count($allFiles), ' . ($_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP']) . ');
+		$maxFile = count($allFiles);
 
 		$message	.=	"</ul><p>" . sprintf("' . $GLOBALS['lang']['installer']['amountDatabaseQueries'] . '", $endFile, $maxFile) . "</p>";
 
-		if ( sizeof($allFiles) > ' . ( $_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP'] ) . ' ) { // continue with DB steps
+		if ( count($allFiles) > ' . ( $_REQUEST['position'] + $_SESSION['EXECUTE_QUERIES_PER_STEP'] ) . ' ) { // continue with DB steps
 			?>' . static::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 		} else { // proceed to next step.
@@ -395,7 +395,7 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 		$message = "<ul>";
 		$success = true;
 
-		for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
+		for ( $i=' . $_REQUEST["position"] . ',$j=0; $i<count($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
 
 			$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
 
@@ -414,12 +414,12 @@ if ($_SESSION["le_db_overwrite"]) { // overwrite webEdition tables
 			' . static::getErrorMessageResponsePart() . '
 
 		} else {
-			$endFile = min(sizeof($allFiles), ' . ($_REQUEST["position"] + $_SESSION['PREPARE_FILES_PER_STEP']) . ');
-			$maxFile = sizeof($allFiles);
+			$endFile = min(count($allFiles), ' . ($_REQUEST["position"] + $_SESSION['PREPARE_FILES_PER_STEP']) . ');
+			$maxFile = count($allFiles);
 
 			$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesPrepared'] . '\', $endFile, $maxFile) . "</p>";
 
-			if ( sizeof($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
+			if ( count($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
 
 				?>' . static::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 			} else {
@@ -451,26 +451,26 @@ $preLength = strlen($filesDir);
 
 $success = true;
 
-$message = "<ul>";
+//$message = "";
 $allFiles = array();
 $liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
 
-for ($i=0; $success && $i<sizeof($allFiles); $i++) {
-	$text = substr(basename($allFiles[$i]), -40);
+for ($i=0; $success && $i<count($allFiles); $i++) {
+	/*$text = substr(basename($allFiles[$i]), -40);
 	$message .= "<li>$text</li>";
-
+*/
 	//$success = $liveUpdateFnc->moveFile($allFiles[$i], $_SESSION["le_installationDirectory"] . substr($allFiles[$i], $preLength));
 
 }
-$message .= "</ul>";
+//$message .= "</ul>";
 $docRoot = isset($_SESSION["le_documentRoot"]) ? $_SESSION["le_documentRoot"] : $_SERVER["DOCUMENT_ROOT"];
 $success = rename($filesDir."webEdition", $docRoot ."/webEdition");
 
 if ($success) {
-	$endFile = sizeof($allFiles);
-	$maxFile = sizeof($allFiles);
+	$endFile = count($allFiles);
+	$maxFile = count($allFiles);
 
-	$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesCopied'] . '\', $endFile, $maxFile) . "</p>";
+	$message = "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesCopied'] . '\', $endFile, $maxFile) . "</p>";
 
 	?>' . static::getProceedNextCommandResponsePart($nextUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 

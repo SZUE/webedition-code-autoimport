@@ -134,7 +134,7 @@ function checkMakeDir(\$dirPath, \$mod=0755) {
 	\$pathArray = explode('/', \$dir);
 	\$path = \$preDir;
 
-	for(\$i=0; \$i<sizeof(\$pathArray); \$i++) {
+	for(\$i=0; \$i<count(\$pathArray); \$i++) {
 		\$path .= \$pathArray[\$i];
 		if(\$pathArray[\$i] != "" && !is_dir(\$path)) {
 			if( !(file_exists(\$path) || mkdir(\$path, \$mod)) ) {

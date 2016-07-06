@@ -39,10 +39,10 @@ if(!isset($_SESSION['clientSyslng'])){
 	}
 }
 
-for($i = 0; $i < sizeof($installAbleLanguages); $i++){
+for($i = 0; $i < count($installAbleLanguages); $i++){
 
 	$onClickJs = "
-for(i=0; i<" . sizeof($installAbleLanguages) . "; i++) {
+for(i=0; i<" . count($installAbleLanguages) . "; i++) {
 	document.getElementById('le_extraLanguages['+i+']').disabled=false;
 }
 document.getElementById('le_extraLanguages[" . $i . "]').disabled = this.checked;";

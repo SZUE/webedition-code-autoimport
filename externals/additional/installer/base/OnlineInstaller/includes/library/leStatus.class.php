@@ -48,7 +48,7 @@ class leStatus{
 						if($_step->IterationStep){
 							$Attribute = " iterationStep=\"true\"";
 						}
-						$StatusBar .= "<li$Attribute id=\"liWizardStep_" . $_wizard->Name . "__" . $_step->Name . "\" class=\"{$id}{$StepStyle}\"" . (sizeof($Steps) <= 1 ? " style=\"display:none\"" : "") . ">" . $_step->Language['title'] . "</li>";
+						$StatusBar .= "<li$Attribute id=\"liWizardStep_" . $_wizard->Name . "__" . $_step->Name . "\" class=\"{$id}{$StepStyle}\"" . (count($Steps) <= 1 ? " style=\"display:none\"" : "") . ">" . $_step->Language['title'] . "</li>";
 					}
 				}
 			}

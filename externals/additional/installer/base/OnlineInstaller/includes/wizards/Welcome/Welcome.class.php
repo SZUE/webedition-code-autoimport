@@ -7,7 +7,7 @@ class Welcome extends leStep{
 
 		$PostContent = "";
 		$AvailableLanguages = leOnlineInstaller::getAvailableLanguages();
-		if(sizeof($AvailableLanguages) > 1){
+		if(count($AvailableLanguages) > 1){
 
 
 			$Name = 'changeApplication';

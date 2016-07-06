@@ -14,7 +14,7 @@ class Summary extends leStep{
 				//$this->Language['webEditionSerial'] => (isset($_SESSION['le_serial']) && $_SESSION['le_serial'] != "" ? $_SESSION['le_serial'] : "-"),
 				$this->Language['webEditionVersion'] => $_SESSION['le_version'],
 				$this->Language['webEditionSystemLanguage'] => $_SESSION['le_defaultLanguage'],
-				$this->Language['webEditionAdditionalLanguages'] => (isset($_SESSION['le_extraLanguages']) && sizeof($_SESSION['le_extraLanguages']) > 0) ? implode(", ", $_SESSION['le_extraLanguages']) : "-",
+				$this->Language['webEditionAdditionalLanguages'] => (isset($_SESSION['le_extraLanguages']) && count($_SESSION['le_extraLanguages']) > 0) ? implode(", ", $_SESSION['le_extraLanguages']) : "-",
 			),
 			$this->Language['databaseConnection'] => array(
 				$this->Language['databaseHost'] => $_SESSION['le_db_host'],

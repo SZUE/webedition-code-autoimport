@@ -46,7 +46,7 @@ abstract class updateBase{
 		$possibleVersions = array();
 
 		foreach($langVersions as $version => $lngArray){
-			if($version > $_SESSION['clientVersionNumber'] && sizeof($lngArray) == sizeof($_SESSION['clientInstalledLanguages'])){
+			if($version > $_SESSION['clientVersionNumber'] && count($lngArray) == count($_SESSION['clientInstalledLanguages'])){
 				$possibleVersions[$version] = updateUtil::number2version($version);
 			} elseif($version > $_SESSION['clientVersionNumber']){
 				$possibleVersions[$version] = updateUtil::number2version($version);

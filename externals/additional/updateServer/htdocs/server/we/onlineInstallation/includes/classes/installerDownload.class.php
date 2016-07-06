@@ -32,14 +32,14 @@ class installerDownload extends installer{
 
 		// each step
 		$installationSteps = static::getInstallationStepNames();
-		$installationStepsTotal = sizeof($installationSteps);
+		$installationStepsTotal = count($installationSteps);
 
 		// downloads
-		$dlSteps = floor(sizeof($_SESSION['clientChanges']['allChanges']) / 100);
+		$dlSteps = floor(count($_SESSION['clientChanges']['allChanges']) / 100);
 		$installationStepsTotal += $dlSteps;
 
 		// prepare files
-		$prepareSteps = sizeof($_SESSION['clientChanges']['allChanges']) / PREPARE_FILES_PER_STEP;
+		$prepareSteps = count($_SESSION['clientChanges']['allChanges']) / PREPARE_FILES_PER_STEP;
 		$installationStepsTotal += $prepareSteps;
 
 		$currentStep = 0;
@@ -51,7 +51,7 @@ class installerDownload extends installer{
 				break;
 			case 'downloadInstallerFiles':
 				$currentStep = 2;
-				$currentStep += ($_REQUEST['position'] / sizeof($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
+				$currentStep += ($_REQUEST['position'] / count($_SESSION['clientChanges']['allChanges'])) * $dlSteps;
 				break;
 			case 'prepareInstallerFiles':
 				$currentStep = 3 + $dlSteps;
@@ -100,7 +100,7 @@ class installerDownload extends installer{
 			$fileArray[$Paths[$Position] . ".'part" . $Part . "'"] = $Value;
 
 			if($Start + $Length >= $FileSize){
-				if($Position >= sizeof($_SESSION['clientChanges']['allChanges'])){
+				if($Position >= count($_SESSION['clientChanges']['allChanges'])){
 					$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 					// :IMPORTANT:
@@ -125,7 +125,7 @@ class installerDownload extends installer{
 		$ResponseSize = 0;
 		do{
 
-			if($Position >= sizeof($Paths)){
+			if($Position >= count($Paths)){
 				break;
 			}
 
@@ -142,7 +142,7 @@ class installerDownload extends installer{
 			}
 		}while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
-		$nextUrl = ($Position >= sizeof($_SESSION['clientChanges']['allChanges']) ?
+		$nextUrl = ($Position >= count($_SESSION['clientChanges']['allChanges']) ?
 						'?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true) :
 						'?' . updateUtil::getCommonHrefParameters($_REQUEST['detail'], false) . "&position=$Position"
 				);
@@ -166,7 +166,7 @@ class installerDownload extends installer{
 		$retFiles = array();
 		$clientPathPrefix = "/tmp/files/";
 
-		for($i = 0; $i < sizeof($files); $i++){
+		for($i = 0; $i < count($files); $i++){
 			$relPath = str_replace($dir, "", $files[$i]);
 			$retFiles["files"]['LE_INSTALLER_TEMP_PATH . "' . $clientPathPrefix . trim($relPath) . '"'] = LIVEUPDATE_SERVER_DOWNLOAD_DIR . trim($relPath);
 			$retFiles["allChanges"]['LE_INSTALLER_TEMP_PATH . "' . $clientPathPrefix . trim($relPath) . '"'] = LIVEUPDATE_SERVER_DOWNLOAD_DIR . trim($relPath);
@@ -179,7 +179,7 @@ class installerDownload extends installer{
 		$nextUrl = '?' . updateUtil::getCommonHrefParameters(static::getNextUpdateDetail(), true);
 
 		$message = '<h1>' . $GLOBALS['lang'][self::$LanguageIndex][$_REQUEST["detail"]] . '</h1>'
-				. '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], sizeof($_SESSION['clientChanges']['allChanges'])) . '</p>';
+				. '<p>' . sprintf($GLOBALS['lang']['installer']['downloadFilesTotal'], count($_SESSION['clientChanges']['allChanges'])) . '</p>';
 
 		$progress = self::getInstallerProgressPercent();
 
@@ -225,7 +225,7 @@ class installerDownload extends installer{
 		$message = "<ul>";
 		$success = true;
 
-		for ($i=' . $_REQUEST["position"] . ',$j=0; $i<sizeof($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
+		for ($i=' . $_REQUEST["position"] . ',$j=0; $i<count($allFiles) && $success && $j < ' . $_SESSION['PREPARE_FILES_PER_STEP'] . '; $i++,$j++) {
 			$content = $liveUpdateFnc->getFileContent($allFiles[$i]);
 
 			$text = substr(basename($allFiles[$i]), -40);
@@ -243,11 +243,11 @@ class installerDownload extends installer{
 			' . static::getErrorMessageResponsePart() . '
 
 		} else {
-			$endFile = ' . sizeof($_SESSION['clientChanges']['allChanges']) . ';
-			$maxFile = ' . sizeof($_SESSION['clientChanges']['allChanges']) . ';
+			$endFile = ' . count($_SESSION['clientChanges']['allChanges']) . ';
+			$maxFile = ' . count($_SESSION['clientChanges']['allChanges']) . ';
 
 			$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesPrepared'] . '\', $endFile, $maxFile) . "</p>";
-			if ( sizeof($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
+			if ( count($allFiles) >= (' . $_SESSION['PREPARE_FILES_PER_STEP'] . ' + ' . $_REQUEST["position"] . ') ) {
 				?>' . static::getProceedNextCommandResponsePart($repeatUrl, self::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
 
 			} else {
@@ -285,7 +285,7 @@ class installerDownload extends installer{
 		$allFiles = array();
 		$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
 
-		for ($i=0;$success && $i<sizeof($allFiles);$i++) {
+		for ($i=0;$success && $i<count($allFiles);$i++) {
 			$text = substr(basename($allFiles[$i]), -40);
 			$message .= "<li>$text</li>";
 			$success = $liveUpdateFnc->moveFile($allFiles[$i], LE_INSTALLER_PATH . substr($allFiles[$i], $preLength));
@@ -294,8 +294,8 @@ class installerDownload extends installer{
 		$message .= "</ul>";
 
 		if ($success) {
-			$endFile = ' . sizeof($_SESSION['clientChanges']['allChanges']) . ';
-			$maxFile = ' . sizeof($_SESSION['clientChanges']['allChanges']) . ';
+			$endFile = ' . count($_SESSION['clientChanges']['allChanges']) . ';
+			$maxFile = ' . count($_SESSION['clientChanges']['allChanges']) . ';
 
 			$message .= "<p>" . sprintf(\'' . $GLOBALS['lang']['installer']['amountFilesCopied'] . '\', $endFile, $maxFile) . "</p>";
 
