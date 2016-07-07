@@ -250,8 +250,8 @@ foreach ($files as $path => $content) {
 }
 
 if ($success) {
-			$endFile = ' . ($_REQUEST['position'] + count($filesArray)) . ';
-			$maxFile = ' . count($_SESSION['clientChanges']['allChanges']) . ';
+			$endFile = ' . ((empty($_REQUEST['position']) ? 0 : $_REQUEST['position']) + count($filesArray)) . ';
+			$maxFile = ' . count(empty($_SESSION['clientChanges']['allChanges']) ? [] : $_SESSION['clientChanges']['allChanges']) . ';
 
 	$message=sprintf("' . $GLOBALS['lang']['installer']['amountFilesDownloaded'] . '", $endFile, $maxFile) . "<br/>";
 	/*foreach ($successFiles as $path) {

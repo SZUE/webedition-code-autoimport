@@ -153,10 +153,10 @@ $lang["Step"]["Login"]["UsernameFailure"] = "Bitte tragen Sie Ihren gewünschten
 $lang["Step"]["Login"]["UsernameToShort"] = "Der Benutzername muss mindestens 2 Zeichen lang sein!";
 $lang["Step"]["Login"]["UsernameInvalid"] = "Der Benutzername darf nur Buchstaben (a-z und A-Z), Zahlen (0-9) sowie die Zeichen '.', '-' und '_' enthalten!";
 $lang["Step"]["Login"]["PasswordFailure"] = "Bitte tragen Sie Ihr gewünschtes Passwort ein.";
-$lang["Step"]["Login"]["PasswordToShort"] = "Das Kennwort muss mindestens 4 Zeichen lang sein!";
+$lang["Step"]["Login"]["PasswordToShort"] = "Das Kennwort muss mindestens 6 Zeichen lang sein!";
 $lang["Step"]["Login"]["PasswordInvalid"] = "Das Kennwort darf keine Leerzeichen enthalten!";
 $lang["Step"]["Login"]["ConfirmFailure"] = "Die eingetragenen Passwörter stimmen nicht überein.";
-
+$lang["Step"]["Login"]["EmailInvalid"] = 'Geben Sie eine Email-Adresse ein!';
 
 // ChooseLanguage
 $lang["Step"]["ChooseLanguage"]["title"] = "Sprache";

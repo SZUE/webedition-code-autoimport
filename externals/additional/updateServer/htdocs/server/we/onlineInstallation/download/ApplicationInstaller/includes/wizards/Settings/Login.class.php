@@ -14,14 +14,14 @@ class Login extends leStep{
 		$UserHelp = leLayout::getHelp($this->Language['user_help']);
 
 		// Password
-		$PassInput = leInput::get('le_login_pass', (isset($_SESSION['le_login_pass']) ? $_SESSION['le_login_pass'] : ""), $Attribs, "password");
+		$PassInput = leInput::get('le_login_pass', (isset($_SESSION['le_login_pass']) ? $_SESSION['le_login_pass'] : ""), $Attribs, 'password');
 		$PassHelp = leLayout::getHelp($this->Language["pass_help"]);
 
 		// Confirm
 		$ConfirmInput = leInput::get('le_login_pass_confirm', (isset($_SESSION['le_login_pass_confirm']) ? $_SESSION['le_login_pass_confirm'] : ""), $Attribs, "password");
 		$ConfirmHelp = leLayout::getHelp($this->Language["confirm_help"]);
 
-		$email = leInput::get('le_login_email', (isset($_SESSION['le_login_email']) ? $_SESSION['le_login_email'] : ""), $Attribs);
+		$email = leInput::get('le_login_email', (isset($_SESSION['le_login_email']) ? $_SESSION['le_login_email'] : ""), $Attribs, 'email');
 		$emailHelp = leLayout::getHelp($this->Language["email_help"]);
 
 		$Content = <<<EOF
@@ -56,19 +56,16 @@ EOF;
 	function check(&$Template = ''){
 
 		if(isset($_REQUEST['le_login_user']) && $_REQUEST['le_login_user'] != "" && !preg_match("/^[A-Za-z0-9.\-_]+$/i", $_REQUEST['le_login_user'])){
-
 			$Template->addError($this->Language['UsernameInvalid']);
 			$Template->addJavascript("top.leForm.setFocus('le_login_user');");
 			$_SESSION['le_login_user'] = "";
 			return false;
 		} else if(isset($_REQUEST['le_login_user']) && strlen($_REQUEST['le_login_user']) < 2){
-
 			$Template->addError($this->Language["UsernameToShort"]);
 			$Template->addJavascript("top.leForm.setFocus('le_login_user');");
 			$_SESSION['le_login_user'] = "";
 			return false;
 		} else if(isset($_REQUEST['le_login_user']) && $_REQUEST['le_login_user'] != ""){
-
 			$_SESSION['le_login_user'] = $_REQUEST['le_login_user'];
 		} else {
 
@@ -79,23 +76,28 @@ EOF;
 		}
 
 		if(isset($_REQUEST['le_login_pass']) && $_REQUEST['le_login_pass'] != "" && preg_match("/[ ]/i", $_REQUEST['le_login_pass'])){
-
 			$Template->addError($this->Language["PasswordInvalid"]);
 			$Template->addJavascript("top.leForm.setFocus('le_login_pass');");
 			$_SESSION['le_login_pass'] = "";
 			return false;
-		} else if(isset($_REQUEST['le_login_pass']) && strlen($_REQUEST['le_login_pass']) < 4){
-
-			$Template->addError($this->Language["PasswordToShort"]);
-			$Template->addJavascript("top.leForm.setFocus('le_login_pass');");
-			$_SESSION['le_login_pass'] = "";
-			return false;
-		} else if(!isset($_REQUEST['le_login_pass']) || $_REQUEST['le_login_pass'] == ""){
-
+		} else if(empty($_REQUEST['le_login_pass'])){
 			$Template->addError($this->Language["PasswordFailure"]);
 			$Template->addJavascript("top.leForm.setFocus('le_login_pass');");
 			$_SESSION['le_login_pass'] = "";
 			return false;
+		} else if(isset($_REQUEST['le_login_pass']) && strlen($_REQUEST['le_login_pass']) < 6){
+			$Template->addError($this->Language['PasswordToShort']);
+			$Template->addJavascript("top.leForm.setFocus('le_login_pass');");
+			$_SESSION['le_login_pass'] = "";
+			return false;
+		}
+
+		if(empty($_REQUEST['le_login_email'])){
+			$Template->addError($this->Language["EmailInvalid"]);
+			$Template->addJavascript("top.leForm.setFocus('le_login_email');");
+			return false;
+		} else {
+			$_SESSION['le_login_email'] = $_REQUEST['le_login_email'];
 		}
 
 		if(isset($_REQUEST['le_login_pass']) && isset($_REQUEST['le_login_pass_confirm']) && $_REQUEST['le_login_pass'] != "" && $_REQUEST["le_login_pass_confirm"] != "" && $_REQUEST["le_login_pass"] == $_REQUEST['le_login_pass_confirm']){

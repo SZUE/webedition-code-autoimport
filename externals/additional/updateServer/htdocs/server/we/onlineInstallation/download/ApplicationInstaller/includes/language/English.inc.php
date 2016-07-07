@@ -151,9 +151,10 @@ $lang["Step"]["Login"]["UsernameFailure"] = "Please enter your prefered username
 $lang["Step"]["Login"]["UsernameToShort"] = "Username must be at least 2 characters long!";
 $lang["Step"]["Login"]["UsernameInvalid"] = "User names can only contain letters (a-z and A-Z), numbers (0-9) and the characters '.', '-' and '_'!";
 $lang["Step"]["Login"]["PasswordFailure"] = "Please insert your prefered password.";
-$lang["Step"]["Login"]["PasswordToShort"] = "Password must be at least 4 characters long!";
+$lang["Step"]["Login"]["PasswordToShort"] = "Password must be at least 6 characters long!";
 $lang["Step"]["Login"]["PasswordInvalid"] = "No spaces allowed in password!";
 $lang["Step"]["Login"]["ConfirmFailure"] = "Passwords do not match.";
+$lang["Step"]["Login"]["EmailInvalid"] = 'Please enter an email-adress!';
 
 
 // ChooseLanguage
