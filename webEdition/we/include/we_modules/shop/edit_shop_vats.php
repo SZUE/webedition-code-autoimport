@@ -157,7 +157,7 @@ $formVat = '
 </tr>
 <tr>
 	<td></td>
-	<td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');') . '</td>
+	<td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');') .' '.we_html_button::create_button(we_html_button::CANCEL,'javascript:we_cmd(\'cancel_notclose\');'). '</td>
 </tr>
 </table>
 </form>';
