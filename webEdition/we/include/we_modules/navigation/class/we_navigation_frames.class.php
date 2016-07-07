@@ -1105,7 +1105,7 @@ function showPreview() {
 					we_navigation_dynList::getWorkspacesForClass($this->Model->ClassID) :
 					($defClassID ?
 						we_navigation_dynList::getWorkspacesForClass($defClassID) :
-						array()
+						[]
 					));
 
 			return '<div id="objLinkWorkspaceClass" style="display: ' . (($this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC) ? 'block' : 'none') . ';margin-top: 5px;">' .

@@ -306,7 +306,7 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 			'application/',
 			we_base_ContentTypes::APPLICATION,
 			'application',
-			array()
+			[]
 		),
 		'FLASHMOVIE' => array(
 			'we_flashDocument',

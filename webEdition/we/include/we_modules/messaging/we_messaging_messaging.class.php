@@ -454,7 +454,7 @@ class we_messaging_messaging extends we_class{
 		$save = array(
 			'we_messaging' => array(
 				[],
-				isset($this->elements) ? $this->elements : array()
+				isset($this->elements) ? $this->elements : []
 			)
 		);
 
@@ -529,7 +529,7 @@ class we_messaging_messaging extends we_class{
 
 	function delete_folders(array $ids){
 		$ret = array(
-			'ids' => array()
+			'ids' => []
 		);
 		$nids = $m = [];
 		for($i = 0, $len = count($ids); $i < $len; $i++){

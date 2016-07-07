@@ -29,7 +29,7 @@ echo we_html_tools::getHtmlTop() .
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
 $remove = we_base_request::_(we_base_request::INT, 'weg');
 if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remove)){
-	$delS = $delB = array();
+	$delS = $delB = [];
 	foreach($remove as $rem => $blockcnt){
 		if($blockcnt){
 			$delB[] = $rem;

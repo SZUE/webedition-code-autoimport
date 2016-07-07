@@ -257,12 +257,9 @@ abstract class we_class{
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
-		$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($val) . ',' . $this->DB_WE->escape($txt) . ' FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail);
-		while($this->DB_WE->next_record(MYSQL_ASSOC)){
-			$v = $this->DB_WE->f($val);
-			$t = $this->DB_WE->f($txt);
-			$vals[$v] = $t;
-		}
+		//array_merge would change the numeric order of keys!
+		$vals = $vals + $this->DB_WE->getAllFirstq('SELECT ' . $val . ',' . $txt . ' FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail, false);
+
 		$myname = 'we_' . $this->Name . '_' . $name;
 
 		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, array_merge(array('onchange' => $onChange), $attribs), 'value', $width);

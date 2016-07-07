@@ -72,7 +72,7 @@ class we_listview_search extends we_listview_base{
 
 		$orderArr1 = array_map('trim', explode(',', $this->order));
 		$random = (in_array('random()', $orderArr1));
-		$orderArr1 = $random ? array() : $orderArr1;
+		$orderArr1 = $random ? [] : $orderArr1;
 
 		foreach($orderArr1 as $o){
 			if(trim($o)){

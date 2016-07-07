@@ -405,7 +405,7 @@ abstract class we_rebuild_base{
 		while($db->next_record(MYSQL_ASSOC)){
 			$rec = $db->getRecord();
 			$tmp = trim($rec['IncludedTemplates'], ',');
-			$rec['IncludedTemplates'] = (empty($tmp) ? array() : array_diff(explode(',', $tmp), $done));
+			$rec['IncludedTemplates'] = (empty($tmp) ? [] : array_diff(explode(',', $tmp), $done));
 			$todo[] = $rec;
 		}
 

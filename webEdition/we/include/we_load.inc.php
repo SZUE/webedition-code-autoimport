@@ -41,11 +41,11 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 		$docCollections = $docCollectionIDs = $objCollections = $objCollectionIDs = [];
 		while($DB_WE->next_record()){
 			if($DB_WE->f('remTable') === stripTblPrefix(FILE_TABLE)){
-				$docCollections[$DB_WE->f('ID')] = !isset($docCollections[$DB_WE->f('ID')]) ? array() : $docCollections[$DB_WE->f('ID')];
+				$docCollections[$DB_WE->f('ID')] = !isset($docCollections[$DB_WE->f('ID')]) ? [] : $docCollections[$DB_WE->f('ID')];
 				$docCollections[$DB_WE->f('ID')][$DB_WE->f('position')] = $DB_WE->f('remObj');
 				$docCollectionIDs[] = $DB_WE->f('remObj');
 			} else {
-				$objectCollections[$DB_WE->f('ID')] = !isset($objectCollections[$DB_WE->f('ID')]) ? array() : $objectCollections[$DB_WE->f('ID')];
+				$objectCollections[$DB_WE->f('ID')] = !isset($objectCollections[$DB_WE->f('ID')]) ? [] : $objectCollections[$DB_WE->f('ID')];
 				$objectCollections[$DB_WE->f('ID')][$DB_WE->f('position')] = $DB_WE->f('remObj');
 				$objCollectionIDs[] = $DB_WE->f('remObj');
 			}

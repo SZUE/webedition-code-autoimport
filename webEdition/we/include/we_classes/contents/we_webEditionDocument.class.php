@@ -275,7 +275,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		}
 		if($disable){
 			$myid = intval($this->TemplateID ? : 0);
-			$path = ($myid ? f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
+			$path = ($myid ? f('SELECT IF(Display!="",Display,Path) FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), '', $this->DB_WE) : '');
 
 			/* $ueberschrift = (permissionhandler::hasPerm('CAN_SEE_TEMPLATES') && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 			  '<a href="javascript:goTemplate(' . $myid . ')">' . g_l('weClass', '[template]') . '</a>' :
@@ -308,9 +308,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	private function xformTemplatePopup($width = 50){
 		$ws = get_ws(TEMPLATES_TABLE, true);
 
-		$hash = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE);
-		$TID = $hash['TemplateID'];
-		$Templates = $hash['Templates'];
+		list($TID, $Templates) = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' WHERE ID =' . intval($this->DocType), $this->DB_WE, MYSQL_NUM);
 		$tlist = ($TID? : '') . ($Templates ? ',' . $Templates : '');
 
 		if($tlist){
@@ -338,8 +336,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				}
 			}
 
-
-			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), ' WHERE ID IN (' . ($foo ? implode(',', $foo) : -1) . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", [], 'left', 'defaultfont', '', $openButton, array(0, ''));
+			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'IF(Display!="",Display,Path)', g_l('weClass', '[template]'), ' WHERE ID IN (' . ($foo ? implode(',', $foo) : -1) . ') AND IsFolder=0 ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", [], 'left', 'defaultfont', '', $openButton, [0, '']);
 		}
 		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID', 'Path', g_l('weClass', '[template]'), '', 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', [], 'left', 'defaultfont', '', $openButton);
 	}
@@ -414,11 +411,11 @@ class we_webEditionDocument extends we_textContentDocument{
 			}
 
 			//	Last step: get Information about the charsets
-			$retSelect = $this->htmlSelect('we_tmp_' . $name, $charsetHandler->getCharsetsByArray($chars), 1, $value, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'), 'value', 254);
+			$retSelect = $this->htmlSelect('we_tmp_' . $name, $charsetHandler->getCharsetsByArray($chars), 1, $value, false, ['onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;'], 'value', 254);
 		} else {
 			//	charset-tag NOT available
 			$retInput = we_html_tools::htmlTextInput("dummi", 40, g_l('charset', '[error][no_charset_tag]'), '', ' readonly disabled', 'text', 254);
-			$retSelect = $this->htmlSelect("dummi2", array(g_l('charset', '[error][no_charset_available]')), 1, DEFAULT_CHARSET, false, array('disabled' => 'disabled'), 'value', 254);
+			$retSelect = $this->htmlSelect("dummi2", [g_l('charset', '[error][no_charset_available]')], 1, DEFAULT_CHARSET, false, ['disabled' => 'disabled'], 'value', 254);
 		}
 		//getCharsets
 		return '
@@ -478,7 +475,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		if($this->ContentType === we_base_ContentTypes::WEDOCUMENT){
 			$only = $this->getUsedElements(true);
 			//FIXME:needed for rebuild, since tags are unintialized
-			$only = $only ? array_merge(array('Title', 'Description', 'Keywords'), $only) : null;
+			$only = $only ? array_merge(['Title', 'Description', 'Keywords'], $only) : null;
 		}
 		return parent::insertAtIndex($only, $fieldTypes);
 	}
@@ -500,7 +497,7 @@ class we_webEditionDocument extends we_textContentDocument{
 			if(preg_match('|<we:([^> /]+)|i', $tag, $regs)){ // starttag found
 				$tagname = $regs[1];
 				if(($tagname != 'var') && ($tagname != 'field') && preg_match('|name="([^"]+)"|i', $tag, $regs)){ // name found
-					$name = str_replace(array('[', ']'), array('\[', '\]'), $regs[1]);
+					$name = str_replace(['[', ']'], ['\[', '\]'], $regs[1]);
 					if($blocks){
 						$foo = end($blocks);
 						$blockname = $foo['name'];

@@ -647,12 +647,12 @@ abstract class we_export_functions{
 					switch($format){
 						case we_import_functions::TYPE_GENERIC_XML:
 							$tag_name = self::correctTagname($field['name'], 'value', $i);
-							$content = $we_obj->getElementByType($field["name"], $field["type"], (empty($dv[$realName]) ? array() : $dv[$realName]));
+							$content = $we_obj->getElementByType($field["name"], $field["type"], (empty($dv[$realName]) ? [] : $dv[$realName]));
 							$file .= self::formatOutput($tag_name, we_document::parseInternalLinks($content, 0, ''), $format, 2, $cdata, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
 
 							break;
 						case 'csv':
-							$content = $we_obj->getElementByType($field["name"], $field["type"], (empty($dv[$realName]) ? array() : $dv[$realName]));
+							$content = $we_obj->getElementByType($field["name"], $field["type"], (empty($dv[$realName]) ? [] : $dv[$realName]));
 							$file .= self::formatOutput("", we_document::parseInternalLinks($content, 0, ''), $format, 2, false, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
 
 							break;

@@ -46,7 +46,7 @@ class we_workflow_base{
 				if(isset($this->persistents[$fieldName])){
 					$this->$fieldName = ($this->persistents[$fieldName] == we_base_request::INTLISTA ?
 							($this->db->f($fieldName) === '' ?
-								array() :
+								[] :
 								explode(',', trim($this->db->f($fieldName), ','))) :
 							$this->db->f($fieldName));
 				}

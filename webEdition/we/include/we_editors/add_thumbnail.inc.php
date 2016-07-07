@@ -50,7 +50,7 @@ $DB_WE->query('SELECT ID,Name,Format,description FROM ' . THUMBNAILS_TABLE . ' O
 
 $thumbnail_counter_firsttime = true;
 
-$doc_thumbs = ($we_doc->Thumbs == -1) ? array() : explode(',', $we_doc->Thumbs);
+$doc_thumbs = ($we_doc->Thumbs == -1) ? [] : explode(',', $we_doc->Thumbs);
 
 $selectedID = 0;
 $enabled_buttons = false;

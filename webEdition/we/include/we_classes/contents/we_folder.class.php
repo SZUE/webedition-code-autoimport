@@ -383,7 +383,7 @@ class we_folder extends we_root{
 		}
 	}
 
-	function formPath($disablePath = false, $notSetHot = false){
+	function formPath($disablePath = false, $notSetHot = false, $extra = ''){
 		$ws = get_ws($this->Table, true);
 		if(intval($this->ParentID) == 0 && $ws){
 			$this->ParentID = reset($ws);

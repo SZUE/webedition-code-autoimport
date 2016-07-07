@@ -61,7 +61,7 @@ abstract class we_glossary_replace{
 			'' => $cache->get(we_glossary_glossary::TYPE_TEXTREPLACE), //text replacement must come first, since other might generate iritation annotations
 			'span' => $cache->get(we_glossary_glossary::TYPE_FOREIGNWORD),
 			'abbr' => (REPLACEACRONYM ? array_merge($cache->get(we_glossary_glossary::TYPE_ABBREVATION), $cache->get(we_glossary_glossary::TYPE_ACRONYM)) : $cache->get(we_glossary_glossary::TYPE_ABBREVATION)),
-			'acronym' => (REPLACEACRONYM ? array() : $cache->get(we_glossary_glossary::TYPE_ACRONYM)),
+			'acronym' => (REPLACEACRONYM ? [] : $cache->get(we_glossary_glossary::TYPE_ACRONYM)),
 			'a' => $cache->get(we_glossary_glossary::TYPE_LINK),
 		);
 		unset($cache);
