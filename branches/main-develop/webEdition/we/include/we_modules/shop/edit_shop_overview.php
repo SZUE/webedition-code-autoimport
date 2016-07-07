@@ -29,7 +29,7 @@ echo we_html_tools::getHtmlTop() .
  STYLESHEET;
 
 /// config
-$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
+$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"'));
 
 $waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
@@ -38,9 +38,10 @@ $year = abs(substr($_REQUEST["mid"], -4));
 $month = abs(str_replace($year, "", $_REQUEST["mid"]));
 
 $bezahlt = $unbezahlt = $r = $f = 0;
+$when = mktime(0, 0, 0, $month, 1, $year);
+$dat = date('Y-m-d 00:00:00');
 
-
-$DB_WE->query('SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ' . SHOP_TABLE . ' WHERE DateOrder>="' . $year . (($month < 10) ? "0" . $month : $month) . '01000000" AND DateOrder<="' . $year . (($month < 10) ? '0' . $month : $month) . date('t', mktime(0, 0, 0, $month, 1, $year)) . '000000" ORDER BY IntOrderID');
+$DB_WE->query('SELECT IntOrderID, Price, IntQuantity, DateShipping,DatePayment FROM ' . SHOP_TABLE . ' WHERE DateOrder BETWEEN ("' . $dat . '" AND ("' . $dat . '" + INTERVAL 1 MONTH) ) ORDER BY IntOrderID');
 while($DB_WE->next_record()){
 	if($DB_WE->f('DatePayment') != 0){
 		if(!isset($bezahlt)){
