@@ -482,7 +482,7 @@ abstract class we_root extends we_class{
 		return !we_users_util::isUserInUsers($_SESSION['user']['ID'], $readers);
 	}
 
-	public function formPath($disablePath = false, $notSetHot = false){
+	public function formPath($disablePath = false, $notSetHot = false, $extra = ''){
 		$disable = ( ($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published);
 		if($this->ContentType === we_base_ContentTypes::HTACESS){
 			$vals = we_base_ContentTypes::inst()->getExtension($this->ContentType, true);
@@ -498,7 +498,8 @@ abstract class we_root extends we_class{
 		<td></td>
 		<td>' . $this->formExtension2() . '</td>
 	</tr>
-	<tr><td colspan="3">' . $this->formDirChooser(0, 0, '', 'ParentPath', 'ParentID', '', g_l('weClass', '[dir]'), $disablePath) . '</td></tr>
+	<tr><td colspan="3">' . $this->formDirChooser(0, 0, '', 'ParentPath', 'ParentID', '', g_l('weClass', '[dir]'), $disablePath) . '</td></tr>' .
+			$extra . '
 </table>';
 	}
 

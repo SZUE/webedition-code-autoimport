@@ -499,7 +499,7 @@ class we_objectFile extends we_document{
 		$GLOBALS["we_JavaScript"] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
 
-	public function formPath($disablePath = false, $notSetHot = false){
+	public function formPath($disablePath = false, $notSetHot = false, $extra = ''){
 		$rootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID, $this->DB_WE);
 		if(!$this->ParentID){
 			$this->ParentID = $rootDirId;
@@ -767,7 +767,7 @@ class we_objectFile extends we_document{
 	}
 
 	private function getMetaFieldHTML($type, $name, array $attribs, $editable = true, $variant = false){
-		$vals = ($variant ? $attribs['meta'] : (empty($this->DefArray['meta_' . $name]['meta']) ? array() : $this->DefArray['meta_' . $name]['meta']));
+		$vals = ($variant ? $attribs['meta'] : (empty($this->DefArray['meta_' . $name]['meta']) ? [] : $this->DefArray['meta_' . $name]['meta']));
 		$element = $this->getElement($name);
 		if(!$editable){
 			return $this->getPreviewView($name, isset($vals[$element]) ? $vals[$element] : '');
@@ -3193,7 +3193,7 @@ class we_objectFile extends we_document{
 		if($table != FILE_TABLE){
 			return '1';
 		}
-		static $wsFlag = array();
+		static $wsFlag = [];
 		$parentIDs = [];
 		$pid = intval($pid);
 		$cid = intval($cid);

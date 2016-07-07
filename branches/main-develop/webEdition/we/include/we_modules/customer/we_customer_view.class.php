@@ -729,7 +729,7 @@ self.close();');
 		$array = array(
 			'AND' => array($arr[0]),
 			'OR' => [],
-			'AND NOT' => array()
+			'AND NOT' => []
 		);
 
 

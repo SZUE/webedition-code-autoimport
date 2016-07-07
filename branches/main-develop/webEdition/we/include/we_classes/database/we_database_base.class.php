@@ -60,7 +60,7 @@ abstract class we_database_base{
 	/** public: connection parameters */
 	protected $Database = DB_DATABASE;
 	private static $Trigger_cnt = 0;
-	private static $queryCache = array();
+	private static $queryCache = [];
 
 	/** Connects to the database, which this is done by the constructor
 	 *
@@ -404,7 +404,7 @@ abstract class we_database_base{
 			//don't kill query cache if we add errors
 			if(!strpos($Query_String, defined('ERROR_LOG_TABLE') ? ERROR_LOG_TABLE : 'ERROR_LOG_TABLE') || (stripos($Query_String, 'DELETE') === 0)){
 // delete getHash DB Cache
-				self::$queryCache = array();
+				self::$queryCache = [];
 			}
 			$repool = true;
 		} elseif(preg_match('/CREATE TEMPORARY/i', $Query_String)){
@@ -428,7 +428,7 @@ abstract class we_database_base{
 				'error' => $this->Error,
 				'affected' => $this->_affected_rows(),
 				'rows' => $this->num_rows(),
-				'explain' => array()
+				'explain' => []
 			);
 			if($isSelect){
 				$this->Query_ID = $this->_query('EXPLAIN ' . $Query_String);
@@ -1127,8 +1127,8 @@ abstract class we_database_base{
 	public function getHash($query = '', $resultType = MYSQL_ASSOC){
 		static $cache = [];
 		if(!$query){
-			self::$queryCache = array();
-			return array();
+			self::$queryCache = [];
+			return [];
 		}
 		$hash = $resultType . md5($query, true);
 		if(isset(self::$queryCache[$hash])){

@@ -264,7 +264,7 @@ function in_workspace($IDs, $wsIDs, $table = FILE_TABLE, we_database_base $db = 
 
 function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $asArray = false){
 	if(empty($path)){
-		return $asArray ? array() : '';
+		return $asArray ? [] : '';
 	}
 	if(!is_array($path)){
 		$path = array($path);
@@ -298,7 +298,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asA
 	$foo = (in_array(0, $IDs) ? array(0 => '/') : []) +
 		($IDs ?
 			$db->getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false) :
-			array()
+			[]
 		);
 
 	return $asArray ? $foo : implode(',', $foo);
@@ -384,13 +384,13 @@ function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '', we_database
 function get_ws($table = FILE_TABLE, $asArray = false){
 	if(isset($_SESSION) && isset($_SESSION['perms'])){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
-			return $asArray ? array() : '';
+			return $asArray ? [] : '';
 		}
 		if($_SESSION['user']['workSpace'] && !empty($_SESSION['user']['workSpace'][$table])){
 			return $asArray ? $_SESSION['user']['workSpace'][$table] : implode(',', $_SESSION['user']['workSpace'][$table]);
 		}
 	}
-	return $asArray ? array() : '';
+	return $asArray ? [] : '';
 }
 
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
@@ -863,7 +863,7 @@ function g_l($name, $specific, $omitErrors = false){
 					$tmp);
 		}
 	}
-	$dirs = (empty($_SESSION['weS']['gl']) ? array() : $_SESSION['weS']['gl']);
+	$dirs = (empty($_SESSION['weS']['gl']) ? [] : $_SESSION['weS']['gl']);
 	$dirs[] = WE_INCLUDES_PATH . 'we_language/';
 	$found = false;
 	foreach($dirs as $dir){

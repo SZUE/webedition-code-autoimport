@@ -273,7 +273,7 @@ abstract class we_customer_EI{
 					$rootnode = array(
 						'name' => 'customer',
 						'attributes' => null,
-						'content' => array()
+						'content' => []
 					);
 
 					$csv = new we_customer_CSVImport();

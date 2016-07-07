@@ -38,7 +38,7 @@ abstract class we_wizard_code{
 	private static function getCustomSnippets(){
 		$SnippetDir = WE_INCLUDES_PATH . self::SnippetPath . 'custom';
 		return (!is_dir($SnippetDir) ?
-				array() :
+				[] :
 				self::getSnippetsByDir('custom'));
 	}
 
@@ -51,7 +51,7 @@ abstract class we_wizard_code{
 		$SnippetDir = WE_INCLUDES_PATH . self::SnippetPath . 'default';
 
 		return (!is_dir($SnippetDir) ?
-				array() :
+				[] :
 				self::getSnippetsByDir('default'));
 	}
 

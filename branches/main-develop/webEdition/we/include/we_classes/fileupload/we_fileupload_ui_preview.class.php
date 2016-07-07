@@ -128,22 +128,22 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 
 	public static function getFormImageEditClientside($multimport = false, $disabled = false, $reeditCmd = 'we_FileUpload.reeditImage(null, 0);'){
 		$editCheckbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_doResize', $multimport ? g_l('importFiles', '[edit_imgsBeforeUpload]') : g_l('importFiles', '[edit_imgBeforeUpload]'), false, 'defaultfont', 'document.getElementById(\'editImage\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){' . $reeditCmd . '}');
-		$attribs = array_merge($disabled ? array('disabled' => 'disabled') : array(), array('name' => 'fu_doc_resizeValue', 'type' => 'text', 'class' => 'wetextinput optsScaleInput' . ($multimport ? ' multiimport' : ''), 'autocomplete' =>'off'));
+		$attribs = array_merge($disabled ? array('disabled' => 'disabled') : [], array('name' => 'fu_doc_resizeValue', 'type' => 'text', 'class' => 'wetextinput optsScaleInput' . ($multimport ? ' multiimport' : ''), 'autocomplete' =>'off'));
 		$scaleValue = we_html_element::htmlInput($attribs);
 		$scalePropositions = we_html_tools::htmlSelect('scaleValuePropsositions',
 				array('' => '', 320 => 320, 640 => 640, 1280 => 1280, 1440 => 1440, 1600 => 1600, 1920 => 1920, 2560 => 2560),
-					1, 0, false, array(), '', '', 'weSelect optsScalePropositions' . ($multimport ? ' multiimport' : ''));
+					1, 0, false, [], '', '', 'weSelect optsScalePropositions' . ($multimport ? ' multiimport' : ''));
 		$scaleWhatSelect = we_html_tools::htmlSelect('fu_doc_unitSelect', array(
 				'pixel_w' => g_l('importFiles', '[edit_pixel_width]'),
 				'pixel_h' => g_l('importFiles', '[edit_pixel_height]'),
 				'pixel_l' => g_l('importFiles', '[edit_pixel_longest]'),
-				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '', $multimport ? 78 : 150, 'weSelect optsUnitSelect');
+				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : []), '', $multimport ? 78 : 150, 'weSelect optsUnitSelect');
 		$rotateSelect = we_html_tools::htmlSelect('fu_doc_rotate', array(
 				0 => g_l('weClass', '[rotate0]'),
 				180 => g_l('weClass', '[rotate180]'),
 				270 => g_l('weClass', '[rotate90l]'),
 				90 => g_l('weClass', '[rotate90r]'),
-				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '28', 150, 'weSelect optsRotateSelect');
+				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : []), '28', 150, 'weSelect optsRotateSelect');
 		$quality = we_html_element::htmlInput(array('type' => 'range', 'value' => 0, 'min' => 0, 'max' => 100, 'step' => 5, 'onchange' => "document.getElementById('qualityValue').innerHTML = this.value", 'oninput' => "document.getElementById('qualityValue').innerHTML = this.value", 'name' => 'fu_doc_quality', 'class' => 'optsQuality'));
 		$btnProcess = we_html_button::create_button(we_html_button::PROCESS, "javascript:" . $reeditCmd, true, 0, 0, '', '', true, false, '_weFileupload', false, $title = '', 'weFileupload_btnImgEditRefresh');
 

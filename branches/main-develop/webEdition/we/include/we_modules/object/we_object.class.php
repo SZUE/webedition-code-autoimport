@@ -1739,7 +1739,7 @@ class we_object extends we_document{
 		return '<table class="default"><tr><td><i class="fa fa-' . ($this->RestrictUsers ? 'check-' : '') . 'square-o wecheckIcon disabled"></i></td><td class="defaultfont">&nbsp;' . g_l('weClass', '[limitedAccess]') . '</td></tr></table>';
 	}
 
-	public function formPath($disablePath = false, $notSetHot = false){
+	public function formPath($disablePath = false, $notSetHot = false, $extra = ''){
 		return '<table class="default">
 	<tr><td>' . $this->formInputField('', 'Text', g_l('modules_object', '[classname]'), 30, 508, 255, 'onchange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
 </table>';

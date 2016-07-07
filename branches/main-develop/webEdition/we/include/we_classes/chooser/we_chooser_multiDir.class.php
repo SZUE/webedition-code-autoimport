@@ -104,7 +104,7 @@ class we_chooser_multiDir{
 	function setOnchangeSetHot($setHot = true){
 		$this->onchangeSetHot = $setHot;
 	}
-	
+
 	function getJsSetHot(){
 		return $this->onchangeSetHot ? "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);" : '';
 	}
@@ -113,7 +113,7 @@ class we_chooser_multiDir{
 		$out = '<table class="default" style="width:' . abs($this->width - 20) . 'px">';
 
 		$this->nr = 0;
-		$idArr = is_array($this->ids) ? $this->ids : ($this->ids === '' ? array() : explode(',', trim($this->ids, ',')));
+		$idArr = is_array($this->ids) ? $this->ids : ($this->ids === '' ? [] : explode(',', trim($this->ids, ',')));
 
 		foreach($idArr as $id){
 			$this->Record = getHash('SELECT ID,Path,' . $this->ct . ' AS ContentType FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($id), $this->db);

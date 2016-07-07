@@ -127,7 +127,7 @@ class we_category extends we_base_model{
 		return ($catIDs ?
 				self::we_getCategories($catIDs, $tokken, $showpath, $db, $rootdir, $catfield, $onlyindir, $asArray, $complete) :
 				($asArray ?
-					array() :
+					[] :
 					'')
 			);
 	}

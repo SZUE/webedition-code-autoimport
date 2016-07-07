@@ -659,7 +659,7 @@ return {
 		$tmpElements = $this->filteredElements;
 		$rownr = 0;
 		$rows = array(
-			$rownr => array()
+			$rownr => []
 		);
 
 		foreach($tmpElements as $elem){

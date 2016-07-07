@@ -176,7 +176,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * @param string $thumbsToAdd
 	 */
 	function add_thumbnails($thumbsToAdd){
-		$thumbsArray = ($this->Thumbs == -1) ? array() : makeArrayFromCSV($this->Thumbs);
+		$thumbsArray = ($this->Thumbs == -1) ? [] : makeArrayFromCSV($this->Thumbs);
 
 		foreach($thumbsToAdd as $t){
 			if(!in_array($t, $thumbsArray)){
@@ -195,7 +195,7 @@ class we_imageDocument extends we_binaryDocument{
 	 * @param int $thumbnailID
 	 */
 	function del_thumbnails($thumbnailID){
-		$thumbsArray = ($this->Thumbs == -1) ? array() : makeArrayFromCSV($this->Thumbs);
+		$thumbsArray = ($this->Thumbs == -1) ? [] : makeArrayFromCSV($this->Thumbs);
 		$newArray = [];
 
 		foreach($thumbsArray as $t){

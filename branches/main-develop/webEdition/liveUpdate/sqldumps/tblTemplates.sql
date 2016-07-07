@@ -4,6 +4,7 @@ CREATE TABLE ###TBLPREFIX###tblTemplates (
   ID int unsigned NOT NULL auto_increment,
   ParentID int unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
+	Display text NOT NULL,
   IsFolder tinyint unsigned NOT NULL default '0',
   ContentType enum('folder','text/weTmpl') NOT NULL default 'text/weTmpl',
   CreationDate int unsigned NOT NULL default '0',

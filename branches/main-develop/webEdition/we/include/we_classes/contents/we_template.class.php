@@ -30,6 +30,7 @@ class we_template extends we_document{
 	var $TagWizardSelection; // bugfix 1502
 	var $IncludedTemplates = '';
 	var $doUpdateCode = true; // will be protected in later WE Versions
+	var $Display = '';
 
 	const NO_TEMPLATE_INC = 'we_noTmpl.inc.php';
 
@@ -39,7 +40,7 @@ class we_template extends we_document{
 		parent::__construct();
 		$this->Table = TEMPLATES_TABLE;
 
-		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection');
+		array_push($this->persistent_slots, 'MasterTemplateID', 'IncludedTemplates', 'TagWizardCode', 'TagWizardSelection', 'Display');
 		$this->setElement('Charset', DEFAULT_CHARSET, 'attrib');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, we_base_constants::WE_EDITPAGE_VARIANTS, we_base_constants::WE_EDITPAGE_VERSIONS, we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS);
@@ -948,6 +949,13 @@ we_templateInit();?>';
 				array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2)
 				)
 		);
+	}
+
+	public function formPath($disablePath = false, $notSetHot = false, $extra = ''){
+		$extra = '<tr><td colspan="3" style="padding-bottom:4px;">' .
+			$this->formInputField('', 'Display', g_l('navigation', '[display]'), 30, 0, 255, 'onchange="' . ($notSetHot ? '' : 'WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true); ') . '"')
+			. '</td></tr>';
+		return parent::formPath($disablePath, $notSetHot, $extra);
 	}
 
 	public static function we_getCodeMirror2Tags($css, $setting, $weTags = true){

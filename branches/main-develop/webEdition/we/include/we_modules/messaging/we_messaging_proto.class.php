@@ -255,7 +255,7 @@ abstract class we_messaging_proto /* extends we_class */{
 	function delete_folders(array $f_arr){
 		$ret = array(
 			"res" => 0,
-			"ids" => array()
+			"ids" => []
 		);
 
 		if(!$f_arr){

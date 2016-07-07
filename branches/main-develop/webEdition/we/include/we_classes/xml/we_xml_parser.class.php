@@ -830,7 +830,7 @@ class we_xml_parser{
 		$axis = array(
 			'axis' => '',
 			'node-test' => '',
-			'predicate' => array()
+			'predicate' => []
 		);
 
 		// Check if there are predicates.

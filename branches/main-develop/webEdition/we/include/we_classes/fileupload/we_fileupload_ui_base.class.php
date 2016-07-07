@@ -61,7 +61,7 @@ class we_fileupload_ui_base extends we_fileupload{
 		'html' => '',
 		'width' => 120,
 		'name' => '',
-		'additionalParams' => array()
+		'additionalParams' => []
 	);
 	protected $isPreset = false;
 	protected $fileTable = '';
