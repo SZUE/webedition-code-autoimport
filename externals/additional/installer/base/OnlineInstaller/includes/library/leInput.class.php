@@ -6,7 +6,7 @@ class leInput{
 
 		$_attribs = "";
 
-		while(list($_key, $_val) = each($attribs)){
+		foreach($attribs as $_key => $_val){
 			$_attribs .= " $_key=\"$_val\"";
 		}
 		$_attribs .= " class=\"textinput\" onblur=\"this.className='textinput';\" onfocus=\"this.className='textinputselected'\"";

@@ -3,37 +3,26 @@
 class Login extends leStep{
 
 	function execute(&$Template = ''){
-
-		// Hostname
-		$Name = 'le_login_user';
-		$Value = isset($_SESSION['le_login_user']) ? $_SESSION['le_login_user'] : "";
 		$Attribs = array(
 			'size' => '40',
 			'style' => 'width: 293px',
+			'required' => 'required'
 		);
-		$UserInput = leInput::get($Name, $Value, $Attribs);
+
+		// username
+		$UserInput = leInput::get('le_login_user', (isset($_SESSION['le_login_user']) ? $_SESSION['le_login_user'] : ""), $Attribs);
 		$UserHelp = leLayout::getHelp($this->Language['user_help']);
 
 		// Password
-		$Name = 'le_login_pass';
-		$Value = isset($_SESSION['le_login_pass']) ? $_SESSION['le_login_pass'] : "";
-		$Attribs = array(
-			'size' => '40',
-			'style' => 'width: 293px',
-		);
-		$PassInput = leInput::get($Name, $Value, $Attribs, "password");
+		$PassInput = leInput::get('le_login_pass', (isset($_SESSION['le_login_pass']) ? $_SESSION['le_login_pass'] : ""), $Attribs, "password");
 		$PassHelp = leLayout::getHelp($this->Language["pass_help"]);
 
 		// Confirm
-		$Name = 'le_login_pass_confirm';
-		$Value = isset($_SESSION['le_login_pass_confirm']) ? $_SESSION['le_login_pass_confirm'] : "";
-		$Attribs = array(
-			'size' => '40',
-			'style' => 'width: 293px',
-		);
-		$ConfirmInput = leInput::get($Name, $Value, $Attribs, "password");
+		$ConfirmInput = leInput::get('le_login_pass_confirm', (isset($_SESSION['le_login_pass_confirm']) ? $_SESSION['le_login_pass_confirm'] : ""), $Attribs, "password");
 		$ConfirmHelp = leLayout::getHelp($this->Language["confirm_help"]);
 
+		$email = leInput::get('le_login_email', (isset($_SESSION['le_login_email']) ? $_SESSION['le_login_email'] : ""), $Attribs);
+		$emailHelp = leLayout::getHelp($this->Language["email_help"]);
 
 		$Content = <<<EOF
 {$this->Language['content']}<br />
@@ -47,6 +36,10 @@ class Login extends leStep{
 
 <b>{$this->Language['confirm']}:</b> {$ConfirmHelp}<br />
 {$ConfirmInput}<br />
+
+<b>{$this->Language['email']}:</b> {$emailHelp}<br />
+{$email}<br />
+
 EOF;
 
 		if(!$this->CheckFailed){

@@ -11,7 +11,6 @@ class Summary extends leStep{
 				$this->Language['webEditionURL'] => LE_URL . "/webEdition/",
 				$this->Language['webEditionUsername'] => $_SESSION['le_login_user'],
 				$this->Language['webEditionPassword'] => $_SESSION['le_login_pass'],
-				//$this->Language['webEditionSerial'] => (isset($_SESSION['le_serial']) && $_SESSION['le_serial'] != "" ? $_SESSION['le_serial'] : "-"),
 				$this->Language['webEditionVersion'] => $_SESSION['le_version'],
 				$this->Language['webEditionSystemLanguage'] => $_SESSION['le_defaultLanguage'],
 				$this->Language['webEditionAdditionalLanguages'] => (isset($_SESSION['le_extraLanguages']) && count($_SESSION['le_extraLanguages']) > 0) ? implode(", ", $_SESSION['le_extraLanguages']) : "-",
