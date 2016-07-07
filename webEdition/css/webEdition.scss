@@ -588,6 +588,9 @@ td.boxHeader{
 #headrow{
 	margin: 7px 0px 7px 5px;
 	white-space: nowrap;
+	#h_path{
+		max-width:40em;
+	}
 	a{
 		#h_path{
 			color: #386aab;
@@ -1433,6 +1436,7 @@ span{
 		white-space: nowrap;
 		display:inline-block;
 		max-width:10em;
+		vertical-align:bottom;
 	}
 	&.cutTextLeft{
     direction:rtl;

@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_import_functions{
-
 	const TYPE_CSV = 'CSVImport';
 	const TYPE_GENERIC_XML = 'GXMLImport';
 	const TYPE_WE_XML = 'WXMLImport';
@@ -101,9 +100,9 @@ abstract class we_import_functions{
 		}
 		// PUBLISH OR EXIT
 		return ($publish ?
-						$GLOBALS['we_doc']->we_publish() :
-						true
-				);
+				$GLOBALS['we_doc']->we_publish() :
+				true
+			);
 	}
 
 	/**
@@ -140,7 +139,7 @@ abstract class we_import_functions{
 			$name_exists = false;
 			$filename = we_import_functions::correctFilename($filename);
 			$object->Text = $filename;
-			$object->Path = $object->getParentPath() . (($object->getParentPath() != "/") ? "/" : "") . $object->Text;
+			$object->Path = $object->getParentPath() . (($object->getParentPath() != '/') ? '/' : '') . $object->Text;
 			// IF NAME OF OBJECT EXISTS, WE HAVE TO CREATE A NEW NAME
 			if(($file_id = f('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE Path="' . $GLOBALS['DB_WE']->escape($object->Path) . '"'))){
 				$name_exists = true;
@@ -174,8 +173,8 @@ abstract class we_import_functions{
 		}
 		// PUBLISH OR EXIT
 		return ($publish ?
-						$object->we_publish() :
-						true);
+				$object->we_publish() :
+				true);
 	}
 
 	/**
@@ -184,12 +183,23 @@ abstract class we_import_functions{
 	 * @desc corrects the filename if it contains invalid chars
 	 */
 	static function correctFilename($filename, $allowPath = false){
-		$filename = strtr($filename, array(' ' => '-', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
-		$filename = preg_replace('%[^a-z0-9\._+\-@' . ($allowPath ? '/' : '') . ']%i', '', $filename);
+		$filename = preg_replace('%[^a-z0-9\._+\-@' . ($allowPath ? '/' : '') . ']%i', '', trim(strtr($filename, array(
+			' ' => '-',
+			'ä' => 'ae',
+			'ö' => 'oe',
+			'ü' => 'ue',
+			'Ä' => 'Ae',
+			'Ö' => 'Oe',
+			'Ü' => 'Ue',
+			'ß' => 'ss'
+				)), '/'));
+
 		if(!$allowPath && strlen($filename) > 100){
-			$filename = substr($filename, 0, 100);
+			$pos = strrpos($filename, '.');
+			$ext = substr($filename, $pos + 1, 16);
+			$name = substr($filename, 0, min($pos, 100 - strlen($ext)));
+			$filename = $name . '.' . $ext;
 		}
-		$filename = trim($filename, '/');
 		return $filename ? : 'newfile';
 	}
 
