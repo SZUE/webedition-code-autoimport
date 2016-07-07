@@ -225,7 +225,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @return boolean
 	 */
 	function checkMakeDir($dirPath, $mod = 0755){
-
+		umask(0022);
 		// open_base_dir - seperate document-root from rest
 		if(strpos($dirPath, LIVEUPDATE_SOFTWARE_DIR) === 0){
 			$preDir = LIVEUPDATE_SOFTWARE_DIR;

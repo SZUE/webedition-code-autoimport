@@ -121,7 +121,7 @@ foreach(\$installerFiles as \$filename => \$content) {
 }
 
 function checkMakeDir(\$dirPath, \$mod=0755) {
-
+	umask(0022);
 	// open_base_dir - seperate document-root from rest
 	if (strpos(\$dirPath, DOCUMENT_ROOT) === 0) {
 		\$preDir = DOCUMENT_ROOT;
