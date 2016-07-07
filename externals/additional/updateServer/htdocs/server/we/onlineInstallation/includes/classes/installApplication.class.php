@@ -594,12 +594,13 @@ if ($success) {
 		$leDB = new le_MySQL_DB();
 		$userText = strip_tags($_SESSION["le_login_user"]);
 		$userText = str_replace(array("\'",\'"\'),"",$userText);
+		$path="/".$userText;
 		if("' . $tblUserQuery['path'] . '"){
 			$docRoot = isset($_SESSION["le_documentRoot"]) ? $_SESSION["le_documentRoot"] : $_SERVER["DOCUMENT_ROOT"];
 			include_once($docRoot."' . $tblUserQuery['path'] . '");
 			' . $tblUserQuery['needle'] . ';
 		}
-		$query = sprintf("' . $tblUserQuery['replace'] . '", $_SESSION[\'le_db_prefix\'], $userText, $_SESSION["le_login_user"], $_SESSION["le_login_pass"],$_SESSION["le_login_email"]);
+		$query = sprintf("' . $tblUserQuery['replace'] . '", $_SESSION[\'le_db_prefix\'], $userText,$path, $_SESSION["le_login_user"], $_SESSION["le_login_pass"],$_SESSION["le_login_email"]);
 
 		if (!$leDB->query($query)) {
 			' . static::getErrorMessageResponsePart('', $GLOBALS['lang'][self::$LanguageIndex]['dbNotInsertUser']) . '
