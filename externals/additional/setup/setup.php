@@ -1140,15 +1140,15 @@ ob_end_clean();
 							<tr style="height:10px;">
 								<td style="width:260px;background-color:#386AAB;"></td>
 								<td rowspan="2" style="width:430px;">
-									<table border="0" style="background-image:url(/webEdition/images/info/info.jpg);background-repeat: no-repeat;background-color:#EBEBEB;">
+									<table border="0" style="background-repeat: no-repeat;background-color:#EBEBEB;">
 										<tr>
-											<td colspan="3" width="432" height="110"><img src="/webEdition/images/pixel.gif" width="432" height="110" border="0"></td>
+											<td colspan="3" width="432" height="110"></td>
 										</tr>
 										<tr>
-											<td width="432" colspan="3"><img src="/webEdition/images/pixel.gif" width="432" height="15" border="0"></td>
+											<td width="432" colspan="3"></td>
 										</tr>
 										<tr>
-											<td width="15"><img src="/webEdition/images/pixel.gif" width="15" height="1" border="0"></td>
+											<td width="15"></td>
 											<td width="402">
 												<?php
 												echo $stepTitle;
@@ -1156,42 +1156,41 @@ ob_end_clean();
 												echo $navigation;
 												?>
 											</td>
-											<td width="15"><img src="/webEdition/images/pixel.gif" width="15" height="1" border="0"></td>
+											<td width="15"></td>
 										</tr>
 										<tr>
-											<td width="432" colspan="3"><img src="/webEdition/images/pixel.gif" width="432" height="10" border="0"></td>
+											<td width="432" colspan="3"></td>
 										</tr>
 										<tr>
-											<td width="15"><img src="/webEdition/images/pixel.gif" width="15" height="1" border="0"></td>
+											<td width="15"></td>
 											<td width="402" class="small">Version: <?php echo WE_VERSION ?></td>
-											<td width="15"><img src="/webEdition/images/pixel.gif" width="15" height="1" border="0"></td>
+											<td width="15"></td>
 										</tr>
 										<tr>
-											<td width="432" colspan="3"><img src="/webEdition/images/pixel.gif" width="432" height="10" border="0"></td>
+											<td width="432" colspan="3"></td>
 										</tr>
 										<tr>
 											<td width="432" colspan="3">
-												<img src="/webEdition/images/pixel.gif" width="432" height="10" border="0">
+
 											</td>
 										</tr>
 									</table>
 								</td>
-								<td valign="top" style="width:260px;background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;">
-									<img src="/webEdition/images/login/top_r.jpg" width="260" height="10"/>
+								<td valign="top" style="width:260px;background-repeat:repeat-y;">
+
 								</td>
 							</tr>
 							<tr>
 								<td  valign="bottom" style="width:260px;height:296px;background-color:#386AAB;">
-									<img src="/webEdition/images/pixel.gif" width="260" height="296" />
 								</td>
-								<td valign="bottom" style="width:260px;height:296px;background-image:url(/webEdition/images/login/right.jpg);background-repeat:repeat-y;">
-									<img src="/webEdition/images/login/bottom_r.jpg" width="260" height="296" />
+								<td valign="bottom" style="width:260px;height:296px;background-repeat:repeat-y;">
+
 								</td>
 							</tr>
 							<tr style="height:10px;">
-								<td style="width:260px;"><img src="/webEdition/images/pixel.gif" width="260" height="10" /></td>
-								<td style="background-image:url(/webEdition/images/login/bottom.jpg);height:10px;"><img src="/webEdition/images/login/bottom_l.jpg" width="184" height="10" /></td>
-								<td style="width:260px;"><img src="/webEdition/images/login/bottom_r2.jpg" width="260" height="10" /></td>
+								<td style="width:260px;"></td>
+								<td style="height:10px;"></td>
+								<td style="width:260px;"></td>
 							</tr>
 						</table>
 					</form>
