@@ -258,6 +258,8 @@ var WebEdition = {
 				fieldNameNotTitleDesc: '<?= g_l('modules_object', '[fieldNameNotTitleDesc]'); ?>',
 				fieldNameEmpty: '<?= g_l('modules_object', '[fieldNameEmpty]'); ?>'
 			},
+			selectors:{
+			},
 			tinyMceTranslationObject: {
 				<?= array_search($GLOBALS['WE_LANGUAGE'], getWELangs()); ?>:{
 					we:{

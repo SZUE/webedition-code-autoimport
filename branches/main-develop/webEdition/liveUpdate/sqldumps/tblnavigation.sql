@@ -6,7 +6,7 @@
 CREATE TABLE ###TBLPREFIX###tblnavigation (
   ID int unsigned NOT NULL auto_increment,
   ParentID int unsigned NOT NULL default '0',
-  Path varchar(2000) NOT NULL default '',
+  Path varchar(2048) NOT NULL default '',
   Published tinyint unsigned NOT NULL DEFAULT '1',
   Text text NOT NULL,
   Display text NOT NULL,
