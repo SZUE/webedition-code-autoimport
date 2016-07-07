@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -22,12 +24,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 var hot = 0;
-if (window.addEventListener) {
-	document.addEventListener("keyup", doKeyDown, true);
-} else {
-	document.onkeydown = doKeyDown;
-}
-
 
 function we_submitForm(url) {
 	var f = self.document.we_form;
@@ -101,7 +97,7 @@ function we_cmd() {
 
 		case "edit":
 			elem = document.getElementById("editShopVatForm");
-			if (elem.style.display == "none") {
+			if (elem.style.display === "none") {
 				elem.style.display = "";
 			}
 
@@ -120,6 +116,11 @@ function we_cmd() {
 			if (confirm(WE().consts.g_l.shop.vat_confirm_delete)) {
 				document.location = SCRIPT_NAME + "?we_cmd[0]=deleteVat&weShopVatId=" + args[1];
 			}
+			break;
+
+		case 'cancel_notclose':
+			elem = document.getElementById("editShopVatForm");
+			elem.style.display = "none";
 			break;
 
 		case "addVat":
