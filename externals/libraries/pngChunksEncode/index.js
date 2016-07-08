@@ -2,6 +2,25 @@ var uint8 = new Uint8Array(4);
 var int32 = new Int32Array(uint8.buffer);
 var uint32 = new Uint32Array(uint8.buffer);
 
+function sliced(args, slice, sliceEnd) {
+  var ret = [];
+  var len = args.length;
+
+  if (0 === len) return ret;
+
+  var start = slice < 0 ? Math.max(0, slice + len) : slice || 0;
+
+  if (sliceEnd !== undefined) {
+    len = sliceEnd < 0 ? sliceEnd + len : sliceEnd
+  }
+
+  while (len-- > start) {
+    ret[len - start] = args[len];
+  }
+
+  return ret;
+}
+
 function encodeChunks (chunks) {
   var totalSize = 8;
   var idx = totalSize;

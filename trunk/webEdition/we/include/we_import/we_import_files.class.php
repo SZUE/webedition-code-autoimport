@@ -70,6 +70,7 @@ class we_import_files{
 		$this->step = we_base_request::_(we_base_request::INT, "step", $this->step);
 		$this->cmd = we_base_request::_(we_base_request::RAW, "cmd", $this->cmd);
 		$this->thumbs = we_base_request::_(we_base_request::INTLIST, 'fu_doc_thumbs', $this->thumbs);
+		/*
 		$this->width = we_base_request::_(we_base_request::INT, "fu_doc_width", $this->width);
 		$this->height = we_base_request::_(we_base_request::INT, "fu_doc_height", $this->height);
 		$this->widthSelect = we_base_request::_(we_base_request::STRING, "fu_doc_widthSelect", $this->widthSelect);
@@ -77,6 +78,7 @@ class we_import_files{
 		$this->keepRatio = we_base_request::_(we_base_request::BOOL, "fu_doc_keepRatio", $this->keepRatio);
 		$this->quality = we_base_request::_(we_base_request::INT, "fu_doc_quality", $this->quality);
 		$this->degrees = we_base_request::_(we_base_request::INT, "fu_doc_degrees", $this->degrees);
+		*/
 		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
 		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
 		$this->fileNameTemp = we_base_request::_(we_base_request::FILE, "weFileNameTemp", '');
@@ -124,10 +126,12 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
 			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true),
 			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
-			// serverside editing is temporarily disabled
+			/*
 			'imageResize' => array('set' => false, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
 			'imageRotate' => array('set' => false, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
 			'imageQuality' => array('set' => false, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
+			 * 
+			 */
 		));
 		$fileupload->loadImageEditPropsFromSession();
 
@@ -163,7 +167,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 					"html" => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, ""),
 				);
 			}
-			$foldAt = 3;
+			$foldAt = -1; //$foldAt = 3;
 		} else {
 			$foldAt = -1;
 		}
@@ -347,6 +351,7 @@ function next() {
 				'fu_file_parentID' => $this->parentID,
 				'fu_file_sameName' => $this->sameName,
 				'fu_doc_thumbs' => $this->thumbs,
+				/*
 				'fu_doc_width' => $this->width,
 				'fu_doc_height' => $this->height,
 				'fu_doc_widthSelect' => $this->widthSelect,
@@ -354,6 +359,8 @@ function next() {
 				'fu_doc_keepRatio' => $this->keepRatio,
 				'fu_doc_degrees' => $this->degrees,
 				'fu_doc_quality' => $this->quality,
+				 * 
+				 */
 				'fu_doc_categories' => $this->categories,
 				'fu_doc_isSearchable' => $this->imgsSearchable,
 				'fu_doc_importMetadata' => $this->importMetadata,
