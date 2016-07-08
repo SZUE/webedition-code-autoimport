@@ -567,7 +567,8 @@ var weFileUpload = (function () {
 						inputRotate.value = 0;
 						inputScale.value = '';
 						btnRefresh.disabled = true;
-						_.controller.uneditImage(pos, pos === -1 ? true : false);
+						_.controller.uneditImage(-1, true);
+						_.controller.reeditImage(-1, true);
 						_.view.previewSyncRotation(-1, 0);
 						_.view.setEditStatus('donotedit', -1, true);
 						doSync = true;
@@ -3450,6 +3451,12 @@ var weFileUpload = (function () {
 			};
 
 			this.setEditStatus = function(state){
+				var fileobj = _.sender.preparedFiles.length ? _.sender.preparedFiles[0] : null,
+					btn = document.getElementsByClassName('weFileupload_btnImgEditRefresh ')[0];
+
+				state = !fileobj ? 'empty' : state;
+				state = state ? state : !fileobj ? 'empty' : (fileobj.isEdited ? 'processed' : (fileobj.img.editOptions.doEdit ? 'notprocessed' : 'donotedit'));
+
 				switch(state){
 					case 'notprocessed':
 						if(_.sender.preparedFiles.length){
@@ -3457,19 +3464,25 @@ var weFileUpload = (function () {
 							_.view.elems.fileDrag.style.backgroundColor = 'rgb(216, 255, 216)';
 							_.view.elems.fileDrag.style.backgroundImage = 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255,1.0) 5px, rgba(216,255,216,.5) 10px)';
 							_.view.elems.txtSize.innerHTML = _.utils.gl.sizeTextOk + '--';
+							btn.disabled = false;
 						}
 						break;
 					case 'processed':
 						if(_.sender.preparedFiles.length){
 							_.view.elems.fileDrag.style.backgroundColor = 'rgb(216, 255, 216)';
 							_.view.elems.fileDrag.style.backgroundImage =  'none';
+							btn.disabled = true;
 						}
 						break;
 					case 'donotedit':
-					default:
 						_.view.elems.fileDrag.style.backgroundColor = 'rgb(232, 232, 255)';
 						_.view.elems.fileDrag.style.backgroundImage =  'none';
-
+						btn.disabled = false;
+						break;
+					case 'empty': 
+						_.view.elems.fileDrag.style.backgroundColor = 'white';
+						_.view.elems.fileDrag.style.backgroundImage =  'none';
+						btn.disabled = true;
 				}
 			};
 
