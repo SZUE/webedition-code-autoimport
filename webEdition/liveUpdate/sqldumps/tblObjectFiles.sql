@@ -35,7 +35,8 @@ CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   Language varchar(5) default NULL,
   WebUserID bigint unsigned NOT NULL,
   PRIMARY KEY  (ID),
-  UNIQUE KEY Path (Path),
+  KEY Path (Path (250)),
+	UNIQUE KEY ParentID (ParentID,Text),
   KEY WebUserID (WebUserID),
   KEY TableID (TableID),
   KEY Url (Url)
