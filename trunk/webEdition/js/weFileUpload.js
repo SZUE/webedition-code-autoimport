@@ -2478,11 +2478,13 @@ var weFileUpload = (function () {
 				fd.append('we_cmd[0]', 'import_files');
 				fd.append('step', 1);
 
-				fd.append('fu_file_sameName', sf.fu_file_sameName.value);
-				fd.append('fu_file_parentID', sf.fu_file_parentID.value);
-				fd.append('fu_doc_categories', sf.fu_doc_categories.value);
-				fd.append('fu_doc_importMetadata', sf.fu_doc_importMetadata.value);
-				fd.append('fu_doc_isSearchable', sf.fu_doc_isSearchable.value);
+				if(!_.EDIT_IMAGES_CLIENTSIDE){
+					fd.append('fu_file_sameName', sf.fu_file_sameName.value);
+					fd.append('fu_file_parentID', sf.fu_file_parentID.value);
+					fd.append('fu_doc_categories', sf.fu_doc_categories.value);
+					fd.append('fu_doc_importMetadata', sf.fu_doc_importMetadata.value);
+					fd.append('fu_doc_isSearchable', sf.fu_doc_isSearchable.value);
+				}
 
 				if (_.controller.EDITABLE_CONTENTTYPES.indexOf(cur.type) !== -1) {
 					fd.append('fu_doc_focusX', cur.img.focusX);
@@ -2670,13 +2672,15 @@ var weFileUpload = (function () {
 
 				_.view.addTextCutLeft(document.getElementById('name_uploadFiles_' + index), f.file.name, 220);
 
-				if(_.controller.EDITABLE_CONTENTTYPES.indexOf(f.type) !== -1){
-					document.getElementById('icon_uploadFiles_' + index).style.display = 'none';
-					document.getElementById('preview_uploadFiles_' + index).style.display = 'block';
-					document.getElementById('editoptions_uploadFiles_' + index).style.display = 'block';
-				} else {
-					var ext = f.file.name.substr(f.file.name.lastIndexOf('.') + 1).toUpperCase();
-					document.getElementById('icon_uploadFiles_' + index).innerHTML = WE().util.getTreeIcon(f.type) + ' ' + ext;
+				if(_.EDIT_IMAGES_CLIENTSIDE){
+					if(_.controller.EDITABLE_CONTENTTYPES.indexOf(f.type) !== -1){
+						document.getElementById('icon_uploadFiles_' + index).style.display = 'none';
+						document.getElementById('preview_uploadFiles_' + index).style.display = 'block';
+						document.getElementById('editoptions_uploadFiles_' + index).style.display = 'block';
+					} else {
+						var ext = f.file.name.substr(f.file.name.lastIndexOf('.') + 1).toUpperCase();
+						document.getElementById('icon_uploadFiles_' + index).innerHTML = WE().util.getTreeIcon(f.type) + ' ' + ext;
+					}
 				}
 
 				this.elems.extProgressDiv.style.display = 'none';
