@@ -226,10 +226,9 @@ class we_listview_multiobject extends we_listview_objectBase{
 				$this->DB_WE->Record['we_WE_URL'] = $this->DB_WE->f('OF_Url');
 				$this->DB_WE->Record['we_WE_TEXT'] = $this->DB_WE->f('OF_Text');
 				$this->DB_WE->Record['we_WE_ID'] = $this->DB_WE->f('OF_ID');
-				$this->DB_WE->Record['we_wedoc_Category'] = $this->DB_WE->f('OF_Category');
 
 				// for seeMode #5317
-				$this->DB_WE->Record["we_wedoc_lastPath"] = $this->LastDocPath . '?we_objectID=' . $this->DB_WE->Record["OF_ID"];
+				$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_objectID=' . $this->DB_WE->Record["OF_ID"];
 				$this->count++;
 				return true;
 			}
