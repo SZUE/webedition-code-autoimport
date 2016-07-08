@@ -73,7 +73,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 		}
 
 		$objects = isset($data['objects']) ? $data['objects'] : $data;
-		if(!$objects){
+		if(empty($objects)){
 			return;
 		}
 		$this->objects = $objects;
@@ -115,7 +115,6 @@ class we_listview_multiobject extends we_listview_objectBase{
 
 		$matrix = [];
 		$join = $this->fillMatrix($matrix, $this->classID);
-
 		$calendar_select = '';
 		$calendar_where = '';
 
@@ -133,8 +132,8 @@ class we_listview_multiobject extends we_listview_objectBase{
 						we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID) :
 						'');
 
-		if($sqlParts["tables"]){
-			$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($obxTable) . '.OF_ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->objects ? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . ' AND ' . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
+		if($sqlParts['tables']){
+			$this->DB_WE->query('SELECT ' . $this->DB_WE->escape($obxTable) . '.OF_ID as ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . ' AND ' . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
 			$mapping = []; // KEY = ID -> VALUE = ROWID
 			$i = 0;
 			while($this->DB_WE->next_record()){
@@ -159,7 +158,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 				$this->anz_all = count($this->objects);
 			}
 
-			$this->DB_WE->query('SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts["tables"] . ' WHERE ' . ($this->objects ? OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' : '') . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . $weDocumentCustomerFilter_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order) ? (' LIMIT ' . $this->start . ',' . $this->rows) : ''));
+			$this->DB_WE->query('SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts["tables"].' JOIN '.OBJECT_FILES_TABLE . ' ON `' . OBJECT_FILES_TABLE . '`.ID=' .  OBJECT_X_TABLE . $this->classID . '.OF_ID WHERE ' .  OBJECT_X_TABLE . $this->classID . '.OF_ID IN (' . implode(',', $this->objects) . ') AND ' . ($this->searchable ? ' ' . OBJECT_X_TABLE . $this->classID . '.OF_IsSearchable=1 AND' : '') . ' ' . $pid_tail . $where_lang . " AND " . OBJECT_X_TABLE . $this->classID . '.OF_ID!=0 ' . ($join ? ' AND (' . $join . ') ' : '') . $cat_tail . $weDocumentCustomerFilter_tail . ' ' . ($sqlParts["publ_cond"] ? (' AND ' . $sqlParts["publ_cond"]) : '') . ' ' . ($sqlParts["cond"] ? (' AND (' . $sqlParts["cond"] . ') ') : '') . $calendar_where . $sqlParts['groupBy'] . $sqlParts["order"] . (($rows > 0 && $this->order) ? (' LIMIT ' . $this->start . ',' . $this->rows) : ''));
 
 			$mapping = []; // KEY = ID -> VALUE = ROWID
 			$i = 0;
