@@ -71,6 +71,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 					array('fu_doc_thumbs', 'text'),
 					array('fu_doc_alt', 'text'),
 					array('fu_doc_title', 'text'),
+					/* 
 					array('fu_doc_width', 'int'),
 					array('fu_doc_height', 'int'),
 					array('fu_doc_widthSelect', 'int'),
@@ -78,6 +79,8 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 					array('fu_doc_keepRatio', 'int'),
 					array('fu_doc_degrees', 'int'),
 					array('fu_doc_quality', 'int'),
+					 * 
+					 */
 				));
 			}
 		} else {

@@ -68,7 +68,7 @@ div.we_fileInputWrapper{
 }
 #div_fileupload_buttons button,
 #div_fileupload_buttons input{
-	width:95% ;
+	width:170px ;
 }
 
 .fileInput{
@@ -165,7 +165,7 @@ table.importer_files{
 div.imgEditOpts{
 	display: none;
 	padding: 4px 0 6px 4px;
-	
+
 	div{
 		position: relative;
 		height: 30px;
@@ -199,24 +199,32 @@ div.imgEditOpts{
 			.optsScaleInput{
 				width: 50px;
 				position: absolute;
-				left: 154px;
+				left: 159px;
 				height: 29px;
 				border-right: 0 none;
 			}
 			.optsScalePropositions{
 				position: absolute;
-				left: 185px;
+				left: 190px;
 				top: 0;
 				padding: 5px 1px 5px 0px;
 				background-color: transparent;
 				height: 29px;
 				width: 40px;
 			}
+			.multiimport.optsUnitSelect{
+				width: 106px;
+				padding-left: 4px;
+				padding-right: 4px;
+			}
 			.multiimport.optsScaleInput{
-				left: 80px;
+				width: 36px;
+				left: 110px;
+				padding-left: 4px;
+				padding-right: 1px;
 			}
 			.multiimport.optsScalePropositions{
-				left: 111px;
+				left: 127px;
 			}
 
 		.optsScalePropositions:focus{
@@ -240,7 +248,13 @@ div.imgEditOpts{
 			left: 70px;
 
 			.optsRotateSelect{
-				width: 153px;
+				width: 155px;
+			}
+
+			.multiimport.optsRotateSelect{
+				width: 167px;
+				padding-left: 4px;
+				padding-right: 4px;
 			}
 		}
 	}
@@ -275,7 +289,7 @@ div.imgEditOpts{
 			width: 53px;
 			text-align: right;
 			display: inline-block;
-			left: 247px;
+			left: 240px;
 		}
 	}
 	div.btnDiv{
@@ -287,6 +301,10 @@ div.imgEditOpts{
 			width: 53px;
 			text-align: right;
 			display: block;
+		}
+		.multiimport.btnContainer{
+			left: 176px;
+			top: -10px;
 		}
 	}
 }
@@ -322,6 +340,32 @@ div.editorLoupe{
 		background-color: white;
 		display: none;
 	}
+}
+
+div.editorLoupeFallback{
+	display: none;
+	position: absolute;
+	top: 0px;
+	left: -202px; 
+	border: 1px solid black;
+	width: auto;
+	height: auto;
+	padding: 2px;
+	z-index: 2200;
+	background-color: white;
+	padding: 6px;
+}
+
+div.editorLoupeMessage{
+	display: none;
+	position: absolute;
+	z-index: 1011;
+	top: 100px;
+	left: -137px;
+	width: 240px;
+	height: 180px;
+	box-sizing: border-box;
+	background-color: #dddddd;
 }
 div.editorCrosshairH{
 	display: none;
@@ -410,6 +454,10 @@ div.focusPointOnSet:before{
 		width: 380px;
 		height: 380px;
 	}
+	div.editorLoupeFallback{
+		top: 124px;
+		left: 0;
+	}
 	div.editorLoupeSpinner{
 		position:absolute;
 		top: 292px;
@@ -462,6 +510,11 @@ div.fileuploadImporter{
 		width: 400px;
 		height: 400px;
 	}
+	div.editorLoupeFallback{
+	top: initial;
+	left: 198px;
+	bottom: 300px;
+	}
 	div.editorCrosshairH{
 		top: initial;
 		bottom: 219px;
@@ -509,7 +562,7 @@ div.fileuploadImporter{
 
 		div.elemContainer{
 			position: relative;
-			width: 526px;
+			width: 540px;
 			margin-top: 4px;
 			border:1px solid #aaaaaa;
 			display: inline-block;
@@ -554,8 +607,26 @@ div.fileuploadImporter{
 			}
 			div.elemContent{
 				position: relative;
-				width: 416px;
+				width: 430px;
 				left: 110px;
+
+				div.elemContentMask{
+					position: relative;
+					height: 110px;
+					display: none;
+
+					.we_file_drag_maskSpinner{
+						position: absolute;
+						left: 40px;
+						top: 0;
+						font-size: 1.8em;
+					}
+					.we_file_drag_maskBusyText{
+						position:absolute;
+						top: 26px;
+						left: 120px;
+					}
+				}
 
 				div.elemContentTop{
 					position: relative;
@@ -569,7 +640,7 @@ div.fileuploadImporter{
 					}
 					div.elemContentTopRight{
 						width: 170px;
-						left: 240px;
+						left: 268px;
 						position: absolute;
 						display: block;
 
@@ -582,7 +653,7 @@ div.fileuploadImporter{
 						div.elemButtons{
 							padding: 4px 0 0 0;
 							width: 96px;
-							left: 76px;
+							left: 64px;
 							height: 36px;
 							position: absolute;
 
@@ -594,88 +665,158 @@ div.fileuploadImporter{
 					}
 					div.elemProgress{
 						width: 180px;
-						left: 240px;
+						left: 286px;
 						height: 40px;
 						padding-top: 6px;
 						position: absolute;
 						display: none;
 					}
 				}
+
 				div.elemContentBottom{
 					display: none;
 					position: relative;
 					height: 74px;
 					border-top: 1px solid #bbbbbb;
 
-					div.elemWhatOpts{
-						position: absolute;
-						width: 120px;
-						padding: 2px 0 0 4px;
+					select{
+						padding: 0 0 0 4px;
 					}
-					div.elemOpts{
+
+					div.optsLeft{
 						position: absolute;
-						left: 190px;
-						padding-top: 0px;
-
-						.optsUnitSelect{
-							width: 110px;
-							height: 22px;
-							padding: 0;
+						display: inline-block;
+						left: 0;
+						width: 182px;
+						height: 73px;
+						padding: 0;
+						
+						div.optsLeftTop{
+							position: relative;
+							top: 10px;
+							left: 10px;
+							width: 160px;
+							height: 20px; 
 						}
-						.optsRotateSelect{
+						div.optsLeftBottom{
+							position: relative;
+							top: 20px;
+							left: 10px;
 							width: 170px;
-							height: 22px;
-							padding: 0;
-						}
+							height: 30px; 
 
-						.optsRowTop,
-						.optsRowMiddle,
-						.optsRowBottom{
-							padding: 2px 0 0 0;
-							margin: 0;
-							div.qualityInputContainer{
-								display: inline-block;
-								padding-top: 4px;
+							div.optsRowRotate{
+								position: relative;
 
-								.optsQuality{
-									width: 130px;
-									height: 10px;
-									margin: 0;
+								select.optsRotateSelect{
+									position: absolute;
+									top: 0;
+									left: 0;
+									width: 172px;
+									height: 28px;
+									/* background-color: white; */
+									border: 1px solid #a5aaae;
 								}
 							}
+						}
+					}
 
-							div.qualityValueContainer{
-								display: inline-block;
-								padding: 0 0 0 6px;
-								/*vertical-align: top;*/
-								width: 20px;
+					div.optsRight{
+						position: absolute;
+						display: inline-block;
+						left: 185px;
+						width: 182px;
+						height: 73px;
+
+						div.optsRightTop{
+							position: relative;
+							top: 8px;
+							left: 0;
+							width: 170px;
+							height: 30px; 
+
+							div.optsRowScale{
+								position: relative;
+								top:0;
+								left: 0;
+
+								.optsUnitSelect{
+									width: 104px;
+									height: 28px;
+									position: absolute;
+									
+								}
+								.optsScaleInput{
+									width: 50px;
+									position: absolute;
+									left: 106px;
+									height: 28px;
+									border-right: 0 none;
+								}
+								.optsScalePropositions{
+									position: absolute;
+									left: 134px;
+									padding: 5px 1px 5px 0px;
+									height: 28px;
+									width: 40px;
+								}
+							}
+						}
+						div.optsRightBottom{
+							position: relative;
+							top: 10px;
+							left: 0;
+							width: 170px;
+							height: 30px; 
+
+							div.optsRowQuality{
+								position: relative;
+
+								div.optsQualityBox{
+									position: absolute;
+									top: 0;
+									left: 0;
+									width: 172px;
+									height: 26px;
+									background-color: #eee;
+									border: 1px solid #a5aaae;
+
+									.optsQualitySlide{
+										position: absolute;
+										top: 1px;
+										left: 2px;
+										width: 116px;
+										height: 20px;
+									}
+									div.optsQualityValue{
+										position: absolute;
+										top: 6px;
+										left: 136px;
+										width: 30px;
+										height: 20px;
+									}
+								}
 							}
 						}
 					}
-					div.elemOptsIE{
-						.optsRowTop{
-							margin-top: 0px;
-							.optsUnitSelect{
-								display:inline-block;
-								height:22px;
-								padding-top:3px;
-							}
-							input[type=text]{
-								padding-top:3px;
-								margin:0;
-							}
-						}
-						.optsRowBottom{
-							margin-top: -12px;
-							padding-top: 0;
+
+					div.optsRightIE{
+						.optsQualitySlide{
+							position: absolute;
+							margin-top: -16px;
+							left: 4px;
+							width: 116px;
+							height: 20px;
 						}
 					}
 
 					div.btnRefresh{
 						display: inline-block;
 						position: absolute;
+						width: 40px;
+						height: 30px;
 						left: 364px;
-						bottom: 0;
+						bottom: 3px;
 					}
 				}
 			}

@@ -49,11 +49,13 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
 			'importMetadata' => we_base_request::_(we_base_request::BOOL, 'fu_doc_importMetadata', $this->docVars['importMetadata']),
 			'isSearchable' => we_base_request::_(we_base_request::BOOL, 'fu_doc_isSearchable', $this->docVars['isSearchable']),
+			/*
 			'widthSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_widthSelect', $this->docVars['widthSelect']),
 			'heightSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_heightSelect', $this->docVars['heightSelect']),
 			'quality' => we_base_request::_(we_base_request::INT, 'fu_doc_quality', $this->docVars['quality']),
 			'keepRatio' => we_base_request::_(we_base_request::BOOL, 'fu_doc_keepRatio', $this->docVars['keepRatio']),
 			'degrees' => we_base_request::_(we_base_request::INT, 'fu_doc_degrees', $this->docVars['degrees']),
+			*/
 			'focusX' => we_base_request::_(we_base_request::FLOAT, 'fu_doc_focusX', $this->docVars['focusX']),
 			'focusY' => we_base_request::_(we_base_request::FLOAT, 'fu_doc_focusY', $this->docVars['focusY']),
 			// unset the following entries when not in request!
