@@ -70,15 +70,15 @@ class we_import_files{
 		$this->step = we_base_request::_(we_base_request::INT, "step", $this->step);
 		$this->cmd = we_base_request::_(we_base_request::RAW, "cmd", $this->cmd);
 		$this->thumbs = we_base_request::_(we_base_request::INTLIST, 'fu_doc_thumbs', $this->thumbs);
-		/*
-		$this->width = we_base_request::_(we_base_request::INT, "fu_doc_width", $this->width);
-		$this->height = we_base_request::_(we_base_request::INT, "fu_doc_height", $this->height);
-		$this->widthSelect = we_base_request::_(we_base_request::STRING, "fu_doc_widthSelect", $this->widthSelect);
-		$this->heightSelect = we_base_request::_(we_base_request::STRING, "fu_doc_heightSelect", $this->heightSelect);
-		$this->keepRatio = we_base_request::_(we_base_request::BOOL, "fu_doc_keepRatio", $this->keepRatio);
-		$this->quality = we_base_request::_(we_base_request::INT, "fu_doc_quality", $this->quality);
-		$this->degrees = we_base_request::_(we_base_request::INT, "fu_doc_degrees", $this->degrees);
-		*/
+		if(!we_fileupload::EDIT_IMAGES_CLIENTSIDE){
+			$this->width = we_base_request::_(we_base_request::INT, "fu_doc_width", $this->width);
+			$this->height = we_base_request::_(we_base_request::INT, "fu_doc_height", $this->height);
+			$this->widthSelect = we_base_request::_(we_base_request::STRING, "fu_doc_widthSelect", $this->widthSelect);
+			$this->heightSelect = we_base_request::_(we_base_request::STRING, "fu_doc_heightSelect", $this->heightSelect);
+			$this->keepRatio = we_base_request::_(we_base_request::BOOL, "fu_doc_keepRatio", $this->keepRatio);
+			$this->quality = we_base_request::_(we_base_request::INT, "fu_doc_quality", $this->quality);
+			$this->degrees = we_base_request::_(we_base_request::INT, "fu_doc_degrees", $this->degrees);
+		}
 		$this->partNum = we_base_request::_(we_base_request::INT, "wePartNum", 0);
 		$this->partCount = we_base_request::_(we_base_request::INT, "wePartCount", 0);
 		$this->fileNameTemp = we_base_request::_(we_base_request::FILE, "weFileNameTemp", '');
@@ -117,7 +117,13 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 		$ips = $this->isPreset;
 
 		$fileupload = new we_fileupload_ui_editor();
-		$fileupload->setFormElements(array(
+
+		$moreFields = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? array() : array(
+			'imageResize' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
+			'imageRotate' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
+			'imageQuality' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
+		);
+		$fileupload->setFormElements(array_merge($moreFields, array(
 			'uploader' => array('set' => false),
 			'parentId' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
 			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
@@ -126,13 +132,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
 			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true),
 			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
-			/*
-			'imageResize' => array('set' => false, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
-			'imageRotate' => array('set' => false, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
-			'imageQuality' => array('set' => false, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
-			 * 
-			 */
-		));
+		)));
 		$fileupload->loadImageEditPropsFromSession();
 
 		if($ips){
@@ -167,7 +167,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 					"html" => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, ""),
 				);
 			}
-			$foldAt = -1; //$foldAt = 3;
+			$foldAt = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? -1 : 3;
 		} else {
 			$foldAt = -1;
 		}
@@ -345,26 +345,26 @@ function next() {
 	}
 
 	function _getHiddens($noCmd = false){
-		return ($noCmd ? '' : we_html_element::htmlHidden('cmd', 'buttons')) . we_html_element::htmlHiddens(array(
+		$moreHiddens = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? array() : array(
+			'fu_doc_width' => $this->width,
+			'fu_doc_height' => $this->height,
+			'fu_doc_widthSelect' => $this->widthSelect,
+			'fu_doc_heightSelect' => $this->heightSelect,
+			'fu_doc_keepRatio' => $this->keepRatio,
+			'fu_doc_degrees' => $this->degrees,
+			'fu_doc_quality' => $this->quality,
+		);
+
+		return ($noCmd ? '' : we_html_element::htmlHidden('cmd', 'buttons')) . we_html_element::htmlHiddens(array_merge(array(
 				'step' => 1,
 				// these are used by we_fileupload to grasp these values AND by editor to have when going back one step
 				'fu_file_parentID' => $this->parentID,
 				'fu_file_sameName' => $this->sameName,
 				'fu_doc_thumbs' => $this->thumbs,
-				/*
-				'fu_doc_width' => $this->width,
-				'fu_doc_height' => $this->height,
-				'fu_doc_widthSelect' => $this->widthSelect,
-				'fu_doc_heightSelect' => $this->heightSelect,
-				'fu_doc_keepRatio' => $this->keepRatio,
-				'fu_doc_degrees' => $this->degrees,
-				'fu_doc_quality' => $this->quality,
-				 * 
-				 */
 				'fu_doc_categories' => $this->categories,
 				'fu_doc_isSearchable' => $this->imgsSearchable,
 				'fu_doc_importMetadata' => $this->importMetadata,
-		));
+		), $moreHiddens));
 	}
 
 	function _getFrameset(){

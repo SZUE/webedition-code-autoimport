@@ -89,8 +89,8 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 				</div>
 				<div class="we_file_drag" id="div_' . $this->name . '_fileDrag" ' . ($isIE10 || we_base_browserDetect::isOpera() ? 'style="display:none;"' : 'style="display:block;width:316px;height:88px;padding-top:40px"') . '>' . g_l('importFiles', '[dragdrop_text]') . '</div>
 			</div>
-		</div>
-		<div style="position:absolute; left: 370px; padding-top: 10px">' . we_fileupload_ui_preview::getFormImageEditClientside(true, false) . '</div>' .
+		</div>' .
+		(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? '<div style="position:absolute; left: 370px; padding-top: 10px">' . we_fileupload_ui_preview::getFormImageEditClientside(true, false) . '</div>' : '') .
 		'</form>';
 
 		$topParts[] = array("html" => $fileselect, 'space' => 0);
@@ -149,11 +149,6 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		$progressbar =  $progress->getHTML('', 'font-size:11px;');
 		 *
 		 */
-
-		
-		
-		
-		//$btnPreview = we_html_element::htmlDiv(array('class' => 'btnRefresh'), we_html_button::create_button(we_html_button::VIEW, "javascript:we_FileUpload.openImageEditor(WEFORMNUM);", true, 0, 0, '', '', false, true, '', false, $title = 'Vollansicht'));
 
 		$quality = we_html_element::htmlDiv(array('class' => 'qualityInputContainer'),
 				we_html_element::htmlInput(array('disabled' => true, 'class' => 'optsQuality', 'type' => 'range', 'title' => 'test', 'value' => 100, 'min' => 10, 'max' => 100, 'step' => 5, 'oninput' => 'this.parentNode.nextSibling.innerHTML = this.value', 'name' => 'fuOpts_quality')) .
@@ -227,6 +222,37 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 			)
 		)));
 
+	}
+
+	protected function _getHtmlFileRow_legacy(){
+		return str_replace(array("\r", "\n"), "", '<table class="default importer_files"><tbody><tr height="28">
+			<td class="weMultiIconBoxHeadline" style="width:55px;padding-left:45px;padding-right:20px;" >' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td>
+			<td><input id="name_uploadFiles_WEFORMNUM" style="width:17.4em;" type="text" readonly="readonly" value="FILENAME" /></td>
+			<td>
+				<div id="div_rowButtons_WEFORMNUM">
+					<table class="default"><tbody><tr>
+							<td class="weFileUploadEntry_size" style="width:6em;text-align:right;margin-left:2px" id="size_uploadFiles_WEFORMNUM">FILESIZE</td>
+							<td style="text-align:middle"><span id="alert_img_WEFORMNUM" style="visibility:hidden;" class="fa-stack fa-lg" style="color:#F2F200;" title=""><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span></td>
+							<td>
+								' . we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);") . '
+							</td>
+							<td>
+								<div class="fileInputWrapper" style="overflow:hidde;vertical-align: bottom; display: inline-block;">
+									<input style="width:40px; height:26px;" class="fileInput fileInputList fileInputHidden" type="file" id="fileInput_uploadFiles_WEFORMNUM" name="" />
+									' . we_html_button::create_button('fa:, fa-lg fa-hdd-o', 'javascript:void(0)') . '
+								</div>
+							</td>
+					</tr></tbody></table>
+				</div>
+				<div style="display: none; margin-left: 12px;" id="div_rowProgress_WEFORMNUM">
+					<table class="default"><tbody><tr>
+						<td style="vertical-align:middle"><div class="progress_image" style="width:0px;height:10px;" id="' . $this->name . '_progress_image_WEFORMNUM" style="vertical-align:top"></div><div class="progress_image_bg" style="width:130px;height:10px;" id="' . $this->name . '_progress_image_bg_WEFORMNUM" style="vertical-align:top"></div></td>
+						<td class="small bold" style="width:3em;color:#006699;padding-left:8px;" id="span_' . $this->name . '_progress_text_WEFORMNUM">0%</td>
+						<td><span id="alert_img_WEFORMNUM" style="visibility:hidden;" class="fa-stack fa-lg" style="color:#F2F200;" title=""><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span></td>
+					</tr></tbody></table>
+				</div>
+			<td>
+		</tr></tbody></table>');
 	}
 
 }
