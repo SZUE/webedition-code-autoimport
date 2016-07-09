@@ -191,8 +191,6 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		);
 		$divBtnRefresh = we_html_element::htmlDiv(array('class' => 'btnRefresh'), we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", true, 0, 0, '', '', false, true, '', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh rowBtnProcess'));
 
-
-
 		return str_replace(array("\r", "\n"), "", we_html_element::htmlDiv(array('class' => 'importerElem'), we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline elemNum'), 'Nr. WE_FORM_NUM') .
 		we_html_element::htmlDiv(array('class' => 'elemContainer'),
 			we_html_element::htmlDiv(array('id' => 'preview_uploadFiles_WEFORMNUM', 'class' => 'weFileUploadEntry_preview elemPreview'),
@@ -218,8 +216,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 				we_html_element::htmlDiv(array('class' => 'elemContentMask'),
 					we_html_element::htmlDiv(array('class' => 'we_file_drag_maskSpinner'), '<i class="fa fa-2x fa-spinner fa-pulse"></i></span>') .
 					we_html_element::htmlDiv(array('id' => 'image_edit_mask_text', 'class' => 'we_file_drag_maskBusyText'))
-				)
-			)
+				) . we_html_element::htmlDiv(array('id' => 'image_edit_done_WEFORMNUM', 'class' => 'elemContentDone')))
 		)));
 
 	}

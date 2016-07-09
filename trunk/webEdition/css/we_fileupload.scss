@@ -606,7 +606,7 @@ div.fileuploadImporter{
 				padding: 10px 0 0 12px;
 			}
 			div.elemContent{
-				position: relative;
+				position: absolute;
 				width: 430px;
 				left: 110px;
 
@@ -673,10 +673,19 @@ div.fileuploadImporter{
 					}
 				}
 
+				div.elemContentDone{
+					display: none;
+					position: relative;
+					top: -73px;
+					height: 73px;
+					background-color: gray;
+					opacity: 0.4;
+				}
+
 				div.elemContentBottom{
 					display: none;
 					position: relative;
-					height: 74px;
+					height: 73px;
 					border-top: 1px solid #bbbbbb;
 
 					select{
