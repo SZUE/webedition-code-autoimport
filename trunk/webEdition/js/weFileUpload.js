@@ -247,6 +247,8 @@ var weFileUpload = (function () {
 					if (_.EDIT_IMAGES_CLIENTSIDE && _.sender.imageFilesToProcess.length) {
 						_.controller.processImages();
 					}
+
+					//IMI: REREGISTER MEMORY
 				}
 			};
 
@@ -1687,8 +1689,7 @@ var weFileUpload = (function () {
 					m.registeredValues['o_' + fileobj.index] = size;
 					m.registeredSum += size;
 				}
-				//top.console.log('reg reg', m);
-				//top.console.log('reg prep', _.sender.preparedFiles);
+				//top.console.log('register', m, _.sender.preparedFiles);
 			};
 
 			this.memorymanagerUnregister = function(fileobj){
@@ -1706,6 +1707,7 @@ var weFileUpload = (function () {
 				if((i = m.queueNotEdited.indexOf(fileobj.index)) !== -1){
 					m.queueNotEdited.splice(i, 1);
 				}
+				//top.console.log('unregister', m, _.sender.preparedFiles);
 			};
 
 			this.memorymanagerReregisterAll = function(){
@@ -1714,6 +1716,7 @@ var weFileUpload = (function () {
 				for(var i = 0; i < _.sender.preparedFiles.length; i++){
 					this.memorymanagerRegister(_.sender.preparedFiles[i]);
 				}
+				//top.console.log('register all', _.controller.memoryManagement, _.sender.preparedFiles);
 			};
 
 			this.memorymanagerReset = function(){
@@ -2366,6 +2369,10 @@ var weFileUpload = (function () {
 							_.sender.isCancelled = false;
 						}
 					}
+
+					if(_.controller.IS_MEMORY_MANAGMENT){
+						_.utils.memorymanagerRegister(f);
+					}
 				}
 			};
 
@@ -2394,6 +2401,10 @@ var weFileUpload = (function () {
 
 			this.resetImageEdit = function (fileobj) {
 				fileobj.dataArray = null;
+				fileobj.dataUrl = null;
+				if(_.controller.IS_MEMORY_MANAGMENT){
+					_.utils.memorymanagerRegister(fileobj);
+				}
 			};
 
 			this.openImageEditor = function(index){
@@ -2550,6 +2561,7 @@ var weFileUpload = (function () {
 						_.sender.preparedFiles[i] = null;
 					}
 				}
+				_.utils.memorymanagerReregisterAll();
 				this.uploadFiles = [];
 				this.currentFile = -1;
 				this.mapFiles = [];
@@ -2730,8 +2742,9 @@ var weFileUpload = (function () {
 					i,
 					sp,
 					divs = document.getElementsByTagName('DIV');
-
+				_.utils.memorymanagerUnregister(_.sender.preparedFiles[index]);
 				_.sender.preparedFiles[index] = null;
+
 				weDelMultiboxRow(index);
 
 				for (i = 0; i < divs.length; i++) {
