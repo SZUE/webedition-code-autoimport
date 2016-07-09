@@ -848,6 +848,11 @@ var weFileUpload = (function () {
 							return;
 						case 'success':
 							this.currentWeightTag = this.currentWeight;
+							cur.dataArray = null;
+							cur.dataUrl = null;
+							if(_.controller.IS_MEMORY_MANAGMENT){
+								_.utils.memorymanagerUnregister(cur);
+							}
 							_.view.repaintGUI({what: 'chunkOK'});
 							_.view.repaintGUI({what: 'fileOK'});
 							this.doOnFileFinished(resp);//FIXME: make this part of postProcess(resp, fileonly=true)
@@ -860,6 +865,11 @@ var weFileUpload = (function () {
 						case 'failure':
 							this.currentWeight = this.currentWeightTag + cur.size;
 							this.currentWeightTag = this.currentWeight;
+							cur.dataArray = null;
+							cur.dataUrl = null;
+							if(_.controller.IS_MEMORY_MANAGMENT){
+								_.utils.memorymanagerUnregister(cur);
+							}
 							_.view.repaintGUI({what: 'chunkNOK', message: resp.message});
 							if (this.uploadFiles.length !== 0) {
 								this.sendNextFile();
@@ -923,6 +933,9 @@ var weFileUpload = (function () {
 			};
 
 			this.setPreviewLoupe = function(fileobj, pt){
+				if(fileobj.isUploadStarted){
+					return;
+				}
 				pt = pt ? pt : 0;
 				if(pt === 1){
 					var info = '',
@@ -1020,6 +1033,9 @@ var weFileUpload = (function () {
 			};
 
 			this.movePreviewLoupe = function(e, fileobj){
+				if(fileobj.isUploadStarted){
+					return;
+				}
 				try{
 					if(e.timeStamp - _.view.lastklick < 10){
 						// in Chrome onclick fires mosemove too: this causes the newly set focuspoint to be slightly wrong...
@@ -1104,21 +1120,21 @@ var weFileUpload = (function () {
 
 			this.setInternalProgress = function (progress, index) {
 				try{
-						var coef = this.intProgress.width / 100,
-							i = typeof index !== 'undefined' || index === false ? index : false,
-							p = i === false ? '' : '_' + i;
+					var coef = this.intProgress.width / 100,
+						i = typeof index !== 'undefined' || index === false ? index : false,
+						p = i === false ? '' : '_' + i;
 
-						document.getElementById(_.fieldName + '_progress_image_bg' + p).style.width = ((coef * 100) - (coef * progress)) + "px";
-						document.getElementById(_.fieldName + '_progress_image' + p).style.width = coef * progress + "px";
+					document.getElementById(_.fieldName + '_progress_image_bg' + p).style.width = ((coef * 100) - (coef * progress)) + "px";
+					document.getElementById(_.fieldName + '_progress_image' + p).style.width = coef * progress + "px";
 
-						this.setInternalProgressText('progress_text', progress + '%', index);
+					this.setInternalProgressText('progress_text', progress + '%', index);
 				} catch(e){}
 			};
 
 			this.setInternalProgressCompleted = function (success, index, txt) {
 				var s = success || false,
-								i = index || false,
-								p = !i ? '' : '_' + i;
+						i = index || false,
+						p = !i ? '' : '_' + i;
 
 				if (s) {
 					this.setInternalProgress(100, i);
@@ -2619,14 +2635,15 @@ var weFileUpload = (function () {
 				}
 			};
 
-			this.replacePreviewCanvas = function(fileobj) {
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].innerHTML = '';
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].appendChild(fileobj.img.previewCanvas);
+			this.replacePreviewCanvas = function(fileobj, nolisteners) {
+					var elem = fileobj.entry.getElementsByClassName('elemPreviewPreview')[0];
+					elem.innerHTML = '';
+					elem.appendChild(fileobj.img.previewCanvas);
 
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
+					elem.firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
+					elem.firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
+					elem.firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
+					elem.firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
 			};
 
 			this.setImageEditMessage = function (singleMode, index) {
