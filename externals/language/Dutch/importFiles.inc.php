@@ -65,6 +65,7 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'step1'=>'Importeer lokale bestanden - Stap 1 van 2',
 	'step2'=>'Importeer lokale bestanden - Stap 2 van 2',
 	'step3'=>'Importeer lokale bestanden - Stap 3 van 3',
+	'targettsize_too_large'=>'Target size is larger than the original size of ##ORIGSIZE##px. It will be ignored.',
 	'thumbnails'=>'Thumbnails',
 	'upload_cancelled'=>'File upload aborted!',
 );

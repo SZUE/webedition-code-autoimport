@@ -63,6 +63,7 @@ $l_importFiles=array(
 	'step1'=>'Lokale Dateien importieren - Schritt 1 von 3',
 	'step2'=>'Lokale Dateien importieren - Schritt 2 von 3',
 	'step3'=>'Lokale Dateien importieren - Schritt 3 von 3',
+	'targettsize_too_large'=>'Die Zielgröße liegt über der Originalgröße von ##ORIGSIZE##px und wird ignoriert.',
 	'thumbnails'=>'Miniaturansichten',
 	'upload_cancelled'=>'Der Import wurde abgebrochen!',
 );

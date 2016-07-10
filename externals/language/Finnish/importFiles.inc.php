@@ -65,6 +65,7 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'step1'=>'Tuo paikallisia tiedostoja - Vaihe 1 / 3',
 	'step2'=>'Tuo paikallisia tiedostoja - Vaihe 2 / 3',
 	'step3'=>'Tuo paikallisia tiedostoja - Vaihe 3 / 3',
+	'targettsize_too_large'=>'Target size is larger than the original size of ##ORIGSIZE##px. It will be ignored.',
 	'thumbnails'=>'Esikatselukuvat',
 	'upload_cancelled'=>'File upload aborted!',
 );

@@ -65,6 +65,7 @@ Click on "Browse" to select files from your harddrive or drag and drop them to t
 	'step1'=>'Import des fichiers local - étape 1 sur 2',
 	'step2'=>'Import des fichiers local - étape 2 sur 2',
 	'step3'=>'Import local files - Step 3 of 3',
+	'targettsize_too_large'=>'Target size is larger than the original size of ##ORIGSIZE##px. It will be ignored.',
 	'thumbnails'=>'Imagettes',
 	'upload_cancelled'=>'File upload aborted!',
 );
