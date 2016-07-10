@@ -139,6 +139,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				'pixel_w' => g_l('importFiles', '[edit_pixel_width]'),
 				'pixel_h' => g_l('importFiles', '[edit_pixel_height]')
 				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '', $multimport ? 0 : 155, 'weSelect optsUnitSelect' . ($multimport ? ' multiimport' : ''));
+		$scaleHelp = we_html_element::htmlDiv(array('data-index' => '0', 'class' => 'optsRowScaleHelp'), '<span class="fa-stack alertIcon" style="color:black;"><i class="fa fa-question-circle" ></i></span>' . we_html_element::htmlDiv(array('class' => 'optsRowScaleHelpText')));
 		$rotateSelect = we_html_tools::htmlSelect('fuOpts_rotate', array(
 				0 => g_l('weClass', '[rotate0]'),
 				180 => g_l('weClass', '[rotate180]'),
@@ -152,7 +153,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			we_html_element::htmlDiv(array('class' => 'imgEditOpts', 'id' => 'editImage'), 
 				we_html_element::htmlDiv(array('class' => 'scaleDiv'),
 					we_html_element::htmlDiv(array('class' => 'labelContainer'), g_l('importFiles', '[scale_label]') .':') .
-					we_html_element::htmlDiv(array('class' => 'inputContainer'), $scaleWhatSelect . ' ' . $scalePropositions .  $scaleValue)
+					we_html_element::htmlDiv(array('class' => 'inputContainer'), $scaleWhatSelect . ' ' . $scalePropositions .  $scaleValue) . $scaleHelp
 				) .
 				we_html_element::htmlDiv(array('class' => 'rotationDiv'),
 					we_html_element::htmlDiv(array('class' => 'labelContainer'), g_l('importFiles', '[rotate_label]') .':') .
