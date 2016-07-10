@@ -231,6 +231,23 @@ div.imgEditOpts{
 				outline: none;
 			}
 		}
+		.optsRowScaleHelp{
+			display: none;
+			position: absolute;
+			left: 304px;
+			.optsRowScaleHelpText{
+				display: none;
+				position: absolute;
+				left: -110px;
+				z-index: 2200;
+				background-color: white;
+				border: 1px solid gray;
+				width: 180px;
+				height: auto;
+				top: 24px;
+				padding: 4px;
+			}
+		}
 	}
 
 	div.rotationDiv{
@@ -768,6 +785,22 @@ div.fileuploadImporter{
 									padding: 5px 1px 5px 0px;
 									height: 28px;
 									width: 40px;
+								}
+							}
+							.optsRowScaleHelp{
+								display: none;
+								position: absolute;
+								left: 180px;
+								.optsRowScaleHelpText{
+									display: none;
+									position: absolute;
+									left: -110px;
+									z-index: 2200;
+									background-color: white;
+									border: 1px solid gray;
+									width: 180px;
+									top: 24px;
+									padding: 4px;
 								}
 							}
 						}

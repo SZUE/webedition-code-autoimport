@@ -407,7 +407,8 @@ we_FileUpload.init({
 		editRotationLeft: "' . g_l('global', '[left]') . '",
 		editRotationRight: "' . g_l('global', '[right]') . '",
 		editQuality: "' . g_l('weClass', '[quality]') . '",
-		editNotEdited: "' . g_l('importFiles', '[not_edited]') . '"
+		editNotEdited: "' . g_l('importFiles', '[not_edited]') . '",
+		editTargetsizeTooLarge: "' . g_l('importFiles', '[targettsize_too_large]') . '"
 }';
 	}
 
