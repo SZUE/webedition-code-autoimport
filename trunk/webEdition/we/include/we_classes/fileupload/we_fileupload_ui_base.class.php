@@ -71,7 +71,6 @@ class we_fileupload_ui_base extends we_fileupload{
 	protected $layout = 'horizontal';
 	public $moreFieldsToAppend = array();
 	protected $fileNameTemp = "";
-	protected $cliensideImageEditing = false;
 
 	public function __construct($name){
 		parent::__construct($name);
@@ -229,20 +228,20 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 							'id' => $this->name,
 							'accept' => trim($this->typeCondition['accepted']['all'], ','),
 				));
-				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
 
 				return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;'), $fileInput . $btn
 				);
 			case 'reset':
-				$btn = we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return $notWrapped ? $btn : we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'), $btn);
 
 			case 'upload':
-				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'), $btn);
 
 			case 'cancel':
-				$btn = we_html_button::create_button(we_html_button::CANCEL, 'javascript:' . $this->getJsBtnCmd('cancel'), true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button(we_html_button::CANCEL, 'javascript:' . $this->getJsBtnCmd('cancel'), true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return we_html_element::htmlDiv(array('id' => 'div_fileupload_btnCancel', 'style' => 'margin-top: 4px;display:none;'), $btn);
 		}
 	}
@@ -282,10 +281,6 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 	}
 
 	protected function _getHtmlFileRow(){
-		return '';
-	}
-
-	protected function _getHtmlFileRow_legacy(){
 		return '';
 	}
 
@@ -342,10 +337,6 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 
 		return we_html_element::jsScript('/webEdition/js/weFileUpload.js') .
 				we_html_element::jsScript('/webEdition/lib/additional/ExifReader/ExifReader.js') .
-				we_html_element::jsScript('/webEdition/lib/additional/pngChunksEncode/index.js') .
-				we_html_element::jsScript('/webEdition/lib/additional/pngChunksExtract/index.js') .
-				we_html_element::jsScript('/webEdition/lib/additional/pngChunksExtract/crc32.js') .
-				we_html_element::jsScript('/webEdition/lib/additional/pica/pica.js') .
 				we_html_element::jsElement('
 we_FileUpload = new weFileUpload("' . $this->type . '");
 we_FileUpload.init({
@@ -367,48 +358,35 @@ we_FileUpload.init({
 	extProgress : ' . json_encode($this->externalProgress) . ',
 	gl: ' . $this->_getJsGl() . ',
 	isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
-	htmlFileRow : \'' . (we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->_getHtmlFileRow() : $this->_getHtmlFileRow_legacy()) . '\',
+	htmlFileRow : \'' . $this->_getHtmlFileRow() . '\',
 	fileTable : "' . $this->fileTable . '",
 	binDocProperties : ' . json_encode($this->binDocProperties) . ',
 	disableUploadBtnOnInit : ' . ($this->disableUploadBtnOnInit ? 'true' : 'false') . ',
 	moreFieldsToAppend : ' . json_encode($this->moreFieldsToAppend) . ',
 	isInternalBtnUpload : ' . ($this->isInternalBtnUpload ? 'true' : 'false') . ',
-	responseClass : "' . $this->responseClass . '",
-	clientsideImageEditing : ' . ($this->cliensideImageEditing && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? 1 : 0) . '
+	responseClass : "' . $this->responseClass . '"
 });
 			') . ($this->externalProgress['create'] ? $progressbar->getJSCode() : '');
 	}
 
 	protected function _getJsGl(){
 		return '{
-		dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
-		sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
-		sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
-		typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
-		typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
-		errorNoFileSelected : "' . g_l('newFile', '[error_no_file]') . '",
-		errorFileSize : "' . g_l('newFile', '[error_file_size]') . '",
-		errorFileType : "' . g_l('newFile', '[error_file_type]') . '",
-		errorFileSizeType : "' . g_l('newFile', '[error_size_type]') . '",
-		uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
-		cancelled : "' . g_l('importFiles', '[cancelled]') . '",
-		doImport : "' . g_l('importFiles', '[do_import]') . '",
-		file : "' . g_l('importFiles', '[file]') . '",
-		btnClose : "' . g_l('button', '[close][value]') . '",
-		btnCancel : "' . g_l('button', '[cancel][value]') . '",
-		btnUpload : "' . g_l('button', '[upload][value]') . '",
-		btnProcess: "' . g_l('importFiles', '[btnProcess]') . '",
-		maskReadImage: "' . g_l('importFiles', '[maskReadImage]') . '",
-		maskProcessImage: "' . g_l('importFiles', '[maskProcessImage]') . '",
-		maskImporterReadImages: "' . addslashes(g_l('importFiles', '[maskImporterReadImages]')) . '",
-		maskImporterProcessImages: "' . addslashes(g_l('importFiles', '[maskImporterProcessImages]')) . '",
-		editScaled: "' . g_l('importFiles', '[scaled_to]') . '",
-		editRotation: "' . g_l('importFiles', '[rotation]') . '",
-		editRotationLeft: "' . g_l('global', '[left]') . '",
-		editRotationRight: "' . g_l('global', '[right]') . '",
-		editQuality: "' . g_l('weClass', '[quality]') . '",
-		editNotEdited: "' . g_l('importFiles', '[not_edited]') . '",
-		editTargetsizeTooLarge: "' . g_l('importFiles', '[targettsize_too_large]') . '"
+	dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
+	sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",
+	sizeTextNok : "' . g_l('newFile', '[file_size]') . ': &gt; ' . $this->maxUploadSizeMBytes . ' MB, ",
+	typeTextOk : "' . g_l('newFile', '[file_type]') . ': ",
+	typeTextNok : "' . g_l('newFile', '[file_type_forbidden]') . ': ",
+	errorNoFileSelected : "' . g_l('newFile', '[error_no_file]') . '",
+	errorFileSize : "' . g_l('newFile', '[error_file_size]') . '",
+	errorFileType : "' . g_l('newFile', '[error_file_type]') . '",
+	errorFileSizeType : "' . g_l('newFile', '[error_size_type]') . '",
+	uploadCancelled : "' . g_l('importFiles', '[upload_cancelled]') . '",
+	cancelled : "' . g_l('importFiles', '[cancelled]') . '",
+	doImport : "' . g_l('importFiles', '[do_import]') . '",
+	file : "' . g_l('importFiles', '[file]') . '",
+	btnClose : "' . g_l('button', '[close][value]') . '",
+	btnCancel : "' . g_l('button', '[cancel][value]') . '",
+	btnUpload : "' . g_l('button', '[upload][value]') . '"
 }';
 	}
 
