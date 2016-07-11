@@ -43,7 +43,6 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 			array('we_doc_ct', 'text'),
 			array('we_doc_ext', 'text')
 		));
-		$this->cliensideImageEditing = $this->contentType === we_base_ContentTypes::IMAGE ? true : false;
 	}
 
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
@@ -68,7 +67,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 					</td>
 					<td style="width:300px">' .
 			we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), $this->getHtmlDropZone('preview', $thumbnailSmall) .
-				($this->contentType === we_base_ContentTypes::IMAGE && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->getFormImageEditClientside() : '') . ($this->contentType === we_base_ContentTypes::IMAGE ? $this->getFormImportMeta() : '')
+				($this->contentType === we_base_ContentTypes::IMAGE ? '<br />' . $this->getFormImportMeta() : '')
 			) . '
 					</td>
 				</tr>

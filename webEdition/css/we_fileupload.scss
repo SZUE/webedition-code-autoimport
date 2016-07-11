@@ -37,21 +37,19 @@ div.we_file_drag{
 	box-shadow: none;
 }
 div.we_file_drag_mask{
-	display: none;
 	position: absolute;
-	background: white;
+	background: transparent;
 	margin: 0 0 10px 0;
-	width: 300px;
-	height: 116px;
 }
 div.we_file_drag_content{
 	float: left;
 	margin: 0 0 10px 0;
+	border: 2px dotted gray;
 }
 div.we_file_drag_preview{
-	position: relative;
 	float: left;
 	margin: 0 0 10px 0;
+	border: 2px dotted gray;
 	display: none;
 }
 div.we_file_drag_hover{
@@ -68,7 +66,7 @@ div.we_fileInputWrapper{
 }
 #div_fileupload_buttons button,
 #div_fileupload_buttons input{
-	width:170px ;
+	width:95% ;
 }
 
 .fileInput{
@@ -101,43 +99,31 @@ div.filedrag_content_right{
 	width: 120px;
 	vertical-align: middle;
 	text-align: center;
-	z-index:200;
 	img{
 		max-height: 100px;
 		max-width: 100px;
-		z-index:90;
 	}
 }
 div.filedrag_preview_left{
-	
 	display: table-cell;
 	width: 178px;
 	height: 116px;
-	text-align: left;
+	padding-left: 10px;
 	vertical-align: middle;
+	text-align: left;
 	color: #333;
 	font-weight: normal;
 	font-size: $medfont;
-	background: transparent;
 }
 div.filedrag_preview_right{
-	position:absolute;
-	left: 184px;
-	width:116px;
-	top: 0;
-	bottom:0;
-	display: block;
-	right:0;
-	/*height: 116px;*/
-	//width: 116px;
-	/*vertical-align: middle;*/
-	text-align: left;
-	background-color: lightgrey;
-	background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
-	background-size: 6px 6px;
+	display: table-cell;
+	height: 116px;
+	width: 120px;
+	vertical-align: middle;
+	text-align: center;
 	img{
-		max-height: 116px;
-		max-width: 116px;
+		max-height: 100px;
+		max-width: 100px;
 	}
 }
 #weImageDialog{
@@ -154,714 +140,167 @@ table.importer_files{
 	}
 }
 
-.we_file_drag_maskSpinner{
-	margin: 20px 0 10px 0;
-	font-size: 2em;
-}
-.we_file_drag_maskBusyText{
-	font-size:1.6em;
-}
 
-div.imgEditOpts{
+#editImage{
 	display: none;
 	padding: 4px 0 6px 4px;
 
-	div{
-		position: relative;
-		height: 30px;
+	.optsUnitSelect{
+		width: 96px;
+	}
+	.optsRotateSelect{
+		width: 153px;
+	}
+	.optsQuality{
+		width: 115px;
+	}
+}
 
-		div{
-			position:absolute;
-			height: 30px;
-		}
+button.importerBrowseHarddisk{
+	margin-left: 0;
+	width: 213px;
+}
+div.importerElem{
+	div.elemNum{
+		width: 39px;
+		margin-top: 18px; 
+		float:left;
 	}
 
-	div.scaleDiv{
-		margin: 4px 0 0 0;
+	div.elemContainer{
+		position: relative;
+		width: 526px;
+		margin-top: 4px;
+		border:1px solid #aaaaaa;
+		display: inline-block;
 
-		div.labelContainer{
-			display: inline-block; 
-			width: 70px;
-			top: 6px;;
-			left: 0;
+		div.elemPreview{
+			display: none;
+			position: relative;
+			height: 110px;
+			width: 110px;
+			float: left;
+			background-color: lightgrey;
+			background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
+			background-size: 6px 6px;
 
-		}
-		div.inputContainer{
-			display: inline-block;
-			top: 0;
-			left: 70px;
-
-			.optsUnitSelect{
-				width: 104px;
+			div.elemPreviewPreview{
 				position: absolute;
+				top: 0;
 				left: 0;
 			}
-			.optsScaleInput{
-				width: 50px;
-				position: absolute;
-				left: 159px;
-				height: 29px;
-				border-right: 0 none;
-			}
-			.optsScalePropositions{
-				position: absolute;
-				left: 190px;
-				top: 0;
-				padding: 5px 1px 5px 0px;
-				background-color: transparent;
-				height: 29px;
-				width: 40px;
-			}
-			.multiimport.optsUnitSelect{
-				width: 106px;
-				padding-left: 4px;
-				padding-right: 4px;
-			}
-			.multiimport.optsScaleInput{
-				width: 36px;
-				left: 110px;
-				padding-left: 4px;
-				padding-right: 1px;
-			}
-			.multiimport.optsScalePropositions{
-				left: 127px;
-			}
-
-		.optsScalePropositions:focus{
-				outline: none;
-			}
-		}
-		.optsRowScaleHelp{
-			display: none;
-			position: absolute;
-			left: 304px;
-			.optsRowScaleHelpText{
+			div.elemPreviewBtn{
 				display: none;
 				position: absolute;
-				left: -110px;
-				z-index: 2200;
+				width: 110px;
+				height: 32px;
 				background-color: white;
-				border: 1px solid gray;
-				width: 180px;
-				height: auto;
-				top: 24px;
-				padding: 4px;
+				bottom: 0; 
+				padding: 5px 2px 0 0;
 			}
 		}
-	}
-
-	div.rotationDiv{
-		margin: 4px 0 0 0;
-
-		div.labelContainer{
-			display: inline-block; 
-			width: 70px;
-			top: 6px;
-			left: 0;
-		}
-		div.inputContainer{
-			display: inline-block;
-			top: 0;
-			left: 70px;
-
-			.optsRotateSelect{
-				width: 155px;
-			}
-
-			.multiimport.optsRotateSelect{
-				width: 167px;
-				padding-left: 4px;
-				padding-right: 4px;
-			}
-		}
-	}
-	div.qualityDiv{
-		margin: 4px 0 0 0;
-
-		div.labelContainer{
-			display: inline-block;
-			width: 70px;
-			top: 4px;
-			left: 0;
-		}
-		div.inputContainer{
-			display: inline-block;
-			top: 0;
-			left: 70px;
-			width: 130px;
-
-			input.optsQuality{
-				width: 124px;
-				margin: 0;
-			}
-		}
-		div.qualityValueContainer{
-			display: inline-block;
-			padding: 0 0 0 6px;
-			width: 35px;
-			left: 200px;
-			top:4px;
-		}
-		div.btnContainer{
-			width: 53px;
-			text-align: right;
-			display: inline-block;
-			left: 240px;
-		}
-	}
-	div.btnDiv{
-		margin: 12px 0 0 0;
-
-		div.btnContainer{
-			position: absolute;
-			left: 178px;
-			width: 53px;
-			text-align: right;
-			display: block;
-		}
-		.multiimport.btnContainer{
-			left: 176px;
-			top: -10px;
-		}
-	}
-}
-
-div.editorLoupe{
-	display: none;
-	position: absolute;
-	z-index: 1000;
-	overflow: hidden;
-	width: 370px;
-	height: 370px;
-	top: 0px;
-	left: -202px; 
-	background-color: lightgrey;
-	background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
-	background-size: 12px 12px;
-
-	div.editorLoupeInner{
-		display: none;
-		overflow: hidden;
-		position: absolute;
-		background-color: transparent;
-	}
-	div.editorLoupeInfo{
-		top: 0px;
-		left: 0px;
-		border: 1px solid black;
-		width: auto;
-		height: auto;
-		padding: 2px;
-		z-index: 2200;
-		position: absolute;
-		background-color: white;
-		display: none;
-	}
-}
-
-div.editorLoupeFallback{
-	display: none;
-	position: absolute;
-	top: 0px;
-	left: -202px; 
-	border: 1px solid black;
-	width: auto;
-	height: auto;
-	padding: 2px;
-	z-index: 2200;
-	background-color: white;
-	padding: 6px;
-}
-
-div.editorLoupeMessage{
-	display: none;
-	position: absolute;
-	z-index: 1011;
-	top: 100px;
-	left: -137px;
-	width: 240px;
-	height: 180px;
-	box-sizing: border-box;
-	background-color: #dddddd;
-}
-div.editorCrosshairH{
-	display: none;
-	position: absolute;
-	z-index: 1010;
-	top: 185px;
-	left: -62px;
-	width: 90px;
-	height: 2px;
-	box-sizing: border-box;
-	border-top: 1px dashed white;
-	border-bottom: 1px dashed black;
-}
-div.editorCrosshairV{
-	display: none;
-	position: absolute;
-	z-index: 1010;
-	top: 140px;
-	left: -16px;
-	width: 2px;
-	box-sizing: border-box;
-	height: 100px;
-	border-right: 1px dashed white;
-	border-left: 1px dashed black;
-}
-div.editorLoupeSpinner{
-	position:absolute;
-	top: 161px;
-	bottom: initial;
-	left: -40px;
-	z-index:1200;
-	display: none;
-
-	span{
-		font-size: 2em;
-		color: white;
-	}
-}
-div.editorFocusPoint{
-	display: none;
-	width: 0px;
-	height: 0px;
-	position: absolute;
-	border: 1px solid white;
-	border-radius: 50%;
-	box-shadow: 0 0 0 1px black;
-	z-index: 10;
-}
-div.editorFocusPoint:before {
-	content: "";
-	display: block;
-	position: absolute;
-	left: -16px;
-	top: -16px;
-	width: 30px;
-	height: 30px;
-	border: 1px solid white;
-	border-radius: 50%;
-	box-shadow: 0 0 0 1px black;
-}
-
-div.focusPointOnSet{
-	top: 185px;
-	left: -17px;
-	z-index:1020;
-}
-div.focusPointOnSet:before{
-	border: 2px solid white;
-	box-shadow: 0 0 0 2px black;
-}
-
-#we_fileupload_editor{
-	div.filedrag_preview_left{
-		width: 260px;
-	}
-	div.filedrag_preview_right{
-		left: 260px;
-	}
-	div.we_file_drag_mask{
-		width: 376px;
-	}
-	div.editorLoupe{
-		top: 124px;
-		bottom: 20px;
-		left: 0;
-		width: 380px;
-		height: 380px;
-	}
-	div.editorLoupeFallback{
-		top: 124px;
-		left: 0;
-	}
-	div.editorLoupeSpinner{
-		position:absolute;
-		top: 292px;
-		bottom: initial;
-		left: 166px;
-		z-index:1200;
-	}
-	div.editorCrosshairH{
-		top: 316px;
-		bottom: initial;
-		left: 140px;
-		width: 100px;
-	}
-	div.editorCrosshairV{
-		top: 264px;
-		bottom: initial;
-		left: 189px;
-		height: 100px;
-	}
-	div.focusPointOnSet{
-		left: 190px;
-		top: 314px;
-	}
-}
-
-/* importer => TODO: clean out redundant definitions */
-div.fileuploadImporter{
-	div.editorMask{
-		display: none;
-		position: absolute;
-		top: 0;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		background-color: gray;
-		opacity: 0.8;
-	}
-	div.we_file_drag_maskSpinner{
-		padding-top: 12px;
-		text-align: center;
-	}
-	div.we_file_drag_maskBusyText{
-		padding-top: 18px;
-		text-align: center;
-	}
-	div.editorLoupe{
-		top: initial;
-		bottom: 20px;
-		left: 198px;
-		width: 400px;
-		height: 400px;
-	}
-	div.editorLoupeFallback{
-	top: initial;
-	left: 198px;
-	bottom: 300px;
-	}
-	div.editorCrosshairH{
-		top: initial;
-		bottom: 219px;
-		left: 348px;
-		width: 100px;
-	}
-	div.editorCrosshairV{
-		top: initial;
-		bottom: 170px;
-		left: 398px;
-		height: 100px;
-	}
-	div.focusPointOnSet{
-		left: 398px;
-		top: initial;
-		bottom: 219px;
-	}
-	div.editorLoupeSpinner{
-		left: 374px;
-		top: initial;
-		bottom: 195px;
-	}
-	div.editorMessage{
-		display: none;
-		padding: 20px;
-		background-color: white;
-		width: 400px;
-		height: 180px;
-		position: absolute;
-		top: 70px;
-		left: 100px;
-		opacity: 1.0;
-	}
-	button.importerBrowseHarddisk{
-		margin-left: 0;
-		width: 213px;
-	}
-
-	div.importerElem{
-		div.elemNum{
-			width: 39px;
-			margin-top: 18px; 
-			float:left;
-		}
-
-		div.elemContainer{
+		div.elemIcon{
 			position: relative;
-			width: 540px;
-			margin-top: 4px;
-			border:1px solid #aaaaaa;
-			display: inline-block;
+			height: 30px;
+			width: 110px;
+			float: left;
 
-			div.elemPreview{
+			font-size: 14px;
+			padding: 10px 0 0 12px;
+		}
+		div.elemContent{
+			position: relative;
+			width: 416px;
+			left: 110px;
+
+			div.elemContentTop{
+				position: relative;
+				height: 36px;
+
+				div.elemFilename{
+					padding: 12px 0 0 6px;
+					width: auto;
+					position: absolute;
+					display: block;
+				}
+				div.elemContentTopRight{
+					width: 170px;
+					left: 240px;
+					position: absolute;
+					display: block;
+
+					div.elemSize{
+						padding: 12px 0 0 0;
+						width: 76px;
+						height: 50px;
+						position: absolute;
+					}
+					div.elemButtons{
+						padding: 4px 0 0 0;
+						width: 96px;
+						left: 76px;
+						height: 36px;
+						position: absolute;
+
+						.elemFileinput{
+							width: 40px;
+							height: 26px;
+						}
+					}
+				}
+				div.elemProgress{
+					width: 180px;
+					left: 240px;
+					height: 40px;
+					padding-top: 6px;
+					position: absolute;
+					display: none;
+				}
+			}
+			div.elemContentBottom{
 				display: none;
 				position: relative;
-				height: 110px;
-				width: 110px;
-				float: left;
-				background-color: lightgrey;
-				background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
-				background-size: 6px 6px;
-				z-index: 998;
+				height: 74px;
+				border-top: 1px solid #bbbbbb;
 
-				div.elemPreviewPreview{
-					height: 110px;
-					width: 110px;
+				div.elemWhatOpts{
 					position: absolute;
-					top: 0;
-					left: 0;
-					z-index: 999;
+					width: 120px;
+					padding: 2px 0 0 4px;
 				}
-				div.elemPreviewBtn{
-					display: none;
+				div.elemOpts{
 					position: absolute;
-					width: 110px;
-					height: 32px;
-					background-color: white;
-					bottom: 0; 
-					padding: 5px 2px 0 0;
-				}
-			}
-			div.elemIcon{
-				position: relative;
-				height: 30px;
-				width: 110px;
-				float: left;
+					left: 190px;
+					padding-top: 2px;
 
-				font-size: 14px;
-				padding: 10px 0 0 12px;
-			}
-			div.elemContent{
-				position: absolute;
-				width: 430px;
-				left: 110px;
-
-				div.elemContentMask{
-					position: relative;
-					height: 110px;
-					display: none;
-
-					.we_file_drag_maskSpinner{
-						position: absolute;
-						left: 40px;
-						top: 0;
-						font-size: 1.8em;
-					}
-					.we_file_drag_maskBusyText{
-						position:absolute;
-						top: 26px;
-						left: 120px;
-					}
-				}
-
-				div.elemContentTop{
-					position: relative;
-					height: 36px;
-
-					div.elemFilename{
-						padding: 12px 0 0 6px;
-						width: auto;
-						position: absolute;
-						display: block;
-					}
-					div.elemContentTopRight{
-						width: 170px;
-						left: 268px;
-						position: absolute;
-						display: block;
-
-						div.elemSize{
-							padding: 12px 0 0 0;
-							width: 76px;
-							height: 50px;
-							position: absolute;
-						}
-						div.elemButtons{
-							padding: 4px 0 0 0;
-							width: 96px;
-							left: 64px;
-							height: 36px;
-							position: absolute;
-
-							.elemFileinput{
-								width: 40px;
-								height: 26px;
-							}
-						}
-					}
-					div.elemProgress{
-						width: 180px;
-						left: 286px;
-						height: 40px;
-						padding-top: 6px;
-						position: absolute;
-						display: none;
-					}
-				}
-
-				div.elemContentDone{
-					display: none;
-					position: relative;
-					top: -73px;
-					height: 73px;
-					background-color: gray;
-					opacity: 0.4;
-				}
-
-				div.elemContentBottom{
-					display: none;
-					position: relative;
-					height: 73px;
-					border-top: 1px solid #bbbbbb;
-
-					select{
-						padding: 0 0 0 4px;
-					}
-
-					div.optsLeft{
-						position: absolute;
-						display: inline-block;
-						left: 0;
-						width: 182px;
-						height: 73px;
+					.optsUnitSelect{
+						width: 110px;
+						height: 20px;
 						padding: 0;
-						
-						div.optsLeftTop{
-							position: relative;
-							top: 10px;
-							left: 10px;
-							width: 160px;
-							height: 20px; 
-						}
-						div.optsLeftBottom{
-							position: relative;
-							top: 20px;
-							left: 10px;
-							width: 170px;
-							height: 30px; 
-
-							div.optsRowRotate{
-								position: relative;
-
-								select.optsRotateSelect{
-									position: absolute;
-									top: 0;
-									left: 0;
-									width: 172px;
-									height: 28px;
-									/* background-color: white; */
-									border: 1px solid #a5aaae;
-								}
-							}
-						}
 					}
-
-					div.optsRight{
-						position: absolute;
-						display: inline-block;
-						left: 185px;
-						width: 182px;
-						height: 73px;
-
-						div.optsRightTop{
-							position: relative;
-							top: 8px;
-							left: 0;
-							width: 170px;
-							height: 30px; 
-
-							div.optsRowScale{
-								position: relative;
-								top:0;
-								left: 0;
-
-								.optsUnitSelect{
-									width: 104px;
-									height: 28px;
-									position: absolute;
-									
-								}
-								.optsScaleInput{
-									width: 50px;
-									position: absolute;
-									left: 106px;
-									height: 28px;
-									border-right: 0 none;
-								}
-								.optsScalePropositions{
-									position: absolute;
-									left: 134px;
-									padding: 5px 1px 5px 0px;
-									height: 28px;
-									width: 40px;
-								}
-							}
-							.optsRowScaleHelp{
-								display: none;
-								position: absolute;
-								left: 180px;
-								.optsRowScaleHelpText{
-									display: none;
-									position: absolute;
-									left: -110px;
-									z-index: 2200;
-									background-color: white;
-									border: 1px solid gray;
-									width: 180px;
-									top: 24px;
-									padding: 4px;
-								}
-							}
-						}
-						div.optsRightBottom{
-							position: relative;
-							top: 10px;
-							left: 0;
-							width: 170px;
-							height: 30px; 
-
-							div.optsRowQuality{
-								position: relative;
-
-								div.optsQualityBox{
-									position: absolute;
-									top: 0;
-									left: 0;
-									width: 172px;
-									height: 26px;
-									background-color: #eee;
-									border: 1px solid #a5aaae;
-
-									.optsQualitySlide{
-										position: absolute;
-										top: 1px;
-										left: 2px;
-										width: 116px;
-										height: 20px;
-									}
-									div.optsQualityValue{
-										position: absolute;
-										top: 6px;
-										left: 136px;
-										width: 30px;
-										height: 20px;
-									}
-								}
-							}
-						}
+					.optsRotateSelect{
+						width: 170px;
+						height: 20px;
+						padding: 0;
 					}
-
-					div.optsRightIE{
-						.optsQualitySlide{
-							position: absolute;
-							margin-top: -16px;
-							left: 4px;
-							width: 116px;
-							height: 20px;
-						}
+					.optsQuality{
+						width: 115px;
+						height: 20px;
 					}
-
-					div.btnRefresh{
-						display: inline-block;
-						position: absolute;
-						width: 40px;
-						height: 30px;
-						left: 364px;
-						bottom: 3px;
+					.optsRowTop,
+					.optsRowMiddle,
+					.optsRowBottom{
+						padding: 2px 0 0 0;
 					}
+				}
+				div.btnRefresh{
+					display: inline-block;
+					position: absolute;
+					left: 364px;
+					bottom: 0;
 				}
 			}
 		}
 	}
+	
 }

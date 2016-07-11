@@ -39,13 +39,8 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$this->type = 'editor';
 		$permImageEdit = permissionhandler::hasPerm("NEW_GRAFIK");
 		$permCat = permissionhandler::hasPerm("EDIT_KATEGORIE");
-		$moreElements = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? array(): array(
-			'imageResize' => array('set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
-			'imageRotate' => array('set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
-			'imageQuality' => array('set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
-		);
 		$this->formElements = array_merge($this->formElements, array(
-			'uploader' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => false),
+			'uploader' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
 			'parentId' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
 			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false),
 			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false, 'noline' => true),
@@ -53,7 +48,10 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			'categories' => array('set' => $permCat, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false),
 			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true),
 			'thumbnails' => array('set' => $permImageEdit, 'multiIconBox' => true, 'rightHeadline' => true),
-		), $moreElements);
+			'imageResize' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
+			'imageRotate' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
+			'imageQuality' => array('set' => $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
+		));
 
 		$this->dimensions['dragWidth'] = 400;
 		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
@@ -65,8 +63,12 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			$this->responseClass = 'we_fileupload_resp_import';
 			if(!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE){
 				$this->formElements['formAttributes'] = $this->formElements['formThumbnails'] = $this->formElements['formImageEdit'] = true;
-				// FIXME: do not append all of these when clientside scaling is active! <= we need php const CLIENTSIDE_IMAGE_EDIT
-				$evenMoreFields = array(
+				$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
+					array('fu_doc_isSearchable', 'int'),
+					array('fu_doc_categories', 'text'),
+					array('fu_doc_thumbs', 'text'),
+					array('fu_doc_alt', 'text'),
+					array('fu_doc_title', 'text'),
 					array('fu_doc_width', 'int'),
 					array('fu_doc_height', 'int'),
 					array('fu_doc_widthSelect', 'int'),
@@ -74,15 +76,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 					array('fu_doc_keepRatio', 'int'),
 					array('fu_doc_degrees', 'int'),
 					array('fu_doc_quality', 'int'),
-				);
-				
-				$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
-					array('fu_doc_isSearchable', 'int'),
-					array('fu_doc_categories', 'text'),
-					array('fu_doc_thumbs', 'text'),
-					array('fu_doc_alt', 'text'),
-					array('fu_doc_title', 'text'),
-				), $evenMoreFields);
+				));
 			}
 		} else {
 			$this->responseClass = 'we_fileupload_resp_base';
@@ -113,9 +107,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 				$this->getHiddens() .
 				we_html_element::htmlDiv(array('style' => 'width:200px'), $divButtons
 				) .
-				we_html_element::htmlDiv(array('style' => 'width:400px'), we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), 
-						$this->getHtmlDropZone('preview', $noImage) .
-						(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? we_html_element::htmlDiv(array(), $this->getFormImageEditClientside()) : '')
+				we_html_element::htmlDiv(array('style' => 'width:200px'), we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), $this->getHtmlDropZone('preview', $noImage)
 					)
 				) .
 				$divProgressbar . ($this->posBtnUpload === 'top' && !$this->isExternalBtnUpload ? $divBtnUpload : '')

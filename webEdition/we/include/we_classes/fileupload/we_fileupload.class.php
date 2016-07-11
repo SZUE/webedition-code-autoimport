@@ -67,7 +67,6 @@ abstract class we_fileupload{
 	const REPLACE_BY_UNIQUEID = '##REPLACE_BY_UNIQUEID##';
 	const REPLACE_BY_FILENAME = '##REPLACE_BY_FILENAME##';
 	const USE_FILENAME_FROM_UPLOAD = true;
-	const EDIT_IMAGES_CLIENTSIDE = true;
 
 	protected function __construct($name){
 		$this->name = $name;

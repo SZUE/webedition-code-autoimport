@@ -65,11 +65,8 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
 			array('fu_doc_importMetadata', 'text'),
 			array('fu_file_sameName', 'text'),
-			array('fu_doc_focusX', 'text'),
-			array('fu_doc_focusY', 'text'),
 		));
 		$this->loadImageEditPropsFromSession();
-		$this->cliensideImageEditing = true;
 	}
 
 	public function getCss(){
@@ -82,11 +79,14 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				width: ' . ($this->dimensions['dragWidth'] * 0.56) . 'px;
 			}
 			div.filedrag_content_right{
-				/*width: ' . ($this->dimensions['dragWidth'] * 0.4) . 'px;*/
+				width: ' . ($this->dimensions['dragWidth'] * 0.4) . 'px;
 			}
 			div.filedrag_preview_left{
 				padding-left: ' . ($this->dimensions['dragWidth'] * 0.04) . 'px;
 				width: ' . ($this->dimensions['dragWidth'] * 0.56) . 'px;
+			}
+			div.filedrag_preview_right{
+				width: ' . ($this->dimensions['dragWidth'] * 0.4) . 'px;
 			}');
 	}
 
@@ -101,74 +101,50 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	protected function getHtmlDropZone($type = 'preview', $thumbnailSmall = ''){
 		$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
 
-		$content = we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : '')/* , 'ondragenter' => "alert('wrong div')" */), we_html_element::htmlDiv(array('id' => 'div_filedrag_content_left', 'class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
-				we_html_element::htmlDiv(array('id' => 'div_filedrag_content_right', 'class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $this->contentType . '"));')))
+		return we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : ''), 'ondragenter' => "alert('wrong div')"), we_html_element::htmlDiv(array('class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
+				we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $this->contentType . '"));')))
 			) .
-			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : 'display:none;')), we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_filename')) .
+			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '')), we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), 
+					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_filename')) .
 					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_size', 'style' => 'padding-top: 4px;')) .
 					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_type')) .
 					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_edit', 'style' => 'display:none;padding-top: 4px;'))
 				) .
 				we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'), '')
 			) .
-			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_mask', 'class' => 'we_file_drag_mask'), we_html_element::htmlDiv(array('class' => 'we_file_drag_maskSpinner'), '<i class="fa fa-2x fa-spinner fa-pulse"></i></span>') .
-				we_html_element::htmlDiv(array('id' => 'image_edit_mask_text', 'class' => 'we_file_drag_maskBusyText'))
-		);
-
-		return self::getHtmlLoup() . ($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag'), $content) : $content);
+			($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag we_file_drag_mask'), '') : '');
 	}
 
 	protected function getHiddens(){
 		return $hiddens = parent::getHiddens() . we_html_element::htmlHiddens(array(
 				'we_doc_ct' => $this->contentType,
 				'we_doc_ext' => $this->extension,
-				'fu_doc_focusX' => 0,
-				'fu_doc_focusY' => 0,
 		));
 	}
 
-	public static function getFormImageEditClientside($multimport = false, $disabled = false){
-		$editCheckbox = we_html_forms::checkboxWithHidden(false, 'fuOpts_doEdit', $multimport ? g_l('importFiles', '[edit_imgsBeforeUpload]') : g_l('importFiles', '[edit_imgBeforeUpload]'), false, 'defaultfont', 'document.getElementById(\'editImage\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){' . $reeditCmd . '}');
-		$attribs = array_merge($disabled ? array('disabled' => 'disabled') : array(), array('name' => 'fuOpts_scale', 'type' => 'text', 'class' => 'wetextinput optsScaleInput' . ($multimport ? ' multiimport' : ''), 'autocomplete' =>'off'));
-		$scaleValue = we_html_element::htmlInput($attribs);
-		$scalePropositions = we_html_tools::htmlSelect('fuOpts_scaleProps', 
-				array('' => '', 320 => 320, 640 => 640, 1280 => 1280, 1440 => 1440, 1600 => 1600, 1920 => 1920, 2560 => 2560),
-					1, 0, false, array(), '', '', 'weSelect optsScalePropositions' . ($multimport ? ' multiimport' : ''));
-		$scaleWhatSelect = we_html_tools::htmlSelect('fuOpts_scaleWhat', array(
-				'pixel_l' => g_l('importFiles', '[edit_pixel_longest]'),
-				'pixel_w' => g_l('importFiles', '[edit_pixel_width]'),
-				'pixel_h' => g_l('importFiles', '[edit_pixel_height]')
-				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '', $multimport ? 0 : 155, 'weSelect optsUnitSelect' . ($multimport ? ' multiimport' : ''));
-		$scaleHelp = we_html_element::htmlDiv(array('data-index' => '0', 'class' => 'optsRowScaleHelp'), '<span class="fa-stack alertIcon" style="color:black;"><i class="fa fa-question-circle" ></i></span>' . we_html_element::htmlDiv(array('class' => 'optsRowScaleHelpText')));
-		$rotateSelect = we_html_tools::htmlSelect('fuOpts_rotate', array(
-				0 => g_l('weClass', '[rotate0]'),
-				180 => g_l('weClass', '[rotate180]'),
-				270 => g_l('weClass', '[rotate90l]'),
-				90 => g_l('weClass', '[rotate90r]'),
-				), 1, 0, false, ($disabled ? array('disabled' => 'disabled') : array()), '28', 0, 'weSelect optsRotateSelect' . ($multimport ? ' multiimport' : ''));
-		$quality = we_html_element::htmlInput(array('type' => 'range', 'value' => 100, 'min' => 10, 'max' => 100, 'step' => 5, 'name' => 'fuOpts_quality', 'class' => 'optsQuality'));
-		$btnProcess = we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", true, 0, 0, '', '', true, false, '_weFileupload', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh');
+	public function getFormImageEditClientside(){
+		$resizeCheckbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_doResize', 'Grafik vor dem Upload bearbeiten', false, 'defaultfont', 'document.getElementById(\'editImage\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){we_FileUpload.reeditImage(null, 0);}');
+		$valueInput = we_html_tools::htmlTextInput("fu_doc_resizeValue", 10, '', '', '', "text", 60);
+		$unitSelect = '<select class="weSelect" name="fu_doc_unitSelect" style="width:90px;"><option value="percent">' . g_l('weClass', '[percent]') . '</option><option value="pixel_w">' . g_l('weClass', '[pixel]') . ': Breite</option><option value="pixel_h">' . g_l('weClass', '[pixel]') . ': Höhe</option></select>';
+		$rotateSelect = '<select class="weSelect" name="fu_doc_rotate" style="width:153px;"><option value="0">' . g_l('weClass', '[rotate0]') . '</option><option value="180">' . g_l('weClass', '[rotate180]') . '</option><option value="270">' . g_l('weClass', '[rotate90l]') . '</option><option value="90">' . g_l('weClass', '[rotate90r]') . '</option></select>';
+		$btnRefresh = we_html_button::create_button(we_html_button::REFRESH_NOTEXT, "javascript:we_FileUpload.reeditImage(null, 0);", true, 0, 0, '', '', false, true, '', false, $title = 'Ausführen');
 
-		return we_html_element::htmlDiv(array(), $editCheckbox) .
-			we_html_element::htmlDiv(array('class' => 'imgEditOpts', 'id' => 'editImage'), 
-				we_html_element::htmlDiv(array('class' => 'scaleDiv'),
-					we_html_element::htmlDiv(array('class' => 'labelContainer'), g_l('importFiles', '[scale_label]') .':') .
-					we_html_element::htmlDiv(array('class' => 'inputContainer'), $scaleWhatSelect . ' ' . $scalePropositions .  $scaleValue) . $scaleHelp
-				) .
-				we_html_element::htmlDiv(array('class' => 'rotationDiv'),
-					we_html_element::htmlDiv(array('class' => 'labelContainer'), g_l('importFiles', '[rotate_label]') .':') .
-					we_html_element::htmlDiv(array('class' => 'inputContainer'), $rotateSelect)
-				) .
-				we_html_element::htmlDiv(array('class' => 'qualityDiv'), 
-					we_html_element::htmlDiv(array('class' => 'labelContainer'), g_l('weClass', '[quality]') . ':') .
-					we_html_element::htmlDiv(array('class' => 'inputContainer'), $quality) .
-					we_html_element::htmlDiv(array('id' => 'qualityValue', 'class' => 'qualityValueContainer'), 100) .
-					(!$multimport ? we_html_element::htmlDiv(array('class' => 'btnContainer'), $btnProcess) : '')
-				) .
-				($multimport ? we_html_element::htmlDiv(array('class' => 'btnDiv'), 
-					we_html_element::htmlDiv(array('class' => 'btnContainer' . ($multimport ? ' multiimport' : '')), $btnProcess)
-				) : '')
-		);
+		return we_html_element::htmlDiv(array(), $resizeCheckbox) . 
+				we_html_element::htmlDiv(array('id' => 'editImage', 'style' => 'display:none; padding: 4px 0 6px 4px;'),
+					we_html_element::htmlDiv(array(),
+						we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Skalieren:') .
+						we_html_element::htmlDiv(array('style' => 'display:inline;'), $valueInput . ' ' . $unitSelect)
+					) . we_html_element::htmlDiv(array('style' => "margin-top: 4px;"),
+						we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Drehen:') .
+						we_html_element::htmlDiv(array('style' => 'display:inline-block;'), $rotateSelect) .
+						we_html_element::htmlDiv(array('style' => 'width: 73px; text-align:right; display:inline-block;'), $btnRefresh)
+					)
+				);
+
+		/*
+		$resizeCheckbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_doResize', 'Grafik vor dem Upload proportional skalieren', false, 'defaultfont', 'document.getElementById(\'editImageResize\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){we_FileUpload.reeditImage(null, 0);}');
+		return we_html_element::htmlDiv(array(), $resizeCheckbox) . we_html_element::htmlDiv(array('id' => 'editImageResize', 'style' => 'display:none; padding: 0 0 4px 28px;'), $valueInput . ' ' . $unitSelect . $btnRefresh);
+		*/
 	}
 
 	public function getFormImportMeta(){
@@ -178,7 +154,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		}
 
 		$html = we_html_forms::checkboxWithHidden(($this->imageEditProps['importMetadata'] ? true : false), 'fu_doc_importMetadata', g_l('importFiles', '[import_metadata]'), false, 'defaultfont', '');
-		$headline = g_l('importFiles', '[metadata]');
+		$headline = 'Metadaten';
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
@@ -189,17 +165,17 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			return;
 		}
 
-		$width_size = 378;
+		$_width_size = 378;
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener.selectCategories();')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;if(typeof \'selectCategories\' !== \'undefined\'){selectCategories()};'));
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 		$variant_js = '
-var categories_edit = new multi_edit("categoriesDiv",document.forms[0],0,"' . $del_but . '",' . ($width_size - 10) . ',false);
+var categories_edit = new multi_edit("categoriesDiv",document.forms[0],0,"' . $del_but . '",' . ($_width_size - 10) . ',false);
 categories_edit.addVariant();';
 
-		$cats = makeArrayFromCSV($this->imageEditProps['categories']);
-		if(is_array($cats)){
-			foreach($cats as $cat){
+		$_cats = makeArrayFromCSV($this->imageEditProps['categories']);
+		if(is_array($_cats)){
+			foreach($_cats as $cat){
 				$variant_js .='
 categories_edit.addItem();
 categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CATEGORY_TABLE) . '");';
@@ -220,7 +196,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 				array(
 					'id' => 'categoriesDiv',
 					'class' => 'blockWrapper',
-					'style' => 'width: ' . ($width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
+					'style' => 'width: ' . ($_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
 		)));
 		$table->setCol(1, 0, array('colspan' => 2, 'style' => 'text-align:right'
 			), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut
@@ -447,18 +423,18 @@ function selectCategories() {
 		}
 
 		$degrees = intval($this->imageEditProps['degrees']);
-		$radio0 = we_html_forms::radiobutton(0, $degrees === 0, "fu_doc_degrees", g_l('weClass', '[rotate0]'));
-		$radio180 = we_html_forms::radiobutton(180, $degrees === 180, "fu_doc_degrees", g_l('weClass', '[rotate180]'));
-		$radio90l = we_html_forms::radiobutton(90, $degrees === 90, "fu_doc_degrees", g_l('weClass', '[rotate90l]'));
-		$radio90r = we_html_forms::radiobutton(270, $degrees === 270, "fu_doc_degrees", g_l('weClass', '[rotate90r]'));
+		$_radio0 = we_html_forms::radiobutton(0, $degrees === 0, "fu_doc_degrees", g_l('weClass', '[rotate0]'));
+		$_radio180 = we_html_forms::radiobutton(180, $degrees === 180, "fu_doc_degrees", g_l('weClass', '[rotate180]'));
+		$_radio90l = we_html_forms::radiobutton(90, $degrees === 90, "fu_doc_degrees", g_l('weClass', '[rotate90l]'));
+		$_radio90r = we_html_forms::radiobutton(270, $degrees === 270, "fu_doc_degrees", g_l('weClass', '[rotate90r]'));
 
-		$html = $radio0 . $radio180 . $radio90l . $radio90r;
+		$html = $_radio0 . $_radio180 . $_radio90l . $_radio90r;
 		$headline = g_l('weClass', '[rotate]');
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
 	}
 
-	public function getFormImageQuality(){ // obsolete
+	public function getFormImageQuality(){
 		$name = 'imageQuality';
 		if(!isset($this->formElements[$name]) || !$this->formElements[$name]['set'] || !permissionhandler::hasPerm("NEW_GRAFIK")){
 			return;
@@ -468,20 +444,6 @@ function selectCategories() {
 		$headline = g_l('weClass', '[quality]');
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
-	}
-
-	public static function getHtmlLoup(){
-		$divLoupe = we_html_element::htmlDiv(array('id' => 'we_fileUpload_loupe', 'class' => 'editorLoupe'), we_html_element::htmlDiv(array('id' => 'we_fileUpload_loupeInner', 'class' => 'editorLoupeInner')) .
-				we_html_element::htmlDiv(array('id' => 'we_fileUpload_loupeInfo', 'class' => 'editorLoupeInfo')) .
-				we_html_element::htmlDiv(array('id' => 'we_fileUpload_focusPoint', 'class' => 'editorFocusPoint'))
-		);
-		$divLoupeFallback = we_html_element::htmlDiv(array('id' => 'we_fileUpload_loupeFallback', 'class' => 'editorLoupeFallback'));//editorLoupeFallback
-		$divLoupeCrosshairH = we_html_element::htmlDiv(array('class' => 'editorCrosshairH'));
-		$divLoupeCrosshairV = we_html_element::htmlDiv(array('class' => 'editorCrosshairV'));
-		$divFixedFocusPoint = we_html_element::htmlDiv(array('id' => 'editorFocuspointFixed', 'class' => 'editorFocusPoint focusPointOnSet'));
-		$divLoupeSpinner = we_html_element::htmlDiv(array('id' => 'we_fileUpload_spinner', 'class' => 'editorLoupeSpinner'), we_html_element::htmlSpan(array(), '<i class="fa fa-2x fa-spinner fa-pulse"></i>'));
-
-		return $divLoupe . $divLoupeFallback . $divLoupeCrosshairH . $divLoupeCrosshairV . $divFixedFocusPoint . $divLoupeSpinner . $divLoupeMessage;
 	}
 
 	protected function makeMultiIconRow($formname, $headline, $html){
