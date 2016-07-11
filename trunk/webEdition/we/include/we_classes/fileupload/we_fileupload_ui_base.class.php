@@ -228,20 +228,20 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 							'id' => $this->name,
 							'accept' => trim($this->typeCondition['accepted']['all'], ','),
 				));
-				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, $width, 0, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
 
 				return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;'), $fileInput . $btn
 				);
 			case 'reset':
-				$btn = we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, $width, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return $notWrapped ? $btn : we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'), $btn);
 
 			case 'upload':
-				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), true, $width, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'), $btn);
 
 			case 'cancel':
-				$btn = we_html_button::create_button(we_html_button::CANCEL, 'javascript:' . $this->getJsBtnCmd('cancel'), true, $width, we_html_button::HEIGHT, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button(we_html_button::CANCEL, 'javascript:' . $this->getJsBtnCmd('cancel'), true, $width, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return we_html_element::htmlDiv(array('id' => 'div_fileupload_btnCancel', 'style' => 'margin-top: 4px;display:none;'), $btn);
 		}
 	}

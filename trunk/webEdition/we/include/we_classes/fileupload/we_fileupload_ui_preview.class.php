@@ -104,11 +104,9 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		return we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : ''), 'ondragenter' => "alert('wrong div')"), we_html_element::htmlDiv(array('class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
 				we_html_element::htmlDiv(array('class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $this->contentType . '"));')))
 			) .
-			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '')), we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), 
-					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_filename')) .
-					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_size', 'style' => 'padding-top: 4px;')) .
-					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_type')) .
-					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_edit', 'style' => 'display:none;padding-top: 4px;'))
+			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : '')), we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_filename')) . we_html_element::htmlBr() .
+					we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_size')) . we_html_element::htmlBr() .
+					we_html_element::htmlSpan(array('id' => 'span_fileDrag_inner_type'))
 				) .
 				we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'), '')
 			) .
@@ -120,31 +118,6 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				'we_doc_ct' => $this->contentType,
 				'we_doc_ext' => $this->extension,
 		));
-	}
-
-	public function getFormImageEditClientside(){
-		$resizeCheckbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_doResize', 'Grafik vor dem Upload bearbeiten', false, 'defaultfont', 'document.getElementById(\'editImage\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){we_FileUpload.reeditImage(null, 0);}');
-		$valueInput = we_html_tools::htmlTextInput("fu_doc_resizeValue", 10, '', '', '', "text", 60);
-		$unitSelect = '<select class="weSelect" name="fu_doc_unitSelect" style="width:90px;"><option value="percent">' . g_l('weClass', '[percent]') . '</option><option value="pixel_w">' . g_l('weClass', '[pixel]') . ': Breite</option><option value="pixel_h">' . g_l('weClass', '[pixel]') . ': Höhe</option></select>';
-		$rotateSelect = '<select class="weSelect" name="fu_doc_rotate" style="width:153px;"><option value="0">' . g_l('weClass', '[rotate0]') . '</option><option value="180">' . g_l('weClass', '[rotate180]') . '</option><option value="270">' . g_l('weClass', '[rotate90l]') . '</option><option value="90">' . g_l('weClass', '[rotate90r]') . '</option></select>';
-		$btnRefresh = we_html_button::create_button(we_html_button::REFRESH_NOTEXT, "javascript:we_FileUpload.reeditImage(null, 0);", true, 0, 0, '', '', false, true, '', false, $title = 'Ausführen');
-
-		return we_html_element::htmlDiv(array(), $resizeCheckbox) . 
-				we_html_element::htmlDiv(array('id' => 'editImage', 'style' => 'display:none; padding: 4px 0 6px 4px;'),
-					we_html_element::htmlDiv(array(),
-						we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Skalieren:') .
-						we_html_element::htmlDiv(array('style' => 'display:inline;'), $valueInput . ' ' . $unitSelect)
-					) . we_html_element::htmlDiv(array('style' => "margin-top: 4px;"),
-						we_html_element::htmlDiv(array('style' => 'display: inline-block; width: 70px;'), 'Drehen:') .
-						we_html_element::htmlDiv(array('style' => 'display:inline-block;'), $rotateSelect) .
-						we_html_element::htmlDiv(array('style' => 'width: 73px; text-align:right; display:inline-block;'), $btnRefresh)
-					)
-				);
-
-		/*
-		$resizeCheckbox = we_html_forms::checkboxWithHidden(false, 'fu_doc_doResize', 'Grafik vor dem Upload proportional skalieren', false, 'defaultfont', 'document.getElementById(\'editImageResize\').style.display=(this.checked ? \'block\' : \'none\');if(!this.checked){we_FileUpload.reeditImage(null, 0);}');
-		return we_html_element::htmlDiv(array(), $resizeCheckbox) . we_html_element::htmlDiv(array('id' => 'editImageResize', 'style' => 'display:none; padding: 0 0 4px 28px;'), $valueInput . ' ' . $unitSelect . $btnRefresh);
-		*/
 	}
 
 	public function getFormImportMeta(){
@@ -165,17 +138,17 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 			return;
 		}
 
-		$_width_size = 378;
+		$width_size = 378;
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener.selectCategories();')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;if(typeof \'selectCategories\' !== \'undefined\'){selectCategories()};'));
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
 		$variant_js = '
-var categories_edit = new multi_edit("categoriesDiv",document.forms[0],0,"' . $del_but . '",' . ($_width_size - 10) . ',false);
+var categories_edit = new multi_edit("categoriesDiv",document.forms[0],0,"' . $del_but . '",' . ($width_size - 10) . ',false);
 categories_edit.addVariant();';
 
-		$_cats = makeArrayFromCSV($this->imageEditProps['categories']);
-		if(is_array($_cats)){
-			foreach($_cats as $cat){
+		$cats = makeArrayFromCSV($this->imageEditProps['categories']);
+		if(is_array($cats)){
+			foreach($cats as $cat){
 				$variant_js .='
 categories_edit.addItem();
 categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CATEGORY_TABLE) . '");';
@@ -196,7 +169,7 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 				array(
 					'id' => 'categoriesDiv',
 					'class' => 'blockWrapper',
-					'style' => 'width: ' . ($_width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
+					'style' => 'width: ' . ($width_size) . 'px; height: 60px; border: #AAAAAA solid 1px;'
 		)));
 		$table->setCol(1, 0, array('colspan' => 2, 'style' => 'text-align:right'
 			), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut
@@ -278,9 +251,6 @@ function selectCategories() {
 		}
 
 		$parentID = $this->parentID['preset'] ? (is_numeric($this->parentID['preset']) ? $this->parentID['preset'] : path_to_id($this->parentID['preset'])) : ($this->imageEditProps['parentID'] ? : (IMAGESTARTID_DEFAULT ? : 0));
-		$DB_WE = new DB_WE();
-		$parentID = !$parentID ? 0 : (!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($parentID) . ' AND IsFolder=1', '', $DB_WE) ? 0 : $parentID);
-
 		if(($ws = get_ws(FILE_TABLE, true))){
 			if(!(we_users_util::in_workspace($parentID, $ws, FILE_TABLE))){
 				$parentID = intval(reset($ws));
@@ -377,7 +347,7 @@ function selectCategories() {
 		}
 
 		$html = we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Alternativ Text') . '<br>' . we_html_tools::htmlTextInput('fu_doc_alt', 24, '', '', '', 'text', 378)) .
-			we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Titel') . '<div>' . we_html_tools::htmlTextInput('fu_doc_title', 24, '', '', '', 'text', 378) . '</div>');
+			we_html_element::htmlDiv(array(), we_html_element::htmlLabel(array(), 'Titel') . '<br>' . we_html_tools::htmlTextInput('fu_doc_title', 24, '', '', '', 'text', 378));
 		$headline = 'Attribute';
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
@@ -423,12 +393,12 @@ function selectCategories() {
 		}
 
 		$degrees = intval($this->imageEditProps['degrees']);
-		$_radio0 = we_html_forms::radiobutton(0, $degrees === 0, "fu_doc_degrees", g_l('weClass', '[rotate0]'));
-		$_radio180 = we_html_forms::radiobutton(180, $degrees === 180, "fu_doc_degrees", g_l('weClass', '[rotate180]'));
-		$_radio90l = we_html_forms::radiobutton(90, $degrees === 90, "fu_doc_degrees", g_l('weClass', '[rotate90l]'));
-		$_radio90r = we_html_forms::radiobutton(270, $degrees === 270, "fu_doc_degrees", g_l('weClass', '[rotate90r]'));
+		$radio0 = we_html_forms::radiobutton(0, $degrees === 0, "fu_doc_degrees", g_l('weClass', '[rotate0]'));
+		$radio180 = we_html_forms::radiobutton(180, $degrees === 180, "fu_doc_degrees", g_l('weClass', '[rotate180]'));
+		$radio90l = we_html_forms::radiobutton(90, $degrees === 90, "fu_doc_degrees", g_l('weClass', '[rotate90l]'));
+		$radio90r = we_html_forms::radiobutton(270, $degrees === 270, "fu_doc_degrees", g_l('weClass', '[rotate90r]'));
 
-		$html = $_radio0 . $_radio180 . $_radio90l . $_radio90r;
+		$html = $radio0 . $radio180 . $radio90l . $radio90r;
 		$headline = g_l('weClass', '[rotate]');
 
 		return $this->formElements[$name]['multiIconBox'] ? $this->makeMultiIconRow($name, $headline, $html) : $html;
