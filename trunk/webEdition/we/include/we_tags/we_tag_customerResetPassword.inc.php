@@ -72,7 +72,8 @@ function we_tag_customerResetPassword(array $attribs, $content = '', $internal =
 	if(($foo = attributFehltError($attribs, 'type', __FUNCTION__))){
 		return $foo;
 	}
-	if(!(defined('CUSTOMER_TABLE') && isset($_REQUEST['s']))){
+	if(!isset($_REQUEST['s'])){
+		$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_FIELD_NOT_SET;
 		return;
 	}
 //cleanup table
