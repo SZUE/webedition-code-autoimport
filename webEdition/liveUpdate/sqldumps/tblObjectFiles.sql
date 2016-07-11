@@ -12,7 +12,7 @@ CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   ContentType enum('folder','objectFile') NOT NULL,
   CreationDate int unsigned NOT NULL default '0',
   ModDate int unsigned NOT NULL default '0',
-  `Path` varchar(1023) NOT NULL default '',
+  `Path` varchar(1000) NOT NULL default '',
   Url varchar(255) NOT NULL default '',
   TriggerID int unsigned NOT NULL default '0',
   CreatorID int unsigned NOT NULL default '0',
@@ -35,7 +35,8 @@ CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   Language varchar(5) default NULL,
   WebUserID bigint unsigned NOT NULL,
   PRIMARY KEY  (ID),
-  UNIQUE KEY Path (Path),
+  KEY Path (Path (250)),
+	UNIQUE KEY ParentID (ParentID,Text),
   KEY WebUserID (WebUserID),
   KEY TableID (TableID),
   KEY Url (Url)

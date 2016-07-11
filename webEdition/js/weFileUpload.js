@@ -179,8 +179,8 @@ var weFileUpload = (function () {
 			this.outer = null;
 			this.isPreset = false;
 
-			this.DELETE_IMG_AFTER_READING = false;
 			this.IMG_NEXT = 0;
+			this.IMG_START = 10;
 			this.IMG_LOAD_CANVAS = 1;
 			this.IMG_EXTRACT_METADATA = 2;
 			this.IMG_SCALE = 3;
@@ -190,6 +190,22 @@ var weFileUpload = (function () {
 			this.IMG_INSERT_METADATA = 7;
 			this.IMG_MAKE_PREVIEW = 8;
 			this.IMG_POSTPROCESS = 9;
+
+			this.OPTS_QUALITY_NEUTRAL_VAL = 100,
+			this.OPTS_QUALITY_DEFAULT_VAL = 90,
+			this.PRESERVE_IMG_DATAURL = true;
+			this.EDITABLE_CONTENTTYPES = ['image/jpeg', 'image/gif', 'image/png'];
+
+			this.IS_MEMORY_MANAGMENT = false;
+			this.PROCESS_PREVIEWS_ONLY = false;
+			//this.MEMORY_LIMIT = 31457280;
+			this.MEMORY_LIMIT = 83886080; // 80 MB
+			this.memoryManagement = {
+				registeredSum: 0,
+				registeredValues: {},
+				queueEdited: [],
+				queueNotEdited: []
+			};
 
 			this.fileselectOnclick = function () {
 			};
@@ -231,6 +247,8 @@ var weFileUpload = (function () {
 					if (_.EDIT_IMAGES_CLIENTSIDE && _.sender.imageFilesToProcess.length) {
 						_.controller.processImages();
 					}
+
+					//IMI: REREGISTER MEMORY
 				}
 			};
 
@@ -239,13 +257,36 @@ var weFileUpload = (function () {
 					file: f,
 					fileNum: 0,
 					dataArray: null,
-					canvas: null, // maybe call it workingcanvas
+					dataUrl: null,
+					isEdited: false,
 					img: {
+						processedOptions: {
+							doEdit: false,
+							from: 'general',
+							scaleWhat: 'pixel_l',
+							scale: 0,
+							rotate: 0,
+							quality: 100
+						},
+						editOptions: {
+							doEdit: false,
+							from: 'general',
+							scaleWhat: 'pixel_l',
+							scale: 0,
+							rotate: 0,
+							quality: 100
+						},
+						origWidth: 0,
+						origHeight: 0,
+						tooSmallToScale: false,
+						isUploadStarted: false,
+						isOrientationChecked: false,
+						orientationValue: 0,
 						workingCanvas: null, // maybe call it workingcanvas
 						previewCanvas: null,
+						actualRotation: 0,
+						previewRotation: 0,
 						previewImg: null, // created only for edited images: unedited images can be very large...
-						editOptions: null,
-						originalPreviewCanvas: null,
 						originalSize: 0,
 						jpgCustomSegments: null,
 						pngTextChunks: null,
@@ -259,8 +300,8 @@ var weFileUpload = (function () {
 					mimePHP: 'none',
 					fileNameTemp: ''
 				},
-				transformables = ['image/jpeg', 'image/gif', 'image/png'], //TODO: add all transformable types and make "global" (_.editables)
-								//TODO: make this OK-stuff more concise
+
+				//TODO: make this OK-stuff more concise
 				type = f.type ? f.type : 'text/plain',
 				u = isUploadable || true,
 				isTypeOk = _.utils.checkFileType(type, f.name),
@@ -281,8 +322,9 @@ var weFileUpload = (function () {
 				fileObj.size = f.size;
 				fileObj.totalParts = Math.ceil(f.size / _.sender.chunkSize);
 				fileObj.lastChunkSize = f.size % _.sender.chunkSize;
+				fileObj.img.originalSize = f.size;
 
-				if (_.EDIT_IMAGES_CLIENTSIDE && transformables.indexOf(f.type) !== -1) {
+				if (_.EDIT_IMAGES_CLIENTSIDE && _.controller.EDITABLE_CONTENTTYPES.indexOf(f.type) !== -1) {
 					_.sender.imageFilesToProcess.push(fileObj);
 				}
 
@@ -290,6 +332,7 @@ var weFileUpload = (function () {
 			};
 
 			this.processImages = function() {
+				_.controller.PROCESS_PREVIEWS_ONLY = false;
 				if (_.sender.imageFilesToProcess && _.sender.imageFilesToProcess.length) {
 					_.utils.setImageEditOptionsGeneral();
 					_.view.setImageEditMessage();
@@ -302,13 +345,33 @@ var weFileUpload = (function () {
 			this.processNextImage = function() {
 				if (_.sender.imageFilesToProcess.length) {
 					var fileobj = _.sender.imageFilesToProcess.shift();
-					_.utils.logTimeFromStart('start edit image', true);
-
+					_.utils.logTimeFromStart('start edit image', true, fileobj);
 					_.utils.setImageEditOptionsFile(fileobj);
-
-					_.controller.processImage(fileobj, this.IMG_LOAD_CANVAS);
+					_.controller.processImage(fileobj, this.IMG_START);
 				} else {
 					_.controller.processImages();
+				}
+			};
+
+			this.processSingleImage = function(fileobj, finishProcess){
+				_.controller.PROCESS_PREVIEWS_ONLY = false;
+				if(finishProcess){
+					fileobj.processSingleImage = false;
+					_.view.unsetImageEditMessage(true, fileobj.preparedFilesIndex);//
+					if (fileobj.img.callback === 'sendNextFile' && _.sender.prepareUpload(true)) {
+						setTimeout(function () {
+							_.sender.sendNextFile();
+						}, 100);
+					}
+					return;
+				} 
+
+				if(fileobj){
+					fileobj.processSingleImage = true;
+					_.view.setImageEditMessage(true, fileobj.preparedFilesIndex);
+					_.utils.logTimeFromStart('start edit image', true);
+					_.utils.setImageEditOptionsFile(fileobj);
+					_.controller.processImage(fileobj, this.IMG_START);
 				}
 			};
 
@@ -319,11 +382,14 @@ var weFileUpload = (function () {
 				}
 
 				switch(task) {
-					case _.controller.IMG_LOAD_CANVAS: // TODO: make IMG_START
-						if(!fileobj.img.editOptions.doEdit && fileobj.dataArray && fileobj.dataArray.length){ // we reset an image edited before!
-							_.utils.processimageReset(fileobj, _.controller.IMG_POSTPROCESS);
+					case _.controller.IMG_START:
+						if(_.controller.PROCESS_PREVIEWS_ONLY && fileobj.img.previewCanvas){
+							_.controller.processImage(fileobj, _.controller.IMG_NEXT);
 							return;
-						}
+						} 
+						_.utils.processimageExtractLandscape(fileobj, _.controller.IMG_LOAD_CANVAS);
+						break;
+					case _.controller.IMG_LOAD_CANVAS: // TODO: make IMG_START
 						if(!fileobj.img.editOptions.doEdit && fileobj.size > 10485760){ // nothing to edit and image is too big for preview (>10MB)
 							_.controller.processImage(fileobj, _.controller.IMG_NEXT);
 							return;
@@ -378,83 +444,182 @@ var weFileUpload = (function () {
 				}
 			};
 
-			this.reeditImage = function (fileobj, pos, all) {
-				pos = pos === undefined ? -1 : pos;
-				var files = all ? _.sender.preparedFiles : (fileobj ? [fileobj] : (pos !== -1 ? [_.sender.preparedFiles[pos]] : []));
+			/*
+			 * reedit a single image or all images using general options applying opts from GUI
+			 * 
+			 */
+			this.reeditImage = function (index, general) {
+				var indexes = _.utils.getImageEditIndexes(index, general, false);
 
-				var transformables = ['image/jpeg', 'image/gif', 'image/png'];
-				for(var i = 0; i < files.length; i++){
-					if(files[i] && transformables.indexOf(files[i].type) !== -1){
-						_.sender.imageFilesToProcess.push(files[i]);
-					}
+				for(var i = 0; i < indexes.length; i++){
+					_.sender.imageFilesToProcess.push(_.sender.preparedFiles[indexes[i]]);
+				}
+				_.controller.processImages();
+			};
+
+			/*
+			 * set property isEdited of a single image or all images using general options to false
+			 * -> empty props like dataArray, dataUrl
+			 * -> do not change GUI (= edit opts)
+			 * 
+			 * we use this to free disk space when edited images are not valid anymore after changing options
+			 * 
+			 */
+			this.uneditImage = function (index, general, isReset) {
+				var indexes = _.utils.getImageEditIndexes(index, general, false),
+					fileobj;
+
+				for(var i = 0; i < indexes.length; i++){
+					fileobj = _.sender.preparedFiles[indexes[i]];
+					fileobj.dataArray = null;
+					fileobj.dataUrl = null;
+					fileobj.size = fileobj.img.originalSize;
+					fileobj.img.previewImg = null;
+					fileobj.img.fullPrev = null;
+					fileobj.img.actualRotation = 0;
+					_.utils.setImageEditOptionsFile(fileobj); // write correct actually valid editoptions
+					fileobj.img.processedOptions = { // reset last edited options
+						doEdit: false,
+						from: 'general',
+						scaleWhat: 'pixel_l',
+						scale: 0,
+						rotate: 0,
+						quality: 100
+					},
+					fileobj.isEdited = false;
+					_.utils.memorymanagerRegister(fileobj);
 				}
 
-				_.controller.processImages();
+				return;
 			};
 
 			this.openImageEditor = function(pos){
 				// to be overridden
 			};
 
-			this.editOptionsOnChange = function(target){
-				var resizeName = 'fu_doc_resizeValue',
-					rotateName = 'fu_doc_rotate',
-					qualityName = 'fu_doc_quality',
-					pos = -1,
-					btnRefresh = target.form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
+			this.editImageButtonOnClick = function(btn, index, general){
+				btn.disabled = true;
 
-				var altNames = ['resizeValue', 'rotateSelect', 'quality']; // TODO: unifiy names!! all fields are uniquely identified by surrounding form
-				if(altNames.indexOf(target.name) !== -1){ // we are in custom opts of an importer entry
-					resizeName = 'resizeValue';
-					rotateName = 'rotateSelect';
-					qualityName = 'quality';
-					pos = parseInt(target.form.id.substring(14));//form_editOpts_0
+				if(!btn.form){ // FIXME: this is a dirty fix: why can we have a button without form?
+					return;
 				}
 
-				var resizeValue = target.form.elements[resizeName].value,
-					rotateValue = parseInt(target.form.elements[rotateName].value),
-					qualityValue = parseInt(target.form.elements[qualityName].value);
+				_.controller.reeditImage(index, general);
+			};
+
+			this.editOptionsOnChange = function(target){
+				var form = target.form,
+					inputScale = form.elements['fuOpts_scale'],
+					inputRotate = form.elements['fuOpts_rotate'],
+					inputQuality = form.elements['fuOpts_quality'],
+					scale = inputScale.value,
+					rotate = parseInt(inputRotate.value),
+					quality = parseInt(inputQuality.value),
+					pos = form.getAttribute('data-type') === 'importer_rowForm' ? form.getAttribute('data-index') : -1,
+					//opttype = pos === -1 ? 'general' : 'custom';
+					btnRefresh = form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
 
 				switch (target.name){
-					case resizeName:
-					case rotateName:
-						if(resizeValue || rotateValue){
-							if(!qualityValue){
-								target.form.elements[qualityName].value = 90;
-								document.getElementById('qualityValue').innerHTML = '90';
-								target.form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '90';
-							}
-						} else {
-							target.form.elements[qualityName].value = 0;
-							target.form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '0';
-							_.controller.reeditImage(null, pos, pos === -1 ? true : false);
-						}
-						btnRefresh.disabled = _.sender.preparedFiles.length === 0 || !(resizeValue || rotateValue || qualityValue);
-						break;
-					case 'scaleValuePropsositions':
-						target.form.elements[resizeName].value = target.value;
-						target.form.elements[resizeName].focus();
+					case 'fuOpts_scaleProps':
+						inputScale.value = target.value;
+						scale = target.value;
+						inputScale.focus();
 						target.value = 0;
-						target.form.elements['fu_doc_resizeValue'].focus();
-						_.controller.editOptionsOnChange(target.form.elements['fu_doc_resizeValue']);
-						break;
-					case qualityName:top.console.log('q', qualityValue, resizeValue, rotateValue);
-						if(!qualityValue && !resizeValue && !rotateValue){
-							btnRefresh.disabled = false;
-							if(_.sender.preparedFiles.length){
-								_.controller.reeditImage(null, pos, pos === -1 ? true : false);
+						// fall through
+					case 'fuOpts_scale':
+					case 'fuOpts_rotate':
+						if(scale || rotate){
+							if(quality === _.controller.OPTS_QUALITY_NEUTRAL_VAL){
+								inputQuality.value = _.controller.OPTS_QUALITY_DEFAULT_VAL;
+								form.getElementsByClassName('qualityValueContainer')[0].innerHTML = _.controller.OPTS_QUALITY_DEFAULT_VAL;
 							}
+							_.view.formCustomEditOptsSync(-1, true);
+							_.controller.uneditImage(pos, pos === -1 ? true : false);
+							_.view.setEditStatus('', pos, pos === -1 ? true : false);
 						} else {
-							btnRefresh.disabled = _.sender.preparedFiles.length === 0;
+							inputQuality.value = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+							form.getElementsByClassName('qualityValueContainer')[0].innerHTML = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+							_.view.formCustomEditOptsSync(-1, true);
+							_.controller.uneditImage(pos, pos === -1 ? true : false);
+							_.view.setEditStatus('', pos, pos === -1 ? true : false);
+						}
+						btnRefresh.disabled = _.sender.preparedFiles.length === 0 || (!scale && !rotate);
+						if(target.name === 'fuOpts_rotate'){
+							_.view.previewSyncRotation(pos, rotate);
 						}
 						break;
-					case 'check_fu_doc_doResize':
-						// whenever we change this reset all vals and disable button // TODO: make or apply some resize function
-						target.form.elements[qualityName].value = 0;
-						target.form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '0';
-						target.form.elements[rotateName].value = 0;
-						target.form.elements[resizeName].value = '';
+					case 'fuOpts_scaleWhat':
+						if(scale){
+							btnRefresh.disabled = true;
+							_.view.formCustomEditOptsSync(-1, true);
+							_.controller.uneditImage(pos, pos === -1 ? true : false);
+							_.view.setEditStatus('notprocessed', pos, pos === -1 ? true : false);
+						}
+						break;
+					case 'fuOpts_quality':
+						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = quality;
+						if((quality === _.controller.OPTS_QUALITY_NEUTRAL_VAL) && !scale && !rotate){
+							//btnRefresh.disabled = true;
+							_.view.formCustomEditOptsSync(-1, true);
+							_.controller.uneditImage(pos, pos === -1 ? true : false);
+							_.view.setEditStatus('', pos, pos === -1 ? true : false);
+						} else {
+							_.view.formCustomEditOptsSync(-1, true);
+							_.controller.uneditImage(pos, pos === -1 ? true : false);
+							btnRefresh.disabled = _.sender.preparedFiles.length === 0;
+							_.utils.setImageEditOptionsFile(pos === -1 ? null : _.sender.preparedFiles[pos], pos === -1 ? true : false);
+							_.view.setEditStatus('', pos, pos === -1 ? true : false);
+						}
+						break;
+					case 'check_fuOpts_doEdit':
+						// whenever we change this optoion we reset all vals and disable button
+						inputQuality.value = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+						inputRotate.value = 0;
+						inputScale.value = '';
 						btnRefresh.disabled = true;
+						_.controller.uneditImage(-1, true);
+						_.controller.reeditImage(-1, true);
+						_.view.previewSyncRotation(-1, 0);
+						_.view.setEditStatus('donotedit', -1, true);
+						_.view.formCustomEditOptsSync(-1, true);
+						break;
+					case 'fuOpts_useCustomOpts':
+						var fileobj = _.sender.preparedFiles[pos];
+						if(target.checked){
+							fileobj.img.editOptions.from = 'custom';
+							_.controller.uneditImage(pos, false);
+							_.view.formCustomEditOptsDisable(form, false);
+							_.view.formEditOptsReset(form);
+							_.view.previewSyncRotation(pos, 0);
+							_.utils.setImageEditOptionsFile(fileobj);
+							_.view.setEditStatus('', pos, false);
+							btnRefresh.disabled = false;
+						}else {
+							fileobj.img.editOptions.from = 'general';
+							_.controller.uneditImage(pos, false);
+							_.view.formCustomEditOptsDisable(form, true);
+							_.view.formCustomEditOptsSync(pos, false);
+							_.utils.setImageEditOptionsFile(fileobj);
+							_.view.previewSyncRotation(pos, fileobj.img.editOptions.rotate);
+							_.view.setEditStatus('', pos, false);
+							btnRefresh.disabled = false;
+						}
+						break;
+				}
+			};
+
+			this.editOptionsHelp = function(target, dir){
+				if(dir === 'enter'){
+					var fileobj = _.sender.preparedFiles[target.getAttribute('data-index')];
+					var scaleReference = fileobj.img.editOptions.scaleWhat === 'pixel_w' ? fileobj.img.origWidth : (
+							fileobj.img.editOptions.scaleWhat === 'pixel_h' ? fileobj.img.origHeight : Math.max(fileobj.img.origHeight, fileobj.img.origWidth));
+					var text = _.utils.gl.editTargetsizeTooLarge;
+
+					target.lastChild.innerHTML = text.replace('##ORIGSIZE##', scaleReference);
+					target.lastChild.style.display = 'block';
+				} else {
+					target.lastChild.style.display = 'none';
 				}
 			};
 		}
@@ -488,10 +653,10 @@ var weFileUpload = (function () {
 			this.imageEditOptions = {
 				doEdit: false,
 				from: 'general',
-				scaleUnit: 'pixel_l', // percent|pixel_w|pixel_h
-				scaleValue: 0,
-				rotateValue: 0,
-				quality: 90
+				scaleWhat: 'pixel_l',
+				scale: 0,
+				rotate: 0,
+				quality: 100
 			};
 			this.moreFieldsToAppend = [];
 
@@ -502,30 +667,70 @@ var weFileUpload = (function () {
 				return true;
 			};
 
+			this.getValidEditOptions = function () {
+				// to be overridden
+				return false;
+			};
+
 			this.sendNextFile = function () {
 				var cur, fr = null, cnt,
-					that = _.sender;//IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
+					that = _.sender, //IMPORTANT: if we use that = this, then that is of type AbstractSender not knowing members of Sender!
+					editOptsLast, editOpts;
 
-				/* when using short syntax in line 1156 we must change some this to that = _.sender. FIXME: WHY?!
-				 if (that.uploadFiles.length > 0) {
-				 that.currentFile = cur = that.uploadFiles.shift();
-				 */
 				if (this.uploadFiles.length > 0) {
+					cur = this.uploadFiles[0];
+
+					if (_.EDIT_IMAGES_CLIENTSIDE && _.controller.EDITABLE_CONTENTTYPES.indexOf(cur.type) !== -1){
+						editOptsLast = cur.img.processedOptions;//JSON.parse(JSON.stringify(cur.img.editOptions));
+						_.utils.setImageEditOptionsFile(cur);
+						editOpts = cur.img.editOptions;
+
+						if(editOpts.doEdit){
+							if(!cur.dataUrl || !cur.dataUrl.length ||
+										editOpts.doEdit != editOptsLast.doEdit || // IMPORTANT: make config string: "1,w,1280,270,90" to compare!!
+										editOpts.scaleWhat != editOptsLast.scaleWhat ||
+										editOpts.scale != editOptsLast.scale ||
+										editOpts.rotate != editOptsLast.rotate ||
+										editOpts.quality != editOptsLast.quality) {
+								// image is not yet edited or edited using options others than actually valid ones!
+								cur.isEdited = false;
+								_.sender.preparedFiles[cur.preparedFilesIndex].img.callback = 'sendNextFile';
+								_.sender.preparedFiles[cur.preparedFilesIndex].tmpSize = _.sender.preparedFiles[cur.preparedFilesIndex].size;
+
+								// we process this image and call sendNextFile again!
+								_.controller.processSingleImage(_.sender.preparedFiles[cur.preparedFilesIndex]);
+								return;
+							}
+
+							// dataUrl of edited file exists: make dataArray, reinsert meta if any and go on:
+							cur.dataArray = _.utils.dataURLToUInt8Array(cur.dataUrl);
+							if(cur.type === 'image/jpeg' && cur.img.jpgCustomSegments){
+								cur.dataArray = _.utils.jpgInsertSegment(cur.dataArray, cur.img.jpgCustomSegments);
+							} else if(cur.type === 'image/png' && cur.img.pngTextChunks){
+								cur.dataArray = _.utils.pngReinsertTextchunks(cur.dataArray, cur.img.pngTextChunks);
+							}
+						}
+						cur.dataUrl = null;
+					}
 					this.currentFile = cur = this.uploadFiles.shift();
+
 					if (cur.uploadConditionsOk) {
 						this.isUploading = true;
+						cur.isUploadStarted = true;
 						_.view.repaintGUI({what: 'startSendFile'});
 
-						if (cur.size <= this.chunkSize && !this.imageEditOptions.doEdit) {// IMPORTANT !cur.doEdit!
+						if (cur.size <= this.chunkSize && !cur.img.editOptions.doEdit) {
 							this.sendNextChunk(false);
 						} else {
 							if (_.view.elems.fileSelect && _.view.elems.fileSelect.value) {
 								_.view.elems.fileSelect.value = '';
 							}
-							var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
-							if (_.EDIT_IMAGES_CLIENTSIDE && transformables.indexOf(cur.type) !== -1 && cur.dataArray && cur.dataArray.length) {
+
+							if (_.EDIT_IMAGES_CLIENTSIDE && _.controller.EDITABLE_CONTENTTYPES.indexOf(cur.type) !== -1 && cur.dataArray && cur.dataArray.length){
+								// we have an edited image width dataArray already prepared
 								that.sendNextChunk(true);
 							} else {
+								// we have an image not to be edited or other filetype
 								fr = new FileReader();
 								fr.onload = function (e) {
 									cur.dataArray = new Uint8Array(e.target.result);
@@ -621,7 +826,7 @@ var weFileUpload = (function () {
 								break;
 							case 'multi_select':
 								var sel = document.we_form.elements[this.moreFieldsToAppend[i][0]],
-												opts = [], opt;
+									opts = [], opt;
 
 								for (var j = 0, len = sel.options.length; j < len; j++) {
 									opt = sel.options[j];
@@ -656,18 +861,28 @@ var weFileUpload = (function () {
 							return;
 						case 'success':
 							this.currentWeightTag = this.currentWeight;
+							cur.dataArray = null;
+							cur.dataUrl = null;
+							if(_.controller.IS_MEMORY_MANAGMENT){
+								_.utils.memorymanagerUnregister(cur);
+							}
 							_.view.repaintGUI({what: 'chunkOK'});
 							_.view.repaintGUI({what: 'fileOK'});
 							this.doOnFileFinished(resp);//FIXME: make this part of postProcess(resp, fileonly=true)
 							if (this.uploadFiles.length !== 0) {
 								this.sendNextFile();
 							} else {
-								this.postProcess(resp);
+								_.sender.postProcess(resp);
 							}
 							return;
 						case 'failure':
 							this.currentWeight = this.currentWeightTag + cur.size;
 							this.currentWeightTag = this.currentWeight;
+							cur.dataArray = null;
+							cur.dataUrl = null;
+							if(_.controller.IS_MEMORY_MANAGMENT){
+								_.utils.memorymanagerUnregister(cur);
+							}
 							_.view.repaintGUI({what: 'chunkNOK', message: resp.message});
 							if (this.uploadFiles.length !== 0) {
 								this.sendNextFile();
@@ -713,6 +928,7 @@ var weFileUpload = (function () {
 			this.previewSize = 116;
 			this.useOriginalAsPreviewIfNotEdited = false;
 			this.lastLoupIndex = -1;
+			this.loupeVisible = false;
 
 			this.setImageEditMessage = function (){
 			};
@@ -730,16 +946,19 @@ var weFileUpload = (function () {
 			};
 
 			this.setPreviewLoupe = function(fileobj, pt){
+				if(fileobj.isUploadStarted){
+					return;
+				}
 				pt = pt ? pt : 0;
 				if(pt === 1){
 					var info = '',
 						dimension = fileobj.img.fullPrev.height + 'x' + fileobj.img.fullPrev.width + ' px';
-					if(fileobj.img.editOptions.doEdit){
-						var deg = parseInt(fileobj.img.editOptions.rotateValue),
+					if(fileobj.isEdited){
+						var deg = parseInt(fileobj.img.processedOptions.rotate),
 							degText = deg === 0 ? '' : (deg === 90 ? '90&deg; ' + _.utils.gl.editRotationRight : (deg === 270 ? '90&deg; ' + _.utils.gl.editRotationLeft : '180&deg;'));
-						info += (fileobj.img.editOptions.scaleValue ? _.utils.gl.editScaled + ' ' : '') + dimension;
+						info += (fileobj.img.processedOptions.scale ? _.utils.gl.editScaled + ' ' : '') + dimension;
 						info += deg ? (info ? ', ' : '') + _.utils.gl.editRotation + ': ' + degText : '';
-						info += fileobj.img.editOptions.quality && fileobj.type === 'image/jpeg' ? (info ? ', ' : '') + _.utils.gl.editQuality + ': ' + fileobj.img.editOptions.quality + '%' : '';
+						info += fileobj.img.processedOptions.quality !== _.controller.OPTS_QUALITY_NEUTRAL_VAL && fileobj.type === 'image/jpeg' ? (info ? ', ' : '') + _.utils.gl.editQuality + ': ' + fileobj.img.processedOptions.quality + '%' : '';
 					} else {
 						info = _.utils.gl.editNotEdited + ': ' + dimension;
 					}
@@ -757,46 +976,79 @@ var weFileUpload = (function () {
 					return;
 				}
 
-				if(!_.view.useOriginalAsPreviewIfNotEdited && _.view.lastLoupIndex !== -1 && _.view.lastLoupIndex !== fileobj.index){
-					// in importer we delete fullPreview when moving to an other file
-					_.sender.preparedFiles[fileobj.index].img.fullPrev = null;
+				if(_.view.lastLoupIndex !== -1 && _.view.lastLoupIndex !== fileobj.index && _.sender.preparedFiles[_.view.lastLoupIndex]){
+					// in importer we delete fullPreview of an fileobj when moving to an other file
+					_.sender.preparedFiles[_.view.lastLoupIndex].img.fullPrev = null;
 				}
+				_.view.lastLoupIndex = fileobj.index;
 
-				fileobj.loupInner = document.getElementById('we_fileUpload_loupeInner');
-				fileobj.loupInner.style.display = 'block';
-				document.getElementById('we_fileUpload_loupe').style.display = 'block';
-				document.getElementById('we_fileUpload_spinner').style.display = 'block';
 
 				var mask;
 				if((mask = document.getElementById('we_fileUploadImporter_mask'))){
 					mask.style.display = 'block';
 				}
 
+				if(!(fileobj.img.fullPrev || fileobj.dataUrl || fileobj.dataArray)){
+					document.getElementById('we_fileUpload_loupeFallback').innerHTML = 'Für dieses Bild bzw. für die aktuellen Bearbeitungsoptionen<br/>wurde noch keine Vorschau erstellt.';
+					document.getElementById('we_fileUpload_loupeFallback').style.display = 'block';
+					_.view.loupeVisible = false;
+					return;
+				}
+				_.view.loupeVisible = true;
+
+				fileobj.loupInner = document.getElementById('we_fileUpload_loupeInner');
+				fileobj.loupInner.style.display = 'block';
+				document.getElementById('we_fileUpload_loupe').style.display = 'block';
+				document.getElementById('we_fileUpload_spinner').style.display = 'block';
+
 				if(fileobj.img.fullPrev){
-					_.view.setPreviewLoupe(fileobj, 1);
-				} else if(fileobj.dataUrl || (fileobj.img.previewImg && fileobj.img.previewImg.src)){
+					_.view.setPreviewLoupe(fileobj, 1); // we always keep 1 rendered image in loupe
+				} else if(fileobj.dataUrl || fileobj.dataArray){ // we have dataURL or dataArray
 					fileobj.img.fullPrev = new Image();
+					_.utils.logTimeFromStart('start load fullpreview', true);
 					fileobj.img.fullPrev.onload = function(){
+						_.utils.logTimeFromStart('end load fullpreview');
 						_.view.setPreviewLoupe(fileobj, 1);
 					};
 					setTimeout(function () {
-						fileobj.img.fullPrev.src = fileobj.dataUrl ? fileobj.dataUrl : fileobj.img.previewImg.src;
-					}, 0);
-				} else { // in importer we do actually not load images for preview when not edited!
+						/*
+						var bin = '', base64 = '';
+						if(!fileobj.dataUrl){
+							for (var i = 0; i < fileobj.dataArray.byteLength; i++) {
+								bin += String.fromCharCode(fileobj.dataArray[ i ]);
+							}
+							base64 = 'data:' + fileobj.type + ';base64,' + window.btoa(bin);
+						} else {
+							base64 = fileobj.dataUrl;
+						}
+						*/
+						fileobj.img.fullPrev.src = fileobj.dataUrl;
+					}, 10);
+				} else {
+					/*
+					 * we sould not load data here: it lasts too long!
+					 * as long as memory limit is not reached we save dataURLs to fileobjects
+					 * => when limit is reached one must load dataURL using btnMakePreview!
+					 * 
+					 */
+					/*
 					var reader = new FileReader();
 					reader.onload = function() {
 						fileobj.img.fullPrev = new Image();
 						fileobj.img.fullPrev.onload = function(){
-							_.view.lastLoupIndex = fileobj.index;
 							_.view.setPreviewLoupe(fileobj, 1);
 						};
 						fileobj.img.fullPrev.src = reader.result;
 					};
 					reader.readAsDataURL(fileobj.file);
+					*/
 				}
 			};
 
 			this.movePreviewLoupe = function(e, fileobj){
+				if(fileobj.isUploadStarted){
+					return;
+				}
 				try{
 					if(e.timeStamp - _.view.lastklick < 10){
 						// in Chrome onclick fires mosemove too: this causes the newly set focuspoint to be slightly wrong...
@@ -804,8 +1056,8 @@ var weFileUpload = (function () {
 					}
 
 					if(fileobj.loupInner && fileobj.loupInner.firstChild){
-						var offsetLeft = (-fileobj.loupInner.firstChild.width / fileobj.img.previewWidth * e.offsetX) + (fileobj.loupInner.parentNode.offsetWidth / 2);
-						var offsetTop = (-fileobj.loupInner.firstChild.height / fileobj.img.previewHeight * e.offsetY) + (fileobj.loupInner.parentNode.offsetHeight / 2);
+						var offsetLeft = (-fileobj.loupInner.firstChild.width / fileobj.img.previewCanvas.width * e.offsetX) + (fileobj.loupInner.parentNode.offsetWidth / 2);
+						var offsetTop = (-fileobj.loupInner.firstChild.height / fileobj.img.previewCanvas.height * e.offsetY) + (fileobj.loupInner.parentNode.offsetHeight / 2);
 						_.view.offesetLeft = offsetLeft;
 						_.view.offsetTop = offsetTop;
 
@@ -821,14 +1073,22 @@ var weFileUpload = (function () {
 			};
 
 			this.unsetPreviewLoupe = function(fileobj){
-				fileobj.loupInner.style.display = 'none';
-				fileobj.loupInner.parentNode.style.display = 'none';
+				_.view.loupeVisible = false;
+				if(fileobj.loupInner){
+					fileobj.loupInner.style.display = 'none';
+					fileobj.loupInner.parentNode.style.display = 'none';
+					fileobj.loupInner.innerHTML = '';
+				}
+				if(fileobj.focusPoint){
+					fileobj.focusPoint.style.display = 'none';
+					fileobj.focusPointFixed.style.display = 'none';
+				}
+
 				document.getElementById('we_fileUpload_loupeInfo').style.display = 'none';
+				document.getElementById('we_fileUpload_loupeFallback').style.display = 'none';
 				document.getElementsByClassName('editorCrosshairH')[0].style.display = 'none';
 				document.getElementsByClassName('editorCrosshairV')[0].style.display = 'none';
-				fileobj.focusPoint.style.display = 'none';
-				fileobj.focusPointFixed.style.display = 'none';
-				fileobj.loupInner.innerHTML = '';
+
 				var mask;
 				if((mask = document.getElementById('we_fileUploadImporter_mask'))){
 					mask.style.display = 'none';
@@ -836,12 +1096,15 @@ var weFileUpload = (function () {
 			};
 
 			this.grabFocusPoint = function(e, fileobj){
+				if(!_.view.loupeVisible){
+					return;
+				}
 				_.view.lastklick = e.timeStamp;
-				if(fileobj.img.previewWidth && fileobj.img.previewHeight){
+				if(fileobj.img.previewCanvas.width && fileobj.img.previewCanvas.height){
 					fileobj.focusPoint.style.display = 'none';
 					fileobj.focusPointFixed.style.display = 'block';
-					var focusX = ((e.offsetX / fileobj.img.previewWidth) * 2) - 1;
-					var focusY = ((e.offsetY / fileobj.img.previewHeight) * 2) - 1;
+					var focusX = ((e.offsetX / fileobj.img.previewCanvas.width) * 2) - 1;
+					var focusY = ((e.offsetY / fileobj.img.previewCanvas.height) * 2) - 1;
 					fileobj.img.focusX = focusX.toFixed(2);
 					fileobj.img.focusY = focusY.toFixed(2);
 					_.view.writeFocusToForm(fileobj);
@@ -864,21 +1127,27 @@ var weFileUpload = (function () {
 				document.getElementById('span_' + _.fieldName + '_' + name + p).innerHTML = text;
 			};
 
+			this.replacePreviewCanvas = function() {
+				// to be overridden
+			};
+
 			this.setInternalProgress = function (progress, index) {
-				var coef = this.intProgress.width / 100,
-					i = typeof index !== 'undefined' || index === false ? index : false,
-					p = i === false ? '' : '_' + i;
+				try{
+					var coef = this.intProgress.width / 100,
+						i = typeof index !== 'undefined' || index === false ? index : false,
+						p = i === false ? '' : '_' + i;
 
-				document.getElementById(_.fieldName + '_progress_image_bg' + p).style.width = ((coef * 100) - (coef * progress)) + "px";
-				document.getElementById(_.fieldName + '_progress_image' + p).style.width = coef * progress + "px";
+					document.getElementById(_.fieldName + '_progress_image_bg' + p).style.width = ((coef * 100) - (coef * progress)) + "px";
+					document.getElementById(_.fieldName + '_progress_image' + p).style.width = coef * progress + "px";
 
-				this.setInternalProgressText('progress_text', progress + '%', index);
+					this.setInternalProgressText('progress_text', progress + '%', index);
+				} catch(e){}
 			};
 
 			this.setInternalProgressCompleted = function (success, index, txt) {
 				var s = success || false,
-								i = index || false,
-								p = !i ? '' : '_' + i;
+						i = index || false,
+						p = !i ? '' : '_' + i;
 
 				if (s) {
 					this.setInternalProgress(100, i);
@@ -888,15 +1157,15 @@ var weFileUpload = (function () {
 				}
 			};
 
-			this.setDoEditGlobal = function (fileobj, checkox) {
-				// from inline
+			this.formEditOptsReset = function (form) { // USED
+				form.elements['fuOpts_scaleWhat'].value = 'pixel_l';
+				form.elements['fuOpts_scale'].value = '';
+				form.elements['fuOpts_rotate'].value = 0;
+				form.elements['fuOpts_quality'].value = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+				form.getElementsByClassName('qualityValueContainer')[0].innerHTML = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
 			};
 
-			this.setUseGeneralOpts = function (fileobj, checkox) {
-				// to be overridden
-			};
-
-			this.setCustomEditOpts = function (fileobj, radio) {
+			this.formCustomEditOptsSync = function () {
 				// to be overridden
 			};
 		}
@@ -919,32 +1188,36 @@ var weFileUpload = (function () {
 				btnClose: '',
 				btnCancel: ''
 			};
+			this.processimageRepeatLoadCanvas = 0;
 
-			this.logTimeFromStart = function(text, resetStart){
+			this.logTimeFromStart = function(text, resetStart, more){
 				if(_.debug){
 					var date = new Date();
 
 					this.start = resetStart ? date.getTime() : this.start;
-					top.console.log((text ? text : ''), (date.getTime() - this.start)/1000);
+					top.console.log((text ? text : ''), (date.getTime() - this.start)/1000, more ? more : '');
 				}
 			};
 
 			this.abstractSetImageEditOptionsGeneral = function (formname) {
 				var form = document.forms[(formname ? formname : 'we_form')],
-					resizeValue = form.elements['fu_doc_resizeValue'].value,
-					deg = parseInt(form.elements['fu_doc_rotate'].value),
-					quality = parseInt(form.elements['fu_doc_quality'].value),
+					scale = form.elements['fuOpts_scale'].value,
+					deg = parseInt(form.elements['fuOpts_rotate'].value),
+					quality = parseInt(form.elements['fuOpts_quality'].value),
 					opts = _.sender.imageEditOptions;
 
-				opts.doEdit = false;
-				if(parseInt(form.elements['fu_doc_doResize'].value) === 1 && (resizeValue || deg || quality)){
+				if(parseInt(form.elements['fuOpts_doEdit'].value) === 1 && (scale || deg || quality !== _.controller.OPTS_QUALITY_NEUTRAL_VAL)){
 					opts.doEdit = true;
-					opts.keepRatio = true;
-
-					opts.scaleUnit = form.elements['fu_doc_unitSelect'].value;
-					opts.scaleValue = resizeValue;
-					opts.rotateValue = deg;
-					opts.quality = form.elements['fu_doc_quality'].value;
+					opts.scaleWhat = form.elements['fuOpts_scaleWhat'].value;
+					opts.scale = scale;
+					opts.rotate = deg;
+					opts.quality = form.elements['fuOpts_quality'].value;
+				} else {
+					opts.doEdit = false;
+					opts.scaleWhat = 'pixel_l';
+					opts.scale = 0;
+					opts.rotate = 0;
+					opts.quality = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
 				}
 			};
 
@@ -953,68 +1226,86 @@ var weFileUpload = (function () {
 			};
 
 			this.setImageEditOptionsFile = function (fileobj) {
-				var type = 'general';
-
-				switch(type){
-					case 'general':
-						fileobj.img.editOptions = JSON.parse(JSON.stringify(_.sender.imageEditOptions));
-						break;
-					case 'expert':
-						// not implemented yet
-						break;
-				}
+				fileobj.img.editOptions = JSON.parse(JSON.stringify(_.sender.imageEditOptions));
 				fileobj.img.editOptions.from = type;
 			};
 
-			this.processimageLoadCanvas = function(fileobj, nexttask) {
-				if(!fileobj.isEdited){
-					//top.console.log('loadcanvas: must load img');
-					fileobj.img.image = null;
-				}
+			this.processimageExtractLandscape = function(fileobj, nexttask) {
+				if(fileobj.type === 'image/jpeg' && !fileobj.img.isOrientationChecked){
+					var reader = new FileReader(),
+						exif, tags;
 
-				fileobj.img.workingCanvas = document.createElement('canvas');
-
-				// we have loaded original image before and have it still stored in fileobj.img.image
-				if(fileobj.img.image && fileobj.img.image.src){
-					fileobj.img.workingCanvas.width = fileobj.img.image.width;
-					fileobj.img.workingCanvas.height = fileobj.img.image.height;
-					fileobj.img.workingCanvas.getContext("2d").drawImage(fileobj.img.image, 0, 0);
-
-					_.utils.logTimeFromStart('canvas loaded');
+					fileobj.img.isOrientationChecked = true;
+					reader.onloadend = function (event) {
+						try {
+							exif = new ExifReader();
+							exif.load(event.target.result);
+							tags = exif.getAllTags();
+							if(tags['Orientation']){
+								switch(tags['Orientation'].value) {
+									case 3:
+										fileobj.img.orientationValue = 180;
+										break;
+									case 6:
+										fileobj.img.orientationValue = -90;
+										break;
+									case 8:
+										fileobj.img.orientationValue = 90;
+										break;
+								}
+							}
+						} catch (error) {}
+						_.controller.processImage(fileobj, nexttask);
+					};
+					reader.readAsArrayBuffer(fileobj.file.slice(0, 128 * 1024));
+				} else {
+					fileobj.img.isOrientationChecked = true;
 					_.controller.processImage(fileobj, nexttask);
-					return;
 				}
+			};
 
-				// we are here for the first time or have cleared earlier fileobj.img.image to free memory
+			this.processimageLoadCanvas = function(fileobj, nexttask) {
 				var reader = new FileReader();
-				fileobj.img.image = new Image();
+
 				reader.onload = function() {
+					if(!fileobj.img.editOptions.doEdit){ // we will not edit and rewrite image so we hold original dataUrl in fileobj to be used by fullpreview
+						fileobj.dataUrl = reader.result;
+
+						if(fileobj.img.previewCanvas){ // preview done during earlier editing: directly jump top postprocess
+							_.utils.processimagePostProcess(fileobj, _.controller.IMG_NEXT);
+							return;
+						}
+					}
+
+					fileobj.img.image = new Image();
 					fileobj.img.image.onload = function() {
+						fileobj.img.workingCanvas = document.createElement('canvas');
+						if(!fileobj.img.image && _.utils.processimageRepeatLoadCanvas < 5){
+							_.utils.processimageRepeatLoadCanvas++;
+							_.utils.processimageLoadCanvas(fileobj, nexttask);
+						}
+						_.utils.processimageRepeatLoadCanvas = 0;
 						fileobj.img.workingCanvas.width = fileobj.img.image.width;
 						fileobj.img.workingCanvas.height = fileobj.img.image.height;
-						fileobj.img.workingCanvas.getContext("2d").drawImage(fileobj.img.image, 0, 0);
-						if(_.controller.DELETE_IMG_AFTER_READING){
-							fileobj.img.image = null;
+						if(!fileobj.img.origWidth || !fileobj.img.origHeight){
+							fileobj.img.origWidth = fileobj.img.image.width;
+							fileobj.img.origHeight = fileobj.img.image.height;
+							_.utils.setImageEditOptionsFile(fileobj); // set editOptions again after orig dimensions are extracted
 						}
-
-						_.utils.processimageMakePreview(fileobj, nexttask, 'originalPreviewCanvas');
+						fileobj.img.workingCanvas.getContext("2d").drawImage(fileobj.img.image, 0, 0);
+						fileobj.img.image = null;
+						_.utils.logTimeFromStart('canvas loaded');
+						nexttask = _.controller.PROCESS_PREVIEWS_ONLY ? _.controller.IMG_MAKE_PREVIEW : nexttask;
+						_.controller.processImage(fileobj, nexttask);
 					};
 
-					_.utils.logTimeFromStart('canvas loaded');
 					_.view.repaintImageEditMessage(true, true);
-					//fileobj.img.dataUrl = 
 					fileobj.img.image.src = reader.result;
 				};
 				reader.readAsDataURL(fileobj.file);
 			};
 
 			this.processimageExtractMetadata = function(fileobj, nexttask) {
-				/*
-				if (!Uint8Array.prototype.slice) { // TODO: must fix loupe for IE11: has no Uint8Array.prototype.slice!!
-					_.controller.processImage(fileobj, nexttask);
-				}
-				*/
-
 				switch(fileobj.type){
 					case 'image/jpeg':
 						_.utils.processimageExtractMetadataJPG(fileobj, nexttask);
@@ -1032,7 +1323,6 @@ var weFileUpload = (function () {
 
 					reader.onloadend = function () {
 						fileobj.img.jpgCustomSegments = _.utils.jpgGetSegmentsIfExist(new Uint8Array(reader.result), [225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239], true);
-						//fileobj.img.exifParsed = _.utils.jpgGetExifParsed();
 
 						_.utils.logTimeFromStart('meta jpg exttracted');
 						_.view.repaintImageEditMessage(true);
@@ -1045,12 +1335,12 @@ var weFileUpload = (function () {
 				var reader = new FileReader();
 
 				reader.onloadend = function () {
-					fileobj.pngTextChunks = [];
+					fileobj.img.pngTextChunks = [];
 					try{
 						var chunks = extractChunks(new Uint8Array(reader.result));
 						for(var i = 0; i < chunks.length; i++){
 							if(chunks[i].name === 'iTXt' || chunks[i].name === 'tEXt' || chunks[i].name === 'zTXt'){
-								fileobj.pngTextChunks.push(chunks[i]);
+								fileobj.img.pngTextChunks.push(chunks[i]);
 								/*
 								var decodedChunk = chunks[i].name !== 'iTXt' ? decodeChunk(chunks[i]) :
 										decodeURIComponent(escape(String.fromCharCode.apply(null, chunks[i].data)));
@@ -1069,18 +1359,19 @@ var weFileUpload = (function () {
 			};
 
 			this.processimageScale = function(fileobj, nexttask){
-				if(!fileobj.img.editOptions.scaleValue){
+				if(!fileobj.img.editOptions.scale){
 					_.utils.logTimeFromStart('scaling skipped');
 					_.controller.processImage(fileobj, nexttask);
 					return; // IMPORTANT! 
 				}
 
-				var scaleUnit = fileobj.img.editOptions.scaleUnit !== 'pixel_l' ? fileobj.img.editOptions.scaleUnit : 
+				var scaleWhat = fileobj.img.editOptions.scaleWhat !== 'pixel_l' ? fileobj.img.editOptions.scaleWhat : 
 						(fileobj.img.workingCanvas.width >= fileobj.img.workingCanvas.height ? 'pixel_w' : 'pixel_h');
-				var ratio = scaleUnit === 'pixel_w' ? fileobj.img.editOptions.scaleValue/fileobj.img.workingCanvas.width : 
-							fileobj.img.editOptions.scaleValue/fileobj.img.workingCanvas.height;
+				var ratio = scaleWhat === 'pixel_w' ? fileobj.img.editOptions.scale/fileobj.img.workingCanvas.width : 
+							fileobj.img.editOptions.scale/fileobj.img.workingCanvas.height;
 				if(ratio >= 1){
-					_.controller.processImage(nexttask); // we do not upscale!
+					_.utils.logTimeFromStart('scaling: image smaller than targetsize');
+					_.controller.processImage(fileobj, nexttask); // we do not upscale!
 					return; // IMPORTANT! 
 				}
 
@@ -1097,46 +1388,49 @@ var weFileUpload = (function () {
 					}
 
 					_.utils.logTimeFromStart('scaling done');
+					fileobj.isEdited = true;
 					_.view.repaintImageEditMessage(true);
 					_.controller.processImage(fileobj, nexttask);
 				});
 			};
 
-			this.processimageRotate = function(fileobj, nexttask){
-				var deg = fileobj.img.editOptions.rotateValue;
+			this.processimageRotate = function(fileobj, nexttask, preview, degrees, correctPreviewOrientation){
+				var deg = (preview && degrees !== undefined) ? degrees : fileobj.img.editOptions.rotate,
+					target = preview ? 'previewCanvas' : 'workingCanvas';
 
-				// correct landscape using exif data
-				if(fileobj.img.exifParsed && fileobj.img.exifParsed.Orientation && fileobj.img.exifParsed.Orientation.value !== 1){
-					switch(fileobj.img.exifParsed.Orientation.value) {
-						case 3:
-							deg += 180;
-							break;
-						case 6:
-							deg += 270;
-							break;
-						case 8:
-							deg += 90;
-							break;
-					}
+				/*
+				 * IMPORTANT: NEVER automatically correct orientation of the preview!
+				 * => we correct preview when creating it and then take it for not rotated!!
+				 */
+				if(target === 'workingCanvas'){
+					deg = (deg + fileobj.img.orientationValue) % 360;
 				}
-				deg = parseInt(deg)%360;
 
-				var cw = fileobj.img.workingCanvas.width, ch = fileobj.img.workingCanvas.height, cx = 0, cy = 0;
+				if(correctPreviewOrientation){
+					deg = -fileobj.img.orientationValue;
+					target = 'previewCanvas';
+					nexttask = undefined;
+					preview = true;
+				}
+
+				var cw = fileobj.img[target].width, ch = fileobj.img[target].height, cx = 0, cy = 0;
 				switch(deg) {
 					case 90 :
-						cw = fileobj.img.workingCanvas.height;
-						ch = fileobj.img.workingCanvas.width;
-						cy = -fileobj.img.workingCanvas.height;
+					case -270 :
+						cw = fileobj.img[target].height;
+						ch = fileobj.img[target].width;
+						cy = -fileobj.img[target].height;
 						break;
 					case 180 :
-						cx = -fileobj.img.workingCanvas.width;
-						cy = -fileobj.img.workingCanvas.height;
+					case -180 :
+						cx = -fileobj.img[target].width;
+						cy = -fileobj.img[target].height;
 						break;
 					case 270 :
 					case -90 :
-						cw = fileobj.img.workingCanvas.height;
-						ch = fileobj.img.workingCanvas.width;
-						cx = -fileobj.img.workingCanvas.width;
+						cw = fileobj.img[target].height;
+						ch = fileobj.img[target].width;
+						cx = -fileobj.img[target].width;
 						break;
 					default:
 						_.utils.logTimeFromStart('rotation skipped');
@@ -1150,14 +1444,22 @@ var weFileUpload = (function () {
 					targetCanvas.height = ch;
 
 				ctxTargetCanvas.rotate(deg * Math.PI / 180);
-				ctxTargetCanvas.drawImage(fileobj.img.workingCanvas, cx, cy);
+				ctxTargetCanvas.drawImage(fileobj.img[target], cx, cy);
 
-				fileobj.img.workingCanvas = targetCanvas;
+				fileobj.img[target] = targetCanvas;
 				targetCanvas = null;
 
-				_.utils.logTimeFromStart('rotation done');
-				_.view.repaintImageEditMessage(true);
-				_.controller.processImage(fileobj, nexttask);
+				if(correctPreviewOrientation){
+					return;
+				}
+
+				if(target === 'workingCanvas'){
+					fileobj.isEdited = true;
+					fileobj.img.actualRotation = deg;
+					_.utils.logTimeFromStart('rotation done');
+					_.view.repaintImageEditMessage(true);
+					_.controller.processImage(fileobj, nexttask);
+				}
 			};
 
 			this.processimageApplyFilters = function(fileobj, nexttask){
@@ -1185,6 +1487,11 @@ var weFileUpload = (function () {
 				*/
 				fileobj.dataUrl = fileobj.img.workingCanvas.toDataURL(fileobj.type, (fileobj.img.editOptions.quality/100));
 				fileobj.dataArray = _.utils.dataURLToUInt8Array(fileobj.dataUrl);
+				if(!_.controller.PRESERVE_IMG_DATAURL){
+					fileobj.dataUrl = null;
+				}
+				fileobj.isEdited = fileobj.img.editOptions.quality < 90 ? true : fileobj.isEdited;
+
 				_.utils.logTimeFromStart('image written fn 2');
 				_.controller.processImage(fileobj, nexttask);
 			};
@@ -1216,9 +1523,12 @@ var weFileUpload = (function () {
 
 			this.processimagInsertMetadataPNG = function(fileobj, nexttask) {
 				_.utils.logTimeFromStart('metadata reinsert skipped');
-				_.controller.processImage(fileobj, nexttask);
+				//_.controller.processImage(fileobj, nexttask);
 
 				if(fileobj.img.pngTextChunks && fileobj.img.pngTextChunks.length){
+					fileobj.dataArray = this.pngReinsertTextchunks(fileobj.dataArray, fileobj.img.pngTextChunks);
+
+					/*
 					var combinedChuks = [];
 					try{
 						var chunks = extractChunks(fileobj.dataArray),
@@ -1245,6 +1555,8 @@ var weFileUpload = (function () {
 					}
 
 					fileobj.dataArray = newUInt8Array ? newUInt8Array : fileobj.dataArray;
+					*/
+
 					_.view.repaintImageEditMessage(true);
 				}
 
@@ -1252,101 +1564,230 @@ var weFileUpload = (function () {
 				_.controller.processImage(fileobj, nexttask);
 			};
 
-			this.processimageMakePreview = function(fileobj, nexttask, target){ // no synchronous action in here so we can normally go back
-				target = target ? target : 'previewCanvas';
-
+			this.processimageMakePreview = function(fileobj, nexttask){
 				if(fileobj && fileobj.img.workingCanvas){
-					var previewCanvas = document.createElement("canvas"),
-						previewMaxSize = _.view.previewSize,
-						previewWidth = 0,
-						previewHeight = 0;
-				
-						
+					if(fileobj.img.previewCanvas){
+						_.utils.processimageRotatePreview(fileobj, -1, nexttask);
+						return;
+					}
 
-					if(fileobj.img.workingCanvas.width > fileobj.img.workingCanvas.height){
-						previewWidth = previewMaxSize;
-						previewHeight = previewMaxSize / fileobj.img.workingCanvas.width * fileobj.img.workingCanvas.height;
-						
+					var tmpCanvas = document.createElement("canvas"),
+						ctxTmpCanvas,
+						previewCanvas = document.createElement("canvas"),
+						clone = null,
+						prevWidth, prevHeight;
+
+					if(fileobj.img.workingCanvas.width < _.view.previewSize && fileobj.img.workingCanvas.height < _.view.previewSize){
+						prevHeight = fileobj.img.workingCanvas.width;
+						prevWidth = fileobj.img.workingCanvas.height;
 					} else {
-						previewHeight = previewMaxSize;
-						previewWidth = previewMaxSize / fileobj.img.workingCanvas.height * fileobj.img.workingCanvas.width;
-					}
-					fileobj.img.previewWidth = Math.round(previewWidth);
-					fileobj.img.previewHeight = Math.round(previewHeight);
-					previewCanvas.width = fileobj.img.previewWidth;
-					previewCanvas.height = fileobj.img.previewHeight;
+						if(fileobj.img.workingCanvas.width > fileobj.img.workingCanvas.height){
+							prevWidth = _.view.previewSize;
+							prevHeight = Math.round(_.view.previewSize / fileobj.img.workingCanvas.width * fileobj.img.workingCanvas.height);
 
-					if(target === 'previewCanvas' && ((_.view.useOriginalAsPreviewIfNotEdited && fileobj.img.image && fileobj.img.image.src) || fileobj.dataUrl)){
-						// preview of edited image (or original if not edited)
-						if(fileobj.dataUrl){ // image is edited and saved to dataArray
-							fileobj.img.previewImg = document.createElement('img');
-							fileobj.img.previewImg.src = fileobj.dataUrl;
-							//top.console.log('we use dataUrl');
 						} else {
-							fileobj.img.previewImg = fileobj.img.image;
-							//top.console.log('we use img.image');
+							prevHeight = _.view.previewSize;
+							prevWidth = Math.round(_.view.previewSize / fileobj.img.workingCanvas.height * fileobj.img.workingCanvas.width);
 						}
-						fileobj.img.previewImg.width = fileobj.img.previewWidth;
-						fileobj.img.previewImg.height = fileobj.img.previewHeight;
-					} else { // preview of original image => we downscale it the fast way, so we can use it for fast resetting GUI
-						var ctxPreviewCanvas = previewCanvas.getContext("2d");
-						ctxPreviewCanvas.drawImage(
-							fileobj.img.workingCanvas,
-							0,
-							0,
-							fileobj.img.workingCanvas.width,
-							fileobj.img.workingCanvas.height,
-							0,
-							0,
-							fileobj.img.previewWidth,
-							fileobj.img.previewHeight
-						);
-						fileobj.img[target] = previewCanvas;
 					}
-					_.view.repaintImageEditMessage(true);
-				}
-				_.utils.logTimeFromStart('preview done');
-				_.controller.processImage(fileobj, nexttask);
 
+					tmpCanvas.width = fileobj.img.workingCanvas.width;
+					tmpCanvas.height = fileobj.img.workingCanvas.height;
+					ctxTmpCanvas = tmpCanvas.getContext("2d");
+					ctxTmpCanvas.drawImage(fileobj.img.workingCanvas, 0, 0, tmpCanvas.width, tmpCanvas.height);
+
+					while((tmpCanvas.width / 2) > prevWidth){
+						clone = tmpCanvas.cloneNode(true);
+						clone.getContext('2d').drawImage(tmpCanvas, 0, 0);
+						tmpCanvas.width = clone.width / 2;
+						tmpCanvas.height = clone.height / 2;
+						ctxTmpCanvas.drawImage(clone, 0, 0, clone.width / 2, clone.height / 2);
+					}
+
+					previewCanvas.width = prevWidth;
+					previewCanvas.height = prevHeight;
+					previewCanvas.getContext('2d').drawImage(tmpCanvas, 0, 0, previewCanvas.width, previewCanvas.height);
+
+					fileobj.img.previewCanvas = previewCanvas;
+					fileobj.img.previewRotation = fileobj.img.actualRotation;
+
+					if(fileobj.img.orientationValue){
+						_.utils.processimageRotate(fileobj, -1, true, 0, true);
+					}
+
+					tmpCanvas = ctxTmpCanvas = previewCanvas = clone = null;
+
+					_.utils.logTimeFromStart('preview done');
+				}
+
+				_.controller.processImage(fileobj, nexttask);
 				return;
 			};
 
+			this.processimageRotatePreview = function(fileobj, deg, nexttask){
+					if(fileobj && fileobj.img.previewCanvas){
+						var targetRotation = deg === -1 ? fileobj.img.actualRotation : deg;
+						var realRotation = (360 - fileobj.img.previewRotation + targetRotation) % 360;
+
+						_.utils.processimageRotate(fileobj, -1, true, realRotation);
+						_.view.replacePreviewCanvas(fileobj);
+						fileobj.img.previewRotation = targetRotation;
+					}
+
+					if(!nexttask){
+						return;
+					}
+					_.controller.processImage(fileobj, nexttask);
+			};
+
+			/* obsolete
 			this.processimageReset = function(fileobj, nexttask){
+				if(!fileobj){
+					return;
+				}
 				fileobj.dataArray = null;
 				fileobj.dataUrl = null;
 				fileobj.size = fileobj.img.originalSize;
 				fileobj.img.previewImg = null;
 				fileobj.img.fullPrev = null;
-				fileobj.img.previewCanvas = fileobj.img.originalPreviewCanvas;// always use poorly scaled canvas for preview of NOT edited images!
+				fileobj.img.actualRotation = 0;
+				_.utils.setImageEditOptionsFile(fileobj); // write correct actually valid editoptions
+				fileobj.img.processedOptions = { // reset last edited options
+					doEdit: false,
+					from: 'general',
+					scaleWhat: 'pixel_l',
+					scale: 0,
+					rotate: 0,
+					quality: 100
+				},
+				_.utils.processimageRotatePreview(fileobj, 0);
+				_.view.replacePreviewCanvas(fileobj);
 				fileobj.isEdited = false;
 
-				_.controller.processImage(fileobj, nexttask);
-			};
-
-			this.processimagePostProcess = function(fileobj, nexttask){
-				if(fileobj.dataArray && fileobj.dataArray.length){
-					fileobj.img.originalSize = fileobj.file.size;
-					fileobj.size = fileobj.dataArray.length;
-					fileobj.isEdited = true;
+				if(nexttask){
+					_.controller.processImage(fileobj, nexttask);
+				} else {
+					_.view.repaintEntry(fileobj);
 				}
-				fileobj.img.fullPrev = null;
-				fileobj.totalParts = Math.ceil(fileobj.size / _.sender.chunkSize);
-				fileobj.lastChunkSize = fileobj.size % _.sender.chunkSize;
-				_.view.repaintEntry(fileobj);
-
-				_.utils.logTimeFromStart('processing finished');
-				_.view.repaintImageEditMessage();
-				_.controller.processImage(fileobj, nexttask);
-			};
-
-			/*
-			this.checkBrowserCompatibility = function () {
-				var xhrTestObj = new XMLHttpRequest(),
-					xhrTest = xhrTestObj && xhrTestObj.upload ? true : false;
-
-				return (xhrTest && window.File && window.FileReader && window.FileList && window.Blob) ? true : false;
+				return;
 			};
 			*/
+
+			this.processimagePostProcess = function(fileobj, nexttask){
+				fileobj.img.originalSize = fileobj.file.size;
+
+				if(fileobj.dataArray && fileobj.isEdited){
+					fileobj.size = fileobj.dataArray.length;
+				}
+				fileobj.dataArray = null; // we recompute it from dataUrl and metas while uploading
+				if(_.controller.PROCESS_PREVIEWS_ONLY){
+					fileobj.dataUrl = null;
+				}
+				fileobj.img.workingCanvas = null;
+				fileobj.img.fullPrev = null;
+
+				fileobj.img.processedOptions = JSON.parse(JSON.stringify(fileobj.img.editOptions));
+				fileobj.totalParts = Math.ceil(fileobj.size / _.sender.chunkSize);
+				fileobj.lastChunkSize = fileobj.size % _.sender.chunkSize;
+				_.sender.preparedFiles[fileobj.preparedFilesIndex] = fileobj; // do we need this?
+				_.view.repaintEntry(fileobj);
+				_.view.repaintImageEditMessage();
+				_.utils.logTimeFromStart('processing finished', false, fileobj);
+
+				if(_.controller.IS_MEMORY_MANAGMENT){
+					_.utils.memorymanagerRegister(fileobj);
+					if(this.memorymanagerIsOverflow()){
+						this.memorymanagerEmptySpace();
+						//top.console.log('emptied space for this file');
+
+						if(_.sender.imageFilesToProcess.length){ // 
+							if(fileobj.img.editOptions.doEdit && this.memorymanagerIsUneditedPreviewToDelete){
+								//top.console.log('dataURLs of unedited where deleted: go on');
+							} else {
+								//top.console.log('processing images must be stopped: we will make previews if needed and then stop');
+								_.controller.PROCESS_PREVIEWS_ONLY = true; 
+							}
+						}
+					}
+				}
+
+				if(fileobj.processSingleImage){
+					_.controller.processSingleImage(fileobj, true);
+				} else {
+					_.controller.processImage(fileobj, nexttask);
+				}
+			};
+
+			this.memorymanagerRegister = function(fileobj){
+				var m = _.controller.memoryManagement;
+				this.memorymanagerUnregister(fileobj);
+
+				if(fileobj.dataArray || fileobj.dataUrl){
+					var size = parseInt((fileobj.dataArray ? fileobj.dataArray.length : 0)) + parseInt((fileobj.dataUrl ? fileobj.dataUrl.length : 0));
+
+					m[fileobj.isEdited ? 'queueEdited' : 'queueNotEdited'].push(fileobj.index);
+					m.registeredValues['o_' + fileobj.index] = size;
+					m.registeredSum += size;
+				}
+				//top.console.log('register', m, _.sender.preparedFiles);
+			};
+
+			this.memorymanagerUnregister = function(fileobj){
+				var m = _.controller.memoryManagement,
+					i;
+
+				if(m.registeredValues['o_' + fileobj.index]){
+					m.registeredSum -= m.registeredValues['o_' + fileobj.index];
+					m.registeredValues['o_' + fileobj.index] = 0;
+				}
+
+				if((i = m.queueEdited.indexOf(fileobj.index)) !== -1){
+					m.queueEdited.splice(i, 1);
+				}
+				if((i = m.queueNotEdited.indexOf(fileobj.index)) !== -1){
+					m.queueNotEdited.splice(i, 1);
+				}
+				//top.console.log('unregister', m, _.sender.preparedFiles);
+			};
+
+			this.memorymanagerReregisterAll = function(){
+				this.memorymanagerReset();
+
+				for(var i = 0; i < _.sender.preparedFiles.length; i++){
+					this.memorymanagerRegister(_.sender.preparedFiles[i]);
+				}
+				//top.console.log('register all', _.controller.memoryManagement, _.sender.preparedFiles);
+			};
+
+			this.memorymanagerReset = function(){
+				_.controller.memoryManagement = {
+					registeredSum: 0,
+					registeredValues: {},
+					queueEdited: [],
+					queueNotEdited: []
+				};
+			};
+
+			this.memorymanagerIsOverflow = function(){
+				return _.controller.memoryManagement.registeredSum > _.controller.MEMORY_LIMIT;
+			};
+
+			this.memorymanagerIsUneditedPreviewToDelete = function(){
+				return _.controller.memoryManagement.queueNotEdited.length > 0;
+			};
+
+			this.memorymanagerEmptySpace = function(){
+				var m = _.controller.memoryManagement,
+					fileobj, index;
+
+				while((m.queueEdited.length || m.queueNotEdited.length) && m.registeredSum > _.controller.MEMORY_LIMIT){
+					index = m.queueNotEdited.length ? m.queueNotEdited.shift() : m.queueEdited.shift();
+					fileobj = _.sender.preparedFiles[index];
+
+					_.controller.uneditImage(fileobj.index);
+					_.view.setEditStatus('', fileobj.index);
+				}
+			};
 
 			this.containsFiles = function (arr) {
 				for (var i = 0; i < arr.length; i++) {
@@ -1410,7 +1851,6 @@ var weFileUpload = (function () {
 				return (size / 1024 > 1023 ? ((size / 1024) / 1024).toFixed(1) + ' MB' : (size / 1024).toFixed(1) + ' KB');
 			};
 
-			// obsolete!
 			this.dataURLToUInt8Array = function (dataURL) {
 				var BASE64_MARKER = ';base64,',
 					parts = dataURL.split(BASE64_MARKER),
@@ -1500,7 +1940,7 @@ var weFileUpload = (function () {
 						head = endPoint;
 					}
 				}
-				
+
 				return {order: order, segments: segments};
 			};
 
@@ -1509,7 +1949,7 @@ var weFileUpload = (function () {
 					searchObj = {},
 					segmentsArr = [],
 					controllArr = [];
-			
+
 				for (var i = 0; i < segments.length; i++) {
 					searchObj[segments[i]] = true;
 				}
@@ -1545,20 +1985,33 @@ var weFileUpload = (function () {
 				return concat ? this.concatTypedArrays(Uint8Array, segmentsArr) : segmentsArr;
 			};
 
-			this.jpgGetExifParsed = function(uint8array) {
-				var exif;
+			this.pngReinsertTextchunks = function(dataArray, pngTextChunks){
+				var combinedChunks = [];
+				try{
+					var chunks = extractChunks(dataArray),
+						combinedChunks = [];
 
-				try {
-					exif = new ExifReader();
-					exif.load(event.target.result);
-					// The MakerNote tag can be really large. Remove it to lower memory usage.
-					exif.deleteTag('MakerNote');
-
-					return exif.getAllTags();
-				} catch (error) {
-					top.console.debug('extract exif failed');
-					return false;
+					combinedChunks.push(chunks.shift()); // new IHDR
+					while(pngTextChunks.length){
+						combinedChunks.push(pngTextChunks.shift());
+					}
+					while(chunks.length){
+						combinedChunks.push(chunks.shift());
+					}
+				} catch(e){
+					combinedChunks = false;
 				}
+
+				var newUInt8Array = false;
+				if(combinedChunks){
+					try{
+						newUInt8Array = encodeChunks(combinedChunks);
+					} catch (e) {
+						newUInt8Array = false;
+					}
+				}
+
+				return newUInt8Array ? newUInt8Array : dataArray;
 			};
 
 			this.concatTypedArrays = function (resultConstructor, arrays) {
@@ -1621,18 +2074,6 @@ var weFileUpload = (function () {
 			_.view.deleteRow(index, but);
 		};
 
-		this.setDoEditGlobal = function (fileobj, checkox) {
-			_.view.setDoEditGlobal(fileobj, checkox);
-		};
-
-		this.setUseGeneralOpts = function (fileobj, checkox) {
-			_.view.setUseGeneralOpts(fileobj, checkox);
-		};
-
-		this.setCustomEditOpts = function (fileobj, radio) {
-			_.view.setCustomEditOpts(fileobj, radio);
-		};
-
 		this.getType = function () {
 			return _.fileuploadType;
 		};
@@ -1642,8 +2083,8 @@ var weFileUpload = (function () {
 			return;
 		};
 
-		this.reeditImage = function (fileObj, pos, all) {
-			_.controller.reeditImage(fileObj, pos, all);
+		this.reeditImage = function (index, general) {
+			_.controller.reeditImage(index, general);
 		};
 		
 		this.openImageEditor = function(pos){
@@ -1749,6 +2190,7 @@ var weFileUpload = (function () {
 				if (this.preparedFiles.length < 1) {
 					return false;
 				}
+				this.preparedFiles[0].preparedFilesIndex = 0;
 				this.uploadFiles = [this.preparedFiles[0]];
 				this.totalFiles = 1;
 				this.totalWeight = this.preparedFiles[0].size;//size?
@@ -1924,16 +2366,20 @@ var weFileUpload = (function () {
 			// add some listeners:
 			if (_.EDIT_IMAGES_CLIENTSIDE) {
 				var generalform = document.getElementById('filechooser');
-				generalform.elements['fu_doc_resizeValue'].addEventListener('keyup', function(e) {_.controller.editOptionsOnChange(e.target);});
-				generalform.elements['scaleValuePropsositions'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-				generalform.elements['fu_doc_rotate'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-				generalform.elements['check_fu_doc_doResize'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-				generalform.elements['fu_doc_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				generalform.elements['fuOpts_scale'].addEventListener('keyup', function(e) {_.controller.editOptionsOnChange(e.target);});
+				generalform.elements['fuOpts_scaleWhat'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+				generalform.elements['fuOpts_scaleProps'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+				generalform.elements['fuOpts_rotate'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+				generalform.elements['check_fuOpts_doEdit'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+				generalform.elements['fuOpts_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				var btn = generalform.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
+				btn.addEventListener('click', function(){_.controller.editImageButtonOnClick(btn, -1, true);}, false);
 			}
 		};
 
 		function Controller() {
 			var that = _.controller;
+			this.IS_MEMORY_MANAGMENT = true;
 
 			this.replaceSelectionHandler = function (e) {
 				var files = e.target.files;
@@ -1950,8 +2396,7 @@ var weFileUpload = (function () {
 					_.sender.preparedFiles[index] = f; //.isSizeOk ? f : null;
 					_.sender.preparedFiles[index].entry = entry;
 
-					var transformables = ['image/jpeg', 'image/gif', 'image/png']; //TODO: add all transformable types and make "global" (_.editables)
-					if (transformables.indexOf(f.type) !== -1) {
+					if (_.controller.EDITABLE_CONTENTTYPES.indexOf(f.type) !== -1) {
 						_.controller.processImages(_.sender.preparedFiles[index]);
 					} else {
 						_.view.repaintEntry(f);
@@ -1963,6 +2408,10 @@ var weFileUpload = (function () {
 							_.view.isUploadEnabled = true;
 							_.sender.isCancelled = false;
 						}
+					}
+
+					if(_.controller.IS_MEMORY_MANAGMENT){
+						_.utils.memorymanagerRegister(f);
 					}
 				}
 			};
@@ -1992,6 +2441,10 @@ var weFileUpload = (function () {
 
 			this.resetImageEdit = function (fileobj) {
 				fileobj.dataArray = null;
+				fileobj.dataUrl = null;
+				if(_.controller.IS_MEMORY_MANAGMENT){
+					_.utils.memorymanagerRegister(fileobj);
+				}
 			};
 
 			this.openImageEditor = function(index){
@@ -2031,16 +2484,24 @@ var weFileUpload = (function () {
 			this.totalChunks = 0; //FIXME: apply consistent terminology to differ between currentfile and all files: and make it part of abstract
 			this.mapFiles = [];
 
-			this.prepareUpload = function () {
+			this.prepareUpload = function (rePrepare) {
+				if(rePrepare){ // first file has been reedited: we must recalculat totalWeight and set external progress
+					this.totalWeight = this.totalWeight - this.uploadFiles[0].tmpSize + this.uploadFiles[0].size;
+					this.totalChunks = this.totalWeight / this.chunkSize;
+					_.view.repaintGUI({what: 'chunkOK'});
+					return true;
+				}
+
 				if (this.currentFile === -1) {
 					this.uploadFiles = [];
 					this.mapFiles = [];
 					for (var i = 0, c = 0; i < this.preparedFiles.length; i++) {
 						if (typeof this.preparedFiles[i] === 'object' && this.preparedFiles[i] !== null && this.preparedFiles[i].isUploadable) {
 							this.preparedFiles[i].fileNum = c++;
+							this.preparedFiles[i].preparedFilesIndex = i;
 							this.uploadFiles.push(this.preparedFiles[i]);
 							this.mapFiles.push(i);
-							this.totalWeight += this.preparedFiles[i].size;//size?
+							this.totalWeight += this.preparedFiles[i].size;
 							document.getElementById('div_rowButtons_' + i).style.display = 'none';
 							document.getElementById('div_rowProgress_' + i).style.display = 'block';
 						}
@@ -2080,27 +2541,17 @@ var weFileUpload = (function () {
 				fd.append('we_cmd[0]', 'import_files');
 				fd.append('step', 1);
 
-				fd.append('fu_file_sameName', sf.fu_file_sameName.value);
-				fd.append('fu_file_parentID', sf.fu_file_parentID.value);
-				fd.append('fu_doc_categories', sf.fu_doc_categories.value);
-				fd.append('fu_doc_importMetadata', sf.fu_doc_importMetadata.value);
-				fd.append('fu_doc_isSearchable', sf.fu_doc_isSearchable.value);
+				if(!_.EDIT_IMAGES_CLIENTSIDE){
+					fd.append('fu_file_sameName', sf.fu_file_sameName.value);
+					fd.append('fu_file_parentID', sf.fu_file_parentID.value);
+					fd.append('fu_doc_categories', sf.fu_doc_categories.value);
+					fd.append('fu_doc_importMetadata', sf.fu_doc_importMetadata.value);
+					fd.append('fu_doc_isSearchable', sf.fu_doc_isSearchable.value);
+				}
 
-				var transformables = ['image/jpeg', 'image/gif', 'image/png'];//TODO: add all transformable types
-				if (transformables.indexOf(cur.type) !== -1 && cur.partNum === cur.totalParts) {
-					if (!_.EDIT_IMAGES_CLIENTSIDE) {
-						fd.append('fu_doc_width', sf.fu_doc_width.value);
-						fd.append('fu_doc_height', sf.fu_doc_height.value);
-						fd.append('fu_doc_widthSelect', sf.fu_doc_widthSelect.value);
-						fd.append('fu_doc_heightSelect', sf.fu_doc_heightSelect.value);
-						fd.append('fu_doc_keepRatio', sf.fu_doc_keepRatio.value);
-						fd.append('fu_doc_quality', sf.fu_doc_quality.value);
-						fd.append('fu_doc_degrees', sf.fu_doc_degrees.value);
-					} else {
-						//fd.append('exif', JSON.stringify(cur.exif));
-						fd.append('fu_doc_focusX', cur.img.focusX);
-						fd.append('fu_doc_focusX', cur.img.focusY);
-					}
+				if (_.controller.EDITABLE_CONTENTTYPES.indexOf(cur.type) !== -1) {
+					fd.append('fu_doc_focusX', cur.img.focusX);
+					fd.append('fu_doc_focusX', cur.img.focusY);
 					fd.append('fu_doc_thumbs', sf.fu_doc_thumbs.value);
 				}
 
@@ -2114,7 +2565,7 @@ var weFileUpload = (function () {
 				if (!this.isCancelled) {
 					_.view.elems.footer.setProgress(100);
 					_.view.elems.footer.setProgressText('progress_title', '');
-					top.we_showMessage(resp.completed.message, resp.completed.type, window);
+					top.we_showMessage(resp.completed.message, top.WE().consts.message.WE_MESSAGE_INFO, window);
 
 					setTimeout(function () {
 						that.callback(_);
@@ -2131,7 +2582,7 @@ var weFileUpload = (function () {
 			this.processError = function (arg) {
 				switch (arg.from) {
 					case 'gui' :
-						top.we_showMessage(arg.msg, 4, window);
+						top.we_showMessage(arg.msg, top.WE().consts.message.WE_MESSAGE_ERROR, window);
 						return;
 					case 'request' :
 						//_.view.repaintGUI({what : 'fileNOK'});
@@ -2150,6 +2601,7 @@ var weFileUpload = (function () {
 						_.sender.preparedFiles[i] = null;
 					}
 				}
+				_.utils.memorymanagerReregisterAll();
 				this.uploadFiles = [];
 				this.currentFile = -1;
 				this.mapFiles = [];
@@ -2175,7 +2627,7 @@ var weFileUpload = (function () {
 				this.appendRow(f, _.sender.preparedFiles.length - 1);//document.getElementById('name_uploadFiles_0').innerHTML = 'juhu';
 			};
 
-			this.repaintEntry = function (fileobj) {
+			this.repaintEntry = function (fileobj) { // TODO: get rid of fileobj.entry
 				if(!fileobj.entry){
 					fileobj.entry = document.getElementById('div_uploadFiles_' + fileobj.index);
 					if(!fileobj.entry){
@@ -2186,35 +2638,14 @@ var weFileUpload = (function () {
 				fileobj.entry.getElementsByClassName('elemSize')[0].innerHTML = (fileobj.isSizeOk ? _.utils.computeSize(fileobj.size) : '<span style="color:red">> ' + ((_.sender.maxUploadSize / 1024) / 1024) + ' MB</span>');
 				_.view.addTextCutLeft(fileobj.entry.getElementsByClassName('elemFilename')[0], fileobj.file.name, 220);
 
-				var transformables = ['image/jpeg', 'image/gif', 'image/png'];
-				if(transformables.indexOf(fileobj.type) !== -1){
+				if(_.controller.EDITABLE_CONTENTTYPES.indexOf(fileobj.type) !== -1){
 					fileobj.entry.getElementsByClassName('elemIcon')[0].style.display = 'none';
 					fileobj.entry.getElementsByClassName('elemPreview')[0].style.display = 'block';
 					fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.display = 'block';
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].innerHTML = '';
-					fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].appendChild(fileobj.img.previewImg ? fileobj.img.previewImg : fileobj.img.previewCanvas);
-
-//					if(Uint8Array.prototype.slice){ // TODO: must fix loupe for IE11: has no offsetWidth!!
-						fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
-						fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
-						fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
-						fileobj.entry.getElementsByClassName('elemPreviewPreview')[0].firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
-//					}
-
-					fileobj.entry.getElementsByClassName('elemContentBottom')[0].style.backgroundColor = fileobj.isEdited ? 'rgb(216, 255, 216)' : '#ffffff';
-					this.formCustomOptsSync(fileobj);
-
-					// add mouseover listeners to preview
-					var classes = ['elemPreview', 'elemPreviewPreview', 'elemPreviewBtn'];
-					for(var i = 0; i < classes.length; i++){
-						fileobj.entry.getElementsByClassName(classes[i])[0].addEventListener('mouseover', function(){
-							//fileobj.entry.getElementsByClassName('elemPreviewBtn')[0].style.display = 'block';
-						}, false);
-						fileobj.entry.getElementsByClassName(classes[i])[0].addEventListener('mouseout', function(){
-							//fileobj.entry.getElementsByClassName('elemPreviewBtn')[0].style.display = 'none';
-						}, false);
-					}
-
+					fileobj.entry.getElementsByClassName('optsQualitySlide')[0].style.display = fileobj.type === 'image/jpeg' ? 'block' : 'none';
+					_.view.replacePreviewCanvas(fileobj);
+					this.formCustomEditOptsSync(fileobj.index, false);
+					this.setEditStatus('', fileobj.index, false);
 				} else {
 					fileobj.entry.getElementsByClassName('elemIcon')[0].style.display = 'block';
 					fileobj.entry.getElementsByClassName('elemPreview')[0].style.display = 'none';
@@ -2225,8 +2656,27 @@ var weFileUpload = (function () {
 				}
 			};
 
-			this.setImageEditMessage = function () {
-				var elem;
+			this.replacePreviewCanvas = function(fileobj) {
+					var elem = fileobj.entry.getElementsByClassName('elemPreviewPreview')[0];
+					elem.innerHTML = '';
+					elem.appendChild(fileobj.img.previewCanvas);
+
+					elem.firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
+					elem.firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
+					elem.firstChild.addEventListener('mouseleave', function(){_.view.unsetPreviewLoupe(fileobj);}, false);
+					elem.firstChild.addEventListener('click', function(e){_.view.grabFocusPoint(e,fileobj);}, false);
+			};
+
+			this.setImageEditMessage = function (singleMode, index) {
+				var row, elem;
+				if(singleMode && (row = document.getElementById('div_uploadFiles_' + index))){
+					row.getElementsByClassName('elemContentTop')[0].style.display = 'none';
+					row.getElementsByClassName('elemContentBottom')[0].style.display = 'none';
+					row.getElementsByClassName('elemContentMask')[0].style.display = 'block';
+					row.getElementsByClassName('we_file_drag_maskBusyText')[0].innerHTML = _.utils.gl.maskProcessImage;
+					return;
+				}
+
 				if((elem = document.getElementById('we_fileUploadImporter_mask'))){
 					document.getElementById('we_fileUploadImporter_busyText').innerHTML = _.sender.imageEditOptions.doEdit ? _.utils.gl.maskImporterProcessImages : _.utils.gl.maskImporterReadImages;
 					try{
@@ -2238,23 +2688,36 @@ var weFileUpload = (function () {
 				}
 			};
 
-			this.unsetImageEditMessage = function () {
-				var elem;
+			this.unsetImageEditMessage = function (singleMode, index) {
+				var row, elem;
+				if(singleMode && (row = document.getElementById('div_uploadFiles_' + index))){
+					row.getElementsByClassName('elemContentTop')[0].style.display = 'block';
+					row.getElementsByClassName('elemContentBottom')[0].style.display = 'block';
+					row.getElementsByClassName('elemContentMask')[0].style.display = 'none';
+					return;
+				}
+
 				if((elem = document.getElementById('we_fileUploadImporter_mask'))){
 					elem.style.display = 'none';
 					document.getElementById('we_fileUploadImporter_busyMessage').style.display = 'none';
 				}
 			};
 
-			this.repaintImageEditMessage = function(step) {
-				if(step){
-					document.getElementById('we_fileUploadImporter_busyText').innerHTML += _.sender.imageEditOptions.doEdit ? '.' : '';
-				} else {
-					document.getElementById('we_fileUploadImporter_busyText').innerHTML = _.sender.imageEditOptions.doEdit ? _.utils.gl.maskImporterProcessImages : _.utils.gl.maskImporterReadImages;
-					try{
+			this.repaintImageEditMessage = function(step, singleMode, index) {
+				var row;
+				try{
+					if(step){
+						if(false && singleMode && (row = document.getElementById('div_uploadFiles_' + index))){
+							row.getElementsByClassName('we_file_drag_maskBusyText')[0].innerHTML += _.sender.imageEditOptions.doEdit ? '.' : '';
+							return;
+						}
+
+						document.getElementById('we_fileUploadImporter_busyText').innerHTML += _.sender.imageEditOptions.doEdit ? '.' : '';
+					} else {
+						document.getElementById('we_fileUploadImporter_busyText').innerHTML = _.sender.imageEditOptions.doEdit ? _.utils.gl.maskImporterProcessImages : _.utils.gl.maskImporterReadImages;
 						document.getElementById('we_fileUploadImporter_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
-					} catch(e){};
-				}
+					}
+				} catch(e){};
 			};
 
 			this.appendRow = function (f, index) {
@@ -2273,17 +2736,16 @@ var weFileUpload = (function () {
 
 				_.view.addTextCutLeft(document.getElementById('name_uploadFiles_' + index), f.file.name, 220);
 
-				var transformables = ['image/jpeg', 'image/gif', 'image/png'];
-				if(transformables.indexOf(f.type) !== -1){
-					document.getElementById('icon_uploadFiles_' + index).style.display = 'none';
-					document.getElementById('preview_uploadFiles_' + index).style.display = 'block';
-					document.getElementById('editoptions_uploadFiles_' + index).style.display = 'block';
-				} else {
-					var ext = f.file.name.substr(f.file.name.lastIndexOf('.') + 1).toUpperCase();
-					document.getElementById('icon_uploadFiles_' + index).innerHTML = WE().util.getTreeIcon(f.type) + ' ' + ext;
+				if(_.EDIT_IMAGES_CLIENTSIDE){
+					if(_.controller.EDITABLE_CONTENTTYPES.indexOf(f.type) !== -1){
+						document.getElementById('icon_uploadFiles_' + index).style.display = 'none';
+						document.getElementById('preview_uploadFiles_' + index).style.display = 'block';
+						document.getElementById('editoptions_uploadFiles_' + index).style.display = 'block';
+					} else {
+						var ext = f.file.name.substr(f.file.name.lastIndexOf('.') + 1).toUpperCase();
+						document.getElementById('icon_uploadFiles_' + index).innerHTML = WE().util.getTreeIcon(f.type) + ' ' + ext;
+					}
 				}
-
-				
 
 				this.elems.extProgressDiv.style.display = 'none';
 				_.controller.setWeButtonText('cancel', 'cancel');
@@ -2302,10 +2764,18 @@ var weFileUpload = (function () {
 				f.entry = document.getElementById('div_uploadFiles_' + index);
 
 				var form = document.getElementById('form_editOpts_' + index);
-				form.elements['resizeValue'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				form.elements['rotateSelect'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				form.elements['quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				form.elements['fuOpts_useCustomOpts'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				form.elements['fuOpts_scale'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				form.elements['fuOpts_scaleWhat'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				form.elements['fuOpts_scaleProps'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+				form.elements['fuOpts_rotate'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				form.elements['fuOpts_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
 
+				var btn = form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
+				btn.addEventListener('click', function(){_.controller.editImageButtonOnClick(btn, index, false);}, false);
+
+				form.getElementsByClassName('optsRowScaleHelp')[0].addEventListener('mouseenter', function(e){_.controller.editOptionsHelp(e.target, 'enter');}, false);
+				form.getElementsByClassName('optsRowScaleHelp')[0].addEventListener('mouseleave', function(e){_.controller.editOptionsHelp(e.target, 'leave');}, false);
 			};
 
 			this.deleteRow = function (index, button) {
@@ -2315,8 +2785,9 @@ var weFileUpload = (function () {
 					i,
 					sp,
 					divs = document.getElementsByTagName('DIV');
-
+				_.utils.memorymanagerUnregister(_.sender.preparedFiles[index]);
 				_.sender.preparedFiles[index] = null;
+
 				weDelMultiboxRow(index);
 
 				for (i = 0; i < divs.length; i++) {
@@ -2352,14 +2823,20 @@ var weFileUpload = (function () {
 
 			this.repaintGUI = function (arg) {
 				var i, j,
-								s = _.sender,
-								cur = s.currentFile,
-								fileProg = 0,
-								totalProg = 0,
-								digits = 0,
-								totalDigits = s.totalChunks > 1000 ? 2 : (s.totalChunks > 100 ? 1 : 0);
+					s = _.sender,
+					cur = s.currentFile,
+					fileProg = 0,
+					totalProg = 0,
+					digits = 0,
+					totalDigits = s.totalChunks > 1000 ? 2 : (s.totalChunks > 100 ? 1 : 0);
 
 				switch (arg.what) {
+					case 'startSendFile':
+						i = s.mapFiles[cur.fileNum];
+						if(_.controller.EDITABLE_CONTENTTYPES.indexOf(cur.type) !== -1){
+							document.getElementById('image_edit_done_' + i).style.display = 'block';
+						}
+						break;
 					case 'chunkOK' :
 						digits = cur.totalParts > 1000 ? 2 : (cur.totalParts > 100 ? 1 : 0);//FIXME: make fn on UtilsAbstract
 						fileProg = (100 / cur.size) * cur.currentWeightFile;
@@ -2376,9 +2853,7 @@ var weFileUpload = (function () {
 						i = s.mapFiles[cur.fileNum];
 						try {
 							document.getElementById('div_upload_files').scrollTop = document.getElementById('div_uploadFiles_' + i).offsetTop - 360;
-						} catch (e) {
-						}
-
+						} catch (e) {}
 						this.setInternalProgressCompleted(true, i, '');
 						return;
 					case 'chunkNOK' :
@@ -2458,119 +2933,87 @@ var weFileUpload = (function () {
 				}
 			};
 
-			this.setUseGeneralOpts = function (checkbox) {
-				switch(checkbox.checked){
-					case true:
-						var radios = checkbox.form.editOpts;
-						for(var i = 0; i < radios.length; i++){
-							radios[i].disabled = true;
-							if((index = radios[i].nextSibling.className.split(' ').indexOf('disabled')) === -1){
-								radios[i].nextSibling.className += ' disabled';
-							}
-							
-						}
-						checkbox.form.elements['unitSelect'].disabled = true;
-						checkbox.form.elements['resizeValue'].disabled = true;
-						checkbox.form.elements['rotateSelect'].disabled = true;
-						checkbox.form.elements['quality'].disabled = true;
-						checkbox.form.getElementsByClassName('weBtn')[0].disabled = true;
-						_.controller.reeditImage(null, checkbox.form.getAttribute('data-index'));
-						break;
-					default:
-						var radios = checkbox.form.elements['editOpts'];
-						var index, classes; 
-						for(var i = 0; i < radios.length; i++){
-							radios[i].disabled = false;
-							if((index = radios[i].nextSibling.className.split(' ').indexOf('disabled')) !== -1){
-								classes = radios[i].nextSibling.className.split(' ');
-								classes.splice(index, 1);
-								radios[i].nextSibling.className = classes.join(' ');
-							}
-						}
-						_.view.setCustomEditOpts(checkbox.form);
-						_.controller.reeditImage(null, checkbox.form.getAttribute('data-index'));
-						break;
-					
+			this.formCustomEditOptsDisable = function(form, disable){
+				form.elements['fuOpts_scaleWhat'].disabled = disable;
+				form.elements['fuOpts_scale'].disabled = disable;
+				form.elements['fuOpts_scaleProps'].disabled = disable;
+				form.elements['fuOpts_rotate'].disabled = disable;
+				form.elements['fuOpts_quality'].disabled = disable;//#eee
+
+				var type = _.sender.preparedFiles[form.getAttribute('data-index')].type;
+				form.getElementsByClassName('optsQualityBox')[0].style.backgroundColor = disable ? '#eee' : (type === 'image/jpeg' ? 'white' : '#eee');
+				if(disable){
+					//form.getElementsByClassName('weBtn')[0].disabled = true;
 				}
 			};
 
-			this.setCustomEditOpts = function(form){
-				var value = form.elements['editOpts'][0].checked = 'checked' ? 'custom' : 'expert';
+			this.formCustomEditOptsSync = function (pos, general) {
+				var generalForm = document.getElementById('filechooser'),
+					form, indexes;
 
-				switch(value){
-					case 'custom':
-						form.elements['unitSelect'].disabled = false;
-						form.elements['resizeValue'].disabled = false;
-						form.elements['rotateSelect'].disabled = false;
-						form.elements['quality'].disabled = false;
-						_.view.formCustomOptsReset(form);
-						//form.getElementsByClassName('weBtn')[0].disabled = false;
-						break;
-					case 'expert':
-						alert('not yet implemented');
-						form.elements['editOpts'].value = 'custom';
-						_.view.setCustomEditOpts(form);
+				pos = general ? -1 : (pos && pos !== -1 ? pos : -1);
+				indexes = _.utils.getImageEditIndexes(pos, general, true);
+
+				for(i = 0; i < indexes.length; i++){
+					form = document.getElementById('form_editOpts_' + indexes[i]);
+					if(form && !form.elements['fuOpts_useCustomOpts'].checked){
+						form.elements['fuOpts_scaleWhat'].value = generalForm.elements['fuOpts_scaleWhat'].value;
+						form.elements['fuOpts_scale'].value = generalForm.elements['fuOpts_scale'].value;
+						form.elements['fuOpts_rotate'].value = generalForm.elements['fuOpts_rotate'].value;
+						form.elements['fuOpts_quality'].value = _.sender.preparedFiles[indexes[i]].type === 'image/jpeg' ? generalForm.elements['fuOpts_quality'].value : 100;
+						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = _.sender.preparedFiles[indexes[i]].type === 'image/jpeg' ? generalForm.elements['fuOpts_quality'].value : 100;
+					}
 				}
 			};
 
-			this.formCustomOptsSync = function (fileobj) {
-				var form = document.getElementById('form_editOpts_' + fileobj.index);
+			this.previewSyncRotation = function(pos, rotation){
+				var indexes = _.utils.getImageEditIndexes(pos, pos === -1, false);
 
-				if(form && fileobj.img.editOptions){
-					if(fileobj.img.editOptions.from === 'general' && fileobj.img.editOptions.doEdit){
-						form.elements['unitSelect'].value = fileobj.img.editOptions.scaleUnit;
-						form.elements['resizeValue'].value = fileobj.img.editOptions.scaleValue;
-						form.elements['rotateSelect'].value = fileobj.img.editOptions.rotateValue;
-						form.elements['quality'].value = fileobj.img.editOptions.quality;
-						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = fileobj.img.editOptions.quality;
+				for(var i = 0; i < indexes.length; i++){
+					_.utils.processimageRotatePreview(_.sender.preparedFiles[indexes[i]], rotation);
+					_.view.replacePreviewCanvas(_.sender.preparedFiles[indexes[i]]);
+				}
+			};
+
+			this.setEditStatus = function(state, pos, general){ // TODO: maybe name it setGuiEditOtions
+				var indexes = _.utils.getImageEditIndexes(pos, general, true),
+					elems = document.getElementsByClassName('elemContentBottom'),
+					sizes = document.getElementsByClassName('weFileUploadEntry_size'),
+					buttons = document.getElementsByClassName('rowBtnProcess'),
+					scaleInputs = document.getElementsByClassName('optsScaleInput_row'),
+					scaleHelp = document.getElementsByClassName('optsRowScaleHelp'),
+					fileobj, i, j, st;
+
+				for(i = 0; i < indexes.length; i++){
+					j = indexes[i];
+					fileobj = _.sender.preparedFiles[j];
+					st = state ? state : (fileobj.isEdited ? 'processed' : (fileobj.img.editOptions.doEdit ? 'notprocessed' : 'donotedit'));
+					switch(st){
+						case 'notprocessed':
+								elems[j].style.backgroundColor = '#ffffff';
+								elems[j].style.backgroundColor = 'rgb(216, 255, 216)';
+								elems[j].style.backgroundImage = 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255,1.0) 5px, rgba(216,255,216,.5) 10px)';
+								sizes[j].innerHTML = _.utils.gl.sizeTextOk + '--';
+							break;
+						case 'processed':
+								elems[j].style.backgroundColor = 'rgb(216, 255, 216)';
+								elems[j].style.backgroundImage =  'none';
+							break;
+						case 'donotedit':
+						default:
+							elems[j].style.backgroundColor = 'white';
+							elems[j].style.backgroundImage = 'none';
+					}
+					if(fileobj.img.tooSmallToScale){
+						scaleInputs[j].style.color = '#aaaaaa';
+						scaleHelp[j].style.display = 'block';
 					} else {
-						/*
-						form.elements['unitSelect'].value = '';
-						form.elements['resizeValue'].value = '';
-						form.elements['rotateSelect'].value = '';
-						form.elements['quality'].value = 0;
-						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '0';
-						*/
+						scaleInputs[j].style.color = 'black';
+						scaleHelp[j].style.display = 'none';
 					}
+					buttons[j].disabled = _.sender.preparedFiles[j].dataUrl ? true : false;
 				}
 			};
-
-			
-			this.formCustomOptsReset = function (form) { // USED
-				form.elements['unitSelect'].value = 'pixel_w';
-				form.elements['resizeValue'].value = '';
-				form.elements['rotateSelect'].value = '0';
-				form.elements['quality'].value = '0';
-				form.getElementsByClassName('qualityValueContainer')[0].innerHTML = '0';
-			};
-
-			/*
-			this.syncCustomEditOpts = function (element){
-				return;
-				var optName = element.name,
-					optValue = element.value;
-
-				for(var i = 0; i < _.sender.preparedFiles.length; i++){
-					if(_.sender.preparedFiles[i]){
-						var form = document.getElementById('form_editOpts_' + i);
-
-						if(form.doEdit.checked && form.editOpts.value === 'general'){
-							switch(optName){
-								case 'fu_doc_unitSelect':
-									form.unitSelect.value = optValue;
-									break;
-								case 'fu_doc_resizeValue':
-									form.resizeValue.value = optValue;
-									break;
-								case 'fu_doc_rotate':
-									form.rotateSelect.value = optValue;
-									break;
-							}
-						}
-					}
-				}
-			};
-			*/
 
 			this.addTextCutLeft = function(elem, text, maxwidth){
 				if(!elem){
@@ -2595,37 +3038,77 @@ var weFileUpload = (function () {
 				_.utils.abstractSetImageEditOptionsGeneral('filechooser');
 			};
 
-			this.setImageEditOptionsFile = function (fileobj) {
-				var form,
-					type = 'general';
+			this.setImageEditOptionsFile = function (fileobj, general) {
+				var indexes = this.getImageEditIndexes(general ? -1 : fileobj.index, general);
 
-				if((form = document.getElementById('form_editOpts_' + fileobj.index))){
-					if(form.useGeneralOpts.checked == false){
-						//type = form.editOpts.value; // does not work in edge!!
-						var type = form.elements['editOpts'][0].checked = 'checked' ? 'custom' : 'expert';
+				for(var i = 0; i < indexes.length; i++){
+					fileobj = _.sender.preparedFiles[indexes[i]];
+					var form = form = document.getElementById('form_editOpts_' + fileobj.index),
+						type = 'general';
+
+					if(form && form.elements['fuOpts_useCustomOpts'].checked){
+						type = 'custom';
+					}
+
+					switch(type){
+						case 'general':
+							_.utils.setImageEditOptionsGeneral();
+							fileobj.img.editOptions = JSON.parse(JSON.stringify(_.sender.imageEditOptions));
+							fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? fileobj.img.editOptions.quality : _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+							break;
+						case 'custom':
+							fileobj.img.editOptions.scaleWhat = form.elements['fuOpts_scaleWhat'].value;
+							fileobj.img.editOptions.scale = form.elements['fuOpts_scale'].value;
+							fileobj.img.editOptions.rotate = parseInt(form.elements['fuOpts_rotate'].value);
+							fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? parseInt(form.elements['fuOpts_quality'].value) : _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+							break;
+					}
+					var scaleReference = fileobj.img.editOptions.scaleWhat === 'pixel_w' ? fileobj.img.origWidth : (
+							fileobj.img.editOptions.scaleWhat === 'pixel_h' ? fileobj.img.origHeight : Math.max(fileobj.img.origHeight, fileobj.img.origWidth));
+					if(scaleReference < fileobj.img.editOptions.scale){
+						fileobj.img.editOptions.scale = '';
+						fileobj.img.tooSmallToScale = true;
+						if(!fileobj.img.editOptions.rotate && fileobj.img.editOptions.quality !== _.controller.OPTS_QUALITY_NEUTRAL_VAL){
+							fileobj.img.editOptions.quality = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+							form.elements['fuOpts_quality'].value = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+							form.getElementsByClassName('optsQualityValue')[0].innerHTML = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+						}
+					} else {
+						fileobj.img.tooSmallToScale = false;
+					}
+
+					fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scale || fileobj.img.editOptions.rotate || (fileobj.img.editOptions.quality !== _.controller.OPTS_QUALITY_NEUTRAL_VAL) ? true : false;
+				}
+			};
+
+			this.getImageEditIndexes = function(index, general, formposition){
+				var indexes = [],
+					forms, i;
+
+				if(general){
+					forms = document.getElementsByName('we_form');
+					for(i = 0; i < forms.length; i++){
+						index = forms[i].getAttribute('data-index');
+						if(_.sender.preparedFiles[index] && _.controller.EDITABLE_CONTENTTYPES.indexOf(_.sender.preparedFiles[index].type) !== -1
+								&& !forms[i].elements['fuOpts_useCustomOpts'].checked
+								&& !_.sender.preparedFiles[index].isUploadStarted){
+							indexes.push(formposition ? i : index);
+						}
+					}
+				} else if(index !== undefined && index > -1 && _.sender.preparedFiles[index]
+						&& _.controller.EDITABLE_CONTENTTYPES.indexOf(_.sender.preparedFiles[index].type) !== -1) {
+					indexes.push(index);
+					if(formposition){
+						forms = document.getElementsByName('we_form');
+						for(i = 0; i < forms.length; i++){
+							if(forms[i].getAttribute('data-index') == index){
+								return [index];
+							}
+						}
 					}
 				}
 
-				switch(type){
-					case 'general':
-						fileobj.img.editOptions = JSON.parse(JSON.stringify(_.sender.imageEditOptions));
-						break;
-					case 'custom':
-						fileobj.img.editOptions.scaleUnit = form.elements['unitSelect'].value;
-						fileobj.img.editOptions.scaleValue = form.elements['resizeValue'].value;
-						fileobj.img.editOptions.rotateValue = parseInt(form.elements['rotateSelect'].value);
-						fileobj.img.editOptions.quality = parseInt(form.elements['quality'].value);
-						fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scaleValue || fileobj.img.editOptions.rotateValue || fileobj.img.editOptions.quality ? true : false;
-						break;
-					case 'expert': 
-						fileobj.img.editOptions = {};
-						fileobj.img.editOptions.scaleUnit = '';
-						fileobj.img.editOptions.scaleValue = 0;
-						fileobj.img.editOptions.rotateValue = 0;
-						fileobj.img.editOptions.quality = 90;
-						fileobj.img.editOptions.doEdit = false;
-				}
-				fileobj.img.editOptions.from = type;
+				return indexes;
 			};
 		}
 	}
@@ -2675,13 +3158,20 @@ var weFileUpload = (function () {
 					inputs[i].addEventListener('change', _.controller.fileSelectHandler, false);
 				}
 			}
-			
+
 			if (_.EDIT_IMAGES_CLIENTSIDE) {
-				document.we_form.elements['check_fu_doc_doResize'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				document.we_form.elements['scaleValuePropsositions'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-				document.we_form.elements['fu_doc_resizeValue'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				document.we_form.elements['fu_doc_rotate'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				document.we_form.elements['fu_doc_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.elements['check_fuOpts_doEdit'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.elements['fuOpts_scaleProps'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
+				document.we_form.elements['fuOpts_scale'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.elements['fuOpts_scaleWhat'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.elements['fuOpts_rotate'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.elements['fuOpts_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0].addEventListener('click', function(e){_.controller.editImageButtonOnClick(e.target);}, false);
+				var btn = document.we_form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
+				btn.addEventListener('click', function(){_.controller.editImageButtonOnClick(btn, -1, true);}, false);
+
+				document.we_form.getElementsByClassName('optsRowScaleHelp')[0].addEventListener('mouseenter', function(e){_.controller.editOptionsHelp(e.target, 'enter');}, false);
+				document.we_form.getElementsByClassName('optsRowScaleHelp')[0].addEventListener('mouseleave', function(e){_.controller.editOptionsHelp(e.target, 'leave');}, false);
 			}
 
 			v.elems.fileDrag_state_0 = document.getElementById('div_fileupload_fileDrag_state_0');
@@ -2731,6 +3221,7 @@ var weFileUpload = (function () {
 		function Controller() {
 			this.elemFileDragClasses = 'we_file_drag';
 			this.doSubmit = false;
+			this.PRESERVE_IMG_DATAURL = true;
 
 			this.fileDragHover = function (e) {
 				e.preventDefault();
@@ -2809,8 +3300,9 @@ var weFileUpload = (function () {
 
 				if (typeof this.preparedFiles[0] === 'object' && this.preparedFiles[0] !== null && this.preparedFiles[0].isUploadable) {
 					this.preparedFiles[0].fileNum = 0;
-					this.uploadFiles.push(this.preparedFiles[0]);
-					this.totalWeight = this.preparedFiles[0].size;//size?
+					this.preparedFiles[0].preparedFilesIndex = 0;
+					this.uploadFiles = [this.preparedFiles[0]];
+					this.totalWeight = this.preparedFiles[0].size;
 				}
 
 				this.totalFiles = this.uploadFiles.length;
@@ -2864,6 +3356,7 @@ var weFileUpload = (function () {
 						'<span style="color:red;">' + _.utils.gl.typeTextNok + f.type + '</span>';
 
 				_.view.elems.fileDrag.style.backgroundColor = f.isEdited ? 'rgb(216, 255, 216)' : 'rgb(232, 232, 255)';
+				_.view.elems.fileDrag.style.backgroundImage = 'none';
 
 				var fn = f.file.name;
 				var fe = '';
@@ -2880,16 +3373,17 @@ var weFileUpload = (function () {
 				this.elems.txtType.innerHTML = typeText;
 				if(f.isEdited){
 					/*
+					 * we may use this for img smaller than target size message
 					var edittext;
-					switch(f.img.editOptions.scaleUnit){
+					switch(f.img.editOptions.scaleWhat){
 						case 'pixel_w':
-							edittext = f.img.editOptions.scaleValue + ' Prozent';
+							edittext = f.img.editOptions.scale + ' Prozent';
 							break;
 						case 'pixel_l':
-							edittext = 'Längere Seite ' + f.img.editOptions.scaleValue + ' px';
+							edittext = 'Längere Seite ' + f.img.editOptions.scale + ' px';
 							break;
 						case 'pixel_h':
-							edittext = 'Höhe ' + f.img.editOptions.scaleValue + ' px';
+							edittext = 'Höhe ' + f.img.editOptions.scale + ' px';
 					}
 
 					this.elems.txtEdit.innerHTML = '<strong>Skaliert</strong> auf ' + edittext;
@@ -2920,6 +3414,14 @@ var weFileUpload = (function () {
 						_.view.elems.dragInnerRight.appendChild(_.view.preview);
 					}
 					this.setGuiState(f.uploadConditionsOk ? this.STATE_PREVIEW_OK : this.STATE_PREVIEW_NOK);
+					if(f.type !== 'image/jpeg'){
+						document.getElementsByClassName('optsQuality')[0].value = 100;
+						document.getElementsByClassName('qualityValueContainer')[0].innerHTML = 100;
+						document.getElementsByClassName('optsQuality')[0].style.display = 'none';
+					} else {
+						document.getElementsByClassName('optsQuality')[0].style.display = 'block'
+					}
+					document.getElementsByClassName('weFileupload_btnImgEditRefresh')[0].disable = false;
 				} else {
 					if (f.uploadConditionsOk) {
 						this.elems.dragInnerRight.innerHTML = '<div class="largeicons" style="margin:24px 0 0 26px;height:62px;width:54px;">' + this.icon + '</div>';
@@ -2937,6 +3439,7 @@ var weFileUpload = (function () {
 						this.setDisplay('fileDrag_state_0', 'block');
 						this.setDisplay('fileDrag_state_1', 'none');
 						this.elems.fileDrag.style.backgroundColor = 'transparent';
+						this.elems.fileDrag.style.backgroundImage = 'none';
 						this.setDisplay('fileInputWrapper', 'block');
 						if (this.isDragAndDrop && this.elems.fileDrag) {
 							this.setDisplay('fileDrag', 'block');
@@ -2947,7 +3450,7 @@ var weFileUpload = (function () {
 						this.setDisplay('divBtnCancel', 'none');
 						this.setDisplay('dragInnerRight', '');
 						if (_.EDIT_IMAGES_CLIENTSIDE) {
-							document.getElementById('process_weFileupload').disabled = true;//make same as following
+							document.getElementById('make_preview_weFileupload').disabled = true;//make same as following
 						}
 						_.controller.setWeButtonState(_.view.uploadBtnName, false);
 						_.controller.setWeButtonState('browse_harddisk_btn', true);
@@ -3026,6 +3529,57 @@ var weFileUpload = (function () {
 				}
 			};
 
+			this.previewSyncRotation = function(pos, rotation){
+				if(_.sender.preparedFiles.length){
+					_.utils.processimageRotatePreview(_.sender.preparedFiles[0], rotation);
+					_.view.replacePreviewCanvas(_.sender.preparedFiles[0]);
+				}
+			};
+
+			this.setEditStatus = function(state){
+				var fileobj = _.sender.preparedFiles.length ? _.sender.preparedFiles[0] : null,
+					btn = document.getElementsByClassName('weFileupload_btnImgEditRefresh ')[0],
+					st;
+
+				state = !fileobj ? 'empty' : state;
+				st = state ? state : !fileobj ? 'empty' : (fileobj.isEdited ? 'processed' : (fileobj.img.editOptions.doEdit ? 'notprocessed' : 'donotedit'));
+
+				switch(st){
+					case 'notprocessed':
+						if(_.sender.preparedFiles.length){
+							_.view.elems.fileDrag.style.backgroundColor = '#ffffff';
+							_.view.elems.fileDrag.style.backgroundColor = 'rgb(216, 255, 216)';
+							_.view.elems.fileDrag.style.backgroundImage = 'repeating-linear-gradient(45deg, transparent, transparent 5px, rgba(255, 255, 255,1.0) 5px, rgba(216,255,216,.5) 10px)';
+							_.view.elems.txtSize.innerHTML = _.utils.gl.sizeTextOk + '--';
+							btn.disabled = false;
+						}
+						break;
+					case 'processed':
+						if(_.sender.preparedFiles.length){
+							_.view.elems.fileDrag.style.backgroundColor = 'rgb(216, 255, 216)';
+							_.view.elems.fileDrag.style.backgroundImage =  'none';
+							btn.disabled = true;
+						}
+						break;
+					case 'donotedit':
+						_.view.elems.fileDrag.style.backgroundColor = 'rgb(232, 232, 255)';
+						_.view.elems.fileDrag.style.backgroundImage =  'none';
+						btn.disabled = false;
+						break;
+					case 'empty': 
+						_.view.elems.fileDrag.style.backgroundColor = 'white';
+						_.view.elems.fileDrag.style.backgroundImage =  'none';
+						btn.disabled = true;
+				}
+				if(fileobj && fileobj.img.tooSmallToScale){
+					document.getElementsByName('fuOpts_scale')[0].style.color = '#aaaaaa';
+					document.getElementsByClassName('optsRowScaleHelp')[0].style.display = 'block';
+				} else {
+					document.getElementsByName('fuOpts_scale')[0].style.color = 'black';
+					document.getElementsByClassName('optsRowScaleHelp')[0].style.display = 'none';
+				}
+			};
+
 			this.writeFocusToForm = function(fileobj){
 				if (!_.EDIT_IMAGES_CLIENTSIDE) {
 					return;
@@ -3050,7 +3604,7 @@ var weFileUpload = (function () {
 				}
 			};
 
-			this.setImageEditMessage = function () {
+			this.setImageEditMessage = function (singleMode) {
 				if (!_.EDIT_IMAGES_CLIENTSIDE) {
 					return;
 				}
@@ -3059,7 +3613,7 @@ var weFileUpload = (function () {
 					text = document.getElementById('image_edit_mask_text');
 
 				mask.style.display = 'block';
-				text.innerHTML = _.utils.gl.maskReadImage;
+				text.innerHTML = singleMode ? _.utils.gl.maskProcessImage : _.utils.gl.maskReadImage;
 			};
 
 			this.unsetImageEditMessage = function () {
@@ -3087,6 +3641,19 @@ var weFileUpload = (function () {
 				if (!_.EDIT_IMAGES_CLIENTSIDE) {
 					return;
 				}
+				_.view.replacePreviewCanvas(fileobj);
+				_.view.setEditStatus();
+			};
+
+			this.formCustomEditOptsSync = function(){
+				if(_.sender.preparedFiles.length && _.sender.preparedFiles[0].type !== 'image/jpeg'){
+					document.getElementsByClassName('qualityValueContainer')[0].innerHTML = 100;
+				}
+			};
+
+			this.replacePreviewCanvas = function(fileobj) {
+				this.elems.dragInnerRight.innerHTML = '';
+				this.elems.dragInnerRight.appendChild(fileobj.img.previewCanvas);
 
 				this.elems.dragInnerRight.firstChild.addEventListener('mouseenter', function(){_.view.setPreviewLoupe(fileobj);}, false);
 				this.elems.dragInnerRight.firstChild.addEventListener('mousemove', function(e){_.view.movePreviewLoupe(e, fileobj);}, false);
@@ -3096,18 +3663,37 @@ var weFileUpload = (function () {
 		}
 
 		function Utils() {
-			this.setImageEditOptionsFile = function (fileobj) {
-				var type = 'general';
+			this.setImageEditOptionsFile = function () {
+				_.utils.setImageEditOptionsGeneral();
+				if(_.sender.preparedFiles.length){
+					var fileobj = _.sender.preparedFiles[0];
 
-				switch(type){
-					case 'general':
-						fileobj.img.editOptions = JSON.parse(JSON.stringify(_.sender.imageEditOptions));
-						break;
-					case 'expert':
-						// not implemented yet
-						break;
+					fileobj.img.editOptions = JSON.parse(JSON.stringify(_.sender.imageEditOptions));
+					fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? fileobj.img.editOptions.quality : _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+					fileobj.img.editOptions.from = 'general';
+
+					// the following is identical in importer: move to new fn on abstract
+					var scaleReference = fileobj.img.editOptions.scaleWhat === 'pixel_w' ? fileobj.img.origWidth : (
+							fileobj.img.editOptions.scaleWhat === 'pixel_h' ? fileobj.img.origHeight : Math.max(fileobj.img.origHeight, fileobj.img.origWidth));
+
+					if(scaleReference && (scaleReference < fileobj.img.editOptions.scale)){
+						fileobj.img.editOptions.scale = '';
+						fileobj.img.tooSmallToScale = true;
+						if(!fileobj.img.editOptions.rotate && fileobj.img.editOptions.quality !== _.controller.OPTS_QUALITY_NEUTRAL_VAL){
+							fileobj.img.editOptions.quality = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+							document.getElementsByName('fuOpts_quality')[0].value = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+							document.getElementById('qualityValue').innerHTML = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+						}
+					} else {
+						fileobj.img.tooSmallToScale = false;
+					}
+
+					fileobj.img.editOptions.doEdit = fileobj.img.editOptions.scale || fileobj.img.editOptions.rotate || (fileobj.img.editOptions.quality !== _.controller.OPTS_QUALITY_NEUTRAL_VAL) ? true : false;
 				}
-				fileobj.img.editOptions.from = type;
+			};
+
+			this.getImageEditIndexes = function(pos, general){
+				return _.sender.preparedFiles.length ? [0] : [];
 			};
 		}
 

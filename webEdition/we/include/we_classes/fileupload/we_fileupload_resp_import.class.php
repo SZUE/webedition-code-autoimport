@@ -45,15 +45,18 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		}
 
 		// FIXME: beim überschreiben bestehender grafiken mit einem neuen bild bleiben width und height in der db unveraendert, so dass beim bearbeiten verzerrt wird
+		$eic = we_fileupload::EDIT_IMAGES_CLIENTSIDE;
 		$this->docVars = array_filter(array(
 			'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
 			'importMetadata' => we_base_request::_(we_base_request::BOOL, 'fu_doc_importMetadata', $this->docVars['importMetadata']),
 			'isSearchable' => we_base_request::_(we_base_request::BOOL, 'fu_doc_isSearchable', $this->docVars['isSearchable']),
-			'widthSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_widthSelect', $this->docVars['widthSelect']),
-			'heightSelect' => we_base_request::_(we_base_request::STRING, 'fu_doc_heightSelect', $this->docVars['heightSelect']),
-			'quality' => we_base_request::_(we_base_request::INT, 'fu_doc_quality', $this->docVars['quality']),
-			'keepRatio' => we_base_request::_(we_base_request::BOOL, 'fu_doc_keepRatio', $this->docVars['keepRatio']),
-			'degrees' => we_base_request::_(we_base_request::INT, 'fu_doc_degrees', $this->docVars['degrees']),
+
+			'widthSelect' => ($eic ? '' : we_base_request::_(we_base_request::STRING, 'fu_doc_widthSelect', $this->docVars['widthSelect'])),
+			'heightSelect' => ($eic ? '' : we_base_request::_(we_base_request::STRING, 'fu_doc_heightSelect', $this->docVars['heightSelect'])),
+			'quality' => ($eic ? 8 : we_base_request::_(we_base_request::INT, 'fu_doc_quality', $this->docVars['quality'])),
+			'keepRatio' => ($eic ? true : we_base_request::_(we_base_request::BOOL, 'fu_doc_keepRatio', $this->docVars['keepRatio'])),
+			'degrees' => ($eic ? 0 : we_base_request::_(we_base_request::INT, 'fu_doc_degrees', $this->docVars['degrees'])),
+
 			'focusX' => we_base_request::_(we_base_request::FLOAT, 'fu_doc_focusX', $this->docVars['focusX']),
 			'focusY' => we_base_request::_(we_base_request::FLOAT, 'fu_doc_focusY', $this->docVars['focusY']),
 			// unset the following entries when not in request!
@@ -61,8 +64,9 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			'title' => we_base_request::_(we_base_request::STRING, 'fu_doc_title', we_base_request::NOT_VALID),
 			'alt' => we_base_request::_(we_base_request::STRING, 'fu_doc_alt', we_base_request::NOT_VALID),
 			'thumbs' => we_base_request::_(we_base_request::INTLIST, 'fu_doc_thumbs', we_base_request::NOT_VALID),
-			'width' => we_base_request::_(we_base_request::INT, 'fu_doc_width', we_base_request::NOT_VALID),
-			'height' => we_base_request::_(we_base_request::INT, 'fu_doc_height', we_base_request::NOT_VALID),
+
+			'width' => ($eic ? we_base_request::NOT_VALID : we_base_request::_(we_base_request::INT, 'fu_doc_width', we_base_request::NOT_VALID)),
+			'height' => ($eic ? we_base_request::NOT_VALID : we_base_request::_(we_base_request::INT, 'fu_doc_height', we_base_request::NOT_VALID)),
 			), function($var){
 			return $var !== we_base_request::NOT_VALID;
 		}

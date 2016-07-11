@@ -438,7 +438,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId('Doc');
 			$yuiSuggest->setTable(CATEGORY_TABLE);
-			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
+			$yuiSuggest->setContentType('');
 			$yuiSuggest->setInput('FolderIDPath', $path);
 			$yuiSuggest->setMaxResults(20);
 			$yuiSuggest->setMayBeEmpty(false);

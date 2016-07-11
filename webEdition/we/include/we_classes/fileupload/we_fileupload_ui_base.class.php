@@ -285,6 +285,10 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 		return '';
 	}
 
+	protected function _getHtmlFileRow_legacy(){
+		return '';
+	}
+
 	protected function getHtmlDropZone(){
 		return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileDrag', 'class' => 'we_file_drag', 'style' => 'margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none')), g_l('importFiles', '[dragdrop_text]'));
 	}
@@ -363,14 +367,14 @@ we_FileUpload.init({
 	extProgress : ' . json_encode($this->externalProgress) . ',
 	gl: ' . $this->_getJsGl() . ',
 	isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
-	htmlFileRow : \'' . $this->_getHtmlFileRow() . '\',
+	htmlFileRow : \'' . (we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->_getHtmlFileRow() : $this->_getHtmlFileRow_legacy()) . '\',
 	fileTable : "' . $this->fileTable . '",
 	binDocProperties : ' . json_encode($this->binDocProperties) . ',
 	disableUploadBtnOnInit : ' . ($this->disableUploadBtnOnInit ? 'true' : 'false') . ',
 	moreFieldsToAppend : ' . json_encode($this->moreFieldsToAppend) . ',
 	isInternalBtnUpload : ' . ($this->isInternalBtnUpload ? 'true' : 'false') . ',
 	responseClass : "' . $this->responseClass . '",
-	clientsideImageEditing : ' . ($this->cliensideImageEditing ? 1 : 0) . '
+	clientsideImageEditing : ' . ($this->cliensideImageEditing && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? 1 : 0) . '
 });
 			') . ($this->externalProgress['create'] ? $progressbar->getJSCode() : '');
 	}
@@ -403,7 +407,8 @@ we_FileUpload.init({
 		editRotationLeft: "' . g_l('global', '[left]') . '",
 		editRotationRight: "' . g_l('global', '[right]') . '",
 		editQuality: "' . g_l('weClass', '[quality]') . '",
-		editNotEdited: "' . g_l('importFiles', '[not_edited]') . '"
+		editNotEdited: "' . g_l('importFiles', '[not_edited]') . '",
+		editTargetsizeTooLarge: "' . g_l('importFiles', '[targettsize_too_large]') . '"
 }';
 	}
 
