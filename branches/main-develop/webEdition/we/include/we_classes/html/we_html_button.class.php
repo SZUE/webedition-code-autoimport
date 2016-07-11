@@ -54,7 +54,6 @@ abstract class we_html_button{
 	const NEXT = 'fat:next,fa-lg fa-step-forward';
 	const BACK = 'fat:back,fa-lg fa-step-backward';
 	const REFRESH = 'fat:refresh,fa-lg fa-refresh';
-	const PROCESS = 'fa:process,fa-lg fa-refresh';
 	const SEARCH = 'fa:btn_function_search,fa-lg fa-search';
 	const CLOSE = 'fat:close,fa-lg fa-close fa-cancel';
 	const CANCEL = 'fat:cancel,fa-lg fa-ban fa-cancel';
@@ -67,6 +66,7 @@ abstract class we_html_button{
 	const PUBLISH = 'fat:publish,fa-lg fa-globe';
 	const TOGGLE = 'fa:selectAll,fa-lg fa-check-square-o,fa-lg fa-square-o';
 	const NOT_FOUND = '.fa-lg fa-bullseye';
+	const MAKE_PREVIEW = 'fa:make_preview,fa-lg fa-refresh, fa-lg fa-search';
 
 	/**
 	 * Gets the HTML Code for the button.

@@ -49,9 +49,9 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   WhiteList text NOT NULL,
   UseDocumentFilter tinyint unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),
-  KEY ParentID (ParentID),
+  UNIQUE KEY ParentID (ParentID,Text),
   KEY LinkID (LinkID),
-  KEY Path (Path(30))
+  KEY Path (Path(250))
 ) ENGINE=MyISAM;
 
 /* query separator */

@@ -10,7 +10,7 @@ CREATE TABLE ###TBLPREFIX###tblTemplates (
   CreationDate int unsigned NOT NULL default '0',
   ModDate int unsigned NOT NULL default '0',
   RebuildDate int unsigned NOT NULL default '0',
-  Path varchar(1023) NOT NULL default '',
+  Path varchar(1000) NOT NULL default '',
   Filehash char(40) NOT NULL default '',
   Filename varchar(64) NOT NULL default '',
   Extension enum('','.tmpl') NOT NULL default '',
@@ -25,8 +25,8 @@ CREATE TABLE ###TBLPREFIX###tblTemplates (
   CacheType enum('','none','tag','document','full') NOT NULL default 'none',
   CacheLifeTime int unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),
-	UNIQUE KEY Path(Path),
-  KEY ParentID (ParentID,Filename(3)),
+	KEY Path(Path(250)),
+  UNIQUE KEY ParentID (ParentID,Filename),
   KEY MasterTemplateID (MasterTemplateID),
   KEY IncludedTemplates (IncludedTemplates)
 ) ENGINE=MyISAM;

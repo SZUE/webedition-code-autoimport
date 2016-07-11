@@ -74,7 +74,7 @@ class we_selector_query{
 				$userExtraSQL = '';
 				break;
 			case CATEGORY_TABLE:
-				$isFolder = 1;
+				$isFolder = 0;
 				break;
 			case VFILE_TABLE:
 			case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : ""):
@@ -108,13 +108,13 @@ class we_selector_query{
 
 		if($this->condition){
 			foreach($this->condition as $val){
-				$where .= ' ' . $val['queryOperator'] . " " . $val['field'] . $val['conditionOperator'] . "'" . $val['value'] . "'";
+				$where .= ' ' . $val['queryOperator'] . ' ' . $val['field'] . $val['conditionOperator'] . "'" . $val['value'] . "'";
 			}
 		}
 
-		$order = 'ORDER BY ' . ($isFolder ? "Path" : "isFolder  ASC, Path") . ' ASC ';
+		$order = 'ORDER BY ' . ($isFolder ? 'Path' : 'isFolder ASC,Path') . ' ASC ';
 		$fields = implode(', ', $this->fields);
-		$this->db->query("SELECT $fields FROM " . $this->db->escape($table) . " WHERE $where $order" . ($limit ? " LIMIT $limit" : ""));
+		$this->db->query('SELECT ' . $fields . ' FROM ' . $this->db->escape($table) . ' WHERE ' . $where . ' ' . $order . ($limit ? ' LIMIT ' . $limit : ''));
 	}
 
 	/**
@@ -176,6 +176,11 @@ class we_selector_query{
 		$where.=($q ? ' AND (' . implode(' OR ', $q) . ')' : '');
 		if(!$q){
 			$isFolder = 1;
+		}
+		switch($table){
+			case CATEGORY_TABLE:
+				$isFolder = 0;
+				break;
 		}
 		if($addCT){
 			$this->addQueryField($typeField);
