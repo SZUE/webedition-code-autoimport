@@ -29,7 +29,7 @@ we_html_tools::protect($protect);
 
 //FIXME: mak sowme view class for this editor and use processVariables() and processCommands()?
 //process request
-$shopCategoriesDir = ($val = we_base_request::_(we_base_request::INT, 'weShopCatDir', false)) !== false ? $val : we_shop_category::getShopCatDir(); //(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_cats_dir"', '', $DB_WE, -1));
+$shopCategoriesDir = ($val = we_base_request::_(we_base_request::INT, 'weShopCatDir', false)) !== false ? $val : we_shop_category::getShopCatDir();
 $relations = array();
 $saveSuccess = false;
 $onsaveClose = we_base_request::_(we_base_request::BOOL, 'onsaveclose', false);
@@ -83,7 +83,7 @@ if($shopCategoriesDir !== -1 && we_base_request::_(we_base_request::STRING, 'we_
 }
 
 //make category dirs select
-$DB_WE->query('SELECT ID,Path FROM ' . CATEGORY_TABLE . ' WHERE IsFolder = 1 ORDER BY Path');
+$DB_WE->query('SELECT ID,Path FROM ' . CATEGORY_TABLE . ' ORDER BY Path');
 $allCategoryDirs = array('-1' => g_l('modules_shop', '[shopcats][select_shopCatDir]'));
 while($DB_WE->next_record()){
 	$data = $DB_WE->getRecord();
