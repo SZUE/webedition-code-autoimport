@@ -67,9 +67,9 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base{
 				"html" => $alert)
 		);
 
-		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 80, we_html_button::HEIGHT, '', '', false, false, '_btn') :
-				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 281, we_html_button::HEIGHT, '', '', false, false, '_btn'));
-		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, ($isIE10 ? 84 : 100), we_html_button::HEIGHT, '', '', true, false, '_btn'));
+		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 80, 0, '', '', false, false, '_btn') :
+				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 281, 0, '', '', false, false, '_btn'));
+		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, ($isIE10 ? 84 : 100), 0, '', '', true, false, '_btn'));
 		$fileselect = '
 		<div style="float:left;">
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
