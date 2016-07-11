@@ -88,7 +88,7 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 			showError(g_l('global', '[CSRF][tokenInvalid]'));
 			break;
 		}
-		echo we_tag('customerResetPassword', array('type' => "resetFromMail", 'passwordRule' => SECURITY_USER_PASS_REGEX), '', true);
+		echo we_tag('customerResetPassword', array('type' => 'resetFromMail', 'passwordRule' => SECURITY_USER_PASS_REGEX), '', true);
 
 		if(we_tag('ifNotCustomerResetPassword')){
 			showError(g_l('global', '[pwd][changeFailed]') . '<br/>');
@@ -120,11 +120,11 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 			showError(g_l('global', '[CSRF][tokenInvalid]'));
 			break;
 		}
-		echo we_tag('customerResetPassword', array('type' => "email", 'required' => "username,Email", 'customerEmailField' => "Email", 'loadFields' => "First,Second,username"), '', true);
+		echo we_tag('customerResetPassword', array('type' => 'email', 'required' => 'username,Email', 'customerEmailField' => 'Email', 'loadFields' => 'First,Second,username'), '', true);
 
 		if(we_tag('ifNotCustomerResetPassword')){
 			showError(g_l('global', '[pwd][changeFailed]') . '<br/>');
-			if(we_tag('ifNotCustomerResetPassword', array('type' => "userNotExists"))){
+			if(we_tag('ifNotCustomerResetPassword', array('type' => 'userNotExists'))){
 				showError(g_l('global', '[pwd][noSuchUser]'));
 			}
 			defaultReset();
