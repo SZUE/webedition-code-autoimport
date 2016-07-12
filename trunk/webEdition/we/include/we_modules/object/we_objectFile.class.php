@@ -641,7 +641,7 @@ class we_objectFile extends we_document{
 		return $tableInfo_sorted;
 	}
 
-	function getFirstTableInfoEntry($tableInfo){
+	static function getFirstTableInfoEntry($tableInfo){
 		foreach($tableInfo as $nr => $field){
 			if($field['name'] != 'ID' && substr($field['name'], 0, 3) != 'OF_'){
 				return $nr;
@@ -2835,8 +2835,7 @@ class we_objectFile extends we_document{
 		}
 	}
 
-	function userCanSave(){
-
+	function userCanSave($ctConditionOk = false){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}

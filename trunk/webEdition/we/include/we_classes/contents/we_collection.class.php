@@ -540,7 +540,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$yuiSuggest->setSelectButton(null, 0);
 		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 		$yuiSuggest->setAdditionalButton('', 0);
-		$divRowContent =  we_html_element::htmlDiv(array('class' => 'divContent'), 
+		$divRowContent =  we_html_element::htmlDiv(array('class' => 'divContent'),
 				we_html_element::htmlDiv(array('class' => 'colContentInput'), $yuiSuggest->getHTML()) .
 				we_html_element::htmlDiv(array('class' => 'colContentTextOnly'))
 		);
@@ -766,8 +766,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$this->Filename = $this->Text;
 	}
 
-	function userCanSave(){
-
+	function userCanSave($ctConditionOk = false){
 		return permissionhandler::hasPerm('SAVE_COLLECTION') && parent::userCanSave(true);
 	}
 
