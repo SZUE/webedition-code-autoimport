@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition SDK
  *
@@ -30,7 +29,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
-
 	/**
 	 * text content of the textarea
 	 *
@@ -472,10 +470,10 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
 		$this->_layouttableObj->addElement($this->_labelObj, 0, 0);
 
 		$this->_layouttableObj->addHTML($this->getButton(), 1, 0);
+		$txt = $this->getText();
+		$html = $this->_layouttableObj->getHTML() .
+			'<div id="' . $this->getId() . '_View" style="border:1px solid white;width:' . $this->getWidth() . 'px;' . $this->getPreviewStyle() . '" >' . we_document::parseInternalLinks($txt, 0) . '</div><textarea style="display:none" id="' . $this->getId() . '" name="' . $this->getName() . '" />' . $this->getText() . '</textarea>';
 
-		$html = $this->_layouttableObj->getHTML();
-
-		$html .= '<div id="' . $this->getId() . '_View" style="border:1px solid white;width:' . $this->getWidth() . 'px;' . $this->getPreviewStyle() . '" >' . we_document::parseInternalLinks($this->getText(), 0) . '</div><textarea style="display:none" id="' . $this->getId() . '" name="' . $this->getName() . '" />' . $this->getText() . '</textarea>';
 		if($this->getHidden()){
 			$this->_style .= 'display:none;';
 		}
