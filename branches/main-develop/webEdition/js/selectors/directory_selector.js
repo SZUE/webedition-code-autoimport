@@ -123,7 +123,7 @@ function selectFile(id) {
 							e.text;
 		}
 		if (top.fsbody.document.getElementById("line_" + id)) {
-			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
+			top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 		}
 		top.currentPath = e.path;
 		top.currentID = id;
@@ -173,7 +173,7 @@ function writeBody(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "background-color:#DFE9F5;" : "") + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "selected" : "") + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="treeIcon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						(we_editDirID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :

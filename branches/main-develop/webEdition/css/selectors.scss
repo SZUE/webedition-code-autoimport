@@ -76,11 +76,6 @@ div{
 		position: absolute;
 		bottom: 0px;
 	}
-	&.selected{
-		background-color:#DFE9F5;
-		border: 1px solid grey;
-	}
-
 	&.cutText{
 		text-overflow: ellipsis;
 		overflow: hidden;
@@ -93,6 +88,14 @@ div{
 		display:inline-block;
 		width:50px;
 		overflow:hidden;
+	}
+}
+
+div,
+tr{
+	&.selected{
+		background-color:#DFE9F5;
+		border: 1px solid grey;
 	}
 }
 

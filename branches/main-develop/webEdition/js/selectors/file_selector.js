@@ -153,7 +153,7 @@ function selectFile(id) {
 							(a.value + "," + e.text) :
 							e.text;
 		}
-		top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
+		top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 		top.currentPath = e.path;
 		top.currentID = id;
 	} else {
@@ -177,7 +177,7 @@ function writeBody(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr' + ((entries[i].ID == top.currentID) ? ' style="background-color:#DFE9F5;"' : '') + ' id="line_' + entries[i].ID + '"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
+		body += '<tr' + ((entries[i].ID == top.currentID) ? ' class="selected"' : '') + ' id="line_' + entries[i].ID + '"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
 						'</tr>';
@@ -188,7 +188,7 @@ function writeBody(d) {
 
 function getFirstSelected() {
 	for (var i = 0; i < entries.length; i++) {
-		if (top.fsbody.document.getElementById("line_" + entries[i].ID).style.backgroundColor != "white") {
+		if (top.fsbody.document.getElementById("line_" + entries[i].ID).classList.contains("selected")) {
 			return i;
 		}
 	}
@@ -197,7 +197,7 @@ function getFirstSelected() {
 
 function unselectFile(id) {
 	e = getEntry(id);
-	top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "white";
+	top.fsbody.document.getElementById("line_" + id).style.classList.remove("selected");
 
 	var foo = top.document.getElementsByName("fname")[0].value.split(/,/);
 
@@ -235,13 +235,13 @@ function getPositionByID(id) {
 }
 
 function isFileSelected(id) {
-	return (top.fsbody.document.getElementById("line_" + id).style.backgroundColor && (top.fsbody.document.getElementById("line_" + id).style.backgroundColor != "white"));
+	return (top.fsbody.document.getElementById("line_" + id).classList.contains("selected"));
 }
 
 function unselectAllFiles() {
 	for (var i = 0; i < entries.length; i++) {
 		if ((elem = top.fsbody.document.getElementById("line_" + entries[i].ID))) {
-			elem.style.backgroundColor = "white";
+			elem.classList.remove("selected");
 		}
 	}
 	top.document.getElementsByName("fname")[0].value = "";

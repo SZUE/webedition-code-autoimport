@@ -146,7 +146,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 		<table class="default"><?php
 			if($nf === 'new_folder'){
 				?>
-				<tr style="background-color:#DFE9F5;">
+				<tr class="selected">
 					<td class="selector treeIcon" data-contenttype="folder" data-extension=""></td>
 					<td class="selector filename"><?= we_html_tools::htmlTextInput("txt", 20, g_l('fileselector', '[new_folder_name]'), "", 'id="txt" onblur="setScrollTo();we_form.submit();" onkeypress="keypressed(event)"', "text", "100%"); ?></td>
 					<td class="selector filetype"><?= g_l('fileselector', '[folder]') ?></td>
@@ -193,7 +193,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 								$show = ($type == g_l('contentTypes', '[folder]'));
 						}
 				}
-				$bgcol = ($curID == ($dir . '/' . $entry) && !( $nf === 'new_folder')) ? '#DFE9F5' : 'white';
+				$bgcol = ($curID == ($dir . '/' . $entry) && !( $nf === 'new_folder')) ? 'selected' : '';
 				$onclick = $ondblclick = '';
 				$cursor = 'cursor:default;';
 				if(!(( $nf === 'rename_folder' || $nf === 'rename_file') && ($entry == $sid) && ($isfolder))){
@@ -247,7 +247,7 @@ echo we_html_tools::getHtmlTop() . STYLESHEET .
 								'-> ' . readlink($dir . '/' . $entry) :
 								'<span' . ($indb ? ' style="color:#006699"' : '') . ' title="' . oldHtmlspecialchars($filesize) . '">' . we_base_file::getHumanFileSize($filesize) . '</span>'));
 
-					echo '<tr ' . ($indb ? 'class="WEFile"' : '') . ' id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' style="background-color:' . $bgcol . ';' . $cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
+					echo '<tr ' . ($indb ? 'class="WEFile"' : '') . ' id="' . oldHtmlspecialchars($entry) . '"' . $ondblclick . $onclick . ' class="' . $bgcol . '" style="' . $cursor . ($set_rename ? "" : "") . '"' . ($set_rename ? '' : '') . '>
 	<td class="selector treeIcon" data-contenttype="' . ($indb? : ($islink ? 'symlink' : ($isfolder ? 'folder' : 'application/*'))) . '" data-extension="' . $ext . '"></td>
 	<td class="selector filename">' . $text_to_show . '</td>
 	<td class="selector filetype">' . $type . '</td>

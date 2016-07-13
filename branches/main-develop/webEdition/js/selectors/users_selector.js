@@ -46,7 +46,7 @@ function selectFile(id) {
 								(a.value + "," + e.text) :
 								e.text;
 			}
-			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
+			top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 			top.currentPath = e.path;
 			top.currentID = id;
 		}
