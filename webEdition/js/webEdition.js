@@ -670,7 +670,7 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, "http://qa.webedition.org/tracker/", "help_bugtracker", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "help_changelog":
-			new (WE().util.jsWindow)(this, "http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(this, "http://www.webedition.org/de/webedition-cms/versionshistorie/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "we_customer_selector":
 		case "we_selector_file":
