@@ -394,16 +394,19 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 
 				$document->we_save();
 
-				$newId = $document->ID;
+				if(!empty($_SESSION[$dataID]['unique'])){
+					$document->Filename = str_replace($_SESSION[$dataID]['unique'], $document->ID, $document->Filename);
+				} else {
+					$t = explode('_', $document->Filename);
+					$t[1] = $document->ID;
+					$document->Filename = implode('_', $t);
+				}
+				$document->Text = $document->Filename . $document->Extension;
 
-				$t = explode('_', $document->Filename);
-				$t[1] = $newId;
-				$fn = implode('_', $t);
-				$document->Filename = $fn;
 				$document->Path = rtrim($document->getParentPath(), '/') . '/' . $document->Filename . $document->Extension;
 				$document->we_save();
 
-				$GLOBALS[$type][$formname]->setElement($name, $newId);
+				$GLOBALS[$type][$formname]->setElement($name, $document->ID);
 			}
 		}
 		if(isset($_SESSION[$dataID])){
