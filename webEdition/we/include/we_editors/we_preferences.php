@@ -1001,10 +1001,9 @@ function build_dialog($selected_setting = 'ui'){
 			$CSSAPPLYTO_DEFAULT->addOption('wysiwyg', 'wysiwyg');
 			$CSSAPPLYTO_DEFAULT->selectOption(get_value('CSSAPPLYTO_DEFAULT') ? : 'around');
 
-			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.imagestartid_default_text.value");
-			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::FOLDER . "', 1)");
-			$acButton2 = we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[IMAGESTARTID_DEFAULT]\'].value = 0;document.forms[0].elements.imagestartid_default_text.value = \'\'');
+			$cmd1 = "document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value";
+			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . FILE_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.forms[0].elements.imagestartid_default_text.value") . "')");
+			$acButton2 = we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[IMAGESTARTID_DEFAULT]\'].value = 0;document.forms[0].elements.imagestartid_default_text.value=\'\'');
 
 			$yuiSuggest->setAcId("doc2");
 			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
@@ -1938,20 +1937,20 @@ for(i=0;i<elements.length; ++i){
 			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
 			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, array('width' => 300));
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, array('width' => '20px'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
 			$customer_table->setCol($row, 5, array(), we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, array('class' => 'defaultfont'), 'h');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
@@ -1969,11 +1968,11 @@ for(i=0;i<elements.length; ++i){
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array(), 's');
 
-			$customer_table->setCol( ++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol(++$row, 1, array('class' => 'defaultfont'), g_l('prefs', '[security][customer][deleteSession]'));
 
 			$customer_table->setCol($row, 3, array(), we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 
@@ -2413,6 +2412,7 @@ for(i=1;i<childs.length;++i){
 		case "browse_server":
 			new (WE().util.jsWindow)(this, url,"browse_server",-1,-1,840,400,true,false,true);
 			break;
+		case "we_selector_directory":
 		case "we_selector_image":
 		case "we_selector_document":
 			new (WE().util.jsWindow)(this, url,"we_selector_document",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
