@@ -25,7 +25,7 @@
 
 function unselectFile(id) {
 	e = getEntry(id);
-	top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "white";
+	top.fsbody.document.getElementById("line_" + id).classList.remove("selected");
 
 	var foo = top.document.getElementsByName("fname")[0].value.split(/,/);
 
@@ -54,7 +54,7 @@ function selectFilesFrom(from, to) {
 
 function getFirstSelected() {
 	for (var i = 0; i < entries.length; i++) {
-		if (top.fsbody.document.getElementById("line_" + entries[i].ID).style.backgroundColor != "white") {
+		if (top.fsbody.document.getElementById("line_" + entries[i].ID).classList.contains("selected")) {
 			return i;
 		}
 	}
@@ -84,7 +84,7 @@ function selectFile(id) {
 							e.text;
 		}
 		if (top.fsbody.document.getElementById("line_" + id)) {
-			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
+			top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 		}
 		top.currentPath = e.path;
 		top.currentID = id;

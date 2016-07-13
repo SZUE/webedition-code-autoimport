@@ -102,7 +102,7 @@ function selectFile(id) {
 		}
 
 		if (top.fsbody.document.getElementById("line_" + id)) {
-			top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
+			top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 		}
 		top.currentPath = e.path;
 		top.currentID = id;
@@ -176,7 +176,7 @@ function writeBodyDocument(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID) ? 'background-color:#DFE9F5;' : "") + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.currentID) ? 'selected' : "") + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="selector treeIcon selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"' + (entries[i].published === 0 && entries[i].isFolder === 0 ? ' style="color: red;"' : "") + ' title="' + entries[i].text + '">' +
 						(we_editDirID == entries[i].ID ?

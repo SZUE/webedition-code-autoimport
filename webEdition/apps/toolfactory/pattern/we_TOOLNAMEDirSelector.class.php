@@ -103,7 +103,7 @@ ob_start();
 									'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
 									'<table class="default" style="width:100%">' +
 									(makeNewFolder?
-													'<tr style="background-color:#DFE9F5;">' +
+													'<tr class="selected">' +
 													'<td style="text-align:center"><img class="treeIcon" src="<?php echo '<?php echo WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/folder.gif" ></td>' +
 													'<td><input type="hidden" name="we_FolderText" value="<?php echo g_l('tools', '[newFolder]'); ?>" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="<?php echo g_l('tools', '[newFolder]'); ?>"  class="wetextinput" style="width:100%" /></td>' +
 													'</tr>':
@@ -111,7 +111,7 @@ ob_start();
 									for (i = 0; i < entries.length; i++){
 					var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 									var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-									body += '<tr id="line_' + entries[i].ID + '" style="' + ((entries[i].ID == top.currentID && (!makeNewFolder))  ? 'background-color:#DFE9F5;' : '') + 'cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
+									body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.currentID && (!makeNewFolder))  ? 'selected' : '') + '" style="cursor:pointer;' + ((we_editDirID != entries[i].ID) ? '' : '') + '"' + ((we_editDirID || makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + ' >' +
 									'<td class="selector" style="width:25px;text-align:center">' +
 									'<img class="treeIcon" src="<?php echo '<?php echo WE_APPS_DIR;?>' . $TOOLNAME; ?>/ui/themes/default/shared/icons/small/' + entries[i].icon + '">' +
 									'</td>' +
@@ -319,7 +319,7 @@ function printFramesetSelectFileHTML(){
 					}
 
 					}
-					if (top.fsbody.document.getElementById("line_" + id)) top.fsbody.document.getElementById("line_" + id).style.backgroundColor = "#DFE9F5";
+					if (top.fsbody.document.getElementById("line_" + id)) top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 									top.currentPath = e.path;
 									top.currentID = id;
 									top.we_editDirID = 0;

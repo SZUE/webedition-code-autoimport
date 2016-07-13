@@ -28,7 +28,7 @@ var selectOwn = 0;
 function drawNewFolder() {
 	for (var i = 0; i < top.allentries.length; i++) {
 		if ((elem = top.fsbody.document.getElementById(top.allentries[i]))) {
-			elem.style.backgroundColor = 'white';
+			elem.classList.remove("selected");
 		}
 	}
 	drawDir(top.currentDir, "new_folder");
@@ -49,9 +49,9 @@ function selectFile(fid) {
 		if (top.fsbody.document.getElementById(fid)) {
 			for (i = 0; i < top.allentries.length; i++) {
 				if (top.fsbody.document.getElementById(top.allentries[i]))
-					top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
+					top.fsbody.document.getElementById(top.allentries[i]).classList.remove("selected");
 			}
-			top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
+			top.fsbody.document.getElementById(fid).classList.add("selected");
 		}
 	} else {
 		top.currentID = top.sitepath;
@@ -60,9 +60,9 @@ function selectFile(fid) {
 		if (top.fsbody.document.getElementById(fid)) {
 			for (i = 0; i < top.allentries.length; i++) {
 				if (top.fsbody.document.getElementById(top.allentries[i]))
-					top.fsbody.document.getElementById(top.allentries[i]).style.backgroundColor = 'white';
+					top.fsbody.document.getElementById(top.allentries[i]).classList.remove("selected");
 			}
-			top.fsbody.document.getElementById(fid).style.backgroundColor = '#DFE9F5';
+			top.fsbody.document.getElementById(fid).classList.add("selected");
 		}
 	}
 }
