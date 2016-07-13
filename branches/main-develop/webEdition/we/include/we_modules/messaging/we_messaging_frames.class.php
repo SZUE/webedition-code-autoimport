@@ -166,7 +166,7 @@ function clearSearch() {
 				array('name' => 'we_messaging_search', 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=messaging&we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=' . $this->viewclass, 'onSubmit' => 'return doSearch()'), $hidden . $table->getHtml()
 		);
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'background-color: white;border-top:1px solid black;'), we_html_element::htmlNobr($form)), $extraHead);
+		return $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'border-top:1px solid black;'), we_html_element::htmlNobr($form)), $extraHead);
 	}
 
 	protected function getHTMLEditorBody(){

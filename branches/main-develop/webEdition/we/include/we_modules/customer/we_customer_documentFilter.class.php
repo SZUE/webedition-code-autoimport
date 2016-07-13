@@ -161,7 +161,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 *
 	 * @return string
 	 */
-	function getConditionForListviewQuery($filter, we_listview_base $obj, $classID = 0, $ids = ''){
+	static function getConditionForListviewQuery($filter, we_listview_base $obj, $classID = 0, $ids = ''){
 		if($filter === 'off' || $filter === 'false' || $filter === false || $filter === 'all' || $filter === ''){
 			return '';
 		}
@@ -272,7 +272,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 * param webeditionDocument or objectFile
 	 * @param mixed $model
 	 */
-	function saveForModel(&$model){
+	public static function saveForModel(&$model){
 		$db = new DB_WE();
 
 		// check if there were any changes?

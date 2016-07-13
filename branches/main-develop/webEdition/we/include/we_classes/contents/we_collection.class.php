@@ -766,8 +766,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$this->Filename = $this->Text;
 	}
 
-	function userCanSave(){
-
+	function userCanSave($ctConditionOk = false){
 		return permissionhandler::hasPerm('SAVE_COLLECTION') && parent::userCanSave(true);
 	}
 
@@ -866,7 +865,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		return $ret;
 	}
 
-	function registerMediaLinks($collection = []){
+	function registerMediaLinks(array $collection = []){
 		$this->MediaLinks = $collection ? : $this->getValidCollection();
 
 		parent::registerMediaLinks(false, true);

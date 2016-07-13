@@ -92,7 +92,7 @@ class we_customer_EIWizard{
 						$this->$function() :
 						$this->getHTMLStep0());
 			default:
-				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', '', we_html_element::htmlBody(array("bgcolor" => "white", "style" => 'margin:10px'), "aba")
+				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', '', we_html_element::htmlBody(array("style" => 'margin:10px'), "aba")
 				);
 		}
 	}

@@ -81,11 +81,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 }
 
 $bodyAttribs = array(
-	"bgcolor" => "#FFFFFF",
-	"marginwidth" => 15,
-	"marginheight" => 10,
-	"leftmargin" => 15,
-	"topmargin" => 10
+	'style'=>"background-color:#FFFFFF;margin:10px;"
 );
 $fr = (we_base_request::_(we_base_request::BOOL, 'finish') ?
 		new we_fragment_copyFolderFinish('we_copyFolderFinish', 1, 0, $bodyAttribs) :

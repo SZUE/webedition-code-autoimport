@@ -62,7 +62,7 @@ class we_workflow_step extends we_workflow_base{
 	/**
 	 * get all workflow steps from database (STATIC)
 	 */
-	function getAllSteps($workflowID){
+	public static function getAllSteps($workflowID){
 		$db = new DB_WE();
 
 		$db->query('SELECT ID FROM ' . WORKFLOW_STEP_TABLE . ' WHERE workflowID=' . intval($workflowID) . ' ORDER BY ID');

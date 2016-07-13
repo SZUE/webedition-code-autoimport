@@ -34,8 +34,8 @@ function getContent(){
 							<tr><td style="padding-bottom:5x;"><div id="badPwd" style="display:none;" class="arrow_box">' . g_l('global', '[pass_to_short]') . '</div>' . we_html_tools::htmlTextInput('newpasswd', 20, '', 32, 'onchange="setPwdErr(comparePwd(\'newpasswd\',\'newpasswd2\'));"', 'password', 200) . '</td></tr>
 							<tr><td class="defaultfont"><div id="badPwd2" style="display:none;" class="arrow_box">' . g_l('global', '[pass_not_confirmed]') . '</div>' . g_l('global', '[newPass2]') . '</td></tr>
 							<tr><td>' . we_html_tools::htmlTextInput('newpasswd2', 20, '', 32, 'onchange="setPwdErr(comparePwd(\'newpasswd\',\'newpasswd2\'));"', 'password', 200) . '</td></tr>
-						</table>', g_l('global', '[changePass]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:document.forms[0].submit();'), null, we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();'))
-		) . we_html_element::htmlHidden("cmd", "ok") . '</form>';
+						</table>', g_l('global', '[changePass]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, 'javascript:document.forms[0].submit();'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();'))
+		) . we_html_element::htmlHidden('cmd', 'ok') . '</form>';
 }
 
 function getLoad(){
