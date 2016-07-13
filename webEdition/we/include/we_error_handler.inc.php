@@ -92,7 +92,7 @@ function we_error_handler($in_webEdition = true){
 	if((defined('WE_ERROR_HANDLER') && WE_ERROR_HANDLER)){
 		$error_level = 0 +
 			($GLOBALS['we']['errorhandler']['deprecated'] ? E_DEPRECATED | E_USER_DEPRECATED | E_STRICT : 0) +
-			($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE | E_STRICT : 0) +
+			($GLOBALS['we']['errorhandler']['notice'] ? E_NOTICE | E_USER_NOTICE : 0) +
 			($GLOBALS['we']['errorhandler']['warning'] ? E_WARNING | E_CORE_WARNING | E_COMPILE_WARNING | E_USER_WARNING : 0) +
 			($GLOBALS['we']['errorhandler']['error'] ? E_ERROR | E_PARSE | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR : 0);
 		error_reporting($error_level);
