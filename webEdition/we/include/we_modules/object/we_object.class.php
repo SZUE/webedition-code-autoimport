@@ -2303,7 +2303,7 @@ class we_object extends we_document{
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($idname, $pathID), $button);
 	}
 
-	function userCanSave(){
+	function userCanSave($ctConditionOk = false){
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			return true;
 		}

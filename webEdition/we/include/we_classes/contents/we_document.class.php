@@ -1608,7 +1608,6 @@ class we_document extends we_root{
 			}
 		}
 
-
 		return preg_replace('/\<a>(.*)\<\/a>/siU', '${1}', $text);
 	}
 

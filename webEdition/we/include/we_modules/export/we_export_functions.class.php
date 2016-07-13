@@ -539,7 +539,7 @@ abstract class we_export_functions{
 							}
 						} else { // is a normal text field
 							$tag_name = self::correctTagname($k, 'text', $tag_counter);
-							$file .= self::formatOutput($tag_name, we_document::parseInternalLinks($we_doc->elements[$k]["dat"], $we_doc->ParentID, ''), $format, 2, $cdata, $format == we_import_functions::TYPE_GENERIC_XML);
+							$file .= self::formatOutput($tag_name, we_document::parseInternalLinks($we_doc->elements[$k]['dat'], $we_doc->ParentID, ''), $format, 2, $cdata, $format == we_import_functions::TYPE_GENERIC_XML);
 
 							// Remove tagname from array
 							if(isset($records)){

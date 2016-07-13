@@ -358,7 +358,7 @@ abstract class we_base_util{
 		return $response;
 	}
 
-	function convertDateInRequest(array &$req, $asInt = false){
+	public static function convertDateInRequest(array &$req, $asInt = false){
 		$dates = $regs = [];
 
 		foreach($req as $key => $value){

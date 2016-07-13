@@ -28,14 +28,14 @@ function we_tag_textarea(array $attribs, $content){
 	}
 
 	if($GLOBALS['we_editmode']){
-		$name = weTag_getAttribute("name", $attribs, '', we_base_request::STRING);
-		$xml = weTag_getAttribute("xml", $attribs, XHTML_DEFAULT, we_base_request::BOOL);
+		$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
+		$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 		$spellcheck = weTag_getAttribute('spellcheck', $attribs, true, we_base_request::BOOL);
 
-		$removeFirstParagraph = weTag_getAttribute("removefirstparagraph", $attribs, defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, we_base_request::BOOL);
-		$autobrAttr = weTag_getAttribute("autobr", $attribs, false, we_base_request::BOOL);
-		$autobr = $GLOBALS['we_doc']->getElement($name, "autobr")? : ($autobrAttr ? "on" : "off");
-		$showAutobr = isset($attribs["autobr"]);
+		$removeFirstParagraph = weTag_getAttribute('removefirstparagraph', $attribs, defined('REMOVEFIRSTPARAGRAPH_DEFAULT') ? REMOVEFIRSTPARAGRAPH_DEFAULT : true, we_base_request::BOOL);
+		$autobrAttr = weTag_getAttribute('autobr', $attribs, false, we_base_request::BOOL);
+		$autobr = $GLOBALS['we_doc']->getElement($name, 'autobr')? : ($autobrAttr ? 'on' : 'off');
+		$showAutobr = isset($attribs['autobr']);
 		if(!$showAutobr){
 			$autobr = 'off';
 			$GLOBALS['we_doc']->elements[$name]["autobr"] = "off";
@@ -49,7 +49,8 @@ function we_tag_textarea(array $attribs, $content){
 		return we_html_forms::weTextarea('we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']', $value, $attribs, $autobr, 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . '#autobr]', $showAutobr, false, false, $xml, $removeFirstParagraph, '', $spellcheck, false, $name);
 	}
 
-	$fieldVal = we_document::parseInternalLinks($GLOBALS['we_doc']->getField($attribs), 0, '');
+	$txt = $GLOBALS['we_doc']->getField($attribs);
+	$fieldVal = we_document::parseInternalLinks($txt, 0, '');
 	if(!strpos($fieldVal, '</we-gallery>')){
 		return $fieldVal;
 	}

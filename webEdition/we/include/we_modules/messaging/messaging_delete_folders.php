@@ -108,7 +108,7 @@ $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(
 );
 ?>
 </head>
-<body style="background-color: white;border-top:1px solid black;margin:10px;">
+<body style="border-top:1px solid black;margin:10px;">
 	<?php
 	echo we_html_tools::htmlMessageBox(400, 120, "<span class=\"defaultfont\">" . g_l('modules_messaging', '[deltext]') . "</span>", g_l('modules_messaging', '[rm_folders]'), $buttons) .
 	$form

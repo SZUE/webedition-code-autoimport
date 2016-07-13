@@ -71,7 +71,7 @@ abstract class we_base_imageCrop{
               <a id="cropButtonZoomOut" title="' . g_l('crop', '[reduce_crop_area]') . '" onmousedown="ImageEditTools.Crop.zoom(-1);"><i class="fa fa-compress"></i></a>
               </div>
             </td>
-            <td>' . we_html_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", 2) . '</td>
+            <td>' . we_html_button::position_yes_no_cancel($okbut, "", $cancelbut, 10, "", "", '2px') . '</td>
           </tr>
         </table>
       </div>

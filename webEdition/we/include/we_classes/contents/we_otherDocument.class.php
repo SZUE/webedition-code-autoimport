@@ -176,8 +176,8 @@ class we_otherDocument extends we_binaryDocument{
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		$reqName = 'we_ui_' . $formname;
 		// check to see if there is an image to create or to change
-		if(!empty($_FILES[$reqName]) && !empty($_FILES[$reqName]['name']) && is_array($_FILES[$reqName]["name"])){
-			foreach($_FILES[$reqName]["name"] as $binaryName => $filename){
+		if(!empty($_FILES[$reqName]) && !empty($_FILES[$reqName]['name']) && is_array($_FILES[$reqName]['name'])){
+			foreach($_FILES[$reqName]['name'] as $binaryName => $filename){
 				$binaryDataId = we_base_request::_(we_base_request::STRING, 'WE_UI_BINARY_DATA_ID_' . $binaryName);
 
 				if($binaryDataId !== false && isset($_SESSION[$binaryDataId])){
@@ -194,9 +194,8 @@ class we_otherDocument extends we_binaryDocument{
 							// move document from upload location to tmp dir
 							$_SESSION[$binaryDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
 							move_uploaded_file($_FILES[$reqName]['tmp_name'][$binaryName], $_SESSION[$binaryDataId]['serverPath']);
-
-							$tmp_Filename = $binaryName . '_' . we_base_file::getUniqueId() . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES[$reqName]['name'][$binaryName]);
-
+							$unique = we_base_file::getUniqueId();
+							$tmp_Filename = $binaryName . '_' . $unique . '_' . preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES[$reqName]['name'][$binaryName]);
 							if($binaryId){
 								$_SESSION[$binaryDataId]['id'] = $binaryId;
 							}
@@ -206,6 +205,7 @@ class we_otherDocument extends we_binaryDocument{
 							$_SESSION[$binaryDataId]['text'] = $_SESSION[$binaryDataId]['fileName'] . $_SESSION[$binaryDataId]['extension'];
 							$_SESSION[$binaryDataId]['type'] = $_FILES[$reqName]['type'][$binaryName];
 							$_SESSION[$binaryDataId]['size'] = $_FILES[$reqName]['size'][$binaryName];
+							$_SESSION[$binaryDataId]['unique'] = $unique;
 						}
 					}
 				}

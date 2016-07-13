@@ -555,7 +555,7 @@ function we_cmd_base(args, url) {
 			we_sbmtFrm(self.load, url, document.getElementsByName("treeheader")[0]);
 			break;
 		case "change_passwd":
-			new (WE().util.jsWindow)(this, url, "we_change_passwd", -1, -1, 250, 300, true, false, true, false);
+			new (WE().util.jsWindow)(this, url, "we_change_passwd", -1, -1, 300, 300, true, false, true, false);
 			break;
 		case "update":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
@@ -670,7 +670,7 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, "http://qa.webedition.org/tracker/", "help_bugtracker", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "help_changelog":
-			new (WE().util.jsWindow)(this, "http://www.webedition.org/de/webedition-cms/versionshistorie/webedition-6/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
+			new (WE().util.jsWindow)(this, "http://www.webedition.org/de/webedition-cms/versionshistorie/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
 			break;
 		case "we_customer_selector":
 		case "we_selector_file":

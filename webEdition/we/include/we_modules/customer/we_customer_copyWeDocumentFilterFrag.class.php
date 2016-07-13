@@ -87,7 +87,7 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 
 		// write filter to target document
 		// save filter
-		$targetDoc->documentCustomerFilter->saveForModel($targetDoc);
+		we_customer_documentFilter::saveForModel($targetDoc);
 		$targetDoc->rewriteNavigation();
 
 		echo we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_base_util::shortenPath($targetDoc->Path, 55) . "');

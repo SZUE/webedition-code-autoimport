@@ -53,7 +53,7 @@ function defaultReset(){
 		<tr><td colspan="2"><h2>' . g_l('global', '[changePass]') . '</h2></td></tr>
 		<tr><td>' . g_l('global', '[username]') . '</td><td><input type="text" name="s[username]" placeholder="' . g_l('global', '[username]') . '"/></td></tr>
 		<tr><td>' . g_l('modules_users', '[email]') . '</td><td><input type="email" name="s[Email]"  placeholder="' . g_l('modules_users', '[email]') . '"/></td></tr>
-		<tr><td></td><td></td><td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:submit();') . '</td></tr>
+		<tr><td></td><td></td><td>' . we_html_button::create_button(we_html_button::OK, 'javascript:submit();') . '</td></tr>
 	</table>
 	<input type="hidden" name="type" value="mail"/>
 	<input type="hidden" name="resetTok" value="' . $_SESSION['resetTok'] . '"/>'
@@ -129,12 +129,16 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 			}
 			defaultReset();
 		} else {
-			showError(sprintf(g_l('global', '[pwd][mailSent]'), $_SESSION['webuser']['Email']));
 
-			we_mail($_SESSION['webuser']['Email'], g_l('global', '[pwd][mailSubject]'), $_SESSION['webuser']['First'] . ' ' . $_SESSION['webuser']['Second'] . ' (' . $_SESSION['webuser']['username'] . '),
+
+			if(we_mail($_SESSION['webuser']['Email'], g_l('global', '[pwd][mailSubject]'), $_SESSION['webuser']['First'] . ' ' . $_SESSION['webuser']['Second'] . ' (' . $_SESSION['webuser']['username'] . '),
 ' . sprintf(g_l('global', '[pwd][resetMail]'), getServerUrl()) . "\n" .
-				we_tag('customerResetPasswordLink', ['plain' => true], '', true)
-			);
+					we_tag('customerResetPasswordLink', ['plain' => true], '', true)
+				)){
+				showError(sprintf(g_l('global', '[pwd][mailSent]'), $_SESSION['webuser']['Email']));
+			} else {
+				showError(sprintf(g_l('modules_newsletter', '[mail_not_sent]'), $_SESSION['webuser']['Email']));
+			}
 
 			unset($_SESSION['webuser']);
 		}
