@@ -43,17 +43,16 @@ function we_tag_sessionStart(array $attribs){
 				setcookie('_we_autologin', '', (time() - 3600), '/');
 			}
 			$GLOBALS['WE_LOGOUT'] = true;
-			unset($_SESSION['s'], $_REQUEST['s']);
-			if(SECURITY_DELETE_SESSION){
-				we_base_sessionHandler::makeNewID(true);
-			}
-			$_SESSION['webuser'] = array('registered' => false);
 		}
+		unset($_SESSION['s'], $_REQUEST['s']);
+		if(SECURITY_DELETE_SESSION){
+			we_base_sessionHandler::makeNewID(true);
+		}
+		$_SESSION['webuser'] = array('registered' => false);
 		return '';
 	}
 
 	$SessionAutologin = 0;
-
 
 	if(!isset($_SESSION['webuser'])){
 		$_SESSION['webuser'] = array(
