@@ -193,8 +193,6 @@ function we_cmd(){
 				'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
 				$defaultValueCode;
 
-		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:we_cmd('saveTag');"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
-		);
 		?>
 		<div id="divTagName">
 			<h1>&lt;we:<?php echo $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (' . g_l('taged', '[deprecated][title]') . ')' : ''); ?></h1>
@@ -205,7 +203,8 @@ function we_cmd(){
 		</div>
 		<div id="divButtons">
 			<div style="padding-top: 8px;">
-<?php echo $buttons; ?>
+<?php echo we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:we_cmd('saveTag');"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+		); ?>
 			</div>
 		</div>
 		<input type="submit" style="width:1px; height:1px; padding:0px; margin:0px; color:#fff; background-color:#fff; border:0px;" />
