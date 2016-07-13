@@ -232,14 +232,14 @@ abstract class we_html_button{
 	 * @return     string
 	 */
 	//FIXME: this function is used at many places where yes buttons contains more than one button!!
-	static function position_yes_no_cancel($yes_button, $no_button = '', $cancel_button = '', $gap = 10, $align = '', $attribs = array(), $aligngap = 0){
+	static function position_yes_no_cancel($yes_button, $no_button = '', $cancel_button = '', $gap = 10, $align = '', $attribs = array(), $aligngap = '0px'){
 		//	Create default attributes for table
 		$align = /* $align ? 'right' : */ 'right';
 		$attr = array(
-			'style' => 'padding:0 ' . ($align === 'right' ? $aligngap : 0) . ' 0 ' . ($align === 'left' ? $aligngap : 0) . ';border-spacing:0px;float:' . $align . ';'
+			'style' => 'padding:0px ' . ($align === 'right' ? $aligngap : '0px') . ' 0px ' . ($align === 'left' ? $aligngap : '0px') . ';border-spacing:0px;float:' . $align . ';'
 		);
 
-		if(is_array($attribs) && count($attribs) > 0){
+		if(is_array($attribs) && !empty($attribs)){
 			array_merge($attr, $attribs);
 		}
 
