@@ -68,7 +68,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 			}
 			return;
 		}
-		if($pwdRule && !preg_match('/' . preg_quote($pwdRule, '/') . '/', $password)){
+		if($pwdRule && !preg_match('/' . addcslashes($pwdRule, '/') . '/', $password)){
 			we_tag_saveRegisteredUser_keepInput();
 			$GLOBALS['ERROR']['saveRegisteredUser'] = we_customer_customer::PWD_NOT_SUFFICIENT;
 			return;
@@ -131,7 +131,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 					}
 					return;
 				}
-				if($pwdRule && !preg_match('/' . preg_quote($pwdRule, '/') . '/', $password)){
+				if($pwdRule && !preg_match('/' . addcslashes($pwdRule, '/') . '/', $password)){
 					if($changesessiondata){
 						we_tag_saveRegisteredUser_keepInput(true);
 					}
