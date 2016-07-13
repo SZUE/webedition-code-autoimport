@@ -40,6 +40,7 @@ function we_tag_banner(array $attribs, $content){
 	$xml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 
 	$nocount = $GLOBALS["WE_MAIN_DOC"]->InWebEdition;
+	$did = isset($GLOBALS['we_obj']->ID) ? $GLOBALS['we_obj']->TriggerID : $GLOBALS["WE_MAIN_DOC"]->ID; //Fix #10759
 
 	if($type === "pixel"){
 
@@ -52,7 +53,7 @@ function we_tag_banner(array $attribs, $content){
 				'cats' => $GLOBALS['WE_MAIN_DOC']->Category,
 				'dt' => (isset($GLOBALS['WE_MAIN_DOC']->DocType) ? $GLOBALS['WE_MAIN_DOC']->DocType : ""),
 				($page ? 'page' : '') => $page,
-				(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID,
+				(!$page ? 'did' : '') => $did,
 				'xml' => $xml ? "1" : "0",
 		));
 		$newAttribs['border'] = 0;
@@ -75,7 +76,7 @@ function we_tag_banner(array $attribs, $content){
 			'dt' => isset($GLOBALS["WE_MAIN_DOC"]->DocType) ? $GLOBALS["WE_MAIN_DOC"]->DocType : "",
 			'paths' => $paths,
 			($page ? 'page' : '') => $page,
-			(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID,
+			(!$page ? 'did' : '') => $did,
 			'bannerclick' => $bannerclick,
 			'xml' => ($xml ? "1" : "0")
 	));
@@ -96,7 +97,7 @@ function we_tag_banner(array $attribs, $content){
 				'bannername' => $bannername,
 				'type' => $type,
 				($page ? 'page' : '') => $page,
-				(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID
+				(!$page ? 'did' : '') => $did
 		));
 		if($target){
 			$linkAtts['target'] = $target;
@@ -120,7 +121,7 @@ function we_tag_banner(array $attribs, $content){
 				'link' => ($link ? 1 : 0),
 				'type' => 'iframe',
 				($page ? 'page' : '') => $page,
-				(!$page ? 'did' : '') => $GLOBALS["WE_MAIN_DOC"]->ID,
+				(!$page ? 'did' : '') => $did,
 				'paths' => $paths,
 				'target' => $target,
 				'bannerclick' => $bannerclick,
@@ -131,11 +132,12 @@ function we_tag_banner(array $attribs, $content){
 
 		return getHtmlTag('iframe', $newAttribs, $noscript);
 	}
-	return ($GLOBALS['WE_MAIN_DOC']->IsDynamic ?
-			we_banner_banner::getBannerCode($GLOBALS["WE_MAIN_DOC"]->ID, $paths, $target, $width, $height, $GLOBALS["WE_MAIN_DOC"]->DocType, $GLOBALS["WE_MAIN_DOC"]->Category, $bannername, $link, "", $bannerclick, $getbanner, "", $page, $GLOBALS["WE_MAIN_DOC"]->InWebEdition, $xml) :
+	
+	return ((isset($GLOBALS['we_obj']->ID) ? true : $GLOBALS['WE_MAIN_DOC']->IsDynamic) ?
+			we_banner_banner::getBannerCode($did, $paths, $target, $width, $height, $GLOBALS["WE_MAIN_DOC"]->DocType, $GLOBALS["WE_MAIN_DOC"]->Category, $bannername, $link, "", $bannerclick, $getbanner, "", $page, $GLOBALS["WE_MAIN_DOC"]->InWebEdition, $xml) :
 			($type === "cookie" ?
 				$noscript :
-				we_html_element::jsElement('r = Math.random();document.write ("<" + "script src=\"' . $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'r="+r+"&amp;link=' . ($link ? 1 : 0) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;type=js' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $GLOBALS["WE_MAIN_DOC"]->ID . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '"+(document.referer ? ("&amp;referer="+encodeURI(document.referer)) : "")+"\"><" + "/script>");') . '<noscript>' . $noscript . '</noscript>'
+				we_html_element::jsElement('r = Math.random();document.write ("<" + "script src=\"' . $getbanner . '?' . ($nocount ? 'nocount=' . $nocount . '&amp;' : '') . 'r="+r+"&amp;link=' . ($link ? 1 : 0) . '&amp;bannername=' . rawurlencode($bannername) . '&amp;type=js' . ($page ? ('&amp;page=' . rawurlencode($page)) : ('&amp;did=' . $did . '&amp;paths=' . rawurlencode($paths))) . '&amp;target=' . rawurlencode($target) . '&amp;bannerclick=' . rawurlencode($bannerclick) . '&amp;height=' . rawurlencode($height) . '&amp;width=' . rawurlencode($width) . '"+(document.referer ? ("&amp;referer="+encodeURI(document.referer)) : "")+"\"><" + "/script>");') . '<noscript>' . $noscript . '</noscript>'
 			)
 		);
 }
