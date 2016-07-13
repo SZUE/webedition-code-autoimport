@@ -94,7 +94,7 @@ class we_imageDocument extends we_binaryDocument{
 		return false;
 	}
 
-	function registerMediaLinks(){
+	function registerMediaLinks($temp = false, $linksReady = false){
 		if(($id = $this->getElement('LinkID', 'bdid') ? : $this->getElement('LinkID', 'dat'))){
 			$this->MediaLinks['Hyperlink:Intern'] = $id;
 		}
@@ -946,7 +946,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 						unset($_SESSION[$imgDataId]);
 						return;
 					}
-					
+
 					$unique = we_base_file::getUniqueId();
 					$tmp_Filename = $imgName . '_' . $unique . '_' .
 						preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);

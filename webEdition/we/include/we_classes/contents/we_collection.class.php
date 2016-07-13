@@ -865,7 +865,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		return $ret;
 	}
 
-	function registerMediaLinks($collection = array()){
+	function registerMediaLinks(array $collection = array()){
 		$this->MediaLinks = $collection ? : $this->getValidCollection();
 
 		parent::registerMediaLinks(false, true);
