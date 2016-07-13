@@ -112,17 +112,17 @@ if($object && $object['ID']){
 		$_REQUEST = array_merge($_GET, $_POST);
 
 		//get query string if there
-		$urlQueryString = array();
-		if(!empty($_SERVER['REDIRECT_QUERY_STRING'])){
-			parse_str($_SERVER['REDIRECT_QUERY_STRING'], $urlQueryString);
-		} elseif(!empty($_SERVER['QUERY_STRING'])){
-			parse_str($_SERVER['QUERY_STRING'], $urlQueryString);
-		}
+		$queryStringArray = array();
+		$queryString = !empty($_SERVER['REDIRECT_QUERY_STRING']) ? $_SERVER['REDIRECT_QUERY_STRING'] :
+			(!empty($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : 
+				parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY)
+			);
+		parse_str($queryString, $queryStringArray);
 
 		//should we also send $_GET?
-		$_GET = isset($_GET) ? array_merge($_GET, $urlQueryString) : $urlQueryString;
+		$_GET = isset($_GET) ? array_merge($_GET, $queryStringArray) : $queryStringArray;
 
-		$_REQUEST = isset($_REQUEST) ? array_merge($_REQUEST, $urlQueryString) : $urlQueryString;
+		$_REQUEST = isset($_REQUEST) ? array_merge($_REQUEST, $queryStringArray) : $queryStringArray;
 		$_REQUEST['we_objectID'] = $object['ID'];
 		$_REQUEST['we_oid'] = $object['ID'];
 
