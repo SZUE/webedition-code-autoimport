@@ -937,7 +937,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
 
 					// move document from upload location to tmp dir
-					$_SESSION[$imgDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
+					$_SESSION[$imgDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();t_e('b');
 					move_uploaded_file($_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$imgDataId]['serverPath']);
 
 					$we_size = we_thumbnail::getimagesize($_SESSION[$imgDataId]['serverPath']);
@@ -946,8 +946,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 						unset($_SESSION[$imgDataId]);
 						return;
 					}
-
-					$tmp_Filename = $imgName . '_' . we_base_file::getUniqueId() . '_' .
+					
+					$unique = we_base_file::getUniqueId();
+					$tmp_Filename = $imgName . '_' . $unique . '_' .
 						preg_replace('/[^A-Za-z0-9._-]/', '', $_FILES['we_ui_' . $formname]['name'][$imgName]);
 
 					if($imgId){
@@ -957,6 +958,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					$_SESSION[$imgDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
 					$_SESSION[$imgDataId]['extension'] = (strpos($tmp_Filename, '.') > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
 					$_SESSION[$imgDataId]['text'] = $_SESSION[$imgDataId]['fileName'] . $_SESSION[$imgDataId]['extension'];
+					$_SESSION[$imgDataId]['unique'] = $unique;
 
 					//image needs to be scaled
 					if(!empty($_SESSION[$imgDataId]['width']) ||

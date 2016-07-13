@@ -353,7 +353,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 
 	static function checkAndPrepare($formname, $key = 'we_document'){
 		// check to see if there is an image to create or to change
-		if(!(isset($_FILES["we_ui_$formname"]) && is_array($_FILES["we_ui_$formname"]) && isset($_FILES["we_ui_$formname"]["name"]) && is_array($_FILES["we_ui_$formname"]["name"]) )){
+		if(!(isset($_FILES['we_ui_' . $formname]) && is_array($_FILES['we_ui_' . $formname]) && isset($_FILES['we_ui_' . $formname]['name']) && is_array($_FILES['we_ui_' . $formname]['name']) )){
 			return;
 		}
 		//$webuserId = isset($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
@@ -375,24 +375,26 @@ class we_flashDocument extends we_document_deprecatedVideo{
 						$videoid = intval($GLOBALS[$key][$formname]->getElement($videoName));
 
 						// move document from upload location to tmp dir
-						$_SESSION[$videoDataId]["serverPath"] = TEMP_PATH . we_base_file::getUniqueId();
-						move_uploaded_file($_FILES["we_ui_$formname"]["tmp_name"][$videoName], $_SESSION[$videoDataId]["serverPath"]);
+						$_SESSION[$videoDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
+						move_uploaded_file($_FILES['we_ui_' . $formname]['tmp_name'][$videoName], $_SESSION[$videoDataId]['serverPath']);
 
-						$tmp_Filename = $videoName . "_" . we_base_file::getUniqueId() . "_" . preg_replace('[^A-Za-z0-9._-]', '', $_FILES["we_ui_$formname"]["name"][$videoName]);
+						$unique = we_base_file::getUniqueId();
+						$tmp_Filename = $videoName . '_' . $unique . '_' . preg_replace('[^A-Za-z0-9._-]', '', $_FILES['we_ui_' . $formname]['name'][$videoName]);
 
 						if($videoid){
-							$_SESSION[$videoDataId]["id"] = $videoid;
+							$_SESSION[$videoDataId]['id'] = $videoid;
 						}
 
-						$_SESSION[$videoDataId]["fileName"] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
-						$_SESSION[$videoDataId]["extension"] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
-						$_SESSION[$videoDataId]["text"] = $_SESSION[$videoDataId]["fileName"] . $_SESSION[$videoDataId]["extension"];
+						$_SESSION[$videoDataId]['fileName'] = preg_replace('#^(.+)\..+$#', '${1}', $tmp_Filename);
+						$_SESSION[$videoDataId]['extension'] = (strpos($tmp_Filename, ".") > 0) ? preg_replace('#^.+(\..+)$#', '${1}', $tmp_Filename) : '';
+						$_SESSION[$videoDataId]['text'] = $_SESSION[$videoDataId]['fileName'] . $_SESSION[$videoDataId]['extension'];
+						$_SESSION[$videoDataId]['unique'] = $unique;
 
-						$we_size = getimagesize($_SESSION[$videoDataId]["serverPath"]);
-						$_SESSION[$videoDataId]["imgwidth"] = $we_size[0];
-						$_SESSION[$videoDataId]["imgheight"] = $we_size[1];
-						$_SESSION[$videoDataId]["type"] = $_FILES["we_ui_$formname"]["type"][$videoName];
-						$_SESSION[$videoDataId]["size"] = $_FILES["we_ui_$formname"]["size"][$videoName];
+						$we_size = getimagesize($_SESSION[$videoDataId]['serverPath']);
+						$_SESSION[$videoDataId]['imgwidth'] = $we_size[0];
+						$_SESSION[$videoDataId]['imgheight'] = $we_size[1];
+						$_SESSION[$videoDataId]['type'] = $_FILES['we_ui_ ' . $formname]['type'][$videoName];
+						$_SESSION[$videoDataId]['size'] = $_FILES['we_ui_' . $formname]['size'][$videoName];
 					}
 				}
 			}
