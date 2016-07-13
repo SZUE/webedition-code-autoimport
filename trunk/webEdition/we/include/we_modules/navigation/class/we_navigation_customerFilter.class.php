@@ -179,7 +179,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 		}
 	}
 
-	function updateByFilter(&$filterObj, $id, $table){
+	public static function updateByFilter(&$filterObj, $id, $table){
 		switch($filterObj->getMode()){
 			case we_customer_abstractFilter::FILTER:
 				$limitAccess = 1;
