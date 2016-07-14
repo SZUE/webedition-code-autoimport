@@ -91,10 +91,6 @@ class we_shop_shop{
 		return (is_object($this->DB_WE) ? $this->DB_WE->getRecord() : []);
 	}
 
-	public function getDBf($field){
-		return (is_object($this->DB_WE) ? $this->DB_WE->f($field) : '');
-	}
-
 	static function getAllOrderYears(){
 		$GLOBALS['DB_WE']->query('SELECT DISTINCT YEAR(DateOrder) AS a FROM ' . SHOP_TABLE . ' ORDER BY a DESC');
 		$years = $GLOBALS['DB_WE']->getAll(true);

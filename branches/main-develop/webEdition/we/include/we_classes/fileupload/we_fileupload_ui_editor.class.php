@@ -39,26 +39,26 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$this->type = 'editor';
 		$permImageEdit = permissionhandler::hasPerm("NEW_GRAFIK");
 		$permCat = permissionhandler::hasPerm("EDIT_KATEGORIE");
-		$moreElements = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? array(): array(
-			'imageResize' => array('set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
-			'imageRotate' => array('set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
-			'imageQuality' => array('set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true),
-		);
-		$this->formElements = array_merge($this->formElements, array(
-			'uploader' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => false),
-			'parentId' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false),
-			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false, 'noline' => true),
-			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false),
-			'categories' => array('set' => $permCat, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false),
-			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true),
-			'thumbnails' => array('set' => $permImageEdit, 'multiIconBox' => true, 'rightHeadline' => true),
-		), $moreElements);
+		$moreElements = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? []: [
+			'imageResize' => ['set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true],
+			'imageRotate' => ['set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true],
+			'imageQuality' => ['set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true],
+			];
+		$this->formElements = array_merge($this->formElements, [
+			'uploader' => ['set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => false],
+			'parentId' => ['set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+			'sameName' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false],
+			'importMeta' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false, 'noline' => true],
+			'isSearchable' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false],
+			'categories' => ['set' => $permCat, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED, 'rightHeadline' => false],
+			'attributes' => ['set' => true, 'multiIconBox' => true, 'rightHeadline' => true],
+			'thumbnails' => ['set' => $permImageEdit, 'multiIconBox' => true, 'rightHeadline' => true],
+			], $moreElements);
 
 		$this->dimensions['dragWidth'] = 400;
-		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
-			array('fu_file_parentID', 'int'),
-		));
+		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, [
+			['fu_file_parentID', 'int'],
+			]);
 		$this->doImport = $doImport;
 
 		if($this->doImport){
@@ -75,7 +75,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 					array('fu_doc_degrees', 'int'),
 					array('fu_doc_quality', 'int'),
 				);
-				
+
 				$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
 					array('fu_doc_isSearchable', 'int'),
 					array('fu_doc_categories', 'text'),
@@ -102,31 +102,30 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$progress = new we_progressBar(0, true);
 		$progress->setStudLen(200);
 		$progress->setName('_fileupload');
-		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'display:none;'), $progress->getHTML('', 'font-size:11px;'));
-		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:400px'), $this->getDivBtnInputReset($this->dimensions['inputWidth'] - 4)
+		$divProgressbar = we_html_element::htmlDiv(['id' => 'div_fileupload_progressBar', 'style' => 'display:none;'], $progress->getHTML('', 'font-size:11px;'));
+		$divButtons = we_html_element::htmlDiv(['id' => 'div_fileupload_buttons', 'style' => 'width:400px'], $this->getDivBtnInputReset($this->dimensions['inputWidth'] - 4)
 		);
-		$divBtnUpload = we_html_element::htmlDiv(array('style' => 'float:right;padding-top:10px;width:auto;'), $this->getDivBtnUploadCancel(170));
+		$divBtnUpload = we_html_element::htmlDiv(['style' => 'float:right;padding-top:10px;width:auto;'], $this->getDivBtnUploadCancel(170));
 
 		$noImage = '<img style="margin:8px 18px;border-style:none;width:64px;height:64px;" src="/webEdition/images/icons/no_image.gif" alt="no-image" />';
-		$formUploader = we_html_element::htmlDiv(array('id' => 'imageUpload', 'style' => 'display:block;width:384px;'), $this->getJs() .
+		$formUploader = we_html_element::htmlDiv(['id' => 'imageUpload', 'style' => 'display:block;width:384px;'], $this->getJs() .
 				$this->getCss() .
 				$this->getHiddens() .
-				we_html_element::htmlDiv(array('style' => 'width:200px'), $divButtons
+				we_html_element::htmlDiv(['style' => 'width:200px'], $divButtons
 				) .
-				we_html_element::htmlDiv(array('style' => 'width:400px'), we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), 
+				we_html_element::htmlDiv(['style' => 'width:400px'], we_html_element::htmlDiv(['id' => 'div_fileupload_right', 'style' => "position:relative;"],
 						$this->getHtmlDropZone('preview', $noImage) .
-						(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? we_html_element::htmlDiv(array(), $this->getFormImageEditClientside()) : '')
+						(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? we_html_element::htmlDiv([], $this->getFormImageEditClientside()) : '')
 					)
 				) .
 				$divProgressbar . ($this->posBtnUpload === 'top' && !$this->isExternalBtnUpload ? $divBtnUpload : '')
 		);
 
-		$parts = [];
-		$parts = is_array($form = $this->makeMultiIconRow('uploader', 'Dateiauswahl', $formUploader)) ? array_merge($parts, array($form)) : $parts;
+		$parts = is_array($form = $this->makeMultiIconRow('uploader', 'Dateiauswahl', $formUploader)) ? [$form] : [];
 		if($this->parentID['setField']){
-			$parts = is_array($form = $this->getFormParentID()) ? array_merge($parts, array($form)) : $parts;
+			$parts = is_array($form = $this->getFormParentID()) ? array_merge($parts, [$form]) : $parts;
 		}
-		$parts = is_array($form = $this->getFormSameName()) ? array_merge($parts, array($form)) : $parts;
+		$parts = is_array($form = $this->getFormSameName()) ? array_merge($parts, [$form]) : $parts;
 
 		if($this->doImport){
 			$parts = is_array($form = $this->getFormImportMeta()) ? array_merge($parts, array($form)) : $parts;

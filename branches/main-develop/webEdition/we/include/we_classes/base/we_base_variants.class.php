@@ -479,14 +479,14 @@ abstract class we_base_variants{
 	 * @param string $name
 	 * @param we_objectFile $model
 	 */
-	public static function useVariantForShopObject(&$record, $name, $model){
+	public static function useVariantForShopObject($record, $name, $model){
 		if(!isset($model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
-			return;
+			return $record;
 		}
 		$variantDatArray = $model->elements[we_base_constants::WE_VARIANTS_ELEMENT_NAME]['dat'];
 
 		if(!is_array($variantDatArray)){
-			return;
+			return $record;
 		}
 
 		foreach($variantDatArray as $variant){
@@ -499,6 +499,7 @@ abstract class we_base_variants{
 				}
 			}
 		}
+		return $record;
 	}
 
 	public static function getVariantData($model, $defaultname){

@@ -45,8 +45,8 @@ class we_document_video extends we_binaryDocument{
 		$yuiSuggest = & weSuggest::getInstance();
 		return '<table class="default propertydualtable">
 	<tr>
-		<td>' . $this->formInputInfo2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', 'origwidth') . '</td>
-		<td>' . $this->formInputInfo2(155, 'height', 10, "attrib", 'onchange="_EditorFrame.setEditorIsHot(true);"', 'origheight') . '</td>
+		<td>' . $this->formInput2(155, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', 'origwidth') . '</td>
+		<td>' . $this->formInput2(155, 'height', 10, "attrib", 'onchange="_EditorFrame.setEditorIsHot(true);"', 'origheight') . '</td>
 		<td>' . $this->formDocChooser(155, 'poster', 'attrib') . '</td>
 	</tr>
 	<tr>

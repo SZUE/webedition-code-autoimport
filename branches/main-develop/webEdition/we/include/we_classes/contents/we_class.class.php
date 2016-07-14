@@ -160,11 +160,6 @@ abstract class we_class{
 		return we_html_tools::htmlFormElementTable($pop, $text, 'left', 'defaultfont');
 	}
 
-	//FIXME: remove
-	function htmlTextInput($name, $size = 0, $value = '', $maxlength = '', $attribs = '', $type = 'text', $width = 0, $height = 0){
-		return we_html_tools::htmlTextInput($name, 0, $value, $maxlength, $attribs, $type, $width, $height);
-	}
-
 	static function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', array $attribs = []){
 		return we_html_element::htmlTextArea(array_merge(array(
 				'name' => trim($name),
@@ -215,28 +210,21 @@ abstract class we_class{
 				, g_l('weClass', '[' . $name . ']'));
 	}
 
-	function formInput2($width, $name, $size = 25, $type = 'txt', $attribs = ''){
-		return $this->formInputField($type, $name, (g_l('weClass', '[' . $name . ']', true)? : $name), $size, $width, '', $attribs);
-	}
-
 	/* creates a text-input field for entering Data that will be stored at the $elements Array and shows information from another Element */
 
-	function formInputInfo2($width, $name, $size, $type = 'txt', $attribs = '', $infoname = ''){
-		$infotext = ' (' . (g_l('weClass', '[' . $infoname . ']', true) ? : $infoname) . ': ' . $this->getElement($infoname) . ')';
+	function formInput2($width, $name, $size, $type = 'txt', $attribs = '', $infoname = ''){
+		$infotext = $infoname ? ' (' . (g_l('weClass', '[' . $infoname . ']', true) ? : $infoname) . ': ' . $this->getElement($infoname) . ')' : '';
 		return $this->formInputField($type, $name, (g_l('weClass', '[' . $name . ']', true) ? : $name) . $infotext, $size, $width, '', $attribs);
 	}
 
-	function formSelect2($width, $name, $table, $val, $txt, $text, $sqlFrom = '', $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = [], $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
+	function formSelect2($width, $name, $table, $sqlFrom, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = [], $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
 		$vals = [];
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
-		$this->DB_WE->query('SELECT ' . ($sqlFrom ? : $this->DB_WE->escape($val) . ',' . $this->DB_WE->escape($txt)) . ' FROM ' . $table . ' WHERE ' . $sqlTail);
-		while($this->DB_WE->next_record(MYSQL_ASSOC)){
-			$v = $this->DB_WE->f($val);
-			$t = $this->DB_WE->f($txt);
-			$vals[$v] = $t;
-		}
+		//FIXME: remove $sqlFrom or val/txt
+		$vals = $vals + $this->DB_WE->getAllFirstq('SELECT ' . $sqlFrom . ' FROM ' . $table . ' WHERE ' . $sqlTail);
+
 		$vals = we_html_tools::groupArray($vals, false, 1);
 		$myname = 'we_' . $this->Name . '_' . $name;
 
@@ -252,13 +240,13 @@ abstract class we_class{
 		return ($multiple ? we_html_element::htmlHidden($myname, $selectedIndex) : '') . we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
 
-	function formSelect4($width, $name, $table, $val, $txt, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = [], $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
+	function formSelect4($width, $name, $table, $sqlFrom, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = [], $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
 		$vals = [];
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
 		//array_merge would change the numeric order of keys!
-		$vals = $vals + $this->DB_WE->getAllFirstq('SELECT ' . $val . ',' . $txt . ' FROM ' . $this->DB_WE->escape($table) . ' ' . $sqlTail, false);
+		$vals = $vals + $this->DB_WE->getAllFirstq('SELECT ' . $sqlFrom . ' FROM ' . $this->DB_WE->escape($table) . ' WHERE ' . $sqlTail, false);
 
 		$myname = 'we_' . $this->Name . '_' . $name;
 
@@ -269,7 +257,6 @@ abstract class we_class{
 		return we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
 
-##### NEWSTUFF ####
 # public ##################
 
 	public function initByID($ID, $Table = FILE_TABLE, $from = we_class::LOAD_MAID_DB){
@@ -720,11 +707,6 @@ abstract class we_class{
 
 	public function getErrMsg(){
 		return ($this->errMsg ? '\n' . str_replace("\n", '\n', $this->errMsg) : '');
-	}
-
-	//FIXME: this is temporary
-	public function getDBf($field){
-		return $this->DB_WE->f($field);
 	}
 
 }

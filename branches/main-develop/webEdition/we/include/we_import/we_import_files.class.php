@@ -115,21 +115,21 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 
 		$fileupload = new we_fileupload_ui_editor();
 
-		$moreFields = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? array() : array(
-			'imageResize' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
-			'imageRotate' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
-			'imageQuality' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
-		);
-		$fileupload->setFormElements(array_merge($moreFields, array(
-			'uploader' => array('set' => false),
-			'parentId' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
-			'sameName' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
-			'importMeta' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true),
-			'categories' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
-			'isSearchable' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
-			'attributes' => array('set' => true, 'multiIconBox' => true, 'rightHeadline' => true),
-			'thumbnails' => array('set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false),
-		)));
+		$moreFields = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? [] : [
+			'imageResize' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true],
+			'imageRotate' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true],
+			'imageQuality' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true],
+			];
+		$fileupload->setFormElements(array_merge($moreFields, [
+			'uploader' => ['set' => false],
+			'parentId' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true],
+			'sameName' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false],
+			'importMeta' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false, 'noline' => true],
+			'categories' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false],
+			'isSearchable' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false],
+			'attributes' => ['set' => true, 'multiIconBox' => true, 'rightHeadline' => true],
+			'thumbnails' => ['set' => true, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_MED2, 'rightHeadline' => false],
+			]));
 
 		$cb = $this->callBack;
 		$pid = $this->parentID;

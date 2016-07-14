@@ -326,7 +326,7 @@ var phpdata={
 	fieldSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $metadata_fields, 1, '', false, array('class' => 'defaultfont', 'style' => 'width:100%', 'onchange' => 'addFieldToInput(this,__we_new_id__)')))) . '",
 	modeSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataMode[__we_new_id__]', $metadata_modes, 1, 'none', false, array('class' => "defaultfont", 'style' => 'width:100%', 'onchange' => 'togglePropositionTable(this, __we_new_id__)')))) . '",
 	csvCheck:"' . str_replace("\n", "\\n", addslashes(we_html_forms::checkboxWithHidden(0, 'metadataCsv[__we_new_id__]', 'CSV'))) . '",
-	closedCheck:"' . str_replace("\n", "\\n", addslashes(we_html_forms::checkboxWithHidden(0, 'metadataClosed[__we_new_id__]', 'abgeschlossen'))) . '",
+	closedCheck:"' . str_replace("\n", "\\n", addslashes(we_html_forms::checkboxWithHidden(0, 'metadataClosed[__we_new_id__]', g_l('export','[finish_progress]')))) . '",
 	addPropositionBtn:"' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, __we_new_id__)'))) . '",
 	trashButton:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_new_id__)") . '\',
 	proposalInp:"' . addslashes(we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310)) . '",
@@ -337,8 +337,6 @@ var phpdata={
 
 			$hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), we_html_tools::TYPE_INFO, 440, false, 50);
 			$hint2 = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[proposals_hint]'), we_html_tools::TYPE_INFO, 440, false);
-
-			//$metadata = new we_html_table(array('style' => 'border:1px solid black', 'width' => 440, 'height' => 50), 4, 3);
 
 			$content = $hint . '<div>&nbsp;</div>' . $hint2 . '<div style="height:20px"></div>' . $metadataTable . we_html_button::create_button(we_html_button::PLUS, 'javascript:addRow()');
 
