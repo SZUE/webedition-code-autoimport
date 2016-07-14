@@ -172,8 +172,8 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	function formProperties(){
 		return '<table class="default propertydualtable">
 	<tr>
-		<td>' . $this->formInputInfo2(155, "width", 10, "attrib", 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth") . '</td>
-		<td>' . $this->formInputInfo2(155, "height", 10, "attrib", 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight") . '</td>
+		<td>' . $this->formInput2(155, "width", 10, "attrib", 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth") . '</td>
+		<td>' . $this->formInput2(155, "height", 10, "attrib", 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight") . '</td>
 		<td>' . $this->formSelectElement(155, "scale", array(
 				"" => "",
 				"showall" => g_l('global', '[showall]'),

@@ -339,21 +339,21 @@ class we_dialog_image extends we_dialog_base{
 		}
 
 
-		$height = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[height]", 5, (isset($this->args["height"]) ? $this->args["height"] : ""), "", ' onkeypress="return WE().util.IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text", 140), g_l('wysiwyg', '[height]'));
-		$width = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[width]", 5, (isset($this->args["width"]) ? $this->args["width"] : ""), "", ' onkeypress="return WE().util.IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text", 140), g_l('wysiwyg', '[width]'));
+		$height = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[height]', 5, (isset($this->args["height"]) ? $this->args["height"] : ""), "", ' onkeypress="return WE().util.IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text", 140), g_l('wysiwyg', '[height]'));
+		$width = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[width]', 5, (isset($this->args["width"]) ? $this->args["width"] : ""), "", ' onkeypress="return WE().util.IsDigitPercent(event);" onkeyup="return checkWidthHeight(this);"', "text", 140), g_l('wysiwyg', '[width]'));
 		$onclick = "checkWidthHeight(document.we_form.elements['we_dialog_args[width]']);";
-		$ratio = we_html_forms::checkboxWithHidden((isset($this->args["ratio"]) ? $this->args["ratio"] : false), "we_dialog_args[ratio]", g_l('thumbnails', '[ratio]'), false, "defaultfont", $onclick);
-		$hspace = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[hspace]", 5, (isset($this->args["hspace"]) ? $this->args["hspace"] : ""), "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 140), g_l('wysiwyg', '[hspace]'));
-		$vspace = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[vspace]", 5, (isset($this->args["vspace"]) ? $this->args["vspace"] : ""), "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 140), g_l('wysiwyg', '[vspace]'));
-		$border = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[border]", 5, (isset($this->args["border"]) ? $this->args["border"] : ""), "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 140), g_l('wysiwyg', '[border]'));
-		$name = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[name]", 30, (isset($this->args["name"]) ? $this->args["name"] : ""), "", '', "text", 315), "Name");
-		$alt = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[alt]", 5, (isset($this->args["alt"]) ? $this->args["alt"] : ""), "", "", "text", 315), g_l('wysiwyg', '[altText]'));
-		$title = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[title]", 5, (isset($this->args["title"]) ? $this->args["title"] : ""), "", "", "text", 315), g_l('global', '[title]'));
+		$ratio = we_html_forms::checkboxWithHidden((isset($this->args['ratio']) ? $this->args['ratio'] : false), 'we_dialog_args[ratio]', g_l('thumbnails', '[ratio]'), false, "defaultfont", $onclick);
+		$hspace = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[hspace]', 5, (isset($this->args["hspace"]) ? $this->args["hspace"] : ""), "", ' onkeypress="return WE().util.IsDigit(event);"', 'text', 140), g_l('wysiwyg', '[hspace]'));
+		$vspace = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[vspace]', 5, (isset($this->args["vspace"]) ? $this->args["vspace"] : ""), "", ' onkeypress="return WE().util.IsDigit(event);"', 'text', 140), g_l('wysiwyg', '[vspace]'));
+		$border = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[border]', 5, (isset($this->args["border"]) ? $this->args["border"] : ""), "", ' onkeypress="return WE().util.IsDigit(event);"', 'text', 140), g_l('wysiwyg', '[border]'));
+		$name = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[name]', 30, (isset($this->args["name"]) ? $this->args["name"] : ""), "", '', "text", 315), "Name");
+		$alt = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[alt]', 5, (isset($this->args["alt"]) ? $this->args["alt"] : ""), "", "", "text", 315), g_l('wysiwyg', '[altText]'));
+		$title = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[title]', 5, (isset($this->args["title"]) ? $this->args["title"] : ""), "", "", "text", 315), g_l('global', '[title]'));
 
 		$foo = '
 			<select class="defaultfont" name="we_dialog_args[align]" style="width:140px;">
 				<option value="">' . g_l('global', '[default]') . '</option>
-				<option value="top"' . (($this->args["align"] === "top") ? "selected" : "") . '>Top</option>
+				<option value="top"' . (($this->args["align"] === 'top') ? 'selected' : "") . '>Top</option>
 				<option value="middle"' . (($this->args["align"] === "middle") ? "selected" : "") . '>Middle</option>
 				<option value="bottom"' . (($this->args["align"] === "bottom") ? "selected" : "") . '>Bottom</option>
 				<option value="left"' . (($this->args["align"] === "left") ? "selected" : "") . '>Left</option>

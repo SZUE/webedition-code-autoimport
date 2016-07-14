@@ -554,7 +554,7 @@ class we_objectFile extends we_document{
 	public function formClass(){
 		return ($this->ID ?
 				'<span class="defaultfont">' . $this->classData['Text'] . '</span>' :
-				$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID', 'Text', '', '', 'IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
+				$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID,Text', '', 'IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
 	}
 
 	public function formClassId(){

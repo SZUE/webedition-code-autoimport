@@ -237,7 +237,7 @@ class we_shop_Basket{
 					$obj = new we_objectFile();
 					$obj->initByID($id, OBJECT_FILES_TABLE);
 
-					we_base_variants::useVariantForShopObject($Record, $variant, $obj);
+					$Record = we_base_variants::useVariantForShopObject($Record, $variant, $obj);
 
 					// add variant to path ...
 					$Record['we_WE_PATH'] .= '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant;
