@@ -86,7 +86,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 
 		$maxDB = 65535;
-		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter([
 					'ID' => intval($this->ID),
 					'DID' => intval($this->ID),
 					'Text' => substr(preg_replace(array('/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB),
@@ -95,9 +95,8 @@ abstract class we_textContentDocument extends we_textDocument{
 					'Doctype' => $this->DocType,
 					'Title' => $this->getElement('Title'),
 					'Description' => $this->getElement('Description'),
-					'Path' => $this->Path,
 					'Language' => $this->Language
-		)));
+		]));
 	}
 
 	/* publish a document */

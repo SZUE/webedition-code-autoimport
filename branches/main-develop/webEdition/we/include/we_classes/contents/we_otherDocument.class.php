@@ -136,7 +136,7 @@ class we_otherDocument extends we_binaryDocument{
 
 		$maxDB = 65535;
 
-		$set = array(
+		$set = [
 			'ID' => intval($this->ID),
 			'DID' => intval($this->ID),
 			'Text' => substr(preg_replace(array("/\n+/", '/  +/'), ' ', $text), 0, $maxDB),
@@ -145,7 +145,7 @@ class we_otherDocument extends we_binaryDocument{
 			'Doctype' => '',
 			'Title' => $this->getElement('Title'),
 			'Description' => $this->getElement('Description'),
-			'Path' => $this->Path);
+		];
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 	}
 

@@ -459,17 +459,11 @@ class we_folder extends we_root{
 		if(!$this->moveAtServer()){
 			return false;
 		}
-		$this->modifyIndexPath();
 		$this->modifyLinks();
 		$this->modifyChildrenPath();
 
 		$this->OldPath = $this->Path;
 		return true;
-	}
-
-	function modifyIndexPath(){
-		//FIXME: tablescan!
-		$this->DB_WE->query('UPDATE ' . INDEX_TABLE . ' SET Path=CONCAT("' . $this->DB_WE->escape($this->Path) . '",SUBSTRING(Path,' . (strlen($this->OldPath) + 1) . ')) WHERE Path LIKE "' . $this->DB_WE->escape($this->OldPath) . '%"');
 	}
 
 	function modifyLinks(){
