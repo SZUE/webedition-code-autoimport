@@ -295,9 +295,9 @@ WE().consts.g_l.cockpit.pad={
 };
 var _ttlB64Esc=escape(WE().util.Base64.encode(_sTb));
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
-		array(
-		"onload" => (($command !== "home") ? "if(parent!=self){init();}" : "") . 'calendarSetup();toggleTblValidity();'
-		), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
-				array("id" => "pad"), $notepad .
+		[
+			"onload" => (($command !== "home") ? "if(parent!=self){init();}" : "") . 'calendarSetup();toggleTblValidity();'
+		], we_html_element::htmlForm(["style" => "display:inline;"], we_html_element::htmlDiv(
+				["id" => "pad"], $notepad .
 				we_html_element::htmlHidden("mark", "")
 ))));

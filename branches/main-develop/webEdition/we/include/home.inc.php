@@ -126,13 +126,13 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 
 
 		_isHotTrf = false;
-		var _trf =[
+		var _trf = [
 	<?php
 	foreach($aTrf as $aRssFeed){
 		echo "['" . $aRssFeed[0] . "','" . $aRssFeed[1] . "'],";
 	}
 	?>
-			];
+		];
 		//-->
 	</script>
 	<?php
@@ -143,10 +143,10 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	we_base_moduleInfo::isActive(we_base_moduleInfo::USERS);
 	$aCmd = explode('_', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
 	if($aCmd[0] === 'new'){
-		$in = array(substr($aCmd[2], -3), 1, 1);
-		$aDat[0] = array_merge(array_slice($aDat[0], 0, 0), array($in), array_slice($aDat[0], 0));
+		$in = [substr($aCmd[2], -3), 1, 1];
+		$aDat[0] = array_merge(array_slice($aDat[0], 0, 0), [$in], array_slice($aDat[0], 0));
 	}
-	$aDiscard = array('rss', 'pad');
+	$aDiscard = ['rss', 'pad'];
 	$s1 = '';
 	$iCurrCol = $iCurrId = 0;
 	foreach($aDat as $d){
@@ -190,43 +190,43 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 			if(file_exists(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php')){
 				include(WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 				$widget = we_base_widget::create('m_' . $iCurrId, $aProps[0], $oTblDiv, $aLang, $aProps[1], $aProps[2], $aProps[3], $iWidth, $aPrefs[$aProps[0]]["height"], $aPrefs[$aProps[0]]["isResizable"]);
-				$s2 .= we_html_element::htmlDiv(array("id" => "m_" . $iCurrId, "class" => "le_widget"), $widget);
+				$s2 .= we_html_element::htmlDiv(["id" => "m_" . $iCurrId, "class" => "le_widget"], $widget);
 			}
 		}
-		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_'. (($bExtendedCol) ? 'expand' : 'collapse') . '">' .
+		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . (($bExtendedCol) ? 'expand' : 'collapse') . '">' .
 			$s2 .
-			we_html_element::htmlDiv(array("class" => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')), '') . '</td>';
+			we_html_element::htmlDiv(["class" => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')], '') . '</td>';
 	}
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_collapse">' .
-			we_html_element::htmlDiv(array("class" => "wildcard"), "") . '</td>' .
+			we_html_element::htmlDiv(["class" => "wildcard"], "") . '</td>' .
 			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}
 
-	$oTblWidgets = new we_html_table(array('class' => 'default'), 1, 1);
-	$oTblWidgets->setCol(0, 0, [], we_html_element::htmlDiv(array("id" => "modules"), '<table id="le_tblWidgets"><tr id="rowWidgets">' . $s1 . '</tr></table>'));
+	$oTblWidgets = new we_html_table(['class' => 'default'], 1, 1);
+	$oTblWidgets->setCol(0, 0, [], we_html_element::htmlDiv(["id" => "modules"], '<table id="le_tblWidgets"><tr id="rowWidgets">' . $s1 . '</tr></table>'));
 
 	// this is the clone widget
-	$oClone = we_base_widget::create("clone", "_reCloneType_", null, array('', ''), "white", 0, "", 100, 60);
+	$oClone = we_base_widget::create("clone", "_reCloneType_", null, ['', ''], "white", 0, "", 100, 60);
 
 	echo
 	we_html_element::htmlBody(
-		array(
+		[
 		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=document.getElementById('le_tblWidgets');initDragWidgets();",
-		), we_html_element::htmlForm(
-			array("name" => "we_form"
-			), we_html_element::htmlHiddens(array(
+		], we_html_element::htmlForm(
+			["name" => "we_form"
+			], we_html_element::htmlHiddens([
 				'we_cmd[0]' => 'widget_cmd',
 				'we_cmd[1]' => 'save',
 				'we_cmd[2]' => '',
-				'we_cmd[3]' => ''))
+				'we_cmd[3]' => ''])
 		) .
-		we_html_element::htmlDiv(array("id" => "rpcBusy", "style" => "display:none;"), '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
-		) . we_html_element::htmlDiv(array("id" => "widgets"), "") .
+		we_html_element::htmlDiv(["id" => "rpcBusy", "style" => "display:none;"], '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
+		) . we_html_element::htmlDiv(["id" => "widgets"], "") .
 		$oTblWidgets->getHtml() .
 		we_base_widget::getJs() .
-		we_html_element::htmlDiv(array("id" => "divClone"), $oClone)
+		we_html_element::htmlDiv(["id" => "divClone"], $oClone)
 	);
 } else { // no right to see cockpit!
 	echo
@@ -248,11 +248,9 @@ _EditorFrame.initEditorFrameData({
 });') .
 	'</head>' .
 	we_html_element::htmlBody(
-		array(
-		'class' => 'noHome',
-		"onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
-		), we_html_element::htmlDiv(
-			array("class" => "defaultfont errorMessage", "style" => "width: 400px;"), (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ?
+		[ 'class' => 'noHome', "onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
+		], we_html_element::htmlDiv(
+			["class" => "defaultfont errorMessage", "style" => "width: 400px;"], (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ?
 				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
 					we_html_button::create_button('preferences', "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
 				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
