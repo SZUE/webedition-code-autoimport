@@ -26,6 +26,8 @@
 /* query separator */
 ###UPDATEDROPCOL(Workspace,###TBLPREFIX###tblIndex)###
 /* query separator */
+###UPDATEDROPCOL(Path,###TBLPREFIX###tblIndex)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblIndex (
 	ID int unsigned NOT NULL default '0',
@@ -38,7 +40,6 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   Doctype smallint unsigned NOT NULL default '0',
   Title varchar(255) NOT NULL default '',
   Description text NOT NULL,
-  Path varchar(1000) NOT NULL default '',
   Language varchar(5) default NULL,
   PRIMARY KEY (ID,ClassID,WorkspaceID),
 	FULLTEXT Text (Text)

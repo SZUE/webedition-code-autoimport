@@ -1961,7 +1961,7 @@ class we_objectFile extends we_document{
 		$ws = array_unique(array_merge(explode(',', $this->Workspaces), explode(',', $this->ExtraWorkspacesSelected)));
 
 		if(!$ws){
-			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter([
 						'ID' => $this->ID,
 						'OID' => $this->ID,
 						'Text' => $text,
@@ -1970,15 +1970,14 @@ class we_objectFile extends we_document{
 						'ClassID' => $this->TableID,
 						'Title' => $this->getElement('Title'),
 						'Description' => $this->getElement('Description'),
-						'Path' => $this->Text,
 						'Language' => $this->Language
-			)));
+			]));
 		}
 
 		//$ws = id_to_path($ws, FILE_TABLE, $this->DB_WE);
 
 		foreach($ws as $w){
-			if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			if(!$this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter([
 						'ID' => $this->ID,
 						'OID' => $this->ID,
 						'Text' => $text,
@@ -1987,9 +1986,8 @@ class we_objectFile extends we_document{
 						'ClassID' => $this->TableID,
 						'Title' => $this->getElement("Title"),
 						'Description' => $this->getElement("Description"),
-						'Path' => $this->Text,
 						'Language' => $this->Language
-				)))){
+				]))){
 				return false;
 			}
 		}

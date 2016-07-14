@@ -182,7 +182,7 @@ class we_binaryDocument extends we_document{
 				}
 			}
 		}
-		$set = array(
+		$set = [
 			'ID' => intval($this->ID),
 			'DID' => intval($this->ID),
 			'Text' => $text,
@@ -191,7 +191,7 @@ class we_binaryDocument extends we_document{
 			'Doctype' => '',
 			'Title' => $this->getElement('Title'),
 			'Description' => $this->getElement('Description'),
-			'Path' => $this->Path);
+		];
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter($set));
 	}
 
