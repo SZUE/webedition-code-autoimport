@@ -27,15 +27,15 @@ if(!isset($aProps)){//preview requested
 	$all = explode(';', we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 1));
 	list($dir, $dt_tid, $cats) = (count($all) > 1 ?
 			$all :
-			array($all[0], '', ''));
+			[$all[0], '', '']);
 
-	$aCsv = array(
+	$aCsv = [
 		0, //unused - compatibility
 		we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
 		$dir,
 		$dt_tid,
 		$cats
-	);
+	];
 }
 
 $mdc = "";
@@ -81,12 +81,11 @@ if($csv){
 	if($query && $DB_WE->query($query)){
 		$mdc .= '<table class="default">';
 		while($DB_WE->next_record()){
-			$mdc .= '<tr><td class="mdcIcon" data-contenttype="' . $DB_WE->f('ContentType') . '"></td><td style="vertical-align:middle" class="middlefont">' . we_html_element::htmlA(
-					array(
+			$mdc .= '<tr><td class="mdcIcon" data-contenttype="' . $DB_WE->f('ContentType') . '"></td><td style="vertical-align:middle" class="middlefont">' . we_html_element::htmlA([
 					"href" => 'javascript:WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',\'' . $DB_WE->f('ID') . '\',\'' . $DB_WE->f('ContentType') . '\');',
 					"title" => $DB_WE->f("Path"),
 					"style" => "color:#000000;text-decoration:none;"
-					), $DB_WE->f("Path")) . '</td></tr>';
+					], $DB_WE->f("Path")) . '</td></tr>';
 		}
 		$mdc .= '</table>';
 	}
@@ -106,10 +105,10 @@ function init(){
 
 	echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', STYLESHEET .
 		we_html_element::jsElement($js), we_html_element::htmlBody(
-			array(
+			[
 			'style' => 'margin:10px 15px;',
 			"onload" => "if(parent!=self){init();}WE().util.setIconOfDocClass(document,'mdcIcon');"
-			), we_html_element::htmlDiv(array(
+			], we_html_element::htmlDiv([
 				"id" => "mdc"
-				), $mdc)));
+				], $mdc)));
 }

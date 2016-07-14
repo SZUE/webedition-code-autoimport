@@ -37,12 +37,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
 		$cmd2 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
 
-		$aProps = array(
+		$aProps = [
 			$cmd1,
 			$aPrefs[$cmd1]['cls'],
 			$aPrefs[$cmd1]['res'],
 			$aPrefs[$cmd1]['csv'],
-		);
+		];
 		foreach($aCfgProps as $a){
 			foreach($a as $arr){
 				if($arr[0] == $aProps[0]){
@@ -66,11 +66,11 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 		include_once (WE_INCLUDES_PATH . 'we_widgets/inc/' . $aProps[0] . '.inc.php');
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssElement('div,span{display:none;}'), we_html_element::htmlBody(
-				array('onload' => 'WE().layout.cockpitFrame.transmit(this,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'
-				), we_html_element::htmlDiv(array('id' => 'content'), $oTblDiv) .
-				we_html_element::htmlSpan(array('id' => 'prefix'), $aLang[0]) .
-				we_html_element::htmlSpan(array('id' => 'postfix'), $aLang[1]) .
-				we_html_element::htmlSpan(array('id' => 'csv'), (isset($aProps[3]) ? $aProps[3] : '')))
+				['onload' => 'WE().layout.cockpitFrame.transmit(this,\'' . $aProps[0] . '\',\'m_' . $iCurrId . '\');'
+				], we_html_element::htmlDiv(['id' => 'content'], $oTblDiv) .
+				we_html_element::htmlSpan(['id' => 'prefix'], $aLang[0]) .
+				we_html_element::htmlSpan(['id' => 'postfix'], $aLang[1]) .
+				we_html_element::htmlSpan(['id' => 'csv'], (isset($aProps[3]) ? $aProps[3] : '')))
 		);
 		break;
 

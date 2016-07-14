@@ -23,9 +23,9 @@
  */
 list($pad_header_enc, $pad_csv) = explode(',', $aProps[3]);
 
-$iFrmPadAtts['src'] = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array(
+$iFrmPadAtts['src'] = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query([
 		'mod' => 'pad',
-		'we_cmd' => array(
+		'we_cmd' => [
 			0 => 'widget_cmd',
 			1 => 'reload',
 			2 => $pad_csv,
@@ -34,12 +34,12 @@ $iFrmPadAtts['src'] = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array(
 			5 => $aProps[1],
 			6 => $pad_header_enc,
 			7 => 'm_' . $iCurrId,
-	)));
+	]]);
 $iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
 $iFrmPadAtts['style'] = 'width:100%;height:287px';
 
 $oTblDiv = str_replace('>', ' allowtransparency="true">', getHtmlTag('iframe', $iFrmPadAtts, '', true));
 
-$aLang = array(
+$aLang = [
 	g_l('cockpit', '[notes]') . " - " . base64_decode($pad_header_enc), ""
-);
+];
