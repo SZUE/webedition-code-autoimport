@@ -108,7 +108,7 @@ way to fit your requirements.
 				padding: 0 2px 4px 2px;
 				border-top-left-radius: 0;
 				box-shadow: 2px 2px 3px $DarkGrey;
-				
+
 				li:hover ul,
 					li:hover ul li:hover ul,
 					li:hover ul li:hover ul li:hover ul,
@@ -133,7 +133,7 @@ way to fit your requirements.
 				display: block;
 				position: relative;
 				float: left;
-				width: 16em;
+				width: 100%;
 				font-family: $weFont;
 				color:black;
 				&:hover {
@@ -152,7 +152,7 @@ way to fit your requirements.
 					display: block;
 					position: relative;
 					float: left;
-					width: 14.5em;
+					width: 100%;
 					font-family: $weFont;
 				}
 			}
@@ -179,16 +179,16 @@ way to fit your requirements.
 
 	}
 
-	ul ul ul {
+	//have these 2 subentries wider
+	ul.menu_file_new_weobj,
+	ul.menu_file_new_wedoc{
 		width: 350px !important;
-		max-height: 400px;
 		overflow: auto !important;
-		font-size: 12px;
 		background: #192c3a !important;
 		li {
 			white-space: nowrap;
 			clear: both;
-			width: 100% !important;
+			width: 100%;
 			&:hover,
 				li a:hover {
 				display: block;
