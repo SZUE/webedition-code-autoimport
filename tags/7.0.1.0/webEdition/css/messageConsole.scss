@@ -1,0 +1,87 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+@import "config.scss";
+body.messageConsoleWindow{
+	#jsMessageUl {
+		border-top			: 1px solid black;
+		background			: #fff;
+		margin:0px;
+		padding:0px;
+
+		li {
+			border-bottom		: 1px solid black;
+			margin				: 0px 0px 0px 0px;
+			padding				: 1ex 0px 1ex 3em;
+
+			.fa-li.fa-lg{
+				left:0px;
+				top: auto;
+			}
+		}
+	}
+
+	#headlineDiv {
+		position:absolute;
+		top:0px;
+		left:0px;
+		right:0px;
+		height				: 40px;
+		div {
+			padding				: 10px 0px 0px 10px;
+		}
+	}
+
+	#messageDiv,
+	#versionsDiv{
+		background			: #fff;
+		overflow			: auto;
+		position:absolute;
+		top:40px;
+		bottom:40px;
+		left:0px;
+		right:0px;
+	}
+
+	.dialogButtonDiv {
+		left				: 0px;
+		height				: 30px;
+		background: $Grey;
+		position			: absolute;
+		bottom				: 0px;
+		width				: 100%;
+		padding: 10px 10px 0px 0px;
+	}
+
+	li{
+		&.imgNoticeActive {
+			color				: darkgray;
+		}
+		&.imgWarningActive {
+			color				: blue;
+		}
+		&.imgErrorActive {
+			color				: red;
+		}
+	}
+}
