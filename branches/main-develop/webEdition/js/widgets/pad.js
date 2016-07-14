@@ -129,7 +129,7 @@ function getCurrentQuery() {
 	var sValidFrom = fo.elements.f_ValidFrom.value;
 	var sValidUntil = fo.elements.f_ValidUntil.value;
 	return (asoc = {
-		'Validity': (validSel === 0) ? 'always' : ((validSel == 1) ? 'date' : 'period'),
+		'Validity': (validSel === "0") ? 'always' : ((validSel === "1") ? 'date' : 'period'),
 		'ValidFrom': convertDate(sValidFrom, '%Y-%m-%d'),
 		'ValidUntil': convertDate(sValidUntil, '%Y-%m-%d'),
 		'Priority': (oRdoPrio[0].checked) ? 'high' : (oRdoPrio[1].checked) ? 'medium' : 'low',
@@ -141,7 +141,7 @@ function getCurrentQuery() {
 function populate(r) {
 	fo = document.forms[0];
 	var sValidity = document.getElementById(r + '_Valid').value;
-	var sValidityIndex = sValidity == 'always' ? 0 : (sValidity == 'date' ? 1 : 2);
+	var sValidityIndex = sValidity === 'always' ? 0 : (sValidity === 'date' ? 1 : 2);
 	var oSctValid = fo.elements.sct_valid;
 	var iSctValidLen = oSctValid.length;
 	for (var i = iSctValidLen - 1; i >= 0; i--) {
@@ -279,7 +279,7 @@ function saveNote() {
 				top.we_showMessage(WE().consts.g_l.cockpit.pad.until_befor_from, WE().consts.message.WE_MESSAGE_NOTICE, window);
 				return false;
 			} else if (!weValidFrom || !weValidUntil) {
-				top.we_showMessage(WE().consts.g_l.cockpit.pad.date_empty, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				top.we_showMessage(WE().consts.g_l.cockpit.pad.date_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 				return false;
 			}
 		} else if (q_curr.Validity == 'date' && !q_curr.ValidFrom) {

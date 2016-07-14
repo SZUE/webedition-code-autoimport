@@ -36,11 +36,10 @@ function convertDate($date){
  */
 function getDateSelector($label, $name, $btn){
 	$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, 'javascript:', null, null, null, null, null, null, false, $btn);
-	$oSelector = new we_html_table(array('class' => 'default', 'id' => $name . '_cell'), 1, 5);
-	$oSelector->setCol(0, 0, array('class' => 'middlefont'), $label);
-	$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name, 55, '', 10, 'id="' . $name . '" readonly="1"', "text", 70, 0));
-	$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));
-	return $oSelector->getHTML();
+	return we_html_element::htmlSpan(array('class' => 'default', 'id' => $name . '_cell'), $label .
+			we_html_tools::htmlTextInput($name, 55, '', 10, 'id="' . $name . '" readonly="1"', "text", 70, 0) .
+			we_html_element::htmlA(array("href" => "#"), $btnDatePicker)
+	);
 }
 
 /**
@@ -224,17 +223,14 @@ $oTblPeriod->setCol(0, 1, array("style" => "text-align:right"), $oTblValidity);
 
 // Edit note prio settings
 $rdoPrio = array(
-	we_html_forms::radiobutton(0, 0, "rdo_prio", g_l('cockpit', '[high]'), true, "middlefont", "", false, "", 0, ""),
-	we_html_forms::radiobutton(1, 0, "rdo_prio", g_l('cockpit', '[medium]'), true, "middlefont", "", false, "", 0, ""),
-	we_html_forms::radiobutton(2, 1, "rdo_prio", g_l('cockpit', '[low]'), true, "middlefont", "", false, "", 0, "")
+	we_html_forms::radiobutton(0, 0, "rdo_prio", '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;" title="' . g_l('cockpit', '[high]') . '" ></i>', true, "middlefont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(1, 0, "rdo_prio", '<i class="fa fa-dot-circle-o" style="color:#F2F200;margin-left:5px;" title="' . g_l('cockpit', '[medium]') . '"></i>', true, "middlefont", "", false, "", 0, ""),
+	we_html_forms::radiobutton(2, 1, "rdo_prio", '<i class="fa fa-dot-circle-o" style="color:green;margin-left:5px;" title="' . g_l('cockpit', '[low]') . '"></i>', true, "middlefont", "", false, "", 0, "")
 );
-$oTblPrio = new we_html_table(array('class' => 'default'), 1, 6);
+$oTblPrio = new we_html_table(array('class' => 'default'), 1, 3);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
-$oTblPrio->setCol(0, 1, null, '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;"></i>  ');
-$oTblPrio->setCol(0, 2, null, $rdoPrio[1]);
-$oTblPrio->setCol(0, 3, null, '<i class="fa fa-dot-circle-o" style="color:#F2F200;margin-left:5px;"></i>  ');
-$oTblPrio->setCol(0, 4, null, $rdoPrio[2]);
-$oTblPrio->setCol(0, 5, null, '<i class="fa fa-dot-circle-o" style="color:green;margin-left:5px;"></i>');
+$oTblPrio->setCol(0, 1, null, $rdoPrio[1]);
+$oTblPrio->setCol(0, 2, null, $rdoPrio[2]);
 
 // Edit note buttons
 $delete_button = we_html_button::create_button(we_html_button::DELETE, "javascript:deleteNote();", false, 0, 0, "", "", true, false);
@@ -254,7 +250,7 @@ $oTblProps->setCol(6, 0, array("class" => "middlefont", 'style' => 'vertical-ali
 $oTblProps->setCol(6, 1, null, we_html_element::htmlTextArea(array(
 		'name' => 'props_text',
 		'id' => 'previewCode',
-		'style' => 'width:100%;height:60px;',
+		'style' => 'width:100%;height:70px;',
 		'class' => 'wetextinput',
 		), ""));
 $oTblProps->setCol(8, 0, array("colspan" => 3), $buttons);
@@ -282,7 +278,6 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
 	we_html_tools::getCalendarFiles() .
 	we_html_element::jsElement("
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
-
 " .
 		(($command === "home") ? "
 var _sTb='" . $title . "';
@@ -291,7 +286,7 @@ var _sInitProps='" . $sInitProps . "';
 var _sCls_=parent.document.getElementById(_sObjId+'_cls').value;
 var _sType='pad';
 var _sTb='" . g_l('cockpit', '[notes]') . " - " . $title . "';
-		") . "
+") . "
 WE().consts.g_l.cockpit.pad={
 	until_befor_from: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[until_befor_from]')) . "',
 	note_not_modified: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[note_not_modified]')) . "',
@@ -301,7 +296,7 @@ WE().consts.g_l.cockpit.pad={
 var _ttlB64Esc=escape(WE().util.Base64.encode(_sTb));
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		array(
-		"onload" => (($command !== "home") ? "if(parent!=self)init();" : "") . 'calendarSetup();toggleTblValidity();'
+		"onload" => (($command !== "home") ? "if(parent!=self){init();}" : "") . 'calendarSetup();toggleTblValidity();'
 		), we_html_element::htmlForm(array("style" => "display:inline;"), we_html_element::htmlDiv(
 				array("id" => "pad"), $notepad .
 				we_html_element::htmlHidden("mark", "")

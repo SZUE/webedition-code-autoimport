@@ -33,7 +33,7 @@ $iFrmPadAtts['src'] = WEBEDITION_DIR . 'we_cmd.php?' . http_build_query(array(
 			4 => 'home',
 			5 => $aProps[1],
 			6 => $pad_header_enc,
-			7 => $iCurrId,
+			7 => 'm_' . $iCurrId,
 	)));
 $iFrmPadAtts['id'] = 'm_' . $iCurrId . '_inline';
 $iFrmPadAtts['style'] = 'width:100%;height:287px';
