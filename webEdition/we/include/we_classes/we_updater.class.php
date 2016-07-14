@@ -250,7 +250,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	public static function fixHistory(we_database_base $db = null){ //called from 6370/update6370.php
-		$db = $db? : new DB_WE();
+	return;
+		/*$db = $db? : new DB_WE();
 		if($db->isColExist(HISTORY_TABLE, 'ID')){
 			$db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID=h2.DID AND h1.DocumentTable=h2.DocumentTable AND h1.ModDate=h2.ModDate WHERE h1.ID<h2.ID');
 			$tmp = $db->getAll(true);
@@ -275,7 +276,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate DESC LIMIT ' . ($cnt - we_history::MAX));
 			}
 			$db->delTable('old' . HISTORY_TABLE);
-		}
+		}*/
 	}
 
 	public static function meassure($name){
@@ -454,8 +455,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		self::meassure('updateGlossar');
 		self::updateCats($db);
 		self::meassure('updateCats');
-		self::fixHistory();
-		self::meassure('fixHistory');
+		/*self::fixHistory();
+		self::meassure('fixHistory');*/
 		self::updateContentTable($db);
 		self::meassure('updateContent');
 		self::updateVersionsTable($db);
