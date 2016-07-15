@@ -4,6 +4,8 @@
 /* query separator */
 ###UPDATEDROPCOL(Portal,###TBLPREFIX###tblUser)###
 /* query separator */
+###UPDATEDROPCOL(UseSalt,###TBLPREFIX###tblUser)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblUser (
   ID int unsigned NOT NULL auto_increment,
@@ -14,7 +16,6 @@ CREATE TABLE ###TBLPREFIX###tblUser (
   `Type` tinyint unsigned NOT NULL default '0',
   username varchar(255) NOT NULL default '',
   passwd varchar(255) NOT NULL default '',
-  UseSalt tinyint unsigned NOT NULL default '0',
   LoginDenied tinyint unsigned NOT NULL default '0',
   Permissions text NOT NULL,
   ParentPerms tinyint unsigned NOT NULL default '0',

@@ -59,10 +59,12 @@ if(!(isset($_POST['WE_LOGIN_username']) && isset($_POST['WE_LOGIN_password']))){
   $_POST['WE_LOGIN_password'] = utf8_decode($_POST['WE_LOGIN_password']);
   } */
 
-$userdata = getHash('SELECT passwd,username,LoginDenied,ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['WE_LOGIN_username']) . '"');
+$hook = new weHook('user_preLogin', '', [/* 'user' => &$userdata, 'request' => 'management', 'type' => ($this->ID ? 'existing' : 'new') */]);
 
 // only if username exists !!
-if(!$userdata || (!we_users_user::comparePasswords($_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))){
+if(!$hook->executeHook() ||
+	!($userdata = getHash('SELECT passwd,username,LoginDenied,ID FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND username="' . $DB_WE->escape($_POST['WE_LOGIN_username']) . '"')) ||
+	(!we_users_user::comparePasswords($_POST['WE_LOGIN_username'], $userdata['passwd'], $_POST['WE_LOGIN_password']))){
 	we_base_sessionHandler::makeNewID(true);
 	return;
 }
