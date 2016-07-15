@@ -36,11 +36,6 @@ function we_tag_shopVat(array $attribs){
 
 		foreach($allVats as $id => $shopVat){
 			$values[$shopVat->id] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
-			if($shopVat->standard){
-
-				$standardId = $shopVat->id;
-				$standardVal = $shopVat->vat;
-			}
 		}
 
 		$attribs['name'] = WE_SHOP_VAT_FIELD_NAME;
