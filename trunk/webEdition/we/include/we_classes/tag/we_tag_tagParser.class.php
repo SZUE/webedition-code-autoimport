@@ -326,8 +326,9 @@ class we_tag_tagParser{
 	public static function printTag($name, $attribs = '', $content = '', $cslash = false, $directContent = false){
 		$attr = (is_array($attribs) ? self::printArray($attribs, false) : ($attribs === 'array()' || $attribs === '[]' ? '' : $attribs));
 		static $no = 0;
+		$newTag = PHP_VERSION_ID >= 50400;
 		return 'we_tag(\'' . $name . '\'' .
-			($attr ? ',' . $attr : ($content ? ',array()' : '')) .
+			($attr ? ',' . $attr : ($content ? ($newTag ? ',[]' : ',array()') : '')) .
 			($content ?
 				($directContent ? ',' . $content :
 					(',' . ($cslash && strpos($content, '\'') !== false ? '<<<\'WE' . $no . 'EOS\'
