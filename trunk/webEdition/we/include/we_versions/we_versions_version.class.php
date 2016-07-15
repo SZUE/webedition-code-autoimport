@@ -1251,7 +1251,7 @@ class we_versions_version{
 											} elseif(!empty($document["schedArr"])){
 												$newData = $document["schedArr"];
 												foreach($newData as $k => $vl){
-													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
+													if(!empty($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
 														$tmpArr1 = $tmpArr2 = array();
 														foreach($vl as $k => $v){
 															$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
