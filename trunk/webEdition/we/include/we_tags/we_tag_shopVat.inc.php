@@ -35,24 +35,24 @@ function we_tag_shopVat(array $attribs){
 		$standardId = 0;
 
 		foreach($allVats as $id => $shopVat){
-			$values[$id] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
+			$values[$shopVat->id] = $shopVat->vat . ' - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 			if($shopVat->standard){
 
-				$standardId = $id;
+				$standardId = $shopVat->id;
 				$standardVal = $shopVat->vat;
 			}
 		}
 
 		$attribs['name'] = WE_SHOP_VAT_FIELD_NAME;
-		$val = oldHtmlspecialchars(isset($GLOBALS['we_doc']->elements[$name]['dat']) ? $GLOBALS['we_doc']->getElement($name) : $standardId);
-
+		$weShopVat = isset($GLOBALS['we_doc']->elements[$name]['dat']) ? we_shop_vats::getShopVATById($GLOBALS['we_doc']->elements[$name]['dat']) : we_shop_vats::getStandardShopVat();
+		
 		// use a defined name for this
 		if($GLOBALS['we_editmode']){
 			$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_attrib[' . $name . ']';
-			return $GLOBALS['we_doc']->htmlSelect($fieldname, $values, 1, $val);
+			return $GLOBALS['we_doc']->htmlSelect($fieldname, $values, 1, $weShopVat->id);
 		}
 
-		return (isset($allVats[$val]) ? $allVats[$val]->vat : $standardVal);
+		return $weShopVat->vat;
 	} else {
 		$field = weTag_getAttribute('field', $attribs, 'vat', we_base_request::STRING);
 		$id = weTag_getAttribute('id', $attribs, false, we_base_request::INT);
