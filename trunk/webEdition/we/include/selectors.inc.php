@@ -162,7 +162,7 @@ switch($class){
 		$JSCommand = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5);
 		$JSIDName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
 		$JSTextName = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4);
-		if($JSCommand || ($JSIDName && $JSTextName)){
+		if(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2)){
 			$noChoose = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 8);
 			$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
 			$rootDirID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 7);
