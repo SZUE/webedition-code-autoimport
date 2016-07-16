@@ -159,7 +159,7 @@ abstract class we_updater{
 
 	private function correctTblFile(we_database_base $db){
 		//added in 7.0.1
-		if(!$db->isKeyExist(FILE_TABLE, 'ParentID', array('ParentID','Filename','Extension'), 'UNIQUE KEY')){
+		if(!$db->isKeyExist(FILE_TABLE, 'ParentID', array('ParentID', 'Filename', 'Extension'), 'UNIQUE KEY')){
 			if($db->isKeyExistAtAll(FILE_TABLE, 'Path')){
 				$db->delKey(FILE_TABLE, 'Path');
 			}
@@ -249,33 +249,33 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	public static function fixHistory(we_database_base $db = null){ //called from 6370/update6370.php
-	return;
-		/*$db = $db? : new DB_WE();
-		if($db->isColExist(HISTORY_TABLE, 'ID')){
-			$db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID=h2.DID AND h1.DocumentTable=h2.DocumentTable AND h1.ModDate=h2.ModDate WHERE h1.ID<h2.ID');
-			$tmp = $db->getAll(true);
-			if($tmp){
-				$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ID IN (' . implode(',', $tmp) . ')');
-			}
-			$db->delCol(HISTORY_TABLE, 'ID');
-			if($db->isKeyExistAtAll(HISTORY_TABLE, 'DID')){
-				$db->delKey(HISTORY_TABLE, 'DID');
-			}
-			self::replayUpdateDB('tblhistory.sql');
-		}
-		if(f('SELECT COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX . ' LIMIT 1')){
-			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ModDate="0000-00-00 00:00:00"');
-			$db->query('RENAME TABLE ' . HISTORY_TABLE . ' TO old' . HISTORY_TABLE);
-			//create clean table
-			self::replayUpdateDB('tblhistory.sql');
-			$db->query('INSERT IGNORE INTO ' . HISTORY_TABLE . ' (DID,DocumentTable,ContentType,ModDate,UserName,UID) SELECT DID,DocumentTable,ContentType,MAX(ModDate),UserName,UID FROM old' . HISTORY_TABLE . ' GROUP BY UID,DID,DocumentTable');
-			$db->query('SELECT UID,COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX);
-			$all = $db->getAllFirst(false);
-			foreach($all as $uid => $cnt){
-				$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate DESC LIMIT ' . ($cnt - we_history::MAX));
-			}
-			$db->delTable('old' . HISTORY_TABLE);
-		}*/
+		return;
+		/* $db = $db? : new DB_WE();
+		  if($db->isColExist(HISTORY_TABLE, 'ID')){
+		  $db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID=h2.DID AND h1.DocumentTable=h2.DocumentTable AND h1.ModDate=h2.ModDate WHERE h1.ID<h2.ID');
+		  $tmp = $db->getAll(true);
+		  if($tmp){
+		  $db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ID IN (' . implode(',', $tmp) . ')');
+		  }
+		  $db->delCol(HISTORY_TABLE, 'ID');
+		  if($db->isKeyExistAtAll(HISTORY_TABLE, 'DID')){
+		  $db->delKey(HISTORY_TABLE, 'DID');
+		  }
+		  self::replayUpdateDB('tblhistory.sql');
+		  }
+		  if(f('SELECT COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX . ' LIMIT 1')){
+		  $db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ModDate="0000-00-00 00:00:00"');
+		  $db->query('RENAME TABLE ' . HISTORY_TABLE . ' TO old' . HISTORY_TABLE);
+		  //create clean table
+		  self::replayUpdateDB('tblhistory.sql');
+		  $db->query('INSERT IGNORE INTO ' . HISTORY_TABLE . ' (DID,DocumentTable,ContentType,ModDate,UserName,UID) SELECT DID,DocumentTable,ContentType,MAX(ModDate),UserName,UID FROM old' . HISTORY_TABLE . ' GROUP BY UID,DID,DocumentTable');
+		  $db->query('SELECT UID,COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX);
+		  $all = $db->getAllFirst(false);
+		  foreach($all as $uid => $cnt){
+		  $db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate DESC LIMIT ' . ($cnt - we_history::MAX));
+		  }
+		  $db->delTable('old' . HISTORY_TABLE);
+		  } */
 	}
 
 	public static function meassure($name){
@@ -435,39 +435,46 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 	}
 
-	public static function doUpdate($internalCall = false){
+	public static function doUpdate($what = 'all', $pos = 0){
 		$db = new DB_WE();
 		self::meassure('start');
 		//if we are in liveupdate, initial db updates already triggered
-		if($internalCall){
+		if($what == 'internal'){
 			self::replayUpdateDB();
 			self::meassure('replayUpdateDB');
+			$what = 'all';
 		}
+		switch($what){
+			default:
+			case 'all':
+				self::updateUsers($db);
+				self::meassure('updateUsers');
+				self::updateObjectFilesX($db);
+				self::meassure('updateObjectFilesX');
+				self::fixInconsistentTables($db);
+				self::meassure('fixInconsistentTables');
+				self::updateGlossar();
+				self::meassure('updateGlossar');
+				self::updateCats($db);
+				self::meassure('updateCats');
+				/* self::fixHistory();
+				  self::meassure('fixHistory'); */
+				self::updateContentTable($db);
+				self::meassure('updateContent');
+				self::updateVersionsTable($db);
+				self::meassure('versions');
+				self::cleanUnreferencedVersions($db);
+				self::meassure('fixVersions');
+				self::updateCustomerFilters($db);
+				self::meassure('customerFilter');
+			case 'shop':
+				$what = 'shop';
 
-		self::updateUsers($db);
-		self::meassure('updateUsers');
-		self::updateObjectFilesX($db);
-		self::meassure('updateObjectFilesX');
-		self::fixInconsistentTables($db);
-		self::meassure('fixInconsistentTables');
-		self::updateGlossar();
-		self::meassure('updateGlossar');
-		self::updateCats($db);
-		self::meassure('updateCats');
-		/*self::fixHistory();
-		self::meassure('fixHistory');*/
-		self::updateContentTable($db);
-		self::meassure('updateContent');
-		self::updateVersionsTable($db);
-		self::meassure('versions');
-		self::cleanUnreferencedVersions($db);
-		self::meassure('fixVersions');
-		self::updateCustomerFilters($db);
-		self::meassure('customerFilter');
-		self::replayUpdateDB();
-		self::meassure('replayUpdateDB');
-		self::meassure(-1);
-		self::removeObsoleteFiles();
+				self::replayUpdateDB();
+				self::meassure('replayUpdateDB');
+				self::meassure(-1);
+				self::removeObsoleteFiles();
+		}
 	}
 
 }

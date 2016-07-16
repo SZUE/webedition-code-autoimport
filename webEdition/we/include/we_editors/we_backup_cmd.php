@@ -342,7 +342,7 @@ run();');
 		} else {
 
 // perform update
-			we_updater::doUpdate(true);
+			we_updater::doUpdate('internal');
 
 			if(is_file(TEMP_PATH . $_SESSION['weS']['weBackupVars']['backup_file'])){
 				unlink(TEMP_PATH . $_SESSION['weS']['weBackupVars']['backup_file']);
