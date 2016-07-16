@@ -95,6 +95,15 @@ abstract class we_editor_footer{
 		}
 	}
 
+	private static function addCopyButton($table, we_root $we_doc, &$pos){
+		$ctrlElem = getControlElement('button', 'copy'); //	look tag we:controlElement for details
+		if((!$ctrlElem || !$ctrlElem['hide']) && $we_doc->ID){
+			$table->addCol(2);
+
+			$table->setCol(0, $pos++, [], we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript:we_cmd('cloneDocument');"));
+		}
+	}
+
 	/**
 	 * @return void
 	 * @desc Prints the footer for the normal mode
@@ -207,6 +216,9 @@ abstract class we_editor_footer{
 						$normalTable->setColAttributes(0, $pos, array('id' => 'publish_' . $GLOBALS['we_doc']->ID));
 						$normalTable->setColContent(0, $pos++, we_html_button::create_button($text, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);we_save_document();"));
 					}
+				}
+				if($we_doc->ContentType !== we_base_ContentTypes::FOLDER && $we_doc->ContentType !== we_base_ContentTypes::OBJECT){
+					self::addCopyButton($normalTable, $we_doc, $pos);
 				}
 				if($hasPerm && $we_doc->ID){
 					self::addDelButton($normalTable, $we_doc, $pos);

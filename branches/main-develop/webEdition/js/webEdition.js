@@ -1264,7 +1264,14 @@ function we_cmd_base(args, url) {
 			var prevWin = new (WE().util.jsWindow)(this, url, "previewVariation", -1, -1, 1600, 1200, true, true, true, true);
 			we_sbmtFrm(prevWin.wind, url);
 			break;
-
+		case 'cloneDocument':
+			var act = WE().layout.weEditorFrameController.getActiveEditorFrame();
+			if (!act.EditorEditorTable || !act.EditorDocumentId) {
+				break;
+			}
+			top.we_cmd("new", act.EditorEditorTable, "", act.EditorContentType);
+			top.we_cmd("copyDocument", act.EditorDocumentId);
+			break;
 		default:
 			return false;
 	}
