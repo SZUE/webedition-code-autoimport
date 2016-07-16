@@ -78,7 +78,7 @@ class we_category extends we_base_model{
 				$cat = '/' . trim($cat, '/ ');
 				$isFolder = 0;
 				$tmp = [];
-				$db->query('SELECT ID, 1 AS IsFolder FROM ' . CATEGORY_TABLE . ' WHERE Path LIKE "' . $db->escape($cat) . '/%" OR Path="' . $db->escape($cat) . '"');
+				$db->query('SELECT ID, EXISTS (SELECT * FROM ' . CATEGORY_TABLE . ' cc WHERE c.ID=cc.ParentID) AS IsFolder FROM ' . CATEGORY_TABLE . ' c WHERE c.Path LIKE "' . $db->escape($cat) . '/%" OR c.Path="' . $db->escape($cat) . '"');
 				while($db->next_record()){
 					$tmp[] = $db->f('ID');
 					$isFolder|=$db->f('IsFolder');

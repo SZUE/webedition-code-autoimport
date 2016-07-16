@@ -4,7 +4,7 @@ CREATE TABLE ###TBLPREFIX###tblVFile (
   `Text` varchar(255) NOT NULL default '',
   ContentType enum('folder','text/weCollection') NOT NULL default 'text/weCollection',
   IsFolder tinyint unsigned NOT NULL default '0',
-  `Path` varchar(1000) NOT NULL default '',
+  Path varchar(800) NOT NULL default '',
   CreatorID int unsigned NOT NULL default '0',
   ModifierID int unsigned NOT NULL default '0',
   CreationDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

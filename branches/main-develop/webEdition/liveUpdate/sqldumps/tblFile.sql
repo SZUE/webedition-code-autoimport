@@ -19,7 +19,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
   CreationDate int unsigned NOT NULL default '0',
   ModDate int unsigned NOT NULL default '0',
   RebuildDate int unsigned NOT NULL default '0',
-  `Path` varchar(1000) NOT NULL default '',
+  Path varchar(800) NOT NULL default '',
   Filehash char(40) NOT NULL default '',
   TemplateID int unsigned NOT NULL default '0',
   temp_template_id int unsigned NOT NULL default '0',
@@ -44,16 +44,15 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 	urlMap varchar(100) NOT NULL default '',
 	parseFile tinyint unsigned NOT NULL default '0',
 	PRIMARY KEY  (ID),
-	UNIQUE KEY ParentID (ParentID,Filename),
+	UNIQUE KEY ParentID (ParentID,Filename,Extension),
   KEY WebUserID (WebUserID),
 	KEY urlMap (urlMap),
 	KEY TemplateID (TemplateID,IsDynamic),
-	KEY searchable(ParentID,IsSearchable,Published)
+	KEY searchable(ParentID,IsSearchable,Published),
+	KEY Path(Path(250))
 ) ENGINE=MyISAM;
 
 /* query separator */
 ###ONCOL(listview,###TBLPREFIX###tblFile) UPDATE ###TBLPREFIX###tblFile SET viewType="icons" WHERE listview=1;###
 /* query separator */
 ###UPDATEDROPCOL(listview,###TBLPREFIX###tblFile)###
-/* query separator */
-###INSTALLONLY###ALTER TABLE ###TBLPREFIX###tblFile ADD UNIQUE KEY Path(Path)
