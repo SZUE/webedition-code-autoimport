@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_lcmd(par) {
+function menuaction(par) {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 
 	switch (par) {
@@ -112,13 +112,5 @@ function we_lcmd(par) {
 		default:
 			top.we_cmd.apply(this, args);
 
-	}
-}
-
-function menuaction(cmd, cmd1) {
-	if (cmd1 === undefined) {
-		we_lcmd(cmd);
-	} else {
-		we_lcmd(cmd, cmd1);
 	}
 }
