@@ -91,7 +91,7 @@ abstract class we_editor_footer{
 		$ctrlElem = getControlElement('button', 'delete'); //	look tag we:controlElement for details
 		if(!$ctrlElem || !$ctrlElem['hide']){
 			$table->addCol(2);
-			$table->setCol(0, $pos++, [], we_html_button::create_button(we_html_button::TRASH, "javascript:if(confirm(WE().consts.g_l.main.delete_single_confirm_delete+'" . $we_doc->Path . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
+			$table->setColContent(0, $pos++, we_html_button::create_button(we_html_button::TRASH, "javascript:if(confirm(WE().consts.g_l.main.delete_single_confirm_delete+'" . $we_doc->Path . "')){we_cmd('delete_single_document','','" . $we_doc->Table . "','1');}"));
 		}
 	}
 
@@ -100,7 +100,7 @@ abstract class we_editor_footer{
 		if((!$ctrlElem || !$ctrlElem['hide']) && $we_doc->ID){
 			$table->addCol(2);
 
-			$table->setCol(0, $pos++, [], we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript:we_cmd('cloneDocument');"));
+			$table->setColContent(0, $pos++, we_html_button::create_button('fa:btn_function_copy,fa-lg fa-copy', "javascript:we_cmd('cloneDocument');"));
 		}
 	}
 
