@@ -159,7 +159,7 @@ abstract class we_updater{
 
 	private function correctTblFile(we_database_base $db){
 		//added in 7.0.1
-		if(!$db->isKeyExist(FILE_TABLE, 'Path', array('Path'), 'UNIQUE KEY')){
+		if(!$db->isKeyExist(FILE_TABLE, 'ParentID', array('ParentID','Filename','Extension'), 'UNIQUE KEY')){
 			if($db->isKeyExistAtAll(FILE_TABLE, 'Path')){
 				$db->delKey(FILE_TABLE, 'Path');
 			}
@@ -184,8 +184,7 @@ abstract class we_updater{
 				t_e('we can\'t upgrade table due to file-list', $problems);
 			} else {
 				//finally add a new unique key, del temp index
-				$db->delKey(FILE_TABLE, 'Path');
-				$db->addKey(FILE_TABLE, 'UNIQUE KEY Path(Path)');
+				$db->addKey(FILE_TABLE, 'UNIQUE KEY ParentID(ParentID,Filename,Extension)');
 			}
 		}
 	}
