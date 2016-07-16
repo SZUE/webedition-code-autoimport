@@ -489,80 +489,80 @@ $we_menu = array(
 		'perm' => 'CAN_SEE_QUICKSTART',
 	),
 // Cockpit > Display
-	array(
+	[
 		'text' => g_l('javaMenu_global', '[display]'),
 		'parent' => 'cockpit',
 		'cmd' => 'home',
 		'perm' => 'CAN_SEE_QUICKSTART',
-	),
+	],
 // Cockpit > new Widget
-	'cockpit_new' => array(
+	'cockpit_new' => [
 		'text' => g_l('javaMenu_global', '[new_widget]'),
 		'parent' => 'cockpit',
 		'perm' => 'CAN_SEE_QUICKSTART',
-	),
+	],
 // Cockpit > new Widget > shortcuts
-	array(
+	[
 		'text' => g_l('javaMenu_global', '[shortcuts]'),
 		'parent' => 'cockpit_new',
-		'cmd' => 'new_widget_sct',
+		'cmd' => ['new_widget', 'sct'],
 		'perm' => 'CAN_SEE_QUICKSTART',
-	),
+	],
 // Cockpit > new Widget > RSS
-	array(
+	[
 		'text' => g_l('javaMenu_global', '[rss_reader]'),
 		'parent' => 'cockpit_new',
-		'cmd' => 'new_widget_rss',
+		'cmd' => ['new_widget', 'rss'],
 		'perm' => 'CAN_SEE_QUICKSTART',
-	),
+	],
 	array(// Cockpit > new Widget > messaging
 		'text' => g_l('javaMenu_global', '[todo_messaging]'),
 		'parent' => 'cockpit_new',
-		'cmd' => 'new_widget_msg',
+		'cmd' => ['new_widget', 'msg'],
 		'perm' => 'CAN_SEE_QUICKSTART',
 		'hide' => !defined('MESSAGING_SYSTEM')
 	),
 	array(// Cockpit > new Widget > Shop
 		'text' => g_l('javaMenu_global', '[shop_dashboard]'),
 		'parent' => 'cockpit_new',
-		'cmd' => 'new_widget_shp',
+		'cmd' => ['new_widget', 'shp'],
 		'perm' => 'CAN_SEE_QUICKSTART || NEW_SHOP_ARTICLE || DELETE_SHOP_ARTICLE || EDIT_SHOP_ORDER || DELETE_SHOP_ORDER || EDIT_SHOP_PREFS',
 		'hide' => !defined('SHOP_TABLE')
 	),
 	array(// Cockpit > new Widget > online users
 		'text' => g_l('javaMenu_global', '[users_online]'),
 		'parent' => 'cockpit_new',
-		'cmd' => 'new_widget_usr',
+		'cmd' => ['new_widget', 'usr'],
 		'perm' => 'CAN_SEE_QUICKSTART',
 	),
 	array(// Cockpit > new Widget > lastmodified
 		'text' => g_l('javaMenu_global', '[last_modified]'),
 		'parent' => 'cockpit_new',
-		'cmd' => 'new_widget_mfd',
+		'cmd' => ['new_widget', 'mfd'],
 		'perm' => 'CAN_SEE_QUICKSTART',
 	),
 	array(// Cockpit > new Widget > unpublished
 		'text' => g_l('javaMenu_global', '[unpublished]'),
 		'parent' => 'cockpit_new',
-		'cmd' => 'new_widget_upb',
+		'cmd' => ['new_widget', 'upb'],
 		'perm' => 'CAN_SEE_QUICKSTART',
 	),
 	array(// Cockpit > new Widget > my Documents
 		'text' => g_l('javaMenu_global', '[my_documents]'),
 		'parent' => 'cockpit_new',
-		'cmd' => 'new_widget_mdc',
+		'cmd' => ['new_widget', 'mdc'],
 		'perm' => 'CAN_SEE_QUICKSTART',
 	),
 	array(// Cockpit > new Widget > Notepad
 		'text' => g_l('javaMenu_global', '[notepad]'),
 		'parent' => 'cockpit_new',
-		'cmd' => 'new_widget_pad',
+		'cmd' => ['new_widget', 'pad'],
 		'perm' => 'CAN_SEE_QUICKSTART',
 	),
 	array(
 		'text' => g_l('javaMenu_global', '[kv_failedLogins]'),
 		'parent' => 'cockpit_new',
-		'cmd' => 'new_widget_fdl',
+		'cmd' => ['new_widget', 'fdl'],
 		'perm' => 'EDIT_CUSTOMER || NEW_CUSTOMER',
 		'hide' => !defined('CUSTOMER_TABLE') || !permissionhandler::hasPerm('CAN_SEE_QUICKSTART'),
 	),
