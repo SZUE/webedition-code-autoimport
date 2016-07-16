@@ -369,7 +369,7 @@ if(
 	}
 	we_base_file::save($fullName, $contents);
 
-	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?charset=' . $GLOBALS['CHARSET'] . '&file=' . str_replace(WEBEDITION_DIR, '', $tempName));
+	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?charset=' . (empty($GLOBALS['CHARSET']) ? DEFAULT_CHARSET : $GLOBALS['CHARSET']) . '&file=' . str_replace(WEBEDITION_DIR, '', $tempName));
 } else {
 	$we_JavaScript = '';
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){

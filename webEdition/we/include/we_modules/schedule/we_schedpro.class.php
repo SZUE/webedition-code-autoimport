@@ -466,6 +466,10 @@ function checkFooter(){
 		if(!f('SELECT 1 FROM ' . SCHEDULE_TABLE . ' WHERE `expire`<=NOW() AND lockedUntil<NOW() AND Active=1')){
 			return;
 		}
+
+		$req = array($_REQUEST,$_GET,$_POST);
+		$_REQUEST=$_GET=$_POST=array();
+
 		$DB_WE = new DB_WE();
 		$DB_WE->addTable('del', array(
 			'ID' => 'bigint(20) unsigned NOT NULL',
@@ -514,6 +518,7 @@ function checkFooter(){
 		//make sure DB is unlocked!
 		$DB_WE->unlock();
 //reset state
+		list($_REQUEST, $_GET, $_POST) = $req;
 		if(isset($lastWEState)){
 			$GLOBALS['WE_MAIN_EDITMODE'] = $lastWEState['WE_MAIN_EDITMODE'];
 			$GLOBALS['we_editmode'] = $lastWEState['we_editmode'];

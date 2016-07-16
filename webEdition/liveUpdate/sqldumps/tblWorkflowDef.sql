@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblWorkflowDef (
   ParentID int unsigned NOT NULL default '0',
   IsFolder tinyint unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
-  `Path` varchar(255) NOT NULL default '/',
+  Path varchar(255) NOT NULL default '/',
   `Type` bigint unsigned NOT NULL default '0',
   Folders varchar(255) NOT NULL default '',
   DocType varchar(255) NOT NULL default '',

@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblSearchResult (
 	docID BIGINT unsigned NOT NULL,
 	docTable enum('tblFile','tblObjectFiles','tblTemplates','tblObject','tblVFile') NOT NULL,
 	Text VARCHAR(255) NOT NULL,
-	Path VARCHAR(255) NOT NULL,
+	Path VARCHAR(800) NOT NULL,
 	ParentID BIGINT unsigned NOT NULL,
 	IsFolder TINYINT unsigned NOT NULL,
 	IsProtected TINYINT unsigned NOT NULL,
