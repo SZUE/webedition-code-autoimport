@@ -9,7 +9,7 @@ CREATE TABLE ###TBLPREFIX###tblsearchtool (
   ID smallint unsigned NOT NULL auto_increment,
   ParentID smallint unsigned NOT NULL default '0',
   IsFolder tinyint unsigned NOT NULL default '0',
-  `Path` varchar(255) NOT NULL,
+  Path varchar(255) NOT NULL,
   `Text` varchar(255) NOT NULL,
   predefined tinyint unsigned NOT NULL,
   folderIDDoc int unsigned NOT NULL,
