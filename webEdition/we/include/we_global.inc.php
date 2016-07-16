@@ -911,7 +911,7 @@ function we_templateInit(){
 			$GLOBALS['DB_WE'] = new DB_WE();
 		}
 //check for Trigger
-		if(!isset($GLOBALS['we']['Scheduler_active']) && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['we_doc']->InWebEdition) &&
+		if(empty($GLOBALS['we']['Scheduler_active']) && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!$GLOBALS['we_doc']->InWebEdition) &&
 			(SCHEDULER_TRIGGER == SCHEDULER_TRIGGER_PREDOC) &&
 			(empty($GLOBALS['we']['backVars'])) //on first call this variable is unset, so we're not inside an include
 		){
