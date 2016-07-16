@@ -747,13 +747,9 @@ function we_cmd_base(args, url) {
 			// get visible frame for displaying editor page
 			var _visibleEditorFrame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 			// if cmd equals "reload_editpage" and there are parameters, attach them to the url
-			if (args[0] === "reload_editpage" && _currentEditorRootFrame.parameters) {
-				url += _currentEditorRootFrame.parameters;
-			}
-
-			// attach necessary parameters if available
-			if (args[0] === "reload_editpage" && args[1]) {
-				url += '#f' + args[1];
+			if (args[0] === "reload_editpage") {
+				url += (_currentEditorRootFrame.parameters ? _currentEditorRootFrame.parameters : '') +
+								(args[1] ? '#f' + args[1] : '');
 			} else if (args[0] === "remove_image" && args[2]) {
 				url += '#f' + args[2];
 			}
@@ -1139,18 +1135,9 @@ function we_cmd_base(args, url) {
 			}
 			break;
 
-		case "new_widget_sct":
-		case "new_widget_rss":
-		case "new_widget_msg":
-		case "new_widget_usr":
-		case "new_widget_mfd":
-		case "new_widget_upb":
-		case "new_widget_mdc":
-		case "new_widget_pad":
-		case "new_widget_shp":
-		case "new_widget_fdl":
+		case "new_widget":
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
-				WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[0].substr(args[0].length - 3), 1, 1);
+				WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[1], 1, 1);
 			} else {
 				top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
