@@ -42,7 +42,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 	urlMap varchar(100) NOT NULL default '',
 	parseFile tinyint unsigned NOT NULL default '0',
 	PRIMARY KEY  (ID),
-	UNIQUE KEY ParentID (ParentID,Filename),
+	UNIQUE KEY ParentID (ParentID,Filename,Extension),
   KEY WebUserID (WebUserID),
 	KEY urlMap (urlMap),
 	KEY TemplateID (TemplateID,IsDynamic),

@@ -24,7 +24,7 @@
  */
 function we_tag_sessionStart(array $attribs){
 	$GLOBALS['WE_SESSION_START'] = true;
-	if((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->InWebEdition) || !empty($GLOBALS['we_editmode'])){
+	if((isset($GLOBALS['WE_MAIN_DOC']) && $GLOBALS['WE_MAIN_DOC']->InWebEdition) || !empty($GLOBALS['we_editmode']) || !empty($GLOBALS['we']['Scheduler_active'])){
 		return '';
 	}
 

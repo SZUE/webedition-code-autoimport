@@ -895,7 +895,7 @@ abstract class we_root extends we_class{
 		}
 		if(!$resave){
 			$this->ModDate = time();
-			$this->ModifierID = !isset($GLOBALS['we']['Scheduler_active']) && !empty($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
+			$this->ModifierID = empty($GLOBALS['we']['Scheduler_active']) && !empty($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0;
 		}
 		$this->RebuildDate = time();
 		if(!parent::we_save($resave)){
