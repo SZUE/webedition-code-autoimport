@@ -1371,9 +1371,12 @@ function showPreview() {
 			return parent::getHTMLEditorFooter('');
 		}
 
-		$table2 = new we_html_table(array('class' => 'default', "style" => 'width:400px;'), 1, 2);
+		$table2 = new we_html_table(array('class' => 'default', "style" => 'width:400px;'), 1, 3);
 		$table2->setColContent(0, 0, we_html_element::htmlSpan(array('style' => 'margin-left: 15px'), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))));
 		$table2->setColContent(0, 1, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', ($this->View->Model->IsFolder ? '[we_new_folder_after_save]' : '[we_new_entry_after_save]')), false, "defaultfont", ""));
+		if(permissionhandler::hasPerm('DELETE_NAVIGATION') || permissionhandler::hasPerm('EDIT_NAVIGATION')){
+			$table2->setColContent(0, 2, we_html_button::create_button(we_html_button::TRASH, "javascript:top.we_cmd('module_navigation_delete');"));
+		}
 
 		return $this->getHTMLDocument(
 				we_html_element::jsElement('
