@@ -1371,7 +1371,7 @@ function showPreview() {
 			return parent::getHTMLEditorFooter([]);
 		}
 
-		$table2 = new we_html_table(array('class' => 'default', "style" => 'width:400px;'), 1, 3);
+		$table2 = new we_html_table(array('class' => 'default'), 1, 3);
 		$table2->setColContent(0, 0, we_html_element::htmlSpan(array('style' => 'margin-left: 15px'), we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.makeNewDoc=document.we_form.makeNewDoc.checked;top.content.we_cmd('module_navigation_save');", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))));
 		$table2->setColContent(0, 1, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', ($this->View->Model->IsFolder ? '[we_new_folder_after_save]' : '[we_new_entry_after_save]')), false, "defaultfont", ""));
 		if(permissionhandler::hasPerm(['DELETE_NAVIGATION', 'EDIT_NAVIGATION'])){
@@ -1381,8 +1381,8 @@ function showPreview() {
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(
 					array(
-					"id" => "footerBody",
-					"onload" => "document.we_form.makeNewDoc.checked=top.content.makeNewDoc;"
+					'id' => 'footerBody',
+					'onload' => 'document.we_form.makeNewDoc.checked=top.content.makeNewDoc;'
 					), we_html_element::htmlForm([], $table2->getHtml())));
 	}
 

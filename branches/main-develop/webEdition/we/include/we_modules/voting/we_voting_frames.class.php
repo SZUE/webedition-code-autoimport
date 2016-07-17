@@ -51,6 +51,11 @@ class we_voting_frames extends we_modules_frame{
 			case 'frameset':
 				$this->View->voting->clearSessionVars();
 				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
+			case "edfooter":
+				return $this->getHTMLEditorFooter([
+						we_html_button::SAVE => [ ['NEW_VOTING', 'EDIT_VOTING'], 'save_voting']
+				]);
+
 			default:
 				return parent::getHTML($what, $mode, $step);
 		}
@@ -112,21 +117,6 @@ function setTab(tab) {
 		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;setMultiEdits();", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()));
 
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
-	}
-
-	protected function getHTMLEditorFooter(array $btn_cmd = [], $extraHead = ''){
-		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return parent::getHTMLEditorFooter([]);
-		}
-
-		return $this->getHTMLDocument(
-				we_html_element::jsElement('
-					function we_save() {
-						top.content.we_cmd("save_voting");
-					}') .
-				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm([], we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_VOTING') && !permissionhandler::hasPerm('EDIT_VOTING'))))
-				)
-		);
 	}
 
 	private function getPercent($total, $value, $precision = 0){

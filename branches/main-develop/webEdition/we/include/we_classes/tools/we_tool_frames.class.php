@@ -126,20 +126,15 @@ function setTab(tab) {
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
-	protected function getHTMLEditorFooter(array $btn_cmd = [], $extraHead = ''){
-		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+	function getHTML($what = '', $mode = '', $step = 0){
+		switch($what){
+			case 'edfooter':
+				return $this->getHTMLEditorFooter([
+						we_html_button::SAVE => [ [], 'tool_' . $this->toolName . '_save']
+						], we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			default:
+				return parent::getHTML($what, $mode, $step);
 		}
-
-		$but_table = we_html_element::htmlSpan(array('style' => 'margin-left: 15px;margin-top:10px;'), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', ''));
-
-		return $this->getHTMLDocument(we_html_element::jsElement('
-function we_save() {
-	top.content.we_cmd("tool_' . $this->toolName . '_save");
-}') .
-				we_html_element::htmlBody(array("id" => "footerBody"), we_html_element::htmlForm([], $but_table)
-				)
-		);
 	}
 
 	function getHTMLGeneral(){

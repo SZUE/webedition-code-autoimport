@@ -63,10 +63,10 @@ class we_workflow_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if($mode == 0){
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), false, "setTab(" . self::TAB_PROPERTIES . ");", array("id" => "tab_0")));
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), false, "setTab(" . self::TAB_OVERVIEW . ");", array("id" => "tab_1")));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), false, "setTab(" . self::TAB_PROPERTIES . ");", ["id" => "tab_0"]));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), false, "setTab(" . self::TAB_OVERVIEW . ");", ["id" => "tab_1"]));
 		} else {
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[editor][information]'), true, "//", array("id" => "tab_0")));
+			$we_tabs->addTab(new we_tab(g_l('tabs', '[editor][information]'), true, "//", ["id" => "tab_0"]));
 		}
 
 		$textPre = g_l('modules_workflow', ($mode == 1 ? '[document]' : '[workflow]'));
@@ -84,18 +84,17 @@ function setTab(tab){
 	}
 }');
 
-		$mainDiv = we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
+		$mainDiv = we_html_element::htmlDiv(['id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlNobr(
 						we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
-						we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
+						we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
 				)) .
 				$we_tabs->getHTML()
 		);
 
-		$body = we_html_element::htmlBody(array(
-				'onresize' => 'weTabs.setFrameSize()',
+		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()',
 				'onload' => 'weTabs.setFrameSize()',
 				'id' => 'eHeaderBody',
-				), $mainDiv .
+				], $mainDiv .
 				we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
 		);
 
@@ -117,21 +116,18 @@ function setStatusCheck(){
 		setTimeout(setStatusCheck,100);
 	}
 
-	if(b==1) a.checked=true;
-	else a.checked=false;
+	a.checked=(b==1);
 }
-function we_save() {
-	top.content.we_cmd("save_workflow");
-}');
+');
 
-		$table2 = new we_html_table(array('class' => 'default', 'width' => 300), 1, 2);
-		$table2->setCol(0, 0, [], we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save()'));
-		$table2->setCol(0, 1, array('class' => 'defaultfont'), $this->View->getStatusHTML());
+		$table2 = new we_html_table(['class' => 'default', 'width' => 300], 1, 2);
+		$table2->setColContent(0, 0, we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.we_cmd('save_workflow');"));
+		$table2->setCol(0, 1, ['class' => 'defaultfont'], $this->View->getStatusHTML());
 
-		$body = we_html_element::htmlBody(array(
-				'id' => 'footerBody',
+		$body = we_html_element::htmlBody([
+			'id' => 'footerBody',
 				'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
-				), we_html_element::htmlForm($attribs = [], $table2->getHtml())
+				], we_html_element::htmlForm($attribs = [], $table2->getHtml())
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);
@@ -139,7 +135,7 @@ function we_save() {
 
 	function getHTMLLog($docID, $type = 0){
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'self.focus();'), we_workflow_view::getLogForDocument($docID, $type))
+				we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_workflow_view::getLogForDocument($docID, $type))
 		);
 	}
 
@@ -151,9 +147,9 @@ function we_save() {
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody([], we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody([], we_html_element::htmlForm(["name" => "we_form"], we_html_element::htmlHiddens([
 							'wcmd' => '',
-							'wopt' => ''))
+							'wopt' => ''])
 					)
 				), we_html_element::jsElement('
 function submitForm(){
@@ -172,7 +168,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	}
 
 	function getHTMLLogQuestion(){
-		$form = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getLogQuestion());
+		$form = we_html_element::htmlForm(['name' => 'we_form'], $this->View->getLogQuestion());
 		$body = we_html_element::htmlBody([], $form);
 
 		return $this->getHTMLDocument($body);
