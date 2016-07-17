@@ -84,7 +84,24 @@ function openModule(module) {
 		$sid = $mod === 'customer' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'sid');
 		$bid = $mod === 'shop' && $cmd1 !== false ? $cmd1 : we_base_request::_(we_base_request::RAW, 'bid');
 
-		echo we_html_element::htmlExIFrame('navi', WE_MODULES_PATH . 'navi.inc.php', 'right:0px;') .
+		$we_tabs = new we_tabs();
+		$mods = we_base_moduleInfo::getAllModules();
+		we_base_moduleInfo::orderModuleArray($mods);
+
+		foreach($mods as $menuItem){
+			if((!empty($menuItem['inModuleMenu'])) || (!empty($menuItem['inModuleWindow']))){
+				if(we_base_moduleInfo::isActive($menuItem["name"])){ //	MODULE INSTALLED
+					if(we_users_util::canEditModule($menuItem["name"])){
+						$we_tabs->addTab(
+							($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
+							$menuItem['text']
+							, ( $mod == $menuItem['name']), "openModule('" . $menuItem['name'] . "');", ['id' => $menuItem['name']]);
+					}
+				}
+			}
+		}
+
+		echo we_html_element::htmlDiv(['style' => 'right:0px;', 'name' => 'naviDiv', 'id' => 'naviDiv'], '<div id="main" >' . $we_tabs->getHTML() . '</div>') .
 		we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), ' ', '', '', false)
 		;
 		?></body></html><?php

@@ -250,11 +250,11 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlHidden($name, $value, $id = ''){
-		$attribs = array(
+		$attribs = [
 			'type' => 'hidden',
 			'name' => $name,
 			'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value
-		);
+			];
 		if($id){
 			$attribs['id'] = $id;
 		}
@@ -265,11 +265,11 @@ abstract class we_html_element{
 		$ret = '';
 		foreach($vals as $key => $value){
 			if($key){
-				$ret.=we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', array(
-						'name' => $key,
+				$ret.=we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', [
+					'name' => $key,
 						'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value,
 						'type' => 'hidden'
-				)));
+						]));
 			}
 		}
 		return $ret;
@@ -398,7 +398,7 @@ abstract class we_html_element{
 		$params['mayscript'] = 'true';
 		$tmp = '';
 		foreach($params as $key => $value){
-			$tmp.=we_html_element::htmlParam(array("name" => $key, "value" => $value));
+			$tmp.=we_html_element::htmlParam(["name" => $key, "value" => $value]);
 		}
 		$content = $tmp . $content;
 		$attribs['MAYSCRIPT'] = '';
@@ -437,8 +437,8 @@ abstract class we_html_element{
 		$isApple = ($isApple !== -1 ? $isApple : (/* we_base_browserDetect::inst()->isSafari() */ (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE)));
 		$iframestyle = $iframestyle ? : 'border:0px;width:100%;height:100%;overflow:hidden;';
 
-		return self::htmlDiv(array('style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class)
-				, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, array('name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.classList.add(\'' . ($isApple ? 'iframeScrollIpad' : 'iframeScroll') . '\');' : 'this.contentDocument.body.classList.add(\'iframeNoScroll\');') . '}catch(e){}' . $onload))
+		return self::htmlDiv(['style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class]
+		, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, ['name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.classList.add(\'' . ($isApple ? 'iframeScrollIpad' : 'iframeScroll') . '\');' : 'this.contentDocument.body.classList.add(\'iframeNoScroll\');') . '}catch(e){}' . $onload])
 		));
 	}
 
@@ -450,7 +450,7 @@ abstract class we_html_element{
 		} else {
 			$tmp = $src;
 		}
-		return self::htmlDiv(array('style' => $style, 'name' => $divname . 'Div', 'id' => $divname . 'Div', 'class' => $class), $tmp);
+		return self::htmlDiv(['style' => $style, 'name' => $divname . 'Div', 'id' => $divname . 'Div', 'class' => $class], $tmp);
 	}
 
 }

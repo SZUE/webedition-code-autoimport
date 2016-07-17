@@ -272,6 +272,7 @@ we/include/we_modules/navigation/class/weNavigation.class.php
 we/include/we_modules/navigation/class/weDynList.class.php
 we/include/we_modules/navi_language.inc.php
 we/include/we_modules/navi.php
+we/include/we_modules/navi.inc.php
 we/include/we_modules/messaging/we_webEditionCmd_messaging.inc.php
 we/include/we_modules/messaging/we_todo.inc.php
 we/include/we_modules/messaging/we_msg_update.inc.php
