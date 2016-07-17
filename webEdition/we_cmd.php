@@ -65,7 +65,7 @@ function findInclude($cmd){
 		case 'sysinfo':
 			return 'sysinfo.inc.php';
 		case 'versions_preview':
-			$ver=new we_versions_preview();
+			$ver = new we_versions_preview();
 			$ver->showHtml();
 			return true;
 		case 'versions_wizard':
@@ -90,11 +90,13 @@ function findInclude($cmd){
 			echo $import_object->getHTML();
 			return true;
 		case 'loadTree':
-			return 'loadTree.inc.php';
+			we_export_tree::loadTree();
+			return true;
 		case 'open_tag_wizzard':
 			return 'weTagWizard/we_tag_wizzard.inc.php';
 		case 'change_passwd':
-			return 'we_editors/we_editPasswd.inc.php';
+			we_users_changePassword::showDialog();
+			return true;
 		case 'exit_delete':
 		case 'exit_move':
 		case 'home':

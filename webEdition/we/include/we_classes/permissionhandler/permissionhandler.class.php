@@ -33,18 +33,22 @@
  */
 abstract class permissionhandler{
 
-	public static function hasPerm($perm){
+	public static function hasPerm($perm, $or = true){
 		if((!empty($_SESSION['perms']['ADMINISTRATOR']))){
 			return true;
 		}
-		$perm = is_array($perm) ? $perm : [$perm];
-
-		foreach($perm as $cur){
-			if((!empty($_SESSION['perms'][$cur]))){
-				return true;
-			}
+		if(empty($perm)){
+			return true;
 		}
-		return false;
+		$perm = is_array($perm) ? $perm : [$perm];
+		$ret = ($or ? false : true);
+		foreach($perm as $cur){
+			$ret = ($or ?
+					$ret || (!empty($_SESSION['perms'][$cur])) :
+					$ret && (!empty($_SESSION['perms'][$cur]))
+				);
+		}
+		return $ret;
 	}
 
 	/**

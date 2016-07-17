@@ -241,7 +241,7 @@ class we_class_folder extends we_folder{
 			$content[] = array(
 				array(
 					"align" => "center",
-					'dat' => ((permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE")) && permissionhandler::checkIfRestrictUserIsAllowed($this->searchclass->f("ID"), OBJECT_FILES_TABLE, $this->DB_WE) ?
+					'dat' => ((permissionhandler::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"])) && permissionhandler::checkIfRestrictUserIsAllowed($this->searchclass->f("ID"), OBJECT_FILES_TABLE, $this->DB_WE) ?
 						'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
 						'<i class="fa fa-square-o wecheckIcon disabled"></i>')),
 				array(
@@ -565,7 +565,7 @@ class we_class_folder extends we_folder{
 </table>
 	<table class="default" style="margin-bottom:12px;">
 	<tr>
-		<td class="defaultfont lowContrast" style="width:200px">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") .
+		<td class="defaultfont lowContrast" style="width:200px">' . (permissionhandler::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"]) ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") .
 			//(isset($this->searchclass->searchname) ? g_l('modules_objectClassfoldersearch', '[teilsuche]') : '') .
 			'</td>
 		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
@@ -574,7 +574,7 @@ class we_class_folder extends we_folder{
 	<div id="scrollContent_DoclistSearch">' . we_html_tools::htmlDialogBorder3(900, $content, $headline) . '</div>
 	<table class="default" style="margin:12px 0px;">
 	<tr>
-		<td style="width:200px;">' . (permissionhandler::hasPerm("DELETE_OBJECTFILE") || permissionhandler::hasPerm("NEW_OBJECTFILE") ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") . '</td>
+		<td style="width:200px;">' . (permissionhandler::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"]) ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: " . $javascriptAll) : "") . '</td>
 		<td style="text-align:right">' . $this->searchclass->getNextPrev($foundItems) . '</td>
 	</tr>
 	<tr>

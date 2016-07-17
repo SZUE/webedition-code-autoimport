@@ -58,7 +58,7 @@ abstract class we_rebuild_wizard{
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", true, 0, 0, "", "", false, false);
 
-		$nextbutdisabled = !(permissionhandler::hasPerm("REBUILD_ALL") || permissionhandler::hasPerm("REBUILD_FILTERD") || permissionhandler::hasPerm("REBUILD_OBJECTS") || permissionhandler::hasPerm("REBUILD_INDEX") || permissionhandler::hasPerm("REBUILD_THUMBS") || permissionhandler::hasPerm("REBUILD_META"));
+		$nextbutdisabled = !(permissionhandler::hasPerm(["REBUILD_ALL", "REBUILD_FILTERD", "REBUILD_OBJECTS", "REBUILD_INDEX", "REBUILD_THUMBS", "REBUILD_META"]));
 
 		if($dc){
 			$buttons = $refreshButton . $cancelButton;
@@ -113,7 +113,7 @@ abstract class we_rebuild_wizard{
 
 		if(($type = we_base_request::_(we_base_request::STRING, 'type'))){
 
-		} elseif(permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD')){
+		} elseif(permissionhandler::hasPerm(['REBUILD_ALL', 'REBUILD_FILTERD'])){
 			$type = 'rebuild_documents';
 		} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('REBUILD_OBJECTS')){
 			$type = 'rebuild_objects';
@@ -132,7 +132,7 @@ abstract class we_rebuild_wizard{
 		$parts = array(
 			array(
 				'headline' => '',
-				'html' => we_html_forms::radiobutton('rebuild_documents', ($type === 'rebuild_documents' && (permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD'))), 'type', g_l('rebuild', '[documents]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_documents]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (!(permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD')))),
+				'html' => we_html_forms::radiobutton('rebuild_documents', ($type === 'rebuild_documents' && (permissionhandler::hasPerm(['REBUILD_ALL', 'REBUILD_FILTERD']))), 'type', g_l('rebuild', '[documents]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_documents]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (!(permissionhandler::hasPerm(['REBUILD_ALL', 'REBUILD_FILTERD'])))),
 			)
 		);
 
@@ -184,7 +184,7 @@ abstract class we_rebuild_wizard{
 			'html' => we_html_forms::radiobutton('rebuild_medialinks', ($type === 'rebuild_medialinks' && true), 'type', g_l('rebuild', '[media_links]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_media_links]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', '', false),
 		);
 
-		$allbutdisabled = !(permissionhandler::hasPerm('REBUILD_ALL') || permissionhandler::hasPerm('REBUILD_FILTERD') || permissionhandler::hasPerm('REBUILD_OBJECTS') || permissionhandler::hasPerm('REBUILD_INDEX') || permissionhandler::hasPerm('REBUILD_THUMBS') || permissionhandler::hasPerm('REBUILD_META'));
+		$allbutdisabled = !(permissionhandler::hasPerm(['REBUILD_ALL', 'REBUILD_FILTERD', 'REBUILD_OBJECTS', 'REBUILD_INDEX', 'REBUILD_THUMBS', 'REBUILD_META']));
 
 
 		$js = '

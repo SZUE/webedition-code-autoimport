@@ -168,7 +168,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 
 		if(($parent = we_base_request::_(we_base_request::INT, $ob . '_ParentID'))){
-			$weAcResult = $weAcQuery->getItemById($parent, USER_TABLE, array('IsFolder'), false);
+			$weAcResult = $weAcQuery->getItemById($parent, USER_TABLE, ['IsFolder'], false);
 			if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 				return;
@@ -176,7 +176,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 		$i = 0;
 		while(($wsp = we_base_request::_(we_base_request::INT, $ob . '_Workspace_' . FILE_TABLE . '_' . $i))){
-			$weAcResult = $weAcQuery->getItemById($wsp, FILE_TABLE, array("IsFolder"));
+			$weAcResult = $weAcQuery->getItemById($wsp, FILE_TABLE, ["IsFolder"]);
 			if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 				$isAcError = true;
 				break;
@@ -185,7 +185,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 		$i = 0;
 		while(($wsp = we_base_request::_(we_base_request::INT, $ob . '_Workspace_' . TEMPLATES_TABLE . '_' . $i))){
-			$weAcResult = $weAcQuery->getItemById($wsp, TEMPLATES_TABLE, array("IsFolder"));
+			$weAcResult = $weAcQuery->getItemById($wsp, TEMPLATES_TABLE, ["IsFolder"]);
 			if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 				$isAcError = true;
 				break;
@@ -194,7 +194,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 		$i = 0;
 		while(($wsp = we_base_request::_(we_base_request::INT, $ob . '_Workspace_' . NAVIGATION_TABLE . '_' . $i))){
-			$weAcResult = $weAcQuery->getItemById($wsp, NAVIGATION_TABLE, array("IsFolder"));
+			$weAcResult = $weAcQuery->getItemById($wsp, NAVIGATION_TABLE, ["IsFolder"]);
 			if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 				$isAcError = true;
 				break;
@@ -203,7 +203,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 		if(defined('OBJECT_FILES_TABLE')){
 			while(($wsp = we_base_request::_(we_base_request::INT, $ob . '_Workspace_' . OBJECT_FILES_TABLE . '_' . $i))){
-				$weAcResult = $weAcQuery->getItemById($wsp, OBJECT_FILES_TABLE, array("IsFolder"));
+				$weAcResult = $weAcQuery->getItemById($wsp, OBJECT_FILES_TABLE, ["IsFolder"]);
 				if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 					$isAcError = true;
 					break;
@@ -214,7 +214,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		if(defined('NEWSLETTER_TABLE')){
 			while(($wsp = we_base_request::_(we_base_request::INT, $ob . '_Workspace_' . NEWSLETTER_TABLE . '_' . $i))){
-				$weAcResult = $weAcQuery->getItemById($wsp, NEWSLETTER_TABLE, array("IsFolder"));
+				$weAcResult = $weAcQuery->getItemById($wsp, NEWSLETTER_TABLE, ["IsFolder"]);
 				if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 					$isAcError = true;
 					break;
@@ -284,7 +284,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 		$foo = ($user_object->ID ?
 				getHash('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($user_object->ID), $user_object->DB_WE) :
-				array('ParentID' => 0));
+				['ParentID' => 0]);
 
 		$ret = $user_object->saveToDB();
 		$_SESSION['user_session_data'] = $user_object;

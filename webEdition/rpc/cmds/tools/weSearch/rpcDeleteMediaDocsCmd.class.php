@@ -27,7 +27,7 @@ class rpcDeleteMediaDocsCmd extends we_rpc_cmd{
 	function execute(){
 		we_html_tools::protect();
 
-		if(!permissionhandler::hasPerm('ADMINISTRATOR') && !permissionhandler::hasPerm('DELETE_DOCUMENT')){
+		if(!permissionhandler::hasPerm('DELETE_DOCUMENT')){
 			//return 'no perms';
 		}
 

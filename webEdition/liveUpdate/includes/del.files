@@ -452,6 +452,7 @@ we/include/we_editors/we_make_backup.inc.php
 we/include/we_editors/we_init_doc.inc.php
 we/include/we_editors/we_fileupload.inc.php
 we/include/we_editors/we_file_locked.inc.php
+we/include/we_editors/we_editPasswd.inc.php
 we/include/we_editors/file_restricted_footer.inc.php
 we/include/we_editors/file_no_save_footer.inc.php
 we/include/we_editors/file_locked_footer.inc.php
@@ -660,6 +661,7 @@ we/include/sidebar.inc.php
 we/include/notInstalledModules.inc.php
 we/include/newMsg.inc.php
 we/include/messageModuleNotActivated.inc.php
+we/include/loadTree.inc.php
 we/include/jsMessageConsole/messageConsole.php
 we/include/htaccessbase.txt
 we/include/home_rss.inc.php

@@ -457,7 +457,7 @@ abstract class we_root extends we_class{
 		}
 		if(!$ctConditionOk){ // check table condition in respective subclasses: eg in we_collection we check SAVE_COLLECTION
 			if(defined('OBJECT_TABLE') && ($this->Table == OBJECT_FILES_TABLE)){
-				if(!(permissionhandler::hasPerm('NEW_OBJECTFILE_FOLDER') || permissionhandler::hasPerm('NEW_OBJECTFILE'))){
+				if(!(permissionhandler::hasPerm(['NEW_OBJECTFILE_FOLDER', 'NEW_OBJECTFILE']))){
 					return false;
 				}
 			} else {
