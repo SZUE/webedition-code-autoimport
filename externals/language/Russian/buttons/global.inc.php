@@ -144,6 +144,9 @@ $l_buttons_global=array(
 	'btn_fs_back'=>array(
 		'alt'=>'One level back',
 	),
+	'btn_function_copy'=>array(
+		'alt'=>'Copy',
+	),
 	'btn_function_plus'=>array(
 		'alt'=>'Add',
 	),
