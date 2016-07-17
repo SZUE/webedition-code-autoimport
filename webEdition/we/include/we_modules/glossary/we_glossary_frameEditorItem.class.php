@@ -24,7 +24,7 @@
  */
 class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 
-	function Header(we_glossary_frames $weGlossaryFrames){
+	public static function Header(we_glossary_frames $weGlossaryFrames){
 
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(new we_tab(g_l('modules_glossary', '[property]'), true, "setTab(1);"));
@@ -50,7 +50,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		return self::buildHeader($weGlossaryFrames, $we_tabs, $title, ($weGlossaryFrames->View->Glossary->ID ? oldHtmlspecialchars($weGlossaryFrames->View->Glossary->Text) : g_l('modules_glossary', '[menu_new]')) . '<div id="mark" style="display: none;">*</div>');
 	}
 
-	function Body(we_glossary_frames $weGlossaryFrames){
+	public static function Body(we_glossary_frames $weGlossaryFrames){
 		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 		$tabNr = ($weGlossaryFrames->View->Glossary->IsFolder && $tabNr != 1) ? 1 : $tabNr;
 		$yuiSuggest = &weSuggest::getInstance();
@@ -74,7 +74,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 		return self::buildBody($weGlossaryFrames, $out);
 	}
 
-	function Footer(we_glossary_frames $weGlossaryFrames){
+	public static function Footer(we_glossary_frames $weGlossaryFrames){
 		$SaveButton = we_html_button::create_button(we_html_button::SAVE, "javascript:if(top.publishWhenSave==1){top.content.editor.edbody.document.getElementById('Published').value=1;};we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
 		$UnpublishButton = we_html_button::create_button('deactivate', "javascript:top.content.editor.edbody.document.getElementById('Published').value=0;top.opener.top.we_cmd('save_glossary')", true, 100, 22, '', '', (!permissionhandler::hasPerm('NEW_GLOSSARY') && !permissionhandler::hasPerm('EDIT_GLOSSARY')));
 
@@ -111,7 +111,7 @@ function we_save() {
 		return self::buildFooter($weGlossaryFrames, $form);
 	}
 
-	private function getHTMLTabProperties(we_glossary_glossary $glossary){
+	private static function getHTMLTabProperties(we_glossary_glossary $glossary){
 		$types = array(
 			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
 			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
@@ -175,7 +175,7 @@ function we_save() {
 </div>';
 	}
 
-	function getHTMLAcronym(we_glossary_glossary $glossary){
+	private static function getHTMLAcronym(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_ACRONYM){
 			$text = html_entity_decode($glossary->Text);
 			$title = html_entity_decode($glossary->Title);
@@ -195,7 +195,7 @@ function we_save() {
 </div>';
 	}
 
-	function getHTMLForeignWord(we_glossary_glossary $glossary){
+	private static function getHTMLForeignWord(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_FOREIGNWORD){
 			$text = html_entity_decode($glossary->Text);
 			$language = $glossary->getAttribute('lang');
@@ -210,7 +210,7 @@ function we_save() {
 </table></div>';
 	}
 
-	function getHTMLTextReplacement(we_glossary_glossary $glossary){
+	private static function getHTMLTextReplacement(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_TEXTREPLACE){
 			$text = html_entity_decode($glossary->Text, null, $GLOBALS["WE_BACKENDCHARSET"]);
 			$title = html_entity_decode($glossary->Title, null, $GLOBALS["WE_BACKENDCHARSET"]);
@@ -226,7 +226,7 @@ function we_save() {
 </table></div>';
 	}
 
-	function getHTMLLink(we_glossary_glossary $glossary){
+	private static function getHTMLLink(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_LINK){
 			$text = html_entity_decode($glossary->Text);
 			$mode = $glossary->getAttribute('mode');
@@ -253,7 +253,7 @@ function we_save() {
 			'</div>';
 	}
 
-	function getHTMLIntern(we_glossary_glossary $glossary){
+	private static function getHTMLIntern(we_glossary_glossary $glossary){
 		$cmd1 = "document.we_form.elements['link[Attributes][InternLinkID]'].value";
 		$cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkPath]'].value") . "','','','0')";
 		$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false);
@@ -287,7 +287,7 @@ function we_save() {
 </table></div>';
 	}
 
-	function getHTMLExtern(we_glossary_glossary $glossary){
+	private static function getHTMLExtern(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_LINK && $glossary->getAttribute('mode') === "extern"){
 			$url = $glossary->getAttribute('ExternUrl');
 			$parameter = $glossary->getAttribute('ExternParameter');
@@ -305,7 +305,7 @@ function we_save() {
 </div>';
 	}
 
-	function getHTMLObject(we_glossary_glossary $glossary){
+	private static function getHTMLObject(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_LINK && $glossary->getAttribute('mode') === "object"){
 			$linkPath = $glossary->getAttribute('ObjectLinkPath');
 			$linkID = $glossary->getAttribute('ObjectLinkID');
@@ -349,7 +349,7 @@ function we_save() {
 	</table></div>';
 	}
 
-	function getHTMLCategory(we_glossary_glossary $glossary){
+	private static function getHTMLCategory(we_glossary_glossary $glossary){
 		if($glossary->Type == we_glossary_glossary::TYPE_LINK && $glossary->getAttribute('mode') === "category"){
 			$linkPath = $glossary->getAttribute('CategoryLinkPath');
 			$linkID = $glossary->getAttribute('CategoryLinkID');
@@ -413,7 +413,7 @@ function we_save() {
 
 
 
-	function getLangField($name, $value, $title, $width){
+	private static function getLangField($name, $value, $title, $width){
 
 		$name = md5($name);
 		//FIXME: these values should be obtained from global settings
@@ -436,7 +436,7 @@ function we_save() {
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
 
-	function getRevRel($name, $value, $title, $width){
+	private static function getRevRel($name, $value, $title, $width){
 
 		$name = md5($name);
 		$options = array(
