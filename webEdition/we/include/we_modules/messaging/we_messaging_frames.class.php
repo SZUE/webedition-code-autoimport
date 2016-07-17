@@ -216,7 +216,7 @@ function clearSearch() {
 		return $this->getHTMLDocument(we_html_element::htmlBody($attribs = array('id' => 'eHeaderBody'), $table->getHTML()), $extraHead);
 	}
 
-	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
+	protected function getHTMLEditorFooter(array $btn_cmd = [], $extraHead = ''){
 
 	}
 

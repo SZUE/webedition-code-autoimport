@@ -38,7 +38,7 @@ class we_workflow_frames extends we_modules_frame{
 			case "edheader":
 				return $this->getHTMLEditorHeader($mode);
 			case "edfooter":
-				return $this->getHTMLEditorFooter($mode);
+				return $this->getHTMLEditorFooter([$mode]);
 			case "qlog":
 				return $this->getHTMLLogQuestion();
 			case "log":
@@ -102,9 +102,9 @@ function setTab(tab){
 		return $this->getHTMLDocument($body, $extraHead);
 	}
 
-	protected function getHTMLEditorFooter($mode = 0, $extraHead = ''){
+	protected function getHTMLEditorFooter(array $mode = [0], $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return parent::getHTMLEditorFooter('');
+			return parent::getHTMLEditorFooter([]);
 		}
 
 		$extraHead = we_html_element::jsElement('

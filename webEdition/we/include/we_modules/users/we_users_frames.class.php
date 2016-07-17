@@ -132,7 +132,10 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	function getHTML($what = '', $mode = '', $step = 0){
 		switch($what){
 			case 'edfooter':
-				return $this->getHTMLEditorFooter('save_user');
+				return $this->getHTMLEditorFooter([
+						we_html_button::SAVE => [['NEW_GROUP', 'NEW_USER', 'SAVE_USER', 'SAVE_GROUP'], 'save_user'],
+						we_html_button::DELETE => [['DELETE_USER', 'DELETE_GROUP'], 'delete_user']
+				]);
 			case 'frameset':
 				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
 			default:

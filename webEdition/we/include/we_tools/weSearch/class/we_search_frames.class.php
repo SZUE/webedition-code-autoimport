@@ -174,7 +174,7 @@ function setTab(tab) {
 		return we_base_request::_(we_base_request::INT, 'tabnr', self::TAB_DOCUMENTS);
 	}
 
-	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
+	protected function getHTMLEditorFooter(array $btn_cmd = [], $extraHead = ''){
 		$but_table = we_html_button::create_button('save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')));
 
 		return $this->getHTMLDocument(we_html_element::jsElement('

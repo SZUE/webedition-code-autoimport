@@ -126,7 +126,7 @@ function setTab(tab) {
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
-	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
+	protected function getHTMLEditorFooter(array $btn_cmd = [], $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 		}
