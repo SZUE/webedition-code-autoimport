@@ -38,7 +38,7 @@ foreach($mods as $menuItem){
 				$we_tabs->addTab(
 					($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
 					$menuItem["text"]
-					, ( $mod == $menuItem["name"]), "openModule('" . $menuItem["name"] . "');", array("id" => $menuItem["name"]));
+					, ( $mod == $menuItem["name"]), "openModule('" . $menuItem["name"] . "');", ["id" => $menuItem["name"]]);
 			}
 		}
 	}
