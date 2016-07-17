@@ -3,7 +3,7 @@ CREATE TABLE ###TBLPREFIX###tblOrder (
 	shopname tinytext NOT NULL DEFAULT '',
 	customOrderNo varchar(100) NOT NULL DEFAULT '',
   IntCustomerID int unsigned default NULL,
-  DateOrder DATETIME timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  DateOrder TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   DateConfirmation DATETIME default NULL,
 
 	PRIMARY KEY  (ID),
