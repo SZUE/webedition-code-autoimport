@@ -479,6 +479,7 @@ we/include/we_classes/we_temporaryDocument.class.php
 we/include/we_classes/we_template.inc.php
 we/include/we_classes/we_template.class.php
 we/include/we_classes/we_tabs.class.inc.php
+we/include/we_classes/we_tab.class.php
 we/include/we_classes/we_tab.class.inc.php
 we/include/we_classes/we_search.inc.php
 we/include/we_classes/we_rtf2html.inc.php

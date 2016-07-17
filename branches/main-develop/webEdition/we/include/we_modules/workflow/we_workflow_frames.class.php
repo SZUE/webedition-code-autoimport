@@ -63,10 +63,10 @@ class we_workflow_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if($mode == 0){
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), false, "setTab(" . self::TAB_PROPERTIES . ");", ["id" => "tab_0"]));
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][overview]'), false, "setTab(" . self::TAB_OVERVIEW . ");", ["id" => "tab_1"]));
+			$we_tabs->addTab(g_l('tabs', '[module][properties]'), false, "setTab(" . self::TAB_PROPERTIES . ");", ["id" => "tab_0"]);
+			$we_tabs->addTab(g_l('tabs', '[module][overview]'), false, "setTab(" . self::TAB_OVERVIEW . ");", ["id" => "tab_1"]);
 		} else {
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[editor][information]'), true, "//", ["id" => "tab_0"]));
+			$we_tabs->addTab(g_l('tabs', '[editor][information]'), true, "//", ["id" => "tab_0"]);
 		}
 
 		$textPre = g_l('modules_workflow', ($mode == 1 ? '[document]' : '[workflow]'));

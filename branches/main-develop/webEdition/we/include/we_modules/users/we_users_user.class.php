@@ -2228,7 +2228,7 @@ function show_seem_chooser(val) {
 
 		$we_tabs = new we_tabs();
 		foreach($tabs as $key => $val){
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][' . $val . ']'), ($tab == $key), 'self.setTab(' . $key . ');'));
+			$we_tabs->addTab(g_l('tabs', '[module][' . $val . ']'), ($tab == $key), 'self.setTab(' . $key . ');');
 		}
 
 

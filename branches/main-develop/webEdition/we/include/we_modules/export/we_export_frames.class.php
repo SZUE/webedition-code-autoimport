@@ -63,10 +63,10 @@ class we_export_frames extends we_modules_frame{
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(new we_tab(g_l('export', '[property]'), false, "setTab(1);", array("id" => "tab_1")));
+		$we_tabs->addTab(g_l('export', '[property]'), false, "setTab(1);", ["id" => "tab_1"]);
 		if($this->View->export->IsFolder == 0){
-			$we_tabs->addTab(new we_tab(g_l('export', '[options]'), false, "setTab(2);", array("id" => "tab_2")));
-			$we_tabs->addTab(new we_tab(g_l('export', '[log]'), false, "setTab(3);", array("id" => "tab_3")));
+			$we_tabs->addTab(g_l('export', '[options]'), false, "setTab(2);", ["id" => "tab_2"]);
+			$we_tabs->addTab(g_l('export', '[log]'), false, "setTab(3);", ["id" => "tab_3"]);
 		}
 
 		$tabsHead = we_tabs::getHeader('

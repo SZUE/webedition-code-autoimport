@@ -26,7 +26,7 @@ class we_glossary_frameEditorFolder extends we_glossary_frameEditor{
 
 	function Header($weGlossaryFrames){
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(new we_tab(g_l('modules_glossary', '[overview]'), true, "setTab(1);"));
+		$we_tabs->addTab(g_l('modules_glossary', '[overview]'), true, "setTab(1);");
 		$frontendL = getWeFrontendLanguagesForBackend();
 
 		return self::buildHeader($weGlossaryFrames, $we_tabs, g_l('modules_glossary', '[folder]'), $frontendL[substr(we_base_request::_(we_base_request::STRING, 'cmdid'), 0, 5)]);

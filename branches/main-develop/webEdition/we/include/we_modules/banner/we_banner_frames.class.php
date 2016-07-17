@@ -63,11 +63,11 @@ class we_banner_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if($isFolder){
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), true, "setTab(" . we_banner_banner::PAGE_PROPERTY . ");"));
+			$we_tabs->addTab(g_l('tabs', '[module][properties]'), true, "setTab(" . we_banner_banner::PAGE_PROPERTY . ");");
 		} else {
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][properties]'), ($page == we_banner_banner::PAGE_PROPERTY), "setTab(" . we_banner_banner::PAGE_PROPERTY . ");"));
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][placement]'), ($page == we_banner_banner::PAGE_PLACEMENT), "setTab(" . we_banner_banner::PAGE_PLACEMENT . ");"));
-			$we_tabs->addTab(new we_tab(g_l('tabs', '[module][statistics]'), ($page == we_banner_banner::PAGE_STATISTICS), "setTab(" . we_banner_banner::PAGE_STATISTICS . ");"));
+			$we_tabs->addTab(g_l('tabs', '[module][properties]'), ($page == we_banner_banner::PAGE_PROPERTY), "setTab(" . we_banner_banner::PAGE_PROPERTY . ");");
+			$we_tabs->addTab(g_l('tabs', '[module][placement]'), ($page == we_banner_banner::PAGE_PLACEMENT), "setTab(" . we_banner_banner::PAGE_PLACEMENT . ");");
+			$we_tabs->addTab(g_l('tabs', '[module][statistics]'), ($page == we_banner_banner::PAGE_STATISTICS), "setTab(" . we_banner_banner::PAGE_STATISTICS . ");");
 		}
 
 		$extraHead = we_tabs::getHeader('
