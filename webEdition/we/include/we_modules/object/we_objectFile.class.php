@@ -3038,7 +3038,7 @@ class we_objectFile extends we_document{
 			}
 			return $path . '?we_objectID=' . intval($id) . str_replace('?', '&amp;', $pidstr);
 		}
-		if($foo['Workspaces'] !== ''){
+		if($foo['Workspaces']){
 			$path = self::getNextDynDoc('', $pid, $foo['Workspaces'], '', $DB_WE);
 			/* $fooArr = makeArrayFromCSV($foo['Workspaces']);
 			  $path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . $DB_WE->escape(id_to_path($fooArr[0], FILE_TABLE, $DB_WE)) . '%" LIMIT 1', '', $DB_WE); */
@@ -3049,8 +3049,8 @@ class we_objectFile extends we_document{
 	}
 
 	//Fix: #10219 leave this public while using in redirectSEOurls.php!
-	public function getNextDynDoc($path, $pid, $ws1, $ws2, we_database_base $DB_WE){
-		if($path && f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE)){
+	public static function getNextDynDoc($path, $pid, $ws1, $ws2, we_database_base $DB_WE){
+		if($path && f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE)){
 			return $path;
 		}
 
