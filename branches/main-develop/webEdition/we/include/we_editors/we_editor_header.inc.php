@@ -50,7 +50,7 @@ switch($_SESSION['weS']['we_mode']){
 					($we_doc->isBinary() ? g_l('weClass', '[upload]') :
 						g_l('weClass', '[edit]')
 					)
-					]);
+				]);
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_IMAGEEDIT, $we_doc->EditPageNrs)){
@@ -100,7 +100,7 @@ switch($_SESSION['weS']['we_mode']){
 				$we_tabs->addTab('<i class="fa fa-lg fa-bug"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_VALIDATION)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_VALIDATION . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_VALIDATION, 'title' => g_l('weClass', '[validation]')]);
 			}
 
-			if(in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $we_doc->EditPageNrs) && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
+			if(in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $we_doc->EditPageNrs) && (permissionhandler::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER']))){
 				$jscmd = "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_WEBUSER . ",'" . $we_transaction . "');";
 				$we_tabs->addTab('<i class="fa fa-lg fa-group"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_WEBUSER)), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), ["id" => "tab_" . we_base_constants::WE_EDITPAGE_WEBUSER, 'title' => g_l('weClass', '[webUser]')]);
 			}

@@ -112,7 +112,7 @@ class we_folder extends we_root{
 			return;
 		}
 
-		if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
+		if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER'])){
 			switch($this->Table){
 				case FILE_TABLE:
 				case OBJECT_FILES_TABLE:

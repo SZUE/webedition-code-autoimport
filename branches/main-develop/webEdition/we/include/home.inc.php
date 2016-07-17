@@ -250,7 +250,7 @@ _EditorFrame.initEditorFrameData({
 	we_html_element::htmlBody(
 		[ 'class' => 'noHome', "onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
 		], we_html_element::htmlDiv(
-			["class" => "defaultfont errorMessage", "style" => "width: 400px;"], (permissionhandler::hasPerm("CHANGE_START_DOCUMENT") && permissionhandler::hasPerm("EDIT_SETTINGS") ?
+			["class" => "defaultfont errorMessage", "style" => "width: 400px;"], (permissionhandler::hasPerm(["CHANGE_START_DOCUMENT", "EDIT_SETTINGS"], false) ?
 				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
 					we_html_button::create_button('preferences', "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
 				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));

@@ -71,7 +71,7 @@ class we_collection extends we_root{
 
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_INFO);
-			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') || permissionhandler::hasPerm('CAN_CHANGE_DOCS_CUSTOMER'))){
+			if(defined('CUSTOMER_TABLE') && (permissionhandler::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER']))){
 				$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_WEBUSER;
 			}
 		}
@@ -290,7 +290,7 @@ class we_collection extends we_root{
 			we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][selector_remTable]'), we_html_tools::TYPE_HELP, false);
 
 
-		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'),false, 'defaultfont', '', !permissionhandler::hasPerm('NEW_COLLECTION'));
+		$dublettes = we_html_forms::checkboxWithHidden($this->IsDuplicates, 'we_' . $this->Name . '_IsDuplicates', g_l('weClass', '[collection][allowDuplicates]'), false, 'defaultfont', '', !permissionhandler::hasPerm('NEW_COLLECTION'));
 
 		$this->DefaultDir = $this->DefaultDir ? : (IMAGESTARTID_DEFAULT ? : 0);
 		$this->DefaultPath = $this->DefaultDir ? id_to_path($this->DefaultDir, FILE_TABLE) : '';
@@ -540,8 +540,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$yuiSuggest->setSelectButton(null, 0);
 		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 		$yuiSuggest->setAdditionalButton('', 0);
-		$divRowContent =  we_html_element::htmlDiv(array('class' => 'divContent'),
-				we_html_element::htmlDiv(array('class' => 'colContentInput'), $yuiSuggest->getHTML()) .
+		$divRowContent = we_html_element::htmlDiv(array('class' => 'divContent'), we_html_element::htmlDiv(array('class' => 'colContentInput'), $yuiSuggest->getHTML()) .
 				we_html_element::htmlDiv(array('class' => 'colContentTextOnly'))
 		);
 

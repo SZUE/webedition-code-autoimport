@@ -233,7 +233,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 				$extra = '<td>' .
 					($this->filter && isset($this->ctb[$this->filter]) ?
 						we_html_button::create_button($this->ctb[$this->filter], "javascript:top.newFile();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
-						(permissionhandler::hasPerm('NEW_GRAFIK') || permissionhandler::hasPerm('NEW_SONSTIGE') ? we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:top.newFile();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
+						(permissionhandler::hasPerm(['NEW_GRAFIK', 'NEW_SONSTIGE']) ? we_html_button::create_button('fa:btn_add_file,fa-plus,fa-lg fa-file-o', "javascript:top.newFile();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') :
 							'')
 					) .
 					'</td>' .
@@ -260,15 +260,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 			}
 		} elseif(!
 			(
-			permissionhandler::hasPerm("NEW_GRAFIK") ||
-			permissionhandler::hasPerm("NEW_HTML") ||
-			permissionhandler::hasPerm("NEW_JS") ||
-			permissionhandler::hasPerm("NEW_CSS") ||
-			permissionhandler::hasPerm("NEW_TEXT") ||
-			permissionhandler::hasPerm("NEW_HTACCESS") ||
-			permissionhandler::hasPerm("NEW_FLASH") ||
-			permissionhandler::hasPerm("NEW_SONSTIGE") ||
-			permissionhandler::hasPerm('FILE_IMPORT')
+			permissionhandler::hasPerm(["NEW_GRAFIK", "NEW_HTML", "NEW_JS", "NEW_CSS", "NEW_TEXT", "NEW_HTACCESS", "NEW_FLASH", "NEW_SONSTIGE", 'FILE_IMPORT'])
 			)
 		){
 			return false;

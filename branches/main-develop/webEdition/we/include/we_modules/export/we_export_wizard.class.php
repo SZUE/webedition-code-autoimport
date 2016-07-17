@@ -210,7 +210,7 @@ var path="/";'
 	}
 
 	private function getHTMLStep0(){
-		$wexpotEnabled = (permissionhandler::hasPerm('NEW_EXPORT') || permissionhandler::hasPerm('DELETE_EXPORT') || permissionhandler::hasPerm('EDIT_EXPORT') || permissionhandler::hasPerm('MAKE_EXPORT'));
+		$wexpotEnabled = (permissionhandler::hasPerm(['NEW_EXPORT', 'DELETE_EXPORT', 'EDIT_EXPORT', 'MAKE_EXPORT']));
 
 		$extype = $this->exportVars["extype"];
 
@@ -396,14 +396,14 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=2";');
 		$parts = array(
 			array(
 				"headline" => "",
-				"html" => we_html_forms::radiobutton("docs", ($art === "docs" ? true : ($art != 'objects')), "art", g_l('export', '[documents]'), true, "defaultfont",  "top.art='docs'"),
+				"html" => we_html_forms::radiobutton("docs", ($art === "docs" ? true : ($art != 'objects')), "art", g_l('export', '[documents]'), true, "defaultfont", "top.art='docs'"),
 				'space' => we_html_multiIconBox::SPACE_SMALL,
 				'noline' => 1)
 		);
 		if(defined('OBJECT_FILES_TABLE')){
 			$parts[] = array(
 				"headline" => "",
-				"html" => we_html_forms::radiobutton("objects", ($art === 'objects' ? true : ($art != 'docs')), "art", g_l('export', '[objects]'), true, "defaultfont",  "top.art='objects'"),
+				"html" => we_html_forms::radiobutton("objects", ($art === 'objects' ? true : ($art != 'docs')), "art", g_l('export', '[objects]'), true, "defaultfont", "top.art='objects'"),
 				'space' => we_html_multiIconBox::SPACE_SMALL,
 				'noline' => 1);
 		}
@@ -425,9 +425,9 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=2";');
 		$art = $this->exportVars["art"];
 
 		$js = ($art === 'objects' && defined('OBJECT_FILES_TABLE') ?
-				we_html_element::jsElement( 'top.table="' . OBJECT_FILES_TABLE . '";') :
+				we_html_element::jsElement('top.table="' . OBJECT_FILES_TABLE . '";') :
 				($art == 'docs' ?
-					we_html_element::jsElement( 'top.table="' . FILE_TABLE . '";') :
+					we_html_element::jsElement('top.table="' . FILE_TABLE . '";') :
 					'')
 			);
 
@@ -671,7 +671,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 
 		$table = new we_html_table(array('class' => 'default'), 2, 1);
 
-		$table->setColContent(0, 0, we_html_forms::radiobutton("local", ($export_to === "local" ? true : false), "export_to", g_l('export', '[export_to_local]'), true, "defaultfont",   "top.export_to='local'"));
+		$table->setColContent(0, 0, we_html_forms::radiobutton("local", ($export_to === "local" ? true : false), "export_to", g_l('export', '[export_to_local]'), true, "defaultfont", "top.export_to='local'"));
 		$table->setCol(1, 0, array('style' => 'padding-top:20px;'), we_html_tools::htmlFormElementTable($this->formFileChooser(260, "path", $path, "", "folder"), we_html_forms::radiobutton("server", ($export_to === "server" ? true : false), "export_to", g_l('export', '[export_to_server]'), true, "defaultfont", "top.export_to='server'")));
 
 		$parts[] = array("headline" => g_l('export', '[export_to]'), "html" => $table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED);

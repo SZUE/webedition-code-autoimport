@@ -245,4 +245,29 @@ if(!' . $this->topFrame . '.treeData) {' .
 		);
 	}
 
+	public static function loadTree(){
+		$topFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', "top", 4);
+//added for export module.
+		$treeFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', $topFrame . '.body', 5);
+		$cmdFrame = we_base_request::_(we_base_request::STRING, 'we_cmd', $topFrame . '.cmd', 6);
+		$tree = new we_export_tree("export_frameset.php", $topFrame, $treeFrame, $cmdFrame);
+
+		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
+
+		if($table === FILE_TABLE && !permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+			if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
+				$table = TEMPLATES_TABLE;
+			} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+				$table = OBJECT_FILES_TABLE;
+			} else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+				$table = OBJECT_TABLE;
+			}
+		}
+
+		$parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
+		$openFolders = array_filter(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 3));
+
+		$tree->loadHTML($table, $parentFolder, $openFolders);
+	}
+
 }

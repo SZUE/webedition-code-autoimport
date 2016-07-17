@@ -319,7 +319,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		return '
 	<table class="default withBigSpace" style="margin:12px 0px 12px 5px;">
 	<tr>
-		<td>' . ($extended && (permissionhandler::hasPerm("DELETE_GLOSSARY") || permissionhandler::hasPerm("NEW_GLOSSARY")) ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: AllItems();") : "") . '</td>
+		<td>' . ($extended && (permissionhandler::hasPerm(["DELETE_GLOSSARY", "NEW_GLOSSARY"])) ? we_html_button::create_button(we_html_button::TOGGLE, "javascript: AllItems();") : "") . '</td>
 		<td style="text-align:right"><table class="default">
 			<tr>
 				<td>' . $prev . '</td>

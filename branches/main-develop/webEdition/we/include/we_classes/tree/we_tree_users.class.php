@@ -43,7 +43,7 @@ class we_tree_users extends we_tree_base{
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
 		$items = [];
 		$db = new DB_WE();
-		if(permissionhandler::hasPerm("NEW_USER") || permissionhandler::hasPerm("NEW_GROUP") || permissionhandler::hasPerm("SAVE_USER") || permissionhandler::hasPerm("SAVE_GROUP") || permissionhandler::hasPerm("DELETE_USER") || permissionhandler::hasPerm("DELETE_GROUP")){
+		if(permissionhandler::hasPerm(["NEW_USER", "NEW_GROUP", "SAVE_USER", "SAVE_GROUP", "DELETE_USER", "DELETE_GROUP"])){
 
 			$parent_path = (permissionhandler::hasPerm("ADMINISTRATOR") ?
 					'/' :
