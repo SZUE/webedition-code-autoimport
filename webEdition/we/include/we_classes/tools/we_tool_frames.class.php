@@ -62,7 +62,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(g_l('tools', '[properties]'), false, "setTab(1);", array("id" => "tab_1"));
+		$we_tabs->addTab(g_l('tools', '[properties]'), false, "setTab(1);", ["id" => "tab_1"]);
 
 		$tabsHead = we_tabs::getHeader('
 function mark() {
