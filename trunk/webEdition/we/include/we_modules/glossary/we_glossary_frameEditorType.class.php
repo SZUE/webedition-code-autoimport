@@ -119,7 +119,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 		return self::buildBody($weGlossaryFrames, $content);
 	}
 
-	function Footer(we_glossary_frames $weGlossaryFrames){
+	public static function Footer(we_glossary_frames $weGlossaryFrames){
 		return self::buildFooter($weGlossaryFrames, "");
 	}
 

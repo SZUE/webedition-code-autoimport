@@ -40,7 +40,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ''), we_html_multiIconBox::getHTML('', self::getHTMLOverview($weGlossaryFrames), 30)));
 	}
 
-	function Footer($weGlossaryFrames){
+	public static function Footer($weGlossaryFrames){
 		return self::buildFooter($weGlossaryFrames, "");
 	}
 
