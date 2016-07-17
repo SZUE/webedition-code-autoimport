@@ -74,7 +74,7 @@ abstract class we_modules_frame{
 			case 'edbody':
 				return $this->getHTMLEditorBody();
 			case 'edfooter':
-				return $this->getHTMLEditorFooter();
+				return $this->getHTMLEditorFooter([]);
 			case 'cmd':
 				return $this->getHTMLCmd();
 			case 'tree':
@@ -196,20 +196,20 @@ abstract class we_modules_frame{
 // to be overridden
 	}
 
-	protected function getHTMLEditorFooter($btn_cmd, $extraHead = ''){
+	protected function getHTMLEditorFooter(array $btn_cmd, $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->getHTMLDocument(we_html_element::htmlBody(array("style" => "background-color:#EFF0EF"), ""));
 		}
 
-		$extraHead .= we_html_element::jsElement('
-function we_save() {
-	top.content.we_cmd("' . $btn_cmd . '");
-}');
-
-		$table2 = new we_html_table(array('class' => 'default', 'style' => 'width:300px;'), 1, 2);
+		$table2 = new we_html_table(array('class' => 'default'), 1, count($btn_cmd));
 		$table2->setRow(0, array('style' => 'vertical-align:middle'));
-		$table2->setCol(0, 1, [], we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save()'));
-
+		$pos = 0;
+		foreach($btn_cmd as $but => $cur){
+			list($right, $cmd) = $cur;
+			if(permissionhandler::hasPerm($right)){
+				$table2->setColContent(0, $pos++, we_html_button::create_button($but, "javascript:top.content.we_cmd('" . $cmd . "')"));
+			}
+		}
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('id' => 'footerBody'), $table2->getHtml()), $extraHead);
 	}
 

@@ -38,7 +38,9 @@ class we_banner_frames extends we_modules_frame{
 			case "edheader":
 				return $this->getHTMLEditorHeader($mode);
 			case "edfooter":
-				return $this->getHTMLEditorFooter('save_banner', we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
+				return $this->getHTMLEditorFooter([
+						we_html_button::SAVE => [ ['EDIT_BANNER'], 'save_banner']
+						], we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
 			case 'frameset':
 				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
 			default:

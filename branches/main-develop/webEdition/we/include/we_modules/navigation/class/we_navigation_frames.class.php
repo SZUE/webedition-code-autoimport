@@ -1366,24 +1366,20 @@ function showPreview() {
 		));
 	}
 
-	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
+	protected function getHTMLEditorFooter(array $btn_cmd = [], $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return parent::getHTMLEditorFooter('');
+			return parent::getHTMLEditorFooter([]);
 		}
 
 		$table2 = new we_html_table(array('class' => 'default', "style" => 'width:400px;'), 1, 3);
-		$table2->setColContent(0, 0, we_html_element::htmlSpan(array('style' => 'margin-left: 15px'), we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))));
+		$table2->setColContent(0, 0, we_html_element::htmlSpan(array('style' => 'margin-left: 15px'), we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.makeNewDoc=document.we_form.makeNewDoc.checked;top.content.we_cmd('module_navigation_save');", true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')))));
 		$table2->setColContent(0, 1, we_html_forms::checkbox("makeNewDoc", false, "makeNewDoc", g_l('global', ($this->View->Model->IsFolder ? '[we_new_folder_after_save]' : '[we_new_entry_after_save]')), false, "defaultfont", ""));
-		if(permissionhandler::hasPerm('DELETE_NAVIGATION') || permissionhandler::hasPerm('EDIT_NAVIGATION')){
+		if(permissionhandler::hasPerm(['DELETE_NAVIGATION', 'EDIT_NAVIGATION'])){
 			$table2->setColContent(0, 2, we_html_button::create_button(we_html_button::TRASH, "javascript:top.we_cmd('module_navigation_delete');"));
 		}
 
 		return $this->getHTMLDocument(
-				we_html_element::jsElement('
-function we_save() {
-	top.content.makeNewDoc = document.we_form.makeNewDoc.checked;
-	top.content.we_cmd("module_' . $this->module . '_save");
-}') . we_html_element::htmlBody(
+				we_html_element::htmlBody(
 					array(
 					"id" => "footerBody",
 					"onload" => "document.we_form.makeNewDoc.checked=top.content.makeNewDoc;"

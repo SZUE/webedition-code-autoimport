@@ -34,8 +34,17 @@
 abstract class permissionhandler{
 
 	public static function hasPerm($perm){
-		return (!empty($_SESSION['perms']['ADMINISTRATOR'])) ||
-			((!empty($_SESSION['perms'][$perm])));
+		if((!empty($_SESSION['perms']['ADMINISTRATOR']))){
+			return true;
+		}
+		$perm = is_array($perm) ? $perm : [$perm];
+
+		foreach($perm as $cur){
+			if((!empty($_SESSION['perms'][$cur]))){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	/**

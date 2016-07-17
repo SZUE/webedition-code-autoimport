@@ -93,9 +93,9 @@ class we_glossary_frames extends we_modules_frame{
 		}
 	}
 
-	protected function getHTMLEditorFooter($btn_cmd = '', $extraHead = ''){
+	protected function getHTMLEditorFooter(array $btn_cmd = [], $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, "home")){
-			return parent::getHTMLEditorFooter('');
+			return parent::getHTMLEditorFooter([]);
 		}
 		$cmdid = we_base_request::_(we_base_request::STRING, 'cmdid');
 		if($cmdid && !is_numeric($cmdid)){

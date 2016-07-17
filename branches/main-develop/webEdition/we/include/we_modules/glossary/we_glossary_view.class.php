@@ -210,7 +210,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$this->Glossary->Title = htmlentities($this->Glossary->Title, ENT_QUOTES);
 
 					if($isNew){
-						$js = 'top.content.treeData.makeNewEntry(id:\'' . $this->Glossary->ID . '\',parentid:\'' . $this->Glossary->Language . '_' . $this->Glossary->Type . '\',text:\'' . $this->Glossary->Text . '\',open:0,contenttype:\'' . ($this->Glossary->IsFolder ? 'folder' : 'we/glossary') . '\',table:\'' . GLOSSARY_TABLE . '\',published:' . ($this->Glossary->Published > 0 ? 1 : 0) . '});
+						$js = 'top.content.treeData.makeNewEntry({id:\'' . $this->Glossary->ID . '\',parentid:\'' . $this->Glossary->Language . '_' . $this->Glossary->Type . '\',text:\'' . $this->Glossary->Text . '\',open:0,contenttype:\'' . ($this->Glossary->IsFolder ? 'folder' : 'we/glossary') . '\',table:\'' . GLOSSARY_TABLE . '\',published:' . ($this->Glossary->Published > 0 ? 1 : 0) . '});
 								top.content.drawTree();';
 					} else {
 						$js = 'top.content.treeData.updateEntry({id:' . $this->Glossary->ID . ',text:"' . $this->Glossary->Text . '",parentid:"' . $this->Glossary->Language . '_' . $this->Glossary->Type . '",published:' . ($this->Glossary->Published > 0 ? 1 : 0) . '});';
