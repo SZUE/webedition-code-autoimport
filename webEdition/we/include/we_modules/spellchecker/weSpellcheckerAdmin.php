@@ -53,8 +53,8 @@ foreach($l_param as $key => $value){
 
 $we_tabs = new we_tabs();
 
-$we_tabs->addTab(new we_tab(g_l('modules_spellchecker', '[dictAdmin]'), false, "setTab(1);", array("id" => "tab_1")));
-$we_tabs->addTab(new we_tab(g_l('modules_spellchecker', '[userDictAdmin]'), false, "setTab(2);", array("id" => "tab_2")));
+$we_tabs->addTab(g_l('modules_spellchecker', '[dictAdmin]'), false, "setTab(1);", array("id" => "tab_1"));
+$we_tabs->addTab(g_l('modules_spellchecker', '[userDictAdmin]'), false, "setTab(2);", array("id" => "tab_2"));
 
 
 $js = we_tabs::getHeader();

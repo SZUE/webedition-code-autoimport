@@ -30,7 +30,7 @@
 // initialise tabs
 $tabs = new we_tabs();
 foreach($this->Data['allTabs'] as $tabname){
-	$tabs->addTab(new we_tab(g_l('liveUpdate', '[tabs][' . $tabname . ']'), ($this->Data['activeTab'] == $tabname), "top.updatecontent.location='?section=$tabname';"));
+	$tabs->addTab(g_l('liveUpdate', '[tabs][' . $tabname . ']'), ($this->Data['activeTab'] == $tabname), "top.updatecontent.location='?section=$tabname';");
 }
 
 

@@ -92,12 +92,12 @@ class we_versions_preview{
 
 	private function getTabsBody(){
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(new we_tab(g_l('versions', '[versionDiffs]'), false, "setTab(1);", array("id" => "tab_1")));
+		$we_tabs->addTab(g_l('versions', '[versionDiffs]'), false, "setTab(1);", ["id" => "tab_1"]);
 		if(!$this->isObj){
-			$we_tabs->addTab(new we_tab(g_l('versions', '[previewVersionNew]'), false, "setTab(2);", array("id" => "tab_2")));
+			$we_tabs->addTab(g_l('versions', '[previewVersionNew]'), false, "setTab(2);", ["id" => "tab_2"]);
 		}
 		if(!empty($this->oldDoc) && !$this->isObj){
-			$we_tabs->addTab(new we_tab(g_l('versions', '[previewVersionOld]'), false, "setTab(3);", array("id" => "tab_3")));
+			$we_tabs->addTab(g_l('versions', '[previewVersionOld]'), false, "setTab(3);", ["id" => "tab_3"]);
 		}
 
 		return $we_tabs->getHTML() . we_html_element::jsElement('

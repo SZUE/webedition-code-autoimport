@@ -38,7 +38,7 @@ $we_tabs = new we_tabs();
 foreach($GLOBALS['tabs'] as $name => $list){
 	list($icon, $perm) = $list;
 	if(empty($perm) || permissionhandler::hasPerm($perm)){
-		$we_tabs->addTab(new we_tab(($icon ? '<i class="fa fa-lg ' . $icon . '"></i> ' : '') . g_l('prefs', '[tab][' . $name . ']'), ($tabname === 'setting_' . $name), "top.we_cmd('" . $name . "');"));
+		$we_tabs->addTab(($icon ? '<i class="fa fa-lg ' . $icon . '"></i> ' : '') . g_l('prefs', '[tab][' . $name . ']'), ($tabname === 'setting_' . $name), "top.we_cmd('" . $name . "');");
 	}
 }
 

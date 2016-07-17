@@ -25,8 +25,16 @@
 class we_tabs{
 	private $container = '';
 
-	public function addTab(we_tab $tab){
-		$this->container .= $tab->getHTML();
+	public function addTab($text, $isActive = false, $jscmd = '', $attribs = []){
+		$class = ($isActive ? 'tabActive' : 'tabNormal');
+		$att = '';
+		if(isset($attribs) && is_array($attribs)){
+			foreach($attribs as $key => $val){
+				$att .= $key . '="' . $val . '" ';
+			}
+		}
+
+		$this->container .= '<div ' . $att . ' onclick="if(weTabs.allowed_change_edit_page()){ weTabs.setTabClass(this); ' . $jscmd . '}" class="' . $class . '"><span class="text">' . $text . '</span></div>';
 	}
 
 	static function getHeader($js = ''){

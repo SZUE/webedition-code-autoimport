@@ -35,10 +35,10 @@ foreach($mods as $menuItem){
 	if((!empty($menuItem['inModuleMenu'])) || (!empty($menuItem['inModuleWindow']))){
 		if(we_base_moduleInfo::isActive($menuItem["name"])){ //	MODULE INSTALLED
 			if(we_users_util::canEditModule($menuItem["name"])){
-				$we_tabs->addTab(new we_tab(
+				$we_tabs->addTab(
 					($menuItem['icon'] ? '<i class="fa fa-lg ' . $menuItem['icon'] . '"></i> ' : '') .
 					$menuItem["text"]
-					, ( $mod == $menuItem["name"]), "openModule('" . $menuItem["name"] . "');", array("id" => $menuItem["name"])));
+					, ( $mod == $menuItem["name"]), "openModule('" . $menuItem["name"] . "');", array("id" => $menuItem["name"]));
 			}
 		}
 	}
