@@ -198,7 +198,7 @@ abstract class we_modules_frame{
 
 	protected function getHTMLEditorFooter(array $btn_cmd, $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("style" => "background-color:#EFF0EF"), ""));
+			return $this->getHTMLDocument(we_html_element::htmlBody(array("style" => "background-color:#EFF0EF"), ""), $extraHead);
 		}
 
 		$table2 = new we_html_table(array('class' => 'default'), 1, count($btn_cmd));
@@ -206,7 +206,7 @@ abstract class we_modules_frame{
 		$pos = 0;
 		foreach($btn_cmd as $but => $cur){
 			list($right, $cmd) = $cur;
-			if(permissionhandler::hasPerm($right)){
+			if(empyt($right) || permissionhandler::hasPerm($right)){
 				$table2->setColContent(0, $pos++, we_html_button::create_button($but, "javascript:top.content.we_cmd('" . $cmd . "')"));
 			}
 		}

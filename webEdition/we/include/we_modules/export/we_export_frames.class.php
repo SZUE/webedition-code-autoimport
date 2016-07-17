@@ -120,7 +120,7 @@ function setTab(tab) {
 		$col = 0;
 		$table2 = new we_html_table(array('style' => 'margin-top:10px;', 'class' => 'default', "width" => 210), 1, 5);
 		$table2->setRow(0, array('style' => 'vertical-align:middle;'));
-		$table2->setCol(0, $col++, [], we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()"));
+		$table2->setCol(0, $col++, [], we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.we_cmd('save_export');"));
 
 		if($this->View->export->IsFolder == 0){
 			$table2->setCol(0, $col++, [], we_html_button::create_button('export', "javascript:top.content.we_cmd('start_export')", true, 100, 22, '', '', !permissionhandler::hasPerm("MAKE_EXPORT"))
@@ -130,10 +130,6 @@ function setTab(tab) {
 		$table2->setCol(0, $col++, array('style' => 'width:290px;'));
 
 		$js = we_html_element::jsElement('
-function we_save() {
-	top.content.we_cmd("save_export");
-
-}
 function doProgress(progress) {
 	var elem = document.getElementById("progress");
 	if(elem.style.display == "none") elem.style.display = "";

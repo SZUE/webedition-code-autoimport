@@ -174,16 +174,6 @@ function setTab(tab) {
 		return we_base_request::_(we_base_request::INT, 'tabnr', self::TAB_DOCUMENTS);
 	}
 
-	protected function getHTMLEditorFooter(array $btn_cmd = [], $extraHead = ''){
-		$but_table = we_html_button::create_button('save', 'javascript:we_save();', true, 100, 22, '', '', (!permissionhandler::hasPerm('EDIT_NAVIGATION')));
-
-		return $this->getHTMLDocument(we_html_element::jsElement('
-function we_save() {
-	top.content.we_cmd("tool_' . $this->module . '_save");
-}') .
-				we_html_element::htmlBody(array('id' => 'footerBody'), we_html_element::htmlForm([], $but_table)));
-	}
-
 	private function getHTMLProperties($preselect = ''){
 		$tabNr = $this->getTab();
 
@@ -401,6 +391,11 @@ function we_save() {
 				return $this->getHTMLFrameset('', ($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
 			case 'editor':
 				return $this->getHTMLEditor(($tab = we_base_request::_(we_base_request::INT, 'tab')) !== false ? '&tab=' . $tab : '');
+			case "edfooter":
+				return $this->getHTMLEditorFooter([
+						we_html_button::SAVE => [ [], 'tool_weSearch_save']
+						]);
+
 			default:
 				return parent::getHTML($what, $mode, $step);
 		}
