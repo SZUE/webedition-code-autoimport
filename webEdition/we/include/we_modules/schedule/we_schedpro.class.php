@@ -525,7 +525,7 @@ function checkFooter(){
 		}
 	}
 
-	function getNextTimestamp($s, $now = 0){
+	public static function getNextTimestamp($s, $now = 0){
 		if(!$now){
 			$now = time();
 		}
