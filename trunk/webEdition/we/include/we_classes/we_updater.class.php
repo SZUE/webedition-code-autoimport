@@ -166,8 +166,8 @@ abstract class we_updater{
 			//we need an temporary key
 			$db->addKey(FILE_TABLE, 'KEY Path(Path)');
 			//first cleanup really invalid entries
-			$db->query('DELETE FROM ' . FILE_TABLE . ' f1 WHERE CreationDate=0 AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile")');
-			$safeDel = $db->getAllq('SELECT f1.ID FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM ' . '.LINK_TABLE.' . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AND EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile")', true);
+			$db->query('DELETE FROM ' . FILE_TABLE . ' WHERE CreationDate=0 AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=ID AND DocumentTable="tblFile")');
+			$safeDel = $db->getAllq('SELECT f1.ID FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AND EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile")', true);
 			if($safeDel){
 				$db->query('DELETE FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', $safeDel) . ')');
 			}
