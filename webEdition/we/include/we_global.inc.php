@@ -207,34 +207,6 @@ function makeArrayFromCSV($csv){
 	return explode(',', $csv);
 }
 
-/**
- * @deprecated since version 6.4.3
- * @param type $arr
- * @param type $prePostKomma
- * @param type $sep
- * @return string
- */
-function makeCSVFromArray($arr, $prePostKomma = false, $sep = ','){
-	if(!$arr){
-		return '';
-	}
-
-	$replaceKomma = (count($arr) > 1) || ($prePostKomma == true);
-
-	if($replaceKomma){
-		foreach($arr as &$a){
-			$a = str_replace($sep, '###komma###', $a);
-		}
-	}
-	$out = implode($sep, $arr);
-	if($prePostKomma){
-		$out = $sep . $out . $sep;
-	}
-	return ($replaceKomma ?
-			str_replace('###komma###', '\\' . $sep, $out) :
-			$out);
-}
-
 function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null){
 	if(intval($pid) != 0 && intval($id) == 0){
 		return false;
@@ -269,7 +241,7 @@ function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $as
 	if(!is_array($path)){
 		$path = array($path);
 	}
-	$db = ($db ? : new DB_WE());
+	$db = ($db ? : $GLOBALS['DB_WE']);
 	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path IN ("' . implode('","', array_map('escape_sql_query', array_map('trim', $path))) . '")');
 	$ret = (in_array('/', $path) ? array(0) : []) + $db->getAll(true);
 	return $asArray ? $ret : implode(',', $ret);

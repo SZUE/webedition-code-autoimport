@@ -40,19 +40,6 @@ abstract class we_util_Strings{
 	}
 
 	/**
-	 * Returns CSV of array values.
-	 *
-	 * @deprecated since version 6.3.8
-	 * @param string $arr  The array to be converted
-	 * @param boolean $prePostKomma Flag to add leading and tailing separators (default: false)
-	 * @param string $sep  The separator to be used (default: ',')
-	 * @return string
-	 */
-	static function makeCSVFromArray($arr, $prePostKomma = false, $sep = ","){
-		return makeCSVFromArray($arr, $prePostKomma, $sep);
-	}
-
-	/**
 	 * Returns an array of CSV values
 	 *
 	 * @deprecated since version 6.3.8
