@@ -119,11 +119,6 @@ function setTab(tab) {
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
 
-	private function getPercent($total, $value, $precision = 0){
-		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
-		return we_base_util::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
-	}
-
 	function getHTMLVariant(){
 		$prefix = '';
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top . content . setHot(); #####placeHolder#####'));
@@ -556,7 +551,7 @@ function newIp(){
 					$this->View->voting->Scores[$key] = 0;
 				}
 
-				$percent = self::getPercent($total_score, $this->View->voting->Scores[$key], 2);
+				$percent = we_base_util::getPercent($total_score, $this->View->voting->Scores[$key], 2);
 
 				$pb = new we_progressBar($percent);
 				$pb->setName('item' . $key);

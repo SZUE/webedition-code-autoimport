@@ -152,7 +152,7 @@ class we_listview_document extends we_listview_base{
 					if($this->search){
 						$order[] = 'ranking';
 					}
-					$order[] = ($this->numorder ? '0+' : '') . 'cc' . $cnt . '.Dat' . ($this->desc ? ' DESC' : '');
+					$order[] = ($this->numorder ? '0+' : '') . 'IFNULL(cc' . $cnt . '.Dat,cc' . $cnt . '.BDID)' . ($this->desc ? ' DESC' : '');
 					break;
 			}
 		}
@@ -441,7 +441,7 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 	private function makeFieldCondition($name, $operation, $value){
 		return (strpos($name, 'WE_') === 0) ? //Fix: #9389
 			'(' . FILE_TABLE . '.' . substr($name, 3) . ' ' . $operation . ' ' . $value . ')' :
-			'(l.nHash=x\'' . md5($name) . '\' AND c.Dat ' . $operation . ' ' . $value . ')';
+			'(l.nHash=x\'' . md5($name) . '\' AND IFNULL(c.Dat,c.BDID) ' . $operation . ' ' . $value . ')';
 	}
 
 	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){

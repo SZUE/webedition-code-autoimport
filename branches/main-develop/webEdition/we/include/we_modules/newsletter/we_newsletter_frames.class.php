@@ -343,7 +343,7 @@ function afterLoad(){
 
 			/* process bar blocked by blacklist */
 			$allBlockedByBlacklist = (array_key_exists("email_is_black", $results) ? $results['email_is_black'] : 0);
-			$percentBlockedByBlacklist = getPercent($allRecipients, $allBlockedByBlacklist, 2);
+			$percentBlockedByBlacklist = we_base_util::getPercent($allRecipients, $allBlockedByBlacklist, 2);
 
 			$pbByB = new we_progressBar($percentBlockedByBlacklist);
 			$pbByB->setName('blacklist' . $key);
@@ -360,7 +360,7 @@ function afterLoad(){
 
 			/* process bar blocked by domain check */
 			$allBlockedByDomainCheck = (array_key_exists("domain_nok", $results) ? $results['domain_nok'] : 0);
-			$percentBlockedByDomain = getPercent($allRecipients, $allBlockedByDomainCheck, 2);
+			$percentBlockedByDomain = we_base_util::getPercent($allRecipients, $allBlockedByDomainCheck, 2);
 
 			$pbBbD = new we_progressBar($percentBlockedByDomain);
 			$pbBbD->setName('domain' . $key);
@@ -377,7 +377,7 @@ function afterLoad(){
 
 			/* process bar all clear recipients */
 			$allClearRecipients = (array_key_exists("mail_sent", $results) ? $results['mail_sent'] : 0);
-			$percentClearRecipients = getPercent($allRecipients, $allClearRecipients, 2);
+			$percentClearRecipients = we_base_util::getPercent($allRecipients, $allClearRecipients, 2);
 
 			$pbCR = new we_progressBar($percentClearRecipients);
 			$pbCR->setName('recipients' . $key);
@@ -578,19 +578,19 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			$table->setCol($c, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[customer_email_field]') . ":&nbsp;");
 			$table->setCol($c, 1, array("class" => "defaultfont"), we_html_tools::htmlSelect("customer_email_field", $custfields, 1, $settings["customer_email_field"], false, [], "value", 308));
 
-			$table->setCol(++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
 			$table->setCol($c, 1, array('class' => 'defaultfont'), we_html_tools::htmlSelect('customer_html_field', $custfields, 1, $settings['customer_html_field'], false, [], 'value', 308));
 
-			$table->setCol(++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
 			$table->setCol($c, 1, array('class' => 'defaultfont'), we_html_tools::htmlSelect('customer_salutation_field', $custfields, 1, $settings['customer_salutation_field'], false, [], 'value', 308));
 
-			$table->setCol(++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
 			$table->setCol($c, 1, array('class' => 'defaultfont'), we_html_tools::htmlSelect('customer_title_field', $custfields, 1, $settings['customer_title_field'], false, [], 'value', 308));
 
-			$table->setCol(++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, array('class' => 'defaultfont'), we_html_tools::htmlSelect('customer_firstname_field', $custfields, 1, $settings['customer_firstname_field'], false, [], 'value', 308));
 
-			$table->setCol(++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, array('class' => 'defaultfont'), we_html_tools::htmlSelect('customer_lastname_field', $custfields, 1, $settings['customer_lastname_field'], false, [], 'value', 308));
 		}
 
