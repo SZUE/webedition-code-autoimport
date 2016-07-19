@@ -175,7 +175,7 @@ top.makeNewFolder = false;';
 	function printDoRenameEntryHTML(){
 		$this->EntryText = rawurldecode($this->EntryText);
 		$txt = trim($this->EntryText);
-		$Path = ($txt ? (!intval($this->dir) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), 'Path', $this->db)) . '/' . $txt : '');
+		$Path = ($txt ? (!intval($this->dir) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db)) . '/' . $txt : '');
 		$js = 'top.clearEntries();';
 
 		if(!$txt){
@@ -186,7 +186,7 @@ top.makeNewFolder = false;';
 			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(preg_match('|[\'"<>/]|', $txt)){
 			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
-		} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), 'Text', $this->db) != $txt){
+		} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db) != $txt){
 			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
 					'Category' => $txt,
 					'ParentID' => intval($this->dir),
@@ -217,10 +217,9 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;'), we_html_el
 		parent::printCmdHTML((intval($this->dir) ? 'top.enableDelBut();' : 'top.disableDelBut();') . $morejs);
 	}
 
-	function renameChildrenPath($id, we_database_base $db = null){
+	private function renameChildrenPath($id, we_database_base $db = null){
 		$db = $db ? : new DB_WE();
-		$path = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id));
-		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("' . $path . '","/",Text) WHERE ParentID=' . intval($id));
+		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT(SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id) . ',"/",Text) WHERE ParentID=' . intval($id));
 		$db->query('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id)); //IsFolder=1 AND
 		$updates = $db->getAll(true);
 		foreach($updates as $id){

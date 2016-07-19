@@ -584,4 +584,9 @@ abstract class we_base_util{
 		return substr($path, 0, $l) . ' ' . self::shortenPathSpace(substr($path, $l), $len);
 	}
 
+	public static function getPercent($total, $value, $precision = 0){
+		$result = ($total ? round(($value * 100) / $total, $precision) : 0);
+		return self::formatNumber($result, strtolower($GLOBALS['WE_LANGUAGE']));
+	}
+
 }
