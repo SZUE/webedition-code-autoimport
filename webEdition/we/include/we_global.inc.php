@@ -24,7 +24,7 @@
  */
 function correctUml($in){//FIXME: need charset!!
 	//FIXME: can we use this (as in objectfile): preg_replace(array('~&szlig;~','~&(.)(uml|grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~', '~[^0-9a-zA-Z/._-]~'), array('ss','${1}${3}', ''), htmlentities($text, ENT_COMPAT, $this->Charset));
-	return strtr($in, array('ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss'));
+	return strtr($in, ['ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue', 'Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ß' => 'ss']);
 }
 
 function makeIDsFromPathCVS($paths, $table = FILE_TABLE){
@@ -239,17 +239,17 @@ function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $as
 		return $asArray ? [] : '';
 	}
 	if(!is_array($path)){
-		$path = array($path);
+		$path = [$path];
 	}
 	$db = ($db ? : $GLOBALS['DB_WE']);
 	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path IN ("' . implode('","', array_map('escape_sql_query', array_map('trim', $path))) . '")');
-	$ret = (in_array('/', $path) ? array(0) : []) + $db->getAll(true);
+	$ret = (in_array('/', $path) ? [0] : []) + $db->getAll(true);
 	return $asArray ? $ret : implode(',', $ret);
 }
 
 function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asArray = false, $endslash = false, $isPublished = false){
 	if(!is_array($IDs) && !$IDs){
-		return ($asArray ? array(0 => '/') : '/');
+		return ($asArray ? [0 => '/'] : '/');
 	}
 
 	$db = $db ? : $GLOBALS['DB_WE'];
@@ -267,7 +267,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asA
 					'Path');
 	}
 
-	$foo = (in_array(0, $IDs) ? array(0 => '/') : []) +
+	$foo = (in_array(0, $IDs) ? [0 => '/'] : []) +
 		($IDs ?
 			$db->getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false) :
 			[]
@@ -289,9 +289,7 @@ function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db){
 		return [];
 	}
 	$IDArr = makeArrayFromCSV($csv);
-	$out = ($firstEntry ? array(
-			0 => $firstEntry
-			) : []) +
+	$out = ($firstEntry ? [0 => $firstEntry] : []) +
 		id_to_path($IDArr, FILE_TABLE, $db, true);
 
 	return $out;
@@ -322,7 +320,7 @@ function getPathsFromTable($table, we_database_base $db, $type = we_base_constan
 			$query[] = ' IsFolder=1 ';
 			break;
 	}
-	$out = $first ? array(0 => $first) : [];
+	$out = $first ? [0 => $first] : [];
 
 	$db->query('SELECT ID,Path FROM ' . $db->escape($table) . (count($query) ? ' WHERE ' . implode(' AND ', $query) : '') . ' ORDER BY ' . $order);
 	while($db->next_record()){
@@ -509,8 +507,8 @@ function t_e($type = 'warning'){
 }
 
 function removeHTML($val){
-	$val = preg_replace(array('%<br ?/?>%i', '/<[^><]+>/'), array('###BR###', ''), str_replace(array('<?', '?>'), array('###?###', '###/?###'), $val));
-	return str_replace(array('###BR###', '###?###', '###/?###'), array('<br/>', '<?', '?>'), $val);
+	$val = preg_replace(['%<br ?/?>%i', '/<[^><]+>/'], ['###BR###', ''], str_replace(['<?', '?>'], ['###?###', '###/?###'], $val));
+	return str_replace(['###BR###', '###?###', '###/?###'], ['<br/>', '<?', '?>'], $val);
 }
 
 /**
@@ -689,7 +687,7 @@ function getHtmlTag($element, $attribs = [], $content = '', $forceEndTag = false
 	$xhtml = weTag_getAttribute('xml', $attribs, XHTML_DEFAULT, we_base_request::BOOL);
 
 //	remove x(ht)ml-attributs
-	$removeAttribs = array('xml', 'xmltype', 'to', 'nameto', '_name_orig', null);
+	$removeAttribs = ['xml', 'xmltype', 'to', 'nameto', '_name_orig', null];
 
 	switch($element){
 		case 'img':
@@ -986,7 +984,7 @@ function we_templatePost(){
 			p_r(get_included_files());
 		}
 
-		if(ob_get_level() && count(array_diff(($handler = ob_list_handlers()), array('zlib output compression'))) && (end($handler) == 'default output handler')){//if still document active, we have to do url replacements
+		if(ob_get_level() && count(array_diff(($handler = ob_list_handlers()), ['zlib output compression'])) && (end($handler) == 'default output handler')){//if still document active, we have to do url replacements
 			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
 // --> Glossary Replacement
 			$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($GLOBALS['we_doc']->InGlossar) && $GLOBALS['we_doc']->InGlossar == 0) && we_glossary_replace::useAutomatic());
@@ -1072,7 +1070,7 @@ function isWE(){
 }
 
 function getWELangs(){
-	return array(
+	return [
 		'de' => 'Deutsch',
 		'en' => 'English',
 		'nl' => 'Dutch',
@@ -1081,11 +1079,11 @@ function getWELangs(){
 		'es' => 'Spanish',
 		'pl' => 'Polish',
 		'fr' => 'French'
-	);
+		];
 }
 
 function getWECountries(){
-	return array(
+	return [
 		'DE' => 'de',
 		'GB' => 'en',
 		'NL' => 'nl',
@@ -1094,7 +1092,7 @@ function getWECountries(){
 		'ES' => 'es',
 		'PL' => 'pl',
 		'FR' => 'fr'
-	);
+		];
 }
 
 function getMysqlVer($nodots = true){

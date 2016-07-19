@@ -467,14 +467,14 @@ function checkFooter(){
 			return;
 		}
 
-		$req = array($_REQUEST,$_GET,$_POST);
-		$_REQUEST=$_GET=$_POST=array();
+		$req = [$_REQUEST, $_GET, $_POST];
+		$_REQUEST = $_GET = $_POST = [];
 
 		$DB_WE = new DB_WE();
-		$DB_WE->addTable('del', array(
+		$DB_WE->addTable('del', [
 			'ID' => 'bigint(20) unsigned NOT NULL',
 			'ClassName' => 'enum("we_htmlDocument","we_webEditionDocument","we_objectFile") NOT NULL'
-			), array('PRIMARY KEY (ID,ClassName)'), 'MEMORY', true);
+			], ['PRIMARY KEY (ID,ClassName)'], 'MEMORY', true);
 		$DB_WE->query('INSERT INTO del (ID,ClassName) SELECT s.DID,s.ClassName FROM ' . SCHEDULE_TABLE . ' s LEFT JOIN ' . FILE_TABLE . ' f ON f.ID=s.DID ' . (defined('OBJECT_FILES_TABLE') ? ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON of
 .ID=s.DID' : '') . ' WHERE (f.ID IS NULL AND s.ClassName IN ("we_htmlDocument","we_webEditionDocument"))' . (defined('OBJECT_FILES_TABLE') ? ' OR (of.ID IS NULL AND s.ClassName="we_objectFile")' : '') . ' GROUP BY s.DID,s.ClassName');
 		$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE (DID,ClassName) IN (SELECT ID,ClassName FROM del )');
@@ -486,14 +486,14 @@ function checkFooter(){
 		$maxSched = defined('SCHEDULED_BY_CRON') ? -1 : 10;
 //make sure documents don't know they are inside WE
 		if(isset($GLOBALS['WE_MAIN_EDITMODE']) || isset($GLOBALS['we_editmode'])){
-			$lastWEState = array(
+			$lastWEState = [
 				'WE_MAIN_EDITMODE' => (isset($GLOBALS['WE_MAIN_EDITMODE']) ? $GLOBALS['WE_MAIN_EDITMODE'] : $GLOBALS['we_editmode']),
 				'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : 0,
-			);
+				];
 			$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = false;
 		}
 
-		while((!$hasLock || $DB_WE->lock(array(SCHEDULE_TABLE, ERROR_LOG_TABLE))) && ( --$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE `expire`<=NOW() AND lockedUntil<NOW() AND Active=1 ORDER BY `expire` LIMIT 1', $DB_WE))){
+		while((!$hasLock || $DB_WE->lock([SCHEDULE_TABLE, ERROR_LOG_TABLE])) && ( --$maxSched != 0) && ($rec = getHash('SELECT * FROM ' . SCHEDULE_TABLE . ' WHERE `expire`<=NOW() AND lockedUntil<NOW() AND Active=1 ORDER BY `expire` LIMIT 1', $DB_WE))){
 			$DB_WE->query('UPDATE ' . SCHEDULE_TABLE . ' SET lockedUntil=NOW()+INTERVAL 1 minute WHERE DID=' . $rec['DID'] . ' AND Active=1 AND ClassName="' . $rec['ClassName'] . '" AND rerun="' . $rec['rerun'] . '" AND task="' . $rec['task'] . '" AND `expire`="' . $rec['expire'] . '"');
 			if($hasLock){
 				$DB_WE->unlock();
@@ -501,12 +501,12 @@ function checkFooter(){
 			$s = we_unserialize($rec['Schedpro']);
 			if(is_array($s)){
 				$s['lasttime'] = self::getPrevTimestamp($s, $now);
-				$tmp = array(
-					'value' => array($s),
+				$tmp = [
+					'value' => [$s],
 					'ClassName' => $rec['ClassName'],
 					'Wann' => $rec['expire'],
 					'table' => $rec['ClassName'] === 'we_objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE,
-				);
+					];
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else {
 				//data invalid, reset & make sure this is not processed the next time
@@ -614,19 +614,19 @@ function checkFooter(){
 	}
 
 	static function getEmptyEntry(){
-		return array(
+		return [
 			'task' => self::SCHEDULE_FROM,
 			'rerun' => self::TYPE_ONCE,
-			'months' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-			'days' => array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-			'weekdays' => array(0, 0, 0, 0, 0, 0, 0),
+			'months' => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			'days' => [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+			'weekdays' => [0, 0, 0, 0, 0, 0, 0],
 			'time' => time(),
 			'CategoryIDs' => '',
 			'DoctypeID' => 0,
 			'ParentID' => 0,
 			'active' => 1,
 			'doctypeAll' => 0,
-		);
+		];
 	}
 
 	function getPrevTimestamp($s, $now = 0){
@@ -745,16 +745,16 @@ function checkFooter(){
 				$makeSched[] = $Wann;
 			}
 
-			if(!$db->query('INSERT INTO ' . SCHEDULE_TABLE . ' SET ' . we_database_base::arraySetter(array(
-								'DID' => $object->ID,
-								'expire' => sql_function('FROM_UNIXTIME(' . $Wann . ')'),
-								'task' => $s['task'],
-								'ClassName' => $object->ClassName,
-								'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\'') : ''),
-								'Schedpro' => we_serialize($s, SERIALIZE_JSON),
-								'rerun' => $s['rerun'],
-								'Active' => $s['active']
-					)))){
+			if(!$db->query('INSERT INTO ' . SCHEDULE_TABLE . ' SET ' . we_database_base::arraySetter([
+						'DID' => $object->ID,
+						'expire' => sql_function('FROM_UNIXTIME(' . $Wann . ')'),
+						'task' => $s['task'],
+						'ClassName' => $object->ClassName,
+						'SerializedData' => ($serializedDoc ? sql_function('x\'' . bin2hex(gzcompress($serializedDoc, 9)) . '\'') : ''),
+						'Schedpro' => we_serialize($s, SERIALIZE_JSON),
+						'rerun' => $s['rerun'],
+						'Active' => $s['active']
+				]))){
 				return false;
 			}
 		}

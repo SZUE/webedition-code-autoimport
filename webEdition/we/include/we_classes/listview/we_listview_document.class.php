@@ -167,7 +167,7 @@ class we_listview_document extends we_listview_base{
 		$ws_where = '';
 
 		if($this->contentTypes){
-			$this->contentTypes = str_replace(array('img', 'wepage', 'binary'), array(we_base_ContentTypes::IMAGE, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::APPLICATION), $this->contentTypes);
+			$this->contentTypes = str_replace(['img', 'wepage', 'binary'], [we_base_ContentTypes::IMAGE, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::APPLICATION], $this->contentTypes);
 			$CtArr = explode(',', $this->contentTypes);
 			if($CtArr){
 				$sql_tail .= ' AND ' . FILE_TABLE . '.ContentType IN ("' . implode('","', array_map('escape_sql_query', $CtArr)) . '")';
@@ -190,9 +190,7 @@ class we_listview_document extends we_listview_base{
 
 		if($this->search){
 			if($this->workspaceID){
-				$cond = array(
-					'i.WorkspaceID IN(' . $this->workspaceID . ')'
-				);
+				$cond = ['i.WorkspaceID IN(' . $this->workspaceID . ')'];
 				$workspaces = array_map('escape_sql_query', id_to_path((is_numeric($this->workspaceID) ? $this->workspaceID : explode(',', $this->workspaceID)), FILE_TABLE, $this->DB_WE), true);
 
 				foreach($workspaces as $workspace){
@@ -203,7 +201,7 @@ class we_listview_document extends we_listview_base{
 			$bedingungen = preg_split('/ +/', $this->search);
 
 			$ranking = '0';
-			$spalten = array(($this->casesensitive ? 'BINARY ' : '') . 'i.Text');
+			$spalten = [($this->casesensitive ? 'BINARY ' : '') . 'i.Text'];
 
 			foreach($bedingungen as $v1){
 				if(preg_match('|^[-\+]|', $v1)){
@@ -241,7 +239,7 @@ class we_listview_document extends we_listview_base{
 			$limit = (($this->maxItemsPerPage) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : '');
 		} else {
 			if($this->workspaceID){
-				$workspaces = is_numeric($this->workspaceID) ? array($this->workspaceID) : explode(',', $this->workspaceID);
+				$workspaces = is_numeric($this->workspaceID) ? [$this->workspaceID] : explode(',', $this->workspaceID);
 				if($this->subfolders){ // all entries with given parentIds
 					$cond = [];
 					$workspacePaths = id_to_path($workspaces, FILE_TABLE, $this->DB_WE, true);
@@ -252,7 +250,7 @@ class we_listview_document extends we_listview_base{
 						$this->DB_WE->query('SELECT ID FROM ' . FILE_TABLE . ' WHERE IsFolder=1 AND (' . implode(' OR ', $cond) . ')');
 						$workspaces = array_unique(array_merge($workspaces, $this->DB_WE->getAll(true)));
 					} else {
-						$cond = array(-1);
+						$cond = [-1];
 					}
 				}
 				$ws_where = ' AND (ParentID IN (' . implode(', ', $workspaces) . '))';
@@ -406,11 +404,11 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 			$this->Record = [];
-			$this->DB_WE->Record = array(
+			$this->DB_WE->Record = [
 				'WE_PATH' => '',
 				'WE_TEXT' => '',
 				'WE_ID' => '',
-			);
+				];
 			$this->count++;
 			return true;
 		}
@@ -419,12 +417,12 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 
 	function makeConditionSql($cond){
 		//FIXME: a>5 AND b>5 will not work, we have a flat join, so both conditions on different link-values cannot match
-		$cond = strtr($cond, array('&gt;' => '>', '&lt;' => '<'));
+		$cond = strtr($cond, ['&gt;' => '>', '&lt;' => '<']);
 		$func = function($value){
 			return trim($value, " \t\n\r\0\x0B()");
 		};
 		$arr = array_map($func, preg_split('/(and|AND|or|OR|&&|\|\|)/i', $cond, -1, PREG_SPLIT_NO_EMPTY));
-		$patterns = array('<>', '!=', '<=', '>=', '=', '<', '>', 'NOT LIKE', 'LIKE', 'NOT IN', 'IN');
+		$patterns = ['<>', '!=', '<=', '>=', '=', '<', '>', 'NOT LIKE', 'LIKE', 'NOT IN', 'IN'];
 		foreach($arr as $exp){
 			foreach($patterns as $pattern){
 				$match = preg_split('/' . $pattern . '/', $exp, -1, PREG_SPLIT_NO_EMPTY);
