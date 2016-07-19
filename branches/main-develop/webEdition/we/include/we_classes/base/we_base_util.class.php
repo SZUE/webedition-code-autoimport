@@ -40,7 +40,7 @@ abstract class we_base_util{
 	//FIXME: add more extensions
 	//FIXME: change this to $finfo = finfo_open(FILEINFO_MIME_TYPE); 		  $mime = finfo_file($finfo, $filepath);		  finfo_close($finfo);
 	//NOTICE: WE contenttypes differ strongly from the following mime types!
-	private static $mimetypes = array(
+	private static $mimetypes = [
 		'hqx' => 'application/mac-binhex40',
 		'cpt' => 'application/mac-compactpro',
 		'doc' => 'application/msword',
@@ -131,12 +131,12 @@ abstract class we_base_util{
 		'svg' => 'image/svg+xml',
 		'svgz' => 'image/svg+xml',
 		'shtm' => 'text/html',
-		'ogg' => array('application/ogg', 'video/ogg', 'audio/ogg'),
+		'ogg' => ['application/ogg', 'video/ogg', 'audio/ogg'],
 		'mp4' => 'video/mp4',
 		'm4v' => 'video/mp4',
 		'mp3' => 'audio/mp3',
 		'wav' => 'audio/wav'
-	);
+	 ];
 
 	/**
 	 * Formates a number with a country specific format into computer readable format.
@@ -158,7 +158,7 @@ abstract class we_base_util{
 		if(preg_match('|([0-9]*)\.([0-9]*)|', $number)){ // engl schreibweise
 			return floatval($number);
 		}
-		return floatval(str_replace(array(',', '.'), '', $number));
+		return floatval(str_replace([',', '.'], '', $number));
 	}
 
 	/**
@@ -195,7 +195,7 @@ abstract class we_base_util{
 	 * @param mixed number
 	 */
 	static function cleanNewLine($string){
-		return str_replace(array("\n\r", "\r\n", "\r"), "\n", $string);
+		return str_replace(["\n\r", "\r\n", "\r"], "\n", $string);
 	}
 
 	/**
@@ -208,7 +208,7 @@ abstract class we_base_util{
 	 * @param mixed number
 	 */
 	static function br2nl($string){
-		$string = str_replace(array("\n", "\r"), '', $string);
+		$string = str_replace(["\n", "\r"], '', $string);
 		return preg_replace('|<br ?/?>|i', "\n", $string);
 	}
 
@@ -253,7 +253,7 @@ abstract class we_base_util{
 	public static function number2System($value, $chars = [], $str = ''){
 
 		if(!(is_array($chars) && count($chars) > 1)){ //	in case of error take default-array
-			$chars = array('^', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z');
+			$chars = ['^', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 		}
 		$base = count($chars);
 
@@ -269,11 +269,11 @@ abstract class we_base_util{
 	}
 
 	static function getCurlHttp($server, $path = '', $files = [], $header = false, $timeout = 0){
-		$response = array(
+		$response = [
 			'data' => '', // data if successful
 			'status' => 0, // 0=ok otherwise error
 			'error' => '' // error string
-		);
+			];
 		$parsedurl = parse_url($server);
 		$protocol = (isset($parsedurl['scheme']) ?
 				$parsedurl['scheme'] . '://' :

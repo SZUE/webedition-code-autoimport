@@ -368,12 +368,12 @@ function afterLoad(){
 			$pbBbD->setStudLen(150);
 
 			$table->addRow();
-			$table->setColContent(2, 0, we_html_element::htmlSpan(array('id' => 'domain_' . $key), g_l('modules_newsletter', '[reporting][mailing_emails_nok]')));
+			$table->setColContent(2, 0, we_html_element::htmlSpan(['id' => 'domain_' . $key], g_l('modules_newsletter', '[reporting][mailing_emails_nok]')));
 			$table->setColContent(2, 1, $pbBbD->getJSCode() . $pbBbD->getHTML());
-			$table->setCol(2, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'), $allBlockedByDomainCheck));
-			$table->setCol(2, 3, array("style" => "padding: 0 5px 0 5px;"), '<i class="fa fa-lg ' . ($allBlockedByDomainCheck == 0 ? "fa-check fa-ok" : "fa-close fa-cancel") . '"></i>');
+			$table->setCol(2, 2, ["style" => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'], $allBlockedByDomainCheck));
+			$table->setCol(2, 3, ["style" => "padding: 0 5px 0 5px;"], '<i class="fa fa-lg ' . ($allBlockedByDomainCheck == 0 ? "fa-check fa-ok" : "fa-close fa-cancel") . '"></i>');
 			//todo: statt domain, sollte show_log begrenzt auf Log=domain_nok + $start_send + start_end
-			$table->setCol(2, 4, array('style' => 'width: 35px'), (($allBlockedByDomainCheck == 0) ? '' : we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('domain_check');"))));
+			$table->setCol(2, 4, ['style' => 'width: 35px'], (($allBlockedByDomainCheck == 0) ? '' : we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('domain_check');"))));
 
 			/* process bar all clear recipients */
 			$allClearRecipients = (array_key_exists("mail_sent", $results) ? $results['mail_sent'] : 0);
@@ -385,22 +385,22 @@ function afterLoad(){
 			$pbCR->setStudLen(150);
 
 			$table->addRow();
-			$table->setColContent(3, 0, we_html_element::htmlSpan(array('id' => 'recipients_' . $key), g_l('modules_newsletter', '[reporting][mailing_emails_success]')));
+			$table->setColContent(3, 0, we_html_element::htmlSpan(['id' => 'recipients_' . $key], g_l('modules_newsletter', '[reporting][mailing_emails_success]')));
 			$table->setColContent(3, 1, $pbCR->getJSCode() . $pbCR->getHTML());
-			$table->setCol(3, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'recipients_total', 'style' => 'color:' . (($allClearRecipients <= 0) ? 'red' : 'green') . ';'), $allClearRecipients));
-			$table->setCol(3, 3, array("style" => "padding: 0 5px 0 5px;"), '<i class="fa fa-lg ' . ($allClearRecipients == $allRecipients ? "fa-check fa-ok" : "fa-exclamation-triangle fa-cancel") . '" title="' . ($allClearRecipients < $allRecipients ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : '') . '"></i>');
+			$table->setCol(3, 2, ["style" => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'recipients_total', 'style' => 'color:' . (($allClearRecipients <= 0) ? 'red' : 'green') . ';'], $allClearRecipients));
+			$table->setCol(3, 3, ["style" => "padding: 0 5px 0 5px;"], '<i class="fa fa-lg ' . ($allClearRecipients == $allRecipients ? "fa-check fa-ok" : "fa-exclamation-triangle fa-cancel") . '" title="' . ($allClearRecipients < $allRecipients ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : '') . '"></i>');
 			//todo: statt show_log, sollte show_log begrenzt auf Log=email_sent + $start_send + start_end
-			$table->setCol(3, 4, array('style' => 'width: 35px'), we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('show_log')")));
+			$table->setCol(3, 4, ['style' => 'width: 35px'], we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('show_log')")));
 
 			/* total recipients */
 			$table->addRow();
 			$table->setColContent(4, 0, we_html_element::htmlB(g_l('modules_newsletter', '[reporting][mailing_all_emails]')));
-			$table->setCol(4, 2, array('colspan' => 2, "style" => "padding: 0 5px 0 5px;"), we_html_element::htmlB($allRecipients));
+			$table->setCol(4, 2, ['colspan' => 2, "style" => "padding: 0 5px 0 5px;"], we_html_element::htmlB($allRecipients));
 
-			$parts[] = array(
+			$parts[] = [
 				"headline" => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . $newsletterMailOrder['startTime'],
 				"html" => $table->getHTML() . we_html_element::htmlBr()
-			);
+			];
 		}
 
 		return $parts;
@@ -411,11 +411,11 @@ function afterLoad(){
 			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
-		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(["name" => "we_form"], we_html_element::htmlHiddens([
 							'mod' => 'newsletter',
 							"pnt" => "cmd",
 							"ncmd" => "",
-							"nopt" => ""))
+							"nopt" => ""])
 					)
 				), we_html_element::jsElement(
 					($pid ?
@@ -433,7 +433,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	}
 
 	function getHTMLSaveQuestion1(){
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onblur" => "self.focus", "onunload" => "doUnload()"), we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[ask_to_preserve]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", "opener.document.we_form.ask.value=0;opener.we_cmd('save_newsletter');self.close();", "self.close();")
+		$body = we_html_element::htmlBody(["class" => "weEditorBody", "onblur" => "self.focus", "onunload" => "doUnload()"], we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[ask_to_preserve]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", "opener.document.we_form.ask.value=0;opener.we_cmd('save_newsletter');self.close();", "self.close();")
 		);
 
 		return $this->getHTMLDocument($body);
@@ -450,43 +450,43 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$c = 0;
 		for($k = 1; $k < $count; $k++){
 			$out.=we_html_element::htmlBr() .
-				we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(sprintf(g_l('modules_newsletter', '[mailing_list]'), $k)));
+				we_html_element::htmlDiv(["class" => "defaultfont"], $tab1 . we_html_element::htmlB(sprintf(g_l('modules_newsletter', '[mailing_list]'), $k)));
 			$gc = 0;
 			if(defined('CUSTOMER_TABLE')){
-				$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . g_l('modules_newsletter', '[customers]'));
+				$out.=we_html_element::htmlDiv(["class" => "defaultfont"], $tab2 . g_l('modules_newsletter', '[customers]'));
 				$emails = $this->View->getEmails($k, we_newsletter_view::MAILS_CUSTOMER, 1);
 
 				foreach($emails as $email){
 					$gc++;
-					$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab3 . $email);
+					$out.=we_html_element::htmlDiv(["class" => "defaultfont"], $tab3 . $email);
 				}
 			}
 
-			$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . g_l('modules_newsletter', '[emails]'));
+			$out.=we_html_element::htmlDiv(["class" => "defaultfont"], $tab2 . g_l('modules_newsletter', '[emails]'));
 
 			$emails = $this->View->getEmails($k, we_newsletter_view::MAILS_EMAILS, 1);
 			foreach($emails as $email){
 				$gc++;
-				$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab3 . $email);
+				$out.=we_html_element::htmlDiv(["class" => "defaultfont"], $tab3 . $email);
 			}
 
-			$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . g_l('modules_newsletter', '[file_email]'));
+			$out.=we_html_element::htmlDiv(["class" => "defaultfont"], $tab2 . g_l('modules_newsletter', '[file_email]'));
 
 			$emails = $this->View->getEmails($k, we_newsletter_view::MAILS_FILE, 1);
 			foreach($emails as $email){
 				$gc++;
-				$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab3 . $email);
+				$out.=we_html_element::htmlDiv(["class" => "defaultfont"], $tab3 . $email);
 			}
 			$c+=$gc;
-			$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(sprintf(g_l('modules_newsletter', '[sum_group]'), $k) . ":" . $gc));
+			$out.=we_html_element::htmlDiv(["class" => "defaultfont"], $tab1 . we_html_element::htmlB(sprintf(g_l('modules_newsletter', '[sum_group]'), $k) . ":" . $gc));
 		}
 
 		$out.=we_html_element::htmlBr() .
-			we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[sum_all]') . ":" . $c)) .
+			we_html_element::htmlDiv(["class" => "defaultfont"], $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[sum_all]') . ":" . $c)) .
 			we_html_element::htmlBr();
-		echo self::getHTMLDocument(we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
+		echo self::getHTMLDocument(we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm(["name" => "we_form", "method" => "post", "onload" => "self.focus()"], we_html_tools::htmlDialogLayout(
 						we_html_element::htmlBr() .
-						we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
+						we_html_element::htmlDiv(["class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"], $out) .
 						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
 					)
 		)));
@@ -502,12 +502,12 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$count = count($this->View->newsletter->groups) + 1;
 
 		$out = we_html_element::htmlBr() .
-			we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[domain_check_begins]'))) .
+			we_html_element::htmlDiv(["class" => "defaultfont"], $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[domain_check_begins]'))) .
 			we_html_element::htmlBr();
 
 		for($k = 1; $k < $count; $k++){
 
-			$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab2 . sprintf(g_l('modules_newsletter', '[domain_check_list]'), $k));
+			$out.=we_html_element::htmlDiv(["class" => "defaultfont"], $tab2 . sprintf(g_l('modules_newsletter', '[domain_check_list]'), $k));
 
 			$emails = $this->View->getEmails($k, we_newsletter_view::MAILS_ALL, 1);
 
@@ -516,19 +516,19 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 					$domain = "";
 
 					if(!$this->View->newsletter->check_domain($email, $domain)){
-						$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab3 . sprintf(g_l('modules_newsletter', '[domain_nok]'), $domain));
+						$out.=we_html_element::htmlDiv(["class" => "defaultfont"], $tab3 . sprintf(g_l('modules_newsletter', '[domain_nok]'), $domain));
 					}
 				} else {
-					$out.=we_html_element::htmlDiv(array("class" => "defaultfont"), $tab3 . sprintf(g_l('modules_newsletter', '[email_malformed]'), $email));
+					$out.=we_html_element::htmlDiv(["class" => "defaultfont"], $tab3 . sprintf(g_l('modules_newsletter', '[email_malformed]'), $email));
 				}
 			}
 		}
 		$out.=we_html_element::htmlBr() .
-			we_html_element::htmlDiv(array("class" => "defaultfont"), $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[domain_check_ends]'))) .
+			we_html_element::htmlDiv(["class" => "defaultfont"], $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[domain_check_ends]'))) .
 			we_html_element::htmlBr();
-		echo self::getHTMLDocument(we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "onload" => "self.focus()"), we_html_tools::htmlDialogLayout(
+		echo self::getHTMLDocument(we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm(["name" => "we_form", "method" => "post", "onload" => "self.focus()"], we_html_tools::htmlDialogLayout(
 						we_html_element::htmlBr() .
-						we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"), $out) .
+						we_html_element::htmlDiv(["class" => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"], $out) .
 						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
 					)
 		)));
@@ -578,19 +578,19 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			$table->setCol($c, 0, array("class" => "defaultfont"), g_l('modules_newsletter', '[customer_email_field]') . ":&nbsp;");
 			$table->setCol($c, 1, array("class" => "defaultfont"), we_html_tools::htmlSelect("customer_email_field", $custfields, 1, $settings["customer_email_field"], false, [], "value", 308));
 
-			$table->setCol( ++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
 			$table->setCol($c, 1, array('class' => 'defaultfont'), we_html_tools::htmlSelect('customer_html_field', $custfields, 1, $settings['customer_html_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
 			$table->setCol($c, 1, array('class' => 'defaultfont'), we_html_tools::htmlSelect('customer_salutation_field', $custfields, 1, $settings['customer_salutation_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
 			$table->setCol($c, 1, array('class' => 'defaultfont'), we_html_tools::htmlSelect('customer_title_field', $custfields, 1, $settings['customer_title_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, array('class' => 'defaultfont'), we_html_tools::htmlSelect('customer_firstname_field', $custfields, 1, $settings['customer_firstname_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, array('class' => 'defaultfont'), g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, array('class' => 'defaultfont'), we_html_tools::htmlSelect('customer_lastname_field', $custfields, 1, $settings['customer_lastname_field'], false, [], 'value', 308));
 		}
 
