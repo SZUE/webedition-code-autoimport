@@ -152,7 +152,7 @@ class we_listview_document extends we_listview_base{
 					if($this->search){
 						$order[] = 'ranking';
 					}
-					$order[] = ($this->numorder ? '0+' : '') . 'cc' . $cnt . '.Dat' . ($this->desc ? ' DESC' : '');
+					$order[] = ($this->numorder ? '0+' : '') . 'IFNULL(cc' . $cnt . '.Dat,cc' . $cnt . '.BDID)' . ($this->desc ? ' DESC' : '');
 					break;
 			}
 		}
