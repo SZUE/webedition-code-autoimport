@@ -170,7 +170,7 @@ var WebEdition = {
 			JS: "<?php echo we_base_ContentTypes::JS; ?>",
 			TEXT: "<?php echo we_base_ContentTypes::TEXT; ?>",
 			XML: "<?php echo we_base_ContentTypes::XML; ?>",
-			HTACESS: "<?php echo we_base_ContentTypes::HTACESS; ?>",
+			HTACCESS: "<?php echo we_base_ContentTypes::HTACCESS; ?>",
 			CSS: "<?php echo we_base_ContentTypes::CSS; ?>",
 			APPLICATION: "<?php echo we_base_ContentTypes::APPLICATION; ?>",
 			COLLECTION: "<?php echo we_base_ContentTypes::COLLECTION; ?>"
