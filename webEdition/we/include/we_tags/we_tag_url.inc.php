@@ -18,9 +18,11 @@
  * A copy is found in the textfile
  * webEdition/licenses/webEditionCMS/License.txt
  *
- * @category   webEdition
- * @package none
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ * @category    webEdition
+ * @package     none
+ * @license     http://www.gnu.org/copyleft/gpl.html  GPL
+ * @param       array $attribs
+ * @return      string
  */
 function we_tag_url(array $attribs){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
