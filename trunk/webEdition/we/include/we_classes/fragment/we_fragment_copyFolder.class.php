@@ -318,7 +318,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				case we_base_ContentTypes::HTML:
 				case we_base_ContentTypes::TEXT:
 				case we_base_ContentTypes::CSS:
-				case we_base_ContentTypes::HTACESS:
+				case we_base_ContentTypes::HTACCESS:
 				case we_base_ContentTypes::JS:
 					$this->parseTextDocument($GLOBALS['we_doc']);
 					break;

@@ -484,7 +484,7 @@ abstract class we_root extends we_class{
 
 	public function formPath($disablePath = false, $notSetHot = false){
 		$disable = ( ($this->ContentType == we_base_ContentTypes::HTML || $this->ContentType == we_base_ContentTypes::WEDOCUMENT) && $this->Published);
-		if($this->ContentType === we_base_ContentTypes::HTACESS){
+		if($this->ContentType === we_base_ContentTypes::HTACCESS){
 			$vals = we_base_ContentTypes::inst()->getExtension($this->ContentType, true);
 			$this->Filename = $this->Filename ? : current($vals);
 			$filenameinput = $this->formSelectFromArray('', 'Filename', array_combine($vals, $vals), g_l('weClass', '[filename]'));
