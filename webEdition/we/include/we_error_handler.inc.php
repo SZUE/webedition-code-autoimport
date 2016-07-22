@@ -335,15 +335,17 @@ function log_error_message($type, $message, $file, $line, $skipBT = false){
 			}
 		} else {
 			$hasI = function_exists('mysqli_connect') ? 'i' : '';
-			$connect = 'mysql' . $hasI . '_connect';
-			$select = 'mysql' . $hasI . '_select_db';
 			$err = 'mysql' . $hasI . '_error';
 			$query = 'mysql' . $hasI . '_query';
 			$insert = 'mysql' . $hasI . '_insert_id';
 			$close = 'mysql' . $hasI . '_close';
 
-			$link = $connect(DB_HOST, DB_USER, DB_PASSWORD) or die('Cannot log error! Could not connect: ' . $err());
-			$select($link, DB_DATABASE) or die('Cannot log error! Could not select database.');
+			if($hasI){
+				$link = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE) or die('Cannot log error! Could not connect: ' . $err());
+			} else {
+				$link = mysql_connect(DB_HOST, DB_USER, DB_PASSWORD) or die('Cannot log error! Could not connect: ' . $err());
+				mysql_select_db($link, DB_DATABASE) or die('Cannot log error! Could not select database.');
+			}
 			if($query($link, $query) === FALSE){
 				mail_error_message($type, 'Cannot log error! Query failed: ' . $message, $file, $line, $skipBT);
 				//die('Cannot log error! Query failed: ' . mysql_error());
