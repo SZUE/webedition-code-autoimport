@@ -22,12 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return array(
-	'user' => array(
-		'text' => g_l('javaMenu_users', '[menu_user]'),
-	),
 	'new' => array(
 		'text' => g_l('javaMenu_users', '[menu_new]'),
-		'parent' => 'user',
 	),
 	array(
 		'text' => g_l('javaMenu_users', '[menu_user]'),
@@ -49,6 +45,9 @@ return array(
 		'parent' => 'new',
 		'cmd' => 'new_group',
 		'perm' => 'NEW_GROUP || ADMINISTRATOR',
+	),
+	'user' => array(
+		'text' => g_l('javaMenu_users', '[menu_user]'),
 	),
 	array(
 		'text' => g_l('javaMenu_users', '[menu_save]'),

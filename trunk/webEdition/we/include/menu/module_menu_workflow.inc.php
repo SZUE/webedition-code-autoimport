@@ -22,14 +22,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return array(
-	'workflow' => array(
-		'text' => g_l('javaMenu_workflow', '[workflow]'),
+	'new' => array(
+		'text' => g_l('javaMenu_workflow', '[new]'),
+		'perm' => 'NEW_WORKFLOW || ADMINISTRATOR',
 	),
 	array(
 		'text' => g_l('javaMenu_workflow', '[new]'),
 		'cmd' => 'new_workflow',
 		'perm' => 'NEW_WORKFLOW || ADMINISTRATOR',
-		'parent' => 'workflow',
+		'parent' => 'new',
+	),
+	'workflow' => array(
+		'text' => g_l('javaMenu_workflow', '[workflow]'),
 	),
 	array(
 		'text' => g_l('javaMenu_workflow', '[save]'),

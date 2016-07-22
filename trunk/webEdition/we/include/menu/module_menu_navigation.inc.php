@@ -22,14 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return array(
-	'navigation' => array(
-		'text' => g_l('navigation', '[navigation]'),
-
-	),
 	'new' => array(
 		'text' => g_l('navigation', '[menu_new]'),
-		'parent' => 'navigation',
-
 	),
 	array(
 		'text' => g_l('navigation', '[entry]'),
@@ -42,6 +36,9 @@ return array(
 		'parent' => 'new',
 		'cmd' => 'module_navigation_new_group',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
+	),
+	'navigation' => array(
+		'text' => g_l('navigation', '[navigation]'),
 	),
 	array(
 		'text' => g_l('navigation', '[menu_save]'),
@@ -62,7 +59,6 @@ return array(
 		'text' => g_l('navigation', '[menu_exit]'),
 		'parent' => 'navigation',
 		'cmd' => 'exit_navigation',
-
 	),
 	'options' => array(
 		'text' => g_l('navigation', '[menu_options]'),
@@ -83,18 +79,15 @@ return array(
 	),
 	array(
 		'text' => g_l('navigation', '[menu_help]'),
-
 	),
 	array(
 		'text' => g_l('navigation', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',
-
 	),
 	array(
 		'text' => g_l('navigation', '[menu_info]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'info_modules',
-
 	)
 );

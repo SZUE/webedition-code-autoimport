@@ -22,12 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return array(
-	'banner' => array(
-		'text' => g_l('modules_banner', '[banner]'),
-	),
 	'new' => array(
 		'text' => g_l('modules_banner', '[new]'),
-		'parent' => 'banner',
 	),
 	array(
 		'text' => g_l('modules_banner', '[banner]'),
@@ -40,6 +36,9 @@ return array(
 		'cmd' => 'new_bannergroup',
 		'perm' => 'NEW_BANNER || ADMINISTRATOR',
 		'parent' => 'new',
+	),
+	'banner' => array(
+		'text' => g_l('modules_banner', '[banner]'),
 	),
 	array(
 		'text' => g_l('modules_banner', '[save]'),

@@ -22,12 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return array(
-	'newsletter' => array(
-		'text' => g_l('modules_newsletter', '[newsletter][text]'),
-	),
 	'new' => array(
 		'text' => g_l('modules_newsletter', '[new]'),
-		'parent' => 'newsletter',
 	),
 	array(
 		'text' => g_l('modules_newsletter', '[newsletter][text]'),
@@ -40,6 +36,9 @@ return array(
 		'cmd' => 'new_newsletter_group',
 		'perm' => 'NEW_NEWSLETTER || ADMINISTRATOR',
 		'parent' => 'new',
+	),
+	'newsletter' => array(
+		'text' => g_l('modules_newsletter', '[newsletter][text]'),
 	),
 	array(
 		'text' => g_l('modules_newsletter', '[save]'),

@@ -22,14 +22,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return array(
-	'customer' => array(
-		'text' => g_l('modules_customer', '[menu_customer]'),
-	),
 	array(
 		'text' => g_l('modules_customer', '[menu_new]'),
-		'parent' => 'customer',
+		'perm' => 'NEW_CUSTOMER || ADMINISTRATOR',
+	),
+	array(
+		'text' => g_l('modules_customer', '[menu_customer]'),
+		'parent' => 'new',
 		'cmd' => 'new_customer',
 		'perm' => 'NEW_CUSTOMER || ADMINISTRATOR',
+	),
+	'customer' => array(
+		'text' => g_l('modules_customer', '[menu_customer]'),
 	),
 	array(
 		'text' => g_l('modules_customer', '[menu_save]'),
