@@ -203,7 +203,7 @@ function addLog(text){
 			'noline' => 1
 		);
 
-		$table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+		$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', array('local' => g_l('export', '[export_to_local]'), "server" => g_l('export', '[export_to_server]')), 1, $this->View->export->ExportTo, false, array('onchange' => 'toggle(\'save_to\');top.content.hot=1;'), 'value', 520));
 		$table->setCol(1, 0, array("id" => "save_to", "style" => ($this->View->export->ExportTo === 'server' ? 'display:block' : 'display: none')), we_html_tools::htmlFormElementTable($this->formFileChooser(400, "ServerPath", $this->View->export->ServerPath, "", "folder"), g_l('export', '[save_to]')));
 
@@ -579,7 +579,7 @@ if (top.content.editor.edfooter.doProgress){
 				"cmd" => "do_export"));
 
 		if($all > $exports){
-			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $progress_update
+			return we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $progress_update
 					)
 			);
 		}
@@ -599,7 +599,7 @@ if (top.content.editor.edbody.addLog){
 }' .
 				($this->View->export->ExportTo === 'local' ?
 					'top.content.editor.edbody.addLog(\'' .
-					we_html_element::htmlSpan(array("class" => "defaultfont"), addslashes(g_l('export', '[backup_finished]')) . "<br/>" .
+					we_html_element::htmlSpan(['class' => 'defaultfont'], addslashes(g_l('export', '[backup_finished]')) . "<br/>" .
 						g_l('export', '[download_starting2]') . "<br/><br/>" .
 						g_l('export', '[download_starting3]') . "<br/>" .
 						we_html_element::htmlB(we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=export&pnt=cmd&cmd=upload&exportfile=' . urlencode($this->View->export->ExportFilename), 'download' => $this->View->export->ExportFilename), g_l('export', '[download]'))) . "<br/><br/>"

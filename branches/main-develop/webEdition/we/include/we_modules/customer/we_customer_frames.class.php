@@ -95,8 +95,6 @@ class we_customer_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
-		$extraJS = 'var aTabs={';
-
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return parent::getHTMLEditorHeader(0);
 		}
@@ -106,7 +104,8 @@ class we_customer_frames extends we_modules_frame{
 		$branches_names = $this->View->customer->getBranchesNames();
 
 		$tabs->addTab(g_l('modules_customer', '[common]'), false, "setTab('" . g_l('modules_customer', '[common]') . "');", ["id" => "common"]);
-		$extraJS .= "'" . g_l('modules_customer', '[common]') . "':'common',";
+		$extraJS = 'var aTabs={' .
+			"'" . g_l('modules_customer', '[common]') . "':'common',";
 		$branchCount = 0;
 		foreach($branches_names as $branch){
 			$tabs->addTab($branch, false, "setTab('" . $branch . "');", ["id" => "branch_" . $branchCount]);
@@ -150,9 +149,9 @@ class we_customer_frames extends we_modules_frame{
 		$text = $this->View->customer->Username;
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(array('onresize' => 'weTabs.setFrameSize()', 'onload' => 'loaded();', 'id' => 'eHeaderBody',), we_html_element::htmlDiv(array('id' => 'main'), we_html_element::htmlDiv(array('id' => 'headrow'), we_html_element::htmlNobr(
+		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'loaded();', 'id' => 'eHeaderBody',], we_html_element::htmlDiv(['id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlNobr(
 							we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('modules_customer', '[customer]')) . ':&nbsp;') .
-							we_html_element::htmlSpan(array('id' => 'h_path', 'class' => 'header_small'), '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
+							we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
 							)
 						)
 					) .
@@ -178,26 +177,38 @@ function setTab(tab) {
 		$branch = we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'));
 
 		return $this->getHTMLDocument(we_html_element::htmlBody(
-					array('class' => 'weEditorBody', 'onload' => 'loaded=1', 'onunload' => 'doUnload()'), we_html_element::htmlForm(
-						array('name' => 'we_form', 'autocomplete' => 'off'), $this->View->getCommonHiddens($hiddens) .
+					['class' => 'weEditorBody', 'onload' => 'loaded=1', 'onunload' => 'doUnload()'], we_html_element::htmlForm(
+						['name' => 'we_form', 'autocomplete' => 'off'], $this->View->getCommonHiddens($hiddens) .
 						$this->View->getHTMLProperties($branch))), $this->View->getJSProperty());
 	}
 
 	protected function getHTMLTreeHeader(){
-		return we_customer_add::getHTMLTreeHeader($this);
+		$select = $this->View->getHTMLSortSelect();
+		$select->setAttributes(['onchange' => 'applySort();', 'style' => 'width:150px']);
+		$select->selectOption($this->View->settings->getSettings('default_sort_view'));
+
+		$table = $select->getHtml() . we_html_button::create_button(we_html_button::RELOAD, "javascript:applySort();") .
+			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('show_sort_admin')");
+
+		return we_html_element::htmlForm(["name" => "we_form_treeheader"], we_html_element::htmlHiddens([
+					"pnt" => "treeheader",
+					"pid" => 0,
+					"cmd" => "no_cmd"]) .
+				$table
+		);
 	}
 
 	protected function getHTMLTreeFooter(){
-		$hiddens = we_html_element::htmlHiddens(array(
+		$hiddens = we_html_element::htmlHiddens([
 				'pnt' => 'cmd',
-				'cmd' => 'show_search'));
+				'cmd' => 'show_search']);
 
 		$table = $hiddens .
 			we_html_tools::htmlTextInput("keyword", 10, '', '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "150px") .
 			we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm('cmd', '', '', 'we_form_treefooter')");
 
 		return we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) .
-			we_html_element::htmlForm(array("name" => "we_form_treefooter", "target" => "cmd"), $table);
+			we_html_element::htmlForm(["name" => "we_form_treefooter", "target" => "cmd"], $table);
 	}
 
 	function getHTMLCustomerAdmin(){
@@ -205,11 +216,11 @@ function setTab(tab) {
 		$branch_select = we_base_request::_(we_base_request::STRING, "branch", g_l('modules_customer', '[other]'));
 
 		$select = $this->View->getHTMLBranchSelect(false);
-		$select->setAttributes(array("name" => "branch_select", "class" => 'weSelect', 'onchange' => "selectBranch()", "style" => "width:150px;"));
+		$select->setAttributes(["name" => "branch_select", "class" => 'weSelect', 'onchange' => "selectBranch()", "style" => "width:150px;"]);
 		$select->selectOption($branch_select);
 
 		$fields = $this->getHTMLFieldsSelect($branch);
-		$fields->setAttributes(array("name" => "fields_select", "size" => 15, "onchange" => '', "style" => "width:350px;height:250px;"));
+		$fields->setAttributes(["name" => "fields_select", "size" => 15, "onchange" => '', "style" => "width:350px;height:250px;"]);
 		//$hiddens = rray("name" => "field", "value" => ''));
 
 		$buttons_table = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('open_add_field')") .
@@ -217,27 +228,27 @@ function setTab(tab) {
 			we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete_field')") .
 			we_html_button::create_button(we_html_button::DIRUP, "javascript:we_cmd('move_field_up')") .
 			we_html_button::create_button(we_html_button::DIRDOWN, "javascript:we_cmd('move_field_down')") .
-			we_html_element::htmlSpan(array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[sort_edit_fields_explain]')) .
+			we_html_element::htmlSpan(["class" => "defaultfont lowContrast"], g_l('modules_customer', '[sort_edit_fields_explain]')) .
 			we_html_button::create_button('reset', "javascript:we_cmd('reset_edit_order')");
 
-		$table = new we_html_table(array('class' => 'default', "width" => 500), 4, 5);
+		$table = new we_html_table(['class' => 'default', "width" => 500], 4, 5);
 
-		$table->setCol(0, 0, array("class" => "defaultfont lowContrast", 'style' => 'padding-right:10px;'), g_l('modules_customer', '[branch]'));
-		$table->setCol(0, 2, array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[branch_select]'));
-		$table->setCol(1, 0, array('style' => 'padding-right:10px;'), we_html_tools::htmlTextInput("branch", 48, $branch, '', 'style="width:350px;"'));
-		$table->setCol(1, 2, array('style' => 'padding-right:10px;'), $select->getHtml());
-		$table->setCol(1, 4, array('style' => 'padding-bottom:10px;'), we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('open_edit_branch')"));
+		$table->setCol(0, 0, ["class" => "defaultfont lowContrast", 'style' => 'padding-right:10px;'], g_l('modules_customer', '[branch]'));
+		$table->setCol(0, 2, ["class" => "defaultfont lowContrast"], g_l('modules_customer', '[branch_select]'));
+		$table->setCol(1, 0, ['style' => 'padding-right:10px;'], we_html_tools::htmlTextInput("branch", 48, $branch, '', 'style="width:350px;"'));
+		$table->setCol(1, 2, ['style' => 'padding-right:10px;'], $select->getHtml());
+		$table->setCol(1, 4, ['style' => 'padding-bottom:10px;'], we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('open_edit_branch')"));
 
 
-		$table->setCol(2, 0, array("class" => "defaultfont lowContrast", 'style' => 'vertical-align:top;'), g_l('modules_customer', '[fields]'));
-		$table->setCol(3, 0, array('style' => 'vertical-align:top;padding-right:10px;'), $fields->getHtml());
-		$table->setCol(3, 2, array('style' => 'vertical-align:top;'), $buttons_table);
+		$table->setCol(2, 0, ["class" => "defaultfont lowContrast", 'style' => 'vertical-align:top;'], g_l('modules_customer', '[fields]'));
+		$table->setCol(3, 0, ['style' => 'vertical-align:top;padding-right:10px;'], $fields->getHtml());
+		$table->setCol(3, 2, ['style' => 'vertical-align:top;'], $buttons_table);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();', 'style' => 'overflow:hidden'), $this->View->getJSAdmin() .
-					we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody(["class" => "weDialogBody", 'onload' => 'self.focus();', 'style' => 'overflow:hidden'], $this->View->getJSAdmin() .
+					we_html_element::htmlForm(["name" => "we_form"], we_html_element::htmlHiddens([
 							"cmd" => "switchBranch",
-							"pnt" => "customer_admin")) .
+							"pnt" => "customer_admin"]) .
 						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"))
 					)
 				)
@@ -260,9 +271,9 @@ function setTab(tab) {
 		switch($type){
 			case "branch":
 				$hiddens.=we_html_element::htmlHidden("pnt", "branch_editor");
-				$edit = new we_html_table(array("width" => 300), 1, 2);
-				$edit->setCol(0, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[field_name]'));
-				$edit->setCol(0, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), we_html_tools::htmlTextInput("name", 26, $branch, '', ''));
+				$edit = new we_html_table(["width" => 300], 1, 2);
+				$edit->setCol(0, 0, ['style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"], g_l('modules_customer', '[field_name]'));
+				$edit->setCol(0, 1, ['style' => 'vertical-align:middle;', 'class' => 'defaultfont'], we_html_tools::htmlTextInput("name", 26, $branch, '', ''));
 
 				$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_branch')");
 				break;
@@ -288,21 +299,21 @@ function setTab(tab) {
 
 				$edit = new we_html_table(array("width" => 300), 5, 2);
 
-				$edit->setCol(0, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[branch]'));
-				$edit->setCol(0, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), $branch);
+				$edit->setCol(0, 0, ['style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"], g_l('modules_customer', '[branch]'));
+				$edit->setCol(0, 1, ['style' => 'vertical-align:middle;', 'class' => 'defaultfont'], $branch);
 
-				$edit->setCol(1, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[field_name]'));
-				$edit->setCol(1, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), we_html_tools::htmlTextInput("name", 26, (isset($field_props['name']) ? $field_props['name'] : ''), '', ''));
+				$edit->setCol(1, 0, ['style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"], g_l('modules_customer', '[field_name]'));
+				$edit->setCol(1, 1, ['style' => 'vertical-align:middle;', 'class' => 'defaultfont'], we_html_tools::htmlTextInput("name", 26, (isset($field_props['name']) ? $field_props['name'] : ''), '', ''));
 
-				$edit->setCol(2, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[field_type]'));
+				$edit->setCol(2, 0, ['style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"], g_l('modules_customer', '[field_type]'));
 
-				$edit->setCol(2, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), $types->getHtml());
+				$edit->setCol(2, 1, ['style' => 'vertical-align:middle;', 'class' => 'defaultfont'], $types->getHtml());
 
-				$edit->setCol(3, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[field_default]'));
-				$edit->setCol(3, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), we_html_tools::htmlTextInput("field_default", 26, (isset($field_props['default']) ? $field_props['default'] : ''), '', ''));
+				$edit->setCol(3, 0, ['style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"], g_l('modules_customer', '[field_default]'));
+				$edit->setCol(3, 1, array('style' => 'vertical-align:middle;', 'class' => 'defaultfont'), we_html_tools::htmlTextInput("field_default", 26, (isset($field_props['default']) ? $field_props['default'] : ''), '', ''));
 
 				$edit->setCol(4, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"), g_l('modules_customer', '[encryptField]'));
-				$edit->setCol(4, 1, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), $enc->getHtml());
+				$edit->setCol(4, 1, array('style' => 'vertical-align:middle;', 'class' => 'defaultfont'), $enc->getHtml());
 
 				$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_field')");
 		}
@@ -323,10 +334,10 @@ function setTab(tab) {
 	}
 
 	function getHTMLBox($content, $headline = "", $width = 100, $height = 50, $w = 25, $vh = 0, $ident = 0, $space = 5, $headline_align = "left", $content_align = "left"){
-		$table = new we_html_table(array("width" => $width, "height" => $height, "class" => 'default', 'style' => 'margin-left:' . intval($ident) . 'px;margin-top:' . intval($vh) . 'px;margin-bottom:' . ($w && $headline ? $vh : 0) . 'px;'), 1, 2);
+		$table = new we_html_table(["width" => $width, "height" => $height, "class" => 'default', 'style' => 'margin-left:' . intval($ident) . 'px;margin-top:' . intval($vh) . 'px;margin-bottom:' . ($w && $headline ? $vh : 0) . 'px;'], 1, 2);
 
-		$table->setCol(0, 0, array("style" => 'vertical-align:middle;text-align:' . $headline_align . ';padding-right:' . $space . 'px;', "class" => "defaultfont lowContrast"), str_replace(" ", "&nbsp;", $headline));
-		$table->setCol(0, 1, array("style" => 'vertical-align:middle;text-align:' . $content_align), $content);
+		$table->setCol(0, 0, ["style" => 'vertical-align:middle;text-align:' . $headline_align . ';padding-right:' . $space . 'px;', "class" => "defaultfont lowContrast"], str_replace(" ", "&nbsp;", $headline));
+		$table->setCol(0, 1, ["style" => 'vertical-align:middle;text-align:' . $content_align], $content);
 		return $table->getHtml();
 	}
 
@@ -351,9 +362,9 @@ function setTab(tab) {
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody([], we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody([], we_html_element::htmlForm(["name" => "we_form"], we_html_element::htmlHiddens([
 							"pnt" => "cmd",
-							"cmd" => "no_cmd"))
+							"cmd" => "no_cmd"])
 					)
 				), we_html_element::jsElement(
 					(we_base_request::_(we_base_request::STRING, 'error') ?
@@ -381,17 +392,17 @@ function setTab(tab) {
 
 		$select = new we_html_select(array('name' => 'search_result', 'style' => 'width:550px;', 'onDblClick' => "opener.top.content.we_cmd('customer_edit',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20));
 
-		$foundItems = 0;
 		if($mode){
 			we_customer_add::getHTMLSearch($this, $search, $select);
 			$foundItems = $GLOBALS['advSearchFoundItems'] ? : 0;
 		} else {
+			$foundItems = 0;
 			$search->setCol(1, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'onchange=""', 'text', '550px')
 			);
 
 			$sw = we_html_button::create_button(we_html_button::DIRRIGHT, "javascript:we_cmd('switchToAdvance')");
 
-			$search->setCol(3, 0, array('style' => 'text-align:right', 'colspan' => $colspan), we_html_element::htmlDiv(array('class' => 'defaultfont'), g_l('modules_customer', '[advanced_search]')) .
+			$search->setCol(3, 0, array('style' => 'text-align:right', 'colspan' => $colspan), we_html_element::htmlDiv(['class' => 'defaultfont'], g_l('modules_customer', '[advanced_search]')) .
 				$sw .
 				$search_but
 			);
@@ -412,7 +423,7 @@ function setTab(tab) {
 
 		$table = new we_html_table(array('width' => 550, 'height' => 50), 3, 1);
 		$table->setCol(0, 0, [], $search->getHtml());
-		$table->setCol(1, 0, array('class' => 'defaultfont'), g_l('modules_customer', '[num_data_sets]') . ($foundItems ? ' (' . $foundItems . ')' : ''));
+		$table->setCol(1, 0, ['class' => 'defaultfont'], g_l('modules_customer', '[num_data_sets]') . ($foundItems ? ' (' . $foundItems . ')' : ''));
 		$table->setCol(2, 0, [], $select->getHtml());
 
 		return $this->getHTMLDocument(
@@ -449,14 +460,14 @@ var fieldDate = new weDate(date_format_dateonly);
 
 		$table = new we_html_table(array('class' => 'default', 'style' => 'margin-right:10px;'), 5, 3);
 		$cur = 0;
-		$table->setCol($cur, 0, array("class" => "defaultfont", 'style' => 'padding-right:30px;'), g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
-		$table->setCol($cur, 2, array("class" => "defaultfont"), $default_sort_view_select->getHtml());
+		$table->setCol($cur, 0, array('class' => 'defaultfont', 'style' => 'padding-right:30px;'), g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
+		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_sort_view_select->getHtml());
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont", 'style' => 'padding-right:30px;'), g_l('modules_customer', '[start_year]') . ":&nbsp;");
-		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont', 'style' => 'padding-right:30px;'), g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol($cur, 2, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol(++$cur, 0, array("class" => "defaultfont", 'style' => 'padding-right:30px;'), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
-		$table->setCol($cur, 2, array("class" => "defaultfont"), we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
+		$table->setCol(++$cur, 0, array('class' => 'defaultfont', 'style' => 'padding-right:30px;'), g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol($cur, 2, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
 
 		$default_order = new we_html_select(array('name' => 'default_order', 'style' => 'width:250px;', 'class' => 'weSelect'));
@@ -468,7 +479,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
 		$table->setCol(++$cur, 0, array('class' => 'defaultfont', 'style' => 'padding-right:30px;'), g_l('modules_customer', '[default_order]') . ':&nbsp;');
-		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_order->getHtml());
+		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_order->getHtml());
 
 		$default_saveRegisteredUser_register = new we_html_select(array('name' => 'default_saveRegisteredUser_register', 'style' => 'width:250px;', 'class' => 'weSelect'));
 		$default_saveRegisteredUser_register->addOption('false', 'false');
@@ -476,7 +487,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
 		$table->setCol(++$cur, 0, array('class' => 'defaultfont', 'style' => 'padding-right:30px;'), '&lt;we:saveRegisteredUser register=&quot;');
-		$table->setCol($cur, 2, array('class' => 'defaultfont'), $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
+		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_settings')");

@@ -77,7 +77,7 @@ $doctypeElement = we_html_tools::htmlFormElementTable(we_html_tools::htmlSelect(
 
 $cls = new we_html_select(array(
 	"name" => "classID",
-	"class" => "defaultfont",
+	'class' => 'defaultfont',
 	"style" => "width:420px; border: #AAAAAA solid 1px"
 	));
 $optid = 0;
@@ -121,7 +121,7 @@ function getHTMLCategory(){
 		'class' => 'default'
 		), 5, 1);
 
-	$table->setCol(1, 0, array('class' => 'defaultfont'), "Kategorien");
+	$table->setCol(1, 0, ['class' => 'defaultfont'], "Kategorien");
 	$table->setColContent(2, 0, we_html_element::htmlDiv(array(
 			'id' => 'categories',
 			'class' => 'blockWrapper',

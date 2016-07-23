@@ -30,7 +30,7 @@ class we_base_ContentTypes{
 	const WEDOCUMENT = 'text/webedition';
 	const JS = 'text/js';
 	const CSS = 'text/css';
-	const HTACESS = 'text/htaccess';
+	const HTACCESS = 'text/htaccess';
 	const TEXT = 'text/plain';
 	const FLASH = 'application/x-shockwave-flash';
 	const VIDEO = 'video/*';
@@ -145,7 +145,7 @@ class we_base_ContentTypes{
 				'Table' => array(FILE_TABLE),
 				'Class' => 'we_textDocument'
 			),
-			self::HTACESS => array(
+			self::HTACCESS => array(
 				'Extension' => array('.htaccess', '.htpasswd'),
 				'ExtensionIsFilename' => true,
 				'Permission' => 'NEW_HTACCESS',

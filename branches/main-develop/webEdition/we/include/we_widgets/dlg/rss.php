@@ -55,7 +55,7 @@ function clip_' . $unique . '(){
 	$oClip->setCol(0, 1, array("width" => 10));
 	$oClip->setCol(0, 2, null, we_html_element::htmlSpan(array(
 			"id" => $unique,
-			"class" => "defaultfont",
+			'class' => 'defaultfont',
 			"style" => "cursor:pointer;",
 			"onclick" => "clip_" . $unique . "();"
 			), addslashes($smalltext)));
@@ -67,7 +67,7 @@ function clip_' . $unique . '(){
 
 $oIptUri = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("ipt_uri", 55, "", 255, 'title=""', "text", 380, 0), g_l('cockpit', '[url]'), "left", "defaultfont");
 
-$oSctRss = new we_html_select(array("name" => "sct_rss", "class" => "defaultfont", "onchange" => "onChangeSctRss(this);"));
+$oSctRss = new we_html_select(array("name" => "sct_rss", 'class' => 'defaultfont', "onchange" => "onChangeSctRss(this);"));
 $oSctRss->insertOption(0, "", "");
 $oTblSctRss = we_html_tools::htmlFormElementTable($oSctRss->getHTML(), g_l('cockpit', '[rss_top_feeds]'), 'left', 'defaultfont');
 
@@ -101,7 +101,7 @@ $oChbxContDesc = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[des
 $oChbxContEnc = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[content_encoded]'), true, "defaultfont", "", false, "", 0, 0);
 $oChbxContPubDate = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[pubdate]'), true, "defaultfont", "", false, "", 0, 0);
 $oChbxContCategory = we_html_forms::checkbox(0, 0, "chbx_conf", g_l('cockpit', '[category]'), true, "defaultfont", "", false, "", 0, 0);
-$oSctNumEntries = new we_html_select(array("name" => "sct_conf", "class" => "defaultfont"));
+$oSctNumEntries = new we_html_select(array("name" => "sct_conf", 'class' => 'defaultfont'));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[no]'));
 
 for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
@@ -112,7 +112,7 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 }
 
 $oRssContR = new we_html_table(array("height" => "100%", 'class' => 'default'), 2, 3);
-$oRssContR->setCol(0, 0, array('style' => 'vertical-align:middle;', "class" => "defaultfont"), g_l('cockpit', '[limit_entries]'));
+$oRssContR->setCol(0, 0, array('style' => 'vertical-align:middle;', 'class' => 'defaultfont'), g_l('cockpit', '[limit_entries]'));
 $oRssContR->setCol(0, 1, array('style' => 'width:5px;'));
 $oRssContR->setCol(0, 2, array('style' => 'vertical-align:middle;'), $oSctNumEntries->getHTML());
 $oRssContR->setCol(1, 0, array("colspan" => 3, 'style' => 'vertical-align:bottom;'), $oChbxContPubDate . $oChbxContCategory);

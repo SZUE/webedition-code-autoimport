@@ -650,7 +650,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 				$file_encoding->addOption("mac", g_l('export', '[mac]'));
 				$file_encoding->selectOption($csv_lineend);
 
-				$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('export', '[csv_lineend]') . "<br/>" . $file_encoding->getHtml());
+				$fileformattable->setCol(0, 0, ['class' => 'defaultfont'], g_l('export', '[csv_lineend]') . "<br/>" . $file_encoding->getHtml());
 				$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array(";" => g_l('export', '[semicolon]'), "," => g_l('export', '[comma]'), ":" => g_l('export', '[colon]'), "\\t" => g_l('export', '[tab]'), " " => g_l('export', '[space]')), g_l('export', '[csv_delimiter]')));
 				$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array("\"" => g_l('export', '[double_quote]'), "'" => g_l('export', '[single_quote]')), g_l('export', '[csv_enclose]')));
 
@@ -660,7 +660,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 				break;
 
 			case we_import_functions::TYPE_GENERIC_XML:
-				$table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+				$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
 
 				$table->setColContent(0, 0, we_html_forms::radiobutton("true", ($cdata === "true"), "cdata", g_l('export', '[export_xml_cdata]'), true, "defaultfont", "top.cdata='true'"));
 				$table->setColContent(1, 0, we_html_forms::radiobutton("false", ($cdata === "false"), "cdata", g_l('export', '[export_xml_entities]'), true, "defaultfont", "top.cdata='false'"));
@@ -689,7 +689,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 	private function getHTMLStep10(){
 		$filename = urldecode(we_base_request::_(we_base_request::FILE, "file_name"));
 
-		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('export', '[backup_finished]') . "<br/><br/>" .
+		$message = we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('export', '[backup_finished]') . "<br/><br/>" .
 				g_l('export', '[download_starting]') .
 				we_html_element::htmlA(array("href" => $this->frameset . '?pnt=body&step=50&exportfile=' . $filename, 'download' => basename($filename)), g_l('export', '[download]')));
 
@@ -757,7 +757,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 				break;
 		}
 
-		$message = we_html_element::htmlSpan(array("class" => "defaultfont"), ($returned_message[1] ? (g_l('export', '[error]') . "<br/><br/>") : "") . $returned_message[0]);
+		$message = we_html_element::htmlSpan(['class' => 'defaultfont'], ($returned_message[1] ? (g_l('export', '[error]') . "<br/><br/>") : "") . $returned_message[0]);
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('export', ($returned_message[1] ? '[step99]' : '[step99_notice]')))
 				)
@@ -1216,7 +1216,7 @@ switch (args[0]) {
 
 		$headline = defined('OBJECT_FILES_TABLE') ?
 			we_html_forms::radiobutton("doctype", ($type === "doctype" ? true : ($type != "classname" ? true : false)), "type", g_l('export', '[doctypename]'), true, "defaultfont", "top.type='doctype'") :
-			we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('export', '[doctypename]'));
+			we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('export', '[doctypename]'));
 
 		return we_html_tools::htmlFormElementTable(
 				$table->getHtml(), $headline

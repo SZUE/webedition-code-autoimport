@@ -54,9 +54,7 @@ class we_banner_frames extends we_modules_frame{
 		}
 
 		$isFolder = we_base_request::_(we_base_request::BOOL, "isFolder");
-
 		$page = we_base_request::_(we_base_request::INT, "page", 0);
-
 		$headline1 = g_l('modules_banner', $isFolder ? '[group]' : '[banner]');
 		$text = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_banner', ($isFolder ? '[newbannergroup]' : '[newbanner]')));
 

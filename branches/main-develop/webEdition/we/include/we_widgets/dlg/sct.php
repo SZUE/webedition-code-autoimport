@@ -72,7 +72,7 @@ foreach($shortcuts as $k => $v){
 
 $oSctPool = new we_html_select(array(
 	"name" => "sct_pool",
-	"class" => "defaultfont",
+	'class' => 'defaultfont',
 	"onchange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
 	)
 );
@@ -88,7 +88,7 @@ $oSctList11 = new we_html_select(array(
 	"name" => "list11",
 	"size" => 10,
 	"style" => "width:200px;",
-	"class" => "defaultfont",
+	'class' => 'defaultfont',
 	"onDblClick" => "moveSelectedOptions(this.form['list11'],this.form['list21'],false);"
 	));
 $oSctList21 = new we_html_select(array(
@@ -96,7 +96,7 @@ $oSctList21 = new we_html_select(array(
 	"name" => "list21",
 	"size" => 10,
 	"style" => "width:200px;",
-	"class" => "defaultfont",
+	'class' => 'defaultfont',
 	"onDblClick" => "moveSelectedOptions(this.form['list21'],this.form['list11'],false);"
 	));
 

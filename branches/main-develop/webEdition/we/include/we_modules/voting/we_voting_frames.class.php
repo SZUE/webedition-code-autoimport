@@ -308,8 +308,8 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			$enclose->addOption(0, g_l('export', '[double_quote]'));
 			$enclose->addOption(1, g_l('export', '[single_quote]'));
 
-			$export_box->setCol(3, 0, array("class" => "defaultfont", 'style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($lineend->getHtml(), g_l('export', '[csv_lineend]')));
-			$export_box->setCol(5, 0, array("class" => "defaultfont", 'style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($import_Charset, g_l('modules_voting', '[csv_charset]')));
+			$export_box->setCol(3, 0, array('class' => 'defaultfont', 'style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($lineend->getHtml(), g_l('export', '[csv_lineend]')));
+			$export_box->setCol(5, 0, array('class' => 'defaultfont', 'style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($import_Charset, g_l('modules_voting', '[csv_charset]')));
 			$export_box->setCol(7, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($delimiter->getHtml(), g_l('export', '[csv_delimiter]')));
 			$export_box->setCol(9, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($enclose->getHtml(), g_l('export', '[csv_enclose]')));
 			$export_box->setCol(11, 0, [], $ok);
@@ -641,7 +641,7 @@ function refreshTexts(){
 		$enclose->addOption(0, g_l('export', '[double_quote]'));
 		$enclose->addOption(1, g_l('export', '[single_quote]'));
 
-		$export_box->setCol(3, 0, array("class" => "defaultfont"), we_html_tools::htmlFormElementTable($lineend->getHtml(), g_l('export', '[csv_lineend]')));
+		$export_box->setCol(3, 0, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable($lineend->getHtml(), g_l('export', '[csv_lineend]')));
 		$export_box->setCol(5, 0, array('padding-top:5px;'), we_html_tools::htmlFormElementTable($delimiter->getHtml(), g_l('export', '[csv_delimiter]')));
 		$export_box->setCol(7, 0, array('padding-top:5px;'), we_html_tools::htmlFormElementTable($enclose->getHtml(), g_l('export', '[csv_enclose]')));
 		$export_box->setCol(9, 0, array('padding-top:5px;'), $ok);
@@ -719,9 +719,9 @@ function setVisible(id,visible){
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody([], we_html_element::htmlForm(
-						array("name" => "we_form"), we_html_element::htmlHiddens(array(
+						["name" => "we_form"], we_html_element::htmlHiddens([
 							"pnt" => "cmd",
-							"cmd" => "no_cmd")
+							"cmd" => "no_cmd"]
 						)
 					)
 				), we_html_element::jsElement(
@@ -739,15 +739,15 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			return;
 		}
 
-		$table = new we_html_table(array('class' => 'default withSpace'), 3, 1);
+		$table = new we_html_table(['class' => 'default withSpace'], 3, 1);
 
-		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_voting', '[csv_export]'), $link));
-		$table->setCol(1, 0, array("class" => "defaultfont"), we_backup_wizard::getDownloadLinkText());
-		$table->setCol(2, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => getServerUrl(true) . $link, 'download' => basename($link)), g_l('modules_voting', '[csv_download]')));
+		$table->setCol(0, 0, ['class' => 'defaultfont'], sprintf(g_l('modules_voting', '[csv_export]'), $link));
+		$table->setCol(1, 0, ['class' => 'defaultfont'], we_backup_wizard::getDownloadLinkText());
+		$table->setCol(2, 0, ['class' => 'defaultfont'], we_html_element::htmlA(["href" => getServerUrl(true) . $link, 'download' => basename($link)], g_l('modules_voting', '[csv_download]')));
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(
+		$body = we_html_element::htmlBody(["class" => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::htmlForm(
 					array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden("group", "") .
 					we_html_tools::htmlDialogLayout(
 						$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_html_button::formatButtons($close), "100%", 30, 350
@@ -763,10 +763,10 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		if($link === false){
 			return;
 		}
-		$table = new we_html_table(array('class' => 'default withSpace'), 3, 1);
-		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_voting', '[csv_export]'), $link));
-		$table->setCol(1, 0, array("class" => "defaultfont"), we_backup_wizard::getDownloadLinkText());
-		$table->setCol(2, 0, array("class" => "defaultfont"), we_html_element::htmlA(array("href" => getServerUrl(true) . $link), g_l('modules_voting', '[csv_download]')));
+		$table = new we_html_table(['class' => 'default withSpace'], 3, 1);
+		$table->setCol(0, 0, ['class' => 'defaultfont'], sprintf(g_l('modules_voting', '[csv_export]'), $link));
+		$table->setCol(1, 0, ['class' => 'defaultfont'], we_backup_wizard::getDownloadLinkText());
+		$table->setCol(2, 0, ['class' => 'defaultfont'], we_html_element::htmlA(array("href" => getServerUrl(true) . $link), g_l('modules_voting', '[csv_download]')));
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
@@ -785,8 +785,8 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_tools::htmlDialogLayout(
-					we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close)
+		$body = we_html_element::htmlBody(["class" => "weDialogBody", 'onload' => 'self.focus();'], we_html_tools::htmlDialogLayout(
+					we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close)
 				)
 		);
 		return $this->getHTMLDocument($body);
@@ -798,7 +798,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
 		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_tools::htmlDialogLayout(
-					we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close)
+					we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close)
 				)
 		);
 		return $this->getHTMLDocument($body);
@@ -817,14 +817,14 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			$log = [];
 		}
 
-		$headline = array(
-			array('dat' => we_html_element::htmlB(g_l('modules_voting', '[time]'))),
-			array('dat' => we_html_element::htmlB(g_l('modules_voting', '[ip]'))),
-			array('dat' => we_html_element::htmlB(g_l('modules_voting', '[user_agent]'))),
-			array('dat' => we_html_element::htmlB(g_l('modules_voting', '[cookie]'))),
-			array('dat' => we_html_element::htmlB(g_l('modules_voting', '[log_fallback]'))),
-			array('dat' => we_html_element::htmlB(g_l('modules_voting', '[status]'))),
-		);
+		$headline = [
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[time]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[ip]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[user_agent]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[cookie]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[log_fallback]'))],
+			['dat' => we_html_element::htmlB(g_l('modules_voting', '[status]'))],
+		];
 
 		$content = [];
 
@@ -867,14 +867,14 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 					$mess = g_l('modules_voting', '[log_success]');
 				}
 
-				$content[] = array(
-					array('dat' => date(g_l('weEditorInfo', '[date_format]'), $data['time'])),
-					array('dat' => $data['ip']),
-					array('dat' => $data['agent']),
-					array('dat' => g_l('modules_voting', $data['cookie'] ? '[enabled]' : '[disabled]')),
-					array('dat' => g_l('global', $data['fallback'] ? '[yes]' : '[no]')),
-					array('dat' => $mess),
-				);
+				$content[] = [
+					['dat' => date(g_l('weEditorInfo', '[date_format]'), $data['time'])],
+					['dat' => $data['ip']],
+					['dat' => $data['agent']],
+					['dat' => g_l('modules_voting', $data['cookie'] ? '[enabled]' : '[disabled]')],
+					['dat' => g_l('global', $data['fallback'] ? '[yes]' : '[no]')],
+					['dat' => $mess],
+				];
 			}
 
 			$nextprev = '<table style="margin-top: 10px;" class="default"><tr><td>' .
@@ -1157,7 +1157,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_tools::htmlDialogLayout(
-						we_html_element::htmlSpan(array('class' => 'defaultfont'), g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close))
+						we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close))
 				)
 		);
 	}

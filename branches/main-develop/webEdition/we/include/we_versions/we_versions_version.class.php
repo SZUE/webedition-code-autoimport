@@ -909,7 +909,7 @@ class we_versions_version{
 				return VERSIONING_TEXT_CSS;
 			case we_base_ContentTypes::TEXT:
 				return VERSIONING_TEXT_PLAIN;
-			case we_base_ContentTypes::HTACESS:
+			case we_base_ContentTypes::HTACCESS:
 				return VERSIONING_TEXT_HTACCESS;
 			case we_base_ContentTypes::TEMPLATE:
 				return VERSIONING_TEXT_WETMPL;

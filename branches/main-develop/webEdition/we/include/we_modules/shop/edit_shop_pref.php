@@ -126,17 +126,17 @@ if(!isset($feldnamen[4])){
 $row = 0;
 //we_html_tools::htmlSelectCountry('weShopVatCountry', '', 1, [], false, array('id' => 'weShopVatCountry'), 200)
 
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][use_shopCats]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[shopcats][use_shopCats]'));
 $htmlTable->setCol($row, 1, array('style' => 'width:10px;'));
 $yesno = array(0 => 'false', 1 => 'true');
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('categorymode', $yesno, 1, $categorymode, false, array("id" => "categorymode", "onchange" => "document.getElementById('shop_holders_location').style.display = (this.value == 1 ? '' : 'none'); document.getElementById('shop_holders_location_br').style.display = (this.value == 1 ? '' : 'none');")));
 $htmlTable->setRow($row, array('id' => 'shop_holders_location_br', 'style' => 'display:' . ($categorymode ? '' : 'none')));
 
 $htmlTable->setRow($row, array('id' => 'shop_holders_location', 'style' => 'display:' . ($categorymode ? '' : 'none')));
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[shopcats][shopHolderCountry]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[shopcats][shopHolderCountry]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlSelectCountry('shoplocation', '', 1, array($shoplocation), false, array('id' => 'shoplocation'), 280));
 
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[waehrung]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[waehrung]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput('waehr', 6, $feldnamen[0]));
 
 $htmlTable->setCol($row, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), g_l('modules_shop', '[mwst]'));
@@ -144,18 +144,18 @@ $htmlTable->setCol($row++, 2, array('class' => 'defaultfont', 'style' => 'paddin
 $htmlTable->setCol($row++, 0, array('colspan' => 3, 'class' => 'small'), we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[mwst_expl]'), we_html_tools::TYPE_INFO, "400", false, 45));
 
 $list = array('german' => 'german', 'english' => 'english', 'french' => 'french', 'swiss' => 'swiss');
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[format]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[format]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('format', $list, 1, $feldnamen[2]));
 
 
 $pager = array('default' => '-', 5 => 5, 10 => 10, 15 => 15, 20 => 20, 25 => 25, 30 => 30, 35 => 35, 40 => 40, 45 => 45, 50 => 50);
 
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[pageMod]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[pageMod]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('pag', $pager, 1, $feldnamen[4]));
 
 
 if(defined('OBJECT_TABLE')){
-	$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[classID]'));
+	$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[classID]'));
 	$htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput('classID', 100, (isset($feldnamen[3]) ? $feldnamen[3] : ''), '', '', 'text', 280) . '<br/><span class="small">&nbsp;' . g_l('modules_shop', '[classIDext]') . ' </span>');
 }
 

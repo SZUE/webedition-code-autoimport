@@ -232,7 +232,7 @@ var openFolders= {
 
 		self::getItems($table, $parentFolder, $treeItems, $openFolders, new DB_WE());
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement('
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 if(!' . $this->topFrame . '.treeData) {' .
 				we_message_reporting::getShowMessageCall("A fatal error occured", we_message_reporting::WE_MESSAGE_ERROR) . '
 }' .

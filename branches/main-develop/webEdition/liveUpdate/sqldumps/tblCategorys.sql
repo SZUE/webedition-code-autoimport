@@ -14,7 +14,7 @@ CREATE TABLE ###TBLPREFIX###tblCategorys (
 	`Language` varchar(5) NOT NULL default '',
   PRIMARY KEY  (ID),
 	UNIQUE KEY ParentID (ParentID,Text),
-  KEY Path (Path)
+  KEY Path (Path(250))
 ) ENGINE=MyISAM;
 
 /*drop IsFolder */

@@ -22,14 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return array(
-	'voting' => array(
-		'text' => g_l('modules_voting', '[voting]'),
-
-	),
 	'new' => array(
 		'text' => g_l('modules_voting', '[menu_new]'),
-		'parent' => 'voting',
-
 	),
 	array(
 		'text' => g_l('modules_voting', '[voting]'),
@@ -42,6 +36,9 @@ return array(
 		'parent' => 'new',
 		'cmd' => 'new_voting_group',
 		'perm' => 'NEW_VOTING || ADMINISTRATOR',
+	),
+	'voting' => array(
+		'text' => g_l('modules_voting', '[voting]'),
 	),
 	array(
 		'text' => g_l('modules_voting', '[menu_save]'),
@@ -62,22 +59,18 @@ return array(
 		'text' => g_l('modules_voting', '[menu_exit]'),
 		'parent' => 'voting',
 		'cmd' => 'exit_voting',
-
 	),
 	'help' => array(
 		'text' => g_l('modules_voting', '[menu_help]'),
-
 	),
 	array(
 		'text' => g_l('modules_voting', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',
-
 	),
 	array(
 		'text' => g_l('modules_voting', '[menu_info]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'info_modules',
-
 	)
 );

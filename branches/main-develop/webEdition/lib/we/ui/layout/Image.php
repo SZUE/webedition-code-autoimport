@@ -64,7 +64,7 @@ abstract class we_ui_layout_Image{
 				return "text_js";
 			case we_base_ContentTypes::TEXT:
 				return "text_plain";
-			case we_base_ContentTypes::HTACESS:
+			case we_base_ContentTypes::HTACCESS:
 				return "text_htaccess";
 			case we_base_ContentTypes::XML:
 				return "text_xml";

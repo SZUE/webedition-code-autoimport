@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_customer_add{
-
 	static $operators = array('=', '<>', '<', '<=', '>', '>=', 'LIKE');
 
 	static function getHTMLSortEditor(we_customer_frames &$pob){
@@ -47,18 +46,18 @@ abstract class we_customer_add{
 			$row_num = 0;
 
 			$sort_table = new we_html_table(array('width' => 400, 'height' => 50), 1, 5);
-			$sort_table->setCol(0, 0, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_branch]')));
-			$sort_table->setCol(0, 1, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_field]')));
-			//$sort_table->setCol(0, 2, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_function]')));
-			$sort_table->setCol(0, 3, array('class' => 'defaultfont'), we_html_element::htmlB(g_l('modules_customer', '[sort_order]')));
+			$sort_table->setCol(0, 0, ['class' => 'defaultfont'], we_html_element::htmlB(g_l('modules_customer', '[sort_branch]')));
+			$sort_table->setCol(0, 1, ['class' => 'defaultfont'], we_html_element::htmlB(g_l('modules_customer', '[sort_field]')));
+			//$sort_table->setCol(0, 2, ['class' => 'defaultfont'], we_html_element::htmlB(g_l('modules_customer', '[sort_function]')));
+			$sort_table->setCol(0, 3, ['class' => 'defaultfont'], we_html_element::htmlB(g_l('modules_customer', '[sort_order]')));
 
 
 			foreach($sorts as $sort){
 				if(!$sort["branch"]){
 					$branches_names = $pob->View->customer->getBranchesNames();
 					$sort["branch"] = (isset($branches_names[0]) ?
-									$branches_names[0] :
-									g_l('modules_customer', '[common]'));
+							$branches_names[0] :
+							g_l('modules_customer', '[common]'));
 				}
 
 				$branch->setAttributes(array("name" => "branch_" . $counter . '_' . $fcounter, "class" => "weSelect", "onchange" => "we_cmd('selectBranch')", "style" => "width:180px;"));
@@ -110,11 +109,11 @@ abstract class we_customer_add{
 
 				$row_num = $fcounter + 1;
 				$sort_table->addRow();
-				$sort_table->setCol($row_num, 0, array("class" => "defaultfont"), $branch->getHtml());
-				$sort_table->setCol($row_num, 1, array("class" => "defaultfont"), $field->getHtml());
-				$sort_table->setCol($row_num, 2, array("class" => "defaultfont"), $function->getHtml());
-				$sort_table->setCol($row_num, 3, array("class" => "defaultfont"), $order->getHtml());
-				$sort_table->setCol($row_num, 4, array("class" => "defaultfont"), we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_sort_field','" . $k . "',$fcounter)", true, 30));
+				$sort_table->setCol($row_num, 0, ['class' => 'defaultfont'], $branch->getHtml());
+				$sort_table->setCol($row_num, 1, ['class' => 'defaultfont'], $field->getHtml());
+				$sort_table->setCol($row_num, 2, ['class' => 'defaultfont'], $function->getHtml());
+				$sort_table->setCol($row_num, 3, ['class' => 'defaultfont'], $order->getHtml());
+				$sort_table->setCol($row_num, 4, ['class' => 'defaultfont'], we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_sort_field','" . $k . "',$fcounter)", true, 30));
 
 				$fcounter++;
 			}
@@ -127,8 +126,8 @@ abstract class we_customer_add{
 			$fhidden.=we_html_element::htmlHidden("fcounter_" . $counter, "$fcounter");
 
 			$htmlCode = $pob->getHTMLBox(we_html_element::htmlInput(array("name" => "sort_" . $counter, "value" => $k, "size" => 40)), g_l('modules_customer', '[name]'), 100, 50, 25, 0, 0, 50) .
-					$sort_table->getHtml() .
-					we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_sort','" . $k . "')");
+				$sort_table->getHtml() .
+				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_sort','" . $k . "')");
 
 			$parts[] = array('html' => $htmlCode, 'headline' => $k);
 
@@ -144,22 +143,22 @@ abstract class we_customer_add{
 		$parts[] = array('html' => $add_button);
 
 		$sort_code = we_html_multiIconBox::getHTML("", $parts, 30, $buttons) .
-				we_html_element::htmlComment("hiddens start") .
-				we_html_element::htmlHiddens(array(
-					"pnt" => "sort_admin",
-					"cmd" => "",
-					"counter" => "$counter",
-					"sortindex" => "",
-					"fieldindex" => "")) .
-				$fhidden .
-				we_html_element::htmlComment("hiddens ends");
+			we_html_element::htmlComment("hiddens start") .
+			we_html_element::htmlHiddens(array(
+				"pnt" => "sort_admin",
+				"cmd" => "",
+				"counter" => "$counter",
+				"sortindex" => "",
+				"fieldindex" => "")) .
+			$fhidden .
+			we_html_element::htmlComment("hiddens ends");
 
 
 
 
 		$out = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "doScrollTo()"), self::getJSSortAdmin($pob->View) .
-						we_html_element::htmlForm(array("name" => "we_form"), $sort_code
-						)
+				we_html_element::htmlForm(array("name" => "we_form"), $sort_code
+				)
 		);
 
 		return $pob->getHTMLDocument($out);
@@ -185,8 +184,8 @@ function doScrollTo(){
 function setScrollTo(){
 		opener.top.content.scrollToVal=pageYOffset;
 }' .
-						$pob->getJSSubmitFunction("sort_admin")) .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_sortAdmin.js');
+				$pob->getJSSubmitFunction("sort_admin")) .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_sortAdmin.js');
 	}
 
 	public static function getHTMLSearch(&$pob, &$search, &$select){
@@ -223,8 +222,8 @@ function setScrollTo(){
 			if(isset($search_arr["branch_" . $i])){
 				$branch->selectOption($search_arr["branch_" . $i]);
 				$field = (!$search_arr["branch_" . $i] ?
-								$pob->getHTMLFieldsSelect(g_l('modules_customer', '[common]')) :
-								$pob->getHTMLFieldsSelect($search_arr["branch_" . $i]));
+						$pob->getHTMLFieldsSelect(g_l('modules_customer', '[common]')) :
+						$pob->getHTMLFieldsSelect($search_arr["branch_" . $i]));
 			}
 
 			if(isset($search_arr["field_" . $i])){
@@ -252,15 +251,15 @@ function setScrollTo(){
 
 		$advsearch->addRow();
 		$advsearch->setCol($c, 0, array("colspan" => $colspan, 'style' => 'padding-top:5px;'), we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_search')") .
-				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_search')")
+			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_search')")
 		);
 
 		$search->setCol(1, 0, [], we_html_element::htmlHidden("count", $count) . $advsearch->getHtml());
 		$search->setCol(3, 0, array("colspan" => $colspan, 'style' => 'text-align:right;padding-top:5px;'), "<table class='default'><tr><td>" .
-				we_html_element::htmlDiv(array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[simple_search]')) .
-				we_html_button::create_button('fa:btn_direction_left,fa-lg fa-caret-left', "javascript:we_cmd('switchToSimple')") .
-				$search_but
-				. '</td><td>&nbsp;</td></tr></table>'
+			we_html_element::htmlDiv(array("class" => "defaultfont lowContrast"), g_l('modules_customer', '[simple_search]')) .
+			we_html_button::create_button('fa:btn_direction_left,fa-lg fa-caret-left', "javascript:we_cmd('switchToSimple')") .
+			$search_but
+			. '</td><td>&nbsp;</td></tr></table>'
 		);
 		$max_res = $pob->View->settings->getMaxSearchResults();
 		$result = ($search_arr && we_base_request::_(we_base_request::BOOL, 'search') ? self::getAdvSearchResults($pob->db, $search_arr, $count, $max_res) : []);
@@ -281,31 +280,15 @@ function setScrollTo(){
 			}
 			if(isset($keywords['field_' . $i]) && isset($keywords["operator_" . $i]) && isset($keywords["value_" . $i])){
 				$where.=
-						(isset($keywords['logic_' . $i]) ? ' ' . $keywords['logic_' . $i] . ' ' : '') .
-						$keywords['field_' . $i] . ' ' . self::$operators[$keywords['operator_' . $i]] . " '" .
-						(is_numeric($keywords['value_' . $i]) ? $keywords['value_' . $i] : $db->escape($keywords['value_' . $i])) .
-						"'";
+					(isset($keywords['logic_' . $i]) ? ' ' . $keywords['logic_' . $i] . ' ' : '') .
+					$keywords['field_' . $i] . ' ' . self::$operators[$keywords['operator_' . $i]] . " '" .
+					(is_numeric($keywords['value_' . $i]) ? $keywords['value_' . $i] : $db->escape($keywords['value_' . $i])) .
+					"'";
 			}
 		}
 
 		$db->query('SELECT ID,CONCAT(Username, " (",Forename," ",Surname,")") AS user FROM ' . CUSTOMER_TABLE . ' WHERE ' . (empty($where) ? 0 : $where) . ' ORDER BY Username LIMIT 0,' . $res_num);
 		return $db->getAllFirst(false);
-	}
-
-	static function getHTMLTreeHeader(&$pob){
-		$select = $pob->View->getHTMLSortSelect();
-		$select->setAttributes(array('onchange' => 'applySort();', 'style' => 'width:150px'));
-		$select->selectOption($pob->View->settings->getSettings('default_sort_view'));
-
-		$table = $select->getHtml() . we_html_button::create_button(we_html_button::RELOAD, "javascript:applySort();") .
-				we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('show_sort_admin')");
-
-		return we_html_element::htmlForm(array("name" => "we_form_treeheader"), we_html_element::htmlHiddens(array(
-							"pnt" => "treeheader",
-							"pid" => 0,
-							"cmd" => "no_cmd")) .
-						$table
-		);
 	}
 
 }

@@ -33,7 +33,7 @@ if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_
 	echo we_SEEM::parseDocument($content);
 } else {
 	$table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin-left:20px; margin-top:20px;'), 2, 1);
-	$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('SEEM', '[ext_doc_not_found]'), $path));
+	$table->setCol(0, 0, ['class' => 'defaultfont'], sprintf(g_l('SEEM', '[ext_doc_not_found]'), $path));
 
 	//	there must be a navigation-history - so use it
 	$table->setColContent(1, 0, we_html_button::create_button(we_html_button::BACK, "javascript:top.weNavigationHistory.navigateBack();"));

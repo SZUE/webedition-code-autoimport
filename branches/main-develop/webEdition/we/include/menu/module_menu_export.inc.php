@@ -22,12 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return [
-	'export' => [
-		'text' => g_l('export', '[export]'),
-	],
 	'new' => [
 		'text' => g_l('export', '[new]'),
-		'parent' => 'export',
 	],
 	[
 		'text' => g_l('export', '[export]'),
@@ -40,6 +36,9 @@ return [
 		'cmd' => 'new_export_group',
 		'perm' => 'NEW_EXPORT || ADMINISTRATOR',
 		'parent' => 'new',
+	],
+	'export' => [
+		'text' => g_l('export', '[export]'),
 	],
 	[
 		'text' => g_l('export', '[save]'),

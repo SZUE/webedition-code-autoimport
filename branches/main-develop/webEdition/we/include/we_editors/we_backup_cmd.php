@@ -257,7 +257,7 @@ top.cmd.location = "about:blank";
 			}
 
 			$description = g_l('backup', '[working]');
-		} else if(isset($_SESSION['weS']['weBackupVars']['files_to_delete']) && !empty($_SESSION['weS']['weBackupVars']['files_to_delete'])){
+		} else if(!empty($_SESSION['weS']['weBackupVars']['files_to_delete'])){
 			$description = g_l('backup', '[delete_old_files]');
 			we_backup_util::getProgressJS(0, $description, false);
 			$oldPercent = 0;
@@ -324,7 +324,7 @@ top.cmd.location = "about:blank";
 		}
 
 		if(($_SESSION['weS']['weBackupVars']['offset'] <= $_SESSION['weS']['weBackupVars']['offset_end']) ||
-			(isset($_SESSION['weS']['weBackupVars']['files_to_delete']) && !empty($_SESSION['weS']['weBackupVars']['files_to_delete']))
+			(!empty($_SESSION['weS']['weBackupVars']['files_to_delete']))
 		){
 
 			we_backup_util::addLog('Issuing next request.');

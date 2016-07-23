@@ -159,10 +159,10 @@ abstract class we_modules_frame{
 	}
 
 	protected function getHTMLTree($extraHead = ''){
-		return we_html_element::htmlDiv(array(
+		return we_html_element::htmlDiv([
 				'id' => 'tree',
 				'class' => ($this->showTreeHeader ? ' withHeader' : '') . ($this->showTreeFooter ? ' withFooter' : '')
-				), $extraHead . $this->Tree->getHTMLContruct()
+				], $extraHead . $this->Tree->getHTMLContruct()
 		);
 	}
 
@@ -178,7 +178,7 @@ abstract class we_modules_frame{
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
 		$sid = we_base_request::_(we_base_request::STRING, 'sid');
-		$body = we_html_element::htmlBody(array('class' => 'moduleEditor'), we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorHeader') .
+		$body = we_html_element::htmlBody(['class' => 'moduleEditor'], we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorHeader') .
 				we_html_element::htmlIFrame('edbody', $this->frameset . '&pnt=edbody' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'border:0px;width:100%;height:100%;', '', true, 'editorBody') .
 				we_html_element::htmlIFrame('edfooter', $this->frameset . '&pnt=edfooter' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorButtonFrame')
 		);
@@ -188,7 +188,7 @@ abstract class we_modules_frame{
 
 	protected function getHTMLEditorHeader($mode = 0){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'home'), ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
+			return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'home'], ''), we_html_element::cssLink(CSS_DIR . 'tools_home.css'));
 		}
 	}
 
@@ -206,7 +206,7 @@ abstract class we_modules_frame{
 		$pos = 0;
 		foreach($btn_cmd as $but => $cur){
 			list($right, $cmd) = $cur;
-			if(empyt($right) || permissionhandler::hasPerm($right)){
+			if(empty($right) || permissionhandler::hasPerm($right)){
 				$table2->setColContent(0, $pos++, we_html_button::create_button($but, "javascript:top.content.we_cmd('" . $cmd . "')"));
 			}
 		}

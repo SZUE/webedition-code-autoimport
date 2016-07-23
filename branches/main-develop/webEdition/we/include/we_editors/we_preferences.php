@@ -973,7 +973,7 @@ function build_dialog($selected_setting = 'ui'){
 			$window_current_dimension_table = we_html_button::create_button('apply_current_dimension', "javascript:document.getElementsByName('newconf[sizeOpt]')[1].checked = true;document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;document.getElementsByName('newconf[weWidth]')[0].value = parent.opener.top.window.outerWidth;document.getElementsByName('newconf[weHeight]')[0].value = parent.opener.top.window.outerHeight;", true);
 
 			// Build final HTML code
-			$window_html = new we_html_table(array('class' => 'default withSpace'), 3, 1);
+			$window_html = new we_html_table(['class' => 'default withSpace'], 3, 1);
 			$window_html->setCol(0, 0, array('style' => 'padding-bttom:10px;'), $window_max_code);
 			$window_html->setCol(1, 0, array('style' => 'padding-bttom:10px;'), $window_specify_code . $window_specify_table->getHtml());
 			$window_html->setCol(2, 0, array('style' => 'padding-left:50px;'), $window_current_dimension_table);
@@ -1396,7 +1396,7 @@ for(i=0;i<elements.length; ++i){
 				$editlist_table = new we_html_table(['class' => 'default'], 2, 3);
 
 				$editlist_table->setCol(0, 0, array('style' => 'padding-right:10px;'), $hidden_fields . $select_box->getHtml());
-				$editlist_table->setCol(0, 2, array('style' => 'vertical-align:top;'), we_html_button::create_button(we_html_button::ADD, "javascript:add_recipient();") . we_html_button::create_button(we_html_button::EDIT, "javascript:edit_recipient();", true, 100, 22, "", "", !$enabled_buttons, false) . we_html_button::create_button(we_html_button::DELETE, "javascript:delete_recipient();", true, 100, 22, "", "", !$enabled_buttons, false));
+				$editlist_table->setCol(0, 2, ['style' => 'vertical-align:top;'], we_html_button::create_button(we_html_button::ADD, "javascript:add_recipient();") . we_html_button::create_button(we_html_button::EDIT, "javascript:edit_recipient();", true, 100, 22, "", "", !$enabled_buttons, false) . we_html_button::create_button(we_html_button::DELETE, "javascript:delete_recipient();", true, 100, 22, "", "", !$enabled_buttons, false));
 
 				// Build dialog if user has permission
 				$settings[] = array("headline" => "", "html" => $editlist_table->getHtml(),);
@@ -2058,7 +2058,7 @@ for(i=0;i<elements.length; ++i){
 					we_base_ContentTypes::JS => 'VERSIONING_TEXT_JS',
 					we_base_ContentTypes::CSS => 'VERSIONING_TEXT_CSS',
 					we_base_ContentTypes::TEXT => 'VERSIONING_TEXT_PLAIN',
-					we_base_ContentTypes::HTACESS => 'VERSIONING_TEXT_HTACCESS',
+					we_base_ContentTypes::HTACCESS => 'VERSIONING_TEXT_HTACCESS',
 					we_base_ContentTypes::TEMPLATE => 'VERSIONING_TEXT_WETMPL',
 					we_base_ContentTypes::FLASH => 'VERSIONING_FLASH',
 					we_base_ContentTypes::VIDEO => 'VERSIONING_VIDEO',

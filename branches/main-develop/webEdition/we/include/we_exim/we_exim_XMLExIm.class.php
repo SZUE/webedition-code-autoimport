@@ -200,13 +200,13 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	function resetContenID(&$object){//FIXME unused?
+	/*function resetContenID(&$object){
 		if(isset($object->elements) && is_array($object->elements)){
 			foreach($object->elements as $ek => $ev){
 				$object->elements[$ek]["id"] = 0;
 			}
 		}
-	}
+	}*/
 
 	//FIXME given parameter is not used in the call stack!
 	function prepareExport(array $ids = []){

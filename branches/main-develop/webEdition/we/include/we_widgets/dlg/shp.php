@@ -64,7 +64,7 @@ if(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm(["NEW_SHOP_ARTIC
 $oDbTableType = $oChbxOrders . $oChbxCustomer . $oChbxAverageOrder . $oChbxTarget;
 //$oDbTableType->setCol(0, 3, null, $revenueTarget);
 
-$oSctDate = new we_html_select(array("name" => "sct_date", "class" => "defaultfont", "onchange" => ""));
+$oSctDate = new we_html_select(array("name" => "sct_date", 'class' => 'defaultfont', "onchange" => ""));
 $aLangDate = array(
 	g_l('cockpit', '[today]'),
 	g_l('cockpit', '[this_week]'),

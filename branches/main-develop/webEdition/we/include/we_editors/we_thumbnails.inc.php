@@ -227,7 +227,7 @@ function delete_thumbnail() {" .
 
 			$thumbnail_specify_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('thumbnails', '[width]') . ':');
 			$thumbnail_specify_table->setCol(0, 1, null, we_html_tools::htmlTextInput('thumbnail_width', 6, ($id != -1 ? $allData['Width'] : ''), 4, ($id == -1 ? 'disabled="disabled"' : ''), 'text'));
-			$thumbnail_specify_table->setCol(1, 0, array('class' => 'defaultfont'), g_l('thumbnails', '[height]') . ':');
+			$thumbnail_specify_table->setCol(1, 0, ['class' => 'defaultfont'], g_l('thumbnails', '[height]') . ':');
 			$thumbnail_specify_table->setCol(1, 1, null, we_html_tools::htmlTextInput('thumbnail_height', 6, ($id != -1 ? $allData['Height'] : ''), 4, ($id == -1 ? 'disabled="disabled"' : ''), 'text'));
 			$thumbnail_specify_table->setCol(2, 0, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_text_cell'), g_l('thumbnails', '[quality]') . ':');
 			$thumbnail_specify_table->setCol(2, 1, array('class' => 'defaultfont', 'id' => 'thumbnail_quality_value_cell'), we_base_imageEdit::qualitySelect('thumbnail_quality', $thumbnail_quality));
