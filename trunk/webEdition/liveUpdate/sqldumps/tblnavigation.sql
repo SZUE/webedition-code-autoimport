@@ -8,7 +8,7 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   ParentID int unsigned NOT NULL default '0',
   Path varchar(2048) NOT NULL default '',
   Published tinyint unsigned NOT NULL DEFAULT '1',
-  Text varchar(800) NOT NULL default '',
+  Text varchar(255) NOT NULL default '',
   Display text NOT NULL,
   ContentType enum('weNavigation') NOT NULL default 'weNavigation',
   IsFolder tinyint unsigned NOT NULL default '0',
