@@ -36,7 +36,7 @@ function getInfoTable($infoArr, $name){
 		$style = ($i % 2 ? '' : "background: #D4DBFA;");
 
 		$table->addRow(1);
-		$table->setRow($i, array("class" => "defaultfont", "style" => $style . "height:20px;"));
+		$table->setRow($i, array('class' => 'defaultfont', "style" => $style . "height:20px;"));
 		$table->setCol($i, 0, array("style" => "width: 200px; height: 20px; padding-left: 10px;", 'class' => 'bold'), $k);
 		$table->setCol($i, 1, array("style" => "width: 250px; height: 20px; padding-left: 10px;"), parseValue($k, $v));
 		$i++;

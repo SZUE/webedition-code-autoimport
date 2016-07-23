@@ -92,22 +92,22 @@ foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
 $i++;
 $tabStatus->setCol($i, 0, array("class" => "defaultfont bold"), g_l('modules_shop', '[statusmails][hidefield]'));
 foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont"), we_html_forms::checkboxWithHidden($weShopStatusMails->FieldsHidden[$fieldname], 'FieldsHidden[' . $fieldname . ']', g_l('modules_shop', '[statusmails][hidefieldJa]'), false, "defaultfont"));
+	$tabStatus->setCol($i, $fieldkey + 1, ['class' => 'defaultfont'], we_html_forms::checkboxWithHidden($weShopStatusMails->FieldsHidden[$fieldname], 'FieldsHidden[' . $fieldname . ']', g_l('modules_shop', '[statusmails][hidefieldJa]'), false, "defaultfont"));
 }
 $i++;
 $tabStatus->setCol($i, 0, array("class" => "defaultfont bold"), g_l('modules_shop', '[statusmails][hidefieldCOV]'));
 foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont"), we_html_forms::checkboxWithHidden($weShopStatusMails->FieldsHiddenCOV[$fieldname], 'FieldsHiddenCOV[' . $fieldname . ']', g_l('modules_shop', '[statusmails][hidefieldJa]'), false, "defaultfont"));
+	$tabStatus->setCol($i, $fieldkey + 1, ['class' => 'defaultfont'], we_html_forms::checkboxWithHidden($weShopStatusMails->FieldsHiddenCOV[$fieldname], 'FieldsHiddenCOV[' . $fieldname . ']', g_l('modules_shop', '[statusmails][hidefieldJa]'), false, "defaultfont"));
 }
 $i++;
 $tabStatus->setCol($i, 0, array("class" => "defaultfont bold"), g_l('modules_shop', '[statusmails][fieldtext]'));
 foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont"), '<input name="FieldsText[' . $fieldname . ']" size="15" type="text" value="' . $weShopStatusMails->FieldsText[$fieldname] . '" />');
+	$tabStatus->setCol($i, $fieldkey + 1, ['class' => 'defaultfont'], '<input name="FieldsText[' . $fieldname . ']" size="15" type="text" value="' . $weShopStatusMails->FieldsText[$fieldname] . '" />');
 }
 $i++;
 $tabStatus->setCol($i, 0, array("class" => "defaultfont bold"), g_l('modules_shop', '[statusmails][EMailssenden]'));
 foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabStatus->setCol($i, $fieldkey + 1, array("class" => "defaultfont"), we_html_forms::radioButton(0, ($weShopStatusMails->FieldsMails[$fieldname] == 0 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenNein]')) .
+	$tabStatus->setCol($i, $fieldkey + 1, ['class' => 'defaultfont'], we_html_forms::radioButton(0, ($weShopStatusMails->FieldsMails[$fieldname] == 0 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenNein]')) .
 		we_html_forms::radioButton(1, ($weShopStatusMails->FieldsMails[$fieldname] == 1 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenHand]')) .
 		we_html_forms::radioButton(2, ($weShopStatusMails->FieldsMails[$fieldname] == 2 ? '1' : '0'), 'FieldsMails[' . $fieldname . ']', g_l('modules_shop', '[statusmails][EMailssendenAuto]')));
 }
@@ -125,20 +125,20 @@ $parts = array(
 );
 
 $tabEMail = new we_html_table(array("cellpadding" => 2, "cellspacing" => 4), $rows_num = 4, $cols_num = 6);
-$tabEMail->setCol(0, 0, array("class" => "defaultfont", "width" => 220), g_l('modules_shop', '[statusmails][AbsenderAdresse]') .
+$tabEMail->setCol(0, 0, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][AbsenderAdresse]') .
 	'<br/>' . we_class::htmlTextInput("EMailData[address]", 30, $weShopStatusMails->EMailData['address']));
-$tabEMail->setCol(1, 0, array("class" => "defaultfont", "width" => 220), g_l('modules_shop', '[statusmails][AbsenderName]') .
+$tabEMail->setCol(1, 0, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][AbsenderName]') .
 	'<br/>' . we_class::htmlTextInput("EMailData[name]", 30, $weShopStatusMails->EMailData['name']));
-$tabEMail->setCol(2, 0, array("class" => "defaultfont", "width" => 220), g_l('modules_shop', '[statusmails][bcc]') .
+$tabEMail->setCol(2, 0, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][bcc]') .
 	'<br/>' . we_class::htmlTextInput("EMailData[bcc]", 30, $weShopStatusMails->EMailData['bcc']));
-$tabEMail->setCol(0, 1, array("class" => "defaultfont", "width" => 340), g_l('modules_shop', '[statusmails][EMailFeld]') .
+$tabEMail->setCol(0, 1, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][EMailFeld]') .
 	'<br/>' . we_class::htmlSelect('EMailData[emailField]', $selectFields, 1, $weShopStatusMails->EMailData['emailField']));
-$tabEMail->setCol(1, 1, array("class" => "defaultfont", "width" => 340), g_l('modules_shop', '[statusmails][TitelFeld]') .
+$tabEMail->setCol(1, 1, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][TitelFeld]') .
 	'<br/>' . we_class::htmlSelect('EMailData[titleField]', $selectFields, 1, $weShopStatusMails->EMailData['titleField']));
-$tabEMail->setCol(2, 1, array("class" => "defaultfont", "width" => 340), g_l('modules_shop', '[statusmails][DocumentSubjectField]') .
+$tabEMail->setCol(2, 1, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][DocumentSubjectField]') .
 	'<br/>' . we_class::htmlTextInput("EMailData[DocumentSubjectField]", 30, $weShopStatusMails->EMailData['DocumentSubjectField']));
-$tabEMail->setCol(3, 0, array("class" => "defaultfont", "width" => 340), g_l('modules_shop', '[statusmails][DocumentAttachmentFieldA]') . '<br/>' . we_class::htmlTextInput("EMailData[DocumentAttachmentFieldA]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldA']));
-$tabEMail->setCol(3, 1, array("class" => "defaultfont", "width" => 340), g_l('modules_shop', '[statusmails][DocumentAttachmentFieldB]') . '<br/>' . we_class::htmlTextInput("EMailData[DocumentAttachmentFieldB]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldB']));
+$tabEMail->setCol(3, 0, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][DocumentAttachmentFieldA]') . '<br/>' . we_class::htmlTextInput("EMailData[DocumentAttachmentFieldA]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldA']));
+$tabEMail->setCol(3, 1, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][DocumentAttachmentFieldB]') . '<br/>' . we_class::htmlTextInput("EMailData[DocumentAttachmentFieldB]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldB']));
 
 
 $parts[] = array(
@@ -157,8 +157,8 @@ $parts[] = array(
 );
 
 $tabSprache = new we_html_table(array("cellpadding" => 2, "cellspacing" => 4), $rows_num = 2, $cols_num = 5);
-$tabSprache->setCol(0, 0, array("class" => "defaultfont", "width" => 220), we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['useLanguages'], 'LanguageData[useLanguages]', g_l('modules_shop', '[statusmails][useLanguages]'), false, "defaultfont"));
-$tabSprache->setCol(0, 2, array("class" => "defaultfont", "width" => 220), g_l('modules_shop', '[statusmails][SprachenFeld]') . we_class::htmlSelect('LanguageData[languageField]', $selectFields, 1, $weShopStatusMails->LanguageData['languageField']) . we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['languageFieldIsISO'], 'LanguageData[languageFieldIsISO]', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont"));
+$tabSprache->setCol(0, 0, array('class' => 'defaultfont', "width" => 220), we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['useLanguages'], 'LanguageData[useLanguages]', g_l('modules_shop', '[statusmails][useLanguages]'), false, "defaultfont"));
+$tabSprache->setCol(0, 2, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][SprachenFeld]') . we_class::htmlSelect('LanguageData[languageField]', $selectFields, 1, $weShopStatusMails->LanguageData['languageField']) . we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['languageFieldIsISO'], 'LanguageData[languageFieldIsISO]', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont"));
 
 $parts[] = array(
 	'headline' => g_l('modules_shop', '[statusmails][Spracheinstellungen]'),
@@ -188,7 +188,7 @@ foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
 $i++;
 $tabDokumente->setCol($i, 0, array("class" => "defaultfont bold"), g_l('modules_shop', '[statusmails][defaultDocs]'));
 foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabDokumente->setCol($i, $fieldkey + 1, array("class" => "defaultfont"), we_class::htmlTextInput("FieldsDocuments[default][" . $fieldname . "]", 15, $weShopStatusMails->FieldsDocuments['default'][$fieldname]));
+	$tabDokumente->setCol($i, $fieldkey + 1, ['class' => 'defaultfont'], we_class::htmlTextInput("FieldsDocuments[default][" . $fieldname . "]", 15, $weShopStatusMails->FieldsDocuments['default'][$fieldname]));
 }
 
 $frontendL = $GLOBALS["weFrontendLanguages"];
@@ -202,7 +202,7 @@ foreach($frontendL as $langkey){
 	$i++;
 	$tabDokumente->setCol($i, 0, array("class" => "defaultfont bold"), g_l('languages', '[' . $langkey . ']') . ' (' . $langkey . ')');
 	foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-		$tabDokumente->setCol($i, $fieldkey + 1, array("class" => "defaultfont"), we_class::htmlTextInput('FieldsDocuments[' . $langkey . '][' . $fieldname . ']', 15, $weShopStatusMails->FieldsDocuments[$langkey][$fieldname]));
+		$tabDokumente->setCol($i, $fieldkey + 1, ['class' => 'defaultfont'], we_class::htmlTextInput('FieldsDocuments[' . $langkey . '][' . $fieldname . ']', 15, $weShopStatusMails->FieldsDocuments[$langkey][$fieldname]));
 	}
 }
 

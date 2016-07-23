@@ -56,7 +56,7 @@ function menuaction(par) {
 			top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.XML);
 			return;
 		case 'new_text_htaccess':
-			top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.HTACESS);
+			top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.HTACCESS);
 			return;
 		case 'new_css_stylesheet':
 			top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.CSS);

@@ -93,7 +93,7 @@ $oChbxCls = (permissionhandler::hasPerm('CAN_SEE_OBJECTS') && $_SESSION['weS']['
 
 $oDbTableType = $oChbxDocs . $oChbxTmpl . $oChbxObjs . $oChbxCls;
 
-$oSctDate = new we_html_select(array("name" => "sct_date", "class" => "defaultfont", "onchange" => ""));
+$oSctDate = new we_html_select(array("name" => "sct_date", 'class' => 'defaultfont', "onchange" => ""));
 $aLangDate = array(
 	g_l('cockpit', '[all]'),
 	g_l('cockpit', '[today]'),
@@ -108,7 +108,7 @@ $oSctDate->selectOption($iDate);
 
 $oChbxShowMfdBy = we_html_forms::checkbox(0, $sDisplayOpt{0}, "chbx_display_opt", g_l('cockpit', '[modified_by]'), true, "defaultfont", "", false, "", 0, 0);
 $oChbxShowDate = we_html_forms::checkbox(0, $sDisplayOpt{1}, "chbx_display_opt", g_l('cockpit', '[date_last_modification]'), true, "defaultfont", "", false, "", 0, 0);
-$oSctNumEntries = new we_html_select(array("name" => "sct_amount_entries", "class" => "defaultfont"));
+$oSctNumEntries = new we_html_select(array("name" => "sct_amount_entries", 'class' => 'defaultfont'));
 $oSctNumEntries->insertOption(0, 0, g_l('cockpit', '[all]'));
 for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 	$oSctNumEntries->insertOption($iCurrEntry, $iCurrEntry, $iCurrEntry);
@@ -119,7 +119,7 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 $oSctNumEntries->selectOption($iAmountEntries);
 
 $oSelMaxEntries = new we_html_table(array("height" => "100%", 'class' => 'default'), 1, 3);
-$oSelMaxEntries->setCol(0, 0, array("class" => "defaultfont", 'style' => 'vertical-align:middle;padding-right:5px;'), g_l('cockpit', '[max_amount_entries]'));
+$oSelMaxEntries->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:middle;padding-right:5px;'), g_l('cockpit', '[max_amount_entries]'));
 $oSelMaxEntries->setCol(0, 2, array('style' => 'vertical-align:middle;'), $oSctNumEntries->getHTML());
 
 $show = $oSelMaxEntries->getHTML() . $oChbxShowMfdBy . $oChbxShowDate . we_html_element::htmlBr() . $oShowUser;

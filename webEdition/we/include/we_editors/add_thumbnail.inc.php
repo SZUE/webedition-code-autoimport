@@ -45,7 +45,7 @@ var transaction="' . $we_transaction . '";
  "</head>";
 
 // SELECT Box with thumbnails
-$thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", "class" => "defaultfont", "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
+$thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", 'class' => 'defaultfont', "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
 $DB_WE->query('SELECT ID,Name,Format,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
 $thumbnail_counter_firsttime = true;

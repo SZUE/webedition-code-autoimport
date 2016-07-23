@@ -1084,6 +1084,7 @@ _multiEditorreload = true;';
 	}
 
 	function resetOwnersCreatorModifier(){
+		//FIXME: replace will not work for "1,2" if 1 is removed
 		$newID = intval($_SESSION['user']['ID']);
 		$this->ID = intval($this->ID);
 		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET Owners=REPLACE(Owners,'," . $this->ID . ",',',')");
@@ -1093,8 +1094,8 @@ _multiEditorreload = true;';
 		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
 		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
 		$this->DB_WE->query('UPDATE ' . FILE_TABLE . " SET ModifierID=$newID WHERE ModifierID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . " SET ModifierID=$newID WHERE ModifierID=" . $this->ID);
-		$this->DB_WE->query('UPDATE ' . USER_TABLE . " SET CreatorID=$newID WHERE CreatorID=" . $this->ID);
+		$this->DB_WE->query('UPDATE ' . TEMPLATES_TABLE . ' SET ModifierID=' . $newID . ' WHERE ModifierID=' . $this->ID);
+		$this->DB_WE->query('UPDATE ' . USER_TABLE . ' SET CreatorID=' . $newID . ' WHERE CreatorID=' . $this->ID);
 		$this->DB_WE->query('UPDATE ' . USER_TABLE . ' SET ModifierID=' . $newID . ' WHERE ModifierID=' . $this->ID);
 
 		if(defined('OBJECT_TABLE')){
@@ -1410,18 +1411,18 @@ function comparePwd(f1,f2){
 			),
 			array(
 				array(array('style' => 'padding-bottom:10px;'), we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))),
-				array(array("class" => "defaultfont"), g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ? : '-'))
+				array(['class' => 'defaultfont'], g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ? : '-'))
 			),
 			array(
 				array(array("colspan" => 2, 'style' => 'padding-bottom:10px;'), we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), g_l('modules_users', '[group]')))
 			),
 			array(
-				array(array('class' => 'defaultfont'), g_l('modules_users', '[CreatorID]') . ' ' . $CreatorIDtext),
-				array(array('class' => 'defaultfont'), g_l('modules_users', '[CreateDate]') . ' ' . (($this->CreateDate) ? date('d.m.Y H:i:s', $this->CreateDate) : '-'))
+				array(['class' => 'defaultfont'], g_l('modules_users', '[CreatorID]') . ' ' . $CreatorIDtext),
+				array(['class' => 'defaultfont'], g_l('modules_users', '[CreateDate]') . ' ' . (($this->CreateDate) ? date('d.m.Y H:i:s', $this->CreateDate) : '-'))
 			),
 			array(
-				array(array('class' => 'defaultfont'), g_l('modules_users', '[ModifierID]') . ' ' . $ModifierIDtext),
-				array(array('class' => 'defaultfont'), g_l('modules_users', '[ModifyDate]') . ' ' . (($this->ModifyDate) ? date('d.m.Y H:i:s', $this->ModifyDate) : '-'))
+				array(['class' => 'defaultfont'], g_l('modules_users', '[ModifierID]') . ' ' . $ModifierIDtext),
+				array(['class' => 'defaultfont'], g_l('modules_users', '[ModifyDate]') . ' ' . (($this->ModifyDate) ? date('d.m.Y H:i:s', $this->ModifyDate) : '-'))
 			),
 		));
 
@@ -1728,7 +1729,7 @@ function delElement(elvalues,elem) {
 		$settings = [];
 		return [];
 		// Create checkboxes
-		$table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+		$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
 //FIXME: where is the difference between force_glossary_check + force_glossary_action?!
 
 		$table->setCol(0, 0, null, we_html_forms::checkbox(1, $this->Preferences['force_glossary_check'], $this->Name . '_Preference_force_glossary_check', g_l('prefs', '[force_glossary_check]'), 'false', 'defaultfont', "top.content.setHot()"));
@@ -1952,7 +1953,7 @@ function show_seem_chooser(val) {
 
 		// Build final HTML code
 		$seem_html = new we_html_table(array('class' => 'default'), 2, 1);
-		$seem_html->setCol(0, 0, array('class' => 'defaultfont'), $start_type->getHtml());
+		$seem_html->setCol(0, 0, ['class' => 'defaultfont'], $start_type->getHtml());
 		$seem_html->setCol(1, 0, null, $seem_document_chooser . $seem_object_chooser . $seem_weapp_chooser);
 
 		if(permissionhandler::hasPerm('CHANGE_START_DOCUMENT')){
@@ -2117,9 +2118,9 @@ function show_seem_chooser(val) {
 		// Create specify window dimension input
 		$template_editor_font_specify_table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin:5px 0px 0px 50px;'), 2, 2);
 
-		$template_editor_font_specify_table->setCol(0, 0, array("class" => "defaultfont", 'style' => 'padding-right:10px;'), g_l('prefs', '[editor_fontname]') . ":");
+		$template_editor_font_specify_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('prefs', '[editor_fontname]') . ":");
 		$template_editor_font_specify_table->setCol(0, 1, null, $template_editor_font_select_box->getHtml());
-		$template_editor_font_specify_table->setCol(1, 0, array("class" => "defaultfont", 'style' => 'padding-right:10px;'), g_l('prefs', '[editor_fontsize]') . ":");
+		$template_editor_font_specify_table->setCol(1, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('prefs', '[editor_fontsize]') . ":");
 		$template_editor_font_specify_table->setCol(1, 1, null, $template_editor_font_sizes_select_box->getHtml());
 
 		// Build dialog

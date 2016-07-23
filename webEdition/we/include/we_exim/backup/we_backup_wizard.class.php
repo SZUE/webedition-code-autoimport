@@ -702,7 +702,7 @@ function setLocation(loc){
 						'binary' => 1
 				));
 
-				$content.=we_html_element::htmlDiv(array('class' => 'defaultfont'), self::getDownloadLinkText() . '<br/><br/>' .
+				$content.=we_html_element::htmlDiv(['class' => 'defaultfont'], self::getDownloadLinkText() . '<br/><br/>' .
 						we_html_element::htmlA(array('href' => $link, 'download' => basename($down)), g_l('backup', '[download_file]'))
 				);
 			} else {
@@ -778,7 +778,7 @@ function startStep(){
 		$error_message = new we_html_table(array("class" => "default defaultfont"), 1, 1);
 		$error_message->setCol(0, 0, null, g_l('backup', '[download_failed]'));
 
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weDialogBody">' . we_html_tools::htmlDialogLayout($error_message->getHtml(), g_l('backup', '[export_step2]')));
+		return we_html_tools::getHtmlTop('', '', '', STYLESHEET, '<body class="weDialogBody">' . we_html_tools::htmlDialogLayout($error_message->getHtml(), g_l('backup', '[export_step2]')));
 	}
 
 	function getHTMLExtern(){

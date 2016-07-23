@@ -258,7 +258,7 @@ abstract class we_backup_preparer{
 		return $list;
 	}
 
-	static function getFileLists(){//FIXME:unused??
+	static function getFileLists(){
 		$list = [];
 		self::getFileList($list, TEMPLATES_PATH, true, false);
 		self::getFileList($list, WE_CACHE_PATH, true, false);

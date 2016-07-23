@@ -98,7 +98,7 @@ class we_textDocument extends we_document{
 	}
 
 	public function we_save($resave = false, $skipHook = false){
-		if($this->ContentType === we_base_ContentTypes::HTACESS && $this->ParentID == 0){
+		if($this->ContentType === we_base_ContentTypes::HTACCESS && $this->ParentID == 0){
 			//pretest new htaccess file
 			$doc = parent::i_getDocumentToSave();
 			$oldDoc = ($this->ID ? f('SELECT Dat FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . $this->ID . ' AND DocumentTable="tblFile" AND l.nHash=x\'' . md5("data") . '\'', '', $this->DB_WE) : '');
@@ -126,7 +126,7 @@ class we_textDocument extends we_document{
 	}
 
 	protected function i_writeSiteDir($doc){
-		if($this->ContentType === we_base_ContentTypes::HTACESS){
+		if($this->ContentType === we_base_ContentTypes::HTACCESS){
 			return true;
 		}
 		return parent::i_writeSiteDir($doc);

@@ -25,12 +25,11 @@
 // ---> Menu File / Glossary
 //
 $we_menu_glossary = array(
-	'glossary' => array(
-		'text' => g_l('modules_glossary', '[glossary]'),
-	),
 	'new' => array(
 		'text' => g_l('modules_glossary', '[menu_new]'),
-		'parent' => 'glossary',
+	),
+	'glossary' => array(
+		'text' => g_l('modules_glossary', '[glossary]'),
 	),
 	array(
 		'text' => g_l('modules_glossary', '[menu_save]'),

@@ -100,7 +100,7 @@ class we_customer_EIWizard{
 	function getHTMLExportStep1(){
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
-		$generic = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+		$generic = new we_html_table(['class' => 'default withSpace'], 2, 1);
 		$generic->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked){top.type='" . we_import_functions::TYPE_GENERIC_XML . "';}", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
 		$generic->setCol(1, 0, [], we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
 
@@ -128,7 +128,7 @@ class we_customer_EIWizard{
 		$table = new we_html_table(array('class' => 'default', 'style' => 'margin:5px 25px 0 0;'), 1, 2);
 		$table->setColContent(0, 1, $this->getHTMLCustomerFilter());
 
-		$generic = new we_html_table(array('class' => 'default withSpace'), 4, 1);
+		$generic = new we_html_table(['class' => 'default withSpace'], 4, 1);
 		$generic->setColContent(0, 0, we_html_forms::radiobutton(self::SELECTION_FILTER, ($selection == self::SELECTION_FILTER), "selection", g_l('modules_customer', '[filter_selection]'), true, "defaultfont", "if(document.we_form.selection[0].checked) top.selection='" . self::SELECTION_FILTER . "';"));
 		$generic->setColContent(1, 0, $table->getHtml());
 
@@ -200,7 +200,7 @@ switch (args[0]){
 			switch($type){
 				case we_import_functions::TYPE_GENERIC_XML:
 
-					$table = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+					$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
 
 					$table->setColContent(0, 0, we_html_forms::radiobutton(1, $cdata, "cdata", g_l('modules_customer', '[export_xml_cdata]'), true, "defaultfont", ""));
 					$table->setColContent(1, 0, we_html_forms::radiobutton(0, !$cdata, "cdata", g_l('modules_customer', '[export_xml_entities]'), true, "defaultfont", ""));
@@ -211,13 +211,13 @@ switch (args[0]){
 				case self::TYPE_CSV:
 					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 4, 1);
 
-					$file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "defaultfont", "style" => "width: 254px;"));
+					$file_encoding = new we_html_select(array("name" => "csv_lineend", 'class' => 'defaultfont', "style" => "width: 254px;"));
 					$file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
 					$file_encoding->addOption("unix", g_l('modules_customer', '[unix]'));
 					$file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
 					$file_encoding->selectOption($csv_lineend);
 
-					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . "<br/>" . $file_encoding->getHtml());
+					$fileformattable->setCol(0, 0, ['class' => 'defaultfont'], g_l('modules_customer', '[csv_lineend]') . "<br/>" . $file_encoding->getHtml());
 					$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array("," => g_l('modules_customer', '[comma]'), ";" => g_l('modules_customer', '[semicolon]'), ":" => g_l('modules_customer', '[colon]'), "\\t" => g_l('modules_customer', '[tab]'), " " => g_l('modules_customer', '[space]')), g_l('modules_customer', '[csv_delimiter]')));
 					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array('"' => g_l('modules_customer', '[double_quote]'), "'" => g_l('modules_customer', '[single_quote]')), g_l('modules_customer', '[csv_enclose]')));
 
@@ -267,7 +267,7 @@ switch (args[0]){
 		$js = we_html_element::jsElement('top.footer.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_EXPORT . '&step=5";');
 
 		if($export_to == self::EXPORT_LOCAL){
-			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
+			$message = we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
 					g_l('modules_customer', '[download_starting]') .
 					we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename, 'download' => $filename), g_l('modules_customer', '[download]'))
 			);
@@ -276,7 +276,7 @@ switch (args[0]){
 					)
 			);
 		} else {
-			$message = we_html_element::htmlSpan(array("class" => "defaultfont"), g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
+			$message = we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
 					g_l('modules_customer', '[server_finished]') . "<br/>" .
 					rtrim($path, '/') . '/' . $filename
 			);
@@ -509,7 +509,7 @@ switch (args[0]){
 	function getHTMLImportStep1(){
 		$type = we_base_request::_(we_base_request::STRING, "type", we_import_functions::TYPE_GENERIC_XML);
 
-		$generic = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+		$generic = new we_html_table(['class' => 'default withSpace'], 2, 1);
 		$generic->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) top.type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
 		$generic->setCol(1, 0, [], we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_import]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
 
@@ -551,7 +551,7 @@ function callBack(){
 }') . $fileUploader->getJs();
 		$css = STYLESHEET . $fileUploader->getCss();
 
-		$table = new we_html_table(array('class' => 'default withSpace'), 2, 2);
+		$table = new we_html_table(['class' => 'default withSpace'], 2, 2);
 		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_SERVER, ($import_from == self::EXPORT_SERVER), "import_from", g_l('modules_customer', '[server_import]'), true, "defaultfont"));
 
 		$table->setCol(1, 1, array('style' => 'padding-bottom:5px;'), $this->formFileChooser(250, "source", $source, "opener.top.body.document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
@@ -564,14 +564,14 @@ function callBack(){
 		);
 
 		//upload table
-		$tmptable = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+		$tmptable = new we_html_table(['class' => 'default withSpace'], 2, 1);
 		//$tmptable->setCol(0, 0, [], we_html_tools::htmlAlertAttentionBox(sprintf(g_l('newFile', '[max_possible_size]'), we_base_file::getHumanFileSize($maxsize, we_base_file::SZ_MB)), we_html_tools::TYPE_ALERT, 430));
 		$tmptable->setCol(0, 0, [], $fileUploader->getHtmlAlertBoxes());
 
 		//$tmptable->setCol(2, 0, array('style'=>'vertical-align:middle;'), we_html_tools::htmlTextInput("upload", 35, "", 255, "onclick=\"document.we_form.import_from[1].checked=true;\"", "file"));
 		$tmptable->setCol(1, 0, array('style' => 'vertical-align:middle;'), $fileUploader->getHTML());
 
-		$table = new we_html_table(array('class' => 'default withSpace'), 2, 2);
+		$table = new we_html_table(['class' => 'default withSpace'], 2, 2);
 		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_LOCAL, ($import_from == self::EXPORT_LOCAL), "import_from", g_l('modules_customer', '[upload_import]'), true, "defaultfont"));
 		$table->setColContent(1, 1, $tmptable->getHtml());
 
@@ -643,7 +643,7 @@ function callBack(){
 
 					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 5, 1);
 
-					$file_encoding = new we_html_select(array("name" => "csv_lineend", "class" => "defaultfont", "style" => "width: 254px;"));
+					$file_encoding = new we_html_select(array("name" => "csv_lineend", 'class' => 'defaultfont', "style" => "width: 254px;"));
 					$file_encoding->addOption('windows', g_l('modules_customer', '[windows]'));
 					$file_encoding->addOption('unix', g_l('modules_customer', '[unix]'));
 					$file_encoding->addOption('mac', g_l('modules_customer', '[mac]'));
@@ -658,8 +658,8 @@ function callBack(){
 					$import_Charset = '<table class="default"><tr><td>' . $importCharset . '</td><td>' . $importCharsetChooser . '</td></tr></table>';
 
 
-					$fileformattable->setCol(0, 0, array("class" => "defaultfont"), g_l('modules_customer', '[csv_lineend]') . we_html_element::htmlBr() . $file_encoding->getHtml());
-					$fileformattable->setCol(1, 0, array("class" => "defaultfont"), g_l('modules_customer', '[import_charset]') . we_html_element::htmlBr() . $import_Charset);
+					$fileformattable->setCol(0, 0, ['class' => 'defaultfont'], g_l('modules_customer', '[csv_lineend]') . we_html_element::htmlBr() . $file_encoding->getHtml());
+					$fileformattable->setCol(1, 0, ['class' => 'defaultfont'], g_l('modules_customer', '[import_charset]') . we_html_element::htmlBr() . $import_Charset);
 					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, $csv_delimiters, g_l('modules_customer', '[csv_delimiter]')));
 					$fileformattable->setColContent(3, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, $csv_encloses, g_l('modules_customer', '[csv_enclose]')));
 
@@ -716,13 +716,13 @@ function callBack(){
 						$tblSelect = new we_html_table([], 1, 7);
 						$tblSelect->setCol(0, 1, [], $rcdSelect->getHtml());
 						$tblSelect->setCol(0, 2, array("width" => 20));
-						$tblSelect->setCol(0, 3, array("class" => "defaultfont"), g_l('modules_customer', '[num_data_sets]'));
+						$tblSelect->setCol(0, 3, ['class' => 'defaultfont'], g_l('modules_customer', '[num_data_sets]'));
 						$tblSelect->setCol(0, 4, [], we_html_tools::htmlTextInput("xml_from", 4, 1, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
-						$tblSelect->setCol(0, 5, array("class" => "defaultfont"), g_l('modules_customer', '[to]'));
+						$tblSelect->setCol(0, 5, ['class' => 'defaultfont'], g_l('modules_customer', '[to]'));
 						$tblSelect->setCol(0, 6, [], we_html_tools::htmlTextInput("xml_to", 4, $firstOptVal, 5, "align=right", "text", 30, "", "", ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 
 						$tblFrame = new we_html_table([], 3, 2);
-						$tblFrame->setCol(0, 0, array("colspan" => 2, "class" => "defaultfont"), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), we_html_tools::TYPE_INFO, 570) :
+						$tblFrame->setCol(0, 0, array("colspan" => 2, 'class' => 'defaultfont'), ($isSingleNode) ? we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[well_formed]') . " " . g_l('modules_customer', '[select_elements]'), we_html_tools::TYPE_INFO, 570) :
 								we_html_tools::htmlAlertAttentionBox(g_l('modules_customer', '[xml_valid_1]') . " $optid " . g_l('modules_customer', '[xml_valid_m2]'), we_html_tools::TYPE_INFO, 570));
 						$tblFrame->setCol(1, 0, array("colspan" => 2));
 						$tblFrame->setCol(2, 1, [], $tblSelect->getHtml());
@@ -789,7 +789,7 @@ function callBack(){
 		foreach($records as $record){
 			$we_fields = new we_html_select(array(
 				"name" => "field_mappings[$record]",
-				"class" => "defaultfont",
+				'class' => 'defaultfont',
 				"onclick" => "",
 				"style" => "")
 			);
@@ -852,7 +852,7 @@ function callBack(){
 		$impno = we_base_request::_(we_base_request::INT, "impno", 0);
 
 		$table = new we_html_table([], 3, 1);
-		$table->setCol(0, 0, array("class" => "defaultfont"), sprintf(g_l('modules_customer', '[import_finished_desc]'), $impno));
+		$table->setCol(0, 0, ['class' => 'defaultfont'], sprintf(g_l('modules_customer', '[import_finished_desc]'), $impno));
 
 		if($tmpdir && is_file(TEMP_PATH . $tmpdir . '/' . $tmpdir . '.log') && is_readable(TEMP_PATH . "$tmpdir/$tmpdir.log")){
 			$log = we_base_file::load(TEMP_PATH . $tmpdir . '/' . $tmpdir . '.log', 'rb');
@@ -920,7 +920,7 @@ function callBack(){
 		}
 		$content->setCol(0, 1, array("style" => "text-align:right"), $buttons);
 
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : ''), we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
+		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : ''), we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
 						"name" => "we_form",
 						"method" => "post",
 						"target" => "load",
@@ -979,7 +979,7 @@ function callBack(){
 		}
 		$content->setCol(0, 1, array("style" => "text-align:right"), $buttons);
 
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : ""), we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
+		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . (isset($progressbar) ? $progressbar->getJSCode() : ""), we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), we_html_element::htmlForm(array(
 						"name" => "we_form",
 						"method" => "post",
 						"target" => "load",

@@ -22,12 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return array(
-	'file' => array(
-		'text' => g_l('javaMenu_messaging', '[file]'),
-	),
 	'new' => array(
 		'text' => g_l('javaMenu_messaging', '[new]'),
-		'parent' => 'file',
 	),
 	array(
 		'text' => g_l('javaMenu_messaging', '[message]') . '&hellip;',
@@ -43,6 +39,9 @@ return array(
 		'text' => g_l('javaMenu_messaging', '[folder]'),
 		'cmd' => 'messaging_new_folder',
 		'parent' => 'new',
+	),
+	'file' => array(
+		'text' => g_l('javaMenu_messaging', '[file]'),
 	),
 	'delete' => array(
 		'text' => g_l('javaMenu_messaging', '[delete]'),

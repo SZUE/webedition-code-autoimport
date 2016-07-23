@@ -18,9 +18,11 @@
  * A copy is found in the textfile
  * webEdition/licenses/webEditionCMS/License.txt
  *
- * @category   webEdition
- * @package none
- * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ * @category    webEdition
+ * @package     none
+ * @license     http://www.gnu.org/copyleft/gpl.html  GPL
+ * @param       array $attribs
+ * @return      string
  */
 function we_tag_url(array $attribs){
 	if(($foo = attributFehltError($attribs, 'id', __FUNCTION__))){
@@ -32,70 +34,67 @@ function we_tag_url(array $attribs){
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
+	
 	if(is_numeric($id) && (isset($urls[$type . $id]))){ // do only work you have never done before
 		return $urls[$type . $id];
 	}
-	if($id != 'self' && $id != 'top' && intval($id) == 0){
+	
+	if($id !== 'self' && $id !== 'top' && intval($id) === 0){
 		$url = '/';
 	} else {
-		$urlNotSet = true;
-		if(($id === 'self' || $id === 'top') && $type === 'document'){
-			$doc = we_getDocForTag($id, true); // check if we should use the top document or the  included document
-			$testid = $doc->ID;
-			if($id === 'top'){//check for object
-				if($GLOBALS['WE_MAIN_DOC'] instanceof we_objectFile){//ein object
-					$triggerid = ($triggerid ? : $GLOBALS['WE_MAIN_ID']);
+		$url = '';
+		switch($type){
+            case we_base_ContentTypes::OBJECT :
+				$objectID = ($id === 'self' || $id === 'top') ? $GLOBALS['we_obj']->ID : intval($id);
+				if(($getObject = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objectID)))){
+					$triggerDocPath = $triggerid ? id_to_path($triggerid) : 
+						($getObject['TriggerID'] ? id_to_path($getObject['TriggerID']) : 
+							(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
+								we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $getObject['Url'])), '/') . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $getObject['Url'])), '/')), $GLOBALS['we_obj']->Workspaces, $GLOBALS['we_obj']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
+								parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
+							)
+						);
+											
+					$path_parts = pathinfo($triggerDocPath);
 
-					$path_parts = pathinfo(id_to_path($triggerid));
-					if($objectseourls && $GLOBALS['WE_MAIN_DOC']->Url && show_SeoLinks()){
+					if($objectseourls && $getObject['Url'] != '' && show_SeoLinks()){
 						$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 							($hidedirindex && seoIndexHide($path_parts['basename']) ?
-								'' : $path_parts['filename'] . '/') .
-							$GLOBALS['WE_MAIN_DOC']->Url;
+								'' : $path_parts['filename'] . '/' ) . $getObject['Url'];
 					} else {
-						//FIXME: check if $GLOBALS['we_obj'] can be used instead of $GLOBALS['WE_MAIN_DOC']->OF_ID
 						$url = ($hidedirindex && seoIndexHide($path_parts['basename']) ?
-								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID :
-								$GLOBALS['WE_MAIN_DOC']->Path . '?we_objectID=' . $GLOBALS['WE_MAIN_DOC']->OF_ID);
+								($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $objectID :
+								$triggerDocPath . '?we_objectID=' . $objectID
+							);
 					}
-					$urlNotSet = false;
 				}
-			}
-		} else {
-			$testid = $id;
-		}
-		if($urlNotSet){
-			if($type === 'document'){
-				$row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($testid));
-				$url = isset($row['Path']) ? ($row['Path'] . ($row['IsFolder'] ? '/' : '')) : '';
-				$path_parts = pathinfo($url);
-				if($hidedirindex && TAGLINKS_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename'])){
-					$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
+				break;
+			case 'document':
+			default:
+				switch($id){
+					case 'self':
+					case 'top':
+						$doc = we_getDocForTag($id, true);
+						$docID = $doc->ID;
+						break;
+					default:
+						$docID = $id;
+						break;
 				}
-			} else {
-				$row = getHash('SELECT ID,Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($testid));
-				if(!$row){
-					$urls[$type . $id] = '';
-					return '';
+				
+				$getDocument = getHash('SELECT Path,IsFolder FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID));
+				if(isset($getDocument['Path'])){
+					$path = ($getDocument['Path'] . ($getDocument['IsFolder'] ? '/' : ''));
+					$path_parts = pathinfo($path);
+					$url = ($hidedirindex && TAGLINKS_DIRECTORYINDEX_HIDE && seoIndexHide($path_parts['basename'])) ?
+						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
+						$path;
 				}
-				if(!$triggerid){
-					$triggerid = ($row['TriggerID'] ? : $GLOBALS['WE_MAIN_DOC']->ID);
-				}
-				$path_parts = pathinfo(id_to_path($triggerid));
-				if($objectseourls && $row['Url'] != '' && show_SeoLinks()){
-					$url = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-						($hidedirindex && seoIndexHide($path_parts['basename']) ?
-							'' : $path_parts['filename'] . '/' ) .
-						$row['Url'];
-				} else {
-					$url = ($hidedirindex && seoIndexHide($path_parts['basename']) ?
-							($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $row['ID'] :
-							id_to_path($triggerid) . '?we_objectID=' . $row['ID']
-						);
-				}
-			}
+				
+				break;
 		}
 	}
+	
 	$urls[$type . $id] = $url;
 	return $url;
 }

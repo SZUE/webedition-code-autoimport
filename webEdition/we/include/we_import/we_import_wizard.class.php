@@ -138,10 +138,10 @@ class we_import_wizard extends we_import_wizardBase{
 		$cmd[1] = empty($cmd[1]) ? we_import_functions::TYPE_LOCAL_FILES : $cmd[1];
 		$expat = (function_exists('xml_parser_create')) ? true : false;
 
-		$tblFiles = new we_html_table(array('class' => 'default withSpace'), 2, 1);
+		$tblFiles = new we_html_table(['class' => 'default withSpace'], 2, 1);
 		$tblFiles->setCol(0, 0, [], we_html_forms::radiobutton('file_import', ($cmd[1] == we_import_functions::TYPE_LOCAL_FILES), 'type', g_l('import', '[file_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('FILE_IMPORT'), g_l('import', '[txt_file_import]'), 0, 384));
 		$tblFiles->setCol(1, 0, [], we_html_forms::radiobutton('site_import', ($cmd[1] == we_import_functions::TYPE_SITE), 'type', g_l('import', '[site_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('SITE_IMPORT'), g_l('import', '[txt_site_import]'), 0, 384));
-		$tblData = new we_html_table(array('class' => 'default withSpace'), 3, 1);
+		$tblData = new we_html_table(['class' => 'default withSpace'], 3, 1);
 		$tblData->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_WE_XML, ($cmd[1] == we_import_functions::TYPE_WE_XML), 'type', g_l('import', '[wxml_import]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('WXML_IMPORT') || !$expat), g_l('import', ($expat ? '[txt_wxml_import]' : '[add_expat_support]')), 0, 384));
 		$tblData->setCol(1, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($cmd[1] == we_import_functions::TYPE_GENERIC_XML), 'type', g_l('import', '[gxml_import]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('GENERICXML_IMPORT') || !$expat), g_l('import', ($expat ? '[txt_gxml_import]' : '[add_expat_support]')), 0, 384));
 		$tblData->setCol(2, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_CSV, ($cmd[1] == we_import_functions::TYPE_CSV), 'type', g_l('import', '[csv_import]'), true, 'defaultfont', '', !permissionhandler::hasPerm('CSV_IMPORT'), g_l('import', '[txt_csv_import]'), 0, 384));
@@ -313,7 +313,7 @@ function handle_eventNext(){
 		$importLocs->setCol(3, 0, array('style' => 'padding-top:4px;'), $rdoLLocal);
 		$importLocs->setCol(4, 0, [], $this->fileUploader->getHtmlAlertBoxes());
 		$importLocs->setCol(5, 0, [], $importFromLocal);
-		$fn_colsn = new we_html_table(array('class' => 'default withSpace'), 4, 1);
+		$fn_colsn = new we_html_table(['class' => 'default withSpace'], 4, 1);
 		$fn_colsn->setCol(0, 0, [], we_html_tools::htmlAlertAttentionBox(g_l('import', '[collision_txt]'), we_html_tools::TYPE_ALERT, 410));
 		$fn_colsn->setCol(1, 0, [], we_html_forms::radiobutton("replace", (isset($v["collision"])) ? ($v["collision"] === "replace") : true, "v[collision]", g_l('import', '[replace]'), true, "defaultfont", "", false, g_l('import', '[replace_txt]'), 0, 384));
 		$fn_colsn->setCol(2, 0, [], we_html_forms::radiobutton("rename", (isset($v["collision"])) ? ($v["collision"] === "rename") : false, "v[collision]", g_l('import', '[rename]'), true, "defaultfont", "", false, g_l('import', '[rename_txt]'), 0, 384));
@@ -1165,9 +1165,9 @@ HTS;
 				$tblSelect = new we_html_table([], 1, 7);
 				$tblSelect->setCol(0, 1, [], $rcdSelect->getHtml());
 				$tblSelect->setCol(0, 2, array('width' => 20));
-				$tblSelect->setCol(0, 3, array('class' => 'defaultfont'), g_l('import', '[num_data_sets]'));
+				$tblSelect->setCol(0, 3, ['class' => 'defaultfont'], g_l('import', '[num_data_sets]'));
 				$tblSelect->setCol(0, 4, [], we_html_tools::htmlTextInput('v[from_iElem]', 4, 1, 5, 'align=right', 'text', 50, '', '', ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
-				$tblSelect->setCol(0, 5, array('class' => 'defaultfont'), g_l('import', '[to]'));
+				$tblSelect->setCol(0, 5, ['class' => 'defaultfont'], g_l('import', '[to]'));
 				$tblSelect->setCol(0, 6, [], we_html_tools::htmlTextInput('v[to_iElem]', 4, $firstOptVal, 5, 'align=right', 'text', 50, '', '', ($isSingleNode && ($firstOptVal == 1)) ? 1 : 0));
 
 				$tblFrame = new we_html_table([], 3, 2);
@@ -1412,7 +1412,7 @@ function handle_event(evt) {
 
 		// Associated prefix selector.
 		$asocPfx = new we_html_table(array('class' => 'default'), 1, 1);
-		$asocPfx->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[pfx]') . '<br/><br/>' .
+		$asocPfx->setCol(0, 0, ['class' => 'defaultfont'], g_l('import', '[pfx]') . '<br/><br/>' .
 			we_html_tools::htmlTextInput('v[asoc_prefix]', 30, (isset($v['asoc_prefix']) ? $v['asoc_prefix'] : g_l('import', ($v['import_type'] === 'documents' ? '[pfx_doc]' : '[pfx_obj]'))), 255, "onclick=\"self.document.we_form.elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
 
 		// Assigned record or attribute field selectors.
@@ -1435,9 +1435,9 @@ function handle_event(evt) {
 		$attPfxSelect = we_html_tools::htmlTextInput('v[att_pfx]', 30, (isset($v['att_pfx']) ? base64_decode($v['att_pfx']) : ''), 255, "onclick=\"self.document.we_form.elements['v[rdo_filename]'][1].checked=true;\"", "text", 100);
 
 		$asgndFld = new we_html_table(array('class' => 'default'), 1, 3);
-		$asgndFld->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[rcd_fld]') . '<br/><br/>' . $rcdPfxSelect->getHTML());
+		$asgndFld->setCol(0, 0, ['class' => 'defaultfont'], g_l('import', '[rcd_fld]') . '<br/><br/>' . $rcdPfxSelect->getHTML());
 		$asgndFld->setCol(0, 1, array('width' => 20), '');
-		$asgndFld->setCol(0, 2, array('class' => 'defaultfont'), g_l('import', '[attributes]') . '<br/><br/>' . $attPfxSelect);
+		$asgndFld->setCol(0, 2, ['class' => 'defaultfont'], g_l('import', '[attributes]') . '<br/><br/>' . $attPfxSelect);
 
 		// Filename selector.
 		$fn = new we_html_table(array('class' => 'default'), 3, 2);
@@ -1453,7 +1453,7 @@ function handle_event(evt) {
 		);
 		if(!empty($dateFields)){
 			// Timestamp
-			$tStamp = new we_html_table(array('class' => 'default withSpace'), 4, 1);
+			$tStamp = new we_html_table(['class' => 'default withSpace'], 4, 1);
 			$tStamp->setCol(0, 0, array('colspan' => 2), we_html_forms::radiobutton('Unix', (!isset($v['rdo_timestamp']) ? 1 : ($v['rdo_timestamp'] === 'Unix') ? 1 : 0), 'v[rdo_timestamp]', g_l('import', '[uts]'), true, 'defaultfont', '', 0, g_l('import', '[unix_timestamp]'), 0, 384));
 			$tStamp->setCol(1, 0, array('colspan' => 2), we_html_forms::radiobutton('GMT', (!isset($v['rdo_timestamp']) ? 0 : ($v['rdo_timestamp'] === 'GMT') ? 1 : 0), 'v[rdo_timestamp]', g_l('import', '[gts]'), true, 'defaultfont', '', 0, g_l('import', '[gmt_timestamp]'), 0, 384));
 			$tStamp->setCol(2, 0, array('colspan' => 2), we_html_forms::radiobutton('Format', (!isset($v['rdo_timestamp']) ? 0 : ($v['rdo_timestamp'] === 'Format') ? 1 : 0), 'v[rdo_timestamp]', g_l('import', '[fts]'), true, 'defaultfont', '', 0, g_l('import', '[format_timestamp]'), 0, 384));
@@ -1477,7 +1477,7 @@ function handle_event(evt) {
 		);
 
 		$conflict = isset($v['collision']) ? $v['collision'] : 'rename';
-		$fn_colsn = new we_html_table(array('class' => 'default withSpace'), 3, 1);
+		$fn_colsn = new we_html_table(['class' => 'default withSpace'], 3, 1);
 		$fn_colsn->setCol(0, 0, [], we_html_forms::radiobutton('rename', $conflict === 'rename', 'nameconflict', g_l('import', '[rename]'), true, 'defaultfont', "self.document.we_form.elements['v[collision]'].value='rename';"));
 		$fn_colsn->setCol(1, 0, [], we_html_forms::radiobutton('replace', $conflict === 'replace', 'nameconflict', g_l('import', '[replace]'), true, 'defaultfont', "self.document.we_form.elements['v[collision]'].value='replace';"));
 		$fn_colsn->setCol(2, 0, [], we_html_forms::radiobutton('skip', $conflict === 'skip', 'nameconflict', g_l('import', '[skip]'), true, 'defaultfont', "self.document.we_form.elements['v[collision]'].value='skip';"));
@@ -1613,10 +1613,10 @@ function handle_eventNext(){
 
 		$rowDef = we_html_forms::checkbox('', (isset($v['csv_fieldnames']) ? $v['csv_fieldnames'] : true), 'checkbox_fieldnames', g_l('import', '[contains]'), true, 'defaultfont', "this.form.elements['v[csv_fieldnames]'].value=this.checked ? 1 : 0;");
 
-		$csvSettings = new we_html_table(array('class' => 'default withSpace'), 4, 1);
-		$csvSettings->setCol(0, 0, array('class' => 'defaultfont'), g_l('import', '[file_format]') . '<br/><br/>' . $charSet->getHtml());
-		$csvSettings->setCol(1, 0, array('class' => 'defaultfont'), g_l('import', '[field_delimiter]') . '<br/><br/>' . $iptDel . ' ' . $fldDel->getHtml());
-		$csvSettings->setCol(2, 0, array('class' => 'defaultfont'), g_l('import', '[text_delimiter]') . '<br/><br/>' . $txtDel->getHtml());
+		$csvSettings = new we_html_table(['class' => 'default withSpace'], 4, 1);
+		$csvSettings->setCol(0, 0, ['class' => 'defaultfont'], g_l('import', '[file_format]') . '<br/><br/>' . $charSet->getHtml());
+		$csvSettings->setCol(1, 0, ['class' => 'defaultfont'], g_l('import', '[field_delimiter]') . '<br/><br/>' . $iptDel . ' ' . $fldDel->getHtml());
+		$csvSettings->setCol(2, 0, ['class' => 'defaultfont'], g_l('import', '[text_delimiter]') . '<br/><br/>' . $txtDel->getHtml());
 		$csvSettings->setCol(3, 0, [], $rowDef);
 
 		$parts = array(
@@ -2244,7 +2244,7 @@ function handle_event(evt) {
 
 		// Associated prefix selector.
 		$asocPfx = new we_html_table(array('class' => 'default'), 1, 1);
-		$asocPfx->setCol(0, 0, array("class" => "defaultfont"), g_l('import', '[pfx]') . "<br/><br/>" .
+		$asocPfx->setCol(0, 0, ['class' => 'defaultfont'], g_l('import', '[pfx]') . "<br/><br/>" .
 			we_html_tools::htmlTextInput("v[asoc_prefix]", 30, (isset($v["asoc_prefix"]) ? $v["asoc_prefix"] : g_l('import', ($v["import_type"] === "documents" ? '[pfx_doc]' : '[pfx_obj]'))), 255, "onclick=\"self.document.we_form.elements['v[rdo_filename]'][0].checked=true;\"", "text", 150));
 
 		// Assigned record or attribute field selectors.
@@ -2263,7 +2263,7 @@ function handle_event(evt) {
 		}
 
 		$asgndFld = new we_html_table(array('class' => 'default'), 1, 1);
-		$asgndFld->setCol(0, 0, array("class" => "defaultfont"), g_l('import', '[rcd_fld]') . "<br/><br/>" . $rcdPfxSelect->getHTML());
+		$asgndFld->setCol(0, 0, ['class' => 'defaultfont'], g_l('import', '[rcd_fld]') . "<br/><br/>" . $rcdPfxSelect->getHTML());
 
 		// Filename selector.
 		$fn = new we_html_table(array('class' => 'default'), 5, 1);
@@ -2282,7 +2282,7 @@ function handle_event(evt) {
 
 		if(!empty($dateFields)){
 			// Timestamp
-			$tStamp = new we_html_table(array('class' => 'default withSpace'), 4, 1);
+			$tStamp = new we_html_table(['class' => 'default withSpace'], 4, 1);
 			$tStamp->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton("Unix", (!isset($v["rdo_timestamp"]) ? 1 : ($v["rdo_timestamp"] === "Unix") ? 1 : 0), "v[rdo_timestamp]", g_l('import', '[uts]'), true, "defaultfont", "", 0, g_l('import', '[unix_timestamp]'), 0, 384));
 			$tStamp->setCol(1, 0, array("colspan" => 2), we_html_forms::radiobutton("GMT", (!isset($v["rdo_timestamp"]) ? 0 : ($v["rdo_timestamp"] === "GMT") ? 1 : 0), "v[rdo_timestamp]", g_l('import', '[gts]'), true, "defaultfont", "", 0, g_l('import', '[gmt_timestamp]'), 0, 384));
 			$tStamp->setCol(2, 0, array("colspan" => 2), we_html_forms::radiobutton("Format", (!isset($v["rdo_timestamp"]) ? 0 : ($v["rdo_timestamp"] === "Format") ? 1 : 0), "v[rdo_timestamp]", g_l('import', '[fts]'), true, "defaultfont", "", 0, g_l('import', '[format_timestamp]'), 0, 384));
@@ -2299,7 +2299,7 @@ function handle_event(evt) {
 		}
 
 		$conflict = isset($v["collision"]) ? $v["collision"] : 'rename';
-		$fn_colsn = new we_html_table(array('class' => 'default withSpace'), 3, 1);
+		$fn_colsn = new we_html_table(['class' => 'default withSpace'], 3, 1);
 		$fn_colsn->setCol(0, 0, [], we_html_forms::radiobutton("rename", $conflict === "rename", "nameconflict", g_l('import', '[rename]'), true, 'defaultfont', "self.document.we_form.elements['v[collision]'].value='rename';"));
 		$fn_colsn->setCol(1, 0, [], we_html_forms::radiobutton("replace", $conflict === "replace", "nameconflict", g_l('import', '[replace]'), true, 'defaultfont', "self.document.we_form.elements['v[collision]'].value='replace';"));
 		$fn_colsn->setCol(2, 0, [], we_html_forms::radiobutton("skip", $conflict === "skip", "nameconflict", g_l('import', '[skip]'), true, 'defaultfont', "self.document.we_form.elements['v[collision]'].value='skip';"));

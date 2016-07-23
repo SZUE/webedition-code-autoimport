@@ -86,7 +86,7 @@ function submitForm(target,action,method,form) {
 		$row = 0;
 		$starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
 		$starttable->setCol($row++, 0, array("class" => "defaultfont titleline", "colspan" => 3), $title);
-		$starttable->setCol($row++, 0, array("class" => "defaultfont", "colspan" => 3), "");
+		$starttable->setCol($row++, 0, array('class' => 'defaultfont', "colspan" => 3), "");
 		$starttable->setCol($row++, 0, array("style" => "text-align:center"), $content);
 
 		ob_start();

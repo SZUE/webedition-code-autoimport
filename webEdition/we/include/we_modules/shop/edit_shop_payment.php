@@ -64,24 +64,24 @@ if(defined('CUSTOMER_TABLE')){
 		$custfields[$DB_WE->f("Field")] = $DB_WE->f("Field");
 	}
 
-	$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldForname]'));
+	$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[fieldForname]'));
 	$htmlTable->setCol($row, 1, array('style' => 'width:10px;'));
 	$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('fieldForname', $custfields, 1, $feldnamen[0]));
 
-	$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldSurname]'));
+	$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[fieldSurname]'));
 	$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('fieldSurname', $custfields, 1, $feldnamen[1]));
 
-	$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldStreet]'));
+	$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[fieldStreet]'));
 	$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('fieldStreet', $custfields, 1, $feldnamen[2]));
 
-	$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldZip]'));
+	$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[fieldZip]'));
 	$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('fieldZip', $custfields, 1, $feldnamen[3]));
 
-	$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldCity]'));
+	$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[fieldCity]'));
 	$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('fieldCity', $custfields, 1, $feldnamen[4]));
 
 
-	$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[fieldEmail]'));
+	$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[fieldEmail]'));
 	$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('fieldEmail', array_merge(array(""), $custfields), 1, $feldnamen[18]));
 
 	$Parts[] = array("html" => $htmlTable->getHtml());
@@ -97,14 +97,14 @@ $list2 = array("HU" => "Hungary", "IS" => "Iceland", "IN" => "India", "IE" => "I
 $list3 = array("NL" => "Netherlands", "NZ" => "New Zealand", "NO" => "Norway", "PL" => "Poland", "PT" => "Portugal", "SG" => "Singapore", "SK" => "Slovakia", "ZA" => "South Afrika", "KR" => "South Korea", "ES" => "Spain", "SE" => "Sweden", "CH" => "Switzerland", "TW" => "Taiwan", "TH" => "Thailand", "TR" => "Turkey", "GB" => "United Kingdom", "United States" => "US", "Uruguay" => "UY", "Venezuela" => "VE");
 $list = array_merge($list1, $list2, $list3);
 
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[lc]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[lc]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('lc', $list, 1, $feldnamen[5]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalLcTxt]') . ' </span>');
 
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[paypalbusiness]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[paypalbusiness]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput("ppB", 30, $feldnamen[6], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalbTxt]') . ' </span>');
 
 $paypalPV = array("default" => "PayPal-Shop", "test" => "Sandbox (Test) ");
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[paypalSB]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[paypalSB]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('psb', $paypalPV, 1, $feldnamen[7]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[paypalSBTxt]') . ' </span>');
 
 $Parts[] = array("html" => $htmlTable->getHtml());
@@ -115,34 +115,34 @@ $row = 0;
 $htmlTable->setCol($row++, 0, array('class' => 'weDialogHeadline', 'colspan' => 4), g_l('modules_shop', '[saferpay]'));
 
 $saferPayLang = array("en" => "english", "de" => "deutsch", "fr" => "francais", "it" => "italiano");
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayTermLang]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayTermLang]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('lcS', $saferPayLang, 1, $feldnamen[8]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayLcTxt]') . ' </span>');
 
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayID]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayID]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput("spAID", 30, $feldnamen[9], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayIDTxt]') . ' </span>');
 
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpaybusiness]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpaybusiness]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput("spB", 30, $feldnamen[10], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpaybTxt]') . ' </span>');
 
 $saferPayCollect = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayAllowCollect]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayAllowCollect]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('spC', $saferPayCollect, 1, $feldnamen[11]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayAllowCollectTxt]') . ' </span>');
 
 $saferPayDelivery = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayDelivery]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayDelivery]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('spD', $saferPayDelivery, 1, $feldnamen[12]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayDeliveryTxt]') . ' </span>');
 
 $saferPayConfirm = array("no" => g_l('modules_shop', '[saferpayNo]'), "yes" => g_l('modules_shop', '[saferpayYes]'));
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayUnotify]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayUnotify]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('spCo', $saferPayConfirm, 1, $feldnamen[13]) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayUnotifyTxt]') . ' </span>');
 
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayProviderset]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayProviderset]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput("spPS", 30, $feldnamen[14], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayProvidersetTxt]') . ' </span>');
 
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayCMDPath]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayCMDPath]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput("spcmdP", 30, $feldnamen[15], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayCMDPathTxt]') . ' </span>');
 
-$htmlTable->setCol($row, 0, array('class' => 'defaultfont'), g_l('modules_shop', '[saferpayconfPath]'));
+$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[saferpayconfPath]'));
 $htmlTable->setColContent($row++, 2, we_html_tools::htmlTextInput("spconfP", 30, $feldnamen[16], "", "", "text", 128) . '<span class="small">&nbsp;' . g_l('modules_shop', '[saferpayconfPathTxt]') . ' </span>');
 
 $htmlTable->setCol($row, 0, array('class' => 'defaultfont', 'style' => 'padding-bottom:20px;'), g_l('modules_shop', '[saferpaydesc]'));

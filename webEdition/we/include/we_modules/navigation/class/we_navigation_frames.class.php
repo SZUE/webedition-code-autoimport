@@ -204,7 +204,7 @@ function setTab(tab) {
 						0)
 				));
 
-		$table->setCol(0, 0, array('class' => 'defaultfont'), g_l('navigation', '[order]') . ':');
+		$table->setCol(0, 0, ['class' => 'defaultfont'], g_l('navigation', '[order]') . ':');
 		if($this->Model->ID){
 			$table->setColContent(0, 1, //we_html_tools::htmlTextInput('Ordn', '', ($this->Model->Ordn + 1), '', 'disabled="true" readonly style="width: 35px"') .
 				we_html_element::htmlHidden('Ordn', ($this->Model->Ordn)) .

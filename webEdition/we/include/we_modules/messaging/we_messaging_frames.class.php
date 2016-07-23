@@ -161,7 +161,7 @@ function clearSearch() {
 			we_html_button::create_button('advanced', "javascript:launchAdvanced()", true) .
 			we_html_button::create_button('reset_search', "javascript:clearSearch();");
 
-		$table->setCol(0, 1, array('class' => 'defaultfont'), $buttons);
+		$table->setCol(0, 1, ['class' => 'defaultfont'], $buttons);
 		$form = we_html_element::htmlForm(
 				array('name' => 'we_messaging_search', 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=messaging&we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=' . $this->viewclass, 'onSubmit' => 'return doSearch()'), $hidden . $table->getHtml()
 		);

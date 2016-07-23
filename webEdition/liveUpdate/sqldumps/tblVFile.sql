@@ -19,6 +19,6 @@ CREATE TABLE ###TBLPREFIX###tblVFile (
   IsDuplicates tinyint unsigned NOT NULL default '1',
   InsertRecursive tinyint unsigned NOT NULL default '1',
   PRIMARY KEY (ID),
-  KEY Path (Path(30),IsFolder),
+  KEY Path (Path(250),IsFolder),
   KEY ParentID(ParentID)
 ) ENGINE=MyISAM;

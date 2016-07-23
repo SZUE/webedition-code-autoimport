@@ -318,7 +318,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				case we_base_ContentTypes::HTML:
 				case we_base_ContentTypes::TEXT:
 				case we_base_ContentTypes::CSS:
-				case we_base_ContentTypes::HTACESS:
+				case we_base_ContentTypes::HTACCESS:
 				case we_base_ContentTypes::JS:
 					$this->parseTextDocument($GLOBALS['we_doc']);
 					break;
@@ -681,7 +681,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 			), 5, 2);
 
 		$table->setCol(1, 0, array('class' => 'defaultfont', 'width' => 100, 'style' => 'padding-top:5px;'), g_l('copyFolder', '[categories]'));
-		$table->setCol(1, 1, array('class' => 'defaultfont'), we_html_forms::checkbox(1, 0, 'OverwriteCategories', g_l('copyFolder', '[overwrite_categories]'), false, "defaultfont", "toggleButton();"));
+		$table->setCol(1, 1, ['class' => 'defaultfont'], we_html_forms::checkbox(1, 0, 'OverwriteCategories', g_l('copyFolder', '[overwrite_categories]'), false, "defaultfont", "toggleButton();"));
 		$table->setCol(2, 0, array('colspan' => 2), we_html_element::htmlDiv(array(
 				'id' => 'categories',
 				'class' => 'blockWrapper',

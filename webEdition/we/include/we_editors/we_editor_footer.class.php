@@ -32,7 +32,7 @@ abstract class we_editor_footer{
 
 		//	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
-		$messageTbl->setCol(0, 1, array("class" => "defaultfont"), sprintf(g_l('alert', '[file_locked_footer]'), $username));
+		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], sprintf(g_l('alert', '[file_locked_footer]'), $username));
 		$messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:top.weNavigationHistory.navigateReload();")));
 
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $messageTbl->getHtml()));
@@ -42,7 +42,7 @@ abstract class we_editor_footer{
 		$messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 3);
 //	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
-		$messageTbl->setCol(0, 1, array("class" => "defaultfont"), g_l('alert', '[' . FILE_TABLE . '][not_im_ws]'));
+		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], g_l('alert', '[' . FILE_TABLE . '][not_im_ws]'));
 
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $messageTbl->getHtml()));
 	}
@@ -51,7 +51,7 @@ abstract class we_editor_footer{
 		$messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 2);
 //	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
-		$messageTbl->setCol(0, 1, array("class" => "defaultfont"), g_l('alert', '[file_no_save_footer]'));
+		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], g_l('alert', '[file_no_save_footer]'));
 
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $messageTbl->getHtml()));
 	}
@@ -60,7 +60,7 @@ abstract class we_editor_footer{
 		$messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 2);
 //	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
-		$messageTbl->setCol(0, 1, array("class" => "defaultfont"), str_replace("<br/>", " ", sprintf(g_l('alert', '[no_perms]'), f('SELECT Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))));
+		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], str_replace("<br/>", " ", sprintf(g_l('alert', '[no_perms]'), f('SELECT Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))));
 
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'footerBody'), $messageTbl->getHtml()));
 	}
@@ -80,7 +80,7 @@ abstract class we_editor_footer{
 
 			$table = new we_html_table(array("class" => 'default footertable'), 1, 2);
 			$table->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:16px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
-			$table->setCol(0, 1, array("class" => "defaultfont"), g_l('modules_workflow', '[doc_in_wf_warning]'));
+			$table->setCol(0, 1, ['class' => 'defaultfont'], g_l('modules_workflow', '[doc_in_wf_warning]'));
 
 			echo we_html_element::htmlBody(array('id' => 'footerBody'), $table->getHtml());
 		}
@@ -296,7 +296,7 @@ abstract class we_editor_footer{
 		// Button workspace
 		if(in_array(we_base_constants::WE_EDITPAGE_WORKSPACE, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES)){
 			$seeModeTable->addCol(2);
-			$seeModeTable->setCol(0, $pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('workspace_button', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_WORKSPACE . ", '" . $GLOBALS["we_transaction"] . "');"));
+			$seeModeTable->setCol(0, $pos++, ['style' => 'vertical-align:top;'], we_html_button::create_button('workspace_button', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_WORKSPACE . ", '" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 
@@ -304,7 +304,7 @@ abstract class we_editor_footer{
 		if(in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $GLOBALS['we_doc']->EditPageNrs) && ($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES) &&
 			we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && permissionhandler::hasPerm("CAN_SEE_SCHEDULER")){
 			$seeModeTable->addCol(2);
-			$seeModeTable->setCol(0, $pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('fat:schedule_button,fa-lg fa-clock-o', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
+			$seeModeTable->setCol(0, $pos++, ['style' => 'vertical-align:top;'], we_html_button::create_button('fat:schedule_button,fa-lg fa-clock-o', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_SCHEDULER . ", '" . $GLOBALS["we_transaction"] . "');"));
 		}
 
 		//	Button put in workflow
@@ -315,7 +315,7 @@ abstract class we_editor_footer{
 
 			if(!$ctrlElem || !$ctrlElem['hide']){
 				$seeModeTable->addCol(2);
-				$seeModeTable->setCol(0, $pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('fat:in_workflow,fa-lg fa-gears', "javascript:put_in_workflow('" . stripTblPrefix($we_doc->Table) . "');"));
+				$seeModeTable->setCol(0, $pos++, ['style' => 'vertical-align:top;'], we_html_button::create_button('fat:in_workflow,fa-lg fa-gears', "javascript:put_in_workflow('" . stripTblPrefix($we_doc->Table) . "');"));
 			}
 		}
 
@@ -329,7 +329,7 @@ abstract class we_editor_footer{
 			$ctrlElem = getControlElement('button', 'unpublish'); //	look tag we:controlElement for details
 			if(!$ctrlElem || !$ctrlElem['hide']){
 				$seeModeTable->addCol(2);
-				$seeModeTable->setCol(0, $pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('fat:unpublish,fa-lg fa-moon-o', "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
+				$seeModeTable->setCol(0, $pos++, ['style' => 'vertical-align:top;'], we_html_button::create_button('fat:unpublish,fa-lg fa-moon-o', "javascript:we_cmd('unpublish', '" . $we_transaction . "');"));
 			}
 		}
 
@@ -339,7 +339,7 @@ abstract class we_editor_footer{
 		$ctrlElem = getControlElement('button', 'save'); //	look tag we:controlElement for details
 		if(!$ctrlElem || !$ctrlElem['hide']){
 			$seeModeTable->addCol(2);
-			$seeModeTable->setCol(0, $pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button('fat:save,fa-lg fa-save', "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);we_save_document();"));
+			$seeModeTable->setCol(0, $pos++, ['style' => 'vertical-align:top;'], we_html_button::create_button('fat:save,fa-lg fa-save', "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(false);we_save_document();"));
 		}
 
 
@@ -352,7 +352,7 @@ abstract class we_editor_footer{
 			if(!($ctrlElem && $ctrlElem['hide'])){
 
 				$seeModeTable->addCol(2);
-				$seeModeTable->setCol(0, $pos++, array('style' => 'vertical-align:top;'), we_html_button::create_button(we_html_button::PUBLISH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);we_save_document();"));
+				$seeModeTable->setCol(0, $pos++, ['style' => 'vertical-align:top;'], we_html_button::create_button(we_html_button::PUBLISH, "javascript:WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorPublishWhenSave(true);we_save_document();"));
 			}
 		}
 
@@ -366,7 +366,7 @@ abstract class we_editor_footer{
 				($ctrlElem && $ctrlElem['hide'] ? '</div>' : '');
 
 			$seeModeTable->addCol(2);
-			$seeModeTable->setCol(0, $pos++, array('style' => 'vertical-align:top;'), $showPubl_makeSamNew);
+			$seeModeTable->setCol(0, $pos++, ['style' => 'vertical-align:top;'], $showPubl_makeSamNew);
 		}
 
 		//
