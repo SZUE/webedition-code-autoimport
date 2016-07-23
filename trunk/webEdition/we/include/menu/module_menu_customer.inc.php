@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 return array(
-	array(
+	'new'=>array(
 		'text' => g_l('modules_customer', '[menu_new]'),
 		'perm' => 'NEW_CUSTOMER || ADMINISTRATOR',
 	),
