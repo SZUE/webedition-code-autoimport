@@ -47,7 +47,7 @@ class we_tree_users extends we_tree_base{
 
 			$parent_path = (permissionhandler::hasPerm("ADMINISTRATOR") ?
 					'/' :
-					str_replace("\\", "/", dirname(f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), $db))));
+					str_replace("\\", "/", dirname(f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), '', $db))));
 
 			$db->query('SELECT ID,ParentID,Text,Type,Permissions,LoginDenied FROM ' . USER_TABLE . ' WHERE Path LIKE "' . $db->escape($parent_path) . '%" AND ParentID=' . $ParentId . ' ORDER BY Text ASC');
 
