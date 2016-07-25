@@ -364,9 +364,9 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		//cache result
 		static $filesWithRestrictionsForCustomer = [];
 
-		$listQuery = ' (mode=' . we_customer_abstractFilter::FILTER . ' AND !FIND_IN_SET(' . $cid . ',whiteList) ) '; //FIND_IN_SET($cid,blackList) AND
-		$specificCustomersQuery = ' (mode=' . we_customer_abstractFilter::SPECIFIC . " AND !FIND_IN_SET($cid,specificCustomers)) ";
-		$mfilter = 'mode IN(' . we_customer_abstractFilter::FILTER . ',' . we_customer_abstractFilter::SPECIFIC . ')';
+		$listQuery = ' (cf.mode=' . we_customer_abstractFilter::FILTER . ' AND !FIND_IN_SET(' . $cid . ',cf.whiteList) ) '; //FIND_IN_SET($cid,blackList) AND
+		$specificCustomersQuery = ' (cf.mode=' . we_customer_abstractFilter::SPECIFIC . ' AND !FIND_IN_SET(' . $cid . ',cf.specificCustomers)) ';
+		$mfilter = 'cf.mode IN(' . we_customer_abstractFilter::FILTER . ',' . we_customer_abstractFilter::SPECIFIC . ')';
 
 		// detect all files/objects with restrictions
 		$queryForIds = $obj->getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery);
@@ -375,7 +375,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 // if customer is not logged in=> return NO_LOGIN
 		// else return correct filter
 		// execute the query (get all existing filters)
-		$query = 'SELECT f.* ' . $queryForIds . ($ids ? ' AND modelId IN (' . implode(',', (array_map('intval', explode(',', $ids)))) . ')' : '');
+		$query = 'SELECT cf.* ' . $queryForIds . ($ids ? ' AND cf.modelId IN (' . implode(',', (array_map('intval', explode(',', $ids)))) . ')' : '');
 		$key = md5($query);
 		if(isset($filesWithRestrictionsForCustomer[$key])){
 			return $filesWithRestrictionsForCustomer[$key];

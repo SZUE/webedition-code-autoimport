@@ -106,7 +106,7 @@ class we_listview_object extends we_listview_objectBase{
 		}
 		$sqlParts = $this->makeSQLParts($matrix, $this->classID, $this->order, $this->condition, true);
 		//allways join the file table itself
-		$sqlParts['tables'].=' JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=`' . OBJECT_X_TABLE . $this->classID . '`.OF_ID';
+		$sqlParts['tables'].=' JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=' . OBJECT_X_TABLE . $this->classID . '.OF_ID';
 
 		$pid_tail = (isset($GLOBALS['we_doc']) ? we_objectFile::makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '1');
 
