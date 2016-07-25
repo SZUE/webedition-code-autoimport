@@ -828,12 +828,13 @@ function CalendarChanged(calObject) {
 				}
 
 				if(defined('OBJECT_TABLE')){
+					$searchArticle = we_base_request::_(we_base_request::STRING, 'searchArticle');
 					// now get all shop objects
 					foreach($this->classIds as $classId){
 						$classId = intval($classId);
-						$this->db->query('SELECT o.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle, o.OF_ID as objectId FROM ' . OBJECT_X_TABLE . $classId . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.OF_ID=of.ID ' .
-							(we_base_request::_(we_base_request::BOOL, 'searchArticle') ?
-								' WHERE ' . OBJECT_X_TABLE . $classId . '.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
+						$this->db->query('SELECT ox.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle,ox.OF_ID as objectId FROM ' . OBJECT_X_TABLE . $classId . ' ox JOIN ' . OBJECT_FILES_TABLE . ' of ON ox.OF_ID=of.ID ' .
+							($searchArticle ?
+								' WHERE ox.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
 								'')
 						);
 
