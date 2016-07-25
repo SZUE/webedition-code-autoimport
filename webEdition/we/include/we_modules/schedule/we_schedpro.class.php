@@ -475,8 +475,8 @@ function checkFooter(){
 			'ID' => 'bigint(20) unsigned NOT NULL',
 			'ClassName' => 'enum("we_htmlDocument","we_webEditionDocument","we_objectFile") NOT NULL'
 			], ['PRIMARY KEY (ID,ClassName)'], 'MEMORY', true);
-		$DB_WE->query('INSERT INTO del (ID,ClassName) SELECT s.DID,s.ClassName FROM ' . SCHEDULE_TABLE . ' s LEFT JOIN ' . FILE_TABLE . ' f ON f.ID=s.DID ' . (defined('OBJECT_FILES_TABLE') ? ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON of
-.ID=s.DID' : '') . ' WHERE (f.ID IS NULL AND s.ClassName IN ("we_htmlDocument","we_webEditionDocument"))' . (defined('OBJECT_FILES_TABLE') ? ' OR (of.ID IS NULL AND s.ClassName="we_objectFile")' : '') . ' GROUP BY s.DID,s.ClassName');
+		$DB_WE->query('INSERT INTO del (ID,ClassName) SELECT s.DID,s.ClassName FROM ' . SCHEDULE_TABLE . ' s LEFT JOIN ' . FILE_TABLE . ' f ON f.ID=s.DID ' .
+			(defined('OBJECT_FILES_TABLE') ? ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=s.DID' : '') . ' WHERE (f.ID IS NULL AND s.ClassName IN ("we_htmlDocument","we_webEditionDocument"))' . (defined('OBJECT_FILES_TABLE') ? ' OR (of.ID IS NULL AND s.ClassName="we_objectFile")' : '') . ' GROUP BY s.DID,s.ClassName');
 		$DB_WE->query('DELETE FROM ' . SCHEDULE_TABLE . ' WHERE (DID,ClassName) IN (SELECT ID,ClassName FROM del )');
 		$DB_WE->delTable('del', true);
 
@@ -489,7 +489,7 @@ function checkFooter(){
 			$lastWEState = [
 				'WE_MAIN_EDITMODE' => (isset($GLOBALS['WE_MAIN_EDITMODE']) ? $GLOBALS['WE_MAIN_EDITMODE'] : $GLOBALS['we_editmode']),
 				'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : 0,
-				];
+			];
 			$GLOBALS['WE_MAIN_EDITMODE'] = $GLOBALS['we_editmode'] = false;
 		}
 
@@ -506,7 +506,7 @@ function checkFooter(){
 					'ClassName' => $rec['ClassName'],
 					'Wann' => $rec['expire'],
 					'table' => $rec['ClassName'] === 'we_objectFile' ? OBJECT_FILES_TABLE : FILE_TABLE,
-					];
+				];
 				self::processSchedule($rec['DID'], $tmp, $now, $DB_WE);
 			} else {
 				//data invalid, reset & make sure this is not processed the next time
