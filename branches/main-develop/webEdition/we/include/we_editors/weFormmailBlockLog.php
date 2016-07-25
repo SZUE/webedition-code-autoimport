@@ -37,11 +37,11 @@ if(permissionhandler::hasPerm("administrator")){
 	$deleteLogBut = we_html_button::create_button('clear_log', "javascript:clearLog()");
 
 
-	$headline = array(
-		array('dat' => we_html_element::htmlB(g_l('prefs', '[ip_address]'))),
-		array('dat' => we_html_element::htmlB(g_l('prefs', '[blocked_until]'))),
-		array('dat' => "")
-	);
+	$headline = [
+		['dat' => we_html_element::htmlB(g_l('prefs', '[ip_address]'))],
+		['dat' => we_html_element::htmlB(g_l('prefs', '[blocked_until]'))],
+		['dat' => ''],
+	];
 
 
 	$content = [];

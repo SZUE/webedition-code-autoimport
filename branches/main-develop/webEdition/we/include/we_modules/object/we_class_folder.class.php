@@ -232,7 +232,7 @@ class we_class_folder extends we_folder{
 			array('dat' => g_l('modules_objectClassfoldersearch', '[charset]')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[language]')),
 			array('dat' => '<span onclick="setOrder(\'WebUserID\');">' . g_l('modules_objectClassfoldersearch', '[WebUser]') . $this->getSortImage('WebUserID') . '</span>'),
-			];
+		];
 
 		$content = [];
 
@@ -298,9 +298,9 @@ class we_class_folder extends we_folder{
 
 		$javascriptAll = "";
 		$headline = array(
-			array('dat' => ''),
+			['dat' => ''],
 			array('dat' => g_l('modules_objectClassfoldersearch', '[zeige]')),
-			array('dat' => ''),
+			['dat' => ''],
 			array('dat' => '<span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . $this->getSortImage('Path') . '</span>'),
 			array('dat' => '<span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . $this->getSortImage('ID') . '</span>'),
 		);
