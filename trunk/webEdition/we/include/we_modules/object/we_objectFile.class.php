@@ -60,7 +60,7 @@ class we_objectFile extends we_document{
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 	var $Url = '';
 	var $TriggerID = 0;
-	private $classData = array();
+	protected $classData = array();
 	private $DefaultInit = false; // this flag is set when the document was first initialized with default values e.g. from Doc-Types
 
 	/* Constructor */
@@ -71,7 +71,7 @@ class we_objectFile extends we_document{
 		$this->ContentType = we_base_ContentTypes::OBJECT_FILE;
 		$this->PublWhenSave = 0;
 		$this->IsTextContentDoc = true;
-		array_push($this->persistent_slots, 'CSS', 'DefArray', 'Text', 'AllowedClasses', 'Templates', 'ExtraTemplates', 'Workspaces', 'ExtraWorkspaces', 'ExtraWorkspacesSelected', 'RootDirPath', 'rootDirID', 'TableID', 'Category', 'IsSearchable', 'Charset', 'Language', 'Url', 'TriggerID');
+		array_push($this->persistent_slots, 'CSS', 'DefArray', 'Text', 'AllowedClasses', 'Templates', 'ExtraTemplates', 'Workspaces', 'ExtraWorkspaces', 'ExtraWorkspacesSelected', 'RootDirPath', 'rootDirID', 'TableID', 'Category', 'IsSearchable', 'Charset', 'Language', 'Url', 'TriggerID', 'classData');
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			array_push($this->persistent_slots, 'From', 'To');
 		}
