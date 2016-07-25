@@ -206,21 +206,21 @@ class we_class_folder extends we_folder{
 		$where = (isset($this->searchclass->searchname) ?
 				$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
 				$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
-		$whereRestrictOwners = ' AND (o.RestrictOwners=0 OR o.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',o.Owners)) ';
+		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',of.Owners)) ';
 
-		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' of JOIN ' . OBJECT_FILES_TABLE . ' o ON of.OF_ID = o.ID');
-		$this->searchclass->setwhere(($where ? $where . ' AND ' : '') . ' o.ID!=0 AND o.Path LIKE "' . $this->Path . '/%" AND o.IsFolder=0 ' . $whereRestrictOwners);
-		$this->searchclass->searchquery('', 'of.*, o.ID, o.Text, o.Path, o.ParentID, o.Workspaces, o.ExtraWorkspaces, o.ExtraWorkspacesSelected, o.Published, o.IsSearchable, o.ModDate, o.Language, o.Url, o.TriggerID, o.ModDate, o.WebUserID, o.IsFolder');
+		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' ox JOIN ' . OBJECT_FILES_TABLE . ' of ON ox.OF_ID = of.ID');
+		$this->searchclass->setwhere(($where ? $where . ' AND ' : '') . ' of.ID!=0 AND of.Path LIKE "' . $this->Path . '/%" AND of.IsFolder=0 ' . $whereRestrictOwners);
+		$this->searchclass->searchquery('', 'ox.*,of.ID,of.Text,of.Path,of.ParentID,of.Workspaces,of.ExtraWorkspaces,of.ExtraWorkspacesSelected,of.Published,of.IsSearchable,of.ModDate,of.Language,of.Url,of.TriggerID, of.ModDate, of.WebUserID, of.IsFolder');
 
 		$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, "", $this->DB_WE));
 
 		$ok = empty($DefaultValues['WorkspaceFlag']) ? '' : $DefaultValues['WorkspaceFlag'];
 
 		$javascriptAll = "";
-		$headline = array(
-			array('dat' => ''),
-			array('dat' => g_l('modules_objectClassfoldersearch', '[zeige]')),
-			array('dat' => ''),
+		$headline = [
+			['dat' => ''],
+			['dat' => g_l('modules_objectClassfoldersearch', '[zeige]')],
+			['dat' => ''],
 			array('dat' => '<span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . $this->getSortImage('Path') . '</span>'),
 			array('dat' => '<span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . $this->getSortImage('ID') . '</span>'),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[Arbeitsbereiche]')),
@@ -232,7 +232,7 @@ class we_class_folder extends we_folder{
 			array('dat' => g_l('modules_objectClassfoldersearch', '[charset]')),
 			array('dat' => g_l('modules_objectClassfoldersearch', '[language]')),
 			array('dat' => '<span onclick="setOrder(\'WebUserID\');">' . g_l('modules_objectClassfoldersearch', '[WebUser]') . $this->getSortImage('WebUserID') . '</span>'),
-		);
+			];
 
 		$content = [];
 
@@ -287,11 +287,11 @@ class we_class_folder extends we_folder{
 		$where = (isset($this->searchclass->searchname) ?
 				$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
 				$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
-		$whereRestrictOwners = ' AND (o.RestrictOwners=0 OR o.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',o.Owners)) ';
+		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',of.Owners)) ';
 
-		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' of JOIN ' . OBJECT_FILES_TABLE . ' o ON of.OF_ID=o.ID');
-		$this->searchclass->setwhere(($where ? $where . ' AND ' : '') . 'o.Path LIKE "' . $this->Path . '/%" AND o.ID!=0 AND o.IsFolder=0 ' . $whereRestrictOwners);
-		$this->searchclass->searchquery('', 'of.*, o.ID, o.Text, o.Path, o.ParentID, o.Workspaces, o.ExtraWorkspaces, o.ExtraWorkspacesSelected, o.Published, o.IsSearchable, o.Charset, o.Language, o.Url, o.TriggerID, o.ModDate, o.WebUserID');
+		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' ox JOIN ' . OBJECT_FILES_TABLE . ' of ON ox.OF_ID=of.ID');
+		$this->searchclass->setwhere(($where ? $where . ' AND ' : '') . 'of.Path LIKE "' . $this->Path . '/%" AND of.ID!=0 AND of.IsFolder=0 ' . $whereRestrictOwners);
+		$this->searchclass->searchquery('', 'ox.*,of.ID,of.Text,of.Path,of.ParentID,of.Workspaces,of.ExtraWorkspaces,of.ExtraWorkspacesSelected,of.Published,of.IsSearchable,of.Charset,of.Language,of.Url,of.TriggerID,of.ModDate,of.WebUserID');
 
 		$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 		$ok = empty($DefaultValues["WorkspaceFlag"]) ? '' : $DefaultValues["WorkspaceFlag"];
@@ -813,8 +813,8 @@ for ( frameId in _usedEditors ) {
 				return '';
 		}
 
-		$whereRestrictOwners = ' AND (o.RestrictOwners=0 OR o.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',o.Owners))';
-		$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' o JOIN ' . OBJECT_X_TABLE . intval($this->TableID) . ' of ON o.ID = of.OF_ID SET ' . we_database_base::arraySetter($set) . ' WHERE o.ID IN(' . implode(',', $IDs) . ') AND o.IsFolder=0' . $whereRestrictOwners);
+		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',of.Owners))';
+		$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_X_TABLE . intval($this->TableID) . ' ox ON of.ID = ox.OF_ID SET ' . we_database_base::arraySetter($set) . ' WHERE of.ID IN(' . implode(',', $IDs) . ') AND of.IsFolder=0' . $whereRestrictOwners);
 
 		//change tblIndex
 		switch($property){
