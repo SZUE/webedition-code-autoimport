@@ -51,6 +51,7 @@ abstract class we_listview_base{
 	var $calendar_struct = [];
 	var $id = 0;
 	public $hidedirindex = false; //since $lv->hidedirindex is accessed at output
+	protected $searchable = true;
 
 	/**
 	 * listviewBase()
@@ -67,7 +68,6 @@ abstract class we_listview_base{
 	 * @param   cols   		  integer - to display a table this is the number of cols
 	 *
 	 */
-
 	function __construct($name = 0, $rows = 999999999, $offset = 0, $order = '', $desc = false, $cats = '', $catOr = false, $workspaceID = 0, $cols = 0, $calendar = '', $datefield = '', $date = '', $weekstart = '', $categoryids = '', $customerFilterType = 'all', $id = 0){
 
 		$this->name = $name;
@@ -633,6 +633,18 @@ abstract class we_listview_base{
 		$model->initByID($docID);
 		$doc = $model;
 		return $doc;
+	}
+
+	public function getListviewRequest($lvname){
+		return
+			(empty($this->contentTypes) ? '' : ('we_lv_ct_' . $lvname . '=' . rawurlencode($this->contentTypes) . '&amp;')) .
+			($this->order ? ('we_lv_order_' . $lvname . '=' . rawurlencode($this->order) . '&amp;') : '') .
+			($this->desc ? ('we_lv_desc_' . $lvname . '=' . rawurlencode($this->desc) . '&amp;') : '') .
+			($this->cats ? ('we_lv_cats_' . $lvname . '=' . rawurlencode($this->cats) . '&amp;') : '') .
+			($this->catOr ? ('we_lv_catOr_' . $lvname . '=' . rawurlencode($this->catOr) . '&amp;') : '') .
+			($this->workspaceID ? ('we_lv_ws_' . $lvname . '=' . rawurlencode($this->workspaceID) . '&amp;') : '') .
+			((isset($this->searchable) && !$this->searchable) ? ('we_lv_se_' . $lvname . '=0&amp;') : '') .
+			(!empty($this->condition) ? ('we_lv_condition_' . $lvname . '=' . rawurlencode($this->condition) . '&amp;') : '');
 	}
 
 }

@@ -34,7 +34,6 @@ class we_listview_langlink extends we_listview_base{
 	var $IDs = []; /* array of ids with pages which are found */
 	var $foundlinks = [];
 	var $linkType = '';
-	var $searchable = true;
 	var $condition = ''; /* condition string (like SQL) */
 	var $customerFilterType = false; // shall we control customer-filter?
 	var $subfolders = true; // regard subfolders

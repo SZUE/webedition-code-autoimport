@@ -34,8 +34,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 	var $condition = ''; /* condition string (like SQL) */
 	var $Path = ''; /* internal: Path of document which to use for displaying thr detail page */
 	var $IDs = [];
-	var $searchable = true;
-	var $languages = ''; //string of Languages, separated by ,
+	protected $languages = ''; //string of Languages, separated by ,
 	var $objectseourls = false;
 	var $hidedirindex = false;
 
