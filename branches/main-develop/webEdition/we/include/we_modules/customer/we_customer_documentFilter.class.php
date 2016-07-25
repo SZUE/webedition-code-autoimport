@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -28,7 +27,6 @@
  *
  */
 class we_customer_documentFilter extends we_customer_abstractFilter{
-
 	const ACCESS = 'f_1';
 	const CONTROLONTEMPLATE = 'f_2';
 	const NO_ACCESS = 'f_3';
@@ -124,11 +122,11 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 	 */
 	static function getCustomerFilterFromRequest($id, $ct, $table){
 		return
-				(we_base_request::_(we_base_request::INT, 'wecf_mode') === we_customer_abstractFilter::OFF ?
-						self::getEmptyDocumentCustomerFilter() :
-						new self(intval($id), $ct, $table, ((we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') === "onTemplate") ? 1 : 0), we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
-						)
-				);
+			(we_base_request::_(we_base_request::INT, 'wecf_mode') === we_customer_abstractFilter::OFF ?
+				self::getEmptyDocumentCustomerFilter() :
+				new self(intval($id), $ct, $table, ((we_base_request::_(we_base_request::STRING, 'wecf_accessControlOnTemplate') === "onTemplate") ? 1 : 0), we_base_request::_(we_base_request::INT, 'wecf_noLoginId', 0), we_base_request::_(we_base_request::INT, 'wecf_noAccessId', 0), we_base_request::_(we_base_request::INT, 'wecf_mode', 0), self::getSpecificCustomersFromRequest(), self::getFilterFromRequest(), self::getWhiteListFromRequest(), self::getBlackListFromRequest()
+				)
+			);
 	}
 
 	/**
@@ -152,8 +150,8 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		$db = ($db ? : new DB_WE());
 		$hash = getHash('SELECT * FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . $db->escape(stripTblPrefix($table)) . '" AND modelId=' . intval($id), $db);
 		return ($hash ?
-						self::getFilterByDbHash($hash) :
-						''); // important do NOT return null
+				self::getFilterByDbHash($hash) :
+				''); // important do NOT return null
 	}
 
 	/**
@@ -169,12 +167,12 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			if($obj instanceof we_listview_search){ // search
 				//FIXME: changed tblINDEX!
 				return ' AND ( (i.ClassID=0 AND i.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '"))' .
-						' OR ( i.ClassID>0 AND i.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")) )';
+					' OR ( i.ClassID>0 AND i.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")) )';
 			}
 			return ($classID ?
-							' AND ' . OBJECT_X_TABLE . $classID . '.OF_ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")' :
-							' AND ' . FILE_TABLE . '.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '")'
-					);
+					' AND ' . OBJECT_X_TABLE . $classID . '.OF_ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")' :
+					' AND ' . FILE_TABLE . '.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '")'
+				);
 		}
 
 		// if customer is not logged in, all documents/objects with filters must be hidden
@@ -195,10 +193,11 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 		// build query from restricted files, regard search and normal listview
 		foreach($restrictedFilesForCustomer as $tab => $fileArray){
 			if($fileArray){
-				$idField = ($classID && $tab === 'tblObjectFiles' ?
-								OBJECT_X_TABLE . $classID . '.OF_ID' :
-								FILE_TABLE . '.ID');
-				$queryTail .= ' AND ' . $idField . ' NOT IN(' . implode(', ', $fileArray) . ')';
+				$queryTail .= ' AND ' .
+					($classID && $tab === 'tblObjectFiles' ?
+						OBJECT_X_TABLE . $classID . '.OF_ID' :
+						FILE_TABLE . '.ID') .
+					' NOT IN(' . implode(', ', $fileArray) . ')';
 			}
 		}
 
@@ -293,18 +292,18 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			$whiteList = $docCustomerFilter->getWhiteList();
 
 			$db->query('REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'modelId' => $model->ID,
-						'modelType' => $model->ContentType,
-						'modelTable' => stripTblPrefix($model->Table),
-						'accessControlOnTemplate' => $docCustomerFilter->getAccessControlOnTemplate(),
-						'errorDocNoLogin' => $docCustomerFilter->getErrorDocNoLogin(),
-						'errorDocNoAccess' => $docCustomerFilter->getErrorDocNoAccess(),
-						'mode' => $docCustomerFilter->getMode(),
-						'specificCustomers' => ($specificCustomers ? implode(',', $specificCustomers) : ''),
-						'filter' => ($filter ? we_serialize($filter, SERIALIZE_JSON) : ''),
-						'whiteList' => ($whiteList ? implode(',', $whiteList) : ''),
-						'blackList' => ($blackList ? implode(',', $blackList) : ''),
-					))
+					'modelId' => $model->ID,
+					'modelType' => $model->ContentType,
+					'modelTable' => stripTblPrefix($model->Table),
+					'accessControlOnTemplate' => $docCustomerFilter->getAccessControlOnTemplate(),
+					'errorDocNoLogin' => $docCustomerFilter->getErrorDocNoLogin(),
+					'errorDocNoAccess' => $docCustomerFilter->getErrorDocNoAccess(),
+					'mode' => $docCustomerFilter->getMode(),
+					'specificCustomers' => ($specificCustomers ? implode(',', $specificCustomers) : ''),
+					'filter' => ($filter ? we_serialize($filter, SERIALIZE_JSON) : ''),
+					'whiteList' => ($whiteList ? implode(',', $whiteList) : ''),
+					'blackList' => ($blackList ? implode(',', $blackList) : ''),
+				))
 			);
 		}
 	}

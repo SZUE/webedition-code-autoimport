@@ -186,9 +186,9 @@ if(isset($daten)){
 						$from_expression .= ', ';
 						$where_expression .= ' AND ';
 					}
-					$count_expression .= 'COUNT(DISTINCT ' . OBJECT_X_TABLE . $clId . '.OF_ID)';
-					$from_expression .= OBJECT_X_TABLE . $clId;
-					$where_expression .= OBJECT_X_TABLE . $clId . '.OF_ID!=0';
+					$count_expression .= 'COUNT(DISTINCT ob' . $clId . '.OF_ID)';
+					$from_expression .= OBJECT_X_TABLE . $clId . ' ob' . $clId;
+					$where_expression .= 'ob' . $clId . '.OF_ID!=0';
 					$fe_count++;
 				}
 			} else {
@@ -196,9 +196,9 @@ if(isset($daten)){
 				if($classid){
 					continue;
 				}
-				$count_expression = 'COUNT(' . OBJECT_X_TABLE . $classid . '.OF_ID)';
-				$from_expression = OBJECT_X_TABLE . $classid;
-				$where_expression = OBJECT_X_TABLE . $classid . '.OF_ID!=0';
+				$count_expression = 'COUNT(ob' . $classid . '.OF_ID)';
+				$from_expression = OBJECT_X_TABLE . $classid . ' ob' . $classid;
+				$where_expression = 'ob' . $classid . '.OF_ID!=0';
 			}
 			$DB_WE->query('SELECT ' . $count_expression . ' FROM ' . $from_expression . ' WHERE ' . $where_expression);
 			$entries += array_sum($DB_WE->getAll(true)); // Pager: determine the number of records;
@@ -234,13 +234,13 @@ ORDER BY ox.OF_ID'); // get the shop-objects from DB;
 				}
 
 				// build the headline
-				$headline = array(
-					array('dat' => getTitleLinkObj(g_l('modules_shop', '[ArtName]'), 'obTitle')),
-					array('dat' => getTitleLinkObj(g_l('modules_shop', '[ArtID]'), 'obID')),
-					array('dat' => getTitleLinkObj(g_l('modules_shop', '[artCreate]'), 'cDate')),
-					array('dat' => getTitleLinkObj(g_l('modules_shop', '[artPub]'), 'cPub')),
-					array('dat' => getTitleLinkObj(g_l('modules_shop', '[artMod]'), 'cMob')),
-				);
+				$headline = [
+					['dat' => getTitleLinkObj(g_l('modules_shop', '[ArtName]'), 'obTitle')],
+					['dat' => getTitleLinkObj(g_l('modules_shop', '[ArtID]'), 'obID')],
+					['dat' => getTitleLinkObj(g_l('modules_shop', '[artCreate]'), 'cDate')],
+					['dat' => getTitleLinkObj(g_l('modules_shop', '[artPub]'), 'cPub')],
+					['dat' => getTitleLinkObj(g_l('modules_shop', '[artMod]'), 'cMob')],
+				];
 
 				$content = [];
 

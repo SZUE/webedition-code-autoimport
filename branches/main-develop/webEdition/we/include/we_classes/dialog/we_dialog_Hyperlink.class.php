@@ -86,7 +86,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					$this->args['fileCT'] = '';
 					$this->args['mailHref'] = '';
 					$this->args['objID'] = trim($ref, '/?#');
-					$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
+					$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), '', $this->db);
 					break;
 				case we_base_link::TYPE_INT_PREFIX:
 					$this->args['type'] = we_base_link::TYPE_INT;
@@ -183,7 +183,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$this->args['fileCT'] = '';
 			$this->args['mailHref'] = '';
 			$this->args['objID'] = $objID;
-			$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), 'Path', $this->db);
+			$this->args['objHref'] = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->args['objID']), '', $this->db);
 		}
 		$this->args['mailsubject'] = $this->args['mailcc'] = $this->args['mailbcc'] = '';
 		$this->args['target'] = $target;

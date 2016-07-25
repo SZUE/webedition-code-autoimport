@@ -921,7 +921,7 @@ class we_objectFile extends we_document{
 
 			$text = $this->getPreviewHeadline(self::TYPE_MULTIOBJECT, $name);
 			$content = we_html_tools::htmlFormElementTable('', $text);
-			list($rootDir, $rootDirPath) = getHash('SELECT oft.ID,oft.Path FROM ' . OBJECT_FILES_TABLE . ' oft LEFT JOIN ' . OBJECT_TABLE . ' ot ON oft.Path=ot.Path WHERE oft.IsClassFolder=1 AND ot.ID=' . intval($classid), $db, MYSQL_NUM);
+			list($rootDir, $rootDirPath) = getHash('SELECT of.ID,of.Path FROM ' . OBJECT_FILES_TABLE . ' of LEFT JOIN ' . OBJECT_TABLE . ' o ON of.Path=o.Path WHERE of.IsClassFolder=1 AND o.ID=' . intval($classid), $db, MYSQL_NUM);
 
 			$inputWidth = (true || $isSEEM ? 346 : 411);
 			$editObjectButtonDis = we_html_button::create_button(we_html_button::VIEW, "", true, 0, 0, "", "", true);
@@ -2653,9 +2653,8 @@ class we_objectFile extends we_document{
 		if(intval($this->TableID) == 0){
 			return false;
 		}
-		$ctable = OBJECT_X_TABLE . intval($this->TableID);
 
-		$tableInfo = $this->DB_WE->metadata($ctable);
+		$tableInfo = $this->DB_WE->metadata(OBJECT_X_TABLE . intval($this->TableID));
 
 		if($this->wasUpdate && $this->ExtraWorkspacesSelected){
 			$ews = makeArrayFromCSV($this->ExtraWorkspacesSelected);
@@ -2687,7 +2686,7 @@ class we_objectFile extends we_document{
 			}
 		}
 		$where = ($this->wasUpdate) ? ' WHERE OF_ID=' . intval($this->ID) : '';
-		$ret = (bool) ($this->DB_WE->query(($this->wasUpdate ? 'UPDATE ' : 'INSERT INTO ') . $this->DB_WE->escape($ctable) . ' SET ' . we_database_base::arraySetter($data) . $where));
+		$ret = (bool) ($this->DB_WE->query(($this->wasUpdate ? 'UPDATE ' : 'INSERT INTO ') . OBJECT_X_TABLE . intval($this->TableID) . ' SET ' . we_database_base::arraySetter($data) . $where));
 		return $ret;
 	}
 
@@ -3203,8 +3202,7 @@ class we_objectFile extends we_document{
 		if(isset($wsFlag[$cid])){
 			$flag = $wsFlag[$cid];
 		} else {
-			$foo = f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db);
-			$fooArr = we_unserialize($foo);
+			$fooArr = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $cid, '', $db));
 			$wsFlag[$cid] = $flag = (isset($fooArr['WorkspaceFlag']) ? $fooArr['WorkspaceFlag'] : 1);
 		}
 		$pid_tail = [];

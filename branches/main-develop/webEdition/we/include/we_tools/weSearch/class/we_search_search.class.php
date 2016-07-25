@@ -835,13 +835,11 @@ class we_search_search extends we_search_base{
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				$Ids = $regs = [];
 
-				$db->query('SELECT ID FROM ' . OBJECT_TABLE);
-				$classes = $db->getAll(true);
+				$classes = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
 
 				//published objects
 				foreach($classes as $i){
 					$obj_table = OBJECT_X_TABLE . intval($i);
-					//$obj_table = strtolower($obj_table);
 					$tableInfo = $db->metadata($obj_table);
 					$fields = [];
 					for($c = 0; $c < count($tableInfo); $c++){
