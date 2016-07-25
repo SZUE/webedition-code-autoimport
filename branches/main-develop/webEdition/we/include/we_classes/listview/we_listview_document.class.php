@@ -32,7 +32,6 @@ class we_listview_document extends we_listview_base{
 	var $IDs = []; /* array of ids with pages which are found */
 	var $casesensitive = false; /* set to true when a search should be case sensitive */
 	var $contentTypes = '';
-	var $searchable = true;
 	var $condition = ''; /* condition string (like SQL) */
 	var $subfolders = true; // regard subfolders
 	var $customers = '';
