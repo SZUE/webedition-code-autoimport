@@ -379,10 +379,10 @@ var searchClass={
 			array("dat" => (permissionhandler::hasPerm('ADMINISTRATOR') ? '<div id="deleteButton">' .
 					we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
 				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
-			array("dat" => ''),
-			array("dat" => ''),
-			array("dat" => ''),
-			array("dat" => ''),
+			['dat' => ''],
+			['dat' => ''],
+			['dat' => ''],
+			['dat' => ''],
 		);
 	}
 
