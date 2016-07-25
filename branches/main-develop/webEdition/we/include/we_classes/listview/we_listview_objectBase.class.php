@@ -63,7 +63,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 			if(preg_match('/(.+?)_(.*)/', $fieldInfo['name'], $regs)){
 				list(, $type, $name) = $regs;
 				if($type === 'object' && $name != $this->classID){
-					if(!isset($matrix['we_object_' . $name]['type']) || !$matrix['we_object_' . $name]['type']){
+					if(empty($matrix['we_object_' . $name]['type'])){
 						$matrix['we_object_' . $name]['type'] = $type;
 						$matrix['we_object_' . $name]['table'] = $table;
 						$matrix['we_object_' . $name]['table2'] = OBJECT_X_TABLE . $name;
@@ -124,13 +124,13 @@ abstract class we_listview_objectBase extends we_listview_base{
 			if(!is_numeric($key) && $val){
 				switch($key){
 					case 'DefaultDesc':
-						$selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS we_Description,`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS WE_Description,';
+						$selFields .= OBJECT_X_TABLE . $classID . '.`' . $val . '` AS we_Description,' . OBJECT_X_TABLE . $classID . '.`' . $val . '` AS WE_Description,';
 						break;
 					case 'DefaultTitle':
-						$selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS we_Title,`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS WE_Title,';
+						$selFields .= OBJECT_X_TABLE . $classID . '.`' . $val . '` AS we_Title,' . OBJECT_X_TABLE . $classID . '.`' . $val . '` AS WE_Title,';
 						break;
 					case 'DefaultKeywords':
-						$selFields .= '`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS we_Keywords,`' . OBJECT_X_TABLE . $classID . '`.`' . $val . '` AS WE_Keywords,';
+						$selFields .= OBJECT_X_TABLE . $classID . '.`' . $val . '` AS we_Keywords,' . OBJECT_X_TABLE . $classID . '.`' . $val . '` AS WE_Keywords,';
 						break;
 				}
 			}
@@ -138,9 +138,9 @@ abstract class we_listview_objectBase extends we_listview_base{
 		$fields = array_keys(getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' LIMIT 1'));
 		$extraFields = '';
 		foreach($fields as $cur){
-			$extraFields.=',`' . OBJECT_FILES_TABLE . '`.' . $cur . ' AS we_wedoc_' . $cur;
+			$extraFields.=',' . OBJECT_FILES_TABLE . '.' . $cur . ' AS we_wedoc_' . $cur;
 		}
-		$f = '`' . OBJECT_FILES_TABLE . '`.ID,`' . OBJECT_FILES_TABLE . '`.Templates AS OF_Templates,`' . OBJECT_FILES_TABLE . '`.ID AS OF_ID,`' . OBJECT_FILES_TABLE . '`.Category AS OF_Category,`' . OBJECT_FILES_TABLE . '`.Text AS OF_Text,`' . OBJECT_FILES_TABLE . '`.Url AS OF_Url,`' . OBJECT_FILES_TABLE . '`.TriggerID AS OF_TriggerID,`' . OBJECT_FILES_TABLE . '`.WebUserID AS OF_WebUserID,`' . OBJECT_FILES_TABLE . '`.Language AS OF_Language' .
+		$f =  OBJECT_FILES_TABLE . '.ID,' . OBJECT_FILES_TABLE . '.Templates AS OF_Templates,' . OBJECT_FILES_TABLE . '.ID AS OF_ID,' . OBJECT_FILES_TABLE . '.Category AS OF_Category,' . OBJECT_FILES_TABLE . '.Text AS OF_Text,' . OBJECT_FILES_TABLE . '.Url AS OF_Url,' . OBJECT_FILES_TABLE . '.TriggerID AS OF_TriggerID,' . OBJECT_FILES_TABLE . '.WebUserID AS OF_WebUserID,' . OBJECT_FILES_TABLE . '.Language AS OF_Language' .
 			$extraFields . ',' . ($selFields ? $selFields : '');
 		$charclass = '[\!\=%&\(\)\*\+\.\/<>\|~, ]';
 		foreach($matrix as $n => $p){
@@ -165,18 +165,18 @@ abstract class we_listview_objectBase extends we_listview_base{
 		}, $cond);
 
 		$cond = strtr($cond, array(
-			'we_creationdate' => '`' . OBJECT_FILES_TABLE . '`.CreationDate',
-			'wedoc_CreationDate' => '`' . OBJECT_FILES_TABLE . '`.CreationDate',
-			'wedoc_ModDate' => '`' . OBJECT_FILES_TABLE . '`.ModDate',
-			'we_moddate' => '`' . OBJECT_FILES_TABLE . '`.ModDate',
-			'wedoc_Published' => '`' . OBJECT_FILES_TABLE . '`.Published',
-			'we_published' => '`' . OBJECT_FILES_TABLE . '`.Published',
-			'wedoc_ParentID' => '`' . OBJECT_FILES_TABLE . '`.ParentID',
-			'wedoc_Text' => '`' . OBJECT_FILES_TABLE . '`.Text',
-			'we_filename' => '`' . OBJECT_FILES_TABLE . '`.Text',
-			'WE_ID' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
-			'we_id' => '`' . OBJECT_X_TABLE . $classID . '`.OF_ID',
-			'we_path' => '`' . OBJECT_FILES_TABLE . '`.Path',
+			'we_creationdate' => OBJECT_FILES_TABLE . '.CreationDate',
+			'wedoc_CreationDate' => OBJECT_FILES_TABLE . '.CreationDate',
+			'wedoc_ModDate' =>  OBJECT_FILES_TABLE . '.ModDate',
+			'we_moddate' => OBJECT_FILES_TABLE . '.ModDate',
+			'wedoc_Published' => OBJECT_FILES_TABLE . '.Published',
+			'we_published' => OBJECT_FILES_TABLE . '.Published',
+			'wedoc_ParentID' => OBJECT_FILES_TABLE . '.ParentID',
+			'wedoc_Text' => OBJECT_FILES_TABLE . '.Text',
+			'we_filename' => OBJECT_FILES_TABLE . '.Text',
+			'WE_ID' => OBJECT_X_TABLE . $classID . '.OF_ID',
+			'we_id' => OBJECT_X_TABLE . $classID . '.OF_ID',
+			'we_path' => OBJECT_FILES_TABLE . '.Path',
 		));
 
 		foreach($orderArr as $pos => $curOrd){
@@ -187,23 +187,23 @@ abstract class we_listview_objectBase extends we_listview_base{
 					break;
 				case 'wedoc_filename':
 				case 'we_filename':
-					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.Text' . ($descArr[$pos] ? ' DESC' : '');
+					$ordertmp[$pos] = OBJECT_FILES_TABLE . '.Text' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'wedoc_path':
 				case 'we_path':
-					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.Path' . ($descArr[$pos] ? ' DESC' : '');
+					$ordertmp[$pos] = OBJECT_FILES_TABLE . '.Path' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'wedoc_published':
 				case 'we_published':
-					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.Published' . ($descArr[$pos] ? ' DESC' : '');
+					$ordertmp[$pos] = OBJECT_FILES_TABLE . '.Published' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'wedoc_moddate':
 				case 'we_moddate':
-					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.ModDate' . ($descArr[$pos] ? ' DESC' : '');
+					$ordertmp[$pos] = OBJECT_FILES_TABLE . '.ModDate' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'wedoc_creationdate':
 				case 'we_creationdate':
-					$ordertmp[$pos] = '`' . OBJECT_FILES_TABLE . '`.CreationDate' . ($descArr[$pos] ? ' DESC' : '');
+					$ordertmp[$pos] = OBJECT_FILES_TABLE . '.CreationDate' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'random()':
 					$ordertmp = [];

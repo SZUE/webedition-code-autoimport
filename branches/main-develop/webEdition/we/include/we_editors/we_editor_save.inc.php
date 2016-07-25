@@ -62,7 +62,7 @@ if(!empty($wasSaved)){
 
 			break;
 		case we_base_ContentTypes::OBJECT:
-			$GLOBALS['DB_WE']->query('SELECT f.ID FROM ' . OBJECT_FILES_TABLE . ' f INNER JOIN ' . LOCK_TABLE . ' l ON f.ID=l.ID AND l.tbl="' . stripTblPrefix(OBJECT_FILES_TABLE) . '" WHERE f.IsFolder=0 AND f.TableID=' . intval($GLOBALS['we_doc']->ID));
+			$GLOBALS['DB_WE']->query('SELECT of.ID FROM ' . OBJECT_FILES_TABLE . ' of INNER JOIN ' . LOCK_TABLE . ' l ON of.ID=l.ID AND l.tbl="' . stripTblPrefix(OBJECT_FILES_TABLE) . '" WHERE of.IsFolder=0 AND of.TableID=' . intval($GLOBALS['we_doc']->ID));
 			$reload[OBJECT_FILES_TABLE] = implode(',', $GLOBALS['DB_WE']->getAll(true));
 	}
 	$reload = array_filter($reload);

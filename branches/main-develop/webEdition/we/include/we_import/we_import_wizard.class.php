@@ -1937,7 +1937,7 @@ HTS;
 			);
 			$ac = implode(',', we_users_util::getAllowedClasses($DB_WE));
 			if($ac){
-				$DB_WE->query('SELECT o.ID,o.Text,f.ID AS FID FROM ' . OBJECT_TABLE . ' o LEFT JOIN ' . OBJECT_FILES_TABLE . ' f ON o.Text=f.Text WHERE ' . ($ac ? '  o.ID IN(' . $ac . ') AND ' : '') . ' f.IsFolder=1 AND f.ParentID=0 ORDER BY o.Text');
+				$DB_WE->query('SELECT o.ID,o.Text,of.ID AS FID FROM ' . OBJECT_TABLE . ' o LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON o.Text=of.Text WHERE ' . ($ac ? '  o.ID IN(' . $ac . ') AND ' : '') . ' of.IsFolder=1 AND of.ParentID=0 ORDER BY o.Text');
 				while($DB_WE->next_record()){
 					if(!$optid){
 						$first = '/' . $DB_WE->f("Text");
