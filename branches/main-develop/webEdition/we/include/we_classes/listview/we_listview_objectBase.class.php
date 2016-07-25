@@ -39,18 +39,6 @@ abstract class we_listview_objectBase extends we_listview_base{
 	var $objectseourls = false;
 	var $hidedirindex = false;
 
-	function tableInMatrix($matrix, $table){//FIXME: is this ever used?
-		if(OBJECT_X_TABLE . $this->classID == $table){
-			return true;
-		}
-		foreach($matrix as $foo){
-			if($foo["table"] == $table){
-				return true;
-			}
-		}
-		return false;
-	}
-
 	function f($key){
 		return $this->DB_WE->f('we_' . $key);
 	}
@@ -64,10 +52,12 @@ abstract class we_listview_objectBase extends we_listview_base{
 				list(, $type, $name) = $regs;
 				if($type === 'object' && $name != $this->classID){
 					if(empty($matrix['we_object_' . $name]['type'])){
-						$matrix['we_object_' . $name]['type'] = $type;
-						$matrix['we_object_' . $name]['table'] = $table;
-						$matrix['we_object_' . $name]['table2'] = OBJECT_X_TABLE . $name;
-						$matrix['we_object_' . $name]['classID'] = $classID;
+						$matrix['we_object_' . $name] = [
+							'type' => $type,
+							'table' => $table,
+							'table2' => OBJECT_X_TABLE . $name,
+							'classID' => $classID,
+						];
 						$foo = $this->fillMatrix($matrix, $name);
 						$joinWhere[] = OBJECT_X_TABLE . intval($classID) . '.' . we_object::QUERY_PREFIX . $name . '=' . OBJECT_X_TABLE . $name . '.OF_ID';
 						if($foo){
@@ -76,12 +66,12 @@ abstract class we_listview_objectBase extends we_listview_base{
 					}
 				} else {
 					if(!isset($matrix[$name])){
-						$matrix[$name] = array(
+						$matrix[$name] = [
 							'type' => $type,
 							'table' => $table,
-							'classID' => $classID,
 							'table2' => $table,
-						);
+							'classID' => $classID,
+						];
 					}
 				}
 			}
@@ -227,7 +217,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 			'fields' => rtrim($f, ',') . ($order === 'RANDOM ' ? ', RAND() AS RANDOM ' : ''),
 			'order' => trim($order) ? ' ORDER BY ' . trim($order) : '',
 			'tables' => implode(' JOIN ', $tb),
-			'groupBy' => (count($tb) > 1) ? ' GROUP BY `' . OBJECT_X_TABLE . $classID . '`.OF_ID ' : '',
+			'groupBy' => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . '.OF_ID ' : '',
 			'publ_cond' => $publ_cond ? ' ( ' . implode(' AND ', $publ_cond) . ' ) ' : '',
 			'cond' => trim($cond)
 		);
@@ -235,7 +225,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 
 	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){
 		return //at least check only documents of the specified class
-			'FROM ' . CUSTOMER_FILTER_TABLE . ' f JOIN ' . OBJECT_X_TABLE . $classID . ' ON (modelId=OF_ID AND modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
+			'FROM ' . CUSTOMER_FILTER_TABLE . ' cf JOIN ' . OBJECT_X_TABLE . $classID . ' ON (cf.modelId=OF_ID AND cf.modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
 	}
 
 	public function getFoundDocument(){

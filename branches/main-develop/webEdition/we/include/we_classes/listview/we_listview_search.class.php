@@ -246,7 +246,7 @@ class we_listview_search extends we_listview_base{
 	}
 
 	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){
-		return 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelType!="folder" AND ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
+		return 'FROM ' . CUSTOMER_FILTER_TABLE . ' cf WHERE cf.modelType!="folder" AND ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
 	}
 
 }

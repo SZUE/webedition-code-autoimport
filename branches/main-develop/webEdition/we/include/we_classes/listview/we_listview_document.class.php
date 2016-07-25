@@ -443,7 +443,7 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 	}
 
 	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){
-		return 'FROM ' . CUSTOMER_FILTER_TABLE . ' f WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '" AND ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
+		return 'FROM ' . CUSTOMER_FILTER_TABLE . ' cf WHERE cf.modelTable="' . stripTblPrefix(FILE_TABLE) . '" AND ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
 	}
 
 }

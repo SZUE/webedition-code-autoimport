@@ -172,35 +172,27 @@ if(isset($daten)){
 		case 'object': //start output object
 			$orderBy = $DB_WE->escape(we_base_request::_(we_base_request::STRING, 'orderBy', 'obTitle'));
 			$entries = 0;
-			$count_expression = $from_expression = $where_expression = "";
+			$count_expression = $from_expression = $where_expression = [];
 			if(!empty($fe)){
-				$fe_count = 0;
-
+				$classid = intval($classid);
+				if($classid){
+					continue;
+				}
+				$count_expression[] = 'COUNT(ox.OF_ID)';
+				$from_expression[] = OBJECT_X_TABLE . $classid . ' ox';
+				$where_expression[] = 'ox.OF_ID!=0';
+			} else {
 				foreach($fe as $clId){
 					$clId = intval($clId);
 					if(!$clId){
 						continue;
 					}
-					if($fe_count > 0){
-						$count_expression .= ' + ';
-						$from_expression .= ', ';
-						$where_expression .= ' AND ';
-					}
-					$count_expression .= 'COUNT(DISTINCT ob' . $clId . '.OF_ID)';
-					$from_expression .= OBJECT_X_TABLE . $clId . ' ob' . $clId;
-					$where_expression .= 'ob' . $clId . '.OF_ID!=0';
-					$fe_count++;
+					$count_expression[] = 'COUNT(DISTINCT ob' . $clId . '.OF_ID)';
+					$from_expression[] = OBJECT_X_TABLE . $clId . ' ob' . $clId;
+					$where_expression[] = 'ob' . $clId . '.OF_ID!=0';
 				}
-			} else {
-				$classid = intval($classid);
-				if($classid){
-					continue;
-				}
-				$count_expression = 'COUNT(ob' . $classid . '.OF_ID)';
-				$from_expression = OBJECT_X_TABLE . $classid . ' ob' . $classid;
-				$where_expression = 'ob' . $classid . '.OF_ID!=0';
 			}
-			$DB_WE->query('SELECT ' . $count_expression . ' FROM ' . $from_expression . ' WHERE ' . $where_expression);
+			$DB_WE->query('SELECT ' . implode('+', $count_expression) . ' FROM ' . implode(',', $from_expression) . ' WHERE ' . implode(' AND ', $where_expression));
 			$entries += array_sum($DB_WE->getAll(true)); // Pager: determine the number of records;
 			$active_page = we_base_request::_(we_base_request::RAW, 'page', 0); // Pager: determine the current page
 			$docType2 = we_base_ContentTypes::OBJECT_FILE; // Pager: determine the current page
