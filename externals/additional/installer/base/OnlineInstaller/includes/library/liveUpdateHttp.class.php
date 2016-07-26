@@ -24,7 +24,7 @@ class liveUpdateHttp{
 			$parameterStr .= "$key=" . urlencode($value) . "&";
 		}
 
-		$address = 'http://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
+		$address = 'https://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
 		$response = false;
 
 		$fh = @fopen($address, "rb");
@@ -64,7 +64,7 @@ class liveUpdateHttp{
 			$parameterStr .= "$key=" . urlencode($value) . "&";
 		}
 
-		$address = 'http://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
+		$address = 'https://' . $server . $url . ($parameterStr ? "?$parameterStr" : '');
 
 		$realm = base64_encode($proxy_user . ":" . $proxy_pass);
 
