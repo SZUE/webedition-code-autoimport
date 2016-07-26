@@ -178,9 +178,9 @@ if(isset($daten)){
 				if($classid){
 					continue;
 				}
-				$count_expression[] = 'COUNT(ox.OF_ID)';
-				$from_expression[] = OBJECT_X_TABLE . $classid . ' ox';
-				$where_expression[] = 'ox.OF_ID!=0';
+				$count_expression[] = 'COUNT(obx.OF_ID)';
+				$from_expression[] = OBJECT_X_TABLE . $classid . ' obx';
+				$where_expression[] = 'obx.OF_ID!=0';
 			} else {
 				foreach($fe as $clId){
 					$clId = intval($clId);
@@ -214,10 +214,10 @@ if(isset($daten)){
 				);
 
 				// :: then do the query for objects
-				$DB_WE->query('SELECT ox.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS obTitle,ox.OF_ID AS obID,of.CreationDate AS cDate,of.Published AS cPub,of.ModDate AS cMob
-FROM ' . OBJECT_X_TABLE . $classid . ' ox JOIN ' . OBJECT_FILES_TABLE . ' of ON ox.OF_ID=of.ID
+				$DB_WE->query('SELECT obx.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS obTitle,obx.OF_ID AS obID,of.CreationDate AS cDate,of.Published AS cPub,of.ModDate AS cMob
+FROM ' . OBJECT_X_TABLE . $classid . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID
 WHERE of.IsFolder=0
-ORDER BY ox.OF_ID'); // get the shop-objects from DB;
+ORDER BY obx.OF_ID'); // get the shop-objects from DB;
 				// build the table
 				$orderRows = $DB_WE->getAll();
 				// we need functionalitty to order these

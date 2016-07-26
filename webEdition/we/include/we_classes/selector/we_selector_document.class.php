@@ -117,7 +117,7 @@ class we_selector_document extends we_selector_directory{
 
 				$this->titleName = ($hash ? $hash['DefaultTitle'] : '');
 				if($this->titleName && strpos($this->titleName, '_')){
-					$this->db->query('SELECT ox.OF_ID, ox.`' . $this->titleName . '` FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' ox JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=ox.OF_ID WHERE of.ParentID=' . intval($this->dir));
+					$this->db->query('SELECT obx.OF_ID,obx.`' . $this->titleName . '` FROM ' . OBJECT_X_TABLE . $hash['ID'] . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=obx.OF_ID WHERE of.ParentID=' . intval($this->dir));
 					$this->titles = $this->db->getAllFirst(false);
 				}
 				break;

@@ -24,15 +24,10 @@
  */
 abstract class we_navigation_dynList{
 
-	public static function getDocuments($doctypeid, $dirid, $categories, $catlogic, &$sort, $count, $field){
-		$select = array(
-			FILE_TABLE . '.ID',
-			FILE_TABLE . '.Text',
-			LINK_TABLE . '.Name as FieldName',
-			CONTENT_TABLE . '.Dat as FieldData'
-		);
+	public static function getDocuments($doctypeid, $dirid, array $categories, $catlogic, &$sort, $count, $field){
+		$select = 'f.ID,f.Text,l.Name as FieldName,c.Dat as FieldData';
 
-		$fieldset = self::getDocData($select, $doctypeid, id_to_path($dirid), $categories, $catlogic, [], [], 0);
+		$fieldset = self::getDocData($select, $doctypeid, id_to_path($dirid), $categories, $catlogic);
 		$docs = $txt = $fields = $ids = [];
 
 		foreach($fieldset as $data){
@@ -106,52 +101,39 @@ abstract class we_navigation_dynList{
 		return $ids;
 	}
 
-	private static function getDocData(array $select, $doctype, $dirpath = '/', $categories = [], $catlogic = 'AND', $condition = [], $order = [], $offset = 0, $count = 100){
-
+	private static function getDocData(array $select, $doctype, $dirpath, array $categories, $catlogic){
 		$db = new DB_WE();
-		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
 		$cats = [];
 		foreach($categories as $cat){
-			$cat = is_numeric($cat) ? $cat : $db->escape(path_to_id($cat, CATEGORY_TABLE, $GLOBALS['DB_WE']));
-			$cats[] = 'FIND_IN_SET(' . $cat . ',Category)'; //bug #6729
+			$cats[] = 'FIND_IN_SET(' . $cat . ',f.Category)'; //bug #6729
 		}
 
 		$dirpath = we_base_file::clearPath($dirpath . '/');
 
-		$db->query('SELECT ' . implode(',', $select) . ' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' ON ' . FILE_TABLE . '.ID=' . LINK_TABLE . '.DID JOIN ' . CONTENT_TABLE . ' ON ' . LINK_TABLE . '.CID=' . CONTENT_TABLE . '.ID WHERE (' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0) ' .
-			'AND ' . LINK_TABLE . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" ' .
-			($doctype ? ' AND ' . FILE_TABLE . '.DocType=' . $db->escape($doctype) : '') .
-			($cats ? (' AND (' . implode(" $catlogic ", $cats) . ')') : '') .
-			($dirpath != '/' ? (' AND Path LIKE "' . $db->escape($dirpath) . '%"') : '') . ' ' .
-			($condition ? (' AND ' . implode(' AND ', $condition)) : '') . ' ' .
-			($order ? (' ORDER BY ' . $order) : '') .
-			'  LIMIT ' . $offset . ',' . $count);
+		$db->query('SELECT ' . $select . ' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON f.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE (f.IsFolder=0 AND f.Published>0) ' .
+			'AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" ' .
+			($doctype ? ' AND f.DocType=' . $db->escape($doctype) : '') .
+			($cats ? (' AND (' . implode($catlogic, $cats) . ')') : '') .
+			($dirpath != '/' ? (' AND f.Path LIKE "' . $db->escape($dirpath) . '%"') : '') .
+			' LIMIT 100');
 
 
 		return $db->getAll();
 	}
 
-	public static function getObjects($classid, $dirid, $categories, $catlogic, &$sort, $count, $field){
-		$select = array('OF_ID', 'OF_Text');
-
-		if($field){
-			$select[] = $field;
-		}
-
-		$sort = is_array($sort) ? $sort : [];
-
+	public static function getObjects($classid, $dirid, array $categories, $catlogic, array $sort, $count, $field){
+		$select = 'obx.OF_ID,of.Text' . ($field ? ',obx.' . $field : '');
 		$order = [];
 		foreach($sort as $sort){
 			$order[] = $sort['field'] . ' ' . $sort['order'];
 		}
-		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
-		$fieldset = self::getObjData($select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, [], $order, 0, $count);
+		$fieldset = self::getObjData($select, $classid, id_to_path($dirid, OBJECT_FILES_TABLE), $categories, $catlogic, $order, $count);
 		$ids = [];
 
 		foreach($fieldset as $data){
 			$ids[] = array(
 				'id' => $data['OF_ID'],
-				'text' => $data['OF_Text'],
+				'text' => $data['Text'],
 				'field' => $field && $data[$field] ? we_navigation_navigation::encodeSpecChars($data[$field]) : ''
 			);
 		}
@@ -159,30 +141,26 @@ abstract class we_navigation_dynList{
 		return $ids;
 	}
 
-	private static function getObjData(array $select, $classid, $dirpath = '/', array $categories = [], $catlogic = 'AND', array $condition = [], array $order = [], $offset = 0, $count = 100){
+	private static function getObjData($select, $classid, $dirpath, array $categories, $catlogic, array $order, $count){
 		$db = new DB_WE();
-		$categories = is_array($categories) ? $categories : makeArrayFromCSV($categories);
 		$cats = [];
 		foreach($categories as $cat){
-			$cat = is_numeric($cat) ? $cat : $db->escape(path_to_id($cat, CATEGORY_TABLE));
-			$cats[] = 'FIND_IN_SET(' . $cat . ',OF_Category)'; //bug #6729
+			$cats[] = 'FIND_IN_SET(' . $cat . ',of.Category)'; //bug #6729
 		}
 
 		$where = [];
 
 		if($cats){
-			$where[] = '(' . implode(" $catlogic ", $cats) . ')';
+			$where[] = '(' . implode($catlogic, $cats) . ')';
 		}
-		if($condition){
-			$where[] = implode(' AND ', $condition);
-		}
+
 		if($dirpath != '/'){
-			$where[] = 'OF_Path LIKE "' . $db->escape($dirpath) . '%"';
+			$where[] = 'of.Path LIKE "' . $db->escape($dirpath) . '%"';
 		}
-		$where[] = 'OF_Published>0'; // Bug #4797
-		$db->query('SELECT ' . implode(',', $select) . ' FROM ' . OBJECT_X_TABLE . intval($classid) . ' WHERE OF_ID!=0 ' .
+		$where[] = 'of.Published>0'; // Bug #4797
+		$db->query('SELECT ' . $select . ' FROM ' . OBJECT_X_TABLE . intval($classid) . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID WHERE obx.OF_ID!=0 ' .
 			($where ? ('AND ' . implode(' AND ', $where)) : '') .
-			($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' LIMIT ' . $offset . ',' . $count);
+			($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' LIMIT ' . $count);
 
 		return $db->getAll();
 	}
