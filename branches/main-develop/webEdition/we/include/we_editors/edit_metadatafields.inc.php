@@ -31,7 +31,7 @@ function getFooter(){
 	$meta_field_wrong_chars_messsage = addslashes(g_l('metadata', '[meta_field_wrong_chars_messsage]'));
 	$meta_field_wrong_name_messsage = addslashes(g_l('metadata', '[meta_field_wrong_name_messsage]'));
 
-	$javascript = <<< END_OF_SCRIPT
+	$javascript = <<< EOS
 function we_save() {
 	var _doc = document;
 	var inputs = _doc.getElementsByTagName('INPUT');
@@ -84,7 +84,7 @@ function checkMetaFieldName(inpElem, nr) {
 	return true;
 }
 
-END_OF_SCRIPT;
+EOS;
 
 	return we_html_element::jsElement($javascript) .
 			we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:we_save();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:" . "top.close()"), 10, '', '', 0));

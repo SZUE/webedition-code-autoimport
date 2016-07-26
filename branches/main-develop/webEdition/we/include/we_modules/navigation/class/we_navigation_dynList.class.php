@@ -122,7 +122,7 @@ abstract class we_navigation_dynList{
 	}
 
 	public static function getObjects($classid, $dirid, array $categories, $catlogic, array $sort, $count, $field){
-		$select = 'obx.OF_ID,of.Text' . ($field ? ',obx.' . $field : '');
+		$select = 'of.ID,of.Text' . ($field ? ',obx.' . $field : '');
 		$order = [];
 		foreach($sort as $sort){
 			$order[] = $sort['field'] . ' ' . $sort['order'];
@@ -132,7 +132,7 @@ abstract class we_navigation_dynList{
 
 		foreach($fieldset as $data){
 			$ids[] = array(
-				'id' => $data['OF_ID'],
+				'id' => $data['ID'],
 				'text' => $data['Text'],
 				'field' => $field && $data[$field] ? we_navigation_navigation::encodeSpecChars($data[$field]) : ''
 			);
@@ -158,7 +158,7 @@ abstract class we_navigation_dynList{
 			$where[] = 'of.Path LIKE "' . $db->escape($dirpath) . '%"';
 		}
 		$where[] = 'of.Published>0'; // Bug #4797
-		$db->query('SELECT ' . $select . ' FROM ' . OBJECT_X_TABLE . intval($classid) . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID WHERE obx.OF_ID!=0 ' .
+		$db->query('SELECT ' . $select . ' FROM ' . OBJECT_X_TABLE . intval($classid) . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID WHERE of.ID!=0 ' .
 			($where ? ('AND ' . implode(' AND ', $where)) : '') .
 			($order ? (' ORDER BY ' . implode(',', $order)) : '') . ' LIMIT ' . $count);
 
