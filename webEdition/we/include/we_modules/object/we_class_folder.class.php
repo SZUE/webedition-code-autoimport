@@ -208,7 +208,7 @@ class we_class_folder extends we_folder{
 				$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',of.Owners)) ';
 
-		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID = of.ID');
+		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID');
 		$this->searchclass->setwhere(($where ? $where . ' AND ' : '') . ' of.ID!=0 AND of.Path LIKE "' . $this->Path . '/%" AND of.IsFolder=0 ' . $whereRestrictOwners);
 		$this->searchclass->searchquery('', 'obx.*,of.ID,of.Text,of.Path,of.ParentID,of.Workspaces,of.ExtraWorkspaces,of.ExtraWorkspacesSelected,of.Published,of.IsSearchable,of.ModDate,of.Language,of.Url,of.TriggerID, of.ModDate, of.WebUserID, of.IsFolder');
 

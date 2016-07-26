@@ -832,7 +832,7 @@ function CalendarChanged(calObject) {
 					// now get all shop objects
 					foreach($this->classIds as $classId){
 						$classId = intval($classId);
-						$this->db->query('SELECT obx.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle,obx.OF_ID as objectId FROM ' . OBJECT_X_TABLE . $classId . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID ' .
+						$this->db->query('SELECT obx.input_' . WE_SHOP_TITLE_FIELD_NAME . ' AS shopTitle,of.ID as objectId FROM ' . OBJECT_X_TABLE . $classId . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID ' .
 							($searchArticle ?
 								' WHERE obx.input_' . WE_SHOP_TITLE_FIELD_NAME . '  LIKE "%' . $this->db->escape($searchArticle) . '%"' :
 								'')

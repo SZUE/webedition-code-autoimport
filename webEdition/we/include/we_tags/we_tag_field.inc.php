@@ -605,11 +605,11 @@ function we_tag_field(array $attribs){
 				break;
 			case 'we_listview_object':
 				$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
-				$showlink = $tid || $triggerid || $GLOBALS['lv']->f('OF_Templates') || $GLOBALS['lv']->docID;
+				$showlink = $tid || $triggerid || $GLOBALS['lv']->f('we_wedoc_Templates') || $GLOBALS['lv']->docID;
 				$tailOwnId = '?we_objectID=' . $GLOBALS['lv']->f('OF_ID');
 				break;
 			case 'we_listview_multiobject':
-				$showlink = $GLOBALS['lv']->f('OF_Templates') || $GLOBALS['lv']->docID;
+				$showlink = $GLOBALS['lv']->f('we_wedoc_Templates') || $GLOBALS['lv']->docID;
 				break;
 			case 'we_listview_shopOrder': //listview type="order"
 				$showlink = !empty($triggerid);

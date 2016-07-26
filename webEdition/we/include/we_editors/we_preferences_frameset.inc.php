@@ -53,14 +53,14 @@ echo we_html_tools::getHtmlTop() .
 $tabname = we_base_request::_(we_base_request::STRING, "tabname", we_base_request::_(we_base_request::STRING, 'we_cmd', "setting_ui", 1));
 
 // Define needed JS
-$javascript = <<< END_OF_SCRIPT
+$javascript = <<< EOS
 var WE=opener.WE;
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
-END_OF_SCRIPT;
+EOS;
 foreach(array_keys($GLOBALS['tabs']) as $name){
 	if(empty($perm) || permissionhandler::hasPerm($perm)){
 		$javascript.='case "' . $name . '":

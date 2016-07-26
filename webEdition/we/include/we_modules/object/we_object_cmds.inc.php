@@ -35,7 +35,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$wsid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
 		$wsPath = id_to_path($wsid, FILE_TABLE, $DB_WE);
 		$tableID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4);
-		list($ofID, $foo) = getHash('SELECT obx.OF_ID,obx.ExtraWorkspacesSelected FROM ' . OBJECT_X_TABLE . intval($tableID) . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=obx.OF_ID WHERE obx.OF_ID=' . intval($oid), $DB_WE, MYSQL_NUM);
+		list($ofID, $foo) = getHash('SELECT of.ID,of.ExtraWorkspacesSelected FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.ID=' . intval($oid), $DB_WE, MYSQL_NUM);
 		if(strstr($foo, ',' . $wsid . ',')){
 			$ews = str_replace(',' . $wsid, ',', '', $foo);
 			if($ews == ','){

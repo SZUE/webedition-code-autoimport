@@ -163,8 +163,8 @@ abstract class we_listview_objectBase extends we_listview_base{
 			'wedoc_ParentID' => 'of.ParentID',
 			'wedoc_Text' => 'of.Text',
 			'we_filename' => 'of.Text',
-			'WE_ID' => OBJECT_X_TABLE . $classID . '.OF_ID',
-			'we_id' => OBJECT_X_TABLE . $classID . '.OF_ID',
+			'WE_ID' => 'of.ID',
+			'we_id' => 'of.ID',
 			'we_path' => 'of.Path',
 		));
 
@@ -172,7 +172,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 			switch(strtolower($curOrd)){
 				case 'wedoc_id':
 				case 'we_id':
-					$ordertmp[$pos] = OBJECT_X_TABLE . $classID . '.OF_ID' . ($descArr[$pos] ? ' DESC' : '');
+					$ordertmp[$pos] = 'of.ID' . ($descArr[$pos] ? ' DESC' : '');
 					break;
 				case 'wedoc_filename':
 				case 'we_filename':
@@ -224,7 +224,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 
 	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){
 		return //at least check only documents of the specified class
-			'FROM ' . CUSTOMER_FILTER_TABLE . ' cf JOIN ' . OBJECT_X_TABLE . $classID . ' ON (cf.modelId=OF_ID AND cf.modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
+			'FROM ' . CUSTOMER_FILTER_TABLE . ' cf JOIN ' . OBJECT_X_TABLE . $classID . ' obx ON (cf.modelId=obx.OF_ID AND cf.modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '") WHERE ' . $mfilter . ' AND (' . $listQuery . ' OR ' . $specificCustomersQuery . ')';
 	}
 
 	public function getFoundDocument(){
