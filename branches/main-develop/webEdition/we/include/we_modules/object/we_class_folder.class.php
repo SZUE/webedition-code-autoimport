@@ -208,9 +208,9 @@ class we_class_folder extends we_folder{
 				$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',of.Owners)) ';
 
-		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' ox JOIN ' . OBJECT_FILES_TABLE . ' of ON ox.OF_ID = of.ID');
+		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID = of.ID');
 		$this->searchclass->setwhere(($where ? $where . ' AND ' : '') . ' of.ID!=0 AND of.Path LIKE "' . $this->Path . '/%" AND of.IsFolder=0 ' . $whereRestrictOwners);
-		$this->searchclass->searchquery('', 'ox.*,of.ID,of.Text,of.Path,of.ParentID,of.Workspaces,of.ExtraWorkspaces,of.ExtraWorkspacesSelected,of.Published,of.IsSearchable,of.ModDate,of.Language,of.Url,of.TriggerID, of.ModDate, of.WebUserID, of.IsFolder');
+		$this->searchclass->searchquery('', 'obx.*,of.ID,of.Text,of.Path,of.ParentID,of.Workspaces,of.ExtraWorkspaces,of.ExtraWorkspacesSelected,of.Published,of.IsSearchable,of.ModDate,of.Language,of.Url,of.TriggerID, of.ModDate, of.WebUserID, of.IsFolder');
 
 		$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, "", $this->DB_WE));
 
@@ -289,9 +289,9 @@ class we_class_folder extends we_folder{
 				$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',of.Owners)) ';
 
-		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' ox JOIN ' . OBJECT_FILES_TABLE . ' of ON ox.OF_ID=of.ID');
+		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID');
 		$this->searchclass->setwhere(($where ? $where . ' AND ' : '') . 'of.Path LIKE "' . $this->Path . '/%" AND of.ID!=0 AND of.IsFolder=0 ' . $whereRestrictOwners);
-		$this->searchclass->searchquery('', 'ox.*,of.ID,of.Text,of.Path,of.ParentID,of.Workspaces,of.ExtraWorkspaces,of.ExtraWorkspacesSelected,of.Published,of.IsSearchable,of.Charset,of.Language,of.Url,of.TriggerID,of.ModDate,of.WebUserID');
+		$this->searchclass->searchquery('', 'obx.*,of.ID,of.Text,of.Path,of.ParentID,of.Workspaces,of.ExtraWorkspaces,of.ExtraWorkspacesSelected,of.Published,of.IsSearchable,of.Charset,of.Language,of.Url,of.TriggerID,of.ModDate,of.WebUserID');
 
 		$DefaultValues = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
 		$ok = empty($DefaultValues["WorkspaceFlag"]) ? '' : $DefaultValues["WorkspaceFlag"];
@@ -814,7 +814,7 @@ for ( frameId in _usedEditors ) {
 		}
 
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',of.Owners))';
-		$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_X_TABLE . intval($this->TableID) . ' ox ON of.ID = ox.OF_ID SET ' . we_database_base::arraySetter($set) . ' WHERE of.ID IN(' . implode(',', $IDs) . ') AND of.IsFolder=0' . $whereRestrictOwners);
+		$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_X_TABLE . intval($this->TableID) . ' obx ON of.ID=obx.OF_ID SET ' . we_database_base::arraySetter($set) . ' WHERE of.ID IN(' . implode(',', $IDs) . ') AND of.IsFolder=0' . $whereRestrictOwners);
 
 		//change tblIndex
 		switch($property){

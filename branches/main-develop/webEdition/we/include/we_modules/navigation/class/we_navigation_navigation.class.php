@@ -178,9 +178,7 @@ class we_navigation_navigation extends we_base_model{
 		if(parent::load($id, true)){
 			$this->CategoryIDs = $this->Categories;
 
-			if(!is_array($this->Categories)){
-				$this->Categories = makeArrayFromCSV($this->Categories);
-			}
+			$this->Categories = makeArrayFromCSV($this->Categories);
 			$this->Categories = $this->convertToPaths($this->Categories, CATEGORY_TABLE);
 
 			$this->Sort = we_unserialize($this->Sort);
@@ -447,12 +445,12 @@ class we_navigation_navigation extends we_base_model{
 		if($this->Selection == self::SELECTION_DYNAMIC){
 			switch($this->SelectionType){
 				case self::STYPE_DOCTYPE:
-					return we_navigation_dynList::getDocuments($this->DocTypeID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField);
+					return we_navigation_dynList::getDocuments($this->DocTypeID, $this->FolderID, explode(',', $this->CategoryIDs), $this->CatAnd ? ' AND ' : ' OR ', $this->Sort, $this->ShowCount, $this->TitleField);
 				case self::STYPE_CATEGORY:
 					return we_navigation_dynList::getCatgories($this->FolderID, $this->ShowCount);
 				default:
 					return $this->ClassID > 0 ?
-						we_navigation_dynList::getObjects($this->ClassID, $this->FolderID, $this->Categories, $this->CatAnd ? 'AND' : 'OR', $this->Sort, $this->ShowCount, $this->TitleField) :
+						we_navigation_dynList::getObjects($this->ClassID, $this->FolderID, explode(',', $this->CategoryIDs), $this->CatAnd ? ' AND ' : ' OR ', $this->Sort, $this->ShowCount, $this->TitleField) :
 						[];
 			}
 		}
@@ -658,7 +656,7 @@ class we_navigation_navigation extends we_base_model{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -670,7 +668,7 @@ class we_navigation_navigation extends we_base_model{
 		}
 		$num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;

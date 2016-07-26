@@ -610,7 +610,7 @@ we_templateInit();?>';
 			$path[$id] = $data[1];
 		}
 
-		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedByTemplates', $path, 1, '', false, array('style' => 'margin-right: 20px;')), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateUsedByTemplates'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
+		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedByTemplates', $path, 1, '', false, array('style' => 'margin-right: 20px;')), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . TEMPLATES_TABLE . "', document.we_form.elements['TemplateUsedByTemplates'].value, '" . we_base_ContentTypes::TEMPLATE . "');") .
 				we_html_button::create_button(we_html_button::VIEW, "javascript:top.openBrowser(document.we_form.elements['TemplateUsedByTemplates'].value);")
 		));
 	}
