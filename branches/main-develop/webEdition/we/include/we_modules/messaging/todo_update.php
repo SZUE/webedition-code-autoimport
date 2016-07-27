@@ -33,7 +33,7 @@ $heading = 'ToDo Status-update ...';
 $arr = array('deadline' => mktime(we_base_request::_(we_base_request::INT, 'td_deadline_hour'), we_base_request::_(we_base_request::INT, 'td_deadline_minute'), 0, we_base_request::_(we_base_request::INT, 'td_deadline_month'), we_base_request::_(we_base_request::INT, 'td_deadline_day'), we_base_request::_(we_base_request::INT, 'td_deadline_year')));
 
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
-$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+$messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 if(($stat = we_base_request::_(we_base_request::INT, 'todo_status')) != $messaging->selected_message['hdrs']['status']){

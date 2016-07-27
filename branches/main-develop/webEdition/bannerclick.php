@@ -36,7 +36,7 @@ if(!$id){
 	$bannername = we_base_request::_(we_base_request::STRING, 'bannername');
 
 	if($bannername && isset($_COOKIE['webid_' . $bannername])){
-		$id = $_COOKIE["webid_" . $bannername];
+		$id = $_COOKIE['webid_' . $bannername];
 	}
 	if(!$id){
 		$id = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"');

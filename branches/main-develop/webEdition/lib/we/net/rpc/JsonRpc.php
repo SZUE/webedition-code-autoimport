@@ -30,7 +30,7 @@ class we_net_rpc_JsonRpc{
 	public static function getReply($namespace = 'we'){
 		$error = new we_net_rpc_JsonRpcError();
 
-		if($_SERVER["REQUEST_METHOD"] === 'POST'){
+		if($_SERVER['REQUEST_METHOD'] === 'POST'){
 			/*
 			 * For POST data, the only acceptable content type is application/json.
 			 */

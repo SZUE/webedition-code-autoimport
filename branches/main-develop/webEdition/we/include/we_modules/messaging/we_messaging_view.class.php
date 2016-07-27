@@ -56,7 +56,7 @@ class we_messaging_view extends we_modules_view{
 
 
 		$this->messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$this->transaction]);
-		$this->messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+		$this->messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 		$this->messaging->init($_SESSION['weS']['we_data'][$this->transaction]);
 
 		$out = '';

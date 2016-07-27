@@ -174,7 +174,7 @@ class we_messaging_message extends we_messaging_proto{
 		}
 		/* Copy sent message into 'Sent' Folder of the sender */
 		if(!isset($this->default_folders[we_messaging_proto::FOLDER_SENT]) || $this->default_folders[we_messaging_proto::FOLDER_SENT] < 0){
-			$this->default_folders[we_messaging_proto::FOLDER_SENT] = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_SENT . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($_SESSION["user"]["ID"]), 'ID', $this->DB_WE);
+			$this->default_folders[we_messaging_proto::FOLDER_SENT] = f('SELECT ID FROM ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE obj_type = ' . we_messaging_proto::FOLDER_SENT . ' AND msg_type = ' . intval($this->sql_class_nr) . ' AND UserID = ' . intval($_SESSION['user']["ID"]), 'ID', $this->DB_WE);
 		}
 		$to_str = implode(', ', $rcpts);
 		$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' (ParentID, UserID, msg_type, obj_type, headerDate, headerSubject, headerUserID, headerTo, Priority, MessageText, seenStatus) VALUES (' . $this->default_folders[we_messaging_proto::FOLDER_SENT] . ', ' . intval($this->userid) . ', ' . intval($this->sql_class_nr) . ', ' . we_messaging_proto::MESSAGE_NR . ', UNIX_TIMESTAMP(NOW()), "' . $this->DB_WE->escape($data['subject']) . '", ' . intval($this->userid) . ', "' . $this->DB_WE->escape(strlen($to_str) > 60 ? substr($to_str, 0, 60) . '...' : $to_str) . '", 0, "' . $this->DB_WE->escape($data['body']) . '", 0)');
@@ -302,7 +302,7 @@ class we_messaging_message extends we_messaging_proto{
 
 	static function newMessage(&$rcpts, $subject, $body, &$errs){
 		$m = new we_messaging_message();
-		$m->set_login_data($_SESSION["user"]["ID"], isset($_SESSION["user"]["Name"]) ? $_SESSION["user"]["Name"] : "");
+		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']["Name"]) ? $_SESSION['user']["Name"] : "");
 		$data = array('subject' => $subject, 'body' => $body);
 
 		$res = $m->send($rcpts, $data);

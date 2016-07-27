@@ -1816,7 +1816,7 @@ class we_object extends we_document{
 				$this->{$cur} = isset($doc->{$cur}) ? $doc->{$cur} : '';
 			}
 			$this->CreationDate = time();
-			$this->CreatorID = $_SESSION["user"]["ID"];
+			$this->CreatorID = $_SESSION['user']["ID"];
 			$this->ID = 0;
 			$this->OldPath = "";
 			$this->Published = 1;

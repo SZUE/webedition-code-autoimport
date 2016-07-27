@@ -417,7 +417,7 @@ abstract class we_SEEM{
 					$linkArray[2][$i] = 'javascript:' . self::getClassVars(($isObj ? 'vtabSrcObjs' : 'vtabSrcDocs')) . "WE().layout.sidebar.load('" . $linkArray[2][$i] . "');";
 					$javascriptCode = "onmouseover=\"top.info('ID: " . ($isObj ?
 							//	target is a object
-							$theParameterArray["we_objectID"] . "');\" " :
+							$theParameterArray['we_objectID'] . "');\" " :
 							//	target is a normal file.
 							$linkArray[6][$i] . "');\" " . $linkArray[4][$i] . ' ');
 				} else { //  without parameters

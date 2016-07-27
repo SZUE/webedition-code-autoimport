@@ -83,7 +83,6 @@ class liveUpdateResponse{
 					'getMysqlVer' => 'we_database_base::getMysqlVer',
 				]);
 //FIXME:eval
-				//t_e($c);
 				return eval('?>' . $c);
 			case 'state':
 				return liveUpdateFrames::htmlStateMessage();

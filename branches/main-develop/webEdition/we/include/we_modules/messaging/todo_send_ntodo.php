@@ -30,7 +30,7 @@ if(!$transaction){
 }
 
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
-$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+$messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 if(($hour = we_base_request::_(we_base_request::INT, 'td_deadline_hour')) !== false){

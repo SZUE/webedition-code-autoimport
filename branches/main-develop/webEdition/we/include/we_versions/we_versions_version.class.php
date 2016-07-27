@@ -1437,7 +1437,7 @@ class we_versions_version{
 	 * @abstract delete version entry from db and delete version files
 	 */
 	function deleteVersion($ID = 0, $where = ''){
-		if(!isset($_SESSION["user"]["ID"])){
+		if(!isset($_SESSION['user']["ID"])){
 			return;
 		}
 

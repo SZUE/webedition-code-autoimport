@@ -55,7 +55,7 @@ class rpcPublishDocsCmd extends we_rpc_cmd{
 					$object->we_publish();
 					if(defined('WORKFLOW_TABLE') && $object->ContentType == we_base_ContentTypes::WEDOCUMENT){
 						if(we_workflow_utility::inWorkflow($object->ID, $object->Table)){
-							we_workflow_utility::removeDocFromWorkflow($object->ID, $object->Table, $_SESSION["user"]["ID"], "");
+							we_workflow_utility::removeDocFromWorkflow($object->ID, $object->Table, $_SESSION['user']["ID"], "");
 						}
 					}
 					unset($_SESSION['weS']['versions']['doPublish']);

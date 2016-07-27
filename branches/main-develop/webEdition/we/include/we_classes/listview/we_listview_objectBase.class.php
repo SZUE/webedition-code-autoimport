@@ -38,6 +38,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 	var $objectseourls = false;
 	var $hidedirindex = false;
 
+	//FIXME: why is everything prefixed by we_?!
 	function f($key){
 		return $this->DB_WE->f('we_' . $key);
 	}
@@ -126,7 +127,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 		}
 		$fields = array_keys(getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' LIMIT 1'));
 		$extraFields = '';
-		//FIXME: change we_wedoc_ to OF_ when columns from table have been removed; the latter is then obsolete as well
+		//FIXME: change we_wedoc_ to OF_ when columns from table have been removed; the latter is then obsolete as well - be care while f uses we_ prefix
 		foreach($fields as $cur){
 			$extraFields.=',of.' . $cur . ' AS we_wedoc_' . $cur;
 		}

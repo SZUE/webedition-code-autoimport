@@ -330,7 +330,7 @@ function doUnload() {
 		// update session
 		$_SESSION['prefs']['siteImportPrefs'] = we_serialize($data);
 		// update DB
-		$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($_SESSION["user"]["ID"]) . ',`key`="siteImportPrefs",`value`="' . $GLOBALS['DB_WE']->escape($_SESSION["prefs"]["siteImportPrefs"]) . '"');
+		$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($_SESSION['user']["ID"]) . ',`key`="siteImportPrefs",`value`="' . $GLOBALS['DB_WE']->escape($_SESSION["prefs"]["siteImportPrefs"]) . '"');
 		return $this->_getHtmlPage('', we_html_element::jsElement('parent.close();'));
 	}
 

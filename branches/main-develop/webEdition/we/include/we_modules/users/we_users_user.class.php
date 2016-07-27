@@ -1410,7 +1410,7 @@ function comparePwd(f1,f2){
 				array(array('style' => 'width:280px;'), we_html_tools::htmlFormElementTable($password, g_l('modules_users', '[password]')))
 			),
 			array(
-				array(array('style' => 'padding-bottom:10px;'), we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION["user"]["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))),
+				array(array('style' => 'padding-bottom:10px;'), we_html_forms::checkboxWithHidden($this->LoginDenied, $this->Name . '_LoginDenied', g_l('modules_users', '[login_denied]'), false, "defaultfont", "top.content.setHot();", ($_SESSION['user']["ID"] == $this->ID || !permissionhandler::hasPerm("ADMINISTRATOR")))),
 				array(['class' => 'defaultfont'], g_l('modules_users', '[lastPing]') . ' ' . ($this->Ping ? : '-'))
 			),
 			array(

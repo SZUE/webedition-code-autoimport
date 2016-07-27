@@ -27,7 +27,7 @@ $cmd2 = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2);
 if($cmd === 'ok'){
 	$wf_text = we_base_request::_(we_base_request::STRING, 'wf_text');
 	$wf_select = we_base_request::_(we_base_request::INT, 'wf_select');
-	if(we_workflow_utility::insertDocInWorkflow($we_doc->ID, $we_doc->Table, $wf_select, $_SESSION["user"]["ID"], $wf_text)){
+	if(we_workflow_utility::insertDocInWorkflow($we_doc->ID, $we_doc->Table, $wf_select, $_SESSION['user']["ID"], $wf_text)){
 		$msg = g_l('modules_workflow', '[' . stripTblPrefix($we_doc->Table) . '][in_workflow_ok]');
 		$msgType = we_message_reporting::WE_MESSAGE_NOTICE;
 		switch($_SESSION['weS']['we_mode']){

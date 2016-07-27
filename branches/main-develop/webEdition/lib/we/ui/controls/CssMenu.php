@@ -47,9 +47,9 @@ class we_ui_controls_CssMenu extends we_ui_abstract_AbstractElement{
 			if(we_base_browserDetect::isGecko()){
 				$_SESSION['weS']['menuentries'] = $this->entries;
 			}
-		} else if(isset($_SESSION['weS']["menuentries"])){
-			$this->entries = $_SESSION['weS']["menuentries"];
-			unset($_SESSION['weS']["menuentries"]);
+		} else if(isset($_SESSION['weS']['menuentries'])){
+			$this->entries = $_SESSION['weS']['menuentries'];
+			unset($_SESSION['weS']['menuentries']);
 		}
 		$this->lcmdFrame = $lcmdFrame;
 	}

@@ -1150,7 +1150,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			$footerTable->setColContent(0, $col++, we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"));
 		}
 
-		if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+		if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"]) && $we_doc->userCanSave()){
 			$footerTable->addCol(2);
 			$footerTable->setColContent(0, $col++, we_html_button::create_button(we_html_button::SAVE, "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 		}
@@ -1158,7 +1158,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		if($publishbutton){
 			$footerTable->addCol(2);
 			$footerTable->setColContent(0, $col++, $publishbutton);
-		} elseif(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+		} elseif(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"]) && $we_doc->userCanSave()){
 
 			if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
 				$footerTable->addCol(2);
@@ -1210,7 +1210,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 						we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"))
 				);
 
-				if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+				if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"]) && $we_doc->userCanSave()){
 					$footerTable->addCol(2);
 					$footerTable->setColContent(0, $col++, we_html_button::create_button(we_html_button::SAVE, "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 					if($showPubl && (!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder)){
@@ -1236,7 +1236,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 						we_html_button::create_button(self::BUTTON_FORWARD, "javascript:pass_workflow();"))
 				);
 
-				if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) && $we_doc->userCanSave()){
+				if(we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"]) && $we_doc->userCanSave()){
 					$footerTable->addCol(2);
 					$footerTable->setColContent(0, $col++, we_html_button::create_button(we_html_button::SAVE, "javascript:_EditorFrame.setEditorPublishWhenSave(false);we_save_document();"));
 
