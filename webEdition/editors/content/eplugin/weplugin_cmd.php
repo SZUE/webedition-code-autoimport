@@ -82,9 +82,9 @@ if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "f
 
 		break;
 	case "setSource":
-		if(isset($_SESSION['weS']['we_data'][$we_transaction][0]["elements"]["data"]["dat"])){
-			$_SESSION['weS']['we_data'][$we_transaction][0]["elements"]["data"]["dat"] = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 2);
-			$_SESSION['weS']['we_data'][$we_transaction][1]["data"]["dat"] = $_SESSION['weS']['we_data'][$we_transaction][0]["elements"]["data"]["dat"];
+		if(isset($_SESSION['weS']['we_data'][$we_transaction][0]['elements']['data']['dat'])){
+			$_SESSION['weS']['we_data'][$we_transaction][0]['elements']['data']['dat'] = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 2);
+			$_SESSION['weS']['we_data'][$we_transaction][1]['data']['dat'] = $_SESSION['weS']['we_data'][$we_transaction][0]['elements']['data']['dat'];
 
 			$out = we_html_element::jsElement(
 					'var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");
@@ -116,7 +116,7 @@ switch(_EditorFrame.getEditorEditPageNr()){
 			$we_doc = we_document::initDoc($we_dt, $we_ContentType);
 
 			$tempName = TEMP_PATH . we_base_file::getUniqueId();
-			move_uploaded_file($_FILES['uploadfile']["tmp_name"], $tempName);
+			move_uploaded_file($_FILES['uploadfile']['tmp_name'], $tempName);
 
 			$we_doc->we_initSessDat($we_dt);
 			if($we_ContentType === we_base_ContentTypes::IMAGE){

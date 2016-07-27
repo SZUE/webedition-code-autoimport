@@ -103,8 +103,8 @@ class we_listview_shopOrderitem extends we_listview_base{
 		}
 
 		$where = ($this->condition ?
-			' WHERE ' . $this->condition . ($this->orderID ? ' AND IntOrderID=' . $this->orderID : '') :
-			($this->orderID ? ' WHERE IntOrderID=' . $this->orderID : '')); 
+				' WHERE ' . $this->condition . ($this->orderID ? ' AND IntOrderID=' . $this->orderID : '') :
+				($this->orderID ? ' WHERE IntOrderID=' . $this->orderID : ''));
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_TABLE . $where, '', $this->DB_WE);
 
@@ -117,8 +117,7 @@ class we_listview_shopOrderitem extends we_listview_base{
 			$strSerial = we_unserialize($this->DB_WE->Record['strSerial']);
 			unset($this->DB_WE->Record['strSerial']);
 
-			$this->DB_WE->Record['articleIsObject'] = isset($strSerial['OF_ID']) ? 1 : 0;
-			if($this->DB_WE->Record['articleIsObject']){//Object based Article
+			if(isset($strSerial['OF_ID'])){//Object based Article
 				foreach($strSerial as $key => &$value){
 					switch($key){
 						case WE_SHOP_ARTICLE_CUSTOM_FIELD:

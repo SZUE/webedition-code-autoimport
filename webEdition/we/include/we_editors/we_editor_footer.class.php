@@ -66,7 +66,7 @@ abstract class we_editor_footer{
 	}
 
 	static function workflow(we_root $we_doc){
-		if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"]) || permissionhandler::hasPerm("PUBLISH")){
+		if(we_workflow_utility::isUserInWorkflow($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"]) || permissionhandler::hasPerm("PUBLISH")){
 
 			$table = ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL ?
 					we_workflow_view::showFooterForNormalMode($we_doc, $GLOBALS['showPubl']) :

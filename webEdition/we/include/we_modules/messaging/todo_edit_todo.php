@@ -30,7 +30,7 @@ if(!$transaction){
 }
 
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
-$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+$messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 $mode = we_base_request::_(we_base_request::STRING, "mode", '');
@@ -85,7 +85,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 			$compose = new we_messaging_format('new');
 			$heading = g_l('modules_messaging', '[new_todo]');
 	}
-	$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+	$compose->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 	?>
 	<form action="<?= WE_MESSAGING_MODULE_DIR; ?>todo_send_ntodo.php" name="compose_form" method="post">
 		<?php
@@ -131,7 +131,7 @@ echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
 		<td class="defaultfont lowContrast">
 			<a href="javascript:selectRecipient()">' . g_l('modules_messaging', '[recipient]') . ':</a></td>
 		<td>
-			' . we_html_tools::htmlTextInput('mn_recipients', 40, ($mode === 'forward' ? '' : $_SESSION["user"]["Username"])) . '</td>
+			' . we_html_tools::htmlTextInput('mn_recipients', 40, ($mode === 'forward' ? '' : $_SESSION['user']["Username"])) . '</td>
 	</tr>
 	<tr>
 		<td class="defaultfont lowContrast">

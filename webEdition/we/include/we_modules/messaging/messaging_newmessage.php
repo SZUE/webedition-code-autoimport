@@ -30,7 +30,7 @@ if(!$transaction){
 }
 
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
-$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+$messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
 
@@ -85,7 +85,7 @@ echo we_html_tools::getHtmlTop('Messaging System - ' . g_l('modules_messaging', 
 		$heading = g_l('modules_messaging', '[new_message]');
 	}
 
-	$compose->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+	$compose->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 	?>
   <form action="<?= WE_MESSAGING_MODULE_DIR; ?>messaging_send_nm.php" name="compose_form" method="post">
 		<?php

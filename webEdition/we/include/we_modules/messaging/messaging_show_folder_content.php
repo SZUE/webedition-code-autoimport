@@ -42,7 +42,7 @@ echo we_html_element::jsElement('
 <body style="margin:5px 7px;">
 	<?php
 	$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
-	$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+	$messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 	$messaging->init($_SESSION['weS']['we_data'][$transaction]);
 	?><table style="width:99%" class="default"><?php
 		$passed_dls = [];

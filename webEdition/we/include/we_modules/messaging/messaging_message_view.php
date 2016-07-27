@@ -30,7 +30,7 @@ if(!$transaction){
 }
 
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
-$messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+$messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 $messaging->get_mv_data(we_base_request::_(we_base_request::INT, 'id'));
 $messaging->saveInSession($_SESSION['weS']['we_data'][$transaction]);
@@ -40,7 +40,7 @@ if(!($messaging->selected_message)){
 }
 
 $format = new we_messaging_format('view', $messaging->selected_message);
-$format->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+$format->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 
 we_html_tools::protect();
 

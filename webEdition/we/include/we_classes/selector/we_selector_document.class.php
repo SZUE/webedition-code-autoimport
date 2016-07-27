@@ -505,7 +505,7 @@ function weWriteBreadCrumb(BreadCrumb){
 			}
 
 			if(isset($metainfos['Keywords'])){
-				$previewFields["metainfos"]["data"][] = array(
+				$previewFields['metainfos']['data'][] = array(
 					"caption" => g_l('weClass', '[Keywords]'),
 					"content" => $metainfos['Keywords']
 				);
@@ -516,19 +516,19 @@ function weWriteBreadCrumb(BreadCrumb){
 					$name = (isset($metainfos['name']) ? $metainfos['name'] : '');
 					$alt = (isset($metainfos['alt']) ? $metainfos['alt'] : '');
 					if($Title !== ""){
-						$previewFields["attributes"]["data"][] = array(
+						$previewFields['attributes']['data'][] = array(
 							"caption" => g_l('weClass', '[Title]'),
 							"content" => oldHtmlspecialchars($Title)
 						);
 					}
 					if($name){
-						$previewFields["attributes"]["data"][] = array(
+						$previewFields['attributes']['data'][] = array(
 							"caption" => g_l('weClass', '[name]'),
 							"content" => $name
 						);
 					}
 					if($alt){
-						$previewFields["attributes"]["data"][] = array(
+						$previewFields['attributes']['data'][] = array(
 							"caption" => g_l('weClass', '[alt]'),
 							"content" => oldHtmlspecialchars($alt)
 						);

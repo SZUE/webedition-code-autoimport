@@ -81,7 +81,7 @@ $canWeSave = $we_doc->userCanSave();
 
 if($canWeSave &&
 	(($ctrlElem && $ctrlElem['hide']) ||
-	(defined('WORKFLOW_TABLE') && inWorkflow($we_doc) && (!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION["user"]["ID"])))
+	(defined('WORKFLOW_TABLE') && inWorkflow($we_doc) && (!we_workflow_utility::canUserEditDoc($we_doc->ID, $we_doc->Table, $_SESSION['user']["ID"])))
 	)){
 	$canWeSave = false;
 }

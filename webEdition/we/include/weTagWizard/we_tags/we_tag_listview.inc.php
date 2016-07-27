@@ -124,7 +124,7 @@ $id = new weTagData_textAttribute('id', false, '');
 $predefinedSQL = new weTagData_textAttribute('predefinedSQL', false, '');
 $numorder = new weTagData_selectAttribute('numorder', weTagData_selectAttribute::getTrueFalse(), false, '');
 $locales = [];
-foreach($GLOBALS["weFrontendLanguages"] as $lv){
+foreach($GLOBALS['weFrontendLanguages'] as $lv){
 	$locales[] = new weTagDataOption($lv);
 }
 $locales[] = new weTagDataOption('self');

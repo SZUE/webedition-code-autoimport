@@ -367,7 +367,7 @@ return '"' . $v . '" : true';
 	session:{
 		seemode:<?= intval($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE); ?>,
 		seeMode_edit_include:<?= (!empty($SEEM_edit_include)) ? 'true' : 'false'; ?>, // in edit_include mode of seeMode
-		userID:<?= $_SESSION["user"]["ID"]; ?>,
+		userID:<?= $_SESSION['user']["ID"]; ?>,
 		//permissions set for the user
 		permissions:{
 <?php

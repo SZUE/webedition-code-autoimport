@@ -73,7 +73,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 		$folder->Filename = $txt;
 		$folder->Published = time();
 		$folder->Path = $folder->getPath();
-		$folder->ModifierID = isset($_SESSION["user"]["ID"]) ? $_SESSION["user"]["ID"] : "";
+		$folder->ModifierID = isset($_SESSION['user']["ID"]) ? $_SESSION['user']["ID"] : "";
 		if(!($msg = $folder->checkFieldsOnSave())){
 			$folder->we_save();
 		}

@@ -829,18 +829,12 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 	protected function i_setElementsFromHTTP(){
 		if(!permissionhandler::hasPerm('NEW_COLLECTION')){
-			unset($_REQUEST['we_' . $this->Name . '_remTable']);
-			unset($_REQUEST['we_' . $this->Name . '_remCT']);
-			unset($_REQUEST['we_' . $this->Name . '_remClass']);
-			unset($_REQUEST['we_' . $this->Name . '_IsDuplicates']);
-			unset($_REQUEST['we_' . $this->Name . '_DefaultDir']);
-			unset($_REQUEST['we_' . $this->Name . '_DefaultPath']);
+			unset($_REQUEST['we_' . $this->Name . '_remTable'], $_REQUEST['we_' . $this->Name . '_remCT'], $_REQUEST['we_' . $this->Name . '_remClass'], $_REQUEST['we_' . $this->Name . '_IsDuplicates'], $_REQUEST['we_' . $this->Name . '_DefaultDir'], $_REQUEST['we_' . $this->Name . '_DefaultPath']);
 		}
 
 		if(!permissionhandler::hasPerm('MOVE_COLLECTION')){
 			//unset($_REQUEST['we_' . $this->Name . '_Filename']);
-			unset($_REQUEST['we_' . $this->Name . '_ParentID']);
-			unset($_REQUEST['we_' . $this->Name . '_ParentPath']);
+			unset($_REQUEST['we_' . $this->Name . '_ParentID'], $_REQUEST['we_' . $this->Name . '_ParentPath']);
 		}
 
 		parent::i_setElementsFromHTTP();

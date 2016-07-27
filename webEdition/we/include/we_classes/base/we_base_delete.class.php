@@ -57,7 +57,7 @@ abstract class we_base_delete{
 				return !(we_object::isUsedByObjectFile($id));
 			case TEMPLATES_TABLE:
 				$arr = we_rebuild_base::getTemplAndDocIDsOfTemplate($id, false, false, true);
-				return (empty($arr["documentIDs"]));
+				return (empty($arr['documentIDs']));
 		}
 		return true;
 	}

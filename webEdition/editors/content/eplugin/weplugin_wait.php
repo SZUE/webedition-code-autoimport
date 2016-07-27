@@ -32,9 +32,9 @@ var g_l={
 no_java:"' . g_l('eplugin', '[no_java]') . '"
 };
 var callBack="' . $callback . '";') .
-	we_html_element::jsScript(JS_DIR . 'weplugin.js'), we_html_element::htmlBody(["style" => "background-color:#ffffff;margin:20px;", "onload" => "initPlugin();"], we_html_element::htmlForm(["name" => "we_form"], we_html_element::htmlCenter(
+	we_html_element::jsScript(JS_DIR . 'weplugin.js'), we_html_element::htmlBody(['style' => 'background-color:#ffffff;margin:20px;', 'onload' => 'initPlugin();'], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlCenter(
 				'<i class="fa fa-2x fa-spinner fa-pulse"></i>' .
-				we_html_element::htmlDiv(["class" => "header_small",'style'=>'margin-top:4ex;'], g_l('eplugin', '[initialisation]'))
+				we_html_element::htmlDiv(['class' => 'header_small','style'=>'margin-top:4ex;'], g_l('eplugin', '[initialisation]'))
 			)
 		)
 	)

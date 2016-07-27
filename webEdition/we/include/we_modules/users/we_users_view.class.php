@@ -48,7 +48,7 @@ WE().consts.g_l.users.view={
 WE().consts.dirs.WE_USERS_MODULE_DIR="' . WE_USERS_MODULE_DIR . '";
 
 parent.document.title = "' . $title . '";
-var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION["user"]["ID"])) : 0) . ';
+var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])) : 0) . ';
 ') .
 			we_html_element::jsScript(JS_DIR . 'we_modules/users/users_view.js');
 	}
@@ -348,12 +348,12 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		if(!empty($_SESSION["user_session_data"])){
 			$user_object = $_SESSION["user_session_data"];
 
-			if($user_object->ID == $_SESSION["user"]["ID"]){
+			if($user_object->ID == $_SESSION['user']["ID"]){
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[delete_user_same]'), we_message_reporting::WE_MESSAGE_ERROR));
 				return;
 			}
 
-			if(we_users_util::isUserInGroup($_SESSION["user"]["ID"], $user_object->ID)){
+			if(we_users_util::isUserInGroup($_SESSION['user']["ID"], $user_object->ID)){
 				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_users', '[delete_group_user_same]'), we_message_reporting::WE_MESSAGE_ERROR));
 				return;
 			}
@@ -427,7 +427,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	private function check_user_display(){
 		if(($uid = we_base_request::_(we_base_request::INT, 'uid'))){
-			$mpid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION["user"]["ID"]), '', $this->db);
+			$mpid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']["ID"]), '', $this->db);
 			$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $uid, '', $this->db);
 
 			$search = true;

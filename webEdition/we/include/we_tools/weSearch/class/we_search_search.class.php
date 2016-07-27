@@ -151,7 +151,7 @@ class we_search_search extends we_search_base{
 					$whereQuery = $where;
 
 					//query for restrict users for FILE_TABLE, VERSIONS_TABLE AND OBJECT_FILES_TABLE
-					$restrictUserQuery = '(WETABLE.RestrictOwners IN(0,' . intval($_SESSION["user"]["ID"]) . ') OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Owners))';
+					$restrictUserQuery = '(WETABLE.RestrictOwners IN(0,' . intval($_SESSION['user']["ID"]) . ') OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',WETABLE.Owners))';
 
 					switch($table){
 						case FILE_TABLE:
@@ -163,14 +163,14 @@ class we_search_search extends we_search_base{
 							break;
 
 						case (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE'):
-							$whereQuery[] = '(o.RestrictUsers=0 OR o.CreatorID=' . intval($_SESSION["user"]["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',o.Users)) ';
+							$whereQuery[] = '(o.RestrictUsers=0 OR o.CreatorID=' . intval($_SESSION['user']["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',o.Users)) ';
 							break;
 						case VERSIONS_TABLE:
 							$_SESSION['weS']['weSearch']['onlyObjects'] = true;
 							$_SESSION['weS']['weSearch']['onlyDocs'] = true;
 							$_SESSION['weS']['weSearch']['ObjectsAndDocs'] = true;
-							$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION["user"]["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Owners))';
-							$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION["user"]["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION["user"]["ID"]) . ',WETABLE.Owners))';
+							$_SESSION['weS']['weSearch']['onlyObjectsRestrUsersWhere'] = ' AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',WETABLE.Owners))';
+							$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] = ' AND (WETABLE.RestrictOwners=0 OR WETABLE.CreatorID=' . intval($_SESSION['user']["ID"]) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',WETABLE.Owners))';
 							if(!empty($workspacesTblFile)){
 								$_SESSION['weS']['weSearch']['onlyDocsRestrUsersWhere'] .= (implode(' AND ', $where) . ' AND ' . self::ofFolderAndChildsOnly($workspacesTblFile[0], $table));
 							}

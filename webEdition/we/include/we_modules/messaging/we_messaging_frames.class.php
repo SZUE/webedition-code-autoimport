@@ -64,10 +64,10 @@ class we_messaging_frames extends we_modules_frame{
 		$this->transaction = $this->weTransaction;
 
 		$this->messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$this->transaction]);
-		$this->messaging->set_login_data($_SESSION["user"]["ID"], $_SESSION["user"]["Username"]);
+		$this->messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 
 		if(!$this->messaging->check_folders()){
-			if(!we_messaging_messaging::createFolders($_SESSION["user"]["ID"])){
+			if(!we_messaging_messaging::createFolders($_SESSION['user']["ID"])){
 				$extraHead .= we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[cant_create_folders]'), we_message_reporting::WE_MESSAGE_ERROR));
 			}
 		}

@@ -30,7 +30,7 @@ $translate = we_core_Local::addTranslation('default.xml', 'toolfactory');
 $perm_group_name = "toolfactory";
 $perm_group_title[$perm_group_name] = $isUTF8 ? $translate->_('toolfactory') : utf8_decode($translate->_('toolfactory'));
 
-$perm_values[$perm_group_name] = ["USE_APP_TOOLFACTORY", "NEW_APP_TOOLFACTORY", "DELETE_APP_TOOLFACTORY", "EDIT_APP_TOOLFACTORY", "PUBLISH_APP_TOOLFACTORY", "GENTOC_APP_TOOLFACTORY"];
+$perm_values[$perm_group_name] = ['USE_APP_TOOLFACTORY', 'NEW_APP_TOOLFACTORY', 'DELETE_APP_TOOLFACTORY', 'EDIT_APP_TOOLFACTORY', 'PUBLISH_APP_TOOLFACTORY', 'GENTOC_APP_TOOLFACTORY'];
 
 $perm_titles[$perm_group_name] = [];
 
@@ -47,5 +47,5 @@ foreach($translated as $i => $value){
 	$perm_titles[$perm_group_name][$perm_values[$perm_group_name][$i]] = $isUTF8 ? $value : utf8_decode($value);
 }
 
-$perm_defaults[$perm_group_name] = ["USE_APP_TOOLFACTORY" => 1, "NEW_APP_TOOLFACTORY" => 1, "DELETE_APP_TOOLFACTORY" => 0, "EDIT_APP_TOOLFACTORY" => 0, "PUBLISH_APP_TOOLFACTORY" => 0, "GENTOC_APP_TOOLFACTORY" => 0
+$perm_defaults[$perm_group_name] = ['USE_APP_TOOLFACTORY' => 1, 'NEW_APP_TOOLFACTORY' => 1, 'DELETE_APP_TOOLFACTORY' => 0, 'EDIT_APP_TOOLFACTORY' => 0, 'PUBLISH_APP_TOOLFACTORY' => 0, 'GENTOC_APP_TOOLFACTORY' => 0
 ];

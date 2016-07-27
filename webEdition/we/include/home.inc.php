@@ -30,7 +30,7 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::cssLink(CSS_DIR . 'home.css');
 
 if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
-	$iLayoutCols = isset($_SESSION["prefs"]["cockpit_amount_columns"]) ? $_SESSION["prefs"]["cockpit_amount_columns"] : 3;
+	$iLayoutCols = empty($_SESSION['prefs']['cockpit_amount_columns']) ? 3 : $_SESSION['prefs']['cockpit_amount_columns'];
 	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reset_home') ? true : false;
 	if(!$bResetProps && $iLayoutCols){
 		$aDat = we_unserialize(we_base_preferences::getUserPref('cockpit_dat'))? : $aCfgProps;
