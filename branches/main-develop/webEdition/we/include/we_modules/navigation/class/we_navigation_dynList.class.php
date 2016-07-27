@@ -187,7 +187,7 @@ abstract class we_navigation_dynList{
 
 		$values = array_merge(makeArrayFromCSV($obj->Workspaces), makeArrayFromCSV($obj->ExtraWorkspaces));
 
-		$all = makeArrayFromCSV($obj->getPossibleWorkspaces(false));
+		$all = $obj->getPossibleWorkspaces(false);
 		$ret = [];
 		$db = new DB_WE();
 		foreach($values as $k => $id){

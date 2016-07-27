@@ -276,25 +276,6 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asA
 	return $asArray ? $foo : implode(',', $foo);
 }
 
-/**
- *
- * @param type $csv
- * @param type $firstEntry
- * @param we_database_base $db
- * @return type
- * @deprecated sicne 6.4.3
- */
-function getHashArrayFromCSV($csv, $firstEntry, we_database_base $db){
-	if(!$csv){
-		return [];
-	}
-	$IDArr = makeArrayFromCSV($csv);
-	$out = ($firstEntry ? [0 => $firstEntry] : []) +
-		id_to_path($IDArr, FILE_TABLE, $db, true);
-
-	return $out;
-}
-
 function getPathsFromTable($table, we_database_base $db, $type = we_base_constants::FILE_ONLY, $wsIDs = '', $order = 'Path', $limitCSV = '', $first = ''){
 	$limitCSV = trim($limitCSV, ',');
 	$query = [];
@@ -1079,7 +1060,7 @@ function getWELangs(){
 		'es' => 'Spanish',
 		'pl' => 'Polish',
 		'fr' => 'French'
-		];
+	];
 }
 
 function getWECountries(){
@@ -1092,7 +1073,7 @@ function getWECountries(){
 		'ES' => 'es',
 		'PL' => 'pl',
 		'FR' => 'fr'
-		];
+	];
 }
 
 function getMysqlVer($nodots = true){
