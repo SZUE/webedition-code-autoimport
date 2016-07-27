@@ -126,6 +126,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 		}
 		$fields = array_keys(getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' LIMIT 1'));
 		$extraFields = '';
+		//FIXME: change we_wedoc_ to OF_ when columns from table have been removed; the latter is then obsolete as well
 		foreach($fields as $cur){
 			$extraFields.=',of.' . $cur . ' AS we_wedoc_' . $cur;
 		}
