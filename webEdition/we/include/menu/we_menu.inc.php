@@ -652,15 +652,6 @@ $we_menu = array(
 		'hide' => $seeMode
 	),
 	array(
-		'text' => g_l('javaMenu_global', '[onlinehelp]') . '&hellip;',
-		'parent' => $seeMode ? 'help' : 'online-help',
-		'cmd' => 'help',
-	),
-	array(// separator
-		'parent' => 'online-help',
-		'hide' => $seeMode
-	),
-	array(
 		'text' => g_l('javaMenu_global', '[onlinehelp_documentation]') . '&hellip;',
 		'parent' => 'online-help',
 		'cmd' => 'help_documentation',
