@@ -271,7 +271,7 @@ if($ok){
 		$type = we_base_link::TYPE_MAIL;
 	} else {
 		$link = (we_unserialize($we_doc->getElement($name))? :
-				array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
+						array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
 		$href = isset($link['href']) ? $link['href'] : '';
 		if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
@@ -369,12 +369,14 @@ if($ok){
 			opener.setScrollTo();
 			opener.we_cmd("change_linklist", "<?= $name; ?>", "");
 			top.close();
+			top.close();
 		<?php
 	} else if(!empty($link)){
 		$_SESSION['weS']['WE_LINK'] = array_filter($link);
 		?>
 			opener.setScrollTo();
 			opener.we_cmd("change_link", "<?= $name; ?>", "");
+			top.close();
 			top.close();
 		<?php
 	}
