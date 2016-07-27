@@ -937,7 +937,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					$imgId = intval($GLOBALS[$key][$formname]->getElement($imgName));
 
 					// move document from upload location to tmp dir
-					$_SESSION[$imgDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();t_e('b');
+					$_SESSION[$imgDataId]['serverPath'] = TEMP_PATH . we_base_file::getUniqueId();
 					move_uploaded_file($_FILES['we_ui_' . $formname]['tmp_name'][$imgName], $_SESSION[$imgDataId]['serverPath']);
 
 					$we_size = we_thumbnail::getimagesize($_SESSION[$imgDataId]['serverPath']);
