@@ -30,6 +30,10 @@ container.prototype.openClose = function (id) {
 	}
 	var eintragsIndex = treeData.indexOfEntry(id);
 
+	if (eintragsIndex === -1) {
+		return;
+	}
+
 	if (treeData[eintragsIndex].typ === "group") {
 		sort = top.content.document.we_form_treeheader.sort.value;
 	}

@@ -221,7 +221,7 @@ if(top.content.treeData){
 				}
 
 				$js = ($newone ?
-						'top.content.treeData.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:0,order:' . $this->Model->Ordn . '});' :
+						'top.content.treeData.makeNewEntry({id:\'' . $this->Model->ID . '\',parentid:\'' . $this->Model->ParentID . '\',text:\'' . addslashes($this->Model->Text) . '\',open:0,contenttype:\'' . ($this->Model->IsFolder ? 'folder' : 'we/navigation') . '\',table:\'' . NAVIGATION_TABLE . '\',published:1,order:' . $this->Model->Ordn . '});' :
 						'top.content.treeData.updateEntry({id:' . $this->Model->ID . ',text:\'' . addslashes($this->Model->Text) . '\',parentid:' . $this->Model->ParentID . ',order:\'' . $this->Model->Depended . '\',tooltip:' . $this->Model->ID . '});');
 
 				if($this->Model->IsFolder && $this->Model->Selection == we_navigation_navigation::SELECTION_DYNAMIC){

@@ -222,7 +222,7 @@ container.prototype = {
 		return nf;
 	},
 	makeNewEntry: function (attribs) {
-		if (window.table && this.table != window.table) {
+		if (window.table && this.table !== window.table) {
 			return;
 		}
 		var pos = this.indexOfEntry(attribs.parentid);
@@ -231,7 +231,7 @@ container.prototype = {
 			attribs.tooltip = attribs.id;
 			attribs.disabled = 0;
 			attribs.selected = 0;
-			if (attribs.typ == "item") {
+			if (attribs.typ === "item") {
 				attribs.published = 0;
 			}
 

@@ -321,7 +321,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		}
 		$tree_code = ($id ?
 				'top.content.treeData.updateEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});' :
-				'top.content.treeData.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? "we/userGroup" : (($user_object->Type == we_users_user::TYPE_ALIAS) ? "we/alias" : "we/user")) . '",table:"' . USER_TABLE . '",class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . ($user_object->LoginDenied ? 'red' : '') . '"});') .
+				'top.content.treeData.makeNewEntry({id:' . $user_object->ID . ',parentid:' . $user_object->ParentID . ',text:"' . $user_object->Text . '",open:false,contenttype:"' . (($user_object->Type == we_users_user::TYPE_USER_GROUP) ? "we/userGroup" : (($user_object->Type == we_users_user::TYPE_ALIAS) ? "we/alias" : "we/user")) . '",table:"' . USER_TABLE . '",published:' . ($user_object->LoginDenied ? 0 : 1) . ',class:"' . ($user_object->checkPermission('ADMINISTRATOR') ? 'bold ' : '') . '"});') .
 			'top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $user_object->Path . '";';
 
 		switch($user_object->Type){
