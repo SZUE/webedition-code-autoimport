@@ -86,7 +86,11 @@ class we_sidebar_frames{
 		include($_SERVER['DOCUMENT_ROOT'] . $file);
 
 		$SrcCode = ob_get_clean();
-
+		$cnt = 0;
+		$SrcCode = str_replace('<head>', '<head><script src="/webEdition/js/global.js"></script>', $SrcCode, $cnt);
+		if(!$cnt){
+			$SrcCode = '<script src="/webEdition/js/global.js"></script>' . $SrcCode;
+		}
 		echo we_SEEM::parseDocument($SrcCode);
 
 		exit();
