@@ -173,11 +173,6 @@ function setDir(id) {
 	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, id));
 }
 
-function drawNewFolder() {
-	unselectAllFiles();
-	top.makeNewFolder = true;
-	top.writeBody(top.fsbody.document.body);
-}
 function drawNewCat() {
 	unselectAllFiles();
 	top.makeNewCat = true;
@@ -225,10 +220,7 @@ function writeBody(d) {
 					(we_editCatID ?
 									'<input type="hidden" name="what" value="' + WE().consts.selectors.DO_RENAME_ENTRY + '" />' +
 									'<input type="hidden" name="we_editCatID" value="' + top.we_editCatID + '" />' :
-									(makeNewFolder ?
-													'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATEFOLDER + '" />' :
-													'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATE_CAT + '" />'
-													)
+									'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATE_CAT + '" />'
 									) +
 					'<input type="hidden" name="order" value="' + top.order + '" />' +
 					'<input type="hidden" name="rootDirID" value="' + options.rootDirID + '" />' +
@@ -244,7 +236,7 @@ function writeBody(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr id="line_' + entries[i].ID + '" style="' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewFolder || makeNewCat) ? '' : onclick) + /*(entries[i].isFolder ? */ondblclick /*: '')*/ + ' >' +
+		body += '<tr id="line_' + entries[i].ID + '" style="' + ((we_editCatID != entries[i].ID) ? '' : '') + '"' + ((we_editCatID || makeNewCat) ? '' : onclick) + /*(entries[i].isFolder ? */ondblclick /*: '')*/ + ' >' +
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType) + '</td>' +
 						((we_editCatID !== undefined && we_editCatID === entries[i].ID) ?
 										'<td class="selector"><input type="hidden" name="we_EntryText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_EntryText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
@@ -253,7 +245,7 @@ function writeBody(d) {
 						'</td></tr>';
 	}
 	d.innerHTML = body + '</table></form>';
-	if (makeNewFolder || makeNewCat || we_editCatID) {
+	if (makeNewCat || we_editCatID) {
 		top.fsbody.document.we_form.we_EntryText_tmp.focus();
 		top.fsbody.document.we_form.we_EntryText_tmp.select();
 	}
@@ -270,14 +262,14 @@ function queryString(what, id, o, we_editCatID) {
 }
 
 function weonclick(e) {
-	if (top.makeNewFolder || top.makeNewCat || top.we_editCatID) {
+	if (top.makeNewCat || top.we_editCatID) {
 		if (!inputklick) {
 			if (parent.options.needIEEscape) {
 				document.we_form.we_EntryText.value = escape(top.fsbody.document.we_form.we_EntryText_tmp.value);
 			} else {
 				document.we_form.we_EntryText.value = top.fsbody.document.we_form.we_EntryText_tmp.value;
 			}
-			top.makeNewFolder = top.makeNewCat = top.we_editCatID = false;
+			top.makeNewCat = top.we_editCatID = false;
 			document.we_form.submit();
 		} else {
 			inputklick = false;

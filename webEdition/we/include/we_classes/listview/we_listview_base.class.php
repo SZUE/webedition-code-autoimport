@@ -525,8 +525,8 @@ abstract class we_listview_base{
 
 		if(!$this->calendar_struct['datefield'] || $this->calendar_struct['datefield'] === '###Published###'){
 			$this->calendar_struct['datefield'] = '###Published###';
-			$calendar_select = ',' . FILE_TABLE . '.Published AS Calendar ';
-			$calendar_where = ' AND (' . FILE_TABLE . '.Published>=' . $start_date . ' AND ' . FILE_TABLE . '.Published<=' . $end_date . ') ';
+			$calendar_select = ',f.Published AS Calendar ';
+			$calendar_where = ' AND (f.Published>=' . $start_date . ' AND f.Published<=' . $end_date . ') ';
 		} else {
 			$field = ($matrix && in_array($this->calendar_struct['datefield'], array_keys($matrix))) ?
 				$matrix[$this->calendar_struct['datefield']]['table'] . '.' . $matrix[$this->calendar_struct['datefield']]['type'] . '_' . $this->calendar_struct['datefield'] :

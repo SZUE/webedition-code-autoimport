@@ -299,15 +299,6 @@ class we_folder extends we_root{
 		// Change language of published documents, objects
 		$DB_WE->query('UPDATE ' . $DB_WE->escape($this->Table) . ' SET Language="' . $DB_WE->escape($this->Language) . '" WHERE Path LIKE "' . $DB_WE->escape($this->Path) . '/%" AND ((Published=0 AND ContentType="folder") OR (Published!=0 AND ContentType IN ("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::HTML . '","' . we_base_ContentTypes::OBJECT_FILE . '")))');
 
-
-		// Sprache auch bei den einzelnen Objekten aendern
-		if($this->Table == OBJECT_FILES_TABLE){
-			// Klasse feststellen
-			list(, $ClassPath) = explode('/', $this->Path);
-			$cid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="/' . $DB_WE->escape($ClassPath) . '"', '', $DB_WE);
-			$DB_WE->query('UPDATE ' . $DB_WE->escape(OBJECT_X_TABLE . $cid) . ' SET OF_Language="' . $DB_WE->escape($this->Language) . '" WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ');
-		}
-
 		return true;
 	}
 
@@ -333,15 +324,6 @@ class we_folder extends we_root{
 					' WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1')){
 				return false;
 			}
-		}
-
-		// TriggerID auch bei den einzelnen Objekten aendern
-		if($this->Table == OBJECT_FILES_TABLE){
-			// Klasse feststellen
-			list(, $ClassPath) = explode('/', $this->Path);
-			$cid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="/' . $DB_WE->escape($ClassPath) . '"', '', $DB_WE);
-
-			$DB_WE->query('UPDATE ' . $DB_WE->escape(OBJECT_X_TABLE . $cid) . ' SET OF_TriggerID=' . intval($this->TriggerID) . ' WHERE OF_Path LIKE "' . $DB_WE->escape($this->Path) . '/%" ');
 		}
 
 		return true;

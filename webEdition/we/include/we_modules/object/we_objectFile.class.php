@@ -1584,10 +1584,8 @@ class we_objectFile extends we_document{
 	}
 
 	function add_workspace(array $ids){
-		//$ExtraWorkspaces = makeArrayFromCSV($this->ExtraWorkspaces);
 		$workspaces = makeArrayFromCSV($this->Workspaces);
 		$templates = makeArrayFromCSV($this->Templates);
-		//$extraTemplates = makeArrayFromCSV($this->ExtraTemplates);
 
 		foreach($ids as $id){
 			if(!in_array($id, $workspaces)){
@@ -2059,23 +2057,11 @@ class we_objectFile extends we_document{
 			$this->Workspaces = implode(',', $newWs);
 		}
 		if($this->ExtraWorkspaces){
-			$ws = makeArrayFromCSV($this->ExtraWorkspaces);
-			$newWs = [];
-			foreach($ws as $wsID){
-				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
-					$newWs[] = $wsID;
-				}
-			}
+			$newWs = $this->DB_WE->getAllq('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN(' . trim($this->ExtraWorkspaces, ',') . ') AND IsFolder=1', true);
 			$this->ExtraWorkspaces = implode(',', $newWs, true);
 		}
 		if($this->ExtraWorkspacesSelected){
-			$ws = makeArrayFromCSV($this->ExtraWorkspacesSelected);
-			$newWs = [];
-			foreach($ws as $wsID){
-				if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($wsID) . ' AND IsFolder=1', '', $this->DB_WE)){
-					$newWs[] = $wsID;
-				}
-			}
+			$newWs = $this->DB_WE->getAllq('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN(' . trim($this->ExtraWorkspacesSelected, ',') . ') AND IsFolder=1', true);
 			$this->ExtraWorkspacesSelected = implode(',', $newWs);
 		}
 	}

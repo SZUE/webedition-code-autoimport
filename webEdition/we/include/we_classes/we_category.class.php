@@ -51,11 +51,11 @@ class we_category extends we_base_model{
 		return $ret;
 	}
 
-	static function getCatSQLTail($catCSV = '', $table = FILE_TABLE, $catOr = false, we_database_base $db = null, $fieldName = 'Category', $categoryids = ''){
+	static function getCatSQLTail($catCSV, $alias, $catOr = false, we_database_base $db = null, $fieldName = 'Category', $categoryids = ''){
 		$db = $db ? : new DB_WE();
 		$catCSV = trim($catCSV, ' ,');
 		$pre = ' FIND_IN_SET("';
-		$post = '",' . $table . '.' . $fieldName . ') ';
+		$post = '",' . $alias . '.' . $fieldName . ') ';
 
 		$idarray = [];
 		$folders = [];
