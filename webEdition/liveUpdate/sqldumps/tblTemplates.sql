@@ -25,7 +25,7 @@ CREATE TABLE ###TBLPREFIX###tblTemplates (
   CacheLifeTime int unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),
 	KEY Path(Path(250)),
-  UNIQUE KEY ParentID (ParentID,Filename),
+  UNIQUE KEY ParentID (ParentID,Filename,Extension),
   KEY MasterTemplateID (MasterTemplateID),
   KEY IncludedTemplates (IncludedTemplates)
 ) ENGINE=MyISAM;
