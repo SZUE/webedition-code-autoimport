@@ -73,15 +73,14 @@ function we_tag_var(array $attribs){
 				if(!we_shop_category::isCategoryMode()){
 					$vatId = $doc->getElement(WE_SHOP_VAT_FIELD_NAME);
 					$return = we_shop_vats::getVatRateForSite($vatId);
-					return $prepareSQL ? $GLOBALS['DB_WE']->escape($return) : $return;
 				} else {
 					$shopVatAttribs = $attribs;
 					$shopVatAttribs['shopcategoryid'] = $doc->getElement(WE_SHOP_CATEGORY_FIELD_NAME);
 					$shopVatAttribs['wedoccategories'] = $doc->Category;
 					unset($shopVatAttribs['type']);
 					$return = we_tag('shopVat', $shopVatAttribs);
-					return $prepareSQL ? $GLOBALS['DB_WE']->escape($return) : $return;
 				}
+				return $prepareSQL ? $GLOBALS['DB_WE']->escape($return) : $return;
 			}
 			return '';
 		case 'shopCategory' :
