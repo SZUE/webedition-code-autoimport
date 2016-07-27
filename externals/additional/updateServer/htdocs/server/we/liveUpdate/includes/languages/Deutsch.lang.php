@@ -50,6 +50,7 @@ $lang['upgrade']['notepad_text'] = '';
 
 $lang['update']['headline'] = 'Update';
 $lang['update']['nightly'] = 'nightly Build';
+$lang['update']['nightly-build'] = 'nightly Build';
 $lang['update']['alpha'] = 'Alpha';
 $lang['update']['beta'] = 'Beta';
 $lang['update']['rc'] = 'RC';

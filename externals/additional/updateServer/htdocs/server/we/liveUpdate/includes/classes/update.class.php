@@ -240,23 +240,22 @@ class update extends updateBase{
 		return static::getFormattedVersionString(0, $showBranch, $showBranchIfTrunk, $versionArray);
 	}
 
-	static function getFormattedVersionString($versionnumber, $showBranch = false, $showBranchIfTrunk = false, $versionArray = array()){
+	static function getFormattedVersionString($versionnumber, $showBranch = false, $showBranchIfTrunk = false, array $versionArray = array()){
 		if($versionnumber != 0){
 			$versionArray = $GLOBALS['DB_WE']->getHash('SELECT version,versname,svnrevision,type,typeversion,branch FROM ' . VERSION_TABLE . ' WHERE version = ' . $versionnumber);
 		}
 
-		if(count($versionArray) > 0){
-			$version = updateUtilBase::number2version($versionArray['version']);
-			$versionname = $versionArray['versname'] ? $versionArray['versname'] : $version;
-			$svnrevision = $versionArray['svnrevision'];
-			$type = $versionArray['type'] ? ' ' . $GLOBALS['lang']['update'][$versionArray['type']] : '';
-			$typeversion = $type && $versionArray['typeversion'] != 0 ? ' ' . $versionArray['typeversion'] : '';
-			$branch = !$showBranch ? '' : ((!$showBranchIfTrunk && $versionArray['branch'] == 'trunk') ? '' : '|' . $versionArray['branch']);
-
-			return $versionname . ' (' . $version . $type . $typeversion . ', SVN-Revision: ' . $svnrevision . $branch . ')';
+		if(empty($versionArray)){
+			return '';
 		}
+		$version = updateUtilBase::number2version($versionArray['version']);
+		$versionname = $versionArray['versname'] ? $versionArray['versname'] : $version;
+		$svnrevision = $versionArray['svnrevision'];
+		$type = $versionArray['type'] ? ' ' . $GLOBALS['lang']['update'][$versionArray['type']] : '';
+		$typeversion = $type && $versionArray['typeversion'] != 0 ? ' ' . $versionArray['typeversion'] : '';
+		$branch = !$showBranch ? '' : ((!$showBranchIfTrunk && $versionArray['branch'] == 'trunk') ? '' : '|' . $versionArray['branch']);
 
-		return '';
+		return $versionname . ' (' . $version . $type . $typeversion . ', SVN-Revision: ' . $svnrevision . $branch . ')';
 	}
 
 	/**

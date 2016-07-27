@@ -1,5 +1,4 @@
 <?php
-
 $lang['license']['undefinedError'] = 'Undefined Error';
 
 $lang['upgrade']['headline'] = 'Upgrade to webEdition 6';
@@ -50,6 +49,7 @@ $lang['upgrade']['notepad_text'] = '';
 
 $lang['update']['headline'] = 'Update';
 $lang['update']['nightly'] = 'nightly build';
+$lang['update']['nightly-build'] = 'nightly build';
 $lang['update']['alpha'] = 'Alpha';
 $lang['update']['beta'] = 'Beta';
 $lang['update']['rc'] = 'RC';

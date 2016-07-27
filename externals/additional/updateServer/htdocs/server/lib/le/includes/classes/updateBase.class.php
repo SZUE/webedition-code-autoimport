@@ -85,8 +85,8 @@ abstract class updateBase{
 	 * @return string
 	 */
 	static function getSubVersion($version){
-		$h = $GLOBALS['DB_WE']->getHash('SELECT  svnrevision FROM ' . VERSION_TABLE . ' WHERE version=' . $version . ' LIMIT 1');
-		return $h['svnrevision'];
+		$h = $GLOBALS['DB_WE']->getHash('SELECT svnrevision FROM ' . VERSION_TABLE . ' WHERE version=' . intval($version) . ' LIMIT 1');
+		return empty($h['svnrevision']) ? 0 : $h['svnrevision'];
 	}
 
 	static function getVersionNames(){
