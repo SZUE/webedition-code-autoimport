@@ -157,7 +157,7 @@ abstract class we_updater{
 		}
 	}
 
-	private function correctTblFile(we_database_base $db){
+/*	private function correctTblFile(we_database_base $db){
 		//added in 7.0.1
 		if(!$db->isKeyExist(FILE_TABLE, 'ParentID', array('ParentID','Filename','Extension'), 'UNIQUE KEY')){
 			if($db->isKeyExistAtAll(FILE_TABLE, 'Path')){
@@ -189,6 +189,7 @@ abstract class we_updater{
 		}
 	}
 
+*/
 	public static function fixInconsistentTables(we_database_base $db = null){//from backup
 		$db = $db? : $GLOBALS['DB_WE'];
 		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
@@ -206,7 +207,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			$db->query('DELETE FROM ' . LINK_TABLE . ' WHERE CID IN (' . implode(',', $del) . ')');
 		}
 		self::upgradeTblLink($db);
-		self::correctTblFile($db);
+		//self::correctTblFile($db);
 
 		$db->query('DELETE FROM ' . CONTENT_TABLE . ' WHERE ID NOT IN (SELECT CID FROM ' . LINK_TABLE . ')');
 
