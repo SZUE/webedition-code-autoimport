@@ -40,9 +40,6 @@ class we_selector_category extends we_selector_file{
 
 	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
-			case self::CREATEFOLDER:
-				$this->printCreateEntryHTML(1);
-				break;
 			case self::DO_RENAME_ENTRY:
 				$this->printDoRenameEntryHTML();
 				break;
@@ -84,7 +81,6 @@ class we_selector_category extends we_selector_file{
 		<td>' . we_html_button::create_button('root_dir', "javascript:top.setRootDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>
 		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-tag', "javascript:top.goBackDir();", true, 0, 0, '', '', $this->dir == intval($this->rootDirID), false) . '</td>' .
 			($this->userCanEditCat() ?
-				/* '<td>' . we_html_button::create_button("fa:btn_new_dir,fa-plus,fa-lg fa-folder", 'javascript:top.drawNewFolder();', true, 0, 0, '', '', false, false) . '</td>' */
 				'<td style="width:38px;">' . we_html_button::create_button('fa:btn_add_cat,fa-plus,fa-lg fa-tag', 'javascript:top.drawNewCat();', true, 0, 0, '', '', false, false) . '</td>' : '') .
 			($this->userCanEditCat() ?
 				'<td class="trash">' . we_html_button::create_button(we_html_button::TRASH, 'javascript:if(changeCatState==1){top.deleteEntry();}', true, 27, 22, '', '', false, false) . '</td>' : '') .
@@ -122,18 +118,18 @@ options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 ');
 	}
 
-	function printCreateEntryHTML($what = 0){
+	function printCreateEntryHTML(){
 		$this->EntryText = rawurldecode($this->EntryText);
 		$txt = trim($this->EntryText);
 		$Path = ($txt ? (!intval($this->dir) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db)) . '/' . $txt : '');
 
 		$js = 'top.clearEntries();';
 		if(empty($txt)){
-			$js.= we_message_reporting::getShowMessageCall(g_l('weEditor', ($what == 1 ? '[folder][filename_empty]' : '[category][filename_empty]')), we_message_reporting::WE_MESSAGE_ERROR);
+			$js.= we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else if(strpos($txt, ',') !== false){
 			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($Path) . '" LIMIT 1', '', $this->db) === '1'){
-			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', ($what == 1 ? '[folder][response_path_exists]' : '[category][response_path_exists]')), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(preg_match('|[\\\'"<>/]|', $txt)){
 			$js.= we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
@@ -152,7 +148,7 @@ if(top.currentID){
 	top.enableDelBut();
 	top.showPref(top.currentID);
 }
-top.makeNewFolder = false;';
+top.makeNewCat = false;';
 		}
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
@@ -210,7 +206,7 @@ if(top.currentID){
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
 				'top.document.getElementsByName("fname")[0].value = "";
-top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;'), we_html_element::htmlBody());
+top.selectFile(' . $this->we_editCatID . ');top.makeNewCat=false;'), we_html_element::htmlBody());
 	}
 
 	protected function printCmdHTML($morejs = ''){
@@ -297,7 +293,7 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;'), we_html_el
 
 			echo we_html_element::jsElement(
 				'top.clearEntries();
-top.makeNewFolder = false;' .
+top.makeNewCat = false;' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
 				'top.currentPath="' . $Path . '";
@@ -422,7 +418,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 		$_SESSION['weS']["we_catVariant"] = $variant;
 		$description = "";
 		if($showPrefs){
-			$result = getHash('SELECT c.ID,c.Category,c.Title,c.Description,c.Path,c.ParentID,cc.Path AS PPath FROM ' . CATEGORY_TABLE . ' c LEFT JOIN ' . CATEGORY_TABLE . ' cc ON c.ParentID=cc.ParentID WHERE c.ID=' . $showPrefs);
+			$result = getHash('SELECT c.ID,c.Category,c.Title,c.Description,c.Path,c.ParentID,cc.Path AS PPath FROM ' . CATEGORY_TABLE . ' c LEFT JOIN ' . CATEGORY_TABLE . ' cc ON c.ParentID=cc.ID WHERE c.ID=' . $showPrefs);
 
 			$path = ($result['ParentID'] ? ($result['PPath']? : '/' ) : '/');
 

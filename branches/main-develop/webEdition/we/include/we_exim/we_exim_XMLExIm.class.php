@@ -200,13 +200,13 @@ class we_exim_XMLExIm{
 		}
 	}
 
-	/*function resetContenID(&$object){
-		if(isset($object->elements) && is_array($object->elements)){
-			foreach($object->elements as $ek => $ev){
-				$object->elements[$ek]["id"] = 0;
-			}
-		}
-	}*/
+	/* function resetContenID(&$object){
+	  if(isset($object->elements) && is_array($object->elements)){
+	  foreach($object->elements as $ek => $ev){
+	  $object->elements[$ek]["id"] = 0;
+	  }
+	  }
+	  } */
 
 	//FIXME given parameter is not used in the call stack!
 	function prepareExport(array $ids = []){
@@ -253,7 +253,7 @@ class we_exim_XMLExIm{
 		return $db->getAll(true);
 	}
 
-		function queryForAllowed($table){
+	function queryForAllowed($table){
 		$db = new DB_WE();
 		$parentpaths = $wsQuery = [];
 		if(($ws = get_ws($table))){
@@ -298,23 +298,20 @@ class we_exim_XMLExIm{
 		}
 		switch($type){
 			case 'doctype':
-				$cat_sql = ($categories ? we_category::getCatSQLTail('', FILE_TABLE, true, $db, 'Category', $categories) : '');
-				if($dir != 0){
-					$workspace = id_to_path($dir, FILE_TABLE, $db);
-					$ws_where = ' AND (' . FILE_TABLE . '.Path LIKE "' . $db->escape($workspace) . '/%" OR ' . FILE_TABLE . '.ID="' . $dir . '") ';
-				} else {
-					$ws_where = '';
-				}
+				$cat_sql = ($categories ? we_category::getCatSQLTail('', 'f', true, $db, 'Category', $categories) : '');
+				$ws_where = ($dir ?
+						' AND (f.Path LIKE "' . $db->escape(id_to_path($dir, FILE_TABLE, $db)) . '/%" OR f.ID="' . $dir . '") ' :
+						'');
 
 				$db->query('SELECT DISTINCT ID FROM ' . FILE_TABLE . ' f WHERE 1 ' . $ws_where . '  AND f.IsFolder=0 AND f.DocType="' . $db->escape($doctype) . '"' . $cat_sql);
 				$selDocs = $db->getAll(true);
 				return;
 			default:
 				if(defined('OBJECT_FILES_TABLE')){
-					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', OBJECT_FILES_TABLE, true, $db, 'Category', $categories) : '');
+					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', 'of', true, $db, 'Category', $categories) : '');
 					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
 
-					$db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=0 AND TableID=' . intval($classname) . $cat_sql . $where);
+					$db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.IsFolder=0 AND of.TableID=' . intval($classname) . $cat_sql . $where);
 					$selObjs = $db->getAll(true);
 				}
 		}

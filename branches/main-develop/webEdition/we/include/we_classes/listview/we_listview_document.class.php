@@ -81,7 +81,7 @@ class we_listview_document extends we_listview_base{
 			$id = $this->id = 0;
 		}
 
-		$this->group.=($this->group ? ',' : '') . FILE_TABLE . '.ID';
+		$this->group.=($this->group ? ',' : '') . 'f.ID';
 
 		$calendar_select = $calendar_where = '';
 
@@ -100,7 +100,7 @@ class we_listview_document extends we_listview_base{
 		$langArray = $this->languages ? array_filter(array_map('trim', explode(',', $this->languages))) : '';
 
 		$where_lang = ($langArray ?
-				' AND ' . FILE_TABLE . '.Language IN("","' . implode('","', array_map('escape_sql_query', $langArray)) . '") ' :
+				' AND f.Language IN("","' . implode('","', array_map('escape_sql_query', $langArray)) . '") ' :
 				'');
 
 		if(stripos($this->order, ' desc') !== false){//was #3849
@@ -119,22 +119,22 @@ class we_listview_document extends we_listview_base{
 		foreach($tmpOrder as $ord){
 			switch(trim($ord)){
 				case 'we_id':
-					$order[] = FILE_TABLE . '.ID' . ($this->desc ? ' DESC' : '');
+					$order[] = 'f.ID' . ($this->desc ? ' DESC' : '');
 					break;
 				case 'we_creationdate':
-					$order[] = FILE_TABLE . '.CreationDate' . ($this->desc ? ' DESC' : '');
+					$order[] = 'f.CreationDate' . ($this->desc ? ' DESC' : '');
 					break;
 				case 'we_path':
-					$order[] = FILE_TABLE . '.Path' . ($this->desc ? ' DESC' : '');
+					$order[] = 'f.Path' . ($this->desc ? ' DESC' : '');
 					break;
 				case 'we_filename':
-					$order[] = FILE_TABLE . '.Text' . ($this->desc ? ' DESC' : '');
+					$order[] = 'f.Text' . ($this->desc ? ' DESC' : '');
 					break;
 				case 'we_moddate':
-					$order[] = FILE_TABLE . '.ModDate' . ($this->desc ? ' DESC' : '');
+					$order[] = 'f.ModDate' . ($this->desc ? ' DESC' : '');
 					break;
 				case 'we_published':
-					$order[] = FILE_TABLE . '.Published' . ($this->desc ? ' DESC' : '');
+					$order[] = 'f.Published' . ($this->desc ? ' DESC' : '');
 					break;
 				case 'random()':
 					$random = true;
@@ -146,7 +146,7 @@ class we_listview_document extends we_listview_base{
 					break;
 				default:
 					$cnt = count($this->joins);
-					$this->joins[] = ' JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=' . FILE_TABLE . '.ID JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
+					$this->joins[] = ' JOIN ' . LINK_TABLE . ' ll' . $cnt . ' ON ll' . $cnt . '.DID=f.ID JOIN ' . CONTENT_TABLE . ' cc' . $cnt . ' ON ll' . $cnt . '.CID=cc' . $cnt . '.ID';
 					$this->orderWhere[] = 'll' . $cnt . '.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" AND ll' . $cnt . '.nHash=x\'' . md5($ord) . '\'';
 					if($this->search){
 						$order[] = 'ranking';
@@ -159,7 +159,7 @@ class we_listview_document extends we_listview_base{
 		$joinstring = implode('', $this->joins);
 		$orderwhereString = implode(' AND ', $this->orderWhere) . ($this->orderWhere ? ' AND ' : '');
 
-		$sql_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, FILE_TABLE, $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
+		$sql_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, 'f', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
 
 		$dt = ($this->docType ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : -1);
 
@@ -169,7 +169,7 @@ class we_listview_document extends we_listview_base{
 			$this->contentTypes = str_replace(['img', 'wepage', 'binary'], [we_base_ContentTypes::IMAGE, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::APPLICATION], $this->contentTypes);
 			$CtArr = explode(',', $this->contentTypes);
 			if($CtArr){
-				$sql_tail .= ' AND ' . FILE_TABLE . '.ContentType IN ("' . implode('","', array_map('escape_sql_query', $CtArr)) . '")';
+				$sql_tail .= ' AND f.ContentType IN ("' . implode('","', array_map('escape_sql_query', $CtArr)) . '")';
 			}
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
@@ -182,10 +182,10 @@ class we_listview_document extends we_listview_base{
 				$this->customerArray['cid_' . $customerData['ID']] = $customerData;
 			}
 
-			$sql_tail .= ' AND (' . FILE_TABLE . '.WebUserID IN(' . $this->customers . ')) ';
+			$sql_tail .= ' AND (f.WebUserID IN(' . $this->customers . ')) ';
 		}
 
-		$sql_tail .= $this->getIdQuery(FILE_TABLE . '.ID');
+		$sql_tail .= $this->getIdQuery('f.ID');
 
 		if($this->search){
 			if($this->workspaceID){
@@ -258,19 +258,19 @@ class we_listview_document extends we_listview_base{
 			$limit = (($rows > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : "");
 		}
 		$this->DB_WE->query(
-			'SELECT ' . FILE_TABLE . '.ID, ' . FILE_TABLE . '.WebUserID' . $extraSelect .
-			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' l ON (' . FILE_TABLE . '.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' . $joinstring .
-			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0) LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' : '') .
+			'SELECT f.ID,f.WebUserID' . $extraSelect .
+			' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' . $joinstring .
+			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=f.ID AND i.ClassID=0) LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' : '') .
 			' WHERE ' . $orderwhereString .
-			($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : 1) . ' ' .
+			($this->searchable ? ' f.IsSearchable=1' : 1) . ' ' .
 			$where_lang . ' ' .
 			$cond_where . ' ' .
 			$ws_where . ' AND ' .
-			FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 ' .
+			'f.IsFolder=0 AND f.Published>0 ' .
 			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
 			($this->docType ?
 				($dt ?
-					' AND ' . FILE_TABLE . '.DocType=' . intval($dt) :
+					' AND f.DocType=' . intval($dt) :
 					' AND FALSE '//invalid DT => no results
 				) :
 				''
@@ -304,22 +304,22 @@ class we_listview_document extends we_listview_base{
 		}
 
 		$this->DB_WE->query(
-			'SELECT ' . FILE_TABLE . '.ID as ID, ' . FILE_TABLE . '.WebUserID as WebUserID' .
+			'SELECT f.ID as ID,f.WebUserID as WebUserID' .
 			($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking' : '')) .
-			' FROM ' . FILE_TABLE . ' JOIN ' . LINK_TABLE . ' l ON ' . FILE_TABLE . '.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID' .
-			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=' . FILE_TABLE . '.ID AND i.ClassID=0)' : '') .
+			' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON f.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID' .
+			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=f.ID AND i.ClassID=0)' : '') .
 			$joinstring .
 			' WHERE ' .
 			$orderwhereString .
-			($this->searchable ? ' ' . FILE_TABLE . '.IsSearchable=1' : '1') . ' ' .
+			($this->searchable ? ' f.IsSearchable=1' : '1') . ' ' .
 			$where_lang . ' ' .
 			$cond_where . ' ' .
 			$ws_where .
-			' AND ' . FILE_TABLE . '.IsFolder=0 AND ' . FILE_TABLE . '.Published>0 AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
+			' AND f.IsFolder=0 AND f.Published>0 AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
 			($this->search ? ' AND ' . $bedingung_sql : '') .
 			($this->docType ?
 				($dt ?
-					' AND ' . FILE_TABLE . '.DocType=' . intval($dt) :
+					' AND f.DocType=' . intval($dt) :
 					' AND FALSE ' //invalid DT => no results
 				) :
 				''
@@ -407,7 +407,7 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 				'WE_PATH' => '',
 				'WE_TEXT' => '',
 				'WE_ID' => '',
-				];
+			];
 			$this->count++;
 			return true;
 		}
@@ -437,7 +437,7 @@ FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 
 	private function makeFieldCondition($name, $operation, $value){
 		return (strpos($name, 'WE_') === 0) ? //Fix: #9389
-			'(' . FILE_TABLE . '.' . substr($name, 3) . ' ' . $operation . ' ' . $value . ')' :
+			'(f.' . substr($name, 3) . ' ' . $operation . ' ' . $value . ')' :
 			'(l.nHash=x\'' . md5($name) . '\' AND IFNULL(c.Dat,c.BDID) ' . $operation . ' ' . $value . ')';
 	}
 
