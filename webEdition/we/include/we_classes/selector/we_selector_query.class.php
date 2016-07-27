@@ -112,7 +112,7 @@ class we_selector_query{
 			}
 		}
 
-		$order = 'ORDER BY ' . ($isFolder ? 'Path' : 'isFolder ASC,Path') . ' ASC ';
+		$order = 'ORDER BY ' . ($isFolder ? 'isFolder ASC,Path' : 'Path' ) . ' ASC ';
 		$fields = implode(', ', $this->fields);
 		$this->db->query('SELECT ' . $fields . ' FROM ' . $this->db->escape($table) . ' WHERE ' . $where . ' ' . $order . ($limit ? ' LIMIT ' . $limit : ''));
 	}

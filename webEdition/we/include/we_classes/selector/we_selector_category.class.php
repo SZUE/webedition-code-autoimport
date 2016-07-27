@@ -152,7 +152,7 @@ if(top.currentID){
 	top.enableDelBut();
 	top.showPref(top.currentID);
 }
-top.makeNewFolder = false;';
+top.makeNewCat = false;';
 		}
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
@@ -210,7 +210,7 @@ if(top.currentID){
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
 				'top.document.getElementsByName("fname")[0].value = "";
-top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;'), we_html_element::htmlBody());
+top.selectFile(' . $this->we_editCatID . ');top.makeNewCat=false;'), we_html_element::htmlBody());
 	}
 
 	protected function printCmdHTML($morejs = ''){
@@ -297,7 +297,7 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewFolder = 0;'), we_html_el
 
 			echo we_html_element::jsElement(
 				'top.clearEntries();
-top.makeNewFolder = false;' .
+top.makeNewCat = false;' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
 				'top.currentPath="' . $Path . '";
@@ -422,7 +422,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 		$_SESSION['weS']["we_catVariant"] = $variant;
 		$description = "";
 		if($showPrefs){
-			$result = getHash('SELECT c.ID,c.Category,c.Title,c.Description,c.Path,c.ParentID,cc.Path AS PPath FROM ' . CATEGORY_TABLE . ' c LEFT JOIN ' . CATEGORY_TABLE . ' cc ON c.ParentID=cc.ParentID WHERE c.ID=' . $showPrefs);
+			$result = getHash('SELECT c.ID,c.Category,c.Title,c.Description,c.Path,c.ParentID,cc.Path AS PPath FROM ' . CATEGORY_TABLE . ' c LEFT JOIN ' . CATEGORY_TABLE . ' cc ON c.ParentID=cc.ID WHERE c.ID=' . $showPrefs);
 
 			$path = ($result['ParentID'] ? ($result['PPath']? : '/' ) : '/');
 
@@ -449,19 +449,19 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 
 			$table = new we_html_table(array('class' => 'default'), 6, 3);
 
-			$table->setCol(0, 0, array('style' => 'width:100px; padding: 0px 0px 10px 0px;', "class" => "defaultfont"), '<b>' . g_l('weClass', '[category]') . '</b>');
+			$table->setCol(0, 0, array('style' => 'width:100px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'), '<b>' . g_l('weClass', '[category]') . '</b>');
 			$table->setCol(0, 1, array('colspan' => 2, 'style' => 'width:350px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'), we_html_tools::htmlTextInput("Category", 50, $category, "", ' id="category"', "text", 360));
 
-			$table->setCol(1, 0, array('style' => 'width:100px; padding: 0px 0px 10px 0px;', "class" => "defaultfont"), "<b>ID</b>");
+			$table->setCol(1, 0, array('style' => 'width:100px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'), "<b>ID</b>");
 			$table->setCol(1, 1, array('colspan' => 2, 'style' => 'width:350px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'), $catID);
 
-			$table->setCol(2, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), '<b>' . g_l('weClass', '[dir]') . '</b>');
-			$table->setCol(2, 1, array("style" => "width:240px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), $yuiSuggest->getHTML());
+			$table->setCol(2, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), '<b>' . g_l('weClass', '[dir]') . '</b>');
+			$table->setCol(2, 1, array("style" => "width:240px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), $yuiSuggest->getHTML());
 
-			$table->setCol(3, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), "<b>" . g_l('global', '[title]') . "</b>");
-			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
-			$table->setCol(4, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), "<b>" . g_l('global', '[description]') . "</b>");
-			$table->setCol(4, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_forms::weTextarea("catDescription", $description, array(
+			$table->setCol(3, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), "<b>" . g_l('global', '[title]') . "</b>");
+			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
+			$table->setCol(4, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), "<b>" . g_l('global', '[description]') . "</b>");
+			$table->setCol(4, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), we_html_forms::weTextarea("catDescription", $description, array(
 					"bgcolor" => "white",
 					"inlineedit" => "true",
 					"wysiwyg" => "true",
@@ -469,7 +469,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 					"height" => 130,
 					'commands' => 'prop,fontsize,xhtmlxtras,color,justify,list,link,table,insert,fullscreen,visibleborders,editsource'
 					), true, 'autobr', true, true, true, true, true, ""));
-			$table->setCol(5, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", "class" => "defaultfont"), we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
+			$table->setCol(5, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
 		}
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
