@@ -74,6 +74,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->Url = $obj->Url;
 		$this->TriggerID = $obj->TriggerID;
 		$this->elements['Charset']['dat'] = $obj->Charset; // for charset-tag
+		$this->IsDynamic = true;
 	}
 
 	public static function initDocument($formname = 'we_global_form', $tid = 0, $doctype = '', $categories = '', $docID = 0, $wewrite = false){
