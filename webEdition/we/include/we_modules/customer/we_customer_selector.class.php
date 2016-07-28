@@ -153,7 +153,7 @@ top.currentID = "' . $this->id . '";';
 	private function getHeaderElements(){
 		$vals = explode('-|-', $this->dir);
 		unset($vals[count($vals) - 1]);
-		$out = array('0' => '/');
+		$out = ['0' => '/'];
 		foreach($vals as $pos => $val){
 			$out[implode('-|-', array_slice($vals, 0, $pos + 1)) . '-|-'] = ($val ? : g_l('modules_customer', '[no_value]'));
 		}

@@ -71,7 +71,7 @@ class we_customer_generatePassword{
 	}
 
 	function PassCheck($pass){ // Function To Check Whether the Password have those Conditions
-		$cond = array('caps' => 0, 'small' => 0, 'nums' => 0, 'specs' => 0);
+		$cond = ['caps' => 0, 'small' => 0, 'nums' => 0, 'specs' => 0];
 		for($i = 0; $i < strlen($pass); $i++){
 			$c = substr($pass, $i, 1);
 			if(strpos($this->caps, $c)){

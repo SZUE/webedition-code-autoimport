@@ -21,76 +21,56 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-return array(
-	'new' => array(
-		'text' => g_l('javaMenu_messaging', '[new]'),
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[message]') . '&hellip;',
+return [
+	'new' => ['text' => g_l('javaMenu_messaging', '[new]'),],
+	['text' => g_l('javaMenu_messaging', '[message]') . '&hellip;',
 		'cmd' => 'messaging_new_message',
 		'parent' => 'new',
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[todo]') . '&hellip;',
+	],
+	['text' => g_l('javaMenu_messaging', '[todo]') . '&hellip;',
 		'cmd' => 'messaging_new_todo',
 		'parent' => 'new',
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[folder]'),
+	],
+	['text' => g_l('javaMenu_messaging', '[folder]'),
 		'cmd' => 'messaging_new_folder',
 		'parent' => 'new',
-	),
-	'file' => array(
-		'text' => g_l('javaMenu_messaging', '[file]'),
-	),
-	'delete' => array(
-		'text' => g_l('javaMenu_messaging', '[delete]'),
+	],
+	'file' => ['text' => g_l('javaMenu_messaging', '[file]'),],
+	'delete' => ['text' => g_l('javaMenu_messaging', '[delete]'),
 		'parent' => 'file',
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[folder]'),
+	],
+	['text' => g_l('javaMenu_messaging', '[folder]'),
 		'cmd' => 'messaging_delete_mode_on',
 		'parent' => 'delete',
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[quit]'),
+	],
+	['text' => g_l('javaMenu_messaging', '[quit]'),
 		'cmd' => 'messaging_exit',
 		'parent' => 'file',
-	),
-	'edit' => array(
-		'text' => g_l('javaMenu_messaging', '[edit]'),
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[folder]'),
+	],
+	'edit' => ['text' => g_l('javaMenu_messaging', '[edit]'),],
+	['text' => g_l('javaMenu_messaging', '[folder]'),
 		'cmd' => 'messaging_edit_folder',
 		'parent' => 'edit',
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[copy]'),
+	],
+	['text' => g_l('javaMenu_messaging', '[copy]'),
 		'cmd' => 'messaging_copy',
 		'parent' => 'edit',
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[cut]'),
+	],
+	['text' => g_l('javaMenu_messaging', '[cut]'),
 		'cmd' => 'messaging_cut',
 		'parent' => 'edit',
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[paste]'),
+	],
+	['text' => g_l('javaMenu_messaging', '[paste]'),
 		'cmd' => 'messaging_paste',
 		'parent' => 'edit',
-	),
-	'help' => array(
-		'text' => g_l('javaMenu_messaging', '[help]'),
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[help]') . '&hellip;',
+	],
+	'help' => ['text' => g_l('javaMenu_messaging', '[help]'),],
+	['text' => g_l('javaMenu_messaging', '[help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',
-	),
-	array(
-		'text' => g_l('javaMenu_messaging', '[info]') . '&hellip;',
+	],
+	['text' => g_l('javaMenu_messaging', '[info]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'info_modules',
-	)
-);
+	]
+];

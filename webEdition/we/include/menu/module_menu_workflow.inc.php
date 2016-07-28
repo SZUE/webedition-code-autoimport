@@ -21,35 +21,27 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-return array(
-	'new' => array(
-		'text' => g_l('javaMenu_workflow', '[new]'),
+return [
+	'new' => ['text' => g_l('javaMenu_workflow', '[new]'),
 		'perm' => 'NEW_WORKFLOW || ADMINISTRATOR',
-	),
-	array(
-		'text' => g_l('javaMenu_workflow', '[new]'),
+	],
+	['text' => g_l('javaMenu_workflow', '[new]'),
 		'cmd' => 'new_workflow',
 		'perm' => 'NEW_WORKFLOW || ADMINISTRATOR',
 		'parent' => 'new',
-	),
-	'workflow' => array(
-		'text' => g_l('javaMenu_workflow', '[workflow]'),
-	),
-	array(
-		'text' => g_l('javaMenu_workflow', '[save]'),
+	],
+	'workflow' => ['text' => g_l('javaMenu_workflow', '[workflow]'),],
+	['text' => g_l('javaMenu_workflow', '[save]'),
 		'parent' => 'workflow',
 		'cmd' => 'save_workflow',
 		'perm' => 'EDIT_WORKFLOW || ADMINISTRATOR',
-	),
-	array(
-		'text' => g_l('javaMenu_workflow', '[delete]'),
+	],
+	['text' => g_l('javaMenu_workflow', '[delete]'),
 		'parent' => 'workflow',
 		'cmd' => 'delete_workflow',
 		'perm' => 'DELETE_WORKFLOW || ADMINISTRATOR',
-	),
-	array(
-		'parent' => 'workflow', // separator
-	),
+	],
+	['parent' => 'workflow',],
 	/*
 	  array(
 	  'text'=> g_l('javaMenu_workflow','[reload]'),
@@ -59,31 +51,23 @@ return array(
 	  ),
 	  $we_menu_workflow['000880']['parent'] = 'workflow'; // separator
 	 */
-	array(
-		'text' => g_l('javaMenu_workflow', '[empty_log]') . '&hellip;',
+	['text' => g_l('javaMenu_workflow', '[empty_log]') . '&hellip;',
 		'parent' => 'workflow',
 		'cmd' => 'empty_log',
 		'perm' => 'EMPTY_LOG || ADMINISTRATOR',
-	),
-	array(
-		'parent' => 'workflow', // separator
-	),
-	array(
-		'text' => g_l('javaMenu_workflow', '[quit]'),
+	],
+	['parent' => 'workflow',],
+	['text' => g_l('javaMenu_workflow', '[quit]'),
 		'parent' => 'workflow',
 		'cmd' => 'exit_workflow',
-	),
-	'help' => array(
-		'text' => g_l('javaMenu_workflow', '[help]'),
-	),
-	array(
-		'text' => g_l('javaMenu_workflow', '[help]') . '&hellip;',
+	],
+	'help' => ['text' => g_l('javaMenu_workflow', '[help]'),],
+	['text' => g_l('javaMenu_workflow', '[help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',
-	),
-	array(
-		'text' => g_l('javaMenu_workflow', '[info]') . '&hellip;',
+	],
+	['text' => g_l('javaMenu_workflow', '[info]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'info_modules',
-	)
-);
+	]
+];

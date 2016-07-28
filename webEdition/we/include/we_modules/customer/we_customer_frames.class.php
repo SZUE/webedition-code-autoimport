@@ -492,10 +492,8 @@ var fieldDate = new weDate(date_format_dateonly);
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_settings')");
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array("name" => "we_form"), we_html_tools::htmlDialogLayout(
-						we_html_element::htmlHiddens(array(
-							"pnt" => "settings",
-							"cmd" => '')) .
+		$body = we_html_element::htmlBody(["class" => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::htmlForm(["name" => "we_form"], we_html_tools::htmlDialogLayout(
+						we_html_element::htmlHiddens([ "pnt" => "settings", "cmd" => '']) .
 						$table->getHtml(), g_l('modules_customer', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
 					)
 				)

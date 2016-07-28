@@ -81,7 +81,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 echo we_html_element::jsElement("
 	var _nextCmd = null;
 	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame('" . $editorFrameId . "');
-	self.focus();
 
 	// functions for keyBoard Listener
 	function applyOnEnter() {

@@ -231,7 +231,7 @@ EO_SCRIPT;
 			$filter_args[$GLOBALS['DB_WE']->f("Field")] = $GLOBALS['DB_WE']->f("Field");
 		}
 		$filter_args = we_html_tools::groupArray($filter_args);
-		$filter_op = array(
+		$filter_op = [
 			we_customer_abstractFilter::OP_EQ => g_l('modules_customerFilter', '[equal]'),
 			we_customer_abstractFilter::OP_NEQ => g_l('modules_customerFilter', '[not_equal]'),
 			we_customer_abstractFilter::OP_LESS => g_l('modules_customerFilter', '[less]'),
@@ -244,24 +244,24 @@ EO_SCRIPT;
 			we_customer_abstractFilter::OP_NOT_CONTAINS => g_l('modules_customerFilter', '[not_contains]'),
 			we_customer_abstractFilter::OP_IN => g_l('modules_customerFilter', '[in]'),
 			we_customer_abstractFilter::OP_NOT_IN => g_l('modules_customerFilter', '[not_in]'),
-		);
+		];
 
-		$filter_logic = array(
+		$filter_logic = [
 			'AND' => g_l('modules_customerFilter', '[AND]'),
 			'OR' => g_l('modules_customerFilter', '[OR]')
-		);
+		];
 
 		$filter = $this->filter->getFilter();
 
 		if(!$startEmpty && empty($filter)){
-			$filter = array(
-				array(
+			$filter = [
+				[
 					'logic' => '',
 					'field' => 'id',
 					'operation' => 0,
 					'value' => ''
-				)
-			);
+				]
+			];
 			$this->filter->setFilter($filter);
 		}
 
@@ -269,7 +269,7 @@ EO_SCRIPT;
 		$adv_row = '';
 
 		foreach($filter as $key => $value){
-			if(!is_array($value)||empty($value)){
+			if(!is_array($value) || empty($value)){
 				continue;
 			}
 			$value['logic'] = trim($value['logic']);
@@ -277,13 +277,13 @@ EO_SCRIPT;
 <tr id="filterRow_' . $i . '">
 	<td style="padding-top: ' . ($value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';width:64px;">' .
-				(($i == 0) ? '' : we_html_tools::htmlSelect('filterLogic_' . $i, $filter_logic, 1, $value['logic'], false, array('onchange' => "wecf_logic_changed(this);", 'class' => "defaultfont logicFilterInput"))) . '</td>
+				(($i == 0) ? '' : we_html_tools::htmlSelect('filterLogic_' . $i, $filter_logic, 1, $value['logic'], false, ['onchange' => "wecf_logic_changed(this);", 'class' => "defaultfont logicFilterInput"])) . '</td>
 	<td style="padding-top: ' . ($value['logic'] === "OR" ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_tools::htmlSelect('filterSelect_' . $i, $filter_args, 1, $value['field'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont leftFilterInput")) . '</td>
+				we_html_tools::htmlSelect('filterSelect_' . $i, $filter_args, 1, $value['field'], false, ['onchange' => "wecf_hot();", 'class' => "defaultfont leftFilterInput"]) . '</td>
 	<td style="padding-top: ' . ($value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
-				we_html_tools::htmlSelect('filterOperation_' . $i, $filter_op, 1, $value['operation'], false, array('onchange' => "wecf_hot();", 'class' => "defaultfont middleFilterInput")) . '</td>
+				we_html_tools::htmlSelect('filterOperation_' . $i, $filter_op, 1, $value['operation'], false, ['onchange' => "wecf_hot();", 'class' => "defaultfont middleFilterInput"]) . '</td>
 	<td style="padding-top: ' . ($value['logic'] === 'OR' ? "10px;border-top:1px solid grey" : "4px;border-top:0") . ';padding-bottom:' .
 				((isset($filter[$key + 1]) && $filter[$key + 1]['logic'] === 'OR') ? '10px' : '0px') . ';">' .
 				'<input name="filterValue_' . $i . '" value="' . $value['value'] . '" type="text" onchange="wecf_hot();" class="defaultfont rightFilterInput"/></td>

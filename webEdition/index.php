@@ -162,20 +162,8 @@ foreach($removePaths as $path){
 	}
 }
 
-we_base_file::cleanTempFiles(true);
-we_base_file::cleanWECache();
-we_navigation_cache::clean();
-we_captcha_captcha::cleanup($GLOBALS['DB_WE']);
-we_search_search::cleanOldEntries();
 we_base_preferences::writeDefaultLanguageConfig();
 
-//clean Error-Log-Table
-$GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date`<(NOW() - INTERVAL ' . we_base_constants::ERROR_LOG_HOLDTIME . ' DAY)');
-$cnt = f('SELECT COUNT(1) FROM ' . ERROR_LOG_TABLE);
-
-if($cnt > we_base_constants::ERROR_LOG_MAX_ITEM_COUNT){
-	$GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE 1 ORDER BY Date LIMIT ' . ($cnt - we_base_constants::ERROR_LOG_MAX_ITEM_THRESH));
-}
 
 //CHECK FOR FAILED LOGIN ATTEMPTS
 $GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND LoginDate<(NOW() - INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
@@ -341,6 +329,21 @@ if(function_exists('fastcgi_finish_request')){
 	fastcgi_finish_request();
 }
 ignore_user_abort(true);
+//cleanup
+we_base_file::cleanTempFiles(true);
+we_base_file::cleanWECache();
+we_navigation_cache::clean();
+we_captcha_captcha::cleanup($GLOBALS['DB_WE']);
+we_search_search::cleanOldEntries();
+//clean Error-Log-Table
+$GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE `Date`<(NOW() - INTERVAL ' . we_base_constants::ERROR_LOG_HOLDTIME . ' DAY)');
+$cnt = f('SELECT COUNT(1) FROM ' . ERROR_LOG_TABLE);
+
+if($cnt > we_base_constants::ERROR_LOG_MAX_ITEM_COUNT){
+	$GLOBALS['DB_WE']->query('DELETE FROM ' . ERROR_LOG_TABLE . ' WHERE 1 ORDER BY Date LIMIT ' . ($cnt - we_base_constants::ERROR_LOG_MAX_ITEM_THRESH));
+}
+
+//updatecheck
 if(!file_exists(WE_CACHE_PATH . 'newwe_version.json')){
 	we_base_file::save(WE_CACHE_PATH . 'newwe_version.json', getHTTP('https://update.webedition.org', '/server/we/latest.php?vers=' .
 			WE_VERSION .
