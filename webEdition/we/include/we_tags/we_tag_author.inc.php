@@ -31,7 +31,7 @@ function we_tag_author(array $attribs){
 
 	switch($docAttr){
 		case 'listview' :
-			$authorID = $GLOBALS['lv']->f('wedoc_' . $author);
+			$authorID = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . $author);
 			break;
 		case 'self' :
 		default :

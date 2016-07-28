@@ -68,13 +68,13 @@ function we_isFieldNotEmpty(array $attribs){
 					$GLOBALS['we_doc']->getElement($orig_match)));
 			$objects = array_filter(isset($data['objects']) ? $data['objects'] : $data);
 			return !empty($objects);
-		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag we_we_object_X zu kommen
+		case 'object' : //Bug 3837: erstmal die Klasse rausfinden um auf den Eintrag object_X zu kommen
 			if($GLOBALS['lv'] instanceof we_listview_document){ // listview/document with objects included using we:object
 				return (bool) $GLOBALS['lv']->f($match);
 			}
 			$match = strpos($orig_match, '/') === false ? $orig_match : substr(strrchr($orig_match, '/'), 1);
 			$objectid = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Text="' . $GLOBALS['DB_WE']->escape($match) . '"');
-			return (bool) $GLOBALS['lv']->f('we_object_' . $objectid);
+			return (bool) $GLOBALS['lv']->f('object_' . $objectid);
 		case 'checkbox' :
 		case 'binary' :
 		case 'img' :

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -76,7 +75,7 @@ function we_tag_saferpay(array $attribs){
 			return;
 		}
 		/*		 * ***** get the currency ******* */
-		$feldnamen = explode("|", f("SELECT pref_value FROM " . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"'));
+		$feldnamen = explode("|", f("SELECT pref_value FROM " . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"'));
 		switch(isset($feldnamen[0]) ? $feldnamen[0] : 'x'){ // determine the currency
 			case "$":
 			case "USD":
@@ -154,7 +153,7 @@ function we_tag_saferpay(array $attribs){
 
 			// foreach article we must determine the correct tax-rate
 			if(we_shop_category::isCategoryMode()){
-				$wedocCategory = ((isset($item['serial']['we_wedoc_Category'])) ? $item['serial']['we_wedoc_Category'] : $item['serial']['wedoc_Category']);
+				$wedocCategory = $item['serial'][we_listview_base::PROPPREFIX . 'CATEGORY'];
 				$billingCountry = we_shop_category::getCountryFromCustomer(true);
 				$catId = !empty($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
 
@@ -193,7 +192,7 @@ function we_tag_saferpay(array $attribs){
 		$weShippingControl = we_shop_shippingControl::getShippingControl();
 
 		$customer = (we_tag('ifRegisteredUser') ? // check if user is registered
-						$_SESSION['webuser'] : false);
+				$_SESSION['webuser'] : false);
 
 		if($shipping === ''){
 			$cartField[WE_SHOP_SHIPPING] = array(

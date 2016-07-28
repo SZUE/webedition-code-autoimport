@@ -28,6 +28,8 @@
  *
  */
 abstract class we_listview_base{
+	const PROPPREFIX = 'WE_';
+
 	var $DB_WE; /* Main DB Object */
 	var $name; /* name of listview */
 	var $rows = -1; /* Number of rows */
@@ -198,6 +200,12 @@ abstract class we_listview_base{
 	 *
 	 */
 	function f($key){
+		$repl = 0;
+		$key = preg_replace('/^(OF|wedoc|we)_/i', '', $key, $repl);
+		if($repl){
+			$key = strtoupper($key);
+		}
+
 		return (isset($this->Record[$key]) ? $this->Record[$key] : '');
 	}
 
@@ -625,7 +633,7 @@ abstract class we_listview_base{
 	public function getFoundDocument(){
 		static $doc = null;
 		static $id = 0;
-		if($id == ($docID = $this->f('WE_ID'))){
+		if($id == ($docID = $this->f(self::PROPPREFIX . 'ID'))){
 			return $doc;
 		}
 		$id = $docID;

@@ -494,7 +494,7 @@ abstract class we_base_variants{
 				if($variantName == $name){
 					foreach($variantData as $elementName => $elementData){
 						// fields have the prefix we_
-						$record['we_' . $elementName] = ($elementData['type'] === 'img' ? (isset($elementData['bdid']) ? $elementData['bdid'] : '') : (isset($elementData['dat']) ? $elementData['dat'] : ''));
+						$record[$elementName] = ($elementData['type'] === 'img' ? (isset($elementData['bdid']) ? $elementData['bdid'] : '') : (isset($elementData['dat']) ? $elementData['dat'] : ''));
 					}
 				}
 			}

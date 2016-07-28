@@ -94,7 +94,7 @@ function we_tag_a(array $attribs, $content){
 					$idd = ((isset($GLOBALS['lv']) && $GLOBALS['lv'] instanceof we_listview_document) && ($lastE = end($GLOBALS['lv']->IDs))) ?
 						$lastE :
 						((isset($GLOBALS['lv']->classID)) ?
-							$GLOBALS['lv']->f('WE_ID') :
+							$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') :
 							((isset($GLOBALS['we_obj']->ID)) ?
 								$GLOBALS['we_obj']->ID :
 								$GLOBALS['WE_MAIN_DOC']->ID));
@@ -113,8 +113,8 @@ function we_tag_a(array $attribs, $content){
 				(isset($GLOBALS['we_doc']->Variant) ? // normal listView or document
 					'&' . we_base_constants::WE_VARIANT_REQUEST . '=' . $GLOBALS['we_doc']->Variant :
 					// variant inside shoplistview!
-					(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_VARIANT') ?
-						'&' . we_base_constants::WE_VARIANT_REQUEST . '=' . $GLOBALS['lv']->f('WE_VARIANT') :
+					(isset($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'VARIANT') ?
+						'&' . we_base_constants::WE_VARIANT_REQUEST . '=' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'VARIANT') :
 						''));
 			$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
 			//	preview mode in seem
@@ -136,7 +136,7 @@ function we_tag_a(array $attribs, $content){
 					$idd = ($lastE = end($GLOBALS['lv']->IDs)) ?
 						$lastE :
 						((isset($GLOBALS['lv']->classID)) ?
-							$GLOBALS['lv']->f('WE_ID') :
+							$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') :
 							((isset($GLOBALS['we_obj']->ID)) ?
 								$GLOBALS['we_obj']->ID :
 								$GLOBALS['WE_MAIN_DOC']->ID));
@@ -165,7 +165,7 @@ function we_tag_a(array $attribs, $content){
 
 		case 'object':
 			$oid = ($listview ?
-					(!empty($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ? $GLOBALS['lv']->f('WE_ID') : 0) :
+					(!empty($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') ? $GLOBALS['lv']->f('WE_ID') : 0) :
 					(!empty($GLOBALS['we_obj']) && isset($GLOBALS['we_obj']->ID) && $editself ? $GLOBALS['we_obj']->ID : 0));
 
 			if($delete){
@@ -179,7 +179,7 @@ function we_tag_a(array $attribs, $content){
 			break;
 		case 'document':
 			$did = ($listview ?
-					(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ? $GLOBALS['lv']->f('WE_ID') : 0) :
+					(isset($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') ? $GLOBALS['lv']->f('WE_ID') : 0) :
 					(isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID) && $editself ? $GLOBALS['we_doc']->ID : 0));
 
 			if($delete){//FIXME: make sure only the selected object can be deleted - sth unique not user-known has to be added to prevent denial of service

@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -7,18 +6,19 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$name = new weTagData_choiceAttribute('name', array(new weTagDataOption('WE_PATH'),
+$name = new weTagData_choiceAttribute('name', array(
+	new weTagDataOption('WE_Path'),
 	new weTagDataOption('WE_ID'),
-	new weTagDataOption('WE_TEXT'),
+	new weTagDataOption('WE_Text'),
 	new weTagDataOption('WE_URL'),
-	new weTagDataOption('WE_CUSTOMER_ID'),
-	new weTagDataOption('WE_TRIGGERID'),
-	new weTagDataOption('wedoc_CreationDate'),
-	new weTagDataOption('wedoc_ModDate'),
-	new weTagDataOption('wedoc_Published'),
-	new weTagDataOption('wedoc_ParentID'),
-	new weTagDataOption('wedoc_Text'),
-	new weTagDataOption('wedoc_Category'),
+	new weTagDataOption('WE_Customer_ID'),
+	new weTagDataOption('WE_TriggerID'),
+	new weTagDataOption('WE_CreationDate'),
+	new weTagDataOption('WE_ModDate'),
+	new weTagDataOption('WE_Published'),
+	new weTagDataOption('WE_ParentID'),
+	new weTagDataOption('WE_Text'),
+	new weTagDataOption('WE_Category'),
 	new weTagDataOption('WE_SHOPVARIANTS', false, 'shop'),
 	), false, false, '');
 $classid = (defined('OBJECT_TABLE') ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);

@@ -30,7 +30,7 @@ function we_tag_ifObjectLanguage(array $attribs){
 
 	$match = weTag_getAttribute('match', $attribs, '', we_base_request::STRING);
 	$matchArray = makeArrayFromCSV($match);
-	$lang = (isset($GLOBALS['lv']) ? $GLOBALS['lv']->f('we_wedoc_Language') : '');
+	$lang = (isset($GLOBALS['lv']) ? $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'LANGUAGE') : '');
 
 	return array_search($lang, $matchArray) !== FALSE;
 }

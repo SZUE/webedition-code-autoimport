@@ -38,7 +38,7 @@ function we_tag_ifSelf(array $attribs){
 			switch(get_class($GLOBALS['lv'])){
 				case 'we_listview_object':
 				case 'we_listview_search':
-					return in_array($GLOBALS['lv']->f('WE_ID'), $ids);
+					return in_array($GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID'), $ids);
 				case 'we_listview_variants':
 					reset($GLOBALS['lv']->Record);
 					$key = key($GLOBALS['lv']->Record);

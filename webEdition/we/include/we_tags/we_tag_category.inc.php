@@ -53,7 +53,7 @@ function we_tag_category(array $attribs){
 		}
 		$catIDs = $GLOBALS['we_doc']->getElement($name);
 	} elseif(isset($GLOBALS['lv']) && $docAttr === 'listview'){
-		$catIDs = $GLOBALS['lv']->f('wedoc_Category');
+		$catIDs = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'CATEGORY');
 	} else {
 		$doc = we_getDocForTag($docAttr, false);
 		$catIDs = $doc->Category;

@@ -769,7 +769,7 @@ function CalendarChanged(calObject) {
 					$standardVat = we_shop_vats::getStandardShopVat();
 
 					if(we_shop_category::isCategoryMode()){
-						$wedocCategory = ((isset($serialDoc['we_wedoc_Category'])) ? $serialDoc['we_wedoc_Category'] : $serialDoc['wedoc_Category']);
+						$wedocCategory = $serialDoc[we_listview_base::PROPPREFIX . 'CATEGORY'];
 						$stateField = we_shop_vatRule::getStateField();
 						$billingCountry = !empty($orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField]) ?
 							$orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] : we_shop_category::getDefaultCountry();

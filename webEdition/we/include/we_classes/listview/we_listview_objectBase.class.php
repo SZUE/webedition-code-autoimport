@@ -29,6 +29,16 @@
  */
 //FIXME: is this class not ~ listview_object? why is this not the base class???
 abstract class we_listview_objectBase extends we_listview_base{
+	const FIELD_REPLACEMENTS = [
+		'we_filename' => 'of.Text',
+		OBJECT_X_TABLE => 'ob',
+		OBJECT_FILES_TABLE => 'of',
+		'OF_' => 'of.',
+		'we_' => 'of.',
+		'wedoc_' => 'of.',
+		self::PROPPREFIX => 'of.'
+	];
+
 	var $classID = 0; /* ID of a class */
 	var $triggerID = 0; /* ID of a document which to use for displaying thr detail page */
 	var $condition = ''; /* condition string (like SQL) */
@@ -38,11 +48,13 @@ abstract class we_listview_objectBase extends we_listview_base{
 	var $objectseourls = false;
 	var $hidedirindex = false;
 
-	//FIXME: why is everything prefixed by we_?!
 	function f($key){
-		//replace access to old OF_ with "new" wedoc_
-		$key = preg_replace('^OF_', 'wedoc_', $key);
-		return $this->DB_WE->f('we_' . $key);
+		$repl = 0;
+		$key = preg_replace('/^(OF|wedoc|we)_/i', self::PROPPREFIX, $key, $repl);
+		if($repl){
+			$key = strtoupper($key);
+		}
+		return $this->DB_WE->f($key);
 	}
 
 	protected function fillMatrix(&$matrix, $classID, $withVariant = false){
@@ -115,27 +127,26 @@ abstract class we_listview_objectBase extends we_listview_base{
 			if(!$val || $val === '_'){ // bug #4657
 				continue;
 			}
-			if(!is_numeric($key) && $val){
+			if($val){
 				switch($key){
 					case 'DefaultDesc':
-						$selFields .= 'ob' . $classID . '.`' . $val . '` AS we_Description,' . 'ob' . $classID . '.`' . $val . '` AS WE_Description,';
+						$selFields .= 'ob' . $classID . '.`' . $val . '` AS ' . self::PROPPREFIX . 'DESCRIPTION,';
 						break;
 					case 'DefaultTitle':
-						$selFields .= 'ob' . $classID . '.`' . $val . '` AS we_Title,' . 'ob' . $classID . '.`' . $val . '` AS WE_Title,';
+						$selFields .= 'ob' . $classID . '.`' . $val . '` AS ' . self::PROPPREFIX . 'TITLE,';
 						break;
 					case 'DefaultKeywords':
-						$selFields .= 'ob' . $classID . '.`' . $val . '` AS we_Keywords,' . 'ob' . $classID . '.`' . $val . '` AS WE_Keywords,';
+						$selFields .= 'ob' . $classID . '.`' . $val . '` AS ' . self::PROPPREFIX . 'KEYWORDS,';
 						break;
 				}
 			}
 		}
 		$fields = array_keys(getHash('SELECT * FROM ' . OBJECT_FILES_TABLE . ' LIMIT 1'));
 		$extraFields = '';
-		//FIXME: change we_wedoc_ to OF_ when columns from table have been removed; the latter is then obsolete as well - be care while f uses we_ prefix
 		foreach($fields as $cur){
-			$extraFields.=',of.' . $cur . ' AS we_wedoc_' . $cur;
+			$extraFields.=',of.' . $cur . ' AS ' . self::PROPPREFIX . strtoupper($cur);
 		}
-		$f = 'of.ID,of.Templates AS OF_Templates,of.ID AS OF_ID,of.Category AS OF_Category,of.Text AS OF_Text,of.Url AS OF_Url,of.TriggerID AS OF_TriggerID,of.WebUserID AS OF_WebUserID,of.Language AS OF_Language' .
+		$f = 'of.ID' .
 			$extraFields . ',' . ($selFields ? $selFields : '');
 		$charclass = '[\!\=%&\(\)\*\+\.\/<>\|~, ]';
 		foreach($matrix as $n => $p){
@@ -144,7 +155,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 				$n = $p['joinClassID'];
 			}
 
-			$f .= $p['alias'] . '.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
+			$f .= $p['alias'] . '.`' . $p['type'] . '_' . $n . '` AS `' . $n2 . '`,';
 			if(!isset($from[$p['table']])){
 				$from[$p['table']] = $p['table'] . ' AS ' . $p['alias'];
 				if($classID != $p['classID']){
@@ -161,11 +172,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 				$ordertmp[$pos] = $p['alias'] . '.`' . $p['type'] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 			}
 			//some replacements if old conditions may occur
-			$cond = strtr($cond, [
-				OBJECT_X_TABLE => 'ob',
-				OBJECT_FILES_TABLE => 'of',
-				'OF_' => 'of.'
-			]);
+			$cond = strtr($cond, self::FIELD_REPLACEMENTS);
 			$cond = preg_replace('/(' . $charclass . ')' . $n . '(' . $charclass . ')/', '${1}' . $p['alias'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
 		}
 		$cond = preg_replace_callback("/'([^']*)'/", function (array $match){
@@ -174,51 +181,14 @@ abstract class we_listview_objectBase extends we_listview_base{
 				}, $match[1]) . "'";
 		}, $cond);
 
-		$cond = strtr($cond, array(
-			'we_creationdate' => 'of.CreationDate',
-			'wedoc_CreationDate' => 'of.CreationDate',
-			'wedoc_ModDate' => 'of.ModDate',
-			'we_moddate' => 'of.ModDate',
-			'wedoc_Published' => 'of.Published',
-			'we_published' => 'of.Published',
-			'wedoc_ParentID' => 'of.ParentID',
-			'wedoc_Text' => 'of.Text',
-			'we_filename' => 'of.Text',
-			'WE_ID' => 'of.ID',
-			'we_id' => 'of.ID',
-			'we_path' => 'of.Path',
-		));
-
 		foreach($orderArr as $pos => $curOrd){
 			switch(strtolower($curOrd)){
-				case 'wedoc_id':
-				case 'we_id':
-					$ordertmp[$pos] = 'of.ID' . ($descArr[$pos] ? ' DESC' : '');
-					break;
-				case 'wedoc_filename':
-				case 'we_filename':
-					$ordertmp[$pos] = 'of.Text' . ($descArr[$pos] ? ' DESC' : '');
-					break;
-				case 'wedoc_path':
-				case 'we_path':
-					$ordertmp[$pos] = 'of.Path' . ($descArr[$pos] ? ' DESC' : '');
-					break;
-				case 'wedoc_published':
-				case 'we_published':
-					$ordertmp[$pos] = 'of.Published' . ($descArr[$pos] ? ' DESC' : '');
-					break;
-				case 'wedoc_moddate':
-				case 'we_moddate':
-					$ordertmp[$pos] = 'of.ModDate' . ($descArr[$pos] ? ' DESC' : '');
-					break;
-				case 'wedoc_creationdate':
-				case 'we_creationdate':
-					$ordertmp[$pos] = 'of.CreationDate' . ($descArr[$pos] ? ' DESC' : '');
-					break;
 				case 'random()':
 					$ordertmp = [];
 					$order = 'RANDOM ';
 					break 2;
+				default:
+					$ordertmp[$pos] = strtr($curOrd, FIELD_REPLACEMENTS) . ($descArr[$pos] ? ' DESC' : '');
 			}
 		}
 		if($ordertmp){
@@ -245,7 +215,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 	public function getFoundDocument(){
 		static $doc = null;
 		static $id = 0;
-		if($id == ($docID = $this->f('WE_ID'))){
+		if($id == ($docID = $this->f(self::PROPPREFIX . 'ID'))){
 			return $doc;
 		}
 		$id = $docID;

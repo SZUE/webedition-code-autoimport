@@ -97,8 +97,8 @@ function we_tag_form(array $attribs){
 						)) .
 						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
 							'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) ?
-									(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ?
-											$GLOBALS['lv']->f('WE_ID') :
+									(isset($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') ?
+											$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') :
 											(isset($GLOBALS['we_doc']->OF_ID) ?
 													$GLOBALS['we_doc']->OF_ID :
 													$GLOBALS['we_doc']->ID)) :

@@ -200,29 +200,29 @@ class we_listview_multiobject extends we_listview_objectBase{
 
 			if($this->count < count($this->Record)){
 				$this->DB_WE->Record($this->Record[$this->count]);
-				$this->DB_WE->Record['we_wedoc_Path'] = $this->Path . '?we_objectID=' . $this->DB_WE->Record['OF_ID'];
+				$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = $this->Path . '?we_objectID=' . $this->DB_WE->Record['OF_ID'];
 				$path_parts = pathinfo($this->Path);
-				if($this->objectseourls && $this->DB_WE->Record['we_wedoc_Url'] && show_SeoLinks()){
-					if(!$this->triggerID && $this->DB_WE->Record['we_wedoc_TriggerID'] != 0){
-						$path_parts = pathinfo(id_to_path($this->DB_WE->f('we_wedoc_TriggerID')));
+				if($this->objectseourls && $this->DB_WE->Record[self::PROPPREFIX . 'URL'] && show_SeoLinks()){
+					if(!$this->triggerID && $this->DB_WE->Record[self::PROPPREFIX . 'TRIGGERID'] != 0){
+						$path_parts = pathinfo(id_to_path($this->DB_WE->f(self::PROPPREFIX . 'TRIGGERID')));
 					}
 					if($this->hidedirindex && seoIndexHide($path_parts['basename'])){
-						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->DB_WE->Record['we_wedoc_Url'];
+						$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $this->DB_WE->Record[self::PROPPREFIX . 'URL'];
 					} else {
-						$this->DB_WE->Record["we_WE_PATH"] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $this->DB_WE->Record['we_wedoc_Url'];
+						$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . $path_parts['filename'] . '/' . $this->DB_WE->Record[self::PROPPREFIX . 'URL'];
 					}
 				} elseif($this->hidedirindex && seoIndexHide($path_parts['basename'])){
-					$this->DB_WE->Record['we_WE_PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $this->DB_WE->Record['we_wedoc_ID'];
+					$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/?we_objectID=' . $this->DB_WE->Record[self::PROPPREFIX . 'ID'];
 				} else {
-					$this->DB_WE->Record['we_WE_PATH'] = $this->Path . '?we_objectID=' . $this->DB_WE->Record['we_wedoc_ID'];
+					$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = $this->Path . '?we_objectID=' . $this->DB_WE->Record[self::PROPPREFIX . 'ID'];
 				}
-				$this->DB_WE->Record['we_WE_TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f('we_wedoc_TriggerID')));
-				$this->DB_WE->Record['we_WE_URL'] = $this->DB_WE->f('we_wedoc_Url');
-				$this->DB_WE->Record['we_WE_TEXT'] = $this->DB_WE->f('we_wedoc_Text');
-				$this->DB_WE->Record['we_WE_ID'] = $this->DB_WE->f('OF_ID');
+				$this->DB_WE->Record[self::PROPPREFIX . 'TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f(self::PROPPREFIX . 'TRIGGERID')));
+				$this->DB_WE->Record[self::PROPPREFIX . 'URL'] = $this->DB_WE->f(self::PROPPREFIX . 'URL');
+				$this->DB_WE->Record[self::PROPPREFIX . 'TEXT'] = $this->DB_WE->f(self::PROPPREFIX . 'TEXT');
+				$this->DB_WE->Record[self::PROPPREFIX . 'ID'] = $this->DB_WE->f('OF_ID');
 
 				// for seeMode #5317
-				$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_objectID=' . $this->DB_WE->Record["OF_ID"];
+				$this->DB_WE->Record[self::PROPPREFIX . 'LASTPATH'] = $this->LastDocPath . '?we_objectID=' . $this->DB_WE->Record["OF_ID"];
 				$this->count++;
 				return true;
 			}

@@ -34,7 +34,7 @@ function we_tag_ifRegisteredUserCanChange(array $attribs){
 	}
 
 	if(isset($GLOBALS['lv'])){
-		return ($protected ? $GLOBALS['lv']->f('wedoc_WebUserID') : $GLOBALS['lv']->f($userid)) == $_SESSION['webuser']['ID'];
+		return ($protected ? $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'WEBUSERID') : $GLOBALS['lv']->f($userid)) == $_SESSION['webuser']['ID'];
 	}
 	return ($protected ? $GLOBALS['we_doc']->WebUserID : $GLOBALS['we_doc']->getElement($userid)) == $_SESSION['webuser']['ID'];
 }

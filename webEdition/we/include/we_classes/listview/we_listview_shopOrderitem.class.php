@@ -143,7 +143,7 @@ class we_listview_shopOrderitem extends we_listview_base{
 						case 'WE_VARIANT':
 							continue;
 						default:
-							if(strpos($key, 'wedoc_') === false){
+							if(strpos($key, self::PROPPREFIX) === false){
 								$this->DB_WE->Record[$key] = $value;
 							}
 					}
@@ -159,10 +159,10 @@ class we_listview_shopOrderitem extends we_listview_base{
 			$this->DB_WE->Record['VARIANT'] = $strSerial['WE_VARIANT'];
 			$this->DB_WE->Record[WE_SHOP_VAT_FIELD_NAME] = $strSerial[WE_SHOP_VAT_FIELD_NAME];
 
-			$this->DB_WE->Record['wedoc_Path'] = $this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
-			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['ID'];
-			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['ID'];
-			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'TEXT'] = $this->DB_WE->Record['ID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'ID'] = $this->DB_WE->Record['ID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'LASTPATH'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'] . '&we_orderitemid=' . $this->DB_WE->Record['ID'];
 			$this->count++;
 			return true;
 		}
@@ -182,6 +182,12 @@ class we_listview_shopOrderitem extends we_listview_base{
 	}
 
 	function f($key){
+		$repl = 0;
+		$key = preg_replace('/^(OF|wedoc|we)_/i', '', $key, $repl);
+		if($repl){
+			$key = strtoupper($key);
+		}
+
 		return $this->DB_WE->f($key);
 	}
 
