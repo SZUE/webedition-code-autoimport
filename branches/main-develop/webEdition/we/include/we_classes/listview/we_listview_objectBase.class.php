@@ -40,6 +40,8 @@ abstract class we_listview_objectBase extends we_listview_base{
 
 	//FIXME: why is everything prefixed by we_?!
 	function f($key){
+		//replace access to old OF_ with "new" wedoc_
+		$key = preg_replace('^OF_', 'wedoc_', $key);
 		return $this->DB_WE->f('we_' . $key);
 	}
 
