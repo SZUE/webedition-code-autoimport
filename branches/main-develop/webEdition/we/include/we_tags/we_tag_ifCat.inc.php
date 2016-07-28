@@ -36,7 +36,7 @@ function we_tag_ifCat(array $attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 
 	if($docAttr === 'listview' && isset($GLOBALS['lv'])){
-		$cat = $GLOBALS['lv']->f('wedoc_Category');
+		$cat = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'CATEGORY');
 	} else {
 		$doc = we_getDocForTag($docAttr);
 		$cat = $doc->Category;

@@ -182,7 +182,7 @@ function we_tag_field(array $attribs){
 				isset($GLOBALS['lv']->classID) ?
 					$GLOBALS['lv']->classID :
 					($GLOBALS['lv'] instanceof we_shop_shop ?
-						$GLOBALS['lv']->f('wedoc_TableID') :
+						$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'TABLEID') :
 						''
 					)
 				) : //Fix #9223
@@ -194,10 +194,10 @@ function we_tag_field(array $attribs){
 		);
 
 
-	$isImageDoc = (isset($GLOBALS['lv']->Record['wedoc_ContentType']) && $GLOBALS['lv']->Record['wedoc_ContentType'] == we_base_ContentTypes::IMAGE);
+	$isImageDoc = (isset($GLOBALS['lv']->Record[we_listview_base::PROPPREFIX . 'CONTENTTYPE']) && $GLOBALS['lv']->Record[we_listview_base::PROPPREFIX . 'CONTENTTYPE'] == we_base_ContentTypes::IMAGE);
 	$isCalendar = (!empty($GLOBALS['lv']->calendar_struct['calendar']) && $GLOBALS['lv']->isCalendarField($type));
 
-	if((!$GLOBALS['lv']->f('WE_ID') && property_exists($GLOBALS['lv'], 'calendar_struct') && $GLOBALS['lv']->calendar_struct['calendar'] === '')){
+	if((!$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') && property_exists($GLOBALS['lv'], 'calendar_struct') && $GLOBALS['lv']->calendar_struct['calendar'] === '')){
 		return '';
 	}
 
@@ -258,7 +258,7 @@ function we_tag_field(array $attribs){
 		case 'float' :
 		case 'checkbox' :
 		case 'collection':
-			$idd = ($isImageDoc && $type === 'img' ) ? $GLOBALS['lv']->Record['wedoc_ID'] : $GLOBALS['lv']->f($name);
+			$idd = ($isImageDoc && $type === 'img' ) ? $GLOBALS['lv']->Record[we_listview_base::PROPPREFIX . 'ID'] : $GLOBALS['lv']->f($name);
 			$out = ($idd == 0 ? '' : $GLOBALS['we_doc']->getFieldByVal($idd, $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'));
 			if($type === 'img' && empty($out)){
 				return '';
@@ -320,7 +320,7 @@ function we_tag_field(array $attribs){
 				} else {
 					$shopVatAttribs = $attribs;
 					$shopVatAttribs['shopcategoryid'] = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME);
-					$shopVatAttribs['wedoccategories'] = $GLOBALS['lv']->f('wedoc_Category');
+					$shopVatAttribs['wedoccategories'] = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'CATEGORY');
 					unset($shopVatAttribs['type']);
 
 					$out = we_tag('shopVat', $shopVatAttribs);
@@ -330,7 +330,7 @@ function we_tag_field(array $attribs){
 		case 'shopCategory' :
 			if(defined('SHOP_TABLE') && is_object($GLOBALS['lv'])){
 				$id = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME);
-				$wedocCategory = $GLOBALS['lv']->f('wedoc_Category');
+				$wedocCategory = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'CATEGORY');
 
 				$out = we_shop_category::getShopCatFieldByID($id, $wedocCategory, $field, $showpath, $rootdir, true);
 			}
@@ -371,7 +371,7 @@ function we_tag_field(array $attribs){
 				$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' .
 					(!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($triggerpath_parts['basename']) ?
 						'' : $triggerpath_parts['filename'] . '/' ) .
-					$GLOBALS['lv']->f('WE_URL');
+					$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'URL');
 			} else {
 				$testtype = ($type === 'select' && $usekey) ? 'text' : $type;
 				switch(get_class($GLOBALS['lv'])){
@@ -398,8 +398,8 @@ function we_tag_field(array $attribs){
 				//FIXME: remove getDBRecord
 				$dbRecord = array_keys($GLOBALS['lv']->getDBRecord()); // bugfix #6399
 				foreach($dbRecord as $glob_key){
-					if(substr($glob_key, 0, 13) === 'we_we_object_'){
-						$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($glob_key, 13), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
+					if(substr($glob_key, 0, 7) === 'object_'){
+						$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f($name), ($usekey ? 'text' : 'select'), $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], substr($glob_key, 7), 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					}
 
 					if($normVal != ''){
@@ -594,7 +594,7 @@ function we_tag_field(array $attribs){
 		switch(get_class($GLOBALS['lv'])){
 			case 'we_listview_document':
 				$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
-				$tailOwnId = '?we_documentID=' . $GLOBALS['lv']->f('wedoc_ID');
+				$tailOwnId = '?we_documentID=' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID');
 			case '':
 			case 'we_listview_search':
 			case 'we_listview_variants':
@@ -605,11 +605,11 @@ function we_tag_field(array $attribs){
 				break;
 			case 'we_listview_object':
 				$triggerid = $triggerid ? : $GLOBALS['lv']->triggerID;
-				$showlink = $tid || $triggerid || $GLOBALS['lv']->f('we_wedoc_Templates') || $GLOBALS['lv']->docID;
+				$showlink = $tid || $triggerid || $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'TEMPLATES') || $GLOBALS['lv']->docID;
 				$tailOwnId = '?we_objectID=' . $GLOBALS['lv']->f('OF_ID');
 				break;
 			case 'we_listview_multiobject':
-				$showlink = $GLOBALS['lv']->f('we_wedoc_Templates') || $GLOBALS['lv']->docID;
+				$showlink = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'TEMPLATES') || $GLOBALS['lv']->docID;
 				break;
 			case 'we_listview_shopOrder': //listview type="order"
 				$showlink = !empty($triggerid);
@@ -626,9 +626,9 @@ function we_tag_field(array $attribs){
 		$tail = ($tid && ($GLOBALS['lv'] instanceof we_listview_object) ? '&amp;we_objectTID=' . $tid : '');
 
 		if(isset($GLOBALS['we_doc']->OF_ID) && ($GLOBALS['we_doc']->InWebEdition)){
-			$linkAttribs['href'] = $GLOBALS['lv']->f('wedoc_lastPath') . $tail;
+			$linkAttribs['href'] = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'LASTPATH') . $tail;
 		} else {
-			$path_parts = pathinfo($GLOBALS['lv']->f('WE_PATH'));
+			$path_parts = pathinfo($GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'PATH'));
 			if($triggerid){
 				$triggerpath = id_to_path($triggerid);
 				$triggerpath_parts = pathinfo($triggerpath);
@@ -636,8 +636,8 @@ function we_tag_field(array $attribs){
 				$linkAttribs['href'] = (!empty($GLOBALS['lv']->objectseourls)) ? // objectseourls=true
 					rtrim($triggerpath_parts['dirname'], '/') . '/' .
 					((!$GLOBALS['WE_MAIN_DOC']->InWebEdition && !empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($triggerpath_parts['basename'])) ? //hidedirindex of triggerID
-						$GLOBALS['lv']->f('WE_URL') . $tail : //Fix #8708 do not hidedirindex of triggerID
-						$triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f('WE_URL') . $tail
+						$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'URL') . $tail : //Fix #8708 do not hidedirindex of triggerID
+						$triggerpath_parts['filename'] . '/' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'URL') . $tail
 					) : //objectseourls=false or not set
 					$triggerpath . $tailOwnId . $tail;
 
@@ -645,7 +645,7 @@ function we_tag_field(array $attribs){
 			} else {
 				$linkAttribs['href'] = (!empty($GLOBALS['lv']->hidedirindex) && seoIndexHide($path_parts['basename']) ?
 						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
-						$GLOBALS['lv']->f('WE_PATH') . $tail
+						$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'PATH') . $tail
 					);
 			}
 		}

@@ -200,22 +200,21 @@ class we_shop_Basket{
 
 				if(($hash = getHash('SELECT * FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $DB_WE, MYSQL_ASSOC))){
 					foreach($hash as $key => $val){
-						$Record['wedoc_' . $key] = $val;
+						$Record[we_listview_base::PROPPREFIX . strtoupper($key)] = $val;
 					}
 				}
 
-				$Record['WE_PATH'] = $Record['wedoc_Path'] . ($variant ? '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant : '');
-				$Record['WE_TEXT'] = $Record['wedoc_Text'];
-				$Record['WE_VARIANT'] = $variant;
-				$Record['WE_ID'] = intval($id);
+				$Record[we_listview_base::PROPPREFIX . 'PATH'] .= ($variant ? '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant : '');
+				$Record[we_listview_base::PROPPREFIX . 'VARIANT'] = $variant;
+				$Record[we_listview_base::PROPPREFIX . 'ID'] = intval($id);
 
 				// at last add custom fields to record and to path
 				if(!empty($customFields)){
-					$Record['WE_PATH'] .= ($variant ? '&amp;' : '?');
+					$Record[we_listview_base::PROPPREFIX . 'PATH'] .= ($variant ? '&amp;' : '?');
 
 					foreach($customFields as $name => $value){
 						$Record[$name] = $value;
-						$Record['WE_PATH'] .= WE_SHOP_ARTICLE_CUSTOM_FIELD . '[' . $name . ']=' . $value . '&amp;';
+						$Record[we_listview_base::PROPPREFIX . 'PATH'] .= WE_SHOP_ARTICLE_CUSTOM_FIELD . '[' . $name . ']=' . $value . '&amp;';
 					}
 				}
 				break;
@@ -240,28 +239,19 @@ class we_shop_Basket{
 					$Record = we_base_variants::useVariantForShopObject($Record, $variant, $obj);
 
 					// add variant to path ...
-					$Record['we_WE_PATH'] .= '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant;
+					$Record[self::PROPPREFIX . 'PATH'] .= '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant;
 				}
-				$Record['WE_VARIANT'] = $variant;
+				$Record[self::PROPPREFIX . 'VARIANT'] = $variant;
 				$Record['we_obj'] = $id;
 
 				// at last add custom fields to record and to path
 				if(!empty($customFields)){
 					foreach($customFields as $name => $value){
 						$Record[$name] = $value;
-						$Record['we_WE_PATH'] .= '&amp;' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '[' . $name . ']=' . $value;
+						$Record[self::PROPPREFIX . 'PATH'] .= '&amp;' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '[' . $name . ']=' . $value;
 					}
 				}
 
-				// when using objects all fields have 'we_' as prename
-				if(isset($Record['we_' . WE_SHOP_VAT_FIELD_NAME])){
-					$Record[WE_SHOP_VAT_FIELD_NAME] = $Record['we_' . WE_SHOP_VAT_FIELD_NAME];
-					unset($Record['we_' . WE_SHOP_VAT_FIELD_NAME]);
-				}
-				if(isset($Record['we_' . WE_SHOP_CATEGORY_FIELD_NAME])){
-					$Record[WE_SHOP_CATEGORY_FIELD_NAME] = $Record['we_' . WE_SHOP_CATEGORY_FIELD_NAME];
-					unset($Record['we_' . WE_SHOP_CATEGORY_FIELD_NAME]);
-				}
 				break;
 		}
 

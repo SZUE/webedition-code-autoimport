@@ -82,32 +82,21 @@ class we_listview_category extends we_listview_base{
 		$this->count = 0;
 	}
 
+	function f($key){
+		$key = strtoupper(preg_replace('/^(OF|wedoc|we)_/i', '', $key));
+		return parent::f($key);
+	}
+
 	function next_record(){
 		if($this->DB_WE->next_record(MYSQL_ASSOC)){
-			$this->Record = array(
-				'WE_PATH' => $this->DB_WE->f('Path'),
-				'WE_TITLE' => $this->DB_WE->f('Title'),
-				'WE_DESCRIPTION' => $this->DB_WE->f('Description'),
-				'Category' => $this->DB_WE->f('Category'),
-				'WE_ID' => $this->DB_WE->f('ID'),
-				'ParentID' => $this->DB_WE->f('ParentID'),
-			);
-			$this->Record['Path'] = $this->Record['WE_PATH'];
-			$this->Record['ID'] = $this->Record['WE_ID'];
-			$this->Record['Title'] = $this->Record['WE_TITLE'];
-			$this->Record['Description'] = $this->Record['WE_DESCRIPTION'];
-
+			$this->Record = array_change_key_case($this->DB_WE->getRecord(), CASE_UPPER);
 			$this->count++;
 			return true;
 		}
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
 			$this->Record = [];
-			$this->DB_WE->Record = array(
-				"WE_PATH" => '',
-				"WE_TEXT" => '',
-				"WE_ID" => '',
-			);
+			$this->DB_WE->Record = [];
 			$this->count++;
 			return true;
 		}

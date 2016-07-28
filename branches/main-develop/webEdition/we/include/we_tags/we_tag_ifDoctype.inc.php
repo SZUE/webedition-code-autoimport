@@ -32,7 +32,7 @@ function we_tag_ifDoctype(array $attribs){
 	$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 
 	if($docAttr === 'listview' && isset($GLOBALS['lv'])){
-		$doctype = $GLOBALS['lv']->f('wedoc_DocType');
+		$doctype = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'DOCTYPE');
 	} else {
 		$doc = we_getDocForTag($docAttr);
 		$doctype = ($doc instanceof we_webEditionDocument) ? $doc->DocType : false;

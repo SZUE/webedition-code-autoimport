@@ -50,7 +50,7 @@ function we_tag_ifShopVat(array $attribs){
 
 		if(isset($GLOBALS['lv'])){
 			$catID = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
-			$wedocCategory = $GLOBALS['lv']->f('wedoc_Category') ? : '';
+			$wedocCategory = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'CATEGORY') ? : '';
 		} elseif(!$lvOnly) {
 			$catID = $GLOBALS['we_doc']->getElement(WE_SHOP_CATEGORY_FIELD_NAME) ? : 0;
 			$wedocCategory = $GLOBALS['we_doc']->Category ? : '';

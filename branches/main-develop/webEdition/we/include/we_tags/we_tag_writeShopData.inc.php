@@ -90,7 +90,7 @@ function we_tag_writeShopData(array $attribs){
 
 		// foreach article we must determine the correct tax-rate
 		if(we_shop_category::isCategoryMode()){
-			$wedocCategory = ((isset($shoppingItem['serial']['we_wedoc_Category'])) ? $shoppingItem['serial']['we_wedoc_Category'] : $shoppingItem['serial']['wedoc_Category']);
+			$wedocCategory = $shoppingItem['serial'][we_listview_base::PROPPREFIX . 'CATEGORY'];
 			$billingCountry = we_shop_category::getCountryFromCustomer(false, $_SESSION['webuser']);
 			$catId = !empty($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
 

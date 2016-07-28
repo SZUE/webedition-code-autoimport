@@ -304,7 +304,7 @@ class we_listview_document extends we_listview_base{
 		}
 
 		$this->DB_WE->query(
-			'SELECT f.ID as ID,f.WebUserID as WebUserID' .
+			'SELECT f.ID,f.WebUserID' .
 			($random ? ',RAND() as RANDOM' : ($this->search ? ',' . $ranking . ' AS ranking' : '')) .
 			' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON f.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID' .
 			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=f.ID AND i.ClassID=0)' : '') .
@@ -348,49 +348,46 @@ class we_listview_document extends we_listview_base{
 				$id = $this->IDs[$count];
 				$this->DB_WE->query('SELECT l.Name,IF(c.BDID!=0,c.BDID,c.Dat) AS data FROM ' . LINK_TABLE . ' l JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE l.DID=' . intval($id) . ' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 				$this->Record = array_merge($this->DB_WE->getAllFirst(false), getHash('SELECT
-	ID AS wedoc_ID,
 	ID AS WE_ID,
-	ParentID AS wedoc_ParentID,
-	Text AS wedoc_Text,
+	ParentID AS WE_PARENTID,
 	Text AS WE_TEXT,
-	IsFolder AS wedoc_IsFolder,
-	ContentType AS wedoc_ContentType,
-	CreationDate AS wedoc_CreationDate,
-	ModDate AS wedoc_ModDate,
-	Path AS wedoc_Path,
+	IsFolder AS WE_ISFOLDER,
+	ContentType AS WE_CONTENTTYPE,
+	CreationDate AS WE_CREATIONDATE,
+	ModDate AS WE_MODDATE,
 	Path AS WE_PATH,
-	TemplateID AS wedoc_TemplateID,
-	Filename AS wedoc_Filename,
-	Extension AS wedoc_Extension,
-	IsDynamic AS wedoc_IsDynamic,
-	IsSearchable AS wedoc_IsSearchable,
-	DocType AS wedoc_DocType,
-	ClassName AS wedoc_ClassName,
-	Category AS wedoc_Category,
-	Published AS wedoc_Published,
-	CreatorID AS wedoc_CreatorID,
-	ModifierID AS wedoc_ModifierID,
-	RestrictOwners AS wedoc_RestrictOwners,
-	Owners AS wedoc_Owners,
-	OwnersReadOnly AS wedoc_OwnersReadOnly,
-	Language AS wedoc_Language,
-	WebUserID AS wedoc_WebUserID,
-	InGlossar AS wedoc_InGlossar
+	TemplateID AS WE_TEMPLATEID,
+	Filename AS WE_FILENAME,
+	Extension AS WE_EXTENSION,
+	IsDynamic AS WE_ISDYNAMIC,
+	IsSearchable AS WE_ISSEARCHABLE,
+	DocType AS WE_DOCTYPE,
+	ClassName AS WE_CLASSNAME,
+	Category AS WE_CATEGORY,
+	Published AS WE_PUBLISHED,
+	CreatorID AS WE_CREATORID,
+	ModifierID AS WE_MODIFIERID,
+	RestrictOwners AS WE_RESTRICTOWNERS,
+	Owners AS WE_OWNERS,
+	OwnersReadOnly AS WE_OWNERSREADONLY,
+	Language AS WE_LANGUAGE,
+	WebUserID AS WE_WEBUSERID,
+	InGlossar AS WE_INGLOSSAR
 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), $this->DB_WE, MYSQL_ASSOC)
 				);
 
-				$this->Record['WE_SHOPVARIANTS'] = 0; //check this for global variants
+				$this->Record[self::PROPPREFIX . 'SHOPVARIANTS'] = 0; //check this for global variants
 				if(!empty($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME])){
 					$variants = is_string($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) ? we_unserialize($this->Record[we_base_constants::WE_VARIANTS_ELEMENT_NAME]) : [];
 					if(is_array($variants) && count($variants) > 0){
-						$this->Record['WE_SHOPVARIANTS'] = count($variants);
+						$this->Record[self::PROPPREFIX . 'SHOPVARIANTS'] = count($variants);
 					}
 				}
 
-				if($this->customers && $this->Record['wedoc_WebUserID']){
-					if(isset($this->customerArray['cid_' . $this->Record['wedoc_WebUserID']])){
-						foreach($this->customerArray['cid_' . $this->Record['wedoc_WebUserID']] as $key => $value){
-							$this->Record['WE_CUSTOMER_' . $key] = $value;
+				if($this->customers && $this->Record[self::PROPPREFIX . 'WEBUSERID']){
+					if(isset($this->customerArray['cid_' . $this->Record[self::PROPPREFIX . 'WEBUSERID']])){
+						foreach($this->customerArray['cid_' . $this->Record[self::PROPPREFIX . 'WEBUSERID']] as $key => $value){
+							$this->Record[self::PROPPREFIX . 'CUSTOMER_' . $key] = $value;
 						}
 					}
 				}

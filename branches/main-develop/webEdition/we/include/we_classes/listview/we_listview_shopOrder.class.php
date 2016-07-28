@@ -148,13 +148,12 @@ class we_listview_shopOrder extends we_listview_base{
 				$this->DB_WE->Record['shopPricename'] = $strSerialOrder['we_shopPricename'];
 			}
 
-			//$this->DB_WE->Record['CustomerID'] = $this->DB_WE->Record['IntCustomerID'];
-			$this->DB_WE->Record['we_cid'] = $this->DB_WE->Record['CustomerID'];
-			$this->DB_WE->Record['we_orderid'] = $this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record['WE_PATH'] = $this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record['WE_TEXT'] = ''; //$this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'CID'] = $this->DB_WE->Record['CustomerID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'ORDERID'] = $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'TEXT'] = ''; //$this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'ID'] = $this->DB_WE->Record['OrderID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'LASTPATH'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
 			$this->count++;
 			return true;
 		}
@@ -173,6 +172,12 @@ class we_listview_shopOrder extends we_listview_base{
 	}
 
 	function f($key){
+		$repl = 0;
+		$key = preg_replace('/^(OF|wedoc|we)_/i', '', $key, $repl);
+		if($repl){
+			$key = strtoupper($key);
+		}
+
 		return $this->DB_WE->f($key);
 	}
 

@@ -177,10 +177,10 @@ function we_tag_listview(array $attribs){
 
 			switch(isset($GLOBALS['lv']) ? get_class($GLOBALS['lv']) : ''){
 				case 'we_listview_object':
-					$we_lv_pageID = $GLOBALS['lv']->f('WE_ID');
+					$we_lv_pageID = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID');
 					$we_lv_linktype = 'tblObjectFiles';
-					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' ? $GLOBALS['lv']->f('we_wedoc_Language') : ($we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
-					$we_lv_ownlanguage = $GLOBALS['lv']->f('we_wedoc_Language');
+					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' ? $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'LANGUAGE') : ($we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : $we_lv_pagelanguage);
+					$we_lv_ownlanguage = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'LANGUAGE');
 					break;
 				default:
 					$we_lv_pagelanguage = $we_lv_pagelanguage === 'self' || $we_lv_pagelanguage === 'top' ? $we_lv_ownlanguage : we_getDocForTag($docAttr)->Language;
@@ -260,7 +260,7 @@ function we_tag_listview(array $attribs){
 		case 'variant':
 			$defaultname = weTag_getAttribute('defaultname', $attribs, '', we_base_request::STRING);
 			$docId = weTag_getAttribute('documentid', $attribs, 0, we_base_request::INT);
-			$objectId = weTag_getAttribute('objectid', $attribs, 0, we_base_request::INT)? : (is_object($GLOBALS['lv']) ? intval($GLOBALS['lv']->f('WE_ID')) : 0);
+			$objectId = weTag_getAttribute('objectid', $attribs, 0, we_base_request::INT)? : (is_object($GLOBALS['lv']) ? intval($GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID')) : 0);
 
 			$GLOBALS['lv'] = new we_listview_variants($name, $we_rows, $defaultname, $docId, $objectId, $we_offset, $hidedirindex, $objectseourls, $triggerid);
 			break;

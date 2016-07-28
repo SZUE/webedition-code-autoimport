@@ -89,20 +89,18 @@ class we_customer_onlinemonitor extends we_listview_base{
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . CUSTOMER_SESSION_TABLE . $where, '', $this->DB_WE);
 
-		$this->DB_WE->query('SELECT SessionID,SessionIp,WebUserID,WebUserGroup,WebUserDescription,Browser,Referrer,UNIX_TIMESTAMP(LastLogin) AS LastLogin,UNIX_TIMESTAMP(LastAccess) AS LastAccess,PageID,SessionAutologin FROM ' . CUSTOMER_SESSION_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0)
-					? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
+		$this->DB_WE->query('SELECT SessionID,SessionIp,WebUserID,WebUserGroup,WebUserDescription,Browser,Referrer,UNIX_TIMESTAMP(LastLogin) AS LastLogin,UNIX_TIMESTAMP(LastAccess) AS LastAccess,PageID,SessionAutologin FROM ' . CUSTOMER_SESSION_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
 	public function next_record(){
 		$ret = $this->DB_WE->next_record();
 		if($ret){
-			$this->DB_WE->Record['we_cid'] = $this->DB_WE->Record['WebUserID'];
-			$this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_omid=' . $this->DB_WE->Record['SessionID'];
-			$this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_omid=' . $this->DB_WE->Record['SessionID'];
-			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['SessionID'];
-			$this->DB_WE->Record['WE_ID'] = $this->DB_WE->Record['SessionID'];
-			$this->DB_WE->Record['we_wedoc_lastPath'] = $this->LastDocPath . '?we_omid=' . $this->DB_WE->Record['SessionID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'CID'] = $this->DB_WE->Record['WebUserID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = $this->Path . '?we_omid=' . $this->DB_WE->Record['SessionID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'TEXT'] = $this->DB_WE->Record['SessionID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'ID'] = $this->DB_WE->Record['SessionID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'LASTPATH'] = $this->LastDocPath . '?we_omid=' . $this->DB_WE->Record['SessionID'];
 			$this->count++;
 			return true;
 		}
@@ -121,6 +119,12 @@ class we_customer_onlinemonitor extends we_listview_base{
 	}
 
 	function f($key){
+		$repl = 0;
+		$key = preg_replace('/^(OF|wedoc|we)_/i', '', $key, $repl);
+		if($repl){
+			$key = strtoupper($key);
+		}
+
 		return $this->DB_WE->f($key);
 	}
 

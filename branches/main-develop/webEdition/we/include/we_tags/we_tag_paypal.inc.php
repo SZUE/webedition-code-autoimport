@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -87,7 +86,7 @@ function we_tag_paypal(array $attribs){
 
 		//	NumberFormat - currency and taxes
 		if(!$currency){
-			$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="shop_pref"', '', $DB_WE));
+			$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"', '', $DB_WE));
 			if(!isset($feldnamen[0])){ // determine the currency
 				$feldnamen[0] = -1;
 			}
@@ -113,7 +112,7 @@ function we_tag_paypal(array $attribs){
 			}
 		}
 
-		$formField = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE. ' WHERE tool="shop" AND pref_name="payment_details"'));
+		$formField = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="payment_details"'));
 		if(isset($formField[0])){ // determine the Forename
 			$sendForename = $_SESSION['webuser'][$formField[0]];
 		}
@@ -217,7 +216,7 @@ function we_tag_paypal(array $attribs){
 
 					// foreach article we must determine the correct tax-rate
 					if(we_shop_category::isCategoryMode()){
-						$wedocCategory = ((isset($item['serial']['we_wedoc_Category'])) ? $item['serial']['we_wedoc_Category'] : $item['serial']['wedoc_Category']);
+						$wedocCategory = $item['serial'][we_listview_base::PROPPREFIX . 'CATEGORY'];
 						$billingCountry = $countrycode ? : we_shop_category::getDefaultCountry();
 						$catId = !empty($item['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) ? $item['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
 
@@ -240,10 +239,10 @@ function we_tag_paypal(array $attribs){
 
 					switch(true){
 						/**
-						* seems to be gros product prices and customer do not need pay tax
-						* so we have to calculate the correct net article price
-						* bug #5701
-						*/
+						 * seems to be gros product prices and customer do not need pay tax
+						 * so we have to calculate the correct net article price
+						 * bug #5701
+						 */
 						case (!$useVat && !$netprices) :
 							$shopVat = (1 + ($shopVat / 100));
 							//paypal allows only two decimal places
@@ -275,15 +274,15 @@ function we_tag_paypal(array $attribs){
 				$customer = (we_tag('ifRegisteredUser') ? $_SESSION['webuser'] : false);
 
 				$cartField[WE_SHOP_SHIPPING] = ($shipping === '' ?
-								array(
-							'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
-							'isNet' => $weShippingControl->isNet,
-							'vatRate' => $weShippingControl->vatRate
-								) :
-								array(
-							'costs' => $shipping,
-							'isNet' => $shippingIsNet,
-							'vatRate' => $shippingVatRate
+						array(
+						'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
+						'isNet' => $weShippingControl->isNet,
+						'vatRate' => $weShippingControl->vatRate
+						) :
+						array(
+						'costs' => $shipping,
+						'isNet' => $shippingIsNet,
+						'vatRate' => $shippingVatRate
 				));
 
 				$shippingCosts = $cartField[WE_SHOP_SHIPPING]['costs'];
