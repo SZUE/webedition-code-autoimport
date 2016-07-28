@@ -142,9 +142,6 @@ abstract class we_listview_objectBase extends we_listview_base{
 				$n = $p['joinClassID'];
 			}
 
-
-
-
 			$f .= $p['alias'] . '.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
 			if(!isset($from[$p['table']])){
 				$from[$p['table']] = $p['table'] . ' AS ' . $p['alias'];
@@ -161,6 +158,12 @@ abstract class we_listview_objectBase extends we_listview_base{
 			if(($pos = array_search($n, $orderArr)) !== false){
 				$ordertmp[$pos] = $p['alias'] . '.`' . $p['type'] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 			}
+			//some replacements if old conditions may occur
+			$cond = strtr($cond, [
+				OBJECT_X_TABLE => 'ob',
+				OBJECT_FILES_TABLE => 'of',
+				'OF_' => 'of.'
+			]);
 			$cond = preg_replace('/(' . $charclass . ')' . $n . '(' . $charclass . ')/', '${1}' . $p['alias'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
 		}
 		$cond = preg_replace_callback("/'([^']*)'/", function (array $match){
