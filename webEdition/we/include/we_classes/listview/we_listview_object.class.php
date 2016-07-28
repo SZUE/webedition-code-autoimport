@@ -159,7 +159,6 @@ class we_listview_object extends we_listview_objectBase{
 				}
 				$q = 'SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' of.IsSearchable=1' : '') . ($pid_tail ? ' AND ' . $pid_tail : '') . ' AND of.ID!=0 ' . $where_lang . $cat_tail . ' ' . ($sqlParts['publ_cond'] ? (' AND ' . $sqlParts['publ_cond']) : '') . ' ' . ($sqlParts['cond'] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			}
-			t_e($q);
 			$this->DB_WE->query($q);
 			$this->anz = $this->DB_WE->num_rows();
 
