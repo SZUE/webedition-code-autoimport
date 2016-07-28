@@ -27,7 +27,8 @@ require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 define('WE_DEFAULT_EMAIL', 'mailserver@' . $_SERVER['SERVER_NAME']);
 define('WE_DEFAULT_SUBJECT', 'webEdition mailform');
 
-$formBlock = $blocked = !we_tag('ifFormToken');
+//FIXME: forms can come from static content;
+$formBlock = $blocked = false;//!we_tag('ifFormToken');
 
 // check to see if we need to lock or block the formmail request
 if(FORMMAIL_LOG){
