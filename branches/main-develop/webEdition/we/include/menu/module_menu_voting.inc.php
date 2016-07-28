@@ -21,56 +21,41 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-return array(
-	'new' => array(
-		'text' => g_l('modules_voting', '[menu_new]'),
-	),
-	array(
-		'text' => g_l('modules_voting', '[voting]'),
+return [
+	'new' => ['text' => g_l('modules_voting', '[menu_new]'),],
+	['text' => g_l('modules_voting', '[voting]'),
 		'parent' => 'new',
 		'cmd' => 'new_voting',
 		'perm' => 'NEW_VOTING || ADMINISTRATOR',
-	),
-	array(
-		'text' => g_l('modules_voting', '[group]'),
+	],
+	['text' => g_l('modules_voting', '[group]'),
 		'parent' => 'new',
 		'cmd' => 'new_voting_group',
 		'perm' => 'NEW_VOTING || ADMINISTRATOR',
-	),
-	'voting' => array(
-		'text' => g_l('modules_voting', '[voting]'),
-	),
-	array(
-		'text' => g_l('modules_voting', '[menu_save]'),
+	],
+	'voting' => ['text' => g_l('modules_voting', '[voting]'),],
+	['text' => g_l('modules_voting', '[menu_save]'),
 		'parent' => 'voting',
 		'cmd' => 'save_voting',
 		'perm' => 'EDIT_VOTING || NEW_VOTING || ADMINISTRATOR',
-	),
-	array(
-		'text' => g_l('modules_voting', '[menu_delete]'),
+	],
+	['text' => g_l('modules_voting', '[menu_delete]'),
 		'parent' => 'voting',
 		'cmd' => 'delete_voting',
 		'perm' => 'DELETE_VOTING || ADMINISTRATOR',
-	),
-	array(
-		'parent' => 'voting', // separator
-	),
-	array(
-		'text' => g_l('modules_voting', '[menu_exit]'),
+	],
+	['parent' => 'voting',],
+	['text' => g_l('modules_voting', '[menu_exit]'),
 		'parent' => 'voting',
 		'cmd' => 'exit_voting',
-	),
-	'help' => array(
-		'text' => g_l('modules_voting', '[menu_help]'),
-	),
-	array(
-		'text' => g_l('modules_voting', '[menu_help]') . '&hellip;',
+	],
+	'help' => ['text' => g_l('modules_voting', '[menu_help]'),],
+	['text' => g_l('modules_voting', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',
-	),
-	array(
-		'text' => g_l('modules_voting', '[menu_info]') . '&hellip;',
+	],
+	['text' => g_l('modules_voting', '[menu_info]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'info_modules',
-	)
-);
+	]
+];

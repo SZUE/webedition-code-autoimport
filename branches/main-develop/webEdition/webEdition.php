@@ -132,7 +132,6 @@ if (self.location !== top.location) {
 top.location = self.location;
 }
 
-self.focus();
 var Header = null;
 var Tree = null;
 var Vtabs = null;
@@ -496,7 +495,7 @@ if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailabl
 //-->
 </script>
 </head>
-<body id="weMainBody" onload="initWE(); top.start('<?= $table_to_load; ?>'); startMsg(); updateCheck();" onbeforeunload ="return doUnload();">
+<body id="weMainBody" onload="initWE(); top.start('<?= $table_to_load; ?>'); startMsg(); updateCheck();self.focus();" onbeforeunload ="return doUnload();">
 	<div id="headerDiv"><?php
 		$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
 		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);

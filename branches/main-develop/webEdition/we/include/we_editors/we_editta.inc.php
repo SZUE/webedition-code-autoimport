@@ -23,7 +23,6 @@
  */
 we_html_tools::protect();
 
-
 $nr = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 $name = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', $we_transaction, 3);
@@ -215,10 +214,10 @@ $table = '<table cellpadding="0" cellspacing="0">
 	</tr>
 </table>';
 
-$parts[] = array(
+$parts[] = [
 	"headline" => "",
 	"html" => $table,
-);
+];
 
 // CLASSES
 $table = '<table cellpadding="0" cellspacing="0">
@@ -227,10 +226,10 @@ $table = '<table cellpadding="0" cellspacing="0">
 	</tr>
 </table>';
 
-$parts[] = array(
+$parts[] = [
 	'headline' => '',
 	'html' => $table,
-);
+];
 
 // TINYPARAMS
 $table = '<table class="default">
@@ -241,10 +240,10 @@ $table = '<table class="default">
 	</tr>
 </table>';
 
-$parts[] = array(
-	"headline" => "",
-	"html" => $table,
-);
+$parts[] = [
+	'headline' => '',
+	'html' => $table,
+];
 
 // TINY-TEMPLATES
 $table = '<table class="default">
@@ -255,10 +254,10 @@ $table = '<table class="default">
 	</tr>
 </table>';
 
-$parts[] = array(
+$parts[] = [
 	"headline" => "",
 	"html" => $table,
-);
+];
 
 $cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
 $okbut = we_html_button::create_button(we_html_button::OK, "javascript:okFn();");

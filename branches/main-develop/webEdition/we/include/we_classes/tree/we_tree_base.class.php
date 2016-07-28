@@ -87,7 +87,7 @@ function startTree(pid,offset){
 	 */
 
 	function getJSTreeCode(){
-		return we_html_element::jsScript(JS_DIR . 'tree.js', 'self.focus();') .
+		return we_html_element::jsScript(JS_DIR . 'tree.js') .
 			$this->customJSFile() .
 			we_html_element::jsElement('
 var treeData = new container();

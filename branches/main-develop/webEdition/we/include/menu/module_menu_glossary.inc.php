@@ -24,105 +24,85 @@
 //
 // ---> Menu File / Glossary
 //
-$we_menu_glossary = array(
-	'new' => array(
-		'text' => g_l('modules_glossary', '[menu_new]'),
-	),
-	'glossary' => array(
-		'text' => g_l('modules_glossary', '[glossary]'),
-	),
-	array(
-		'text' => g_l('modules_glossary', '[menu_save]'),
+$we_menu_glossary = [
+	'new' => ['text' => g_l('modules_glossary', '[menu_new]'),],
+	'glossary' => ['text' => g_l('modules_glossary', '[glossary]'),],
+	['text' => g_l('modules_glossary', '[menu_save]'),
 		'parent' => 'glossary',
 		'cmd' => 'save_glossary',
 		'perm' => 'EDIT_GLOSSARY || NEW_GLOSSARY || ADMINISTRATOR',
-	),
-	array(
-		'text' => g_l('modules_glossary', '[menu_delete]'),
+	],
+	['text' => g_l('modules_glossary', '[menu_delete]'),
 		'parent' => 'glossary',
 		'cmd' => 'delete_glossary',
 		'perm' => 'DELETE_GLOSSARY || ADMINISTRATOR',
-	),
-	array('parent' => 'glossary'
-	), // separator
-	array(
-		'text' => g_l('modules_glossary', '[menu_exit]'),
+	],
+	['parent' => 'glossary'], // separator
+	['text' => g_l('modules_glossary', '[menu_exit]'),
 		'parent' => 'glossary',
 		'cmd' => 'exit_glossary',
-	),
+	],
 //
 // ---> Menu Options
 //
-	'options' => array(
-		'text' => g_l('modules_glossary', '[menu_options]'),
+	'options' => ['text' => g_l('modules_glossary', '[menu_options]'),
 		'perm' => 'ADMINISTRATOR',
-	),
-	array(
-		'text' => g_l('modules_glossary', '[menu_settings]'),
+	],
+	['text' => g_l('modules_glossary', '[menu_settings]'),
 		'parent' => 'options',
 		'cmd' => 'glossary_settings',
 		'perm' => 'ADMINISTRATOR',
-	),
+	],
 //
 // ---> Menu Help
 //
-	'help' => array(
-		'text' => g_l('modules_glossary', '[menu_help]'),
-	),
-	array(
-		'text' => g_l('modules_glossary', '[menu_help]') . '&hellip;',
+	'help' => ['text' => g_l('modules_glossary', '[menu_help]'),],
+	['text' => g_l('modules_glossary', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',
-	),
-	array(
-		'text' => g_l('modules_glossary', '[menu_info]') . '&hellip;',
+	],
+	['text' => g_l('modules_glossary', '[menu_info]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'info_modules',
-	)
-);
+	]
+];
 
 $langs = getWeFrontendLanguagesForBackend();
 foreach($langs as $key => $language){
-	$we_menu_glossary[$language] = array(
-		'text' => $language,
+	$we_menu_glossary[$language] = ['text' => $language,
 		'parent' => 'new',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-	);
+	];
 
-	$we_menu_glossary[] = array(
-		'text' => g_l('modules_glossary', '[abbreviation]'),
+	$we_menu_glossary[] = ['text' => g_l('modules_glossary', '[abbreviation]'),
 		'parent' => $language,
 		'cmd' => 'GlossaryXYZnew_glossary_abbreviationXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-	);
+	];
 
-	$we_menu_glossary[] = array(
-		'text' => g_l('modules_glossary', '[acronym]'),
+	$we_menu_glossary[] = ['text' => g_l('modules_glossary', '[acronym]'),
 		'parent' => $language,
 		'cmd' => 'GlossaryXYZnew_glossary_acronymXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-	);
+	];
 
-	$we_menu_glossary[] = array(
-		'text' => g_l('modules_glossary', '[foreignword]'),
+	$we_menu_glossary[] = ['text' => g_l('modules_glossary', '[foreignword]'),
 		'parent' => $language,
 		'cmd' => 'GlossaryXYZnew_glossary_foreignwordXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-	);
+	];
 
-	$we_menu_glossary[] = array(
-		'text' => g_l('modules_glossary', '[link]'),
+	$we_menu_glossary[] = ['text' => g_l('modules_glossary', '[link]'),
 		'parent' => $language,
 		'cmd' => 'GlossaryXYZnew_glossary_linkXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-	);
+	];
 
-	$we_menu_glossary[] = array(
-		'text' => g_l('modules_glossary', '[textreplacement]'),
+	$we_menu_glossary[] = ['text' => g_l('modules_glossary', '[textreplacement]'),
 		'parent' => $language,
 		'cmd' => 'GlossaryXYZnew_glossary_textreplacementXYZ$key',
 		'perm' => 'NEW_GLOSSARY || ADMINISTRATOR',
-	);
+	];
 }
 
 return $we_menu_glossary;

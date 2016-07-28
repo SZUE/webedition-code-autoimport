@@ -21,73 +21,56 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-return array(
-	'new' => array(
-		'text' => g_l('navigation', '[menu_new]'),
-	),
-	array(
-		'text' => g_l('navigation', '[entry]'),
+return [
+	'new' => [ 'text' => g_l('navigation', '[menu_new]'),],
+	['text' => g_l('navigation', '[entry]'),
 		'parent' => 'new',
 		'cmd' => 'module_navigation_new',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-	),
-	array(
-		'text' => g_l('navigation', '[group]'),
+	],
+	['text' => g_l('navigation', '[group]'),
 		'parent' => 'new',
 		'cmd' => 'module_navigation_new_group',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-	),
-	'navigation' => array(
-		'text' => g_l('navigation', '[navigation]'),
-	),
-	array(
-		'text' => g_l('navigation', '[menu_save]'),
+	],
+	'navigation' => ['text' => g_l('navigation', '[navigation]'),],
+	['text' => g_l('navigation', '[menu_save]'),
 		'parent' => 'navigation',
 		'cmd' => 'module_navigation_save',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
-	),
-	array(
-		'text' => g_l('navigation', '[menu_delete]'),
+	],
+	['text' => g_l('navigation', '[menu_delete]'),
 		'parent' => 'navigation',
 		'cmd' => 'module_navigation_delete',
 		'perm' => 'DELETE_NAVIGATION || EDIT_NAVIGATION || ADMINISTRATOR',
-	),
-	array(
-		'parent' => 'navigation', // separator
-	),
-	array(
-		'text' => g_l('navigation', '[menu_exit]'),
+	],
+	['parent' => 'navigation',],
+	['text' => g_l('navigation', '[menu_exit]'),
 		'parent' => 'navigation',
 		'cmd' => 'exit_navigation',
-	),
+	 ],
 	'options' => array(
 		'text' => g_l('navigation', '[menu_options]'),
 		'perm' => 'EDIT_NAVIAGTION_RULES',
 	),
-	array(
-		'text' => g_l('navigation', '[menu_highlight_rules]'),
+	['text' => g_l('navigation', '[menu_highlight_rules]'),
 		'parent' => 'options',
 		'perm' => 'EDIT_NAVIAGTION_RULES',
 		'cmd' => 'module_navigation_rules',
-	),
-	array(
-		'text' => g_l('navigation', '[reset_customer_filter]'),
+	 ],
+	 ['text' => g_l('navigation', '[reset_customer_filter]'),
 		'parent' => 'options',
 		'perm' => 'ADMINISTRATOR',
 		'cmd' => 'module_navigation_reset_customer_filter',
 		'hide' => !defined('CUSTOMER_TABLE')
-	),
-	array(
-		'text' => g_l('navigation', '[menu_help]'),
-	),
-	array(
-		'text' => g_l('navigation', '[menu_help]') . '&hellip;',
+	 ],
+	 ['text' => g_l('navigation', '[menu_help]'),		],
+	 ['text' => g_l('navigation', '[menu_help]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'help_modules',
-	),
-	array(
-		'text' => g_l('navigation', '[menu_info]') . '&hellip;',
+	 ],
+	 ['text' => g_l('navigation', '[menu_info]') . '&hellip;',
 		'parent' => 'help',
 		'cmd' => 'info_modules',
-	)
-);
+	 ]
+];

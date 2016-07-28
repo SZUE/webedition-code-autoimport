@@ -154,7 +154,7 @@ function we_cmd(){
 	 }
 }'));
 ?>
-<body onload="window.focus();" class="defaultfont tagWizzard">
+<body onload="self.focus();" class="defaultfont tagWizzard">
 	<form name="we_form" onsubmit="we_cmd('saveTag');
 			return false;"><?php
 // start building the content of the page
