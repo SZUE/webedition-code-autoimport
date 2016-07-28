@@ -58,10 +58,10 @@ if(FORMMAIL_LOG){
 	}
 }
 
-$blocked |= (FORMMAIL_VIAWEDOC && $_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . basename(__FILE__));
+$docBlock = $blocked |= (FORMMAIL_VIAWEDOC && $_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . basename(__FILE__));
 
 if($blocked){
-	print_error('Email dispatch blocked / Email Versand blockiert' . ($formBlock ? ' (Token)!' : '(Log)!'));
+	print_error('Email dispatch blocked / Email Versand blockiert' . ($formBlock ? ' (Token)!' : ($docBlock ? '(Doc)' : '(Log)!')));
 }
 
 function contains_bad_str($str_to_test){
