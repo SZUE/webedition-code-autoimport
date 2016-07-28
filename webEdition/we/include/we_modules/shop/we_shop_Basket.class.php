@@ -226,7 +226,7 @@ class we_shop_Basket{
 					return [];
 				}
 
-				$olv = new we_listview_object(0, 1, 0, '', false, $classID, '', '', ' ' . OBJECT_X_TABLE . $classID . '.OF_ID=' . $id, 0, 0, true, false, '', '', '', '', '', '', '', 0, '', '', '', '', TAGLINKS_DIRECTORYINDEX_HIDE, TAGLINKS_OBJECTSEOURLS);
+				$olv = new we_listview_object(0, 1, 0, '', false, $classID, '', '', 'of.ID=' . $id, 0, 0, true, false, '', '', '', '', '', '', '', 0, '', '', '', '', TAGLINKS_DIRECTORYINDEX_HIDE, TAGLINKS_OBJECTSEOURLS);
 				$olv->next_record();
 
 				$Record = $olv->getDBRecord();

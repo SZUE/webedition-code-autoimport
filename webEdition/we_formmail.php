@@ -28,7 +28,7 @@ define('WE_DEFAULT_EMAIL', 'mailserver@' . $_SERVER['SERVER_NAME']);
 define('WE_DEFAULT_SUBJECT', 'webEdition mailform');
 
 //FIXME: forms can come from static content;
-$formBlock = $blocked = false;//!we_tag('ifFormToken');
+$formBlock = $blocked = false; //!we_tag('ifFormToken');
 
 // check to see if we need to lock or block the formmail request
 if(FORMMAIL_LOG){

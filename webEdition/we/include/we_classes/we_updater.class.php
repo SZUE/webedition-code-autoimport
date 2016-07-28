@@ -157,38 +157,39 @@ abstract class we_updater{
 		}
 	}
 
-/*	private function correctTblFile(we_database_base $db){
-		//added in 7.0.1
-		if(!$db->isKeyExist(FILE_TABLE, 'ParentID', array('ParentID', 'Filename', 'Extension'), 'UNIQUE KEY')){
-			if($db->isKeyExistAtAll(FILE_TABLE, 'Path')){
-				$db->delKey(FILE_TABLE, 'Path');
-			}
-			//we need an temporary key
-			$db->addKey(FILE_TABLE, 'KEY Path(Path)');
-			//first cleanup really invalid entries
-			$db->query('DELETE FROM ' . FILE_TABLE . ' WHERE CreationDate=0 AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=ID AND DocumentTable="tblFile")');
-			$safeDel = $db->getAllq('SELECT f1.ID FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AND EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile")', true);
-			if($safeDel){
-				$db->query('DELETE FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', $safeDel) . ')');
-			}
+	/* 	private function correctTblFile(we_database_base $db){
+	  //added in 7.0.1
+	  if(!$db->isKeyExist(FILE_TABLE, 'ParentID', array('ParentID', 'Filename', 'Extension'), 'UNIQUE KEY')){
+	  if($db->isKeyExistAtAll(FILE_TABLE, 'Path')){
+	  $db->delKey(FILE_TABLE, 'Path');
+	  }
+	  //we need an temporary key
+	  $db->addKey(FILE_TABLE, 'KEY Path(Path)');
+	  //first cleanup really invalid entries
+	  $db->query('DELETE FROM ' . FILE_TABLE . ' WHERE CreationDate=0 AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=ID AND DocumentTable="tblFile")');
+	  $safeDel = $db->getAllq('SELECT f1.ID FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AND EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile")', true);
+	  if($safeDel){
+	  $db->query('DELETE FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', $safeDel) . ')');
+	  }
 
-			$ids = $db->getAllq('SELECT f1.ID FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AND EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile")');
-			if($ids){
-				$db->query('DELETE FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', $ids) . ')');
-			}
+	  $ids = $db->getAllq('SELECT f1.ID FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AND EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile")');
+	  if($ids){
+	  $db->query('DELETE FROM ' . FILE_TABLE . ' WHERE ID IN (' . implode(',', $ids) . ')');
+	  }
 
-			//check if we still have bad entries
-			$problems = $db->getAllq('SELECT f1.ID AS fail,f1.Path AS `Name1`,f2.ID as other,f2.Path AS `Name2`,BINARY f1.Path=BINARY f2.Path AS `binEq`,EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AS origOk,EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile") AS otherOk,f2.ContentType,f1.CreationDate AS `create1`,f2.CreationDate AS `create2`,f1.ModDate AS `mod1`,f2.ModDate AS `mod2` FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID<f2.ID');
+	  //check if we still have bad entries
+	  $problems = $db->getAllq('SELECT f1.ID AS fail,f1.Path AS `Name1`,f2.ID as other,f2.Path AS `Name2`,BINARY f1.Path=BINARY f2.Path AS `binEq`,EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f1.ID AND DocumentTable="tblFile") AS origOk,EXISTS (SELECT * FROM ' . LINK_TABLE . ' WHERE DID=f2.ID AND DocumentTable="tblFile") AS otherOk,f2.ContentType,f1.CreationDate AS `create1`,f2.CreationDate AS `create2`,f1.ModDate AS `mod1`,f2.ModDate AS `mod2` FROM ' . FILE_TABLE . ' f1 JOIN ' . FILE_TABLE . ' f2 ON f1.Path=f2.Path WHERE f1.ID<f2.ID');
 
-			if($problems){
-				t_e('we can\'t upgrade table due to file-list', $problems);
-			} else {
-				//finally add a new unique key, del temp index
-				$db->addKey(FILE_TABLE, 'UNIQUE KEY ParentID(ParentID,Filename,Extension)');
-			}
-		}
-	}
-*/
+	  if($problems){
+	  t_e('we can\'t upgrade table due to file-list', $problems);
+	  } else {
+	  //finally add a new unique key, del temp index
+	  $db->addKey(FILE_TABLE, 'UNIQUE KEY ParentID(ParentID,Filename,Extension)');
+	  }
+	  }
+	  }
+	 */
+
 	public static function fixInconsistentTables(we_database_base $db = null){//from backup
 		$db = $db? : $GLOBALS['DB_WE'];
 		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
@@ -465,6 +466,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				  self::meassure('fixHistory'); */
 				self::updateContentTable($db);
 				self::meassure('updateContent');
+				self::updateDateInContent($db);
+				self::meassure('updateContentDate');
 				self::updateVersionsTable($db);
 				self::meassure('versions');
 				self::cleanUnreferencedVersions($db);
