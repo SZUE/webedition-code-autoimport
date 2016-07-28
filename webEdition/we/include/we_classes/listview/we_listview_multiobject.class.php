@@ -130,7 +130,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 			$this->DB_WE->query('SELECT of.ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=ob' . $this->classID . '.OF_ID WHERE of.ID IN (' . implode(',', $this->objects) . ') AND ' . ($this->searchable ? ' of.IsSearchable=1' : '') . $where_lang . ' AND of.ID!=0 ' . $cat_tail . ' ' . ($sqlParts['publ_cond'] ? (' AND ' . $sqlParts['publ_cond']) : '') . ' ' . ($sqlParts['cond'] ? (' AND (' . $sqlParts['cond'] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
 			$mapping = []; // KEY = ID -> VALUE = ROWID
 			$i = 0;
-			while($this->DB_WE->next_record()){
+			while($this->DB_WE->next_record(MYSQL_ASSOC)){
 				$mapping[$this->DB_WE->Record['ID']] = $i++;
 				$this->IDs[] = $this->DB_WE->f('ID');
 				if($calendar){
@@ -156,7 +156,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 
 			$mapping = []; // KEY = ID -> VALUE = ROWID
 			$i = 0;
-			while($this->DB_WE->next_record()){
+			while($this->DB_WE->next_record(MYSQL_ASSOC)){
 				$mapping[$this->DB_WE->Record['OF_ID']] = $i++;
 			}
 

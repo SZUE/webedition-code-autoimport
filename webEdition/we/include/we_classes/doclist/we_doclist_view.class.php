@@ -287,7 +287,7 @@ WE().consts.g_l.weSearch = {
 					$templateText = g_l('searchtool', '[no_template]');
 					if($templateID){
 						$DB_WE->query('SELECT ID, Text FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($templateID));
-						while($DB_WE->next_record()){
+						while($DB_WE->next_record(MYSQL_ASSOC)){
 							$templateText = we_base_util::shortenPath($DB_WE->f('Text'), 20) . ' (ID=' . $DB_WE->f('ID') . ')';
 						}
 					}
@@ -304,7 +304,7 @@ WE().consts.g_l.weSearch = {
 					if(we_exim_contentProvider::isBinary($result[$f]["docID"])){
 						$DB_WE->query('SELECT l.DID,c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($result[$f]['docID']) . ' AND l.nHash=x\'' . md5($tagName) . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 						$metafields[$tagName] = '';
-						while($DB_WE->next_record()){
+						while($DB_WE->next_record(MYSQL_ASSOC)){
 							$metafields[$tagName] = we_base_util::shortenPath($DB_WE->f('Dat'), 45);
 						}
 					}

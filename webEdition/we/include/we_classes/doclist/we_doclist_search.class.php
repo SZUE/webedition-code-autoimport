@@ -139,7 +139,7 @@ class we_doclist_search extends we_search_search{
 
 			$this->selectFromTempTable($currentSearchstart, $currentAnzahl, $currentOrder);
 
-			while($this->next_record()){
+			while($this->next_record(MYSQL_ASSOC)){
 				if(!isset($saveArrayIds[$this->Record['ContentType']][$this->Record['docID']])){
 					$saveArrayIds[$this->Record['ContentType']][$this->Record['docID']] = $this->Record['docID'];
 					$result[] = array_merge(array('Table' => $table), $this->Record);

@@ -112,7 +112,7 @@ class we_listview_shopOrder extends we_listview_base{
 	}
 
 	function next_record(){
-		$ret = $this->DB_WE->next_record();
+		$ret = $this->DB_WE->next_record(MYSQL_ASSOC);
 		if($ret){
 			$strSerialOrder = we_unserialize($this->DB_WE->Record['strSerialOrder']);
 			unset($this->DB_WE->Record['strSerialOrder']);

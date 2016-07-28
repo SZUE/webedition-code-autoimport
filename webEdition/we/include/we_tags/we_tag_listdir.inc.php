@@ -71,7 +71,7 @@ function we_tag_listdir(array $attribs){
 			'Text') . ' AS sort
 FROM ' . FILE_TABLE . ' f WHERE ((Published>0 ' . ($searchable ? 'AND IsSearchable=1' : '') . ') OR (IsFolder=1)) AND ParentID=' . intval($dirID) . ' ORDER BY ' . ($sort ? 'sort' : 'Text') . ($desc ? ' DESC' : ''));
 
-	while($db->next_record()){
+	while($db->next_record(MYSQL_ASSOC)){
 		$id = intval($db->f('IsFolder') ?
 				$db->f('FolderIndex') :
 				$db->f('ID'));
