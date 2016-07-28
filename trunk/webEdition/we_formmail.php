@@ -27,7 +27,7 @@ require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 define('WE_DEFAULT_EMAIL', 'mailserver@' . $_SERVER['SERVER_NAME']);
 define('WE_DEFAULT_SUBJECT', 'webEdition mailform');
 
-$blocked = !we_tag('ifFormToken');
+$formBlock = $blocked = !we_tag('ifFormToken');
 
 // check to see if we need to lock or block the formmail request
 if(FORMMAIL_LOG){
@@ -61,7 +61,7 @@ if(FORMMAIL_LOG){
 $blocked |= (FORMMAIL_VIAWEDOC && $_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . basename(__FILE__));
 
 if($blocked){
-	print_error('Email dispatch blocked / Email Versand blockiert!');
+	print_error('Email dispatch blocked / Email Versand blockiert' . ($formBlock ? ' (Token)!' : '(Log)!'));
 }
 
 function contains_bad_str($str_to_test){
@@ -77,11 +77,11 @@ function contains_bad_str($str_to_test){
 
 	foreach($bad_strings as $bad_string){
 		if(preg_match('|^' . preg_quote($bad_string, '|') . '|i', $str_to_test) || preg_match('|[\n\r]' . preg_quote($bad_string, "|") . '|i', $str_to_test)){
-			print_error('Email dispatch blocked / Email Versand blockiert!');
+			print_error('Email dispatch blocked / Email Versand blockiert (str)!');
 		}
 	}
 	if(stristr($str_to_test, 'multipart/mixed')){
-		print_error('Email dispatch blocked / Email Versand blockiert!');
+		print_error('Email dispatch blocked / Email Versand blockiert (mixed)!');
 	}
 }
 
