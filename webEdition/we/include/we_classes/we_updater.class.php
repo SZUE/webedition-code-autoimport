@@ -367,6 +367,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		$db->delTable('WE_tmp');
 	}
 
+	private static function updateDateInContent(we_database_base $db){
+		$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=\'x00\',BDID=Dat,Dat=NULL WHERE ID IN (SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND type="date") AND dHash!=\'x00\'');
+	}
+
 	private static function updateVersionsTable(we_database_base $db){
 		if(!f('SELECT 1 FROM ' . VERSIONS_TABLE . ' WHERE binaryPath LIKE "' . WEBEDITION_DIR . '%" LIMIT 1')){
 			return;
@@ -458,6 +462,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		self::meassure('fixHistory');
 		self::updateContentTable($db);
 		self::meassure('updateContent');
+				self::updateDateInContent($db);
+				self::meassure('updateContentDate');
 		self::updateVersionsTable($db);
 		self::meassure('versions');
 		self::cleanUnreferencedVersions($db);
