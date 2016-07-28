@@ -679,7 +679,7 @@ edf.populateGroups();');
 
 			case "export_csv":
 				if(($exportno = we_base_request::_(we_base_request::INT, "csv_export")) !== false){
-					$fname = rtim(we_base_request::_(we_base_request::FILE, "csv_dir" . $exportno), '/') . "/emails_export_" . time() . ".csv";
+					$fname = rtrim(we_base_request::_(we_base_request::FILE, "csv_dir" . $exportno), '/') . "/emails_export_" . time() . ".csv";
 
 					we_base_file::save($_SERVER['DOCUMENT_ROOT'] . $fname, $this->newsletter->groups[$exportno]->Emails);
 					echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
