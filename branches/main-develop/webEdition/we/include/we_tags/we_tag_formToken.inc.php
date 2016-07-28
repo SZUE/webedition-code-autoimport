@@ -20,6 +20,7 @@
  */
 function we_tag_formToken(array $attribs){
 	// No token needen in editmode
+	//FIXME: check if Dynamic is true on seo's
 	if(!empty($GLOBALS['we_doc']->InWebEdition) || empty($GLOBALS['WE_MAIN_DOC']->IsDynamic)){
 		return;
 	}

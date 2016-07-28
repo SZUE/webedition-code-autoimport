@@ -11,4 +11,3 @@ if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, '', true, '');
 }
 $this->Attributes[] = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
-//$this->Attributes[] = new weTagData_textAttribute('cachelifetime', false, '');

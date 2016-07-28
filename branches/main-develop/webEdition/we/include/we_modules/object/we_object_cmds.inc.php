@@ -46,7 +46,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			$ews = ($foo ? : ",") . $wsid . ",";
 			$check = 1;
 		}
-		$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($tableID) . ' SET OF_ExtraWorkspacesSelected="' . $DB_WE->escape($ews) . '" WHERE OF_ID=' . intval($oid));
+		//$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($tableID) . ' SET OF_ExtraWorkspacesSelected="' . $DB_WE->escape($ews) . '" WHERE OF_ID=' . intval($oid));
 		$DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' SET ExtraWorkspacesSelected="' . $DB_WE->escape($ews) . '" WHERE ID=' . intval($ofID));
 		$of = new we_objectFile();
 		$of->initByID($ofID, OBJECT_FILES_TABLE);

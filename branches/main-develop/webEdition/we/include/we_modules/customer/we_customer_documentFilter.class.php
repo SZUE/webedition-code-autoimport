@@ -170,7 +170,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 					' OR ( i.ClassID>0 AND i.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")) )';
 			}
 			return ($classID ?
-					' AND ' . OBJECT_X_TABLE . $classID . '.OF_ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")' :
+					' AND of.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(OBJECT_FILES_TABLE) . '")' :
 					' AND ' . FILE_TABLE . '.ID NOT IN(SELECT modelId FROM ' . CUSTOMER_FILTER_TABLE . ' WHERE modelTable="' . stripTblPrefix(FILE_TABLE) . '")'
 				);
 		}
@@ -183,7 +183,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			// build query from restricted files, regard search and normal listview
 			foreach($restrictedFilesForCustomer as $tab => $fileArray){
 				if($fileArray){
-					$queryTail [] = '(' . ($tab === 'tblObjectFiles' ? ' ClassID>0' : 'ClassID=0') . ' AND  ID NOT IN(' . implode(', ', $fileArray) . '))';
+					$queryTail [] = '(' . ($tab === 'tblObjectFiles' ? ' ClassID>0' : 'ClassID=0') . ' AND ID NOT IN(' . implode(', ', $fileArray) . '))';
 				}
 			}
 			return ' AND ' . implode(' OR ', $queryTail);
@@ -195,7 +195,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			if($fileArray){
 				$queryTail .= ' AND ' .
 					($classID && $tab === 'tblObjectFiles' ?
-						OBJECT_X_TABLE . $classID . '.OF_ID' :
+						'of.ID' :
 						FILE_TABLE . '.ID') .
 					' NOT IN(' . implode(', ', $fileArray) . ')';
 			}

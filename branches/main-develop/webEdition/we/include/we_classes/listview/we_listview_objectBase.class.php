@@ -55,37 +55,39 @@ abstract class we_listview_objectBase extends we_listview_base{
 						$matrix['we_object_' . $name] = [
 							'type' => $type,
 							'table' => $table,
-							'table2' => OBJECT_X_TABLE . $name,
 							'classID' => $classID,
+							'alias' => 'ob' . $classID,
+							'aliasf' => 'of' . $name,
+							'joinClassID' => $name,
+							'join' => OBJECT_X_TABLE . $name,
+							'on' => OBJECT_X_TABLE . $name . ' AS ob' . $name . ' ON ob' . $name . '.OF_ID=ob' . intval($classID) . '.' . we_object::QUERY_PREFIX . $name . ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' of' . $name . ' ON (of' . $name . '.ID=ob' . $name . '.OF_ID AND of' . $name . '.Published>0)'
 						];
-						$foo = $this->fillMatrix($matrix, $name);
-						$joinWhere[] = OBJECT_X_TABLE . intval($classID) . '.' . we_object::QUERY_PREFIX . $name . '=' . OBJECT_X_TABLE . $name . '.OF_ID';
-						if($foo){
-							$joinWhere[] = $foo;
-						}
+						$this->fillMatrix($matrix, $name);
 					}
 				} else {
 					if(!isset($matrix[$name])){
 						$matrix[$name] = [
 							'type' => $type,
 							'table' => $table,
-							'table2' => $table,
+							'alias' => 'ob' . $classID,
+							'aliasf' => 'of' . $classID,
 							'classID' => $classID,
 						];
 					}
 				}
 			}
 		}
-		return implode(' AND ', $joinWhere);
 	}
 
-	protected function makeSQLParts($matrix, $classID, $order, $cond, $useTable2){
+	protected function makeSQLParts($matrix, $classID, $order, $cond){
 		if(!$classID){
 			t_e('no classid given!');
 			return;
 		}
 		$from = $orderArr = $descArr = $ordertmp = [];
-
+		$publ_cond = [
+			'of.Published>0'
+		];
 		$cond = ' ' . preg_replace_callback("/'([^']*)'/", function (array $match){
 				$in = $match[1];
 				$out = '';
@@ -114,13 +116,13 @@ abstract class we_listview_objectBase extends we_listview_base{
 			if(!is_numeric($key) && $val){
 				switch($key){
 					case 'DefaultDesc':
-						$selFields .= OBJECT_X_TABLE . $classID . '.`' . $val . '` AS we_Description,' . OBJECT_X_TABLE . $classID . '.`' . $val . '` AS WE_Description,';
+						$selFields .= 'ob' . $classID . '.`' . $val . '` AS we_Description,' . 'ob' . $classID . '.`' . $val . '` AS WE_Description,';
 						break;
 					case 'DefaultTitle':
-						$selFields .= OBJECT_X_TABLE . $classID . '.`' . $val . '` AS we_Title,' . OBJECT_X_TABLE . $classID . '.`' . $val . '` AS WE_Title,';
+						$selFields .= 'ob' . $classID . '.`' . $val . '` AS we_Title,' . 'ob' . $classID . '.`' . $val . '` AS WE_Title,';
 						break;
 					case 'DefaultKeywords':
-						$selFields .= OBJECT_X_TABLE . $classID . '.`' . $val . '` AS we_Keywords,' . OBJECT_X_TABLE . $classID . '.`' . $val . '` AS WE_Keywords,';
+						$selFields .= 'ob' . $classID . '.`' . $val . '` AS we_Keywords,' . 'ob' . $classID . '.`' . $val . '` AS WE_Keywords,';
 						break;
 				}
 			}
@@ -136,18 +138,30 @@ abstract class we_listview_objectBase extends we_listview_base{
 		$charclass = '[\!\=%&\(\)\*\+\.\/<>\|~, ]';
 		foreach($matrix as $n => $p){
 			$n2 = $n;
-			if(strpos($n, 'we_object_') === 0){
-				$n = substr($n, 10);
+			if(!empty($p['joinClassID'])){
+				$n = $p['joinClassID'];
 			}
-			$f .= '`' . $p['table'] . '`.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
-			$from[] = $p['table'];
-			if($useTable2){
-				$from[] = $p['table2'];
+
+
+
+
+			$f .= $p['alias'] . '.`' . $p['type'] . '_' . $n . '` AS `we_' . $n2 . '`,';
+			if(!isset($from[$p['table']])){
+				$from[$p['table']] = $p['table'] . ' AS ' . $p['alias'];
+				if($classID != $p['classID']){
+					//if not mistaken this is never used
+					$publ_cond[] = '(' . $p['alias'] . '.OF_ID=IFNULL(' . $p['aliasf'] . '.ID,0) )';
+				}
 			}
+			if(!empty($p['join'])){
+				$from[$p['join']] = $p['on'];
+				$publ_cond[] = '(ob' . $p['joinClassID'] . '.OF_ID=IFNULL(' . $p['aliasf'] . '.ID,0) )';
+			}
+
 			if(($pos = array_search($n, $orderArr)) !== false){
-				$ordertmp[$pos] = '`' . $p['table'] . '`.`' . $p['type'] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
+				$ordertmp[$pos] = $p['alias'] . '.`' . $p['type'] . '_' . $n . '`' . ($descArr[$pos] ? ' DESC' : '');
 			}
-			$cond = preg_replace('/(' . $charclass . ')' . $n . '(' . $charclass . ')/', '${1}' . $p['table'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
+			$cond = preg_replace('/(' . $charclass . ')' . $n . '(' . $charclass . ')/', '${1}' . $p['alias'] . '.`' . $p['type'] . '_' . $n . '`$2', $cond);
 		}
 		$cond = preg_replace_callback("/'([^']*)'/", function (array $match){
 			return "'" . preg_replace_callback("/&([^;]+);/", function (array $match){
@@ -206,22 +220,16 @@ abstract class we_listview_objectBase extends we_listview_base{
 			ksort($ordertmp);
 			$order = implode(',', $ordertmp);
 		}
-		$tb = array_unique($from);
 
-		$publ_cond = [];
-		foreach($tb as &$t){
-			$t = '`' . $t . '`';
-			$publ_cond[] = '(' . $t . '.OF_Published>0 OR ' . $t . '.OF_ID=0)';
-		}
-
-		return array(//FIXME: maybe random can be changed by time%ID or sth. which is faster and quite rand enough
+		return [
 			'fields' => rtrim($f, ',') . ($order === 'RANDOM ' ? ', RAND() AS RANDOM ' : ''),
 			'order' => trim($order) ? ' ORDER BY ' . trim($order) : '',
-			'tables' => implode(' JOIN ', $tb),
-			'groupBy' => (count($tb) > 1) ? ' GROUP BY ' . OBJECT_X_TABLE . $classID . '.OF_ID ' : '',
+			'tables' => implode(' JOIN ', $from),
+			//FIXME: afaik grouping is not needed
+			'groupBy' => (count($from) > 1) ? ' GROUP BY of.ID ' : '',
 			'publ_cond' => $publ_cond ? ' ( ' . implode(' AND ', $publ_cond) . ' ) ' : '',
 			'cond' => trim($cond)
-		);
+		];
 	}
 
 	public function getCustomerRestrictionQuery($specificCustomersQuery, $classID, $mfilter, $listQuery){

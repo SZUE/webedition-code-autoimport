@@ -199,8 +199,8 @@ class we_objectFile extends we_document{
 	function we_rewrite(){
 		$this->setLanguage();
 		$this->setUrl();
-		if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Url="' . $this->DB_WE->escape($this->Url) . '" WHERE ID=' . intval($this->ID)) ||
-			!$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Url="' . $this->DB_WE->escape($this->Url) . '" WHERE OF_ID=' . intval($this->ID))){
+		if(!$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->Table) . ' SET Url="' . $this->DB_WE->escape($this->Url) . '" WHERE ID=' . intval($this->ID)) /* ||
+		  !$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Url="' . $this->DB_WE->escape($this->Url) . '" WHERE OF_ID=' . intval($this->ID)) */){
 			return false;
 		}
 
@@ -1978,14 +1978,14 @@ class we_objectFile extends we_document{
 
 	function setLanguage($language = ''){
 		$this->Language = $language ? : $this->Language;
-		$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Language="' . $this->DB_WE->escape($this->Language) . '" WHERE OF_ID=' . intval($this->ID));
+		/* $this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Language="' . $this->DB_WE->escape($this->Language) . '" WHERE OF_ID=' . intval($this->ID)); */
 	}
 
 	private function setPublishTime($time){
 		$this->Published = $time;
 		return
-			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' SET Published=' . $time . ' WHERE ID=' . $this->ID) &&
-			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Published=' . intval($time) . ' WHERE OF_ID=' . intval($this->ID));
+		$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' SET Published=' . $time . ' WHERE ID=' . $this->ID) /* &&
+		  $this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Published=' . intval($time) . ' WHERE OF_ID=' . intval($this->ID) )*/;
 	}
 
 	function markAsPublished(){
@@ -2668,12 +2668,12 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-		if($this->ID){
+		/*if($this->ID){
 			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET ' . we_database_base::arraySetter(array(
 					'OF_TEXT' => $this->Text,
 					'OF_PATH' => $this->Path)) .
 				' WHERE OF_ID=' . intval($this->ID));
-		}
+		}*/
 		return $this->i_savePersistentSlotsToDB('Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,IsSearchable,Charset,Url,TriggerID');
 	}
 
@@ -2922,7 +2922,7 @@ class we_objectFile extends we_document{
 		$tid = $hash['TableID'];
 //update Lang of doc
 		$db->query('UPDATE ' . $db->escape($this->Table) . ' SET Language="' . $db->escape($lang) . '" WHERE ID=' . intval($id));
-		$db->query('UPDATE ' . OBJECT_X_TABLE . intval($tid) . 'SET OF_Language="' . $db->escape($lang) . '" WHERE ID=' . intval($id));
+		//$db->query('UPDATE ' . OBJECT_X_TABLE . intval($tid) . 'SET OF_Language="' . $db->escape($lang) . '" WHERE ID=' . intval($id));
 //update LangLink:
 		$db->query('UPDATE ' . LANGLINK_TABLE . ' SET DLocale="' . $db->escape($lang) . '" WHERE DID=' . intval($id) . ' AND DocumentTable="' . $db->escape($type) . '"');
 //drop invalid entries => is this safe???
@@ -3177,10 +3177,10 @@ class we_objectFile extends we_document{
 		}
 		$pid_tail = [];
 		if($flag){
-			$pid_tail[] = OBJECT_X_TABLE . $cid . '.OF_Workspaces=""';
+			$pid_tail[] = 'of.Workspaces=""';
 		}
 		foreach($parentIDs as $pid){
-			$pid_tail[] = 'FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . $cid . '.OF_Workspaces) OR FIND_IN_SET(' . intval($pid) . ',' . OBJECT_X_TABLE . $cid . '.OF_ExtraWorkspacesSelected)';
+			$pid_tail[] = 'FIND_IN_SET(' . intval($pid) . ',of.Workspaces) OR FIND_IN_SET(' . intval($pid) . ',of.ExtraWorkspacesSelected)';
 		}
 		return ($pid_tail ? ' (' . implode(' OR ', $pid_tail) . ') ' : 1);
 	}

@@ -205,7 +205,7 @@ class we_class_folder extends we_folder{
 		$userWSArray = $this->setDefaultWorkspaces();
 		$where = (isset($this->searchclass->searchname) ?
 				$this->searchclass->searchfor($this->searchclass->searchname, $this->searchclass->searchfield, $this->searchclass->searchlocation, OBJECT_X_TABLE . $this->TableID, -1, 0, "", 0) . $this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID) :
-				$this->searchclass->greenOnly($this->GreenOnly, $this->WorkspaceID, $this->TableID));
+				$this->searchclass->greenOnly($this, $this->WorkspaceID, $this->TableID));
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']["ID"]) . ',of.Owners)) ';
 
 		$this->searchclass->settable(OBJECT_X_TABLE . $this->TableID . ' obx JOIN ' . OBJECT_FILES_TABLE . ' of ON obx.OF_ID=of.ID');
@@ -783,16 +783,16 @@ for ( frameId in _usedEditors ) {
 		switch($property){
 			case 'IsSearchable':
 				$value = intval($value);
-				$set = array($property => $value, 'OF_' . $property => $value);
+				$set = [$property => $value];
 				break;
 			case 'TriggerID':
 				$value = intval(f('SELECT DefaultTriggerID FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), '', $this->DB_WE));
-				$set = array($property => $value, 'OF_' . $property => $value);
+				$set = [$property => $value];
 				break;
 			case 'Charset':
 				$class = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->TableID, '', $this->DB_WE));
-				$value = (isset($class["elements"]["Charset"]['dat']) ? $class["elements"]["Charset"]['dat'] : DEFAULT_CHARSET );
-				$set = array($property => $value, 'OF_' . $property => $value);
+				$value = (isset($class['elements']['Charset']['dat']) ? $class["elements"]["Charset"]['dat'] : DEFAULT_CHARSET );
+				$set = [$property => $value];
 				break;
 			case 'Workspaces':
 				$class = getHash('SELECT Workspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
@@ -802,11 +802,6 @@ for ( frameId in _usedEditors ) {
 					'ExtraWorkspacesSelected' => '',
 					'Templates' => $class['Templates'],
 					'ExtraTemplates' => '',
-					'OF_Workspaces' => $class['Workspaces'],
-					'OF_ExtraWorkspaces' => '',
-					'OF_ExtraWorkspacesSelected' => '',
-					'OF_Templates' => $class['Templates'],
-					'OF_ExtraTemplates' => '',
 				);
 				break;
 			default:
@@ -814,7 +809,7 @@ for ( frameId in _usedEditors ) {
 		}
 
 		$whereRestrictOwners = ' AND (of.RestrictOwners=0 OR of.CreatorID=' . intval($_SESSION['user']['ID']) . ' OR FIND_IN_SET(' . intval($_SESSION['user']['ID']) . ',of.Owners))';
-		$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_X_TABLE . intval($this->TableID) . ' obx ON of.ID=obx.OF_ID SET ' . we_database_base::arraySetter($set) . ' WHERE of.ID IN(' . implode(',', $IDs) . ') AND of.IsFolder=0' . $whereRestrictOwners);
+		$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' of SET ' . we_database_base::arraySetter($set) . ' WHERE of.ID IN(' . implode(',', $IDs) . ') AND of.IsFolder=0' . $whereRestrictOwners);
 
 		//change tblIndex
 		switch($property){

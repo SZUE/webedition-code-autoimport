@@ -115,7 +115,7 @@ function we_tag_object(array $attribs){
 
 	if($we_oid && $classid){
 		$unique = md5(uniqid(__FUNCTION__, true));
-		$GLOBALS['lv'] = new we_listview_object($unique, 1, 0, '', 0, $classid, '', '', '(' . OBJECT_X_TABLE . $classid . '.OF_ID="' . intval($we_oid) . '")' . ($condition ? ' AND ' . $condition : ''), $triggerid, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
+		$GLOBALS['lv'] = new we_listview_object($unique, 1, 0, '', 0, $classid, '', '', 'of.ID=' . intval($we_oid)  . ($condition ? ' AND ' . $condition : ''), $triggerid, '', '', $searchable, '', '', '', '', '', '', '', 0, '', '', '', '', $hidedirindex, $objectseourls);
 		$avail = $GLOBALS['lv']->next_record();
 
 		if($avail){

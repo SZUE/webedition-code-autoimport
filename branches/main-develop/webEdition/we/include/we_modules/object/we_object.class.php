@@ -161,9 +161,9 @@ class we_object extends we_document{
 
 
 		if(!$this->wasUpdate){
-			$q = array(
+			$q = [
 				'OF_ID' => 'BIGINT NOT NULL',
-				'OF_ParentID' => 'BIGINT NOT NULL',
+				/*'OF_ParentID' => 'BIGINT NOT NULL',
 				'OF_Text' => 'VARCHAR(255) NOT NULL',
 				'OF_Path' => 'VARCHAR(255) NOT NULL',
 				'OF_Url' => 'VARCHAR(255) NOT NULL',
@@ -178,8 +178,8 @@ class we_object extends we_document{
 				'OF_IsSearchable' => 'tinyint(1) NOT NULL default "1"',
 				'OF_Charset' => 'VARCHAR(64) NOT NULL',
 				'OF_WebUserID' => 'BIGINT NOT NULL',
-				'OF_Language' => 'VARCHAR(5) default "NULL"',
-			);
+				'OF_Language' => 'VARCHAR(5) default "NULL"',*/
+		 ];
 
 			$indexe = array(
 				'PRIMARY KEY (OF_ID)'

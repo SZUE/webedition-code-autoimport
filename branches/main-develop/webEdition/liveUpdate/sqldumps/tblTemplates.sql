@@ -1,5 +1,9 @@
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblTemplates)###
 /* query separator */
+###UPDATEDROPCOL(CacheLifeTime,###TBLPREFIX###tblTemplates)###
+/* query separator */
+###UPDATEDROPCOL(CacheType,###TBLPREFIX###tblTemplates)###
+/* query separator */
 CREATE TABLE ###TBLPREFIX###tblTemplates (
   ID int unsigned NOT NULL auto_increment,
   ParentID int unsigned NOT NULL default '0',
@@ -22,8 +26,6 @@ CREATE TABLE ###TBLPREFIX###tblTemplates (
   ModifierID int unsigned NOT NULL default '0',
   MasterTemplateID int unsigned NOT NULL default '0',
   IncludedTemplates varchar(255) NOT NULL default '',
-  CacheType enum('','none','tag','document','full') NOT NULL default 'none',
-  CacheLifeTime int unsigned NOT NULL default '0',
   PRIMARY KEY  (ID),
 	KEY Path(Path(250)),
   UNIQUE KEY ParentID (ParentID,Filename,Extension),

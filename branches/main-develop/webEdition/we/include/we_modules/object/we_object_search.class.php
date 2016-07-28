@@ -146,8 +146,7 @@ function toggleShowVisible(c) {
 
 	function greenOnly($GreenOnly, $pid, $cid){
 		if($GreenOnly){
-			$pid_tail = we_objectFile::makePIDTail($pid, $cid, $GLOBALS['DB_WE']);
-			return ' AND ' . OBJECT_X_TABLE . intval($cid) . '.OF_Published>0 AND ' . $pid_tail;
+			return we_objectFile::makePIDTail($pid, $cid, $GLOBALS['DB_WE']) . ' AND of.Published>0 AND ' . $pid_tail;
 		}
 	}
 
