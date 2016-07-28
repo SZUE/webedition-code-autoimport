@@ -29,6 +29,9 @@ container.prototype.openClose = function (id) {
 		return;
 	}
 	var eintragsIndex = treeData.indexOfEntry(id);
+	if (eintragsIndex === -1) {
+		return;
+	}
 
 	if (eintragsIndex === -1) {
 		return;
