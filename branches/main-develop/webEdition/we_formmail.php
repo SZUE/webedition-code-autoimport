@@ -27,7 +27,8 @@ require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 define('WE_DEFAULT_EMAIL', 'mailserver@' . $_SERVER['SERVER_NAME']);
 define('WE_DEFAULT_SUBJECT', 'webEdition mailform');
 
-$blocked = !we_tag('ifFormToken');
+//FIXME: forms can come from static content;
+$formBlock = $blocked = false;//!we_tag('ifFormToken');
 
 // check to see if we need to lock or block the formmail request
 if(FORMMAIL_LOG){
@@ -58,10 +59,10 @@ if(FORMMAIL_LOG){
 	}
 }
 
-$blocked |= (FORMMAIL_VIAWEDOC && $_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . basename(__FILE__));
+$docBlock = $blocked |= (FORMMAIL_VIAWEDOC && $_SERVER['SCRIPT_NAME'] == WEBEDITION_DIR . basename(__FILE__));
 
 if($blocked){
-	print_error('Email dispatch blocked / Email Versand blockiert!');
+	print_error('Email dispatch blocked / Email Versand blockiert' . ($formBlock ? ' (Token)!' : ($docBlock ? '(Doc)' : '(Log)!')));
 }
 
 function contains_bad_str($str_to_test){
@@ -77,11 +78,11 @@ function contains_bad_str($str_to_test){
 
 	foreach($bad_strings as $bad_string){
 		if(preg_match('|^' . preg_quote($bad_string, '|') . '|i', $str_to_test) || preg_match('|[\n\r]' . preg_quote($bad_string, "|") . '|i', $str_to_test)){
-			print_error('Email dispatch blocked / Email Versand blockiert!');
+			print_error('Email dispatch blocked / Email Versand blockiert (str)!');
 		}
 	}
 	if(stristr($str_to_test, 'multipart/mixed')){
-		print_error('Email dispatch blocked / Email Versand blockiert!');
+		print_error('Email dispatch blocked / Email Versand blockiert (mixed)!');
 	}
 }
 
@@ -190,7 +191,7 @@ if(!empty($_REQUEST['email'])){//fixme: note this mail can be in "abc" <cc@de.de
 $output = [];
 
 $removeArr = array_map('trim', array_filter(explode(',', we_base_request::_(we_base_request::STRING, 'we_remove'))));
-$we_reserved = array_merge(array('from', 'we_remove', 'captchaname', 'we_mode', 'charset', 'required', 'order', 'ok_page', 'error_page', 'captcha_error_page', 'mail_error_page', 'recipient', 'subject', 'mimetype', 'confirm_mail', 'pre_confirm', 'post_confirm', 'MAX_FILE_SIZE', session_name(), 'cookie', 'recipient_error_page', 'forcefrom'), $removeArr);
+$we_reserved = array_merge(array('from', 'we_remove', 'captchaname', 'we_mode', 'charset', 'required', 'order', 'ok_page', 'error_page', 'captcha_error_page', 'mail_error_page', 'recipient', 'subject', 'mimetype', 'confirm_mail', 'pre_confirm', 'post_confirm', 'MAX_FILE_SIZE', session_name(), 'cookie', 'recipient_error_page', 'forcefrom', 'securityToken'), $removeArr);
 
 $we_txt = '';
 $we_html = '<table>';
