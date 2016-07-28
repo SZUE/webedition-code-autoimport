@@ -170,7 +170,7 @@ abstract class we_navigation_dynList{
 		$db = new DB_WE();
 		$db->query('SELECT ID,Text,Title FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($dirid) . ' LIMIT ' . $count);
 
-		while($db->next_record()){
+		while($db->next_record(MYSQL_ASSOC)){
 			$ids[] = array(
 				'id' => $db->f('ID'),
 				'text' => $db->f('Text'),

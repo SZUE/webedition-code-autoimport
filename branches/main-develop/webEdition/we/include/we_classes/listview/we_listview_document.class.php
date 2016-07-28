@@ -285,7 +285,7 @@ class we_listview_document extends we_listview_base{
 
 		$idListArray = [];
 
-		while($this->DB_WE->next_record()){
+		while($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$this->IDs[] = $this->DB_WE->f('ID');
 			if($calendar != ''){
 				$this->calendar_struct['storage'][$this->DB_WE->f('ID')] = intval($this->DB_WE->f('Calendar'));

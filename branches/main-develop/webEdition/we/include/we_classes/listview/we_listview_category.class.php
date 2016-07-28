@@ -83,7 +83,7 @@ class we_listview_category extends we_listview_base{
 	}
 
 	function next_record(){
-		if($this->DB_WE->next_record()){
+		if($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$this->Record = array(
 				'WE_PATH' => $this->DB_WE->f('Path'),
 				'WE_TITLE' => $this->DB_WE->f('Title'),

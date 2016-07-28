@@ -185,7 +185,7 @@ class we_listview_search extends we_listview_base{
 	}
 
 	public function next_record(){
-		if($this->DB_WE->next_record()){
+		if($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$fileData = getHash('SELECT * FROM ' .
 				($this->DB_WE->Record['ClassID'] ? OBJECT_FILES_TABLE : FILE_TABLE ) .
 				' WHERE ID=' . intval($this->DB_WE->Record['ID']) . ' LIMIT 1');

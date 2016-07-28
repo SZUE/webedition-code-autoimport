@@ -121,7 +121,7 @@ class we_listview_object extends we_listview_objectBase{
 			$wsql = ' of.WebUserID IN(' . $this->customers . ') ';
 			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $this->customers . ')');
 			$encrypted = we_customer_customer::getEncryptedFields();
-			while($this->DB_WE->next_record()){
+			while($this->DB_WE->next_record(MYSQL_ASSOC)){
 				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = array_merge($this->DB_WE->getRecord(), $encrypted);
 			}
 
@@ -152,7 +152,7 @@ class we_listview_object extends we_listview_objectBase{
 				$this->DB_WE->query('SELECT of.ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' of.IsSearchable=1' : '') . ($pid_tail ? ' AND ' . $pid_tail : '') . ' AND of.ID!=0 ' . $where_lang . $cat_tail . ' ' . ($sqlParts['publ_cond'] ? (' AND ' . $sqlParts['publ_cond']) : '') . ' ' . ($sqlParts['cond'] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $idTail . $sqlParts['groupBy']);
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar){
-					while($this->DB_WE->next_record()){
+					while($this->DB_WE->next_record(MYSQL_ASSOC)){
 						$this->IDs[] = $this->DB_WE->f('ID');
 						$this->calendar_struct['storage'][$this->DB_WE->f('ID')] = (int) $this->DB_WE->f('Calendar');
 					}
@@ -164,7 +164,7 @@ class we_listview_object extends we_listview_objectBase{
 
 			if($this->customers === '*'){
 				$idListArray = [];
-				while($this->DB_WE->next_record()){
+				while($this->DB_WE->next_record(MYSQL_ASSOC)){
 					if(intval($this->DB_WE->f('we_wedoc_WebUserID')) > 0){
 						$idListArray[] = $this->DB_WE->f('we_wedoc_WebUserID');
 					}
@@ -174,7 +174,7 @@ class we_listview_object extends we_listview_objectBase{
 					$db = new DB_WE();
 					$db->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $idlist . ')');
 					$encrypted = we_customer_customer::getEncryptedFields();
-					while($db->next_record()){
+					while($db->next_record(MYSQL_ASSOC)){
 						$this->customerArray['cid_' . $db->f('ID')] = array_merge($db->Record, $encrypted);
 					}
 				}
@@ -207,7 +207,7 @@ class we_listview_object extends we_listview_objectBase{
 			}
 		}
 
-		if($this->DB_WE->next_record()){
+		if($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$paramName = $this->docID ? 'we_oid' : 'we_objectID';
 			$this->DB_WE->Record['we_wedoc_Path'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
 			$this->DB_WE->Record['we_WE_CUSTOMER_ID'] = $this->DB_WE->Record['we_wedoc_WebUserID'];

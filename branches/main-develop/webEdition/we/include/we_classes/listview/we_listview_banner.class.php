@@ -65,21 +65,21 @@ class we_listview_banner extends we_listview_base{
 
 		$ord = stripos($this->order, "views") === 0 ? 'ORDER BY ' . $this->order : '';
 		$this->DB_WE->query('SELECT DID, COUNT(ID) AS views FROM ' . BANNER_VIEWS_TABLE . ' WHERE DID!=0 AND (Page="" OR page="0") AND ID=' . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp BETWEEN ' . intval($this->FilterDate) . ' AND ' . intval($this->FilterDateEnd) . ')' : '') . ' GROUP  BY DID');
-		while($this->DB_WE->next_record()){
-			$tempArray[$this->DB_WE->f("DID")] = array(
-				"views" => $this->DB_WE->f("views")
+		while($this->DB_WE->next_record(MYSQL_ASSOC)){
+			$tempArray[$this->DB_WE->f('DID')] = array(
+				"views" => $this->DB_WE->f('views')
 			);
 			$this->allviews += intval($this->DB_WE->f("views"));
 		}
 
 		$this->DB_WE->query('SELECT DID,COUNT(ID) AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE DID!=0 AND (Page='' OR page='0') AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp>="' . $this->FilterDate . '" AND Timestamp<"' . ($this->FilterDateEnd) . '")' : '') . ' GROUP BY DID');
-		while($this->DB_WE->next_record()){
+		while($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$tempArray[$this->DB_WE->f("DID")]["clicks"] = $this->DB_WE->f("clicks");
 			$this->allclicks += intval($this->DB_WE->f("clicks"));
 		}
 
 		$this->DB_WE->query('SELECT Page,COUNT(ID) AS views FROM ' . BANNER_VIEWS_TABLE . " WHERE Page!='' AND Page!='0' AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp>=' . intval($this->FilterDate) . ' AND Timestamp<' . intval($this->FilterDateEnd) . ')' : '') . ' GROUP  BY Page');
-		while($this->DB_WE->next_record()){
+		while($this->DB_WE->next_record(MYSQL_ASSOC)){
 
 			$tempArray2[$this->DB_WE->f("Page")] = array(
 				"views" => $this->DB_WE->f("views")
@@ -87,7 +87,7 @@ class we_listview_banner extends we_listview_base{
 			$this->allviews += intval($this->DB_WE->f("views"));
 		}
 		$this->DB_WE->query('SELECT Page,COUNT(ID) AS clicks FROM ' . BANNER_CLICKS_TABLE . " WHERE Page!='' AND Page!='0' AND ID=" . intval($this->bannerID) . ' ' . ($this->UseFilter ? ' AND (Timestamp>="' . $this->FilterDate . '" AND Timestamp<"' . ($this->FilterDateEnd) . '")' : '') . ' GROUP BY Page');
-		while($this->DB_WE->next_record()){
+		while($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$tempArray2[$this->DB_WE->f("Page")]["clicks"] = $this->DB_WE->f("clicks");
 			$this->allclicks += intval($this->DB_WE->f("clicks"));
 		}

@@ -85,7 +85,7 @@ class we_voting_list{
 
 	public function getNext(){
 
-		if($this->db->next_record()){
+		if($this->db->next_record(MYSQL_ASSOC)){
 			$GLOBALS['_we_voting'] = new we_voting_voting($this->db->f('ID'));
 			$GLOBALS['_we_voting']->setDefVersion($this->Version);
 			return true;
