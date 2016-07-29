@@ -24,7 +24,7 @@
  */
 class we_navigation_rule extends we_base_model{
 	var $Table = NAVIGATION_RULE_TABLE;
-	var $ContentType = 'weNavigationRule';
+	var $ContentType = we_base_ContentTypes::NAVIGATIONRULE;
 	var $ClassName = __CLASS__;
 	var $ID;
 	var $NavigationName;

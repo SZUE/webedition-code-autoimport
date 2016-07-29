@@ -537,7 +537,7 @@ if(top.content.editor.edbody.addLog){
 						$path = f('SELECT DocType FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;
-					case 'weNavigationRule':
+					case we_base_ContentTypes::NAVIGATIONRULE:
 						$path = f('SELECT NavigationName FROM ' . $table . ' WHERE ID=' . intval($ref->ID), '', $this->db);
 						$proceed = true;
 						break;

@@ -90,7 +90,7 @@ class we_navigation_navigation extends we_base_model{
 	var $Charset = '';
 	var $previewCode = '';
 	var $ClassName = __CLASS__;
-	var $ContentType = 'weNavigation';
+	var $ContentType = we_base_ContentTypes::NAVIGATION;
 	var $Attributes = [];
 	var $FolderSelection = self::STYPE_DOCLINK;
 	var $FolderParameter = '';
@@ -202,7 +202,7 @@ class we_navigation_navigation extends we_base_model{
 				$this->CustomerFilter = we_unserialize($this->CustomerFilter);
 			}
 		}
-		$this->ContentType = 'weNavigation';
+		$this->ContentType = we_base_ContentTypes::NAVIGATION;
 	}
 
 	private function _getFilterOfDocument(){
@@ -838,7 +838,7 @@ class we_navigation_navigation extends we_base_model{
 
 	function we_load($id){
 		parent::load($id, true);
-		$this->ContentType = 'weNavigation';
+		$this->ContentType = we_base_ContentTypes::NAVIGATION;
 	}
 
 	function we_save(){

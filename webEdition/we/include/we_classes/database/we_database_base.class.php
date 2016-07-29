@@ -30,7 +30,7 @@ if(!defined('DB_DATABASE')){
 }
 
 abstract class we_database_base{
-	private static $pool = []; //fixme: don't repool temporary tables - they require the same connection
+	private static $pool = [];
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
 	//states if we have lost connection and try again

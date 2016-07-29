@@ -154,9 +154,9 @@ class we_exim_XMLExIm{
 			case "we_backup_binary":
 			case 'weBinary'://FIMXE remove
 				return null;
-			case "weNavigation":
+			case we_base_ContentTypes::NAVIGATION:
 				return NAVIGATION_TABLE;
-			case "weNavigationRule":
+			case we_base_ContentTypes::NAVIGATIONRULE:
 				return NAVIGATION_RULE_TABLE;
 			case "weThumbnail":
 				return THUMBNAILS_TABLE;
