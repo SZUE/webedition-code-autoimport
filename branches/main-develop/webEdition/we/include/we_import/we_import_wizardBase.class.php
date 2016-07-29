@@ -403,7 +403,7 @@ setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 											case 'doctype':
 												$path_info = f('SELECT DocType FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
-											case 'weNavigationRule':
+											case we_base_ContentTypes::NAVIGATIONRULE:
 												$path_info = f('SELECT NavigationName FROM ' . escape_sql_query($ref->Table) . ' WHERE ID=' . intval($ref->ID), '', new DB_WE());
 												break;
 											case 'weThumbnail':

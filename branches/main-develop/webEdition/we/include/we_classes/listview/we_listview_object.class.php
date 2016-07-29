@@ -75,7 +75,7 @@ class we_listview_object extends we_listview_objectBase{
 				' AND of.Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
 				'');
 
-		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
+		if($this->order && $this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
 		}
 
@@ -165,8 +165,8 @@ class we_listview_object extends we_listview_objectBase{
 			if($this->customers === '*'){
 				$idListArray = [];
 				while($this->DB_WE->next_record(MYSQL_ASSOC)){
-					if(intval($this->DB_WE->f(self::PROPPREFIX .'WebUserID')) > 0){
-						$idListArray[] = $this->DB_WE->f(self::PROPPREFIX .'WebUserID');
+					if(intval($this->DB_WE->f(self::PROPPREFIX . 'WebUserID')) > 0){
+						$idListArray[] = $this->DB_WE->f(self::PROPPREFIX . 'WebUserID');
 					}
 				}
 				if($idListArray){
@@ -209,24 +209,24 @@ class we_listview_object extends we_listview_objectBase{
 
 		if($this->DB_WE->next_record(MYSQL_ASSOC)){
 			$paramName = $this->docID ? 'we_oid' : 'we_objectID';
-			$this->DB_WE->Record[self::PROPPREFIX .'PATH'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
-			$this->DB_WE->Record[self::PROPPREFIX . 'CUSTOMER_ID'] = $this->DB_WE->Record[self::PROPPREFIX .'WEBUSERID'];
-			$this->DB_WE->Record[self::PROPPREFIX . 'TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f(self::PROPPREFIX .'TRIGGERID')));
-			$this->DB_WE->Record[self::PROPPREFIX . 'URL'] = $this->DB_WE->f(self::PROPPREFIX .'URL');
-			$this->DB_WE->Record[self::PROPPREFIX . 'TEXT'] = $this->DB_WE->f(self::PROPPREFIX .'TEXT');
-			$this->DB_WE->Record[self::PROPPREFIX . 'ID'] = $this->DB_WE->f(self::PROPPREFIX .'ID');
+			$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = $this->Path . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'CUSTOMER_ID'] = $this->DB_WE->Record[self::PROPPREFIX . 'WEBUSERID'];
+			$this->DB_WE->Record[self::PROPPREFIX . 'TRIGGERID'] = ($this->triggerID ? : intval($this->DB_WE->f(self::PROPPREFIX . 'TRIGGERID')));
+			$this->DB_WE->Record[self::PROPPREFIX . 'URL'] = $this->DB_WE->f(self::PROPPREFIX . 'URL');
+			$this->DB_WE->Record[self::PROPPREFIX . 'TEXT'] = $this->DB_WE->f(self::PROPPREFIX . 'TEXT');
+			$this->DB_WE->Record[self::PROPPREFIX . 'ID'] = $this->DB_WE->f(self::PROPPREFIX . 'ID');
 			$this->DB_WE->Record[self::PROPPREFIX . 'SHOPVARIANTS'] = 0; //check this for global variants
 
 			$path_parts = pathinfo($this->Path);
-			if($this->objectseourls && $this->DB_WE->Record[self::PROPPREFIX .'URL'] && show_SeoLinks()){
-				if(!$this->triggerID && $this->DB_WE->Record[self::PROPPREFIX .'TRIGGERID']){
-					$path_parts = pathinfo(id_to_path($this->DB_WE->f(self::PROPPREFIX .'TRIGGERID')));
+			if($this->objectseourls && $this->DB_WE->Record[self::PROPPREFIX . 'URL'] && show_SeoLinks()){
+				if(!$this->triggerID && $this->DB_WE->Record[self::PROPPREFIX . 'TRIGGERID']){
+					$path_parts = pathinfo(id_to_path($this->DB_WE->f(self::PROPPREFIX . 'TRIGGERID')));
 				}
 				$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = (!empty($path_parts['dirname']) && $path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 					($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
 						'' :
 						$path_parts['filename'] . '/'
-					) . $this->DB_WE->Record[self::PROPPREFIX .'URL'];
+					) . $this->DB_WE->Record[self::PROPPREFIX . 'URL'];
 			} else {
 				$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = ($this->hidedirindex && seoIndexHide($path_parts['basename']) ?
 						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
@@ -240,10 +240,10 @@ class we_listview_object extends we_listview_objectBase{
 				}
 			}
 			// for seeMode #5317
-			$this->DB_WE->Record[self::PROPPREFIX .'LASTPATH'] = $this->LastDocPath . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
-			if($this->customers && $this->DB_WE->Record[self::PROPPREFIX .'WEBUSERID']){
-				if(isset($this->customerArray['cid_' . $this->DB_WE->Record[self::PROPPREFIX .'WEBUSERID']])){
-					foreach($this->customerArray['cid_' . $this->DB_WE->Record[self::PROPPREFIX .'WEBUSERID']] as $key => $value){
+			$this->DB_WE->Record[self::PROPPREFIX . 'LASTPATH'] = $this->LastDocPath . '?' . $paramName . '=' . $this->DB_WE->Record['OF_ID'];
+			if($this->customers && $this->DB_WE->Record[self::PROPPREFIX . 'WEBUSERID']){
+				if(isset($this->customerArray['cid_' . $this->DB_WE->Record[self::PROPPREFIX . 'WEBUSERID']])){
+					foreach($this->customerArray['cid_' . $this->DB_WE->Record[self::PROPPREFIX . 'WEBUSERID']] as $key => $value){
 						$this->DB_WE->Record[self::PROPPREFIX . 'CUSTOMER_' . $key] = $value;
 					}
 				}

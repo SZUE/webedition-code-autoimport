@@ -7,7 +7,7 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_choiceAttribute('pages', array(new weTagDataOption('all'),
+$this->Attributes[] = new weTagData_choiceAttribute('pages', [new weTagDataOption('all'),
 	new weTagDataOption('properties'),
 	new weTagDataOption('edit'),
 	new weTagDataOption('information'),
@@ -17,4 +17,4 @@ $this->Attributes[] = new weTagData_choiceAttribute('pages', array(new weTagData
 	new weTagDataOption('versions'),
 	new weTagDataOption('schedpro'),
 	new weTagDataOption('variants'),
-	), false, true, '');
+ ], false, true, '');

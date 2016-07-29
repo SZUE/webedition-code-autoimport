@@ -351,7 +351,7 @@ class we_exim_XMLImport extends we_exim_XMLExIm{
 			$path = dirname($object->Path);
 			$ref = $this->RefTable->getRef(array(
 				'OldID' => $object->ParentID,
-				'ContentType' => 'weNavigation'
+				'ContentType' => we_base_ContentTypes::NAVIGATION
 					));
 			if($ref){
 				$object->ParentID = $ref->ID;

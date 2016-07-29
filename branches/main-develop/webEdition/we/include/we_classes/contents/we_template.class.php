@@ -718,17 +718,12 @@ we_templateInit();?>';
 		foreach($regs as $reg){
 			$attribs = we_tag_tagParser::parseAttribs(isset($reg[2]) ? $reg[2] : '', true);
 			if(!empty($attribs['name'])){
-				$masterTags[$attribs['name']] = array(
-					//'all' => $reg[0],
-					//'startTag' => $reg[1],
-					'content' => isset($reg[3]) ? $reg[3] : '',
-				);
+				$masterTags[$attribs['name']] = [ 'content' => isset($reg[3]) ? $reg[3] : '',];
 				$code = str_replace($reg[0], '', $code);
 			}
 		}
 
-		if($this->MasterTemplateID != 0){
-
+		if($this->MasterTemplateID){
 			$templates = [];
 			self::getUsedTemplatesOfTemplate($this->MasterTemplateID, $templates);
 			if(in_array($this->ID, $templates) || $this->ID == $this->MasterTemplateID || in_array($this->MasterTemplateID, $recursiveTemplates)){

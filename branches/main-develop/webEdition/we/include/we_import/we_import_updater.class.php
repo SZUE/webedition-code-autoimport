@@ -39,18 +39,6 @@ class we_import_updater extends we_exim_XMLExIm{
 			t_e('Updating object', $object->ID, (isset($object->Path) ? $object->Path : ''), (isset($object->Table) ? $object->Table : ''));
 		}
 		$this->processedPatterns = [];
-		if(!empty($object->MasterTemplateID)){
-			$ref = $this->RefTable->getRef(
-				array(
-					'OldID' => $object->MasterTemplateID,
-					'ContentType' => we_base_ContentTypes::TEMPLATE
-				)
-			);
-			if($ref){
-				$object->MasterTemplateID = $ref->ID;
-				$object->_updateCompleteCode(true);
-			}
-		}
 
 		switch(isset($object->ClassName) ? $object->ClassName : ''){
 			case 'we_textDocument'://JS, CSS
@@ -143,7 +131,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			$this->updateElements($object);
 		}
 
-		if(isset($object->ContentType) && ($object->ContentType === 'weNavigation' || $object->ContentType === 'weNavigationRule')){
+		if(!empty($object->ContentType) && ($object->ContentType === we_base_ContentTypes::NAVIGATION || $object->ContentType === we_base_ContentTypes::NAVIGATIONRULE)){
 			$this->updateNavigation($object);
 		}
 
@@ -351,14 +339,25 @@ class we_import_updater extends we_exim_XMLExIm{
 		if($this->debug){
 			t_e("Updating template source...\n");
 		}
-
+		if(!empty($object->MasterTemplateID)){
+			$ref = $this->RefTable->getRef(
+				array(
+					'OldID' => $object->MasterTemplateID,
+					'ContentType' => we_base_ContentTypes::TEMPLATE
+				)
+			);
+			if($ref){
+				$object->MasterTemplateID = $ref->ID;
+				$object->_updateCompleteCode(true);
+			}
+		}
 		$source = $object->getElement("data");
 
-		$this->updateSource($this->Patterns->doc_patterns["id"], $source, 'ID', FILE_TABLE);
-		$this->updateSource($this->Patterns->doc_patterns["path"], $source, 'Path', FILE_TABLE);
+		$this->updateSource($this->Patterns->doc_patterns['id'], $source, 'ID', FILE_TABLE);
+		$this->updateSource($this->Patterns->doc_patterns['path'], $source, 'Path', FILE_TABLE);
 		if(defined('OBJECT_TABLE')){
-			$this->updateSource($this->Patterns->obj_patterns["id"], $source, 'ID', OBJECT_FILES_TABLE);
-			$this->updateSource($this->Patterns->doc_patterns["path"], $source, 'Path', OBJECT_FILES_TABLE);
+			$this->updateSource($this->Patterns->obj_patterns['id'], $source, 'ID', OBJECT_FILES_TABLE);
+			$this->updateSource($this->Patterns->doc_patterns['path'], $source, 'Path', OBJECT_FILES_TABLE);
 			$this->updateSource($this->Patterns->class_patterns, $source, 'ID', OBJECT_TABLE);
 		}
 
@@ -369,7 +368,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		// must be at the end
 		$this->updateSource($this->Patterns->special_patterns, $source, 'ID', FILE_TABLE);
 
-		$object->setElement("data", $source);
+		$object->setElement('data', $source);
 	}
 
 	private function updateObjectModuleData(we_object &$object){
@@ -415,8 +414,7 @@ class we_import_updater extends we_exim_XMLExIm{
 			}
 		}
 
-		if(isset($object->Templates) && strlen($object->Templates) > 0){
-
+		if(!empty($object->Templates)){
 			$tids = makeArrayFromCSV($object->Templates);
 			$new_tids = [];
 			foreach($tids as $tid){
@@ -436,7 +434,7 @@ class we_import_updater extends we_exim_XMLExIm{
 
 	private function updateNavigation(&$object){
 		switch($object->ContentType){
-			case 'weNavigation':
+			case we_base_ContentTypes::NAVIGATION:
 				if($this->debug){
 					t_e("Updating navigation...\n");
 				}
@@ -486,8 +484,7 @@ class we_import_updater extends we_exim_XMLExIm{
 				}
 				break;
 
-			case 'weNavigationRule':
-
+			case we_base_ContentTypes::NAVIGATIONRULE:
 				$this->updateField($object, 'NavigationID', NAVIGATION_TABLE);
 				$this->updateField($object, 'DoctypeID', DOC_TYPES_TABLE);
 

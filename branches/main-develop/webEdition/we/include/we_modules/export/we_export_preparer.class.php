@@ -108,12 +108,12 @@ class we_export_preparer extends we_exim_XMLExIm{
 						f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . intval($value), '', $this->db) :
 						'');
 
-				$this->addToDepArray($level, $value, 'weNavigation', NAVIGATION_TABLE);
+				$this->addToDepArray($level, $value, we_base_ContentTypes::NAVIGATION, NAVIGATION_TABLE);
 				$navrules[] = $value;
 
 				$this->db->query('SELECT ID FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $this->db->escape($path) . '/%"');
 				while($this->db->next_record()){
-					$this->addToDepArray($level, $this->db->f('ID'), 'weNavigation', NAVIGATION_TABLE);
+					$this->addToDepArray($level, $this->db->f('ID'), we_base_ContentTypes::NAVIGATION, NAVIGATION_TABLE);
 					$navrules[] = $this->db->f('ID');
 				}
 			}
@@ -126,7 +126,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 	private function getNavigationRule(array $naviid, $level){
 		$this->db->query('SELECT ID FROM ' . NAVIGATION_RULE_TABLE . ' WHERE NavigationID IN (' . implode(',', $naviid) . ')');
 		while($this->db->next_record()){
-			$this->addToDepArray($level, $this->db->f('ID'), 'weNavigationRule', NAVIGATION_RULE_TABLE);
+			$this->addToDepArray($level, $this->db->f('ID'), we_base_ContentTypes::NAVIGATIONRULE, NAVIGATION_RULE_TABLE);
 		}
 	}
 

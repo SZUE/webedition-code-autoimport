@@ -41,6 +41,8 @@ class we_base_ContentTypes{
 	const OBJECT = 'object';
 	const OBJECT_FILE = 'objectFile';
 	const COLLECTION = 'text/weCollection';
+	const NAVIGATION = 'weNavigation';
+	const NAVIGATIONRULE = 'weNavigationRule';
 
 	private $ct;
 

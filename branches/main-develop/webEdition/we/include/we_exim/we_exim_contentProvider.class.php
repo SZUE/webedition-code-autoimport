@@ -45,11 +45,11 @@ class we_exim_contentProvider{
 				$we_doc = new we_category();
 				$we_doc->load($ID);
 				return $we_doc;
-			case 'weNavigation':
+			case we_base_ContentTypes::NAVIGATION:
 				$we_doc = new we_navigation_navigation();
 				$we_doc->we_load($ID);
 				return $we_doc;
-			case 'weNavigationRule':
+			case we_base_ContentTypes::NAVIGATIONRULE:
 				$we_doc = new we_navigation_rule();
 				$we_doc->we_load($ID);
 				return $we_doc;

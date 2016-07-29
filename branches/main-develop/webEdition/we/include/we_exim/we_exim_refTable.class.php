@@ -89,7 +89,7 @@ class we_exim_refTable{
 		}
 		switch($rd->ContentType){
 			case 'weBinary':
-			case 'weNavigationRule':
+			case we_base_ContentTypes::NAVIGATIONRULE:
 			case 'weThumbnail':
 				return true;
 			default:
