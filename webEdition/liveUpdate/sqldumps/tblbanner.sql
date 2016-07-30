@@ -26,7 +26,7 @@ CREATE TABLE ###TBLPREFIX###tblbanner (
   FileIDs varchar(255) NOT NULL default '',
   FolderIDs varchar(255) NOT NULL default '',
   CategoryIDs text NOT NULL,
-  DoctypeIDs varchar(255) NOT NULL default '',
+  DoctypeIDs text NOT NULL,
   IsActive tinyint unsigned NOT NULL default '0',
   clicks int unsigned NOT NULL default '0',
   views int unsigned NOT NULL default '0',

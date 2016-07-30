@@ -919,14 +919,14 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 				if($type && $name){
 					switch($type){
 						case 'button': //	only look, if the button shall be hidden or not
-							$ctrlArray['button'][$name] = array('hide' => ( $hide ? 1 : 0 ));
+							$ctrlArray['button'][$name] = ['hide' => ( $hide ? 1 : 0 )];
 							break;
 						case 'checkbox':
-							$ctrlArray['checkbox'][$name] = array(
+							$ctrlArray['checkbox'][$name] = [
 								'hide' => ( $hide ? 1 : 0 ),
 								'readonly' => ( weTag_getAttribute('readonly', $tagAttribs, true, we_base_request::BOOL) ? 1 : 0 ),
 								'checked' => ( weTag_getAttribute('checked', $tagAttribs, false, we_base_request::BOOL) ? 1 : 0 )
-							);
+							];
 							break;
 					}
 				}
