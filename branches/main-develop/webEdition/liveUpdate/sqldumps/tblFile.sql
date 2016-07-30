@@ -27,7 +27,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 	Extension varchar(16) NOT NULL default '',
 	IsDynamic tinyint unsigned NOT NULL default '0',
 	IsSearchable tinyint unsigned NOT NULL default '0',
-	DocType smallint unsigned NOT NULL,
+	DocType mediumint unsigned NOT NULL,
 	ClassName ENUM('we_flashDocument','we_folder','we_htmlDocument','we_imageDocument','we_otherDocument','we_textDocument','we_webEditionDocument','we_document_video','we_document_audio') NOT NULL default 'we_textDocument',
 	Category text NOT NULL,
 	temp_category text NOT NULL,

@@ -1757,7 +1757,7 @@ class we_objectFile extends we_document{
 	}
 
 	function setTitleAndDescription(){
-		$fields = array('Description' => 'DefaultDesc', 'Title' => 'DefaultTitle', 'Keywords' => 'DefaultKeywords');
+		$fields = ['Description' => 'DefaultDesc', 'Title' => 'DefaultTitle', 'Keywords' => 'DefaultKeywords'];
 
 		foreach($fields as $key => $field){
 			if(!empty($this->classData[$field])){

@@ -38,7 +38,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   IsDynamic tinyint unsigned NOT NULL,
   IsSearchable tinyint unsigned NOT NULL,
   ClassName ENUM('we_flashDocument','we_folder','we_htmlDocument','we_imageDocument','we_otherDocument','we_textDocument','we_webEditionDocument','we_document_video','we_document_audio','we_class_folder','we_objectFile','we_object','we_template') NOT NULL,
-  DocType smallint unsigned NOT NULL,
+  DocType mediumint unsigned NOT NULL,
   Category text NOT NULL,
   RestrictOwners tinyint unsigned NOT NULL,
   Owners varchar(255) NOT NULL,

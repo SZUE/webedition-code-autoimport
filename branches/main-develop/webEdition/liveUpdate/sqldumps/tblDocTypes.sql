@@ -10,7 +10,7 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblDocTypes (
-  ID smallint unsigned NOT NULL auto_increment,
+  ID mediumint unsigned NOT NULL auto_increment,
   DocType varchar(64) NOT NULL default '',
   Extension varchar(16) NOT NULL default '',
   ParentID int unsigned NOT NULL default '0',

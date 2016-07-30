@@ -12,7 +12,7 @@ CREATE TABLE ###TBLPREFIX###tblexport (
   Filename varchar(255) NOT NULL default '',
   Selection enum('auto','manual') NOT NULL default 'auto',
   SelectionType enum('doctype','classname') NOT NULL default 'doctype',
-  DocType smallint NOT NULL,
+  DocType mediumint NOT NULL,
   Folder smallint unsigned NOT NULL default '0',
   ClassName varchar(255) NOT NULL default '',
   Categorys text NOT NULL,

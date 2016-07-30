@@ -37,7 +37,7 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   `Text` text NOT NULL,
   Category varchar(255) NOT NULL default '',
   ClassID int unsigned NOT NULL default '0',
-  Doctype smallint unsigned NOT NULL default '0',
+  Doctype mediumint unsigned NOT NULL default '0',
   Title varchar(255) NOT NULL default '',
   Description text NOT NULL,
   Language varchar(5) default NULL,
