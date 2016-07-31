@@ -46,8 +46,8 @@ switch($_SESSION['weS']['we_mode']){
 				$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES)), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), ['id' => 'tab_' . we_base_constants::WE_EDITPAGE_PROPERTIES, 'title' => g_l('weClass', '[tab_properties]')]);
 			}
 			if(in_array(we_base_constants::WE_EDITPAGE_CONTENT, $we_doc->EditPageNrs)){
-				$we_tabs->addTab(($we_doc->isBinary() ? '<i class="fa fa-lg fa-upload"></i>' : '<i class="fa fa-lg fa-edit"></i>'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_CONTENT . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_CONTENT, 'title' =>
-					($we_doc->isBinary() ? g_l('weClass', '[upload]') :
+				$we_tabs->addTab(($we_doc->isBinary() ? '<i class="fa fa-lg fa-upload"></i>' : '<i class="fa fa-lg fa-edit"></i>'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_CONTENT . ",'" . $we_transaction . "');", ['id' => 'tab_' . we_base_constants::WE_EDITPAGE_CONTENT, 'title' => ($we_doc->isBinary() ?
+						g_l('weClass', '[upload]') :
 						g_l('weClass', '[edit]')
 					)
 				]);
@@ -75,7 +75,7 @@ switch($_SESSION['weS']['we_mode']){
 			if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
 
 				$jscmd = "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');";
-				$we_tabs->addTab('<i class="fa fa-lg fa-eye"></i>' . ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE ? '<i class="fa fa-lg fa-edit"></i>' : ''), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW)), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), ["id" => "tab_" . we_base_constants::WE_EDITPAGE_PREVIEW, 'title' => g_l('weClass', ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE ? '[previeweditmode]' : '[preview]'))]);
+				$we_tabs->addTab('<i class="fa fa-lg fa-eye"></i>' . ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE ? '<i class="fa fa-lg fa-edit"></i>' : ''), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW)), ($we_doc->isBinary() ? we_fileupload_ui_preview::getJsOnLeave($jscmd) : $jscmd), ['id' => 'tab_' . we_base_constants::WE_EDITPAGE_PREVIEW, 'title' => g_l('weClass', ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE ? '[previeweditmode]' : '[preview]'))]);
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, $we_doc->EditPageNrs)){
@@ -87,13 +87,13 @@ switch($_SESSION['weS']['we_mode']){
 				$we_tabs->addTab('<i class="fa fa-lg fa-balance-scale"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_TEMPLATE_UNUSEDELEMENTS, 'title' => g_l('weClass', '[unusedElementsTab]')]);
 			}
 			if(in_array(we_base_constants::WE_EDITPAGE_FIELDS, $we_doc->EditPageNrs)){
-				$we_tabs->addTab('<i class="fa fa-lg fa-search"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_FIELDS)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_FIELDS . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_FIELDS, 'title' => g_l('weClass', '[docList]')]);
+				$we_tabs->addTab(we_base_constants::WE_ICON_CONTENT, (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_FIELDS)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_FIELDS . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_FIELDS, 'title' => g_l('weClass', '[docList]')]);
 			}
 			if(in_array(we_base_constants::WE_EDITPAGE_DOCLIST, $we_doc->EditPageNrs)){
 				$we_tabs->addTab('<i class="fa fa-lg fa-search"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_DOCLIST)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_DOCLIST . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_DOCLIST, 'title' => g_l('weClass', '[docList]')]);
 			}
 
-			if(permissionhandler::hasPerm("CAN_SEE_SCHEDULER") && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $we_doc->EditPageNrs) && $we_doc->ContentType != "folder"){
+			if(permissionhandler::hasPerm('CAN_SEE_SCHEDULER') && we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && in_array(we_base_constants::WE_EDITPAGE_SCHEDULER, $we_doc->EditPageNrs) && $we_doc->ContentType != 'folder'){
 				$we_tabs->addTab('<i class="fa fa-lg fa-clock-o"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_SCHEDULER)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_SCHEDULER . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_SCHEDULER, 'title' => g_l('weClass', '[scheduler]')]);
 			}
 			if((in_array(we_base_constants::WE_EDITPAGE_VALIDATION, $we_doc->EditPageNrs) && ($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT || $we_doc->ContentType == we_base_ContentTypes::CSS || $we_doc->ContentType == we_base_ContentTypes::HTML )) && permissionhandler::hasPerm("CAN_SEE_VALIDATION")){

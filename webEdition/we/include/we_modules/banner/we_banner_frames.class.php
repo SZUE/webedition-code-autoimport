@@ -60,12 +60,10 @@ class we_banner_frames extends we_modules_frame{
 
 		$we_tabs = new we_tabs();
 
-		if($isFolder){
-			$we_tabs->addTab(g_l('tabs', '[module][properties]'), true, "setTab(" . we_banner_banner::PAGE_PROPERTY . ");");
-		} else {
-			$we_tabs->addTab(g_l('tabs', '[module][properties]'), ($page == we_banner_banner::PAGE_PROPERTY), "setTab(" . we_banner_banner::PAGE_PROPERTY . ");");
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, ($isFolder || $page == we_banner_banner::PAGE_PROPERTY), "setTab(" . we_banner_banner::PAGE_PROPERTY . ");", ['title' => g_l('tabs', '[module][properties]')]);
+		if(!$isFolder){
 			$we_tabs->addTab(g_l('tabs', '[module][placement]'), ($page == we_banner_banner::PAGE_PLACEMENT), "setTab(" . we_banner_banner::PAGE_PLACEMENT . ");");
-			$we_tabs->addTab(g_l('tabs', '[module][statistics]'), ($page == we_banner_banner::PAGE_STATISTICS), "setTab(" . we_banner_banner::PAGE_STATISTICS . ");");
+			$we_tabs->addTab('<i class="fa fa-lg fa-hourglass-half"></i>', ($page == we_banner_banner::PAGE_STATISTICS), "setTab(" . we_banner_banner::PAGE_STATISTICS . ");", ['title' => g_l('tabs', '[module][statistics]')]);
 		}
 
 		$extraHead = we_tabs::getHeader('

@@ -63,10 +63,10 @@ class we_workflow_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 
 		if($mode == 0){
-			$we_tabs->addTab(g_l('tabs', '[module][properties]'), false, "setTab(" . self::TAB_PROPERTIES . ");", ["id" => "tab_0"]);
-			$we_tabs->addTab(g_l('tabs', '[module][overview]'), false, "setTab(" . self::TAB_OVERVIEW . ");", ["id" => "tab_1"]);
+			$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, "setTab(" . self::TAB_PROPERTIES . ");", ['id' => 'tab_0', 'title' => g_l('tabs', '[module][properties]')]);
+			$we_tabs->addTab(we_base_constants::WE_ICON_CONTENT, false, "setTab(" . self::TAB_OVERVIEW . ");", ['id' => 'tab_1', 'title' => g_l('tabs', '[module][overview]')]);
 		} else {
-			$we_tabs->addTab(g_l('tabs', '[editor][information]'), true, "//", ["id" => "tab_0"]);
+			$we_tabs->addTab(we_base_constants::WE_ICON_INFO, true, '//', ['id' => "tab_0", 'title' => g_l('tabs', '[editor][information]')]);
 		}
 
 		$textPre = g_l('modules_workflow', ($mode == 1 ? '[document]' : '[workflow]'));
@@ -125,7 +125,7 @@ function setStatusCheck(){
 		$table2->setCol(0, 1, ['class' => 'defaultfont'], $this->View->getStatusHTML());
 
 		$body = we_html_element::htmlBody([
-			'id' => 'footerBody',
+				'id' => 'footerBody',
 				'onload' => ($mode == 0 ? 'setStatusCheck()' : '')
 				], we_html_element::htmlForm($attribs = [], $table2->getHtml())
 		);

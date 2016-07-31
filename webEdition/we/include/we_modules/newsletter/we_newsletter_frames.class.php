@@ -264,7 +264,7 @@ function afterLoad(){
 		if($mode[0] == 0){
 			$table2->setRow(0, array('style' => 'vertical-align:middle;'));
 
-			$table2->setCol(0, 0, [], ((permissionhandler::hasPerm(["NEW_NEWSLETTER", "EDIT_NEWSLETTER"])) ?
+			$table2->setCol(0, 0, [], ((permissionhandler::hasPerm(['NEW_NEWSLETTER', 'EDIT_NEWSLETTER'])) ?
 					we_html_button::create_button(we_html_button::SAVE, "javascript:we_save()") :
 					""
 				)
