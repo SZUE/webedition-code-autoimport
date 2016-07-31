@@ -63,7 +63,7 @@ class we_export_frames extends we_modules_frame{
 		}
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(g_l('export', '[property]'), false, "setTab(1);", ["id" => "tab_1"]);
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, "setTab(1);", ["id" => "tab_1", 'title' => g_l('export', '[property]')]);
 		if($this->View->export->IsFolder == 0){
 			$we_tabs->addTab(g_l('export', '[options]'), false, "setTab(2);", ["id" => "tab_2"]);
 			$we_tabs->addTab(g_l('export', '[log]'), false, "setTab(3);", ["id" => "tab_3"]);
@@ -184,24 +184,24 @@ function addLog(text){
 	}
 
 	function getHTMLTab1(){
-		$parts = array(
-			array(
-				"headline" => g_l('export', '[property]'),
-				"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: 520px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);" onchange="top.content.hot=1;"'), g_l('export', '[name]')) . '<br/>' .
+		$parts = [
+			[
+				'headline' => g_l('export', '[property]'),
+				'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Text", '', $this->View->export->Text, '', 'style="width: 520px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value);" onchange="top.content.hot=1;"'), g_l('export', '[name]')) . '<br/>' .
 				$this->getHTMLDirChooser(),
-				'space' => we_html_multiIconBox::SPACE_MED)
-		);
+				'space' => we_html_multiIconBox::SPACE_MED]
+		];
 
 		if($this->View->export->IsFolder == 1){
 			return $parts;
 		}
 
-		$parts[] = array(
-			"headline" => g_l('export', '[export_to]'),
-			"html" => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: 520px;" onchange="top.content.hot=1;"'), g_l('export', '[filename]')),
+		$parts[] = [
+			'headline' => g_l('export', '[export_to]'),
+			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: 520px;" onchange="top.content.hot=1;"'), g_l('export', '[filename]')),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
-		);
+			];
 
 		$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', array('local' => g_l('export', '[export_to_local]'), "server" => g_l('export', '[export_to_server]')), 1, $this->View->export->ExportTo, false, array('onchange' => 'toggle(\'save_to\');top.content.hot=1;'), 'value', 520));

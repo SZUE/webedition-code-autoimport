@@ -68,7 +68,7 @@ class we_voting_frames extends we_modules_frame{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(g_l('modules_voting', '[property]'), false, "setTab(1);", ["id" => "tab_1"]);
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, "setTab(1);", ["id" => "tab_1",'title'=>g_l('modules_voting', '[property]')]);
 		if(!$this->View->voting->IsFolder){
 			$we_tabs->addTab(g_l('modules_voting', '[inquiry]'), false, "setTab(2);", ["id" => "tab_2"]);
 			$we_tabs->addTab(g_l('modules_voting', '[options]'), false, "setTab(3);", ["id" => "tab_3"]);

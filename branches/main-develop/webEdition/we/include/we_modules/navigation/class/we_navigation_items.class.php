@@ -404,7 +404,7 @@ class we_navigation_items{
 			$tmpItem['Name'] = $tmpItem['Text'];
 			self::$Storage['items'][] = $tmpItem;
 
-			if($db->Record['IsFolder'] && ($db->Record['FolderSelection'] === '' || $db->Record['FolderSelection'] == we_navigation_navigation::STYPE_DOCLINK)){
+			if($db->Record['IsFolder'] && ($db->Record['SelectionType'] === '' || $db->Record['SelectionType'] == we_navigation_navigation::STYPE_DOCLINK)){
 				$ids[] = $db->Record['LinkID'];
 			} elseif($db->Record['Selection'] == we_navigation_navigation::SELECTION_STATIC && $db->Record['SelectionType'] == we_navigation_navigation::STYPE_DOCLINK){
 				$ids[] = $db->Record['LinkID'];

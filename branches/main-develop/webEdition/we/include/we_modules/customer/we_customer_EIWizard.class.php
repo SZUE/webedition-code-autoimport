@@ -778,9 +778,9 @@ function callBack(){
 		$records = we_customer_EI::getCustomersFieldset();
 
 		if($type == we_import_functions::TYPE_GENERIC_XML){
-			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')), array("dat" => g_l('import', '[attributes]')));
+			$tableheader = array(array('dat' => g_l('modules_customer', '[we_flds]')), array('dat' => g_l('modules_customer', '[rcd_flds]')), array('dat' => g_l('import', '[attributes]')));
 		} else {
-			$tableheader = array(array("dat" => g_l('modules_customer', '[we_flds]')), array("dat" => g_l('modules_customer', '[rcd_flds]')));
+			$tableheader = array(array('dat' => g_l('modules_customer', '[we_flds]')), array('dat' => g_l('modules_customer', '[rcd_flds]')));
 		}
 
 		$rows = [];
@@ -810,14 +810,14 @@ function callBack(){
 			}
 			if($type == we_import_functions::TYPE_GENERIC_XML){
 				$rows[] = array(
-					array("dat" => $record),
-					array("dat" => $we_fields->getHTML()),
-					array("dat" => we_html_tools::htmlTextInput("att_mappings[$record]", 30, (isset($att_mappings[$record]) ? $att_mappings[$record] : ""), 255, "", "text", 100))
+					array('dat' => $record),
+					array('dat' => $we_fields->getHTML()),
+					array('dat' => we_html_tools::htmlTextInput("att_mappings[$record]", 30, (isset($att_mappings[$record]) ? $att_mappings[$record] : ""), 255, "", "text", 100))
 				);
 			} else {
 				$rows[] = array(
-					array("dat" => $record),
-					array("dat" => $we_fields->getHTML())
+					array('dat' => $record),
+					array('dat' => $we_fields->getHTML())
 				);
 			}
 			$i++;

@@ -355,9 +355,7 @@ abstract class we_root extends we_class{
 		$inputFeld = we_html_tools::htmlTextInput($textname, 24, $creator, '', ' readonly', '');
 		$idfield = we_html_element::htmlHidden($idname, $this->CreatorID);
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
-		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','user'," . $cmd1 . ",'" . $wecmdenc5 . "')");
+		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','user'," . $cmd1 . ",'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);") . "')");
 
 		return we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, $button);
 	}
@@ -1508,7 +1506,7 @@ abstract class we_root extends we_class{
 			return [];
 		}
 		$category = property_exists($this, 'Category') ? array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory))))) : '';
-		$queries = array('(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STYPE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',
+		$queries = array('(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '") OR (IsFolder=1 AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',
 		);
 		if(isset($this->DocType)){
 			//FIXME: query should use ID, not parentID

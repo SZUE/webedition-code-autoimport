@@ -524,19 +524,19 @@ WE().consts.weSearch= {
 	function makeHeadLines($whichSearch){
 		return $whichSearch !== self::SEARCH_MEDIA ?
 			array(
-			array("dat" => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'),
-			array("dat" => '<span onclick="javascript:weSearch.setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . ($whichSearch === 'TmplSearch' ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]')) . ' <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage('SiteTitle', $whichSearch) . '</span></span>'),
-			array("dat" => '<span onclick="weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span></span>'),
-			array("dat" => '<span onclick="weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span></span>')
+			array('dat' => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'),
+			array('dat' => '<span onclick="javascript:weSearch.setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . ($whichSearch === 'TmplSearch' ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]')) . ' <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage('SiteTitle', $whichSearch) . '</span></span>'),
+			array('dat' => '<span onclick="weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span></span>'),
+			array('dat' => '<span onclick="weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span></span>')
 			) :
 			array(
-			array("dat" => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'),
-			array("dat" => '<span onclick="weSearch.setOrder(\'media_filesize\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[groesse]') . ' <span id="media_filesize_' . $whichSearch . '" >' . $this->getSortImage('media_filesize', $whichSearch) . '</span></span>'),
-			array("dat" => '<span onclick="weSearch.setOrder(\'IsUsed\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[Status]') . ' <span id="IsUsed_' . $whichSearch . '" >' . $this->getSortImage('IsUsed', $whichSearch) . '</span></span>'),
-			array("dat" => '<span onclick="weSearch.setOrder(\'media_alt\',\'' . $whichSearch . '\');">alt <span id="media_alt_' . $whichSearch . '" >' . $this->getSortImage('media_alt', $whichSearch) . '</span></span>'),
-			array("dat" => '<span onclick="weSearch.setOrder(\'media_title\',\'' . $whichSearch . '\');">title <span id="media_title_' . $whichSearch . '" >' . $this->getSortImage('media_title', $whichSearch) . '</span></span>'),
-			array("dat" => '<span onclick="weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span></span>'),
-			array("dat" => '<span onclick="weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span></span>'),
+			array('dat' => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'),
+			array('dat' => '<span onclick="weSearch.setOrder(\'media_filesize\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[groesse]') . ' <span id="media_filesize_' . $whichSearch . '" >' . $this->getSortImage('media_filesize', $whichSearch) . '</span></span>'),
+			array('dat' => '<span onclick="weSearch.setOrder(\'IsUsed\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[Status]') . ' <span id="IsUsed_' . $whichSearch . '" >' . $this->getSortImage('IsUsed', $whichSearch) . '</span></span>'),
+			array('dat' => '<span onclick="weSearch.setOrder(\'media_alt\',\'' . $whichSearch . '\');">alt <span id="media_alt_' . $whichSearch . '" >' . $this->getSortImage('media_alt', $whichSearch) . '</span></span>'),
+			array('dat' => '<span onclick="weSearch.setOrder(\'media_title\',\'' . $whichSearch . '\');">title <span id="media_title_' . $whichSearch . '" >' . $this->getSortImage('media_title', $whichSearch) . '</span></span>'),
+			array('dat' => '<span onclick="weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span></span>'),
+			array('dat' => '<span onclick="weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span></span>'),
 			['dat' => '']
 		);
 	}
@@ -657,16 +657,16 @@ WE().consts.weSearch= {
 				$standardStyle = 'height:12px;padding-top:6px;font-size:11px;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;';
 				$content[] = $whichSearch !== self::SEARCH_MEDIA ?
 					array(
-					array("dat" => $actionCheckbox),
-					array("dat" => '<span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
-					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"]),
-					array("dat" => ($whichSearch === 'TmplSearch' ? str_replace('/' . $result[$f]["Text"], '', $result[$f]["Path"]) : $result[$f]["SiteTitle"])),
-					array("dat" => isset($result[$f]["VersionID"]) && $result[$f]['VersionID'] ?
+					array('dat' => $actionCheckbox),
+					array('dat' => '<span class="iconListview">' . $iconHTML['imageView'] . '</span>'),
+					array('dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]['Path'] . ' (ID: ' . $result[$f]['docID'] . ')"><u>' . $result[$f]["Text"]),
+					array('dat' => ($whichSearch === 'TmplSearch' ? str_replace('/' . $result[$f]["Text"], '', $result[$f]["Path"]) : $result[$f]["SiteTitle"])),
+					array('dat' => isset($result[$f]["VersionID"]) && $result[$f]['VersionID'] ?
 							"-" :
 							($result[$f]["CreationDate"] ?
 								date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) :
 								"-")),
-					array("dat" => ($result[$f]["ModDate"] ?
+					array('dat' => ($result[$f]["ModDate"] ?
 							date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) :
 							"-")),
 					) :
@@ -753,27 +753,27 @@ WE().consts.weSearch= {
 				}
 
 				$content[] = array(
-					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageView'] . '<span></a>'),
-					array("dat" => we_base_util::shortenPath($result[$f]["SiteTitle"], 17)),
-					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $result[$f]["Path"] : $result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($result[$f]["Text"], 20) . '</u></a>'),
-					array("dat" => '<nobr>' . ($result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) : "-") . '</nobr>'),
-					array("dat" => '<nobr>' . ($result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) : "-") . '</nobr>'),
-					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '</span></a>'),
-					array("dat" => $result[$f]['fileSize']),
-					array("dat" => $iconHTML['sizeX'] . " x " . $iconHTML['sizeY']),
-					array("dat" => we_base_util::shortenPath(g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']'), 22)),
-					array("dat" => '<span class="' . $fontColor . '">' . we_base_util::shortenPath($result[$f]["Text"], 30) . '</span>'),
-					array("dat" => we_base_util::shortenPath($result[$f]["SiteTitle"], 45)),
-					array("dat" => we_base_util::shortenPath($result[$f]["Description"], 100)),
-					array("dat" => $result[$f]['ContentType']),
-					array("dat" => we_base_util::shortenPath($creator, 22)),
-					array("dat" => $templateText),
-					array("dat" => $metafields),
-					array("dat" => $result[$f]['docID']),
-					array("dat" => (isset($result[$f]['media_alt']) ? $result[$f]['media_alt'] : '')),
-					array("dat" => (isset($result[$f]['media_title']) ? $result[$f]['media_title'] : '')),
-					array("dat" => (isset($result[$f]['isProtected']) ? $result[$f]['isProtected'] : '')),
-					array("dat" => (isset($result[$f]['isUsed']) ? $result[$f]['isUsed'] : '')),
+					array('dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageView'] . '<span></a>'),
+					array('dat' => we_base_util::shortenPath($result[$f]["SiteTitle"], 17)),
+					array('dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . ' middlefont" title="' . ($whichSearch === self::SEARCH_MEDIA ? $result[$f]["Path"] : $result[$f]["Text"]) . '"><u>' . we_base_util::shortenPath($result[$f]["Text"], 20) . '</u></a>'),
+					array('dat' => '<nobr>' . ($result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) : "-") . '</nobr>'),
+					array('dat' => '<nobr>' . ($result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) : "-") . '</nobr>'),
+					array('dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $result[$f]["Text"] . '"><span class="iconGridview">' . $iconHTML['imageViewPopup'] . '</span></a>'),
+					array('dat' => $result[$f]['fileSize']),
+					array('dat' => $iconHTML['sizeX'] . " x " . $iconHTML['sizeY']),
+					array('dat' => we_base_util::shortenPath(g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']'), 22)),
+					array('dat' => '<span class="' . $fontColor . '">' . we_base_util::shortenPath($result[$f]["Text"], 30) . '</span>'),
+					array('dat' => we_base_util::shortenPath($result[$f]["SiteTitle"], 45)),
+					array('dat' => we_base_util::shortenPath($result[$f]["Description"], 100)),
+					array('dat' => $result[$f]['ContentType']),
+					array('dat' => we_base_util::shortenPath($creator, 22)),
+					array('dat' => $templateText),
+					array('dat' => $metafields),
+					array('dat' => $result[$f]['docID']),
+					array('dat' => (isset($result[$f]['media_alt']) ? $result[$f]['media_alt'] : '')),
+					array('dat' => (isset($result[$f]['media_title']) ? $result[$f]['media_title'] : '')),
+					array('dat' => (isset($result[$f]['isProtected']) ? $result[$f]['isProtected'] : '')),
+					array('dat' => (isset($result[$f]['isUsed']) ? $result[$f]['isUsed'] : '')),
 				);
 			}
 		}

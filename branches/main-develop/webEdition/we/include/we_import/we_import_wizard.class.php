@@ -2198,7 +2198,7 @@ function handle_event(evt) {
 			}
 		}
 
-		$th = array(array("dat" => g_l('import', '[we_flds]')), array("dat" => g_l('import', '[rcd_flds]')));
+		$th = array(array('dat' => g_l('import', '[we_flds]')), array('dat' => g_l('import', '[rcd_flds]')));
 		$rows = [];
 
 		$i = 0;
@@ -2237,7 +2237,7 @@ function handle_event(evt) {
 					$new_record = '';
 			}
 			$rows[] = array(
-				array("dat" => ($new_record != "") ? $new_record : $record), array("dat" => $sct_we_fields->getHTML()),
+				array('dat' => ($new_record != "") ? $new_record : $record), array('dat' => $sct_we_fields->getHTML()),
 			);
 			++$i;
 		}

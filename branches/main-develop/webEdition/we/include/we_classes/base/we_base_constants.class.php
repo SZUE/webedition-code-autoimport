@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_base_constants{
-
 	const MODE_NORMAL = 'normal';
 	const MODE_SEE = 'seem';
 	const PING_TIME = 30; // 30 sec
@@ -59,5 +58,9 @@ abstract class we_base_constants{
 	const WE_VARIANTS_PREFIX = 'we__intern_variant___';
 	const WE_VARIANTS_ELEMENT_NAME = 'weInternVariantElement';
 	const WE_VARIANT_REQUEST = 'we_variant';
+	const WE_ICON_PROPERTIES = '<i class="fa fa-lg fa-cog"></i>';
+	const WE_ICON_CUSTOMER_FILTER = '<i class="fa fa-lg fa-group"></i>';
+	const WE_ICON_WORKSPACE = '<i class="fa fa-lg fa-desktop"></i>';
+	const WE_ICON_EDIT = '<i class="fa fa-lg fa-edit"></i>';
 
 }
