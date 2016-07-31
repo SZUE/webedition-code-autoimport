@@ -260,7 +260,7 @@ function setTab(tab) {
 		$branch = we_base_request::_(we_base_request::STRING, "branch", g_l('modules_customer', '[other]'));
 
 		$hiddens = we_html_element::htmlHiddens([
-			"pnt" => "field_editor",
+				"pnt" => "field_editor",
 				"cmd" => "no_cmd",
 				"branch" => "$branch",
 				"art" => "$mode",
@@ -379,7 +379,7 @@ function setTab(tab) {
 		$mode = we_base_request::_(we_base_request::INT, 'mode', 0);
 
 		$hiddens = we_html_element::htmlHiddens([
-			'pnt' => 'search',
+				'pnt' => 'search',
 				'cmd' => 'search',
 				'search' => 1,
 				'mode' => $mode]);
@@ -463,10 +463,10 @@ var fieldDate = new weDate(date_format_dateonly);
 		$table->setCol($cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_sort_view_select->getHtml());
 
-		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
 
@@ -478,7 +478,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_order->getHtml());
 
 		$default_saveRegisteredUser_register = new we_html_select(['name' => 'default_saveRegisteredUser_register', 'style' => 'width:250px;', 'class' => 'weSelect']);
@@ -486,7 +486,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
