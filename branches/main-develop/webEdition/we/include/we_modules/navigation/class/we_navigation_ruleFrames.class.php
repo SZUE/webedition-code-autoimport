@@ -49,7 +49,7 @@ class we_navigation_ruleFrames{
 
 	function getHTMLFrameset(){
 		return we_html_tools::getHtmlTop(g_l('navigation', '[menu_highlight_rules]')) . STYLESHEET . '</head>' .
-			we_html_element::htmlBody(array('class ' => 'weDialogBody')
+			we_html_element::htmlBody(['class ' => 'weDialogBody']
 				, we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleContent', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 				we_html_element::htmlIFrame('cmdFrame', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			) .
@@ -69,24 +69,23 @@ class we_navigation_ruleFrames{
 		}
 		asort($rules);
 
-		$parts = array(
-			array(
+		$parts = [
+			[
 				'headline' => g_l('navigation', '[rules][available_rules]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => weSuggest::getYuiFiles() . '<table class="default">
-	<tr><td>' . we_html_tools::htmlSelect('navigationRules', $rules, 8, '', false, array('style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)')) . '</td>
+	<tr><td>' . we_html_tools::htmlSelect('navigationRules', $rules, 8, '', false, ['style' => "width: 275px;", 'onclick' => 'we_cmd(\'navigation_edit_rule\', this.value)']) . '</td>
 		<td style="vertical-align:top">' . we_html_button::create_button('new_entry', 'javascript:we_cmd("new_navigation_rule")') . '<div style="height:10px;"></div>' . we_html_button::create_button('delete', 'javascript:we_cmd("delete_navigation_rule")') . '
 		</td>
 	</tr>
 </table>'
-			),
-			array(
+			], [
 				'headline' => g_l('navigation', '[rules][rule_name]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_html_tools::htmlTextInput('NavigationName', 24, '', '', 'style="width: 275px;"'),
 				'noline' => 1
-			),
-		);
+			],
+		];
 
 		$yuiSuggest->setAcId("NavigationIDPath");
 		$yuiSuggest->setContentType("folder,weNavigation");
@@ -98,36 +97,30 @@ class we_navigation_ruleFrames{
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(275);
 		$yuiSuggest->setSelectButton(
-			we_html_button::create_button(
-				'select', "javascript:we_cmd('we_selector_file', document.we_form.elements.NavigationID.value, '" . NAVIGATION_TABLE . "', 'document.we_form.elements.NavigationID.value', 'document.we_form.elements.NavigationIDPath.value')"), 10);
+			we_html_button::create_button('select', "javascript:we_cmd('we_selector_file', document.we_form.elements.NavigationID.value, '" . NAVIGATION_TABLE . "', 'document.we_form.elements.NavigationID.value', 'document.we_form.elements.NavigationIDPath.value')"), 10);
 
 		$weAcSelector = $yuiSuggest->getHTML();
 
-		$parts[] = array(
+		$parts[] = [
 			'headline' => g_l('navigation', '[rules][rule_navigation_link]'),
 			'space' => we_html_multiIconBox::SPACE_BIG,
 			'html' => $weAcSelector,
 			'noline' => 1
-		);
+		];
 
-		$selectionTypes = array(
-			we_navigation_navigation::STYPE_DOCTYPE => g_l('global', '[documents]')
-		);
+		$selectionTypes = [we_navigation_navigation::STYPE_DOCTYPE => g_l('global', '[documents]')];
 		if(defined('OBJECT_TABLE')){
 			$selectionTypes[we_navigation_navigation::STYPE_CLASS] = g_l('global', '[objects]');
 		}
 
-		$parts[] = array(
+		$parts[] = [
 			'headline' => g_l('navigation', '[rules][rule_applies_for]'),
 			'space' => we_html_multiIconBox::SPACE_BIG,
-			'html' => we_html_tools::htmlSelect(
-				'SelectionType', $selectionTypes, 1, 0, false, array('style' => "width: 275px;", 'onchange' => "switchType(this.value);"))
-		);
+			'html' => we_html_tools::htmlSelect('SelectionType', $selectionTypes, 1, 0, false, ['style' => "width: 275px;", 'onchange' => "switchType(this.value);"])
+		];
 
 // getDoctypes
-		$docTypes = array(
-			0 => g_l('navigation', '[no_entry]')
-		);
+		$docTypes = [0 => g_l('navigation', '[no_entry]')];
 		$dtq = we_docTypes::getDoctypeQuery($this->db);
 		$this->db->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE ' . $dtq['where']);
 		while($this->db->next_record()){
@@ -155,7 +148,7 @@ class we_navigation_ruleFrames{
 </tr>
 <tr id="trDoctypeID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_doctype]') . '</td>
-	<td>' . we_html_tools::htmlSelect('DoctypeID', $docTypes, 1, 0, false, array("style" => "width: 275px;")) . '</td>
+	<td>' . we_html_tools::htmlSelect('DoctypeID', $docTypes, 1, 0, false, ["style" => "width: 275px;"]) . '</td>
 </tr>';
 
 		if(defined('OBJECT_TABLE')){
@@ -181,8 +174,7 @@ class we_navigation_ruleFrames{
 </tr>
 <tr id="trWorkspaceID">
 	<td style="height: 40px;" class="weMultiIconBoxHeadline">' . g_l('navigation', '[rules][rule_workspace]') . '</td>
-	<td>' . we_html_tools::htmlSelect(
-					'WorkspaceID', [], 1, '', false, array('style' => "width: 275px;")) . '</td>
+	<td>' . we_html_tools::htmlSelect('WorkspaceID', [], 1, '', false, ['style' => "width: 275px;"]) . '</td>
 </tr>';
 		}
 		$formTable .= '
@@ -194,32 +186,27 @@ class we_navigation_ruleFrames{
 </tr>
 </table>';
 
-		$parts[] = array(
+		$parts[] = [
 			'html' => $formTable,
-		);
+		];
 
 		$saveButton = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd("save_navigation_rule");');
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.window.close();');
-		return we_html_tools::getHtmlTop() . STYLESHEET .
-			we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
-			we_html_element::jsElement('
+		return we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+				we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
+				we_html_element::jsElement('
 var dependencies = {
 	' . we_navigation_navigation::STYPE_CLASS . ':["ClassID", "WorkspaceID", "Categories"],
 	' . we_navigation_navigation::STYPE_DOCTYPE . ': ["FolderID", "DoctypeID", "Categories"]
 };
 ') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js') . '
-</head>
-<body onload="switchType(document.we_form[\'SelectionType\'].value)" class="weDialogBody">
-	<form name="we_form" target="cmdFrame" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleCmd">' .
-			we_html_element::htmlHiddens(array(
-				'cmd' => '',
-				'ID' => '0'
-			)) .
-			we_html_multiIconBox::getHTML('navigationRules', $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]')) . '
-	</form>' .
-			$yuiSuggest->getYuiJs() .
-			'</body></html>';
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js'), we_html_element::htmlBody(['onload' => "switchType(document.we_form.SelectionType.value)", 'class' => "weDialogBody"], we_html_element::htmlForm(['name' => "we_form", 'target' => "cmdFrame", 'method' => "post", 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleCmd'], we_html_element::htmlHiddens([
+							'cmd' => '',
+							'ID' => '0'
+						]) .
+						we_html_multiIconBox::getHTML('navigationRules', $parts, 30, we_html_button::position_yes_no_cancel($saveButton, null, $closeButton), -1, '', '', false, g_l('navigation', '[rules][navigation_rules]'))) .
+					$yuiSuggest->getYuiJs()
+		));
 	}
 
 	function getHTMLCategory(){
@@ -227,33 +214,27 @@ var dependencies = {
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 
-		$table = new we_html_table(
-			array(
-			'id' => 'CategoriesBlock',
-			'style' => 'display: block;',
-			'class' => 'default withSpace'
-			), 2, 1);
+		$table = new we_html_table([ 'id' => 'CategoriesBlock', 'style' => 'display: block;', 'class' => 'default withSpace'], 2, 1);
 
-		$table->setColContent(0, 0, we_html_element::htmlDiv(
-				array(
-					'id' => 'categories',
-					'class' => 'blockWrapper',
-					'style' => 'width: 380px; height: 80px; border: #AAAAAA solid 1px;'
-		)));
+		$table->setColContent(0, 0, we_html_element::htmlDiv([
+				'id' => 'categories',
+				'class' => 'blockWrapper',
+				'style' => 'width: 380px; height: 80px; border: #AAAAAA solid 1px;'
+		]));
 
-		$table->setCol(1, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
+		$table->setCol(1, 0, ['colspan' => 2, 'style' => 'text-align:right'], we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() .
-			we_html_element::htmlHiddens(array(
+			we_html_element::htmlHiddens([
 				'CategoriesControl' => 0,
 				'CategoriesCount' => 0
-			)) .
+			]) .
 			we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
-			var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",400,false);
-			categories_edit.addVariant();
-			document.we_form.CategoriesControl.value = categories_edit.name;
-			categories_edit.showVariant(0);
+var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",400,false);
+categories_edit.addVariant();
+document.we_form.CategoriesControl.value = categories_edit.name;
+categories_edit.showVariant(0);
 		');
 	}
 

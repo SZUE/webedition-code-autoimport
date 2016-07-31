@@ -107,7 +107,7 @@ abstract class we_modules_frame{
 			we_base_menu::getJS() .
 			$extraHead;
 
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => 'startTree();'), we_html_element::htmlExIFrame('header', self::getHTMLHeader(
+		$body = we_html_element::htmlBody(['id' => 'weMainBody', "onload" => 'startTree();'], we_html_element::htmlExIFrame('header', self::getHTMLHeader(
 						(isset($this->toolDir) ?
 							$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
 							WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
@@ -124,8 +124,8 @@ abstract class we_modules_frame{
 		$jmenu = new we_base_menu($inc, 'top.opener.top.load', '');
 		$menu = $jmenu->getHTML();
 
-		return we_html_element::htmlDiv(array('class' => 'menuDiv'), $menu .
-				we_html_element::htmlDiv(array('id' => 'moduleMessageConsole'), we_main_headermenu::createMessageConsole('moduleFrame', false))
+		return we_html_element::htmlDiv(['class' => 'menuDiv'], $menu .
+				we_html_element::htmlDiv(['id' => 'moduleMessageConsole'], we_main_headermenu::createMessageConsole('moduleFrame', false))
 			) . we_html_element::jsElement(we_main_headermenu::createMessageConsole('moduleFrame', true));
 	}
 
@@ -136,23 +136,22 @@ abstract class we_modules_frame{
 	<div class="baumArrow" onclick="top.content.toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-' . ($this->treeWidth <= 30 ? "right" : "left") . '" ></i></div>
 </div>';
 
-		$content = we_html_element::htmlDiv(array('id' => 'moduleContent'), we_html_element::htmlDiv(array('id' => 'lframeDiv', 'style' => 'width: ' . $this->treeWidth . 'px;'), we_html_element::htmlDiv(array('id' => 'vtabs'), $incDecTree) .
+		$content = we_html_element::htmlDiv(['id' => 'moduleContent'], we_html_element::htmlDiv(['id' => 'lframeDiv', 'style' => 'width: ' . $this->treeWidth . 'px;'], we_html_element::htmlDiv(['id' => 'vtabs'], $incDecTree) .
 					$this->getHTMLLeft()
 				) .
-				we_html_element::htmlDiv(array('id' => 'right', 'style' => 'left: ' . $this->treeWidth . 'px;'), we_html_element::htmlIFrame('editor', $this->frameset . '&pnt=editor' . $extraUrlParams, ' ', '', '', false)
+				we_html_element::htmlDiv(['id' => 'right', 'style' => 'left: ' . $this->treeWidth . 'px;'], we_html_element::htmlIFrame('editor', $this->frameset . '&pnt=editor' . $extraUrlParams, ' ', '', '', false)
 				)
 		);
 
-		return we_html_element::htmlDiv(array('id' => 'resize', 'name' => 'resize', 'class' => ($this->hasIconbar ? 'withIconBar' : ''), 'style' => 'overflow:hidden'), $content);
+		return we_html_element::htmlDiv(['id' => 'resize', 'name' => 'resize', 'class' => ($this->hasIconbar ? 'withIconBar' : ''), 'style' => 'overflow:hidden'], $content);
 	}
 
 	protected function getHTMLLeft(){
 		//we load tree in iFrame, because the complete tree JS is based on document.open() and document.write()
 		//it makes not much sense, to rewrite trees before abandoning them anyway
-		return we_html_element::htmlDiv(array(
-				'id' => 'left', 'name' => 'left'), we_html_element::htmlDiv(array('id' => 'treeheader', 'style' => ($this->showTreeHeader ? 'display:block;' : '')), $this->getHTMLTreeheader()) .
+		return we_html_element::htmlDiv(['id' => 'left', 'name' => 'left'], we_html_element::htmlDiv(['id' => 'treeheader', 'style' => ($this->showTreeHeader ? 'display:block;' : '')], $this->getHTMLTreeheader()) .
 				$this->getHTMLTree() .
-				($this->showTreeFooter ? we_html_element::htmlDiv(array('id' => 'treefooter', 'class' => 'editfooter'), $this->getHTMLTreefooter()) :
+				($this->showTreeFooter ? we_html_element::htmlDiv(['id' => 'treefooter', 'class' => 'editfooter'], $this->getHTMLTreefooter()) :
 					''
 				)
 		);
@@ -198,11 +197,11 @@ abstract class we_modules_frame{
 
 	protected function getHTMLEditorFooter(array $btn_cmd, $extraHead = ''){
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
-			return $this->getHTMLDocument(we_html_element::htmlBody(array("style" => "background-color:#EFF0EF"), ""), $extraHead);
+			return $this->getHTMLDocument(we_html_element::htmlBody(["style" => "background-color:#EFF0EF"], ""), $extraHead);
 		}
 
-		$table2 = new we_html_table(array('class' => 'default'), 1, count($btn_cmd));
-		$table2->setRow(0, array('style' => 'vertical-align:middle'));
+		$table2 = new we_html_table(['class' => 'default'], 1, count($btn_cmd));
+		$table2->setRow(0, ['style' => 'vertical-align:middle']);
 		$pos = 0;
 		foreach($btn_cmd as $but => $cur){
 			list($right, $cmd) = $cur;
@@ -210,7 +209,7 @@ abstract class we_modules_frame{
 				$table2->setColContent(0, $pos++, we_html_button::create_button($but, "javascript:top.content.we_cmd('" . $cmd . "')"));
 			}
 		}
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('id' => 'footerBody'), $table2->getHtml()), $extraHead);
+		return $this->getHTMLDocument(we_html_element::htmlBody(['id' => 'footerBody'], $table2->getHtml()), $extraHead);
 	}
 
 	protected function getHTMLCmd(){

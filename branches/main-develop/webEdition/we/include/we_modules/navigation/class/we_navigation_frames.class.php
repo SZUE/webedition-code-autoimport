@@ -184,7 +184,7 @@ function setTab(tab) {
 				)
 		);
 
-		return $this->getHTMLDocument($body, STYLESHEET . $this->View->getJSProperty() .
+		return $this->getHTMLDocument($body, $this->View->getJSProperty() .
 				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_frame.js'));
 	}
 
