@@ -2215,21 +2215,32 @@ function show_seem_chooser(val) {
 		switch($this->Type){
 			case self::TYPE_USER_GROUP:
 				$headline1 = g_l('modules_users', '[group]') . ': ';
-				$tabs = array(self::TAB_DATA => 'data', self::TAB_PERMISSION => 'permissions', self::TAB_WORKSPACES => 'workspace');
+				$tabs = [
+					self::TAB_DATA => ['data', ''],
+					self::TAB_PERMISSION => ['permissions', ''],
+					self::TAB_WORKSPACES => ['workspace', '']
+				];
 				break;
 			case self::TYPE_ALIAS:
-				$tabs = array(self::TAB_DATA => 'data');
+				$tabs = [
+					self::TAB_DATA => ['data', '']
+				];
 				$headline1 = g_l('javaMenu_users', '[menu_alias]') . ': ';
 				break;
 			case self::TYPE_USER:
 			default:
-				$tabs = array(self::TAB_DATA => 'data', self::TAB_PERMISSION => 'permissions', self::TAB_WORKSPACES => 'workspace', self::TAB_SETTINGS => 'preferences');
+				$tabs = [
+					self::TAB_DATA => ['data', ''],
+					self::TAB_PERMISSION => ['permissions', '<i class="fa fa-lg fa-user-secret"></i>'],
+					self::TAB_WORKSPACES => ['workspace', we_base_constants::WE_ICON_WORKSPACE],
+					self::TAB_SETTINGS => ['preferences', we_base_constants::WE_ICON_PROPERTIES]
+				];
 				$headline1 = g_l('javaMenu_users', '[menu_user]') . ': ';
 		}
 
 		$we_tabs = new we_tabs();
 		foreach($tabs as $key => $val){
-			$we_tabs->addTab(g_l('tabs', '[module][' . $val . ']'), ($tab == $key), 'self.setTab(' . $key . ');');
+			$we_tabs->addTab($val[1], ($tab == $key), 'self.setTab(' . $key . ');', ['title' => g_l('tabs', '[module][' . $val[0] . ']')]);
 		}
 
 

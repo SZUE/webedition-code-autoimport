@@ -214,20 +214,22 @@ WE().consts.g_l.weSearch = {
 					case we_base_ContentTypes::HTML:
 					case we_base_ContentTypes::WEDOCUMENT:
 					case we_base_ContentTypes::OBJECT_FILE:
-						$published = ((($result[$f]['Published'] != 0) && ($result[$f]['Published'] < $result[$f]['ModDate'])) ? -1 : $result[$f]['Published']);
-						if($published == 0){
-							$fontColor = 'notpublished';
-							$showPubCheckbox = false;
-						} elseif($published == -1){
-							$fontColor = 'changed';
-							$showPubCheckbox = false;
+						$published = intval((($result[$f]['Published'] != 0) && ($result[$f]['Published'] < $result[$f]['ModDate'])) ? -1 : $result[$f]['Published']);
+						switch($published){
+							case 0:
+								$fontColor = 'notpublished';
+								$showPubCheckbox = false;
+								break;
+							case -1:
+								$fontColor = 'changed';
+								$showPubCheckbox = false;
 						}
 						break;
 					default:
-						$published = $result[$f]['Published'];
+					//$published = $result[$f]['Published'];
 				}
 			} else {
-				$published = 1;
+				//$published = 1;
 			}
 
 
@@ -244,16 +246,16 @@ WE().consts.g_l.weSearch = {
 						$publishCheckbox = $showPubCheckbox ? '' : '<span style="width:20px"/>';
 				}
 
-				$content[$f] = array(
-					array('dat' => $publishCheckbox),
-					array('dat' => '<span class="iconListview"><span class="resultIcon" data-contenttype="' . $result[$f]["ContentType"] . '" data-extension="' . $result[$f]['Extension'] . '"></span></span>'),
+				$content[$f] = [
+					['dat' => $publishCheckbox],
+					['dat' => '<span class="iconListview"><span class="resultIcon" data-contenttype="' . $result[$f]["ContentType"] . '" data-extension="' . $result[$f]['Extension'] . '"></span></span>'],
 					// TODO: set thumb ptah when doctype is image/*
-					array('dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]['docID'] . '\',\'' . $result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $result[$f]['Text'] . '"><u>' . we_base_util::shortenPath($result[$f]['Text'], $we_PathLength)),
-					//array("dat" => '<nobr>' . g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']') . '</nobr>'),
-					array('dat' => '<nobr>' . we_base_util::shortenPath($result[$f]["SiteTitle"], $we_PathLength) . '</nobr>'),
-					array('dat' => '<nobr>' . ($result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) : '-') . '</nobr>'),
-					array('dat' => '<nobr>' . ($result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) : '-') . '</nobr>')
-				);
+					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]['docID'] . '\',\'' . $result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $result[$f]['Text'] . '"><u>' . we_base_util::shortenPath($result[$f]['Text'], $we_PathLength)],
+					//array('dat' => '<nobr>' . g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']') . '</nobr>'),
+					['dat' => '<nobr>' . we_base_util::shortenPath($result[$f]['SiteTitle'], $we_PathLength) . '</nobr>'],
+					['dat' => '<nobr>' . ($result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['CreationDate']) : '-') . '</nobr>'],
+					['dat' => '<nobr>' . ($result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : '-') . '</nobr>']
+				];
 			} else {
 				$fs = file_exists($_SERVER['DOCUMENT_ROOT'] . $result[$f]['Path']) ? filesize($_SERVER['DOCUMENT_ROOT'] . $result[$f]['Path']) : 0;
 
@@ -264,9 +266,9 @@ WE().consts.g_l.weSearch = {
 					if($fs){
 						$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result[$f]['Path']);
 
-						$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $result[$f]['docID'] . "&size[width]=" . $smallSize . "&path=" . urlencode($result[$f]["Path"]) . "&extension=" . $result[$f]["Extension"];
+						$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $result[$f]['docID'] . "&size[width]=" . $smallSize . "&path=" . urlencode($result[$f]['Path']) . "&extension=" . $result[$f]['Extension'];
 						$imageView = '<img src="' . $url . '" /></a>';
-						$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $result[$f]["docID"] . "&size[width]=" . $bigSize . "&path=" . $result[$f]["Path"] . "&extension=" . $result[$f]["Extension"];
+						$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $result[$f]['docID'] . "&size[width]=" . $bigSize . "&path=" . $result[$f]['Path'] . "&extension=" . $result[$f]["Extension"];
 						$imageViewPopup = '<img src="' . $urlPopup . '"/></a>';
 					} else {
 						$imagesize = array(0, 0);
@@ -280,7 +282,7 @@ WE().consts.g_l.weSearch = {
 				$creator = $result[$f]['CreatorID'] ? id_to_path($result[$f]['CreatorID'], USER_TABLE, $DB_WE) : g_l('searchtool', '[nobody]');
 
 				if($result[$f]['ContentType'] == we_base_ContentTypes::WEDOCUMENT){
-					$templateID = ($result[$f]["Published"] >= $result[$f]["ModDate"] && $result[$f]["Published"] ?
+					$templateID = ($result[$f]["Published"] >= $result[$f]['ModDate'] && $result[$f]['Published'] ?
 							$result[$f]['TemplateID'] :
 							$result[$f]['temp_template_id']);
 
@@ -301,7 +303,7 @@ WE().consts.g_l.weSearch = {
 				for($i = 0; $i < $fieldcount; $i++){
 					$tagName = $defined_fields[$i]["tag"];
 
-					if(we_exim_contentProvider::isBinary($result[$f]["docID"])){
+					if(we_exim_contentProvider::isBinary($result[$f]['docID'])){
 						$DB_WE->query('SELECT l.DID,c.Dat FROM ' . LINK_TABLE . ' l LEFT JOIN ' . CONTENT_TABLE . ' c ON (l.CID=c.ID) WHERE l.DID=' . intval($result[$f]['docID']) . ' AND l.nHash=x\'' . md5($tagName) . '\' AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"');
 						$metafields[$tagName] = '';
 						while($DB_WE->next_record(MYSQL_ASSOC)){
@@ -310,25 +312,25 @@ WE().consts.g_l.weSearch = {
 					}
 				}
 
-				$content[$f] = array(
-					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $result[$f]["Text"] . '">' . $imageView . '</a>'),
-					array("dat" => we_base_util::shortenPath($result[$f]["SiteTitle"], 17)),
-					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]["Text"] . '"><u>' . we_base_util::shortenPath($result[$f]["Text"], 17) . '</u></a>'),
-					array("dat" => '<nobr>' . ($result[$f]["CreationDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["CreationDate"]) : "-") . '</nobr>'),
-					array("dat" => '<nobr>' . ($result[$f]["ModDate"] ? date(g_l('searchtool', '[date_format]'), $result[$f]["ModDate"]) : "-") . '</nobr>'),
-					array("dat" => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $result[$f]["Text"] . '">' . $imageViewPopup . '</a>'),
-					array("dat" => we_base_file::getHumanFileSize($fs)),
-					array("dat" => $imagesize[0] . " x " . $imagesize[1]),
-					array("dat" => we_base_util::shortenPath(g_l('contentTypes', '[' . ($result[$f]['ContentType']) . ']'), 22)),
-					array("dat" => '<span class="' . $fontColor . '">' . we_base_util::shortenPath($result[$f]["Text"], 30) . '</span>'),
-					array("dat" => we_base_util::shortenPath($result[$f]["SiteTitle"], 45)),
-					array("dat" => we_base_util::shortenPath($result[$f]["Description"], 100)),
-					array("dat" => $result[$f]['ContentType']),
-					array("dat" => we_base_util::shortenPath($creator, 22)),
-					array("dat" => $templateText),
-					array("dat" => $metafields),
-					array("dat" => $result[$f]["docID"]),
-				);
+				$content[$f] = [
+					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none" class="middlefont" title="' . $result[$f]["Text"] . '">' . $imageView . '</a>'],
+					['dat' => we_base_util::shortenPath($result[$f]["SiteTitle"], 17)],
+					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]["docTable"]) . '\',\'' . $result[$f]["docID"] . '\',\'' . $result[$f]["ContentType"] . '\')" class="' . $fontColor . '"  title="' . $result[$f]["Text"] . '"><u>' . we_base_util::shortenPath($result[$f]["Text"], 17) . '</u></a>'],
+					['dat' => '<nobr>' . ($result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['CreationDate']) : '-') . '</nobr>'],
+					['dat' => '<nobr>' . ($result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : "-") . '</nobr>'],
+					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]['docID'] . '\',\'' . $result[$f]["ContentType"] . '\')" style="text-decoration:none;" class="middlefont" title="' . $result[$f]['Text'] . '">' . $imageViewPopup . '</a>'],
+					['dat' => we_base_file::getHumanFileSize($fs)],
+					['dat' => $imagesize[0] . " x " . $imagesize[1]],
+					['dat' => we_base_util::shortenPath(g_l('contentTypes', '[' . ($result[$f]['ContentType']) . ']'), 22)],
+					['dat' => '<span class="' . $fontColor . '">' . we_base_util::shortenPath($result[$f]['Text'], 30) . '</span>'],
+					['dat' => we_base_util::shortenPath($result[$f]['SiteTitle'], 45)],
+					['dat' => we_base_util::shortenPath($result[$f]['Description'], 100)],
+					['dat' => $result[$f]['ContentType']],
+					['dat' => we_base_util::shortenPath($creator, 22)],
+					['dat' => $templateText],
+					['dat' => $metafields],
+					['dat' => $result[$f]["docID"]],
+				];
 			}
 		}
 

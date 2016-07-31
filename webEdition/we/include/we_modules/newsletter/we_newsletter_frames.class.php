@@ -149,13 +149,13 @@ function setTab(tab) {
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(g_l('modules_newsletter', '[property]'), (($page == self::TAB_PROPERTIES) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_PROPERTIES . ");");
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, (($page == self::TAB_PROPERTIES) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_PROPERTIES . ");", ['title' => g_l('modules_newsletter', '[property]')]);
 
 		if(!$group){
-			$we_tabs->addTab(sprintf(g_l('modules_newsletter', '[mailing_list]'), ""), (($page == self::TAB_MAILING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_MAILING . ");");
-			$we_tabs->addTab(g_l('modules_newsletter', '[edit]'), (($page == self::TAB_EDIT) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_EDIT . ");");
+			$we_tabs->addTab('<i class="fa fa-lg fa-list"></i>', (($page == self::TAB_MAILING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_MAILING . ");", ['title' => sprintf(g_l('modules_newsletter', '[mailing_list]'), "")]);
+			$we_tabs->addTab(we_base_constants::WE_ICON_EDIT, (($page == self::TAB_EDIT) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_EDIT . ");", ['title' => g_l('modules_newsletter', '[edit]')]);
 			//if($this->View->newsletter->ID){ // zusaetzlicher tab fuer auswertung
-			$we_tabs->addTab(g_l('modules_newsletter', '[reporting][tab]'), (($page == self::TAB_REPORTING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_REPORTING . ");");
+			$we_tabs->addTab('<i class="fa fa-lg fa-hourglass-half"></i>', (($page == self::TAB_REPORTING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_REPORTING . ");", ['title' => g_l('modules_newsletter', '[reporting][tab]')]);
 			//}
 		}
 
@@ -189,7 +189,9 @@ function setTab(tab) {
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return parent::getHTMLEditorFooter([]);
 		}
-
+		if(empty($mode)){
+			$mode = [0];
+		}
 		$group = we_base_request::_(we_base_request::INT, "group", 0);
 
 		$js = we_html_element::jsElement('

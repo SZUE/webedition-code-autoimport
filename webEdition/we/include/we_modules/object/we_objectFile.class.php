@@ -2933,7 +2933,7 @@ class we_objectFile extends we_document{
 		$category = array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory)))));
 
 		$queries = array(
-			'(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '") OR (IsFolder=1 AND FolderSelection="' . we_navigation_navigation::STYPE_OBJLINK . '")) AND LinkID=' . intval($this->ID) . ')',
+			'(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '") OR (IsFolder=1 AND SelectionType="' . we_navigation_navigation::STYPE_OBJLINK . '")) AND LinkID=' . intval($this->ID) . ')',
 			//FIXME: query should use ID, not parentID
 			'((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '") AND SelectionType="' . we_navigation_navigation::STYPE_CLASS . '" AND (ClassID=' . $this->TableID . '))'
 		);

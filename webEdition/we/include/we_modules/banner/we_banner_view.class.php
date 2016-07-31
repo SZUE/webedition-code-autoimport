@@ -611,25 +611,25 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$clickslink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements.order.value==\'clicks desc\'){this.document.we_form.elements.order.value=\'clicks\';}else{this.document.we_form.elements.order.value=\'clicks desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[clicks]') . '</a>';
 		$ratelink = '<a href="javascript:top.content.setHot();if(this.document.we_form.elements.order.value==\'rate desc\'){this.document.we_form.elements.order.value=\'rate\';}else{this.document.we_form.elements.order.value=\'rate desc\';}we_cmd(\'switchPage\',\'' . $this->page . '\');">' . g_l('modules_banner', '[rate]') . '</a>';
 		$headline = array(
-			array("dat" => $pathlink),
-			array("dat" => $viewslink),
-			array("dat" => $clickslink),
-			array("dat" => $ratelink)
+			array('dat' => $pathlink),
+			array('dat' => $viewslink),
+			array('dat' => $clickslink),
+			array('dat' => $ratelink)
 		);
 		$rows = array(
 			array(
-				array("dat" => g_l('modules_banner', '[all]')),
-				array("dat" => $GLOBALS["lv"]->getAllviews()),
-				array("dat" => $GLOBALS["lv"]->getAllclicks()),
-				array("dat" => $GLOBALS["lv"]->getAllrate() . "%", "style" => "text-align:right")
+				array('dat' => g_l('modules_banner', '[all]')),
+				array('dat' => $GLOBALS["lv"]->getAllviews()),
+				array('dat' => $GLOBALS["lv"]->getAllclicks()),
+				array('dat' => $GLOBALS["lv"]->getAllrate() . "%", "style" => "text-align:right")
 			)
 		);
 		while($GLOBALS["lv"]->next_record()){
 			$rows[] = array(
-				array("dat" => ($GLOBALS["lv"]->f("page") ? '' : '<a href="' . $GLOBALS["lv"]->f(we_listview_base::PROPPREFIX . 'PATH') . '" target="_blank">') . $GLOBALS["lv"]->f(we_listview_base::PROPPREFIX . 'PATH') . ($GLOBALS["lv"]->f("page") ? '' : '</a>'), FILE_TABLE),
-				array("dat" => $GLOBALS["lv"]->f("views")),
-				array("dat" => $GLOBALS["lv"]->f("clicks")),
-				array("dat" => $GLOBALS["lv"]->f("rate") . "%", "style" => "text-align:right")
+				array('dat' => ($GLOBALS["lv"]->f("page") ? '' : '<a href="' . $GLOBALS["lv"]->f(we_listview_base::PROPPREFIX . 'PATH') . '" target="_blank">') . $GLOBALS["lv"]->f(we_listview_base::PROPPREFIX . 'PATH') . ($GLOBALS["lv"]->f("page") ? '' : '</a>'), FILE_TABLE),
+				array('dat' => $GLOBALS["lv"]->f("views")),
+				array('dat' => $GLOBALS["lv"]->f("clicks")),
+				array('dat' => $GLOBALS["lv"]->f("rate") . "%", "style" => "text-align:right")
 			);
 		}
 

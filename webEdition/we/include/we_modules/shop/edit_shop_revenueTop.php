@@ -313,14 +313,14 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 	);
 
 	$headline = array(
-		array("dat" => getTitleLink(g_l('modules_shop', '[bestellung]'), 'IntOrderID')),
-		array("dat" => g_l('modules_shop', '[ArtName]')), // 'shoptitle'
-		array("dat" => g_l('modules_shop', '[anzahl]')),
-		array("dat" => getTitleLink(g_l('modules_shop', '[artPrice]'), 'Price')),
-		array("dat" => g_l('modules_shop', '[Gesamt]')),
-		array("dat" => getTitleLink(g_l('modules_shop', '[artOrdD]'), 'DateOrder')),
-		array("dat" => getTitleLink(g_l('modules_shop', '[ArtID]'), 'IntArticleID')),
-		array("dat" => getTitleLink(g_l('modules_shop', '[artPay]'), 'DatePayment')),
+		array('dat' => getTitleLink(g_l('modules_shop', '[bestellung]'), 'IntOrderID')),
+		array('dat' => g_l('modules_shop', '[ArtName]')), // 'shoptitle'
+		array('dat' => g_l('modules_shop', '[anzahl]')),
+		array('dat' => getTitleLink(g_l('modules_shop', '[artPrice]'), 'Price')),
+		array('dat' => g_l('modules_shop', '[Gesamt]')),
+		array('dat' => getTitleLink(g_l('modules_shop', '[artOrdD]'), 'DateOrder')),
+		array('dat' => getTitleLink(g_l('modules_shop', '[ArtID]'), 'IntArticleID')),
+		array('dat' => getTitleLink(g_l('modules_shop', '[artPay]'), 'DatePayment')),
 	);
 	$content = [];
 

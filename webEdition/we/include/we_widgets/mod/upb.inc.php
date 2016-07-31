@@ -117,20 +117,20 @@ foreach($tbls as $table){
 	while($db->next_record()){
 		$cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" data-contenttype="' . $db->f('ContentType') . '"></td><td class="upbEntry middlefont '.($db->f("Published") != '-' ? 'changed' : "notpublished").'" onclick="WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '">' . $db->f("Path") . '</td></tr>';
 		$row = array(
-			array("dat" => $path),
-			/* array("dat" => $db->f("Creator") ? : '-'),
-			  array("dat" => $db->f('CreationDate')),
-			  array("dat" => $db->f("Modifier") ? : '-'),
-			  array("dat" => $db->f("Modified")),
-			  array("dat" => $db->f("Published")), */
+			array('dat' => $path),
+			/* array('dat' => $db->f("Creator") ? : '-'),
+			  array('dat' => $db->f('CreationDate')),
+			  array('dat' => $db->f("Modifier") ? : '-'),
+			  array('dat' => $db->f("Modified")),
+			  array('dat' => $db->f("Published")), */
 		);
 		if(defined('WORKFLOW_TABLE')){
 			if($db->f("wforder")){
 				$step = we_workflow_utility::findLastActiveStep($db->f("ID"), $table) + 1;
 				$steps = count(we_workflow_utility::getNumberOfSteps($db->f("ID"), $table));
-				$row[] = array("dat" => $step . '&nbsp;' . g_l('resave', '[of]') . '&nbsp;' . $steps . '&nbsp;<i class="fa fa-lg fa-circle" style="color:#' . ($db->f("mywforder") ? '006DB8' : 'E7E7E7') . ';"></i>');
+				$row[] = array('dat' => $step . '&nbsp;' . g_l('resave', '[of]') . '&nbsp;' . $steps . '&nbsp;<i class="fa fa-lg fa-circle" style="color:#' . ($db->f("mywforder") ? '006DB8' : 'E7E7E7') . ';"></i>');
 			} else {
-				$row[] = array("dat" => "-");
+				$row[] = array('dat' => "-");
 			}
 		}
 		$content[] = $row;

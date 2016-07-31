@@ -100,17 +100,17 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(g_l('navigation', '[property]'), false, "setTab(" . self::TAB_PROPERTIES . ");", ["id" => "tab_" . self::TAB_PROPERTIES]);
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, 'setTab(' . self::TAB_PROPERTIES . ');', ['id' => 'tab_' . self::TAB_PROPERTIES, 'title' => g_l('navigation', '[property]')]);
 		if($this->Model->IsFolder && permissionhandler::hasPerm('EDIT_DYNAMIC_NAVIGATION')){
-			$we_tabs->addTab(g_l('navigation', '[content]'), false, "setTab(" . self::TAB_CONTENT . ");", ["id" => "tab_" . self::TAB_CONTENT]);
+			$we_tabs->addTab(g_l('navigation', '[content]'), false, 'setTab(' . self::TAB_CONTENT . ');', ['id' => 'tab_' . self::TAB_CONTENT]);
 		}
 
 		if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm("CAN_EDIT_CUSTOMERFILTER")){
-			$we_tabs->addTab(g_l('navigation', '[customers]'), false, "setTab(" . self::TAB_CUSTOMER . ");", ["id" => "tab_" . self::TAB_CUSTOMER]);
+			$we_tabs->addTab(we_base_constants::WE_ICON_CUSTOMER_FILTER, false, 'setTab(' . self::TAB_CUSTOMER . ');', ['id' => 'tab_' . self::TAB_CUSTOMER, 'title' => g_l('navigation', '[customers]')]);
 		}
 
 		if($this->Model->IsFolder){
-			$we_tabs->addTab(g_l('navigation', '[preview]'), false, "setTab('" . self::TAB_PREVIEW . "');", ["id" => "tab_" . self::TAB_PREVIEW]);
+			$we_tabs->addTab(g_l('navigation', '[preview]'), false, "setTab('" . self::TAB_PREVIEW . "');", ['id' => 'tab_' . self::TAB_PREVIEW]);
 		}
 
 		$tabsHead = we_tabs::getHeader(
@@ -324,10 +324,10 @@ function setTab(tab) {
 		$button_obj = we_html_button::create_button(we_html_button::SELECT, $cmd_obj, true, 0, 0, '', '', false) .
 			(defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::VIEW, 'javascript:WE().layout.openToEdit("' . OBJECT_FILES_TABLE . '",' . $cmd1 . ',"")', true, 100, 22, '', '', false) : '');
 
-		$buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->FolderSelection) || $this->Model->FolderSelection == we_navigation_navigation::STYPE_DOCLINK) ? 'inline' : 'none') . '">' . $button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->FolderSelection == we_navigation_navigation::STYPE_OBJLINK ? 'inline' : 'none') . '">' . $button_obj . '</div>';
+		$buttons = '<div id="docFolderLink" style="display: ' . ((empty($this->Model->SelectionType) || $this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK) ? 'inline' : 'none') . '">' . $button_doc . '</div><div id="objFolderLink" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? 'inline' : 'none') . '">' . $button_obj . '</div>';
 		$path = ($this->Model->LinkID == 0 ?
 				'' :
-				id_to_path($this->Model->LinkID, ($this->Model->FolderSelection == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->FolderSelection == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE))));
+				id_to_path($this->Model->LinkID, ($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE))));
 
 		$seltype = array(
 			we_navigation_navigation::STYPE_DOCLINK => g_l('navigation', '[docLink]'),
@@ -339,9 +339,9 @@ function setTab(tab) {
 
 		$yuiSuggest->setAcId('LinkPath');
 		$yuiSuggest->setContentType(
-			$this->Model->FolderSelection == we_navigation_navigation::STYPE_DOCLINK ?
+			$this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ?
 				implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH)) :
-				(defined('OBJECT_TABLE') && $this->Model->FolderSelection == we_navigation_navigation::STYPE_OBJLINK ?
+				(defined('OBJECT_TABLE') && $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ?
 					'folder,objectFile' :
 					implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH))
 			));
@@ -350,7 +350,7 @@ function setTab(tab) {
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult('LinkID', $this->Model->LinkID);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setTable($this->Model->FolderSelection == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->FolderSelection == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
+		$yuiSuggest->setTable($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCLINK ? FILE_TABLE : (defined('OBJECT_TABLE') && $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK ? OBJECT_FILES_TABLE : FILE_TABLE));
 		$yuiSuggest->setWidth(330);
 		$yuiSuggest->setSelectButton($buttons);
 		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, 'javascript:document.we_form.elements.LinkID.value=0;document.we_form.elements.LinkPath.value="";', true, 27, 22));
@@ -358,12 +358,12 @@ function setTab(tab) {
 		$weAcSelector = $yuiSuggest->getHTML();
 
 		$selection = '<div style="display: block;">' .
-			we_html_tools::htmlSelect('FolderSelection', $seltype, 1, $this->Model->FolderSelection, false, array('onchange' => "onFolderSelectionChangeJS(this.value);setFolderSelection(this.value);top.content.mark();", 'style' => 'width: 520px; margin-top: 5px;'), 'value', 520) . '
+			we_html_tools::htmlSelect('SelectionType', $seltype, 1, $this->Model->SelectionType, false, array('onchange' => "onFolderSelectionChangeJS(this.value);setFolderSelection(this.value);top.content.mark();", 'style' => 'width: 520px; margin-top: 5px;'), 'value', 520) . '
 
-		<div id="folderSelectionDiv" style="display: ' . ($this->Model->FolderSelection != we_navigation_navigation::STYPE_URLLINK ? 'block' : 'none') . ';margin-top: 5px;">' . $weAcSelector . '</div>
+		<div id="folderSelectionDiv" style="display: ' . ($this->Model->SelectionType != we_navigation_navigation::STYPE_URLLINK ? 'block' : 'none') . ';margin-top: 5px;">' . $weAcSelector . '</div>
 
 		</div>
-		<div id="folderUrlDiv" style="display: ' . ($this->Model->FolderSelection == we_navigation_navigation::STYPE_URLLINK ? 'block' : 'none') . '; margin-top: 5px;">
+		<div id="folderUrlDiv" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_URLLINK ? 'block' : 'none') . '; margin-top: 5px;">
 			' . we_html_tools::htmlTextInput('FolderUrl', 58, $this->Model->FolderUrl, '', 'onchange="top.content.mark();"', 'text', 520, 0) . '
 		</div>' .
 			$this->getHTMLWorkspace('object', 0, 'FolderWsID') . we_html_tools::htmlFormElementTable(
@@ -1126,11 +1126,11 @@ function showPreview() {
 					we_html_tools::htmlSelect('WorkspaceID', $wsid, 1, $this->Model->WorkspaceID, false, array('style' => 'width: 520px;', 'onchange' => 'top.content.mark();'), 'value'), g_l('navigation', '[workspace]')) .
 				'</div>';
 		}
-		if($this->Model->FolderSelection == we_navigation_navigation::STYPE_OBJLINK && $this->Model->LinkID){
+		if($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK && $this->Model->LinkID){
 			$wsid = we_navigation_dynList::getWorkspacesForObject($this->Model->LinkID);
 		}
 
-		return '<div id="objLinkFolderWorkspace" style="display: ' . (($this->Model->FolderSelection == we_navigation_navigation::STYPE_OBJLINK && ($this->Model->FolderWsID > -1)) ? 'block' : 'none') . ';margin-top: 5px;">' .
+		return '<div id="objLinkFolderWorkspace" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK && ($this->Model->FolderWsID > -1)) ? 'block' : 'none') . ';margin-top: 5px;">' .
 			we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect(
 					'FolderWsID', $wsid, 1, $this->Model->FolderWsID, false, array('style' => 'width: 520px;', 'onchange' => 'top.content.mark();'), 'value'), g_l('navigation', '[workspace]')) .
