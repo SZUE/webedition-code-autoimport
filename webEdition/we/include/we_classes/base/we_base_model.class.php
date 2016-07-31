@@ -157,7 +157,7 @@ class we_base_model{
 		return true;
 	}
 
-	function registerMediaLinks(){ // FIXME: use this for categorys and newsletter too
+	protected function registerMediaLinks(){ // FIXME: use this for categorys and newsletter too
 		$this->MediaLinks = array_filter($this->MediaLinks, function($v){
 			return $v && is_numeric($v);
 		});

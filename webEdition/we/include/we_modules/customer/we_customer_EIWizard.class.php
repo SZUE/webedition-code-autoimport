@@ -654,7 +654,7 @@ function callBack(){
 					//$charset = $GLOBALS['WE_BACKENDCHARSET'];
 					//$GLOBALS['weDefaultCharset'] = get_value("default_charset");
 					$importCharset = we_html_tools::htmlTextInput('the_charset', 8, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), 255, '', 'text', 100);
-					$importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $charsets, 1, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
+					$importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $charsets, 1, ($charset === 'ASCII' ? 'ISO8859-1' : $charset), false, array('onchange' => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 160, "defaultfont", false);
 					$import_Charset = '<table class="default"><tr><td>' . $importCharset . '</td><td>' . $importCharsetChooser . '</td></tr></table>';
 
 

@@ -251,7 +251,7 @@ function weDoOk() {' .
 		return we_base_request::_($type, 'we_dialog_args', $alt, $name);
 	}
 
-	function getLangField($name, $title, $width){
+	protected function getLangField($name, $title, $width){
 		//FIXME: these values should be obtained from global settings
 		$foo = we_html_tools::htmlTextInput("we_dialog_args[" . $name . "]", 15, (isset($this->args[$name]) ? $this->args[$name] : ""), "", '', "text", $width - 50);
 		$foo2 = '<select style="width:50px;" class="defaultfont" name="' . $name . '_select" onchange="this.form.elements[\'we_dialog_args[' . $name . ']\'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;">

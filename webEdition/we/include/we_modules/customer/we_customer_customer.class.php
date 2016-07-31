@@ -122,7 +122,7 @@ class we_customer_customer extends we_base_model{
 		return $hook->executeHook() && we_base_model::save() && $this->registerMediaLinks();
 	}
 
-	function registerMediaLinks(){
+	protected function registerMediaLinks(){
 		$this->unregisterMediaLinks();
 		foreach(self::getImageFields() as $field){
 			if($this->$field){

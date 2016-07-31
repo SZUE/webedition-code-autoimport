@@ -902,7 +902,7 @@ function CalendarChanged(calObject) {
 						)) . '
 			<table class="default">
 			<tr>
-			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, array("onchange" => "selectArticle(this.options[this.selectedIndex].value)"), 'value', '380') . '</td>
+			<td>' . we_class::htmlSelect("add_article", $shopArticlesSelect, 15, we_base_request::_(we_base_request::RAW, 'add_article', ''), false, array('onchange' => "selectArticle(this.options[this.selectedIndex].value)"), 'value', '380') . '</td>
 			<td width="10"></td>
 			<td style="vertical-align:top">' . $backBut . '<div style="margin:5px 0"></div>' . $nextBut . '</td>
 			</tr>

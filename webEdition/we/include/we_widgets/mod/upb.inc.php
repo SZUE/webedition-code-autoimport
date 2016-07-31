@@ -76,8 +76,7 @@ foreach($tbls as $table){
 	$parentlist = $childlist = '';
 
 	if($table == FILE_TABLE){
-		if(($ws = get_ws($table))){
-			$wsArr = makeArrayFromCSV($ws);
+		if(($wsArr = get_ws($table, true))){
 			foreach($wsArr as $i){
 				$parents[] = $i;
 				$childs[] = $i;
@@ -115,7 +114,7 @@ foreach($tbls as $table){
 	$content = [];
 
 	while($db->next_record()){
-		$cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" data-contenttype="' . $db->f('ContentType') . '"></td><td class="upbEntry middlefont '.($db->f("Published") != '-' ? 'changed' : "notpublished").'" onclick="WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '">' . $db->f("Path") . '</td></tr>';
+		$cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" data-contenttype="' . $db->f('ContentType') . '"></td><td class="upbEntry middlefont ' . ($db->f("Published") != '-' ? 'changed' : "notpublished") . '" onclick="WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '">' . $db->f("Path") . '</td></tr>';
 		$row = array(
 			array('dat' => $path),
 			/* array('dat' => $db->f("Creator") ? : '-'),

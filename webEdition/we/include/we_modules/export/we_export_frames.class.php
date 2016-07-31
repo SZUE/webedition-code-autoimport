@@ -201,7 +201,7 @@ function addLog(text){
 			'html' => we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("Filename", 75, $this->View->export->Filename, '', 'style="width: 520px;" onchange="top.content.hot=1;"'), g_l('export', '[filename]')),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
-			];
+		];
 
 		$table = new we_html_table(['class' => 'default withSpace'], 2, 1);
 		$table->setColContent(0, 0, we_html_tools::htmlSelect('ExportTo', array('local' => g_l('export', '[export_to_local]'), "server" => g_l('export', '[export_to_server]')), 1, $this->View->export->ExportTo, false, array('onchange' => 'toggle(\'save_to\');top.content.hot=1;'), 'value', 520));
@@ -290,7 +290,7 @@ function closeAllType(){
 		return $parts;
 	}
 
-	function getHTMLTab2(){
+	private function getHTMLTab2(){
 		$formattable = new we_html_table([], 5, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden($this->View->export->HandleDefTemplates, "HandleDefTemplates", g_l('export', '[handle_def_templates]'), false, 'defaultfont', 'top.content.hot=1;'));
 		$formattable->setCol(1, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleDocIncludes ? true : false), "HandleDocIncludes", g_l('export', '[handle_document_includes]'), false, 'defaultfont', 'top.content.hot=1;'));
@@ -348,13 +348,13 @@ function closeAllType(){
 		return $parts;
 	}
 
-	function getHTMLTab3(){
-		return array(
-			array(
-				"headline" => '',
-				"html" => we_html_element::htmlDiv(array('class' => 'blockWrapper', 'style' => 'width: 650px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'), ''),
-			)
-		);
+	private function getHTMLTab3(){
+		return [
+			[
+				'headline' => '',
+				'html' => we_html_element::htmlDiv(['class' => 'blockWrapper', 'style' => 'width: 650px; height: 400px; border:1px #dce6f2 solid;', 'id' => 'log'], ''),
+			]
+		];
 	}
 
 	function getHTMLDirChooser(){
@@ -366,7 +366,7 @@ function closeAllType(){
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
 		$yuiSuggest->setContentType("folder");
-		$yuiSuggest->setInput("ParentPath", $path, array("onchange" => 'top.content.hot=1;'));
+		$yuiSuggest->setInput("ParentPath", $path, array('onchange' => 'top.content.hot=1;'));
 		$yuiSuggest->setLabel(g_l('export', '[group]'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
@@ -682,7 +682,7 @@ if (top.content.editor.edbody.addLog){
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('SelPath');
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($Pathname, $Pathvalue, array("onchange" => 'top.content.hot=1;'));
+		$yuiSuggest->setInput($Pathname, $Pathvalue, array('onchange' => 'top.content.hot=1;'));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($IDName, $IDValue);

@@ -314,7 +314,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		$pages = $Search->getPages();
 
-		$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, array("onchange" => "jump(this.value);"));
+		$select = we_html_tools::htmlSelect("TmpOffset", $pages, 1, $Search->Offset, false, array('onchange' => "jump(this.value);"));
 
 		return '
 	<table class="default withBigSpace" style="margin:12px 0px 12px 5px;">

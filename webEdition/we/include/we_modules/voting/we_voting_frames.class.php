@@ -292,7 +292,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			$charsetHandler = new we_base_charsetHandler();
 			$charsets = $charsetHandler->getCharsetsForTagWizzard();
 			$importCharset = we_html_tools::htmlTextInput('the_charset', 8, '', 255, "", "text", 200);
-			$importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $charsets, 1, '', false, array("onchange" => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 325, "defaultfont", false);
+			$importCharsetChooser = we_html_tools::htmlSelect("ImportCharsetSelect", $charsets, 1, '', false, array('onchange' => "document.forms[0].elements.the_charset.value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 325, "defaultfont", false);
 			$import_Charset = '<table class="default"><tr><td>' . $importCharset . '</td><td>' . $importCharsetChooser . '</td></tr></table>';
 
 
@@ -351,7 +351,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		return $parts;
 	}
 
-	function getHTMLTab2(){
+	private function getHTMLTab2(){
 		$successor_box = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;'), 2, 1);
 		$successor_box->setCol(1, 0, [], we_html_tools::htmlFormElementTable($this->formFileChooser(400, 'Successor', '/', '', ''), g_l('modules_voting', '[voting-successor]')));
 
@@ -410,7 +410,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		return $parts;
 	}
 
-	function getHTMLTab3(){
+	private function getHTMLTab3(){
 		$parts = [];
 
 

@@ -248,8 +248,8 @@ function setStaticSelection(value) {
 function setFolderSelection(value) {
 	document.we_form.LinkID.value = "";
 	document.we_form.LinkPath.value = "";
-	document.we_form.FolderUrl.value = "http://";
-	document.we_form.FolderWsID.value = -1;
+	document.we_form.Url.value = "http://";
+	document.we_form.WorkspaceID.value = -1;
 	switch (value) {
 		case WE().consts.navigation.STYPE_URLLINK:
 			setVisible("folderSelectionDiv", false);

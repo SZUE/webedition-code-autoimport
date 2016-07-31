@@ -379,7 +379,7 @@ function getWsQueryForSelector($tab, $includingFolders = true){
 		return '';
 	}
 
-	if(!($ws = makeArrayFromCSV(get_ws($tab)))){
+	if(!($ws = get_ws($tab, true))){
 		return (($tab == NAVIGATION_TABLE || (defined('NEWSLETTER_TABLE') && $tab == NEWSLETTER_TABLE)) ? '' : ' OR RestrictOwners=0 ');
 	}
 	$paths = id_to_path($ws, $tab, null, true);
@@ -424,7 +424,7 @@ function get_def_ws($table = FILE_TABLE){
 	$ws = implode(',', explode(',', $foo));
 
 	if(!$ws){
-		$wsA = explode(',', get_ws($table));
+		list($wsA) = get_ws($table, true);
 		return ($wsA ? $wsA[0] : '');
 	}
 	return $ws;

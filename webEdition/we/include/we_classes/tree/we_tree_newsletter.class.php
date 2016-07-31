@@ -35,7 +35,7 @@ class we_tree_newsletter extends we_tree_base{
 
 		$items = $aWsQuery = $parentpaths = [];
 
-		if(($ws = get_ws($table))){
+		if(($ws = get_ws($table, true))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
 				$aWsQuery[] = ' Path LIKE "' . $path . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
@@ -79,7 +79,7 @@ class we_tree_newsletter extends we_tree_base{
 				'text' => $db->f('Text'),
 				'path' => $db->f('Path'),
 				'published' => 1,
-				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/newsletter'),
+				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/newsletter'),
 			);
 
 			$fileds = [];

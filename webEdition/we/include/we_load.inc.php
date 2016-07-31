@@ -21,7 +21,6 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 $table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 $parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 $offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
@@ -187,7 +186,7 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 	$counts = $parents = $childs = $parentpaths = $wspaces = [];
 	$parentlist = $childlist = "";
 
-	if(($ws = get_ws($table))){
+	if(($ws = get_ws($table, true))){
 		$wsPathArray = id_to_path($ws, $table, $DB_WE, true);
 
 		foreach($wsPathArray as $path){
