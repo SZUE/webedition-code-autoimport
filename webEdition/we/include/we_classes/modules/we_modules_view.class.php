@@ -38,12 +38,12 @@ class we_modules_view implements we_modules_viewIF{
 	}
 
 	function getCommonHiddens($cmds = []){
-		return we_html_element::htmlHiddens(array(
+		return we_html_element::htmlHiddens([
 				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
 				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
 				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : ''),
 				'tabnr' => (isset($cmds['tabnr']) ? $cmds['tabnr'] : '')
-		));
+		]);
 	}
 
 	function getJSTop(){
@@ -84,10 +84,10 @@ function submitForm(target,action,method,form) {
 		$title = isset($modData['text']) ? $modData['text'] : '';
 
 		$row = 0;
-		$starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
-		$starttable->setCol($row++, 0, array("class" => "defaultfont titleline", "colspan" => 3), $title);
-		$starttable->setCol($row++, 0, array('class' => 'defaultfont', "colspan" => 3), "");
-		$starttable->setCol($row++, 0, array("style" => "text-align:center"), $content);
+		$starttable = new we_html_table(["cellpadding" => 7], 3, 1);
+		$starttable->setCol($row++, 0, ["class" => "defaultfont titleline", "colspan" => 3], $title);
+		$starttable->setCol($row++, 0, ['class' => 'defaultfont', "colspan" => 3], "");
+		$starttable->setCol($row++, 0, ["style" => "text-align:center"], $content);
 
 		ob_start();
 		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $this->getJSProperty() . (empty($GLOBALS['extraJS']) ? '' : $GLOBALS['extraJS']));
