@@ -35,7 +35,7 @@ class we_backup_tableAdv{
 		$this->table = $table;
 		$this->elements = [];
 
-		$this->attribute_slots["name"] = stripTblPrefix($table);
+		$this->attribute_slots['name'] = stripTblPrefix($table);
 
 		$update_table = true;
 

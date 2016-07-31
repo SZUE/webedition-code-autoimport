@@ -376,7 +376,7 @@ function doUnload() {
 	 */
 	private function _getIndexOfValues($values, $name){
 		foreach($values as $cur){
-			if($cur["name"] === $name){
+			if($cur['name'] === $name){
 				return array($cur['pre'], $cur['post']);
 			}
 		}
@@ -1316,7 +1316,7 @@ function doUnload() {
 		$templateFields = self::_getFieldsFromTemplate($templateId);
 
 		foreach($fieldValues as $field){
-			if(!empty($field["pre"]) && !empty($field["post"]) && !empty($field["name"])){
+			if(!empty($field["pre"]) && !empty($field["post"]) && !empty($field['name'])){
 				$fieldval = '';
 				$field['pre'] = str_replace(array("\r\n", "\r"), "\n", $field['pre']);
 				$field['post'] = str_replace(array("\r\n", "\n"), "\n", $field['post']);
@@ -1334,9 +1334,9 @@ function doUnload() {
 					}
 				}
 				// only set field if field exists in template
-				if(isset($templateFields[$field["name"]])){
+				if(isset($templateFields[$field['name']])){
 
-					if($templateFields[$field["name"]] === "date"){ // import date fields
+					if($templateFields[$field['name']] === "date"){ // import date fields
 						switch($dateFormat){
 							case "unix" :
 								$fieldval = abs($fieldval);
@@ -1350,18 +1350,18 @@ function doUnload() {
 								$fieldval = we_import_functions::date2Timestamp(trim($fieldval), $dateFormatValue);
 								break;
 						}
-						$we_doc->setElement($field["name"], abs($fieldval), "date");
-					} elseif($templateFields[$field["name"]] === "img"){ // import image fields
+						$we_doc->setElement($field['name'], abs($fieldval), "date");
+					} elseif($templateFields[$field['name']] === "img"){ // import image fields
 						if(preg_match('/<[^>]+src=["\']?([^"\' >]+)[^"\'>]?[^>]*>/i', $fieldval, $regs)){ // only if image tag has a src attribute
 							$src = $regs[1];
 							$imgId = path_to_id($src);
-							$we_doc->elements[$field["name"]] = array(
+							$we_doc->elements[$field['name']] = array(
 								"type" => "img",
 								"bdid" => $imgId
 							);
 						}
 					} else {
-						$we_doc->setElement($field["name"], trim($fieldval));
+						$we_doc->setElement($field['name'], trim($fieldval));
 					}
 				}
 			}

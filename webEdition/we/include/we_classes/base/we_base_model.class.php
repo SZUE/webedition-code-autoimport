@@ -52,7 +52,7 @@ class we_base_model{
 		$this->persistent_slots = [];
 		$tableInfo = $this->db->metadata($this->table);
 		foreach($tableInfo as $info){
-			$fname = $info["name"];
+			$fname = $info['name'];
 			$this->persistent_slots[] = $fname;
 			switch($info["type"]){
 				case 'tinyblob':

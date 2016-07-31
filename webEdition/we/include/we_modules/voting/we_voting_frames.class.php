@@ -114,7 +114,7 @@ function setTab(tab) {
 
 		$hiddens = array('cmd' => 'voting_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
 
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;setMultiEdits();", "onunload" => "doUnload()"), we_html_element::htmlForm(array("name" => "we_form", "onsubmit" => "return false"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()));
+		$body = we_html_element::htmlBody(array('class' => "weEditorBody", "onload" => "loaded=1;setMultiEdits();", "onunload" => "doUnload()"), we_html_element::htmlForm(array('name' => "we_form", "onsubmit" => "return false"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()));
 
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
@@ -719,7 +719,7 @@ function setVisible(id,visible){
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody([], we_html_element::htmlForm(
-						["name" => "we_form"], we_html_element::htmlHiddens([
+						['name' => "we_form"], we_html_element::htmlHiddens([
 							"pnt" => "cmd",
 							"cmd" => "no_cmd"]
 						)
@@ -747,8 +747,8 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
-		$body = we_html_element::htmlBody(["class" => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::htmlForm(
-					array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden("group", "") .
+		$body = we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::htmlForm(
+					array('name' => "we_form", "method" => "post"), we_html_element::htmlHidden("group", "") .
 					we_html_tools::htmlDialogLayout(
 						$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_html_button::formatButtons($close), "100%", 30, 350
 					)
@@ -770,7 +770,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHidden("group", '') .
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array('name' => "we_form", "method" => "post"), we_html_element::htmlHidden("group", '') .
 					we_html_tools::htmlDialogLayout(
 						$table->getHtml(), g_l('modules_voting', '[csv_download]'), we_html_button::formatButtons($close), "100%", 30, 350
 					)
@@ -785,7 +785,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
-		$body = we_html_element::htmlBody(["class" => "weDialogBody", 'onload' => 'self.focus();'], we_html_tools::htmlDialogLayout(
+		$body = we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();'], we_html_tools::htmlDialogLayout(
 					we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close)
 				)
 		);
@@ -797,7 +797,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_tools::htmlDialogLayout(
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_tools::htmlDialogLayout(
 					we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close)
 				)
 		);
@@ -909,7 +909,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close), -1, '', '', false, g_l('modules_voting', '[voting]'))
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close), -1, '', '', false, g_l('modules_voting', '[voting]'))
 		);
 		return $this->getHTMLDocument($body);
 	}
@@ -1035,7 +1035,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close), -1, '', '', false, g_l('modules_voting', '[voting]'))
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close), -1, '', '', false, g_l('modules_voting', '[voting]'))
 		);
 		return $this->getHTMLDocument($body);
 	}
@@ -1145,7 +1145,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			);
 		}
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close), -1, '', '', false, g_l('modules_voting', '[voting]'))
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::position_yes_no_cancel($refresh, $close), -1, '', '', false, g_l('modules_voting', '[voting]'))
 		);
 		return $this->getHTMLDocument($body);
 	}
@@ -1156,7 +1156,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus();'), we_html_tools::htmlDialogLayout(
+				we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_tools::htmlDialogLayout(
 						we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_voting', '[data_deleted_info]')), g_l('modules_voting', '[voting]'), we_html_button::formatButtons($close))
 				)
 		);

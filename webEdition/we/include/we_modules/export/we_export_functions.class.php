@@ -616,8 +616,8 @@ abstract class we_export_functions{
 		$fields = $regs = [];
 		foreach($tableInfo_sorted as $cur){
 			// bugfix 8141
-			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
-				$fields[] = array("name" => $regs[2], "type" => $regs[1]);
+			if(preg_match('/(.+?)_(.*)/', $cur['name'], $regs)){
+				$fields[] = array('name' => $regs[2], "type" => $regs[1]);
 			}
 		}
 
@@ -647,12 +647,12 @@ abstract class we_export_functions{
 					switch($format){
 						case we_import_functions::TYPE_GENERIC_XML:
 							$tag_name = self::correctTagname($field['name'], 'value', $i);
-							$content = $we_obj->getElementByType($field["name"], $field["type"], (empty($dv[$realName]) ? [] : $dv[$realName]));
+							$content = $we_obj->getElementByType($field['name'], $field["type"], (empty($dv[$realName]) ? [] : $dv[$realName]));
 							$file .= self::formatOutput($tag_name, we_document::parseInternalLinks($content, 0, ''), $format, 2, $cdata, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")));
 
 							break;
 						case 'csv':
-							$content = $we_obj->getElementByType($field["name"], $field["type"], (empty($dv[$realName]) ? [] : $dv[$realName]));
+							$content = $we_obj->getElementByType($field['name'], $field["type"], (empty($dv[$realName]) ? [] : $dv[$realName]));
 							$file .= self::formatOutput("", we_document::parseInternalLinks($content, 0, ''), $format, 2, false, (($format == we_import_functions::TYPE_GENERIC_XML) && ($field["type"] != "date") && ($field["type"] != "int") && ($field["type"] != "float")), $csv_delimiter, $csv_enclose, $csv_lineend);
 
 							break;
@@ -706,9 +706,9 @@ abstract class we_export_functions{
 				case 'binary':
 					continue;
 				default:
-					$realName = $field["type"] . '_' . $field["name"];
+					$realName = $field["type"] . '_' . $field['name'];
 
-					$tag_name = self::correctTagname($field["name"], "value", ++$pos);
+					$tag_name = self::correctTagname($field['name'], "value", ++$pos);
 					$file .= self::formatOutput('', $tag_name, "csv", 2, false, false, $csv_delimiter, $csv_enclose, $csv_lineend);
 			}
 		}

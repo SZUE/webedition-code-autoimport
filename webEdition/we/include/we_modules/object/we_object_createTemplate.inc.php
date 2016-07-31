@@ -27,7 +27,7 @@ function getObjectTags($id, $isField = false){
 	$content = '<table style="border:1px solid black;width:400px">';
 	$regs = [];
 	foreach($tableInfo as $cur){
-		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
+		if(preg_match('/(.+?)_(.*)/', $cur['name'], $regs)){
 			$content .= getTmplTableRow($regs[1], $regs[2], $isField);
 		}
 	}
@@ -47,7 +47,7 @@ function getMultiObjectTags($name){
 	//FIXME: causes internal server error
 	$regs = [];
 	foreach($tableInfo as $cur){
-		if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
+		if(preg_match('/(.+?)_(.*)/', $cur['name'], $regs)){
 //			$content .= getTmplTableRow($regs[1], $regs[2], true);
 		}
 	}

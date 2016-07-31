@@ -42,7 +42,7 @@ class we_users_frames extends we_modules_frame{
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody([], we_html_element::htmlForm(array("name" => "we_form"), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody([], we_html_element::htmlForm(array('name' => "we_form"), we_html_element::htmlHiddens(array(
 							"pnt" => "cmd",
 							"cmd" => "no_cmd"))
 					)
@@ -70,7 +70,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			we_html_tools::htmlTextInput("keyword", 10, "", "", 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "120px") .
 			we_html_button::create_button(we_html_button::SEARCH, "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);");
 
-		return we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) . we_html_element::htmlForm(array("name" => "we_form_treefooter"), $table);
+		return we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) . we_html_element::htmlForm(array('name' => "we_form_treefooter"), $table);
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){

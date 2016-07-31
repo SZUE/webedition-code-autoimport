@@ -2059,7 +2059,7 @@ function show_seem_chooser(val) {
 		return [];
 		//FIXME: this is not correct!
 		//Editor Mode
-		$template_editor_mode = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorMode", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
+		$template_editor_mode = new we_html_select(array('class' => "weSelect", "name" => $this->Name . "_Preference_editorMode", "onchange" => "displayEditorOptions(this.options[this.options.selectedIndex].value);"));
 		$template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
 		$template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
 		$template_editor_mode->selectOption($this->Preferences['editorMode']);
@@ -2084,7 +2084,7 @@ function show_seem_chooser(val) {
 		// Build specify font
 		$template_editor_font_specify_code = we_html_forms::checkbox(1, $template_editor_font_specify, $this->Name . "_Preference_editorFont", g_l('prefs', '[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('" . $this->Name . "_Preference_editorFont')[0].checked) { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = true; }");
 
-		$template_editor_font_select_box = new we_html_select(array("class" => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "style" => "width: 90px;", ($template_editor_font_specify ? "enabled" : "disabled") => ($template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$template_editor_font_select_box = new we_html_select(array('class' => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "style" => "width: 90px;", ($template_editor_font_specify ? "enabled" : "disabled") => ($template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($template_fonts as $tf){
 			$template_editor_font_select_box->addOption($tf, $tf);

@@ -933,7 +933,7 @@ class we_messaging_messaging extends we_class{
 			"todo" => g_l('modules_messaging', '[folder_todo]')
 		);
 
-		$matchArray = array("Name" => $fooArray);
+		$matchArray = array('name' => $fooArray);
 
 		$mergedArray = array_merge(
 			array(

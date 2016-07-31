@@ -346,7 +346,7 @@ class we_dialog_image extends we_dialog_base{
 		$hspace = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[hspace]', 5, (isset($this->args["hspace"]) ? $this->args["hspace"] : ""), "", ' onkeypress="return WE().util.IsDigit(event);"', 'text', 140), g_l('wysiwyg', '[hspace]'));
 		$vspace = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[vspace]', 5, (isset($this->args["vspace"]) ? $this->args["vspace"] : ""), "", ' onkeypress="return WE().util.IsDigit(event);"', 'text', 140), g_l('wysiwyg', '[vspace]'));
 		$border = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[border]', 5, (isset($this->args["border"]) ? $this->args["border"] : ""), "", ' onkeypress="return WE().util.IsDigit(event);"', 'text', 140), g_l('wysiwyg', '[border]'));
-		$name = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[name]', 30, (isset($this->args["name"]) ? $this->args["name"] : ""), "", '', "text", 315), "Name");
+		$name = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[name]', 30, (isset($this->args['name']) ? $this->args['name'] : ""), "", '', "text", 315), "Name");
 		$alt = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[alt]', 5, (isset($this->args["alt"]) ? $this->args["alt"] : ""), "", "", "text", 315), g_l('wysiwyg', '[altText]'));
 		$title = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('we_dialog_args[title]', 5, (isset($this->args["title"]) ? $this->args["title"] : ""), "", "", "text", 315), g_l('global', '[title]'));
 
@@ -411,7 +411,7 @@ class we_dialog_image extends we_dialog_base{
 				</table>
 				<div></div>' .
 			we_html_element::htmlHiddens(array(
-				'we_dialog_args[name]' => (isset($this->args["name"]) ? $this->args["name"] : ''),
+				'we_dialog_args[name]' => (isset($this->args['name']) ? $this->args['name'] : ''),
 				'we_dialog_args[type]' => (isset($this->args["type"]) ? $this->args["type"] : we_base_link::TYPE_INT),
 				'we_dialog_args[rendered_width]' => 0,
 				'we_dialog_args[rendered_height]' => 0,
@@ -493,7 +493,7 @@ if(top.document.we_form.tinyMCEInitRatioW !== undefined){
 						"border" => $attribs["border"],
 						"alt" => $attribs["alt"],
 						"align" => $attribs["align"],
-						"name" => $attribs["name"],
+						"name" => $attribs['name'],
 						"class" => $attribs["cssclass"],
 						"title" => $attribs["title"],
 						"longdesc" => (intval($attribs["longdescid"]) ? $attribs["longdescsrc"] . '?id=' . intval($attribs["longdescid"]) : '')

@@ -42,7 +42,7 @@ abstract class we_banner_base{ // FIXME: base on we_ModelBase to us registerFile
 		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID));
 		if($this->db->next_record()){
 			foreach($tableInfo as $cur){
-				$fieldName = $cur["name"];
+				$fieldName = $cur['name'];
 				if(isset($this->persistents[$fieldName])){
 					$foo = $this->db->f($fieldName);
 					$this->{$fieldName} = $foo;

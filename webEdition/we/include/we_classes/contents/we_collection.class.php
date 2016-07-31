@@ -270,7 +270,7 @@ class we_collection extends we_root{
 		$classListFrom = we_html_tools::htmlSelect('classListFrom', $unselectedClasses, max(count($allClasses), 5), '', true, array_merge($attribsFrom, array("id" => "classListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListFrom'],this.form['classListTo'],true, 'object');")), 'value', 184);
 		$classListTo = we_html_tools::htmlSelect('classListTo', $selectedClasses, max(count($allClasses), 5), '', true, array_merge($attribsTo, array("id" => "classListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListTo'],this.form['classListFrom'],true, 'object');")), 'value', 184);
 
-		$classTable = new we_html_table(array("class" => 'collection_props-classes default'), 1, 3);
+		$classTable = new we_html_table(array('class' => 'collection_props-classes default'), 1, 3);
 		$classTable->setCol(0, 0, null, $classListFrom);
 		//FIXME: why a tags, if onclick is used????
 

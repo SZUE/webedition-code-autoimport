@@ -1376,7 +1376,7 @@ for(i=0;i<elements.length; ++i){
 				/**
 				 * Recipients list
 				 */
-				$select_box = new we_html_select(array("class" => "weSelect", "name" => "we_recipient", 'size' => 10, "style" => "width: 340px;height:100px", "ondblclick" => "edit_recipient();"));
+				$select_box = new we_html_select(array('class' => "weSelect", "name" => "we_recipient", 'size' => 10, "style" => "width: 340px;height:100px", "ondblclick" => "edit_recipient();"));
 
 				$enabled_buttons = false;
 
@@ -1406,14 +1406,14 @@ for(i=0;i<elements.length; ++i){
 
 
 			if(we_base_preferences::userIsAllowed("FORMMAIL_CONFIRM")){
-				$formmail_confirm = new we_html_select(array("name" => "newconf[FORMMAIL_CONFIRM]", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_confirm = new we_html_select(array('name' => "newconf[FORMMAIL_CONFIRM]", "style" => "width:88px;", "class" => "weSelect"));
 				$formmail_confirm->addOption(1, g_l('prefs', '[on]'));
 				$formmail_confirm->addOption(0, g_l('prefs', '[off]'));
 				$formmail_confirm->selectOption(get_value("FORMMAIL_CONFIRM") ? 1 : 0);
 
 				$settings[] = array('html' => $formmail_confirm->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailConfirm]'));
 
-				$formmail_log = new we_html_select(array("name" => "newconf[FORMMAIL_LOG]", "onchange" => "formmailLogOnOff()", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_log = new we_html_select(array('name' => "newconf[FORMMAIL_LOG]", "onchange" => "formmailLogOnOff()", "style" => "width:88px;", "class" => "weSelect"));
 				$formmail_log->addOption(1, g_l('prefs', '[yes]'));
 				$formmail_log->addOption(0, g_l('prefs', '[no]'));
 				$formmail_log->selectOption(get_value("FORMMAIL_LOG") ? 1 : 0);
@@ -1429,7 +1429,7 @@ for(i=0;i<elements.length; ++i){
 				$isDisabled = (get_value("FORMMAIL_LOG") == 0);
 
 
-				$formmail_emptylog = new we_html_select(array("name" => "newconf[FORMMAIL_EMPTYLOG]", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_emptylog = new we_html_select(array('name' => "newconf[FORMMAIL_EMPTYLOG]", "style" => "width:88px;", "class" => "weSelect"));
 				if($isDisabled){
 					$formmail_emptylog->setAttribute("disabled", "disabled");
 				}
@@ -1450,7 +1450,7 @@ for(i=0;i<elements.length; ++i){
 				$settings[] = array('html' => $formmail_emptylog->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[deleteEntriesOlder]'));
 
 				// formmail only via we doc //
-				$formmail_ViaWeDoc = new we_html_select(array("name" => "newconf[FORMMAIL_VIAWEDOC]", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_ViaWeDoc = new we_html_select(array('name' => "newconf[FORMMAIL_VIAWEDOC]", "style" => "width:88px;", "class" => "weSelect"));
 				$formmail_ViaWeDoc->addOption(1, g_l('prefs', '[yes]'));
 				$formmail_ViaWeDoc->addOption(0, g_l('prefs', '[no]'));
 				$formmail_ViaWeDoc->selectOption((get_value("FORMMAIL_VIAWEDOC") ? 1 : 0));
@@ -1458,7 +1458,7 @@ for(i=0;i<elements.length; ++i){
 				$settings[] = array('html' => $formmail_ViaWeDoc->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailViaWeDoc]'));
 
 				// limit formmail requests //
-				$formmail_block = new we_html_select(array("name" => "newconf[FORMMAIL_BLOCK]", "onchange" => "formmailBlockOnOff()", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_block = new we_html_select(array('name' => "newconf[FORMMAIL_BLOCK]", "onchange" => "formmailBlockOnOff()", "style" => "width:88px;", "class" => "weSelect"));
 				if($isDisabled){
 					$formmail_block->setAttribute("disabled", "disabled");
 				}
@@ -1488,7 +1488,7 @@ for(i=0;i<elements.length; ++i){
 					$isDisabled = (get_value("FORMMAIL_BLOCK") == 0);
 				}
 
-				$formmail_span = new we_html_select(array("name" => "newconf[FORMMAIL_SPAN]", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_span = new we_html_select(array('name' => "newconf[FORMMAIL_SPAN]", "style" => "width:88px;", "class" => "weSelect"));
 				if($isDisabled){
 					$formmail_span->setAttribute("disabled", "disabled");
 				}
@@ -1510,7 +1510,7 @@ for(i=0;i<elements.length; ++i){
 
 
 				$settings[] = array('html' => $formmail_span->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailSpan]'), 'noline' => 1);
-				$formmail_blocktime = new we_html_select(array("name" => "newconf[FORMMAIL_BLOCKTIME]", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_blocktime = new we_html_select(array('name' => "newconf[FORMMAIL_BLOCKTIME]", "style" => "width:88px;", "class" => "weSelect"));
 				if($isDisabled){
 					$formmail_blocktime->setAttribute("disabled", "disabled");
 				}
@@ -1606,7 +1606,7 @@ for(i=0;i<elements.length; ++i){
 				break;
 			}
 			/*
-			  $WYSIWYG_TYPE = new we_html_select(array("name" => "newconf[WYSIWYG_TYPE]", "class" => "weSelect"));
+			  $WYSIWYG_TYPE = new we_html_select(array('name' => "newconf[WYSIWYG_TYPE]", "class" => "weSelect"));
 			  $options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
 			  foreach($options as $key => $val){
 			  $WYSIWYG_TYPE->addOption($key, $val);
@@ -1614,7 +1614,7 @@ for(i=0;i<elements.length; ++i){
 			  $WYSIWYG_TYPE->selectOption(get_value("WYSIWYG_TYPE"));
 			  $settings[] = array("headline" => g_l('prefs', '[wysiwyg_type]'), "html" => $WYSIWYG_TYPE->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
-			  $WYSIWYG_TYPE_FRONTEND = new we_html_select(array("name" => "newconf[WYSIWYG_TYPE_FRONTEND]", "class" => "weSelect"));
+			  $WYSIWYG_TYPE_FRONTEND = new we_html_select(array('name' => "newconf[WYSIWYG_TYPE_FRONTEND]", "class" => "weSelect"));
 			  $options = array('tinyMCE' => 'tinyMCE', 'default' => 'webEdition Editor (deprecated))');
 			  foreach($options as $key => $val){
 			  $WYSIWYG_TYPE_FRONTEND->addOption($key, $val);
@@ -1648,7 +1648,7 @@ for(i=0;i<elements.length; ++i){
 			}
 
 			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-				$_Schedtrigger_setting = new we_html_select(array("name" => "newconf[SCHEDULER_TRIGGER]", "class" => "weSelect"));
+				$_Schedtrigger_setting = new we_html_select(array('name' => "newconf[SCHEDULER_TRIGGER]", "class" => "weSelect"));
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_PREDOC, g_l('prefs', '[we_scheduler_trigger][preDoc]')); //pre
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
@@ -1657,7 +1657,7 @@ for(i=0;i<elements.length; ++i){
 				$settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_HELP), "html" => $tmp, 'space' => we_html_multiIconBox::SPACE_BIG);
 			}
 			// Build select box
-			$NAVIGATION_ENTRIES_FROM_DOCUMENT = new we_html_select(array("name" => "newconf[NAVIGATION_ENTRIES_FROM_DOCUMENT]", "class" => "weSelect"));
+			$NAVIGATION_ENTRIES_FROM_DOCUMENT = new we_html_select(array('name' => "newconf[NAVIGATION_ENTRIES_FROM_DOCUMENT]", "class" => "weSelect"));
 			for($i = 0; $i < 2; $i++){
 				$NAVIGATION_ENTRIES_FROM_DOCUMENT->addOption($i, g_l('prefs', $i == 0 ? '[navigation_entries_from_document_folder]' : '[navigation_entries_from_document_item]'));
 			}
@@ -1665,7 +1665,7 @@ for(i=0;i<elements.length; ++i){
 			$settings[] = array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
 
 
-			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH = new we_html_select(array("name" => "newconf[NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH]", "class" => "weSelect"));
+			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH = new we_html_select(array('name' => "newconf[NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH]", "class" => "weSelect"));
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->addOption(0, g_l('prefs', '[no]'));
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->addOption(1, g_l('prefs', '[yes]'));
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->selectOption(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? 1 : 0);
@@ -1787,7 +1787,7 @@ for(i=0;i<elements.length; ++i){
 			}
 
 			//  select if hooks can be executed
-			$EXECUTE_HOOKS = new we_html_select(["name" => "newconf[EXECUTE_HOOKS]", "class" => "weSelect"]);
+			$EXECUTE_HOOKS = new we_html_select(['name' => "newconf[EXECUTE_HOOKS]", "class" => "weSelect"]);
 			$EXECUTE_HOOKS->addOption(0, g_l('prefs', '[no]'));
 			$EXECUTE_HOOKS->addOption(1, g_l('prefs', '[yes]'));
 
@@ -1795,7 +1795,7 @@ for(i=0;i<elements.length; ++i){
 
 			$hooksHtml = $EXECUTE_HOOKS->getHtml() . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[hooks_information]'), we_html_tools::TYPE_HELP);
 
-			$useSession = new we_html_select(["name" => "newconf[SYSTEM_WE_SESSION]", "class" => "weSelect", 'onchange' => 'alert(\'' . g_l('prefs', '[session][crypt][alert]') . '\');']);
+			$useSession = new we_html_select(['name' => "newconf[SYSTEM_WE_SESSION]", "class" => "weSelect", 'onchange' => 'alert(\'' . g_l('prefs', '[session][crypt][alert]') . '\');']);
 			$useSession->addOption(0, g_l('prefs', '[no]'));
 			$useSession->addOption(1, g_l('prefs', '[yes]'));
 			$useSession->selectOption(get_value("SYSTEM_WE_SESSION") ? 1 : 0);
@@ -1803,7 +1803,7 @@ for(i=0;i<elements.length; ++i){
 			$sessionTime = '<table class="default"><tr><td>' .
 				we_html_tools::htmlTextInput("newconf[SYSTEM_WE_SESSION_TIME]", 22, abs(get_value("SYSTEM_WE_SESSION_TIME")), "", ' onkeypress="return WE().util.IsDigit(event);"', "text", 60) . '</td><td style="padding-left:20px;" class="small">s</td></tr></table>';
 
-			$cryptSession = new we_html_select(["name" => 'newconf[SYSTEM_WE_SESSION_CRYPT]', 'class' => "weSelect", 'onchange' => 'alert(\'' . g_l('prefs', '[session][crypt][alert]') . '\');']);
+			$cryptSession = new we_html_select(['name' => 'newconf[SYSTEM_WE_SESSION_CRYPT]', 'class' => "weSelect", 'onchange' => 'alert(\'' . g_l('prefs', '[session][crypt][alert]') . '\');']);
 			$cryptSession->addOption(0, g_l('prefs', '[no]'));
 			$cryptSession->addOption(1, 'Transparent');
 			$cryptSession->addOption(2, 'Cookie');

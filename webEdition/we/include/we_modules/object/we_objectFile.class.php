@@ -570,7 +570,7 @@ class we_objectFile extends we_document{
 		$regs = [];
 		$fields = 0;
 		foreach($tableInfo as $info){
-			if(preg_match('/(.+?)_(.*)/', $info["name"], $regs)){
+			if(preg_match('/(.+?)_(.*)/', $info['name'], $regs)){
 				switch($regs[1]){
 					case 'OF':
 					case 'variant':
@@ -1167,7 +1167,7 @@ class we_objectFile extends we_document{
 	}
 
 	private function htmlLinkInput($type, $n, array $attribs, $we_editmode = true, $variant = true){
-		$attribs["name"] = $n;
+		$attribs['name'] = $n;
 		$link = we_unserialize($this->getElement($n));
 		$link = $link ? : array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]'));
 
@@ -1216,7 +1216,7 @@ class we_objectFile extends we_document{
 		}
 
 		$countrycode = array_search($langcode, getWECountries());
-		$countryselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "style" => "width:620;", "class" => "wetextinput", "onchange" => "_EditorFrame.setEditorIsHot(true);"));
+		$countryselect = new we_html_select(array('name' => "we_" . $this->Name . "_language[$name]", "style" => "width:620;", "class" => "wetextinput", "onchange" => "_EditorFrame.setEditorIsHot(true);"));
 
 		$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
@@ -1267,7 +1267,7 @@ class we_objectFile extends we_document{
 			$lccode = explode('_', $lcvalue);
 			$lcvalue = $lccode[0];
 		}
-		$languageselect = new we_html_select(array("name" => "we_" . $this->Name . "_language[$name]", "style" => "width:620;", "class" => "wetextinput", "onchange" => "_EditorFrame.setEditorIsHot(true);"));
+		$languageselect = new we_html_select(array('name' => "we_" . $this->Name . "_language[$name]", "style" => "width:620;", "class" => "wetextinput", "onchange" => "_EditorFrame.setEditorIsHot(true);"));
 		if(!$this->DefArray["language_" . $name]["required"]){
 			$languageselect->addOption('--', '');
 		}
@@ -2205,7 +2205,7 @@ class we_objectFile extends we_document{
 		$tableInfo = $db->metadata(OBJECT_X_TABLE . intval($this->TableID));
 		$regs = [];
 		foreach($tableInfo as $cur){
-			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
+			if(preg_match('/(.+?)_(.*)/', $cur['name'], $regs)){
 				if($regs[1] != 'OF'){
 					$name = $regs[2];
 					$this->setElement($name, $cur["len"], $regs[1], 'len');
@@ -2486,7 +2486,7 @@ class we_objectFile extends we_document{
 		$tableInfo = $this->getSortedTableInfo($this->TableID, false, $this->DB_WE);
 		$regs = [];
 		foreach($tableInfo as $cur){
-			if(preg_match('/(.+?)_(.*)/', $cur["name"], $regs)){
+			if(preg_match('/(.+?)_(.*)/', $cur['name'], $regs)){
 				if($regs[1] != 'OF'){
 					if($regs[1] == self::TYPE_OBJECT){
 						$id = $this->getElement('we_' . $cur['name']);
@@ -2524,7 +2524,7 @@ class we_objectFile extends we_document{
 		$db->query('SELECT * FROM ' . OBJECT_X_TABLE . intval($this->TableID) . ' WHERE OF_ID=' . intval($this->ID));
 		if($db->next_record()){
 			foreach($tableInfo as $cur){
-				$regs = explode('_', $cur["name"], 2);
+				$regs = explode('_', $cur['name'], 2);
 				if(count($regs) > 1){
 					if($regs[0] === "OF"){
 						continue;
@@ -2540,12 +2540,12 @@ class we_objectFile extends we_document{
 					}
 
 					$this->elements[$name] = array(
-						$key => $db->f($cur["name"]),
+						$key => $db->f($cur['name']),
 						'type' => $regs[0],
 						'len' => $cur["len"]
 					);
 //						if($regs[0] == "multiobject"){
-//							$this->elements[$name]["class"] = $db->f($tableInfo[$i]["name"]);
+//							$this->elements[$name]['class'] = $db->f($tableInfo[$i]['name']);
 //						}
 				}
 			}

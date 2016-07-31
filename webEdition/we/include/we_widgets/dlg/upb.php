@@ -50,4 +50,4 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', STYLESHE
 	we_html_element::jsElement($jsPrefs) .
 	we_html_element::jsScript(JS_DIR . 'widgets/upb.js')
 	, we_html_element::htmlBody(
-		array("class" => "weDialogBody", "onload" => "init();"), we_html_element::htmlForm("", $sTblWidget)));
+		array('class' => "weDialogBody", "onload" => "init();"), we_html_element::htmlForm("", $sTblWidget)));

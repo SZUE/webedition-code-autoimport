@@ -218,7 +218,7 @@ $sctValid = we_html_tools::htmlSelect("sct_valid", array(
 		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:100px;", 'onchange' => "toggleTblValidity()"), 'value', 100, 'middlefont');
 $oTblValidity = getDateSelector(g_l('cockpit', '[from]'), "f_ValidFrom", "_from") . ' ' . getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until");
 $oTblPeriod = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 2);
-$oTblPeriod->setCol(0, 0, array("class" => "middlefont"), $sctValid);
+$oTblPeriod->setCol(0, 0, array('class' => "middlefont"), $sctValid);
 $oTblPeriod->setCol(0, 1, array("style" => "text-align:right"), $oTblValidity);
 
 // Edit note prio settings
@@ -240,13 +240,13 @@ $buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button
 
 // Edit note dialog
 $oTblProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 9, 2);
-$oTblProps->setCol(0, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[valid]') . '&nbsp;');
+$oTblProps->setCol(0, 0, array('class' => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[valid]') . '&nbsp;');
 $oTblProps->setCol(0, 1, array("colspan" => 2, "style" => "text-align:right"), $oTblPeriod->getHTML());
-$oTblProps->setCol(2, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[prio]'));
+$oTblProps->setCol(2, 0, array('class' => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[prio]'));
 $oTblProps->setCol(2, 1, null, $oTblPrio->getHTML());
-$oTblProps->setCol(4, 0, array("class" => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[title]'));
+$oTblProps->setCol(4, 0, array('class' => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[title]'));
 $oTblProps->setCol(4, 1, null, we_html_tools::htmlTextInput("props_title", 255, "", 255, "", "text", "100%", 0));
-$oTblProps->setCol(6, 0, array("class" => "middlefont", 'style' => 'vertical-align:top;padding-bottom:8px;'), g_l('cockpit', '[note]'));
+$oTblProps->setCol(6, 0, array('class' => "middlefont", 'style' => 'vertical-align:top;padding-bottom:8px;'), g_l('cockpit', '[note]'));
 $oTblProps->setCol(6, 1, null, we_html_element::htmlTextArea(array(
 		'name' => 'props_text',
 		'id' => 'previewCode',

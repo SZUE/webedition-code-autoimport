@@ -79,7 +79,7 @@ abstract class we_versions_wizard{
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(
-					array("class" => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
+					array('class' => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
 					), ($dc ? $pb : $content->getHtml()))
 		);
 	}
@@ -1179,7 +1179,7 @@ set_button_state(false);';
 
 		return we_html_tools::getHtmlTop('', '', '', $headCal . STYLESHEET .
 				($contents[0] ? we_html_element::jsElement($contents[0]) : ""), we_html_element::htmlBody(
-					array("class" => "weDialogBody")
+					array('class' => "weDialogBody")
 					, we_html_element::htmlForm(array(
 						"name" => "we_form",
 						"method" => "post",

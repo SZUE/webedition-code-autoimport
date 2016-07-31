@@ -67,5 +67,5 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[users_online]'), '', '', STYLESH
 	$jsFile .
 	we_html_element::jsElement(
 		$jsPrefs . $jsCode), we_html_element::htmlBody(
-		array("class" => "weDialogBody", "onload" => "init();"
+		array('class' => "weDialogBody", "onload" => "init();"
 		), we_html_element::htmlForm("", $sTblWidget)));

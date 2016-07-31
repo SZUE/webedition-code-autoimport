@@ -464,22 +464,22 @@ class we_base_linklist{
 
 		if($this->editmode){
 			$disabled = ($this->show > 0 && $this->length() >= $this->show);
-			$plusbut = we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('insert_link_at_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 100, 22, "", "", $disabled);
+			$plusbut = we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('insert_link_at_linklist','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", true, 100, 22, "", "", $disabled);
 			if($ret === false){
-				if(isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $this->attribs["name"])){
-					echo we_html_element::jsElement('we_cmd("edit_linklist","' . $this->attribs["name"] . '","' . (!empty($GLOBALS["we_list_insertedNr"]) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '");');
+				if(isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $this->attribs['name'])){
+					echo we_html_element::jsElement('we_cmd("edit_linklist","' . $this->attribs['name'] . '","' . (!empty($GLOBALS["we_list_insertedNr"]) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '");');
 				}
 				if($this->show == -1 || ($this->show > $this->length())){
-					echo "<br/>" . we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", $disabled) .
-					we_html_element::htmlHidden('we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']', $this->getString()) . ($this->length() ? '' : $plusbut);
+					echo "<br/>" . we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs['name'] . "')", true, 100, 22, "", "", $disabled) .
+					we_html_element::htmlHidden('we_' . $this->docName . '_linklist[' . $this->attribs['name'] . ']', $this->getString()) . ($this->length() ? '' : $plusbut);
 				}
 			} else {
 				// Create button object
 				// Create buttons
-				$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('up_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt > 0));
-				$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('down_link_at_list','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
-				$editbut = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('edit_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "')", true);
-				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('delete_linklist','" . $this->attribs["name"] . "','" . key($this->listArray) . "','')", true);
+				$upbut = we_html_button::create_button(we_html_button::DIRUP, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('up_link_at_list','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt > 0));
+				$downbut = we_html_button::create_button(we_html_button::DIRDOWN, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('down_link_at_list','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", true, 0, 0, "", "", !($this->cnt < (count($this->listArray) - 1)));
+				$editbut = we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('edit_linklist','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", true);
+				$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('delete_linklist','" . $this->attribs['name'] . "','" . key($this->listArray) . "','')", true);
 				echo $plusbut . $upbut . $downbut . $editbut . $trashbut . '<br/>';
 			}
 		}
@@ -631,8 +631,8 @@ class we_base_linklist{
 	function last(){
 		if($this->editmode && ($this->show == -1 || ($this->show > $this->length()))){
 			echo "<br/>" .
-			we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs["name"] . "')", true, 100, 22, "", "", false) .
-			we_html_element::htmlHidden('we_' . $this->docName . '_linklist[' . $this->attribs["name"] . ']', $this->getString());
+			we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs['name'] . "')", true, 100, 22, "", "", false) .
+			we_html_element::htmlHidden('we_' . $this->docName . '_linklist[' . $this->attribs['name'] . ']', $this->getString());
 		}
 	}
 

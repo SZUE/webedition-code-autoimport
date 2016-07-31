@@ -732,7 +732,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 					we_html_element::jsElement($contents[1]) :
 					''), we_html_element::htmlBody(array(
 					"class" => "weDialogBody"
-					), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[2])
+					), we_html_element::htmlForm(array('name' => "we_form", "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[2])
 				)
 		);
 	}

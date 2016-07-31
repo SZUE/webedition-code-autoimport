@@ -85,4 +85,4 @@ $cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:t
 $buttons = we_html_button::position_yes_no_cancel($addbut, null, $cancelbut);
 
 $dialog = we_html_multiIconBox::getHTML("", $thumbs, 30, $buttons, -1, "", "", false, g_l('weClass', '[thumbnails]'));
-echo we_html_element::htmlBody(array("class" => "weDialogBody", "style" => "overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";
+echo we_html_element::htmlBody(array('class' => "weDialogBody", "style" => "overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";

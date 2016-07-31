@@ -28,7 +28,7 @@ abstract class we_editor_footer{
 //	user
 		$username = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->isLockedByUser()));
 
-		$messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 3);
+		$messageTbl = new we_html_table(array('class' => 'default footertable'), 1, 3);
 
 		//	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
@@ -39,7 +39,7 @@ abstract class we_editor_footer{
 	}
 
 	static function fileInWorkspace(){
-		$messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 3);
+		$messageTbl = new we_html_table(array('class' => 'default footertable'), 1, 3);
 //	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], g_l('alert', '[' . FILE_TABLE . '][not_im_ws]'));
@@ -48,7 +48,7 @@ abstract class we_editor_footer{
 	}
 
 	static function fileNoSave(){
-		$messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 2);
+		$messageTbl = new we_html_table(array('class' => 'default footertable'), 1, 2);
 //	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], g_l('alert', '[file_no_save_footer]'));
@@ -57,7 +57,7 @@ abstract class we_editor_footer{
 	}
 
 	static function fileIsRestricted(we_root $we_doc){
-		$messageTbl = new we_html_table(array("class" => 'default footertable'), 1, 2);
+		$messageTbl = new we_html_table(array('class' => 'default footertable'), 1, 2);
 //	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], str_replace("<br/>", " ", sprintf(g_l('alert', '[no_perms]'), f('SELECT Username FROM ' . USER_TABLE . ' WHERE ID=' . intval($we_doc->CreatorID)))));
@@ -73,12 +73,12 @@ abstract class we_editor_footer{
 					($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
 						we_workflow_view::showFooterForSEEMMode($we_doc, $GLOBALS['showPubl']) : ''));
 
-			$we_form = we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), $table);
+			$we_form = we_html_element::htmlForm(array('name' => "we_form", "method" => "post"), $table);
 
 			echo we_html_element::htmlBody(array('id' => 'footerBody'), $we_form);
 		} else {
 
-			$table = new we_html_table(array("class" => 'default footertable'), 1, 2);
+			$table = new we_html_table(array('class' => 'default footertable'), 1, 2);
 			$table->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:16px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 			$table->setCol(0, 1, ['class' => 'defaultfont'], g_l('modules_workflow', '[doc_in_wf_warning]'));
 
@@ -109,7 +109,7 @@ abstract class we_editor_footer{
 	 * @desc Prints the footer for the normal mode
 	 */
 	static function normalMode(we_root $we_doc, $we_transaction, $haspermNew, $showPubl){
-		$normalTable = new we_html_table(array("class" => 'default footertable'), 1, 1);
+		$normalTable = new we_html_table(array('class' => 'default footertable'), 1, 1);
 		$pos = 0;
 
 		if($we_doc->ID){
@@ -256,7 +256,7 @@ abstract class we_editor_footer{
 	 * @desc prints the footer for the See-Mode
 	 */
 	static function SEEMode(we_root $we_doc, $we_transaction, $haspermNew, $showPubl){
-		$seeModeTable = new we_html_table(array("class" => 'default footertable'), 1, 1);
+		$seeModeTable = new we_html_table(array('class' => 'default footertable'), 1, 1);
 		$pos = 0;
 
 		//##############################	First buttons which are always needed

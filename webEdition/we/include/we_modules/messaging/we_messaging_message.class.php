@@ -302,7 +302,7 @@ class we_messaging_message extends we_messaging_proto{
 
 	static function newMessage(&$rcpts, $subject, $body, &$errs){
 		$m = new we_messaging_message();
-		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']["Name"]) ? $_SESSION['user']["Name"] : "");
+		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
 		$data = array('subject' => $subject, 'body' => $body);
 
 		$res = $m->send($rcpts, $data);

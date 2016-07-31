@@ -179,7 +179,7 @@ function setTab(tab) {
 			return $this->View->getHomeScreen();
 		}
 
-		$body = we_html_element::htmlBody(["class" => "weEditorBody", 'onload' => 'loaded=1;'], we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
+		$body = we_html_element::htmlBody(['class' => "weEditorBody", 'onload' => 'loaded=1;'], we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
 				we_html_element::htmlForm(['name' => 'we_form', 'onsubmit' => 'return false'], $this->getHTMLProperties()
 				)
 		);
@@ -962,7 +962,7 @@ function showPreview() {
 		$button = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:setFields('" . $cmd . "');", true, 100, 22, '', '', true, false), null, we_html_button::create_button(we_html_button::CLOSE, 'javascript:self.close();'));
 
 		$body = we_html_element::htmlBody(
-				["class" => "weDialogBody", "onload" => "loaded=1;"], we_html_element::htmlForm(["name" => "we_form", "onsubmit" => "return false"], we_html_multiIconBox::getHTML('', $parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
+				['class' => "weDialogBody", "onload" => "loaded=1;"], we_html_element::htmlForm(['name' => "we_form", "onsubmit" => "return false"], we_html_multiIconBox::getHTML('', $parts, 30, $button, -1, '', '', false, g_l('navigation', '[select_field_txt]'))));
 
 		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigation_frame.js'));
 	}
@@ -1049,7 +1049,7 @@ function showPreview() {
 					$select->getHtml(), g_l('navigation', ($this->Model->SelectionType == we_navigation_navigation::STYPE_CATEGORY ? '[categories]' : ($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS ? '[objects]' : '[documents]')))),
 		]];
 
-		$body = we_html_element::htmlBody(["class" => "weDialogBody"], we_html_element::htmlForm([
+		$body = we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm([
 					'name' => 'we_form', 'onsubmit' => 'return false'
 					], we_html_multiIconBox::getHTML('', $parts, 30, '<div style="float:right;">' .
 						we_html_button::create_button('close', 'javascript:self.close();') .
