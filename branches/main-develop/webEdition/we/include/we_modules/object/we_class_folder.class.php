@@ -675,11 +675,11 @@ EOF;
 
 			foreach($tableInfo as $info){
 //fixme: explode?
-				$type = explode('_', $info["name"]);
+				$type = explode('_', $info['name']);
 				switch($type[0]){
 					case 'meta':
 						$ret.= "
-if(f=='" . $info["name"] . "'){
+if(f=='" . $info['name'] . "'){
 	document.we_form_search.target='load';
 	document.we_form_search.action=WE().consts.dirs.WE_MODULES_DIR+'object/search_submit.php';
 	document.we_form_search.todo.value='changemeta';
@@ -688,7 +688,7 @@ if(f=='" . $info["name"] . "'){
 						break;
 					case 'date':
 						$ret.= "
-if(f=='" . $info["name"] . "'){
+if(f=='" . $info['name'] . "'){
 	document.we_form_search.target='load';
 	document.we_form_search.action=WE().consts.dirs.WE_MODULES_DIR+'object/search_submit.php';
 	document.we_form_search.todo.value='changedate';
@@ -697,7 +697,7 @@ if(f=='" . $info["name"] . "'){
 						break;
 					case 'checkbox':
 						$ret.= "
-if(f=='" . $info["name"] . "'){
+if(f=='" . $info['name'] . "'){
 	document.we_form_search.target='load';
 	document.we_form_search.action=WE().consts.dirs.WE_MODULES_DIR+'object/search_submit.php';
 	document.we_form_search.todo.value='changecheckbox';

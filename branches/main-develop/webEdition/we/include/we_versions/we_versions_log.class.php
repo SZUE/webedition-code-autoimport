@@ -46,7 +46,7 @@ class we_versions_log{
 
 		$tableInfo = $this->db->metadata($this->table);
 		foreach($tableInfo as $t){
-			$columnName = $t["name"];
+			$columnName = $t['name'];
 			$this->persistent_slots[] = $columnName;
 			if(!isset($this->$columnName)){
 				$this->$columnName = "";
@@ -62,7 +62,7 @@ class we_versions_log{
 		$m = 0;
 		while($this->db->next_record()){
 			for($i = 0; $i < count($tableInfo); $i++){
-				$columnName = $tableInfo[$i]["name"];
+				$columnName = $tableInfo[$i]['name'];
 				if(in_array($columnName, $this->persistent_slots)){
 					$content[$m][$columnName] = $this->db->f($columnName);
 				}

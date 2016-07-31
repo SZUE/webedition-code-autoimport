@@ -80,7 +80,7 @@ function setTab(tab) {
 
 		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px', 'class' => 'default'), 1, 1);
 
-		$table->setCol(0, 0, array("class" => "small", 'style' => 'vertical-align:top;padding-left:15px;'), we_html_element::htmlB(g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text));
+		$table->setCol(0, 0, array('class' => "small", 'style' => 'vertical-align:top;padding-left:15px;'), we_html_element::htmlB(g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text));
 		$text = !empty($this->View->export->Path) ? $this->View->export->Path : "/" . $this->View->export->Text;
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 
@@ -107,7 +107,7 @@ function setTab(tab) {
 		}
 		$yuiSuggest = & weSuggest::getInstance();
 		//FIXME: folder don't have a tree to start.
-		$body = we_html_element::htmlBody(array("class" => "weEditorBody", "onload" => "loaded=1;if(window.startTree){startTree();start();}", "onunload" => "WE().util.jsWindow.prototype.closeAll(window);"), weSuggest::getYuiFiles() . we_html_element::htmlForm(array("name" => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiJs()
+		$body = we_html_element::htmlBody(array('class' => "weEditorBody", "onload" => "loaded=1;if(window.startTree){startTree();start();}", "onunload" => "WE().util.jsWindow.prototype.closeAll(window);"), weSuggest::getYuiFiles() . we_html_element::htmlForm(array('name' => "we_form"), $this->View->getCommonHiddens($hiddens) . $this->getHTMLProperties()) . $yuiSuggest->getYuiJs()
 		);
 		return $this->getHTMLDocument($body, $this->View->getJSProperty());
 	}
@@ -455,7 +455,7 @@ function closeAllType(){
 					"all" => $all,
 					"cmd" => "do_export"));
 
-			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens)
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post", "action" => $this->frameset), $hiddens)
 					)
 			);
 		}
@@ -505,7 +505,7 @@ if(top.content.editor.edbody.addLog){
 					"all" => $all,
 					"cmd" => "do_export"));
 
-			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $progress_update
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $progress_update
 					)
 			);
 		}
@@ -579,7 +579,7 @@ if (top.content.editor.edfooter.doProgress){
 				"cmd" => "do_export"));
 
 		if($all > $exports){
-			return we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $progress_update
+			return we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post", "action" => $this->frameset), $hiddens) . $progress_update
 					)
 			);
 		}

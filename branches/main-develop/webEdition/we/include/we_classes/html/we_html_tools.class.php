@@ -783,7 +783,7 @@ this.selectedIndex = 0;' .
 	 */
 	public static function getDateSelector($name, $btn, $value, $selWidth = 100, $btnClass = ''){
 		$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, "javascript:", false, 0, 0, '', '', false, false, $btn, false, '', $btnClass);
-		$oSelector = new we_html_table(array("class" => 'default', "id" => $name . "_cell"), 1, 5);
+		$oSelector = new we_html_table(array('class' => 'default', "id" => $name . "_cell"), 1, 5);
 		$oSelector->setCol(0, 2, null, we_html_tools::htmlTextInput($name, 55, $value, 10, 'id="' . $name . '" class="wetextinput" readonly="1"', "text", $selWidth));
 		$oSelector->setCol(0, 3, null, '');
 		$oSelector->setCol(0, 4, null, we_html_element::htmlA(array("href" => "#"), $btnDatePicker));

@@ -88,7 +88,7 @@ class rpcGetRssCmd extends we_rpc_cmd{
 			$sLink = (($bCfgLink && isset($item['link'])) && !$bShowTitle) ? " &nbsp;" .
 				we_html_element::htmlA(["href" => $item['link'], "target" => "_blank", "style" => "text-decoration:underline;"], g_l('cockpit', '[more]')) : "";
 			if($bShowContEnc){
-				$contEnc = new we_html_table(["class" => 'default'], 1, 1);
+				$contEnc = new we_html_table(['class' => 'default'], 1, 1);
 				$contEnc->setCol(0, 0, null, $item['content:encoded'] . ((!$bCfgDesc) ? $sLink : ""));
 			}
 

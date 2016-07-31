@@ -2155,10 +2155,10 @@ function handle_event(evt) {
 			$classFields = self::getClassFields($class);
 			foreach($classFields as $classField){
 				if(self::isTextField($classField["type"]) || self::isNumericField($classField["type"]) || self::isDateField($classField["type"])){
-					$records[] = $classField["name"];
+					$records[] = $classField['name'];
 				}
 				if(self::isDateField($classField["type"])){
-					$dateFields[] = $classField["name"];
+					$dateFields[] = $classField['name'];
 				}
 			}
 		}

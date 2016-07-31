@@ -1975,22 +1975,22 @@ class we_object extends we_document{
 		);
 		foreach($tableInfo as $info){
 			$type = $name = '';
-			@list($type, $name) = explode('_', $info["name"], 2);
+			@list($type, $name) = explode('_', $info['name'], 2);
 			if($name && $type != 'OF' && $type != 'variant'){
 
 
-				$this->setElement($info["name"], $name, "dat");
-				$this->setElement("wholename" . $this->getSortIndexByValue($f), $info["name"], 'dat');
-				$this->setElement($info["name"] . self::ELEMENT_LENGHT, $info["len"], 'dat');
-				$this->setElement($info["name"] . self::ELEMENT_TYPE, $type, 'dat');
+				$this->setElement($info['name'], $name, "dat");
+				$this->setElement("wholename" . $this->getSortIndexByValue($f), $info['name'], 'dat');
+				$this->setElement($info['name'] . self::ELEMENT_LENGHT, $info["len"], 'dat');
+				$this->setElement($info['name'] . self::ELEMENT_TYPE, $type, 'dat');
 				$typeLen = strtoupper($info['type']) . (strpos($info['flags'], 'unsigned') !== false || (defined('MYSQLI_UNSIGNED_FLAG') && (($info['flags'] & MYSQLI_UNSIGNED_FLAG) > 0)) ? '_U' : '');
-				$this->setElement($info["name"] . 'typeLen', $typeLen, 'dat');
+				$this->setElement($info['name'] . 'typeLen', $typeLen, 'dat');
 
-				if(isset($vals[$info["name"]]["variant"])){
-					$this->setElement($info["name"] . "variant", $vals[$info["name"]]["variant"]);
+				if(isset($vals[$info['name']]["variant"])){
+					$this->setElement($info['name'] . "variant", $vals[$info['name']]["variant"]);
 				}
 				foreach($fields as $field => $def){
-					$this->setElement($info["name"] . $field, isset($vals[$info["name"]][$field]) ? $vals[$info["name"]][$field] : $def);
+					$this->setElement($info['name'] . $field, isset($vals[$info['name']][$field]) ? $vals[$info['name']][$field] : $def);
 				}
 
 				$f++;

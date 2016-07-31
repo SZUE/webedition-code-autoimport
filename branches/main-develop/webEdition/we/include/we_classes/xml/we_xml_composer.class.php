@@ -40,7 +40,7 @@ abstract class we_xml_composer{
 	static function buildXMLElements($elements){
 		$out = "";
 		foreach($elements as $element){
-			$element = new we_html_baseElement($element["name"], true, $element["attributes"], (is_array($element["content"]) ? we_xml_composer::buildXMLElements($element["content"]) : $element["content"]));
+			$element = new we_html_baseElement($element['name'], true, $element["attributes"], (is_array($element["content"]) ? we_xml_composer::buildXMLElements($element["content"]) : $element["content"]));
 			$out.=$element->getHTML();
 		}
 		return $out;

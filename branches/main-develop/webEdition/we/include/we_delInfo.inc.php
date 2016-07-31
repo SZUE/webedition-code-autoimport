@@ -41,7 +41,7 @@ $parts = array(
 	),
 	array(
 		"headline" => "",
-		"html" => we_html_element::htmlDiv(array("class" => "blockWrapper", "style" => "width: 475px; height: 350px; border:1px #dce6f2 solid;"), $table->getHtml()),
+		"html" => we_html_element::htmlDiv(array('class' => "blockWrapper", "style" => "width: 475px; height: 350px; border:1px #dce6f2 solid;"), $table->getHtml()),
 		'space' => we_html_multiIconBox::SPACE_SMALL
 	),
 );
@@ -49,6 +49,6 @@ unset($_SESSION['weS']['delete_files_info']);
 
 $buttons = new we_html_table(array('class' => 'default defaultfont', "style" => "text-align:right"), 1, 1);
 $buttons->setCol(0, 0, null, we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();"));
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody"), we_html_multiIconBox::getHTML("", $parts, 30, $buttons->getHtml())
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_multiIconBox::getHTML("", $parts, 30, $buttons->getHtml())
 	)
 );

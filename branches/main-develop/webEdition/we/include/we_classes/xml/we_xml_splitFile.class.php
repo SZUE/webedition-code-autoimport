@@ -172,7 +172,7 @@ class we_xml_splitFile extends we_xml_parser{
 			}
 		}
 		// Add the end tag of the new root element.
-		$xml .=  '</' . $root["name"] . '>';
+		$xml .=  '</' . $root['name'] . '>';
 
 		return $xml;
 	}

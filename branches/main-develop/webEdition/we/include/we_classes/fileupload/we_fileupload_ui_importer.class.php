@@ -115,7 +115,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 				$divBusyMessage
 		);
 //<div id="imgfocus_point" style="display:none;" draggable="false"></div>
-		return we_html_element::htmlBody(array("class" => "weDialogBody"), $content);
+		return we_html_element::htmlBody(array('class' => "weDialogBody"), $content);
 	}
 
 	//TODO: add param filetype

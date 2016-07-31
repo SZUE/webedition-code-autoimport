@@ -398,7 +398,7 @@ abstract class we_html_element{
 		$params['mayscript'] = 'true';
 		$tmp = '';
 		foreach($params as $key => $value){
-			$tmp.=we_html_element::htmlParam(["name" => $key, "value" => $value]);
+			$tmp.=we_html_element::htmlParam(['name' => $key, "value" => $value]);
 		}
 		$content = $tmp . $content;
 		$attribs['MAYSCRIPT'] = '';

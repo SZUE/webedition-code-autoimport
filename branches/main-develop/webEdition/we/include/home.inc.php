@@ -195,12 +195,12 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		}
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_' . (($bExtendedCol) ? 'expand' : 'collapse') . '">' .
 			$s2 .
-			we_html_element::htmlDiv(["class" => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')], '') . '</td>';
+			we_html_element::htmlDiv(['class' => "wildcard", 'style' => ($iDatLen > $iCurrCol ? 'margin-right:5px' : '')], '') . '</td>';
 	}
 	while($iCurrCol < $iLayoutCols){
 		$iCurrCol++;
 		$s1 .= '<td id="c_' . $iCurrCol . '" class="cls_collapse">' .
-			we_html_element::htmlDiv(["class" => "wildcard"], "") . '</td>' .
+			we_html_element::htmlDiv(['class' => "wildcard"], "") . '</td>' .
 			($iLayoutCols > $iCurrCol ? '<td>&nbsp;&nbsp;</td>' : '');
 	}
 
@@ -215,7 +215,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		[
 		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=document.getElementById('le_tblWidgets');initDragWidgets();",
 		], we_html_element::htmlForm(
-			["name" => "we_form"
+			['name' => "we_form"
 			], we_html_element::htmlHiddens([
 				'we_cmd[0]' => 'widget_cmd',
 				'we_cmd[1]' => 'save',
@@ -250,7 +250,7 @@ _EditorFrame.initEditorFrameData({
 	we_html_element::htmlBody(
 		[ 'class' => 'noHome', "onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
 		], we_html_element::htmlDiv(
-			["class" => "defaultfont errorMessage", "style" => "width: 400px;"], (permissionhandler::hasPerm(["CHANGE_START_DOCUMENT", "EDIT_SETTINGS"], false) ?
+			['class' => "defaultfont errorMessage", "style" => "width: 400px;"], (permissionhandler::hasPerm(["CHANGE_START_DOCUMENT", "EDIT_SETTINGS"], false) ?
 				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
 					we_html_button::create_button('preferences', "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
 				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));

@@ -435,7 +435,7 @@ we_templateInit();?>';
 
 					if(!empty($blocks)){
 						$foo = end($blocks);
-						$blockname = $foo["name"];
+						$blockname = $foo['name'];
 						switch($foo['type']){
 							case 'list':
 							case 'block':

@@ -1480,7 +1480,7 @@ class we_versions_version{
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
 
 		foreach($tableInfo as $cur){
-			$tblFields[] = $cur["name"];
+			$tblFields[] = $cur['name'];
 		}
 
 		$data = getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($ID), $db);
@@ -1977,7 +1977,7 @@ class we_versions_version{
 
 		$tableInfo = $db->metadata($table);
 		foreach($tableInfo as $cur){
-			$fieldNames[] = $cur["name"];
+			$fieldNames[] = $cur['name'];
 		}
 
 		return $fieldNames;

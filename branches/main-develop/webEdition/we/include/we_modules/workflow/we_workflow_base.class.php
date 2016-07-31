@@ -42,7 +42,7 @@ class we_workflow_base{
 		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID));
 		if($this->db->next_record()){
 			foreach($tableInfo as $cur){
-				$fieldName = $cur["name"];
+				$fieldName = $cur['name'];
 				if(isset($this->persistents[$fieldName])){
 					$this->$fieldName = ($this->persistents[$fieldName] == we_base_request::INTLISTA ?
 							($this->db->f($fieldName) === '' ?
@@ -105,7 +105,7 @@ class we_workflow_base{
 		$foo = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userID), '', $this->db);
 		$rcpts = array($foo); /* user names */
 		$m = new we_messaging_todo();
-		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']["Name"]) ? $_SESSION['user']["Name"] : "");
+		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
 		$data = array('subject' => $subject, 'body' => $description, 'deadline' => $deadline, 'Content_Type' => 'html', 'priority' => 5);
 
 		$res = $m->send($rcpts, $data);
@@ -129,7 +129,7 @@ class we_workflow_base{
 
 		$userid = f('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id), '', new DB_WE());
 
-		$m->set_login_data($userid, isset($_SESSION['user']["Name"]) ? $_SESSION['user']["Name"] : "");
+		$m->set_login_data($userid, isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
 		$m->init();
 
 		$data = array('todo_status' => 100);
@@ -148,7 +148,7 @@ class we_workflow_base{
 
 	function removeTodo($id = 0){
 		$m = new we_messaging_todo();
-		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']["Name"]) ? $_SESSION['user']["Name"] : "");
+		$m->set_login_data($_SESSION['user']["ID"], isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
 
 		$i_headers = array('_ID' => $id);
 
@@ -163,7 +163,7 @@ class we_workflow_base{
 		$db = new DB_WE();
 		$userid = f('SELECT UserID FROM ' . MSG_TODO_TABLE . ' WHERE ID=' . intval($id), '', $db);
 
-		$m->set_login_data($userid, isset($_SESSION['user']["Name"]) ? $_SESSION['user']["Name"] : "");
+		$m->set_login_data($userid, isset($_SESSION['user']['name']) ? $_SESSION['user']['name'] : "");
 		$m->init();
 
 		$msg = array('int_hdrs' => array('_ID' => $id, '_from_userid' => $userid));

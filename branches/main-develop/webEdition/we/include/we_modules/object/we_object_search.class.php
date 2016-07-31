@@ -64,22 +64,22 @@ class we_object_search extends we_search_base{
 
 		if($properties){
 			foreach($tableInfoProperties as $cur){
-				switch($cur["name"]){
+				switch($cur['name']){
 					case 'Text':
-						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>';
-						$all[] = $cur["name"];
+						$opts .= '<option value="' . $cur['name'] . '" ' . (($select == $cur['name']) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>';
+						$all[] = $cur['name'];
 						break;
 					case 'Path':
-						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>';
-						$all[] = $cur["name"];
+						$opts .= '<option value="' . $cur['name'] . '" ' . (($select == $cur['name']) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>';
+						$all[] = $cur['name'];
 						break;
 					case 'ID':
-						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>';
-						$all[] = $cur["name"];
+						$opts .= '<option value="' . $cur['name'] . '" ' . (($select == $cur['name']) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>';
+						$all[] = $cur['name'];
 						break;
 					case 'Url':
-						$opts .= '<option value="' . $cur["name"] . '" ' . (($select == $cur["name"]) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>';
-						$all[] = $cur["name"];
+						$opts .= '<option value="' . $cur['name'] . '" ' . (($select == $cur['name']) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>';
+						$all[] = $cur['name'];
 						break;
 				}
 			}
@@ -87,14 +87,14 @@ class we_object_search extends we_search_base{
 
 		if($fields){
 			foreach($tableInfoFields as $cur){
-				if($cur["name"] != 'ID' && substr($cur["name"], 0, 3) != "OF_" && stripos($cur["name"], we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($cur["name"], "object") !== 0){
-					$regs = explode('_', $cur["name"], 2);
+				if($cur['name'] != 'ID' && substr($cur['name'], 0, 3) != "OF_" && stripos($cur['name'], we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($cur['name'], "object") !== 0){
+					$regs = explode('_', $cur['name'], 2);
 					if(count($regs) == 2){
-						$opts .= '<option value="' . $cur["name"] . '" '
-							. (($select == $cur["name"]) ? "selected" : "") . '>'
+						$opts .= '<option value="' . $cur['name'] . '" '
+							. (($select == $cur['name']) ? "selected" : "") . '>'
 							. $regs[1] . '</option>';
 					}
-					$all[] = $cur["name"];
+					$all[] = $cur['name'];
 				}
 			}
 		}

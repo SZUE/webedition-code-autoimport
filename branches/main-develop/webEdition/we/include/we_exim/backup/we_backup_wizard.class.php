@@ -127,7 +127,7 @@ function startStep(){
 	top.busy.location="' . $this->frameset . '&pnt=busy&step=1";
 }');
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $js . STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step1]'))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $js . STYLESHEET, we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post"), we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step1]'))
 					)
 				)
 		);
@@ -162,7 +162,7 @@ self.focus();
 			array("headline" => "", "html" => we_html_forms::radiobutton("import_upload", false, "import_from", g_l('backup', '[import_from_local]')), 'noline' => 1)
 		);
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $js . STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep();"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post"), we_html_element::htmlHiddens(array("pnt" => "body", "step" => 3)) .
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $js . STYLESHEET, we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "startStep();"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post"), we_html_element::htmlHiddens(array("pnt" => "body", "step" => 3)) .
 						we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step2]'))
 					)
 				)
@@ -209,7 +209,7 @@ function setLocation(loc){
 }
 extra_files=[];
 extra_files_desc=[];';
-			$select = new we_html_select(array("name" => "backup_select", "size" => 7, "style" => "width: 600px;"));
+			$select = new we_html_select(array('name' => "backup_select", "size" => 7, "style" => "width: 600px;"));
 			$files = [];
 			$extra_files = [];
 			$dateformat = g_l('date', '[format][default]');
@@ -464,11 +464,11 @@ function delSelected(){
 ');
 
 		$form_attribs = (we_base_request::_(we_base_request::STRING, "import_from") === "import_upload" ?
-				array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd", "enctype" => "multipart/form-data") :
-				array("name" => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd")
+				array('name' => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd", "enctype" => "multipart/form-data") :
+				array('name' => "we_form", "method" => "post", "action" => $this->frameset, "target" => "cmd")
 			);
 
-		$body = we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep();self.focus();"), we_html_element::htmlForm($form_attribs, we_html_element::htmlHiddens(array(
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "startStep();self.focus();"), we_html_element::htmlForm($form_attribs, we_html_element::htmlHiddens(array(
 						"pnt" => "cmd",
 						"cmd" => "import",
 						"step" => 3,
@@ -510,7 +510,7 @@ function stopBusy() {
 top.cmd.location ="about:blank";
 self.focus();');
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $js . STYLESHEET, we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "stopBusy()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step3]'))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $js . STYLESHEET, we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "stopBusy()"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step3]'))
 					)
 				)
 		);
@@ -677,7 +677,7 @@ function setLocation(loc){
 
 		$edit_cookie = weGetCookieVariable("but_edit_image");
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array("class" => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", 'onsubmit' => 'return false;'), we_html_element::htmlHiddens(array(
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post", 'onsubmit' => 'return false;'), we_html_element::htmlHiddens(array(
 							"pnt" => "cmd",
 							"cmd" => "export",
 							"operation_mode" => "backup",
@@ -775,7 +775,7 @@ function startStep(){
 	}
 
 	function build_error_message(){
-		$error_message = new we_html_table(array("class" => "default defaultfont"), 1, 1);
+		$error_message = new we_html_table(array('class' => "default defaultfont"), 1, 1);
 		$error_message->setCol(0, 0, null, g_l('backup', '[download_failed]'));
 
 		return we_html_tools::getHtmlTop('', '', '', STYLESHEET, '<body class="weDialogBody">' . we_html_tools::htmlDialogLayout($error_message->getHtml(), g_l('backup', '[export_step2]')));
@@ -787,7 +787,7 @@ function startStep(){
 		$yesCmd = "self.close();";
 		$noCmd = "top.opener.top.body.clearExtern();" . $yesCmd;
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("class" => "weEditorBody", "onblur" => "self.focus()", "onload" => "self.focus();"), we_html_element::htmlForm(array("name" => "we_form"), we_html_tools::htmlYesNoCancelDialog($txt, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", $yesCmd, $noCmd))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', STYLESHEET, we_html_element::htmlBody(array('class' => "weEditorBody", "onblur" => "self.focus()", "onload" => "self.focus();"), we_html_element::htmlForm(array('name' => "we_form"), we_html_tools::htmlYesNoCancelDialog($txt, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", $yesCmd, $noCmd))
 				)
 		);
 	}
@@ -914,7 +914,7 @@ function press_yes() {
 				break;
 		}
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $head, we_html_element::htmlBody(array("class" => "weDialogButtonsBody"), $table->getHtml())
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', $head, we_html_element::htmlBody(array('class' => "weDialogButtonsBody"), $table->getHtml())
 		);
 	}
 

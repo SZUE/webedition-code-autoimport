@@ -678,7 +678,7 @@ abstract class we_database_base{
 		 * - full is false (default):
 		 * $result[]:
 		 *   [0]["table"]  table name
-		 *   [0]["name"]   field name
+		 *   [0]['name']   field name
 		 *   [0]["type"]   field type
 		 *   [0]["len"]    field length
 		 *   [0]["flags"]  field flags
@@ -687,7 +687,7 @@ abstract class we_database_base{
 		 * $result[]:
 		 *   ["num_fields"] number of metadata records
 		 *   [0]["table"]  table name
-		 *   [0]["name"]   field name
+		 *   [0]['name']   field name
 		 *   [0]["type"]   field type
 		 *   [0]["len"]    field length
 		 *   [0]["flags"]  field flags

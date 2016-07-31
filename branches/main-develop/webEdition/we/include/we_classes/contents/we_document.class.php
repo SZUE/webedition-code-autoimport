@@ -1277,9 +1277,9 @@ class we_document extends we_root{
 					(empty($popUpCtrl["jswidth"]) ? '' : ',width=' . $popUpCtrl["jswidth"] ) .
 					(empty($popUpCtrl["jsheight"]) ? '' : ',height=' . $popUpCtrl["jsheight"] ) .
 					'\';';
-				$foo = $js . "var we_win = window.open('','we_" . (isset($attribs["name"]) ? $attribs["name"] : "") . "',we_winOpts);";
+				$foo = $js . "var we_win = window.open('','we_" . (isset($attribs['name']) ? $attribs['name'] : "") . "',we_winOpts);";
 
-				$linkAttribs['target'] = 'we_' . (isset($attribs["name"]) ? $attribs["name"] : "");
+				$linkAttribs['target'] = 'we_' . (isset($attribs['name']) ? $attribs['name'] : "");
 				$linkAttribs['onclick'] = $foo;
 			}
 			return $rollOverScript . getHtmlTag('a', removeAttribs($linkAttribs, array('hidedirindex', 'objectseourls')), '', false, true);

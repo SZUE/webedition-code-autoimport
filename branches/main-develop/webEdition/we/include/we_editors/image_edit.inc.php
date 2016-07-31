@@ -55,7 +55,7 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(JS_DIR . 'image_edit.js') .
  we_html_element::jsElement($js) .
  STYLESHEET . '</head>' .
- we_html_element::htmlBody(array("class" => "weDialogBody", 'onload' => 'self.focus()'), we_html_element::htmlForm(array("name" => "we_form"), $dialog)) . "</html>";
+ we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus()'), we_html_element::htmlForm(array('name' => "we_form"), $dialog)) . "</html>";
 
 function we_getImageResizeDialogJS(){
 	list($width, $height) = $GLOBALS['we_doc']->getOrigSize();

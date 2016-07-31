@@ -83,7 +83,7 @@ class we_customer_customer extends we_base_model{
 		$this->persistent_slots = [];
 		$tableInfo = $this->db->metadata($this->table);
 		foreach($tableInfo as $t){
-			$fname = $t["name"];
+			$fname = $t['name'];
 			$this->persistent_slots[] = $fname;
 			if(!isset($this->$fname)){
 				$this->$fname = '';

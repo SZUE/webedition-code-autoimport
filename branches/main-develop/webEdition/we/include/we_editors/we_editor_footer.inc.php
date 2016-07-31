@@ -171,7 +171,7 @@ if(inWorkflow($we_doc)){
 						}
 					} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
-						$noPermTable = new we_html_table(array("class" => 'default footertable'), 1, 2);
+						$noPermTable = new we_html_table(array('class' => 'default footertable'), 1, 2);
 
 						$noPermTable->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:10px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 						$noPermTable->setColContent(0, 1, g_l('SEEM', '[no_permission_to_edit_document]'));
