@@ -130,9 +130,9 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 
 		$content = $hidden . '<table class="default">
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[folder]') . '</td></tr>
-	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, array("onchange" => "top.content.setHot();"), "value", 520) . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . we_html_tools::htmlSelect("Language", getWeFrontendLanguagesForBackend(), 1, $language, false, array('onchange' => "top.content.setHot();"), "value", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . g_l('modules_glossary', '[type]') . '</td></tr>
-	<tr><td>' . we_html_tools::htmlSelect("Type", $types, 1, $glossary->Type, false, array("onchange" => "top.content.setHot();showType(this.value);"), "value", 520) . '</td></tr>
+	<tr><td>' . we_html_tools::htmlSelect("Type", $types, 1, $glossary->Type, false, array('onchange' => "top.content.setHot();showType(this.value);"), "value", 520) . '</td></tr>
 	<tr><td class="defaultfont">' . we_html_forms::checkboxWithHidden((bool) $glossary->Fullword, 'Fullword', g_l('modules_glossary', '[Fullword]'), false, 'defaultfont', 'top.content.setHot();') . '</td></tr>
 </table>';
 		$parts = array(
@@ -246,7 +246,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 				'extern' => g_l('modules_glossary', '[link_extern]'),
 				'object' => g_l('modules_glossary', '[link_object]'),
 				'category' => g_l('modules_glossary', '[link_category]'),
-				), 1, $mode, false, array("onchange" => "setHot();showLinkMode(this.value);"), "value", 520) . '</td></tr>
+				), 1, $mode, false, array('onchange' => "setHot();showLinkMode(this.value);"), "value", 520) . '</td></tr>
 </table>' .
 			self::getHTMLIntern($glossary) .
 			self::getHTMLExtern($glossary) .
@@ -433,7 +433,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 
 		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $width));
 
-		$select = we_html_tools::htmlSelect($name, $options, 1, "", false, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), 'value', $width);
+		$select = we_html_tools::htmlSelect($name, $options, 1, "", false, array('onchange' => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), 'value', $width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
@@ -467,7 +467,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 
 		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $width));
 
-		$select = we_html_tools::htmlSelect($name, $options, $size, "", $multiple, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), $compare, $width);
+		$select = we_html_tools::htmlSelect($name, $options, $size, "", $multiple, array('onchange' => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), $compare, $width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}

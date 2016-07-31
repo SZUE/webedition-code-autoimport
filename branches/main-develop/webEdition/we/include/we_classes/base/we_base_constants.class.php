@@ -64,5 +64,6 @@ abstract class we_base_constants{
 	const WE_ICON_EDIT = '<i class="fa fa-lg fa-edit"></i>';
 	const WE_ICON_INFO = '<i class="fa fa-lg fa-info-circle"></i>';
 	const WE_ICON_CONTENT = '<i class="fa fa-lg fa-search"></i>';
+	const WE_ICON_PREVIEW = '<i class="fa fa-lg fa-eye"></i>';
 
 }

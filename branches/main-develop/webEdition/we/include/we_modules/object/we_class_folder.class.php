@@ -189,7 +189,7 @@ class we_class_folder extends we_folder{
 	}
 
 	private function setDefaultWorkspaces(){
-		$userWSArray = makeArrayFromCSV(get_ws());
+		$userWSArray = get_ws(FILE_TABLE, true);
 		$userDefaultWsID = empty($userWSArray) ? 0 : $userWSArray[0];
 		$userDefaultWsPath = $userDefaultWsID ? id_to_path($userDefaultWsID, FILE_TABLE, $GLOBALS['DB_WE']) : '/';
 		$this->WorkspacePath = ($this->WorkspacePath ? $this->WorkspacePath : $userDefaultWsPath);

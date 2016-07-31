@@ -38,7 +38,7 @@ switch($_SESSION['weS']['we_mode']){
 		$access = $we_doc->userHasAccess();
 		if($access != we_root::USER_HASACCESS && $access != we_root::USER_NO_SAVE){
 			if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
-				$we_tabs->addTab('<i class="fa fa-lg fa-eye"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_PREVIEW, 'title' => g_l('weClass', '[preview]')]);
+				$we_tabs->addTab(we_base_constants::WE_ICON_PREVIEW, (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "');", ["id" => "tab_" . we_base_constants::WE_EDITPAGE_PREVIEW, 'title' => g_l('weClass', '[preview]')]);
 			}
 		} else { //	show tabs according to permissions
 			if(in_array(we_base_constants::WE_EDITPAGE_PROPERTIES, $we_doc->EditPageNrs) && permissionhandler::hasPerm("CAN_SEE_PROPERTIES")){

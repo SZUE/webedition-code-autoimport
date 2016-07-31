@@ -362,7 +362,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 
 				if($values){
 					foreach($values as $id => $path){
-						$js .= 'top.content.editor.edbody.document.we_form.FolderWsID.options[top.content.editor.edbody.document.we_form.FolderWsID.options.length] = new Option("' . $path . '",' . $id . ');';
+						$js .= 'top.content.editor.edbody.document.we_form.WorkspaceID.options[top.content.editor.edbody.document.we_form.WorkspaceID.options.length] = new Option("' . $path . '",' . $id . ');';
 					}
 					echo we_html_element::jsElement('top.content.populateFolderWs("values");' . $js);
 				} elseif(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){

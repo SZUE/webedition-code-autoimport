@@ -256,7 +256,7 @@ class we_exim_XMLExIm{
 	function queryForAllowed($table){
 		$db = new DB_WE();
 		$parentpaths = $wsQuery = [];
-		if(($ws = get_ws($table))){
+		if(($ws = get_ws($table, true))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
 				$wsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);

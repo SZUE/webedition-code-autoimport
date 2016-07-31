@@ -67,7 +67,7 @@ class we_tool_treeDataSource{
 		$aWsQuery = [];
 		$parentpaths = [];
 
-		if(($ws = get_ws($table))){
+		if(($ws = get_ws($table, true))){
 			$wsPathArray = id_to_path($ws, $table, $db, true);
 			foreach($wsPathArray as $path){
 				$aWsQuery[] = ' Path LIKE "' . $db->escape($path) . '/%" OR ' . self::getQueryParents($path);

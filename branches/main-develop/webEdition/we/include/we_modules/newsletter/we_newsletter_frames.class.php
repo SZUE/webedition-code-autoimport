@@ -155,7 +155,7 @@ function setTab(tab) {
 			$we_tabs->addTab('<i class="fa fa-lg fa-list"></i>', (($page == self::TAB_MAILING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_MAILING . ");", ['title' => sprintf(g_l('modules_newsletter', '[mailing_list]'), "")]);
 			$we_tabs->addTab(we_base_constants::WE_ICON_EDIT, (($page == self::TAB_EDIT) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_EDIT . ");", ['title' => g_l('modules_newsletter', '[edit]')]);
 			//if($this->View->newsletter->ID){ // zusaetzlicher tab fuer auswertung
-			$we_tabs->addTab('<i class="fa fa-lg fa-hourglass-half"></i>', (($page == self::TAB_REPORTING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_REPORTING . ");", ['title' => g_l('modules_newsletter', '[reporting][tab]')]);
+			$we_tabs->addTab('<i class="fa fa-lg fa-pie-chart"></i>', (($page == self::TAB_REPORTING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_REPORTING . ");", ['title' => g_l('modules_newsletter', '[reporting][tab]')]);
 			//}
 		}
 
@@ -801,7 +801,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$table = new we_html_table(['class' => 'default withSpace'], 3, 3);
 
 		// 1. ROW: select status
-		$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array("onchange" => "weShowMailsByStatus(this.value, $group);", 'id' => 'weViewByStatus'), "value", 150);
+		$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array('onchange' => "weShowMailsByStatus(this.value, $group);", 'id' => 'weViewByStatus'), "value", 150);
 		$table->setCol(0, 0, array('style' => 'vertical-align:middle;', "colspan" => 3, 'class' => 'defaultfont'), $selectStatus);
 
 		// 2. ROW: Mail list with handling buttons
@@ -1773,7 +1773,7 @@ self.focus();
 
 			$nextprev->setCol(0, 3, array('class' => 'defaultfont', 'style' => 'padding-left:20px;'), we_html_element::htmlB(g_l('modules_newsletter', '[show]')) . " " . we_html_tools::htmlTextInput("numRows", 5, $numRows)
 			);
-			$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array("onchange" => 'listFile();'), "value", 150);
+			$selectStatus = we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array('onchange' => 'listFile();'), "value", 150);
 			$nextprev->setCol(0, 4, array('class' => 'defaultfont', 'style' => 'padding-left:20px;'), $selectStatus);
 			$nextprev->setCol(0, 5, array('class' => 'defaultfont', 'style' => 'padding-left:20px;'), $add);
 
@@ -1787,7 +1787,7 @@ self.focus();
 			} else {
 				if(we_base_request::_(we_base_request::INT, 'weEmailStatus') == 1){
 					$nlMessage = g_l('modules_newsletter', '[file_all_ok]');
-					$selectStatus2 = "<br/>" . we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array("onchange" => 'listFile();'), "value", 150);
+					$selectStatus2 = "<br/>" . we_html_element::htmlB(g_l('modules_newsletter', '[status]')) . " " . we_html_tools::htmlSelect("weEmailStatus", array(g_l('modules_newsletter', '[statusAll]'), g_l('modules_newsletter', '[statusInvalid]')), "", we_base_request::_(we_base_request::RAW, 'weEmailStatus', 0), "", array('onchange' => 'listFile();'), "value", 150);
 				} else {
 					$nlMessage = g_l('modules_newsletter', '[file_all_ok]');
 					$selectStatus2 = '';
@@ -2374,7 +2374,7 @@ self.focus();');
 	 * @return	select menue to determine charset
 	 * @param	boolean
 	 */
-	function getHTMLCharsetTable(){
+	private function getHTMLCharsetTable(){
 		$value = (isset($this->View->newsletter->Charset) ? $this->View->newsletter->Charset : "");
 
 		$charsetHandler = new we_base_charsetHandler();

@@ -684,7 +684,7 @@ function build_dialog($selected_setting = 'ui'){
 				$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				$GLOBALS['weDefaultCharset'] = get_value('DEFAULT_CHARSET');
 				$defaultCharset = we_html_tools::htmlTextInput('newconf[DEFAULT_CHARSET]', 8, $GLOBALS['weDefaultCharset'], 255, '', 'text', 100);
-				$defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $charsets, 1, $GLOBALS['weDefaultCharset'], false, array("onchange" => "document.forms[0].elements['newconf[DEFAULT_CHARSET]'].value=this.options[this.selectedIndex].value;"), "value", 100, "defaultfont", false);
+				$defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $charsets, 1, $GLOBALS['weDefaultCharset'], false, array('onchange' => "document.forms[0].elements['newconf[DEFAULT_CHARSET]'].value=this.options[this.selectedIndex].value;"), "value", 100, "defaultfont", false);
 				$DEFAULT_CHARSET = '<table class="default"><tr><td>' . $defaultCharset . '</td><td>' . $defaultCharsetChooser . '</td></tr></table>';
 
 				$settings[] = array(
@@ -881,7 +881,7 @@ function build_dialog($selected_setting = 'ui'){
 
 				// Sidebar width
 				$sidebar_width = we_html_tools::htmlTextInput('newconf[SIDEBAR_DEFAULT_WIDTH]', 8, get_value('SIDEBAR_DEFAULT_WIDTH'), 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", 'number', 90);
-				$sidebar_width_chooser = we_html_tools::htmlSelect('tmp_sidebar_width', array('' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400), 1, '', false, array("onchange" => "document.forms[0].elements['newconf[SIDEBAR_DEFAULT_WIDTH]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 100, "defaultfont");
+				$sidebar_width_chooser = we_html_tools::htmlSelect('tmp_sidebar_width', array('' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400), 1, '', false, array('onchange' => "document.forms[0].elements['newconf[SIDEBAR_DEFAULT_WIDTH]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 100, "defaultfont");
 
 				// Sidebar document
 				$sidebar_document_button = we_html_button::create_button(we_html_button::SELECT, 'javascript:selectSidebarDoc()');
@@ -2016,7 +2016,7 @@ for(i=0;i<elements.length; ++i){
 			);
 
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
-				$emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, array("onchange" => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"), 'value', 300, 'defaultfont');
+				$emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, array('onchange' => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"), 'value', 300, 'defaultfont');
 
 				$smtp_table = new we_html_table(array('class' => 'default', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'), 4, 2);
 				$smtp_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('prefs', '[smtp_server]'));

@@ -179,7 +179,7 @@ var openFolders= {
 	public function loadHTML($table, $parentFolder, $openFolders){
 		$GLOBALS['parentpaths'] = $wsQuery = [];
 
-		if(($ws = get_ws($table))){
+		if(($ws = get_ws($table, true))){
 			$wsPathArray = id_to_path($ws, $table, $GLOBALS['DB_WE'], true);
 			foreach($wsPathArray as $path){
 				$wsQuery[] = 'Path LIKE "' . $GLOBALS['DB_WE']->escape($path) . '/%" OR ' . self::getQueryParents($path);

@@ -41,9 +41,6 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   UrlID int unsigned NOT NULL default '0',
   Charset ENUM('','UTF-8','ISO-8859-1','ISO-8859-2','ISO-8859-3','ISO-8859-4','ISO-8859-5','ISO-8859-6','ISO-8859-7','ISO-8859-8','ISO-8859-9','ISO-8859-10','ISO-8859-11','ISO-8859-12','ISO-8859-13','ISO-8859-14','ISO-8859-15','Windows-1251','Windows-1252') NOT NULL default '',
   Attributes text NOT NULL,
-  FolderWsID int unsigned NOT NULL default '0',
-  FolderParameter text NOT NULL,
-  FolderUrl text NOT NULL,
   LimitAccess tinyint unsigned NOT NULL default '0',
   AllCustomers tinyint unsigned NOT NULL default '1',
   ApplyFilter tinyint unsigned NOT NULL default '0',
@@ -59,11 +56,13 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
 ) ENGINE=MyISAM;
 
 /* query separator */
-UPDATE ###TBLPREFIX###tblnavigation SET Url="" WHERE Url="http://";
-
+###ONCOL(FolderUrl,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET Url=FolderUrl WHERE IsFolder=1;###
 /* query separator */
-UPDATE ###TBLPREFIX###tblnavigation SET FolderUrl="" WHERE FolderUrl="http://";
-
+###UPDATEDROPCOL(FolderUrl,###TBLPREFIX###tblnavigation)###
+/* query separator */
+###ONCOL(FolderWsID,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET WorkspaceID=FolderWsID WHERE IsFolder=1;###
+/* query separator */
+###UPDATEDROPCOL(FolderWsID,###TBLPREFIX###tblnavigation)###
 /* query separator */
 ###ONCOL(FolderSelection,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET FolderSelection="doctype" WHERE IsFolder=1 AND FolderSelection IS NULL;###
 /* query separator */
@@ -71,3 +70,9 @@ UPDATE ###TBLPREFIX###tblnavigation SET FolderUrl="" WHERE FolderUrl="http://";
 /* query separator */
 ###UPDATEDROPCOL(FolderSelection,###TBLPREFIX###tblnavigation)###
 /* query separator */
+###ONCOL(FolderParameter,###TBLPREFIX###tblnavigation) UPDATE ###TBLPREFIX###tblnavigation SET Parameter=FolderParameter WHERE IsFolder=1;###
+/* query separator */
+###UPDATEDROPCOL(FolderParameter,###TBLPREFIX###tblnavigation)###
+
+/* query separator */
+UPDATE ###TBLPREFIX###tblnavigation SET Url="" WHERE Url="http://";

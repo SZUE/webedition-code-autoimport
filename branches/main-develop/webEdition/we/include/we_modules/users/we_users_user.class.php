@@ -2153,7 +2153,7 @@ function show_seem_chooser(val) {
 
 		$yuiSuggest->setAcId("PathGroup");
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
-		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, array("onchange" => "top.content.setHot();"));
+		$yuiSuggest->setInput($this->Name . '_ParentID_Text', $parent_text, array('onchange' => "top.content.setHot();"));
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($this->Name . '_ParentID', $this->ParentID);

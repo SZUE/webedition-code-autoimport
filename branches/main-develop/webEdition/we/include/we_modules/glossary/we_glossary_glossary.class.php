@@ -276,7 +276,7 @@ class we_glossary_glossary extends we_base_model{
 		return $retVal;
 	}
 
-	function registerMediaLinks(){
+	protected function registerMediaLinks(){
 		$this->unregisterMediaLinks();
 		if($this->Type === 'link' && !intval($this->IsFolder)){
 			$attribs = is_array($this->Attributes) ? $this->Attributes : we_unserialize($this->Attributes);
