@@ -7,6 +7,8 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   ID int unsigned NOT NULL auto_increment,
   ParentID int unsigned NOT NULL default '0',
   Path varchar(2048) NOT NULL default '',
+	CreationDate int unsigned NOT NULL default '0',
+	ModDate int unsigned NOT NULL default '0',
 	Published int unsigned NOT NULL default '1',
 	CreatorID int unsigned NOT NULL default '0',
 	ModifierID int unsigned NOT NULL default '0',
