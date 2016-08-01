@@ -355,7 +355,7 @@ abstract class we_root extends we_class{
 		$inputFeld = we_html_tools::htmlTextInput($textname, 24, $creator, '', ' readonly', '');
 		$idfield = we_html_element::htmlHidden($idname, $this->CreatorID);
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$button = we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','user'," . $cmd1 . ",'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);") . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','user'," . $cmd1 . ",'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);") . "')");
 
 		return we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, $button);
 	}
