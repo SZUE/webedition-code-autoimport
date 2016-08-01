@@ -28,7 +28,7 @@
 
 container.prototype.openClose = function (id) {
 	var sort = "";
-	if (id === ""){
+	if (id === "") {
 		return;
 	}
 	var eintragsIndex = treeData.indexOfEntry(id);
@@ -59,15 +59,17 @@ node.prototype.showSegment = function () {
 	reloadGroup(this.parentid, this.offset);
 };
 
-
 function info(text) {
-	t = treeData.frames.top.document.getElementById("infoField");
+	i = treeData.frames.top.document.getElementById("infoField");
+	s = treeData.frames.top.document.getElementById("search");
 	if (text != " ") {
-		t.style.display = "block";
-		t.innerHTML = text;
+		s.style.display = "none";
+		i.style.display = "block";
+		i.innerHTML = text;
 	} else {
-		t.innerHTML = text;
-		t.style.display = "none";
+		i.innerHTML = text;
+		i.style.display = "none";
+		s.style.display = "block";
 	}
 }
 

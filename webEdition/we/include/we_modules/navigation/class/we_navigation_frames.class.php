@@ -61,7 +61,7 @@ class we_navigation_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLTreeFooter(){
-		return '<div id="infoField" class="defaultfont"></div>';//.$this->getHTMLSearchTreeFooter();
+		return '<div id="infoField" class="defaultfont" style="display:none;"></div>' . $this->getHTMLSearchTreeFooter();
 	}
 
 	protected function getHTMLCmd(){
