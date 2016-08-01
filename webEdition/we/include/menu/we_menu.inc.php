@@ -143,7 +143,8 @@ $we_menu = array(
 	'file_new_dir' => array(// File > New > Directory
 		'text' => g_l('javaMenu_global', '[directory]'),
 		'parent' => 'file_new',
-		'hide' => $seeMode
+		'hide' => $seeMode,
+		'perm' => 'NEW_DOC_FOLDER || NEW_TEMP_FOLDER || NEW_OBJECTFILE_FOLDER || NEW_COLLECTION_FOLDER',
 	),
 	array(// File > New > Directory > Document
 		'text' => g_l('javaMenu_global', '[document_directory]'),
