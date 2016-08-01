@@ -43,13 +43,13 @@ class we_collection extends we_root{
 	protected $insertPrefs;
 	//private $tmpFoldersDone = [];
 	protected $view = 'grid';
-	private $gridItemDimensions = array(
-		2 => array('item' => 400, 'icon' => 56, 'font' => 30, 'btnFontsize' => 30, 'btnHeight' => 60),
-		3 => array('item' => 264, 'icon' => 42, 'font' => 24, 'btnFontsize' => 22, 'btnHeight' => 44),
-		4 => array('item' => 200, 'icon' => 32, 'font' => 18, 'btnFontsize' => 16, 'btnHeight' => 31),
-		5 => array('item' => 159, 'icon' => 24, 'font' => 14, 'btnFontsize' => 13, 'btnHeight' => 25),
-		6 => array('item' => 134, 'icon' => 20, 'font' => 11, 'btnFontsize' => 13, 'btnHeight' => 25)
-	);
+	private $gridItemDimensions = [
+		2 => ['item' => 400, 'icon' => 56, 'font' => 30, 'btnFontsize' => 30, 'btnHeight' => 60],
+		3 => ['item' => 264, 'icon' => 42, 'font' => 24, 'btnFontsize' => 22, 'btnHeight' => 44],
+		4 => ['item' => 200, 'icon' => 32, 'font' => 18, 'btnFontsize' => 16, 'btnHeight' => 31],
+		5 => ['item' => 159, 'icon' => 24, 'font' => 14, 'btnFontsize' => 13, 'btnHeight' => 25],
+		6 => ['item' => 134, 'icon' => 20, 'font' => 11, 'btnFontsize' => 13, 'btnHeight' => 25]
+	];
 	protected $itemsPerRow = 4;
 
 	const CLASS_YES = 'we-state-green';
@@ -129,7 +129,7 @@ class we_collection extends we_root{
 		while($this->DB_WE->next_record()){
 			if(!trim($this->$prop, ',') || in_array($this->DB_WE->f($cField), makeArrayFromCSV($this->$prop))){
 				if($full){
-					$verifiedItems[$this->DB_WE->f('ID')] = array_merge($this->getEmptyItem(), array('id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'ct' => $this->DB_WE->f($cField), 'name' => $this->DB_WE->f('Filename'), 'ext' => $this->DB_WE->f('Extension')));
+					$verifiedItems[$this->DB_WE->f('ID')] = array_merge($this->getEmptyItem(), ['id' => $this->DB_WE->f('ID'), 'path' => $this->DB_WE->f('Path'), 'ct' => $this->DB_WE->f($cField), 'name' => $this->DB_WE->f('Filename'), 'ext' => $this->DB_WE->f('Extension')]);
 				} else {
 					$verifiedItems[$this->DB_WE->f('ID')] = $this->DB_WE->f('ID');
 				}
@@ -205,10 +205,10 @@ class we_collection extends we_root{
 
 	public function getPropertyPage(){
 		return we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
-			we_html_multiIconBox::getHTML('PropertyPage', array(
-				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(!permissionhandler::hasPerm('MOVE_COLLECTION')), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2))
+			we_html_multiIconBox::getHTML('PropertyPage', [
+				['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(!permissionhandler::hasPerm('MOVE_COLLECTION')), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2]]
 		);
 	}
 
@@ -216,9 +216,9 @@ class we_collection extends we_root{
 		$fixedRemTable = true || !permissionhandler::hasPerm('NEW_COLLECTION');
 		$this->remTable = stripTblPrefix(FILE_TABLE); // FIXME: remove this line when object collections are implemented
 
-		$valsRemTable = array(
+		$valsRemTable = [
 			'tblFile' => g_l('navigation', '[documents]')
-		);
+		];
 		if(defined('OBJECT_TABLE')){
 			$valsRemTable['tblObjectFiles'] = g_l('navigation', '[objects]');
 		}
@@ -236,7 +236,7 @@ class we_collection extends we_root{
 			}
 		}
 		$this->remCT = $tmpRemCT;
-		$attribsFrom = $attribsTo = !permissionhandler::hasPerm('NEW_COLLECTION') ? array('disabled' => 'disabled') : [];
+		$attribsFrom = $attribsTo = !permissionhandler::hasPerm('NEW_COLLECTION') ? ['disabled' => 'disabled'] : [];
 		$mimeListFrom = we_html_tools::htmlSelect('mimeListFrom', $unselectedMime, 13, '', true, array_merge($attribsFrom, array("id" => "mimeListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListFrom'],this.form['mimeListTo'],true, 'document');")), 'value', 175);
 		$mimeListTo = we_html_tools::htmlSelect('mimeListTo', $selectedMime, 13, '', true, array_merge($attribsTo, array("id" => "mimeListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['mimeListTo'],this.form['mimeListFrom'],true, 'document');")), 'value', 175);
 		$mimeTable = new we_html_table(array('class' => 'collection_props-mime default'), 1, 3);
@@ -267,10 +267,10 @@ class we_collection extends we_root{
 				}
 			}
 		}
-		$classListFrom = we_html_tools::htmlSelect('classListFrom', $unselectedClasses, max(count($allClasses), 5), '', true, array_merge($attribsFrom, array("id" => "classListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListFrom'],this.form['classListTo'],true, 'object');")), 'value', 184);
-		$classListTo = we_html_tools::htmlSelect('classListTo', $selectedClasses, max(count($allClasses), 5), '', true, array_merge($attribsTo, array("id" => "classListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListTo'],this.form['classListFrom'],true, 'object');")), 'value', 184);
+		$classListFrom = we_html_tools::htmlSelect('classListFrom', $unselectedClasses, max(count($allClasses), 5), '', true, array_merge($attribsFrom, ["id" => "classListFrom", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListFrom'],this.form['classListTo'],true, 'object');"]), 'value', 184);
+		$classListTo = we_html_tools::htmlSelect('classListTo', $selectedClasses, max(count($allClasses), 5), '', true, array_merge($attribsTo, ["id" => "classListTo", "onDblClick" => "wePropertiesEdit.moveSelectedOptions(this.form['classListTo'],this.form['classListFrom'],true, 'object');"]), 'value', 184);
 
-		$classTable = new we_html_table(array('class' => 'collection_props-classes default'), 1, 3);
+		$classTable = new we_html_table(['class' => 'collection_props-classes default'], 1, 3);
 		$classTable->setCol(0, 0, null, $classListFrom);
 		//FIXME: why a tags, if onclick is used????
 
@@ -714,8 +714,8 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			}
 
 			// mark the first 2 set elements of each item in an ordered way
-			$elements = array('attrib_title', 'attrib_alt', 'meta_title', 'meta_description');
-			$hasMeta = array('application/*', 'application/x-shockwave-flash', 'audio/*', 'image/*', 'text/webedition', 'video/*');
+			$elements = ['attrib_title', 'attrib_alt', 'meta_title', 'meta_description'];
+			$hasMeta = ['application/*', 'application/x-shockwave-flash', 'audio/*', 'image/*', 'text/webedition', 'video/*'];
 			foreach($items as $k => $v){
 				$c = 0;
 				foreach($elements as $name){
@@ -838,14 +838,14 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		$i = 0;
 		foreach(($this->IsDuplicates ? $collection : array_unique($collection)) as $remObj){
-			$ret &= $this->DB_WE->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			$ret &= $this->DB_WE->query('INSERT INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter([
 					'ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix(VFILE_TABLE),
 					'type' => 'collection',
 					'remObj' => $remObj,
 					'remTable' => $this->getRemTable(),
 					'position' => $i++,
-			)));
+			]));
 		}
 
 		return $ret;
@@ -876,7 +876,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		}
 		$tmpColl = array_slice($coll, $pos);
 		$newColl = array_slice($coll, 0, $pos);
-		$result = array([], []);
+		$result = [[], []];
 		$isFirstSet = false;
 		foreach($items as $item){
 			if($this->IsDuplicates || !in_array($item, $coll)){
@@ -889,13 +889,13 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				$result[1][] = $item;
 			}
 		}
-		$this->setCollection(array_merge($newColl, $tmpColl, array(-1)));
+		$this->setCollection(array_merge($newColl, $tmpColl, [-1]));
 
 		return $result;
 	}
 
 	public function getValidItemsFromIDs($IDs = [], $returnFull = false, $recursive = -1, $table = '', $recursion = 0, $foldersDone = [], $checkWs = true, $wspaces = []){
-		$IDs = is_array($IDs) ? $IDs : array($IDs);
+		$IDs = is_array($IDs) ? $IDs : [$IDs];
 		if(empty($IDs)){
 			return -1;
 		}
@@ -956,7 +956,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				//if((!$this->$typeProp || in_array($data[$typeField], explode(',', $this->$typeProp))) && $data['ContentType'] !== 'folder'){
 				//IMI:TEST ==> get icon from some fn!
 				if($data['ID'] !== -1 && $data[$typeField] === 'image/*'){
-					$file = array('docID' => $data['ID'], 'Path' => $data['Path'], 'ContentType' => isset($data[$typeField]) ? $data[$typeField] : 'text/*', 'Extension' => $data['Extension']);
+					$file = ['docID' => $data['ID'], 'Path' => $data['Path'], 'ContentType' => isset($data[$typeField]) ? $data[$typeField] : 'text/*', 'Extension' => $data['Extension']];
 					$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
 					$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
 					// FIXME: look for biggest icon size in grid view dynamically
@@ -966,13 +966,13 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 				$resultIDsCsv .= $data['ID'] . ',';
 				if($data['ParentID'] == 0){
 					if($returnFull){
-						$resultRoot[$data['ID']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ext' => $data['Extension'], 'ct' => $data[$typeField], 'name' => $data[$nameField]));
+						$resultRoot[$data['ID']] = array_merge($this->getEmptyItem(), ['id' => $data['ID'], 'path' => $data['Path'], 'ext' => $data['Extension'], 'ct' => $data[$typeField], 'name' => $data[$nameField]]);
 						$resultRoot[$data['ID']]['icon'] = $iconHTML;
 					} else {
 						$resultRoot[] = $data['ID'];
 					}
 				} else {
-					$result[$data['Path']] = array_merge($this->getEmptyItem(), array('id' => $data['ID'], 'path' => $data['Path'], 'ext' => $data['Extension'], 'ct' => $data[$typeField], 'name' => $data[$nameField]));
+					$result[$data['Path']] = array_merge($this->getEmptyItem(), ['id' => $data['ID'], 'path' => $data['Path'], 'ext' => $data['Extension'], 'ct' => $data[$typeField], 'name' => $data[$nameField]]);
 					$result[$data['Path']]['icon'] = $iconHTML;
 				}
 			}
@@ -1017,7 +1017,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
 		}
 
-		return array('imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1], 'url' => $url, 'urlPopup' => $urlPopup);
+		return ['imageView' => $imageView, 'imageViewPopup' => $imageViewPopup, 'sizeX' => $imagesize[0], 'sizeY' => $imagesize[1], 'url' => $url, 'urlPopup' => $urlPopup];
 	}
 
 	private static function isDragAndDrop(){
