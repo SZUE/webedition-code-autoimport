@@ -427,25 +427,26 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	private function check_user_display(){
 		if(($uid = we_base_request::_(we_base_request::INT, 'uid'))){
-			$mpid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']["ID"]), '', $this->db);
+			$mpid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($_SESSION['user']['ID']), '', $this->db);
 			$pid = f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $uid, '', $this->db);
 
-			$search = true;
+			$search = $first = true;
 			$found = false;
-			$first = true;
 
-			while($search){
-				if($mpid == $pid){
-					$search = false;
-					if(!$first){
-						$found = true;
+			if(!permissionhandler::hasPerm('ADMINISTRATOR')){
+				while($search){
+					if($mpid == $pid){
+						$search = false;
+						if(!$first){
+							$found = true;
+						}
 					}
+					$first = false;
+					if($pid == 0){
+						$search = false;
+					}
+					$pid = intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), '', $this->db));
 				}
-				$first = false;
-				if($pid == 0){
-					$search = false;
-				}
-				$pid = intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . intval($pid), '', $this->db));
 			}
 
 			echo we_html_element::jsElement(

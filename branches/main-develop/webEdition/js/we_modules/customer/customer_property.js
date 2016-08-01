@@ -112,10 +112,10 @@ function we_cmd() {
 			document.we_form.branch.value = args[1];
 			submitForm();
 			break;
-		case "show_search":
+		/*case "show_search":
 			keyword = top.content.we_form_treefooter.keyword.value;
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 650, 600, true, true, true, false);
-			break;
+			break;*/
 		case "show_customer_settings":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings", "customer_settings", -1, -1, 570, 270, true, true, true, false);
 			break;

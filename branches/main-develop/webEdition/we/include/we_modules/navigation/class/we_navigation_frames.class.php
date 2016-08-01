@@ -60,6 +60,53 @@ class we_navigation_frames extends we_modules_frame{
 		}
 	}
 
+	function getHTMLSearch(){
+		$keyword = we_base_request::_(we_base_request::RAW, 'keyword', "");
+		$arr = explode(' ', strToLower($keyword));
+		$DB_WE = $GLOBALS['DB_WE'];
+		$aWsQuery = [];
+
+		if(($ws = get_ws(NAVIGATION_TABLE, true))){
+			$wsPathArray = id_to_path($ws, NAVIGATION_TABLE, $DB_WE, true);
+			foreach($wsPathArray as $path){
+				$aWsQuery[] = ' Path LIKE "' . $DB_WE->escape($path) . '/%" OR ' . we_tool_treeDataSource::getQueryParents($path);
+			}
+		}
+
+		$condition = ($aWsQuery ? '(' . implode(' OR ', $aWsQuery) . ')' : '');
+		foreach($arr as $value){
+			$value = $DB_WE->escape($value);
+			$condition.=($condition ? ' AND ' : '') .
+				'(Path LIKE "%' . $value . '%" OR Text LIKE "%' . $value . '%" OR Display LIKE "%' . $value . '%")';
+		}
+
+		$DB_WE->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ($condition ? ' WHERE ' . $condition : '') . ' ORDER BY Path');
+
+		$select = '<div style="background-color:white;width:520px;height:220px;"/>';
+		if($DB_WE->num_rows()){
+			$select = '<select name="search_results" size="20" style="width:520px;height:220px;" ondblclick="top.opener.top.we_cmd(\'module_navigation_edit\',document.we_form.search_results.value); top.close();">';
+			while($DB_WE->next_record(MYSQL_NUM)){
+				$select.='<option value="' . $DB_WE->f(0) . '">' . $DB_WE->f(1) . '</option>';
+			}
+			$select.='</select>';
+		}
+
+		$buttons = we_html_button::position_yes_no_cancel(
+				we_html_button::create_button(we_html_button::EDIT, "javascript:top.opener.top.we_cmd('module_navigation_edit',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+		);
+
+		$content = we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput('keyword', 24, $keyword, '', '', 'text', 485), g_l('modules_users', '[search_for]'), 'left', 'defaultfont', we_html_button::create_button(we_html_button::SEARCH, "javascript:document.we_form.submit();")
+			) . '<div style="height:20px;"></div>' .
+			we_html_tools::htmlFormElementTable($select, g_l('modules_users', '[search_result]'));
+
+		return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody', 'style' => 'margin:10px 20px;'], we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post'], we_html_element::htmlHiddens([
+							'mod' => 'navigation',
+							'pnt' => 'search']) .
+						we_html_tools::htmlDialogLayout($content, g_l('modules_users', '[search]'), $buttons))
+		));
+	}
+
 	protected function getHTMLTreeFooter(){
 		return '<div id="infoField" class="defaultfont" style="display:none;"></div>' . $this->getHTMLSearchTreeFooter();
 	}
