@@ -112,11 +112,11 @@ abstract class we_updater{
 				return;
 			}
 			//correct folder properties
-			$db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET IsClassFolder=IF(ParentID=0,1,0)');
+			$db->query('UPDATE ' . OBJECT_FILES_TABLE . ' of SET IsClassFolder=IF(ParentID=0,1,0)');
 
 			//all files should have a tableid
-			$db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path=f.Path) WHERE IsClassFolder=1 AND TableID=0');
-			$db->query('UPDATE ' . OBJECT_FILES_TABLE . ' f SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE f.Path LIKE CONCAT(Path,"/%") ) WHERE IsClassFolder=0 AND IsFolder=1 AND TableID=0');
+			$db->query('UPDATE ' . OBJECT_FILES_TABLE . ' of SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path=of.Path) WHERE IsClassFolder=1 AND TableID=0');
+			$db->query('UPDATE ' . OBJECT_FILES_TABLE . ' of SET TableID=(SELECT ID FROM ' . OBJECT_TABLE . ' WHERE of.Path LIKE CONCAT(Path,"/%") ) WHERE IsClassFolder=0 AND IsFolder=1 AND TableID=0');
 
 			//all files without a tableID can be deleted
 			$db->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0');
@@ -368,7 +368,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	private static function updateDateInContent(we_database_base $db){
-		$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=\'x00\',BDID=Dat,Dat=NULL WHERE ID IN (SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND type="date") AND dHash!=\'x00\'');
+		$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=x\'00\',BDID=Dat,Dat=NULL WHERE ID IN (SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND type="date") AND Dat IS NOT NULL AND dHash!=x\'00\'');
 	}
 
 	private static function updateVersionsTable(we_database_base $db){
