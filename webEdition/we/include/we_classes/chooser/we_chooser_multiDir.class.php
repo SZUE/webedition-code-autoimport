@@ -67,7 +67,7 @@ class we_chooser_multiDir{
 				return '<tr>
 	<td class="chooserFileIcon" data-contenttype="' . $this->Record['ContentType'] . '"></td>
 	<td class="' . $this->css . '">' . $this->Record['Path'] . '</td>
-	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
+	<td class="buttons">' . ((($this->isEditable && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:" . $this->getJsSetHot() . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','" . $this->Record["ID"] . "'" . (strlen($this->thirdDelPar) ? ",'" . $this->thirdDelPar . "'" : "") . ");") :
 						'') . '</td>
 </tr>';
@@ -80,25 +80,11 @@ class we_chooser_multiDir{
 				return '<tr>
 	<td class="chooserFileIcon" data-contenttype="folder"></td>
 	<td class="' . $this->css . '">/</td>
-	<td class="buttons">' . ((($this->isEditable() && $this->cmd_del) || $this->CanDelete) ?
+	<td class="buttons">' . ((($this->isEditable && $this->cmd_del) || $this->CanDelete) ?
 						we_html_button::create_button(we_html_button::TRASH, "javascript:" . $this->getJsSetHot() . ($this->extraDelFn ? : "") . ";we_cmd('" . $this->cmd_del . "','0');") :
 						'') . '</td>
 </tr>';
 		}
-	}
-
-	function isEditable(){
-		return $this->isEditable;
-
-		/* if($this->isEditable == false){
-		  return false;
-		  }
-		  if($this->ws){
-		  if(!we_users_util::in_workspace($this->Record["ID"], $this->ws, $this->table, $this->db)){
-		  return false;
-		  }
-		  }
-		  return true; */
 	}
 
 	function setOnchangeSetHot($setHot = true){

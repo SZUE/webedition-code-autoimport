@@ -688,7 +688,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 		$buttons = $delallbut . (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? $addbut : '';
 
-		$cats = new we_chooser_multiFile(self::def_width, $this->View->newsletter->groups[$group]->Extern, "del_file", $buttons, "edit_file");
+		$cats = new we_chooser_multiFile(self::def_width, $this->View->newsletter->groups[$group]->Extern, 'del_file', $buttons, 'edit_file');
 
 		$cats->extraDelFn = 'document.we_form.ngroup.value=' . $group;
 		return we_html_element::htmlHiddens(['fileselect' => '']) .
