@@ -185,7 +185,7 @@ abstract class we_modules_frame{
 			we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm('cmd', '', '', 'we_form_treefooter')");
 
 		return we_html_element::jsElement($this->View->getJSSubmitFunction('cmd')) .
-			we_html_element::htmlForm(['name' => 'we_form_treefooter', 'target' => 'cmd'], $table);
+			we_html_element::htmlDiv(['id' => 'search', 'style' => 'display:block'], we_html_element::htmlForm(['name' => 'we_form_treefooter', 'target' => 'cmd'], $table));
 	}
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){

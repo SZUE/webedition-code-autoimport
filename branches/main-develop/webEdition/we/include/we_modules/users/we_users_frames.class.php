@@ -122,33 +122,27 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	}
 
 	function getHTMLSearch(){
-		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::USERS) && we_users_util::canEditModule(we_base_moduleInfo::USERS) ? null : array(false);
-		we_html_tools::protect($protect);
-
-
 		$keyword = we_base_request::_(we_base_request::RAW, 'keyword', "");
-		$arr = explode(" ", strToLower($keyword));
+		$arr = explode(' ', strToLower($keyword));
 		$DB_WE = $GLOBALS['DB_WE'];
 
 		$array_and = [];
 		$array_or = [];
 		$array_not = [];
-		$array_and[0] = $arr[0];
 
-		for($i = 1; $i < count($arr); $i++){
+		for($i = 0; $i < count($arr); $i++){
 			switch($arr[$i]){
 				case 'not':
 					$i++;
 					$array_not[] = $arr[$i];
 					break;
-				case 'and':
-					$i++;
-					$array_and[] = $arr[$i];
-					break;
 				case 'or':
 					$i++;
 					$array_or[] = $arr[$i];
 					break;
+				case 'and':
+					$i++;
+				//no break
 				default:
 					$array_and[] = $arr[$i];
 					break;
@@ -158,17 +152,17 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		foreach($array_and as $k => $value){
 			$value = $DB_WE->escape($value);
 			$condition.=($condition ? ' AND ' : '') .
-				" (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')";
+				'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
 		}
 		foreach($array_or as $k => $value){
 			$value = $DB_WE->escape($value);
 			$condition.=($condition ? ' OR ' : '') .
-				"(First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')";
+				'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
 		}
 		foreach($array_not as $k => $value){
 			$value = $DB_WE->escape($value);
-			$condition.=($condition ? 'AND NOT ' : '') .
-				" (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')";
+			$condition.=($condition ? ' AND NOT ' : '') .
+				'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
 		}
 
 		$DB_WE->query('SELECT ID,Text FROM ' . USER_TABLE . ($condition ? ' WHERE ' . $condition . ' ORDER BY Text' : ''));
