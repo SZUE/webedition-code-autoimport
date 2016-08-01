@@ -184,7 +184,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 					$JScript = 'top.wizbusy.setProgressText("pb1","' . g_l('import', '[prepare_progress]') . '");';
 
 
-					$out .= we_html_element::htmlForm(array('name' => "we_form"), $h) .
+					$out .= we_html_element::htmlForm(array('name' => 'we_form'), $h) .
 						we_html_element::jsElement($JScript . 'setTimeout(we_import,15,1,-1);');
 					break;
 
@@ -277,7 +277,7 @@ if (top.wizbody && top.wizbody.addLog){
 							"v[numFiles]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $num_files : $parse->fileId,
 							"v[uniquePath]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $path : $parse->path));
 
-					$out .= we_html_element::htmlForm(array('name' => "we_form"), $h) . we_html_element::jsElement(
+					$out .= we_html_element::htmlForm(array('name' => 'we_form'), $h) . we_html_element::jsElement(
 							"setTimeout(we_import,15,1,0);");
 					break;
 
@@ -348,7 +348,7 @@ if (top.wizbody.addLog){
 										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getCount() + $v["numFiles"]) . ")*100));";
 
 
-									$out .= we_html_element::htmlForm(array('name' => "we_form"), $hiddens .
+									$out .= we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 											we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . $v['cid'] . ");"));
 								} else {
 									we_updater::doUpdate('internal');
@@ -356,7 +356,7 @@ if (top.wizbody.addLog){
 top.wizbusy.finish(" . $xmlExIm->options['rebuild'] . ");
 setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 								}
-								$out .= we_html_element::htmlForm(array('name' => "we_form"), $hiddens . we_html_element::jsElement($JScript));
+								$out .= we_html_element::htmlForm(array('name' => 'we_form'), $hiddens . we_html_element::jsElement($JScript));
 
 								$xmlExIm->unsetPerserves();
 							} else { // do import
@@ -441,7 +441,7 @@ top.wizbusy.setProgressText('pb1','" . $status . " - " . $counter_text . "');
 top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));";
 
 
-									$out .= we_html_element::htmlForm(array('name' => "we_form"), $hiddens .
+									$out .= we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 											we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . ($v["cid"] + 1) . ");"));
 								}
 							}
@@ -556,7 +556,7 @@ top.wizbusy.setProgressText('pb1','" . g_l('import', '[import]') . "');
 top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));";
 
 
-					$out .= we_html_element::htmlForm(array('name' => "we_form"), $hiddens .
+					$out .= we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
 							we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . ($v["cid"] + 1) . ");"));
 					break;
 			} // end switch

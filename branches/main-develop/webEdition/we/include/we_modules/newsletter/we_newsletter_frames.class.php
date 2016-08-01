@@ -300,7 +300,7 @@ function afterLoad(){
 		}
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array('name' => "we_form", "method" => "post"), we_html_tools::htmlDialogLayout(
+				we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), we_html_tools::htmlDialogLayout(
 							we_html_element::htmlDiv(array('class' => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;margin:5px 10px 15px 10px;"), $content)
 							, g_l('modules_newsletter', '[show_log]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
 						)
@@ -407,7 +407,7 @@ function afterLoad(){
 			return $this->getHTMLDocument(we_html_element::htmlBody());
 		}
 
-		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(['name' => "we_form"], we_html_element::htmlHiddens([
+		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens([
 							'mod' => 'newsletter',
 							"pnt" => "cmd",
 							"ncmd" => "",
@@ -422,14 +422,14 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	}
 
 	function getHTMLSendQuestion(){
-		$body = we_html_element::htmlBody(['class' => "weEditorBody", "onblur" => "self.focus", "onunload" => "doUnload()"], we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[continue_camp]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", "opener.yes();self.close();", "opener.no();self.close();", "opener.cancel();self.close();")
+		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onblur" => "self.focus", "onunload" => "doUnload()"], we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[continue_camp]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", "opener.yes();self.close();", "opener.no();self.close();", "opener.cancel();self.close();")
 		);
 
 		return $this->getHTMLDocument($body);
 	}
 
 	function getHTMLSaveQuestion1(){
-		$body = we_html_element::htmlBody(['class' => "weEditorBody", "onblur" => "self.focus", "onunload" => "doUnload()"], we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[ask_to_preserve]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", "opener.document.we_form.ask.value=0;opener.we_cmd('save_newsletter');self.close();", "self.close();")
+		$body = we_html_element::htmlBody(['class' => 'weEditorBody', "onblur" => "self.focus", "onunload" => "doUnload()"], we_html_tools::htmlYesNoCancelDialog(g_l('modules_newsletter', '[ask_to_preserve]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "", "opener.document.we_form.ask.value=0;opener.we_cmd('save_newsletter');self.close();", "self.close();")
 		);
 
 		return $this->getHTMLDocument($body);
@@ -480,7 +480,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$out.=we_html_element::htmlBr() .
 			we_html_element::htmlDiv(['class' => 'defaultfont'], $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[sum_all]') . ":" . $c)) .
 			we_html_element::htmlBr();
-		echo self::getHTMLDocument(we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm(['name' => "we_form", "method" => "post", "onload" => "self.focus()"], we_html_tools::htmlDialogLayout(
+		echo self::getHTMLDocument(we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "onload" => "self.focus()"], we_html_tools::htmlDialogLayout(
 						we_html_element::htmlBr() .
 						we_html_element::htmlDiv(['class' => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"], $out) .
 						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
@@ -522,7 +522,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$out.=we_html_element::htmlBr() .
 			we_html_element::htmlDiv(['class' => 'defaultfont'], $tab1 . we_html_element::htmlB(g_l('modules_newsletter', '[domain_check_ends]'))) .
 			we_html_element::htmlBr();
-		echo self::getHTMLDocument(we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm(['name' => "we_form", "method" => "post", "onload" => "self.focus()"], we_html_tools::htmlDialogLayout(
+		echo self::getHTMLDocument(we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "onload" => "self.focus()"], we_html_tools::htmlDialogLayout(
 						we_html_element::htmlBr() .
 						we_html_element::htmlDiv(['class' => "blockWrapper", "style" => "width: 588px; height: 500px; border:1px #dce6f2 solid;"], $out) .
 						we_html_element::htmlBr(), g_l('modules_newsletter', '[lists_overview]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")
@@ -619,7 +619,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$gml_table->setCol(2, 0, [], $this->formFileChooser(380, "global_mailing_list", $settings["global_mailing_list"]));
 		$gml_table->setCol(2, 1, array('style' => 'text-align:right'), $deselect);
 
-		$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array('name' => "we_form"), $this->View->getHiddens() .
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getHiddens() .
 					we_html_tools::htmlDialogLayout(
 						$table->getHtml() .
 						$radios_code .
@@ -1186,7 +1186,7 @@ window.onload=extraInit;');
 					$this->weAutoCompleter->getYuiJs();
 		}
 
-		$body = we_html_element::htmlBody(array("onload" => "self.loaded=true;if(self.doScrollTo){self.doScrollTo();}; setHeaderTitle();", "class" => "weEditorBody", "onunload" => "doUnload()"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post", "onsubmit" => "return false;"), $out
+		$body = we_html_element::htmlBody(array("onload" => "self.loaded=true;if(self.doScrollTo){self.doScrollTo();}; setHeaderTitle();", "class" => "weEditorBody", "onunload" => "doUnload()"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post", "onsubmit" => "return false;"), $out
 				)
 		);
 //$this->getHTMLDocumentHeader();
@@ -1258,7 +1258,7 @@ window.onload=extraInit;');
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:save();");
 
-		$body = we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "document.we_form.emailfield.select();document.we_form.emailfield.focus();"), we_html_element::htmlForm(array('name' => "we_form", "onsubmit" => "save();return false;"), we_html_element::htmlHidden("group", $group) .
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "document.we_form.emailfield.select();document.we_form.emailfield.focus();"), we_html_element::htmlForm(array('name' => 'we_form', "onsubmit" => "save();return false;"), we_html_element::htmlHidden("group", $group) .
 					($type ?
 						we_html_element::htmlHidden("id", $id) :
 						""
@@ -1503,7 +1503,7 @@ self.focus();
 		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_black')");
 
 
-		$body = we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array('name' => "we_form", "onsubmit" => "save();return false;"), $this->View->getHiddens() .
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array('name' => 'we_form', "onsubmit" => "save();return false;"), $this->View->getHiddens() .
 					we_html_element::htmlHiddens(array("black_list" => $this->View->settings["black_list"],
 						"sib" => $sib,
 						"seb" => $seb)) .
@@ -1539,7 +1539,7 @@ self.focus();
 		$table->setCol(0, 0, array("style" => "padding-right:30px"), $weFileupload->getHtmlAlertBoxes());
 		$table->setCol(1, 0, array('style' => 'vertical-align:middle;'), $weFileupload->getHTML());
 
-		$body = we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post", "enctype" => "multipart/form-data"), we_html_element::htmlCenter(
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post", "enctype" => "multipart/form-data"), we_html_element::htmlCenter(
 						$this->View->getHiddens() .
 						(($grp = we_base_request::_(we_base_request::STRING, 'grp')) !== false ? we_html_element::htmlHiddens(array("group" => $grp)) : '') .
 						we_html_element::htmlHiddens(array("MAX_FILE_SIZE" => $weFileupload->getMaxUploadSize())) .
@@ -1571,7 +1571,7 @@ self.focus();
 			$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 		}
 
-		$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array('name' => "we_form", "method" => "post"), we_html_element::htmlHidden("group", '') .
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), we_html_element::htmlHidden("group", '') .
 					($allowClear ?
 						we_html_element::htmlHiddens(array("pnt" => "clear_log", "ncmd" => "do_clear_log")) .
 						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_newsletter', '[clear_log]'), we_html_button::position_yes_no_cancel($ok, null, $cancel), "100%", 30, "", "hidden") :
@@ -1799,7 +1799,7 @@ self.focus();
 		}
 
 
-		$body = we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => ($open_file ? "submitForm('edit_file')" : "" )), we_html_element::htmlForm(array('name' => "we_form"), we_html_element::htmlHiddens(array(
+		$body = we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => ($open_file ? "submitForm('edit_file')" : "" )), we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
 						"ncmd" => "edit_file",
 						"pnt" => "edit_file",
 						"order" => $order,
@@ -1937,7 +1937,7 @@ self.focus();
 			'</td></tr></table>';
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post"), $pb->getJSCode() .
+				we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), $pb->getJSCode() .
 						we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array('name' => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:280px;")), g_l('modules_newsletter', '[details]'), $footer)
 					) .
 					we_html_element::jsElement('
@@ -2006,7 +2006,7 @@ function initControl(){
 self.focus();');
 
 
-		echo $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'margin:10px;', "onload" => "initControl()"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post"), we_html_element::htmlHiddens(array(
+		echo $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'margin:10px;', "onload" => "initControl()"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), we_html_element::htmlHiddens(array(
 						'mod' => 'newsletter',
 						"nid" => $nid,
 						"pnt" => "send_cmd",
@@ -2347,7 +2347,7 @@ function reload(){
 
 self.focus();');
 
-		$body = we_html_element::htmlBody(array("style" => 'margin:10px', "onload" => "startTimeout()"), we_html_element::htmlForm(array('name' => "we_form", "method" => "post", "target" => "send_cmd", "action" => $this->frameset), we_html_element::htmlHiddens(array(
+		$body = we_html_element::htmlBody(array("style" => 'margin:10px', "onload" => "startTimeout()"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post", "target" => "send_cmd", "action" => $this->frameset), we_html_element::htmlHiddens(array(
 						'mod' => 'newsletter',
 						"nid" => $nid,
 						"pnt" => "send_cmd",

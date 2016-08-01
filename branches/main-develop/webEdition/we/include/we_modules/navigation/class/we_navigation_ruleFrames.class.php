@@ -200,7 +200,7 @@ var dependencies = {
 	' . we_navigation_navigation::STYPE_DOCTYPE . ': ["FolderID", "DoctypeID", "Categories"]
 };
 ') .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js'), we_html_element::htmlBody(['onload' => "switchType(document.we_form.SelectionType.value)", 'class' => "weDialogBody"], we_html_element::htmlForm(['name' => "we_form", 'target' => "cmdFrame", 'method' => "post", 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleCmd'], we_html_element::htmlHiddens([
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'navigation/navigationRule.js'), we_html_element::htmlBody(['onload' => "switchType(document.we_form.SelectionType.value)", 'class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', 'target' => "cmdFrame", 'method' => "post", 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleCmd'], we_html_element::htmlHiddens([
 							'cmd' => '',
 							'ID' => '0'
 						]) .

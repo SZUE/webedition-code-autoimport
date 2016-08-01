@@ -73,7 +73,7 @@ abstract class we_editor_footer{
 					($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE ?
 						we_workflow_view::showFooterForSEEMMode($we_doc, $GLOBALS['showPubl']) : ''));
 
-			$we_form = we_html_element::htmlForm(array('name' => "we_form", "method" => "post"), $table);
+			$we_form = we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), $table);
 
 			echo we_html_element::htmlBody(array('id' => 'footerBody'), $we_form);
 		} else {

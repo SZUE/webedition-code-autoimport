@@ -215,7 +215,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		[
 		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=document.getElementById('le_tblWidgets');initDragWidgets();",
 		], we_html_element::htmlForm(
-			['name' => "we_form"
+			['name' => 'we_form'
 			], we_html_element::htmlHiddens([
 				'we_cmd[0]' => 'widget_cmd',
 				'we_cmd[1]' => 'save',

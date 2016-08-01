@@ -398,7 +398,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			}
 			echo we_html_element::jsElement('
 		if(confirm("' . $question . '")){
-			top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&ucmd=do_delete";
+			top.content.cmd.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=do_delete";
 		}');
 		}
 	}
@@ -457,21 +457,23 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	function processCommands(){
-		switch(we_base_request::_(we_base_request::STRING, "ucmd")){
-			case "new_group":
+		switch(we_base_request::_(we_base_request::STRING, 'cmd')){
+			case 'new_group':
 				return $this->new_group();
-			case "new_alias":
+			case 'new_alias':
 				return $this->new_alias();
-			case "search":
-				echo we_html_element::jsElement('top.content.editor.edbody.location="' . WE_USERS_MODULE_DIR . 'edit_users_sresults.php?kwd=' . we_base_request::_(we_base_request::STRING, "kwd") . '";');
+			case 'show_search':
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+				we_html_element::jsElement('url=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
+						new (WE().util.jsWindow)(window, url,"search",-1,-1,650,600,true,true,true,false);');
 				return;
-			case "new_user":
+			case 'new_user':
 				return $this->new_user();
-			case "display_user":
+			case 'display_user':
 				return $this->display_user();
-			case "save_user":
+			case 'save_user':
 				return $this->save_user();
-			case "delete_user":
+			case 'delete_user':
 				return $this->delete_user();
 			case 'do_delete':
 				return $this->do_delete();

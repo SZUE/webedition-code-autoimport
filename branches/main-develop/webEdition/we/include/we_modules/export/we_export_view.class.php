@@ -297,7 +297,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$hiddens["cmd"] = "home";
 		$content = we_html_button::create_button('new_export', "javascript:top.we_cmd('new_export');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_EXPORT")) . '<br/>' .
 			we_html_button::create_button('new_export_group', "javascript:top.we_cmd('new_export_group');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_EXPORT"));
-		return parent::getActualHomeScreen("export", "export.gif", $content, we_html_element::htmlForm(array('name' => "we_form"), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
+		return parent::getActualHomeScreen("export", "export.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden("home", 0)
 		));
 	}
 

@@ -106,7 +106,7 @@ function setTab(tab){
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody([], we_html_element::htmlForm(array('name' => "we_form"), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody([], we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
 							"pnt" => "cmd",
 							"cmd" => "no_cmd"))
 					)
