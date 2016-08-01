@@ -42,7 +42,7 @@ class we_users_frames extends we_modules_frame{
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody([], we_html_element::htmlForm(array('name' => "we_form"), we_html_element::htmlHiddens(array(
+				we_html_element::htmlBody([], we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
 							"pnt" => "cmd",
 							"cmd" => "no_cmd"))
 					)
@@ -61,16 +61,8 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	 *
 	 */
 
-	protected function getHTMLTreeFooter(){//TODO: js an customer anpassen oder umgekehrt!
-		$hiddens = we_html_element::htmlHiddens(array(
-				"pnt" => "cmd",
-				"cmd" => "show_search"));
-
-		$table = $hiddens .
-			we_html_tools::htmlTextInput("keyword", 10, "", "", 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "120px") .
-			we_html_button::create_button(we_html_button::SEARCH, "javascript:top.content.we_cmd('search',document.we_form_treefooter.keyword.value);");
-
-		return we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) . we_html_element::htmlForm(array('name' => "we_form_treefooter"), $table);
+	protected function getHTMLTreeFooter(){
+		return $this->getHTMLSearchTreeFooter();
 	}
 
 	protected function getHTMLEditorHeader($mode = 0){
@@ -94,8 +86,8 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$js = $this->View->getJSProperty();
 		$tab = we_base_request::_(we_base_request::INT, 'tab', 0);
 		$permBranch = oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "perm_branch", 0));
-		$content = we_html_element::htmlHiddens(array(
-				"ucmd" => "",
+		$content = we_html_element::htmlHiddens([
+				'cmd' => '',
 				"tab" => $tab,
 				"oldtab" => $tab,
 				"perm_branch" => $permBranch,
@@ -104,7 +96,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 				"uid" => $user_object->ID,
 				"ctype" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctype", '')),
 				"ctable" => oldHtmlspecialchars(we_base_request::_(we_base_request::STRING, "ctable", '')),
-				"sd" => 0));
+				"sd" => 0]);
 
 		if($user_object){
 			if(($oldTab = we_base_request::_(we_base_request::INT, 'oldtab')) !== false && ($oldBranch = we_base_request::_(we_base_request::STRING, 'old_perm_branch')) !== false){
@@ -127,6 +119,83 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 				'onsubmit' => 'return false'
 				), $content);
 		return $this->getHTMLDocument(we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $form), $js);
+	}
+
+	function getHTMLSearch(){
+		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::USERS) && we_users_util::canEditModule(we_base_moduleInfo::USERS) ? null : array(false);
+		we_html_tools::protect($protect);
+
+
+		$keyword = we_base_request::_(we_base_request::RAW, 'keyword', "");
+		$arr = explode(" ", strToLower($keyword));
+		$DB_WE = $GLOBALS['DB_WE'];
+
+		$array_and = [];
+		$array_or = [];
+		$array_not = [];
+		$array_and[0] = $arr[0];
+
+		for($i = 1; $i < count($arr); $i++){
+			switch($arr[$i]){
+				case 'not':
+					$i++;
+					$array_not[] = $arr[$i];
+					break;
+				case 'and':
+					$i++;
+					$array_and[] = $arr[$i];
+					break;
+				case 'or':
+					$i++;
+					$array_or[] = $arr[$i];
+					break;
+				default:
+					$array_and[] = $arr[$i];
+					break;
+			}
+		}
+		$condition = "";
+		foreach($array_and as $k => $value){
+			$value = $DB_WE->escape($value);
+			$condition.=($condition ? ' AND ' : '') .
+				" (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')";
+		}
+		foreach($array_or as $k => $value){
+			$value = $DB_WE->escape($value);
+			$condition.=($condition ? ' OR ' : '') .
+				"(First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')";
+		}
+		foreach($array_not as $k => $value){
+			$value = $DB_WE->escape($value);
+			$condition.=($condition ? 'AND NOT ' : '') .
+				" (First LIKE '%$value%' OR Second LIKE '%$value%' OR username LIKE '%$value%' OR Address LIKE '%$value%' OR City LIKE '%$value%' OR State LIKE '%$value%' OR Country LIKE '%$value%' OR Tel_preselection LIKE '%$value%' OR Fax_preselection LIKE '%$value%' OR Telephone LIKE '%$value%' OR Fax LIKE '%$value%' OR Description LIKE '%$value%')";
+		}
+
+		$DB_WE->query('SELECT ID,Text FROM ' . USER_TABLE . ($condition ? ' WHERE ' . $condition . ' ORDER BY Text' : ''));
+
+		$select = '<div style="background-color:white;width:520px;height:220px;"/>';
+		if($DB_WE->num_rows()){
+			$select = '<select name="search_results" size="20" style="width:520px;height:220px;" ondblclick="top.opener.top.we_cmd(\'check_user_display\',document.we_form.search_results.value); top.close();">';
+			while($DB_WE->next_record()){
+				$select.='<option value="' . $DB_WE->f("ID") . '">' . $DB_WE->f("Text") . '</option>';
+			}
+			$select.='</select>';
+		}
+
+		$buttons = we_html_button::position_yes_no_cancel(
+				we_html_button::create_button(we_html_button::EDIT, "javascript:top.opener.top.we_cmd('check_user_display',document.we_form.search_results.value); if(document.we_form.search_results.value){top.close()}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+		);
+
+		$content = we_html_tools::htmlFormElementTable(
+				we_html_tools::htmlTextInput('keyword', 24, $keyword, "", "", "text", 485), g_l('modules_users', '[search_for]'), "left", "defaultfont", we_html_button::create_button(we_html_button::SEARCH, "javascript:document.we_form.submit();")
+			) . '<div style="height:20px;"></div>' .
+			we_html_tools::htmlFormElementTable($select, g_l('modules_users', '[search_result]'));
+
+		return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody', 'style' => "margin:10px 20px;"], we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post'], we_html_element::htmlHiddens([
+							'mod' => 'users',
+							'pnt' => 'search']) .
+						we_html_tools::htmlDialogLayout($content, g_l('modules_users', '[search]'), $buttons))
+		));
 	}
 
 	function getHTML($what = '', $mode = '', $step = 0){

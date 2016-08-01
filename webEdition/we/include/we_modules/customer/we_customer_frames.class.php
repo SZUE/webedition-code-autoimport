@@ -59,8 +59,6 @@ class we_customer_frames extends we_modules_frame{
 				return $this->getHTMLFieldEditor('field', $mode);
 			case 'sort_admin':
 				return we_customer_add::getHTMLSortEditor($this);
-			case 'search':
-				return $this->getHTMLSearch();
 			case 'settings':
 				return $this->getHTMLSettings();
 			case 'frameset':
@@ -199,16 +197,7 @@ function setTab(tab) {
 	}
 
 	protected function getHTMLTreeFooter(){
-		$hiddens = we_html_element::htmlHiddens([
-				'pnt' => 'cmd',
-				'cmd' => 'show_search']);
-
-		$table = $hiddens .
-			we_html_tools::htmlTextInput("keyword", 10, '', '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "150px") .
-			we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm('cmd', '', '', 'we_form_treefooter')");
-
-		return we_html_element::jsElement($this->View->getJSSubmitFunction("cmd")) .
-			we_html_element::htmlForm(['name' => "we_form_treefooter", "target" => "cmd"], $table);
+		return $this->getHTMLSearchTreeFooter();
 	}
 
 	function getHTMLCustomerAdmin(){
@@ -246,7 +235,7 @@ function setTab(tab) {
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();', 'style' => 'overflow:hidden'], $this->View->getJSAdmin() .
-					we_html_element::htmlForm(['name' => "we_form"], we_html_element::htmlHiddens([
+					we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens([
 							"cmd" => "switchBranch",
 							"pnt" => "customer_admin"]) .
 						we_html_tools::htmlDialogLayout($table->getHtml(), g_l('modules_customer', '[field_admin]'), we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"))
@@ -321,7 +310,7 @@ function setTab(tab) {
 		return
 			$this->getHTMLDocument(
 				we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();setStatusEncryption(\'' . $curType . '\');'], $this->View->getJSAdmin() .
-					we_html_element::htmlForm(['name' => "we_form"], $hiddens .
+					we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
 						we_html_tools::htmlDialogLayout($edit->getHtml(), (
 							$type === "branch" ?
 								(g_l('modules_customer', '[edit_branche]')) :
@@ -362,9 +351,9 @@ function setTab(tab) {
 		$offset = we_base_request::_(we_base_request::INT, 'offset', 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody([], we_html_element::htmlForm(['name' => "we_form"], we_html_element::htmlHiddens([
-							"pnt" => "cmd",
-							"cmd" => "no_cmd"])
+				we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens([
+							'pnt' => 'cmd',
+							'cmd' => 'no_cmd'])
 					)
 				), we_html_element::jsElement(
 					(we_base_request::_(we_base_request::STRING, 'error') ?
@@ -396,7 +385,6 @@ function setTab(tab) {
 			we_customer_add::getHTMLSearch($this, $search, $select);
 			$foundItems = $GLOBALS['advSearchFoundItems'] ? : 0;
 		} else {
-			$foundItems = 0;
 			$search->setCol(1, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'onchange=""', 'text', '550px')
 			);
 
@@ -492,7 +480,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
 		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_settings')");
 
-		$body = we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::htmlForm(['name' => "we_form"], we_html_tools::htmlDialogLayout(
+		$body = we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::htmlForm(['name' => 'we_form'], we_html_tools::htmlDialogLayout(
 						we_html_element::htmlHiddens([ "pnt" => "settings", "cmd" => '']) .
 						$table->getHtml(), g_l('modules_customer', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
 					)

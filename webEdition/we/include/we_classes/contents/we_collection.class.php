@@ -142,7 +142,7 @@ class we_collection extends we_root{
 
 		$ret = [];
 		$tempCollection = ',';
-		$emptyItem = array('id' => -1, 'path' => '', 'type' => '', 'name' => '', 'ext' => '', 'elements' => array('attrib_title' => array('Dat' => '', 'state' => self::CLASS_NONE), 'attrib_alt' => array('Dat' => '', 'state' => self::CLASS_NONE), 'meta_title' => array('Dat' => '', 'state' => self::CLASS_NONE), 'meta_description' => array('Dat' => '', 'state' => self::CLASS_NONE), 'custom' => array('type' => '', 'Dat' => '', 'BDID' => 0)), 'icon' => array('imageView' => '', 'imageViewPopup' => '', 'sizeX' => 0, 'sizeY' => 0, 'url' => '', 'urlPopup' => ''));
+		$emptyItem = ['id' => -1, 'path' => '', 'type' => '', 'name' => '', 'ext' => '', 'elements' => ['attrib_title' => ['Dat' => '', 'state' => self::CLASS_NONE], 'attrib_alt' => ['Dat' => '', 'state' => self::CLASS_NONE], 'meta_title' => ['Dat' => '', 'state' => self::CLASS_NONE], 'meta_description' => ['Dat' => '', 'state' => self::CLASS_NONE], 'custom' => ['type' => '', 'Dat' => '', 'BDID' => 0]], 'icon' => ['imageView' => '', 'imageViewPopup' => '', 'sizeX' => 0, 'sizeY' => 0, 'url' => '', 'urlPopup' => '']];
 
 		$activeCollection = explode(',', trim($this->$activeCollectionName, ','));
 		$activeCollection = $this->IsDuplicates ? $activeCollection : array_unique($activeCollection);
@@ -650,46 +650,39 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 	}
 
 	private function getEmptyItem(){
-		return array(
-			'id' => -1,
+		return ['id' => -1,
 			'path' => '',
 			'ct' => '',
 			'name' => '',
 			'ext' => '',
-			'elements' => array(
-				'attrib_title' => array(
-					'Dat' => '',
+			'elements' => [
+				'attrib_title' => ['Dat' => '',
 					'state' => self::CLASS_NONE,
 					'write' => ''
-				),
-				'attrib_alt' => array(
-					'Dat' => '',
+				],
+				'attrib_alt' => ['Dat' => '',
 					'state' => self::CLASS_NONE,
 					'write' => ''
-				), 'meta_title' => array(
-					'Dat' => '',
+				], 'meta_title' => ['Dat' => '',
 					'state' => self::CLASS_NONE,
 					'write' => ''
-				),
-				'meta_description' => array(
-					'Dat' => '',
+				],
+				'meta_description' => ['Dat' => '',
 					'state' => self::CLASS_NONE,
 					'write' => ''
-				),
-				'custom' => array(
-					'type' => '',
+				],
+				'custom' => ['type' => '',
 					'Dat' => '',
-					'BDID' => 0)
-			),
-			'icon' => array(
-				'imageView' => '',
+					'BDID' => 0]
+			],
+			'icon' => ['imageView' => '',
 				'imageViewPopup' => '',
 				'sizeX' => 0,
 				'sizeY' => 0,
 				'url' => '',
 				'urlPopup' => ''
-			)
-		);
+			]
+		];
 	}
 
 	private function setItemElements($items){
@@ -717,7 +710,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 					default:
 						$fieldname = 'custom';
 				}
-				$items[$this->DB_WE->f('DID')]['elements'][$fieldname] = $fieldname === 'custom' ? array('type' => $this->DB_WE->f('type'), 'Dat' => $this->DB_WE->f('Dat'), 'BDID' => $this->DB_WE->f('BDID')) : array('Dat' => $this->DB_WE->f('Dat'), 'state' => self::CLASS_NONE);
+				$items[$this->DB_WE->f('DID')]['elements'][$fieldname] = $fieldname === 'custom' ? ['type' => $this->DB_WE->f('type'), 'Dat' => $this->DB_WE->f('Dat'), 'BDID' => $this->DB_WE->f('BDID')] : ['Dat' => $this->DB_WE->f('Dat'), 'state' => self::CLASS_NONE];
 			}
 
 			// mark the first 2 set elements of each item in an ordered way

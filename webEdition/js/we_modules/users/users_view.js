@@ -49,13 +49,13 @@ function we_cmd() {
 			break;
 		case "new_user":
 			top.content.editor.edbody.focus();
-			if (hot === 1 && top.content.editor.edbody.document.we_form.ucmd) {
+			if (hot === 1 && top.content.editor.edbody.document.we_form.cmd) {
 				if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
-					top.content.editor.edbody.document.we_form.ucmd.value = "save_user";
+					top.content.editor.edbody.document.we_form.cmd.value = "save_user";
 					top.content.editor.edbody.document.we_form.sd.value = 1;
 				} else {
 					top.content.usetHot();
-					top.content.editor.edbody.document.we_form.ucmd.value = "new_user";
+					top.content.editor.edbody.document.we_form.cmd.value = "new_user";
 				}
 				if (args[1]) {
 					top.content.editor.edbody.document.we_form.uid.value = args[1];
@@ -68,21 +68,21 @@ function we_cmd() {
 				}
 				top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd");
 			} else {
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&ucmd=new_user&cgroup=" + cgroup;
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_user&cgroup=" + cgroup;
 			}
 			break;
 		case "check_user_display":
-			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&ucmd=check_user_display&uid=" + args[1];
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=check_user_display&uid=" + args[1];
 			break;
 		case "display_user":
 			top.content.editor.edbody.focus();
-			if (hot === 1 && top.content.editor.edbody.document.we_form.ucmd) {
+			if (hot === 1 && top.content.editor.edbody.document.we_form.cmd) {
 				if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
-					top.content.editor.edbody.document.we_form.ucmd.value = "save_user";
+					top.content.editor.edbody.document.we_form.cmd.value = "save_user";
 					top.content.editor.edbody.document.we_form.sd.value = 1;
 				} else {
 					top.content.usetHot();
-					top.content.editor.edbody.document.we_form.ucmd.value = "display_user";
+					top.content.editor.edbody.document.we_form.cmd.value = "display_user";
 				}
 				if (args[1]) {
 					top.content.editor.edbody.document.we_form.uid.value = args[1];
@@ -95,17 +95,17 @@ function we_cmd() {
 				}
 				top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd");
 			} else {
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&ucmd=display_user&uid=" + args[1];
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=display_user&uid=" + args[1];
 			}
 			break;
 		case "new_group":
-			if (hot === 1 && top.content.editor.edbody.document.we_form.ucmd) {
+			if (hot === 1 && top.content.editor.edbody.document.we_form.cmd) {
 				if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
-					top.content.editor.edbody.document.we_form.ucmd.value = "save_user";
+					top.content.editor.edbody.document.we_form.cmd.value = "save_user";
 					top.content.editor.edbody.document.we_form.sd.value = 1;
 				} else {
 					top.content.usetHot();
-					top.content.editor.edbody.document.we_form.ucmd.value = "new_group";
+					top.content.editor.edbody.document.we_form.cmd.value = "new_group";
 				}
 				if (args[1]) {
 					top.content.editor.edbody.document.we_form.uid.value = args[1];
@@ -118,17 +118,17 @@ function we_cmd() {
 				}
 				top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd");
 			} else {
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&ucmd=new_group&cgroup=" + cgroup;
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_group&cgroup=" + cgroup;
 			}
 			break;
 		case "new_alias":
-			if (hot === 1 && top.content.editor.edbody.document.we_form.ucmd) {
+			if (hot === 1 && top.content.editor.edbody.document.we_form.cmd) {
 				if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
-					top.content.editor.edbody.document.we_form.ucmd.value = "save_user";
+					top.content.editor.edbody.document.we_form.cmd.value = "save_user";
 					top.content.editor.edbody.document.we_form.sd.value = 1;
 				} else {
 					top.content.usetHot();
-					top.content.editor.edbody.document.we_form.ucmd.value = "new_alias";
+					top.content.editor.edbody.document.we_form.cmd.value = "new_alias";
 				}
 				if (args[1]) {
 					top.content.editor.edbody.document.we_form.uid.value = args[1];
@@ -141,27 +141,28 @@ function we_cmd() {
 				}
 				top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd");
 			} else {
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&ucmd=new_alias&cgroup=" + cgroup;
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_alias&cgroup=" + cgroup;
 			}
 			break;
 		case "save_user":
 			if (top.content.editor.edbody.document.we_form) {
-				top.content.editor.edbody.document.we_form.ucmd.value = "save_user";
+				top.content.editor.edbody.document.we_form.cmd.value = "save_user";
 				if (top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd")) {
 					top.content.usetHot();
 				}
 			}
 			break;
 		case "delete_user":
-			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&ucmd=delete_user";
+			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=delete_user";
 			break;
-		case "search":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WE_USERS_MODULE_DIR + "edit_users_sresults.php?kwd=" + args[1], "customer_settings", -1, -1, 580, 400, true, false, true);
+		case "show_search":
+			keyword = top.content.we_form_treefooter.keyword.value;
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 580, 400, true, true, true, false);
 			break;
 		case "new_organization":
 			var orgname = prompt(WE().consts.g_l.users.view.give_org_name, "");
 			if (orgname !== null) {
-				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&ucmd=new_organization&orn=" + orgname;
+				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_organization&orn=" + orgname;
 			}
 			break;
 		default:

@@ -175,6 +175,19 @@ abstract class we_modules_frame{
 		//to be overridden
 	}
 
+	protected function getHTMLSearchTreeFooter(){
+		$hiddens = we_html_element::htmlHiddens([
+				'pnt' => 'cmd',
+				'cmd' => 'show_search']);
+
+		$table = $hiddens .
+			we_html_tools::htmlTextInput("keyword", 10, '', '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "150px") .
+			we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm('cmd', '', '', 'we_form_treefooter')");
+
+		return we_html_element::jsElement($this->View->getJSSubmitFunction('cmd')) .
+			we_html_element::htmlForm(['name' => 'we_form_treefooter', 'target' => 'cmd'], $table);
+	}
+
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){
 		$sid = we_base_request::_(we_base_request::STRING, 'sid');
 		$body = we_html_element::htmlBody(['class' => 'moduleEditor'], we_html_element::htmlIFrame('edheader', $this->frameset . '&pnt=edheader' . ($sid !== false ? '&sid=' . $sid : '&home=1') . $extraUrlParams, '', 'width: 100%; overflow: hidden', '', false, 'editorHeader') .

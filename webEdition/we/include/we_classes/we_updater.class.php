@@ -369,7 +369,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	private static function updateDateInContent(we_database_base $db){
-		$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=\'x00\',BDID=Dat,Dat=NULL WHERE ID IN (SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND type="date") AND dHash!=\'x00\'');
+		$db->query('UPDATE ' . CONTENT_TABLE . ' SET dHash=x\'00\',BDID=Dat,Dat=NULL WHERE ID IN (SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND type="date") AND Dat IS NOT NULL AND dHash!=x\'00\'');
 	}
 
 	private static function updateVersionsTable(we_database_base $db){

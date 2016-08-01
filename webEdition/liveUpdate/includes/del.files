@@ -147,6 +147,7 @@ we/include/we_modules/users/we_conf_userpro.inc.php
 we/include/we_modules/users/weUsersView.class.php
 we/include/we_modules/users/weUsersFrames.class.php
 we/include/we_modules/users/mod_home.inc.php
+we/include/we_modules/users/edit_users_sresults.php
 we/include/we_modules/users/edit_users_search.php
 we/include/we_modules/users/edit_users_right.php
 we/include/we_modules/users/edit_users_resize.php

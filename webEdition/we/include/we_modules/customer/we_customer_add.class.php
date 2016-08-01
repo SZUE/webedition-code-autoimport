@@ -157,7 +157,7 @@ abstract class we_customer_add{
 
 
 		$out = we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "doScrollTo()"), self::getJSSortAdmin($pob->View) .
-				we_html_element::htmlForm(array('name' => "we_form"), $sort_code
+				we_html_element::htmlForm(array('name' => 'we_form'), $sort_code
 				)
 		);
 
