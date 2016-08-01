@@ -267,7 +267,6 @@ if(top.content.makeNewDoc) {
 
 				break;
 			case 'module_navigation_delete':
-
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 
 				if(!permissionhandler::hasPerm('DELETE_NAVIGATION')){
@@ -373,7 +372,6 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 
 				break;
 			case 'populateWorkspaces':
-
 				$objFields = '';
 				if($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS){
 					if(defined('OBJECT_TABLE')){
@@ -401,11 +399,12 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 						$js .= 'top.content.editor.edbody.document.we_form.WorkspaceID' . $prefix . '.options[top.content.editor.edbody.document.we_form.WorkspaceID' . $prefix . '.options.length] = new Option("' . $path . '",' . $id . ');';
 					}
 					echo we_html_element::jsElement($objFields . 'top.content.populateWorkspaces("values","' . $prefix . '");' . $js);
-				} else // if the class has no workspaces
-				if(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID)){
-					echo we_html_element::jsElement($objFields . 'top.content.populateWorkspaces("workspace","' . $prefix . '");');
-				} else {
-					echo we_html_element::jsElement($objFields . 'top.content.populateWorkspaces("noWorkspace","' . $prefix . '");');
+				} else { // if the class has no workspaces
+					echo we_html_element::jsElement($objFields . 'top.content.populateWorkspaces("' .
+						(we_navigation_dynList::getWorkspaceFlag($this->Model->LinkID) ?
+							'workspace' :
+							'noWorkspace') .
+						'","' . $prefix . '");');
 				}
 				break;
 			case 'populateText':
@@ -418,6 +417,12 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 					}
 				}
 				break;
+			case 'show_search':
+				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+				we_html_element::jsElement('url=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
+						new (WE().util.jsWindow)(window, url,"search",-1,-1,650,600,true,true,true,false);');
+				return;
+
 			default:
 		}
 

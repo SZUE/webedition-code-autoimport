@@ -192,6 +192,11 @@ function we_cmd() {
 				we_cmd("module_navigation_do_reset_customer_filter");
 			}
 			break;
+		case "show_search":
+			keyword = top.content.we_form_treefooter.keyword.value;
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 580, 400, true, true, true, false);
+			break;
+
 		default:
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
