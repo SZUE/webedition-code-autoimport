@@ -101,10 +101,10 @@ abstract class we_navigation_dynList{
 		return $ids;
 	}
 
-	private static function getDocData(array $select, $doctype, $dirpath, array $categories, $catlogic){
+	private static function getDocData($select, $doctype, $dirpath, array $categories, $catlogic){
 		$db = new DB_WE();
 		$cats = [];
-		foreach($categories as $cat){
+		foreach(array_filter($categories) as $cat){
 			$cats[] = 'FIND_IN_SET(' . $cat . ',f.Category)'; //bug #6729
 		}
 
@@ -144,7 +144,7 @@ abstract class we_navigation_dynList{
 	private static function getObjData($select, $classid, $dirpath, array $categories, $catlogic, array $order, $count){
 		$db = new DB_WE();
 		$cats = [];
-		foreach($categories as $cat){
+		foreach(array_filter($categories) as $cat){
 			$cats[] = 'FIND_IN_SET(' . $cat . ',of.Category)'; //bug #6729
 		}
 
@@ -171,11 +171,11 @@ abstract class we_navigation_dynList{
 		$db->query('SELECT ID,Text,Title FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($dirid) . ' LIMIT ' . $count);
 
 		while($db->next_record(MYSQL_ASSOC)){
-			$ids[] = array(
+			$ids[] = [
 				'id' => $db->f('ID'),
 				'text' => $db->f('Text'),
 				'field' => we_navigation_navigation::encodeSpecChars($db->f('Title'))
-			);
+			];
 		}
 
 		return $ids;
