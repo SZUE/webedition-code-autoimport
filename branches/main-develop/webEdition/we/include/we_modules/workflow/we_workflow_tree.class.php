@@ -36,7 +36,6 @@ class we_workflow_tree extends we_tree_base{
 		foreach($ids as $id){
 			$workflowDef = new we_workflow_workflow($id);
 			$items[] = array(
-				'icon' => 'folder.gif',
 				'id' => $workflowDef->ID,
 				'parentid' => 0,
 				'text' => oldHtmlspecialchars(addslashes($workflowDef->Text)),

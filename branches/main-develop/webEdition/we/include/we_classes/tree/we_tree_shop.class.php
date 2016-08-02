@@ -61,15 +61,15 @@ function startTree(){
 			//added for #6786
 			$style = 'color:black;font-family:liberation_sansbold;';
 
-			if($this->db->f('DateCustomA') != '' || $this->db->f('DateCustomB') != '' || $this->db->f('DateCustomC') != '' || $this->db->f('DateCustomD') != '' || $this->db->f('DateCustomE') != '' || $this->db->f('DateCustomF') != '' || $this->db->f('DateCustomG') != '' || $this->db->f('DateCustomH') != '' || $this->db->f('DateCustomI') != '' || $this->db->f('DateCustomJ') != '' || $this->db->f('DateConfirmation') != '' || ($this->db->f('DateShipping') != '0000-00-00 00:00:00' && $this->db->f('DateShipping') != '')){
+			if($this->db->f('DateCustomA') || $this->db->f('DateCustomB') || $this->db->f('DateCustomC') || $this->db->f('DateCustomD') || $this->db->f('DateCustomE') || $this->db->f('DateCustomF') || $this->db->f('DateCustomG') || $this->db->f('DateCustomH') || $this->db->f('DateCustomI') || $this->db->f('DateCustomJ') || $this->db->f('DateConfirmation') || $this->db->f('DateShipping')){
 				$style = 'color:red;';
 			}
 
-			if($this->db->f('DatePayment') != '0000-00-00 00:00:00' && $this->db->f('DatePayment') != ''){
+			if($this->db->f('DatePayment')){
 				$style = 'color:#006699;';
 			}
 
-			if($this->db->f('DateCancellation') != '' || $this->db->f('DateFinished') != ''){
+			if($this->db->f('DateCancellation') || $this->db->f('DateFinished')){
 				$style = 'color:black;';
 			}
 
@@ -86,17 +86,17 @@ function startTree(){
 			});";
 
 			if($this->db->f('DateShipping') <= 0){
-				if(isset($l[  $this->db->f('mdate')])){
-					$l[  $this->db->f('mdate')]++;
+				if(isset($l[$this->db->f('mdate')])){
+					$l[$this->db->f('mdate')] ++;
 				} else {
-					$l[  $this->db->f('mdate')] = 1;
+					$l[$this->db->f('mdate')] = 1;
 				}
 			}
 
-			if(isset($v[ $this->db->f('mdate')])){
-				$v[ $this->db->f('mdate')] ++;
+			if(isset($v[$this->db->f('mdate')])){
+				$v[$this->db->f('mdate')] ++;
 			} else {
-				$v[ $this->db->f('mdate')] = 1;
+				$v[$this->db->f('mdate')] = 1;
 			}
 		}
 

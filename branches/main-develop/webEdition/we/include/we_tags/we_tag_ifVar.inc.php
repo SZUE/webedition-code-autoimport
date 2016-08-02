@@ -43,7 +43,7 @@ function _we_tag_ifVar_op($operator, $first, $match){
 }
 
 function we_tag_ifVar(array $attribs){
-	if(($foo = attributFehltError($attribs, array('name' => false, 'match' => true), __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, ['name' => false, 'match' => true], __FUNCTION__))){
 		echo $foo;
 		return false;
 	}
@@ -64,7 +64,6 @@ function we_tag_ifVar(array $attribs){
 	switch($type){
 		case 'customer' :
 		case 'sessionfield' :
-
 			return ($size == 1 && $operator != '' && isset($_SESSION['webuser'][$nameOrig]) ?
 							_we_tag_ifVar_op($operator, $_SESSION['webuser'][$nameOrig], $match) :
 							(isset($_SESSION['webuser'][$nameOrig]) && in_array($_SESSION['webuser'][$nameOrig], $matchArray)));
