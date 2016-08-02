@@ -420,15 +420,11 @@ function submitForm(target,action,method) {
 		<tr><td height="1" colspan="11"><hr style="color: black" noshade /></td></tr>
 		<tr>
 			<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
-			<td></td>
 			<td>' . self::getFieldFromShoparticle($shopArticleObject, WE_SHOP_TITLE_FIELD_NAME, 35) . '</td>
-			<td></td>
 			<td>' . self::getFieldFromShoparticle($shopArticleObject, WE_SHOP_DESCRIPTION_FIELD_NAME, 45) . '</td>
-			<td></td>
 			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . we_base_util::formatNumber($Price[$i]) . "</a>" . $waehr . '</td>
-			<td></td>
 			<td class="shopContentfontR">' . we_base_util::formatNumber($articlePrice) . $waehr . '</td>' .
-					($calcVat ? '<td></td><td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
+					($calcVat ? '<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
 			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
 				// if this article has custom fields or is a variant - we show them in a extra rows
@@ -484,8 +480,8 @@ function submitForm(target,action,method) {
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 		</tr>
 		<tr>
-			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[Preis]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPrice) . $waehr . '</strong></td>
+			<td colspan="3" class="shopContentfontR">' . g_l('modules_shop', '[Preis]') . ':</td>
+			<td colspan="2" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPrice) . $waehr . '</strong></td>
 		</tr>';
 
 			if($calcVat){ // add Vat to price
@@ -499,9 +495,8 @@ function submitForm(target,action,method) {
 						$totalPriceAndVat += $shippingCostsNet;
 						$orderTable .= '
 		<tr>
-			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><strong><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_base_util::formatNumber($shippingCostsNet) . $waehr . '</a></strong></td>
-			<td></td>
+			<td colspan="3" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
+			<td colspan="2" class="shopContentfontR"><strong><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_base_util::formatNumber($shippingCostsNet) . $waehr . '</a></strong></td>
 			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
 		</tr>
 		<tr>
@@ -510,17 +505,17 @@ function submitForm(target,action,method) {
 					}
 					$orderTable .= '
 		<tr>
-			<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[plusVat]') . '</label>:</td>
-			<td colspan="7"></td>
-			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
+			<td colspan="3" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[plusVat]') . '</label>:</td>
+			<td colspan="2"></td>
+			<td><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
 		</tr>';
 					foreach($articleVatArray as $vatRate => $sum){
 						if($vatRate){
 							$totalPriceAndVat += $sum;
 							$orderTable .= '
 		<tr>
-			<td colspan="5" class="shopContentfontR">' . $vatRate . ' %:</td>
-			<td colspan="4" class="shopContentfontR">' . we_base_util::formatNumber($sum) . $waehr . '</td>
+			<td colspan="3" class="shopContentfontR">' . $vatRate . ' %:</td>
+			<td colspan="2" class="shopContentfontR">' . we_base_util::formatNumber($sum) . $waehr . '</td>
 		</tr>';
 						}
 					}
@@ -529,8 +524,8 @@ function submitForm(target,action,method) {
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 		</tr>
 		<tr>
-			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPriceAndVat) . $waehr . '</strong></td>
+			<td colspan="3" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
+			<td colspan="2" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPriceAndVat) . $waehr . '</strong></td>
 		</tr>';
 				} else { // prices are gros
 					$orderTable .= '<tr><td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td></tr>';
@@ -539,17 +534,16 @@ function submitForm(target,action,method) {
 						$totalPrice += $shippingCostsGros;
 						$orderTable .= '
 		<tr>
-			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_base_util::formatNumber($shippingCostsGros) . $waehr . '</a></td>
-			<td></td>
+			<td colspan="3" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
+			<td colspan="2" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_base_util::formatNumber($shippingCostsGros) . $waehr . '</a></td>
 			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
 		</tr>
 		<tr>
-			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPrice) . $waehr . '</strong></td>
+			<td colspan="3" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
+			<td colspan="2" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPrice) . $waehr . '</strong></td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
@@ -558,16 +552,16 @@ function submitForm(target,action,method) {
 
 					$orderTable .= '
 		<tr>
-			<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[includedVat]') . '</label>:</td>
-			<td colspan="7"></td>
-			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
+			<td colspan="3" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[includedVat]') . '</label>:</td>
+			<td colspan="2"></td>
+			<td><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
 		</tr>';
 					foreach($articleVatArray as $vatRate => $sum){
 						if($vatRate){
 							$orderTable .= '
 		<tr>
-			<td colspan="5" class="shopContentfontR">' . $vatRate . ' %:</td>
-			<td colspan="4" class="shopContentfontR">' . we_base_util::formatNumber($sum) . $waehr . '</td>
+			<td colspan="3" class="shopContentfontR">' . $vatRate . ' %:</td>
+			<td colspan="2" class="shopContentfontR">' . we_base_util::formatNumber($sum) . $waehr . '</td>
 		</tr>';
 						}
 					}
@@ -582,23 +576,23 @@ function submitForm(target,action,method) {
 			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
 		</tr>
 		<tr>
-			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\')">' . we_base_util::formatNumber($shippingCostsNet) . $waehr . '</a></td>
+			<td colspan="3" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
+			<td colspan="2" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\')">' . we_base_util::formatNumber($shippingCostsNet) . $waehr . '</a></td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
 		</tr>
 		<tr>
-			<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
-			<td colspan="7"></td>
-			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
+			<td colspan="3" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
+			<td colspan="2"></td>
+			<td><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 		</tr>
 		<tr>
-			<td colspan="5" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
-			<td colspan="4" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPrice) . $waehr . '</strong></td>
+			<td colspan="3" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
+			<td colspan="2" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPrice) . $waehr . '</strong></td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
@@ -607,9 +601,9 @@ function submitForm(target,action,method) {
 
 					$orderTable .= '
 		<tr>
-			<td colspan="5" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
-			<td colspan="7"></td>
-			<td colspan="1"><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
+			<td colspan="3" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
+			<td colspan="2"></td>
+			<td><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
 		</tr>';
 				}
 			}
