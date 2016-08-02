@@ -440,6 +440,18 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 	}
 
+	private static function updateShop(we_database_base $db){
+		$zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails" AND pref_value LIKE "%weShopStatusMails%"', '', $db);
+		if($zw){
+			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
+					'pref_value' => strtr($zw, [
+						'O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":',
+						'O:17:"weshopstatusmails":' => 'O:19:"we_shop_statusMails":',
+					])
+				]) . ' WHERE tool="shop" AND pref_name="weShopStatusMails"');
+		}
+	}
+
 	public static function doUpdate($what = 'all', $pos = 0){
 		$db = new DB_WE();
 		self::meassure('start');
@@ -476,7 +488,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::meassure('customerFilter');
 			case 'shop':
 				$what = 'shop';
-
+				self::updateShop($db);
 				self::replayUpdateDB();
 				self::meassure('replayUpdateDB');
 				self::meassure(-1);

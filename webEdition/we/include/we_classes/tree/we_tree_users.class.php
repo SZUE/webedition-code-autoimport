@@ -55,10 +55,9 @@ class we_tree_users extends we_tree_base{
 				switch(($type = $db->f('Type'))){
 					case we_users_user::TYPE_USER_GROUP:
 						$items[] = array(
-							'icon' => 'usergroup.gif',
 							'id' => $db->f('ID'),
-							'parentid' => $db->f("ParentID"),
-							'text' => addslashes($db->f("Text")),
+							'parentid' => $db->f('ParentID'),
+							'text' => addslashes($db->f('Text')),
 							'typ' => 'group',
 							'open' => 0,
 							'contentType' => 'we/userGroup',
@@ -68,18 +67,17 @@ class we_tree_users extends we_tree_base{
 						);
 						break;
 					default:
-						$p = we_unserialize($db->f("Permissions"));
+						$p = we_unserialize($db->f('Permissions'));
 
 						$items[] = array(
-							'icon' => ($type == we_users_user::TYPE_ALIAS ? 'user_alias.gif' : 'user.gif'),
 							'id' => $db->f('ID'),
-							'parentid' => $db->f("ParentID"),
-							'text' => addslashes($db->f("Text")),
+							'parentid' => $db->f('ParentID'),
+							'text' => addslashes($db->f('Text')),
 							'typ' => 'item',
 							'open' => 0,
-							'contentType' => ($db->f("Type") == we_users_user::TYPE_ALIAS ? 'we/alias' : 'we/user'),
+							'contentType' => ($db->f('Type') == we_users_user::TYPE_ALIAS ? 'we/alias' : 'we/user'),
 							'table' => USER_TABLE,
-							'class' => (!empty($p["ADMINISTRATOR"]) ? 'bold ' : '') . ($db->f("LoginDenied") ? 'red' : '')
+							'class' => (!empty($p['ADMINISTRATOR']) ? 'bold ' : '') . ($db->f('LoginDenied') ? 'red' : '')
 						);
 				}
 			}

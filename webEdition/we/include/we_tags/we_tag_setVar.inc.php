@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_setVar(array $attribs){
-	if(($foo = attributFehltError($attribs, array('nameto' => false, 'to' => false), __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, ['nameto' => false, 'to' => false], __FUNCTION__))){
 		return $foo;
 	}
 
@@ -49,14 +49,14 @@ function we_tag_setVar(array $attribs){
 			case 'get' :
 			case 'global' :
 			case 'session' :
-				$valueFrom = we_tag('var', array('type' => $from, '_name_orig' => $nameFrom, 'name' => $nameFrom, 'varType' => $varType));
+				$valueFrom = we_tag('var', ['type' => $from, '_name_orig' => $nameFrom, 'name' => $nameFrom, 'varType' => $varType]);
 				break;
 			case 'top' :
 				if($propertyFrom){
 					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->$nameFrom) ? $GLOBALS['WE_MAIN_DOC']->$nameFrom : '';
 				} else {
 					$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom . ($typeFrom === 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
-						$GLOBALS['WE_MAIN_DOC']->getField(array('name' => $nameFrom), $typeFrom, true) :
+						$GLOBALS['WE_MAIN_DOC']->getField(['name' => $nameFrom], $typeFrom, true) :
 						'';
 				}
 				break;
@@ -65,7 +65,7 @@ function we_tag_setVar(array $attribs){
 					$valueFrom = isset($GLOBALS['we_doc']->$nameFrom) ? $GLOBALS['we_doc']->$nameFrom : '';
 				} else {
 					$valueFrom = $GLOBALS['we_doc']->issetElement($nameFrom . ($typeFrom === 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
-						$GLOBALS['we_doc']->getField(array('name' => $nameFrom), $typeFrom, true) :
+						$GLOBALS['we_doc']->getField(['name' => $nameFrom], $typeFrom, true) :
 						'';
 				}
 				break;
@@ -86,17 +86,14 @@ function we_tag_setVar(array $attribs){
 				if(!isset($GLOBALS['lv'])){
 					return parseError(g_l('parser', '[setVar_lv_not_in_lv]'));
 				}
-				$valueFrom = we_tag('field', array('name' => $nameFrom, 'type' => $typeFrom));
+				$valueFrom = we_tag('field', ['name' => $nameFrom, 'type' => $typeFrom]);
 				break;
 			case 'block' :
 				$nameFrom = we_tag_getPostName($nameFrom);
 				if($typeFrom === 'href' && $GLOBALS['we_doc']->issetElement($nameFrom . we_base_link::MAGIC_INT_LINK)){
 					$nameFrom .= we_base_link::MAGIC_INT_LINK_ID;
 				}
-				$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom) ? $GLOBALS['WE_MAIN_DOC']->getField(
-						array(
-						'name' => $nameFrom
-						), $typeFrom, true) : '';
+				$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom) ? $GLOBALS['WE_MAIN_DOC']->getField(['name' => $nameFrom], $typeFrom, true) : '';
 				break;
 			case 'listdir' :
 				$valueFrom = isset($GLOBALS['we_position']['listdir'][$nameFrom]) ? $GLOBALS['we_position']['listdir'][$nameFrom] : '';

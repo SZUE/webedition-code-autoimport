@@ -51,8 +51,8 @@ class we_shop_statusMails{
 
 	static function getShopStatusMails(){
 		global $DB_WE;
-		$documentsarray = array(
-			'default' => array(
+		$documentsarray = [
+			'default' => [
 				'DateOrder' => 0,
 				'DateConfirmation' => 0,
 				'DateCustomA' => 0,
@@ -69,10 +69,10 @@ class we_shop_statusMails{
 				'DateCustomI' => 0,
 				'DateCustomJ' => 0,
 				'DateFinished' => 0,
-			)
-		);
+			]
+		];
 		$frontendL = $GLOBALS["weFrontendLanguages"];
-		foreach($frontendL as $lc => &$lcvalue){
+		foreach($frontendL as &$lcvalue){
 			$lccode = explode('_', $lcvalue);
 			$lcvalue = $lccode[0];
 		}
@@ -81,7 +81,7 @@ class we_shop_statusMails{
 			$documentsarray[$langkey] = $documentsarray['default'];
 		}
 		$zw = new self(
-			array(//Fieldshidden
+			[//Fieldshidden
 			'DateOrder' => 0,
 			'DateConfirmation' => 1,
 			'DateCustomA' => 1,
@@ -98,7 +98,7 @@ class we_shop_statusMails{
 			'DateCustomI' => 1,
 			'DateCustomJ' => 1,
 			'DateFinished' => 1
-			), array(//FieldshiddenCOV
+			], [//FieldshiddenCOV
 			'DateOrder' => 0,
 			'DateConfirmation' => 1,
 			'DateCustomA' => 1,
@@ -115,7 +115,7 @@ class we_shop_statusMails{
 			'DateCustomI' => 1,
 			'DateCustomJ' => 1,
 			'DateFinished' => 1
-			), array(//FieldsTexts
+			], [//FieldsTexts
 			'DateOrder' => g_l('modules_shop', '[bestelldatum]'),
 			'DateConfirmation' => g_l('modules_shop', '[bestaetigt]'),
 			'DateCustomA' => g_l('modules_shop', '[customA]'),
@@ -132,7 +132,7 @@ class we_shop_statusMails{
 			'DateCustomI' => g_l('modules_shop', '[customI]'),
 			'DateCustomJ' => g_l('modules_shop', '[customJ]'),
 			'DateFinished' => g_l('modules_shop', '[beendet]')
-			), array(//FieldsMails
+			], [//FieldsMails
 			'DateOrder' => 1,
 			'DateConfirmation' => 1,
 			'DateCustomA' => 1,
@@ -149,7 +149,7 @@ class we_shop_statusMails{
 			'DateCustomI' => 1,
 			'DateCustomJ' => 1,
 			'DateFinished' => 0
-			), array(//EMailData
+			], [//EMailData
 			'address' => '',
 			'name' => '',
 			'bcc' => '',
@@ -158,18 +158,14 @@ class we_shop_statusMails{
 			'DocumentAttachmentFieldB' => '',
 			'emailField' => '',
 			'titleField' => ''
-			), array(//LanguageData
+			], [//LanguageData
 			'useLanguages' => 1,
 			'languageField' => '',
 			'languageFieldIsISO' => 0
-			), $documentsarray
+			], $documentsarray
 		);
-		$zw2 = strtr(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails"', '', $DB_WE), array(
-			'O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":',
-			'O:17:"weshopstatusmails":' => 'O:19:"we_shop_statusMails":',
-		));
 
-		if($zw2){
+		if(($zw2 = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails"', '', $DB_WE))){
 			$zw2 = we_unserialize($zw2);
 			foreach($zw->FieldsHidden as $key => &$value){
 				if(isset($zw2->FieldsHidden[$key])){
