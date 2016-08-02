@@ -489,6 +489,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			case 'shop':
 				$what = 'shop';
 				self::updateShop($db);
+				self::meassure('shop');
 				self::replayUpdateDB();
 				self::meassure('replayUpdateDB');
 				self::meassure(-1);

@@ -126,19 +126,19 @@ $parts = array(
 
 $tabEMail = new we_html_table(array("cellpadding" => 2, "cellspacing" => 4), $rows_num = 4, $cols_num = 6);
 $tabEMail->setCol(0, 0, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][AbsenderAdresse]') .
-	'<br/>' . we_class::htmlTextInput("EMailData[address]", 30, $weShopStatusMails->EMailData['address']));
+	'<br/>' . we_html_tools::htmlTextInput("EMailData[address]", 30, $weShopStatusMails->EMailData['address']));
 $tabEMail->setCol(1, 0, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][AbsenderName]') .
-	'<br/>' . we_class::htmlTextInput("EMailData[name]", 30, $weShopStatusMails->EMailData['name']));
+	'<br/>' . we_html_tools::htmlTextInput("EMailData[name]", 30, $weShopStatusMails->EMailData['name']));
 $tabEMail->setCol(2, 0, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][bcc]') .
-	'<br/>' . we_class::htmlTextInput("EMailData[bcc]", 30, $weShopStatusMails->EMailData['bcc']));
+	'<br/>' . we_html_tools::htmlTextInput("EMailData[bcc]", 30, $weShopStatusMails->EMailData['bcc']));
 $tabEMail->setCol(0, 1, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][EMailFeld]') .
 	'<br/>' . we_class::htmlSelect('EMailData[emailField]', $selectFields, 1, $weShopStatusMails->EMailData['emailField']));
 $tabEMail->setCol(1, 1, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][TitelFeld]') .
 	'<br/>' . we_class::htmlSelect('EMailData[titleField]', $selectFields, 1, $weShopStatusMails->EMailData['titleField']));
 $tabEMail->setCol(2, 1, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][DocumentSubjectField]') .
-	'<br/>' . we_class::htmlTextInput("EMailData[DocumentSubjectField]", 30, $weShopStatusMails->EMailData['DocumentSubjectField']));
-$tabEMail->setCol(3, 0, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][DocumentAttachmentFieldA]') . '<br/>' . we_class::htmlTextInput("EMailData[DocumentAttachmentFieldA]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldA']));
-$tabEMail->setCol(3, 1, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][DocumentAttachmentFieldB]') . '<br/>' . we_class::htmlTextInput("EMailData[DocumentAttachmentFieldB]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldB']));
+	'<br/>' . we_html_tools::htmlTextInput("EMailData[DocumentSubjectField]", 30, $weShopStatusMails->EMailData['DocumentSubjectField']));
+$tabEMail->setCol(3, 0, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][DocumentAttachmentFieldA]') . '<br/>' . we_html_tools::htmlTextInput("EMailData[DocumentAttachmentFieldA]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldA']));
+$tabEMail->setCol(3, 1, array('class' => 'defaultfont', "width" => 340), g_l('modules_shop', '[statusmails][DocumentAttachmentFieldB]') . '<br/>' . we_html_tools::htmlTextInput("EMailData[DocumentAttachmentFieldB]", 30, $weShopStatusMails->EMailData['DocumentAttachmentFieldB']));
 
 
 $parts[] = array(
@@ -188,7 +188,7 @@ foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
 $i++;
 $tabDokumente->setCol($i, 0, array('class' => "defaultfont bold"), g_l('modules_shop', '[statusmails][defaultDocs]'));
 foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-	$tabDokumente->setCol($i, $fieldkey + 1, ['class' => 'defaultfont'], we_class::htmlTextInput("FieldsDocuments[default][" . $fieldname . "]", 15, $weShopStatusMails->FieldsDocuments['default'][$fieldname]));
+	$tabDokumente->setCol($i, $fieldkey + 1, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("FieldsDocuments[default][" . $fieldname . "]", 15, $weShopStatusMails->FieldsDocuments['default'][$fieldname]));
 }
 
 $frontendL = $GLOBALS["weFrontendLanguages"];
@@ -202,7 +202,7 @@ foreach($frontendL as $langkey){
 	$i++;
 	$tabDokumente->setCol($i, 0, array('class' => "defaultfont bold"), g_l('languages', '[' . $langkey . ']') . ' (' . $langkey . ')');
 	foreach(we_shop_statusMails::$StatusFields as $fieldkey => $fieldname){
-		$tabDokumente->setCol($i, $fieldkey + 1, ['class' => 'defaultfont'], we_class::htmlTextInput('FieldsDocuments[' . $langkey . '][' . $fieldname . ']', 15, $weShopStatusMails->FieldsDocuments[$langkey][$fieldname]));
+		$tabDokumente->setCol($i, $fieldkey + 1, ['class' => 'defaultfont'], we_html_tools::htmlTextInput('FieldsDocuments[' . $langkey . '][' . $fieldname . ']', 15, $weShopStatusMails->FieldsDocuments[$langkey][$fieldname]));
 	}
 }
 
