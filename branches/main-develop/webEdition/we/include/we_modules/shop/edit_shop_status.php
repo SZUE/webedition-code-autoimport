@@ -89,7 +89,7 @@ foreach($frontendL as &$lcvalue){
 }
 unset($lcvalue);
 
-$tabStatus = new we_html_table(["class" => 'withSpace'], $rows_num = 5, $cols_num = 6 + count($frontendL));
+$tabStatus = new we_html_table(['class' => 'withSpace'], $rows_num = 5, $cols_num = 6 + count($frontendL));
 
 $tabStatus->setCol(0, 1, ['colspan' => 4, 'class' => 'defaultfont bold', 'style' => 'text-align:center;background-color:yellow;'], g_l('modules_shop', '[statusmails][AnzeigeDaten]'));
 $tabStatus->setCol(0, 5, ['colspan' => 1 + count($frontendL), 'class' => 'defaultfont bold', 'style' => 'text-align:center;background-color:lightblue;'], g_l('modules_shop', '[statusmails][Dokumente]'));
@@ -152,7 +152,7 @@ $parts = [
 	],
 ];
 
-$tabEMail = new we_html_table(["class" => 'withSpace'], $rows_num = 4, $cols_num = 6);
+$tabEMail = new we_html_table(['class' => 'withSpace'], $rows_num = 4, $cols_num = 6);
 $tabEMail->setCol(0, 0, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][AbsenderAdresse]') .
 	'<br/>' . we_html_tools::htmlTextInput("EMailData[address]", 30, $weShopStatusMails->EMailData['address']));
 $tabEMail->setCol(1, 0, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][AbsenderName]') .
@@ -184,7 +184,7 @@ $parts[] = array(
 	'html' => $tabEMail->getHtml(),
 );
 
-$tabSprache = new we_html_table(["class" => 'withSpace'], $rows_num = 2, $cols_num = 5);
+$tabSprache = new we_html_table(['class' => 'withSpace'], $rows_num = 2, $cols_num = 5);
 $tabSprache->setCol(0, 0, array('class' => 'defaultfont', "width" => 220), we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['useLanguages'], 'LanguageData[useLanguages]', g_l('modules_shop', '[statusmails][useLanguages]'), false, "defaultfont"));
 $tabSprache->setCol(0, 2, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][SprachenFeld]') . we_class::htmlSelect('LanguageData[languageField]', $selectFields, 1, $weShopStatusMails->LanguageData['languageField']) . we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['languageFieldIsISO'], 'LanguageData[languageFieldIsISO]', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont"));
 

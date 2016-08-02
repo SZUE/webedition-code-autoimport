@@ -97,10 +97,10 @@ class we_shop_Basket{
 	 */
 	function getCartProperties(){
 
-		return array(
+		return [
 			'shoppingItems' => $this->getShoppingItems(),
 			'cartFields' => $this->getCartFields()
-		);
+			];
 	}
 
 	/**
