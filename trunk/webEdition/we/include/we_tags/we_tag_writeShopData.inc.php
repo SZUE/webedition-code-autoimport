@@ -51,6 +51,7 @@ function we_tag_writeShopData(array $attribs){
 	$useVat = weTag_getAttribute('usevat', $attribs, false, we_base_request::BOOL);
 
 	$customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
+	unset($customer['Password'], $customer['_Password']);
 
 	if($useVat){
 		$weShopVatRule = we_shop_vatRule::getShopVatRule();
