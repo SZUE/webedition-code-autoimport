@@ -51,6 +51,7 @@ function we_tag_writeShopData(array $attribs){
 	$useVat = weTag_getAttribute('usevat', $attribs, false, we_base_request::BOOL);
 
 	$customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
+	unset($customer['Password'], $customer['_Password']);
 
 	if($useVat){
 		$weShopVatRule = we_shop_vatRule::getShopVatRule();
@@ -145,23 +146,23 @@ function we_tag_writeShopData(array $attribs){
 	// add shopcartfields to table
 	$weShippingControl = we_shop_shippingControl::getShippingControl();
 
-	$cartField = array(
+	$cartField = [
 		WE_SHOP_CART_CUSTOM_FIELD => $cartFields, // add custom cart fields to article
 		WE_SHOP_PRICE_IS_NET_NAME => $netprices, // add netprice flag to article
 		WE_SHOP_CART_CUSTOMER_FIELD => $customer, // add netprice flag to article
 		WE_SHOP_PRICENAME => $pricename,
 		WE_SHOP_SHIPPING => ($shipping === '' ?
-			array(
+			[
 			'costs' => $weShippingControl->getShippingCostByOrderValue($totPrice, $customer),
 			'isNet' => $weShippingControl->isNet,
 			'vatRate' => $weShippingControl->vatRate
-			) :
-			array(
+			] :
+			[
 			'costs' => floatval(str_replace(',', '.', $shipping)),
 			'isNet' => $shippingIsNet,
 			'vatRate' => $shippingVatRate
-			)),
-	);
+			]),
+	];
 
 
 	if($useVat){

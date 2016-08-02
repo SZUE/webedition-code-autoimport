@@ -108,7 +108,7 @@ class we_listview_shopOrderitem extends we_listview_base{
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_TABLE . $where, '', $this->DB_WE);
 
-		$this->DB_WE->query('SELECT IntID as ID,IntOrderID as OrderID, IntArticleID as ArticleID, IntQuantity as Quantity, Price, strSerial FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
+		$this->DB_WE->query('SELECT IntID AS ID,IntOrderID AS OrderID,IntArticleID AS ArticleID,IntQuantity AS Quantity,Price,strSerial FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
