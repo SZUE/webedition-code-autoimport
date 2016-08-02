@@ -86,19 +86,19 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 				return;
 			case 1:
 			default:
-				if(isset($navItem->customers['filter']) && is_array($navItem->customers['filter']) && count($navItem->customers['filter'])){
+				if(isset($navItem->customers['filter']) && is_array($navItem->customers['filter']) && !empty($navItem->customers['filter'])){
 					$this->setMode(we_customer_abstractFilter::FILTER);
 					$custFilter = $navItem->customers['filter'];
 					$this->updateCustomerFilter($custFilter);
 					$this->setFilter($custFilter);
 
-					if(isset($navItem->customers['blacklist']) && is_array($navItem->customers['blacklist']) && count($navItem->customers['blacklist'])){
+					if(isset($navItem->customers['blacklist']) && is_array($navItem->customers['blacklist']) && !empty($navItem->customers['blacklist'])){
 						$this->setBlackList($navItem->customers['blacklist']);
 					}
-					if(isset($navItem->customers['whitelist']) && is_array($navItem->customers['whitelist']) && count($navItem->customers['whitelist'])){
+					if(isset($navItem->customers['whitelist']) && is_array($navItem->customers['whitelist']) && !empty($navItem->customers['whitelist'])){
 						$this->setWhiteList($navItem->customers['whitelist']);
 					}
-				} else if(isset($navItem->customers['id']) && is_array($navItem->customers['id']) && count($navItem->customers['id'])){
+				} else if(isset($navItem->customers['id']) && is_array($navItem->customers['id']) && !empty($navItem->customers['id'])){
 					$this->setMode(we_customer_abstractFilter::SPECIFIC);
 					$this->setSpecificCustomers($navItem->customers['id']);
 				} else {

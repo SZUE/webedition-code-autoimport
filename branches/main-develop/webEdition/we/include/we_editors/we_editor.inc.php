@@ -350,7 +350,7 @@ if(
 	if(!empty($GLOBALS['we_editmode'])){
 		$matches = [];
 		preg_match_all('|<form( name="we_form")|i', $contents, $matches, PREG_PATTERN_ORDER);
-		if($matches && count($matches[0])/* >2 */){
+		if($matches && !empty($matches[0])){
 			//find the number of we-forms
 			$all = count($matches[0]);
 			$no = count(array_filter($matches[1]));

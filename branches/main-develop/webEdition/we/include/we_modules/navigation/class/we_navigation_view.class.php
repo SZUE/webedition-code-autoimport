@@ -186,7 +186,7 @@ if(top.content.treeData){
 
 				if($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS && $this->Model->TitleField != ""){
 					$classFields = we_unserialize(f('SELECT DefaultValues FROM ' . OBJECT_TABLE . " WHERE ID=" . intval($this->Model->ClassID), "DefaultValues", $this->db));
-					if(is_array($classFields) && count($classFields) > 0){
+					if(is_array($classFields) && !empty($classFields)){
 						$fieldsByNamePart = [];
 						foreach(array_keys($classFields) as $key){
 							if(($pos = strpos($key, "_")) && (substr($key, 0, $pos) != "object")){

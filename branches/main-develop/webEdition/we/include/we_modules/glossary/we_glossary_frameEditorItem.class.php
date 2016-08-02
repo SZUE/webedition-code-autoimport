@@ -474,7 +474,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 
 	private function getHTMLLinkAttributes(we_glossary_glossary $glossary){
 		$input_width = 70;
-		$popup = new we_html_table(array('cellpadding' => 5), 4, 4);
+		$popup = new we_html_table(["class" => 'withSpace'], 4, 4);
 		$popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
 		$popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));
 

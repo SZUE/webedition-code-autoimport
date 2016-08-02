@@ -551,7 +551,7 @@ function weWriteBreadCrumb(BreadCrumb){
 					break;
 
 				case "folder":
-					if(isset($folderFolders) && is_array($folderFolders) && count($folderFolders)){
+					if(isset($folderFolders) && is_array($folderFolders) && !empty($folderFolders)){
 						foreach($folderFolders as $fId => $fxVal){
 							$previewFields["folders"]["data"][] = array(
 								"caption" => $fId,
@@ -559,7 +559,7 @@ function weWriteBreadCrumb(BreadCrumb){
 							);
 						}
 					}
-					if(isset($folderFiles) && is_array($folderFiles) && count($folderFiles)){
+					if(isset($folderFiles) && is_array($folderFiles) && !empty($folderFiles)){
 						foreach($folderFiles as $fId => $fxVal){
 							$previewFields["files"]["data"][] = array(
 								"caption" => $fId,

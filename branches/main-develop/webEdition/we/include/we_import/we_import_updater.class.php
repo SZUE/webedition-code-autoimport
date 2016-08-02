@@ -269,7 +269,7 @@ class we_import_updater extends we_exim_XMLExIm{
 		unset($element);
 
 		// update object for embedded object
-		if(isset($new_elements) && count($new_elements)){
+		if(isset($new_elements) && !empty($new_elements)){
 			foreach($del_elements as $delid){
 				unset($object->elements[$delid]);
 			}

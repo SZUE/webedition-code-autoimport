@@ -141,7 +141,7 @@ class we_mail_mail extends we_mail_znd{
 		}
 
 
-		if(is_array($to) && count($to) > 0){
+		if(is_array($to) && !empty($to)){
 			foreach($to as $_to){
 				$_to = $this->parseEmailUser($_to);
 				$this->addTo($_to['email'], $_to['name']);
@@ -151,7 +151,7 @@ class we_mail_mail extends we_mail_znd{
 			$this->addTo($_to['email'], $_to['name']);
 		}
 
-		if(is_array($reply) && count($reply) > 0){
+		if(is_array($reply) && !empty($reply)){
 			foreach($reply as $_reply){
 				$_reply = $this->parseEmailUser($_reply);
 				$this->setReplyTo($_reply['email'], $_reply['name']);
@@ -173,7 +173,7 @@ class we_mail_mail extends we_mail_znd{
 	}
 
 	public function setCC($toCC){
-		if(is_array($toCC) && count($toCC) > 0){
+		if(is_array($toCC) && !empty($toCC)){
 			foreach($toCC as $_toCC){
 				$_toCC = $this->parseEmailUser($_toCC);
 				$this->addCc($_toCC['email'], $_toCC['name']);
@@ -230,7 +230,7 @@ class we_mail_mail extends we_mail_znd{
 	}
 
 	public function addAddressList($list){
-		if(is_array($list) && count($list) > 0){
+		if(is_array($list) && !empty($list)){
 			foreach($list as $_to){
 				$_to = $this->parseEmailUser($_to);
 				$this->addTo($_to['email'], $_to['name']);
@@ -414,7 +414,7 @@ class we_mail_mail extends we_mail_znd{
 	 * @param Array $vars
 	 */
 	public function setClassVars($vars){
-		if(is_array($vars) && count($vars) > 0){
+		if(is_array($vars) && !empty($vars)){
 			foreach($vars as $var => $val){
 				$this->set($var, $val);
 			}

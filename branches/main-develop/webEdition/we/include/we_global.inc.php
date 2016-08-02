@@ -965,7 +965,7 @@ function we_templatePost(){
 			p_r(get_included_files());
 		}
 
-		if(ob_get_level() && count(array_diff(($handler = ob_list_handlers()), ['zlib output compression'])) && (end($handler) == 'default output handler')){//if still document active, we have to do url replacements
+		if(ob_get_level() && !empty(array_diff(($handler = ob_list_handlers()), ['zlib output compression'])) && (end($handler) == 'default output handler')){//if still document active, we have to do url replacements
 			$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
 // --> Glossary Replacement
 			$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($GLOBALS['we_doc']->InGlossar) && $GLOBALS['we_doc']->InGlossar == 0) && we_glossary_replace::useAutomatic());

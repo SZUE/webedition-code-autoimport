@@ -235,7 +235,7 @@ class we_listview_object extends we_listview_objectBase{
 			}
 			if(($dat = $this->f(we_base_constants::WE_VARIANTS_ELEMENT_NAME))){
 				$variants = we_unserialize($dat);
-				if(is_array($variants) && count($variants) > 0){
+				if(is_array($variants) && !empty($variants)){
 					$this->DB_WE->Record[self::PROPPREFIX . 'SHOPVARIANTS'] = count($variants);
 				}
 			}

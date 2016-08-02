@@ -141,7 +141,7 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd')){
 			} while(we_backup_util::limitsReached($_SESSION['weS']['weBackupVars']['current_table'], microtime(true) - $start));
 			$_SESSION['weS']['weBackupVars']['close']($fh);
 		}
-		if(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || (isset($_SESSION['weS']['weBackupVars']['extern_files']) && count($_SESSION['weS']['weBackupVars']['extern_files']) > 0) || we_backup_util::hasNextTable()){
+		if(($_SESSION['weS']['weBackupVars']['row_counter'] < $_SESSION['weS']['weBackupVars']['row_count']) || (isset($_SESSION['weS']['weBackupVars']['extern_files']) && !empty($_SESSION['weS']['weBackupVars']['extern_files']) ) || we_backup_util::hasNextTable()){
 			$percent = we_backup_util::getExportPercent();
 			we_backup_util::addLog('Issuing next request.');
 			echo we_html_element::jsElement('

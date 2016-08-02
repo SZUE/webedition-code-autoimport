@@ -77,9 +77,9 @@ class we_html_table extends we_html_baseCollection{
 			}
 		}
 		for($i = 0; $i < $rows_num; $i++){
-			$this->childs[] = new we_html_baseCollection("tr");
+			$this->childs[] = new we_html_baseCollection('tr');
 			for($j = 0; $j < $cols_num; $j++){
-				$this->childs[count($this->childs) - 1]->childs[] = new we_html_baseElement("td");
+				$this->childs[count($this->childs) - 1]->childs[] = new we_html_baseElement('td');
 			}
 		}
 	}
