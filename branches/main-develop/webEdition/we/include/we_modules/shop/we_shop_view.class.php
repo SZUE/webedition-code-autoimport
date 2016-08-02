@@ -1196,7 +1196,7 @@ function CalendarChanged(calObject) {
 					array(
 						'headline' => g_l('modules_customer', '[Forname]') . ': ',
 						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_html_tools::htmlTextInputInput('weCustomerOrder[Forename]', 44, $customer['Forename']),
+						'html' => we_html_tools::htmlTextInput('weCustomerOrder[Forename]', 44, $customer['Forename']),
 						'noline' => 1
 					),
 					array(
