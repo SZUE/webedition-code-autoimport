@@ -926,7 +926,7 @@ function CalendarChanged(calObject) {
 						'space' => we_html_multiIconBox::SPACE_MED,
 						'html' => '
 			<table class="default">
-				<tr><td>' . we_class::htmlTextInput('searchArticle', 24, we_base_request::_(we_base_request::RAW, 'searchArticle', ''), '', 'id="searchArticle"', 'text', 380) . '</td>
+				<tr><td>' . we_html_tools::htmlTextInput('searchArticle', 24, we_base_request::_(we_base_request::RAW, 'searchArticle', ''), '', 'id="searchArticle"', 'text', 380) . '</td>
 					<td></td>
 					<td>' . $searchBut . '</td>
 				</tr>
@@ -974,7 +974,7 @@ function CalendarChanged(calObject) {
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[anzahl]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => we_class::htmlTextInput('anzahl', 24, '', '', 'min="1"', 'number', 380),
+						'html' => we_html_tools::htmlTextInput('anzahl', 24, '', '', 'min="1"', 'number', 380),
 						'noline' => 1
 					);
 
@@ -988,7 +988,7 @@ function CalendarChanged(calObject) {
 					$parts[] = array(
 						'headline' => g_l('modules_shop', '[customField]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => we_class::htmlTextInput('we_customField', 24, '', '', '', 'text', 380) .
+						'html' => we_html_tools::htmlTextInput('we_customField', 24, '', '', '', 'text', 380) .
 						'<br /><span class="small">Eingabe in der Form: <i>name1=wert1;name2=wert2</i></span></form>',
 						'noline' => 1
 					);
@@ -1129,7 +1129,7 @@ function CalendarChanged(calObject) {
 					array(
 						'headline' => g_l('modules_shop', '[edit_order][shipping_costs]'),
 						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_class::htmlTextInput('weShipping_costs', 24, $shippingCost),
+						'html' => we_html_tools::htmlTextInput('weShipping_costs', 24, $shippingCost),
 						'noline' => 1
 					),
 					array(
@@ -1196,13 +1196,13 @@ function CalendarChanged(calObject) {
 					array(
 						'headline' => g_l('modules_customer', '[Forname]') . ': ',
 						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_class::htmlTextInput('weCustomerOrder[Forename]', 44, $customer['Forename']),
+						'html' => we_html_tools::htmlTextInputInput('weCustomerOrder[Forename]', 44, $customer['Forename']),
 						'noline' => 1
 					),
 					array(
 						'headline' => g_l('modules_customer', '[Surname]') . ': ',
 						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_class::htmlTextInput('weCustomerOrder[Surname]', 44, $customer['Surname']),
+						'html' => we_html_tools::htmlTextInput('weCustomerOrder[Surname]', 44, $customer['Surname']),
 						'noline' => 1
 					)
 				);
@@ -1276,7 +1276,7 @@ function CalendarChanged(calObject) {
 							$parts[] = array(
 								'headline' => $k . ': ',
 								'space' => we_html_multiIconBox::SPACE_MED2,
-								'html' => we_class::htmlTextInput('weCustomerOrder[' . $k . ']', 44, $v),
+								'html' => we_html_tools::htmlTextInput('weCustomerOrder[' . $k . ']', 44, $v),
 								'noline' => 1
 							);
 						}

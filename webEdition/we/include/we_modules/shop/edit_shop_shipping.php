@@ -226,7 +226,7 @@ function we_submitForm(url){
 			$parts[] = array(
 				'headline' => g_l('modules_shop', '[shipping][name]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
-				'html' => we_class::htmlTextInput('weShipping_text', 24, $weShipping->text) . we_html_element::htmlHidden('weShippingId', $weShipping->id),
+				'html' => we_html_tools::htmlTextInput('weShipping_text', 24, $weShipping->text) . we_html_element::htmlHidden('weShippingId', $weShipping->id),
 				'noline' => 1
 			);
 			$parts[] = array(
@@ -246,9 +246,9 @@ function we_submitForm(url){
 
 					$tblPart .= '
 			<tr id="' . $tblRowName . '">
-				<td>' . we_class::htmlTextInput('weShipping_cartValue[]', 24, $weShipping->cartValue[$i], '', 'onkeypress="return WE().util.IsDigit(event);"') . '</td>
+				<td>' . we_html_tools::htmlTextInput('weShipping_cartValue[]', 24, $weShipping->cartValue[$i], '', 'onkeypress="return WE().util.IsDigit(event);"') . '</td>
 				<td></td>
-				<td>' . we_class::htmlTextInput('weShipping_shipping[]', 20, $weShipping->shipping[$i], '', 'onkeypress="return WE().util.IsDigit(event);"') . '</td>
+				<td>' . we_html_tools::htmlTextInput('weShipping_shipping[]', 20, $weShipping->shipping[$i], '', 'onkeypress="return WE().util.IsDigit(event);"') . '</td>
 				<td></td>
 				<td>' . we_html_button::create_button(we_html_button::TRASH, "we_cmd('deleteShippingCostTableRow','" . $tblRowName . "');") . '</td>
 			</tr>';
