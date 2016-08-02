@@ -36,7 +36,7 @@ function we_isFieldNotEmpty(array $attribs){
 	switch($type){
 		case 'calendar' :
 			if(isset($GLOBALS['lv']->calendar_struct)){
-				if($GLOBALS['lv']->calendar_struct['date'] < 0 || count($GLOBALS['lv']->calendar_struct['storage']) < 1){
+				if($GLOBALS['lv']->calendar_struct['date'] < 0 || empty($GLOBALS['lv']->calendar_struct['storage'])){
 					return false;
 				}
 				switch($orig_match){

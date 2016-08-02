@@ -118,8 +118,8 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 	}
 
 	$shopCategories = we_shop_category::getShopCatFieldsFromDir('', false, true, $shopCategoriesDir, true, true, true, '', 'Path');
-	$catsTable = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 4), (count($shopCategories) * 6), 5);
-	$catsDirTable = new we_html_table(array('cellpadding' => 2, 'cellspacing' => 4), 7, 5);
+	$catsTable = new we_html_table(["class" => 'withSpace'], (count($shopCategories) * 6), 5);
+	$catsDirTable = new we_html_table(["class" => 'withSpace'], 7, 5);
 	if(is_array($shopCategories) && count($shopCategories) > 1){
 		$i = $iTmp = 0;
 

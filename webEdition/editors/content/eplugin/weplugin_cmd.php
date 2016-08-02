@@ -122,7 +122,7 @@ switch(_EditorFrame.getEditorEditPageNr()){
 			if($we_ContentType === we_base_ContentTypes::IMAGE){
 				$we_doc->setElement('data', $tempName, 'image');
 				$dim = we_thumbnail::getimagesize($tempName);
-				if(is_array($dim) && count($dim) > 0){
+				if(is_array($dim) && !empty($dim)){
 					$we_doc->setElement('width', $dim[0], 'attrib');
 					$we_doc->setElement('height', $dim[1], 'attrib');
 				}

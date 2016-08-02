@@ -442,7 +442,7 @@ function submitForm(target,action,method) {
 		</tr>';
 				}
 				// add custom fields
-				if(isset($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && count($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
+				if(isset($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && !empty($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
 
 					$caField = '';
 					foreach($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD] as $key => $value){

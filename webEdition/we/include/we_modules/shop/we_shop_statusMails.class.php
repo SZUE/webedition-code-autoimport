@@ -30,8 +30,8 @@ class we_shop_statusMails{
 	var $EMailData; // an array with the E-Mail data, see getShopStatusMails
 	var $LanguageData; // an array with the Language data, see getShopStatusMails
 	var $FieldsDocuments; // an array with dfault values and separate Arrays for each Langauge, see getShopStatusMails
-	public static $StatusFields = array('DateOrder', 'DateConfirmation', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateShipping', 'DateCustomD', 'DateCustomE', 'DatePayment', 'DateCustomF', 'DateCustomG', 'DateCancellation', 'DateCustomH', 'DateCustomI', 'DateCustomJ', 'DateFinished');
-	public static $MailFields = array('MailShipping', 'MailPayment', 'MailOrder', 'MailConfirmation', 'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE', 'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ', 'MailCancellation', 'MailFinished');
+	public static $StatusFields = ['DateOrder', 'DateConfirmation', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateShipping', 'DateCustomD', 'DateCustomE', 'DatePayment', 'DateCustomF', 'DateCustomG', 'DateCancellation', 'DateCustomH', 'DateCustomI', 'DateCustomJ', 'DateFinished'];
+	public static $MailFields = ['MailShipping', 'MailPayment', 'MailOrder', 'MailConfirmation', 'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE', 'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ', 'MailCancellation', 'MailFinished'];
 
 	function __construct(array $FieldsHidden, array $FieldsHiddenCOV, array $FieldsText, array $FieldsMails, array $EMailData, array $LanguageData, array $FieldsDocuments){
 		$this->FieldsHidden = $FieldsHidden;

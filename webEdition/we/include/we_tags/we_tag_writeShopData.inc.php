@@ -153,14 +153,14 @@ function we_tag_writeShopData(array $attribs){
 		WE_SHOP_PRICENAME => $pricename,
 		WE_SHOP_SHIPPING => ($shipping === '' ?
 			[
-			'costs' => $weShippingControl->getShippingCostByOrderValue($totPrice, $customer),
-			'isNet' => $weShippingControl->isNet,
-			'vatRate' => $weShippingControl->vatRate
+			'costs' => floatval($weShippingControl->getShippingCostByOrderValue($totPrice, $customer)),
+			'isNet' => (bool) $weShippingControl->isNet,
+			'vatRate' => floatval($weShippingControl->vatRate)
 			] :
 			[
 			'costs' => floatval(str_replace(',', '.', $shipping)),
-			'isNet' => $shippingIsNet,
-			'vatRate' => $shippingVatRate
+			'isNet' => (bool) $shippingIsNet,
+			'vatRate' => floatval($shippingVatRate)
 			]),
 	];
 

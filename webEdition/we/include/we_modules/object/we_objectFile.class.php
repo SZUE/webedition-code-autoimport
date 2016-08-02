@@ -2270,7 +2270,7 @@ class we_objectFile extends we_document{
 	}
 
 	private function i_getUniqueIDsAndFixNames(){
-		if(is_array($this->DefArray) && count($this->DefArray)){
+		if(is_array($this->DefArray) && !empty($this->DefArray)){
 			$newDefArr = $this->getDefaultValueArray();
 			foreach($newDefArr as $n => $v){
 				if(is_array($v) && isset($v["uniqueID"])){
@@ -2818,7 +2818,7 @@ class we_objectFile extends we_document{
 		$object->initByID($this->TableID, OBJECT_TABLE);
 
 		return ($checkFields ?
-				$object->canHaveVariants() && count($object->getVariantFields()) :
+				$object->canHaveVariants() && !empty($object->getVariantFields()) :
 				$object->canHaveVariants());
 	}
 

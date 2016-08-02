@@ -151,7 +151,7 @@ parent.document.title = "' . $title . '";
 
 				$q_empty = true;
 				$a_empty = true;
-				if(!$this->voting->IsFolder && count($this->voting->QASet) != 0){
+				if(!$this->voting->IsFolder && !empty($this->voting->QASet)){
 					foreach($this->voting->QASet as $set){
 						$q = trim($set['question']);
 						if($q === ''){

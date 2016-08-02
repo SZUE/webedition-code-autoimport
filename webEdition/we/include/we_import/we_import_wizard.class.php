@@ -955,7 +955,7 @@ HTS;
 			'style' => 'width: 300px')
 		);
 
-		if($v['docType'] != -1 && count($TPLselect->childs)){
+		if($v['docType'] != -1 && !empty($TPLselect->childs)){
 			$displayDocType = 'display:block';
 			$displayNoDocType = 'display:none';
 			$foo = getHash('SELECT TemplateID,Templates FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.ID=' . intval($v['docType']), $DB_WE);

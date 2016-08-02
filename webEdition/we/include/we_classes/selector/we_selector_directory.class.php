@@ -536,14 +536,14 @@ top.selectFile(top.currentID);'
 					break;
 				case "folder":
 					$out .= $previewDefauts;
-					if(isset($folderFolders) && is_array($folderFolders) && count($folderFolders)){
+					if(isset($folderFolders) && is_array($folderFolders) && !empty($folderFolders)){
 						$next = 0;
 						$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', '[folders]') . "</td></tr>";
 						foreach($folderFolders as $fId => $fxVal){
 							$out .= "<tr class='" . ( ++$next % 2 == 0 ? 'even' : 'odd') . "'><td>" . $fId . ": </td><td>" . $fxVal . "</td></tr>";
 						}
 					}
-					if(isset($folderFiles) && is_array($folderFiles) && count($folderFiles)){
+					if(isset($folderFiles) && is_array($folderFiles) && !empty($folderFiles)){
 						$next = 0;
 						$out .= "<tr><td colspan='2' class='headline'>" . g_l('fileselector', '[files]') . "</td></tr>";
 						foreach($folderFiles as $fId => $fxVal){
