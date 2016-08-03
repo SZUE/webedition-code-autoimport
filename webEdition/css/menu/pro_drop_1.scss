@@ -117,6 +117,9 @@ way to fit your requirements.
 					top: -1px;
 					background: #284a70;
 					word-wrap: break-word;
+					overflow-y: auto;
+					overflow-x: hidden;
+					max-height: 46em;
 					width: 14.5em;
 					z-index: 400;
 					height: auto;
@@ -124,8 +127,6 @@ way to fit your requirements.
 				}
 				li:hover ul{
 					left: 15.7em;
-					max-height: 46em;
-					overflow-y: auto;
 				}
 			}
 
@@ -181,10 +182,11 @@ way to fit your requirements.
 
 	//have these 2 subentries wider
 	ul.menu_file_new_weobj,
-	ul.menu_file_new_wedoc{
+	ul.menu_file_new_wedoc,
+	ul ul ul {
 		width: 350px !important;
-		overflow: auto !important;
-		background: #192c3a !important;
+		//overflow: auto !important;
+		//background: #192c3a !important;
 		li {
 			white-space: nowrap;
 			clear: both;
@@ -203,9 +205,7 @@ way to fit your requirements.
 		top: 2px;
 		font-size: 1.7em;
 	}
-}
-
-
-#nav li div.click ul li:hover > a {
-	color: #386aab !important;
+	li div.click ul li:hover > a {
+		color: #386aab !important;
+	}
 }

@@ -79,36 +79,26 @@ function we_tag_form(array $attribs){
 	switch($type){
 		case 'shopliste' :
 			$formAttribs['action'] = $we_form_action;
-			$myID = ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs) && ($last = end($GLOBALS['lv']->IDs))) ? $last : $GLOBALS['we_doc']->ID);
-			$formAttribs['name'] = 'form' . $myID;
+			$articleID = (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID')) ? $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') : (isset($GLOBALS['we_obj']->ID) ? $GLOBALS['we_obj']->ID : $GLOBALS['we_doc']->ID);
+			$formAttribs['name'] = 'form' . $articleID;
 			if(empty($GLOBALS['we_editmode'])){
 				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
-					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
+					getHtmlTag('input', ['xml' => $xml, 'type' => 'hidden', 'name' => 'type',
 						'value' => (
 						isset($GLOBALS['lv']->classID) ?
 							we_shop_shop::OBJECT :
 							($GLOBALS['lv'] instanceof we_listview_document ?
 								we_shop_shop::DOCUMENT :
-								(isset($GLOBALS['we_doc']->OF_ID)) ?
+								(isset($GLOBALS['we_obj']->ID) ?
 									we_shop_shop::OBJECT :
 									we_shop_shop::DOCUMENT
-							)
-						),
-					)) .
-					getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
-						'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) ?
-							(isset($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') ?
-								$GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') :
-								(isset($GLOBALS['we_doc']->OF_ID) ?
-									$GLOBALS['we_doc']->OF_ID :
-									$GLOBALS['we_doc']->ID)) :
-							(isset($GLOBALS['lv']) ?
-								($GLOBALS['lv'] instanceof we_listview_document && ($lastE = end($GLOBALS['lv']->IDs)) ?
-									$lastE :
-									$GLOBALS['we_doc']->ID) :
-								$GLOBALS['we_doc']->ID)
-						)
-					)) .
+								)
+							))
+						]
+					) .
+					getHtmlTag('input', ['xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
+						'value' => $articleID
+					]) .
 					getHtmlTag('input', [
 						'xml' => $xml,
 						'type' => 'hidden',
@@ -158,7 +148,7 @@ function we_tag_form(array $attribs){
 						getHtmlTag('input', ['type' => 'hidden', 'name' => 'edit_' . $type, 'value' => 1, 'xml' => $xml]) .
 						getHtmlTag('input', ['type' => 'hidden', 'name' => 'we_edit' . $typetmp . '_ID', 'xml' => $xml,
 							'value' => we_base_request::_(we_base_request::INT, 'we_edit' . $typetmp . '_ID', 0),
-							]);
+					]);
 				}
 			} elseif(empty($GLOBALS['we_editmode'])){
 				$ret.=getHtmlTag('form', $formAttribs, '', false, true);
