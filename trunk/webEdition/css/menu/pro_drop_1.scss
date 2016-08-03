@@ -117,6 +117,8 @@ way to fit your requirements.
 					top: -1px;
 					background: #284a70;
 					word-wrap: break-word;
+					overflow-y: auto;
+					max-height: 46em;
 					width: 14.5em;
 					z-index: 400;
 					height: auto;
@@ -124,8 +126,6 @@ way to fit your requirements.
 				}
 				li:hover ul{
 					left: 15.7em;
-					max-height: 46em;
-					overflow-y: auto;
 				}
 			}
 
@@ -133,7 +133,7 @@ way to fit your requirements.
 				display: block;
 				position: relative;
 				float: left;
-				width: 16em;
+				width: 100%;
 				font-family: $weFont;
 				color:black;
 				&:hover {
@@ -152,7 +152,7 @@ way to fit your requirements.
 					display: block;
 					position: relative;
 					float: left;
-					width: 14.5em;
+					width: 100%;
 					font-family: $weFont;
 				}
 			}
@@ -179,16 +179,17 @@ way to fit your requirements.
 
 	}
 
+	//have these 2 subentries wider
+	ul.menu_file_new_weobj,
+	ul.menu_file_new_wedoc,
 	ul ul ul {
 		width: 350px !important;
-		max-height: 400px;
 		overflow: auto !important;
-		font-size: 12px;
 		background: #192c3a !important;
 		li {
 			white-space: nowrap;
 			clear: both;
-			width: 100% !important;
+			width: 100%;
 			&:hover,
 				li a:hover {
 				display: block;
@@ -203,9 +204,9 @@ way to fit your requirements.
 		top: 2px;
 		font-size: 1.7em;
 	}
-}
 
 
-#nav li div.click ul li:hover > a {
+	li div.click ul li:hover > a {
 	color: #386aab !important;
+	}
 }
