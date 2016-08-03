@@ -438,8 +438,6 @@ abstract class we_newsletter_util{
 				'Path' => '/' . $f['subscribe_mail'],
 				'Password' => $GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'],
 				'MemberSince' => time(),
-				'IsFolder' => 0,
-				'ParentID' => 0,
 				'LoginDenied' => 0,
 				'LastLogin' => 0,
 				'LastAccess' => 0,
