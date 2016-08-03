@@ -79,43 +79,32 @@ function we_tag_form(array $attribs){
 	switch($type){
 		case 'shopliste' :
 			$formAttribs['action'] = $we_form_action;
-			$myID = ((isset($GLOBALS['lv']) && isset($GLOBALS['lv']->IDs) && ($last = end($GLOBALS['lv']->IDs))) ? $last : $GLOBALS['we_doc']->ID);
-			$formAttribs['name'] = 'form' . $myID;
+			$articleID = (isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID')) ? $GLOBALS['lv']->f('WE_ID') : (isset($GLOBALS['we_obj']->ID) ? $GLOBALS['we_obj']->ID : $GLOBALS['we_doc']->ID);
+			$formAttribs['name'] = 'form' . $articleID;
 			if(!isset($GLOBALS['we_editmode']) || !$GLOBALS['we_editmode']){
 				$ret = getHtmlTag('form', $formAttribs, '', false, true) .
 						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'type',
 							'value' => (
-							isset($GLOBALS['lv']->classID) ?
+								isset($GLOBALS['lv']->classID) ?
 									we_shop_shop::OBJECT :
 									($GLOBALS['lv'] instanceof we_listview_document ?
 											we_shop_shop::DOCUMENT :
-											(isset($GLOBALS['we_doc']->OF_ID)) ?
-													we_shop_shop::OBJECT :
-													we_shop_shop::DOCUMENT
+											(isset($GLOBALS['we_obj']->ID) ?
+												we_shop_shop::OBJECT :
+												we_shop_shop::DOCUMENT
+											)
+									)
 							)
-							),
 						)) .
 						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'shop_artikelid',
-							'value' => (isset($GLOBALS['lv']->classID) || isset($GLOBALS['we_doc']->ClassID) ?
-									(isset($GLOBALS['lv']) && $GLOBALS['lv']->f('WE_ID') ?
-											$GLOBALS['lv']->f('WE_ID') :
-											(isset($GLOBALS['we_doc']->OF_ID) ?
-													$GLOBALS['we_doc']->OF_ID :
-													$GLOBALS['we_doc']->ID)) :
-									(isset($GLOBALS['lv']) ?
-											($GLOBALS['lv'] instanceof we_listview_document && ($lastE = end($GLOBALS['lv']->IDs)) ?
-													$lastE :
-													$GLOBALS['we_doc']->ID) :
-											$GLOBALS['we_doc']->ID)
-							)
+							'value' => $articleID
 						)) .
-						getHtmlTag('input', array(
-							'xml' => $xml,
-							'type' => 'hidden',
-							'name' => 'we_variant',
-							'value' => (isset($GLOBALS['we_doc']->Variant) ? $GLOBALS['we_doc']->Variant : ''),
+						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 'we_variant',
+							'value' => (isset($GLOBALS['we_doc']->Variant) ? $GLOBALS['we_doc']->Variant : '')
 						)) .
-						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 't', 'value' => time(),));
+						getHtmlTag('input', array('xml' => $xml, 'type' => 'hidden', 'name' => 't', 
+							'value' => time()
+						));
 			}
 			break;
 		case 'object' :
