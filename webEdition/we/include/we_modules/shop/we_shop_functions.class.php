@@ -35,7 +35,7 @@ class we_shop_functions{
 			$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS format' . $field;
 		}
 
-		$GLOBALS['DB_WE']->query('SELECT IntOrderID, ' . implode(',', we_shop_statusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC');
+		$GLOBALS['DB_WE']->query('SELECT IntOrderID,shopname, ' . implode(',', we_shop_statusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC');
 
 		$orderStr = '<table class="defaultfont" style="width:1200px">';
 		if($GLOBALS['DB_WE']->num_rows()){
@@ -61,7 +61,7 @@ class we_shop_functions{
 				} else {
 					$orderStr .='<td></td>';
 				}
-				$orderStr .= '<td>' . $GLOBALS['DB_WE']->f('IntOrderID') . '. ' . g_l('modules_shop', '[orderList][order]') . '</td>';
+				$orderStr .= '<td>' . $GLOBALS['DB_WE']->f('IntOrderID') . ' ('.$GLOBALS['DB_WE']->f('shopname')./*'. ' . g_l('modules_shop', '[orderList][order]') .*/ ')</td>';
 				foreach(we_shop_statusMails::$StatusFields as $field){
 					if(!$weShopStatusMails->FieldsHidden[$field]){
 						$orderStr .='<td>' . ( $GLOBALS['DB_WE']->f($field) > 0 ? $GLOBALS['DB_WE']->f('format' . $field) : '-' ) . '</td>';

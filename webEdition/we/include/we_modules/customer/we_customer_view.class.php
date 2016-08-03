@@ -1046,16 +1046,16 @@ self.close();');
 
 		switch($preselect){
 			case g_l('modules_customer', '[common]'):
-				$parts = array($this->getCommonTable($common, false));
+				$parts = [$this->getCommonTable($common, false)];
 				break;
 			case g_l('modules_customer', '[other]'):
-				$parts = array($this->getOtherTable($other, false));
+				$parts = [$this->getOtherTable($other, false)];
 				break;
 			case g_l('modules_customer', '[orderTab]'):
-				$parts = array(array(
-						'html' => we_shop_functions::getCustomersOrderList($this->customer->ID, false),
-					)
-				);
+				$parts = [[
+					'html' => we_shop_functions::getCustomersOrderList($this->customer->ID, false),
+					]
+				];
 				break;
 			case g_l('modules_customer', '[objectTab]'):
 				$DB_WE = new DB_WE();
@@ -1064,7 +1064,7 @@ self.close();');
 				if($DB_WE->num_rows()){
 					$objectStr.='<table class="defaultfont" style="width:600px;">' .
 						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_object', '[class]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
-					while($DB_WE->next_record()){
+					while($DB_WE->next_record(MYSQL_ASSOC)){
 						$objectStr.='<tr>
 	<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
 	<td>' . $DB_WE->f('ID') . '</td>
