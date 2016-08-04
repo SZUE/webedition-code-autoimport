@@ -467,8 +467,8 @@ function checkFooter(){
 			return;
 		}
 
-		$req = [$_REQUEST, $_GET, $_POST];
-		$_REQUEST = $_GET = $_POST = [];
+		$req = array(empty($_REQUEST) ? array() : $_REQUEST, empty($_GET) ? array() : $_GET, empty($_POST) ? array() : $_POST);
+		$_REQUEST = $_GET = $_POST = array();
 
 		$DB_WE = new DB_WE();
 		$DB_WE->addTable('del', [
