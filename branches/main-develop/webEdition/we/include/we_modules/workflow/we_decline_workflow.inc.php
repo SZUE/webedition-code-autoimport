@@ -60,7 +60,6 @@ if($cmd === "ok"){
 	}
 	echo we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . 'self.close();');
 }
-echo STYLESHEET;
 ?>
 </head>
 

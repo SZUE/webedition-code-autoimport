@@ -65,7 +65,6 @@ WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFoot
 	}
 	echo we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . 'self.close();');
 }
-echo STYLESHEET;
 ?>
 </head>
 

@@ -30,19 +30,14 @@ class we_selector_image extends we_selector_document{
 	}
 
 	protected function getFrameset($withPreview = false){
-		return
-			STYLESHEET .
-			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			$this->getFramsetJSFile() .
-			'<body class="selector" onload="startFrameset();">' .
+		return '<body class="selector" onload="startFrameset();">' .
 			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview') .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
 			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-			'</body>
-</html>';
+			'</body>';
 	}
 
 	protected function printFooterTable($more = null){
