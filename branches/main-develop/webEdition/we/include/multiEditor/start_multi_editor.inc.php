@@ -130,4 +130,4 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 4) === 'SEEM_edit_i
 		}
 	}
 }
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') . we_html_element::jsElement($jsCommand), we_html_element::htmlBody());
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jsCommand), we_html_element::htmlBody());

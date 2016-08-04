@@ -84,13 +84,14 @@ function we_tag_writeShopData(array $attribs){
 	$totPrice = 0;
 	$articleCount = 0;
 	$first = false;
+	$categoryMode = we_shop_category::isCategoryMode();
 
 	foreach($shoppingItems as $shoppingItem){
 		$preis = we_base_util::std_numberformat((isset($shoppingItem['serial']['we_' . $pricename])) ? $shoppingItem['serial']['we_' . $pricename] : $shoppingItem['serial'][$pricename]);
 		$totPrice += $preis * $shoppingItem['quantity'];
 
 		// foreach article we must determine the correct tax-rate
-		if(we_shop_category::isCategoryMode()){
+		if($categoryMode){
 			$wedocCategory = $shoppingItem['serial'][we_listview_base::PROPPREFIX . 'CATEGORY'];
 			$billingCountry = we_shop_category::getCountryFromCustomer(false, $_SESSION['webuser']);
 			$catId = !empty($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
@@ -113,18 +114,16 @@ function we_tag_writeShopData(array $attribs){
 		$shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] = $shopCategory ? : 0;
 
 		if(!$DB_WE->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
-				we_database_base::arraySetter(array(
+				we_database_base::arraySetter([
 					'IntArticleID' => intval($shoppingItem['id']),
 					'IntQuantity' => abs($shoppingItem['quantity']),
 					'Price' => $preis,
 					'IntOrderID' => $orderID,
 					'IntCustomerID' => intval($_SESSION['webuser']['ID']),
 					'DateOrder' => sql_function('NOW()'),
-					'DateShipping' => 0,
-					'Datepayment' => 0,
 					'strSerial' => we_serialize($shoppingItem['serial'], SERIALIZE_JSON),
 					'shopname' => $shopname
-			)))){
+			]))){
 
 			$DB_WE->unlock();
 			t_e('error during write shop data contents of basket', $shoppingItems);

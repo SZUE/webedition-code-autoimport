@@ -605,13 +605,13 @@ this.selectedIndex = 0;' .
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			self::htmlMetaCtCharset(($charset ? : $GLOBALS['WE_BACKENDCHARSET'])) .
 			we_html_element::htmlTitle($_SERVER['SERVER_NAME'] . ' ' . $title) .
-			we_html_element::htmlMeta(array('name' => 'viewport', 'content' => 'width=device-width, height=device-height, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes')) .
-			we_html_element::htmlMeta(array('http-equiv' => 'expires', 'content' => 0)) .
-			we_html_element::htmlMeta(array('http-equiv' => 'Cache-Control', 'content' => 'no-cache')) .
-			we_html_element::htmlMeta(array('http-equiv' => 'pragma', 'content' => 'no-cache')) .
-			we_html_element::htmlMeta(array('http-equiv' => 'imagetoolbar', 'content' => 'no')) .
-			we_html_element::htmlMeta(array('name' => 'generator', 'content' => 'webEdition')) .
-			we_html_element::linkElement(array('rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico'));
+			we_html_element::htmlMeta(['name' => 'viewport', 'content' => 'width=device-width, height=device-height, maximum-scale=1.0, initial-scale=1.0, user-scalable=yes']) .
+			we_html_element::htmlMeta(['http-equiv' => 'expires', 'content' => 0]) .
+			we_html_element::htmlMeta(['http-equiv' => 'Cache-Control', 'content' => 'no-cache']) .
+			we_html_element::htmlMeta(['http-equiv' => 'pragma', 'content' => 'no-cache']) .
+			we_html_element::htmlMeta(['http-equiv' => 'imagetoolbar', 'content' => 'no']) .
+			we_html_element::htmlMeta(['name' => 'generator', 'content' => 'webEdition']) .
+			we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']);
 	}
 
 	static function htmlMetaCtCharset($charset){

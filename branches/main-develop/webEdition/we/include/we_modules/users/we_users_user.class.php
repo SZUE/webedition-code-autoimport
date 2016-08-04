@@ -1813,12 +1813,12 @@ function delElement(elvalues,elem) {
 		// Generate needed JS
 		$js = we_html_element::jsElement("
 function select_seem_start() {
-	myWindStr=\"WE().util.jsWindow.prototype.find('preferences')\";
+	myWindStr=\"WE().util.jsWindow.prototype.find('edit_module').content.editor.edbody\";
 
 	if(document.getElementById('seem_start_type').value == 'object') {
-		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_object.value, '" . (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "") . "', myWindStr + '.document.forms[0].elements.seem_start_object.value', myWindStr + '.document.forms[0].elements.seem_start_object_name.value', '', '', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
+		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_object.value, " . (defined('OBJECT_FILES_TABLE') ? 'seem_start_document' : "'x'") . ", myWindStr + '.document.forms[0].elements.seem_start_object.value', myWindStr + '.document.forms[0].elements.seem_start_object_name.value', '', '', '', 'objectFile','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");
 	} else {
-		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_document.value, '" . FILE_TABLE . "', myWindStr + '.document.forms[0].elements.seem_start_document.value', myWindStr + '.document.forms[0].elements.seem_start_document_name.value', '', '', '', '" . we_base_ContentTypes::WEDOCUMENT . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
+		top.opener.top.we_cmd('we_selector_document', document.forms[0].elements.seem_start_document.value, WE().consts.tables.FILE_TABLE, myWindStr + '.document.forms[0].elements.seem_start_document.value', myWindStr + '.document.forms[0].elements.seem_start_document_name.value', '', '', '', '" . we_base_ContentTypes::WEDOCUMENT . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");
 	}
 }
 

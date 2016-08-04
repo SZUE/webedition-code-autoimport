@@ -39,11 +39,11 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$this->type = 'editor';
 		$permImageEdit = permissionhandler::hasPerm("NEW_GRAFIK");
 		$permCat = permissionhandler::hasPerm("EDIT_KATEGORIE");
-		$moreElements = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? []: [
+		$moreElements = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? [] : [
 			'imageResize' => ['set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true],
 			'imageRotate' => ['set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true],
 			'imageQuality' => ['set' => true && $permImageEdit, 'multiIconBox' => true, 'space' => we_html_multiIconBox::SPACE_BIG, 'rightHeadline' => false, 'noline' => true],
-			];
+		];
 		$this->formElements = array_merge($this->formElements, [
 			'uploader' => ['set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => false],
 			'parentId' => ['set' => true, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
@@ -58,7 +58,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$this->dimensions['dragWidth'] = 400;
 		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, [
 			['fu_file_parentID', 'int'],
-			]);
+		]);
 		$this->doImport = $doImport;
 
 		if($this->doImport){
@@ -82,7 +82,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 					array('fu_doc_thumbs', 'text'),
 					array('fu_doc_alt', 'text'),
 					array('fu_doc_title', 'text'),
-				), $evenMoreFields);
+					), $evenMoreFields);
 			}
 		} else {
 			$this->responseClass = 'we_fileupload_resp_base';
@@ -113,8 +113,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 				$this->getHiddens() .
 				we_html_element::htmlDiv(['style' => 'width:200px'], $divButtons
 				) .
-				we_html_element::htmlDiv(['style' => 'width:400px'], we_html_element::htmlDiv(['id' => 'div_fileupload_right', 'style' => "position:relative;"],
-						$this->getHtmlDropZone('preview', $noImage) .
+				we_html_element::htmlDiv(['style' => 'width:400px'], we_html_element::htmlDiv(['id' => 'div_fileupload_right', 'style' => "position:relative;"], $this->getHtmlDropZone('preview', $noImage) .
 						(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? we_html_element::htmlDiv([], $this->getFormImageEditClientside()) : '')
 					)
 				) .
@@ -283,7 +282,6 @@ documentWriteback = function(importedDocument){
 		$yuiSuggest = &weSuggest::getInstance();
 
 		echo we_html_tools::getHtmlTop('fileupload', '', '', STYLESHEET . $fileUpload->getEditorJS() .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
 			we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js'), we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm([], we_html_element::htmlDiv(array('id' => 'we_fileupload_editor', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'), $fileUpload->getHtml()) .
 					we_html_element::htmlDiv(array('id' => 'we_fileupload_footer', 'class' => '', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'), $fileUpload->getHtmlFooter())
