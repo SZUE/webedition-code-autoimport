@@ -8,6 +8,8 @@
 /* query separator */
 ###UPDATEDROPCOL(NotifyOnChange,###TBLPREFIX###tblDocTypes)###
 /* query separator */
+###UPDATEDROPCOL(Deleted,###TBLPREFIX###tblDocTypes)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblDocTypes (
   ID smallint unsigned NOT NULL auto_increment,
