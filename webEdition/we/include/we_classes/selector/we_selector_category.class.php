@@ -340,11 +340,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 
 	protected function getFrameset(){
 		$isMainChooser = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'we_selector_category' && !(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) || we_base_request::_(we_base_request::JS, 'we_cmd', false, 5));
-		return
-			STYLESHEET .
-			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			$this->getFramsetJSFile() .
-			'<body class="selector" onload="self.focus();">' .
+		return '<body class="selector" onload="self.focus();">' .
 			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
 			($isMainChooser ?
@@ -352,8 +348,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			) .
 			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-			'</body>
-</html>';
+			'</body>';
 	}
 
 	function printChangeCatHTML(){

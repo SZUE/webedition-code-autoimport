@@ -304,18 +304,14 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 
 	protected function getFrameset($withPreview = false){
 		$is_object = defined('OBJECT_TABLE') && $this->table === OBJECT_TABLE;
-		return STYLESHEET .
-			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			$this->getFramsetJSFile() .
-			'<body class="selector" onload="startFrameset()">' .
+		return '<body class="selector" onload="startFrameset()">' .
 			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview' . ($is_object ? ' object' : '')) .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false, ($is_object ? 'object' : '')) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
 			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-			'</body>
-</html>';
+			'</body>';
 	}
 
 	function printPreviewHTML(){

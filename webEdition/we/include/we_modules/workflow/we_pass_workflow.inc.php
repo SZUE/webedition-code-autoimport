@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo STYLESHEET;
 
 if($cmd === "ok"){
 	$wf_text = we_base_request::_(we_base_request::STRING, 'wf_text');

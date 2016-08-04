@@ -194,14 +194,11 @@ class we_selector_file{
 
 	function printFramesetHTML($withPreview = true){
 		$this->setDirAndID(); //set correct directory
-		echo we_html_tools::getHtmlTop($this->title, '', 'frameset') .
-		$this->getFramesetJavaScriptDef() .
-		$this->getFramsetJSFile() .
-		$this->getExitOpen() .
-		we_html_element::jsElement($this->printCmdAddEntriesHTML() . 'self.focus();');
-		?>
-		</head><?php
-		echo $this->getFrameset($withPreview);
+		echo we_html_tools::getHtmlTop($this->title, '', 'frameset', $this->getFramesetJavaScriptDef() .
+			$this->getFramsetJSFile() .
+			$this->getExitOpen() .
+			we_html_element::jsElement($this->printCmdAddEntriesHTML() . 'self.focus();') .
+			we_html_element::cssLink(CSS_DIR . 'selectors.css'), $this->getFrameset($withPreview));
 	}
 
 	protected function getFramsetJSFile(){
@@ -265,18 +262,13 @@ var g_l={
 	}
 
 	protected function getFrameset(){
-		return
-			STYLESHEET .
-			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-			$this->getFramsetJSFile() .
-			'<body class="selector" onload="startFrameset();">' .
+		return '<body class="selector" onload="startFrameset();">' .
 			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
 			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
-			'</body>
-</html>';
+			'</body>';
 	}
 
 	protected function getExitOpen(){
