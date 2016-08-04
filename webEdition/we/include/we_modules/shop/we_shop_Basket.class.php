@@ -143,14 +143,14 @@ class we_shop_Basket{
 			$key = str_replace('.', '', uniqid('we_cart_', true));
 
 			if($quantity > 0){ // only add new item with positive number
-				$item = array(
+				$item = [
 					'id' => $id,
 					'type' => $type,
 					'variant' => $variant,
 					'quantity' => $quantity,
 					'serial' => $this->getserial($id, $type, $variant, $customFields),
 					'customFields' => $customFields
-				);
+					];
 
 				$this->ShoppingItems[$key] = $item;
 			}
@@ -229,7 +229,7 @@ class we_shop_Basket{
 				$olv->next_record();
 
 				$Record = $olv->getDBRecord();
-
+				unset($Record[self::PROPPREFIX . 'LASTPATH']);
 				if($variant){
 					// init model to detect variants
 					// :TODO: change this to match above version
