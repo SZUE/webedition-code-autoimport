@@ -25,8 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 we_html_tools::protect($protect);
 
-echo we_html_tools::getHtmlTop() . STYLESHEET;
-
 $jsFunction = '
 	function we_submitForm(url){
 		var f = self.document.we_form;
@@ -145,7 +143,7 @@ $parts = [
 	[
 		'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintDokumente]'), we_html_tools::TYPE_INFO, 650, false),
 		'noline' => 1
-	 ],
+	],
 	[
 		'headline' => '',
 		'html' => $tabStatus->getHtml()
@@ -207,9 +205,9 @@ $parts[] = [
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintISO]'), we_html_tools::TYPE_INFO, 650, false),
 ];
 
-echo we_html_element::jsElement($jsFunction);
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+	we_html_element::jsElement($jsFunction));
 ?>
-</head>
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post" >
 		<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />

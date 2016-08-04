@@ -24,21 +24,19 @@
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
 
 $browser = we_base_browserDetect::inst();
 $transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
 if(!$transaction){
 	exit();
 }
-echo we_html_element::jsElement('
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+	we_html_element::jsElement('
 		var transaction="' . $transaction . '";
 ') .
- we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
- we_html_element::jsScript(JS_DIR . 'we_modules/messaging/showFolder.js');
+	we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
+	we_html_element::jsScript(JS_DIR . 'we_modules/messaging/showFolder.js'));
 ?>
-</head>
 <body style="margin:5px 7px;">
 	<?php
 	$messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);

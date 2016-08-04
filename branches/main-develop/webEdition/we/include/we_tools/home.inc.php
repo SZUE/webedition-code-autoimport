@@ -21,31 +21,18 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop() .
- STYLESHEET .
- we_html_element::cssLink(CSS_DIR . 'tools_home.css');
-
 $row = 0;
 $starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
 $starttable->setCol($row++, 0, array('class' => "defaultfont titleline", "colspan" => 3), $title);
 $starttable->setCol($row++, 0, array('class' => 'defaultfont', "colspan" => 3), "");
 $starttable->setCol($row++, 0, array("style" => "text-align:center"), $content);
 
-echo we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $GLOBALS["we_head_insert"];
-?>
-
-</head>
-
-<?php
 $tooldir = ($tool === 'weSearch' ? WE_INCLUDES_DIR . 'we_tools/' : WE_APPS_DIR);
-?>
 
-<body class="home" onload="loaded = true;
-		var we_is_home = 1;">
-	<div id="tabelle"><?= $starttable->getHtml(); ?></div>
-	<div id="modimage"><img src="<?= $tooldir . $tool . '/layout/home.gif'; ?>" style="width:335px;height:329px" /></div>
-
-	<?= $GLOBALS["we_body_insert"]; ?>
-</body>
-
-</html>
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+	we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
+	we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $GLOBALS["we_head_insert"], we_html_element::htmlBody(['class' => "home", 'onload' => "loaded = true;var we_is_home = 1;"], '
+	<div id="tabelle">' . $starttable->getHtml() . '</div>
+	<div id="modimage"><img src="' . $tooldir . $tool . '/layout/home.gif" style="width:335px;height:329px" /></div>' .
+		$GLOBALS["we_body_insert"]
+));

@@ -25,14 +25,14 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
 
 $transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
 if(!$transaction){
 	exit();
 }
 
+echo we_html_tools::getHtmlTop() .
+ STYLESHEET;
 
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);

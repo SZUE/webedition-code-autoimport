@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -23,13 +22,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop();
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $GLOBALS['we_transaction']), 1);
-echo we_html_element::jsElement('
+echo we_html_tools::getHtmlTop() .
+ we_html_element::jsElement('
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");
 var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();' .
 	$we_JavaScript . ';' .
 	($we_responseText ?
 		we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) :
-		'') .$GLOBALS['we_responseJS']
+		'') . $GLOBALS['we_responseJS']
 );

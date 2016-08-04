@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop();
 
 $html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .
 	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? : "-") . '</div>
@@ -34,7 +33,7 @@ $parts = array(
 	array("headline" => "",
 		"html" => $html,
 		'space' => we_html_multiIconBox::SPACE_MED2,
-		'icon' =>"meta.gif"
+		'icon' => "meta.gif"
 	)
 );
 
@@ -66,17 +65,7 @@ if($GLOBALS['we_doc']->ModifierID){
 $parts[] = array("headline" => "",
 	"html" => $html,
 	'space' => we_html_multiIconBox::SPACE_MED2,
-	'icon' =>"cal.gif"
+	'icon' => "cal.gif"
 );
 
-
-echo STYLESHEET;
-?>
-</head>
-<body class="weEditorBody">
-	<?php
-	echo we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("", $parts, 30);
-	?>
-</body>
-</html>
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_multiIconBox::getJS(), we_html_element::htmlBody(['class' => "weEditorBody"], we_html_multiIconBox::getHTML("", $parts, 30)));

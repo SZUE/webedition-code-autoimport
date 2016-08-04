@@ -174,7 +174,7 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 					$selAttribs = array('id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']');
 					$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
 
-					$innerTable->setCol($num, 0, array('class' => 'defaultfont'.($isDefCountry ?' bold':''), 'width' => 184, 'style' => ($isDefCountry ? '' : 'padding-bottom: 8px;')), ($v['textTerritory'] ? : 'N.N.'));
+					$innerTable->setCol($num, 0, array('class' => 'defaultfont' . ($isDefCountry ? ' bold' : ''), 'width' => 184, 'style' => ($isDefCountry ? '' : 'padding-bottom: 8px;')), ($v['textTerritory'] ? : 'N.N.'));
 					$innerTable->setCol($num, 1, array('class' => 'defaultfont', 'width' => 220), $sel);
 				}
 			}
@@ -198,7 +198,6 @@ if($shopCategoriesDir && intval($shopCategoriesDir) !== -1){
 	$catsTableHtml = $catsDirTableHtml = g_l('modules_shop', '[shopcats][warning_noShopCatDir]');
 }
 
-echo we_html_tools::getHtmlTop() . STYLESHEET;
 
 $jsFunction = '
 	var hot = 0;
@@ -294,14 +293,12 @@ $parts[] = array(
 
 $parts[] = array(
 	'headline' => '',
-
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_edit_shopCatDir]'), we_html_tools::TYPE_INFO, '614', false, 100),
 	'noline' => 1
 );
 
 $parts[] = array(
 	'headline' => '',
-
 	'html' => $catsDirTableHtml,
 );
 
@@ -314,26 +311,23 @@ $parts[] = array(
 
 $parts[] = array(
 	'headline' => '',
-
 	'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_editShopCats]'), we_html_tools::TYPE_INFO, "614", false, 101),
 	'noline' => 1
 );
 
 $parts[] = array(
 	'headline' => '',
-
 	'html' => $catsTableHtml,
 	'noline' => 1
 );
 
 $parts[] = array(
 	'headline' => '',
-
 	//'html' => $debug_output
 );
 
-echo we_html_element::jsElement($jsFunction) .
- '</head>
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+	we_html_element::jsElement($jsFunction)) . '
 <body class="weDialogBody" onload="window.focus(); addListeners();">
 	<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="load" /><input type="hidden" name="onsaveclose" value="0" />' .

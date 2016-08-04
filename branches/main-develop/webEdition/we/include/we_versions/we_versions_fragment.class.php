@@ -48,7 +48,6 @@ class we_versions_fragment extends we_fragment_base{
 		}
 		unset($_SESSION['weS']['versions']['logResetIds']);
 		$responseText = we_base_request::_(we_base_request::STRING, 'responseText', "");
-		echo we_html_tools::getHtmlTop();
 		switch(we_base_request::_(we_base_request::STRING, 'type')){
 			case "delete_versions":
 				$responseText = g_l('versions', '[deleteDateVersionsOK]');
@@ -56,8 +55,8 @@ class we_versions_fragment extends we_fragment_base{
 			case "reset_versions":
 				$responseText = g_l('versions', '[resetAllVersionsOK]');
 		}
-		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(
-				addslashes($responseText ? : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(
+					addslashes($responseText ? : ""), we_message_reporting::WE_MESSAGE_NOTICE) . '
 
 			// reload current document => reload all open Editors on demand
 
@@ -78,8 +77,7 @@ class we_versions_fragment extends we_fragment_base{
 			top.opener.we_cmd("load", top.opener.top.treeData.table ,0);
 
 			top.close();
-		') .
-		'</head></html>';
+		'), we_html_element::htmlBody());
 	}
 
 	static function printHeader(){

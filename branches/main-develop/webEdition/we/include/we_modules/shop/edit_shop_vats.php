@@ -25,9 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 we_html_tools::protect($protect);
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
-
 $saveSuccess = false;
 $onsaveClose = we_base_request::_(we_base_request::BOOL, 'onsaveclose', false);
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
@@ -157,29 +154,18 @@ $formVat = '
 </tr>
 <tr>
 	<td></td>
-	<td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');') .' '.we_html_button::create_button(we_html_button::CANCEL,'javascript:we_cmd(\'cancel_notclose\');'). '</td>
+	<td>' . we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');') . ' ' . we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'cancel_notclose\');') . '</td>
 </tr>
 </table>
 </form>';
 
-$parts = array(
-	array(
-		'html' => $vatTable
-	),
-	array(
-		'html' => $plusBut
-	),
-	array(
-		'html' => $formVat,
-	),
-);
+$parts = [
+	['html' => $vatTable],
+	['html' => $plusBut],
+	['html' => $formVat,],
+];
 
-echo we_html_element::jsElement(
-	$vatJavaScript .
-	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess && $onsaveClose ? 'window.close()' : '') : '')) . we_html_element::jsScript(JS_DIR . 'we_modules/shop/edit_shop_vats.js') . "
-	</head>
-<body class=\"weDialogBody\" onload='window.focus();addListeners();'>" .
- we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
-);
-?>
-</body></html>
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsElement(
+		$vatJavaScript .
+		(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess && $onsaveClose ? 'window.close()' : '') : '')) . we_html_element::jsScript(JS_DIR . 'we_modules/shop/edit_shop_vats.js'), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
+)));
