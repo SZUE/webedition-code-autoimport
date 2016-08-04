@@ -47,8 +47,7 @@ $mode = we_base_request::_(we_base_request::INT, "art", 0);
 $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 if($what === 'show_frameset'){ //old call to show_frameset.php
-	echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-		we_tabs::getHeader('
+	echo we_html_tools::getHtmlTop('', '', '', we_tabs::getHeader('
 var makeNewEntryCheck = 0;
 var publishWhenSave = 0;
 var weModuleWindow = true;

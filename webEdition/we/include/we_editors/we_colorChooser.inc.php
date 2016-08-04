@@ -23,7 +23,6 @@
  */
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
- STYLESHEET .
  we_html_element::jsScript(JS_DIR . 'we_colors2.js');
 $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 ?>
@@ -56,7 +55,7 @@ $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
 <body class="weDialogBody"<?= 'onload="init(' . ($isA ? '"' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) . '"' : 'window.dialogArguments["bgcolor"]') . ')"'; ?>>
 	<form name="we_form" action="" onsubmit="<?php if(!$isA){ ?>setColor();<?php } ?>return
 			false;">
-					<?php
+				<?php
 					$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, ($isA ? "javascript:setColor();" : we_html_button::WE_FORM . ":we_form")), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close()"));
 					echo we_html_tools::htmlDialogLayout('<table class="default">
 	<tr>

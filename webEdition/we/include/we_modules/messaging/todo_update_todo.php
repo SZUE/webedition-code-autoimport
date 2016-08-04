@@ -33,8 +33,7 @@ $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction
 $messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 $messaging->init($_SESSION['weS']['we_data'][$transaction]);
 
-echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]') . ' - Update Status') .
- STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]') . ' - Update Status');
 ?>
 <script><!--
 function do_confirm() {

@@ -32,8 +32,7 @@ echo we_html_tools::getHtmlTop() .
 		entrstr = "";
 
 		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=show_folder_content&sort=" + sortitem + entrstr + "&we_transaction=' . $transaction . '";
-	}') .
- STYLESHEET;
+	}');
 $si = we_base_request::_(we_base_request::STRING, "si");
 $so = we_base_request::_(we_base_request::STRING, 'so');
 ?>
@@ -62,7 +61,7 @@ $so = we_base_request::_(we_base_request::STRING, 'so');
 			<?php } else { ?>
 				<td class="defaultfont" style="width:200px"><a href="javascript:doSort('subject');"><b><?= g_l('modules_messaging', '[subject]') ?></b>&nbsp;<?= ($si === 'subject' ? we_messaging_frames::sort_arrow($so) : '') ?></a></td>
 				<td class="defaultfont" style="width:170px"><a href="javascript:doSort('deadline');"><b><?= g_l('modules_messaging', '[deadline]') ?></b>&nbsp;<?= ($si === 'deadline' ? we_messaging_frames::sort_arrow($so) : '') ?></a></td>
-				<td class="defaultfont" style="width:120px"><a href="javascript:doSort('priority');"><b><?= g_l('modules_messaging', '[priority]') ?></b>&nbsp;<?= ($si === 'priority' ? we_messaging_frames::sort_arrow( $so) : '') ?></a></td>
+				<td class="defaultfont" style="width:120px"><a href="javascript:doSort('priority');"><b><?= g_l('modules_messaging', '[priority]') ?></b>&nbsp;<?= ($si === 'priority' ? we_messaging_frames::sort_arrow($so) : '') ?></a></td>
 				<td class="defaultfont" style="width:70px"><a href="javascript:doSort('status');"><b><?= g_l('modules_messaging', '[status]') ?></b>&nbsp;<?= ($si === 'status' ? we_messaging_frames::sort_arrow($so) : '') ?></a></td>
 						<?php } ?>
 		</tr>

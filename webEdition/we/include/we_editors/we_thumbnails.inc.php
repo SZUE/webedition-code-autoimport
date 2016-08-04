@@ -365,8 +365,7 @@ var g_l={
 	thumbnail_new: "' . g_l('thumbnails', '[new]') . '"
 };
 	') .
- we_html_element::jsScript(JS_DIR . 'we_thumbnails.js') .
- STYLESHEET . '</head>';
+ we_html_element::jsScript(JS_DIR . 'we_thumbnails.js') . '</head>';
 //  check if gd_lib is installed ...
 if(we_base_imageEdit::gd_version() > 0){
 	echo we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'init();')

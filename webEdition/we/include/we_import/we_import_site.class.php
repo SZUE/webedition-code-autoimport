@@ -1953,7 +1953,7 @@ function doUnload() {
 	}
 
 	private function _getHtmlPage($body, $js = ""){
-		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET . $js, $body);
+		return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $js, $body);
 	}
 
 }

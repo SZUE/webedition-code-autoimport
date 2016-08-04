@@ -38,8 +38,7 @@ if(!we_base_request::_(we_base_request::TRANSACTION, 'we_transaction')){
 	exit();
 }
 
-echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]')) .
- STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[wintitle]'));
 ?>
 
 <script><!--

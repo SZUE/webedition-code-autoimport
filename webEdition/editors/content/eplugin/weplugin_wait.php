@@ -26,7 +26,7 @@ we_html_tools::protect();
 
 $callback = we_base_request::_(we_base_request::JS, 'callback');
 
-echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+echo we_html_tools::getHtmlTop('', '', '',
 	we_html_element::jsElement('
 var g_l={
 no_java:"' . g_l('eplugin', '[no_java]') . '"

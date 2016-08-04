@@ -176,8 +176,7 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 
 $sTblWidget = we_html_multiIconBox::getHTML('rssProps', $parts, 30, $buttons, -1, '', '', '', g_l('cockpit', '[rss_feed]'));
 
-echo we_html_tools::getHtmlTop(g_l('cockpit', '[rss_feed]'), '', '', STYLESHEET .
-	$jsFile .
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[rss_feed]'), '', '', $jsFile .
 	we_html_element::jsElement($jsPrefs . "
 var g_l={
 	invalid_url: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[invalid_url]')) . "'

@@ -38,5 +38,5 @@ $table->setColContent(0, 1, '<span class="fa-stack fa-lg" style="color:#F2F200;"
 $table->setCol(0, 1, array('class' => "middlefont highlightElementChanged", 'style' => 'padding-left:9px;'), $errormsg);
 
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array("id" => 'eHeaderBody',), $table->getHtml())
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', we_html_element::htmlBody(["id" => 'eHeaderBody',], $table->getHtml())
 );

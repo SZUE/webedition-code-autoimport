@@ -124,7 +124,7 @@ $parts = [
 ];
 
 //  css for webSite
-echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsElement('
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 host = {};
 path = {};
 varname = {};

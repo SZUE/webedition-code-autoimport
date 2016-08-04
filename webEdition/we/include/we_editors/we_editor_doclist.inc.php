@@ -24,7 +24,6 @@
 we_html_tools::protect();
 
 echo we_html_tools::getHtmlTop() .
- STYLESHEET .
  YAHOO_FILES;
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');

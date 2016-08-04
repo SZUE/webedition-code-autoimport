@@ -65,15 +65,15 @@ var typeAttributeRequires = {};';
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = [];';
 			} else {
 				$typeAttributeJs .= 'typeAttributeAllows["' . $option->getName() . '"] = ["' .
-						implode('","', $allowedAttribs) .
-						'"];';
+					implode('","', $allowedAttribs) .
+					'"];';
 			}
 
 			$reqAttribs = $option->getRequiredAttributes($attributes);
 			if($reqAttribs){
 				$typeAttributeJs .= 'typeAttributeRequires["' . $option->getName() . '"] = ["' .
-						implode('","', $reqAttribs) .
-						'"];';
+					implode('","', $reqAttribs) .
+					'"];';
 			} else {
 				$typeAttributeJs .= 'typeAttributeRequires["' . $option->getName() . '"] = [];';
 			}
@@ -89,10 +89,9 @@ weTagWizard.typeAttributeRequires = typeAttributeRequires;';
 }
 // additional javascript for the individual tags - end
 // print html header of page
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-		we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
-		we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
-		we_html_element::jsElement('
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::cssLink(CSS_DIR . 'tagWizard.css') .
+	we_html_element::jsScript(JS_DIR . 'tagWizard.js') .
+	we_html_element::jsElement('
 weTagWizard = new weTagWizard("' . $weTag->getName() . '");
 weTagWizard.allAttributes = [' . ($attributes ? '"' . implode('", "', $attributes) . '"' : '') . '];
 weTagWizard.reqAttributes = {' . implode(',', $jsReqAttributes) . '};
@@ -112,14 +111,14 @@ function we_cmd(){
 			if (strWeTag = weTagWizard.getWeTag()) {
 				var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 			' .
-				( $openAtCursor ? '
+		( $openAtCursor ? '
 				contentEditor.window.addCursorPosition( strWeTag );
 				self.close();;
 				' : '
 				contentEditor.document.we_form.elements.tag_edit_area.value=strWeTag;
 				contentEditor.document.we_form.elements.tag_edit_area.select();
 				self.close();'
-				) . '
+		) . '
 			} else {
 				if (weTagWizard.missingFields.length) {
 					req = "";
@@ -159,52 +158,52 @@ function we_cmd(){
 			return false;"><?php
 // start building the content of the page
 // get all attributes
-		$typeAttribCode = $weTag->getTypeAttributeCodeForTagWizard();
-		$attributesCode = $weTag->getAttributesCodeForTagWizard();
-		$defaultValueCode = ($weTag->needsEndTag() ? $weTag->getDefaultValueCodeForTagWizard() : '');
+					$typeAttribCode = $weTag->getTypeAttributeCodeForTagWizard();
+					$attributesCode = $weTag->getAttributesCodeForTagWizard();
+					$defaultValueCode = ($weTag->needsEndTag() ? $weTag->getDefaultValueCodeForTagWizard() : '');
 
-		if($typeAttribCode){
+					if($typeAttribCode){
 
-			$typeAttribCode = '<hr /><fieldset>
+						$typeAttribCode = '<hr /><fieldset>
 		<div class="legend"><strong>' . g_l('taged', '[type_attribute]') . "</strong></div>
 		$typeAttribCode
 	</fieldset>";
-		}
-		if($attributesCode){
+					}
+					if($attributesCode){
 
-			$attributesCode = '<hr/><fieldset>
+						$attributesCode = '<hr/><fieldset>
 		<div class="legend"><strong>' . g_l('taged', '[attributes]') . "</strong></div>
 		" . ($typeAttribCode ? '<ul id="no_type_selected_attributes"><li>' . g_l('taged', '[no_type_selected]') . '</li></ul>' : '' ) . "
 		" . ($typeAttribCode ? '<ul id="no_attributes_for_type" style="display: none;"><li>' . g_l('taged', '[no_attributes_for_type]') . '</li></ul>' : '' ) . "
 		$attributesCode
 	</fieldset>";
-		}
-		if($defaultValueCode){
+					}
+					if($defaultValueCode){
 
-			$defaultValueCode = '<hr/><fieldset>
+						$defaultValueCode = '<hr/><fieldset>
 		<div class="legend"><strong>' . we_html_element::htmlLabel(array('id' => 'label_weTagData_defaultValue', 'for' => 'weTagData_defaultValue'), g_l('taged', '[defaultvalue]') . ':<br />') . "</strong></div>
 		$defaultValueCode
 	</fieldset>";
-		}
+					}
 
-		$code = '<fieldset>
+					$code = '<fieldset>
 		<div class="legend"><strong>' . g_l('taged', '[description]') . '</strong></div>' .
-				($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '98%') : '') . $weTag->getDescription() .
-				'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
-				$defaultValueCode;
-
-		?>
+						($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '98%') : '') . $weTag->getDescription() .
+						'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
+						$defaultValueCode;
+					?>
 		<div id="divTagName">
 			<h1>&lt;we:<?= $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (' . g_l('taged', '[deprecated][title]') . ')' : ''); ?></h1>
 		</div>
 		<div id="divContent">
-<?= $code; ?>
+			<?= $code; ?>
 			<br/>
 		</div>
 		<div id="divButtons">
 			<div style="padding-top: 8px;">
-<?= we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:we_cmd('saveTag');"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
-		); ?>
+				<?= we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:we_cmd('saveTag');"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();")
+				);
+				?>
 			</div>
 		</div>
 		<input type="submit" style="width:1px; height:1px; padding:0px; margin:0px; color:#fff; background-color:#fff; border:0px;" />

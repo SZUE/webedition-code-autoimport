@@ -44,7 +44,7 @@ $format->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);
 
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsElement('
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 	function todo_markdone() {
 		top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&pnt=cmd&mcmd=todo_markdone&we_transaction=' . $transaction . '";
 	}'));

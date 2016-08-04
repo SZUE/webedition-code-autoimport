@@ -22,8 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
- STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('global', '[question]'));
 
 $we_cmd6 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6);
 

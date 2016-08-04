@@ -74,8 +74,7 @@ function printHeader($login, $status = 200, $js = ''){
 	header('Pragma: no-cache');
 	we_html_tools::setHttpCode($status);
 
-	echo we_html_tools::getHtmlTop('webEdition', '', '', '', '', false) .
-	STYLESHEET .
+	echo we_html_tools::getHtmlTop('', '', '', '', '', false) .
 	we_html_element::jsScript(JS_DIR . 'windows.js') .
 	we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
 	we_html_element::jsElement(we_message_reporting::jsString());
@@ -171,10 +170,8 @@ $GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTabl
 $count = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblUser" AND IP="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '" AND LoginDate>(NOW() - INTERVAL ' . intval(we_base_constants::LOGIN_FAILED_TIME) . ' MINUTE)');
 
 if($count >= we_base_constants::LOGIN_FAILED_NR){
-	echo we_html_tools::getHtmlTop('webEdition ') .
-	we_html_element::jsScript(JS_DIR . 'windows.js') .
-	we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR)) .
-	'</html>';
+	echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'windows.js') .
+		we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[3timesLoginError]'), we_base_constants::LOGIN_FAILED_NR, we_base_constants::LOGIN_FAILED_TIME), we_message_reporting::WE_MESSAGE_ERROR)), we_html_element::htmlBody());
 	exit();
 }
 

@@ -46,8 +46,7 @@ if(is_array($_SESSION['weS']['we_data'][$transaction])){
 	$res = we_messaging_message::newMessage($rcpts, we_base_request::_(we_base_request::STRING, 'mn_subject'), we_base_request::_(we_base_request::STRING, 'mn_body'), $errs);
 }
 
-echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[message_send]')) .
- STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('modules_messaging', '[message_send]'));
 
 if($res['ok']){
 	if(substr(we_base_request::_(we_base_request::STRING, "mode"), 0, 2) != 'u_'){

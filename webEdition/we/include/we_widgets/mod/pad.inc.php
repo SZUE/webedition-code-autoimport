@@ -273,8 +273,7 @@ $notepad = $oPad->getHTML() .
 	we_html_element::htmlDiv(array("id" => "props"), $oTblProps->getHTML()) .
 	we_html_element::htmlDiv(array("id" => "view"), $oTblBtnProps);
 
-echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
-	we_html_element::cssLink(CSS_DIR . 'pad.css') .
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', we_html_element::cssLink(CSS_DIR . 'pad.css') .
 	we_html_tools::getCalendarFiles() .
 	we_html_element::jsElement("
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5) . "';
@@ -296,7 +295,7 @@ WE().consts.g_l.cockpit.pad={
 var _ttlB64Esc=escape(WE().util.Base64.encode(_sTb));
 ") . we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
 		[
-			"onload" => (($command !== "home") ? "if(parent!=self){init();}" : "") . 'calendarSetup();toggleTblValidity();'
+		"onload" => (($command !== "home") ? "if(parent!=self){init();}" : "") . 'calendarSetup();toggleTblValidity();'
 		], we_html_element::htmlForm(["style" => "display:inline;"], we_html_element::htmlDiv(
 				["id" => "pad"], $notepad .
 				we_html_element::htmlHidden("mark", "")

@@ -318,11 +318,8 @@ function exit_open(){' .
 	}
 
 	protected function printBodyHTML(){
-		echo we_html_tools::getHtmlTop('', '', '4Trans') .
-		STYLESHEET .
-		we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-		$this->getFramsetJSFile() .
-		'</head><body class="selectorBody" onload="top.writeBody(self.document.body);" onclick="weonclick(event);"></body></html>';
+		echo we_html_tools::getHtmlTop('', '', '4Trans', we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+			$this->getFramsetJSFile(), we_html_element::htmlBody(['class' => "selectorBody", 'onload' => "top.writeBody(self.document.body);", 'onclick' => "weonclick(event);"]));
 	}
 
 	protected function printHeaderHTML(){

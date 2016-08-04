@@ -210,8 +210,7 @@ function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),WE().consts.g_l.cockpit.mfd.last_modified);
 }";
 
-echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', STYLESHEET .
-	we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
 		array(
 		'style' => 'margin:10px 15px;',
 		"onload" => 'init();'

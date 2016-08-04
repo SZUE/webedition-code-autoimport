@@ -117,8 +117,7 @@ function getTmplTableRow($type, $name, $isField = false){
 
 $cmd3 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 3);
 
-echo we_html_tools::getHtmlTop(g_l('weClass', '[generateTemplate]')) .
- STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('weClass', '[generateTemplate]'));
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo '</head><body class="weDialogBody"><form name="we_form">';

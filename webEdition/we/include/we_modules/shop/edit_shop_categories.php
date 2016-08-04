@@ -326,8 +326,7 @@ $parts[] = array(
 	//'html' => $debug_output
 );
 
-echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-	we_html_element::jsElement($jsFunction)) . '
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jsFunction)) . '
 <body class="weDialogBody" onload="window.focus(); addListeners();">
 	<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="load" /><input type="hidden" name="onsaveclose" value="0" />' .

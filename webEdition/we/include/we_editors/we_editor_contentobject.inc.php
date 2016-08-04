@@ -46,8 +46,6 @@ if($we_doc->CSS){
 		}
 	}
 }
-echo STYLESHEET;
-
 
 //	---> Loading some Javascript
 

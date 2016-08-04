@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop() . STYLESHEET;
+echo we_html_tools::getHtmlTop();
 
 // init document
 $we_dt = $_SESSION['weS']['we_data'][$GLOBALS['we_transaction']];

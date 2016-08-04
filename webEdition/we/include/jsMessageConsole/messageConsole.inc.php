@@ -26,8 +26,7 @@ $closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:
 
 $buttons = we_html_button::formatButtons($deleteAllButton . $closeButton);
 
-echo we_html_tools::getHtmlTop(g_l('messageConsole', '[headline]'), '', '', STYLESHEET .
-	we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
+echo we_html_tools::getHtmlTop(g_l('messageConsole', '[headline]'), '', '', we_html_element::cssLink(CSS_DIR . 'messageConsole.css') .
 	we_html_element::jsScript(JS_DIR . 'messageConsoleWindow.js'), we_html_element::htmlBody([
 		'onload' => "(msgWin=new messageConsoleWindow(window)).init();",
 		'onunload' => "msgWin.remove();",

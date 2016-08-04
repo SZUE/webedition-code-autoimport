@@ -48,7 +48,7 @@ abstract class we_modules_frame{
 	public function getHTMLDocumentHeader($charset = ''){
 		$charset = ($charset? : $GLOBALS['WE_BACKENDCHARSET']);
 		we_html_tools::headerCtCharset('text/html', $charset);
-		return we_html_tools::getHtmlTop($this->module, $charset) . STYLESHEET;
+		return we_html_tools::getHtmlTop($this->module, $charset);
 	}
 
 	function getHTMLDocument($body, $extraHead = ''){
@@ -239,7 +239,7 @@ abstract class we_modules_frame{
 			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd("' . $dc . '","' . we_base_request::_(we_base_request::INT, 'delayParam') . '");self.close();';
 			$cancel = 'self.close();';
 
-			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
+			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
 					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $yes, $no, $cancel) .
 					'</body>');
 		}

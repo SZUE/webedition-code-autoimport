@@ -78,7 +78,6 @@ if($cmd0 === 'do_addToCollection'){
 }
 
 echo we_html_tools::getHtmlTop() .
- STYLESHEET .
  $script .
  we_html_element::jsScript(JS_DIR . 'weAddToCollection.js') .
  we_html_element::jsElement('

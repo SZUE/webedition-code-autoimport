@@ -214,7 +214,7 @@ function doKeyDown() {
 	}
 
 	function getHeaderHTML($printJS_Style = false, $additionals = ''){
-		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . ($printJS_Style ? STYLESHEET : '') . static::getTinyMceJS() .
+		return we_html_tools::getHtmlTop($this->dialogTitle, $this->charset) . static::getTinyMceJS() .
 			($printJS_Style ?
 				$this->getJs() :
 				''

@@ -73,8 +73,7 @@ class liveUpdateTemplates{
 	 * @return string
 	 */
 	static function getHtmlHead(){
-		return we_html_tools::htmlMetaCtCharset($GLOBALS['WE_BACKENDCHARSET']) . STYLESHEET .
-			LIVEUPDATE_CSS;
+		return we_html_tools::htmlMetaCtCharset($GLOBALS['WE_BACKENDCHARSET']) . LIVEUPDATE_CSS;
 	}
 
 	/**

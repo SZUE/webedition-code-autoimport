@@ -114,7 +114,7 @@ if(($we_doc->IsTextContentDoc /* || $we_doc->IsFolder */) && $haspermNew && //	$
 	$js_permnew = '';
 }
 
-echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_html_element::jsElement('
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 var we_transaction="' . $we_transaction . '";
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
 var doc={

@@ -248,8 +248,7 @@ $parts = [
 echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'), '', '', we_html_element::jsElement('function closeOnEscape() {
 		return true;
 	}
-') .
-	STYLESHEET);
+'));
 ?>
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">

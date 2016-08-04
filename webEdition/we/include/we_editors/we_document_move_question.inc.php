@@ -22,10 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
- STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('global', '[question]'), '', '', ' ');
 ?>
-</head>
 <body class="weEditorBody" onload="self.focus();" onblur="self.focus();">
 	<?php
 	$yesCmd = "url = '" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter';new (WE().util.jsWindow)(window, url,'templateMoveQuestion',-1,-1,600,135,true,false,true);self.close();";

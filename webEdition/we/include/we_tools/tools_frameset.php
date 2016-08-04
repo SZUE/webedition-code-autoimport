@@ -89,13 +89,11 @@ if($tool === "weSearch"){
 	$tab = $modelid = false;
 }
 
-echo we_html_tools::getHtmlTop($title, '', 'frameset') .
- STYLESHEET .
+echo we_html_tools::getHtmlTop($title, '', 'frameset',
  we_html_element::jsScript(JS_DIR . 'toolframe.js') .
  YAHOO_FILES .
- we_tabs::getHeader();
+ we_tabs::getHeader());
 ?>
-</head>
 <body style="overflow:hidden;" <?= ($showHeader ? 'onload="weTabs.setFrameSize();"' : ''); ?>><?php
 	$_REQUEST['tool'] = $tool;
 	echo ($showHeader ?

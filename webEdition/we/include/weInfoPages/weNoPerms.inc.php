@@ -22,10 +22,4 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(g_l('alert', '[no_perms_title]'), '', '', STYLESHEET);
-?>
-<body class="weDialogBody" onload="WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);"><?php
-	echo we_html_tools::htmlDialogLayout('<p class="defaultfont">' . g_l('alert', '[no_perms_action]') . '</p>', g_l('alert', '[no_perms_title]'));
-	?>
-</body>
-</html>
+echo we_html_tools::getHtmlTop(g_l('alert', '[no_perms_title]'), '', '', '', we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "WE().layout.weEditorFrameController.getEditorFrame(window.name).setEditorIsLoading(false);"], we_html_tools::htmlDialogLayout('<p class="defaultfont">' . g_l('alert', '[no_perms_action]') . '</p>', g_l('alert', '[no_perms_title]'))));

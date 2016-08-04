@@ -384,7 +384,6 @@ if($ok){
 ?>
 //-->
 </script>
-<?= STYLESHEET; ?>
 </head>
 
 <body class="weDialogBody" onload="self.focus();" style="overflow:hidden;">

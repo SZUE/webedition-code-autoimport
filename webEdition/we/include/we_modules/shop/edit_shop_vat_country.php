@@ -157,8 +157,7 @@ $parts = array(
 	)
 );
 
-echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-	we_html_element::jsElement($jsFunction));
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jsFunction));
 ?>
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post">

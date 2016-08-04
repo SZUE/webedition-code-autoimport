@@ -240,7 +240,6 @@ function doUnload() {
 }
 //-->
 </script>
-<?= STYLESHEET; ?>
 </head>
 <body class="weDialogBody" onload="doOnLoad();
 		init();" onunload="doUnload();">

@@ -148,4 +148,4 @@ if(isset($we_transaction)){
 	}
 }
 
-echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody([], $out));
+echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody([], $out));

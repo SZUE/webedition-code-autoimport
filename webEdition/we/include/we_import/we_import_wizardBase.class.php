@@ -59,9 +59,7 @@ var tables = {
 	OBJECT_TABLE: '" . (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE') . "'
 };
 var path='" . $this->path . "';") .
-				we_html_element::jsScript(JS_DIR . 'import_wizardBase.js') .
-				STYLESHEET, $body
-		);
+				we_html_element::jsScript(JS_DIR . 'import_wizardBase.js'), $body);
 	}
 
 	private function getWizBody($type = '', $step = 0, $mode = 0){
@@ -84,8 +82,7 @@ var path='" . $this->path . "';") .
 			$step = 'get' . $type . 'Step' . $step;
 			list($js, $content) = $this->$step();
 			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
-			return we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-					($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
+			return we_html_tools::getHtmlTop('', '', '', ($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
 					we_html_element::jsElement($js), we_html_element::htmlBody(array(
 						"class" => "weDialogBody",
 						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "&pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
@@ -146,7 +143,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 <div id="closeDiv" style="display:none;">' . $closeButton . '</div>'
 		);
 
-		echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array(
+		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array(
 				"class" => "weDialogButtonsBody",
 				"onload" => "top.wizbody.set_button_state();",
 				'style' => 'overflow:hidden;'

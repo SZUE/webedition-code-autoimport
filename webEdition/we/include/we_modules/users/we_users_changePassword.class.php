@@ -72,8 +72,7 @@ top.document.forms[0].elements.newpasswd2.select();';
 	}
 
 	public static function showDialog(){
-		echo we_html_tools::getHtmlTop(g_l('global', '[changePass]'), '', '', STYLESHEET .
-			we_html_element::jsElement('
+		echo we_html_tools::getHtmlTop(g_l('global', '[changePass]'), '', '', we_html_element::jsElement('
 function saveOnKeyBoard() {
 	document.forms[0].submit();
 	return true;

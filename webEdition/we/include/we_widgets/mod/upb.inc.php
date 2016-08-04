@@ -152,7 +152,7 @@ function init(){
 }
 ";
 
-	echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', STYLESHEET . we_html_element::jsElement($jsCode), we_html_element::htmlBody(array(
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', we_html_element::jsElement($jsCode), we_html_element::htmlBody(array(
 			'style' => 'margin:10px 15px;',
 			"onload" => 'if(parent!=self){init();}WE().util.setIconOfDocClass(document,"upbIcon");'
 			), we_html_element::htmlDiv(array(

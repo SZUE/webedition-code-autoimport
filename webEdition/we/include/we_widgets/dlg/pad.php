@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -73,7 +72,7 @@ $oRdoDate = array(
 $date = new we_html_table(array('class' => 'default'), 3, 1);
 $date->setCol(0, 0, array(
 	"width" => 145
-		), $oRdoDate[0]);
+	), $oRdoDate[0]);
 $date->setCol(1, 0, null, $oRdoDate[1]);
 $date->setCol(2, 0, null, $oRdoDate[2]);
 
@@ -103,8 +102,8 @@ $parts[] = array(
 );
 
 $oSctValid = we_html_tools::htmlSelect("sct_valid", array(
-			g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
-				), 1, g_l('cockpit', '[always]'), false, array('style' => "width:120px;", 'onchange' => ""), 'value', 120);
+		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
+		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:120px;", 'onchange' => ""), 'value', 120);
 
 $parts[] = array(
 	"headline" => g_l('cockpit', '[default_validity]'), "html" => $oSctValid, 'space' => we_html_multiIconBox::SPACE_MED
@@ -133,13 +132,12 @@ $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javasc
 $cancel_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:exit_close();");
 $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button, $cancel_button);
 
-echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', STYLESHEET .
-		we_html_element::jsScript(JS_DIR . "weCombobox.js") .
-		$jsFile .
-		we_html_element::jsElement($jsPrefs) .
-		we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
-				array(
-			"class" => "weDialogBody", "onload" => "initDlg();"
-				), we_html_element::htmlForm(array(
-					"onsubmit" => "return false;"
-						), we_html_multiIconBox::getHTML("padProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))));
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', we_html_element::jsScript(JS_DIR . "weCombobox.js") .
+	$jsFile .
+	we_html_element::jsElement($jsPrefs) .
+	we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
+		array(
+		"class" => "weDialogBody", "onload" => "initDlg();"
+		), we_html_element::htmlForm(array(
+			"onsubmit" => "return false;"
+			), we_html_multiIconBox::getHTML("padProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))));

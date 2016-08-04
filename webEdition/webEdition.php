@@ -112,8 +112,7 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 	}
 }
 
-echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', '', '', false) .
- STYLESHEET;
+echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', '', '', false);
 ?>
 <script><!--
 <?php

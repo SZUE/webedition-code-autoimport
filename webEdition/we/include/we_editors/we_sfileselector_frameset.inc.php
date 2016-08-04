@@ -144,8 +144,7 @@ function printFrameSet(){
 		//-->
 	</script>
 	<?php
-	echo STYLESHEET .
-	we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+	echo we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 	we_html_element::cssElement('
 #fsfooter{
 	 bottom:0px;
@@ -155,7 +154,7 @@ function printFrameSet(){
 	?>
 	</head>
 	<body onload="setLookin();
-				top.fscmd.selectDir();" onunload="doUnload();">
+			top.fscmd.selectDir();" onunload="doUnload();">
 					<?php
 					echo we_html_element::htmlDiv(array('id' => 'fsheader'), printHeaderHTML(($cmd1 ? 1 : 0))) .
 					we_html_element::htmlIFrame('fsbody', 'about:blank', '', '', '', true) .

@@ -325,9 +325,8 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 
 		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db);
 		$path = $result ? $result['Path'] : '';
-		$out = we_html_tools::getHtmlTop('','','', 			STYLESHEET .
-			we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
-			we_html_element::jsElement('
+		$out = we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
+				we_html_element::jsElement('
 function setInfoSize() {
 	infoSize = document.body.clientHeight;
 	if(infoElem=document.getElementById("info")) {

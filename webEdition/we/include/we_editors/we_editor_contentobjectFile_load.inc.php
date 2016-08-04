@@ -66,8 +66,6 @@ if($we_doc->CSS){
 		echo we_html_element::cssLink(id_to_path($cs));
 	}
 }
-echo STYLESHEET;
-
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
@@ -135,11 +133,11 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			}
 
 			//FIXME: this will kill all other fields. we nee code to append & delete the following fields
-			$js = '';/*
-targetF.YAHOO.autocoml.yuiAcFieldsById = {' . implode(',', $fildsById) . '};
-targetF.YAHOO.autocoml.yuiAcFields = [' . implode(',', $fildsObj) . '];
-targetF.YAHOO.autocoml.init();
-';*/
+			$js = ''; /*
+			  targetF.YAHOO.autocoml.yuiAcFieldsById = {' . implode(',', $fildsById) . '};
+			  targetF.YAHOO.autocoml.yuiAcFields = [' . implode(',', $fildsObj) . '];
+			  targetF.YAHOO.autocoml.init();
+			  '; */
 
 			echo $jsGUI->getResponse('reload', $identifier, $content, false, $js);
 

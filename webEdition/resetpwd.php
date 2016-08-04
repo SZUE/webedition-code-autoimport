@@ -23,10 +23,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
-echo we_html_tools::getHtmlTop('webEdition') .
- STYLESHEET .
- we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
- we_html_element::jsElement('
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
+	we_html_element::jsElement('
 function comparePwd(f1,f2){
 	var pwd1=document.getElementsByName(f1)[0];
 	var pwd2=document.getElementsByName(f2)[0];
@@ -42,8 +40,8 @@ function comparePwd(f1,f2){
 	}
 	}
 }
-') .
- '</head><body id="loginScreen">';
+')) .
+ '<body id="loginScreen">';
 
 function defaultReset(){
 	$_SESSION['resetTok'] = md5(uniqid(__FILE__, true));

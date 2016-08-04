@@ -345,12 +345,12 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			we_html_element::cssLink(CSS_DIR . 'selectors.css') .
 			$this->getFramsetJSFile() .
 			'<body class="selector" onload="self.focus();">' .
-			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
+			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) .
 			($isMainChooser ?
 				we_html_element::htmlIFrame('fsvalues', $this->getFsQueryString(we_selector_file::PROPERTIES), '', '', '', true, ($isMainChooser ? 'catproperties' : '')) : ''
 			) .
-			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
+			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>
 </html>';
@@ -465,8 +465,7 @@ if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 			$table->setCol(5, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
 		}
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-			we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
 			we_html_element::jsElement('
 function we_cmd(){
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));

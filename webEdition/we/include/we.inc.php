@@ -151,8 +151,7 @@ $GLOBALS['WE_LANGUAGE'] = (!empty($_SESSION['prefs']['Language']) ?
 
 define('STYLESHEET_MINIMAL', we_html_element::cssLink(LIB_DIR . 'additional/fontLiberation/stylesheet.css') .
 	we_html_element::cssLink(CSS_DIR . 'we_button.css') . we_html_element::cssLink(LIB_DIR . 'additional/fontawesome/css/font-awesome.min.css'));
-define('STYLESHEET', //we_html_element::cssLink(CSS_DIR . 'global.php') .
-	STYLESHEET_MINIMAL .
+define('STYLESHEET', STYLESHEET_MINIMAL .
 	we_html_element::cssLink(CSS_DIR . 'webEdition.css')
 );
 

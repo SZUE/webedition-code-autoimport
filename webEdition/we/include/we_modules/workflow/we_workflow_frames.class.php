@@ -178,7 +178,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		if(we_base_request::_(we_base_request::BOOL, 'home')){
 			return $this->View->getHomeScreen();
 		}
-		return $this->getHTMLDocument($this->View->getProperties(), STYLESHEET . $this->View->getJSProperty());
+		return $this->getHTMLDocument($this->View->getProperties(), $this->View->getJSProperty());
 	}
 
 }

@@ -81,8 +81,7 @@ function monthSelect($select_name, $selectedMonth){
 }
 
 $mon = we_base_request::_(we_base_request::INT, 'ViewMonth');
-echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-	we_html_element::jsElement('
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 	function we_submitDateform() {
 		elem = document.forms[0];
 		elem.submit();

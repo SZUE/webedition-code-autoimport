@@ -22,11 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $title = sprintf(g_l('moduleActivation', '[headline]'), $GLOBALS['moduleName']);
-echo we_html_tools::getHtmlTop($title, '', '', STYLESHEET) .
- '<body class="weDialogBody" onload="self.focus();" onblur="self.close();">' . '
-<table style="width:100%" class="default defaultfont">
+echo we_html_tools::getHtmlTop($title, '', '', '', we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "self.focus();", 'onblur' => "self.close();"], '<table style="width:100%" class="default defaultfont">
 <tr><td colspan="2"><strong>' . $title . '</strong></td></tr>
 <tr><td style="vertical-align:top"><span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span></td><td class="defaultfont">' . g_l('moduleActivation', '[content]') . '</td></tr>
 </table>
-</body>
-</html>';
+'));

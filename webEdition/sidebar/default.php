@@ -23,11 +23,8 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop('sideBar') .
- STYLESHEET;
+echo we_html_tools::getHtmlTop('sideBar','','',' ')
 ?>
-
-</head>
 <body class="weSidebarBody">
 	<table>
 		<?php

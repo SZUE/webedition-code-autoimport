@@ -583,9 +583,9 @@ this.selectedIndex = 0;' .
 			'</td></tr></table>';
 	}
 
-	public static function getHtmlTop($title = 'webEdition', $charset = '', $doctype = '', $extraHead = '', $body = '', $skipErrorHandler = true){
+	public static function getHtmlTop($title = '', $charset = '', $doctype = '', $extraHead = '', $body = '', $skipErrorHandler = true){
 		return we_html_element::htmlDocType($doctype) .
-			we_html_element::htmlhtml(we_html_element::htmlHead(self::getHtmlInnerHead($title, $charset, $skipErrorHandler) . $extraHead, ($extraHead || $body ? true : false)) .
+			we_html_element::htmlhtml(we_html_element::htmlHead(self::getHtmlInnerHead($title? : 'webEdition', $charset, $skipErrorHandler) . $extraHead, ($extraHead || $body ? true : false)) .
 				$body, ($body ? true : false)
 		);
 	}
@@ -611,7 +611,8 @@ this.selectedIndex = 0;' .
 			we_html_element::htmlMeta(['http-equiv' => 'pragma', 'content' => 'no-cache']) .
 			we_html_element::htmlMeta(['http-equiv' => 'imagetoolbar', 'content' => 'no']) .
 			we_html_element::htmlMeta(['name' => 'generator', 'content' => 'webEdition']) .
-			we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']);
+			we_html_element::linkElement(['rel' => 'SHORTCUT ICON', 'href' => IMAGE_DIR . 'webedition.ico']) .
+			STYLESHEET;
 	}
 
 	static function htmlMetaCtCharset($charset){

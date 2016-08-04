@@ -63,8 +63,7 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 
 $sTblWidget = we_html_multiIconBox::getHTML("usrProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[users_online]'));
 
-echo we_html_tools::getHtmlTop(g_l('cockpit', '[users_online]'), '', '', STYLESHEET .
-	$jsFile .
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[users_online]'), '', '', $jsFile .
 	we_html_element::jsElement(
 		$jsPrefs . $jsCode), we_html_element::htmlBody(
 		array('class' => "weDialogBody", "onload" => "init();"

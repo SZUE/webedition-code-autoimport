@@ -65,7 +65,6 @@ echo $jsGUI->getJS() .
  we_html_multiIconBox::getJs();
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo STYLESHEET;
 ?>
 </head>
 

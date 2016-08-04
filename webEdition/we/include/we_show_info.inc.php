@@ -21,8 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET .
-	we_html_element::cssLink(CSS_DIR . 'loginScreen.css').
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
 	we_html_element::cssLink(CSS_DIR . 'infoScreen.css'));
 ?>
 <body id="infoScreen" onload="self.focus();">
