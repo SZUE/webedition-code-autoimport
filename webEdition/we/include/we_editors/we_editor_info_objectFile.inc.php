@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop();
 
 $html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>' .
 	'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID ? : "-") . '</div>
@@ -88,7 +87,8 @@ if(defined('WORKFLOW_TABLE')){
 	);
 }
 
-echo STYLESHEET;
+echo we_html_tools::getHtmlTop().
+	STYLESHEET;
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>

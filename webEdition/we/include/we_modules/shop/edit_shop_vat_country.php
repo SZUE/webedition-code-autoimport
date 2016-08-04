@@ -25,9 +25,6 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 we_html_tools::protect($protect);
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
-
 $jsFunction = '
 function we_submitForm(url){
 var f = self.document.we_form;
@@ -62,8 +59,6 @@ var url = WE().util.getWe_cmdArgsUrl(args);
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }';
-
-
 
 // initialise the vatRuleObject
 if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'saveVatRule'){
@@ -162,16 +157,18 @@ $parts = array(
 	)
 );
 
-echo we_html_element::jsElement($jsFunction);
-?></head>
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+	we_html_element::jsElement($jsFunction));
+?>
 <body class="weDialogBody" onload="window.focus();">
 	<form name="we_form" method="post">
 		<input type="hidden" name="we_cmd[0]" value="saveVatRule" />
-<?= we_html_multiIconBox::getHTML('weShopCountryVat', $parts, 30, we_html_button::position_yes_no_cancel(
-		we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
-	), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
-);
-?>
+		<?=
+		we_html_multiIconBox::getHTML('weShopCountryVat', $parts, 30, we_html_button::position_yes_no_cancel(
+				we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
+			), -1, '', '', false, g_l('modules_shop', '[vat_country][box_headline]'), '', 741
+		);
+		?>
 	</form>
 </body>
 </html>

@@ -47,8 +47,6 @@ function getPreferencesHeader(){
 }
 
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop() .
- STYLESHEET . we_tabs::getHeader();
 
 $tabname = we_base_request::_(we_base_request::STRING, "tabname", we_base_request::_(we_base_request::STRING, 'we_cmd', "setting_ui", 1));
 
@@ -96,9 +94,8 @@ function saveOnKeyBoard() {
 
 }";
 
-
-echo we_html_element::jsElement($javascript) .
- "</head>";
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET . we_tabs::getHeader() .
+	we_html_element::jsElement($javascript));
 
 include(WE_INCLUDES_PATH . 'we_editors/we_preferences_footer.inc.php');
 

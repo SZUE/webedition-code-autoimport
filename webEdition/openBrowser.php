@@ -34,13 +34,10 @@ if(($id = we_base_request::_(we_base_request::INT, 'url'))){
 				getServerUrl() . $path
 			) . '?r=' . rand();
 	} else {
-		$loc =  WEBEDITION_DIR . 'notPublished.php';
+		$loc = WEBEDITION_DIR . 'notPublished.php';
 	}
 } else {
 	$loc = we_base_request::_(we_base_request::URL, 'url', '');
 }
 header('Location: ' . $loc);
-echo we_html_tools::getHtmlTop();
-?>
-<meta http-equiv="refresh" content="1; url=<?= $loc; ?>">
-</head><body></body></html>
+echo we_html_tools::getHtmlTop('', '', '', '<meta http-equiv="refresh" content="1; url=' . $loc . '">', we_html_element::htmlBody());

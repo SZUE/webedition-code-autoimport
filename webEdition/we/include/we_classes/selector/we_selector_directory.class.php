@@ -307,12 +307,11 @@ top.makeNewFolder = true;' .
 			$folder->we_save();
 		}
 
-		echo we_html_tools::getHtmlTop() .
-		we_html_element::jsElement('
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 top.clearEntries();
 top.makeNewFolder=false;' .
-			($msg ? we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
-				'var ref;
+				($msg ? we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
+					'var ref;
 if(top.opener.top.treeData){
 	ref = top.opener.top;
 }else if(top.opener.top.opener.top.treeData){
@@ -321,15 +320,14 @@ if(top.opener.top.treeData){
 if(ref){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});
 }' .
-				($this->canSelectDir ? '
+					($this->canSelectDir ? '
 top.currentPath="' . $folder->Path . '";
 top.currentID="' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '')
-			) .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.selectFile(top.currentID);') . '
-</head><body></body></html>';
+				) .
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.selectFile(top.currentID);'), we_html_element::htmlBody());
 	}
 
 	protected function getFrameset($withPreview = true){
@@ -408,12 +406,12 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 			}
 		}
 
-		echo we_html_tools::getHtmlTop() . we_html_element::jsElement(
-			$js .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() . '
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
+				$js .
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() . '
 top.selectFile(top.currentID);'
-		) . '</head><body></body></html>';
+			), we_html_element::htmlBody());
 	}
 
 	function printPreviewHTML(){
@@ -438,12 +436,10 @@ top.selectFile(top.currentID);'
 			);
 		}
 		$path = $data ? $data['Path'] : '';
-		$out = we_html_tools::getHtmlTop() .
-			STYLESHEET .
-			we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
-			we_html_element::jsScript(JS_DIR . 'selectors/preview.js') .
-			'</head>
-<body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';
+		$out = we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+				we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
+				we_html_element::jsScript(JS_DIR . 'selectors/preview.js')) .
+			'<body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';
 		if(!empty($result['ContentType'])){
 			switch($this->table){
 				case FILE_TABLE:

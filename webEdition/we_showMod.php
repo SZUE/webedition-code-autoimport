@@ -47,9 +47,8 @@ $mode = we_base_request::_(we_base_request::INT, "art", 0);
 $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 if($what === 'show_frameset'){ //old call to show_frameset.php
-	echo we_html_tools::getHtmlTop() .
-	STYLESHEET .
-	we_tabs::getHeader('
+	echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+		we_tabs::getHeader('
 var makeNewEntryCheck = 0;
 var publishWhenSave = 0;
 var weModuleWindow = true;
@@ -72,9 +71,8 @@ function openModule(module) {
 		current = module;
 		top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
 	}
-}');
+}'));
 	?>
-	</head>
 	<body id="weMainBody" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
 		<?php
 		$_REQUEST['mod'] = $mod = (isset($mod) ? $mod : we_base_request::_(we_base_request::STRING, 'mod'));
@@ -105,159 +103,159 @@ function openModule(module) {
 		we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod . ($cmd1 === false ? '' : '&msg_param=' . $cmd1) . ($sid !== false ? '&sid=' . $sid : '') . ($bid !== false ? '&bid=' . $bid : ''), ' ', '', '', false)
 		;
 		?></body></html><?php
-	return;
-}
-
-switch($mod){
-	case 'workflow':
-		$override = ($what === 'log');
-	default:
-		$protect = we_base_moduleInfo::isActive($mod) && (we_users_util::canEditModule($mod) || !empty($override)) ? null : array(false);
-		we_html_tools::protect($protect);
-}
-
-switch($mod){
-	case 'banner':
-		$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process();
-		break;
-	case 'shop':
-		$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->View->processCommands();
-		break;
-	case 'customer':
-		switch($what){
-			case 'export':
-			case 'eibody':
-			case 'eifooter':
-			case 'eiload':
-			case 'import':
-			case 'eiupload':
-				$mode = we_base_request::_(we_base_request::STRING, "art", 0);
-				$weFrame = new we_customer_EIWizard(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-				break;
-			default:
-				$weFrame = new we_customer_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-				$weFrame->process();
-		}
-		break;
-	case 'users':
-		$weFrame = new we_users_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process();
-		break;
-
-	case 'export':
-		$weFrame = new we_export_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process();
-		break;
-
-	case 'glossary':
-		$weFrame = new we_glossary_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process();
-		break;
-
-	case 'voting':
-		$weFrame = new we_voting_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process();
-		break;
-
-	case 'navigation':
-		switch($what){
-			case 'ruleCmd':
-			case 'ruleContent':
-			case 'ruleFrameset':
-				we_html_tools::protect(array('EDIT_NAVIAGTION_RULES'));
-
-				$weFrame = new we_navigation_ruleFrames();
-				ob_start();
-				$weFrame->Controller->processVariables();
-				$weFrame->Controller->processCommands();
-				$GLOBALS['extraJS'] = ob_get_clean();
-				break;
-			default:
-				$weFrame = new we_navigation_frames('');
-				$weFrame->process();
-				break;
-		}
-		break;
-
-	case 'workflow':
-		$type = we_base_request::_(we_base_request::INTLIST, 'type', 0);
-		$weFrame = new we_workflow_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		$weFrame->process();
-		echo $weFrame->getHTML($what, $mode, $type);
 		return;
-	case 'messaging':
+	}
 
-		if(!isset($we_transaction)){//FIXME: can this ever be set except register globals???
-			$we_transaction = 0;
-		}
-		$transaction = $what === 'frameset' ? $we_transaction : we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'); //FIXME: is $transaction used anywhere?
+	switch($mod){
+		case 'workflow':
+			$override = ($what === 'log');
+		default:
+			$protect = we_base_moduleInfo::isActive($mod) && (we_users_util::canEditModule($mod) || !empty($override)) ? null : array(false);
+			we_html_tools::protect($protect);
+	}
 
-		$weFrame = new we_messaging_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod, we_base_request::_(we_base_request::STRING, 'viewclass', 'message'), we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'), $we_transaction);
-		$weFrame->process();
-		break;
+	switch($mod){
+		case 'banner':
+			$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+			$weFrame->process();
+			break;
+		case 'shop':
+			$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+			$weFrame->View->processCommands();
+			break;
+		case 'customer':
+			switch($what){
+				case 'export':
+				case 'eibody':
+				case 'eifooter':
+				case 'eiload':
+				case 'import':
+				case 'eiupload':
+					$mode = we_base_request::_(we_base_request::STRING, "art", 0);
+					$weFrame = new we_customer_EIWizard(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+					break;
+				default:
+					$weFrame = new we_customer_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+					$weFrame->process();
+			}
+			break;
+		case 'users':
+			$weFrame = new we_users_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+			$weFrame->process();
+			break;
 
-	case 'newsletter':
-		$ncmd = we_base_request::_(we_base_request::STRING, 'ncmd', '');
+		case 'export':
+			$weFrame = new we_export_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+			$weFrame->process();
+			break;
 
-		$weFrame = new we_newsletter_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
-		switch($what){
-			case 'edit_file':
-				$mode = we_base_request::_(we_base_request::FILE, 'art');
-				break;
-			default:
-				$mode = we_base_request::_(we_base_request::INT, 'art', 0);
-				break;
-		}
+		case 'glossary':
+			$weFrame = new we_glossary_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+			$weFrame->process();
+			break;
 
-		/* switch($ncmd){
-		  case 'do_upload_csv':
-		  case 'do_upload_black':
-		  break;
-		  default:
-		  echo $weFrame->getHTMLDocumentHeader($what, $mode);
-		  } */
+		case 'voting':
+			$weFrame = new we_voting_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+			$weFrame->process();
+			break;
 
-		if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){
-			$weFrame->View->newsletter = new we_newsletter_newsletter($id);
-		} else {
+		case 'navigation':
+			switch($what){
+				case 'ruleCmd':
+				case 'ruleContent':
+				case 'ruleFrameset':
+					we_html_tools::protect(array('EDIT_NAVIAGTION_RULES'));
+
+					$weFrame = new we_navigation_ruleFrames();
+					ob_start();
+					$weFrame->Controller->processVariables();
+					$weFrame->Controller->processCommands();
+					$GLOBALS['extraJS'] = ob_get_clean();
+					break;
+				default:
+					$weFrame = new we_navigation_frames('');
+					$weFrame->process();
+					break;
+			}
+			break;
+
+		case 'workflow':
+			$type = we_base_request::_(we_base_request::INTLIST, 'type', 0);
+			$weFrame = new we_workflow_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+			$weFrame->process();
+			echo $weFrame->getHTML($what, $mode, $type);
+			return;
+		case 'messaging':
+
+			if(!isset($we_transaction)){//FIXME: can this ever be set except register globals???
+				$we_transaction = 0;
+			}
+			$transaction = $what === 'frameset' ? $we_transaction : we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'); //FIXME: is $transaction used anywhere?
+
+			$weFrame = new we_messaging_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod, we_base_request::_(we_base_request::STRING, 'viewclass', 'message'), we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 'no_request'), $we_transaction);
+			$weFrame->process();
+			break;
+
+		case 'newsletter':
+			$ncmd = we_base_request::_(we_base_request::STRING, 'ncmd', '');
+
+			$weFrame = new we_newsletter_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+			switch($what){
+				case 'edit_file':
+					$mode = we_base_request::_(we_base_request::FILE, 'art');
+					break;
+				default:
+					$mode = we_base_request::_(we_base_request::INT, 'art', 0);
+					break;
+			}
+
+			/* switch($ncmd){
+			  case 'do_upload_csv':
+			  case 'do_upload_black':
+			  break;
+			  default:
+			  echo $weFrame->getHTMLDocumentHeader($what, $mode);
+			  } */
+
+			if(($id = we_base_request::_(we_base_request::INT, 'inid')) !== false){
+				$weFrame->View->newsletter = new we_newsletter_newsletter($id);
+			} else {
+				switch($what){
+					case 'export_csv_mes':
+					case 'newsletter_settings':
+					case 'qsend':
+					case 'eedit':
+					case 'black_list':
+					case 'upload_csv':
+						break;
+					default:
+						$weFrame->View->processVariables();
+				}
+			}
+
 			switch($what){
 				case 'export_csv_mes':
+				case 'preview':
+				case 'domain_check':
 				case 'newsletter_settings':
+				case 'show_log':
+				case 'print_lists':
 				case 'qsend':
 				case 'eedit':
 				case 'black_list':
-				case 'upload_csv':
 					break;
 				default:
-					$weFrame->View->processVariables();
+					$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
+					ob_start();
+					$weFrame->View->processCommands();
+					$GLOBALS['extraJS'] = ob_get_clean();
 			}
-		}
 
-		switch($what){
-			case 'export_csv_mes':
-			case 'preview':
-			case 'domain_check':
-			case 'newsletter_settings':
-			case 'show_log':
-			case 'print_lists':
-			case 'qsend':
-			case 'eedit':
-			case 'black_list':
-				break;
-			default:
-				$mode = isset($mode) ? $mode : we_base_request::_(we_base_request::INT, 'art', 0);
-				ob_start();
-				$weFrame->View->processCommands();
-				$GLOBALS['extraJS'] = ob_get_clean();
-		}
-
-		break;
-	default:
-		echo 'no module';
-		return;
-}
+			break;
+		default:
+			echo 'no module';
+			return;
+	}
 
 //FIXME: process will generate js output without doctype
-echo $weFrame->getHTML($what, $mode, $step);
+	echo $weFrame->getHTML($what, $mode, $step);

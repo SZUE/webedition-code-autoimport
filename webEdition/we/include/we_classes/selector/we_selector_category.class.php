@@ -252,8 +252,7 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewCat=false;'), we_html_ele
 	}
 
 	function printDoDelEntryHTML(){
-		echo we_html_tools::getHtmlTop();
-
+		$js = '';
 		if(($catsToDel = we_base_request::_(we_base_request::INTLISTA, 'todel', []))){
 			$finalDelete = [];
 			$catlistNotDeleted = "";
@@ -263,7 +262,7 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewCat=false;'), we_html_ele
 				if($this->CatInUse($id, $IsDir)){
 					$catlistNotDeleted .= id_to_path($id, CATEGORY_TABLE) . '\n';
 				} else {
-					$finalDelete[] = array('id' => $id, 'IsDir' => $IsDir);
+					$finalDelete[] = ['id' => $id, 'IsDir' => $IsDir];
 				}
 			}
 			if($finalDelete){
@@ -279,19 +278,17 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewCat=false;'), we_html_ele
 				}
 			}
 			if($catlistNotDeleted){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('fileselector', '[cat_in_use]') . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR));
+				$js.=we_message_reporting::getShowMessageCall(g_l('fileselector', '[cat_in_use]') . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR);
 			}
 			if($changeToParent){
 				$this->dir = $this->values['ParentID'];
 			}
 			$this->id = $this->dir;
-			$hash = ($this->id ?
-					getHash('SELECT Path,Text FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->id), $this->db) :
-					array('Path' => '', 'Text' => ''));
-			$Path = $hash['Path'];
-			$Text = $hash['Text'];
+			$Path = ($this->id ?
+					f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->id), '', $this->db) :
+					'');
 
-			echo we_html_element::jsElement(
+			$js.=
 				'top.clearEntries();
 top.makeNewCat = false;' .
 				$this->printCmdAddEntriesHTML() .
@@ -301,9 +298,9 @@ top.currentID="' . $this->id . '";
 top.selectFile(' . $this->id . ');
 if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
 	top.enableDelBut();
-}');
+}';
 		}
-		echo '</head><body></body></html>';
+		echo we_html_tools::getHtmlTop('', '', '', ($js ? we_html_element::jsElement($js) : ''), we_html_element::htmlBody());
 
 		return;
 	}

@@ -107,14 +107,12 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 			}
 		}
 
-		echo we_html_tools::getHtmlTop() .
-		we_html_element::jsElement(
-			$js .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.selectFile(top.currentID);'
-		) .
-		'</head><body></body></html>';
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
+				$js .
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() .
+				'top.selectFile(top.currentID);'
+			), we_html_element::htmlBody());
 	}
 
 	function query(){
@@ -122,7 +120,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 	}
 
 	function printDoRenameFolderHTML(){
-		$js=		'top.clearEntries();
+		$js = 'top.clearEntries();
 top.makeNewFolder=false;';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
@@ -158,14 +156,12 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 			}
 		}
 
-		echo we_html_tools::getHtmlTop() .
-		we_html_element::jsElement(
-			$js.
-			$this->printCmdAddEntriesHTML() .
-		$this->printCMDWriteAndFillSelectorHTML() . '
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
+				$js .
+				$this->printCmdAddEntriesHTML() .
+				$this->printCMDWriteAndFillSelectorHTML() . '
 top.selectFile(top.currentID);'
-			).
-'</head><body></body></html>';
+			), we_html_element::htmlBody());
 	}
 
 	protected function getFramesetJavaScriptDef(){

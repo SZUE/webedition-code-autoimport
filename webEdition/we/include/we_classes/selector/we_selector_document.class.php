@@ -325,8 +325,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 
 		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db);
 		$path = $result ? $result['Path'] : '';
-		$out = we_html_tools::getHtmlTop() .
-			STYLESHEET .
+		$out = we_html_tools::getHtmlTop('','','', 			STYLESHEET .
 			we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
 			we_html_element::jsElement('
 function setInfoSize() {
@@ -339,8 +338,7 @@ function weWriteBreadCrumb(BreadCrumb){
 	if(top.document.getElementById("fspath")){
 		top.document.getElementById("fspath").innerHTML = BreadCrumb;
 	}
-}') . '
-</head>
+}')) . '
 <body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';
 		if((isset($result['ContentType']) && !empty($result['ContentType'])) || ($this->table == VFILE_TABLE )){//FIXME: this check should be obsolete, remove in 6.6
 			if((isset($result['ContentType']) && $result['ContentType'] === we_base_ContentTypes::FOLDER) || ($this->table == VFILE_TABLE && $result['IsFolder'])){

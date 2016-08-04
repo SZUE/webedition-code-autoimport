@@ -108,15 +108,15 @@ function readFiles($dir){
 		case 20:
 		case 30:
 		case 40:
-			asort($ordDir,SORT_NATURAL|SORT_FLAG_CASE);
-			asort($ordFile,SORT_NATURAL|SORT_FLAG_CASE);
+			asort($ordDir, SORT_NATURAL | SORT_FLAG_CASE);
+			asort($ordFile, SORT_NATURAL | SORT_FLAG_CASE);
 			break;
 		case 11:
 		case 21:
 		case 31:
 		case 41:
-			arsort($ordDir,SORT_NATURAL|SORT_FLAG_CASE);
-			arsort($ordFile,SORT_NATURAL|SORT_FLAG_CASE);
+			arsort($ordDir, SORT_NATURAL | SORT_FLAG_CASE);
+			arsort($ordFile, SORT_NATURAL | SORT_FLAG_CASE);
 			break;
 	}
 
@@ -135,12 +135,11 @@ $thumbFold = trim(WE_THUMBNAIL_DIRECTORY, '/');
 $dir = rtrim($_SERVER['DOCUMENT_ROOT'] . $org, '/');
 $files = readFiles($dir);
 
-echo we_html_tools::getHtmlTop() . STYLESHEET .
- we_html_element::cssLink(CSS_DIR . 'selectors.css') .
- we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js') .
- we_html_element::jsElement('top.allentries=' . ($files ? '["' . (implode('","', $files)) . '"]' : '[]') . ';');
+echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
+	we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+	we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_body.js') .
+	we_html_element::jsElement('top.allentries=' . ($files ? '["' . (implode('","', $files)) . '"]' : '[]') . ';'));
 ?>
-</head>
 <body onload="WE().util.setIconOfDocClass(document, 'treeIcon');doScrollTo();">
 	<form name="we_form" target="fscmd" action="we_cmd.php?we_cmd[0]=selectorBrowseCmd" method="post" onsubmit="return false;">
 		<table class="default"><?php
