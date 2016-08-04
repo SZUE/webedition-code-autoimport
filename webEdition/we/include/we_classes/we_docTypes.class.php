@@ -29,7 +29,6 @@ class we_docTypes extends we_class{
 	var $ParentID = 0;
 	var $ParentPath = '';
 	var $TemplateID = 0;
-	var $ContentTable = '';
 	var $IsDynamic = false;
 	var $IsSearchable = false;
 	var $Templates = '';
@@ -39,7 +38,7 @@ class we_docTypes extends we_class{
 
 	public function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'Category', 'DocType', 'Extension', 'ParentID', 'ParentPath', 'TemplateID', 'ContentTable', 'IsDynamic', 'IsSearchable', 'SubDir', 'Templates', 'Language');
+		array_push($this->persistent_slots, 'Category', 'DocType', 'Extension', 'ParentID', 'ParentPath', 'TemplateID', 'IsDynamic', 'IsSearchable', 'SubDir', 'Templates', 'Language');
 		$this->Table = DOC_TYPES_TABLE;
 	}
 
@@ -284,7 +283,9 @@ function switchExt(){
 	}
 
 	private function formSubDir($width = 100){
-		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), 1, $this->SubDir, false, array(), 'value', $width), g_l('weClass', '[subdirectory]'));
+		//FIXME: !!! after 7.0.2 g_l('weClass', '[subdir]') must be changed from 0... to '-'...ymd
+
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . '_SubDir', g_l('weClass', '[subdir]'), 1, $this->SubDir, false, [], 'value', $width), g_l('weClass', '[subdirectory]'));
 	}
 
 	/**
