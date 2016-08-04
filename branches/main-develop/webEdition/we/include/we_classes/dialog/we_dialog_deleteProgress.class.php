@@ -34,16 +34,11 @@ abstract class we_dialog_deleteProgress{
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$pb = we_html_tools::htmlDialogLayout($WE_PB->getHTML(), g_l('delete', '[delete]'), $cancelButton);
 
-		return we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-				$js, we_html_element::htmlBody(array(
-					"class" => "weDialogBody"
-					), $pb
-				)
-		);
+		return we_html_tools::getHtmlTop('', '', '', $js, we_html_element::htmlBody(["class" => "weDialogBody"], $pb));
 	}
 
 	public static function getHTML($table, $currentID){
-		return we_html_tools::getHtmlTop(g_l('delete', '[delete]'), '', '', STYLESHEET, we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';")
+		return we_html_tools::getHtmlTop(g_l('delete', '[delete]'), '', '', '', we_html_element::htmlBody(['id' => 'weMainBody', "onload" => "delcmd.location='" . WEBEDITION_DIR . "delFrag.php?frame=cmd" . ($table ? ("&amp;table=" . rawurlencode($table)) : "") . "&currentID=" . $currentID . "';"]
 					, we_html_element::htmlIFrame('delmain', WEBEDITION_DIR . "delFrag.php?frame=main", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('delcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 				)

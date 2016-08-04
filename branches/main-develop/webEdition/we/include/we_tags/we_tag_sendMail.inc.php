@@ -114,7 +114,7 @@ function we_tag_sendMail(array $attribs, $content){
 		$headline = 'Fehler / Error';
 		$content = g_l('global', '[formmailerror]') . getHtmlTag('br') . '&#8226; ' . 'Email dispatch blocked / Email Versand blockiert!';
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, getHtmlTag('body', array('class' => 'weEditorBody'), we_html_tools::htmlDialogLayout(getHtmlTag('div', array('class' => 'defaultfont lowContrast'), $content), $headline)));
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', getHtmlTag('body', ['class' => 'weEditorBody'], we_html_tools::htmlDialogLayout(getHtmlTag('div', ['class' => 'defaultfont lowContrast'], $content), $headline)));
 
 		exit;
 	}

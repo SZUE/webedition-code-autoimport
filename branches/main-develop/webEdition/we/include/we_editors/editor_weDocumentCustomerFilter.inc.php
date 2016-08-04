@@ -48,7 +48,6 @@ $parts[] = array(
 
 
 echo we_html_tools::getHtmlTop() .
- STYLESHEET .
  weSuggest::getYuiFiles();
 require(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .

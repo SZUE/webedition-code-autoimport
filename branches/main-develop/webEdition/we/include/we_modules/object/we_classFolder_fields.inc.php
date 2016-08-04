@@ -56,8 +56,7 @@ echo we_html_tools::getHtmlTop() .
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 
-echo STYLESHEET .
- '</head>
+echo '</head>
 <body class="weEditorBody" onunload="doUnload()">' .
  we_html_multiIconBox::getHTML('', array(
 	array('html' => $we_doc->getSearchDialog()),

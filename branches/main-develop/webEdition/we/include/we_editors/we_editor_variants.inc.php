@@ -26,8 +26,7 @@ if(!empty($we_doc->elements["Charset"]["dat"]) && $we_doc->EditPageNr == we_base
 	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
 }
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+echo we_html_tools::getHtmlTop();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>

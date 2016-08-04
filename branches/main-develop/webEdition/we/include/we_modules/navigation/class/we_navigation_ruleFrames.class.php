@@ -48,12 +48,10 @@ class we_navigation_ruleFrames{
 	}
 
 	function getHTMLFrameset(){
-		return we_html_tools::getHtmlTop(g_l('navigation', '[menu_highlight_rules]')) . STYLESHEET . '</head>' .
-			we_html_element::htmlBody(['class ' => 'weDialogBody']
-				, we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleContent', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
-				we_html_element::htmlIFrame('cmdFrame', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
-			) .
-			'</html>';
+		return we_html_tools::getHtmlTop(g_l('navigation', '[menu_highlight_rules]'), '', '', '', we_html_element::htmlBody(['class ' => 'weDialogBody']
+					, we_html_element::htmlIFrame('content', WEBEDITION_DIR . 'we_showMod.php?mod=navigation&pnt=ruleContent', 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden') .
+					we_html_element::htmlIFrame('cmdFrame', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+		));
 	}
 
 	function getHTMLContent(){
@@ -192,8 +190,7 @@ class we_navigation_ruleFrames{
 
 		$saveButton = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd("save_navigation_rule");');
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.window.close();');
-		return we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-				we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'formFunctions.js') .
 				we_html_element::jsElement('
 var dependencies = {
 	' . we_navigation_navigation::STYPE_CLASS . ':["ClassID", "WorkspaceID", "Categories"],

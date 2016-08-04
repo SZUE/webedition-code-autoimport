@@ -579,7 +579,7 @@ if (top.content.editor.edfooter.doProgress){
 				"cmd" => "do_export"));
 
 		if($all > $exports){
-			return we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post", "action" => $this->frameset), $hiddens) . $progress_update
+			return we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "action" => $this->frameset], $hiddens) . $progress_update
 					)
 			);
 		}

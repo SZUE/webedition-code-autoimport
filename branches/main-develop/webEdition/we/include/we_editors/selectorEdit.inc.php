@@ -24,7 +24,7 @@
 
 we_html_tools::protect(array("BROWSE_SERVER"));
 
-echo we_html_tools::getHtmlTop() . STYLESHEET;
+echo we_html_tools::getHtmlTop();
 
 $id = we_base_request::_(we_base_request::FILE, 'id');
 if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){

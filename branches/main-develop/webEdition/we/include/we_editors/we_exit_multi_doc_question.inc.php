@@ -41,8 +41,8 @@ foreach(g_l('contentTypes', '') as $key => $lng){
 	$ctLngs [] = '"' . $key . '": "' . $lng . '"';
 }
 
-echo STYLESHEET .
- we_html_element::jsElement('
+echo
+we_html_element::jsElement('
 var ctLngs = {' . implode(',', $ctLngs) . '};
 var nextCmd="' . $nextCmd . '";
 ') .

@@ -45,8 +45,7 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 
 $sTblWidget = we_html_multiIconBox::getHTML("mfdProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[unpublished]'));
 
-echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', STYLESHEET .
-	$jsFile .
+echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', $jsFile .
 	we_html_element::jsElement($jsPrefs) .
 	we_html_element::jsScript(JS_DIR . 'widgets/upb.js')
 	, we_html_element::htmlBody(

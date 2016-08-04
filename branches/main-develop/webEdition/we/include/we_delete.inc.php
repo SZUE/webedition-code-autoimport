@@ -22,8 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+echo we_html_tools::getHtmlTop();
 
 function getObjectsForDocWorkspace($id, we_database_base $db){
 	$ids = (is_array($id)) ? $id : array($id);
@@ -427,7 +426,7 @@ if (top.treeData.table != "<?= $table; ?>") {
 
 function we_submitForm(target, url) {
 	var f = self.document.we_form;
-		if (!f.checkValidity()) {
+	if (!f.checkValidity()) {
 		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
 	}

@@ -78,7 +78,7 @@ abstract class we_versions_wizard{
 			$content->setCol(0, 1, array("style" => "text-align:right"), $content2);
 		}
 
-		return we_html_tools::getHtmlTop('', '', '', STYLESHEET . $js, we_html_element::htmlBody(
+		return we_html_tools::getHtmlTop('', '', '', $js, we_html_element::htmlBody(
 					array('class' => ($dc ? "weDialogBody" : "weDialogButtonsBody"), 'style' => 'overflow:hidden'
 					), ($dc ? $pb : $content->getHtml()))
 		);
@@ -1039,7 +1039,7 @@ set_button_state(false);';
 			);
 		}
 
-		return we_html_tools::getHtmlTop(g_l('versions', '[versions_wizard]'), '', '', STYLESHEET, $body);
+		return we_html_tools::getHtmlTop(g_l('versions', '[versions_wizard]'), '', '', '', $body);
 	}
 
 	/**
@@ -1177,14 +1177,13 @@ set_button_state(false);';
 		}
 		$headCal = we_html_tools::getCalendarFiles() . YAHOO_FILES;
 
-		return we_html_tools::getHtmlTop('', '', '', $headCal . STYLESHEET .
+		return we_html_tools::getHtmlTop('', '', '', $headCal .
 				($contents[0] ? we_html_element::jsElement($contents[0]) : ""), we_html_element::htmlBody(
-					array('class' => "weDialogBody")
-					, we_html_element::htmlForm(array(
-						"name" => "we_form",
+					['class' => "weDialogBody"]
+					, we_html_element::htmlForm(["name" => "we_form",
 						"method" => "post",
 						"action" => WEBEDITION_DIR . "we_cmd.php"
-						), $contents[1]))
+						], $contents[1]))
 		);
 	}
 

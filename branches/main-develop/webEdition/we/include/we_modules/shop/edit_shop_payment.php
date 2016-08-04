@@ -25,8 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 we_html_tools::protect($protect);
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+echo we_html_tools::getHtmlTop();
 
 if(($fname = we_base_request::_(we_base_request::STRING, "fieldForname"))){ //	save data in arrays ..
 	$DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
@@ -89,7 +88,7 @@ if(defined('CUSTOMER_TABLE')){
 
 // PayPal
 $htmlTable = new we_html_table(array('class' => 'default withSpace', 'width' => "100%"), 4, 3);
-$row=0;
+$row = 0;
 $htmlTable->setCol($row++, 0, array('class' => 'weDialogHeadline', 'colspan' => 4), g_l('modules_shop', '[paypal][name]'));
 
 $list1 = array("AI" => "Anguilla", "AR" => "Argentina", "AU" => "Australia", "AT" => "Austria", "BE" => "Belgium", "BR" => "Brazil", "CA" => "Canada", "CL" => "Chile", "CN" => "China", "CR" => "Costa Rica", "CY" => "Cyprus", "CZ" => "Czech Republic", "DK" => "Denmark", "DO" => "Dominican Rep.", "EC" => "Equador", "EE" => "Estonia", "FI" => "Finland", "FR" => "France", "DE" => "Deutschland", "GR" => "Greece", "HK" => "Hong Kong");

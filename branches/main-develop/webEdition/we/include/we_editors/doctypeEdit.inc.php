@@ -151,8 +151,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 $yuiSuggest = & weSuggest::getInstance();
 echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
  weSuggest::getYuiFiles() .
- we_html_element::jsScript(JS_DIR . 'doctypeEdit.js') .
- STYLESHEET;
+ we_html_element::jsScript(JS_DIR . 'doctypeEdit.js');
 ?>
 <script><!--
 	var countSaveLoop = 0;
@@ -162,7 +161,8 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
 		doctype_empty: "<?= we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_empty]')); ?>",
 		doctype_exists: "<?= we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_exists]')); ?>",
 	};
-<?= (empty($we_JavaScript) ? '' : $we_JavaScript . ';') .
+<?=
+(empty($we_JavaScript) ? '' : $we_JavaScript . ';') .
  ($we_show_response && $we_responseText ? we_message_reporting::getShowMessageCall($we_responseText, $we_response_type) : '');
 
 switch($wecmd0){

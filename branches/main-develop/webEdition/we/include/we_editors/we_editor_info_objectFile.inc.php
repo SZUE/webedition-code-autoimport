@@ -33,7 +33,7 @@ $parts = array(
 	array("headline" => "",
 		"html" => $html,
 		'space' => we_html_multiIconBox::SPACE_MED2,
-		'icon' =>"meta.gif"
+		'icon' => "meta.gif"
 	)
 );
 
@@ -70,7 +70,7 @@ $html .= '<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_
 $parts[] = array("headline" => "",
 	"html" => $html,
 	'space' => we_html_multiIconBox::SPACE_MED2,
-	'icon' =>"cal.gif"
+	'icon' => "cal.gif"
 );
 
 
@@ -83,12 +83,11 @@ if(defined('WORKFLOW_TABLE')){
 		"html" => $anzeige,
 		'space' => we_html_multiIconBox::SPACE_MED2,
 		"forceRightHeadline" => 1,
-		'icon' =>"workflow.gif"
+		'icon' => "workflow.gif"
 	);
 }
 
-echo we_html_tools::getHtmlTop().
-	STYLESHEET;
+echo we_html_tools::getHtmlTop();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>

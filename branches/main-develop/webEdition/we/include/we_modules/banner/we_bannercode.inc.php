@@ -23,8 +23,7 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(g_l('modules_banner', '[bannercode]')) .
- STYLESHEET;
+echo we_html_tools::getHtmlTop(g_l('modules_banner', '[bannercode]'));
 
 $code = '';
 $ok = we_base_request::_(we_base_request::BOOL, "ok");

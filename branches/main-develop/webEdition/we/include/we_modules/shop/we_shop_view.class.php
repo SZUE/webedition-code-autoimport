@@ -88,7 +88,7 @@ function submitForm(target,action,method) {
 
 	function getProperties(){
 		we_html_tools::protect();
-		echo STYLESHEET;
+		echo we_html_tools::getHtmlTop();
 
 		//$weShopVatRule = weShopVatRule::getShopVatRule();
 

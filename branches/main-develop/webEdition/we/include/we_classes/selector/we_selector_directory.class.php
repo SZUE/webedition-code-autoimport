@@ -436,8 +436,7 @@ top.selectFile(top.currentID);'
 			);
 		}
 		$path = $data ? $data['Path'] : '';
-		$out = we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-				we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
+		$out = we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
 				we_html_element::jsScript(JS_DIR . 'selectors/preview.js')) .
 			'<body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';
 		if(!empty($result['ContentType'])){

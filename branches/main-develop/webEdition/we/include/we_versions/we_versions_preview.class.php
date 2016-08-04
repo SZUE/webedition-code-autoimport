@@ -563,8 +563,7 @@ document.getElementById("tab_"+activ_tab).className="tabActive";');
 	}
 
 	public function showHtml(){
-		echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($this->newDoc['Charset'] ? : DEFAULT_CHARSET), '', STYLESHEET .
-			we_html_element::cssLink(CSS_DIR . 'we_version_preview.css') .
+		echo we_html_tools::getHtmlTop('webEdition - ' . g_l('versions', '[versioning]'), ($this->newDoc['Charset'] ? : DEFAULT_CHARSET), '', we_html_element::cssLink(CSS_DIR . 'we_version_preview.css') .
 			we_tabs::getHeader('
 var activ_tab = 1;
 

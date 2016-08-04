@@ -86,7 +86,7 @@ if(($we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_trans
 			//  change base href -> css of included page is loaded correctly
 			str_replace('<head>', '<head><base href="http://' . $host . '" />', $http_response->http_body) :
 //  no correct answer
-			we_html_tools::getHtmlTop(g_l('validation', '[connection_problems]'), '', '', STYLESHEET, '<body>' .
+			we_html_tools::getHtmlTop(g_l('validation', '[connection_problems]'), '', '', '', '<body>' .
 				we_html_tools::htmlAlertAttentionBox(sprintf(g_l('validation', '[connection_problems]'), $http_response->getHttp_answer()), we_html_tools::TYPE_ALERT, 0, false) .
 				'</body>')
 		);

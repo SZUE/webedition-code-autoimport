@@ -29,8 +29,7 @@ $charset = ($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES ?
 		$GLOBALS['WE_BACKENDCHARSET']);
 
 we_html_tools::headerCtCharset('text/html', $charset);
-echo we_html_tools::getHtmlTop('', $charset) .
- STYLESHEET;
+echo we_html_tools::getHtmlTop('', $charset);
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 echo weSuggest::getYuiFiles();
 ?>

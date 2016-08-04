@@ -12,7 +12,7 @@ if(!permissionhandler::hasPerm('SPELLCHECKER_ADMIN')){
 	exit();
 }
 
-echo we_html_tools::getHtmlTop() . STYLESHEET;
+echo we_html_tools::getHtmlTop();
 
 $_width = 600;
 $space = 5;
@@ -185,22 +185,23 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 	}
 //-->
 </script>
-<?= $js .
+<?=
+$js .
  we_html_element::jsScript(JS_DIR . 'we_modules/spellchecker/weSpellcheckerAdmin.js');
 ?>
 </head>
 
 <body onload="loadTable()" class="weDialogBody">
 
-	<?= $tabsBody; ?>
+<?= $tabsBody; ?>
 
 	<div id="content" style="margin: 10px; width: 450px;">
 		<div id="tab1" style="display:block;">
-			<?= $tab_1 ?>
+<?= $tab_1 ?>
 
 		</div>
 		<div id="tab2" style="display:none;">
-			<?= $tab_2 ?>
+<?= $tab_2 ?>
 		</div>
 
 	</div>

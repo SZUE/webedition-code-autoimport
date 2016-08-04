@@ -123,8 +123,6 @@ echo we_html_element::jsElement("
 
 // $yesCmd: $REQUEST['we_cmd'][6] => next-EditCommand, JS-Function Call !! after save document.
 
-
-echo STYLESHEET;
 ?>
 </head>
 

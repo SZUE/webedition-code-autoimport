@@ -29,8 +29,7 @@ $starttable->setCol($row++, 0, array("style" => "text-align:center"), $content);
 
 $tooldir = ($tool === 'weSearch' ? WE_INCLUDES_DIR . 'we_tools/' : WE_APPS_DIR);
 
-echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-	we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'tools_home.css') .
 	we_html_element::cssLink(CSS_DIR . 'tools_home.css') . $GLOBALS["we_head_insert"], we_html_element::htmlBody(['class' => "home", 'onload' => "loaded = true;var we_is_home = 1;"], '
 	<div id="tabelle">' . $starttable->getHtml() . '</div>
 	<div id="modimage"><img src="' . $tooldir . $tool . '/layout/home.gif" style="width:335px;height:329px" /></div>' .

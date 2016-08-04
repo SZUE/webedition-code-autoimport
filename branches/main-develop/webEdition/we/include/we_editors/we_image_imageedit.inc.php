@@ -36,8 +36,7 @@ echo we_html_tools::getHtmlTop() .
 		we_cmd(cmnd,"' . $we_transaction . '");
 	}
 	//elem.selectedIndex=0;
-}') .
- STYLESHEET;
+}');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>

@@ -30,8 +30,7 @@ $transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'
 if(!$transaction){
 	exit();
 }
-echo we_html_tools::getHtmlTop('', '', '', STYLESHEET .
-	we_html_element::jsElement('
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 		var transaction="' . $transaction . '";
 ') .
 	we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .

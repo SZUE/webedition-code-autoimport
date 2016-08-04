@@ -109,5 +109,5 @@ function clearLog() {
 }
 
 function getHTMLDocument($body, $head = ""){
-	return we_html_tools::getHtmlTop(g_l('prefs', '[formmail_log]'), '', '', STYLESHEET . $head, $body);
+	return we_html_tools::getHtmlTop(g_l('prefs', '[formmail_log]'), '', '', $head, $body);
 }

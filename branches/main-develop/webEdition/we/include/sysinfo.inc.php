@@ -276,32 +276,31 @@ $parts[] = array(
 	'html' => '<a href="javascript:showPhpInfo();">' . g_l('sysinfo', '[more_info]') . '&hellip;</a>',
 	'space' => we_html_multiIconBox::SPACE_SMALL
 );
-echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', STYLESHEET .
-	we_html_element::jsScript(JS_DIR . 'sysinfo.js')
-);
+echo we_html_tools::getHtmlTop(g_l('sysinfo', '[sysinfo]'), '', '', we_html_element::jsScript(JS_DIR . 'sysinfo.js'));
 ?>
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">
-<?= we_html_multiIconBox::getJS() .
- we_html_multiIconBox::getHTML('', $parts, 30, $buttons);
-?>
+		<?=
+		we_html_multiIconBox::getJS() .
+		we_html_multiIconBox::getHTML('', $parts, 30, $buttons);
+		?>
 	</div>
 	<div id="more" style="display:none;">
-<?php
-$parts = array(
-	array(
-		'headline' => '',
-		'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . ' &hellip;</iframe>',
-	),
-	array(
-		'headline' => '',
-		'html' => '<a href="javascript:showInfoTable();">' . g_l('sysinfo', '[back]') . '</a>',
-		'space' => we_html_multiIconBox::SPACE_SMALL
-	),
-);
+		<?php
+		$parts = array(
+			array(
+				'headline' => '',
+				'html' => '<iframe id="phpinfo" style="width:1280px;height:530px;">' . g_l('sysinfo', '[more_info]') . ' &hellip;</iframe>',
+			),
+			array(
+				'headline' => '',
+				'html' => '<a href="javascript:showInfoTable();">' . g_l('sysinfo', '[back]') . '</a>',
+				'space' => we_html_multiIconBox::SPACE_SMALL
+			),
+		);
 
-echo we_html_multiIconBox::getHTML('', $parts, 30, $buttons);
-?>
+		echo we_html_multiIconBox::getHTML('', $parts, 30, $buttons);
+		?>
 	</div>
 </body>
 </html>

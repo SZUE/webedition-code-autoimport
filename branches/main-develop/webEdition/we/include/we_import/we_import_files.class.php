@@ -220,7 +220,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 		$uploader->setCallback($this->callBack);
 		$body = $uploader->getHTML($this->_getHiddens(true));
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . $uploader->getCss() . $uploader->getJs() . we_html_multiIconBox::getDynJS("uploadFiles", 30), $body);
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', $uploader->getCss() . $uploader->getJs() . we_html_multiIconBox::getDynJS("uploadFiles", 30), $body);
 	}
 
 	function getStep3(){
@@ -379,7 +379,7 @@ function next() {
 	}
 
 	function _getHtmlPage($body, $js = ""){
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET . weSuggest::getYuiFiles() . $js, $body);
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', weSuggest::getYuiFiles() . $js, $body);
 	}
 
 }

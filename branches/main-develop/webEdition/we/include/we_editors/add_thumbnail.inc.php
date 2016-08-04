@@ -36,13 +36,10 @@ if(!($we_doc instanceof we_imageDocument)){
 	exit("ERROR: Couldn't initialize we_imageDocument object");
 }
 
-echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]')) .
- we_html_element::jsElement('
+echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]'), '', '', we_html_element::jsElement('
 var transaction="' . $we_transaction . '";
-').
-	STYLESHEET .
- we_html_element::jsScript(JS_DIR . 'add_thumb.js') .
- "</head>";
+') .
+	we_html_element::jsScript(JS_DIR . 'add_thumb.js'));
 
 // SELECT Box with thumbnails
 $thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", 'class' => 'defaultfont', "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));

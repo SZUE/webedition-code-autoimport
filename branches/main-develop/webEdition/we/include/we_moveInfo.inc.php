@@ -45,6 +45,6 @@ $parts = array(
 
 $buttons = new we_html_table(array("style" => "text-align:right", "class" => "default defaultfont"), 1, 1);
 $buttons->setCol(0, 0, null, we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();"));
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET, we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_multiIconBox::getHTML("", $parts, 30, $buttons->getHtml())
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', we_html_element::htmlBody(['class' => "weDialogBody"], we_html_multiIconBox::getHTML("", $parts, 30, $buttons->getHtml())
 	)
 );

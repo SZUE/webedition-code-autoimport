@@ -35,7 +35,6 @@ $foundItems = count($content);
 
 echo we_html_tools::getCalendarFiles() .
  $versionsView->getJS() .
- STYLESHEET .
  we_html_element::cssLink(CSS_DIR . 'we_versions.css', array('media' => 'screen')) .
  we_html_element::cssLink(CSS_DIR . 'we_versions_print.css', array('media' => 'print'));
 ?>

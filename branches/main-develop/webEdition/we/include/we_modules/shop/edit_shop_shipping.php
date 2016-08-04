@@ -25,8 +25,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 we_html_tools::protect($protect);
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+echo we_html_tools::getHtmlTop();
 
 $weShippingControl = we_shop_shippingControl::getShippingControl();
 
@@ -157,7 +156,7 @@ function we_submitForm(url){
 	f.submit();
 	return true;
 }' .
-		(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')
+	(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')
 ) .
  '</head>';
 ?>
@@ -282,8 +281,8 @@ function we_submitForm(url){
 		}
 
 		echo we_html_multiIconBox::getHTML('weShipping', $parts, 30, we_html_button::position_yes_no_cancel(
-						we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
-				), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
+				we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
+			), -1, '', '', false, g_l('modules_shop', '[shipping][shipping_package]')
 		);
 		?>
 	</form>

@@ -698,7 +698,7 @@ edf.populateGroups();');
 
 				//set header we avoided when sending JSON only
 				we_html_tools::headerCtCharset('text/html', $GLOBALS['WE_BACKENDCHARSET']);
-				echo we_html_tools::getHtmlTop('newsletter') . STYLESHEET;
+				echo we_html_tools::getHtmlTop('newsletter');
 
 				$tempName = '';
 				$fileUploader = new we_fileupload_resp_base();

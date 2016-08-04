@@ -32,8 +32,7 @@ function prepareFieldname($str){
 }
 
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+echo we_html_tools::getHtmlTop();
 
 
 $ignoreFields = explode(',', we_shop_shop::ignoredEditFields);

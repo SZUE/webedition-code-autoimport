@@ -65,7 +65,6 @@ if($we_doc->CSS){
 		}
 	}
 }
-echo STYLESHEET;
 
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>

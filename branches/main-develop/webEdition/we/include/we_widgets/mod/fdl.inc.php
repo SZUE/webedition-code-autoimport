@@ -96,11 +96,9 @@ function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 }";
 
-	echo we_html_tools::getHtmlTop(g_l('cockpit', '[kv_failedLogins][headline]') . ' (' . $maxRows . ')', '', '', STYLESHEET . we_html_element::jsElement($sJsCode), we_html_element::htmlBody(array(
-			'style' => 'margin:10px 15px;',
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[kv_failedLogins][headline]') . ' (' . $maxRows . ')', '', '', we_html_element::jsElement($sJsCode), we_html_element::htmlBody(['style' => 'margin:10px 15px;',
 			"onload" => "if(parent!=self){init();}"
-			), we_html_element::htmlDiv(array(
-				"id" => "fdl"
-				), we_html_element::htmlDiv(array('id' => 'fdl_data'), $failedLoginHTML)
+			], we_html_element::htmlDiv(["id" => "fdl"
+				], we_html_element::htmlDiv(['id' => 'fdl_data'], $failedLoginHTML)
 	)));
 }

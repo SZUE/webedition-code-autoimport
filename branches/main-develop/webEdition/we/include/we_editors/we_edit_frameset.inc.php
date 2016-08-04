@@ -188,7 +188,7 @@ if($we_doc->ID == 0){
 
 if($we_doc->EditPageNr === -1){ //	there is no view available for this document
 	//	show errorMessage - no view for this document (we:hidePages)
-	echo we_html_tools::getHtmlTop('', '', '', STYLESHEET, we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert', '[no_views][description]'), we_html_tools::TYPE_ALERT, 500, true), g_l('alert', '[no_views][headline]'))
+	echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_tools::htmlDialogLayout(we_html_tools::htmlAlertAttentionBox(g_l('alert', '[no_views][description]'), we_html_tools::TYPE_ALERT, 500, true), g_l('alert', '[no_views][headline]'))
 		)
 	);
 	exit;
@@ -234,7 +234,6 @@ if(!$we_doc->getElement('data')){
 	);
 }
 echo we_html_tools::getHtmlTop('', '', 'frameset') .
- STYLESHEET .
  we_html_element::jsElement((isset($parastr) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "edit_document_with_parameters" ?
 		'var parameters = "' . $parastr . '";' :
 		'') .

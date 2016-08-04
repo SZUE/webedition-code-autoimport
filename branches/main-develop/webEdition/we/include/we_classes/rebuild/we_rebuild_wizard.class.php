@@ -77,7 +77,7 @@ abstract class we_rebuild_wizard{
 			$content->setCol(0, 1, array("style" => "text-align:right"), $content2);
 		}
 
-		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', STYLESHEET . $js, we_html_element::htmlBody(array('style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
+		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', $js, we_html_element::htmlBody(array('style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
 	}
@@ -713,7 +713,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			);
 		}
 
-		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', STYLESHEET, $body);
+		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', '', $body);
 	}
 
 	/**
@@ -726,8 +726,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		if(!$contents){
 			return '';
 		}
-		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', STYLESHEET .
-				$contents[0] .
+		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', $contents[0] .
 				($contents[1] ?
 					we_html_element::jsElement($contents[1]) :
 					''), we_html_element::htmlBody(array(

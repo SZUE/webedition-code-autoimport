@@ -22,8 +22,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 
 $fieldName = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
-echo we_html_tools::getHtmlTop(sprintf(g_l('wysiwyg', '[window_title]'), $fieldName), 'UTF-8') .
- STYLESHEET;
+echo we_html_tools::getHtmlTop(sprintf(g_l('wysiwyg', '[window_title]'), $fieldName), 'UTF-8');
 
 if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed')){
 	$newHTML = we_base_request::_(we_base_request::RAW, $fieldName, '');

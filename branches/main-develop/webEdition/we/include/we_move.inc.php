@@ -142,7 +142,7 @@ switch($table){
 		break;
 }
 
-echo we_html_tools::getHtmlTop() . STYLESHEET .
+echo we_html_tools::getHtmlTop() .
  $script .
  weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'move.js', "initMove('" . $table . "');");

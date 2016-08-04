@@ -365,8 +365,7 @@ function back(id) {
 	public static function showFrameset(){
 		$versionsLogView = new self();
 
-		echo we_html_tools::getHtmlTop(g_l('versions', '[versions_log]'), '', '', STYLESHEET .
-			YAHOO_FILES .
+		echo we_html_tools::getHtmlTop(g_l('versions', '[versions_log]'), '', '', YAHOO_FILES .
 			$versionsLogView->getJS() .
 			we_html_element::cssLink(CSS_DIR . 'messageConsole.css'), we_html_element::htmlBody(['class' => 'weDialogBody messageConsoleWindow'], '
 	<div id="headlineDiv">

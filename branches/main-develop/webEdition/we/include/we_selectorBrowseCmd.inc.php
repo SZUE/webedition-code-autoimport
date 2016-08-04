@@ -24,7 +24,7 @@
 
 we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
 
-echo we_html_tools::getHtmlTop() . STYLESHEET;
+echo we_html_tools::getHtmlTop();
 $cmd = we_base_request::_(we_base_request::STRING, 'cmd');
 
 if($cmd === "save_last"){

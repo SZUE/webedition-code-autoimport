@@ -31,8 +31,7 @@ if(!$transaction){
 	exit();
 }
 
-echo we_html_tools::getHtmlTop() .
- STYLESHEET;
+echo we_html_tools::getHtmlTop();
 
 $messaging = new we_messaging_messaging($_SESSION['weS']['we_data'][$transaction]);
 $messaging->set_login_data($_SESSION['user']["ID"], $_SESSION['user']["Username"]);

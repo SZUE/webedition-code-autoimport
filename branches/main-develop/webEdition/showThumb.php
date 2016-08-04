@@ -33,8 +33,6 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 	$we_doc = we_document::initDoc($we_dt);
 	session_write_close();
 
-	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', STYLESHEET);
-
 	$table = '<table class="default"><tr>';
 
 	foreach($thumbIDs as $thumbid){
@@ -66,6 +64,5 @@ if(($uniqid = we_base_request::_(we_base_request::RAW, 'u')) &&
 	}
 
 	$table .= '</tr></table>';
-
-	echo we_html_element::htmlBody(['style' => 'margin: 5px;'], $table) . '</html>';
+	echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['style' => 'margin: 5px;'], $table));
 }

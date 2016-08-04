@@ -103,8 +103,7 @@ function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
 }";
 
-	echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', STYLESHEET .
-		we_html_element::jsElement($js), we_html_element::htmlBody(
+	echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', we_html_element::jsElement($js), we_html_element::htmlBody(
 			[
 			'style' => 'margin:10px 15px;',
 			"onload" => "if(parent!=self){init();}WE().util.setIconOfDocClass(document,'mdcIcon');"

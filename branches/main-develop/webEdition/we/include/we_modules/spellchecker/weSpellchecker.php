@@ -10,8 +10,7 @@ echo we_html_tools::getHtmlTop() .
  we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/mctabs.js') .
  we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/form_utils.js') .
  we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/validate.js') .
- we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js') .
- STYLESHEET;
+ we_html_element::jsScript(TINYMCE_SRC_DIR . 'utils/editable_selects.js');
 
 if(!isset($_SESSION['weS']['dictLang'])){
 	$_SESSION['weS']['dictLang'] = $spellcheckerConf['default'];
@@ -77,7 +76,8 @@ if($editname !== false){
 
 //-->
 </script>
-<?= we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
+<?=
+we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
  we_html_element::jsScript(JS_DIR . 'we_modules/spellchecker/weSpellchecker.js');
 ?>
 </head>

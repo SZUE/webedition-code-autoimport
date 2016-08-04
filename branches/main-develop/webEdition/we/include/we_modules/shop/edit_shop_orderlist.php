@@ -25,17 +25,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 $protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 we_html_tools::protect($protect);
 
-echo we_html_tools::getHtmlTop('','','', STYLESHEET);
-
-$Kundenname = '';
-
 if(($cid = we_base_request::_(we_base_request::INT, 'cid'))){
 	$Kundenname = f('SELECT CONCAT(Forename," ",Surname) AS Name FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . $cid);
 	$orderList = we_shop_functions::getCustomersOrderList($cid);
-}else{
-	$Kundenname = $orderList='';
+} else {
+	$Kundenname = $orderList = '';
 }
-?>
-<body class="weEditorBody">
-	<?= we_html_tools::htmlDialogLayout($orderList, g_l('modules_shop', '[order_liste]') . "&nbsp;" . $Kundenname); ?>
-</body></html>
+echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(['class' => "weEditorBody"], we_html_tools::htmlDialogLayout($orderList, g_l('modules_shop', '[order_liste]') . "&nbsp;" . $Kundenname)));

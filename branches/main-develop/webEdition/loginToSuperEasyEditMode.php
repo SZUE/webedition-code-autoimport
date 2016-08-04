@@ -54,11 +54,10 @@ if(isset($_POST["username"]) && isset($_POST["id"]) && isset($_POST["type"])){
 			"open_selected" => true, //	This var is only temporary
 		];
 		//	now start webEdition
-		echo we_html_tools::getHtmlTop('webEdition', '', '', '', '
-<body>
+		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody([], '
 <form name="startSuperEasyEditMode" method="post" action="/webEdition/webEdition.php">
-</form>' . we_html_element::jsElement('document.forms[\'startSuperEasyEditMode\'].submit();') .
-			'</body>');
+</form>' . we_html_element::jsElement('document.forms[\'startSuperEasyEditMode\'].submit();')
+		));
 	} else {
 
 		echo "Ein Fehler trat auf. - 1";
