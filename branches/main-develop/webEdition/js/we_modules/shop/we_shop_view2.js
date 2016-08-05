@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -21,9 +23,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var bid = 0;
+var cid = 0;
 
 function SendMail(was) {
-	document.location = SCRIPT_NAME + "?mod=shop&pnt=edbody&bid=" + bid + "&SendMail=" + was;
+	document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&bid=" + bid + "&SendMail=" + was;
 }
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -31,16 +35,16 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_properties.php?");
+	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_order_properties");
 
 	var wind;
 	switch (args[0]) {
 		case "edit_shipping_cost":
-			wind = new (WE().util.jsWindow)(this, url + "&bid=" + bid, "edit_shipping_cost", -1, -1, 545, 205, true, true, true, false);
+			wind = new (WE().util.jsWindow)(this, url + "&bid=" + bid, args[0], -1, -1, 545, 205, true, true, true, false);
 			break;
 
 		case "edit_shop_cart_custom_field":
-			wind = new (WE().util.jsWindow)(this, url + "&bid=" + bid + "&cartfieldname=" + (args[1] ? args[1] : ''), "edit_shop_cart_custom_field", -1, -1, 545, 300, true, true, true, false);
+			wind = new (WE().util.jsWindow)(this, url + "&bid=" + bid + "&cartfieldname=" + (args[1] ? args[1] : ''), args[0], -1, -1, 545, 300, true, true, true, false);
 			break;
 
 		case "edit_order_customer":
