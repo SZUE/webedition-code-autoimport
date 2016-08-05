@@ -33,6 +33,7 @@ switch($what = we_base_request::_(we_base_request::STRING, "pnt", 'frameset')){
 	case "cmd":
 		echo we_html_tools::getHtmlTop('webEdition', '', '', $weBackupWizard->getHTMLCmd(), we_html_element::htmlBody());
 		flush();
+		break;
 	case "busy":
 		echo $weBackupWizard->getHTMLBusy();
 		break;
