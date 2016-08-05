@@ -109,7 +109,7 @@ function we_cmd() {
 				top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
 				top.content.editor.edbody.document.we_form.owners_name.value = top.content.editor.edbody.owners_label.name;
 				top.content.editor.edbody.document.we_form.owners_count.value = top.content.editor.edbody.owners_label.itemCount;
-				if (top.content.editor.edbody.document.we_form.IsFolder.value !== 1) {
+				if (top.content.editor.edbody.document.we_form.IsFolder.value !== '1') {
 					top.content.editor.edbody.document.we_form.question_name.value = top.content.editor.edbody.question_edit.name;
 					top.content.editor.edbody.document.we_form.answers_name.value = top.content.editor.edbody.answers_edit.name;
 					top.content.editor.edbody.document.we_form.variant_count.value = top.content.editor.edbody.answers_edit.variantCount;
