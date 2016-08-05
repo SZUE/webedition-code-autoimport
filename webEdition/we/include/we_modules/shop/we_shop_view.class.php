@@ -1313,7 +1313,7 @@ function CalendarChanged(calObject) {
 		}
 
 		if(is_array($this->raw->persistent_slots)){
-			foreach($this->raw->persistent_slots as $key => $val){
+			foreach($this->raw->persistent_slots as $val){
 				$varname = $val;
 				if(isset($_REQUEST[$varname])){
 					$this->raw->{$val} = $_REQUEST[$varname];

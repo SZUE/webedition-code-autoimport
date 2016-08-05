@@ -82,21 +82,20 @@ if(permissionhandler::hasPerm("administrator")){
 				we_html_button::create_button(we_html_button::NEXT, "", "", 100, 22, "", "", true)) .
 			'</td></tr></table>';
 
-		$parts = array(
-			array(
-				'headline' => '',
+		$parts = [
+			['headline' => '',
 				'html' => we_html_tools::htmlDialogBorder3(730, $content, $headline) . $nextprev,
 				'noline' => 1
-			)
-		);
+			]
+		];
 	} else {
-		$parts[] = array(
+		$parts[] = [
 			'headline' => '',
-			'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('prefs', '[log_is_empty]')) .
+			'html' => we_html_element::htmlSpan(['class' => 'middlefont lowContrast'], g_l('prefs', '[log_is_empty]')) .
 			we_html_element::htmlBr() .
 			we_html_element::htmlBr(),
 			'noline' => 1
-		);
+		];
 	}
 
 	$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::formatButtons($refresh . $close . $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'))
