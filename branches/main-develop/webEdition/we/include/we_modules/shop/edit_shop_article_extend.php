@@ -239,20 +239,20 @@ ORDER BY obx.OF_ID'); // get the shop-objects from DB;
 					$isPublished = $orderRows[$i]['cPub'] > 0 ? true : false;
 					$publishedStylePre = $isPublished ? '<span>' : '<span style="color: red">';
 
-					$content[] = array(
-						array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\' ,\'' . $orderRows[$i]['obID'] . '\',\'' . $docType2 . '\');");">' . $publishedStylePre . substr($orderRows[$i]['obTitle'], 0, 25) . '..</span></a>'),
-						array('dat' => $publishedStylePre . $orderRows[$i]['obID'] . '</span>'),
+					$content[] = [
+						['dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\' ,\'' . $orderRows[$i]['obID'] . '\',\'' . $docType2 . '\');");">' . $publishedStylePre . substr($orderRows[$i]['obTitle'], 0, 25) . '..</span></a>'],
+						['dat' => $publishedStylePre . $orderRows[$i]['obID'] . '</span>'],
 						//$content[$nr][2]['dat'] = $orderRows[$i]['type'];
-						array('dat' => $publishedStylePre . ($orderRows[$i]['cDate'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['cDate']) : "") . '</span>'),
-						array('dat' => $orderRows[$i]['cPub'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['cPub']) : ''),
-						array('dat' => $publishedStylePre . ($orderRows[$i]['cMob'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['cMob']) : "") . '</span>')
-					);
+						['dat' => $publishedStylePre . ($orderRows[$i]['cDate'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['cDate']) : "") . '</span>'],
+						['dat' => $orderRows[$i]['cPub'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['cPub']) : ''],
+						['dat' => $publishedStylePre . ($orderRows[$i]['cMob'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['cMob']) : "") . '</span>']
+					];
 				}
 
-				$parts[] = array(
+				$parts[] = [
 					'html' => we_html_tools::htmlDialogBorder3(670, $content, $headline),
 					'noline' => true
-				);
+				];
 
 				// now the pager class at last:
 				// Pager: Zweite Linkliste zeigen
@@ -295,36 +295,34 @@ ORDER BY obx.OF_ID'); // get the shop-objects from DB;
 				}
 				$typeAlias = "document";
 				// build the headline
-				$headline = array(
-					array('dat' => getTitleLinkDoc(g_l('modules_shop', '[ArtName]'), 'sql')),
-					array('dat' => getTitleLinkDoc(g_l('modules_shop', '[ArtID]'), 'dd')),
+				$headline = [
+					['dat' => getTitleLinkDoc(g_l('modules_shop', '[ArtName]'), 'sql')],
+					['dat' => getTitleLinkDoc(g_l('modules_shop', '[ArtID]'), 'dd')],
 					//$headline[2]['dat'] = getTitleLinkDoc(g_l('modules_shop','[docType]'), $typeAlias);
-					array('dat' => getTitleLinkDoc(g_l('modules_shop', '[artCreate]'), 'dDate')),
-					array('dat' => getTitleLinkDoc(g_l('modules_shop', '[artPub]'), 'dPub')),
-					array('dat' => getTitleLinkDoc(g_l('modules_shop', '[artMod]'), 'dMod')),
-				);
+					['dat' => getTitleLinkDoc(g_l('modules_shop', '[artCreate]'), 'dDate')],
+					['dat' => getTitleLinkDoc(g_l('modules_shop', '[artPub]'), 'dPub')],
+					['dat' => getTitleLinkDoc(g_l('modules_shop', '[artMod]'), 'dMod')],
+					];
 
 				$content = [];
 				for($nr = 0, $i = ($actPage * $nrOfPage); $i < count($orderRows) && $i < ($actPage * $nrOfPage + $nrOfPage); $i++, $nr++){
 					$isPublished = $orderRows[$i]['dPub'] > 0 ? true : false;
 					$publishedStylePre = $isPublished ? '<span>' : '<span style="color: red">';
-					$content[$nr] = array(
-						array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . FILE_TABLE . '\' ,\'' . $orderRows[$i]['dd'] . '\',\'' . $docType . '\');");">' . $publishedStylePre . substr($orderRows[$i]['sql'], 0, 25) . '..</span></a>'),
-						array('dat' => $publishedStylePre . ($orderRows[$i]['dd']) . '</span>'),
+					$content[$nr] = [
+						['dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . FILE_TABLE . '\' ,\'' . $orderRows[$i]['dd'] . '\',\'' . $docType . '\');");">' . $publishedStylePre . substr($orderRows[$i]['sql'], 0, 25) . '..</span></a>'],
+						['dat' => $publishedStylePre . ($orderRows[$i]['dd']) . '</span>'],
 						//$content[$nr][2]['dat'] = $orderRows[$i]['type'];
-						array('dat' => $publishedStylePre . ($orderRows[$i]['dDate'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['dDate']) : '') . '</span>'),
-						array('dat' => $orderRows[$i]['dPub'] > 0 ? date("d.m.Y - H:m:s", $orderRows[$i]['dPub']) : ""),
-						array('dat' => $publishedStylePre . ($orderRows[$i]['dMod'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['dMod']) : '') . '</span>'),
-					);
+						['dat' => $publishedStylePre . ($orderRows[$i]['dDate'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['dDate']) : '') . '</span>'],
+						['dat' => $orderRows[$i]['dPub'] > 0 ? date("d.m.Y - H:m:s", $orderRows[$i]['dPub']) : ""],
+						['dat' => $publishedStylePre . ($orderRows[$i]['dMod'] > 0 ? date('d.m.Y - H:m:s', $orderRows[$i]['dMod']) : '') . '</span>'],
+						];
 				}
-				$parts[] = array(
-					'html' => we_html_tools::htmlDialogBorder3(670, $content, $headline),
+				$parts[] = ['html' => we_html_tools::htmlDialogBorder3(670, $content, $headline),
 					'noline' => true
-				);
+					];
 
-				$parts[] = array(
-					'html' => we_shop_pager::getStandardPagerHTML(getPagerLinkDoc(), $actPage, $nrOfPage, count($orderRows)),
-				);
+				$parts[] = ['html' => we_shop_pager::getStandardPagerHTML(getPagerLinkDoc(), $actPage, $nrOfPage, count($orderRows)),
+					];
 
 				echo we_html_multiIconBox::getHTML("revenues", $parts, 30, "", -1, "", "", false, sprintf(g_l('tabs', '[module][artList]'), $topInfo));
 			}

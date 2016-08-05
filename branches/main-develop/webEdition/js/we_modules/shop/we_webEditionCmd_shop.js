@@ -36,7 +36,7 @@ function shopCloseWindow(args) {
 function we_cmd_shop(args, url) {
 	switch (args[0]) {
 		case "edit_settings_shop":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php", "shoppref", -1, -1, 470, 600, true, false, true);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=pref_shop", "pref_shop", -1, -1, 470, 600, true, false, true);
 			break;
 		case "shop_edit_ifthere":
 		case "shop_edit":
@@ -44,38 +44,31 @@ function we_cmd_shop(args, url) {
 			break;
 		case "pref_shop":
 			shopCloseWindow(args);
-			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_pref.php";
-			new (WE().util.jsWindow)(this, url, "shoppref", -1, -1, 470, 600, true, true, true, false);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 470, 600, true, true, true, false);
 			break;
 		case "edit_shop_status":
 			shopCloseWindow(args);
-			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_status.php";
-			new (WE().util.jsWindow)(this, url, "edit_shop_status", -1, -1, 700, 580, true, true, true, false);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 700, 580, true, true, true, false);
 			break;
 		case "edit_shop_vat_country":
 			shopCloseWindow(args);
-			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_vat_country.php";
-			new (WE().util.jsWindow)(this, url, "edit_shop_vat_country", -1, -1, 700, 780, true, true, true, false);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 700, 780, true, true, true, false);
 			break;
 		case "edit_shop_categories":
 			shopCloseWindow(args);
-			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_categories.php";
-			new (WE().util.jsWindow)(this, url, "edit_shop_categories", -1, -1, 740, 650, true, false, true, false);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 740, 650, true, false, true, false);
 			break;
 		case "edit_shop_vats":
 			shopCloseWindow(args);
-			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_vats.php";
-			new (WE().util.jsWindow)(this, url, "edit_shop_vats", -1, -1, 650, 650, true, false, true, false);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 650, 650, true, false, true, false);
 			break;
 		case "edit_shop_shipping":
 			shopCloseWindow(args);
-			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_shipping.php";
-			new (WE().util.jsWindow)(this, url, "edit_shop_shipping", -1, -1, 700, 600, true, false, true, false);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 700, 600, true, false, true, false);
 			break;
 		case "payment_val":
 			shopCloseWindow(args);
-			url = WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_payment.php";
-			new (WE().util.jsWindow)(this, url, "edit_shop_payment", -1, -1, 520, 720, true, false, true, false);
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=" + args[0], args[0], -1, -1, 520, 720, true, false, true, false);
 			break;
 		case 'yearCmd'://pseudocommand
 		case "revenue_view":

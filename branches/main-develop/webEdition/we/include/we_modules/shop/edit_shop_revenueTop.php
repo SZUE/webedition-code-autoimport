@@ -70,7 +70,7 @@ function yearSelect($select_name){
 		$opts[$yearNow] = $yearNow;
 		$yearNow--;
 	}
-	return we_class::htmlSelect($select_name, $opts, 1, we_base_request::_(we_base_request::INT, $select_name, ''), false, array('id' => $select_name));
+	return we_class::htmlSelect($select_name, $opts, 1, we_base_request::_(we_base_request::INT, $select_name, ''), false, ['id' => $select_name]);
 }
 
 function monthSelect($select_name, $selectedMonth){
@@ -81,38 +81,6 @@ function monthSelect($select_name, $selectedMonth){
 }
 
 $mon = we_base_request::_(we_base_request::INT, 'ViewMonth');
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-	function we_submitDateform() {
-		elem = document.forms[0];
-		elem.submit();
-	}
-
-	function setHeaderTitle() {
-		pre = "";
-		post = "' . ($mon > 0 ? g_l('modules_shop', '[month][' . $mon . ']') . ' ' : '') . we_base_request::_(we_base_request::INT, 'ViewYear') . '";
-		if(parent.edheader && parent.edheader.weTabs.setTitlePath) {
-			parent.edheader.weTabs.setTitlePath(post,pre);
-		} else {
-				setTimeout(setHeaderTitle,100);
-		}
-	}
-
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-		switch (args[0]) {
-			case "openOrder": //TODO: check this adress: mit oder ohne tree? Bisher: left
-				if(top.content.doClick) {
-					top.content.doClick(args[1], args[2], args[3]);//TODO: check this adress
-				}
-				break;
-			default: // not needed yet
-				top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-		}
-	}')) . '
-<body class="weEditorBody" onload="self.focus(); setHeaderTitle();" onunload="">
-<form>';
 
 // get some preferences!
 $feldnamen = explode('|', f('SELECT pref_value from ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"'));
@@ -129,26 +97,23 @@ if($nrOfPage === "default"){
 	$nrOfPage = 20;
 }
 
-$parts = array(
-// get header of total revenue of a year
-	array(
+$parts = [
+	[
 		'headline' => '<label for="ViewYear">' . g_l('modules_shop', '[selectYear]') . '</label>',
 		'html' => yearSelect("ViewYear"),
 		'space' => we_html_multiIconBox::SPACE_MED2,
 		'noline' => 1
-	),
-	array(
+	], [
 		'headline' => '<label for="ViewMonth">' . g_l('modules_shop', '[selectMonth]') . '</label>',
 		'html' => monthSelect("ViewMonth", $selectedMonth),
 		'space' => we_html_multiIconBox::SPACE_MED2,
 		'noline' => 1
-	),
-	array(
+	], [
 		'headline' => we_html_button::create_button(we_html_button::SELECT, "javascript:we_submitDateform();"),
 		'html' => '',
 		'space' => we_html_multiIconBox::SPACE_MED2
-	)
-);
+	]
+];
 
 // get queries for revenue and article list.
 $queryCondtion = 'YEAR(DateOrder)=' . $selectedYear . ($selectedMonth > 0 ? ' AND MONTH(DateOrder)=' . $selectedMonth : '');
@@ -180,7 +145,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 		$articleSum = $DB_WE->f('IntQuantity') * $priceToShow;
 
 
-		$orderRows[] = array(
+		$orderRows[] = [
 			'articleArray' => $shopArticleObject,
 			// save all data in array
 			'IntOrderID' => $DB_WE->f('IntOrderID'), // also for ordering
@@ -197,7 +162,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 			'Price' => $priceToShow, // also for ordering
 			WE_SHOP_TITLE_FIELD_NAME => (isset($shopArticleObject[WE_SHOP_TITLE_FIELD_NAME]) ? $shopArticleObject[WE_SHOP_TITLE_FIELD_NAME] : $shopArticleObject['we_' . WE_SHOP_TITLE_FIELD_NAME]), // also for ordering
 			'orderArray' => $orderData,
-		);
+			];
 	}
 
 
@@ -287,7 +252,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 		}
 	}
 
-	$parts[] = array(
+	$parts[] = [
 		'html' => '
 			<table class="defaultfont" style="width:680px;">
 			<tr>
@@ -309,18 +274,18 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 				<td class="shopContentfontR">' . we_base_util::formatNumber($total) . $waehr . '</td>
 			</tr>' . "\n" .
 		$vatTable . '</table>' . "\n",
-	);
+		];
 
-	$headline = array(
-		array('dat' => getTitleLink(g_l('modules_shop', '[bestellung]'), 'IntOrderID')),
-		array('dat' => g_l('modules_shop', '[ArtName]')), // 'shoptitle'
-		array('dat' => g_l('modules_shop', '[anzahl]')),
-		array('dat' => getTitleLink(g_l('modules_shop', '[artPrice]'), 'Price')),
-		array('dat' => g_l('modules_shop', '[Gesamt]')),
-		array('dat' => getTitleLink(g_l('modules_shop', '[artOrdD]'), 'DateOrder')),
-		array('dat' => getTitleLink(g_l('modules_shop', '[ArtID]'), 'IntArticleID')),
-		array('dat' => getTitleLink(g_l('modules_shop', '[artPay]'), 'DatePayment')),
-	);
+	$headline = [
+		['dat' => getTitleLink(g_l('modules_shop', '[bestellung]'), 'IntOrderID')],
+		['dat' => g_l('modules_shop', '[ArtName]')], // 'shoptitle'
+		['dat' => g_l('modules_shop', '[anzahl]')],
+		['dat' => getTitleLink(g_l('modules_shop', '[artPrice]'), 'Price')],
+		['dat' => g_l('modules_shop', '[Gesamt]')],
+		['dat' => getTitleLink(g_l('modules_shop', '[artOrdD]'), 'DateOrder')],
+		['dat' => getTitleLink(g_l('modules_shop', '[ArtID]'), 'IntArticleID')],
+		['dat' => getTitleLink(g_l('modules_shop', '[artPay]'), 'DatePayment')],
+	];
 	$content = [];
 
 	// we need functionalitty to order these
@@ -347,34 +312,57 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 			}
 		}
 
-		$content[] = array(
-			array('dat' => '<a href="javascript:we_cmd(\'openOrder\',' . $orderRow['IntOrderID'] . ',\'shop\',\'' . SHOP_TABLE . '\');">' . $orderRow['IntOrderID'] . '</a>'),
-			array('dat' => $orderRow[WE_SHOP_TITLE_FIELD_NAME] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'),
-			array('dat' => $orderRow['IntQuantity']),
-			array('dat' => we_base_util::formatNumber($orderRow['Price']) . $waehr),
-			array('dat' => we_base_util::formatNumber($orderRow['articleSum']) . $waehr),
-			array('dat' => $orderRow['formatDateOrder']),
-			array('dat' => $orderRow['IntArticleID']),
-			array('dat' => ($orderRow['DatePayment'] ? $orderRow['formatDatePayment'] : ( $orderRow['DateCancellation'] ? '<span class="defaultfont shopNotPayed">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="defaultfont shopNotPayed">' . g_l('modules_shop', '[artNPay]') . '</span>'))),
-		);
+		$content[] = [
+			['dat' => '<a href="javascript:we_cmd(\'openOrder\',' . $orderRow['IntOrderID'] . ',\'shop\',\'' . SHOP_TABLE . '\');">' . $orderRow['IntOrderID'] . '</a>'],
+			['dat' => $orderRow[WE_SHOP_TITLE_FIELD_NAME] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'],
+			['dat' => $orderRow['IntQuantity']],
+			['dat' => we_base_util::formatNumber($orderRow['Price']) . $waehr],
+			['dat' => we_base_util::formatNumber($orderRow['articleSum']) . $waehr],
+			['dat' => $orderRow['formatDateOrder']],
+			['dat' => $orderRow['IntArticleID']],
+			['dat' => ($orderRow['DatePayment'] ? $orderRow['formatDatePayment'] : ( $orderRow['DateCancellation'] ? '<span class="defaultfont shopNotPayed">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="defaultfont shopNotPayed">' . g_l('modules_shop', '[artNPay]') . '</span>'))],
+		];
 	}
 
-	$parts[] = array(
-		'html' => we_html_tools::htmlDialogBorder3(670, $content, $headline),
+	$parts[] = ['html' => we_html_tools::htmlDialogBorder3(670, $content, $headline),
 		'noline' => true
-	);
+		];
 
-	$parts[] = array(
-		'html' => we_shop_pager::getStandardPagerHTML(getPagerLink(), $actPage, $nrOfPage, $maxRows),
-	);
+	$parts[] = ['html' => we_shop_pager::getStandardPagerHTML(getPagerLink(), $actPage, $nrOfPage, $maxRows),
+		];
 } else {
-	$parts[] = array(
-		'html' => g_l('modules_shop', '[NoRevenue]') . ' (' . ($selectedMonth > 0 ? g_l('modules_shop', '[month][' . $selectedMonth . ']') . ' ' : '') . $selectedYear . ')',
-	);
+	$parts[] = ['html' => g_l('modules_shop', '[NoRevenue]') . ' (' . ($selectedMonth > 0 ? g_l('modules_shop', '[month][' . $selectedMonth . ']') . ' ' : '') . $selectedYear . ')',
+		];
 }
 
-echo we_html_multiIconBox::getHTML('revenues', $parts, 30, '', -1, '', '', false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear));
-?>
-</form>
-</body>
-</html>
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
+	function we_submitDateform() {
+		elem = document.forms[0];
+		elem.submit();
+	}
+
+	function setHeaderTitle() {
+		pre = "";
+		post = "' . ($mon > 0 ? g_l('modules_shop', '[month][' . $mon . ']') . ' ' : '') . we_base_request::_(we_base_request::INT, 'ViewYear') . '";
+		if(parent.edheader && parent.edheader.weTabs.setTitlePath) {
+			parent.edheader.weTabs.setTitlePath(post,pre);
+		} else {
+				setTimeout(setHeaderTitle,100);
+		}
+	}
+
+function we_cmd() {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+
+		switch (args[0]) {
+			case "openOrder": //TODO: check this adress: mit oder ohne tree? Bisher: left
+				if(top.content.doClick) {
+					top.content.doClick(args[1], args[2], args[3]);//TODO: check this adress
+				}
+				break;
+			default: // not needed yet
+				top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+		}
+	}'), we_html_element::htmlBody(['class' => "weEditorBody", 'onload' => "self.focus(); setHeaderTitle();"], '<form>' . we_html_multiIconBox::getHTML('revenues', $parts, 30, '', -1, '', '', false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear)) . '</form>'));
+

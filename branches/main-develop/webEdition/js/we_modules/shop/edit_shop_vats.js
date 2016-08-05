@@ -80,16 +80,16 @@ function we_cmd() {
 	switch (args[0]) {
 		case "save":
 			document.we_form.onsaveclose.value = 1;
-			we_submitForm(SCRIPT_NAME);
+			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_vats");
 			break;
 
 		case "save_notclose":
-			we_submitForm(SCRIPT_NAME);
+			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_vats");
 			break;
 
 		case "close":
 			if (hot) {
-				new (WE().util.jsWindow)(this, WE().consts.dirs.WE_SHOP_MODULE_DIR + "edit_shop_exitQuestion.php", "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=exitQuestion", "we_exit_doc_question", -1, -1, 380, 130, true, false, true);
 			} else {
 				this.close();
 			}
@@ -114,7 +114,7 @@ function we_cmd() {
 
 		case "delete":
 			if (confirm(WE().consts.g_l.shop.vat_confirm_delete)) {
-				document.location = SCRIPT_NAME + "?we_cmd[0]=deleteVat&weShopVatId=" + args[1];
+				document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_vats&we_cmd[0]=deleteVat&weShopVatId=" + args[1];
 			}
 			break;
 
