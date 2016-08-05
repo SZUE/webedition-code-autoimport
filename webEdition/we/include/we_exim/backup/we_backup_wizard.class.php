@@ -1056,6 +1056,7 @@ top.cmd.reloadTimer=setTimeout(reloadFrame, ' . $execute . ');');
 			case "cmd":
 				echo we_html_tools::getHtmlTop('', '', '', $weBackupWizard->getHTMLCmd(), we_html_element::htmlBody());
 				flush();
+				break;
 			case "busy":
 				echo $weBackupWizard->getHTMLBusy();
 				break;
