@@ -55,7 +55,11 @@ class we_shop_view extends we_modules_view{
 		// whether the resultset is empty?
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
 
-
+		$js = 'isDocument=' . intval($resultD) . ';
+isObject=' . intval((!empty($resultO))) . ';
+classID=' . intval($classid) . ';
+parent.document.title=\'' . $title . '\';
+';
 		return we_html_element::jsElement('
 WE().consts.g_l.shop={
 	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_perms]')) . '",
@@ -66,11 +70,8 @@ WE().consts.g_l.shop={
 	del_shop:"' . g_l('modules_shop', '[del_shop]') . '",
 };
 WE().consts.dirs.WE_SHOP_MODULE_DIR="' . WE_SHOP_MODULE_DIR . '";
-var isDocument=' . intval($resultD) . ';
-var isObject=' . intval((!empty($resultO))) . ';
-var classID=' . intval($classid) . ';
 ') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', 'parent.document.title=\'' . $title . '\';');
+			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', $js);
 	}
 
 	function getJSProperty(){
@@ -88,7 +89,6 @@ function submitForm(target,action,method) {
 
 	function getProperties(){
 		we_html_tools::protect();
-		echo we_html_tools::getHtmlTop();
 
 		//$weShopVatRule = weShopVatRule::getShopVatRule();
 
@@ -105,7 +105,7 @@ function submitForm(target,action,method) {
 		// config
 		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db));
 		$waehr = '&nbsp;' . oldHtmlspecialchars($feldnamen[0]);
-		$numberformat = $feldnamen[2];
+		//$numberformat = $feldnamen[2];
 		$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 		$this->classIds = makeArrayFromCSV($classid);
 		$mwst = ($feldnamen[1] ? : '');
@@ -119,15 +119,11 @@ function submitForm(target,action,method) {
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 		if(we_base_request::_(we_base_request::BOOL, 'deletethisorder')){
 			$this->db->query('DELETE FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid);
-			echo we_html_element::jsElement('top.content.treeData.deleteEntry(' . $bid . ')') .
-			'</head>
-			<body class="weEditorBody" onunload="doUnload()">
-			<table style="width:300px">
+			return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('top.content.treeData.deleteEntry(' . $bid . ')'), we_html_element::htmlBody(['class' => "weEditorBody", 'onunload' => "doUnload()"], '<table style="width:300px">
 			  <tr>
 				<td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout('<span class="defaultfont">' . g_l('modules_shop', '[geloscht]') . '</span>', g_l('modules_shop', '[loscht]')) . '</td>
 			  </tr>
-			  </table></html>';
-			exit;
+			  </table>'));
 		}
 
 		if(($id = we_base_request::_(we_base_request::INT, 'deleteaarticle'))){
@@ -136,6 +132,7 @@ function submitForm(target,action,method) {
 				$letzerartikel = 1;
 			}
 		}
+		echo we_html_tools::getHtmlTop();
 
 		// Get Customer data
 		$_REQUEST['cid'] = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid . ' LIMIT 1', '', $this->db);
@@ -652,35 +649,31 @@ function submitForm(target,action,method) {
 			// ********************************************************************************
 			// "Html output for order with articles"
 			//
-		echo we_html_tools::getCalendarFiles() .
+			$js = '
+bid =' . we_base_request::_(we_base_request::INT, 'bid', 0) . ';
+cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';';
+			echo we_html_tools::getCalendarFiles() .
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			we_html_element::jsElement('
-var SCRIPT_NAME= "' . $_SERVER['SCRIPT_NAME'] . '";
-var bid =' . we_base_request::_(we_base_request::INT, 'bid', 0) . ';
-var cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';
-
-' . (isset($alertMessage) ?
+			we_html_element::jsElement(
+				(isset($alertMessage) ?
 					we_message_reporting::getShowMessageCall($alertMessage, $alertType) : '')
 			) .
-			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view2.js');
+			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view2.js', $js);
 			?>
 
 			</head>
 			<body class="weEditorBody" onload="hot = 1" onunload="doUnload()">
 
 				<?php
-				$parts = array(array(
-						'html' => $orderDataTable,
-					),
-					array(
-						'html' => $orderTable,
-					)
-				);
+				$parts = [['html' => $orderDataTable,
+					],
+					['html' => $orderTable,
+					]
+				];
 				if($customCartFieldsTable){
 
-					$parts[] = array(
-						'html' => $customCartFieldsTable,
-					);
+					$parts[] = ['html' => $customCartFieldsTable,
+					];
 				}
 
 				echo we_html_multiIconBox::getHTML('', $parts, 30);
@@ -1331,7 +1324,7 @@ function CalendarChanged(calObject) {
 	//some functions from edit_shop_properties
 
 	private static function getFieldFromShoparticle(array $array, $name, $length = 0){
-		$val = strip_tags( isset($array['we_' . $name]) ? $array['we_' . $name] : (isset($array[$name]) ? $array[$name] : '' ) );
+		$val = strip_tags(isset($array['we_' . $name]) ? $array['we_' . $name] : (isset($array[$name]) ? $array[$name] : '' ) );
 		return $length && strlen($val) > $length ?
 			'<span ' . ($length ? 'class="cutText" title="' . $val . '" style="max-width: ' . $length . 'em;"' : '') . '>' . $val . '</span>' :
 			$val;

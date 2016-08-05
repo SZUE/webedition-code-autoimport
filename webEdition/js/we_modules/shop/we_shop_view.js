@@ -28,6 +28,10 @@ var hot = 0;
 var get_focus = 1;
 var activ_tab = 1;
 var scrollToVal = 0;
+var isDocument = 0;
+var isObject = 0;
+var classID = 0;
+
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -36,7 +40,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "new_shop":

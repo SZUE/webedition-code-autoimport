@@ -327,8 +327,13 @@ function setTab(tab) {
 				return self::showVatCountryDialog();
 			case 'edit_shop_categories':
 				return self::showCategoriesDialog();
-			case '':
+			case 'edit_shop_shipping':
 				return self::showDialogShipping();
+			case 'edit_order_properties':
+				$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
+				we_html_tools::protect($protect);
+				return $this->View->getProperties();
+
 			default:
 				return parent::getHTML($what, $mode, $step);
 		}

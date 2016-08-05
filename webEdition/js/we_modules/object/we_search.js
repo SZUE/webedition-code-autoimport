@@ -22,32 +22,32 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function sub(){
-	document.we_form_search.target="load";
-	document.getElementsByName("SearchStart")[0].value=0;
-	document.we_form_search.action=WE().consts.dirs.WE_MODULES_DIR+"object/search_submit.php";
-	document.we_form_search.todo.value="search";
+function sub() {
+	document.we_form_search.target = "load";
+	document.getElementsByName("SearchStart")[0].value = 0;
+	document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + "object/search_submit.php";
+	document.we_form_search.todo.value = "search";
 	document.we_form_search.submit();
 }
 
-function newinput(){
-	document.we_form_search.target='load';
-	document.we_form_search.action=WE().consts.dirs.WE_MODULES_DIR+"object/search_submit.php";
-	document.we_form_search.todo.value="add";
+function newinput() {
+	document.we_form_search.target = 'load';
+	document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + "object/search_submit.php";
+	document.we_form_search.todo.value = "add";
 	document.we_form_search.submit();
 }
 
-function del(pos){
-	document.we_form_search.target='load';
-	document.we_form_search.action=WE().consts.dirs.WE_MODULES_DIR+"object/search_submit.php";
-	document.we_form_search.todo.value="delete";
-	document.we_form_search.position.value=pos;
+function del(pos) {
+	document.we_form_search.target = 'load';
+	document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + "object/search_submit.php";
+	document.we_form_search.todo.value = "delete";
+	document.we_form_search.position.value = pos;
 	document.we_form_search.submit();
 }
 
-function changeitanyway(f){
-		document.we_form_search.target='load';
-		document.we_form_search.action=WE().consts.dirs.WE_MODULES_DIR+'object/search_submit.php';
-		document.we_form_search.todo.value="changemeta";
-		document.we_form_search.submit();
+function changeitanyway(f) {
+	document.we_form_search.target = 'load';
+	document.we_form_search.action = WE().consts.dirs.WE_MODULES_DIR + 'object/search_submit.php';
+	document.we_form_search.todo.value = "changemeta";
+	document.we_form_search.submit();
 }

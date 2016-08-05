@@ -196,6 +196,7 @@ we/include/we_modules/shop/edit_shop_vats.php
 we/include/we_modules/shop/edit_shop_vat_country.php
 we/include/we_modules/shop/edit_shop_status.php
 we/include/we_modules/shop/edit_shop_shipping.php
+we/include/we_modules/shop/edit_shop_properties.php
 we/include/we_modules/shop/edit_shop_pref.php
 we/include/we_modules/shop/edit_shop_payment.php
 we/include/we_modules/shop/edit_shop_payment.inc.php
