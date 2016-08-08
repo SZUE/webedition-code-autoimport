@@ -196,6 +196,7 @@ $l_modules_newsletter=array(
 		'mailing_emails_are_black'=>'Included in black list:',
 		'mailing_emails_nok'=>'Domains not verified:',
 		'mailing_emails_success'=>'Sent successfully:',
+		'mailing_not_done'=>'',
 		'mailing_send_at'=>'Mailing sent on:',
 		'tab'=>'Report',
 	),

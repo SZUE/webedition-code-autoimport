@@ -196,6 +196,7 @@ $l_modules_newsletter=array(
 		'mailing_emails_are_black'=>'In Schwarzer Liste enthalten:',
 		'mailing_emails_nok'=>'Nicht überprüfbare Domains:',
 		'mailing_emails_success'=>'Erfolgreich versandt:',
+		'mailing_not_done'=>'Die Kampagne wurde noch nicht versandt.',
 		'mailing_send_at'=>'Mailing versandt am:',
 		'tab'=>'Auswertung',
 	),
