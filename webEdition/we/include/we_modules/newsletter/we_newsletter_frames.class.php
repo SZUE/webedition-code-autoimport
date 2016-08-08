@@ -123,7 +123,7 @@ class we_newsletter_frames extends we_modules_frame{
 
 		$group = we_base_request::_(we_base_request::BOOL, "group");
 
-		$page = ($group ? 0 : we_base_request::_(we_base_request::INT, "page", 0));
+		$page = ($group ? self::TAB_PROPERTIES : we_base_request::_(we_base_request::INT, 'page', self::TAB_PROPERTIES));
 
 
 		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter][text]'));
@@ -153,13 +153,13 @@ function setTab(tab) {
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(new we_tab(g_l('modules_newsletter', '[property]'), (($page == self::TAB_PROPERTIES) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_PROPERTIES . ");"));
+		$we_tabs->addTab(new we_tab(g_l('modules_newsletter', '[property]'), ($page == self::TAB_PROPERTIES), "self.setTab(" . self::TAB_PROPERTIES . ");"));
 
 		if(!$group){
-			$we_tabs->addTab(new we_tab(sprintf(g_l('modules_newsletter', '[mailing_list]'), ""), (($page == self::TAB_MAILING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_MAILING . ");"));
-			$we_tabs->addTab(new we_tab(g_l('modules_newsletter', '[edit]'), (($page == self::TAB_EDIT) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_EDIT . ");"));
+			$we_tabs->addTab(new we_tab(sprintf(g_l('modules_newsletter', '[mailing_list]'), ""), ($page == self::TAB_MAILING), "self.setTab(" . self::TAB_MAILING . ");"));
+			$we_tabs->addTab(new we_tab(g_l('modules_newsletter', '[edit]'), ($page == self::TAB_EDIT), "self.setTab(" . self::TAB_EDIT . ");"));
 			//if($this->View->newsletter->ID){ // zusaetzlicher tab fuer auswertung
-			$we_tabs->addTab(new we_tab(g_l('modules_newsletter', '[reporting][tab]'), (($page == self::TAB_REPORTING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_REPORTING . ");"));
+			$we_tabs->addTab(new we_tab(g_l('modules_newsletter', '[reporting][tab]'), ($page == self::TAB_REPORTING), "self.setTab(" . self::TAB_REPORTING . ");"));
 			//}
 		}
 
