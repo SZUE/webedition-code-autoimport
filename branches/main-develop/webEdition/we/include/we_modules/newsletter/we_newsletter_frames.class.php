@@ -122,7 +122,7 @@ class we_newsletter_frames extends we_modules_frame{
 		}
 
 		$group = we_base_request::_(we_base_request::BOOL, "group");
-		$page = ($group ? 0 : we_base_request::_(we_base_request::INT, "page", 0));
+		$page = ($group ? self::TAB_PROPERTIES : we_base_request::_(we_base_request::INT, 'page', self::TAB_PROPERTIES));
 		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter][text]'));
 		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
@@ -149,13 +149,13 @@ function setTab(tab) {
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, (($page == self::TAB_PROPERTIES) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_PROPERTIES . ");", ['title' => g_l('modules_newsletter', '[property]')]);
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, ($page == self::TAB_PROPERTIES), "self.setTab(" . self::TAB_PROPERTIES . ");", ['title' => g_l('modules_newsletter', '[property]')]);
 
 		if(!$group){
-			$we_tabs->addTab('<i class="fa fa-lg fa-list"></i>', (($page == self::TAB_MAILING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_MAILING . ");", ['title' => sprintf(g_l('modules_newsletter', '[mailing_list]'), "")]);
-			$we_tabs->addTab(we_base_constants::WE_ICON_EDIT, (($page == self::TAB_EDIT) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_EDIT . ");", ['title' => g_l('modules_newsletter', '[edit]')]);
+			$we_tabs->addTab('<i class="fa fa-lg fa-list"></i>', ($page == self::TAB_MAILING), "self.setTab(" . self::TAB_MAILING . ");", ['title' => sprintf(g_l('modules_newsletter', '[mailing_list]'), "")]);
+			$we_tabs->addTab(we_base_constants::WE_ICON_EDIT, ($page == self::TAB_EDIT), "self.setTab(" . self::TAB_EDIT . ");", ['title' => g_l('modules_newsletter', '[edit]')]);
 			//if($this->View->newsletter->ID){ // zusaetzlicher tab fuer auswertung
-			$we_tabs->addTab('<i class="fa fa-lg fa-pie-chart"></i>', (($page == self::TAB_REPORTING) ? "TAB_ACTIVE" : "TAB_NORMAL"), "self.setTab(" . self::TAB_REPORTING . ");", ['title' => g_l('modules_newsletter', '[reporting][tab]')]);
+			$we_tabs->addTab('<i class="fa fa-lg fa-pie-chart"></i>', ($page == self::TAB_REPORTING), "self.setTab(" . self::TAB_REPORTING . ");", ['title' => g_l('modules_newsletter', '[reporting][tab]')]);
 			//}
 		}
 
@@ -319,11 +319,11 @@ function afterLoad(){
 		$newsletterMailOrdersCnt = 0;
 
 		while($this->View->db->next_record()){
-			if($this->View->db->f("Log") === "log_start_send"){
-				$newsletterMailOrders[++$newsletterMailOrdersCnt]['start_send'] = $this->View->db->f("stamp");
-				$newsletterMailOrders[$newsletterMailOrdersCnt]['startTime'] = $this->View->db->f("LogTime");
+			if($this->View->db->f('Log') === 'log_start_send'){
+				$newsletterMailOrders[++$newsletterMailOrdersCnt]['start_send'] = $this->View->db->f('stamp');
+				$newsletterMailOrders[$newsletterMailOrdersCnt]['startTime'] = $this->View->db->f('LogTime');
 			} else {
-				$newsletterMailOrders[$newsletterMailOrdersCnt]['end_send'] = $this->View->db->f("stamp");
+				$newsletterMailOrders[$newsletterMailOrdersCnt]['end_send'] = $this->View->db->f('stamp');
 			}
 		}
 
@@ -394,12 +394,16 @@ function afterLoad(){
 			$table->setCol(4, 2, ['colspan' => 2, "style" => "padding: 0 5px 0 5px;"], we_html_element::htmlB($allRecipients));
 
 			$parts[] = [
-				"headline" => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . $newsletterMailOrder['startTime'],
-				"html" => $table->getHTML() . we_html_element::htmlBr()
+				'headline' => g_l('modules_newsletter', '[reporting][mailing_send_at]') . '&nbsp;' . $newsletterMailOrder['startTime'],
+				'html' => $table->getHTML() . we_html_element::htmlBr()
 			];
 		}
 
-		return $parts;
+		return $parts? : [
+			[
+				'headline' => g_l('modules_newsletter', '[reporting][mailing_not_done]'),
+			]
+		];
 	}
 
 	protected function getHTMLCmd(){
