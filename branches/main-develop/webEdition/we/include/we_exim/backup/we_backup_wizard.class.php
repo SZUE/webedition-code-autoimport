@@ -1081,8 +1081,10 @@ top.cmd.reloadTimer=setTimeout(reloadFrame, ' . $execute . ');');
 				echo $weBackupWizard->getHTMLStep($step);
 				break;
 			case 'cmd':
-				echo we_html_tools::getHtmlTop('', '', '', $weBackupWizard->getHTMLCmd(), we_html_element::htmlBody());
-				break;
+				if(($ret = $weBackupWizard->getHTMLCmd())){
+					echo we_html_tools::getHtmlTop('webEdition', '', '', $ret, we_html_element::htmlBody());
+					break;
+				}
 			case 'busy':
 				echo $weBackupWizard->getHTMLBusy();
 				break;

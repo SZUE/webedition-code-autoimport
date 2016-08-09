@@ -102,6 +102,8 @@ way to fit your requirements.
 				border-left: 1px solid $MiddleBlue;
 				word-wrap: break-word;
 				width: 16em;
+				max-height: 46em;
+				max-height: 80vh;
 				height: auto;
 				z-index: 300;
 				margin-top: 0;
@@ -120,6 +122,7 @@ way to fit your requirements.
 					overflow-y: auto;
 					overflow-x: hidden;
 					max-height: 46em;
+					max-height: 80vh;
 					width: 14.5em;
 					z-index: 400;
 					height: auto;

@@ -680,7 +680,7 @@ $tools = we_tool_lookup::getAllTools(true, false);
 
 foreach($tools as $tool){
 	$we_menu[] = [
-		'text' => $tool['text'] . '&hellip;',
+		'text' => ($tool['text'] === 'toolfactory' ? g_l('javaMenu_global', '[toolfactory]') : $tool['text']) . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'tool_' . $tool['name'] . '_edit',
 		'perm' => $tool['startpermission'],

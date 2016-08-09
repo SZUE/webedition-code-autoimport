@@ -1179,74 +1179,75 @@ class we_versions_version{
 
 				$vals = getHash('SELECT ' . implode(',', $fields) . ' FROM ' . VERSIONS_TABLE . ' WHERE version<' . intval($this->version) . " AND status != 'deleted' AND documentID=" . intval($document["ID"]) . ' AND documentTable="' . $db->escape($document["Table"]) . '" ORDER BY version DESC LIMIT 1');
 				foreach($fields as $val){
-					if(isset($this->modFields[$val]) && isset($vals[$val])){
-						$lastEntryField = isset($vals[$val]) ? $vals[$val] : '';
+					if(!isset($this->modFields[$val]) || !isset($vals[$val])){
+						continue;
+					}
+					$lastEntryField = isset($vals[$val]) ? $vals[$val] : '';
 
-						if($val === "Text" && $document["ContentType"] != we_base_ContentTypes::OBJECT_FILE){
-							$val = "";
+					if($val === 'Text' && $document['ContentType'] != we_base_ContentTypes::OBJECT_FILE){
+						$val = '';
+					}
+
+					if(isset($document[$val])){
+						switch($val){
+							case 'DocType':
+							case 'IsSearchable':
+							case 'WebUserID':
+							case 'TemplateID':
+								if(!$document[$val]){
+									$document[$val] = 0;
+								}
+								break;
 						}
-
-						if(isset($document[$val])){
-							switch($val){
-								case 'DocType':
-								case 'IsSearchable':
-								case 'WebUserID':
-								case 'TemplateID':
-									if(!$document[$val]){
-										$document[$val] = 0;
-									}
-									break;
-							}
-							if($document[$val] != $lastEntryField){
-								$modifications[] = $val;
-							} elseif(($lastEntryField === '' && $document[$val] === '') || ($lastEntryField == $document[$val])){
+						if($document[$val] != $lastEntryField){
+							$modifications[] = $val;
+						} elseif(($lastEntryField === '' && $document[$val] === '') || ($lastEntryField == $document[$val])){
 // do nothing
-							} else {
-								$modifications[] = $val;
-							}
 						} else {
-							switch($val){
-								case 'documentElements':
-								case 'documentScheduler':
-								case 'documentCustomFilter':
-									$newData = [];
-									$diff = [];
-									if(!$lastEntryField){
-										$lastEntryField = [];
-									} else {
-										$lastEntryField = we_unserialize(
+							$modifications[] = $val;
+						}
+						continue;
+					}
+					switch($val){
+						case 'documentElements':
+						case 'documentScheduler':
+						case 'documentCustomFilter':
+									$newData = $diff = [];
+									$lastEntryField = (!$lastEntryField ? []:
+									we_unserialize(
 											(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
 												html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
 												$lastEntryField)
-										);
-									}
-									switch($val){
-										case 'documentElements':
+										));
+							switch($val){
+								case 'documentElements':
 //TODO: imi: check if we need next-level information from nested arrays
-											if($document["elements"]){
-												$newData = $document["elements"];
-												foreach($newData as $k => $vl){
-													if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
-														if(isset($vl['dat'])){
-															$vl['dat'] = is_array($vl['dat']) ? we_serialize($vl['dat']) : $vl['dat'];
-														}
-														if(isset($lastEntryField[$k]['dat'])){
-															$lastEntryField[$k]['dat'] = is_array($lastEntryField[$k]['dat']) ? we_serialize($lastEntryField[$k]['dat']) : $lastEntryField[$k]['dat'];
-														}
-														$diff = array_diff_assoc($vl, $lastEntryField[$k]);
-														if(!empty($diff) && isset($diff['dat'])){
-															$diff[] = $diff;
-														}
-													}
-												}
+									if(!$document['elements']){
+										break;
+									}
+									$newData = $document["elements"];
+									foreach($newData as $k => $vl){
+										if(isset($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
+											if(isset($vl['dat'])){
+												$vl['dat'] = is_array($vl['dat']) ? we_serialize($vl['dat']) : $vl['dat'];
 											}
-											break;
-										case 'documentScheduler':
+											if(isset($lastEntryField[$k]['dat'])){
+												$lastEntryField[$k]['dat'] = is_array($lastEntryField[$k]['dat']) ? we_serialize($lastEntryField[$k]['dat']) : $lastEntryField[$k]['dat'];
+											}
+											$diffs = array_diff_assoc($vl, $lastEntryField[$k]);
+											if(!empty($diffs) && isset($diffs['dat'])){
+												$diff[] = $diffs;
+											}
+										}
+									}
+
+									break;
+								case 'documentScheduler':
 //TODO: imi: check if count() is ok (do we allways have two arrays?)
-											if(count($document["schedArr"]) != count($lastEntryField)){
+									if(count($document['schedArr']) != count($lastEntryField)){
 												$diff['schedArr'] = true;
-											} elseif(!empty($document["schedArr"])){
-												$newData = $document["schedArr"];
+									} elseif(!empty($document['schedArr'])){
+										$newData = $document['schedArr'];
 												foreach($newData as $k => $vl){
 													if(!empty($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
 														$tmpArr1 = $tmpArr2 = [];
@@ -1256,9 +1257,9 @@ class we_versions_version{
 														foreach($lastEntryField[$k] as $k => $v){
 															$tmpArr2[$k] = is_array($v) ? we_serialize($v) : $v;
 														}
-														$diff = array_diff_assoc($tmpArr1, $tmpArr2);
-														if(!empty($diff)){
-															$diff = $diff;
+												$diffs = array_diff_assoc($tmpArr1, $tmpArr2);
+												if(!empty($diffs)){
+													$diff = $diffs;
 														}
 													}
 												}
@@ -1266,32 +1267,30 @@ class we_versions_version{
 											break;
 										case 'documentCustomFilter':
 //TODO: imi: check if we need both foreach
-											if(isset($document["documentCustomerFilter"]) && is_array($document["documentCustomerFilter"]) && is_array($lastEntryField)){
-												$tmpArr1 = $tmpArr2 = [];
-												foreach($document["documentCustomerFilter"] as $k => $v){
+									if(isset($document['documentCustomerFilter']) && is_array($document['documentCustomerFilter']) && is_array($lastEntryField)){
+										$tmpArr1 = $tmpArr2 = array();
+										foreach($document['documentCustomerFilter'] as $k => $v){
 													$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
 												}
-												foreach($lastEntryField as $k => $v){
+										foreach($lastEntryField as $k => $v){
 													$tmpArr2[$k] = is_array($v) ? we_serialize($v) : $v;
 												}
-												$diff = array_diff_assoc($tmpArr1, $tmpArr2);
-												if(!empty($diff)){
-													$diff['documentCustomerFilter'] = $diff;
+												$diffs = array_diff_assoc($tmpArr1, $tmpArr2);
+												if(!empty($diffs)){
+													$diff = $diffs;
 												}
 											}
-
-											break;
-									}
-
-									if(!empty($diff)){
-										$modifications[] = $val;
-									}
+								
+									break;
 							}
 
-							if($val === 'status' && $lastEntryField != $this->status){
+							if(!empty($diff)){
 								$modifications[] = $val;
 							}
-						}
+					}
+
+					if($val === 'status' && $lastEntryField != $this->status){
+						$modifications[] = $val;
 					}
 				}
 

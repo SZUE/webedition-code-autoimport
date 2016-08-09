@@ -207,7 +207,7 @@ class we_selector_file{
 
 	protected function getFramesetJavaScriptDef(){
 		$startPath = f('SELECT Path FROM ' . $GLOBALS['DB_WE']->escape($this->table) . ' WHERE ID=' . intval($this->dir))? : '/';
-		if($this->id == 0){
+		if($this->id === 0){
 			$this->path = '/';
 		}
 		//FIXME: make a new selector-object & add all relevant information there

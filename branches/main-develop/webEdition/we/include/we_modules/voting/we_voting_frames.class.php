@@ -138,48 +138,51 @@ function setTab(tab) {
 
 			function setMultiEdits() {';
 
-		if($this->View->voting->IsFolder == 0){
-			$variant_js .=
-				'question_edit = new multi_edit("question",document.we_form,1,"",' . 520 . ',true);
+		if($this->View->voting->IsFolder == 1){
+			$variant_js .='}';
+			return $js . we_html_element::jsElement($variant_js);
+		}
+		$variant_js .=
+			'question_edit = new multi_edit("question",document.we_form,1,"",' . 520 . ',true);
 				answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",' . 500 . ',true);
 				answers_edit.SetImageIDText("' . g_l('modules_voting', '[imageID_text]') . '");
 				answers_edit.SetMediaIDText("' . g_l('modules_voting', '[mediaID_text]') . '");
 				answers_edit.SetSuccessorIDText("' . g_l('modules_voting', '[successorID_text]') . '");';
 
-			for($j = 0; $j < count($this->View->voting->QASet[0]['answers']); $j++){
-				$variant_js .= 'answers_edit.addItem("2");';
-			}
+		for($j = 0; $j < count($this->View->voting->QASet[0]['answers']); $j++){
+			$variant_js .= 'answers_edit.addItem("2");';
+		}
 
-			foreach($this->View->voting->QASet as $variant => $value){
-				$variant_js .=
-					'question_edit.addVariant();
+		foreach($this->View->voting->QASet as $variant => $value){
+			$variant_js .=
+				'question_edit.addVariant();
 				   answers_edit.addVariant();';
-				foreach($value as $k => $v){
-					switch($k){
-						case 'question':
-							$variant_js .= 'question_edit.setItem("' . $variant . '",0,"' . $v . '");';
-							break;
-						case 'answers':
-							foreach($v as $akey => $aval){
-								if((isset($this->View->voting->QASetAdditions[$variant]) && isset($this->View->voting->QASetAdditions[$variant]['imageID'][$akey]))){
-									$aval2 = $this->View->voting->QASetAdditions[$variant]['imageID'][$akey];
-									$aval3 = $this->View->voting->QASetAdditions[$variant]['mediaID'][$akey];
-									$aval4 = $this->View->voting->QASetAdditions[$variant]['successorID'][$akey];
-								} else {
-									$aval2 = $aval3 = $aval4 = '';
-								}
-								$variant_js .=
-									'answers_edit.setItem("' . $variant . '","' . $akey . '","' . $aval . '");
+			foreach($value as $k => $v){
+				switch($k){
+					case 'question':
+						$variant_js .= 'question_edit.setItem("' . $variant . '",0,"' . $v . '");';
+						break;
+					case 'answers':
+						foreach($v as $akey => $aval){
+							if((isset($this->View->voting->QASetAdditions[$variant]) && isset($this->View->voting->QASetAdditions[$variant]['imageID'][$akey]))){
+								$aval2 = $this->View->voting->QASetAdditions[$variant]['imageID'][$akey];
+								$aval3 = $this->View->voting->QASetAdditions[$variant]['mediaID'][$akey];
+								$aval4 = $this->View->voting->QASetAdditions[$variant]['successorID'][$akey];
+							} else {
+								$aval2 = $aval3 = $aval4 = '';
+							}
+							$variant_js .=
+								'answers_edit.setItem("' . $variant . '","' . $akey . '","' . $aval . '");
 								answers_edit.setItemImageID("' . $variant . '","' . $akey . '","' . $aval2 . '");
 								answers_edit.setItemMediaID("' . $variant . '","' . $akey . '","' . $aval3 . '");
 								answers_edit.setItemSuccessorID("' . $variant . '","' . $akey . '","' . $aval4 . '");';
-							}
-							break;
-					}
+						}
+						break;
 				}
 			}
+		}
 
-			$variant_js .= '
+		$variant_js .= '
 answers_edit.delRelatedItems=true;
 question_edit.showVariant(0);
 answers_edit.showVariant(0);
@@ -189,7 +192,7 @@ answers_edit.SetMinCount(' . ($this->View->voting->AllowFreeText ? 1 : 2) . ');
 answers_edit.' . ($this->View->voting->AllowImages ? 'show' : 'hide') . 'Images();
 answers_edit.' . ($this->View->voting->AllowMedia ? 'show' : 'hide') . 'Media();
 answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Successors();';
-		}
+
 
 
 		$variant_js .= ' owners_label = new multi_edit("owners",document.we_form,0,"' . $del_but . '",510,false);

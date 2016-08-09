@@ -114,7 +114,6 @@ $weekstart = new weTagData_selectAttribute('weekstart', array(new weTagDataOptio
 	), false, '');
 $cfilter = (defined('CUSTOMER_TABLE') ? new weTagData_selectAttribute('cfilter', array(new weTagDataOption('false'),
 		new weTagDataOption('true'),
-		new weTagDataOption('auto'),
 		), false, 'customer') : null);
 $recursive = new weTagData_selectAttribute('recursive', weTagData_selectAttribute::getTrueFalse(), false, '');
 $docid = new weTagData_multiSelectorAttribute('docid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, 'ID', false, '');

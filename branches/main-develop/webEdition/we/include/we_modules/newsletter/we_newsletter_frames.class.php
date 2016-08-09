@@ -123,6 +123,7 @@ class we_newsletter_frames extends we_modules_frame{
 
 		$group = we_base_request::_(we_base_request::BOOL, "group");
 		$page = ($group ? self::TAB_PROPERTIES : we_base_request::_(we_base_request::INT, 'page', self::TAB_PROPERTIES));
+
 		$textPre = g_l('modules_newsletter', ($group ? '[group]' : '[newsletter][text]'));
 		$textPost = we_base_request::_(we_base_request::STRING, "txt", g_l('modules_newsletter', ($group ? '[new_newsletter_group]' : '[new_newsletter]')));
 
