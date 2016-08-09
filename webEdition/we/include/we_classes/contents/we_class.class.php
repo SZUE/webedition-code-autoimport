@@ -31,10 +31,10 @@ abstract class we_class{
 	const LOAD_REVERT_DB = 2; //we_temporaryDocument::revert gibst nicht mehr siehe #5789
 	const LOAD_SCHEDULE_DB = 3;
 	//constants define where to write document (guess)
-	const SUB_DIR_NO = 0;
-	const SUB_DIR_YEAR = 1;
-	const SUB_DIR_YEAR_MONTH = 2;
-	const SUB_DIR_YEAR_MONTH_DAY = 3;
+	const SUB_DIR_NO = '';
+	const SUB_DIR_YEAR = 'y';
+	const SUB_DIR_YEAR_MONTH = 'ym';
+	const SUB_DIR_YEAR_MONTH_DAY = 'ymd';
 
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName = __CLASS__;

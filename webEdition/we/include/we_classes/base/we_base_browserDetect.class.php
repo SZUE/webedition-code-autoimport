@@ -36,7 +36,7 @@ class we_base_browserDetect{
 	const APPLE = 'appleWebKit';
 	const SAFARI = 'safari';
 	const CHROME = 'chrome';
-	const SYS_MAC = 'mac';
+	const SYS_MAC = 'macintosh';
 	const SYS_WIN = 'win';
 	const SYS_UNIX = 'unix';
 	const SYS_ANDROID = 'android';
@@ -181,18 +181,25 @@ class we_base_browserDetect{
 	}
 
 	private function _getSys($bracket){
-		if(stristr($bracket, 'mac')){
-			self::$sys = self::SYS_MAC;
-		} elseif(stristr($bracket, 'win')){
-			self::$sys = self::SYS_WIN;
-		} elseif(stristr($bracket, 'android')){
-			self::$sys = self::SYS_ANDROID;
-		} elseif(stristr($bracket, 'iPhone')){
-			self::$sys = self::SYS_IPHONE;
-		} elseif(stristr($bracket, 'iPad')){
-			self::$sys = self::SYS_IPAD;
-		} elseif(stristr($bracket, 'linux') || stristr($bracket, 'x11') || stristr($bracket, 'sun')){
-			self::$sys = self::SYS_UNIX;
+		switch($bracket){
+			case (stristr($bracket, self::SYS_MAC)):
+				self::$sys = self::SYS_MAC;
+				break;
+			case (stristr($bracket, self::SYS_WIN)):
+				self::$sys = self::SYS_WIN;
+				break;
+			case (stristr($bracket, self::SYS_ANDROID)):
+				self::$sys = self::SYS_ANDROID;
+				break;
+			case (stristr($bracket, self::SYS_IPHONE)):
+				self::$sys = self::SYS_IPHONE;
+				break;
+			case (stristr($bracket, self::SYS_IPAD)):
+				self::$sys = self::SYS_IPAD;
+				break;
+			case (stristr($bracket, self::SYS_UNIX) || stristr($bracket, 'x11') || stristr($bracket, 'sun')):
+				self::$sys = self::SYS_UNIX;
+				break;
 		}
 	}
 

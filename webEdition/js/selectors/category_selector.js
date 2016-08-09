@@ -102,7 +102,7 @@ function selectFile(id) {
 }
 
 function exit_close() {
-	if (!noChoose && hot) {
+	if (!noChoose && hot && opener.setScrollTo) {
 		if (opener.setScrollTo) {
 			opener.setScrollTo();
 			opener.top.we_cmd("reload_editpage");
