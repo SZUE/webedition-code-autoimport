@@ -96,6 +96,7 @@ $l_javaMenu_global=array(
 	'text_xml'=>'XML Dokumentti',
 	'thumbnails'=>'Esikatselukuvat',
 	'todo_messaging'=>'Tehtävät/Viestintä',
+	'toolfactory'=>'Application management',
 	'unpublished'=>'julkaisematon',
 	'unpublished_pages'=>'Julkaisemattomat sivut',
 	'update'=>'Päivitä',

@@ -96,6 +96,7 @@ $l_javaMenu_global=array(
 	'text_xml'=>'XML Document',
 	'thumbnails'=>'Thumbnails',
 	'todo_messaging'=>'Taken/Berichten',
+	'toolfactory'=>'Application management',
 	'unpublished'=>'ongepubliceerd',
 	'unpublished_pages'=>'Ongepubliceerde pagina`s',
 	'update'=>'Bijwerken',
