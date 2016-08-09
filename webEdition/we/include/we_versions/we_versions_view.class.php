@@ -334,9 +334,9 @@ var searchClass={
 		for($f = 0; $f < $resultCount; $f++){
 
 			$modificationText = $this->getTextForMod($versions[$f]["modifications"], $versions[$f]["status"]);
-			$user = $versions[$f]["modifierID"] ? id_to_path($versions[$f]["modifierID"], USER_TABLE, $this->db) : g_l('versions', '[unknown]');
-			$vers = $versions[$f]["version"];
-			$disabledReset = ($versions[$f]["active"] == 1) ? true : false;
+			$user = $versions[$f]['modifierID'] ? id_to_path($versions[$f]["modifierID"], USER_TABLE, $this->db) : g_l('versions', '[unknown]');
+			$vers = $versions[$f]['version'];
+			$disabledReset = ($versions[$f]['active'] == 1);
 			if(!permissionhandler::hasPerm("ADMINISTRATOR") && !permissionhandler::hasPerm("RESET_VERSIONS")){
 				$disabledReset = true;
 			}
