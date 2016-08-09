@@ -854,19 +854,19 @@ class we_versions_version{
 				default :
 					if(isset($_SESSION['weS']['ExImRefTable'])){
 						foreach($_SESSION['weS']['ExImRefTable'] as $v){
-							if($v["ID"] == $docObj->ID){
+							if($v['ID'] == $docObj->ID){
 								$_SESSION['weS']['versions']['fromImport'] = 1;
 								$this->saveVersion($docObj);
 							}
 						}
 					}
 			}
-		} elseif($cmd0 === "siteImport" || $cmd0 === "import_files"){
+		} elseif($cmd0 === 'siteImport' || $cmd0 === 'import_files'){
 			$_SESSION['weS']['versions']['fromImport'] = 1;
 			$this->saveVersion($docObj);
 		} else {
 			if((!empty($_SESSION['weS']['versions']['fromScheduler'])) ||
-				((we_base_request::_(we_base_request::STRING, "type") === "reset_versions") ||
+				((we_base_request::_(we_base_request::STRING, "type") === 'reset_versions') ||
 				(!empty($_SESSION['weS']['versions']['initialVersions'])))){
 				$cmd0 = "save_document";
 				if(isset($_SESSION['weS']['versions']['initialVersions'])){
@@ -874,12 +874,12 @@ class we_versions_version{
 				}
 			}
 			switch($cmd0){
-				case "save_document":
-				case "unpublish":
-				case "revert_published":
-				case "ResetVersion":
-				case "PublishDocs":
-				case "ResetVersionsWizard":
+				case 'save_document':
+				case 'unpublish':
+				case 'revert_published':
+				case 'ResetVersion':
+				case 'PublishDocs':
+				case 'ResetVersionsWizard':
 					$this->saveVersion($docObj, $status);
 			}
 		}
@@ -1587,7 +1587,7 @@ class we_versions_version{
 				}
 			}
 
-			$existsFile = f('SELECT 1 FROM ' . $db->escape($resetArray["documentTable"]) . ' WHERE ID!=' . intval($resetArray["documentID"]) . ' AND Path="' . $db->escape($resetDoc->Path) . '" LIMIT 1', '', $db);
+			$existsFile = f('SELECT 1 FROM ' . $db->escape($resetArray['documentTable']) . ' WHERE ID!=' . intval($resetArray['documentID']) . ' AND Path="' . $db->escape($resetDoc->Path) . '" LIMIT 1', '', $db);
 
 			$doPark = false;
 			if($existsFile){
@@ -1616,7 +1616,7 @@ class we_versions_version{
 			$resetDoc->ModDate = time();
 			$resetDoc->Published = $resetArray['timestamp'];
 
-			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray["documentID"]) . ' AND documentTable="' . $db->escape($resetArray['documentTable']) . '" AND status="published" ORDER BY version DESC LIMIT 1', '', $db);
+			$wasPublished = f('SELECT status FROM ' . VERSIONS_TABLE . ' WHERE documentID=' . intval($resetArray['documentID']) . ' AND documentTable="' . $db->escape($resetArray['documentTable']) . '" AND status="published" ORDER BY version DESC LIMIT 1', '', $db);
 			$publishedDoc = $_SERVER['DOCUMENT_ROOT'] . $resetDoc->Path;
 			$publishedDocExists = true;
 			if($resetArray['ContentType'] != we_base_ContentTypes::OBJECT_FILE){
@@ -1763,7 +1763,6 @@ class we_versions_version{
 				}
 				return $fieldValueText;
 			case 'fromScheduler':
-				return g_l('versions', ($v == 1) ? '[yes]' : '[no]');
 			case 'fromImport':
 				return g_l('versions', ($v == 1) ? '[yes]' : '[no]');
 			case 'resetFromVersion':
