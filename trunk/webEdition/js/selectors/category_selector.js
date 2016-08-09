@@ -102,11 +102,9 @@ function selectFile(id) {
 }
 
 function exit_close() {
-	if (!noChoose && hot) {
-		if (opener.setScrollTo) {
-			opener.setScrollTo();
-			opener.top.we_cmd("reload_editpage");
-		}
+	if (!noChoose && hot && opener.setScrollTo) {
+		opener.setScrollTo();
+		opener.top.we_cmd("reload_editpage");
 	}
 	self.close();
 }
