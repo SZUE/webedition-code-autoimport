@@ -31,9 +31,10 @@ switch($what = we_base_request::_(we_base_request::STRING, "pnt", 'frameset')){
 		echo $weBackupWizard->getHTMLStep(we_base_request::_(we_base_request::INT, "step", 1));
 		break;
 	case "cmd":
-		echo we_html_tools::getHtmlTop('webEdition', '', '', $weBackupWizard->getHTMLCmd(), we_html_element::htmlBody());
-		flush();
-		break;
+		if(($ret = $weBackupWizard->getHTMLCmd())){
+			echo we_html_tools::getHtmlTop('webEdition', '', '', $ret, we_html_element::htmlBody());
+			break;
+		}
 	case "busy":
 		echo $weBackupWizard->getHTMLBusy();
 		break;
