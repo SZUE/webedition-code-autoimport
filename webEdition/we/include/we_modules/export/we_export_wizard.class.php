@@ -849,7 +849,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 					$buttons = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();");
 				} else if($step == 99 && $show_controls){
 					$buttons = we_html_button::position_yes_no_cancel(
-							we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=0';top.footer.location='" . $this->frameset . "&pnt=footer&step=0';") .
+							we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "?x=y&pnt=body&step=0';top.footer.location='" . $this->frameset . "?x=y&pnt=footer&step=0';") .
 							we_html_button::create_button(we_html_button::NEXT, "", false, 100, 22, "", "", true), we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")
 					);
 				}
@@ -971,7 +971,7 @@ if (top.footer.setProgress){
 							');
 				}
 
-				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => ($start_export ? ("top.footer.location='" . $this->frameset . "&pnt=footer&mode=progress&step=4';document.we_form.submit()") : ("top.body.location='" . $this->frameset . "&pnt=body&step=99&error=" . $export_error . "';top.footer.location='" . $this->frameset . "&pnt=footer&step=99';"))), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
+				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET, we_html_element::htmlBody(array("bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => ($start_export ? ("top.footer.location='" . $this->frameset . "?x=y&pnt=footer&mode=progress&step=4';document.we_form.submit()") : ("top.body.location='" . $this->frameset . "?x=y&pnt=body&step=99&error=" . $export_error . "';top.footer.location='" . $this->frameset . "?x=y&pnt=footer&step=99';"))), we_html_element::htmlForm(array("name" => "we_form", "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 						)
 				);
 
@@ -1038,7 +1038,7 @@ if (top.footer.setProgress){
 				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', STYLESHEET, we_html_element::htmlBody(
 							array(
 								'style' => 'margin:5px;',
-								"onload" => oldHtmlspecialchars($export_local ? ("top.body.location='" . $this->frameset . "&pnt=body&step=10&file_name=" . urlencode($filename) . "';top.footer.location='" . $this->frameset . "&pnt=footer&step=10';") : (we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();")))), null
+								"onload" => oldHtmlspecialchars($export_local ? ("top.body.location='" . $this->frameset . "?x=y&pnt=body&step=10&file_name=" . urlencode($filename) . "';top.footer.location='" . $this->frameset . "?x=y&pnt=footer&step=10';") : (we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();")))), null
 				);
 
 			case 'do_wexport':
