@@ -2,6 +2,7 @@
 ###UPDATEONLY###UPDATE ###TBLPREFIX###tblOrders SET DatePayment=NULL WHERE DatePayment='0000-00-00 00:00:00';
 /* query separator */
 ###UPDATEONLY###UPDATE ###TBLPREFIX###tblOrders SET DateShipping=NULL WHERE DateShipping='0000-00-00 00:00:00';
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblOrders (
   IntID int unsigned NOT NULL auto_increment,
