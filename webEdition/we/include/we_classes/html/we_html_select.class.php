@@ -241,7 +241,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return  we_html_baseElement
 	 */
-	function getNewOption($value, $text){
+	public static function getNewOption($value, $text){
 		return new we_html_baseElement("option", true, array("value" => $value), $text);
 	}
 
@@ -252,7 +252,7 @@ class we_html_select extends we_html_baseCollection{
 	 *
 	 * @return  we_html_baseElement
 	 */
-	function getNewOptionGroup(array $attribs = array()){
+	public static function getNewOptionGroup(array $attribs = array()){
 		return new we_html_baseCollection("optgroup", true, $attribs);
 	}
 
