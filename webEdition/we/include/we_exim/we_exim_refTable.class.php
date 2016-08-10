@@ -55,7 +55,7 @@ class we_exim_refTable{
 		}
 	}
 
-	function hasPerms($rd){
+	private function hasPerms($rd){
 		if($rd->Table){
 			switch($rd->Table){
 				case DOC_TYPES_TABLE:
@@ -85,6 +85,8 @@ class we_exim_refTable{
 					return $allowed && permissionhandler::hasPerm('EDIT_KATEGORIE');
 				case NAVIGATION_TABLE:
 					return $allowed && permissionhandler::hasPerm('EDIT_NAVIGATION');
+				case FILELINK_TABLE:
+					return true;
 			}
 		}
 		switch($rd->ContentType){
