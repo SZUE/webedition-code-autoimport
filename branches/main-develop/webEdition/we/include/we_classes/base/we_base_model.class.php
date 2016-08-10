@@ -205,7 +205,7 @@ class we_base_model{
 
 	function isKeyDefined(){
 		foreach($this->keys as $prim){
-			if(!isset($this->$prim)){
+			if(!property_exists($this, $prim)){
 				return false;
 			}
 		}
