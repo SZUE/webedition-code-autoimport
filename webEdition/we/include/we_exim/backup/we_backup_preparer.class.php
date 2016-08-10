@@ -164,7 +164,7 @@ abstract class we_backup_preparer{
 	}
 
 	static function getOptions(&$options, &$handle_options){
-		$options = array(
+		$options = [
 			'backup_extern' => we_base_request::_(we_base_request::BOOL, 'handle_extern'),
 			'convert_charset' => we_base_request::_(we_base_request::BOOL, "convert_charset"),
 			'compress' => we_base_request::_(we_base_request::BOOL, 'compress') ? we_backup_util::COMPRESSION : we_backup_util::NO_COMPRESSION,
@@ -173,9 +173,9 @@ abstract class we_backup_preparer{
 			'export2server' => we_base_request::_(we_base_request::BOOL, 'export_server'),
 			'export2send' => we_base_request::_(we_base_request::BOOL, 'export_send'),
 			'do_import_after_backup' => we_base_request::_(we_base_request::BOOL, 'do_import_after_backup'),
-		);
+			];
 
-		$handle_options = array(
+		$handle_options = [
 			'user' => we_base_request::_(we_base_request::BOOL, 'handle_user'),
 			'customer' => we_base_request::_(we_base_request::BOOL, 'handle_customer'),
 			'shop' => we_base_request::_(we_base_request::BOOL, 'handle_shop'),
@@ -200,7 +200,7 @@ abstract class we_backup_preparer{
 			'hooks' => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
 			'customTags' => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
 			'backup' => $options['backup_extern'],
-		);
+			];
 
 		if(($tools = we_base_request::_(we_base_request::BOOL, 'handle_tool'))){
 			foreach(array_keys($tools) as $tool){

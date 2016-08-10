@@ -39,7 +39,7 @@ class we_backup_tableItem extends we_base_model{
 			$this->table = $table;
 		}
 		$this->attribute_slots['table'] = stripTblPrefix($table);
-		$this->setKeys(self::getTableKey($this->table));
+		$this->keys = self::getTableKey($this->table);
 	}
 
 	function load(array $ids, $isAdvanced = false){

@@ -1212,13 +1212,13 @@ class we_versions_version{
 						case 'documentElements':
 						case 'documentScheduler':
 						case 'documentCustomFilter':
-									$newData = $diff = [];
-									$lastEntryField = (!$lastEntryField ? []:
+							$newData = $diff = [];
+							$lastEntryField = (!$lastEntryField ? [] :
 									we_unserialize(
-											(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
-												html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
-												$lastEntryField)
-										));
+										(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
+											html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
+											$lastEntryField)
+							));
 							switch($val){
 								case 'documentElements':
 //TODO: imi: check if we need next-level information from nested arrays
@@ -1245,34 +1245,16 @@ class we_versions_version{
 								case 'documentScheduler':
 //TODO: imi: check if count() is ok (do we allways have two arrays?)
 									if(count($document['schedArr']) != count($lastEntryField)){
-												$diff['schedArr'] = true;
+										$diff['schedArr'] = true;
 									} elseif(!empty($document['schedArr'])){
 										$newData = $document['schedArr'];
-												foreach($newData as $k => $vl){
-													if(!empty($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
-														$tmpArr1 = $tmpArr2 = [];
-														foreach($vl as $k => $v){
-															$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
-														}
-														foreach($lastEntryField[$k] as $k => $v){
-															$tmpArr2[$k] = is_array($v) ? we_serialize($v) : $v;
-														}
-												$diffs = array_diff_assoc($tmpArr1, $tmpArr2);
-												if(!empty($diffs)){
-													$diff = $diffs;
-														}
-													}
-												}
-											}
-											break;
-										case 'documentCustomFilter':
-//TODO: imi: check if we need both foreach
-									if(isset($document['documentCustomerFilter']) && is_array($document['documentCustomerFilter']) && is_array($lastEntryField)){
-										$tmpArr1 = $tmpArr2 = array();
-										foreach($document['documentCustomerFilter'] as $k => $v){
+										foreach($newData as $k => $vl){
+											if(!empty($lastEntryField[$k]) && is_array($lastEntryField[$k]) && is_array($vl)){
+												$tmpArr1 = $tmpArr2 = [];
+												foreach($vl as $k => $v){
 													$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
 												}
-										foreach($lastEntryField as $k => $v){
+												foreach($lastEntryField[$k] as $k => $v){
 													$tmpArr2[$k] = is_array($v) ? we_serialize($v) : $v;
 												}
 												$diffs = array_diff_assoc($tmpArr1, $tmpArr2);
@@ -1280,7 +1262,25 @@ class we_versions_version{
 													$diff = $diffs;
 												}
 											}
-								
+										}
+									}
+									break;
+								case 'documentCustomFilter':
+//TODO: imi: check if we need both foreach
+									if(isset($document['documentCustomerFilter']) && is_array($document['documentCustomerFilter']) && is_array($lastEntryField)){
+										$tmpArr1 = $tmpArr2 = array();
+										foreach($document['documentCustomerFilter'] as $k => $v){
+											$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
+										}
+										foreach($lastEntryField as $k => $v){
+											$tmpArr2[$k] = is_array($v) ? we_serialize($v) : $v;
+										}
+										$diffs = array_diff_assoc($tmpArr1, $tmpArr2);
+										if(!empty($diffs)){
+											$diff = $diffs;
+										}
+									}
+
 									break;
 							}
 
@@ -1712,7 +1712,7 @@ class we_versions_version{
 					$vals = makeArrayFromCSV($v);
 					if(!empty($vals)){
 						foreach($vals as $k){
-							if($fieldValueText != ""){
+							if($fieldValueText != ''){
 								$fieldValueText .= '<br/>';
 							}
 							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
@@ -1740,7 +1740,7 @@ class we_versions_version{
 					$vals = makeArrayFromCSV($v);
 					if(!empty($vals)){
 						foreach($vals as $k){
-							if(!empty($fieldValueText)){
+							if($fieldValueText){
 								$fieldValueText .= '<br/>';
 							}
 							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
@@ -1754,7 +1754,7 @@ class we_versions_version{
 					$vals = makeArrayFromCSV($v);
 					if(!empty($vals)){
 						foreach($vals as $k){
-							if(!empty($fieldValueText)){
+							if($fieldValueText){
 								$fieldValueText .= '<br/>';
 							}
 							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
@@ -1772,7 +1772,7 @@ class we_versions_version{
 				$v = makeArrayFromCSV($v);
 				if(!empty($v)){
 					foreach($v as $key){
-						if($fieldValueText != ""){
+						if($fieldValueText){
 							$fieldValueText .= "<br/>";
 						}
 						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, CATEGORY_TABLE), $pathLength);
@@ -1784,7 +1784,7 @@ class we_versions_version{
 				$v = makeArrayFromCSV($v);
 				if(!empty($v)){
 					foreach($v as $key){
-						if($fieldValueText != ""){
+						if($fieldValueText){
 							$fieldValueText .= "<br/>";
 						}
 						$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($key, USER_TABLE), $pathLength);
@@ -1798,7 +1798,7 @@ class we_versions_version{
 				}
 				if(is_array($v) && !empty($v)){
 					foreach($v as $key => $val){
-						if($fieldValueText != ""){
+						if($fieldValueText){
 							$fieldValueText .= "<br/>";
 						}
 						$stat = g_l('versions', ($val == 1) ? '[activ]' : '[notactiv]');
