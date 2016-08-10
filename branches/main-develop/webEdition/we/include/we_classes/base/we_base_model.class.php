@@ -30,7 +30,7 @@ class we_base_model{
 	var $db;
 	var $table = '';
 	var $persistent_slots = [];
-	var $keys = array('ID');
+	var $keys = ['ID'];
 	var $isnew = true;
 	protected $MediaLinks = [];
 	protected $isAdvanced = false;
@@ -204,13 +204,12 @@ class we_base_model{
 	}
 
 	function isKeyDefined(){
-		$defined = true;
 		foreach($this->keys as $prim){
 			if(!isset($this->$prim)){
-				$defined = false;
+				return false;
 			}
 		}
-		return $defined;
+		return true;
 	}
 
 	function setKeys($keys){

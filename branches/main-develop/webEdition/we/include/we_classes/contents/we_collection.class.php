@@ -857,7 +857,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		parent::registerMediaLinks(false, true);
 	}
 
-	public function addItemsToCollection($items, $pos = -1){ // FIXME: when pos=-1 do append at the end od collection not replacing last element!
+	public function addItemsToCollection($items, $pos = -1){ // FIXME: when pos=-1 do append at the end of collection not replacing last element!
 		$coll = $this->getCollection(true);
 		array_pop($coll); // FIXME: maybe abandon the ending -1 inserted on we_load()?
 

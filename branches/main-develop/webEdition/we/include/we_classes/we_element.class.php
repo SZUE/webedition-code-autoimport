@@ -47,7 +47,7 @@ class we_element{
 		}
 		$this->DID = 0;
 		$this->Link = new we_base_model(LINK_TABLE, self::$db);
-		$this->Link->setKeys(array('DID', 'CID'));
+		$this->Link->setKeys(['DID', 'CID']);
 		$this->Content = new we_base_model(CONTENT_TABLE, self::$db);
 		if(is_array($options)){
 			if($link_props){
@@ -97,7 +97,7 @@ class we_element{
 	}
 
 	function load($DID, $Name, $Table){
-		$this->Link->setKeys(array("DID", "Name", "DocumentTable"));
+		$this->Link->setKeys(["DID", "Name", "DocumentTable"]);
 		if($this->Link->load("$DID,$Name,$Table")){
 			$this->Content->load($this->Link->CID);
 			return true;
