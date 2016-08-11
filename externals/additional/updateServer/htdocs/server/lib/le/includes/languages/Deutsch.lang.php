@@ -4,7 +4,7 @@ $lang['update']['headline'] = 'Update';
 $lang['notification']['headline'] = 'Meldung vom LiveUpdate Server';
 $lang['notification']['lostSession'] = 'Es gab ein Problem mit der Session';
 $lang['notification']['databaseFailure'] = 'Die Datenbank ist momentan nicht einsatzbereit';
-$lang['notification']['maintenance'] = 'Wegen Wartungsarbeiten ist ein Update der webEdition Version 6 derzeit nicht m&ouml;glich.';
+$lang['notification']['maintenance'] = 'Wegen Wartungsarbeiten ist ein Update von webEdition derzeit nicht m&ouml;glich.';
 $lang['notification']['updateNotPossibleUntilRelease'] = 'webEdition kann erst ab dem 03.11.2008 upgedated werden.';
 $lang['notification']['betaExpired'] = 'Sie verwenden derzeit eine Beta-Version. Das Beta-Programm der Version %s ist beendet. Bitte installieren sie eine regul&auml;re webEdition Version.';
 

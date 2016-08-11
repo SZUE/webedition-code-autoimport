@@ -1,12 +1,12 @@
 <?php
 $lang['license']['undefinedError'] = 'Undefined Error';
 
-$lang['upgrade']['headline'] = 'Upgrade to webEdition 6';
+$lang['upgrade']['headline'] = 'Upgrade webEdition';
 $lang['upgrade']['upgradeToVersion'] = 'Upgrade to version';
-$lang['upgrade']['confirmUpgradeWarning'] = 'You are about to upgrade to webEdition 6. <b>In a first step, you can upgrade only to version 6.0.0.6.</b> During this process, all webEdition programme files will be replaced. This process can take some time.<br /><br /><b>Attention:</b><ul><li>webEdition 6 requires at least <u>PHP version 5.2</u> or newer.</li><li>After the update webEdition must be restarted.</li><li>After restart, you must make a complete rebuild of your web-site.</li><li><b>Finally you can update to the latest version of webEdition 6.</b></li><li>We recommend to do this step by step 6.0.0.6 -&gt; 6.1.0.2, 6.1.0.2 -&gt; 6.2.X (latest) with rebuilds after each step.</li></ul>';
+$lang['upgrade']['confirmUpgradeWarning'] = 'You are about to upgrade webEdition. <b>In a first step, you can upgrade only to version 6.0.0.6.</b> During this process, all webEdition programme files will be replaced. This process can take some time.<br /><br /><b>Attention:</b><ul><li>webEdition 6 requires at least <u>PHP version 5.5</u> or newer.</li><li>After the update webEdition must be restarted.</li><li>After restart, you must make a complete rebuild of your web-site.</li><li><b>Finally you can update to the latest version of webEdition.</b></li><li>We recommend to do this step by step 6.0.0.6 -&gt; 6.1.0.2, 6.1.0.2 -&gt; 6.2.X (latest) with rebuilds after each step.</li></ul>';
 $lang['upgrade']['confirmUpgradeWarningTitle'] = 'Please confirm to continue:';
 $lang['upgrade']['confirmUpgradeWarningCheckbox'] = 'I hereby confirm that I have read the above notice.';
-$lang['upgrade']['confirmUpdateWarning'] = 'You are about to update your webEdition 6 installation.<br /><br /><b>Attention:</b><ul><li>After the update webEdition should be restarted.</li><li>You should make a rebuild after the update.</li></ul>';
+$lang['upgrade']['confirmUpdateWarning'] = 'You are about to update your webEdition installation.<br /><br /><b>Attention:</b><ul><li>After the update webEdition should be restarted.</li><li>You should make a rebuild after the update.</li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6007] = '<b>webEdition 6.0.0.7:</b><ul><li><b>Starting with this webEdition version, <u>PHP version 5.2.4</u> or newer is required.</b><br/>The used PHP version can be found over the dialog "system information" (menu Help).</li><li>After the rebuild over documents and templates, please rebuild also:<ul><li>Index table</li><li>Objects</li></ul></li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6008] = '<b>webEdition 6.0.0.8:</b><ul><li><b>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required.</b><br/>The used PHP version can be found over the dialog "system information" (menu Help).</li><li>After the rebuild over documents and templates, please rebuild also:<ul><li>Navigation</li></ul></li></ul>';
 $lang['upgrade']['confirmUpdateHint'][6100] = '<b>webEdition 6.1.0.0:</b><ul><li>This update requires temporarily about <b>62 MB free webspace (Quota!)</b> since all files are going to be replaced</li><li><b>For this webEdition version, <u>PHP version 5.2.4</u> or newer is required.</b><br/>The used PHP version can be found over the dialog "system information" (menu Help).</li><li>After the rebuild over documents and templates, please rebuild also:<ul><li>Navigation</li><li>Objects</li><li>Templates</li></ul></li><li>The PHP classes smtp.class.php, we_mailer_class.inc.php, weNewsletterMailer.php will not be available in future and are declared as DEPRECATED. If this classes are used in direct PHP programming in templates, (the we:tags are not affected), they are to be replaced by calls to the class we_util_Mailer (or Zend_Mail).<br/><b>In this installation, the classes are not deleted and can still be used.</b></li><li>Due to the update of the JS framework YUI, <strong>already installed WE-Apps do not work in this version of webEdition</strong> and have to be adopted before the update. A documentation of the necessary changes can be found at <a href="http://documentation.webedition.org/wiki/en/webedition/developer-information/software-development-kit-sdk/changes-from-sdk6000-to-sdk6100/start" target="_blank">Changes from SDK version 6.0.0.0 to SDK version 6.1.0</a</li></ul>';
@@ -27,22 +27,21 @@ $lang['upgrade']['confirmUpdateWarningEnd'] = '';
 $lang['upgrade']['confirmUpdateWarningTitle'] = 'Please confirm to continue:';
 $lang['upgrade']['confirmUpdateWarningCheckbox'] = 'I hereby confirm that I have read the above notice.';
 $lang['upgrade']['pleaseSelectVersion'] = 'Please select a target version for the update.';
-$lang['upgrade']['noUpgradeForLanguages'] = 'An update to webEdition 6 is not possible at the moment. Several of your installed languages prevent the update.';
+$lang['upgrade']['noUpgradeForLanguages'] = 'An update to webEdition is not possible at the moment. Several of your installed languages prevent the update.';
 $lang['upgrade']['copyFilesSuccess'] = 'All needed webEdition files are stored, the webEdition folder successful moved.';
-$lang['upgrade']['copyFilesError'] = 'Could not move the webEdition 5 folder';
+$lang['upgrade']['copyFilesError'] = 'Could not move the old webEdition folder';
 $lang['upgrade']['copyFilesVersionError'] = 'Could not create the file version.php';
 $lang['upgrade']['copyFilesConfError'] = 'Could not create the configuration file';
 $lang['upgrade']['copyFilesBackupError'] = 'Could not move the backup folder';
 $lang['upgrade']['copyFilesDirectoryError'] = 'Could not create the folder %s';
 $lang['upgrade']['copyFilesMoveDirectoryError'] = 'Could not move the folder %s';
 $lang['upgrade']['copyFilesFileError'] = 'Could not copy the file %s';
-$lang['upgrade']['executePatchesDatabase'] = 'Could no adjust Tables for webEdition 6. The following tables could not be adjusted.';
-$lang['upgrade']['notEnoughLicenses'] = 'You do not own enough licenses to update to webEdition 6. You can buy updates in our shop.';
-$lang['upgrade']['finishInstallationError'] = 'Could not complete the update to webEdition 6.<br />Please check, if<br /><ul><li>The webEdition folder was renamed to webEdition5 (Does the folder /webEdition5 exist?)</li><li>The webEdition6 folder was renamed to webEdition (Is there also the folder /webEdition?)</li><br /><li>The backup folder was moved to webEdition/we_backup (Does the folder /webEdition/we_backup exist?)</li><br /><li>The site folder was moved to webEdition/site. (Does the folder /webEdition/site exist?)</li></ul><br />Please try to refresh this site first (press the refresh button), or try to make the described changes by yourself, or contact our support.';
-$lang['upgrade']['finished'] = 'Update to webEdition version 6 completed';
+$lang['upgrade']['executePatchesDatabase'] = 'Could no adjust Tables for webEdition. The following tables could not be adjusted.';
+$lang['upgrade']['finishInstallationError'] = 'Could not complete the update of webEdition.<br />Please check, if<br /><ul><li>The webEdition folder was renamed to webEdition5 (Does the folder /webEdition5 exist?)</li><li>The webEdition6 folder was renamed to webEdition (Is there also the folder /webEdition?)</li><br /><li>The backup folder was moved to webEdition/we_backup (Does the folder /webEdition/we_backup exist?)</li><br /><li>The site folder was moved to webEdition/site. (Does the folder /webEdition/site exist?)</li></ul><br />Please try to refresh this site first (press the refresh button), or try to make the described changes by yourself, or contact our support.';
+$lang['upgrade']['finished'] = 'Update of webEdition completed';
 $lang['upgrade']['finished_note'] = 'The installation is completed. To activate all changes, webEdition is restarted now.<br /><strong>Please dont\'t forget to delete your browser cache and make a complete rebuild of your web-site.</strong>';
 $lang['upgrade']['notepad_category'] = 'Sonstiges';
-$lang['upgrade']['notepad_headline'] = 'Welcome to webEdition 6';
+$lang['upgrade']['notepad_headline'] = 'Welcome to webEdition';
 //$lang['upgrade']['notepad_text'] = 'One of the new features in version 5 is the cockpit. You can select several widgets in the cockpit menu. Each widget can be adjusted and positioned in the title bar.';
 $lang['upgrade']['notepad_text'] = '';
 
