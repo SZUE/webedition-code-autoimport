@@ -53,6 +53,7 @@ $lang['update']['alpha'] = 'Alpha';
 $lang['update']['beta'] = 'Beta';
 $lang['update']['rc'] = 'RC';
 $lang['update']['release'] = 'official Release';
+$lang["update"]['retired'] = '=&gt; retired release!';
 $lang['update']['installedVersion'] = 'Running version';
 $lang['update']['newestVersionSameBranch'] = '<br/>Available version from the same branch';
 $lang['update']['newestVersion'] = '<br/>Newest available version';

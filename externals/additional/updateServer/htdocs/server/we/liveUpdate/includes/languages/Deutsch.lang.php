@@ -39,7 +39,7 @@ $lang['upgrade']['copyFilesDirectoryError'] = 'Konnte den Ordner %s nicht anlege
 $lang['upgrade']['copyFilesMoveDirectoryError'] = 'Konnte den Ordner %s nicht verschieben';
 $lang['upgrade']['copyFilesFileError'] = 'Konnte die Datei %s nicht kopieren';
 $lang['upgrade']['executePatchesDatabase'] = 'Fehler beim Anpassen der Datenbank. Folgende Tabellen konnten nicht angepasst werden.';
-$lang['upgrade']['finishInstallationError'] = 'Beim abschließen des Updates von webEdition ist ein Fehler aufgetreten.<br />\\\nBitte pr&uuml;fen Sie, ob<br />\\\n<ul><li>Der webEdition Ordner in webEdition5 umbenannt werden konnte (Gibt es den Ordner /webEdition5 ?)</li>\\\n<li>Der webEdition6 Ordner in webEdition umbenannt werden konnte (Gibt es den Ordner /webEdition)</li><br />\\\n<li>Der Backup Ordner nach webEdition/we_backup verschoben werden konnte (Gibt es den Ordner /webEdition/we_backup ?)</li><br />\\\n<li>Das site Verzeichnis nach /webEdition/site Verzeichnis verschoben werden konnte. (Gibt es den Ordner /webEdition/site ?)</li></ul><br />\\\nBitte versuchen Sie zun&auml;chst den Aktualisieren Button zu dr&uuml;cken, f&uuml;hren Sie die genannten Ver&auml;nderungen notfalls von Hand aus, bzw. verst&auml;ndigen Sie den Support';
+$lang['upgrade']['finishInstallationError'] = 'Beim Abschlie&szlig;en des Updates von webEdition ist ein Fehler aufgetreten.<br />\\\nBitte pr&uuml;fen Sie, ob<br />\\\n<ul><li>Der webEdition Ordner in webEdition5 umbenannt werden konnte (Gibt es den Ordner /webEdition5 ?)</li>\\\n<li>Der webEdition6 Ordner in webEdition umbenannt werden konnte (Gibt es den Ordner /webEdition)</li><br />\\\n<li>Der Backup Ordner nach webEdition/we_backup verschoben werden konnte (Gibt es den Ordner /webEdition/we_backup ?)</li><br />\\\n<li>Das site Verzeichnis nach /webEdition/site Verzeichnis verschoben werden konnte. (Gibt es den Ordner /webEdition/site ?)</li></ul><br />\\\nBitte versuchen Sie zun&auml;chst den Aktualisieren Button zu dr&uuml;cken, f&uuml;hren Sie die genannten Ver&auml;nderungen notfalls von Hand aus, bzw. verst&auml;ndigen Sie den Support';
 $lang['upgrade']['finished'] = 'Update auf Version 6 abgeschlossen';
 $lang['upgrade']['finished_note'] = 'Die Installation ist beendet. Um alle &Auml;nderungen zu &uuml;bernehmen, wird webEdition nun neu gestartet.<br /><strong>Bitte l&ouml;schen Sie vor der n&auml;chsten Anmeldung Ihren Browsercache und f&uuml;hren dann einen Rebuild durch.</strong>';
 $lang['upgrade']['notepad_category'] = 'Sonstiges';
@@ -54,6 +54,7 @@ $lang['update']['alpha'] = 'Alpha';
 $lang['update']['beta'] = 'Beta';
 $lang['update']['rc'] = 'RC';
 $lang['update']['release'] = 'offizieller Release';
+$lang["update"]['retired'] = '=&gt; zur&uuml;ckgezogener Release!';
 $lang['update']['installedVersion'] = 'Momentan installierte Version';
 $lang['update']['newestVersionSameBranch'] = '<br/>Neueste Version aus dem selben Entwicklungszweig';
 $lang['update']['newestVersion'] = '<br/>Aktuellste verf&uuml;gbare Version';

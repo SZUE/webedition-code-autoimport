@@ -103,6 +103,7 @@ $lang["installer"]['alpha'] = 'Alpha';
 $lang["installer"]['beta'] = 'Beta';
 $lang["installer"]['rc'] = 'RC';
 $lang["installer"]['release'] = 'offizieller Release';
+$lang["installer"]['retired'] = '=&gt; zur&uuml;ckgezogener Release!';
 
 
 
