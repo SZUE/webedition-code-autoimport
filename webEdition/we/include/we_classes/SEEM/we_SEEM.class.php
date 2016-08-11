@@ -977,7 +977,7 @@ abstract class we_SEEM{
 			if($GLOBALS['lv'] instanceof we_listview_object){
 				return '<a href="' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') . '" seem="object"></a>';
 			}
-			if((isset($GLOBALS['lv']->Record[self::PROPPREFIX . 'CONTENTTYPE']) && $GLOBALS['lv']->Record[self::PROPPREFIX . 'CONTENTTYPE'] == we_base_ContentTypes::IMAGE)){
+			if((isset($GLOBALS['lv']->Record[we_listview_base::PROPPREFIX . 'CONTENTTYPE']) && $GLOBALS['lv']->Record[we_listview_base::PROPPREFIX . 'CONTENTTYPE'] == we_base_ContentTypes::IMAGE)){
 				return '<a href="' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') . '" seem="edit_image"></a>';
 			}
 		}

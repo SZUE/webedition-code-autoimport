@@ -183,7 +183,7 @@ class we_shop_Basket{
 	 * @param string $variant
 	 * @return string
 	 */
-	function getserial($id, $type, $variant = false, $customFields = []){
+	private function getserial($id, $type, $variant = false, $customFields = []){
 		$DB_WE = new DB_WE();
 		$Record = [];
 
@@ -229,7 +229,7 @@ class we_shop_Basket{
 				$olv->next_record();
 
 				$Record = $olv->getDBRecord();
-				unset($Record[self::PROPPREFIX . 'LASTPATH']);
+				unset($Record[we_listview_base::PROPPREFIX . 'LASTPATH']);
 				if($variant){
 					// init model to detect variants
 					// :TODO: change this to match above version
@@ -239,16 +239,16 @@ class we_shop_Basket{
 					$Record = we_base_variants::useVariantForShopObject($Record, $variant, $obj);
 
 					// add variant to path ...
-					$Record[self::PROPPREFIX . 'PATH'] .= '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant;
+					$Record[we_listview_base::PROPPREFIX . 'PATH'] .= '?' . we_base_constants::WE_VARIANT_REQUEST . '=' . $variant;
 				}
-				$Record[self::PROPPREFIX . 'VARIANT'] = $variant;
+				$Record[we_listview_base::PROPPREFIX . 'VARIANT'] = $variant;
 				$Record['we_obj'] = $id;
 
 				// at last add custom fields to record and to path
 				if(!empty($customFields)){
 					foreach($customFields as $name => $value){
 						$Record[$name] = $value;
-						$Record[self::PROPPREFIX . 'PATH'] .= '&amp;' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '[' . $name . ']=' . $value;
+						$Record[we_listview_base::PROPPREFIX . 'PATH'] .= '&amp;' . WE_SHOP_ARTICLE_CUSTOM_FIELD . '[' . $name . ']=' . $value;
 					}
 				}
 
