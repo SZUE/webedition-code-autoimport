@@ -1,0 +1,306 @@
+/**
+ * webEdition CMS
+ *
+ * webEdition CMS
+ * $Rev$
+ * $Author$
+ * $Date$
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+*/
+@import "config.scss";
+div.we_file_drag{
+	width: 300px;
+	height: 116px;
+	display: block;
+	font-weight: normal;
+	font-size: $medfont;
+	text-align: center;
+	color: #555;
+	cursor: default;
+	background-color: white;
+	margin: 0 0.2em 0px 0.1em;
+	border: 2px dotted gray;
+	box-shadow: none;
+}
+div.we_file_drag_mask{
+	position: absolute;
+	background: transparent;
+	margin: 0 0 10px 0;
+}
+div.we_file_drag_content{
+	float: left;
+	margin: 0 0 10px 0;
+	border: 2px dotted gray;
+}
+div.we_file_drag_preview{
+	float: left;
+	margin: 0 0 10px 0;
+	border: 2px dotted gray;
+	display: none;
+}
+div.we_file_drag_hover{
+	color: #00cc00;
+	border: 2px solid #00cc00;
+	box-shadow: inset 0 3px 4px #888;
+}
+div.we_fileInputWrapper{
+	overflow: hidden;
+	position: relative;
+	cursor: pointer;
+	vertical-align: top;
+	display: inline-block;
+}
+#div_fileupload_buttons button,
+#div_fileupload_buttons input{
+	width:95% ;
+}
+
+.fileInput{
+	cursor: pointer;
+	height: 100%;
+	position: absolute;
+	width: 286px;
+	height: 22px;
+}
+.fileInputList{
+	width: 24px;
+}
+.fileInputHidden {
+	opacity: 0;
+}
+
+div.filedrag_content_left{
+	display: table-cell;
+	width: 178px;
+	height: 116px;
+	padding-left: 4px;
+	vertical-align: middle;
+	color: #cccccc;
+	font-weight: normal;
+	font-size: $bigfont;
+}
+div.filedrag_content_right{
+	display: table-cell;
+	height: 116px;
+	width: 120px;
+	vertical-align: middle;
+	text-align: center;
+	img{
+		max-height: 100px;
+		max-width: 100px;
+	}
+}
+div.filedrag_preview_left{
+	display: table-cell;
+	width: 178px;
+	height: 116px;
+	padding-left: 10px;
+	vertical-align: middle;
+	text-align: left;
+	color: #333;
+	font-weight: normal;
+	font-size: $medfont;
+}
+div.filedrag_preview_right{
+	display: table-cell;
+	height: 116px;
+	width: 120px;
+	vertical-align: middle;
+	text-align: center;
+	img{
+		max-height: 100px;
+		max-width: 100px;
+	}
+}
+#weImageDialog{
+	div.weFileuploadEditor{
+		margin-left: 34px;
+		width: 496px;
+		border: 1px solid gray;
+		display:none;
+	}
+}
+table.importer_files{
+	td{
+		vertical-align: middle;
+	}
+}
+
+
+#editImage{
+	display: none;
+	padding: 4px 0 6px 4px;
+
+	.optsUnitSelect{
+		width: 96px;
+	}
+	.optsRotateSelect{
+		width: 153px;
+	}
+	.optsQuality{
+		width: 115px;
+	}
+}
+
+button.importerBrowseHarddisk{
+	margin-left: 0;
+	width: 213px;
+}
+div.importerElem{
+	div.elemNum{
+		width: 39px;
+		margin-top: 18px; 
+		float:left;
+	}
+
+	div.elemContainer{
+		position: relative;
+		width: 526px;
+		margin-top: 4px;
+		border:1px solid #aaaaaa;
+		display: inline-block;
+
+		div.elemPreview{
+			display: none;
+			position: relative;
+			height: 110px;
+			width: 110px;
+			float: left;
+			background-color: lightgrey;
+			background-image: linear-gradient(45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989), linear-gradient(-45deg, #898989 25%, transparent 25%, transparent 75%, #898989 75%, #898989);
+			background-size: 6px 6px;
+
+			div.elemPreviewPreview{
+				position: absolute;
+				top: 0;
+				left: 0;
+			}
+			div.elemPreviewBtn{
+				display: none;
+				position: absolute;
+				width: 110px;
+				height: 32px;
+				background-color: white;
+				bottom: 0; 
+				padding: 5px 2px 0 0;
+			}
+		}
+		div.elemIcon{
+			position: relative;
+			height: 30px;
+			width: 110px;
+			float: left;
+
+			font-size: 14px;
+			padding: 10px 0 0 12px;
+		}
+		div.elemContent{
+			position: relative;
+			width: 416px;
+			left: 110px;
+
+			div.elemContentTop{
+				position: relative;
+				height: 36px;
+
+				div.elemFilename{
+					padding: 12px 0 0 6px;
+					width: auto;
+					position: absolute;
+					display: block;
+				}
+				div.elemContentTopRight{
+					width: 170px;
+					left: 240px;
+					position: absolute;
+					display: block;
+
+					div.elemSize{
+						padding: 12px 0 0 0;
+						width: 76px;
+						height: 50px;
+						position: absolute;
+					}
+					div.elemButtons{
+						padding: 4px 0 0 0;
+						width: 96px;
+						left: 76px;
+						height: 36px;
+						position: absolute;
+
+						.elemFileinput{
+							width: 40px;
+							height: 26px;
+						}
+					}
+				}
+				div.elemProgress{
+					width: 180px;
+					left: 240px;
+					height: 40px;
+					padding-top: 6px;
+					position: absolute;
+					display: none;
+				}
+			}
+			div.elemContentBottom{
+				display: none;
+				position: relative;
+				height: 74px;
+				border-top: 1px solid #bbbbbb;
+
+				div.elemWhatOpts{
+					position: absolute;
+					width: 120px;
+					padding: 2px 0 0 4px;
+				}
+				div.elemOpts{
+					position: absolute;
+					left: 190px;
+					padding-top: 2px;
+
+					.optsUnitSelect{
+						width: 110px;
+						height: 20px;
+						padding: 0;
+					}
+					.optsRotateSelect{
+						width: 170px;
+						height: 20px;
+						padding: 0;
+					}
+					.optsQuality{
+						width: 115px;
+						height: 20px;
+					}
+					.optsRowTop,
+					.optsRowMiddle,
+					.optsRowBottom{
+						padding: 2px 0 0 0;
+					}
+				}
+				div.btnRefresh{
+					display: inline-block;
+					position: absolute;
+					left: 364px;
+					bottom: 0;
+				}
+			}
+		}
+	}
+	
+}

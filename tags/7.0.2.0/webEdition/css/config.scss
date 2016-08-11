@@ -1,0 +1,39 @@
+/* This is a global config file for all scss files*/
+
+$menuHeight: 40px;
+$iconbarHeight:40px;
+
+$vtabWidth:40px;
+$vtabHeight:100px;
+/*main editable elements tabs - files*/
+$defaultEditorTabHeight:30px;
+$editorFooterHeight:53px;
+$diaglogFooterHeight: 40px;
+$weFont: liberation_sansregular,sans-serif;
+$weFontBold: liberation_sansbold,sans-serif;
+
+$smallfont: 11px;
+$medfont:12px;
+$bigfont:14px;
+
+$fafontSmall:7px;
+$fafontMed:9px;
+$fafontBig:14px;
+
+/* Colors */
+$White:#ffffff;
+$LightGrey:#cacdd0;
+$MiddleGrey:#d7dce0;
+$Grey:#a5aaae;
+$DarkGrey:#4d565d;
+$GreyGradient:linear-gradient(#ebeef0, #d8dadc);
+$ButtonGrey:#ebeef0;
+$LightBlue: #abc6e9;
+$DarkBlue: #192c3a;
+$DarkBlueGradient:linear-gradient(#345881, #284a70);
+$MiddleBlue: #325e94;
+$MiddleBlueGradient:linear-gradient(#4675b1, #325e94);
+$ButtonBlue:#4675b1;
+$ModifiedColor:#3366CC;
+$NotPublishedColor:red;
+$ErrorRed:#b51309;
