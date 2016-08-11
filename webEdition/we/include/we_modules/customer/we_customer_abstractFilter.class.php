@@ -229,12 +229,12 @@ abstract class we_customer_abstractFilter{
 	}
 
 	public static function getQueryFromFilter(array $filter){
-		$flag = false;
 		$ret = '';
 		foreach($filter as $filter){
 			//FIXME: read webuser table to check for nonexistent fields
-			$ret.=($flag ? ' ' . $filter['logic'] . ' ' : '') . self::evalSingleFilterQuery($filter['operation'], $filter['field'], $filter['value']);
-			$flag = true;
+			if(!empty($filter['field'])){
+				$ret.=($ret ? ' ' . $filter['logic'] . ' ' : '') . self::evalSingleFilterQuery($filter['operation'], $filter['field'], empty($filter['value']) ? '' : $filter['value']);
+			}
 		}
 		return $ret ? '(' . $ret . ')' : '';
 	}
