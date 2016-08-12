@@ -188,7 +188,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 					$order = 'RANDOM ';
 					break 2;
 				default:
-					$ordertmp[$pos] = strtr($curOrd, FIELD_REPLACEMENTS) . ($descArr[$pos] ? ' DESC' : '');
+					$ordertmp[$pos] = strtr($curOrd, self::FIELD_REPLACEMENTS) . ($descArr[$pos] ? ' DESC' : '');
 			}
 		}
 		if($ordertmp){
