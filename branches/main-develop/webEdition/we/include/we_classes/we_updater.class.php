@@ -452,6 +452,96 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 	}
 
+	public static function updateShop2($pos = 0){
+		$db = new DB_WE();
+		if($pos == 0){
+			//make sure we have at least the last Order in the new table
+			$max = f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE);
+			if(!$max){
+				//no shop used
+				return false;
+			}
+			$db->query('INSERT IGNORE INTO ' . SHOP_ORDER_TABLE . ' SET ID=' . $max);
+		}
+		$db2 = $GLOBALS['DB_WE'];
+		//prefill as much as possible
+
+		$db->query('REPLACE INTO ' . SHOP_ORDER_TABLE . ' (ID,shopname,customerID,DateOrder,DateConfirmation,DateShipping,DatePayment,DateCancellation,DateFinished) (SELECT IntOrderID,shopname,IntCustomerID,DateOrder,DateConfirmation,DateShipping,DatePayment,DateCancellation,DateFinished FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID)');
+
+		//fill in dates
+		foreach(['MailConfirmation', 'MailShipping', 'MailPayment', 'MailCancellation', 'MailFinished',
+		'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateCustomD', 'DateCustomE', 'DateCustomF', 'DateCustomG', 'DateCustomH', 'DateCustomI', 'DateCustomJ',
+		'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE', 'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ'] as $date){
+			$db->query('REPLACE INTO ' . SHOP_ORDER_DATES_TABLE . ' (ID,type,date) (SELECT IntOrderID,"' . $date . '",' . $date . ' FROM ' . SHOP_TABLE . ' WHERE ' . $date . ' IS NOT NULL GROUP BY IntOrderID)');
+		}
+
+		//fill the rest of the order itself
+		$db->query('SELECT IntOrderID,strSerialOrder FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID');
+		while($db->next_record(MYSQL_ASSOC)){
+			$dat = we_unserialize($db->f('strSerialOrder'));
+			$customer = $dat[WE_SHOP_CART_CUSTOMER_FIELD];
+			unset($customer['Password'], $customer['_Password'], $customer['ID'], $customer['Username'], $customer['LoginDenied'], $customer['MemberSince'], $customer['LastLogin'], $customer['LastAccess'], $customer['AutoLoginDenied'], $customer['AutoLogin'], $customer['ModifyDate'], $customer['ModifiedBy'], $customer['Path'], $customer['Newsletter_Ok'], $customer['registered'], $customer['AutoLoginID']
+			);
+			$db2->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
+					'pricesNet' => intval($dat[WE_SHOP_PRICE_IS_NET_NAME]),
+					'priceName' => $dat[WE_SHOP_PRICENAME],
+					'shippingCost' => $dat[WE_SHOP_SHIPPING]['costs'],
+					'shippingNet' => $dat[WE_SHOP_SHIPPING]['isNet'],
+					'shippingVat' => $dat[WE_SHOP_SHIPPING]['vatRate'],
+					'calcVat' => empty($dat[WE_SHOP_CALC_VAT]) ? 1 : $dat[WE_SHOP_CALC_VAT],
+					'customFields' => we_serialize($dat[WE_SHOP_CART_CUSTOM_FIELD], SERIALIZE_JSON, false, 0, true),
+					'customerData' => we_serialize($customer, SERIALIZE_JSON, false, 5, true),
+				]) . ' WHERE ID=' . $db->f('IntOrderID'));
+		}
+
+		//fill in order items
+		$db->query('SELECT IntOrderID,Price,IntQuantity,strSerial FROM ' . SHOP_TABLE);
+		while($db->next_record(MYSQL_ASSOC)){
+			$dat = array_filter(we_unserialize($db->f('strSerial')), function($k){
+				return !is_numeric($k);
+			}, ARRAY_FILTER_USE_KEY);
+			$docid = intval($dat['ID']);
+			$pub = intval(empty($dat['we_wedoc_Published']) ? $dat['WE_Published'] : $dat['we_wedoc_Published']);
+			$type = (!empty($dat['we_wedoc_ContentType'] && $dat['we_wedoc_ContentType'] == we_base_ContentTypes::OBJECT_FILE) ? 'object' : 'document');
+			$variant = $dat['WE_VARIANT'];
+			$id = f('SELECT ID FROM ' . SHOP_ORDER_DOCUMENT_TABLE . ' WHERE DocID=' . $docid . ' AND type="' . $type . '" AND variant="' . $db->escape($variant) . '" AND Published=FROM_UNIXTIME(' . $pub . ')');
+			$customField = $dat[WE_SHOP_ARTICLE_CUSTOM_FIELD];
+			if(!$id){
+				$title = strip_tags($dat['we_shoptitle']);
+				$desc = strip_tags($dat['we_shopdescription']);
+				unset($dat['we_shoptitle'], $dat['we_shopdescription'], $dat[WE_SHOP_ARTICLE_CUSTOM_FIELD]);
+				//add document first
+				$db2->query('REPLACE INTO ' . SHOP_ORDER_DOCUMENT_TABLE . ' SET ' . we_database_base::arraySetter([
+						'DocID' => $docid,
+						'type' => $type,
+						'variant' => $variant,
+						'Published' => sql_function('FROM_UNIXTIME(' . $pub . ')'),
+						'title' => $title,
+						'description' => $desc,
+						'SerializedData' => we_serialize($dat, SERIALIZE_JSON, false, 5, true)
+				]));
+				$id = $db2->getInsertId();
+			}
+			$db2->query('REPLACE INTO ' . SHOP_ORDER_ITEM_TABLE . ' SET ' . we_database_base::arraySetter([
+					'orderID' => $db->f('IntOrderID'),
+					'orderDocID' => $id,
+					'quantity' => $db->f('IntQuantity'),
+					'Price' => $db->f('Price'),
+					'customFields' => we_serialize($customField, SERIALIZE_JSON, false, 0, true),
+			]));
+
+			/* 			t_e($dat);
+			  return; */
+			//$db2->query('UPDATE ' . SHOP_ORDER_ITEM_TABLE . ' SET ' . we_database_base::arraySetter([
+			//]));
+		}
+		//what about variants?! how do they apply?
+		//old not used: IntPayment_Type
+		//new unfilled tblOrder: customOrderNo
+		//FIXME strSerial may contain we_wedoc_ & OF_... & may contain numeric entries
+		/* 	 */
+	}
+
 	public static function doUpdate($what = 'all', $pos = 0){
 		$db = new DB_WE();
 		self::meassure('start');

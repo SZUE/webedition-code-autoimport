@@ -30,7 +30,7 @@ function we_parse_tag_orderitem($attribs, $content){
 
 function we_tag_orderitem(array $attribs){
 
-	if(!defined('WE_SHOP_MODULE_PATH')){
+	if(!defined('WE_SHOP_VAT_TABLE')){
 		echo modulFehltError('Shop', __FUNCTION__);
 		return false;
 	}

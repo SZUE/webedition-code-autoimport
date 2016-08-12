@@ -36,10 +36,8 @@ function we_tag_writeShopData(array $attribs){
 	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__))){
 		return $foo;
 	}
-	if(!$name){
-		if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
-			return $foo;
-		}
+	if(!$name && ($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
+		return $foo;
 	}
 
 	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING)? : $name;
@@ -51,7 +49,8 @@ function we_tag_writeShopData(array $attribs){
 	$useVat = weTag_getAttribute('usevat', $attribs, false, we_base_request::BOOL);
 
 	$customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
-	unset($customer['Password'], $customer['_Password']);
+	unset($customer['Password'], $customer['_Password'], $customer['ID'], $customer['Username'], $customer['LoginDenied'], $customer['MemberSince'], $customer['LastLogin'], $customer['LastAccess'], $customer['AutoLoginDenied'], $customer['AutoLogin'], $customer['ModifyDate'], $customer['ModifiedBy'], $customer['Path'], $customer['Newsletter_Ok'], $customer['registered'], $customer['AutoLoginID']
+	);
 
 	if($useVat){
 		$weShopVatRule = we_shop_vatRule::getShopVatRule();

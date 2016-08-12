@@ -400,11 +400,9 @@ function afterLoad(){
 			];
 		}
 
-		return $parts? : [
-			[
+		return $parts? : [ [
 				'headline' => g_l('modules_newsletter', '[reporting][mailing_not_done]'),
-			]
-		];
+			]];
 	}
 
 	protected function getHTMLCmd(){
