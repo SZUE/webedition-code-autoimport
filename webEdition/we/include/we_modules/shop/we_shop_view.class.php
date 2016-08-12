@@ -69,7 +69,6 @@ WE().consts.g_l.shop={
 	delete_alert:"' . g_l('modules_shop', '[delete_alert]') . '",
 	del_shop:"' . g_l('modules_shop', '[del_shop]') . '",
 };
-WE().consts.dirs.WE_SHOP_MODULE_DIR="' . WE_SHOP_MODULE_DIR . '";
 ') .
 			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', $js);
 	}

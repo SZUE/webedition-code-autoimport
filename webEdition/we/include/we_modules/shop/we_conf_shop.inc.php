@@ -22,9 +22,12 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 define('SHOP_TABLE', TBL_PREFIX . 'tblOrders');
+define('SHOP_ORDER_TABLE', TBL_PREFIX . 'tblOrder');
+define('SHOP_ORDER_DATES_TABLE', TBL_PREFIX . 'tblOrderDates');
+define('SHOP_ORDER_DOCUMENT_TABLE', TBL_PREFIX . 'tblOrderItemDocument');
+define('SHOP_ORDER_ITEM_TABLE', TBL_PREFIX . 'tblOrderItem');
 define('WE_SHOP_VAT_TABLE', TBL_PREFIX . 'tblshopvats');
 define('WE_SHOP_MODULE_DIR', WE_MODULES_DIR . 'shop/');
-define('WE_SHOP_MODULE_PATH', WE_MODULES_PATH . 'shop/');
 
 // name of request array for shopping items
 define('WE_SHOP_ARTICLE_CUSTOM_FIELD', 'we_sacf');
@@ -42,5 +45,9 @@ define('WE_SHOP_CALC_VAT', 'we_shopCalcVat');
 
 we_base_request::registerTables(array(
 	'SHOP_TABLE' => SHOP_TABLE,
-	'WE_SHOP_VAT_TABLE' => WE_SHOP_VAT_TABLE
+	'WE_SHOP_VAT_TABLE' => WE_SHOP_VAT_TABLE,
+	'SHOP_ORDER_TABLE' => SHOP_ORDER_TABLE,
+	'SHOP_ORDER_DATES_TABLE' => SHOP_ORDER_DATES_TABLE,
+	'SHOP_ORDER_DOCUMENT_TABLE' => SHOP_ORDER_DOCUMENT_TABLE,
+	'SHOP_ORDER_ITEM_TABLE' => SHOP_ORDER_ITEM_TABLE,
 ));

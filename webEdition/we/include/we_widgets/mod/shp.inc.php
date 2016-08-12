@@ -89,7 +89,7 @@ $defaultVat = ($feldnamen[1] ? : 0);
 
 $amountCustomers = $amountOrders = $amountArticles = $amountCanceledOrders = $canceled = 0;
 
-if(defined('WE_SHOP_MODULE_DIR') && (permissionhandler::hasPerm(['NEW_SHOP_ARTICLE', 'DELETE_SHOP_ARTICLE', 'EDIT_SHOP_ORDER', 'DELETE_SHOP_ORDER', 'EDIT_SHOP_PREFS']))){
+if(defined('WE_SHOP_VAT_TABLE') && (permissionhandler::hasPerm(['NEW_SHOP_ARTICLE', 'DELETE_SHOP_ARTICLE', 'EDIT_SHOP_ORDER', 'DELETE_SHOP_ORDER', 'EDIT_SHOP_PREFS']))){
 	$queryShop = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryShopDateCondtion;
 
 	$total = $payed = $unpayed = $timestampDatePayment = 0;

@@ -277,7 +277,7 @@ class we_base_request{
 			$argname = implode('.', $args);
 			//reduce duplicate requests on the same global scope
 			static $requests = [];
-			$requests[$name][$argname][] = getBacktrace(array('error_showDevice', 'error_handler', 'getBacktrace', 'display_error_message'));
+			$requests[$name][$argname][] = getBacktrace(['error_showDevice', 'error_handler', 'getBacktrace', 'display_error_message']);
 			if(count($requests[$name][$argname]) > 1){
 				t_e('rerequest ', $name, $args, $requests[$name][$argname]);
 			}
@@ -291,13 +291,13 @@ class we_base_request{
 
 		if(is_array($var)){
 			$oldVar = $var;
-			array_walk($var, 'we_base_request::_weRequest', array($type, $default));
+			array_walk($var, 'we_base_request::_weRequest', [$type, $default]);
 			if($oldVar != $var){
 
 			}
 		} else {
 			$oldVar = $var;
-			self::_weRequest($var, '', array($type, $default));
+			self::_weRequest($var, '', [$type, $default]);
 			/*
 			  switch($type){
 			  case self::URL:
