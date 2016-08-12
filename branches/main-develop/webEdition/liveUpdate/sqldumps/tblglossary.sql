@@ -21,4 +21,7 @@ CREATE TABLE ###TBLPREFIX###tblglossary (
   KEY valid (Language,Published)
 ) ENGINE=MyISAM;
 /* query separator */
-UPDATE ###TBLPREFIX###tblglossary SET Language="de_DE" WHERE Language="";
+###UPDATEONLY###UPDATE ###TBLPREFIX###tblglossary SET Language="de_DE" WHERE Language="";
+
+/* query separator */
+###UPDATEONLY###UPDATE ###TBLPREFIX###tblglossary SET Attributes="" WHERE Attributes ='s:0:"";';
