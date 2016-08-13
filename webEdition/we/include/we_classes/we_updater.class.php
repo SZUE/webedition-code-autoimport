@@ -497,10 +497,14 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		//fill in order items
 		$db->query('SELECT IntOrderID,Price,IntQuantity,strSerial FROM ' . SHOP_TABLE);
 		while($db->next_record(MYSQL_ASSOC)){
-			$dat = array_filter(we_unserialize($db->f('strSerial')), function($k){
+			$tmp=@unserialize($db->f('strSerial'));
+			if(empty($tmp)){
+				$tmp=unserialize(utf8_decode($db->f('strSerial')));
+			}
+			$dat = array_filter($tmp, function($k){
 				return !is_numeric($k);
 			}, ARRAY_FILTER_USE_KEY);
-			$docid = intval($dat['ID']);
+			$docid = intval(isset($dat['OF_ID']) ? $dat['OF_ID'] : $dat['ID']);
 			$pub = intval(empty($dat['we_wedoc_Published']) ? $dat['WE_Published'] : $dat['we_wedoc_Published']);
 			$type = (!empty($dat['we_wedoc_ContentType'] && $dat['we_wedoc_ContentType'] == we_base_ContentTypes::OBJECT_FILE) ? 'object' : 'document');
 			$variant = $dat['WE_VARIANT'];
