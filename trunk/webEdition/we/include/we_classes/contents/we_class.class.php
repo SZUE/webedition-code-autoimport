@@ -133,7 +133,13 @@ abstract class we_class{
 		}
 		$formname = 'we_' . $this->Name . '_' . $type . '[' . $name . ']';
 		$out = we_html_element::htmlHidden($formname, $this->getElement($name)) .
-			'<table class="default" style="border:1px solid black"><tr><td style="background-color: ' . ($value ? : 'inherit') . ';"><a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);"><span style="width:' . $width . 'px;height:' . $height . 'px"/></a></td></tr></table>';
+			'<table class="default" style="border:1px solid black">
+				<tr>
+					<td style="background-color: ' . ($value ? : 'inherit') . ';">
+						<a href="javascript:setScrollTo();we_cmd(\'openColorChooser\',\'' . $formname . '\',document.we_form.elements[\'' . $formname . '\'].value);"><span style="display:block;width:' . $width . 'px;height:' . $height . 'px">&nbsp;</span></a>
+					</td>
+				</tr>
+			</table>';
 		return g_l('weClass', '[' . $name . ']', true) !== false ? we_html_tools::htmlFormElementTable($out, g_l('weClass', '[' . $name . ']')) : $out;
 	}
 
