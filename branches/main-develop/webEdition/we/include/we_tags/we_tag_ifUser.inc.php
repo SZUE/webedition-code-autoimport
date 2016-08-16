@@ -16,8 +16,8 @@
  * A copy is found in the textfile
  * webEdition/licenses/webEditionCMS/License.txt
  *
- * This function returns true if given usernames (CSV) contrains actual back user or
- * given usergroups (CSV) contains group of actual backend user
+ * This function returns true if given usernames (CSV) contain actual backend user or
+ * given usergroups (CSV) contain group of actual backend user
  *
  * @author	$Author: andreaswitt $
  * @param	$attribs array
