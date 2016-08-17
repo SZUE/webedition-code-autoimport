@@ -125,10 +125,6 @@ function we_submitForm(target, url) {
 	if (!f) {
 		return false;
 	}
-	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-		return false;
-	}
 
 	parent.openedWithWe = true;
 	if (url) {
@@ -353,8 +349,6 @@ function we_cmd() {
 
 
 function fields_are_valid() {
-	var _retVal = true;
-	var objFieldErrorMsg = "";
 	if (isWEObject) {
 
 		var theInputs = document.getElementsByTagName("input");
@@ -402,7 +396,7 @@ function fields_are_valid() {
 		}
 
 	}
-	return true;
+	return document.forms[0].checkValidity();
 }
 
 function we_checkObjFieldname(i) {
