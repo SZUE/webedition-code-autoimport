@@ -22,7 +22,8 @@
  */
 @import "config.scss";
 .weMarkInputError,
-input:invalid {
+input:invalid,
+select:invalid{
 	background-color: #ff8888 ! important;
 }
 
@@ -39,20 +40,20 @@ input:invalid {
 }
 
 div.we_blockControls button, div.we_blockControls select {
-  	margin-right: 1em; 
+  	margin-right: 1em;
 }
 
 table.mceLayout {
-	
+
 }
 
 table.mceLayout .mceToolbar,
 table.mceLayout .mceStatusbar {
-	
+
 }
 
 .we_blockControls {
-	
+
 }
 
 .we_blockControls button.weBtn,
