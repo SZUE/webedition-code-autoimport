@@ -49,7 +49,7 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 		$bodyDiv = new we_ui_layout_Div(array(
 			'width' => 206,
 			'height' => $this->_boxHeight - (38 + 22),
-			'top' => 20,
+			'top' => 62,
 			'left' => 0,
 			'position' => 'absolute',
 			'class' => self::kClassBoxBody
