@@ -101,6 +101,7 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement{
 		$divID = we_util_Strings::createUniqueId();
 		$imgID = we_util_Strings::createUniqueId();
 		if($this->_isFoldable){
+			$this->_leftWidth = 700;
 			if($this->_isFolded){
 				$folderHTML = we_html_button::create_button('fa:, fa-lg fa-caret-right', '', true, 0, 0, 'd = document.getElementById(\'' . $divID . '\'); btn = document.getElementById(\'' . $imgID . '\').firstChild; if(d.style.display == \'none\'){d.style.display = \'block\'; btn.classList.remove("fa-caret-right"); btn.classList.add("fa-caret-down");} else {d.style.display = \'none\'; btn.classList.remove("fa-caret-down"); btn.classList.add("fa-caret-right");}', '', false, false, '', false, 'open', $class = 'clipbutton', $imgID);
 			} else {
@@ -109,7 +110,7 @@ class we_ui_layout_HeadlineIconTableRow extends we_ui_abstract_AbstractElement{
 		} else {
 			$folderHTML = '';
 		}
-		$headlineHTML = ($this->_title !== '') ? ('<div class="' . we_ui_layout_HeadlineIconTable::kRowTitle . '" style="margin-bottom:10px;">' . $folderHTML . oldHtmlspecialchars($this->_title) . '</div>') : "";
+		$headlineHTML = ($this->_title !== '') ? ('<div class="' . we_ui_layout_HeadlineIconTable::kRowTitle . '" style="margin-bottom:10px;' . ($this->_isFoldable ? ' margin-left:-6px;' : '') . '">' . $folderHTML . oldHtmlspecialchars($this->_title) . '</div>') : "";
 
 		$leftContent = ($iconHTML !== '') ? $iconHTML : (($this->_leftWidth && ($this->_titlePosition === 'left')) ? $headlineHTML : "");
 
