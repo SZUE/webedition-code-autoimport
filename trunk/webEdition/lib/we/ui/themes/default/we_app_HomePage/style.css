@@ -26,17 +26,30 @@
 .we_app_HomePageBoxHeader {
 	font-weight: bold;
 	text-align: center;
-	padding-top:3px;
-	background-image: url(QuickstartHeader.gif);
+	padding:8px 0 8px 0;
+	text-align: center;
+	background: #325e94;
+	color: white;
+	font-size: 15px;
+	height: 36px;
+	top: 30px !important;
 }
 
 .we_app_HomePageBoxBody {
+	background-color: #d7dce0;
+	height: 220px;
+	margin-top: 3px;
+	position: absolute;
+	top: 63px;
+	visibility: visible;
+	width: 251px;
+	box-shadow: none;
+	z-index: 3;
 	text-align: center;
 	padding:22px 22px 0 22px;
-	background-image: url(QuickstartBody.gif);
 }
 
-.we_app_HomePageBoxFooter {
-	background-image: url(QuickstartFooter.gif);
+.weAppHome img {
+	top: 220px !important;
+	left: 350px !important;
 }
-
