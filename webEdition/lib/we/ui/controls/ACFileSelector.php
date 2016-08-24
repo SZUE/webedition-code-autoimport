@@ -477,6 +477,7 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$this->_buttonObj->setHidden($this->getHidden());
 		$this->_buttonObj->setWidth(120);
 		$this->_buttonObj->setOnClick($this->getButtonOnClick());
+		$this->_buttonObj->setMargin('0');
 
 		return $this->_buttonObj->getHTML();
 	}
@@ -511,8 +512,6 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		} else {
 			$page = we_ui_layout_HTMLPage::getInstance();
 		}
-
-		$page->addInlineCSS($this->_suggestObj->getYuiCss());
 
 		if($this->getHidden()){
 			$this->_style .= 'display:none;';
