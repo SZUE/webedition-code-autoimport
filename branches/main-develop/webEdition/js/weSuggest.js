@@ -225,7 +225,7 @@ YAHOO.autocoml = {
 		YAHOO.autocoml.yuiAcFields[id].newval = '';
 	},
 	setupInstance: function (i, select, check, myInput, myContainer) {
-		YAHOO.autocoml.oACDS[i] = new YAHOO.widget.DS_XHR(YAHOO.autocoml.ajaxURL, ['\n', '\t']);
+		YAHOO.autocoml.oACDS[i] = new YAHOO.widget.DS_XHR(WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ['\n', '\t']);
 		YAHOO.autocoml.oACDS[i].responseType = YAHOO.widget.DS_XHR.TYPE_FLAT;
 		YAHOO.autocoml.oACDS[i].maxCacheEntries = 60;
 		YAHOO.autocoml.oACDS[i].queryMatchSubset = false;
@@ -326,7 +326,7 @@ YAHOO.autocoml = {
 		YAHOO.autocoml.yuiAcFields[i].sel = '';
 	},
 	doAjax: function (callback, postdata) {
-		var request = YAHOO.util.Connect.asyncRequest('POST', YAHOO.autocoml.ajaxURL, callback, postdata);
+		var request = YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", callback, postdata);
 	},
 	validateForm: function () {
 		// Validate form inputs here

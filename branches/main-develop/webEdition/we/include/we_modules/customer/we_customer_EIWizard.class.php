@@ -82,15 +82,35 @@ class we_customer_EIWizard{
 	function getHTMLStep($mode, $step = 0){
 		switch($mode){
 			case self::ART_EXPORT:
-				$function = 'getHTMLExportStep' . intval($step);
-				return (method_exists($this, $function) ?
-						$this->$function() :
-						$this->getHTMLStep0());
+				switch($step){
+					case 1:
+						return $this->getHTMLExportStep1();
+					case 2:
+						return $this->getHTMLExportStep2();
+					case 3:
+						return $this->getHTMLExportStep3();
+					case 4:
+						return $this->getHTMLExportStep4();
+					case 5:
+						return $this->getHTMLExportStep5();
+					default:
+						return $this->getHTMLStep0();
+				}
 			case self::ART_IMPORT:
-				$function = 'getHTMLImportStep' . intval($step);
-				return (method_exists($this, $function) ?
-						$this->$function() :
-						$this->getHTMLStep0());
+				switch($step){
+					case 1:
+						return $this->getHTMLImportStep1();
+					case 2:
+						return $this->getHTMLImportStep2();
+					case 3:
+						return $this->getHTMLImportStep3();
+					case 4:
+						return $this->getHTMLImportStep4();
+					case 5:
+						return $this->getHTMLImportStep5();
+					default:
+						return $this->getHTMLStep0();
+				}
 			default:
 				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', '', we_html_element::htmlBody(array("style" => 'margin:10px'), "aba")
 				);
@@ -992,7 +1012,7 @@ function callBack(){
 
 	private function getLoadCode(){
 		if(($pid = we_base_request::_(we_base_request::INT, "pid"))){
-			return we_html_element::jsElement("self.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::STRING, "openFolders") . "'");
+			return we_html_element::jsElement("self.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=loadTree&we_cmd[1]=" . we_base_request::_(we_base_request::TABLE, "tab") . "&we_cmd[2]=" . $pid . "&we_cmd[3]=" . we_base_request::_(we_base_request::STRING, "openFolders") . "'");
 		}
 		return '';
 	}

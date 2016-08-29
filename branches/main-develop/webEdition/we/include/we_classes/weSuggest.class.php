@@ -229,7 +229,6 @@ function initYahooData(){
 	}
 	try{
 	YAHOO.autocoml.width= ' . intval($this->width) . ';
-	YAHOO.autocoml.ajaxURL = WE().consts.dirs.WEBEDITION_DIR+"rpc.php";
 	YAHOO.autocoml.selfType="' . $weSelfContentType . '";
 	YAHOO.autocoml.selfID="' . $weSelfID . '";
 	YAHOO.autocoml.yuiAcFieldsById = {' . implode(',', $fildsById) . '};

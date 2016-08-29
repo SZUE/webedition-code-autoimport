@@ -23,8 +23,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var ajaxURL = WE().consts.dirs.WEBEDITION_DIR + "rpc.php";
-
 function init() {
 	sizeScrollContent();
 }
@@ -114,7 +112,7 @@ function deleteVersionAjax() {
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = "<table border='0' width='100%' height='100%'><tr><td align='center'><i class=\"fa fa-2x fa-spinner fa-pulse\"></i></td></tr></table>";
 
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDeleteVersion, "protocol=json&cns=versionlist&cmd=DeleteVersion&" + args + "");
+	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackDeleteVersion, "protocol=json&cns=versionlist&cmd=DeleteVersion&" + args + "");
 }
 
 function previewVersion(table, ID, version) {
@@ -271,7 +269,7 @@ function makeAjaxRequestDoclist() {
 	}
 	var scroll = document.getElementById("scrollContent");
 	scroll.innerHTML = '<table style="width:100%;height:100%"><tr><td style="text-align:center"><i class="fa fa-2x fa-spinner fa-pulse"></i></td></tr></table>';
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResultList, "protocol=json&cns=versionlist&cmd=GetSearchResult&classname=" + doc.ClassName + "&id=" + doc.ID + "&table=" + doc.Table + "&we_transaction=" + transaction + args);
+	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackResultList, "protocol=json&cns=versionlist&cmd=GetSearchResult&classname=" + doc.ClassName + "&id=" + doc.ID + "&table=" + doc.Table + "&we_transaction=" + transaction + args);
 }
 
 function makeAjaxRequestParametersTop() {
@@ -281,7 +279,7 @@ function makeAjaxRequestParametersTop() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersTop, "protocol=json&position=top&cns=versionlist&cmd=GetSearchParameters&path=" + doc.Path + "&text=" + doc.Text + "&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args);
+	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackParametersTop, "protocol=json&position=top&cns=versionlist&cmd=GetSearchParameters&path=" + doc.Path + "&text=" + doc.Text + "&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args);
 }
 
 function makeAjaxRequestParametersBottom() {
@@ -291,7 +289,7 @@ function makeAjaxRequestParametersBottom() {
 		newString = document.we_form.elements[i].name;
 		args += "&we_cmd[" + encodeURI(newString) + "]=" + encodeURI(document.we_form.elements[i].value);
 	}
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackParametersBottom, "protocol=json&position=bottom&cns=versionlist&cmd=GetSearchParameters&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args);
+	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackParametersBottom, "protocol=json&position=bottom&cns=versionlist&cmd=GetSearchParameters&classname=" + doc.ClassName + "&id=" + doc.ID + "&we_transaction=" + transaction + args);
 }
 
 
@@ -328,7 +326,7 @@ var ajaxCallbackResetVersion = {
 };
 
 function resetVersionAjax(id, documentID, version, table) {
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=" + transaction);
+	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackResetVersion, "protocol=json&cns=versionlist&cmd=ResetVersion&id=" + id + "&documentID=" + documentID + "&version=" + version + "&documentTable=" + table + "&we_transaction=" + transaction);
 }
 
 

@@ -104,11 +104,27 @@ function doClick(opt) {
 	function getHTMLStep($step){
 		switch($this->mode){
 			case self::BACKUP:
-				$step = 'getHTMLBackupStep' . $step;
-				return $this->{$step}();
+				switch($step){
+					default:
+					case 1:
+						return $this->getHTMLBackupStep1();
+					case 2:
+						return $this->getHTMLBackupStep2();
+					case 3:
+						return $this->getHTMLBackupStep3();
+				}
 			case self::RECOVER:
-				$step = 'getHTMLRecoverStep' . $step;
-				return $this->{$step}();
+				switch($step){
+					default:
+					case 1:
+						return $this->getHTMLRecoverStep1();
+					case 2:
+						return $this->getHTMLRecoverStep2();
+					case 3:
+						return $this->getHTMLRecoverStep3();
+					case 4:
+						return $this->getHTMLRecoverStep4();
+				}
 		}
 	}
 

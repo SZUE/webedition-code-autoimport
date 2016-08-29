@@ -42,7 +42,6 @@ weSearch.conf = {
 	whichsearch: "' . we_search_view::SEARCH_DOCLIST . '",
 	we_transaction: "' . $this->Model->transaction . '",
 	editorBodyFrame : window,
-	ajaxURL: WE().consts.dirs.WEBEDITION_DIR+"rpc.php",
 	rows: ' . (isset($_REQUEST['searchFields' . we_search_view::SEARCH_DOCLIST]) ? count($_REQUEST['searchFields' . we_search_view::SEARCH_DOCLIST]) - 1 : 0) . ',
 	tab: 0,
 	modelClassName: "placeholder",
