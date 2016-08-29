@@ -35,8 +35,6 @@ class we_versions_logView{
 
 	public function getJS(){
 		return we_html_element::jsElement('
-var ajaxURL = WE().consts.dirs.WEBEDITION_DIR+"rpc.php";
-
 var currentId = 0;
 
 var ajaxCallbackDetails = {
@@ -60,8 +58,7 @@ function openDetails(id) {
 		}
 	}
 
-
-	YAHOO.util.Connect.asyncRequest("POST", ajaxURL, ajaxCallbackDetails, "protocol=json&cns=logging/versions&cmd=GetLogVersionDetails&id="+id+"");
+	YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", ajaxCallbackDetails, "protocol=json&cns=logging/versions&cmd=GetLogVersionDetails&id="+id+"");
 
 }
 

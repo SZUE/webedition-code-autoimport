@@ -851,7 +851,7 @@ function doUnload() {
 
 		$js = we_html_element::jsElement("
 		function back() {
-			top.location.href='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import&we_cmd[1]=siteImport';
+			top.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&we_cmd[1]=siteImport';
 		}
 		function next() {
 			var testvalue = 0;

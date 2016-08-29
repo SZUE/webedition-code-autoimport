@@ -259,7 +259,6 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 weSearch.conf = {
 	whichsearch: "' . $whichSearch . '",
 	editorBodyFrame : ' . $this->editorBodyFrame . ',
-	ajaxURL: WE().consts.dirs.WEBEDITION_DIR+"rpc.php",
 	tab: "' . $tab . '",
 	modelClassName: "' . $this->Model->ModelClassName . '",
 	modelID: "' . $this->Model->ID . '",

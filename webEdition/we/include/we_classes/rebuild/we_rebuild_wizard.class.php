@@ -700,7 +700,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		}
 
 		if($tail){
-			$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "wizcmd.location='" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';")
+			$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "wizcmd.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';")
 					, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 					we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			);

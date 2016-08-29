@@ -23,12 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_import_wizardBase{
-	var $path = '';
 	public $fileUploader = null;
-
-	protected function __construct(){
-		$this->path = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import';
-	}
 
 	public function getHTML($what, $type, $step, $mode){
 		switch($what){
@@ -47,18 +42,13 @@ abstract class we_import_wizardBase{
 		$args = 'pnt=wizbody' .
 			(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1)) ? '&we_cmd[1]=' . $cmd1 : '');
 
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "wiz_next('wizbody', '" . $this->path . '&' . $args . "');")
-				, we_html_element::htmlIFrame('wizbody', "about:blank", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+		$body = we_html_element::htmlBody(['id' => 'weMainBody', "onload" => "wiz_next('wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&" . $args . "');"]
+		, we_html_element::htmlIFrame('wizbody', "about:blank", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
 				we_html_element::htmlIFrame('wizbusy', "about:blank", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false) .
-				we_html_element::htmlIFrame('wizcmd', $this->path . "&pnt=wizcmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
+				we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import&pnt=wizcmd', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		);
 
 		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', YAHOO_FILES .
-				we_html_element::jsElement("
-var tables = {
-	OBJECT_TABLE: '" . (defined('OBJECT_TABLE') ? OBJECT_TABLE : 'OBJECT_TABLE') . "'
-};
-var path='" . $this->path . "';") .
 				we_html_element::jsScript(JS_DIR . 'import_wizardBase.js'), $body);
 	}
 
@@ -70,9 +60,9 @@ var path='" . $this->path . "';") .
 		}
 
 		if($continue){
-			$a = array(
+			$a = [
 				'name' => 'we_form'
-			);
+			];
 			if($type == we_import_functions::TYPE_GENERIC_XML && $step == 1){
 				$a["onsubmit"] = 'return false;';
 			}
@@ -85,7 +75,7 @@ var path='" . $this->path . "';") .
 			return we_html_tools::getHtmlTop('', '', '', ($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
 					we_html_element::jsElement($js), we_html_element::htmlBody(array(
 						"class" => "weDialogBody",
-						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', '" . $this->path . "&pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state) set_button_state();"
+						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state){set_button_state()};"
 						), we_html_element::htmlForm($a, we_html_element::htmlHiddens(array(
 								"pnt" => "wizbody",
 								"type" => $type,
@@ -621,13 +611,13 @@ function cycle() {
 }
 function we_import(mode, cid,reload) {
 	if(reload==1){
-		top.wizbody.location = '" . $this->path . "&pnt=wizbody&step=3&type=" . we_import_functions::TYPE_WE_XML . "&noload=1';
+		top.wizbody.location = WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&pnt=wizbody&step=3&type=" . we_import_functions::TYPE_WE_XML . "&noload=1';
 	};
 	var we_form = self.document.we_form;
 	we_form.elements['v[mode]'].value = mode;
 	we_form.elements['v[cid]'].value = cid;
 	we_form.target = 'wizcmd';
-	we_form.action = '" . $this->path . "&pnt=wizcmd';
+	we_form.action = WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&pnt=wizcmd';
 	we_form.method = 'post';
 	we_form.submit();
 }"
