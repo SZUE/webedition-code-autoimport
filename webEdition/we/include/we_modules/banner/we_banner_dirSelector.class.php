@@ -23,10 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_banner_dirSelector extends we_selector_directory{
-	var $fields = 'ID,ParentID,Text,Path,IsFolder';
 
 	function __construct($id, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $we_editDirID = 0, $FolderText = ''){
 		parent::__construct($id, BANNER_TABLE, $JSIDName, $JSTextName, $JSCommand, $order, '', $we_editDirID, $FolderText);
+		$this->fields = 'ID,ParentID,Text,Path,IsFolder';
 		$this->title = g_l('fileselector', '[bannerDirSelector][title]');
 		$this->userCanMakeNewFolder = true;
 	}
