@@ -189,7 +189,7 @@ YAHOO.autocoml = {
 		//setTimeout('YAHOO.autocoml.doOnTextfieldBlur_$i(0,0," . $i . ")',100);
 	},
 	ajaxSuccess: function (o, id) {
-		if (o.responseText !== undefined && o.responseText !== '') {
+		if (o.responseText !== undefined && o.responseText) {
 			var weResponse = JSON.parse(o.responseText);
 			if (weResponse.Success) {
 				if (weResponse.DataArray.data.contentType === 'folder' && (YAHOO.autocoml.yuiAcFields[id].selector === 'docSelector' || YAHOO.autocoml.yuiAcFields[id].selector === 'Docselector')) {

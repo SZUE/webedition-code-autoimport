@@ -40,7 +40,7 @@ class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends we_rpc_cmd{
 		$document->we_initSessDat($we_dt);
 		$filterOfDocument = $document->documentCustomerFilter;
 
-		$ret = (we_customer_documentFilter::filterAreQual($filterOfFolder, $filterOfDocument, true) ? 'false' : 'true');
+		$ret = (we_customer_documentFilter::filterAreQual($filterOfFolder, $filterOfDocument, true) ? false : true);
 
 		$resp->setData('data', $ret);
 
@@ -48,12 +48,12 @@ class rpcGetUpdateDocumentCustomerFilterQuestionCmd extends we_rpc_cmd{
 	}
 
 	function getFilterOfFolder($id, $table){
-		if($id > 0){
-			$folder = new we_folder();
-			$folder->initByID($id, $table);
-			return $folder->documentCustomerFilter;
+		if($id == 0){
+			return '';
 		}
-		return "";
+		$folder = new we_folder();
+		$folder->initByID($id, $table);
+		return $folder->documentCustomerFilter;
 	}
 
 }
