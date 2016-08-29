@@ -531,13 +531,11 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 	if (_cmdName) {
 		top.YAHOO.util.Connect.asyncRequest('GET', url, {
 			success: function (o) {
-				if (o.responseText !== undefined && o.responseText !== '') {
-					var weResponse = false;
+				if (o.responseText !== undefined && o.responseText) {
 					try {
-						eval(o.responseText);
-						if (weResponse) {
-							updateWidgetContent(weResponse.widgetType, weResponse.widgetId, weResponse.data, weResponse.titel);
-
+						var weResponse = JSON.parse(o.responseText);
+						if (weResponse.Success) {
+							updateWidgetContent(weResponse.DataArray.widgetType, weResponse.DataArray.widgetId, weResponse.DataArray.data, weResponse.DataArray.titel);
 						}
 					} catch (exc) {
 						alert("Could not complete the ajax request");

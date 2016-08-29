@@ -188,12 +188,8 @@ abstract class we_html_button{
 				$cmd = $on_click . $hrefData[1];
 				break;
 			default:
-				//FIXME: is this really used???
-				if($target){
-					t_e('new window by button', $target, $href);
-				}
 				// Check if the link has to be opened in a different frame or in a new window
-				$cmd = $on_click . ($target ? // The link will be opened in a different frame or in a new window
+				$cmd = $on_click . /*($target ? // The link will be opened in a different frame or in a new window
 						// Check if the link has to be opend in a frame or a window
 						($target === '_blank' ? // The link will be opened in a new window
 							"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
@@ -201,7 +197,8 @@ abstract class we_html_button{
 							"target_frame = eval('parent.' + " . $target . ");" .
 							"target_frame.location.href='" . $href . "';") :
 						// The link will be opened in the current frame or window
-						"window.location.href='" . $href . "';");
+				 */
+						"window.location.href='" . $href . "';";/*);*/
 		}
 
 		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($title ? : (g_l('button', '[' . $name . '][alt]', true) ? : '')), $disabled, $hrefData[0] === self::WE_FORM, $class, $dimensions);

@@ -149,20 +149,15 @@ function updateCustomerFilterIfNeeded() {
 			top.YAHOO.util.Connect.asyncRequest('GET', WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, {
 				// check if parentId was changed
 				success: function (o) {
-					if (o.responseText !== undefined && o.responseText !== '') {
-						var weResponse = false;
-						try {
-							//FIXME can we use JSON.parse
-							eval(o.responseText);
-							if (weResponse) {
-								if (weResponse.data === "true") {
-									_question = isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
-									if (confirm(_question)) {
-										top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
-									}
+					if (o.responseText !== undefined && o.responseText) {
+						var weResponse = JSON.parse(o.responseText);
+						if (weResponse) {
+							if (weResponse.DataArray.data === true) {
+								_question = isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
+								if (confirm(_question)) {
+									top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
 								}
 							}
-						} catch (exc) {
 						}
 					}
 				},
