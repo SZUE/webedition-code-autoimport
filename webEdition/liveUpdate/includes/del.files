@@ -688,6 +688,7 @@ treeInfo.php
 sysinfo.php
 stay_alive.php
 showDoc.php
+rpc/views/json/rpcGetNaviItemsView.class.php
 rpc/rpcRoot.inc.php
 rewrite_we_conf_global.php
 restore_we_conf_global.php

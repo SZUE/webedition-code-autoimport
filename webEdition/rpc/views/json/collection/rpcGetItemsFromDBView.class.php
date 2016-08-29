@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class rpcGetItemsFromDBView extends we_rpc_view{
-	function getResponse($response){
+	function getResponse(we_rpc_response $response){
 		return json_encode($response->getData("itemsArray"));
 	}
 }

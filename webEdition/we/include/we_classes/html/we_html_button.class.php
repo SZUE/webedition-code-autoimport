@@ -85,7 +85,7 @@ abstract class we_html_button{
 	 * @param boolean $important
 	 * @static
 	 */
-	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = '', $dimensions = []){
+	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = '', array $dimensions = []){
 		// $dimensions: to be used only when calling this function from app
 		$style = isset($dimensions['width']) || isset($dimensions['height']) ? ' style="' . (isset($dimensions['width']) ? 'width:' . $dimensions['width'] . 'px;' : '') . (isset($dimensions['height']) ? 'height:' . $dimensions['height'] . 'px;' : '') . '"' : '';
 
@@ -114,7 +114,7 @@ abstract class we_html_button{
 	 * @return     string
 	 */
 
-	static function create_button($name, $href, $unused3 = 0, $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, $dimensions = []){
+	static function create_button($name, $href, $unused3 = 0, $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, array $dimensions = []){
 		$cmd = '';
 
 		restart:

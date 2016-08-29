@@ -337,7 +337,7 @@ class we_webEditionDocument extends we_textContentDocument{
 				}
 			}
 
-			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID,IF(Display!="",Display,Path)', g_l('weClass', '[template]'), 'IsFolder=0 AND ID IN (' . ($foo ? implode(',', $foo) : -1) . ') ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", [], 'left', 'defaultfont', '', $openButton, [0, '']);
+			return $this->formSelect4($width, 'TemplateID', TEMPLATES_TABLE, 'ID,IF(Display!="",Display,Path)', g_l('weClass', '[template]'), 'IsFolder=0 AND ID IN (' . ($foo ? implode(',', $foo) : -1) . ') ORDER BY Path', 1, $TID, false, "we_cmd('template_changed');_EditorFrame.setEditorIsHot(true);", ['required' => 'required'], 'left', 'defaultfont', '', $openButton, ['', '']);
 		}
 		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID,IF(Display!="",Display,Path)', g_l('weClass', '[template]'), 'IsFolder=0 ORDER BY Path ', 1, $this->TemplateID, false, '_EditorFrame.setEditorIsHot(true);', [], 'left', 'defaultfont', '', $openButton);
 	}
@@ -823,20 +823,20 @@ $GLOBALS[\'we_transaction\'] = 0;
 $GLOBALS[\'we_ContentType\'] = \'' . we_base_ContentTypes::WEDOCUMENT . '\';
 
 if(isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
-		$_REQUEST[\'we_cmd\'] = array(
+		$_REQUEST[\'we_cmd\'] = [
 				1 => intval($_REQUEST[\'pv_id\']),
 				4 => intval($_REQUEST[\'pv_tid\']),
-		);
+		];
 } else {
-		$_REQUEST[\'we_cmd\'] = array(1 => ' . $this->ID . ');
+		$_REQUEST[\'we_cmd\'] = [1 => ' . $this->ID . '];
 }
 
 $FROM_WE_SHOW_DOC = true;
 
 if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
-		include(\'' . WE_INCLUDES_PATH . 'we_showObject.inc.php\');
+		include($_SERVER[\'DOCUMENT_ROOT\'] . \'we_showObject.inc.php\');
 } else {
-		include(\'' . WE_INCLUDES_PATH . 'we_showDocument.inc.php\');
+		include($_SERVER[\'DOCUMENT_ROOT\'] . \'we_showDocument.inc.php\');
 }';
 		}
 

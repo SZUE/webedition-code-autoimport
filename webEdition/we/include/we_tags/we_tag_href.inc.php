@@ -118,7 +118,7 @@ function we_tag_href(array $attribs){
 	$intID_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_href[' . $nintID . '#bdid]';
 	$ext_elem_Name = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 
-	$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ''), true);
+	$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value = ''; document.we_form.elements['" . $intPath_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);" . (($include || $reload) ? "setScrollTo(); top.we_cmd('reload_editpage');" : ''));
 	$span = '<span class="defaultfont" style="color: black;">';
 
 	$size = 5 * intval(weTag_getAttribute('size', $attribs, 20, we_base_request::INT));
@@ -134,7 +134,7 @@ function we_tag_href(array $attribs){
 		$but2 = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button('fa:btn_edit_link,fa-lg fa-pencil,fa-lg fa-link', "javascript:we_cmd('browse_server', 'document.forms[0].elements[\\'" . $ext_elem_Name . "\\'].value', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['" . $ext_elem_Name . "'].value, 'opener._EditorFrame.setEditorIsHot(true);" . ($type == we_base_link::TYPE_ALL ? " opener.document.we_form.elements[\'" . $int_elem_Name . "\'][1].checked = true;" : '') . "','" . $rootdir . "')") : '';
 	}
 	$open = we_html_button::create_button(we_html_button::VIEW, "javascript:if(" . $cmd1 . "){WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', " . $cmd1 . ",'');}");
-	$trashbut2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);", true);
+	$trashbut2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $ext_elem_Name . "'].value = ''; _EditorFrame.setEditorIsHot(true);");
 
 	switch($type){
 		case we_base_link::TYPE_ALL:

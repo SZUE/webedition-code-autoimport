@@ -31,9 +31,9 @@ class rpcGetNaviItemsCmd extends we_rpc_cmd{
 		$data = [];
 
 		foreach($items as $item){
-			$data[] = $item['id'] . ':' . $item['text'];
+			$data[] = [$item['id'], $item['text']];
 		}
-		$resp->setData('data', implode(',', $data));
+		$resp->setData('data', $data);
 		return $resp;
 	}
 

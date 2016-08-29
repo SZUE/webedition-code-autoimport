@@ -22,46 +22,48 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-class rpcSelectorGetSelectedIdView extends we_rpc_view{
+class rpcSelectorGetSelectedIdView extends we_rpc_genericJSONView{
 
-	function getResponse($response){
-
-		header('Content-type: text/plain');
+	function getResponse(we_rpc_response $response){
 		$suggests = $response->getData('data');
 		if(is_array($suggests) && isset($suggests[0]['ID'])){
-			$status = "response";
-			$html = ' "id": "' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4) . '", "value": "' . $suggests[0]['ID'] . '"' .
-				(isset($suggests[0]['ContentType']) ? ', "contentType": "' . $suggests[0]['ContentType'] . '"' : "");
-		} else {
-			$status = "error";
-			if(strpos(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3), ',')){
-				switch(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2)){
-					case FILE_TABLE:
-						$msg = g_l('weSelectorSuggest', '[no_document]');
-						break;
-					case TEMPLATES_TABLE:
-						$msg = g_l('weSelectorSuggest', '[no_template]');
-						break;
-					case OBJECT_TABLE:
-						$msg = g_l('weSelectorSuggest', '[no_class]');
-						break;
-					case OBJECT_FILES_TABLE:
-						$msg = g_l('weSelectorSuggest', '[no_class]');
-						break;
-					default:
-						$msg = g_l('weSelectorSuggest', '[no_result]');
-						break;
-				}
-			} else {
-				$msg = g_l('weSelectorSuggest', '[no_folder]');
-			}
-			$html = '"msg":"' . $msg . '","nr":"' . we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2) . '"';
+			$response->setStatus(true);
+			$response->setData('data', [
+				'id' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4),
+				'value' => $suggests[0]['ID'],
+				'contentType' => (isset($suggests[0]['ContentType']) ? $suggests[0]['ContentType'] : '')
+			]);
+			return parent::getResponse($response);
 		}
-		return
-			'var weResponse = {
-			"type": "' . $status . '",
-			"data": {' . $html . ' }
-		};';
+		$response->setStatus(false);
+
+		if(strpos(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3), ',')){
+			switch(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2)){
+				case FILE_TABLE:
+					$msg = g_l('weSelectorSuggest', '[no_document]');
+					break;
+				case TEMPLATES_TABLE:
+					$msg = g_l('weSelectorSuggest', '[no_template]');
+					break;
+				case OBJECT_TABLE:
+					$msg = g_l('weSelectorSuggest', '[no_class]');
+					break;
+				case OBJECT_FILES_TABLE:
+					$msg = g_l('weSelectorSuggest', '[no_class]');
+					break;
+				default:
+					$msg = g_l('weSelectorSuggest', '[no_result]');
+					break;
+			}
+		} else {
+			$msg = g_l('weSelectorSuggest', '[no_folder]');
+		}
+		$response->setData('data', [
+			'msg' => $msg,
+			'nr' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2)
+		]);
+
+		return parent::getResponse($response);
 	}
 
 }

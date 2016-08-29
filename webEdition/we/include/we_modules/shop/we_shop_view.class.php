@@ -1381,11 +1381,11 @@ function CalendarChanged(calObject) {
 		$content = we_html_button::create_button('pref_shop', "javascript:top.we_cmd('pref_shop');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>' .
 			we_html_button::create_button('payment_val', "javascript:top.we_cmd('payment_val');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_USER")) . '<br/>';
 		if(($resultD) && $resultO){ //docs and objects
-			$content.= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '", true) . '<br/>';
+			$content.= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '") . '<br/>';
 		} elseif((!$resultD) && $resultO){ // no docs but objects
-			$content.= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=object&ViewClass=$classid '", true) . '<br/>';
+			$content.= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=object&ViewClass=$classid '") . '<br/>';
 		} elseif(($resultD) && !$resultO){ // docs but no objects
-			$content.= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '", true) . '<br/>';
+			$content.= we_html_button::create_button('quick_rev', "javascript:top.content.editor.location='" . $this->frameset . "&pnt=editor&top=1&typ=document '") . '<br/>';
 		}
 
 		return parent::getActualHomeScreen('shop', "shop.gif", $content);

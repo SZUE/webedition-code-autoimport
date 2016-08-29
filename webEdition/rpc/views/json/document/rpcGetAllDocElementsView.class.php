@@ -24,9 +24,7 @@
  */
 class rpcGetAllDocElementsView extends we_rpc_view{
 
-	function getResponse($response){
-
-
+	function getResponse(we_rpc_response $response){
 		ob_start();
 		print_r($response->getData('elements'));
 		$out = ob_get_clean();

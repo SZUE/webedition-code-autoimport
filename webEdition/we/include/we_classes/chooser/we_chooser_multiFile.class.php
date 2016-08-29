@@ -93,9 +93,9 @@ class we_chooser_multiFile extends we_chooser_multiDir{
 		}
 
 
-		$table2 = new we_html_table(['class' => 'default', "width" => $this->width], 1, 1);
+		$table2 = new we_html_table(['class' => 'default', 'width' => $this->width], 1, 1);
 
-		$table2->setCol(0, 0, [], we_html_element::htmlDiv(["style" => "background-color:white;", "class" => "multichooser", "id" => "multi_selector"], $table->getHtml()));
+		$table2->setCol(0, 0, [], we_html_element::htmlDiv(['style' => 'background-color:white;', 'class' => "multichooser", 'id' => 'multi_selector'], $table->getHtml()));
 
 		if($this->addbut){
 			$table2->addRow(1);

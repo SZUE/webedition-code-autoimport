@@ -28,16 +28,16 @@ class we_rpc_jsonView extends we_rpc_view{
 	 * @param we_rpc_response $response
 	 * @return string
 	 */
-	function getResponse($response){
+	function getResponse(we_rpc_response $response){
 		$status = ($response->Success ? "response" : "error");
 
 
 		// DONT TOUCH THIS -  this is also  used forDreamweaver extension !
 		return
 			'var weResponse = {
-			"type":"' . $status . '",
-			"data":"' . addslashes($response->getData("data")) . '"
-		};'
+	"type":"' . $status . '",
+	"data":"' . addslashes($response->getData("data")) . '"
+};'
 		;
 	}
 

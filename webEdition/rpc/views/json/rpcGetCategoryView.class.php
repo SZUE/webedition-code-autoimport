@@ -24,7 +24,7 @@
  */
 class rpcGetCategoryView extends we_rpc_view{
 
-	function getResponse($response){
+	function getResponse(we_rpc_response $response){
 		return (json_encode($response->getData("elementsById")));
 	}
 
