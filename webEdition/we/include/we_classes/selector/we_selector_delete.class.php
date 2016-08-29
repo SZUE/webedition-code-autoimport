@@ -66,7 +66,11 @@ consts.DEL=' . self::DEL . ';
 	function printDoDelEntryHTML(){
 		$js = '';
 		if(($del = we_base_request::_(we_base_request::INT, "todel"))){
-			$_SESSION['weS']['todel'] = $del;
+			$_SESSION['weS']['fragDel'] = [
+				'todel' => $del,
+				'we_not_deleted_entries' => [],
+				'we_go_seem_start' => false,
+			];
 			$js = we_html_element::jsElement('
 top.opener.top.we_cmd("del_frag", "' . $del . '");
 top.close();');
