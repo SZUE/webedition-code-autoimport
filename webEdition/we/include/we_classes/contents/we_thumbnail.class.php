@@ -273,8 +273,7 @@ class we_thumbnail{
 	 */
 	public function initByThumbName($thumbName, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
 		$foo = getHash('SELECT ID,Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE Name="' . $this->db->escape($thumbName) . '"', $this->db)? :
-			array(
-			'ID' => 0,
+			['ID' => 0,
 			'Width' => 0,
 			'Height' => 0,
 			'Options' => '',
@@ -282,7 +281,10 @@ class we_thumbnail{
 			'Name' => '',
 			'Date' => '',
 			'Quality' => ''
-		);
+		];
+		if(!$foo['ID']){
+			t_e('thumbnail name `' . $thumbName . '` not found.');
+		}
 		$this->init($foo['ID'], $foo['Width'], $foo['Height'], $foo['Options'], $foo['Format'], $foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $foo['Date'], $foo['Quality']);
 		return ($this->thumbID && $this->thumbName);
 	}
