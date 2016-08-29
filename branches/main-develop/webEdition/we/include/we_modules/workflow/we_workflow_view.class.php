@@ -50,14 +50,13 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getHiddens(){
-		return we_html_element::htmlHiddens(array(
-				'home' => '0',
+		return we_html_element::htmlHiddens(['home' => '0',
 				'wcmd' => 'new_workflow',
 				'wid' => $this->workflowDef->ID,
 				'pnt' => 'edit',
 				'wname' => $this->uid,
 				'page' => $this->page
-		));
+				]);
 	}
 
 	function getHiddensFormPropertyPage(){
@@ -68,7 +67,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getHiddensFormOverviewPage(){
 		//we need the following vars since fields expect this hidden fields & selectors don't generate a hidden field itself
-		array_push($this->hiddens, 'Type', 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects');
+		array_push($this->hiddens, 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects');
 
 		$out = '';
 
@@ -123,20 +122,17 @@ class we_workflow_view extends we_modules_view{
 		} else {
 			switch($this->page){
 				case self::PAGE_PROPERTIES:
-					$parts = array(
-						$this->getWorkflowHeaderMultiboxParts(143),
-						$parts[] = array(
-						'headline' => g_l('modules_workflow', '[type]'),
+					$parts = [$this->getWorkflowHeaderMultiboxParts(143),
+						$parts[] = ['headline' => g_l('modules_workflow', '[type]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
-						'html' => $this->getWorkflowTypeHTML()),
-						array(
-							'headline' => g_l('modules_workflow', '[specials]'),
+						'html' => $this->getWorkflowTypeHTML()],
+						['headline' => g_l('modules_workflow', '[specials]'),
 							'space' => we_html_multiIconBox::SPACE_MED,
 							'html' => '<br/>' .
 							we_html_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
 							we_html_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
-						),
-					);
+							],
+						];
 					//	Workflow-Type
 					$content .= $this->getHiddensFormOverviewPage() .
 						we_html_multiIconBox::getHTML('workflowProperties', $parts, 30);
@@ -169,15 +165,16 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getWorkflowTypeHTML(){
-		return $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::FOLDER, ($this->workflowDef->Type == we_workflow_workflow::FOLDER ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_dir]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
+		t_e($this->workflowDef);
+		return $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::FOLDER, $this->workflowDef->Type == we_workflow_workflow::FOLDER, $this->uid . '_Type', g_l('modules_workflow', '[type_dir]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
 				$this->getFoldersHTML(),
 				), 25) .
-			$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::DOCTYPE_CATEGORY, ($this->workflowDef->Type == we_workflow_workflow::DOCTYPE_CATEGORY ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_doctype]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
+			$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::DOCTYPE_CATEGORY, $this->workflowDef->Type == we_workflow_workflow::DOCTYPE_CATEGORY, $this->uid . '_Type', g_l('modules_workflow', '[type_doctype]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
 				$this->getDocTypeHTML(),
 				$this->getCategoryHTML(),
 				), 25) .
 			(defined('OBJECT_TABLE') ?
-				$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::OBJECT, ($this->workflowDef->Type == we_workflow_workflow::OBJECT ? 1 : 0), $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
+				$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::OBJECT, $this->workflowDef->Type == we_workflow_workflow::OBJECT, $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
 					$this->getObjectHTML(),
 					$this->getObjCategoryHTML(),
 					$this->getObjectFileFoldersHTML(),

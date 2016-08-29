@@ -189,7 +189,7 @@ function exit_open() {
 
 			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
 
-			$ret .= 'top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Filename") . '","' . $this->db->f("Extension") . '",' . $this->db->f('IsFolder') . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), $this->db->f("ModDate")) . '","' . $this->db->f("ContentType") . '","' . $this->db->f("Published") . '","' . $title . '");';
+			$ret .= 'top.addEntry(' . $this->db->f('ID') . ',"' . $this->db->f('Filename') . '","' . $this->db->f('Extension') . '",' . $this->db->f('IsFolder') . ',"' . $this->db->f('Path') . '","' . date(g_l('date', '[format][default]'), $this->db->f('ModDate')) . '","' . $this->db->f('ContentType') . '","' . $this->db->f('Published') . '","' . $title . '");';
 		}
 		$ret .=' function startFrameset(){';
 		switch($this->filter){

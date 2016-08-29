@@ -304,3 +304,22 @@ function handle_eventCSVImportStep3(evt) {
 			break;
 	}
 }
+
+function onChangeSelectXMLNode(node) {
+	node.form.elements['v[to_iElem]'].value = node.options[node.selectedIndex].value;
+	node.form.elements['v[from_iElem]'].value = 1;
+	node.form.elements['v[sct_node]'].value = node.options[node.selectedIndex].text;
+	if (node.options[node.selectedIndex].value == 1) {
+		node.form.elements['v[from_iElem]'].disabled = true;
+		node.form.elements['v[to_iElem]'].disabled = true;
+	} else {
+		node.form.elements['v[from_iElem]'].disabled = false;
+		node.form.elements['v[to_iElem]'].disabled = false;
+	}
+}
+
+function onChangeSelectObject(node) {
+	var elem = document.we_form.elements['v[classID]'];
+	document.we_form.elements['v[obj_path]'].value = '/' + elem.options[elem.selectedIndex].text;
+	document.we_form.elements['v[obj_path_id]'].value = document.we_form.elements['v[classID]'].value.split('_')[1];
+}
