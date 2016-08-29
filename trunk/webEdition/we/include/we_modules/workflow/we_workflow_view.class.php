@@ -68,7 +68,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getHiddensFormOverviewPage(){
 		//we need the following vars since fields expect this hidden fields & selectors don't generate a hidden field itself
-		array_push($this->hiddens, 'Type', 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects');
+		array_push($this->hiddens, 'Folders', 'ObjectFileFolders', 'Categories', 'ObjCategories', 'DocType', 'Objects');
 
 		$out = '';
 
