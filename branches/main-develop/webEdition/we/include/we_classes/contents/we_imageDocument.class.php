@@ -290,7 +290,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 		$quality = ($quality > 10 ? 10 : max($quality, 0)) * 10;
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
-		$resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, array($ratio ? we_thumbnail::OPTION_RATIO : 0));
+		$resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, [$ratio ? we_thumbnail::OPTION_RATIO : 0]);
 		if(!$resized_image[0]){
 			return false;
 		}
@@ -322,7 +322,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$quality = max(min($quality, 10), 0) * 10;
 
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
-		$resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, array(we_thumbnail::OPTION_INTERLACE), array(0, 0), $rotation);
+		$resized_image = we_base_imageEdit::edit_image($this->getElement('data'), $this->getGDType(), $dataPath, $quality, $width, $height, [we_thumbnail::OPTION_INTERLACE], [0, 0], $rotation);
 
 		if(!$resized_image[0]){
 			return false;

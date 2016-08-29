@@ -111,7 +111,7 @@ function we_tag_img(array $attribs){
 		}
 		$out = $GLOBALS['we_doc']->getField($tagAttribs, 'img');
 	} elseif($GLOBALS['we_editmode'] && $GLOBALS['we_doc']->InWebEdition){
-		$tagAttribs = removeAttribs($tagAttribs, array('thumbnail', 'only', 'name'));
+		$tagAttribs = removeAttribs($tagAttribs, ['thumbnail', 'only', 'name']);
 		$tagAttribs['src'] = ICON_DIR . 'no_image.gif';
 		$tagAttribs['style'] = 'width:64px;height:64px;border-style:none;';
 		$tagAttribs['alt'] = 'no-img';
