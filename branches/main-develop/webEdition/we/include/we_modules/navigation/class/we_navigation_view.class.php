@@ -161,7 +161,7 @@ if(top.content.treeData){
 					break;
 				}
 
-				if($this->Model->filenameNotValid($this->Model->Text)){
+				if(we_navigation_navigation::filenameNotValid($this->Model->Text)){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}

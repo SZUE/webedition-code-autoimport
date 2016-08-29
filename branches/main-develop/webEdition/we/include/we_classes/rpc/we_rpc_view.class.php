@@ -35,7 +35,7 @@ class we_rpc_view{
 		$this->protocol = $protocol;
 	}
 
-	function getResponse($response){
+	function getResponse(we_rpc_response $response){
 		return $response->getData("data");
 	}
 

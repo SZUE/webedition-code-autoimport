@@ -1101,16 +1101,15 @@ class we_document extends we_root{
 		}
 		switch($link['type']){
 			case we_base_link::TYPE_INT:
-				$id = $link['id'];
-				if(!$id){
+				if(empty($link['id'])){
 					return '';
 				}
-				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db);
+				$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($link['id']), '', $db);
 				$path_parts = pathinfo($path);
 				if($hidedirindex && seoIndexHide($path_parts['basename'])){
 					$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/';
 				}
-				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition || f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db)){
+				if(isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->InWebEdition || f('SELECT Published FROM ' . FILE_TABLE . ' WHERE ID=' . intval($link['id']), '', $db)){
 					return $path;
 				}
 				$GLOBALS['we_link_not_published'] = 1;

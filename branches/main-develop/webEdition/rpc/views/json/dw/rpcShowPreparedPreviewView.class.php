@@ -24,11 +24,8 @@
  */
 class rpcShowPreparedPreviewView extends we_rpc_view{
 
-	function getResponse($response){
-
-		$html = $response->getData("data");
-
-		return $html;
+	function getResponse(we_rpc_response $response){
+		return $response->getData("data");
 	}
 
 }

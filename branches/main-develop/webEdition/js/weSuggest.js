@@ -42,29 +42,29 @@ function weInputInArray(arr, val) {
 	return false;
 }
 
-function dropzoneAddPreview(name, id, table, ct, path){
+function dropzoneAddPreview(name, id, table, ct, path) {
 	var specialmode = (name === 'Image' && id === -1);
-	if(!specialmode && !(name && id && table && ct && path)){
+	if (!specialmode && !(name && id && table && ct && path)) {
 		return;
 	}
 
-	if(specialmode){
+	if (specialmode) {
 		id = document.we_form.elements['yuiAcResultImage'].value;
 		path = document.we_form.elements['yuiAcInputImage'].value;
 		table = WE().consts.tables.FILE_TABLE;
 		ct = WE().consts.contentTypes.IMAGE;
 	}
 
-	if(table === WE().consts.tables.FILE_TABLE && ct === WE().consts.contentTypes.IMAGE){
+	if (table === WE().consts.tables.FILE_TABLE && ct === WE().consts.contentTypes.IMAGE) {
 		var src, img, preview, imgs;
 
 		preview = top.document.getElementById('preview_' + name);
 		imgs = preview.getElementsByTagName('IMG');
-		if(imgs && imgs.length){
+		if (imgs && imgs.length) {
 			preview.removeChild(imgs[0]);
 		}
 
-		src = WE().consts.dirs.WEBEDITION_DIR + 'thumbnail.php?id=' + id + '&size[width]=100&size[height]=100&path=' + encodeURIComponent(path) +  '&extension=.' + path.split('.').pop();
+		src = WE().consts.dirs.WEBEDITION_DIR + 'thumbnail.php?id=' + id + '&size[width]=100&size[height]=100&path=' + encodeURIComponent(path) + '&extension=.' + path.split('.').pop();
 		img = document.createElement("IMG");
 		img.src = src;
 		img.style = "vertical-align:middle;";
@@ -190,9 +190,20 @@ YAHOO.autocoml = {
 	},
 	ajaxSuccess: function (o, id) {
 		if (o.responseText !== undefined && o.responseText !== '') {
-			//FIXME: check if this is always json, so we can use JSON.parse
-			eval(o.responseText);
-			if (weResponse.type == 'error') {
+			var weResponse = JSON.parse(o.responseText);
+			if (weResponse.Success) {
+				if (weResponse.DataArray.data.contentType === 'folder' && (YAHOO.autocoml.yuiAcFields[id].selector === 'docSelector' || YAHOO.autocoml.yuiAcFields[id].selector === 'Docselector')) {
+					document.getElementById(YAHOO.autocoml.yuiAcFields[id].fields_id[0]).value = '';
+					YAHOO.autocoml.markNotValid(id);
+					YAHOO.autocoml.yuiAcFields[id].newval = '';
+				} else {
+					document.getElementById(YAHOO.autocoml.yuiAcFields[id].fields_id[0]).value = weResponse.DataArray.data.value;
+					YAHOO.autocoml.unmarkNotValid(id);
+					YAHOO.autocoml.yuiAcFields[id].newval = document.getElementById(YAHOO.autocoml.yuiAcFields[id].id).value;
+				}
+				YAHOO.autocoml.yuiAcFields[id].found = 1;
+
+			} else {
 				//for (i=0; i < YAHOO.autocoml.yuiAcFields[id].fields_id.length; i++) {
 				document.getElementById(YAHOO.autocoml.yuiAcFields[id].fields_id[0]).value = YAHOO.autocoml.yuiAcFields[id].fields_val[0];
 				//}
@@ -200,17 +211,6 @@ YAHOO.autocoml = {
 				YAHOO.autocoml.yuiAcFields[id].newval = '';
 				YAHOO.autocoml.markNotValid(id);
 				YAHOO.autocoml.yuiAcFields[id].newval = '';
-			} else {
-				if (weResponse.data.contentType == 'folder' && (YAHOO.autocoml.yuiAcFields[id].selector == 'docSelector' || YAHOO.autocoml.yuiAcFields[id].selector == 'Docselector')) {
-					document.getElementById(YAHOO.autocoml.yuiAcFields[id].fields_id[0]).value = '';
-					YAHOO.autocoml.markNotValid(id);
-					YAHOO.autocoml.yuiAcFields[id].newval = '';
-				} else {
-					document.getElementById(YAHOO.autocoml.yuiAcFields[id].fields_id[0]).value = weResponse.data.value;
-					YAHOO.autocoml.unmarkNotValid(id);
-					YAHOO.autocoml.yuiAcFields[id].newval = document.getElementById(YAHOO.autocoml.yuiAcFields[id].id).value;
-				}
-				YAHOO.autocoml.yuiAcFields[id].found = 1;
 			}
 		}
 		YAHOO.autocoml.yuiAcFields[id].run = false;

@@ -907,7 +907,7 @@ ImageEditTools = {
 			}
 			switch (keynum) {
 				case 13:
-					eval("CropTool.set" + inp.name + "(inp.value)");
+					CropTool["set" + inp.name](inp.value);
 					return true;
 				case 8:
 					return true;

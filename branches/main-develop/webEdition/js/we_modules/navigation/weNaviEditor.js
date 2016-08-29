@@ -44,14 +44,11 @@ var ajaxObj = {
 		this.processResult(o);
 		if (o.responseText) {
 			document.getElementById("details").innerHTML = "";
-			eval(o.responseText);
-
-			var items = weResponse.data.split(",");
-
-			for (var s in items) {
-				var row = items[s].split(":");
-				if (row.length > 1) {
-					document.getElementById("details").innerHTML += '<div style="width: 40px; float: left;">' + s + '</div><div style="width: 220px;">' + row[1] + "</div>";
+			var weResponse = JSON.parse(o.responseText);
+			if (weResponse.Success) {
+				var items = weResponse.DataArray.data;
+				for (var s in items) {
+					document.getElementById("details").innerHTML += '<div style="width: 40px; float: left;">' + s + '</div><div style="width: 220px;">' + items[s][1] + "</div>";
 				}
 			}
 		}
@@ -63,14 +60,12 @@ var ajaxObj = {
 		// This member is called by handleSuccess
 	},
 	startRequest: function (id) {
-		YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", callback, "cmd=GetNaviItems&nid=" + id);
+		YAHOO.util.Connect.asyncRequest("POST", WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
+			success: this.handleSuccess,
+			failure: this.handleFailure,
+			scope: this
+		}, "cmd=GetNaviItems&nid=" + id);
 	}
-};
-
-var callback = {
-	success: ajaxObj.handleSuccess,
-	failure: ajaxObj.handleFailure,
-	scope: ajaxObj
 };
 
 function queryEntries(id) {

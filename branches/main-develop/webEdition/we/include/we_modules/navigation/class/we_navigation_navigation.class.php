@@ -374,7 +374,7 @@ class we_navigation_navigation extends we_base_model{
 		}
 	}
 
-	function filenameNotValid($text){
+	static function filenameNotValid($text){
 		return (strpos($text, '/') !== false);
 	}
 

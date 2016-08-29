@@ -223,7 +223,7 @@ abstract class we_class{
 			$vals[$firstEntry[0]] = $firstEntry[1];
 		}
 		//FIXME: remove $sqlFrom or val/txt
-		$vals = $vals + $this->DB_WE->getAllFirstq('SELECT ' . $sqlFrom . ' FROM ' . $table . ' WHERE ' . $sqlTail);
+		$vals = $vals + $this->DB_WE->getAllFirstq('SELECT ' . $sqlFrom . ' FROM ' . $table . ' WHERE ' . $sqlTail, false);
 
 		$vals = we_html_tools::groupArray($vals, false, 1);
 		$myname = 'we_' . $this->Name . '_' . $name;
@@ -240,7 +240,7 @@ abstract class we_class{
 		return ($multiple ? we_html_element::htmlHidden($myname, $selectedIndex) : '') . we_html_tools::htmlFormElementTable($pop, $text, $textalign, $textclass);
 	}
 
-	function formSelect4($width, $name, $table, $sqlFrom, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = [], $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', $firstEntry = '', $gap = 20){
+	function formSelect4($width, $name, $table, $sqlFrom, $text, $sqlTail = '', $size = 1, $selectedIndex = '', $multiple = false, $onChange = '', array $attribs = [], $textalign = 'left', $textclass = 'defaultfont', $precode = '', $postcode = '', array $firstEntry = [], $gap = 20){
 		$vals = [];
 		if($firstEntry){
 			$vals[$firstEntry[0]] = $firstEntry[1];
@@ -250,7 +250,7 @@ abstract class we_class{
 
 		$myname = 'we_' . $this->Name . '_' . $name;
 
-		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, array_merge(array('onchange' => $onChange), $attribs), 'value', $width);
+		$pop = $this->htmlSelect($myname, $vals, $size, $selectedIndex, $multiple, array_merge(['onchange' => $onChange], $attribs), 'value', $width);
 		if($precode || $postcode){
 			$pop = '<table class="default"><tr>' . ($precode ? ('<td style="padding-right:' . $gap . 'px;">' . $precode . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . $postcode . '</td>') : '') . '</tr></table>';
 		}

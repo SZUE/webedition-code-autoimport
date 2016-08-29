@@ -50,7 +50,7 @@ function we_tag_link(array $attribs, $content){
 		$id = 0;
 	}
 
-	$attribs = removeAttribs($attribs, array('text', 'id', 'imageid', 'to', 'nameto'));
+	$attribs = removeAttribs($attribs, ['text', 'id', 'imageid', 'to', 'nameto']);
 	$data = $GLOBALS['we_doc']->getElement($name);
 	$link = we_unserialize($GLOBALS['we_doc']->getElement($name));
 
@@ -60,14 +60,14 @@ function we_tag_link(array $attribs, $content){
 
 	if(is_array($link)){
 		if(!$link){
-			$link = array(
+			$link = [
 				'id' => (isset($id) ? $id : ''),
 				'ctype' => ((!empty($imageid)) ? we_base_link::CONTENT_INT : we_base_link::CONTENT_TEXT),
 				'img_id' => ((!empty($imageid) ) ? $imageid : ''),
 				'type' => (isset($id) ? we_base_link::TYPE_INT : we_base_link::TYPE_EXT),
 				'href' => (isset($id) ? '' : we_base_link::EMPTY_EXT),
 				'text' => (!empty($imageid) ? (!empty($text) ? $text : g_l('global', '[new_link]')) : '')
-			);
+				];
 
 			// Link should only displayed if it's a preset link
 			if($id || $imageid != 0 || $text){

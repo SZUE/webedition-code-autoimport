@@ -332,7 +332,7 @@ abstract class we_SEEM{
 					//  Edit an included document from webedition.
 					case 'edit_image':
 						$handler = "if(top.edit_include){top.edit_include.close();}top.edit_include=new (WE().util.jsWindow)(window, '" . WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=edit_include_document&we_cmd[1]=" . FILE_TABLE . "&we_cmd[2]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[3]=" . we_base_ContentTypes::IMAGE . "&we_cmd[4]=" . FILE_TABLE . "&we_cmd[5]=" . $SEEM_LinkArray[1][$i] . "&we_cmd[6]=" . $trans . "&we_cmd[7]='" . ",'_blank',-1, -1, 800, 600, true, true, true);return true;";
-						$code = str_replace($link . '</a>', we_html_button::create_button(we_html_button::EDIT, 'javascript:' . $handler, true), $code);
+						$code = str_replace($link . '</a>', we_html_button::create_button(we_html_button::EDIT, 'javascript:' . $handler), $code);
 						break;
 					case 'include':
 						//  a new window is opened which stays as long, as the browser is closed, or the window is closed manually

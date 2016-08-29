@@ -24,7 +24,7 @@
  */
 class rpcGetSnippetCodeView extends we_rpc_view{
 
-	function getResponse($response){
+	function getResponse(we_rpc_response $response){
 		header('Content-type: text/plain');
 		return $response->getData("data");
 	}

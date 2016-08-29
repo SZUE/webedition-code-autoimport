@@ -874,7 +874,7 @@ function press_yes() {
 						break;
 					case 2:
 
-						$nextbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=1'", true) .
+						$nextbuts = we_html_button::create_button(we_html_button::BACK, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=1'") .
 							we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.we_submitForm('body','" . $this->frameset . "');");
 
 						$buttons = we_html_button::position_yes_no_cancel($nextbuts, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));

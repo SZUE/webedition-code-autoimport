@@ -24,7 +24,7 @@
  */
 class rpcLoginView extends we_rpc_view{
 
-	function getResponse($response){
+	function getResponse(we_rpc_response $response){
 
 		if($response->getStatus() == we_rpc_cmd::STATUS_OK){
 

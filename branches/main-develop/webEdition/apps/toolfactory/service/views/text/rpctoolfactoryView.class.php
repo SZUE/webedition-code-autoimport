@@ -24,7 +24,7 @@
  */
 class rpctoolfactoryView extends we_rpc_view{
 
-	function getResponse($response){
+	function getResponse(we_rpc_response $response){
 		$html = 'Hello World! My name is toolfactory and I am a webEdition-Application.';
 
 		return $html;

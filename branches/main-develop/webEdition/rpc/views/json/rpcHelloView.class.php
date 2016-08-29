@@ -24,7 +24,7 @@
  */
 class rpcHelloView extends we_rpc_view{
 
-	function getResponse($response){
+	function getResponse(we_rpc_response $response){
 
 		$html = '
 			Hallo World!

@@ -24,7 +24,7 @@
  */
 class rpcSelectorGetSelectedIdView extends we_rpc_view{
 
-	function getResponse($response){
+	function getResponse(we_rpc_response $response){
 
 		header('Content-type: text/plain');
 		$suggests = $response->getData("data");
