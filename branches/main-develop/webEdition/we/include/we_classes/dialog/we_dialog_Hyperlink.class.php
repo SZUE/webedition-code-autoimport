@@ -554,7 +554,7 @@ var g_l={
 	anchor_invalid:"' . g_l('linklistEdit', '[anchor_invalid]') . '",
 };
 var consts={
-	EMPTY_EXT : "' . we_base_link::EMPTY_EXT . '",
+	EMPTY_EXT: "' . we_base_link::EMPTY_EXT . '",
 	TYPE_INT:"' . we_base_link::TYPE_INT . '"
 };
 ') . we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js');

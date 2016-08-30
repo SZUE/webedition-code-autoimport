@@ -155,8 +155,8 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 	var activ_tab = 1;
 	var appletActiv = false;
 	var g_l = {
-		"dict_saved": "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
-		"ask_dict_del": "<?= g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
+		dict_saved: "<?= we_message_reporting::prepareMsgForJS(g_l('modules_spellchecker', '[dict_saved]')); ?>",
+		ask_dict_del: "<?= g_l('modules_spellchecker', '[ask_dict_del]'); ?>"
 	};
 
 	function setAppletCode() {

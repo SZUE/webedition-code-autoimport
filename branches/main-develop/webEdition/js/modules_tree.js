@@ -79,7 +79,16 @@ function storeTreeWidth(w) {
 	var ablauf = new Date();
 	var newTime = ablauf.getTime() + 30758400000;
 	ablauf.setTime(newTime);
-	weSetCookie(currentModule, w, ablauf, "/");
+
+	var moduleVals = sizeTreeJsWidth;
+	moduleVals[module] = w;
+	var val = "";
+	for (var param in moduleVals) {
+		val += val ? "," + param + ":" + moduleVals[param] : param + " : " + moduleVals[param];
+	}
+
+	WE().util.weSetCookie(self.document, "treewidth_modules", val, ablauf, "/");
+
 }
 
 function incTree() {
@@ -104,18 +113,4 @@ function decTree() {
 	if (w <= WE().consts.size.tree.min && ((w + WE().consts.size.tree.step) >= WE().consts.size.tree.min)) {
 		toggleTree();
 	}
-}
-
-function weSetCookie(module, value, expires, path, domain) {
-	var moduleVals = sizeTreeJsWidth;
-	var doc = self.document;
-	moduleVals[module] = value;
-	var val = "";
-	for (var param in moduleVals) {
-		val += val ? "," + param + ":" + moduleVals[param] : param + " : " + moduleVals[param];
-	}
-	doc.cookie = "treewidth_modules" + "=" + val +
-					((expires === null) ? "" : "; expires=" + expires.toGMTString()) +
-					((path === null) ? "" : "; path=" + path) +
-					((domain === null) ? "" : "; domain=" + domain);
 }
