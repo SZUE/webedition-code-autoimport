@@ -27,6 +27,8 @@ var activ_tab = 1;
 var hot = 0;
 var makeNewDoc = false;
 
+WE().util.loadConsts("g_l.navigation");
+
 function mark() {
 	hot = 1;
 	top.content.editor.edheader.mark();

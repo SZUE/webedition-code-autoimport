@@ -24,6 +24,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+WE().util.loadConsts("g_l.thumbnail");
+
 function init() {
 	self.focus();
 	changeFormat();
@@ -56,11 +58,11 @@ function changeFormat() {
 }
 
 function change_thumbnail(id) {
-	self.location = consts.reloadUrl + '&id=' + id;
+	self.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editThumbs&id=" + id;
 }
 
 function add_thumbnail() {
-	var name = prompt(g_l.thumbnail_new, '');
+	var name = prompt(WE().consts.g_l.thumbnail.new, '');
 
 	if (name === null) {
 		return;
@@ -71,13 +73,13 @@ function add_thumbnail() {
 	}
 
 	if (name.indexOf("'") !== -1 || name.indexOf(",") !== -1) {
-		top.we_showMessage(g_l.thumbnail_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.thumbnail.hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else if (name === "") {
-		top.we_showMessage(g_l.thumbnail_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.thumbnail.empty, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else if (WE().util.in_array(name, thumbnail_names)) {
-		top.we_showMessage(g_l.thumbnail_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.thumbnail.exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else {
-		self.location = consts.reloadUrl + '&newthumbnail=' + encodeURI(name);
+		self.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editThumbs&newthumbnail=" + encodeURI(name);
 	}
 
 }

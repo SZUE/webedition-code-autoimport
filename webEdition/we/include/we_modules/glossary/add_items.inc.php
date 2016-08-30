@@ -32,29 +32,11 @@ if(!($Transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0
 echo we_html_tools::getHtmlTop(g_l('modules_glossary', '[glossary_check]')) .
  we_html_element::cssLink(CSS_DIR . 'glossary_add.css') .
  we_html_element::jsElement('
-WE().consts.g_l.glossary={
-	checking:"' . g_l('modules_glossary', '[checking]') . '",
-	all_words_identified:"' . g_l('modules_glossary', '[all_words_identified]') . '",
-	no_java:"' . g_l('modules_glossary', '[no_java]') . '",
-	change_to:"' . g_l('modules_glossary', '[change_to]') . '",
-	input:"' . g_l('modules_glossary', '[input]') . '",
-	suggestions:"' . g_l('modules_glossary', '[suggestions]') . '",
-	languages:"' . g_l('modules_glossary', '[languages]') . '",
-	please_insert_title:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_insert_title]')) . '",
-	please_insert_language:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_insert_language]')) . '",
-	please_insert_correct_word:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_insert_correct_word]')) . '",
-	please_choose_action:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_choose_action]')) . '",
-};
-
+WE().util.loadConsts("g_l.glossary");
 var doc={
 	EditPageNr:' . intval($we_doc->EditPageNr) . '",
 };
 var transaction="' . $Transaction . '";
-var consts={
-	TYPE_FOREIGNWORD:"' . we_glossary_glossary::TYPE_FOREIGNWORD . '",
-	TYPE_ABBREVATION:"' . we_glossary_glossary::TYPE_ABBREVATION . '",
-	TYPE_ACRONYM:"' . we_glossary_glossary::TYPE_ACRONYM . '",
-};
 ') .
  we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/add_items.js');
 
@@ -338,8 +320,8 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 							title = document.getElementById('title_' + i).value;
 							lang = document.getElementById('lang_' + i).value;
 							switch (type) {
-								case consts.TYPE_ABBREVATION:
-								case consts.TYPE_ACRONYM:
+								case WE().consts.glossary.TYPE_ABBREVATION:
+								case WE().consts.glossary.TYPE_ACRONYM:
 									if (title === '') {
 										document.getElementById('title_' + i).focus();
 										WE().util.showMessage(WE().consts.g_l.glossary.please_insert_title, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -351,7 +333,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 										return false;
 									}
 									break;
-								case consts.TYPE_FOREIGNWORD:
+								case WE().consts.glossary.TYPE_FOREIGNWORD:
 									if (lang === '') {
 										document.getElementById('lang_' + i).focus();
 										WE().util.showMessage(WE().consts.g_l.glossary.please_insert_language, WE().consts.message.WE_MESSAGE_ERROR, window);

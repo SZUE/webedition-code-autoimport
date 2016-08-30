@@ -64,20 +64,7 @@ var activ_tab = 1;
 var hot= 0;
 var scrollToVal=0;
 var table = WE().consts.tables.FILE_TABLE;
-WE().consts.dirs.WE_EXPORT_MODULE_DIR="' . WE_EXPORT_MODULE_DIR . '";
-
-WE().consts.g_l.exports={
-	save_changed_export:"' . g_l('export', '[save_changed_export]') . '",
-	delete_question:"' . g_l('export', '[delete_question]') . '",
-	delete_group_question:"' . g_l('export', '[delete_group_question]') . '",
-	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[no_perms]')) . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[nothing_to_delete]')) . '",
-	must_save:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[must_save]')) . '",
-	name_empty:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[name_empty]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('export', '[nothing_to_save]')) . '",
-};
-parent.document.title = "' . $title . '"
-') . we_html_element::jsScript(WE_JS_MODULES_DIR . '/export/export_top.js');
+') . we_html_element::jsScript(WE_JS_MODULES_DIR . '/export/export_top.js', 'parent.document.title = "' . $title . '"');
 	}
 
 	function getJSProperty(){

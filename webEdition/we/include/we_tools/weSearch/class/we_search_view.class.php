@@ -60,26 +60,7 @@ class we_search_view extends we_modules_view{
 	}
 
 	function getJSTop(){
-		return we_html_element::jsElement('
-WE().consts.g_l.weSearch = {
-	publish_docs:"' . g_l('searchtool', '[publish_docs]') . '",
-	nothingCheckedAdv: \'' . g_l('searchtool', '[nothingCheckedAdv]') . '\',
-	nothingCheckedTmplDoc: \'' . g_l('searchtool', '[nothingCheckedTmplDoc]') . '\',
-	buttonSelectValue: "' . g_l('button', '[select][value]') . '",
-	versionsResetAllVersionsOK: "' . g_l('versions', '[resetAllVersionsOK]') . '",
-	versionsNotChecked: "' . g_l('versions', '[notChecked]') . '",
-	searchtool__notChecked: "' . g_l('searchtool', '[notChecked]') . '",
-	searchtool__publishOK: "' . g_l('searchtool', '[publishOK]') . '",
-	predefinedSearchmodify:"' . we_message_reporting::prepareMsgForJS(g_l('searchtool', '[predefinedSearchmodify]')) . '",
-	predefinedSearchdelete:"' . we_message_reporting::prepareMsgForJS(g_l('searchtool', '[predefinedSearchdelete]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('tools', '[nothing_to_save]')) . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('tools', '[nothing_to_delete]')) . '",
-	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('tools', '[no_perms]')) . '",
-	confirmDel:"' . g_l('searchtool', '[confirmDel]') . '",
-	nameForSearch:"' . g_l('searchtool', '[nameForSearch]') . '",
-	resetVersionsSearchtool:"' . g_l('versions', '[resetVersionsSearchtool]') . '",
-};') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view2.js');
+		return we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view2.js');
 	}
 
 	function processCommands(){

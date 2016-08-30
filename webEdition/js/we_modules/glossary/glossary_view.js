@@ -27,6 +27,9 @@
 var get_focus = 1;
 var activ_tab = 1;
 var scrollToVal = 0;
+
+WE().util.loadConsts("g_l.glossary");
+
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }

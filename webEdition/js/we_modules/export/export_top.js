@@ -24,6 +24,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+WE().util.loadConsts("g_l.exports");
+
 function setHot() {
 	hot = 1;
 }
@@ -133,7 +135,7 @@ function we_cmd() {
 				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
-			if (top.content.editor.edbody.document.we_form.cmd.value === "home"){
+			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
 				return;
 			}
 

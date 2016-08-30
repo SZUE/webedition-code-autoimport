@@ -181,7 +181,7 @@ function drawNewCat() {
 	top.writeBody(top.fsbody.document.body);
 }
 function deleteEntry() {
-	if (confirm(g_l.deleteQuestion)) {
+	if (confirm(WE().consts.g_l.fileselector.deleteQuestion)) {
 		var todel = "";
 		for (var i = 0; i < entries.length; i++) {
 			if (isFileSelected(entries[i].ID)) {

@@ -950,4 +950,44 @@ class we_navigation_navigation extends we_base_model{
 			, $body);
 	}
 
+public static function getJSConsts(){
+	return 'WE().consts.g_l.navigation={
+	view:{
+		documents:"' . g_l('navigation', '[documents]') . '",
+		objects:"' . g_l('navigation', '[objects]') . '",
+		categories:"' . g_l('navigation', '[categories]') . '",
+		docLink:"' . g_l('navigation', '[docLink]') . '",
+		urlLink:"' . g_l('navigation', '[urlLink]') . '",
+		objLink:"' . g_l('navigation', '[objLink]') . '",
+		catLink:"' . g_l('navigation', '[catLink]') . '",
+		populate_question:"' . g_l('navigation', '[populate_question]') . '",
+		depopulate_question:"' . g_l('navigation', '[depopulate_question]') . '",
+		save_populate_question:"' . g_l('navigation', '[save_populate_question]') . '",
+		delete_alert:"' . g_l('navigation', '[delete_alert]') . '",
+		reset_customerfilter_question:"' . g_l('navigation', '[reset_customerfilter_question]') . '",
+		nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_to_save]')) . '",
+		nothing_selected:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_selected]')) . '",
+		nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[nothing_to_delete]')) . '",
+		no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[no_perms]')) . '",
+		no_workspace:"' . we_message_reporting::prepareMsgForJS(g_l('navigation', '[no_workspace]')) . '",
+	},
+	rule:{
+		save_error_fields_value_not_valid:"' . we_message_reporting::prepareMsgForJS(g_l('alert', '[save_error_fields_value_not_valid]')) . '",
+	}
+};
+
+WE().consts.navigation={
+	STYPE_CLASS:"' . we_navigation_navigation::STYPE_CLASS . '",
+	STYPE_DOCTYPE:"' . we_navigation_navigation::STYPE_DOCTYPE . '",
+	STYPE_CATEGORY:"' . we_navigation_navigation::STYPE_CATEGORY . '",
+	STYPE_DOCLINK:"' . we_navigation_navigation::STYPE_DOCLINK . '",
+	STYPE_URLLINK:"' . we_navigation_navigation::STYPE_URLLINK . '",
+	STYPE_OBJLINK:"' . we_navigation_navigation::STYPE_OBJLINK . '",
+	STYPE_CATLINK:"' . we_navigation_navigation::STYPE_CATLINK . '",
+	SELECTION_DYNAMIC:"' . we_navigation_navigation::SELECTION_DYNAMIC . '",
+	SELECTION_STATIC:"' . we_navigation_navigation::SELECTION_STATIC . '",
+	LSELECTION_INTERN:"' . we_navigation_navigation::LSELECTION_INTERN . '",
+	LSELECTION_EXTERN:"' . we_navigation_navigation::LSELECTION_EXTERN . '",
+};';
+}
 }

@@ -162,7 +162,7 @@ function delete_thumbnail() {" .
 					"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($id))) . "');
 
 		if (deletion == true) {
-			self.location = consts.reloadUrl+'&deletethumbnail=" . $id . "';
+			self.location = WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=editThumbs&deletethumbnail=" . $id . "';
 		}" :
 					"") . "
 }";
@@ -347,25 +347,13 @@ function getMainDialog(){
 	} else {
 		save_all_values();
 		$save_javascript = we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-			"self.location = consts.reloadUrl+'&id=" . we_base_request::_(we_base_request::INT, "edited_id", 0) . "';";
+			"self.location = WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=editThumbs&id=" . we_base_request::_(we_base_request::INT, "edited_id", 0) . "';";
 	}
 
 	return we_html_element::jsElement($save_javascript) . build_dialog('saved');
 }
 
-echo
-we_html_element::jsElement('
-var consts={
-	reloadUrl:WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=editThumbs",
-};
-var g_l={
-	thumbnail_hochkomma: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_hochkomma]')) . '",
-	thumbnail_empty: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_empty]')) . '",
-	thumbnail_exists: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_exists]')) . '",
-	thumbnail_new: "' . g_l('thumbnails', '[new]') . '"
-};
-	') .
- we_html_element::jsScript(JS_DIR . 'we_thumbnails.js') . '</head>';
+echo we_html_element::jsScript(JS_DIR . 'we_thumbnails.js') . '</head>';
 //  check if gd_lib is installed ...
 if(we_base_imageEdit::gd_version() > 0){
 	echo we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'init();')

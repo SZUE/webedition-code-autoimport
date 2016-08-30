@@ -190,31 +190,6 @@ class we_newsletter_view extends we_modules_view{
 
 		return we_html_element::jsElement('
 parent.document.title = "' . $title . '";
-WE().consts.g_l.newsletter = {
-	save_changed_newsletter:"' . g_l('modules_newsletter', '[save_changed_newsletter]') . '",
-	no_newsletter_selected: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_newsletter_selected]')) . '",
-	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_save]')) . '",
-	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_delete]')) . '",
-	delete_group_question:	"' . g_l('modules_newsletter', '[delete_group_question]') . '",
-	delete_question:"' . g_l('modules_newsletter', '[delete_question]') . '",
-	must_save_preview: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[must_save_preview]')) . '",
-	no_newsletter_selected: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_newsletter_selected]')) . '",
-	must_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[must_save]')) . '",
-	send_test_question:"' . g_l('modules_newsletter', '[send_test_question]') . '",
-	send_question:"' . g_l('modules_newsletter', '[send_question]') . '",
-	no_email: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_email]')) . '",
-	search_text:"' . g_l('modules_newsletter', '[search_text]') . '",
-	test_email_question:"' . sprintf(g_l('modules_newsletter', '[test_email_question]'), $this->newsletter->Test) . '",
-	empty_name: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[empty_name]')) . '",
-	email_max_len: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[email_max_len]')) . '",
-	email_exists: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[email_exists]')) . '",
-	email_delete:"' . g_l('modules_newsletter', '[email_delete]') . '",
-	email_delete_all:"' . g_l('modules_newsletter', '[email_delete_all]') . '",
-	search_finished:"' . g_l('modules_newsletter', '[search_finished]') . '",
-	del_email_file:"' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[del_email_file]')) . '",
-	all_list:"' . g_l('modules_newsletter', '[all_list]') . '",
-	mailing_list:"' . g_l('modules_newsletter', '[mailing_list]') . '",
-};
 var frameSet="' . $this->frameset . '";
 ') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'newsletter/newsletter_top.js');
 	}

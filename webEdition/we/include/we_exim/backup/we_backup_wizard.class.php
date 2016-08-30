@@ -39,35 +39,6 @@ class we_backup_wizard{
 		return
 			we_html_element::jsScript(JS_DIR . 'backup_wizard.js') .
 			we_html_element::jsElement('
-WE().consts.g_l.backupWizard={
-	temporary_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_temporary_dep]')) . '",
-	versions_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_versions_dep]')) . '",
-	versions_binarys_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_versions_binarys_dep]')) . '",
-	binary_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_binary_dep]')) . '",
-	schedule_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_schedule_dep]')) . '",
-	shop_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_shop_dep]')) . '",
-	workflow_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_workflow_dep]')) . '",
-	todo_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_todo_dep]')) . '",
-  newsletter_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_newsletter_dep]')) . '",
-	banner_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_banner_dep]')) . '",
-	workflow_data:"' . g_l('backup', '[' . $mode . '_workflow_data]') . '",
-	newsletter_data:"' . g_l('backup', '[' . $mode . '_newsletter_data]') . '",
-	schedule_data:"' . g_l('backup', '[' . $mode . '_schedule_data]') . '",
-	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
-	versions_binarys_data:"' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '",
-	temporary_data:"' . g_l('backup', '[' . $mode . '][temporary_data]') . '",
-	history_data:"' . g_l('backup', '[' . $mode . '][history_data]') . '",
-	todo_data:"' . g_l('backup', '[' . $mode . '_todo_data]') . '",
-	shop_data:"' . g_l('backup', '[' . $mode . '_shop_data]') . '",
-	unselect_dep2:"' . g_l('backup', '[unselect_dep2]') . '",
-	unselect_dep3:"' . g_l('backup', '[unselect_dep3]') . '",
-	core_data:"' . g_l('backup', '[' . $mode . '_core_data]') . '",
-	object_data:"' . g_l('backup', '[' . $mode . '_object_data]') . '",
-	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
-	binary_data:"' . g_l('backup', '[' . $mode . '_binary_data]') . '",
-	user_data:"' . g_l('backup', '[' . $mode . '_user_data]') . '",
-	customer_data:"' . g_l('backup', '[' . $mode . '_customer_data]') . '",
-};
 
 function doCheck(opt){
 	switch (opt) {
@@ -1108,6 +1079,39 @@ top.cmd.reloadTimer=setTimeout(reloadFrame, ' . $execute . ');');
 			default:
 				t_e(__FILE__ . ' unknown reference: ' . $what);
 		}
+	}
+
+	public static function getJSLangConsts(){
+		return 'WE().consts.g_l.backupWizard={
+	temporary_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_temporary_dep]')) . '",
+	versions_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_versions_dep]')) . '",
+	versions_binarys_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_versions_binarys_dep]')) . '",
+	binary_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_binary_dep]')) . '",
+	schedule_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_schedule_dep]')) . '",
+	shop_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_shop_dep]')) . '",
+	workflow_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_workflow_dep]')) . '",
+	todo_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_todo_dep]')) . '",
+  newsletter_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_newsletter_dep]')) . '",
+	banner_dep:"' . we_message_reporting::prepareMsgForJS(g_l('backup', '[' . $mode . '_banner_dep]')) . '",
+	workflow_data:"' . g_l('backup', '[' . $mode . '_workflow_data]') . '",
+	newsletter_data:"' . g_l('backup', '[' . $mode . '_newsletter_data]') . '",
+	schedule_data:"' . g_l('backup', '[' . $mode . '_schedule_data]') . '",
+	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
+	versions_binarys_data:"' . g_l('backup', '[' . $mode . '_versions_binarys_data]') . '",
+	temporary_data:"' . g_l('backup', '[' . $mode . '][temporary_data]') . '",
+	history_data:"' . g_l('backup', '[' . $mode . '][history_data]') . '",
+	todo_data:"' . g_l('backup', '[' . $mode . '_todo_data]') . '",
+	shop_data:"' . g_l('backup', '[' . $mode . '_shop_data]') . '",
+	unselect_dep2:"' . g_l('backup', '[unselect_dep2]') . '",
+	unselect_dep3:"' . g_l('backup', '[unselect_dep3]') . '",
+	core_data:"' . g_l('backup', '[' . $mode . '_core_data]') . '",
+	object_data:"' . g_l('backup', '[' . $mode . '_object_data]') . '",
+	versions_data:"' . g_l('backup', '[' . $mode . '_versions_data]') . '",
+	binary_data:"' . g_l('backup', '[' . $mode . '_binary_data]') . '",
+	user_data:"' . g_l('backup', '[' . $mode . '_user_data]') . '",
+	customer_data:"' . g_l('backup', '[' . $mode . '_customer_data]') . '",
+};
+';
 	}
 
 }

@@ -1010,4 +1010,18 @@ class we_messaging_messaging extends we_class{
 		return 1;
 	}
 
+	public static function getJSLangConsts(){
+		return 'WE().consts.g_l.messaging={
+	q_rm_todos:"' . g_l('modules_messaging', '[q_rm_todos]') . '",
+	q_rm_messages:"' . g_l('modules_messaging', '[q_rm_messages]') . '",
+	Mitteilungen:"' . g_l('modules_messaging', '[Mitteilungen]') . '",
+	ToDo:"' . g_l('modules_messaging', '[ToDo]') . '",
+	Erledigt:"' . g_l('modules_messaging', '[Erledigt]') . '",
+	Zurueckgewiesen:"' . g_l('modules_messaging', '[Zurueckgewiesen]') . '",
+	Gesendet:"' . g_l('modules_messaging', '[Gesendet]') . '",
+	save_changed_folder:"' . g_l('modules_messaging', '[save_changed_folder]') . '",
+};
+';
+	}
+
 }

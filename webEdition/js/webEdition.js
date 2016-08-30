@@ -71,37 +71,6 @@ function doExtClick(url) {
 	WE().layout.weEditorFrameController.openDocument('', '', '', '', '', url, '', '', parameters);
 }
 
-WE().util.weSetCookie = function (doc, name, value, expires, path, domain) {
-	doc.cookie = name + "=" + encodeURI(value) +
-					((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
-					((path === undefined) ? "" : "; path=" + path) +
-					((domain === undefined) ? "" : "; domain=" + domain);
-};
-
-WE().util.weGetCookie = function (doc, name) {
-	var cname = name + "=";
-	var dc = doc.cookie;
-	if (dc.length > 0) {
-		begin = dc.indexOf(cname);
-		if (begin !== -1) {
-			begin += cname.length;
-			end = dc.indexOf(";", begin);
-			if (end === -1) {
-				end = dc.length;
-			}
-			return unescape(dc.substring(begin, end));
-		}
-	}
-	return null;
-};
-
-WE().util.hashCode = function (s) {
-	return s.split("").reduce(function (a, b) {
-		a = ((a << 5) - a) + b.charCodeAt(0);
-		return a & a;
-	}, 0);
-};
-
 WE().t_e = function () {
 	var msg = '';
 	for (var i = 0; i < arguments.length; i++) {
@@ -110,15 +79,15 @@ WE().t_e = function () {
 	WE().handler.errorHandler(msg);
 };
 
-function treeResized() {
-	var treeWidth = getTreeWidth();
-	if (treeWidth <= WE().consts.size.tree.hidden) {
-		//setTreeArrow("right");
-	} else {
-		//setTreeArrow("left");
-		storeTreeWidth(treeWidth);
-	}
-}
+/*function treeResized() {
+ var treeWidth = getTreeWidth();
+ if (treeWidth <= WE().consts.size.tree.hidden) {
+ //setTreeArrow("right");
+ } else {
+ //setTreeArrow("left");
+ storeTreeWidth(treeWidth);
+ }
+ }*/
 
 var oldTreeWidth = WE().consts.size.tree.defaultWidth;
 function toggleTree(setVisible) {
@@ -1278,6 +1247,41 @@ function we_cmd_base(args, url) {
 	return true;
 }
 
+/* ***********************************************
+ * WE().util functions
+ ************************************************/
+
+WE().util.weSetCookie = function (doc, name, value, expires, path, domain) {
+	doc.cookie = name + "=" + encodeURI(value) +
+					((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
+					((path === undefined) ? "" : "; path=" + path) +
+					((domain === undefined) ? "" : "; domain=" + domain);
+};
+
+WE().util.weGetCookie = function (doc, name) {
+	var cname = name + "=";
+	var dc = doc.cookie;
+	if (dc.length > 0) {
+		begin = dc.indexOf(cname);
+		if (begin !== -1) {
+			begin += cname.length;
+			end = dc.indexOf(";", begin);
+			if (end === -1) {
+				end = dc.length;
+			}
+			return unescape(dc.substring(begin, end));
+		}
+	}
+	return null;
+};
+
+WE().util.hashCode = function (s) {
+	return s.split("").reduce(function (a, b) {
+		a = ((a << 5) - a) + b.charCodeAt(0);
+		return a & a;
+	}, 0);
+};
+
 WE().util.in_array = function (needle, haystack) {
 	for (var i = 0; i < haystack.length; i++) {
 		if (haystack[i] == needle) {
@@ -1722,6 +1726,31 @@ WE().util.Base64 = {
 		return string;
 	}
 };
+
+WE().util.loadConsts = function (check) {
+	var cur = WE().consts;
+	var found = true;
+	var what = check.split(".");
+	for (var i = 0; i < what.length; i++) {
+		if (cur[what[i]]===undefined || !cur[what[i]]) {
+			found = false;
+			break;
+		}
+		cur = cur[what[i]];
+	}
+	if (found) {
+		return;
+	}
+	//load consts
+	var fileref = document.createElement('script');
+	fileref.setAttribute("src", WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=loadJSConsts&we_cmd[1]=" + check);
+	document.getElementsByTagName("head")[0].appendChild(fileref);
+
+};
+
+/* ***********************************************
+ * WE().layout functions
+ ************************************************/
 
 WE().layout.openToEdit = function (tab, id, contentType) {
 	if (id > 0) {

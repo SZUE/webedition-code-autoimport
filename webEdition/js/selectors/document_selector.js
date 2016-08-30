@@ -168,9 +168,9 @@ function writeBodyDocument(d) {
 					(makeNewFolder ?
 									'<tr class="newEntry">' +
 									'<td class="treeIcon selectoricon">' + WE().util.getTreeIcon('folder', false) + '</td>' +
-									'<td class="filename"><input type="hidden" name="we_FolderText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" /></td>' +
-									'<td class="selector title">' + g_l.folder + '</td>' +
-									'<td class="selector moddate">' + g_l.date_format + '</td>' +
+									'<td class="filename"><input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" /></td>' +
+									'<td class="selector title">' + WE().consts.g_l.fileselector.folder + '</td>' +
+									'<td class="selector moddate">' + WE().consts.g_l.fileselector.date_format + '</td>' +
 									'</tr>' :
 									'');
 	for (i = 0; i < entries.length; i++) {

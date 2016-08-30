@@ -60,17 +60,7 @@ isObject=' . intval((!empty($resultO))) . ';
 classID=' . intval($classid) . ';
 parent.document.title=\'' . $title . '\';
 ';
-		return we_html_element::jsElement('
-WE().consts.g_l.shop={
-	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_perms]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[nothing_to_save]')) . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[nothing_to_delete]')) . '",
-	no_order_there:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_order_there]')) . '",
-	delete_alert:"' . g_l('modules_shop', '[delete_alert]') . '",
-	del_shop:"' . g_l('modules_shop', '[del_shop]') . '",
-};
-') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', $js);
+		return we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', $js);
 	}
 
 	function getJSProperty(){

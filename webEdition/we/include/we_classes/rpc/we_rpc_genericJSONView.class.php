@@ -24,7 +24,7 @@
  */
 class we_rpc_genericJSONView extends we_rpc_view{
 
-	function getResponse(we_rpc_response $response){
+	function getResponse($response){
 		$json = new Services_JSON();
 		return $json->encode($response);
 	}

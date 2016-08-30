@@ -32,6 +32,7 @@ var isDocument = 0;
 var isObject = 0;
 var classID = 0;
 
+WE().util.loadConsts("g_l.shop");
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);

@@ -61,27 +61,6 @@ class we_customer_view extends we_modules_view{
 			parent::getJSTop() .
 			we_html_element::jsElement('
 parent.document.title = "' . $title . '";
-WE().consts.g_l.customer.view={
-	save_changed_customer:"' . g_l('modules_customer', '[save_changed_customer]') . '",
-	delete_alert:"' . g_l('modules_customer', '[delete_alert]') . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_delete]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[nothing_to_save]')) . '",
-	reset_failed_login_successfully:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[login_reset_ok]')) . '"
-};
-WE().consts.g_l.customer.admin={
-	del_fild_question:"' . g_l('modules_customer', '[del_fild_question]') . '",
-	reset_edit_order_question:"' . g_l('modules_customer', '[reset_edit_order_question]') . '",
-	other:"' . g_l('modules_customer', '[other]') . '",
-	no_field: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_field]')) . '",
-	no_branch:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_branch]')) . '",
-	branch_no_edit:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[branch_no_edit]')) . '",
-	we_fieldname_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[we_fieldname_notValid]')) . '"
-};
-WE().consts.g_l.customer.sortAdmin={
-	default_soting_no_del: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[default_soting_no_del]')) . '",
-	sortname_empty: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[sortname_empty]')) . '",
-};
-
 var frameUrl="' . $this->frameset . '";
 ') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js');

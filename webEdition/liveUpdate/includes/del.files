@@ -71,12 +71,6 @@ we/include/we_tools/treePopup.inc.php
 we/include/we_tools/tools_header.php
 we/include/we_tools/tableFn.inc.php
 we/include/we_tools/htmlBox.inc.php
-we/include/we_tools/cache/weTagListviewCache.class.php
-we/include/we_tools/cache/weTagCache.class.php
-we/include/we_tools/cache/weTagBlockCache.class.php
-we/include/we_tools/cache/weDocumentCache.class.php
-we/include/we_tools/cache/weCacheHelper.class.php
-we/include/we_tools/cache/weCache.class.php
 we/include/we_tools/MultiFileChooser.inc.php
 we/include/we_tools/MultiDirTemplateAndDefaultChooser.inc.php
 we/include/we_tools/MultiDirChooser2.inc.php

@@ -668,4 +668,13 @@ class we_thumbnail{
 		}
 	}
 
+	public static function getJSLangConsts(){
+		return 'WE().consts.g_l.thumbnail={
+	hochkomma: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_hochkomma]')) . '",
+	empty: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_empty]')) . '",
+	exists: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_exists]')) . '",
+	new: "' . g_l('thumbnails', '[new]') . '"
+};
+		';
+	}
 }

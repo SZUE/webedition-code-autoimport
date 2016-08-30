@@ -236,28 +236,8 @@ var options={
 	open_doc:"' . $this->open_doc . '"
 };
 
-WE().consts.selectors={
-	DORENAMEFOLDER:"' . self::DORENAMEFOLDER . '",
-	CREATEFOLDER:"' . self::CREATEFOLDER . '",
-	CMD:' . self::CMD . ',
-	DEL:' . self::DEL . ',
-	PROPERTIES:' . self::PROPERTIES . ',
-	PREVIEW:' . self::PREVIEW . ',
-	NEWFOLDER:' . self::NEWFOLDER . ',
-	RENAMEFOLDER:' . self::RENAMEFOLDER . ',
-	CREATE_CAT:' . self::CREATE_CAT . ',
-	DO_RENAME_ENTRY:' . self::DO_RENAME_ENTRY . ',
-	SETDIR:' . self::SETDIR . ',
-	VIEW_ICONS:"' . we_search_view::VIEW_ICONS . '",
-  VIEW_LIST:"' . we_search_view::VIEW_LIST . '",
-};
-
-var g_l={
-	deleteQuestion:\'' . g_l('fileselector', '[deleteQuestion]') . '\',
-	new_folder_name:"' . g_l('fileselector', '[new_folder_name]') . '",
-	date_format:"' . date(g_l('date', '[format][default]')) . '",
-	folder:"' . g_l('contentTypes', '[folder]') . '"
-};
+WE().util.loadConsts("g_l.fileselector");
+WE().util.loadConsts("selectors");
 ');
 	}
 
@@ -434,6 +414,38 @@ top.selectIt();';
 <th class='selector moddate'><a href='#' onclick='javascript:top.orderIt(\"ModDate\");'>" . g_l('fileselector', '[modified]') . "</a></th>
 <th class='selector remain'></th>";
 		}
+	}
+
+	public static function getJSLangConsts(){
+		return '
+WE().consts.g_l.fileselector = {
+	edit_file_nok: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')) . '",
+	edit_file_is_folder: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')) . '",
+	already_root: "' . we_message_reporting::prepareMsgForJS(g_l('fileselector', '[already_root]')) . '",
+	deleteQuestion:"' . g_l('fileselector', '[deleteQuestion]') . '",
+	new_folder_name:"' . g_l('fileselector', '[new_folder_name]') . '",
+	date_format:"' . date(g_l('date', '[format][default]')) . '",
+	folder:"' . g_l('contentTypes', '[folder]') . '"
+};';
+	}
+
+	public static function getJSConsts(){
+		return 'WE().consts.selectors={
+	DORENAMEFOLDER:"' . self::DORENAMEFOLDER . '",
+	CREATEFOLDER:"' . self::CREATEFOLDER . '",
+	CMD:' . self::CMD . ',
+	DEL:' . self::DEL . ',
+	PROPERTIES:' . self::PROPERTIES . ',
+	PREVIEW:' . self::PREVIEW . ',
+	NEWFOLDER:' . self::NEWFOLDER . ',
+	RENAMEFOLDER:' . self::RENAMEFOLDER . ',
+	CREATE_CAT:' . self::CREATE_CAT . ',
+	DO_RENAME_ENTRY:' . self::DO_RENAME_ENTRY . ',
+	SETDIR:' . self::SETDIR . ',
+	VIEW_ICONS:"' . we_search_view::VIEW_ICONS . '",
+  VIEW_LIST:"' . we_search_view::VIEW_LIST . '",
+};
+';
 	}
 
 }
