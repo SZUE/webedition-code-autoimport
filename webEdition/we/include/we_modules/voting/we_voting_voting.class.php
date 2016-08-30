@@ -288,7 +288,7 @@ class we_voting_voting extends we_base_model{
 		}
 	}
 
-	function filenameNotValid($text){
+	static function filenameNotValid($text){
 		return preg_match('%[^a-z0-9äüöß\._\@\ \-]%i', $text);
 	}
 
