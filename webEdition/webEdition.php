@@ -239,6 +239,9 @@ var WebEdition = {
 				post_remove: '" <?= g_l('cockpit', '[post_remove]'); ?>',
 				reduce_size: '<?= g_l('cockpit', '[reduce_size]') ?>',
 				reset_settings: '<?= g_l('alert', '[cockpit_reset_settings]'); ?>',
+				no_type_selected: '<?= we_message_reporting::prepareMsgForJS(g_l('cockpit', '[no_type_selected]')); ?>',
+				invalid_url: '<?= we_message_reporting::prepareMsgForJS(g_l('cockpit', '[invalid_url]')); ?>',
+				all_selected:'<?= g_l('cockpit', '[all_selected]'); ?>',
 			},
 			editorScript:{
 				confirm_navDel: "<?= g_l('navigation', '[del_question]'); ?>",

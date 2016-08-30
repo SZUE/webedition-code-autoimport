@@ -202,7 +202,7 @@ $sJsCode = "
 var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 5) . "';
 var _sType='mfd';
 WE().consts.g_l.cockpit.mfd={
-	last_modified:'" . g_l('cockpit', '[last_modified]') . "'
+	last_modified:'" . g_l('cockpit', '[last_modified]') . "',
 };
 
 function init(){

@@ -27,12 +27,7 @@ we_html_tools::protect();
 
 list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(';', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 
-$jsCode = "
-var _sUsers='" . $sUsers . "';
-	var g_l={
-	no_type_selected: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[no_type_selected]')) . "'
-};
-";
+$jsCode = "var _sUsers='" . $sUsers . "';";
 
 $textname = 'UserNameTmp';
 $idname = 'UserIDTmp';
