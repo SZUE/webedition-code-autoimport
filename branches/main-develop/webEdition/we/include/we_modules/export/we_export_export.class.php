@@ -157,11 +157,11 @@ class we_export_export extends we_base_model{
 		}
 	}
 
-	function filenameNotValid($text){
+	static function filenameNotValid($text){
 		return preg_match('%[^a-z0-9äöü\._\@\ \-]%i', $text);
 	}
 
-	function exportToFilenameValid($filename){
+	static function exportToFilenameValid($filename){
 		return (preg_match('%p?html?%i', $filename) || stripos($filename, 'inc') !== false || preg_match('%php3?%i', $filename));
 	}
 

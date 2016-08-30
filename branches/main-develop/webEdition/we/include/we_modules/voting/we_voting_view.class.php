@@ -118,7 +118,7 @@ parent.document.title = "' . $title . '";
 				}
 
 				$js = "";
-				if($this->voting->filenameNotValid($this->voting->Text)){
+				if(we_voting_voting::filenameNotValid($this->voting->Text)){
 					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}

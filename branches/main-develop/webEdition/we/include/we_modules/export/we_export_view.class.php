@@ -159,20 +159,16 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case "save_export":
 				if(!permissionhandler::hasPerm("NEW_EXPORT")){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 				$js = "";
-				if($this->export->filenameNotValid($this->export->Text)){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+				if(we_export_export::filenameNotValid($this->export->Text)){
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
 					break;
 				}
 				// check if filename is valid.
-				if($this->export->exportToFilenameValid($this->export->Filename)){
+				if(we_export_export::exportToFilenameValid($this->export->Filename)){
 					echo we_html_element::jsElement(
 						we_message_reporting::getShowMessageCall(g_l('export', '[wrongfilename]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
@@ -207,9 +203,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$weAcQuery = new we_selector_query();
 					$weAcResult = $weAcQuery->getItemById($this->export->Folder, FILE_TABLE, array("IsFolder"));
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
-						echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
 					}
 				}
@@ -256,9 +250,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 							');
 					$this->export = new we_export_export();
 				} else {
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('export', ($this->export->IsFolder == 1 ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('export', ($this->export->IsFolder == 1 ? '[delete_group_nok]' : '[delete_nok]')), we_message_reporting::WE_MESSAGE_ERROR));
 				}
 
 				break;

@@ -716,7 +716,7 @@ function setLocation(loc){
 				]);
 
 				$content.=we_html_element::htmlDiv(['class' => 'defaultfont'], self::getDownloadLinkText() . '<br/><br/>' .
-						we_html_element::htmlA(['href' => $link, 'download' => basename($down)], g_l('backup', '[download_file]'))
+						we_html_element::htmlA(['href' => $link, 'download' => $_SESSION['weS']['weBackupVars']['filename']], g_l('backup', '[download_file]'))
 				);
 			} else {
 				$content.=we_html_element::htmlDiv([], g_l('backup', '[download_failed]'));
@@ -788,7 +788,7 @@ function startStep(){
 	}
 
 	function build_error_message(){
-		$error_message = new we_html_table(array('class' => "default defaultfont"), 1, 1);
+		$error_message = new we_html_table(['class' => "default defaultfont"], 1, 1);
 		$error_message->setCol(0, 0, null, g_l('backup', '[download_failed]'));
 
 		return we_html_tools::getHtmlTop('', '', '', '', '<body class="weDialogBody">' . we_html_tools::htmlDialogLayout($error_message->getHtml(), g_l('backup', '[export_step2]')));
@@ -808,7 +808,7 @@ function startStep(){
 	function getHTMLBusy(){
 		$head = $body = '';
 
-		$table = new we_html_table(array('class' => 'default', "style" => "width:100%;text-align:right"), 1, 3);
+		$table = new we_html_table(['class' => 'default', "style" => "width:100%;text-align:right"], 1, 3);
 
 		if(we_base_request::_(we_base_request::STRING, "operation_mode") === "busy"){
 			$text = we_base_request::_(we_base_request::BOOL, "current_description", g_l('backup', '[working]'));
@@ -816,7 +816,7 @@ function startStep(){
 			$progress->setStudLen(200);
 			$progress->addText($text, 0, "current_description");
 			$head.=$progress->getJSCode('top.busy');
-			$table->setCol(0, 0, array('style' => 'text-align:left;'), $progress->getHtml('', 'margin-left:15px'));
+			$table->setCol(0, 0, ['style' => 'text-align:left;'], $progress->getHtml('', 'margin-left:15px'));
 		}
 
 
@@ -838,13 +838,13 @@ function doExport() {
 		top.body.we_submitForm("cmd","' . WE_INCLUDES_DIR . 'we_editors/we_backup_cmd.php");
 	}
 }');
-						$table->setCol(0, 1, null, we_html_button::position_yes_no_cancel(we_html_button::create_button('make_backup', "javascript:doExport();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();")));
+						$table->setCol(0, 1, null, we_html_button::position_yes_no_cancel(we_html_button::create_button('make_backup', "javascript:doExport();"), null, we_html_button::create_button(we_html_button::CANCEL, 'javascript:top.close();')));
 						break;
 					case 2:
 						$table->setCol(0, 1, null, we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();"));
 						break;
 					case 3:
-						if(we_base_request::_(we_base_request::BOOL, "do_import_after_backup")){
+						if(we_base_request::_(we_base_request::BOOL, 'do_import_after_backup')){
 							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.body.location='" . $this->frameset . "&pnt=body&step=2';top.busy.location='" . $this->frameset . "&pnt=cmd';top.cmd.location='" . $this->frameset . "&pnt=busy';");
 						} else if(!empty($_SESSION['weS']['inbackup'])){
 							$body = we_html_button::create_button(we_html_button::NEXT, "javascript:top.opener.weiter();top.close();");
