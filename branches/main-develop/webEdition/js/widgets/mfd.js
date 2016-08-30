@@ -137,7 +137,7 @@ function save() {
 		top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 		self.close();
 	} else {
-		top.we_showMessage(g_l.no_type_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.cockpit.no_type_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }
 
@@ -147,6 +147,6 @@ function preview() {
 		previewPrefs();
 		refresh(true);
 	} else {
-		top.we_showMessage(g_l.no_type_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
+		top.we_showMessage(WE().consts.g_l.cockpit.no_type_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }

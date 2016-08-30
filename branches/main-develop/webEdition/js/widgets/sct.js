@@ -347,7 +347,7 @@ function deleteEntry(sValue) {
 		if (oSctPool.options[i].value == sValue) {
 			oSctPool.options[i] = null;
 			if (oSctPool.length == 1) {
-				oSctPool.options[0].text = g_l.all_selected;
+				oSctPool.options[0].text = WE().consts.g_l.cockpit.all_selected;
 			}
 			oSctPool.selectedIndex = 0;
 			break;

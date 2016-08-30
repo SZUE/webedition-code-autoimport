@@ -34,9 +34,6 @@ var _oSctDate;
 var _sInitNum='" . $sRevenueTarget . "';
 var _bPrev=false;
 var _sLastPreviewCsv='';
-WE().consts.g_l.cockpit.shop={
-	no_type_selected: '" . we_message_reporting::prepareMsgForJS(g_l('cockpit', '[no_type_selected]')) . "',
-};
 ";
 
 // Typ block
