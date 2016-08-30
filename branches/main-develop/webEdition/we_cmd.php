@@ -262,8 +262,6 @@ function findInclude($cmd){
 			return true;
 		case 'messageConsole':
 			return 'jsMessageConsole/messageConsole.inc.php';
-		case 'start_multi_editor':
-			return 'multiEditor/start_multi_editor.inc.php';
 		case 'import':
 			we_import_wizard::getFrameset();
 			return true;

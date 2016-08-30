@@ -32,7 +32,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	$iLayoutCols = empty($_SESSION['prefs']['cockpit_amount_columns']) ? 3 : $_SESSION['prefs']['cockpit_amount_columns'];
 	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reset_home') ? true : false;
 	if(!$bResetProps && $iLayoutCols){
-		$aDat = we_unserialize(we_base_preferences::getUserPref('cockpit_dat'))? : $aCfgProps;
+		$aDat = strlen(we_base_preferences::getUserPref('cockpit_dat'))>5?(we_unserialize(we_base_preferences::getUserPref('cockpit_dat'))? : $aCfgProps):$aCfgProps;
 		$aTrf = we_unserialize(we_base_preferences::getUserPref('cockpit_rss'))? : $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
@@ -69,62 +69,19 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		});
 
 		var _iInitCols = _iLayoutCols =<?= intval($iLayoutCols); ?>;
-		var quickstart = true;
-		var _bDgSave = false;
-		var bInitDrag = false;
-		var oTblWidgets = null;
 		WE().layout.cockpitFrame.transact = "<?= md5(uniqid(__FILE__, true)); ?>";
-
+		var homeData = [
 	<?php
-	echo $jsPrefs;
-	?>
-
-		function isHot() {
-			var ix = ['type', 'cls', 'res', 'csv'];
-			var ix_len = ix.length;
-			var dat = [
-	<?php
-	$j = 0;
-	$count_j = $iDatLen;
 	foreach($aDat as $d){
-		$i = 0;
-		$count_i = count($d);
-		echo "[";
-		reset($d);
-		while((list(, $v) = each($d))){
-			$i++;
-			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':'" . $v[2] . "','csv':'" . $v[3] . "'}" . (($i < $count_i) ? "," : "");
+		echo '[';
+		foreach($d as $v){
+			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':'" . $v[2] . "','csv':'" . $v[3] . "'},";
 		}
-		$j++;
-		echo "]" . (($j < $count_j) ? "," : "");
+		echo '],';
 	}
 	?>
-			];
-			if (_iInitCols != _iLayoutCols) {
-				return true;
-			}
-			for (var i = 0; i < _iLayoutCols; i++) {
-				var asoc = getColumnAsoc('c_' + (i + 1));
-				var asoc_len = asoc.length;
-				if ((dat[i] === undefined && asoc_len) || (dat[i] !== undefined && asoc_len != dat[i].length)) {
-					return true;
-				}
-				for (var k = 0; k < asoc_len; k++) {
-					for (var j = 0; j < ix_len; j++) {
-						if (dat[i][k][ix[j]] === undefined || asoc[k][ix[j]] != dat[i][k][ix[j]]) {
-							return true;
-						}
-					}
-				}
-			}
-			if (_isHotTrf) {
-				return true;
-			}
-			return false;
-		}
+		];
 
-
-		_isHotTrf = false;
 		var _trf = [
 	<?php
 	foreach($aTrf as $aRssFeed){
@@ -132,6 +89,8 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	}
 	?>
 		];
+
+	<?= $jsPrefs; ?>
 		//-->
 	</script>
 	<?= we_html_element::jsScript(JS_DIR . 'home.js'); ?>

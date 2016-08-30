@@ -26,7 +26,5 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
 
-<body class="weEditorBody" style="margin:20px;"><?php
-	echo $we_doc->getHtml(true);
-	?></body>
+<body class="weEditorBody" style="margin:20px;"><?= $we_doc->getHtml(true); ?></body>
 </html>

@@ -25,6 +25,35 @@
  */
 
 var _propsDlg = [];
+var _isHotTrf = false;
+var quickstart = true;
+var _bDgSave = false;
+
+function isHot() {
+	var ix = ['type', 'cls', 'res', 'csv'];
+	var ix_len = ix.length;
+	if (_iInitCols != _iLayoutCols) {
+		return true;
+	}
+	for (var i = 0; i < _iLayoutCols; i++) {
+		var asoc = getColumnAsoc('c_' + (i + 1));
+		var asoc_len = asoc.length;
+		if ((homeData[i] === undefined && asoc_len) || (homeData[i] !== undefined && asoc_len != homeData[i].length)) {
+			return true;
+		}
+		for (var k = 0; k < asoc_len; k++) {
+			for (var j = 0; j < ix_len; j++) {
+				if (homeData[i][k][ix[j]] === undefined || asoc[k][ix[j]] != homeData[i][k][ix[j]]) {
+					return true;
+				}
+			}
+		}
+	}
+	if (_isHotTrf) {
+		return true;
+	}
+	return false;
+}
 
 function getColumnAsoc(id) {
 	var oNode = document.getElementById(id);

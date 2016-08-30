@@ -1069,6 +1069,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/weTagWizard/data
 !we/include/weCodeWizard/data/English_UTF-8
 !we/include/weCodeWizard/data/Deutsch_UTF-8
+!we/include/multiEditor
 !we/include/java_menu
 !we/include/fonts
 !sidebar/img

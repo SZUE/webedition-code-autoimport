@@ -35,8 +35,6 @@ function setFrameSize() {
 function startMultiEditor() {
 	WE().layout.weEditorFrameController = new EditorFrameController();
 	WE().layout.multiTabs = new TabView(this.document);
-	var args = ['start_multi_editor'];
-	we_cmd.apply(this, args.concat(Array.prototype.slice.call(arguments)));
 }
 
 

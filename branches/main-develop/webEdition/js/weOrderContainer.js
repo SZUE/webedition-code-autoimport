@@ -94,13 +94,13 @@ function weOrderContainer(id) {
 	this.reload = function (doc, id, selectedId, selectedValue) {
 
 		var found = false;
-		var pos = this.position.length;
+		//var pos = this.position.length;
 		var node = null;
 		var div;
 
 		for (var i = 0; i < this.position.length; i++) {
 			if (this.position[i] == id) {
-				pos = i;
+				//pos = i;
 				found = true;
 			}
 		}

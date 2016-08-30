@@ -87,18 +87,17 @@ window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . 
 // menu for seemode
 			} else {
 //  no menu in this case !
-				$navigationButtons[] = array(
+				$navigationButtons[] = [
 					"onclick" => "top.we_cmd('dologout');",
 					"i" => "close",
 					"text" => g_l('javaMenu_global', '[close]')
-				);
+					];
 			}
-			$navigationButtons = array_merge($navigationButtons, array(
-				//array("onclick" => "top.we_cmd('start_multi_editor');", 'i' => 'home', "text" => g_l('javaMenu_global', '[home]')),
-				array("onclick" => "top.weNavigationHistory.navigateReload();", "i" => "refresh", "text" => g_l('javaMenu_global', '[reload]')),
-				array("onclick" => "top.weNavigationHistory.navigateBack();", "i" => "caret-left", "text" => g_l('javaMenu_global', '[back]')),
-				array("onclick" => "top.weNavigationHistory.navigateNext();", "i" => "caret-right", "text" => g_l('javaMenu_global', '[next]')),
-				)
+			$navigationButtons = array_merge($navigationButtons, [
+				["onclick" => "top.weNavigationHistory.navigateReload();", "i" => "refresh", "text" => g_l('javaMenu_global', '[reload]')],
+				["onclick" => "top.weNavigationHistory.navigateBack();", "i" => "caret-left", "text" => g_l('javaMenu_global', '[back]')],
+				["onclick" => "top.weNavigationHistory.navigateNext();", "i" => "caret-right", "text" => g_l('javaMenu_global', '[next]')],
+				]
 			);
 		}
 		?>
@@ -123,7 +122,7 @@ window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . 
 				if(($versionInfo = updateAvailable())){
 					?>
 					<div id="newUpdate" class="navigation">
-						<i class="fa fa-lg fa-exclamation-circle" title="<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted']  . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>"></i>
+						<i class="fa fa-lg fa-exclamation-circle" title="<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>"></i>
 					</div>
 					<?php
 				}

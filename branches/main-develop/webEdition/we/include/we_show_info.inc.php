@@ -25,8 +25,6 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_ele
 	we_html_element::cssLink(CSS_DIR . 'infoScreen.css'));
 ?>
 <body id="infoScreen" onload="self.focus();">
-	<?php
-	echo include (WE_INCLUDES_PATH . 'we_editors/we_info.inc.php');
-	?>
+	<?= include (WE_INCLUDES_PATH . 'we_editors/we_info.inc.php'); ?>
 </body>
 </html>
