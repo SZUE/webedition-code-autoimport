@@ -282,7 +282,7 @@ var WebEdition = {
 						tt_weinsertbreak:"<?= g_l('wysiwyg', '[insert_br]'); ?>",
 						tt_welink:"<?= g_l('wysiwyg', '[hyperlink]'); ?>",
 						tt_weimage:"<?= g_l('wysiwyg', '[insert_edit_image]'); ?>",
-						tt_wefullscreen_set:"<?= g_l('wysiwyg', '[maxsize_set]'); //($this->isInPopup ? g_l('wysiwyg', '[maxsize_set]') : g_l('wysiwyg', '[fullscreen]'));                    ?>",
+						tt_wefullscreen_set:"<?= g_l('wysiwyg', '[maxsize_set]'); ?>",
 						tt_wefullscreen_reset:"<?= g_l('wysiwyg', '[maxsize_reset]'); ?>",
 						tt_welang:"<?= g_l('wysiwyg', '[language]'); ?>",
 						tt_wespellchecker:"<?= g_l('wysiwyg', '[spellcheck]'); ?>",
@@ -360,6 +360,8 @@ foreach(we_base_request::getAllTables() as $k => $v){
 			TYPE_INT_PREFIX: '<?= we_base_link::TYPE_INT_PREFIX; ?>',
 			TYPE_MAIL_PREFIX: '<?= we_base_link::TYPE_MAIL_PREFIX; ?>',
 			TYPE_THUMB_PREFIX: '<?= we_base_link::TYPE_THUMB_PREFIX; ?>',
+			EMPTY_EXT: "<?= we_base_link::EMPTY_EXT; ?>",
+			TYPE_INT:"<?= we_base_link::TYPE_INT; ?>",
 		},
 		graphic:{
 			gdSupportedTypes:{<?= implode(',', array_map(function($v){

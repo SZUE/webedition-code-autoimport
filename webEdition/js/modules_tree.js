@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition SDK
  *
@@ -30,7 +32,7 @@ function toggleTree() {
 	var tfd = self.document.getElementById("left");
 	var w = getTreeWidth();
 
-	if (tfd.style.display == "none") {
+	if (tfd.style.display === "none") {
 		oldTreeWidth = (oldTreeWidth < WE().consts.size.tree.min ? WE().consts.size.tree.default : oldTreeWidth);
 		setTreeWidth(oldTreeWidth);
 		tfd.style.display = "block";

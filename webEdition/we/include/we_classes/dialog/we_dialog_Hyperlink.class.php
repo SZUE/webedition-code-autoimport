@@ -351,8 +351,8 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			$external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
 			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extHref]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){window.open(f.value);}", true, 0, 0, '', '', ($extHref && $extHref !== we_base_link::EMPTY_EXT ? false : true), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
 
-			$external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? consts.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
-if(this.value === \'\' || this.value === consts.EMPTY_EXT){
+			$external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? WE().consts.linkPrefix.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
+if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 	document.getElementById(\'btn_edit_ext\').disabled=true;
 	checkMakeEmptyHrefExt();
 }else{
@@ -552,10 +552,6 @@ var classNames = ' . (!empty($this->args["cssClasses"]) ? '"' . $this->args['css
 
 var g_l={
 	anchor_invalid:"' . g_l('linklistEdit', '[anchor_invalid]') . '",
-};
-var consts={
-	EMPTY_EXT: "' . we_base_link::EMPTY_EXT . '",
-	TYPE_INT:"' . we_base_link::TYPE_INT . '"
 };
 ') . we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js');
 	}

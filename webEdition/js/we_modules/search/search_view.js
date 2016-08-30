@@ -26,14 +26,8 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-WE().consts.weSearch = {
-	SEARCH_DOCS: '',
-	SEARCH_TMPL: '',
-	SEARCH_MEDIA: '',
-	SEARCH_ADV: '',
-	SEARCH_DOCLIST: '',
-	MEDIA_CONTENTTYPES_CSV: ''
-};
+WE().util.loadConsts("weSearch");
+WE().util.loadConsts("g_l.weSearch");
 
 weSearch = {
 	conf: {
@@ -381,7 +375,7 @@ weSearch = {
 			switch (this.conf.whichsearch) {
 				case WE().consts.weSearch.SEARCH_DOCS:
 				case WE().consts.weSearch.SEARCH_TMPL:
-					top.console.log('found');
+					//top.console.log('found');
 					h = frameH - 324;
 					break;
 					/*

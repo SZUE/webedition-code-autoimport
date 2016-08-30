@@ -38,7 +38,7 @@ function weCheckAcFields() {
 	if (weFocusedField !== undefined) {
 		weFocusedField.blur();
 	}
-	if (document.getElementById("weDialogType").value === consts.TYPE_INT) {
+	if (document.getElementById("weDialogType").value === WE().consts.linkPrefix.TYPE_INT) {
 		setTimeout(weDoCheckAcFields, 100);
 	} else {
 		document.we_form.submit();
@@ -99,10 +99,10 @@ function checkMakeEmptyHrefExt() {
 					anchor = f.elements["we_dialog_args[anchor]"].value,
 					params = f.elements["we_dialog_args[param]"].value;
 
-	if ((anchor || params) && hrefField.value === consts.EMPTY_EXT) {
+	if ((anchor || params) && hrefField.value === WE().consts.linkPrefix.EMPTY_EXT) {
 		hrefField.value = "";
 	} else if (!(anchor || params) && !hrefField.value) {
-		hrefField.value = consts.EMPTY_EXT;
+		hrefField.value = WE().consts.linkPrefix.EMPTY_EXT;
 	}
 
 }
