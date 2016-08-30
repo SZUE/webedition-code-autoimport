@@ -179,5 +179,5 @@ $sTblWidget = we_html_multiIconBox::getHTML('rssProps', $parts, 30, $buttons, -1
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[rss_feed]'), '', '', $jsFile .
 	we_html_element::jsElement($jsPrefs) .
 	we_html_element::jsScript(JS_DIR . 'widgets/rss.js'), we_html_element::htmlBody(
-		array('class' => 'weDialogBody', 'onload' => 'init();'), we_html_element::htmlForm("", $sTblWidget)
+		['class' => 'weDialogBody', 'onload' => 'init();'], we_html_element::htmlForm("", $sTblWidget)
 ));

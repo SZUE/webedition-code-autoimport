@@ -242,6 +242,15 @@ var WebEdition = {
 				no_type_selected: '<?= we_message_reporting::prepareMsgForJS(g_l('cockpit', '[no_type_selected]')); ?>',
 				invalid_url: '<?= we_message_reporting::prepareMsgForJS(g_l('cockpit', '[invalid_url]')); ?>',
 				all_selected:'<?= g_l('cockpit', '[all_selected]'); ?>',
+				mfd:{
+					last_modified:'<?= g_l('cockpit', '[last_modified]'); ?>',
+				},
+				pad:{
+					until_befor_from: '<?= we_message_reporting::prepareMsgForJS(g_l('cockpit', '[until_befor_from]')); ?>',
+					note_not_modified: '<?= we_message_reporting::prepareMsgForJS(g_l('cockpit', '[note_not_modified]')); ?>',
+					title_empty: '<?= we_message_reporting::prepareMsgForJS(g_l('cockpit', '[title_empty]')); ?>',
+					date_empty: '<?= we_message_reporting::prepareMsgForJS(g_l('cockpit', '[date_empty]')); ?>',
+				},
 			},
 			editorScript:{
 				confirm_navDel: "<?= g_l('navigation', '[del_question]'); ?>",
