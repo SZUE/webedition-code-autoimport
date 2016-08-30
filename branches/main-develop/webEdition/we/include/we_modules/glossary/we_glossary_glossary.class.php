@@ -460,4 +460,36 @@ class we_glossary_glossary extends we_base_model{
 		return false;
 	}
 
+	public static function getJSConsts(){
+		return '
+WE().consts.g_l.glossary={
+	checking:"' . g_l('modules_glossary', '[checking]') . '",
+	all_words_identified:"' . g_l('modules_glossary', '[all_words_identified]') . '",
+	no_java:"' . g_l('modules_glossary', '[no_java]') . '",
+	change_to:"' . g_l('modules_glossary', '[change_to]') . '",
+	input:"' . g_l('modules_glossary', '[input]') . '",
+	suggestions:"' . g_l('modules_glossary', '[suggestions]') . '",
+	languages:"' . g_l('modules_glossary', '[languages]') . '",
+	please_insert_title:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_insert_title]')) . '",
+	please_insert_language:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_insert_language]')) . '",
+	please_insert_correct_word:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_insert_correct_word]')) . '",
+	please_choose_action:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[please_choose_action]')) . '",
+};
+
+WE().consts.g_l.glossary.view={
+	save_changed_glossary:"' . g_l('modules_glossary', '[save_changed_glossary]') . '",
+	delete_alert:	"' . g_l('modules_glossary', '[delete_alert]') . '",
+	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_delete]')) . '",
+	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_perms]')) . '",
+	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_save]')) . '",
+	no_workspace:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_workspace]')) . '",
+};
+WE().consts.glossary={
+	TYPE_FOREIGNWORD:"' . we_glossary_glossary::TYPE_FOREIGNWORD . '",
+	TYPE_ABBREVATION:"' . we_glossary_glossary::TYPE_ABBREVATION . '",
+	TYPE_ACRONYM:"' . we_glossary_glossary::TYPE_ACRONYM . '",
+};
+';
+	}
+
 }

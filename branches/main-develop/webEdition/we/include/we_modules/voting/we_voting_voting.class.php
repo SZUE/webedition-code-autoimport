@@ -770,4 +770,17 @@ class we_voting_voting extends we_base_model{
 		return true;
 	}
 
+	public static function getJSLangConsts(){
+		return 'WE().consts.g_l.voting={
+	save_changed_voting:"' . g_l('modules_voting', '[save_changed_voting]') . '",
+	delete_alert:"' . g_l('modules_voting', '[delete_alert]') . '",
+	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[no_perms]')) . '",
+	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[nothing_to_delete]')) . '",
+	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[nothing_to_save]')) . '",
+	delete_ipdata_question:"' . g_l('modules_voting', '[delete_ipdata_question]') . '",
+	delete_log_question:"' . g_l('modules_voting', '[delete_log_question]') . '",
+};
+';
+	}
+
 }

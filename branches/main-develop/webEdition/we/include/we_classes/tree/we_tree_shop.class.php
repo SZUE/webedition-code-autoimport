@@ -44,17 +44,12 @@ function startTree(){
 	function getJSTreeCode(){
 		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::jsElement('
-				var table="' . SHOP_TABLE . '";
-				WE().consts.g_l.shop.tree={
-					treeYearClick:"' . g_l('modules_shop', '[treeYearClick]') . '",
-					treeYear:"' . g_l('modules_shop', '[treeYear]') . '"
-				};
-				');
+var table="' . SHOP_TABLE . '";
+WE().util.loadConsts("g_l.shop");');
 		$menu = '
 			function loadData() {
 				treeData.clear();
 				treeData.add(node.prototype.rootEntry(0, "root", "root"));';
-
 
 		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysql]') . "') AS orddate, DATE_FORMAT(DateOrder,'%c%Y') AS mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
 		while($this->db->next_record()){

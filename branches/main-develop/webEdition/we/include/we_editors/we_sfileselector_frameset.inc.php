@@ -126,11 +126,7 @@ function printFrameSet(){
 		var dirsel = 1;
 		var scrollToVal = 0;
 		var allentries = [];
-		WE().consts.g_l.sfselector = {
-			edit_file_nok: "<?= we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_nok]')); ?>",
-			edit_file_is_folder: "<?= we_message_reporting::prepareMsgForJS(g_l('fileselector', '[edit_file_is_folder]')); ?>",
-			already_root: "<?= we_message_reporting::prepareMsgForJS(g_l('fileselector', '[already_root]')); ?>",
-		};
+		WE().util.loadConsts("g_l.fileselector");
 		function exit_close() {
 			if (!browseServer) {
 				var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));

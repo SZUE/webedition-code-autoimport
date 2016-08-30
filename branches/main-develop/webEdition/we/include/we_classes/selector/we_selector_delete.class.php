@@ -41,7 +41,7 @@ class we_selector_delete extends we_selector_file{
 
 	protected function getFramesetJavaScriptDef(){
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
-g_l.deleteQuestion="' . g_l('fileselector', '[deleteQuestion]') . '";
+WE().util.loadConsts("g_l.fileselector");
 options.seemForOpenDelSelector=' . intval(isset($_SESSION['weS']['seemForOpenDelSelector']['ID']) ? $_SESSION['weS']['seemForOpenDelSelector']['ID'] : 0) . ';
 consts.DEL=' . self::DEL . ';
 ');

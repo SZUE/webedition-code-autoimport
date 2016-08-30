@@ -24,6 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+WE().util.loadConsts("g_l.voting");
 function setHot() {
 	hot = 1;
 }

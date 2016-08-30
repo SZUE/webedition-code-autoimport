@@ -57,13 +57,7 @@ class we_versions_view{
 		}
 
 		return we_html_element::jsElement('
-WE().consts.g_l.versions={
-	resetVersions:"' . g_l('versions', '[resetVersions]') . '",
-	mark:"' . g_l('versions', '[mark]') . '",
-	notMark:"' . g_l('versions', '[notMark]') . '",
-	deleteVersions:"' . g_l('versions', '[deleteVersions]') . '",
-	notChecked: "' . we_message_reporting::prepareMsgForJS(g_l('versions', '[notChecked]')) . '",
-};
+WE().util.loadConsts("g_l.versions");
 var rows = ' . (isset($_REQUEST['searchFields']) ? count($_REQUEST['searchFields']) - 1 : 0) . ';
 var transaction="' . $GLOBALS['we_transaction'] . '";
 var doc={

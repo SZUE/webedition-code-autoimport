@@ -125,17 +125,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(' . $pid . ',\'roo
 	protected function getHTMLEditorHeader($mode = 0){
 		$extraHead = we_html_element::jsElement('
 WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
-WE().consts.g_l.messaging={
-	q_rm_todos:"' . g_l('modules_messaging', '[q_rm_todos]') . '",
-	q_rm_messages:"' . g_l('modules_messaging', '[q_rm_messages]') . '",
-	Mitteilungen:"' . g_l('modules_messaging', '[Mitteilungen]') . '",
-	ToDo:"' . g_l('modules_messaging', '[ToDo]') . '",
-	Erledigt:"' . g_l('modules_messaging', '[Erledigt]') . '",
-	Zurueckgewiesen:"' . g_l('modules_messaging', '[Zurueckgewiesen]') . '",
-	Gesendet:"' . g_l('modules_messaging', '[Gesendet]') . '",
-	save_changed_folder:"' . g_l('modules_messaging', '[save_changed_folder]') . '",
-};
-
+WE().util.loadConsts("g_l.messaging");
 function doSearch() {
 	top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
 }
@@ -166,7 +156,7 @@ function clearSearch() {
 				array('name' => 'we_messaging_search', 'action' => WEBEDITION_DIR . 'we_showMod.php?mod=messaging&we_transaction=' . $this->transaction . '&pnt=edheader&viewclass=' . $this->viewclass, 'onSubmit' => 'return doSearch()'), $hidden . $table->getHtml()
 		);
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('style' => 'border-top:1px solid black;'), we_html_element::htmlNobr($form)), $extraHead);
+		return $this->getHTMLDocument(we_html_element::htmlBody(['style' => 'border-top:1px solid black;'], we_html_element::htmlNobr($form)), $extraHead);
 	}
 
 	protected function getHTMLEditorBody(){

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -138,8 +137,8 @@ class we_metadata_metaData{
 	 */
 	function getImplementations(){
 		return (!$this->valid || !$this->datatype ?
-						false :
-						$this->datatype);
+				false :
+				$this->datatype);
 	}
 
 	function getMetaData($selection = ''){
@@ -346,13 +345,17 @@ class we_metadata_metaData{
 
 		switch($filter){
 			case we_metadata_metaData::ONLY_STANDARD_FIELDS:
-				$ret = array_filter($fields, function($v){return in_array($v['tag'], explode(',', we_metadata_metaData::STANDARD_FIELDS));});
+				$ret = array_filter($fields, function($v){
+					return in_array($v['tag'], explode(',', we_metadata_metaData::STANDARD_FIELDS));
+				});
 				break;
 			case we_metadata_metaData::ALL_FIELDS:
 				$ret = $fields;
 				break;
 			case we_metadata_metaData::ALL_BUT_STANDARD_FIELDS:
-				$ret = array_filter($fields, function($v){return !in_array($v['tag'], explode(',', we_metadata_metaData::STANDARD_FIELDS));});
+				$ret = array_filter($fields, function($v){
+					return !in_array($v['tag'], explode(',', we_metadata_metaData::STANDARD_FIELDS));
+				});
 		}
 
 		return $assoc ? $ret : array_values($ret);
@@ -397,6 +400,17 @@ class we_metadata_metaData{
 		}
 
 		return $field ? (isset($defined_values[$field]) ? $defined_values[$field] : []) : $defined_values;
+	}
+
+	public static function getJSLangConsts(){
+		return 'WE().consts.g_l.metadatafields={
+	tagname:"' . g_l('metadata', '[tagname]') . '",
+	type:"' . g_l('metadata', '[type]') . '",
+	import_from:"' . oldHtmlspecialchars(g_l('metadata', '[import_from]')) . '",
+	fields:"' . oldHtmlspecialchars(g_l('metadata', '[fields]')) . '",
+	proposals:"' . oldHtmlspecialchars('Vorschlagsliste') . '",
+};
+';
 	}
 
 }

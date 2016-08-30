@@ -152,6 +152,7 @@ $yuiSuggest = & weSuggest::getInstance();
 echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
  weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'doctypeEdit.js');
+//FIXME: currently we don't have a class so we can't move js-g_l
 ?>
 <script><!--
 	var countSaveLoop = 0;

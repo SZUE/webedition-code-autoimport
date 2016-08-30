@@ -53,17 +53,6 @@ var get_focus = 1;
 var activ_tab = 1;
 var hot = 0;
 var scrollToVal = 0;
-WE().consts.dirs.WE_VOTING_MODULE_DIR="' . WE_VOTING_MODULE_DIR . '";
-WE().consts.g_l.voting={
-	save_changed_voting:"' . g_l('modules_voting', '[save_changed_voting]') . '",
-	delete_alert:"' . g_l('modules_voting', '[delete_alert]') . '",
-	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[no_perms]')) . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[nothing_to_delete]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[nothing_to_save]')) . '",
-	delete_ipdata_question:"' . g_l('modules_voting', '[delete_ipdata_question]') . '",
-	delete_log_question:"' . g_l('modules_voting', '[delete_log_question]') . '",
-};
-
 parent.document.title = "' . $title . '";
 ') . we_html_element::jsScript(WE_JS_MODULES_DIR . '/voting/voting_top.js');
 	}

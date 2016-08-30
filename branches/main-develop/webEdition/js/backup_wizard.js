@@ -22,6 +22,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+WE().util.loadConsts("g_l.backupWizard");
+
 function we_submitForm(target, url) {
 	var f = self.document.we_form;
 	if (!f.checkValidity()) {

@@ -50,18 +50,7 @@ class we_glossary_view extends we_modules_view{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		return
 			parent::getJSTop() .
-			we_html_element::jsElement('
-WE().consts.g_l.glossary.view={
-	save_changed_glossary:"' . g_l('modules_glossary', '[save_changed_glossary]') . '",
-	delete_alert:	"' . g_l('modules_glossary', '[delete_alert]') . '",
-	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_delete]')) . '",
-	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_perms]')) . '",
-	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[nothing_to_save]')) . '",
-	no_workspace:"' . we_message_reporting::prepareMsgForJS(g_l('modules_glossary', '[no_workspace]')) . '",
-};
-parent.document.title = "' . $title . '";
-') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view.js', 'parent.document.title = "' . $title . '";');
 	}
 
 	function getJSProperty(){

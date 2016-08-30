@@ -263,7 +263,7 @@ function addPredefinedRow(word, suggestions, type, title, lang) {
 
 function disableItem(id, value) {
 	switch (value) {
-		case consts.TYPE_FOREIGNWORD :
+		case WE().consts.glossary.TYPE_FOREIGNWORD :
 			document.getElementById('title_' + id).disabled = true;
 			document.getElementById('lang_' + id).disabled = false;
 			document.getElementById('title_' + id).style.display = 'inline';

@@ -173,4 +173,11 @@ class we_category extends we_base_model{
 		return ($complete || $asArray) ? $cats : implode($tokken, $cats);
 	}
 
+	public static function getJSLangConsts(){
+		return 'WE().consts.g_l.selectors.category={
+	new_cat_name:"' . g_l('fileselector', '[new_cat_name]') . '",
+	we_filename_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('weEditor', '[category][we_filename_notValid]')) . '",
+};';
+	}
+
 }

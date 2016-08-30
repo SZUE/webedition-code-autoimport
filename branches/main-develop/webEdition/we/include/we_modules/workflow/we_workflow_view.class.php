@@ -389,25 +389,7 @@ class we_workflow_view extends we_modules_view{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		return we_html_element::jsElement('
-parent.document.title="' . $title . '";
-WE().consts.g_l.workflow.view={
-	save_changed_workflow:"' . g_l('modules_workflow', '[save_changed_workflow]') . '",
-	save_question:"' . g_l('modules_workflow', '[save_question]') . '",
-	delete_question:"' . g_l('modules_workflow', '[delete_question]') . '",
-	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_delete]')) . '",
-	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_save]')) . '"
-};
-WE().consts.g_l.workflow.prop={
-	worktime_empty: "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '",
-	user_empty:"' . addslashes(g_l('modules_workflow', '[user_empty]')) . '",
-	del_last_step:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_step]')) . '",
-	del_last_task:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_task]')) . '",
-	name_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[name_empty]')) . '",
-	folders_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[folders_empty]')) . '",
-	doctype_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[doctype_empty]')) . '",
-	objects_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[objects_empty]')) . '"
-};
-') .
+parent.document.title="' . $title . '";') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js');
 	}
 

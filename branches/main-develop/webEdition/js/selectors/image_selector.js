@@ -40,7 +40,7 @@ function writeBody(d) {
 							'<input type="hidden" name="id" value="' + currentDir + '" />' +
 							(makeNewFolder ?
 											'<div class="imgDiv">' + WE().util.getTreeIcon('folder', false) + '<br/>' +
-											'<input type="hidden" name="we_FolderText" value="' + g_l.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + g_l.new_folder_name + '" class="wetextinput" style="width:100%" />' +
+											'<input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" style="width:100%" />' +
 											'</div>' :
 											'');
 			for (i = 0; i < entries.length; i++) {

@@ -30,8 +30,10 @@ if(!$cmd){
 	t_e('call without command, might be an error');
 	exit();
 }
+$skipJS = false;
 
 function findInclude($cmd){
+	global $skipJS;
 	switch($cmd){
 		case ''://empty command
 			exit();
@@ -294,6 +296,10 @@ function findInclude($cmd){
 		case 'tool_weSearch_edit':
 			$_REQUEST['tool'] = 'weSearch';
 			return 'we_tools/tools_frameset.php';
+		case 'loadJSConsts':
+			echo we_base_jsConstants::process(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
+			$skipJS = true;
+			return true;
 
 		default:
 			//	In we.inc.php all names of the active modules have already been searched
@@ -355,7 +361,9 @@ if(($inc = findInclude($cmd))){
 		case 'we_fileupload_editor':
 			break;
 		default:
-			echo we_html_element::jsElement('parent.openedWithWE=true;');
+			if(!$skipJS){
+				echo we_html_element::jsElement('parent.openedWithWE=true;');
+			}
 			break;
 	}
 }

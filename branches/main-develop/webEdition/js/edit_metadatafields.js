@@ -26,6 +26,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
+WE().util.loadConsts("g_l.metadatafields");
 
 function togglePropositionTable(sel, index) {
 	var row = document.getElementById("proposalTable_" + index);

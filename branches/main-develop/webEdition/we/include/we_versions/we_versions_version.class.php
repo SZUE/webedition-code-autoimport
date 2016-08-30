@@ -2084,4 +2084,14 @@ class we_versions_version{
 		}
 	}
 
+	public static function getJSLangConsts(){
+		return 'WE().consts.g_l.versions={
+	resetVersions:"' . g_l('versions', '[resetVersions]') . '",
+	mark:"' . g_l('versions', '[mark]') . '",
+	notMark:"' . g_l('versions', '[notMark]') . '",
+	deleteVersions:"' . g_l('versions', '[deleteVersions]') . '",
+	notChecked: "' . we_message_reporting::prepareMsgForJS(g_l('versions', '[notChecked]')) . '",
+};';
+	}
+
 }

@@ -114,7 +114,7 @@ function unselectAllFiles() {
 }
 
 function deleteEntry() {
-	if (confirm(g_l.deleteQuestion)) {
+	if (confirm(WE().consts.g_l.fileselector.deleteQuestion)) {
 		var todel = "";
 		var docIsOpen = false;
 		for (var i = 0; i < entries.length; i++) {

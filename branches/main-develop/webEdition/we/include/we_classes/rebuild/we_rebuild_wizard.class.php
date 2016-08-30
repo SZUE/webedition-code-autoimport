@@ -188,9 +188,7 @@ abstract class we_rebuild_wizard{
 
 
 		$js = '
-WE().consts.g_l.rebuild={
-	noFieldsChecked:"' . we_message_reporting::prepareMsgForJS(g_l('rebuild', '[noFieldsChecked]')) . '",
-};
+			WE().util.loadConsts("g_l.rebuild");
 WE().session.rebuild={};
 window.onload = function(){top.focus();}
 set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
@@ -750,6 +748,13 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			default:
 				echo self::getFrameset();
 		}
+	}
+
+	public static function getJSLangConsts(){
+		return '
+	WE().consts.g_l.rebuild={
+	noFieldsChecked:"' . we_message_reporting::prepareMsgForJS(g_l('rebuild', '[noFieldsChecked]')) . '",
+};';
 	}
 
 }

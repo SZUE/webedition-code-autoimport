@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_shop{
-
 	const DOCUMENT = 'w';
 	const OBJECT = 'o';
 
@@ -98,6 +97,24 @@ class we_shop_shop{
 			array_unshift($years, date('Y'));
 		}
 		return $years;
+	}
+
+	public static function getJSLangConsts(){
+		return '
+WE().consts.g_l.shop={
+	no_perms:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_perms]')) . '",
+	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[nothing_to_save]')) . '",
+	nothing_to_delete:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[nothing_to_delete]')) . '",
+	no_order_there:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_order_there]')) . '",
+	delete_alert:"' . g_l('modules_shop', '[delete_alert]') . '",
+	del_shop:"' . g_l('modules_shop', '[del_shop]') . '",
+};
+
+WE().consts.g_l.shop.tree={
+	treeYearClick:"' . g_l('modules_shop', '[treeYearClick]') . '",
+	treeYear:"' . g_l('modules_shop', '[treeYear]') . '"
+};
+	';
 	}
 
 }

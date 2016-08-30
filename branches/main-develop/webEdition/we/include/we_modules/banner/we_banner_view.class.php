@@ -207,17 +207,7 @@ class we_banner_view extends we_modules_view{
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
-		return we_html_element::jsElement('
-parent.document.title="' . $title . '";
-WE().consts.g_l.banner.view = {
-	save_changed_banner:"' . g_l('modules_banner', '[save_changed_banner]') . '",
-	delete_question:"' . g_l('modules_banner', '[delete_question]') . '",
-	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_delete]')) . '",
-	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_banner', '[nothing_to_save]')) . '",
-	deleteStatConfirm: "' . g_l('modules_banner', '[deleteStatConfirm]') . '"
-};
-') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_top.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_top.js', 'parent.document.title="' . $title . '";');
 	}
 
 	function getJSProperty(){

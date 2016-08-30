@@ -109,11 +109,7 @@ var we_editCatID="";
 var old=0;
 var noChoose=' . intval($this->noChoose) . ';
 
-WE().consts.g_l.selectors.category={
-	new_cat_name:"' . g_l('fileselector', '[new_cat_name]') . '",
-	we_filename_notValid:"' . we_message_reporting::prepareMsgForJS(g_l('weEditor', '[category][we_filename_notValid]')) . '",
-};
-
+WE().util.loadConsts("g_l.selectors.category");
 options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 ');
 	}

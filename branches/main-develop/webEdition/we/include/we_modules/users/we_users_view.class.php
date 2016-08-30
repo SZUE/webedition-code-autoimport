@@ -40,13 +40,6 @@ class we_users_view extends we_modules_view{
 var loaded=0;
 var hot=0;
 var frameset="' . $this->frameset . '";
-WE().consts.g_l.users.view={
-	save_changed_user:"' . g_l('modules_users', '[save_changed_user]') . '",
-	give_org_name:"' . g_l('modules_users', '[give_org_name]') . '",
-	password_alert:"' . we_message_reporting::prepareMsgForJS(g_l('modules_users', '[password_alert]')) . '"
-};
-WE().consts.dirs.WE_USERS_MODULE_DIR="' . WE_USERS_MODULE_DIR . '";
-
 parent.document.title = "' . $title . '";
 var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])) : 0) . ';
 ') .
