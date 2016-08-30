@@ -2,8 +2,8 @@
 /**
  * webEdition CMS
  *
- * $Rev: 11591 $
- * $Date: 2016-03-07 18:28:18 +0100 (Mon, 07 Mar 2016) $
+ * $Rev$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -19,7 +19,7 @@
  * This function returns true if given usernames (CSV) contain actual backend user or
  * given usergroups (CSV) contain group of actual backend user
  *
- * @author	$Author: andreaswitt $
+ * @author	$Author$
  * @param	$attribs array
  * @return	boolean
  *
