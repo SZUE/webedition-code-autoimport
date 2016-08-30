@@ -42,8 +42,6 @@ echo weSuggest::getYuiFiles();
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
-	<?php
-	echo $yuiSuggest->getYuiJs();
-	?>
+	<?= $yuiSuggest->getYuiJs(); ?>
 </body>
 </html>

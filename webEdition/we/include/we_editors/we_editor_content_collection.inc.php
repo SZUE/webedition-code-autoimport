@@ -60,8 +60,8 @@ weCollectionEdit.view = "grid";
 		we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
-	<?php
-	echo weSuggest::getYuiFiles() .
+	<?=
+	weSuggest::getYuiFiles() .
 	$yuiSuggest->getYuiJs();
 	?>
 </body>
