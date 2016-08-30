@@ -350,7 +350,7 @@ $l_weTag=array(
 		'description'=>'Das Tag bewirkt, daß alles, was zwischen dem Start- und Endtag steht, nur dann angezeigt wird, wenn das shopField mit dem Namen "name" ungleich dem Wert ist, welcher in "match" eingetragen ist. Ist dies der Fall, wird alles zwischen Start- und Endtag angezeigt.',
 	),
 	'ifNotSidebar'=>array(
-		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur auszugeben, wenn der Seitenaufruf ausserhalb der Sidebar stattfindet.',
+		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur auszugeben, wenn der Seitenaufruf ausserhalb der Seitenleiste stattfindet.',
 	),
 	'ifNotSubscribe'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn der Eintrag in eine Newsletter-Adressliste nicht erfolgreich war und sollte in der Vorlage nach &lt;we:addDelNewsletterEmail&gt; stehen, aus der das webEdition-Dokument erzeugt wird, welches nach einem Eintrag in eine Newsletter-Adressliste aufgerufen wird.',
@@ -452,7 +452,7 @@ $l_weTag=array(
 		'description'=>'Mit we:ifShopVat kann man den Mehrwertsteuersatz, des aktuellen Artikels (als Dokument oder im Warenkorb) prüfen. Das Tag kann auch mit den in Version 6.4.0 eingeführten Shop-Kategorien umgehen.',
 	),
 	'ifSidebar'=>array(
-		'description'=>'Dieses Tag dient dazu, den umschliessenden Inhalt nur auszugeben, wenn der Seitenaufruf innerhalb der Sidebar stattfindet.',
+		'description'=>'Dieses Tag dient dazu, den umschliessenden Inhalt nur auszugeben, wenn der Seitenaufruf innerhalb der Seitenleiste stattfindet.',
 	),
 	'ifSubscribe'=>array(
 		'description'=>'Dieses Tag dient dazu, den umschlossenen Inhalt nur dann anzuzeigen, wenn der Eintrag in eine Newsletter-Adressliste erfolgreich war.',
@@ -734,8 +734,8 @@ In der Benutzereingabe können lediglich Dokumente geändert werden, sofern das 
 		'description'=>'Das we:showShopItemNumber-Tag zeigt die im Warenkorb vorhandene Anzahl der Artikel eines Typs an.',
 	),
 	'sidebar'=>array(
-		'defaultvalue'=>'Sidebar öffnen',
-		'description'=>'Dieses Tag dient dazu einen Button im Bearbeitenmodus eines Dokumentes zum öffnen einer Webseite in der Sidebar zu öffnen einzubinden.',
+		'defaultvalue'=>'Seitenleiste öffnen',
+		'description'=>'Dieses Tag dient dazu einen Button im Bearbeitenmodus eines Dokumentes zum öffnen einer Webseite in der Seitenleiste zu öffnen einzubinden.',
 	),
 	'subscribe'=>array(
 		'description'=>'Dieses Tag erzeugt ein Eingabefeld zum Eintragen in die Newsletter-Liste. Mit dem Attribut "type" kann bestimmt werden, um welche Art Feld es sich handelt.',

@@ -208,7 +208,7 @@ $l_buttons_global=array(
 		'alt'=>'Neues Verzeichnis erstellen',
 	),
 	'btn_open_sidebar'=>array(
-		'alt'=>'Sidebar öffnen',
+		'alt'=>'Seitenleiste öffnen',
 	),
 	'btn_remove_from_collection'=>array(
 		'alt'=>'Aus Sammlung entfernen',
