@@ -75,6 +75,8 @@ abstract class we_base_jsConstants{
 				return we_rebuild_wizard::getJSLangConsts();
 			case 'g_l.thumbnail':
 				return we_thumbnail::getJSLangConsts();
+			case 'weSearch':
+				return we_search_view::getJSConsts();
 			default:
 				t_e('loading of JS consts ' . $what . ' failed');
 		}

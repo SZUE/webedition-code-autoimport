@@ -68,5 +68,5 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 $dialog = new we_dialog_abbr($noInternals);
 $dialog->initByHttp();
 echo $dialog->getHTML() .
- we_html_element::jsElement($appendJS);
+ ($appendJS ? we_html_element::jsElement($appendJS) : '');
 

@@ -261,16 +261,18 @@ weSearch.elems = {
 	selModFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
 	selUsers: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
 	searchFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchFields' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", $whichSearch), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields" . $whichSearch . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"))) . '\'
-};
+};');
+	}
 
-WE().consts.weSearch= {
+	public static function getJSConsts(){
+		return 'WE().consts.weSearch= {
 	SEARCH_DOCS: "' . self::SEARCH_DOCS . '",
 	SEARCH_TMPL: "' . self::SEARCH_TMPL . '",
 	SEARCH_MEDIA: "' . self::SEARCH_MEDIA . '",
 	SEARCH_ADV: "' . self::SEARCH_ADV . '",
+	SEARCH_DOCLIST: "' . we_search_view::SEARCH_DOCLIST . '",
 	MEDIA_CONTENTTYPES_CSV: "' . we_base_ContentTypes::APPLICATION . "," . we_base_ContentTypes::AUDIO . "," . we_base_ContentTypes::FLASH . "," . we_base_ContentTypes::IMAGE . "," . we_base_ContentTypes::VIDEO . '"
-};
-');
+};';
 	}
 
 	function getNextPrev($we_search_anzahl, $whichSearch, $isTop = true, $dataOnly = false){

@@ -1,3 +1,5 @@
+/* global top, WE */
+
 /**
  * webEdition CMS
  *
@@ -26,7 +28,7 @@ function weToggleBox(name, textDown, textRight) {
 	var t = document.getElementById('table_' + name);
 	var s = document.getElementById('text_' + name);
 	var b = document.getElementById('btn_direction_' + name + '_middle');
-	if (t.style.display == "none") {
+	if (t.style.display === "none") {
 		t.style.display = "";
 		s.innerHTML = textDown;
 		weSetCookieVariable("but_" + name, "down");
@@ -42,7 +44,7 @@ function toggleButton(but, name) {
 }
 
 function weGetCookieVariable(name) {
-	var c = WE().util.weGetCookie((top.name == "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id);
+	var c = WE().util.weGetCookie((top.name === "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id);
 	var vals = [];
 	if (c !== null) {
 		var parts = c.split(/&/);
@@ -56,7 +58,7 @@ function weGetCookieVariable(name) {
 }
 
 function weSetCookieVariable(name, value) {
-	var c = WE().util.weGetCookie((top.name == "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id);
+	var c = WE().util.weGetCookie((top.name === "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id);
 	var vals = [];
 	var i;
 	if (c !== null) {
@@ -74,5 +76,5 @@ function weSetCookieVariable(name, value) {
 	if (c.length > 0) {
 		c = c.substring(0, c.length - 1);
 	}
-	WE().util.weSetCookie((top.name == "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id, c);
+	WE().util.weSetCookie((top.name === "edit_module") ? top.opener.top.document : top.document, "we" + WE().session.sess_id, c);
 }

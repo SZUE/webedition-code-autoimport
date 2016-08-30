@@ -63,15 +63,6 @@ weSearch.elems = {
 	selUsers: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"])) . '\',
 	searchFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchFields' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", we_search_view::SEARCH_DOCLIST), 1, "", false, ['class' => "defaultfont", 'id' => "searchFields" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"])) . '\'
 };
-
-WE().consts.weSearch= {
-	SEARCH_DOCS: "' . we_search_view::SEARCH_DOCS . '",
-	SEARCH_TMPL: "' . we_search_view::SEARCH_TMPL . '",
-	SEARCH_MEDIA: "' . we_search_view::SEARCH_MEDIA . '",
-	SEARCH_ADV: "' . we_search_view::SEARCH_ADV . '",
-	SEARCH_DOCLIST: "' . we_search_view::SEARCH_DOCLIST . '"
-};
-WE().util.loadConsts("g_l.weSearch");
 ');
 	}
 
