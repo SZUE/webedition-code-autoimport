@@ -3,9 +3,9 @@
 /**
  * These should be consts only used INSIDE WE, we should not need to load this class in frontend
  *
- * $Rev: 12578 $
- * $Author: mokraemer $
- * $Date: 2016-07-31 23:08:57 +0200 (So, 31. Jul 2016) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
