@@ -424,47 +424,47 @@ function edit_recipient() {
 function show_seem_chooser(val) {
 	switch (val) {
 		case 'document':
-			if (document.getElementById('selectordummy') !== undefined) {
+			if (document.getElementById('selectordummy')) {
 				document.getElementById('selectordummy').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_object') !== undefined) {
+			if (document.getElementById('seem_start_object')) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_weapp') !== undefined) {
+			if (document.getElementById('seem_start_weapp')) {
 				document.getElementById('seem_start_weapp').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_document') !== undefined) {
+			if (document.getElementById('seem_start_document')) {
 				document.getElementById('seem_start_document').style.display = 'block';
 			}
 
 			break;
 
 		case 'weapp':
-			if (document.getElementById('selectordummy') !== undefined) {
+			if (document.getElementById('selectordummy')) {
 				document.getElementById('selectordummy').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_document') !== undefined) {
+			if (document.getElementById('seem_start_document')) {
 				document.getElementById('seem_start_document').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_weapp') !== undefined) {
+			if (document.getElementById('seem_start_weapp')) {
 				document.getElementById('seem_start_weapp').style.display = 'block';
 			}
-			if (document.getElementById('seem_start_object') !== undefined) {
+			if (document.getElementById('seem_start_object')) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
 			break;
 		case 'object':
 			if (WE().consts.tables.OBJECT_FILES_TABLE) {
-				if (document.getElementById('selectordummy') !== undefined) {
+				if (document.getElementById('selectordummy')) {
 					document.getElementById('selectordummy').style.display = 'none';
 				}
-				if (document.getElementById('seem_start_weapp') !== undefined) {
+				if (document.getElementById('seem_start_weapp')) {
 					document.getElementById('seem_start_weapp').style.display = 'none';
 				}
-				if (document.getElementById('seem_start_document') !== undefined) {
+				if (document.getElementById('seem_start_document')) {
 					document.getElementById('seem_start_document').style.display = 'none';
 				}
-				if (document.getElementById('seem_start_object') !== undefined) {
+				if (document.getElementById('seem_start_object')) {
 					document.getElementById('seem_start_object').style.display = 'block';
 				}
 				break;
@@ -472,16 +472,16 @@ function show_seem_chooser(val) {
 			}
 			/* falls through */
 		default:
-			if (document.getElementById('selectordummy') !== null) {
+			if (document.getElementById('selectordummy')) {
 				document.getElementById('selectordummy').style.display = 'block';
 			}
-			if (document.getElementById('seem_start_document') !== null) {
+			if (document.getElementById('seem_start_document')) {
 				document.getElementById('seem_start_document').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_weapp') !== null) {
+			if (document.getElementById('seem_start_weapp')) {
 				document.getElementById('seem_start_weapp').style.display = 'none';
 			}
-			if (document.getElementById('seem_start_object') !== null) {
+			if (document.getElementById('seem_start_object')) {
 				document.getElementById('seem_start_object').style.display = 'none';
 			}
 
