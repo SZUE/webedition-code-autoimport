@@ -262,16 +262,16 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 
 	public static function getJSLangConsts(){
 		return 'WE().consts.g_l.prefs = {
-		language_already_exists: ' . we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_already_exists]')) . ',
-		language_country_missing: ' . we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_country_missing]')) . ',
-		cannot_delete_default_language: ' . we_message_reporting::prepareMsgForJS(g_l('prefs', '[cannot_delete_default_language]')) . ',
-		max_name_recipient: ' . we_message_reporting::prepareMsgForJS(g_l('alert', '[max_name_recipient]')) . ',
-		recipient_exists: ' . we_message_reporting::prepareMsgForJS(g_l('alert', '[recipient_exists]')) . ',
-		not_entered_recipient: ' . we_message_reporting::prepareMsgForJS(g_l('alert', '[not_entered_recipient]')) . ',
-		add_dictionary_question: ' . g_l('prefs', '[add_dictionary_question]') . ',
-		delete_recipient: ' . g_l('alert', '[delete_recipient]') . ',
-		recipient_new_name: ' . g_l('alert', '[recipient_new_name]') . ',
-		input_name: ' . g_l('alert', '[input_name]') . '
+		language_already_exists: "' . we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_already_exists]')) . '",
+		language_country_missing: "' . we_message_reporting::prepareMsgForJS(g_l('prefs', '[language_country_missing]')) . '",
+		cannot_delete_default_language: "' . we_message_reporting::prepareMsgForJS(g_l('prefs', '[cannot_delete_default_language]')) . '",
+		max_name_recipient: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[max_name_recipient]')) . '",
+		recipient_exists: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[recipient_exists]')) . '",
+		not_entered_recipient: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[not_entered_recipient]')) . '",
+		add_dictionary_question: "' . g_l('prefs', '[add_dictionary_question]') . '",
+		delete_recipient: "' . g_l('alert', '[delete_recipient]') . '",
+		recipient_new_name: "' . g_l('alert', '[recipient_new_name]') . '",
+		input_name: "' . g_l('alert', '[input_name]') . '"
 	};';
 	}
 
