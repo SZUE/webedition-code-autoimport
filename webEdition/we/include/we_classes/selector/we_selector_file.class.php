@@ -431,8 +431,8 @@ WE().consts.g_l.fileselector = {
 
 	public static function getJSConsts(){
 		return 'WE().consts.selectors={
-	DORENAMEFOLDER:"' . self::DORENAMEFOLDER . '",
-	CREATEFOLDER:"' . self::CREATEFOLDER . '",
+	DORENAMEFOLDER:' . self::DORENAMEFOLDER . ',
+	CREATEFOLDER:' . self::CREATEFOLDER . ',
 	CMD:' . self::CMD . ',
 	DEL:' . self::DEL . ',
 	PROPERTIES:' . self::PROPERTIES . ',
