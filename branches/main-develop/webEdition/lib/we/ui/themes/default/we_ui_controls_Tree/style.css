@@ -24,9 +24,9 @@
  */
 
 body {
-	margin: 0px 0 0 0px;
+	margin: 0px 0px 0 0px;
 	padding: 0px;
-	background-color: #F3F7FF;
+	background-color: #d7dce0 !important;
 }
 
 /* the cell in which each item resides */
@@ -330,4 +330,9 @@ body {
 
 .unpublished {
 	color: #FF0000;
+}
+
+#infoField {
+	background-color: #a5aaae !important;
+	height: 53px !important;
 }

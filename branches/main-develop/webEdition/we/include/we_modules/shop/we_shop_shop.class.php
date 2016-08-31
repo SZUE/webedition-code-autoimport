@@ -108,6 +108,7 @@ WE().consts.g_l.shop={
 	no_order_there:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_order_there]')) . '",
 	delete_alert:"' . g_l('modules_shop', '[delete_alert]') . '",
 	del_shop:"' . g_l('modules_shop', '[del_shop]') . '",
+	vat_confirm_delete:"' . g_l('modules_shop', '[vat][js_confirm_delete]') . '"
 };
 
 WE().consts.g_l.shop.tree={

@@ -859,10 +859,10 @@ function setTab(tab) {
 				$province = we_base_request::_(we_base_request::STRING, 'weShopVatProvince');
 				$territory = we_base_request::_(we_base_request::STRING, 'weShopVatCountry') . ($province ? '-' . $province : '');
 
-				$weShopVat = new we_shop_vat(we_base_request::_(we_base_request::INT, 'weShopVatId'), we_base_request::_(we_base_request::STRING, 'weShopVatText'), we_base_request::_(we_base_request::FLOAT, 'weShopVatVat'), we_base_request::_(we_base_request::FLOAT, 'weShopVatStandard'), $territory, we_base_request::_(we_base_request::STRING, 'weShopVatTextProvince'));
+				$shopVat = new we_shop_vat(we_base_request::_(we_base_request::INT, 'weShopVatId'), we_base_request::_(we_base_request::STRING, 'weShopVatText'), we_base_request::_(we_base_request::FLOAT, 'weShopVatVat'), we_base_request::_(we_base_request::FLOAT, 'weShopVatStandard'), $territory, we_base_request::_(we_base_request::STRING, 'weShopVatTextProvince'));
 
-				if(($newId = we_shop_vats::saveWeShopVAT($weShopVat))){
-					$weShopVat->id = $newId;
+				if(($newId = we_shop_vats::saveWeShopVAT($shopVat))){
+					$shopVat->id = $newId;
 					unset($newId);
 					$saveSuccess = true;
 					$jsMessage = g_l('modules_shop', '[vat][save_success]');
@@ -886,15 +886,14 @@ function setTab(tab) {
 		}
 
 
-		if(!isset($weShopVat)){
-			$weShopVat = new we_shop_vat(0, g_l('modules_shop', '[vat][new_vat_name]'), 19, 0);
+		if(!isset($shopVat)){
+			$shopVat = new we_shop_vat(0, g_l('modules_shop', '[vat][new_vat_name]'), 19, 0);
 		}
 
 // at top of page show a table with all actual vats
 		$allVats = we_shop_vats::getAllShopVATs();
 
 		$vatJavaScript = '
-WE().consts.g_l.shop.vat_confirm_delete="' . g_l('modules_shop', '[vat][js_confirm_delete]') . '";
 var allVats = {
 	vat_0: {
 		id:0,
@@ -919,22 +918,22 @@ var allVats = {
 			<td><strong>' . g_l('modules_shop', '[vat][vat_form_standard]') . '</strong></td>
 		</tr>';
 
-			foreach($allVats as $weShopVat){
+			foreach($allVats as $shopVat){
 				$vatJavaScript .='
-		allVats["vat_' . $weShopVat->id . '"] = {"id":"' . $weShopVat->id . '","text":"' . $weShopVat->getNaturalizedText() . '", "vat":"' . $weShopVat->vat . '", "standard":"' . ($weShopVat->standard ? 1 : 0) . '", "territory":"' . $weShopVat->territory . '", "country":"' . $weShopVat->country . '", "province":"' . $weShopVat->province . '", "textProvince":"' . $weShopVat->textProvince . '"};';
+		allVats["vat_' . $shopVat->id . '"] = {"id":"' . $shopVat->id . '","text":"' . $shopVat->getNaturalizedText() . '", "vat":"' . $shopVat->vat . '", "standard":"' . ($shopVat->standard ? 1 : 0) . '", "territory":"' . $shopVat->territory . '", "country":"' . $shopVat->country . '", "province":"' . $shopVat->province . '", "textProvince":"' . $shopVat->textProvince . '"};';
 
 				$vatTable .= '
 		<tr>
-			<td>' . $weShopVat->id . '</td>
-			<td>' . oldHtmlspecialchars($weShopVat->getNaturalizedText()) . '</td>
-			<td>' . $weShopVat->vat . '%</td>
-			<td>' . $weShopVat->textTerritory . '</td>
-			<td>' . $weShopVat->territory . '</td>
-			<td>' . g_l('global', ($weShopVat->standard ? '[yes]' : '[no]')) . '</td>
-			<td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:we_cmd(\'edit\',\'' . $weShopVat->id . '\');') . '</td>
-			<td>' . we_html_button::create_button(we_html_button::TRASH, 'javascript:we_cmd(\'delete\',\'' . $weShopVat->id . '\');') . '</td>
+			<td>' . $shopVat->id . '</td>
+			<td>' . oldHtmlspecialchars($shopVat->getNaturalizedText()) . '</td>
+			<td>' . $shopVat->vat . '%</td>
+			<td>' . $shopVat->textTerritory . '</td>
+			<td>' . $shopVat->territory . '</td>
+			<td>' . g_l('global', ($shopVat->standard ? '[yes]' : '[no]')) . '</td>
+			<td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:we_cmd(\'edit\',\'' . $shopVat->id . '\');') . '</td>
+			<td>' . we_html_button::create_button(we_html_button::TRASH, 'javascript:we_cmd(\'delete\',\'' . $shopVat->id . '\');') . '</td>
 		</tr>';
-				unset($weShopVat);
+				unset($shopVat);
 			}
 
 			$vatTable .= '</table>
@@ -952,7 +951,7 @@ var allVats = {
 
 		$formVat = '
 <form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_vats">
-<input type="hidden" name="weShopVatId" id="weShopVatId" value="' . $weShopVat->id . '" />
+<input type="hidden" name="weShopVatId" id="weShopVatId" value="' . $shopVat->id . '" />
 <input type="hidden" name="onsaveclose" value="0" />
 <input type="hidden" name="we_cmd[0]" value="saveVat" />
 <table class="defaultfont" id="editShopVatForm" style="display:none;">
@@ -961,11 +960,11 @@ var allVats = {
 </tr>
 <tr>
 	<td style="width:100px">' . g_l('modules_shop', '[vat][vat_form_name]') . ':</td>
-	<td><input class="wetextinput" type="text" id="weShopVatText" name="weShopVatText" value="' . $weShopVat->text . '" />' . $selPredefinedNames . '</td>
+	<td><input class="wetextinput" type="text" id="weShopVatText" name="weShopVatText" value="' . $shopVat->text . '" />' . $selPredefinedNames . '</td>
 </tr>
 <tr>
 	<td>' . g_l('modules_shop', '[vat][vat_form_vat]') . ':</td>
-	<td><input class="wetextinput" type="text" id="weShopVatVat" name="weShopVatVat" value="' . $weShopVat->vat . '" onkeypress="return WE().util.IsDigit(event);" />%</td>
+	<td><input class="wetextinput" type="text" id="weShopVatVat" name="weShopVatVat" value="' . $shopVat->vat . '" onkeypress="return WE().util.IsDigit(event);" />%</td>
 </tr>
 
 <tr>
@@ -980,8 +979,8 @@ var allVats = {
 <tr>
 	<td>' . g_l('modules_shop', '[vat][vat_form_standard]') . ':</td>
 	<td><select id="weShopVatStandard" name="weShopVatStandard">
-			<option value="1"' . ($weShopVat->standard ? ' selected="selected"' : '') . '>' . g_l('modules_shop', '[vat][vat_edit_form_yes]') . '</option>
-			<option value="0"' . ($weShopVat->standard ? '' : ' selected="selected"') . '>' . g_l('modules_shop', '[vat][vat_edit_form_no]') . '</option>
+			<option value="1"' . ($shopVat->standard ? ' selected="selected"' : '') . '>' . g_l('modules_shop', '[vat][vat_edit_form_yes]') . '</option>
+			<option value="0"' . ($shopVat->standard ? '' : ' selected="selected"') . '>' . g_l('modules_shop', '[vat][vat_edit_form_no]') . '</option>
 		</select>
 	</td>
 	<td></td>
