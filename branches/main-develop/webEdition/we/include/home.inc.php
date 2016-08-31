@@ -32,7 +32,8 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	$iLayoutCols = empty($_SESSION['prefs']['cockpit_amount_columns']) ? 3 : $_SESSION['prefs']['cockpit_amount_columns'];
 	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reset_home') ? true : false;
 	if(!$bResetProps && $iLayoutCols){
-		$aDat = strlen(we_base_preferences::getUserPref('cockpit_dat'))>5?(we_unserialize(we_base_preferences::getUserPref('cockpit_dat'))? : $aCfgProps):$aCfgProps;
+		$aDat = (we_unserialize(we_base_preferences::getUserPref('cockpit_dat'))? : $aCfgProps);
+		$aDat = array_filter($aDat)? : $aCfgProps;
 		$aTrf = we_unserialize(we_base_preferences::getUserPref('cockpit_rss'))? : $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
@@ -69,6 +70,10 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		});
 
 		var _iInitCols = _iLayoutCols =<?= intval($iLayoutCols); ?>;
+		var quickstart = true;
+		var _bDgSave = false;
+		var bInitDrag = false;
+		var oTblWidgets = null;
 		WE().layout.cockpitFrame.transact = "<?= md5(uniqid(__FILE__, true)); ?>";
 		var homeData = [
 	<?php
