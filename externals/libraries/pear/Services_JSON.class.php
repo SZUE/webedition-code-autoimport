@@ -309,7 +309,12 @@ class Services_JSON{
 				$strlen_var = $this->strlen8($var);
 //WE-change!
 				if($this->use & self::SERVICES_JSON_USE_NO_CHARSET_CONVERSION){
-					return '"' . $var . '"';
+					return '"' . strtr($var, array(
+							'\\' => '\\\\',
+							'/' => '\\/',
+							'"' => '\\"',
+							'\'' => '\\\'',
+						)) . '"';
 				}
 				/*
 				 * Iterate over every character in the string,
