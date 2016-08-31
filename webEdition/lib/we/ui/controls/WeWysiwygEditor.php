@@ -472,7 +472,7 @@ class we_ui_controls_WeWysiwygEditor extends we_ui_abstract_AbstractFormElement{
 		$this->_layouttableObj->addHTML($this->getButton(), 1, 0);
 		$txt = $this->getText();
 		$html = $this->_layouttableObj->getHTML() .
-			'<div id="' . $this->getId() . '_View" style="border:1px solid white;width:' . $this->getWidth() . 'px;' . $this->getPreviewStyle() . '" >' . we_document::parseInternalLinks($txt, 0) . '</div><textarea style="display:none" id="' . $this->getId() . '" name="' . $this->getName() . '" />' . $this->getText() . '</textarea>';
+			'<div id="' . $this->getId() . '_View" style="border:1px solid #a5aaae;width:' . $this->getWidth() . 'px;' . $this->getPreviewStyle() . '" >' . we_document::parseInternalLinks($txt, 0) . '</div><textarea style="display:none" id="' . $this->getId() . '" name="' . $this->getName() . '" />' . $this->getText() . '</textarea>';
 
 		if($this->getHidden()){
 			$this->_style .= 'display:none;';

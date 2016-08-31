@@ -53,9 +53,10 @@ body, div, span, input, textarea, td, th, label, li {
 }
 
 .weEditorFooter {
-	background-image: url(edit_footer_background.gif);
+	background-color: #a5aaae ;
+	height: 54px;
 }
 
 .weEditorHeader {
-	background-image: url(edit_header_background.gif);
+	background-color: #a5aaae;
 }

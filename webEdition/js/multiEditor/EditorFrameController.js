@@ -1156,21 +1156,17 @@ TabView.prototype = {
 	 * adds an new tab to the tab view
 	 */
 	addTab: function (frameId, text, title, pos) {
-		newtab = this.tabDummy.cloneNode(true);
+		var newtab = this.tabDummy.cloneNode(true);
 		newtab.innerHTML = newtab.innerHTML.replace(/###tabTextId###/g, "text_" + frameId).replace(/###modId###/g, "mod_" + frameId).replace(/###loadId###/g, "load_" + frameId).replace(/###closeId###/g, "close_" + frameId);
 		newtab.id = "tab_" + frameId;
 		newtab.name = "tab";
 		newtab.title = title;
 		newtab.className = "tabActive";
-		if (pos !== undefined) {
-			if (this.tabContainer.childNodes.length > pos) {
-				this.tabContainer.insertBefore(newtab, this.tabContainer.childNodes[pos]);
-			} else {
-				pos = undefined;
-			}
-		}
+		pos = (pos !== undefined && this.tabContainer.childNodes.length > pos ? pos : undefined);
 		if (pos === undefined) {
 			this.tabContainer.appendChild(newtab);
+		} else {
+			this.tabContainer.insertBefore(newtab, this.tabContainer.childNodes[pos]);
 		}
 		this.setText(frameId, text);
 		this.setTitle(frameId, title);
@@ -1244,7 +1240,7 @@ TabView.prototype = {
 	 * sets the tab title
 	 */
 	setTitle: function (frameId, val) {
-		title = this.myDoc.getElementById('tab_' + frameId);
+		var title = this.myDoc.getElementById('tab_' + frameId);
 		if (title) {
 			title.title = val;
 		}

@@ -92,7 +92,7 @@ class we_app_HomePage extends we_ui_layout_HTMLPage{
 
 		$mainDiv = new we_ui_layout_Div(array('width' => 250, 'height' => $this->_boxHeight, 'top' => 30, 'left' => 40, 'position' => 'absolute'));
 
-		$headerDiv = new we_ui_layout_Div(array('width' => 250, 'height' => 20, 'top' => 0, 'left' => 0, 'position' => 'absolute', 'class' => self::kClassBoxHeader));
+		$headerDiv = new we_ui_layout_Div(array('width' => 250, 'top' => 0, 'left' => 0, 'position' => 'absolute', 'class' => self::kClassBoxHeader));
 
 		if($this->_title === ''){
 			$this->_title = oldHtmlspecialchars($translate->_($appName));
@@ -102,11 +102,11 @@ class we_app_HomePage extends we_ui_layout_HTMLPage{
 
 		$bodyDiv = $this->_getBodyDiv();
 
-		$footerDiv = new we_ui_layout_Div(array('width' => 250, 'height' => 18, 'top' => $this->_boxHeight - 18, 'left' => 0, 'position' => 'absolute', 'class' => self::kClassBoxFooter));
+		//$footerDiv = new we_ui_layout_Div(array('width' => 250, 'height' => 18, 'top' => $this->_boxHeight - 18, 'left' => 0, 'position' => 'absolute', 'class' => self::kClassBoxFooter));
 
 		$mainDiv->addElement($headerDiv);
 		$mainDiv->addElement($bodyDiv);
-		$mainDiv->addElement($footerDiv);
+		//$mainDiv->addElement($footerDiv);
 
 		$this->addElement($mainDiv);
 

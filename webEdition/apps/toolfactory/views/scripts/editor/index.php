@@ -24,7 +24,7 @@
  */
 $appDir = Zend_Controller_Front::getInstance()->getParam('appDir');
 
-$frameset = new we_ui_layout_Frameset(array('rows' => '40,*,40'));
+$frameset = new we_ui_layout_Frameset(array('rows' => '40,*,53'));
 
 $frameset->addFrame(array(
 	'src' => $appDir . '/index.php/editor/header' . $this->paramString,

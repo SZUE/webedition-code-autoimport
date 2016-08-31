@@ -25,6 +25,15 @@
  */
 var hot = 0;
 
+function doKeyDown(e) {
+	var key = (e.charCode === undefined ? event.keyCode : e.charCode);
+	switch (key) {
+		case 27:
+			top.close();
+			break;
+	}
+}
+
 function we_submitForm(url) {
 	var f = self.document.we_form;
 	if (!f.checkValidity()) {

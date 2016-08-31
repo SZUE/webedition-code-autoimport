@@ -161,6 +161,13 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	protected $_width = 150;
 
 	/**
+	 * style element margin
+	 *
+	 * @var string
+	 */
+	protected $_margin = '6px 0 0 -3px';
+
+	/**
 	 * type of button
 	 *
 	 * @var string
@@ -293,6 +300,15 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 	 */
 	public function setHref($_href){
 		$this->_href = $_href;
+	}
+
+	/**
+	 * Set style element margin of button
+	 *
+	 * @param string $_margin
+	 */
+	public function setMargin($_margin){
+		$this->_margin = $_margin;
 	}
 
 	/**
@@ -606,7 +622,7 @@ class we_ui_controls_Button extends we_ui_abstract_AbstractFormElement{
 		$dimensions = array('width' => $this->getWidth(), 'height' => 0 /* $this->getHeight()*/);
 
 		//FIXME: make css
-		return we_html_element::htmlDiv(array('style' => 'margin: 6px 0 0 0px;'), we_html_button::create_button($this->getButtonContent(), $this->getHref(), true, 0, 0, $this->getOnClick(), $this->getTarget(), $this->getDisabled(), false, '', false, $this->getTitle(), $this->getClass(), $this->getId(), $this->_isTextReady, array_filter($dimensions)));
+		return we_html_element::htmlDiv(array('style' => 'margin: ' . $this->_margin . ';'), we_html_button::create_button($this->getButtonContent(), $this->getHref(), true, 0, 0, $this->getOnClick(), $this->getTarget(), $this->getDisabled(), false, '', false, $this->getTitle(), $this->getClass(), $this->getId(), $this->_isTextReady, array_filter($dimensions)));
 	}
 
 }
