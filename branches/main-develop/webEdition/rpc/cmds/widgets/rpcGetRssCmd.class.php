@@ -72,7 +72,7 @@ class rpcGetRssCmd extends we_rpc_cmd{
 		}
 		$feeddata = $http_response->http_body;
 
-		$oRssParser = new we_xml_rss($feeddata, null, $GLOBALS['WE_BACKENDCHARSET']); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
+		$oRssParser = new we_xml_rss($feeddata, null, 'UTF-8'); // Umstellung in der XML_RSS-Klasse: den string, und nicht die url weiterzugeben
 		$tmp = $oRssParser->parse();
 		$sRssOut = "";
 
