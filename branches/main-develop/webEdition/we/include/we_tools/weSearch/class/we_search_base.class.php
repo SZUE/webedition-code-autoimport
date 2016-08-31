@@ -179,7 +179,11 @@ class we_search_base{
 		$this->maxItems = f('SELECT COUNT(1) FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : ''));
 		$this->limit = ' LIMIT ' . ($limit ? : $this->searchstart . ',' . $this->anzahl . ' ');
 
-		$this->db->query('SELECT ' . $this->get . ' FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : '') . ' ' . ($this->Order ? ' ORDER BY `' . $this->Order . '`' : '') . ' ' . $this->limit);
+		//FIXME: this is a bad fix
+		$count = 0;
+		$ord = str_replace(' DESC', '', $this->Order, $count);
+
+		$this->db->query('SELECT ' . $this->get . ' FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : '') . ' ' . ($this->Order ? ' ORDER BY `' . $ord . '`' . ($count ? ' DESC' : '') : '') . ' ' . $this->limit);
 	}
 
 	function setlimit($anzahl = '', $searchstart = ''){
