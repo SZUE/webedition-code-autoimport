@@ -24,8 +24,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-WE().layout.cockpitFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
+
+var quickstart = true;
 
 _EditorFrame.initEditorFrameData({
 	EditorType: "cockpit",

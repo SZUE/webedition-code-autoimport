@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var bInitDrag = false;
+
 function initDragWidgets() {
 	if (!bInitDrag) {
 		le_dragInit(oTblWidgets);

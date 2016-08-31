@@ -59,10 +59,8 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	}
 	?>
 	<script><!--
+		WE().layout.cockpitFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
 		var _iInitCols = _iLayoutCols =<?= intval($iLayoutCols); ?>;
-		var quickstart = true;
-		var _bDgSave = false;
-		var bInitDrag = false;
 		var oTblWidgets = null;
 		WE().layout.cockpitFrame.transact = "<?= md5(uniqid(__FILE__, true)); ?>";
 		var homeData = [
