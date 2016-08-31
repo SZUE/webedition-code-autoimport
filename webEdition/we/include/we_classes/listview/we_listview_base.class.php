@@ -80,7 +80,7 @@ abstract class we_listview_base{
 		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;
 		$this->cols = (($cols == '' && ($calendar === 'month' || $calendar === 'month_table')) ? 7 : $cols);
 		$this->offset = abs($offset);
-		$this->start = we_base_request::_(we_base_request::INT, 'we_lv_start_' . $this->name, 0);
+		$this->start = abs(we_base_request::_(we_base_request::INT, 'we_lv_start_' . $this->name, 0));
 		if($this->start == 0){
 			$this->start += $this->offset;
 		}

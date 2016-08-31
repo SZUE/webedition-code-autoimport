@@ -169,7 +169,7 @@ class we_glossary_search{
 			($this->Having ? ' HAVING ' . $this->Having : '');
 
 		if(!$countStmt){
-			if($this->Order != ''){
+			if($this->Order){
 				$stmt .= ' ORDER BY ' . $this->Order . ' ' . $this->Sort;
 			}
 

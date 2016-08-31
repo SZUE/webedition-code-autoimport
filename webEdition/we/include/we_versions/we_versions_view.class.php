@@ -365,19 +365,19 @@ var searchClass={
 	 * @return array with headlines
 	 */
 	public function makeHeadLines(){
-		return array(
-			array('dat' => '<span onclick="setOrder(\'version\');">' . g_l('versions', '[version]') . ' <span id="version" >' . $this->getSortImage('version') . '</span></span>'),
-			array('dat' => '<span onclick="setOrder(\'modifierID\');">' . g_l('versions', '[user]') . ' <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span></span>'),
-			array('dat' => '<span onclick="setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span></span>'),
-			array('dat' => g_l('versions', '[modifications]')),
-			array('dat' => (permissionhandler::hasPerm('ADMINISTRATOR') ? '<div id="deleteButton">' .
+		return [
+			['dat' => '<span onclick="setOrder(\'version\');">' . g_l('versions', '[version]') . ' <span id="version" >' . $this->getSortImage('version') . '</span></span>'],
+			['dat' => '<span onclick="setOrder(\'modifierID\');">' . g_l('versions', '[user]') . ' <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span></span>'],
+			['dat' => '<span onclick="setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span></span>'],
+			['dat' => g_l('versions', '[modifications]')],
+			['dat' => (permissionhandler::hasPerm('ADMINISTRATOR') ? '<div id="deleteButton">' .
 					we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
-				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")),
+				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")],
 			['dat' => ''],
 			['dat' => ''],
 			['dat' => ''],
 			['dat' => ''],
-		);
+		];
 	}
 
 	/**

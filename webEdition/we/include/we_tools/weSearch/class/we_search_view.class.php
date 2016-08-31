@@ -505,22 +505,22 @@ weSearch.elems = {
 
 	function makeHeadLines($whichSearch){
 		return $whichSearch !== self::SEARCH_MEDIA ?
-			array(
-			array('dat' => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'),
-			array('dat' => '<span onclick="javascript:weSearch.setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . ($whichSearch === 'TmplSearch' ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]')) . ' <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage('SiteTitle', $whichSearch) . '</span></span>'),
-			array('dat' => '<span onclick="weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span></span>'),
-			array('dat' => '<span onclick="weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span></span>')
-			) :
-			array(
-			array('dat' => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'),
-			array('dat' => '<span onclick="weSearch.setOrder(\'media_filesize\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[groesse]') . ' <span id="media_filesize_' . $whichSearch . '" >' . $this->getSortImage('media_filesize', $whichSearch) . '</span></span>'),
-			array('dat' => '<span onclick="weSearch.setOrder(\'IsUsed\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[Status]') . ' <span id="IsUsed_' . $whichSearch . '" >' . $this->getSortImage('IsUsed', $whichSearch) . '</span></span>'),
-			array('dat' => '<span onclick="weSearch.setOrder(\'media_alt\',\'' . $whichSearch . '\');">alt <span id="media_alt_' . $whichSearch . '" >' . $this->getSortImage('media_alt', $whichSearch) . '</span></span>'),
-			array('dat' => '<span onclick="weSearch.setOrder(\'media_title\',\'' . $whichSearch . '\');">title <span id="media_title_' . $whichSearch . '" >' . $this->getSortImage('media_title', $whichSearch) . '</span></span>'),
-			array('dat' => '<span onclick="weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span></span>'),
-			array('dat' => '<span onclick="weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span></span>'),
+			[
+			['dat' => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'],
+			['dat' => '<span onclick="javascript:weSearch.setOrder(\'SiteTitle\',\'' . $whichSearch . '\');">' . ($whichSearch === 'TmplSearch' ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]')) . ' <span id="SiteTitle_' . $whichSearch . '" >' . $this->getSortImage('SiteTitle', $whichSearch) . '</span></span>'],
+			['dat' => '<span onclick="weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span></span>'],
+			['dat' => '<span onclick="weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span></span>']
+			] :
+			[
+			['dat' => '<span onclick="weSearch.setOrder(\'Text\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . $whichSearch . '" >' . $this->getSortImage('Text', $whichSearch) . '</span></span>'],
+			['dat' => '<span onclick="weSearch.setOrder(\'media_filesize\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[groesse]') . ' <span id="media_filesize_' . $whichSearch . '" >' . $this->getSortImage('media_filesize', $whichSearch) . '</span></span>'],
+			['dat' => '<span onclick="weSearch.setOrder(\'IsUsed\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[Status]') . ' <span id="IsUsed_' . $whichSearch . '" >' . $this->getSortImage('IsUsed', $whichSearch) . '</span></span>'],
+			['dat' => '<span onclick="weSearch.setOrder(\'media_alt\',\'' . $whichSearch . '\');">alt <span id="media_alt_' . $whichSearch . '" >' . $this->getSortImage('media_alt', $whichSearch) . '</span></span>'],
+			['dat' => '<span onclick="weSearch.setOrder(\'media_title\',\'' . $whichSearch . '\');">title <span id="media_title_' . $whichSearch . '" >' . $this->getSortImage('media_title', $whichSearch) . '</span></span>'],
+			['dat' => '<span onclick="weSearch.setOrder(\'CreationDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . $whichSearch . '" >' . $this->getSortImage('CreationDate', $whichSearch) . '</span></span>'],
+			['dat' => '<span onclick="weSearch.setOrder(\'ModDate\',\'' . $whichSearch . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . $whichSearch . '" >' . $this->getSortImage('ModDate', $whichSearch) . '</span></span>'],
 			['dat' => '']
-		);
+		];
 	}
 
 	public function makeContent(array $result = [], $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){

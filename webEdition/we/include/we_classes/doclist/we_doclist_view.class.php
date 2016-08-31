@@ -171,12 +171,12 @@ weSearch.elems = {
 	}
 
 	public function makeHeadLines($table){
-		return array(
-			array('dat' => '<span onclick="weSearch.setOrder(\'Text\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('Text', we_search_view::SEARCH_DOCLIST) . '</span></span>'),
-			array('dat' => '<span onclick="weSearch.setOrder(\'SiteTitle\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . ($table == TEMPLATES_TABLE ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]') ) . ' <span id="SiteTitle_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('SiteTitle', we_search_view::SEARCH_DOCLIST) . '</span></span>'),
-			array('dat' => '<span onclick="javascript:weSearch.setOrder(\'CreationDate\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('CreationDate', we_search_view::SEARCH_DOCLIST) . '</span></span>'),
-			array('dat' => '<span onclick="javascript:weSearch.setOrder(\'ModDate\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('ModDate', we_search_view::SEARCH_DOCLIST) . '</span></span>'),
-		);
+		return [
+			['dat' => '<span onclick="weSearch.setOrder(\'Text\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . g_l('searchtool', '[dateiname]') . ' <span id="Text_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('Text', we_search_view::SEARCH_DOCLIST) . '</span></span>'],
+			['dat' => '<span onclick="weSearch.setOrder(\'SiteTitle\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . ($table == TEMPLATES_TABLE ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]') ) . ' <span id="SiteTitle_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('SiteTitle', we_search_view::SEARCH_DOCLIST) . '</span></span>'],
+			['dat' => '<span onclick="javascript:weSearch.setOrder(\'CreationDate\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('CreationDate', we_search_view::SEARCH_DOCLIST) . '</span></span>'],
+			['dat' => '<span onclick="javascript:weSearch.setOrder(\'ModDate\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('ModDate', we_search_view::SEARCH_DOCLIST) . '</span></span>'],
+			];
 	}
 
 	public function makeContent(array $result = [], $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){

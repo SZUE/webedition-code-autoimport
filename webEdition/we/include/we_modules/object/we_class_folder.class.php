@@ -221,50 +221,48 @@ class we_class_folder extends we_folder{
 			['dat' => ''],
 			['dat' => g_l('modules_objectClassfoldersearch', '[zeige]')],
 			['dat' => ''],
-			array('dat' => '<span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . $this->getSortImage('Path') . '</span>'),
-			array('dat' => '<span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . $this->getSortImage('ID') . '</span>'),
-			array('dat' => g_l('modules_objectClassfoldersearch', '[Arbeitsbereiche]')),
-			array('dat' => g_l('modules_objectClassfoldersearch', '[xtraArbeitsbereiche]')),
-			array('dat' => '<span onclick="setOrder(\'Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . $this->getSortImage('Published') . '</span>'),
-			array('dat' => '<span onclick="setOrder(\'ModDate\');">' . g_l('modules_objectClassfoldersearch', '[geaendert]') . $this->getSortImage('ModDate') . '</span>'),
-			array('dat' => '<span onclick="setOrder(\'Url\');">' . g_l('modules_objectClassfoldersearch', '[url]') . $this->getSortImage('Url') . '</span>'),
-			array('dat' => '<span onclick="setOrder(\'TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . $this->getSortImage('TriggerID') . '</span>'),
-			array('dat' => g_l('modules_objectClassfoldersearch', '[charset]')),
-			array('dat' => g_l('modules_objectClassfoldersearch', '[language]')),
-			array('dat' => '<span onclick="setOrder(\'WebUserID\');">' . g_l('modules_objectClassfoldersearch', '[WebUser]') . $this->getSortImage('WebUserID') . '</span>'),
+			['dat' => '<span onclick="setOrder(\'Path\');">' . g_l('modules_objectClassfoldersearch', '[Objekt]') . $this->getSortImage('Path') . '</span>'],
+			['dat' => '<span onclick="setOrder(\'ID\');">' . g_l('modules_objectClassfoldersearch', '[ID]') . $this->getSortImage('ID') . '</span>'],
+			['dat' => g_l('modules_objectClassfoldersearch', '[Arbeitsbereiche]')],
+			['dat' => g_l('modules_objectClassfoldersearch', '[xtraArbeitsbereiche]')],
+			['dat' => '<span onclick="setOrder(\'Published\');">' . g_l('modules_objectClassfoldersearch', '[Veroeffentlicht]') . $this->getSortImage('Published') . '</span>'],
+			['dat' => '<span onclick="setOrder(\'ModDate\');">' . g_l('modules_objectClassfoldersearch', '[geaendert]') . $this->getSortImage('ModDate') . '</span>'],
+			['dat' => '<span onclick="setOrder(\'Url\');">' . g_l('modules_objectClassfoldersearch', '[url]') . $this->getSortImage('Url') . '</span>'],
+			['dat' => '<span onclick="setOrder(\'TriggerID\');">' . g_l('modules_objectClassfoldersearch', '[triggerid]') . $this->getSortImage('TriggerID') . '</span>'],
+			['dat' => g_l('modules_objectClassfoldersearch', '[charset]')],
+			['dat' => g_l('modules_objectClassfoldersearch', '[language]')],
+			['dat' => '<span onclick="setOrder(\'WebUserID\');">' . g_l('modules_objectClassfoldersearch', '[WebUser]') . $this->getSortImage('WebUserID') . '</span>'],
 		];
 
 		$content = [];
 
 		while($this->searchclass->next_record()){
 			$stateclass = !$this->searchclass->f("Published") ? 'notpublished' : ($this->searchclass->f("ModDate") > $this->searchclass->f("Published") ? 'changed' : '');
-			$content[] = array(
-				array(
-					"align" => "center",
+			$content[] = [
+				["align" => "center",
 					'dat' => ((permissionhandler::hasPerm(["DELETE_OBJECTFILE", "NEW_OBJECTFILE"])) && permissionhandler::checkIfRestrictUserIsAllowed($this->searchclass->f("ID"), OBJECT_FILES_TABLE, $this->DB_WE) ?
 						'<input type="checkbox" name="weg[' . $this->searchclass->f("ID") . ']" />' :
-						'<i class="fa fa-square-o wecheckIcon disabled"></i>')),
-				array(
-					"align" => "center",
+						'<i class="fa fa-square-o wecheckIcon disabled"></i>')],
+				["align" => "center",
 					"height" => 35,
 					'dat' => ((((we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("Workspaces")) && $this->searchclass->f("Workspaces") != "") || (we_users_util::in_workspace($this->WorkspaceID, $this->searchclass->f("ExtraWorkspacesSelected")) && $this->searchclass->f("ExtraWorkspacesSelected") != "" ) ) || ($this->searchclass->f("Workspaces") === "" && $ok)) ?
 						'<i class="fa fa-lg fa-circle" style="color:#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[visible_in_ws]') . '"></i>' :
-						'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]') . '"></i>')),
-				array('dat' => ($this->searchclass->f("IsSearchable") ?
+						'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[not_visible_in_ws]') . '"></i>')],
+				['dat' => ($this->searchclass->f("IsSearchable") ?
 						'<i class="fa fa-lg fa-circle" style="color:#006DB8;" title="' . g_l('modules_objectClassfoldersearch', '[issearchable]') . '"></i>' :
-						'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '"></i>')),
-				array('dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("ID") . ',\'objectFile\');" class="middlefont' . ($stateclass ? ' ' . $stateclass : '') . '" title="' . $this->searchclass->f("Path") . '">' . we_base_util::shortenPath($this->searchclass->f("Text"), 32) . '</a>'),
-				array('dat' => $this->searchclass->f("ID")),
-				array('dat' => $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("Workspaces")), 32)),
-				array('dat' => $this->searchclass->getExtraWorkspace(makeArrayFromCSV($this->searchclass->f("ExtraWorkspaces")), 32, $this->TableID, $userWSArray)),
-				array('dat' => '<nobr>' . ($this->searchclass->f("Published") ? date(g_l('date', '[format][default]'), $this->searchclass->f("Published")) : "-") . '</nobr>'),
-				array('dat' => '<nobr>' . ($this->searchclass->f("ModDate") ? date(g_l('date', '[format][default]'), $this->searchclass->f("ModDate")) : "-") . '</nobr>'),
-				array('dat' => $this->searchclass->f("Url")),
-				array('dat' => $this->searchclass->f("TriggerID") ? id_to_path($this->searchclass->f("TriggerID")) : ''),
-				array('dat' => $this->searchclass->f("Charset")),
-				array('dat' => $this->searchclass->f("Language")),
-				array('dat' => $this->searchclass->f("WebUserID")),
-			);
+						'<i class="fa fa-lg fa-circle" style="color:#E7E7E7;" title="' . g_l('modules_objectClassfoldersearch', '[isnotsearchable]') . '"></i>')],
+				['dat' => '<a href="javascript:WE().layout.weEditorFrameController.openDocument(\'' . OBJECT_FILES_TABLE . '\',' . $this->searchclass->f("ID") . ',\'objectFile\');" class="middlefont' . ($stateclass ? ' ' . $stateclass : '') . '" title="' . $this->searchclass->f("Path") . '">' . we_base_util::shortenPath($this->searchclass->f("Text"), 32) . '</a>'],
+				['dat' => $this->searchclass->f("ID")],
+				['dat' => $this->searchclass->getWorkspaces(makeArrayFromCSV($this->searchclass->f("Workspaces")), 32)],
+				['dat' => $this->searchclass->getExtraWorkspace(makeArrayFromCSV($this->searchclass->f("ExtraWorkspaces")), 32, $this->TableID, $userWSArray)],
+				['dat' => '<nobr>' . ($this->searchclass->f("Published") ? date(g_l('date', '[format][default]'), $this->searchclass->f("Published")) : "-") . '</nobr>'],
+				['dat' => '<nobr>' . ($this->searchclass->f("ModDate") ? date(g_l('date', '[format][default]'), $this->searchclass->f("ModDate")) : "-") . '</nobr>'],
+				['dat' => $this->searchclass->f("Url")],
+				['dat' => $this->searchclass->f("TriggerID") ? id_to_path($this->searchclass->f("TriggerID")) : ''],
+				['dat' => $this->searchclass->f("Charset")],
+				['dat' => $this->searchclass->f("Language")],
+				['dat' => $this->searchclass->f("WebUserID")],
+			];
 
 			$javascriptAll .= "var flo=document.we_form.elements['weg[" . $this->searchclass->f("ID") . "]'].checked=true;";
 		}
@@ -526,7 +524,7 @@ class we_class_folder extends we_folder{
 </table>';
 
 
-		$this->searchclass->Order = we_base_request::_(we_base_request::STRING, 'Order', (isset($this->Order) ? $this->Order : 'Path'));
+		$this->searchclass->Order = we_base_request::_(we_base_request::STRING, 'Order', (empty($this->Order) ? 'Path' : $this->Order));
 		$this->Order = $this->searchclass->Order;
 		$this->searchclass->searchstart = we_base_request::_(we_base_request::INT, 'SearchStart', $this->searchclass->searchstart);
 		$this->searchclass->anzahl = we_base_request::_(we_base_request::INT, 'Anzahl', $this->searchclass->anzahl);
@@ -732,13 +730,13 @@ EOF;
 		if(!isset($_SESSION['weS']['we_objectSearch'])){
 			$_SESSION['weS']['we_objectSearch'] = [];
 		}
-		$_SESSION['weS']['we_objectSearch'][$this->ID] = array(
+		$_SESSION['weS']['we_objectSearch'][$this->ID] = [
 			'Searchclass' => $this->searchclass,
 			'SearchStart' => $this->SearchStart,
 			'GreenOnly' => $this->GreenOnly,
 			'Order' => $this->Order,
 			'EditPageNr' => $this->EditPageNr,
-		);
+		];
 	}
 
 	public function deleteObjects(){
