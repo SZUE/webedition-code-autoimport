@@ -36,10 +36,10 @@ function we_tag_charset(array $attribs, $content){
 	if($content){ //	set charset
 		$attribs['charset'] = $content;
 		if(!headers_sent()){
-			header('Content-Type: ' . 'text/html; charset=' . $content);
+			header('Content-Type: ' . 'text/html; charset=' . $content, false);
 		}
 
-		return getHtmlTag('meta', removeAttribs($attribs, array('defined'))) . "\n";
+		return getHtmlTag('meta', removeAttribs($attribs, ['defined'])) . "\n";
 	}
 	return '';
 }
