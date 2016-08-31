@@ -26,8 +26,6 @@
 
 var _propsDlg = [];
 var _isHotTrf = false;
-var quickstart = true;
-var _bDgSave = false;
 
 function isHot() {
 	var ix = ['type', 'cls', 'res', 'csv'];
