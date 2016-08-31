@@ -59,16 +59,6 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	}
 	?>
 	<script><!--
-		WE().layout.cockpitFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
-		var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
-		_EditorFrame.initEditorFrameData({
-			EditorType: "cockpit",
-			EditorDocumentText: "<?= g_l('cockpit', '[cockpit]'); ?>",
-			EditorDocumentPath: "Cockpit",
-			EditorContentType: "cockpit",
-			EditorEditCmd: "open_cockpit"
-		});
-
 		var _iInitCols = _iLayoutCols =<?= intval($iLayoutCols); ?>;
 		var quickstart = true;
 		var _bDgSave = false;
@@ -174,7 +164,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	echo
 	we_html_element::htmlBody(
 		[
-		'onload' => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});oTblWidgets=document.getElementById('le_tblWidgets');initDragWidgets();",
+		'onload' => "WE().layout.weEditorFrameController.getEditorFrame(window.name).initEditorFrameData({'EditorIsLoading':false});oTblWidgets=document.getElementById('le_tblWidgets');initDragWidgets();",
 		], we_html_element::htmlForm(
 			['name' => 'we_form'
 			], we_html_element::htmlHiddens([

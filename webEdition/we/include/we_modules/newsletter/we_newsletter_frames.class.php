@@ -273,7 +273,7 @@ function afterLoad(){
 
 			if(!$group){
 				$table2->setCol(0, 1, array('style' => 'padding-left:70px;'), $select->getHtml());
-				$table2->setCol(0, 2, array('style' => 'padding-left:5px;'), we_html_forms::checkbox(0, false, "htmlmail_check", g_l('modules_newsletter', '[html_preview]'), false, "defaultfont", "if(document.we_form.htmlmail_check.checked) { document.we_form.hm.value=1;top.opener.top.nlHTMLMail=1; } else { document.we_form.hm.value=0;top.opener.top.nlHTMLMail=0; }"));
+				$table2->setCol(0, 2, array('style' => 'padding-left:5px;'), we_html_forms::checkbox(0, false, "htmlmail_check", g_l('modules_newsletter', '[html_preview]'), false, "defaultfont", "if(document.we_form.htmlmail_check.checked) { document.we_form.hm.value=1;top.opener.top.nlHTMLMail=true; } else { document.we_form.hm.value=0;top.opener.top.nlHTMLMail=false; }"));
 				$table2->setCol(0, 3, [], we_html_button::create_button(we_html_button::PREVIEW, "javascript:we_cmd('popPreview')"));
 				$table2->setCol(0, 4, [], (permissionhandler::hasPerm("SEND_NEWSLETTER") ? we_html_button::create_button('send', "javascript:we_cmd('popSend')") : ""));
 			}

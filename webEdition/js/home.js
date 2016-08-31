@@ -24,6 +24,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+WE().layout.cockpitFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
+
+_EditorFrame.initEditorFrameData({
+	EditorType: "cockpit",
+	EditorDocumentText: WE().consts.g_l.cockpit.tabName,
+	EditorDocumentPath: "Cockpit",
+	EditorContentType: "cockpit",
+	EditorEditCmd: "open_cockpit"
+});
+
 var _propsDlg = [];
 var _isHotTrf = false;
 

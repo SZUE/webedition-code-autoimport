@@ -57,7 +57,6 @@ class we_versions_view{
 		}
 
 		return we_html_element::jsElement('
-WE().util.loadConsts("g_l.versions");
 var rows = ' . (isset($_REQUEST['searchFields']) ? count($_REQUEST['searchFields']) - 1 : 0) . ';
 var transaction="' . $GLOBALS['we_transaction'] . '";
 var doc={
@@ -70,14 +69,14 @@ var doc={
 var searchClass={
 	scrollHeight:' . $h . ',
 	anzahl:' . intval($this->Model->getProperty('currentAnzahl')) . ',
-	searchFields: "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);')))) . '",
-	locationFields:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]")))) . '",
-	locationFieldsDate:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, array('class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]")))) . '",
-	locationFieldsText:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, array('class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]")))) . '",
-	search:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '",
+	searchFields: "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, ['class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);']))) . '",
+	locationFields:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
+	locationFieldsDate:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, ['class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
+	locationFieldsText:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, ['class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
+	search:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
 	trash:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_row__)") . '\',
-	searchUsers:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '",
-	searchStats:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]")))) . '",
+	searchUsers:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
+	searchStats:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, ['class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
 };') . we_html_element::jsScript(JS_DIR . 'versions_view.js');
 	}
 

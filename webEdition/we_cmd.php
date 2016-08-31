@@ -360,6 +360,7 @@ if(($inc = findInclude($cmd))){
 			break;
 		default:
 			if(!$skipJS){
+				//FIXME: check if we can skip/remove this from all calls and assign to appropreate
 				echo we_html_element::jsElement('parent.openedWithWE=true;');
 			}
 			break;
