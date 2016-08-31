@@ -179,7 +179,11 @@ class we_search_base{
 		$this->maxItems = f('SELECT COUNT(1) FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : ''));
 		$this->limit = ' LIMIT ' . ($limit ? : $this->searchstart . ',' . $this->anzahl . ' ');
 
-		$this->db->query('SELECT ' . $this->get . ' FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : '') . ' ' . ($this->Order ? ' ORDER BY `' . $this->Order . '`' : '') . ' ' . $this->limit);
+		//FIXME: this is a bad fix
+		$count = 0;
+		$ord = str_replace(' DESC', '', $this->Order, $count);
+
+		$this->db->query('SELECT ' . $this->get . ' FROM ' . $this->table . ' ' . ($this->where ? ' WHERE ' . $this->where : '') . ' ' . ($this->Order ? ' ORDER BY `' . $ord . '`' . ($count ? ' DESC' : '') : '') . ' ' . $this->limit);
 	}
 
 	function setlimit($anzahl = '', $searchstart = ''){
@@ -256,7 +260,7 @@ class we_search_base{
 
 		$page = ceil($this->searchstart / $this->anzahl) * $this->anzahl;
 
-		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array("onchange" => "this.form.elements.SearchStart.value = this.value;we_cmd('reload_editpage');"));
+		$select = we_html_tools::htmlSelect("page", $pages, 1, $page, false, array('onchange' => "this.form.elements.SearchStart.value = this.value;we_cmd('reload_editpage');"));
 		if(!defined('SearchStart')){//we need this, since pager is shown above & under the results
 			define("SearchStart", true);
 			$out .= we_html_element::htmlHidden("SearchStart", $this->searchstart);
