@@ -143,8 +143,8 @@ function setOnload() {
 	if (top.edit_include) {
 		top.edit_include.close();
 	}
-	if (openedWithWE == false) {
+	if (openedWithWE === false) {
 		checkDocument();
 	}
-	setOpenedWithWE(false);
+	openedWithWE=false;
 }
