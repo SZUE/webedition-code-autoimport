@@ -25,8 +25,15 @@
 class we_rpc_genericJSONView extends we_rpc_view{
 
 	function getResponse($response){
-		$json = new Services_JSON();
-		return $json->encode($response);
+		//always sent utf8 data as expected by json
+		header('Content-Type: application/json; charset=UTF-8');
+		$ret = json_encode($response, JSON_UNESCAPED_UNICODE);
+		if($ret){
+			return $ret;
+		}
+
+		$json = new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
+		return utf8_encode($json->encode($response, false));
 	}
 
 }
