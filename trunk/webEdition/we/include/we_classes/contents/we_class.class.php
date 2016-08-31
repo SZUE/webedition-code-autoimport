@@ -31,7 +31,7 @@ abstract class we_class{
 	const LOAD_REVERT_DB = 2; //we_temporaryDocument::revert gibst nicht mehr siehe #5789
 	const LOAD_SCHEDULE_DB = 3;
 	//constants define where to write document (guess)
-	const SUB_DIR_NO = '';
+	const SUB_DIR_NO = '-';
 	const SUB_DIR_YEAR = 'y';
 	const SUB_DIR_YEAR_MONTH = 'ym';
 	const SUB_DIR_YEAR_MONTH_DAY = 'ymd';
