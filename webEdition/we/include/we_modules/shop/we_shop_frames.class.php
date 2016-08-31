@@ -59,9 +59,7 @@ function we_cmd() {
 			// not needed yet
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
-}
-
-		');
+}');
 
 //	$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 //	$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
@@ -704,40 +702,6 @@ function setTab(tab) {
 		we_html_tools::protect($protect);
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		$jsFunction = '
-	function we_submitForm(url){
-		var f = self.document.we_form;
-	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-		return false;
-	}
-		f.action = url;
-    	f.method = "post";
-
-    	f.submit();
-			return true;
-    }
-
-	function doUnload() {
-		WE().util.jsWindow.prototype.closeAll(window);
-	}
-
-	function we_cmd(){
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-		switch (args[0]) {
-			case "close":
-				window.close();
-				break;
-			case "save":
-				we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_status");
-				break;
-			default:
-				top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-		}
-	}';
-
 // initialise the shopStatusMails Object
 		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'saveShopStatusMails'){
 			// initialise the vatRule by request
@@ -875,7 +839,7 @@ function setTab(tab) {
 			]
 		];
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jsFunction), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_status">
+		return we_html_tools::getHtmlTop('', '', '',we_html_element::jsScript(JS_DIR . 'we_modules/shop/statusMails.js') , we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_status">
 		<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />' .
 					we_html_multiIconBox::getHTML('weShopStatusMails', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
