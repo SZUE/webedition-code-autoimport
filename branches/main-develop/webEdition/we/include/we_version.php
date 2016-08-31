@@ -6,4 +6,3 @@ define("WE_SVNREV","12467");
 define("WE_VERSION_SUPP_VERSION","0");
 define("WE_VERSION_BRANCH","main-develop");
 define("WE_VERSION_NAME","webEdition 7.0.8.1 Nightly");
-

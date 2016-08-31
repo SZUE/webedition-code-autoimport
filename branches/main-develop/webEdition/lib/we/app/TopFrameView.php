@@ -156,6 +156,7 @@ weEventController.register("docChanged", function(data, sender) {
 weEventController.register("save", function(data, sender) {
 	self.hot = false;
 	var msg = "$saveMessage";
+	var text;
 	//datasource: table
 	if(data.model.Path!=null) {
 		text = data.model.Path;

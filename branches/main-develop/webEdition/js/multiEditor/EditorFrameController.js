@@ -1224,14 +1224,14 @@ TabView.prototype = {
 	 * sets the tab label
 	 */
 	setText: function (frameId, val) {
-		text = this.myDoc.getElementById('text_' + frameId);
+		var text = this.myDoc.getElementById('text_' + frameId);
 		if (text) {
 			text.innerHTML = val;
 			this.setFrameSize();
 		}
 	},
 	setTextClass: function (frameId, classname) {
-		text = this.myDoc.getElementById('text_' + frameId);
+		var text = this.myDoc.getElementById('text_' + frameId);
 		if (classname) {
 			text.className = "cutText text " + classname;
 		}

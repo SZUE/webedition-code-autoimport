@@ -161,8 +161,7 @@ weEventController.register("save", function(data, sender) {
 	//datasource: table
 	if(data.model.Path!=null) {
 		text = data.model.Path;
-	}
-	else {
+	} else {
 		//custom tool, no Path
 		text = data.model.Text;
 	}
