@@ -20,6 +20,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+/* global WE */
+
 function weNavigationHistory() {
 
 	this.documentHistory = [];
@@ -128,5 +130,3 @@ function weNavigationHistoryEntry(table, id, ct, editcmd, url, parameters) {
 		return false;
 	};
 }
-
-top.weNavigationHistory = new weNavigationHistory();

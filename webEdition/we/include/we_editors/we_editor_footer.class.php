@@ -33,7 +33,7 @@ abstract class we_editor_footer{
 		//	spaceholder
 		$messageTbl->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:5px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 		$messageTbl->setCol(0, 1, ['class' => 'defaultfont'], sprintf(g_l('alert', '[file_locked_footer]'), $username));
-		$messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:top.weNavigationHistory.navigateReload();")));
+		$messageTbl->setColContent(0, 2, (we_base_request::_(we_base_request::BOOL, "SEEM_edit_include") ? '' : we_html_button::create_button(we_html_button::RELOAD, "javascript:WE().layout.weNavigationHistory.navigateReload();")));
 
 		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array('id' => 'footerBody'), $messageTbl->getHtml()));
 	}

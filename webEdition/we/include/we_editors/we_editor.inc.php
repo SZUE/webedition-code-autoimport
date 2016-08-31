@@ -590,7 +590,7 @@ _EditorFrame.getDocumentReference().frames.editFooter.location.reload();'; // re
 				}
 
 				if($wasNew){ // add to history
-					$we_JavaScript .= "top.weNavigationHistory.addDocToHistory('" . $we_doc->Table . "', " . $we_doc->ID . ", '" . $we_doc->ContentType . "');";
+					$we_JavaScript .= "WE().layout.weNavigationHistory.addDocToHistory('" . $we_doc->Table . "', " . $we_doc->ID . ", '" . $we_doc->ContentType . "');";
 				}
 			}
 			$we_responseText.=$we_doc->getErrMsg();
