@@ -94,9 +94,9 @@ window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . 
 					];
 			}
 			$navigationButtons = array_merge($navigationButtons, [
-				["onclick" => "top.weNavigationHistory.navigateReload();", "i" => "refresh", "text" => g_l('javaMenu_global', '[reload]')],
-				["onclick" => "top.weNavigationHistory.navigateBack();", "i" => "caret-left", "text" => g_l('javaMenu_global', '[back]')],
-				["onclick" => "top.weNavigationHistory.navigateNext();", "i" => "caret-right", "text" => g_l('javaMenu_global', '[next]')],
+				["onclick" => "WE().layout.weNavigationHistory.navigateReload();", "i" => "refresh", "text" => g_l('javaMenu_global', '[reload]')],
+				["onclick" => "WE().layout.weNavigationHistory.navigateBack();", "i" => "caret-left", "text" => g_l('javaMenu_global', '[back]')],
+				["onclick" => "WE().layout.weNavigationHistory.navigateNext();", "i" => "caret-right", "text" => g_l('javaMenu_global', '[next]')],
 				]
 			);
 		}

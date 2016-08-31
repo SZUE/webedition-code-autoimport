@@ -36,7 +36,7 @@ if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_
 	$table->setCol(0, 0, ['class' => 'defaultfont'], sprintf(g_l('SEEM', '[ext_doc_not_found]'), $path));
 
 	//	there must be a navigation-history - so use it
-	$table->setColContent(1, 0, we_html_button::create_button(we_html_button::BACK, "javascript:top.weNavigationHistory.navigateBack();"));
+	$table->setColContent(1, 0, we_html_button::create_button(we_html_button::BACK, "javascript:WE().layout.weNavigationHistory.navigateBack();"));
 
 	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', we_html_element::htmlBody(["style" => 'background-color:#F3F7FF;'], $table->getHtml())
 	);

@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  * webEdition CMS
  *
@@ -353,7 +355,7 @@ function save() {
 	}
 	opener.setPrefs(_sObjId, sBit, sTitleEnc);
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
-	opener.top.weNavigationHistory.navigateReload();
+	WE().layout.weNavigationHistory.navigateReload();
 	self.close();
 }
 

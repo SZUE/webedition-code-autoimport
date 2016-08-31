@@ -166,7 +166,7 @@ EditorFrameController.prototype = {
 				this.closeDocument(_editorId, "WE().layout.weEditorFrameController.openDocument(\"" + table + "\" ,\"" + id + "\",\"" + ct + "\",\"" + editcmd + "\",\"" + dt + "\",\"" + url + "\",\"" + code + "\",\"" + mode + "\",\"" + parameters + "\");");
 			} else if (this.ActiveEditorFrameId !== _editorId) {
 				// add to navigationHistory:
-				top.weNavigationHistory.addDocToHistory(table, id, ct, editcmd, url, parameters);
+				WE().layout.weNavigationHistory.addDocToHistory(table, id, ct, editcmd, url, parameters);
 
 				// activate in tree
 				if (top.treeData && top.treeData.table === table) {
@@ -187,7 +187,7 @@ EditorFrameController.prototype = {
 
 			if (this.getNumberOfFreeWindows() > 0) { // if there is a free frame, use it
 				if (editcmd || url || id) {	// add to navigationHistory
-					top.weNavigationHistory.addDocToHistory(table, id, ct, editcmd, url, parameters);
+					WE().layout.weNavigationHistory.addDocToHistory(table, id, ct, editcmd, url, parameters);
 				}
 
 				if (editcmd) { // open cockpit !
@@ -503,7 +503,7 @@ EditorFrameController.prototype = {
 
 			if (_currentEditor.getEditorIsInUse()) {
 
-				top.weNavigationHistory.addDocToHistory(
+				WE().layout.weNavigationHistory.addDocToHistory(
 								_currentEditor.getEditorEditorTable(),
 								_currentEditor.getEditorDocumentId(),
 								_currentEditor.getEditorContentType(),

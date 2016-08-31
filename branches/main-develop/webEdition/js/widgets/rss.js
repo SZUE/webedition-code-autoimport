@@ -192,7 +192,7 @@ function save() {
 	//savePrefs();
 	//displayRssFeed(sUri,true);
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
-	opener.top.weNavigationHistory.navigateReload();
+	WE().layout.weNavigationHistory.navigateReload();
 	self.close();
 }
 
