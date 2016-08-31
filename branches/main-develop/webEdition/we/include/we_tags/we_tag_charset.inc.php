@@ -36,7 +36,7 @@ function we_tag_charset(array $attribs, $content){
 	if($content){ //	set charset
 		$attribs['charset'] = $content;
 		if(!headers_sent()){
-			header('Content-Type: ' . 'text/html; charset=' . $content, false);
+			header('Content-Type: ' . 'text/html; charset=' . $content);
 		}
 
 		return getHtmlTag('meta', removeAttribs($attribs, ['defined'])) . "\n";
