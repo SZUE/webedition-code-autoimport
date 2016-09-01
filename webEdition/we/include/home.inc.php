@@ -57,36 +57,25 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		$aTrf = $aTopRssFeeds;
 		$iDatLen = count($aDat);
 	}
-	?>
-	<script><!--
-		WE().layout.cockpitFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
-		var _iInitCols = _iLayoutCols =<?= intval($iLayoutCols); ?>;
-		var oTblWidgets = null;
-		WE().layout.cockpitFrame.transact = "<?= md5(uniqid(__FILE__, true)); ?>";
-		var homeData = [
-	<?php
-	foreach($aDat as $d){
-		echo '[';
-		foreach($d as $v){
-			echo "{'type':'" . $v[0] . "','cls':'" . $v[1] . "','res':'" . $v[2] . "','csv':'" . $v[3] . "'},";
-		}
-		echo '],';
-	}
-	?>
-		];
-
-		var _trf = [
-	<?php
+	$cockpit = [
+		'_iInitCols' => intval($iLayoutCols),
+		'transact' => md5(uniqid(__FILE__, true)),
+		'_trf' => [],
+		'homeData' => [],
+		'oCfg' => $jsoCfg,
+	];
 	foreach($aTrf as $aRssFeed){
-		echo "['" . $aRssFeed[0] . "','" . $aRssFeed[1] . "'],";
+		$cockpit['_trf'][] = [$aRssFeed[0], $aRssFeed[1]];
 	}
-	?>
-		];
+	foreach($aDat as $d){
+		$tmp = [];
+		foreach($d as $v){
+			$tmp[] = ['type' => $v[0], 'cls' => $v[1], 'res' => $v[2], 'csv' => $v[3]];
+		}
+		$cockpit['homeData'][] = $tmp;
+	}
 
-	<?= $jsPrefs; ?>
-		//-->
-	</script>
-	<?= we_html_element::jsScript(JS_DIR . 'home.js'); ?>
+	echo we_html_element::jsScript(JS_DIR . 'home.js', '', ['id' => 'loadVarHome', 'data-cockpit' => setDynamicVar($cockpit)]); ?>
 	</head>
 	<?php
 	we_base_moduleInfo::isActive(we_base_moduleInfo::USERS);
@@ -160,10 +149,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	$oClone = we_base_widget::create("clone", "_reCloneType_", null, ['', ''], "white", 0, "", 100, 60);
 
 	echo
-	we_html_element::htmlBody(
-		[
-		'onload' => "WE().layout.weEditorFrameController.getEditorFrame(window.name).initEditorFrameData({'EditorIsLoading':false});oTblWidgets=document.getElementById('le_tblWidgets');initDragWidgets();",
-		], we_html_element::htmlForm(
+	we_html_element::htmlBody([ 'onload' => "startCockpit();",], we_html_element::htmlForm(
 			['name' => 'we_form'
 			], we_html_element::htmlHiddens([
 				'we_cmd[0]' => 'widget_cmd',
@@ -178,23 +164,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		we_html_element::htmlDiv(["id" => "divClone"], $oClone)
 	);
 } else { // no right to see cockpit!
-	echo
-	we_html_element::jsElement('
-function isHot(){
-	return false;
-}
-
-function closeAllModalWindows(){
-}
-
-var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
-_EditorFrame.initEditorFrameData({
-	"EditorType":"cockpit",
-	"EditorDocumentText":"Cockpit",
-	"EditorDocumentPath":"Cockpit",
-	"EditorContentType":"cockpit",
-	"EditorEditCmd":"open_cockpit"
-});') .
+	echo we_html_element::jsScript(JS_DIR . 'nohome.js') .
 	'</head>' .
 	we_html_element::htmlBody(
 		[ 'class' => 'noHome', "onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"

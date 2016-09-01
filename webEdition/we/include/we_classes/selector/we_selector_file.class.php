@@ -246,7 +246,7 @@ WE().util.loadConsts("selectors");
 			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
-			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
+			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient'], we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>';
 	}

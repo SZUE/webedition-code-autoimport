@@ -273,15 +273,15 @@ foreach($_SESSION['perms'] as $perm => $access){
 }
 
 echo we_html_element::jsScript(JS_DIR . 'webEdition.js', "var el=document.getElementById('loadWEData');"
-	. "WE().session=JSON.parse(WE().util.Base64.decode(el.getAttribute('data-session')));"
+	. "WE().session=WE().util.getDynamicVar(el.getAttribute('data-session'));"
 	. "WE().consts=WE().util.getDynamicVar(el.getAttribute('data-consts'));"
 	//FIXME: move after changes
 	. "WE().util.loadConsts('g_l.main');"//finally load language files
 	. 'oldTreeWidth = WE().consts.size.tree.defaultWidth;'
 	, [
 	'id' => 'loadWEData',
-	'data-session' => base64_encode(json_encode($session)),
-	'data-consts' => base64_encode(json_encode($const)),
+	'data-session' => setDynamicVar($session),
+	'data-consts' => setDynamicVar($const),
 ]) .
  we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'weTinyMceDialogs.js') .
  we_html_element::jsScript(JS_DIR . 'weNavigationHistory.js', 'WE().layout.weNavigationHistory = new weNavigationHistory();') .

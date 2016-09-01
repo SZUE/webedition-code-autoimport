@@ -1937,20 +1937,20 @@ for(i=0;i<elements.length; ++i){
 			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
 			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
 			$customer_table->setCol($row, 6, array('width' => 300));
-			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameIP]'));
 			$customer_table->setCol($row, 2, array('width' => '20px'));
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
 			$customer_table->setCol($row, 5, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, ['class' => 'defaultfont'], 'h');
 
-			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
 			$customer_table->setCol($row, 5, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, ['class' => 'defaultfont'], 'h');
 
-			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
@@ -1968,11 +1968,11 @@ for(i=0;i<elements.length; ++i){
 
 			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
 
-			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, [], 's');
 
-			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][deleteSession]'));
 
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
 
@@ -2353,15 +2353,6 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	$doSave = true;
 }
 
-?>
-<script><!--
-	var hot = false;
-	var modules = {
-		SPELLCHECKER: '<?= intval(defined('SPELLCHECKER')); ?>'
-	};
-	var args = "";
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-//--></</script><?php
 echo weSuggest::getYuiFiles() .
  we_html_element::jsScript(JS_DIR . 'preferences.js');
 if($doSave && !$acError){
@@ -2380,10 +2371,8 @@ for(i=1;i<childs.length;++i){
 	childs[i].className="tabNormal";
 	}
 
-	this.location = "' . WE_INCLUDES_DIR . 'we_editors/we_preferences.php";
+	this.location = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/we_preferences.php";
 	setTimeout(top.document.getElementById("tabContainer").children[0].click, 1000);
-
-
 	}
 	') .
 	'</head>' .

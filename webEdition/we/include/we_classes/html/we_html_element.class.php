@@ -254,7 +254,7 @@ abstract class we_html_element{
 			'type' => 'hidden',
 			'name' => $name,
 			'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value
-			];
+		];
 		if($id){
 			$attribs['id'] = $id;
 		}
@@ -266,10 +266,10 @@ abstract class we_html_element{
 		foreach($vals as $key => $value){
 			if($key){
 				$ret.=we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', [
-					'name' => $key,
+						'name' => $key,
 						'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value,
 						'type' => 'hidden'
-						]));
+				]));
 			}
 		}
 		return $ret;
@@ -427,7 +427,7 @@ abstract class we_html_element{
 	public static function getUnCache($url){
 		static $cache = -1;
 		if($cache == -1){
-			$cache = md5(WE_VERSION . filemtime(WE_INCLUDES_PATH . 'we_version.php'));
+			$cache = md5(WE_VERSION . $GLOBALS['WE_BACKENDCHARSET'] . filemtime(WE_INCLUDES_PATH . 'we_version.php'));
 		}
 		return $url . (strstr($url, '?') ? '&amp;' : '?') . $cache;
 	}
@@ -438,7 +438,7 @@ abstract class we_html_element{
 		$iframestyle = $iframestyle ? : 'border:0px;width:100%;height:100%;overflow:hidden;';
 
 		return self::htmlDiv(['style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class]
-		, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, ['name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.classList.add(\'' . ($isApple ? 'iframeScrollIpad' : 'iframeScroll') . '\');' : 'this.contentDocument.body.classList.add(\'iframeNoScroll\');') . '}catch(e){}' . $onload])
+				, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, ['name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.classList.add(\'' . ($isApple ? 'iframeScrollIpad' : 'iframeScroll') . '\');' : 'this.contentDocument.body.classList.add(\'iframeNoScroll\');') . '}catch(e){}' . $onload])
 		));
 	}
 

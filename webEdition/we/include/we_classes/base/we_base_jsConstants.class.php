@@ -36,7 +36,7 @@ abstract class we_base_jsConstants{
 			case 'selectors':
 				return we_selector_file::getJSConsts();
 			case 'g_l.main':
-				return self::getMainJSConsts();
+				return self::getMainJSLangConsts();
 			case 'g_l.fileselector':
 				return we_selector_file::getJSLangConsts();
 			case 'g_l.selectors.category':
@@ -77,6 +77,8 @@ abstract class we_base_jsConstants{
 				return we_rebuild_wizard::getJSLangConsts();
 			case 'g_l.thumbnail':
 				return we_thumbnail::getJSLangConsts();
+			case 'g_l.doctypeEdit':
+				return we_docTypes::getJSLangConsts();
 			case 'weSearch':
 				return we_search_view::getJSConsts();
 			default:
@@ -84,7 +86,7 @@ abstract class we_base_jsConstants{
 		}
 	}
 
-	private static function getMainJSConsts(){
+	private static function getMainJSLangConsts(){
 		return 'WE().consts.g_l={
 	main:{
 		unable_to_call_setpagenr: "' . g_l('global', '[unable_to_call_setpagenr]') . '",
@@ -169,6 +171,10 @@ abstract class we_base_jsConstants{
 		fieldNameNotValid: "' . g_l('modules_object', '[fieldNameNotValid]') . '",
 		fieldNameNotTitleDesc: "' . g_l('modules_object', '[fieldNameNotTitleDesc]') . '",
 		fieldNameEmpty: "' . g_l('modules_object', '[fieldNameEmpty]') . '"
+	},
+	weTagWizard:{
+		insert_tagname:"' . g_l('weTagWizard', '[insert_tagname]') . '",
+		insert_tagname_not_exist: "' . sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"_wrongTag\"') . '\n\n",
 	},
 	selectors:{
 	},

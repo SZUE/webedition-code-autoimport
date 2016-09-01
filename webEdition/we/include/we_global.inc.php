@@ -1167,6 +1167,10 @@ function we_serialize($array, $target = SERIALIZE_PHP, $numeric = false, $compre
 	return $compression ? gzcompress($ret, $compression) : $ret;
 }
 
+function setDynamicVar($data){
+	return base64_encode(json_encode($data));
+}
+
 function updateAvailable(){
 	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json')? : ''), true);
 	if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 /* ||

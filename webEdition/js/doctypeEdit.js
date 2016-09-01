@@ -25,7 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
+var countSaveLoop = 0;
 function we_save_docType(doc, url) {
 	var acStatus = '';
 	invalidAcFields = false;

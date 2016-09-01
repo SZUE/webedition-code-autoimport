@@ -95,10 +95,9 @@ function setTab(tab) {
 
 		  $table->setCol(1, 0, array('class' => "small",'style'=>'p'), we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>')); */
 
-		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
-		$body = we_html_element::htmlBody(array("id" => "eHeaderBody", "onload" => "setFrameSize()", "onresize" => "setFrameSize()"), '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .
+		$body = we_html_element::htmlBody(["id" => "eHeaderBody", "onload" => "document.getElementById('tab_'+top.content.activ_tab).className='tabActive';setFrameSize()", "onresize" => "setFrameSize()"], '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .
 				$we_tabs->getHTML() .
-				'</div>' . we_html_element::jsElement($extraJS)
+				'</div>'
 		);
 
 		return $this->getHTMLDocument($body, $tabsHead);

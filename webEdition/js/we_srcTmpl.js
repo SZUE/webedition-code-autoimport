@@ -23,6 +23,11 @@
  */
 
 /* global _EditorFrame */
+var el = document.getElementById('loadVarSrcTmpl');
+var doc = (el ?
+				WE().util.getDynamicVar(el.getAttribute('data-doc')) :
+				{}
+);
 
 var editor = null;
 var weIsTextEditor = true;
@@ -39,7 +44,7 @@ function initCM() {
 		document.getElementById("bodydiv").style.display = "block";
 		editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
 		sizeEditor();
-		if (editorHighlightCurrentLine) {
+		if (doc.editorHighlightCurrentLine) {
 			hlLine = editor.addLineClass(0, "background", "activeline");
 			//highlight current line
 			editor.on("cursorActivity", function () {
@@ -143,7 +148,7 @@ function wedoKeyDown(ta, ev) {
 // ############ EDITOR PLUGIN ################
 
 function setSource(source) {
-	document.forms.we_form.elements['we_' + docName + '_txt[data]'].value = source;
+	document.forms.we_form.elements['we_' + doc.docName + '_txt[data]'].value = source;
 	//Codemirror
 	if (editor !== undefined && editor !== null && typeof editor === 'object') {
 		editor.setValue(source);
@@ -151,11 +156,11 @@ function setSource(source) {
 }
 
 function getSource() {
-	return document.forms.we_form.elements['we_' + docName + '_txt[data]'].value;
+	return document.forms.we_form.elements['we_' + doc.docName + '_txt[data]'].value;
 }
 
 function getCharset() {
-	return docCharSet;
+	return doc.docCharSet;
 }
 
 // ############ CodeMirror Functions ################
@@ -312,9 +317,9 @@ function openTagWizWithReturn(Ereignis) {
 }
 
 function openTagWizardPrompt(_wrongTag) {
-	var _prompttext = g_l.insert_tagname;
+	var _prompttext = WE().consts.g_l.weTagWizard.insert_tagname;
 	if (_wrongTag) {
-		_prompttext = g_l.insert_tagname_not_exist.replace(/_wrongTag/, _wrongTag) + _prompttext;
+		_prompttext = WE().consts.g_l.weTagWizard.insert_tagname_not_exist.replace(/_wrongTag/, _wrongTag) + _prompttext;
 	}
 
 	var _tagName = prompt(_prompttext);
@@ -340,7 +345,7 @@ function insertAtStart(tagText) {
 	if (window.editor && window.editor.frame) {
 		window.editor.insertIntoLine(window.editor.firstLine(), 0, tagText + "\n");
 	} else {
-		document.we_form["we_" + docName + "_txt[data]"].value = tagText + "\n" + document.we_form["we_" + docName + "_txt[data]"].value;
+		document.we_form["we_" + doc.docName + "_txt[data]"].value = tagText + "\n" + document.we_form["we_" + doc.docName + "_txt[data]"].value;
 	}
 	_EditorFrame.setEditorIsHot(true);
 }
@@ -349,7 +354,7 @@ function insertAtEnd(tagText) {
 	if (window.editor && window.editor.frame) {
 		window.editor.insertIntoLine(window.editor.lastLine(), "end", "\n" + tagText);
 	} else {
-		document.we_form["we_" + docName + "_txt[data]"].value += "\n" + tagText;
+		document.we_form["we_" + doc.docName + "_txt[data]"].value += "\n" + tagText;
 	}
 	_EditorFrame.setEditorIsHot(true);
 }
@@ -359,7 +364,7 @@ function addCursorPosition(tagText) {
 		window.editor.replaceSelection(tagText);
 		return;
 	}
-	var weForm = document.we_form["we_" + docName + "_txt[data]"];
+	var weForm = document.we_form["we_" + doc.docName + "_txt[data]"];
 	if (document.selection) {
 		weForm.focus();
 		document.selection.createRange().text = tagText;

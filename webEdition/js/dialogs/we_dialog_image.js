@@ -25,6 +25,11 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+var el = document.getElementById('loadVarDialogImage');
+var image = (el ?
+				WE().util.getDynamicVar(el.getAttribute('data-image')) :
+				{}
+);
 
 
 function imageChanged(wasThumbnailChange) {
@@ -44,25 +49,21 @@ function imageChanged(wasThumbnailChange) {
 
 function checkWidthHeight(field) {
 	var ratioCheckBox = document.getElementById('check_we_dialog_args[ratio]'),
-		v = parseInt(field.value);
+					v = parseInt(field.value);
 
 	if (ratioCheckBox.checked) {
-		if (field.value.indexOf('%') == -1) {
-			/*
-			ratiow = ratiow ? ratiow : (field.form.elements.tinyMCEInitRatioW.value ? field.form.elements.tinyMCEInitRatioW.value : 0);
-			ratioh = ratioh ? ratioh : (field.form.elements.tinyMCEInitRatioH.value ? field.form.elements.tinyMCEInitRatioH.value : 0);
-			*/
+		if (field.value.indexOf('%') === -1) {
 
-			ratiow = (parseInt(field.form.elements['we_dialog_args[rendered_width]'].value) / parseInt(field.form.elements['we_dialog_args[rendered_height]'].value));
-			ratioh = (parseInt(field.form.elements['we_dialog_args[rendered_height]'].value) / parseInt(field.form.elements['we_dialog_args[rendered_width]'].value));
+			var ratiow = (parseInt(field.form.elements['we_dialog_args[rendered_width]'].value) / parseInt(field.form.elements['we_dialog_args[rendered_height]'].value));
+			var ratioh = (parseInt(field.form.elements['we_dialog_args[rendered_height]'].value) / parseInt(field.form.elements['we_dialog_args[rendered_width]'].value));
 
 			//if ((field.form.elements['we_dialog_args[width]'].value && field.form.elements['we_dialog_args[height]'].value) || (!field.form.elements['we_dialog_args[width]'].value && !field.form.elements['we_dialog_args[height]'].value)) {
-				if(field.name === 'we_dialog_args[height]'){
-					field.form.elements['we_dialog_args[width]'].value = v ? Math.round(v * ratiow) : '';
-				} else {
-					field.form.elements['we_dialog_args[height]'].value = v ? Math.round(v * ratioh) : '';
-				}
-				field.value = v ? v : '';
+			if (field.name === 'we_dialog_args[height]') {
+				field.form.elements['we_dialog_args[width]'].value = v ? Math.round(v * ratiow) : '';
+			} else {
+				field.form.elements['we_dialog_args[height]'].value = v ? Math.round(v * ratioh) : '';
+			}
+			field.value = v ? v : '';
 			//}
 		} else {
 			ratioCheckBox.checked = false;

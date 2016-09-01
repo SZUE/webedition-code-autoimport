@@ -1769,3 +1769,40 @@ WE().layout.we_setPath = function (_EditorFrame, path, text, id, classname) {
 		}
 	}
 };
+
+WE().layout.reloadUsedEditors = function (reloadTabs) {
+	var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+
+	for (var frameId in usedEditors) {
+		if (reloadTabs[usedEditors[frameId].getEditorEditorTable()] && (reloadTabs[usedEditors[frameId].getEditorEditorTable()]).indexOf(',' + usedEditors[frameId].getEditorDocumentId() + ',') !== -1) {
+			usedEditors[frameId].setEditorReloadNeeded(true);
+		}
+	}
+};
+
+WE().layout.makeNewDoc = function (_EditorFrame, curType, curID, savetmpl, noClose) {
+	var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
+
+	switch (curType) {
+		case WE().consts.contentTypes.TEMPLATE:
+			if (WE().util.hasPerm("NEW_WEBEDITIONSITE")) {
+				if (_EditorFrame.getEditorMakeNewDoc() == true) {
+					if (savetmpl) {
+						top.we_cmd('new', WE().consts.tables.FILE_TABLE, '', WE().consts.contentTypes.WEDOCUMENT, '', curID);
+					}
+				} else if (noClose && _EditorFrame.getEditorIsInUse()) {
+					_EditorFrameDocumentRef.frames.editHeader.location.reload();
+				}
+			}
+			break;
+		case WE().consts.contentTypes.OBJECT:
+			if (WE().util.hasPerm('NEW_OBJECTFILE')) {
+				if (_EditorFrame.getEditorMakeNewDoc() == true) {
+					top.we_cmd('new', WE().consts.tables.OBJECT_FILES_TABLE, '', WE().consts.contentTypes.OBJECT_FILE, curID);
+				} else if (noClose && _EditorFrame.getEditorIsInUse()) {
+					_EditorFrameDocumentRef.frames.editHeader.location.reload();
+				}
+
+			}
+	}
+};

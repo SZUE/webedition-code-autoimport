@@ -503,12 +503,9 @@ if(top.document.we_form.tinyMCEInitRatioW !== undefined){
 
 	function getJs(){
 		$yuiSuggest = & weSuggest::getInstance();
-		$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : [];
-		return parent::getJs() . we_html_element::jsElement('
-var classNames=' . ($css ? '["' . implode('","', $css) . '"]' : 'top.opener.weclassNames_tinyMce') . ' ;
-var ratioh = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["width"] / $this->args["height"]) : 0) . ';
-var ratiow = ' . (intval($this->args["width"] * $this->args["height"]) ? ($this->args["height"] / $this->args["width"]) : 0) . ';
-') .
+		//$css = !empty($this->args["cssClasses"]) ? explode(',', $this->args["cssClasses"]) : [];
+
+		return parent::getJs() .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_image.js') .
 			weSuggest::getYuiFiles();
 	}
