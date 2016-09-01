@@ -94,14 +94,51 @@ function saveOnKeyBoard() {
 
 }";
 
+function getPreferencesFooterJS(){
+	$tmp = '';
+	foreach(array_keys($GLOBALS['tabs']) as $key){
+		$tmp.="document.getElementById('content').contentDocument.getElementById('setting_" . $key . "').style.display = 'none';";
+	}
+	$javascript = <<< EOS
+var countSaveTrys = 0;
+function we_save() {
+		$tmp
+	// update setting for message_reporting
+	WE().session.messageSettings = document.getElementById('content').contentDocument.getElementById("message_reporting").value;
+
+	if(WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart){
+		var oCockpit=WE().layout.weEditorFrameController.getActiveDocumentReference();
+		var _fo=document.getElementById('content').contentDocument.forms[0];
+		var oSctCols=_fo.elements['newconf[cockpit_amount_columns]'];
+		var iCols=oSctCols.options[oSctCols.selectedIndex].value;
+		if(iCols!=oCockpit._iLayoutCols){
+			oCockpit.modifyLayoutCols(iCols);
+		}
+	}
+
+	document.getElementById('content').contentDocument.getElementById('setting_save').style.display = '';
+	document.getElementById('content').contentDocument.we_form.save_settings.value = 1;
+
+	document.getElementById('content').contentDocument.we_form.submit();
+ }
+
+EOS;
+	return we_html_element::jsElement($javascript);
+}
+
+function getPreferencesFooter(){
+	$okbut = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_save();');
+	$cancelbut = we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.close()');
+
+	return we_html_element::htmlDiv(['class' => 'weDialogButtonsBody', 'style' => 'height:100%;'], we_html_button::position_yes_no_cancel($okbut, '', $cancelbut, 10, '', '', 0));
+}
+
 echo we_html_tools::getHtmlTop('', '', '', we_tabs::getHeader() .
 	we_html_element::jsElement($javascript));
 
-include(WE_INCLUDES_PATH . 'we_editors/we_preferences_footer.inc.php');
-
-$body = we_html_element::htmlBody(array('id' => 'weMainBody', 'onload' => 'weTabs.setFrameSize()', 'onresize' => 'weTabs.setFrameSize()')
-		, we_html_element::htmlDiv(array('style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;')
-			, we_html_element::htmlExIFrame('navi', getPreferencesHeader(), 'right:0px;') .
+$body = we_html_element::htmlBody(['id' => 'weMainBody', 'onload' => 'weTabs.setFrameSize()', 'onresize' => 'weTabs.setFrameSize()']
+, we_html_element::htmlDiv(['style' => 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;']
+, we_html_element::htmlExIFrame('navi', getPreferencesHeader(), 'right:0px;') .
 			we_html_element::htmlIFrame('content', WE_INCLUDES_DIR . "we_editors/we_preferences.php?" . ($tabname ? "tabname=" . $tabname : ""), 'position:absolute;top:22px;bottom:40px;left:0px;right:0px;overflow: hidden;', 'border:0px;width:100%;height:100%;overflow: scroll;') .
 			we_html_element::htmlExIFrame('we_preferences_footer', getPreferencesFooter(), 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;')
 	));

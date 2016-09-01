@@ -36,7 +36,7 @@ class we_dialog_fullscreenEdit extends we_dialog_base{
 
 	function getDialogContentHTML(){
 		$e = new we_wysiwyg_editor("we_dialog_args[src]", $this->args["screenWidth"] - 90, $this->args["screenHeight"] - 200, '', $this->args["propString"], $this->args["bgcolor"], true, $this->args["className"], $this->args["fontnames"], $this->args["outsideWE"], $this->args["xml"], $this->args["removeFirstParagraph"], true, $this->args["baseHref"], $this->args["charset"], $this->args["cssClasses"], $this->args['language'], '', true, false, 'top', true, $this->args["contentCss"], $this->args["origName"], $this->args["tinyParams"], $this->args["contextmenu"], false, $this->args["templates"], $this->args["formats"], $this->args["imageStartID"], $this->args["galleryTemplates"], $this->args["fontsizes"]);
-		return we_wysiwyg_editor::getHeaderHTML(false, false) . we_html_element::jsElement('isFullScreen = true;') . $e->getHTML();
+		return we_wysiwyg_editor::getHeaderHTML(false, false) . we_html_element::jsElement('var isFullScreen = true;') . $e->getHTML();
 	}
 
 	public static function getTinyMceJS(){

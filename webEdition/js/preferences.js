@@ -506,7 +506,51 @@ function select_seem_start() {
 		parent.opener.top.we_cmd('we_selector_document', document.getElementsByName('seem_start_document')[0].value, WE().consts.tables.FILE_TABLE, myWindStr + '.content.document.getElementsByName(\'seem_start_document\')[0].value', myWindStr + '.content.document.getElementsByName(\'seem_start_document_name\')[0].value', '', '', '', WE().consts.contentTypes.WEDOCUMENT, WE().util.hasPerm("CAN_SELECT_OTHER_USERS_FILES"));
 	}
 }
+function we_cmd() {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "browse_server":
+			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
+			break;
+		case "we_selector_directory":
+		case "we_selector_image":
+		case "we_selector_document":
+			new (WE().util.jsWindow)(this, url, "we_selector_document", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true, true);
+			break;
+		case "show_formmail_log":
+			url = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/weFormmailLog.php"
+			new (WE().util.jsWindow)(this, url, "we_selector_document", -1, -1, 840, 400, true, false, true);
+			break;
+		case "show_formmail_block_log":
+			url = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/weFormmailBlockLog.php"
+			new (WE().util.jsWindow)(this, url, "we_selector_document", -1, -1, 840, 400, true, false, true);
+			break;
+		case "openColorChooser":
+			new (WE().util.jsWindow)(this, url, "we_colorChooser", -1, -1, 430, 370, true, true, true);
+			break;
+		default:
+			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+	}
+}
+
+function setColorField(name) {
+	document.getElementById("color_" + name).style.backgroundColor = document.we_form.elements[name].value;
+}
 
 function startPrefs() {
 	initEditorMode();
+}
+
+function checkFonts() {
+	var detective = new Detector();
+	var elements = document.getElementsByName("newconf[editorFontname]")[0].children;
+	var elements2 = document.getElementsByName("newconf[editorTooltipFontname]")[0].children;
+	for (i = 0; i < elements.length; ++i) {
+		if (!detective.detect(elements[i].value)) {
+			elements[i].disabled = "disabled";
+			elements2[i].disabled = "disabled";
+		}
+	}
 }

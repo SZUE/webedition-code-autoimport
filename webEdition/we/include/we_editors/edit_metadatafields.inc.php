@@ -350,7 +350,7 @@ function render_dialog(){
 	// Render setting groups
 	return we_html_element::htmlDiv(array('id' => 'metadatafields_dialog'), build_dialog('dialog')) .
 		// Render save screen
-		we_html_element::htmlDiv(array('id' => 'metadatafields_save', 'style' => 'display: none;'), build_dialog('save'));
+		we_html_element::htmlDiv(['id' => 'metadatafields_save', 'style' => 'display: none;'], build_dialog('save'));
 }
 
 function getMainDialog(){
@@ -371,12 +371,11 @@ function getMainDialog(){
 
 		return
 			$save_javascript .
-			we_html_element::htmlDiv(array('class' => 'weDialogBody', 'style' => 'height:100%;width:100%'), build_dialog('saved'));
-	} else {
-		return
-			we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['REQUEST_URI']), we_html_element::htmlHidden('save_metadatafields', 'false') . render_dialog())
-			. we_html_element::jsElement('init();');
+			we_html_element::htmlDiv(['class' => 'weDialogBody', 'style' => 'height:100%;width:100%'], build_dialog('saved'));
 	}
+	return
+		we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['REQUEST_URI']], we_html_element::htmlHidden('save_metadatafields', 'false') . render_dialog())
+		. we_html_element::jsElement('init();');
 }
 
 echo
@@ -392,7 +391,7 @@ function saveOnKeyBoard() {
 }'
 ) . STYLESHEET .
  '</head>' .
- we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'self.focus();')
-	, we_html_element::htmlExIFrame('we_metadatafields', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow:auto;', 'weDialogBody') .
+ we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();']
+, we_html_element::htmlExIFrame('we_metadatafields', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow:auto;', 'weDialogBody') .
 	we_html_element::htmlExIFrame('we_metadatafields_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 ) . '</html>';

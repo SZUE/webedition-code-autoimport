@@ -238,11 +238,11 @@ class we_selector_file{
 	}
 
 	protected function getFrameset(){
-		return '<body class="selector" onload="startFrameset();">' .
+		return '<body class="selector" onload="top.document.getElementById(\'fspath\').innerHTML=(top.fileSelect.data.startPath === \'\' ? \'/\' : top.fileSelect.data.startPath);startFrameset();">' .
 			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
-			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient'], we_html_element::jsElement('document.write( (top.fileSelect.data.startPath === "" ? "/" : top.fileSelect.data.startPath));')) .
+			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient']) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>';
 	}

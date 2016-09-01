@@ -92,76 +92,10 @@ abstract class we_html_multiIconBox{
 	}
 
 	static function getDynJS($uniqname = '', $marginLeft = 0){
-		return we_html_element::jsElement('
-function weGetMultiboxLength(){
-	var divs = document.getElementsByTagName("DIV");
-	var prefix =  "div_' . $uniqname . '_";
-	var z = 0;
-	for(var i = 0; i<divs.length; i++){
-		if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) == prefix){
-			z++;
-		}
-	}
-	return z;
-}
-
-function weGetLastMultiboxNr(){
-	var divs = document.getElementsByTagName("DIV");
-	var prefix =  "div_' . $uniqname . '_";
-	var num = -1;
-	for(var i = 0; i<divs.length; i++){
-		if(divs[i].id.length > prefix.length && divs[i].id.substring(0,prefix.length) == prefix){
-			num = divs[i].id.substring(prefix.length,divs[i].id.length);
-		}
-	}
-	return parseInt(num);
-}
-
-function weDelMultiboxRow(nr){
-	var div = document.getElementById("div_' . $uniqname . '_"+nr);
-	var mainTD = document.getElementById("td_' . $uniqname . '");
-	mainTD.removeChild(div);
-}
-
-function weAppendMultiboxRow(content,headline,icon,space,insertRuleBefore,insertDivAfter){
-	var lastNum = weGetLastMultiboxNr();
-	var i = (lastNum + 1);
-	headline = headline ? (\'<div  id="headline_' . $uniqname . '_\'+ i + \'" class="weMultiIconBoxHeadline">\' + headline + \'</div>\') : "";
-
-	var mainContent = content ? content : "";
-	var leftWidth = space ? space : 0;
-	var leftContent = (leftWidth ? headline : "");
-	var rightContent = \'<div style="float:left;">\' + (( (leftContent == "")) ? (headline + \'<div>\' + mainContent + \'</div>\') : mainContent)  + \'</div>\';
-
-	var mainDiv = document.createElement("DIV");
-	mainDiv.className= \'' . ($marginLeft ? 'withMargin' : '') . '\';
-	mainDiv.id="div_' . $uniqname . '_" + i;
-	var innerHTML = "";
-
-	if (leftContent || leftWidth) {
-		if ((!leftContent) && leftWidth) {
-			leftContent = "&nbsp;";
-		}
-		innerHTML += \'<div style="float:left;width:\' + leftWidth + \'px">\' + leftContent + \'</div>\';
-	}
-	mainDiv.innerHTML = rightContent+\'<br style="clear:both;">\';
-
-	var mainTD = document.getElementById("td_' . $uniqname . '");
-	mainTD.appendChild(mainDiv);
-
-	var lastDiv = document.createElement("DIV");
-	if(insertDivAfter !== -1){
-		lastDiv.style.cssText = "margin:10px 0;clear:both;";
-		mainTD.appendChild(lastDiv);
-	}
-
-	if(insertRuleBefore && (lastNum != -1)){
-		var rule = document.createElement("DIV");
-		rule.style.cssText = "border-top: 1px solid #AFB0AF;margin:10px 0 10px 0;clear:both;";
-		var preDIV = document.getElementById("div_' . $uniqname . '_"+lastNum);
-		preDIV.appendChild(rule);
-	}
-}');
+		return we_html_element::jsScript(JS_DIR . 'multiIconBox.js', '', ['id' => 'loadVarMultiIconBox', 'data-iconbox' => setDynamicVar([
+					'name' => $uniqname,
+					'margin' => $marginLeft,
+		])]);
 	}
 
 	private static function _getBoxStartHeadline($name, $headline, $uniqname, $marginLeft = 0){

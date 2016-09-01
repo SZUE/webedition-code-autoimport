@@ -284,7 +284,7 @@ top.fileSelect.data.parentID = "' . $this->values['ParentID'] . '";' :
 	function printNewFolderHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();
-top.fileSelect.data.makeNewFolder = true;' .
+top.fileSelect.data.makeNewFolder=true;' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() . '
 ');
@@ -326,12 +326,12 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '
 	}
 
 	protected function getFrameset($withPreview = true){
-		return '<body class="selector" onload="startFrameset();">' .
+		return '<body class="selector" onload="top.document.getElementById(\'fspath\').innerHTML=(top.fileSelect.data.startPath === \'\' ? \'/\' : top.fileSelect.data.startPath);startFrameset();">' .
 			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, $withPreview ? 'preview' : '') .
 			($withPreview ? we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) : '') .
 			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
-			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient'], we_html_element::jsElement('document.write( (top.fileSelect.data.startPath === "" ? "/" : top.fileSelect.data.startPath));')) .
+			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient']) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>';
 	}
