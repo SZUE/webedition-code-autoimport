@@ -56,20 +56,22 @@ abstract class we_message_reporting{
 		}
 	}
 
+	public static function jsMessagePush($message, $priority){
+		return we_html_element::jsScript(JS_DIR . 'we_showMsg.js', '', ['id' => 'loadVarMsg', 'data-msg' => setDynamicVar($message), 'data-msgType' => $priority]);
+	}
+
 	public static function prepareMsgForJS($message){
-		return str_replace(array(
-			"\n",
+		return str_replace(["\n",
 			'\n',
 			'\\',
 			'"',
 			'###NL###'
-			), array(
-			'###NL###',
+			], ['###NL###',
 			'###NL###',
 			'\\\\',
 			'\\"',
 			'\n'
-			), $message
+			], $message
 		);
 	}
 
