@@ -202,7 +202,7 @@ function checkFooter(){
 				break;
 			case self::CATEGORY:
 				$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('schedule_delete_all_schedcats'," . $this->nr . ")");
-				$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'schedule_add_schedcat\\',fileSelect.data.currentID," . $this->nr . ");')");
+				$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.setScrollTo();opener.top.we_cmd(\\'schedule_add_schedcat\\',top.fileSelect.data.currentID," . $this->nr . ");')");
 				$cats = new we_chooser_multiDir(450, $this->CategoryIDs, "schedule_delete_schedcat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", $this->nr);
 				$cats->extraDelFn = 'setScrollTo();';
 				if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){

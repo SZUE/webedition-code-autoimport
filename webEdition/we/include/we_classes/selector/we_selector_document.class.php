@@ -140,10 +140,10 @@ class we_selector_document extends we_selector_directory{
 			'';
 		return we_html_element::jsElement('
 function exit_open() {
-	if(fileSelect.data.currentID) {' . ($this->JSIDName ?
-					'top.opener.' . $this->JSIDName . '= fileSelect.data.currentID ? fileSelect.data.currentID : "";' : '') .
+	if(top.fileSelect.data.currentID) {' . ($this->JSIDName ?
+					'top.opener.' . $this->JSIDName . '= top.fileSelect.data.currentID ? top.fileSelect.data.currentID : "";' : '') .
 				($this->JSTextName ?
-					'top.opener.' . $this->JSTextName . '= fileSelect.data.currentID ? top.currentPath : "";
+					'top.opener.' . $this->JSTextName . '= top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
 		if(top.opener.' . $frameRef . 'YAHOO!==undefined && top.opener.' . $frameRef . 'YAHOO.autocoml!==undefined) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 		' : '') .
 				($this->JSCommand ?
@@ -309,7 +309,7 @@ var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview' . ($is_object ? ' object' : '')) .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false, ($is_object ? 'object' : '')) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
-			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
+			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.fileSelect.data.startPath === "" ? "/" : top.fileSelect.data.startPath));')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>';
 	}

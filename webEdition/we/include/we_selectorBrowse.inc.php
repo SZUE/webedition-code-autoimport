@@ -201,15 +201,15 @@ if($nf === 'new_folder'){
 							$ondblclick = 'onDblClick="wasdblclick=true;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
 							$cursor = 'cursor:pointer;';
 						} elseif($selectOwn){
-							$onclick = 'onclick="if(fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(fileSelect.click.oldID);}},500); fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+							$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 							$cursor = 'cursor:pointer;';
 						}
 					} else {
 						if($isfolder){
-							$onclick = 'onclick="if(fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEdit(fileSelect.click.oldID);}},500); fileSelect.click.oldID=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
+							$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEdit(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
 							$ondblclick = 'onDblClick="wasdblclick=true;clearTimeout(tout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
 						} else {
-							$onclick = 'onclick="if(fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(fileSelect.click.oldID);}},500); fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+							$onclick = 'onclick="if(top.fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(top.fileSelect.click.oldID);}},500); top.fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 						}
 						$cursor = 'cursor:pointer;';
 					}

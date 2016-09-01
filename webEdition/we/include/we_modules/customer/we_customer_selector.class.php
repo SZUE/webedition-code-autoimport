@@ -138,11 +138,11 @@ class we_customer_selector extends we_users_selector{
 			if($this->id == 0){
 				$this->path = '/';
 			}
-			$js.= 'top.currentPath = "' . $this->path . '";
-fileSelect.data.currentID = "' . $this->id . '";';
+			$js.= 'top.fileSelect.data.currentPath = "' . $this->path . '";
+top.fileSelect.data.currentID = "' . $this->id . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-		$js.='fileSelect.data.currentDir = "' . $this->dir . '";';
+		$js.='top.fileSelect.data.currentDir = "' . $this->dir . '";';
 		echo we_html_element::jsElement($js);
 	}
 

@@ -24,8 +24,8 @@
  */
 
 function setDir(id) {
-	if (fileSelect.data.currentType === "user") {
-		fileSelect.data.currentDir = id;
+	if (top.fileSelect.data.currentType === "user") {
+		top.fileSelect.data.currentDir = id;
 		top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, id));
 	} else {
 		top.fscmd.location.replace(top.queryString(WE().consts.selectors.SETDIR, id));
@@ -36,7 +36,7 @@ function selectFile(id) {
 	var a = top.document.getElementsByName("fname")[0];
 	if (id) {
 		e = top.getEntry(id);
-		if (fileSelect.data.currentType !== "user" || !e.isFolder) {
+		if (top.fileSelect.data.currentType !== "user" || !e.isFolder) {
 			if (a.value != e.text &&
 							a.value.indexOf(e.text + ",") == -1 &&
 							a.value.indexOf("," + e.text + ",") == -1 &&
@@ -47,24 +47,24 @@ function selectFile(id) {
 								e.text;
 			}
 			top.fsbody.document.getElementById("line_" + id).classList.add("selected");
-			top.currentPath = e.path;
-			fileSelect.data.currentID = id;
+			top.fileSelect.data.currentPath = e.path;
+			top.fileSelect.data.currentID = id;
 		}
 	} else {
 		a.value = "";
-		top.currentPath = "";
+		top.fileSelect.data.currentPath = "";
 	}
 }
 
 function queryString(what, id, o) {
 	if (!o) {
-		o = top.order;
+		o = top.fileSelect.data.order;
 	}
-	return fileSelect.options.formtarget + 'what=' + what + '&table=' + fileSelect.options.table + '&id=' + id + "&order=" + o + "&filter=" + fileSelect.data.currentType;
+	return top.fileSelect.options.formtarget + 'what=' + what + '&table=' + top.fileSelect.options.table + '&id=' + id + "&order=" + o + "&filter=" + top.fileSelect.data.currentType;
 }
 
 function press_ok_button() {
-	if (top.document.getElementsByName("fname")[0].value === '' && fileSelect.data.currentType != 'group') {
+	if (top.document.getElementsByName("fname")[0].value === '' && top.fileSelect.data.currentType != 'group') {
 		top.exit_close();
 	} else {
 		top.exit_open();

@@ -51,8 +51,8 @@ top.clearEntries();' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() . '
 top.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
-fileSelect.data.currentDir = "' . $this->dir . '";
-fileSelect.data.parentID = "' . $this->values["ParentID"] . '";');
+top.fileSelect.data.currentDir = "' . $this->dir . '";
+top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";');
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 

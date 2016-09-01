@@ -417,10 +417,10 @@ class we_folder extends we_root{
 		$disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		//FIXME: give JS an array!
-		$wecmdenc3 = we_base_request::encCmd("var parents=[" . implode(',', $parents) . "];if(parents.indexOf(fileSelect.data.currentID) > -1){
+		$wecmdenc3 = we_base_request::encCmd("var parents=[" . implode(',', $parents) . "];if(parents.indexOf(top.fileSelect.data.currentID) > -1){
 			WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 }else{
-	opener.top.we_cmd('copyFolder', fileSelect.data.currentID," . $this->ID . ",1,'" . $this->Table . "');
+	opener.top.we_cmd('copyFolder', top.fileSelect.data.currentID," . $this->ID . ",1,'" . $this->Table . "');
 }");
 		$but = we_html_button::create_button(we_html_button::SELECT, ($this->ID ?
 					"javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . $this->Table . "', '" . we_base_request::encCmd($cmd1) . "', '', '" . $wecmdenc3 . "')" :

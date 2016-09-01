@@ -102,11 +102,11 @@ class we_selector_category extends we_selector_file{
 
 	protected function getFramesetJavaScriptDef(){
 		$this->jsoptions['options']['userCanEditCat'] = intval($this->userCanEditCat());
+		$this->jsoptions['data']['makeNewCat'] = false;
+		$this->jsoptions['data']['we_editCatID'] = 0;
+		$this->jsoptions['data']['noChoose']=intval($this->noChoose);
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var hot=0; // this is hot for category edit!!
-var makeNewCat=false;
-var we_editCatID="";
-var noChoose=' . intval($this->noChoose) . ';
 
 WE().util.loadConsts("g_l.selectors.category");
 ');
@@ -134,22 +134,22 @@ WE().util.loadConsts("g_l.selectors.category");
 					'Path' => $Path,
 			)));
 			$folderID = $this->db->getInsertId();
-			$js.='top.currentPath = "' . $Path . '";
-fileSelect.data.currentID = "' . $folderID . '";
+			$js.='top.fileSelect.data.currentPath = "' . $Path . '";
+top.fileSelect.data.currentID = "' . $folderID . '";
 top.hot = 1; // this is hot for category edit!!
 
-if(fileSelect.data.currentID){
+if(top.fileSelect.data.currentID){
 	top.enableDelBut();
-	top.showPref(fileSelect.data.currentID);
+	top.showPref(top.fileSelect.data.currentID);
 }
-top.makeNewCat = false;';
+top.fileSelect.data.makeNewCat = false;';
 		}
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(fileSelect.data.currentID);'), we_html_element::htmlBody());
+				'top.selectFile(top.fileSelect.data.currentID);'), we_html_element::htmlBody());
 	}
 
 	function printHeaderHeadlines(){
@@ -185,13 +185,13 @@ top.makeNewCat = false;';
 				)) .
 				' WHERE ID=' . intval($this->we_editCatID));
 			$this->renameChildrenPath($this->we_editCatID);
-			$js.='top.currentPath = "' . $Path . '";
+			$js.='top.fileSelect.data.currentPath = "' . $Path . '";
 
 top.hot = 1; // this is hot for category edit!!
-fileSelect.data.currentID = "' . $this->we_editCatID . '";
-if(fileSelect.data.currentID){
+top.fileSelect.data.currentID = "' . $this->we_editCatID . '";
+if(top.fileSelect.data.currentID){
 	top.enableDelBut();
-	top.showPref(fileSelect.data.currentID);
+	top.showPref(top.fileSelect.data.currentID);
 }';
 		}
 
@@ -200,7 +200,7 @@ if(fileSelect.data.currentID){
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
 				'top.document.getElementsByName("fname")[0].value = "";
-top.selectFile(' . $this->we_editCatID . ');top.makeNewCat=false;'), we_html_element::htmlBody());
+top.selectFile(' . $this->we_editCatID . ');top.fileSelect.data.makeNewCat=false;'), we_html_element::htmlBody());
 	}
 
 	protected function printCmdHTML($morejs = ''){
@@ -284,13 +284,13 @@ top.selectFile(' . $this->we_editCatID . ');top.makeNewCat=false;'), we_html_ele
 
 			$js.=
 				'top.clearEntries();
-top.makeNewCat = false;' .
+top.fileSelect.data.makeNewCat = false;' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.currentPath="' . $Path . '";
-fileSelect.data.currentID="' . $this->id . '";
+				'top.fileSelect.data.currentPath="' . $Path . '";
+top.fileSelect.data.currentID="' . $this->id . '";
 top.selectFile(' . $this->id . ');
-if(fileSelect.data.currentID && top.document.getElementsByName("fname")[0].value != ""){
+if(top.fileSelect.data.currentID && top.document.getElementsByName("fname")[0].value != ""){
 	top.enableDelBut();
 }';
 		}

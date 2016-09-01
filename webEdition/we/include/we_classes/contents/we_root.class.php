@@ -508,7 +508,7 @@ abstract class we_root extends we_class{
 	function formCopyDocument(){
 		$idname = 'we_' . $this->Name . '_CopyID';
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ",'" . $this->Table . "','" . we_base_request::encCmd($cmd1) . "','','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', fileSelect.data.currentID);") . "','','0','" . $this->ContentType . "',1);");
+		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ",'" . $this->Table . "','" . we_base_request::encCmd($cmd1) . "','','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', top.fileSelect.data.currentID);") . "','','0','" . $this->ContentType . "',1);");
 
 		return we_html_element::htmlHidden($idname, $this->CopyID) . $but;
 	}

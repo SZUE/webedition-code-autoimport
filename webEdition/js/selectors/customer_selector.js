@@ -26,7 +26,7 @@
 function setDir(id) {
 	if (id >= 0 || id < 0) {
 		e = getEntry(id);
-		fileSelect.data.currentDir = id;
+		top.fileSelect.data.currentDir = id;
 		path = e.path;
 		if (path == "/") {
 			path = 0;

@@ -567,8 +567,8 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		//$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmd1 = "WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form.elements['" . $idname . "'].value";
 		$wecmd2 = "";
-		//$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{var ce = opener._EditorFrame.getContentEditor();ce.weCollectionEdit.callForValidItemsAndInsert(ce.weCollectionEdit.getItemId(ce.document.we_form.elements['collectionItem_we_id_" . $index . "']), fileSelect.data.currentID);} catch(e){}";
-		$wecmd3 = "try{var ce = top.opener.WE().layout.weEditorFrameController.getVisibleEditorFrame();ce.weCollectionEdit.callForValidItemsAndInsert(ce.weCollectionEdit.getItemId(ce.document.we_form.elements['collectionItem_we_id_" . $index . "']), fileSelect.data.currentID);} catch(e){}";
+		//$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{var ce = opener._EditorFrame.getContentEditor();ce.weCollectionEdit.callForValidItemsAndInsert(ce.weCollectionEdit.getItemId(ce.document.we_form.elements['collectionItem_we_id_" . $index . "']), top.fileSelect.data.currentID);} catch(e){}";
+		$wecmd3 = "try{var ce = top.opener.WE().layout.weEditorFrameController.getVisibleEditorFrame();ce.weCollectionEdit.callForValidItemsAndInsert(ce.weCollectionEdit.getItemId(ce.document.we_form.elements['collectionItem_we_id_" . $index . "']), top.fileSelect.data.currentID);} catch(e){}";
 
 		switch($item['id']){
 			case '##ID##':

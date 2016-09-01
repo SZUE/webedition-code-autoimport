@@ -234,7 +234,7 @@ top.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();}'
 		}
 		return ($withWrite ? 'top.writeBody(top.fsbody.document.body);' : '') . '
 top.clearOptions();
-if(!fileSelect.options.rootDirID){
+if(!top.fileSelect.options.rootDirID){
 	top.addOption("/",0);
 }' .
 			$out . '
@@ -273,14 +273,14 @@ top.clearEntries();' .
 			$morejs .
 			($isWS ?
 				($morejs ? '' :
-					'top.currentPath="' . $this->path . '";
-fileSelect.data.currentID="' . $this->id . '";'
+					'top.fileSelect.data.currentPath="' . $this->path . '";
+top.fileSelect.data.currentID="' . $this->id . '";'
 
 				) .
 				'top.unselectAllFiles();
 top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();
-fileSelect.data.currentDir = "' . $this->dir . '";
-fileSelect.data.parentID = "' . $this->values['ParentID'] . '";' :
+top.fileSelect.data.currentDir = "' . $this->dir . '";
+top.fileSelect.data.parentID = "' . $this->values['ParentID'] . '";' :
 				'')
 		);
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
@@ -289,7 +289,7 @@ fileSelect.data.parentID = "' . $this->values['ParentID'] . '";' :
 	function printNewFolderHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();
-fileSelect.data.makeNewFolder = true;' .
+top.fileSelect.data.makeNewFolder = true;' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() . '
 ');
@@ -309,7 +309,7 @@ fileSelect.data.makeNewFolder = true;' .
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 top.clearEntries();
-fileSelect.data.makeNewFolder=false;' .
+top.fileSelect.data.makeNewFolder=false;' .
 				($msg ? we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
 					'var ref;
 if(top.opener.top.treeData){
@@ -321,13 +321,13 @@ if(ref){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});
 }' .
 					($this->canSelectDir ? '
-top.currentPath="' . $folder->Path . '";
-fileSelect.data.currentID="' . $folder->ID . '";
+top.fileSelect.data.currentPath="' . $folder->Path . '";
+top.fileSelect.data.currentID="' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '')
 				) .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(fileSelect.data.currentID);'), we_html_element::htmlBody());
+				'top.selectFile(top.fileSelect.data.currentID);'), we_html_element::htmlBody());
 	}
 
 	protected function getFrameset($withPreview = true){
@@ -335,8 +335,8 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '
 			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, $withPreview ? 'preview' : '') .
 			($withPreview ? we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) : '') .
-			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
-			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
+			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
+			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient'], we_html_element::jsElement('document.write( (top.fileSelect.data.startPath === "" ? "/" : top.fileSelect.data.startPath));')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>';
 	}
@@ -351,7 +351,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '
 		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			echo we_html_element::jsElement('
 top.clearEntries();
-fileSelect.data.we_editDirID=' . $this->we_editDirID . ';' .
+top.fileSelect.data.we_editDirID=' . $this->we_editDirID . ';' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML());
 		}
@@ -375,7 +375,7 @@ fileSelect.data.we_editDirID=' . $this->we_editDirID . ';' .
 
 
 		$js = 'top.clearEntries();
-fileSelect.data.makeNewFolder=false;';
+top.fileSelect.data.makeNewFolder=false;';
 		if(($msg = $folder->checkFieldsOnSave())){
 			$js.= we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
@@ -391,8 +391,8 @@ if(ref){
 	ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '",table:"' . $this->table . '"});
 }' .
 					($this->canSelectDir ? '
-top.currentPath = "' . $folder->Path . '";
-fileSelect.data.currentID = "' . $folder->ID . '";
+top.fileSelect.data.currentPath = "' . $folder->Path . '";
+top.fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 			}
@@ -402,7 +402,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() . '
-top.selectFile(fileSelect.data.currentID);'
+top.selectFile(top.fileSelect.data.currentID);'
 			), we_html_element::htmlBody());
 	}
 

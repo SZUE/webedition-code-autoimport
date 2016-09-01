@@ -224,7 +224,6 @@ class we_selector_file{
 	}
 
 	protected function getFramesetJavaScriptDef(){
-		$startPath = f('SELECT Path FROM ' . $GLOBALS['DB_WE']->escape($this->table) . ' WHERE ID=' . intval($this->dir))? : '/';
 		if($this->id === 0){
 			$this->path = '/';
 		}
@@ -232,15 +231,11 @@ class we_selector_file{
 		$this->jsoptions['data']['currentType'] = (isset($this->filter) ? $this->filter : "");
 		$this->jsoptions['data']['currentDir'] = $this->dir;
 		$this->jsoptions['data']['currentText'] = (isset($this->values["Text"]) ? $this->values["Text"] : '');
-		$this->jsoptions['data']['currentID']= $this->id;
-		return we_html_element::jsElement('
-var currentPath="' . $this->path . '";
-var startPath="' . $startPath . '";
-var table="' . $this->table . '";
-var order="' . $this->order . '";
-WE().util.loadConsts("g_l.fileselector");
-WE().util.loadConsts("selectors");
-');
+		$this->jsoptions['data']['currentID'] = $this->id;
+		$this->jsoptions['data']['startPath'] = f('SELECT Path FROM ' . $GLOBALS['DB_WE']->escape($this->table) . ' WHERE ID=' . intval($this->dir))? : '/';
+		$this->jsoptions['data']['currentPath'] = $this->path;
+		$this->jsoptions['data']['order'] = $this->order;
+		return '';
 	}
 
 	protected function getFrameset(){
@@ -248,7 +243,7 @@ WE().util.loadConsts("selectors");
 			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
-			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient'], we_html_element::jsElement('document.write( (top.startPath === undefined || top.startPath === "") ? "/" : top.startPath);')) .
+			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient'], we_html_element::jsElement('document.write( (top.fileSelect.data.startPath === "" ? "/" : top.fileSelect.data.startPath));')) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>';
 	}
@@ -258,21 +253,21 @@ WE().util.loadConsts("selectors");
 		return we_html_element::jsElement('
 function exit_open(){' .
 				($this->JSIDName ? '
-	opener.' . $this->JSIDName . '=fileSelect.data.currentID;' :
+	opener.' . $this->JSIDName . '=top.fileSelect.data.currentID;' :
 					''
 				) .
 				($this->JSTextName ? '
-	opener.' . $this->JSTextName . '= fileSelect.data.currentID ? top.currentPath : "";
+	opener.' . $this->JSTextName . '= top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
 	if((opener.parent!==undefined) && (opener.parent.frames.editHeader!==undefined)) {
-			if(fileSelect.data.currentType!="")	{
-				switch(fileSelect.data.currentType){
+			if(top.fileSelect.data.currentType!="")	{
+				switch(top.fileSelect.data.currentType){
 					case "noalias":
-						setTabsCurPath = "@"+fileSelect.data.currentText;
+						setTabsCurPath = "@"+top.fileSelect.data.currentText;
 						break;
 					default:
-						setTabsCurPath = top.currentPath;
+						setTabsCurPath = top.fileSelect.data.currentPath;
 				}
-				if(getEntry(fileSelect.data.currentID).isFolder){
+				if(getEntry(top.fileSelect.data.currentID).isFolder){
 					opener.parent.frames.editHeader.weTabs.setTitlePath("",setTabsCurPath);
 				}else{
 					opener.parent.frames.editHeader.weTabs.setTitlePath(setTabsCurPath);
@@ -344,8 +339,8 @@ top.clearEntries();' .
 			(intval($this->dir) == intval($this->rootDirID) ?
 				'top.disableRootDirButs();' :
 				'top.enableRootDirButs();') .
-			'top.currentPath = "' . $this->path . '";
-fileSelect.data.parentID = "' . $this->values["ParentID"] . '";
+			'top.fileSelect.data.currentPath = "' . $this->path . '";
+top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";
 ' .
 			$morejs);
 	}

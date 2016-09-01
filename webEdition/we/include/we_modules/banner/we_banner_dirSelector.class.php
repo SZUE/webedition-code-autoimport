@@ -79,7 +79,7 @@ class we_banner_dirSelector extends we_selector_directory{
 	function printCreateFolderHTML(){
 
 		$js = 'top.clearEntries();
-fileSelect.data.makeNewFolder=false;';
+top.fileSelect.data.makeNewFolder=false;';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if(!$txt){
@@ -100,8 +100,8 @@ if(top.opener.top.content.makeNewEntry){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
 }' .
 					($this->canSelectDir ?
-						'top.currentPath = "' . $folder->Path . '";
-fileSelect.data.currentID = "' . $folder->ID . '";
+						'top.fileSelect.data.currentPath = "' . $folder->Path . '";
+top.fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 			}
@@ -111,7 +111,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(fileSelect.data.currentID);'
+				'top.selectFile(top.fileSelect.data.currentID);'
 			), we_html_element::htmlBody());
 	}
 
@@ -121,7 +121,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 
 	function printDoRenameFolderHTML(){
 		$js = 'top.clearEntries();
-fileSelect.data.makeNewFolder=false;';
+top.fileSelect.data.makeNewFolder=false;';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if(!$txt){
@@ -147,8 +147,8 @@ if(top.opener.top.content.treeData.updateEntry){
 	ref.treeData.updateEntry({id:' . $folder->ID . ',parentid:"' . $folder->ParentID . '",text:"' . $txt . '"});
 }
 ' . ($this->canSelectDir ? '
-top.currentPath = "' . $folder->Path . '";
-fileSelect.data.currentID = "' . $folder->ID . '";
+top.fileSelect.data.currentPath = "' . $folder->Path . '";
+top.fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 					}
@@ -160,7 +160,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() . '
-top.selectFile(fileSelect.data.currentID);'
+top.selectFile(top.fileSelect.data.currentID);'
 			), we_html_element::htmlBody());
 	}
 
