@@ -845,7 +845,7 @@ function build_dialog($selected_setting = 'ui'){
 					$seem_html = new we_html_table(['class' => 'default'], 2, 1);
 					$seem_html->setCol(0, 0, ['class' => 'defaultfont'], $start_type->getHtml());
 					$seem_html->setCol(1, 0, array('style' => 'padding-top:5px;'), $seem_cockpit_selectordummy . $seem_document_chooser . $seem_object_chooser . $seem_weapp_chooser);
-					$settings[] = array('headline' => g_l('prefs', '[seem_startdocument]'), 'html' => $seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $seem_start_type . '");'), 'space' => we_html_multiIconBox::SPACE_BIG);
+					$settings[] = ['headline' => g_l('prefs', '[seem_startdocument]'), 'html' => $seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $seem_start_type . '");'), 'space' => we_html_multiIconBox::SPACE_BIG];
 				}
 
 				// Build dialog if user has permission
@@ -1332,34 +1332,23 @@ function build_dialog($selected_setting = 'ui'){
 			//Build activation of integration of documentation
 			$template_editor_autoClose = we_html_forms::checkbox(1, get_value('editorDocuintegration'), 'newconf[editorDocuintegration]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '') .
 //remove fonts not available
-				we_html_element::jsScript(LIB_DIR . 'additional/fontdetect/fontdetect.js') .
-				we_html_element::jsElement('
-var detective = new Detector();
-var elements=document.getElementsByName("newconf[editorFontname]")[0].children;
-var elements2=document.getElementsByName("newconf[editorTooltipFontname]")[0].children;
-for(i=0;i<elements.length; ++i){
-	if(!detective.detect(elements[i].value)){
-		elements[i].disabled="disabled";
-		elements2[i].disabled="disabled";
-	}
-}');
-
-			$settings = array(
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_information]'), we_html_tools::TYPE_INFO, 480, false),),
-				array('headline' => g_l('prefs', '[editor_mode]'), 'html' => $template_editor_mode->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_font]'), 'html' => $template_editor_font_specify_code . $template_editor_font_specify_table, 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_theme]'), 'html' => $template_editor_theme->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				we_html_element::jsScript(LIB_DIR . 'additional/fontdetect/fontdetect.js', 'checkFonts()');
+			$settings = [
+				['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[editor_information]'), we_html_tools::TYPE_INFO, 480, false),],
+				['headline' => g_l('prefs', '[editor_mode]'), 'html' => $template_editor_mode->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_font]'), 'html' => $template_editor_font_specify_code . $template_editor_font_specify_table, 'space' => we_html_multiIconBox::SPACE_MED2],
+				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_theme]'), 'html' => $template_editor_theme->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2],
 //				array('class' => 'editor editor_java', 'headline' => g_l('prefs', '[editor_highlight_colors]'), 'html' => $template_editor_font_color_checkbox . $template_editor_font_color_table, 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $template_editor_linenumbers_code, 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_highlightLine]'), 'html' => $template_editor_highlightLine_code, 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('global', '[wrapcheck]'), 'html' => $template_editor_Wrap_code, 'space' => we_html_multiIconBox::SPACE_MED2),
+				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $template_editor_linenumbers_code, 'space' => we_html_multiIconBox::SPACE_MED2],
+				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_highlightLine]'), 'html' => $template_editor_highlightLine_code, 'space' => we_html_multiIconBox::SPACE_MED2],
+				['class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('global', '[wrapcheck]'), 'html' => $template_editor_Wrap_code, 'space' => we_html_multiIconBox::SPACE_MED2],
 				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_tabstop]'), 'html' => $template_editor_tabstop_code, 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoindent]'), 'html' => $template_editor_autoIndent_code, 'space' => we_html_multiIconBox::SPACE_MED2),
 				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $template_editor_codecompletion_code, 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $template_editor_tooltips_code . '<br/>' . $template_editor_tooltip_font_specify_code . '<br/>' . $template_editor_tooltip_font_specify_table, 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoCloseTags]'), 'html' => $template_editor_autoClose, 'space' => we_html_multiIconBox::SPACE_MED2),
+				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $template_editor_tooltips_code . '<br/>' . $template_editor_tooltip_font_specify_code . '<br/>' . $template_editor_tooltip_font_specify_table, 'space' => we_html_multiIconBox::SPACE_MED2],
+				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoCloseTags]'), 'html' => $template_editor_autoClose, 'space' => we_html_multiIconBox::SPACE_MED2],
 				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $template_editor_docuintegration_code, 'space' => we_html_multiIconBox::SPACE_MED2),
-			);
+			];
 
 			return create_dialog("settings_editor_predefined", $settings, count($settings), g_l('prefs', '[show_predefined]'), g_l('prefs', '[hide_predefined]'));
 
@@ -2376,46 +2365,15 @@ for(i=1;i<childs.length;++i){
 	}
 	') .
 	'</head>' .
-	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'doClose()'), build_dialog('saved')) . '</html>';
+	we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'doClose()'], build_dialog('saved')) . '</html>';
 } else {
-	$form = we_html_element::htmlForm(array('onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHidden('save_settings', 0) . render_dialog());
+	$form = we_html_element::htmlForm(['onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']], we_html_element::htmlHidden('save_settings', 0) . render_dialog());
 
-	$we_cmd_js = we_html_element::jsElement('function we_cmd(){
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]){
-		case "browse_server":
-			new (WE().util.jsWindow)(this, url,"browse_server",-1,-1,840,400,true,false,true);
-			break;
-		case "we_selector_directory":
-		case "we_selector_image":
-		case "we_selector_document":
-			new (WE().util.jsWindow)(this, url,"we_selector_document",-1,-1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ',true,false,true,true);
-			break;
-		case "show_formmail_log":
-			url = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/weFormmailLog.php"
-			new (WE().util.jsWindow)(this, url,"we_selector_document",-1,-1,840,400,true,false,true);
-			break;
-		case "show_formmail_block_log":
-			url = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/weFormmailBlockLog.php"
-			new (WE().util.jsWindow)(this, url,"we_selector_document",-1,-1,840,400,true,false,true);
-			break;
-		case "openColorChooser":
-			new (WE().util.jsWindow)(this, url,"we_colorChooser",-1,-1,430,370,true,true,true);
-			break;
-		default:
-			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-	}
-}
-
-function setColorField(name) {
-document.getElementById("color_" + name).style.backgroundColor=document.we_form.elements[name].value;
-}' . ($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
+	$we_cmd_js = we_html_element::jsElement(($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
 
 
 	echo $we_cmd_js . '</head>' .
-	we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'startPrefs();'), $form) .
+	we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'startPrefs();'], $form) .
 	$yuiSuggest->getYuiJs() .
 	'</html>';
 }

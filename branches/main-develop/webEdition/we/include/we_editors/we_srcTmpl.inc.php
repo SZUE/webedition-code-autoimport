@@ -30,25 +30,17 @@ if(isset($we_doc->elements["Charset"]["dat"])){ //	send charset which might be d
 	we_html_tools::headerCtCharset('text/html', $we_doc->elements["Charset"]["dat"]);
 }
 
-echo we_html_tools::getHtmlTop('', isset($we_doc->elements["Charset"]["dat"]) ? $we_doc->elements["Charset"]["dat"] : '');
+echo we_html_tools::getHtmlTop('', isset($we_doc->elements['Charset']['dat']) ? $we_doc->elements["Charset"]["dat"] : '');
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 if(!isset($_SESSION['weS']['we_wrapcheck'])){
 	$_SESSION['weS']['we_wrapcheck'] = $_SESSION['prefs']['editorWrap'];
 }
-$doc = [
-	'docName' => $we_doc->Name,
-	'docCharSet' => ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']),
-	'editorHighlightCurrentLine' => intval($_SESSION['prefs']['editorHighlightCurrentLine']),
-];
-
-echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js').
-	we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', '', ['id' => 'loadVarSrcTmpl', 'data-doc' => setDynamicVar($doc)]);
 
 function we_getCSSIds(){
 	$tp = new we_tag_tagParser($GLOBALS['we_doc']->getElement('data'));
 	$tags = $tp->getTagsWithAttributes();
-	$query = array('document' => [], 'template' => [], 'object' => []);
+	$query = ['document' => [], 'template' => [], 'object' => []];
 
 	foreach($tags as $tag){
 		if(isset($tag['attribs']['id']) && intval($tag['attribs']['id'])){
@@ -174,10 +166,9 @@ function we_getCodeMirror2Code(){
 			$maineditor.=we_html_element::jsScript(LIB_DIR . 'additional/CodeMirror/' . $js);
 		}
 
-
 		$tmp = we_unserialize($_SESSION['prefs']['editorCodecompletion']);
 		$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
-		$settings = http_build_query(array('settings' => is_array($tmp) ? $tmp : []));
+		$settings = http_build_query(['settings' => is_array($tmp) ? $tmp : []]);
 
 		$maineditor.=
 			($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ?
@@ -246,63 +237,22 @@ var CMoptions = { //these are the CodeMirror options
 				'
 	}
 };' . '
-window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content
 ');
 	}
 	return $maineditor;
 }
 
-switch($_SESSION['prefs']['editorMode']){
-	case 'java':
-	case 'codemirror2':
-		$initEditor = 'initCM();';
-		break;
-	default:
-		$initEditor = 'initDefaultEdior();';
-		break;
+function getInitEditor(){
+	switch($_SESSION['prefs']['editorMode']){
+		case 'java':
+		case 'codemirror2':
+			return'initCM();';
+		default:
+			return 'initDefaultEdior();';
+	}
 }
 
-
-$wrap = ($_SESSION['weS']['we_wrapcheck'] ? 'virtual' : 'off');
-
-$code = ($we_doc instanceof we_htmlDocument ?
-		$we_doc->getDocumentCode() :
-		$we_doc->getElement('data')
-	);
-
-$maineditor = '<div id="editorDiv" style="margin-left: 20px;margin-right: 20px;">' .
-	'<textarea id="editarea" style="' . (($_SESSION["prefs"]["editorFont"] == 1) ? ' font-family: ' . $_SESSION['prefs']['editorFontname'] . '; font-size: ' . $_SESSION['prefs']['editorFontsize'] . 'px;' : '') .
-	'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
-	'" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . $wrap . '" ' .
-	((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="editorChanged();return wedoKeyDown(this,event);"') . '>'
-	. oldHtmlspecialchars($code) . '</textarea>';
-switch($_SESSION['prefs']['editorMode']){
-	case 'java':
-	case 'codemirror2': //Syntax-Highlighting
-		$maineditor .= we_getCodeMirror2Code();
-		break;
-	default:
-		$maineditor.=we_html_element::jsElement('window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content');
-}
-
-$maineditor .= '<table class="default" id="srtable">
-	    <tr>
-<td style="text-align:left" class="defaultfont">' .
-	($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '
-<input type="text" style="width: 10em;float:left;" id="query" onkeydown="cmSearch(event);"/><div style="float:left;">' . we_html_button::create_button(we_html_button::SEARCH, 'javascript:cmSearch(null);') . '</div>
-<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace" onkeydown="cmReplace(event);"/><div style="float:left;">' . we_html_button::create_button('replace', 'javascript:cmReplace(null);') . '</div>' .
-		we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
-		'</div>' : ''
-	) . '
-					</td>
-					<td style="text-align:right" class="defaultfont">' .
-	we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? 'editor.setOption(\'lineWrapping\',this.checked);' : "we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;') .
-	($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button('fa:reindent,fa-lg fa-indent', 'javascript:reindent();') . '</div>' : '') .
-	'</td></tr></table></div>';
-$znr = -1;
-$wepos = "";
-
-if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
+function getTagWizzard($we_doc){
 	// Code Wizard
 	$allWeTags = we_wizard_tag::getExistingWeTags();
 
@@ -379,25 +329,78 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 	  </td>
 	  </tr>
 	  </table> */
-	$parts = array(
+	return [
 		[],
-		array("headline" => "", "html" => $tagWizardHtml,)
+		["headline" => "", "html" => $tagWizardHtml,]
+	];
+}
+
+$doc = [
+	'docName' => $we_doc->Name,
+	'docCharSet' => ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']),
+	'editorHighlightCurrentLine' => intval($_SESSION['prefs']['editorHighlightCurrentLine']),
+];
+
+echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
+ we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', '', ['id' => 'loadVarSrcTmpl', 'data-doc' => setDynamicVar($doc)]);
+
+$code = ($we_doc instanceof we_htmlDocument ?
+		$we_doc->getDocumentCode() :
+		$we_doc->getElement('data')
 	);
+
+$maineditor = '<textarea id="editarea" style="' . (($_SESSION["prefs"]["editorFont"] == 1) ? ' font-family: ' . $_SESSION['prefs']['editorFontname'] . '; font-size: ' . $_SESSION['prefs']['editorFontsize'] . 'px;' : '') .
+	'-moz-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -o-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; -webkit-tab-size:' . $_SESSION['prefs']['editorTabSize'] . '; tab-size:' . $_SESSION['prefs']['editorTabSize'] . ';' .
+	'" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . ($_SESSION['weS']['we_wrapcheck'] ? 'virtual' : 'off') . '" ' .
+	((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="editorChanged();return wedoKeyDown(this,event);"') . '>'
+	. oldHtmlspecialchars($code) . '</textarea>';
+switch($_SESSION['prefs']['editorMode']){
+	case 'java':
+	case 'codemirror2': //Syntax-Highlighting
+		$maineditor .= we_getCodeMirror2Code();
+		break;
+	default:
+		$maineditor.=we_html_element::jsElement('window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content');
+}
+
+$znr = -1;
+$wepos = "";
+
+if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
+	$parts = getTagWizzard($we_doc);
 	$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 	$znr = 1;
 }
 ?>
 </head>
-<body class="weEditorBody" style="overflow:hidden;" onload="<?= $initEditor; ?>" onunload="doUnload();
+<body class="weEditorBody" style="overflow:hidden;" onload="<?= getInitEditor(); ?>" onunload="doUnload();
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" onresize="sizeEditor();">
 	<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
-echo we_class::hiddenTrans() .
- '<div id="bodydiv" style="display:none;position:absolute;top:10px;left:0px;right:0px;bottom:0px;">' . $maineditor . (isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>' .
- we_html_element::htmlHidden('we_complete_request', 1) .
- (isset($groupJs) ?
-	we_html_element::jsElement('tagGroups = {' . $groupJs . '};' . (isset($selectedGroup) ? "selectTagGroup('" . $selectedGroup . "');" : '')) :
-	'');
-?>
+		echo we_class::hiddenTrans() .
+		'<div id="bodydiv" style="display:none;position:absolute;top:10px;left:0px;right:0px;bottom:0px;">
+<div id="editorDiv" style="margin-left: 20px;margin-right: 20px;">' .
+		$maineditor . '
+	<table class="default" id="srtable">
+	<tr>
+		<td style="text-align:left" class="defaultfont">' .
+		($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '
+	<input type="text" style="width: 10em;float:left;" id="query" onkeydown="cmSearch(event);"/><div style="float:left;">' . we_html_button::create_button(we_html_button::SEARCH, 'javascript:cmSearch(null);') . '</div>
+	<input type="text" style="margin-left:2em;width: 10em;float:left;" id="replace" onkeydown="cmReplace(event);"/><div style="float:left;">' . we_html_button::create_button('replace', 'javascript:cmReplace(null);') . '</div>' .
+			we_html_forms::checkbox(1, 0, 'caseSens', g_l('weClass', '[caseSensitive]'), false, "defaultfont", '', false, '', 0, 0, '', 'display:inline-block;margin-left:2em;') .
+			'</div>' : ''
+		) . '
+						</td>
+						<td style="text-align:right" class="defaultfont">' .
+		we_html_forms::checkbox(1, ($_SESSION['weS']['we_wrapcheck'] == 1), 'we_wrapcheck_tmp', g_l('global', '[wrapcheck]'), false, "defaultfont", ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? 'editor.setOption(\'lineWrapping\',this.checked);' : "we_cmd('wrap_on_off',this.checked)"), false, '', 0, 0, '', 'display:inline-block;') .
+		($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '<div id="reindentButton" style="display:inline-block;margin-left:10px;margin-top:-3px;">' . we_html_button::create_button('fa:reindent,fa-lg fa-indent', 'javascript:reindent();') . '</div>' : '') .
+		'</td></tr></table>
+</div>' .
+		(isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>' .
+		we_html_element::htmlHidden('we_complete_request', 1) .
+		(isset($groupJs) ?
+			we_html_element::jsElement('tagGroups = {' . $groupJs . '};' . (isset($selectedGroup) ? "selectTagGroup('" . $selectedGroup . "');" : '')) :
+			'');
+		?>
 	</form></body>
 </html>

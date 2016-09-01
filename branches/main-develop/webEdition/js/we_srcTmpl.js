@@ -36,6 +36,8 @@ var wizardHeight = {
 };
 
 function initCM() {
+	window.orignalTemplateContent = document.getElementById("editarea").value.replace(/\r/g, ""); //this is our reference of the original content to compare with current content
+
 	try {
 		document.getElementById("bodydiv").style.display = "block";
 		editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);
@@ -57,7 +59,7 @@ function initCM() {
 		editor.on("change", function () {
 			//this wil save content from CodeMirror2 to our original <textarea>.
 			var currentTemplateCode = editor.getValue().replace(/\r/g, "\n");
-			if (window.orignalTemplateContent != currentTemplateCode) {
+			if (window.orignalTemplateContent !== currentTemplateCode) {
 				document.getElementById("editarea").value = currentTemplateCode;
 				_EditorFrame.setEditorIsHot(true);
 			} else {

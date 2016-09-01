@@ -293,12 +293,12 @@ function exit_open() {
 
 	protected function getFrameset($withPreview = false){
 		$is_object = defined('OBJECT_TABLE') && $this->table === OBJECT_TABLE;
-		return '<body class="selector" onload="startFrameset()">' .
-			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
+		return '<body class="selector" onload="top.document.getElementById(\'fspath\').innerHTML=(top.fileSelect.data.startPath === \'\' ? \'/\' : top.fileSelect.data.startPath);startFrameset()">' .
+			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview' . ($is_object ? ' object' : '')) .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false, ($is_object ? 'object' : '')) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
-			we_html_element::htmlDiv(array('id' => 'fspath', 'class' => 'radient'), we_html_element::jsElement('document.write( (top.fileSelect.data.startPath === "" ? "/" : top.fileSelect.data.startPath));')) .
+			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient']) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>';
 	}

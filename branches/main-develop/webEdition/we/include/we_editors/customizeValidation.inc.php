@@ -93,22 +93,22 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_ele
     </table>' .
 		$hiddenFields;
 
-	$parts = array(
-		array('headline' => g_l('validation', '[available_services]'), 'html' => $table, 'space' => we_html_multiIconBox::SPACE_MED2)
-	);
+	$parts = [
+		['headline' => g_l('validation', '[available_services]'), 'html' => $table, 'space' => we_html_multiIconBox::SPACE_MED2]
+		];
 
 	if($services){
-		$parts[] = array('headline' => g_l('validation', '[category]'), 'html' => we_html_tools::htmlSelect('category', validation::getAllCategories(), 1, $selectedService->category), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
-		$parts[] = array('headline' => g_l('validation', '[service_name]'), 'html' => we_html_tools::htmlTextInput('name', 50, $selectedService->name), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
-		$parts[] = array('headline' => g_l('validation', '[host]'), 'html' => we_html_tools::htmlTextInput('host', 50, $selectedService->host), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
-		$parts[] = array('headline' => g_l('validation', '[path]'), 'html' => we_html_tools::htmlTextInput('path', 50, $selectedService->path), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
-		$parts[] = array('headline' => g_l('validation', '[ctype]'), 'html' => we_html_tools::htmlTextInput('ctype', 50, $selectedService->ctype) . '<br /><span class="small">' . g_l('validation', '[desc][ctype]') . '</span>', 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
-		$parts[] = array('headline' => g_l('validation', '[fileEndings]'), 'html' => we_html_tools::htmlTextInput('fileEndings', 50, $selectedService->fileEndings) . '<br /><span class="small">' . g_l('validation', '[desc][fileEndings]') . '</span>', 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
-		$parts[] = array('headline' => g_l('validation', '[method]'), 'html' => we_html_tools::htmlSelect('s_method', array('post' => 'post', 'get' => 'get'), 1, $selectedService->method, false), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
-		$parts[] = array('headline' => g_l('validation', '[checkvia]'), 'html' => we_html_tools::htmlSelect('checkvia', array('url' => g_l('validation', '[checkvia_url]'), 'fileupload' => g_l('validation', '[checkvia_upload]')), 1, $selectedService->checkvia, false), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
-		$parts[] = array('headline' => g_l('validation', '[varname]'), 'html' => we_html_tools::htmlTextInput('varname', 50, $selectedService->varname) . '<br /><span class="small">' . g_l('validation', '[desc][varname]') . '</span>', 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1);
-		$parts[] = array('headline' => g_l('validation', '[additionalVars]'), 'html' => we_html_tools::htmlTextInput('additionalVars', 50, $selectedService->additionalVars) . '<br /><span class="small">' . g_l('validation', '[desc][additionalVars]') . '</span>', 'space' => we_html_multiIconBox::SPACE_MED2);
-		$parts[] = array('headline' => g_l('validation', '[active]'), 'html' => we_html_tools::htmlSelect('active', array(0 => 'false', 1 => 'true'), 1, $selectedService->active) . '<br /><span class="small">' . g_l('validation', '[desc][active]') . '</span>', 'space' => we_html_multiIconBox::SPACE_MED2);
+		$parts[] = ['headline' => g_l('validation', '[category]'), 'html' => we_html_tools::htmlSelect('category', validation::getAllCategories(), 1, $selectedService->category), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];
+		$parts[] = ['headline' => g_l('validation', '[service_name]'), 'html' => we_html_tools::htmlTextInput('name', 50, $selectedService->name), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];
+		$parts[] = ['headline' => g_l('validation', '[host]'), 'html' => we_html_tools::htmlTextInput('host', 50, $selectedService->host), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];
+		$parts[] = ['headline' => g_l('validation', '[path]'), 'html' => we_html_tools::htmlTextInput('path', 50, $selectedService->path), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];
+		$parts[] = ['headline' => g_l('validation', '[ctype]'), 'html' => we_html_tools::htmlTextInput('ctype', 50, $selectedService->ctype) . '<br /><span class="small">' . g_l('validation', '[desc][ctype]') . '</span>', 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];
+		$parts[] = ['headline' => g_l('validation', '[fileEndings]'), 'html' => we_html_tools::htmlTextInput('fileEndings', 50, $selectedService->fileEndings) . '<br /><span class="small">' . g_l('validation', '[desc][fileEndings]') . '</span>', 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];
+		$parts[] = ['headline' => g_l('validation', '[method]'), 'html' => we_html_tools::htmlSelect('s_method', ['post' => 'post', 'get' => 'get'], 1, $selectedService->method, false), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];
+		$parts[] = ['headline' => g_l('validation', '[checkvia]'), 'html' => we_html_tools::htmlSelect('checkvia', ['url' => g_l('validation', '[checkvia_url]'), 'fileupload' => g_l('validation', '[checkvia_upload]')], 1, $selectedService->checkvia, false), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];
+		$parts[] = ['headline' => g_l('validation', '[varname]'), 'html' => we_html_tools::htmlTextInput('varname', 50, $selectedService->varname) . '<br /><span class="small">' . g_l('validation', '[desc][varname]') . '</span>', 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];
+		$parts[] = ['headline' => g_l('validation', '[additionalVars]'), 'html' => we_html_tools::htmlTextInput('additionalVars', 50, $selectedService->additionalVars) . '<br /><span class="small">' . g_l('validation', '[desc][additionalVars]') . '</span>', 'space' => we_html_multiIconBox::SPACE_MED2];
+		$parts[] = ['headline' => g_l('validation', '[active]'), 'html' => we_html_tools::htmlSelect('active', [0 => 'false', 1 => 'true'], 1, $selectedService->active) . '<br /><span class="small">' . g_l('validation', '[desc][active]') . '</span>', 'space' => we_html_multiIconBox::SPACE_MED2];
 	}
 
 	echo '<form name="we_form" onsubmit="return false;">' .
