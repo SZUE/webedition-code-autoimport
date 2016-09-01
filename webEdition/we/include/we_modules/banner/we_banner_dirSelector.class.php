@@ -164,12 +164,6 @@ top.selectFile(top.currentID);'
 			), we_html_element::htmlBody());
 	}
 
-	protected function getFramesetJavaScriptDef(){
-		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
-g_l.newbannergroup="' . g_l('modules_banner', '[newbannergroup]') . '";
-');
-	}
-
 	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		parent::printHTML($what, false);
 	}

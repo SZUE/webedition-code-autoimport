@@ -193,8 +193,17 @@ class we_selector_file{
 	}
 
 	function printFramesetHTML($withPreview = true){
+		$this->jsoptions = [
+			'rootDirID' => $this->rootDirID,
+			'table' => $this->table,
+			'formtarget' => $_SERVER['SCRIPT_NAME'],
+			'multiple' => intval($this->multiple),
+			'needIEEscape' => intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8'),
+			'open_doc' => $this->open_doc
+		];
+		$tmp = $this->getFramesetJavaScriptDef();
 		$this->setDirAndID(); //set correct directory
-		echo we_html_tools::getHtmlTop($this->title, '', 'frameset', $this->getFramesetJavaScriptDef() .
+		echo we_html_tools::getHtmlTop($this->title, '', 'frameset', $tmp .
 			$this->getFramsetJSFile() .
 			$this->getExitOpen() .
 			we_html_element::jsElement($this->printCmdAddEntriesHTML() . 'self.focus();') .
@@ -202,7 +211,7 @@ class we_selector_file{
 	}
 
 	protected function getFramsetJSFile(){
-		return we_html_element::jsScript(JS_DIR . 'selectors/file_selector.js');
+		return we_html_element::jsScript(JS_DIR . 'selectors/file_selector.js', '', ['id' => 'loadVarSelectors', 'data-options' => setDynamicVar($this->jsoptions)]);
 	}
 
 	protected function getFramesetJavaScriptDef(){
@@ -210,7 +219,6 @@ class we_selector_file{
 		if($this->id === 0){
 			$this->path = '/';
 		}
-		//FIXME: make a new selector-object & add all relevant information there
 		return we_html_element::jsElement('
 var currentID="' . $this->id . '";
 var currentDir="' . $this->dir . '";
@@ -221,21 +229,6 @@ var startPath="' . $startPath . '";
 var parentID=' . intval(($this->dir ? f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db) : 0)) . ';
 var table="' . $this->table . '";
 var order="' . $this->order . '";
-var entries = [];
-var clickCount=0;
-var wasdblclick=false;
-var tout=null;
-var mk=null;
-
-var options={
-  rootDirID:' . $this->rootDirID . ',
-	table:"' . $this->table . '",
-	formtarget:"' . $_SERVER['SCRIPT_NAME'] . '",
-	multiple:' . intval($this->multiple) . ',
-	needIEEscape:' . intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8') . ',
-	open_doc:"' . $this->open_doc . '"
-};
-
 WE().util.loadConsts("g_l.fileselector");
 WE().util.loadConsts("selectors");
 ');
@@ -425,7 +418,11 @@ WE().consts.g_l.fileselector = {
 	deleteQuestion:"' . g_l('fileselector', '[deleteQuestion]') . '",
 	new_folder_name:"' . g_l('fileselector', '[new_folder_name]') . '",
 	date_format:"' . date(g_l('date', '[format][default]')) . '",
-	folder:"' . g_l('contentTypes', '[folder]') . '"
+	folder:"' . g_l('contentTypes', '[folder]') . '",
+	newbannergroup:"' . g_l('modules_banner', '[newbannergroup]') . '",
+	newFolderExport:"' . g_l('export', '[newFolder]') . '",
+	newFolderVoting:"' . g_l('modules_voting', '[newFolder]') . '",
+	newFolderNavigation:"' . g_l('navigation', '[newFolder]') . '",
 };';
 	}
 
@@ -444,6 +441,7 @@ WE().consts.g_l.fileselector = {
 	SETDIR:' . self::SETDIR . ',
 	VIEW_ICONS:"' . we_search_view::VIEW_ICONS . '",
   VIEW_LIST:"' . we_search_view::VIEW_LIST . '",
+	DEL:' . self::DEL . ',
 };
 ';
 	}

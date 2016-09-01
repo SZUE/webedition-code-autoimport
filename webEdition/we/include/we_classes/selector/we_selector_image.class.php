@@ -61,9 +61,8 @@ class we_selector_image extends we_selector_document{
 	}
 
 	protected function getFramesetJavaScriptDef(){
-		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
-options.view=WE().consts.selectors.VIEW_ICONS;
-');
+		$this->jsoptions['view'] = we_search_view::VIEW_ICONS;
+		return parent::getFramesetJavaScriptDef();
 	}
 
 }

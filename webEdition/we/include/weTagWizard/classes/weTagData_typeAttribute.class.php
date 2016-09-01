@@ -54,7 +54,7 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 	 * @return string
 	 */
 	function getCodeForTagWizard(){
-		$entries = array('' => g_l('taged', '[select_type]'));
+		$entries = ['' => g_l('taged', '[select_type]')];
 
 		foreach($this->Options as $option){
 			$entries[$option->Value] = ($option->getName() === '-' ? '' : $option->getName());

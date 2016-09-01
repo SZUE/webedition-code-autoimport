@@ -1729,8 +1729,8 @@ WE().util = {
 		document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	},
-	getDynamicVar: function (id, dataname) {
-		var el = document.getElementById(id);
+	getDynamicVar: function (doc, id, dataname) {
+		var el = doc.getElementById(id);
 		return (el ?
 						JSON.parse(this.Base64.decode(el.getAttribute(dataname))) :
 						{}

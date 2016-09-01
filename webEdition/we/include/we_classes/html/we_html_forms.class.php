@@ -227,7 +227,7 @@ abstract class we_html_forms{
 			$bgStyle = $bgcolor ? ' style="background-color: ' . $bgcolor . ' !important; background-image: none !important;"' : '';
 
 			return $out .
-				we_html_element::htmlTextArea(array('name' => $name, 'id' => $name, 'onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none', 'class' => 'wetextarea'), $hiddenTextareaContent) .
+				we_html_element::htmlTextArea(['name' => $name, 'id' => $name, 'onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none', 'class' => 'wetextarea'], $hiddenTextareaContent) .
 				($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') .
 				($buttonTop ? '<div class="tbButtonWysiwygBorder" style="border-bottom:0px;">' . $e->getHTML() . '</div>' : '') . '<div class="wysiwygPreview tbButtonWysiwygBorder ' . ($class ? : "") . ' wetextarea tiny-wetextarea wetextarea-' . $origName . '" ' . $bgStyle . ' id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="border-top:0px;">' . $e->getHTML() . '</div>' : '');
 		}
@@ -241,8 +241,15 @@ abstract class we_html_forms{
 
 		if($showAutobr || $showSpell){
 			$clearval = $value;
-			$value = str_replace(array('<?', '<script', '</script', '\\', "\n", "\r", '"'), array('##|lt;?##', '<##scr#ipt##', '</##scr#ipt##', '\\\\', '\n', '\r',
-				'\\"'), $value);
+			$value = strtr($value, [
+				'<?' => '##|lt;?##',
+				'<script' => '<##scr#ipt##',
+				'</script' => '</##scr#ipt##',
+				'\\' => '\\\\',
+				"\n" => '\n',
+				"\r" => '\r',
+				'"' => '\\"'
+			]);
 			$out .= we_html_element::jsElement('new we_textarea("' . $name . '","' . $value . '","' . $cols . '","' . $rows . '","","","' . $autobr . '","' . $autobrName . '",' . ($showAutobr ? ($hideautobr ? "false" : "true") : "false") . ',' . ($importrtf ? "true" : "false") . ',"' . $GLOBALS["WE_LANGUAGE"] . '","' . $class . '","' . implode(';', $style) . '","' . $wrap . '","onkeydown","' . ($xml ? "true" : "false") . '","' . $id . '",' . ((defined('SPELLCHECKER') && $showSpell) ? "true" : "false") . ',"' . $origName . '");') .
 				'<noscript><textarea name="' . $name . '"' . ($tabindex ? ' tabindex="' . $tabindex . '"' : '') . ($style ? ' style="' . implode(';', $style) . '"' : '') . ' class="' . ($class ? $class . " " : "") . 'wetextarea wetextarea-' . $origName . '"' . ($id ? ' id="' . $id . '"' : '') . '>' . oldHtmlspecialchars($clearval) . '</textarea></noscript>';
 		} else {

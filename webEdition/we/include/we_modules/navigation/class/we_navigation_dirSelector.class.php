@@ -165,12 +165,6 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/naviagationDir_selector.js');
 	}
 
-	protected function getFramesetJavaScriptDef(){
-		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
-g_l.newFolder="' . g_l('navigation', '[newFolder]') . '";
-');
-	}
-
 	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		parent::printHTML($what, false);
 	}

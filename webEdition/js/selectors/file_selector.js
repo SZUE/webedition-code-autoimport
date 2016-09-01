@@ -22,7 +22,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var options = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-options');
 
+var entries = [];
+var clickCount = 0;
+var mk = null;
 var allIDs = "";
 var allPaths = "";
 var allTexts = "";

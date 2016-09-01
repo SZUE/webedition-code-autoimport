@@ -342,12 +342,12 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '
 	}
 
 	protected function getFramesetJavaScriptDef(){
+		$this->jsoptions['userCanRenameFolder'] = intval($this->userCanRenameFolder);
+		$this->jsoptions['userCanMakeNewFolder'] = intval($this->userCanMakeNewFolder);
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var makeNewFolder=false;
 var we_editDirID="";
 var old=0;
-options.userCanRenameFolder=' . intval($this->userCanRenameFolder) . ';
-options.userCanMakeNewFolder=' . intval($this->userCanMakeNewFolder) . ';
 ');
 	}
 
