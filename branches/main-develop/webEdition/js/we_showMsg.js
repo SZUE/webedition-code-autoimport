@@ -1,7 +1,8 @@
+/* global top,WE */
+
 /**
  * webEdition CMS
  *
- * webEdition CMS
  * $Rev$
  * $Author$
  * $Date$
@@ -18,18 +19,12 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package    webEdition_base
+ * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-/* FIXME: move this styles to lib/we/ui/themes/default/we_ui_layout_HTMLPage/style,css and make scss in lib/we */
-
-@import "config.scss";
-
-#resize {
-	top: 0;
-}
-
-.weEditorBody{
-	overflow:auto !important;
+var msg = WE().util.getDynamicVar(document, 'loadVarMsg', 'data-msg');
+if (msg) {
+	var type = document.getElementById('loadVarMsg').getAttribute('data-msgType');
+	top.we_showMessage(msg, type ? parseInt(type) : WE().consts.message.WE_MESSAGE_NOTICE, window);
 }
