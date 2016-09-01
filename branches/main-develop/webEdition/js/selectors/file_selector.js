@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var options = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-options');
+var fileSelect = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-selector');
 
 var entries = [];
 var clickCount = 0;
@@ -57,11 +57,11 @@ function closeOnEscape() {
 
 function orderIt(o) {
 	order = o + (order === o ? " DESC" : "");
-	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, top.currentDir, order));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, fileSelect.data.currentDir, order));
 }
 
 function goBackDir() {
-	setDir(parentID);
+	setDir(fileSelect.data.parentID);
 }
 
 function getEntry(id) {
@@ -95,9 +95,9 @@ function doClick(id, ct) {
 				wasdblclick = false;
 			}, 400);
 		}
-	} else if (top.options.multiple) {
+	} else if (fileSelect.options.multiple) {
 		if (top.shiftpressed) {
-			var oldid = top.currentID;
+			var oldid = fileSelect.data.currentID;
 			var currendPos = getPositionByID(id);
 			var firstSelected = getFirstSelected();
 
@@ -108,7 +108,7 @@ function doClick(id, ct) {
 			} else {
 				selectFile(id);
 			}
-			top.currentID = oldid;
+			fileSelect.data.currentID = oldid;
 		} else if (!top.ctrlpressed) {
 			selectFile(id);
 		} else if (isFileSelected(id)) {
@@ -130,16 +130,16 @@ function doClick(id, ct) {
 
 function setDir(id) {
 	e = getEntry(id);
-	top.currentID = id;
-	top.currentDir = id;
+	fileSelect.data.currentID = id;
+	fileSelect.data.currentDir = id;
 	top.currentPath = e.path;
-	top.currentText = e.text;
+	fileSelect.data.currentText = e.text;
 	top.document.getElementsByName("fname")[0].value = e.text;
 	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, id));
 }
 
 function setRootDir() {
-	setDir(options.rootDirID);
+	setDir(fileSelect.options.rootDirID);
 }
 
 function selectFile(id) {
@@ -159,7 +159,7 @@ function selectFile(id) {
 		}
 		top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 		top.currentPath = e.path;
-		top.currentID = id;
+		fileSelect.data.currentID = id;
 	} else {
 		a.value = "";
 		top.currentPath = "";
@@ -181,7 +181,7 @@ function writeBody(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr' + ((entries[i].ID == top.currentID) ? ' class="selected"' : '') + ' id="line_' + entries[i].ID + '"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
+		body += '<tr' + ((entries[i].ID == fileSelect.data.currentID) ? ' class="selected"' : '') + ' id="line_' + entries[i].ID + '"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
 						'</tr>';
@@ -256,7 +256,7 @@ function queryString(what, id, o) {
 	if (!o) {
 		o = top.order;
 	}
-	return options.formtarget + 'what=' + what + '&table=' + options.table + '&id=' + id + "&order=" + o + "&filter=" + currentType;
+	return fileSelect.options.formtarget + 'what=' + what + '&table=' + fileSelect.options.table + '&id=' + id + "&order=" + o + "&filter=" + fileSelect.data.currentType;
 }
 
 function fillIDs(asArray) {
@@ -273,8 +273,8 @@ function fillIDs(asArray) {
 			allIsFolder.push(entries[i].isFolder);
 		}
 	}
-	if (top.currentID !== "" && allIDs.indexOf(top.currentID) === -1) {
-		allIDs.push(top.currentID);
+	if (fileSelect.data.currentID !== "" && allIDs.indexOf(fileSelect.data.currentID) === -1) {
+		allIDs.push(fileSelect.data.currentID);
 	}
 	if (top.currentPath !== "" && allPaths.indexOf(top.currentPath) === -1) {
 		allPaths.push(top.currentPath);
@@ -320,7 +320,7 @@ function weonclick(e) {
 			shiftpressed = true;
 		}
 	}
-	if (top.options.multiple) {
+	if (fileSelect.options.multiple) {
 		if ((self.shiftpressed === false) && (self.ctrlpressed === false)) {
 			top.unselectAllFiles();
 		}
@@ -349,7 +349,7 @@ function disableDelBut() {
 
 function enableDelBut() {
 	WE().layout.button.switch_button_state(document, "delete", "enabled");
-	if (top.options.userCanEditCat) {
+	if (fileSelect.options.userCanEditCat) {
 		WE().layout.button.switch_button_state(document, "btn_function_trash", "enabled");
 		changeCatState = 1;
 	}
@@ -382,7 +382,7 @@ function disableNewBut() {
 }
 
 function enableNewBut() {
-	if (top.options.userCanEditCat) {
+	if (fileSelect.options.userCanEditCat) {
 		WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
 		WE().layout.button.switch_button_state(document, "btn_add_cat", "enabled");
 	}
@@ -418,7 +418,7 @@ function selectIt() {
 }
 
 function setview(view) {
-	top.options.view = view;
+	fileSelect.options.view = view;
 	var zoom = top.document.getElementsByName("zoom")[0];
 	switch (view) {
 		case 'list':

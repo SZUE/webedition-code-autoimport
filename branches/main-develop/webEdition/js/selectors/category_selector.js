@@ -87,7 +87,7 @@ function selectFile(id) {
 			top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 		}
 		top.currentPath = e.path;
-		top.currentID = id;
+		fileSelect.data.currentID = id;
 		if (id) {
 			top.enableDelBut();
 		}
@@ -118,16 +118,16 @@ function doClick(id, ct) {
 			setTimeout(function () {
 				wasdblclick = false;
 			}, 400);
-		} else if (top.currentID == id && WE().util.hasPerm("EDIT_KATEGORIE")) {
+		} else if (fileSelect.data.currentID == id && WE().util.hasPerm("EDIT_KATEGORIE")) {
 			top.RenameEntry(id);
 		}
-	} else if (top.currentID == id && (!top.ctrlpressed)) {
+	} else if (fileSelect.data.currentID == id && (!top.ctrlpressed)) {
 		if (WE().util.hasPerm("EDIT_KATEGORIE")) {
 			top.RenameEntry(id);
 		}
 
 	} else if (top.shiftpressed) {
-		var oldid = top.currentID;
+		var oldid = fileSelect.data.currentID;
 		var currendPos = getPositionByID(id);
 		var firstSelected = getFirstSelected();
 		if (currendPos > firstSelected) {
@@ -137,7 +137,7 @@ function doClick(id, ct) {
 		} else {
 			selectFile(id);
 		}
-		top.currentID = oldid;
+		fileSelect.data.currentID = oldid;
 		hidePref(id);
 	} else if (!top.ctrlpressed) {
 		showPref(id);
@@ -165,8 +165,8 @@ function setDir(id) {
 	if (id === 0) {
 		e.text = "";
 	}
-	top.currentID = id;
-	top.currentDir = id;
+	fileSelect.data.currentID = id;
+	fileSelect.data.currentDir = id;
 	top.currentPath = e.path;
 	top.document.getElementsByName("fname")[0].value = e.text;
 	if (id) {
@@ -191,7 +191,7 @@ function deleteEntry() {
 		if (todel) {
 			todel = "," + todel;
 		}
-		top.fscmd.location.replace(top.queryString(WE().consts.selectors.DEL, top.currentID) + "&todel=" + encodeURI(todel));
+		top.fscmd.location.replace(top.queryString(WE().consts.selectors.DEL, fileSelect.data.currentID) + "&todel=" + encodeURI(todel));
 		if (top.fsvalues)
 			top.fsvalues.location.replace(top.queryString(WE().consts.selectors.PROPERTIES, 0));
 		top.disableDelBut();
@@ -215,9 +215,9 @@ function hidePref() {
 }
 
 function writeBody(d) {
-	var body = (options.needIEEscape ?
-					'<form name="we_form" target="fscmd" method="post" action="' + options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
-					'<form name="we_form" target="fscmd" method="post" action="' + options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
+	var body = (fileSelect.options.needIEEscape ?
+					'<form name="we_form" target="fscmd" method="post" action="' + fileSelect.options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=escape(document.we_form.we_EntryText_tmp.value);return true;">' :
+					'<form name="we_form" target="fscmd" method="post" action="' + fileSelect.options.formtarget + '" onsubmit="document.we_form.we_EntryText.value=document.we_form.we_EntryText_tmp.value;return true;">'
 					) +
 					(we_editCatID ?
 									'<input type="hidden" name="what" value="' + WE().consts.selectors.DO_RENAME_ENTRY + '" />' +
@@ -225,9 +225,9 @@ function writeBody(d) {
 									'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATE_CAT + '" />'
 									) +
 					'<input type="hidden" name="order" value="' + top.order + '" />' +
-					'<input type="hidden" name="rootDirID" value="' + options.rootDirID + '" />' +
-					'<input type="hidden" name="table" value="' + options.table + '" />' +
-					'<input type="hidden" name="id" value="' + top.currentDir + '" />' +
+					'<input type="hidden" name="rootDirID" value="' + fileSelect.options.rootDirID + '" />' +
+					'<input type="hidden" name="table" value="' + fileSelect.options.table + '" />' +
+					'<input type="hidden" name="id" value="' + fileSelect.data.currentDir + '" />' +
 					'<table class="selector">' +
 					(makeNewCat ?
 									'<tr class="newEntry">' +
@@ -260,13 +260,13 @@ function queryString(what, id, o, we_editCatID) {
 	if (!we_editCatID) {
 		we_editCatID = "";
 	}
-	return options.formtarget + 'what=' + what + '&rootDirID=' + options.rootDirID + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
+	return fileSelect.options.formtarget + 'what=' + what + '&rootDirID=' + fileSelect.options.rootDirID + '&table=' + fileSelect.options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editCatID ? ("&we_editCatID=" + we_editCatID) : "");
 }
 
 function weonclick(e) {
 	if (top.makeNewCat || top.we_editCatID) {
 		if (!inputklick) {
-			if (parent.options.needIEEscape) {
+			if (parent.fileSelect.options.needIEEscape) {
 				document.we_form.we_EntryText.value = escape(top.fsbody.document.we_form.we_EntryText_tmp.value);
 			} else {
 				document.we_form.we_EntryText.value = top.fsbody.document.we_form.we_EntryText_tmp.value;

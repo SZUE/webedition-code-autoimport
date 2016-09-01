@@ -1,4 +1,4 @@
-/* global top, WE */
+/* global top, WE, fileSelect */
 
 /**
  * webEdition CMS
@@ -25,12 +25,12 @@
 
 function drawNewFolder() {
 	unselectAllFiles();
-	top.fscmd.location.replace(top.queryString(WE().consts.selectors.NEWFOLDER, currentDir));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.NEWFOLDER, fileSelect.data.currentDir));
 }
 
 function RenameFolder(id) {
 	unselectAllFiles();
-	top.fscmd.location.replace(top.queryString(WE().consts.selectors.RENAMEFOLDER, currentDir, "", id));
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.RENAMEFOLDER, fileSelect.data.currentDir, "", id));
 }
 
 function showPreview(id) {
@@ -51,17 +51,17 @@ function doClick(id, ct) {
 			}, 400);
 		}
 	} else {
-		if (top.currentID == id && (!top.ctrlpressed)) {
-			if (top.options.userCanRenameFolder) {
+		if (fileSelect.data.currentID == id && (!top.ctrlpressed)) {
+			if (fileSelect.options.userCanRenameFolder) {
 				top.RenameFolder(id);
 			} else {
 				selectFile(id);
 			}
 
 		} else {
-			if (top.options.multiple) {
+			if (fileSelect.options.multiple) {
 				if (top.shiftpressed) {
-					var oldid = top.currentID;
+					var oldid = fileSelect.data.currentID;
 					var currendPos = getPositionByID(id);
 					var firstSelected = getFirstSelected();
 
@@ -72,7 +72,7 @@ function doClick(id, ct) {
 					} else {
 						selectFile(id);
 					}
-					top.currentID = oldid;
+					fileSelect.data.currentID = oldid;
 
 				} else if (!top.ctrlpressed) {
 					selectFile(id);
@@ -126,12 +126,12 @@ function selectFile(id) {
 			top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 		}
 		top.currentPath = e.path;
-		top.currentID = id;
-		top.we_editDirID = 0;
+		fileSelect.data.currentID = id;
+		fileSelect.data.we_editDirID = 0;
 	} else {
 		a.value = "";
 		top.currentPath = "";
-		top.we_editDirID = 0;
+		fileSelect.data.we_editDirID = 0;
 	}
 }
 
@@ -151,18 +151,18 @@ function addEntry(id, txt, folder, pth, moddte, ct) {
 }
 
 function writeBody(d) {
-	var body = (we_editDirID ?
+	var body = (fileSelect.data.we_editDirID ?
 					'<input type="hidden" name="what" value="' + WE().consts.selectors.DORENAMEFOLDER + '" />' +
-					'<input type="hidden" name="we_editDirID" value="' + we_editDirID + '" />'
+					'<input type="hidden" name="we_editDirID" value="' + fileSelect.data.we_editDirID + '" />'
 					:
 					'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATEFOLDER + '" />'
 					) +
 					'<input type="hidden" name="order" value="' + order + '" />' +
-					'<input type="hidden" name="rootDirID" value="' + options.rootDirID + '" />' +
-					'<input type="hidden" name="table" value="' + options.table + '" />' +
-					'<input type="hidden" name="id" value="' + currentDir + '" />' +
+					'<input type="hidden" name="rootDirID" value="' + fileSelect.options.rootDirID + '" />' +
+					'<input type="hidden" name="table" value="' + fileSelect.options.table + '" />' +
+					'<input type="hidden" name="id" value="' + fileSelect.data.currentDir + '" />' +
 					'<table class="selector">' +
-					(makeNewFolder ?
+					(fileSelect.data.makeNewFolder ?
 									'<tr class="newEntry">' +
 									'<td class="selectoricon">' + WE().util.getTreeIcon('folder', false) + '</td>' +
 									'<td><input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" /></td>' +
@@ -173,17 +173,17 @@ function writeBody(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.currentID && (!makeNewFolder)) ? "selected" : "") + '" ' + ((we_editDirID || makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == fileSelect.data.currentID && (!fileSelect.data.makeNewFolder)) ? "selected" : "") + '" ' + ((fileSelect.data.we_editDirID || fileSelect.data.makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="treeIcon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
-						(we_editDirID == entries[i].ID ?
+						(fileSelect.data.we_editDirID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<td class="selector cutText directory" title="' + entries[i].text + '">' + entries[i].text
 										) +
 						'</td><td class="selector moddate">' + entries[i].modDate + '</td>' +
 						'</tr>';
 	}
-	d.innerHTML = '<form name="we_form" target="fscmd" method="post" action="' + options.formtarget + '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' + body + '</table></form>';
-	if (makeNewFolder || we_editDirID) {
+	d.innerHTML = '<form name="we_form" target="fscmd" method="post" action="' + fileSelect.options.formtarget + '" onsubmit="document.we_form.we_FolderText.value=escape(document.we_form.we_FolderText_tmp.value);return true;">' + body + '</table></form>';
+	if (fileSelect.data.makeNewFolder || fileSelect.data.we_editDirID) {
 		top.fsbody.document.we_form.we_FolderText_tmp.focus();
 		top.fsbody.document.we_form.we_FolderText_tmp.select();
 	}
@@ -193,19 +193,16 @@ function queryString(what, id, o, we_editDirID) {
 	if (!o) {
 		o = top.order;
 	}
-	if (!we_editDirID) {
-		we_editDirID = "";
-	}
-	return options.formtarget + 'what=' + what + '&rootDirID=' + options.rootDirID + '&open_doc=' + options.open_doc + '&table=' + options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
+	return fileSelect.options.formtarget + 'what=' + what + '&rootDirID=' + fileSelect.options.rootDirID + '&open_doc=' + fileSelect.options.open_doc + '&table=' + fileSelect.options.table + '&id=' + id + (o ? ("&order=" + o) : "") + (we_editDirID ? ("&we_editDirID=" + we_editDirID) : "");
 }
 
 function weonclick(e) {
 	if (top.fspreview && top.fspreview.document.body) {
 		top.fspreview.document.body.innerHTML = "";
 	}
-	if (top.makeNewFolder || top.we_editDirID) {
+	if (fileSelect.data.makeNewFolder || fileSelect.data.we_editDirID) {
 		if (!inputklick) {
-			top.makeNewFolder = top.we_editDirID = false;
+			fileSelect.data.makeNewFolder = fileSelect.data.we_editDirID = false;
 			document.we_form.we_FolderText.value = escape(document.we_form.we_FolderText_tmp.value);
 			document.we_form.submit();
 		} else {
@@ -228,7 +225,7 @@ function weonclick(e) {
 				shiftpressed = true;
 			}
 		}
-		if (top.options.multiple) {
+		if (fileSelect.options.multiple) {
 			if (!self.shiftpressed && !self.ctrlpressed) {
 				top.unselectAllFiles();
 			}

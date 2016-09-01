@@ -775,6 +775,7 @@ js/utils/progressBar.js
 js/utils/lib.js
 js/utils/dimension.js
 js/selectors/we_sselector_footer.js
+js/selectors/delete_selector.js
 js/seeMode.php
 js/multiEditor/multiTabs.js
 js/messageConsoleView.js

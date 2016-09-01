@@ -508,7 +508,7 @@ we_templateInit();?>';
 		$alerttext = str_replace('\'', "\\\\\\'", g_l('weClass', '[same_master_template]'));
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);if(currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['" . $idname . "'].value='';opener.document.we_form.elements['" . $textname . "'].value='';}");
+		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);if(fileSelect.data.currentID==$this->ID){" . we_message_reporting::getShowMessageCall($alerttext, we_message_reporting::WE_MESSAGE_ERROR) . "opener.document.we_form.elements['" . $idname . "'].value='';opener.document.we_form.elements['" . $textname . "'].value='';}");
 
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		$openButton = we_html_button::create_button(we_html_button::EDIT, 'javascript:goTemplate(document.we_form.elements[\'we_' . $GLOBALS['we_doc']->Name . '_MasterTemplateID\'].value)');

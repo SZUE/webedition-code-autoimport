@@ -368,7 +368,7 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 
 			// INTERNAL LINK
 			$cmd1 = "document.we_form.elements['we_dialog_args[fileID]'].value";
-			$wecmdenc3 = we_base_request::encCmd("if(currentID){opener.document.we_form.yuiAcResultCT.value = currentType;opener.document.getElementById(\"btn_edit_int\").disabled=false;}");
+			$wecmdenc3 = we_base_request::encCmd("if(fileSelect.data.currentID){opener.document.we_form.yuiAcResultCT.value = fileSelect.data.currentType;opener.document.getElementById(\"btn_edit_int\").disabled=false;}");
 			$internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','" . $wecmdenc3 . "','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION)));
@@ -389,7 +389,7 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 			if(defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
 				$cmd1 = "document.we_form.elements['we_dialog_args[objID]'].value";
 				$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objHref]'].value");
-				$wecmdenc3 = we_base_request::encCmd("if(currentID){opener.document.getElementById(\"btn_edit_obj\").disabled=false;}");
+				$wecmdenc3 = we_base_request::encCmd("if(fileSelect.data.currentID){opener.document.getElementById(\"btn_edit_obj\").disabled=false;}");
 				$object_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '" . $wecmdenc3 . "', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
 				$yuiSuggest->setAcId("Obj");
 				$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);

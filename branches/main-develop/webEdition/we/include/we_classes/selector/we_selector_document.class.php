@@ -140,10 +140,10 @@ class we_selector_document extends we_selector_directory{
 			'';
 		return we_html_element::jsElement('
 function exit_open() {
-	if(top.currentID) {' . ($this->JSIDName ?
-					'top.opener.' . $this->JSIDName . '= top.currentID ? top.currentID : "";' : '') .
+	if(fileSelect.data.currentID) {' . ($this->JSIDName ?
+					'top.opener.' . $this->JSIDName . '= fileSelect.data.currentID ? fileSelect.data.currentID : "";' : '') .
 				($this->JSTextName ?
-					'top.opener.' . $this->JSTextName . '= top.currentID ? top.currentPath : "";
+					'top.opener.' . $this->JSTextName . '= fileSelect.data.currentID ? top.currentPath : "";
 		if(top.opener.' . $frameRef . 'YAHOO!==undefined && top.opener.' . $frameRef . 'YAHOO.autocoml!==undefined) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 		' : '') .
 				($this->JSCommand ?
@@ -598,8 +598,8 @@ function weWriteBreadCrumb(BreadCrumb){
 	}
 
 	protected function getFramesetJavaScriptDef(){
-		$this->jsoptions['canSelectDir'] = intval($this->canSelectDir);
-		$this->jsoptions['useID'] = intval($this->useID);
+		$this->jsoptions['options']['canSelectDir'] = intval($this->canSelectDir);
+		$this->jsoptions['options']['useID'] = intval($this->useID);
 		return parent::getFramesetJavaScriptDef();
 	}
 

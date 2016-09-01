@@ -139,10 +139,10 @@ class we_customer_selector extends we_users_selector{
 				$this->path = '/';
 			}
 			$js.= 'top.currentPath = "' . $this->path . '";
-top.currentID = "' . $this->id . '";';
+fileSelect.data.currentID = "' . $this->id . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-		$js.='top.currentDir = "' . $this->dir . '";';
+		$js.='fileSelect.data.currentDir = "' . $this->dir . '";';
 		echo we_html_element::jsElement($js);
 	}
 

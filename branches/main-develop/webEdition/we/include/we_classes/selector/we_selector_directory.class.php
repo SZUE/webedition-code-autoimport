@@ -234,7 +234,7 @@ top.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();}'
 		}
 		return ($withWrite ? 'top.writeBody(top.fsbody.document.body);' : '') . '
 top.clearOptions();
-if(!top.options.rootDirID){
+if(!fileSelect.options.rootDirID){
 	top.addOption("/",0);
 }' .
 			$out . '
@@ -274,13 +274,13 @@ top.clearEntries();' .
 			($isWS ?
 				($morejs ? '' :
 					'top.currentPath="' . $this->path . '";
-top.currentID="' . $this->id . '";'
+fileSelect.data.currentID="' . $this->id . '";'
 
 				) .
 				'top.unselectAllFiles();
 top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();
-top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values['ParentID'] . '";' :
+fileSelect.data.currentDir = "' . $this->dir . '";
+fileSelect.data.parentID = "' . $this->values['ParentID'] . '";' :
 				'')
 		);
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
@@ -289,7 +289,7 @@ top.parentID = "' . $this->values['ParentID'] . '";' :
 	function printNewFolderHTML(){
 		echo we_html_element::jsElement('
 top.clearEntries();
-top.makeNewFolder = true;' .
+fileSelect.data.makeNewFolder = true;' .
 			$this->printCmdAddEntriesHTML() .
 			$this->printCMDWriteAndFillSelectorHTML() . '
 ');
@@ -309,7 +309,7 @@ top.makeNewFolder = true;' .
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 top.clearEntries();
-top.makeNewFolder=false;' .
+fileSelect.data.makeNewFolder=false;' .
 				($msg ? we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
 					'var ref;
 if(top.opener.top.treeData){
@@ -322,12 +322,12 @@ if(ref){
 }' .
 					($this->canSelectDir ? '
 top.currentPath="' . $folder->Path . '";
-top.currentID="' . $folder->ID . '";
+fileSelect.data.currentID="' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '')
 				) .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(top.currentID);'), we_html_element::htmlBody());
+				'top.selectFile(fileSelect.data.currentID);'), we_html_element::htmlBody());
 	}
 
 	protected function getFrameset($withPreview = true){
@@ -342,20 +342,16 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '
 	}
 
 	protected function getFramesetJavaScriptDef(){
-		$this->jsoptions['userCanRenameFolder'] = intval($this->userCanRenameFolder);
-		$this->jsoptions['userCanMakeNewFolder'] = intval($this->userCanMakeNewFolder);
-		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
-var makeNewFolder=false;
-var we_editDirID="";
-var old=0;
-');
+		$this->jsoptions['options']['userCanRenameFolder'] = intval($this->userCanRenameFolder);
+		$this->jsoptions['options']['userCanMakeNewFolder'] = intval($this->userCanMakeNewFolder);
+		return parent::getFramesetJavaScriptDef();
 	}
 
 	function printRenameFolderHTML(){
 		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			echo we_html_element::jsElement('
 top.clearEntries();
-top.we_editDirID=' . $this->we_editDirID . ';' .
+fileSelect.data.we_editDirID=' . $this->we_editDirID . ';' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML());
 		}
@@ -379,7 +375,7 @@ top.we_editDirID=' . $this->we_editDirID . ';' .
 
 
 		$js = 'top.clearEntries();
-top.makeNewFolder=false;';
+fileSelect.data.makeNewFolder=false;';
 		if(($msg = $folder->checkFieldsOnSave())){
 			$js.= we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
@@ -396,7 +392,7 @@ if(ref){
 }' .
 					($this->canSelectDir ? '
 top.currentPath = "' . $folder->Path . '";
-top.currentID = "' . $folder->ID . '";
+fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 			}
@@ -406,7 +402,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() . '
-top.selectFile(top.currentID);'
+top.selectFile(fileSelect.data.currentID);'
 			), we_html_element::htmlBody());
 	}
 

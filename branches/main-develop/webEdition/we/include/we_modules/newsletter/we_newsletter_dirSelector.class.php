@@ -41,7 +41,7 @@ class we_newsletter_dirSelector extends we_selector_directory{
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 top.clearEntries();
-top.makeNewFolder=false;' .
+fileSelect.data.makeNewFolder=false;' .
 				($msg ?
 					we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
 					'var ref;
@@ -52,13 +52,13 @@ if(top.opener.top.content.makeNewEntry){
 ' .
 					($this->canSelectDir ?
 						'top.currentPath = "' . $folder->Path . '";
-top.currentID = "' . $folder->ID . '";
+fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '')
 				) .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(top.currentID);'), we_html_element::htmlBody());
+				'top.selectFile(fileSelect.data.currentID);'), we_html_element::htmlBody());
 	}
 
 	function printDoRenameFolderHTML(){
@@ -78,7 +78,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 top.clearEntries();
-top.makeNewFolder=false;' .
+fileSelect.data.makeNewFolder=false;' .
 				($msg ?
 					we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
 					'var ref;
@@ -90,7 +90,7 @@ if(top.opener.top.content.makeNewEntry){
 ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});' .
 					($this->canSelectDir ?
 						'top.currentPath = "' . $folder->Path . '";
-top.currentID = "' . $folder->ID . '";
+fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' :
 						''
@@ -98,7 +98,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 				) .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(top.currentID);'), we_html_element::htmlBody());
+				'top.selectFile(fileSelect.data.currentID);'), we_html_element::htmlBody());
 	}
 
 	function query(){

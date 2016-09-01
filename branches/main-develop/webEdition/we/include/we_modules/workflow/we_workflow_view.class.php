@@ -212,7 +212,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getObjectHTML(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objects')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('add_object',top.currentID);");
+		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('add_object',fileSelect.data.currentID);");
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('openObjselector','','" . OBJECT_TABLE . "','','','" . $wecmdenc3 . "')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->Objects, "del_object", $delallbut . $addbut, "", "ContentType", OBJECT_TABLE, "defaultfont", "", "top.content.setHot();");

@@ -1,4 +1,4 @@
-/* global top */
+/* global top, fileSelect */
 
 /**
  * webEdition CMS
@@ -24,8 +24,8 @@
  */
 
 function setDir(id) {
-	if (currentType === "user") {
-		currentDir = id;
+	if (fileSelect.data.currentType === "user") {
+		fileSelect.data.currentDir = id;
 		top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, id));
 	} else {
 		top.fscmd.location.replace(top.queryString(WE().consts.selectors.SETDIR, id));
@@ -36,7 +36,7 @@ function selectFile(id) {
 	var a = top.document.getElementsByName("fname")[0];
 	if (id) {
 		e = top.getEntry(id);
-		if (currentType !== "user" || !e.isFolder) {
+		if (fileSelect.data.currentType !== "user" || !e.isFolder) {
 			if (a.value != e.text &&
 							a.value.indexOf(e.text + ",") == -1 &&
 							a.value.indexOf("," + e.text + ",") == -1 &&
@@ -48,7 +48,7 @@ function selectFile(id) {
 			}
 			top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 			top.currentPath = e.path;
-			top.currentID = id;
+			fileSelect.data.currentID = id;
 		}
 	} else {
 		a.value = "";
@@ -60,11 +60,11 @@ function queryString(what, id, o) {
 	if (!o) {
 		o = top.order;
 	}
-	return options.formtarget + 'what=' + what + '&table=' + options.table + '&id=' + id + "&order=" + o + "&filter=" + currentType;
+	return fileSelect.options.formtarget + 'what=' + what + '&table=' + fileSelect.options.table + '&id=' + id + "&order=" + o + "&filter=" + fileSelect.data.currentType;
 }
 
 function press_ok_button() {
-	if (top.document.getElementsByName("fname")[0].value === '' && top.currentType != 'group') {
+	if (top.document.getElementsByName("fname")[0].value === '' && fileSelect.data.currentType != 'group') {
 		top.exit_close();
 	} else {
 		top.exit_open();

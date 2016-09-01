@@ -81,7 +81,7 @@ class we_export_dirSelector extends we_selector_directory{
 		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
 
 		$js = 'top.clearEntries();
-top.makeNewFolder=false;';
+fileSelect.data.makeNewFolder=false;';
 		if(!$txt){
 			$js.=we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
@@ -100,7 +100,7 @@ if(top.opener.top.content.makeNewEntry){
 }' .
 					($this->canSelectDir ?
 						'top.currentPath = "' . $folder->Path . '";
-top.currentID = "' . $folder->ID . '";
+fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 			}
@@ -110,7 +110,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(top.currentID);'
+				'top.selectFile(fileSelect.data.currentID);'
 			), we_html_element::htmlBody());
 	}
 
@@ -123,7 +123,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 		$txt = $this->FolderText;
 
 		$js = 'top.clearEntries();
-top.makeNewFolder=false;';
+fileSelect.data.makeNewFolder=false;';
 		if(!$txt){
 			$js.= we_message_reporting::getShowMessageCall(g_l('export', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
@@ -148,7 +148,7 @@ if(top.opener.top.content.treeData.updateEntry){
 }' .
 							($this->canSelectDir ?
 								'top.currentPath = "' . $folder->Path . '";
-top.currentID = "' . $folder->ID . '";
+fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' :
 								'');
 					}
@@ -160,7 +160,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' :
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(top.currentID);'
+				'top.selectFile(fileSelect.data.currentID);'
 			), we_html_element::htmlBody());
 	}
 

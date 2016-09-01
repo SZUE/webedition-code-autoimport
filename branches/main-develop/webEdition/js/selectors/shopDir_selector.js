@@ -34,7 +34,7 @@ function doClick(id, ct) {
 	} else {
 		e = top.getEntry(id);
 		if (e.isFolder) {
-			if (top.currentID == id) {
+			if (fileSelect.data.currentID == id) {
 				top.RenameFolder(id);
 			}
 		} else {
