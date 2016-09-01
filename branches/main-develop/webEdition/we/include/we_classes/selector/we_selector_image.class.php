@@ -60,9 +60,9 @@ class we_selector_image extends we_selector_document{
 		<td id="' . we_search_view::VIEW_LIST . '">' . we_html_button::create_button('fa:listview,fa-lg fa-align-justify-lg fa-align-justify', "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>', true);
 	}
 
-	protected function getFramesetJavaScriptDef(){
+	protected function setFramesetJavaScriptOptions(){
+		parent::setFramesetJavaScriptOptions();
 		$this->jsoptions['options']['view'] = we_search_view::VIEW_ICONS;
-		return parent::getFramesetJavaScriptDef();
 	}
 
 }

@@ -346,14 +346,14 @@ function press_ok_button() {
 function disableDelBut() {
 	WE().layout.button.switch_button_state(document, "delete", "disabled");
 	WE().layout.button.switch_button_state(document, "btn_function_trash", "disabled");
-	changeCatState = 0;
+	top.fileSelect.data.changeCatState = false;
 }
 
 function enableDelBut() {
 	WE().layout.button.switch_button_state(document, "delete", "enabled");
 	if (top.fileSelect.options.userCanEditCat) {
 		WE().layout.button.switch_button_state(document, "btn_function_trash", "enabled");
-		changeCatState = 1;
+		top.fileSelect.data.changeCatState =true;
 	}
 }
 
@@ -363,20 +363,20 @@ function startFrameset() {
 function disableRootDirButs() {
 	WE().layout.button.switch_button_state(document, "root_dir", "disabled");
 	WE().layout.button.switch_button_state(document, "btn_fs_back", "disabled");
-	rootDirButsState = false;
+	top.fileSelect.data.rootDirButsState = false;
 }
 function enableRootDirButs() {
 	WE().layout.button.switch_button_state(document, "root_dir", "enabled");
 	WE().layout.button.switch_button_state(document, "btn_fs_back", "enabled");
-	rootDirButsState = true;
+	top.fileSelect.data.rootDirButsState = true;
 }
 function disableNewFolderBut() {
 	WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
-	makefolderState = false;
+	top.fileSelect.data.makefolderState = false;
 }
 function enableNewFolderBut() {
 	WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
-	makefolderState = true;
+	top.fileSelect.data.makefolderState = true;
 }
 function disableNewBut() {
 	WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
@@ -392,12 +392,12 @@ function enableNewBut() {
 
 function disableNewFileBut() {
 	WE().layout.button.switch_button_state(document, "btn_add_file", "disabled");
-	newFileState = false;
+	top.fileSelect.data.newFileState = false;
 }
 
 function enableNewFileBut() {
 	WE().layout.button.switch_button_state(document, "btn_add_file", "enabled");
-	newFileState = true;
+	top.fileSelect.data.newFileState = true;
 }
 
 function clearOptions() {
