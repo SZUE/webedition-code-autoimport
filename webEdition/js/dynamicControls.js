@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -21,7 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
+var all_groups = WE().util.getDynamicVar('loadVarDynamicControls', 'data-groups');
 
 var opened_group = "";
 /**
@@ -108,5 +110,25 @@ function toggle(group_id, display_style, use_form, form_name, form_group_name) {
 
 		// Change the arrow
 		toggle_arrow("arrow_" + group_id, display_style);
+	}
+}
+
+/**
+ * This function closes all groups
+ *
+ * @see        toggle()
+ * @see        toggle_arrow()
+ *
+ * @return     void
+ */
+
+function toggle_all() {
+	// Hide all groups
+	for (i = 0; i <= all_groups.length; i++) {
+		// Check if that group is open
+		if (document.getElementById("group_" + all_groups[i]).style.display === "block") {
+			// Hide the group
+			toggle(all_groups[i], "close");
+		}
 	}
 }

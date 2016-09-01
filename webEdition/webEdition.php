@@ -272,9 +272,9 @@ foreach($_SESSION['perms'] as $perm => $access){
 	$session['permissions'][$perm] = (!empty($_SESSION['perms']['ADMINISTRATOR']) ? 1 : intval($access));
 }
 
-echo we_html_element::jsScript(JS_DIR . 'webEdition.js', "var el=document.getElementById('loadWEData');"
-	. "WE().session=WE().util.getDynamicVar(el.getAttribute('data-session'));"
-	. "WE().consts=WE().util.getDynamicVar(el.getAttribute('data-consts'));"
+echo we_html_element::jsScript(JS_DIR . 'webEdition.js', ""
+	. "WE().session=WE().util.getDynamicVar('loadWEData','data-session');"
+	. "WE().consts=WE().util.getDynamicVar('loadWEData','data-consts');"
 	//FIXME: move after changes
 	. "WE().util.loadConsts('g_l.main');"//finally load language files
 	. 'oldTreeWidth = WE().consts.size.tree.defaultWidth;'

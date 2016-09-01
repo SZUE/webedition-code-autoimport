@@ -25,12 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-var el = document.getElementById('loadVarDialogImage');
-var image = (el ?
-				WE().util.getDynamicVar(el.getAttribute('data-image')) :
-				{}
-);
-
+var image = WE().util.getDynamicVar('loadVarDialogImage','data-image');
 
 function imageChanged(wasThumbnailChange) {
 	if (wasThumbnailChange !== null && wasThumbnailChange) {
