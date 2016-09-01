@@ -23,11 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var el = document.getElementById('loadVarHome');
-var cockpit = (el ?
-				WE().util.getDynamicVar(el.getAttribute('data-cockpit')) :
-				{}
-);
+var cockpit = WE().util.getDynamicVar('loadVarHome', 'data-cockpit');
 
 var _iLayoutCols = cockpit._iInitCols;
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);

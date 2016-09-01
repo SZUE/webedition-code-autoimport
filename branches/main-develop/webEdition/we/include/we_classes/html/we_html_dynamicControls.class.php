@@ -68,10 +68,7 @@ class we_html_dynamicControls{
 	 */
 	private function js_fold_checkbox_groups($groups, $filter, $use_with_user_module){
 		// Initialize string representing the array of all groups
-		$groups_array = "";
-
-		// Initialize iterative counter
-		$i = 0;
+		$groups_array = [];
 
 		// Build array of all groups
 		foreach(array_keys($groups) as $groups_key){
@@ -90,45 +87,12 @@ class we_html_dynamicControls{
 
 			// Now build string representing the array of all groups if this group is visible
 			if($show_group){
-				$groups_array .= '_all_groups[' . $i . '] = "' . $groups_key . '";';
-
-				// Increase counter
-				$i++;
+				$groups_array[] = $groups_key;
 			}
 		}
 
-		// Set counter for next "for" loop
-		$i--;
-
-		// Continue building JavaScript functions
-		$JavaScript_functions = '
-/**
- * This function closes all groups
- *
- * @see        toggle()
- * @see        toggle_arrow()
- *
- * @return     void
- */
-
-function toggle_all() {
-	// Define all groups
-	_all_groups = [2];
-
-	' . $groups_array . '
-
-	// Hide all groups
-	for (i = 0; i <= ' . $i . '; i++) {
-		// Check if that group is open
-		if (document.getElementById("group_" + _all_groups[i]).style.display == "block") {
-			// Hide the group
-			toggle(_all_groups[i], "close");
-		}
-	}
-}';
-
 		// Build string to be returned by the function
-		return we_html_element::jsScript(JS_DIR . 'dynamicControls.js') . we_html_element::jsElement($JavaScript_functions);
+		return we_html_element::jsScript(JS_DIR . 'dynamicControls.js', '', ['id' => 'loadVarDynamicControls', 'data-groups' => setDynamicVar($groups_array)]);
 	}
 
 	/**

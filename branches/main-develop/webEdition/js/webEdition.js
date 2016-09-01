@@ -1729,8 +1729,12 @@ WE().util = {
 		document.getElementsByTagName("head")[0].appendChild(fileref);
 
 	},
-	getDynamicVar: function (data) {
-		return JSON.parse(this.Base64.decode(data));
+	getDynamicVar: function (id, dataname) {
+		var el = document.getElementById(id);
+		return (el ?
+						JSON.parse(this.Base64.decode(el.getAttribute(dataname))) :
+						{}
+		);
 	},
 };
 /* ***********************************************

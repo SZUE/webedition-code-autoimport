@@ -22,12 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-/* global _EditorFrame */
-var el = document.getElementById('loadVarSrcTmpl');
-var doc = (el ?
-				WE().util.getDynamicVar(el.getAttribute('data-doc')) :
-				{}
-);
+/* global _EditorFrame, WE */
+var doc = WE().util.getDynamicVar('loadVarSrcTmpl', 'data-doc');
 
 var editor = null;
 var weIsTextEditor = true;
