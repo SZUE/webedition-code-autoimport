@@ -101,13 +101,11 @@ class we_selector_category extends we_selector_file{
 	}
 
 	protected function getFramesetJavaScriptDef(){
-		$this->jsoptions['userCanEditCat'] = intval($this->userCanEditCat());
+		$this->jsoptions['options']['userCanEditCat'] = intval($this->userCanEditCat());
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
-var makeNewFolder=false;
 var hot=0; // this is hot for category edit!!
 var makeNewCat=false;
 var we_editCatID="";
-var old=0;
 var noChoose=' . intval($this->noChoose) . ';
 
 WE().util.loadConsts("g_l.selectors.category");
@@ -137,12 +135,12 @@ WE().util.loadConsts("g_l.selectors.category");
 			)));
 			$folderID = $this->db->getInsertId();
 			$js.='top.currentPath = "' . $Path . '";
-top.currentID = "' . $folderID . '";
+fileSelect.data.currentID = "' . $folderID . '";
 top.hot = 1; // this is hot for category edit!!
 
-if(top.currentID){
+if(fileSelect.data.currentID){
 	top.enableDelBut();
-	top.showPref(top.currentID);
+	top.showPref(fileSelect.data.currentID);
 }
 top.makeNewCat = false;';
 		}
@@ -151,7 +149,7 @@ top.makeNewCat = false;';
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(top.currentID);'), we_html_element::htmlBody());
+				'top.selectFile(fileSelect.data.currentID);'), we_html_element::htmlBody());
 	}
 
 	function printHeaderHeadlines(){
@@ -190,10 +188,10 @@ top.makeNewCat = false;';
 			$js.='top.currentPath = "' . $Path . '";
 
 top.hot = 1; // this is hot for category edit!!
-top.currentID = "' . $this->we_editCatID . '";
-if(top.currentID){
+fileSelect.data.currentID = "' . $this->we_editCatID . '";
+if(fileSelect.data.currentID){
 	top.enableDelBut();
-	top.showPref(top.currentID);
+	top.showPref(fileSelect.data.currentID);
 }';
 		}
 
@@ -290,9 +288,9 @@ top.makeNewCat = false;' .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
 				'top.currentPath="' . $Path . '";
-top.currentID="' . $this->id . '";
+fileSelect.data.currentID="' . $this->id . '";
 top.selectFile(' . $this->id . ');
-if(top.currentID && top.document.getElementsByName("fname")[0].value != ""){
+if(fileSelect.data.currentID && top.document.getElementsByName("fname")[0].value != ""){
 	top.enableDelBut();
 }';
 		}

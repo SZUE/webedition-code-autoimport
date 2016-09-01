@@ -40,7 +40,7 @@ class we_selector_delete extends we_selector_file{
 	}
 
 	protected function getFramesetJavaScriptDef(){
-		$this->jsoptions['seemForOpenDelSelector'] = intval(isset($_SESSION['weS']['seemForOpenDelSelector']['ID']) ? $_SESSION['weS']['seemForOpenDelSelector']['ID'] : 0);
+		$this->jsoptions['options']['seemForOpenDelSelector'] = intval(isset($_SESSION['weS']['seemForOpenDelSelector']['ID']) ? $_SESSION['weS']['seemForOpenDelSelector']['ID'] : 0);
 		unset($_SESSION['weS']['seemForOpenDelSelector']['ID']);
 
 		return parent::getFramesetJavaScriptDef();

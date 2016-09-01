@@ -104,12 +104,12 @@ class we_users_selector extends we_selector_file{
 				$this->path = '/';
 			}
 			$js.= 'top.currentPath = "' . $this->path . '";
-top.currentID = "' . $this->id . '";
+fileSelect.data.currentID = "' . $this->id . '";
 top.document.getElementsByName("fname")[0].value = "' . $this->values["Text"] . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-		$js.= 'top.currentDir = "' . $this->dir . '";
-top.parentID = "' . $this->values["ParentID"] . '";';
+		$js.= 'fileSelect.data.currentDir = "' . $this->dir . '";
+fileSelect.data.parentID = "' . $this->values["ParentID"] . '";';
 		echo we_html_element::jsElement($js);
 	}
 

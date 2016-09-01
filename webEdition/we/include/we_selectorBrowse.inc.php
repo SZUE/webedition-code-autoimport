@@ -201,15 +201,15 @@ if($nf === 'new_folder'){
 							$ondblclick = 'onDblClick="wasdblclick=true;clearTimeout(tout);doClick(\'' . $entry . '\',1,' . ($indb ? 1 : 0) . ');return true;"';
 							$cursor = 'cursor:pointer;';
 						} elseif($selectOwn){
-							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(old);}},500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+							$onclick = 'onclick="if(fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(fileSelect.click.oldID);}},500); fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 							$cursor = 'cursor:pointer;';
 						}
 					} else {
 						if($isfolder){
-							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEdit(old);}},500); old=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
+							$onclick = 'onclick="if(fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEdit(fileSelect.click.oldID);}},500); fileSelect.click.oldID=\'' . $entry . '\';doSelectFolder(\'' . $entry . '\',' . ($indb ? 1 : 0) . ');"';
 							$ondblclick = 'onDblClick="wasdblclick=true;clearTimeout(tout);clearTimeout(mk);doClick(\'' . $entry . '\',1,0);return true;"';
 						} else {
-							$onclick = 'onclick="if(old==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(old);}},500); old=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
+							$onclick = 'onclick="if(fileSelect.click.oldID==\'' . $entry . '\') mk=setTimeout(function(){if(!wasdblclick){clickEditFile(fileSelect.click.oldID);}},500); fileSelect.click.oldID=\'' . $entry . '\';doClick(\'' . $entry . '\',0,0);return true;"';
 						}
 						$cursor = 'cursor:pointer;';
 					}

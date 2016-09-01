@@ -113,15 +113,24 @@ function printFrameSet(){
 	$selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
 	?>
 	<script><!--
+		var fileSelect = [
+						options:[
+						],
+						data:[
+										currentType:"<?= ($filter == we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : ''; ?>",
+										currentDir:"<?= str_replace($rootDir, '', $currentDir); ?>",
+										currentID:"<?= $currentID; ?>",
+						],
+						click:[
+							oldID = 0,
+							]
+		];
 		var rootDir = "<?= $rootDir; ?>";
-		var currentID = "<?= $currentID; ?>";
-		var currentDir = "<?= str_replace($rootDir, '', $currentDir); ?>";
 		var currentName = "<?= $currentName; ?>";
 		var currentFilter = "<?= str_replace(' ', '%20', g_l('contentTypes', '[' . $filter . ']', true) !== false ? g_l('contentTypes', '[' . $filter . ']') : ''); ?>";
 		var filter = '<?= $filter; ?>';
 		var browseServer = <?= $cmd1 ? 'false' : 'true'; ?>
 
-		var currentType = "<?= ($filter == we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : ''; ?>";
 		var sitepath = "<?= $docroot; ?>";
 		var dirsel = 1;
 		var scrollToVal = 0;
@@ -129,7 +138,7 @@ function printFrameSet(){
 		WE().util.loadConsts("g_l.fileselector");
 		function exit_close() {
 			if (!browseServer) {
-				var foo = (!currentID || (currentID === sitepath) ? "/" : currentID.substring(sitepath.length));
+				var foo = (!fileSelect.data.currentID || (fileSelect.data.currentID === sitepath) ? "/" : fileSelect.data.currentID.substring(sitepath.length));
 
 				opener.<?= $cmd1? : 'x'; ?> = foo;
 			}
@@ -151,7 +160,8 @@ function printFrameSet(){
 	</head>
 	<body onload="setLookin();
 				top.fscmd.selectDir();" onunload="doUnload();">
-					<?= we_html_element::htmlDiv(['id' => 'fsheader'], printHeaderHTML(($cmd1 ? 1 : 0))) .
+					<?=
+					we_html_element::htmlDiv(['id' => 'fsheader'], printHeaderHTML(($cmd1 ? 1 : 0))) .
 					we_html_element::htmlIFrame('fsbody', 'about:blank', '', '', '', true) .
 					we_html_element::htmlDiv(['id' => 'fsfooter'], printFooterTable(($cmd1 ? 1 : 0), $filter, $currentName)) .
 					we_html_element::htmlIFrame('fscmd', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=selectorBrowseCmd&ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName . '&selectOwn=' . $selectOwn, 'display:none;', '', '', false);

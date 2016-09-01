@@ -194,12 +194,21 @@ class we_selector_file{
 
 	function printFramesetHTML($withPreview = true){
 		$this->jsoptions = [
-			'rootDirID' => $this->rootDirID,
-			'table' => $this->table,
-			'formtarget' => $_SERVER['SCRIPT_NAME'],
-			'multiple' => intval($this->multiple),
-			'needIEEscape' => intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8'),
-			'open_doc' => $this->open_doc
+			'options' => [
+				'rootDirID' => $this->rootDirID,
+				'table' => $this->table,
+				'formtarget' => $_SERVER['SCRIPT_NAME'],
+				'multiple' => intval($this->multiple),
+				'needIEEscape' => intval(we_base_browserDetect::isIE() && $GLOBALS['WE_BACKENDCHARSET'] != 'UTF-8'),
+				'open_doc' => $this->open_doc,
+			],
+			'data' => [
+				'makeNewFolder' => false,
+				'we_editDirID' => 0,
+			],
+			'click' => [
+				'oldID' => 0,
+			]
 		];
 		$tmp = $this->getFramesetJavaScriptDef();
 		$this->setDirAndID(); //set correct directory
@@ -211,7 +220,7 @@ class we_selector_file{
 	}
 
 	protected function getFramsetJSFile(){
-		return we_html_element::jsScript(JS_DIR . 'selectors/file_selector.js', '', ['id' => 'loadVarSelectors', 'data-options' => setDynamicVar($this->jsoptions)]);
+		return we_html_element::jsScript(JS_DIR . 'selectors/file_selector.js', '', ['id' => 'loadVarSelectors', 'data-selector' => setDynamicVar($this->jsoptions)]);
 	}
 
 	protected function getFramesetJavaScriptDef(){
@@ -219,14 +228,14 @@ class we_selector_file{
 		if($this->id === 0){
 			$this->path = '/';
 		}
+		$this->jsoptions['data']['parentID'] = intval(($this->dir ? f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db) : 0));
+		$this->jsoptions['data']['currentType'] = (isset($this->filter) ? $this->filter : "");
+		$this->jsoptions['data']['currentDir'] = $this->dir;
+		$this->jsoptions['data']['currentText'] = (isset($this->values["Text"]) ? $this->values["Text"] : '');
+		$this->jsoptions['data']['currentID']= $this->id;
 		return we_html_element::jsElement('
-var currentID="' . $this->id . '";
-var currentDir="' . $this->dir . '";
 var currentPath="' . $this->path . '";
-var currentText="' . (isset($this->values["Text"]) ? $this->values["Text"] : '') . '";
-var currentType="' . (isset($this->filter) ? $this->filter : "") . '";
 var startPath="' . $startPath . '";
-var parentID=' . intval(($this->dir ? f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db) : 0)) . ';
 var table="' . $this->table . '";
 var order="' . $this->order . '";
 WE().util.loadConsts("g_l.fileselector");
@@ -249,21 +258,21 @@ WE().util.loadConsts("selectors");
 		return we_html_element::jsElement('
 function exit_open(){' .
 				($this->JSIDName ? '
-	opener.' . $this->JSIDName . '=top.currentID;' :
+	opener.' . $this->JSIDName . '=fileSelect.data.currentID;' :
 					''
 				) .
 				($this->JSTextName ? '
-	opener.' . $this->JSTextName . '= top.currentID ? top.currentPath : "";
+	opener.' . $this->JSTextName . '= fileSelect.data.currentID ? top.currentPath : "";
 	if((opener.parent!==undefined) && (opener.parent.frames.editHeader!==undefined)) {
-			if(currentType!="")	{
-				switch(currentType){
+			if(fileSelect.data.currentType!="")	{
+				switch(fileSelect.data.currentType){
 					case "noalias":
-						setTabsCurPath = "@"+currentText;
+						setTabsCurPath = "@"+fileSelect.data.currentText;
 						break;
 					default:
 						setTabsCurPath = top.currentPath;
 				}
-				if(getEntry(top.currentID).isFolder){
+				if(getEntry(fileSelect.data.currentID).isFolder){
 					opener.parent.frames.editHeader.weTabs.setTitlePath("",setTabsCurPath);
 				}else{
 					opener.parent.frames.editHeader.weTabs.setTitlePath(setTabsCurPath);
@@ -336,7 +345,7 @@ top.clearEntries();' .
 				'top.disableRootDirButs();' :
 				'top.enableRootDirButs();') .
 			'top.currentPath = "' . $this->path . '";
-top.parentID = "' . $this->values["ParentID"] . '";
+fileSelect.data.parentID = "' . $this->values["ParentID"] . '";
 ' .
 			$morejs);
 	}
