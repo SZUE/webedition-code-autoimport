@@ -23,7 +23,7 @@
  */
 
 /* global _EditorFrame, WE */
-var doc = WE().util.getDynamicVar('loadVarSrcTmpl', 'data-doc');
+var doc = WE().util.getDynamicVar(document, 'loadVarSrcTmpl', 'data-doc');
 
 var editor = null;
 var weIsTextEditor = true;

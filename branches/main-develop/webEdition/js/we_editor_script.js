@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var doc = WE().util.getDynamicVar('loadVarEditor_script','data-doc');
+var doc = WE().util.getDynamicVar(document, 'loadVarEditor_script','data-doc');
 
 var _controller = WE().layout.weEditorFrameController;
 

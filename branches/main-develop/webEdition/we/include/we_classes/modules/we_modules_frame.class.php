@@ -266,9 +266,9 @@ abstract class we_modules_frame{
 
 	static function getJSToggleTreeCode($module){
 		//FIXME: throw some of these functions out again and use generic version of main-window functions
+		//FIXME: move this var to a generic place
 		return we_html_element::jsElement('
 var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
-var currentModule="' . $module . '";
 ') . we_html_element::jsScript(JS_DIR . 'modules_tree.js');
 	}
 

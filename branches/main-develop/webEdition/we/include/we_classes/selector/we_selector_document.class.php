@@ -598,19 +598,9 @@ function weWriteBreadCrumb(BreadCrumb){
 	}
 
 	protected function getFramesetJavaScriptDef(){
-		/* $ctypes = [];
-		  $ct = we_base_ContentTypes::inst();
-		  foreach($ct->getContentTypes() as $ctype){
-		  if(g_l('contentTypes', '[' . $ctype . ']') !== false){
-		  $ctypes[] = '"' . $ctype . '" : "' . g_l('contentTypes', '[' . $ctype . ']') . '"';
-		  }
-		  } */
-
-		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
-options.canSelectDir=' . intval($this->canSelectDir) . ';
-options.useID=' . intval($this->useID) . ';
-');
-		//var contentTypes = {' . implode(',', $ctypes) . '};
+		$this->jsoptions['canSelectDir'] = intval($this->canSelectDir);
+		$this->jsoptions['useID'] = intval($this->useID);
+		return parent::getFramesetJavaScriptDef();
 	}
 
 }

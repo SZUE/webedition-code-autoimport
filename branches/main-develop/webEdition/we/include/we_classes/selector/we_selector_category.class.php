@@ -101,6 +101,7 @@ class we_selector_category extends we_selector_file{
 	}
 
 	protected function getFramesetJavaScriptDef(){
+		$this->jsoptions['userCanEditCat'] = intval($this->userCanEditCat());
 		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
 var makeNewFolder=false;
 var hot=0; // this is hot for category edit!!
@@ -110,7 +111,6 @@ var old=0;
 var noChoose=' . intval($this->noChoose) . ';
 
 WE().util.loadConsts("g_l.selectors.category");
-options.userCanEditCat=' . intval($this->userCanEditCat()) . ';
 ');
 	}
 

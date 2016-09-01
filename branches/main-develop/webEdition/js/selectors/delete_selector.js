@@ -129,7 +129,7 @@ function deleteEntry() {
 			todel = "," + todel;
 		}
 
-		top.fscmd.location.replace(top.queryString(consts.DEL, top.currentID) + "&todel=" + encodeURI(todel));
+		top.fscmd.location.replace(top.queryString(WE().consts.selectors.DEL, top.currentID) + "&todel=" + encodeURI(todel));
 		top.disableDelBut();
 
 		if (docIsOpen) {

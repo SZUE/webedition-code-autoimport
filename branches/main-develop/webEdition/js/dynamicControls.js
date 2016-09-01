@@ -23,7 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var all_groups = WE().util.getDynamicVar('loadVarDynamicControls', 'data-groups');
+var all_groups = WE().util.getDynamicVar(document, 'loadVarDynamicControls', 'data-groups');
 
 var opened_group = "";
 /**
