@@ -23,6 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 var fileSelect = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-selector');
+WE().util.loadConsts("g_l.fileselector");
+WE().util.loadConsts("selectors");
 
 var entries = [];
 var clickCount = 0;
@@ -56,12 +58,12 @@ function closeOnEscape() {
 }
 
 function orderIt(o) {
-	order = o + (order === o ? " DESC" : "");
-	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, fileSelect.data.currentDir, order));
+	top.fileSelect.data.order = o + (top.fileSelect.data.order === o ? " DESC" : "");
+	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, top.fileSelect.data.currentDir, top.fileSelect.data.order));
 }
 
 function goBackDir() {
-	setDir(fileSelect.data.parentID);
+	setDir(top.fileSelect.data.parentID);
 }
 
 function getEntry(id) {
@@ -95,9 +97,9 @@ function doClick(id, ct) {
 				wasdblclick = false;
 			}, 400);
 		}
-	} else if (fileSelect.options.multiple) {
+	} else if (top.fileSelect.options.multiple) {
 		if (top.shiftpressed) {
-			var oldid = fileSelect.data.currentID;
+			var oldid = top.fileSelect.data.currentID;
 			var currendPos = getPositionByID(id);
 			var firstSelected = getFirstSelected();
 
@@ -108,7 +110,7 @@ function doClick(id, ct) {
 			} else {
 				selectFile(id);
 			}
-			fileSelect.data.currentID = oldid;
+			top.fileSelect.data.currentID = oldid;
 		} else if (!top.ctrlpressed) {
 			selectFile(id);
 		} else if (isFileSelected(id)) {
@@ -130,16 +132,16 @@ function doClick(id, ct) {
 
 function setDir(id) {
 	e = getEntry(id);
-	fileSelect.data.currentID = id;
-	fileSelect.data.currentDir = id;
-	top.currentPath = e.path;
-	fileSelect.data.currentText = e.text;
+	top.fileSelect.data.currentID = id;
+	top.fileSelect.data.currentDir = id;
+	top.fileSelect.data.currentPath = e.path;
+	top.fileSelect.data.currentText = e.text;
 	top.document.getElementsByName("fname")[0].value = e.text;
 	top.fscmd.location.replace(top.queryString(WE().consts.selectors.CMD, id));
 }
 
 function setRootDir() {
-	setDir(fileSelect.options.rootDirID);
+	setDir(top.fileSelect.options.rootDirID);
 }
 
 function selectFile(id) {
@@ -158,11 +160,11 @@ function selectFile(id) {
 							e.text;
 		}
 		top.fsbody.document.getElementById("line_" + id).classList.add("selected");
-		top.currentPath = e.path;
-		fileSelect.data.currentID = id;
+		top.fileSelect.data.currentPath = e.path;
+		top.fileSelect.data.currentID = id;
 	} else {
 		a.value = "";
-		top.currentPath = "";
+		top.fileSelect.data.currentPath = "";
 	}
 }
 
@@ -181,7 +183,7 @@ function writeBody(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr' + ((entries[i].ID == fileSelect.data.currentID) ? ' class="selected"' : '') + ' id="line_' + entries[i].ID + '"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
+		body += '<tr' + ((entries[i].ID == top.fileSelect.data.currentID) ? ' class="selected"' : '') + ' id="line_' + entries[i].ID + '"' + onclick + (entries[i].isFolder ? ondblclick : '') + ' >' +
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						'<td class="selector filename"  title="' + entries[i].text + '"><div class="cutText">' + entries[i].text + '</div></td>' +
 						'</tr>';
@@ -254,9 +256,9 @@ function unselectAllFiles() {
 
 function queryString(what, id, o) {
 	if (!o) {
-		o = top.order;
+		o = top.fileSelect.data.order;
 	}
-	return fileSelect.options.formtarget + 'what=' + what + '&table=' + fileSelect.options.table + '&id=' + id + "&order=" + o + "&filter=" + fileSelect.data.currentType;
+	return top.fileSelect.options.formtarget + 'what=' + what + '&table=' + top.fileSelect.options.table + '&id=' + id + "&order=" + o + "&filter=" + top.fileSelect.data.currentType;
 }
 
 function fillIDs(asArray) {
@@ -273,12 +275,12 @@ function fillIDs(asArray) {
 			allIsFolder.push(entries[i].isFolder);
 		}
 	}
-	if (fileSelect.data.currentID !== "" && allIDs.indexOf(fileSelect.data.currentID) === -1) {
-		allIDs.push(fileSelect.data.currentID);
+	if (top.fileSelect.data.currentID !== "" && allIDs.indexOf(top.fileSelect.data.currentID) === -1) {
+		allIDs.push(top.fileSelect.data.currentID);
 	}
-	if (top.currentPath !== "" && allPaths.indexOf(top.currentPath) === -1) {
-		allPaths.push(top.currentPath);
-		allTexts.push(we_makeTextFromPath(top.currentPath));
+	if (top.fileSelect.data.currentPath !== "" && allPaths.indexOf(top.fileSelect.data.currentPath) === -1) {
+		allPaths.push(top.fileSelect.data.currentPath);
+		allTexts.push(we_makeTextFromPath(top.fileSelect.data.currentPath));
 	}
 
 	if (!asArray) {
@@ -320,7 +322,7 @@ function weonclick(e) {
 			shiftpressed = true;
 		}
 	}
-	if (fileSelect.options.multiple) {
+	if (top.fileSelect.options.multiple) {
 		if ((self.shiftpressed === false) && (self.ctrlpressed === false)) {
 			top.unselectAllFiles();
 		}
@@ -349,7 +351,7 @@ function disableDelBut() {
 
 function enableDelBut() {
 	WE().layout.button.switch_button_state(document, "delete", "enabled");
-	if (fileSelect.options.userCanEditCat) {
+	if (top.fileSelect.options.userCanEditCat) {
 		WE().layout.button.switch_button_state(document, "btn_function_trash", "enabled");
 		changeCatState = 1;
 	}
@@ -382,7 +384,7 @@ function disableNewBut() {
 }
 
 function enableNewBut() {
-	if (fileSelect.options.userCanEditCat) {
+	if (top.fileSelect.options.userCanEditCat) {
 		WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
 		WE().layout.button.switch_button_state(document, "btn_add_cat", "enabled");
 	}
@@ -418,7 +420,7 @@ function selectIt() {
 }
 
 function setview(view) {
-	fileSelect.options.view = view;
+	top.fileSelect.options.view = view;
 	var zoom = top.document.getElementsByName("zoom")[0];
 	switch (view) {
 		case 'list':

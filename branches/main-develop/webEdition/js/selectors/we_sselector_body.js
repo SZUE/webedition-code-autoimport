@@ -41,14 +41,14 @@ function doClick(id, ct, indb) {
 				top.fscmd.selectFile(id);
 			}
 		}
-		if ((fileSelect.click.oldID === id) && (!wasdblclick)) {
+		if ((top.fileSelect.click.oldID === id) && (!wasdblclick)) {
 			clickEdit(id);
 		}
 	} else {
 		top.fscmd.selectFile(id);
 		top.dirsel = 0;
 	}
-	top.fileSelect.click.oldID = id;
+	top.top.fileSelect.click.oldID = id;
 }
 
 function doSelectFolder(entry, indb) {
@@ -74,13 +74,13 @@ function clickEdit(dir) {
 			break;
 		default:
 			setScrollTo();
-			top.fscmd.drawDir(fileSelect.data.currentDir, "rename_folder", dir);
+			top.fscmd.drawDir(top.fileSelect.data.currentDir, "rename_folder", dir);
 	}
 }
 
 function clickEditFile(file) {
 	setScrollTo();
-	top.fscmd.drawDir(fileSelect.data.currentDir, "rename_file", file);
+	top.fscmd.drawDir(top.fileSelect.data.currentDir, "rename_file", file);
 }
 
 function doScrollTo() {
@@ -106,5 +106,5 @@ function initSelector(type) {
 	if (type === "rename_folder" || type === "rename_file") {
 		document.we_form.elements.oldtxt.value = document.we_form.elements.txt.value;
 	}
-	document.we_form.elements.pat.value = fileSelect.data.currentDir;
+	document.we_form.elements.pat.value = top.fileSelect.data.currentDir;
 }

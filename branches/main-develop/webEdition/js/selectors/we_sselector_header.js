@@ -34,7 +34,7 @@ function addOptionh(txt, id) {
 }
 
 function openFile() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_fileupload_editor&we_cmd[2]=0&we_cmd[3]=sselector&we_cmd[6]=" + fileSelect.data.currentDir + "&we_cmd[7]=1&we_cmd[8]=sselector";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_fileupload_editor&we_cmd[2]=0&we_cmd[3]=sselector&we_cmd[6]=" + top.fileSelect.data.currentDir + "&we_cmd[7]=1&we_cmd[8]=sselector";
 	new (WE().util.jsWindow)(window, url, "we_fileupload_editor", -1, -1, 500, 550, true, true, true, true);
 }
 
@@ -78,7 +78,7 @@ function reorder(name) {
 			}
 			break;
 	}
-	top.fscmd.reorderDir(fileSelect.data.currentDir, order);
+	top.fscmd.reorderDir(top.fileSelect.data.currentDir, order);
 }
 
 function setLookin() {
@@ -88,7 +88,7 @@ function setLookin() {
 	var c = 0;
 
 	a.options.length = 0;
-	foo = fileSelect.data.currentDir.split("/");
+	foo = top.fileSelect.data.currentDir.split("/");
 	for (j = 0; j < foo.length; j++) {
 		if (foo[j] !== "") {
 			dirs[c] = foo[j];
@@ -128,11 +128,11 @@ function addOption(txt, id) {
 function editFile() {
 	if (!top.dirsel) {
 		var a = document.getElementsByName("fname")[0];
-		if ((fileSelect.data.currentID !== "") && (a.value !== "")) {
+		if ((top.fileSelect.data.currentID !== "") && (a.value !== "")) {
 			if (a.value != top.currentName) {
-				fileSelect.data.currentID = top.sitepath + top.rootDir + fileSelect.data.currentDir + "/" + a.value;
+				top.fileSelect.data.currentID = top.sitepath + top.rootDir + top.fileSelect.data.currentDir + "/" + a.value;
 			}
-			url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=selectorEdit&id=" + fileSelect.data.currentID;
+			url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=selectorEdit&id=" + top.fileSelect.data.currentID;
 			new (WE().util.jsWindow)(window, url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
 		}
 		else {

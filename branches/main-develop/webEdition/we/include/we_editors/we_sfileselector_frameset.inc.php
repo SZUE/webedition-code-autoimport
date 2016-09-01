@@ -138,7 +138,7 @@ function printFrameSet(){
 		WE().util.loadConsts("g_l.fileselector");
 		function exit_close() {
 			if (!browseServer) {
-				var foo = (!fileSelect.data.currentID || (fileSelect.data.currentID === sitepath) ? "/" : fileSelect.data.currentID.substring(sitepath.length));
+				var foo = (!top.fileSelect.data.currentID || (top.fileSelect.data.currentID === sitepath) ? "/" : top.fileSelect.data.currentID.substring(sitepath.length));
 
 				opener.<?= $cmd1? : 'x'; ?> = foo;
 			}

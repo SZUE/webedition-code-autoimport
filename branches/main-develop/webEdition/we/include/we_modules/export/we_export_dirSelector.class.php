@@ -81,7 +81,7 @@ class we_export_dirSelector extends we_selector_directory{
 		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
 
 		$js = 'top.clearEntries();
-fileSelect.data.makeNewFolder=false;';
+top.fileSelect.data.makeNewFolder=false;';
 		if(!$txt){
 			$js.=we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
@@ -99,8 +99,8 @@ if(top.opener.top.content.makeNewEntry){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
 }' .
 					($this->canSelectDir ?
-						'top.currentPath = "' . $folder->Path . '";
-fileSelect.data.currentID = "' . $folder->ID . '";
+						'top.fileSelect.data.currentPath = "' . $folder->Path . '";
+top.fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 			}
@@ -110,7 +110,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(fileSelect.data.currentID);'
+				'top.selectFile(top.fileSelect.data.currentID);'
 			), we_html_element::htmlBody());
 	}
 
@@ -123,7 +123,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 		$txt = $this->FolderText;
 
 		$js = 'top.clearEntries();
-fileSelect.data.makeNewFolder=false;';
+top.fileSelect.data.makeNewFolder=false;';
 		if(!$txt){
 			$js.= we_message_reporting::getShowMessageCall(g_l('export', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
@@ -147,8 +147,8 @@ if(top.opener.top.content.treeData.updateEntry){
 	ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});
 }' .
 							($this->canSelectDir ?
-								'top.currentPath = "' . $folder->Path . '";
-fileSelect.data.currentID = "' . $folder->ID . '";
+								'top.fileSelect.data.currentPath = "' . $folder->Path . '";
+top.fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' :
 								'');
 					}
@@ -160,7 +160,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' :
 				$js .
 				$this->printCmdAddEntriesHTML() .
 				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(fileSelect.data.currentID);'
+				'top.selectFile(top.fileSelect.data.currentID);'
 			), we_html_element::htmlBody());
 	}
 

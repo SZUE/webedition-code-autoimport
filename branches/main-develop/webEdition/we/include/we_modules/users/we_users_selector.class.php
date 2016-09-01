@@ -103,13 +103,13 @@ class we_users_selector extends we_selector_file{
 			if($this->id == 0){
 				$this->path = '/';
 			}
-			$js.= 'top.currentPath = "' . $this->path . '";
-fileSelect.data.currentID = "' . $this->id . '";
+			$js.= 'top.fileSelect.data.currentPath = "' . $this->path . '";
+top.fileSelect.data.currentID = "' . $this->id . '";
 top.document.getElementsByName("fname")[0].value = "' . $this->values["Text"] . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-		$js.= 'fileSelect.data.currentDir = "' . $this->dir . '";
-fileSelect.data.parentID = "' . $this->values["ParentID"] . '";';
+		$js.= 'top.fileSelect.data.currentDir = "' . $this->dir . '";
+top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";';
 		echo we_html_element::jsElement($js);
 	}
 
