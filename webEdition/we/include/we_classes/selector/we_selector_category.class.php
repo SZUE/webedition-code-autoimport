@@ -96,20 +96,13 @@ class we_selector_category extends we_selector_file{
 		return ($this->userCanEditCat() && $this->id > 0);
 	}
 
-	protected function printHeaderJSDef(){
-		return 'var changeCatState=' . ($this->userCanChangeCat() ? 1 : 0) . ';';
-	}
-
-	protected function getFramesetJavaScriptDef(){
+	protected function setFramesetJavaScriptOptions(){
+		parent::setFramesetJavaScriptOptions();
 		$this->jsoptions['options']['userCanEditCat'] = intval($this->userCanEditCat());
 		$this->jsoptions['data']['makeNewCat'] = false;
 		$this->jsoptions['data']['we_editCatID'] = 0;
-		$this->jsoptions['data']['noChoose']=intval($this->noChoose);
-		return parent::getFramesetJavaScriptDef() . we_html_element::jsElement('
-var hot=0; // this is hot for category edit!!
-
-WE().util.loadConsts("g_l.selectors.category");
-');
+		$this->jsoptions['data']['noChoose'] = intval($this->noChoose);
+		$this->jsoptions['data']['changeCatState']=$this->userCanChangeCat();
 	}
 
 	function printCreateEntryHTML(){

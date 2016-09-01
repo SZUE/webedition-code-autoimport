@@ -210,10 +210,9 @@ class we_selector_file{
 				'oldID' => 0,
 			]
 		];
-		$tmp = $this->getFramesetJavaScriptDef();
+		$this->setFramesetJavaScriptOptions();
 		$this->setDirAndID(); //set correct directory
-		echo we_html_tools::getHtmlTop($this->title, '', 'frameset', $tmp .
-			$this->getFramsetJSFile() .
+		echo we_html_tools::getHtmlTop($this->title, '', 'frameset', $this->getFramsetJSFile() .
 			$this->getExitOpen() .
 			we_html_element::jsElement($this->printCmdAddEntriesHTML() . 'self.focus();') .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css'), $this->getFrameset($withPreview));
@@ -223,7 +222,7 @@ class we_selector_file{
 		return we_html_element::jsScript(JS_DIR . 'selectors/file_selector.js', '', ['id' => 'loadVarSelectors', 'data-selector' => setDynamicVar($this->jsoptions)]);
 	}
 
-	protected function getFramesetJavaScriptDef(){
+	protected function setFramesetJavaScriptOptions(){
 		if($this->id === 0){
 			$this->path = '/';
 		}
@@ -235,7 +234,7 @@ class we_selector_file{
 		$this->jsoptions['data']['startPath'] = f('SELECT Path FROM ' . $GLOBALS['DB_WE']->escape($this->table) . ' WHERE ID=' . intval($this->dir))? : '/';
 		$this->jsoptions['data']['currentPath'] = $this->path;
 		$this->jsoptions['data']['order'] = $this->order;
-		return '';
+		$this->jsoptions['data']['rootDirButsState'] = (($this->dir != 0));
 	}
 
 	protected function getFrameset(){
@@ -295,7 +294,6 @@ function exit_open(){' .
 		$this->setDirAndID();
 		$do = (!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE;
 		return
-			we_html_element::jsElement($this->printHeaderJSDef()) .
 			($do ? $this->printHeaderTable() : '') .
 			we_html_element::jsElement(($do ? $this->printCMDWriteAndFillSelectorHTML(false) : '')) .
 			$this->printHeaderHeadlines();
@@ -309,7 +307,7 @@ function exit_open(){' .
 		<td class="lookin"><select name="lookin" id="lookin" class="weSelect" onchange="top.setDir(this.options[this.selectedIndex].value);" class="defaultfont" style="width:100%">
 		</select>
 		</td>
-		<td>' . we_html_button::create_button('root_dir', "javascript:if(rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
+		<td>' . we_html_button::create_button('root_dir', "javascript:if(top.fileSelect.data.rootDirButsState){top.setRootDir();}", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>
 		<td>' . we_html_button::create_button('fa:btn_fs_back,fa-lg fa-level-up,fa-lg fa-folder', "javascript:top.goBackDir();", false, 40, 22, "", "", ($this->dir == 0), false) . '</td>' .
 			$extra .
 			'</tr>
@@ -325,10 +323,6 @@ function exit_open(){' .
 		<th class="selector remain"></th>
 	</tr>
 </table>';
-	}
-
-	protected function printHeaderJSDef(){
-		return 'var rootDirButsState = ' . (($this->dir == 0) ? 0 : 1) . ';';
 	}
 
 	protected function printCmdHTML($morejs = ''){

@@ -216,17 +216,6 @@ function exit_open() {
 </table>';
 	}
 
-	protected function printHeaderJSDef(){
-		switch($this->table){
-			case FILE_TABLE:
-			case VFILE_TABLE:
-				return parent::printHeaderJSDef() . '
-var newFileState = ' . ($this->userCanMakeNewFile ? 1 : 0) . ';';
-			default:
-				return parent::printHeaderJSDef();
-		}
-	}
-
 	protected function printHeaderTable($extra = '', $append = true){
 		switch($this->table){
 			case FILE_TABLE:
@@ -597,10 +586,15 @@ function weWriteBreadCrumb(BreadCrumb){
 		echo $out;
 	}
 
-	protected function getFramesetJavaScriptDef(){
+	protected function setFramesetJavaScriptOptions(){
+		parent::setFramesetJavaScriptOptions();
 		$this->jsoptions['options']['canSelectDir'] = intval($this->canSelectDir);
 		$this->jsoptions['options']['useID'] = intval($this->useID);
-		return parent::getFramesetJavaScriptDef();
+		switch($this->table){
+			case FILE_TABLE:
+			case VFILE_TABLE:
+				$this->jsoptions['data']['newFileState'] = $this->userCanMakeNewFile;
+		}
 	}
 
 }

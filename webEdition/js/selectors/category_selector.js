@@ -22,6 +22,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var hot = 0; // this is hot for category edit!!
+
+WE().util.loadConsts("g_l.selectors.category");
 
 function unselectFile(id) {
 	e = getEntry(id);
