@@ -23,6 +23,9 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var hot = false;
+var args = "";
+var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 
 mainXhtmlFields = ["setXhtml_remove_wrong", "setXhtml_show_wrong"];
 showXhtmlFields = ["setXhtml_show_wrong_text", "setXhtml_show_wrong_js", "setXhtml_show_wrong_error_log"];
@@ -327,7 +330,7 @@ function addLocale() {
 		if (document.getElementById('locale_temp_locales').options.length === 1) {
 			setDefaultLocale(LocaleValue);
 		}
-		if (modules.SPELLCHECKER) {
+		if (WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR) {
 // Wörterbuch hinzufügen
 			if (confirm(WE().consts.g_l.prefs.add_dictionary_question)) {
 				top.opener.top.we_cmd('spellchecker_edit_ifthere');

@@ -36,21 +36,14 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 if(!isset($_SESSION['weS']['we_wrapcheck'])){
 	$_SESSION['weS']['we_wrapcheck'] = $_SESSION['prefs']['editorWrap'];
 }
-//FIXME: make real js files out of this!
-echo we_html_multiIconBox::getJS();
-?>
-<script><!--
-	var docName = "<?= $we_doc->Name; ?>";
-	var docCharSet = "<?= ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']); ?>";
-	var editorHighlightCurrentLine =<?= intval($_SESSION['prefs']['editorHighlightCurrentLine']); ?>;
-	var g_l = {
-		insert_tagname: "<?= g_l('weTagWizard', '[insert_tagname]'); ?>",
-		insert_tagname_not_exist: "<?php sprintf(g_l('weTagWizard', '[insert_tagname_not_exist]'), '\"_wrongTag\"') . '\n\n'; ?>",
-	}
-//-->
-</script>
-<?php
-echo we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js');
+$doc = [
+	'docName' => $we_doc->Name,
+	'docCharSet' => ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']),
+	'editorHighlightCurrentLine' => intval($_SESSION['prefs']['editorHighlightCurrentLine']),
+];
+
+echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js').
+	we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', '', ['id' => 'loadVarSrcTmpl', 'data-doc' => setDynamicVar($doc)]);
 
 function we_getCSSIds(){
 	$tp = new we_tag_tagParser($GLOBALS['we_doc']->getElement('data'));
@@ -399,12 +392,12 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" onresize="sizeEditor();">
 	<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
-		echo we_class::hiddenTrans() .
-		'<div id="bodydiv" style="display:none;position:absolute;top:10px;left:0px;right:0px;bottom:0px;">' . $maineditor . (isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>' .
-		we_html_element::htmlHidden('we_complete_request', 1) .
-		(isset($groupJs) ?
-			we_html_element::jsElement('tagGroups = {' . $groupJs . '};' . (isset($selectedGroup) ? "selectTagGroup('" . $selectedGroup . "');" : '')) :
-			'');
-		?>
+echo we_class::hiddenTrans() .
+ '<div id="bodydiv" style="display:none;position:absolute;top:10px;left:0px;right:0px;bottom:0px;">' . $maineditor . (isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>' .
+ we_html_element::htmlHidden('we_complete_request', 1) .
+ (isset($groupJs) ?
+	we_html_element::jsElement('tagGroups = {' . $groupJs . '};' . (isset($selectedGroup) ? "selectTagGroup('" . $selectedGroup . "');" : '')) :
+	'');
+?>
 	</form></body>
 </html>

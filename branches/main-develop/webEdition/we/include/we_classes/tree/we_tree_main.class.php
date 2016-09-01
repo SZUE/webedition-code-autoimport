@@ -70,12 +70,12 @@ if(weWindow.treeData){
 	if(weWindow.treeData.table == "' . $doc->Table . '"){
 		if(weWindow.treeData[top.treeData.indexOfEntry(' . $doc->ParentID . ')]){
 			var attribs={
-			"id":' . $doc->ID . ',
-			"parentid":' . $doc->ParentID . ',
-			"text":\'' . addcslashes($doc->Text, '\'') . '\',
-			"published":' . $published . ',
-			"table":\'' . $doc->Table . '\',
-			"inschedule":\'' . intval($hasSched) . '\'
+				id:' . $doc->ID . ',
+				parentid:' . $doc->ParentID . ',
+				text:\'' . addcslashes($doc->Text, '\'') . '\',
+				published:' . $published . ',
+				table:\'' . $doc->Table . '\',
+				inschedule:\'' . intval($hasSched) . '\'
 			};
 
 			var visible=(top.treeData.indexOfEntry(' . $doc->ParentID . ')!=-1?

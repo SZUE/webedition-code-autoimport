@@ -36,7 +36,6 @@ if($we_responseText && $we_responseTextType == we_message_reporting::WE_MESSAGE_
 
 if(!empty($wasSaved)){
 	// DOC was saved, mark open tabs to reload if necessary
-	// outsource this, if code gets too big
 	// was saved - not hot anymore
 	?>
 		_EditorFrame.setEditorIsHot(false);
@@ -68,38 +67,15 @@ if(!empty($wasSaved)){
 	$reload = array_filter($reload);
 
 	if($reload){
-		echo 'var _reloadTabs = {};';
+		echo 'WE().layout.reloadUsedEditors({';
 		foreach($reload as $table => $vals){
-			echo "_reloadTabs['" . $table . "'] = '," . $vals . ",';";
+			echo $table . " : '," . $vals . ",',";
 		}
-		echo "
-var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-
-for (frameId in _usedEditors) {
-	if ( _reloadTabs[_usedEditors[frameId].getEditorEditorTable()] && (_reloadTabs[_usedEditors[frameId].getEditorEditorTable()]).indexOf(',' + _usedEditors[frameId].getEditorDocumentId() + ',') != -1 ) {
-		_usedEditors[frameId].setEditorReloadNeeded(true);
- 	}
-}";
+		echo "});";
 	}
 
 	if($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE){
-		//	JS, when not in seem
-		$isTmpl = $we_doc->ContentType == we_base_ContentTypes::TEMPLATE && permissionhandler::hasPerm("NEW_WEBEDITIONSITE");
-		echo ($isTmpl ?
-			'if( _EditorFrame.getEditorMakeNewDoc() == true ) {' .
-			(!empty($saveTemplate) ?
-				"	top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "','','" . $we_doc->ID . "');" :
-				''
-			) .
-			'} else {' :
-			(($isObject = $we_doc->ContentType === we_base_ContentTypes::OBJECT && permissionhandler::hasPerm('NEW_OBJECTFILE')) ?
-				"if( _EditorFrame.getEditorMakeNewDoc() == true ) {
-				top.we_cmd('new','" . OBJECT_FILES_TABLE . "','','objectFile','" . $we_doc->ID . "');
-			} else {" : '')) .
-		(!isset($isClose) || !$isClose ? //if we close the document, we should not reload any header etc.
-			'if ( _EditorFrame.getEditorIsInUse() ) {_EditorFrameDocumentRef.frames.editHeader.location.reload();}' : '') .
-		($isTmpl || $isObject ?
-			'}' : '');
+		echo 'WE().layout.makeNewDoc(_EditorFrame,"' . $we_doc->ContentType . '",' . $we_doc->ID . ',' . intval(!empty($saveTemplate)) . ',' . intval(!isset($isClose) || !$isClose) . ');';
 	}
 }
 
@@ -108,7 +84,7 @@ echo (isset($we_JavaScript) ? $we_JavaScript : "");
 if($we_responseText){
 	$jsCommand = "";
 	echo 'self.focus();
-showAlert = 0;
+var showAlert = false;
 var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();';
 
 	// enable navigation box if doc has been published
@@ -124,7 +100,7 @@ var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 		if(!empty($GLOBALS["publish_doc"])){ //	edit include and pulish then close window and reload
 			$jsCommand .='
 if(isEditInclude){
-	showAlert = 1;
+	showAlert = true;
 }';
 		}
 		$jsCommand .=

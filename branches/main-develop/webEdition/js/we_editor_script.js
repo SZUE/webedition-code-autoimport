@@ -24,12 +24,18 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var el = document.getElementById('loadVarEditor_script');
+var doc = (el ?
+				WE().util.getDynamicVar(el.getAttribute('data-doc')) :
+				{}
+);
+
 var _controller = WE().layout.weEditorFrameController;
 
 var _EditorFrame = _controller.getEditorFrame(parent.name);
 if (!_EditorFrame) {
-	_EditorFrame = (we_transaction ?
-					_controller.getEditorFrameByTransaction(we_transaction) :
+	_EditorFrame = (doc.we_transaction ?
+					_controller.getEditorFrameByTransaction(doc.we_transaction) :
 					_controller.getEditorFrame());
 
 }
@@ -143,17 +149,17 @@ function doUnload() {
 }
 
 function updateCustomerFilterIfNeeded() {
-	if ((_elem = document.we_form["we_" + docName + "_ParentID"])) {
-		_parentid = _elem.value;
-		if (_parentid !== _oldparentid) {
-			top.YAHOO.util.Connect.asyncRequest('GET', WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + _parentid + '&we_transaction=' + we_transaction + '&table=' + docTable + '&classname=' + docClass, {
+	if ((_elem = document.we_form["we_" + doc.docName + "_ParentID"])) {
+		var parentid = _elem.value;
+		if (parentid !== doc.oldparentid) {
+			top.YAHOO.util.Connect.asyncRequest('GET', WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=GetUpdateDocumentCustomerFilterQuestion&cns=customer&folderId=' + parentid + '&we_transaction=' + doc.we_transaction + '&table=' + doc.docTable + '&classname=' + doc.docClass, {
 				// check if parentId was changed
 				success: function (o) {
 					if (o.responseText !== undefined && o.responseText) {
 						var weResponse = JSON.parse(o.responseText);
 						if (weResponse) {
 							if (weResponse.DataArray.data === true) {
-								_question = isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
+								_question = doc.isFolder ? WE().consts.g_l.alert.confirm_applyFilterFolder : WE().consts.g_l.alert.confirm_applyFilterDocument;
 								if (confirm(_question)) {
 									top.we_cmd("customer_applyWeDocumentCustomerFilterFromFolder");
 								}
@@ -165,7 +171,7 @@ function updateCustomerFilterIfNeeded() {
 				}
 			}
 			);
-			_oldparentid = _parentid;
+			doc.oldparentid = parentid;
 		}
 	}
 }
@@ -176,9 +182,9 @@ function pathOfDocumentChanged() {
 	var _filepath = '';
 	var elem = false;
 
-	elem = document.we_form["we_" + docName + "_Filename"]; // documents
+	elem = document.we_form["we_" + doc.docName + "_Filename"]; // documents
 	if (!elem) { // object
-		elem = document.we_form["we_" + docName + "_Text"];
+		elem = document.we_form["we_" + doc.docName + "_Text"];
 	}
 
 	if (elem) {
@@ -186,12 +192,12 @@ function pathOfDocumentChanged() {
 		// text
 		_filetext = elem.value;
 		// Extension if there
-		if (document.we_form["we_" + docName + "_Extension"]) {
-			_filetext += document.we_form["we_" + docName + "_Extension"].value;
+		if (document.we_form["we_" + doc.docName + "_Extension"]) {
+			_filetext += document.we_form["we_" + doc.docName + "_Extension"].value;
 		}
 
 		// path
-		if ((_elem = document.we_form["we_" + docName + "_ParentPath"])) {
+		if ((_elem = document.we_form["we_" + doc.docName + "_ParentPath"])) {
 			_filepath = _elem.value;
 		}
 		if (_filepath !== "/") {
@@ -200,7 +206,7 @@ function pathOfDocumentChanged() {
 
 		_filepath += _filetext;
 		WE().layout.we_setPath(_EditorFrame, _filepath, _filetext, -1, "");
-		if (hasCustomerFilter) {
+		if (doc.hasCustomerFilter) {
 			updateCustomerFilterIfNeeded();
 		}
 	}
@@ -274,7 +280,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_tag_wizzard", -1, -1, 600, 620, true, true, true);
 			break;
 		case "glossary_check":
-			if (hasGlossary) {
+			if (doc.hasGlossary) {
 				new (WE().util.jsWindow)(this, url, "glossary_check", -1, -1, 730, 400, true, false, true);
 			}
 			break;
@@ -282,10 +288,10 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_add_thumbnail", -1, -1, 400, 410, true, true, true);
 			break;
 		case "image_resize":
-			if (WE().consts.graphic.gdSupportedTypes[gdType]) {
-				ImageEditTools.Resize.start(url, gdType);
+			if (WE().consts.graphic.gdSupportedTypes[doc.gdType]) {
+				ImageEditTools.Resize.start(url, doc.gdType);
 			} else {
-				top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
+				top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, doc.gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "image_convertJPEG":
@@ -293,10 +299,10 @@ function we_cmd() {
 			break;
 		case "image_rotate":
 			if (WE().consts.graphic.canRotate) {
-				if (gdSupport) {
-					ImageEditTools.Rotate.start(url, gdType);
+				if (doc.gdSupport) {
+					ImageEditTools.Rotate.start(url, doc.gdType);
 				} else {
-					top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
+					top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, doc.gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 			} else {
 				top.we_showMessage(WE().consts.g_l.editorScript.noRotate, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -306,11 +312,11 @@ function we_cmd() {
 			ImageEditTools.Focus.start();
 			break;
 		case "image_crop":
-			if (WE_EDIT_IMAGE) {
-				if (gdSupport) {
+			if (doc.WE_EDIT_IMAGE) {
+				if (doc.gdSupport) {
 					ImageEditTools.Crop.crop();
 				} else {
-					top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
+					top.we_showMessage(WE().util.sprintf(WE().consts.g_l.editorScript.gdTypeNotSupported, doc.gdType), WE().consts.message.WE_MESSAGE_ERROR, this);
 				}
 			}
 			break;
@@ -344,7 +350,7 @@ function we_cmd() {
 
 
 function fields_are_valid() {
-	if (isWEObject) {
+	if (doc.isWEObject) {
 		var theInputs = document.getElementsByTagName("input");
 
 		for (i = 0; i < theInputs.length; i++) {

@@ -178,20 +178,17 @@ for($i = 0; $i < count($aTopRssFeeds); $i++){
 }
 //$aCfgProps[]= $aTopRssFeeds;
 
-$jsPrefs = "
-var oCfg={
-	iDlgWidth:" . intval($iDlgWidth) . ",
-	_noResizeTypes:['pad'],";
-
+$jsoCfg = [
+	'iDlgWidth' => intval($iDlgWidth),
+	'_noResizeTypes' => ['pad'],
+];
 
 foreach($aPrefs as $type => $prefs){
-	$jsPrefs .= $type . "_props_:{
-		width:" . intval($prefs["width"]) . ",
-		height:" . intval($prefs["height"]) . ",
-		res:" . $prefs["res"] . ",
-		cls:'" . $prefs["cls"] . "',
-		iDlgHeight:" . intval($prefs["dlgHeight"]) . "
-},";
+	$jsoCfg[$type . "_props_"] = [
+		'width' => intval($prefs["width"]),
+		'height' => intval($prefs["height"]),
+		'res' => $prefs["res"],
+		'cls' => $prefs["cls"],
+		'iDlgHeight' => intval($prefs["dlgHeight"]),
+	];
 }
-$jsPrefs.='};';
-

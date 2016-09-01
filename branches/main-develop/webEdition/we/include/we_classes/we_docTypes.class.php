@@ -259,7 +259,7 @@ class we_docTypes extends we_class{
 		}
 		$tlist = array_filter(array_unique($tlist));
 		$sqlTail = 'IsFolder=0 ' . ($tlist ? 'AND ID IN(' . implode(',', $tlist) . ')' : ' AND false' );
-		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID,Path', g_l('weClass', '[standard_template]'), $sqlTail, 1, $this->TemplateID, false, '', [], 'left', 'defaultfont', '', '', array(0, g_l('weClass', '[none]')));
+		return $this->formSelect2($width, 'TemplateID', TEMPLATES_TABLE, 'ID,Path', g_l('weClass', '[standard_template]'), $sqlTail, 1, $this->TemplateID, false, '', [], 'left', 'defaultfont', '', '', [0, g_l('weClass', '[none]')]);
 	}
 
 	private function formIsDynamic(){
@@ -324,6 +324,16 @@ function switchExt(){
 				'join' => '',
 				'where' => '1 ORDER BY dt.DocType'
 		));
+	}
+
+	public static function getJSLangConsts(){
+		return '
+	WE().consts.g_l.doctypeEdit = {
+		newDocTypeName: "' . g_l('weClass', '[newDocTypeName]') . '",
+		doctype_hochkomma: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_hochkomma]')) . '",
+		doctype_empty: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_empty]')) . '",
+		doctype_exists: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_exists]')) . '",
+	};';
 	}
 
 }

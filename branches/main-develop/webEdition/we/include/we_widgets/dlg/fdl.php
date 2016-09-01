@@ -56,11 +56,11 @@ function exit_close(){
 }
 ";
 
-$parts = array(
-	array(
-		"headline" => "", "html" => $oSelCls->getHTML(),
-	)
-);
+$parts = [
+	["headline" => "",
+		"html" => $oSelCls->getHTML(),
+	]
+];
 
 $save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
 $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);

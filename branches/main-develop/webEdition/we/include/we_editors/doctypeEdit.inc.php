@@ -49,15 +49,13 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 			$we_responseText = sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType);
 			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
 			$we_show_response = 1;
+		} elseif($we_doc->we_save()){
+			$we_responseText = sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType);
+			$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
+			$we_show_response = 1;
+			$we_JavaScript = we_main_headermenu::getMenuReloadCode();
 		} else {
-			if($we_doc->we_save()){
-				$we_responseText = sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType);
-				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
-				$we_show_response = 1;
-				$we_JavaScript = we_main_headermenu::getMenuReloadCode();
-			} else {
-				echo "ERROR";
-			}
+			echo "ERROR";
 		}
 		break;
 	case "newDocType":
@@ -155,13 +153,7 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
 //FIXME: currently we don't have a class so we can't move js-g_l
 ?>
 <script><!--
-	var countSaveLoop = 0;
-	WE().consts.g_l.doctypeEdit = {
-		newDocTypeName: "<?= g_l('weClass', '[newDocTypeName]'); ?>",
-		doctype_hochkomma: "<?= we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_hochkomma]')); ?>",
-		doctype_empty: "<?= we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_empty]')); ?>",
-		doctype_exists: "<?= we_message_reporting::prepareMsgForJS(g_l('alert', '[doctype_exists]')); ?>",
-	};
+	WE().util.loadConsts("g_l.doctypeEdit");
 <?=
 (empty($we_JavaScript) ? '' : $we_JavaScript . ';') .
  ($we_show_response && $we_responseText ? we_message_reporting::getShowMessageCall($we_responseText, $we_response_type) : '');

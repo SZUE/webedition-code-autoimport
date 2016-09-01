@@ -124,15 +124,13 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 			$table->setColContent($row, 5, $cur['content']);
 		}
 
-		$parts = array(
-			array(
-				'headline' => g_l('weClass', '[unusedElementsTab]'),
+		$parts = [
+			['headline' => g_l('weClass', '[unusedElementsTab]'),
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[unusedElements][description]'), we_html_tools::TYPE_ALERT, 850, false)
-			),
-			array(
-				'html' => $table->getHtml() .
+			],
+			['html' => $table->getHtml() .
 				($obsolete ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('weClass', '[unusedElements][delete]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") : ''),
-			),
+			],
 			/*
 			  array(
 			  'headline' => 'Obsolete Elemente',
@@ -150,14 +148,14 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 			  'headline' => 'Elemente in DB',
 			  'html' => '<pre>' . print_r($allFields, true) . '</pre>',
 			  ), */
-		);
+		];
 
 
 		echo we_html_multiIconBox::getHTML('', $parts, 20) .
-		we_html_element::htmlHiddens(array(
+		we_html_element::htmlHiddens([
 			'we_complete_request' => 1,
 			'do' => ''
-		));
+		]);
 		?>
 	</form>
 </body>

@@ -23,7 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var aTopRssFeeds = opener._trf;
+var aTopRssFeeds = opener.cockpit._trf;
 var _iTopRssFeedsLen = aTopRssFeeds.length;
 var _bIsHotTopRssFeeds = false;
 var _sInitUri;
@@ -185,7 +185,7 @@ function save() {
 			aNewTopRssFeeds[i] = [WE().util.Base64.encode(oSctRss.options[i + 1].text),
 				WE().util.Base64.encode(oSctRss.options[i + 1].value)];
 		}
-		opener._trf = aNewTopRssFeeds;
+		opener.cockpit._trf = aNewTopRssFeeds;
 		opener._isHotTrf = true;
 	}
 	opener.saveSettings();
