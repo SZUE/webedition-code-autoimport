@@ -114,8 +114,7 @@ class we_chooser_multiDir{
 			}
 			$this->nr++;
 		}
-		$out .= '
-</table>' . we_html_element::jsElement('WE().util.setIconOfDocClass(document, "chooserFileIcon");');
+		$out .= '</table>';
 
 
 		return '<table class="default" style="width:' . $this->width . 'px">

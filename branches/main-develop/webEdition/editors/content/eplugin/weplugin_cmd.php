@@ -50,11 +50,11 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 
 
 		$out = we_html_element::jsElement('
-session = "' . session_id() . '";
-transaction = "' . str_replace('"', '', $we_transaction) . '";
-filename = "' . addslashes($filename) . '";
-ct = "' . $ct . '";
-source = "' . base64_encode($source) . '";
+var session = "' . session_id() . '";
+var transaction = "' . str_replace('"', '', $we_transaction) . '";
+var filename = "' . addslashes($filename) . '";
+var ct = "' . $ct . '";
+var source = "' . base64_encode($source) . '";
 if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "function") ) {
 	top.plugin.document.WePlugin.editSource(session,"' . session_name() . '",transaction,filename,source,ct,"true","' . $charset . '");
 }');

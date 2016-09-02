@@ -23,10 +23,11 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+var weAcCheckLoop = 0;
 
 function checkAnchor(el) {
 	if (el.value && !new RegExp('#?[a-z]+[a-z0-9_:.-=]*$', 'i').test(el.value)) {
-		alert(g_l.anchor_invalid);
+		alert(WE().consts.g_l.alert.anchor_invalid);
 		window.setTimeout(function () {
 			el.focus;
 		}, 10);
