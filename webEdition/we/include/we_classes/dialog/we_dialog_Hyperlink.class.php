@@ -546,13 +546,8 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 
 	function getJs(){
 		return parent::getJs() . we_html_element::jsElement('
-var weAcCheckLoop = 0;
 var editname="' . (isset($this->args["editname"]) ? $this->args["editname"] : '') . '";
 var classNames = ' . (!empty($this->args["cssClasses"]) ? '"' . $this->args['cssClasses'] . '".split(/,/)' : 'top.opener.weclassNames_tinyMce;') . ';
-
-var g_l={
-	anchor_invalid:"' . g_l('linklistEdit', '[anchor_invalid]') . '",
-};
 ') . we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_hyperlink.js');
 	}
 
@@ -594,7 +589,7 @@ var g_l={
 
 		return we_dialog_base::getTinyMceJS() .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/welink/js/welink_insert.js') .
-			'<form name="tiny_form">' . we_html_element::htmlHiddens(array(
+			'<form name="tiny_form">' . we_html_element::htmlHiddens([
 				"href" => $href,
 				"target" => $args["target"],
 				"class" => $args["cssclass"],
@@ -604,7 +599,7 @@ var g_l={
 				"accesskey" => $args["accesskey"],
 				"tabindex" => $args["tabindex"],
 				"rel" => $args["rel"],
-				"rev" => $args["rev"])) . '</form>';
+				"rev" => $args["rev"]]) . '</form>';
 	}
 
 }

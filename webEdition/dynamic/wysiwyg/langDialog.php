@@ -44,17 +44,18 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 	$Glossary->setAttribute('lang', we_base_request::_(we_base_request::STRING, 'we_dialog_args', '', 'lang'));
 	$Glossary->setPath();
 
+	$cmd = new we_base_jsCmd();
 	if($Glossary->Text === "" || $Glossary->getAttribute('lang') === ""){
-		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$cmd->addCmd('msg', ['msg' => g_l('modules_glossary', '[name_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 	} else if($Glossary->pathExists($Glossary->Path)){
-		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$cmd->addCmd('msg', ['msg' => g_l('modules_glossary', '[name_exists]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 	} else {
 		$Glossary->save();
-		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[entry_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.close();';
+		$cmd->addCmd('msg', ['msg' => g_l('modules_glossary', '[entry_saved]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+		$cmd->addCmd('close');
 	}
 }
 
 $dialog = new we_dialog_lang($noInternals);
 $dialog->initByHttp();
-echo $dialog->getHTML() .
- we_html_element::jsElement($appendJS);
+echo $dialog->getHTML() . $cmd->getCmds();

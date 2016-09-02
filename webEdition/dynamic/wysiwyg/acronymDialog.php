@@ -47,7 +47,7 @@ if(defined('GLOSSARY_TABLE') && we_base_request::_(we_base_request::BOOL, 'weSav
 	$Glossary->setPath();
 
 	if($Glossary->Title === ''){
-		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[title_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . ';var elem = document.forms[0].elements["we_dialog_args[title]"];elem.focus();elem.select();';
+		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[title_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . 'var elem = document.forms[0].elements["we_dialog_args[title]"];elem.focus();elem.select();';
 	} else if($Glossary->getAttribute('lang') === ''){
 		$appendJS = we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[lang_empty]'), we_message_reporting::WE_MESSAGE_ERROR) . 'var elem = document.forms[0].elements["we_dialog_args[lang]"];elem.focus();elem.select();';
 	} else if($Glossary->Text === ''){

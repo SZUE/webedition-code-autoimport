@@ -130,6 +130,7 @@ abstract class we_base_jsConstants{
 		confirm_applyFilterDocument: "' . g_l('alert', '[confirm][applyWeDocumentCustomerFiltersDocument]') . '",
 		copy_folder_not_valid: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[copy_folder_not_valid]')) . '",
 		exit_multi_doc_question: "' . g_l('alert', '[exit_multi_doc_question]') . '",
+		anchor_invalid:"' . g_l('linklistEdit', '[anchor_invalid]') . '",
 		in_wf_warning:{
 			tblFile:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : '') . '",
 			tblObjectFiles:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObjectFiles][in_wf_warning]') : '') . '",

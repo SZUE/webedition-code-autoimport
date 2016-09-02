@@ -256,8 +256,8 @@ class we_imageDocument extends we_binaryDocument{
 		}
 
 		$js = '
-img' . self::$imgCnt . 'Over = new Image();
-img' . self::$imgCnt . 'Out = new Image();
+var img' . self::$imgCnt . 'Over = new Image();
+var img' . self::$imgCnt . 'Out = new Image();
 img' . self::$imgCnt . 'Over.src = "' . ($src_over? : f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($this->getElement('RollOverID')), '', $this->DB_WE)) . '";
 img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		return ($useScript ? we_html_element::jsElement($js) : $js);

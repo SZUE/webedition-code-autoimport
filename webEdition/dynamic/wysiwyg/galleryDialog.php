@@ -23,8 +23,6 @@
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 
-$appendJS = "";
-
 
 if(!(
 	we_base_request::_(we_base_request::BOOL, 'we_dialog_args', false, 'outsideWE') ||
@@ -40,6 +38,4 @@ $noInternals = $noInternals || !isset($_SESSION['user']) || !isset($_SESSION['us
 $dialog = new we_dialog_gallery($noInternals);
 
 $dialog->initByHttp();
-echo $dialog->getHTML() .
- we_html_element::jsElement($appendJS);
-
+echo $dialog->getHTML();

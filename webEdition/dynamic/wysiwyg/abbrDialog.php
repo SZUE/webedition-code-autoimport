@@ -69,4 +69,3 @@ $dialog = new we_dialog_abbr($noInternals);
 $dialog->initByHttp();
 echo $dialog->getHTML() .
  ($appendJS ? we_html_element::jsElement($appendJS) : '');
-
