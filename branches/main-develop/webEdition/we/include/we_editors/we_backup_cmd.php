@@ -57,7 +57,7 @@ if(($cmd === 'export' || $cmd === 'import') && isset($_SESSION['weS']['weBackupV
 
 		if($_SESSION['weS']['weBackupVars']['retry'] > 10 || $_SESSION['weS']['weBackupVars']['options']['compress'] != we_backup_util::NO_COMPRESSION){//in case of compression the file can't be used
 			$_SESSION['weS']['weBackupVars']['retry'] = 1;
-			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR));
+			echo we_message_reporting::jsMessagePush(g_l('backup', '[error_timeout]'), we_message_reporting::WE_MESSAGE_ERROR);
 			exit();
 		}
 	}

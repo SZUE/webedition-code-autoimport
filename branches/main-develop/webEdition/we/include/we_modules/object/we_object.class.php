@@ -1778,7 +1778,7 @@ class we_object extends we_document{
 
 		if(!empty($GLOBALS['WE_DEL_WORKSPACE_ERROR'])){
 			unset($GLOBALS['WE_DEL_WORKSPACE_ERROR']);
-			$content .= we_html_element::jsElement(we_message_reporting::getShowMessageCall(addslashes(g_l('weClass', '[we_del_workspace_error]')), we_message_reporting::WE_MESSAGE_ERROR));
+			$content .= we_message_reporting::jsMessagePush(addslashes(g_l('weClass', '[we_del_workspace_error]')), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 		return $content;
 	}

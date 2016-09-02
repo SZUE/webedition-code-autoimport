@@ -143,12 +143,12 @@ function we_cmd(){
 				$js = '';
 				$this->customer->Username = trim($this->customer->Username);
 				if(!$this->customer->Username){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[username_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->customer->filenameNotValid()){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_customer', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -156,9 +156,7 @@ function we_cmd(){
 
 				$exists = f('SELECT ID FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $this->db->escape($this->customer->Username) . '"' . ($newone ? '' : ' AND ID!=' . $this->customer->ID), '', $this->db);
 				if($exists){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_message_reporting::jsMessagePush(sprintf(g_l('modules_customer', '[username_exists]'), $this->customer->Username), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 				if($_SESSION['weS']['customer_session']->Password != $this->customer->Password || $this->customer->LoginDenied || $this->customer->AutoLoginDenied){
@@ -379,9 +377,7 @@ close();';
 				$branch_old = we_base_request::_(we_base_request::STRING, 'branch', '');
 
 				if($branch_new == g_l('modules_customer', '[common]') || $branch_new == g_l('modules_customer', '[other]') || $branch_new == g_l('modules_customer', '[all]')){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
 
@@ -389,17 +385,13 @@ close();';
 					$arr = $this->customer->getBranchesNames();
 
 					if(in_array($branch_new, $arr)){
-						echo we_html_element::jsElement(
-							we_message_reporting::getShowMessageCall(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
-						);
+						echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
 				}
 
 				if($this->saveBranch($branch_old, $branch_new) == -5){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_message_reporting::jsMessagePush(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field), we_message_reporting::WE_MESSAGE_ERROR);
 				} else {
 					$this->customer->loadPresistents();
 					echo we_html_element::jsElement('

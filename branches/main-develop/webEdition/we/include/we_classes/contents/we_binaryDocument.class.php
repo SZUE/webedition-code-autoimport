@@ -99,7 +99,7 @@ class we_binaryDocument extends we_document{
 			$this->i_getContentData();
 		}
 		if($this->getFilesize() == 0){
-			echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR));
+			echo we_message_reporting::jsMessagePush(g_l('metadata', '[file_size_0]'), we_message_reporting::WE_MESSAGE_ERROR);
 			return false;
 		}
 		if(parent::we_save($resave, $skipHook)){

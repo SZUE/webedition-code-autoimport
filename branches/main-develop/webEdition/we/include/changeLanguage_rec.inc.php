@@ -32,5 +32,6 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	$ok = $we_doc->changeLanguageRecursive();
 }
 
-echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ($ok ? we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', '[grant_language_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)) :
-		we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('weClass', '[grant_language_notok]'), we_message_reporting::WE_MESSAGE_ERROR))), we_html_element::htmlBody());
+echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ($ok ?
+		we_message_reporting::jsMessagePush(g_l('weClass', '[grant_language_ok]'), we_message_reporting::WE_MESSAGE_NOTICE) :
+		we_message_reporting::jsMessagePush(g_l('weClass', '[grant_language_notok]'), we_message_reporting::WE_MESSAGE_ERROR)), we_html_element::htmlBody());

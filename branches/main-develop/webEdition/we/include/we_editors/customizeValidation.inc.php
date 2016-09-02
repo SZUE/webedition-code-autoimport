@@ -30,20 +30,18 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_ele
 		case 'saveService':
 			$service = new validationService(we_base_request::_(we_base_request::INT, 'id'), 'custom', we_base_request::_(we_base_request::STRING, 'category'), we_base_request::_(we_base_request::STRING, 'name'), we_base_request::_(we_base_request::STRING, 'host'), we_base_request::_(we_base_request::FILE, 'path'), we_base_request::_(we_base_request::STRING, 's_method'), we_base_request::_(we_base_request::STRING, 'varname'), we_base_request::_(we_base_request::STRING, 'checkvia'), we_base_request::_(we_base_request::STRING, 'ctype'), we_base_request::_(we_base_request::STRING, 'additionalVars'), we_base_request::_(we_base_request::STRING, 'fileEndings'), we_base_request::_(we_base_request::BOOL, 'active'));
 			if(($selectedService = validation::saveService($service))){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE));
+				echo we_message_reporting::jsMessagePush(g_l('validation', '[edit_service][saved_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
 			} else {
 				$selectedService = $service;
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR));
+				echo we_message_reporting::jsMessagePush(g_l('validation', '[edit_service][saved_failure]') . (isset($GLOBALS['errorMessage']) ? '\n' . $GLOBALS['errorMessage'] : ''), we_message_reporting::WE_MESSAGE_ERROR);
 			}
 			break;
 		case 'deleteService':
 			$service = new validationService(we_base_request::_(we_base_request::INT, 'id'), 'custom', we_base_request::_(we_base_request::STRING, 'category'), we_base_request::_(we_base_request::STRING, 'name'), we_base_request::_(we_base_request::STRING, 'host'), we_base_request::_(we_base_request::FILE, 'path'), we_base_request::_(we_base_request::STRING, 's_method'), we_base_request::_(we_base_request::STRING, 'varname'), we_base_request::_(we_base_request::STRING, 'checkvia'), we_base_request::_(we_base_request::STRING, 'ctype'), we_base_request::_(we_base_request::STRING, 'additionalVars'), we_base_request::_(we_base_request::STRING, 'fileEndings'), we_base_request::_(we_base_request::BOOL, 'active'));
-			if(validation::deleteService($service)){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE));
-			} else {
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('validation', '[edit_service][delete_failure]'), WE() . consts . message . WE_MESSAGE_ERR)
-				);
-			}
+			echo (validation::deleteService($service) ?
+				we_message_reporting::jsMessagePush(g_l('validation', '[edit_service][delete_success]'), we_message_reporting::WE_MESSAGE_NOTICE) :
+				we_message_reporting::jsMessagePush(g_l('validation', '[edit_service][delete_failure]'), we_message_reporting::WE_MESSAGE_ERR)
+			);
 			break;
 		case 'selectService';
 			$selectedName = we_base_request::_(we_base_request::STRING, 'validationService');
@@ -95,7 +93,7 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_ele
 
 	$parts = [
 		['headline' => g_l('validation', '[available_services]'), 'html' => $table, 'space' => we_html_multiIconBox::SPACE_MED2]
-		];
+	];
 
 	if($services){
 		$parts[] = ['headline' => g_l('validation', '[category]'), 'html' => we_html_tools::htmlSelect('category', validation::getAllCategories(), 1, $selectedService->category), 'space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1];

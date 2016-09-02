@@ -44,7 +44,7 @@ class we_backup_delete extends we_fragment_base{
 			}
 
 			if(!$this->alldata){
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING));
+				echo we_message_reporting::jsMessagePush(g_l('backup', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
 				$this->finish();
 			}
 		}

@@ -119,7 +119,7 @@ class we_search_view extends we_modules_view{
 				$this->Model->prepareModelForSearch();
 
 				if(!$this->Model->isAllowedForUser()){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('tools', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					$this->Model = new we_search_model();
 					$_REQUEST['home'] = true;
 					break;
@@ -138,34 +138,34 @@ if(top.content.treeData){
 			case 'tool_weSearch_save' :
 				$this->Model->Text = we_base_request::_(we_base_request::STRING, 'savedSearchName', $this->Model->Text);
 				if(strlen($this->Model->Text) > 30){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[nameTooLong]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('searchtool', '[nameTooLong]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 				if(stristr($this->Model->Text, "'") || stristr($this->Model->Text, '"')){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('searchtool', '[no_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('searchtool', '[no_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Model->filenameNotValid($this->Model->Text)){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('tools', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				$this->Model->activTab = we_base_request::_(we_base_request::INT, 'tabnr', 1); // TODO: have activeTab always active (initByHttp)!!
 
 				if(!trim($this->Model->Text)){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('tools', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 				$oldpath = $this->Model->Path;
 				// set the path and check it
 				$this->Model->setPath();
 				if($this->Model->pathExists($this->Model->Path)){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('tools', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 				if($this->Model->isSelf()){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('tools', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('tools', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
