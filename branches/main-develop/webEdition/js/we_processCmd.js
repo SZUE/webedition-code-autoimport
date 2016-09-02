@@ -23,8 +23,20 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var msg = WE().util.getDynamicVar(document, 'loadVarMsg', 'data-msg');
-if (msg) {
-	var type = document.getElementById('loadVarMsg').getAttribute('data-msgType');
-	top.we_showMessage(msg, type ? parseInt(type) : WE().consts.message.WE_MESSAGE_NOTICE, window);
+var el = document.getElementById('loadVarCmd');
+var cmd = el.getAttribute('data-cmds');
+if (cmd) {
+	var cmds = cmd.split(',');
+	var cmdData = null;
+	for (var i = 0; i < cmds.length; i++) {
+		cmdData = WE().util.decodeDynamicVar(el, 'data-cmd' + i);
+
+		//Keep switch clean, only few statements should be here, everthing else goes to specific js file
+		switch (cmds[i]) {
+			case 'msg':
+				top.we_showMessage(cmdData.msg, cmdData.prio ? cmdData.prio : WE().consts.message.WE_MESSAGE_NOTICE, window);
+				break;
+
+		}
+	}
 }

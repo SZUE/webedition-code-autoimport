@@ -45,7 +45,7 @@ class we_selector_query{
 	 */
 	public function __construct(){
 		$this->db = new DB_WE();
-		$this->fields = array('ID', 'Path');
+		$this->fields = ['ID', 'Path'];
 	}
 
 	/**
@@ -239,9 +239,8 @@ class we_selector_query{
 	 * @param string $table
 	 */
 	function getItemById($id, $table, $fields = '', $useExtraSQL = true){
-		$votingTable = defined('VOTING_TABLE') ? VOTING_TABLE : "";
 		switch($table){
-			case $votingTable:
+			case defined('VOTING_TABLE') ? VOTING_TABLE : "":
 				$useCreatorID = false;
 				break;
 			default:

@@ -2514,7 +2514,7 @@ function resetTabs(){
 
 	public static function getJSLangConsts(){
 		return 'WE().consts.g_l.users={
-	view={
+	view:{
 		save_changed_user:"' . g_l('modules_users', '[save_changed_user]') . '",
 		give_org_name:"' . g_l('modules_users', '[give_org_name]') . '",
 		password_alert:"' . we_message_reporting::prepareMsgForJS(g_l('modules_users', '[password_alert]')) . '"

@@ -1732,9 +1732,13 @@ WE().util = {
 	getDynamicVar: function (doc, id, dataname) {
 		var el = doc.getElementById(id);
 		return (el ?
-						JSON.parse(this.Base64.decode(el.getAttribute(dataname))) :
-						{}
-		);
+						this.decodeDynamicVar(el, dataname) :
+						null
+						);
+	},
+	decodeDynamicVar: function (el, dataname) {
+		var data = el.getAttribute(dataname);
+		return data ? JSON.parse(this.Base64.decode(data)) : null;
 	},
 };
 /* ***********************************************
