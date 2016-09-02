@@ -400,9 +400,7 @@ function closeAllType(){
 
 	private function getDoExportCode(){
 		if(!permissionhandler::hasPerm("MAKE_EXPORT")){
-			return we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-			);
+			return we_message_reporting::jsMessagePush(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 
 
@@ -664,9 +662,7 @@ if (top.content.editor.edbody.addLog){
 				exit();
 
 			case 'upload_failed':
-				return we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('export', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR)
-				);
+				return we_message_reporting::jsMessagePush(g_l('export', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR);
 			default:
 				return '';
 		}

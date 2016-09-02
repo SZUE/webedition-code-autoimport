@@ -67,9 +67,7 @@ class we_glossary_view extends we_modules_view{
 			case "new_glossary_link":
 			case "new_glossary_textreplacement":
 				if(!permissionhandler::hasPerm("NEW_GLOSSARY")){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 				$this->Glossary = new we_glossary_glossary();
@@ -87,7 +85,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case "glossary_edit_link":
 			case "glossary_edit_textreplacement":
 				if(!permissionhandler::hasPerm("EDIT_GLOSSARY")){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
 					break;
@@ -127,9 +125,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 				we_glossary_glossary::editException($language, $exception);
 
-				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE)
-				);
+				echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[save_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 
 				break;
 
@@ -148,24 +144,22 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$this->Glossary->Attributes = we_base_request::_(we_base_request::STRING, $type, '', 'Attributes');
 
 				if(!permissionhandler::hasPerm("NEW_GLOSSARY") && !permissionhandler::hasPerm("EDIT_GLOSSARY")){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if(!trim($this->Glossary->Text)){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Glossary->checkFieldText($this->Glossary->Text)){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[text_notValid]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[text_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Glossary->checkFieldText($this->Glossary->Title)){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[title_notValid]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[title_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -174,16 +168,12 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				$this->Glossary->setPath();
 
 				if($this->Glossary->pathExists($this->Glossary->Path)){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Glossary->isSelf()){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -244,9 +234,7 @@ top.content.hot=0;
 			case "delete_glossary":
 
 				if(!permissionhandler::hasPerm("DELETE_GLOSSARY")){
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
 				if($this->Glossary->delete()){
@@ -266,7 +254,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_glossary', ($this->Glossary-
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
 				} else {
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('modules_glossary', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 				break;
 

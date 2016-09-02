@@ -29,7 +29,7 @@ class we_glossary_settingControl{
 			case 'save_glossary_setting':
 				echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body>' . ($this->saveSettings() ?
 						we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_saved]'), we_message_reporting::WE_MESSAGE_NOTICE) . 'top.window.close();') :
-						we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR)))
+						we_message_reporting::jsMessagePush(g_l('modules_glossary', '[preferences_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR))
 					. '</body>');
 
 				break;

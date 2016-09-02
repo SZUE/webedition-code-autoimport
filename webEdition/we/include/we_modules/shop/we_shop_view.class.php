@@ -780,7 +780,7 @@ function CalendarChanged(calObject) {
 							'strSerialOrder' => $strSerialOrder
 					))));
 				} else {
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true));
+					echo we_message_reporting::jsMessagePush("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true);
 				}
 
 				break;

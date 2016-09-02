@@ -173,7 +173,7 @@ abstract class we_backup_preparer{
 			'export2server' => we_base_request::_(we_base_request::BOOL, 'export_server'),
 			'export2send' => we_base_request::_(we_base_request::BOOL, 'export_send'),
 			'do_import_after_backup' => we_base_request::_(we_base_request::BOOL, 'do_import_after_backup'),
-			];
+		];
 
 		$handle_options = [
 			'user' => we_base_request::_(we_base_request::BOOL, 'handle_user'),
@@ -200,7 +200,7 @@ abstract class we_backup_preparer{
 			'hooks' => we_base_request::_(we_base_request::BOOL, "handle_hooks"),
 			'customTags' => we_base_request::_(we_base_request::BOOL, "handle_customtags"),
 			'backup' => $options['backup_extern'],
-			];
+		];
 
 		if(($tools = we_base_request::_(we_base_request::BOOL, 'handle_tool'))){
 			foreach(array_keys($tools) as $tool){
@@ -407,10 +407,9 @@ abstract class we_backup_preparer{
 							} else {
 								top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";
 							}');
-				} else {
-					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-							'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');
 				}
+				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
+						'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');
 			case 'customer':
 				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
 						'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');

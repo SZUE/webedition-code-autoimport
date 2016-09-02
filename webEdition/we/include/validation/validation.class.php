@@ -131,7 +131,7 @@ abstract class validation{
 							echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_attribute][text]') . $removeText, $k, $element) . '</p>';
 						}
 						if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
-							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_message_reporting::jsMessagePush(sprintf(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText), we_message_reporting::WE_MESSAGE_ERROR);
 						}
 						if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 							t_e(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText);
@@ -151,7 +151,7 @@ abstract class validation{
 								echo '<p>' . sprintf(g_l('xhtmlDebug', '[missing_attribute][text]'), $required, $element) . '</p>';
 							}
 							if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
-								echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element), we_message_reporting::WE_MESSAGE_ERROR));
+								echo we_message_reporting::jsMessagePush(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element), we_message_reporting::WE_MESSAGE_ERROR);
 							}
 							if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 								error_log(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element));
@@ -166,7 +166,7 @@ abstract class validation{
 					echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_element][text]'), $element) . '</p>';
 				}
 				if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 				if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
 					error_log(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element));

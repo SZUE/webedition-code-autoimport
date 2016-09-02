@@ -82,7 +82,7 @@ var weNavTitleField = [' . implode(',', $objFields) . '];'
 			case 'module_navigation_new':
 			case 'module_navigation_new_group':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 				$this->Model = new we_navigation_navigation();
@@ -94,14 +94,14 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case 'module_navigation_edit':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION')){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				$this->Model = new we_navigation_navigation(we_base_request::_(we_base_request::INT, 'cmdid'));
 
 				if(!$this->Model->isAllowedForUser()){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					$this->Model = new we_navigation_navigation();
 					$_REQUEST['home'] = true;
 					break;
@@ -116,17 +116,17 @@ if(top.content.treeData){
 				break;
 			case 'module_navigation_save':
 				if(!permissionhandler::hasPerm('EDIT_NAVIGATION') && !permissionhandler::hasPerm('EDIT_NAVIGATION')){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if(we_navigation_navigation::filenameNotValid($this->Model->Text)){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if(!trim($this->Model->Text)){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('navigation', '[name_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -134,12 +134,12 @@ if(top.content.treeData){
 				// set the path and check it
 				$this->Model->setPath();
 				if($this->Model->pathExists($this->Model->Path)){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('navigation', '[name_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
 				if($this->Model->isSelf() || !$this->Model->isAllowedForUser()){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('navigation', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 					break;
 				}
 
@@ -153,11 +153,11 @@ if(top.content.treeData){
 							}
 						}
 						if(!key_exists($this->Model->TitleField, $fieldsByNamePart) && !key_exists($this->Model->TitleField, $classFields)){
-							echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR));
+							echo we_message_reporting::jsMessagePush(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR);
 							break;
 						}
 					} else {
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_message_reporting::jsMessagePush(g_l('navigation', '[wrongTitleField]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					}
 				}
@@ -229,7 +229,7 @@ if(top.content.makeNewDoc) {
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();');
 
 				if(!permissionhandler::hasPerm('DELETE_NAVIGATION')){
-					echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+					echo we_message_reporting::jsMessagePush(g_l('navigation', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 					return;
 				}
 				if($this->Model->delete()){
@@ -240,9 +240,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 					$_REQUEST['home'] = 1;
 					$_REQUEST['pnt'] = 'edbody';
 				} else {
-					echo we_html_element::jsElement(
-						we_message_reporting::getShowMessageCall(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR)
-					);
+					echo we_message_reporting::jsMessagePush(g_l('navigation', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 				break;
 			case 'switchPage':

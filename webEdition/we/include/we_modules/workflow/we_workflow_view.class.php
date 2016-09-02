@@ -56,7 +56,7 @@ class we_workflow_view extends we_modules_view{
 				'pnt' => 'edit',
 				'wname' => $this->uid,
 				'page' => $this->page
-				]);
+		]);
 	}
 
 	function getHiddensFormPropertyPage(){
@@ -131,8 +131,8 @@ class we_workflow_view extends we_modules_view{
 							'html' => '<br/>' .
 							we_html_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
 							we_html_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
-							],
-						];
+						],
+					];
 					//	Workflow-Type
 					$content .= $this->getHiddensFormOverviewPage() .
 						we_html_multiIconBox::getHTML('workflowProperties', $parts, 30);
@@ -558,15 +558,15 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$double = intval(f('SELECT COUNT(1) FROM ' . WORKFLOW_TABLE . ' WHERE Text="' . $this->db->escape($this->workflowDef->Text) . '"' . ($newone ? '' : ' AND ID!=' . intval($this->workflowDef->ID)), '', $this->db));
 
 					if(!permissionhandler::hasPerm('EDIT_WORKFLOW') && !permissionhandler::hasPerm('NEW_WORKFLOW')){
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
 					if($newone && !permissionhandler::hasPerm('NEW_WORKFLOW')){
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
 					if($double){
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[double_name]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
 					$childs = '';
@@ -603,7 +603,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 			case 'delete_workflow':
 				if(($id = we_base_request::_(we_base_request::INT, 'wid'))){
 					if(!permissionhandler::hasPerm('DELETE_WORKFLOW')){
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
 
@@ -613,7 +613,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 						echo we_html_element::jsElement('top.content.treeData.deleteEntry(' . $id . ',"folder");' .
 							we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
 					} else {
-						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
+						echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[delete_nok]'), we_message_reporting::WE_MESSAGE_ERROR);
 					}
 				}
 				break;
@@ -626,7 +626,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$stamp = mktime($t[3], $t[4], 0, $t[1], $t[0], $t[2]);
 				}
 				$this->Log->clearLog($stamp);
-				echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('modules_workflow', '[empty_log_ok]'), we_message_reporting::WE_MESSAGE_NOTICE));
+				echo we_message_reporting::jsMessagePush(g_l('modules_workflow', '[empty_log_ok]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				break;
 			default:
 		}

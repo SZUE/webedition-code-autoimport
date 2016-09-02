@@ -920,18 +920,17 @@ top.close();');
 			case "deletebackup":
 				$bfile = we_base_request::_(we_base_request::FILE, "bfile");
 				if(strpos($bfile, '..') === 0){
-					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[name_notok]'), we_message_reporting::WE_MESSAGE_ERROR));
+					return we_message_reporting::jsMessagePush(g_l('backup', '[name_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 				if(!is_writable(BACKUP_PATH . $bfile)){
-					return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR));
+					return we_message_reporting::jsMessagePush(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 				return we_html_element::jsElement((unlink(BACKUP_PATH . $bfile) ?
 							'if(top.body.delSelItem) top.body.delSelItem();' :
 							we_message_reporting::getShowMessageCall(g_l('backup', '[error_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
 				);
 			default:
-				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[error]'), we_message_reporting::WE_MESSAGE_ERROR)
-				);
+				return we_message_reporting::jsMessagePush(g_l('backup', '[error]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	}
 
