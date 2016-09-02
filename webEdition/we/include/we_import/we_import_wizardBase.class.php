@@ -621,7 +621,7 @@ function we_import(mode, cid,reload) {
 	we_form.method = 'post';
 	we_form.submit();
 }"
-				), we_html_element::htmlBody(array('style' => 'overflow:hidden;'), $out));
+				), we_html_element::htmlBody(['style' => 'overflow:hidden;'], $out));
 	}
 
 	private function importFinished($v, $type){

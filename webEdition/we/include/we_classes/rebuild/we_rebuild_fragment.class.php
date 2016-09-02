@@ -59,9 +59,10 @@ parent.wizbusy.setProgress(' . $percent . ');');
 
 	function finish(){
 		$responseText = we_base_request::_(we_base_request::STRING, 'responseText', '');
-
-		echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(addslashes($responseText ? : g_l('rebuild', '[finished]')), we_message_reporting::WE_MESSAGE_NOTICE) . '
-			top.close();');
+		$cmd = new we_base_jsCmd();
+		$cmd->addCmd('msg', ['msg' => addslashes($responseText ? : g_l('rebuild', '[finished]')), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+		$cmd->addCmd('close');
+		echo $cmd->getCmds();
 	}
 
 	function printBodyTag(array $attributes = []){

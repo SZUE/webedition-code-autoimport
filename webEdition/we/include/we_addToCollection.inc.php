@@ -27,7 +27,7 @@ $targetCollection = we_base_request::_(we_base_request::INT, 'we_cmd', '', 3);
 $targetCollectionPath = we_base_request::_(we_base_request::URL, 'we_cmd', '', 4);
 $insertIndex = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5);
 $insertPos = ($pos = we_base_request::_(we_base_request::INT, 'we_cmd', -1, 6)) !== -1 ? $pos : (we_base_request::_(we_base_request::INT, 'we_targetInsertPos', -1));
-$script = '';
+$msg = '';
 
 /* FIXME: adapt when collection perms are implemented
  *
@@ -44,9 +44,9 @@ $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 
 if($cmd0 === 'do_addToCollection'){
 	if(($targetCollection = we_base_request::_(we_base_request::INT, 'we_target', 0)) === 0){
-		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
+		$msg = we_message_reporting::jsMessagePush(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} elseif(!($sel = we_base_request::_(we_base_request::INTLISTA, 'sel', []))){
-		$script .= 'top.we_showMessage(WE().consts.g_l.main.nothing_to_move, WE().consts.message.WE_MESSAGE_ERROR, window);';
+		$msg = we_message_reporting::jsMessagePush(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
 	} else {
 		$collection = new we_collection();
 		$isSession = false;
@@ -58,7 +58,7 @@ if($cmd0 === 'do_addToCollection'){
 		}
 
 		if($collection->getRemTable() !== stripTblPrefix(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2))){
-			$script .= we_message_reporting::getShowMessageCall(g_l('weClass', '[collection][wrongTable]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$msg = we_message_reporting::jsMessagePush(g_l('weClass', '[collection][wrongTable]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
 			$collBefore = $collection->getCollection();
 			if(($items = $collection->getValidItemsFromIDs($sel, false, $recursive = we_base_request::_(we_base_request::BOOL, 'InsertRecursive', false)))){
@@ -68,24 +68,22 @@ if($cmd0 === 'do_addToCollection'){
 				} else {
 					$collection->save();
 				}
-				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[collection][insertedAndDuplicates]'), implode(',', $result[0]), implode(',', $result[1])), we_message_reporting::WE_MESSAGE_ERROR);
+				$msg = we_message_reporting::jsMessagePush(sprintf(g_l('weClass', '[collection][insertedAndDuplicates]'), implode(',', $result[0]), implode(',', $result[1])), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
-				$script .= we_message_reporting::getShowMessageCall(g_l('weClass', '[collection][contentDoesntMatch]'), we_message_reporting::WE_MESSAGE_INFO);
+				$msg = we_message_reporting::jsMessagePush(g_l('weClass', '[collection][contentDoesntMatch]'), we_message_reporting::WE_MESSAGE_INFO);
 			}
 		}
 	}
-	$script = we_html_element::jsElement($script);
 }
 
+$init = [
+	'table' => $table,
+	'targetInsertIndex' => $insertIndex,
+	'targetInsertPos' => $insertPos,
+];
 echo we_html_tools::getHtmlTop() .
- $script .
- we_html_element::jsScript(JS_DIR . 'weAddToCollection.js') .
- we_html_element::jsElement('
-	weAddToCollection.init({
-			table: "' . $table . '",
-			targetInsertIndex: ' . $insertIndex . ',
-			targetInsertPos: ' . $insertPos . '
-		});') .
+ $msg .
+ we_html_element::jsScript(JS_DIR . 'weAddToCollection.js', '', ['id' => 'loadVarWeAddToCollection', 'data-init' => setDynamicVar($init)]) .
  weSuggest::getYuiFiles();
 
 if($cmd0 === "do_addToCollection"){

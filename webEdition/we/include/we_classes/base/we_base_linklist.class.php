@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_base_linklist{
-
 	private $name = "";
 	private $listArray;
 	private $db;
@@ -158,24 +157,24 @@ class we_base_linklist{
 
 		if(isset($jswinAttribs) && is_array($jswinAttribs) && !empty($jswinAttribs["jswin"])){ //popUp
 			$js = "var we_winOpts = '';" .
-					(!empty($jswinAttribs["jscenter"]) && !empty($jswinAttribs["jswidth"]) && !empty($jswinAttribs["jsheight"]) ?
+				(!empty($jswinAttribs["jscenter"]) && !empty($jswinAttribs["jswidth"]) && !empty($jswinAttribs["jsheight"]) ?
 					'if (window.screen) {var w = ' . $jswinAttribs["jswidth"] . ';var h = ' . $jswinAttribs["jsheight"] . ';var screen_height = screen.availHeight - 70;var screen_width = screen.availWidth-10;var w = Math.min(screen_width,w);var h = Math.min(screen_height,h);var x = (screen_width - w) / 2;var y = (screen_height - h) / 2;we_winOpts = \'left=\'+x+\',top=\'+y;}else{we_winOpts=\'\';};' : (
-							(empty($jswinAttribs["jsposx"]) ? '' : 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $jswinAttribs["jsposx"] . '\';' ) .
-							(empty($jswinAttribs["jsposy"]) ? '' : 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $jswinAttribs["jsposy"] . '\';')
-							)
-					) .
-					'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (empty($jswinAttribs["jsstatus"]) ? 'no' : 'yes' ) .
-					',scrollbars=' . (empty($jswinAttribs["jsscrollbars"]) ? 'no' : 'yes') .
-					',menubar=' . (empty($jswinAttribs["jsmenubar"]) ? 'no' : 'yes') .
-					',resizable=' . (empty($jswinAttribs["jsresizable"]) ? 'no' : 'yes') .
-					',location=' . (empty($jswinAttribs["jslocation"]) ? 'no' : 'yes') .
-					',toolbar=' . (empty($jswinAttribs["jstoolbar"]) ? 'no' : 'yes') .
-					(empty($jswinAttribs["jswidth"]) ? '' : ',width=' . $jswinAttribs["jswidth"]) .
-					(empty($jswinAttribs["jsheight"]) ? '' : ',height=' . $jswinAttribs["jsheight"]) .
-					'\';';
+					(empty($jswinAttribs["jsposx"]) ? '' : 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'left=' . $jswinAttribs["jsposx"] . '\';' ) .
+					(empty($jswinAttribs["jsposy"]) ? '' : 'we_winOpts += (we_winOpts ? \',\' : \'\')+\'top=' . $jswinAttribs["jsposy"] . '\';')
+					)
+				) .
+				'we_winOpts += (we_winOpts ? \',\' : \'\')+\'status=' . (empty($jswinAttribs["jsstatus"]) ? 'no' : 'yes' ) .
+				',scrollbars=' . (empty($jswinAttribs["jsscrollbars"]) ? 'no' : 'yes') .
+				',menubar=' . (empty($jswinAttribs["jsmenubar"]) ? 'no' : 'yes') .
+				',resizable=' . (empty($jswinAttribs["jsresizable"]) ? 'no' : 'yes') .
+				',location=' . (empty($jswinAttribs["jslocation"]) ? 'no' : 'yes') .
+				',toolbar=' . (empty($jswinAttribs["jstoolbar"]) ? 'no' : 'yes') .
+				(empty($jswinAttribs["jswidth"]) ? '' : ',width=' . $jswinAttribs["jswidth"]) .
+				(empty($jswinAttribs["jsheight"]) ? '' : ',height=' . $jswinAttribs["jsheight"]) .
+				'\';';
 			$foo = $js . "var we_win = window.open('','we_ll_" . key($this->listArray) . "',we_winOpts);";
 
-			$lattribs = removeAttribs($lattribs, array('name', 'href', 'onClick','onclick'));
+			$lattribs = removeAttribs($lattribs, array('name', 'href', 'onClick', 'onclick'));
 
 			$lattribs['target'] = 'we_ll_' . key($this->listArray);
 			$lattribs['onclick'] = $foo;
@@ -467,7 +466,7 @@ class we_base_linklist{
 			$plusbut = we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('insert_link_at_linklist','" . $this->attribs['name'] . "','" . key($this->listArray) . "')", true, 100, 22, "", "", $disabled);
 			if($ret === false){
 				if(isset($GLOBALS["we_list_inserted"]) && ($GLOBALS["we_list_inserted"] == $this->attribs['name'])){
-					echo we_html_element::jsElement('we_cmd("edit_linklist","' . $this->attribs['name'] . '","' . (!empty($GLOBALS["we_list_insertedNr"]) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID()) . '");');
+					echo we_base_jsCmd::singleCmd('we_cmd', ['edit_linklist', $this->attribs['name'], (!empty($GLOBALS["we_list_insertedNr"]) ? $GLOBALS["we_list_insertedNr"] : $this->getMaxListNrID())]);
 				}
 				if($this->show == -1 || ($this->show > $this->length())){
 					echo "<br/>" . we_html_button::create_button('fa:btn_add_link,fa-plus,fa-lg fa-link', "javascript:setScrollTo();WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);we_cmd('add_link_to_linklist','" . $this->attribs['name'] . "')", true, 100, 22, "", "", $disabled) .

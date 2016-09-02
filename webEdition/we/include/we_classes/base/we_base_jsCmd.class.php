@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-/**Class for external JS commands
+/* * Class for external JS commands
  * dynamic generated content is handled as a command dynamic paramters can be passed.
  * we_processCmd.js is responsible for the correct commands to be executed
  */
@@ -30,7 +30,7 @@ class we_base_jsCmd{
 	private $cmds = [];
 	private $cmdData = [];
 
-	public function addCmd($cmd, $data){
+	public function addCmd($cmd, $data = ''){
 		$this->cmds[] = $cmd;
 		$this->cmdData[] = $data ? setDynamicVar($data) : '';
 	}

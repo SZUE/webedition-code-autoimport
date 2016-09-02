@@ -49,10 +49,10 @@ class we_versions_fragment extends we_fragment_base{
 		unset($_SESSION['weS']['versions']['logResetIds']);
 		$responseText = we_base_request::_(we_base_request::STRING, 'responseText', "");
 		switch(we_base_request::_(we_base_request::STRING, 'type')){
-			case "delete_versions":
+			case 'delete_versions':
 				$responseText = g_l('versions', '[deleteDateVersionsOK]');
 				break;
-			case "reset_versions":
+			case 'reset_versions':
 				$responseText = g_l('versions', '[resetAllVersionsOK]');
 		}
 		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(we_message_reporting::getShowMessageCall(

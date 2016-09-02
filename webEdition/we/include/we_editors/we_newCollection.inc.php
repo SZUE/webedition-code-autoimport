@@ -126,11 +126,11 @@ var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '"
 }
 ' . (!empty($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')));
 
-$parts[] = array('headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($fixedPID !== -1, true), 'noline' => 1);
-$parts[] = array('headline' => 'Inhalt', 'html' => $collection->formContent(true), 'noline' => 1);
+$parts[] = ['headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($fixedPID !== -1, true), 'noline' => 1];
+$parts[] = ['headline' => 'Inhalt', 'html' => $collection->formContent(true), 'noline' => 1];
 
-$content = we_html_element::htmlHidden('dosave', 0) .
-	we_html_element::htmlHiddens(array(
+$content = we_html_element::htmlHiddens([
+		'dosave' => 0,
 		'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
 		'we_cmd[1]' => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1),
 		'we_cmd[2]' => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 2),
@@ -138,14 +138,14 @@ $content = we_html_element::htmlHidden('dosave', 0) .
 		"fixedremtable" => $fixedRemTable,
 		'we_name' => $collection->Name,
 		'caller' => $caller
-	)) .
+	]) .
 	we_html_multiIconBox::getHTML(
 		'weNewCollection', $parts, 30, we_html_button::position_yes_no_cancel(
 			we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
 		), -1, '', '', false, g_l('buttons_global', '[new_collection][value]'));
 
 echo we_html_element::htmlBody(
-	array('class' => 'weDialogBody',
+	['class' => 'weDialogBody',
 	'onload' => 'window.focus();'
-	), we_html_element::htmlForm(array('method' => 'post'), $content)
+ ], we_html_element::htmlForm(['method' => 'post'], $content)
 ) . '</html>';

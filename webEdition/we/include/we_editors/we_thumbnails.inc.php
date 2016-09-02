@@ -337,20 +337,20 @@ function getFooter(){
 function getMainDialog(){
 	// Check if we need to save settings
 	if(!we_base_request::_(we_base_request::BOOL, 'save_thumbnails')){
-		return we_html_element::htmlForm(array('name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']), we_html_element::htmlHiddens(array('we_cmd[0]' => 'editThumbs', 'save_thumbnails' => 0)) . render_dialog());
+		return we_html_element::htmlForm(['name' => 'we_form', 'method' => 'get', 'action' => $_SERVER['SCRIPT_NAME']], we_html_element::htmlHiddens(['we_cmd[0]' => 'editThumbs', 'save_thumbnails' => 0]) . render_dialog());
 	}
-
+	$cmd = new we_base_jsCmd();
 	$tn = we_base_request::_(we_base_request::STRING, 'thumbnail_name');
 	if((strpos($tn, "'") !== false || strpos($tn, ',') !== false)){
-		$save_javascript = we_message_reporting::getShowMessageCall(g_l('alert', '[thumbnail_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
-			'history.back()';
+		$cmd->addCmd('msg', ['msg' => g_l('alert', '[thumbnail_hochkomma]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+		$cmd->addCmd('history.back');
 	} else {
 		save_all_values();
-		$save_javascript = we_message_reporting::getShowMessageCall(g_l('thumbnails', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-			"self.location = WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=editThumbs&id=" . we_base_request::_(we_base_request::INT, "edited_id", 0) . "';";
+		$cmd->addCmd('msg', ['msg' => g_l('thumbnails', '[saved]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+		$cmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=editThumbs&id=' . we_base_request::_(we_base_request::INT, "edited_id", 0)]);
 	}
 
-	return we_html_element::jsElement($save_javascript) . build_dialog('saved');
+	return $cmd->getCmds() . build_dialog('saved');
 }
 
 echo we_html_element::jsScript(JS_DIR . 'we_thumbnails.js') . '</head>';

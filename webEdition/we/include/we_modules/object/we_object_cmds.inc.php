@@ -51,7 +51,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$of = new we_objectFile();
 		$of->initByID($ofID, OBJECT_FILES_TABLE);
 		$of->insertAtIndex();
-		echo we_html_element::jsElement('top.we_cmd("reload_editpage");');
+		echo we_base_jsCmd::singleCmd('we_cmd', ['reload_editpage']);
 		break;
 	case "object_obj_search":
 		$we_doc->Search = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
@@ -59,6 +59,6 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_WORKSPACE;
 		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_WORKSPACE;
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-		echo we_html_element::jsElement('top.we_cmd("switch_edit_page",' . we_base_constants::WE_EDITPAGE_WORKSPACE . ',"' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 1) . '");');
+		echo we_base_jsCmd::singleCmd('we_cmd', ['switch_edit_page', we_base_constants::WE_EDITPAGE_WORKSPACE, we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', '', 1)]);
 		break;
 }
