@@ -104,13 +104,12 @@ function start() {
 						we_message_reporting::getShowMessageCall(g_l('export', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR)
 					);
 					break;
-				} else {
-					$this->export = new we_export_export();
-					echo we_html_element::jsElement('
+				}
+				$this->export = new we_export_export();
+				echo we_html_element::jsElement('
 top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edheader&text=' . urlencode($this->export->Text) . '";
 top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=export&pnt=edfooter";
-						');
-				}
+');
 
 				break;
 			case "new_export_group":
@@ -180,7 +179,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 				if($this->export->ParentID > 0){
 					$weAcQuery = new we_selector_query();
-					$weAcResult = $weAcQuery->getItemById($this->export->ParentID, EXPORT_TABLE, array("IsFolder"));
+					$weAcResult = $weAcQuery->getItemById($this->export->ParentID, EXPORT_TABLE, ["IsFolder"]);
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
@@ -188,7 +187,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				}
 				if(!empty($this->export->Folder) && $this->export->ParentID > 0){
 					$weAcQuery = new we_selector_query();
-					$weAcResult = $weAcQuery->getItemById($this->export->Folder, FILE_TABLE, array("IsFolder"));
+					$weAcResult = $weAcQuery->getItemById($this->export->Folder, FILE_TABLE, ["IsFolder"]);
 					if(!is_array($weAcResult) || $weAcResult[0]['IsFolder'] == 0){
 						echo we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('export', '[path_nok]'), we_message_reporting::WE_MESSAGE_ERROR));
 						break;
@@ -204,9 +203,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 				if($this->export->IsFolder && $oldpath != '' && $oldpath != '/' && $oldpath != $this->export->Path){
 					$db_tmp = new DB_WE();
-					$this->db->query('SELECT ID FROM ' . EXPORT_TABLE . ' WHERE Path LIKE \'' . $this->db->escape($oldpath) . '%\' AND ID!=' . intval($this->export->ID) . ';');
+					$this->db->query('SELECT ID FROM ' . EXPORT_TABLE . ' WHERE Path LIKE "' . $this->db->escape($oldpath) . '%" AND ID!=' . intval($this->export->ID));
 					while($this->db->next_record()){
-						$db_tmp->query('UPDATE ' . EXPORT_TABLE . ' SET Path=\'' . $this->export->evalPath($this->db->f("ID")) . '\' WHERE ID=' . $this->db->f("ID") . ';');
+						$db_tmp->query('UPDATE ' . EXPORT_TABLE . ' SET Path="' . $this->export->evalPath($this->db->f("ID")) . '" WHERE ID=' . $this->db->f("ID"));
 					}
 				}
 

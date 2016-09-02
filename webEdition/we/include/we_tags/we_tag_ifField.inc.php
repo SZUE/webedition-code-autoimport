@@ -40,7 +40,7 @@ function we_tag_ifField(array $attribs){
 			$attribs['type'] = 'text';//Bug #4815
 	}
 
-	if(($foo = attributFehltError($attribs, array('name' => false, 'match' => true), __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, ['name' => false, 'match' => true], __FUNCTION__))){
 		echo $foo;
 		return false;
 	}

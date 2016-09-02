@@ -57,7 +57,7 @@ abstract class we_message_reporting{
 	}
 
 	public static function jsMessagePush($message, $priority){
-		return we_html_element::jsScript(JS_DIR . 'we_showMsg.js', '', ['id' => 'loadVarMsg', 'data-msg' => setDynamicVar($message), 'data-msgType' => $priority]);
+		return we_base_jsCmd::singleCmd('msg', ['msg' => $message, 'prio' => $priority]);
 	}
 
 	public static function prepareMsgForJS($message){

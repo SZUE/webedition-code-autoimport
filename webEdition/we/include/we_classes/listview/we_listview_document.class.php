@@ -252,7 +252,7 @@ class we_listview_document extends we_listview_base{
 						$cond = [-1];
 					}
 				}
-				$ws_where = ' AND (ParentID IN (' . implode(', ', $workspaces) . '))';
+				$ws_where = ' AND (f.ParentID IN (' . implode(', ', $workspaces) . '))';
 			}
 			$extraSelect = ($random ? ', RAND() as RANDOM' : '');
 			$limit = (($rows > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : "");
@@ -265,8 +265,8 @@ class we_listview_document extends we_listview_base{
 			($this->searchable ? ' f.IsSearchable=1' : 1) . ' ' .
 			$where_lang . ' ' .
 			$cond_where . ' ' .
-			$ws_where . ' AND ' .
-			'f.IsFolder=0 AND f.Published>0 ' .
+			$ws_where .
+			' AND f.IsFolder=0 AND f.Published>0 ' .
 			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
 			($this->docType ?
 				($dt ?
