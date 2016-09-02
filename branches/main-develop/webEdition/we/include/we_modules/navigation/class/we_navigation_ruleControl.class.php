@@ -151,12 +151,12 @@ $selectWorkspace";
 					$optionList = array('{"text":"' . g_l('navigation', '[no_entry]') . '","value":"0"}');
 
 					foreach($workspaces as $key => $value){
-						$optionList[]= '{"text":"' . $value . '","value":"' . $key . '"}';
+						$optionList[] = '{"text":"' . $value . '","value":"' . $key . '"}';
 					}
 
 					$js = '
 doc = top.frames.content;
-var optionList = ['.implode(',',$optionList).'];
+var optionList = [' . implode(',', $optionList) . '];
 doc.weSelect.setOptions("WorkspaceID", optionList);
 ';
 				}

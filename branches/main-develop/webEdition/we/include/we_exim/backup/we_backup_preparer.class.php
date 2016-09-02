@@ -401,21 +401,27 @@ abstract class we_backup_preparer{
 			case 'weimport':
 				if(permissionhandler::hasPerm('WXML_IMPORT')){
 					return we_html_element::jsElement('
-							if(confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
-								top.opener.top.we_cmd("import");
-								top.close();
-							} else {
-								top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";
-							}');
+if(confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' \n\n' . g_l('backup', '[import_file_found_question]')) . '")){
+	top.opener.top.we_cmd("import");
+	top.close();
+} else {
+	top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";
+}');
 				}
-				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-						'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');
+				$cmd = new we_base_jsCmd();
+				$cmd->addCmd('msg', ['msg' => g_l('backup', '[import_file_found]'), 'prio' => we_message_reporting::WE_MESSAGE_WARNING]);
+				$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
+				return $cmd->getCmds();
 			case 'customer':
-				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[customer_import_file_found]'), we_message_reporting::WE_MESSAGE_WARNING) .
-						'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');
+				$cmd = new we_base_jsCmd();
+				$cmd->addCmd('msg', ['msg' => g_l('backup', '[customer_import_file_found]'), 'prio' => we_message_reporting::WE_MESSAGE_WARNING]);
+				$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
+				return $cmd->getCmds();
 			default:
-				return we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('backup', '[format_unknown]'), we_message_reporting::WE_MESSAGE_WARNING) .
-						'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');
+				$cmd = new we_base_jsCmd();
+				$cmd->addCmd('msg', ['msg' => g_l('backup', '[format_unknown]'), 'prio' => we_message_reporting::WE_MESSAGE_WARNING]);
+				$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
+				return $cmd->getCmds();
 		}
 	}
 
@@ -448,8 +454,10 @@ abstract class we_backup_preparer{
 			we_backup_util::addLog('Error: ' . $mess);
 		}
 
-		return we_html_element::jsElement(we_message_reporting::getShowMessageCall($mess, we_message_reporting::WE_MESSAGE_ERROR) .
-				'top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";');
+		$cmd = new we_base_jsCmd();
+		$cmd->addCmd('msg', ['msg' => $mess, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+		$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
+		return $cmd->getCmds();
 	}
 
 }

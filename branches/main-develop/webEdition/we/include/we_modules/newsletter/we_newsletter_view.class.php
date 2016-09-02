@@ -443,30 +443,29 @@ new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.p
 				$ret = $this->newsletter->saveNewsletter($message, (isset($this->settings["reject_save_malformed"]) ? $this->settings["reject_save_malformed"] : true));
 				switch($ret){
 					default:
-						$jsmess = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_group]'), $ret, $message), we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::jsMessagePush(sprintf(g_l('modules_newsletter', '[malformed_mail_group]'), $ret, $message), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case we_newsletter_newsletter::MALFORMED_SENDER:
-						$jsmess = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_sender]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::jsMessagePush(sprintf(g_l('modules_newsletter', '[malformed_mail_sender]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case we_newsletter_newsletter::MALFORMED_REPLY:
-						$jsmess = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_reply]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::jsMessagePush(sprintf(g_l('modules_newsletter', '[malformed_mail_reply]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case we_newsletter_newsletter::MALFORMED_TEST:
-						$jsmess = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_newsletter', '[malformed_mail_test]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::jsMessagePush(sprintf(g_l('modules_newsletter', '[malformed_mail_test]'), $message), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case we_newsletter_newsletter::SAVE_PATH_NOK:
-						$jsmess = we_message_reporting::getShowMessageCall($message, we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::jsMessagePush($message, we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case 0:
-						$jsmess = ($newone ?
+						echo we_html_element::jsElement(($newone ?
 								'top.content.treeData.makeNewEntry({id:\'' . $this->newsletter->ID . '\',parentid:\'' . $this->newsletter->ParentID . '\',text:\'' . $this->newsletter->Text . '\',open:0,contenttype:\'' . ($this->newsletter->IsFolder ? we_base_ContentTypes::FOLDER : 'we/newsletter') . '\',table:\'' . NEWSLETTER_TABLE . '\'});' :
 								'top.content.treeData.updateEntry({id:' . $this->newsletter->ID . ',text:"' . $this->newsletter->Text . '",parentid:' . $this->newsletter->ParentID . '});') .
 							'top.content.drawTree();' .
 							we_message_reporting::getShowMessageCall(g_l('modules_newsletter', ($this->newsletter->IsFolder == 1 ? '[save_group_ok]' : '[save_ok]')), we_message_reporting::WE_MESSAGE_NOTICE) .
-							'top.content.hot=0;';
+							'top.content.hot=0;');
 						break;
 				}
-				echo we_html_element::jsElement($jsmess);
 
 				break;
 

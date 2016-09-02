@@ -1,3 +1,5 @@
+/* global self, WE, top */
+
 /**
  * webEdition CMS
  *
@@ -22,6 +24,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var tw = WE().util.getDynamicVar(document, 'loadVarTagWizard', 'data-tw');
+WE().util.loadConsts("g_l.tagWizzard");
+
 function weTagWizard(tagName) {
 
 	this.tagName = tagName; // name of the we:tag
@@ -37,8 +42,6 @@ function weTagWizard(tagName) {
 	this.missingFields = []; // missing attributes -> these are genereated by method getWeTag
 
 	this.changeType = function (newType) {
-
-
 		// set the matching required fields.
 		// 1st remove all not always needed
 		for (i = 0; i < this.allAttributes.length; i++) {
@@ -248,6 +251,66 @@ function applyOnEnter(evt) {
 		we_cmd("saveTag");
 		return true;
 	}
-
-
 }
+
+function we_cmd() {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "switch_type":
+			weTagWizard.changeType(args[1]);
+			break;
+		case "saveTag":
+			var strWeTag = weTagWizard.getWeTag();
+			if (strWeTag) {
+				var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+				if (tw.openAtCursor) {
+					contentEditor.window.addCursorPosition(strWeTag);
+					self.close();
+				} else {
+					contentEditor.document.we_form.elements.tag_edit_area.value = strWeTag;
+					contentEditor.document.we_form.elements.tag_edit_area.select();
+					self.close();
+				}
+			} else {
+				if (weTagWizard.missingFields.length) {
+					var req = "";
+					for (i = 0; i < weTagWizard.missingFields.length; i++) {
+						req += "- " + weTagWizard.missingFields[i] + "\n";
+					}
+					req = WE().consts.g_l.tagWizzard.fill_required_fields + "\n" + req;
+					top.we_showMessage(req, WE().consts.message.WE_MESSAGE_WARNING, window);
+				} else {
+					top.we_showMessage(WE().consts.g_l.tagWizzard.no_type_selected, WE().consts.message.WE_MESSAGE_WARNING, window);
+				}
+			}
+			break;
+		case "we_selector_directory":
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			break;
+		case "we_selector_document":
+		case "we_selector_image":
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			break;
+		case "we_selector_file":
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			break;
+		case "we_selector_category":
+			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+			break;
+		case "we_users_selector":
+			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
+			break;
+		default:
+			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+	}
+}
+
+var weTagWizard = new weTagWizard(tw.tagName);
+weTagWizard.allAttributes = tw.attributes;
+weTagWizard.reqAttributes = tw.reqAttributes;
+weTagWizard.typeAttributeId = tw.typeAttributeId;
+weTagWizard.typeAttributeAllows = tw.typeAttributeAllows;
+weTagWizard.typeAttributeRequires = tw.typeAttributeRequires;
+weTagWizard.needsEndTag = tw.needsEndTag;

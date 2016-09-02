@@ -1,4 +1,4 @@
-/* global top,WE */
+/* global top,WE, self */
 
 /**
  * webEdition CMS
@@ -36,7 +36,24 @@ if (cmd) {
 			case 'msg':
 				top.we_showMessage(cmdData.msg, cmdData.prio ? cmdData.prio : WE().consts.message.WE_MESSAGE_NOTICE, window);
 				break;
-
+			case 'close':
+				top.close();
+				break;
+			case 'history.back':
+				history.back();
+				break;
+			case 'we_cmd':
+				top.we_cmd.apply(this, cmdData);
+				break;
+			case 'location':
+				switch (cmdData['doc']) {
+					case 'document':
+						document.location = cmdData['loc'];
+						break;
+					case 'body':
+						top.body.document.location = cmdData['loc'];
+						break;
+				}
 		}
 	}
 }

@@ -29,7 +29,7 @@ $we_dt = $_SESSION['weS']['we_data'][$we_transaction];
 $we_doc = we_document::initDoc($we_dt);
 
 we_html_tools::protect();
-
+echo we_html_tools::getHtmlTop();
 $we_doc->searchclass->objsearch = we_base_request::_(we_base_request::RAW, 'objsearch', '');
 $we_doc->searchclass->objsearchField = we_base_request::_(we_base_request::RAW, 'objsearchField', '');
 $we_doc->searchclass->objlocation = we_base_request::_(we_base_request::RAW, 'objlocation', 0);
@@ -45,8 +45,7 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 		$we_doc->searchclass->setLimit();
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-
-		echo we_html_element::jsElement('top.we_cmd("switch_edit_page",' . (isset($go) ? $go : $we_doc->EditPageNr ) . ');');
+		echo we_base_jsCmd::singleCmd('we_cmd', ['switch_edit_page', (isset($go) ? $go : $we_doc->EditPageNr )]);
 		break;
 	case 'delete':
 		if($we_doc->searchclass->height == 0){
@@ -67,7 +66,8 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 
-		echo we_html_element::jsElement('top.we_cmd("switch_edit_page",' . (isset($go) ? $go : $we_doc->EditPageNr ) . ');');
+		echo we_base_jsCmd::singleCmd('we_cmd', ['switch_edit_page', (isset($go) ? $go : $we_doc->EditPageNr )]);
+
 		break;
 	case 'search':
 		$we_doc->searchclass->searchname = $we_doc->searchclass->objsearch;
@@ -78,19 +78,20 @@ switch(we_base_request::_(we_base_request::STRING, 'todo')){
 		$we_doc->searchclass->setLimit();
 		$we_doc->SearchStart = 0;
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-		echo we_html_element::jsElement('top.we_cmd("switch_edit_page",' . (isset($go) ? $go : $we_doc->EditPageNr ) . ');');
+		echo we_base_jsCmd::singleCmd('we_cmd', ['switch_edit_page', (isset($go) ? $go : $we_doc->EditPageNr )]);
+
 		break;
 	case 'changemeta':
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-		echo we_html_element::jsElement('top.we_cmd("reload_editpage");');
+		echo we_base_jsCmd::singleCmd('we_cmd', ['reload_editpage']);
 		break;
 	case 'changedate':
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-		echo we_html_element::jsElement('top.we_cmd("reload_editpage");');
+		echo we_base_jsCmd::singleCmd('we_cmd', ['reload_editpage']);
 		break;
 	case 'changecheckbox':
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
-		echo we_html_element::jsElement('top.we_cmd("reload_editpage");');
+		echo we_base_jsCmd::singleCmd('we_cmd', ['reload_editpage']);
 		break;
 	case 'quickchangemeta':
 		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);

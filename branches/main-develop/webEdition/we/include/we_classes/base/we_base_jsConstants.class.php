@@ -79,6 +79,8 @@ abstract class we_base_jsConstants{
 				return we_thumbnail::getJSLangConsts();
 			case 'g_l.doctypeEdit':
 				return we_docTypes::getJSLangConsts();
+			case 'g_l.tagWizzard':
+				return we_template::getJSLangConsts();
 			case 'weSearch':
 				return we_search_view::getJSConsts();
 			default:

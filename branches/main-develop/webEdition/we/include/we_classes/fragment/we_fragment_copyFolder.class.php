@@ -630,13 +630,21 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 			echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 			flush();
-			echo we_html_element::jsElement('self.location=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=copyFolder&finish=1";');
+			echo we_base_jsCmd::singleCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1']);
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		} elseif(!isset($_SESSION['weS']['WE_COPY_OBJECTS'])){
-			echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . FILE_TABLE . '");WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);top.close();');
+			$cmd = new we_base_jsCmd();
+			$cmd->addCmd('we_cmd', ['load', FILE_TABLE]);
+			$cmd->addCmd('msg', ['msg' => g_l('copyFolder', '[copy_success]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+			$cmd->addCmd('close');
+			echo $cmd->getCmds();
 		} else {
 			unset($_SESSION['weS']['WE_COPY_OBJECTS']);
-			echo we_html_element::jsElement('top.opener.top.we_cmd("load","' . OBJECT_FILES_TABLE . '");WE().util.showMessage(WE().consts.g_l.main.folder_copy_success, WE().consts.message.WE_MESSAGE_NOTICE, window);top.close();');
+			$cmd = new we_base_jsCmd();
+			$cmd->addCmd('we_cmd', ['load', OBJECT_FILES_TABLE]);
+			$cmd->addCmd('msg', ['msg' => g_l('copyFolder', '[copy_success]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+			$cmd->addCmd('close');
+			echo $cmd->getCmds();
 		}
 	}
 

@@ -22,6 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var initData = WE().util.getDynamicVar(document, 'loadVarWeAddToCollection', 'data-init');
+
 weAddToCollection = {
 	conf: {
 		table: '',
@@ -179,3 +181,5 @@ weAddToCollection = {
 function we_submitForm(target, url) {
 	return weAddToCollection.we_submitForm(target, url);
 }
+
+weAddToCollection.init(initData);

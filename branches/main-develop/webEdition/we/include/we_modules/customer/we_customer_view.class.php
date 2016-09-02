@@ -228,19 +228,19 @@ new (WE().util.jsWindow)(window, url,"customer_admin",-1,-1,600,420,true,true,tr
 
 				switch($saveret){
 					case self::ERR_SAVE_BRANCH:
-						$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[branch_no_edit]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_FIELD_INVALID:
-						$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[we_fieldname_notValid]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_PROPERTY:
-						$js = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field_name), we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::jsMessagePush(sprintf(g_l('modules_customer', '[cannot_save_property]'), $field_name), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_FIELD_EXISTS:
-						$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[fieldname_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[fieldname_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					case self::ERR_SAVE_FIELD_NOT_EMPTY:
-						$js = we_message_reporting::getShowMessageCall(g_l('modules_customer', '[field_not_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+						echo we_message_reporting::jsMessagePush(g_l('modules_customer', '[field_not_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 						break;
 					default:
 						$this->customer->loadPresistents();
@@ -265,12 +265,11 @@ new (WE().util.jsWindow)(window, url,"customer_admin",-1,-1,600,420,true,true,tr
 						$this->settings->setEditSort(implode(',', $sortarray));
 						$this->settings->save();
 
-						$js = '
+						echo we_html_element::jsElement('
 opener.submitForm();
 opener.opener.refreshForm();
-close();';
+close();');
 				}
-				echo we_html_element::jsElement($js);
 
 				break;
 			case 'delete_field':
