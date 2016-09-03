@@ -115,6 +115,7 @@ abstract class we_base_jsConstants{
 		folder_copy_success: "' . we_message_reporting::prepareMsgForJS(g_l('copyFolder', '[copy_success]')) . '",
 		close_include:"' . we_message_reporting::prepareMsgForJS(g_l('SEEM', '[alert][close_include]')) . '",
 		untitled:"' . g_l('global', '[untitled]') . '",
+		confirm_ext_change:"'.	g_l('weClass', '[confirm_ext_change]').'",
 	},
 	message_reporting:{
 		notice:"' . g_l('alert', '[notice]') . '",

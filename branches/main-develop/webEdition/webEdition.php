@@ -186,6 +186,8 @@ $const = [
 	'global' => [
 		'WE_EDITPAGE_CONTENT' => we_base_constants::WE_EDITPAGE_CONTENT,
 		'PING_TIME' => (we_base_constants::PING_TIME * 1000),
+		'DEFAULT_DYNAMIC_EXT'=>DEFAULT_DYNAMIC_EXT,
+		'DEFAULT_STATIC_EXT'=>DEFAULT_STATIC_EXT,
 	],
 	'message' => [
 		'WE_MESSAGE_INFO' => we_message_reporting::WE_MESSAGE_INFO,

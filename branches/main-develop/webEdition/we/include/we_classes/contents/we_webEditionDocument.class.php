@@ -195,17 +195,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$v = $this->IsDynamic;
 		if(!$disabled){
 			$n = 'we_' . $this->Name . '_IsDynamic';
-			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[IsDynamic]'), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);switchExt();") . we_html_element::jsElement(
-					'function switchExt() {' .
-					($this->Published ?
-						'' :
-						'var a=document.we_form.elements;' .
-						($this->ID ? 'if(confirm("' . g_l('weClass', '[confirm_ext_change]') . '")){' : '') . '
-					a["we_' . $this->Name . '_Extension"].value=(a["we_' . $this->Name . '_IsDynamic"].value==1?"' . DEFAULT_DYNAMIC_EXT . '":"' . DEFAULT_STATIC_EXT . '");' .
-						($this->ID ? '}' : '')
-					) .
-					'}'
-			);
+			return we_html_forms::checkboxWithHidden($v ? true : false, $n, g_l('weClass', '[IsDynamic]'), false, "defaultfont", "_EditorFrame.setEditorIsHot(true);WE().layout.propEdit.switchExt(document," . intval($this->ID) . ",'" . $this->Name . "');");
 		}
 		return we_html_forms::checkboxWithHidden($v ? true : false, '', g_l('weClass', '[IsDynamic]'), false, "defaultfont", "", true);
 	}

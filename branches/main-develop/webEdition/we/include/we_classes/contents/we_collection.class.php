@@ -406,17 +406,16 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 
 		return we_html_element::jsElement($this->jsFormCollection) .
-			we_html_element::htmlHiddens(array(
-				'we_' . $this->Name . '_view' => $this->view,
+			we_html_element::htmlHiddens(['we_' . $this->Name . '_view' => $this->view,
 				'we_' . $this->Name . '_viewSub' => $this->viewSub,
 				'we_' . $this->Name . '_itemsPerRow' => $this->itemsPerRow,
 				'we_' . $this->Name . '_fileCollection' => $this->fileCollection,
-				'we_' . $this->Name . '_objectCollection' => $this->objectCollection)) .
-			we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline collection-head'), g_l('weClass', '[collection][collectionTitle]')) .
-			we_html_element::htmlDiv(array('class' => 'collection-head'), we_html_tools::htmlAlertAttentionBox($longtext . $ddtext, we_html_tools::TYPE_INFO, 850, false, 29)) .
-			we_html_element::htmlDiv(array('class' => 'collection-toolbar'), $toolbar->getHtml()) .
-			we_html_element::htmlDiv(array('id' => 'content_div_list', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')), $rows) .
-			we_html_element::htmlDiv(array('id' => 'content_div_grid', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')));
+				'we_' . $this->Name . '_objectCollection' => $this->objectCollection]) .
+			we_html_element::htmlDiv(['class' => 'weMultiIconBoxHeadline collection-head'], g_l('weClass', '[collection][collectionTitle]')) .
+			we_html_element::htmlDiv(['class' => 'collection-head'], we_html_tools::htmlAlertAttentionBox($longtext . $ddtext, we_html_tools::TYPE_INFO, 850, false, 29)) .
+			we_html_element::htmlDiv(['class' => 'collection-toolbar'], $toolbar->getHtml()) .
+			we_html_element::htmlDiv(['id' => 'content_div_list', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'none' : 'block')], $rows) .
+			we_html_element::htmlDiv(['id' => 'content_div_grid', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')]);
 	}
 
 	private function makeListItem($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
@@ -465,43 +464,38 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index, false, '', 'btn_down') .
 			we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
 
-		$rowHtml = new we_html_table(array('class' => $item['class'], 'draggable' => 'false'), 1, 4);
-		$imgDiv = we_html_element::htmlDiv(array(
-				'id' => 'previweDiv_' . $index,
+		$rowHtml = new we_html_table(['class' => $item['class'], 'draggable' => 'false'], 1, 4);
+		$imgDiv = we_html_element::htmlDiv(['id' => 'previweDiv_' . $index,
 				'class' => 'previewDiv',
 				'style' => "background-image:url('" . $item['icon']['url'] . "');",
 				'title' => $item['path'] . ' (ID: ' . $item['id'] . ')'
-				), we_html_element::htmlDiv(array('class' => 'divBtnSelect'), $selectButton));
-		$rowHtml->setCol(0, 0, array('class' => 'colNum weMultiIconBoxHeadline'), '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
-		$rowHtml->setCol(0, 1, array('class' => 'colPreview'), $imgDiv);
+				], we_html_element::htmlDiv(['class' => 'divBtnSelect'], $selectButton));
+		$rowHtml->setCol(0, 0, ['class' => 'colNum weMultiIconBoxHeadline'], '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
+		$rowHtml->setCol(0, 1, ['class' => 'colPreview'], $imgDiv);
 
-		$rowInnerTable = new we_html_table(array('draggable' => 'false'), 2, 1);
-		$rowInnerTable->setCol(0, 0, array('colspan' => 1), $yuiSuggest->getHTML());
+		$rowInnerTable = new we_html_table(['draggable' => 'false'], 2, 1);
+		$rowInnerTable->setCol(0, 0, ['colspan' => 1], $yuiSuggest->getHTML());
 
-		$attrTitle = we_html_element::htmlDiv(array(
-				'class' => 'innerDiv defaultfont' . ($item['elements']['attrib_title']['Dat'] ? ' div_' . $item['elements']['attrib_title']['state'] : ''),
+		$attrTitle = we_html_element::htmlDiv(['class' => 'innerDiv defaultfont' . ($item['elements']['attrib_title']['Dat'] ? ' div_' . $item['elements']['attrib_title']['state'] : ''),
 				'title' => ($item['elements']['attrib_title']['Dat'])
-				), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i> ' . $item['elements']['attrib_title']['write']);
-		$attrAlt = we_html_element::htmlDiv(array(
-				'class' => 'innerDiv defaultfont' . ($item['elements']['attrib_alt']['Dat'] ? ' div_' . $item['elements']['attrib_alt']['state'] : ''),
+				], '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i> ' . $item['elements']['attrib_title']['write']);
+		$attrAlt = we_html_element::htmlDiv(['class' => 'innerDiv defaultfont' . ($item['elements']['attrib_alt']['Dat'] ? ' div_' . $item['elements']['attrib_alt']['state'] : ''),
 				'title' => ($item['elements']['attrib_alt']['Dat'])
-				), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i> ' . $item['elements']['attrib_alt']['write']);
-		$metaTitle = we_html_element::htmlDiv(array(
-				'class' => 'innerDiv defaultfont' . ($item['elements']['meta_title']['Dat'] ? ' div_' . $item['elements']['meta_title']['state'] : ''),
+				], '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i> ' . $item['elements']['attrib_alt']['write']);
+		$metaTitle = we_html_element::htmlDiv(['class' => 'innerDiv defaultfont' . ($item['elements']['meta_title']['Dat'] ? ' div_' . $item['elements']['meta_title']['state'] : ''),
 				'title' => ($item['elements']['meta_title']['Dat'])
-				), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i> ' . $item['elements']['meta_title']['write']);
-		$metaDesc = we_html_element::htmlDiv(array(
-				'class' => 'innerDiv defaultfont' . ($item['elements']['meta_description']['Dat'] ? ' div_' . $item['elements']['meta_description']['state'] : ''),
+				], '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i> ' . $item['elements']['meta_title']['write']);
+		$metaDesc = we_html_element::htmlDiv(['class' => 'innerDiv defaultfont' . ($item['elements']['meta_description']['Dat'] ? ' div_' . $item['elements']['meta_description']['state'] : ''),
 				'title' => ($item['elements']['meta_description']['Dat'])
-				), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i> ' . $item['elements']['meta_description']['write']);
+				], '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i> ' . $item['elements']['meta_description']['write']);
 
 		$rowInnerTable->setCol(1, 0, [], $attrTitle . $attrAlt . $metaTitle . $metaDesc);
-		$rowInnerTable->setRowAttributes(1, array('class' => 'rowAttribsMeta'));
+		$rowInnerTable->setRowAttributes(1, ['class' => 'rowAttribsMeta']);
 
-		$rowHtml->setCol(0, 2, array('class' => 'colContent'), $rowInnerTable->getHtml());
-		$rowHtml->setCol(0, 3, array('class' => 'colControls weMultiIconBoxHeadline'), $rowControlls);
+		$rowHtml->setCol(0, 2, ['class' => 'colContent'], $rowInnerTable->getHtml());
+		$rowHtml->setCol(0, 3, ['class' => 'colControls weMultiIconBoxHeadline'], $rowControlls);
 
-		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'), $rowHtml->getHtml());
+		return we_html_element::htmlDiv(['id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'], $rowHtml->getHtml());
 	}
 
 	private function makeListItemMinimal($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
@@ -532,7 +526,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setAcId('Item_' . $index);
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
-		$yuiSuggest->setInput($textname, $item['path'], array('title' => $item['path'] . ' (ID: ' . $item['id'] . ')'));
+		$yuiSuggest->setInput($textname, $item['path'], ['title' => $item['path'] . ' (ID: ' . $item['id'] . ')']);
 		$yuiSuggest->setResult($idname, $item['id']);
 		$yuiSuggest->setWidth(500);
 		$yuiSuggest->setMaxResults(10);
@@ -540,26 +534,25 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$yuiSuggest->setSelectButton(null, 0);
 		$yuiSuggest->setDoOnItemSelect("weCollectionEdit.repaintAndRetrieveCsv();");
 		$yuiSuggest->setAdditionalButton('', 0);
-		$divRowContent = we_html_element::htmlDiv(array('class' => 'divContent'), we_html_element::htmlDiv(array('class' => 'colContentInput'), $yuiSuggest->getHTML()) .
-				we_html_element::htmlDiv(array('class' => 'colContentTextOnly'))
+		$divRowContent = we_html_element::htmlDiv(['class' => 'divContent'], we_html_element::htmlDiv(['class' => 'colContentInput'], $yuiSuggest->getHTML()) .
+				we_html_element::htmlDiv(['class' => 'colContentTextOnly'])
 		);
 
-		$rowControlls = we_html_element::htmlDiv(array('class' => 'divBtnEditTextOnly'), $editButton) . we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);", true, 50, 22) .
+		$rowControlls = we_html_element::htmlDiv(['class' => 'divBtnEditTextOnly'], $editButton) . we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);", true, 50, 22) .
 			we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
 
-		$rowHtml = new we_html_table(array('class' => $item['class'], 'draggable' => 'false'), 1, 4);
-		$imgDiv = we_html_element::htmlDiv(array(
-				'id' => 'previweDiv_' . $index,
+		$rowHtml = new we_html_table(['class' => $item['class'], 'draggable' => 'false'], 1, 4);
+		$imgDiv = we_html_element::htmlDiv(['id' => 'previweDiv_' . $index,
 				'class' => 'previewDiv',
 				'style' => "background-image:url('" . $item['icon']['url'] . "');",
 				'title' => $item['path'] . ' (ID: ' . $item['id'] . ')'
-				), we_html_element::htmlDiv(array('class' => 'divBtnSelect'), $selectButton));
-		$rowHtml->setCol(0, 0, array('class' => 'colNum weMultiIconBoxHeadline'), '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
-		$rowHtml->setCol(0, 1, array('class' => 'colPreview'), $imgDiv);
-		$rowHtml->setCol(0, 2, array('class' => 'colContent'), $divRowContent);
-		$rowHtml->setCol(0, 3, array('class' => 'colControls weMultiIconBoxHeadline'), $rowControlls);
+				], we_html_element::htmlDiv(['class' => 'divBtnSelect'], $selectButton));
+		$rowHtml->setCol(0, 0, ['class' => 'colNum weMultiIconBoxHeadline'], '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
+		$rowHtml->setCol(0, 1, ['class' => 'colPreview'], $imgDiv);
+		$rowHtml->setCol(0, 2, ['class' => 'colContent'], $divRowContent);
+		$rowHtml->setCol(0, 3, ['class' => 'colControls weMultiIconBoxHeadline'], $rowControlls);
 
-		return we_html_element::htmlDiv(array('id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'), $rowHtml->getHtml());
+		return we_html_element::htmlDiv(['id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'], $rowHtml->getHtml());
 	}
 
 	private function makeGridItem($item, $index){ // TODO: maybe write only blank item and let JS render items oninit from storage?
