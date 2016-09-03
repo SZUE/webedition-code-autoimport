@@ -783,7 +783,7 @@ function build_dialog($selected_setting = 'ui'){
 					// Build SEEM select start document chooser
 
 					$yuiSuggest->setAcId('Doc');
-					$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::HTML, we_base_ContentTypes::IMAGE)));
+					$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::HTML, we_base_ContentTypes::IMAGE]);
 					$yuiSuggest->setInput('seem_start_document_name', $document_path, '', get_value('seem_start_file'));
 					$yuiSuggest->setMaxResults(20);
 					$yuiSuggest->setMayBeEmpty(false);

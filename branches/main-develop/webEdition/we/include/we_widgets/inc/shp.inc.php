@@ -22,11 +22,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $oTblDiv = we_html_element::htmlDiv(
-		array(
-		'id' => 'm_' . $iCurrId . '_inline',
+		['id' => 'm_' . $iCurrId . '_inline',
 		"style" => "width:" . $iWidth . "px;height:" . ($aPrefs[$aProps[0]]["height"] - 25) . "px;overflow:auto;"
-		), we_html_element::htmlDiv(array('id' => 'shp_data'), $shopDashboard)
+		], we_html_element::htmlDiv(['id' => 'shp_data'], $shopDashboard)
 );
-$aLang = array(
-	g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval, ""
-);
+$aLang = [g_l('cockpit', '[shop_dashboard][headline]') . '&nbsp;' . $interval, ""];

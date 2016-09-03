@@ -29,8 +29,6 @@ class we_progressBar{
 	var $stud_len = 100;
 	var $showProgressText = true;
 	var $progressTextPlace = 1;
-	var $callback_code = "";
-	var $callback_timeout = "";
 	var $name = "";
 
 	public function __construct($progress = 0, $showProgressText = true){
@@ -39,13 +37,13 @@ class we_progressBar{
 	}
 
 	/*
-	public function getJS($pgFrame = '', $doReturn = false){
-		if($doReturn){
-			return $this->getJSCode($pgFrame);
-		}
-		echo $this->getJSCode($pgFrame);
-		flush();
-	}*/
+	  public function getJS($pgFrame = '', $doReturn = false){
+	  if($doReturn){
+	  return $this->getJSCode($pgFrame);
+	  }
+	  echo $this->getJSCode($pgFrame);
+	  flush();
+	  } */
 
 	public function getJSCode($pgFrame = ''){
 		$frame = $pgFrame ? $pgFrame . '.' : '';
@@ -71,16 +69,8 @@ function setProgress' . $this->name . '(progress){
 				$frame . 'document.getElementById("progress_image_bg' . $this->name . '").style.width=(koef*100)-(koef*progress)+"px";' .
 				($this->showProgressText ?
 					'setProgressText' . $this->name . '("progress_text' . $this->name . '",progress+"%");' :
-					'') .
-				($this->callback_code ?
-					'if(progress<100) to=setTimeout(function(){' . $this->callback_code . '},' . $this->callback_timeout . ');
-							else var to=clearTimeout(to);
-					' : '') . '
-}' .
-				($this->callback_code ?
-					'var to=setTimeout(function(){' . $this->callback_code . '},' . $this->callback_timeout . ');' :
-					'')
-		);
+					'') . '
+}');
 	}
 
 	public function addText($text = "", $place = 0, $id = "", $class = "small", $color = "#006699", $height = 10, $bold = 1){
@@ -93,12 +83,6 @@ function setProgress' . $this->name . '(progress){
 
 	public function setName($name){
 		$this->name = $name;
-	}
-
-	public function setCallback($code, $timeout){
-		t_e('callback for pb set');
-		$this->callback_code = $code;
-		$this->callback_timeout = $timeout;
 	}
 
 	public function setStudWidth($stud_width = 10){

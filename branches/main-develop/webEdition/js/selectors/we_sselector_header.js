@@ -22,10 +22,16 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+WE().util.loadConsts("g_l.fileselector");
+
 var name_ord = 0;
 var type_ord = 0;
 var date_ord = 0;
 var size_ord = 0;
+var dirsel = 1;
+var scrollToVal = 0;
+var allentries = [];
+
 
 function addOptionh(txt, id) {
 	var a = document.getElementById('lookin');
@@ -132,14 +138,12 @@ function editFile() {
 			if (a.value != top.currentName) {
 				top.fileSelect.data.currentID = top.sitepath + top.rootDir + top.fileSelect.data.currentDir + "/" + a.value;
 			}
-			url = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=selectorEdit&id=" + top.fileSelect.data.currentID;
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorEdit&id=" + top.fileSelect.data.currentID;
 			new (WE().util.jsWindow)(window, url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
-		}
-		else {
+		} else {
 			top.we_showMessage(WE().consts.g_l.fileselector.edit_file_nok, WE().consts.message.WE_MESSAGE_ERROR, window);
 		}
-	}
-	else {
+	} else {
 		top.we_showMessage(g_l.edit_file_is_folder, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
 }

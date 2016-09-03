@@ -73,7 +73,7 @@ function startTree(pid,offset){
 		cmd:' . $this->cmdFrame . ',
 		tree:' . $this->treeFrame . '
 	};
-	pid = pid ? pid :
+	pid = pid ? pid : 0;
 	offset = offset ? offset : 0;
 	treeData.frames.cmd.location=treeData.frameset+"&pnt=cmd&pid="+pid+"&offset="+offset;
 	drawTree();

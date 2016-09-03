@@ -118,7 +118,7 @@ function setPwdErr(status){
 	}
 }
 
-'), we_html_element::htmlBody(array('class' => 'weDialogBody', 'onload' => 'self.focus();'), we_html_element::htmlExIFrame('passwdcontent', self::getContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+'), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_html_element::htmlExIFrame('passwdcontent', self::getContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
 				self::getLoad()
 		));
 	}

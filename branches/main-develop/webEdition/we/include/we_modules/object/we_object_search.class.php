@@ -107,41 +107,11 @@ class we_object_search extends we_search_base{
 	}
 
 	function getJSinWEsearchobj($name){
-		return we_html_element::jsElement('
-_EditorFrame.setEditorIsHot(false);
-
-function next(){
-	document.we_form.elements.SearchStart.value = parseInt(document.we_form.elements.SearchStart.value) + ' . $this->anzahl . ';
-	top.we_cmd("reload_editpage");
-}
-function back(){
-	document.we_form.elements.SearchStart.value = parseInt(document.we_form.elements.SearchStart.value) - ' . $this->anzahl . ';
-	top.we_cmd("reload_editpage");
-}
-
-function setOrder(order){
-
-	foo = document.we_form.elements.Order.value;
-
-	if(((foo.substring(foo.length-5,foo.length) == " DESC") && (foo.substring(0,order.length-5) == order)) || foo != order){
-		document.we_form.elements.Order.value=order;
-	}else{
-		document.we_form.elements.Order.value=order+" DESC";
-	}
-	top.we_cmd("reload_editpage");
-}
-
-function setWs(path,id) {
-	document.we_form.elements["we_' . $name . '_WorkspacePath"].value=path;
-	document.we_form.elements["we_' . $name . '_WorkspaceID"].value=id;
-	top.we_cmd("reload_editpage");
-}
-
-function toggleShowVisible(c) {
-	c.value=(c.checked ? 1 : 0);
-	document.we_form.elements.SearchStart.value = 0;
-	top.we_cmd("reload_editpage");
-}');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'object/object_search.js', '', ['loadVarObject_search', 'data-searchObj' => setDynamicVar([
+					'anzahl' => $this->anzahl,
+					'name' => $name,
+				])]
+		);
 	}
 
 	function greenOnly($GreenOnly, $pid, $cid){

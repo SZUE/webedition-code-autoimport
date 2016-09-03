@@ -274,7 +274,7 @@ top.content.drawTree();');
 			case 'save_settings':
 				if($ui){
 					if($this->messaging->save_settings(array('update_interval' => $ui))){
-						$out .= we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
+						$out .= we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js') .
 							we_html_element::jsElement(
 								we_message_reporting::getShowMessageCall(g_l('modules_messaging', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
 								'close_win("messaging_settings");'

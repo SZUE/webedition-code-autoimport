@@ -239,39 +239,37 @@ $save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:s
 $buttons = we_html_button::position_yes_no_cancel($delete_button, $cancel_button, $save_button);
 
 // Edit note dialog
-$oTblProps = new we_html_table(array("width" => "100%", 'class' => 'default'), 9, 2);
-$oTblProps->setCol(0, 0, array('class' => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[valid]') . '&nbsp;');
-$oTblProps->setCol(0, 1, array("colspan" => 2, "style" => "text-align:right"), $oTblPeriod->getHTML());
-$oTblProps->setCol(2, 0, array('class' => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[prio]'));
+$oTblProps = new we_html_table(["width" => "100%", 'class' => 'default'], 9, 2);
+$oTblProps->setCol(0, 0, ['class' => "middlefont", 'style' => "padding-bottom:8px;"], g_l('cockpit', '[valid]') . '&nbsp;');
+$oTblProps->setCol(0, 1, ["colspan" => 2, "style" => "text-align:right"], $oTblPeriod->getHTML());
+$oTblProps->setCol(2, 0, ['class' => "middlefont", 'style' => "padding-bottom:8px;"], g_l('cockpit', '[prio]'));
 $oTblProps->setCol(2, 1, null, $oTblPrio->getHTML());
-$oTblProps->setCol(4, 0, array('class' => "middlefont", 'style' => "padding-bottom:8px;"), g_l('cockpit', '[title]'));
+$oTblProps->setCol(4, 0, ['class' => "middlefont", 'style' => "padding-bottom:8px;"], g_l('cockpit', '[title]'));
 $oTblProps->setCol(4, 1, null, we_html_tools::htmlTextInput("props_title", 255, "", 255, "", "text", "100%", 0));
-$oTblProps->setCol(6, 0, array('class' => "middlefont", 'style' => 'vertical-align:top;padding-bottom:8px;'), g_l('cockpit', '[note]'));
-$oTblProps->setCol(6, 1, null, we_html_element::htmlTextArea(array(
+$oTblProps->setCol(6, 0, ['class' => "middlefont", 'style' => 'vertical-align:top;padding-bottom:8px;'], g_l('cockpit', '[note]'));
+$oTblProps->setCol(6, 1, null, we_html_element::htmlTextArea([
 		'name' => 'props_text',
 		'id' => 'previewCode',
 		'style' => 'width:100%;height:70px;',
 		'class' => 'wetextinput',
-		), ""));
-$oTblProps->setCol(8, 0, array("colspan" => 3), $buttons);
+		], ""));
+$oTblProps->setCol(8, 0, ["colspan" => 3], $buttons);
 
 // Button: add note
 $oTblBtnProps = we_html_button::create_button('fa:btn_add_note,fa-plus,fa-lg fa-newspaper-o', "javascript:displayNote();", false, 0, 0);
 
 // Table with the note list
-$oPad = new we_html_table(
-	array(
+$oPad = new we_html_table([
 	"style" => "table-layout:fixed;width:100%;padding-top:6px;padding-bottom:6px;background-color:white;",
 	'class' => 'default'
-	), 1, 1);
+	], 1, 1);
 
-$oPad->setCol(0, 0, array("colspan" => 3, "class" => "cl_notes"), we_html_element::htmlDiv(array(
-		"id" => "notices"
-		), getNoteList($sql, $bDate, $bDisplay)));
+$oPad->setCol(0, 0, ["colspan" => 3, "class" => "cl_notes"], we_html_element::htmlDiv(["id" => "notices"
+		], getNoteList($sql, $bDate, $bDisplay)));
 
 $notepad = $oPad->getHTML() .
-	we_html_element::htmlDiv(array("id" => "props"), $oTblProps->getHTML()) .
-	we_html_element::htmlDiv(array("id" => "view"), $oTblBtnProps);
+	we_html_element::htmlDiv(["id" => "props"], $oTblProps->getHTML()) .
+	we_html_element::htmlDiv(["id" => "view"], $oTblBtnProps);
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', we_html_element::cssLink(CSS_DIR . 'pad.css') .
 	we_html_tools::getCalendarFiles() .

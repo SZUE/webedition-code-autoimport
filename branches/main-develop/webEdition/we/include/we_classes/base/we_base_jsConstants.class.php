@@ -142,6 +142,16 @@ abstract class we_base_jsConstants{
 		move_exit_open_docs_question:"' . g_l('alert', '[move_exit_open_docs_question]') . '",
 		move_exit_open_docs_continue:"' . g_l('alert', '[move_exit_open_docs_continue]') . '",
 	},
+	scheduler:{
+		activeSchedule:{
+			title:"' . g_l('button', '[saveInScheduler][alt]') . '",
+			value:"'.g_l('button', '[saveInScheduler][value]') . '",
+		},
+		inActiveSchedule:{
+			title:"' . g_l('button', '[publish][alt]') . '",
+			value:"'.g_l('button', '[publish][value]') . '",
+		},
+	},
 	cockpit:{
 		increase_size: "' . g_l('cockpit', '[increase_size]') . '",
 		not_activated: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[cockpit_not_activated]')) . '",

@@ -63,7 +63,10 @@ WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFoot
 				$script = '';
 		}
 	}
-	echo we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . 'self.close();');
+	$cmd = new we_base_jsCmd();
+	$cmd->addCmd('msg', ['msg' => $msg, 'prio' => $msgType]);
+	$cmd->addCmd('close');
+	echo we_html_element::jsElement($script) . $cmd->getCmds();
 }
 ?>
 </head>
@@ -118,9 +121,10 @@ WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFoot
 				</form>
 				<?php
 			} else {
-				echo we_html_element::jsElement(
-					we_message_reporting::getShowMessageCall(g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), we_message_reporting::WE_MESSAGE_ERROR) .
-					'top.close();');
+				$cmd = new we_base_jsCmd();
+				$cmd->addCmd('msg', ['msg' => g_l('modules_workflow', ($we_doc->Table == FILE_TABLE ? '[no_wf_defined]' : '[no_wf_defined_object]')), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+				$cmd->addCmd('close');
+				echo $cmd->getCmds();
 			}
 		}
 		?>

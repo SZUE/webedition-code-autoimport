@@ -49,10 +49,6 @@ class we_voting_view extends we_modules_view{
 		return
 			parent::getJSTop() .
 			we_html_element::jsElement('
-var get_focus = 1;
-var activ_tab = 1;
-var hot = 0;
-var scrollToVal = 0;
 parent.document.title = "' . $title . '";
 ') . we_html_element::jsScript(WE_JS_MODULES_DIR . '/voting/voting_top.js');
 	}

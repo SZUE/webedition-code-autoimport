@@ -36,7 +36,7 @@ class we_doclist_view extends we_search_view{
 	public function getSearchJS($whichSearch = ''){
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
 
-		return we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view.js') .
+		return we_html_element::jsScript(WE_JS_MODULES_DIR. 'search/search_view.js') .
 			we_html_element::jsElement('
 weSearch.conf = {
 	whichsearch: "' . we_search_view::SEARCH_DOCLIST . '",

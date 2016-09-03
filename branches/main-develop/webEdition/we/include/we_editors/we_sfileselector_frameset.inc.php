@@ -132,10 +132,6 @@ function printFrameSet(){
 		var browseServer = <?= $cmd1 ? 'false' : 'true'; ?>
 
 		var sitepath = "<?= $docroot; ?>";
-		var dirsel = 1;
-		var scrollToVal = 0;
-		var allentries = [];
-		WE().util.loadConsts("g_l.fileselector");
 		function exit_close() {
 			if (!browseServer) {
 				var foo = (!top.fileSelect.data.currentID || (top.fileSelect.data.currentID === sitepath) ? "/" : top.fileSelect.data.currentID.substring(sitepath.length));

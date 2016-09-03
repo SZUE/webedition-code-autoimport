@@ -77,7 +77,7 @@ if($editname !== false){
 </script>
 <?=
 we_html_element::cssLink(CSS_DIR . 'weSpellchecker.css') .
- we_html_element::jsScript(JS_DIR . 'we_modules/spellchecker/weSpellchecker.js');
+ we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellchecker.js');
 ?>
 </head>
 <body class="weDialogBody" onload="setDialog()"><?php

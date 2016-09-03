@@ -32,7 +32,7 @@ function doUnload() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
+	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
 		case "switchPage":
@@ -43,4 +43,12 @@ function we_cmd() {
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
+}
+
+function submitForm(target, action, method) {
+	var f = self.document.we_form;
+	f.target = (target ? target : "edbody");
+	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop");
+	f.method = (method ? method : "post");
+	f.submit();
 }

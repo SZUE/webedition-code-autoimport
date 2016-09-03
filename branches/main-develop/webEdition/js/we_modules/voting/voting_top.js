@@ -25,6 +25,12 @@
  */
 
 WE().util.loadConsts("g_l.voting");
+
+var get_focus = 1;
+var activ_tab = 1;
+var hot = 0;
+var scrollToVal = 0;
+
 function setHot() {
 	hot = 1;
 }

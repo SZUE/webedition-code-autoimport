@@ -55,25 +55,17 @@ class we_shop_view extends we_modules_view{
 		// whether the resultset is empty?
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
 
-		$js = 'isDocument=' . intval($resultD) . ';
-isObject=' . intval((!empty($resultO))) . ';
-classID=' . intval($classid) . ';
-parent.document.title=\'' . $title . '\';
-';
-		return we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view.js', $js);
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_view.js', '', ['id' => 'loadVarShop_view', 'data-viewData' => setDynamicVar([
+					'isDocument' => intval($resultD),
+					'isObject' => ((!empty($resultO))),
+					'classID' => intval($classid),
+					'title' => $title,
+		])]);
 	}
 
 	function getJSProperty(){
 		return parent::getJSProperty() .
-			we_html_element::jsElement('
-function submitForm(target,action,method) {
-	var f = self.document.we_form;
-	f.target =  (target?target:"edbody");
-	f.action = (action?action:"' . $this->frameset . '");
-	f.method = (method?method:"post");
-	f.submit();
-}') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_property.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_property.js');
 	}
 
 	function getProperties(){
@@ -643,11 +635,9 @@ bid =' . we_base_request::_(we_base_request::INT, 'bid', 0) . ';
 cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';';
 			echo we_html_tools::getCalendarFiles() .
 			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			we_html_element::jsElement(
-				(isset($alertMessage) ?
-					we_message_reporting::getShowMessageCall($alertMessage, $alertType) : '')
-			) .
-			we_html_element::jsScript(JS_DIR . 'we_modules/shop/we_shop_view2.js', $js);
+			(isset($alertMessage) ?
+				we_message_reporting::jsMessagePush($alertMessage, $alertType) : '') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_view2.js', $js);
 			?>
 
 			</head>
@@ -659,8 +649,8 @@ cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';';
 					['html' => $orderTable,
 					]
 				];
-				if($customCartFieldsTable){
 
+				if($customCartFieldsTable){
 					$parts[] = ['html' => $customCartFieldsTable,
 					];
 				}
@@ -1039,19 +1029,17 @@ function CalendarChanged(calObject) {
 				}
 
 				// make input field, for name or textfield
-				$parts = array(
-					array(
-						'headline' => g_l('modules_shop', '[field_name]'),
+				$parts = [
+					['headline' => g_l('modules_shop', '[field_name]'),
 						'html' => $fieldHtml,
 						'space' => we_html_multiIconBox::SPACE_MED,
 						'noline' => 1
-					),
-					array(
-						'headline' => g_l('modules_shop', '[field_value]'),
+					],
+					['headline' => g_l('modules_shop', '[field_value]'),
 						'html' => '<textarea name="cartfieldvalue" style="width: 350; height: 150">' . $val . '</textarea>',
 						'space' => we_html_multiIconBox::SPACE_MED
-					)
-				);
+					]
+				];
 
 				echo we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]')) .
 				'</form></body></html>';
@@ -1101,39 +1089,35 @@ function CalendarChanged(calObject) {
 					$shippingVat = '19';
 				}
 
-				$parts = array(
-					array(
-						'headline' => g_l('modules_shop', '[edit_order][shipping_costs]'),
+				$parts = [
+					['headline' => g_l('modules_shop', '[edit_order][shipping_costs]'),
 						'space' => we_html_multiIconBox::SPACE_MED2,
 						'html' => we_html_tools::htmlTextInput('weShipping_costs', 24, $shippingCost),
 						'noline' => 1
-					),
-					array(
-						'headline' => g_l('modules_shop', '[edit_shipping_cost][isNet]'),
+					],
+					['headline' => g_l('modules_shop', '[edit_shipping_cost][isNet]'),
 						'space' => we_html_multiIconBox::SPACE_MED2,
-						'html' => we_class::htmlSelect('weShipping_isNet', array(1 => g_l('global', '[yes]'), 0 => g_l('global', '[no]')), 1, $shippingIsNet),
+						'html' => we_class::htmlSelect('weShipping_isNet', [1 => g_l('global', '[yes]'), 0 => g_l('global', '[no]')], 1, $shippingIsNet),
 						'noline' => 1
-					),
-					array(
-						'headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
+					],
+					['headline' => g_l('modules_shop', '[edit_shipping_cost][vatRate]'),
 						'space' => we_html_multiIconBox::SPACE_MED2,
 						'html' => we_html_tools::htmlInputChoiceField('weShipping_vatRate', $shippingVat, $shippingVats, [], '', true),
 						'noline' => 1
-					)
-				);
+					]
+				];
 
 
 				echo '</head>
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-				we_html_element::htmlHiddens(array(
+				we_html_element::htmlHiddens([
 					'bid' => $_REQUEST['bid'],
 					"we_cmd[]" => 'save_shipping_cost'
-				)) .
+				]) .
 				we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
 				'</form></body></html>';
 				exit;
-				break;
 
 			case 'save_shipping_cost':
 				$serialOrder = we_unserialize($this->getFieldFromOrder($_REQUEST['bid'], 'strSerialOrder'));
@@ -1165,24 +1149,21 @@ function CalendarChanged(calObject) {
 
 				$dontEdit = explode(',', we_shop_shop::ignoredEditFields);
 
-				$parts = array(
-					array(
-						'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[preferences][explanation_customer_odercustomer]'), we_html_tools::TYPE_INFO, 470),
-					),
-					array(
-						'headline' => g_l('modules_customer', '[Forname]') . ': ',
+				$parts = [
+					['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[preferences][explanation_customer_odercustomer]'), we_html_tools::TYPE_INFO, 470),
+					],
+					['headline' => g_l('modules_customer', '[Forname]') . ': ',
 						'space' => we_html_multiIconBox::SPACE_MED2,
 						'html' => we_html_tools::htmlTextInput('weCustomerOrder[Forename]', 44, $customer['Forename']),
 						'noline' => 1
-					),
-					array(
-						'headline' => g_l('modules_customer', '[Surname]') . ': ',
+					],
+					['headline' => g_l('modules_customer', '[Surname]') . ': ',
 						'space' => we_html_multiIconBox::SPACE_MED2,
 						'html' => we_html_tools::htmlTextInput('weCustomerOrder[Surname]', 44, $customer['Surname']),
 						'noline' => 1
-					)
-				);
-				$editFields = array('Forename', 'Surname');
+					]
+				];
+				$editFields = ['Forename', 'Surname'];
 
 				foreach($customer as $k => $v){
 					if(!in_array($k, $dontEdit) && !is_numeric($k)){
@@ -1190,7 +1171,7 @@ function CalendarChanged(calObject) {
 							$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 							$langcode = array_search($lang[0], getWELangs());
 							$countrycode = array_search($langcode, getWECountries());
-							$countryselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput'));
+							$countryselect = new we_html_select(['name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput']);
 
 							$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 							foreach($topCountries as $countrykey => &$countryvalue){
@@ -1215,26 +1196,25 @@ function CalendarChanged(calObject) {
 								$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 							}
 							unset($countryvalue);
-							$countryselect->addOption('-', '----', array('disabled' => 'disabled'));
+							$countryselect->addOption('-', '----', ['disabled' => 'disabled']);
 							foreach($shownCountries as $countrykey => &$countryvalue){
 								$countryselect->addOption($countrykey, CheckAndConvertISObackend($countryvalue));
 							}
 							unset($countryvalue);
 							$countryselect->selectOption($v);
 
-							$parts[] = array(
-								'headline' => $k . ': ',
+							$parts[] = ['headline' => $k . ': ',
 								'space' => we_html_multiIconBox::SPACE_MED2,
 								'html' => $countryselect->getHtml(),
 								'noline' => 1
-							);
+							];
 						} elseif((isset($this->CLFields['languageField']) && !empty($this->CLFields['languageFieldIsISO']) && $k == $this->CLFields['languageField'])){
 							$frontendL = $GLOBALS['weFrontendLanguages'];
 							foreach($frontendL as &$lcvalue){
 								list($lcvalue) = explode('_', $lcvalue);
 							}
 							unset($countryvalue);
-							$languageselect = new we_html_select(array('name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput'));
+							$languageselect = new we_html_select(['name' => 'weCustomerOrder[' . $k . ']', 'style' => 'width:280px;', 'class' => 'wetextinput']);
 							foreach(g_l('languages', '') as $languagekey => $languagevalue){
 								if(in_array($languagekey, $frontendL)){
 									$languageselect->addOption($languagekey, $languagevalue);
@@ -1242,19 +1222,17 @@ function CalendarChanged(calObject) {
 							}
 							$languageselect->selectOption($v);
 
-							$parts[] = array(
-								'headline' => $k . ': ',
+							$parts[] = ['headline' => $k . ': ',
 								'space' => we_html_multiIconBox::SPACE_MED2,
 								'html' => $languageselect->getHtml(),
 								'noline' => 1
-							);
+							];
 						} else {
-							$parts[] = array(
-								'headline' => $k . ': ',
+							$parts[] = ['headline' => $k . ': ',
 								'space' => we_html_multiIconBox::SPACE_MED2,
 								'html' => we_html_tools::htmlTextInput('weCustomerOrder[' . $k . ']', 44, $v),
 								'noline' => 1
-							);
+							];
 						}
 						$editFields[] = $k;
 					}

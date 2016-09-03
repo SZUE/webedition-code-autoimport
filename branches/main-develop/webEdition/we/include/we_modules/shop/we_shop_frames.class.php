@@ -103,10 +103,10 @@ function we_cmd() {
 
 		if($headline){
 			$iconBarTable->addCol();
-			$iconBarTable->setCol(0, $c++, array('style' => 'text-align:right', 'class' => 'header_shop'), '<span style="margin-left:15px">' . $headline . '</span>');
+			$iconBarTable->setCol(0, $c++, ['style' => 'text-align:right', 'class' => 'header_shop'], '<span style="margin-left:15px">' . $headline . '</span>');
 		}
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('id' => 'iconBar'), $iconBarTable->getHTML()), $extraHead);
+		return $this->getHTMLDocument(we_html_element::htmlBody(['id' => 'iconBar'], $iconBarTable->getHTML()), $extraHead);
 	}
 
 	protected function getHTMLCmd(){
@@ -555,7 +555,7 @@ function setTab(tab) {
 			$weShopStatusMails->save();
 
 			//	Close window when finished
-			return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('self.close();'), we_html_element::htmlBody());
+			return we_html_tools::getHtmlTop('', '', '', we_base_jsCmd::singleCmd('close'), we_html_element::htmlBody());
 		}
 	}
 
@@ -693,7 +693,7 @@ function setTab(tab) {
 			)));
 
 			//	Close window when finished
-			return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('self.close();'), we_html_element::htmlBody());
+			return we_html_tools::getHtmlTop('', '', '', we_base_jsCmd::singleCmd('close'), we_html_element::htmlBody());
 		}
 	}
 
@@ -839,7 +839,7 @@ function setTab(tab) {
 			]
 		];
 
-		return we_html_tools::getHtmlTop('', '', '',we_html_element::jsScript(JS_DIR . 'we_modules/shop/statusMails.js') , we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_status">
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/statusMails.js'), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_status">
 		<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />' .
 					we_html_multiIconBox::getHTML('weShopStatusMails', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
@@ -1000,7 +1000,7 @@ var allVats = {
 
 		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
 					$vatJavaScript .
-					(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess && $onsaveClose ? 'window.close()' : '') : '')) . we_html_element::jsScript(JS_DIR . 'we_modules/shop/edit_shop_vats.js'), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
+					(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess && $onsaveClose ? 'window.close()' : '') : '')) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_vats.js'), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
 		)));
 	}
 
@@ -1312,83 +1312,13 @@ var url = WE().util.getWe_cmdArgsUrl(args);
 			$catsTableHtml = $catsDirTableHtml = g_l('modules_shop', '[shopcats][warning_noShopCatDir]');
 		}
 
-
-		$jsFunction = '
-	var hot = 0;
-
-	function addListeners(){
-		for(var i = 1; i < document.we_form.elements.length; i++){
-			document.we_form.elements[i].addEventListener("change",function(){
-				hot = 1;
-			});
+		$jscmd = new we_base_jsCmd();
+		if(isset($jsMessage)){
+			$jscmd->addCmd('msg', ['msg' => $jsMessage, 'prio' => $jsMessageType]);
 		}
-	}
-
-	function we_submitForm(url){
-		var f = self.document.we_form;
-	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-		return false;
-	}
-		f.action = url;
-		f.method = "post";
-		f.submit();
-		return true;
-	}
-
-	function doUnload() {
-		WE().util.jsWindow.prototype.closeAll(window);
-	}
-
-function we_cmd(){
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-		switch (args[0]) {
-			case "close":
-				if(hot){
-					new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=exitQuestion","we_exit_doc_question",-1,-1,380,130,true,false,true);
-				} else {
-					window.close();
-				}
-				break;
-			case "save":
-				document.we_form["we_cmd[0]"].value = "saveShopCatRels";
-				document.we_form.onsaveclose.value = 1;
-				we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_categories");
-				break;
-			case "save_notclose":
-				document.we_form["we_cmd[0]"].value = "saveShopCatRels";
-				we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_categories");
-				break;
-			default:
-				top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+		if($saveSuccess && $onsaveClose){
+			$jscmd->addCmd('close');
 		}
-	}
-
-	function we_switch_active_by_id(id){
-		try{
-			document.getElementById("destPrincipleRow_" + id).style.display =
-				document.getElementById("defCountryRow_" + id).style.display =
-				(document.getElementById("check_weShopCatIsActive[" + id + "]").checked) ? "" : "none";
-
-			document.getElementById("countriesRow_" + id).style.display =
-				document.getElementById("check_weShopCatIsActive[" + id + "]").checked &&
-				(document.getElementById("taxPrinciple_tmp[" + id + "]").value == 1) ? "" : "none";
-		} catch(e){}
-	}
-
-	function we_switch_principle_by_id(id, obj, isShopCatsDir){
-		try{
-			var active = isShopCatsDir ? true : document.getElementById("check_weShopCatIsActive[" + id + "]").checked;
-
-			document.getElementById("taxPrinciple_tmp[" + id + "]").value = obj.value;
-			document.getElementById("countriesRow_" + id).style.display =
-				(active && obj.value == 1) ? "" : "none";
-		} catch(e){}
-	}
-
-	' . (isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess && $onsaveClose ? 'window.close()' : '') : '');
 
 		$parts = [
 			['headline' => g_l('modules_shop', '[shopcats][text_shopCatDir]'),
@@ -1424,7 +1354,7 @@ function we_cmd(){
 			//'html' => $debug_output
 		]];
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jsFunction), we_html_element::htmlBody([ 'class' => "weDialogBody", 'onload' => "window.focus(); addListeners();"], '<form name="we_form" method="post" >
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/showCategoriesDialog.js') . $jscmd->getCmds() . we_html_element::jsElement($jsFunction), we_html_element::htmlBody([ 'class' => "weDialogBody", 'onload' => "window.focus(); addListeners();"], '<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="load" /><input type="hidden" name="onsaveclose" value="0" />' .
 					we_html_multiIconBox::getHTML('weShopCategories', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')

@@ -656,7 +656,7 @@ class we_navigation_navigation extends we_base_model{
 		if(!($this->ID && $this->Ordn > 0)){
 			return false;
 		}
-		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( --$this->Ordn));
+		$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(--$this->Ordn));
 		$this->saveField('Ordn');
 		$this->reorder($this->ParentID);
 		return true;
@@ -668,7 +668,7 @@ class we_navigation_navigation extends we_base_model{
 		}
 		$num = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ParentID=' . intval($this->ParentID), '', $this->db);
 		if($this->Ordn < ($num - 1)){
-			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval( ++$this->Ordn));
+			$this->db->query('UPDATE ' . NAVIGATION_TABLE . ' SET Ordn=' . intval($this->Ordn) . ' WHERE ParentID=' . intval($this->ParentID) . ' AND Ordn=' . intval(++$this->Ordn));
 			$this->saveField('Ordn');
 			$this->reorder($this->ParentID);
 			return true;
@@ -950,8 +950,19 @@ class we_navigation_navigation extends we_base_model{
 			, $body);
 	}
 
-public static function getJSConsts(){
-	return 'WE().consts.g_l.navigation={
+	public static function reset_customer_filter(){
+		if(permissionhandler::hasPerm("ADMINISTRATOR")){
+			$GLOBALS['DB_WE']->query('UPDATE ' . NAVIGATION_TABLE . ' SET LimitAccess=0, ApplyFilter=0');
+
+			echo we_html_element::jsElement(
+				'top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&type=rebuild_navigation&responseText=' . rawurlencode(
+					g_l('navigation', '[reset_customerfilter_done_message]')) . '\',\'resave\',-1,-1,600,130,0,true);
+');
+		}
+	}
+
+	public static function getJSConsts(){
+		return 'WE().consts.g_l.navigation={
 	view:{
 		documents:"' . g_l('navigation', '[documents]') . '",
 		objects:"' . g_l('navigation', '[objects]') . '",
@@ -989,5 +1000,6 @@ WE().consts.navigation={
 	LSELECTION_INTERN:"' . we_navigation_navigation::LSELECTION_INTERN . '",
 	LSELECTION_EXTERN:"' . we_navigation_navigation::LSELECTION_EXTERN . '",
 };';
-}
+	}
+
 }

@@ -395,10 +395,8 @@ parent.document.title="' . $title . '";') .
 
 	function getJSProperty(){
 		return we_html_element::jsElement('
-var loaded;
 var uid="' . $this->uid . '";
 ' . (!$this->show ? '
-
 function getNumOfDocs(){
 	return ' . $this->workflowDef->loadDocuments() . count($this->workflowDef->documents) . ';
 }

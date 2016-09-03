@@ -2091,6 +2091,9 @@ class we_versions_version{
 	notMark:"' . g_l('versions', '[notMark]') . '",
 	deleteVersions:"' . g_l('versions', '[deleteVersions]') . '",
 	notChecked: "' . we_message_reporting::prepareMsgForJS(g_l('versions', '[notChecked]')) . '",
+	defaultView:"' . g_l('logging', '[defaultView]') . '",
+	all:"' . g_l('logging', '[all]') . '",
+
 };';
 	}
 

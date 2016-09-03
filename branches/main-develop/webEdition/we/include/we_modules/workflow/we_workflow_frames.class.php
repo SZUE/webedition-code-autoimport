@@ -84,18 +84,17 @@ function setTab(tab){
 	}
 }');
 
-		$mainDiv = we_html_element::htmlDiv(['id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlNobr(
-						we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
-						we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
-				)) .
-				$we_tabs->getHTML()
-		);
-
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()',
-				'onload' => 'weTabs.setFrameSize()',
+				'onload' => "weTabs.setFrameSize();document.getElementById('tab_" . $page . "').className='tabActive';",
 				'id' => 'eHeaderBody',
-				], $mainDiv .
-				we_html_element::jsElement('document.getElementById("tab_' . $page . '").className="tabActive";')
+				], we_html_element::htmlDiv(
+					['id' => 'main'], we_html_element::htmlDiv(
+						['id' => 'headrow'], we_html_element::htmlNobr(
+							we_html_element::htmlB(oldHtmlspecialchars($textPre) . ':&nbsp;') .
+							we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . oldHtmlspecialchars($textPost) . '</b>')
+					)) .
+					$we_tabs->getHTML()
+				)
 		);
 
 		return $this->getHTMLDocument($body, $extraHead);

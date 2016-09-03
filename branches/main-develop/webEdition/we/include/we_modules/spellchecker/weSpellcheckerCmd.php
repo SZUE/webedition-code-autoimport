@@ -201,10 +201,8 @@ switch(we_base_request::_(we_base_request::STRING, 'cmd', '', 0)){
 		$_dir->close();
 
 		echo we_html_element::jsElement('
-
-				parent.document.getElementById("selector").innerHTML = "' . addslashes(preg_replace("|\r?\n|", '', $table->getHtml())) . '";
-
-			');
+parent.document.getElementById("selector").innerHTML = "' . addslashes(preg_replace("|\r?\n|", '', $table->getHtml())) . '";
+');
 		break;
 
 	default:
