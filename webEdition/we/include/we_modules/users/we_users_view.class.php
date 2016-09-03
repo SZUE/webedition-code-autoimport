@@ -37,19 +37,17 @@ class we_users_view extends we_modules_view{
 		}
 
 		return we_html_element::jsElement('
-var loaded=0;
-var hot=0;
 var frameset="' . $this->frameset . '";
 parent.document.title = "' . $title . '";
 var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])) : 0) . ';
 ') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/users/users_view.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_view.js');
 	}
 
 	function getJSProperty(){
 		return
 			weSuggest::getYuiFiles() .
-			we_html_element::jsScript(JS_DIR . 'we_modules/users/users_property.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_property.js');
 	}
 
 	private function new_group(){
@@ -424,7 +422,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				return $this->new_alias();
 			case 'show_search':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
+				we_html_element::jsElement('var url=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
 						new (WE().util.jsWindow)(window, url,"search",-1,-1,650,600,true,true,true,false);');
 				return;
 			case 'new_user':

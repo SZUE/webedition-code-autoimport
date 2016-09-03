@@ -68,7 +68,7 @@ class we_voting_frames extends we_modules_frame{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, "setTab(1);", ["id" => "tab_1",'title'=>g_l('modules_voting', '[property]')]);
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, false, "setTab(1);", ["id" => "tab_1", 'title' => g_l('modules_voting', '[property]')]);
 		if(!$this->View->voting->IsFolder){
 			$we_tabs->addTab(g_l('modules_voting', '[inquiry]'), false, "setTab(2);", ["id" => "tab_2"]);
 			$we_tabs->addTab(g_l('modules_voting', '[options]'), false, "setTab(3);", ["id" => "tab_3"]);
@@ -98,10 +98,13 @@ function setTab(tab) {
 		  )
 		  ); */
 
-		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
-		$body = we_html_element::htmlBody(array("onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"), '<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", g_l('modules_voting', ($this->View->voting->IsFolder ? '[group]' : '[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $this->View->voting->Path) . '</b></span></div>' .
+		$body = we_html_element::htmlBody([
+				"onresize" => "weTabs.setFrameSize()",
+				"onload" => "weTabs.setFrameSize();document.getElementById('tab_'+top.content.activ_tab).className='tabActive';",
+				"id" => "eHeaderBody"
+				], '<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", g_l('modules_voting', ($this->View->voting->IsFolder ? '[group]' : '[voting]'))) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $this->View->voting->Path) . '</b></span></div>' .
 				$we_tabs->getHTML() .
-				'</div>' . we_html_element::jsElement($extraJS)
+				'</div>'
 		);
 
 		return $this->getHTMLDocument($body, $tabsHead);
@@ -145,9 +148,9 @@ function setTab(tab) {
 		$variant_js .=
 			'question_edit = new multi_edit("question",document.we_form,1,"",' . 520 . ',true);
 				answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",' . 500 . ',true);
-				answers_edit.SetImageIDText("' . g_l('modules_voting', '[imageID_text]') . '");
-				answers_edit.SetMediaIDText("' . g_l('modules_voting', '[mediaID_text]') . '");
-				answers_edit.SetSuccessorIDText("' . g_l('modules_voting', '[successorID_text]') . '");';
+				answers_edit.SetImageIDText(WE().consts.g_l.voting.imageID_text);
+				answers_edit.SetMediaIDText(WE().consts.g_l.voting.mediaID_text);
+				answers_edit.SetSuccessorIDText(WE().consts.g_l.voting.successorID_text);';
 
 		for($j = 0; $j < count($this->View->voting->QASet[0]['answers']); $j++){
 			$variant_js .= 'answers_edit.addItem("2");';
@@ -244,13 +247,13 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "',''," . $cmd1 . ",'" . $wecmdenc5 . "','','',1);")
 		);
 
-		$parts = array(
-			array(
-				'headline' => g_l('modules_voting', '[property]'),
-				'html' => we_html_element::htmlHiddens(array(
+		$parts = [
+			['headline' => g_l('modules_voting', '[property]'),
+				'html' => we_html_element::htmlHiddens([
 					'owners_name' => '',
 					'owners_count' => 0,
-					'newone' => ($this->View->voting->ID == 0 ? 1 : 0))) .
+					'newone' => ($this->View->voting->ID == 0 ? 1 : 0)
+				]) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->View->voting->Text, '', 'style="width: 520px;" id="yuiAcInputPathName" onchange="top.content.setHot();" onblur="parent.edheader.weTabs.setTitlePath(this.value)"'), g_l('modules_voting', '[headline_name]')) .
 				we_html_element::htmlBr() .
 				$this->getHTMLDirChooser() .
@@ -258,36 +261,34 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				we_html_element::htmlBr() .
 				(!$this->View->voting->IsFolder ? we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('PublishDate%s', $this->View->voting->PublishDate, false, '', 'top.content.setHot();'), g_l('modules_voting', '[headline_publish_date]')) : ''),
 				'space' => we_html_multiIconBox::SPACE_MED,
-				'noline' => 1),
-			array(
-				'headline' => '',
+				'noline' => 1],
+			['headline' => '',
 				'html' => we_html_forms::checkboxWithHidden($this->View->voting->RestrictOwners ? true : false, 'RestrictOwners', g_l('modules_voting', '[limit_access]'), false, 'defaultfont', 'top.content.setHot(); toggle(\'ownersTable\')'),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			),
-			array(
-				'headline' => '',
+			],
+			['headline' => '',
 				'html' => $table->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
-			)
-		);
+			]
+		];
 
 		if($this->View->voting->IsFolder){
-			$parts[] = array(
+			$parts[] = [
 				'headline' => g_l('modules_voting', '[control]'),
 				'html' => we_html_button::formatButtons(we_html_button::create_button('logbook', "javascript:we_cmd('show_log')") . we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete_log')")),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			);
+			];
 
 
 			$ok = we_html_button::create_button('export', "javascript:we_cmd('exportGroup_csv')");
 
-			$export_box = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;'), 12, 1);
+			$export_box = new we_html_table(['class' => 'default', 'style' => 'margin-top:10px;'], 12, 1);
 
-			$export_box->setCol(1, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($this->formFileChooser(400, 'csv_dir', '/', '', we_base_ContentTypes::FOLDER), g_l('export', '[dir]')));
+			$export_box->setCol(1, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlFormElementTable($this->formFileChooser(400, 'csv_dir', '/', '', we_base_ContentTypes::FOLDER), g_l('export', '[dir]')));
 
-			$lineend = new we_html_select(array('name' => 'csv_lineend', 'class' => 'defaultfont', 'style' => 'width: 520px'));
+			$lineend = new we_html_select(['name' => 'csv_lineend', 'class' => 'defaultfont', 'style' => 'width: 520px']);
 			$lineend->addOption('windows', g_l('export', '[windows]'));
 			$lineend->addOption('unix', g_l('export', '[unix]'));
 			$lineend->addOption('mac', g_l('export', '[mac]'));
@@ -307,14 +308,14 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			$delimiter->addOption('\t', g_l('export', '[tab]'));
 			$delimiter->addOption(' ', g_l('export', '[space]'));
 
-			$enclose = new we_html_select(array('name' => 'csv_enclose', 'class' => 'defaultfont', 'style' => 'width: 520px'));
+			$enclose = new we_html_select(['name' => 'csv_enclose', 'class' => 'defaultfont', 'style' => 'width: 520px']);
 			$enclose->addOption(0, g_l('export', '[double_quote]'));
 			$enclose->addOption(1, g_l('export', '[single_quote]'));
 
-			$export_box->setCol(3, 0, array('class' => 'defaultfont', 'style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($lineend->getHtml(), g_l('export', '[csv_lineend]')));
-			$export_box->setCol(5, 0, array('class' => 'defaultfont', 'style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($import_Charset, g_l('modules_voting', '[csv_charset]')));
-			$export_box->setCol(7, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($delimiter->getHtml(), g_l('export', '[csv_delimiter]')));
-			$export_box->setCol(9, 0, array('style' => 'padding-bottom:5px;'), we_html_tools::htmlFormElementTable($enclose->getHtml(), g_l('export', '[csv_enclose]')));
+			$export_box->setCol(3, 0, ['class' => 'defaultfont', 'style' => 'padding-bottom:5px;'], we_html_tools::htmlFormElementTable($lineend->getHtml(), g_l('export', '[csv_lineend]')));
+			$export_box->setCol(5, 0, ['class' => 'defaultfont', 'style' => 'padding-bottom:5px;'], we_html_tools::htmlFormElementTable($import_Charset, g_l('modules_voting', '[csv_charset]')));
+			$export_box->setCol(7, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlFormElementTable($delimiter->getHtml(), g_l('export', '[csv_delimiter]')));
+			$export_box->setCol(9, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlFormElementTable($enclose->getHtml(), g_l('export', '[csv_enclose]')));
 			$export_box->setCol(11, 0, [], $ok);
 
 			$parts[] = array(
@@ -333,22 +334,22 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		$activeTime->selectOption($this->View->voting->ActiveTime);
 
 		$table = new we_html_table([], 4, 2);
-		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[valid_txt]'), we_html_tools::TYPE_INFO, 520, false, 133));
-		$table->setCol(1, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($this->View->voting->Active ? true : false, 'Active', g_l('modules_voting', '[active_till]'), false, 'defaultfont', 'toggle(\'activetime\');if(!this.checked) setVisible(\'valid\',false); else if(document.we_form.ActiveTime.value==1) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
+		$table->setCol(0, 0, ['colspan' => 2], we_html_tools::htmlAlertAttentionBox(g_l('modules_voting', '[valid_txt]'), we_html_tools::TYPE_INFO, 520, false, 133));
+		$table->setCol(1, 0, ['colspan' => 2], we_html_forms::checkboxWithHidden($this->View->voting->Active ? true : false, 'Active', g_l('modules_voting', '[active_till]'), false, 'defaultfont', 'toggle(\'activetime\');if(!this.checked) setVisible(\'valid\',false); else if(document.we_form.ActiveTime.value==1) setVisible(\'valid\',true); else setVisible(\'valid\',false);'));
 
-		$table->setColContent(2, 1, we_html_element::htmlDiv(array('id' => 'activetime', 'style' => 'display: ' . ($this->View->voting->Active ? 'block' : 'none') . ';'), $activeTime->getHtml()
+		$table->setColContent(2, 1, we_html_element::htmlDiv(['id' => 'activetime', 'style' => 'display: ' . ($this->View->voting->Active ? 'block' : 'none') . ';'], $activeTime->getHtml()
 			)
 		);
-		$table->setColContent(3, 1, we_html_element::htmlDiv(array('id' => 'valid', 'style' => 'display: ' . ($this->View->voting->Active && $this->View->voting->ActiveTime ? 'block' : 'none') . ';'), we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('Valid%s', $this->View->voting->Valid, false, '', 'top.content.setHot();'), "")
+		$table->setColContent(3, 1, we_html_element::htmlDiv(['id' => 'valid', 'style' => 'display: ' . ($this->View->voting->Active && $this->View->voting->ActiveTime ? 'block' : 'none') . ';'], we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('Valid%s', $this->View->voting->Valid, false, '', 'top.content.setHot();'), "")
 			)
 		);
 
-		$parts[] = array(
+		$parts[] = [
 			'headline' => g_l('modules_voting', '[valid]'),
 			'html' => $table->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
-		);
+		];
 
 
 		return $parts;
@@ -361,9 +362,8 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 
 		$displaySuccessor = ($this->View->voting->AllowSuccessor ? 'block' : 'none');
 
-		$parts = array(
-			array(
-				'headline' => g_l('modules_voting', '[headline_datatype]'),
+		$parts = [
+			['headline' => g_l('modules_voting', '[headline_datatype]'),
 				'html' =>
 				we_html_forms::checkboxWithHidden($this->View->voting->IsRequired ? true : false, 'IsRequired', g_l('modules_voting', '[IsRequired]'), false, 'defaultfont', 'top.content.setHot();') .
 				we_html_forms::checkboxWithHidden($this->View->voting->AllowFreeText ? true : false, 'AllowFreeText', g_l('modules_voting', '[AllowFreeText]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleMinCount();') .
@@ -374,41 +374,41 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 				we_html_forms::checkboxWithHidden($this->View->voting->AllowSuccessors ? true : false, 'AllowSuccessors', g_l('modules_voting', '[AllowSuccessors]'), false, 'defaultfont', 'top.content.setHot();answers_edit.toggleSuccessors();')
 				,
 				'space' => we_html_multiIconBox::SPACE_MED
-			)
-		);
+			]
+		];
 
-		$select = new we_html_select(array('name' => 'selectVar', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();question_edit.showVariant(this.value);answers_edit.showVariant(this.value);document.we_form.vernr.value=this.value;refreshTexts();', 'style' => 'width:450px;'));
+		$select = new we_html_select(['name' => 'selectVar', 'class' => 'weSelect', 'onchange' => 'top.content.setHot();question_edit.showVariant(this.value);answers_edit.showVariant(this.value);document.we_form.vernr.value=this.value;refreshTexts();', 'style' => 'width:450px;']);
 		foreach(array_keys($this->View->voting->QASet) as $variant){
 			$select->addOption($variant, g_l('modules_voting', '[variant]') . ' ' . ($variant + 1));
 		}
 		$select->selectOption(we_base_request::_(we_base_request::INT, 'vernr', 0));
 
-		$table = new we_html_table(array('class' => 'default'), 1, 3);
+		$table = new we_html_table(['class' => 'default'], 1, 3);
 		$table->setColContent(0, 0, $select->getHtml());
 		$table->setColContent(0, 1, we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();question_edit.addVariant();answers_edit.addVariant();question_edit.showVariant(question_edit.variantCount-1);answers_edit.showVariant(answers_edit.variantCount-1);document.we_form.selectVar.options[document.we_form.selectVar.options.length] = new Option('" . g_l('modules_voting', '[variant]') . " '+question_edit.variantCount,question_edit.variantCount-1,false,true);"));
 		$table->setColContent(0, 2, we_html_button::create_button(we_html_button::TRASH, "javascript:top.content.setHot();if(question_edit.variantCount>1){ question_edit.deleteVariant(document.we_form.selectVar.selectedIndex);answers_edit.deleteVariant(document.we_form.selectVar.selectedIndex);document.we_form.selectVar.options.length--;document.we_form.selectVar.selectedIndex=question_edit.currentVariant;refreshTexts();} else {" . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[variant_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . "}"));
 		$table->setColAttributes(0, 1, array("style" => "padding:0 5px;"));
 		$selectCode = $table->getHtml();
 
-		$table = new we_html_table(array('class' => 'default'), 5, 1);
+		$table = new we_html_table(['class' => 'default'], 5, 1);
 
 		$table->setColContent(0, 0, $selectCode);
-		$table->setCol(2, 0, array('padding-top:10px;'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('id' => 'question')), g_l('modules_voting', '[inquiry_question]')));
-		$table->setCol(4, 0, array('padding-top:10px;'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('id' => 'answers')), g_l('modules_voting', '[inquiry_answers]')));
+		$table->setCol(2, 0, ['padding-top:10px;'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['id' => 'question']), g_l('modules_voting', '[inquiry_question]')));
+		$table->setCol(4, 0, array('padding-top:10px;'), we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['id' => 'answers']), g_l('modules_voting', '[inquiry_answers]')));
 
-		$parts[] = array(
+		$parts[] = [
 			'headline' => g_l('modules_voting', '[headline_data]'),
-			'html' => we_html_element::htmlHiddens(array(
+			'html' => we_html_element::htmlHiddens([
 				'question_name' => '',
 				'variant_count' => 0,
 				'answers_name' => '',
 				'item_count' => 0,
 				'iptable_name' => '',
-				'iptable_count' => 0)) .
+				'iptable_count' => 0]) .
 			$table->getHtml() .
 			we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();answers_edit.addItem()"),
 			'space' => we_html_multiIconBox::SPACE_MED
-		);
+			];
 
 		return $parts;
 	}
@@ -426,7 +426,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		$selectTime->addOption((0), g_l('modules_voting', '[always]'));
 		$selectTime->selectOption($this->View->voting->RevoteTime);
 
-		$table = new we_html_table(array('id' => 'method_table', 'style' => 'display: ' . ($this->View->voting->RevoteTime == 0 ? 'none' : 'block')), 10, 2);
+		$table = new we_html_table(['id' => 'method_table', 'style' => 'display: ' . ($this->View->voting->RevoteTime == 0 ? 'none' : 'block')], 10, 2);
 		$table->setCol(0, 0, array('colspan' => 2), we_html_tools::htmlAlertAttentionBox(
 				we_html_element::htmlB(g_l('modules_voting', '[cookie_method]')) . we_html_element::htmlBr() .
 				g_l('modules_voting', '[cookie_method_help]') .
@@ -436,9 +436,9 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		);
 
 
-		$table->setCol(2, 0, array('colspan' => 2), we_html_forms::radiobutton(1, ($this->View->voting->RevoteControl == 1 ? true : false), 'RevoteControl', g_l('modules_voting', '[cookie_method]'), true, "defaultfont", "top.content.setHot();"));
-		$table->setCol(3, 0, array('style' => 'padding-left:10px;'), we_html_forms::checkboxWithHidden($this->View->voting->FallbackIp ? true : false, 'FallbackIp', g_l('modules_voting', '[fallback]'), false, "defaultfont", "top.content.setHot();"));
-		$table->setCol(5, 0, array('colspan' => 2, 'style' => 'padding-top:10px;'), we_html_forms::radiobutton(0, ($this->View->voting->RevoteControl == 0 ? true : false), 'RevoteControl', g_l('modules_voting', '[ip_method]'), true, "defaultfont", "top.content.setHot();"));
+		$table->setCol(2, 0, ['colspan' => 2], we_html_forms::radiobutton(1, ($this->View->voting->RevoteControl == 1 ? true : false), 'RevoteControl', g_l('modules_voting', '[cookie_method]'), true, "defaultfont", "top.content.setHot();"));
+		$table->setCol(3, 0, ['style' => 'padding-left:10px;'], we_html_forms::checkboxWithHidden($this->View->voting->FallbackIp ? true : false, 'FallbackIp', g_l('modules_voting', '[fallback]'), false, "defaultfont", "top.content.setHot();"));
+		$table->setCol(5, 0, ['colspan' => 2, 'style' => 'padding-top:10px;'], we_html_forms::radiobutton(0, ($this->View->voting->RevoteControl == 0 ? true : false), 'RevoteControl', g_l('modules_voting', '[ip_method]'), true, "defaultfont", "top.content.setHot();"));
 
 		$datasize = f('SELECT (LENGTH(Revote)+LENGTH(RevoteUserAgent)) AS Size FROM ' . VOTING_TABLE, 'Size', $this->db);
 

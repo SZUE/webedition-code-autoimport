@@ -105,16 +105,14 @@ if(isset($fieldName) && we_base_request::_(we_base_request::BOOL, 'we_okpressed'
 		$openerDocument = 'top.opener.document';
 	}
 
-	$value = preg_replace('|(</?)script([^>]*>)|i', '${1}scr"+"ipt${2}', strtr(we_base_request::_(we_base_request::RAW_CHECKED, $reqName, '', $fieldName), array(
-		"\r" => '\r',
+	$value = preg_replace('|(</?)script([^>]*>)|i', '${1}scr"+"ipt${2}', strtr(we_base_request::_(we_base_request::RAW_CHECKED, $reqName, '', $fieldName), ["\r" => '\r',
 		"\n" => '\n',
 		"'" => '&#039;'
-	)));
-	$replacements = array(
-		'"' => '\"',
+		]));
+	$replacements = ['"' => '\"',
 		"\xe2\x80\xa8" => '',
 		"\xe2\x80\xa9" => '',
-	);
+		];
 	$taValue = strtr($value, $replacements);
 	$divValue = isset($writeToFrontend) ? $taValue : strtr(we_document::parseInternalLinks($value, 0), $replacements);
 

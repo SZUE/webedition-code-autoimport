@@ -83,7 +83,7 @@ class we_messaging_frames extends we_modules_frame{
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 
-		$extraHead = we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
+		$extraHead = we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js') .
 			$this->Tree->getMsgJSTreeCode($this->messaging) .
 			we_html_element::jsElement('startTree();');
 

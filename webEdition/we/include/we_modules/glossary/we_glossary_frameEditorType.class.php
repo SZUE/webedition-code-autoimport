@@ -92,7 +92,7 @@ class we_glossary_frameEditorType extends we_glossary_frameEditor{
 
 		// ---> Search End
 
-		$js = we_html_element::jsElement($js) . we_html_element::jsScript(JS_DIR . 'we_modules/glossary/we_glossary_frameEditorType.js', "loadHeaderFooter('" . we_base_request::_(we_base_request::STRING, 'cmdid') . "');Rows=" . $Rows . ";");
+		$js = we_html_element::jsElement($js) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorType.js', "loadHeaderFooter('" . we_base_request::_(we_base_request::STRING, 'cmdid') . "');Rows=" . $Rows . ";");
 
 		$content = self::getHTMLPreferences($Search, $Type, $Language) .
 			($Search->countItems() ?

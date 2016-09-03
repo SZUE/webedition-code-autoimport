@@ -121,44 +121,16 @@ class we_schedpro{
 
 	//needed to switch description of button publish to "save to scheduler" and vice versa
 	public static function getMainJS($doc){
-		return we_html_element::jsElement('
-var we_hasExtraRow=[' . implode(',', self::$extraCont) . '];
-function changeSchedOption(elem,nr){
-	_EditorFrame.setEditorIsHot(true);
-	checkFooter();
-	if(self.we_hasExtraRow[nr] || elem.options[elem.selectedIndex].value==' . self::DOCTYPE . ' || elem.options[elem.selectedIndex].value==' . self::CATEGORY . ' || elem.options[elem.selectedIndex].value==' . self::DIR . '){
-		setScrollTo();
-		we_cmd(\'reload_editpage\');
-	}
-}
-
-function checkFooter(){
-	var button=parent.editFooter.document.getElementById("publish_' . $doc->ID . '")
-	var aEl=document.getElementsByClassName("we_schedule_active");
-	var active=false;
-	if(button != undefined){
-	button=button.getElementsByTagName("button")[0];
-		for( var i=0; i<aEl.length; ++i){
-			if(aEl[i].value==1){
-			var no=aEl[i].name.split("we_schedule_active_");
-			if(document.getElementsByName("we_schedule_task_"+no[1])[0].value== ' . self::SCHEDULE_FROM . '){
-				active=true;
-				break;
-			}
-		}
-	}
-
-	if(active){
-		button.title="' . g_l('button', '[saveInScheduler][alt]') . '";
-		button.innerHTML="<i class=\"fa fa-lg fa-clock-o\"></i> ' . g_l('button', '[saveInScheduler][value]') . '";
-	}else{
-		button.title="' . g_l('button', '[publish][alt]') . '";
-		button.innerHTML="<i class=\"fa fa-lg fa-sun-o\"></i> ' . g_l('button', '[publish][value]') . '";
-	}
-}
-//we_schedule_task
-}
-');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'schedule/scheduler.js', '', ['loadVarScheduler', 'data-scheduler' => setDynamicVar([
+					'we_hasExtraRow' => self::$extraCont,
+					'selection' => [
+						'DOCTYPE' => self::DOCTYPE,
+						'CATEGORY' => self::CATEGORY,
+						'DIR' => self::DIR,
+						'SCHEDULE_FROM' => self::SCHEDULE_FROM
+					],
+					'docID' => $doc->ID,
+		])]);
 	}
 
 	function getHTML($isobj = false){

@@ -23,7 +23,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-
+var loaded;
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }

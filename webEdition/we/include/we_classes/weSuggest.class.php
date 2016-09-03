@@ -372,7 +372,7 @@ YAHOO.util.Event.addListener(window, "load", initYahooData );');
 	 * @param unknown_type $val
 	 */
 	function setContentType($val){
-		$this->contentType = $val;
+		$this->contentType = is_array($val) ? implode(',', $val) : $val;
 	}
 
 	function setDoOnItemSelect($val){

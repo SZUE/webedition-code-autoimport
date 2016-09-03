@@ -23,7 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
+var nlView = WE().util.getDynamicVar(document, 'loadVarNewsletter_property', 'data-nlView');
 function set_state_edit_delete_recipient(control) {
 	var p = document.forms[0].elements[control];
 	var i = p.length;
@@ -596,7 +596,7 @@ function searchEmail(searchname) {
 
 function isValidEmail(email) {
 	email = email.toLowerCase();
-	return checkMail ? WE().util.validate.email(email) : true;
+	return nlView.checkMail ? WE().util.validate.email(email) : true;
 }
 
 function setHeaderTitle() {
@@ -713,4 +713,8 @@ function delEmailFile(eid, email) {
 		fr.ncmd.value = "delete_email_file";
 		submitForm("edit_file");
 	}
+}
+
+function getStatusContol() {
+	return document.we_form[nlView.uid + "_Status"].value;
 }

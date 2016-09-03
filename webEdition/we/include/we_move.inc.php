@@ -102,10 +102,10 @@ switch($cmd0){
 				if($notMovedItems){
 					$_SESSION['weS']['move_files_nok'] = [];
 					foreach($notMovedItems as $item){
-						$_SESSION['weS']['move_files_nok'][] = array(
-							"ContentType" => $item['ContentType'],
-							"path" => $item['Path']
-						);
+						$_SESSION['weS']['move_files_nok'][] = [
+							'ContentType' => $item['ContentType'],
+							'path' => $item['Path']
+							];
 					}
 					$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=moveInfo","we_moveinfo",-1,-1,550,550,true,true,true);' . "\n";
 				} else {

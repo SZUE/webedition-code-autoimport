@@ -60,7 +60,7 @@ class we_search_view extends we_modules_view{
 	}
 
 	function getJSTop(){
-		return we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view2.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view2.js');
 	}
 
 	function processCommands(){
@@ -235,7 +235,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
 		$showSelects = '';
-		return we_html_element::jsScript(JS_DIR . 'we_modules/search/search_view.js') .
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view.js') .
 			we_html_element::jsElement('
 weSearch.conf = {
 	whichsearch: "' . $whichSearch . '",

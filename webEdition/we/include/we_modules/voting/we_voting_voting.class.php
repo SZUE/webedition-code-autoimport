@@ -779,6 +779,9 @@ class we_voting_voting extends we_base_model{
 	nothing_to_save:"' . we_message_reporting::prepareMsgForJS(g_l('modules_voting', '[nothing_to_save]')) . '",
 	delete_ipdata_question:"' . g_l('modules_voting', '[delete_ipdata_question]') . '",
 	delete_log_question:"' . g_l('modules_voting', '[delete_log_question]') . '",
+	imageID_text:"' . g_l('modules_voting', '[imageID_text]') . '",
+	mediaID_text:"' . g_l('modules_voting', '[mediaID_text]') . '",
+	successorID_text:"' . g_l('modules_voting', '[successorID_text]') . '",
 };
 ';
 	}

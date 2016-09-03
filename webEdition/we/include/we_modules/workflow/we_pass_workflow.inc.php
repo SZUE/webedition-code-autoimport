@@ -62,23 +62,26 @@ WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFoot
 				$script = '';
 		}
 	}
-	echo we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . ';top.close();');
+	$cmd = new we_base_jsCmd();
+	$cmd->addCmd('msg', ['msg' => $msg, 'prio' => $msgType]);
+	$cmd->addCmd('close');
+	echo we_html_element::jsElement($script) . $cmd->getCmds();
 }
 ?>
 </head>
 <body class="weDialogBody"><div style="text-align:center">
-	<?php
-	if($cmd !== "ok"){
-		?>
-		<form action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post">
-			<?php
-			$okbut = we_html_button::create_button(we_html_button::OK, "javascript:document.forms[0].submit()");
-			$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
+		<?php
+		if($cmd !== "ok"){
+			?>
+			<form action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post">
+				<?php
+				$okbut = we_html_button::create_button(we_html_button::OK, "javascript:document.forms[0].submit()");
+				$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
 
 
-			$content = '<table class="default">';
-			$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
-			$content .= '<tr>
+				$content = '<table class="default">';
+				$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="left:10px;right:10px;height:190px"></textarea>';
+				$content .= '<tr>
 <td class="defaultfont">' . g_l('modules_workflow', '[message]') . '</td>
 </tr>
 <tr>
@@ -86,15 +89,15 @@ WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFoot
 </tr>
 </table>';
 
-			echo we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[pass_workflow]'), we_html_button::position_yes_no_cancel($okbut, "", $cancelbut)) .
-			we_html_element::htmlHiddens(array(
-				"cmd" => "ok",
-				"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
-				"we_cmd[1]" => $we_transaction
-			));
-			?>
-		</form>
-	<?php } ?>
-</div>
+				echo we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[pass_workflow]'), we_html_button::position_yes_no_cancel($okbut, "", $cancelbut)) .
+				we_html_element::htmlHiddens(array(
+					"cmd" => "ok",
+					"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+					"we_cmd[1]" => $we_transaction
+				));
+				?>
+			</form>
+		<?php } ?>
+	</div>
 </body>
 </html>

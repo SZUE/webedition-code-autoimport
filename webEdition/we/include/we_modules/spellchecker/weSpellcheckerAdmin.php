@@ -5,10 +5,10 @@ $protect = we_base_moduleInfo::isActive(we_base_moduleInfo::GLOSSARY) && we_user
 we_html_tools::protect($protect);
 
 if(!permissionhandler::hasPerm('SPELLCHECKER_ADMIN')){
-	echo we_html_element::jsElement(
-		we_message_reporting::getShowMessageCall(g_l('alert', '[access_denied]'), we_message_reporting::WE_MESSAGE_ERROR) .
-		'self.close();
-		');
+	$cmd = new we_base_jsCmd();
+	$cmd->addCmd('msg', ['msg' => g_l('alert', '[access_denied]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+	$cmd->addCmd('close');
+	echo $cmd->getCmds();
 	exit();
 }
 
@@ -88,7 +88,7 @@ while(false !== ($entry = $_dir->read())){
 $_dir->close();
 
 $_button = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");
-$tabsBody = $we_tabs->getHTML() . we_html_element::jsElement('if(!activ_tab) activ_tab = 1; document.getElementById("tab_"+activ_tab).className="tabActive";');
+$tabsBody = $we_tabs->getHTML();
 
 $tab_1 = we_html_tools::htmlDialogLayout('
 	 <form name="we_form" target="hiddenCmd" method="post" action="' . WE_SPELLCHECKER_MODULE_DIR . 'weSpellcheckerCmd.php">
@@ -187,11 +187,15 @@ $_applet_code2 = we_html_element::htmlApplet(array(
 </script>
 <?=
 $js .
- we_html_element::jsScript(JS_DIR . 'we_modules/spellchecker/weSpellcheckerAdmin.js');
+ we_html_element::jsScript(WE_JS_MODULES_DIR . 'spellchecker/weSpellcheckerAdmin.js');
 ?>
 </head>
 
-<body onload="loadTable()" class="weDialogBody">
+<body onload="loadTable();
+		if (!activ_tab) {
+			activ_tab = 1;
+		}
+		document.getElementById('tab_' + activ_tab).className = 'tabActive';" class="weDialogBody">
 
 <?= $tabsBody; ?>
 

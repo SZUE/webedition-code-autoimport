@@ -58,21 +58,24 @@ if($cmd === "ok"){
 			$script = '';
 		}
 	}
-	echo we_html_element::jsElement($script . we_message_reporting::getShowMessageCall($msg, $msgType) . 'self.close();');
+	$cmd = new we_base_jsCmd();
+	$cmd->addCmd('msg', ['msg' => $msg, 'prio' => $msgType]);
+	$cmd->addCmd('close');
+	echo we_html_element::jsElement($script).$cmd->getCmds();
 }
 ?>
 </head>
 
 <body class="weDialogBody">
-<div style="text-align:center">
-	<?php if($cmd != 'ok'){ ?>
-		<form action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post">
-			<?php
-			$okbut = we_html_button::create_button(we_html_button::OK, "javascript:document.forms[0].submit()");
-			$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
-			$content = '<table class="default">';
-			$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360;height:190"></textarea>';
-			$content .= '
+	<div style="text-align:center">
+		<?php if($cmd != 'ok'){ ?>
+			<form action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post">
+				<?php
+				$okbut = we_html_button::create_button(we_html_button::OK, "javascript:document.forms[0].submit()");
+				$cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()");
+				$content = '<table class="default">';
+				$wf_textarea = '<textarea name="wf_text" rows="7" cols="50" style="width:360;height:190"></textarea>';
+				$content .= '
 						<tr>
 							<td class="defaultfont">
 								' . g_l('modules_workflow', '[message]') . '</td>
@@ -83,16 +86,16 @@ if($cmd === "ok"){
 						</tr>
 					</table>';
 
-			$button = we_html_button::position_yes_no_cancel($okbut, "", $cancelbut);
-			$frame = we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[decline_workflow]'), $button);
-			echo $frame . we_html_element::htmlHiddens(array(
-				"cmd" => "ok",
-				"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
-				"we_cmd[1]" => $we_transaction));
-			?>
-		</form>
-	<?php } ?>
-</div>
+				$button = we_html_button::position_yes_no_cancel($okbut, "", $cancelbut);
+				$frame = we_html_tools::htmlDialogLayout($content, g_l('modules_workflow', '[decline_workflow]'), $button);
+				echo $frame . we_html_element::htmlHiddens(array(
+					"cmd" => "ok",
+					"we_cmd[0]" => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+					"we_cmd[1]" => $we_transaction));
+				?>
+			</form>
+		<?php } ?>
+	</div>
 
 </body>
 

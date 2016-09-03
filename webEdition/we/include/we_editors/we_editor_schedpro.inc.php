@@ -38,15 +38,13 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		foreach($we_doc->schedArr as $i => $sched){
 			$schedObj = new we_schedpro($sched, $i);
 
-			$parts[] = array(
-				'headline' => '',
+			$parts[] = ['headline' => '',
 				'html' => $schedObj->getHTML($GLOBALS['we_doc']->Table == (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE')),
-			);
+			];
 		}
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_schedule', '[descriptiontext]'), we_html_tools::TYPE_INFO, 700) . '<br/><br/>' . we_html_button::create_button('fa:btn_add_schedule,fa-plus,fa-lg fa-clock-o', "javascript:we_cmd('schedule_add')"),
-		);
+		];
 		echo we_html_multiIconBox::getJS() .
 		we_schedpro::getMainJS($we_doc) .
 		we_html_multiIconBox::getHTML('', $parts, 20) .

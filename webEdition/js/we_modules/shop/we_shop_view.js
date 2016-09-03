@@ -28,11 +28,9 @@ var hot = 0;
 var get_focus = 1;
 var activ_tab = 1;
 var scrollToVal = 0;
-var isDocument = 0;
-var isObject = 0;
-var classID = 0;
 
 WE().util.loadConsts("g_l.shop");
+var viewData = WE().util.getDynamicVar(document, 'loadVarShop_view', 'data-viewData');
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -86,11 +84,11 @@ function we_cmd() {
 			break;
 		case "revenue_view":
 			//FIXME: this is not correct; document doesnt work like this
-			if (isDocument) {
+			if (viewData.isDocument) {
 				top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor&top=1&typ=document";
 			} else
-			if (isObject) {
-				top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor&top=1&typ=object&ViewClass=" + classID;
+			if (viewData.isObject) {
+				top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor&top=1&typ=object&ViewClass=" + viewData.classID;
 			} else {
 				top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor&top=1&typ=document";
 			}
@@ -103,3 +101,4 @@ function we_cmd() {
 			top.opener.top.we_cmd.apply(this, arguments);
 	}
 }
+parent.document.title = viewData.title;

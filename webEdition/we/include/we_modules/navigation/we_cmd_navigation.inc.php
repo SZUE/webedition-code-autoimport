@@ -31,4 +31,7 @@ switch($cmd){
 		return '../../we_showMod.php';
 	case 'we_navigation_dirSelector':
 		return 'selectors.inc.php';
+	case 'we_navigation_do_reset_customer_filter':
+		we_navigation_navigation::reset_customer_filter();
+		return true;
 }

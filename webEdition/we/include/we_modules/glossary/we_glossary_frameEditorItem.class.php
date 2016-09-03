@@ -27,7 +27,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 	public static function Header(we_glossary_frames $weGlossaryFrames){
 
 		$we_tabs = new we_tabs();
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, true, "setTab(1);",['title'=>g_l('modules_glossary', '[property]')]);
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, true, "setTab(1);", ['title' => g_l('modules_glossary', '[property]')]);
 
 		switch($weGlossaryFrames->View->Glossary->Type){
 			case we_glossary_glossary::TYPE_ABBREVATION:
@@ -57,7 +57,7 @@ class we_glossary_frameEditorItem extends we_glossary_frameEditor{
 
 		$out = weSuggest::getYuiFiles() .
 			we_html_element::jsElement('var table="' . GLOSSARY_TABLE . '";') .
-			we_html_element::jsScript(JS_DIR . 'we_modules/glossary/we_glossary_frameEditorItem.js', 'loadHeaderFooter();') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/we_glossary_frameEditorItem.js', 'loadHeaderFooter();') .
 			we_html_multiIconBox::getJs() .
 			we_html_element::htmlDiv(array('id' => 'tab1', 'style' => ($tabNr == 1 ? '' : 'display: none')), we_html_multiIconBox::getHTML('weMultibox', self::getHTMLTabProperties($weGlossaryFrames->View->Glossary), 30, '', 2, g_l('modules_glossary', '[show_extended_linkoptions]'), g_l('modules_glossary', '[hide_extended_linkoptions]'), false)) .
 			we_html_element::jsElement(
@@ -271,7 +271,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 		}
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId('docPath');
-		$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION)));
+		$yuiSuggest->setContentType([we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
 		$yuiSuggest->setInput('link[Attributes][InternLinkPath]', $linkPath);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(1);

@@ -33,8 +33,8 @@ if(!$transaction){
 echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
 		var transaction="' . $transaction . '";
 ') .
-	we_html_element::jsScript(JS_DIR . 'we_modules/messaging/messaging_std.js') .
-	we_html_element::jsScript(JS_DIR . 'we_modules/messaging/showFolder.js'));
+	we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/messaging_std.js') .
+	we_html_element::jsScript(WE_JS_MODULES_DIR . 'messaging/showFolder.js'));
 ?>
 <body style="margin:5px 7px;">
 	<?php

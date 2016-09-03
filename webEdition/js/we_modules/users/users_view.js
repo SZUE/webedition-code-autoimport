@@ -27,6 +27,9 @@
  */
 WE().util.loadConsts("g_l.users");
 
+var loaded = 0;
+var hot = 0;
+
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }

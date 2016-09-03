@@ -1134,7 +1134,7 @@ class we_objectFile extends we_document{
 				);
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId($int_elem_Name . we_base_file::getUniqueId());
-			$yuiSuggest->setContentType(implode(',', array(we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION)));
+			$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
 			$yuiSuggest->setInput($Path_elem_Name, $path, array('onchange' => ($showRadio ? "document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "")));
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(1);

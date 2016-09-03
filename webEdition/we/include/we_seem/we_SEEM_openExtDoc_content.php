@@ -32,7 +32,7 @@ $path = we_base_request::_(we_base_request::URL, "filepath");
 if(($content = we_base_file::load($path . '?' . urldecode(we_base_request::_(we_base_request::RAW, "paras", '')))) !== false){
 	echo we_SEEM::parseDocument($content);
 } else {
-	$table = new we_html_table(array('class' => 'default withSpace', 'style' => 'margin-left:20px; margin-top:20px;'), 2, 1);
+	$table = new we_html_table(['class' => 'default withSpace', 'style' => 'margin-left:20px; margin-top:20px;'], 2, 1);
 	$table->setCol(0, 0, ['class' => 'defaultfont'], sprintf(g_l('SEEM', '[ext_doc_not_found]'), $path));
 
 	//	there must be a navigation-history - so use it
