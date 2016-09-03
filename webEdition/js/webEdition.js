@@ -1814,3 +1814,15 @@ WE().layout.makeNewDoc = function (_EditorFrame, curType, curID, savetmpl, noClo
 			}
 	}
 };
+WE().layout.propEdit = {
+	switchExt: function (doc, id, name) {
+		var a = doc.we_form.elements;
+		var ok = true;
+		if (id) {
+			ok = confirm(WE().consts.g_l.main.confirm_ext_change);
+		}
+		if (ok) {
+			a["we_" + name + "_Extension"].value = (a["we_" + name + "_IsDynamic"].value == 1 ? WE().consts.global.DEFAULT_DYNAMIC_EXT : WE().consts.global.DEFAULT_STATIC_EXT);
+		}
+	}
+};

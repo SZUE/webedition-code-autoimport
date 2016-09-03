@@ -639,21 +639,21 @@ this.selectedIndex = 0;' .
 	 * @param string $script
 	 * @return string
 	 */
-	static function htmlYesNoCancelDialog($text = '', $img = '', $yes = '', $no = '', $cancel = '', $yesHandler = '', $noHandler = '', $cancelHandler = '', $script = ''){
+	static function htmlYesNoCancelDialog($text = '', $img = '', $yes = '', $no = '', $cancel = '', $yesHandler = '', $noHandler = '', $cancelHandler = ''){
 		$cancelButton = ($cancel ? we_html_button::create_button(we_html_button::CANCEL, 'javascript:' . $cancelHandler) : '');
 		$noButton = ($no ? we_html_button::create_button(we_html_button::NO, 'javascript:' . $noHandler) : '');
 		$yesButton = ($yes ? we_html_button::create_button(we_html_button::YES, 'javascript:' . $yesHandler) : '');
 
 
-		$content = new we_html_table(array('class' => 'default'), 1, ($img ? 2 : 1));
+		$content = new we_html_table(['class' => 'default'], 1, ($img ? 2 : 1));
 
 		if($img){
-			$content->setCol(0, 0, array('style' => 'vertical-align:top;padding:10px;'), $img);
+			$content->setCol(0, 0, ['style' => 'vertical-align:top;padding:10px;'], $img);
 		}
 
-		$content->setCol(0, ($img ? 1 : 0), array('class' => 'defaultfont', 'style' => 'padding:10px;'), $text);
+		$content->setCol(0, ($img ? 1 : 0), ['class' => 'defaultfont', 'style' => 'padding:10px;'], $text);
 
-		return self::htmlDialogLayout(($script ? we_html_element::jsElement($script) : '') . $content->getHtml(), '', we_html_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), '99%', 0);
+		return self::htmlDialogLayout($content->getHtml(), '', we_html_button::position_yes_no_cancel($yesButton, $noButton, $cancelButton), '99%', 0);
 	}
 
 	static function groupArray(array $arr, $sort = true, $len = 1){
