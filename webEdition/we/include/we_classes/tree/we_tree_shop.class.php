@@ -42,12 +42,10 @@ function startTree(){
 	}
 
 	function getJSTreeCode(){
-		$ret = we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::jsElement('
-var table="' . SHOP_TABLE . '";
-WE().util.loadConsts("g_l.shop");');
 		$menu = '
-			function loadData() {
+var table="' . SHOP_TABLE . '";
+WE().util.loadConsts("g_l.shop");
+function loadData() {
 				treeData.clear();
 				treeData.add(node.prototype.rootEntry(0, "root", "root"));';
 
@@ -114,8 +112,8 @@ WE().util.loadConsts("g_l.shop");');
 });";
 		}
 		$menu.='treeData.yearshop = ' . $year . ';
-			}';
-		return $ret . we_html_element::jsElement($menu) . parent::getJSTreeCode();
+}';
+		return we_html_element::cssLink(CSS_DIR . 'tree.css') . we_html_element::jsElement($menu) . parent::getJSTreeCode();
 	}
 
 }

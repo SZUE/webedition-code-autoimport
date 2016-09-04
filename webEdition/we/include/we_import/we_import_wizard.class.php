@@ -1466,10 +1466,6 @@ function handle_eventNext(){
 				(defined('OBJECT_TABLE') ? '' : 'v[import_type]') => 'documents')
 		);
 
-		$DefaultDynamicExt = DEFAULT_DYNAMIC_EXT;
-		$DefaultStaticExt = DEFAULT_STATIC_EXT;
-
-
 		$functions = "
 function set_button_state() {
 	top.frames.wizbusy.back_enabled = WE().layout.button.switch_button_state(top.wizbusy.document, 'back', 'enabled');

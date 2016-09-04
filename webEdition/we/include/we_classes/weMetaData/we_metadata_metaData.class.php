@@ -409,6 +409,9 @@ class we_metadata_metaData{
 	import_from:"' . oldHtmlspecialchars(g_l('metadata', '[import_from]')) . '",
 	fields:"' . oldHtmlspecialchars(g_l('metadata', '[fields]')) . '",
 	proposals:"' . oldHtmlspecialchars('Vorschlagsliste') . '",
+	error_meta_field_empty_msg:"' . addslashes(g_l('metadata', '[error_meta_field_empty_msg]')) . '",
+	meta_field_wrong_chars_messsage:"' . addslashes(g_l('metadata', '[meta_field_wrong_chars_messsage]')) . '",
+	meta_field_wrong_name_messsage:"' . addslashes(g_l('metadata', '[meta_field_wrong_name_messsage]')) . '",
 };
 ';
 	}

@@ -76,14 +76,13 @@ if($cmd0 === 'do_addToCollection'){
 	}
 }
 
-$init = [
-	'table' => $table,
-	'targetInsertIndex' => $insertIndex,
-	'targetInsertPos' => $insertPos,
-];
 echo we_html_tools::getHtmlTop() .
  $msg .
- we_html_element::jsScript(JS_DIR . 'weAddToCollection.js', '', ['id' => 'loadVarWeAddToCollection', 'data-init' => setDynamicVar($init)]) .
+ we_html_element::jsScript(JS_DIR . 'weAddToCollection.js', '', ['id' => 'loadVarWeAddToCollection', 'data-init' => setDynamicVar([
+		'table' => $table,
+		'targetInsertIndex' => $insertIndex,
+		'targetInsertPos' => $insertPos,
+])]) .
  weSuggest::getYuiFiles();
 
 if($cmd0 === "do_addToCollection"){

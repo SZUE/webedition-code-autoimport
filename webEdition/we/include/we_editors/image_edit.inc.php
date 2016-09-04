@@ -37,95 +37,48 @@ if(!($we_doc instanceof we_imageDocument)){
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 	case "image_resize":
-		$js = we_getImageResizeDialogJS();
+		$json = we_getImageResizeDialogJS();
 		$dialog = we_getImageResizeDialog();
 		break;
 	case "image_convertJPEG":
-		$js = we_getImageConvertDialogJS();
+		$json = we_getImageConvertDialogJS();
 		$dialog = we_getImageConvertDialog();
 		break;
 	case "image_rotate":
-		$js = we_getImageRotateDialogJS();
+		$json = we_getImageRotateDialogJS();
 		$dialog = we_getImageRotateDialog();
 		break;
 	default:
-		$dialog = $js = '';
+		$dialog = $json = '';
 }
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'image_edit.js') .
-	we_html_element::jsElement($js), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus()'], we_html_element::htmlForm(['name' => 'we_form'], $dialog)));
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'image_edit.js', '', ['id' => 'loadImage_edit', 'data-imgEdit' => setDynamicVar($json)]), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus()'], we_html_element::htmlForm(['name' => 'we_form'], $dialog)));
 
 function we_getImageResizeDialogJS(){
 	list($width, $height) = $GLOBALS['we_doc']->getOrigSize();
 
-	return 'var width = ' . $width . ';
-var height = ' . $height . ';
-var ratio_wh = width / height;
-var ratio_hw = height / width;
-
-function doOK(){
-	var f = document.we_form;
-	var qual = 8;
-
-	if (f.width.value == 0 || f.height.value == 0 || f.width.value == "0%" || f.height.value == "0%") {
-		' . we_message_reporting::getShowMessageCall(g_l('weClass', '[image_edit_null_not_allowed]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-		return;
-	}
-	var newWidth = (f.widthSelect.options[f.widthSelect.selectedIndex].value == "pixel") ? f.width.value : Math.round((width/100) * f.width.value);
-	var newHeight = (f.heightSelect.options[f.heightSelect.selectedIndex].value == "pixel") ? f.height.value : Math.round((height/100) * f.height.value);
-	if(doc.gdType==="jpg"){
-		qual = f.quality.options[f.quality.selectedIndex].value;
-	}
-	top.opener._EditorFrame.setEditorIsHot(true);
-	top.opener.we_cmd("resizeImage",newWidth,newHeight,qual);
-	top.close();
-}
-
-';
+	return [
+		'okCmd' => 'ResizeDialog',
+		'width' => $width,
+		'height' => $height,
+		'ratio_wh' => $width / $height,
+		'ratio_hw' => $height / $width,
+	];
 }
 
 function we_getImageConvertDialogJS(){
-	return 'function doOK(){
-	var f = document.we_form;
-	var qual = f.quality.options[f.quality.selectedIndex].value;
-	top.opener._EditorFrame.setEditorIsHot(true);
-	top.opener.top.we_cmd("doImage_convertJPEG", qual);
-	top.close();
-}
-';
+	return [
+		'okCmd' => 'ImageConvert'
+	];
 }
 
 function we_getImageRotateDialogJS(){
 
 	$imageSize = $GLOBALS['we_doc']->getOrigSize();
-
-	return 'function doOK(){
-	var f = document.we_form;
-	var qual = 8;
-	var degrees = 0;
-	var w = "' . $imageSize[0] . '";
-	var h= "' . $imageSize[1] . '";
-
-	for(var i=0; i<f.degrees.length;i++){
-		if(f.degrees[i].checked){
-			degrees = f.degrees[i].value;
-			break;
-		}
-	}
-	switch(parseInt(degrees)){
-		case 90:
-		case 270:
-			w = "' . $imageSize[1] . '";
-			h= "' . $imageSize[0] . '";
-			break;
-	}
-	if(doc.gdType==="jpg"){
-		qual = f.quality.options[f.quality.selectedIndex].value;
-	}
-	top.opener._EditorFrame.setEditorIsHot(true);
-	top.opener.top.we_cmd("rotateImage", w, h, degrees, qual);
-	top.close();
-}
-';
+	return [
+		'okCmd' => 'ImageRotate',
+		'width' => $imageSize[0],
+		'height' => $imageSize[1]
+	];
 }
 
 function we_getImageResizeDialog(){

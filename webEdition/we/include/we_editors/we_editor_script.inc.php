@@ -66,22 +66,20 @@ window.addEventListener("load", we_rpc_dw_onload);
 ';
 }
 
-$doc = [
-	'we_transaction' => we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0),
-	'oldparentid' => isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->ParentID) : 0,
-	'docName ' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Name : '',
-	'isFolder' => isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->IsFolder) : 0,
-	'docTable' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Table : '',
-	'docClass' => isset($GLOBALS['we_doc']) ? get_class($GLOBALS['we_doc']) : '',
-	'hasCustomerFilter' => intval(isset($GLOBALS['we_doc']) && defined('CUSTOMER_TABLE') && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)),
-	'hasGlossary' => intval(defined('GLOSSARY_TABLE') && isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE)),
-	'gdType' => $hasGD && isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->getGDType() : '',
-	'gdSupport' => intval($hasGD && isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->gd_support() : 0),
-	'isWEObject' => intval(isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT/* FIXME: only supported for type object || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE */)),
-	'WE_EDIT_IMAGE' => intval(defined('WE_EDIT_IMAGE')),
-];
-
 echo we_html_element::cssLink(CSS_DIR . 'editor.css') .
  we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
- we_html_element::jsScript(JS_DIR . 'we_editor_script.js', '', ['id' => 'loadVarEditor_script', 'data-doc' => setDynamicVar($doc)]) .
+ we_html_element::jsScript(JS_DIR . 'we_editor_script.js', '', ['id' => 'loadVarEditor_script', 'data-doc' => setDynamicVar([
+		'we_transaction' => we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0),
+		'oldparentid' => isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->ParentID) : 0,
+		'docName ' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Name : '',
+		'isFolder' => isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->IsFolder) : 0,
+		'docTable' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Table : '',
+		'docClass' => isset($GLOBALS['we_doc']) ? get_class($GLOBALS['we_doc']) : '',
+		'hasCustomerFilter' => intval(isset($GLOBALS['we_doc']) && defined('CUSTOMER_TABLE') && in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $GLOBALS['we_doc']->EditPageNrs) && isset($GLOBALS['we_doc']->documentCustomerFilter)),
+		'hasGlossary' => intval(defined('GLOSSARY_TABLE') && isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::WEDOCUMENT || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE)),
+		'gdType' => $hasGD && isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->getGDType() : '',
+		'gdSupport' => intval($hasGD && isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->gd_support() : 0),
+		'isWEObject' => intval(isset($GLOBALS['we_doc']) && ($GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT/* FIXME: only supported for type object || $GLOBALS['we_doc']->ContentType === we_base_ContentTypes::OBJECT_FILE */)),
+		'WE_EDIT_IMAGE' => intval(defined('WE_EDIT_IMAGE')),
+])]) .
  ($js ? we_html_element::jsElement($js) : '');

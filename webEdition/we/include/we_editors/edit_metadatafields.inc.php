@@ -24,71 +24,6 @@
 we_html_tools::protect();
 echo we_html_tools::getHtmlTop(g_l('metadata', '[headline]'));
 
-function getFooter(){
-	// Define needed JS
-	$meta_field_empty_messsage = addslashes(g_l('metadata', '[error_meta_field_empty_msg]'));
-	$meta_field_wrong_chars_messsage = addslashes(g_l('metadata', '[meta_field_wrong_chars_messsage]'));
-	$meta_field_wrong_name_messsage = addslashes(g_l('metadata', '[meta_field_wrong_name_messsage]'));
-
-	$javascript = <<< EOS
-function we_save() {
-	var _doc = document;
-	var inputs = _doc.getElementsByTagName('INPUT');
-	for(var i = 0; i < inputs.length; i++){
-		inputs[i].disabled = false;
-	}
-
-	var _z = 0;
-	var _field = _doc.forms[0].elements['metadataTag[' + _z + ']'] !== undefined ? _doc.forms[0].elements['metadataTag[' + _z + ']'] : null;
-
-	while (_field != null) {
-		if (!checkMetaFieldName(_field, _z)) {
-			return;
-		}
-		_z++;
-		_field = _doc.forms[0].elements['metadataTag[' + _z + ']'] !== undefined ? _doc.forms[0].elements['metadataTag[' + _z + ']'] : null;
-	}
-
-	_doc.getElementById('metadatafields_dialog').style.display = 'none';
-
-	_doc.getElementById('metadatafields_save').style.display = '';
-
-	_doc.we_form.save_metadatafields.value = 'true';
-	_doc.we_form.submit();
-}
-
-function checkMetaFieldName(inpElem, nr) {
-	var _val = inpElem.value;
-	var _forbiddenNames = ",data,width,height,border,align,hspace,vspace,alt,name,title,longdescid,useMetaTitle,scale,play,autoplay,quality,attrib,salign,loop,controller,volume,hidden,";
-	var _errtxt = "";
-	if (_val === "") {
-		_errtxt = "$meta_field_empty_messsage";
-		_errtxt = _errtxt.replace(/%s1/,nr+1);
-	} else if (_val.search(/[^a-zA-z0-9_]/) != -1) {
-		_errtxt = "$meta_field_wrong_chars_messsage";
-		_errtxt = _errtxt.replace(/%s1/,_val);
-	} else if (_forbiddenNames.indexOf(","+_val+",") >= 0) {
-		_errtxt = "$meta_field_wrong_name_messsage";
-		_errtxt = _errtxt.replace(/%s1/,_val);
-		_errtxt = _errtxt.replace(/%s2/,"\\n" + _forbiddenNames.substring(1,_forbiddenNames.length-1).replace(/,/g,", "));
-	}
-
-
-	if (_errtxt !== "") {
-		inpElem.focus();
-		inpElem.select();
-		WE().util.showMessage(_errtxt, 4, top);
-		return false;
-	}
-	return true;
-}
-
-EOS;
-
-	return we_html_element::jsElement($javascript) .
-		we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'height:100%;'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:we_save();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:" . "top.close()"), 10, '', '', 0));
-}
-
 /**
  * This function returns the HTML code of a dialog.
  *
@@ -154,15 +89,15 @@ function build_dialog($selected_setting = 'ui'){
 	switch($selected_setting){
 		// save dialog:
 		case 'save':
-			$settings = array(
-				array('headline' => '', 'html' => g_l('metadata', '[save]'),)
-			);
+			$settings = [
+				['headline' => '', 'html' => g_l('metadata', '[save]'),]
+			];
 			return create_dialog('', g_l('metadata', '[save_wait]'), $settings);
 		// SAVED SUCCESSFULLY DIALOG:
 		case 'saved':
-			$content = array(
-				array('headline' => '', 'html' => g_l('metadata', '[saved]'),)
-			);
+			$content = [
+				['headline' => '', 'html' => g_l('metadata', '[saved]'),]
+			];
 			// Build dialog element if user has permission
 			return create_dialog('', g_l('metadata', '[saved_successfully]'), $content);
 		// THUMBNAILS
@@ -172,20 +107,20 @@ function build_dialog($selected_setting = 'ui'){
 			$defined_fields = we_metadata_metaData::getDefinedMetaDataFields(we_metadata_metaData::ALL_BUT_STANDARD_FIELDS);
 			$defined_values = we_metadata_metaData::getDefinedMetaValues();
 
-			$metadata_types = array(
+			$metadata_types = [
 				'textfield' => 'textfield',
 				'textarea' => 'textarea',
 				//'wysiwyg' 	=> 'wysiwyg',
 				'date' => 'date'
-			);
+			];
 
-			$metadata_modes = array(
+			$metadata_modes = [
 				'none' => g_l('metadata', '[mode_none]'),
 				'manual' => g_l('metadata', '[mode_manually]'),
 				'auto' => g_l('metadata', '[mode_auto]')
-			);
+			];
 
-			$metadata_fields = array('' => '-- ' . g_l('metadata', '[add]') . ' --', 'Exif' => we_html_tools::OPTGROUP);
+			$metadata_fields = ['' => '-- ' . g_l('metadata', '[add]') . ' --', 'Exif' => we_html_tools::OPTGROUP];
 			$tmp = we_metadata_Exif::getUsedFields();
 			foreach($tmp as $key){
 				$metadata_fields[$key] = $key;
@@ -204,14 +139,13 @@ function build_dialog($selected_setting = 'ui'){
 			$standardFieldNames = explode(',', we_metadata_metaData::STANDARD_FIELDS);
 			foreach($standardFieldNames as $name){
 				$field = we_metadata_metaData::getMetaDataField($name) ? :
-					array(
-					'tag' => $name,
+					['tag' => $name,
 					'type' => 'textfield',
 					'importFrom' => '',
 					'mode' => 'none',
 					'csv' => ($name === 'Keywords' ? 1 : 0),
 					'closed' => 0,
-				);
+				];
 				$field['tagname'] = g_l('weClass', '[' . $name . ']');
 				$field['isStandard'] = true;
 				$standardFields[] = $field;
@@ -310,22 +244,19 @@ function build_dialog($selected_setting = 'ui'){
 	</tbody>
 </table>';
 
-			$js = we_html_element::jsElement('
-var phpdata={
-	tagInp:"' . addslashes(we_html_tools::htmlTextInput('metadataTag[__we_new_id__]', 24, "", 255, "", "text", 210)) . '",
-	importInp:"' . addslashes(we_html_tools::htmlTextInput('metadataImportFrom[__we_new_id__]', 24, "", 255, "", "text", 210)) . '",
-	typeSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $metadata_types, 1, 'textfield', false, ['class' => 'defaultfont', 'onchange' => 'toggleType(this, __we_new_id__)']))) . '",
-	fieldSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataType[__we_new_id__]', $metadata_fields, 1, '', false, ['class' => 'defaultfont', 'style' => 'width:100%', 'onchange' => 'addFieldToInput(this,__we_new_id__)']))) . '",
-	modeSel:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('metadataMode[__we_new_id__]', $metadata_modes, 1, 'none', false, ['class' => "defaultfont", 'style' => 'width:100%', 'onchange' => 'togglePropositionTable(this, __we_new_id__)']))) . '",
-	csvCheck:"' . str_replace("\n", "\\n", addslashes(we_html_forms::checkboxWithHidden(0, 'metadataCsv[__we_new_id__]', 'CSV'))) . '",
-	closedCheck:"' . str_replace("\n", "\\n", addslashes(we_html_forms::checkboxWithHidden(0, 'metadataClosed[__we_new_id__]', g_l('export', '[finish_progress]')))) . '",
-	addPropositionBtn:"' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, __we_new_id__)'))) . '",
-	trashButton:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_new_id__)") . '\',
-	proposalInp:"' . addslashes(we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310)) . '",
-	delPropositionBtn:"' . str_replace("\n", "\\n", addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:delProposition(this)'))) . '"
-
-};') .
-				we_html_element::jsScript(JS_DIR . 'edit_metadatafields.js');
+			$js = we_html_element::jsScript(JS_DIR . 'edit_metadatafields.js', '', ['id' => 'loadVarEdit_metadatafields', 'data-phpdata' => setDynamicVar([
+						'tagInp' => we_html_tools::htmlTextInput('metadataTag[__we_new_id__]', 24, "", 255, "", "text", 210),
+						'importInp' => we_html_tools::htmlTextInput('metadataImportFrom[__we_new_id__]', 24, "", 255, "", "text", 210),
+						'typeSel' => we_html_tools::htmlSelect('metadataType[__we_new_id__]', $metadata_types, 1, 'textfield', false, ['class' => 'defaultfont', 'onchange' => 'toggleType(this, __we_new_id__)']),
+						'fieldSel' => we_html_tools::htmlSelect('metadataType[__we_new_id__]', $metadata_fields, 1, '', false, ['class' => 'defaultfont', 'style' => 'width:100%', 'onchange' => 'addFieldToInput(this,__we_new_id__)']),
+						'modeSel' => we_html_tools::htmlSelect('metadataMode[__we_new_id__]', $metadata_modes, 1, 'none', false, ['class' => "defaultfont", 'style' => 'width:100%', 'onchange' => 'togglePropositionTable(this, __we_new_id__)']),
+						'csvCheck' => we_html_forms::checkboxWithHidden(0, 'metadataCsv[__we_new_id__]', 'CSV'),
+						'closedCheck' => we_html_forms::checkboxWithHidden(0, 'metadataClosed[__we_new_id__]', g_l('export', '[finish_progress]')),
+						'addPropositionBtn' => we_html_button::create_button(we_html_button::PLUS, 'javascript:addProposition(this, __we_new_id__)'),
+						'trashButton' => we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_new_id__)"),
+						'proposalInp' => we_html_tools::htmlTextInput('metadataProposal[__we_meta_id__][__we_prop_id__]', 24, "", 255, "", "text", 310),
+						'delPropositionBtn' => we_html_button::create_button(we_html_button::TRASH, 'javascript:delProposition(this)'),
+			])]);
 
 			$hint = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[fields_hint]'), we_html_tools::TYPE_INFO, 440, false, 50);
 			$hint2 = we_html_tools::htmlAlertAttentionBox(g_l('metadata', '[proposals_hint]'), we_html_tools::TYPE_INFO, 440, false);
@@ -348,7 +279,7 @@ var phpdata={
  */
 function render_dialog(){
 	// Render setting groups
-	return we_html_element::htmlDiv(array('id' => 'metadatafields_dialog'), build_dialog('dialog')) .
+	return we_html_element::htmlDiv(['id' => 'metadatafields_dialog'], build_dialog('dialog')) .
 		// Render save screen
 		we_html_element::htmlDiv(['id' => 'metadatafields_save', 'style' => 'display: none;'], build_dialog('save'));
 }
@@ -356,42 +287,31 @@ function render_dialog(){
 function getMainDialog(){
 	// Check if we need to save settings
 	if(we_base_request::_(we_base_request::BOOL, 'save_metadatafields')){
-		$save_javascript = '';
+		$save_javascript = new we_base_jsCmd();
 		$name = we_base_request::_(we_base_request::STRING, 'metadatafields_name');
 		if((strpos($name, "'") !== false || strpos($name, ',') !== false)){
-			$save_javascript = we_html_element::jsElement(we_message_reporting::getShowMessageCall(g_l('alert', '[metadatafields_hochkomma]'), we_message_reporting::WE_MESSAGE_ERROR) .
-					'history.back()');
+			$save_javascript->addCmd('msg', ['msg' => g_l('alert', '[metadatafields_hochkomma]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+			$save_javascript->addCmd('history.back');
 		} else {
 			save_all_values();
 
-			$save_javascript = we_html_element::jsElement($save_javascript .
-					we_message_reporting::getShowMessageCall(g_l('metadata', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE) .
-					'top.close();');
+			$save_javascript->addCmd('msg', ['msg' => g_l('metadata', '[saved]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+			$save_javascript->addCmd('close');
 		}
 
 		return
-			$save_javascript .
+			$save_javascript->getCmds() .
 			we_html_element::htmlDiv(['class' => 'weDialogBody', 'style' => 'height:100%;width:100%'], build_dialog('saved'));
 	}
 	return
-		we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['REQUEST_URI']], we_html_element::htmlHidden('save_metadatafields', 'false') . render_dialog())
-		. we_html_element::jsElement('init();');
+		we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['REQUEST_URI']], we_html_element::htmlHidden('save_metadatafields', 'false') . render_dialog()) .
+		we_html_element::jsElement('init();');
 }
 
 echo
-we_html_element::jsElement('
-function closeOnEscape() {
-	return true;
-}
-
-function saveOnKeyBoard() {
-	window.we_save();
-	return true;
-
-}'
-) . STYLESHEET .
+STYLESHEET .
  '</head>' .
  we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();']
-, we_html_element::htmlExIFrame('we_metadatafields', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow:auto;', 'weDialogBody') .
-	we_html_element::htmlExIFrame('we_metadatafields_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+	, we_html_element::htmlExIFrame('we_metadatafields', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow:auto;', 'weDialogBody') .
+	we_html_element::htmlDiv(['class' => 'weDialogButtonsBody', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'], we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:we_save();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:" . "top.close()"), 10, '', '', 0))
 ) . '</html>';

@@ -36,13 +36,13 @@ if(!($we_doc instanceof we_imageDocument)){
 	exit("ERROR: Couldn't initialize we_imageDocument object");
 }
 
-echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]'), '', '', we_html_element::jsElement('
-var transaction="' . $we_transaction . '";
-') .
-	we_html_element::jsScript(JS_DIR . 'add_thumb.js'));
+echo we_html_tools::getHtmlTop(g_l('weClass', '[thumbnails]'), '', '',
+	we_html_element::jsScript(JS_DIR . 'add_thumb.js', '', ['id' => 'loadVarAdd_thumb', 'data-thumbData' => setDynamicVar([
+			'transaction' => $we_transaction
+])]));
 
 // SELECT Box with thumbnails
-$thumbnails = new we_html_select(array("multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", 'class' => 'defaultfont', "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"));
+$thumbnails = new we_html_select(["multiple" => "multiple", "name" => "Thumbnails", "id" => "Thumbnails", 'class' => 'defaultfont', "size" => 6, "style" => "width: 340px;", "onchange" => "select_thumbnails(this);"]);
 $DB_WE->query('SELECT ID,Name,Format,description FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name');
 
 $thumbnail_counter_firsttime = true;

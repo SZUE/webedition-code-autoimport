@@ -27,6 +27,7 @@
  */
 
 WE().util.loadConsts("g_l.metadatafields");
+var phpdata = WE().util.getDynamicVar(document, 'loadVarEdit_metadatafields', 'data-phpdata');
 
 function togglePropositionTable(sel, index) {
 	var row = document.getElementById("proposalTable_" + index);
@@ -40,11 +41,11 @@ function togglePropositionTable(sel, index) {
 
 function toggleType(sel, index) {
 	var row = document.getElementById("proposalTable_" + index),
-		selMode = document.forms[0].elements["metadataMode[" + index + "]"],
-		checksDiv0 = document.getElementById('metadataProposalChecks0_' + index),
-		checksDiv1 = document.getElementById('metadataProposalChecks1_' + index),
-		modeDiv0 = document.getElementById('metadataModeDiv0_' + index),
-		modeDiv1 = document.getElementById('metadataModeDiv1_' + index);
+					selMode = document.forms[0].elements["metadataMode[" + index + "]"],
+					checksDiv0 = document.getElementById('metadataProposalChecks0_' + index),
+					checksDiv1 = document.getElementById('metadataProposalChecks1_' + index),
+					modeDiv0 = document.getElementById('metadataModeDiv0_' + index),
+					modeDiv1 = document.getElementById('metadataModeDiv1_' + index);
 
 	row.style.display = (sel.value !== "textfield" ? "none" : (selMode.options[selMode.selectedIndex].value === "none" ? "none" : "block"));
 	//selMode.disabled = sel.value === "textfield" ? false : true;
@@ -54,7 +55,7 @@ function toggleType(sel, index) {
 
 function delRow(id) {
 	var el = document.getElementById("row_" + id);
-	if(el){
+	if (el) {
 		el.parentNode.removeChild(el);
 	}
 }
@@ -91,7 +92,7 @@ function addRow() {
 	if (container) {
 		elem = document.createElement("TABLE");
 		elem.style.backgroundColor = '#f5f5f5';//margin-bottom:10px
-		elem.style.marginBottom ='10px';
+		elem.style.marginBottom = '10px';
 		elem.setAttribute("id", "elem_" + newID);
 
 		newRow = document.createElement("TR");
@@ -205,4 +206,66 @@ function getPropositionRow(indexMeta, indexProp) {
 	row.appendChild(cell);
 
 	return row;
+}
+
+function closeOnEscape() {
+	return true;
+}
+
+function saveOnKeyBoard() {
+	window.we_save();
+	return true;
+
+}
+
+function we_save() {
+	var _doc = document;
+	var inputs = _doc.getElementsByTagName('INPUT');
+	for (var i = 0; i < inputs.length; i++) {
+		inputs[i].disabled = false;
+	}
+
+	var _z = 0;
+	var _field = _doc.forms[0].elements['metadataTag[' + _z + ']'] !== undefined ? _doc.forms[0].elements['metadataTag[' + _z + ']'] : null;
+
+	while (_field != null) {
+		if (!checkMetaFieldName(_field, _z)) {
+			return;
+		}
+		_z++;
+		_field = _doc.forms[0].elements['metadataTag[' + _z + ']'] !== undefined ? _doc.forms[0].elements['metadataTag[' + _z + ']'] : null;
+	}
+
+	_doc.getElementById('metadatafields_dialog').style.display = 'none';
+
+	_doc.getElementById('metadatafields_save').style.display = '';
+
+	_doc.we_form.save_metadatafields.value = 'true';
+	_doc.we_form.submit();
+}
+
+function checkMetaFieldName(inpElem, nr) {
+	var _val = inpElem.value;
+	var _forbiddenNames = ",data,width,height,border,align,hspace,vspace,alt,name,title,longdescid,useMetaTitle,scale,play,autoplay,quality,attrib,salign,loop,controller,volume,hidden,";
+	var _errtxt = "";
+	if (_val === "") {
+		_errtxt = WE().consts.g_l.metadatafields.error_meta_field_empty_msg;
+		_errtxt = _errtxt.replace(/%s1/, nr + 1);
+	} else if (_val.search(/[^a-zA-z0-9_]/) != -1) {
+		_errtxt = WE().consts.g_l.metadatafields.meta_field_wrong_chars_messsage;
+		_errtxt = _errtxt.replace(/%s1/, _val);
+	} else if (_forbiddenNames.indexOf("," + _val + ",") >= 0) {
+		_errtxt = WE().consts.g_l.metadatafields.meta_field_wrong_name_messsage;
+		_errtxt = _errtxt.replace(/%s1/, _val);
+		_errtxt = _errtxt.replace(/%s2/, "\\n" + _forbiddenNames.substring(1, _forbiddenNames.length - 1).replace(/,/g, ", "));
+	}
+
+
+	if (_errtxt !== "") {
+		inpElem.focus();
+		inpElem.select();
+		WE().util.showMessage(_errtxt, 4, top);
+		return false;
+	}
+	return true;
 }
