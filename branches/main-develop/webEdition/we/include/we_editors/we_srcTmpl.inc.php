@@ -335,14 +335,12 @@ function getTagWizzard($we_doc){
 	];
 }
 
-$doc = [
-	'docName' => $we_doc->Name,
-	'docCharSet' => ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']),
-	'editorHighlightCurrentLine' => intval($_SESSION['prefs']['editorHighlightCurrentLine']),
-];
-
 echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
- we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', '', ['id' => 'loadVarSrcTmpl', 'data-doc' => setDynamicVar($doc)]);
+ we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', '', ['id' => 'loadVarSrcTmpl', 'data-doc' => setDynamicVar([
+		'docName' => $we_doc->Name,
+		'docCharSet' => ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']),
+		'editorHighlightCurrentLine' => intval($_SESSION['prefs']['editorHighlightCurrentLine']),
+])]);
 
 $code = ($we_doc instanceof we_htmlDocument ?
 		$we_doc->getDocumentCode() :

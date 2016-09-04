@@ -306,12 +306,7 @@ top.fileSelect.data.makeNewFolder=true;' .
 top.clearEntries();
 top.fileSelect.data.makeNewFolder=false;' .
 				($msg ? we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
-					'var ref;
-if(top.opener.top.treeData){
-	ref = top.opener.top;
-}else if(top.opener.top.opener.top.treeData){
-	ref = top.opener.top.opener.top;
-}
+					'var ref=(top.opener.top.treeData?top.opener.top:(top.opener.top.opener.top.treeData?top.opener.top.opener.top:null));
 if(ref){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});
 }' .
@@ -377,12 +372,7 @@ top.fileSelect.data.makeNewFolder=false;';
 		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 				$folder->we_save();
-				$js.='var ref;
-if(top.opener.top.treeData){
-	ref = top.opener.top;
-}else if(top.opener.top.opener.top.treeData){
-	ref = top.opener.top.opener.top;
-}
+				$js.='var ref=(top.opener.top.treeData?top.opener.top:(top.opener.top.opener.top.treeData?top.opener.top.opener.top:null));
 if(ref){
 	ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '",table:"' . $this->table . '"});
 }' .

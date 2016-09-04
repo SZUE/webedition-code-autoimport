@@ -115,7 +115,7 @@ abstract class we_base_jsConstants{
 		folder_copy_success: "' . we_message_reporting::prepareMsgForJS(g_l('copyFolder', '[copy_success]')) . '",
 		close_include:"' . we_message_reporting::prepareMsgForJS(g_l('SEEM', '[alert][close_include]')) . '",
 		untitled:"' . g_l('global', '[untitled]') . '",
-		confirm_ext_change:"'.	g_l('weClass', '[confirm_ext_change]').'",
+		confirm_ext_change:"' . g_l('weClass', '[confirm_ext_change]') . '",
 	},
 	message_reporting:{
 		notice:"' . g_l('alert', '[notice]') . '",
@@ -132,6 +132,7 @@ abstract class we_base_jsConstants{
 		copy_folder_not_valid: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[copy_folder_not_valid]')) . '",
 		exit_multi_doc_question: "' . g_l('alert', '[exit_multi_doc_question]') . '",
 		anchor_invalid:"' . g_l('linklistEdit', '[anchor_invalid]') . '",
+		image_edit_null_not_allowed:"' . g_l('weClass', '[image_edit_null_not_allowed]') . '",
 		in_wf_warning:{
 			tblFile:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : '') . '",
 			tblObjectFiles:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObjectFiles][in_wf_warning]') : '') . '",
@@ -146,11 +147,11 @@ abstract class we_base_jsConstants{
 	scheduler:{
 		activeSchedule:{
 			title:"' . g_l('button', '[saveInScheduler][alt]') . '",
-			value:"'.g_l('button', '[saveInScheduler][value]') . '",
+			value:"' . g_l('button', '[saveInScheduler][value]') . '",
 		},
 		inActiveSchedule:{
 			title:"' . g_l('button', '[publish][alt]') . '",
-			value:"'.g_l('button', '[publish][value]') . '",
+			value:"' . g_l('button', '[publish][value]') . '",
 		},
 	},
 	cockpit:{

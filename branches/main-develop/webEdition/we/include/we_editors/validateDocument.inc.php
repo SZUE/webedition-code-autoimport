@@ -125,13 +125,13 @@ $parts = [
 
 //  css for webSite
 echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-host = {};
-path = {};
-varname = {};
-checkvia = {};
-ctype = {};
-s_method = {};
-additionalVars = {};' .
+var host = {};
+var path = {};
+var varname = {};
+var checkvia = {};
+var ctype = {};
+var s_method = {};
+var additionalVars = {};' .
 		$js) .
 	we_html_element::jsScript(JS_DIR . 'validateDocument.js'), we_html_element::htmlBody(
 		['class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'], '<form name="we_form">'

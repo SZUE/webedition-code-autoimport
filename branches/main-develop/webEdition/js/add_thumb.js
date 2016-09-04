@@ -26,6 +26,8 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
+var thumbData = WE().util.getDynamicVar(document, 'loadVarAdd_thumb', 'data-thumbData');
+
 function add_thumbnails() {
 	sel = document.getElementById("Thumbnails");
 	var thumbs = "";
@@ -68,6 +70,6 @@ function select_thumbnails(sel) {
 
 	WE().layout.button.switch_button_state(document, "add", (thumbs.length ? "enabled" : "disabled"));
 
-	self.showthumbs.location = WE().consts.dirs.WEBEDITION_DIR + "showThumb.php?u=" + Math.random() + "&t=" + transaction + "&id=" + encodeURI(thumbs.join(","));
+	self.showthumbs.location = WE().consts.dirs.WEBEDITION_DIR + "showThumb.php?u=" + Math.random() + "&t=" + thumbData.transaction + "&id=" + encodeURI(thumbs.join(","));
 
 }

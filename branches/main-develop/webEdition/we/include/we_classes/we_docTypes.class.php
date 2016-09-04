@@ -265,16 +265,7 @@ class we_docTypes extends we_class{
 	private function formIsDynamic(){
 		$n = 'we_' . $this->Name . '_IsDynamic';
 
-		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', '[IsDynamic]'), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0'); switchExt();") . we_html_element::htmlHidden($n, ($this->IsDynamic ? 1 : 0)) .
-			we_html_element::jsElement('
-function switchExt(){
-	var a=document.we_form.elements;' .
-				($this->ID ?
-					'if(confirm("' . g_l('weClass', '[confirm_ext_change]') . '")){' : '') .
-				'if(a["we_' . $this->Name . '_IsDynamic"].value==1) {var changeto="' . DEFAULT_DYNAMIC_EXT . '";} else {var changeto="' . DEFAULT_STATIC_EXT . '";}
-	a["we_' . $this->Name . '_Extension"].value=changeto;' .
-				($this->ID ? '}' : '') . '
-}');
+		return we_html_forms::checkbox(1, $this->IsDynamic, "check_" . $n, g_l('weClass', '[IsDynamic]'), true, "defaultfont", "this.form.elements['" . $n . "'].value = (this.checked ? '1' : '0');WE().layout.propEdit.switchExt(document," . intval($this->ID) . ",'" . $this->Name . "');");
 	}
 
 	private function formIsSearchable(){
