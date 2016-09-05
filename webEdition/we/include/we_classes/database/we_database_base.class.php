@@ -1018,7 +1018,7 @@ abstract class we_database_base{
 		if($oldcol == $newcol){
 			return;
 		}
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $oldcol . '` `' . $newcol . '`');
+		$this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $oldcol . '` `' . $newcol . '` ' . $this->getColTyp($tab, $oldcol));
 	}
 
 	/**
