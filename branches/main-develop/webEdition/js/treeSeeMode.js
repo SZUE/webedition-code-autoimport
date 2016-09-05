@@ -31,7 +31,8 @@ var treeData={
 	},
 	unselectNode:function(){
 	}
-}
+};
+
 function drawTree(){
 }
 

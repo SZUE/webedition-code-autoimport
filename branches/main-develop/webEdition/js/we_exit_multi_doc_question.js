@@ -38,7 +38,7 @@ function setHotDocuments() {
 		_hotDocumentsOfCt[ct].push(allHotDocuments[frameId]);
 	}
 
-	for (var ct in _hotDocumentsOfCt) {
+	for (ct in _hotDocumentsOfCt) {
 		var liCtElem = document.createElement("li");
 		liCtElem.innerHTML = question.ctLngs[ct];
 

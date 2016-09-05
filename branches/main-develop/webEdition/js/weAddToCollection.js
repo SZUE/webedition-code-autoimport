@@ -44,7 +44,8 @@ weAddToCollection = {
 	},
 	press_ok_add: function () {
 		var sel = '';
-		for (var i = 1; i <= top.treeData.len; i++) {
+		var i;
+		for (i = 1; i <= top.treeData.len; i++) {
 			if (top.treeData[i].checked == 1) {
 				sel += (top.treeData[i].id + ",");
 			}
@@ -122,7 +123,7 @@ weAddToCollection = {
 				if (onInsertClose) {
 					this.we_cmd('exit_addToCollection', '', 'we65_tblFile');
 				} else {
-					for (var i = 1; i <= top.treeData.len; i++) {
+					for (i = 1; i <= top.treeData.len; i++) {
 						if (top.treeData[i].constructor.name === 'node' && top.treeData[i].checked) {
 							top.treeData.checkNode('img_' + top.treeData[i].id);
 						}

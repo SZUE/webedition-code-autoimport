@@ -35,10 +35,10 @@ function changeSchedOption(elem, nr) {
 }
 
 function checkFooter() {
-	var button = parent.editFooter.document.getElementById("publish_" + scheduler.docID)
+	var button = parent.editFooter.document.getElementById("publish_" + scheduler.docID);
 	var aEl = document.getElementsByClassName("we_schedule_active");
 	var active = false;
-	if (button != undefined) {
+	if (button !== undefined) {
 		button = button.getElementsByTagName("button")[0];
 		for (var i = 0; i < aEl.length; ++i) {
 			if (aEl[i].value == 1) {

@@ -49,8 +49,8 @@ function dropzoneAddPreview(name, id, table, ct, path) {
 	}
 
 	if (specialmode) {
-		id = document.we_form.elements['yuiAcResultImage'].value;
-		path = document.we_form.elements['yuiAcInputImage'].value;
+		id = document.we_form.elements.yuiAcResultImage.value;
+		path = document.we_form.elements.yuiAcInputImage.value;
 		table = WE().consts.tables.FILE_TABLE;
 		ct = WE().consts.contentTypes.IMAGE;
 	}

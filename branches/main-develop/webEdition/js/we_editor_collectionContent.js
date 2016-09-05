@@ -199,6 +199,7 @@ weCollectionEdit = {
 				this.sliderDiv.style.display = 'none';
 				break;
 			case 'grid':
+			/* falls through */
 			default:
 				this.view = view;
 				this.ct.grid.style.display = 'inline-block';

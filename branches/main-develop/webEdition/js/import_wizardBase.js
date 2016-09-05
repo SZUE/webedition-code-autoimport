@@ -218,7 +218,7 @@ function handle_eventStep0(evt) {
 			break;
 		case 'next':
 			for (var i = 0; i < f.type.length; i++) {
-				if (f.type[i].checked == true) {
+				if (f.type[i].checked) {
 					switch (f.type[i].value) {
 						case 'file_import':
 							top.location.href = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import_files';

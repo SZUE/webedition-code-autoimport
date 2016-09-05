@@ -25,7 +25,7 @@
  */
 
 function initMove(table) {
-	top.treeData.setState(top.treeData.tree_states["select"]);
+	top.treeData.setState(top.treeData.tree_states.select);
 	if (top.treeData.table !== table) {
 		top.treeData.table = table;
 		we_cmd("load", table);
@@ -106,7 +106,7 @@ function press_ok_move(type) {
 
 	var _open_move_editors = [];
 
-	for (frameId in _usedEditors) {
+	for (var frameId in _usedEditors) {
 		if (_move_table == _usedEditors[frameId].getEditorEditorTable()) {
 			_open_move_editors.push(_usedEditors[frameId]);
 		}

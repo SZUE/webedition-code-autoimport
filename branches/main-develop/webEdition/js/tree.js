@@ -340,6 +340,7 @@ container.prototype = {
 	},
 	checkNode: function (imgName) {
 		var object_name = imgName.substring(4, imgName.length);
+		var tmp;
 		for (var i = 1; i <= this.len; i++) {
 			if (this[i].id != object_name) {
 				continue;
@@ -349,7 +350,7 @@ container.prototype = {
 				this[i].applylayout();
 				try {
 					if (treeData.frames.tree.document.getElementsByName(imgName)) {
-						var tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
+						tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
 						tmp.classList.remove('fa-check-square-o');
 						tmp.classList.add('fa-square-o');
 					}
@@ -362,7 +363,7 @@ container.prototype = {
 			this[i].applylayout();
 			try {
 				if (treeData.frames.tree.document.getElementsByName(imgName)) {
-					var tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
+					tmp = treeData.frames.tree.document.getElementsByName(imgName)[0];
 					tmp.classList.remove('fa-square-o');
 					tmp.classList.add('fa-check-square-o');
 				}

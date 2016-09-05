@@ -84,6 +84,7 @@ function showDateHelp() {
 
 function checkForm() {
 	var f = document.forms[0];
+	var i, search, result, index, key;
 	var createType = f.createType.options[f.createType.selectedIndex].value;
 	if (createType === "specify") {
 		// check if template is selected
@@ -94,25 +95,25 @@ function checkForm() {
 		// check value of fields
 		var fields = [];
 		var inputElements = f.getElementsByTagName("input");
-		for (var i = 0; i < inputElements.length; i++) {
-			if (inputElements[i].name.indexOf("fields[") == 0) {
-				var search = /^fields\[([^\]]+)\]\[([^\]]+)\]$/;
-				var result = search.exec(inputElements[i].name);
-				var index = parseInt(result[1]);
-				var key = result[2];
-				if (fields[index] == null) {
+		for (i = 0; i < inputElements.length; i++) {
+			if (inputElements[i].name.indexOf("fields[") === 0) {
+				search = /^fields\[([^\]]+)\]\[([^\]]+)\]$/;
+				result = search.exec(inputElements[i].name);
+				index = parseInt(result[1]);
+				key = result[2];
+				if (fields[index] === null) {
 					fields[index] = {};
 				}
 				fields[index][key] = inputElements[i].value;
 			}
 		}
 		var textareaElements = f.getElementsByTagName("textarea");
-		for (var i = 0; i < textareaElements.length; i++) {
+		for (i = 0; i < textareaElements.length; i++) {
 			if (textareaElements[i].name.indexOf("fields[") === 0) {
-				var search = /^fields\[([^\]]+)\]\[([^\]]+)\]$/;
-				var result = search.exec(textareaElements[i].name);
-				var index = parseInt(result[1]);
-				var key = result[2];
+				search = /^fields\[([^\]]+)\]\[([^\]]+)\]$/;
+				result = search.exec(textareaElements[i].name);
+				index = parseInt(result[1]);
+				key = result[2];
 				if (fields[index] === null) {
 					fields[index] = {};
 				}
@@ -120,8 +121,8 @@ function checkForm() {
 			}
 		}
 		var filled = 0;
-		for (var i = 0; i < fields.length; i++) {
-			if (fields[i]["pre"].length > 0 && fields[i]["post"].length > 0) {
+		for (i = 0; i < fields.length; i++) {
+			if (fields[i].pre.length > 0 && fields[i].post.length > 0) {
 				filled = 1;
 				break;
 			}

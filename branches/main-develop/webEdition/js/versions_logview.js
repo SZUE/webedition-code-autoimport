@@ -30,13 +30,13 @@ var currentId = 0;
 
 var ajaxCallbackDetails = {
 	success: function (o) {
-		if (o.responseText !== undefined && o.responseText != "") {
+		if (o.responseText !== undefined && o.responseText !== "") {
 			document.getElementById("dataContent_" + currentId + "").innerHTML = o.responseText;
 		}
 	},
 	failure: function (o) {
 	}
-}
+};
 
 function openDetails(id) {
 	currentId = id;

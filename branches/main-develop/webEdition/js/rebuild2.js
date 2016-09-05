@@ -47,6 +47,7 @@ function we_cmd() {
 	f = document.we_form;
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
+	var cats,i, folders;
 
 	switch (args[0]) {
 		case "we_selector_directory":
@@ -57,8 +58,8 @@ function we_cmd() {
 			break;
 		case "add_cat":
 			var catsToAdd = makeArrayFromCSV(args[1]);
-			var cats = makeArrayFromCSV(f.categories.value);
-			for (var i = 0; i < catsToAdd.length; i++) {
+			cats = makeArrayFromCSV(f.categories.value);
+			for (i = 0; i < catsToAdd.length; i++) {
 				if (!WE().util.in_array(catsToAdd[i], cats)) {
 					cats.push(catsToAdd[i]);
 				}
@@ -69,9 +70,9 @@ function we_cmd() {
 			break;
 		case "del_cat":
 			var catToDel = args[1];
-			var cats = makeArrayFromCSV(f.categories.value);
+			cats = makeArrayFromCSV(f.categories.value);
 			var newcats = [];
-			for (var i = 0; i < cats.length; i++) {
+			for (i = 0; i < cats.length; i++) {
 				if (cats[i] != catToDel) {
 					newcats.push(cats[i]);
 				}
@@ -88,8 +89,8 @@ function we_cmd() {
 			break;
 		case "add_folder":
 			var foldersToAdd = makeArrayFromCSV(args[1]);
-			var folders = makeArrayFromCSV(f[WE().session.rebuild.folders].value);
-			for (var i = 0; i < foldersToAdd.length; i++) {
+			folders = makeArrayFromCSV(f[WE().session.rebuild.folders].value);
+			for (i = 0; i < foldersToAdd.length; i++) {
 				if (!WE().util.in_array(foldersToAdd[i], folders)) {
 					folders.push(foldersToAdd[i]);
 				}
@@ -100,9 +101,9 @@ function we_cmd() {
 			break;
 		case "del_folder":
 			var folderToDel = args[1];
-			var folders = makeArrayFromCSV(f[WE().session.rebuild.folders].value);
+			folders = makeArrayFromCSV(f[WE().session.rebuild.folders].value);
 			var newfolders = [];
-			for (var i = 0; i < folders.length; i++) {
+			for (i = 0; i < folders.length; i++) {
 				if (folders[i] != folderToDel) {
 					newfolders.push(folders[i]);
 				}
@@ -119,7 +120,7 @@ function we_cmd() {
 		case "toggle_all_fields":
 			var _elem = document.we_form.elements;
 			var checked = 0;
-			for (var i = 0; i < _elem.length; i++) {
+			for (i = 0; i < _elem.length; i++) {
 				if (_elem[i].name.substring(0, 7) == "_field[") {
 					_elem[i].checked = !_elem[i].checked;
 					if (_elem[i].checked) {

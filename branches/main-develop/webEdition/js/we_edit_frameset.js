@@ -133,7 +133,7 @@ function edit_framesetStart(Text, Path, Table, Id, Transaction, ContentType, Par
 		}
 	}
 
-	if (top.treeData && (top.treeData.state == top.treeData.tree_states["select"] || top.treeData.state == top.treeData.tree_states["selectitem"])) {
+	if (top.treeData && (top.treeData.state == top.treeData.tree_states.select || top.treeData.state == top.treeData.tree_states.selectitem)) {
 		top.we_cmd("exit_delete");
 	}
 

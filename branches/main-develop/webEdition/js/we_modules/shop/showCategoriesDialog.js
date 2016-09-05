@@ -24,11 +24,13 @@
  */
 var hot = 0;
 
+function setHot() {
+	hot = 1;
+}
+
 function addListeners() {
 	for (var i = 1; i < document.we_form.elements.length; i++) {
-		document.we_form.elements[i].addEventListener("change", function () {
-			hot = 1;
-		});
+		document.we_form.elements[i].addEventListener("change", setHot());
 	}
 }
 
