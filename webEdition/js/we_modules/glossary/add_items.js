@@ -126,7 +126,7 @@ function fadeout(id, from, step, speed) {
 	}
 }
 function we_save_document() {
-	top.opener._showGlossaryCheck = 0;
+	top.opener.doc._showGlossaryCheck = 0;
 	top.opener.we_save_document();
 	top.close();
 }

@@ -35,10 +35,9 @@ if(permissionhandler::hasPerm('administrator')){
 	$deleteLogBut = we_html_button::create_button('clear_log', "javascript:clearLog()");
 
 
-	$headline = array(
-		array('dat' => we_html_element::htmlB("IP Adresse")),
-		array('dat' => we_html_element::htmlB("Datum/Uhrzeit"))
-	);
+	$headline = [['dat' => we_html_element::htmlB("IP Adresse")],
+		['dat' => we_html_element::htmlB("Datum/Uhrzeit")]
+	];
 
 	$content = [];
 
@@ -53,10 +52,9 @@ if(permissionhandler::hasPerm('administrator')){
 	$num_rows = $GLOBALS['DB_WE']->num_rows();
 	if($num_rows > 0){
 		while($GLOBALS['DB_WE']->next_record()){
-			$content[] = array(
-				array('dat' => $GLOBALS['DB_WE']->f("ip")),
-				array('dat' => $GLOBALS['DB_WE']->f("unixTime"))
-			);
+			$content[] = [['dat' => $GLOBALS['DB_WE']->f("ip")],
+				['dat' => $GLOBALS['DB_WE']->f("unixTime")]
+			];
 		}
 
 		$next = $start + $count;
@@ -75,26 +73,22 @@ if(permissionhandler::hasPerm('administrator')){
 			) .
 			"</td></tr></table>";
 
-		$parts = array(
-			array(
-				'headline' => '',
-				'html' => we_html_tools::htmlDialogBorder3(730, $content, $headline) . $nextprev,
-				'noline' => 1
-			)
-		);
+		$parts = [['headline' => '',
+			'html' => we_html_tools::htmlDialogBorder3(730, $content, $headline) . $nextprev,
+			'noline' => 1
+			]
+		];
 	} else {
-		$parts = array(
-			array(
-				'headline' => '',
-				'html' => we_html_element::htmlSpan(array('class' => 'middlefont lowContrast'), g_l('prefs', '[log_is_empty]')) .
-				we_html_element::htmlBr() .
-				we_html_element::htmlBr(),
-				'noline' => 1
-			)
-		);
+		$parts = [['headline' => '',
+			'html' => we_html_element::htmlSpan(['class' => 'middlefont lowContrast'], g_l('prefs', '[log_is_empty]')) .
+			we_html_element::htmlBr() .
+			we_html_element::htmlBr(),
+			'noline' => 1
+			]
+		];
 	}
 
-	$body = we_html_element::htmlBody(array('class' => "weDialogBody", 'onload' => 'self.focus();'), we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::formatButtons($refresh . $close . $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'))
+	$body = we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();'], we_html_multiIconBox::getHTML("show_log_data", $parts, 30, we_html_button::formatButtons($refresh . $close . $deleteLogBut), -1, '', '', false, g_l('prefs', '[formmail_log]'))
 	);
 
 

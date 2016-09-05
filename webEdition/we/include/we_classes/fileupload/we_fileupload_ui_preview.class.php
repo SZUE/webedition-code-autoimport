@@ -492,18 +492,6 @@ function selectCategories() {
 		return 'if(window.we_FileUpload === undefined){alert("what\'s wrong?");}else{' . $call . ';}';
 	}
 
-	public static function getJsOnLeave($callback, $type = 'switch_tab'){
-		if($type === 'switch_tab'){
-			$parentObj = 'WE().layout.weEditorFrameController';
-			$frame = 'WE().layout.weEditorFrameController.getVisibleEditorFrame()';
-		} else {
-			$parentObj = 'top._EditorFrame';
-			$frame = '_EditorFrame.getContentEditor()';
-		}
-
-		return "var fileupload; if(" . $parentObj . " !== undefined && (fileUpload = " . $frame . ".we_FileUpload) !== undefined && fileUpload.getType() === 'binDoc'){fileUpload.doUploadIfReady(function(){" . $callback . "})}else{" . $callback . "}";
-	}
-
 	public function setIsExternalBtnUpload($isExternal){
 		$this->isExternalBtnUpload = $isExternal;
 	}

@@ -43,7 +43,6 @@ if(permissionhandler::hasPerm("administrator")){
 		['dat' => ''],
 	];
 
-
 	$content = [];
 
 	$count = 15;
@@ -110,7 +109,6 @@ function clearLog() {
 }
 function clearEntry(id,ip) {
 	var txt = "' . addslashes(g_l('prefs', '[clear_block_entry_question]')) . '";
-
 
 	if (confirm(txt.replace(/%s/,ip))) {
 		document.location="' . $_SERVER['SCRIPT_NAME'] . '?clearEntry="+id;
