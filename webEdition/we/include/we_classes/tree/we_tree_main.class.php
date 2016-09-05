@@ -40,8 +40,8 @@ treeData.table="' . FILE_TABLE . '";';
 
 //	This is needed in SeeMode
 		$s = '
-isEditInclude = false;
-weWindow = top;
+var isEditInclude = false;
+var weWindow = top;
 while(1){
 	if(!weWindow.top.opener || weWindow.treeData){
 			break;

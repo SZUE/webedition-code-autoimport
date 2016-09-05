@@ -23,6 +23,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var editFrameset = WE().util.getDynamicVar(document, 'loadVarEdit_frameset', 'data-editFrameset');
+
 var unlock = false;
 var scrollToVal = 0;
 var editorScrollPosTop = 0;
@@ -85,7 +87,7 @@ function checkDocument() {
 		//	Location not known - empty top and footer
 
 		//	close window, when in seeMode include window.
-		if (SEEM_edit_include) {
+		if (editFrameset.SEEM_edit_include) {
 			WE().util.showMessage(WE().consts.g_l.main.close_include, WE().consts.message.WE_MESSAGE_ERROR, window);
 			top.close();
 		} else {
@@ -106,7 +108,7 @@ function checkDocument() {
 function doUnload() {
 	try {
 		closeAllModalWindows();
-		if (USERACCESS) {
+		if (editFrameset.USERACCESS) {
 			if (!unlock && (!top.opener || top.opener.win)) {	//	login to super easy edit mode
 				unlock = true;
 			}

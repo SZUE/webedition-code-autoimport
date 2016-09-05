@@ -74,7 +74,7 @@ function setProgress' . $this->name . '(progress){
 	}
 
 	public function addText($text = "", $place = 0, $id = "", $class = "small", $color = "#006699", $height = 10, $bold = 1){
-		$this->texts[] = array('name' => $id, "text" => $text, "class" => $class, "color" => $color, "bold" => $bold, "italic" => 0, "place" => $place, "height" => $height);
+		$this->texts[] = ['name' => $id, "text" => $text, "class" => $class, "color" => $color, "bold" => $bold, "italic" => 0, "place" => $place, "height" => $height];
 	}
 
 	private function setProgress($progress = 0){
