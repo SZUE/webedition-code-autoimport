@@ -94,7 +94,6 @@ echo we_html_element::jsElement("
 		window_closed();
 		self.close();
 	}
-
 ") . we_html_element::jsScript(JS_DIR . 'exit_doc_question.js');
 
 // $yesCmd: $REQUEST['we_cmd'][6] => next-EditCommand, JS-Function Call !! after save document.

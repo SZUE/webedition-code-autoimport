@@ -1,0 +1,155 @@
+/* global WE, top, self*/
+
+/**
+ * webEdition CMS
+ *
+ * $Rev: 12723 $
+ * $Author: mokraemer $
+ * $Date: 2016-09-05 12:48:58 +0200 (Mo, 05. Sep 2016) $
+ *
+ * This source is part of webEdition CMS. webEdition CMS is
+ * free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * any later version.
+ *
+ * The GNU General Public License can be found at
+ * http://www.gnu.org/copyleft/gpl.html.
+ * A copy is found in the textfile
+ * webEdition/licenses/webEditionCMS/License.txt
+ *
+ * @category   webEdition
+ * @package    webEdition_base
+ * @license    http://www.gnu.org/copyleft/gpl.html  GPL
+ */
+
+WE().util.loadConsts("g_l.import");
+
+function we_cmd() {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+		case "we_selector_image":
+		case "we_selector_document":
+			new (WE().util.jsWindow)(this, url, "we_docselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			break;
+
+		case "we_selector_directory":
+			new (WE().util.jsWindow)(this, url, "we_dirselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+			break;
+		case "browse_server":
+			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 800, 400, true, false, true);
+			break;
+		case "siteImportCreateWePageSettings":
+			new (WE().util.jsWindow)(this, url, "siteImportCreateWePageSettings", -1, -1, 520, 600, true, false, true);
+			break;
+		default:
+			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+	}
+}
+
+function hideTable() {
+	document.getElementById("specifyParam").style.display = "none";
+}
+
+function displayTable() {
+	if (document.we_form.templateID.value > 0) {
+		document.getElementById("specifyParam").style.display = "block";
+		var iframeObj = document.getElementById("iloadframe");
+		iframeObj.src = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=updateSiteImportTable&tid=" + document.we_form.templateID.value;
+	}
+}
+function doUnload() {
+	WE().util.jsWindow.prototype.closeAll(window);
+}
+
+
+function createTypeChanged(s) {
+	var val = s.options[s.selectedIndex].value;
+	document.getElementById("ctauto").style.display = (val === "auto") ? "block" : "none";
+	document.getElementById("ctspecify").style.display = (val === "specify") ? "block" : "none";
+}
+
+function dateFormatChanged(s) {
+	var val = s.options[s.selectedIndex].value;
+	document.getElementById("ownValueInput").style.display = (val === "own") ? "block" : "none";
+	document.getElementById("ownValueInputHelp").style.display = (val === "own") ? "block" : "none";
+}
+
+function showDateHelp() {
+	// this is a real alert, dont use showMessage yet
+	top.we_showMessage(WE().consts.g_l.import.format_timestamp, top.WE().consts.message.WE_MESSAGE_INFO, window);
+}
+
+function checkForm() {
+	var f = document.forms[0];
+	var createType = f.createType.options[f.createType.selectedIndex].value;
+	if (createType === "specify") {
+		// check if template is selected
+		if (f.templateID.value == "0" || f.templateID.value === "") {
+			top.we_showMessage(WE().consts.g_l.import.pleaseSelectTemplateAlert, top.WE().consts.message.WE_MESSAGE_ERROR, window);
+			return false;
+		}
+		// check value of fields
+		var fields = [];
+		var inputElements = f.getElementsByTagName("input");
+		for (var i = 0; i < inputElements.length; i++) {
+			if (inputElements[i].name.indexOf("fields[") == 0) {
+				var search = /^fields\[([^\]]+)\]\[([^\]]+)\]$/;
+				var result = search.exec(inputElements[i].name);
+				var index = parseInt(result[1]);
+				var key = result[2];
+				if (fields[index] == null) {
+					fields[index] = {};
+				}
+				fields[index][key] = inputElements[i].value;
+			}
+		}
+		var textareaElements = f.getElementsByTagName("textarea");
+		for (var i = 0; i < textareaElements.length; i++) {
+			if (textareaElements[i].name.indexOf("fields[") === 0) {
+				var search = /^fields\[([^\]]+)\]\[([^\]]+)\]$/;
+				var result = search.exec(textareaElements[i].name);
+				var index = parseInt(result[1]);
+				var key = result[2];
+				if (fields[index] === null) {
+					fields[index] = {};
+				}
+				fields[index][key] = textareaElements[i].value;
+			}
+		}
+		var filled = 0;
+		for (var i = 0; i < fields.length; i++) {
+			if (fields[i]["pre"].length > 0 && fields[i]["post"].length > 0) {
+				filled = 1;
+				break;
+			}
+		}
+		if (filled === 0) {
+			top.we_showMessage(WE().consts.g_l.import.startEndMarkAlert, top.WE().consts.message.WE_MESSAGE_ERROR, window);
+			return false;
+		}
+		if (document.getElementById("ownValueInput").style.display !== "none") {
+			if (f.dateformatField.value.length === 0) {
+				top.we_showMessage(WE().consts.g_l.import.errorEmptyDateFormat, top.WE().consts.message.WE_MESSAGE_ERROR, window);
+				return false;
+			}
+		}
+	} else {
+		if (f.templateName.value.length === 0) {
+			top.we_showMessage(WE().consts.g_l.import.nameOfTemplateAlert, top.WE().consts.message.WE_MESSAGE_ERROR, window);
+			f.templateName.focus();
+			f.templateName.select();
+			return false;
+		}
+		var reg = /[^a-z0-9\._+\-]/gi;
+		if (reg.test(f.templateName.value)) {
+			top.we_showMessage(WE().consts.g_l.import.we_filename_notValid, top.WE().consts.message.WE_MESSAGE_ERROR, window);
+			f.templateName.focus();
+			f.templateName.select();
+			return false;
+		}
+	}
+	return true;
+}

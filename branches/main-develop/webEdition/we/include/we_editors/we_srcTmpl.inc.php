@@ -258,7 +258,6 @@ function getTagWizzard($we_doc){
 
 	$tagGroups = we_wizard_tag::getWeTagGroups($allWeTags);
 
-	$groupJs = '';
 	$selectedGroup = !empty($we_doc->TagWizardSelection) ? $we_doc->TagWizardSelection : "alltags";
 	$groupselect = '<select class="weSelect" style="width: 250px;" id="weTagGroupSelect" name="we_' . $we_doc->Name . '_TagWizardSelection" onchange="selectTagGroup(this.value);">
 <optgroup label="' . g_l('weCodeWizard', '[snippets]') . '">
@@ -267,7 +266,7 @@ function getTagWizzard($we_doc){
 		</optgroup>
 		<optgroup label="we:tags">';
 
-	foreach($tagGroups as $tagGroupName => $tags){
+	foreach(array_keys($tagGroups) as $tagGroupName){
 		switch($tagGroupName){
 			case 'custom_tags':
 				$tagGroupName = 'custom';
@@ -278,7 +277,6 @@ function getTagWizzard($we_doc){
 		if($tagGroupName === 'alltags'){
 			$groupselect .= '<option value="-1" disabled="disabled">----------</option>';
 		}
-		$groupJs .= "'" . $tagGroupName . "': ['" . implode("', '", $tags) . "'],";
 	}
 	$groupselect .= '</optgroup></select>';
 
@@ -329,9 +327,12 @@ function getTagWizzard($we_doc){
 	  </td>
 	  </tr>
 	  </table> */
-	return [
-		[],
-		["headline" => "", "html" => $tagWizardHtml,]
+	return
+		[$selectedGroup,
+			[
+				[],
+				["headline" => "", "html" => $tagWizardHtml,]
+			]
 	];
 }
 
@@ -357,21 +358,19 @@ switch($_SESSION['prefs']['editorMode']){
 	case 'codemirror2': //Syntax-Highlighting
 		$maineditor .= we_getCodeMirror2Code();
 		break;
-	default:
-		$maineditor.=we_html_element::jsElement('window.orignalTemplateContent=document.getElementById("editarea").value.replace(/\r/g,""); //this is our reference of the original content to compare with current content');
 }
 
 $znr = -1;
 $wepos = "";
 
 if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
-	$parts = getTagWizzard($we_doc);
+	list($selectedGroup, $parts ) = getTagWizzard($we_doc);
 	$wepos = weGetCookieVariable("but_weTMPLDocEdit");
 	$znr = 1;
 }
 ?>
 </head>
-<body class="weEditorBody" style="overflow:hidden;" onload="<?= getInitEditor(); ?>" onunload="doUnload();
+<body class="weEditorBody" style="overflow:hidden;" onload="<?= (isset($selectedGroup) ? "selectTagGroup('" . $selectedGroup . "');" : '') . getInitEditor(); ?>" onunload="doUnload();
 		parent.editorScrollPosTop = getScrollPosTop();
 		parent.editorScrollPosLeft = getScrollPosLeft();" onresize="sizeEditor();">
 	<form name="we_form" method="post" onsubmit="return false;" style="margin:0px;"><?php
@@ -395,10 +394,7 @@ if($we_doc->ContentType == we_base_ContentTypes::TEMPLATE){
 		'</td></tr></table>
 </div>' .
 		(isset($parts) ? we_html_multiIconBox::getHTML("weTMPLDocEdit", $parts, 20, "", $znr, g_l('weClass', '[showTagwizard]'), g_l('weClass', '[hideTagwizard]'), ($wepos === 'down'), '', 'sizeEditor();') : '') . '</div>' .
-		we_html_element::htmlHidden('we_complete_request', 1) .
-		(isset($groupJs) ?
-			we_html_element::jsElement('tagGroups = {' . $groupJs . '};' . (isset($selectedGroup) ? "selectTagGroup('" . $selectedGroup . "');" : '')) :
-			'');
+		we_html_element::htmlHidden('we_complete_request', 1);
 		?>
 	</form></body>
 </html>

@@ -1020,11 +1020,31 @@ we_templateInit();?>';
 		}
 		return $ret;
 	}
-public static function getJSLangConsts(){
-	return 'WE().consts.g_l.tagWizzard={
+
+	public static function getJSLangConsts(){
+		return 'WE().consts.g_l.tagWizzard={
 	fill_required_fields:"' . g_l('taged', '[fill_required_fields]') . '",
 	no_type_selected:"' . g_l('taged', '[no_type_selected]') . '",
 };
 ';
-}
+	}
+
+	public static function getJSTWConsts(){
+		// Code Wizard
+		$allWeTags = we_wizard_tag::getExistingWeTags();
+		$tagGroups = we_wizard_tag::getWeTagGroups($allWeTags);
+		$groupJs = '';
+		foreach($tagGroups as $tagGroupName => $tags){
+			switch($tagGroupName){
+				case 'custom_tags':
+					$tagGroupName = 'custom';
+			}
+			$groupJs .= $tagGroupName . ": ['" . implode("', '", $tags) . "'],";
+		}
+
+		return 'WE().consts.tagWizzard={
+  groups:{' . $groupJs . '},
+};';
+	}
+
 }

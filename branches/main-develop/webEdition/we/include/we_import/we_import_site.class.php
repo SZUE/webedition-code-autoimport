@@ -128,54 +128,6 @@ class we_import_site{
 	}
 
 	/**
-	 * returns the javascript needed in the main content frame
-	 *
-	 *  @return         string
-	 */
-	private static function _getJS(){
-		return we_html_element::jsElement('
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]) {
-			case "we_selector_image":
-			case "we_selector_document":
-			new (WE().util.jsWindow)(this, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
-			break;
-
-			case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url,"we_dirselector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
-			break;
-		case "browse_server":
-			new (WE().util.jsWindow)(this, url,"browse_server",-1,-1,800,400,true,false,true);
-			break;
-		case "siteImportCreateWePageSettings":
-			new (WE().util.jsWindow)(this, url,"siteImportCreateWePageSettings",-1,-1,520,600,true,false,true);
-			break;
-		default:
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-	}
-}
-
-function hideTable() {
-	document.getElementById("specifyParam").style.display="none";
-}
-
-function displayTable() {
-	if (document.we_form.templateID.value > 0) {
-		document.getElementById("specifyParam").style.display="block";
-		var iframeObj = document.getElementById("iloadframe");
-		iframeObj.src = WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=updateSiteImportTable&tid="+document.we_form.templateID.value;
-	}
-}
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
-');
-	}
-
-	/**
 	 * returns the fields of the template with given $tid (ID of template)
 	 *
 	 * @param	int	$tid ID of template
@@ -291,10 +243,9 @@ function doUnload() {
 		}
 
 		return $this->_getHtmlPage('', we_html_element::jsElement('
-		var tableDivObj = parent.document.getElementById("tablediv");
-		tableDivObj.innerHTML = "' .
-					str_replace(array("\r", "\n"), array('\r', '\n'), addslashes($this->_getSiteImportTableHTML($templateFields, $values))) . '"
-		parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFields ? "block" : "none") . '";'
+var tableDivObj = parent.document.getElementById("tablediv");
+tableDivObj.innerHTML = "' . strtr(addslashes($this->_getSiteImportTableHTML($templateFields, $values)), ["\r" => '\r', "\n" => '\n']) . '"
+parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFields ? "block" : "none") . '";'
 		));
 	}
 
@@ -436,10 +387,8 @@ function doUnload() {
 
 		$html = '<div style="height:480px">' . $html . '</div>';
 
-		$parts = array(
-			array(
-				"headline" => "", "html" => $html,
-		));
+		$parts = [["headline" => "", "html" => $html,
+		]];
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:if(checkForm()){document.we_form.submit();}"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
 
 		$bodyhtml = '<body class="weDialogBody">
@@ -451,102 +400,7 @@ function doUnload() {
 			we_html_multiIconBox::getHTML("", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', '[importSettingsWePages]')) .
 			'</form></body>';
 
-		$js = we_html_element::jsElement('
-	function checkForm(){
-		var f = document.forms[0];
-		var createType = f.createType.options[f.createType.selectedIndex].value;
-		if (createType == "specify") {
-			// check if template is selected
-			if (f.templateID.value == "0" || f.templateID.value=="") {
-				' . we_message_reporting::getShowMessageCall(
-					g_l('siteimport', '[pleaseSelectTemplateAlert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				return false;
-			}
-			// check value of fields
-			var fields = [];
-			var inputElements = f.getElementsByTagName("input");
-			for (var i=0; i<inputElements.length; i++) {
-				if (inputElements[i].name.indexOf("fields[") == 0) {
-					var search = /^fields\[([^\]]+)\]\[([^\]]+)\]$/;
-					var result = search.exec(inputElements[i].name);
-					var index = parseInt(result[1]);
-					var key = result[2];
-					if (fields[index] == null) {
-						fields[index] = {};
-					}
-					fields[index][key] = inputElements[i].value;
-				}
-			}
-			var textareaElements = f.getElementsByTagName("textarea");
-			for (var i=0; i<textareaElements.length; i++) {
-				if (textareaElements[i].name.indexOf("fields[") == 0) {
-					var search = /^fields\[([^\]]+)\]\[([^\]]+)\]$/;
-					var result = search.exec(textareaElements[i].name);
-					var index = parseInt(result[1]);
-					var key = result[2];
-					if (fields[index] == null) {
-						fields[index] = {};
-					}
-					fields[index][key] = textareaElements[i].value;
-				}
-			}
-			filled = 0;
-			for (var i=0; i<fields.length; i++) {
-				if (fields[i]["pre"].length > 0 && fields[i]["post"].length > 0) {
-					filled = 1;
-					break;
-				}
-			}
-			if (filled == 0) {
-				' . we_message_reporting::getShowMessageCall(
-					g_l('siteimport', '[startEndMarkAlert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				return false;
-			}
-			if (document.getElementById("ownValueInput").style.display != "none") {
-				if (f.dateformatField.value.length == 0) {
-					' . we_message_reporting::getShowMessageCall(
-					str_replace('"', '\"', g_l('siteimport', '[errorEmptyDateFormat]')), we_message_reporting::WE_MESSAGE_ERROR) . '
-					return false;
-				}
-			}
-		} else {
-			if (f.templateName.value.length==0) {
-				' . we_message_reporting::getShowMessageCall(
-					g_l('siteimport', '[nameOfTemplateAlert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				f.templateName.focus();
-				f.templateName.select();
-				return false;
-			}
-			var reg = /[^a-z0-9\._+\-]/gi;
-			if (reg.test(f.templateName.value)) {' .
-				we_message_reporting::getShowMessageCall(g_l('alert', '[we_filename_notValid]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				f.templateName.focus();
-				f.templateName.select();
-				return false;
-			}
-		}
-		return true;
-	}
-
-	function createTypeChanged(s) {
-		var val = s.options[s.selectedIndex].value;
-		document.getElementById("ctauto").style.display = (val == "auto") ? "block" : "none";
-		document.getElementById("ctspecify").style.display = (val == "specify") ? "block" : "none";
-	}
-
-	function dateFormatChanged(s) {
-		var val = s.options[s.selectedIndex].value;
-		document.getElementById("ownValueInput").style.display = (val == "own") ? "block" : "none";
-		document.getElementById("ownValueInputHelp").style.display = (val == "own") ? "block" : "none";
-	}
-
-	function showDateHelp() {
-		// this is a real alert, dont use showMessage yet
-		' . we_message_reporting::getShowMessageCall(
-					g_l('import', '[format_timestamp]'), we_message_reporting::WE_MESSAGE_INFO) . '
-	}');
-
-		return $this->_getHtmlPage($bodyhtml, self::_getJS() . $js);
+		return $this->_getHtmlPage($bodyhtml, we_html_element::jsScript(JS_DIR . 'import_site.js'));
 	}
 
 	/**
@@ -817,7 +671,7 @@ function doUnload() {
 				"class" => "weDialogBody", "onunload" => "doUnload();"
 				), $content);
 
-		$js = self::_getJS();
+		$js = we_html_element::jsScript(JS_DIR . 'import_site.js');
 
 		return $this->_getHtmlPage($body, $js);
 	}
