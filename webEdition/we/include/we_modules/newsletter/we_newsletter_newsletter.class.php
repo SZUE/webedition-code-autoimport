@@ -461,6 +461,8 @@ class we_newsletter_newsletter extends we_newsletter_base{
 
 	public static function getJSLangConsts(){
 		return 'WE().consts.g_l.newsletter = {
+	add_email:"' . g_l('modules_newsletter', '[add_email]') . '",
+	edit_email:"' . g_l('modules_newsletter', '[edit_email]') . '",
 	save_changed_newsletter:"' . g_l('modules_newsletter', '[save_changed_newsletter]') . '",
 	no_newsletter_selected: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_newsletter_selected]')) . '",
 	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[nothing_to_save]')) . '",

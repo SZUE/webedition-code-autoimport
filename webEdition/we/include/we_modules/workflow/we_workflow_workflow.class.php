@@ -344,6 +344,7 @@ class we_workflow_workflow extends we_workflow_base{
 	delete_question:"' . g_l('modules_workflow', '[delete_question]') . '",
 	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_delete]')) . '",
 	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_save]')) . '"
+	emty_log_question:"' . g_l('modules_workflow', '[emty_log_question]') . '",
 };
 WE().consts.g_l.workflow.prop={
 	worktime_empty: "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '",

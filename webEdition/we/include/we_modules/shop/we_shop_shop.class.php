@@ -108,7 +108,9 @@ WE().consts.g_l.shop={
 	no_order_there:"' . we_message_reporting::prepareMsgForJS(g_l('modules_shop', '[no_order_there]')) . '",
 	delete_alert:"' . g_l('modules_shop', '[delete_alert]') . '",
 	del_shop:"' . g_l('modules_shop', '[del_shop]') . '",
-	vat_confirm_delete:"' . g_l('modules_shop', '[vat][js_confirm_delete]') . '"
+	vat_confirm_delete:"' . g_l('modules_shop', '[vat][js_confirm_delete]') . '",
+	delete_shipping:"' . g_l('modules_shop', '[delete][shipping]') . '",
+	field_empty_js_alert:"' . g_l('modules_shop', '[field_empty_js_alert]') . '",
 };
 
 WE().consts.g_l.shop.tree={

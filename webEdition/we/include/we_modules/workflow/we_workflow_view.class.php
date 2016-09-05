@@ -388,9 +388,8 @@ class we_workflow_view extends we_modules_view{
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
-		return we_html_element::jsElement('
-parent.document.title="' . $title . '";') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js');
+		return
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_top.js', "parent.document.title='" . $title . "';");
 	}
 
 	function getJSProperty(){
@@ -1068,32 +1067,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	}
 
 	function getLogQuestion(){
-		$vals = array('<table class="default" style="margin-left:22px;"><tr><td>' . we_html_tools::getDateInput("log_time%s", (time() - (336 * 3600))) . '</td></tr></table>');
+		$vals = ['<table class="default" style="margin-left:22px;"><tr><td>' . we_html_tools::getDateInput("log_time%s", (time() - (336 * 3600))) . '</td></tr></table>'];
 
-		return we_html_element::jsElement('
-			function clear(){
-				opener.top.content.cmd.document.we_form.wcmd.value="empty_log";
-				if(document.we_form.clear_opt.value==1){
-					var day=document.we_form.log_time_day.options[document.we_form.log_time_day.selectedIndex].text;
-					var month=document.we_form.log_time_month.options[document.we_form.log_time_month.selectedIndex].text;
-					var year=document.we_form.log_time_year.options[document.we_form.log_time_year.selectedIndex].text;
-					var hour=document.we_form.log_time_hour.options[document.we_form.log_time_hour.selectedIndex].text;
-					var min=document.we_form.log_time_minute.options[document.we_form.log_time_minute.selectedIndex].text;
-
-					var timearr=[day,month,year,hour,min];
-					opener.top.content.cmd.document.we_form.wopt.value=timearr.join();
-				}
-				else{
-					if(!confirm("' . g_l('modules_workflow', '[emty_log_question]') . '")){
-						return;
-					}
-				}
-				opener.top.content.cmd.submitForm();
-				close();
-			}
-			self.focus();
-		') .
-			we_html_tools::htmlDialogLayout(
+		return we_html_tools::htmlDialogLayout(
 				we_html_element::htmlHidden('clear_opt', 1) .
 				'<form name="we_form">' .
 				'<table class="default">' .
@@ -1101,7 +1077,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				'<tr><td>' . $this->getTypeTableHTML(we_html_forms::radiobutton(1, true, 'clear_time', g_l('modules_workflow', '[log_question_time]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=1;"), $vals) . '</td></tr>' .
 				'<tr><td style="padding-top:1em;">' . we_html_forms::radiobutton(0, false, 'clear_time', g_l('modules_workflow', '[log_question_all]'), true, 'defaultfont', "javascript:document.we_form.clear_opt.value=0;") . '</td></tr>' .
 				'</table>'
-				, g_l('modules_workflow', '[empty_log]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, 'javascript:self.clear();'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();')
+				, g_l('modules_workflow', '[empty_log]'), we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, 'javascript:self.clearLog();'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();')
 				)
 			) . '</form>';
 	}

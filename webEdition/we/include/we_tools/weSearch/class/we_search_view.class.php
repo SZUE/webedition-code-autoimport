@@ -1378,40 +1378,8 @@ weSearch.elems = {
 
 	function getJSProperty(){
 		return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view3.js').
 			we_html_element::jsElement('
-var loaded=0;
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]) {
-		case "we_selector_image":
-		case "we_selector_document":
-			new (WE().util.jsWindow)(this, url,"we_docselector",-1,-1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height,true,true,true,true);
-			break;
-		case "we_selector_file":
-			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
-			break;
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,WE().consts.size.windowDirSelect.width,WE().consts.size.windowDirSelect.height,true,true,true,true);
-			break;
-		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url,"we_catselector",-1,-1,WE().consts.size.catSelect.width,WE().consts.size.catSelect.height,true,true,true,true);
-			break;
-		case "openweSearchDirselector":
-			url = WE().consts.dirs.WEBEDITION_DIR+"apps/weSearch/we_weSearchDirSelect.php?";
-			for(var i = 0; i < args.length; i++){
-				url += "we_cmd[]="+encodeURI(args[i]);
-				if(i < (args.length - 1)){
-				url += "&";
-				}
-			}
-			new (WE().util.jsWindow)(this, url,"we_weSearch_dirselector",-1,-1,600,400,true,true,true);
-			break;
-		default:
-			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-	}
-}
 function submitForm(target,action,method) {
 	var f = self.document.we_form;
 	f.target = (target?target:"edbody");

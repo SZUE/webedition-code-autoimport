@@ -38,10 +38,9 @@ class we_users_view extends we_modules_view{
 
 		return we_html_element::jsElement('
 var frameset="' . $this->frameset . '";
-parent.document.title = "' . $title . '";
 var cgroup=' . ($_SESSION['user']['ID'] ? intval(f('SELECT ParentID FROM ' . USER_TABLE . ' WHERE ID=' . $_SESSION['user']["ID"])) : 0) . ';
 ') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_view.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'users/users_view.js', "parent.document.title='" . $title . "';");
 	}
 
 	function getJSProperty(){
