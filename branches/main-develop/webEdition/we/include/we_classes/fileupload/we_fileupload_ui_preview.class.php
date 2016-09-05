@@ -23,20 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_preview extends we_fileupload_ui_base{
-	protected $formElements = array(
-		'uploader' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'importMeta' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'isSearchable' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'categories' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'parentId' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'sameName' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'attributes' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'thumbnails' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'imageResize' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'imageRotate' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'imageQuality' => array('set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true),
-		'tableProperties' => array('foldAtNr' => -1, 'foldAtOpen' => '', 'foldAtClose' => '')
-	);
+	protected $formElements = ['uploader' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'importMeta' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'isSearchable' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'categories' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'parentId' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'sameName' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'attributes' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'thumbnails' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'imageResize' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'imageRotate' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'imageQuality' => ['set' => false, 'multiIconBox' => true, 'rightHeadline' => true, 'noline' => true],
+		'tableProperties' => ['foldAtNr' => -1, 'foldAtOpen' => '', 'foldAtClose' => '']
+	];
 	protected $isExternalBtnUpload = false;
 	protected $parentID = array(
 		'setField' => false,
@@ -59,15 +58,14 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$this->extension = $extension;
 		$this->setInternalProgress(array('isInternalProgress' => true));
 		$this->internalProgress['width'] = 170;
-		$this->setTypeCondition('accepted', array($contentType));
+		$this->setTypeCondition('accepted', [$contentType]);
 		$this->setDimensions(array('width' => 200, 'dragHeight' => 116, 'alertBoxWidth' => 507));
 		//$this->binDocProperties = $this->getDocProperties();
-		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
-			array('fu_doc_importMetadata', 'text'),
-			array('fu_file_sameName', 'text'),
-			array('fu_doc_focusX', 'text'),
-			array('fu_doc_focusY', 'text'),
-		));
+		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, [['fu_doc_importMetadata', 'text'],
+			['fu_file_sameName', 'text'],
+			['fu_doc_focusX', 'text'],
+			['fu_doc_focusY', 'text'],
+		]);
 		$this->cliensideImageEditing = true;
 	}
 
@@ -94,24 +92,24 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 	}
 
 	protected function getDivBtnInputReset($width){
-		return we_html_element::htmlDiv(array('style' => 'margin-top:18px;'), $this->getButtonWrapped('reset', false, $width) . $this->getButtonWrapped('browse', false, $width));
+		return we_html_element::htmlDiv(['style' => 'margin-top:18px;'], $this->getButtonWrapped('reset', false, $width) . $this->getButtonWrapped('browse', false, $width));
 	}
 
 	protected function getHtmlDropZone($type = 'preview', $thumbnailSmall = ''){
 		$dropText = g_l('newFile', $this->isDragAndDrop ? '[drop_text_ok]' : '[drop_text_nok]');
 
-		$content = we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : '')/* , 'ondragenter' => "alert('wrong div')" */), we_html_element::htmlDiv(array('id' => 'div_filedrag_content_left', 'class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')), $dropText) .
-				we_html_element::htmlDiv(array('id' => 'div_filedrag_content_right', 'class' => 'filedrag_content_right'), ($thumbnailSmall ? : we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $this->contentType . '"));')))
+		$content = we_html_element::htmlDiv(['id' => 'div_fileupload_fileDrag_state_0', 'class' => 'we_file_drag_content', 'style' => (!$this->isDragAndDrop ? 'border-color:white;' : '')/* , 'ondragenter' => "alert('wrong div')" */], we_html_element::htmlDiv(['id' => 'div_filedrag_content_left', 'class' => 'filedrag_content_left', 'style' => (!$this->isDragAndDrop ? 'font-size:14px' : '')], $dropText) .
+				we_html_element::htmlDiv(['id' => 'div_filedrag_content_right', 'class' => 'filedrag_content_right'], ($thumbnailSmall ? : we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $this->contentType . '"));')))
 			) .
-			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : 'display:none;')), we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'), we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_filename')) .
-					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_size', 'style' => 'padding-top: 4px;')) .
-					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_type')) .
-					we_html_element::htmlDiv(array('id' => 'span_fileDrag_inner_edit', 'style' => 'display:none;padding-top: 4px;'))
+			we_html_element::htmlDiv(['id' => 'div_fileupload_fileDrag_state_1', 'class' => 'we_file_drag_preview', 'style' => (!$this->isDragAndDrop ? 'border-color:rgb(243, 247, 255);' : 'display:none;')], we_html_element::htmlDiv(['id' => 'div_upload_fileDrag_innerLeft', 'class' => 'filedrag_preview_left'], we_html_element::htmlDiv(['id' => 'span_fileDrag_inner_filename']) .
+					we_html_element::htmlDiv(['id' => 'span_fileDrag_inner_size', 'style' => 'padding-top: 4px;']) .
+					we_html_element::htmlDiv(['id' => 'span_fileDrag_inner_type']) .
+					we_html_element::htmlDiv(['id' => 'span_fileDrag_inner_edit', 'style' => 'display:none;padding-top: 4px;'])
 				) .
-				we_html_element::htmlDiv(array('id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'), '')
+				we_html_element::htmlDiv(['id' => 'div_upload_fileDrag_innerRight', 'class' => 'filedrag_preview_right'], '')
 			) .
-			we_html_element::htmlDiv(array('id' => 'div_fileupload_fileDrag_mask', 'class' => 'we_file_drag_mask'), we_html_element::htmlDiv(array('class' => 'we_file_drag_maskSpinner'), '<i class="fa fa-2x fa-spinner fa-pulse"></i></span>') .
-				we_html_element::htmlDiv(array('id' => 'image_edit_mask_text', 'class' => 'we_file_drag_maskBusyText'))
+			we_html_element::htmlDiv(['id' => 'div_fileupload_fileDrag_mask', 'class' => 'we_file_drag_mask'], we_html_element::htmlDiv(['class' => 'we_file_drag_maskSpinner'], '<i class="fa fa-2x fa-spinner fa-pulse"></i></span>') .
+				we_html_element::htmlDiv(['id' => 'image_edit_mask_text', 'class' => 'we_file_drag_maskBusyText'])
 		);
 
 		return self::getHtmlLoup() . ($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag'), $content) : $content);
@@ -187,22 +185,9 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$width_size = 378;
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener.selectCategories();')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;if(typeof \'selectCategories\' !== \'undefined\'){selectCategories()};'));
-		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js');
-		$variant_js = '
-var categories_edit = new multi_edit("categoriesDiv",document.forms[0],0,"' . $del_but . '",' . ($width_size - 10) . ',false);
-categories_edit.addVariant();';
 
-		$cats = makeArrayFromCSV($this->imageEditProps['categories']);
-		if(is_array($cats)){
-			foreach($cats as $cat){
-				$variant_js .='
-categories_edit.addItem();
-categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CATEGORY_TABLE) . '");';
-			}
-		}
-
-		$variant_js .= 'categories_edit.showVariant(0);';
-		$js .= we_html_element::jsElement($variant_js);
+		$cats = makeArrayFromCSV($this->imageEditProps['categories']) ?
+			id_to_path($cats, CATEGORY_TABLE) : [];
 
 		$table = new we_html_table([
 			'id' => 'CategoriesBlock',
@@ -218,37 +203,12 @@ categories_edit.setItem(0,(categories_edit.itemCount-1),"' . id_to_path($cat, CA
 		$table->setCol(1, 0, ['colspan' => 2, 'style' => 'text-align:right'], we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut
 		);
 
-		$js .= we_html_element::jsElement('
-function removeAllCats(){
-	if(categories_edit.itemCount>0){
-		while(categories_edit.itemCount>0){
-			categories_edit.delItem(categories_edit.itemCount);
-		}
-		categories_edit.showVariant(0);
-		selectCategories();
-	}
-}
-
-function addCat(paths){
-	var path = paths.split(",");
-	for (var i = 0; i < path.length; i++) {
-		if(path[i]!="") {
-			categories_edit.addItem();
-			categories_edit.setItem(0,(categories_edit.itemCount-1),path[i]);
-		}
-	}
-	categories_edit.showVariant(0);
-	//selectCategories();
-}
-
-function selectCategories() {
-	var cats = [];
-	for(var i=0;i<categories_edit.itemCount;i++){
-		cats.push(categories_edit.form.elements[categories_edit.name+"_variant0_"+categories_edit.name+"_item"+i].value);
-	}
-	categories_edit.form.fu_doc_categories.value=cats.join(",");
-}');
-
+		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') . we_html_element::jsElement($variant_js) .
+			we_html_element::jsScript(JS_DIR . 'we_fileupload_ui_preview.js', 'init();', ['id' => 'loadVarFileupload_ui_preview', 'data-preview' => setDynamicVar([
+					'delButton' => $del_but,
+					'categoriesDivSize' => ($width_size - 10),
+					'variantCats' => $cats
+		])]);
 		$html = $table->getHtml() . $js . we_html_element::htmlHidden('fu_doc_categories', '');
 		$headline = g_l('global', '[categorys]');
 

@@ -79,20 +79,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 
 
 echo we_html_element::jsElement("
-	var _nextCmd = null;
 	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame('" . $editorFrameId . "');
-
-	// functions for keyBoard Listener
-	function applyOnEnter() {
-		pressed_yes();
-
-	}
-
-	// functions for keyBoard Listener
-	function closeOnEscape() {
-		pressed_cancel();
-
-	}
 
 	function pressed_yes() {
 		_EditorFrame.getDocumentReference().frames.editFooter.we_save_document('" . str_replace("'", "\\'", "WE().layout.weEditorFrameController.closeDocument('" . $editorFrameId . "');" . ($nextCmd ? "top.setTimeout('" . $nextCmd . "', 1000);" : "" )) . "');
@@ -106,23 +93,11 @@ echo we_html_element::jsElement("
 		" . ($nextCmd ? "opener.top.setTimeout('" . $nextCmd . "', 1000);" : "" ) . "
 		window_closed();
 		self.close();
-
 	}
 
-	function pressed_cancel() {
-		window_closed();
-		self.close();
-
-	}
-
-	function window_closed() {
-		_EditorFrame.EditorExitDocQuestionDialog = false;
-
-	}
-");
+") . we_html_element::jsScript(JS_DIR . 'exit_doc_question.js');
 
 // $yesCmd: $REQUEST['we_cmd'][6] => next-EditCommand, JS-Function Call !! after save document.
-
 ?>
 </head>
 

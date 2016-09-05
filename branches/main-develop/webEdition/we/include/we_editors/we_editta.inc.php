@@ -55,13 +55,14 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 	$js = 'opener._EditorFrame.setEditorIsHot(true);'
 		. ((we_base_browserDetect::isIE() || we_base_browserDetect::isOpera()) &&
 		$we_doc->getElement($name . 'dhtmledit') === 'on' &&
-		$we_doc->getElement($name . 'inlineedit') === 'on' ? 'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
-			'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");')
-		. 'top.close();';
+		$we_doc->getElement($name . 'inlineedit') === 'on' ?
+			'opener.setScrollTo();opener.we_cmd("switch_edit_page",1,"' . $we_transaction . '");' :
+			'opener.we_cmd("object_reload_entry_at_class","' . $we_transaction . '", "' . $nr . '");'
+		) . 'top.close();';
 } else {
-	$js = 'function okFn(){'
-		. 'document.forms[0].submit();'
-		. '}';
+	$js = 'function okFn(){
+	document.forms[0].submit();
+}';
 }
 
 echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js));
