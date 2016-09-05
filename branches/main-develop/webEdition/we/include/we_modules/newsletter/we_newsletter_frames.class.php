@@ -513,19 +513,19 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			$table->setCol($c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_email_field]') . ":&nbsp;");
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect("customer_email_field", $custfields, 1, $settings["customer_email_field"], false, [], "value", 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_html_field', $custfields, 1, $settings['customer_html_field'], false, [], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_salutation_field', $custfields, 1, $settings['customer_salutation_field'], false, [], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_title_field', $custfields, 1, $settings['customer_title_field'], false, [], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_firstname_field', $custfields, 1, $settings['customer_firstname_field'], false, [], 'value', 308));
 
-			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
+			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_lastname_field', $custfields, 1, $settings['customer_lastname_field'], false, [], 'value', 308));
 		}
 
@@ -2155,7 +2155,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 
 		$to = (is_numeric($this->View->settings["send_wait"]) ? $this->View->settings["send_wait"] : 0) + 40000;
 
-		$body = we_html_element::htmlBody(["style" => 'margin:10px', "onload" => "startTimeout()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "send_cmd", "action" => $this->frameset], we_html_element::htmlHiddens(['mod' => 'newsletter',
+		echo $this->getHTMLDocument(we_html_element::htmlBody(["style" => 'margin:10px', "onload" => "startTimeout();"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "send_cmd", "action" => $this->frameset], we_html_element::htmlHiddens(['mod' => 'newsletter',
 						"nid" => $nid,
 						"pnt" => "send_cmd",
 						"retry" => 1,
@@ -2167,8 +2167,7 @@ top.send_control.document.we_form.ecs.value=' . $ecs . ';');
 						"ecs" => $ecs,
 						"reload" => 0])
 				)
-		);
-		echo $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'sendControl.js', 'self.focus();', ['id' => 'loadVarSendControl', 'data-control' => setDynamicVar([
+			), we_html_element::jsScript(WE_JS_MODULES_DIR . 'sendControl.js', 'self.focus();', ['id' => 'loadVarSendControl', 'data-control' => setDynamicVar([
 					'to' => $to
 		])]));
 		flush();

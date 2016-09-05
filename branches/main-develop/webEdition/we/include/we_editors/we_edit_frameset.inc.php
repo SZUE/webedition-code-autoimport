@@ -234,13 +234,10 @@ if(!$we_doc->getElement('data')){
 	);
 }
 echo we_html_tools::getHtmlTop('', '', 'frameset') .
- we_html_element::jsElement((isset($parastr) && we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "edit_document_with_parameters" ?
-		'var parameters = "' . $parastr . '";' :
-		'') .
-	'var SEEM_edit_include=' . intval(we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include')) . ';
-var USERACCESS=' . intval($we_doc->userHasAccess() == we_root::USER_HASACCESS) . ';'
-) .
- we_html_element::jsScript(JS_DIR . 'we_edit_frameset.js', "edit_framesetStart('" . oldHtmlspecialchars($we_doc->Text) . "','" . $we_doc->Path . "','" . $we_doc->Table . "'," . $we_doc->ID . ",'" . $we_transaction . "','" . $we_doc->ContentType . "','" . (empty($parastr) ? '' : $parastr ) . "');");
+ we_html_element::jsScript(JS_DIR . 'we_edit_frameset.js', "edit_framesetStart('" . oldHtmlspecialchars($we_doc->Text) . "','" . $we_doc->Path . "','" . $we_doc->Table . "'," . $we_doc->ID . ",'" . $we_transaction . "','" . $we_doc->ContentType . "','" . (empty($parastr) ? '' : $parastr ) . "');", ['id' => 'loadVarEdit_frameset', 'data-editFrameset' => setDynamicVar([
+		'SEEM_edit_include' => we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include'),
+		'USERACCESS' => $we_doc->userHasAccess() == we_root::USER_HASACCESS
+])]);
 
 function setOnload(){
 	// Don't do this with Templates and only in Preview Mode
