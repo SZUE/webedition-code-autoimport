@@ -24,6 +24,7 @@
 
 /* global _EditorFrame, WE */
 var doc = WE().util.getDynamicVar(document, 'loadVarSrcTmpl', 'data-doc');
+WE().util.loadConsts("tagWizzard");
 
 var editor = null;
 var weIsTextEditor = true;
@@ -73,6 +74,7 @@ function initCM() {
 }
 
 function initDefaultEdior() {
+	window.orignalTemplateContent = document.getElementById("editarea").value.replace(/\r/g, ""); //this is our reference of the original content to compare with current content
 	document.getElementById("bodydiv").style.display = "block";
 	sizeEditor();
 	window.setTimeout(scrollToPosition, 50);
@@ -293,8 +295,8 @@ function selectTagGroup(groupname) {
 				elem.options[i] = null;
 			}
 
-			for (i = 0; i < tagGroups[groupname].length; i++) {
-				elem.options[i] = new Option(tagGroups[groupname][i], tagGroups[groupname][i]);
+			for (i = 0; i < WE().consts.tagWizzard.groups[groupname].length; i++) {
+				elem.options[i] = new Option(WE().consts.tagWizzard.groups[groupname][i], WE().consts.tagWizzard.groups[groupname][i]);
 			}
 	}
 }
@@ -324,8 +326,8 @@ function openTagWizardPrompt(_wrongTag) {
 	var _tagExists = false;
 
 	if (typeof (_tagName) == "string") {
-		for (i = 0; i < tagGroups.alltags.length && !_tagExists; i++) {
-			if (tagGroups.alltags[i] == _tagName) {
+		for (i = 0; i < WE().consts.tagWizzard.groups.alltags.length && !_tagExists; i++) {
+			if (WE().consts.tagWizzard.groups.alltags[i] == _tagName) {
 				_tagExists = true;
 			}
 		}

@@ -1369,7 +1369,7 @@ function handle_eventNext(){
 			$fldDel->selectOption($v['sct_csv_seperator']);
 		}
 
-		$charSet = new we_html_select(['name' => 'v[file_format]', 'class' => 'weSelect', ]);
+		$charSet = new we_html_select(['name' => 'v[file_format]', 'class' => 'weSelect',]);
 		$charSet->addOption('win', 'Windows');
 		$charSet->addOption('unix', 'Unix');
 		$charSet->addOption('mac', 'Mac');
@@ -1377,7 +1377,7 @@ function handle_eventNext(){
 			$charSet->selectOption($v['file_format']);
 		}
 
-		$txtDel = new we_html_select(['name' => 'v[csv_enclosed]', 'class' => 'weSelect',  'style' => 'width: 300px']);
+		$txtDel = new we_html_select(['name' => 'v[csv_enclosed]', 'class' => 'weSelect', 'style' => 'width: 300px']);
 		$txtDel->addOption('double_quote', g_l('import', '[double_quote]'));
 		$txtDel->addOption('single_quote', g_l('import', '[single_quote]'));
 		$txtDel->addOption('none', g_l('import', '[none]'));
@@ -2051,6 +2051,17 @@ function handle_event(evt) {
 		}
 
 		echo $wizard->getHTML($what, $type, $step, $mode);
+	}
+
+	public static function getJSLangConsts(){
+		return 'WE().consts.g_l.import={
+  format_timestamp:"' . g_l('import', '[format_timestamp]') . '",
+	pleaseSelectTemplateAlert:"' . g_l('siteimport', '[pleaseSelectTemplateAlert]') . '",
+	startEndMarkAlert:"' . g_l('siteimport', '[startEndMarkAlert]') . '",
+	errorEmptyDateFormat:"' . we_message_reporting::prepareMsgForJS(g_l('siteimport', '[errorEmptyDateFormat]')) . '",
+	nameOfTemplateAlert:"' . g_l('siteimport', '[nameOfTemplateAlert]') . '",
+	we_filename_notValid:"' . g_l('alert', '[we_filename_notValid]') . '",
+};';
 	}
 
 }

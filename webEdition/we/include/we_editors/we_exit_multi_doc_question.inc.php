@@ -29,35 +29,24 @@ $cancelCmd = "self.close();";
 
 $nextCmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1);
 
-$allowedCmds = array("dologout", "close_all_documents");
-if(!in_array($nextCmd, $allowedCmds)){
-	$nextCmd = "";
-}
-
-
 $ctLngs = [];
-
 foreach(g_l('contentTypes', '') as $key => $lng){
-	$ctLngs [] = '"' . $key . '": "' . $lng . '"';
+	$ctLngs [$key] = $lng;
 }
 
-echo
-we_html_element::jsElement('
-var ctLngs = {' . implode(',', $ctLngs) . '};
-var nextCmd="' . $nextCmd . '";
-') .
- we_html_element::jsScript(JS_DIR . 'we_exit_multi_doc_question.js');
+echo we_html_element::jsScript(JS_DIR . 'we_exit_multi_doc_question.js', '', ['id' => 'loadVarExit_multi_doc_question', 'data-question' => setDynamicVar([
+		'ctLngs' => $ctLngs,
+		'nextCmd' => (in_array($nextCmd, ["dologout", "close_all_documents"]) ? $nextCmd : ''),
+])]);
 ?>
 </head>
 <body class="weEditorBody" onload="setHotDocuments();" onBlur="self.focus();">
 	<?= we_html_tools::htmlYesNoCancelDialog('
-<div>
-	' . g_l('alert', '[exit_multi_doc_question]') . '
+<div>' . g_l('alert', '[exit_multi_doc_question]') . '
 	<br />
 	<br />
 	<div style="width: 350px; height: 150px; background: white; overflow: auto;">
 		<ul id="ulHotDocuments">
-
 		</ul>
 	</div>
 </div>', '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, false, true, $yesCmd, "", $cancelCmd); ?>

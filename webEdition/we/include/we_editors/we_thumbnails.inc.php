@@ -155,7 +155,7 @@ function build_dialog($selected_setting = 'ui'){
 			$thumbnail_names = $thumbnail_names ? '\'' . implode('\',\'', $thumbnail_names) . '\'' : '';
 
 			// Generate needed JS
-			$needed_JavaScript_Source = "
+			$needed_JavaScript = we_html_element::jsElement("
 var thumbnail_names = [" . $thumbnail_names . "];
 function delete_thumbnail() {" .
 				(permissionhandler::hasPerm('ADMINISTRATOR') ?
@@ -165,9 +165,7 @@ function delete_thumbnail() {" .
 			self.location = WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=editThumbs&deletethumbnail=" . $id . "';
 		}" :
 					"") . "
-}";
-
-			$needed_JavaScript = we_html_element::jsElement($needed_JavaScript_Source);
+}");
 
 			$enabled_buttons = false;
 

@@ -81,8 +81,12 @@ abstract class we_base_jsConstants{
 				return we_docTypes::getJSLangConsts();
 			case 'g_l.tagWizzard':
 				return we_template::getJSLangConsts();
+			case 'g_l.import':
+				return we_import_wizard::getJSLangConsts();
 			case 'weSearch':
 				return we_search_view::getJSConsts();
+			case 'tagWizzard':
+				return we_template::getJSTWConsts();
 			default:
 				t_e('loading of JS consts ' . $what . ' failed');
 		}

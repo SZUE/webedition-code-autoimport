@@ -24,6 +24,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var question = WE().util.getDynamicVar(document, 'loadVarExit_multi_doc_question', 'data-question');
+
 function setHotDocuments() {
 	var allHotDocuments = WE().layout.weEditorFrameController.getEditorsInUse();
 	var _hotDocumentsOfCt = {};
@@ -38,7 +40,7 @@ function setHotDocuments() {
 
 	for (var ct in _hotDocumentsOfCt) {
 		var liCtElem = document.createElement("li");
-		liCtElem.innerHTML = ctLngs[ct];
+		liCtElem.innerHTML = question.ctLngs[ct];
 
 		var ulCtElem = document.createElement("ul");
 		for (var i = 0; i < _hotDocumentsOfCt[ct].length; i++) {
@@ -65,6 +67,6 @@ function yes_cmd_pressed() {
 			allHotDocuments[frameId].setEditorIsHot(false);
 		}
 	}
-	top.opener.top.we_cmd(nextCmd);
+	top.opener.top.we_cmd(question.nextCmd);
 	self.close();
 }
