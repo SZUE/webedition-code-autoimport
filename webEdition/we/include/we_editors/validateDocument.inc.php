@@ -91,7 +91,7 @@ if($services){
 	}
 	$select .= '</optgroup></optgroup></select>';
 	$selectedService = $validationService[0];
-	$hiddens = we_html_element::htmlHiddens(array(
+	$hiddens = we_html_element::htmlHiddens([
 			'host' => $selectedService->host,
 			'path' => $selectedService->path,
 			'ctype' => $selectedService->ctype,
@@ -99,7 +99,7 @@ if($services){
 			'checkvia' => $selectedService->checkvia,
 			'varname' => $selectedService->varname,
 			'additionalVars' => $selectedService->additionalVars
-	));
+	]);
 } else {
 	$select = g_l('validation', '[no_services_available]');
 }

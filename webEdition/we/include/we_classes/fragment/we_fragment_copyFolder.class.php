@@ -677,26 +677,25 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
-			var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",478,false);
-			categories_edit.addVariant();
-			categories_edit.showVariant(0);
-		');
+var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",478,false);
+categories_edit.addVariant();
+categories_edit.showVariant(0);
+');
 
-		$table = new we_html_table(array(
+		$table = new we_html_table([
 			'id' => 'CategoriesBlock',
 			'style' => 'display: block;',
 			'class' => 'default',
-			), 5, 2);
+			], 5, 2);
 
-		$table->setCol(1, 0, array('class' => 'defaultfont', 'width' => 100, 'style' => 'padding-top:5px;'), g_l('copyFolder', '[categories]'));
+		$table->setCol(1, 0, ['class' => 'defaultfont', 'width' => 100, 'style' => 'padding-top:5px;'], g_l('copyFolder', '[categories]'));
 		$table->setCol(1, 1, ['class' => 'defaultfont'], we_html_forms::checkbox(1, 0, 'OverwriteCategories', g_l('copyFolder', '[overwrite_categories]'), false, "defaultfont", "toggleButton();"));
-		$table->setCol(2, 0, array('colspan' => 2), we_html_element::htmlDiv(array(
-				'id' => 'categories',
+		$table->setCol(2, 0, ['colspan' => 2], we_html_element::htmlDiv(['id' => 'categories',
 				'class' => 'blockWrapper',
 				'style' => 'width: 488px; height: 60px; border: #AAAAAA solid 1px;'
-		)));
+		]));
 
-		$table->setCol(4, 0, array('colspan' => 2, 'style' => 'text-align:right;padding-top:5px;'), we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
+		$table->setCol(4, 0, ['colspan' => 2, 'style' => 'text-align:right;padding-top:5px;'], we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut);
 
 		return $table->getHtml() . $js;
 	}

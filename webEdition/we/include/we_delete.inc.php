@@ -70,15 +70,15 @@ function confirmDel(){' .
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
 		we_html_element::htmlHidden("sel", implode(',', $selectedItems)) . "</form>";
-} elseif(in_array($wecmd0, array("do_delete", 'delete_single_document'))){
+} elseif(in_array($wecmd0, ["do_delete", 'delete_single_document'])){
 	if(($selectedItems = we_base_request::_(we_base_request::INTLISTA, "sel", []))){
 		//	look which documents must be deleted.
 		$retVal = 1;
-		$idInfos = array(
+		$idInfos = [
 			'IsFolder' => 0,
 			'Path' => '',
 			'hasFiles' => 0
-		);
+			];
 		if($selectedItems && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
 			$idInfos = getHash('SELECT IsFolder, Path FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($selectedItems[0]));
 			if(!$idInfos){
