@@ -564,6 +564,7 @@ weSearch = {
 		if (locationTD) {
 			row.removeChild(locationTD);
 		}
+		var table;
 
 		switch (value) {
 			case 'Content':
@@ -626,7 +627,7 @@ weSearch = {
 				location.value = 'IS';
 				location.disabled = true;
 
-				var table = value === 'ParentIDDoc' ? WE().consts.tables.FILE_TABLE : (value === 'ParentIDObj' ? WE().consts.tables.OBJECT_FILES_TABLE : WE().consts.tables.TEMPLATES_TABLE);
+				table = value === 'ParentIDDoc' ? WE().consts.tables.FILE_TABLE : (value === 'ParentIDObj' ? WE().consts.tables.OBJECT_FILES_TABLE : WE().consts.tables.TEMPLATES_TABLE);
 				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +
@@ -647,7 +648,7 @@ weSearch = {
 				location.value = 'IS';
 				location.disabled = true;
 
-				var table = WE().consts.tables.FILE_TABLE;
+				table = WE().consts.tables.FILE_TABLE;
 				innerhtml = '<table class="default"><tbody><tr>' +
 								'<td>' + this.elems.fieldSearch.replace(/__we_new_id__/g, rowNr).replace(/__we_read_only__/, 'readonly="1" ') + '</td>' +
 								'<td><input value="" name="search' + this.conf.whichsearch + 'ParentID[' + rowNr + ']" type="hidden"></td><td></td>' +

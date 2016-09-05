@@ -228,7 +228,7 @@ function we_save() {
 	var _z = 0;
 	var _field = _doc.forms[0].elements['metadataTag[' + _z + ']'] !== undefined ? _doc.forms[0].elements['metadataTag[' + _z + ']'] : null;
 
-	while (_field != null) {
+	while (_field !== null) {
 		if (!checkMetaFieldName(_field, _z)) {
 			return;
 		}

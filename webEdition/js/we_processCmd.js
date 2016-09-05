@@ -46,12 +46,12 @@ if (cmd) {
 				top.we_cmd.apply(this, cmdData);
 				break;
 			case 'location':
-				switch (cmdData['doc']) {
+				switch (cmdData.doc) {
 					case 'document':
-						document.location = cmdData['loc'];
+						document.location = cmdData.loc;
 						break;
 					case 'body':
-						top.body.document.location = cmdData['loc'];
+						top.body.document.location = cmdData.loc;
 						break;
 				}
 		}

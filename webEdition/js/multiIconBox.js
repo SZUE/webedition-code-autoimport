@@ -119,7 +119,7 @@ function weAppendMultiboxRow(content, headline, icon, space, insertRuleBefore, i
 	var mainContent = content ? content : "";
 	var leftWidth = space ? space : 0;
 	var leftContent = (leftWidth ? headline : "");
-	var rightContent = '<div style="float:left;">' + (((leftContent == "")) ? (headline + '<div>' + mainContent + '</div>') : mainContent) + '</div>';
+	var rightContent = '<div style="float:left;">' + (((leftContent === "")) ? (headline + '<div>' + mainContent + '</div>') : mainContent) + '</div>';
 
 	var mainDiv = document.createElement("DIV");
 	mainDiv.className = (iconBox.margin ? 'withMargin' : '');
