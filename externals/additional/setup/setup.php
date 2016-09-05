@@ -784,7 +784,7 @@ function step_installation(){
 	echo count($dbqueries) . ' queries found.';
 	$conn = mysqli_connect($_SESSION["db_host"], $_SESSION["db_username"], $_SESSION["db_password"]);
 	if(!$conn){
-		$output .= tpl_error("Could not connect to database server. Message from server: " . mysqli_error());
+		$output .= tpl_error("Could not connect to database server. Message from server: " . mysqli_error($conn));
 		$errors = true;
 		return $output;
 	} else {

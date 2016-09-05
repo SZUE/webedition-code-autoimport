@@ -124,8 +124,8 @@ class le_MySQL{
 		}
 
 		$this->Row = 0;
-		$this->Errno = mysqli_errno();
-		$this->Error = mysqli_error();
+		$this->Errno = mysqli_errno($this->Link_ID);
+		$this->Error = mysqli_error($this->Link_ID);
 		if(!$this->Query_ID){
 			$this->halt("Invalid SQL: " . $Query_String);
 		}
@@ -144,8 +144,8 @@ class le_MySQL{
 
 		$this->Record = @mysqli_fetch_array($this->Query_ID);
 		$this->Row += 1;
-		$this->Errno = mysqli_errno();
-		$this->Error = mysqli_error();
+		$this->Errno = mysqli_errno($this->Link_ID);
+		$this->Error = mysqli_error($this->Link_ID);
 
 		$stat = is_array($this->Record);
 		if(!$stat && $this->Auto_Free){
