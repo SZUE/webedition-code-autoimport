@@ -39,28 +39,6 @@ class we_shop_frames extends we_modules_frame{
 	}
 
 	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();
-		$extraHead = we_html_element::jsElement('
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
-
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]) {
-		case "openOrder":
-			//TODO: check this adress: mit oder ohne tree? Bisher: left
-			if(top.content.doClick) {
-				top.content.doClick(args[1], args[2], args[3]);//TODO: check this adress
-			}
-			break;
-		default:
-			// not needed yet
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-	}
-}');
-
 //	$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 //	$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
 		$data = getHash("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $this->db);
@@ -106,7 +84,7 @@ function we_cmd() {
 			$iconBarTable->setCol(0, $c++, ['style' => 'text-align:right', 'class' => 'header_shop'], '<span style="margin-left:15px">' . $headline . '</span>');
 		}
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(['id' => 'iconBar'], $iconBarTable->getHTML()), $extraHead);
+		return $this->getHTMLDocument(we_html_element::htmlBody(['id' => 'iconBar'], $iconBarTable->getHTML()), we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/shop_frames.js'));
 	}
 
 	protected function getHTMLCmd(){
@@ -892,19 +870,18 @@ function setTab(tab) {
 
 // at top of page show a table with all actual vats
 		$allVats = we_shop_vats::getAllShopVATs();
+		$vatJSON = [
+			'vat_0' => [
+				'id' => 0,
+				'text' => g_l('modules_shop', '[vat][new_vat_name]'),
+				'vat' => 19,
+				'standard' => 0,
+				'country' => "DE",
+				'province' => "",
+				'textProvince' => ""
+			]
+		];
 
-		$vatJavaScript = '
-var allVats = {
-	vat_0: {
-		id:0,
-		text:"' . g_l('modules_shop', '[vat][new_vat_name]') . '",
-		vat:19,
-		standard:0,
-		country:"DE",
-		province:"",
-		textProvince:""
-	}
-};';
 		if($allVats){
 			$vatTable = '
 	<div style="height:300px; width: 550px; padding-right: 40px; overflow:auto;">
@@ -919,9 +896,16 @@ var allVats = {
 		</tr>';
 
 			foreach($allVats as $shopVat){
-				$vatJavaScript .='
-		allVats["vat_' . $shopVat->id . '"] = {"id":"' . $shopVat->id . '","text":"' . $shopVat->getNaturalizedText() . '", "vat":"' . $shopVat->vat . '", "standard":"' . ($shopVat->standard ? 1 : 0) . '", "territory":"' . $shopVat->territory . '", "country":"' . $shopVat->country . '", "province":"' . $shopVat->province . '", "textProvince":"' . $shopVat->textProvince . '"};';
-
+				$vatJSON['vat_' . $shopVat->id] = [
+					"id" => $shopVat->id,
+					"text" => $shopVat->getNaturalizedText(),
+					"vat" => $shopVat->vat,
+					"standard" => ($shopVat->standard ? 1 : 0),
+					"territory" => $shopVat->territory,
+					"country" => $shopVat->country,
+					"province" => $shopVat->province,
+					"textProvince" => $shopVat->textProvince,
+				];
 				$vatTable .= '
 		<tr>
 			<td>' . $shopVat->id . '</td>
@@ -998,9 +982,16 @@ var allVats = {
 			['html' => $formVat,],
 		];
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-					$vatJavaScript .
-					(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) . ($saveSuccess && $onsaveClose ? 'window.close()' : '') : '')) . we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_vats.js'), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
+		$jsCmd = new we_base_jsCmd();
+		if(isset($jsMessage)){
+			$jsCmd->addCmd('msg', ['msg' => $jsMessage, 'prio' => $jsMessageType]);
+			if($saveSuccess && $onsaveClose){
+				$jsCmd->addCmd('close');
+			}
+		}
+
+		return we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds() .
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_vats.js', '', ['id' => 'loadVarEdit_shop_vats', 'data-allVats' => setDynamicVar($vatJSON)]), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
 		)));
 	}
 
@@ -1008,41 +999,6 @@ var allVats = {
 		$protect = we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP) && we_users_util::canEditModule(we_base_moduleInfo::SHOP) ? null : array(false);
 		we_html_tools::protect($protect);
 		$DB_WE = $GLOBALS['DB_WE'];
-
-		$jsFunction = '
-function we_submitForm(url){
-var f = self.document.we_form;
-	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-		return false;
-	}
-
-	f.action = url;
-	f.method = "post";
-
-	f.submit();
-	return true;
-}
-
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
-
-function we_cmd(){
-var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]) {
-		case "close":
-			window.close();
-			break;
-		case "save":
-			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_vat_country");
-			break;
-		default:
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-	}
-}';
 
 // initialise the vatRuleObject
 		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'saveVatRule'){
@@ -1129,7 +1085,7 @@ var url = WE().util.getWe_cmdArgsUrl(args);
 			]
 		];
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jsFunction), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_vat_country">
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_country.js'), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_vat_country">
 		<input type="hidden" name="we_cmd[0]" value="saveVatRule" />' .
 					we_html_multiIconBox::getHTML('weShopCountryVat', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
@@ -1354,7 +1310,7 @@ var url = WE().util.getWe_cmdArgsUrl(args);
 			//'html' => $debug_output
 		]];
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/showCategoriesDialog.js') . $jscmd->getCmds() . we_html_element::jsElement($jsFunction), we_html_element::htmlBody([ 'class' => "weDialogBody", 'onload' => "window.focus(); addListeners();"], '<form name="we_form" method="post" >
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/showCategoriesDialog.js') . $jscmd->getCmds(), we_html_element::htmlBody([ 'class' => "weDialogBody", 'onload' => "window.focus(); addListeners();"], '<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="load" /><input type="hidden" name="onsaveclose" value="0" />' .
 					we_html_multiIconBox::getHTML('weShopCategories', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
@@ -1504,59 +1460,13 @@ var url = WE().util.getWe_cmdArgsUrl(args);
 		}
 
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-function closeOnEscape() {
-	return true;
-}
-
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
-
-function we_cmd(){
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]) {
-		case "save":
-			we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_shipping");
-			break;
-		case "close":
-			window.close();
-			break;
-		case "delete":
-			if (confirm("' . g_l('modules_shop', '[delete][shipping]') . '")) {
-				var we_cmd_field = document.getElementById("we_cmd_field");
-				we_cmd_field.value = "deleteShipping";
-				we_submitForm(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_shipping");
-
-			}
-			break;
-		case "newEntry":
-			document.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edit_shop_shipping&we_cmd[0]=newShipping";
-			break;
-		case "addShippingCostTableRow":
-			addShippingCostTableRow();
-			break;
-		case "deleteShippingCostTableRow":
-			deleteShippingCostTableRow(args[1]);
-			break;
-		default :
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-			break;
-	}
-}
-
-// this is for new entries.
-var entryPosition = 0;
-
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_shipping.js') .
+				we_html_element::jsElement('
 function addShippingCostTableRow() {
+	var tbl = document.getElementById("shippingCostTableEntries");
+	var entryId = "New" + "" + entryPosition++;
 
-	tbl = document.getElementById("shippingCostTableEntries");
-
-	entryId = "New" + "" + entryPosition++;
-
-	theNewRow = document.createElement("TR");
+	var theNewRow = document.createElement("TR");
 	theNewRow.setAttribute("id", "weShippingId_" + entryId);
 
 	var cell1 = document.createElement("TD");
@@ -1579,32 +1489,7 @@ cell5.innerHTML=tmp.replace("#####placeHolder#####",entryId);
 	// append new row
 	tbl.appendChild(theNewRow);
 }
-
-function deleteShippingCostTableRow(rowId) {
-	tbl = document.getElementById("shippingCostTable");
-	tableRows = tbl.rows;
-
-	for (i=0;i<tableRows.length;i++) {
-		if(rowId == tableRows[i].id) {
-			tbl.deleteRow(i);
-		}
-	}
-}
-
-function we_submitForm(url){
-	var f = self.document.we_form;
-	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-		return false;
-	}
-	f.action = url;
-	f.method = "post";
-
-	f.submit();
-	return true;
-}' .
-					(isset($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '')
-				), we_html_element::htmlBody([ 'class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form">
+') . (isset($jsMessage) ? we_message_reporting::jsMessagePush($jsMessage, $jsMessageType) : ''), we_html_element::htmlBody([ 'class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form">
 		<input type="hidden" id="we_cmd_field" name="we_cmd[0]" value="saveShipping" />' .
 					we_html_multiIconBox::getHTML('weShipping', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')

@@ -1000,15 +1000,14 @@ function CalendarChanged(calObject) {
 			case 'edit_shop_cart_custom_field':
 
 				echo we_html_element::jsElement('function we_submit() {
-				elem = document.getElementById("cartfieldname");
+	var elem = document.getElementById("cartfieldname");
 
-				if (elem && elem.value) {
-					document.we_form.submit();
-				} else {
-					' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR) . '
-				}
-
-			}') . '
+	if (elem && elem.value) {
+		document.we_form.submit();
+	} else {
+		top.we_showMessage(WE().consts.g_l.shop.field_empty_js_alert, WE().consts.message.WE_MESSAGE_ERROR, window);
+	}
+}') . '
 					</head>
 		<body class="weDialogBody">
 		<form name="we_form">
@@ -1053,8 +1052,8 @@ function CalendarChanged(calObject) {
 
 					// update all orders with this orderId
 					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($serialOrder))){
-						$jsCmd = 'top.opener.top.content.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");top.opener.' .
-							we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
+						$jsCmd = 'top.opener.top.content.doClick(' . $_REQUEST['bid'] . ',"shop","' . SHOP_TABLE . '");
+top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
 					} else {
 						$jsCmd = we_message_reporting::getShowMessageCall(sprintf(g_l('modules_shop', '[edit_order][js_saved_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
 					}

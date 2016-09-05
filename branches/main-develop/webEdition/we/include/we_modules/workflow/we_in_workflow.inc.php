@@ -37,18 +37,14 @@ if($cmd === 'ok'){
 				break;
 			default:
 			case we_base_constants::MODE_NORMAL:
-				$script = 'if(opener){
-WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();
-}else{
-WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();
-}';
+				$script = 'WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter.location.reload();';
 		}
 
 		if($cmd2){ // make same new
 			$we_doc->makeSameNew();
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 			$script .= 'opener.top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
-		} elseif(in_array($we_doc->EditPageNr, array(we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO))){
+		} elseif(in_array($we_doc->EditPageNr, [we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_INFO])){
 			$script .= 'opener.top.we_cmd("switch_edit_page","' . $we_doc->EditPageNr . '","' . $we_transaction . '");'; // wird in Templ eingef�gt
 		}
 	} else {

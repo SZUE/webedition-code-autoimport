@@ -105,20 +105,6 @@ function setTab(tab){
 			return parent::getHTMLEditorFooter([]);
 		}
 
-		$extraHead = we_html_element::jsElement('
-function setStatusCheck(){
-	var a=document.we_form.status_workflow;
-	var b;
-	if(top.content.editor.edbody.loaded){
-		b=top.content.editor.edbody.getStatusContol();
-	}else{
-		setTimeout(setStatusCheck,100);
-	}
-
-	a.checked=(b==1);
-}
-');
-
 		$table2 = new we_html_table(['class' => 'default', 'width' => 300], 1, 2);
 		$table2->setColContent(0, 0, we_html_button::create_button(we_html_button::SAVE, "javascript:top.content.we_cmd('save_workflow');"));
 		$table2->setCol(0, 1, ['class' => 'defaultfont'], $this->View->getStatusHTML());
@@ -129,7 +115,7 @@ function setStatusCheck(){
 				], we_html_element::htmlForm($attribs = [], $table2->getHtml())
 		);
 
-		return $this->getHTMLDocument($body, $extraHead);
+		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_frames.js'));
 	}
 
 	function getHTMLLog($docID, $type = 0){
@@ -168,9 +154,9 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 	function getHTMLLogQuestion(){
 		$form = we_html_element::htmlForm(['name' => 'we_form'], $this->View->getLogQuestion());
-		$body = we_html_element::htmlBody([], $form);
+		$body = we_html_element::htmlBody(['onload' => 'self.focus();'], $form);
 
-		return $this->getHTMLDocument($body);
+		return $this->getHTMLDocument($body, we_html_element::jsScript(WE_JS_MODULES_DIR . 'workflow/workflow_frames.js'));
 	}
 
 	protected function getHTMLEditorBody(){

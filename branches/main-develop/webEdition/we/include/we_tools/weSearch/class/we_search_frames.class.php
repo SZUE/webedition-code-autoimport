@@ -52,11 +52,9 @@ class we_search_frames extends we_modules_frame{
 		}
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody($attr, we_html_element::htmlForm(array(
-						'name' => 'we_form'
-						), we_html_element::htmlHiddens(array(
-							'pnt' => 'cmd',
-							'cmd' => 'no_cmd'))
+				we_html_element::htmlBody($attr, we_html_element::htmlForm(['name' => 'we_form'
+						], we_html_element::htmlHiddens(['pnt' => 'cmd',
+							'cmd' => 'no_cmd'])
 				)), we_html_element::jsElement(
 					($pid ?
 						'' :

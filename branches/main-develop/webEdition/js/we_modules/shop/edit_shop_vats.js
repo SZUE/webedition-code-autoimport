@@ -23,6 +23,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var allVats = WE().util.getDynamicVar(document, 'loadVarEdit_shop_vats', 'data-allVats');
+
 var hot = 0;
 
 function doKeyDown(e) {
