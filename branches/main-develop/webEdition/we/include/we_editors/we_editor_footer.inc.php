@@ -88,59 +88,34 @@ if($canWeSave &&
 
 // publish for templates to save in version
 $pass_publish = $canWeSave && ($showPubl || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL)) ? " WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave() " : "''";
-$js_we_save_cmd = "we_cmd('save_document','','','',''," . $pass_publish . ",addCmd);";
 
-$js = '
-function generatedSaveDoc(addCmd){
-	if(weCanSave){
-' . ($we_doc->isBinary() ?
-		we_fileupload_ui_preview::getJsOnLeave($js_we_save_cmd) :
-		$js_we_save_cmd
-	) .
-	($reloadPage ?
-		'setTimeout(saveReload,1500);' :
-		''
-	) . '
-	}
-}';
+$doc = [
+	'we_transaction' => $we_transaction,
+	'ID' => intval($we_doc->ID),
+	'Path' => $we_doc->Path,
+	'Text' => $we_doc->Text,
+	'contentType' => $we_doc->ContentType,
+	'editFilename' => preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path),
+	'makeSameDocCheck' => intval(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew && (!inWorkflow($we_doc))),
+	'isTemplate' => $we_doc->Table == TEMPLATES_TABLE,
+	'isFolder' => $we_doc->ContentType == we_base_ContentTypes::FOLDER,
+	'isBinary' => $we_doc->isBinary(),
+	'classname' => ($we_doc->Published == 0 ? 'notpublished' : (!in_array($we_doc->Table, [TEMPLATES_TABLE, VFILE_TABLE]) && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')),
+	'_showGlossaryCheck' => $showGlossaryCheck,
+	'weCanSave' => $canWeSave,
+	'ctrlElem' => 0,
+	'reloadOnSave' => $reloadPage,
+	'pass_publish' => $pass_publish,
+];
 
 if(($we_doc->IsTextContentDoc /* || $we_doc->IsFolder */) && $haspermNew && //	$js_permnew
 	($_SESSION['weS']['we_mode'] != we_base_constants::MODE_SEE || $GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)){ // not in SeeMode or in editmode
 	$ctrlElem = getControlElement('checkbox', 'makeSameDoc');
-	$js_permnew = ($ctrlElem ? //	changes for we:controlElement
-			'setTextDocument(true,' . ($ctrlElem["checked"] ? "true" : "false") . ');' :
-			'setTextDocument(false);');
-} else {
-	$js_permnew = '';
+	$doc['ctrlElem'] = ($ctrlElem ? ($ctrlElem["checked"] ? 1 : 2) : 3);
 }
 
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-var we_transaction="' . $we_transaction . '";
-var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(we_transaction);
-var doc={
-	ID:' . intval($we_doc->ID) . ',
-	Path:"' . $we_doc->Path . '",
-	Text:"' . $we_doc->Text . '",
-	contentType:"' . $we_doc->ContentType . '",
-	editFilename:"' . preg_replace('|/' . $we_doc->Filename . '.*$|', $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : ''), $we_doc->Path) . '",
-	makeSameDocCheck: ' . intval(($we_doc->IsTextContentDoc/* || $we_doc->IsFolder */) && $haspermNew && (!inWorkflow($we_doc))) . ',
-	isTemplate:' . intval($we_doc->Table == TEMPLATES_TABLE) . ',
-	isFolder:' . intval($we_doc->ContentType == we_base_ContentTypes::FOLDER) . ',
-	classname:"' . ($we_doc->Published == 0 ? 'notpublished' : (!in_array($we_doc->Table, array(TEMPLATES_TABLE, VFILE_TABLE)) && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . '"
-};
-var weCanSave=' . ($canWeSave ? 'true' : 'false') . ';
-var _showGlossaryCheck = ' . $showGlossaryCheck . ';
-
-function we_footerLoaded(){
-	if(doc.isTemplate && !doc.isFolder){
-		setTemplate();
-	}' .
-		$js_permnew . '
-	setPath();
-}' .
-		$js) .
-	we_html_element::jsScript(JS_DIR . 'we_editor_footer.js')
-);
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'we_editor_footer.js', '', ['id' => 'loadVarEditor_footer', 'data-doc' => setDynamicVar($doc)]));
+unset($doc);
 //	Document is in workflow
 if(inWorkflow($we_doc)){
 	we_editor_footer::workflow($we_doc);
@@ -171,7 +146,7 @@ if(inWorkflow($we_doc)){
 						}
 					} else if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
 
-						$noPermTable = new we_html_table(array('class' => 'default footertable'), 1, 2);
+						$noPermTable = new we_html_table(['class' => 'default footertable'], 1, 2);
 
 						$noPermTable->setColContent(0, 0, '<span class="fa-stack fa-lg" style="color:#F2F200;margin-right:10px;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>');
 						$noPermTable->setColContent(0, 1, g_l('SEEM', '[no_permission_to_edit_document]'));

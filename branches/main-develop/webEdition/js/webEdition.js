@@ -1826,3 +1826,24 @@ WE().layout.propEdit = {
 		}
 	}
 };
+
+WE().layout.checkFileUpload = function (we_cmd_args, type) {
+	var parentObj, frame;
+
+	if (type === undefined || type === 'switch_tab') {
+		parentObj = WE().layout.weEditorFrameController;
+		frame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+	} else {
+		parentObj = top._EditorFrame;
+		frame = _EditorFrame.getContentEditor();
+	}
+
+	if (parentObj !== undefined && (frame.we_FileUpload) !== undefined && frame.we_FileUpload.getType() === 'binDoc') {
+		frame.we_FileUpload.doUploadIfReady(function () {
+			top.we_cmd.apply(this, we_cmd_args);
+		});
+	} else {
+		top.we_cmd.apply(this, we_cmd_args);
+	}
+
+};

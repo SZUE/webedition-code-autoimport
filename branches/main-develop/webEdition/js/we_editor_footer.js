@@ -23,6 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var doc = WE().util.getDynamicVar(document, 'loadVarEditor_footer', 'data-doc');
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(doc.we_transaction);
+
 function we_submitForm(target, url) {
 	var f = self.document.we_form;
 	if (!f.checkValidity()) {
@@ -42,20 +45,20 @@ function put_in_workflow(table) {
 			we_cmd('save_document', '', '', '', '', 0, 0, 1);
 		}
 	} else {
-		top.we_cmd('workflow_isIn', we_transaction, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0));
+		top.we_cmd('workflow_isIn', doc.we_transaction, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0));
 	}
 }
 
 function pass_workflow() {
-	we_cmd('workflow_pass', we_transaction);
+	we_cmd('workflow_pass', doc.we_transaction);
 }
 
 function workflow_finish() {
-	we_cmd('workflow_finish', we_transaction);
+	we_cmd('workflow_finish', doc.we_transaction);
 }
 
 function decline_workflow() {
-	we_cmd('workflow_decline', we_transaction);
+	we_cmd('workflow_decline', doc.we_transaction);
 }
 
 function editFile() {
@@ -75,16 +78,8 @@ function editSource() {
 }
 
 function setTemplate() {
-	if (_EditorFrame.getEditorAutoRebuild()) {
-		self.document.we_form.autoRebuild.checked = true;
-	} else {
-		self.document.we_form.autoRebuild.checked = false;
-	}
-	if (_EditorFrame.getEditorMakeNewDoc()) {
-		self.document.we_form.makeNewDoc.checked = true;
-	} else {
-		self.document.we_form.makeNewDoc.checked = false;
-	}
+	self.document.we_form.autoRebuild.checked = (_EditorFrame.getEditorAutoRebuild() ? true : false);
+	self.document.we_form.makeNewDoc.checked = (_EditorFrame.getEditorMakeNewDoc() ? true : false);
 }
 
 function setTextDocument(hasCtrl, value) {
@@ -107,7 +102,7 @@ function setPath() {
 }
 
 function saveReload() {
-	self.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' + we_transaction;
+	self.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' + doc.we_transaction;
 }
 
 function we_cmd() {
@@ -121,16 +116,16 @@ function we_cmd() {
 		case "save_document":
 			if (doc.isTemplate) {
 				if (doc.isFolder) {
-					top.we_cmd("save_document", we_transaction, 0, 1, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0), "", args[6] ? args[6] : "", args[7] ? args[7] : "");
+					top.we_cmd("save_document", doc.we_transaction, 0, 1, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0), "", args[6] ? args[6] : "", args[7] ? args[7] : "");
 				} else {
-					top.we_cmd("save_document", we_transaction, 0, 0, "", args[5] ? args[5] : "", args[6] ? args[6] : "", args[7] ? args[7] : "");
+					top.we_cmd("save_document", doc.we_transaction, 0, 0, "", args[5] ? args[5] : "", args[6] ? args[6] : "", args[7] ? args[7] : "");
 				}
 			} else {
-				top.we_cmd("save_document", we_transaction, 0, 1, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0), args[5] ? args[5] : "", args[6] ? args[6] : "", args[7] ? args[7] : "");
+				top.we_cmd("save_document", doc.we_transaction, 0, 1, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0), args[5] ? args[5] : "", args[6] ? args[6] : "", args[7] ? args[7] : "");
 			}
 			break;
 		case "object_obj_search":
-			top.we_cmd("object_obj_search", we_transaction, document.we_form.obj_search.value, document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
+			top.we_cmd("object_obj_search", doc.we_transaction, document.we_form.obj_search.value, document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
 			break;
 		default:
 			if (top.we_cmd) {
@@ -139,6 +134,23 @@ function we_cmd() {
 	}
 }
 
+function we_footerLoaded() {
+	if (doc.isTemplate && !doc.isFolder) {
+		setTemplate();
+	}
+	switch (doc.ctrlElem) {
+		case 1:
+			setTextDocument(true, true);
+			break;
+		case 2:
+			setTextDocument(true, false);
+			break;
+		case 3:
+			setTextDocument(false);
+			break;
+	}
+	setPath();
+}
 
 function we_save_document() {
 	var countSaveLoop = 0;
@@ -152,8 +164,8 @@ function we_save_document() {
 		// Nothing
 	}
 
-	/*if (_EditorFrame.getEditorPublishWhenSave() && _showGlossaryCheck) {
-	 we_cmd('glossary_check', '', we_transaction);
+	/*if (_EditorFrame.getEditorPublishWhenSave() && doc._showGlossaryCheck) {
+	 we_cmd('glossary_check', '', doc.we_transaction);
 	 } else */{
 		acStatus = '';
 		invalidAcFields = false;
@@ -176,7 +188,7 @@ function we_save_document() {
 		if (countSaveLoop > 10) {
 			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
-		} else if (acStatusType.toLowerCase() == 'object' && acStatus.running) {
+		} else if (acStatusType.toLowerCase() === 'object' && acStatus.running) {
 			countSaveLoop++;
 			setTimeout(we_save_document, 100);
 		} else if (invalidAcFields) {
@@ -184,7 +196,17 @@ function we_save_document() {
 			countSaveLoop = 0;
 		} else {
 			countSaveLoop = 0;
-			generatedSaveDoc();
+			if (doc.weCanSave) {
+				var we_cmd_args = ["save_document", "", "", "", "", doc.pass_publish];
+				if (doc.isBinary) {
+					WE().layout.checkFileUpload(we_cmd_args);
+				} else {
+					we_cmd.apply(this, we_cmd_args);
+				}
+				if (doc.reloadOnSave) {
+					setTimeout(saveReload, 1500);
+				}
+			}
 		}
 	}
 }
