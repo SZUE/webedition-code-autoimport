@@ -24,11 +24,524 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+var WebEdition = {
+//all constants in WE used in JS
+	layout: {
+		button: null,
+		sidebar: null,
+		cockpitFrame: null,
+		windows: [],
+		focusedWindow: null
+	},
+	handler: {
+		errorHandler: errorHandler,
+		dealWithKeyboardShortCut: null,
+	},
+	//utility functions, defined in webedition.js
+	util: {
+		weSetCookie: function (doc, name, value, expires, path, domain) {
+			doc.cookie = name + "=" + encodeURI(value) +
+							((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
+							((path === undefined) ? "" : "; path=" + path) +
+							((domain === undefined) ? "" : "; domain=" + domain);
+		},
+		weGetCookie: function (doc, name) {
+			var cname = name + "=";
+			var dc = doc.cookie;
+			if (dc.length > 0) {
+				begin = dc.indexOf(cname);
+				if (begin !== -1) {
+					begin += cname.length;
+					end = dc.indexOf(";", begin);
+					if (end === -1) {
+						end = dc.length;
+					}
+					return unescape(dc.substring(begin, end));
+				}
+			}
+			return null;
+		},
+		hashCode: function (s) {
+			return s.split("").reduce(function (a, b) {
+				a = ((a << 5) - a) + b.charCodeAt(0);
+				return a & a;
+			}, 0);
+		},
+		in_array: function (needle, haystack) {
+			for (var i = 0; i < haystack.length; i++) {
+				if (haystack[i] == needle) {
+					return true;
+				}
+			}
+			return false;
+		},
+		hasPerm: function (perm) {
+			return (WE().session.permissions.ADMINISTRATOR || WE().session.permissions[perm] ? true : false);
+		},
+		/**
+		 * This function sets incons inside elements of a given class. The element must have the property data-contenttype and data-extension set to determine the correct icon
+		 * @param string classname the elements classname
+		 * @returns noting
+		 */
+		setIconOfDocClass: function (doc, classname) {
+			var elements = doc.getElementsByClassName(classname);
+			for (var i = 0; i < elements.length; i++) {
+				elements[i].innerHTML = this.getTreeIcon(elements[i].getAttribute("data-contenttype"), false, elements[i].getAttribute("data-extension"));
+			}
+		},
+		/**
+		 * Get a file icon out of a given type, used in tree, selectors & tabs
+		 * @param {type} contentType
+		 * @param {type} open
+		 * @returns icon to be drawn as html-code
+		 */
+		getTreeIcon: function (contentType, open, extension) {
+			var simplepre = '<span class="fa-stack fa-lg fileicon">';
+			var pre = simplepre + '<i class="fa fa-file fa-inverse fa-stack-2x fa-fw"></i>',
+							post = '</span>';
+			switch (contentType) {
+				case 'cockpit':
+					return simplepre + '<i class="fa fa-th-large fa-stack-2x"></i>' + post;
+				case 'class_folder'://FIXME: this contenttype is not set
+				case 'we/bannerFolder':
+				case 'folder':
+					return simplepre + '<i class="fa fa-folder' + (open ? '-open' : '') + ' fa-stack-2x"></i><i class="fa fa-folder' + (open ? '-open' : '') + '-o fa-stack-2x"></i>' + post;
+				case  'image/*':
+					return pre + '<i class="fa fa-file-image-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+				case 'text/js':
+					return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">js</i></span>' + post;
+				case 'text/css':
+					return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">cs</i></span>' + post;
+				case 'text/htaccess':
+					return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">ht</i></span>' + post;
+				case 'text/weTmpl':
+					return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">T</i></span>' + post;
+				case 'text/webedition':
+					return pre + '<i class="fa fa-file-text-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span>' + post;
+				case 'text/xml':
+				case 'text/html':
+					return pre + '<i class="fa fa-file-code-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+				case 'application/x-shockwave-flash':
+				case 'video/*':
+					return pre + '<i class="fa fa-file-video-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+				case 'audio/*':
+					return pre + '<i class="fa fa-file-sound-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+				case 'text/plain':
+					return pre + '<i class="fa fa-file-text-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+				case 'file':
+				case 'application/*':
+					switch (extension) {
+						case '.pdf':
+							return pre + '<i class="fa fa-file-pdf-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+						case '.zip' :
+						case '.sit' :
+						case '.hqx' :
+						case '.bin' :
+							return pre + '<i class="fa fa-file-archive-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+						case '.odg':
+						case '.otg':
+						case '.odt':
+						case '.ott':
+						case '.dot' :
+						case '.doc' :
+							return pre + '<i class="fa fa-file-word-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+						case '.ods':
+						case '.ots':
+						case '.xlt' :
+						case '.xls' :
+							return pre + '<i class="fa fa-table fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+						case '.odp':
+						case '.otp':
+						case '.ppt' :
+							return pre + '<i class="fa fa-line-chart fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+						default:
+							return pre + '<i class="fa fa-file-o fa-stack-2x"></i>' + post;
+					}
+					return '';
+				case 'object':
+					return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">C</i></span>' + post;
+				case 'objectFile':
+					return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">O</i></span>' + post;
+				case 'text/weCollection':
+					return simplepre + '<i class="fa fa-archive fa-stack-2x we-color"></i>' + post;
+//Banner module
+				case 'we/banner':
+					return simplepre + '<i class="fa fa-flag-checkered fa-stack-2x we-color"></i>' + post;
+				case 'we/customerGroup':
+				case 'we/userGroup':
+					return simplepre + '<i class="fa fa-users fa-stack-2x we-color"></i>' + post;
+				case 'we/alias':
+					return simplepre + '<i class="fa fa-user fa-stack-2x" style="color:grey"></i>' + post;
+				case 'we/customer':
+				case 'we/user':
+					return simplepre + '<i class="fa fa-user fa-stack-2x we-color"></i>' + post;
+				case 'we/export':
+					return pre + '<i class="fa fa-download fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+				case 'we/glossar':
+					return simplepre + '<i class="fa fa-commenting fa-stack-2x we-color"></i>' + post;
+				case 'we/newsletter':
+					return simplepre + '<i class="fa fa-newspaper-o fa-stack-2x we-color"></i>' + post;
+				case 'we/voting':
+					return simplepre + '<i class="fa fa-thumbs-up fa-stack-2x we-color"></i>' + post;
+				case 'we/navigation':
+					return simplepre + '<i class="fa fa-compass fa-stack-2x we-color"></i>' + post;
+				case 'we/search':
+					return pre + '<i class="fa fa-search fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
+				case 'we/shop':
+					return simplepre + '<i class="fa fa-shopping-cart fa-stack-2x we-color"></i></i>' + post;
+				case 'we/workflow':
+					return simplepre + '<i class="fa fa-fa-gears fa-stack-2x we-color"></i></i>' + post;
+				case 'we/categories':
+					return simplepre + '<i class="fa fa-tags fa-stack-2x we-color"></i>' + post;
+				case 'we/category':
+					return simplepre + '<i class="fa fa-tag fa-stack-2x we-color"></i>' + post;
+				case 'symlink':
+					return pre + '<i class="fa fa-link fa-stack-2x we-color"></i>' + post;
+				case 'settings':
+					return simplepre + '<i class="fa fa-list fa-stack-2x we-color"></i>' + post;
+
+				default:
+					return pre + '<i class="fa fa-file-o fa-stack-2x ' + contentType + '"></i>' + post;
+			}
+		},
+		sprintf: function (argum) {
+			if (!arguments || arguments.length === 0) {
+				return;
+			}
+
+			var regex = /([^%]*)%(%|d|s)(.*)/;
+			var arr = [];
+			var iterator = 0;
+			var matches = 0;
+
+			while ((arr = regex.exec(argum))) {
+				var left = arr[1];
+				var type = arr[2];
+				var right = arr[3];
+
+				matches++;
+				iterator++;
+
+				var replace = arguments[iterator];
+
+				switch (type) {
+					case "d":
+						replace = parseInt(arguments[iterator]) ? parseInt(arguments[iterator]) : 0;
+						break;
+					case "s":
+						replace = arguments[iterator];
+						break;
+				}
+				argum = left + replace + right;
+			}
+			return argum;
+		},
+		IsDigitPercent: function (e) {
+			var key;
+			if (e.charCode === undefined) {
+				key = event.keyCode;
+			} else {
+				key = e.charCode;
+			}
+
+			return (((key >= 48) && (key <= 57)) || (key === 37) || (key === 0) || (key === 46) || (key === 101) || (key === 109) || (key === 13) || (key === 8) || (key <= 63235 && key >= 63232) || (key === 63272));
+		},
+		IsDigit: function (e) {
+			var key = e.charCode === undefined ? event.keyCode : e.charCode;
+			return ((key === 46) || ((key >= 48) && (key <= 57)) || (key === 0) || (key === 13) || (key === 8) || (key <= 63235 && key >= 63232) || (key === 63272));
+		},
+		getWe_cmdArgsArray: function (arr) {
+			if (arr.lenght > 0 && typeof arr[0] === "object") {
+				return arr[0];
+			}
+			return arr;
+		},
+		getWe_cmdArgsUrl: function (args, base) {
+			var url = (base === undefined ? WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?" : base);
+
+			if (Object.prototype.toString.call(args) === '[object Array]') {
+				for (var i = 0; i < args.length; i++) {
+					url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+				}
+			} else {
+				url += Object.keys(args).map(function (key) {
+					return "we_cmd[" + key + "]=" + encodeURIComponent(args[key]);
+				}).join("&");
+			}
+
+			return url;
+		},
+		/**
+		 * setting is built like the unix file system privileges with the 3 options
+		 * see notices, see warnings, see errors
+		 *
+		 * 1 => see Notices
+		 * 2 => see Warnings
+		 * 4 => see Errors
+		 *
+		 * @param message string
+		 * @param prio integer one of the values 1,2,4
+		 * @param win object reference to the calling window
+		 */
+		showMessage: function (message, prio, win) {
+			win = (win ? win : this.window);
+			// default is error, to avoid missing messages
+			prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
+
+			// always show in console !
+			WE().layout.messageConsole.addMessage(prio, message);
+
+			if (prio & WE().session.messageSettings) { // show it, if you should
+
+				// the used vars are in file JS_DIR . "weJsStrings.php";
+				switch (prio) {
+					// Notice
+					case WE().consts.message.WE_MESSAGE_INFO:
+					case WE().consts.message.WE_MESSAGE_NOTICE:
+						win.alert(WE().consts.g_l.message_reporting.notice + ":\n" + message);
+						break;
+
+						// Warning
+					case WE().consts.message.WE_MESSAGE_WARNING:
+						win.alert(WE().consts.g_l.message_reporting.warning + ":\n" + message);
+						break;
+
+						// Error
+					case WE().consts.message.WE_MESSAGE_ERROR:
+						win.alert(WE().consts.g_l.message_reporting.error + ":\n" + message);
+						break;
+				}
+			}
+		},
+		clip: function (doc, unique, width) {
+			var text = doc.getElementById("td_" + unique);
+			var btn = doc.getElementById("btn_" + unique).firstChild;
+
+			if (text.classList.contains("cutText")) {
+				text.classList.remove("cutText");
+				text.style.maxWidth = "";
+				btn.classList.remove("fa-caret-right");
+				btn.classList.add("fa-caret-down");
+			} else {
+				text.classList.add("cutText");
+				text.style.maxWidth = width + "ex";
+				btn.classList.remove("fa-caret-down");
+				btn.classList.add("fa-caret-right");
+			}
+		},
+		validate: {
+			email: function (email) {
+				email = email.replace(/".*"/g, "y");
+				email = email.replace(/\\./g, "z");
+				var parts = email.split("@");
+				if (parts.length != 2) {
+					return false;
+				}
+				if (!WE().util.validate.domain(parts[1])) {
+					return false;
+				}
+				if (!parts[0].match(/(.+)/)) {
+					return false;
+				}
+				return true;
+			},
+			domain: function (domain) {
+				var parts = domain.split(".");
+				//if(parts.length>3 || parts.length<1) return false;
+				//if(parts.length===1 && !WE().util.validate.domainname(parts[0])) return false;
+				for (var i = 0; i < (parts.length - 1); i++) {
+					if (!WE().util.validate.domainname(parts[i])) {
+						return false;
+					}
+				}
+				if (!parts[parts.length - 1].match(/^[a-z][a-z]+$/i)) {
+					return false;
+				}
+				return true;
+			},
+			domainname: function (domainname) {
+				var pattern = /^[^_\-\s/=?\*"'#!§$%&;()\[\]\{\};:,°<>\|][^\s/=?\*"'#!§$%&;()\[\]\{\};:,°<>\|]+$/i;
+				if (domainname.match(pattern)) {
+					return true;
+				}
+				return false;
+			},
+			date: function () {
+				// TODO
+			},
+			currency: function () {
+				// TODO
+			}
+		},
+		Base64: {
+			// private property
+			_keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+			// public method for encoding
+			encode: function (input) {
+				var output = "";
+				var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
+				var i = 0;
+
+				input = this._utf8_encode(input);
+
+				while (i < input.length) {
+
+					chr1 = input.charCodeAt(i++);
+					chr2 = input.charCodeAt(i++);
+					chr3 = input.charCodeAt(i++);
+
+					enc1 = chr1 >> 2;
+					enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
+					enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
+					enc4 = chr3 & 63;
+
+					if (isNaN(chr2)) {
+						enc3 = enc4 = 64;
+					} else if (isNaN(chr3)) {
+						enc4 = 64;
+					}
+
+					output = output +
+									this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
+									this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
+
+				}
+
+				return output;
+			},
+			// public method for decoding
+			decode: function (input) {
+				var output = "";
+				var chr1, chr2, chr3;
+				var enc1, enc2, enc3, enc4;
+				var i = 0;
+
+				input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
+
+				while (i < input.length) {
+
+					enc1 = this._keyStr.indexOf(input.charAt(i++));
+					enc2 = this._keyStr.indexOf(input.charAt(i++));
+					enc3 = this._keyStr.indexOf(input.charAt(i++));
+					enc4 = this._keyStr.indexOf(input.charAt(i++));
+
+					chr1 = (enc1 << 2) | (enc2 >> 4);
+					chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
+					chr3 = ((enc3 & 3) << 6) | enc4;
+
+					output = output + String.fromCharCode(chr1);
+
+					if (enc3 !== 64) {
+						output = output + String.fromCharCode(chr2);
+					}
+					if (enc4 !== 64) {
+						output = output + String.fromCharCode(chr3);
+					}
+
+				}
+
+				output = this._utf8_decode(output);
+
+				return output;
+
+			},
+			// private method for UTF-8 encoding
+			_utf8_encode: function (string) {
+				string = string.replace(/\r\n/g, "\n");
+				var utftext = "";
+
+				for (var n = 0; n < string.length; n++) {
+
+					var c = string.charCodeAt(n);
+
+					if (c < 128) {
+						utftext += String.fromCharCode(c);
+					} else if ((c > 127) && (c < 2048)) {
+						utftext += String.fromCharCode((c >> 6) | 192);
+						utftext += String.fromCharCode((c & 63) | 128);
+					} else {
+						utftext += String.fromCharCode((c >> 12) | 224);
+						utftext += String.fromCharCode(((c >> 6) & 63) | 128);
+						utftext += String.fromCharCode((c & 63) | 128);
+					}
+
+				}
+
+				return utftext;
+			},
+			// private method for UTF-8 decoding
+			_utf8_decode: function (utftext) {
+				var string = "";
+				var i = 0;
+				var c = c2 = 0;
+
+				while (i < utftext.length) {
+					c = utftext.charCodeAt(i);
+					if (c < 128) {
+						string += String.fromCharCode(c);
+						i++;
+					} else if ((c > 191) && (c < 224)) {
+						c2 = utftext.charCodeAt(i + 1);
+						string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
+						i += 2;
+					} else {
+						c2 = utftext.charCodeAt(i + 1);
+						c3 = utftext.charCodeAt(i + 2);
+						string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+						i += 3;
+					}
+
+				}
+
+				return string;
+			}
+		},
+		loadConsts: function (check) {
+			var cur = WE().consts;
+			var found = true;
+			var what = check.split(".");
+			for (var i = 0; i < what.length; i++) {
+				if (cur[what[i]] === undefined || !cur[what[i]]) {
+					found = false;
+					break;
+				}
+				cur = cur[what[i]];
+			}
+			if (found) {
+				return;
+			}
+			//load consts
+			var fileref = document.createElement('script');
+			fileref.setAttribute("src", WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=loadJSConsts&we_cmd[1]=" + check);
+			document.getElementsByTagName("head")[0].appendChild(fileref);
+
+		},
+		getDynamicVar: function (doc, id, dataname) {
+			var el = doc.getElementById(id);
+			return (el ?
+							this.decodeDynamicVar(el, dataname) :
+							null
+							);
+		},
+		decodeDynamicVar: function (el, dataname) {
+			var data = el.getAttribute(dataname);
+			return data ? JSON.parse(this.Base64.decode(data)) : null;
+		},
+	},
+	session: {},
+	consts: {},
+};
+
+WebEdition.consts = WebEdition.util.getDynamicVar(document, 'loadWEData', 'data-consts');
+WebEdition.session = WebEdition.util.getDynamicVar(document, 'loadWEData', 'data-session')
+//finally load language files
+WE().util.loadConsts('g_l.main');
+
 var regular_logout = false;
 var widthBeforeDeleteMode = 0;
 var widthBeforeDeleteModeSidebar = 0;
 var we_mediaReferences = {};
-var oldTreeWidth;
+var oldTreeWidth = WE().consts.size.tree.defaultWidth;
 
 function doClickDirect(id, ct, table, fenster) {
 	if (!fenster) {
@@ -1247,500 +1760,6 @@ WE().t_e = function () {
 	WE().handler.errorHandler(msg);
 };
 
-/* ***********************************************
- * WE().util functions
- ************************************************/
-
-WE().util = {
-	weSetCookie: function (doc, name, value, expires, path, domain) {
-		doc.cookie = name + "=" + encodeURI(value) +
-						((expires === undefined) ? "" : "; expires=" + expires.toGMTString()) +
-						((path === undefined) ? "" : "; path=" + path) +
-						((domain === undefined) ? "" : "; domain=" + domain);
-	},
-	weGetCookie: function (doc, name) {
-		var cname = name + "=";
-		var dc = doc.cookie;
-		if (dc.length > 0) {
-			begin = dc.indexOf(cname);
-			if (begin !== -1) {
-				begin += cname.length;
-				end = dc.indexOf(";", begin);
-				if (end === -1) {
-					end = dc.length;
-				}
-				return unescape(dc.substring(begin, end));
-			}
-		}
-		return null;
-	},
-	hashCode: function (s) {
-		return s.split("").reduce(function (a, b) {
-			a = ((a << 5) - a) + b.charCodeAt(0);
-			return a & a;
-		}, 0);
-	},
-	in_array: function (needle, haystack) {
-		for (var i = 0; i < haystack.length; i++) {
-			if (haystack[i] == needle) {
-				return true;
-			}
-		}
-		return false;
-	},
-	hasPerm: function (perm) {
-		return (WE().session.permissions.ADMINISTRATOR || WE().session.permissions[perm] ? true : false);
-	},
-	/**
-	 * This function sets incons inside elements of a given class. The element must have the property data-contenttype and data-extension set to determine the correct icon
-	 * @param string classname the elements classname
-	 * @returns noting
-	 */
-	setIconOfDocClass: function (doc, classname) {
-		var elements = doc.getElementsByClassName(classname);
-		for (var i = 0; i < elements.length; i++) {
-			elements[i].innerHTML = this.getTreeIcon(elements[i].getAttribute("data-contenttype"), false, elements[i].getAttribute("data-extension"));
-		}
-	},
-	/**
-	 * Get a file icon out of a given type, used in tree, selectors & tabs
-	 * @param {type} contentType
-	 * @param {type} open
-	 * @returns icon to be drawn as html-code
-	 */
-	getTreeIcon: function (contentType, open, extension) {
-		var simplepre = '<span class="fa-stack fa-lg fileicon">';
-		var pre = simplepre + '<i class="fa fa-file fa-inverse fa-stack-2x fa-fw"></i>',
-						post = '</span>';
-		switch (contentType) {
-			case 'cockpit':
-				return simplepre + '<i class="fa fa-th-large fa-stack-2x"></i>' + post;
-			case 'class_folder'://FIXME: this contenttype is not set
-			case 'we/bannerFolder':
-			case 'folder':
-				return simplepre + '<i class="fa fa-folder' + (open ? '-open' : '') + ' fa-stack-2x"></i><i class="fa fa-folder' + (open ? '-open' : '') + '-o fa-stack-2x"></i>' + post;
-			case  'image/*':
-				return pre + '<i class="fa fa-file-image-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-			case 'text/js':
-				return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">js</i></span>' + post;
-			case 'text/css':
-				return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">cs</i></span>' + post;
-			case 'text/htaccess':
-				return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-otherfiles"><i class="fa fa-stack-1x">ht</i></span>' + post;
-			case 'text/weTmpl':
-				return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">T</i></span>' + post;
-			case 'text/webedition':
-				return pre + '<i class="fa fa-file-text-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span>' + post;
-			case 'text/xml':
-			case 'text/html':
-				return pre + '<i class="fa fa-file-code-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-			case 'application/x-shockwave-flash':
-			case 'video/*':
-				return pre + '<i class="fa fa-file-video-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-			case 'audio/*':
-				return pre + '<i class="fa fa-file-sound-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-			case 'text/plain':
-				return pre + '<i class="fa fa-file-text-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-			case 'file':
-			case 'application/*':
-				switch (extension) {
-					case '.pdf':
-						return pre + '<i class="fa fa-file-pdf-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-					case '.zip' :
-					case '.sit' :
-					case '.hqx' :
-					case '.bin' :
-						return pre + '<i class="fa fa-file-archive-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-					case '.odg':
-					case '.otg':
-					case '.odt':
-					case '.ott':
-					case '.dot' :
-					case '.doc' :
-						return pre + '<i class="fa fa-file-word-o fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-					case '.ods':
-					case '.ots':
-					case '.xlt' :
-					case '.xls' :
-						return pre + '<i class="fa fa-table fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-					case '.odp':
-					case '.otp':
-					case '.ppt' :
-						return pre + '<i class="fa fa-line-chart fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-					default:
-						return pre + '<i class="fa fa-file-o fa-stack-2x"></i>' + post;
-				}
-				return '';
-			case 'object':
-				return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">C</i></span>' + post;
-			case 'objectFile':
-				return pre + '<i class="fa fa-file-o fa-stack-2x"></i><span class="we-icon"><i class="fa fa-circle fa-stack-1x"></i><i class="fa fa-stack-1x fa-inverse">e</i></span><span class="we-classification"><i class="fa fa-stack-1x">O</i></span>' + post;
-			case 'text/weCollection':
-				return simplepre + '<i class="fa fa-archive fa-stack-2x we-color"></i>' + post;
-//Banner module
-			case 'we/banner':
-				return simplepre + '<i class="fa fa-flag-checkered fa-stack-2x we-color"></i>' + post;
-			case 'we/customerGroup':
-			case 'we/userGroup':
-				return simplepre + '<i class="fa fa-users fa-stack-2x we-color"></i>' + post;
-			case 'we/alias':
-				return simplepre + '<i class="fa fa-user fa-stack-2x" style="color:grey"></i>' + post;
-			case 'we/customer':
-			case 'we/user':
-				return simplepre + '<i class="fa fa-user fa-stack-2x we-color"></i>' + post;
-			case 'we/export':
-				return pre + '<i class="fa fa-download fa-stack-2x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-			case 'we/glossar':
-				return simplepre + '<i class="fa fa-commenting fa-stack-2x we-color"></i>' + post;
-			case 'we/newsletter':
-				return simplepre + '<i class="fa fa-newspaper-o fa-stack-2x we-color"></i>' + post;
-			case 'we/voting':
-				return simplepre + '<i class="fa fa-thumbs-up fa-stack-2x we-color"></i>' + post;
-			case 'we/navigation':
-				return simplepre + '<i class="fa fa-compass fa-stack-2x we-color"></i>' + post;
-			case 'we/search':
-				return pre + '<i class="fa fa-search fa-stack-1x we-color"></i><i class="fa fa-file-o fa-stack-2x"></i>' + post;
-			case 'we/shop':
-				return simplepre + '<i class="fa fa-shopping-cart fa-stack-2x we-color"></i></i>' + post;
-			case 'we/workflow':
-				return simplepre + '<i class="fa fa-fa-gears fa-stack-2x we-color"></i></i>' + post;
-			case 'we/categories':
-				return simplepre + '<i class="fa fa-tags fa-stack-2x we-color"></i>' + post;
-			case 'we/category':
-				return simplepre + '<i class="fa fa-tag fa-stack-2x we-color"></i>' + post;
-			case 'symlink':
-				return pre + '<i class="fa fa-link fa-stack-2x we-color"></i>' + post;
-			case 'settings':
-				return simplepre + '<i class="fa fa-list fa-stack-2x we-color"></i>' + post;
-
-			default:
-				return pre + '<i class="fa fa-file-o fa-stack-2x ' + contentType + '"></i>' + post;
-		}
-	},
-	sprintf: function (argum) {
-		if (!arguments || arguments.length === 0) {
-			return;
-		}
-
-		var regex = /([^%]*)%(%|d|s)(.*)/;
-		var arr = [];
-		var iterator = 0;
-		var matches = 0;
-
-		while ((arr = regex.exec(argum))) {
-			var left = arr[1];
-			var type = arr[2];
-			var right = arr[3];
-
-			matches++;
-			iterator++;
-
-			var replace = arguments[iterator];
-
-			switch (type) {
-				case "d":
-					replace = parseInt(arguments[iterator]) ? parseInt(arguments[iterator]) : 0;
-					break;
-				case "s":
-					replace = arguments[iterator];
-					break;
-			}
-			argum = left + replace + right;
-		}
-		return argum;
-	},
-	IsDigitPercent: function (e) {
-		var key;
-		if (e.charCode === undefined) {
-			key = event.keyCode;
-		} else {
-			key = e.charCode;
-		}
-
-		return (((key >= 48) && (key <= 57)) || (key === 37) || (key === 0) || (key === 46) || (key === 101) || (key === 109) || (key === 13) || (key === 8) || (key <= 63235 && key >= 63232) || (key === 63272));
-	},
-	IsDigit: function (e) {
-		var key = e.charCode === undefined ? event.keyCode : e.charCode;
-		return ((key === 46) || ((key >= 48) && (key <= 57)) || (key === 0) || (key === 13) || (key === 8) || (key <= 63235 && key >= 63232) || (key === 63272));
-	},
-	getWe_cmdArgsArray: function (arr) {
-		if (arr.lenght > 0 && typeof arr[0] === "object") {
-			return arr[0];
-		}
-		return arr;
-	},
-	getWe_cmdArgsUrl: function (args, base) {
-		var url = (base === undefined ? WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?" : base);
-
-		if (Object.prototype.toString.call(args) === '[object Array]') {
-			for (var i = 0; i < args.length; i++) {
-				url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
-			}
-		} else {
-			url += Object.keys(args).map(function (key) {
-				return "we_cmd[" + key + "]=" + encodeURIComponent(args[key]);
-			}).join("&");
-		}
-
-		return url;
-	},
-	/**
-	 * setting is built like the unix file system privileges with the 3 options
-	 * see notices, see warnings, see errors
-	 *
-	 * 1 => see Notices
-	 * 2 => see Warnings
-	 * 4 => see Errors
-	 *
-	 * @param message string
-	 * @param prio integer one of the values 1,2,4
-	 * @param win object reference to the calling window
-	 */
-	showMessage: function (message, prio, win) {
-		win = (win ? win : this.window);
-		// default is error, to avoid missing messages
-		prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
-
-		// always show in console !
-		WE().layout.messageConsole.addMessage(prio, message);
-
-		if (prio & WE().session.messageSettings) { // show it, if you should
-
-			// the used vars are in file JS_DIR . "weJsStrings.php";
-			switch (prio) {
-				// Notice
-				case WE().consts.message.WE_MESSAGE_INFO:
-				case WE().consts.message.WE_MESSAGE_NOTICE:
-					win.alert(WE().consts.g_l.message_reporting.notice + ":\n" + message);
-					break;
-
-					// Warning
-				case WE().consts.message.WE_MESSAGE_WARNING:
-					win.alert(WE().consts.g_l.message_reporting.warning + ":\n" + message);
-					break;
-
-					// Error
-				case WE().consts.message.WE_MESSAGE_ERROR:
-					win.alert(WE().consts.g_l.message_reporting.error + ":\n" + message);
-					break;
-			}
-		}
-	},
-	clip: function (doc, unique, width) {
-		var text = doc.getElementById("td_" + unique);
-		var btn = doc.getElementById("btn_" + unique).firstChild;
-
-		if (text.classList.contains("cutText")) {
-			text.classList.remove("cutText");
-			text.style.maxWidth = "";
-			btn.classList.remove("fa-caret-right");
-			btn.classList.add("fa-caret-down");
-		} else {
-			text.classList.add("cutText");
-			text.style.maxWidth = width + "ex";
-			btn.classList.remove("fa-caret-down");
-			btn.classList.add("fa-caret-right");
-		}
-	},
-	validate: {
-		email: function (email) {
-			email = email.replace(/".*"/g, "y");
-			email = email.replace(/\\./g, "z");
-			var parts = email.split("@");
-			if (parts.length != 2) {
-				return false;
-			}
-			if (!WE().util.validate.domain(parts[1])) {
-				return false;
-			}
-			if (!parts[0].match(/(.+)/)) {
-				return false;
-			}
-			return true;
-		},
-		domain: function (domain) {
-			var parts = domain.split(".");
-			//if(parts.length>3 || parts.length<1) return false;
-			//if(parts.length===1 && !WE().util.validate.domainname(parts[0])) return false;
-			for (var i = 0; i < (parts.length - 1); i++) {
-				if (!WE().util.validate.domainname(parts[i])) {
-					return false;
-				}
-			}
-			if (!parts[parts.length - 1].match(/^[a-z][a-z]+$/i)) {
-				return false;
-			}
-			return true;
-		},
-		domainname: function (domainname) {
-			var pattern = /^[^_\-\s/=?\*"'#!§$%&;()\[\]\{\};:,°<>\|][^\s/=?\*"'#!§$%&;()\[\]\{\};:,°<>\|]+$/i;
-			if (domainname.match(pattern)) {
-				return true;
-			}
-			return false;
-		},
-		date: function () {
-			// TODO
-		},
-		currency: function () {
-			// TODO
-		}
-	},
-	Base64: {
-		// private property
-		_keyStr: "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
-		// public method for encoding
-		encode: function (input) {
-			var output = "";
-			var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
-			var i = 0;
-
-			input = this._utf8_encode(input);
-
-			while (i < input.length) {
-
-				chr1 = input.charCodeAt(i++);
-				chr2 = input.charCodeAt(i++);
-				chr3 = input.charCodeAt(i++);
-
-				enc1 = chr1 >> 2;
-				enc2 = ((chr1 & 3) << 4) | (chr2 >> 4);
-				enc3 = ((chr2 & 15) << 2) | (chr3 >> 6);
-				enc4 = chr3 & 63;
-
-				if (isNaN(chr2)) {
-					enc3 = enc4 = 64;
-				} else if (isNaN(chr3)) {
-					enc4 = 64;
-				}
-
-				output = output +
-								this._keyStr.charAt(enc1) + this._keyStr.charAt(enc2) +
-								this._keyStr.charAt(enc3) + this._keyStr.charAt(enc4);
-
-			}
-
-			return output;
-		},
-		// public method for decoding
-		decode: function (input) {
-			var output = "";
-			var chr1, chr2, chr3;
-			var enc1, enc2, enc3, enc4;
-			var i = 0;
-
-			input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
-
-			while (i < input.length) {
-
-				enc1 = this._keyStr.indexOf(input.charAt(i++));
-				enc2 = this._keyStr.indexOf(input.charAt(i++));
-				enc3 = this._keyStr.indexOf(input.charAt(i++));
-				enc4 = this._keyStr.indexOf(input.charAt(i++));
-
-				chr1 = (enc1 << 2) | (enc2 >> 4);
-				chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-				chr3 = ((enc3 & 3) << 6) | enc4;
-
-				output = output + String.fromCharCode(chr1);
-
-				if (enc3 !== 64) {
-					output = output + String.fromCharCode(chr2);
-				}
-				if (enc4 !== 64) {
-					output = output + String.fromCharCode(chr3);
-				}
-
-			}
-
-			output = this._utf8_decode(output);
-
-			return output;
-
-		},
-		// private method for UTF-8 encoding
-		_utf8_encode: function (string) {
-			string = string.replace(/\r\n/g, "\n");
-			var utftext = "";
-
-			for (var n = 0; n < string.length; n++) {
-
-				var c = string.charCodeAt(n);
-
-				if (c < 128) {
-					utftext += String.fromCharCode(c);
-				} else if ((c > 127) && (c < 2048)) {
-					utftext += String.fromCharCode((c >> 6) | 192);
-					utftext += String.fromCharCode((c & 63) | 128);
-				} else {
-					utftext += String.fromCharCode((c >> 12) | 224);
-					utftext += String.fromCharCode(((c >> 6) & 63) | 128);
-					utftext += String.fromCharCode((c & 63) | 128);
-				}
-
-			}
-
-			return utftext;
-		},
-		// private method for UTF-8 decoding
-		_utf8_decode: function (utftext) {
-			var string = "";
-			var i = 0;
-			var c = c2 = 0;
-
-			while (i < utftext.length) {
-				c = utftext.charCodeAt(i);
-				if (c < 128) {
-					string += String.fromCharCode(c);
-					i++;
-				} else if ((c > 191) && (c < 224)) {
-					c2 = utftext.charCodeAt(i + 1);
-					string += String.fromCharCode(((c & 31) << 6) | (c2 & 63));
-					i += 2;
-				} else {
-					c2 = utftext.charCodeAt(i + 1);
-					c3 = utftext.charCodeAt(i + 2);
-					string += String.fromCharCode(((c & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
-					i += 3;
-				}
-
-			}
-
-			return string;
-		}
-	},
-	loadConsts: function (check) {
-		var cur = WE().consts;
-		var found = true;
-		var what = check.split(".");
-		for (var i = 0; i < what.length; i++) {
-			if (cur[what[i]] === undefined || !cur[what[i]]) {
-				found = false;
-				break;
-			}
-			cur = cur[what[i]];
-		}
-		if (found) {
-			return;
-		}
-		//load consts
-		var fileref = document.createElement('script');
-		fileref.setAttribute("src", WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=loadJSConsts&we_cmd[1]=" + check);
-		document.getElementsByTagName("head")[0].appendChild(fileref);
-
-	},
-	getDynamicVar: function (doc, id, dataname) {
-		var el = doc.getElementById(id);
-		return (el ?
-						this.decodeDynamicVar(el, dataname) :
-						null
-						);
-	},
-	decodeDynamicVar: function (el, dataname) {
-		var data = el.getAttribute(dataname);
-		return data ? JSON.parse(this.Base64.decode(data)) : null;
-	},
-};
 /* ***********************************************
  * WE().layout functions
  ************************************************/

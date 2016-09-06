@@ -21,14 +21,13 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::protect();
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $GLOBALS['we_transaction']), 1);
-echo we_html_tools::getHtmlTop() .
- we_html_element::jsElement('
-var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");
-var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();' .
-	$we_JavaScript . ';' .
-	($we_responseText ?
-		we_message_reporting::getShowMessageCall($we_responseText, $we_responseTextType) :
-		'') . $GLOBALS['we_responseJS']
-);
+
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'editor_save.js', '', ['id' => 'loadVarEditor_save', 'data-editorSave' => setDynamicVar([
+			'we_editor_save' => true,
+			'we_transaction' => $we_transaction,
+			//FIXME:we_JavaScript is evaled
+			'we_JavaScript' => (isset($we_JavaScript) ? $we_JavaScript : ""),
+			'we_responseText' => $we_responseText,
+			'we_responseTextType' => $we_responseTextType,
+	])]), we_html_element::htmlBody());

@@ -22,26 +22,17 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(g_l('global', '[question]'));
-
-$we_cmd6 = we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6);
+$we_cmd6 = we_base_request::_(we_base_request::JS, 'we_cmd', '', 6);
 
 $alerttext = ($isTemplatesUsedByThisTemplate ?
-				g_l('alert', '[template_save_warning2]') :
-				sprintf((g_l('alert', ($nrDocsUsedByThisTemplate == 1) ? '[template_save_warning1]' : '[template_save_warning]')), $nrDocsUsedByThisTemplate)
-		);
+		g_l('alert', '[template_save_warning2]') :
+		sprintf((g_l('alert', ($nrDocsUsedByThisTemplate == 1) ? '[template_save_warning1]' : '[template_save_warning]')), $nrDocsUsedByThisTemplate)
+	);
+
+echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
+	we_html_element::jsScript(JS_DIR . 'template_save_question.js');
 ?>
 <script><!--
-
-	// functions for keyBoard Listener
-	function applyOnEnter() {
-		pressed_yes_button();
-	}
-
-	// functions for keyBoard Listener
-	function closeOnEscape() {
-		pressed_cancel_button();
-	}
 
 	function pressed_yes_button() {
 		opener.top.we_cmd('save_document', '<?= $we_transaction; ?>', 0, 1, 1, '<?= str_replace("'", "\\'", $GLOBALS['we_responseJS']); ?>', "<?= $we_cmd6; ?>");
@@ -54,9 +45,6 @@ $alerttext = ($isTemplatesUsedByThisTemplate ?
 		self.close();
 	}
 
-	function pressed_cancel_button() {
-		self.close();
-	}
 //-->
 </script>
 </head>
