@@ -87,7 +87,7 @@ if($canWeSave &&
 }
 
 // publish for templates to save in version
-$pass_publish = $canWeSave && ($showPubl || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL)) ? " WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave() " : "''";
+$pass_publish = $canWeSave && ($showPubl || ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE && defined('VERSIONING_TEXT_WETMPL') && defined('VERSIONS_CREATE_TMPL') && VERSIONS_CREATE_TMPL && VERSIONING_TEXT_WETMPL)) ? ['publishWhenSave'] : [];
 
 $doc = [
 	'we_transaction' => $we_transaction,

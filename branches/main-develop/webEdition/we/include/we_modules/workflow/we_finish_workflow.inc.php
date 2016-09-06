@@ -55,4 +55,5 @@ if(we_workflow_utility::approve($we_doc->ID, $we_doc->Table, $_SESSION['user']['
 	$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 }
 
+//we_editor_save::saveInc($we_transaction, $we_doc, $we_responseText, $we_responseTextType, $we_JavaScript, false, false, $GLOBALS['we_responseJS']);
 include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');

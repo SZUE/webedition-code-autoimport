@@ -31,9 +31,8 @@ if(!isset($we_transaction) || !$we_transaction){//we_session assumes to have tra
 	$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 1));
 }
 $GLOBALS['we_transaction'] = $we_transaction;
-$we_dt = isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '';
 
-$we_doc = we_document::initDoc($we_dt);
+$we_doc = we_document::initDoc(isset($_SESSION['weS']['we_data'][$we_transaction]) ? $_SESSION['weS']['we_data'][$we_transaction] : '');
 
 function processEditorCmd($we_doc, $cmd0){
 	switch($cmd0){
@@ -504,12 +503,12 @@ if(
 
 					if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2)){
 //this is the second call to save_document (see next else command)
-						include(WE_INCLUDES_PATH . 'we_editors/we_template_save_question.inc.php'); // this includes the gui for the save question dialog
+						we_editor_save::templateSaveQuestion($we_transaction, $isTemplatesUsedByThisTemplate, $GLOBALS['we_responseJS']);
 						$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 						exit();
 					} else if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) && $somethingNeedsToBeResaved){
 // this happens when the template is saved and there are documents which use the template and "automatic rebuild" is not checked!
-						include(WE_INCLUDES_PATH . 'we_TemplateSave.inc.php'); // this calls again we_cmd with save_document and sets we_cmd[2]
+						we_editor_save::templateSave($we_transaction); // this calls again we_cmd with save_document and sets we_cmd[2]
 						$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 						exit();
 					} else {
