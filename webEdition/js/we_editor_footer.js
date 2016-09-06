@@ -203,7 +203,7 @@ function we_save_document(nextCmd) {
 		} else {
 			countSaveLoop = 0;
 			if (doc.weCanSave) {
-				var we_cmd_args = ["save_document", "", "", "", "", doc.pass_publish, nextCmd];
+				var we_cmd_args = ["save_document", "", "", "", "", doc.pass_publish ? WE().util.Base64.encode(JSON.stringify(doc.pass_publish)) : '', nextCmd];
 				if (doc.isBinary) {
 					WE().layout.checkFileUpload(we_cmd_args);
 				} else {

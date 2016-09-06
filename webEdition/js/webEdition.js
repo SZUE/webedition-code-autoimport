@@ -1339,6 +1339,9 @@ function we_cmd_base(args, url) {
 		case "unpublish":
 			doPublish(url, args[1], args[0]);
 			break;
+		case "publishWhenSave":
+			WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave()
+			break;
 		case "save_document":
 			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			if (_EditorFrame && _EditorFrame.getEditorFrameWindow().frames && _EditorFrame.getEditorFrameWindow().frames[1]) {
@@ -1849,16 +1852,9 @@ WE().layout.propEdit = {
 	}
 };
 
-WE().layout.checkFileUpload = function (we_cmd_args, type) {
-	var parentObj, frame;
-
-	if (type === undefined || type === 'switch_tab') {
-		parentObj = WE().layout.weEditorFrameController;
-		frame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
-	} else {
-		parentObj = top._EditorFrame;
-		frame = _EditorFrame.getContentEditor();
-	}
+WE().layout.checkFileUpload = function (we_cmd_args) {
+	var parentObj = WE().layout.weEditorFrameController;
+	var frame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 
 	if (parentObj !== undefined && (frame.we_FileUpload) !== undefined && frame.we_FileUpload.getType() === 'binDoc') {
 		frame.we_FileUpload.doUploadIfReady(function () {

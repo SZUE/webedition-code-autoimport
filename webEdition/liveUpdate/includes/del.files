@@ -1,3 +1,5 @@
+we/include/we_TemplateSave.inc.php
+we/include/we_editors/we_template_save_question.inc.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php

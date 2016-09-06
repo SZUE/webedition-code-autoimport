@@ -748,7 +748,7 @@ class we_webEditionDocument extends we_textContentDocument{
 		$this->EditPageNr = $editpageSave;
 		$this->InWebEdition = $inWebEditonSave;
 
-		if(!empty($we_EDITOR)){ //  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
+		if(!empty($GLOBALS['we_EDITOR'])){ //  fix for php5, in editor we_doc was replaced by $GLOBALS['we_doc'] from we:include tags
 			$GLOBALS['we_doc'] = $this;
 		}
 

@@ -23,6 +23,8 @@
  */
 
 //FIXME: move to .class file
+we_editor_save::saveInc($we_transaction, $GLOBALS['we_doc'], $we_responseText, $we_responseTextType, $we_JavaScript, !empty($wasSaved), !empty($saveTemplate), (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : []), isset($isClose) && $isClose, (isset($showAlert) && $showAlert),!empty($GLOBALS["publish_doc"]));
+/*
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 1);
 $reload = [];
 if(!empty($wasSaved)){
@@ -55,13 +57,13 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'e
 			'we_editor_save' => true,
 			'we_transaction' => $we_transaction,
 			'isHot' => ($we_responseText && $we_responseTextType == we_message_reporting::WE_MESSAGE_ERROR),
-			'wasSaved' => $wasSaved,
+			'wasSaved' => !empty($wasSaved),
 			'wasPublished' => !empty($GLOBALS['we_doc']->Published),
 			'isPublished' => !empty($GLOBALS["publish_doc"]),
 			'isSEEMode' => $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE,
 			'reloadEditors' => array_filter($reload),
-			'ContentType' => $we_doc->ContentType,
-			'docID' => $we_doc->ID,
+			'ContentType' => $GLOBALS['we_doc']->ContentType,
+			'docID' => $GLOBALS['we_doc']->ID,
 			'EditPageNr' => $GLOBALS['we_doc']->EditPageNr,
 			'saveTmpl' => intval(!empty($saveTemplate)),
 			'isClose' => intval(isset($isClose) && $isClose),
@@ -74,3 +76,4 @@ echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'e
 			'we_responseJS' => (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : []),
 			'docHasPreview' => in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs),
 	])]), we_html_element::htmlBody());
+*/
