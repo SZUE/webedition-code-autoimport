@@ -244,26 +244,24 @@ function processEditorCmd($we_doc, $cmd0){
 	return '';
 }
 
-$wasNew = false;
-$GLOBALS['we_responseJS'] = [];
-$insertReloadFooter = processEditorCmd($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
-
-//	if document is locked - only Preview mode is possible. otherwise show warning.
-$userID = $we_doc->isLockedByUser();
-if($userID != 0 && $userID != $_SESSION['user']['ID'] && $we_doc->ID){ // document is locked
-	if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs) && !$we_doc instanceof we_template){
-		$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
-		$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
-	} else if($we_doc instanceof we_folder){
-		$target = in_array(we_base_constants::WE_EDITPAGE_DOCLIST, $we_doc->EditPageNrs) ? we_base_constants::WE_EDITPAGE_DOCLIST : we_base_constants::WE_EDITPAGE_FIELDS;
-		$we_doc->EditPageNr = $target;
-		$_SESSION['weS']['EditPageNr'] = $target;
-	} else {
-		$we_doc->showLockedWarning($userID);
-	}
-} elseif($userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){
+//if document is locked - only Preview mode is possible. otherwise show warning.
+function documentLocking($we_doc){
+	$userID = $we_doc->isLockedByUser();
+	if($userID != 0 && $userID != $_SESSION['user']['ID'] && $we_doc->ID){ // document is locked
+		if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs) && !$we_doc instanceof we_template){
+			$we_doc->EditPageNr = we_base_constants::WE_EDITPAGE_PREVIEW;
+			$_SESSION['weS']['EditPageNr'] = we_base_constants::WE_EDITPAGE_PREVIEW;
+		} else if($we_doc instanceof we_folder){
+			$target = in_array(we_base_constants::WE_EDITPAGE_DOCLIST, $we_doc->EditPageNrs) ? we_base_constants::WE_EDITPAGE_DOCLIST : we_base_constants::WE_EDITPAGE_FIELDS;
+			$we_doc->EditPageNr = $target;
+			$_SESSION['weS']['EditPageNr'] = $target;
+		} else {
+			$we_doc->showLockedWarning($userID);
+		}
+	} elseif($userID != $_SESSION['user']['ID'] && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE && $we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW){
 // lock document, if in seeMode and EditMode !!, don't lock when already locked
-	$we_doc->lockDocument();
+		$we_doc->lockDocument();
+	}
 }
 
 /*
@@ -273,27 +271,8 @@ if($userID != 0 && $userID != $_SESSION['user']['ID'] && $we_doc->ID){ // docume
  * We need to do this, because, when the pages has for example jsp. content, it will be parsed right!
  * This is only done when the IsDynamic - PersistantSlot is false.
  */
-$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
-if(
-	(
-	$cmd0 != 'save_document' &&
-	$cmd0 != 'publish' &&
-	$cmd0 != 'unpublish' &&
-	($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT &&
-	(
-	$we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW ||
-	$we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT
-	)
-	) ||
-	(
-	$we_doc->ContentType == we_base_ContentTypes::HTML &&
-	$we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW
-	)
-	) &&
-	!$we_doc->IsDynamic &&
-	!empty($_POST) &&
-	we_base_request::_(we_base_request::BOOL, 'we_complete_request')
-){
+
+function includeEditor($we_doc, $we_transaction){//this is really unclear what is done here
 	$we_include = $we_doc->editor();
 	ob_start();
 	if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
@@ -365,6 +344,131 @@ if(
 	we_base_file::save($fullName, $contents);
 
 	header('Location: ' . WEBEDITION_DIR . 'showTempFile.php?charset=' . (empty($GLOBALS['CHARSET']) ? DEFAULT_CHARSET : $GLOBALS['CHARSET']) . '&file=' . str_replace(WEBEDITION_DIR, '', $tempName));
+}
+
+function doUnpublish($we_doc, $we_transaction){
+	if(!$we_doc->Published){
+		we_editor_save::publishInc($we_transaction, sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_not_published]'), $we_doc->Path), we_message_reporting::WE_MESSAGE_ERROR);
+		return;
+	}
+	if($we_doc->we_unpublish()){
+		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_ok]'), $we_doc->Path);
+		$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
+		if($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
+			$GLOBALS['we_responseJS'][] = ['switch_edit_page', $we_doc->EditPageNr, $we_transaction]; // wird in Templ eingef?gt
+		}
+//	When unpublishing a document stay where u are.
+//	uncomment the following line to switch to preview page.
+		$GLOBALS['we_responseJS'][] = ['reload_editfooter'];
+
+		$we_JavaScript = '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
+	} else {
+		$we_JavaScript = '';
+		$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_notok]'), $we_doc->Path);
+		$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+	}
+	if($_SERVER['REQUEST_METHOD'] === 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
+		$we_responseText = g_l('weEditor', '[incompleteRequest]');
+		$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+	} else {
+		$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
+	}
+	we_editor_save::publishInc($we_transaction, $we_responseText, $we_responseTextType, $we_JavaScript);
+}
+
+function includeEditorDefault($we_doc, $we_transaction){
+	$we_include = $we_doc->editor();
+	if(!$we_include){ // object does not handle html-output, so we need to include a template( return value)
+		exit('Nothing to include ...');
+	}
+
+	/* At this point complete requests are not common
+	  if(!isset($_REQUEST['we_complete_request'])){
+	  $we_responseText = g_l('weEditor', '[incompleteRequest]');
+	  $we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
+	  } */
+	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
+	if($_SERVER['DOCUMENT_ROOT'] && substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
+
+		ob_start();
+		if(!defined('WE_CONTENT_TYPE_SET')){
+			$charset = $we_doc->getElement('Charset') ? : DEFAULT_CHARSET; //	send charset which might be determined in template
+			define('WE_CONTENT_TYPE_SET', 1);
+			we_html_tools::headerCtCharset('text/html', $charset);
+		}
+		$we_include = (file_exists($we_include) ? $we_include : WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC);
+		include($we_include);
+		$contents = ob_get_clean();
+
+//  SEEM the file
+//  but only, if we are not in the template-editor
+		switch($we_doc->ContentType){
+			case we_base_ContentTypes::TEMPLATE:
+				if($we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE){
+					echo $contents;
+					break;
+				}
+			default:
+				$tmpCntnt = we_SEEM::parseDocument($contents);
+
+// insert $reloadFooter at right place
+				$tmpCntnt = (strpos($tmpCntnt, '</head>')) ?
+					str_replace('</head>', $insertReloadFooter . '</head>', $tmpCntnt) :
+					$insertReloadFooter . $tmpCntnt;
+
+// --> Start Glossary Replacement
+
+				$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && (!isset($GLOBALS['we_editmode']) || (isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode'])) && we_glossary_replace::useAutomatic());
+				echo ($useGlossary ? we_glossary_replace::doReplace($tmpCntnt, $GLOBALS['we_doc']->Language) : $tmpCntnt);
+		}
+	} else {
+//  These files were edited only in source-code mode, so no seeMode is needed.
+		include((preg_match('#^' . WEBEDITION_DIR . 'we/#', $we_include) ? $_SERVER['DOCUMENT_ROOT'] : WE_INCLUDES_PATH) . $we_include);
+		echo $insertReloadFooter;
+	}
+	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
+	if(isset($GLOBALS['we_file_to_delete_after_include'])){
+		we_base_file::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
+	}
+}
+
+$wasNew = false;
+$GLOBALS['we_responseJS'] = [];
+$insertReloadFooter = processEditorCmd($we_doc, we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
+
+//	if document is locked - only Preview mode is possible. otherwise show warning.
+documentLocking($we_doc);
+
+
+/*
+ * if the document is a webEdition document, we save it with a temp-name (path of document+extension) and redirect
+ * to the tmp-location. This is done for the content- and preview-editpage.
+ * With html-documents this is only done for preview-editpage.
+ * We need to do this, because, when the pages has for example jsp. content, it will be parsed right!
+ * This is only done when the IsDynamic - PersistantSlot is false.
+ */
+$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
+if(
+	(
+	$cmd0 != 'save_document' &&
+	$cmd0 != 'publish' &&
+	$cmd0 != 'unpublish' &&
+	($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT &&
+	(
+	$we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW ||
+	$we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT
+	)
+	) ||
+	(
+	$we_doc->ContentType == we_base_ContentTypes::HTML &&
+	$we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW
+	)
+	) &&
+	!$we_doc->IsDynamic &&
+	!empty($_POST) &&
+	we_base_request::_(we_base_request::BOOL, 'we_complete_request')
+){
+	includeEditor($we_doc, $we_transaction);
 } else {
 	$we_JavaScript = '';
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
@@ -591,10 +695,8 @@ top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype
 			}
 			$we_responseText.=$we_doc->getErrMsg();
 			if($_SERVER['REQUEST_METHOD'] === 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
-				$we_responseText = g_l('weEditor', '[incompleteRequest]');
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 				//will show the message
-				include(WE_INCLUDES_PATH . 'we_editors/we_editor_publish.inc.php');
+				echo we_message_reporting::jsMessagePush(g_l('weEditor', '[incompleteRequest]'), we_message_reporting::WE_MESSAGE_ERROR);
 				break;
 			}
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
@@ -606,90 +708,10 @@ top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype
 			include(WE_INCLUDES_PATH . 'we_editors/we_editor_save.inc.php');
 			break;
 		case 'unpublish':
-			if($we_doc->Published){
-				if($we_doc->we_unpublish()){
-					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_ok]'), $we_doc->Path);
-					$we_responseTextType = we_message_reporting::WE_MESSAGE_NOTICE;
-					if($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
-						$GLOBALS['we_responseJS'][] = ['switch_edit_page', $we_doc->EditPageNr, $we_transaction]; // wird in Templ eingef?gt
-					}
-//	When unpublishing a document stay where u are.
-//	uncomment the following line to switch to preview page.
-					$GLOBALS['we_responseJS'][] = ['reload_editfooter'];
-
-					$we_JavaScript = '_EditorFrame.setEditorDocumentId(' . $we_doc->ID . ');' . $we_doc->getUpdateTreeScript() . ';'; // save/ rename a document
-				} else {
-					$we_JavaScript = '';
-					$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_unpublish_notok]'), $we_doc->Path);
-					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-				}
-				if($_SERVER['REQUEST_METHOD'] === 'POST' && !we_base_request::_(we_base_request::BOOL, 'we_complete_request')){
-					$we_responseText = g_l('weEditor', '[incompleteRequest]');
-					$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-				} else {
-					$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
-				}
-			} else {
-				$we_JavaScript = '';
-				$we_responseText = sprintf(g_l('weEditor', '[' . $we_doc->ContentType . '][response_not_published]'), $we_doc->Path);
-				$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			}
-			include(WE_INCLUDES_PATH . 'we_editors/we_editor_publish.inc.php');
+			doUnpublish($we_doc, $we_transaction);
 			break;
 		default:
-			$we_include = $we_doc->editor();
-			if(!$we_include){ // object does not handle html-output, so we need to include a template( return value)
-				exit('Nothing to include ...');
-			}
-
-			/* At this point complete requests are not common
-			  if(!isset($_REQUEST['we_complete_request'])){
-			  $we_responseText = g_l('weEditor', '[incompleteRequest]');
-			  $we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
-			  } */
-			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
-			if($_SERVER['DOCUMENT_ROOT'] && substr(strtolower($we_include), 0, strlen($_SERVER['DOCUMENT_ROOT'])) == strtolower($_SERVER['DOCUMENT_ROOT'])){
-
-				ob_start();
-				if(!defined('WE_CONTENT_TYPE_SET')){
-					$charset = $we_doc->getElement('Charset') ? : DEFAULT_CHARSET; //	send charset which might be determined in template
-					define('WE_CONTENT_TYPE_SET', 1);
-					we_html_tools::headerCtCharset('text/html', $charset);
-				}
-				$we_include = (file_exists($we_include) ? $we_include : WE_INCLUDES_PATH . 'we_editors/' . we_template::NO_TEMPLATE_INC);
-				include($we_include);
-				$contents = ob_get_clean();
-
-//  SEEM the file
-//  but only, if we are not in the template-editor
-				switch($we_doc->ContentType){
-					case we_base_ContentTypes::TEMPLATE:
-						if($we_doc->EditPageNr != we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE){
-							echo $contents;
-							break;
-						}
-					default:
-						$tmpCntnt = we_SEEM::parseDocument($contents);
-
-// insert $reloadFooter at right place
-						$tmpCntnt = (strpos($tmpCntnt, '</head>')) ?
-							str_replace('</head>', $insertReloadFooter . '</head>', $tmpCntnt) :
-							$insertReloadFooter . $tmpCntnt;
-
-// --> Start Glossary Replacement
-
-						$useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && (!isset($GLOBALS['we_editmode']) || (isset($GLOBALS['we_editmode']) && !$GLOBALS['we_editmode'])) && we_glossary_replace::useAutomatic());
-						echo ($useGlossary ? we_glossary_replace::doReplace($tmpCntnt, $GLOBALS['we_doc']->Language) : $tmpCntnt);
-				}
-			} else {
-//  These files were edited only in source-code mode, so no seeMode is needed.
-				include((preg_match('#^' . WEBEDITION_DIR . 'we/#', $we_include) ? $_SERVER['DOCUMENT_ROOT'] : WE_INCLUDES_PATH) . $we_include);
-				echo $insertReloadFooter;
-			}
-			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
-			if(isset($GLOBALS['we_file_to_delete_after_include'])){
-				we_base_file::deleteLocalFile($GLOBALS['we_file_to_delete_after_include']);
-			}
+			includeEditorDefault($we_doc, $we_transaction);
 	}
 }
 

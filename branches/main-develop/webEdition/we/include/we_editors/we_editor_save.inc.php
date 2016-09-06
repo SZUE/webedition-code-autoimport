@@ -21,6 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+//FIXME: move to .class file
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 1);
 $reload = [];
 if(!empty($wasSaved)){
@@ -49,26 +51,26 @@ if(!empty($wasSaved)){
 	}
 }
 
-echo we_html_tools::getHtmlTop('','','', we_html_element::jsScript(JS_DIR . 'editor_save.js', '', ['id' => 'loadVarEditor_save', 'data-editorSave' => setDynamicVar([
-		'we_editor_save' => true,
-		'we_transaction' => $we_transaction,
-		'isHot' => ($we_responseText && $we_responseTextType == we_message_reporting::WE_MESSAGE_ERROR),
-		'wasSaved' => $wasSaved,
-		'wasPublished' => !empty($GLOBALS['we_doc']->Published),
-		'isPublished' => !empty($GLOBALS["publish_doc"]),
-		'isSEEMode' => $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE,
-		'reloadEditors' => array_filter($reload),
-		'ContentType' => $we_doc->ContentType,
-		'docID' => $we_doc->ID,
-		'EditPageNr' => $GLOBALS['we_doc']->EditPageNr,
-		'saveTmpl' => intval(!empty($saveTemplate)),
-		'isClose' => intval(isset($isClose) && $isClose),
-		'showAlert' => (isset($showAlert) && $showAlert),
-		'we_responseText' => $we_responseText,
-		'we_responseTextType' => $we_responseTextType,
-		//FIXME:we_JavaScript is evaled
-		'we_JavaScript' => (!empty($we_JavaScript) ? $we_JavaScript : ""),
-		'we_cmd5' => we_base_request::_(we_base_request::JSON, 'we_cmd', '', 5), // this is we_responseJS through save-template-question
-		'we_responseJS' => (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : []),
-		'docHasPreview' => in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs),
-])]),  we_html_element::htmlBody());
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'editor_save.js', '', ['id' => 'loadVarEditor_save', 'data-editorSave' => setDynamicVar([
+			'we_editor_save' => true,
+			'we_transaction' => $we_transaction,
+			'isHot' => ($we_responseText && $we_responseTextType == we_message_reporting::WE_MESSAGE_ERROR),
+			'wasSaved' => $wasSaved,
+			'wasPublished' => !empty($GLOBALS['we_doc']->Published),
+			'isPublished' => !empty($GLOBALS["publish_doc"]),
+			'isSEEMode' => $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE,
+			'reloadEditors' => array_filter($reload),
+			'ContentType' => $we_doc->ContentType,
+			'docID' => $we_doc->ID,
+			'EditPageNr' => $GLOBALS['we_doc']->EditPageNr,
+			'saveTmpl' => intval(!empty($saveTemplate)),
+			'isClose' => intval(isset($isClose) && $isClose),
+			'showAlert' => (isset($showAlert) && $showAlert),
+			'we_responseText' => $we_responseText,
+			'we_responseTextType' => $we_responseTextType,
+			//FIXME:we_JavaScript is evaled
+			'we_JavaScript' => $we_JavaScript,
+			'we_cmd5' => we_base_request::_(we_base_request::JSON, 'we_cmd', '', 5), // this is we_responseJS through save-template-question
+			'we_responseJS' => (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : []),
+			'docHasPreview' => in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs),
+	])]), we_html_element::htmlBody());
