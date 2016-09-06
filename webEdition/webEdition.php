@@ -130,28 +130,11 @@ var nlHTMLMail = false;
 var browserwind = null;
 var weplugin_wait = null;
 // seeMode
-var specialUnload =<?= intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())); ?>;
 // TODO: move to some JS-file
 var dd = {
 	dataTransfer: {
 		text: ''
 	}
-};
-var WebEdition = {
-//all constants in WE used in JS
-	layout: {
-		button: null,
-		sidebar: null,
-		cockpitFrame: null,
-		windows: [],
-		focusedWindow: null
-	},
-	handler: {
-		errorHandler: errorHandler,
-		dealWithKeyboardShortCut: null,
-	},
-	//utility functions, defined in webedition.js
-	util: {}
 };
 //-->
 </script>
@@ -186,8 +169,8 @@ $const = [
 	'global' => [
 		'WE_EDITPAGE_CONTENT' => we_base_constants::WE_EDITPAGE_CONTENT,
 		'PING_TIME' => (we_base_constants::PING_TIME * 1000),
-		'DEFAULT_DYNAMIC_EXT'=>DEFAULT_DYNAMIC_EXT,
-		'DEFAULT_STATIC_EXT'=>DEFAULT_STATIC_EXT,
+		'DEFAULT_DYNAMIC_EXT' => DEFAULT_DYNAMIC_EXT,
+		'DEFAULT_STATIC_EXT' => DEFAULT_STATIC_EXT,
 	],
 	'message' => [
 		'WE_MESSAGE_INFO' => we_message_reporting::WE_MESSAGE_INFO,
@@ -246,6 +229,9 @@ $const = [
 	'graphic' => [
 		'gdSupportedTypes' => [],
 		'canRotate' => intval(function_exists("ImageRotate")),
+	],
+	'tabs' => [
+		'PREVIEW' => we_base_constants::WE_EDITPAGE_PREVIEW
 	]
 ];
 foreach(we_base_imageEdit::supported_image_types() as $v){
@@ -264,7 +250,7 @@ $session = [
 //permissions set for the user
 	'permissions' => [],
 	'sess_id' => session_id(),
-	'specialUnload' => specialUnload,
+	'specialUnload' => intval(!(we_base_browserDetect::isChrome() || we_base_browserDetect::isSafari())),
 	'docuLang' => ($GLOBALS["WE_LANGUAGE"] === 'Deutsch' ? 'de' : 'en'),
 	'helpLang' => $GLOBALS["WE_LANGUAGE"],
 	'messageSettings' => (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_INFO | we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : PHP_INT_MAX),
@@ -274,14 +260,7 @@ foreach($_SESSION['perms'] as $perm => $access){
 	$session['permissions'][$perm] = (!empty($_SESSION['perms']['ADMINISTRATOR']) ? 1 : intval($access));
 }
 
-echo we_html_element::jsScript(JS_DIR . 'webEdition.js', ""
-	. "WE().session=WE().util.getDynamicVar(document, 'loadWEData','data-session');"
-	. "WE().consts=WE().util.getDynamicVar(document, 'loadWEData','data-consts');"
-	//FIXME: move after changes
-	. "WE().util.loadConsts('g_l.main');"//finally load language files
-	. 'oldTreeWidth = WE().consts.size.tree.defaultWidth;'
-	, [
-	'id' => 'loadWEData',
+echo we_html_element::jsScript(JS_DIR . 'webEdition.js', '', [ 'id' => 'loadWEData',
 	'data-session' => setDynamicVar($session),
 	'data-consts' => setDynamicVar($const),
 ]) .

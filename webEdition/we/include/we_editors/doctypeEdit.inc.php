@@ -26,7 +26,7 @@ we_html_tools::protect(array('CAN_SEE_TEMPLATES', 'EDIT_DOCTYPE'));
 $we_doc = new we_docTypes();
 
 // Initialize variables
-$we_JavaScript = "";
+$reloadMenu = "";
 
 $jsCmd = new we_base_jsCmd();
 
@@ -45,7 +45,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 			$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} elseif($we_doc->we_save()){
 			$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
-			$we_JavaScript = we_main_headermenu::getMenuReloadCode();
+			$reloadMenu = we_main_headermenu::getMenuReloadCode();
 		} else {
 			echo "ERROR";
 		}
@@ -53,7 +53,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 	case "newDocType":
 		if(($dt = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 1))){
 			$we_doc->DocType = urldecode($dt);
-			$we_JavaScript = we_main_headermenu::getMenuReloadCode();
+			$reloadMenu = we_main_headermenu::getMenuReloadCode();
 			$we_doc->we_save();
 		}
 		break;
@@ -144,7 +144,7 @@ echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
 ?>
 <script><!--
 <?php
-echo (empty($we_JavaScript) ? '' : $we_JavaScript . ';');
+echo (empty($reloadMenu) ? '' : $reloadMenu . ';');
 
 switch($wecmd0){
 	case "deleteDocType":

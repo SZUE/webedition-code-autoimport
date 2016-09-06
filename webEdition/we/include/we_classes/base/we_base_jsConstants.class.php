@@ -137,6 +137,8 @@ abstract class we_base_jsConstants{
 		exit_multi_doc_question: "' . g_l('alert', '[exit_multi_doc_question]') . '",
 		anchor_invalid:"' . g_l('linklistEdit', '[anchor_invalid]') . '",
 		image_edit_null_not_allowed:"' . g_l('weClass', '[image_edit_null_not_allowed]') . '",
+		confirm_change_to_preview:"' . g_l('SEEM', '[confirm][change_to_preview]') . '",
+		changed_include:"' . g_l('SEEM', '[alert][changed_include]') . '",
 		in_wf_warning:{
 			tblFile:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblFile][in_wf_warning]') : '') . '",
 			tblObjectFiles:"' . (defined('WORKFLOW_TABLE') ? g_l('alert', '[tblObjectFiles][in_wf_warning]') : '') . '",

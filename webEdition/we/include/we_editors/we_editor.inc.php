@@ -429,7 +429,8 @@ if(
 							if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4)){
 // this happens when the documents which uses the templates has to be rebuilt. (if user clicks "yes" at template save question or if automatic rebuild was set)
 								if($somethingNeedsToBeResaved){
-									$we_JavaScript .= '_EditorFrame.setEditorIsHot(false);top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter&templateID=' . $we_doc->ID . '&responseText=' . rawurlencode(sprintf($we_responseText, $we_doc->Path)) . '\',\'resave\',-1,-1,600,130,0,true);';
+									$we_JavaScript .= '_EditorFrame.setEditorIsHot(false);
+top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_filter&templateID=' . $we_doc->ID . '&responseText=' . rawurlencode(sprintf($we_responseText, $we_doc->Path)) . '\',\'resave\',-1,-1,600,130,0,true);';
 									$we_responseText = '';
 								}
 							}
