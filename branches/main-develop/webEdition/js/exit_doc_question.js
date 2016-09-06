@@ -23,6 +23,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+
+var editorSave = WE().util.getDynamicVar(document, 'loadVarExit_doc_question', 'data-editorSave');
+var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(editorSave.editorFrameId);
+
 function pressed_cancel() {
 	window_closed();
 	self.close();
@@ -40,4 +44,22 @@ function applyOnEnter() {
 // functions for keyBoard Listener
 function closeOnEscape() {
 	pressed_cancel();
+}
+
+function pressed_yes() {
+	//FIXME: eval in timeout
+	_EditorFrame.getDocumentReference().frames.editFooter.we_save_document("WE().layout.weEditorFrameController.closeDocument('" + editorSave.editorFrameId + "');" + (editorSave.nextCmd ? "top.setTimeout('" + editorSave.nextCmd + "', 1000);" : ""));
+	window_closed();
+	self.close();
+}
+
+function pressed_no() {
+	_EditorFrame.setEditorIsHot(false);
+	WE().layout.weEditorFrameController.closeDocument(editorSave.editorFrameId);
+	if (editorSave.nextCmd) {
+		//FIXME: eval
+		opener.top.setTimeout(editorSave.nextCmd, 1000);
+	}
+	window_closed();
+	self.close();
 }

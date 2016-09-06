@@ -330,14 +330,14 @@ class we_collection extends we_root{
 
 		//TODO: use tables and some padding
 		$toolbar = new we_html_table([], 1, 8);
-		$toolbar->setCol(0, 0, array('class' => 'toolbarRecursive'), $recursive);
-		$toolbar->setCol(0, 1, array('class' => 'toolbarSlider'), $slider);
-		$toolbar->setCol(0, 2, array('class' => 'toolbarView'), $btnGridview);
-		$toolbar->setCol(0, 3, array('class' => 'toolbarView'), $btnListview);
-		$toolbar->setCol(0, 4, array('class' => 'toolbarView'), $btnListviewMinimal);
-		$toolbar->setCol(0, 5, array('class' => 'toolbarAdd'), $addFromTreeButton);
-		$toolbar->setCol(0, 6, array('class' => 'toolbarImport'), $btnImport);
-		$toolbar->setCol(0, 7, array('class' => 'toolbarNum weMultiIconBoxHeadline'), g_l('weClass', '[collection][number]') . ': <span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>');
+		$toolbar->setCol(0, 0, ['class' => 'toolbarRecursive'], $recursive);
+		$toolbar->setCol(0, 1, ['class' => 'toolbarSlider'], $slider);
+		$toolbar->setCol(0, 2, ['class' => 'toolbarView'], $btnGridview);
+		$toolbar->setCol(0, 3, ['class' => 'toolbarView'], $btnListview);
+		$toolbar->setCol(0, 4, ['class' => 'toolbarView'], $btnListviewMinimal);
+		$toolbar->setCol(0, 5, ['class' => 'toolbarAdd'], $addFromTreeButton);
+		$toolbar->setCol(0, 6, ['class' => 'toolbarImport'], $btnImport);
+		$toolbar->setCol(0, 7, ['class' => 'toolbarNum weMultiIconBoxHeadline'], g_l('weClass', '[collection][number]') . ': <span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>');
 
 		$items = $this->getValidCollection(false, true, true);
 
@@ -370,28 +370,28 @@ class we_collection extends we_root{
 		}
 
 		// write "blank" collection row to js
-		$placeholders = array(
+		$placeholders = [
 			'id' => '##ID##',
 			'path' => '##PATH##',
 			'type' => '##CT##',
 			'class' => '##CLASS##',
-			'icon' => array('url' => '##ICONURL##', 'sizeX' => 200, 'sizeY' => 200),
-			'elements' => array(
-				'attrib_title' => array('Dat' => '##ATTRIB_TITLE##', 'state' => '##S_ATTRIB_TITLE##', 'write' => '##W_ATTRIB_TITLE##'),
-				'attrib_alt' => array('Dat' => '##ATTRIB_ALT##', 'state' => '##S_ATTRIB_ALT##', 'write' => '##W_ATTRIB_ALT##'),
-				'meta_title' => array('Dat' => '##META_TITLE##', 'state' => '##S_META_TITLE##', 'write' => '##W_META_TITLE##'),
-				'meta_description' => array('Dat' => '##META_DESC##', 'state' => '##S_META_DESC##', 'write' => '##W_META_DESC##'),
-				'custom' => array('Dat' => '##CUSTOM##')
-			)
-		);
+			'icon' => ['url' => '##ICONURL##', 'sizeX' => 200, 'sizeY' => 200],
+			'elements' => [
+				'attrib_title' => ['Dat' => '##ATTRIB_TITLE##', 'state' => '##S_ATTRIB_TITLE##', 'write' => '##W_ATTRIB_TITLE##'],
+				'attrib_alt' => ['Dat' => '##ATTRIB_ALT##', 'state' => '##S_ATTRIB_ALT##', 'write' => '##W_ATTRIB_ALT##'],
+				'meta_title' => ['Dat' => '##META_TITLE##', 'state' => '##S_META_TITLE##', 'write' => '##W_META_TITLE##'],
+				'meta_description' => ['Dat' => '##META_DESC##', 'state' => '##S_META_DESC##', 'write' => '##W_META_DESC##'],
+				'custom' => ['Dat' => '##CUSTOM##']
+			]
+		];
 
 		$this->jsFormCollection .= "
 weCollectionEdit.isDragAndDrop = " . (self::isDragAndDrop() ? 1 : 0) . ";
 weCollectionEdit.gridItemDimension = " . json_encode($this->gridItemDimensions[$this->itemsPerRow]) . ";
 weCollectionEdit.maxIndex = " . count($items) . ";
-weCollectionEdit.blankItem.list = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->makeListItem($placeholders, '##INDEX##', $yuiSuggest, 1, true, true))) . "';
-weCollectionEdit.blankItem.listMinimal = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->makeListItemMinimal($placeholders, '##INDEX##', $yuiSuggest, 1, true, true))) . "';
-weCollectionEdit.blankItem.grid = '" . str_replace(array("'"), "\'", str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $this->makeGridItem($placeholders, '##INDEX##'))) . "';
+weCollectionEdit.blankItem.list = '" . strtr($this->makeListItem($placeholders, '##INDEX##', $yuiSuggest, 1, true, true), ["'" => "\'", "\r" => '', "\n" => '']) . "';
+weCollectionEdit.blankItem.listMinimal = '" . strtr($this->makeListItemMinimal($placeholders, '##INDEX##', $yuiSuggest, 1, true, true), ["'" => "\'", "\r" => '', "\n" => '']) . "';
+weCollectionEdit.blankItem.grid = '" . strtr($this->makeGridItem($placeholders, '##INDEX##'), ["'" => "\'", "\r" => '', "\n" => '']) . "';
 weCollectionEdit.collectionArr = [" . rtrim($jsItemsArr, ',') . "];
 weCollectionEdit.view = '" . $this->view . "';
 weCollectionEdit.viewSub = '" . ($this->viewSub === 'minimal' ? 'minimal' : 'broad') . "';
@@ -448,7 +448,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setAcId('Item_' . $index);
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
-		$yuiSuggest->setInput($textname, $item['path'], array('title' => $item['path'] . ' (ID: ' . $item['id'] . ')'));
+		$yuiSuggest->setInput($textname, $item['path'], ['title' => $item['path'] . ' (ID: ' . $item['id'] . ')']);
 		$yuiSuggest->setResult($idname, $item['id']);
 		$yuiSuggest->setWidth(240);
 		$yuiSuggest->setMaxResults(10);

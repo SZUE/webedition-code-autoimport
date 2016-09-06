@@ -102,9 +102,13 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 		}
 	} else {
 		top.we_showMessage(editorSave.we_responseText, editorSave.we_responseTextType, window);
-//FIXME eval
-		eval(editorSave.we_responseJS);
-		eval(editorSave.we_cmd5);
+		for (var i = 0; i < editorSave.we_responseJS; i++) {
+			top.we_cmd.apply(this, editorSave.we_responseJS[i]);
+		}
+
+		for (var i = 0; i < editorSave.we_cmd5; i++) {
+			top.we_cmd.apply(this, editorSave.we_cmd5[i]);
+		}
 	}
 } else {//called from we_editor_publish.inc.php
 //FIXME eval

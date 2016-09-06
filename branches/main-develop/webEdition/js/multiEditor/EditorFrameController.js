@@ -251,7 +251,6 @@ EditorFrameController.prototype = {
 					this.showEditor(editorId);
 
 					if (!this.getEditorFrame(editorId).EditorExitDocQuestionDialog) { // open exit_doc_question if not already open
-						this.getEditorFrame(editorId).EditorExitDocQuestionDialog = true;
 						this.getEditorFrame(editorId).EditorExitDocQuestionDialog = top.we_cmd("exit_doc_question", editorId, this.getEditorFrame(editorId).getEditorContentType(), nextCommand);
 					} else {
 						this.getEditorFrame(editorId).EditorExitDocQuestionDialog.open();

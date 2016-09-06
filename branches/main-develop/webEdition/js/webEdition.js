@@ -496,6 +496,9 @@ var WebEdition = {
 				return string;
 			}
 		},
+		weCmdEnc: function (inp) {
+			return 'WECMDENC_' + this.Base64.encode(inp);
+		},
 		loadConsts: function (check) {
 			var cur = WE().consts;
 			var found = true;
@@ -746,7 +749,7 @@ function we_sbmtFrm(target, url, source) {
 }
 
 function doSave(url, trans, cmd) {
-	_EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
+	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
 	// _EditorFrame.setEditorIsHot(false);
 	if (_EditorFrame.getEditorAutoRebuild()) {
 		url += "&we_cmd[8]=1";

@@ -67,10 +67,8 @@ echo we_html_tools::getHtmlTop('','','', we_html_element::jsScript(JS_DIR . 'edi
 		'we_responseText' => $we_responseText,
 		'we_responseTextType' => $we_responseTextType,
 		//FIXME:we_JavaScript is evaled
-		'we_JavaScript' => (isset($we_JavaScript) ? $we_JavaScript : ""),
-		//FIXME:we_cmd5 is evaled
-		'we_cmd5' => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5),
-		//FIXME:we_responseJS
-		'we_responseJS' => (isset($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : ''),
+		'we_JavaScript' => (!empty($we_JavaScript) ? $we_JavaScript : ""),
+		'we_cmd5' => we_base_request::_(we_base_request::JSON, 'we_cmd', '', 5), // this is we_responseJS through save-template-question
+		'we_responseJS' => (!empty($GLOBALS['we_responseJS']) ? $GLOBALS['we_responseJS'] : []),
 		'docHasPreview' => in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $GLOBALS['we_doc']->EditPageNrs),
 ])]),  we_html_element::htmlBody());

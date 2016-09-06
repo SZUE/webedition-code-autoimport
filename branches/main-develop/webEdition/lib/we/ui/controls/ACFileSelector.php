@@ -167,7 +167,6 @@ class we_ui_controls_ACFileSelector extends we_ui_abstract_AbstractFormElement{
 		$this->addJSFile(LIB_DIR . 'additional/yui/animation-min.js');
 		$this->addJSFile(LIB_DIR . 'additional/yui/autocomplete-min.js');
 		$this->addJSFile(LIB_DIR . 'we/core/JsonRpc.js');
-		$this->addJSFile(JS_DIR . 'utils/we_cmd_encode.js');
 	}
 
 	/**

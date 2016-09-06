@@ -114,15 +114,21 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "glossary_check", -1, -1, 730, 400, true, false, true);
 			break;
 		case "save_document":
+			args[1] = doc.we_transaction;
+			args[2] = 0;
+
 			if (doc.isTemplate) {
 				if (doc.isFolder) {
-					top.we_cmd("save_document", doc.we_transaction, 0, 1, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0), "", args[6] ? args[6] : "", args[7] ? args[7] : "");
+					args[3] = 1;
+					args[4] = (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0);
 				} else {
-					top.we_cmd("save_document", doc.we_transaction, 0, 0, "", args[5] ? args[5] : "", args[6] ? args[6] : "", args[7] ? args[7] : "");
+					args[3] = 0;
 				}
 			} else {
-				top.we_cmd("save_document", doc.we_transaction, 0, 1, (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0), args[5] ? args[5] : "", args[6] ? args[6] : "", args[7] ? args[7] : "");
+				args[3] = 1;
+				args[4] = (doc.makeSameDocCheck && _EditorFrame.getEditorMakeSameDoc() ? 1 : 0);
 			}
+			top.we_cmd.apply(this, args);
 			break;
 		case "object_obj_search":
 			top.we_cmd("object_obj_search", doc.we_transaction, document.we_form.obj_search.value, document.we_form.obj_searchField[document.we_form.obj_searchField.selectedIndex].value);
@@ -152,7 +158,7 @@ function we_footerLoaded() {
 	setPath();
 }
 
-function we_save_document() {
+function we_save_document(nextCmd) {
 	var countSaveLoop = 0;
 	try {
 		var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
@@ -163,7 +169,7 @@ function we_save_document() {
 	} catch (e) {
 		// Nothing
 	}
-
+	nextCmd = nextCmd ? nextCmd : "";
 	/*if (_EditorFrame.getEditorPublishWhenSave() && doc._showGlossaryCheck) {
 	 we_cmd('glossary_check', '', doc.we_transaction);
 	 } else */{
@@ -190,14 +196,14 @@ function we_save_document() {
 			countSaveLoop = 0;
 		} else if (acStatusType.toLowerCase() === 'object' && acStatus.running) {
 			countSaveLoop++;
-			setTimeout(we_save_document, 100);
+			setTimeout(we_save_document, 100, nextCmd);
 		} else if (invalidAcFields) {
 			top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 			countSaveLoop = 0;
 		} else {
 			countSaveLoop = 0;
 			if (doc.weCanSave) {
-				var we_cmd_args = ["save_document", "", "", "", "", doc.pass_publish];
+				var we_cmd_args = ["save_document", "", "", "", "", doc.pass_publish, nextCmd];
 				if (doc.isBinary) {
 					WE().layout.checkFileUpload(we_cmd_args);
 				} else {

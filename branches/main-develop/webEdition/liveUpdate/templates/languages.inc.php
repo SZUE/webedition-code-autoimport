@@ -62,11 +62,7 @@ if(!empty($notDeletedLngs)){
 	}
 }
 
-if($jsAlert){
-	$jsAlert = we_html_element::jsElement('alert("' . $jsAlert . '")');
-}
-
-$content = '
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[languages][headline]'), '
 <div>
 <form name="we_form">
 ' . we_html_element::htmlHidden('section', 'languages') . '
@@ -88,6 +84,4 @@ $content = '
 </tr>
 </table>
 </form>
-' . $jsAlert;
-
-echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[languages][headline]'), $content);
+' . ($jsAlert ? we_message_reporting::jsMessagePush($jsAlert, we_message_reporting::WE_MESSAGE_FRONTEND) : ''));

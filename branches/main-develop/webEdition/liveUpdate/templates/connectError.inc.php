@@ -43,14 +43,14 @@ if(!empty($_SESSION['le_proxy_use'])){
 		$errorMessage .= '<li>' . g_l('liveUpdate', '[connect][ipResolutionTest]') . ' (IPv4 only): ';
 		$hostName = gethostbyaddr((string) $_SESSION["le_proxy_host"]);
 		if($hostName != $_SESSION["le_proxy_host"]){
-			$errorMessage .=  g_l('liveUpdate', '[connect][succeeded]') . ".</li>" .
+			$errorMessage .= g_l('liveUpdate', '[connect][succeeded]') . ".</li>" .
 				"<li>" . g_l('liveUpdate', '[connect][hostName]') . ": " . $hostName . "</li>";
 		} else {
-			$errorMessage .=  g_l('liveUpdate', '[connect][failed]') . ".</li>";
+			$errorMessage .= g_l('liveUpdate', '[connect][failed]') . ".</li>";
 		}
 	}
 	// gethostbyaddr currently does not support ipv6 address resolution
-	 else {
+	else {
 		$errorMessage .= "<li>" . g_l('liveUpdate', '[connect][dnsResolutionTest]') . ": ";
 		if(($ipAddr = gethostbynamel($_SESSION["le_proxy_host"]))){
 			$errorMessage .= g_l('liveUpdate', '[connect][succeeded]') . ".</li>" .
@@ -73,9 +73,6 @@ $errorMessage .= "<li>" . g_l('liveUpdate', '[connect][dnsResolutionTest]') . ":
 		g_l('liveUpdate', '[connect][failed]') . ".</li>"
 	) . "</ul>";
 
-
-$content = '
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[connect][headline]'), '
 <div class="defaultfont">' . g_l('liveUpdate', '[connect][connectionError]') . '</div>' .
-	we_html_element::jsElement('alert("' . g_l('liveUpdate', '[connect][connectionErrorJs]') . '");') . $errorMessage;
-
-echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[connect][headline]'), $content);
+	we_message_reporting::jsMessagePush(g_l('liveUpdate', '[connect][connectionErrorJs]'), we_message_reporting::WE_MESSAGE_FRONTEND) . $errorMessage);
