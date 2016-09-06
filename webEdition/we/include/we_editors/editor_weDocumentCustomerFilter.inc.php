@@ -41,7 +41,7 @@ if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_E
 
 $parts[] = array(
 	'headline' => g_l('modules_customer', '[one_customer]'),
-	'html' => formWebuser(permissionhandler::hasPerm("CAN_CHANGE_DOCS_CUSTOMER"), 434),
+	'html' => formWebuser(permissionhandler::hasPerm("CAN_CHANGE_DOCS_CUSTOMER")),
 	'space' => we_html_multiIconBox::SPACE_MED
 );
 
@@ -60,7 +60,7 @@ echo we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 </body>
 </html>';
 
-function formWebuser($canChange, $width = 388){
+function formWebuser($canChange){
 	if(!$GLOBALS['we_doc']->WebUserID){
 		$GLOBALS['we_doc']->WebUserID = 0;
 	}

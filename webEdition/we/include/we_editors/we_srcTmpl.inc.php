@@ -80,7 +80,7 @@ function we_getCSSIds(){
 	return $ret;
 }
 
-function we_getCodeMirror2Code(){
+function we_getCodeMirror2Code(&$options){
 	$maineditor = '';
 	$parser_js = [];
 	$parser_css = array('theme/' . $_SESSION['prefs']['editorTheme'] . '.css');
@@ -170,6 +170,28 @@ function we_getCodeMirror2Code(){
 		$hasCompletion = is_array($tmp) ? array_sum($tmp) : false;
 		$settings = http_build_query(['settings' => is_array($tmp) ? $tmp : []]);
 
+		$options = [ //these are the CodeMirror options
+			'mode' => $mode,
+			'electricChars' => false,
+			'theme' => $_SESSION['prefs']['editorTheme'],
+			'lineNumbers' => ($_SESSION['prefs']['editorLinenumbers'] ? true : false),
+			'gutter' => true,
+			'indentWithTabs' => true,
+			'tabSize' => intval($_SESSION['prefs']['editorTabSize']),
+			'indentUnit' => intval($_SESSION['prefs']['editorTabSize']),
+			'matchBrackets' => true,
+			/* 	workTime: 300,
+			  workDelay: 800, */
+			'dragDrop' => false,
+			'height' => intval(($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : 320),
+			'lineWrapping' => ($_SESSION['weS']['we_wrapcheck'] ? true : false),
+			'autoCloseTags' => ($_SESSION['prefs']['editorDocuintegration'] ? true : false), // use object with indentTags to indent these tags
+			'autofocus' => true,
+			'smartIndent' => ($_SESSION['prefs']['editorAutoIndent'] ? true : false/* '"Enter": false,' */),
+			'closeCharacters' => '()[]{};>,',
+			'hasCodeCompletion' => ($hasCompletion && $useCompletion)
+		];
+
 		$maineditor.=
 			($GLOBALS['we_doc']->ContentType == we_base_ContentTypes::TEMPLATE ?
 				we_html_element::jsScript(WEBEDITION_DIR . 'editors/template/CodeMirror/mode/webEdition/webEdition.js') :
@@ -209,35 +231,7 @@ function we_getCodeMirror2Code(){
 	background-position: right;
 	background-repeat: no-repeat;
 }' : '')
-			) . we_html_element::jsElement('
-var CMoptions = { //these are the CodeMirror options
-	mode: "' . $mode . '",
-	electricChars: false,
-	theme: "' . $_SESSION['prefs']['editorTheme'] . '",
-	lineNumbers: ' . ($_SESSION['prefs']['editorLinenumbers'] ? 'true' : 'false') . ',
-	gutter: true,
-	indentWithTabs: true,
-	tabSize: ' . intval($_SESSION['prefs']['editorTabSize']) . ',
-	indentUnit: ' . intval($_SESSION['prefs']['editorTabSize']) . ',
-	matchBrackets: true,
-/*	workTime: 300,
-	workDelay: 800,*/
-	dragDrop: false,
-	height: ' . intval(($_SESSION["prefs"]["editorHeight"] != 0) ? $_SESSION["prefs"]["editorHeight"] : 320) . ',
-	lineWrapping:' . ($_SESSION['weS']['we_wrapcheck'] ? 'true' : 'false') . ',
-	autoCloseTags: ' . ($_SESSION['prefs']['editorDocuintegration'] ? 'true' : 'false') . ', // use object with indentTags to indent these tags
-	autofocus: true,
-	smartIndent: ' . ($_SESSION['prefs']['editorAutoIndent'] ? 'true' : 'false'/* '"Enter": false,' */) . ',
-	closeCharacters: /[()\[\]{};>,]/,
-	extraKeys: {' . ($hasCompletion && $useCompletion ? '
-							  "Space": function(cm) { CodeMirror.weHint(cm, \' \'); },
-							  "\'<\'": function(cm) { CodeMirror.weHint(cm, \'<\'); },
-							  "Ctrl-Space": function(cm) { CodeMirror.weHint(cm, \'\'); },' : ''
-				) .
-				'
-	}
-};' . '
-');
+		);
 	}
 	return $maineditor;
 }
@@ -336,13 +330,6 @@ function getTagWizzard($we_doc){
 	];
 }
 
-echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
- we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', '', ['id' => 'loadVarSrcTmpl', 'data-doc' => setDynamicVar([
-		'docName' => $we_doc->Name,
-		'docCharSet' => ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']),
-		'editorHighlightCurrentLine' => intval($_SESSION['prefs']['editorHighlightCurrentLine']),
-])]);
-
 $code = ($we_doc instanceof we_htmlDocument ?
 		$we_doc->getDocumentCode() :
 		$we_doc->getElement('data')
@@ -353,12 +340,20 @@ $maineditor = '<textarea id="editarea" style="' . (($_SESSION["prefs"]["editorFo
 	'" name="we_' . $we_doc->Name . '_txt[data]" wrap="' . ($_SESSION['weS']['we_wrapcheck'] ? 'virtual' : 'off') . '" ' .
 	((!we_base_browserDetect::isGecko() && !$_SESSION['weS']['we_wrapcheck']) ? '' : '') . ($_SESSION['prefs']['editorMode'] === 'codemirror2' ? '' : (we_base_browserDetect::isIE() || we_base_browserDetect::isOpera() ? 'onkeydown' : 'onkeypress') . '="editorChanged();return wedoKeyDown(this,event);"') . '>'
 	. oldHtmlspecialchars($code) . '</textarea>';
+$options = [];
 switch($_SESSION['prefs']['editorMode']){
 	case 'java':
 	case 'codemirror2': //Syntax-Highlighting
-		$maineditor .= we_getCodeMirror2Code();
+		$maineditor .= we_getCodeMirror2Code($options);
 		break;
 }
+echo we_html_element::jsScript(JS_DIR . 'multiIconBox.js') .
+ we_html_element::jsScript(JS_DIR . 'we_srcTmpl.js', '', ['id' => 'loadVarSrcTmpl', 'data-doc' => setDynamicVar([
+		'docName' => $we_doc->Name,
+		'docCharSet' => ($we_doc->elements['Charset']['dat'] ? : $GLOBALS['WE_BACKENDCHARSET']),
+		'editorHighlightCurrentLine' => intval($_SESSION['prefs']['editorHighlightCurrentLine']),
+		'CMOptions' => $options,
+])]);
 
 $znr = -1;
 $wepos = "";

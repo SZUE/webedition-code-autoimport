@@ -824,9 +824,9 @@ if(isset($_REQUEST[\'pv_id\']) && isset($_REQUEST[\'pv_tid\'])) {
 $FROM_WE_SHOW_DOC = true;
 
 if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
-		include($_SERVER[\'DOCUMENT_ROOT\'] . \'we_showObject.inc.php\');
+		include($_SERVER[\'DOCUMENT_ROOT\'] . \'' . WE_INCLUDES_DIR . 'we_showObject.inc.php\');
 } else {
-		include($_SERVER[\'DOCUMENT_ROOT\'] . \'we_showDocument.inc.php\');
+		include($_SERVER[\'DOCUMENT_ROOT\'] .  \'' . WE_INCLUDES_DIR . 'we_showDocument.inc.php\');
 }';
 		}
 

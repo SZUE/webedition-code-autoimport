@@ -1,3 +1,5 @@
+/* global WE, top */
+
 /**
  webEdition CMS
  *
@@ -364,7 +366,7 @@ var weFileUpload = (function () {
 						}, 100);
 					}
 					return;
-				} 
+				}
 
 				if(fileobj){
 					fileobj.processSingleImage = true;
@@ -386,7 +388,7 @@ var weFileUpload = (function () {
 						if(_.controller.PROCESS_PREVIEWS_ONLY && fileobj.img.previewCanvas){
 							_.controller.processImage(fileobj, _.controller.IMG_NEXT);
 							return;
-						} 
+						}
 						_.utils.processimageExtractLandscape(fileobj, _.controller.IMG_LOAD_CANVAS);
 						break;
 					case _.controller.IMG_LOAD_CANVAS: // TODO: make IMG_START
@@ -404,7 +406,7 @@ var weFileUpload = (function () {
 						break;
 					case _.controller.IMG_ROTATE:
 						_.utils.processimageRotate(fileobj, _.controller.IMG_APPLY_FILTERS);
-						break;							
+						break;
 					case _.controller.IMG_APPLY_FILTERS:
 						_.utils.processimageApplyFilters(fileobj, _.controller.IMG_WRITE_IMAGE);
 						break;
@@ -446,7 +448,7 @@ var weFileUpload = (function () {
 
 			/*
 			 * reedit a single image or all images using general options applying opts from GUI
-			 * 
+			 *
 			 */
 			this.reeditImage = function (index, general) {
 				var indexes = _.utils.getImageEditIndexes(index, general, false);
@@ -461,9 +463,9 @@ var weFileUpload = (function () {
 			 * set property isEdited of a single image or all images using general options to false
 			 * -> empty props like dataArray, dataUrl
 			 * -> do not change GUI (= edit opts)
-			 * 
+			 *
 			 * we use this to free disk space when edited images are not valid anymore after changing options
-			 * 
+			 *
 			 */
 			this.uneditImage = function (index, general, isReset) {
 				var indexes = _.utils.getImageEditIndexes(index, general, false),
@@ -1029,7 +1031,7 @@ var weFileUpload = (function () {
 					 * we sould not load data here: it lasts too long!
 					 * as long as memory limit is not reached we save dataURLs to fileobjects
 					 * => when limit is reached one must load dataURL using btnMakePreview!
-					 * 
+					 *
 					 */
 					/*
 					var reader = new FileReader();
@@ -1362,17 +1364,17 @@ var weFileUpload = (function () {
 				if(!fileobj.img.editOptions.scale){
 					_.utils.logTimeFromStart('scaling skipped');
 					_.controller.processImage(fileobj, nexttask);
-					return; // IMPORTANT! 
+					return; // IMPORTANT!
 				}
 
-				var scaleWhat = fileobj.img.editOptions.scaleWhat !== 'pixel_l' ? fileobj.img.editOptions.scaleWhat : 
+				var scaleWhat = fileobj.img.editOptions.scaleWhat !== 'pixel_l' ? fileobj.img.editOptions.scaleWhat :
 						(fileobj.img.workingCanvas.width >= fileobj.img.workingCanvas.height ? 'pixel_w' : 'pixel_h');
-				var ratio = scaleWhat === 'pixel_w' ? fileobj.img.editOptions.scale/fileobj.img.workingCanvas.width : 
+				var ratio = scaleWhat === 'pixel_w' ? fileobj.img.editOptions.scale/fileobj.img.workingCanvas.width :
 							fileobj.img.editOptions.scale/fileobj.img.workingCanvas.height;
 				if(ratio >= 1){
 					_.utils.logTimeFromStart('scaling: image smaller than targetsize');
 					_.controller.processImage(fileobj, nexttask); // we do not upscale!
-					return; // IMPORTANT! 
+					return; // IMPORTANT!
 				}
 
 				var targetCanvas = document.createElement('canvas');
@@ -1700,12 +1702,12 @@ var weFileUpload = (function () {
 						this.memorymanagerEmptySpace();
 						//top.console.log('emptied space for this file');
 
-						if(_.sender.imageFilesToProcess.length){ // 
+						if(_.sender.imageFilesToProcess.length){ //
 							if(fileobj.img.editOptions.doEdit && this.memorymanagerIsUneditedPreviewToDelete){
 								//top.console.log('dataURLs of unedited where deleted: go on');
 							} else {
 								//top.console.log('processing images must be stopped: we will make previews if needed and then stop');
-								_.controller.PROCESS_PREVIEWS_ONLY = true; 
+								_.controller.PROCESS_PREVIEWS_ONLY = true;
 							}
 						}
 					}
@@ -2086,7 +2088,7 @@ var weFileUpload = (function () {
 		this.reeditImage = function (index, general) {
 			_.controller.reeditImage(index, general);
 		};
-		
+
 		this.openImageEditor = function(pos){
 			_.controller.openImageEditor(pos);
 		};
@@ -3566,7 +3568,7 @@ var weFileUpload = (function () {
 						_.view.elems.fileDrag.style.backgroundImage =  'none';
 						btn.disabled = false;
 						break;
-					case 'empty': 
+					case 'empty':
 						_.view.elems.fileDrag.style.backgroundColor = 'white';
 						_.view.elems.fileDrag.style.backgroundImage =  'none';
 						btn.disabled = true;
@@ -3633,7 +3635,7 @@ var weFileUpload = (function () {
 				text = (changeText ? _.utils.gl.maskProcessImage : text) + '.';
 				text += '.';
 				document.getElementById('image_edit_mask_text').innerHTML = text;
-				
+
 			};
 
 			this.repaintEntry = function (fileobj) {

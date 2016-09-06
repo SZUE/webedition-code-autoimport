@@ -25,6 +25,9 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
+WE().util.loadConsts("g_l.doctypeEdit");
+var doctype = WE().util.getDynamicVar(document, 'loadVarDoctypeEdit', 'data-doctype');
+
 var countSaveLoop = 0;
 function we_save_docType(doc, url) {
 	var acStatus = '';
@@ -117,7 +120,7 @@ function we_cmd() {
 					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_hochkomma, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else if (name === "") {
 					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_empty, WE().consts.message.WE_MESSAGE_ERROR, window);
-				} else if (WE().util.in_array(name, docTypeNames)) {
+				} else if (WE().util.in_array(name, doctype.docTypeNames)) {
 					top.we_showMessage(WE().consts.g_l.doctypeEdit.doctype_exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 				} else {
 					/*						if (top.opener.top.header) {

@@ -26,33 +26,25 @@ we_html_tools::protect(array('CAN_SEE_TEMPLATES', 'EDIT_DOCTYPE'));
 $we_doc = new we_docTypes();
 
 // Initialize variables
-$we_show_response = 0;
 $we_JavaScript = "";
+
+$jsCmd = new we_base_jsCmd();
 
 switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	case "save_docType":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
-			$we_responseText = g_l('weClass', '[no_perms]');
-			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
+			$jsCmd->addCmd('msg', ['msg' => g_l('weClass', '[no_perms]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			break;
 		}
 		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$we_transaction]);
 		if(preg_match('|[\'",]|', $we_doc->DocType)){
-			$we_responseText = g_l('alert', '[doctype_hochkomma]');
-			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
-			$we_show_response = 1;
+			$jsCmd->addCmd('msg', ['msg' => g_l('alert', '[doctype_hochkomma]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else if(!$we_doc->DocType){
-			$we_responseText = g_l('alert', '[doctype_empty]');
-			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
-			$we_show_response = 1;
+			$jsCmd->addCmd('msg', ['msg' => g_l('alert', '[doctype_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} elseif(($id = f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' dt WHERE dt.DocType="' . $GLOBALS['DB_WE']->escape($we_doc->DocType) . '" LIMIT 1')) && ($we_doc->ID != $id)){
-			$we_responseText = sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType);
-			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
-			$we_show_response = 1;
+			$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('weClass', '[doctype_save_nok_exist]'), $we_doc->DocType), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} elseif($we_doc->we_save()){
-			$we_responseText = sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType);
-			$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
-			$we_show_response = 1;
+			$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('weClass', '[doctype_save_ok]'), $we_doc->DocType), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
 			$we_JavaScript = we_main_headermenu::getMenuReloadCode();
 		} else {
 			echo "ERROR";
@@ -67,8 +59,7 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		break;
 	case "deleteDocTypeok":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
-			$we_responseText = g_l('alert', '[no_perms]');
-			$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
+			$jsCmd->addCmd('msg', ['msg' => g_l('alert', '[no_perms]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			break;
 		}
 		$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1);
@@ -76,18 +67,13 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 		$del = false;
 		if($name){
 			if(f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE DocType=' . $id . ' LIMIT 1')){
-				$we_show_response = 1;
-				$we_response_type = we_message_reporting::WE_MESSAGE_ERROR;
-				$we_responseText = sprintf(g_l('weClass', '[doctype_delete_nok]'), $name);
+				$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('weClass', '[doctype_delete_nok]'), $name), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} else {
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . DOC_TYPES_TABLE . ' WHERE ID=' . $id);
 
 				// Fast Fix for deleting entries from tblLangLink: #5840
 				$GLOBALS['DB_WE']->query('DELETE FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="tblDocTypes" AND (DID=' . $id . ' OR LDID=' . $id . ')');
-
-				$we_show_response = 1;
-				$we_response_type = we_message_reporting::WE_MESSAGE_NOTICE;
-				$we_responseText = sprintf(g_l('weClass', '[doctype_delete_ok]'), $name);
+				$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('weClass', '[doctype_delete_ok]'), $name), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
 				$del = true;
 			}
 			if($del){
@@ -147,38 +133,39 @@ switch(($wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)))
 }
 
 $yuiSuggest = & weSuggest::getInstance();
+$GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(dt.DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
+
 echo we_html_tools::getHtmlTop(g_l('weClass', '[doctypes]')) .
  weSuggest::getYuiFiles() .
- we_html_element::jsScript(JS_DIR . 'doctypeEdit.js');
+ we_html_element::jsScript(JS_DIR . 'doctypeEdit.js', '', ['id' => 'loadVarDoctypeEdit', 'data-doctype' => setDynamicVar([
+		'docTypeNames' => $GLOBALS['DB_WE']->getAll(true)
+])]);
 //FIXME: currently we don't have a class so we can't move js-g_l
 ?>
 <script><!--
-	WE().util.loadConsts("g_l.doctypeEdit");
-<?=
-(empty($we_JavaScript) ? '' : $we_JavaScript . ';') .
- ($we_show_response && $we_responseText ? we_message_reporting::getShowMessageCall($we_responseText, $we_response_type) : '');
+<?php
+echo (empty($we_JavaScript) ? '' : $we_JavaScript . ';');
 
 switch($wecmd0){
 	case "deleteDocType":
 		if(!permissionhandler::hasPerm("EDIT_DOCTYPE")){
-			echo we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$jsCmd->addCmd('msg', ['msg' => g_l('alert', '[no_perms]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			break;
 		}
 		?>
-			if (confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
-				we_cmd("deleteDocTypeok", "<?= we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
-			}
+		if (confirm("<?php printf(g_l('weClass', '[doctype_delete_prompt]'), $we_doc->DocType); ?>")) {
+			we_cmd("deleteDocTypeok", "<?= we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1); ?>");
+		}
 		<?php
 		break;
 	case "deleteDocTypeok":
-		echo we_main_headermenu::getMenuReloadCode() .
-		we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_NOTICE);
+		echo we_main_headermenu::getMenuReloadCode();
+		break;
 }
-$GLOBALS['DB_WE']->query('SELECT CONCAT("\'",REPLACE(dt.DocType,"\'","\\\\\'"),"\'") FROM ' . DOC_TYPES_TABLE . ' dt ORDER BY dt.DocType');
-echo 'var docTypeNames = [' . implode(',', $GLOBALS['DB_WE']->getAll(true)) . '];';
 ?>
 //-->
 </script>
+<?= $jsCmd->getCmds(); ?>
 </head>
 
 <body class="weDialogBody" onunload="doUnload()" onload="self.focus();">

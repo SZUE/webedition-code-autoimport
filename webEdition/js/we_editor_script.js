@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var doc = WE().util.getDynamicVar(document, 'loadVarEditor_script','data-doc');
+var doc = WE().util.getDynamicVar(document, 'loadVarEditor_script', 'data-doc');
 
 var _controller = WE().layout.weEditorFrameController;
 
@@ -454,4 +454,36 @@ function metaFieldSelectProposal(sel, inputName, isCsv) {
 
 	document.forms[0].elements[inputName].value = newVal;
 	sel.selectedIndex = 0;
+}
+
+function changeOption(elem){
+	var cmnd = elem.options[elem.selectedIndex].value;
+	if(cmnd){
+		switch(cmnd){
+			case "doImage_convertPNG":
+			case "doImage_convertGIF":
+				WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+		}
+		we_cmd(cmnd,doc.we_transaction);
+	}
+	//elem.selectedIndex=0;
+}
+
+if (doc.cmd) {
+	top.we_cmd.apply(this, doc.cmd);
+	doc.cmd = false;
+}
+
+if (doc.isDW) {
+	// overwrite/disable some functions in javascript!!!!
+	window.open = function () {};
+	window.onerror = function () {
+		return true;
+	};
+
+	window.addEventListener("load", we_rpc_dw_onload);
+
+} else if (doc.useSEE_MODE) {
+	// add event-Handler, replace links after load
+	window.addEventListener("load", seeMode_dealWithLinks, false);
 }

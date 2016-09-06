@@ -43,7 +43,7 @@ switch($_SESSION['weS']['we_mode']){
 		} else { //	show tabs according to permissions
 			if(in_array(we_base_constants::WE_EDITPAGE_PROPERTIES, $we_doc->EditPageNrs) && permissionhandler::hasPerm("CAN_SEE_PROPERTIES")){
 				$jscmd = "var we_cmd_args = ['switch_edit_page'," . we_base_constants::WE_EDITPAGE_PROPERTIES . ",'" . $we_transaction . "'];";
-				$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES)), ($we_doc->isBinary() ? $jscmd.'WE().layout.checkFileUpload(we_cmd_args)': $jscmd.'we_cmd.apply(this, we_cmd_args);'), ['id' => 'tab_' . we_base_constants::WE_EDITPAGE_PROPERTIES, 'title' => g_l('weClass', '[tab_properties]')]);
+				$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES)), ($we_doc->isBinary() ? $jscmd . 'WE().layout.checkFileUpload(we_cmd_args)' : $jscmd . 'we_cmd.apply(this, we_cmd_args);'), ['id' => 'tab_' . we_base_constants::WE_EDITPAGE_PROPERTIES, 'title' => g_l('weClass', '[tab_properties]')]);
 			}
 			if(in_array(we_base_constants::WE_EDITPAGE_CONTENT, $we_doc->EditPageNrs)){
 				$we_tabs->addTab(($we_doc->isBinary() ? '<i class="fa fa-lg fa-upload"></i>' : '<i class="fa fa-lg fa-edit"></i>'), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT)), "we_cmd('switch_edit_page'," . we_base_constants::WE_EDITPAGE_CONTENT . ",'" . $we_transaction . "');", ['id' => 'tab_' . we_base_constants::WE_EDITPAGE_CONTENT, 'title' => ($we_doc->isBinary() ?
@@ -55,12 +55,12 @@ switch($_SESSION['weS']['we_mode']){
 
 			if(in_array(we_base_constants::WE_EDITPAGE_IMAGEEDIT, $we_doc->EditPageNrs)){
 				$jscmd = "var we_cmd_args = ['switch_edit_page'," . we_base_constants::WE_EDITPAGE_IMAGEEDIT . ",'" . $we_transaction . "'];";
-				$we_tabs->addTab(we_base_constants::WE_ICON_EDIT, (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_IMAGEEDIT)), ($we_doc->isBinary() ? $jscmd.'WE().layout.checkFileUpload(we_cmd_args)': $jscmd.'we_cmd.apply(this, we_cmd_args);'), ["id" => "tab_" . we_base_constants::WE_EDITPAGE_IMAGEEDIT, 'title' => g_l('weClass', '[edit_image]')]);
+				$we_tabs->addTab(we_base_constants::WE_ICON_EDIT, (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_IMAGEEDIT)), ($we_doc->isBinary() ? $jscmd . 'WE().layout.checkFileUpload(we_cmd_args)' : $jscmd . 'we_cmd.apply(this, we_cmd_args);'), ["id" => "tab_" . we_base_constants::WE_EDITPAGE_IMAGEEDIT, 'title' => g_l('weClass', '[edit_image]')]);
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_THUMBNAILS, $we_doc->EditPageNrs)){
 				$jscmd = "var we_cmd_args = ['switch_edit_page'," . we_base_constants::WE_EDITPAGE_THUMBNAILS . ",'" . $we_transaction . "'];";
-				$we_tabs->addTab('<i class="fa fa-lg fa-image"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_THUMBNAILS)), ($we_doc->isBinary() ? $jscmd.'WE().layout.checkFileUpload(we_cmd_args)': $jscmd.'we_cmd.apply(this, we_cmd_args);'), ["id" => "tab_" . we_base_constants::WE_EDITPAGE_THUMBNAILS, 'title' => g_l('weClass', '[thumbnails]')]);
+				$we_tabs->addTab('<i class="fa fa-lg fa-image"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_THUMBNAILS)), ($we_doc->isBinary() ? $jscmd . 'WE().layout.checkFileUpload(we_cmd_args)' : $jscmd . 'we_cmd.apply(this, we_cmd_args);'), ["id" => "tab_" . we_base_constants::WE_EDITPAGE_THUMBNAILS, 'title' => g_l('weClass', '[thumbnails]')]);
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_WORKSPACE, $we_doc->EditPageNrs)){
@@ -69,13 +69,13 @@ switch($_SESSION['weS']['we_mode']){
 
 			if(in_array(we_base_constants::WE_EDITPAGE_INFO, $we_doc->EditPageNrs) && permissionhandler::hasPerm("CAN_SEE_INFO")){
 				$jscmd = "var we_cmd_args = ['switch_edit_page'," . we_base_constants::WE_EDITPAGE_INFO . ",'" . $we_transaction . "'];";
-				$we_tabs->addTab('<i class="fa fa-lg fa-info-circle"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)), ($we_doc->isBinary() ? $jscmd.'WE().layout.checkFileUpload(we_cmd_args)': $jscmd.'we_cmd.apply(this, we_cmd_args);'), ["id" => "tab_" . we_base_constants::WE_EDITPAGE_INFO, 'title' => g_l('weClass', '[information]')]);
+				$we_tabs->addTab('<i class="fa fa-lg fa-info-circle"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_INFO)), ($we_doc->isBinary() ? $jscmd . 'WE().layout.checkFileUpload(we_cmd_args)' : $jscmd . 'we_cmd.apply(this, we_cmd_args);'), ["id" => "tab_" . we_base_constants::WE_EDITPAGE_INFO, 'title' => g_l('weClass', '[information]')]);
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW, $we_doc->EditPageNrs)){
 
 				$jscmd = "var we_cmd_args = ['switch_edit_page'," . we_base_constants::WE_EDITPAGE_PREVIEW . ",'" . $we_transaction . "'];";
-				$we_tabs->addTab('<i class="fa fa-lg fa-eye"></i>' . ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE ? '<i class="fa fa-lg fa-edit"></i>' : ''), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW)), ($we_doc->isBinary() ? $jscmd.'WE().layout.checkFileUpload(we_cmd_args)': $jscmd.'we_cmd.apply(this, we_cmd_args);'), ['id' => 'tab_' . we_base_constants::WE_EDITPAGE_PREVIEW, 'title' => g_l('weClass', ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE ? '[previeweditmode]' : '[preview]'))]);
+				$we_tabs->addTab('<i class="fa fa-lg fa-eye"></i>' . ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE ? '<i class="fa fa-lg fa-edit"></i>' : ''), (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_PREVIEW)), ($we_doc->isBinary() ? $jscmd . 'WE().layout.checkFileUpload(we_cmd_args)' : $jscmd . 'we_cmd.apply(this, we_cmd_args);'), ['id' => 'tab_' . we_base_constants::WE_EDITPAGE_PREVIEW, 'title' => g_l('weClass', ($we_doc->ContentType == we_base_ContentTypes::TEMPLATE ? '[previeweditmode]' : '[preview]'))]);
 			}
 
 			if(in_array(we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE, $we_doc->EditPageNrs)){
@@ -102,12 +102,12 @@ switch($_SESSION['weS']['we_mode']){
 
 			if(in_array(we_base_constants::WE_EDITPAGE_WEBUSER, $we_doc->EditPageNrs) && (permissionhandler::hasPerm(['CAN_EDIT_CUSTOMERFILTER', 'CAN_CHANGE_DOCS_CUSTOMER']))){
 				$jscmd = "var we_cmd_args = ['switch_edit_page'," . we_base_constants::WE_EDITPAGE_WEBUSER . ",'" . $we_transaction . "'];";
-				$we_tabs->addTab(we_base_constants::WE_ICON_CUSTOMER_FILTER, (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_WEBUSER)), ($we_doc->isBinary() ? $jscmd.'WE().layout.checkFileUpload(we_cmd_args)': $jscmd.'we_cmd.apply(this, we_cmd_args);'), ['id' => 'tab_' . we_base_constants::WE_EDITPAGE_WEBUSER, 'title' => g_l('weClass', '[webUser]')]);
+				$we_tabs->addTab(we_base_constants::WE_ICON_CUSTOMER_FILTER, (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_WEBUSER)), ($we_doc->isBinary() ? $jscmd . 'WE().layout.checkFileUpload(we_cmd_args)' : $jscmd . 'we_cmd.apply(this, we_cmd_args);'), ['id' => 'tab_' . we_base_constants::WE_EDITPAGE_WEBUSER, 'title' => g_l('weClass', '[webUser]')]);
 			}
 
 			if(permissionhandler::hasPerm("SEE_VERSIONS") && in_array(we_base_constants::WE_EDITPAGE_VERSIONS, $we_doc->EditPageNrs)){
 				$jscmd = "var we_cmd_args = ['switch_edit_page'," . we_base_constants::WE_EDITPAGE_VERSIONS . ",'" . $we_transaction . "'];";
-				$we_tabs->addTab('<i class="fa fa-lg fa-history"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_VERSIONS)), ($we_doc->isBinary() ? $jscmd.'WE().layout.checkFileUpload(we_cmd_args)': $jscmd.'we_cmd.apply(this, we_cmd_args);'), ["id" => "tab_" . we_base_constants::WE_EDITPAGE_VERSIONS, 'title' => g_l('weClass', '[version]')]);
+				$we_tabs->addTab('<i class="fa fa-lg fa-history"></i>', (($we_doc->EditPageNr == we_base_constants::WE_EDITPAGE_VERSIONS)), ($we_doc->isBinary() ? $jscmd . 'WE().layout.checkFileUpload(we_cmd_args)' : $jscmd . 'we_cmd.apply(this, we_cmd_args);'), ["id" => "tab_" . we_base_constants::WE_EDITPAGE_VERSIONS, 'title' => g_l('weClass', '[version]')]);
 			}
 
 			$we_doc->we_initSessDat($we_dt);
