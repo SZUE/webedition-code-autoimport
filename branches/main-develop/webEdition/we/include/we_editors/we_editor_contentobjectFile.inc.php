@@ -77,7 +77,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			$jsGUI->getContainer() .
 			we_html_multiIconBox::_getBoxEnd();
 			$js = '';
-			foreach($parts as $idx => $part){
+			foreach($parts as $part){
 
 				echo '<div id="' . $part['name'] . '" class="objectFileElement">
 	<div id="f' . $part['name'] . '" class="default defaultfont">
@@ -88,9 +88,9 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 			}
 			echo we_html_element::jsElement($js);
 		} else {
-			/*if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
-				$msg = '';
-			}*/
+			/* if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL){
+			  $msg = '';
+			  } */
 			echo we_SEEM::parseDocument(we_html_multiIconBox::getHTML('', $parts, 30));
 		}
 		echo we_html_element::htmlHidden("we_complete_request", 1) .

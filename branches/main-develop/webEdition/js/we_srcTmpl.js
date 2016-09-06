@@ -38,7 +38,21 @@ var wizardHeight = {
 
 function initCM() {
 	window.orignalTemplateContent = document.getElementById("editarea").value.replace(/\r/g, ""); //this is our reference of the original content to compare with current content
-
+	var CMoptions = doc.CMOptions;
+	CMoptions.closeCharacters = new RegExp(CMoptions.closeCharacters);
+	if (CMoptions.hasCodeCompletion) {
+		CMoptions.extraKeys = {
+			"Space": function (cm) {
+				CodeMirror.weHint(cm, ' ');
+			},
+			"'<'": function (cm) {
+				CodeMirror.weHint(cm, '<');
+			},
+			"Ctrl-Space": function (cm) {
+				CodeMirror.weHint(cm, '');
+			}
+		};
+	}
 	try {
 		document.getElementById("bodydiv").style.display = "block";
 		editor = CodeMirror.fromTextArea(document.getElementById("editarea"), CMoptions);

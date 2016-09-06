@@ -23,20 +23,7 @@
  */
 define("WE_EDIT_IMAGE", true);
 
-echo we_html_tools::getHtmlTop() .
- we_html_element::jsElement(
-	'function changeOption(elem){
-	var cmnd = elem.options[elem.selectedIndex].value;
-	if(cmnd){
-		switch(cmnd){
-			case "doImage_convertPNG":
-			case "doImage_convertGIF":
-				WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
-		}
-		we_cmd(cmnd,"' . $we_transaction . '");
-	}
-	//elem.selectedIndex=0;
-}');
+echo we_html_tools::getHtmlTop();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 ?>
 </head>
@@ -80,9 +67,8 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 <input type="number" id="y_focus" value="' . round(floatval($focus[1]), 2) . '" step="0.01" min="-1" max="1" onchange="setFocusPositionByValue();" />
 <input type="hidden" name="we_' . $GLOBALS['we_doc']->Name . '_input[focus]" id="focus" value="[' . implode(',', $focus) . ']"/>
 </div>
-' .
-		'</td></tr>'
-		. '</table>' .
+</td></tr>
+</table>' .
 		we_html_element::htmlHidden('we_complete_request', 1);
 		?>
 	</form>

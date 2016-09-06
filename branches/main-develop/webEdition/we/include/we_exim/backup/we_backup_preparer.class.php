@@ -397,6 +397,7 @@ abstract class we_backup_preparer{
 
 	static function isOtherXMLImport($format){
 
+		$cmd = new we_base_jsCmd();
 		switch($format){
 			case 'weimport':
 				if(permissionhandler::hasPerm('WXML_IMPORT')){
@@ -408,17 +409,14 @@ if(confirm("' . str_replace('"', '\'', g_l('backup', '[import_file_found]') . ' 
 	top.body.location = "' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2";
 }');
 				}
-				$cmd = new we_base_jsCmd();
 				$cmd->addCmd('msg', ['msg' => g_l('backup', '[import_file_found]'), 'prio' => we_message_reporting::WE_MESSAGE_WARNING]);
 				$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
 				return $cmd->getCmds();
 			case 'customer':
-				$cmd = new we_base_jsCmd();
 				$cmd->addCmd('msg', ['msg' => g_l('backup', '[customer_import_file_found]'), 'prio' => we_message_reporting::WE_MESSAGE_WARNING]);
 				$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
 				return $cmd->getCmds();
 			default:
-				$cmd = new we_base_jsCmd();
 				$cmd->addCmd('msg', ['msg' => g_l('backup', '[format_unknown]'), 'prio' => we_message_reporting::WE_MESSAGE_WARNING]);
 				$cmd->addCmd('location', ['doc' => 'body', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=recover_backup&pnt=body&step=2']);
 				return $cmd->getCmds();

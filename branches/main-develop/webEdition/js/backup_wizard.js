@@ -275,3 +275,7 @@ function showAll() {
 		}
 	}
 }
+
+function setLocation(loc) {
+	location.href = loc;
+}

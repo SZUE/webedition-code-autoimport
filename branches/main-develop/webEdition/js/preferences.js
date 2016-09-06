@@ -1,4 +1,4 @@
-/* global WE */
+/* global WE, top */
 
 /**
  * webEdition CMS
@@ -553,4 +553,17 @@ function checkFonts() {
 			elements2[i].disabled = "disabled";
 		}
 	}
+}
+
+function doClose() {
+	doCloseDyn();
+	var childs = top.document.getElementById("tabContainer").children;
+	childs[0].className = "tabActive";
+	for (i = 1; i < childs.length; ++i) {
+		childs[i].className = "tabNormal";
+	}
+
+	this.location = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/we_preferences.php";
+	setTimeout(top.document.getElementById("tabContainer").children[0].click, 1000);
+
 }

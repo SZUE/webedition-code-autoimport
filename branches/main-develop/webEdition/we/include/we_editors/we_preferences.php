@@ -419,9 +419,9 @@ _multiEditorreload = true;";
 
 		case 'active_integrated_modules':
 			$GLOBALS['config_files']['conf_active_integrated_modules']['content'] = '<?php
-$GLOBALS[\'_we_active_integrated_modules\'] = array(
+$GLOBALS[\'_we_active_integrated_modules\'] = [
 \'' . implode("',\n'", we_base_request::_(we_base_request::STRING, 'newconf', [], 'active_integrated_modules')) . '\'
-);';
+];';
 			return;
 
 		case 'useproxy':
@@ -608,19 +608,16 @@ function save_all_values(){
 function build_dialog($selected_setting = 'ui'){
 	global $DB_WE;
 	$yuiSuggest = & weSuggest::getInstance();
-	$trueFalseArray = array('true' => 'true', 'false' => 'false');
 
 	switch($selected_setting){
 		case 'save':
 
-			return create_dialog('', array(
-				array('headline' => '', 'html' => g_l('prefs', '[save]'),)
-			));
+			return create_dialog('', [['headline' => '', 'html' => g_l('prefs', '[save]'),]
+			]);
 
 		case 'saved'://SAVED SUCCESSFULLY DIALOG
-			return create_dialog('', array(
-				array('headline' => '', 'html' => g_l('prefs', '[saved]'),)
-			));
+			return create_dialog('', [['headline' => '', 'html' => g_l('prefs', '[saved]'),]
+			]);
 
 		case 'ui':
 			//LANGUAGE
@@ -639,7 +636,7 @@ function build_dialog($selected_setting = 'ui'){
 			global $languages;
 
 			if(!empty($language)){ // Build language select box
-				$languages = new we_html_select(array('name' => 'newconf[Language]', 'class' => 'weSelect', 'onchange' => "document.getElementById('langnote').style.display='block'"));
+				$languages = new we_html_select(['name' => 'newconf[Language]', 'class' => 'weSelect', 'onchange' => "document.getElementById('langnote').style.display='block'"]);
 				foreach($language as $key => $value){
 					$languages->addOption($key, $value);
 				}
@@ -659,22 +656,22 @@ function build_dialog($selected_setting = 'ui'){
 </table>
 </div>';
 				// Build dialog
-				$settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $languages->getHtml() . '<br/><br/>' . $langNote, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
+				$settings[] = ['headline' => g_l('prefs', '[choose_language]'), 'html' => $languages->getHtml() . '<br/><br/>' . $langNote, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1];
 			} else { // Just one Language Installed, no select box needed
 				foreach($language as $key => $value){
 					$languages = $value;
 				}
 				// Build dialog
-				$settings[] = array('headline' => g_l('prefs', '[choose_language]'), 'html' => $languages, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1);
+				$settings[] = ['headline' => g_l('prefs', '[choose_language]'), 'html' => $languages, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1];
 			}
 
-			$BackendCharset = new we_html_select(array('name' => 'newconf[BackendCharset]', 'class' => 'weSelect', 'onchange' => "document.getElementById('langnote').style.display='block'"));
+			$BackendCharset = new we_html_select(['name' => 'newconf[BackendCharset]', 'class' => 'weSelect', 'onchange' => "document.getElementById('langnote').style.display='block'"]);
 			$c = we_base_charsetHandler::getAvailCharsets();
 			foreach($c as $char){
 				$BackendCharset->addOption($char, $char);
 			}
 			$BackendCharset->selectOption(get_value('BackendCharset'));
-			$settings[] = array('headline' => g_l('prefs', '[choose_backendcharset]'), 'html' => $BackendCharset->getHtml() . '<br/><br/>' . $langNote, 'space' => we_html_multiIconBox::SPACE_BIG);
+			$settings[] = ['headline' => g_l('prefs', '[choose_backendcharset]'), 'html' => $BackendCharset->getHtml() . '<br/><br/>' . $langNote, 'space' => we_html_multiIconBox::SPACE_BIG];
 
 
 			// DEFAULT CHARSET
@@ -684,23 +681,22 @@ function build_dialog($selected_setting = 'ui'){
 				$charset = $GLOBALS['WE_BACKENDCHARSET'];
 				$GLOBALS['weDefaultCharset'] = get_value('DEFAULT_CHARSET');
 				$defaultCharset = we_html_tools::htmlTextInput('newconf[DEFAULT_CHARSET]', 8, $GLOBALS['weDefaultCharset'], 255, '', 'text', 100);
-				$defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $charsets, 1, $GLOBALS['weDefaultCharset'], false, array('onchange' => "document.forms[0].elements['newconf[DEFAULT_CHARSET]'].value=this.options[this.selectedIndex].value;"), "value", 100, "defaultfont", false);
+				$defaultCharsetChooser = we_html_tools::htmlSelect('DefaultCharsetSelect', $charsets, 1, $GLOBALS['weDefaultCharset'], false, ['onchange' => "document.forms[0].elements['newconf[DEFAULT_CHARSET]'].value=this.options[this.selectedIndex].value;"], "value", 100, "defaultfont", false);
 				$DEFAULT_CHARSET = '<table class="default"><tr><td>' . $defaultCharset . '</td><td>' . $defaultCharsetChooser . '</td></tr></table>';
 
-				$settings[] = array(
-					'headline' => g_l('prefs', '[default_charset]'),
+				$settings[] = ['headline' => g_l('prefs', '[default_charset]'),
 					'space' => we_html_multiIconBox::SPACE_BIG,
 					'html' => $DEFAULT_CHARSET
-				);
+					];
 			}
 
 			//AMOUNT COLUMNS IN COCKPIT
-			$cockpit_amount_columns = new we_html_select(array('name' => 'newconf[cockpit_amount_columns]', 'class' => 'weSelect'));
+			$cockpit_amount_columns = new we_html_select(['name' => 'newconf[cockpit_amount_columns]', 'class' => 'weSelect']);
 			for($i = 1; $i <= 10; $i++){
 				$cockpit_amount_columns->addOption($i, $i);
 			}
 			$cockpit_amount_columns->selectOption(get_value('cockpit_amount_columns'));
-			$settings[] = array('headline' => g_l('prefs', '[cockpit_amount_columns]'), 'html' => $cockpit_amount_columns->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+			$settings[] = ['headline' => g_l('prefs', '[cockpit_amount_columns]'), 'html' => $cockpit_amount_columns->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG];
 
 			/*			 * ***************************************************************
 			 * SEEM
@@ -711,7 +707,7 @@ function build_dialog($selected_setting = 'ui'){
 				$seem_disabler = we_html_forms::checkbox(1, get_value('WE_SEEM') == 0 ? 1 : 0, 'newconf[WE_SEEM]', g_l('prefs', '[seem_deactivate]'));
 
 				// Build dialog if user has permission
-				$settings[] = array('headline' => g_l('prefs', '[seem]'), 'html' => $seem_disabler, 'space' => we_html_multiIconBox::SPACE_BIG);
+				$settings[] = ['headline' => g_l('prefs', '[seem]'), 'html' => $seem_disabler, 'space' => we_html_multiIconBox::SPACE_BIG];
 			}
 
 			// SEEM start document
@@ -764,10 +760,10 @@ function build_dialog($selected_setting = 'ui'){
 						break;
 				}
 
-				$start_type = new we_html_select(array('name' => 'newconf[seem_start_type]', 'class' => 'weSelect', 'id' => 'seem_start_type', 'onchange' => "show_seem_chooser(this.value);"));
+				$start_type = new we_html_select(['name' => 'newconf[seem_start_type]', 'class' => 'weSelect', 'id' => 'seem_start_type', 'onchange' => "show_seem_chooser(this.value);"]);
 
 				$showStartType = false;
-				$permitedStartTypes = array('');
+				$permitedStartTypes = [''];
 				$start_type->addOption(0, '-');
 				$seem_cockpit_selectordummy = "<div id='selectordummy' style='height:24px;'>&nbsp;</div>";
 				if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
@@ -793,7 +789,7 @@ function build_dialog($selected_setting = 'ui'){
 					$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 					$yuiSuggest->setContainerWidth(259);
 
-					$seem_document_chooser = we_html_element::htmlSpan(array('id' => 'seem_start_document', 'style' => 'display:none'), $yuiSuggest->getHTML());
+					$seem_document_chooser = we_html_element::htmlSpan(['id' => 'seem_start_document', 'style' => 'display:none'], $yuiSuggest->getHTML());
 					$permitedStartTypes[] = 'document';
 				}
 				$seem_object_chooser = '';
@@ -814,10 +810,10 @@ function build_dialog($selected_setting = 'ui'){
 					$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, 'javascript:select_seem_start()', true, 100, 22, '', '', false, false), 10);
 					$yuiSuggest->setContainerWidth(259);
 
-					$seem_object_chooser = we_html_element::htmlSpan(array('id' => 'seem_start_object', 'style' => 'display:none'), $yuiSuggest->getHTML());
+					$seem_object_chooser = we_html_element::htmlSpan(['id' => 'seem_start_object', 'style' => 'display:none'], $yuiSuggest->getHTML());
 					$permitedStartTypes[] = 'object';
 				}
-				$start_weapp = new we_html_select(array('name' => 'newconf[seem_start_weapp]', 'class' => 'weSelect', 'id' => 'seem_start_weapp'));
+				$start_weapp = new we_html_select(['name' => 'newconf[seem_start_weapp]', 'class' => 'weSelect', 'id' => 'seem_start_weapp']);
 				$tools = we_tool_lookup::getAllTools(true, false);
 				foreach($tools as $tool){
 					if(!$tool['appdisabled'] && permissionhandler::hasPerm($tool['startpermission'])){
@@ -831,7 +827,7 @@ function build_dialog($selected_setting = 'ui'){
 						$start_weapp->selectOption($seem_start_weapp);
 					}
 					$weAPPSelector = $start_weapp->getHtml();
-					$seem_weapp_chooser = we_html_element::htmlSpan(array('id' => 'seem_start_weapp', 'style' => 'display:none'), $weAPPSelector);
+					$seem_weapp_chooser = we_html_element::htmlSpan(['id' => 'seem_start_weapp', 'style' => 'display:none'], $weAPPSelector);
 					$permitedStartTypes[] = 'weapp';
 				}
 
@@ -844,7 +840,7 @@ function build_dialog($selected_setting = 'ui'){
 					}
 					$seem_html = new we_html_table(['class' => 'default'], 2, 1);
 					$seem_html->setCol(0, 0, ['class' => 'defaultfont'], $start_type->getHtml());
-					$seem_html->setCol(1, 0, array('style' => 'padding-top:5px;'), $seem_cockpit_selectordummy . $seem_document_chooser . $seem_object_chooser . $seem_weapp_chooser);
+					$seem_html->setCol(1, 0, ['style' => 'padding-top:5px;'], $seem_cockpit_selectordummy . $seem_document_chooser . $seem_object_chooser . $seem_weapp_chooser);
 					$settings[] = ['headline' => g_l('prefs', '[seem_startdocument]'), 'html' => $seem_html->getHtml() . we_html_element::jsElement('show_seem_chooser("' . $seem_start_type . '");'), 'space' => we_html_multiIconBox::SPACE_BIG];
 				}
 
@@ -856,7 +852,7 @@ function build_dialog($selected_setting = 'ui'){
 				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_WARNING, $val & we_message_reporting::WE_MESSAGE_WARNING, "message_reporting_warnings", g_l('prefs', '[message_reporting][show_warnings]'), false, "defaultfont", "handle_message_reporting_click();") . "<br />" .
 				we_html_forms::checkbox(we_message_reporting::WE_MESSAGE_NOTICE, $val & we_message_reporting::WE_MESSAGE_NOTICE, "message_reporting_notices", g_l('prefs', '[message_reporting][show_notices]'), false, "defaultfont", "handle_message_reporting_click();");
 
-			$settings[] = array('headline' => g_l('prefs', '[message_reporting][headline]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_HELP, false, false), 'html' => $html, 'space' => we_html_multiIconBox::SPACE_BIG);
+			$settings[] = ['headline' => g_l('prefs', '[message_reporting][headline]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[message_reporting][information]'), we_html_tools::TYPE_HELP, false, false), 'html' => $html, 'space' => we_html_multiIconBox::SPACE_BIG];
 
 			/*			 * *******************************************************
 			 * Sidebar
@@ -881,7 +877,7 @@ function build_dialog($selected_setting = 'ui'){
 
 				// Sidebar width
 				$sidebar_width = we_html_tools::htmlTextInput('newconf[SIDEBAR_DEFAULT_WIDTH]', 8, get_value('SIDEBAR_DEFAULT_WIDTH'), 255, "onchange=\"if ( isNaN( this.value ) ||  parseInt(this.value) < 100 ) { this.value=100; };\"", 'number', 90);
-				$sidebar_width_chooser = we_html_tools::htmlSelect('tmp_sidebar_width', array('' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400), 1, '', false, array('onchange' => "document.forms[0].elements['newconf[SIDEBAR_DEFAULT_WIDTH]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), "value", 100, "defaultfont");
+				$sidebar_width_chooser = we_html_tools::htmlSelect('tmp_sidebar_width', ['' => '', 100 => 100, 150 => 150, 200 => 200, 250 => 250, 300 => 300, 350 => 350, 400 => 400], 1, '', false, ['onchange' => "document.forms[0].elements['newconf[SIDEBAR_DEFAULT_WIDTH]'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"], "value", 100, "defaultfont");
 
 				// Sidebar document
 				$sidebar_document_button = we_html_button::create_button(we_html_button::SELECT, 'javascript:selectSidebarDoc()');
@@ -905,25 +901,25 @@ function build_dialog($selected_setting = 'ui'){
 				// build html
 				$sidebar_html2 = new we_html_table(['class' => 'default', 'id' => 'sidebar_options', 'style' => 'display:' . $sidebar_show], 8, 2);
 
-				$sidebar_html2->setCol(0, 0, array('colspan' => 3, 'height' => 10), '');
-				$sidebar_html2->setCol(1, 0, array('colspan' => 3, 'height' => 10), $sidebar_show_on_startup);
-				$sidebar_html2->setCol(2, 0, array('colspan' => 3, 'height' => 10), '');
-				$sidebar_html2->setCol(3, 0, array('colspan' => 3, 'class' => 'defaultfont'), g_l('prefs', '[sidebar_width]'));
+				$sidebar_html2->setCol(0, 0, ['colspan' => 3, 'height' => 10], '');
+				$sidebar_html2->setCol(1, 0, ['colspan' => 3, 'height' => 10], $sidebar_show_on_startup);
+				$sidebar_html2->setCol(2, 0, ['colspan' => 3, 'height' => 10], '');
+				$sidebar_html2->setCol(3, 0, ['colspan' => 3, 'class' => 'defaultfont'], g_l('prefs', '[sidebar_width]'));
 				$sidebar_html2->setCol(4, 0, null, $sidebar_width);
-				$sidebar_html2->setCol(4, 1, array('style' => 'padding-left:10px;'), $sidebar_width_chooser);
-				$sidebar_html2->setCol(5, 0, array('colspan' => 3, 'height' => 10), '');
-				$sidebar_html2->setCol(6, 0, array('colspan' => 3, 'class' => 'defaultfont'), g_l('prefs', '[sidebar_document]'));
-				$sidebar_html2->setCol(7, 0, array('colspan' => 3), $yuiSuggest->getHTML());
+				$sidebar_html2->setCol(4, 1, ['style' => 'padding-left:10px;'], $sidebar_width_chooser);
+				$sidebar_html2->setCol(5, 0, ['colspan' => 3, 'height' => 10], '');
+				$sidebar_html2->setCol(6, 0, ['colspan' => 3, 'class' => 'defaultfont'], g_l('prefs', '[sidebar_document]'));
+				$sidebar_html2->setCol(7, 0, ['colspan' => 3], $yuiSuggest->getHTML());
 
 				// Build dialog if user has permission
-				$settings[] = array('headline' => g_l('prefs', '[sidebar]'), 'html' => $sidebar_html1->getHtml() . $sidebar_html2->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+				$settings[] = ['headline' => g_l('prefs', '[sidebar]'), 'html' => $sidebar_html1->getHtml() . $sidebar_html2->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG];
 			}
 
 
 			// TREE
 
 			$tree_count = get_value('default_tree_count');
-			$file_tree_count = new we_html_select(array('name' => 'newconf[default_tree_count]', 'class' => 'weSelect'));
+			$file_tree_count = new we_html_select(['name' => 'newconf[default_tree_count]', 'class' => 'weSelect']);
 			$file_tree_count->addOption(0, g_l('prefs', '[all]'));
 
 
@@ -941,7 +937,7 @@ function build_dialog($selected_setting = 'ui'){
 				$file_tree_count->selectOption($tree_count);
 			}
 
-			$settings[] = array('headline' => g_l('prefs', '[tree_title]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_HELP), 'html' => $file_tree_count->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+			$settings[] = ['headline' => g_l('prefs', '[tree_title]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_HELP), 'html' => $file_tree_count->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG];
 
 
 			//WINDOW DIMENSIONS
@@ -961,7 +957,7 @@ function build_dialog($selected_setting = 'ui'){
 			$window_specify_code = we_html_forms::radiobutton(1, !(get_value('sizeOpt') == 0), 'newconf[sizeOpt]', g_l('prefs', '[specify]'), true, 'defaultfont', "document.getElementsByName('newconf[weWidth]')[0].disabled = false;document.getElementsByName('newconf[weHeight]')[0].disabled = false;");
 
 			// Create specify window dimension input
-			$window_specify_table = new we_html_table(array('class' => 'default', 'style' => 'margin-top:10px;margin-left:50px;'), 2, 2);
+			$window_specify_table = new we_html_table(['class' => 'default', 'style' => 'margin-top:10px;margin-left:50px;'], 2, 2);
 
 			$window_specify_table->setCol(0, 0, ['class' => 'defaultfont'], g_l('prefs', '[width]') . ':');
 			$window_specify_table->setCol(1, 0, ['class' => 'defaultfont'], g_l('prefs', '[height]') . ':');
@@ -974,12 +970,12 @@ function build_dialog($selected_setting = 'ui'){
 
 			// Build final HTML code
 			$window_html = new we_html_table(['class' => 'default withSpace'], 3, 1);
-			$window_html->setCol(0, 0, array('style' => 'padding-bttom:10px;'), $window_max_code);
-			$window_html->setCol(1, 0, array('style' => 'padding-bttom:10px;'), $window_specify_code . $window_specify_table->getHtml());
-			$window_html->setCol(2, 0, array('style' => 'padding-left:50px;'), $window_current_dimension_table);
+			$window_html->setCol(0, 0, ['style' => 'padding-bttom:10px;'], $window_max_code);
+			$window_html->setCol(1, 0, ['style' => 'padding-bttom:10px;'], $window_specify_code . $window_specify_table->getHtml());
+			$window_html->setCol(2, 0, ['style' => 'padding-left:50px;'], $window_current_dimension_table);
 
 			// Build dialog
-			$settings[] = array('headline' => g_l('prefs', '[dimension]'), 'html' => $window_html->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+			$settings[] = ['headline' => g_l('prefs', '[dimension]'), 'html' => $window_html->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG];
 			return create_dialog('', $settings, -1);
 
 		case 'defaultAttribs':
@@ -992,10 +988,10 @@ function build_dialog($selected_setting = 'ui'){
 			 */
 			// Build select box
 
-			$commands_default_tmp = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById('commands_default_id'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
+			$commands_default_tmp = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, ['onchange' => "var elem=document.getElementById('commands_default_id'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]);
 			$COMMANDS_DEFAULT = we_html_tools::htmlTextInput('newconf[COMMANDS_DEFAULT]', 22, get_value('COMMANDS_DEFAULT'), '', 'id="commands_default_id"', 'text', 225, 0, '');
 
-			$CSSAPPLYTO_DEFAULT = new we_html_select(array('name' => 'newconf[CSSAPPLYTO_DEFAULT]', 'class' => 'weSelect'));
+			$CSSAPPLYTO_DEFAULT = new we_html_select(['name' => 'newconf[CSSAPPLYTO_DEFAULT]', 'class' => 'weSelect']);
 			$CSSAPPLYTO_DEFAULT->addOption('all', 'all');
 			$CSSAPPLYTO_DEFAULT->addOption('around', 'around');
 			$CSSAPPLYTO_DEFAULT->addOption('wysiwyg', 'wysiwyg');
@@ -1049,12 +1045,12 @@ function build_dialog($selected_setting = 'ui'){
 			setlocale(LC_ALL, $oldLocale);
 			$countries_top = explode(',', get_value('WE_COUNTRIES_TOP'));
 			$countries_shown = explode(',', get_value('WE_COUNTRIES_SHOWN'));
-			$tabC = new we_html_table(array('style' => 'border:1px solid black'), 1, 4);
+			$tabC = new we_html_table(['style' => 'border:1px solid black'], 1, 4);
 			$i = 0;
-			$tabC->setCol($i, 0, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_country]'));
-			$tabC->setCol($i, 1, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_top]'));
-			$tabC->setCol($i, 2, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_show]'));
-			$tabC->setCol($i, 3, array('class' => 'defaultfont bold'), g_l('prefs', '[countries_noshow]'));
+			$tabC->setCol($i, 0, ['class' => 'defaultfont bold'], g_l('prefs', '[countries_country]'));
+			$tabC->setCol($i, 1, ['class' => 'defaultfont bold'], g_l('prefs', '[countries_top]'));
+			$tabC->setCol($i, 2, ['class' => 'defaultfont bold'], g_l('prefs', '[countries_show]'));
+			$tabC->setCol($i, 3, ['class' => 'defaultfont bold'], g_l('prefs', '[countries_noshow]'));
 			foreach($supported as $countrycode => $country){
 				$i++;
 				$tabC->addRow();
@@ -1064,11 +1060,11 @@ function build_dialog($selected_setting = 'ui'){
 				$tabC->setCol($i, 3, ['class' => 'defaultfont'], '<input type="radio" name="newconf[countries][' . $countrycode . ']" value="0" ' . (!in_array($countrycode, $countries_top) && !in_array($countrycode, $countries_shown) ? 'checked' : '') . ' > ');
 			}
 
-			$settings = array(
-				array('headline' => g_l('prefs', '[countries_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1),
-				array('headline' => g_l('prefs', '[countries_default]'), 'html' => $countries_default, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
-				array('headline' => '', 'html' => $tabC->getHtml(), 'noline' => 1),
-			);
+			$settings = [
+				['headline' => g_l('prefs', '[countries_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[countries_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1],
+				['headline' => g_l('prefs', '[countries_default]'), 'html' => $countries_default, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
+				['headline' => '', 'html' => $tabC->getHtml(), 'noline' => 1],
+				];
 			// Build dialog element if user has permission
 			return create_dialog('', $settings);
 
@@ -1086,7 +1082,7 @@ function build_dialog($selected_setting = 'ui'){
 				we_html_element::htmlHidden('newconf[locale_locales]', implode(',', array_keys($locales)), 'locale_locales');
 
 			//Locales
-			$select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'locale_temp_locales', 'size' => 10, 'id' => 'locale_temp_locales', 'style' => 'width: 340px'));
+			$select_box = new we_html_select(['class' => 'weSelect', 'name' => 'locale_temp_locales', 'size' => 10, 'id' => 'locale_temp_locales', 'style' => 'width: 340px']);
 			$select_box->addOptions($locales);
 
 			$enabled_buttons = (count($locales) > 0);
@@ -1099,13 +1095,13 @@ function build_dialog($selected_setting = 'ui'){
 			$default = we_html_button::create_button('default', 'javascript:defaultLocale()', true, 100, 22, '', '', !$enabled_buttons);
 			$delete = we_html_button::create_button(we_html_button::DELETE, 'javascript:deleteLocale()', true, 100);
 
-			$editlist_table->setCol(0, 0, array('style' => 'padding-right:10px;'), $hidden_fields . $select_box->getHtml());
-			$editlist_table->setCol(0, 1, array('style' => 'vertical-align:top'), $default . $delete);
+			$editlist_table->setCol(0, 0, ['style' => 'padding-right:10px;'], $hidden_fields . $select_box->getHtml());
+			$editlist_table->setCol(0, 1, ['style' => 'vertical-align:top'], $default . $delete);
 
 			// Add Locales
 			// Languages
 			$Languages = g_l('languages', '');
-			$TopLanguages = array(
+			$TopLanguages = [
 				'~de' => $Languages['de'],
 				'~nl' => $Languages['nl'],
 				'~en' => $Languages['en'],
@@ -1114,18 +1110,18 @@ function build_dialog($selected_setting = 'ui'){
 				'~pl' => $Languages['pl'],
 				'~ru' => $Languages['ru'],
 				'~es' => $Languages['es'],
-			);
+				];
 			asort($Languages);
 			asort($TopLanguages);
 			$TopLanguages[''] = '---';
 			$Languages = array_merge($TopLanguages, $Languages);
 
-			$languages = new we_html_select(array('name' => 'newconf[locale_language]', 'id' => 'locale_language', 'style' => 'width: 139px', 'class' => 'weSelect'));
+			$languages = new we_html_select(['name' => 'newconf[locale_language]', 'id' => 'locale_language', 'style' => 'width: 139px', 'class' => 'weSelect']);
 			$languages->addOptions($Languages);
 
 			// Countries
 			$Countries = g_l('countries', '');
-			$TopCountries = array(
+			$TopCountries = [
 				'~DE' => $Countries['DE'],
 				'~CH' => $Countries['CH'],
 				'~AT' => $Countries['AT'],
@@ -1137,13 +1133,13 @@ function build_dialog($selected_setting = 'ui'){
 				'~PL' => $Countries['PL'],
 				'~RU' => $Countries['RU'],
 				'~ES' => $Countries['ES'],
-			);
+				];
 			asort($Countries);
 			asort($TopCountries);
 			$TopCountries['~'] = '---';
-			$Countries = array_merge(array('' => ''), $TopCountries, $Countries);
+			$Countries = array_merge(['' => ''], $TopCountries, $Countries);
 
-			$countries = new we_html_select(array('name' => 'newconf[locale_country]', 'id' => 'locale_country', 'style' => 'width: 139px', 'class' => 'weSelect'));
+			$countries = new we_html_select(['name' => 'newconf[locale_country]', 'id' => 'locale_country', 'style' => 'width: 139px', 'class' => 'weSelect']);
 			$countries->addOptions($Countries);
 
 			// Button
@@ -1157,13 +1153,13 @@ function build_dialog($selected_setting = 'ui'){
 				$add_button;
 
 			//Todo: remove: g_l('prefs', '[langlink_support_backlinks_information]'), g_l('prefs', '[langlink_support_backlinks]'),g_l('prefs', '[langlink_support_recursive_information]'),g_l('prefs', '[langlink_support_recursive]') g_l('prefs', '[langlink_abandoned_options]')
-			$settings = array(
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[locale_information]'), we_html_tools::TYPE_INFO, 450, false),),
-				array('headline' => '', 'html' => $editlist_table->getHtml(),),
-				array('headline' => g_l('prefs', '[locale_add]'), 'html' => $add_html, 'space' => we_html_multiIconBox::SPACE_BIG),
-				array('headline' => g_l('prefs', '[langlink_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1),
-				array('headline' => g_l('prefs', '[langlink_support]'), 'html' => getTrueFalseSelect('LANGLINK_SUPPORT'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
-			);
+			$settings = [
+				['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[locale_information]'), we_html_tools::TYPE_INFO, 450, false),],
+				['headline' => '', 'html' => $editlist_table->getHtml(),],
+				['headline' => g_l('prefs', '[locale_add]'), 'html' => $add_html, 'space' => we_html_multiIconBox::SPACE_BIG],
+				['headline' => g_l('prefs', '[langlink_headline]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[langlink_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1],
+				['headline' => g_l('prefs', '[langlink_support]'), 'html' => getTrueFalseSelect('LANGLINK_SUPPORT'), 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
+				];
 
 			return create_dialog('', $settings) . $postJs;
 
@@ -1173,7 +1169,7 @@ function build_dialog($selected_setting = 'ui'){
 			$attr = ' class="defaultfont" style="width:150px;"';
 			//$attr_dis = ' class="defaultfont" style="width:150px;color:grey;"';
 
-			$template_editor_mode = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorMode]', 'onchange' => 'displayEditorOptions(this.options[this.options.selectedIndex].value);'));
+			$template_editor_mode = new we_html_select(['class' => 'weSelect', 'name' => 'newconf[editorMode]', 'onchange' => 'displayEditorOptions(this.options[this.options.selectedIndex].value);']);
 			$template_editor_mode->addOption('textarea', g_l('prefs', '[editor_plaintext]'));
 			$template_editor_mode->addOption('codemirror2', g_l('prefs', '[editor_javascript2]'));
 			//$template_editor_mode->addOption('java', g_l('prefs', '[editor_java]'));
@@ -1182,8 +1178,7 @@ function build_dialog($selected_setting = 'ui'){
 			/**
 			 * Editor font settings
 			 */
-			$template_fonts = array(
-				'Arial',
+			$template_fonts = ['Arial',
 				'Andale Mono',
 				'Consolas',
 				'Courier New',
@@ -1201,8 +1196,8 @@ function build_dialog($selected_setting = 'ui'){
 				'Tahoma',
 				'Verdana',
 				'serif',
-				'sans-serif');
-			$template_font_sizes = array(10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 32, 48, 72);
+				'sans-serif'];
+			$template_font_sizes = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22, 24, 32, 48, 72];
 
 			$template_editor_font_specify = (get_value('editorFontname') != '' && get_value('editorFontname') != 'none');
 			$template_editor_font_size_specify = (get_value('editorFontsize') != '' && get_value('editorFontsize') != -1);
@@ -1210,7 +1205,7 @@ function build_dialog($selected_setting = 'ui'){
 			// Build specify font
 			$template_editor_font_specify_code = we_html_forms::checkbox(1, $template_editor_font_specify, 'newconf[editorFont]', g_l('prefs', '[specify]'), true, 'defaultfont', "if (document.getElementsByName('newconf[editorFont]')[0].checked) { document.getElementsByName('newconf[editorFontname]')[0].disabled = false;document.getElementsByName('newconf[editorFontsize]')[0].disabled = false; } else { document.getElementsByName('newconf[editorFontname]')[0].disabled = true;document.getElementsByName('newconf[editorFontsize]')[0].disabled = true; }");
 
-			$template_editor_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontname]', 'style' => 'width: 135px;', ($template_editor_font_specify ? 'enabled' : 'disabled') => ($template_editor_font_specify ? 'enabled' : 'disabled')));
+			$template_editor_font_select_box = new we_html_select(['class' => 'weSelect', 'name' => 'newconf[editorFontname]', 'style' => 'width: 135px;', ($template_editor_font_specify ? 'enabled' : 'disabled') => ($template_editor_font_specify ? 'enabled' : 'disabled')]);
 
 			/* 			$colorsDisabled = true;
 
@@ -1227,7 +1222,7 @@ function build_dialog($selected_setting = 'ui'){
 			}
 			$template_editor_font_select_box->selectOption($template_editor_font_specify ? get_value('editorFontname') : 'Courier New');
 
-			$template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorFontsize]', 'style' => 'width: 135px;', ($template_editor_font_size_specify ? 'enabled' : 'disabled') => ($template_editor_font_size_specify ? 'enabled' : 'disabled')));
+			$template_editor_font_sizes_select_box = new we_html_select(['class' => 'weSelect', 'name' => 'newconf[editorFontsize]', 'style' => 'width: 135px;', ($template_editor_font_size_specify ? 'enabled' : 'disabled') => ($template_editor_font_size_specify ? 'enabled' : 'disabled')]);
 			foreach($template_font_sizes as $key => $sz){
 				$template_editor_font_sizes_select_box->addOption($sz, $sz);
 			}
@@ -1253,9 +1248,9 @@ function build_dialog($selected_setting = 'ui'){
 			  <tr><td id="label_editorCommentFontcolor"' . $attr . '>' . g_l('prefs', '[editor_comment_font_color]') . '</td><td>' . $template_editor_comment_fontcolor_selector . '</td></tr>
 			  </table>';
 			 */
-			$template_editor_theme = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTheme]'));
+			$template_editor_theme = new we_html_select(['class' => 'weSelect', 'name' => 'newconf[editorTheme]']);
 			foreach(glob(WE_LIB_PATH . 'additional/CodeMirror/theme/*.css') as $filename){
-				$theme = str_replace(array('.css', WE_LIB_PATH . 'additional/CodeMirror/theme/'), '', $filename);
+				$theme = str_replace(['.css', WE_LIB_PATH . 'additional/CodeMirror/theme/'], '', $filename);
 				$template_editor_theme->addOption($theme, $theme);
 			}
 			$template_editor_theme->selectOption(get_value('editorTheme'));
@@ -1265,15 +1260,15 @@ function build_dialog($selected_setting = 'ui'){
 			$template_editor_highlightLine_code = we_html_forms::checkbox(1, get_value('editorHighlightCurrentLine'), 'newconf[editorHighlightCurrentLine]', g_l('prefs', '[editor_enable]'), true, 'defaultfont', '');
 
 			//Build activation of code completion
-			$template_editor_codecompletion_code = we_html_element::htmlHiddens(array(
-					'newconf[editorCodecompletion][WE]' => get_value('editorCodecompletion-WE'),
+			$template_editor_codecompletion_code = we_html_element::htmlHiddens([
+				'newconf[editorCodecompletion][WE]' => get_value('editorCodecompletion-WE'),
 					'newconf[editorCodecompletion][htmlTag]' => get_value('editorCodecompletion-htmlTag'),
 					'newconf[editorCodecompletion][htmlDefAttr]' => get_value('editorCodecompletion-htmlDefAttr'),
 					'newconf[editorCodecompletion][htmlAttr]' => get_value('editorCodecompletion-htmlAttr'),
 					'newconf[editorCodecompletion][htmlJSAttr]' => get_value('editorCodecompletion-htmlJSAttr'),
 					'newconf[editorCodecompletion][html5Tag]' => get_value('editorCodecompletion-html5Tag'),
 					'newconf[editorCodecompletion][html5Attr]' => get_value('editorCodecompletion-html5Attr')
-				)) .
+					]) .
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-WE'), 'editorCodecompletion0', 'WE-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][WE]\');') .
 				'<br/>' .
 				we_html_forms::checkbox(1, get_value('editorCodecompletion-htmlTag'), 'editorCodecompletion1', 'HTML-Tags', true, 'defaultfont', 'set_xhtml_field(this.checked,\'newconf[editorCodecompletion][htmlTag]\');') .
@@ -1311,15 +1306,15 @@ function build_dialog($selected_setting = 'ui'){
 			// Build specify font
 			$template_editor_tooltip_font_specify_code = we_html_forms::checkbox(1, $template_editor_tooltip_font_specify, 'newconf[editorTooltipFont]', g_l('prefs', '[specify]'), true, 'defaultfont', 'if (document.getElementsByName(\'newconf[editorTooltipFont]\')[0].checked) { document.getElementsByName(\'newconf[editorTooltipFontname]\')[0].disabled = false;document.getElementsByName(\'newconf[editorTooltipFontsize]\')[0].disabled = false; } else { document.getElementsByName(\'newconf[editorTooltipFontname]\')[0].disabled = true;document.getElementsByName(\'newconf[editorTooltipFontsize]\')[0].disabled = true; }');
 
-			$template_editor_tooltip_font_select_box = new we_html_select(array('class' => 'weSelect', 'name' => 'newconf[editorTooltipFontname]', 'style' => 'width: 135px;', ($template_editor_tooltip_font_specify ? 'enabled' : 'disabled') => ($template_editor_tooltip_font_specify ? 'enabled' : 'disabled')));
+			$template_editor_tooltip_font_select_box = new we_html_select(['class' => 'weSelect', 'name' => 'newconf[editorTooltipFontname]', 'style' => 'width: 135px;', ($template_editor_tooltip_font_specify ? 'enabled' : 'disabled') => ($template_editor_tooltip_font_specify ? 'enabled' : 'disabled')]);
 
 			foreach($template_fonts as $font){
 				$template_editor_tooltip_font_select_box->addOption($font, $font);
 			}
 			$template_editor_tooltip_font_select_box->selectOption($template_editor_tooltip_font_specify ? get_value('editorTooltipFontname') : 'Tahoma');
 
-			$template_editor_tooltip_font_sizes_select_box = new we_html_select(array('class' => 'weSelect editor editor_codemirror2', 'name' => 'newconf[editorTooltipFontsize]', 'style' => 'width: 135px;', ($template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled') => ($template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled')));
-			$template_toolfont_sizes = array(10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20);
+			$template_editor_tooltip_font_sizes_select_box = new we_html_select(['class' => 'weSelect editor editor_codemirror2', 'name' => 'newconf[editorTooltipFontsize]', 'style' => 'width: 135px;', ($template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled') => ($template_editor_tooltip_font_size_specify ? 'enabled' : 'disabled')]);
+			$template_toolfont_sizes = [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
 			foreach($template_toolfont_sizes as $sz){
 				$template_editor_tooltip_font_sizes_select_box->addOption($sz, $sz);
 			}
@@ -1342,9 +1337,9 @@ function build_dialog($selected_setting = 'ui'){
 				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_linenumbers]'), 'html' => $template_editor_linenumbers_code, 'space' => we_html_multiIconBox::SPACE_MED2],
 				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_highlightLine]'), 'html' => $template_editor_highlightLine_code, 'space' => we_html_multiIconBox::SPACE_MED2],
 				['class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('global', '[wrapcheck]'), 'html' => $template_editor_Wrap_code, 'space' => we_html_multiIconBox::SPACE_MED2],
-				array('class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_tabstop]'), 'html' => $template_editor_tabstop_code, 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoindent]'), 'html' => $template_editor_autoIndent_code, 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $template_editor_codecompletion_code, 'space' => we_html_multiIconBox::SPACE_MED2),
+				['class' => 'editor editor_codemirror2 editor_textarea', 'headline' => g_l('prefs', '[editor_tabstop]'), 'html' => $template_editor_tabstop_code, 'space' => we_html_multiIconBox::SPACE_MED2],
+				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoindent]'), 'html' => $template_editor_autoIndent_code, 'space' => we_html_multiIconBox::SPACE_MED2],
+				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_completion]'), 'html' => $template_editor_codecompletion_code, 'space' => we_html_multiIconBox::SPACE_MED2],
 				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_tooltips]'), 'html' => $template_editor_tooltips_code . '<br/>' . $template_editor_tooltip_font_specify_code . '<br/>' . $template_editor_tooltip_font_specify_table, 'space' => we_html_multiIconBox::SPACE_MED2],
 				['class' => 'editor editor_codemirror2', 'headline' => g_l('prefs', '[editor_autoCloseTags]'), 'html' => $template_editor_autoClose, 'space' => we_html_multiIconBox::SPACE_MED2],
 				//array('class'=>'editor editor_codemirror2','headline' => g_l('prefs', '[editor_docuclick]'), 'html' => $template_editor_docuintegration_code, 'space' => we_html_multiIconBox::SPACE_MED2),
@@ -1360,12 +1355,12 @@ function build_dialog($selected_setting = 'ui'){
 			//FORMMAIL RECIPIENTS
 			if(we_base_preferences::userIsAllowed('FORMMAIL_BLOCK')){
 				// Build dialog if user has permission
-				$settings[] = array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[formmail_information]'), we_html_tools::TYPE_INFO, 450, false),);
+				$settings[] = ["headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[formmail_information]'), we_html_tools::TYPE_INFO, 450, false),];
 
 				/**
 				 * Recipients list
 				 */
-				$select_box = new we_html_select(array('class' => "weSelect", "name" => "we_recipient", 'size' => 10, "style" => "width: 340px;height:100px", "ondblclick" => "edit_recipient();"));
+				$select_box = new we_html_select(['class' => "weSelect", "name" => "we_recipient", 'size' => 10, "style" => "width: 340px;height:100px", "ondblclick" => "edit_recipient();"]);
 
 				$enabled_buttons = false;
 
@@ -1377,32 +1372,31 @@ function build_dialog($selected_setting = 'ui'){
 				}
 
 				// Create needed hidden fields
-				$hidden_fields = we_html_element::htmlHiddens(array(
-						"newconf[formmail_values]" => "",
-						"newconf[formmail_deleted]" => ""));
+				$hidden_fields = we_html_element::htmlHiddens(["newconf[formmail_values]" => "",
+						"newconf[formmail_deleted]" => ""]);
 
 				// Create edit list
 				$editlist_table = new we_html_table(['class' => 'default'], 2, 3);
 
-				$editlist_table->setCol(0, 0, array('style' => 'padding-right:10px;'), $hidden_fields . $select_box->getHtml());
+				$editlist_table->setCol(0, 0, ['style' => 'padding-right:10px;'], $hidden_fields . $select_box->getHtml());
 				$editlist_table->setCol(0, 2, ['style' => 'vertical-align:top;'], we_html_button::create_button(we_html_button::ADD, "javascript:add_recipient();") . we_html_button::create_button(we_html_button::EDIT, "javascript:edit_recipient();", true, 100, 22, "", "", !$enabled_buttons, false) . we_html_button::create_button(we_html_button::DELETE, "javascript:delete_recipient();", true, 100, 22, "", "", !$enabled_buttons, false));
 
 				// Build dialog if user has permission
-				$settings[] = array("headline" => "", "html" => $editlist_table->getHtml(),);
+				$settings[] = ["headline" => "", "html" => $editlist_table->getHtml(),];
 			}
 
 			// formmail stuff
 
 
 			if(we_base_preferences::userIsAllowed("FORMMAIL_CONFIRM")){
-				$formmail_confirm = new we_html_select(array('name' => "newconf[FORMMAIL_CONFIRM]", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_confirm = new we_html_select(['name' => "newconf[FORMMAIL_CONFIRM]", "style" => "width:88px;", "class" => "weSelect"]);
 				$formmail_confirm->addOption(1, g_l('prefs', '[on]'));
 				$formmail_confirm->addOption(0, g_l('prefs', '[off]'));
 				$formmail_confirm->selectOption(get_value("FORMMAIL_CONFIRM") ? 1 : 0);
 
-				$settings[] = array('html' => $formmail_confirm->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailConfirm]'));
+				$settings[] = ['html' => $formmail_confirm->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailConfirm]')];
 
-				$formmail_log = new we_html_select(array('name' => "newconf[FORMMAIL_LOG]", "onchange" => "formmailLogOnOff()", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_log = new we_html_select(['name' => "newconf[FORMMAIL_LOG]", "onchange" => "formmailLogOnOff()", "style" => "width:88px;", "class" => "weSelect"]);
 				$formmail_log->addOption(1, g_l('prefs', '[yes]'));
 				$formmail_log->addOption(0, g_l('prefs', '[no]'));
 				$formmail_log->selectOption(get_value("FORMMAIL_LOG") ? 1 : 0);
@@ -1413,12 +1407,12 @@ function build_dialog($selected_setting = 'ui'){
 								<td style="padding-left:10px;">' . we_html_button::create_button('logbook', 'javascript:we_cmd(\'show_formmail_log\')') . '</td>
 							</tr>
 						</table>';
-				$settings[] = array('html' => $html, 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[logFormmailRequests]'), 'noline' => 1);
+				$settings[] = ['html' => $html, 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[logFormmailRequests]'), 'noline' => 1];
 
 				$isDisabled = (get_value("FORMMAIL_LOG") == 0);
 
 
-				$formmail_emptylog = new we_html_select(array('name' => "newconf[FORMMAIL_EMPTYLOG]", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_emptylog = new we_html_select(['name' => "newconf[FORMMAIL_EMPTYLOG]", "style" => "width:88px;", "class" => "weSelect"]);
 				if($isDisabled){
 					$formmail_emptylog->setAttribute("disabled", "disabled");
 				}
@@ -1436,18 +1430,18 @@ function build_dialog($selected_setting = 'ui'){
 				$formmail_emptylog->selectOption(get_value("FORMMAIL_EMPTYLOG"));
 
 
-				$settings[] = array('html' => $formmail_emptylog->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[deleteEntriesOlder]'));
+				$settings[] = ['html' => $formmail_emptylog->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[deleteEntriesOlder]')];
 
 				// formmail only via we doc //
-				$formmail_ViaWeDoc = new we_html_select(array('name' => "newconf[FORMMAIL_VIAWEDOC]", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_ViaWeDoc = new we_html_select(['name' => "newconf[FORMMAIL_VIAWEDOC]", "style" => "width:88px;", "class" => "weSelect"]);
 				$formmail_ViaWeDoc->addOption(1, g_l('prefs', '[yes]'));
 				$formmail_ViaWeDoc->addOption(0, g_l('prefs', '[no]'));
 				$formmail_ViaWeDoc->selectOption((get_value("FORMMAIL_VIAWEDOC") ? 1 : 0));
 
-				$settings[] = array('html' => $formmail_ViaWeDoc->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailViaWeDoc]'));
+				$settings[] = ['html' => $formmail_ViaWeDoc->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailViaWeDoc]')];
 
 				// limit formmail requests //
-				$formmail_block = new we_html_select(array('name' => "newconf[FORMMAIL_BLOCK]", "onchange" => "formmailBlockOnOff()", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_block = new we_html_select(['name' => "newconf[FORMMAIL_BLOCK]", "onchange" => "formmailBlockOnOff()", "style" => "width:88px;", "class" => "weSelect"]);
 				if($isDisabled){
 					$formmail_block->setAttribute("disabled", "disabled");
 				}
@@ -1462,7 +1456,7 @@ function build_dialog($selected_setting = 'ui'){
 							</tr>
 						</table>';
 
-				$settings[] = array('html' => $html, 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[blockFormmail]'), 'noline' => 1);
+				$settings[] = ['html' => $html, 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[blockFormmail]'), 'noline' => 1];
 
 				$isDisabled = $isDisabled || (get_value("FORMMAIL_BLOCK") == 0);
 
@@ -1471,13 +1465,13 @@ function build_dialog($selected_setting = 'ui'){
 					we_html_tools::htmlTextInput("newconf[FORMMAIL_TRIALS]", 24, get_value("FORMMAIL_TRIALS"), "", "", "text", 88, 0, "", $isDisabled) .
 					'</td></tr></table>';
 
-				$settings[] = array('html' => $formmail_trials, 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailTrials]'), 'noline' => 1);
+				$settings[] = ['html' => $formmail_trials, 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailTrials]'), 'noline' => 1];
 
 				if(!$isDisabled){
 					$isDisabled = (get_value("FORMMAIL_BLOCK") == 0);
 				}
 
-				$formmail_span = new we_html_select(array('name' => "newconf[FORMMAIL_SPAN]", "style" => "width:88px;", "class" => "weSelect"));
+				$formmail_span = new we_html_select(['name' => "newconf[FORMMAIL_SPAN]", "style" => "width:88px;", "class" => "weSelect"]);
 				if($isDisabled){
 					$formmail_span->setAttribute("disabled", "disabled");
 				}
@@ -1498,8 +1492,8 @@ function build_dialog($selected_setting = 'ui'){
 				$formmail_span->selectOption(get_value("FORMMAIL_SPAN"));
 
 
-				$settings[] = array('html' => $formmail_span->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailSpan]'), 'noline' => 1);
-				$formmail_blocktime = new we_html_select(array('name' => "newconf[FORMMAIL_BLOCKTIME]", "style" => "width:88px;", "class" => "weSelect"));
+				$settings[] = ['html' => $formmail_span->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[formmailSpan]'), 'noline' => 1];
+				$formmail_blocktime = new we_html_select(['name' => "newconf[FORMMAIL_BLOCKTIME]", "style" => "width:88px;", "class" => "weSelect"]);
 				if($isDisabled){
 					$formmail_blocktime->setAttribute("disabled", "disabled");
 				}
@@ -1521,7 +1515,7 @@ function build_dialog($selected_setting = 'ui'){
 				$formmail_blocktime->selectOption(get_value("FORMMAIL_BLOCKTIME"));
 
 
-				$settings[] = array('html' => $formmail_blocktime->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[blockFor]'), 'noline' => 1);
+				$settings[] = ['html' => $formmail_blocktime->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG, "headline" => g_l('prefs', '[blockFor]'), 'noline' => 1];
 			}
 
 			return create_dialog("", $settings, -1);
@@ -1550,10 +1544,10 @@ function build_dialog($selected_setting = 'ui'){
 				}
 			}
 
-			$settings = array(
-				array('headline' => g_l('prefs', '[module_activation][headline]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[module_activation][information]'), we_html_tools::TYPE_HELP, false, false)
-					, "html" => $html, 'space' => we_html_multiIconBox::SPACE_BIG)
-			);
+			$settings = [
+				['headline' => g_l('prefs', '[module_activation][headline]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[module_activation][information]'), we_html_tools::TYPE_HELP, false, false)
+					, "html" => $html, 'space' => we_html_multiIconBox::SPACE_BIG]
+			];
 
 			return create_dialog('', $settings, -1);
 
@@ -1575,14 +1569,14 @@ function build_dialog($selected_setting = 'ui'){
 
 			// Build dialog if user has permission
 
-			$settings = array(
-				array("headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[proxy_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1),
-				array("headline" => g_l('prefs', '[tab][proxy]'), "html" => $use_proxy, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
-				array("headline" => g_l('prefs', '[proxyaddr]'), "html" => $proxyaddr, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
-				array("headline" => g_l('prefs', '[proxyport]'), "html" => $proxyport, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
-				array("headline" => g_l('prefs', '[proxyuser]'), "html" => $proxyuser, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
-				array("headline" => g_l('prefs', '[proxypass]'), "html" => $proxypass, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1),
-			);
+			$settings = [
+				["headline" => "", "html" => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[proxy_information]'), we_html_tools::TYPE_INFO, 450, false), 'noline' => 1],
+				["headline" => g_l('prefs', '[tab][proxy]'), "html" => $use_proxy, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
+				["headline" => g_l('prefs', '[proxyaddr]'), "html" => $proxyaddr, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
+				["headline" => g_l('prefs', '[proxyport]'), "html" => $proxyport, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
+				["headline" => g_l('prefs', '[proxyuser]'), "html" => $proxyuser, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
+				["headline" => g_l('prefs', '[proxypass]'), "html" => $proxypass, 'space' => we_html_multiIconBox::SPACE_BIG, 'noline' => 1],
+				];
 			// Build dialog element if user has permission
 			return create_dialog("", $settings, -1);
 
@@ -1618,47 +1612,46 @@ function build_dialog($selected_setting = 'ui'){
 				we_html_forms::radiobutton(1, $we_doctype_workspace_behavior, "newconf[WE_DOCTYPE_WORKSPACE_BEHAVIOR]", g_l('prefs', '[we_doctype_workspace_behavior_1]'), true, "defaultfont", "", false, g_l('prefs', '[we_doctype_workspace_behavior_hint1]'), 0, 430) .
 				'</td></tr></table>';
 
-			$settings[] = array("headline" => g_l('prefs', '[we_doctype_workspace_behavior]'), "html" => $we_doctype_workspace_behavior_table, 'space' => we_html_multiIconBox::SPACE_BIG);
+			$settings[] = ["headline" => g_l('prefs', '[we_doctype_workspace_behavior]'), "html" => $we_doctype_workspace_behavior_table, 'space' => we_html_multiIconBox::SPACE_BIG];
 
 			if(we_base_preferences::userIsAllowed('WE_LOGIN_HIDEWESTATUS')){
 				$loginWEst_disabler = we_html_forms::checkbox(1, get_value('WE_LOGIN_HIDEWESTATUS') == 1 ? 1 : 0, 'newconf[WE_LOGIN_HIDEWESTATUS]', g_l('prefs', '[login][deactivateWEstatus]'));
 
-				$we_windowtypes = array(
-					0 => g_l('prefs', '[login][windowtypeboth]'),
+				$we_windowtypes = [0 => g_l('prefs', '[login][windowtypeboth]'),
 					1 => g_l('prefs', '[login][windowtypepopup]'),
-					2 => g_l('prefs', '[login][windowtypesame]'));
-				$we_windowtypeselect = new we_html_select(array('name' => 'newconf[WE_LOGIN_WEWINDOW]', 'class' => 'weSelect'));
+					2 => g_l('prefs', '[login][windowtypesame]')];
+				$we_windowtypeselect = new we_html_select(['name' => 'newconf[WE_LOGIN_WEWINDOW]', 'class' => 'weSelect']);
 				foreach($we_windowtypes as $key => $value){
 					$we_windowtypeselect->addOption($key, $value);
 				}
 				$we_windowtypeselect->selectOption(get_value('WE_LOGIN_WEWINDOW'));
 				// Build dialog if user has permission
-				$settings[] = array('headline' => g_l('prefs', '[login][login]'), 'html' => $loginWEst_disabler . we_html_element::htmlBr() . g_l('prefs', '[login][windowtypes]') . we_html_element::htmlBr() . $we_windowtypeselect->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+				$settings[] = ['headline' => g_l('prefs', '[login][login]'), 'html' => $loginWEst_disabler . we_html_element::htmlBr() . g_l('prefs', '[login][windowtypes]') . we_html_element::htmlBr() . $we_windowtypeselect->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG];
 			}
 
 			if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-				$_Schedtrigger_setting = new we_html_select(array('name' => "newconf[SCHEDULER_TRIGGER]", "class" => "weSelect"));
+				$_Schedtrigger_setting = new we_html_select(['name' => "newconf[SCHEDULER_TRIGGER]", "class" => "weSelect"]);
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_PREDOC, g_l('prefs', '[we_scheduler_trigger][preDoc]')); //pre
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_POSTDOC, g_l('prefs', '[we_scheduler_trigger][postDoc]')); //post
 				$_Schedtrigger_setting->addOption(SCHEDULER_TRIGGER_CRON, g_l('prefs', '[we_scheduler_trigger][cron]')); //cron
 				$_Schedtrigger_setting->selectOption(get_value("SCHEDULER_TRIGGER"));
 				$tmp = $_Schedtrigger_setting->getHtml();
-				$settings[] = array("headline" => g_l('prefs', '[we_scheduler_trigger][head]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_HELP), "html" => $tmp, 'space' => we_html_multiIconBox::SPACE_BIG);
+				$settings[] = ["headline" => g_l('prefs', '[we_scheduler_trigger][head]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[we_scheduler_trigger][description]'), we_html_tools::TYPE_HELP), "html" => $tmp, 'space' => we_html_multiIconBox::SPACE_BIG];
 			}
 			// Build select box
-			$NAVIGATION_ENTRIES_FROM_DOCUMENT = new we_html_select(array('name' => "newconf[NAVIGATION_ENTRIES_FROM_DOCUMENT]", "class" => "weSelect"));
+			$NAVIGATION_ENTRIES_FROM_DOCUMENT = new we_html_select(['name' => "newconf[NAVIGATION_ENTRIES_FROM_DOCUMENT]", "class" => "weSelect"]);
 			for($i = 0; $i < 2; $i++){
 				$NAVIGATION_ENTRIES_FROM_DOCUMENT->addOption($i, g_l('prefs', $i == 0 ? '[navigation_entries_from_document_folder]' : '[navigation_entries_from_document_item]'));
 			}
 			$NAVIGATION_ENTRIES_FROM_DOCUMENT->selectOption(get_value("NAVIGATION_ENTRIES_FROM_DOCUMENT") ? 1 : 0);
-			$settings[] = array("headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+			$settings[] = ["headline" => g_l('prefs', '[navigation_entries_from_document]'), "html" => $NAVIGATION_ENTRIES_FROM_DOCUMENT->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG];
 
 
-			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH = new we_html_select(array('name' => "newconf[NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH]", "class" => "weSelect"));
+			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH = new we_html_select(['name' => "newconf[NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH]", "class" => "weSelect"]);
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->addOption(0, g_l('prefs', '[no]'));
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->addOption(1, g_l('prefs', '[yes]'));
 			$NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->selectOption(get_value("NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH") ? 1 : 0);
-			$settings[] = array("headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+			$settings[] = ["headline" => g_l('prefs', '[navigation_rules_continue]'), "html" => $NAVIGATION_RULES_CONTINUE_AFTER_FIRST_MATCH->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG];
 
 			return create_dialog("", $settings, -1);
 
@@ -1671,8 +1664,8 @@ function build_dialog($selected_setting = 'ui'){
 			$we_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::WEDOCUMENT);
 
 			// Build static webEdition extensions select box
-			$static_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_STATIC_EXT]', 'class' => 'weSelect'));
-			$dynamic_we_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_DYNAMIC_EXT]', 'class' => 'weSelect'));
+			$static_we_extensions = new we_html_select(['name' => 'newconf[DEFAULT_STATIC_EXT]', 'class' => 'weSelect']);
+			$dynamic_we_extensions = new we_html_select(['name' => 'newconf[DEFAULT_DYNAMIC_EXT]', 'class' => 'weSelect']);
 			foreach($we_extensions as $value){
 				$static_we_extensions->addOption($value, $value);
 				$dynamic_we_extensions->addOption($value, $value);
@@ -1686,7 +1679,7 @@ function build_dialog($selected_setting = 'ui'){
 			$html_extensions = we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::HTML);
 
 			// Build static webEdition extensions select box
-			$static_html_extensions = new we_html_select(array('name' => 'newconf[DEFAULT_HTML_EXT]', 'class' => 'weSelect'));
+			$static_html_extensions = new we_html_select(['name' => 'newconf[DEFAULT_HTML_EXT]', 'class' => 'weSelect']);
 			foreach($html_extensions as $value){
 				$static_html_extensions->addOption($value, $value);
 			}
@@ -1728,7 +1721,7 @@ function build_dialog($selected_setting = 'ui'){
 
 			$GLOBALS['DB_WE']->query('SHOW CHARACTER SET');
 
-			$charsets = array('');
+			$charsets = [''];
 			while($GLOBALS['DB_WE']->next_record()){
 				$charsets[] = $GLOBALS['DB_WE']->f('Charset');
 			}
@@ -1894,26 +1887,26 @@ function build_dialog($selected_setting = 'ui'){
 
 			// Create checkboxes
 			$error_display_table = new we_html_table(['class' => 'default'], 8, 1);
-			$error_display_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-left: 25px;'), we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[error_notices_warning]'), we_html_tools::TYPE_ALERT, 260));
+			$error_display_table->setCol(0, 0, ['class' => 'defaultfont', 'style' => 'padding-left: 25px;'], we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[error_notices_warning]'), we_html_tools::TYPE_ALERT, 260));
 
 			$error_display_table->setCol(1, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_SHOW'), 'newconf[WE_ERROR_SHOW]', g_l('prefs', '[error_display]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
 			$error_display_table->setCol(3, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_LOG'), 'newconf[WE_ERROR_LOG]', g_l('prefs', '[error_log]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
 			$error_display_table->setCol(5, 0, null, we_html_forms::checkbox(1, get_value('WE_ERROR_MAIL'), 'newconf[WE_ERROR_MAIL]', g_l('prefs', '[error_mail]'), false, 'defaultfont', '', !get_value('WE_ERROR_HANDLER')));
 
 			// Create specify mail address input
-			$error_mail_specify_table = new we_html_table(array('class' => 'default', 'style' => 'margin-left:25px;'), 1, 4);
+			$error_mail_specify_table = new we_html_table(['class' => 'default', 'style' => 'margin-left:25px;'], 1, 4);
 
 			$error_mail_specify_table->setCol(0, 1, ['class' => 'defaultfont'], g_l('prefs', '[error_mail_address]') . ': ');
-			$error_mail_specify_table->setCol(0, 2, array('style' => 'text-align:left'), we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, get_value('WE_ERROR_MAIL_ADDRESS'), 100, 'placeholder="mail@example"', 'email', 195));
+			$error_mail_specify_table->setCol(0, 2, ['style' => 'text-align:left'], we_html_tools::htmlTextInput('newconf[WE_ERROR_MAIL_ADDRESS]', 6, get_value('WE_ERROR_MAIL_ADDRESS'), 100, 'placeholder="mail@example"', 'email', 195));
 
 			$error_display_table->setCol(7, 0, null, $error_mail_specify_table->getHtml());
 
-			$settings = array(
+			$settings = [
 				//array('headline' => g_l('prefs', '[templates]'), 'html' => $template_error_handling_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
-				array('headline' => g_l('prefs', '[tab][error_handling]'), 'html' => $we_error_handler, 'space' => we_html_multiIconBox::SPACE_BIG),
-				array('headline' => g_l('prefs', '[error_types]'), 'html' => $error_handling_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
-				array('headline' => g_l('prefs', '[error_displaying]'), 'html' => $error_display_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG),
-			);
+				['headline' => g_l('prefs', '[tab][error_handling]'), 'html' => $we_error_handler, 'space' => we_html_multiIconBox::SPACE_BIG],
+				['headline' => g_l('prefs', '[error_types]'), 'html' => $error_handling_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG],
+				['headline' => g_l('prefs', '[error_displaying]'), 'html' => $error_display_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG],
+			];
 
 			return create_dialog('settings_error_expert', $settings, $foldAt, g_l('prefs', '[show_expert]'), g_l('prefs', '[hide_expert]'));
 
@@ -1922,24 +1915,24 @@ function build_dialog($selected_setting = 'ui'){
 				return;
 			}
 			$row = 0;
-			$customer_table = new we_html_table(array('class' => 'default', 'id' => 'customer_table'), 9, 10);
-			$customer_table->setCol($row, 0, array('class' => 'defaultfont', 'width' => '20px'), '');
-			$customer_table->setCol($row, 1, array('class' => 'defaultfont', 'colspan' => 5), g_l('prefs', '[security][customer][disableLogins]') . ':');
-			$customer_table->setCol($row, 6, array('width' => 300));
-			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameIP]'));
-			$customer_table->setCol($row, 2, array('width' => '20px'));
+			$customer_table = new we_html_table(['class' => 'default', 'id' => 'customer_table'], 9, 10);
+			$customer_table->setCol($row, 0, ['class' => 'defaultfont', 'width' => '20px'], '');
+			$customer_table->setCol($row, 1, ['class' => 'defaultfont', 'colspan' => 5], g_l('prefs', '[security][customer][disableLogins]') . ':');
+			$customer_table->setCol($row, 6, ['width' => 300]);
+			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameIP]'));
+			$customer_table->setCol($row, 2, ['width' => '20px']);
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP'), 3, '', 'number', 50));
-			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'width:2em;text-align:center'), '/');
+			$customer_table->setCol($row, 4, ['class' => 'defaultfont', 'style' => 'width:2em;text-align:center'], '/');
 			$customer_table->setCol($row, 5, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_IP_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_IP_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, ['class' => 'defaultfont'], 'h');
 
-			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameUser]'));
+			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][sameUser]'));
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME'), 3, '', 'number', 50));
-			$customer_table->setCol($row, 4, array('class' => 'defaultfont', 'style' => 'text-align:center;'), '/');
+			$customer_table->setCol($row, 4, ['class' => 'defaultfont', 'style' => 'text-align:center;'], '/');
 			$customer_table->setCol($row, 5, [], we_html_tools::htmlTextInput('newconf[SECURITY_LIMIT_CUSTOMER_NAME_HOURS]', 3, get_value('SECURITY_LIMIT_CUSTOMER_NAME_HOURS'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 6, ['class' => 'defaultfont'], 'h');
 
-			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][errorPage]'));
+			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][errorPage]'));
 
 			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
 			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
@@ -1955,17 +1948,17 @@ function build_dialog($selected_setting = 'ui'){
 			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
 			$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);
 
-			$customer_table->setCol($row, 3, array('class' => 'defaultfont', 'colspan' => 5), $yuiSuggest->getHTML());
+			$customer_table->setCol($row, 3, ['class' => 'defaultfont', 'colspan' => 5], $yuiSuggest->getHTML());
 
-			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][slowDownLogin]'));
+			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][slowDownLogin]'));
 			$customer_table->setCol($row, 3, [], we_html_tools::htmlTextInput('newconf[SECURITY_DELAY_FAILED_LOGIN]', 3, get_value('SECURITY_DELAY_FAILED_LOGIN'), 3, '', 'number', 50));
 			$customer_table->setCol($row, 4, [], 's');
 
-			$customer_table->setCol(++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][deleteSession]'));
+			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][deleteSession]'));
 
-			$customer_table->setCol($row, 3, [], we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', array(g_l('prefs', '[no]'), g_l('prefs', '[yes]')), 1, get_value('SECURITY_DELETE_SESSION')));
+			$customer_table->setCol($row, 3, [], we_html_tools::htmlSelect('newconf[SECURITY_DELETE_SESSION]', [g_l('prefs', '[no]'), g_l('prefs', '[yes]')], 1, get_value('SECURITY_DELETE_SESSION')));
 
-			$encryption = new we_html_select(array('name' => 'newconf[SECURITY_ENCRYPTION_TYPE_PASSWORD]', 'class' => 'weSelect'));
+			$encryption = new we_html_select(['name' => 'newconf[SECURITY_ENCRYPTION_TYPE_PASSWORD]', 'class' => 'weSelect']);
 			$encryption->addOption(we_customer_customer::ENCRYPT_NONE, g_l('prefs', '[security][encryption][type][0]'));
 			if(function_exists('mcrypt_module_open') && ($res = mcrypt_module_open(MCRYPT_BLOWFISH, '', MCRYPT_MODE_OFB, ''))){
 				$encryption->addOption(we_customer_customer::ENCRYPT_SYMMETRIC, g_l('prefs', '[security][encryption][type][1]'));
@@ -1980,56 +1973,55 @@ function build_dialog($selected_setting = 'ui'){
 			$cryptkey = get_value('SECURITY_ENCRYPTION_KEY');
 			$encryptionKey = we_html_tools::htmlTextInput('newconf[SECURITY_ENCRYPTION_KEY]', 0, ($cryptkey ? : bin2hex(we_customer_customer::cryptGetIV(56))), 112, '', 'text', '20em') . ' (hex)'; //+Button vorhandene Passwörter convertieren
 
-			$storeSessionPassword = new we_html_select(array('name' => 'newconf[SECURITY_SESSION_PASSWORD]', 'class' => 'weSelect'));
+			$storeSessionPassword = new we_html_select(['name' => 'newconf[SECURITY_SESSION_PASSWORD]', 'class' => 'weSelect']);
 			$storeSessionPassword->addOption(we_customer_customer::REMOVE_PASSWORD, g_l('prefs', '[security][storeSessionPassword][type][0]'));
 			$storeSessionPassword->addOption(we_customer_customer::STORE_PASSWORD, g_l('prefs', '[security][storeSessionPassword][type][1]'));
 			$storeSessionPassword->addOption(we_customer_customer::STORE_DBPASSWORD, g_l('prefs', '[security][storeSessionPassword][type][2]'));
 			$storeSessionPassword->addOption(we_customer_customer::STORE_PASSWORD + we_customer_customer::STORE_DBPASSWORD, g_l('prefs', '[security][storeSessionPassword][type][3]'));
 			$storeSessionPassword->selectOption(get_value('SECURITY_SESSION_PASSWORD'));
 
-			$settings = array(
-				array('headline' => g_l('perms_customer', '[perm_group_title]'), 'html' => $customer_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED),
-				array('headline' => g_l('prefs', '[security][encryption][title]'), 'html' => $encryption->getHtml() . $encryptinfo, 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1),
-				array('headline' => g_l('prefs', '[security][encryption][symmetricKey]'), 'html' => $encryptionKey, 'space' => we_html_multiIconBox::SPACE_MED),
-				array('headline' => g_l('prefs', '[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED),
-				array('headline' => g_l('prefs', '[security][userPassRegex][title]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_REGEX]', 0, get_value('SECURITY_USER_PASS_REGEX'), 100, '', 'text', '20em'), 'space' => we_html_multiIconBox::SPACE_MED),
-			);
+			$settings = [
+				['headline' => g_l('perms_customer', '[perm_group_title]'), 'html' => $customer_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED],
+				['headline' => g_l('prefs', '[security][encryption][title]'), 'html' => $encryption->getHtml() . $encryptinfo, 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1],
+				['headline' => g_l('prefs', '[security][encryption][symmetricKey]'), 'html' => $encryptionKey, 'space' => we_html_multiIconBox::SPACE_MED],
+				['headline' => g_l('prefs', '[security][storeSessionPassword][title]'), 'html' => $storeSessionPassword->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED],
+				['headline' => g_l('prefs', '[security][userPassRegex][title]'), 'html' => we_html_tools::htmlTextInput('newconf[SECURITY_USER_PASS_REGEX]', 0, get_value('SECURITY_USER_PASS_REGEX'), 100, '', 'text', '20em'), 'space' => we_html_multiIconBox::SPACE_MED],
+			];
 			return create_dialog('settings_security', $settings);
 
 		case 'email':
 			/**
 			 * Information
 			 */
-			$settings = array(
-				array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), we_html_tools::TYPE_INFO, 450, false),)
-			);
+			$settings = [
+				['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[mailer_information]'), we_html_tools::TYPE_INFO, 450, false),]
+			];
 
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
-				$emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', array('php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')), 1, get_value('WE_MAILER'), false, array('onchange' => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"), 'value', 300, 'defaultfont');
+				$emailSelect = we_html_tools::htmlSelect('newconf[WE_MAILER]', ['php' => g_l('prefs', '[mailer_php]'), 'smtp' => g_l('prefs', '[mailer_smtp]')], 1, get_value('WE_MAILER'), false, ['onchange' => "var el = document.getElementById('smtp_table').style; if(this.value=='smtp') el.display='block'; else el.display='none';"], 'value', 300, 'defaultfont');
 
-				$smtp_table = new we_html_table(array('class' => 'default', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'), 4, 2);
-				$smtp_table->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'padding-right:10px;'), g_l('prefs', '[smtp_server]'));
-				$smtp_table->setCol(0, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_SERVER]', 24, get_value('SMTP_SERVER'), 180, '', 'text', 180));
+				$smtp_table = new we_html_table(['class' => 'default', 'id' => 'smtp_table', 'width' => 300, 'style' => 'display: ' . ((get_value('WE_MAILER') === 'php') ? 'none' : 'block') . ';'], 4, 2);
+				$smtp_table->setCol(0, 0, ['class' => 'defaultfont', 'style' => 'padding-right:10px;'], g_l('prefs', '[smtp_server]'));
+				$smtp_table->setCol(0, 1, ['style' => 'text-align:right'], we_html_tools::htmlTextInput('newconf[SMTP_SERVER]', 24, get_value('SMTP_SERVER'), 180, '', 'text', 180));
 				$smtp_table->setCol(1, 0, ['class' => 'defaultfont'], g_l('prefs', '[smtp_port]'));
-				$smtp_table->setCol(1, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PORT]', 24, get_value('SMTP_PORT'), 180, '', 'text', 180));
+				$smtp_table->setCol(1, 1, ['style' => 'text-align:right'], we_html_tools::htmlTextInput('newconf[SMTP_PORT]', 24, get_value('SMTP_PORT'), 180, '', 'text', 180));
 
 
-				$encryptSelect = we_html_tools::htmlSelect('newconf[SMTP_ENCRYPTION]', array(0 => g_l('prefs', '[smtp_encryption_none]'), 'ssl' => g_l('prefs', '[smtp_encryption_ssl]'), 'tls' => g_l('prefs', '[smtp_encryption_tls]')), 1, get_value('SMTP_ENCRYPTION'), false, [], 'value', 180, 'defaultfont');
+				$encryptSelect = we_html_tools::htmlSelect('newconf[SMTP_ENCRYPTION]', [0 => g_l('prefs', '[smtp_encryption_none]'), 'ssl' => g_l('prefs', '[smtp_encryption_ssl]'), 'tls' => g_l('prefs', '[smtp_encryption_tls]')], 1, get_value('SMTP_ENCRYPTION'), false, [], 'value', 180, 'defaultfont');
 
 				$smtp_table->setCol(2, 0, ['class' => 'defaultfont'], g_l('prefs', '[smtp_encryption]'));
-				$smtp_table->setCol(2, 1, array('style' => 'text-align:right'), $encryptSelect);
-				$smtp_table->setCol(3, 0, array('class' => 'defaultfont', 'colspan' => 3), we_html_forms::checkbox(1, get_value('SMTP_AUTH'), 'newconf[SMTP_AUTH]', g_l('prefs', '[smtp_auth]'), false, 'defaultfont', "var el2 = document.getElementById('auth_table').style; if(this.checked) el2.display='block'; else el2.display='none';"));
+				$smtp_table->setCol(2, 1, ['style' => 'text-align:right'], $encryptSelect);
+				$smtp_table->setCol(3, 0, ['class' => 'defaultfont', 'colspan' => 3], we_html_forms::checkbox(1, get_value('SMTP_AUTH'), 'newconf[SMTP_AUTH]', g_l('prefs', '[smtp_auth]'), false, 'defaultfont', "var el2 = document.getElementById('auth_table').style; if(this.checked) el2.display='block'; else el2.display='none';"));
 
-
-				$auth_table = new we_html_table(array('class' => 'default', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'), 2, 2);
+				$auth_table = new we_html_table(['class' => 'default', 'id' => 'auth_table', 'width' => 200, 'style' => 'display: ' . ((get_value('SMTP_AUTH') == 1) ? 'block' : 'none') . ';'], 2, 2);
 				$auth_table->setCol(0, 0, ['class' => 'defaultfont'], g_l('prefs', '[smtp_username]'));
-				$auth_table->setCol(0, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, 'placeholder="username"', 'text', 180));
+				$auth_table->setCol(0, 1, ['style' => 'text-align:right'], we_html_tools::htmlTextInput('newconf[SMTP_USERNAME]', 14, get_value('SMTP_USERNAME'), 105, 'placeholder="username"', 'text', 180));
 				$auth_table->setCol(1, 0, ['class' => 'defaultfont'], g_l('prefs', '[smtp_password]'));
-				$auth_table->setCol(1, 1, array('style' => 'text-align:right'), we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, get_value('SMTP_PASSWORD'), 105, 'placeholder="password"', 'password', 180));
+				$auth_table->setCol(1, 1, ['style' => 'text-align:right'], we_html_tools::htmlTextInput('newconf[SMTP_PASSWORD]', 14, get_value('SMTP_PASSWORD'), 105, 'placeholder="password"', 'password', 180));
 
-				$settings[] = array('headline' => g_l('prefs', '[mailer_type]'), 'html' => $emailSelect, 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1);
-				$settings[] = array('headline' => '', 'html' => $smtp_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1);
-				$settings[] = array('headline' => '', 'html' => $auth_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1);
+				$settings[] = ['headline' => g_l('prefs', '[mailer_type]'), 'html' => $emailSelect, 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
+				$settings[] = ['headline' => '', 'html' => $smtp_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
+				$settings[] = ['headline' => '', 'html' => $auth_table->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
 			}
 
 			return create_dialog('settings_email', $settings);
@@ -2039,8 +2031,8 @@ function build_dialog($selected_setting = 'ui'){
 				break;
 			}
 
-			$versionsPrefs = array(
-				'ctypes' => array(
+			$versionsPrefs = [
+				'ctypes' => [
 					we_base_ContentTypes::IMAGE => 'VERSIONING_IMAGE',
 					we_base_ContentTypes::HTML => 'VERSIONING_TEXT_HTML',
 					we_base_ContentTypes::WEDOCUMENT => 'VERSIONING_TEXT_WEBEDITION',
@@ -2055,8 +2047,8 @@ function build_dialog($selected_setting = 'ui'){
 					we_base_ContentTypes::APPLICATION => 'VERSIONING_SONSTIGE',
 					we_base_ContentTypes::XML => 'VERSIONING_TEXT_XML',
 					we_base_ContentTypes::OBJECT_FILE => 'VERSIONING_OBJECT',
-				),
-				'other' => array(
+				],
+				'other' => [
 					'VERSIONS_TIME_DAYS' => 'VERSIONS_TIME_DAYS',
 					'VERSIONS_TIME_WEEKS' => 'VERSIONS_TIME_WEEKS',
 					'VERSIONS_TIME_YEARS' => 'VERSIONS_TIME_YEARS',
@@ -2067,8 +2059,8 @@ function build_dialog($selected_setting = 'ui'){
 					'VERSIONS_TIME_WEEKS_TMPL' => 'VERSIONS_TIME_WEEKS_TMPL',
 					'VERSIONS_TIME_YEARS_TMPL' => 'VERSIONS_TIME_YEARS_TMPL',
 					'VERSIONS_ANZAHL_TMPL' => 'VERSIONS_ANZAHL_TMPL'
-				)
-			);
+				]
+			];
 
 			//js
 			$jsCheckboxCheckAll = '';
@@ -2096,11 +2088,7 @@ function checkAll(val) {
 				$checkboxes .= we_html_forms::checkbox(1, get_value($v), 'newconf[' . $v . ']', g_l('contentTypes', '[' . $k . ']'), false, 'defaultfont', 'checkAllRevert(this);') . '<br/>';
 			}
 
-			$versions_time_days = new we_html_select(array(
-				'name' => 'newconf[VERSIONS_TIME_DAYS]',
-				'class' => 'weSelect'
-				)
-			);
+			$versions_time_days = new we_html_select(['name' => 'newconf[VERSIONS_TIME_DAYS]', 'class' => 'weSelect']);
 
 			$versions_time_days->addOption(-1, '');
 			$versions_time_days->addOption(secondsDay, g_l('prefs', '[1_day]'));
@@ -2110,10 +2098,7 @@ function checkAll(val) {
 			$versions_time_days->selectOption(get_value('VERSIONS_TIME_DAYS'));
 
 
-			$versions_time_weeks = new we_html_select(array(
-				'name' => 'newconf[VERSIONS_TIME_WEEKS]',
-				'class' => 'weSelect')
-			);
+			$versions_time_weeks = new we_html_select(['name' => 'newconf[VERSIONS_TIME_WEEKS]', 'class' => 'weSelect']);
 			$versions_time_weeks->addOption(-1, '');
 			$versions_time_weeks->addOption(secondsWeek, g_l('prefs', '[1_week]'));
 			for($x = 2; $x <= 52; $x++){
@@ -2122,11 +2107,7 @@ function checkAll(val) {
 			$versions_time_weeks->selectOption(get_value('VERSIONS_TIME_WEEKS'));
 
 
-			$versions_time_years = new we_html_select(array(
-				'name' => 'newconf[VERSIONS_TIME_YEARS]',
-				'class' => 'weSelect'
-				)
-			);
+			$versions_time_years = new we_html_select(['name' => 'newconf[VERSIONS_TIME_YEARS]', 'class' => 'weSelect']);
 			$versions_time_years->addOption(-1, '');
 			$versions_time_years->addOption(secondsYear, g_l('prefs', '[1_year]'));
 			for($x = 2; $x <= 10; $x++){
@@ -2138,11 +2119,7 @@ function checkAll(val) {
 			$versions_create_publishing = we_html_forms::radiobutton(1, (get_value('VERSIONS_CREATE') == 1), 'newconf[VERSIONS_CREATE]', g_l('prefs', '[versions_create_publishing]'), true, 'defaultfont', '', false, '');
 			$versions_create_always = we_html_forms::radiobutton(0, (get_value('VERSIONS_CREATE') == 0), 'newconf[VERSIONS_CREATE]', g_l('prefs', '[versions_create_always]'), true, 'defaultfont', '', false, '');
 
-			$versions_time_days_tmpl = new we_html_select(array(
-				'name' => 'newconf[VERSIONS_TIME_DAYS_TMPL]',
-				'class' => 'weSelect'
-				)
-			);
+			$versions_time_days_tmpl = new we_html_select(['name' => 'newconf[VERSIONS_TIME_DAYS_TMPL]', 'class' => 'weSelect']);
 
 			$versions_time_days_tmpl->addOption(-1, '');
 			$versions_time_days_tmpl->addOption(secondsDay, g_l('prefs', '[1_day]'));
@@ -2152,10 +2129,7 @@ function checkAll(val) {
 			$versions_time_days_tmpl->selectOption(get_value('VERSIONS_TIME_DAYS_TMPL'));
 
 
-			$versions_time_weeks_tmpl = new we_html_select(array(
-				'name' => 'newconf[VERSIONS_TIME_WEEKS_TMPL]',
-				'class' => 'weSelect')
-			);
+			$versions_time_weeks_tmpl = new we_html_select(['name' => 'newconf[VERSIONS_TIME_WEEKS_TMPL]', 'class' => 'weSelect']);
 			$versions_time_weeks_tmpl->addOption(-1, '');
 			$versions_time_weeks_tmpl->addOption(secondsWeek, g_l('prefs', '[1_week]'));
 			for($x = 2; $x <= 52; $x++){
@@ -2163,11 +2137,7 @@ function checkAll(val) {
 			}
 			$versions_time_weeks_tmpl->selectOption(get_value('VERSIONS_TIME_WEEKS_TMPL'));
 
-			$versions_time_years_tmpl = new we_html_select(array(
-				'name' => 'newconf[VERSIONS_TIME_YEARS_TMPL]',
-				'class' => 'weSelect'
-				)
-			);
+			$versions_time_years_tmpl = new we_html_select(['name' => 'newconf[VERSIONS_TIME_YEARS_TMPL]', 'class' => 'weSelect']);
 			$versions_time_years_tmpl->addOption(-1, '');
 			$versions_time_years_tmpl->addOption(secondsYear, g_l('prefs', '[1_year]'));
 			for($x = 2; $x <= 10; $x++){
@@ -2179,57 +2149,45 @@ function checkAll(val) {
 			$versions_create_tmpl_always = we_html_forms::radiobutton(0, (get_value('VERSIONS_CREATE_TMPL') == 0), 'newconf[VERSIONS_CREATE_TMPL]', g_l('prefs', '[versions_create_tmpl_always]'), true, 'defaultfont', '', false, '');
 			$versions_wizard = '<div style="float:left;">' . we_html_button::create_button('openVersionWizard', 'javascript:openVersionWizard()', true, 100, 22, '', '') . '</div>';
 
-
-			$settings = array(
-				array(
-					'headline' => g_l('prefs', '[ContentType]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_activate_text]'), we_html_tools::TYPE_HELP),
+			return create_dialog('', [
+				['headline' => g_l('prefs', '[ContentType]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_activate_text]'), we_html_tools::TYPE_HELP),
 					'space' => we_html_multiIconBox::SPACE_BIG,
 					'html' => $checkboxes
-				),
-				array(
-					'html' => $versions_time_days->getHtml() . ' ' . $versions_time_weeks->getHtml() . ' ' . $versions_time_years->getHtml(),
+				],
+				['html' => $versions_time_days->getHtml() . ' ' . $versions_time_weeks->getHtml() . ' ' . $versions_time_years->getHtml(),
 					'space' => we_html_multiIconBox::SPACE_BIG,
 					'headline' => g_l('prefs', '[versioning_time]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_time_text]'), we_html_tools::TYPE_HELP)
-				),
-				array(
-					'headline' => g_l('prefs', '[versioning_anzahl]'),
+				],
+				['headline' => g_l('prefs', '[versioning_anzahl]'),
 					'html' => $versions_anzahl,
 					'space' => we_html_multiIconBox::SPACE_BIG
-				),
-				array(
-					'headline' => g_l('prefs', '[versioning_create]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_create_text]'), we_html_tools::TYPE_HELP, false, false),
+				],
+				['headline' => g_l('prefs', '[versioning_create]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_create_text]'), we_html_tools::TYPE_HELP, false, false),
 					'html' => $versions_create_publishing . '<br/>' . $versions_create_always,
 					'space' => we_html_multiIconBox::SPACE_BIG
-				),
-				array(
-					'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_templates_text]'), we_html_tools::TYPE_INFO, 470, false),
+				],
+				['html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_templates_text]'), we_html_tools::TYPE_INFO, 470, false),
 					'noline' => 1,
-				),
-				array(
-					'html' => $versions_time_days_tmpl->getHtml() . ' ' . $versions_time_weeks_tmpl->getHtml() . ' ' . $versions_time_years_tmpl->getHtml(),
+				],
+				['html' => $versions_time_days_tmpl->getHtml() . ' ' . $versions_time_weeks_tmpl->getHtml() . ' ' . $versions_time_years_tmpl->getHtml(),
 					'space' => we_html_multiIconBox::SPACE_BIG,
 					'noline' => 1,
 					'headline' => g_l('prefs', '[versioning_time]')
-				),
-				array(
-					'headline' => g_l('prefs', '[versioning_anzahl]'),
+				],
+				['headline' => g_l('prefs', '[versioning_anzahl]'),
 					'html' => $versions_anzahl_tmpl,
 					'noline' => 1,
 					'space' => we_html_multiIconBox::SPACE_BIG
-				),
-				array(
-					'headline' => g_l('prefs', '[versioning_create]'),
+				],
+				['headline' => g_l('prefs', '[versioning_create]'),
 					'html' => $versions_create_tmpl_publishing . '<br/>' . $versions_create_tmpl_always,
 					'space' => we_html_multiIconBox::SPACE_BIG
-				),
-				array(
-					'headline' => g_l('prefs', '[versioning_wizard]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_wizard_text]'), we_html_tools::TYPE_HELP),
+				],
+				['headline' => g_l('prefs', '[versioning_wizard]') . we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[versioning_wizard_text]'), we_html_tools::TYPE_HELP),
 					'html' => $versions_wizard,
 					'space' => we_html_multiIconBox::SPACE_BIG
-				),
-			);
-
-			return create_dialog('', $settings, -1, '', '');
+				],
+				], -1, '', '');
 	}
 
 	return 'No rights.';
@@ -2248,13 +2206,13 @@ function render_dialog(){
 	$ret = '';
 
 	foreach($tabs as $tab){
-		$ret .= we_html_element::htmlDiv(array('id' => 'setting_' . $tab, 'style' => ($GLOBALS['tabname'] === 'setting_' . $tab ? '' : 'display: none;')), build_dialog($tab));
+		$ret .= we_html_element::htmlDiv(['id' => 'setting_' . $tab, 'style' => ($GLOBALS['tabname'] === 'setting_' . $tab ? '' : 'display: none;')], build_dialog($tab));
 	}
 	return $ret;
 }
 
 function getYesNoSelect($setting){
-	$select = new we_html_select(array('name' => 'newconf[' . $setting . ']', 'class' => 'weSelect'));
+	$select = new we_html_select(['name' => 'newconf[' . $setting . ']', 'class' => 'weSelect']);
 	$select->addOption(0, g_l('prefs', '[no]'));
 	$select->addOption(1, g_l('prefs', '[yes]'));
 	$select->selectOption(get_value($setting) ? 1 : 0);
@@ -2263,7 +2221,7 @@ function getYesNoSelect($setting){
 }
 
 function getTrueFalseSelect($setting){
-	$select = new we_html_select(array('name' => 'newconf[' . $setting . ']', 'class' => 'weSelect'));
+	$select = new we_html_select(['name' => 'newconf[' . $setting . ']', 'class' => 'weSelect']);
 	$select->addOption(0, 'false');
 	$select->addOption(1, 'true');
 	$select->selectOption(get_value($setting) ? 1 : 0);
@@ -2288,7 +2246,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 				$acError = true;
 				$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
 			} else {
-				$acResponse = $acQuery->getItemById($doc, FILE_TABLE, array('IsFolder'));
+				$acResponse = $acQuery->getItemById($doc, FILE_TABLE, ['IsFolder']);
 				if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 					$acError = true;
 					$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
@@ -2308,7 +2266,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 				$acError = true;
 				$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
 			} else {
-				$acResponse = $acQuery->getItemById($obj, OBJECT_FILES_TABLE, array('IsFolder'));
+				$acResponse = $acQuery->getItemById($obj, OBJECT_FILES_TABLE, ['IsFolder']);
 				if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 					$acError = true;
 					$acErrorMsg = sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[seem_startdocument]'), g_l('prefs', '[tab][ui]')) . "\\n";
@@ -2318,7 +2276,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	}
 	// check sidebar document
 	if(!we_base_request::_(we_base_request::BOOL, 'newconf', false, 'SIDEBAR_DISABLED') && we_base_request::_(we_base_request::FILE, 'ui_sidebar_file_name')){
-		$acResponse = $acQuery->getItemById(we_base_request::_(we_base_request::INT, 'newconf', 0, 'SIDEBAR_DEFAULT_DOCUMENT'), FILE_TABLE, array('IsFolder'));
+		$acResponse = $acQuery->getItemById(we_base_request::_(we_base_request::INT, 'newconf', 0, 'SIDEBAR_DEFAULT_DOCUMENT'), FILE_TABLE, ['IsFolder']);
 		if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 			$acError = true;
 			$acErrorMsg .= sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[sidebar]') . ' / ' . g_l('prefs', '[sidebar_document]'), g_l('prefs', '[tab][ui]')) . "\\n";
@@ -2326,7 +2284,7 @@ if(we_base_request::_(we_base_request::BOOL, 'save_settings')){
 	}
 	// check doc for error on none existing objects
 	if(we_base_request::_(we_base_request::FILE, 'error_document_no_objectfile_text')){
-		$acResponse = $acQuery->getItemById(we_base_request::_(we_base_request::INT, 'newconf', 0, 'ERROR_DOCUMENT_NO_OBJECTFILE'), FILE_TABLE, array('IsFolder'));
+		$acResponse = $acQuery->getItemById(we_base_request::_(we_base_request::INT, 'newconf', 0, 'ERROR_DOCUMENT_NO_OBJECTFILE'), FILE_TABLE, ['IsFolder']);
 		if(!$acResponse || $acResponse[0]['IsFolder'] == 1){
 			$acError = true;
 			$acErrorMsg .= sprintf(g_l('alert', '[field_in_tab_notvalid]'), g_l('prefs', '[error_no_object_found]'), g_l('prefs', '[tab][error_handling]')) . "\\n";
@@ -2349,19 +2307,10 @@ if($doSave && !$acError){
 
 	echo
 	we_html_element::jsElement('
-function doClose() {
-
-var _multiEditorreload = false;
+function doCloseDyn() {
+	var _multiEditorreload = false;
 ' . $save_javascript .
 		(!$email_saved ? we_message_reporting::getShowMessageCall(g_l('prefs', '[error_mail_not_saved]'), we_message_reporting::WE_MESSAGE_ERROR) : we_message_reporting::getShowMessageCall(g_l('prefs', '[saved]'), we_message_reporting::WE_MESSAGE_NOTICE)) . '
-var childs=top.document.getElementById("tabContainer").children;
-childs[0].className="tabActive";
-for(i=1;i<childs.length;++i){
-	childs[i].className="tabNormal";
-	}
-
-	this.location = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/we_preferences.php";
-	setTimeout(top.document.getElementById("tabContainer").children[0].click, 1000);
 	}
 	') .
 	'</head>' .
@@ -2369,10 +2318,10 @@ for(i=1;i<childs.length;++i){
 } else {
 	$form = we_html_element::htmlForm(['onSubmit' => 'return false;', 'name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['SCRIPT_NAME']], we_html_element::htmlHidden('save_settings', 0) . render_dialog());
 
-	$we_cmd_js = we_html_element::jsElement(($acError ? we_message_reporting::getShowMessageCall(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : ""));
 
-
-	echo $we_cmd_js . '</head>' .
+	echo ($acError ?
+		we_message_reporting::jsMessagePush(g_l('alert', '[field_in_tab_notvalid_pre]') . "\\n\\n" . $acErrorMsg . "\\n" . g_l('alert', '[field_in_tab_notvalid_post]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
+	'</head>' .
 	we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'startPrefs();'], $form) .
 	$yuiSuggest->getYuiJs() .
 	'</html>';

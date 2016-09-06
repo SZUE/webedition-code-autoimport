@@ -95,10 +95,10 @@ var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '"
 
 	switch (args[0]) {
 		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ', true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1,' . we_selector_file::WINDOW_DOCSELECTOR_WIDTH . ',' . we_selector_file::WINDOW_DOCSELECTOR_HEIGHT . ', true, true, true, true);
+			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "close":
 			window.close();
@@ -117,7 +117,8 @@ var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '"
 			opener.top.unselectAllFiles();
 			opener.top.doClick(' . $id . ', 0);
 			setTimeout(opener.top.selectFile, 200,' . $id . ');' :
-			((isset($writeBack[0]) && $writeBack[0] && isset($writeBack[1])) ? 'opener.' . $writeBack[0] . ' = ' . $id . ';opener.' . $writeBack[1] . ' = "' . $collection->Path . '";' : '')) . '
+			((isset($writeBack[0]) && $writeBack[0] && isset($writeBack[1])) ? 'opener.' . $writeBack[0] . ' = ' . $id . ';
+			opener.' . $writeBack[1] . ' = "' . $collection->Path . '";' : '')) . '
 			window.close();
 			break;
 		default:
