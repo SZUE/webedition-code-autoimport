@@ -25,8 +25,7 @@ $yuiSuggest = & weSuggest::getInstance();
 
 echo we_html_tools::getHtmlTop();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo we_html_element::jsScript(JS_DIR . 'utils/we_cmd_encode.js') .
- we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
+echo we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
  we_html_element::jsElement('
 weCollectionEdit.we_doc = {
 	ID: "' . $GLOBALS['we_doc']->ID . '",

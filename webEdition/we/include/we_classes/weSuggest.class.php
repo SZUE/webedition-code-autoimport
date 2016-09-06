@@ -123,7 +123,6 @@ class weSuggest{
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/datasource-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/animation-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/autocomplete-min.js') .
-			we_html_element::jsScript(JS_DIR . 'utils/we_cmd_encode.js') .
 			we_html_element::jsScript(JS_DIR . 'weSuggest.js');
 	}
 

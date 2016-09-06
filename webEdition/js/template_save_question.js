@@ -22,6 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+/* global WE */
+
+var editorSave = WE().util.getDynamicVar(document, 'loadVarTemplate_save_question', 'data-editorSave');
+
 // functions for keyBoard Listener
 function applyOnEnter() {
 	pressed_yes_button();
@@ -33,5 +37,16 @@ function closeOnEscape() {
 }
 
 function pressed_cancel_button() {
+	self.close();
+}
+
+function pressed_yes_button() {
+	opener.top.we_cmd('save_document', editorSave.we_transaction, 0, 1, 1, WE().util.Base64.encode(JSON.stringify(editorSave.we_responseJS)), editorSave.we_cmd6);
+	self.close();
+
+}
+
+function pressed_no_button() {
+	opener.top.we_cmd('save_document', editorSave.we_transaction, 0, 1, 0, WE().util.Base64.encode(JSON.stringify(editorSave.we_responseJS)), editorSave.we_cmd6);
 	self.close();
 }

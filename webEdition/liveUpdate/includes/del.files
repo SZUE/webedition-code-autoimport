@@ -771,6 +771,7 @@ js/weTinyMceDialogs.js
 js/weJsStrings.php
 js/weJsStrings.inc.php
 js/weDOM_Safari.js
+js/utils/we_cmd_encode.js
 js/utils/rewrite_element.js
 js/utils/prototypes.js
 js/utils/progressBar.js

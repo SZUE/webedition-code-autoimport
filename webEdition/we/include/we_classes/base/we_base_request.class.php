@@ -33,6 +33,7 @@ class we_base_request{
 	const FLOAT = 'float';
 	const BOOL = 'bool';
 	const RAW = 'raw';
+	const JSON = 'json';
 	const URL = 'url';
 	const EMAIL = 'email'; //add email_list
 	const STRING = 'string';
@@ -235,6 +236,9 @@ class we_base_request{
 				return;
 			case self::HTML:
 				$var = filter_var(htmlspecialchars_decode($var), FILTER_SANITIZE_SPECIAL_CHARS);
+				return;
+			case self::JSON:
+				$var = we_unserialize(base64_decode($var));
 				return;
 			case self::JS://for information!
 			case self::RAW:

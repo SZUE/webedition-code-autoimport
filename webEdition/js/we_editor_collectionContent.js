@@ -488,9 +488,9 @@ weCollectionEdit = {
 
 			//TODO: list fallback!
 			if (item.id === -1) {
-				cmd1 = weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/##INDEX##/g, t.maxIndex));
-				cmd2 = weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/##INDEX##/g, t.maxIndex));
-				cmd3 = weCmdEnc(weCollectionEdit.selectorCmds[2].replace(/##INDEX##/g, t.maxIndex));
+				cmd1 = WE().util.weCmdEnc(weCollectionEdit.selectorCmds[0].replace(/##INDEX##/g, t.maxIndex));
+				cmd2 = WE().util.weCmdEnc(weCollectionEdit.selectorCmds[1].replace(/##INDEX##/g, t.maxIndex));
+				cmd3 = WE().util.weCmdEnc(weCollectionEdit.selectorCmds[2].replace(/##INDEX##/g, t.maxIndex));
 			}
 			blank = blank.replace(/##CMD1##/g, cmd1).replace(/##CMD2##/g, cmd2).replace(/##CMD3##/g, cmd3);
 			div.innerHTML = blank;
@@ -523,8 +523,8 @@ weCollectionEdit = {
 			}
 		} else {
 			if (item.id === -1) {
-				cmd1 = weCmdEnc(weCollectionEdit.gridBtnCmds[0].replace(/##INDEX##/g, t.maxIndex));
-				cmd3 = weCmdEnc(weCollectionEdit.gridBtnCmds[2].replace(/##INDEX##/g, t.maxIndex));
+				cmd1 = WE().util.weCmdEnc(weCollectionEdit.gridBtnCmds[0].replace(/##INDEX##/g, t.maxIndex));
+				cmd3 = WE().util.weCmdEnc(weCollectionEdit.gridBtnCmds[2].replace(/##INDEX##/g, t.maxIndex));
 				blank = blank.replace(/##CMD1##/g, cmd1).replace(/##CMD2##/g, '').replace(/##CMD3##/g, cmd3).replace(/##SHOWBTN##/g, 'block');
 			} else {
 				blank = blank.replace(/##SHOWBTN##/g, 'none');

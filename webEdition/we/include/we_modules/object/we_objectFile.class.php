@@ -486,7 +486,7 @@ class we_objectFile extends we_document{
 	function publishFromInsideDocument(){
 		$this->publish();
 		if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
-			$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page",' . $this->EditPageNr . ',"' . $GLOBALS["we_transaction"] . '");';
+			$GLOBALS['we_responseJS'][] = ['switch_edit_page', $this->EditPageNr, $GLOBALS["we_transaction"]];
 		}
 		$GLOBALS['we_JavaScript'] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
@@ -494,7 +494,7 @@ class we_objectFile extends we_document{
 	function unpublishFromInsideDocument(){
 		$this->unpublish();
 		if($this->EditPageNr == we_base_constants::WE_EDITPAGE_PROPERTIES || $this->EditPageNr == we_base_constants::WE_EDITPAGE_INFO){
-			$GLOBALS['we_responseJS'] = 'top.we_cmd("switch_edit_page",' . $this->EditPageNr . ',"' . $GLOBALS["we_transaction"] . '");';
+			$GLOBALS['we_responseJS'][] = ['switch_edit_page', $this->EditPageNr, $GLOBALS["we_transaction"]];
 		}
 		$GLOBALS["we_JavaScript"] = "_EditorFrame.setEditorDocumentId(" . $this->ID . ");" . $this->getUpdateTreeScript();
 	}
@@ -1984,8 +1984,8 @@ class we_objectFile extends we_document{
 	private function setPublishTime($time){
 		$this->Published = $time;
 		return
-		$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' SET Published=' . $time . ' WHERE ID=' . $this->ID) /* &&
-		  $this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Published=' . intval($time) . ' WHERE OF_ID=' . intval($this->ID) )*/;
+			$this->DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' SET Published=' . $time . ' WHERE ID=' . $this->ID) /* &&
+		  $this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Published=' . intval($time) . ' WHERE OF_ID=' . intval($this->ID) ) */;
 	}
 
 	function markAsPublished(){
@@ -2668,12 +2668,12 @@ class we_objectFile extends we_document{
 				return false;
 			}
 		}
-		/*if($this->ID){
-			$this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET ' . we_database_base::arraySetter(array(
-					'OF_TEXT' => $this->Text,
-					'OF_PATH' => $this->Path)) .
-				' WHERE OF_ID=' . intval($this->ID));
-		}*/
+		/* if($this->ID){
+		  $this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET ' . we_database_base::arraySetter(array(
+		  'OF_TEXT' => $this->Text,
+		  'OF_PATH' => $this->Path)) .
+		  ' WHERE OF_ID=' . intval($this->ID));
+		  } */
 		return $this->i_savePersistentSlotsToDB('Path,Text,ParentID,CreatorID,ModifierID,RestrictOwners,Owners,OwnersReadOnly,Published,ModDate,IsSearchable,Charset,Url,TriggerID');
 	}
 

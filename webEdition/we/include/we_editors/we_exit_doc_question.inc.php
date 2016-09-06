@@ -23,9 +23,6 @@
  */
 we_html_tools::protect();
 
-echo we_html_tools::getHtmlTop(g_l('global', '[question]'));
-
-
 // we_cmd[0] => exit_doc_question
 // we_cmd[1] => multiEditFrameId
 // we_cmd[2] => content-type of the document
@@ -77,31 +74,12 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2)){
 		break;
 }
 
-
-echo we_html_element::jsElement("
-	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame('" . $editorFrameId . "');
-
-	function pressed_yes() {
-		_EditorFrame.getDocumentReference().frames.editFooter.we_save_document('" . str_replace("'", "\\'", "WE().layout.weEditorFrameController.closeDocument('" . $editorFrameId . "');" . ($nextCmd ? "top.setTimeout('" . $nextCmd . "', 1000);" : "" )) . "');
-		window_closed();
-		self.close();
-	}
-
-	function pressed_no() {
-		_EditorFrame.setEditorIsHot(false);
-		WE().layout.weEditorFrameController.closeDocument('" . $editorFrameId . "');
-		" . ($nextCmd ? "opener.top.setTimeout('" . $nextCmd . "', 1000);" : "" ) . "
-		window_closed();
-		self.close();
-	}
-") . we_html_element::jsScript(JS_DIR . 'exit_doc_question.js');
+echo we_html_tools::getHtmlTop(g_l('global', '[question]'), '', '', we_html_element::jsScript(JS_DIR . 'exit_doc_question.js', '', ['id' => 'loadVarExit_doc_question', 'data-editorSave' => setDynamicVar([
+			'editorFrameId' => $editorFrameId,
+			'nextCmd' => $nextCmd,
+	])]), we_html_element::htmlBody(
+		['onunload' => "window_closed();", 'class' => "weEditorBody", 'onload' => "self.focus();", 'onblur' => "self.focus();"], we_html_tools::htmlYesNoCancelDialog(
+			g_l('alert', '[' . stripTblPrefix($documentTable) . '][exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, "pressed_yes();", "pressed_no();", "pressed_cancel();"))
+);
 
 // $yesCmd: $REQUEST['we_cmd'][6] => next-EditCommand, JS-Function Call !! after save document.
-?>
-</head>
-
-<body onunload="window_closed();" class="weEditorBody" onload="self.focus();" onblur="self.focus();">
-	<?= we_html_tools::htmlYesNoCancelDialog(g_l('alert', '[' . stripTblPrefix($documentTable) . '][exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, "pressed_yes();", "pressed_no();", "pressed_cancel();"); ?>
-</body>
-
-</html>

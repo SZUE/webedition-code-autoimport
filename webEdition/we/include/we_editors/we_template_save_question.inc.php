@@ -30,23 +30,13 @@ $alerttext = ($isTemplatesUsedByThisTemplate ?
 	);
 
 echo we_html_tools::getHtmlTop(g_l('global', '[question]')) .
-	we_html_element::jsScript(JS_DIR . 'template_save_question.js');
+ we_html_element::jsScript(JS_DIR . 'template_save_question.js', '', ['id' => 'loadVarTemplate_save_question', 'data-editorSave' => setDynamicVar([
+		'we_transaction' => $we_transaction,
+		'we_responseJS' => $GLOBALS['we_responseJS'],
+		'we_cmd6' => $we_cmd6
+	])]
+);
 ?>
-<script><!--
-
-	function pressed_yes_button() {
-		opener.top.we_cmd('save_document', '<?= $we_transaction; ?>', 0, 1, 1, '<?= str_replace("'", "\\'", $GLOBALS['we_responseJS']); ?>', "<?= $we_cmd6; ?>");
-		self.close();
-
-	}
-
-	function pressed_no_button() {
-		opener.top.we_cmd('save_document', '<?= $we_transaction; ?>', 0, 1, 0, '<?= str_replace("'", "\\'", $GLOBALS['we_responseJS']) ?>', "<?= $we_cmd6; ?>");
-		self.close();
-	}
-
-//-->
-</script>
 </head>
 <body class="weEditorBody" onload="self.focus();" onblur="self.focus()">
 	<?= we_html_tools::htmlYesNoCancelDialog($alerttext, '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', true, true, true, 'pressed_yes_button()', 'pressed_no_button()', 'pressed_cancel_button()'); ?>

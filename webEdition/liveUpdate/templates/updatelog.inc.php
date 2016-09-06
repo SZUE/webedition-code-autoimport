@@ -122,25 +122,11 @@ if($this->Data['allEntries']){ // entries exist
 </form>';
 }
 
-
-echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, we_html_element::jsElement('
+echo liveUpdateTemplates::getHtml(g_l('liveUpdate', '[updatelog][headline]'), $content, we_html_element::jsScript(JS_DIR . 'update/updatelog.js') .
+	we_html_element::jsElement('
 function confirmDelete() {
 	if (confirm("' . g_l('liveUpdate', '[updatelog][confirmDelete]') . '")) {
 		deleteEntries();
 	}
 }
-
-function deleteEntries() {
-	document.we_form.log_cmd.value = "deleteEntries";
-	document.we_form.submit();
-}
-
-function lastEntries() {
-	document.we_form.log_cmd.value = "lastEntries";
-	document.we_form.submit();
-}
-
-function nextEntries() {
-	document.we_form.log_cmd.value = "nextEntries";
-	document.we_form.submit();
-}'), $buttons);
+'), $buttons);

@@ -125,7 +125,7 @@ class we_imageDocument extends we_binaryDocument{
 		if(($tmp = $this->getElement('data'))){
 			return we_thumbnail::getimagesize($tmp);
 		}
-		return array(0, 0, 0, '');
+		return [0, 0, 0, ''];
 	}
 
 	/**
@@ -268,10 +268,10 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	 * @desc returns the rollover attribs as array
 	 */
 	function getRollOverAttribsArr($child = true){
-		return $this->getElement('RollOverFlag') ? array(
+		return $this->getElement('RollOverFlag') ? [
 			'onmouseover' => ($child ? 'if(this.firstChild){ this.firstChild' : '{this') . '.src = img' . self::$imgCnt . 'Over.src; }',
 			'onmouseout' => ($child ? 'if(this.firstChild){ this.firstChild' : '{this') . '.src = img' . self::$imgCnt . 'Out.src;}',
-			) :
+			] :
 			[];
 	}
 
