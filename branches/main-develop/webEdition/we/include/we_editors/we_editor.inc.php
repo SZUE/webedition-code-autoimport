@@ -503,7 +503,7 @@ if(
 
 					if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 2)){
 //this is the second call to save_document (see next else command)
-						we_editor_save::templateSaveQuestion($we_transaction, $isTemplatesUsedByThisTemplate, $GLOBALS['we_responseJS']);
+						we_editor_save::templateSaveQuestion($we_transaction, $isTemplatesUsedByThisTemplate, $nrDocsUsedByThisTemplate, $GLOBALS['we_responseJS']);
 						$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]); // save the changed object in session
 						exit();
 					} else if(!we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3) && $somethingNeedsToBeResaved){
@@ -547,8 +547,8 @@ top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype
 						exit();
 					}
 //FIXME: is this safe??? Code-Injection!
-					if(($js = we_base_request::_(we_base_request::JS, 'we_cmd', '', 6))){
-						$we_JavaScript .= $js;
+					if(($js = we_base_request::_(we_base_request::JSON, 'we_cmd', '', 6))){
+						$we_JavaScript .= 'top.we_cmd("' . implode('","', $js) . '");';
 					}
 				} else {
 					if((!permissionhandler::hasPerm('NEW_SONSTIGE')) && $we_doc->ContentType == we_base_ContentTypes::APPLICATION && in_array($we_doc->Extension, we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::HTML))){
@@ -669,8 +669,8 @@ top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype
 							$we_responseTextType = we_message_reporting::WE_MESSAGE_ERROR;
 						}
 					}
-					if(($js = we_base_request::_(we_base_request::JS, 'we_cmd', '', 6))){
-						$we_JavaScript .= $js;
+					if(($js = we_base_request::_(we_base_request::JSON, 'we_cmd', '', 6))){
+						$we_JavaScript .= 'top.we_cmd("' . implode('","', $js) . '");';
 						$isClose = preg_match('|closeDocument|', $js);
 					} else if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 4) && (!$wf_flag)){
 						$we_doc->makeSameNew();

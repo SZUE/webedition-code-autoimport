@@ -96,7 +96,7 @@ abstract class we_editor_save{
 						1 => $we_transaction,
 						2 => 1,
 						5 => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 5), //is json64
-						6 => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6),
+						6 => we_base_request::_(we_base_request::RAW, 'we_cmd', '', 6), //is json64
 					],
 					'we_transaction' => $we_transaction,
 					'we_complete_request' => 1
@@ -106,8 +106,8 @@ new (WE().util.jsWindow)(window, url,"templateSaveQuestion",-1,-1,400,170,true,f
 '), '<body></body>');
 	}
 
-	public static function templateSaveQuestion($we_transaction, $isTemplatesUsedByThisTemplate, $we_responseJS){
-		$we_cmd6 = we_base_request::_(we_base_request::JS, 'we_cmd', '', 6);
+	public static function templateSaveQuestion($we_transaction, $isTemplatesUsedByThisTemplate,$nrDocsUsedByThisTemplate, $we_responseJS){
+		$we_cmd6 = we_base_request::_(we_base_request::JSON, 'we_cmd', '', 6);
 
 		$alerttext = ($isTemplatesUsedByThisTemplate ?
 				g_l('alert', '[template_save_warning2]') :
