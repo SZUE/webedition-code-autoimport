@@ -212,7 +212,7 @@ function weChangeDocType(f) {
 }
 
 function handle_eventStep0(evt) {
-	var f = self.document.we_form;
+	var f = top.wizbody.document.we_form;
 	switch (evt) {
 		case 'previous':
 			break;

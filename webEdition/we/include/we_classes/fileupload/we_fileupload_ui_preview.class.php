@@ -240,7 +240,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 					we_html_forms::radiobutton('rename', true, "sameName", g_l('importFiles', '[sameName_rename]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;') .
 					we_html_forms::radiobutton('nothing', false, "sameName", g_l('importFiles', '[sameName_nothing]'), false, "defaultfont", 'document.we_form.fu_file_sameName.value=this.value;')
 				) .
-				we_html_tools::hidden('fu_file_sameName', 'rename')
+				we_html_element::htmlHidden('fu_file_sameName', 'rename')
 		);
 
 		$headline = g_l('importFiles', '[sameName_headline]');

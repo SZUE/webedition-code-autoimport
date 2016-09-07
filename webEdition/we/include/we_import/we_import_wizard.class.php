@@ -25,10 +25,6 @@
 class we_import_wizard extends we_import_wizardBase{
 	var $TemplateID = 0;
 
-	public function __construct(){
-		parent::__construct();
-	}
-
 	private function formCategory2($obj, $categories){
 		$js = (defined('OBJECT_TABLE')) ? "opener.wizbody.document.we_form.elements[\\'v[import_type]\\'][0].checked=true;" : "";
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','" . $js . "fillIDs();opener.top.we_cmd(\\'add_" . $obj . "Cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
@@ -163,7 +159,7 @@ function set_button_state() {
 	WE().layout.button.switch_button_state(top.wizbusy.document, 'next', 'enabled');
 }
 function handle_event(evt) {
-	handle_eventStep0(evt);
+	top.handle_eventStep0(evt);
 }",
 			we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('import', '[title]'))
 		];

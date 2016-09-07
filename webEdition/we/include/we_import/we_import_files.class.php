@@ -134,7 +134,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 		$cb = $this->callBack;
 		$pid = $this->parentID;
 		$ips = $this->isPreset;
-		$this->loadPropsFromSession();
+		$fileupload->loadImageEditPropsFromSession();
 		if($ips){
 			$this->callBack = $cb;
 			$this->parentID = $pid;
