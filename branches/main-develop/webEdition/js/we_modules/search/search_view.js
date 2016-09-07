@@ -28,36 +28,40 @@
 
 WE().util.loadConsts("weSearch");
 WE().util.loadConsts("g_l.weSearch");
+var searchConf = WE().util.getDynamicVar(document, 'loadVarSearch_view', 'data-searchConf');
 
 weSearch = {
-	conf: {
-		whichsearch: '',
-		editorBodyFrame: '',
-		tab: 0,
-		modelClassName: '',
-		modelID: 0,
-		modelIsFolder: 0,
-		showSelects: 0,
-		rows: 0,
-		we_transaction: '',
-	},
-	elems: {
-		btnTrash: '',
-		btnSelector: '',
-		fieldSearch: '',
-		selStatus: '',
-		selSpeicherart: '',
-		selLocation: '',
-		selLocationText: '',
-		selLocationDate: '',
-		selModFields: '',
-		selUsers: '',
-		pixel: '',
-		searchFields: ''
-	},
+	/*conf: {
+	 whichsearch: '',
+	 editorBodyFrame: '',
+	 tab: 0,
+	 modelClassName: '',
+	 modelID: 0,
+	 modelIsFolder: 0,
+	 showSelects: 0,
+	 rows: 0,
+	 we_transaction: '',
+	 },
+	 elems: {
+	 btnTrash: '',
+	 btnSelector: '',
+	 fieldSearch: '',
+	 selStatus: '',
+	 selSpeicherart: '',
+	 selLocation: '',
+	 selLocationText: '',
+	 selLocationDate: '',
+	 selModFields: '',
+	 selUsers: '',
+	 pixel: '',
+	 searchFields: ''
+	 },*/
+	conf: searchConf.conf,
+	elems: searchConf.elems,
 	elem: null,
 	rolloverElem: null,
 	init: function () {
+		weSearch.conf.editorBodyFrame = (weSearch.conf.editorBody === "window" ? window : top.content.editor.edbody);
 		if (weSearch.conf.editorBodyFrame.document.readyState === "complete") {
 			if (weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch)) {
 				weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch).innerHTML = weSearch.conf.editorBodyFrame.document.getElementById('movethemaway').innerHTML;

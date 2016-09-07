@@ -102,7 +102,7 @@ class we_selector_category extends we_selector_file{
 		$this->jsoptions['data']['makeNewCat'] = false;
 		$this->jsoptions['data']['we_editCatID'] = 0;
 		$this->jsoptions['data']['noChoose'] = intval($this->noChoose);
-		$this->jsoptions['data']['changeCatState']=$this->userCanChangeCat();
+		$this->jsoptions['data']['changeCatState'] = $this->userCanChangeCat();
 	}
 
 	function printCreateEntryHTML(){
@@ -120,12 +120,12 @@ class we_selector_category extends we_selector_file{
 		} elseif(preg_match('|[\\\'"<>/]|', $txt)){
 			$js.= we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
-			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
+			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter([
 					'Category' => $txt,
 					'ParentID' => intval($this->dir),
 					'Text' => $txt,
 					'Path' => $Path,
-			)));
+			]));
 			$folderID = $this->db->getInsertId();
 			$js.='top.fileSelect.data.currentPath = "' . $Path . '";
 top.fileSelect.data.currentID = "' . $folderID . '";
