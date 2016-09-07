@@ -777,14 +777,14 @@ weCollectionEdit = {
 					c = this.ct[this.view];
 
 					if (!this.dd.moveItem.removed) {
-						newPos = [].indexOf.call(c.children, el);
+						newPos = Array.indexOf.call(c.children, el);
 						c.removeChild(this.dd.moveItem.el);
 						c.insertBefore(this.getPlaceholder(), c.childNodes[newPos + (newPos >= this.dd.moveItem.pos ? 0 : -1)]);
 						this.dd.moveItem.removed = true;
 						return false;
 					}
 
-					newPos = [].indexOf.call(c.children, el);
+					newPos = Array.indexOf.call(c.children, el);
 					c.removeChild(this.getPlaceholder());
 					c.insertBefore(this.getPlaceholder(), c.childNodes[newPos]);
 				}
@@ -889,7 +889,7 @@ weCollectionEdit = {
 	},
 	startMoveItem: function (evt, view) {
 		var elem = this.getItem(evt.target),
-			position = [].indexOf.call(this.ct[view].children, elem);
+			position = Array.indexOf.call(this.ct[view].children, elem);
 
 		this.view = view;
 		this.dd.isMoveItem = true;
