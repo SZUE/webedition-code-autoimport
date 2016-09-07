@@ -160,7 +160,7 @@ var weFileUpload = (function () {
 
 			//add eventhandlers for some html elements
 			if (v.elems.fileSelect) {
-				v.elems.top.fileSelect.addEventListener('change', _.controller.fileSelectHandler, false);
+				v.elems.fileSelect.addEventListener('change', _.controller.fileSelectHandler, false);
 				v.elems.fileInputWrapper.addEventListener('click', _.controller.fileselectOnclick, false);
 			}
 			if (v.elems.fileDrag && _.view.isDragAndDrop) {
@@ -724,8 +724,8 @@ var weFileUpload = (function () {
 						if (cur.size <= this.chunkSize && !cur.img.editOptions.doEdit) {
 							this.sendNextChunk(false);
 						} else {
-							if (_.view.elems.fileSelect && _.view.elems.top.fileSelect.value) {
-								_.view.elems.top.fileSelect.value = '';
+							if (_.view.elems.fileSelect && _.view.elems.fileSelect.value) {
+								_.view.elems.fileSelect.value = '';
 							}
 
 							if (_.EDIT_IMAGES_CLIENTSIDE && _.controller.EDITABLE_CONTENTTYPES.indexOf(cur.type) !== -1 && cur.dataArray && cur.dataArray.length){
