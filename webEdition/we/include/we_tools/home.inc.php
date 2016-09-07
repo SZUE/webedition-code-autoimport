@@ -22,10 +22,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 $row = 0;
-$starttable = new we_html_table(array("cellpadding" => 7), 3, 1);
-$starttable->setCol($row++, 0, array('class' => "defaultfont titleline", "colspan" => 3), $title);
-$starttable->setCol($row++, 0, array('class' => 'defaultfont', "colspan" => 3), "");
-$starttable->setCol($row++, 0, array("style" => "text-align:center"), $content);
+$starttable = new we_html_table(["cellpadding" => 7], 3, 1);
+$starttable->setCol($row++, 0, ['class' => "defaultfont titleline", "colspan" => 3], $title);
+$starttable->setCol($row++, 0, ['class' => 'defaultfont', "colspan" => 3], "");
+$starttable->setCol($row++, 0, ["style" => "text-align:center"], $content);
 
 $tooldir = ($tool === 'weSearch' ? WE_INCLUDES_DIR . 'we_tools/' : WE_APPS_DIR);
 
