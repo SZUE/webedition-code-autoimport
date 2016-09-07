@@ -34,36 +34,34 @@ class we_doclist_view extends we_search_view{
 	 * @return javascript code
 	 */
 	public function getSearchJS($whichSearch = ''){
-		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0);
-
-		return we_html_element::jsScript(WE_JS_MODULES_DIR. 'search/search_view.js') .
-			we_html_element::jsElement('
-weSearch.conf = {
-	whichsearch: "' . we_search_view::SEARCH_DOCLIST . '",
-	we_transaction: "' . $this->Model->transaction . '",
-	editorBodyFrame : window,
-	rows: ' . (isset($_REQUEST['searchFields' . we_search_view::SEARCH_DOCLIST]) ? count($_REQUEST['searchFields' . we_search_view::SEARCH_DOCLIST]) - 1 : 0) . ',
-	tab: 0,
-	modelClassName: "placeholder",
-	modelID: "placeholder",
-	modelIsFolder: true,
-	//showSelects: "placeholder",
-	rows: 0,
-};
-weSearch.elems = {
-	btnTrash: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)")) . '\',
-	btnSelector: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . we_search_view::SEARCH_DOCLIST . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . we_search_view::SEARCH_DOCLIST . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]\\\'].value');", true, 60, 22)) . '\',
-	fieldSearch: \'' . str_replace("'", "\'", we_html_tools::htmlTextInput('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]"', 'text', 170)) . '\',
-	selStatus: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"])) . '\',
-	selSpeicherart: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"])) . '\',
-	selLocation: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"])) . '\',
-	selLocationDate: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"])) . '\',
-	selLocationText: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"])) . '\',
-	selModFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"])) . '\',
-	selUsers: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"])) . '\',
-	searchFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchFields' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", we_search_view::SEARCH_DOCLIST), 1, "", false, ['class' => "defaultfont", 'id' => "searchFields" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"])) . '\'
-};
-');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view.js', '', ['id' => 'loadVarSearch_view', 'data-searchConf' => setDynamicVar([
+					'conf' => [
+						'whichsearch' => we_search_view::SEARCH_DOCLIST,
+						'we_transaction' => $this->Model->transaction,
+						'editorBody' => 'window',
+						'rows' => (isset($_REQUEST['searchFields' . we_search_view::SEARCH_DOCLIST]) ? count($_REQUEST['searchFields' . we_search_view::SEARCH_DOCLIST]) - 1 : 0),
+						'tab' => 0,
+						'modelClassName' => "placeholder",
+						'modelID' => "placeholder",
+						'modelIsFolder' => true,
+						//showSelects: "placeholder",
+						'rows' => 0,
+					],
+					'elems' => [
+						'btnTrash' => we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)"),
+						'btnSelector' => we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . we_search_view::SEARCH_DOCLIST . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . we_search_view::SEARCH_DOCLIST . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]\\\'].value');", true, 60, 22),
+						'fieldSearch' => we_html_tools::htmlTextInput('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]"', 'text', 170),
+						'selStatus' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selSpeicherart' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selLocation' => we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selLocationDate' => we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selLocationText' => we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px;', 'id' => "location" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selModFields' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'selUsers' => we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]"]),
+						'searchFields' => we_html_tools::htmlSelect('searchFields' . we_search_view::SEARCH_DOCLIST . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", we_search_view::SEARCH_DOCLIST), 1, "", false, ['class' => "defaultfont", 'id' => "searchFields" . we_search_view::SEARCH_DOCLIST . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"]),
+					]
+					]
+		)]);
 	}
 
 	/**
@@ -176,7 +174,7 @@ weSearch.elems = {
 			['dat' => '<span onclick="weSearch.setOrder(\'SiteTitle\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . ($table == TEMPLATES_TABLE ? g_l('weClass', '[path]') : g_l('searchtool', '[seitentitel]') ) . ' <span id="SiteTitle_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('SiteTitle', we_search_view::SEARCH_DOCLIST) . '</span></span>'],
 			['dat' => '<span onclick="javascript:weSearch.setOrder(\'CreationDate\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . g_l('searchtool', '[created]') . ' <span id="CreationDate_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('CreationDate', we_search_view::SEARCH_DOCLIST) . '</span></span>'],
 			['dat' => '<span onclick="javascript:weSearch.setOrder(\'ModDate\', \'' . we_search_view::SEARCH_DOCLIST . '\');">' . g_l('searchtool', '[modified]') . ' <span id="ModDate_' . we_search_view::SEARCH_DOCLIST . '" >' . self::getSortImage('ModDate', we_search_view::SEARCH_DOCLIST) . '</span></span>'],
-			];
+		];
 	}
 
 	public function makeContent(array $result = [], $view = self::VIEW_LIST, $whichSearch = self::SEARCH_DOCS){

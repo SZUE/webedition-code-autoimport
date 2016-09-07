@@ -94,10 +94,9 @@ top.fileSelect.data.makeNewFolder=false;';
 				$js.= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
-				$js.='var ref;
+				$js.='
 if(top.opener.top.content.makeNewEntry){
-	ref = top.opener.top.content;
-	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
+	top.opener.top.content.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
 }' .
 					($this->canSelectDir ?
 						'top.fileSelect.data.currentPath = "' . $folder->Path . '";

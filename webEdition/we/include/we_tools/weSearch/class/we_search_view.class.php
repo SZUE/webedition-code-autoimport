@@ -235,33 +235,34 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 		$tab = we_base_request::_(we_base_request::INT, 'tab', we_base_request::_(we_base_request::INT, 'tabnr', 1));
 
 		$showSelects = '';
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view.js') .
-			we_html_element::jsElement('
-weSearch.conf = {
-	whichsearch: "' . $whichSearch . '",
-	editorBodyFrame : ' . $this->editorBodyFrame . ',
-	tab: "' . $tab . '",
-	modelClassName: "' . $this->Model->ModelClassName . '",
-	modelID: "' . $this->Model->ID . '",
-	modelIsFolder: ' . ($this->Model->IsFolder ? 1 : 0) . ',
-	showSelects: ' . ($showSelects ? 1 : 0) . ',
-	rows: ' . ($whichSearch == self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : (count($this->Model->getProperty('currentSearchFields')) - ($whichSearch == self::SEARCH_ADV ? 1 : 0))) . ',
-	//rows: ' . (count($this->Model->getProperty('currentSearchFields')) - ($whichSearch == self::SEARCH_ADV ? 1 : 0) /* : ($whichSearch == self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : (count($this->Model->getProperty('currentSearchFields')) - ($whichSearch == self::SEARCH_ADV ? 1 : 0))) */) . ',
-	we_transaction: "' . $GLOBALS["we_transaction"] . '",
-};
-weSearch.elems = {
-	btnTrash: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)")) . '\',
-	btnSelector: \'' . str_replace("'", "\'", we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . $whichSearch . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . $whichSearch . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . $whichSearch . "[__we_new_id__]\\\'].value', '', 0, '', '__we_content_types__');", true, 60, 22)) . '\',
-	fieldSearch: \'' . str_replace("'", "\'", we_html_tools::htmlTextInput('search' . $whichSearch . '[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="search' . $whichSearch . '[__we_new_id__]"', 'text', 170)) . '\',
-	selStatus: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
-	selSpeicherart: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
-	selLocation: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, array('class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"))) . '\',
-	selLocationDate: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, array('class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"))) . '\',
-	selLocationText: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, array('class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"))) . '\',
-	selModFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
-	selUsers: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, array('class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"))) . '\',
-	searchFields: \'' . str_replace("'", "\'", we_html_tools::htmlSelect('searchFields' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", $whichSearch), 1, "", false, array('class' => "defaultfont", 'id' => "searchFields" . $whichSearch . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"))) . '\'
-};');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view.js', '', ['id' => 'loadVarSearch_view', 'data-searchConf' => setDynamicVar([
+					'conf' => [
+						'whichsearch' => $whichSearch,
+						'editorBody' => $this->editorBodyFrame,
+						'tab' => $tab,
+						'modelClassName' => $this->Model->ModelClassName,
+						'modelID' => $this->Model->ID,
+						'modelIsFolder' => ($this->Model->IsFolder ? 1 : 0),
+						'showSelects' => ($showSelects ? 1 : 0),
+						'rows' => ($whichSearch == self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : (count($this->Model->getProperty('currentSearchFields')) - ($whichSearch == self::SEARCH_ADV ? 1 : 0))),
+						//rows: ' . (count($this->Model->getProperty('currentSearchFields')) - ($whichSearch == self::SEARCH_ADV ? 1 : 0) /* : ($whichSearch == self::SEARCH_MEDIA ? $this->searchMediaOptFieldIndex : (count($this->Model->getProperty('currentSearchFields')) - ($whichSearch == self::SEARCH_ADV ? 1 : 0))) */) . ',
+						'we_transaction' => $GLOBALS["we_transaction"],
+					],
+					'elems' => [
+						'btnTrash' => we_html_button::create_button(we_html_button::TRASH, "javascript:weSearch.delRow(__we_new_id__)"),
+						'btnSelector' => we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('__we_selector__', document.we_form.elements['search" . $whichSearch . "ParentID[__we_new_id__]'].value, '__we_sel_table__', 'document.we_form.elements[\\\'search" . $whichSearch . "ParentID[__we_new_id__]\\\'].value', 'document.we_form.elements[\\\'search" . $whichSearch . "[__we_new_id__]\\\'].value', '', 0, '', '__we_content_types__');", true, 60, 22),
+						'fieldSearch' => we_html_tools::htmlTextInput('search' . $whichSearch . '[__we_new_id__]', 58, '', '', ' __we_read_only__class="wetextinput" id="search' . $whichSearch . '[__we_new_id__]"', 'text', 170),
+						'selStatus' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsStatus(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
+						'selSpeicherart' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFieldsSpeicherart(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
+						'selLocation' => we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"]),
+						'selLocationDate' => we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"]),
+						'selLocationText' => we_html_tools::htmlSelect('location' . $whichSearch . '[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, ['class' => "defaultfont", 'style' => 'width:150px', 'id' => "location" . $whichSearch . "[__we_new_id__]"]),
+						'selModFields' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
+						'selUsers' => we_html_tools::htmlSelect('search' . $whichSearch . '[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont", 'style' => "width:170px;", 'id' => "search" . $whichSearch . "[__we_new_id__]"]),
+						'searchFields' => we_html_tools::htmlSelect('searchFields' . $whichSearch . '[__we_new_id__]', $this->searchclass->getFields("__we_new_id__", $whichSearch), 1, "", false, ['class' => "defaultfont", 'id' => "searchFields" . $whichSearch . "[__we_new_id__]", 'onchange' => "weSearch.changeit(this.value, __we_new_id__);"]),
+					]
+					]
+		)]);
 	}
 
 	public static function getJSConsts(){
@@ -1378,7 +1379,7 @@ weSearch.elems = {
 
 	function getJSProperty(){
 		return we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view3.js').
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'search/search_view3.js') .
 			we_html_element::jsElement('
 function submitForm(target,action,method) {
 	var f = self.document.we_form;

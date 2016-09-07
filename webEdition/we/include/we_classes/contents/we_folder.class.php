@@ -493,7 +493,7 @@ class we_folder extends we_root{
 				t_e('old path doesn\'t exist', $oldPath);
 				return false;
 			}
-			if($this->Table != TEMPLATES_TABLE){
+			if($this->Table == FILE_TABLE){
 				// renames the folder on the local machine in the root-dir+site-dir
 				$sitepath = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($this->Path, 1);
 				$siteoldPath = $_SERVER['DOCUMENT_ROOT'] . SITE_DIR . substr($this->OldPath, 1);
