@@ -74,51 +74,9 @@ top.document.forms[0].elements.newpasswd2.select();';
 	}
 
 	public static function showDialog(){
-		echo we_html_tools::getHtmlTop(g_l('global', '[changePass]'), '', '', we_html_element::jsElement('
-function saveOnKeyBoard() {
-	document.forms[0].submit();
-	return true;
-}
-function closeOnEscape() {
-	return true;
-}
-
-function comparePwd(f1,f2){
-	var pwd1=document.getElementsByName(f1)[0];
-	var pwd2=document.getElementsByName(f2)[0];
-	var re=/' . SECURITY_USER_PASS_REGEX . '/;
-	if(!re.test(pwd1.value)){
-		pwd1.classList.add("weMarkInputError");
-		return 1;
-	}else{
-		pwd1.classList.remove("weMarkInputError");
-		if(pwd1.value!=pwd2.value){
-			pwd2.classList.add("weMarkInputError");
-			return 2;
-		}else{
-			pwd2.classList.remove("weMarkInputError");
-		}
-	}
-	return 0;
-}
-function setPwdErr(status){
-	switch(status){
-		case 0:
-		document.getElementById(\'badPwd\').style.display=\'none\';
-		document.getElementById(\'badPwd2\').style.display=\'none\';
-		break;
-		case 1:
-		document.getElementById(\'badPwd\').style.display=\'block\';
-		document.getElementById(\'badPwd2\').style.display=\'none\';
-		break;
-		case 2:
-		document.getElementById(\'badPwd\').style.display=\'none\';
-		document.getElementById(\'badPwd2\').style.display=\'block\';
-		break;
-	}
-}
-
-'), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_html_element::htmlExIFrame('passwdcontent', self::getContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
+		echo we_html_tools::getHtmlTop(g_l('global', '[changePass]'), '', '', we_html_element::jsScript(JS_DIR . 'comparePwd.js', '', ['id' => 'loadVarComparePwd', 'data-passwd' => setDynamicVar([
+					'pwdCheck' => SECURITY_USER_PASS_REGEX
+			])]), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'self.focus();'], we_html_element::htmlExIFrame('passwdcontent', self::getContent(), 'position:absolute;top:0px;bottom:1px;left:0px;right:0px;overflow: hidden;') .
 				self::getLoad()
 		));
 	}

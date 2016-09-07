@@ -1215,27 +1215,9 @@ _multiEditorreload = true;';
 		$yuiSuggest = & weSuggest::getInstance();
 		switch($tab){
 			case self::TAB_DATA:
-				return weSuggest::getYuiFiles() .
-					we_html_element::jsElement('
-function comparePwd(f1,f2){
-	var pwd1=document.getElementsByName(f1)[0];
-	var pwd2=document.getElementsByName(f2)[0];
-	var re=/' . SECURITY_USER_PASS_REGEX . '/;
-	if(!re.test(pwd1.value)){
-		pwd1.classList.add("weMarkInputError");
-		return 1;
-	}else{
-		pwd1.classList.remove("weMarkInputError");
-		if(pwd1.value!=pwd2.value){
-			pwd2.classList.add("weMarkInputError");
-			return 2;
-		}else{
-			pwd2.classList.remove("weMarkInputError");
-		}
-	}
-	return false;
-}
-') .
+				return weSuggest::getYuiFiles() . we_html_element::jsScript(JS_DIR . 'comparePwd.js', '', ['id' => 'loadVarComparePwd', 'data-passwd' => setDynamicVar([
+							'pwdCheck' => SECURITY_USER_PASS_REGEX
+					])]) .
 					$this->formGeneralData();
 			case self::TAB_PERMISSION:
 				return $this->formPermissions($perm_branch);
