@@ -25,22 +25,10 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 require_once (WE_INCLUDES_PATH . 'we_tag.inc.php');
 echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'loginScreen.css') .
 	we_html_element::jsElement('
-function comparePwd(f1,f2){
-	var pwd1=document.getElementsByName(f1)[0];
-	var pwd2=document.getElementsByName(f2)[0];
-	var re=/' . SECURITY_USER_PASS_REGEX . '/;
-	if(!re.test(pwd1.value)){
-		pwd1.classList.add("weMarkInputError");
-	}else{
-		pwd1.classList.remove("weMarkInputError");
-	if(pwd1.value!=pwd2.value){
-		pwd2.classList.add("weMarkInputError");
-	}else{
-		pwd2.classList.remove("weMarkInputError");
-	}
-	}
-}
-')) .
+var passwd ={
+	pwdCheck:JSON.parse(\'' . json_encode(SECURITY_USER_PASS_REGEX, JSON_UNESCAPED_UNICODE) . '\'),
+};')) .
+ we_html_element::jsScript(JS_DIR . 'comparePwd.js') .
  '<body id="loginScreen">';
 
 function defaultReset(){
