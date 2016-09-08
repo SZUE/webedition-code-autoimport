@@ -38,7 +38,7 @@ class we_selector_category extends we_selector_file{
 		$this->filter = '';
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
+	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::DO_RENAME_ENTRY:
 				$this->printDoRenameEntryHTML();
@@ -110,7 +110,10 @@ class we_selector_category extends we_selector_file{
 		$txt = trim($this->EntryText);
 		$Path = ($txt ? (!intval($this->dir) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db)) . '/' . $txt : '');
 
-		$js = 'top.clearEntries();';
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
+
+		$js = '';
 		if(empty($txt)){
 			$js.= we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
 		} else if(strpos($txt, ',') !== false){
@@ -138,14 +141,15 @@ if(top.fileSelect.data.currentID){
 top.fileSelect.data.makeNewCat = false;';
 		}
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
-				$js .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(top.fileSelect.data.currentID);'), we_html_element::htmlBody());
+		$js.=$this->printCmdAddEntriesHTML($weCmd) .
+			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->printCMDWriteAndFillSelectorHTML($weCmd);
+
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds() .
+			we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
-	function printHeaderHeadlines(){
+	protected function printHeaderHeadlines(){
 		return '
 <table class="headerLines" style="width:100%">
 	<tr>
@@ -159,7 +163,10 @@ top.fileSelect.data.makeNewCat = false;';
 		$this->EntryText = rawurldecode($this->EntryText);
 		$txt = trim($this->EntryText);
 		$Path = ($txt ? (!intval($this->dir) ? '' : f('SELECT Path FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db)) . '/' . $txt : '');
-		$js = 'top.clearEntries();';
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
+
+		$js = '';
 
 		if(!$txt){
 			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
@@ -187,13 +194,13 @@ if(top.fileSelect.data.currentID){
 	top.showPref(top.fileSelect.data.currentID);
 }';
 		}
+		$js.=$this->printCmdAddEntriesHTML($weCmd) .
+			'top.document.getElementsByName("fname")[0].value = "";
+top.selectFile(' . $this->we_editCatID . ');top.fileSelect.data.makeNewCat=false;';
+		$this->printCMDWriteAndFillSelectorHTML($weCmd);
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
-				$js .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.document.getElementsByName("fname")[0].value = "";
-top.selectFile(' . $this->we_editCatID . ');top.fileSelect.data.makeNewCat=false;'), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds() .
+			we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
 	protected function printCmdHTML($morejs = ''){
@@ -239,6 +246,8 @@ top.selectFile(' . $this->we_editCatID . ');top.fileSelect.data.makeNewCat=false
 	}
 
 	function printDoDelEntryHTML(){
+		$weCmd = new we_base_jsCmd();
+
 		$js = '';
 		if(($catsToDel = we_base_request::_(we_base_request::INTLISTA, 'todel', []))){
 			$finalDelete = [];
@@ -274,20 +283,21 @@ top.selectFile(' . $this->we_editCatID . ');top.fileSelect.data.makeNewCat=false
 			$Path = ($this->id ?
 					f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($this->id), '', $this->db) :
 					'');
+			$weCmd = new we_base_jsCmd();
+			$weCmd->addCmd('clearEntries');
 
 			$js.=
-				'top.clearEntries();
-top.fileSelect.data.makeNewCat = false;' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.fileSelect.data.currentPath="' . $Path . '";
+				$this->printCmdAddEntriesHTML($weCmd) .
+				'top.fileSelect.data.makeNewCat = false;
+top.fileSelect.data.currentPath="' . $Path . '";
 top.fileSelect.data.currentID="' . $this->id . '";
 top.selectFile(' . $this->id . ');
 if(top.fileSelect.data.currentID && top.document.getElementsByName("fname")[0].value != ""){
 	top.enableDelBut();
 }';
+			$this->printCMDWriteAndFillSelectorHTML($weCmd);
 		}
-		echo we_html_tools::getHtmlTop('', '', '', ($js ? we_html_element::jsElement($js) : ''), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . ($js ? we_html_element::jsElement($js) : ''), we_html_element::htmlBody());
 
 		return;
 	}

@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -22,8 +24,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-sel_color = "#697ace";
-default_color = "#000000";
+var sel_color = "#697ace";
+var default_color = "#000000";
 
 // Highlighting-Stuff start
 function selectEntryHandler(id) {
@@ -146,9 +148,8 @@ function close_win(name) {
 
 
 function init_check() {
-	var i;
-	for (i = 0; i < opener.current_sel.length; i++) {
-		if (opener.current_sel[i][0] != 'we_message') {
+	for (var i = 0; i < opener.current_sel.length; i++) {
+		if (opener.current_sel[i][0] !== 'we_message') {
 			continue;
 		}
 		check(opener.current_sel[i][1] + '&' + opener.current_sel[i][2]);

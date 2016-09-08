@@ -77,7 +77,7 @@ class we_selector_file{
 
 	public function __construct($id, $table = FILE_TABLE, $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $rootDirID = 0, $multiple = true, $filter = '', $startID = 0){
 		if(!isset($_SESSION['weS']['we_fs_lastDir'])){
-			$_SESSION['weS']['we_fs_lastDir'] = array($table => 0);
+			$_SESSION['weS']['we_fs_lastDir'] = [$table => 0];
 		}
 
 		$this->db = new DB_WE();
@@ -150,27 +150,15 @@ class we_selector_file{
 		$this->id = $this->dir;
 		$this->path = '';
 
-		$this->values = array(
+		$this->values = [
 			'ParentID' => 0,
 			'Text' => '/',
 			'Path' => '/',
 			'IsFolder' => 1
-		);
+		];
 	}
 
-	function isIDInFolder($ID, $folderID, we_database_base $db = null){
-		if($folderID == $ID){
-			return true;
-		}
-		$db = ($db ? : new DB_WE());
-		$pid = f('SELECT ParentID FROM ' . $db->escape($this->table) . ' WHERE ID=' . intval($ID), '', $db);
-		if($pid == $folderID){
-			return true;
-		}
-		return $pid && $this->isIDInFolder($pid, $folderID, $db);
-	}
-
-	function query(){
+	protected function query(){
 		$wsQuery = $this->table == NAVIGATION_TABLE && get_ws($this->table) ? ' ' . getWsQueryForSelector($this->table) : '';
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE ParentID=' . intval($this->dir) . ' ' .
 			( ($this->filter && $this->table != CATEGORY_TABLE ? 'AND ContentType="' . $this->db->escape($this->filter) . '" ' : '' ) . $wsQuery ) .
@@ -178,7 +166,7 @@ class we_selector_file{
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
+	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::BODY:
 				$this->printBodyHTML();
@@ -193,6 +181,7 @@ class we_selector_file{
 	}
 
 	function printFramesetHTML($withPreview = true){
+		$weCmd = new we_base_jsCmd();
 		$this->jsoptions = [
 			'options' => [
 				'rootDirID' => $this->rootDirID,
@@ -214,7 +203,8 @@ class we_selector_file{
 		$this->setDirAndID(); //set correct directory
 		echo we_html_tools::getHtmlTop($this->title, '', 'frameset', $this->getFramsetJSFile() .
 			$this->getExitOpen() .
-			we_html_element::jsElement($this->printCmdAddEntriesHTML() . 'self.focus();') .
+			we_html_element::jsElement($this->printCmdAddEntriesHTML($weCmd) . 'self.focus();') .
+			$weCmd->getCmds() .
 			we_html_element::cssLink(CSS_DIR . 'selectors.css'), $this->getFrameset($withPreview));
 	}
 
@@ -239,9 +229,9 @@ class we_selector_file{
 
 	protected function getFrameset(){
 		return '<body class="selector" onload="top.document.getElementById(\'fspath\').innerHTML=(top.fileSelect.data.startPath === \'\' ? \'/\' : top.fileSelect.data.startPath);startFrameset();">' .
-			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
+			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
-			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
+			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
 			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient']) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>';
@@ -292,10 +282,14 @@ function exit_open(){' .
 
 	protected function printHeaderHTML(){
 		$this->setDirAndID();
+		$weCmd = new we_base_jsCmd();
 		$do = (!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE;
+		if($do){
+			$this->printCMDWriteAndFillSelectorHTML($weCmd, false);
+		}
 		return
 			($do ? $this->printHeaderTable() : '') .
-			we_html_element::jsElement(($do ? $this->printCMDWriteAndFillSelectorHTML(false) : '')) .
+			$weCmd->getCmds() .
 			$this->printHeaderHeadlines();
 	}
 
@@ -314,7 +308,7 @@ function exit_open(){' .
 </table>';
 	}
 
-	function printHeaderHeadlines(){
+	protected function printHeaderHeadlines(){
 		return '
 <table class="headerLines">
 	<tr>
@@ -326,48 +320,56 @@ function exit_open(){' .
 	}
 
 	protected function printCmdHTML($morejs = ''){
-		echo we_html_element::jsElement('
-top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
+		$js = $this->printCmdAddEntriesHTML($weCmd) .
 			(intval($this->dir) == intval($this->rootDirID) ?
 				'top.disableRootDirButs();' :
 				'top.enableRootDirButs();') .
 			'top.fileSelect.data.currentPath = "' . $this->path . '";
 top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";
 ' .
-			$morejs);
+			$morejs;
+		$this->printCMDWriteAndFillSelectorHTML($weCmd);
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
-	protected function printCmdAddEntriesHTML(){
-		$ret = '';
+	protected function printCmdAddEntriesHTML(we_base_jsCmd $weCmd){
 		$this->query();
+		$entries = [];
 		while($this->db->next_record()){
-			$ret.= 'top.addEntry(' . $this->db->f("ID") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Text")), '"') . '",' . $this->db->f("IsFolder") . ',"' . addcslashes(str_replace(array("\n", "\r"), "", $this->db->f("Path")), '"') . '","' . $this->db->f("ContentType") . '");';
+			$entries[] = [
+				$this->db->f("ID"),
+				str_replace(["\n", "\r"], "", $this->db->f("Text")),
+				$this->db->f("IsFolder"),
+				str_replace(["\n", "\r"], "", $this->db->f("Path")),
+				$this->db->f("ContentType")
+			];
 		}
-		return $ret;
+		$weCmd->addCmd('addEntries', $entries);
 	}
 
-	protected function printCMDWriteAndFillSelectorHTML($withWrite = true){
+	protected function printCMDWriteAndFillSelectorHTML(we_base_jsCmd $weCmd, $withWrite = true){
 		$pid = $this->dir;
-		$out = '';
+		$options = [];
 		$c = 0;
 		while($pid != 0){
 			$c++;
 			$this->db->query('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid));
 			if($this->db->next_record()){
-				$out = 'top.addOption("' . $this->db->f('Text') . '",' . $this->db->f('ID') . ');' . $out;
+				$options[] = [$this->db->f('Text'), $this->db->f('ID')];
 			}
 			$pid = $this->db->f('ParentID');
 			if($c > 500){
 				$pid = 0;
 			}
 		}
-		return ($withWrite ? 'top.writeBody(top.fsbody.document.body);' : '') . '
-top.clearOptions();
-top.addOption("/",0);' .
-			$out . '
-top.selectIt();';
+		$options[] = ['/', 0];
+		//we need to reverse the array, cause root is at the end
+		$weCmd->addCmd('writeOptions', array_reverse($options));
+		if($withWrite){
+			$weCmd->addCmd('writeBody');
+		}
 	}
 
 	protected function printFooterTable(){
@@ -377,7 +379,7 @@ top.selectIt();';
 <table id="footer">
 	<tr>
 		<td class="defaultfont description">' . g_l('fileselector', '[name]') . '</td>
-		<td class="defaultfont" style="text-align:left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", "style=\"width:100%\" readonly=\"readonly\"") . '</td>
+		<td class="defaultfont" style="text-align:left">' . we_html_tools::htmlTextInput("fname", 24, $this->values["Text"], "", 'style="width:100%" readonly="readonly"') . '</td>
 	</tr>
 </table>
 <div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';

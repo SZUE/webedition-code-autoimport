@@ -1,5 +1,3 @@
-we/include/we_TemplateSave.inc.php
-we/include/we_editors/we_template_save_question.inc.php
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -451,6 +449,7 @@ we/include/we_editors/we_thumbnails_frameset.inc.php
 we/include/we_editors/we_thumbnails_footer.php
 we/include/we_editors/we_thumbnails.php
 we/include/we_editors/we_template_variant.inc.php
+we/include/we_editors/we_template_save_question.inc.php
 we/include/we_editors/we_showBinaryDoc.inc.php
 we/include/we_editors/we_recover_backup.php
 we/include/we_editors/we_rebuild.inc.php
@@ -650,6 +649,7 @@ we/include/we_classes/Getopt.php
 we/include/we_browser_check.inc.php
 we/include/we_browserDetect.inc.php
 we/include/we_active_integrated_modules.inc.php
+we/include/we_TemplateSave.inc.php
 we/include/we_ContentTypes.inc.php
 we/include/weTagWizard/we_tags/we_tag_redirectObjectSeoUrls.inc.php
 we/include/weTagWizard/we_tags/we_tag_pagelogger.inc.php
@@ -1147,3 +1147,4 @@ apps/toolfactory/hook/custom_hooks/dummy
 !editor
 !css/multiEditor
 !cms
+!apps/toolfactory/pattern

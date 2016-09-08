@@ -55,7 +55,7 @@ class we_customer_selector extends we_users_selector{
 		}
 	}
 
-	function query($optionalID = 0){
+	protected function query($optionalID = 0){
 		$pid = $this->dir;
 		$settings = new we_customer_settings();
 		$settings->load();
@@ -129,11 +129,13 @@ class we_customer_selector extends we_users_selector{
 	}
 
 	function printSetDirHTML(){
-		$js = 'top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
-			'top.' . (($this->dir) ? 'enable' : 'disable' ) . 'RootDirButs();';
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
 
+		$js = $this->printCmdAddEntriesHTML($weCmd) .
+			'top.' . (($this->dir) ? 'enable' : 'disable' ) . 'RootDirButs();';
+		$this->printCMDWriteAndFillSelectorHTML($weCmd);
+		
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			if($this->id == 0){
 				$this->path = '/';
@@ -143,7 +145,7 @@ top.fileSelect.data.currentID = "' . $this->id . '";';
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 		$js.='top.fileSelect.data.currentDir = "' . $this->dir . '";';
-		echo we_html_element::jsElement($js);
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
 	protected function getFramsetJSFile(){
@@ -160,17 +162,16 @@ top.fileSelect.data.currentID = "' . $this->id . '";';
 		return $out;
 	}
 
-	protected function printCMDWriteAndFillSelectorHTML($withWrite = true){
+	protected function printCMDWriteAndFillSelectorHTML(we_base_jsCmd $weCmd, $withWrite = true){
 		$elem = $this->getHeaderElements();
-		$out = '';
+		$options = [];
 		foreach($elem as $key => $val){
-			$out .= 'top.addOption("' . $val . '","' . $key . '");';
+			$options[] = [$val, $key];
 		}
-
-		return ($withWrite ? 'top.writeBody(top.fsbody.document.body);' : '') . '
-top.clearOptions();' .
-			$out . '
-top.selectIt();';
+		$weCmd->addCmd('writeOptions', $options);
+		if($withWrite){
+			$weCmd->addCmd('writeBody');
+		}
 	}
 
 }
