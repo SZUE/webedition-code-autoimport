@@ -124,8 +124,8 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 		}
 		$weCmd->addCmd('addEntries', $entries);
 		$ret.=' function startFrameset(){' . ($this->userCanMakeNewDir() ?
-				'top.enableNewFolderBut();' :
-				'top.disableNewFolderBut();') . '}';
+				'top.NewFolderBut(true);' :
+				'top.NewFolderBut(false);') . '}';
 		return $ret;
 	}
 

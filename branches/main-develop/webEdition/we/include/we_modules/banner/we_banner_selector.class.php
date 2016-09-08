@@ -48,7 +48,7 @@ class we_banner_selector extends we_selector_file{
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
 		$js = $this->printCmdAddEntriesHTML($weCmd) . '
-top.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
+top.RootDirButs(' . (intval($this->dir) == 0 ? 'false' : 'true') . ');
 top.fileSelect.data.currentDir = "' . $this->dir . '";
 top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";';
 		$this->printCMDWriteAndFillSelectorHTML($weCmd);

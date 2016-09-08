@@ -133,9 +133,9 @@ class we_customer_selector extends we_users_selector{
 		$weCmd->addCmd('clearEntries');
 
 		$js = $this->printCmdAddEntriesHTML($weCmd) .
-			'top.' . (($this->dir) ? 'enable' : 'disable' ) . 'RootDirButs();';
+			'top.RootDirButs(' . (($this->dir) ? 'true' : 'false' ) . ');';
 		$this->printCMDWriteAndFillSelectorHTML($weCmd);
-		
+
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			if($this->id == 0){
 				$this->path = '/';

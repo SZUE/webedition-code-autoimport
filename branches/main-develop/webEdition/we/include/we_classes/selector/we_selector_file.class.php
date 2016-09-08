@@ -324,8 +324,8 @@ function exit_open(){' .
 		$weCmd->addCmd('clearEntries');
 		$js = $this->printCmdAddEntriesHTML($weCmd) .
 			(intval($this->dir) == intval($this->rootDirID) ?
-				'top.disableRootDirButs();' :
-				'top.enableRootDirButs();') .
+				'top.RootDirButs(false);' :
+				'top.RootDirButs(true);') .
 			'top.fileSelect.data.currentPath = "' . $this->path . '";
 top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";
 ' .
