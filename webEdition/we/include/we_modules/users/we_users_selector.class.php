@@ -92,7 +92,7 @@ class we_users_selector extends we_selector_file{
 		$weCmd->addCmd('clearEntries');
 
 		$js = $this->printCmdAddEntriesHTML($weCmd) .
-			'top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
+			'top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 'true') . ');';
 		$this->printCMDWriteAndFillSelectorHTML($weCmd);
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){

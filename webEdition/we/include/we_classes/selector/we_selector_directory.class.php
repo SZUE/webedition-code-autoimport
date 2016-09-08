@@ -73,7 +73,7 @@ class we_selector_directory extends we_selector_file{
 
 	protected function printCmdHTML($morejs = ''){
 		parent::printCmdHTML(
-			($this->userCanMakeNewFolder ? 'top.enableNewFolderBut();' : 'top.disableNewFolderBut();') .
+			($this->userCanMakeNewFolder ? 'top.NewFolderBut(true);' : 'top.NewFolderBut(false);') .
 			$morejs
 		);
 	}
@@ -137,7 +137,7 @@ class we_selector_directory extends we_selector_file{
 		}
 		$weCmd->addCmd('addEntries', $entries);
 		$ret = ' function startFrameset(){
-top.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();}';
+top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');}';
 		return $ret;
 	}
 
@@ -271,7 +271,7 @@ top.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();}'
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
 		$js = $this->printCmdAddEntriesHTML($weCmd) .
-			($this->userCanMakeNewFolder ? 'top.enableNewFolderBut();' : 'top.disableNewFolderBut();') .
+			($this->userCanMakeNewFolder ? 'top.NewFolderBut(true);' : 'top.NewFolderBut(false);') .
 			$morejs .
 			($isWS ?
 				($morejs ? '' :
@@ -280,7 +280,7 @@ top.fileSelect.data.currentID="' . $this->id . '";'
 
 				) .
 				'top.unselectAllFiles();
-top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();
+top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 'true') . ');
 top.fileSelect.data.currentDir = "' . $this->dir . '";
 top.fileSelect.data.parentID = "' . $this->values['ParentID'] . '";' :
 				'');

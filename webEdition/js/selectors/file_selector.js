@@ -360,44 +360,44 @@ function enableDelBut() {
 function startFrameset() {
 }
 
-function disableRootDirButs() {
-	WE().layout.button.switch_button_state(document, "root_dir", "disabled");
-	WE().layout.button.switch_button_state(document, "btn_fs_back", "disabled");
-	top.fileSelect.data.rootDirButsState = false;
+function RootDirButs(enable) {
+	if (enable) {
+		WE().layout.button.switch_button_state(document, "root_dir", "enabled");
+		WE().layout.button.switch_button_state(document, "btn_fs_back", "enabled");
+	} else {
+		WE().layout.button.switch_button_state(document, "root_dir", "disabled");
+		WE().layout.button.switch_button_state(document, "btn_fs_back", "disabled");
+	}
+	top.fileSelect.data.rootDirButsState = enable;
 }
-function enableRootDirButs() {
-	WE().layout.button.switch_button_state(document, "root_dir", "enabled");
-	WE().layout.button.switch_button_state(document, "btn_fs_back", "enabled");
-	top.fileSelect.data.rootDirButsState = true;
-}
-function disableNewFolderBut() {
-	WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
-	top.fileSelect.data.makefolderState = false;
-}
-function enableNewFolderBut() {
-	WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
-	top.fileSelect.data.makefolderState = true;
-}
-function disableNewBut() {
-	WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
-	WE().layout.button.switch_button_state(document, "btn_add_cat", "disabled");
+function NewFolderBut(enable) {
+	if (enable) {
+		WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
+	} else {
+		WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
+	}
+	top.fileSelect.data.makefolderState = enable;
 }
 
-function enableNewBut() {
-	if (top.fileSelect.options.userCanEditCat) {
-		WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
-		WE().layout.button.switch_button_state(document, "btn_add_cat", "enabled");
+function NewBut(enable) {
+	if (enable) {
+		if (top.fileSelect.options.userCanEditCat) {
+			WE().layout.button.switch_button_state(document, "btn_new_dir", "enabled");
+			WE().layout.button.switch_button_state(document, "btn_add_cat", "enabled");
+		} else {
+			WE().layout.button.switch_button_state(document, "btn_new_dir", "disabled");
+			WE().layout.button.switch_button_state(document, "btn_add_cat", "disabled");
+		}
 	}
 }
 
-function disableNewFileBut() {
-	WE().layout.button.switch_button_state(document, "btn_add_file", "disabled");
-	top.fileSelect.data.newFileState = false;
-}
-
-function enableNewFileBut() {
-	WE().layout.button.switch_button_state(document, "btn_add_file", "enabled");
-	top.fileSelect.data.newFileState = true;
+function NewFileBut(enable) {
+	if (enable) {
+		WE().layout.button.switch_button_state(document, "btn_add_file", "enabled");
+	} else {
+		WE().layout.button.switch_button_state(document, "btn_add_file", "disabled");
+	}
+	top.fileSelect.data.newFileState = enable;
 }
 
 function clearOptions() {
