@@ -32,7 +32,7 @@ class we_base_jsCmd{
 
 	public function addCmd($cmd, $data = ''){
 		$this->cmds[] = $cmd;
-		$this->cmdData[] = $data ? setDynamicVar($data) : '';
+		$this->cmdData[] = $data !== '' ? setDynamicVar($data) : '';
 	}
 
 	public function getCmds(){

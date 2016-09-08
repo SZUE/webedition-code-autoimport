@@ -99,16 +99,22 @@ class we_voting_dirSelector extends we_selector_directory{
 				$js.=we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
-				$js.='var ref;
-if(top.opener.top.content.makeNewEntry){
-	ref = top.opener.top.content;
-	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:1});
-}
-' . ($this->canSelectDir ?
-						'top.fileSelect.data.currentPath = "' . $folder->Path . '";
-top.fileSelect.data.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-' : '');
+				$weCmd->addCmd('makeNewTreeEntry', [
+					'id' => $folder->ID,
+					'parentid' => $folder->ParentID,
+					'text' => $txt,
+					'open' => 1,
+					'contenttype' => "folder",
+					'table' => $this->table,
+					'published' => 1
+				]);
+				if($this->canSelectDir){
+					$weCmd->addCmd('updateSelectData', [
+						'currentPath' => $folder->Path,
+						'currentID' => $folder->ID,
+					]);
+				}
+				$js.=($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '');
 			}
 		}
 

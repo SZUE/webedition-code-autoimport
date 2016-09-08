@@ -601,7 +601,7 @@ function weWriteBreadCrumb(BreadCrumb){
 
 	protected function setFramesetJavaScriptOptions(){
 		parent::setFramesetJavaScriptOptions();
-		$this->jsoptions['options']['canSelectDir'] = intval($this->canSelectDir);
+
 		$this->jsoptions['options']['useID'] = intval($this->useID);
 		switch($this->table){
 			case FILE_TABLE:
