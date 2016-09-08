@@ -100,14 +100,18 @@ class we_banner_dirSelector extends we_selector_directory{
 				$js.= we_message_reporting::getShowMessageCall(g_l('modules_banner', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
+				if($this->canSelectDir){
+					$weCmd->addCmd('updateSelectData', [
+						'currentID' => $folder->ID,
+						'currentPath' => $folder->Path,
+					]);
+				}
 				$js.='
 if(top.opener.top.content.makeNewEntry){
 	top.opener.top.content.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
 }' .
 					($this->canSelectDir ?
-						'top.fileSelect.data.currentPath = "' . $folder->Path . '";
-top.fileSelect.data.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
+						'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 			}
 		}

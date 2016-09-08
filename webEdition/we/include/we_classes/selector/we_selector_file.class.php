@@ -285,7 +285,7 @@ function exit_open(){' .
 		$weCmd = new we_base_jsCmd();
 		$do = (!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE;
 		if($do){
-			$this->printCMDWriteAndFillSelectorHTML($weCmd, false);
+			$this->setSelectorData($weCmd, false);
 		}
 		return
 			($do ? $this->printHeaderTable() : '') .
@@ -322,15 +322,16 @@ function exit_open(){' .
 	protected function printCmdHTML($morejs = ''){
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
+		$weCmd->addCmd('updateSelectData', [
+			'currentPath' => $this->path,
+			'parentID' => $this->values["ParentID"],
+		]);
 		$js = $this->printCmdAddEntriesHTML($weCmd) .
 			(intval($this->dir) == intval($this->rootDirID) ?
 				'top.RootDirButs(false);' :
 				'top.RootDirButs(true);') .
-			'top.fileSelect.data.currentPath = "' . $this->path . '";
-top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";
-' .
 			$morejs;
-		$this->printCMDWriteAndFillSelectorHTML($weCmd);
+		$this->setSelectorData($weCmd);
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
@@ -349,7 +350,7 @@ top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";
 		$weCmd->addCmd('addEntries', $entries);
 	}
 
-	protected function printCMDWriteAndFillSelectorHTML(we_base_jsCmd $weCmd, $withWrite = true){
+	protected function setSelectorData(we_base_jsCmd $weCmd, $withWrite = true){
 		$pid = $this->dir;
 		$options = [];
 		$c = 0;

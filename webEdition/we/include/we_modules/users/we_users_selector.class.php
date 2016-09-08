@@ -93,7 +93,7 @@ class we_users_selector extends we_selector_file{
 
 		$js = $this->printCmdAddEntriesHTML($weCmd) .
 			'top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 'true') . ');';
-		$this->printCMDWriteAndFillSelectorHTML($weCmd);
+		$this->setSelectorData($weCmd);
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$go = true;
@@ -105,13 +105,18 @@ class we_users_selector extends we_selector_file{
 			if($this->id == 0){
 				$this->path = '/';
 			}
-			$js.= 'top.fileSelect.data.currentPath = "' . $this->path . '";
-top.fileSelect.data.currentID = "' . $this->id . '";
-top.document.getElementsByName("fname")[0].value = "' . $this->values["Text"] . '";';
+			$weCmd->addCmd('updateSelectData', [
+				'currentPath' => $this->path,
+				'currentID' => $this->id,
+			]);
+			$js.= 'top.document.getElementsByName("fname")[0].value = "' . $this->values["Text"] . '";';
 		}
+		$weCmd->addCmd('updateSelectData', [
+			'currentDir' => $this->dir,
+			'parentID' => $this->values["ParentID"]
+		]);
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-		$js.= 'top.fileSelect.data.currentDir = "' . $this->dir . '";
-top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";';
+
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 

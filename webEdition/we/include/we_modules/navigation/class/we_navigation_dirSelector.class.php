@@ -102,15 +102,17 @@ class we_navigation_dirSelector extends we_selector_directory{
 				$js.=we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} else {
 				$folder->we_save();
+				if($this->canSelectDir){
+					$weCmd->addCmd('updateSelectData', [
+						'currentPath' => $folder->Path,
+						'currentID' => $folder->ID,
+					]);
+				}
 				$js.='
 if(top.opener.top.treeData.makeNewEntry){
 	top.opener.top.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:0,order:0});
 }' .
-					($this->canSelectDir ?
-						'top.fileSelect.data.currentPath = "' . $folder->Path . '";
-top.fileSelect.data.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' :
-						'');
+					($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '');
 			}
 		}
 		$js.=$this->printCmdAddEntriesHTML($weCmd) .

@@ -130,20 +130,24 @@ class we_selector_category extends we_selector_file{
 					'Path' => $Path,
 			]));
 			$folderID = $this->db->getInsertId();
-			$js.='top.fileSelect.data.currentPath = "' . $Path . '";
-top.fileSelect.data.currentID = "' . $folderID . '";
+			$weCmd->addCmd('updateSelectData', [
+				'currentPath' => $Path,
+				'currentID' => $folderID,
+				'makeNewCat' => false,
+			]);
+			$js.='
 top.hot = 1; // this is hot for category edit!!
 
 if(top.fileSelect.data.currentID){
-	top.enableDelBut();
+	top.DelBut(false);
 	top.showPref(top.fileSelect.data.currentID);
 }
-top.fileSelect.data.makeNewCat = false;';
+';
 		}
 
 		$js.=$this->printCmdAddEntriesHTML($weCmd) .
 			'top.selectFile(top.fileSelect.data.currentID);';
-		$this->printCMDWriteAndFillSelectorHTML($weCmd);
+		$this->setSelectorData($weCmd);
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds() .
 			we_html_element::jsElement($js), we_html_element::htmlBody());
@@ -185,26 +189,29 @@ top.fileSelect.data.makeNewCat = false;';
 				)) .
 				' WHERE ID=' . intval($this->we_editCatID));
 			$this->renameChildrenPath($this->we_editCatID);
-			$js.='top.fileSelect.data.currentPath = "' . $Path . '";
-
+			$weCmd->addCmd('updateSelectData', [
+				'currentPath' => $Path,
+				'currentID' => $this->we_editCatID
+			]);
+			$js.='
 top.hot = 1; // this is hot for category edit!!
-top.fileSelect.data.currentID = "' . $this->we_editCatID . '";
 if(top.fileSelect.data.currentID){
-	top.enableDelBut();
+	top.DelBut(true);
 	top.showPref(top.fileSelect.data.currentID);
 }';
 		}
 		$js.=$this->printCmdAddEntriesHTML($weCmd) .
 			'top.document.getElementsByName("fname")[0].value = "";
-top.selectFile(' . $this->we_editCatID . ');top.fileSelect.data.makeNewCat=false;';
-		$this->printCMDWriteAndFillSelectorHTML($weCmd);
+top.selectFile(top.fileSelect.data.currentID);
+top.fileSelect.data.makeNewCat=false;';
+		$this->setSelectorData($weCmd);
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds() .
 			we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
 	protected function printCmdHTML($morejs = ''){
-		parent::printCmdHTML((intval($this->dir) ? 'top.enableDelBut();' : 'top.disableDelBut();') . $morejs);
+		parent::printCmdHTML((intval($this->dir) ? 'top.DelBut(true);' : 'top.DelBut(false);') . $morejs);
 	}
 
 	private function renameChildrenPath($id, we_database_base $db = null){
@@ -285,17 +292,18 @@ top.selectFile(' . $this->we_editCatID . ');top.fileSelect.data.makeNewCat=false
 					'');
 			$weCmd = new we_base_jsCmd();
 			$weCmd->addCmd('clearEntries');
-
+			$weCmd->addCmd('updateSelectData', [
+				'makeNewCat' => false,
+				'currentPath' => $Path,
+				'currentID' => $this->id
+			]);
 			$js.=
-				$this->printCmdAddEntriesHTML($weCmd) .
-				'top.fileSelect.data.makeNewCat = false;
-top.fileSelect.data.currentPath="' . $Path . '";
-top.fileSelect.data.currentID="' . $this->id . '";
-top.selectFile(' . $this->id . ');
+				$this->printCmdAddEntriesHTML($weCmd) . '
+top.selectFile(top.fileSelect.data.currentID);
 if(top.fileSelect.data.currentID && top.document.getElementsByName("fname")[0].value != ""){
-	top.enableDelBut();
+	top.DelBut(true);
 }';
-			$this->printCMDWriteAndFillSelectorHTML($weCmd);
+			$this->setSelectorData($weCmd);
 		}
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . ($js ? we_html_element::jsElement($js) : ''), we_html_element::htmlBody());
 

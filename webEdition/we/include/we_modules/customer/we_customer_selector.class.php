@@ -134,7 +134,7 @@ class we_customer_selector extends we_users_selector{
 
 		$js = $this->printCmdAddEntriesHTML($weCmd) .
 			'top.RootDirButs(' . (($this->dir) ? 'true' : 'false' ) . ');';
-		$this->printCMDWriteAndFillSelectorHTML($weCmd);
+		$this->setSelectorData($weCmd);
 
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
 			if($this->id == 0){
@@ -162,7 +162,7 @@ top.fileSelect.data.currentID = "' . $this->id . '";';
 		return $out;
 	}
 
-	protected function printCMDWriteAndFillSelectorHTML(we_base_jsCmd $weCmd, $withWrite = true){
+	protected function setSelectorData(we_base_jsCmd $weCmd, $withWrite = true){
 		$elem = $this->getHeaderElements();
 		$options = [];
 		foreach($elem as $key => $val){

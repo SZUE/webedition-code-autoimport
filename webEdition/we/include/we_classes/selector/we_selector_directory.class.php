@@ -270,19 +270,20 @@ top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');}';
 		}
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
+		if($isWS){
+			$weCmd->addCmd('updateSelectData', [
+				'currentDir' => $this->dir,
+				'parentID' => $this->values['ParentID'],
+				'currentPath' => $this->path,
+				'currentID' => $this->id,
+			]);
+		}
 		$js = $this->printCmdAddEntriesHTML($weCmd) .
-			($this->userCanMakeNewFolder ? 'top.NewFolderBut(true);' : 'top.NewFolderBut(false);') .
 			$morejs .
 			($isWS ?
-				($morejs ? '' :
-					'top.fileSelect.data.currentPath="' . $this->path . '";
-top.fileSelect.data.currentID="' . $this->id . '";'
-
-				) .
 				'top.unselectAllFiles();
-top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 'true') . ');
-top.fileSelect.data.currentDir = "' . $this->dir . '";
-top.fileSelect.data.parentID = "' . $this->values['ParentID'] . '";' :
+top.NewFolderBut(' . ($this->userCanMakeNewFolder ? 'true' : 'false') . ');
+top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 'true') . ');' :
 				'');
 		$this->setWriteSelectorData($weCmd);
 
@@ -293,8 +294,10 @@ top.fileSelect.data.parentID = "' . $this->values['ParentID'] . '";' :
 	private function printNewFolderHTML(){
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
-		$js = 'top.fileSelect.data.makeNewFolder=true;' .
-			$this->printCmdAddEntriesHTML($weCmd);
+		$weCmd->addCmd('updateSelectData', [
+			'makeNewFolder' => true
+		]);
+		$js = $this->printCmdAddEntriesHTML($weCmd);
 		$this->setWriteSelectorData($weCmd);
 
 		echo $weCmd->getCmds() .
@@ -314,10 +317,14 @@ top.fileSelect.data.parentID = "' . $this->values['ParentID'] . '";' :
 		}
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
+		if($msg){
+			$weCmd->addCmd('msg', ['msg' => $msg, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+		}
 
-		$js = '
-top.fileSelect.data.makeNewFolder=false;' .
-			($msg ? we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
+		$weCmd->addCmd('updateSelectData', [
+			'makeNewFolder' => false,
+		]);
+		$js = ($msg ? '' :
 				'var ref=(top.opener.top.treeData?top.opener.top:(top.opener.top.opener.top.treeData?top.opener.top.opener.top:null));
 if(ref){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});
@@ -335,7 +342,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '
 
 	protected function getFrameset($withPreview = true){
 		return '<body class="selector" onload="top.document.getElementById(\'fspath\').innerHTML=(top.fileSelect.data.startPath === \'\' ? \'/\' : top.fileSelect.data.startPath);startFrameset();">' .
-			we_html_element::htmlDiv(array('id' => 'fsheader'), $this->printHeaderHTML()) .
+			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, $withPreview ? 'preview' : '') .
 			($withPreview ? we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) : '') .
 			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
@@ -355,9 +362,10 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '
 		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			$weCmd = new we_base_jsCmd();
 			$weCmd->addCmd('clearEntries');
-			$js = '
-top.fileSelect.data.we_editDirID=' . $this->we_editDirID . ';' .
-				$this->printCmdAddEntriesHTML($weCmd);
+			$weCmd->addCmd('updateSelectData', [
+				'we_editDirID' => $this->we_editDirID
+			]);
+			$js = $this->printCmdAddEntriesHTML($weCmd);
 
 			$this->setWriteSelectorData($weCmd);
 			echo $weCmd->getCmds() .

@@ -42,24 +42,35 @@ class we_newsletter_dirSelector extends we_selector_directory{
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
 
-		$js = '
-top.fileSelect.data.makeNewFolder=false;' .
-			($msg ?
-				we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
+		if($msg){
+			$weCmd->addCmd('updateSelectData', [
+				'makeNewFolder' => false,
+			]);
+			$weCmd->addCmd('msg', ['msg' => $msg, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+		} else {
+			$weCmd->addCmd('updateSelectData', [
+				'makeNewFolder' => false,
+			]);
+			if($this->canSelectDir){
+				$weCmd->addCmd('updateSelectData', [
+					'currentPath' => $folder->Path,
+					'currentID' => $folder->ID
+				]);
+			}
+		}
+		$js = ($msg ?
+				'' :
 				'var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '",published:1});
 }
 ' .
-				($this->canSelectDir ?
-					'top.fileSelect.data.currentPath = "' . $folder->Path . '";
-top.fileSelect.data.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-' : '')
+				($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '')
 			) .
 			$this->printCmdAddEntriesHTML($weCmd) .
 			'top.selectFile(top.fileSelect.data.currentID);';
+
 		$this->setWriteSelectorData($weCmd);
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() .
 			we_html_element::jsElement($js), we_html_element::htmlBody());

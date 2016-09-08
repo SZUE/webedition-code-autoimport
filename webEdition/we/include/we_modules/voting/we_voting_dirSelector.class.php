@@ -170,10 +170,13 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 			} elseif(f('SELECT Text FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE ID=' . intval($this->we_editDirID), "", $this->db) != $txt){
 				$folder->we_save();
 				$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID]);
-				$js.= ($this->canSelectDir ?
-						'top.fileSelect.data.currentPath = "' . $folder->Path . '";
-top.fileSelect.data.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
+				if($this->canSelectDir){
+					$weCmd->addCmd('updateSelectData', [
+						'currentPath' => $folder->Path,
+						'currentID' => $folder->ID
+					]);
+				}
+				$js.= ($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 			}
 		}

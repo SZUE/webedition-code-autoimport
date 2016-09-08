@@ -251,7 +251,7 @@ function unselectAllFiles() {
 		}
 	}
 	top.document.getElementsByName("fname")[0].value = "";
-	top.disableDelBut();
+	top.DelBut(false);
 }
 
 function queryString(what, id, o) {
@@ -343,17 +343,17 @@ function press_ok_button() {
 	}
 }
 
-function disableDelBut() {
-	WE().layout.button.switch_button_state(document, "delete", "disabled");
-	WE().layout.button.switch_button_state(document, "btn_function_trash", "disabled");
-	top.fileSelect.data.changeCatState = false;
-}
-
-function enableDelBut() {
-	WE().layout.button.switch_button_state(document, "delete", "enabled");
-	if (top.fileSelect.options.userCanEditCat) {
-		WE().layout.button.switch_button_state(document, "btn_function_trash", "enabled");
-		top.fileSelect.data.changeCatState = true;
+function DelBut(enable) {
+	if (enable) {
+		WE().layout.button.switch_button_state(document, "delete", "enabled");
+		if (top.fileSelect.options.userCanEditCat) {
+			WE().layout.button.switch_button_state(document, "btn_function_trash", "enabled");
+			top.fileSelect.data.changeCatState = true;
+		}
+	} else {
+		WE().layout.button.switch_button_state(document, "delete", "disabled");
+		WE().layout.button.switch_button_state(document, "btn_function_trash", "disabled");
+		top.fileSelect.data.changeCatState = false;
 	}
 }
 
@@ -469,6 +469,12 @@ function we_cmd() {
 			var ref = (top.opener.top.treeData ? top.opener.top : (top.opener.top.opener.top.treeData ? top.opener.top.opener.top : null));
 			if (ref) {
 				ref.treeData.updateEntry(args[1]);
+			}
+			break;
+		case 'updateSelectData':
+			var obj = args[1];
+			for (i in obj) {
+				top.fileSelect.data[i] = obj[i];
 			}
 			break;
 		default:

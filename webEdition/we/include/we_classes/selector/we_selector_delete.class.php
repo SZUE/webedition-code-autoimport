@@ -46,7 +46,7 @@ class we_selector_delete extends we_selector_file{
 	}
 
 	protected function printCmdHTML($morejs = ''){
-		parent::printCmdHTML((intval($this->dir) ? 'top.enableDelBut();' : 'top.disableDelBut();') . $morejs);
+		parent::printCmdHTML((intval($this->dir) ? 'top.DelBut(true);' : 'top.DelBut(false);') . $morejs);
 	}
 
 	function renameChildrenPath($id, we_database_base $db = null){
