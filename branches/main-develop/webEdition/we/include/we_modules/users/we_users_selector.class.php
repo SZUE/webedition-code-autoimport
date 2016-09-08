@@ -54,7 +54,7 @@ class we_users_selector extends we_selector_file{
 		}
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
+	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::SETDIR:
 				$this->printSetDirHTML();
@@ -64,7 +64,7 @@ class we_users_selector extends we_selector_file{
 		}
 	}
 
-	function query(){
+	protected function query(){
 		switch($this->filter){
 			case 'group':
 				$q = ' AND IsFolder=1 ';
@@ -88,10 +88,12 @@ class we_users_selector extends we_selector_file{
 	}
 
 	function printSetDirHTML(){
-		$js = 'top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
+
+		$js = $this->printCmdAddEntriesHTML($weCmd) .
 			'top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();';
+		$this->printCMDWriteAndFillSelectorHTML($weCmd);
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
 			$go = true;
@@ -110,7 +112,7 @@ top.document.getElementsByName("fname")[0].value = "' . $this->values["Text"] . 
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 		$js.= 'top.fileSelect.data.currentDir = "' . $this->dir . '";
 top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";';
-		echo we_html_element::jsElement($js);
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
 	protected function printFooterTable(){

@@ -46,7 +46,7 @@ class we_selector_directory extends we_selector_file{
 		$this->FolderText = $FolderText;
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
+	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::SETDIR:
 				$this->printSetDirHTML();
@@ -78,7 +78,7 @@ class we_selector_directory extends we_selector_file{
 		);
 	}
 
-	function query(){
+	protected function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) . ' AND((1' . we_users_util::makeOwnersSql() . ') ' .
 			getWsQueryForSelector($this->table) . ')' . ($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : ''));
 	}
@@ -121,18 +121,27 @@ class we_selector_directory extends we_selector_file{
 			we_html_element::jsScript(JS_DIR . 'selectors/directory_selector.js');
 	}
 
-	protected function printCmdAddEntriesHTML(){
+	protected function printCmdAddEntriesHTML(we_base_jsCmd $weCmd){
 		$this->query();
-		$ret = '';
+		$entries = [];
+
 		while($this->db->next_record()){
-			$ret.='top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Text") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '","' . date(g_l('date', '[format][default]'), (is_numeric($this->db->f("ModDate")) ? $this->db->f("ModDate") : 0)) . '","folder");';
+			$entries[] = [
+				$this->db->f("ID"),
+				$this->db->f("Text"),
+				$this->db->f("IsFolder"),
+				$this->db->f("Path"),
+				date(g_l('date', '[format][default]'), (is_numeric($this->db->f("ModDate")) ? $this->db->f("ModDate") : 0)),
+				"folder"
+			];
 		}
-		$ret.=' function startFrameset(){
+		$weCmd->addCmd('addEntries', $entries);
+		$ret = ' function startFrameset(){
 top.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();}';
 		return $ret;
 	}
 
-	function printHeaderHeadlines(){
+	protected function printHeaderHeadlines(){
 		return '
 <table class="headerLines">
 	<tr>
@@ -212,28 +221,28 @@ top.' . ($this->userCanMakeNewDir() ? 'enable' : 'disable') . 'NewFolderBut();}'
 		return true;
 	}
 
-	protected function printCMDWriteAndFillSelectorHTML($withWrite = true){
+	protected function setWriteSelectorData(we_base_jsCmd $weCmd, $withWrite = true){
 		$pid = $this->dir;
-		$out = '';
+		$options = [];
 		$c = 0;
 		while($pid != 0){
 			$c++;
 			$this->db->query('SELECT ID,Text,ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($pid));
 			if($this->db->next_record()){
-				$out = 'top.addOption("' . $this->db->f('Text') . '",' . $this->db->f('ID') . ');' . $out;
+				$options[] = [$this->db->f('Text'), $this->db->f('ID')];
 			}
 			$pid = $this->db->f("ParentID");
 			if($c > 500 || ($this->rootDirID && $this->db->f('ID') == $this->rootDirID)){
 				$pid = 0;
 			}
 		}
-		return ($withWrite ? 'top.writeBody(top.fsbody.document.body);' : '') . '
-top.clearOptions();
-if(!top.fileSelect.options.rootDirID){
-	top.addOption("/",0);
-}' .
-			$out . '
-top.selectIt();';
+		if(!$this->rootDirID){
+			$options[] = ['/', 0];
+		}
+		$weCmd->addCmd('writeOptions', array_reverse($options));
+		if($withWrite){
+			$weCmd->addCmd('writeBody');
+		}
 	}
 
 	protected function printHeaderTable($extra = '', $append = false){
@@ -259,11 +268,9 @@ top.selectIt();';
 		if(!$morejs && $isWS && $this->id == 0){
 			$this->path = '/';
 		}
-
-		echo we_html_element::jsElement('
-top.clearEntries();' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() .
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
+		$js = $this->printCmdAddEntriesHTML($weCmd) .
 			($this->userCanMakeNewFolder ? 'top.enableNewFolderBut();' : 'top.disableNewFolderBut();') .
 			$morejs .
 			($isWS ?
@@ -276,21 +283,25 @@ top.fileSelect.data.currentID="' . $this->id . '";'
 top.' . (intval($this->dir) == intval($this->rootDirID) ? 'disable' : 'enable') . 'RootDirButs();
 top.fileSelect.data.currentDir = "' . $this->dir . '";
 top.fileSelect.data.parentID = "' . $this->values['ParentID'] . '";' :
-				'')
-		);
+				'');
+		$this->setWriteSelectorData($weCmd);
+
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	function printNewFolderHTML(){
-		echo we_html_element::jsElement('
-top.clearEntries();
-top.fileSelect.data.makeNewFolder=true;' .
-			$this->printCmdAddEntriesHTML() .
-			$this->printCMDWriteAndFillSelectorHTML() . '
-');
+	private function printNewFolderHTML(){
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
+		$js = 'top.fileSelect.data.makeNewFolder=true;' .
+			$this->printCmdAddEntriesHTML($weCmd);
+		$this->setWriteSelectorData($weCmd);
+
+		echo $weCmd->getCmds() .
+		we_html_element::jsElement($js);
 	}
 
-	function printCreateFolderHTML(){
+	protected function printCreateFolderHTML(){
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		$folder = (defined('OBJECT_FILES_TABLE') && $this->table == OBJECT_FILES_TABLE ? //4076
@@ -301,23 +312,25 @@ top.fileSelect.data.makeNewFolder=true;' .
 		if(!($msg = $folder->checkFieldsOnSave())){
 			$folder->we_save();
 		}
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
 
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-top.clearEntries();
+		$js = '
 top.fileSelect.data.makeNewFolder=false;' .
-				($msg ? we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
-					'var ref=(top.opener.top.treeData?top.opener.top:(top.opener.top.opener.top.treeData?top.opener.top.opener.top:null));
+			($msg ? we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
+				'var ref=(top.opener.top.treeData?top.opener.top:(top.opener.top.opener.top.treeData?top.opener.top.opener.top:null));
 if(ref){
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '"});
 }' .
-					($this->canSelectDir ? '
+				($this->canSelectDir ? '
 top.fileSelect.data.currentPath="' . $folder->Path . '";
 top.fileSelect.data.currentID="' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '')
-				) .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(top.fileSelect.data.currentID);'), we_html_element::htmlBody());
+			) .
+			$this->printCmdAddEntriesHTML($weCmd) .
+			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->setWriteSelectorData($weCmd);
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
 	protected function getFrameset($withPreview = true){
@@ -338,17 +351,21 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '
 		$this->jsoptions['data']['makefolderState'] = $this->userCanMakeNewFolder;
 	}
 
-	function printRenameFolderHTML(){
+	private function printRenameFolderHTML(){
 		if(we_users_util::userIsOwnerCreatorOfParentDir($this->we_editDirID, $this->table) && we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
-			echo we_html_element::jsElement('
-top.clearEntries();
+			$weCmd = new we_base_jsCmd();
+			$weCmd->addCmd('clearEntries');
+			$js = '
 top.fileSelect.data.we_editDirID=' . $this->we_editDirID . ';' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML());
+				$this->printCmdAddEntriesHTML($weCmd);
+
+			$this->setWriteSelectorData($weCmd);
+			echo $weCmd->getCmds() .
+			we_html_element::jsElement($js);
 		}
 	}
 
-	function printDoRenameFolderHTML(){
+	protected function printDoRenameFolderHTML(){
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 
@@ -364,35 +381,31 @@ top.fileSelect.data.we_editDirID=' . $this->we_editDirID . ';' .
 		$folder->Path = $folder->getPath();
 		$folder->ModifierID = isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : '';
 
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
 
-		$js = 'top.clearEntries();
-top.fileSelect.data.makeNewFolder=false;';
+		$js = 'top.fileSelect.data.makeNewFolder=false;';
 		if(($msg = $folder->checkFieldsOnSave())){
 			$js.= we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
 			if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), 'Text', $this->db) != $txt){
 				$folder->we_save();
-				$js.='var ref=(top.opener.top.treeData?top.opener.top:(top.opener.top.opener.top.treeData?top.opener.top.opener.top:null));
-if(ref){
-	ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '",table:"' . $this->table . '"});
-}' .
-					($this->canSelectDir ? '
+				$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID, 'table' => $this->table]);
+				$js.= ($this->canSelectDir ? '
 top.fileSelect.data.currentPath = "' . $folder->Path . '";
 top.fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '');
 			}
 		}
+		$js.=$this->printCmdAddEntriesHTML($weCmd) . '
+top.selectFile(top.fileSelect.data.currentID);';
+		$this->setWriteSelectorData($weCmd);
 
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement(
-				$js .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() . '
-top.selectFile(top.fileSelect.data.currentID);'
-			), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
-	function printPreviewHTML(){
+	protected function printPreviewHTML(){
 		if(!$this->id){
 			return;
 		}

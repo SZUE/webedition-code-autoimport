@@ -189,7 +189,7 @@ container.prototype = {
 	makeFoldersOpenString: function () {
 		var op = "";
 		for (i = 1; i <= treeData.len; i++) {
-			if (treeData[i].typ == "group" && treeData[i].open) {
+			if (treeData[i].typ === "group" && treeData[i].open) {
 				op += treeData[i].id + ",";
 			}
 		}
@@ -197,7 +197,7 @@ container.prototype = {
 		return op;
 	},
 	updateEntry: function (attribs) {
-		if (attribs.table && treeData.table != attribs.table) {
+		if (attribs.table && treeData.table !== attribs.table) {
 			return;
 		}
 		var updated = false;

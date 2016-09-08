@@ -30,10 +30,10 @@ class we_banner_selector extends we_selector_file{
 	}
 
 	protected function getFramsetJSFile(){
-		return parent::getFramsetJSFile() .we_html_element::jsScript(JS_DIR . 'selectors/banner_selector.js');
+		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/banner_selector.js');
 	}
 
-	function printHeaderHeadlines(){
+	protected function printHeaderHeadlines(){
 		return '
 <table class="headerLines" style="width:550px;">
 <colgroup><col style="width:25px;"/><col style="width:200px;"/><col style="width:300px;"/></colgroup>
@@ -45,18 +45,18 @@ class we_banner_selector extends we_selector_file{
 	}
 
 	function printSetDirHTML(){
-
-		echo we_html_element::jsElement('
-top.clearEntries();' .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() . '
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
+		$js = $this->printCmdAddEntriesHTML($weCmd) . '
 top.' . (intval($this->dir) == 0 ? 'disable' : 'enable') . 'RootDirButs();
 top.fileSelect.data.currentDir = "' . $this->dir . '";
-top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";');
+top.fileSelect.data.parentID = "' . $this->values["ParentID"] . '";';
+		$this->printCMDWriteAndFillSelectorHTML($weCmd);
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
+	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::SETDIR:
 				$this->printSetDirHTML();

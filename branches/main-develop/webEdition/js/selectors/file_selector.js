@@ -353,7 +353,7 @@ function enableDelBut() {
 	WE().layout.button.switch_button_state(document, "delete", "enabled");
 	if (top.fileSelect.options.userCanEditCat) {
 		WE().layout.button.switch_button_state(document, "btn_function_trash", "enabled");
-		top.fileSelect.data.changeCatState =true;
+		top.fileSelect.data.changeCatState = true;
 	}
 }
 
@@ -436,17 +436,44 @@ function setview(view) {
 			zoom.style.display = "inline";
 			break;
 	}
-	top.document.getElementById('list').style.display = (view == 'list' ? "none" : "table-cell");
-	top.document.getElementById('icons').style.display = (view == 'icons' ? "none" : "table-cell");
+	top.document.getElementById('list').style.display = (view === 'list' ? "none" : "table-cell");
+	top.document.getElementById('icons').style.display = (view === 'icons' ? "none" : "table-cell");
 
 	top.writeBody(top.fsbody.document.body);
 }
 
 function we_cmd() {
-	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+	var i;
+	switch (args[0]) {
+		case 'clearEntries':
+			top.clearEntries();
+			break;
+		case 'addEntries':
+			for (i = 0; i < args[1].length; i++) {
+				top.addEntry.apply(this, args[1][i]);
+			}
+			break;
+		case 'writeOptions':
+			top.clearOptions();
+			for (i = 0; i < args[1].length; i++) {
+				top.addOption.apply(this, args[1][i]);
+			}
+			top.selectIt();
+			break;
+		case 'writeBody':
+			top.writeBody(top.fsbody.document.body);
+			break;
+		case 'updateTreeEntry':
+			var ref = (top.opener.top.treeData ? top.opener.top : (top.opener.top.opener.top.treeData ? top.opener.top.opener.top : null));
+			if (ref) {
+				ref.treeData.updateEntry(args[1]);
+			}
+			break;
+		default:
+			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+	}
 }
 
 function selectorOnClick(event, id) {

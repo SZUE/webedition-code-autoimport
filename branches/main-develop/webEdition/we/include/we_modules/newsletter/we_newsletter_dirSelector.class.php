@@ -30,7 +30,7 @@ class we_newsletter_dirSelector extends we_selector_directory{
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple);
 	}
 
-	function printCreateFolderHTML(){
+	protected function printCreateFolderHTML(){
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		$folder = new we_folder();
@@ -39,29 +39,33 @@ class we_newsletter_dirSelector extends we_selector_directory{
 			$folder->we_save();
 		}
 
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-top.clearEntries();
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
+
+		$js = '
 top.fileSelect.data.makeNewFolder=false;' .
-				($msg ?
-					we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
-					'var ref;
+			($msg ?
+				we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
+				'var ref;
 if(top.opener.top.content.makeNewEntry){
 	ref = top.opener.top.content;
 	ref.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"' . $folder->ContentType . '",table:"' . $this->table . '",published:1});
 }
 ' .
-					($this->canSelectDir ?
-						'top.fileSelect.data.currentPath = "' . $folder->Path . '";
+				($this->canSelectDir ?
+					'top.fileSelect.data.currentPath = "' . $folder->Path . '";
 top.fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' : '')
-				) .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(top.fileSelect.data.currentID);'), we_html_element::htmlBody());
+			) .
+			$this->printCmdAddEntriesHTML($weCmd) .
+			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->setWriteSelectorData($weCmd);
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() .
+			we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
-	function printDoRenameFolderHTML(){
+	protected function printDoRenameFolderHTML(){
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		$folder = new we_folder();
@@ -75,46 +79,50 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 		if(!($msg = $folder->checkFieldsOnSave())){
 			$folder->we_save();
 		}
+		$weCmd = new we_base_jsCmd();
+		$weCmd->addCmd('clearEntries');
+		if($msg){
+			$weCmd->addCmd('msg', ['msg' => $msg, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+		} else {
+			$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID]);
+		}
 
-		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-top.clearEntries();
-top.fileSelect.data.makeNewFolder=false;' .
-				($msg ?
-					we_message_reporting::getShowMessageCall($msg, we_message_reporting::WE_MESSAGE_ERROR) :
-					'var ref;
-if(top.opener.top.content.makeNewEntry){
-	ref = top.opener.top;
-}else if(top.opener.top.opener){
-	ref = top.opener.top.opener.top;
-}
-ref.treeData.updateEntry({id:' . $folder->ID . ',text:"' . $txt . '",parentid:"' . $folder->ParentID . '"});' .
-					($this->canSelectDir ?
-						'top.fileSelect.data.currentPath = "' . $folder->Path . '";
+		$js = ($msg ? '' :
+				($this->canSelectDir ?
+					'top.fileSelect.data.currentPath = "' . $folder->Path . '";
 top.fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' :
-						''
-					)
-				) .
-				$this->printCmdAddEntriesHTML() .
-				$this->printCMDWriteAndFillSelectorHTML() .
-				'top.selectFile(top.fileSelect.data.currentID);'), we_html_element::htmlBody());
+					''
+				)
+			) .
+			'top.fileSelect.data.makeNewFolder=false;' .
+			$this->printCmdAddEntriesHTML($weCmd) .
+			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->setWriteSelectorData($weCmd);
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 
-	function query(){
+	protected function query(){
 		$this->db->query('SELECT ' . $this->fields . ' FROM ' . $this->db->escape($this->table) . ' WHERE IsFolder=1 AND ParentID=' . intval($this->dir) .
 			getWsQueryForSelector(NEWSLETTER_TABLE) .
 			($this->order ? (' ORDER BY IsFolder DESC,' . $this->order) : '')
 		);
 	}
 
-	protected function printCmdAddEntriesHTML(){
+	protected function printCmdAddEntriesHTML(we_base_jsCmd $weCmd){
 		$ret = '';
+		$entries = [];
 		$this->query();
 		while($this->db->next_record()){
-			$ret.='top.addEntry(' . $this->db->f("ID") . ',"' . $this->db->f("Text") . '",' . $this->db->f("IsFolder") . ',"' . $this->db->f("Path") . '");';
+			$entries[] = [
+				$this->db->f("ID"),
+				$this->db->f("Text"),
+				$this->db->f("IsFolder"),
+				$this->db->f("Path")
+			];
 		}
-
+		$weCmd->addCmd('addEntries', $entries);
 		$ret.=' function startFrameset(){' . ($this->userCanMakeNewDir() ?
 				'top.enableNewFolderBut();' :
 				'top.disableNewFolderBut();') . '}';
@@ -126,7 +134,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 			we_html_element::jsScript(JS_DIR . 'selectors/newsletterdir_selector.js');
 	}
 
-	function printHeaderHeadlines(){
+	protected function printHeaderHeadlines(){
 		return '
 <table class="headerLines" style="width:550px;">
 <colgroup><col style="width:25px;"/><col style="width:200px;"/><col style="width:300px;"/></colgroup>
@@ -157,7 +165,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 		return permissionhandler::hasPerm('NEW_NEWSLETTER');
 	}
 
-	function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
+	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		parent::printHTML($what, false);
 	}
 

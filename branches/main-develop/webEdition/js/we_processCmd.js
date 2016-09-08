@@ -54,6 +54,10 @@ if (cmd) {
 						top.body.document.location = cmdData.loc;
 						break;
 				}
+				break;
+			default:
+				//if nothing matched, we set arg[0]=cmd & pass the whole argument to we_cmd
+				top.we_cmd.apply(this, [cmds[i], cmdData]);
 		}
 	}
 }

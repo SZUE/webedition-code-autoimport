@@ -74,7 +74,7 @@ class we_selector_document extends we_selector_directory{
 		parent::printCmdHTML(($isWS && $this->userCanMakeNewFile ? 'top.enableNewFileBut();' : 'top.disableNewFileBut();') . $morejs);
 	}
 
-	function query(){
+	protected function query(){
 		$filterQuery = '';
 		if($this->filter){
 			$contentTypes = explode(',', $this->filter);
@@ -182,15 +182,29 @@ function exit_open() {
 		return $_SERVER['SCRIPT_NAME'] . 'what=' . $what . '&rootDirID=' . $this->rootDirID . '&table=' . $this->table . '&id=' . $this->id . '&order=' . $this->order . '&startID=' . $this->startID . '&filter=' . $this->filter . '&open_doc=' . $this->open_doc . '&lang=' . $this->language;
 	}
 
-	protected function printCmdAddEntriesHTML(){
+	protected function printCmdAddEntriesHTML(we_base_jsCmd $weCmd){
 		$ret = '';
 		$this->query();
+		$entries = [];
 		while($this->db->next_record()){
 
 			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
 
-			$ret .= 'top.addEntry(' . $this->db->f('ID') . ',"' . $this->db->f('Filename') . '","' . $this->db->f('Extension') . '",' . $this->db->f('IsFolder') . ',"' . $this->db->f('Path') . '","' . date(g_l('date', '[format][default]'), $this->db->f('ModDate')) . '","' . $this->db->f('ContentType') . '","' . $this->db->f('Published') . '","' . $title . '");';
+			$entries[] = [
+				$this->db->f('ID'),
+				$this->db->f('Filename'),
+				$this->db->f('Extension'),
+				$this->db->f('IsFolder'),
+				$this->db->f('Path'),
+				date(g_l('date', '[format][default]'), $this->db->f('ModDate')),
+				$this->db->f('ContentType'),
+				$this->db->f('Published'),
+				$title
+			];
 		}
+
+		$weCmd->addCmd('addEntries', $entries);
+
 		$ret .=' function startFrameset(){';
 		switch($this->filter){
 			case we_base_ContentTypes::TEMPLATE:
@@ -209,7 +223,7 @@ function exit_open() {
 		return $ret;
 	}
 
-	function printHeaderHeadlines(){
+	protected function printHeaderHeadlines(){
 		return '
 <table class="headerLines">
 	<tr>' . $this->tableHeadlines . '</tr>
@@ -303,7 +317,7 @@ function exit_open() {
 			'</body>';
 	}
 
-	function printPreviewHTML(){
+	protected function printPreviewHTML(){
 		if(!$this->id){
 			return;
 		}
