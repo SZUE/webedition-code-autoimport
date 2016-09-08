@@ -150,8 +150,7 @@ if(top.opener.top.treeData.makeNewEntry){
 			} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
 				$folder->we_save();
 				$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID]);
-				$js.=($this->canSelectDir ?
-						'top.fileSelect.data.currentPath = "' . $folder->Path . '";
+				$js.=($this->canSelectDir ? 'top.fileSelect.data.currentPath = "' . $folder->Path . '";
 top.fileSelect.data.currentID = "' . $folder->ID . '";
 top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 ' :

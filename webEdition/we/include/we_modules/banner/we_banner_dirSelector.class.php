@@ -106,13 +106,15 @@ class we_banner_dirSelector extends we_selector_directory{
 						'currentPath' => $folder->Path,
 					]);
 				}
-				$js.='
-if(top.opener.top.content.makeNewEntry){
-	top.opener.top.content.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '"});
-}' .
-					($this->canSelectDir ?
-						'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-' : '');
+				$weCmd->addCmd('makeNewTreeEntry', [
+					'id' => $folder->ID,
+					'parentid' => $folder->ParentID,
+					'text' => $txt,
+					'open' => 1,
+					'contenttype' => 'folder',
+					'table' => $this->table
+				]);
+				$js.= ($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '');
 			}
 		}
 

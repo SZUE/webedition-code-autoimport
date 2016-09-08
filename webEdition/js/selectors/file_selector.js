@@ -445,7 +445,7 @@ function setview(view) {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 //	var url = WE().util.getWe_cmdArgsUrl(args);
-	var i;
+	var i, ref;
 	switch (args[0]) {
 		case 'clearEntries':
 			top.clearEntries();
@@ -466,9 +466,15 @@ function we_cmd() {
 			top.writeBody(top.fsbody.document.body);
 			break;
 		case 'updateTreeEntry':
-			var ref = (top.opener.top.treeData ? top.opener.top : (top.opener.top.opener.top.treeData ? top.opener.top.opener.top : null));
+			ref = (top.opener.top.treeData ? top.opener.top : (top.opener.top.opener.top.treeData ? top.opener.top.opener.top : null));
 			if (ref) {
 				ref.treeData.updateEntry(args[1]);
+			}
+			break;
+		case 'makeNewTreeEntry':
+			ref = (top.opener.top.treeData ? top.opener.top : (top.opener.top.opener.top.treeData ? top.opener.top.opener.top : null));
+			if (ref) {
+				ref.treeData.makeNewEntry(args[1]);
 			}
 			break;
 		case 'updateSelectData':

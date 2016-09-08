@@ -216,6 +216,7 @@ class we_selector_file{
 		if($this->id === 0){
 			$this->path = '/';
 		}
+		$this->jsoptions['options']['canSelectDir'] = intval($this->canSelectDir);
 		$this->jsoptions['data']['parentID'] = intval(($this->dir ? f('SELECT ParentID FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->dir), '', $this->db) : 0));
 		$this->jsoptions['data']['currentType'] = (isset($this->filter) ? $this->filter : "");
 		$this->jsoptions['data']['currentDir'] = $this->dir;
