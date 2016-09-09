@@ -272,9 +272,9 @@ function exit_open() {
 	}
 
 	protected function printSetDirHTML($morejs = ''){
-		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
+		$isWS = $this->userCanMakeNewFile && we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
 
-		parent::printSetDirHTML(($isWS && $this->userCanMakeNewFile ? 'top.NewFileBut(true);' : 'top.NewFileBut(false);') . $morejs);
+		parent::printSetDirHTML(($isWS ? 'top.NewFileBut(true);' : 'top.NewFileBut(false);') . $morejs);
 	}
 
 	protected function printFooterTable($more = null){
@@ -324,18 +324,7 @@ function exit_open() {
 		$result = getHash('SELECT * FROM ' . $this->table . ' WHERE ID=' . intval($this->id), $this->db);
 		$path = $result ? $result['Path'] : '';
 		$out = we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .
-				we_html_element::jsElement('
-function setInfoSize() {
-	infoSize = document.body.clientHeight;
-	if(infoElem=document.getElementById("info")) {
-		infoElem.style.height = document.body.clientHeight - (prieviewpic = document.getElementById("previewpic") ? 160 : 0 )+"px";
-	}
-}
-function weWriteBreadCrumb(BreadCrumb){
-	if(top.document.getElementById("fspath")){
-		top.document.getElementById("fspath").innerHTML = BreadCrumb;
-	}
-}')) . '
+				we_html_element::jsScript(JS_DIR . 'selectors/preview.js')) . '
 <body class="defaultfont" onresize="setInfoSize()" onload="setInfoSize();weWriteBreadCrumb(\'' . $path . '\');">';
 		if((isset($result['ContentType']) && !empty($result['ContentType'])) || ($this->table == VFILE_TABLE )){//FIXME: this check should be obsolete, remove in 6.6
 			if((isset($result['ContentType']) && $result['ContentType'] === we_base_ContentTypes::FOLDER) || ($this->table == VFILE_TABLE && $result['IsFolder'])){

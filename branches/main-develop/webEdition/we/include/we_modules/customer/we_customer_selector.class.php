@@ -140,11 +140,16 @@ class we_customer_selector extends we_users_selector{
 			if($this->id == 0){
 				$this->path = '/';
 			}
-			$js.= 'top.fileSelect.data.currentPath = "' . $this->path . '";
-top.fileSelect.data.currentID = "' . $this->id . '";';
+			$weCmd->addCmd('updateSelectData', [
+				'currentPath' => $this->path,
+				'currentID' => $this->id,
+			]);
 		}
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
-		$js.='top.fileSelect.data.currentDir = "' . $this->dir . '";';
+		$weCmd->addCmd('updateSelectData', [
+			'currentDir' => $this->dir
+		]);
+
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
 

@@ -51,6 +51,13 @@ class we_newsletter_dirSelector extends we_selector_directory{
 			$weCmd->addCmd('updateSelectData', [
 				'makeNewFolder' => false,
 			]);
+			if($this->canSelectDir){
+				$weCmd->addCmd('updateSelectData', [
+					'currentPath' => $folder->Path,
+					'currentID' => $folder->ID,
+					'currentText' => $folder->Text
+				]);
+			}
 			$weCmd->addCmd('makeNewTreeEntry', [
 				'id' => $folder->ID,
 				'parentid' => $folder->ParentID,
@@ -60,15 +67,8 @@ class we_newsletter_dirSelector extends we_selector_directory{
 				'table' => $this->table,
 				'published' => 1
 			]);
-			if($this->canSelectDir){
-				$weCmd->addCmd('updateSelectData', [
-					'currentPath' => $folder->Path,
-					'currentID' => $folder->ID
-				]);
-			}
 		}
-		$js = ($msg ? '' : ($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '') ) .
-			$this->printCmdAddEntriesHTML($weCmd) .
+		$js = $this->printCmdAddEntriesHTML($weCmd) .
 			'top.selectFile(top.fileSelect.data.currentID);';
 
 		$this->setWriteSelectorData($weCmd);
