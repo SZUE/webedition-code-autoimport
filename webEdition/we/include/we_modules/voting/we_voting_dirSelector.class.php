@@ -94,11 +94,19 @@ class we_voting_dirSelector extends we_selector_directory{
 			$folder->we_new($this->table, $this->dir, $txt);
 			$this->db->query('SELECT ID FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '"');
 			if($this->db->next_record()){
-				$js.= we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => g_l('modules_voting', '[folder_path_exists]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} elseif(we_voting_voting::filenameNotValid($folder->Text)){
-				$js.=we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => g_l('modules_voting', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} else {
 				$folder->we_save();
+				if($this->canSelectDir){
+					$weCmd->addCmd('updateSelectData', [
+						'currentPath' => $folder->Path,
+						'currentID' => $folder->ID,
+						'currentText' => $folder->Text
+					]);
+				}
+
 				$weCmd->addCmd('makeNewTreeEntry', [
 					'id' => $folder->ID,
 					'parentid' => $folder->ParentID,
@@ -108,13 +116,6 @@ class we_voting_dirSelector extends we_selector_directory{
 					'table' => $this->table,
 					'published' => 1
 				]);
-				if($this->canSelectDir){
-					$weCmd->addCmd('updateSelectData', [
-						'currentPath' => $folder->Path,
-						'currentID' => $folder->ID,
-					]);
-				}
-				$js.=($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '');
 			}
 		}
 
@@ -159,9 +160,12 @@ class we_voting_dirSelector extends we_selector_directory{
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
 
-		$js = 'top.fileSelect.data.makeNewFolder=false;';
+		$js = '';
+		$weCmd->addCmd('updateSelectData', [
+			'makeNewFolder' => false
+		]);
 		if(!$txt){
-			$js.= we_message_reporting::getShowMessageCall(g_l('modules_voting', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => g_l('modules_voting', '[folder_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -170,19 +174,20 @@ class we_voting_dirSelector extends we_selector_directory{
 			$folder->Path = $folder->getPath();
 			$exists = f('SELECT 1 FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE Path="' . $folder->Path . '" AND ID!=' . $this->we_editDirID . ' LIMIT 1', '', $this->db);
 			if($exists){
-				$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => sprintf(g_l('modules_voting', '[folder_exists]'), $folder->Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} elseif(preg_match('/[%/\\"\']/', $folder->Text)){
-				$js.= we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => g_l('modules_voting', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} elseif(f('SELECT Text FROM ' . $this->db->escape(VOTING_TABLE) . ' WHERE ID=' . intval($this->we_editDirID), "", $this->db) != $txt){
 				$folder->we_save();
 				$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID]);
 				if($this->canSelectDir){
 					$weCmd->addCmd('updateSelectData', [
 						'currentPath' => $folder->Path,
-						'currentID' => $folder->ID
+						'currentID' => $folder->ID,
+						'currentText' => $folder->Text
 					]);
 				}
-				$js.= ($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
+				$js.= ($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;
 ' : '');
 			}
 		}

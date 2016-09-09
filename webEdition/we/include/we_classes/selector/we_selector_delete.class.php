@@ -61,18 +61,17 @@ class we_selector_delete extends we_selector_file{
 	}
 
 	function printDoDelEntryHTML(){
-		$js = '';
+		$weCmd = new we_base_jsCmd();
 		if(($del = we_base_request::_(we_base_request::INT, "todel"))){
 			$_SESSION['weS']['fragDel'] = [
 				'todel' => $del,
 				'we_not_deleted_entries' => [],
 				'we_go_seem_start' => false,
 			];
-			$js = we_html_element::jsElement('
-top.opener.top.we_cmd("del_frag", "' . $del . '");
-top.close();');
+			$weCmd->addCmd('we_cmd', ['del_frag', $del]);
+			$weCmd->addCmd('close');
 		}
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $js, we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function printFooterTable(){

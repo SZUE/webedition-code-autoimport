@@ -56,8 +56,9 @@ class we_navigation_dirSelector extends we_selector_directory{
 
 	protected function printHeaderTable($extra = '', $append = false){
 		$makefolderState = permissionhandler::hasPerm("EDIT_NAVIGATION");
-		return parent::printHeaderTable('<td>' .
-				we_html_element::jsElement('top.fileSelect.data.makefolderState=' . intval($makefolderState) . ';') .
+		return parent::printHeaderTable('<td>' . we_base_jsCmd::singleCmd('updateSelectData', [
+					'makefolderState' => $makefolderState
+				]) .
 				we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(top.fileSelect.data.makefolderState){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
 				'</td>');
 	}
@@ -149,11 +150,15 @@ if(top.opener.top.treeData.makeNewEntry){
 				$js.=we_message_reporting::getShowMessageCall(g_l('navigation', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
 			} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
 				$folder->we_save();
+				if($this->canSelectDir){
+					$weCmd->addCmd('updateSelectData', [
+						'currentPath' => $folder->Path,
+						'currentID' => $folder->ID,
+						'currentText' => $folder->Text
+					]);
+				}
 				$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID]);
-				$js.=($this->canSelectDir ? 'top.fileSelect.data.currentPath = "' . $folder->Path . '";
-top.fileSelect.data.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-' :
+				$js.=($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value =top.fileSelect.data.currentText;' :
 						''
 					);
 			}

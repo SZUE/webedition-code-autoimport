@@ -57,7 +57,9 @@ class we_export_dirSelector extends we_selector_directory{
 	protected function printHeaderTable($extra = '', $append = false){
 		$makefolderState = permissionhandler::hasPerm("NEW_EXPORT");
 		return parent::printHeaderTable('<td>' .
-				we_html_element::jsElement('top.fileSelect.data.makefolderState=' . intval($makefolderState) . ';') .
+				we_base_jsCmd::singleCmd('updateSelectData', [
+					'makefolderState' => $makefolderState
+				]) .
 				we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(top.fileSelect.data.makefolderState){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
 				'</td>');
 	}
@@ -95,15 +97,16 @@ class we_export_dirSelector extends we_selector_directory{
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
 			if(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '"', '', $this->db)){
-				$js.= we_message_reporting::getShowMessageCall(g_l('export', '[folder_path_exists]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => g_l('export', '[folder_path_exists]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} elseif(we_export_export::filenameNotValid($folder->Text)){
-				$js.= we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => g_l('export', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} else {
 				$folder->we_save();
 				if($this->canSelectDir){
 					$weCmd->addCmd('updateSelectData', [
 						'currentPath' => $folder->Path,
 						'currentID' => $folder->ID,
+						'currentText' => $folder->Text
 					]);
 				}
 				$weCmd->addCmd('makeNewTreeEntry', [
@@ -114,7 +117,6 @@ class we_export_dirSelector extends we_selector_directory{
 					'contenttype' => "folder",
 					'table' => $this->table
 				]);
-				$js.= ($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '');
 			}
 		}
 		$js.=$this->printCmdAddEntriesHTML($weCmd) .
@@ -138,7 +140,7 @@ class we_export_dirSelector extends we_selector_directory{
 
 		$js = 'top.fileSelect.data.makeNewFolder=false;';
 		if(!$txt){
-			$js.= we_message_reporting::getShowMessageCall(g_l('export', '[folder_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => g_l('export', '[folder_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -147,20 +149,23 @@ class we_export_dirSelector extends we_selector_directory{
 			$folder->Path = $folder->getPath();
 			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '" AND ID!=' . intval($this->we_editDirID));
 			if($this->db->next_record()){
-				$js.= we_message_reporting::getShowMessageCall(sprintf(g_l('export', '[folder_exists]'), $folder->Path), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => sprintf(g_l('export', '[folder_exists]'), $folder->Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} else {
 				if(preg_match('/[%/\\"\']/', $folder->Text)){
-					$js.=we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+					$weCmd->addCmd('msg', ['msg' => g_l('export', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 				} else {
 					if(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), '', $this->db) != $txt){
 						$folder->we_save();
 						$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID]);
+						if($this->canSelectDir){
+							$weCmd->addCmd('updateSelectData', [
+								'currentPath' => $folder->Path,
+								'currentID' => $folder->ID,
+								'currentText' => $folder->Text
+							]);
+						}
 						$js.=
-							($this->canSelectDir ?
-								'top.fileSelect.data.currentPath = "' . $folder->Path . '";
-top.fileSelect.data.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' :
-								'');
+							($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;' : '');
 					}
 				}
 			}

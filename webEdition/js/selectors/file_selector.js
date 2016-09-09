@@ -476,6 +476,9 @@ function we_cmd() {
 			if (ref) {
 				ref.treeData.makeNewEntry(args[1]);
 			}
+			if(top.fileSelect.options.canSelectDir){
+				top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;
+			}
 			break;
 		case 'updateSelectData':
 			var obj = args[1];

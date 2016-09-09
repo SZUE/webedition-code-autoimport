@@ -490,59 +490,59 @@ $we_menu = array(
 		'cmd' => ['new_widget', 'fdl'],
 		'perm' => 'EDIT_CUSTOMER || NEW_CUSTOMER',
 		'hide' => !defined('CUSTOMER_TABLE') || !permissionhandler::hasPerm('CAN_SEE_QUICKSTART'),
-	], array(// Cockpit > new Widget > default settings
+	], [// Cockpit > new Widget > default settings
 		'text' => g_l('javaMenu_global', '[default_settings]'),
 		'parent' => 'cockpit',
 		'cmd' => 'reset_home',
 		'perm' => 'CAN_SEE_QUICKSTART',
-	),
+	],
 	'modules' => [
 		'text' => g_l('javaMenu_global', '[modules]'),
 	],
 	'extras' => [
 		'text' => g_l('javaMenu_global', '[extras]'),
-	], array(// Extras > Dokument-Typen
+	], [// Extras > Dokument-Typen
 		'text' => g_l('javaMenu_global', '[document_types]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'doctypes',
 		'perm' => 'EDIT_DOCTYPE',
-	), array(// Extras > Kategorien
+	], [// Extras > Kategorien
 		'text' => g_l('javaMenu_global', '[categories]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'editCat',
 		'perm' => 'EDIT_KATEGORIE',
-	), array(// Extras > Thumbnails
+	], [// Extras > Thumbnails
 		'text' => g_l('javaMenu_global', '[thumbnails]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'editThumbs',
 		'perm' => 'EDIT_THUMBS',
-	), array(// Extras > Metadata fields
+	], [// Extras > Metadata fields
 		'text' => g_l('javaMenu_global', '[metadata]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'editMetadataFields',
 		'perm' => 'ADMINISTRATOR',
 		'hide' => $seeMode
-	), [
+	], [
 		'parent' => 'extras',
 		'perm' => 'EDIT_DOCTYPE || EDIT_KATEGORIE || EDIT_THUMBS',
-	], array(// Extras > change password
+	], [// Extras > change password
 		'text' => g_l('javaMenu_global', '[change_password]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'change_passwd',
 		'perm' => 'EDIT_PASSWD',
-	), ['parent' => 'extras',
+	], ['parent' => 'extras',
 		'perm' => 'EDIT_PASSWD',
-	], array(// Extras > versioning
+	], [// Extras > versioning
 		'text' => g_l('javaMenu_global', '[versioning]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'versions_wizard',
 		'perm' => 'ADMINISTRATOR',
-	), array(// Extras > versioning-log
+	], [// Extras > versioning-log
 		'text' => g_l('javaMenu_global', '[versioning_log]') . '&hellip;',
 		'parent' => 'extras',
 		'cmd' => 'versioning_log',
 		'perm' => 'ADMINISTRATOR',
-	), [
+	], [
 		'parent' => 'extras',
 		'perm' => 'ADMINISTRATOR',
 	], [

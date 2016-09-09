@@ -32,7 +32,7 @@ class we_selector_image extends we_selector_document{
 	protected function getFrameset($withPreview = false){
 		return '<body class="selector" onload="top.document.getElementById(\'fspath\').innerHTML=(top.fileSelect.data.startPath === \'\' ? \'/\' : top.fileSelect.data.startPath);startFrameset();">' .
 			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
-			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview') .
+			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', 'top.fsbody.document.body.style.fontSize=top.document.getElementsByName("zoom")[0].value+"%";', true, 'preview') .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
 			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
 			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient']) .
@@ -43,10 +43,6 @@ class we_selector_image extends we_selector_document{
 	protected function printFooterTable($more = null){
 		//IE doesn't support slider correctly inside tables, disable this
 		return parent::printFooterTable(we_base_browserDetect::inst()->isIE() ? '<input name="zoom" type="hidden"/>' : '<input type="range" style="width:120px;height:20px;" name="zoom" min="50" step="25" max="250" value="100" onchange="top.fsbody.document.body.style.fontSize=this.value+\'%\';"/>');
-	}
-
-	protected function printBodyHTML(){//FIXME: move this somewhere more appropriate
-		return parent::printBodyHTML() . we_html_element::jsElement('top.fsbody.document.body.style.fontSize=top.document.getElementsByName("zoom")[0].value+"%";');
 	}
 
 	protected function getFramsetJSFile(){

@@ -115,13 +115,13 @@ class we_selector_category extends we_selector_file{
 
 		$js = '';
 		if(empty($txt)){
-			$js.= we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => g_l('weEditor', '[category][filename_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else if(strpos($txt, ',') !== false){
-			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => g_l('weEditor', '[category][name_komma]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} elseif(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($Path) . '" LIMIT 1', '', $this->db) === '1'){
-			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} elseif(preg_match('|[\\\'"<>/]|', $txt)){
-			$js.= we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else {
 			$this->db->query('INSERT INTO ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter([
 					'Category' => $txt,
@@ -181,12 +181,12 @@ if(top.fileSelect.data.currentID){
 		} elseif(preg_match('|[\'"<>/]|', $txt)){
 			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
 		} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db) != $txt){
-			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
-					'Category' => $txt,
+			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter([
+				'Category' => $txt,
 					'ParentID' => intval($this->dir),
 					'Text' => $txt,
 					'Path' => $Path,
-				)) .
+					]) .
 				' WHERE ID=' . intval($this->we_editCatID));
 			$this->renameChildrenPath($this->we_editCatID);
 			$weCmd->addCmd('updateSelectData', [
@@ -200,10 +200,12 @@ if(top.fileSelect.data.currentID){
 	top.showPref(top.fileSelect.data.currentID);
 }';
 		}
+		$weCmd->addCmd('updateSelectData', [
+			'makeNewCat'=>false,
+			]);
 		$js.=$this->printCmdAddEntriesHTML($weCmd) .
 			'top.document.getElementsByName("fname")[0].value = "";
-top.selectFile(top.fileSelect.data.currentID);
-top.fileSelect.data.makeNewCat=false;';
+top.selectFile(top.fileSelect.data.currentID);';
 		$this->setSelectorData($weCmd);
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds() .
@@ -370,6 +372,7 @@ if(top.fileSelect.data.currentID && top.document.getElementsByName("fname")[0].v
 		$targetPath = id_to_path($parentid, CATEGORY_TABLE);
 
 		$js = '';
+		$weCmd = new we_base_jsCmd();
 		if(preg_match('|^' . preg_quote($path, '|') . '|', $targetPath) || preg_match('|^' . preg_quote($path, '|') . '/|', $targetPath)){
 			// Verschieben nicht m�glich
 			$parentid = $result['ParentID'];
@@ -383,28 +386,32 @@ if(top.fileSelect.data.currentID && top.document.getElementsByName("fname")[0].v
 				$parentPath = implode('/', $tmp);
 				$path = $parentPath . '/' . $category;
 			}
-			$js = "top.frames.fsvalues.document.we_form.elements.FolderID.value = '" . $parentid . "';top.frames.fsvalues.document.we_form.elements.FolderIDPath.value = '" . $parentPath . "';";
+			$js = "top.frames.fsvalues.document.we_form.elements.FolderID.value = '" . $parentid . "';
+top.frames.fsvalues.document.we_form.elements.FolderIDPath.value = '" . $parentPath . "';";
 		} else {
 			$path = ($parentid ? $targetPath : '') . '/' . $category;
 		}
-		$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
+		$updateok = $db->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter([
 				'Category' => $category,
 				'Text' => $category,
 				'Path' => $path,
 				'ParentID' => $parentid,
 				'Title' => $title,
 				'Description' => $description,
-			)) . ' WHERE ID=' . $catId);
+			]) . ' WHERE ID=' . $catId);
 
 		if($updateok){
 			$this->renameChildrenPath($catId);
 
 			$cat = new we_category($catId);
 			$cat->registerMediaLinks();
+			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+		} else {
+			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		}
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js . 'top.setDir(top.document.getElementById("lookin").value);' .
-				($updateok ? we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_ok]'), $category), we_message_reporting::WE_MESSAGE_NOTICE) : we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_save_notok]'), $category), we_message_reporting::WE_MESSAGE_ERROR) )
-			), we_html_element::htmlBody());
+
+		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement($js . 'top.setDir(top.document.getElementById("lookin").value);'
+			) . $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	function printPropertiesHTML(){
@@ -440,54 +447,32 @@ if(top.fileSelect.data.currentID && top.document.getElementsByName("fname")[0].v
 			$yuiSuggest->setSelectButton($dir_chooser, 10);
 			$yuiSuggest->setContainerWidth(350);
 
-			$table = new we_html_table(array('class' => 'default'), 6, 3);
+			$table = new we_html_table(['class' => 'default'], 6, 3);
 
-			$table->setCol(0, 0, array('style' => 'width:100px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'), '<b>' . g_l('weClass', '[category]') . '</b>');
-			$table->setCol(0, 1, array('colspan' => 2, 'style' => 'width:350px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'), we_html_tools::htmlTextInput("Category", 50, $category, "", ' id="category"', "text", 360));
+			$table->setCol(0, 0, ['style' => 'width:100px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'], '<b>' . g_l('weClass', '[category]') . '</b>');
+			$table->setCol(0, 1, ['colspan' => 2, 'style' => 'width:350px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'], we_html_tools::htmlTextInput("Category", 50, $category, "", ' id="category"', "text", 360));
 
-			$table->setCol(1, 0, array('style' => 'width:100px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'), "<b>ID</b>");
-			$table->setCol(1, 1, array('colspan' => 2, 'style' => 'width:350px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'), $catID);
+			$table->setCol(1, 0, ['style' => 'width:100px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'], "<b>ID</b>");
+			$table->setCol(1, 1, ['colspan' => 2, 'style' => 'width:350px; padding: 0px 0px 10px 0px;', 'class' => 'defaultfont'], $catID);
 
-			$table->setCol(2, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), '<b>' . g_l('weClass', '[dir]') . '</b>');
-			$table->setCol(2, 1, array("style" => "width:240px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), $yuiSuggest->getHTML());
+			$table->setCol(2, 0, ["style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], '<b>' . g_l('weClass', '[dir]') . '</b>');
+			$table->setCol(2, 1, ["style" => "width:240px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], $yuiSuggest->getHTML());
 
-			$table->setCol(3, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), "<b>" . g_l('global', '[title]') . "</b>");
-			$table->setCol(3, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
-			$table->setCol(4, 0, array("style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), "<b>" . g_l('global', '[description]') . "</b>");
-			$table->setCol(4, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), we_html_forms::weTextarea("catDescription", $description, array(
-					"bgcolor" => "white",
+			$table->setCol(3, 0, ["style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], "<b>" . g_l('global', '[title]') . "</b>");
+			$table->setCol(3, 1, ["colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_tools::htmlTextInput("catTitle", 50, $title, "", '', "text", 360));
+			$table->setCol(4, 0, ["style" => "width:100px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], "<b>" . g_l('global', '[description]') . "</b>");
+			$table->setCol(4, 1, ["colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_forms::weTextarea("catDescription", $description, ["bgcolor" => "white",
 					"inlineedit" => "true",
 					"wysiwyg" => "true",
 					"width" => 450,
 					"height" => 130,
 					'commands' => 'prop,fontsize,xhtmlxtras,color,justify,list,link,table,insert,fullscreen,visibleborders,editsource'
-					), true, 'autobr', true, true, true, true, true, ""));
-			$table->setCol(5, 1, array("colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'), we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
+					], true, 'autobr', true, true, true, true, true, ""));
+			$table->setCol(5, 1, ["colspan" => 2, "style" => "width:350px; padding: 0px 0px 10px 0px;", 'class' => 'defaultfont'], we_html_button::create_button(we_html_button::SAVE, "javascript:top.saveOnKeyBoard();"));
 		}
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'we_textarea.js') .
-			we_html_element::jsElement('
-function we_cmd(){
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	switch (args[0]){
-		case "we_selector_file":
-			new (WE().util.jsWindow)(this, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width,WE().consts.size.windowSelect.height,true,true,true,true);
-			break;
-		default:
-			parent.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-
-	}
-}
-function we_checkName() {
-	var regExp = /\'|"|>|<|\\\|\\//;
-	if(regExp.test(document.getElementById("category").value)) {
-	top.we_showMessage(WE().util.sprintf(WE().consts.g_l.selectors.category.we_filename_notValid,"' . $path . '"), WE().consts.message.WE_MESSAGE_ERROR, this);
-	} else {
-		document.we_form.submit();
-	}
-}') .
+			we_html_element::jsScript(JS_DIR . 'selectors/category_selector.js') .
 			weSuggest::getYuiFiles(), '<body class="defaultfont weDialogBody" style="padding: 15px 0 0 10px;">
 ' . ($showPrefs ? '
 	<form action="' . $_SERVER["SCRIPT_NAME"] . '" name="we_form" method="post" target="fscmd"><input type="hidden" name="what" value="' . self::CHANGE_CAT . '" /><input type="hidden" name="catid" value="' . we_base_request::_(we_base_request::INT, 'catid', 0) . '" />
