@@ -68,7 +68,10 @@ class we_newsletter_dirSelector extends we_selector_directory{
 				'published' => 1
 			]);
 		}
-		$js = $this->printCmdAddEntriesHTML($weCmd) .
+		$this->printCmdAddEntriesHTML($weCmd);
+		$js = ($this->userCanMakeNewDir() ?
+				'top.NewFolderBut(true);' :
+				'top.NewFolderBut(false);') .
 			'top.selectFile(top.fileSelect.data.currentID);';
 
 		$this->setWriteSelectorData($weCmd);
@@ -108,8 +111,11 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 				)
 			) .
 			'top.fileSelect.data.makeNewFolder=false;' .
-			$this->printCmdAddEntriesHTML($weCmd) .
+			($this->userCanMakeNewDir() ?
+				'top.NewFolderBut(true);' :
+				'top.NewFolderBut(false);') .
 			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setWriteSelectorData($weCmd);
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
 	}
@@ -122,7 +128,6 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 	}
 
 	protected function printCmdAddEntriesHTML(we_base_jsCmd $weCmd){
-		$ret = '';
 		$entries = [];
 		$this->query();
 		while($this->db->next_record()){
@@ -134,10 +139,7 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 			];
 		}
 		$weCmd->addCmd('addEntries', $entries);
-		$ret.=' function startFrameset(){' . ($this->userCanMakeNewDir() ?
-				'top.NewFolderBut(true);' :
-				'top.NewFolderBut(false);') . '}';
-		return $ret;
+		return ($this->userCanMakeNewDir() ? 'top.NewFolderBut(true);' : 'top.NewFolderBut(false);');
 	}
 
 	protected function getFramsetJSFile(){

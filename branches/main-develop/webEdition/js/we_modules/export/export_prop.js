@@ -41,13 +41,6 @@ function we_cmd() {
 			break;
 		case "we_export_dirSelector":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-			args[0] = "we_export_dirSelector";
-			for (var i = 0; i < args.length; i++) {
-				url += "we_cmd[]=" + encodeURI(args[i]);
-				if (i < (args.length - 1)) {
-					url += "&";
-				}
-			}
 			new (WE().util.jsWindow)(this, url, "we_exportselector", -1, -1, 600, 350, true, true, true);
 			break;
 		case "we_selector_category":

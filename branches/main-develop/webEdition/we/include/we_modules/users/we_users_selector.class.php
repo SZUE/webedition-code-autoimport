@@ -108,8 +108,9 @@ class we_users_selector extends we_selector_file{
 			$weCmd->addCmd('updateSelectData', [
 				'currentPath' => $this->path,
 				'currentID' => $this->id,
+				'currentText' => $this->values["Text"]
 			]);
-			$js.= 'top.document.getElementsByName("fname")[0].value = "' . $this->values["Text"] . '";';
+			$js.= 'top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;';
 		}
 		$weCmd->addCmd('updateSelectData', [
 			'currentDir' => $this->dir,

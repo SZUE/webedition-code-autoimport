@@ -194,6 +194,8 @@ class we_selector_file{
 			'data' => [
 				'makeNewFolder' => false,
 				'we_editDirID' => 0,
+				'JSIDName' => $this->JSIDName,
+				'JSTextName' => $this->JSTextName
 			],
 			'click' => [
 				'oldID' => 0,
@@ -229,7 +231,7 @@ class we_selector_file{
 	}
 
 	protected function getFrameset(){
-		return '<body class="selector" onload="top.document.getElementById(\'fspath\').innerHTML=(top.fileSelect.data.startPath === \'\' ? \'/\' : top.fileSelect.data.startPath);startFrameset();">' .
+		return '<body class="selector" onload="startFrameset();">' .
 			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
 			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
@@ -264,7 +266,8 @@ function exit_open(){' .
 				}
 			}
 	}
-	if(opener.' . $frameRef . 'YAHOO!==undefined && opener.' . $frameRef . 'YAHOO.autocoml!==undefined) {  opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
+	if(opener.' . $frameRef . 'YAHOO!==undefined && opener.' . $frameRef . 'YAHOO.autocoml!==undefined) {
+		opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
 	' : '') .
 				($this->JSCommand ? '	' . $this->JSCommand . ';' : '') .
 				'	self.close();

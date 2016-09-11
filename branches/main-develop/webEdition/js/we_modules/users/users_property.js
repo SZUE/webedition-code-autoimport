@@ -78,23 +78,18 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
 			break;
 		case "select_seem_start":
+			var myWind = WE().util.jsWindow.prototype.find('preferences');
 			myWindStr = "WE().util.jsWindow.prototype.find(\'preferences\')";
 			top.opener.top.we_cmd("we_selector_document", myWind.document.forms[0].elements.seem_start_file.value, WE().consts.tables.FILE_TABLE, myWindStr + ".document.forms[0].elements.seem_start_file.value", myWindStr + ".document.forms[0].elements.seem_start_file_name.value", "", "", "", WE().consts.contentTypes.WEDOCUMENT, 1);
 			break;
 		case "openNavigationDirselector":
 		case "openNewsletterDirselector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 			if (args[0] === "openNewsletterDirselector") {
 				args[0] = "we_newsletter_dirSelector";//FIXME
 			} else {
 				args[0] = "we_navigation_dirSelector";
 			}
-			for (var i = 0; i < args.length; i++) {
-				url += "we_cmd[]=" + encodeURI(args[i]);
-				if (i < (args.length - 1)) {
-					url += "&";
-				}
-			}
+			url = WE().util.getWe_cmdArgsUrl(args);
 			new (WE().util.jsWindow)(this, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 		default:
