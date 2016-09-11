@@ -88,7 +88,7 @@ class we_voting_dirSelector extends we_selector_directory{
 		$txt = rawurldecode(we_base_request::_(we_base_request::FILE, 'we_FolderText_tmp', ''));
 
 		if(!$txt){
-			$js.=we_message_reporting::getShowMessageCall(g_l('modules_voting', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => g_l('modules_voting', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
@@ -119,8 +119,8 @@ class we_voting_dirSelector extends we_selector_directory{
 			}
 		}
 
-		$js.=$this->printCmdAddEntriesHTML($weCmd) .
-			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->printCmdAddEntriesHTML($weCmd);
+		$js.= 'top.selectFile(top.fileSelect.data.currentID);';
 		$this->setWriteSelectorData($weCmd);
 
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() .
@@ -191,8 +191,8 @@ class we_voting_dirSelector extends we_selector_directory{
 ' : '');
 			}
 		}
-		$js.=$this->printCmdAddEntriesHTML($weCmd) .
-			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->printCmdAddEntriesHTML($weCmd);
+		$js.= 'top.selectFile(top.fileSelect.data.currentID);';
 		$this->setWriteSelectorData($weCmd);
 
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() .

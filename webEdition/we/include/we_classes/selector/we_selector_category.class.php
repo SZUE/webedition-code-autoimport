@@ -144,9 +144,8 @@ if(top.fileSelect.data.currentID){
 }
 ';
 		}
-
-		$js.=$this->printCmdAddEntriesHTML($weCmd) .
-			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->printCmdAddEntriesHTML($weCmd);
+		$js.= 'top.selectFile(top.fileSelect.data.currentID);';
 		$this->setSelectorData($weCmd);
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds() .
@@ -173,20 +172,20 @@ if(top.fileSelect.data.currentID){
 		$js = '';
 
 		if(!$txt){
-			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][filename_empty]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => g_l('weEditor', '[category][filename_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} elseif(strpos($txt, ',') !== false){
-			$js.=we_message_reporting::getShowMessageCall(g_l('weEditor', '[category][name_komma]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => g_l('weEditor', '[category][name_komma]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} elseif(f('SELECT 1 FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($Path) . '" AND ID!=' . intval($this->we_editCatID) . ' LIMIT 1', '', $this->db)){
-			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][response_path_exists]'), $Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} elseif(preg_match('|[\'"<>/]|', $txt)){
-			$js.=we_message_reporting::getShowMessageCall(sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => sprintf(g_l('weEditor', '[category][we_filename_notValid]'), $Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editCatID), '', $this->db) != $txt){
 			$this->db->query('UPDATE ' . $this->db->escape($this->table) . ' SET ' . we_database_base::arraySetter([
-				'Category' => $txt,
+					'Category' => $txt,
 					'ParentID' => intval($this->dir),
 					'Text' => $txt,
 					'Path' => $Path,
-					]) .
+				]) .
 				' WHERE ID=' . intval($this->we_editCatID));
 			$this->renameChildrenPath($this->we_editCatID);
 			$weCmd->addCmd('updateSelectData', [
@@ -194,17 +193,17 @@ if(top.fileSelect.data.currentID){
 				'currentID' => $this->we_editCatID
 			]);
 			$js.='
-top.hot = 1; // this is hot for category edit!!
+top.hot = true; // this is hot for category edit!!
 if(top.fileSelect.data.currentID){
 	top.DelBut(true);
 	top.showPref(top.fileSelect.data.currentID);
 }';
 		}
 		$weCmd->addCmd('updateSelectData', [
-			'makeNewCat'=>false,
-			]);
-		$js.=$this->printCmdAddEntriesHTML($weCmd) .
-			'top.document.getElementsByName("fname")[0].value = "";
+			'makeNewCat' => false,
+		]);
+		$this->printCmdAddEntriesHTML($weCmd);
+		$js.= 'top.document.getElementsByName("fname")[0].value = "";
 top.selectFile(top.fileSelect.data.currentID);';
 		$this->setSelectorData($weCmd);
 
@@ -283,7 +282,7 @@ top.selectFile(top.fileSelect.data.currentID);';
 				}
 			}
 			if($catlistNotDeleted){
-				$js.=we_message_reporting::getShowMessageCall(g_l('fileselector', '[cat_in_use]') . '\n\n' . $catlistNotDeleted, we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => g_l('fileselector', '[cat_in_use]') . '\n\n' . $catlistNotDeleted, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			}
 			if($changeToParent){
 				$this->dir = $this->values['ParentID'];
@@ -299,9 +298,8 @@ top.selectFile(top.fileSelect.data.currentID);';
 				'currentPath' => $Path,
 				'currentID' => $this->id
 			]);
-			$js.=
-				$this->printCmdAddEntriesHTML($weCmd) . '
-top.selectFile(top.fileSelect.data.currentID);
+			$this->printCmdAddEntriesHTML($weCmd);
+			$js.= 'top.selectFile(top.fileSelect.data.currentID);
 if(top.fileSelect.data.currentID && top.document.getElementsByName("fname")[0].value != ""){
 	top.DelBut(true);
 }';

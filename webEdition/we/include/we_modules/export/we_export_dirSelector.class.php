@@ -90,9 +90,12 @@ class we_export_dirSelector extends we_selector_directory{
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
 
-		$js = 'top.fileSelect.data.makeNewFolder=false;';
+		$weCmd->addCmd('updateSelectData', [
+			'makeNewFolder' => false
+			]
+		);
 		if(!$txt){
-			$js.=we_message_reporting::getShowMessageCall(g_l('export', '[wrongtext]'), we_message_reporting::WE_MESSAGE_ERROR);
+			$weCmd->addCmd('msg', ['msg' => g_l('export', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
@@ -119,8 +122,8 @@ class we_export_dirSelector extends we_selector_directory{
 				]);
 			}
 		}
-		$js.=$this->printCmdAddEntriesHTML($weCmd) .
-			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->printCmdAddEntriesHTML($weCmd);
+		$js = 'top.selectFile(top.fileSelect.data.currentID);';
 		$this->setWriteSelectorData($weCmd);
 
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() .
@@ -137,8 +140,10 @@ class we_export_dirSelector extends we_selector_directory{
 
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
-
-		$js = 'top.fileSelect.data.makeNewFolder=false;';
+		$weCmd->addCmd('updateSelectData', [
+			'makeNewFolder' => false
+		]);
+		$js = '';
 		if(!$txt){
 			$weCmd->addCmd('msg', ['msg' => g_l('export', '[folder_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else {
@@ -164,15 +169,13 @@ class we_export_dirSelector extends we_selector_directory{
 								'currentText' => $folder->Text
 							]);
 						}
-						$js.=
-							($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;' : '');
+						$js.= ($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;' : '');
 					}
 				}
 			}
 		}
-
-		$js.= $this->printCmdAddEntriesHTML($weCmd) .
-			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->printCmdAddEntriesHTML($weCmd);
+		$js.= 'top.selectFile(top.fileSelect.data.currentID);';
 		$this->setWriteSelectorData($weCmd);
 
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());

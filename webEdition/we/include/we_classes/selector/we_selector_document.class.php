@@ -205,7 +205,6 @@ function exit_open() {
 
 		$weCmd->addCmd('addEntries', $entries);
 
-		$ret .=' function startFrameset(){';
 		switch($this->filter){
 			case we_base_ContentTypes::TEMPLATE:
 			case we_base_ContentTypes::OBJECT:
@@ -214,12 +213,11 @@ function exit_open() {
 				break;
 			default:
 				$tmp = ((we_users_util::in_workspace($this->dir, get_ws($this->table, true))) && $this->userCanMakeNewFile) ? 'true' : 'false';
-				$ret.= 'if(top.NewFileBut){top.NewFileBut(' . $tmp . ');}';
+				$ret.= 'if(top.NewFileBut){top.NewFileBut(' . $tmp . ');';
 		}
 
 
-		$ret.='top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');}';
-		return $ret;
+		return $ret . 'top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');}';
 	}
 
 	protected function printHeaderHeadlines(){
@@ -306,7 +304,7 @@ function exit_open() {
 
 	protected function getFrameset($withPreview = false){
 		$is_object = defined('OBJECT_TABLE') && $this->table === OBJECT_TABLE;
-		return '<body class="selector" onload="top.document.getElementById(\'fspath\').innerHTML=(top.fileSelect.data.startPath === \'\' ? \'/\' : top.fileSelect.data.startPath);startFrameset()">' .
+		return '<body class="selector" onload="startFrameset()">' .
 			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview' . ($is_object ? ' object' : '')) .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false, ($is_object ? 'object' : '')) .

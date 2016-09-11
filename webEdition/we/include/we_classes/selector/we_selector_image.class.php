@@ -30,7 +30,7 @@ class we_selector_image extends we_selector_document{
 	}
 
 	protected function getFrameset($withPreview = false){
-		return '<body class="selector" onload="top.document.getElementById(\'fspath\').innerHTML=(top.fileSelect.data.startPath === \'\' ? \'/\' : top.fileSelect.data.startPath);startFrameset();">' .
+		return '<body class="selector" onload="startFrameset();">' .
 			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', 'top.fsbody.document.body.style.fontSize=top.document.getElementsByName("zoom")[0].value+"%";', true, 'preview') .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .

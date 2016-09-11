@@ -44,16 +44,6 @@ function we_cmd() {
 		case "we_selector_category":
 			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
-		case "openweSearchDirselector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "apps/weSearch/we_weSearchDirSelect.php?";
-			for (var i = 0; i < args.length; i++) {
-				url += "we_cmd[]=" + encodeURI(args[i]);
-				if (i < (args.length - 1)) {
-					url += "&";
-				}
-			}
-			new (WE().util.jsWindow)(this, url, "we_weSearch_dirselector", -1, -1, 600, 400, true, true, true);
-			break;
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}

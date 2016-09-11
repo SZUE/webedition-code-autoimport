@@ -358,6 +358,7 @@ function DelBut(enable) {
 }
 
 function startFrameset() {
+	top.document.getElementById('fspath').innerHTML = (top.fileSelect.data.startPath === '' ? '/' : top.fileSelect.data.startPath);
 }
 
 function RootDirButs(enable) {
@@ -476,7 +477,7 @@ function we_cmd() {
 			if (ref) {
 				ref.treeData.makeNewEntry(args[1]);
 			}
-			if(top.fileSelect.options.canSelectDir){
+			if (top.fileSelect.options.canSelectDir) {
 				top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;
 			}
 			break;

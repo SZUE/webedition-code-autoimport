@@ -88,7 +88,6 @@ class we_banner_dirSelector extends we_selector_directory{
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
 
-		$js = '';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if(!$txt){
@@ -123,9 +122,8 @@ class we_banner_dirSelector extends we_selector_directory{
 				]);
 			}
 		}
-
-		$js.=$this->printCmdAddEntriesHTML($weCmd) .
-			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->printCmdAddEntriesHTML($weCmd);
+		$js = 'top.selectFile(top.fileSelect.data.currentID);';
 		$this->setWriteSelectorData($weCmd);
 		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() .
 			we_html_element::jsElement($js), we_html_element::htmlBody());
