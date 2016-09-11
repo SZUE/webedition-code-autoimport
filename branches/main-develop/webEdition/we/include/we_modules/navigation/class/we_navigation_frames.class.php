@@ -428,7 +428,7 @@ function setTab(tab) {
 		$disabled = ($this->Model->isnew ? ' ' . g_l('weClass', '[availableAfterSave]') : '');
 		$cmd1 = "document.we_form.CopyFolderID.value";
 
-		$cmd = "javascript:we_cmd('openNavigationDirselector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.CopyFolderPath.value") . "','opener.we_cmd(\"copyNaviFolder\")')";
+		$cmd = "javascript:we_cmd('we_navigation_dirSelector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.CopyFolderPath.value") . "','opener.we_cmd(\"copyNaviFolder\")')";
 		$button_copyFolder = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', !empty($disabled));
 
 		$parts[] = [
@@ -892,7 +892,7 @@ function showPreview() {
 		$wecmdenc2 = we_base_request::encCmd("document.we_form.$PathName.value");
 
 		if($table == NAVIGATION_TABLE){
-			$cmd = "javascript:we_cmd('openNavigationDirselector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $cmd . "')";
+			$cmd = "javascript:we_cmd('we_navigation_dirSelector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $cmd . "')";
 			$selector = weSuggest::DirSelector;
 		} else if($filter == we_base_ContentTypes::FOLDER){
 			$cmd = "javascript:we_cmd('we_selector_file'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $cmd . "','','" . $rootDirID . "')";

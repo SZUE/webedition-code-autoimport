@@ -225,15 +225,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 
-		case "openNewsletterDirselector":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
-			args[0] = "we_newsletter_dirSelector";
-			for (i = 0; i < args.length; i++) {
-				url += "we_cmd[]=" + encodeURI(args[i]);
-				if (i < (args.length - 1)) {
-					url += "&";
-				}
-			}
+		case "we_newsletter_dirSelector":
 			new (WE().util.jsWindow)(this, url, "we_newsletter_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 

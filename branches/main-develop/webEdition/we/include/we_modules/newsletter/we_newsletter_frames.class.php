@@ -1007,7 +1007,7 @@ window.onload=extraInit;');
 
 		$wecmd1 = "document.we_form.elements['" . $IDName . "'].value";
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('openNewsletterDirselector'," . $wecmd1 . ",'" . we_base_request::encCmd($wecmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_newsletter_dirSelector'," . $wecmd1 . ",'" . we_base_request::encCmd($wecmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
 		if(is_object($acObject)){
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId('PathGroup');

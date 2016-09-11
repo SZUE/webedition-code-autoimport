@@ -92,9 +92,7 @@ function we_cmd() {
 		case "we_selector_category":
 			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
-		case "openNavigationDirselector":
-			args[0] = "we_navigation_dirSelector";
-			url = WE().util.getWe_cmdArgsUrl(args);
+		case "we_navigation_dirSelector":
 			new (WE().util.jsWindow)(this, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 		case "openFieldSelector":
