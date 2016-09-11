@@ -45,8 +45,9 @@ class we_selector_delete extends we_selector_file{
 		unset($_SESSION['weS']['seemForOpenDelSelector']['ID']);
 	}
 
-	protected function printCmdHTML($morejs = ''){
-		parent::printCmdHTML((intval($this->dir) ? 'top.DelBut(true);' : 'top.DelBut(false);') . $morejs);
+	protected function printCmdHTML(we_base_jsCmd $weCmd){
+		$weCmd->addCmd('setButtons', [['DelBut', $this->dir ? true : false]]);
+		parent::printCmdHTML($weCmd);
 	}
 
 	function renameChildrenPath($id, we_database_base $db = null){

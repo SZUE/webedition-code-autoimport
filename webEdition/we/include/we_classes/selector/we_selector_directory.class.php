@@ -49,7 +49,8 @@ class we_selector_directory extends we_selector_file{
 	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){
 		switch($what){
 			case self::SETDIR:
-				$this->printSetDirHTML();
+				$weCmd = new we_base_jsCmd();
+				$this->printSetDirHTML($weCmd);
 				break;
 			case self::NEWFOLDER:
 				$this->printNewFolderHTML();
@@ -71,11 +72,10 @@ class we_selector_directory extends we_selector_file{
 		}
 	}
 
-	protected function printCmdHTML($morejs = ''){
-		parent::printCmdHTML(
-			($this->userCanMakeNewFolder ? 'top.NewFolderBut(true);' : 'top.NewFolderBut(false);') .
-			$morejs
-		);
+	protected function printCmdHTML(we_base_jsCmd $weCmd){
+		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewFolder]]);
+
+		parent::printCmdHTML($weCmd);
 	}
 
 	protected function query(){
@@ -136,8 +136,8 @@ class we_selector_directory extends we_selector_file{
 			];
 		}
 		$weCmd->addCmd('addEntries', $entries);
-		$ret = 'top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');';
-		return $ret;
+		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
+		$weCmd->addCmd('writeBody');
 	}
 
 	protected function printHeaderHeadlines(){
@@ -242,7 +242,7 @@ class we_selector_directory extends we_selector_file{
 		}
 	}
 
-	protected function printHeaderTable($extra = '', $append = false){
+	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = false){
 		return '
 <table class="selectorHeaderTable">
 	<tr style="vertical-align:middle">
@@ -260,12 +260,11 @@ class we_selector_directory extends we_selector_file{
 </table>';
 	}
 
-	protected function printSetDirHTML($morejs = ''){
+	protected function printSetDirHTML(we_base_jsCmd $weCmd){
 		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
 		if(!$morejs && $isWS && $this->id == 0){
 			$this->path = '/';
 		}
-		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
 		if($isWS){
 			$weCmd->addCmd('updateSelectData', [
@@ -276,16 +275,17 @@ class we_selector_directory extends we_selector_file{
 			]);
 		}
 		$this->printCmdAddEntriesHTML($weCmd);
-		$js = 'top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');' .
-			$morejs .
-			($isWS ?
-				'top.unselectAllFiles();
-top.NewFolderBut(' . ($this->userCanMakeNewFolder ? 'true' : 'false') . ');
-top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 'true') . ');' :
-				'');
+		$weCmd->addCmd('setButtons', [
+			['NewFolderBut', $this->userCanMakeNewDir() && $this->userCanMakeNewFolder],
+			['RootDirButs', $isWS && (intval($this->dir) !== intval($this->rootDirID))]
+		]);
+
+		if($isWS){
+			$weCmd->addCmd('unselectAllFiles');
+		}
 		$this->setWriteSelectorData($weCmd);
 
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 
@@ -297,9 +297,9 @@ top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 
 		]);
 		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setWriteSelectorData($weCmd);
+		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
 
-		echo $weCmd->getCmds() .
-		we_html_element::jsElement('top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');');
+		echo $weCmd->getCmds();
 	}
 
 	protected function printCreateFolderHTML(){
@@ -339,17 +339,15 @@ top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 
 			'makeNewFolder' => false,
 		]);
 		$this->printCmdAddEntriesHTML($weCmd);
+		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
 
-		$js = ($msg && $this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;' : '') .
-			'top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');' .
-			'top.selectFile(top.fileSelect.data.currentID);';
 		$this->setWriteSelectorData($weCmd);
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
-	protected function getFrameset($withPreview = true){
+	protected function getFrameset(we_base_jsCmd $weCmd, $withPreview = true){
 		return '<body class="selector" onload="startFrameset();">' .
-			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
+			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML($weCmd)) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, $withPreview ? 'preview' : '') .
 			($withPreview ? we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) : '') .
 			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
@@ -360,8 +358,8 @@ top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 
 
 	protected function setFramesetJavaScriptOptions(){
 		parent::setFramesetJavaScriptOptions();
-		$this->jsoptions['options']['userCanRenameFolder'] = intval($this->userCanRenameFolder);
-		$this->jsoptions['options']['userCanMakeNewFolder'] = intval($this->userCanMakeNewFolder);
+		$this->jsoptions['options']['userCanRenameFolder'] = $this->userCanRenameFolder;
+		$this->jsoptions['options']['userCanMakeNewFolder'] = $this->userCanMakeNewFolder;
 		$this->jsoptions['data']['makefolderState'] = $this->userCanMakeNewFolder;
 	}
 
@@ -375,8 +373,9 @@ top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 
 			$this->printCmdAddEntriesHTML($weCmd);
 
 			$this->setWriteSelectorData($weCmd);
-			echo $weCmd->getCmds() .
-			we_html_element::jsElement('top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');');
+			$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
+
+			echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 		}
 	}
 
@@ -398,8 +397,10 @@ top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 
 
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
+		$weCmd->addCmd('updateSelectData', [
+			'makeNewFolder' => false
+		]);
 
-		$js = 'top.fileSelect.data.makeNewFolder=false;';
 		if(($msg = $folder->checkFieldsOnSave())){
 			$weCmd->addCmd('msg', ['msg' => $msg, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} elseif(we_users_util::in_workspace($this->we_editDirID, get_ws($this->table, true), $this->table, $this->db)){
@@ -413,18 +414,14 @@ top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 
 						'currentText' => $folder->Text
 					]);
 				}
-
-				$js.= ($this->canSelectDir ? '
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-' : '');
 			}
 		}
 		$this->printCmdAddEntriesHTML($weCmd);
-		$js.='top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');
-top.selectFile(top.fileSelect.data.currentID);';
+		$weCmd->addCmd('setButtons', [['NewFolderBut', $this->userCanMakeNewDir()]]);
+
 		$this->setWriteSelectorData($weCmd);
 
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function printPreviewHTML(){
@@ -433,7 +430,7 @@ top.selectFile(top.fileSelect.data.currentID);';
 		}
 		$data = getHash('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->id), $this->db);
 		if($data){
-			$result = array(
+			$result = [
 				'Text' => $data['Text'],
 				'Path' => $data['Path'],
 				'ContentType' => isset($data['ContentType']) ? $data['ContentType'] : '',
@@ -446,7 +443,7 @@ top.selectFile(top.fileSelect.data.currentID);';
 				'IncludedTemplates' => isset($data['IncludedTemplates']) ? $data['IncludedTemplates'] : '',
 				'ClassName' => isset($data['ClassName']) ? $data['ClassName'] : '',
 				'Templates' => isset($data['Templates']) ? $data['Templates'] : '',
-			);
+			];
 		}
 		$path = $data ? $data['Path'] : '';
 		$out = we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_selector_preview.css') .

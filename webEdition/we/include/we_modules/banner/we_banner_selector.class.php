@@ -44,8 +44,7 @@ class we_banner_selector extends we_selector_file{
 </table>';
 	}
 
-	function printSetDirHTML(){
-		$weCmd = new we_base_jsCmd();
+	function printSetDirHTML(we_base_jsCmd $weCmd){
 		$weCmd->addCmd('clearEntries');
 		$weCmd->addCmd('updateSelectData', [
 			'currentDir' => $this->dir,
@@ -54,8 +53,8 @@ class we_banner_selector extends we_selector_file{
 		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setSelectorData($weCmd);
 
-		$js = 'top.RootDirButs(' . (intval($this->dir) == 0 ? 'false' : 'true') . ');';
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
+		$weCmd->addCmd('setButtons', [['RootDirButs' ,intval($this->dir) !== 0]]);
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 	}
 

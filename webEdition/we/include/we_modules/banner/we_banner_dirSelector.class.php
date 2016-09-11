@@ -54,9 +54,9 @@ class we_banner_dirSelector extends we_selector_directory{
 </table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}
 
-	protected function printHeaderTable($extra = '', $append = false){
+	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = false){
 		$makefolderState = permissionhandler::hasPerm("NEW_BANNER");
-		return parent::printHeaderTable('<td>' .
+		return parent::printHeaderTable($weCmd, '<td>' .
 				we_base_jsCmd::singleCmd('updateSelectData', [
 					'makefolderState' => $makefolderState
 					]
@@ -82,6 +82,7 @@ class we_banner_dirSelector extends we_selector_directory{
 			];
 		}
 		$weCmd->addCmd('addEntries', $entries);
+		$weCmd->addCmd('writeBody');
 	}
 
 	protected function printCreateFolderHTML(){
@@ -123,10 +124,8 @@ class we_banner_dirSelector extends we_selector_directory{
 			}
 		}
 		$this->printCmdAddEntriesHTML($weCmd);
-		$js = 'top.selectFile(top.fileSelect.data.currentID);';
 		$this->setWriteSelectorData($weCmd);
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() .
-			we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function query(){
@@ -136,9 +135,8 @@ class we_banner_dirSelector extends we_selector_directory{
 	protected function printDoRenameFolderHTML(){
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
+		$weCmd->addCmd('updateSelectData', ['makeNewFolder' => false]);
 
-		$js = '
-top.fileSelect.data.makeNewFolder=false;';
 		$this->FolderText = rawurldecode($this->FolderText);
 		$txt = $this->FolderText;
 		if(!$txt){
@@ -166,17 +164,13 @@ top.fileSelect.data.makeNewFolder=false;';
 								'currentText' => $folder->Text
 							]);
 						}
-						$js.= ($this->canSelectDir ? '
-top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;
-' : '');
 					}
 				}
 			}
 		}
-		$js.=$this->printCmdAddEntriesHTML($weCmd) . '
-top.selectFile(top.fileSelect.data.currentID);';
+		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setWriteSelectorData($weCmd);
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	public function printHTML($what = we_selector_file::FRAMESET, $withPreview = true){

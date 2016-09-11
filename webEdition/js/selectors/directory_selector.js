@@ -1,4 +1,4 @@
-/* global top, WE, fileSelect */
+/* global top, WE, fileSelect, entries */
 
 /**
  * webEdition CMS

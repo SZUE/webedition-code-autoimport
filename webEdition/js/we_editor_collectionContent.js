@@ -190,7 +190,7 @@ weCollectionEdit = {
 
 	},
 	setView: function (view, viewSub) {
-		switch(view){
+		switch (view) {
 			case 'list':
 				this.view = 'list';
 				this.viewSub = viewSub === 'minimal' ? 'minimal' : 'broad';
@@ -199,7 +199,7 @@ weCollectionEdit = {
 				this.sliderDiv.style.display = 'none';
 				break;
 			case 'grid':
-			/* falls through */
+				/* falls through */
 			default:
 				this.view = view;
 				this.ct.grid.style.display = 'inline-block';
@@ -258,7 +258,7 @@ weCollectionEdit = {
 		//TODO: grab elems by getElementByClassName instead of counting children...
 		if (this.view === 'grid') {
 			item = elem.firstChild;
-			if(!last){
+			if (!last) {
 				item.addEventListener('mouseover', function () {
 					t.overMouse('item', view, item);
 				}, false);
@@ -305,7 +305,7 @@ weCollectionEdit = {
 		}
 
 		if (this.isDragAndDrop) {
-			if(!last){
+			if (!last) {
 				item.style.cursor = 'move';
 				item.draggable = true;
 			}
@@ -390,7 +390,7 @@ weCollectionEdit = {
 			//this.ct['grid'].children[i].style.backgroundSize = Math.max(item.icon.sizeX, item.icon.sizeY) < this.gridItemDimension.item ? 'auto' : 'contain';
 
 			attribDivs[i].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
-			if(iconDivs[i].firstChild.tagName === 'BUTTON'){
+			if (iconDivs[i].firstChild.tagName === 'BUTTON') {
 				iconDivs[i].firstChild.style.fontSize = this.gridItemDimension.btnFontsize + 'px';
 				iconDivs[i].firstChild.style.height = this.gridItemDimension.btnHeight + 'px';
 			} else {
@@ -455,9 +455,9 @@ weCollectionEdit = {
 	},
 	insertItem: function (elem, repaint, item, scope, color, last) {
 		var t = scope ? scope : this,
-			el = elem ? t.getItem(elem) : null,
-			mustInsertPathCutLeft = false,
-			div, newItem, cmd1, cmd2, cmd3, blank, elPreview, btn;
+						el = elem ? t.getItem(elem) : null,
+						mustInsertPathCutLeft = false,
+						div, newItem, cmd1, cmd2, cmd3, blank, elPreview, btn;
 
 		color = color ? color : false;
 		item = item ? item : this.storage['item_-1'];
@@ -475,16 +475,16 @@ weCollectionEdit = {
 
 		var viewPlusSub = t.view !== 'list' ? 'grid' : (t.viewSub === 'minimal' ? 'listMinimal' : 'list');
 		blank = t.blankItem[viewPlusSub].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
-			replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
-			replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
-			replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
-			replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).
-			replace(/##META_DESC##/g, item.elements.meta_description.Dat).replace(/##S_META_DESC##/g, item.elements.meta_description.state);
+						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
+						replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
+						replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
+						replace(/##META_TITLE##/g, item.elements.meta_title.Dat).replace(/##S_META_TITLE##/g, item.elements.meta_title.state).
+						replace(/##META_DESC##/g, item.elements.meta_description.Dat).replace(/##S_META_DESC##/g, item.elements.meta_description.state);
 
 		if (t.view === 'list') {
 			blank = blank.replace(/##W_ATTRIB_TITLE##/g, item.elements.attrib_title.write).replace(/##W_ATTRIB_ALT##/g, item.elements.attrib_alt.write).
-				replace(/##W_META_TITLE##/g, item.elements.meta_title.write).replace(/##W_META_DESC##/g, item.elements.meta_description.write).
-				replace(/##CLASS##/g, (this.viewSub === 'minimal' ? 'minimalListItem' : 'broadListItem'));
+							replace(/##W_META_TITLE##/g, item.elements.meta_title.write).replace(/##W_META_DESC##/g, item.elements.meta_description.write).
+							replace(/##CLASS##/g, (this.viewSub === 'minimal' ? 'minimalListItem' : 'broadListItem'));
 
 			//TODO: list fallback!
 			if (item.id === -1) {
@@ -504,7 +504,7 @@ weCollectionEdit = {
 				div.getElementsByClassName('divBtnSelect')[0].style.display = 'block';
 			} else {
 				div.getElementsByClassName('previewDiv')[0].innerHTML = '';
-				if (this.viewSub === 'minimal'){
+				if (this.viewSub === 'minimal') {
 					div.getElementsByClassName('colContentInput')[0].style.display = 'none';
 					div.getElementsByClassName('colContentTextOnly')[0].style.display = 'inline-block';
 					div.getElementsByClassName('divBtnEditTextOnly')[0].style.display = 'inline-block';
@@ -518,7 +518,7 @@ weCollectionEdit = {
 				elPreview.style.background = 'transparent';
 				elPreview.style.display = 'block';
 			}
-			if(last){
+			if (last) {
 				div.getElementsByClassName('colControls')[0].style.display = 'none';
 			}
 		} else {
@@ -550,7 +550,7 @@ weCollectionEdit = {
 			div.getElementsByClassName('toolbarAttribs')[0].style.display = this.itemsPerRow > 5 ? 'none' : 'block';
 			if (item.id === -1) {
 				btn = div.getElementsByClassName('divInner')[0].firstChild;
-				if(btn.tagName === 'BUTTON'){
+				if (btn.tagName === 'BUTTON') {
 					btn.style.fontSize = this.gridItemDimension.btnFontsize + 'px';
 					btn.style.height = this.gridItemDimension.btnHeight + 'px';
 				}
@@ -562,13 +562,13 @@ weCollectionEdit = {
 		document.body.removeChild(div);
 		newItem = el ? t.ct[t.view].insertBefore(div.firstChild, el.nextSibling) : t.ct[t.view].appendChild(div.firstChild);
 
-		if(mustInsertPathCutLeft){
+		if (mustInsertPathCutLeft) {
 			var colContentText = newItem.getElementsByClassName('colContentTextOnly')[0];
 			this.addTextCutLeft(colContentText, item.path, colContentText.parentNode.offsetWidth - 10);
 		}
 
 
-		if(last){
+		if (last) {
 			newItem.setAttribute("name", "last");
 		}
 		this.resetItemColors(newItem);
@@ -668,7 +668,7 @@ weCollectionEdit = {
 					break;
 				case 'list':
 					val = parseInt(document.getElementById('yuiAcResultItem_' + ct.childNodes[i].id.substr(10)).value);
-					if(this.viewSub !== 'minimal'){
+					if (this.viewSub !== 'minimal') {
 						btns_up[i].disabled = i === 0;
 						btns_down[i].disabled = (i === (ct.childNodes.length - 1));
 					}
@@ -735,8 +735,8 @@ weCollectionEdit = {
 				break;
 		}
 	},
-	addTextCutLeft: function(elem, text, maxwidth){
-		if(!elem){
+	addTextCutLeft: function (elem, text, maxwidth) {
+		if (!elem) {
 			return;
 		}
 
@@ -744,7 +744,7 @@ weCollectionEdit = {
 		text = text ? text : '';
 		var i = 2000;
 		elem.innerHTML = text;
-		while(elem.offsetWidth > maxwidth && i > 0){
+		while (elem.offsetWidth > maxwidth && i > 0) {
 			text = text.substr(4);
 			elem.innerHTML = '...' + text;
 			--i;
@@ -889,7 +889,7 @@ weCollectionEdit = {
 	},
 	startMoveItem: function (evt, view) {
 		var elem = this.getItem(evt.target),
-			position = Array.indexOf.call(this.ct[view].children, elem);
+						position = Array.indexOf.call(this.ct[view].children, elem);
 
 		this.view = view;
 		this.dd.isMoveItem = true;
@@ -920,11 +920,11 @@ weCollectionEdit = {
 
 		switch (data[0]) {
 			case 'moveItem':
-				if(!last){
+				if (!last) {
 					this.dd.isMoveItem = false;
 					if (this.dd.moveItem.el !== this.getItem(elem)) {
 						var indexNextToNewPos = this.getPlaceholder().nextSibling ? this.getPlaceholder().nextSibling.id.substr(10) : 0,
-							otherView = view === 'grid' ? 'list' : 'grid';
+										otherView = view === 'grid' ? 'list' : 'grid';
 
 						this.ct[this.view].replaceChild(this.dd.moveItem.el, this.getPlaceholder());
 						this.dd.moveItem.el.firstChild.style.borderColor = 'green';
@@ -1070,3 +1070,13 @@ weCollectionEdit = {
 
 	}
 };
+
+function doFileUploader(table, ID) {
+	var fc, editorID, frame, ce;
+	if ((fc = WE().layout.weEditorFrameController) && (editorID = fc.getEditorIdOfOpenDocument(table, ID)) && (fc.getEditorEditPageNr(editorID) == 1) && (frame = fc.getEditorFrame(editorID)) && (ce = frame.getContentEditor().weCollectionEdit)) {
+		ce.insertImportedDocuments(scope.sender.resp.success);
+	} else {
+		top.opener.top.console.debug('error: collection closed or changed tab');
+	}
+	top.close()
+}

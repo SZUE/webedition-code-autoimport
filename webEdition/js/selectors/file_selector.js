@@ -149,15 +149,12 @@ function selectFile(id) {
 	if (id) {
 		e = getEntry(id);
 
-		if (
-						a.value != e.text &&
-						a.value.indexOf(e.text + ",") == -1 &&
-						a.value.indexOf("," + e.text + ",") == -1 &&
-						a.value.indexOf("," + e.text + ",") == -1) {
+		if (a.value != e.text &&
+						a.value.indexOf(e.text + ",") === -1 &&
+						a.value.indexOf("," + e.text + ",") === -1 &&
+						a.value.indexOf("," + e.text + ",") === -1) {
 
-			a.value = a.value ?
-							(a.value + "," + e.text) :
-							e.text;
+			a.value = a.value ? (a.value + "," + e.text) : e.text;
 		}
 		top.fsbody.document.getElementById("line_" + id).classList.add("selected");
 		top.fileSelect.data.currentPath = e.path;
@@ -464,7 +461,10 @@ function we_cmd() {
 			top.selectIt();
 			break;
 		case 'writeBody':
-			top.writeBody(top.fsbody.document.body);
+			if (top.fsbody.document.body) {
+				top.writeBody(top.fsbody.document.body);
+				top.selectFile(top.fileSelect.data.currentID);
+			}
 			break;
 		case 'updateTreeEntry':
 			ref = (top.opener.top.treeData ? top.opener.top : (top.opener.top.opener.top.treeData ? top.opener.top.opener.top : null));
@@ -485,6 +485,51 @@ function we_cmd() {
 			var obj = args[1];
 			for (i in obj) {
 				top.fileSelect.data[i] = obj[i];
+				if (obj === 'currentText') {
+					top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;
+				}
+			}
+			break;
+		case 'setButtons':
+			for (i = 0; i < args[1].length; i++) {
+				switch (args[1][i][0]) {
+					case 'NewFolderBut':
+						NewFolderBut(args[1][i][1]);
+						break;
+					case 'NewFileBut':
+						NewFileBut(args[1][i][1]);
+						break;
+					case 'RootDirButs':
+						RootDirButs(args[1][i][1]);
+						break;
+					case 'DelBut':
+						DelBut(args[1][i][1]);
+				}
+			}
+			break;
+		case 'setLookinDir':
+			top.setDir(top.document.getElementById("lookin").value);
+			break;
+		case 'updateCatChooserButton':
+			top.frames.fsvalues.document.we_form.elements.FolderID.value = args[1];
+			top.frames.fsvalues.document.we_form.elements.FolderIDPath.value = args[2];
+			break;
+		case 'newCatSuccess':
+			top.hot = 1; // this is hot for category edit!!
+
+			if (top.fileSelect.data.currentID) {
+				top.DelBut(false);
+				top.showPref(top.fileSelect.data.currentID);
+			}
+			break;
+		case 'unselectAllFiles':
+			top.unselectAllFiles();
+			break;
+		case 'postRenameCat':
+			top.hot = true; // this is hot for category edit!!
+			if (top.fileSelect.data.currentID) {
+				top.DelBut(true);
+				top.showPref(top.fileSelect.data.currentID);
 			}
 			break;
 		default:
@@ -510,3 +555,56 @@ function selectorOnDblClick(id) {
 	top.doClick(id, 1);
 	return true;
 }
+
+function exit_open() {
+	if (top.fileSelect.data.JSIDName) {
+		if (top.fileSelect.data.JSIDName.indexOf(".")) {
+			//FIXME: remove eval
+			eval("opener." + top.fileSelect.data.JSIDName + "=top.fileSelect.data.currentID;");
+		} else {
+			opener.document.we_form.elements[top.fileSelect.data.JSIDName].value = top.fileSelect.data.currentID;
+		}
+	}
+	if (top.fileSelect.data.JSTextName) {
+		if (top.fileSelect.data.JSTextName.indexOf(".")) {
+			//FIXME: remove eval
+			eval("opener." + top.fileSelect.data.JSTextName + "= top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : '';");
+		} else {
+			opener.document.we_form.elements[top.fileSelect.data.JSTextName].value = top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
+		}
+
+		if ((opener.parent !== undefined) && (opener.parent.frames.editHeader !== undefined)) {
+			if (top.fileSelect.data.currentType != "") {
+				switch (top.fileSelect.data.currentType) {
+					case "noalias":
+						setTabsCurPath = "@" + top.fileSelect.data.currentText;
+						break;
+					default:
+						setTabsCurPath = top.fileSelect.data.currentPath;
+				}
+				if (getEntry(top.fileSelect.data.currentID).isFolder) {
+					opener.parent.frames.editHeader.weTabs.setTitlePath("", setTabsCurPath);
+				} else {
+					opener.parent.frames.editHeader.weTabs.setTitlePath(setTabsCurPath);
+				}
+			}
+		}
+		if (opener.YAHOO !== undefined && opener.YAHOO.autocoml !== undefined) {
+			var val = (top.fileSelect.data.JSTextName.indexOf(".") ?
+							//FIXME: remove eval
+							eval("opener." + top.fileSelect.data.JSTextName.replace(".value", ".id")) :
+							opener.document.we_form.elements[top.fileSelect.data.JSTextName].id
+							);
+			opener.YAHOO.autocoml.selectorSetValid(val);
+		}
+	}
+	if (top.fileSelect.data.JSCommand) {
+		eval(top.fileSelect.data.JSCommand);
+	}
+
+	self.close();
+}
+
+
+
+self.focus();

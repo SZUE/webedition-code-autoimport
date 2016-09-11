@@ -54,9 +54,9 @@ class we_navigation_dirSelector extends we_selector_directory{
 </table><div id="footerButtons">' . we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) . '</div>';
 	}
 
-	protected function printHeaderTable($extra = '', $append = false){
+	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = false){
 		$makefolderState = permissionhandler::hasPerm("EDIT_NAVIGATION");
-		return parent::printHeaderTable('<td>' . we_base_jsCmd::singleCmd('updateSelectData', [
+		return parent::printHeaderTable($weCmd, '<td>' . we_base_jsCmd::singleCmd('updateSelectData', [
 					'makefolderState' => $makefolderState
 				]) .
 				we_html_button::create_button('fa:btn_new_dir,fa-plus,fa-lg fa-folder', "javascript:if(top.fileSelect.data.makefolderState){top.drawNewFolder();}", true, 0, 0, "", "", $makefolderState ? false : true) .
@@ -81,6 +81,7 @@ class we_navigation_dirSelector extends we_selector_directory{
 			];
 		}
 		$weCmd->addCmd('addEntries', $entries);
+		$weCmd->addCmd('writeBody');
 	}
 
 	protected function printCreateFolderHTML(){
@@ -94,36 +95,39 @@ class we_navigation_dirSelector extends we_selector_directory{
 			'makeNewFolder' => false
 		]);
 
-		$js = '';
 		if(!$txt){
-			$weCmd->addCmd('msg',['msg'=>g_l('navigation', '[wrongtext]'),'prio'=> we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addCmd('msg', ['msg' => g_l('navigation', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else {
 			$folder = new we_folder();
 			$folder->we_new($this->table, $this->dir, $txt);
 			if(f('SELECT 1 FROM ' . $this->table . ' WHERE Path="' . $folder->Path . '"', '', $this->db)){
-				$weCmd->addCmd('msg',['msg'=>g_l('navigation', '[folder_path_exists]'),'prio'=>we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addCmd('msg', ['msg' => g_l('navigation', '[folder_path_exists]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} elseif(we_navigation_navigation::filenameNotValid($folder->Text)){
-				$weCmd->addCmd('msg',['msg'=>g_l('navigation', '[wrongtext]'),'prio'=>we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addCmd('msg', ['msg' => g_l('navigation', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} else {
 				$folder->we_save();
 				if($this->canSelectDir){
 					$weCmd->addCmd('updateSelectData', [
 						'currentPath' => $folder->Path,
 						'currentID' => $folder->ID,
+						'crrentText' => $folder->Text
 					]);
 				}
-				$js.='
-if(top.opener.top.treeData.makeNewEntry){
-	top.opener.top.treeData.makeNewEntry({id:' . $folder->ID . ',parentid:' . $folder->ParentID . ',text:"' . $txt . '",open:1,contenttype:"folder",table:"' . $this->table . '",published:0,order:0});
-}' .
-					($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";' : '');
+				$weCmd->addCmd('makeNewTreeEntry', [
+					'id' => $folder->ID,
+					'parentid' => $folder->ParentID,
+					'text' => $txt,
+					'open' => 1,
+					'contenttype' => "folder",
+					'table' => $this->table,
+					'published' => 0,
+					'order' => 0
+				]);
 			}
 		}
 		$this->printCmdAddEntriesHTML($weCmd);
-		$js.= 'top.selectFile(top.fileSelect.data.currentID);';
 		$this->setWriteSelectorData($weCmd);
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() .
-			we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function query(){
@@ -137,9 +141,10 @@ if(top.opener.top.treeData.makeNewEntry){
 		$weCmd = new we_base_jsCmd();
 		$weCmd->addCmd('clearEntries');
 
-		$js = 'top.fileSelect.data.makeNewFolder=false;';
+		$weCmd->addCmd('updateSelectData', ['makeNewFolder' => false]);
+
 		if(!$txt){
-			$weCmd->addCmd('msg',['msg'=>g_l('navigation', '[folder_empty]'),'prio'=>we_message_reporting::WE_MESSAGE_ERROR]);
+			$weCmd->addCmd('msg', ['msg' => g_l('navigation', '[folder_empty]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else {
 			$folder = new we_folder();
 			$folder->initByID($this->we_editDirID, $this->table);
@@ -148,9 +153,9 @@ if(top.opener.top.treeData.makeNewEntry){
 			$folder->Path = $folder->getPath();
 			$this->db->query('SELECT ID,Text FROM ' . $this->db->escape($this->table) . ' WHERE Path="' . $this->db->escape($folder->Path) . '" AND ID!=' . intval($this->we_editDirID));
 			if($this->db->next_record()){
-				$weCmd->addCmd('msg',['msg'=>sprintf(g_l('navigation', '[folder_exists]'), $folder->Path),'prio'=>we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addCmd('msg', ['msg' => sprintf(g_l('navigation', '[folder_exists]'), $folder->Path), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} elseif(strpbrk($folder->Text, '%/\\"\'') !== false){
-				$weCmd->addCmd('msg',['msg'=>g_l('navigation', '[wrongtext]'),'prio'=>we_message_reporting::WE_MESSAGE_ERROR]);
+				$weCmd->addCmd('msg', ['msg' => g_l('navigation', '[wrongtext]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 			} elseif(f('SELECT Text FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->we_editDirID), "Text", $this->db) != $txt){
 				$folder->we_save();
 				if($this->canSelectDir){
@@ -161,16 +166,11 @@ if(top.opener.top.treeData.makeNewEntry){
 					]);
 				}
 				$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID]);
-				$js.=($this->canSelectDir ? 'top.document.getElementsByName("fname")[0].value =top.fileSelect.data.currentText;' :
-						''
-					);
 			}
 		}
-		$js.=$this->printCmdAddEntriesHTML($weCmd) .
-			'top.selectFile(top.fileSelect.data.currentID);';
+		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setWriteSelectorData($weCmd);
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() .
-			we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function getFramsetJSFile(){
