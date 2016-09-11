@@ -87,12 +87,10 @@ class we_users_selector extends we_selector_file{
 		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/users_selector.js');
 	}
 
-	function printSetDirHTML(){
-		$weCmd = new we_base_jsCmd();
+	protected function printSetDirHTML(we_base_jsCmd $weCmd){
 		$weCmd->addCmd('clearEntries');
-
-		$js = $this->printCmdAddEntriesHTML($weCmd) .
-			'top.RootDirButs(' . (intval($this->dir) == intval($this->rootDirID) ? 'false' : 'true') . ');';
+		$this->printCmdAddEntriesHTML($weCmd);
+		$weCmd->addCmd('setButtons', [['RootDirButs', intval($this->dir) !== 0]]);
 		$this->setSelectorData($weCmd);
 
 		if(permissionhandler::hasPerm("ADMINISTRATOR")){
@@ -110,7 +108,6 @@ class we_users_selector extends we_selector_file{
 				'currentID' => $this->id,
 				'currentText' => $this->values["Text"]
 			]);
-			$js.= 'top.document.getElementsByName("fname")[0].value = top.fileSelect.data.currentText;';
 		}
 		$weCmd->addCmd('updateSelectData', [
 			'currentDir' => $this->dir,
@@ -118,7 +115,7 @@ class we_users_selector extends we_selector_file{
 		]);
 		$_SESSION['weS']['we_fs_lastDir'][$this->table] = $this->dir;
 
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function printFooterTable(){

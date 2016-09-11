@@ -128,12 +128,11 @@ class we_customer_selector extends we_users_selector{
 		}
 	}
 
-	function printSetDirHTML(){
-		$weCmd = new we_base_jsCmd();
+	function printSetDirHTML(we_base_jsCmd $weCmd){
 		$weCmd->addCmd('clearEntries');
 
 		$this->printCmdAddEntriesHTML($weCmd);
-		$js = 'top.RootDirButs(' . (($this->dir) ? 'true' : 'false' ) . ');';
+		$weCmd->addCmd('setButtons', [['RootDirButs' ,intval($this->dir) !== 0]]);
 		$this->setSelectorData($weCmd);
 
 		if(permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -150,7 +149,7 @@ class we_customer_selector extends we_users_selector{
 			'currentDir' => $this->dir
 		]);
 
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function getFramsetJSFile(){
@@ -167,16 +166,13 @@ class we_customer_selector extends we_users_selector{
 		return $out;
 	}
 
-	protected function setSelectorData(we_base_jsCmd $weCmd, $withWrite = true){
+	protected function setSelectorData(we_base_jsCmd $weCmd){
 		$elem = $this->getHeaderElements();
 		$options = [];
 		foreach($elem as $key => $val){
 			$options[] = [$val, $key];
 		}
 		$weCmd->addCmd('writeOptions', $options);
-		if($withWrite){
-			$weCmd->addCmd('writeBody');
-		}
 	}
 
 }

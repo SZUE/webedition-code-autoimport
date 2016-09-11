@@ -46,6 +46,7 @@ class we_base_jsCmd{
 			}
 		}
 
+		$this->cmds = $this->cmdData = [];
 		return we_html_element::jsScript(JS_DIR . 'we_processCmd.js', '', $attrs);
 	}
 

@@ -69,14 +69,10 @@ class we_newsletter_dirSelector extends we_selector_directory{
 			]);
 		}
 		$this->printCmdAddEntriesHTML($weCmd);
-		$js = ($this->userCanMakeNewDir() ?
-				'top.NewFolderBut(true);' :
-				'top.NewFolderBut(false);') .
-			'top.selectFile(top.fileSelect.data.currentID);';
+		$weCmd->addCmd('setButtons', [['NewFolderBut' ,$this->userCanMakeNewDir()]]);
 
 		$this->setWriteSelectorData($weCmd);
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() .
-			we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function printDoRenameFolderHTML(){
@@ -99,25 +95,21 @@ class we_newsletter_dirSelector extends we_selector_directory{
 			$weCmd->addCmd('msg', ['msg' => $msg, 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 		} else {
 			$weCmd->addCmd('updateTreeEntry', ['id' => $folder->ID, 'text' => $txt, 'parentid' => $folder->ParentID]);
+			if($this->canSelectDir){
+				$weCmd->addCmd('updateSelectData', [
+					'currentPath' => $folder->Path,
+					'currentID' => $folder->ID,
+					'currentText' => $folder->Text
+				]);
+			}
 		}
 
-		$js = ($msg ? '' :
-				($this->canSelectDir ?
-					'top.fileSelect.data.currentPath = "' . $folder->Path . '";
-top.fileSelect.data.currentID = "' . $folder->ID . '";
-top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
-' :
-					''
-				)
-			) .
-			'top.fileSelect.data.makeNewFolder=false;' .
-			($this->userCanMakeNewDir() ?
-				'top.NewFolderBut(true);' :
-				'top.NewFolderBut(false);') .
-			'top.selectFile(top.fileSelect.data.currentID);';
+		$weCmd->addCmd('setButtons', [['NewFolderBut' ,$this->userCanMakeNewDir()]]);
+		$weCmd->addCmd('updateSelectData', ['makeNewFolder' => false]);
+
 		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setWriteSelectorData($weCmd);
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function query(){
@@ -139,7 +131,8 @@ top.document.getElementsByName("fname")[0].value = "' . $folder->Text . '";
 			];
 		}
 		$weCmd->addCmd('addEntries', $entries);
-		return ($this->userCanMakeNewDir() ? 'top.NewFolderBut(true);' : 'top.NewFolderBut(false);');
+		$weCmd->addCmd('setButtons', [['NewFolderBut' ,$this->userCanMakeNewDir()]]);
+		$weCmd->addCmd('writeBody');
 	}
 
 	protected function getFramsetJSFile(){

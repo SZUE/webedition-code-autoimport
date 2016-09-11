@@ -29,9 +29,9 @@ class we_selector_image extends we_selector_document{
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, $sessionID, $we_editDirID, $FolderText, $filter, $rootDirID, $open_doc, $multiple, $canSelectDir, $startID, '');
 	}
 
-	protected function getFrameset($withPreview = false){
+	protected function getFrameset(we_base_jsCmd $weCmd, $withPreview = false){
 		return '<body class="selector" onload="startFrameset();">' .
-			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
+			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML($weCmd)) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', 'top.fsbody.document.body.style.fontSize=top.document.getElementsByName("zoom")[0].value+"%";', true, 'preview') .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false) .
 			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
@@ -50,8 +50,8 @@ class we_selector_image extends we_selector_document{
 	}
 
 	//FIXME: get/set view using tblFile.viewType
-	protected function printHeaderTable($extra = '', $append = true){
-		return parent::printHeaderTable(
+	protected function printHeaderTable(we_base_jsCmd $weCmd,$extra = '', $append = true){
+		return parent::printHeaderTable($weCmd,
 				'<td id="' . we_search_view::VIEW_ICONS . '" style="display:none">' . we_html_button::create_button('fa:iconview,fa-lg fa-th', "javascript:setview('" . we_search_view::VIEW_ICONS . "');", true, 40, "", "", "", false) . '</td>
 		<td id="' . we_search_view::VIEW_LIST . '">' . we_html_button::create_button('fa:listview,fa-lg fa-align-justify-lg fa-align-justify', "javascript:setview('" . we_search_view::VIEW_LIST . "');", true, 40, "", "", "", false) . '</td>', true);
 	}

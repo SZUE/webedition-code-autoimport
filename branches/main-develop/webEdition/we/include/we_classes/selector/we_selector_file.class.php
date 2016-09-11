@@ -172,7 +172,8 @@ class we_selector_file{
 				$this->printBodyHTML();
 				break;
 			case self::CMD:
-				$this->printCmdHTML();
+				$weCmd = new we_base_jsCmd();
+				$this->printCmdHTML($weCmd);
 				break;
 			case self::FRAMESET:
 			default:
@@ -180,7 +181,7 @@ class we_selector_file{
 		}
 	}
 
-	function printFramesetHTML($withPreview = true){
+	private function printFramesetHTML($withPreview = true){
 		$weCmd = new we_base_jsCmd();
 		$this->jsoptions = [
 			'options' => [
@@ -195,19 +196,18 @@ class we_selector_file{
 				'makeNewFolder' => false,
 				'we_editDirID' => 0,
 				'JSIDName' => $this->JSIDName,
-				'JSTextName' => $this->JSTextName
+				'JSTextName' => $this->JSTextName,
+				'JSCommand' => $this->JSCommand,
 			],
 			'click' => [
 				'oldID' => 0,
 			]
 		];
 		$this->setFramesetJavaScriptOptions();
+		$this->printCmdAddEntriesHTML($weCmd);
 		$this->setDirAndID(); //set correct directory
 		echo we_html_tools::getHtmlTop($this->title, '', 'frameset', $this->getFramsetJSFile() .
-			$this->getExitOpen() .
-			we_html_element::jsElement($this->printCmdAddEntriesHTML($weCmd) . 'self.focus();') .
-			$weCmd->getCmds() .
-			we_html_element::cssLink(CSS_DIR . 'selectors.css'), $this->getFrameset($withPreview));
+			we_html_element::cssLink(CSS_DIR . 'selectors.css'), $this->getFrameset($weCmd, $withPreview) . $weCmd->getCmds());
 	}
 
 	protected function getFramsetJSFile(){
@@ -230,49 +230,14 @@ class we_selector_file{
 		$this->jsoptions['data']['rootDirButsState'] = (($this->dir != 0));
 	}
 
-	protected function getFrameset(){
+	protected function getFrameset(we_base_jsCmd $weCmd, $withPreview = false){
 		return '<body class="selector" onload="startFrameset();">' .
-			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
+			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML($weCmd)) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true) .
 			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
 			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient']) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>';
-	}
-
-	protected function getExitOpen(){
-		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ? substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) : "";
-		return we_html_element::jsElement('
-function exit_open(){' .
-				($this->JSIDName ? '
-	opener.' . $this->JSIDName . '=top.fileSelect.data.currentID;' :
-					''
-				) .
-				($this->JSTextName ? '
-	opener.' . $this->JSTextName . '= top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
-	if((opener.parent!==undefined) && (opener.parent.frames.editHeader!==undefined)) {
-			if(top.fileSelect.data.currentType!="")	{
-				switch(top.fileSelect.data.currentType){
-					case "noalias":
-						setTabsCurPath = "@"+top.fileSelect.data.currentText;
-						break;
-					default:
-						setTabsCurPath = top.fileSelect.data.currentPath;
-				}
-				if(getEntry(top.fileSelect.data.currentID).isFolder){
-					opener.parent.frames.editHeader.weTabs.setTitlePath("",setTabsCurPath);
-				}else{
-					opener.parent.frames.editHeader.weTabs.setTitlePath(setTabsCurPath);
-				}
-			}
-	}
-	if(opener.' . $frameRef . 'YAHOO!==undefined && opener.' . $frameRef . 'YAHOO.autocoml!==undefined) {
-		opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
-	' : '') .
-				($this->JSCommand ? '	' . $this->JSCommand . ';' : '') .
-				'	self.close();
-	}'
-		);
 	}
 
 	protected function getFsQueryString($what){
@@ -284,20 +249,18 @@ function exit_open(){' .
 			$this->getFramsetJSFile(), we_html_element::htmlBody(['class' => "selectorBody", 'onload' => "top.writeBody(self.document.body);", 'onclick' => "weonclick(event);"]));
 	}
 
-	protected function printHeaderHTML(){
+	protected function printHeaderHTML(we_base_jsCmd $weCmd){
 		$this->setDirAndID();
-		$weCmd = new we_base_jsCmd();
 		$do = (!defined('OBJECT_TABLE')) || $this->table != OBJECT_TABLE;
 		if($do){
-			$this->setSelectorData($weCmd, false);
+			$this->setSelectorData($weCmd);
 		}
 		return
-			($do ? $this->printHeaderTable() : '') .
-			$weCmd->getCmds() .
+			($do ? $this->printHeaderTable($weCmd) : '') .
 			$this->printHeaderHeadlines();
 	}
 
-	protected function printHeaderTable($extra = ''){
+	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = false){
 		return '
 <table class="selectorHeaderTable">
 	<tr style="vertical-align:middle">
@@ -323,20 +286,16 @@ function exit_open(){' .
 </table>';
 	}
 
-	protected function printCmdHTML($morejs = ''){
-		$weCmd = new we_base_jsCmd();
+	protected function printCmdHTML(we_base_jsCmd $weCmd){
 		$weCmd->addCmd('clearEntries');
 		$weCmd->addCmd('updateSelectData', [
 			'currentPath' => $this->path,
 			'parentID' => $this->values["ParentID"],
 		]);
-		$js = $this->printCmdAddEntriesHTML($weCmd) .
-			(intval($this->dir) == intval($this->rootDirID) ?
-				'top.RootDirButs(false);' :
-				'top.RootDirButs(true);') .
-			$morejs;
+		$this->printCmdAddEntriesHTML($weCmd);
+		$weCmd->addCmd('setButtons', [['RootDirButs', (intval($this->dir) != intval($this->rootDirID))]]);
 		$this->setSelectorData($weCmd);
-		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds() . we_html_element::jsElement($js), we_html_element::htmlBody());
+		echo we_html_tools::getHtmlTop('', '', '', $weCmd->getCmds(), we_html_element::htmlBody());
 	}
 
 	protected function printCmdAddEntriesHTML(we_base_jsCmd $weCmd){
@@ -352,9 +311,10 @@ function exit_open(){' .
 			];
 		}
 		$weCmd->addCmd('addEntries', $entries);
+		$weCmd->addCmd('writeBody');
 	}
 
-	protected function setSelectorData(we_base_jsCmd $weCmd, $withWrite = true){
+	protected function setSelectorData(we_base_jsCmd $weCmd){
 		$pid = $this->dir;
 		$options = [];
 		$c = 0;
@@ -372,9 +332,6 @@ function exit_open(){' .
 		$options[] = ['/', 0];
 		//we need to reverse the array, cause root is at the end
 		$weCmd->addCmd('writeOptions', array_reverse($options));
-		if($withWrite){
-			$weCmd->addCmd('writeBody');
-		}
 	}
 
 	protected function printFooterTable(){

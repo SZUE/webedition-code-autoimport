@@ -69,9 +69,10 @@ class we_selector_document extends we_selector_directory{
 		$this->open_doc = $open_doc;
 	}
 
-	protected function printCmdHTML($morejs = ''){
+	protected function printCmdHTML(we_base_jsCmd $weCmd){
 		$isWS = we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
-		parent::printCmdHTML(($isWS && $this->userCanMakeNewFile ? 'top.NewFileBut(true);' : 'top.NewFileBut(false);') . $morejs);
+		$weCmd->addCmd('setButtons', [['NewFileBut', $isWS && $this->userCanMakeNewFile]]);
+		parent::printCmdHTML($weCmd);
 	}
 
 	protected function query(){
@@ -134,25 +135,6 @@ class we_selector_document extends we_selector_directory{
 		return parent::getFramsetJSFile() . we_html_element::jsScript(JS_DIR . 'selectors/document_selector.js');
 	}
 
-	protected function getExitOpen(){
-		$frameRef = $this->JSTextName && strpos($this->JSTextName, ".document.") > 0 ?
-			substr($this->JSTextName, 0, strpos($this->JSTextName, ".document.") + 1) :
-			'';
-		return we_html_element::jsElement('
-function exit_open() {
-	if(top.fileSelect.data.currentID) {' . ($this->JSIDName ?
-					'top.opener.' . $this->JSIDName . '= top.fileSelect.data.currentID ? top.fileSelect.data.currentID : "";' : '') .
-				($this->JSTextName ?
-					'top.opener.' . $this->JSTextName . '= top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
-		if(top.opener.' . $frameRef . 'YAHOO!==undefined && top.opener.' . $frameRef . 'YAHOO.autocoml!==undefined) {  top.opener.' . $frameRef . 'YAHOO.autocoml.selectorSetValid(top.opener.' . str_replace('.value', '.id', $this->JSTextName) . '); }
-		' : '') .
-				($this->JSCommand ?
-					$this->JSCommand . ';' : '') . '
-	}
-	self.close();
-}');
-	}
-
 	protected function setDefaultDirAndID($setLastDir){
 		$ws = get_ws($this->table, true);
 		$rootDirID = ($ws ? reset($ws) : 0);
@@ -183,7 +165,6 @@ function exit_open() {
 	}
 
 	protected function printCmdAddEntriesHTML(we_base_jsCmd $weCmd){
-		$ret = '';
 		$this->query();
 		$entries = [];
 		while($this->db->next_record()){
@@ -204,7 +185,7 @@ function exit_open() {
 		}
 
 		$weCmd->addCmd('addEntries', $entries);
-
+		$buttons = [];
 		switch($this->filter){
 			case we_base_ContentTypes::TEMPLATE:
 			case we_base_ContentTypes::OBJECT:
@@ -213,11 +194,12 @@ function exit_open() {
 				break;
 			default:
 				$tmp = ((we_users_util::in_workspace($this->dir, get_ws($this->table, true))) && $this->userCanMakeNewFile) ? 'true' : 'false';
-				$ret.= 'if(top.NewFileBut){top.NewFileBut(' . $tmp . ');';
+				$buttons[] = ['NewFileBut', $tmp];
 		}
 
-
-		return $ret . 'top.NewFolderBut(' . ($this->userCanMakeNewDir() ? 'true' : 'false') . ');}';
+		$buttons[] = ['NewFolderBut', $this->userCanMakeNewDir()];
+		$weCmd->addCmd('setButtons', $buttons);
+		$weCmd->addCmd('writeBody');
 	}
 
 	protected function printHeaderHeadlines(){
@@ -227,7 +209,7 @@ function exit_open() {
 </table>';
 	}
 
-	protected function printHeaderTable($extra = '', $append = true){
+	protected function printHeaderTable(we_base_jsCmd $weCmd, $extra = '', $append = true){
 		switch($this->table){
 			case FILE_TABLE:
 				$extra = '<td>' .
@@ -244,7 +226,7 @@ function exit_open() {
 				$extra = '<td>' . we_html_button::create_button($this->ctb[we_base_ContentTypes::COLLECTION], "javascript:top.newCollection();", true, 0, 0, "", "", !$this->userCanMakeNewFile, false, '', false, '', '', 'btn_add_file') . '</td>';
 				break;
 		}
-		return parent::printHeaderTable($extra, true);
+		return parent::printHeaderTable($weCmd, $extra, true);
 	}
 
 	protected function _userCanMakeNewFile(){
@@ -269,10 +251,10 @@ function exit_open() {
 		return true;
 	}
 
-	protected function printSetDirHTML($morejs = ''){
+	protected function printSetDirHTML(we_base_jsCmd $weCmd){
 		$isWS = $this->userCanMakeNewFile && we_users_util::in_workspace(intval($this->dir), get_ws($this->table, true), $this->table, $this->db);
-
-		parent::printSetDirHTML(($isWS ? 'top.NewFileBut(true);' : 'top.NewFileBut(false);') . $morejs);
+		$weCmd->addCmd('setButtons', [['NewFileBut' ,$isWS]]);
+		parent::printSetDirHTML($weCmd);
 	}
 
 	protected function printFooterTable($more = null){
@@ -302,10 +284,10 @@ function exit_open() {
 		return $ret;
 	}
 
-	protected function getFrameset($withPreview = false){
+	protected function getFrameset(we_base_jsCmd $weCmd, $withPreview = false){
 		$is_object = defined('OBJECT_TABLE') && $this->table === OBJECT_TABLE;
 		return '<body class="selector" onload="startFrameset()">' .
-			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML()) .
+			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML($weCmd)) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview' . ($is_object ? ' object' : '')) .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false, ($is_object ? 'object' : '')) .
 			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .

@@ -324,7 +324,7 @@ class we_collection extends we_root{
 		$btnListviewMinimal = we_html_button::create_button('fa:listview_minimal,fa-lg fa-align-justify', "javascript:weCollectionEdit.setView('list', 'minimal');", true, 40, "", "", "", false);
 
 		//$callback = we_base_request::encCmd("if(WE().layout.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1)){WE().layout.weEditorFrameController.getEditorIfOpen('" . VFILE_TABLE . "', " . $this->ID . ", 1).weCollectionEdit.insertImportedDocuments(scope.sender.resp.success)} top.close();");
-		$callback = we_base_request::encCmd("var fc, editorID, frame, ce; if((fc = WE().layout.weEditorFrameController) && (editorID = fc.getEditorIdOfOpenDocument('" . VFILE_TABLE . "', " . $this->ID . ")) && (fc.getEditorEditPageNr(editorID) == 1) && (frame = fc.getEditorFrame(editorID)) && (ce = frame.getContentEditor().weCollectionEdit)){ce.insertImportedDocuments(scope.sender.resp.success);} else {top.opener.top.console.debug('error: collection closed or changed tab');} top.close()");
+		$callback = we_base_request::encCmd("doFileUploader('" . VFILE_TABLE . "', " . $this->ID . ");");
 		$btnImport = we_fileupload_ui_importer::getBtnImportFiles($this->DefaultDir, $callback, 'btn_import_files_and_insert');
 		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', "javascript:weCollectionEdit.doClickAddItems();", true, 62, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
 
