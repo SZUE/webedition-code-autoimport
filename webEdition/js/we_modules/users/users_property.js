@@ -82,14 +82,8 @@ function we_cmd() {
 			myWindStr = "WE().util.jsWindow.prototype.find(\'preferences\')";
 			top.opener.top.we_cmd("we_selector_document", myWind.document.forms[0].elements.seem_start_file.value, WE().consts.tables.FILE_TABLE, myWindStr + ".document.forms[0].elements.seem_start_file.value", myWindStr + ".document.forms[0].elements.seem_start_file_name.value", "", "", "", WE().consts.contentTypes.WEDOCUMENT, 1);
 			break;
-		case "openNavigationDirselector":
-		case "openNewsletterDirselector":
-			if (args[0] === "openNewsletterDirselector") {
-				args[0] = "we_newsletter_dirSelector";//FIXME
-			} else {
-				args[0] = "we_navigation_dirSelector";
-			}
-			url = WE().util.getWe_cmdArgsUrl(args);
+		case "we_navigation_dirSelector":
+		case "we_newsletter_dirSelector":
 			new (WE().util.jsWindow)(this, url, "we_navigation_dirselector", -1, -1, 600, 400, true, true, true);
 			break;
 		default:

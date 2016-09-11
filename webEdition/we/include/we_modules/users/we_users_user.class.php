@@ -1604,15 +1604,14 @@ function delElement(elvalues,elem) {
 
 				switch($k){
 					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('openNewsletterDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_newsletter_dirSelector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 						break;
+
 					case NAVIGATION_TABLE:
-
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('openNavigationDirselector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_navigation_dirSelector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 						break;
-					default:
 
+					default:
 						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 				}
 
