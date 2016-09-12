@@ -38,32 +38,11 @@ class we_backup_wizard{
 		$this->json['modeCmd'] = ($mode == self::BACKUP ? 'make_backup' : 'recover_backup');
 	}
 
-	private static function getJSDep($docheck, $doclick, $douncheck = ''){
+	private function getJSDep(){
+		$this->json['import_from'] = we_base_request::_(we_base_request::STRING, "import_from");
+
 		return
-			we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) .
-			we_html_element::jsElement('
-
-function doCheck(opt){
-	switch (opt) {
-		' . $docheck . '
-	}
-}
-
-function doUnCheck(opt){
-	switch (opt) {
-		' . $douncheck . '
-	}
-}
-
-function doClick(opt) {
-	switch (opt) {
-		' . $doclick . '
-	}
-	doClicked(a.checked,opt);
-	if (!a.checked){
-
-	}
-}');
+			we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]);
 	}
 
 	function getHTMLFrameset(){
@@ -158,10 +137,9 @@ function we_submitForm(target,url) {
 		$this->fileUploader->setDimensions(['width' => 500, 'alertBoxWidth' => 600, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5]);
 		$this->fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_FILENAME);
 
-		$js = "";
-
 		$maxsize = $this->fileUploader->getMaxUploadSize();
 
+		$js = '';
 		if(we_base_request::_(we_base_request::STRING, "import_from") === 'import_upload'){
 			if($maxsize || $this->fileUploader){
 				//FIXME:
@@ -175,9 +153,6 @@ function we_submitForm(target,url) {
 				];
 			}
 		} else {
-			$js = '
-var extra_files=[];
-var extra_files_desc=[];';
 			$select = new we_html_select(['name' => "backup_select", "size" => 7, "style" => "width: 600px;"]);
 			$files = [];
 			$extra_files = [];
@@ -259,11 +234,11 @@ var extra_files_desc=[];';
 			$select->addChild($default);
 			$select->addChild($other);
 
+			$this->json['extra_files'] = [];
+			$this->json['extra_files_desc'] = [];
 			foreach($extra_files as $fk => $fv){
-				$js.='extra_files["' . $i . '"]="' . $fk . '";
-						extra_files_desc["' . $i . '"]="' . $fv . '"
-				';
-				$i++;
+				$this->json['extra_files'][] = $fk;
+				$this->json['extra_files_desc'][] = $fv;
 			}
 
 			$parts = [['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1],
@@ -316,33 +291,15 @@ var extra_files_desc=[];';
 			$i++;
 		}
 
-		ksort($form_properties);
+		$parts[] = ['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[import_options]'), we_html_tools::TYPE_INFO, 600, false), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
 
-		$parts[] = array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[import_options]'), we_html_tools::TYPE_INFO, 600, false), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1);
+		$this->json['form_properties'] = $form_properties;
 
-		$docheck = $douncheck = $doclick = '';
+
 		foreach($form_properties as $k => $v){
 			if(!$v){
 				continue;
 			}
-			$docheck.='
-				case ' . $k . ':
-					document.we_form.' . $v . '.checked=true;
-					doClick(' . $k . ');
-				break;
-			';
-			$douncheck.='
-				case ' . $k . ':
-					document.we_form.' . $v . '.checked=false;
-					doClick(' . $k . ');
-				break;
-			';
-
-			$doclick.='
-				case ' . $k . ':
-					var a=document.we_form.' . $v . ';
-				break;
-			';
 			if($k > 2 && $k < 101){
 				$parts[] = ['headline' => '', 'html' => we_html_forms::checkbox(1, true, $v, g_l('backup', '[' . str_replace('handle', 'import', $v) . '_data]'), false, 'defaultfont', "doClick($k);"), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
 			}
@@ -374,58 +331,7 @@ var extra_files_desc=[];';
 
 		$js = we_html_element::jsElement($js) .
 			(isset($fileUploaderHead) ? $fileUploaderHead : '') .
-			self::getJSDep($docheck, $doclick, $douncheck) .
-			we_html_element::jsElement('
-function startBusy() {
-	top.busy.location="' . $this->frameset . '&pnt=busy&operation_mode=busy&step=4";
-}
-
-function startImport(isFileReady) {
-	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
-		isFileReady = isFileReady || false;
-	for (frameId in _usedEditors) {
-		_usedEditors[frameId].setEditorIsHot( false );
-
-	}
-	WE().layout.weEditorFrameController.closeAllDocuments();
-
-	' . ((we_base_request::_(we_base_request::STRING, "import_from") === "import_upload") ? ('
-	if(isFileReady || document.we_form.we_upload_file.value) {
-		startBusy();
-		top.body.delete_enabled = WE().layout.button.switch_button_state(top.body.document, "delete", "disabled");
-		document.we_form.action = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/we_backup_cmd.php";
-		document.we_form.submit();
-	}else{
-	top.we_showMessage(WE().consts.g_l.backupWizard.nothing_selected, WE().consts.message.WE_MESSAGE_WARNING, window);
-	}') : ('
-	if(document.we_form.backup_select.value) {
-		startBusy();
-		top.body.delete_backup_enabled = WE().layout.button.switch_button_state(top.body.document, "delete_backup", "disabled");
-		top.body.delete_enabled = WE().layout.button.switch_button_state(top.body.document, "delete", "disabled");
-		document.we_form.action = WE().consts.dirs.WE_INCLUDES_DIR+"we_editors/we_backup_cmd.php";
-		document.we_form.submit();
-	}else{
-	top.we_showMessage(WE().consts.g_l.backupWizard.nothing_selected_fromlist, WE().consts.message.WE_MESSAGE_WARNING, window);
-	}')) . '
-}
-
-function delOldFiles(){
-	if(confirm(WE().consts.g_l.backupWizard.delold_confirm)){
-     top.cmd.location="' . $this->frameset . '&pnt=cmd&operation_mode=deleteall";
-		}
-}
-
-function delSelected(){
-	var sel = document.we_form.backup_select;
-	if(sel.selectedIndex>-1){
-		if(confirm(WE().consts.g_l.backupWizard.del_backup_confirm)){
-				top.cmd.location="' . $this->frameset . '&pnt=cmd&operation_mode=deletebackup&bfile="+sel.options[sel.selectedIndex].value;
-			}
-	} else {
-	top.we_showMessage(WE().consts.g_l.backupWizard.nothing_selected_fromlist, WE().consts.message.WE_MESSAGE_WARNING, window);
-	}
-}
-');
+			$this->getJSDep();
 
 		$form_attribs = (we_base_request::_(we_base_request::STRING, "import_from") === "import_upload" ?
 				['name' => 'we_form', "method" => "post", "action" => $this->frameset, "target" => "cmd", "enctype" => "multipart/form-data"] :
@@ -487,7 +393,22 @@ function stopBusy() {
 			1 => "export_server",
 			2 => "export_send",
 			10 => "handle_core",
+			11 => defined('OBJECT_TABLE') ? "handle_object" : '',
+			12 => "handle_versions",
+			13 => "handle_versions_binarys",
 			14 => "handle_binary",
+			20 => 'handle_user',
+			25 => defined('CUSTOMER_TABLE') ? "handle_customer" : '',
+			30 => defined('SHOP_TABLE') ? "handle_shop" : '',
+			35 => defined('WORKFLOW_TABLE') ? "handle_workflow" : '',
+			40 => defined('MESSAGING_SYSTEM') ? "handle_todo" : '',
+			45 => defined('NEWSLETTER_TABLE') ? "handle_newsletter" : '',
+			50 => defined('BANNER_TABLE') ? "handle_banner" : '',
+			55 => we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? "handle_schedule" : '',
+			60 => we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT) ? "handle_export" : '',
+			65 => defined('VOTING_TABLE') ? "handle_voting" : '',
+			//70 => defined('SPELLCHECKER') ? "handle_spellchecker" : '',
+			75 => defined('GLOSSARY_TABLE') ? "handle_glossary" : '',
 			98 => "handle_hooks",
 			99 => "handle_customtags",
 			100 => "handle_settings",
@@ -497,54 +418,12 @@ function stopBusy() {
 			320 => "backup_log"
 		];
 
-		if(defined('OBJECT_TABLE')){
-			$form_properties[11] = "handle_object";
-		}
-		$form_properties[20] = "handle_user";
-		if(defined('CUSTOMER_TABLE')){
-			$form_properties[25] = "handle_customer";
-		}
-		if(defined('SHOP_TABLE')){
-			$form_properties[30] = "handle_shop";
-		}
-		if(defined('WORKFLOW_TABLE')){
-			$form_properties[35] = "handle_workflow";
-		}
-		if(defined('MESSAGING_SYSTEM')){
-			$form_properties[40] = "handle_todo";
-		}
-		if(defined('NEWSLETTER_TABLE')){
-			$form_properties[45] = "handle_newsletter";
-		}
-		if(defined('BANNER_TABLE')){
-			$form_properties[50] = "handle_banner";
-		}
-		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
-			$form_properties[55] = "handle_schedule";
-		}
-		if(we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT)){
-			$form_properties[60] = "handle_export";
-		}
-		if(defined('VOTING_TABLE')){
-			$form_properties[65] = "handle_voting";
-		}
-		/* if(defined('SPELLCHECKER')){
-		  $form_properties[70] = "handle_spellchecker";
-		  } */
-		if(defined('GLOSSARY_TABLE')){
-			$form_properties[75] = "handle_glossary";
-		}
-		$form_properties[12] = "handle_versions";
-		$form_properties[13] = "handle_versions_binarys";
-
 		$i = 0;
 		$tools = we_tool_lookup::getToolsForBackup();
 		foreach($tools as $tool){
 			$form_properties[700 + $i] = "handle_tool[" . $tool . ']';
 			$i++;
 		}
-
-		ksort($form_properties);
 
 		$compression = we_base_file::hasCompression("gzip");
 
@@ -569,20 +448,12 @@ function stopBusy() {
 		$parts[] = ['headline' => '', 'html' => we_html_forms::checkbox(1, false, "export_send", g_l('backup', '[export_location_send]'), false, "defaultfont", "doClick(2)", (!permissionhandler::hasPerm("EXPORT"))), 'space' => we_html_multiIconBox::SPACE_MED];
 		$parts[] = ['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[export_options]'), we_html_tools::TYPE_INFO, 600, false), 'noline' => 1];
 
-		$docheck = $doclick = '';
+		$this->json['form_properties'] = $form_properties;
 		foreach($form_properties as $k => $v){
-			$docheck.='
-				case ' . $k . ':
-					document.we_form.' . $v . '.checked=true;
-					doClick(' . $k . ');
-				break;
-			';
+			if(!$v){
+				continue;
+			}
 
-			$doclick.='
-				case ' . $k . ':
-					var a=document.we_form.' . $v . ';
-				break;
-			';
 			if($k > 2 && $k < 101){
 				if($v === "handle_versions_binarys"){
 					$boxNr = 1;
@@ -621,7 +492,7 @@ function stopBusy() {
 		$parts[] = ['headline' => '', 'html' => we_html_forms::checkbox(1, true, "backup_log", g_l('backup', '[export_backup_log]'), false, "defaultfont", "doClick(320);"), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
 
 
-		$js = self::getJSDep($docheck, $doclick);
+		$js = $this->getJSDep();
 
 		$edit_cookie = weGetCookieVariable("but_edit_image");
 
