@@ -29,18 +29,16 @@ class we_tree_customer extends we_tree_base{
 	}
 
 	function getJSLoadTree($rootID, array $treeItems){
-		$days = array(
-			'Sunday' => 0,
+		$days = ['Sunday' => 0,
 			'Monday' => 1,
 			'Tuesday' => 2,
 			'Wednesday' => 3,
 			'Thursday' => 4,
 			'Friday' => 5,
 			'Saturday' => 6
-		);
+			];
 
-		$months = array(
-			'January' => 0,
+		$months = ['January' => 0,
 			'February' => 1,
 			'March' => 2,
 			'April' => 3,
@@ -52,14 +50,14 @@ class we_tree_customer extends we_tree_base{
 			'October' => 9,
 			'November' => 10,
 			'December' => 11
-		);
+			];
 
 		$js = (!$rootID ?
 				'top.content.treeData.clear();' .
 				'top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
 			'var attribs={};';
 		foreach($treeItems as $item){
-			$js.=($rootID ? 'if(top.content.treeData.indexOfEntry(\'' . str_replace(array("\n", "\r", '\''), '', $item["id"]) . '\')<0){' : '') .
+			$js.=($rootID ? 'if(top.content.treeData.indexOfEntry(\'' . str_replace(["\n", "\r", '\''], '', $item["id"]) . '\')<0){' : '') .
 				'attribs={';
 
 			foreach($item as $k => $v){
@@ -73,7 +71,7 @@ class we_tree_customer extends we_tree_base{
 				}
 				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
 						intval($v) :
-						'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') .
+						'\'' . str_replace(['"', '\'', '\\'], '', $v) . '\'') .
 					',';
 			}
 
@@ -97,8 +95,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 
 		$prevoffset = max(0, $offset - $segment);
 		$items = ($offset && $segment ?
-				array(array(
-					"id" => "prev_" . $ParentID,
+				[["id" => "prev_" . $ParentID,
 					"parentid" => $ParentID,
 					"text" => "display (" . $prevoffset . "-" . $offset . ")",
 					"contenttype" => "arrowup",
@@ -109,7 +106,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 					"disabled" => 0,
 					"tooltip" => "",
 					"offset" => $prevoffset
-				)) : []);
+					]] : []);
 
 
 		$settings = new we_customer_settings();

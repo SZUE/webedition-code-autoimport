@@ -45,6 +45,10 @@ _EditorFrame.initEditorFrameData({
 
 
 function startCockpit() {
+	for (var i = 0; i < cockpit.widgetData; i++) {
+		setLabel.apply(cockpit.widgetData[i]);
+		initWidget(cockpit.widgetData[i][0]);
+	}
 	WE().layout.weEditorFrameController.getEditorFrame(window.name).initEditorFrameData({'EditorIsLoading': false});
 	oTblWidgets = document.getElementById('le_tblWidgets');
 	initDragWidgets();

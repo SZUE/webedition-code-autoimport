@@ -28,7 +28,7 @@
  * Use this class to add a widget to the Cockpit.
  */
 abstract class we_base_widget{
-	static $js = '';
+	static $json = [];
 
 	const w_icon = 20;
 
@@ -49,8 +49,8 @@ abstract class we_base_widget{
 	 * @return     object Returns the we_html_table object
 	 */
 	static function create($iId, $sType, $oContent, $aLabel = array("", ""), $sCls = "white", $iRes = 0, $sCsv = "", $w = 0, $h = 0, $resize = true){
-		$oDrag = new we_html_table(array("id" => $iId . "_h", "style" => "width:100%"), 1, 1);
-		$oDrag->setCol(0, 0, array('style' => 'width:' . self::w_icon . 'px;height:16px;'));
+		$oDrag = new we_html_table(["id" => $iId . "_h", "style" => "width:100%"], 1, 1);
+		$oDrag->setCol(0, 0, ['style' => 'width:' . self::w_icon . 'px;height:16px;']);
 
 		$oIco_prc = new we_html_table([], 1, 3);
 		$oIco_prc->setCol(0, 0, [], '<span class="fa-stack" title="' . g_l('cockpit', '[properties]') . '" onclick="propsWidget(\'' . $sType . '\',\'' . $iId . '\',document.getElementById(\'' . $iId . '_csv\').value);this.blur();">
@@ -78,15 +78,18 @@ abstract class we_base_widget{
 
 		$oTb = new we_html_table(array("id" => $iId . "_tb", 'class' => 'widget_controls'), 1, 2);
 		$oTb->setCol(0, 0, [], $oDrag->getHtml());
-		$oTb->setCol(0, 1, array("width" => self::w_icon), $sIco);
+		$oTb->setCol(0, 1, ["width" => self::w_icon], $sIco);
 
 		if($iId != 'clone'){
-			self::$js.="setLabel('" . $iId . "','" . str_replace("'", "\'", $aLabel[0]) . "','" . str_replace("'", "\'", $aLabel[1]) . "');" .
-				"initWidget('" . $iId . "');";
+			self::$json[] = [
+				$iId,
+				str_replace("'", "\'", $aLabel[0]),
+				str_replace("'", "\'", $aLabel[1])
+			];
 		}
-		return we_html_element::htmlDiv(array("id" => $iId . "_bx", "class" => 'widget bgc_' . $sCls . ' ' . ($w > 400 ? 'cls_expand' : 'cls_collapse')), $oTb->getHtml() .
-				we_html_element::htmlDiv(array("id" => $iId . "_lbl", "class" => "label widgetTitle",)) .
-				we_html_element::htmlDiv(array("id" => $iId . "_wrapper", "class" => "content"), we_html_element::htmlDiv(array("id" => $iId . "_content"), $oContent) .
+		return we_html_element::htmlDiv(["id" => $iId . "_bx", "class" => 'widget bgc_' . $sCls . ' ' . ($w > 400 ? 'cls_expand' : 'cls_collapse')], $oTb->getHtml() .
+				we_html_element::htmlDiv(["id" => $iId . "_lbl", "class" => "label widgetTitle",]) .
+				we_html_element::htmlDiv(["id" => $iId . "_wrapper", "class" => "content"], we_html_element::htmlDiv(["id" => $iId . "_content"], $oContent) .
 					we_html_element::htmlHidden($iId . '_prefix', $aLabel[0], $iId . '_prefix') .
 					we_html_element::htmlHidden($iId . '_postfix', $aLabel[1], $iId . '_postfix') .
 					we_html_element::htmlHidden($iId . '_res', $iRes, $iId . '_res') .
@@ -97,8 +100,8 @@ abstract class we_base_widget{
 		);
 	}
 
-	public static function getJs(){
-		return we_html_element::jsElement(self::$js);
+	public static function getJson(){
+		return self::$json;
 	}
 
 }

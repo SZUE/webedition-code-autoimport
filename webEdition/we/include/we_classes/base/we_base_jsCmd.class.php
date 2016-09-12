@@ -29,8 +29,15 @@
 class we_base_jsCmd{
 	private $cmds = [];
 	private $cmdData = [];
+	private static $count = 0;
 
-	public function addCmd($cmd, $data = ''){
+	public function __construct(){
+		if(self::$count++){
+			t_e('possible JS error will arrise');
+		}
+	}
+
+		public function addCmd($cmd, $data = ''){
 		$this->cmds[] = $cmd;
 		$this->cmdData[] = $data !== '' ? setDynamicVar($data) : '';
 	}

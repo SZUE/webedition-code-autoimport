@@ -48,6 +48,7 @@ $wfchk = defined('WORKFLOW_TABLE') && ($table == FILE_TABLE || (defined('OBJECT_
 $wecmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $wfchk_html = '';
 $script = '';
+$weCmd = new we_base_jsCmd();
 
 if(!$wfchk){
 	if(($selectedItems = we_base_request::_(we_base_request::INTLISTA, 'sel', []))){
@@ -65,7 +66,7 @@ function confirmDel(){' .
 				($found ? '}' : '') .
 				'}');
 	} else {
-		$script = we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
+		$weCmd->addCmd('msg', ['msg' => g_l('alert', '[nothing_to_delete]'), 'prio' => we_message_reporting::WE_MESSAGE_WARNING]);
 		$wfchk_html .= we_html_element::jsElement('function confirmDel(){}');
 	}
 	$wfchk_html .= '</head><body onload="confirmDel()"><form name="we_form" method="post">' .
@@ -78,7 +79,7 @@ function confirmDel(){' .
 			'IsFolder' => 0,
 			'Path' => '',
 			'hasFiles' => 0
-			];
+		];
 		if($selectedItems && ($table == FILE_TABLE || $table == TEMPLATES_TABLE)){
 			$idInfos = getHash('SELECT IsFolder, Path FROM ' . $GLOBALS['DB_WE']->escape($table) . ' WHERE ID=' . intval($selectedItems[0]));
 			if(!$idInfos){
@@ -342,26 +343,26 @@ for ( frameId in _usedEditors ) {
 							$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",-1,-1,550,550,true,true,true);';
 						} else {
 							$delete_ok = g_l('alert', '[delete_ok]');
-							$script .= we_message_reporting::getShowMessageCall($delete_ok, we_message_reporting::WE_MESSAGE_NOTICE);
+							$weCmd->addCmd('msg', ['msg' => $delete_ok, 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
 						}
 					}
 				} else {
 					switch($table){
 						case TEMPLATES_TABLE:
-							$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[deleteTempl_notok_used]'), we_message_reporting::WE_MESSAGE_ERROR);
+							$weCmd->addCmd('msg', ['msg' => g_l('alert', '[deleteTempl_notok_used]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 							break;
 						case OBJECT_TABLE:
-							$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[deleteClass_notok_used]'), we_message_reporting::WE_MESSAGE_ERROR);
+							$weCmd->addCmd('msg', ['msg' => g_l('alert', '[deleteClass_notok_used]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 							break;
 						default:
-							$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[delete_notok]'), we_message_reporting::WE_MESSAGE_ERROR);
+							$weCmd->addCmd('msg', ['msg' => g_l('alert', '[delete_notok]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 					}
 				}
 		}
 	} else {
-		$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[nothing_to_delete]'), we_message_reporting::WE_MESSAGE_WARNING);
+		$weCmd->addCmd('msg', ['msg' => g_l('alert', '[nothing_to_delete]'), 'prio' => we_message_reporting::WE_MESSAGE_WARNING]);
 	}
-	echo we_html_element::jsElement($script);
+	echo $weCmd->getCmds() . we_html_element::jsElement($script);
 
 	//exit;
 }
@@ -370,11 +371,14 @@ for ( frameId in _usedEditors ) {
 
 
 if($_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE){
-	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement(
-			($retVal ? //	document deleted -> go to seeMode startPage
-				we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][return_to_start]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.we_cmd('start_multi_editor');" :
-				we_message_reporting::getShowMessageCall(g_l('alert', '[delete_single][no_delete]'), we_message_reporting::WE_MESSAGE_ERROR))
-		), we_html_element::htmlBody());
+	if($retVal){
+		$weCmd->addCmd('msg', ['msg' => g_l('alert', '[delete_single][return_to_start]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
+	} else {
+		$weCmd->addCmd('msg', ['msg' => g_l('alert', '[delete_single][no_delete]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+	}
+	echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', $weCmd->getCmds() . ($retVal ? we_html_element::jsElement(
+				//	document deleted -> go to seeMode startPage
+				"top.we_cmd('start_multi_editor');") : '' ), we_html_element::htmlBody());
 	exit();
 }
 ?>

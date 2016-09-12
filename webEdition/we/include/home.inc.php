@@ -24,9 +24,6 @@
 include_once (WE_INCLUDES_PATH . '/we_widgets/cfg.inc.php');
 //make sure we know which browser is used
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop() .
- we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
- we_html_element::cssLink(CSS_DIR . 'home.css');
 
 if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	$iLayoutCols = empty($_SESSION['prefs']['cockpit_amount_columns']) ? 3 : $_SESSION['prefs']['cockpit_amount_columns'];
@@ -63,6 +60,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		'_trf' => [],
 		'homeData' => [],
 		'oCfg' => $jsoCfg,
+		'widgetData' => []
 	];
 	foreach($aTrf as $aRssFeed){
 		$cockpit['_trf'][] = [$aRssFeed[0], $aRssFeed[1]];
@@ -75,9 +73,6 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 		$cockpit['homeData'][] = $tmp;
 	}
 
-	echo we_html_element::jsScript(JS_DIR . 'home.js', '', ['id' => 'loadVarHome', 'data-cockpit' => setDynamicVar($cockpit)]); ?>
-	</head>
-	<?php
 	we_base_moduleInfo::isActive(we_base_moduleInfo::USERS);
 	$aCmd = explode('_', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0));
 	if($aCmd[0] === 'new'){
@@ -147,32 +142,35 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 
 	// this is the clone widget
 	$oClone = we_base_widget::create("clone", "_reCloneType_", null, ['', ''], "white", 0, "", 100, 60);
+	$cockpit['widgetData'] = we_base_widget::getJson();
 
 	echo
-	we_html_element::htmlBody([ 'onload' => "startCockpit();",], we_html_element::htmlForm(
-			['name' => 'we_form'
-			], we_html_element::htmlHiddens([
-				'we_cmd[0]' => 'widget_cmd',
-				'we_cmd[1]' => 'save',
-				'we_cmd[2]' => '',
-				'we_cmd[3]' => ''])
-		) .
-		we_html_element::htmlDiv(["id" => "rpcBusy", "style" => "display:none;"], '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
-		) . we_html_element::htmlDiv(["id" => "widgets"], "") .
-		$oTblWidgets->getHtml() .
-		we_base_widget::getJs() .
-		we_html_element::htmlDiv(["id" => "divClone"], $oClone)
-	);
+	we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
+		we_html_element::cssLink(CSS_DIR . 'home.css') .
+		we_html_element::jsScript(JS_DIR . 'home.js', '', ['id' => 'loadVarHome', 'data-cockpit' => setDynamicVar($cockpit)])
+		, we_html_element::htmlBody([ 'onload' => "startCockpit();",], we_html_element::htmlForm(
+				['name' => 'we_form'
+				], we_html_element::htmlHiddens([
+					'we_cmd[0]' => 'widget_cmd',
+					'we_cmd[1]' => 'save',
+					'we_cmd[2]' => '',
+					'we_cmd[3]' => ''])
+			) .
+			we_html_element::htmlDiv(["id" => "rpcBusy", "style" => "display:none;"], '<i class="fa fa-2x fa-spinner fa-pulse"></i>'
+			) . we_html_element::htmlDiv(["id" => "widgets"], "") .
+			$oTblWidgets->getHtml() .
+			we_html_element::htmlDiv(["id" => "divClone"], $oClone)
+	));
 } else { // no right to see cockpit!
-	echo we_html_element::jsScript(JS_DIR . 'nohome.js') .
-	'</head>' .
-	we_html_element::htmlBody(
-		[ 'class' => 'noHome', "onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
-		], we_html_element::htmlDiv(
-			['class' => "defaultfont errorMessage", "style" => "width: 400px;"], (permissionhandler::hasPerm(["CHANGE_START_DOCUMENT", "EDIT_SETTINGS"], false) ?
-				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
-					we_html_button::create_button('preferences', "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
-				we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false))));
+	echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
+		we_html_element::cssLink(CSS_DIR . 'home.css') .
+		we_html_element::jsScript(JS_DIR . 'nohome.js'), we_html_element::htmlBody(
+			[ 'class' => 'noHome', "onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
+			], we_html_element::htmlDiv(
+				['class' => "defaultfont errorMessage", "style" => "width: 400px;"], (permissionhandler::hasPerm(["CHANGE_START_DOCUMENT", "EDIT_SETTINGS"], false) ?
+					we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
+						we_html_button::create_button('preferences', "javascript:top.we_cmd('openPreferences');"), we_html_tools::TYPE_ALERT, 0, false) :
+					we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[start_with_SEEM_no_startdocument]') . "</strong>", we_html_tools::TYPE_ALERT, 0, false)))));
 }
 //FIXME: remove iframe
 ?>

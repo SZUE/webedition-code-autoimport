@@ -32,11 +32,11 @@ class we_main_headermenu{
 	 */
 	public static function createMessageConsole($consoleName = 'NoName', $js = true){
 		return ($js ? '
-_console_' . $consoleName . ' = new (WE().layout.messageConsoleView)(\'' . $consoleName . '\', this.window );
-_console_' . $consoleName . '.register();
-window.document.body.addEventListener(\'onunload\',	_console_' . $consoleName . '.unregister);' :
+var _console_ = new (WE().layout.messageConsoleView)(\'' . $consoleName . '\', this.window );
+_console_.register();
+window.document.body.addEventListener(\'onunload\',	_console_.unregister);' :
 				'
-<div id="messageConsole" onclick="_console_' . $consoleName . '.openMessageConsole();">
+<div id="messageConsole" onclick="_console_.openMessageConsole();">
 <table><tr>
 	<td style="vertical-align:middle"><div class="small messageConsoleMessage" id="messageConsoleMessage' . $consoleName . '">--</div></td>
 	<td><div class="navigation" id="messageConsoleImageDiv"><i id="messageConsoleImage' . $consoleName . '" class="fa fa-lg fa-bell"></i></div></td>

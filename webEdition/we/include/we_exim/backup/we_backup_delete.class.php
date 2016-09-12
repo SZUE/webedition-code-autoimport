@@ -53,10 +53,10 @@ class we_backup_delete extends we_fragment_base{
 	function doTask(){
 		if(!we_base_file::delete($this->data[0])){
 			if(file_exists($this->data[0])){
-				$_SESSION['weS']['delete_files_nok'][] = array(
+				$_SESSION['weS']['delete_files_nok'][] = [
 					"ContentType" => $this->data[1],
 					"path" => $this->data[0]
-				);
+				];
 			}
 		}
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
@@ -71,13 +71,10 @@ class we_backup_delete extends we_fragment_base{
 	}
 
 	function finish(){
-		$js = '';
-		if(!empty($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok'])){
-			$js = '
-					new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",-1,-1,600,550,true,true,true);
-			';
-		}
-		unset($_SESSION['weS']['backup_delete']);
+		$js = (!empty($_SESSION['weS']['delete_files_nok']) && is_array($_SESSION['weS']['delete_files_nok']) ?
+				'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",-1,-1,600,550,true,true,true);' :
+				'');
+		unset($_SESSION['weS']['backup_delete'], $_SESSION['weS']['delete_files_nok']);
 		echo we_html_element::jsElement($js . 'top.close();');
 	}
 
