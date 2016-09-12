@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -22,8 +21,7 @@ $path_temp = (defined('TEMPLATES_TABLE') ? new weTagData_selectorAttribute('path
 $rootdir = new weTagData_textAttribute('rootdir', false, '');
 $startid = new weTagData_selectorAttribute('startid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, '');
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array($id, $path, $gethttp, $seeMode, $kind, $name, $rootdir, $startid, $description), []),
-	new weTagDataOption('template', false, '', array($path_temp, $id_temp, $once), [])), false, '');
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('document', false, '', [$id, $path, $gethttp, $seeMode, $kind, $name, $rootdir, $startid, $description], []),
+	new weTagDataOption('template', false, '', [$path_temp, $id_temp, $once], [])], false, '');
 
-$this->Attributes = array($included, $id, $path, $path_temp, $gethttp, $seeMode, $kind, $name, $id_temp, $once, $rootdir, $startid, $description);
+$this->Attributes = [$included, $id, $path, $path_temp, $gethttp, $seeMode, $kind, $name, $id_temp, $once, $rootdir, $startid, $description];

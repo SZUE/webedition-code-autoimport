@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagData_selectAttribute extends weTagDataAttribute{
-
 	/**
 	 * @var array
 	 */
@@ -54,13 +53,13 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 	 * @return string
 	 */
 	function getCodeForTagWizard(){
-		$select = new we_html_select(array('name' => $this->getName(), 'id' => $this->getIdName(), 'class' => 'defaultfont selectinput'));
+		$select = new we_html_select(['name' => $this->getName(), 'id' => $this->getIdName(), 'class' => 'defaultfont selectinput']);
 		if(!$this->Required){
 			$select->addOption('', '');
 		}
 
 		foreach($this->Options as $option){
-			$select->addOption($option->Value, $option->getName(), $option->Disabled ? array('disabled' => 'disabled') : []);
+			$select->addOption($option->Value, $option->getName(), $option->Disabled ? ['disabled' => 'disabled'] : []);
 		}
 		$select->selectOption($this->Value);
 

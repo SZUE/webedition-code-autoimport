@@ -25,12 +25,11 @@
 abstract class validation{
 
 	static function getAllCategories(){
-		$cats = array(
-			'xhtml' => g_l('validation', '[category_xhtml]'),
+		$cats = ['xhtml' => g_l('validation', '[category_xhtml]'),
 			'links' => g_l('validation', '[category_links]'),
 			'css' => g_l('validation', '[category_css]'),
 			'accessibility' => g_l('validation', '[category_accessibility]')
-		);
+		];
 		return $cats;
 	}
 
@@ -42,7 +41,7 @@ abstract class validation{
 			return false;
 		}
 
-		$qSet = we_database_base::arraySetter(array(
+		$qSet = we_database_base::arraySetter([
 				'category' => $validationService->category,
 				'name' => $validationService->name,
 				'host' => $validationService->host,
@@ -54,7 +53,7 @@ abstract class validation{
 				'ctype' => $validationService->ctype,
 				'fileEndings' => $validationService->fileEndings,
 				'active' => $validationService->active
-		));
+		]);
 		$query = ($validationService->id != 0 ?
 				'UPDATE ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet . ' WHERE PK_tblvalidationservices=' . intval($validationService->id) :
 				'INSERT INTO ' . VALIDATION_SERVICES_TABLE . ' SET ' . $qSet);
@@ -104,78 +103,78 @@ abstract class validation{
 	  changes attribs if removeWrong is true
 
 
-	public static function validateXhtmlAttribs($element, &$attribs, $xhtmlType, $showWrong, $removeWrong){
+	  public static function validateXhtmlAttribs($element, &$attribs, $xhtmlType, $showWrong, $removeWrong){
 
-		if($xhtmlType === 'transitional'){ //	use xml-transitional
-			include(WE_INCLUDES_PATH . 'validation/xhtml_10_transitional.inc.php');
-			//   the array $validAtts and $reqAtts are set inside this include-file
-		} else { //	use xml-strict
-			include(WE_INCLUDES_PATH . 'validation/xhtml_10_strict.inc.php');
-			//   the array $validAtts and $reqAtts are set inside this include-file
-		}
+	  if($xhtmlType === 'transitional'){ //	use xml-transitional
+	  include(WE_INCLUDES_PATH . 'validation/xhtml_10_transitional.inc.php');
+	  //   the array $validAtts and $reqAtts are set inside this include-file
+	  } else { //	use xml-strict
+	  include(WE_INCLUDES_PATH . 'validation/xhtml_10_strict.inc.php');
+	  //   the array $validAtts and $reqAtts are set inside this include-file
+	  }
 
-		if(isset($validAtts[$element])){ //	element exists
-			//	check if all parameters are allowed.
-			foreach($attribs as $k => $v){
-				if(!in_array($k, $validAtts[$element]) && !in_array(str_replace('pass_', '', $k), $validAtts[$element])){
+	  if(isset($validAtts[$element])){ //	element exists
+	  //	check if all parameters are allowed.
+	  foreach($attribs as $k => $v){
+	  if(!in_array($k, $validAtts[$element]) && !in_array(str_replace('pass_', '', $k), $validAtts[$element])){
 
-					$removeText = '';
+	  $removeText = '';
 
-					if($removeWrong){
-						$removeText = ' ' . g_l('xhtmlDebug', '[removed_element][text]');
-						unset($attribs[$k]);
-					}
+	  if($removeWrong){
+	  $removeText = ' ' . g_l('xhtmlDebug', '[removed_element][text]');
+	  unset($attribs[$k]);
+	  }
 
-					if($showWrong){
-						if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
-							echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_attribute][text]') . $removeText, $k, $element) . '</p>';
-						}
-						if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
-							echo we_message_reporting::jsMessagePush(sprintf(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText), we_message_reporting::WE_MESSAGE_ERROR);
-						}
-						if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
-							t_e(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText);
-						}
-					}
-				}
-			}
+	  if($showWrong){
+	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
+	  echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_attribute][text]') . $removeText, $k, $element) . '</p>';
+	  }
+	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
+	  echo we_message_reporting::jsMessagePush(sprintf(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText), we_message_reporting::WE_MESSAGE_ERROR);
+	  }
+	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
+	  t_e(sprintf(g_l('xhtmlDebug', '[wrong_attribute][error_log]'), $k, $element) . $removeText);
+	  }
+	  }
+	  }
+	  }
 
-			//	check if all required parameters are there.
-			if(array_key_exists($element, $reqAtts)){
-				foreach($reqAtts[$element] as $required){
+	  //	check if all required parameters are there.
+	  if(array_key_exists($element, $reqAtts)){
+	  foreach($reqAtts[$element] as $required){
 
-					if(!array_key_exists($required, $attribs)){
+	  if(!array_key_exists($required, $attribs)){
 
-						if($showWrong){
-							if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
-								echo '<p>' . sprintf(g_l('xhtmlDebug', '[missing_attribute][text]'), $required, $element) . '</p>';
-							}
-							if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
-								echo we_message_reporting::jsMessagePush(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element), we_message_reporting::WE_MESSAGE_ERROR);
-							}
-							if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
-								error_log(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element));
-							}
-						}
-					}
-				}
-			}
-		} else { //	element does not exist
-			if($showWrong){
-				if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
-					echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_element][text]'), $element) . '</p>';
-				}
-				if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
-					echo we_message_reporting::jsMessagePush(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element), we_message_reporting::WE_MESSAGE_ERROR);
-				}
-				if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
-					error_log(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element));
-				}
-			}
-			if($removeWrong){
-				//  nothing
-			}
-		}
-	}
-*/
+	  if($showWrong){
+	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
+	  echo '<p>' . sprintf(g_l('xhtmlDebug', '[missing_attribute][text]'), $required, $element) . '</p>';
+	  }
+	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
+	  echo we_message_reporting::jsMessagePush(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element), we_message_reporting::WE_MESSAGE_ERROR);
+	  }
+	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
+	  error_log(sprintf(g_l('xhtmlDebug', '[missing_attribute][error_log]'), $required, $element));
+	  }
+	  }
+	  }
+	  }
+	  }
+	  } else { //	element does not exist
+	  if($showWrong){
+	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_text'])){
+	  echo '<p>' . sprintf(g_l('xhtmlDebug', '[wrong_element][text]'), $element) . '</p>';
+	  }
+	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_js'])){
+	  echo we_message_reporting::jsMessagePush(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element), we_message_reporting::WE_MESSAGE_ERROR);
+	  }
+	  if(!empty($_SESSION['prefs']['xhtml_show_wrong_error_log'])){
+	  error_log(sprintf(g_l('xhtmlDebug', '[wrong_element][error_log]'), $element));
+	  }
+	  }
+	  if($removeWrong){
+	  //  nothing
+	  }
+	  }
+	  }
+	 */
 }

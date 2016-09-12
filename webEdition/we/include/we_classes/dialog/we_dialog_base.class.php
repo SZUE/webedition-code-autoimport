@@ -111,15 +111,11 @@ class we_dialog_base{
 	}
 
 	function getFramesetHTML(){
-		return we_html_element::jsElement('
+		return we_html_element::jsScript(JS_DIR . 'closeEscape.js ') . we_html_element::jsElement('
 if (document.addEventListener) {
 	document.addEventListener("keyup", doKeyDown, true);
 } else {
 	document.onkeydown = doKeyDown;
-}
-
-function closeOnEscape() {
-	return true;
 }
 
 function doKeyDown() {
@@ -136,7 +132,7 @@ function doKeyDown() {
 	}
 }') .
 			we_html_element::htmlBody(['id' => $this->bodyId, 'class' => 'weDialogBody', 'onunload' => 'doUnload()']
-		, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
+				, we_html_element::htmlExIFrame('main', $this->getDialogHTML(), 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden;') .
 				we_html_element::htmlIFrame('we_' . $this->ClassName . '_cmd_frame', 'about:blank', 'position:absolute;height:0px;bottom:0px;left:0px;right:0px;overflow: hidden;')
 		);
 	}

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -31,62 +30,52 @@ include_once ('meta.conf.php');
 $controller = Zend_Controller_Front::getInstance();
 $appName = $controller->getParam('appName');
 
-$we_menu_toolfactory = array(
-	100 => array(
-		'text' => $translate->_('toolfactory'),
+$we_menu_toolfactory = [100 => ['text' => $translate->_('toolfactory'),
 		'parent' => 0,
 		'perm' => '',
 		'enabled' => 1,
-	),
-	array(
-		'text' => $translate->_('New Entry'),
+	],
+	['text' => $translate->_('New Entry'),
 		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_new',
 		'perm' => 'NEW_APP_TOOLFACTORY || ADMINISTRATOR',
 		'enabled' => 1,
-	),
-	array(
-		'text' => $translate->_('Delete Entry/Group.'),
+	],
+	['text' => $translate->_('Delete Entry/Group.'),
 		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_checkdelete',
 		'perm' => 'DELETE_APP_TOOLFACTORY || ADMINISTRATOR',
 		'enabled' => 1,
-	),
-	array(
-		'text' => $translate->_('Generate TGZ-File from App'),
+	],
+	['text' => $translate->_('Generate TGZ-File from App'),
 		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_generateTGZ',
 		'perm' => 'NEW_APP_TOOLFACTORY || ADMINISTRATOR',
 		'enabled' => 1,
-	),
-	array(
-		'parent' => 100, // separator
-	),
-	array(
-		'text' => $translate->_('Close'),
+	],
+	['parent' => 100, // separator
+	],
+	['text' => $translate->_('Close'),
 		'parent' => 100,
 		'cmd' => 'app_' . $appName . '_exit',
 		'perm' => '',
 		'enabled' => 1,
-	),
-	3000 => array(
-		'text' => $translate->_('Help'),
+	],
+	3000 => ['text' => $translate->_('Help'),
 		'parent' => 0,
 		'perm' => '',
 		'enabled' => 1,
-	),
-	array(
-		'text' => $translate->_('Help') . '&hellip;',
+	],
+	['text' => $translate->_('Help') . '&hellip;',
 		'parent' => 3000,
 		'cmd' => 'app_' . $appName . '_help',
 		'perm' => '',
 		'enabled' => 1,
-	),
-	array(
-		'text' => $translate->_('Info') . '&hellip;',
+	],
+	['text' => $translate->_('Info') . '&hellip;',
 		'parent' => 3000,
 		'cmd' => 'app_' . $appName . '_info',
 		'perm' => '',
 		'enabled' => 1,
-	)
-);
+	]
+];

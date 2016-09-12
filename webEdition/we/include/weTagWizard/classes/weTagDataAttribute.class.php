@@ -72,11 +72,11 @@ class weTagDataAttribute{
 	 * @return string
 	 */
 	function getLabelCodeForTagWizard(){
-		$tmp = array(
+		$tmp = [
 			'id' => 'label_' . $this->getIdName(),
 			'class' => 'defaultfont',
 			'for' => $this->getIdName()
-		);
+		];
 		if($this->Description){
 			$tmp['style'] = 'border-bottom-style: dotted;border-bottom-width: 1px;border-spacing: 2px;cursor:help;';
 			$tmp['title'] = $this->Description;

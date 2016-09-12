@@ -39,6 +39,6 @@ $pageFormat = new weTagData_textAttribute('pageFormat', false, '');
 $singlePage = new weTagData_selectAttribute('singlePage', weTagData_selectAttribute::getTrueFalse(), false, '');
 
 
-$this->Attributes = array($type, $circle, $range, $prePage, $pastPage, $preFirstPage, $pastLastPage, $title, $digits, $fillChar, $link_activePage, $style, $activePageStyle, $class, $activePageClass, $link_style, $link_activePageStyle, $link_class, $link_activePageClass, $pageFormat, $singlePage);
- * 
+$this->Attributes = [$type, $circle, $range, $prePage, $pastPage, $preFirstPage, $pastLastPage, $title, $digits, $fillChar, $link_activePage, $style, $activePageStyle, $class, $activePageClass, $link_style, $link_activePageStyle, $link_class, $link_activePageClass, $pageFormat, $singlePage];
+ *
  */

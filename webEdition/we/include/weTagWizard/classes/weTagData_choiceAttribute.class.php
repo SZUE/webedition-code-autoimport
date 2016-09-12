@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagData_choiceAttribute extends weTagDataAttribute{
-
 	/**
 	 * @var array
 	 */
@@ -56,19 +55,18 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 
 		// get html for choice box
 
-		$select = new we_html_select(array(
-			'onchange' => ($this->Multiple ?
-					'var valSel=this.options[this.selectedIndex].value; var valTa = document.getElementById(\'' . $this->getIdName() . '\').value; document.getElementById(\'' . $this->getIdName() . '\').value=((valTa==\'\' || (valSel==\'\')) ? valSel : (valTa+\',\'+valSel));' :
-					'document.getElementById(\'' . $this->getIdName() . '\').value=this.options[this.selectedIndex].value;'),
+		$select = new we_html_select(['onchange' => ($this->Multiple ?
+				'var valSel=this.options[this.selectedIndex].value; var valTa = document.getElementById(\'' . $this->getIdName() . '\').value; document.getElementById(\'' . $this->getIdName() . '\').value=((valTa==\'\' || (valSel==\'\')) ? valSel : (valTa+\',\'+valSel));' :
+				'document.getElementById(\'' . $this->getIdName() . '\').value=this.options[this.selectedIndex].value;'),
 			'class' => 'defaultfont selectinput'
-		));
+		]);
 
 
-		$entries = array('' => '----');
+		$entries = ['' => '----'];
 		foreach($this->Options as $option){
 			if($option->Value == we_html_tools::OPTGROUP){
 				$select->addOptions($entries);
-				$select->addOptionGroup(array('label' => htmlentities($option->Name)));
+				$select->addOptionGroup(['label' => htmlentities($option->Name)]);
 				$entries = [];
 			} else {
 				$entries[htmlspecialchars($option->Value)] = $option->getName();
@@ -81,12 +79,11 @@ class weTagData_choiceAttribute extends weTagDataAttribute{
 <table class="attribute">
 <tr>
 	<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
-	<td class="attributeField">' . we_html_element::htmlInput(array(
-					'name' => $this->Name,
-					'value' => $this->Value,
-					'id' => $this->getIdName(),
-					'class' => 'wetextinput'
-				)) . '</td>
+	<td class="attributeField">' . we_html_element::htmlInput(['name' => $this->Name,
+				'value' => $this->Value,
+				'id' => $this->getIdName(),
+				'class' => 'wetextinput'
+			]) . '</td>
 	<td class="attributeButton">' . $select->getHtml() . '</td>
 </tr>
 </table>';

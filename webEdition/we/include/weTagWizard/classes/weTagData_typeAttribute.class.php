@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagData_typeAttribute extends weTagDataAttribute{
-
 	/**
 	 * @var array
 	 */
@@ -62,12 +61,11 @@ class weTagData_typeAttribute extends weTagDataAttribute{
 
 		$js = "we_cmd('switch_type', this.value);";
 
-		$select = new we_html_select(array(
-			'name' => $this->Name,
+		$select = new we_html_select(['name' => $this->Name,
 			'id' => $this->getIdName(),
 			'onchange' => $js,
 			'class' => 'defaultfont selectinput'
-		));
+		]);
 		$select->addOptions($entries);
 
 		return '

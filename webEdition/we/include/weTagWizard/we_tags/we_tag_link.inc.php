@@ -6,9 +6,8 @@ $this->Groups[] = 'input_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes = array(
-	new weTagData_textAttribute('name', false, ''),
-	new weTagData_selectAttribute('only', array(new weTagDataOption('href'),
+$this->Attributes = [new weTagData_textAttribute('name', false, ''),
+	new weTagData_selectAttribute('only', [new weTagDataOption('href'),
 		new weTagDataOption('jsstatus'),
 		new weTagDataOption('jsscrollbars'),
 		new weTagDataOption('jsmenubar'),
@@ -41,12 +40,12 @@ $this->Attributes = array(
 		new weTagDataOption('jscenter'),
 		new weTagDataOption('jsposy'),
 		new weTagDataOption('img_title'),
-		), false, ''),
+		], false, ''),
 	new weTagData_textAttribute('class', false, ''),
 	new weTagData_textAttribute('style', false, ''),
 	new weTagData_textAttribute('text', false, ''),
 	new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, ''),
-);
+];
 if(defined('FILE_TABLE')){
 	$this->Attributes[] = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 }

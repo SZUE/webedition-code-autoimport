@@ -646,7 +646,7 @@ function startStep(){
 
 		$edit_cookie = weGetCookieVariable("but_edit_image");
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '',  we_html_element::jsScript(JS_DIR . 'backup_wizard.js') .$js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", 'onsubmit' => 'return false;'], we_html_element::htmlHiddens(["pnt" => "cmd",
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", 'onsubmit' => 'return false;'], we_html_element::htmlHiddens(["pnt" => "cmd",
 							"cmd" => "export",
 							"operation_mode" => "backup",
 							"do_import_after_backup" => we_base_request::_(we_base_request::BOOL, "do_import_after_backup")]) .
@@ -686,7 +686,7 @@ function startStep(){
 	top.busy.location="' . $this->frameset . '&pnt=busy&do_import_after_backup=' . $do_import_after_backup . '&step=3";
 }');
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '',  we_html_element::jsScript(JS_DIR . 'backup_wizard.js') .$js, we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'startStep();'], we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post'], we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'startStep();'], we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post'], we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
 					)
 				)
 		);
@@ -996,11 +996,7 @@ top.cmd.reloadTimer=setTimeout(reloadFrame, ' . $execute . ');');
 			];
 		}
 		$buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
-		echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]'), '', '', we_html_element::jsElement('
-	function closeOnEscape() {
-		return true;
-	}
-')
+		echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]'), '', '', we_html_element::jsScript(JS_DIR . 'closeEscape.js ')
 			, we_html_element::htmlBody(['class' => "weDialogBody", 'style' => "overflow:hidden;", 'onload' => "self.focus();"], '
 	<div id="info">' .
 				we_html_multiIconBox::getJS() .

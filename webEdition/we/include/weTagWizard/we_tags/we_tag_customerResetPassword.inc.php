@@ -12,9 +12,8 @@ $customerEmailField = new weTagData_textAttribute('customerEmailField', false, '
 $expireToken = new weTagData_textAttribute('expireToken', false, 'customer');
 $pwdVal = new weTagData_textAttribute('passwordRule', false, 'customer');
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('direct', false, 'customer', array($required, $loadFields, $pwdVal), array($required)),
-	new weTagDataOption('email', false, 'customer', array($required, $customerEmailField, $expireToken, $loadFields, $pwdVal), array($required, $customerEmailField)),
-	new weTagDataOption('emailPassword', false, 'customer', array($required, $customerEmailField, $expireToken, $loadFields, $pwdVal), array($required)),
-	new weTagDataOption('resetFromMail', false, 'customer', array($required, $pwdVal), array($required)),
-	), true, '');
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('direct', false, 'customer', [$required, $loadFields, $pwdVal], [$required]),
+	new weTagDataOption('email', false, 'customer', [$required, $customerEmailField, $expireToken, $loadFields, $pwdVal], [$required, $customerEmailField]),
+	new weTagDataOption('emailPassword', false, 'customer', [$required, $customerEmailField, $expireToken, $loadFields, $pwdVal], [$required]),
+	new weTagDataOption('resetFromMail', false, 'customer', [$required, $pwdVal], [$required]),
+	], true, '');

@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
+list($jsPrefs, $jsFile, $oSelCls) = include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
 $jsCode = "
 function init(){
@@ -49,12 +49,11 @@ function exit_close(){
 }
 ";
 
-$parts = array(
-	array(
-		"headline" => "",
+$parts = [
+	["headline" => "",
 		"html" => $oSelCls->getHTML(),
-	)
-);
+	]
+];
 
 $save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
 $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);
@@ -66,5 +65,5 @@ $sTblWidget = we_html_multiIconBox::getHTML("usrProps", $parts, 30, $buttons, -1
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[users_online]'), '', '', $jsFile .
 	we_html_element::jsElement(
 		$jsPrefs . $jsCode), we_html_element::htmlBody(
-		array('class' => "weDialogBody", "onload" => "init();"
-		), we_html_element::htmlForm("", $sTblWidget)));
+		['class' => "weDialogBody", "onload" => "init();"
+		], we_html_element::htmlForm("", $sTblWidget)));

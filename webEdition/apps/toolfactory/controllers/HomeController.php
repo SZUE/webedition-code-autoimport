@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -37,7 +36,7 @@ class HomeController extends Zend_Controller_Action{
 	 */
 	public function indexAction(){
 		$homePage = new toolfactory_app_HomePage();
-		$homePage->setBodyAttributes(array('class' => 'weAppHome'));
+		$homePage->setBodyAttributes(['class' => 'weAppHome']);
 		echo $homePage->getHTML();
 	}
 

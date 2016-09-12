@@ -390,12 +390,11 @@ abstract class we_SEEM{
 	 * @return               links without attributes, which can affect bad with webEdition.
 	 */
 	static function cleanLinks(array $linkArray){
-		$pattern = array(
-			'/\s*onclick\s*=/i' => ' thiswasonclick=',
+		$pattern = ['/\s*onclick\s*=/i' => ' thiswasonclick=',
 			'/\s*onmouseover\s*=/i' => ' thiswasonmouseover=',
 			'/\s*onmouseout\s*=/i' => ' thiswasonmouseout=',
 			'/\s*ondblclick\s*=/i' => ' thiswasondblclick=',
-		);
+			];
 
 		foreach($linkArray[1] as $i => &$ll){
 			$ll = preg_replace(array_keys($pattern), array_values($pattern), $ll);
@@ -454,7 +453,7 @@ abstract class we_SEEM{
 					$javascriptCode .= (array_key_exists('we_objectID', $theParameterArray) ? //	target is a object
 							"top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');\" onmouseover=\"top.info('ID: " . $theParameterArray["we_objectID"] . "');\"" :
 							//	target is a normal file.
-							"top.doClickWithParameters('" . $linkArray[6][$i] . "','" . $linkArray[7][$i] . "','" . FILE_TABLE . "', '" . self::arrayToParameters($theParameterArray, "", array('we_cmd')) . "');\"  onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"");
+							"top.doClickWithParameters('" . $linkArray[6][$i] . "','" . $linkArray[7][$i] . "','" . FILE_TABLE . "', '" . self::arrayToParameters($theParameterArray, "", ['we_cmd']) . "');\"  onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"");
 				} else { //  without parameters
 					$javascriptCode .= "top.doClickDirect(" . $linkArray[6][$i] . ",'" . $linkArray[7][$i] . "','" . FILE_TABLE . "');return true;\" onmouseover=\"top.info('ID: " . $linkArray[6][$i] . "');\"";
 				}
@@ -468,7 +467,7 @@ abstract class we_SEEM{
 				//  Work with the parameters
 				if($linkArray[3][$i]){
 					$theParameterArray = self::getAttributesFromGet($linkArray[3][$i], 'we_cmd');
-					$theParameters = self::arrayToParameters($theParameterArray, '', array('we_cmd'));
+					$theParameters = self::arrayToParameters($theParameterArray, '', ['we_cmd']);
 				} else {
 					$theParameters = '';
 				}
@@ -788,9 +787,8 @@ abstract class we_SEEM{
 					$newForm .= '>';
 				}
 				//  Now add some hidden fields.
-				$newForm .= we_html_element::htmlHiddens(array(
-						"we_cmd[0]" => "open_form_in_editor",
-						"original_action" => $formArray[1][$i]));
+				$newForm .= we_html_element::htmlHiddens(["we_cmd[0]" => "open_form_in_editor",
+						"original_action" => $formArray[1][$i]]);
 			}
 
 			$code = str_replace($formArray[0][$i], $newForm, $code);
@@ -884,7 +882,7 @@ abstract class we_SEEM{
 				if(array_key_exists("we_objectID", $theParameterArray)){ //	target is a object
 					return self::getClassVars("vtabSrcObjs") . "top.doClickDirect('" . $theParameterArray["we_objectID"] . "','objectFile','" . OBJECT_FILES_TABLE . "');";
 				} //	target is a normal file.
-				$theParameters = self::arrayToParameters($theParameterArray, "", array('we_cmd'));
+				$theParameters = self::arrayToParameters($theParameterArray, "", ['we_cmd']);
 				return self::getClassVars("vtabSrcDocs") . "top.doClickWithParameters('" . $linkArray[6][0] . "','" . $linkArray[7][0] . "','" . FILE_TABLE . "', '" . $theParameters . "');";
 			} //	No Parameters
 			return self::getClassVars("vtabSrcDocs") . "top.doClickDirect(" . $linkArray[6][0] . ",'" . $linkArray[7][0] . "','" . FILE_TABLE . "');";
@@ -908,7 +906,7 @@ abstract class we_SEEM{
 
 			if($linkArray[3][0]){
 				$theParametersArray = self::getAttributesFromGet($linkArray[3][0], 'we_cmd');
-				$theParameters = self::arrayToParameters($theParametersArray, "", array('we_cmd'));
+				$theParameters = self::arrayToParameters($theParametersArray, "", ['we_cmd']);
 			}
 
 			if(isset($GLOBALS['we_doc'])){
@@ -986,7 +984,7 @@ abstract class we_SEEM{
 	}
 
 	public static function openFormInEditor(){
-		$paraStr = we_SEEM::arrayToParameters($_REQUEST, "", array("we_cmd", "original_action"));
+		$paraStr = we_SEEM::arrayToParameters($_REQUEST, "", ["we_cmd", "original_action"]);
 		$action = $_REQUEST['original_action'] . '?1' . $paraStr;
 
 		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', ' ', we_html_element::htmlBody([],

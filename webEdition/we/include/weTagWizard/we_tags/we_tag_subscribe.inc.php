@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -17,15 +16,14 @@ $onchange = new weTagData_textAttribute('onchange', false, '');
 $checked = new weTagData_selectAttribute('checked', weTagData_selectAttribute::getTrueFalse(), false, '');
 $xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('email', false, 'newsletter', array($size, $maxlength, $value, $class, $style, $onchange), []),
-	new weTagDataOption('htmlCheckbox', false, 'newsletter', array($class, $style, $checked), []),
-	new weTagDataOption('htmlSelect', false, 'newsletter', array($value, $values, $class, $style), []),
-	new weTagDataOption('firstname', false, 'newsletter', array($size, $maxlength, $value, $class, $style, $onchange), []),
-	new weTagDataOption('lastname', false, 'newsletter', array($size, $maxlength, $value, $class, $style, $onchange), []),
-	new weTagDataOption('salutation', false, 'newsletter', array($size, $maxlength, $value, $values, $class, $style, $onchange), []),
-	new weTagDataOption('title', false, 'newsletter', array($size, $maxlength, $value, $values, $class, $style, $onchange), []),
-	new weTagDataOption('listCheckbox', false, 'newsletter', array($class, $style, $checked), []),
-	new weTagDataOption('listSelect', false, 'newsletter', array($size, $values, $class, $style), [])), false, '');
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('email', false, 'newsletter', [$size, $maxlength, $value, $class, $style, $onchange], []),
+	new weTagDataOption('htmlCheckbox', false, 'newsletter', [$class, $style, $checked], []),
+	new weTagDataOption('htmlSelect', false, 'newsletter', [$value, $values, $class, $style], []),
+	new weTagDataOption('firstname', false, 'newsletter', [$size, $maxlength, $value, $class, $style, $onchange], []),
+	new weTagDataOption('lastname', false, 'newsletter', [$size, $maxlength, $value, $class, $style, $onchange], []),
+	new weTagDataOption('salutation', false, 'newsletter', [$size, $maxlength, $value, $values, $class, $style, $onchange], []),
+	new weTagDataOption('title', false, 'newsletter', [$size, $maxlength, $value, $values, $class, $style, $onchange], []),
+	new weTagDataOption('listCheckbox', false, 'newsletter', [$class, $style, $checked], []),
+	new weTagDataOption('listSelect', false, 'newsletter', [$size, $values, $class, $style], [])], false, '');
 
-$this->Attributes = array($size, $maxlength, $value, $values, $class, $style, $onchange, $checked, $xml);
+$this->Attributes = [$size, $maxlength, $value, $values, $class, $style, $onchange, $checked, $xml];

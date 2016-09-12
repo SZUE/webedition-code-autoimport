@@ -10,17 +10,15 @@ $opts = we_shop_category::getShopCatFieldsFromDir('Path', true);
 foreach($opts as $k => $v){
 	$options[] = new weTagDataOption($v, $k);
 }
-$this->Attributes = array(
-	new weTagData_selectAttribute('id', $options, false),
+$this->Attributes = [new weTagData_selectAttribute('id', $options, false),
 	/* temorarily disabled
-	  $this->Attributes[] = new weTagData_selectAttribute('doc', array(
+	  $this->Attributes[] = new weTagData_selectAttribute('doc', [
 	  new weTagDataOption('self'),
 	  new weTagDataOption('top'),
-	  ), false, '');
+	  ], false, '');
 	 *
 	 */
-	new weTagData_selectAttribute('field', array(
-		new weTagDataOption('id'),
+	new weTagData_selectAttribute('field', [new weTagDataOption('id'),
 		new weTagDataOption('category'),
 		new weTagDataOption('path'),
 		new weTagDataOption('title'),
@@ -29,7 +27,7 @@ $this->Attributes = array(
 		new weTagDataOption('is_from_doc_object'),
 		new weTagDataOption('is_fallback_to_standard'),
 		new weTagDataOption('is_fallback_to_active')
-		), false, ''),
+		], false, ''),
 	new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, ''),
 	new weTagData_textAttribute('rootdir', false, ''),
-);
+];

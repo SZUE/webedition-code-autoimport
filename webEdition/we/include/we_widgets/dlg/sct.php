@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
+list($jsPrefs, $jsFile, $oSelCls) = include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
 $disableNew = true;
 $cmdNew = "javascript:top.we_cmd('new','" . FILE_TABLE . "','','" . we_base_ContentTypes::WEDOCUMENT . "');";
@@ -52,7 +52,7 @@ if(defined('OBJECT_TABLE')){
 	}
 }
 
-$shortcuts = array_filter(array(
+$shortcuts = array_filter([
 	'open_document' => (defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') ? g_l('button', '[open_document][value]') : ''),
 	'new_document' => (defined('FILE_TABLE') && permissionhandler::hasPerm('CAN_SEE_DOCUMENTS') && !$disableNew ? g_l('button', '[new_document][value]') : ''),
 	'new_template' => (defined('TEMPLATES_TABLE') && permissionhandler::hasPerm('NEW_TEMPLATE') ? g_l('button', '[new_template][value]') : ''),
@@ -63,18 +63,18 @@ $shortcuts = array_filter(array(
 	'new_class' => (defined('OBJECT_TABLE') && permissionhandler::hasPerm('NEW_OBJECT') ? g_l('button', '[new_class][value]') : ''),
 	'preferences' => (permissionhandler::hasPerm('EDIT_SETTINGS') ? g_l('button', '[preferences][value]') : ''),
 	'btn_add_image' => (permissionhandler::hasPerm('NEW_GRAFIK') ? g_l('button', '[btn_add_image][alt]') : '')
-	));
+ ]);
 
 $jsLang = [];
 foreach($shortcuts as $k => $v){
 	$jsLang [] = "'" . $k . "':'" . $v . "'";
 }
 
-$oSctPool = new we_html_select(array(
+$oSctPool = new we_html_select([
 	"name" => "sct_pool",
 	'class' => 'defaultfont',
 	"onchange" => "addBtn(_fo['list11'],this.options[this.selectedIndex].text,this.options[this.selectedIndex].value,true);this.options[0].selected=true;"
-	)
+ ]
 );
 $oSctPool->insertOption(0, " ", "", true);
 $iCurrOpt = 1;
@@ -83,62 +83,55 @@ foreach($shortcuts as $key => $value){
 	$iCurrOpt++;
 }
 
-$oSctList11 = new we_html_select(array(
-	"multiple" => "multiple",
+$oSctList11 = new we_html_select(["multiple" => "multiple",
 	"name" => "list11",
 	"size" => 10,
 	"style" => "width:200px;",
 	'class' => 'defaultfont',
 	"onDblClick" => "moveSelectedOptions(this.form['list11'],this.form['list21'],false);"
-	));
-$oSctList21 = new we_html_select(array(
-	"multiple" => "multiple",
+ ]);
+$oSctList21 = new we_html_select(["multiple" => "multiple",
 	"name" => "list21",
 	"size" => 10,
 	"style" => "width:200px;",
 	'class' => 'defaultfont',
 	"onDblClick" => "moveSelectedOptions(this.form['list21'],this.form['list11'],false);"
-	));
+ ]);
 
 $oBtnDelete = we_html_button::create_button(we_html_button::DELETE, "javascript:removeOption(document.forms[0]['list11']);removeOption(document.forms[0]['list21']);", false, -1, -1, "", "", false, false);
 $oShortcutsRem = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[sct_rem]'), we_html_tools::TYPE_INFO, 420);
 
-$oPool = new we_html_table(array("width" => 420, 'class' => 'default'), 3, 3);
+$oPool = new we_html_table(["width" => 420, 'class' => 'default'], 3, 3);
 $oPool->setCol(0, 0, null, $oSctList11->getHTML());
 $oPool->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle;'), we_html_element::htmlA(array(
 		"href" => "#",
 		"onclick" => "moveOptionUp(document.forms[0]['list11']);moveOptionUp(document.forms[0]['list21']);return false;"
 		), '<i class="fa fa-lg fa-caret-up"></i>') .
 	we_html_element::htmlBr() . we_html_element::htmlBr() .
-	we_html_element::htmlA(array(
-		"href" => "#",
+	we_html_element::htmlA(["href" => "#",
 		"onclick" => "moveSelectedOptions(document.forms[0]['list11'],document.forms[0]['list21'],false);return false;"
-		), '<i class="fa fa-lg fa-caret-right"></i>') .
+	 ], '<i class="fa fa-lg fa-caret-right"></i>') .
 	we_html_element::htmlBr() . we_html_element::htmlBr() .
-	we_html_element::htmlA(array(
-		"href" => "#",
+	we_html_element::htmlA(["href" => "#",
 		"onclick" => "moveSelectedOptions(document.forms[0]['list21'],document.forms[0]['list11'],false);return false;"
-		), '<i class="fa fa-lg fa-caret-left"></i>') .
+	 ], '<i class="fa fa-lg fa-caret-left"></i>') .
 	we_html_element::htmlBr() . we_html_element::htmlBr() .
-	we_html_element::htmlA(array(
-		"href" => "#",
+	we_html_element::htmlA(["href" => "#",
 		"onclick" => "moveOptionDown(document.forms[0]['list11']);moveOptionDown(document.forms[0]['list21']);return false;"
-		), '<i class="fa fa-lg fa-caret-down"></i>'
+	 ], '<i class="fa fa-lg fa-caret-down"></i>'
 ));
 $oPool->setCol(0, 2, null, $oSctList21->getHTML());
-$oPool->setCol(1, 0, array("colspan" => 3, 'style' => 'text-align:center;padding-top:5px;'), $oBtnDelete);
+$oPool->setCol(1, 0, ["colspan" => 3, 'style' => 'text-align:center;padding-top:5px;'], $oBtnDelete);
 
 $content = $oShortcutsRem . we_html_element::htmlBr() . we_html_tools::htmlFormElementTable(
 		$oSctPool->getHTML(), g_l('cockpit', '[select_buttons]'), "left", "defaultfont") . we_html_element::htmlBr() . $oPool->getHTML();
 
-$parts = array(
-	array(
-		"headline" => "", "html" => $content,
-	),
-	array(
-		"headline" => "", "html" => $oSelCls->getHTML(),
-	)
-);
+$parts = [
+	["headline" => "", "html" => $content,
+		],
+		["headline" => "", "html" => $oSelCls->getHTML(),
+		]
+];
 
 $save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
 $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);
@@ -152,6 +145,5 @@ echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', $jsFile .
 _aLang={" . implode(',', $jsLang) . "};
 ") .
 	we_html_element::jsScript(JS_DIR . 'widgets/sct.js'), we_html_element::htmlBody(
-		array(
-		"class" => "weDialogBody", "onload" => "init();"
-		), we_html_element::htmlForm("", $sTblWidget)));
+		["class" => "weDialogBody", "onload" => "init();"
+		], we_html_element::htmlForm("", $sTblWidget)));

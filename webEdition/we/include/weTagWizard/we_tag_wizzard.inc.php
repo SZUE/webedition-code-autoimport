@@ -80,40 +80,40 @@ echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_ele
 			return false;"><?php
 // start building the content of the page
 // get all attributes
-				$typeAttribCode = $weTag->getTypeAttributeCodeForTagWizard();
-				$attributesCode = $weTag->getAttributesCodeForTagWizard();
-				$defaultValueCode = ($weTag->needsEndTag() ? $weTag->getDefaultValueCodeForTagWizard() : '');
+					$typeAttribCode = $weTag->getTypeAttributeCodeForTagWizard();
+					$attributesCode = $weTag->getAttributesCodeForTagWizard();
+					$defaultValueCode = ($weTag->needsEndTag() ? $weTag->getDefaultValueCodeForTagWizard() : '');
 
-				if($typeAttribCode){
+					if($typeAttribCode){
 
-					$typeAttribCode = '<hr /><fieldset>
+						$typeAttribCode = '<hr /><fieldset>
 		<div class="legend"><strong>' . g_l('taged', '[type_attribute]') . "</strong></div>
 		$typeAttribCode
 	</fieldset>";
-				}
-				if($attributesCode){
+					}
+					if($attributesCode){
 
-					$attributesCode = '<hr/><fieldset>
+						$attributesCode = '<hr/><fieldset>
 		<div class="legend"><strong>' . g_l('taged', '[attributes]') . "</strong></div>
 		" . ($typeAttribCode ? '<ul id="no_type_selected_attributes"><li>' . g_l('taged', '[no_type_selected]') . '</li></ul>' : '' ) . "
 		" . ($typeAttribCode ? '<ul id="no_attributes_for_type" style="display: none;"><li>' . g_l('taged', '[no_attributes_for_type]') . '</li></ul>' : '' ) . "
 		$attributesCode
 	</fieldset>";
-				}
-				if($defaultValueCode){
+					}
+					if($defaultValueCode){
 
-					$defaultValueCode = '<hr/><fieldset>
-		<div class="legend"><strong>' . we_html_element::htmlLabel(array('id' => 'label_weTagData_defaultValue', 'for' => 'weTagData_defaultValue'), g_l('taged', '[defaultvalue]') . ':<br />') . "</strong></div>
+						$defaultValueCode = '<hr/><fieldset>
+		<div class="legend"><strong>' . we_html_element::htmlLabel(['id' => 'label_weTagData_defaultValue', 'for' => 'weTagData_defaultValue'], g_l('taged', '[defaultvalue]') . ':<br />') . "</strong></div>
 		$defaultValueCode
 	</fieldset>";
-				}
+					}
 
-				$code = '<fieldset>
+					$code = '<fieldset>
 		<div class="legend"><strong>' . g_l('taged', '[description]') . '</strong></div>' .
-					($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '98%') : '') . $weTag->getDescription() .
-					'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
-					$defaultValueCode;
-				?>
+						($weTag->isDeprecated() ? we_html_tools::htmlAlertAttentionBox(g_l('taged', '[deprecated][description]'), we_html_tools::TYPE_ALERT, '98%') : '') . $weTag->getDescription() .
+						'</fieldset>' . $typeAttribCode . ' ' . $attributesCode . ' ' .
+						$defaultValueCode;
+					?>
 		<div id="divTagName">
 			<h1>&lt;we:<?= $weTag->getName() . '&gt;' . ($weTag->isDeprecated() ? ' (' . g_l('taged', '[deprecated][title]') . ')' : ''); ?></h1>
 		</div>
