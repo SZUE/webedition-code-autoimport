@@ -116,7 +116,7 @@ class we_object_search extends we_search_base{
 
 	function greenOnly($GreenOnly, $pid, $cid){
 		if($GreenOnly){
-			return we_objectFile::makePIDTail($pid, $cid, $GLOBALS['DB_WE']) . ' AND of.Published>0 AND ' . $pid_tail;
+			return we_objectFile::makePIDTail($pid, $cid, $GLOBALS['DB_WE']) . ' AND of.Published>0';
 		}
 	}
 

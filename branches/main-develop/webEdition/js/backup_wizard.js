@@ -24,6 +24,7 @@
  */
 
 WE().util.loadConsts("g_l.backupWizard");
+var backup = WE().util.getDynamicVar(document, 'loadVarBackup_wizard', 'data-backup');
 
 function we_submitForm(target, url) {
 	var f = self.document.we_form;
@@ -278,4 +279,9 @@ function showAll() {
 
 function setLocation(loc) {
 	location.href = loc;
+}
+
+function startStep(step) {
+	self.focus();
+	top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy&step=" + step;
 }
