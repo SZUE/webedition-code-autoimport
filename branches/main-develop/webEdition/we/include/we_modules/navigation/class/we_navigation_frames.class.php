@@ -350,11 +350,9 @@ function setTab(tab) {
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$cmd1 = "document.we_form.elements.LinkID.value";
-		$wecmdenc1 = we_base_request::encCmd($cmd1);
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.LinkPath.value");
-		$cmd_doc = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','0','',0)";
+		$cmd_doc = "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','LinkID','LinkPath','','','0','',0)";
 
-		$cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',$cmd1,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . we_base_request::encCmd("opener.top.content.we_cmd('populateFolderWs');") . "','','0','objectFile',0)" : '';
+		$cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "','LinkID','LinkPath','" . we_base_request::encCmd("opener.top.content.we_cmd('populateFolderWs');") . "','','0','objectFile',0)" : '';
 
 		$button_doc = we_html_button::create_button(we_html_button::SELECT, $cmd_doc, true, 0, 0, '', '', false) .
 			we_html_button::create_button(we_html_button::VIEW, 'javascript:WE().layout.openToEdit("' . FILE_TABLE . '",' . $cmd1 . ',"")', true, 100, 22, '', '', false);
@@ -426,9 +424,8 @@ function setTab(tab) {
 
 		// COPY FOLDER
 		$disabled = ($this->Model->isnew ? ' ' . g_l('weClass', '[availableAfterSave]') : '');
-		$cmd1 = "document.we_form.CopyFolderID.value";
 
-		$cmd = "javascript:we_cmd('we_navigation_dirSelector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.CopyFolderPath.value") . "','opener.we_cmd(\"copyNaviFolder\")')";
+		$cmd = "javascript:we_cmd('we_navigation_dirSelector',document.we_form.CopyFolderID.value,'CopyFolderID','CopyFolderPath','opener.we_cmd(\"copyNaviFolder\")')";
 		$button_copyFolder = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', !empty($disabled));
 
 		$parts[] = [
@@ -572,11 +569,9 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 			$seltype[we_navigation_navigation::STYPE_OBJLINK] = g_l('navigation', '[objLink]');
 		}
 
+		$cmd_doc = "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','LinkID','LinkPath','" . we_base_request::encCmd("WE().layout.button.switch_button_state(opener.document, 'open_navigation_doc', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');") . "','','0',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
-		$cmd1 = "document.we_form.elements.LinkID.value";
-		$cmd_doc = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.LinkPath.value") . "','" . we_base_request::encCmd("WE().layout.button.switch_button_state(opener.document, 'open_navigation_doc', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');") . "','','0',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
-
-		$cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.LinkPath.value") . "','" . we_base_request::encCmd('opener.top.content' . ".we_cmd('populateWorkspaces');WE().layout.button.switch_button_state(opener.document, 'open_navigation_obj', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');") . "','','0',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
+		$cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "LinkID','LinkPath','" . we_base_request::encCmd('opener.top.content' . ".we_cmd('populateWorkspaces');WE().layout.button.switch_button_state(opener.document, 'open_navigation_obj', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');") . "','','0',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$cmd_cat = "javascript:we_cmd('we_selector_category',document.we_form.elements.LinkID.value,'" . CATEGORY_TABLE . "','document.we_form.elements.LinkID.value','document.we_form.elements.LinkPath.value','opener.top.content.we_cmd(\"populateText\");opener.top.content.mark();','','0')";
 
 		$button_doc = we_html_button::create_button(we_html_button::SELECT, $cmd_doc, true, 0, 0, '', '', $disabled) .
@@ -888,17 +883,14 @@ function showPreview() {
 			}
 		}
 
-		$cmd1 = "document.we_form.$IDName.value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.$PathName.value");
-
 		if($table == NAVIGATION_TABLE){
-			$cmd = "javascript:we_cmd('we_navigation_dirSelector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $cmd . "')";
+			$cmd = "javascript:we_cmd('we_navigation_dirSelector',document.we_form.$IDName.value,'" . $IDName . "','" . $PathName . "','" . $cmd . "')";
 			$selector = weSuggest::DirSelector;
 		} else if($filter == we_base_ContentTypes::FOLDER){
-			$cmd = "javascript:we_cmd('we_selector_file'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $cmd . "','','" . $rootDirID . "')";
+			$cmd = "javascript:we_cmd('we_selector_file',document.we_form.$IDName.value,'" . $table . "','" . $IDName . "','" . $PathName . "','" . $cmd . "','','" . $rootDirID . "')";
 			$selector = weSuggest::DirSelector;
 		} else {
-			$cmd = "javascript:we_cmd('" . ($filter == we_base_ContentTypes::IMAGE ? 'we_selector_image' : 'we_selector_document') . "'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+			$cmd = "javascript:we_cmd('" . ($filter == we_base_ContentTypes::IMAGE ? 'we_selector_image' : 'we_selector_document') . "',document.we_form.$IDName.value,'" . $table . "','" . $IDName . "','" . $PathName . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 			$selector = weSuggest::DocSelector;
 		}
 
@@ -1028,18 +1020,15 @@ function showPreview() {
 
 		$rootDirID = (($ws = get_ws($table, true)) ? reset($ws) : 0);
 
-		$cmd1 = "document.we_form.elements.FolderID.value";
-		$wecmdenc1 = we_base_request::encCmd($cmd1);
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
 		$wecmdenc3 = we_base_request::encCmd("opener.top.content.mark();");
-		$button_doc = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$button_doc = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','FolderID','FolderPath','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		$countSubDirs = 1;
 		if(defined('OBJECT_FILES_TABLE') && ($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS || $this->Model->SelectionType == we_navigation_navigation::STYPE_OBJLINK)){
 			$classDirID = f('SELECT of.ID FROM ' . OBJECT_TABLE . ' o LEFT JOIN ' . OBJECT_FILES_TABLE . ' of ON o.Path=of.Path WHERE o.ID=' . $this->Model->ClassID, '', $this->db);
 			$countSubDirs = f('SELECT COUNT(1) FROM ' . OBJECT_FILES_TABLE . ' WHERE ParentID=' . $classDirID . ' AND IsFolder=1', '', $this->db);
 		}
 
-		$button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',classDirs[document.we_form.elements.ClassID.options[document.we_form.elements.ClassID.selectedIndex].value])", true, 100, 22, "", "", ($countSubDirs ? false : true), false, "_XFolder") : '';
+		$button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . OBJECT_FILES_TABLE . "','FolderID','FolderPath','" . $wecmdenc3 . "','',classDirs[document.we_form.elements.ClassID.options[document.we_form.elements.ClassID.selectedIndex].value])", true, 100, 22, "", "", ($countSubDirs ? false : true), false, "_XFolder") : '';
 		$button_cat = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_category',document.we_form.elements.FolderID.value,'" . CATEGORY_TABLE . "','document.we_form.elements.FolderID.value','document.we_form.elements.FolderPath.value','opener.top.content.mark();','','" . $rootDirID . "')");
 		$buttons = '<div id="docFolder" style="display: ' . (($this->Model->SelectionType == we_navigation_navigation::STYPE_DOCTYPE) ? 'inline' : 'none') . '">' . $button_doc . '</div><div id="objFolder" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_CLASS ? 'inline' : 'none') . '">' . $button_obj . '</div><div id="catFolder" style="display: ' . ($this->Model->SelectionType == we_navigation_navigation::STYPE_CATEGORY ? 'inline' : 'none') . '">' . $button_cat . '</div>';
 
@@ -1143,8 +1132,7 @@ function showPreview() {
 	}
 
 	private function getHTMLLink($prefix = ''){
-		$cmd1 = "document.we_form.elements." . $prefix . "UrlID.value";
-		$cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements." . $prefix . "UrlIDPath.value") . "','" . we_base_request::encCmd("opener.top.content.mark()") . "','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+		$cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements." . $prefix . "UrlID.value,'" . FILE_TABLE . "','" . $prefix . "UrlID','" . $prefix . "UrlIDPath','" . we_base_request::encCmd("opener.top.content.mark()") . "','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
 		$path = id_to_path($this->Model->UrlID);
 

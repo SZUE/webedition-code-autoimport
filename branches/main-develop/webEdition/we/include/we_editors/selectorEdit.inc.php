@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-we_html_tools::protect(array("BROWSE_SERVER"));
+we_html_tools::protect(["BROWSE_SERVER"]);
 
 echo we_html_tools::getHtmlTop();
 

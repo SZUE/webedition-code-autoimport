@@ -123,8 +123,7 @@ class we_doclist_view extends we_search_view{
 						$linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 						$rootDirID = 0;
 
-						$cmd1 = "document.we_form.elements['search" . we_search_view::SEARCH_DOCLIST . "ParentID[" . $i . "]'].value";
-						$cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['search" . we_search_view::SEARCH_DOCLIST . "[" . $i . "]'].value") . "','','','" . $rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
+						$cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . we_search_view::SEARCH_DOCLIST . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','search" . we_search_view::SEARCH_DOCLIST . "ParentID[" . $i . "]','search" . we_search_view::SEARCH_DOCLIST . "[" . $i . "]','','','" . $rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')";
 						$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 60, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', 58, $linkPath, '', 'readonly ', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . we_search_view::SEARCH_DOCLIST . 'ParentID[' . $i . ']', ''), $button);
 

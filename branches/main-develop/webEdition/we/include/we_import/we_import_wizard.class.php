@@ -254,7 +254,7 @@ function handle_eventNext(){
 		$importFromLocal = we_html_tools::htmlFormElementTable($inputLLocal, "", "left", "defaultfont", '', "", "", "", "", 0);
 		$rdoLServer = we_html_forms::radiobutton("lServer", (isset($v["rdofloc"])) ? ($v["rdofloc"] === "lServer") : 1, "v[rdofloc]", g_l('import', '[fileselect_server]'));
 		$rdoLLocal = we_html_forms::radiobutton("lLocal", (isset($v["rdofloc"])) ? ($v["rdofloc"] === "lLocal") : 0, "v[rdofloc]", g_l('import', '[fileselect_local]'));
-		$importLocs = new we_html_table(array('class' => 'default'), 6, 1);
+		$importLocs = new we_html_table(['class' => 'default'], 6, 1);
 		$importLocs->setColContent(0, 0, $rdoLServer);
 		$importLocs->setColContent(1, 0, $importFromServer);
 		$importLocs->setCol(3, 0, ['style' => 'padding-top:4px;'], $rdoLLocal);
@@ -376,9 +376,8 @@ handle_event("previous");');
 			$tbl_extra->setCol(0, 0, null, we_html_forms::checkboxWithHidden((!empty($v['import_docs'])) ? true : false, 'v[import_docs]', g_l('import', '[import_docs]'), false, 'defaultfont', "toggle('doc_table')"));
 
 			$rootDirID = get_def_ws();
-			$cmd1 = "top.wizbody.document.we_form.elements['v[doc_dir_id]'].value";
 
-			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("top.wizbody.document.we_form.elements['v[doc_dir]'].value") . "','','','" . $rootDirID . "')");
+			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.wizbody.document.we_form.elements['v[doc_dir_id]'].value,'" . FILE_TABLE . "','v[doc_dir_id]','v[doc_dir]','','','" . $rootDirID . "')");
 			$yuiSuggest = & weSuggest::getInstance();
 			$yuiSuggest->setAcId("DocPath");
 			$yuiSuggest->setContentType("folder");
@@ -408,8 +407,8 @@ handle_event("previous");');
 			// import templates
 			$rootDirID = get_def_ws(TEMPLATES_TABLE);
 			$tbl_extra->setCol(2, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden((!empty($v['import_templ'])), 'v[import_templ]', g_l('import', '[import_templ]'), false, 'defaultfont', "toggle('tpl_table')"));
-			$cmd1 = "top.wizbody.document.we_form.elements['v[tpl_dir_id]'].value";
-			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("top.wizbody.document.we_form.elements['v[tpl_dir]'].value") . "','','','" . $rootDirID . "')");
+
+			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.wizbody.document.we_form.elements['v[tpl_dir_id]'].value,'" . TEMPLATES_TABLE . "','v[tpl_dir_id]','v[tpl_dir]','','','" . $rootDirID . "')");
 
 			$yuiSuggest->setAcId('TemplPath');
 			$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);
@@ -464,7 +463,7 @@ handle_event("previous");');
 
 			// --
 
-			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_navigation_dirSelector','" . we_base_request::encCmd("document.we_form.elements[\"v[navigation_dir_id]\"].value") . "','','" . we_base_request::encCmd("document.we_form.elements[\"v[navigation_dir]\"].value") . "');");
+			$btnDocDir = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_navigation_dirSelector',document.we_form.elements[\"v[navigation_dir_id]\"].value,'v[navigation_dir_id]','v[navigation_dir]');");
 
 			$yuiSuggest->setAcId("NaviPath");
 			$yuiSuggest->setContentType("folder");
@@ -753,7 +752,7 @@ function handle_eventNext(){
 		//$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($myid), 'Path', $DB_WE);
 
 		$cmd1 = "top.wizbody.document.we_form.elements['noDocTypeTemplateId'].value";
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("top.wizbody.document.we_form.elements['v[we_TemplateName]'].value") . "','" . we_base_request::encCmd("opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',top.wizbody.document.we_form.elements['noDocTypeTemplateId'].value,'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("top.wizbody.document.we_form.elements['v[we_TemplateName]'].value") . "','" . we_base_request::encCmd("opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 		/*		 * ******************************************************************** */
 		$yuiSuggest = & weSuggest::getInstance();
 

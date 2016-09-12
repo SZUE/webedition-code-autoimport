@@ -997,8 +997,7 @@ function build_dialog($selected_setting = 'ui'){
 			$CSSAPPLYTO_DEFAULT->addOption('wysiwyg', 'wysiwyg');
 			$CSSAPPLYTO_DEFAULT->selectOption(get_value('CSSAPPLYTO_DEFAULT') ? : 'around');
 
-			$cmd1 = "document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value";
-			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . FILE_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.forms[0].elements.imagestartid_default_text.value") . "')");
+			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory', document.forms[0].elements['newconf[IMAGESTARTID_DEFAULT]'].value, '" . FILE_TABLE . "', 'newconf[IMAGESTARTID_DEFAULT]','imagestartid_default_text')");
 			$acButton2 = we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[IMAGESTARTID_DEFAULT]\'].value = 0;document.forms[0].elements.imagestartid_default_text.value=\'\'');
 
 			$yuiSuggest->setAcId("doc2");
@@ -1758,8 +1757,7 @@ function build_dialog($selected_setting = 'ui'){
 
 
 			if(we_base_imageEdit::gd_version() > 0){ //  gd lib ist installiert
-				$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value");
-				$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . $wecmdenc1 . "', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
+				$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'newconf[WE_THUMBNAIL_DIRECTORY]'].value', '" . we_base_ContentTypes::FOLDER . "', document.forms[0].elements['newconf[WE_THUMBNAIL_DIRECTORY]'].value, '')") : "";
 				$inp = we_html_tools::htmlTextInput("newconf[WE_THUMBNAIL_DIRECTORY]", 12, get_value("WE_THUMBNAIL_DIRECTORY"), "", "", "text", 125);
 				$thumbnail_dir = $inp . $but;
 			} else { //  gd lib ist nicht installiert
@@ -1823,9 +1821,7 @@ function build_dialog($selected_setting = 'ui'){
 			// Build dialog if user has permission
 
 			$navigation_directoryindex_names = we_html_tools::htmlTextInput("newconf[NAVIGATION_DIRECTORYINDEX_NAMES]", 22, get_value("NAVIGATION_DIRECTORYINDEX_NAMES"), "", "", "text", 225);
-			$cmd1 = "document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value";
-			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.error_document_no_objectfile_text.value");
-			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML . "', 1)");
+			$acButton1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].elements['newconf[ERROR_DOCUMENT_NO_OBJECTFILE]'].value, '" . FILE_TABLE . "', 'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]','error_document_no_objectfile_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML . "', 1)");
 			$acButton2 = we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[ERROR_DOCUMENT_NO_OBJECTFILE]\'].value = 0;document.forms[0].elements.error_document_no_objectfile_text.value = \'\'');
 
 			$yuiSuggest->setAcId("doc2");
@@ -1934,9 +1930,6 @@ function build_dialog($selected_setting = 'ui'){
 
 			$customer_table->setCol( ++$row, 1, ['class' => 'defaultfont'], g_l('prefs', '[security][customer][errorPage]'));
 
-			$wecmdenc1 = we_base_request::encCmd("document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value");
-			$wecmdenc2 = we_base_request::encCmd("document.forms[0].elements.SECURITY_LIMIT_CUSTOMER_REDIRECT_text.value");
-
 			$yuiSuggest->setAcId('SECURITY_LIMIT_CUSTOMER_REDIRECT_doc');
 			$yuiSuggest->setContentType('folder,' . we_base_ContentTypes::WEDOCUMENT . ',' . we_base_ContentTypes::HTML);
 			$yuiSuggest->setInput('SECURITY_LIMIT_CUSTOMER_REDIRECT_text', (SECURITY_LIMIT_CUSTOMER_REDIRECT ? id_to_path(SECURITY_LIMIT_CUSTOMER_REDIRECT) : ''));
@@ -1945,7 +1938,7 @@ function build_dialog($selected_setting = 'ui'){
 			$yuiSuggest->setResult('newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]', ( SECURITY_LIMIT_CUSTOMER_REDIRECT ? : 0));
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(250);
-			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', '" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
+			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.forms[0].elements['newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]'].value, '" . FILE_TABLE . "', 'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]','SECURITY_LIMIT_CUSTOMER_REDIRECT_text','','','', '" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML . "', 1)"), 10);
 			$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, 'javascript:document.forms[0].elements[\'newconf[SECURITY_LIMIT_CUSTOMER_REDIRECT]\'].value = 0;document.forms[0].elements[\'SECURITY_LIMIT_CUSTOMER_REDIRECT_text\'].value = \'\''), 4);
 
 			$customer_table->setCol($row, 3, ['class' => 'defaultfont', 'colspan' => 5], $yuiSuggest->getHTML());

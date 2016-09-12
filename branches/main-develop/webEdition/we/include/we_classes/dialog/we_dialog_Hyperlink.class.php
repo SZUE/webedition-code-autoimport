@@ -347,8 +347,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 				);
 
 			// EXTERNAL LINK
-			$cmd1 = "document.we_form.elements['we_dialog_args[extHref]'].value";
-			$external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
+			$external_select_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'we_dialog_args[extHref]', '', document.we_form.elements['we_dialog_args[extHref]'].value, '')") : "";
 			$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:var f=top.document.we_form.elements['we_dialog_args[extHref]']; if(f.value && f.value !== '" . we_base_link::EMPTY_EXT . "'){window.open(f.value);}", true, 0, 0, '', '', ($extHref && $extHref !== we_base_link::EMPTY_EXT ? false : true), false, '_ext', false, g_l('wysiwyg', '[openNewWindow]'));
 
 			$external_link = "<div style='margin-top:1px'>" . we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("we_dialog_args[extHref]", 30, $extHref, '', 'onfocus="this.value = this.value === \'\' ? WE().consts.linkPrefix.EMPTY_EXT : this.value;" onblur="checkMakeEmptyHrefExt();" onchange="
@@ -367,9 +366,8 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 	}}"', "url", 300), "", "left", "defaultfont", $external_select_button . $openbutton, '', '', '', '', 0) . '</div>';
 
 			// INTERNAL LINK
-			$cmd1 = "document.we_form.elements['we_dialog_args[fileID]'].value";
 			$wecmdenc3 = we_base_request::encCmd("if(top.fileSelect.data.currentID){opener.document.we_form.yuiAcResultCT.value = top.fileSelect.data.currentType;opener.document.getElementById(\"btn_edit_int\").disabled=false;}");
-			$internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['we_dialog_args[fileHref]'].value") . "','" . $wecmdenc3 . "','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$internal_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[fileID]'].value, '" . FILE_TABLE . "','we_dialog_args[fileID]','we_dialog_args[fileHref]','" . $wecmdenc3 . "','',0, '', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$yuiSuggest->setAcId("Path");
 			$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION]);
 			$yuiSuggest->setInput("we_dialog_args[fileHref]", $this->args["fileHref"]);
@@ -387,10 +385,8 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 
 			// OBJECT LINK
 			if(defined('OBJECT_TABLE') && ($_SESSION['weS']['we_mode'] == we_base_constants::MODE_NORMAL || permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"))){
-				$cmd1 = "document.we_form.elements['we_dialog_args[objID]'].value";
-				$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['we_dialog_args[objHref]'].value");
 				$wecmdenc3 = we_base_request::encCmd("if(top.fileSelect.data.currentID){opener.document.getElementById(\"btn_edit_obj\").disabled=false;}");
-				$object_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_FILES_TABLE . "', '" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "', '" . $wecmdenc3 . "', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
+				$object_select_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['we_dialog_args[objID]'].value, '" . OBJECT_FILES_TABLE . "', 'we_dialog_args[objID]','we_dialog_args[objHref]', '" . $wecmdenc3 . "', '', '', 'objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");", false, 100, 22, "", "", !permissionhandler::hasPerm("CAN_SEE_OBJECTFILES"));
 				$yuiSuggest->setAcId("Obj");
 				$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
 				$yuiSuggest->setInput("we_dialog_args[objHref]", $this->args["objHref"]);

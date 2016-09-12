@@ -691,10 +691,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$yuiSuggest = & weSuggest::getInstance();
 		$Pathvalue = $IDValue ? id_to_path($IDValue, FILE_TABLE, $this->db) : '';
 		$Pathname = md5(uniqid(__FUNCTION__, true));
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_image',((document.we_form.elements['" . $IDName . "'].value != 0) ? document.we_form.elements['" . $IDName . "'].value : ''),'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_image',((document.we_form.elements['" . $IDName . "'].value != 0) ? document.we_form.elements['" . $IDName . "'].value : ''),'" . FILE_TABLE . "','" . $IDName . "','" . $Pathname . "','" . $wecmdenc3 . "','',0,'" . we_base_ContentTypes::IMAGE . "')");
 
 		$yuiSuggest->setAcId("Image");
 		$yuiSuggest->setLabel($title);
@@ -714,10 +712,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$yuiSuggest = & weSuggest::getInstance();
 		$path = id_to_path($idvalue, $table, $this->db);
 		$textname = md5(uniqid(__FUNCTION__, true));
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $idname . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_banner_dirSelector',document.we_form.elements['" . $idname . "'].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_banner_dirSelector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "','" . $wecmdenc3 . "')");
 
 		$yuiSuggest->setAcId($acID);
 		$yuiSuggest->setLabel($title);
@@ -786,8 +782,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		<td class="defaultfont">&nbsp;<label for="' . $this->uid . '_IntHref1">' . g_l('modules_banner', '[int_url]') . '</label></td>
 	</tr>
 </table>';
-		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','',0,'')");
+
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $Pathname . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','',0,'')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("InternalURL");
 		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::XML, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);

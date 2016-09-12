@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagData_selectorAttribute extends weTagDataAttribute{
-
 	const FOLDER = 'folder';
 
 	/**
@@ -67,14 +66,13 @@ class weTagData_selectorAttribute extends weTagDataAttribute{
 				$weCmd = ($this->Selectable == self::FOLDER ? 'we_selector_directory' : 'we_selector_document');
 		}
 
-		$input = we_html_element::htmlInput(array(
-					'name' => $this->Name,
-					'value' => $this->Value,
-					'id' => $this->getIdName(),
-					'class' => 'wetextinput'
-		));
-		$wecmdenc1 = we_base_request::encCmd("document.getElementById('" . $this->getIdName() . "').value");
-		$button = we_html_button::create_button('select', "javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "','" . ($this->useName ? '' : $wecmdenc1) . "','" . ($this->useName ? $wecmdenc1 : '') . "', '', '', '', '" . $this->Selectable . "')");
+		$input = we_html_element::htmlInput([
+			'name' => $this->Name,
+				'value' => $this->Value,
+				'id' => $this->getIdName(),
+				'class' => 'wetextinput'
+				]);
+		$button = we_html_button::create_button('select', "javascript:we_cmd('" . $weCmd . "', document.getElementById('" . $this->getIdName() . "').value, '" . $this->Table . "','','" . ($this->useName ? $this->getIdName() : '') . "', '', '', '', '" . $this->Selectable . "')");
 
 		return '<table class="attribute"><tr>
 						<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>

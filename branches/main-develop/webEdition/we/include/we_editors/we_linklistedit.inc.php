@@ -399,14 +399,12 @@ if($ok){
 </select>';
 
 
-		$cmd1 = 'document.we_form.href.value';
-		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
+		$but = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'href', '', document.we_form.href.value, '')") : "";
 
 		$extLink = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("href", 30, $href, '', 'placeholder="http://www.example.com"', "url", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 		$emailLink = we_html_tools::htmlTextInput("emaillink", 30, $emaillink, "", 'placeholder="user@example.com"', "text", 300);
 
-		$cmd1 = "document.we_form.elements.id.value";
-		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.href_int.value") . "','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.id.value,'" . FILE_TABLE . "','id','href_int','','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('Doc');
@@ -421,8 +419,7 @@ if($ok){
 
 		$intLink = $yuiSuggest->getHTML();
 		if(defined('OBJECT_TABLE')){
-			$cmd1 = "document.we_form.elements.obj_id.value";
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.href_obj.value") . "','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
+			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.obj_id.value,'" . OBJECT_FILES_TABLE . "','obj_id','href_obj','','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 
 			$yuiSuggest->setAcId("Obj");
 			$yuiSuggest->setContentType("folder," . we_base_ContentTypes::OBJECT_FILE);
@@ -500,12 +497,10 @@ if($ok){
 
 		$ctext = we_html_tools::htmlTextInput("text", 30, $text, "", "", "text", 300);
 
-		$cmd1 = "document.we_form.img_src.value";
-		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "', '', " . $cmd1 . ", '')") : "";
+		$but = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'img_src', '', document.we_form.img_src.value, '')") : "";
 		$extImg = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("img_src", 30, $img_src, "", "", "text", 300), "", "left", "defaultfont", $but, '', "", "", "", 0);
 
-		$cmd1 = "document.we_form.elements.img_id.value";
-		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.src_int.value") . "','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements.img_id.value,'" . FILE_TABLE . "','id','src_int','','','','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 		$yuiSuggest->setAcId("Image");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::IMAGE);

@@ -273,8 +273,7 @@ var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
 	}
 
 	protected function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){
-		$cmd1 = "document.we_form.elements['" . $IDName . "'].value";
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "','" . $filter . "'," . $cmd1 . ");");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $IDName . "','" . $filter . "',document.we_form.elements['" . $IDName . "'].value);");
 
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($IDName, 30, $IDValue, '', 'readonly', 'text', 400, 0), "", "left", "defaultfont", "", permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ? $button : "");
 	}

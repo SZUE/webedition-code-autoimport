@@ -23,14 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_object_createTemplate extends we_template{
+
 	function formDirChooser($width = 0, $rootDirID = 0, $table = TEMPLATES_TABLE, $Pathname = "ParentPath", $IDName = "ParentID", $cmd = "", $label = true, $disabled = false){
 		$table = $table? : $this->Table;
 		$textname = 'we_' . $this->Name . '_' . $Pathname;
 		$idname = 'we_' . $this->Name . '_' . $IDName;
 		$path = $this->$Pathname;
 		//$myid = $this->$IDName;
-		$cmd = "document.we_form.elements['" . $idname . "'].value";
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd . ",'" . $table . "','" . we_base_request::encCmd($cmd) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','','')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','','')");
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($textname, 30, $path, "", ' readonly', "text", $width, 0), g_l('weClass', '[dir]'), "left", "defaultfont", we_html_element::htmlHidden($idname, 0), $button);
 	}
 

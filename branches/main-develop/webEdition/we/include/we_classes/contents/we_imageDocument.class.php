@@ -647,9 +647,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setResult($longdesc_id_name, $longdesc_id);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setWidth(332);
-		$cmd1 = "document.we_form.elements['" . $longdesc_id_name . "'].value";
 
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $longdesc_text_name . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $longdesc_id_name . "'].value,'" . FILE_TABLE . "','" . $longdesc_id_name . "','" . $longdesc_text_name . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('reload_editpage');") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::TEXT . "," . we_base_ContentTypes::HTML . "',1)"));
 		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $longdesc_id_name . "'].value='-1';document.we_form.elements['" . $longdesc_text_name . "'].value='';_EditorFrame.setEditorIsHot(true); YAHOO.autocoml.setValidById('" . $yuiSuggest->getInputId() . "')"));
 		$content->setCol($row, 0, ['style' => 'vertical-align:bottom', 'colspan' => 5], $yuiSuggest->getHTML() . $yuiSuggest->getYuiJs());
 
@@ -799,23 +798,20 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$RollOverPath = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($RollOverID), '', $this->DB_WE);
 
 		$checkFlagName = 'check_' . $this->Name . '_RollOverFlag';
-		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$but1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][2].checked=true;") . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but1 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['" . $idname . "'].value,'" . FILE_TABLE . "','" . $idname . "','" . $textname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][2].checked=true;") . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
-		$cmd1 = "document.we_form.elements['" . $RollOverIDName . "'].value";
-		$but2 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image', " . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $RollOverPathname . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['" . $RollOverFlagName . "'].value=1;opener.document.we_form.elements['" . $checkFlagName . "'].checked=true;") . "','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+		$but2 = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image', document.we_form.elements['" . $RollOverIDName . "'].value,'" . FILE_TABLE . "','" . $RollOverIDName . "','" . $RollOverPathname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['" . $RollOverFlagName . "'].value=1;opener.document.we_form.elements['" . $checkFlagName . "'].checked=true;") . "','',0,'" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 
 
-		$cmd1 = "document.we_form.elements['" . $extname . "'].value";
 		$butExt = permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ?
-			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . we_base_request::encCmd($cmd1) . "',''," . $cmd1 . ",'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;") . "')") : "";
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $extname . "','',document.we_form.elements['" . $extname . "'].value,'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][1].checked=true;") . "')") : "";
 
 		if(defined('OBJECT_TABLE')){
 			$objidname = 'we_' . $this->Name . '_txt[ObjID]';
 			$objtextname = 'we_' . $this->Name . '_txt[ObjPath]';
 			$objPath = f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->getElement('ObjID')), '', $this->DB_WE);
-			$cmd1 = "document.we_form.elements['" . $objidname . "'].value";
-			$butObj = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $objtextname . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][3].checked=true;") . "','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
+
+			$butObj = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $objidname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $objidname . "','" . $objtextname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.document.we_form.elements['we_" . $this->Name . "_txt[LinkType]'][3].checked=true;") . "','','','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ");");
 		}
 
 		// Create table

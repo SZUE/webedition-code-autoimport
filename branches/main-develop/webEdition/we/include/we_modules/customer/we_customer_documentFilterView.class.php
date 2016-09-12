@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -36,8 +35,8 @@ class we_customer_documentFilterView extends we_customer_filterView{
 	 */
 	function getFilterHTML($ShowModeNone = false){
 		return parent::getFilterHTML() . '<div style="height: 20px;"></div>' .
-				$this->getAccessControlHTML() .
-				(($GLOBALS['we_doc']->ContentType === "folder") ? ('<div style="height: 20px;"></div>' . $this->getFolderApplyHTML()) : "");
+			$this->getAccessControlHTML() .
+			(($GLOBALS['we_doc']->ContentType === "folder") ? ('<div style="height: 20px;"></div>' . $this->getFolderApplyHTML()) : "");
 	}
 
 	/**
@@ -60,8 +59,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$selectorNoLoginId = "wecf_noLoginId";
 		$selectorNoLoginText = "wecf_InputNoLoginText";
 		//$selectorNoLoginError = "wecf_ErrorMarkNoLoginText";
-		$cmd1 = "document.we_form.elements['" . $selectorNoLoginId . "'].value";
-		$selectorNoLoginButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $selectorNoLoginText . "'].value") . "','" . we_base_request::encCmd("opener." . $this->getHotScript() . ";") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
+		$selectorNoLoginButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $selectorNoLoginId . "'].value,'" . FILE_TABLE . "','" . $selectorNoLoginId . "','" . $selectorNoLoginText . "','" . we_base_request::encCmd("opener." . $this->getHotScript() . ";") . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)") . "<div id=\"wecf_container_noLoginId\"></div>";
 
 		$yuiSuggest->setAcId("NoLogin");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
@@ -86,8 +84,7 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$selectorNoAccessId = "wecf_noAccessId";
 		$selectorNoAccessText = "wecf_InputNoAccessText";
 		//$selectorNoAccessError = "wecf_ErrorMarkNoAccessText";
-		$cmd1 = "document.we_form.elements['" . $selectorNoAccessId . "'].value";
-		$selectorNoAccessButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $selectorNoAccessText . "'].value") . "','" . we_base_request::encCmd("opener." . $this->getHotScript()) . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
+		$selectorNoAccessButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $selectorNoAccessId . "'].value,'" . FILE_TABLE . "','" . $selectorNoAccessId . "','" . $selectorNoAccessText . "','" . we_base_request::encCmd("opener." . $this->getHotScript()) . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)");
 
 		$yuiSuggest->setAcId("NoAccess");
 		$yuiSuggest->setContentType("folder," . we_base_ContentTypes::WEDOCUMENT);
@@ -103,19 +100,19 @@ class we_customer_documentFilterView extends we_customer_filterView{
 		$weAcSelector2 = $yuiSuggest->getHTML();
 
 		$accesControl = '<div class="weMultiIconBoxHeadline">' .
-				g_l('modules_customerFilter', '[accessControl]') . '</div>' .
-				we_html_forms::radiobutton(
-						"onTemplate", $filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnTemplate]'), true, "defaultfont", "updateView();" . $this->getHotScript()
-				) .
-				we_html_forms::radiobutton(
-						"errorDoc", !$filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnErrorDoc]'), true, "defaultfont", "updateView();" . $this->getHotScript()
-				) .
-				we_customer_documentFilterView::getDiv($weAcSelector . $weAcSelector2, 'accessControlSelectorDiv', (!$filter->getAccessControlOnTemplate()), 25);
+			g_l('modules_customerFilter', '[accessControl]') . '</div>' .
+			we_html_forms::radiobutton(
+				"onTemplate", $filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnTemplate]'), true, "defaultfont", "updateView();" . $this->getHotScript()
+			) .
+			we_html_forms::radiobutton(
+				"errorDoc", !$filter->getAccessControlOnTemplate(), "wecf_accessControlOnTemplate", g_l('modules_customerFilter', '[accessControlOnErrorDoc]'), true, "defaultfont", "updateView();" . $this->getHotScript()
+			) .
+			we_customer_documentFilterView::getDiv($weAcSelector . $weAcSelector2, 'accessControlSelectorDiv', (!$filter->getAccessControlOnTemplate()), 25);
 
 
 
 		return weSuggest::getYuiFiles() .
-				$this->getDiv($accesControl, 'accessControlDiv', $filter->getMode() !== we_customer_abstractFilter::OFF, 0);
+			$this->getDiv($accesControl, 'accessControlDiv', $filter->getMode() !== we_customer_abstractFilter::OFF, 0);
 	}
 
 	/**
