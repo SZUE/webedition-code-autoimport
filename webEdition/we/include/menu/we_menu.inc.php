@@ -409,13 +409,13 @@ $we_menu = array(
 		'parent' => 'file',
 		'cmd' => 'rebuild',
 		'perm' => 'REBUILD',
-	), array(// File > Browse server
+	), [// File > Browse server
 		'text' => g_l('javaMenu_global', '[browse_server]') . '&hellip;',
 		'parent' => 'file',
 		'cmd' => 'browse_server',
 		'perm' => 'BROWSE_SERVER',
 		'hide' => $seeMode,
-	), [
+	], [
 		'parent' => 'file',
 		'perm' => 'BROWSE_SERVER',
 		'hide' => $seeMode,

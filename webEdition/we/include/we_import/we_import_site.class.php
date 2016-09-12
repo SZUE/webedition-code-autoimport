@@ -412,9 +412,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 */
 	private function _getTemplateSelectHTML($tid){
 		$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid));
-		$cmd1 = "document.we_form.elements['templateID'].value";
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['templateDummy'].value") . "','" . we_base_request::encCmd("opener.displayTable();") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','templateID','templateDummy','" . we_base_request::encCmd("opener.displayTable();") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
 		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
@@ -429,17 +428,15 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	private function _getContentHTML(){
 		// Suorce Directory
 
-		$cmd1 = "document.we_form.elements.from.value";
 		$from_button = permissionhandler::hasPerm("CAN_SELECT_EXTERNAL_FILES") ?
-			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', '" . we_base_request::encCmd($cmd1) . "','" . we_base_ContentTypes::FOLDER . "'," . $cmd1 . ")") :
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server', 'from','" . we_base_ContentTypes::FOLDER . "',document.we_form.elements.from.value)") :
 			"";
 
 		$input = we_html_tools::htmlTextInput("from", 30, $this->from, "", "readonly", "text", 300);
 		$importFrom = we_html_tools::htmlFormElementTable($input, g_l('siteimport', '[importFrom]'), "left", "defaultfont", $from_button, '', "", "", "", 0);
 
 		// Destination Directory
-		$cmd1 = "document.we_form.elements.to.value";
-		$to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.toPath.value") . "','','','0')");
+		$to_button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.to.value,'" . FILE_TABLE . "','to','toPath','','','0')");
 
 		//$hidden = we_html_element::htmlHidden("to",$this->to);
 		//$input = we_html_tools::htmlTextInput("toPath",30,id_to_path($this->to),"",'readonly="readonly"',"text",300);
@@ -849,9 +846,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 */
 	private static function _formPathHTML($templateName, $myid){
 		$path = id_to_path($myid, TEMPLATES_TABLE);
-		$cmd1 = "document.we_form.elements.templateParentID.value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.templateDirName.value");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . TEMPLATES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','','')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.templateParentID.value,'" . TEMPLATES_TABLE . "','templateParentID','templateDirName','','')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("TplPath");

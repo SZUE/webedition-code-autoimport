@@ -558,7 +558,7 @@ function selectorOnDblClick(id) {
 
 function exit_open() {
 	if (top.fileSelect.data.JSIDName) {
-		if (top.fileSelect.data.JSIDName.indexOf(".")) {
+		if (top.fileSelect.data.JSIDName.indexOf(".") > 0) {
 			//FIXME: remove eval
 			eval("opener." + top.fileSelect.data.JSIDName + "=top.fileSelect.data.currentID;");
 		} else {
@@ -566,7 +566,7 @@ function exit_open() {
 		}
 	}
 	if (top.fileSelect.data.JSTextName) {
-		if (top.fileSelect.data.JSTextName.indexOf(".")) {
+		if (top.fileSelect.data.JSTextName.indexOf(".") > 0) {
 			//FIXME: remove eval
 			eval("opener." + top.fileSelect.data.JSTextName + "= top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : '';");
 		} else {
@@ -590,7 +590,7 @@ function exit_open() {
 			}
 		}
 		if (opener.YAHOO !== undefined && opener.YAHOO.autocoml !== undefined) {
-			var val = (top.fileSelect.data.JSTextName.indexOf(".") ?
+			var val = (top.fileSelect.data.JSTextName.indexOf(".") > 0 ?
 							//FIXME: remove eval
 							eval("opener." + top.fileSelect.data.JSTextName.replace(".value", ".id")) :
 							opener.document.we_form.elements[top.fileSelect.data.JSTextName].id

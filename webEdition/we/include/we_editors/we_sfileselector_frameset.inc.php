@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
+we_html_tools::protect(['BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR']);
 
 function printHeaderHTML($ret){
 	return '
@@ -136,7 +136,7 @@ function printFrameSet(){
 			if (!browseServer) {
 				var foo = (!top.fileSelect.data.currentID || (top.fileSelect.data.currentID === sitepath) ? "/" : top.fileSelect.data.currentID.substring(sitepath.length));
 
-				opener.<?= $cmd1? : 'x'; ?> = foo;
+				opener.document.we_form.elements[<?= $cmd1? : 'x'; ?>].value = foo;
 			}
 	<?= we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4); ?>;
 			close();

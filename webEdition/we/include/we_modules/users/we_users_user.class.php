@@ -1599,20 +1599,17 @@ function delElement(elvalues,elem) {
 					$path = id_to_path($value);
 				}
 
-				$wecmdenc1 = we_base_request::encCmd("document.getElementsByName('" . $obj_names . '[id][' . $key . "]')[0].value");
-				$wecmdenc2 = we_base_request::encCmd("document.getElementsByName('" . $obj_names . '[Text][' . $key . "]')[0].value");
-
 				switch($k){
 					case (defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : 'NEWSLETTER_TABLE'):
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_newsletter_dirSelector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_newsletter_dirSelector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $obj_names . '[id][' . $key . "]','" . $obj_names . '[Text][' . $key . "]','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 						break;
 
 					case NAVIGATION_TABLE:
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_navigation_dirSelector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_navigation_dirSelector',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $obj_names . '[id][' . $key . "]','" .$obj_names . '[Text][' . $key . "]','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 						break;
 
 					default:
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.getElementsByName('" . $obj_names . "[id][" . $key . "]')[0].value,'" . $k . "','" . $obj_names . '[id][' . $key . "]','" . $obj_names . '[Text][' . $key . "]','','','" . we_base_request::_(we_base_request::INT, "rootDirID", 0) . "' )");
 				}
 
 				$yuiSuggest->setAcId('WS' . $k . $key);

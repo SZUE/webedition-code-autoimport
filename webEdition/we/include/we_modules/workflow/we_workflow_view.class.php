@@ -376,11 +376,9 @@ class we_workflow_view extends we_modules_view{
 	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
 
 	function formDirChooser($width = '', $rootDirID = 0, $table = FILE_TABLE, $Pathname = 'ParentPath', $Pathvalue = '', $IDName = 'ParentID', $IDValue = '', $cmd = ''){
-		$cmd1 = "document.we_form.elements['" . $IDName . "'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" .$IDName . "','" . $Pathname . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'onchange="top.content.setHot();" readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), $button);
 	}
 

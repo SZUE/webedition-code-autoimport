@@ -300,7 +300,7 @@ abstract class we_root extends we_class{
 		}
 
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . $parentPathChanged . str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . $table . "','" . $idname . "','" . $textname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . $parentPathChanged . str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
 
 		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
@@ -354,8 +354,7 @@ abstract class we_root extends we_class{
 
 		$inputFeld = we_html_tools::htmlTextInput($textname, 24, $creator, '', ' readonly', '');
 		$idfield = we_html_element::htmlHidden($idname, $this->CreatorID);
-		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value") . "','user'," . $cmd1 . ",'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);") . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','" . $idname . "','" . $textname . "','user',document.we_form.elements['" . $idname . "'].value,'" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);") . "')");
 
 		return we_html_tools::htmlFormElementTable($inputFeld, g_l('weClass', '[maincreator]'), 'left', 'defaultfont', $idfield, $button);
 	}
@@ -391,10 +390,9 @@ abstract class we_root extends we_class{
 		$textname = 'OwnerNameTmp';
 		$idname = 'OwnerIDTmp';
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('users_del_all_owners','')", true, 0, 0, "", "", $this->Owners ? false : true);
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.setScrollTo();fillIDs();opener.we_cmd('users_add_owner',top.allIDs);");
 		$addbut = $canChange ?
-			we_html_element::htmlHiddens(array($idname => '', $textname => '')) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector','document.we_form.elements[\'" . $idname . "\'].value','" . $wecmdenc2 . "','',document.we_form.elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);") : "";
+			we_html_element::htmlHiddens(array($idname => '', $textname => '')) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector','document.we_form.elements[\'" . $idname . "\'].value','" . $textname . "','','" . $idname . "','" . $wecmdenc5 . "','','',1);") : "";
 
 		$content = '<table class="default" style="width:500px;">
 <tr><td><div class="multichooser">' . $content . '</div></td></tr>
@@ -507,8 +505,7 @@ abstract class we_root extends we_class{
 
 	function formCopyDocument(){
 		$idname = 'we_' . $this->Name . '_CopyID';
-		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ",'" . $this->Table . "','" . we_base_request::encCmd($cmd1) . "','','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', top.fileSelect.data.currentID);") . "','','0','" . $this->ContentType . "',1);");
+		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements['" . $idname . "'].value,'" . $this->Table . "','" . $idname . "','','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('copyDocument', top.fileSelect.data.currentID);") . "','','0','" . $this->ContentType . "',1);");
 
 		return we_html_element::htmlHidden($idname, $this->CopyID) . $but;
 	}
@@ -527,8 +524,7 @@ abstract class we_root extends we_class{
 			$username = f('SELECT username FROM ' . USER_TABLE . ' WHERE ID=' . intval($userid), 'username', $this->DB_WE);
 		}
 
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
-		return we_html_tools::htmlFormElementTable(self::htmlTextInput($textname, 30, $username, '', ' readonly', 'text', $width, 0), 'User', 'left', 'defaultfont', we_html_element::htmlHidden($idname, $userid), we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form.elements['" . $idname . "'].value','" . $wecmdenc2 . "','user')"));
+		return we_html_tools::htmlFormElementTable(self::htmlTextInput($textname, 30, $username, '', ' readonly', 'text', $width, 0), 'User', 'left', 'defaultfont', we_html_element::htmlHidden($idname, $userid), we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_users_selector','document.we_form.elements['" . $idname . "'].value','" . $textname . "','user')"));
 	}
 
 	//FIXME: this should be a general selector
@@ -538,8 +534,6 @@ abstract class we_root extends we_class{
 		$idname = 'we_' . $this->Name . '_' . $type . '[' . $name . '#bdid]';
 		$myid = $this->getElement($name, 'bdid');
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
-		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
 
 		$yuiSuggest->setAcId('TriggerID');
@@ -552,7 +546,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setSelector($selector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth($width);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::IMAGE . "',1)"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::IMAGE . "',1)"));
 		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", true, 27, 22));
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		//$yuiSuggest->setDoOnTextfieldBlur("if(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
@@ -571,8 +565,6 @@ abstract class we_root extends we_class{
 			$myid = $this->TriggerID ? : '';
 		}
 		$path = f('SELECT Path FROM ' . $this->DB_WE->escape($table) . ' WHERE ID=' . intval($myid), '', $this->DB_WE);
-		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);");
 
 		$yuiSuggest->setAcId('TriggerID');
@@ -585,7 +577,7 @@ abstract class we_root extends we_class{
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
 		$yuiSuggest->setTable($table);
 		$yuiSuggest->setWidth(388);
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . $wecmdenc3 . "','','','" . we_base_ContentTypes::WEDOCUMENT . "',1)"));
 		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInputTriggerID');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", true, 27, 22));
 		//$yuiSuggest->setDoOnTextfieldBlur("if(document.getElementById('yuiAcResultTemplate').value == '' || document.getElementById('yuiAcResultTemplate').value == 0) { document.getElementById('TemplateLabel').style.display = 'inline'; document.getElementById('TemplateLabelLink').style.display = 'none'; } else { document.getElementById('TemplateLabel').style.display = 'none'; document.getElementById('TemplateLabelLink').style.display = 'inline'; }");
 		//$yuiSuggest->setDoOnTextfieldBlur("if(YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInputTemplate'].set].changed && YAHOO.autocoml.isValidById('yuiAcInputTemplate')) top.we_cmd('reload_editpage')");
@@ -616,11 +608,9 @@ abstract class we_root extends we_class{
 			$ctype = we_base_ContentTypes::OBJECT_FILE;
 			$etype = OBJECT_FILES_TABLE;
 		}
-		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd('opener.WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);');
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "','" . $ctype . "',1,0,0,'" . $langkey . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . $table . "','" . $idname . "','" . $textname . "','" . $wecmdenc3 . "','','" . $rootDirID . "','" . $ctype . "',1,0,0,'" . $langkey . "')");
 		$trashButton = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='-1';document.we_form.elements['" . $textname . "'].value='';YAHOO.autocoml.selectorSetValid('yuiAcInput" . $ackeyshort . "');WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", true, 27, 22);
 		$openbutton = we_html_button::create_button(we_html_button::EDIT, "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . $ctype . "','" . $etype . "'); }");
 		if(!empty($this->DocType) && permissionhandler::hasPerm("NEW_WEBEDITIONSITE")){

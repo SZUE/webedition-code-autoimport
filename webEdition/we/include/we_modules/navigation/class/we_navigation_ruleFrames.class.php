@@ -133,8 +133,7 @@ class we_navigation_ruleFrames{
 		$yuiSuggest->setResult('FolderID');
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setWidth(275);
-		$cmd1 = "document.we_form.elements.FolderID.value";
-		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory', " . $cmd1 . ", '" . FILE_TABLE . "', '" . we_base_request::encCmd($cmd1) . "', '" . we_base_request::encCmd("document.we_form.elements.FolderIDPath.value") . "')"), 10);
+		$yuiSuggest->setSelectButton(we_html_button::create_button('select', "javascript:we_cmd('we_selector_directory', document.we_form.elements.FolderID.value, '" . FILE_TABLE . "', 'FolderID', 'FolderIDPath')"), 10);
 		$yuiSuggest->setTrashButton(we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements.FolderID.value = '';document.we_form.elements.FolderIDPath.value = '';"));
 
 		$weAcSelector = $yuiSuggest->getHTML();
@@ -160,8 +159,7 @@ class we_navigation_ruleFrames{
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setTable(OBJECT_TABLE);
 			$yuiSuggest->setWidth(275);
-			$cmd1 = "document.we_form.elements.ClassID.value";
-			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', " . $cmd1 . ", '" . OBJECT_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.ClassIDPath.value") . "','" . we_base_request::encCmd("top.opener.we_cmd('get_workspaces');") . "')"), 10);
+			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.ClassID.value, '" . OBJECT_TABLE . "','ClassID','ClassIDPath','" . we_base_request::encCmd("top.opener.we_cmd('get_workspaces');") . "')"), 10);
 
 			$weAcSelector = $yuiSuggest->getHTML();
 

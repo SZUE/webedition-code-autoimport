@@ -256,8 +256,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 	}
 
 	private static function getHTMLIntern(we_glossary_glossary $glossary){
-		$cmd1 = "document.we_form.elements['link[Attributes][InternLinkID]'].value";
-		$cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][InternLinkPath]'].value") . "','','','0')";
+		$cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][InternLinkID]'].value,'" . FILE_TABLE . "','link[Attributes][InternLinkID]','link[Attributes][InternLinkPath]','','','0')";
 		$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false);
 
 		if($glossary->Type === "link" && $glossary->getAttribute('mode') === "intern"){
@@ -317,8 +316,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			$linkPath = $linkID = $workspaceID = $parameter = "";
 		}
 
-		$cmd1 = "document.we_form.elements['link[Attributes][ObjectLinkID]'].value";
-		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . OBJECT_FILES_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][ObjectLinkPath]'].value") . "','" . we_base_request::encCmd("opener.we_cmd('populateWorkspaces');") . "','','0','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
+		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','link[Attributes][ObjectLinkID]','link[Attributes][ObjectLinkPath]','" . we_base_request::encCmd("opener.we_cmd('populateWorkspaces');") . "','','0','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false);
 
 		$yuiSuggest = &weSuggest::getInstance();
@@ -372,14 +370,12 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			$parameter = "";
 		}
 
-		$cmd1 = "document.we_form.elements['link[Attributes][CategoryLinkID]'].value";
-
-		$cmd = "javascript:we_cmd('we_selector_category'," . $cmd1 . ",'" . CATEGORY_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryLinkPath]'].value") . "','" . we_base_request::encCmd("opener.setHot();") . "','','0')";
+		$cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'" . CATEGORY_TABLE . "','link[Attributes][CategoryLinkID]','link[Attributes][CategoryLinkPath]','" . we_base_request::encCmd("opener.setHot();") . "','','0')";
 
 		$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]', 58, $linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryLinkID]', $linkID), we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false));
 
-		$cmd1 = "document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value";
-		$cmd = "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . FILE_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['link[Attributes][CategoryInternLinkPath]'].value") . "','','','0')";
+
+		$cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][CategoryInternLinkID]'].value,'" . FILE_TABLE . "','link[Attributes][CategoryInternLinkID]','link[Attributes][CategoryInternLinkPath]','','','0')";
 
 		$selector2 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryInternLinkPath]', 58, $internLinkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryInternLinkID]', $internLinkID), we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false)
 		);

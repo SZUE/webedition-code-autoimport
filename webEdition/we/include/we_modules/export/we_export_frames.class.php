@@ -359,9 +359,8 @@ function closeAllType(){
 
 	function getHTMLDirChooser(){
 		$path = id_to_path($this->View->export->ParentID, EXPORT_TABLE);
-		$cmd1 = "document.we_form.elements.ParentID.value";
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_export_dirSelector'," . $cmd1 . ",'" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements.ParentPath.value") . "','" . we_base_request::encCmd("top.hot=1;") . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_export_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','" . we_base_request::encCmd("top.hot=1;") . "')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
@@ -671,10 +670,8 @@ if (top.content.editor.edbody.addLog){
 	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
 		$Pathvalue = ($Pathvalue ? : f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "", $this->db));
 
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $IDName . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value");
 		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('SelPath');
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);

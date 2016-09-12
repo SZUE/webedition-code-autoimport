@@ -1006,9 +1006,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 						$linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 
 						$rootDirID = 0;
-						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value");
-						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "[" . $i . "]'].value");
-						$cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "','','')";
+						$cmd = "javascript:we_cmd('we_selector_directory',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','search" . $whichSearch . "ParentID[" . $i . "]','search" . $whichSearch . "[" . $i . "]','','','" . $rootDirID . "','','')";
 						$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 60, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ""), $button);
 
@@ -1018,10 +1016,8 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 						$linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 
 						$rootDirID = 0;
-						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value");
-						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "[" . $i . "]'].value");
 
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','','" . we_base_ContentTypes::IMAGE . "')", true, 60, 22, '', '', false);
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . FILE_TABLE . "','search" . $whichSearch . "ParentID[" . $i . "]','search" . $whichSearch . "[" . $i . "]','','','','" . we_base_ContentTypes::IMAGE . "')", true, 60, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $button);
 
 						$searchInput = $selector;
@@ -1031,10 +1027,8 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 						$linkPath = (isset($currentSearch[$i]) ? $currentSearch[$i] : '');
 
 						$rootDirID = 0;
-						$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value");
-						$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['search" . $whichSearch . "[" . $i . "]'].value");
 
-						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')", true, 60, 22, '', '', false);
+						$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['search" . $whichSearch . "ParentID[" . $i . "]'].value,'" . TEMPLATES_TABLE . "','search" . $whichSearch . "ParentID[" . $i . "]','search" . $whichSearch . "[" . $i . "]','','','" . $rootDirID . "','','" . we_base_ContentTypes::TEMPLATE . "')", true, 60, 22, '', '', false);
 						$selector = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('search' . $whichSearch . '[' . $i . ']', 58, $linkPath, '', 'readonly', 'text', 170, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('search' . $whichSearch . 'ParentID[' . $i . ']', ''), $button);
 
 						$searchInput = $selector;
@@ -1355,9 +1349,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 		$yuiSuggest->setResult($nameFolderID, $nameFolderPath);
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable($table);
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements['" . $nameFolderID . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $nameFolderPath . "'].value");
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $nameFolderID . "'].value,'" . $table . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "')"));
+		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $nameFolderID . "'].value,'" . $table . "','" . $nameFolderID . "','" . $nameFolderPath . "')"));
 
 		return
 			weSuggest::getYuiFiles() .

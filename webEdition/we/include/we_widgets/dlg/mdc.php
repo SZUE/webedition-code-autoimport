@@ -50,10 +50,8 @@ function getHTMLDirSelector($selType){
 	$showAC = true;
 	$rootDirID = 0;
 	$folderID = 0;
-	$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.FolderID.value");
-	$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.FolderPath.value");
-	$button_doc = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')");
-	$button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . OBJECT_FILES_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','','" . $rootDirID . "')") : '';
+	$button_doc = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . FILE_TABLE . "','FolderID','FolderPath','','','" . $rootDirID . "')");
+	$button_obj = defined('OBJECT_TABLE') ? we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.FolderID.value,'" . OBJECT_FILES_TABLE . "','FolderID','FolderPath','','','" . $rootDirID . "')") : '';
 
 	$buttons = '<div id="docFolder" style="display: ' . (!$selType ? "inline" : "none") . '">' . $button_doc . "</div>" . '<div id="objFolder" style="display: ' . ($selType ? "inline" : "none") . '">' . $button_obj . "</div>";
 	$path = id_to_path($folderID, (!$selType ? FILE_TABLE : (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : "")));

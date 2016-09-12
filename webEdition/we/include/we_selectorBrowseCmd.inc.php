@@ -21,8 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
-we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
+we_html_tools::protect(['BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR']);
 
 echo we_html_tools::getHtmlTop();
 $cmd = we_base_request::_(we_base_request::STRING, 'cmd');

@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::protect(array('BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR'));
+we_html_tools::protect(['BROWSE_SERVER', 'SITE_IMPORT', 'ADMINISTRATOR']);
 if(file_exists(($supportDebuggingFile = WEBEDITION_PATH . 'we_sselector_inc.php'))){
 	include($supportDebuggingFile);
 	if(defined('SUPPORT_IP') && defined('SUPPORT_DURATION') && defined('SUPPORT_START')){

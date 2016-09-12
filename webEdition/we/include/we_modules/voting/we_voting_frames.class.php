@@ -238,13 +238,11 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		$table->setColContent(1, 1, we_html_element::htmlDiv(array('id' => 'owners', 'class' => 'multichooser', 'style' => 'width: 510px; height: 60px; border: #AAAAAA solid 1px;')));
 		$idname = 'owner_id';
 		$textname = 'owner_text';
-		$cmd1 = "document.forms[0].elements['" . $idname . "'].value";
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements['" . $textname . "'].value");
 		$wecmdenc5 = we_base_request::encCmd("fillIDs();opener.we_cmd('users_add_owner',top.allPaths,top.allIsFolder);");
 		$table->setCol(2, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_element::htmlHiddens(array(
 				$idname => '',
 				$textname => '')) .
-			we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_users_selector','" . we_base_request::encCmd($cmd1) . "','" . $wecmdenc2 . "',''," . $cmd1 . ",'" . $wecmdenc5 . "','','',1);")
+			we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_users_selector','" . $idname . "','" . $textname . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);")
 		);
 
 		$parts = [
@@ -692,9 +690,7 @@ function setVisible(id,visible){
 
 	function getHTMLDirChooser(){
 		$path = id_to_path($this->View->voting->ParentID, VOTING_TABLE);
-		$wecmdenc1 = we_base_request::encCmd("document.we_form.elements.ParentID.value");
-		$wecmdenc2 = we_base_request::encCmd("document.we_form.elements.ParentPath.value");
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot(); we_cmd('we_voting_dirSelector',document.we_form.elements.ParentID.value,'" . $wecmdenc1 . "','" . $wecmdenc2 . "','')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot(); we_cmd('we_voting_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','')");
 		$width = 416;
 
 		$yuiSuggest = & weSuggest::getInstance();

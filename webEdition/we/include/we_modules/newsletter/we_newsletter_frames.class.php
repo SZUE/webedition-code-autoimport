@@ -513,19 +513,19 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			$table->setCol($c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_email_field]') . ":&nbsp;");
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect("customer_email_field", $custfields, 1, $settings["customer_email_field"], false, [], "value", 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_html_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_html_field', $custfields, 1, $settings['customer_html_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_salutation_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_salutation_field', $custfields, 1, $settings['customer_salutation_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_title_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_title_field', $custfields, 1, $settings['customer_title_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_firstname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_firstname_field', $custfields, 1, $settings['customer_firstname_field'], false, [], 'value', 308));
 
-			$table->setCol( ++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
+			$table->setCol(++$c, 0, ['class' => 'defaultfont'], g_l('modules_newsletter', '[customer_lastname_field]') . ':&nbsp;');
 			$table->setCol($c, 1, ['class' => 'defaultfont'], we_html_tools::htmlSelect('customer_lastname_field', $custfields, 1, $settings['customer_lastname_field'], false, [], 'value', 308));
 		}
 
@@ -592,12 +592,10 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	}
 
 	function getHTMLCopy(){
-		$cmd1 = 'document.we_form.elements.copyid.value';
-
 		return we_html_element::htmlHiddens([
 				'copyid' => 0,
 				'copyid_text' => ""]) .
-			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file'," . $cmd1 . ",'" . NEWSLETTER_TABLE . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd('document.we_form.elements.copyid_text.value') . "','" . we_base_request::encCmd("opener.we_cmd('copy_newsletter');") . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file',document.we_form.elements.copyid.value,'" . NEWSLETTER_TABLE . "','copyid','copyid_text','" . we_base_request::encCmd("opener.we_cmd('copy_newsletter');") . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){
@@ -809,9 +807,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $open_doc = '', $acObject = null, $contentType = ''){
 		$Pathvalue = $Pathvalue? : f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), '', $this->db);
 
-		$cmd1 = "document.we_form.elements['" . $IDName . "'].value";
-
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','','" . $open_doc . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','','" . $open_doc . "')");
 		if(is_object($acObject)){
 
 			$yuiSuggest = $acObject;
@@ -833,9 +829,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	private function formWeDocChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = '', $filter = we_base_ContentTypes::WEDOCUMENT, $acObject = null){
 		$Pathvalue = $Pathvalue? : f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), '', $this->db);
 
-		$wecmd1 = "document.we_form.elements['" . $IDName . "'].value";
-
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document'," . $wecmd1 . ",'" . $table . "','" . we_base_request::encCmd($wecmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")");
 		if(is_object($acObject)){
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId($IDName);
@@ -1005,9 +999,7 @@ window.onload=extraInit;');
 			$Pathvalue = f('SELECT Path FROM ' . NEWSLETTER_TABLE . ' WHERE ID=' . intval($IDValue), '', $this->db);
 		}
 
-		$wecmd1 = "document.we_form.elements['" . $IDName . "'].value";
-
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_newsletter_dirSelector'," . $wecmd1 . ",'" . we_base_request::encCmd($wecmd1) . "','" . we_base_request::encCmd("document.we_form.elements['" . $Pathname . "'].value") . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_newsletter_dirSelector',document.we_form.elements['" . $IDName . "'].value,'" . $IDName . "','" . $Pathname . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
 		if(is_object($acObject)){
 			$yuiSuggest = $acObject;
 			$yuiSuggest->setAcId('PathGroup');
