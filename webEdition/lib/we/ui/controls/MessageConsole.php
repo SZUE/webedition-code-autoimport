@@ -78,7 +78,7 @@ class we_ui_controls_MessageConsole extends we_ui_abstract_AbstractElement{
 		$page = we_ui_layout_HTMLPage::getInstance();
 
 		$js = <<<EOS
-var _console_$this->_consoleName = new (WE().layout.messageConsoleView)( '$this->_consoleName', this.window );
+_console_$this->_consoleName = new (WE().layout.messageConsoleView)( '$this->_consoleName', this.window );
 _console_$this->_consoleName.register();
 
 onunload=function() {
