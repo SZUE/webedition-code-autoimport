@@ -124,7 +124,7 @@ container.prototype.frames={
 			foreach($item as $k => $v){
 				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
 						intval($v) :
-						'\'' . str_replace(array('"', '\'', '\\'), '', $v) . '\'') . ',';
+						'\'' . str_replace(['"', '\'', '\\'], '', $v) . '\'') . ',';
 			}
 			$js.='}));' . ($clear ? '' : '}');
 		}

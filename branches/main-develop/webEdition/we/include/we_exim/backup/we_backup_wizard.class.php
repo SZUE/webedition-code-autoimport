@@ -29,13 +29,16 @@ class we_backup_wizard{
 	private $mode; //1-backup;2-recover
 	private $frameset;
 	private $fileUploader = null;
+	private $json = [];
 
 	function __construct($mode = self::BACKUP){
 		$this->frameset = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . ($mode == self::BACKUP ? 'make_backup' : 'recover_backup');
 		$this->mode = $mode;
+		$this->json['mode'] = $mode;
+		$this->json['modeCmd'] = ($mode == self::BACKUP ? 'make_backup' : 'recover_backup');
 	}
 
-	private static function getJSDep($mode, $docheck, $doclick, $douncheck = ''){
+	private static function getJSDep($docheck, $doclick, $douncheck = ''){
 		return
 			we_html_element::jsScript(JS_DIR . 'backup_wizard.js') .
 			we_html_element::jsElement('
@@ -100,10 +103,9 @@ function doClick(opt) {
 	}
 
 	function getHTMLRecoverStep1(){
-		$parts = array(
-			array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[save_before]'), we_html_tools::TYPE_ALERT, 600), 'noline' => 1),
-			array('headline' => '', 'html' => g_l('backup', '[save_question]'), 'noline' => 1),
-		);
+		$parts = [['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[save_before]'), we_html_tools::TYPE_ALERT, 600), 'noline' => 1],
+			['headline' => '', 'html' => g_l('backup', '[save_question]'), 'noline' => 1],
+		];
 
 		$js = we_html_element::jsElement('
 function startStep(){
@@ -111,7 +113,7 @@ function startStep(){
 	top.busy.location="' . $this->frameset . '&pnt=busy&step=1";
 }');
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "startStep()"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step1]'))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step1]'))
 					)
 				)
 		);
@@ -134,10 +136,9 @@ function we_submitForm(target,url) {
 
 function startStep(){
 	top.busy.location="' . $this->frameset . '&pnt=busy&step=2";
+		self.focus();
 }
-
-self.focus();
-		');
+');
 		$parts = [
 			['headline' => '', 'html' => we_html_forms::radiobutton("import_server", true, "import_from", g_l('backup', '[import_from_server]')), 'noline' => 1],
 			['headline' => '', 'html' => we_html_forms::radiobutton("import_upload", false, "import_from", g_l('backup', '[import_from_local]')), 'noline' => 1]
@@ -383,7 +384,7 @@ var extra_files_desc=[];';
 
 		$js = we_html_element::jsElement($js) .
 			(isset($fileUploaderHead) ? $fileUploaderHead : '') .
-			self::getJSDep("import", $docheck, $doclick, $douncheck) .
+			self::getJSDep($docheck, $doclick, $douncheck) .
 			we_html_element::jsElement('
 function startBusy() {
 	top.busy.location="' . $this->frameset . '&pnt=busy&operation_mode=busy&step=4";
@@ -476,11 +477,10 @@ function delSelected(){
 		$js = we_html_element::jsElement('
 function stopBusy() {
 	top.busy.location="' . $this->frameset . '&pnt=busy&step=5";
-	/*if(top.opener.top.header)
-		top.opener.top.header.document.location.reload();*/
+	top.cmd.location ="about:blank";
+	self.focus();
 }
-top.cmd.location ="about:blank";
-self.focus();');
+');
 
 		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "stopBusy()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "enctype" => "multipart/form-data"], we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step3]'))
 					)
@@ -635,8 +635,7 @@ self.focus();');
 		$parts[] = ['headline' => '', 'html' => we_html_forms::checkbox(1, true, "backup_log", g_l('backup', '[export_backup_log]'), false, "defaultfont", "doClick(320);"), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
 
 
-		$mode = "export";
-		$js = self::getJSDep("export", $docheck, $doclick) .
+		$js = self::getJSDep($docheck, $doclick) .
 			we_html_element::jsElement('
 function startStep(){
 	self.focus();

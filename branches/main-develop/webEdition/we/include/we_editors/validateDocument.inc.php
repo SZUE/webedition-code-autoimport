@@ -124,16 +124,7 @@ $parts = [
 ];
 
 //  css for webSite
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
-var host = {};
-var path = {};
-var varname = {};
-var checkvia = {};
-var ctype = {};
-var s_method = {};
-var additionalVars = {};' .
-		$js) .
-	we_html_element::jsScript(JS_DIR . 'validateDocument.js'), we_html_element::htmlBody(
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'validateDocument.js') . we_html_element::jsElement($js), we_html_element::htmlBody(
 		['class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'], '<form name="we_form">'
 		. we_html_element::htmlHidden('we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))
 		. we_html_multiIconBox::getHTML('weDocValidation', $parts, 20) .

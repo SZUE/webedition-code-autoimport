@@ -1078,6 +1078,15 @@ function we_cmd_base(args, url) {
 		case "exit_multi_doc_question":
 			new (WE().util.jsWindow)(this, url, "exit_multi_doc_question", -1, -1, 500, 300, true, false, true);
 			break;
+		case "load":
+			if (!WE().session.seemode) {
+				top.setScrollY();
+
+				var table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
+				we_cmd("setTab", table);
+				we_repl(self.load, url, args[0]);
+			}
+			break;
 		case "loadFolder":
 		case "closeFolder":
 			we_repl(self.load, url, args[0]);
@@ -1467,15 +1476,6 @@ function we_cmd_base(args, url) {
 				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
 			} else {
 				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4]);
-			}
-			break;
-		case "load":
-			if (!WE().session.seemode) {
-				top.setScrollY();
-
-				var table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
-				we_cmd("setTab", table);
-				we_repl(self.load, url, args[0]);
 			}
 			break;
 		case "exit_delete":

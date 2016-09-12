@@ -24,7 +24,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-
+var host = {};
+var path = {};
+var varname = {};
+var checkvia = {};
+var ctype = {};
+var s_method = {};
+var additionalVars = {};
 function we_submitForm(target, url) {
 	var f = self.document.we_form;
 	if (!f.checkValidity()) {

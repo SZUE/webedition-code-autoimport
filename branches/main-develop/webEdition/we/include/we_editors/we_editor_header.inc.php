@@ -119,7 +119,7 @@ switch($_SESSION['weS']['we_mode']){
 		echo we_tabs::getHeader();
 		break;
 	case we_base_constants::MODE_SEE://	No tabs in Super-Easy-Edit_mode
-		echo we_html_element::jsElement('var weTabs; function setFrameSize(){}');
+		echo we_html_element::jsScript(JS_DIR . 'seemode.js');
 }
 
 echo we_html_element::jsScript(JS_DIR . 'we_editor_header.js', '

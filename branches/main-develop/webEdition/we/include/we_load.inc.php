@@ -253,22 +253,17 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder
 		}
 
 		$js = we_html_element::jsElement('
-top.document.getElementById("treeName").innerHTML="' . $name . '";
 function loadTreeData(){
-	if(!top.treeData) {
-		window.setTimeout(loadTreeData,500);
-		return;
-	}' .
+	top.document.getElementById("treeName").innerHTML="' . $name . '";' .
 				($parentFolder ? '' :
 					'top.treeData.clear();
 top.treeData.add(top.node.prototype.rootEntry(\'' . $parentFolder . '\',\'root\',\'root\',\'' . $offset . '\'));'
 				) .
 				$Tree->getJSLoadTree(!$parentFolder, $treeItems) . '
-}
-loadTreeData();
-top.scrollToY();');
+top.scrollToY();
+}');
 	}
 
-	echo we_html_tools::getHtmlTop('File-Tree', '', '', $js, we_html_element::htmlBody());
+	echo we_html_tools::getHtmlTop('File-Tree', '', '', $js, we_html_element::htmlBody(['onload' => 'loadTreeData();']));
 }
 we_users_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
