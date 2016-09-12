@@ -40,7 +40,7 @@ class we_backup_wizard{
 
 	private static function getJSDep($docheck, $doclick, $douncheck = ''){
 		return
-			we_html_element::jsScript(JS_DIR . 'backup_wizard.js') .
+			we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) .
 			we_html_element::jsElement('
 
 function doCheck(opt){
@@ -107,13 +107,8 @@ function doClick(opt) {
 			['headline' => '', 'html' => g_l('backup', '[save_question]'), 'noline' => 1],
 		];
 
-		$js = we_html_element::jsElement('
-function startStep(){
-	self.focus();
-	top.busy.location="' . $this->frameset . '&pnt=busy&step=1";
-}');
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step1]'))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]), we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep(1)"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step1]'))
 					)
 				)
 		);
@@ -134,17 +129,13 @@ function we_submitForm(target,url) {
 	return true;
 }
 
-function startStep(){
-	top.busy.location="' . $this->frameset . '&pnt=busy&step=2";
-		self.focus();
-}
 ');
 		$parts = [
 			['headline' => '', 'html' => we_html_forms::radiobutton("import_server", true, "import_from", g_l('backup', '[import_from_server]')), 'noline' => 1],
 			['headline' => '', 'html' => we_html_forms::radiobutton("import_upload", false, "import_from", g_l('backup', '[import_from_local]')), 'noline' => 1]
 		];
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "startStep();"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), we_html_element::htmlHiddens(array("pnt" => "body", "step" => 3)) .
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) . $js, we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "startStep(2);"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), we_html_element::htmlHiddens(array("pnt" => "body", "step" => 3)) .
 						we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step2]'))
 					)
 				)
@@ -161,10 +152,10 @@ function startStep(){
 		}
 
 		$this->fileUploader = new we_fileupload_ui_base('we_upload_file');
-		$this->fileUploader->setTypeCondition('accepted', array(we_base_ContentTypes::XML), array('.gz', '.tgz'));
+		$this->fileUploader->setTypeCondition('accepted', [we_base_ContentTypes::XML], ['.gz', '.tgz']);
 		$this->fileUploader->setCallback('top.body.startImport(true)');
-		$this->fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 300));
-		$this->fileUploader->setDimensions(array('width' => 500, 'alertBoxWidth' => 600, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5));
+		$this->fileUploader->setInternalProgress(['isInternalProgress' => true, 'width' => 300]);
+		$this->fileUploader->setDimensions(['width' => 500, 'alertBoxWidth' => 600, 'dragWidth' => 594, 'dragHeight' => 70, 'marginTop' => 5]);
 		$this->fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_FILENAME);
 
 		$js = "";
@@ -177,18 +168,17 @@ function startStep(){
 				$fileUploaderHead = $this->fileUploader->getCss() . $this->fileUploader->getJs();
 				$inputTypeFile = $this->fileUploader->getHTML();
 
-				$parts = array(
-					array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1),
-					(DEFAULT_CHARSET ? null : array('headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1)),
-					array('headline' => '', 'html' => $this->fileUploader->getHtmlAlertBoxes(), 'noline' => 1),
-					array('headline' => '', 'html' => $inputTypeFile, 'noline' => 1)
-				);
+				$parts = [['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[charset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1],
+					(DEFAULT_CHARSET ? null : ['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[defaultcharset_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1]),
+					['headline' => '', 'html' => $this->fileUploader->getHtmlAlertBoxes(), 'noline' => 1],
+					['headline' => '', 'html' => $inputTypeFile, 'noline' => 1]
+				];
 			}
 		} else {
 			$js = '
 var extra_files=[];
 var extra_files_desc=[];';
-			$select = new we_html_select(array('name' => "backup_select", "size" => 7, "style" => "width: 600px;"));
+			$select = new we_html_select(['name' => "backup_select", "size" => 7, "style" => "width: 600px;"]);
 			$files = [];
 			$extra_files = [];
 			$dateformat = g_l('date', '[format][default]');
@@ -425,10 +415,6 @@ function delOldFiles(){
 		}
 }
 
-function startStep(){
-	top.busy.location="' . $this->frameset . '&pnt=busy&step=3";
-}
-
 function delSelected(){
 	var sel = document.we_form.backup_select;
 	if(sel.selectedIndex>-1){
@@ -446,7 +432,7 @@ function delSelected(){
 				['name' => 'we_form', "method" => "post", "action" => $this->frameset, "target" => "cmd"]
 			);
 
-		$body = we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep();self.focus();"], we_html_element::htmlForm($form_attribs, we_html_element::htmlHiddens(["pnt" => "cmd",
+		$body = we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep(3);self.focus();"], we_html_element::htmlForm($form_attribs, we_html_element::htmlHiddens(["pnt" => "cmd",
 						"cmd" => "import",
 						"step" => 3,
 						"MAX_FILE_SIZE" => $maxsize]) .
@@ -456,7 +442,7 @@ function delSelected(){
 				)
 		);
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, $body);
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) . $js, $body);
 	}
 
 	function getHTMLRecoverStep4(){
@@ -482,7 +468,7 @@ function stopBusy() {
 }
 ');
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "stopBusy()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "enctype" => "multipart/form-data"], we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step3]'))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) . $js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "stopBusy()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "enctype" => "multipart/form-data"], we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step3]'))
 					)
 				)
 		);
@@ -635,17 +621,11 @@ function stopBusy() {
 		$parts[] = ['headline' => '', 'html' => we_html_forms::checkbox(1, true, "backup_log", g_l('backup', '[export_backup_log]'), false, "defaultfont", "doClick(320);"), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
 
 
-		$js = self::getJSDep($docheck, $doclick) .
-			we_html_element::jsElement('
-function startStep(){
-	self.focus();
-	top.busy.location="' . $this->frameset . '&pnt=busy&step=1";
-}
-');
+		$js = self::getJSDep($docheck, $doclick);
 
 		$edit_cookie = weGetCookieVariable("but_edit_image");
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", 'onsubmit' => 'return false;'], we_html_element::htmlHiddens(["pnt" => "cmd",
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) . $js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "startStep(1)"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", 'onsubmit' => 'return false;'], we_html_element::htmlHiddens(["pnt" => "cmd",
 							"cmd" => "export",
 							"operation_mode" => "backup",
 							"do_import_after_backup" => we_base_request::_(we_base_request::BOOL, "do_import_after_backup")]) .
@@ -685,7 +665,7 @@ function startStep(){
 	top.busy.location="' . $this->frameset . '&pnt=busy&do_import_after_backup=' . $do_import_after_backup . '&step=3";
 }');
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js') . $js, we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'startStep();'], we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post'], we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) . $js, we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'startStep();'], we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post'], we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
 					)
 				)
 		);
