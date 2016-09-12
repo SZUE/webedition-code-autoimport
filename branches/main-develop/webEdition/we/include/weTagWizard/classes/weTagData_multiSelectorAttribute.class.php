@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagData_multiSelectorAttribute extends weTagDataAttribute{
-
 	/**
 	 * @var string
 	 */
@@ -75,7 +74,7 @@ class weTagData_multiSelectorAttribute extends weTagDataAttribute{
 <table class="attribute">
 <tr>
 	<td class="attributeName">' . $this->getLabelCodeForTagWizard() . '</td>
-	<td class="attributeField">' . we_html_element::htmlTextArea(array('name' => $this->Name, 'id' => $this->getIdName(), 'class' => 'wetextinput wetextarea')) . '</td>
+	<td class="attributeField">' . we_html_element::htmlTextArea(['name' => $this->Name, 'id' => $this->getIdName(), 'class' => 'wetextinput wetextarea']) . '</td>
 	<td class="attributeButton">' . $button . '</td>
 </tr>
 </table>';

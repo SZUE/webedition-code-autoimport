@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagData{
-
 	private $Exists = false;
 
 	/**
@@ -93,12 +92,12 @@ class weTagData{
 					return;
 				}
 			}
-		}catch(Exception $e){
+		} catch (Exception $e){
 			t_e('Error in TW-Tag ' . $this->Name, $e->getMessage());
 		}
 
 		if(strpos($tagName, 'if') !== 0){
-			$to = new weTagData_choiceAttribute('to', array(
+			$to = new weTagData_choiceAttribute('to', [
 				new weTagDataOption('global'),
 				new weTagDataOption('request'),
 				new weTagDataOption('get'),
@@ -109,7 +108,7 @@ class weTagData{
 				new weTagDataOption('block'),
 				new weTagDataOption('sessionfield'),
 				new weTagDataOption('screen'),
-					), false, false, '');
+				], false, false, '');
 			$nameto = new weTagData_textAttribute('nameto', false, '');
 		}
 
@@ -120,7 +119,7 @@ class weTagData{
 				$options = $this->TypeAttribute->getOptions();
 				if(!$this->noDocuLink){
 					foreach($options as &$value){
-						$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName) . ($value->Name ? '-' . $this->TypeAttribute->getName() . '-' . $value->Name : '')), g_l('taged', '[tagreference_linktext]'));
+						$tmp = new weTagData_cmdAttribute('TagReferenz', false, '', ['open_tagreference', strtolower($tagName) . ($value->Name ? '-' . $this->TypeAttribute->getName() . '-' . $value->Name : '')], g_l('taged', '[tagreference_linktext]'));
 						$value->AllowedAttributes[] = $tmp;
 						if($value->Value != '-'){
 							$this->Attributes[] = $tmp;
@@ -143,7 +142,7 @@ class weTagData{
 			}
 		} else {
 			if(!$this->noDocuLink){
-				$this->Attributes[] = new weTagData_cmdAttribute('TagReferenz', false, '', array('open_tagreference', strtolower($tagName)), g_l('taged', '[tagreference_linktext]')); // Bug #6341
+				$this->Attributes[] = new weTagData_cmdAttribute('TagReferenz', false, '', ['open_tagreference', strtolower($tagName)], g_l('taged', '[tagreference_linktext]')); // Bug #6341
 			}
 		}
 
@@ -229,9 +228,9 @@ class weTagData{
 		$attribs = [];
 		foreach($this->UsedAttributes as $attrib){
 			$attribs[] = ($idPrefix ?
-							$attrib->getIdName() :
-							$attrib->getName()
-					);
+					$attrib->getIdName() :
+					$attrib->getName()
+				);
 		}
 		return $attribs;
 	}
@@ -305,8 +304,8 @@ class weTagData{
 	function getTypeAttributeCodeForTagWizard(){
 		if($this->TypeAttribute){
 			return '<ul>' .
-					'<li>' . $this->TypeAttribute->getCodeForTagWizard() . '</li>' .
-					'</ul>';
+				'<li>' . $this->TypeAttribute->getCodeForTagWizard() . '</li>' .
+				'</ul>';
 		}
 		return '';
 	}
@@ -316,11 +315,11 @@ class weTagData{
 	 */
 	function getDefaultValueCodeForTagWizard(){
 
-		return we_html_element::htmlTextArea(array(
-					'name' => 'weTagData_defaultValue',
-					'id' => 'weTagData_defaultValue',
-					'class' => 'wetextinput wetextarea'
-						), $this->DefaultValue);
+		return we_html_element::htmlTextArea([
+				'name' => 'weTagData_defaultValue',
+				'id' => 'weTagData_defaultValue',
+				'class' => 'wetextinput wetextarea'
+				], $this->DefaultValue);
 	}
 
 }

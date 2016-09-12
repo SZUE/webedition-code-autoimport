@@ -208,10 +208,9 @@ function init(){
 }";
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', we_html_element::jsElement($sJsCode), we_html_element::htmlBody(
-		array(
-		'style' => 'margin:10px 15px;',
+		['style' => 'margin:10px 15px;',
 		"onload" => 'init();'
-		), we_html_element::htmlDiv(array(
+		], we_html_element::htmlDiv(array(
 			'id' => 'mfd'
 			), we_html_element::htmlDiv(array('id' => 'mfd_data'), $lastModified)
 )));

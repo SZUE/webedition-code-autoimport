@@ -6,11 +6,9 @@ $this->Groups[] = 'if_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes = array(
-	new weTagData_selectAttribute('type', array(
-		new weTagDataOption('document'),
+$this->Attributes = [new weTagData_selectAttribute('type', [new weTagDataOption('document'),
 		new weTagDataOption('object'),
 		new weTagDataOption('customer'),
-		), false, ''),
+		], false, ''),
 	new weTagData_textAttribute('formname', false, '')
-);
+];

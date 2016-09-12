@@ -8,8 +8,7 @@ $this->Module = 'shop';
 
 if(defined('WE_SHOP_VAT_TABLE')){
 	if(we_shop_category::isCategoryMode()){
-		$this->Attributes[] = new weTagData_selectAttribute('field', array(
-			new weTagDataOption('id'),
+		$this->Attributes[] = new weTagData_selectAttribute('field', [new weTagDataOption('id'),
 			new weTagDataOption('vat'),
 			new weTagDataOption('name'),
 			new weTagDataOption('country'),
@@ -18,8 +17,8 @@ if(defined('WE_SHOP_VAT_TABLE')){
 			new weTagDataOption('is_fallback_to_standard'),
 			new weTagDataOption('is_fallback_to_prefs'),
 			new weTagDataOption('is_country_fallback_to_prefs')
-		), false, '');
-		
+			], false, '');
+
 	}
 
 	$options = [];

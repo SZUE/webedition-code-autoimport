@@ -1,10 +1,12 @@
-<?php
+/* global WE */
+
 /**
  * webEdition CMS
  *
- * $Rev$
- * $Author$
- * $Date$
+ * webEdition CMS
+ * $Rev: 11938 $
+ * $Author: mokraemer $
+ * $Date: 2016-04-18 01:02:26 +0200 (Mo, 18. Apr 2016) $
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -18,8 +20,10 @@
  * webEdition/licenses/webEditionCMS/License.txt
  *
  * @category   webEdition
- * @package none
+ * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$information = ['foldername' => 'Verschiedenes',];
 
+function closeOnEscape() {
+	return true;
+}

@@ -19,7 +19,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagData_cmdAttribute extends weTagDataAttribute{
-
 	/**
 	 * @var array
 	 */
@@ -45,13 +44,12 @@ class weTagData_cmdAttribute extends weTagDataAttribute{
 	 */
 	function getCodeForTagWizard(){
 		return sprintf('<table class="attribute"><tr><td class="attributeName defaultfont">&nbsp;</td><td class="attributeField">%s</td></tr>
-			</table>', we_html_element::htmlSpan(array(
-					'name' => $this->Name,
-					'id' => $this->getIdName(),
-					'value' => '',
-					'class' => 'defaultfont',
-						), sprintf('<a href="#" onclick="we_cmd(%s);">%s</a>', '\'' . implode('\',\'', $this->Options) . '\'', $this->Text)
-				)
+			</table>', we_html_element::htmlSpan(['name' => $this->Name,
+				'id' => $this->getIdName(),
+				'value' => '',
+				'class' => 'defaultfont',
+				], sprintf('<a href="#" onclick="we_cmd(%s);">%s</a>', '\'' . implode('\',\'', $this->Options) . '\'', $this->Text)
+			)
 		);
 	}
 

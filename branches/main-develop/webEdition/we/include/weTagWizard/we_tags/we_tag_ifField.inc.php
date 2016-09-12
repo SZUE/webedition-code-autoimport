@@ -22,13 +22,12 @@ $striphtml = new weTagData_selectAttribute('striphtml', array(new weTagDataOptio
 $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
 
 if(defined('SHOP_TABLE')){
-	$catfield = new weTagData_selectAttribute('field', array(
-		new weTagDataOption('id'),
+	$catfield = new weTagData_selectAttribute('field', [new weTagDataOption('id'),
 		new weTagDataOption('is_destinationprinciple'),
 		new weTagDataOption('is_from doc_object'),
 		new weTagDataOption('is_fallback_to_standard'),
 		new weTagDataOption('is_fallback_to_active')
-		), false, '');
+		], false, '');
 
 	$options = [];
 	$opts = we_shop_category::getShopCatFieldsFromDir('Path', true);
@@ -37,13 +36,12 @@ if(defined('SHOP_TABLE')){
 	}
 	$catmatch = new weTagData_selectAttribute('match', $options, false);
 	$ignorefallbacks = new weTagData_selectAttribute('ignorefallbacks', weTagData_selectAttribute::getTrueFalse(), false, '');
-	$vatfield = new weTagData_selectAttribute('field', array(
-		new weTagDataOption('id'),
+	$vatfield = new weTagData_selectAttribute('field', [new weTagDataOption('id'),
 		new weTagDataOption('is_standard'),
 		new weTagDataOption('is_fallback_to_standard'),
 		new weTagDataOption('is_fallback_to_prefs'),
 		new weTagDataOption('is_country_fallback_to_prefs')
-		), false, '');
+		], false, '');
 
 	$options = [];
 	$vats = we_shop_vats::getAllShopVATs();
@@ -51,33 +49,32 @@ if(defined('SHOP_TABLE')){
 		$options[] = new weTagDataOption($vat->vat . '% - ' . $vat->getNaturalizedText() . ' (' . $vat->territory . ')', $vat->id);
 	}
 	$vatmatch = new weTagData_selectAttribute('match', $options, false);
-	$shopVatAttributes = we_shop_category::isCategoryMode() ? array($vatfield, $vatmatch) : array($name, $match, $operator, $striphtml, $usekey);
+	$shopVatAttributes = we_shop_category::isCategoryMode() ? [$vatfield, $vatmatch] : [$name, $match, $operator, $striphtml, $usekey];
 }
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('text', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('date', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('img', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('flashmovie', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('href', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('link', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('day', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('dayname', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('month', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('monthname', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('year', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('select', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('binary', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('float', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('int', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('collection', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	new weTagDataOption('shopCategory', false, 'shop', (defined('SHOP_TABLE') ? array($catfield, $catmatch, $ignorefallbacks,) : []), []),
-	new weTagDataOption('shopVat', false, 'shop', isset($shopVatAttributes) ? $shopVatAttributes : [], defined('SHOP_TABLE') && !we_shop_category::isCategoryMode() ? array($name, $match) : []),
-	new weTagDataOption('checkbox', false, '', array($name, $match, $operator, $striphtml, $usekey), array($name, $match)),
-	), true, '');
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('text', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('date', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('img', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('flashmovie', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('href', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('link', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('day', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('dayname', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('month', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('monthname', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('year', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('select', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('binary', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('float', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('int', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('collection', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	new weTagDataOption('shopCategory', false, 'shop', (defined('SHOP_TABLE') ? [$catfield, $catmatch, $ignorefallbacks,] : []), []),
+	new weTagDataOption('shopVat', false, 'shop', isset($shopVatAttributes) ? $shopVatAttributes : [], defined('SHOP_TABLE') && !we_shop_category::isCategoryMode() ? [$name, $match] : []),
+	new weTagDataOption('checkbox', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
+	], true, '');
 
-$this->Attributes = array($name, $match, $operator, $striphtml, $usekey);
+$this->Attributes = [$name, $match, $operator, $striphtml, $usekey];
 
 if(defined('SHOP_TABLE')){
-	$this->Attributes = array_merge($this->Attributes, array($catfield, $catmatch, $ignorefallbacks, $vatfield, $vatmatch));
+	$this->Attributes = array_merge($this->Attributes, [$catfield, $catmatch, $ignorefallbacks, $vatfield, $vatmatch]);
 }

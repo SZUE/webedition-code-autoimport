@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = true;
@@ -14,9 +13,8 @@ $name = new weTagData_textAttribute('name', true, '');
 $size = new weTagData_textAttribute('size', false, '');
 $reload = new weTagData_selectAttribute('reload', weTagData_selectAttribute::getTrueFalse(), false, '');
 $values = new weTagData_textAttribute('values', false, '');
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('', false, '', array($name, $size, $reload)),
-	new weTagDataOption('html', false, '', array($name, $size, $reload)),
-	new weTagDataOption('csv', false, '', array($name, $size, $reload, $values), [])), false, '');
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('', false, '', [$name, $size, $reload]),
+	new weTagDataOption('html', false, '', [$name, $size, $reload]),
+	new weTagDataOption('csv', false, '', [$name, $size, $reload, $values], [])], false, '');
 
-$this->Attributes = array($name, $size, $reload, $values);
+$this->Attributes = [$name, $size, $reload, $values];

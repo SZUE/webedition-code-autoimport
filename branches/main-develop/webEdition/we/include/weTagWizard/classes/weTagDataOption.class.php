@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class weTagDataOption{
-
 	/**
 	 * @var string
 	 */
@@ -79,9 +78,7 @@ class weTagDataOption{
 	 * @return array
 	 */
 	function getAssoziation(){
-		return array(
-			$this->Value => $this->Name
-		);
+		return [$this->Value => $this->Name];
 	}
 
 	/**

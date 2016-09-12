@@ -40,8 +40,8 @@ class rpcCopyNavigationFolderCmd extends we_rpc_cmd{
 			$sourceFolder = f('SELECT Path FROM ' . NAVIGATION_TABLE . ' WHERE ID=' . $sourceFolderID);
 			$result = $db->getAllq('SELECT * FROM ' . NAVIGATION_TABLE . ' WHERE Path LIKE "' . $db->escape($sourceFolder) . '/%" ORDER BY IsFolder DESC, Path ASC');
 
-			$folders = array($targetFolderID);
-			$mapedId = array($sourceFolderID => array($targetFolderID, $targetFolder));
+			$folders = [$targetFolderID];
+			$mapedId = [$sourceFolderID => [$targetFolderID, $targetFolder]];
 			$itemsQuery = [];
 
 			foreach($result as $row){
@@ -73,7 +73,7 @@ class rpcCopyNavigationFolderCmd extends we_rpc_cmd{
 				$querySet = '(' . implode(',', $querySet) . ')';
 				if($row['IsFolder']){
 					$db->query('INSERT INTO ' . NAVIGATION_TABLE . ' VALUES ' . $querySet);
-					$mapedId[$row['ID']] = array($db->getInsertId(), $newPath);
+					$mapedId[$row['ID']] = [$db->getInsertId(), $newPath];
 					$folders[] = $mapedId[$row['ID']][0];
 				} else {
 					$itemsQuery[] = $querySet;

@@ -31,7 +31,7 @@ $validationService[] = new validationService($i++, 'default', 'xhtml', g_l('vali
 
 
 /*
-$service['bobby'] = array(
+$service['bobby'] = [
                         'name'     => g_l('validation','[service_bobby]'),
                         'host'     => 'bobby.watchfire.com',
                         'path'     => '/bobby/bobbyServlet',
@@ -40,6 +40,6 @@ $service['bobby'] = array(
                         'checkvia' => 'url',
                         'ctype' => 'text/html',
                         'additionalVars' => ''
-                    );
+                    ];
 */
 

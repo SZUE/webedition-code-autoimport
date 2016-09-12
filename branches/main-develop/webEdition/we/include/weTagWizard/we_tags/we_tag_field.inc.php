@@ -6,8 +6,7 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$name = new weTagData_choiceAttribute('name', array(
-	new weTagDataOption('WE_Path'),
+$name = new weTagData_choiceAttribute('name', [new weTagDataOption('WE_Path'),
 	new weTagDataOption('WE_ID'),
 	new weTagDataOption('WE_Text'),
 	new weTagDataOption('WE_URL'),
@@ -20,7 +19,7 @@ $name = new weTagData_choiceAttribute('name', array(
 	new weTagDataOption('WE_Text'),
 	new weTagDataOption('WE_Category'),
 	new weTagDataOption('WE_SHOPVARIANTS', false, 'shop'),
-	), false, false, '');
+	], false, false, '');
 $classid = (defined('OBJECT_TABLE') ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, '') : null);
 $hyperlink = new weTagData_selectAttribute('hyperlink', weTagData_selectAttribute::getTrueFalse(), false, '');
 $tid = (defined('TEMPLATES_TABLE') ? new weTagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
@@ -95,8 +94,7 @@ $triggerid = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('triggerid
 $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
 $showpath = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');
 $rootdir = new weTagData_textAttribute('rootdir', false, '');
-$catfield = new weTagData_selectAttribute('field', array(
-	new weTagDataOption('id'),
+$catfield = new weTagData_selectAttribute('field', [new weTagDataOption('id'),
 	new weTagDataOption('category'),
 	new weTagDataOption('path'),
 	new weTagDataOption('title'),
@@ -105,9 +103,8 @@ $catfield = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('is_from doc_object'),
 	new weTagDataOption('is_fallback_to_standard'),
 	new weTagDataOption('is_fallback_to_active')
-	), false, '');
-$vatfield = new weTagData_selectAttribute('field', array(
-	new weTagDataOption('id'),
+	], false, '');
+$vatfield = new weTagData_selectAttribute('field', [new weTagDataOption('id'),
 	new weTagDataOption('vat'),
 	new weTagDataOption('name'),
 	new weTagDataOption('country'),
@@ -116,34 +113,33 @@ $vatfield = new weTagData_selectAttribute('field', array(
 	new weTagDataOption('is_fallback_to_standard'),
 	new weTagDataOption('is_fallback_to_prefs'),
 	new weTagDataOption('is_country_fallback_to_prefs')
-	), false, '');
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('-', false, '', [], []),
-	new weTagDataOption('text', false, '', array($name, $hyperlink, $href, $target, $num_format, $alt, $max, $striphtml, $htmlspecialchars, $triggerid), array($name)),
-	new weTagDataOption('date', false, '', array($name, $hyperlink, $href, $target, $format, $alt, $max, $htmlspecialchars, $triggerid), array($name)),
-	new weTagDataOption('img', false, '', array($name, $hyperlink, $href, $target, $thumbnail, $src, $width, $height, $border, $hspace, $vspace, $align, $onlyImg, $triggerid), array($name)),
-	new weTagDataOption('flashmovie', false, '', array($name, $width, $height, $triggerid), array($name)),
-	new weTagDataOption('href', false, '', array($name), array($name)),
-	new weTagDataOption('link', false, '', array($name), array($name)),
+	], false, '');
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('-'),
+	new weTagDataOption('text', false, '', [$name, $hyperlink, $href, $target, $num_format, $alt, $max, $striphtml, $htmlspecialchars, $triggerid], [$name]),
+	new weTagDataOption('date', false, '', [$name, $hyperlink, $href, $target, $format, $alt, $max, $htmlspecialchars, $triggerid], [$name]),
+	new weTagDataOption('img', false, '', [$name, $hyperlink, $href, $target, $thumbnail, $src, $width, $height, $border, $hspace, $vspace, $align, $onlyImg, $triggerid], [$name]),
+	new weTagDataOption('flashmovie', false, '', [$name, $width, $height, $triggerid], [$name]),
+	new weTagDataOption('href', false, '', [$name], [$name]),
+	new weTagDataOption('link', false, '', [$name], [$name]),
 	new weTagDataOption('day', false, '', [], []),
 	new weTagDataOption('dayname', false, '', [], []),
 	new weTagDataOption('week', false, '', [], []),
 	new weTagDataOption('month', false, '', [], []),
 	new weTagDataOption('monthname', false, '', [], []),
 	new weTagDataOption('year', false, '', [], []),
-	new weTagDataOption('select', false, 'object', array($name, $usekey, $htmlspecialchars, $triggerid), array($name)),
-	new weTagDataOption('binary', false, 'object', array($name, $hyperlink, $href, $target, $only), array($name)),
-	new weTagDataOption('float', false, '', array($name, $hyperlink, $href, $target, $num_format, $triggerid), array($name)),
-	new weTagDataOption('int', false, 'object', array($name, $hyperlink, $href, $target, $triggerid), array($name)),
-	new weTagDataOption('collection', false, '', array($name), array($name)),
-	new weTagDataOption('shopVat', false, '', array($vatfield), []),
-	new weTagDataOption('shopCategory', false, '', array($catfield, $showpath, $rootdir), []),
-	new weTagDataOption('checkbox', false, '', array($name), array($name)),
-	new weTagDataOption('country', false, '', array($outputlanguage, $doc), []),
-	new weTagDataOption('language', false, '', array($outputlanguage, $doc), [])
-	), false, '');
+	new weTagDataOption('select', false, 'object', [$name, $usekey, $htmlspecialchars, $triggerid], [$name]),
+	new weTagDataOption('binary', false, 'object', [$name, $hyperlink, $href, $target, $only], [$name]),
+	new weTagDataOption('float', false, '', [$name, $hyperlink, $href, $target, $num_format, $triggerid], [$name]),
+	new weTagDataOption('int', false, 'object', [$name, $hyperlink, $href, $target, $triggerid], [$name]),
+	new weTagDataOption('collection', false, '', [$name], [$name]),
+	new weTagDataOption('shopVat', false, '', [$vatfield], []),
+	new weTagDataOption('shopCategory', false, '', [$catfield, $showpath, $rootdir], []),
+	new weTagDataOption('checkbox', false, '', [$name], [$name]),
+	new weTagDataOption('country', false, '', [$outputlanguage, $doc], []),
+	new weTagDataOption('language', false, '', [$outputlanguage, $doc], [])
+	], false, '');
 
-$this->Attributes = array($name, $classid, $hyperlink, $tid, $href, $target, $class, $style, $format, $num_format, $thumbnail, $id, $parentidname, $winprops, $alt, $max, $src,
+$this->Attributes = [$name, $classid, $hyperlink, $tid, $href, $target, $class, $style, $format, $num_format, $thumbnail, $id, $parentidname, $winprops, $alt, $max, $src,
 	$width, $height, $border, $hspace, $vspace, $align, $only, $onlyImg, $htmlspecialchars, $seeMode, $xml, $win2iso, $listviewname, $striphtml, $outputlanguage, $doc, $triggerid,
-	$usekey, $vatfield, $catfield, $showpath, $rootdir);
+	$usekey, $vatfield, $catfield, $showpath, $rootdir];
 

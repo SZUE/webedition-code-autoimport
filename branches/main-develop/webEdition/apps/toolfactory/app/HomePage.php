@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -46,32 +45,29 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 
 		$appName = Zend_Controller_Front::getInstance()->getParam('appName');
 		$this->_boxHeight = 300;
-		$bodyDiv = new we_ui_layout_Div(array(
-			'width' => 206,
+		$bodyDiv = new we_ui_layout_Div(['width' => 206,
 			'height' => $this->_boxHeight - (38 + 22),
 			'top' => 62,
 			'left' => 0,
 			'position' => 'absolute',
 			'class' => self::kClassBoxBody
-		));
+		]);
 		$perm = 'NEW_APP_' . strtoupper($appName);
-		$newItemButton = new we_ui_controls_Button(array(
-			'text' => $translate->_('New Entry'),
+		$newItemButton = new we_ui_controls_Button(['text' => $translate->_('New Entry'),
 			'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_new"})',
 			'type' => 'onClick',
-			'disabled' => ! permissionhandler::hasPerm($perm),
+			'disabled' => !permissionhandler::hasPerm($perm),
 			'width' => 200
-		));
+		]);
 		$perm = 'GENTOC_APP_' . strtoupper($appName);
-		$regenerateTocButton = new we_ui_controls_Button(array(
-			'text' => $translate->_('Regenetrate TOC'),
+		$regenerateTocButton = new we_ui_controls_Button(['text' => $translate->_('Regenetrate TOC'),
 			'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_gentoc"})',
 			'type' => 'onClick',
 			'disabled' => !permissionhandler::hasPerm($perm),
 			'width' => 200,
 			'top' => '10px;',
 			'style' => 'margin-bottom:10px;'
-		));
+		]);
 		$bodyDiv->addElement($newItemButton);
 		$bodyDiv->addElement($regenerateTocButton);
 		$perm = 'NEW_APP_' . strtoupper($appName);
@@ -79,15 +75,14 @@ class toolfactory_app_HomePage extends we_app_HomePage{
 		$appdata = $inst->getApplist();
 		$i = 0;
 		foreach($appdata as $dieApp){
-			$localInstallButton = new we_ui_controls_Button(array(
-				'text' => $translate->_('Install') . ' ' . $dieApp['classname'] . ' ' . $dieApp['version'],
+			$localInstallButton = new we_ui_controls_Button(['text' => $translate->_('Install') . ' ' . $dieApp['classname'] . ' ' . $dieApp['version'],
 				'onClick' => 'weCmdController.fire({cmdName: "app_' . $appName . '_localInstall' . $i . '"})',
 				'type' => 'onClick',
 				'disabled' => !permissionhandler::hasPerm($perm),
 				'width' => 200,
 				'top' => '10px;',
 				'style' => 'margin-top:10px;'
-			));
+				]);
 			$bodyDiv->addElement($localInstallButton);
 
 			if($i >= 5){

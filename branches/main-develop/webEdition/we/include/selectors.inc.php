@@ -86,7 +86,7 @@ switch($class){
 		break;
 
 	case 'we_users_selector':
-		we_html_tools::protect(array('NEW_USER', 'NEW_GROUP', 'SAVE_USER', 'SAVE_GROUP', 'DELETE_USER', 'DELETE_GROUP'));
+		we_html_tools::protect(['NEW_USER', 'NEW_GROUP', 'SAVE_USER', 'SAVE_GROUP', 'DELETE_USER', 'DELETE_GROUP']);
 		if(($idname = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1))){
 			$id = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4);
 			$JSIDName = $idname;

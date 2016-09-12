@@ -30,12 +30,12 @@ $activTab = we_base_request::_(we_base_request::STRING, 'activTab', 'idPropertyT
 
 $this->inputWidth = 400;
 
-$form = new we_ui_layout_Form(array('name' => 'we_form', 'onsubmit' => 'return false', 'method' => 'post'));
+$form = new we_ui_layout_Form(['name' => 'we_form', 'onsubmit' => 'return false', 'method' => 'post']);
 
 $form->addHTML(we_ui_layout_Form::hidden('ID', $this->model->ID));
 $form->addHTML(we_ui_layout_Form::hidden('activTab', $activTab));
 
-$rowGeneral = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('General')));
+$rowGeneral = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('General')]);
 
 $labelName = new we_ui_controls_Label();
 $labelName->setStyle('display:block;');
@@ -75,10 +75,9 @@ if(!empty($this->model->ID)){
 	$labelDatasource->setHidden(true);
 }
 $selectDatasource = new we_ui_controls_Select();
-$optDatasource = array(
-	'custom:' => 'custom',
+$optDatasource = ['custom:' => 'custom',
 	'table:' => $translate->_('Maintable')
-);
+];
 $selectDatasource->setOptions($optDatasource);
 $selectDatasource->setSelectedValue($this->model->datasource);
 $selectDatasource->setName('datasource');
@@ -159,12 +158,12 @@ if(empty($this->model->ID)){
 }
 
 // create div for content of property tab
-$propertyTab = new we_ui_layout_Div(array('id' => 'idPropertyTab'));
+$propertyTab = new we_ui_layout_Div(['id' => 'idPropertyTab']);
 
 $tableGeneral = new we_ui_layout_HeadlineIconTable();
 $tableGeneral->setId('tab_1');
 $tableGeneral->setMarginLeft(30);
-$tableGeneral->setRows(array($rowGeneral));
+$tableGeneral->setRows([$rowGeneral]);
 
 $propertyTab->addElement($tableGeneral);
 
@@ -175,7 +174,7 @@ if(!empty($this->model->ID)){
 			$tableTitle->setId('tabTitle');
 			$tableTitle->setMarginLeft(30);
 			$rowsTitle = [];
-			$rowTitle = new we_ui_layout_HeadlineIconTableRow(array('title' => ''));
+			$rowTitle = new we_ui_layout_HeadlineIconTableRow(['title' => '']);
 			$lang = we_core_Local::getLocale();
 
 			if(!empty($this->model->appconfig->info->title->$lang)){
@@ -202,7 +201,7 @@ if(!empty($this->model->ID)){
 			$rowsAuthor = [];
 			if(!empty($this->model->appconfig->creator)){
 				$cm = $this->model->appconfig->creator;
-				$rowAuthor = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Author')));
+				$rowAuthor = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('Author')]);
 				$rowAuthor->setLine(0);
 				$html = '';
 				if(!empty($cm->company)){
@@ -256,7 +255,7 @@ if(!empty($this->model->ID)){
 			if(!empty($this->model->appconfig->maintainer)){
 				$cm = $this->model->appconfig->maintainer;
 				$html = '';
-				$rowMaintainer = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Maintainer')));
+				$rowMaintainer = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('Maintainer')]);
 				$rowMaintainer->setLine(0);
 				if(!empty($cm->company)){
 					$html .= '<strong>' . $cm->company . '</strong><br/>';
@@ -315,7 +314,7 @@ if(!empty($this->model->ID)){
 
 
 		if(!empty($this->model->appconfig->info->version) || !empty($this->model->appconfig->dependencies->version)){
-			$rowVersion = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('AppStatus')));
+			$rowVersion = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('AppStatus')]);
 			$html = '';
 			if(!empty($this->model->appconfig->info->version)){
 				$html .= '<strong>' . $translate->_('Version') . ': ' . $this->model->appconfig->info->version . '</strong>';
@@ -369,7 +368,7 @@ if(!empty($this->model->ID)){
 			$tableVersion = new we_ui_layout_HeadlineIconTable();
 			$tableVersion->setId('tabVersion');
 			$tableVersion->setMarginLeft(30);
-			$tableVersion->setRows(array($rowVersion));
+			$tableVersion->setRows([$rowVersion]);
 			$propertyTab->addElement($tableVersion);
 		}
 		if(!empty($this->model->appconfig->thirdparty)){
@@ -378,7 +377,7 @@ if(!empty($this->model->ID)){
 			$tableExTool->setMarginLeft(30);
 			$rowsExTool = [];
 			$html = '';
-			$rowExTool = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('ExTool')));
+			$rowExTool = new we_ui_layout_HeadlineIconTableRow(['title' => $translate->_('ExTool')]);
 			if(!empty($this->model->appconfig->thirdparty->www)){
 				$html .= ' <a href="' . $this->model->appconfig->thirdparty->www . '" target="_blank">';
 				if(!empty($this->model->appconfig->thirdparty->name)){
@@ -458,9 +457,9 @@ if(!empty($this->model->ID)){
 	$rowPermissions = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Permissions')));
 	$html = '';
 	foreach($this->model->permissions as $key => $value){
-		$html .= '<strong>' . $key . '</strong>'.
-			'<br/>'.
-			$translate->_('default') . ':&nbsp;' . $value.
+		$html .= '<strong>' . $key . '</strong>' .
+			'<br/>' .
+			$translate->_('default') . ':&nbsp;' . $value .
 			'<br/><br/>';
 	}
 	$rowPermissions->addHTML($html);
@@ -473,7 +472,7 @@ if(!empty($this->model->ID)){
 	$rowBackupTable = new we_ui_layout_HeadlineIconTableRow(array('title' => $translate->_('Backup table')));
 	$html = '';
 	foreach($this->model->backupTables as $table){
-		$html .= $table.
+		$html .= $table .
 			'<br/>';
 	}
 	$rowBackupTable->addHTML($html);

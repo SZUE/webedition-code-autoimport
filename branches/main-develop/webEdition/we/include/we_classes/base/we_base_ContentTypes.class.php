@@ -48,31 +48,28 @@ class we_base_ContentTypes{
 
 	public function __construct(){
 		$charset = defined('WE_BACKENDCHARSET') ? WE_BACKENDCHARSET : 'UTF-8';
-		$this->ct = array(
-// Content Type for Images
-			self::IMAGE => array(
-				'Extension' => array('.gif', '.jpg', '.jpeg', '.png', '.svg', '.svgz'),
-				'ContentTypes' => array('image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png', 'image/svg+xml', 'image/svg-xml', 'image/x-citrix-pjpeg'),
+		$this->ct = [
+			self::IMAGE => ['Extension' => ['.gif', '.jpg', '.jpeg', '.png', '.svg', '.svgz'],
+				'ContentTypes' => ['image/jpeg', 'image/pjpeg', 'image/gif', 'image/png', 'image/x-png', 'image/svg+xml', 'image/svg-xml', 'image/x-citrix-pjpeg'],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_GRAFIK',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_imageDocument'
-			),
-			self::XML => array(//this entry must stay before text/html, text/we because fileextensions are not distinct
+			],
+			self::XML => [//this entry must stay before text/html, text/we because fileextensions are not distinct
 				'Extension' => '.xml',
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEXT',
 				'DefaultCode' => '<?xml version="1.0" encoding="' . $charset . '" ?>',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_textDocument'
-			),
-			self::HTML => array(
-				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'),
+			],
+			self::HTML => ['Extension' => ['.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_HTML',
 				'DefaultCode' => '<!doctype html>
@@ -86,21 +83,19 @@ class we_base_ContentTypes{
 </html>',
 				'IsWebEditionFile' => true,
 				'IsRealFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_htmlDocument'
-			),
-			self::WEDOCUMENT => array(
-				'Extension' => array('.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml'),
+			],
+			self::WEDOCUMENT => ['Extension' => ['.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml'],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_WEBEDITIONSITE',
 				'DefaultCode' => '',
 				'IsWebEditionFile' => true,
 				'IsRealFile' => false,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_webEditionDocument'
-			),
-			self::TEMPLATE => array(
-				'Extension' => '.tmpl',
+			],
+			self::TEMPLATE => ['Extension' => '.tmpl',
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEMPLATE',
 				'DefaultCode' => '<!DOCTYPE HTML>
@@ -124,142 +119,129 @@ class we_base_ContentTypes{
 </html>',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Table' => array(TEMPLATES_TABLE),
+				'Table' => [TEMPLATES_TABLE],
 				'Class' => 'we_template'
-			),
-			self::JS => array(
-				'Extension' => '.js',
+			],
+			self::JS => ['Extension' => '.js',
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_JS',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_textDocument'
-			),
-			self::CSS => array(
-				'Extension' => array('.css', '.less', '.scss', '.sass'),
+			],
+			self::CSS => ['Extension' => ['.css', '.less', '.scss', '.sass'],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_CSS',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_textDocument'
-			),
-			self::HTACCESS => array(
-				'Extension' => array('.htaccess', '.htpasswd'),
+			],
+			self::HTACCESS => ['Extension' => ['.htaccess', '.htpasswd'],
 				'ExtensionIsFilename' => true,
 				'Permission' => 'NEW_HTACCESS',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_textDocument'
-			),
-			self::TEXT => array(
-				'Extension' => array('.txt', '.csv'),
+			],
+			self::TEXT => ['Extension' => ['.txt', '.csv'],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_TEXT',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_textDocument'
-			),
-			self::FOLDER => array(
-				'Extension' => '',
+			],
+			self::FOLDER => ['Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Table' => array_filter(array(FILE_TABLE, TEMPLATES_TABLE, defined('OBJECT_TABLE') ? OBJECT_TABLE : '', defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : '', defined('VFILE_TABLE') ? VFILE_TABLE : '')),
+				'Table' => array_filter([FILE_TABLE, TEMPLATES_TABLE, defined('OBJECT_TABLE') ? OBJECT_TABLE : '', defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : '', defined('VFILE_TABLE') ? VFILE_TABLE : '']),
 				'Class' => 'we_folder'
-			),
-			self::CLASS_FOLDER => array(
-				'Extension' => '',
+			],
+			self::CLASS_FOLDER => ['Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Table' => array(defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''),
+				'Table' => [defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''],
 				'Class' => 'we_class_folder'
-			),
-			self::FLASH => array(
-				'Extension' => array('.swf'/* ,'.mp4','.m4v' */),
+			],
+			self::FLASH => ['Extension' => ['.swf'/* ,'.mp4','.m4v' */],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_FLASH',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_flashDocument'
-			),
-			self::VIDEO => array(
-				'Extension' => array('.mp4', '.m4v', '.ogg', '.webm'),
-				'ContentTypes' => array('video/mp4', 'video/webm', 'application/ogg', 'video/ogg',),
+			],
+			self::VIDEO => ['Extension' => ['.mp4', '.m4v', '.ogg', '.webm'],
+				'ContentTypes' => ['video/mp4', 'video/webm', 'application/ogg', 'video/ogg',],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_FLASH',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_document_video'
-			),
-			self::AUDIO => array(
-				'Extension' => array('.mp3', '.wav', '.ogg'),
-				'ContentTypes' => array('audio/mp3', 'audio/ogg', 'audio/wav'),
+			],
+			self::AUDIO => ['Extension' => ['.mp3', '.wav', '.ogg'],
+				'ContentTypes' => ['audio/mp3', 'audio/ogg', 'audio/wav'],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_SONSTIGE',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_document_audio'
-			),
-			self::APPLICATION => array(
-				'Extension' => array('.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe', '.pdf'),
+			],
+			self::APPLICATION => ['Extension' => ['.doc', '.xls', '.ppt', '.zip', '.sit', '.bin', '.hqx', '.exe', '.pdf'],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_SONSTIGE',
 				'DefaultCode' => '',
 				'IsRealFile' => true,
 				'IsWebEditionFile' => true,
-				'Table' => array(FILE_TABLE),
+				'Table' => [FILE_TABLE],
 				'Class' => 'we_otherDocument'
-			),
-			self::OBJECT => array(
-				'Extension' => '',
+			],
+			self::OBJECT => ['Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Table' => array(defined('OBJECT_TABLE') ? OBJECT_TABLE : ''),
+				'Table' => [defined('OBJECT_TABLE') ? OBJECT_TABLE : ''],
 				'Class' => 'we_object'
-			),
-			self::OBJECT_FILE => array(
-				'Extension' => '',
+			],
+			self::OBJECT_FILE => ['Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
 				'IsRealFile' => false,
 				'IsWebEditionFile' => false,
-				'Table' => array(defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''),
+				'Table' => [defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : ''],
 				'Class' => 'we_objectFile'
-			),
-			self::COLLECTION => array(
-				'Extension' => '',
+			],
+			self::COLLECTION => ['Extension' => '',
 				'ExtensionIsFilename' => false,
 				'Permission' => '',
 				'DefaultCode' => '',
 				'IsRealFile' => false, //TODO: use this when saving
 				'IsWebEditionFile' => false,
-				'Table' => array(defined('VFILE_TABLE') ? VFILE_TABLE : ''),
+				'Table' => [defined('VFILE_TABLE') ? VFILE_TABLE : ''],
 				'Class' => 'we_collection'
-			)
-		);
+			]
+		];
 	}
 
 	public static function inst(){

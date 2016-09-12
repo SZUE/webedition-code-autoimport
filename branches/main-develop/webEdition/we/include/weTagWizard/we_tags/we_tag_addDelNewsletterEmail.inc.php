@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -23,11 +22,10 @@ $recipientCC = new weTagData_textAttribute('recipientCC', false, '');
 $recipientBCC = new weTagData_textAttribute('recipientBCC', false, '');
 $includeimages = new weTagData_selectAttribute('includeimages', weTagData_selectAttribute::getTrueFalse(), false, '');
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('csv', false, '', array($path, $doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages), array($path)),
-	new weTagDataOption('customer', false, 'customer', array($doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $fieldGroup, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages), []),
-	new weTagDataOption('emailonly', false, '', array($doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $adminmailid, $adminsubject, $adminemail, $includeimages), array($adminmailid, $adminsubject, $adminemail))), false, 'newsletter');
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('csv', false, '', [$path, $doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages], [$path]),
+	new weTagDataOption('customer', false, 'customer', [$doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $fieldGroup, $mailingList, $recipientCC, $recipientBCC, $adminmailid, $adminsubject, $adminemail, $includeimages], []),
+	new weTagDataOption('emailonly', false, '', [$doubleoptin, $expiredoubleoptin, $mailid, $subject, $from, $id, $adminmailid, $adminsubject, $adminemail, $includeimages], [$adminmailid, $adminsubject, $adminemail])], false, 'newsletter');
 
 
-$this->Attributes = array($path, $mailingList, $doubleoptin, $expiredoubleoptin, $mailid, $subject, $adminmailid, $adminsubject, $adminemail,
-	$from, $id, $fieldGroup, $recipientCC, $recipientBCC, $includeimages);
+$this->Attributes = [$path, $mailingList, $doubleoptin, $expiredoubleoptin, $mailid, $subject, $adminmailid, $adminsubject, $adminemail,
+	$from, $id, $fieldGroup, $recipientCC, $recipientBCC, $includeimages];

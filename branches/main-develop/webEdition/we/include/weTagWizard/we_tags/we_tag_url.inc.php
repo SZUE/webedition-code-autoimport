@@ -12,8 +12,7 @@ $triggerid = new weTagData_selectorAttribute('triggerid', FILE_TABLE, we_base_Co
 $hidedirindex = new weTagData_selectAttribute('hidedirindex', weTagData_selectAttribute::getTrueFalse(), false, '');
 $objectseourls = new weTagData_selectAttribute('objectseourls', weTagData_selectAttribute::getTrueFalse(), false, '');
 $this->Attributes = [];
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array($id_document, $hidedirindex), array($id_document)),
-	new weTagDataOption('object', false, 'object', array($id_object, $triggerid, $hidedirindex, $objectseourls), array($id_object))), false, '');
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('document', false, '', [$id_document, $hidedirindex], [$id_document]),
+	new weTagDataOption('object', false, 'object', [$id_object, $triggerid, $hidedirindex, $objectseourls], [$id_object])], false, '');
 
-$this->Attributes = array($id_document, $id_object, $triggerid, $hidedirindex, $objectseourls);
+$this->Attributes = [$id_document, $id_object, $triggerid, $hidedirindex, $objectseourls];

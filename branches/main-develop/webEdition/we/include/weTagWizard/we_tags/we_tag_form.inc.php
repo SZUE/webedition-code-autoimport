@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = true;
@@ -47,25 +46,23 @@ $enctype = new weTagData_selectAttribute('enctype', array(new weTagDataOption('a
 	), false, '');
 
 if(defined('FORMMAIL_VIAWEDOC') && FORMMAIL_VIAWEDOC == 1){
-	$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-		new weTagDataOption('-', false, '', array($id, $name, $nameid, $method, $target, $enctype), []),
-		new weTagDataOption('document', false, '', array($id, $name, $nameid, $method, $target, $doctype, $tid, $enctype), array($doctype)),
-		new weTagDataOption('formmail', false, '', array($id, $name, $nameid, $method, $target, $recipient, $onsuccess, $onerror, $onmailerror, $onrecipienterror, $from, $subject, $charset, $order, $required, $remove, $mimetype, $confirmmail, $forcefrom, $preconfirm, $postconfirm), array($recipient)),
-		new weTagDataOption('object', false, 'object', array($id, $name, $nameid, $method, $target, $categories, $classid, $parentid, $enctype), array($classid)),
-		new weTagDataOption('search', false, '', array($id, $name, $nameid, $method, $target), []),
-		new weTagDataOption('shopliste', false, '', array($id, $nameid, $method, $target), [])
-		), false, '');
+	$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('-', false, '', [$id, $name, $nameid, $method, $target, $enctype], []),
+		new weTagDataOption('document', false, '', [$id, $name, $nameid, $method, $target, $doctype, $tid, $enctype], [$doctype]),
+		new weTagDataOption('formmail', false, '', [$id, $name, $nameid, $method, $target, $recipient, $onsuccess, $onerror, $onmailerror, $onrecipienterror, $from, $subject, $charset, $order, $required, $remove, $mimetype, $confirmmail, $forcefrom, $preconfirm, $postconfirm], [$recipient]),
+		new weTagDataOption('object', false, 'object', [$id, $name, $nameid, $method, $target, $categories, $classid, $parentid, $enctype], [$classid]),
+		new weTagDataOption('search', false, '', [$id, $name, $nameid, $method, $target], []),
+		new weTagDataOption('shopliste', false, '', [$id, $nameid, $method, $target], [])
+		], false, '');
 } else {
-	$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-		new weTagDataOption('-', false, '', array($id, $name, $nameid, $method, $target, $enctype), []),
-		new weTagDataOption('document', false, '', array($id, $name, $nameid, $method, $target, $doctype, $tid, $enctype), array($doctype)),
-		new weTagDataOption('formmail', false, '', array($name, $nameid, $method, $target, $recipient, $onsuccess, $onerror, $onmailerror, $onrecipienterror, $from, $subject, $charset, $order, $required, $remove, $mimetype, $confirmmail, $forcefrom, $preconfirm, $postconfirm), array($recipient)),
-		new weTagDataOption('object', false, 'object', array($id, $name, $nameid, $method, $target, $categories, $classid, $parentid, $enctype), array($classid)),
-		new weTagDataOption('search', false, '', array($id, $name, $nameid, $method, $target), []),
-		new weTagDataOption('shopliste', false, '', array($id, $nameid, $method, $target), [])
-		), false, '');
+	$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('-', false, '', [$id, $name, $nameid, $method, $target, $enctype], []),
+		new weTagDataOption('document', false, '', [$id, $name, $nameid, $method, $target, $doctype, $tid, $enctype], [$doctype]),
+		new weTagDataOption('formmail', false, '', [$name, $nameid, $method, $target, $recipient, $onsuccess, $onerror, $onmailerror, $onrecipienterror, $from, $subject, $charset, $order, $required, $remove, $mimetype, $confirmmail, $forcefrom, $preconfirm, $postconfirm], [$recipient]),
+		new weTagDataOption('object', false, 'object', [$id, $name, $nameid, $method, $target, $categories, $classid, $parentid, $enctype], [$classid]),
+		new weTagDataOption('search', false, '', [$id, $name, $nameid, $method, $target], []),
+		new weTagDataOption('shopliste', false, '', [$id, $nameid, $method, $target], [])
+		], false, '');
 }
 
 
-$this->Attributes = array($id, $name, $nameid, $method, $target, $recipient, $onsuccess, $onerror, $onmailerror, $from, $subject, $charset, $order, $required, $remove, $mimetype,
-	$confirmmail, $forcefrom, $preconfirm, $postconfirm, $doctype, $categories, $tid, $classid, $parentid, $xml, $enctype);
+$this->Attributes = [$id, $name, $nameid, $method, $target, $recipient, $onsuccess, $onerror, $onmailerror, $from, $subject, $charset, $order, $required, $remove, $mimetype,
+	$confirmmail, $forcefrom, $preconfirm, $postconfirm, $doctype, $categories, $tid, $classid, $parentid, $xml, $enctype];

@@ -1,13 +1,11 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = true;
 //$this->Groups[] = 'input_tags';
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
-$this->Attributes[] = new weTagData_selectAttribute('type', array(
-	new weTagDataOption('banner'),
+$this->Attributes[] = new weTagData_selectAttribute('type', [new weTagDataOption('banner'),
 	new weTagDataOption('customer'),
 	new weTagDataOption('glossary'),
 	new weTagDataOption('messaging'),
@@ -17,4 +15,4 @@ $this->Attributes[] = new weTagData_selectAttribute('type', array(
 	new weTagDataOption('scheduler'),
 	new weTagDataOption('voting'),
 	new weTagDataOption('workflow'),
-	), true);
+	], true);

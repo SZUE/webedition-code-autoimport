@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -20,8 +19,7 @@ $mailfrom = new weTagData_textAttribute('mailfrom', false, '');
 $charset = new weTagData_textAttribute('charset', false, '');
 $userid = new weTagData_textAttribute('userid', false, '');
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('document', false, '', array($doctype, $pid, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $protected, $id), []),
-	new weTagDataOption('object', false, '', array($classid, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $pidO, $protected, $id), [])), false, '');
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('document', false, '', [$doctype, $pid, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $protected, $id], []),
+	new weTagDataOption('object', false, '', [$classid, $userid, $admin, $forceedit, $mail, $mailfrom, $charset, $pidO, $protected, $id], [])], false, '');
 
-$this->Attributes = array($doctype, $classid, $pid, $pidO, $protected, $admin, $forceedit, $mail, $mailfrom, $charset, $userid, $id);
+$this->Attributes = [$doctype, $classid, $pid, $pidO, $protected, $admin, $forceedit, $mail, $mailfrom, $charset, $userid, $id];

@@ -49,7 +49,7 @@ class toolfactory_models_Default extends we_app_Model{
 	 *
 	 * @var array
 	 */
-	public $_requiredFields = array('Text', 'classname');
+	public $_requiredFields = ['Text', 'classname'];
 
 	/**
 	 * classname attribute
@@ -155,7 +155,7 @@ class toolfactory_models_Default extends we_app_Model{
 			$this->load($toolfactoryID);
 		}
 
-		$this->setPersistentSlots(array('ID', 'Text', 'classname', 'maintable', 'datasource', 'makeTable', 'makeTags', 'makeServices', 'makePerms', 'makeBackup'));
+		$this->setPersistentSlots(['ID', 'Text', 'classname', 'maintable', 'datasource', 'makeTable', 'makeTags', 'makeServices', 'makePerms', 'makeBackup']);
 	}
 
 	/**
@@ -215,7 +215,7 @@ class toolfactory_models_Default extends we_app_Model{
 
 		$this->languages = we_tool_lookup::getAllToolLanguages($myid, '/lang', true);
 		if(!($this->languages)){
-			$this->languages = array('a', 'b');
+			$this->languages = ['a', 'b'];
 		}
 
 		$this->backupTables = we_tool_lookup::getBackupTables($myid, true);
@@ -309,7 +309,7 @@ class toolfactory_models_Default extends we_app_Model{
 					} elseif($_ext === '.css'){
 						ob_start();
 						include($_file);
-						$_content = strtr(ob_get_clean(), array('{$TOOLNAME}' => $TOOLNAME, '{$TOOLNAMELANG}' => $TOOLNAMELANG));
+						$_content = strtr(ob_get_clean(), ['{$TOOLNAME}' => $TOOLNAME, '{$TOOLNAMELANG}' => $TOOLNAMELANG]);
 					} else {
 						$_content = we_base_file::load($_file);
 					}
@@ -372,7 +372,7 @@ class toolfactory_models_Default extends we_app_Model{
 		}
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('save', $this->_appName, array($this));
+			$hook = new weHook('save', $this->_appName, [$this]);
 			$hook->executeHook();
 		}
 
@@ -471,7 +471,7 @@ class toolfactory_models_Default extends we_app_Model{
 
 		$_menuItems = we_tool_lookup::getAllTools(true, false, true);
 
-		$_prohibit_classnames = array($_menuItems);
+		$_prohibit_classnames = [$_menuItems];
 
 		foreach($_menuItems as $_menuItem){
 			$_prohibit_classnames[] = $_menuItem["classname"];

@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = false;
@@ -69,22 +68,21 @@ if(defined('CUSTOMER_TABLE')){
 	$commands = new weTagData_choiceAttribute('commands', we_wysiwyg_editor::getEditorCommands(true), false, true, '');
 
 
-	$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-		new weTagDataOption('textinput', false, '', array($name, $size, $maxlength, $value), array($name)),
-		new weTagDataOption('textarea', false, '', array($name, $rows, $cols, $value, $pure, $wysiwyg, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck, $commands), array($name)),
-		new weTagDataOption('checkbox', false, '', array($name, $checked), array($name)),
-		new weTagDataOption('radio', false, '', array($name, $checked, $value), array($name)),
-		new weTagDataOption('password', false, '', array($name, $size, $maxlength, $value), array($name)),
-		new weTagDataOption('hidden', false, 'customer', array($name, $value, $autofill, $languageautofill, $doc, $usevalue, $htmlspecialchars), array($name)),
-		new weTagDataOption('print', false, '', array($name, $dateformat, $ascountry, $aslanguage, $outputlanguage, $doc, $htmlspecialchars), array($name)),
-		new weTagDataOption('select', false, '', array($name, $size, $value, $values), array($name)),
-		new weTagDataOption('choice', false, '', array($name, $size, $maxlength, $value, $values), array($name)),
-		new weTagDataOption('img', false, 'customer', array($name, $value, $id, $xml, $parentid, $width, $height, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle, $inputstyle, $checkboxclass, $inputclass, $checkboxtext, $showcontrol, $thumbnail), array($name, $parentid)),
-		new weTagDataOption('date', false, '', array($name, $dateformat, $minyear, $maxyear, $value), array($name)),
-		new weTagDataOption('country', false, '', array($name, $size, $doc, $value), array($name)),
-		new weTagDataOption('language', false, '', array($name, $size, $doc, $value), array($name))), true, '');
+	$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('textinput', false, '', [$name, $size, $maxlength, $value], [$name]),
+		new weTagDataOption('textarea', false, '', [$name, $rows, $cols, $value, $pure, $wysiwyg, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck, $commands], [$name]),
+		new weTagDataOption('checkbox', false, '', [$name, $checked], [$name]),
+		new weTagDataOption('radio', false, '', [$name, $checked, $value], [$name]),
+		new weTagDataOption('password', false, '', [$name, $size, $maxlength, $value], [$name]),
+		new weTagDataOption('hidden', false, 'customer', [$name, $value, $autofill, $languageautofill, $doc, $usevalue, $htmlspecialchars], [$name]),
+		new weTagDataOption('print', false, '', [$name, $dateformat, $ascountry, $aslanguage, $outputlanguage, $doc, $htmlspecialchars], [$name]),
+		new weTagDataOption('select', false, '', [$name, $size, $value, $values], [$name]),
+		new weTagDataOption('choice', false, '', [$name, $size, $maxlength, $value, $values], [$name]),
+		new weTagDataOption('img', false, 'customer', [$name, $value, $id, $xml, $parentid, $width, $height, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle, $inputstyle, $checkboxclass, $inputclass, $checkboxtext, $showcontrol, $thumbnail], [$name, $parentid]),
+		new weTagDataOption('date', false, '', [$name, $dateformat, $minyear, $maxyear, $value], [$name]),
+		new weTagDataOption('country', false, '', [$name, $size, $doc, $value], [$name]),
+		new weTagDataOption('language', false, '', [$name, $size, $doc, $value], [$name])], true, '');
 
-	$this->Attributes = array($name, $size, $maxlength, $rows, $cols, $onchange, $choice, $checked, $value, $values, $dateformat, $xml, $id, $removefirstparagraph, $autofill,
+	$this->Attributes = [$name, $size, $maxlength, $rows, $cols, $onchange, $choice, $checked, $value, $values, $dateformat, $xml, $id, $removefirstparagraph, $autofill,
 		$parentid, $width, $height, $quality, $keepratio, $maximize, $bordercolor, $checkboxstyle, $inputstyle, $checkboxclass, $inputclass, $checkboxtext, $showcontrol,
-		$thumbnail, $ascountry, $aslanguage, $outputlanguage, $languageautofill, $doc, $usevalue, $minyear, $maxyear, $pure, $wysiwyg, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck, $commands);
+		$thumbnail, $ascountry, $aslanguage, $outputlanguage, $languageautofill, $doc, $usevalue, $minyear, $maxyear, $pure, $wysiwyg, $autobr, $html, $htmlspecialchars, $php, $abbr, $spellcheck, $commands];
 }

@@ -6,10 +6,9 @@ $this->NeedsEndTag = true;
 $this->Module = 'customer';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->TypeAttribute = new weTagData_typeAttribute('type', array(
-	new weTagDataOption('all'),
+$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('all'),
 	new weTagDataOption('passwordMismatch'),
 	new weTagDataOption('required'),
 	new weTagDataOption('token'),
-	), true, '');
+	], true, '');
 

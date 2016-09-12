@@ -43,12 +43,12 @@ return [
 	],
 	['parent' => 'workflow',],
 	/*
-	  array(
+	  [
 	  'text'=> g_l('javaMenu_workflow','[reload]'),
 	  'parent'=> 'workflow',
 	  'cmd'=> 'reload_workflow',
 	  'enabled'=> '0',
-	  ),
+	  ],
 	  $we_menu_workflow['000880']['parent'] = 'workflow'; // separator
 	 */
 	['text' => g_l('javaMenu_workflow', '[empty_log]') . '&hellip;',

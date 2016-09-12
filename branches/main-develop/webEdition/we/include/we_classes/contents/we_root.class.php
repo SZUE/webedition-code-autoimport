@@ -284,11 +284,10 @@ abstract class we_root extends we_class{
 		$path = $this->$Pathname;
 		$myid = $this->$IDName;
 		if($disabled){
-			return we_html_tools::htmlFormElementTable(array(
-					"text" => we_html_element::htmlHidden($idname, $myid, $idname) .
+			return we_html_tools::htmlFormElementTable(["text" => we_html_element::htmlHidden($idname, $myid, $idname) .
 					we_html_element::htmlHidden($textname, $path, $textname) .
-					we_html_element::htmlInput(array('name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width - 6), 'disabled' => 1)),
-					'style' => 'vertical-align:top;height:10px;'), g_l('weClass', '[dir]')
+					we_html_element::htmlInput(['name' => 'disabled', 'value' => $path, 'type' => 'text', 'width' => intval($width - 6), 'disabled' => 1]),
+					'style' => 'vertical-align:top;height:10px;'], g_l('weClass', '[dir]')
 			);
 		}
 
@@ -302,9 +301,9 @@ abstract class we_root extends we_class{
 		$cmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . $table . "','" . $idname . "','" . $textname . "','" . we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . $parentPathChanged . str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "')");
 
-		$yuiSuggest->setAcId('Path', id_to_path(array($rootDirID), $table));
+		$yuiSuggest->setAcId('Path', id_to_path([$rootDirID], $table));
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::CLASS_FOLDER);
-		$yuiSuggest->setInput($textname, $path, array('onblur' => $parentPathChangedBlur));
+		$yuiSuggest->setInput($textname, $path, ['onblur' => $parentPathChangedBlur]);
 		$yuiSuggest->setLabel($label ? : '');
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(0);

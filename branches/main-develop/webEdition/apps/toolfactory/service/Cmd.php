@@ -155,9 +155,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		}
 		$model->ID = $model->classname;
 		we_app_Common::rebuildAppTOC();
-		return array(
-			'model' => $model, 'newBeforeSaving' => $newBeforeSaving
-		);
+		return ['model' => $model, 'newBeforeSaving' => $newBeforeSaving
+			];
 	}
 
 	/**
@@ -199,9 +198,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		we_util_File::rmdirr(WE_APPS_PATH . '/' . $model->classname);
 		we_app_Common::rebuildAppTOC();
 		//return deleted model
-		return array(
-			'model' => $model
-		);
+		return ['model' => $model
+			];
 	}
 
 	/**
@@ -249,9 +247,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 
 		we_app_Common::deactivate($model->classname);
-		return array(
-			'model' => $model
-		);
+		return ['model' => $model
+			];
 	}
 
 	/**
@@ -282,9 +279,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 
 
 		we_app_Common::activate($model->classname); // eintrag im TOC, in define und meta
-		return array(
-			'model' => $model
-		);
+		return ['model' => $model
+			];
 	}
 
 	public function localInstallFromTGZ($args){
@@ -312,9 +308,8 @@ class toolfactory_service_Cmd extends we_app_service_AbstractCmd{
 		}
 		$newBeforeSaving = 0;
 		we_app_Common::rebuildAppTOC();
-		return array(
-			'model' => $model, 'newBeforeSaving' => $newBeforeSaving
-		);
+		return ['model' => $model, 'newBeforeSaving' => $newBeforeSaving
+			];
 	}
 
 	public function generateTGZ($args){

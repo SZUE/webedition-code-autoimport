@@ -42,3 +42,5 @@ $oSctCls->insertOption(6, "red", g_l('cockpit', '[red]'));
 $oSelCls = new we_html_table(['class' => 'default'], 1, 2);
 $oSelCls->setCol(0, 0, ["width" => 130, 'class' => 'defaultfont'], g_l('cockpit', '[bgcolor]'));
 $oSelCls->setCol(0, 1, null, $oSctCls->getHTML());
+
+return [$jsPrefs, $jsFile, $oSelCls];

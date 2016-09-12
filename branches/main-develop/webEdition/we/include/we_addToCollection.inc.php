@@ -126,10 +126,9 @@ $recursive = we_html_forms::checkboxWithHidden(1, 'InsertRecursive', g_l('weClas
 echo
 '</head><body class="weTreeHeaderAddToCollection">
 <form name="we_form" method="post" onsubmit="return false">' .
- we_html_element::htmlHiddens(array(
-	'we_targetTransaction' => '',
+ we_html_element::htmlHiddens(['we_targetTransaction' => '',
 	'we_targetInsertPos' => $insertPos,
-	'sel' => '')) . '
+	'sel' => '']) . '
 <div style="width:440px;">
 <h1 class="big" style="padding:0px;margin:0px;">' . g_l('weClass', '[collection][add]') . '</h1>
 <p class="small"><span class="middlefont" style="padding-right:5px;padding-bottom:10px;">' . g_l('weClass', '[collection][add_help]') . '</span>

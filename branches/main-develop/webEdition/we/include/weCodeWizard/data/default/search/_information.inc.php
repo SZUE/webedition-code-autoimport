@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -22,7 +21,5 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$information = array(
-	'foldername' => 'Suche',
-);
+$information = ['foldername' => 'Suche',];
 
