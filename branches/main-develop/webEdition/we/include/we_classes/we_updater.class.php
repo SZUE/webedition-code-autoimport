@@ -108,6 +108,40 @@ abstract class we_updater{
 			//this is from 6.3.9
 			$db = $db? : new DB_WE();
 
+			//change old tables to have different prim key
+			$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
+			foreach($tables as $table){
+				if($db->isColExist(OBJECT_X_TABLE . $table, 'ID')){
+					$db->delCol(OBJECT_X_TABLE . $table, 'ID');
+					//we need to set the key, if sth. is present 2 times, this is an error.
+					$db->addKey(OBJECT_X_TABLE . $table, 'PRIMARY KEY (OF_ID)', true);
+				}
+
+				//remove old OF_ cols
+				if($db->isColExist(OBJECT_X_TABLE . $table, 'OF_ParentID')){
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_ParentID');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Text');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Path');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Url');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_TriggerID');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Workspaces');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_ExtraWorkspaces');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_ExtraWorkspacesSelected');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Templates');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_ExtraTemplates');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Category');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Published');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_IsSearchable');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Charset');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_WebUserID');
+					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Language');
+					$db->delKey(OBJECT_X_TABLE . $table, 'published');
+					if($db->isKeyExist(OBJECT_X_TABLE . $table, 'Published')){
+						$db->delKey(OBJECT_X_TABLE . $table, 'Published');
+					}
+				}
+			}
+
 			if(!f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0 LIMIT 1')){
 				return;
 			}
@@ -497,9 +531,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		//fill in order items
 		$db->query('SELECT IntOrderID,Price,IntQuantity,strSerial FROM ' . SHOP_TABLE);
 		while($db->next_record(MYSQL_ASSOC)){
-			$tmp=@unserialize($db->f('strSerial'));
+			$tmp = @unserialize($db->f('strSerial'));
 			if(empty($tmp)){
-				$tmp=unserialize(utf8_decode($db->f('strSerial')));
+				$tmp = unserialize(utf8_decode($db->f('strSerial')));
 			}
 			$dat = array_filter($tmp, function($k){
 				return !is_numeric($k);

@@ -124,7 +124,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 				}
 				break;
 			case 'doctype':
-				$cat_sql = ($categories ? we_category::getCatSQLTail('', 'f', true, $this->db, 'Category', $categories) : '');
+				$cat_sql = ($categories ? ' AND ' . we_category::getCatSQLTail('', 'f', true, $this->db, 'Category', $categories) : '');
 				if($dir != 0){
 					$workspace = id_to_path($dir, FILE_TABLE, $this->db);
 					$ws_where = ' AND (f.Path LIKE "' . $this->db->escape($workspace) . '/%" OR f.ID="' . $dir . '")';
@@ -138,7 +138,7 @@ class we_exim_XMLExport extends we_exim_XMLExIm{
 			default:
 				if(defined('OBJECT_FILES_TABLE')){
 					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
-					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', 'of', true, $this->db, 'Category', $categories) : '');
+					$cat_sql = ' ' . ($categories ? ' AND ' . we_category::getCatSQLTail('', 'of', true, $this->db, 'Category', $categories) : '');
 
 					$this->db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.IsFolder=0 AND of.TableID=' . intval($classname) . $cat_sql . $where);
 					$selObjs = $this->db->getAll(true);

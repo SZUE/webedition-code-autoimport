@@ -105,7 +105,7 @@ class we_category extends we_base_model{
 			unset($cur);
 		}
 
-		return ' AND (' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
+		return '(' . implode(($catOr ? ' OR ' : ' AND '), $where) . ' )';
 	}
 
 	public function registerMediaLinks(){

@@ -92,9 +92,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
-		$where_lang = ($this->languages ?
-				' AND of.Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
-				'');
+		$where_lang = ($this->languages ? 'of.Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' : '');
 
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
@@ -119,15 +117,24 @@ class we_listview_multiobject extends we_listview_objectBase{
 		}
 		$sqlParts = $this->makeSQLParts($matrix, $this->classID, $this->order, $this->condition, false);
 
-		$cat_tail = ($this->cats || $this->categoryids ?
-				we_category::getCatSQLTail($this->cats, 'of', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
+		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, 'of', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
 				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID) :
 				'');
 
 		if($sqlParts['tables']){
-			$this->DB_WE->query('SELECT of.ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=ob' . $this->classID . '.OF_ID WHERE of.ID IN (' . implode(',', $this->objects) . ') AND ' . ($this->searchable ? ' of.IsSearchable=1' : '') . $where_lang . ' AND of.ID!=0 ' . $cat_tail . ' ' . ($sqlParts['publ_cond'] ? (' AND ' . $sqlParts['publ_cond']) : '') . ' ' . ($sqlParts['cond'] ? (' AND (' . $sqlParts['cond'] . ') ') : '') . $calendar_where . $weDocumentCustomerFilter_tail . $sqlParts['groupBy']);
+			$where = implode(' AND ', array_filter([
+					'ids' => 'of.ID IN (' . implode(',', $this->objects) . ')',
+					'search' => ($this->searchable ? 'of.IsSearchable=1' : ''),
+					'lang' => $where_lang,
+					'cat' => $cat_tail,
+					'publ' => $sqlParts['publ_cond'],
+					'cond' => ($sqlParts['cond'] ? '(' . $sqlParts['cond'] . ')' : ''),
+					'cal' => $calendar_where,
+				])) . $weDocumentCustomerFilter_tail . $sqlParts['groupBy'];
+
+			$this->DB_WE->query('SELECT of.ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=ob' . $this->classID . '.OF_ID WHERE ' . $where);
 			$mapping = []; // KEY = ID -> VALUE = ROWID
 			$i = 0;
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
@@ -152,7 +159,7 @@ class we_listview_multiobject extends we_listview_objectBase{
 				$this->anz_all = count($this->objects);
 			}
 
-			$this->DB_WE->query('SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=ob' . $this->classID . '.OF_ID WHERE of.ID IN (' . implode(',', $this->objects) . ') AND ' . ($this->searchable ? ' of.IsSearchable=1' : '') . $where_lang . ' AND of.ID!=0 ' . $cat_tail . $weDocumentCustomerFilter_tail . ' ' . ($sqlParts['publ_cond'] ? (' AND ' . $sqlParts['publ_cond']) : '') . ' ' . ($sqlParts['cond'] ? (' AND (' . $sqlParts['cond'] . ') ') : '') . $calendar_where . $sqlParts['groupBy'] . $sqlParts['order'] . (($rows > 0 && $this->order) ? (' LIMIT ' . $this->start . ',' . $this->rows) : ''));
+			$this->DB_WE->query('SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=ob' . $this->classID . '.OF_ID WHERE ' . $where . $sqlParts['order'] . (($rows > 0 && $this->order) ? (' LIMIT ' . $this->start . ',' . $this->rows) : ''));
 
 			$mapping = []; // KEY = ID -> VALUE = ROWID
 			$i = 0;
