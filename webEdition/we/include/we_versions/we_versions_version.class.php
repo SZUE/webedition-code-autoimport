@@ -1268,7 +1268,7 @@ class we_versions_version{
 								case 'documentCustomFilter':
 //TODO: imi: check if we need both foreach
 									if(isset($document['documentCustomerFilter']) && is_array($document['documentCustomerFilter']) && is_array($lastEntryField)){
-										$tmpArr1 = $tmpArr2 = array();
+										$tmpArr1 = $tmpArr2 = [];
 										foreach($document['documentCustomerFilter'] as $k => $v){
 											$tmpArr1[$k] = is_array($v) ? we_serialize($v) : $v;
 										}

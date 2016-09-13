@@ -41,8 +41,7 @@ class we_backup_wizard{
 	private function getJSDep(){
 		$this->json['import_from'] = we_base_request::_(we_base_request::STRING, "import_from");
 
-		return
-			we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]);
+		return we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]);
 	}
 
 	function getHTMLFrameset(){
@@ -94,27 +93,12 @@ class we_backup_wizard{
 	}
 
 	function getHTMLRecoverStep2(){
-		$js = we_html_element::jsElement('
-function we_submitForm(target,url) {
-	var f = self.document.we_form;
-	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-		return false;
-	}
-	f.target = target;
-	f.action = url;
-	f.method = "post";
-	f.submit();
-	return true;
-}
-
-');
 		$parts = [
 			['headline' => '', 'html' => we_html_forms::radiobutton("import_server", true, "import_from", g_l('backup', '[import_from_server]')), 'noline' => 1],
 			['headline' => '', 'html' => we_html_forms::radiobutton("import_upload", false, "import_from", g_l('backup', '[import_from_local]')), 'noline' => 1]
 		];
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) . $js, we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "startStep(2);"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), we_html_element::htmlHiddens(array("pnt" => "body", "step" => 3)) .
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]), we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "startStep(2);"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), we_html_element::htmlHiddens(array("pnt" => "body", "step" => 3)) .
 						we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step2]'))
 					)
 				)
@@ -139,7 +123,6 @@ function we_submitForm(target,url) {
 
 		$maxsize = $this->fileUploader->getMaxUploadSize();
 
-		$js = '';
 		if(we_base_request::_(we_base_request::STRING, "import_from") === 'import_upload'){
 			if($maxsize || $this->fileUploader){
 				//FIXME:
@@ -329,10 +312,6 @@ function we_submitForm(target,url) {
 		$parts[] = ['headline' => '', 'html' => we_html_forms::checkbox(1, true, "backup_log", g_l('backup', '[export_backup_log]'), false, "defaultfont", "doClick(320);"), 'space' => we_html_multiIconBox::SPACE_MED, 'noline' => 1];
 
 
-		$js = we_html_element::jsElement($js) .
-			(isset($fileUploaderHead) ? $fileUploaderHead : '') .
-			$this->getJSDep();
-
 		$form_attribs = (we_base_request::_(we_base_request::STRING, "import_from") === "import_upload" ?
 				['name' => 'we_form', "method" => "post", "action" => $this->frameset, "target" => "cmd", "enctype" => "multipart/form-data"] :
 				['name' => 'we_form', "method" => "post", "action" => $this->frameset, "target" => "cmd"]
@@ -348,7 +327,8 @@ function we_submitForm(target,url) {
 				)
 		);
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) . $js, $body);
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) . (isset($fileUploaderHead) ? $fileUploaderHead : '') .
+				$this->getJSDep(), $body);
 	}
 
 	function getHTMLRecoverStep4(){
@@ -366,15 +346,7 @@ function we_submitForm(target,url) {
 			['headline' => '', 'html' => we_html_tools::htmlAlertAttentionBox(g_l('backup', '[old_backups_warning]'), we_html_tools::TYPE_ALERT, 600, false), 'noline' => 1]
 		];
 
-		$js = we_html_element::jsElement('
-function stopBusy() {
-	top.busy.location="' . $this->frameset . '&pnt=busy&step=5";
-	top.cmd.location ="about:blank";
-	self.focus();
-}
-');
-
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) . $js, we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "stopBusy()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "enctype" => "multipart/form-data"], we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step3]'))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]), we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "stopBusy()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "enctype" => "multipart/form-data"], we_html_multiIconBox::getHTML("backup_options", $parts, 30, "", -1, "", "", false, g_l('backup', '[step3]'))
 					)
 				)
 		);
@@ -528,15 +500,9 @@ function stopBusy() {
 			}
 		}
 
-
 		$do_import_after_backup = (!empty($_SESSION['weS']['weBackupVars']['options']['do_import_after_backup'])) ? 1 : 0;
-		$js = we_html_element::jsElement('
-function startStep(){
-	self.focus();
-	top.busy.location="' . $this->frameset . '&pnt=busy&do_import_after_backup=' . $do_import_after_backup . '&step=3";
-}');
 
-		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]) . $js, we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'startStep();'], we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post'], we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
+		return we_html_tools::getHtmlTop(g_l('backup', '[wizard_title_export]'), '', '', we_html_element::jsScript(JS_DIR . 'backup_wizard.js', '', ['id' => 'loadVarBackup_wizard', 'data-backup' => setDynamicVar($this->json)]), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'startStep(3,' . $do_import_after_backup . ');'], we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post'], we_html_tools::htmlDialogLayout($content, g_l('backup', '[export_step2]'))
 					)
 				)
 		);
@@ -629,9 +595,6 @@ function startStep(){
 				switch($step){
 					case 1:
 						$head.=we_html_element::jsElement('
-function setLocation(loc){
-	location.href=loc;
-}
 function doExport() {
 	if((!top.body.document.we_form.export_send.checked) && (!top.body.document.we_form.export_server.checked)) {
 		' . we_message_reporting::getShowMessageCall(g_l('backup', '[save_not_checked]'), we_message_reporting::WE_MESSAGE_WARNING) . '
@@ -663,9 +626,7 @@ function doExport() {
 				switch($step){
 					case 1:
 						$head .= we_html_element::jsElement('
-function setLocation(loc){
-	location.href=loc;
-}
+
 function press_yes() {
 	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
 	var _unsavedChanges = false;
@@ -737,9 +698,6 @@ function press_yes() {
 				return;
 			case "rebuild":
 				return we_html_element::jsElement('
-function setLocation(loc){
-	location.href=loc;
-}
 top.opener.top.openWindow(WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=rebuild&step=2&btype=rebuild_all&responseText=' . g_l('backup', '[finished_success]') . '","rebuildwin",-1,-1,600,130,0,true);
 top.close();');
 			case "deleteall":
@@ -780,12 +738,6 @@ top.close();');
 		$retry = 3;
 
 		return we_html_element::jsElement('
-function setLocation(loc){
-	if(top.cmd.reloadTimer){
-		clearTimeout(top.cmd.reloadTimer);
-	}
-	location.href = loc;
-}
 
 function reloadFrame(){
 	var reload = ' . (we_base_request::_(we_base_request::INT, 'reload', 0) + 1) . ';

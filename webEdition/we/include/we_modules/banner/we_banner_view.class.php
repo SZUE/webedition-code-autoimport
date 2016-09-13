@@ -679,10 +679,9 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$IDName = "ParentID";
 		$Pathname = "ParentPath";
 
-		return we_html_element::htmlHiddens(array(
-				$IDName => 0,
-				$Pathname => "")) .
-			we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_file',document.we_form.elements['" . $IDName . "'].value,'" . BANNER_TABLE . "','document.we_form.elements[\\'" . $IDName . "\\'].value','document.we_form.elements[\\'" . $Pathname . "\\'].value','opener.we_cmd(\\'copy_banner\\');','','" . $rootDirID . "')");
+		return we_html_element::htmlHiddens([$IDName => 0,
+				$Pathname => ""]) .
+			we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_file',document.we_form.elements['" . $IDName . "'].value,'" . BANNER_TABLE . "','" . $IDName . "','" . $Pathname . "','opener.we_cmd(\\'copy_banner\\');','','" . $rootDirID . "')");
 	}
 
 	/* creates the DocumentChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
@@ -697,7 +696,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 		$yuiSuggest->setAcId("Image");
 		$yuiSuggest->setLabel($title);
 		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::IMAGE, we_base_ContentTypes::APPLICATION, we_base_ContentTypes::FLASH]);
-		$yuiSuggest->setInput($Pathname, $Pathvalue, "onchange=\"top.content.setHot();\"", true);
+		$yuiSuggest->setInput($Pathname, $Pathvalue, 'onchange="top.content.setHot();"', true);
 		$yuiSuggest->setMaxResults(10);
 		$yuiSuggest->setMayBeEmpty(true);
 		$yuiSuggest->setResult($IDName, $IDValue);

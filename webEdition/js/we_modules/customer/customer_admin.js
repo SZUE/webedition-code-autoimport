@@ -21,7 +21,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-/* global WE */
+/* global WE, top */
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -43,13 +43,13 @@ function saveField() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args, frameUrl + "?");
+	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer");
 
 	var branch, field;
 	switch (args[0]) {
 		case "open_add_field":
 			branch = document.we_form.branch.value;
-			url = frameUrl + "&pnt=field_editor&art=add&branch=" + branch;
+			url += "&pnt=field_editor&art=add&branch=" + branch;
 			new (WE().util.jsWindow)(this, url, "field_editor", -1, -1, 380, 250, true, false, true);
 			break;
 		case "open_edit_field":
@@ -58,7 +58,7 @@ function we_cmd() {
 			if (field === "") {
 				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
-				url = frameUrl + "&pnt=field_editor&art=edit&field=" + field + "&branch=" + branch;
+				url += "&pnt=field_editor&art=edit&field=" + field + "&branch=" + branch;
 				new (WE().util.jsWindow)(this, url, "field_editor", -1, -1, 380, 250, true, false, true);
 			}
 			break;
@@ -108,7 +108,7 @@ function we_cmd() {
 			} else if (branch == WE().consts.g_l.customer.admin.other) {
 				top.we_showMessage(WE().consts.g_l.customer.admin.branch_no_edit, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
-				url = frameUrl + "&pnt=branch_editor&art=edit&&branch=" + branch;
+				url += "&pnt=branch_editor&art=edit&&branch=" + branch;
 				new (WE().util.jsWindow)(this, url, "field_editor", -1, -1, 380, 250, true, false, true);
 			}
 			break;
