@@ -8,17 +8,17 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
 $name = new weTagData_textAttribute('name', true, '');
 $match = new weTagData_textAttribute('match', true, '');
-$operator = new weTagData_selectAttribute('operator', array(new weTagDataOption('equal'),
+$operator = new weTagData_selectAttribute('operator', [new weTagDataOption('equal'),
 	new weTagDataOption('less'),
 	new weTagDataOption('less|equal'),
 	new weTagDataOption('greater'),
 	new weTagDataOption('greater|equal'),
 	new weTagDataOption('contains'),
 	new weTagDataOption('isin'),
-	), false, '');
-$striphtml = new weTagData_selectAttribute('striphtml', array(new weTagDataOption('false'),
+	], false, '');
+$striphtml = new weTagData_selectAttribute('striphtml', [new weTagDataOption('false'),
 	new weTagDataOption('true'),
-	), false, '');
+	], false, '');
 $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
 
 if(defined('SHOP_TABLE')){

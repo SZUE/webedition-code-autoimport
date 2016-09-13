@@ -157,7 +157,7 @@ class we_tag_tagParser{
 						$endtagpos = strpos($code, $endtags[$n], $endtagpos + 1);
 					}
 					$this->tags[$i] = '';
-					return array($endtagpos, $i);
+					return [$endtagpos, $i];
 				}
 			} else {
 				if(preg_match('|(< ?we ?: ?' . $tagname . '[^a-z])|i', $this->tags[$i])){
@@ -170,7 +170,7 @@ class we_tag_tagParser{
 
 	public static function makeArrayFromAttribs($attr){
 		$attribs = self::parseAttribs($attr, false);
-		@eval('$arr = array(' . $attribs . ');'); //FIXME: can we remove this eval?
+		@eval('$arr = [' . $attribs . '];'); //FIXME: can we remove this eval?
 		if(!isset($arr) || !is_array($arr)){
 			t_e($attr, $attribs);
 			return [];
@@ -180,7 +180,7 @@ class we_tag_tagParser{
 
 	public static function parseAttribs($attr, $asArray){
 		//remove comment-attribute (should never be seen), and obsolete cachelifetime
-		$removeAttribs = array('cachelifetime', 'comment');
+		$removeAttribs = ['cachelifetime', 'comment'];
 		$attribs = [];
 		$regs = [];
 		preg_match_all('/([^=]+)=[ \t]*"([^"]*)"/', $attr, $regs, PREG_SET_ORDER);
@@ -207,7 +207,7 @@ class we_tag_tagParser{
 		foreach($this->tags as $tag){
 			if(preg_match('%<we:([[:alnum:]_-]+)[ \t\n\r]*(.*)/?>?%msi', $tag, $regs)){
 				$attribs = (isset($regs[2]) ? self::parseAttribs($regs[2], true) : []);
-				$ret[] = array('name' => $regs[1], 'attribs' => $attribs + ($withBlocknames ? array('weblock' => $blocks) : []));
+				$ret[] = ['name' => $regs[1], 'attribs' => $attribs + ($withBlocknames ? ['weblock' => $blocks] : [])];
 				if($withBlocknames && $regs[1] === 'block' && !empty($attribs['name'])){
 					array_unshift($blocks, 'blk_' . $attribs['name']);
 				}

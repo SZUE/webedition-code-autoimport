@@ -117,7 +117,7 @@ function we_tag_ifPosition(array $attribs){
 	if(isset($GLOBALS['we']['ll'])){
 		$attribs['type'] = 'linklist';
 	}
-	if(($missingAttrib = attributFehltError($attribs, array('type' => false, 'position' => false), __FUNCTION__))){
+	if(($missingAttrib = attributFehltError($attribs, ['type' => false, 'position' => false], __FUNCTION__))){
 		echo $missingAttrib;
 		return '';
 	}

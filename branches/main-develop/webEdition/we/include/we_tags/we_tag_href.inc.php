@@ -35,7 +35,7 @@ function we_tag_href(array $attribs){
 //	$seeMode = weTag_getAttribute((isset($attribs['seem']) ? 'seem' : 'seeMode'), $attribs, true, true);
 	$file = weTag_getAttribute('file', $attribs, true, we_base_request::BOOL);
 	$directory = weTag_getAttribute('directory', $attribs, false, we_base_request::BOOL);
-	$attribs = removeAttribs($attribs, array('rootdir', 'file', 'directory'));
+	$attribs = removeAttribs($attribs, ['rootdir', 'file', 'directory']);
 
 	if(isset($GLOBALS['we_doc']->OF_ID)){
 		$hrefArr = we_unserialize($GLOBALS['we_doc']->getElement($name));
@@ -168,14 +168,13 @@ function we_tag_href(array $attribs){
 <tr>
 	<td class="weEditmodeStyle">' . ($type == we_base_link::TYPE_ALL ? we_html_forms::radiobutton(0, !$int, $int_elem_Name, $span . g_l('tags', '[ext_href]') . ':</span>') : $span . g_l('tags', '[ext_href]') . ':</span><input type="hidden" name="' . $int_elem_Name . '" value="0" />') . '</td>
 	<td class="weEditmodeStyle" style="width:' . ($size + 20) . 'px">' .
-			getHtmlTag('input', array_merge(removeAttribs($attribs, array('onkeydown', 'onKeyDown')), array(
-				'style' => 'width:' . ($size) . 'px;',
+			getHtmlTag('input', array_merge(removeAttribs($attribs, ['onkeydown', 'onKeyDown']), ['style' => 'width:' . ($size) . 'px;',
 				'onchange' => ($type == we_base_link::TYPE_ALL ? 'this.form.elements[\'' . $int_elem_Name . '\'][1].checked=true;' : ''),
 				'type' => "text",
 				'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
 				'placeholder' => "http://example.org",
 				'value' => $extPath
-			)))
+			]))
 			. '</td>
 	<td class="weEditmodeStyle">' . $but2 . '</td>
 	<td class="weEditmodeStyle">' . $trashbut2 . '</td>

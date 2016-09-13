@@ -36,12 +36,12 @@ function we_tag_bannerSelect(array $attribs){
 
 	$where = ' WHERE IsFolder=0 ';
 
-	$newAttribs = removeAttribs($attribs, array('showpath', 'rootdir', 'firstentry', 'submitonchange', 'customer'));
+	$newAttribs = removeAttribs($attribs, ['showpath', 'rootdir', 'firstentry', 'submitonchange', 'customer']);
 	if($submitonchange){
 		$newAttribs['onchange'] = 'we_submitForm();';
 	}
 
-	$options = ($firstentry ? getHtmlTag('option', array('value' => ''), $firstentry, true) : '');
+	$options = ($firstentry ? getHtmlTag('option', ['value' => ''], $firstentry, true) : '');
 
 	$GLOBALS['DB_WE']->query('SELECT ID,Text,Path,Customers FROM ' . BANNER_TABLE . ' ' . $where . ' ORDER BY Path');
 	$res = $GLOBALS['DB_WE']->getAll();
@@ -50,8 +50,8 @@ function we_tag_bannerSelect(array $attribs){
 			we_banner_banner::customerOwnsBanner($_SESSION['webuser']['ID'], $record['ID'], $GLOBALS['DB_WE']))){
 			$rName = we_base_request::_(we_base_request::HTML, $name, $record['Path']);
 			$options .= ($rName == $record['Path'] ?
-					getHtmlTag('option', array('value' => $record['Path'], 'selected' => 'selected'), $showpath ? $record['Path'] : $record['Text']) :
-					getHtmlTag('option', array('value' => $record['Path']), $showpath ? $record['Path'] : $record['Text']));
+					getHtmlTag('option', ['value' => $record['Path'], 'selected' => 'selected'], $showpath ? $record['Path'] : $record['Text']) :
+					getHtmlTag('option', ['value' => $record['Path']], $showpath ? $record['Path'] : $record['Text']));
 		}
 	}
 

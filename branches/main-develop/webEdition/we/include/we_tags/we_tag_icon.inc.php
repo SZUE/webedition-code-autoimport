@@ -30,7 +30,7 @@ function we_tag_icon(array $attribs){
 	$id = weTag_getAttribute('id', $attribs);
 	if(($row = getHash('SELECT Path,IsFolder,IsDynamic FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id)))){
 		$url = $row['Path'] . ($row['IsFolder'] ? '/' : '');
-		return getHtmlTag('link', array('rel' => 'shortcut icon', 'href' => $url, 'xml' => $xml));
+		return getHtmlTag('link', ['rel' => 'shortcut icon', 'href' => $url, 'xml' => $xml]);
 	}
 	return '';
 }

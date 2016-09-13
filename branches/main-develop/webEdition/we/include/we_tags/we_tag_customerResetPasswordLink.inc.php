@@ -32,7 +32,7 @@ function we_tag_customerResetPasswordLink(array $attribs, $content, $internal = 
 		$cnt = 0;
 	} else {
 		$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
-		$docPath = we_tag('a', array('hrefonly' => true, 'id' => $id));
+		$docPath = we_tag('a', ['hrefonly' => true, 'id' => $id]);
 		$cnt = 0;
 		//Fix #10071
 		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE'], true);
@@ -44,6 +44,6 @@ function we_tag_customerResetPasswordLink(array $attribs, $content, $internal = 
 
 	return (weTag_getAttribute('plain', $attribs, false, we_base_request::BOOL) ?
 			$attribs['href'] :
-			getHtmlTag('a', removeAttribs($attribs, array('id', 'plain', 'host')), $content ? : $attribs['href'])
+			getHtmlTag('a', removeAttribs($attribs, ['id', 'plain', 'host']), $content ? : $attribs['href'])
 		);
 }

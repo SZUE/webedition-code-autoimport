@@ -5,13 +5,13 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->Groups[] = 'if_tags';
 $this->Module = 'voting';
 
-$this->Attributes[] = new weTagData_selectAttribute('name', array(new weTagDataOption('question'),
+$this->Attributes[] = new weTagData_selectAttribute('name', [new weTagDataOption('question'),
 	new weTagDataOption('answer'),
 	new weTagDataOption('result'),
 	new weTagDataOption('id'),
 	new weTagDataOption('date'),
-	), true, '');
-$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('text'),
+ ], true, '');
+$this->Attributes[] = new weTagData_selectAttribute('type', [new weTagDataOption('text'),
 	new weTagDataOption('radio'),
 	new weTagDataOption('checkbox'),
 	new weTagDataOption('select'),
@@ -24,12 +24,12 @@ $this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataO
 	new weTagDataOption('textarea'),
 	new weTagDataOption('image'),
 	new weTagDataOption('media'),
-	), false, '');
+ ], false, '');
 $this->Attributes[] = new weTagData_textAttribute('match', true, '');
-$this->Attributes[] = new weTagData_selectAttribute('operator', array(new weTagDataOption('equal'),
+$this->Attributes[] = new weTagData_selectAttribute('operator', [new weTagDataOption('equal'),
 	new weTagDataOption('less'),
 	new weTagDataOption('less|equal'),
 	new weTagDataOption('greater'),
 	new weTagDataOption('greater|equal'),
 	new weTagDataOption('contains'),
-	), false, '');
+ ], false, '');

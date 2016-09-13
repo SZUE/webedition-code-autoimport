@@ -50,7 +50,7 @@ function we_tag_css(array $attribs){
 			break;
 	}
 	//	remove not needed elements
-	$attribs = removeAttribs($attribs, array('id', 'applyto'));
+	$attribs = removeAttribs($attribs, ['id', 'applyto']);
 
 	$attribs['rel'] = weTag_getAttribute('rel', $attribs, 'stylesheet', we_base_request::STRING);
 	$attribs['type'] = 'text/css';

@@ -29,7 +29,10 @@ function we_tag_conditionAdd(array $attribs){
 
 	// initialize possible Attributes
 	$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);
-	$value = str_replace(array('&gt;', '&lt;'), array('>', '<'), weTag_getAttribute('value', $attribs, '', we_base_request::RAW));
+	$value = strtr(weTag_getAttribute('value', $attribs, '', we_base_request::RAW), [
+		['&gt;' => '>',
+			'&lt;' => '<']
+	]);
 	$compare = weTag_getAttribute('compare', $attribs, '=', we_base_request::RAW);
 	$var = weTag_getAttribute('var', $attribs, '', we_base_request::STRING);
 	$type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING);

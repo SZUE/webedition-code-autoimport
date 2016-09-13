@@ -225,38 +225,38 @@ function confirmDel(){' .
 
 		switch($retVal){
 			case -6:
-				$script .= we_message_reporting::getShowMessageCall(g_l('alert', '[no_perms_action]'), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => g_l('alert', '[no_perms_action]'), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 				break;
 			case -5: //	not allowed to delete workspace
 				$objList = '';
 				foreach($objects as $val){
 					$objList .= '- ' . $val . '\n';
 				}
-				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_object_r]'), id_to_path($selectedItem, $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => sprintf(g_l('alert', '[delete_workspace_object_r]'), id_to_path($selectedItem, $table), $objList), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 				break;
 			case -4: //	not allowed to delete workspace
 				$usrList = '';
 				foreach($users as $val){
 					$usrList .= '- ' . $val . '\n';
 				}
-				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_user_r]'), id_to_path($selectedItem, $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => sprintf(g_l('alert', '[delete_workspace_user_r]'), id_to_path($selectedItem, $table), $usrList), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 				break;
 			case -3: //	not allowed to delete workspace
 				$objList = '';
 				foreach($objects as $val){
 					$objList .= "- " . $val . '\n';
 				}
-				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_object]'), id_to_path($selectedItem, $table), $objList), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => sprintf(g_l('alert', '[delete_workspace_object]'), id_to_path($selectedItem, $table), $objList), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 				break;
 			case -2: //	not allowed to delete workspace
 				$usrList = '';
 				foreach($users as $val){
 					$usrList .= '- ' . $val . '\n';
 				}
-				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[delete_workspace_user]'), id_to_path($selectedItem, $table), $usrList), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => sprintf(g_l('alert', '[delete_workspace_user]'), id_to_path($selectedItem, $table), $usrList), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 				break;
 			case -1: //	not allowed to delete document
-				$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('alert', '[noRightsToDelete]'), id_to_path($selectedItem, $table)), we_message_reporting::WE_MESSAGE_ERROR);
+				$weCmd->addCmd('msg', ['msg' => sprintf(g_l('alert', '[noRightsToDelete]'), id_to_path($selectedItem, $table)), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
 				break;
 			default:
 				if($retVal){ //	user may delete -> delete files !

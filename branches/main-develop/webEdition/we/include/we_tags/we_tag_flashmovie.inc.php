@@ -41,7 +41,7 @@ function we_tag_flashmovie(array $attribs){
 
 	$out = ($GLOBALS['we_editmode'] && !$showvideo ?
 			'' :
-			$GLOBALS['we_doc']->getField(removeAttribs($attribs, array('showflash', 'parentid', 'startid')), 'flashmovie') );
+			$GLOBALS['we_doc']->getField(removeAttribs($attribs, ['showflash', 'parentid', 'startid']), 'flashmovie') );
 
 	if($showcontrol && $GLOBALS['we_editmode']){
 		$startid = weTag_getAttribute('startid', $attribs, 0, we_base_request::INT);

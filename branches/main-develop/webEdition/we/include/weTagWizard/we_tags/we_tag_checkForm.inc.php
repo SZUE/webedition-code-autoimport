@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = true;
@@ -7,10 +6,12 @@ $this->NeedsEndTag = true;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_textAttribute('match', true);
-$this->Attributes[] = new weTagData_selectAttribute('type', array(new weTagDataOption('id'), new weTagDataOption('name')), true);
-$this->Attributes[] = new weTagData_textAttribute('mandatory');
-$this->Attributes[] = new weTagData_textAttribute('email');
-$this->Attributes[] = new weTagData_textAttribute('password');
-$this->Attributes[] = new weTagData_textAttribute('onError');
-$this->Attributes[] = new weTagData_textAttribute('jsIncludePath');
+$this->Attributes = [
+	new weTagData_textAttribute('match', true),
+	new weTagData_selectAttribute('type', [new weTagDataOption('id'), new weTagDataOption('name')], true),
+	new weTagData_textAttribute('mandatory'),
+	new weTagData_textAttribute('email'),
+	new weTagData_textAttribute('password'),
+	new weTagData_textAttribute('onError'),
+	new weTagData_textAttribute('jsIncludePath'),
+];

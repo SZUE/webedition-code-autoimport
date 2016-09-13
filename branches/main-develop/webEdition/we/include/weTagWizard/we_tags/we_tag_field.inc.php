@@ -24,19 +24,19 @@ $classid = (defined('OBJECT_TABLE') ? new weTagData_selectorAttribute('classid',
 $hyperlink = new weTagData_selectAttribute('hyperlink', weTagData_selectAttribute::getTrueFalse(), false, '');
 $tid = (defined('TEMPLATES_TABLE') ? new weTagData_selectorAttribute('tid', TEMPLATES_TABLE, 'text/weTmpl', false, '') : null);
 $href = new weTagData_textAttribute('href', false, '');
-$target = new weTagData_choiceAttribute('target', array(new weTagDataOption('_top'),
+$target = new weTagData_choiceAttribute('target', [new weTagDataOption('_top'),
 	new weTagDataOption('_parent'),
 	new weTagDataOption('_self'),
 	new weTagDataOption('_blank'),
-	), false, false, '');
+	], false, false, '');
 $class = new weTagData_textAttribute('class', false, '');
 $style = new weTagData_textAttribute('style', false, '');
 $format = new weTagData_textAttribute('format', false, '');
-$num_format = new weTagData_choiceAttribute('num_format', array(new weTagDataOption('german'),
+$num_format = new weTagData_choiceAttribute('num_format', [new weTagDataOption('german'),
 	new weTagDataOption('french'),
 	new weTagDataOption('english'),
 	new weTagDataOption('swiss'),
-	), false, false, '');
+	], false, false, '');
 $thumbnail = new weTagData_sqlRowAttribute('thumbnail', THUMBNAILS_TABLE, false, 'Name', '', '', '');
 $id = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null);
 $parentidname = new weTagData_textAttribute('parentidname', false, '');
@@ -49,7 +49,7 @@ $height = new weTagData_textAttribute('height', false, '');
 $border = new weTagData_textAttribute('border', false, '');
 $hspace = new weTagData_textAttribute('hspace', false, '');
 $vspace = new weTagData_textAttribute('vspace', false, '');
-$align = new weTagData_selectAttribute('align', array(new weTagDataOption('left'),
+$align = new weTagData_selectAttribute('align', [new weTagDataOption('left'),
 	new weTagDataOption('right'),
 	new weTagDataOption('top'),
 	new weTagDataOption('bottom'),
@@ -58,25 +58,25 @@ $align = new weTagData_selectAttribute('align', array(new weTagDataOption('left'
 	new weTagDataOption('texttop'),
 	new weTagDataOption('baseline'),
 	new weTagDataOption('absbottom'),
-	), false, '');
+	], false, '');
 //$only = new weTagData_textAttribute('only', false, '');
 $htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', weTagData_selectAttribute::getTrueFalse(), false, '');
 $seeMode = new weTagData_selectAttribute('seeMode', weTagData_selectAttribute::getTrueFalse(), false, '');
 $xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 $win2iso = new weTagData_selectAttribute('win2iso', weTagData_selectAttribute::getTrueFalse(), false, '');
 $listviewname = new weTagData_textAttribute('listviewname', false, '');
-$striphtml = new weTagData_selectAttribute('striphtml', array(new weTagDataOption('false'),
+$striphtml = new weTagData_selectAttribute('striphtml', [new weTagDataOption('false'),
 	new weTagDataOption('true'),
-	), false, '');
-$only = new weTagData_selectAttribute('only', array(new weTagDataOption('name'),
+	], false, '');
+$only = new weTagData_selectAttribute('only', [new weTagDataOption('name'),
 	new weTagDataOption('src'),
 	new weTagDataOption('parentpath'),
 	new weTagDataOption('filename'),
 	new weTagDataOption('extension'),
 	new weTagDataOption('filesize'),
 	new weTagDataOption('id'),
-	), false, '');
-$onlyImg = new weTagData_selectAttribute('only', array(new weTagDataOption('name'),
+	], false, '');
+$onlyImg = new weTagData_selectAttribute('only', [new weTagDataOption('name'),
 	new weTagDataOption('src'),
 	new weTagDataOption('parentpath'),
 	new weTagDataOption('filename'),
@@ -85,11 +85,11 @@ $onlyImg = new weTagData_selectAttribute('only', array(new weTagDataOption('name
 	new weTagDataOption('width'),
 	new weTagDataOption('height'),
 	new weTagDataOption('alt'),
-	), false, '');
+	], false, '');
 $outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
-$doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
+$doc = new weTagData_selectAttribute('doc', [new weTagDataOption('self'),
 	new weTagDataOption('top'),
-	), false, '');
+	], false, '');
 $triggerid = (defined('FILE_TABLE') ? new weTagData_selectorAttribute('triggerid', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '') : null);
 $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
 $showpath = new weTagData_selectAttribute('showpath', weTagData_selectAttribute::getTrueFalse(), false, '');

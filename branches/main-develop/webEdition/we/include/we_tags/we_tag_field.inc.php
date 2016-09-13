@@ -236,14 +236,13 @@ function we_tag_field(array $attribs){
 			}
 		case 'img' :
 			if($src){
-				$imgAtts = array(
-					'alt' => '', //  alt must be set
+				$imgAtts = ['alt' => '', //  alt must be set
 					'src' => $src,
 					'xml' => $xml,
-				);
+				];
 
-				$imgAtts = array_merge($imgAtts, useAttribs($attribs, array('alt', 'width', 'height', 'border', 'hspace', 'align', 'vspace'))); //  use some atts form attribs array
-				$imgAtts = removeEmptyAttribs($imgAtts, array('alt'));
+				$imgAtts = array_merge($imgAtts, useAttribs($attribs, ['alt', 'width', 'height', 'border', 'hspace', 'align', 'vspace'])); //  use some atts form attribs array
+				$imgAtts = removeEmptyAttribs($imgAtts, ['alt']);
 
 				$out = getHtmlTag('img', $imgAtts);
 				if(!$out){
@@ -339,11 +338,10 @@ function we_tag_field(array $attribs){
 			if(isset($GLOBALS['lv'])){
 				switch(get_class($GLOBALS['lv'])){
 					case 'we_listview_document':
-						$hrefArr = array(
-							'int' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK),
+						$hrefArr = ['int' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK) ? : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK),
 							'intID' => $GLOBALS['lv']->f($name . we_base_link::MAGIC_INT_LINK_ID) ? : $GLOBALS['lv']->f(we_tag_getPostName($name) . we_base_link::MAGIC_INT_LINK_ID),
 							'extPath' => $GLOBALS['lv']->f($name)
-						);
+						];
 						break;
 					case 'we_listview_multiobject':
 					case 'we_listview_object':
@@ -365,7 +363,7 @@ function we_tag_field(array $attribs){
 			}
 		default : // FIXME: treat type="select" as separate case, and clean up the mess with all this little fixes
 
-			if($orgName === 'WE_PATH' && $triggerid && in_array(get_class($GLOBALS['lv']), array('we_listview_search', 'we_listview_object', 'we_listview_multiobject'))){
+			if($orgName === 'WE_PATH' && $triggerid && in_array(get_class($GLOBALS['lv']), ['we_listview_search', 'we_listview_object', 'we_listview_multiobject'])){
 				$triggerpath = id_to_path($triggerid);
 				$triggerpath_parts = pathinfo($triggerpath);
 				$normVal = ($triggerpath_parts['dirname'] != '/' ? $triggerpath_parts['dirname'] : '') . '/' .
@@ -435,7 +433,7 @@ function we_tag_field(array $attribs){
 
 	if($hyperlink || $name === 'we_href'){
 
-		$linkAttribs = array('xml' => $xml);
+		$linkAttribs = ['xml' => $xml];
 		if($target && !$winprops){ //  save atts in array
 			$linkAttribs['target'] = $target;
 		}

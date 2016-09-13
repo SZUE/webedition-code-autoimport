@@ -66,90 +66,90 @@ function we_tag_a(array $attribs, $content){
 		return ($GLOBALS['we_editmode'] ? parseError('in we:a attribute id not exists!') : '');
 	}
 
-    if($edit){
-        $delete = weTag_getAttribute('delete', $attribs, false, true);
-        $editself = weTag_getAttribute('editself', $attribs, false, true);
-        $listview = isset($GLOBALS['lv']);
+	if($edit){
+		$delete = weTag_getAttribute('delete', $attribs, false, true);
+		$editself = weTag_getAttribute('editself', $attribs, false, true);
+		$listview = isset($GLOBALS['lv']);
 
-        switch($edit){
-            case 'shop':
-                if($delshop && (($foo = attributFehltError($attribs, 'shopname', __FUNCTION__)))){
-                    return $foo;
-                }
+		switch($edit){
+			case 'shop':
+				if($delshop && (($foo = attributFehltError($attribs, 'shopname', __FUNCTION__)))){
+					return $foo;
+				}
 
-                $amount = weTag_getAttribute('amount', $attribs, 1);
-                $shopname = weTag_getAttribute('shopname', $attribs);
-                $ifShopname = ($shopname ? '&shopname=' . $shopname : '');
+				$amount = weTag_getAttribute('amount', $attribs, 1);
+				$shopname = weTag_getAttribute('shopname', $attribs);
+				$ifShopname = ($shopname ? '&shopname=' . $shopname : '');
 
-                if($delshop){ //delete basket
-                    $param[] = 'deleteshop=1' . $ifShopname . '&t=' . time();
-                }else{
-                    $customReq = '';
-                    if(isset($GLOBALS['lv'])){
-                        switch($GLOBALS['lv']){
-                            case ($GLOBALS['lv'] instanceof we_shop_shop):
-                                $articleID = $GLOBALS['lv']->ActItem['id'];
-                                $type = $GLOBALS['lv']->ActItem['type'];
-                                $customReq = $GLOBALS['lv']->getCustomFieldsAsRequest();
-                                break;
-                            case ($GLOBALS['lv']->Model instanceof we_objectFile):
-                            case (isset($GLOBALS['lv']->classID)):
-                                $articleID = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID');
-                                $type = we_shop_shop::OBJECT;
-                                break;
-                            case ($GLOBALS['lv'] instanceof we_listview_document):
-                            default:
-                                $articleID = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID');
-                                $type = we_shop_shop::DOCUMENT;
-                                break;
-                        }
-                    }else{
-                        $articleID = isset($GLOBALS['we_obj']->ID) ? $GLOBALS['we_obj']->ID : $GLOBALS['we_doc']->ID;
-                        $type = isset($GLOBALS['we_obj']->ID) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT;
-                    }
+				if($delshop){ //delete basket
+					$param[] = 'deleteshop=1' . $ifShopname . '&t=' . time();
+				} else {
+					$customReq = '';
+					if(isset($GLOBALS['lv'])){
+						switch($GLOBALS['lv']){
+							case ($GLOBALS['lv'] instanceof we_shop_shop):
+								$articleID = $GLOBALS['lv']->ActItem['id'];
+								$type = $GLOBALS['lv']->ActItem['type'];
+								$customReq = $GLOBALS['lv']->getCustomFieldsAsRequest();
+								break;
+							case ($GLOBALS['lv']->Model instanceof we_objectFile):
+							case (isset($GLOBALS['lv']->classID)):
+								$articleID = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID');
+								$type = we_shop_shop::OBJECT;
+								break;
+							case ($GLOBALS['lv'] instanceof we_listview_document):
+							default:
+								$articleID = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID');
+								$type = we_shop_shop::DOCUMENT;
+								break;
+						}
+					} else {
+						$articleID = isset($GLOBALS['we_obj']->ID) ? $GLOBALS['we_obj']->ID : $GLOBALS['we_doc']->ID;
+						$type = isset($GLOBALS['we_obj']->ID) ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT;
+					}
 
-                    // is it a variant ????
-                    $variant = // normal variant on document
-                        (isset($GLOBALS['we_doc']->Variant) ? // normal listView or document
-                            '&' . we_base_constants::WE_VARIANT_REQUEST . '=' . $GLOBALS['we_doc']->Variant :
-                            // variant inside shoplistview!
-                            (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'VARIANT') ?
-                                '&' . we_base_constants::WE_VARIANT_REQUEST . '=' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'VARIANT') :
-                                ''));
+					// is it a variant ????
+					$variant = // normal variant on document
+						(isset($GLOBALS['we_doc']->Variant) ? // normal listView or document
+							'&' . we_base_constants::WE_VARIANT_REQUEST . '=' . $GLOBALS['we_doc']->Variant :
+							// variant inside shoplistview!
+							(isset($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'VARIANT') ?
+								'&' . we_base_constants::WE_VARIANT_REQUEST . '=' . $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'VARIANT') :
+								''));
 
-                    $trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
+					$trans = we_base_request::_(we_base_request::TRANSACTION, 'we_transaction');
 
-                    //	preview mode in seem
-                    if($trans && isset($_SESSION['weS']['we_data'][$trans][0]['ClassName']) && $_SESSION['weS']['we_data'][$trans][0]['ClassName'] === 'we_objectFile'){
-                        $type = we_shop_shop::OBJECT;
-                    }
+					//	preview mode in seem
+					if($trans && isset($_SESSION['weS']['we_data'][$trans][0]['ClassName']) && $_SESSION['weS']['we_data'][$trans][0]['ClassName'] === 'we_objectFile'){
+						$type = we_shop_shop::OBJECT;
+					}
 
-                    if($delarticle){ // delete article
-                        $param[] = 'del_shop_artikelid=' . $articleID . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? : '') . $ifShopname;
-                    } else { // increase/decrease amount of articles
-                        $param[] = 'shop_artikelid=' . $articleID . '&shop_anzahl=' . $amount . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? : '') . $ifShopname;
-                    }
-                }
-                break;
+					if($delarticle){ // delete article
+						$param[] = 'del_shop_artikelid=' . $articleID . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? : '') . $ifShopname;
+					} else { // increase/decrease amount of articles
+						$param[] = 'shop_artikelid=' . $articleID . '&shop_anzahl=' . $amount . '&type=' . $type . '&t=' . time() . $variant . ($customReq ? : '') . $ifShopname;
+					}
+				}
+				break;
 
-            case 'object':
-                $oid = ($listview ?
-                    (!empty($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') ? $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') : 0) :
-                    (!empty($GLOBALS['we_obj']) && isset($GLOBALS['we_obj']->ID) && $editself ? $GLOBALS['we_obj']->ID : 0));
+			case 'object':
+				$oid = ($listview ?
+						(!empty($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') ? $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') : 0) :
+						(!empty($GLOBALS['we_obj']) && isset($GLOBALS['we_obj']->ID) && $editself ? $GLOBALS['we_obj']->ID : 0));
 
-                //FIXME: make sure only the selected object can be deleted - sth unique not user-known has to be added to prevent denial of service
-                $param[] = ($oid ? 'we_'. ($delete ? 'del' : 'edit') .'Object_ID=' . $oid : 'edit_object=1');
-                break;
-            case 'document':
-                $did = ($listview ?
-                    (isset($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') ? $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') : 0) :
-                    (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID) && $editself ? $GLOBALS['we_doc']->ID : 0));
+				//FIXME: make sure only the selected object can be deleted - sth unique not user-known has to be added to prevent denial of service
+				$param[] = ($oid ? 'we_' . ($delete ? 'del' : 'edit') . 'Object_ID=' . $oid : 'edit_object=1');
+				break;
+			case 'document':
+				$did = ($listview ?
+						(isset($GLOBALS['lv']) && $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') ? $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'ID') : 0) :
+						(isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->ID) && $editself ? $GLOBALS['we_doc']->ID : 0));
 
-                //FIXME: make sure only the selected document can be deleted - sth unique not user-known has to be added to prevent denial of service
-                $param[] = ($did ? 'we_'. ($delete ? 'del' : 'edit') .'Document_ID=' . $did : 'edit_document=1');
-                break;
-        }
-    }
+				//FIXME: make sure only the selected document can be deleted - sth unique not user-known has to be added to prevent denial of service
+				$param[] = ($did ? 'we_' . ($delete ? 'del' : 'edit') . 'Document_ID=' . $did : 'edit_document=1');
+				break;
+		}
+	}
 
 	if($return){
 		$param[] = 'we_returnpage=' . rawurlencode($_SERVER['SCRIPT_NAME'] . '?' . $_SERVER['QUERY_STRING']);
@@ -160,8 +160,7 @@ function we_tag_a(array $attribs, $content){
 	}
 
 	//	remove unneeded attributes from array
-	$attribs = removeAttribs($attribs, array(
-		'id',
+	$attribs = removeAttribs($attribs, ['id',
 		'shop',
 		'amount',
 		'delshop',
@@ -177,14 +176,14 @@ function we_tag_a(array $attribs, $content){
 		'editself',
 		'delete',
 		'params'
-	));
+	]);
 
 	if($button){ //	show button
 		$attribs['type'] = 'button';
 		$attribs['onclick'] = ($target ? "var we_win=window.open('','" . $target . "');we_win" : 'self') .
 			".document.location='" . $url . oldHtmlspecialchars(($param ? '?' . implode('&', $param) : '')) . "';";
 
-		$attribs = removeAttribs($attribs, array('target')); //	not html - valid
+		$attribs = removeAttribs($attribs, ['target']); //	not html - valid
 
 
 		if($confirm){
