@@ -83,7 +83,7 @@ function we_tag($name, $attribs = [], $content = '', $internal = false){
 	$user = weTag_getAttribute('user', $attribs, [], we_base_request::STRING_LIST);
 	if(defined('WE_PROFILER')){
 		$bt = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-		$prof = array('tag' => $name, 'line' => $bt[0]['line'], 'file' => $bt[0]['file'], 'time' => round((microtime(true) - WE_PROFILER), 5) . ' s', 'mem' => round(((memory_get_usage() / 1024))) . ' kB');
+		$prof = ['tag' => $name, 'line' => $bt[0]['line'], 'file' => $bt[0]['file'], 'time' => round((microtime(true) - WE_PROFILER), 5) . ' s', 'mem' => round(((memory_get_usage() / 1024))) . ' kB'];
 		$GLOBALS['we_profile'][] = $prof;
 		//annotate tag, if possible
 		$attribs['data-time'] = $prof['time'];
@@ -95,14 +95,14 @@ function we_tag($name, $attribs = [], $content = '', $internal = false){
 	switch($name){
 		case 'setVar':
 		case 'xmlnode'://special handling inside tag setVar and xmlnode
-			$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'user'));
+			$attribs = removeAttribs($attribs, ['cachelifetime', 'comment', 'user']);
 			$nameTo = '';
 			$to = 'screen';
 			break;
 		default:
 			$to = weTag_getAttribute('to', $attribs, 'screen');
 			$nameTo = weTag_getAttribute('nameto', $attribs, isset($attribs['name']) ? $attribs['name'] : '');
-			$attribs = removeAttribs($attribs, array('cachelifetime', 'comment', 'to', 'nameto', 'user'));
+			$attribs = removeAttribs($attribs, ['cachelifetime', 'comment', 'to', 'nameto', 'user']);
 
 			/* if to attribute is set, output of the tag is redirected to a variable
 			 * this makes only sense if tag output is equal to non-editmode */
@@ -230,7 +230,7 @@ function printElement($code){
 	//t_e('deprecated', 'we-tag contained php code which needs evaluation, this is deprecated, use parseTag instead', $code);
 	//this is used e.g. in <we:a>$var</we> or in <we:a><we:ifBack....
 	//FIXME: bad eval????
-	eval('?>' . str_replace(array('<?php', '<?=', '?>'), array('<?php ', '<?= ', ' ?>'), $code));
+	eval('?>' . str_replace(['<?php', '<?=', '?>'], ['<?php ', '<?= ', ' ?>'], $code));
 }
 
 function getArrayValue($var, $name, $arrayIndex, $isset = false){
@@ -299,13 +299,12 @@ function cutSimpleText($text, $len){
 	}
 	$text = substr($text, 0, $len);
 	//cut to last whitespace, if any.
-	return substr($text, 0, max(array(
-			strrpos($text, ' '),
+	return substr($text, 0, max([strrpos($text, ' '),
 			strrpos($text, '.'),
 			strrpos($text, ','),
 			strrpos($text, "\n"),
 			strrpos($text, "\t"),
-		))? : $len
+		])? : $len
 	);
 }
 
@@ -379,7 +378,7 @@ function we_getDocForTag($docAttr, $maindefault = false){
 }
 
 function modulFehltError($modul, $tag){
-	return parseError(sprintf(g_l('parser', '[module_missing]'), $modul, str_replace(array('we_tag_', 'we_parse_tag_'), '', $tag)));
+	return parseError(sprintf(g_l('parser', '[module_missing]'), $modul, str_replace(['we_tag_', 'we_parse_tag_'], '', $tag)));
 }
 
 function parseError($text, $extra = ''){
@@ -388,9 +387,9 @@ function parseError($text, $extra = ''){
 }
 
 function attributFehltError($attribs, $attrs, $tag, $canBeEmpty = false){
-	$tag = str_replace(array('we_tag_', 'we_parse_tag_'), '', $tag);
+	$tag = str_replace(['we_tag_', 'we_parse_tag_'], '', $tag);
 	if(!is_array($attrs)){
-		$attrs = array($attrs => $canBeEmpty);
+		$attrs = [$attrs => $canBeEmpty];
 	}
 	foreach($attrs as $attr => $canBeEmpty){
 		if($canBeEmpty){
@@ -491,16 +490,15 @@ function we_getSelectField($name, $value, $values, array $attribs = [], $addMiss
 	foreach($options as $option){
 		$opt = oldHtmlspecialchars($option, -1, 'ISO-8859-1', false);
 		if($option == $value){
-			$content .= getHtmlTag('option', array('value' => $opt, 'selected' => 'selected'), $opt, true);
+			$content .= getHtmlTag('option', ['value' => $opt, 'selected' => 'selected'], $opt, true);
 			$isin = 1;
 		} else {
-			$content .= getHtmlTag('option', array('value' => $opt), $opt, true);
+			$content .= getHtmlTag('option', ['value' => $opt], $opt, true);
 		}
 	}
 	if((!$isin) && $addMissing && $value != ''){
-		$content .= getHtmlTag('option', array(
-			'value' => oldHtmlspecialchars($value), 'selected' => 'selected'
-			), oldHtmlspecialchars($value), true);
+		$content .= getHtmlTag('option', ['value' => oldHtmlspecialchars($value), 'selected' => 'selected'
+			], oldHtmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
 }

@@ -40,11 +40,11 @@ function we_tag_categorySelect(array $attribs, $content){
 	$values = '';
 	if($isuserinput && $GLOBALS['WE_FORM']){
 		$objekt = isset($GLOBALS['we_object'][$GLOBALS['WE_FORM']]) ?
-				$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
-				(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
-						$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
-						(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] :
-								false));
+			$GLOBALS['we_object'][$GLOBALS['WE_FORM']] :
+			(isset($GLOBALS['we_document'][$GLOBALS['WE_FORM']]) ?
+				$GLOBALS['we_document'][$GLOBALS['WE_FORM']] :
+				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc'] :
+					false));
 		if($objekt){
 			$values = $objekt->Category;
 		}
@@ -55,8 +55,8 @@ function we_tag_categorySelect(array $attribs, $content){
 	} else {
 		// Bug Fix #750
 		$valuesArray = (isset($GLOBALS[$name]) && is_array($GLOBALS[$name])) ?
-				$GLOBALS[$name] :
-				explode(',', $GLOBALS[$name]);
+			$GLOBALS[$name] :
+			explode(',', $GLOBALS[$name]);
 	}
 
 	$attribs['name'] = $name;
@@ -66,15 +66,15 @@ function we_tag_categorySelect(array $attribs, $content){
 		$attribs['name'] .= '[]';
 		$attribs['multiple'] = 'multiple';
 	} else {
-		$attribs = removeAttribs($attribs, array('size', 'multiple'));
+		$attribs = removeAttribs($attribs, ['size', 'multiple']);
 	}
 
-	$attribs = removeAttribs($attribs, array('showpath', 'rootdir', 'firstentry', 'type', 'shopCat'));
+	$attribs = removeAttribs($attribs, ['showpath', 'rootdir', 'firstentry', 'type', 'shopCat']);
 
 	$content = trim($content);
 	if(!$content){
 		if($firstentry){
-			$content .= getHtmlTag('option', array('value' => ($fromTag === 'shopcategory' ? 0 : '')), $firstentry);
+			$content .= getHtmlTag('option', ['value' => ($fromTag === 'shopcategory' ? 0 : '')], $firstentry);
 		}
 		$db = $GLOBALS['DB_WE'];
 		$dbfield = $showpath || $indent ? 'Path' : 'Category';
@@ -86,14 +86,13 @@ function we_tag_categorySelect(array $attribs, $content){
 		while($db->next_record()){
 			$deep = count(explode('/', $db->f('Path'))) - 2;
 			$field = ($rootdir && ($rootdir != '/') && $showpath ?
-							preg_replace('|^' . preg_quote($rootdir, '|') . '|', '', $db->f($dbfield)) :
-							$db->f($dbfield));
+					preg_replace('|^' . preg_quote($rootdir, '|') . '|', '', $db->f($dbfield)) :
+					$db->f($dbfield));
 
 			if($field){
-				$content .= getHtmlTag('option', array(
-					'value' => $db->f($valueField),
+				$content .= getHtmlTag('option', ['value' => $db->f($valueField),
 					(in_array($db->f($valueField), $valuesArray) ? 'selected' : null) => 'selected'
-						), str_repeat($indent, $deep) . $field);
+					], str_repeat($indent, $deep) . $field);
 			}
 		}
 	} else {

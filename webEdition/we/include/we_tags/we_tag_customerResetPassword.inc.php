@@ -97,7 +97,7 @@ function we_tag_customerResetPassword(array $attribs, $content = '', $internal =
 				return;
 			}
 
-			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter(array('Password' => we_customer_customer::cryptPassword(we_base_request::_(we_base_request::STRING, 's', '', 'Password')))) . ' WHERE ID=' . $uid);
+			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter(['Password' => we_customer_customer::cryptPassword(we_base_request::_(we_base_request::STRING, 's', '', 'Password'))]) . ' WHERE ID=' . $uid);
 			$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK;
 //finally remove any entries of failed logins so the user can login
 			$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_SESSION['webuser']['Username']) . '"');
@@ -114,13 +114,12 @@ function we_tag_customerResetPassword(array $attribs, $content = '', $internal =
 			}
 			$pwd = we_base_request::_(we_base_request::STRING, 's', '', 'Password');
 			$_SESSION['webuser']['WE_token'] = substr(md5(uniqid('', true)), 0, 25);
-			$GLOBALS['DB_WE']->query('REPLACE INTO ' . PWDRESET_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'ID' => $uid,
+			$GLOBALS['DB_WE']->query('REPLACE INTO ' . PWDRESET_TABLE . ' SET ' . we_database_base::arraySetter(['ID' => $uid,
 					'UserTable' => ($internal ? 'tblUser' : 'tblWebUser'),
 					'password' => $pwd ? we_customer_customer::cryptPassword($pwd) : '',
 					'expires' => sql_function('NOW()+ INTERVAL ' . intval(weTag_getAttribute('expireToken', $attribs, 3600, we_base_request::INT)) . ' SECOND'),
 					'token' => $_SESSION['webuser']['WE_token']
-			)));
+			]));
 			$GLOBALS['ERROR']['customerResetPassword'] = we_customer_customer::PWD_ALL_OK;
 
 			break;

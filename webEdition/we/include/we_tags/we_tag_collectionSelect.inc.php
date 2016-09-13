@@ -19,15 +19,15 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 /*
-function we_parse_tag_collection($attribs, $content){
-	return '';
-}
-*/
+  function we_parse_tag_collection($attribs, $content){
+  return '';
+  }
+ */
 function we_tag_collectionSelect(array $attribs){
 	if($GLOBALS['we_editmode']){
 		$name = weTag_getAttribute('name', $attribs, 0, we_base_request::STRING);
 		// FIXME: why does he return when condition "!$name" is missing?
-		if((!$name && $foo = attributFehltError($attribs, array('name'), __FUNCTION__))){
+		if((!$name && $foo = attributFehltError($attribs, ['name'], __FUNCTION__))){
 			return $foo;
 		}
 
@@ -42,7 +42,7 @@ function we_tag_collectionSelect(array $attribs){
 		$open = we_html_button::create_button(we_html_button::VIEW, "javascript:if(document.forms[0].elements['" . $idname . "'].value){WE().layout.weEditorFrameController.openDocument('" . VFILE_TABLE . "', document.forms[0].elements['" . $idname . "'].value,'');}");
 		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo();opener.we_cmd('reload_editpage');opener._EditorFrame.setEditorIsHot(true);");
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname. "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")"); //FIXME: permissions in collections
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','" . $wecmdenc3 . "','','" . $rootDirID . "',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")"); //FIXME: permissions in collections
 
 		$yuiSuggest = &weSuggest::getInstance();
 		$yuiSuggest->setAcId($name . we_base_file::getUniqueId(), f('SELECT Path FROM ' . VFILE_TABLE . ' WHERE ID=' . $rootDirID));

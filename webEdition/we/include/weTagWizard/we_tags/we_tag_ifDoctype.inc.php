@@ -1,5 +1,4 @@
 <?php
-
 //NOTE you are inside the constructor of weTagData.class.php
 
 $this->NeedsEndTag = true;
@@ -13,9 +12,10 @@ $docTypes = [];
 while($db->next_record()){
 	$docTypes[] = new weTagDataOption($db->f('DocType'));
 }
-$this->Attributes[] = new weTagData_choiceAttribute('doctypes', $docTypes, false, true, '');
-
-$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top'),
-	new weTagDataOption('self'),
-	new weTagDataOption('listview'),
-	), false, '');
+$this->Attributes = [
+	new weTagData_choiceAttribute('doctypes', $docTypes, false, true, ''),
+	new weTagData_selectAttribute('doc', [new weTagDataOption('top'),
+		new weTagDataOption('self'),
+		new weTagDataOption('listview'),
+		], false, ''),
+];

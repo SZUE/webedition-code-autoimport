@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_checkForm($attribs, $content, array $arr){
-	if(($foo = attributFehltError($arr, array('match' => false, 'type' => false), __FUNCTION__))){
+	if(($foo = attributFehltError($arr, ['match' => false, 'type' => false], __FUNCTION__))){
 		return $foo;
 	}
 
@@ -42,7 +42,7 @@ function we_tag_checkForm(array $attribs, $content){
 	}
 
 	//  check required Fields
-	if(($missingAttrib = attributFehltError($attribs, array("match" => false, 'type' => false), __FUNCTION__))){
+	if(($missingAttrib = attributFehltError($attribs, ["match" => false, 'type' => false], __FUNCTION__))){
 		echo $missingAttrib;
 		return '';
 	}
@@ -103,7 +103,7 @@ pwError = weCheckFormPassword(formular, password);
 	if($jsIncludePath){
 
 		if(is_numeric($jsIncludePath)){
-			$jsEventHandler = we_tag('js', array('id' => $jsIncludePath, 'xml' => $xml));
+			$jsEventHandler = we_tag('js', ['id' => $jsIncludePath, 'xml' => $xml]);
 			if(!$jsEventHandler){
 				return parseError(g_l('parser', '[checkForm_jsIncludePath_not_found]'));
 			}

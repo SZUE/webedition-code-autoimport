@@ -37,7 +37,7 @@ function we_parse_tag_block($attribs, $content, array $arr){
 	$content = preg_replace('|([^\'"])\\\\\$|', '${1}\$', $content);
 
 	$blockName = weTag_getParserAttribute('name', $arr);
-	$name = str_replace(array('$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9), '', md5($blockName)) . $GLOBALS['blkCnt'];
+	$name = str_replace(['$', '.', '/', 0, 1, 2, 3, 4, 5, 6, 7, 8, 9], '', md5($blockName)) . $GLOBALS['blkCnt'];
 
 
 	if(($content = str_replace('we_tag_blockControls("##blockControlsREPL##"', 'we_tag_blockControls($block_' . $name, $content, $count)) && $count){
@@ -45,7 +45,7 @@ function we_parse_tag_block($attribs, $content, array $arr){
 	} else {
 		$content = (preg_match('/< ?(tr|td)/i', $content) ?
 				//table found
-				strtr(preg_replace('|(< ?td[^>]*>)|si', '${1}' . '<?php we_tag_blockControls($block_' . $name . ');?>', strtr($content, array('=>' => '#####PHPCALSSARROW####', '?>' => '#####PHPENDBRACKET####')), 1), array('#####PHPCALSSARROW####' => '=>', '#####PHPENDBRACKET####' => '?>')) :
+				strtr(preg_replace('|(< ?td[^>]*>)|si', '${1}' . '<?php we_tag_blockControls($block_' . $name . ');?>', strtr($content, ['=>' => '#####PHPCALSSARROW####', '?>' => '#####PHPENDBRACKET####']), 1), ['#####PHPCALSSARROW####' => '=>', '#####PHPENDBRACKET####' => '?>']) :
 				//no tables found
 				'<?php we_tag_blockControls($block_' . $name . ');?>' . $content
 			);
@@ -80,9 +80,8 @@ function we_condition_tag_block(&$block){
 
 	$GLOBALS['postTagName'] = 'blk_' . $block['name'] . '_' . $block['list'][$block['pos']];
 
-	$GLOBALS['we_position']['block'][$block['name']] = array(
-		'position' => $block['pos'] + 1,
-		'size' => $block['listSize']);
+	$GLOBALS['we_position']['block'][$block['name']] = ['position' => $block['pos'] + 1,
+		'size' => $block['listSize']];
 	return true;
 }
 
@@ -127,13 +126,12 @@ function we_tag_block(array $attribs){
 			$listlen = min($listlen, $limit);
 		}
 	}
-	return array(
-		'name' => $name,
+	return ['name' => $name,
 		'list' => $list,
 		'listSize' => $listlen,
 		'ctlShow' => $show,
 		'ctlShowSelect' => weTag_getAttribute('showselect', $attribs, true, we_base_request::BOOL),
 		'pos' => -1,
 		'lastPostName' => isset($GLOBALS['postTagName']) ? $GLOBALS['postTagName'] : '',
-	);
+	];
 }

@@ -9,14 +9,14 @@ $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $id = new weTagData_selectorAttribute('id', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 $name = new weTagData_textAttribute('name', false, '');
 $nameid = new weTagData_textAttribute('nameid', false, '');
-$method = new weTagData_selectAttribute('method', array(new weTagDataOption('get'),
+$method = new weTagData_selectAttribute('method', [new weTagDataOption('get'),
 	new weTagDataOption('post'),
-	), false, '');
-$target = new weTagData_choiceAttribute('target', array(new weTagDataOption('_top'),
+	], false, '');
+$target = new weTagData_choiceAttribute('target', [new weTagDataOption('_top'),
 	new weTagDataOption('_parent'),
 	new weTagDataOption('_self'),
 	new weTagDataOption('_blank'),
-	), false, false, '');
+	], false, false, '');
 $recipient = new weTagData_textAttribute('recipient', true, '');
 $onsuccess = new weTagData_selectorAttribute('onsuccess', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
 $onerror = new weTagData_selectorAttribute('onerror', FILE_TABLE, we_base_ContentTypes::WEDOCUMENT, false, '');
@@ -28,9 +28,9 @@ $charset = new weTagData_textAttribute('charset', false, '');
 $order = new weTagData_textAttribute('order', false, '');
 $required = new weTagData_textAttribute('required', false, '');
 $remove = new weTagData_textAttribute('remove', false, '');
-$mimetype = new weTagData_selectAttribute('mimetype', array(new weTagDataOption('text/plain'),
+$mimetype = new weTagData_selectAttribute('mimetype', [new weTagDataOption('text/plain'),
 	new weTagDataOption('text/html'),
-	), false, '');
+	], false, '');
 $confirmmail = new weTagData_selectAttribute('confirmmail', weTagData_selectAttribute::getTrueFalse(), false, '');
 $forcefrom = new weTagData_selectAttribute('forcefrom', weTagData_selectAttribute::getTrueFalse(), false, '');
 $preconfirm = new weTagData_textAttribute('preconfirm', false, '');
@@ -41,9 +41,9 @@ $tid = (defined('TEMPLATES_TABLE') ? new weTagData_selectorAttribute('tid', TEMP
 $classid = (defined('OBJECT_TABLE') ? new weTagData_selectorAttribute('classid', OBJECT_TABLE, 'object', false, 'object') : null);
 $parentid = (defined('OBJECT_FILES_TABLE') ? new weTagData_selectorAttribute('parentid', OBJECT_FILES_TABLE, weTagData_selectorAttribute::FOLDER, false, '') : null);
 $xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
-$enctype = new weTagData_selectAttribute('enctype', array(new weTagDataOption('application/x-www-form-urlencoded'),
+$enctype = new weTagData_selectAttribute('enctype', [new weTagDataOption('application/x-www-form-urlencoded'),
 	new weTagDataOption('multipart/form-data'),
-	), false, '');
+	], false, '');
 
 if(defined('FORMMAIL_VIAWEDOC') && FORMMAIL_VIAWEDOC == 1){
 	$this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption('-', false, '', [$id, $name, $nameid, $method, $target, $enctype], []),

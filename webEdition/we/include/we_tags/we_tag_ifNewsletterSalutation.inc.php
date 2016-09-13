@@ -19,11 +19,11 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_ifNewsletterSalutation(array $attribs){
-	if(($foo = attributFehltError($attribs, array('type' => true, 'match' => false), __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, ['type' => true, 'match' => false], __FUNCTION__))){
 		echo $foo;
 		return false;
 	}
 	$match = weTag_getParserAttribute('match', $attribs);
-	$atts = removeAttribs($attribs, array('match'));
+	$atts = removeAttribs($attribs, ['match']);
 	return (we_tag('newsletterSalutation', $atts) == $match);
 }

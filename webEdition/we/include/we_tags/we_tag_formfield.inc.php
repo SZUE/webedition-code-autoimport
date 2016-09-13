@@ -42,9 +42,8 @@ function we_tag_formfield(array $attribs){
 	// here add some mandatory fields
 	$mandatoryFields = [];
 	if($xml){
-		$mandatoryFields = array(
-			'textarea_cols', 'textarea_rows'
-		);
+		$mandatoryFields = ['textarea_cols', 'textarea_rows'
+		];
 	}
 	$m = [];
 	foreach($attribs as $k => $v){
@@ -187,7 +186,7 @@ function we_tag_formfield(array $attribs){
 
 	$tagEndTag = false;
 
-	$tagAtts = removeAttribs($attribs, array('doc', 'type', 'attribs'));
+	$tagAtts = removeAttribs($attribs, ['doc', 'type', 'attribs']);
 	$tagAtts['name'] = oldHtmlspecialchars($GLOBALS['we_doc']->getElement($attribs['name'], 'ffname'));
 
 	$tagContent = '';
@@ -236,11 +235,10 @@ function we_tag_formfield(array $attribs){
 			break;
 		case 'select':
 			$selected = $GLOBALS['we_doc']->getElement($name, 'ffdefault');
-			$foo = explode("<_BR_>", str_replace(array("\r\n", "\r", "\n",), '<_BR_>', $GLOBALS['we_doc']->getElement($name, 'ffvalues')));
+			$foo = explode("<_BR_>", str_replace(["\r\n", "\r", "\n",], '<_BR_>', $GLOBALS['we_doc']->getElement($name, 'ffvalues')));
 			foreach($foo as $v){
-				$atts = array(
-					'value' => oldHtmlspecialchars(trim($v))
-				);
+				$atts = ['value' => oldHtmlspecialchars(trim($v))
+				];
 				if($selected == $v){
 					$atts['selected'] = 'selected';
 				}
@@ -318,12 +316,11 @@ function we_tag_formfield(array $attribs){
 			$tagName = 'select';
 			break;
 		case 'file':
-			$ret = getHtmlTag('input', array(
-				'type' => 'hidden',
+			$ret = getHtmlTag('input', ['type' => 'hidden',
 				'name' => 'MAX_FILE_SIZE',
 				'value' => oldHtmlspecialchars($GLOBALS['we_doc']->getElement($name, 'ffmaxfilesize')),
 				'xml' => $xml
-			));
+			]);
 			break;
 	}
 	return getHtmlTag($tagName, $tagAtts, $tagContent, $tagEndTag) . $ret;

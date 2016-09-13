@@ -7,4 +7,4 @@ $this->NeedsEndTag = false;
 //$this->Module = '';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 
-$this->Attributes[] = new weTagData_selectAttribute('doc', array(new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('listview', false, '')), false, '');
+$this->Attributes[] = new weTagData_selectAttribute('doc', [new weTagDataOption('top', false, ''), new weTagDataOption('self', false, ''), new weTagDataOption('listview', false, '')], false, '');

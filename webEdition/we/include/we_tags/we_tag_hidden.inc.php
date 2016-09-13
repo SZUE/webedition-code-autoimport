@@ -44,5 +44,5 @@ function we_tag_hidden(array $attribs){
 			break;
 	}
 
-	return getHtmlTag('input', array('type' => 'hidden', 'name' => $name, 'value' => $value, 'xml' => $xml));
+	return getHtmlTag('input', ['type' => 'hidden', 'name' => $name, 'value' => $value, 'xml' => $xml]);
 }

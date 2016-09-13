@@ -24,7 +24,7 @@
  */
 function we_parse_tag_calculate($a, $content, array $attribs){
 	$attribs['_type'] = 'stop';
-	return '<?php ' . we_tag_tagParser::printTag('calculate', array('_type' => 'start')) . ';?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('calculate', $attribs) . ');?>';
+	return '<?php ' . we_tag_tagParser::printTag('calculate', ['_type' => 'start']) . ';?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('calculate', $attribs) . ');?>';
 }
 
 function we_tag_calculate(array $attribs, $content){

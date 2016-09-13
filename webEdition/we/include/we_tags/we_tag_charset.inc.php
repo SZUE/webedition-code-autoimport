@@ -26,10 +26,9 @@ function we_tag_charset(array $attribs, $content){
 	$content = !empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $content;
 	if(!empty($GLOBALS['we_editmode']) && $GLOBALS['we_doc']->EditPageNr === we_base_constants::WE_EDITPAGE_PROPERTIES){
 		//set meta data & exit
-		$GLOBALS['meta']['Charset'] = array(
-			'default' => $content,
+		$GLOBALS['meta']['Charset'] = ['default' => $content,
 			'defined' => weTag_getAttribute('defined', $attribs, '', we_base_request::STRING),
-		);
+		];
 		return;
 	}
 
