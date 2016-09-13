@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_shopField(array $attribs){
-	if(($foo = attributFehltError($attribs, array('name' => false, "reference" => false, "shopname" => false), __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, ['name' => false, "reference" => false, "shopname" => false], __FUNCTION__))){
 		return $foo;
 	}
 
@@ -47,14 +47,14 @@ function we_tag_shopField(array $attribs){
 	$mode = weTag_getAttribute('mode', $attribs, '', we_base_request::STRING);
 
 	$fieldname = ($reference === 'article' ? WE_SHOP_ARTICLE_CUSTOM_FIELD : WE_SHOP_CART_CUSTOM_FIELD) . '[' . $name . ']';
-	
+
 	$isFieldForCheckBox = false;
 
 	if($reference === 'article'){ // name depends on value
 		$savedVal = (!$shopname) ? we_base_request::_(we_base_request::HTML, WE_SHOP_ARTICLE_CUSTOM_FIELD, '', $name) : '';
 		// does not exist here - we are only in article - custom fields are not stored on documents
 
-		if(isset($GLOBALS['lv']) && ($tmpVal = we_tag('field', array('name' => $name)))){
+		if(isset($GLOBALS['lv']) && ($tmpVal = we_tag('field', ['name' => $name]))){
 			$savedVal = $tmpVal;
 			unset($tmpVal);
 		}
@@ -63,7 +63,7 @@ function we_tag_shopField(array $attribs){
 		$isFieldForCheckBox = isset($GLOBALS[$shopname]) ? $GLOBALS[$shopname]->hasCartField($name) : false;
 	}
 
-	$atts = removeAttribs($attribs, array('name', 'reference', 'shopname', 'type', 'values', 'value', 'checked', 'mode'));
+	$atts = removeAttribs($attribs, ['name', 'reference', 'shopname', 'type', 'values', 'value', 'checked', 'mode']);
 
 	if($type != 'checkbox' && $type != 'choice' && $type != 'radio' && $value){
 		// value is compared to saved value in some cases
@@ -75,7 +75,7 @@ function we_tag_shopField(array $attribs){
 
 	switch($type){
 		case "checkbox":
-			$atts = removeAttribs($atts, array('size'));
+			$atts = removeAttribs($atts, ['size']);
 			//$atts['name'] = $fieldname; changed to $tnpname because of new hidden field #6544
 			//we_getInputCheckboxField() not possible because sessionField type="checkbox" has a mandatory value
 			$tmpname = md5(uniqid(__FUNCTION__, true)); // #6590, changed from: uniqid(time())
@@ -94,7 +94,7 @@ function we_tag_shopField(array $attribs){
 			return we_html_tools::htmlInputChoiceField($fieldname, $savedVal, $values, $atts, $mode);
 
 		case 'hidden':
-			$atts = removeAttribs($atts, array('reference'));
+			$atts = removeAttribs($atts, ['reference']);
 			$atts['name'] = $fieldname;
 			$atts['value'] = $savedVal;
 			return getHtmlTag('hidden', $atts);
@@ -121,7 +121,7 @@ function we_tag_shopField(array $attribs){
 			return we_getSelectField($fieldname, $savedVal, $values, $atts, false);
 
 		case 'country':
-			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'checked', 'mode'));
+			$newAtts = removeAttribs($attribs, ['name', 'type', 'value', 'values', 'checked', 'mode']);
 			$newAtts['name'] = 'we_sscf[' . $name . ']';
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 			$doc = we_getDocForTag($docAttr);
@@ -167,7 +167,7 @@ function we_tag_shopField(array $attribs){
 			return getHtmlTag('select', $newAtts, $content, true);
 
 		case 'language':
-			$newAtts = removeAttribs($attribs, array('name', 'type', 'value', 'values', 'checked', 'mode'));
+			$newAtts = removeAttribs($attribs, ['name', 'type', 'value', 'values', 'checked', 'mode']);
 			$newAtts['name'] = 'we_sscf[' . $name . ']';
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 			$doc = we_getDocForTag($docAttr);

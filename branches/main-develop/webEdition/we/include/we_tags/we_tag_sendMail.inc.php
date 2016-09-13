@@ -49,7 +49,7 @@ function _getMails($to){
 }
 
 function we_tag_sendMail(array $attribs, $content){
-	if(($foo = attributFehltError($attribs, array('recipient' => false, 'from' => false), __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, ['recipient' => false, 'from' => false], __FUNCTION__))){
 		return $foo;
 	}
 

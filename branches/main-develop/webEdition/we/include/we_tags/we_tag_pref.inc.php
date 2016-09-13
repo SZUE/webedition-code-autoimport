@@ -19,14 +19,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_pref(array $attribs){
-	if(($foo = attributFehltError($attribs, array('type' => false, 'name' => false), __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, ['type' => false, 'name' => false], __FUNCTION__))){
 		return $foo;
 	}
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 
 	switch(($type = weTag_getAttribute('type', $attribs, '', we_base_request::STRING))){
 		case 'shop':
-			if(($foo = attributFehltError($attribs, array('field' => false), __FUNCTION__))){
+			if(($foo = attributFehltError($attribs, ['field' => false], __FUNCTION__))){
 				return $foo;
 			}
 			$field = weTag_getAttribute('field', $attribs, '', we_base_request::STRING);

@@ -45,8 +45,8 @@ function we_tag_select(array $attribs, $content){
 			$content = '';
 			foreach($vals as $cur){
 				$content.=($cur == $val ?
-						getHtmlTag('option', array('value' => $cur, 'selected' => 'selected'), $cur, true) :
-						getHtmlTag('option', array('value' => $cur), $cur, true)
+						getHtmlTag('option', ['value' => $cur, 'selected' => 'selected'], $cur, true) :
+						getHtmlTag('option', ['value' => $cur], $cur, true)
 					);
 			}
 			break;
@@ -61,7 +61,7 @@ function we_tag_select(array $attribs, $content){
 			}
 			break;
 	}
-	$attribs = removeAttribs($attribs, array('reload', 'value', '_name_orig', 'type', 'values')); //	not html - valid
+	$attribs = removeAttribs($attribs, ['reload', 'value', '_name_orig', 'type', 'values']); //	not html - valid
 	$attribs['class'] = "defaultfont";
 	$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 	$attribs['onchange'] = '_EditorFrame.setEditorIsHot(true);' . ($onchange ? : "") . ';' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '');

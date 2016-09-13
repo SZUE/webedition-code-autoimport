@@ -300,39 +300,33 @@ function checkAndCreateBinary($formname, $type = 'we_document'){
 	$webuserId = !empty($_SESSION['webuser']['registered']) && !empty($_SESSION['webuser']['ID']) ? $_SESSION['webuser']['ID'] : 0;
 	$regs = [];
 
-	$checks = array(
-		'BINARY' => array(
-			'we_otherDocument',
+	$checks = ['BINARY' => ['we_otherDocument',
 			'application/',
 			we_base_ContentTypes::APPLICATION,
 			'application',
 			[]
-		),
-		'FLASHMOVIE' => array(
-			'we_flashDocument',
+		],
+		'FLASHMOVIE' => ['we_flashDocument',
 			we_base_ContentTypes::FLASH,
 			we_base_ContentTypes::FLASH,
 			'image',
-			array(
-				'width' => 'imgwidth',
+			['width' => 'imgwidth',
 				'height' => 'imgheight',
 				'origwidth' => 'imgwidth',
 				'origheight' => 'imgheight'
-			)
-		),
-		'IMG' => array(
-			'we_imageDocument',
+			]
+		],
+		'IMG' => ['we_imageDocument',
 			'image/',
 			we_base_ContentTypes::IMAGE,
 			'image',
-			array(
-				'width' => 'imgwidth',
+			['width' => 'imgwidth',
 				'height' => 'imgheight',
 				'origwidth' => 'imgwidth',
 				'origheight' => 'imgheight'
-			)
-		),
-	);
+			]
+		],
+	];
 	foreach($_REQUEST as $key => $dataID){
 		$doc = '';
 		foreach($checks as $check => $checkData){

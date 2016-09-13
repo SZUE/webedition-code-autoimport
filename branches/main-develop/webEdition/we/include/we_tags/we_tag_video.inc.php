@@ -25,7 +25,7 @@
 function we_tag_video(array $attribs){
 	$lid = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
-	if(!($lid || $name) && ($foo = attributFehltError($attribs, array('name' => false, 'id' => false), __FUNCTION__))){
+	if(!($lid || $name) && ($foo = attributFehltError($attribs, ['name' => false, 'id' => false], __FUNCTION__))){
 		return $foo;
 	}
 	$showcontrol = weTag_getAttribute('showcontrol', $attribs, true, we_base_request::BOOL);
@@ -41,7 +41,7 @@ function we_tag_video(array $attribs){
 
 	$out = ($GLOBALS['we_editmode'] && !$showvideo ?
 			'' :
-			$GLOBALS['we_doc']->getField(removeAttribs($attribs, array('showvideo', 'parentid', 'startid', 'showcontrol')), 'video') );
+			$GLOBALS['we_doc']->getField(removeAttribs($attribs, ['showvideo', 'parentid', 'startid', 'showcontrol']), 'video') );
 
 	if($showcontrol && $GLOBALS['we_editmode']){
 		$startid = weTag_getAttribute('startid', $attribs, 0, we_base_request::INT);

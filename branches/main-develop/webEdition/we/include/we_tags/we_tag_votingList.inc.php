@@ -28,7 +28,7 @@ function we_parse_tag_votingList($a, $content, array $attribs){
 	}
 
 	$attribs['_type'] = 'start';
-	return '<?php ' . we_tag_tagParser::printTag('votingList', $attribs) . '; ?>' . $content . '<?php ' . we_tag_tagParser::printTag('votingList', array('_type' => 'stop')) . ';?>';
+	return '<?php ' . we_tag_tagParser::printTag('votingList', $attribs) . '; ?>' . $content . '<?php ' . we_tag_tagParser::printTag('votingList', ['_type' => 'stop']) . ';?>';
 }
 
 function we_tag_votingList(array $attribs){

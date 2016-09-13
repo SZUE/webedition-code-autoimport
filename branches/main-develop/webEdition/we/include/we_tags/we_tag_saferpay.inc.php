@@ -195,17 +195,15 @@ function we_tag_saferpay(array $attribs){
 				$_SESSION['webuser'] : false);
 
 		if($shipping === ''){
-			$cartField[WE_SHOP_SHIPPING] = array(
-				'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
+			$cartField[WE_SHOP_SHIPPING] = ['costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
 				'isNet' => $weShippingControl->isNet,
 				'vatRate' => $weShippingControl->vatRate
-			);
+			];
 		} else {
-			$cartField[WE_SHOP_SHIPPING] = array(
-				'costs' => $shipping,
+			$cartField[WE_SHOP_SHIPPING] = ['costs' => $shipping,
 				'isNet' => $shippingIsNet,
 				'vatRate' => $shippingVatRate
-			);
+			];
 		}
 
 
@@ -222,7 +220,7 @@ function we_tag_saferpay(array $attribs){
 
 ########################### submit starts here #########################
 
-		$attributes = array("-a", "AMOUNT", (int) $strAmount,
+		$attributes = ["-a", "AMOUNT", (int) $strAmount,
 			"-a", "CURRENCY", $currency,
 			"-a", "DESCRIPTION", $desc,
 			"-a", "ALLOWCOLLECT", $allowColl,
@@ -235,7 +233,7 @@ function we_tag_saferpay(array $attribs){
 			"-a", "PROVIDERSET", $providerset,
 			"-a", "LANGID", $langID,
 			"-a", "NOTIFYADDRESS", $notifyAddr
-		);
+		];
 
 
 		$_SESSION['strAmount'] = $strAmount;
@@ -283,7 +281,7 @@ function we_tag_saferpay(array $attribs){
 
 			/* get the payinit URL */
 			$fp = popen($command, "r");
-			$payinit_url = str_replace(array("\n", "\r"), '', fread($fp, 4096));
+			$payinit_url = str_replace(["\n", "\r"], '', fread($fp, 4096));
 		}
 
 		if($payinit_url){

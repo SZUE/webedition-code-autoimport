@@ -25,7 +25,7 @@
 function we_parse_tag_listdir($attribs, $content){
 	return '<?php
 		' . we_tag_tagParser::printTag('listdir', $attribs) . ';
-while(' . we_tag_tagParser::printTag('listdir', array('_internal' => true)) . '){
+while(' . we_tag_tagParser::printTag('listdir', ['_internal' => true]) . '){
 	?>' . $content . '<?php
 }
 unset($GLOBALS[\'we_position\'][\'listdir\']);
@@ -43,12 +43,11 @@ function we_tag_listdir(array $attribs){
 		$GLOBALS['lv']->field = $we_locfile['Text'];
 		$GLOBALS['lv']->ID = $we_locfile['ID'];
 		$GLOBALS['lv']->Path = $we_locfile['Path'];
-		$GLOBALS['we_position']['listdir'] = array(
-			'position' => $pos + 1,
+		$GLOBALS['we_position']['listdir'] = ['position' => $pos + 1,
 			'size' => count($files),
 			'field' => $we_locfile['Text'],
 			'id' => $we_locfile['ID'],
-			'path' => $we_locfile['Path']);
+			'path' => $we_locfile['Path']];
 		return true;
 	}
 	$files = [];
@@ -77,15 +76,14 @@ FROM ' . FILE_TABLE . ' f WHERE ((Published>0 ' . ($searchable ? 'AND IsSearchab
 				$db->f('ID'));
 
 		if($id){
-			$files[] = array(
-				'ID' => $db->f('ID'),
+			$files[] = ['ID' => $db->f('ID'),
 				'Path' => $db->f('Path'),
 				'Text' => $db->f('Text'),
 				'sort' => $db->f('sort'),
-			);
+			];
 		}
 	}
-	$GLOBALS['we_position']['listdir'] = array('position' => 0);
+	$GLOBALS['we_position']['listdir'] = ['position' => 0];
 	//Fake listview
 	$GLOBALS['lv'] = new stdClass();
 	we_pre_tag_listview();

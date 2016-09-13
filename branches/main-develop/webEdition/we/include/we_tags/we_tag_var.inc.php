@@ -42,7 +42,7 @@ function we_tag_var(array $attribs){
 	$doc = we_getDocForTag($docAttr, false);
 	$varType = weTag_getAttribute('varType', $attribs, we_base_request::STRING, we_base_request::STRING);
 	$prepareSQL = weTag_getAttribute('prepareSQL', $attribs, false, true);
-	$attribs = removeAttribs($attribs, array('varType', 'prepareSQL', 'htmlspecialchars',));
+	$attribs = removeAttribs($attribs, ['varType', 'prepareSQL', 'htmlspecialchars',]);
 
 	switch($type){
 		case 'session' :

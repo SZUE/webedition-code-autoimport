@@ -24,9 +24,8 @@
  */
 function we_tag_keywords(array $attribs, $content){
 	$htmlspecialchars = weTag_getAttribute('htmlspecialchars', $attribs, false, we_base_request::BOOL);
-	$attribs = removeAttribs($attribs, array(
-		'htmlspecialchars'
-	));
+	$attribs = removeAttribs($attribs, ['htmlspecialchars'
+	]);
 
 	$keys = !empty($GLOBALS['KEYWORDS']) ? $GLOBALS['KEYWORDS'] : '';
 	if(!$keys && $content){

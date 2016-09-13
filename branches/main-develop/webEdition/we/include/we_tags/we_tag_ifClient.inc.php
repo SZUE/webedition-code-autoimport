@@ -62,7 +62,7 @@ function we_tag_ifClient(array $attribs){
 			default://old behaviour
 				//FIXME: add to deprecated, remove in 7.0.1
 				$versionMatched = true;
-				$ver = str_replace(array('up', 'down', 'eq'), array('>=', '<', '=='), $version);
+				$ver = str_replace(['up', 'down', 'eq'], ['>=', '<', '=='], $version);
 
 				if(strpos($ver, '==') !== false){
 					eval('$versionMatched=(' . floor(floatval($brv)) . $ver . ');');

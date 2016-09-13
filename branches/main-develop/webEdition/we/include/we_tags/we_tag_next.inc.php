@@ -23,13 +23,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_next($attribs, $content){
-	return '<?php printElement(' . we_tag_tagParser::printTag('next', $attribs) . ');?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('next', array('_type' => 'stop')) . ');?>';
+	return '<?php printElement(' . we_tag_tagParser::printTag('next', $attribs) . ');?>' . $content . '<?php printElement(' . we_tag_tagParser::printTag('next', ['_type' => 'stop']) . ');?>';
 }
 
 function we_tag_next(array $attribs){
 	switch(weTag_getAttribute('_type', $attribs, '', we_base_request::STRING)){
 		default:
-			$attribs = removeAttribs($attribs, array('_type'));
+			$attribs = removeAttribs($attribs, ['_type']);
 			if(isset($GLOBALS['_we_voting_list'])){
 				return $GLOBALS['_we_voting_list']->getNextLink($attribs);
 			}

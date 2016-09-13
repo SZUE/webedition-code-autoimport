@@ -31,7 +31,7 @@ function we_tag_ifVotingField(array $attribs){
 	$operator = weTag_getAttribute('operator', $attribs, '', we_base_request::RAW);
 	$match = weTag_getAttribute('match', $attribs, '', we_base_request::RAW);
 
-	$atts = removeAttribs($attribs, array('match', 'operator'));
+	$atts = removeAttribs($attribs, ['match', 'operator']);
 	$realvalue = we_tag('votingField', $atts);
 
 	switch($operator){

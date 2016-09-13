@@ -71,13 +71,12 @@ function we_tag_writeShopData(array $attribs){
 
 	$DB_WE = $GLOBALS['DB_WE'];
 
-	$DB_WE->lock(array(
-		SHOP_TABLE => 'write',
+	$DB_WE->lock([SHOP_TABLE => 'write',
 		ERROR_LOG_TABLE => 'write',
 		WE_SHOP_VAT_TABLE => 'read',
 		CATEGORY_TABLE => 'read',
 		SETTINGS_TABLE => 'read'
-	));
+	]);
 	$orderID = intval(f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE, '', $DB_WE)) + 1;
 
 	$totPrice = 0;

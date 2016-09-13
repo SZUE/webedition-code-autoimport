@@ -35,7 +35,7 @@ function we_tag_sessionLogout(array $attribs, $content){
 	$row = getHash('SELECT Path,IsFolder FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
 
 	$url = ($row ? $row['Path'] . ($row['IsFolder'] ? '/' : '') : '');
-	$attribs = removeAttribs($attribs, array('id', '_name_orig')); //	not html - valid
+	$attribs = removeAttribs($attribs, ['id', '_name_orig']); //	not html - valid
 	$attribs['href'] = $url . '?we_webUser_logout=1';
 
 	return getHtmlTag('a', $attribs, $content);

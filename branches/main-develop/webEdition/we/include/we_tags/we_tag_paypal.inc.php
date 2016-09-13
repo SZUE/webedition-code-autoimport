@@ -274,16 +274,14 @@ function we_tag_paypal(array $attribs){
 				$customer = (we_tag('ifRegisteredUser') ? $_SESSION['webuser'] : false);
 
 				$cartField[WE_SHOP_SHIPPING] = ($shipping === '' ?
-						array(
-						'costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
+						['costs' => $weShippingControl->getShippingCostByOrderValue($summit, $customer),
 						'isNet' => $weShippingControl->isNet,
 						'vatRate' => $weShippingControl->vatRate
-						) :
-						array(
-						'costs' => $shipping,
+						] :
+						['costs' => $shipping,
 						'isNet' => $shippingIsNet,
 						'vatRate' => $shippingVatRate
-				));
+				]);
 
 				$shippingCosts = $cartField[WE_SHOP_SHIPPING]['costs'];
 				$isNet = $cartField[WE_SHOP_SHIPPING]['isNet'];

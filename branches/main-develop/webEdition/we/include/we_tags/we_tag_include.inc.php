@@ -34,9 +34,9 @@ function we_parse_tag_include($attribs, $c, array $attr){
 }
 
 function we_setBackVar($we_unique){
-	$GLOBALS['we']['backVars'][$we_unique] = array(
+	$GLOBALS['we']['backVars'][$we_unique] = [
 		'we_doc' => clone($GLOBALS['we_doc']),
-		'GLOBAL' => array(
+		'GLOBAL' => [
 			'WE_IS_DYN' => isset($GLOBALS['WE_IS_DYN']) ? 1 : 0,
 			'WE_DOC_ID' => $GLOBALS['WE_DOC_ID'],
 			'WE_DOC_ParentID' => $GLOBALS['WE_DOC_ParentID'],
@@ -54,10 +54,9 @@ function we_setBackVar($we_unique){
 			'we_editmode' => isset($GLOBALS['we_editmode']) ? $GLOBALS['we_editmode'] : null,
 			'we_ContentType' => isset($GLOBALS['we_ContentType']) ? $GLOBALS['we_ContentType'] : we_base_ContentTypes::WEDOCUMENT,
 			'postTagName' => isset($GLOBALS['postTagName']) ? $GLOBALS['postTagName'] : '',
-		),
-		'REQUEST' => array(
-			'we_cmd' => we_base_request::_(we_base_request::RAW, 'we_cmd', ''),
-	));
+		],
+		'REQUEST' => ['we_cmd' => we_base_request::_(we_base_request::RAW, 'we_cmd', ''),
+	]];
 
 	if(isset($GLOBALS['WE_IS_DYN'])){
 		unset($GLOBALS['WE_IS_DYN']);
@@ -115,7 +114,7 @@ function we_tag_include(array $attribs){//FIXME: include doesn't work in editmod
 			$description = weTag_getAttribute('description', $attribs, g_l('tags', '[include_file]'), we_base_request::RAW);
 
 			echo '<table class="weEditTable" style="background: #006DB8;border:0px;padding:0px;"><tr><td style="padding: 3px;color:white;">' . '&nbsp;' . $description . '</td></tr><tr><td>' .
-			we_tag('href', array('name' => $nameOrig, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE), 'startid' => weTag_getAttribute('startid', $attribs, 0, we_base_request::INT), 'type' => $type, 'size' => weTag_getAttribute('size', $attribs, 50, we_base_request::UNIT))) .
+			we_tag('href', ['name' => $nameOrig, 'rootdir' => weTag_getAttribute('rootdir', $attribs, '/', we_base_request::FILE), 'startid' => weTag_getAttribute('startid', $attribs, 0, we_base_request::INT), 'type' => $type, 'size' => weTag_getAttribute('size', $attribs, 50, we_base_request::UNIT)]) .
 			'</td></tr></table>';
 			return '';
 		}
@@ -129,7 +128,7 @@ function we_tag_include(array $attribs){//FIXME: include doesn't work in editmod
 			$id = $intID;
 			$path = '';
 		} else {
-			$path = we_tag('href', array('name' => $nameOrig, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1));
+			$path = we_tag('href', ['name' => $nameOrig, 'hidedirindex' => 'false', 'type' => $type, 'isInternal' => 1]);
 		}
 	}
 
@@ -202,9 +201,8 @@ function we_tag_include(array $attribs){//FIXME: include doesn't work in editmod
 		$GLOBALS['we']['backVars'][$we_unique] = [];
 	} else {
 		$we_unique = 1;
-		$GLOBALS['we']['backVars'] = array(
-			$we_unique => []
-		);
+		$GLOBALS['we']['backVars'] = [$we_unique => []
+		];
 	}
 
 	we_setBackVar($we_unique);

@@ -37,7 +37,7 @@ function we_tag_linkToSeeMode(array $attribs){
 
 	$value = weTag_getAttribute('value', $attribs, '', we_base_request::STRING);
 
-	if(!empty($id) ){
+	if(!empty($id)){
 		$type = 'document';
 	} elseif(isset($GLOBALS['we_obj']) || $oid){ // use object if possible
 		$type = 'object';
@@ -57,25 +57,23 @@ function we_tag_linkToSeeMode(array $attribs){
 			//	check if the customer is a user, too.
 			$tmpDB = $GLOBALS['DB_WE'];
 
-			$q = f('SELECT passwd FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND LoginDenied=0 AND username="' . $tmpDB->escape($_SESSION["webuser"]["Username"]) . '"','', $tmpDB);
+			$q = f('SELECT passwd FROM ' . USER_TABLE . ' WHERE IsFolder=0 AND LoginDenied=0 AND username="' . $tmpDB->escape($_SESSION["webuser"]["Username"]) . '"', '', $tmpDB);
 
 			if($q && we_users_user::comparePasswords($_SESSION['webuser']['Username'], $q, $_SESSION['webuser']['Password'])){// customer is also a user
 				unset($q);
 				$retStr = getHtmlTag(
-						'form', array(
-						'method' => 'post',
+						'form', ['method' => 'post',
 						'name' => 'startSeeMode_' . $type . '_' . $id,
 						'target' => '_parent',
 						'action' => WEBEDITION_DIR . 'loginToSuperEasyEditMode.php'
-						), getHtmlTag('input', array('type' => 'hidden', 'name' => 'username', 'value' => $_SESSION["webuser"]["Username"], 'xml' => $xml)) .
-						getHtmlTag('input', array('type' => 'hidden', 'name' => 'type', 'value' => $type, 'xml' => $xml)) .
-						getHtmlTag('input', array('type' => 'hidden', 'name' => 'id', 'value' => $id, 'xml' => $xml)) .
-						getHtmlTag('input', array('type' => 'hidden', 'name' => 'path', 'value' => $_SERVER['HTTP_REQUEST_URI'], 'xml' => $xml))
+						], getHtmlTag('input', ['type' => 'hidden', 'name' => 'username', 'value' => $_SESSION["webuser"]["Username"], 'xml' => $xml]) .
+						getHtmlTag('input', ['type' => 'hidden', 'name' => 'type', 'value' => $type, 'xml' => $xml]) .
+						getHtmlTag('input', ['type' => 'hidden', 'name' => 'id', 'value' => $id, 'xml' => $xml]) .
+						getHtmlTag('input', ['type' => 'hidden', 'name' => 'path', 'value' => $_SERVER['HTTP_REQUEST_URI'], 'xml' => $xml])
 					) .
-					getHtmlTag('a', array(
-						'href' => 'javascript:document.forms[\'startSeeMode_' . $type . '_' . $id . '\'].submit();',
+					getHtmlTag('a', ['href' => 'javascript:document.forms[\'startSeeMode_' . $type . '_' . $id . '\'].submit();',
 						'xml' => $xml
-						), $value);
+						], $value);
 			} else { //	customer is no user
 				return '<!-- ERROR: CUSTOMER IS NO USER! -->';
 			}
