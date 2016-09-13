@@ -121,7 +121,7 @@ class we_schedpro{
 
 	//needed to switch description of button publish to "save to scheduler" and vice versa
 	public static function getMainJS($doc){
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'schedule/scheduler.js', '', ['loadVarScheduler', 'data-scheduler' => setDynamicVar([
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'schedule/scheduler.js', '', ['id' => 'loadVarScheduler', 'data-scheduler' => setDynamicVar([
 					'we_hasExtraRow' => self::$extraCont,
 					'selection' => [
 						'DOCTYPE' => self::DOCTYPE,
@@ -198,8 +198,7 @@ class we_schedpro{
 					$rootDirID = 0;
 				}
 
-				$wecmdenc3 = we_base_request::encCmd('top.opener._EditorFrame.setEditorIsHot(true);');
-				$button = we_html_button::create_button(we_html_button::SELECT, 'javascript:we_cmd(\'we_selector_directory\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $idname . '\',\'' . $textname. '\',\'' . $wecmdenc3 . '\',\'\',\'' . $rootDirID . '\')');
+				$button = we_html_button::create_button(we_html_button::SELECT, 'javascript:we_cmd(\'we_selector_directory\',document.we_form.elements[\'' . $idname . '\'].value,\'' . $GLOBALS['we_doc']->Table . '\',\'' . $idname . '\',\'' . $textname . '\',\'setHot\',\'\',\'' . $rootDirID . '\')');
 
 				$yuiSuggest = & weSuggest::getInstance();
 				$yuiSuggest->setAcId('WsDir');
