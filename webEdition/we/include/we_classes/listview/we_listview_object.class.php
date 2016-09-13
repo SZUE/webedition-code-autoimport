@@ -71,10 +71,6 @@ class we_listview_object extends we_listview_objectBase{
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
-		$where_lang = ($this->languages ?
-				' AND of.Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' :
-				'');
-
 		if($this->order && $this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
 		}
@@ -106,26 +102,28 @@ class we_listview_object extends we_listview_objectBase{
 		//allways join the file table itself
 		$sqlParts['tables'].=' JOIN ' . OBJECT_FILES_TABLE . ' of ON of.ID=ob' . $this->classID . '.OF_ID';
 
-		$pid_tail = (isset($GLOBALS['we_doc']) ? we_objectFile::makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '');
-
-		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, 'of', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
-
-		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID, $id) :
-				'');
-
-		$webUserID_tail = '';
 		if($this->customers && $this->customers !== "*"){
-
 			$wsql = ' of.WebUserID IN(' . $this->customers . ') ';
 			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . $this->customers . ')');
 			$encrypted = we_customer_customer::getEncryptedFields();
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
 				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = array_merge($this->DB_WE->getRecord(), $encrypted);
 			}
-
 			$webUserID_tail = '(' . $wsql . ')';
+		} else {
+			$webUserID_tail = '';
 		}
+
+		$condParts = [
+			'search' => ($this->searchable ? 'of.IsSearchable=1' : ''),
+			'pid' => (isset($GLOBALS['we_doc']) ? we_objectFile::makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : ''),
+			'lang' => ($this->languages ? 'of.Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' : ''),
+			'cat' => ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, 'of', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : ''),
+			'publ' => $sqlParts['publ_cond'],
+			'cond' => ($sqlParts['cond'] ? '(' . $sqlParts['cond'] . ')' : ''),
+			'cal' => $calendar_where,
+			'webUser' => $webUserID_tail,
+		];
 
 		if($sqlParts["tables"] || $we_predefinedSQL != ''){
 
@@ -134,7 +132,7 @@ class we_listview_object extends we_listview_objectBase{
 				$this->anz_all = $this->DB_WE->num_rows();
 				$q = $we_predefinedSQL . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			} else {
-				$idTail = $this->getIdQuery('ob' . $this->classID . '.OF_ID');
+				$condParts['id'] = $this->getIdQuery('ob' . $this->classID . '.OF_ID');
 
 				if($this->workspaceID != ''){
 					$workspaces = makeArrayFromCSV($this->workspaceID);
@@ -144,22 +142,12 @@ class we_listview_object extends we_listview_objectBase{
 						$cond[] = 'of.Path LIKE "' . $workspace . '/%"';
 						$cond[] = 'of.Path="' . $workspace . '"';
 					}
-					$ws_tail = empty($cond) ? '' : '(' . implode(' OR ', $cond) . ')';
-				} else {
-					$ws_tail = '';
+					$condParts['ws'] = empty($cond) ? '' : '(' . implode(' OR ', $cond) . ')';
 				}
-				$where = implode(' AND ', array_filter([
-						'search' => ($this->searchable ? 'of.IsSearchable=1' : ''),
-						'pid' => $pid_tail,
-						'lang' => $where_lang,
-						'cat' => $cat_tail,
-						'publ' => $sqlParts['publ_cond'],
-						'cond' => ($sqlParts['cond'] ? '(' . $sqlParts['cond'] . ')' : ''),
-						'cal' => $calendar_where,
-						'ws' => $ws_tail,
-						'webUser' => $webUserID_tail,
-						'id' => $idTail,
-					])) . $weDocumentCustomerFilter_tail . $sqlParts['groupBy'];
+
+				$where = implode(' AND ', array_filter($condParts)) .
+				(defined('CUSTOMER_FILTER_TABLE') ? we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID, $id) : '').
+				$sqlParts['groupBy'];
 				$this->DB_WE->query('SELECT of.ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . $where);
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar){

@@ -92,8 +92,6 @@ class we_listview_multiobject extends we_listview_objectBase{
 		$this->objectseourls = $objectseourls;
 		$this->hidedirindex = $hidedirindex;
 
-		$where_lang = ($this->languages ? 'of.Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' : '');
-
 		if($this->desc && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';
 		}
@@ -117,18 +115,14 @@ class we_listview_multiobject extends we_listview_objectBase{
 		}
 		$sqlParts = $this->makeSQLParts($matrix, $this->classID, $this->order, $this->condition, false);
 
-		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, 'of', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
-
-		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
-				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID) :
-				'');
+		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ? we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID) : '');
 
 		if($sqlParts['tables']){
 			$where = implode(' AND ', array_filter([
 					'ids' => 'of.ID IN (' . implode(',', $this->objects) . ')',
 					'search' => ($this->searchable ? 'of.IsSearchable=1' : ''),
-					'lang' => $where_lang,
-					'cat' => $cat_tail,
+					'lang' => ($this->languages ? 'of.Language IN ("' . implode('","', array_map('escape_sql_query', array_filter(array_map('trim', explode(',', $this->languages))))) . '")' : ''),
+					'cat' => ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, 'of', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : ''),
 					'publ' => $sqlParts['publ_cond'],
 					'cond' => ($sqlParts['cond'] ? '(' . $sqlParts['cond'] . ')' : ''),
 					'cal' => $calendar_where,
