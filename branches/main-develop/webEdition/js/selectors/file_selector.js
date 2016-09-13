@@ -558,20 +558,10 @@ function selectorOnDblClick(id) {
 
 function exit_open() {
 	if (top.fileSelect.data.JSIDName) {
-		if (top.fileSelect.data.JSIDName.indexOf(".") > 0) {
-			//FIXME: remove eval
-			eval("opener." + top.fileSelect.data.JSIDName + "=top.fileSelect.data.currentID;");
-		} else {
-			opener.document.we_form.elements[top.fileSelect.data.JSIDName].value = top.fileSelect.data.currentID;
-		}
+		opener.document.we_form.elements[top.fileSelect.data.JSIDName].value = top.fileSelect.data.currentID;
 	}
 	if (top.fileSelect.data.JSTextName) {
-		if (top.fileSelect.data.JSTextName.indexOf(".") > 0) {
-			//FIXME: remove eval
-			eval("opener." + top.fileSelect.data.JSTextName + "= top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : '';");
-		} else {
-			opener.document.we_form.elements[top.fileSelect.data.JSTextName].value = top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
-		}
+		opener.document.we_form.elements[top.fileSelect.data.JSTextName].value = top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
 
 		if ((opener.parent !== undefined) && (opener.parent.frames.editHeader !== undefined)) {
 			if (top.fileSelect.data.currentType != "") {
@@ -590,16 +580,16 @@ function exit_open() {
 			}
 		}
 		if (opener.YAHOO !== undefined && opener.YAHOO.autocoml !== undefined) {
-			var val = (top.fileSelect.data.JSTextName.indexOf(".") > 0 ?
-							//FIXME: remove eval
-							eval("opener." + top.fileSelect.data.JSTextName.replace(".value", ".id")) :
-							opener.document.we_form.elements[top.fileSelect.data.JSTextName].id
-							);
+			var val = opener.document.we_form.elements[top.fileSelect.data.JSTextName].id
 			opener.YAHOO.autocoml.selectorSetValid(val);
 		}
 	}
 	if (top.fileSelect.data.JSCommand) {
-		eval(top.fileSelect.data.JSCommand);
+		if (top.fileSelect.data.JSCommand.indexOf(".") > 0) {
+			eval(top.fileSelect.data.JSCommand);
+		}else{
+			opener.we_cmd(top.fileSelect.data.JSCommand);
+		}
 	}
 
 	self.close();

@@ -332,6 +332,9 @@ function we_cmd() {
 				var win = new (WE().util.jsWindow)(this, WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", -1, -1, 500, 450, true, false, true, false);
 			}
 			break;
+		case 'setHot':
+			_EditorFrame.setEditorIsHot(true);
+			break;
 			// it must be the last command
 		case "delete_navi":
 			if (!confirm(WE().consts.g_l.editorScript.confirm_navDel)) {
@@ -456,15 +459,15 @@ function metaFieldSelectProposal(sel, inputName, isCsv) {
 	sel.selectedIndex = 0;
 }
 
-function changeOption(elem){
+function changeOption(elem) {
 	var cmnd = elem.options[elem.selectedIndex].value;
-	if(cmnd){
-		switch(cmnd){
+	if (cmnd) {
+		switch (cmnd) {
 			case "doImage_convertPNG":
 			case "doImage_convertGIF":
 				WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 		}
-		we_cmd(cmnd,doc.we_transaction);
+		we_cmd(cmnd, doc.we_transaction);
 	}
 	//elem.selectedIndex=0;
 }
