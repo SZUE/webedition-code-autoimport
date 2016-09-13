@@ -119,6 +119,9 @@ abstract class we_updater{
 
 				//remove old OF_ cols
 				if($db->isColExist(OBJECT_X_TABLE . $table, 'OF_ParentID')){
+					//remove dummy entry
+					$db->query('DELETE FROM ' . OBJECT_X_TABLE . $table . ' WHERE OF_ID=0');
+
 					$db->delCol(OBJECT_X_TABLE . $table, 'OF_ParentID');
 					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Text');
 					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Path');

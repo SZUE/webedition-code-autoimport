@@ -90,9 +90,6 @@ class we_backup_object extends we_object{
 			$this->DB_WE->delTable($ctable);
 			$this->DB_WE->addTable($ctable, $qarr, $indexe);
 
-//dummy eintrag schreiben
-			$this->DB_WE->query('INSERT INTO ' . $ctable . ' SET OF_ID=0');
-
 
 // folder in object schreiben
 			if(!($this->OldPath && ($this->OldPath != $this->Path))){
@@ -100,9 +97,6 @@ class we_backup_object extends we_object{
 				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
 			}
 
-////// resave the line O to O.....
-			$this->DB_WE->query('REPLACE INTO ' . $ctable . ' SET OF_ID=0');
-////// resave the line O to O.....
 		} else {
 			$this->SerializedArray = we_unserialize($this->DefaultValues);
 			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : [];
