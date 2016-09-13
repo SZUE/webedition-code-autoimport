@@ -108,6 +108,16 @@ abstract class we_updater{
 			//this is from 6.3.9
 			$db = $db? : new DB_WE();
 
+			//change old tables to have different prim key
+			$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
+			foreach($tables as $table){
+				if($db->isColExist(OBJECT_X_TABLE . $table, 'ID')){
+					$db->delCol(OBJECT_X_TABLE . $table, 'ID');
+					//we need to set the key, if sth. is present 2 times, this is an error.
+					$db->addKey(OBJECT_X_TABLE . $table, 'PRIMARY KEY (OF_ID)', true);
+				}
+			}
+
 			if(!f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0 LIMIT 1')){
 				return;
 			}
@@ -120,14 +130,6 @@ abstract class we_updater{
 
 			//all files without a tableID can be deleted
 			$db->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0');
-			$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
-			foreach($tables as $table){
-				if($db->isColExist(OBJECT_X_TABLE . $table, 'ID')){
-					$db->delCol(OBJECT_X_TABLE . $table, 'ID');
-					//we need to set the key, if sth. is present 2 times, this is an error.
-					$db->addKey(OBJECT_X_TABLE . $table, 'PRIMARY KEY (OF_ID)', true);
-				}
-			}
 		}
 		return true;
 	}
