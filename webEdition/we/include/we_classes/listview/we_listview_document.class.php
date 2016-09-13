@@ -92,16 +92,12 @@ class we_listview_document extends we_listview_base{
 		$this->condition = $condition;
 
 		$cond_where = // #3763
-			($this->condition != '' && ($condition_sql = $this->makeConditionSql($this->condition)) ?
-				' AND (' . $condition_sql . ')' :
-				'');
+			($this->condition != '' && ($condition_sql = $this->makeConditionSql($this->condition)) ? '(' . $condition_sql . ')' : '');
 
 		$this->languages = $languages ? : (isset($GLOBALS['we_lv_languages']) ? $GLOBALS['we_lv_languages'] : '');
 		$langArray = $this->languages ? array_filter(array_map('trim', explode(',', $this->languages))) : '';
 
-		$where_lang = ($langArray ?
-				' AND f.Language IN("","' . implode('","', array_map('escape_sql_query', $langArray)) . '") ' :
-				'');
+		$where_lang = ($langArray ? 'f.Language IN("","' . implode('","', array_map('escape_sql_query', $langArray)) . '") ' : '');
 
 		if(stripos($this->order, ' desc') !== false){//was #3849
 			$this->order = str_ireplace(' desc', '', $this->order);
@@ -157,35 +153,34 @@ class we_listview_document extends we_listview_base{
 		}
 		$orderstring = $order ? ' ORDER BY ' . implode(',', $order) : '';
 		$joinstring = implode('', $this->joins);
-		$orderwhereString = implode(' AND ', $this->orderWhere) . ($this->orderWhere ? ' AND ' : '');
+		$orderwhereString = implode(' AND ', $this->orderWhere);
 
-		$sql_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, 'f', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
+		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, 'f', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
 
 		$dt = ($this->docType ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : -1);
 
 		$ws_where = '';
-
+		$ctTail = '';
 		if($this->contentTypes){
 			$this->contentTypes = str_replace(['img', 'wepage', 'binary'], [we_base_ContentTypes::IMAGE, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::APPLICATION], $this->contentTypes);
 			$CtArr = explode(',', $this->contentTypes);
 			if($CtArr){
-				$sql_tail .= ' AND f.ContentType IN ("' . implode('","', array_map('escape_sql_query', $CtArr)) . '")';
+				$ctTail = ' AND f.ContentType IN ("' . implode('","', array_map('escape_sql_query', $CtArr)) . '")';
 			}
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
-			$sql_tail .= we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, 0, $id);
+			$sql_tail = we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, 0, $id);
 		}
 
+		$cust = '';
 		if($this->customers && $this->customers !== '*'){
 			foreach(explode(',', $this->customers) as $cid){
 				$customerData = array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE), we_customer_customer::getEncryptedFields());
 				$this->customerArray['cid_' . $customerData['ID']] = $customerData;
 			}
 
-			$sql_tail .= ' AND (f.WebUserID IN(' . $this->customers . ')) ';
+			$cust = ' AND (f.WebUserID IN(' . $this->customers . ')) ';
 		}
-
-		$sql_tail .= $this->getIdQuery('f.ID');
 
 		if($this->search){
 			if($this->workspaceID){
@@ -195,7 +190,7 @@ class we_listview_document extends we_listview_base{
 				foreach($workspaces as $workspace){
 					$cond[] = 'wsp.Path LIKE "' . $workspace . '/%"';
 				}
-				$ws_where = ' AND (' . implode(' OR ', $cond) . ')';
+				$ws_where = '(' . implode(' OR ', $cond) . ')';
 			}
 			$bedingungen = preg_split('/ +/', $this->search);
 
@@ -252,33 +247,33 @@ class we_listview_document extends we_listview_base{
 						$cond = [-1];
 					}
 				}
-				$ws_where = ' AND (f.ParentID IN (' . implode(', ', $workspaces) . '))';
+				$ws_where = '(f.ParentID IN (' . implode(', ', $workspaces) . '))';
 			}
 			$extraSelect = ($random ? ', RAND() as RANDOM' : '');
 			$limit = (($rows > 0) ? (' LIMIT ' . abs($this->start) . ',' . abs($this->maxItemsPerPage)) : "");
 		}
+		$where = implode(' AND ', array_filter([
+				'default' => 'f.IsFolder=0 AND f.Published>0',
+				'orderWhere' => $orderwhereString,
+				'search' => ($this->searchable ? ' f.IsSearchable=1' : 1),
+				'lang' => $where_lang,
+				'cond' => $cond_where,
+				'beding' => $bedingung_sql,
+				'docT' => ($this->docType ? ($dt ? 'f.DocType=' . intval($dt) : 'FALSE'/* invalid DT => no results */) : ''),
+				'cal' => $calendar_where,
+				'ws' => $ws_where,
+				'cat' => $cat_tail,
+				'contentType' => $ctTail,
+				'cust' => $cust,
+				'id' => $this->getIdQuery('f.ID'),
+			])) . ' ' . $sql_tail .
+			' GROUP BY ' . $this->group;
+
 		$this->DB_WE->query(
 			'SELECT f.ID,f.WebUserID' . $extraSelect .
 			' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' . $joinstring .
 			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=f.ID AND i.ClassID=0) LEFT JOIN ' . FILE_TABLE . ' wsp ON wsp.ID=i.WorkspaceID ' : '') .
-			' WHERE ' . $orderwhereString .
-			($this->searchable ? ' f.IsSearchable=1' : 1) . ' ' .
-			$where_lang . ' ' .
-			$cond_where . ' ' .
-			$ws_where .
-			' AND f.IsFolder=0 AND f.Published>0 ' .
-			(isset($bedingung_sql) ? ' AND ' . $bedingung_sql : '') .
-			($this->docType ?
-				($dt ?
-					' AND f.DocType=' . intval($dt) :
-					' AND FALSE '//invalid DT => no results
-				) :
-				''
-			) . ' ' .
-			$sql_tail .
-			$calendar_where .
-			' GROUP BY ' . $this->group . ' ' . $orderstring .
-			$limit
+			' WHERE ' . $where . ' ' . $orderstring . $limit
 		);
 
 		$this->anz = $this->DB_WE->num_rows();
@@ -309,24 +304,7 @@ class we_listview_document extends we_listview_base{
 			' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON f.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID' .
 			($this->search ? ' JOIN ' . INDEX_TABLE . ' i ON (i.ID=f.ID AND i.ClassID=0)' : '') .
 			$joinstring .
-			' WHERE ' .
-			$orderwhereString .
-			($this->searchable ? ' f.IsSearchable=1' : '1') . ' ' .
-			$where_lang . ' ' .
-			$cond_where . ' ' .
-			$ws_where .
-			' AND f.IsFolder=0 AND f.Published>0 AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '"' .
-			($this->search ? ' AND ' . $bedingung_sql : '') .
-			($this->docType ?
-				($dt ?
-					' AND f.DocType=' . intval($dt) :
-					' AND FALSE ' //invalid DT => no results
-				) :
-				''
-			) . ' ' .
-			$sql_tail .
-			$calendar_where .
-			' GROUP BY ' . $this->group . ' ' . $orderstring);
+			' WHERE ' . $where . ' ' . $orderstring);
 
 		$this->anz_all = $this->DB_WE->num_rows();
 		if($calendar != ''){

@@ -994,8 +994,8 @@ abstract class we_database_base{
 	 * @param string $tab tablename
 	 * @param string $fullKey full key definition what is used in a create statement
 	 */
-	public function addKey($tab, $fullKey){
-		$this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD ' . $fullKey);
+	public function addKey($tab, $fullKey, $force = false){
+		$this->query('ALTER ' . ($force ? 'IGNORE' : '') . ' TABLE ' . $this->escape($tab) . ' ADD ' . $fullKey);
 	}
 
 	/**

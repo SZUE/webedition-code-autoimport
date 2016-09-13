@@ -74,7 +74,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 							'aliasf' => 'of' . $name,
 							'joinClassID' => $name,
 							'join' => OBJECT_X_TABLE . $name,
-							'on' => OBJECT_X_TABLE . $name . ' AS ob' . $name . ' ON ob' . $name . '.OF_ID=ob' . intval($classID) . '.' . we_object::QUERY_PREFIX . $name . ' LEFT JOIN ' . OBJECT_FILES_TABLE . ' of' . $name . ' ON (of' . $name . '.ID=ob' . $name . '.OF_ID AND of' . $name . '.Published>0)'
+							'on' => OBJECT_FILES_TABLE . ' of' . $name . ' ON (of' . $name . '.ID=ob' . intval($classID) . '.' . we_object::QUERY_PREFIX . $name . ' AND of' . $name . '.Published>0) LEFT JOIN ' . OBJECT_X_TABLE . $name . ' AS ob' . $name . ' ON (ob' . $name . '.OF_ID=of' . $name . '.ID)'
 						];
 						$this->fillMatrix($matrix, $name);
 					}
@@ -160,12 +160,12 @@ abstract class we_listview_objectBase extends we_listview_base{
 				$from[$p['table']] = $p['table'] . ' AS ' . $p['alias'];
 				if($classID != $p['classID']){
 					//if not mistaken this is never used
-					$publ_cond[] = '(' . $p['alias'] . '.OF_ID=IFNULL(' . $p['aliasf'] . '.ID,0) )';
+				//	$publ_cond[] = '(' . $p['alias'] . '.OF_ID=IFNULL(' . $p['aliasf'] . '.ID,0) )';
 				}
 			}
 			if(!empty($p['join'])){
 				$from[$p['join']] = $p['on'];
-				$publ_cond[] = '(ob' . $p['joinClassID'] . '.OF_ID=IFNULL(' . $p['aliasf'] . '.ID,0) )';
+			//	$publ_cond[] = '(ob' . $p['joinClassID'] . '.OF_ID=IFNULL(' . $p['aliasf'] . '.ID,0) )';
 			}
 
 			if(($pos = array_search($n, $orderArr)) !== false){
@@ -199,7 +199,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 		return [
 			'fields' => rtrim($f, ',') . ($order === 'RANDOM ' ? ', RAND() AS RANDOM ' : ''),
 			'order' => trim($order) ? ' ORDER BY ' . trim($order) : '',
-			'tables' => implode(' JOIN ', $from),
+			'tables' => implode(' LEFT JOIN ', $from),
 			//FIXME: afaik grouping is not needed
 			'groupBy' => (count($from) > 1) ? ' GROUP BY of.ID ' : '',
 			'publ_cond' => $publ_cond ? ' ( ' . implode(' AND ', $publ_cond) . ' ) ' : '',

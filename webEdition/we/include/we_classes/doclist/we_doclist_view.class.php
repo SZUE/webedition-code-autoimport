@@ -96,6 +96,9 @@ class we_doclist_view extends we_search_view{
 			$searchInput = we_html_tools::htmlTextInput('search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', 30, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), "", " class=\"wetextinput\"  id=\"search" . we_search_view::SEARCH_DOCLIST . "[" . $i . "]\" ", "text", 170);
 
 			switch(isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ''){
+				default:
+					$locationDisabled = '';
+					break;
 				case 'Content':
 				case 'Status':
 				case 'Speicherart':

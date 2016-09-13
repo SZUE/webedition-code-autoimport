@@ -298,7 +298,7 @@ class we_exim_XMLExIm{
 		}
 		switch($type){
 			case 'doctype':
-				$cat_sql = ($categories ? we_category::getCatSQLTail('', 'f', true, $db, 'Category', $categories) : '');
+				$cat_sql = ($categories ? ' AND ' . we_category::getCatSQLTail('', 'f', true, $db, 'Category', $categories) : '');
 				$ws_where = ($dir ?
 						' AND (f.Path LIKE "' . $db->escape(id_to_path($dir, FILE_TABLE, $db)) . '/%" OR f.ID="' . $dir . '") ' :
 						'');
@@ -308,7 +308,7 @@ class we_exim_XMLExIm{
 				return;
 			default:
 				if(defined('OBJECT_FILES_TABLE')){
-					$cat_sql = ' ' . ($categories ? we_category::getCatSQLTail('', 'of', true, $db, 'Category', $categories) : '');
+					$cat_sql = ' ' . ($categories ? ' AND ' . we_category::getCatSQLTail('', 'of', true, $db, 'Category', $categories) : '');
 					$where = $this->queryForAllowed(OBJECT_FILES_TABLE);
 
 					$db->query('SELECT ID FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.IsFolder=0 AND of.TableID=' . intval($classname) . $cat_sql . $where);

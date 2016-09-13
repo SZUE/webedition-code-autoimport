@@ -108,8 +108,7 @@ class we_listview_object extends we_listview_objectBase{
 
 		$pid_tail = (isset($GLOBALS['we_doc']) ? we_objectFile::makePIDTail($GLOBALS['we_doc']->ParentID, $this->classID, $this->DB_WE, $GLOBALS['we_doc']->Table) : '');
 
-		$cat_tail = ($this->cats || $this->categoryids ?
-				we_category::getCatSQLTail($this->cats, 'of', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
+		$cat_tail = ($this->cats || $this->categoryids ? we_category::getCatSQLTail($this->cats, 'of', $this->catOr, $this->DB_WE, 'Category', $this->categoryids) : '');
 
 		$weDocumentCustomerFilter_tail = (defined('CUSTOMER_FILTER_TABLE') ?
 				we_customer_documentFilter::getConditionForListviewQuery($this->customerFilterType, $this, $this->classID, $id) :
@@ -125,7 +124,7 @@ class we_listview_object extends we_listview_objectBase{
 				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = array_merge($this->DB_WE->getRecord(), $encrypted);
 			}
 
-			$webUserID_tail = ' AND (' . $wsql . ') ';
+			$webUserID_tail = '(' . $wsql . ')';
 		}
 
 		if($sqlParts["tables"] || $we_predefinedSQL != ''){
@@ -145,11 +144,23 @@ class we_listview_object extends we_listview_objectBase{
 						$cond[] = 'of.Path LIKE "' . $workspace . '/%"';
 						$cond[] = 'of.Path="' . $workspace . '"';
 					}
-					$ws_tail = empty($cond) ? '' : ' AND (' . implode(' OR ', $cond) . ') ';
+					$ws_tail = empty($cond) ? '' : '(' . implode(' OR ', $cond) . ')';
 				} else {
 					$ws_tail = '';
 				}
-				$this->DB_WE->query('SELECT of.ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' of.IsSearchable=1 AND ' : '') . ($pid_tail ? $pid_tail . ' AND ' : '') . '1' . $where_lang . $cat_tail . ' ' . ($sqlParts['publ_cond'] ? (' AND ' . $sqlParts['publ_cond']) : '') . ' ' . ($sqlParts['cond'] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $idTail . $sqlParts['groupBy']);
+				$where = implode(' AND ', array_filter([
+						'search' => ($this->searchable ? 'of.IsSearchable=1' : ''),
+						'pid' => $pid_tail,
+						'lang' => $where_lang,
+						'cat' => $cat_tail,
+						'publ' => $sqlParts['publ_cond'],
+						'cond' => ($sqlParts['cond'] ? '(' . $sqlParts['cond'] . ')' : ''),
+						'cal' => $calendar_where,
+						'ws' => $ws_tail,
+						'webUser' => $webUserID_tail,
+						'id' => $idTail,
+					])) . $weDocumentCustomerFilter_tail . $sqlParts['groupBy'];
+				$this->DB_WE->query('SELECT of.ID ' . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . $where);
 				$this->anz_all = $this->DB_WE->num_rows();
 				if($calendar){
 					while($this->DB_WE->next_record(MYSQL_ASSOC)){
@@ -157,7 +168,7 @@ class we_listview_object extends we_listview_objectBase{
 						$this->calendar_struct['storage'][$this->DB_WE->f('ID')] = (int) $this->DB_WE->f('Calendar');
 					}
 				}
-				$q = 'SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . ($this->searchable ? ' of.IsSearchable=1 AND ' : '') . ($pid_tail ? $pid_tail.' AND ' : '') . '1' . $where_lang . $cat_tail . ' ' . ($sqlParts['publ_cond'] ? (' AND ' . $sqlParts['publ_cond']) : '') . ' ' . ($sqlParts['cond'] ? ' AND (' . $sqlParts['cond'] . ') ' : '') . $calendar_where . $ws_tail . $weDocumentCustomerFilter_tail . $webUserID_tail . $idTail . $sqlParts['groupBy'] . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
+				$q = 'SELECT ' . $sqlParts['fields'] . $calendar_select . ' FROM ' . $sqlParts['tables'] . ' WHERE ' . $where . $sqlParts["order"] . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . $this->maxItemsPerPage) : '');
 			}
 			$this->DB_WE->query($q);
 			$this->anz = $this->DB_WE->num_rows();

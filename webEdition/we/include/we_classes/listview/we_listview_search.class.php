@@ -124,7 +124,7 @@ class we_listview_search extends we_listview_base{
 		$this->casesensitive = $casesensitive;
 		$this->search = $this->DB_WE->escape($this->search);
 
-		$cat_tail = ($this->cats ? we_category::getCatSQLTail($this->cats, 'i', $this->catOr, $this->DB_WE) : '');
+		$cat_tail = ($this->cats ? ' AND '.we_category::getCatSQLTail($this->cats, 'i', $this->catOr, $this->DB_WE) : '');
 		$dt = ($this->docType ? f('SELECT ID FROM ' . DOC_TYPES_TABLE . ' WHERE DocType LIKE "' . $this->DB_WE->escape($this->docType) . '"', '', $this->DB_WE) : 0);
 
 		if($dt && $this->class){
