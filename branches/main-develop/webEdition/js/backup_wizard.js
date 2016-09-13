@@ -278,16 +278,27 @@ function showAll() {
 }
 
 function setLocation(loc) {
+	if (top.cmd.reloadTimer) {
+		clearTimeout(top.cmd.reloadTimer);
+	}
+
 	location.href = loc;
 }
 
-function startStep(step) {
+function startStep(step, doImport) {
 	self.focus();
-	top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy&step=" + step;
+	top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy&step=" + step + (
+					doImport !== undefined ? "&do_import_after_backup" + doImport : "");
 }
 
 function startBusy() {
 	top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy&operation_mode=busy&step=4";
+}
+
+function stopBusy() {
+	top.busy.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=" + backup.modeCmd + "&pnt=busy&step=5";
+	top.cmd.location = "about:blank";
+	self.focus();
 }
 
 function delOldFiles() {

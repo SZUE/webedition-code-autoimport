@@ -25,7 +25,7 @@
  *
  */
 
-function we_tag_ifUser($attribs = array()) {
+function we_tag_ifUser($attribs = []) {
     if(empty($GLOBALS['we_editmode']) || !isset($_SESSION['user'])){
         return false;
     }

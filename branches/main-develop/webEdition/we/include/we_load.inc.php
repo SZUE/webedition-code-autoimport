@@ -53,8 +53,7 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 
 	$prevoffset = max(0, $offset - $segment);
 	if($offset && $segment){
-		$treeItems[] = array(
-			'id' => 'prev_' . $ParentID,
+		$treeItems[] = ['id' => 'prev_' . $ParentID,
 			'parentid' => intval($ParentID),
 			'text' => 'display (' . $prevoffset . '-' . $offset . ')',
 			'contenttype' => 'arrowup',
@@ -67,7 +66,7 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 			'disabled' => 0,
 			'tooltip' => '',
 			'offset' => $prevoffset
-		);
+			];
 	}
 
 	$tmp = array_filter($openFolders);
@@ -112,8 +111,7 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 		$ID = intval($DB_WE->f('ID'));
 		$Path = $DB_WE->f('Path');
 
-		$tmpItems[$ID] = array(
-			"id" => $ID,
+		$tmpItems[$ID] = ["id" => $ID,
 			"we_id" => $collectionIDs ? $ID : 0,
 			"parentid" => intval($DB_WE->f("ParentID")),
 			"text" => $DB_WE->f("Text"),
@@ -129,7 +127,7 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 			'inSchedule' => intval($DB_WE->f("inSchedule")),
 			"offset" => $offset,
 			"path" => $DB_WE->f("Path")
-		);
+			];
 	}
 
 	if($collectionIDs){
@@ -148,10 +146,10 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 	}
 
 	if($table === VFILE_TABLE){
-		if(count($docCollectionIDs = array_unique($docCollectionIDs))){
+		if(($docCollectionIDs = array_unique($docCollectionIDs))){
 			getItems(FILE_TABLE, 0, 0, 0, $docCollectionIDs, $docCollections);
 		}
-		if(count($objCollectionIDs = array_unique($objCollectionIDs))){
+		if(($objCollectionIDs = array_unique($objCollectionIDs))){
 			getItems(OBJECT_FILES_TABLE, 0, 0, 0, $objCollectionIDs, $objCollections);
 		}
 	}
@@ -159,8 +157,7 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 	$total = f('SELECT COUNT(1) FROM ' . $table . ' ' . $where, '', $DB_WE);
 	$nextoffset = $offset + $segment;
 	if($segment && $total > $nextoffset){
-		$treeItems[] = array(
-			"id" => "next_" . $ParentID,
+		$treeItems[] = ["id" => "next_" . $ParentID,
 			"parentid" => $ParentID,
 			"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
 			"contenttype" => "arrowdown",
@@ -173,7 +170,7 @@ function getItems($table, $ParentID, $offset = 0, $segment = 0, $collectionIDs =
 			"disabled" => 0,
 			"tooltip" => "",
 			"offset" => $nextoffset
-		);
+			];
 	}
 }
 

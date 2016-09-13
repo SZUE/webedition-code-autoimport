@@ -61,7 +61,6 @@ class we_customer_view extends we_modules_view{
 			parent::getJSTop() .
 			we_html_element::jsElement('
 parent.document.title = "' . $title . '";
-var frameUrl="' . $this->frameset . '";
 ') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js');
 	}
@@ -78,10 +77,7 @@ function refreshForm(){
 	}
 
 	function getJSAdmin(){
-		return we_html_element::jsElement('
-var frameUrl="' . $this->frameset . '";
-' . $this->getJSSubmitFunction("customer_admin")
-			) .
+		return we_html_element::jsElement($this->getJSSubmitFunction("customer_admin")) .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_admin.js');
 	}
 

@@ -232,7 +232,7 @@ class we_schedpro{
 	<tr style="vertical-align:top">
 		<td class="defaultfont lowContrast" style="margin-bottom:10px;">' . g_l('modules_schedule', '[task][headline]') . ':</td>
 		<td class="defaultfont"><table class="default"><tr><td>' . $taskpopup . '</td><td class="defaultfont">&nbsp;&nbsp;</td><td>' . we_html_forms::checkbox(1, $this->active, $checknname, g_l('modules_schedule', '[active]')
-				, false, "defaultfont", "this.form.elements['we_schedule_active_" . $this->nr . "'].value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
+				, false, "defaultfont", "this.form.elements.we_schedule_active_" . $this->nr . ".value=this.checked?1:0;_EditorFrame.setEditorIsHot(true);checkFooter();") .
 			'<input type="hidden" class="we_schedule_active" name="we_schedule_active_' . $this->nr . '" value="' . $this->active . '" /></td></tr></table></td>
 		<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('schedule_del','" . $this->nr . "')") . '</td>
 	</tr>';
@@ -437,8 +437,8 @@ class we_schedpro{
 			return;
 		}
 
-		$req = array(empty($_REQUEST) ? array() : $_REQUEST, empty($_GET) ? array() : $_GET, empty($_POST) ? array() : $_POST);
-		$_REQUEST = $_GET = $_POST = array();
+		$req = [empty($_REQUEST) ? [] : $_REQUEST, empty($_GET) ? [] : $_GET, empty($_POST) ? [] : $_POST];
+		$_REQUEST = $_GET = $_POST = [];
 
 		$DB_WE = new DB_WE();
 		$DB_WE->addTable('del', [

@@ -345,15 +345,14 @@ function next() {
 	}
 
 	function _getHiddens($noCmd = false){
-		$moreHiddens = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? array() : array(
-			'fu_doc_width' => $this->width,
+		$moreHiddens = we_fileupload::EDIT_IMAGES_CLIENTSIDE ? [] : ['fu_doc_width' => $this->width,
 			'fu_doc_height' => $this->height,
 			'fu_doc_widthSelect' => $this->widthSelect,
 			'fu_doc_heightSelect' => $this->heightSelect,
 			'fu_doc_keepRatio' => $this->keepRatio,
 			'fu_doc_degrees' => $this->degrees,
 			'fu_doc_quality' => $this->quality,
-		);
+			];
 
 		return ($noCmd ? '' : we_html_element::htmlHidden('cmd', 'buttons')) . we_html_element::htmlHiddens(array_merge(array(
 				'step' => 1,

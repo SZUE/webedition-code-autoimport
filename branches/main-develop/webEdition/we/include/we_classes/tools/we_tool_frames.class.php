@@ -136,26 +136,25 @@ function setTab(tab) {
 	}
 
 	function getHTMLGeneral(){
-		return array(array(
-				'headline' => g_l('tools', '[general]'),
-				'html' => we_html_element::htmlHidden('newone', ($this->Model->ID == 0 ? 1 : 0)) .
-				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: 520px;" onchange="top.content.mark();"'), g_l('tools', '[name]')) .
-				$this->getHTMLChooser(g_l('tools', '[group]'), $this->Table, 0, 'ParentID', $this->Model->ParentID, 'ParentPath', 'opener.top.content.mark()', ''),
-				'space' => we_html_multiIconBox::SPACE_MED,
-				'noline' => 1
-			)
-		);
+		return [['headline' => g_l('tools', '[general]'),
+			'html' => we_html_element::htmlHidden('newone', ($this->Model->ID == 0 ? 1 : 0)) .
+			we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', $this->Model->Text, '', 'style="width: 520px;" onchange="top.content.mark();"'), g_l('tools', '[name]')) .
+			$this->getHTMLChooser(g_l('tools', '[group]'), $this->Table, 0, 'ParentID', $this->Model->ParentID, 'ParentPath', 'opener.top.content.mark()', ''),
+			'space' => we_html_multiIconBox::SPACE_MED,
+			'noline' => 1
+			]
+		];
 	}
 
 	function getHTMLProperties($preselect = ''){
 		$tabNr = we_base_request::_(we_base_request::INT, 'tabnr', 1);
 
-		$hiddens = array('cmd' => '',
+		$hiddens = ['cmd' => '',
 			'pnt' => 'edbody',
 			'tabnr' => $tabNr,
 			'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0),
 			'delayParam' => we_base_request::_(we_base_request::INT, 'delayParam', '')
-		);
+		];
 
 		return $this->View->getCommonHiddens($hiddens) .
 			we_html_multiIconBox::getHTML('', $this->getHTMLGeneral(), 30);
@@ -171,9 +170,8 @@ function setTab(tab) {
 
 		$loader = new $class($this->TreeSource);
 
-		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
-							'pnt' => 'cmd',
-							'cmd' => 'no_cmd'))
+		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(['pnt' => 'cmd',
+							'cmd' => 'no_cmd'])
 					)
 				), we_html_element::jsElement(
 					($pid ?
