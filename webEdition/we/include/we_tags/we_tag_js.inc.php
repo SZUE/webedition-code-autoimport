@@ -37,5 +37,5 @@ function we_tag_js(array $attribs){
 	$attribs['src'] = $url . '?m=' . $row['Published'];
 
 	//	prepare $attribs for output:
-	return getHtmlTag('script', removeAttribs($attribs, array('id')), '', true) . "\n";
+	return getHtmlTag('script', removeAttribs($attribs, ['id']), '', true) . "\n";
 }

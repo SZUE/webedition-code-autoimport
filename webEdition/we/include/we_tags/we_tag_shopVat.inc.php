@@ -40,7 +40,7 @@ function we_tag_shopVat(array $attribs){
 
 		$attribs['name'] = WE_SHOP_VAT_FIELD_NAME;
 		$weShopVat = isset($GLOBALS['we_doc']->elements[$name]['dat']) ? we_shop_vats::getShopVATById($GLOBALS['we_doc']->elements[$name]['dat']) : we_shop_vats::getStandardShopVat();
-		
+
 		// use a defined name for this
 		if($GLOBALS['we_editmode']){
 			$fieldname = 'we_' . $GLOBALS['we_doc']->Name . '_attrib[' . $name . ']';
@@ -57,8 +57,7 @@ function we_tag_shopVat(array $attribs){
 		$countrycode = weTag_getAttribute('countrycode', $attribs, false, we_base_request::STRING);
 		$iso = $field === 'countrycode';
 
-		$fieldMap = array(
-			'id' => 'id',
+		$fieldMap = ['id' => 'id',
 			'vat' => 'vat',
 			'name' => 'text',
 			'country' => 'territory',
@@ -67,7 +66,7 @@ function we_tag_shopVat(array $attribs){
 			'is_fallback_to_standard' => 'is_vat_fallback_to_standard',
 			'is_fallback_to_prefs' => 'is_vat_fallback_to_prefs',
 			'is_country_fallback_to_prefs' => 'is_country_fallback_to_prefs'
-		);
+		];
 		$field = isset($fieldMap[$field]) ? $fieldMap[$field] : 'vat';
 
 		if($id){

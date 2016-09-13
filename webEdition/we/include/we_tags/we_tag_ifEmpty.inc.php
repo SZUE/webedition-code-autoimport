@@ -60,7 +60,7 @@ function we_tag_ifEmpty(array $attribs){
 			}
 			if(intval($doc->getElement($match . we_base_link::MAGIC_INT_LINK))){ // for type = href int
 				$intID = $doc->getElement($match . we_base_link::MAGIC_INT_LINK_ID, 'bdid');
-				return !($intID && strlen(id_to_path(array($intID))));
+				return !($intID && strlen(id_to_path([$intID])));
 			}
 			$hreftmp = $doc->getElement($match);
 			if($hreftmp && $hreftmp{0} === '/'){

@@ -38,7 +38,7 @@ function we_tag_printVersion(array $attribs, $content){
 
 	$query_string = [];
 
-	$hideQuery = array('we_objectID', 'tid', 'id', 'pv_tid', 'pv_id', 'we_cmd', 'responseText', 'we_mode', 'btype', SESSION_NAME, 'PHPSESSID');
+	$hideQuery = ['we_objectID', 'tid', 'id', 'pv_tid', 'pv_id', 'we_cmd', 'responseText', 'we_mode', 'btype', SESSION_NAME, 'PHPSESSID'];
 	if(isset($_SESSION)){
 		$hideQuery[] = session_name();
 	}
@@ -74,6 +74,6 @@ function we_tag_printVersion(array $attribs, $content){
 	$attribs['href'] = ($triggerID ? id_to_path($triggerID) : (isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'])) . '?' . http_build_query($query_string);
 
 	return ($link ?
-			getHtmlTag('a', removeAttribs($attribs, array('tid', 'triggerID', 'triggerid', 'doc', 'type', 'link', 'Link')), $content, true) :
+			getHtmlTag('a', removeAttribs($attribs, ['tid', 'triggerID', 'triggerid', 'doc', 'type', 'link', 'Link']), $content, true) :
 			$attribs['href']);
 }

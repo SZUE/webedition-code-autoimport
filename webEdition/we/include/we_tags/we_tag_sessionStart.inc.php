@@ -61,7 +61,7 @@ function we_tag_sessionStart(array $attribs){
 	if(!$_SESSION['webuser']['registered'] && isset($_REQUEST['s']['Username']) && isset($_REQUEST['s']['Password']) && !(isset($_REQUEST['s']['ID'])) && !isset($_REQUEST['s']['Password2'])//if set, we assume it is a password reset or use of an forgotten password routine, so we don't try to do an login
 	){
 		$GLOBALS['DB_WE']->query('DELETE FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND LoginDate<(NOW() - INTERVAL ' . we_base_constants::LOGIN_FAILED_HOLDTIME . ' DAY)');
-		$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart'));
+		$hook = new weHook('customer_preLogin', '', ['customer' => &$_REQUEST['s'], 'type' => 'normal', 'tagname' => 'sessionStart']);
 		$hook->executeHook();
 
 		if(!wetagsessionStartdoLogin($persistentlogins, $SessionAutologin)){
@@ -70,7 +70,7 @@ function we_tag_sessionStart(array $attribs){
 			$GLOBALS['DB_WE']->query('UPDATE ' . FAILED_LOGINS_TABLE . ' SET isValid="false" WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($_REQUEST['s']['Username']) . '"');
 			//change session ID to prevent session
 			we_base_sessionHandler::makeNewID();
-			$hook = new weHook('customer_Login', '', array('customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart'));
+			$hook = new weHook('customer_Login', '', ['customer' => &$_SESSION['webuser'], 'type' => 'normal', 'tagname' => 'sessionStart']);
 			$hook->executeHook();
 		}
 		unset($_REQUEST['s']['Password']);
@@ -100,8 +100,7 @@ function we_tag_sessionStart(array $attribs){
 		$WebUserGroup = ($_SESSION['webuser']['registered'] && $monitorgroupfield ? $_SESSION['webuser'][$monitorgroupfield] : 'we_guest');
 
 		$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_SESSION_TABLE . ' SET ' .
-			we_database_base::arraySetter(array(
-				'SessionID' => session_id(),
+			we_database_base::arraySetter(['SessionID' => session_id(),
 				'SessionIp' => $_SERVER['REMOTE_ADDR'] ? : '',
 				'WebUserID' => $WebUserID,
 				'WebUserGroup' => $WebUserGroup,
@@ -111,12 +110,11 @@ function we_tag_sessionStart(array $attribs){
 				'LastLogin' => sql_function('NOW()'),
 				'PageID' => $doc->ID,
 				'SessionAutologin' => $SessionAutologin
-			)) . ' ON DUPLICATE KEY UPDATE ' . we_database_base::arraySetter(array(
-				'PageID' => $doc->ID,
+			]) . ' ON DUPLICATE KEY UPDATE ' . we_database_base::arraySetter(['PageID' => $doc->ID,
 				'WebUserID' => $WebUserID,
 				'WebUserGroup' => $WebUserGroup,
 				'WebUserDescription' => '',
-		)));
+		]));
 	}
 	//remove sessions consisting only of webuser[registered]
 	if(!empty($_SESSION['webuser']) && count($_SESSION['webuser']) == 1){
@@ -190,11 +188,10 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin, $extern
 
 			if($persistentlogins && !empty($_REQUEST['s']['AutoLogin']) && $_SESSION['webuser']['AutoLoginDenied'] != 1){
 				$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
-				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
+				$GLOBALS['DB_WE']->query('INSERT INTO ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter(['AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
 						'WebUserID' => $_SESSION['webuser']['ID'],
 						'LastIp' => $_SERVER['REMOTE_ADDR']
-				)));
+				]));
 
 				setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');
 				$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_TABLE . ' SET AutoLogin=1 WHERE ID=' . intval($_SESSION['webuser']['ID']));
@@ -211,7 +208,7 @@ function wetagsessionStartdoLogin($persistentlogins, &$SessionAutologin, $extern
 function wetagsessionStartdoAutoLogin(){
 	$autologinSeek = $_COOKIE['_we_autologin'];
 	if(!empty($autologinSeek)){
-		$hook = new weHook('customer_preLogin', '', array('customer' => &$_REQUEST['s'], 'type' => 'autoLogin', 'tagname' => 'sessionStart'));
+		$hook = new weHook('customer_preLogin', '', ['customer' => &$_REQUEST['s'], 'type' => 'autoLogin', 'tagname' => 'sessionStart']);
 		$hook->executeHook();
 
 		$wasRegistered = $_SESSION['webuser']['registered'];
@@ -229,9 +226,9 @@ function wetagsessionStartdoAutoLogin(){
 			$_SESSION['webuser']['registered'] = true;
 			$_SESSION['webuser']['AutoLoginID'] = uniqid(hexdec(substr(session_id(), 0, 8)), true);
 			$GLOBALS['DB_WE']->query('UPDATE ' . CUSTOMER_AUTOLOGIN_TABLE . ' SET ' . we_database_base::arraySetter([
-				'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
+					'AutoLoginID' => sha1($_SESSION['webuser']['AutoLoginID']),
 					'LastIp' => $_SERVER['REMOTE_ADDR'],
-					]) . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']) . ' AND AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"'
+				]) . ' WHERE WebUserID=' . intval($_SESSION['webuser']['ID']) . ' AND AutoLoginID="' . $GLOBALS['DB_WE']->escape(sha1($autologinSeek)) . '"'
 			);
 
 			setcookie('_we_autologin', $_SESSION['webuser']['AutoLoginID'], (time() + CUSTOMER_AUTOLOGIN_LIFETIME), '/');

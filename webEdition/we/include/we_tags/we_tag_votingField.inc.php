@@ -58,7 +58,7 @@ function we_tag_votingField(array $attribs){
 						$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
 						$subb = ($GLOBALS['_we_voting']->AllowFreeText && $GLOBALS['_we_voting']->answerCount == $countanswers - 1 ? 1 : 0);
 						if($GLOBALS['_we_voting']->answerCount < $countanswers - $subb){
-							$atts = removeAttribs($attribs, array('name', 'type'));
+							$atts = removeAttribs($attribs, ['name', 'type']);
 							$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
 							if($GLOBALS['_we_voting']->IsRequired && $GLOBALS['_we_voting']->answerCount == 0){
 								$atts['type'] = 'hidden';
@@ -88,7 +88,7 @@ function we_tag_votingField(array $attribs){
 						$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
 						$subb = ($GLOBALS['_we_voting']->AllowFreeText && $GLOBALS['_we_voting']->answerCount == $countanswers - 1 ? 1 : 0);
 						if($GLOBALS['_we_voting']->answerCount < $countanswers - $subb){
-							$atts = removeAttribs($attribs, array('name', 'type'));
+							$atts = removeAttribs($attribs, ['name', 'type']);
 							$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
 							if($GLOBALS['_we_voting']->IsRequired && $GLOBALS['_we_voting']->answerCount == 0){
 								$atts['type'] = 'hidden';
@@ -116,14 +116,14 @@ function we_tag_votingField(array $attribs){
 						$code = '';
 						if($GLOBALS['_we_voting']->answerCount == 0){
 
-							$atts = removeAttribs($attribs, array('name', 'type'));
+							$atts = removeAttribs($attribs, ['name', 'type']);
 							$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
 							$atts['id'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID;
 
 							$code .= getHtmlTag('select', $atts, '');
 						}
 
-						$atts = removeAttribs($attribs, array('name', 'type'));
+						$atts = removeAttribs($attribs, ['name', 'type']);
 						$atts['value'] = $GLOBALS['_we_voting']->answerCount;
 
 						$code .= getHtmlTag('option', $atts, addslashes($GLOBALS['_we_voting']->getAnswer()));
@@ -139,7 +139,7 @@ function we_tag_votingField(array $attribs){
 								$myImage = new we_imageDocument();
 								$myImage->initByID($myImageID);
 
-								$atts = removeAttribs($attribs, array('name', 'type', 'precision', 'num_format', 'nameto', 'to'));
+								$atts = removeAttribs($attribs, ['name', 'type', 'precision', 'num_format', 'nameto', 'to']);
 								$myImage->initByAttribs($atts);
 								return $myImage->getHtml();
 							}
@@ -155,7 +155,7 @@ function we_tag_votingField(array $attribs){
 						$code = '';
 						if($GLOBALS['_we_voting']->AllowFreeText){
 
-							$atts = removeAttribs($attribs, array('name', 'type'));
+							$atts = removeAttribs($attribs, ['name', 'type']);
 							$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
 							if($GLOBALS['_we_voting']->answerCount == $countanswers - 1){
 								$atts['type'] = 'text';
@@ -186,7 +186,7 @@ function we_tag_votingField(array $attribs){
 						return $code;
 					case 'textarea':
 						if($GLOBALS['_we_voting']->AllowFreeText){
-							$atts = removeAttribs($attribs, array('name', 'type'));
+							$atts = removeAttribs($attribs, ['name', 'type']);
 							$countanswers = count($GLOBALS['_we_voting']->QASet[$GLOBALS['_we_voting']->defVersion]['answers']);
 							if($GLOBALS['_we_voting']->answerCount == $countanswers - 1){
 								$atts['name'] = '_we_voting_answer_' . $GLOBALS['_we_voting']->ID . '_' . $GLOBALS['_we_voting']->answerCount;

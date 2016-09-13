@@ -1,4 +1,5 @@
 <?php
+
 /**
  * webEdition CMS
  *
@@ -24,53 +25,52 @@
  * @return	boolean
  *
  */
+function we_tag_ifUser($attribs = []){
+	if(empty($GLOBALS['we_editmode']) || !isset($_SESSION['user'])){
+		return false;
+	}
 
-function we_tag_ifUser($attribs = []) {
-    if(empty($GLOBALS['we_editmode']) || !isset($_SESSION['user'])){
-        return false;
-    }
+	if(($foo = attributFehltError($attribs, ['name' => false, 'match' => true], __FUNCTION__))){
+		echo $foo;
+		return false;
+	}
 
-    if(($foo = attributFehltError($attribs, array('name' => false, 'match' => true), __FUNCTION__))){
-        echo $foo;
-        return false;
-    }
+	$match = weTag_getAttribute('match', $attribs, '', we_base_request::RAW);
+	$operator = weTag_getAttribute('operator', $attribs, 'equal', we_base_request::STRING);
 
-    $match = weTag_getAttribute('match', $attribs, '', we_base_request::RAW);
-    $operator = weTag_getAttribute('operator', $attribs, 'equal', we_base_request::STRING);
+	$matchArray = [];
+	if(is_bool($match)){
+		$size = 1;
+	} else {
+		$matchArray = explode(',', $match);
+		$size = count($matchArray);
+	}
 
-    $matchArray = [];
-    if(is_bool($match)){
-        $size = 1;
-    } else {
-        $matchArray = explode(',', $match);
-        $size = count($matchArray);
-    }
-
-    /**
-     * values: Username, groups = array()
-     */
-    switch(($name = weTag_getAttribute('name', $attribs, 'Username', we_base_request::STRING))){
-        default:
-        case (stripos($name, 'username') === 0): //we need this for <we:block>
-            return ($size == 1 ?
-                _we_tag_ifUser_op($operator, $_SESSION['user']['Username'], $match) :
-                (isset($_SESSION['user']['Username']) && in_array($_SESSION['user']['Username'], $matchArray)));
-        case (stripos($name, 'groups') === 0):
-            $userGroups = isset($_SESSION['user']['groups']) ? $_SESSION['user']['groups'] : '';
-            if(!is_array($userGroups) || count($userGroups) == 0){
-                return false;
-            }
-            // get paths for actual users userGroups and check, if paths match with specified userGroups
-            $query = "SELECT Path FROM " . USER_TABLE . " WHERE ID IN (" . implode("," , $userGroups) . ") AND `IsFolder` = 1";
-            $db = new DB_WE();
-            $db->query($query);
-            while($db->next_record()) {
-                if (in_array($db->f('Path'), explode(',', $match))) {
-                    return true;
-                }
-            }
-            return false;
-    }
+	/**
+	 * values: Username, groups = array()
+	 */
+	switch(($name = weTag_getAttribute('name', $attribs, 'Username', we_base_request::STRING))){
+		default:
+		case (stripos($name, 'username') === 0): //we need this for <we:block>
+			return ($size == 1 ?
+					_we_tag_ifUser_op($operator, $_SESSION['user']['Username'], $match) :
+					(isset($_SESSION['user']['Username']) && in_array($_SESSION['user']['Username'], $matchArray)));
+		case (stripos($name, 'groups') === 0):
+			$userGroups = isset($_SESSION['user']['groups']) ? $_SESSION['user']['groups'] : '';
+			if(!is_array($userGroups) || count($userGroups) == 0){
+				return false;
+			}
+			// get paths for actual users userGroups and check, if paths match with specified userGroups
+			$query = "SELECT Path FROM " . USER_TABLE . " WHERE ID IN (" . implode(",", $userGroups) . ") AND `IsFolder` = 1";
+			$db = new DB_WE();
+			$db->query($query);
+			while($db->next_record()){
+				if(in_array($db->f('Path'), explode(',', $match))){
+					return true;
+				}
+			}
+			return false;
+	}
 }
 
 /**
@@ -79,16 +79,14 @@ function we_tag_ifUser($attribs = []) {
  * @param $match
  * @return bool
  */
-
 function _we_tag_ifUser_op($operator, $first, $match){
-    switch($operator){
-        default:
-        case 'equal':
-            return $first == $match;
-        case 'contains':
-            return (strpos($first, $match) !== false);
-        case 'isin':
-            return (strpos($match, $first) !== false);
-    }
+	switch($operator){
+		default:
+		case 'equal':
+			return $first == $match;
+		case 'contains':
+			return (strpos($first, $match) !== false);
+		case 'isin':
+			return (strpos($match, $first) !== false);
+	}
 }
-

@@ -49,7 +49,7 @@ function we_tag_input(array $attribs, $content){
 				$d = abs($GLOBALS['we_doc']->getElement($name));
 				return we_html_tools::getDateInput('we_' . $GLOBALS['we_doc']->Name . '_date[' . $name . ']', $d? : ($currentdate ? time() : 0), true, $format);
 			case 'checkbox':
-				$attribs = removeAttribs($attribs, array('name', 'value', 'type', '_name_orig', 'reload'));
+				$attribs = removeAttribs($attribs, ['name', 'value', 'type', '_name_orig', 'reload']);
 				$attribs['type'] = 'checkbox';
 				$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_attrib_' . $name;
 				$attribs['value'] = 1;
@@ -62,7 +62,7 @@ function we_tag_input(array $attribs, $content){
 					getHtmlTag('input', $attribs);
 
 			case 'country':
-				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
+				$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg']);
 				$newAtts['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 				$newAtts['onclick'] = '_EditorFrame.setEditorIsHot(true);';
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
@@ -103,7 +103,7 @@ function we_tag_input(array $attribs, $content){
 
 				return getHtmlTag('select', $newAtts, $content, true);
 			case 'language':
-				$newAtts = removeAttribs($attribs, array('checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg'));
+				$newAtts = removeAttribs($attribs, ['checked', 'type', 'options', 'selected', 'onchange', 'onChange', 'name', 'value', 'values', 'onclick', 'onClick', 'mode', 'choice', 'pure', 'rows', 'cols', 'maxlength', 'wysiwyg']);
 				$newAtts['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 				$newAtts['onclick'] = '_EditorFrame.setEditorIsHot(true);';
 				$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
@@ -142,11 +142,10 @@ function we_tag_input(array $attribs, $content){
 							"this.form.elements['" . $tagname . "'].value = this.options[this.selectedIndex].text;") .
 						($reload ? 'setScrollTo();top.we_cmd(\'reload_editpage\');' : '');
 
-					$sel = getHtmlTag('select', array(
-						'class' => "defaultfont",
+					$sel = getHtmlTag('select', ['class' => "defaultfont",
 						'name' => 'we_choice_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']',
 						'onchange' => $onChange . ';this.selectedIndex=0;_EditorFrame.setEditorIsHot(true);'
-						), ($vals ? '<option>' . implode('</option><option>', $vals) . '</option>' : ''), true);
+						], ($vals ? '<option>' . implode('</option><option>', $vals) . '</option>' : ''), true);
 				}
 
 				$attribs['onchange'] = '_EditorFrame.setEditorIsHot(true);';
@@ -154,7 +153,7 @@ function we_tag_input(array $attribs, $content){
 				$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 				$attribs['value'] = $val;
 
-				return getHtmlTag('input', removeAttribs($attribs, array('mode', 'values', '_name_orig'))) . "&nbsp;" . (isset($sel) ? $sel : '');
+				return getHtmlTag('input', removeAttribs($attribs, ['mode', 'values', '_name_orig'])) . "&nbsp;" . (isset($sel) ? $sel : '');
 			case 'select':
 				//NOTE: this tag is for objects only
 				return $GLOBALS['we_doc']->getField($attribs, 'select');
@@ -167,7 +166,7 @@ function we_tag_input(array $attribs, $content){
 				$attribs['type'] = "text";
 				$attribs['name'] = 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $name . ']';
 				$attribs['value'] = $val;
-				$input = getHtmlTag('input', removeAttribs($attribs, array('mode', 'values', '_name_orig')));
+				$input = getHtmlTag('input', removeAttribs($attribs, ['mode', 'values', '_name_orig']));
 				return (defined('SPELLCHECKER') && $spellcheck ?
 						'<table class="weEditTable padding0 spacing0 border0">
 	<tr>

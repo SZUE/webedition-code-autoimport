@@ -94,12 +94,11 @@ function we_tag_userInput(array $attribs, $content){
 			case 'flashmovie':
 				break;
 			default:
-				$hidden = getHtmlTag('input', array(
-					'type' => 'hidden',
+				$hidden = getHtmlTag('input', ['type' => 'hidden',
 					'name' => $fieldname,
 					'value' => oldHtmlspecialchars($orgVal),
 					'xml' => $xml
-				));
+				]);
 				return (($type != 'hidden') ? $content : '') . $hidden;
 		}
 	}
@@ -175,11 +174,10 @@ function we_tag_userInput(array $attribs, $content){
 			if(isset($_SESSION[$imgDataId]['serverPath'])){
 				$src = '/' . ltrim(substr($_SESSION[$imgDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 
-				return getHtmlTag('img', array(
-						'src' => $src,
+				return getHtmlTag('img', ['src' => $src,
 						'alt' => "",
 						'style' => 'width:' . $_SESSION[$imgDataId]["imgwidth"] . 'px;height:' . $_SESSION[$imgDataId]["imgheight"] . 'px',
-					)) . $hidden;
+					]) . $hidden;
 			}
 
 			if(!empty($_SESSION[$imgDataId]['doDelete'])){
@@ -227,7 +225,7 @@ function we_tag_userInput(array $attribs, $content){
 					$src = '/' . ltrim(substr($_SESSION[$flashmovieDataId]['serverPath'], strlen($_SERVER['DOCUMENT_ROOT'])), '/');
 					$flashmovieTag = '';
 				} else {
-					$attribs = removeAttribs($attribs, array('width', 'height'));
+					$attribs = removeAttribs($attribs, ['width', 'height']);
 					// Include Flash class
 					$flashmovieTag = (!empty($attribs['id']) ?
 							$GLOBALS['we_doc']->getField($attribs, 'flashmovie') :
@@ -267,7 +265,7 @@ function we_tag_userInput(array $attribs, $content){
 				if(!empty($_SESSION[$flashmovieDataId]['doDelete'])){
 					return $hidden;
 				}
-				$attribs = removeAttribs($attribs, array('width', 'height'));
+				$attribs = removeAttribs($attribs, ['width', 'height']);
 				$attribs['id'] = $_SESSION[$flashmovieDataId]['id'];
 				return $GLOBALS['we_doc']->getField($attribs, 'flashmovie') . $hidden;
 			}
@@ -369,8 +367,7 @@ function we_tag_userInput(array $attribs, $content){
 		case 'textarea' :
 			//$attribs['inlineedit'] = "true"; // bugfix: 7276
 			if(weTag_getAttribute("pure", $attribs, false, we_base_request::BOOL)){
-				$atts = removeAttribs($attribs, array(
-					'wysiwyg',
+				$atts = removeAttribs($attribs, ['wysiwyg',
 					'commands',
 					'pure',
 					'type',
@@ -392,7 +389,7 @@ function we_tag_userInput(array $attribs, $content){
 					'editorcss',
 					'ignoredocumentcss',
 					'buttonpos'
-				));
+				]);
 				return we_getTextareaField($fieldname, ($content ? : $value), $atts);
 			}
 
@@ -415,8 +412,7 @@ function we_tag_userInput(array $attribs, $content){
 				we_html_forms::weTextarea($fieldname, ($content ? : $value), $attribs, $autobr, 'autobr', $showAutobr, false, false, $xml, $removeFirstParagraph, $charset, false, true, $name);
 
 		case 'checkbox' :
-			$atts = removeAttribs($attribs, array(
-				'wysiwyg',
+			$atts = removeAttribs($attribs, ['wysiwyg',
 				'commands',
 				'pure',
 				'type',
@@ -435,19 +431,18 @@ function we_tag_userInput(array $attribs, $content){
 				'height',
 				'bgcolor',
 				'fontnames'
-			));
+			]);
 			if((!$isset) && $checked){
 				$content = 1;
 			}
 			return we_getInputCheckboxField($fieldname, $content, $atts);
 		case 'date' :
 			if($hidden){
-				$attsHidden = array(
-					'type' => 'hidden',
+				$attsHidden = ['type' => 'hidden',
 					'name' => $fieldname,
 					'value' => $orgVal ? : time(),
 					'xml' => $xml
-				);
+				];
 				return getHtmlTag('input', $attsHidden);
 			}
 			$currentdate = weTag_getAttribute('currentdate', $attribs, false, we_base_request::BOOL);
@@ -480,7 +475,7 @@ function we_tag_userInput(array $attribs, $content){
 			return we_html_tools::getDateInput('we_ui_' . (isset($GLOBALS['WE_FORM']) ? $GLOBALS['WE_FORM'] : '') . '[we_date_' . $name . ']', $orgVal, false, $format, '', '', $xml, $minyear, $maxyear);
 
 		case 'country':
-			$newAtts = removeAttribs($attribs, array('wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength'));
+			$newAtts = removeAttribs($attribs, ['wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength']);
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 
 			$doc = we_getDocForTag($docAttr);
@@ -524,7 +519,7 @@ function we_tag_userInput(array $attribs, $content){
 			$newAtts['name'] = $fieldname;
 			return getHtmlTag('select', $newAtts, $options, true);
 		case 'language':
-			$newAtts = removeAttribs($attribs, array('wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength'));
+			$newAtts = removeAttribs($attribs, ['wysiwyg', 'commands', 'pure', 'type', 'value', 'checked', 'autobr', 'name', 'values', 'hidden', 'editable', 'format', 'property', 'rows', 'cols', 'fontnames', 'bgcolor', 'width', 'height', 'maxlength']);
 
 			$docAttr = weTag_getAttribute('doc', $attribs, 'self', we_base_request::STRING);
 			$doc = we_getDocForTag($docAttr);
@@ -557,8 +552,7 @@ function we_tag_userInput(array $attribs, $content){
 			return getHtmlTag('select', $newAtts, $options, true);
 		case 'select' :
 			$options = '';
-			$atts = removeAttribs($attribs, array(
-				'wysiwyg',
+			$atts = removeAttribs($attribs, ['wysiwyg',
 				'commands',
 				'pure',
 				'type',
@@ -578,7 +572,7 @@ function we_tag_userInput(array $attribs, $content){
 				'width',
 				'height',
 				'maxlength'
-			));
+			]);
 			if($values){
 
 				$values = explode(',', $values);
@@ -586,9 +580,8 @@ function we_tag_userInput(array $attribs, $content){
 				foreach($values as $txt){
 
 					$attsOption = ($txt == $orgVal ?
-							array(
-							'selected' => 'selected'
-							) :
+							['selected' => 'selected'
+							] :
 							[]);
 
 					$options .= getHtmlTag('option', $attsOption, trim($txt), true);
@@ -597,15 +590,13 @@ function we_tag_userInput(array $attribs, $content){
 				foreach($object->DefArray["meta_" . $name]["meta"] as $key => $val){
 
 					if($orgVal == $key){
-						$atts2 = array(
-							'value' => $key, 'selected' => 'selected'
-						);
+						$atts2 = ['value' => $key, 'selected' => 'selected'
+						];
 					} else {
-						$atts2 = array(
-							'value' => $key
-						);
+						$atts2 = ['value' => $key
+						];
 					}
-					$attsOption = removeAttribs(array_merge($atts, $atts2), array('class'));
+					$attsOption = removeAttribs(array_merge($atts, $atts2), ['class']);
 					$options .= getHtmlTag('option', $attsOption, $val, true);
 				}
 			}
@@ -613,8 +604,7 @@ function we_tag_userInput(array $attribs, $content){
 			$atts['name'] = $fieldname;
 			return getHtmlTag('select', $atts, $options, true);
 		case 'radio' :
-			$atts = removeAttribs($attribs, array(
-				'wysiwyg',
+			$atts = removeAttribs($attribs, ['wysiwyg',
 				'commands',
 				'pure',
 				'type',
@@ -633,23 +623,21 @@ function we_tag_userInput(array $attribs, $content){
 				'height',
 				'bgcolor',
 				'fontnames'
-			));
+			]);
 			return (!$isset ?
 					we_getInputRadioField($fieldname, ($checked ? $value : $value . 'dummy'), $value, $atts) :
 					we_getInputRadioField($fieldname, $orgVal, $value, $atts));
 
 		case 'hidden':
-			return getHtmlTag('input', array(
-				'type' => 'hidden',
+			return getHtmlTag('input', ['type' => 'hidden',
 				'name' => $fieldname,
 				'value' => oldHtmlspecialchars($content),
 				'xml' => $xml,
-			));
+			]);
 		case 'print' :
 			return $orgVal;
 		case 'choice' :
-			$atts = removeAttribs($attribs, array(
-				'wysiwyg',
+			$atts = removeAttribs($attribs, ['wysiwyg',
 				'commands',
 				'pure',
 				'type',
@@ -669,12 +657,11 @@ function we_tag_userInput(array $attribs, $content){
 				'bgcolor',
 				'fontnames',
 				'maxlength'
-			));
+			]);
 			$mode = weTag_getAttribute('mode', $attribs, '', we_base_request::STRING);
 			return we_html_tools::htmlInputChoiceField($fieldname, $orgVal, $values, $atts, $mode);
 		case 'password':
-			$atts = array_merge(removeAttribs($attribs, array(
-				'wysiwyg',
+			$atts = array_merge(removeAttribs($attribs, ['wysiwyg',
 				'commands',
 				'pure',
 				'type',
@@ -693,17 +680,15 @@ function we_tag_userInput(array $attribs, $content){
 				'height',
 				'bgcolor',
 				'fontnames'
-				)), array(
-				'type' => 'password',
+				]), ['type' => 'password',
 				'name' => $fieldname,
-				'value' => oldHtmlspecialchars($orgVal))
+				'value' => oldHtmlspecialchars($orgVal)]
 			);
 
 			return getHtmlTag('input', $atts);
 		case 'textinput':
 		default :
-			$atts = removeAttribs($attribs, array(
-				'wysiwyg',
+			$atts = removeAttribs($attribs, ['wysiwyg',
 				'commands',
 				'pure',
 				'type',
@@ -722,7 +707,7 @@ function we_tag_userInput(array $attribs, $content){
 				'height',
 				'bgcolor',
 				'fontnames'
-			));
+			]);
 			return we_getInputTextInputField($fieldname, $orgVal, $atts);
 	}
 }

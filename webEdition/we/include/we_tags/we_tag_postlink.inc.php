@@ -20,5 +20,5 @@
  */
 //used in we:linkedlist
 function we_tag_postlink(array $attribs, $content){
-	return (we_tag('ifPosition', array('type' => 'linklist', 'position' => 'last', 'operator' => 'equal')) ? '' : $content);
+	return (we_tag('ifPosition', ['type' => 'linklist', 'position' => 'last', 'operator' => 'equal']) ? '' : $content);
 }

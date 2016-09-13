@@ -78,7 +78,7 @@ function we_tag_writeVoting(array $attribs){
 			if($GLOBALS['_we_voting_status'] != we_voting_voting::SUCCESS){
 				break;
 			}
-			$_SESSION['_we_voting_sessionData'][$id] = array('value' => $value, 'addFields' => $addFields);
+			$_SESSION['_we_voting_sessionData'][$id] = ['value' => $value, 'addFields' => $addFields];
 		}
 	}
 	if($allowredirect && !$GLOBALS['WE_MAIN_DOC']->InWebEdition && !empty($GLOBALS['_we_voting_SuccessorID'])){

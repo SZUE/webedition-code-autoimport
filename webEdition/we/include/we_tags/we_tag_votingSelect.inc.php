@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_votingSelect(array $attribs){
-	$db=$GLOBALS['DB_WE'];
+	$db = $GLOBALS['DB_WE'];
 
 	if($GLOBALS['we_editmode'] && isset($GLOBALS['_we_voting']) && isset($GLOBALS['_we_voting_namespace'])){
 		$submitonchange = weTag_getAttribute('submitonchange', $attribs, false, we_base_request::BOOL);
@@ -33,9 +33,8 @@ function we_tag_votingSelect(array $attribs){
 
 		$select_name = $GLOBALS['_we_voting_namespace'];
 
-		$newAttribs = array(
-			'name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $select_name . ']'
-		);
+		$newAttribs = ['name' => 'we_' . $GLOBALS['we_doc']->Name . '_txt[' . $select_name . ']'
+		];
 
 		$val = oldHtmlspecialchars($GLOBALS['we_doc']->issetElement($select_name) ? $GLOBALS['we_doc']->getElement($select_name) : 0);
 
@@ -43,7 +42,7 @@ function we_tag_votingSelect(array $attribs){
 				'we_submitForm();' :
 				'_EditorFrame.setEditorIsHot(true)' . ($reload ? (';setScrollTo();top.we_cmd(\'reload_editpage\');') : '') );
 
-		$options = (isset($attribs['firstentry']) ? getHtmlTag('option', array('value' => ''), $firstentry, true) : '');
+		$options = (isset($attribs['firstentry']) ? getHtmlTag('option', ['value' => ''], $firstentry, true) : '');
 
 		$hasOpt = false;
 		if($parentid){
@@ -59,7 +58,7 @@ function we_tag_votingSelect(array $attribs){
 				$hasOpt = true;
 				continue;
 			}
-			$options .= getHtmlTag('option', ($db->f('ID') == $val ? array('value' => $db->f("ID"), 'selected' => 'selected') : array('value' => $db->f('ID'))), $db->f('Text'));
+			$options .= getHtmlTag('option', ($db->f('ID') == $val ? ['value' => $db->f("ID"), 'selected' => 'selected'] : ['value' => $db->f('ID')]), $db->f('Text'));
 		}
 		return getHtmlTag('select', $newAttribs, $options . ($hasOpt ? '</optgroup>' : ''), true);
 	}

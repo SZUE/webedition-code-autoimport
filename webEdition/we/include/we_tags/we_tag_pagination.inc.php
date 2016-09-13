@@ -50,7 +50,7 @@ function we_tag_pagination(array $attribs, $content){
 	$ln_pageFormat = (string) weTag_getAttribute("pageFormat", $attribs, ':#:');
 	$ln_pages = (int) we_tag("listviewPages", $attribs, '');
 
-	$ln_varName = $ln_pages . '_' . md5(print_r($attribs,true));
+	$ln_varName = $ln_pages . '_' . md5(print_r($attribs, true));
 
 	static $cache = [];
 
@@ -223,17 +223,17 @@ function we_tag_pagination(array $attribs, $content){
 		if($ln_start_circle !== false){
 			for($i = $ln_start_circle - 1; $i >= 0; $i--){
 				$tmp_page = $ln_end - $i - 1;
-				$ln_output_array[] = array('page' => $tmp_page + 1, 'offset' => ($tmp_page * $ln_rows) + $ln_lv_offset, 'start' => ($tmp_page * $ln_rows) + 1, 'end' => ($tmp_page < $ln_pages - 1 ? (($tmp_page + 1) * $ln_rows) : $ln_number_of_rows));
+				$ln_output_array[] = ['page' => $tmp_page + 1, 'offset' => ($tmp_page * $ln_rows) + $ln_lv_offset, 'start' => ($tmp_page * $ln_rows) + 1, 'end' => ($tmp_page < $ln_pages - 1 ? (($tmp_page + 1) * $ln_rows) : $ln_number_of_rows)];
 			}
 		}
 
 		for($i = ($ln_start - 1); $i < $ln_end; $i++){
-			$ln_output_array[] = array('page' => $i + 1, 'offset' => ($i * $ln_rows) + $ln_lv_offset, 'start' => ($i * $ln_rows) + 1, 'end' => ($i < $ln_pages - 1 ? ($i + 1) * $ln_rows : $ln_number_of_rows));
+			$ln_output_array[] = ['page' => $i + 1, 'offset' => ($i * $ln_rows) + $ln_lv_offset, 'start' => ($i * $ln_rows) + 1, 'end' => ($i < $ln_pages - 1 ? ($i + 1) * $ln_rows : $ln_number_of_rows)];
 		}
 
 		if($ln_end_circle !== false){
 			for($i = 0; $i < $ln_end_circle; $i++){
-				$ln_output_array[] = array('page' => $i + 1, 'offset' => ($i * $ln_rows) + $ln_lv_offset, 'start' => ($i * $ln_rows) + 1, 'end' => ($i < $ln_pages - 1 ? ($i + 1) * $ln_rows : $ln_number_of_rows));
+				$ln_output_array[] = ['page' => $i + 1, 'offset' => ($i * $ln_rows) + $ln_lv_offset, 'start' => ($i * $ln_rows) + 1, 'end' => ($i < $ln_pages - 1 ? ($i + 1) * $ln_rows : $ln_number_of_rows)];
 			}
 		}
 

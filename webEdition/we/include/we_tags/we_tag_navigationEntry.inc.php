@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_parse_tag_navigationEntry($attribs, $content){
-	return '<?php ' . we_tag_tagParser::printTag('navigationEntry', $attribs, str_replace(array('global $lv;', '\\\\$'), array('', '$'), $content), true) . ';?>';
+	return '<?php ' . we_tag_tagParser::printTag('navigationEntry', $attribs, str_replace(['global $lv;', '\\\\$'], ['', '$'], $content), true) . ';?>';
 }
 
 function we_tag_navigationEntry(array $attribs, $content){

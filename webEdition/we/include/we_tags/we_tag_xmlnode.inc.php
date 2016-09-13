@@ -69,10 +69,9 @@ function we_tag_xmlnode(array $attribs){
 	}
 
 	$ind_name = count($GLOBALS['xpaths']) + 1;
-	$GLOBALS["xpaths"][$ind_name] = array(
-		'xpath' => $attribs["xpath"],
+	$GLOBALS["xpaths"][$ind_name] = ['xpath' => $attribs["xpath"],
 		'parent' => $parent_name
-	);
+	];
 
 	// find feed
 	if($url){

@@ -75,7 +75,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 		}
 
 		// username existiert noch nicht!
-		$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'new', 'tagname' => 'saveRegisteredUser'));
+		$hook = new weHook('customer_preSave', '', ['customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'new', 'tagname' => 'saveRegisteredUser']);
 		$ret = $hook->executeHook();
 
 		we_saveCustomerImages();
@@ -93,10 +93,9 @@ function we_tag_saveRegisteredUser(array $attribs){
 			$id = $GLOBALS['DB_WE']->getInsertId();
 			if($id){
 				// User in session speichern
-				$_SESSION['webuser'] = array(
-					'ID' => $id,
+				$_SESSION['webuser'] = ['ID' => $id,
 					'registered' => true, //needed for reload
-				);
+				];
 				$GLOBALS['we_customer_write_ID'] = $_SESSION['webuser']['ID'];
 				//make sure to always load session data
 				$changesessiondata = true;
@@ -114,7 +113,7 @@ function we_tag_saveRegisteredUser(array $attribs){
 			return;
 		}
 		if(isset($_REQUEST['s'])){// es existiert kein anderer User mit den neuen Username oder username hat sich nicht geaendert
-			$hook = new weHook('customer_preSave', '', array('customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser'));
+			$hook = new weHook('customer_preSave', '', ['customer' => &$_REQUEST['s'], 'from' => 'tag', 'type' => 'modify', 'tagname' => 'saveRegisteredUser']);
 			$ret = $hook->executeHook();
 
 			we_saveCustomerImages();
@@ -220,7 +219,7 @@ function we_saveCustomerImages(){
 					(!empty($_SESSION['webuser']['imgtmp'][$imgName]['height']))){
 					$imageData = we_base_file::load($serverPath);
 					$thumb = new we_thumbnail();
-					$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], array($_SESSION['webuser']['imgtmp'][$imgName]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION['webuser']['imgtmp'][$imgName]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
+					$thumb->init('dummy', $_SESSION['webuser']['imgtmp'][$imgName]['width'], $_SESSION['webuser']['imgtmp'][$imgName]['height'], [$_SESSION['webuser']['imgtmp'][$imgName]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION['webuser']['imgtmp'][$imgName]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0], '', 'dummy', 0, '', '', $extension, $we_size[0], $we_size[1], $imageData, '', $_SESSION['webuser']['imgtmp'][$imgName]['quality'], true);
 
 					$imgData = '';
 					$thumb->getThumb($imgData);

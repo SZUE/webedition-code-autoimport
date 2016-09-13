@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -29,7 +28,7 @@
  * @param string $content
  */
 function we_tag_xmlfeed(array $attribs){
-	if(($foo = attributFehltError($attribs, array('name' => false, 'url' => false), __FUNCTION__))){
+	if(($foo = attributFehltError($attribs, ['name' => false, 'url' => false], __FUNCTION__))){
 		return $foo;
 	}
 

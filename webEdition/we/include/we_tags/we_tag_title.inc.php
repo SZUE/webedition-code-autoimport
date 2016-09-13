@@ -28,7 +28,7 @@ function we_tag_title(array $attribs, $content){
 	$suffix = weTag_getAttribute('suffix', $attribs, '', we_base_request::RAW_CHECKED);
 	$delimiter = weTag_getAttribute('delimiter', $attribs, '', we_base_request::RAW_CHECKED);
 
-	$attribs = removeAttribs($attribs, array('htmlspecialchars', 'prefix', 'suffix', 'delimiter'));
+	$attribs = removeAttribs($attribs, ['htmlspecialchars', 'prefix', 'suffix', 'delimiter']);
 	$title = !empty($GLOBALS['TITLE']) ? $GLOBALS['TITLE'] : '';
 	if(!$title && $content){
 		ob_start();
