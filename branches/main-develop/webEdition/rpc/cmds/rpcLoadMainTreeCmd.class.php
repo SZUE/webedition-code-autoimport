@@ -175,7 +175,7 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 
 	function execute(){
 		$resp = new we_rpc_response();
-t_e($_REQUEST);
+
 		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 		$parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 		$offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
