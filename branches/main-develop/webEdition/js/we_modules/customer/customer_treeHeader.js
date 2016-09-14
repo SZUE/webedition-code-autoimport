@@ -37,3 +37,11 @@ function addSorting(sortname) {
 	document.we_form_treeheader.sort.options[len] = new Option(sortname, sortname);
 
 }
+function submitForm(target, action, method, form) {
+	var f = form ? self.document.forms[form] : self.document.we_form;
+	f.target = target ? target : "cmd";
+	f.action = action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer";
+	f.method = method ? method : "post";
+
+	f.submit();
+}

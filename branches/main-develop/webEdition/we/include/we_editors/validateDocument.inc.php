@@ -37,7 +37,7 @@ if($we_doc->ContentType == we_base_ContentTypes::CSS || $we_doc->Extension === '
 }
 
 $services = [];
-$js = '';
+$json = [];
 
 foreach($validationService as $service){
 	$services[$service->art][$service->category][] = $service;
@@ -79,13 +79,15 @@ if($services){
 					$select .= '<optgroup class="lvl2" label="-- ' . g_l('validation', '[category_' . $cat . ']') . '">';
 				}
 				$select .= '<option value="' . $service->getName() . '">' . oldHtmlspecialchars($service->name) . '</option>';
-				$js .= '				host["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->host) . '";
-                        path["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->path) . '";
-                        s_method["' . $service->getName() . '"] = "' . $service->method . '";
-                        varname["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->varname) . '";
-                        checkvia["' . $service->getName() . '"] = "' . $service->checkvia . '";
-                        ctype["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->ctype) . '";
-                        additionalVars["' . $service->getName() . '"] = "' . oldHtmlspecialchars($service->additionalVars) . '";';
+				$json[$service->getName()] = [
+					'host' => $service->host,
+					'path' => $service->path,
+					's_method' => $service->method,
+					'varname' => $service->varname,
+					'checkvia' => $service->checkvia,
+					'ctype' => $service->ctype,
+					'additionalVars' => $service->additionalVars,
+				];
 			}
 		}
 	}
@@ -124,7 +126,7 @@ $parts = [
 ];
 
 //  css for webSite
-echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'validateDocument.js') . we_html_element::jsElement($js), we_html_element::htmlBody(
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'validateDocument.js', '', ['id' => 'loadVarValidateDocument', 'data-validate' => setDynamicVar($json)]), we_html_element::htmlBody(
 		['class' => 'weEditorBody', 'onload' => 'setIFrameSize()', 'onresize' => 'setIFrameSize()'], '<form name="we_form">'
 		. we_html_element::htmlHidden('we_transaction', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', 0))
 		. we_html_multiIconBox::getHTML('weDocValidation', $parts, 20) .

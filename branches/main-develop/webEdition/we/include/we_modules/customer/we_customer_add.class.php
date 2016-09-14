@@ -153,21 +153,13 @@ abstract class we_customer_add{
 			$fhidden .
 			we_html_element::htmlComment("hiddens ends");
 
-		$out = we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "doScrollTo()"], self::getJSSortAdmin($pob->View) .
+		$out = we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "doScrollTo()"], we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_sortAdmin.js', '', ['id' => 'loadVarCustomer_sortAdmin', 'data-settings' => setDynamicVar([
+						'default_sort_view' => $pob->View->settings->getSettings('default_sort_view')
+				])]) .
 				we_html_element::htmlForm(['name' => 'we_form'], $sort_code)
 		);
 
 		return $pob->getHTMLDocument($out);
-	}
-
-	public static function getJSSortAdmin(we_customer_view $pob){
-		return we_html_element::jsElement('
-var settings={
-	default_sort_view:"' . $pob->settings->getSettings('default_sort_view') . '"
-};
-' .
-				$pob->getJSSubmitFunction("sort_admin")) .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_sortAdmin.js');
 	}
 
 	public static function getHTMLSearch(&$pob, &$search, &$select){

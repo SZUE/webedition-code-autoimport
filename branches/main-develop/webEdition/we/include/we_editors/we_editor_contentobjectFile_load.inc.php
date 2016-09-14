@@ -125,12 +125,12 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	</div>
 </div>';
 			$yuiSuggest = &weSuggest::getInstance();
-			$fildsObj = $yuiSuggest->getyuiAcFields();
+			/*$fildsObj = $yuiSuggest->getyuiAcFields();
 			// AC-FIEDS BY ID
 			$fildsById = [];
 			foreach(array_keys($fildsObj) as $i => $key){
 				$fildsById[] = '"' . $key . '":' . $i;
-			}
+			}*/
 
 			//FIXME: this will kill all other fields. we nee code to append & delete the following fields
 			$js = ''; /*

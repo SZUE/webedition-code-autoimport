@@ -1,4 +1,4 @@
-/* global top */
+/* global top, WE */
 
 /**
  * webEdition CMS
@@ -64,4 +64,14 @@ function we_cmd() {
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
+}
+
+
+function submitForm(target, action, method, form) {
+	var f = form ? self.document.forms[form] : self.document.we_form;
+	f.target = target ? target : "search";
+	f.action = action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer";
+	f.method = method ? method : "post";
+
+	f.submit();
 }

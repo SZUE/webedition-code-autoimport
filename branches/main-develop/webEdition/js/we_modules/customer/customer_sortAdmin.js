@@ -23,6 +23,8 @@
 
 /* global top, WE */
 
+var settings = WE().util.getDynamicVar(document, 'loadVarCustomer_sortAdmin', 'data-settings');
+
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
 }
@@ -77,4 +79,13 @@ function doScrollTo() {
 
 function setScrollTo() {
 	opener.top.content.scrollToVal = pageYOffset;
+}
+
+function submitForm(target, action, method, form) {
+	var f = form ? self.document.forms[form] : self.document.we_form;
+	f.target = target ? target : "sort_admin";
+	f.action = action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer";
+	f.method = method ? method : "post";
+
+	f.submit();
 }

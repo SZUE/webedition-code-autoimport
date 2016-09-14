@@ -37,6 +37,11 @@ class we_tabs{
 		$this->container .= '<div ' . $att . ' onclick="if(weTabs.allowed_change_edit_page()){weTabs.setTabClass(this); ' . $jscmd . '}else{top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);}" class="' . $class . '"><span class="text">' . $text . '</span></div>';
 	}
 
+	/**
+	 * @deprecated since version 7.1
+	 * @param type $js
+	 * @return type
+	 */
 	static function getHeader($js = ''){
 		return we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
 			we_html_element::jsElement('var weTabs=new (WE().layout.we_tabs)(document,window);' . $js);
