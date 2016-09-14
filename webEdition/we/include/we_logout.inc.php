@@ -29,36 +29,13 @@ $DB_WE->query('UPDATE ' . USER_TABLE . ' SET Ping=NULL WHERE ID=' . intval($_SES
 we_base_file::cleanTempFiles(true);
 
 //	getJSCommand
-$path = (isset($_SESSION['weS']['SEEM']['startId']) ? // logout from webEdition opened with tag:linkToSuperEasyEditMode
+/*$path = (isset($_SESSION['weS']['SEEM']['startId']) ? // logout from webEdition opened with tag:linkToSuperEasyEditMode
 		$_SESSION['weS']['SEEM']['startPath'] :
 		WEBEDITION_DIR);
+*/
 
 we_base_sessionHandler::makeNewID(true);
 
 if(!isset($GLOBALS['isIncluded']) || !$GLOBALS['isIncluded']){
-	echo we_html_tools::getHtmlTop() . we_html_element::jsElement('
-	WE().util.jsWindow.prototype.closeAll();
-
-	if(top.tinyMceDialog !== undefined && top.tinyMceDialog !== null){
-		var tinyDialog = top.tinyMceDialog;
-		try{
-			tinyDialog.close();
-		}catch(err){}
-	}
-
-	if(top.tinyMceSecondaryDialog !== undefined && top.tinyMceSecondaryDialog !== null){
-		var tinyDialog = top.tinyMceSecondaryDialog;
-		try{
-			tinyDialog.close();
-		}catch(err){}
-	}
-
-	if(top.opener){ // we was opened in popup
-		top.opener.location.replace("' . $path . '");
-		top.close();
-		top.opener.focus();
-	} else{
-		top.location.replace("' . $path . '");
-	}
-');
+	echo we_html_tools::getHtmlTop() . we_html_element::jsScript(JS_DIR . 'logout.js');
 }

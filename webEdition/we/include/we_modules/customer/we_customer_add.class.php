@@ -23,19 +23,19 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 abstract class we_customer_add{
-	static $operators = array('=', '<>', '<', '<=', '>', '>=', 'LIKE');
+	static $operators = ['=', '<>', '<', '<=', '>', '>=', 'LIKE'];
 
 	static function getHTMLSortEditor(we_customer_frames &$pob){
 		$branch = $pob->View->getHTMLBranchSelect();
 		$branch->setOptionVT(1, g_l('modules_customer', '[other]'), g_l('modules_customer', '[other]'));
 
 
-		$order = new we_html_select(array('name' => 'order', 'style' => 'width:90px;'));
+		$order = new we_html_select(['name' => 'order', 'style' => 'width:90px;']);
 		foreach($pob->View->settings->OrderTable as $ord){
 			$order->addOption($ord, $ord);
 		}
 
-		$function = new we_html_select(array('name' => 'function', 'style' => 'width:130px;'));
+		$function = new we_html_select(['name' => 'function', 'style' => 'width:130px;']);
 
 		$counter = 0;
 		$fhidden = '';
@@ -45,7 +45,7 @@ abstract class we_customer_add{
 			$fcounter = 0;
 			$row_num = 0;
 
-			$sort_table = new we_html_table(array('width' => 400, 'height' => 50), 1, 5);
+			$sort_table = new we_html_table(['width' => 400, 'height' => 50], 1, 5);
 			$sort_table->setCol(0, 0, ['class' => 'defaultfont'], we_html_element::htmlB(g_l('modules_customer', '[sort_branch]')));
 			$sort_table->setCol(0, 1, ['class' => 'defaultfont'], we_html_element::htmlB(g_l('modules_customer', '[sort_field]')));
 			//$sort_table->setCol(0, 2, ['class' => 'defaultfont'], we_html_element::htmlB(g_l('modules_customer', '[sort_function]')));
@@ -60,11 +60,11 @@ abstract class we_customer_add{
 							g_l('modules_customer', '[common]'));
 				}
 
-				$branch->setAttributes(array('name' => "branch_" . $counter . '_' . $fcounter, "class" => "weSelect", "onchange" => "we_cmd('selectBranch')", "style" => "width:180px;"));
+				$branch->setAttributes(['name' => "branch_" . $counter . '_' . $fcounter, "class" => "weSelect", "onchange" => "we_cmd('selectBranch')", "style" => "width:180px;"]);
 				$branch->selectOption($sort["branch"]);
 
 				$field = $pob->getHTMLFieldsSelect($sort["branch"]);
-				$field->setAttributes(array('name' => "field_" . $counter . '_' . $fcounter, "style" => "width:180px;", "class" => "weSelect", "onchange" => "we_cmd('selectBranch')"));
+				$field->setAttributes(['name' => "field_" . $counter . '_' . $fcounter, "style" => "width:180px;", "class" => "weSelect", "onchange" => "we_cmd('selectBranch')"]);
 
 				$fields_names = array_keys($pob->View->customer->getFieldsNames($sort["branch"]));
 				if($sort["branch"] == g_l('modules_customer', '[common]') || $sort["branch"] == g_l('modules_customer', '[other]')){
@@ -90,7 +90,7 @@ abstract class we_customer_add{
 					$field->selectOption($sort["field"]);
 				}
 
-				$function->setAttributes(array('name' => "function_" . $counter . "_" . $fcounter, "class" => "weSelect",));
+				$function->setAttributes(['name' => "function_" . $counter . "_" . $fcounter, "class" => "weSelect",]);
 
 				$function->delAllOptions();
 				$function->addOption('', '');
@@ -104,7 +104,7 @@ abstract class we_customer_add{
 					$function->selectOption($sort['function']);
 				}
 
-				$order->setAttributes(array('name' => 'order_' . $counter . '_' . $fcounter, 'class' => 'weSelect',));
+				$order->setAttributes(['name' => 'order_' . $counter . '_' . $fcounter, 'class' => 'weSelect',]);
 				$order->selectOption($sort['order']);
 
 				$row_num = $fcounter + 1;
@@ -120,16 +120,16 @@ abstract class we_customer_add{
 
 			$sort_table->addRow();
 			$row_num++;
-			$sort_table->setCol($row_num, 4, array('style' => 'padding-top:5px;'), we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort_field',document.we_form.sort_" . $counter . ".value)", true, 30));
+			$sort_table->setCol($row_num, 4, ['style' => 'padding-top:5px;'], we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort_field',document.we_form.sort_" . $counter . ".value)", true, 30));
 
 
 			$fhidden.=we_html_element::htmlHidden("fcounter_" . $counter, "$fcounter");
 
-			$htmlCode = $pob->getHTMLBox(we_html_element::htmlInput(array('name' => "sort_" . $counter, "value" => $k, "size" => 40)), g_l('modules_customer', '[name]'), 100, 50, 25, 0, 0, 50) .
+			$htmlCode = $pob->getHTMLBox(we_html_element::htmlInput(['name' => "sort_" . $counter, "value" => $k, "size" => 40]), g_l('modules_customer', '[name]'), 100, 50, 25, 0, 0, 50) .
 				$sort_table->getHtml() .
 				we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_sort','" . $k . "')");
 
-			$parts[] = array('html' => $htmlCode, 'headline' => $k);
+			$parts[] = ['html' => $htmlCode, 'headline' => $k];
 
 			$counter++;
 		}
@@ -140,7 +140,7 @@ abstract class we_customer_add{
 		$buttons = we_html_button::position_yes_no_cancel($save, null, $cancel);
 
 		$add_button = we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_sort')") . we_html_element::htmlDiv(array('class' => "defaultfont lowContrast"), g_l('modules_customer', '[add_sort_group]'));
-		$parts[] = array('html' => $add_button);
+		$parts[] = ['html' => $add_button];
 
 		$sort_code = we_html_multiIconBox::getHTML("", $parts, 30, $buttons) .
 			we_html_element::htmlComment("hiddens start") .
@@ -153,12 +153,8 @@ abstract class we_customer_add{
 			$fhidden .
 			we_html_element::htmlComment("hiddens ends");
 
-
-
-
-		$out = we_html_element::htmlBody(array('class' => "weDialogBody", "onload" => "doScrollTo()"), self::getJSSortAdmin($pob->View) .
-				we_html_element::htmlForm(array('name' => 'we_form'), $sort_code
-				)
+		$out = we_html_element::htmlBody(['class' => "weDialogBody", "onload" => "doScrollTo()"], self::getJSSortAdmin($pob->View) .
+				we_html_element::htmlForm(['name' => 'we_form'], $sort_code)
 		);
 
 		return $pob->getHTMLDocument($out);
@@ -166,24 +162,10 @@ abstract class we_customer_add{
 
 	public static function getJSSortAdmin(we_customer_view $pob){
 		return we_html_element::jsElement('
-var frames={
-	set:"' . $pob->frameset . '"
-};
-
 var settings={
 	default_sort_view:"' . $pob->settings->getSettings('default_sort_view') . '"
 };
-
-function doScrollTo(){
-	if(opener.top.content.scrollToVal){
-		window.scrollTo(0,opener.top.content.scrollToVal);
-		opener.top.content.scrollToVal=0;
-	}
-}
-
-function setScrollTo(){
-		opener.top.content.scrollToVal=pageYOffset;
-}' .
+' .
 				$pob->getJSSubmitFunction("sort_admin")) .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_sortAdmin.js');
 	}
@@ -191,7 +173,7 @@ function setScrollTo(){
 	public static function getHTMLSearch(&$pob, &$search, &$select){
 		$count = we_base_request::_(we_base_request::INT, 'count');
 
-		$logic = array('AND' => 'AND', 'OR' => 'OR');
+		$logic = ['AND' => 'AND', 'OR' => 'OR'];
 
 		$search_arr = [];
 
@@ -207,7 +189,6 @@ function setScrollTo(){
 				$search_arr['value_' . $i] = we_base_request::_(we_base_request::STRING, 'value_' . $i);
 			}
 		}
-
 
 		$advsearch = new we_html_table([], 1, 4);
 		$branch = $pob->View->getHTMLBranchSelect();
@@ -230,12 +211,12 @@ function setScrollTo(){
 				$field->selectOption($search_arr["field_" . $i]);
 			}
 
-			$branch->setAttributes(array('name' => "branch_" . $i, "class" => 'weSelect', "onchange" => "we_cmd('selectBranch')", "style" => "width:145px"));
-			$field->setAttributes(array('name' => "field_" . $i, "style" => "width:145px", "class" => 'weSelect', "onchange" => "isDateField($i)"));
+			$branch->setAttributes(['name' => "branch_" . $i, "class" => 'weSelect', "onchange" => "we_cmd('selectBranch')", "style" => "width:145px"]);
+			$field->setAttributes(['name' => "field_" . $i, "style" => "width:145px", "class" => 'weSelect', "onchange" => "isDateField($i)"]);
 
 			if($i != 0){
 				$advsearch->addRow();
-				$advsearch->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("logic_" . $i, $logic, 1, (isset($search_arr["logic_" . $i]) ? $search_arr["logic_" . $i] : ""), false, [], "value", 70));
+				$advsearch->setCol($c, 0, ["colspan" => $colspan], we_html_tools::htmlSelect("logic_" . $i, $logic, 1, (isset($search_arr["logic_" . $i]) ? $search_arr["logic_" . $i] : ""), false, [], "value", 70));
 				++$c;
 			}
 			$value_i = we_html_tools::htmlTextInput("value_" . $i, 20, (isset($search_arr["value_" . $i]) ? $search_arr["value_" . $i] : ""), "", "id='value_$i'", "text", 185);
@@ -245,18 +226,18 @@ function setScrollTo(){
 			$advsearch->setCol($c, 0, [], $branch->getHtml());
 			$advsearch->setCol($c, 1, [], $field->getHtml());
 			$advsearch->setCol($c, 2, [], we_html_tools::htmlSelect("operator_" . $i, self::$operators, 1, (isset($search_arr["operator_" . $i]) ? $search_arr["operator_" . $i] : ""), false, [], "value", 60));
-			$advsearch->setCol($c, 3, array("width" => 190), "<table class='default'><tr><td>" . $value_i . $value_date_i . "</td><td id='dpzell_$i' style='display:none; padding-left:5px;text-align:right'>$btnDatePicker</td></tr></table>");
+			$advsearch->setCol($c, 3, ["width" => 190], "<table class='default'><tr><td>" . $value_i . $value_date_i . "</td><td id='dpzell_$i' style='display:none; padding-left:5px;text-align:right'>$btnDatePicker</td></tr></table>");
 			++$c;
 		}
 
 		$advsearch->addRow();
-		$advsearch->setCol($c, 0, array("colspan" => $colspan, 'style' => 'padding-top:5px;'), we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_search')") .
+		$advsearch->setCol($c, 0, ["colspan" => $colspan, 'style' => 'padding-top:5px;'], we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('add_search')") .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('del_search')")
 		);
 
 		$search->setCol(1, 0, [], we_html_element::htmlHidden("count", $count) . $advsearch->getHtml());
-		$search->setCol(3, 0, array("colspan" => $colspan, 'style' => 'text-align:right;padding-top:5px;'), "<table class='default'><tr><td>" .
-			we_html_element::htmlDiv(array('class' => "defaultfont lowContrast"), g_l('modules_customer', '[simple_search]')) .
+		$search->setCol(3, 0, ["colspan" => $colspan, 'style' => 'text-align:right;padding-top:5px;'], "<table class='default'><tr><td>" .
+			we_html_element::htmlDiv(['class' => "defaultfont lowContrast"], g_l('modules_customer', '[simple_search]')) .
 			we_html_button::create_button('fa:btn_direction_left,fa-lg fa-caret-left', "javascript:we_cmd('switchToSimple')") .
 			$search_but
 			. '</td><td>&nbsp;</td></tr></table>'

@@ -49,8 +49,7 @@ function we_cmd() {
 		case "del_sort":
 			if (args[1] === settings.default_sort_view) {
 				top.we_showMessage(WE().consts.g_l.customer.sortAdmin.default_soting_no_del, WE().consts.message.WE_MESSAGE_ERROR, this);
-			}
-			else {
+			} else {
 				document.we_form.cmd.value = args[0];
 				document.we_form.sortindex.value = args[1];
 				submitForm();
@@ -66,4 +65,16 @@ function we_cmd() {
 
 	}
 	setScrollTo();
+}
+
+
+function doScrollTo() {
+	if (opener.top.content.scrollToVal) {
+		window.scrollTo(0, opener.top.content.scrollToVal);
+		opener.top.content.scrollToVal = 0;
+	}
+}
+
+function setScrollTo() {
+	opener.top.content.scrollToVal = pageYOffset;
 }

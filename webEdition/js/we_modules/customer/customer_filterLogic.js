@@ -44,13 +44,13 @@ function wecf_logic_changed(s) {
 
 	for (var i = 0; i < l2; i++) {
 		if (prev.childNodes[i].nodeName.toLowerCase() === "td") {
-			prev.childNodes[i].style.paddingBottom = (val == "OR") ? "10px" : "0";
+			prev.childNodes[i].style.paddingBottom = (val === "OR") ? "10px" : "0";
 		}
 	}
 	for (i = 0; i < l; i++) {
 		if (row.childNodes[i].nodeName.toLowerCase() === "td") {
-			row.childNodes[i].style.paddingTop = (val == "OR") ? "10px" : "0";
-			row.childNodes[i].style.borderTop = (val == "OR") ? "1px solid grey" : "0";
+			row.childNodes[i].style.paddingTop = (val === "OR") ? "10px" : "0";
+			row.childNodes[i].style.borderTop = (val === "OR") ? "1px solid grey" : "0";
 		}
 	}
 }
