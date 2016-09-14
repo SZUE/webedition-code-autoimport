@@ -439,9 +439,8 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			}
 		}
 
-		$html .= we_html_element::htmlSpan(array('style' => 'margin:10px 0 20px 0;'), $selAllBut) .
+		$html .= we_html_element::htmlSpan(['style' => 'margin:10px 0 20px 0;'], $selAllBut) .
 			we_html_forms::checkbox(1, $onlyEmpty, 'onlyEmpty', g_l('rebuild', '[onlyEmpty]'));
-
 
 		return $html;
 	}
@@ -509,14 +508,11 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $key . ']', $val);
 			}
 		}
-		return array(
-			we_html_element::jsScript(JS_DIR . 'rebuild2.js'),
-			'WE().session.rebuild.folders="folders";',
+		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js'), 'WE().session.rebuild.folders="folders";',
 			we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_documents]')) .
 			$thumbsHidden .
 			$metaFieldsHidden .
-			we_html_element::htmlHiddens(array(
-				'thumbsFolders' => $thumbsFolders,
+			we_html_element::htmlHiddens(['thumbsFolders' => $thumbsFolders,
 				'metaFolders' => $metaFolders,
 				'metaFields' => $metaFields,
 				'onlyEmpty' => $onlyEmpty,
@@ -525,7 +521,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				'fr' => 'body',
 				'type' => $type,
 				'we_cmd[0]' => 'rebuild',
-				'step' => 2)));
+				'step' => 2])];
 	}
 
 	/**
@@ -570,10 +566,9 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			'<br/><br/>' .
 			we_rebuild_wizard::formFolders($thumbsFolders, true, 520);
 
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => $content,
-		);
+		];
 
 		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
@@ -584,14 +579,11 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		foreach($metaFields as $key => $val){
 			$metaFieldsHidden .= we_html_element::htmlHidden("_field[$key]", $val);
 		}
-		return array(
-			we_html_element::jsScript(JS_DIR . 'rebuild2.js'),
-			'WE().session.rebuild.folders="thumbsFolders";',
+		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js'), 'WE().session.rebuild.folders="thumbsFolders";',
 			we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_thumbnails]')) .
 			$dthidden .
 			$metaFieldsHidden .
-			we_html_element::htmlHiddens(array(
-				'catAnd' => $catAnd,
+			we_html_element::htmlHiddens(['catAnd' => $catAnd,
 				'thumbsFolders' => $thumbsFolders,
 				'metaFolders' => $metaFolders,
 				'onlyEmpty' => $onlyEmpty,
@@ -600,7 +592,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				'fr' => 'body',
 				'type' => $type,
 				'we_cmd[0]' => 'rebuild',
-				'step' => 2)));
+				'step' => 2])];
 	}
 
 	static function getRebuildMetadata(){
@@ -639,12 +631,11 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			we_html_element::htmlBr() . we_html_element::htmlBr() .
 			we_rebuild_wizard::formFolders($metaFolders, true, 520);
 
-		$parts = array(
-			array(
-				'headline' => '',
+		$parts = [
+			['headline' => '',
 				'html' => $content,
-			)
-		);
+			]
+		];
 
 		$dthidden = '';
 		$doctypesArray = makeArrayFromCSV($doctypes);
@@ -656,14 +647,11 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		for($i = 0; $i < count($thumbsArray); $i++){
 			$thumbsHidden .= we_html_element::htmlHidden('thumbs[' . $i . ']', $thumbsArray[$i]);
 		}
-		return array(
-			we_html_element::jsScript(JS_DIR . 'rebuild2.js'),
-			'WE().session.rebuild.folders="metaFolders";',
+		return [we_html_element::jsScript(JS_DIR . 'rebuild2.js'), 'WE().session.rebuild.folders="metaFolders";',
 			we_html_multiIconBox::getHTML('', $parts, 40, '', -1, '', '', false, g_l('rebuild', '[rebuild_metadata]')) .
 			$dthidden .
 			$thumbsHidden .
-			we_html_element::htmlHiddens(array(
-				'catAnd' => $catAnd,
+			we_html_element::htmlHiddens(['catAnd' => $catAnd,
 				'metaFolders' => $metaFolders,
 				'thumbsFolders' => $thumbsFolders,
 				'folders' => $folders,
@@ -671,7 +659,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				'fr' => 'body',
 				'type' => $type,
 				'we_cmd[0]' => 'rebuild',
-				'step' => 2)));
+				'step' => 2])];
 	}
 
 	/**

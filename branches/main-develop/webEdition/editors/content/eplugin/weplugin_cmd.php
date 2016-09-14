@@ -26,8 +26,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 we_html_tools::protect();
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', 0, 2);
 
-$out = '';
-switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
+$out = [];
+switch(($cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0))){
 	case '':
 		exit();
 	case "editSource" :
@@ -43,21 +43,21 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 
 		$source = ($source === '###EDITORPLUGIN:EMPTYSTRING###' ? $_SESSION['weS']['we_data'][$we_transaction][0]['elements']['data']['dat'] : $source);
 
-		// charset is necessary when encoding=true
+// charset is necessary when encoding=true
 		$charset = (!empty($_SESSION['weS']['we_data'][$we_transaction][0]['elements']['Charset']['dat']) ?
 				$_SESSION['weS']['we_data'][$we_transaction][0]['elements']['Charset']['dat'] :
 				$GLOBALS['WE_BACKENDCHARSET']);
 
-
-		$out = we_html_element::jsElement('
-var session = "' . session_id() . '";
-var transaction = "' . str_replace('"', '', $we_transaction) . '";
-var filename = "' . addslashes($filename) . '";
-var ct = "' . $ct . '";
-var source = "' . base64_encode($source) . '";
-if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "function") ) {
-	top.plugin.document.WePlugin.editSource(session,"' . session_name() . '",transaction,filename,source,ct,"true","' . $charset . '");
-}');
+		$out = [
+			'cmd' => $cmd,
+			'session' => session_id(),
+			'sessionName' => session_name(),
+			'transaction' => $we_transaction,
+			'filename' => $filename,
+			'ct' => $ct,
+			'source' => base64_encode($source),
+			'charset' => $charset
+		];
 
 		break;
 	case "editFile":
@@ -77,36 +77,37 @@ if (top.plugin.isLoaded && (typeof top.plugin.document.WePlugin.editSource == "f
 			t_e("$tmp_file not exists in " . __FILE__ . " on line " . __LINE__);
 		}
 
-		$out = we_html_element::jsElement(
-				'top.plugin.document.WePlugin.editFile("' . session_id() . '","' . session_name() . '","' . $_SERVER['HTTP_USER_AGENT'] . '","' . (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : '') . '","' . (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : '') . '","' . $we_transaction . '","' . addslashes($filename) . '","' . getServerUrl(true) . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', $tmp_file) . '","' . $we_ContentType . '");');
+		$out = [
+			'cmd' => $cmd,
+			'session' => session_id(),
+			'sessionName' => session_name(),
+			'transaction' => $we_transaction,
+			'ua' => $_SERVER['HTTP_USER_AGENT'],
+			'lang' => (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : ''),
+			'enc' => (isset($_SERVER['HTTP_ACCEPT_ENCODING']) ? $_SERVER['HTTP_ACCEPT_ENCODING'] : ''),
+			'filename' => $filename,
+			'ct' => $ct,
+			'tmp' => getServerUrl(true) . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(WEBEDITION_DIR, '', $tmp_file)
+		];
 
 		break;
 	case "setSource":
 		if(isset($_SESSION['weS']['we_data'][$we_transaction][0]['elements']['data']['dat'])){
 			$_SESSION['weS']['we_data'][$we_transaction][0]['elements']['data']['dat'] = we_base_request::_(we_base_request::RAW_CHECKED, 'we_cmd', '', 2);
 			$_SESSION['weS']['we_data'][$we_transaction][1]['data']['dat'] = $_SESSION['weS']['we_data'][$we_transaction][0]['elements']['data']['dat'];
-
-			$out = we_html_element::jsElement(
-					'var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");
-_EditorFrame.getContentFrame().reloadContent = true;');
+			$out = [
+				'cmd' => $cmd,
+				'transaction' => $we_transaction,
+			];
 		}
 
 		break;
 	case "reloadContentFrame":
-		$out = we_html_element::jsElement(
-				'var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("' . $we_transaction . '");
-_EditorFrame.setEditorIsHot(true);
-switch(_EditorFrame.getEditorEditPageNr()){
-	case ' . we_base_constants::WE_EDITPAGE_CONTENT . ':
-	case ' . we_base_constants::WE_EDITPAGE_PREVIEW . ':
-	case ' . we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE . ':
-	if ( _EditorFrame.getEditorIsActive() ) { // reload active editor
-		_EditorFrame.setEditorReloadNeeded(true);
-		_EditorFrame.setEditorIsActive(true);
-	} else {
-		_EditorFrame.setEditorReloadNeeded(true);
-	}
-}');
+		$out = [
+			'cmd' => $cmd,
+			'transaction' => $we_transaction,
+		];
+
 		break;
 
 	case "setBinary":
@@ -148,4 +149,4 @@ if(isset($we_transaction)){
 	}
 }
 
-echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody([], $out));
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'weplugin_cmd.js', '', ['id' => 'loadVarWeplugin_cmd', 'data-weplugin' => setDynamicVar($out)]), we_html_element::htmlBody());

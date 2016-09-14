@@ -168,6 +168,8 @@ $const = [
 	],
 	'global' => [
 		'WE_EDITPAGE_CONTENT' => we_base_constants::WE_EDITPAGE_CONTENT,
+		'WE_EDITPAGE_PREVIEW' => we_base_constants::WE_EDITPAGE_PREVIEW,
+		'WE_EDITPAGE_PREVIEW_TEMPLATE' => we_base_constants::WE_EDITPAGE_PREVIEW_TEMPLATE,
 		'PING_TIME' => (we_base_constants::PING_TIME * 1000),
 		'DEFAULT_DYNAMIC_EXT' => DEFAULT_DYNAMIC_EXT,
 		'DEFAULT_STATIC_EXT' => DEFAULT_STATIC_EXT,

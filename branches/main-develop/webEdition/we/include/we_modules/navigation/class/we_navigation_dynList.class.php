@@ -25,7 +25,7 @@
 abstract class we_navigation_dynList{
 
 	public static function getDocuments($doctypeid, $dirid, array $categories, $catlogic, &$sort, $count, $field){
-		$select = 'f.ID,f.Text,l.Name as FieldName,c.Dat as FieldData';
+		$select = 'f.ID,f.Text,l.Name AS FieldName,IFNULL(c.Dat,c.BDID) AS FieldData';
 
 		$fieldset = self::getDocData($select, $doctypeid, id_to_path($dirid), $categories, $catlogic);
 		$docs = $txt = $fields = $ids = [];
@@ -73,11 +73,11 @@ abstract class we_navigation_dynList{
 			for($i = 0; $i < $count; $i++){
 				if(isset($ids_tmp[$i])){
 					$id = str_replace('id_', '', $ids_tmp[$i]);
-					$ids[$i] = array(
+					$ids[$i] = [
 						'id' => str_replace('id_', '', $id),
 						'text' => $txt[$id],
 						'field' => we_navigation_navigation::encodeSpecChars(isset($fields[$id]) ? $fields[$id] : '')
-					);
+						];
 				} else {
 					break;
 				}
@@ -86,11 +86,10 @@ abstract class we_navigation_dynList{
 			$counter = 0;
 			foreach($docs as $id => $doc){
 				if($counter < $count){
-					$ids[] = array(
-						'id' => $id,
+					$ids[] = ['id' => $id,
 						'field' => we_navigation_navigation::encodeSpecChars(isset($fields[$id]) ? $fields[$id] : ''),
 						'text' => $txt[$id]
-					);
+						];
 					$counter++;
 				} else {
 					break;
@@ -131,11 +130,10 @@ abstract class we_navigation_dynList{
 		$ids = [];
 
 		foreach($fieldset as $data){
-			$ids[] = array(
-				'id' => $data['ID'],
+			$ids[] = ['id' => $data['ID'],
 				'text' => $data['Text'],
 				'field' => $field && $data[$field] ? we_navigation_navigation::encodeSpecChars($data[$field]) : ''
-			);
+				];
 		}
 
 		return $ids;
