@@ -176,11 +176,17 @@ class we_collection extends we_root{
 	public function getEditorBodyAttributes($editor = 0){
 		switch($editor){
 			case self::EDITOR_HEADER:
-				return ' ondragenter="we_editor_header.dragEnter();" ondragleave="we_editor_header.dragLeave();"';
+				return [
+					'ondragenter' => "we_editor_header.dragEnter();",
+					'ondragleave' => "we_editor_header.dragLeave();"
+				];
 			case self::EDITOR_FOOTER:
-				return ' ondragenter="we_editor_footer.dragEnter();" ondragleave="we_editor_footer.dragLeave();"';
+				return [
+					'ondragenter' => "we_editor_footer.dragEnter();",
+					'ondragleave' => "we_editor_footer.dragLeave();"
+				];
 			default:
-				return '';
+				return [];
 		}
 	}
 

@@ -109,6 +109,10 @@ function findInclude($cmd){
 			return 'we_logout.inc.php';
 		case 'openColorChooser':
 			return 'we_editors/we_colorChooser.inc.php';
+		case 'show_formmail_log':
+			return 'we_editors/weFormmailLog.inc.php';
+		case 'show_formmail_block_log':
+			return 'we_editors/weFormmailBlockLog.inc.php';
 		case 'add_dt_template':
 		case 'change_docType':
 		case 'deleteDocType':

@@ -65,3 +65,9 @@ var we_editor_header = {
 	}
 };
 
+var weTabs = WE().session.seemode ? '' : new (WE().layout.we_tabs)(document, window);
+
+if (WE().session.seemode) {
+	top.setFrameSize = function () {
+	}
+}

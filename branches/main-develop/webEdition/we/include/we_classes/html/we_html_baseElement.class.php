@@ -33,7 +33,7 @@ class we_html_baseElement{
 	var $uid;
 	var $tag_name = '';
 	var $need_end_tag = true;
-	var $attribs = array('style' => []);
+	var $attribs = ['style' => []];
 	var $content = '';
 	private $rfc = 'html4';
 
@@ -127,9 +127,9 @@ class we_html_baseElement{
 				foreach($vals as $val){
 					$val = trim($val);
 					if($val){
-						/*if(count(explode(':', $val))==1){
-							t_e($val);
-						}*/
+						/* if(count(explode(':', $val))==1){
+						  t_e($val);
+						  } */
 						list($k, $v) = explode(':', $val);
 						$this->setStyle(trim($k), trim($v));
 					}
@@ -210,9 +210,9 @@ class we_html_baseElement{
 		return $object->getHTML();
 	}
 
-	function getHTML(){
-		$out = '<' . $this->tag_name;
-		foreach($this->attribs as $k => $v){
+	public static function getAttribsAsString($attr){
+		$out = '';
+		foreach($attr as $k => $v){
 			if($k === 'style'){
 				if($v){
 					$out.=' ' . $k . '="';
@@ -247,6 +247,11 @@ class we_html_baseElement{
 				}
 			}
 		}
+		return $out;
+	}
+
+	function getHTML(){
+		$out = '<' . $this->tag_name . self::getAttribsAsString($this->attribs);
 		if(is_array($this->content)){
 			t_e($this);
 		}
