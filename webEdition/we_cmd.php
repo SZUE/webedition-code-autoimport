@@ -223,10 +223,6 @@ function findInclude($cmd){
 		case 'edit_link_at_class':
 		case 'edit_link_at_object':
 			return 'we_editors/we_linklistedit.inc.php';
-		case 'closeFolder':
-		case 'load':
-		case 'loadFolder':
-			return 'we_load.inc.php';
 		case 'delete':
 			return (we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 1) ? 'we_delete.inc.php' : 'home.inc.php');
 		case 'move':
