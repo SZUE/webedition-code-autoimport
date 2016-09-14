@@ -111,7 +111,7 @@ class we_dialog_base{
 	}
 
 	function getFramesetHTML(){
-		return we_html_element::jsScript(JS_DIR . 'closeEscape.js ') . we_html_element::jsElement('
+		return we_html_element::jsScript(JS_DIR . 'closeEscape.js') . we_html_element::jsElement('
 if (document.addEventListener) {
 	document.addEventListener("keyup", doKeyDown, true);
 } else {

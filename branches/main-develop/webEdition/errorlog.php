@@ -245,7 +245,7 @@ $parts = [
 	]
 ];
 
-echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'), '', '', we_html_element::jsScript(JS_DIR . 'closeEscape.js '));
+echo we_html_tools::getHtmlTop(g_l('javaMenu_global', '[showerrorlog]'), '', '', we_html_element::jsScript(JS_DIR . 'closeEscape.js'));
 ?>
 <body class="weDialogBody" style="overflow:hidden;" onload="self.focus();">
 	<div id="info" style="display: block;">

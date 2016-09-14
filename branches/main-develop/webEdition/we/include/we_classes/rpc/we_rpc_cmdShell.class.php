@@ -122,11 +122,11 @@ class we_rpc_cmdShell{
 
 	function getErrorOut(){
 		switch($this->Status){
-			case we_rpc_cmd::STATUS_NO_CMD :
+			case we_rpc_cmd::STATUS_NO_CMD:
 				return 'ERROR: No command defined!';
-			case we_rpc_cmd::STATUS_NO_VIEW :
+			case we_rpc_cmd::STATUS_NO_VIEW:
 				return 'ERROR: No view defined!';
-			case we_rpc_cmd::STATUS_NO_SESSION :
+			case we_rpc_cmd::STATUS_NO_SESSION:
 				return 'ERROR: No session exists!';
 			default:
 				return 'ERROR';

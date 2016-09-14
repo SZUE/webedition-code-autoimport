@@ -798,7 +798,7 @@ top.cmd.reloadTimer=setTimeout(reloadFrame, ' . $execute . ');');
 			];
 		}
 		$buttons = we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close()"));
-		echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]'), '', '', we_html_element::jsScript(JS_DIR . 'closeEscape.js ')
+		echo we_html_tools::getHtmlTop(g_l('backup', '[view_log]'), '', '', we_html_element::jsScript(JS_DIR . 'closeEscape.js')
 			, we_html_element::htmlBody(['class' => "weDialogBody", 'style' => "overflow:hidden;", 'onload' => "self.focus();"], '
 	<div id="info">' .
 				we_html_multiIconBox::getJS() .

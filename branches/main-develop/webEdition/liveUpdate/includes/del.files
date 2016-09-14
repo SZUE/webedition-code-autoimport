@@ -402,6 +402,7 @@ we/include/we_modules/banner/mod_home.inc.php
 we/include/we_modules/banner/edit_banner_header.php
 we/include/we_modules/banner/edit_banner_frameset.php
 we/include/we_loadInfo.inc.php
+we/include/we_load.inc.php
 we/include/we_live_tools.inc.php
 we/include/we_linklist.inc.php
 we/include/we_installed_modules.inc.php

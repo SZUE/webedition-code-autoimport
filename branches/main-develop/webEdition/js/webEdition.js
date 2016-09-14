@@ -1079,17 +1079,38 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, url, "exit_multi_doc_question", -1, -1, 500, 300, true, false, true);
 			break;
 		case "load":
-			if (!WE().session.seemode) {
-				top.setScrollY();
-
-				var table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
-				we_cmd("setTab", table);
-				we_repl(self.load, url, args[0]);
+			if (WE().session.seemode) {
+				break;
 			}
-			break;
+
+			var table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
+			we_cmd("setTab", table);
+			/* falls through */
 		case "loadFolder":
 		case "closeFolder":
-			we_repl(self.load, url, args[0]);
+			url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=LoadMainTree&');
+			YAHOO.util.Connect.asyncRequest("GET", url, {
+				success: function (o) {
+					if (o.responseText !== undefined && o.responseText !== "") {
+						var weResponse = JSON.parse(o.responseText);
+						if (weResponse) {
+							top.document.getElementById("treeName").innerHTML = weResponse.DataArray.treeName;
+							if (!weResponse.DataArray.parentFolder) {
+								top.treeData.clear();
+								top.treeData.add(top.node.prototype.rootEntry(weResponse.DataArray.parentFolder, 'root', 'root', weResponse.DataArray.offset));
+							}
+							for (var i = 0; i < weResponse.DataArray.items.length; i++) {
+								if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
+									top.treeData.add(new top.node(weResponse.DataArray.items[i]));
+								}
+							}
+							top.drawTree();
+						}
+					}
+					top.scrollToY();
+				}
+			});
+
 			break;
 		case "reload_editfooter":
 			we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url, args[0]);
