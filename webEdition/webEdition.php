@@ -240,7 +240,6 @@ foreach(we_base_imageEdit::supported_image_types() as $v){
 	$const['graphic']['gdSupportedTypes'][$v] = true;
 }
 
-
 foreach(we_base_request::getAllTables() as $k => $v){
 	$const['tables'][$k] = $v;
 }

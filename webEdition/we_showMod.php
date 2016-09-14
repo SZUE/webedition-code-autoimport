@@ -47,30 +47,10 @@ $mode = we_base_request::_(we_base_request::INT, "art", 0);
 $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 if($what === 'show_frameset'){ //old call to show_frameset.php
-	echo we_html_tools::getHtmlTop('', '', '', we_tabs::getHeader('
-var makeNewEntryCheck = 0;
-var publishWhenSave = 0;
-var weModuleWindow = true;
-
-function we_cmd() {
-	top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-}
-var current = "' . $mod . '";
-function openModule(module) {
-	if(top.content.hot =="1") {
-		if(confirm("' . g_l('alert', '[discard_changed_data]') . '")) {
-			if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
-			current = module;
-			top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
-		} else {
-			weTabs.setActiveTab(current);
-		}
-	} else {
-		if(typeof "top.content.usetHot" == "function") {top.content.usetHot();}
-		current = module;
-		top.content.location.replace(WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=" + module);
-	}
-}'));
+	echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css') .
+		we_html_element::jsScript(WE_JS_MODULES_DIR . 'showMod.js', '', ['id' => 'loadVarShowMod', 'data-moduleData' => setDynamicVar([
+				'mod' => $mod,
+	])]));
 	?>
 	<body id="weMainBody" onload="weTabs.setFrameSize()" onresize="weTabs.setFrameSize()">
 		<?php
@@ -115,11 +95,11 @@ switch($mod){
 
 switch($mod){
 	case 'banner':
-			$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+		$weFrame = new we_banner_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->process();
 		break;
 	case 'shop':
-			$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
+		$weFrame = new we_shop_frames(WEBEDITION_DIR . 'we_showMod.php?mod=' . $mod);
 		$weFrame->View->processCommands();
 		break;
 	case 'customer':

@@ -23,14 +23,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var validate = WE().util.getDynamicVar(document, 'loadVarValidateDocument', 'data-validate');
 
-var host = {};
-var path = {};
-var varname = {};
-var checkvia = {};
-var ctype = {};
-var s_method = {};
-var additionalVars = {};
 function we_submitForm(target, url) {
 	var f = self.document.we_form;
 	if (!f.checkValidity()) {
@@ -62,17 +56,16 @@ function we_cmd() {
 
 function switchPredefinedService(name) {
 	var f = self.document.we_form;
-
-	f.host.value = host[name];
-	f.path.value = path[name];
-	f.ctype.value = ctype[name];
-	f.varname.value = varname[name];
-	f.additionalVars.value = additionalVars[name];
-	f.checkvia.value = checkvia[name];
-	f.s_method.value = s_method[name];
-
-
+	var el = validate[name];
+	f.host.value = el.host;
+	f.path.value = el.path;
+	f.ctype.value = el.ctype;
+	f.varname.value = el.varname;
+	f.additionalVars.value = el.additionalVars;
+	f.checkvia.value = el.checkvia;
+	f.s_method.value = el.s_method;
 }
+
 function setIFrameSize() {
 	var h = window.innerHeight ? window.innerHeight : document.body.offsetHeight;
 	var w = window.innerWidth ? window.innerWidth : document.body.offsetWidth;

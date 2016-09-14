@@ -122,69 +122,47 @@ class weSuggest{
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/dom-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/datasource-min.js') .
 			we_html_element::jsScript(LIB_DIR . 'additional/yui/animation-min.js') .
-			we_html_element::jsScript(LIB_DIR . 'additional/yui/autocomplete-min.js') .
-			we_html_element::jsScript(JS_DIR . 'weSuggest.js');
+			we_html_element::jsScript(LIB_DIR . 'additional/yui/autocomplete-min.js');
 	}
 
 	//use this, if you need to add fields dynamically
 	public function getyuiAcFields(){
 		$fildsObj = [];
 
+//FIXME: this will not work anymore
 		// loop fields
-		for($i = 0; $i < count($this->inputfields); $i++){
+		foreach($this->inputfields as $i => $field){
 			if(!$this->noAutoInits[$i]){
-				//$weErrorMarkId = str_replace("Input", "ErrorMark", $this->inputfields[$i]);
+				//$weErrorMarkId = str_replace("Input", "ErrorMark", $field);
 				$weWorkspacePathArray = id_to_path(get_ws($this->tables[$i]), $this->tables[$i], null, true);
 				//$weFieldWS[] = '[' . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . ']';
 
-				$current = "{
-	id : '" . $this->inputfields[$i] . "',
-	container: '" . $this->containerfields[$i] . "',
-	old: document.getElementById('" . $this->inputfields[$i] . "').value,
-	selector: '" . $this->selectors[$i] . "',
-	sel: '',
-	newval: null,
-	run: false,
-	found: 0,
-	cType: '',
-	valid: true,
-	countMark: 0,
-	changed: false,
-	maxResults:" . $this->weMaxResults[$i] . ",
-	table: '" . $this->tables[$i] . "',
-	rootDir: '" . $this->rootDirs[$i] . "',
-	cTypes: '" . $this->contentTypes[$i] . "',
-	workspace: [" . ($weWorkspacePathArray ? '"' . implode('","', $weWorkspacePathArray) . '"' : '') . "],
-	mayBeEmpty: " . ($this->inputMayBeEmpty[$i] ? "true" : "false") . ",
-	checkField: " . intval(!empty($this->checkFieldsValues[$i]));
-
-				if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
-					if($this->setOnSelectFields[$i]){
-						$current .=",
-	fields_id: ['" . implode('\',\'', $this->setOnSelectFields[$i]) . '\']' . ",
-	fields_val: [document.getElementById('" . implode("').value,document.getElementById('", $this->setOnSelectFields[$i]) . "').value]";
-					}
-				}
-				if($this->doOnItemSelect[$i]){
-					$current .=',itemSelect:function(param1,param2,param,params){' . $this->doOnItemSelect[$i] . '}';
-				}
-				if($this->doOnTextfieldBlur[$i]){
-					$current .=',blur:function(){' . $this->doOnTextfieldBlur[$i] . '}';
-				}
-				if(!empty($this->checkFieldsValues[$i])){
-					$additionalFields = "";
-					if(isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i])){
-						for($j = 0; $j < count($this->setOnSelectFields[$i]); $j++){
-							$additionalFields .= ($j > 0 ? "," : "") . str_replace('-', '_', $this->setOnSelectFields[$i][$j]);
-						}
-						$current .=",
-	checkValues:'" . $additionalFields . "'";
-					}
-				}
-				// EOF loop fields
-
-				$current .= "}";
-				$fildsObj[$this->inputfields[$i]] = $current;
+				$current = [
+					'id' => $field,
+					'container' => $this->containerfields[$i],
+					'selector' => $this->selectors[$i],
+					'sel' => '',
+					'newval' => null,
+					'run' => false,
+					'found' => 0,
+					'cType' => '',
+					'valid' => true,
+					'countMark' => 0,
+					'changed' => false,
+					'maxResults' => $this->weMaxResults[$i],
+					'table' => $this->tables[$i],
+					'rootDir' => $this->rootDirs[$i],
+					'cTypes' => $this->contentTypes[$i],
+					'workspace' => $weWorkspacePathArray,
+					'mayBeEmpty' => ($this->inputMayBeEmpty[$i] ? true : false),
+					'checkField' => intval(!empty($this->checkFieldsValues[$i])),
+					'checkValues' => (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i]) ? $this->setOnSelectFields[$i] : []),
+					'blur' => $this->doOnTextfieldBlur[$i]? : '',
+					'itemSelect' => $this->doOnItemSelect[$i]? : '',
+					'fields_id' => (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i]) && $this->setOnSelectFields[$i] ? $this->setOnSelectFields[$i] : [])
+				];
+//FIXME: set object to $field, needs change in weSuggest.js
+				$fildsObj[] = $current;
 			}
 		}
 		return $fildsObj;
@@ -210,34 +188,23 @@ class weSuggest{
 			return;
 		}
 
-		// WORKSPACES
-		//$weFieldWS = [];
 		// AC-FIEDS
 		$fildsObj = $this->getyuiAcFields();
 		// AC-FIEDS BY ID
+		//$fildsById = array_flip(array_keys($fildsObj));
 		$fildsById = [];
-		foreach(array_keys($fildsObj) as $i => $key){
-			$fildsById[] = '"' . $key . '":' . $i;
+		foreach($fildsObj as $i => $f){
+			$fildsById[$f['id']] = $i;
 		}
 
-		return we_html_element::jsElement('
-function initYahooData(){
-	if(YAHOO.autocoml===undefined||!YAHOO.autocoml){
-		setTimeout(initYahooData, 100);
-		return;
-	}
-	try{
-	YAHOO.autocoml.width= ' . intval($this->width) . ';
-	YAHOO.autocoml.selfType="' . $weSelfContentType . '";
-	YAHOO.autocoml.selfID="' . $weSelfID . '";
-	YAHOO.autocoml.yuiAcFieldsById = {' . implode(',', $fildsById) . '};
-	YAHOO.autocoml.yuiAcFields = [' . implode(',', $fildsObj) . '];
-	YAHOO.autocoml.init();
-	}catch(e){
-	//catch bug in IE
-	}
-}
-YAHOO.util.Event.addListener(window, "load", initYahooData );');
+		return
+			we_html_element::jsScript(JS_DIR . 'weSuggest.js', '', ['id' => 'loadVarWeSuggest', 'data-yahoo' => setDynamicVar([
+					'width' => intval($this->width),
+					'selfType' => $weSelfContentType,
+					'selfID' => $weSelfID,
+					'yuiAcFieldsById' => $fildsById,
+					'yuiAcFields' => $fildsObj,
+		])]);
 	}
 
 	function getHTML($reset = true){

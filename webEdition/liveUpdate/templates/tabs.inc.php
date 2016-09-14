@@ -42,7 +42,7 @@ $bodyContent = '<div id="main">' .
 
 $body = we_html_element::htmlBody([
 		'id' => 'eHeaderBody',
-		'onload' => 'weTabs.setFrameSize();',
+		'onload' => 'var weTabs=new (WE().layout.we_tabs)(document,window);weTabs.setFrameSize();',
 		'onresize' => 'weTabs.setFrameSize()'], $bodyContent);
 
-echo we_html_tools::getHtmlTop('', '', '',  we_tabs::getHeader(), $body);
+echo we_html_tools::getHtmlTop('', '', '', we_html_element::cssLink(CSS_DIR . 'we_tab.css'), $body);

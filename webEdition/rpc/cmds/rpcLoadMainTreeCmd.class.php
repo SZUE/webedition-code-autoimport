@@ -110,22 +110,22 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 			$ID = intval($DB_WE->f('ID'));
 			$Path = $DB_WE->f('Path');
 
-			$tmpItems[$ID] = ["id" => $ID,
-				"we_id" => $collectionIDs ? $ID : 0,
-				"parentid" => intval($DB_WE->f("ParentID")),
-				"text" => $DB_WE->f("Text"),
-				"contenttype" => $DB_WE->f("ContentType"),
-				"isclassfolder" => intval($DB_WE->f("IsClassFolder")),
-				"table" => $table,
-				"checked" => 0,
-				"typ" => $DB_WE->f("IsFolder") ? "group" : "item",
-				"open" => (in_array($ID, $openFolders) ? 1 : 0),
-				"published" => intval($DB_WE->f("isPublished")),
-				"disabled" => (in_array($Path, $parentpaths) ? 1 : 0),
-				"tooltip" => $ID,
-				'inSchedule' => intval($DB_WE->f("inSchedule")),
-				"offset" => $offset,
-				"path" => $DB_WE->f("Path")
+			$tmpItems[$ID] = ['id' => $ID,
+				'we_id' => $collectionIDs ? $ID : 0,
+				'parentid' => intval($DB_WE->f('ParentID')),
+				'text' => $DB_WE->f('Text'),
+				'contenttype' => $DB_WE->f('ContentType'),
+				'isclassfolder' => intval($DB_WE->f('IsClassFolder')),
+				'table' => $table,
+				'checked' => 0,
+				'typ' => $DB_WE->f('IsFolder') ? 'group' : 'item',
+				'open' => (in_array($ID, $openFolders) ? 1 : 0),
+				'published' => intval($DB_WE->f('isPublished')),
+				'disabled' => (in_array($Path, $parentpaths) ? 1 : 0),
+				'tooltip' => $ID,
+				'inSchedule' => intval($DB_WE->f('inSchedule')),
+				'offset' => $offset,
+				'path' => $DB_WE->f('Path')
 			];
 		}
 
@@ -156,35 +156,36 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 		$total = f('SELECT COUNT(1) FROM ' . $table . ' ' . $where, '', $DB_WE);
 		$nextoffset = $offset + $segment;
 		if($segment && $total > $nextoffset){
-			$treeItems[] = ["id" => "next_" . $ParentID,
-				"parentid" => $ParentID,
-				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
-				"contenttype" => "arrowdown",
-				"isclassfolder" => 0,
-				"table" => $table,
-				"checked" => 0,
-				"typ" => "threedots",
-				"open" => 0,
-				"published" => 0,
-				"disabled" => 0,
-				"tooltip" => "",
-				"offset" => $nextoffset
+			$treeItems[] = ['id' => 'next_' . $ParentID,
+				'parentid' => $ParentID,
+				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
+				'contenttype' => 'arrowdown',
+				'isclassfolder' => 0,
+				'table' => $table,
+				'checked' => 0,
+				'typ' => 'threedots',
+				'open' => 0,
+				'published' => 0,
+				'disabled' => 0,
+				'tooltip' => '',
+				'offset' => $nextoffset
 			];
 		}
 	}
 
 	function execute(){
+		$DB_WE = $GLOBALS['DB_WE'];
 		$resp = new we_rpc_response();
 
 		$table = we_base_request::_(we_base_request::TABLE, 'we_cmd', FILE_TABLE, 1);
 		$parentFolder = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
 		$offset = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 6);
 
-		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === "closeFolder"){
-			$openDirs = array_flip(makeArrayFromCSV($_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)]));
+		if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'closeFolder'){
+			$openDirs = array_flip(makeArrayFromCSV($_SESSION['prefs']['openFolders_' . stripTblPrefix($table)]));
 			unset($openDirs[$parentFolder]);
 			$openDirs = array_keys($openDirs);
-			$_SESSION["prefs"]["openFolders_" . stripTblPrefix($table)] = implode(',', $openDirs);
+			$_SESSION['prefs']['openFolders_' . stripTblPrefix($table)] = implode(',', $openDirs);
 		} else {
 			$parentpaths = $wspaces = [];
 
@@ -259,12 +260,8 @@ class rpcLoadMainTreeCmd extends we_rpc_cmd{
 			$resp->setData('treeName', $name);
 			$resp->setData('parentFolder', $parentFolder);
 			$resp->setData('offset', $offset);
-			$resp->setData('items', $Tree->getJSLoadTree(!$parentFolder, $treeItems));
+			$resp->setData('items', $Tree->getJSLoadTree($treeItems));
 		}
-
-
-
-
 
 		return $resp;
 	}

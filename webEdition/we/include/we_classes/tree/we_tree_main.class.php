@@ -107,30 +107,20 @@ if(weWindow.treeData){
 		return we_html_element::jsScript(JS_DIR . 'main_tree.js');
 	}
 
-	function getJSLoadTree($clear, array $treeItems){
-		$js = '';
+	function getJSLoadTree(array $treeItems){
 		$ret = [];
 
 		if(is_array($treeItems)){
 			foreach($treeItems as $item){
-				$js.= ($clear ? '' : 'if(top.treeData.indexOfEntry("' . $item['id'] . '")<0){') .
-					'top.treeData.add(new top.node({';
 				$cur = [];
 				foreach($item as $k => $v){
 					$cur[strtolower($k)] = ($v === 1 || $v === 0 || $v === 'true' || $v === 'false' || is_int($v) ?
 							intval($v) :
 							$v);
-
-					$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-							intval($v) :
-							'\'' . str_replace(['"', '\'', '\\'], '', $v) . '\'') . ',';
 				}
 				$ret[] = $cur;
-				$js.='}));' . ($clear ? '' : '}');
 			}
 		}
-		$js.= 'top.drawTree();';
-
 		return $ret;
 	}
 

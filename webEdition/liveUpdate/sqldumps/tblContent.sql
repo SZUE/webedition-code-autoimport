@@ -11,7 +11,7 @@
 CREATE TABLE ###TBLPREFIX###tblContent (
   ID int unsigned NOT NULL auto_increment,
   BDID int unsigned NOT NULL default '0',
-  Dat longtext,
+  Dat longtext default NULL,
 	dHash binary(16) NOT NULL,
   PRIMARY KEY (ID),
   KEY BDID (BDID),

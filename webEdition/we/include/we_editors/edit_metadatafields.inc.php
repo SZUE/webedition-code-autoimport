@@ -304,8 +304,7 @@ function getMainDialog(){
 			we_html_element::htmlDiv(['class' => 'weDialogBody', 'style' => 'height:100%;width:100%'], build_dialog('saved'));
 	}
 	return
-		we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['REQUEST_URI']], we_html_element::htmlHidden('save_metadatafields', 'false') . render_dialog()) .
-		we_html_element::jsElement('init();');
+		we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post', 'action' => $_SERVER['REQUEST_URI']], we_html_element::htmlHidden('save_metadatafields', 'false') . render_dialog());
 }
 
 echo

@@ -71,10 +71,6 @@ function delProposition(btn) {
 	prop.parentNode.removeChild(prop);
 }
 
-function init() {
-	self.focus();
-}
-
 function addFieldToInput(sel, inpNr) {
 	if (sel && sel.selectedIndex >= 0 && sel.options[sel.selectedIndex].parentNode.nodeName.toLowerCase() == "optgroup") {
 		var _inpElem = document.forms[0].elements["metadataImportFrom[" + inpNr + "]"];

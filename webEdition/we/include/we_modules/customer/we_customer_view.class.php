@@ -76,16 +76,6 @@ function refreshForm(){
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_property.js');
 	}
 
-	function getJSAdmin(){
-		return we_html_element::jsElement($this->getJSSubmitFunction("customer_admin")) .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_admin.js');
-	}
-
-	function getJSTreeHeader(){
-		return we_html_element::jsElement($this->getJSSubmitFunction('cmd')) .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_treeHeader.js');
-	}
-
 	function getJSSearch(){
 		return we_html_element::jsElement('
 var frames={
