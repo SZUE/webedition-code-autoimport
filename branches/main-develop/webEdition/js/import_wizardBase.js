@@ -323,3 +323,55 @@ function onChangeSelectObject(node) {
 	document.we_form.elements['v[obj_path]'].value = '/' + elem.options[elem.selectedIndex].text;
 	document.we_form.elements['v[obj_path_id]'].value = document.we_form.elements['v[classID]'].value.split('_')[1];
 }
+
+function addField(form, fieldType, fieldName, fieldValue) {
+	if (document.getElementById) {
+		var input = document.createElement('INPUT');
+		if (document.all) {
+			input.type = fieldType;
+			input.name = fieldName;
+			input.value = fieldValue;
+		} else if (document.getElementById) {
+			input.setAttribute('type', fieldType);
+			input.setAttribute('name', fieldName);
+			input.setAttribute('value', fieldValue);
+		}
+		form.appendChild(input);
+	}
+}
+function getField(form, fieldName) {
+	if (!document.all) {
+		return form[fieldName];
+	} else {
+		for (var e = 0; e < form.elements.length; e++) {
+			if (form.elements[e].name === fieldName) {
+				return form.elements[e];
+			}
+		}
+	}
+	return null;
+}
+function removeField(form, fieldName) {
+	var field = getField(form, fieldName);
+	if (field && !field.length) {
+		field.parentNode.removeChild(field);
+	}
+}
+function toggleField(form, fieldName, value) {
+	var field = getField(form, fieldName);
+	if (field) {
+		removeField(form, fieldName);
+	} else {
+		addField(form, 'hidden', fieldName, value);
+	}
+}
+function cycle() {
+	var cf = self.document.we_form;
+	var bf = top.wizbody.document.we_form;
+	for (var i = 0; i < bf.elements.length; i++) {
+		if ((bf.elements[i].name.indexOf('v') > -1) || (bf.elements[i].name.indexOf('records') > -1) ||
+						(bf.elements[i].name.indexOf('we_flds') > -1) || (bf.elements[i].name.indexOf('attributes') > -1)) {
+			addField(cf, 'hidden', bf.elements[i].name, bf.elements[i].value);
+		}
+	}
+}

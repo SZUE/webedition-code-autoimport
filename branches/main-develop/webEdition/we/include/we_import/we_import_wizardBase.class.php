@@ -43,7 +43,7 @@ abstract class we_import_wizardBase{
 			(($cmd1 = we_base_request::_(we_base_request::STRING, 'we_cmd', false, 1)) ? '&we_cmd[1]=' . $cmd1 : '');
 
 		$body = we_html_element::htmlBody(['id' => 'weMainBody', "onload" => "wiz_next('wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&" . $args . "');"]
-		, we_html_element::htmlIFrame('wizbody', "about:blank", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
+				, we_html_element::htmlIFrame('wizbody', "about:blank", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
 				we_html_element::htmlIFrame('wizbusy', "about:blank", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;', '', '', false) .
 				we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=import&pnt=wizcmd', 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 		);
@@ -73,16 +73,14 @@ abstract class we_import_wizardBase{
 			list($js, $content) = $this->$step();
 			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
 			return we_html_tools::getHtmlTop('', '', '', ($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
-					we_html_element::jsElement($js), we_html_element::htmlBody(array(
-						"class" => "weDialogBody",
+					we_html_element::jsElement($js), we_html_element::htmlBody(["class" => "weDialogBody",
 						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state){set_button_state()};"
-						), we_html_element::htmlForm($a, we_html_element::htmlHiddens(array(
-								"pnt" => "wizbody",
+						], we_html_element::htmlForm($a, we_html_element::htmlHiddens(["pnt" => "wizbody",
 								"type" => $type,
 								"v[type]" => $type,
 								"step" => $step,
 								"mode" => $mode,
-								"button_state" => 0)) .
+								"button_state" => 0]) .
 							$content
 						)
 					)
@@ -96,7 +94,7 @@ abstract class we_import_wizardBase{
 			$WE_PB->setStudLen(200);
 			$WE_PB->addText($text = g_l('import', '[import_progress]'), 0, "pb1");
 			$pb = $WE_PB->getJSCode() .
-				we_html_element::htmlDiv(array('id' => 'progress'), $WE_PB->getHTML());
+				we_html_element::htmlDiv(['id' => 'progress'], $WE_PB->getHTML());
 			$js = we_html_element::jsElement('
 function finish(rebuild) {
 	var std = top.wizbusy.document.getElementById("standardDiv");
@@ -126,18 +124,17 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 
 		$prevNextButtons = $prevButton ? $prevButton . $nextButton : null;
 
-		$content = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
+		$content = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$content->setCol(0, 0, null, $pb);
-		$content->setCol(0, 1, array("style" => "text-align:right"), '
+		$content->setCol(0, 1, ["style" => "text-align:right"], '
 <div id="standardDiv">' . we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, "", [], 10) . '</div>
 <div id="closeDiv" style="display:none;">' . $closeButton . '</div>'
 		);
 
-		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(array(
-				"class" => "weDialogButtonsBody",
+		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["class" => "weDialogButtonsBody",
 				"onload" => "top.wizbody.set_button_state();",
 				'style' => 'overflow:hidden;'
-				), $content->getHtml() . $js
+				], $content->getHtml() . $js
 			)
 		);
 	}
@@ -171,7 +168,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 					$JScript = 'top.wizbusy.setProgressText("pb1","' . g_l('import', '[prepare_progress]') . '");';
 
 
-					$out .= we_html_element::htmlForm(array('name' => 'we_form'), $h) .
+					$out .= we_html_element::htmlForm(['name' => 'we_form'], $h) .
 						we_html_element::jsElement($JScript . 'setTimeout(we_import,15,1,-1);');
 					break;
 
@@ -260,12 +257,10 @@ if (top.wizbody && top.wizbody.addLog){
 					if($v["type"] == we_import_functions::TYPE_GENERIC_XML){
 						$h.=$this->getHdns("attributes", $attributes) . $this->getHdns("attrs", $attrs);
 					}
-					$h .= we_html_element::htmlHiddens(array(
-							"v[numFiles]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $num_files : $parse->fileId,
-							"v[uniquePath]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $path : $parse->path));
+					$h .= we_html_element::htmlHiddens(["v[numFiles]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $num_files : $parse->fileId,
+							"v[uniquePath]" => ($v["type"] != we_import_functions::TYPE_GENERIC_XML) ? $path : $parse->path]);
 
-					$out .= we_html_element::htmlForm(array('name' => 'we_form'), $h) . we_html_element::jsElement(
-							"setTimeout(we_import,15,1,0);");
+					$out .= we_html_element::htmlForm(['name' => 'we_form'], $h) . we_html_element::jsElement("setTimeout(we_import,15,1,0);");
 					break;
 
 				case $v['numFiles']:
@@ -286,8 +281,7 @@ if (top.wizbody && top.wizbody.addLog){
 							if($v["cid"] >= $v["numFiles"] - 1){ // finish import
 								$xmlExIm = new we_import_updater();
 								$xmlExIm->loadPerserves();
-								$xmlExIm->setOptions(array(
-									'handle_documents' => $v['import_docs'],
+								$xmlExIm->setOptions(['handle_documents' => $v['import_docs'],
 									'handle_templates' => $v['import_templ'],
 									'handle_objects' => isset($v['import_objs']) ? $v['import_objs'] : 0,
 									'handle_classes' => isset($v['import_classes']) ? $v['import_classes'] : 0,
@@ -309,7 +303,7 @@ if (top.wizbody && top.wizbody.addLog){
 									'xml_encoding' => $v['import_XMLencoding'],
 									'target_encoding' => $v['import_TARGETencoding'],
 									'rebuild' => $v['rebuild']
-								));
+								]);
 
 								if($xmlExIm->RefTable->current == 0){
 									echo we_html_element::jsElement('
@@ -335,7 +329,7 @@ if (top.wizbody.addLog){
 										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getCount() + $v["numFiles"]) . ")*100));";
 
 
-									$out .= we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
+									$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
 											we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . $v['cid'] . ");"));
 								} else {
 									we_updater::doUpdate('internal');
@@ -343,7 +337,7 @@ if (top.wizbody.addLog){
 top.wizbusy.finish(" . $xmlExIm->options['rebuild'] . ");
 setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 								}
-								$out .= we_html_element::htmlForm(array('name' => 'we_form'), $hiddens . we_html_element::jsElement($JScript));
+								$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens . we_html_element::jsElement($JScript));
 
 								$xmlExIm->unsetPerserves();
 							} else { // do import
@@ -351,8 +345,7 @@ setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 								$chunk = $v["uniquePath"] . basename($v["import_from"]) . "_" . $v["cid"];
 								if(file_exists($chunk)){
 									$xmlExIm->loadPerserves();
-									$xmlExIm->setOptions(array(
-										'handle_documents' => $v['import_docs'],
+									$xmlExIm->setOptions(['handle_documents' => $v['import_docs'],
 										'handle_templates' => $v['import_templ'],
 										'handle_objects' => isset($v['import_objs']) ? $v['import_objs'] : 0,
 										'handle_classes' => isset($v['import_classes']) ? $v['import_classes'] : 0,
@@ -374,7 +367,7 @@ setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 										'xml_encoding' => $v['import_XMLencoding'],
 										'target_encoding' => $v['import_TARGETencoding'],
 										'rebuild' => $v['rebuild']
-									));
+									]);
 									$imported = $xmlExIm->import($chunk);
 									$xmlExIm->savePerserves();
 									if($imported){
@@ -401,11 +394,8 @@ setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 												break;
 										}
 										$progress_text = we_html_element::htmlB(
-												g_l('contentTypes', '[' . $ref->ContentType . ']', true) ?
-													g_l('contentTypes', '[' . $ref->ContentType . ']') :
-													(g_l('import', '[' . $ref->ContentType . ']', true) ?
-														g_l('import', '[' . $ref->ContentType . ']') : ''
-													)
+												g_l('contentTypes', '[' . $ref->ContentType . ']', true) ? :
+													(g_l('import', '[' . $ref->ContentType . ']', true) ? : '' )
 											) . '  ' . $path_info;
 
 										echo we_html_element::jsElement(
@@ -428,7 +418,7 @@ top.wizbusy.setProgressText('pb1','" . $status . " - " . $counter_text . "');
 top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));";
 
 
-									$out .= we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
+									$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
 											we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . ($v["cid"] + 1) . ");"));
 								}
 							}
@@ -462,7 +452,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 								if($xPath == ''){
 									$xPath = $firstNode;
 								}
-								$fields = $fields + array($record => $xp->getData($xPath));
+								$fields = $fields + [$record => $xp->getData($xPath)];
 							}
 							if($v['pfx_fn'] == 1){
 								$v['rcd_pfx'] = $xp->getData($xp->root . '/' . $v["rcd_pfx"] . "[1]");
@@ -543,72 +533,20 @@ top.wizbusy.setProgressText('pb1','" . g_l('import', '[import]') . "');
 top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));";
 
 
-					$out .= we_html_element::htmlForm(array('name' => 'we_form'), $hiddens .
+					$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
 							we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . ($v["cid"] + 1) . ");"));
 					break;
 			} // end switch
 		} else if($mode != 1){
-			$out .= we_html_element::htmlForm(array('id' => 'wizardBaseForm', "name" => "we_form"), we_html_element::htmlHiddens(array(
-						"v[mode]" => "",
+			$out .= we_html_element::htmlForm(['id' => 'wizardBaseForm', "name" => "we_form"], we_html_element::htmlHiddens(["v[mode]" => "",
 						"v[cid]" => "",
 						"mode" => "",
 						"type" => "",
-						"cid" => "")));
+						"cid" => ""]));
 		}
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement("
-function addField(form, fieldType, fieldName, fieldValue) {
-	if (document.getElementById) {
-		var input = document.createElement('INPUT');
-		if (document.all) {
-			input.type = fieldType;
-			input.name = fieldName;
-			input.value = fieldValue;
-		}else if (document.getElementById) {
-			input.setAttribute('type', fieldType);
-			input.setAttribute('name', fieldName);
-			input.setAttribute('value', fieldValue);
-		}
-		form.appendChild(input);
-	}
-}
-function getField(form, fieldName) {
-	if (!document.all){
-		return form[fieldName];
-	}else{
-		for (var e = 0; e < form.elements.length; e++){
-			if (form.elements[e].name == fieldName){
-				return form.elements[e];
-			}
-		}
-	}
-	return null;
-}
-function removeField(form, fieldName) {
-	var field = getField (form, fieldName);
-	if (field && !field.length){
-		field.parentNode.removeChild(field);
-	}
-}
-function toggleField (form, fieldName, value) {
-	var field = getField (form, fieldName);
-	if (field){
-		removeField (form, fieldName);
-	}else{
-		addField (form, 'hidden', fieldName, value);
-	}
-}
-function cycle() {
-	var test = '';
-	var cf = self.document.we_form;
-	var bf = top.wizbody.document.we_form;
-	for (var i = 0; i < bf.elements.length; i++) {
-		if ((bf.elements[i].name.indexOf('v') > -1) || (bf.elements[i].name.indexOf('records') > -1) ||
-			(bf.elements[i].name.indexOf('we_flds') > -1) || (bf.elements[i].name.indexOf('attributes') > -1)) {
-			addField(cf, 'hidden', bf.elements[i].name, bf.elements[i].value);
-		}
-	}
-}
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'import_wizardBase.js') .
+				we_html_element::jsElement("
 function we_import(mode, cid,reload) {
 	if(reload==1){
 		top.wizbody.location = WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&pnt=wizbody&step=3&type=" . we_import_functions::TYPE_WE_XML . "&noload=1';

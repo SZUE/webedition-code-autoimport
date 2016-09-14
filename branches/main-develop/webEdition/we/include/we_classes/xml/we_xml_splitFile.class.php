@@ -237,7 +237,7 @@ class we_xml_splitFile extends we_xml_parser{
 	 * @return     string
 	 */
 	function replaceEntities($text){
-		return strtr($text, array('<' => '&lt;', '>' => '&gt;', '&nbsp;' => '&amp;nbsp;'));
+		return strtr($text, ['<' => '&lt;', '>' => '&gt;', '&nbsp;' => '&amp;nbsp;']);
 	}
 
 }
