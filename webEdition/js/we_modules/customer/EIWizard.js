@@ -27,24 +27,24 @@ var wizzard = WE().util.getDynamicVar(document, 'loadVarEIWizard', 'data-wizzard
 
 function doNext() {
 	top.body.document.we_form.step.value++;
-	top.footer.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=" + wizzard.ART_EXPORT + "&step=" + top.body.document.we_form.step.value;
+	top.footer.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=" + wizzard.art + "&step=" + top.body.document.we_form.step.value;
 	if (top.body.document.we_form.step.value > 3) {
 		top.body.document.we_form.target = "load";
 		top.body.document.we_form.pnt.value = "eiload";
-		top.body.document.we_form.cmd.value = wizzard.ART_EXPORT;
+		top.body.document.we_form.cmd.value = wizzard.art;
 	}
 	top.body.document.we_form.submit();
 }
 
 function doNextBack() {
 	top.body.document.we_form.step.value--;
-	top.footer.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=" + wizzard.ART_EXPORT + "&step=" + top.body.document.we_form.step.value;
+	top.footer.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=" + wizzard.art + "&step=" + top.body.document.we_form.step.value;
 	top.body.document.we_form.submit();
 }
 
 function doNextAction() {
 	top.body.document.we_form.step.value++;
-	top.footer.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=" + wizzard.ART_EXPORT + "&step=" + top.body.document.we_form.step.value;
+	top.footer.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=" + wizzard.art + "&step=" + top.body.document.we_form.step.value;
 	if (top.body.document.we_form.step.value > 4) {
 		top.body.document.we_form.target = "load";
 		top.body.document.we_form.pnt.value = "eiload";

@@ -123,13 +123,11 @@ class we_customer_EIWizard{
 		$generic->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_export]'), true, "defaultfont", "if(document.we_form.type[0].checked){top.type='" . we_import_functions::TYPE_GENERIC_XML . "';}", false, g_l('modules_customer', '[txt_gxml_export]'), 0, 430));
 		$generic->setCol(1, 0, [], we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_export]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_export]'), 0, 430));
 
-		$parts = array(
-			array(
-				"headline" => g_l('modules_customer', '[generic_export]'),
-				"html" => $generic->getHTML(),
-				'space' => we_html_multiIconBox::SPACE_MED,
-				'noline' => 1)
-		);
+		$parts = [["headline" => g_l('modules_customer', '[generic_export]'),
+			"html" => $generic->getHTML(),
+			'space' => we_html_multiIconBox::SPACE_MED,
+			'noline' => 1]
+		];
 
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', '', we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "body"],
 						//("name"=>"pnt","value"=>"eibody")).
@@ -155,12 +153,11 @@ class we_customer_EIWizard{
 		$generic->setColContent(2, 0, we_html_forms::radiobutton(self::SELECTION_MANUAL, ($selection == self::SELECTION_MANUAL), "selection", g_l('modules_customer', '[manual_selection]'), true, "defaultfont", "if(document.we_form.selection[1].checked) top.selection='" . self::SELECTION_MANUAL . "';"));
 		$generic->setColContent(3, 0, $table->getHtml());
 
-		$parts = array(array(
-				"headline" => "",
-				"html" => $generic->getHTML(),
-				'space' => we_html_multiIconBox::SPACE_SMALL,
-				'noline' => 1)
-		);
+		$parts = [["headline" => "",
+			"html" => $generic->getHTML(),
+			'space' => we_html_multiIconBox::SPACE_SMALL,
+			'noline' => 1]
+		];
 
 		$js = we_html_element::jsElement('
 
@@ -228,31 +225,31 @@ switch (args[0]){
 
 					break;
 				case self::TYPE_CSV:
-					$fileformattable = new we_html_table(array('style' => 'margin-top:10px;'), 4, 1);
+					$fileformattable = new we_html_table(['style' => 'margin-top:10px;'], 4, 1);
 
-					$file_encoding = new we_html_select(array('name' => "csv_lineend", 'class' => 'defaultfont', "style" => "width: 254px;"));
+					$file_encoding = new we_html_select(['name' => "csv_lineend", 'class' => 'defaultfont', "style" => "width: 254px;"]);
 					$file_encoding->addOption("windows", g_l('modules_customer', '[windows]'));
 					$file_encoding->addOption("unix", g_l('modules_customer', '[unix]'));
 					$file_encoding->addOption("mac", g_l('modules_customer', '[mac]'));
 					$file_encoding->selectOption($csv_lineend);
 
 					$fileformattable->setCol(0, 0, ['class' => 'defaultfont'], g_l('modules_customer', '[csv_lineend]') . "<br/>" . $file_encoding->getHtml());
-					$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, array("," => g_l('modules_customer', '[comma]'), ";" => g_l('modules_customer', '[semicolon]'), ":" => g_l('modules_customer', '[colon]'), "\\t" => g_l('modules_customer', '[tab]'), " " => g_l('modules_customer', '[space]')), g_l('modules_customer', '[csv_delimiter]')));
-					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, array('"' => g_l('modules_customer', '[double_quote]'), "'" => g_l('modules_customer', '[single_quote]')), g_l('modules_customer', '[csv_enclose]')));
+					$fileformattable->setColContent(1, 0, $this->getHTMLChooser("csv_delimiter", $csv_delimiter, ["," => g_l('modules_customer', '[comma]'), ";" => g_l('modules_customer', '[semicolon]'), ":" => g_l('modules_customer', '[colon]'), "\\t" => g_l('modules_customer', '[tab]'), " " => g_l('modules_customer', '[space]')], g_l('modules_customer', '[csv_delimiter]')));
+					$fileformattable->setColContent(2, 0, $this->getHTMLChooser("csv_enclose", $csv_enclose, ['"' => g_l('modules_customer', '[double_quote]'), "'" => g_l('modules_customer', '[single_quote]')], g_l('modules_customer', '[csv_enclose]')));
 
 					$fileformattable->setColContent(3, 0, we_html_forms::checkbox(1, $csv_fieldnames, "csv_fieldnames", g_l('modules_customer', '[csv_fieldnames]')));
 
-					$parts[] = array("headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2);
+					$parts[] = ["headline" => g_l('modules_customer', '[csv_params]'), "html" => $fileformattable->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED2];
 			}
 
-			$parts[] = array("headline" => g_l('modules_customer', '[export_to]'), "html" => "", 'noline' => 1);
+			$parts[] = ["headline" => g_l('modules_customer', '[export_to]'), "html" => "", 'noline' => 1];
 
-			$parts[] = array('space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1,
-				"headline" => we_html_element::htmlDiv(array('class' => 'default'), we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", "top.export_to='" . self::EXPORT_SERVER . "'")),
+			$parts[] = ['space' => we_html_multiIconBox::SPACE_MED2, 'noline' => 1,
+				"headline" => we_html_element::htmlDiv(['class' => 'default'], we_html_forms::radiobutton(self::EXPORT_SERVER, ($export_to == self::EXPORT_SERVER), "export_to", g_l('modules_customer', '[export_to_server]'), true, "defaultfont", "top.export_to='" . self::EXPORT_SERVER . "'")),
 				"html" =>
 				we_html_element::htmlBr() .
 				we_html_tools::htmlFormElementTable($this->formFileChooser(200, "path", $path, "", we_base_ContentTypes::FOLDER), g_l('modules_customer', '[path]'))
-			);
+			];
 
 			$parts[] = ["headline" => we_html_forms::radiobutton(self::EXPORT_LOCAL, ($export_to == self::EXPORT_LOCAL), "export_to", g_l('modules_customer', '[export_to_local]'), true, "defaultfont", "top.export_to='" . self::EXPORT_LOCAL . "'"),
 				'space' => we_html_multiIconBox::SPACE_MED2,
@@ -286,10 +283,10 @@ switch (args[0]){
 		if($export_to == self::EXPORT_LOCAL){
 			$message = we_html_element::htmlSpan(['class' => 'defaultfont'], g_l('modules_customer', '[export_finished]') . "<br/><br/>" .
 					g_l('modules_customer', '[download_starting]') .
-					we_html_element::htmlA(array("href" => WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename, 'download' => $filename), g_l('modules_customer', '[download]'))
+					we_html_element::htmlA(["href" => WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename, 'download' => $filename], g_l('modules_customer', '[download]'))
 			);
 			return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', $js .
-					we_html_element::htmlMeta(array("http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename)), we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
+					we_html_element::htmlMeta(["http-equiv" => "refresh", "content" => "2; url=" . WEBEDITION_DIR . 'we_showMod.php?mod=customer&pnt=eibody&art=' . self::ART_EXPORT . '&step=5&exportfile=' . $filename]), we_html_element::htmlBody(['class' => "weDialogBody"], we_html_tools::htmlDialogLayout($message, g_l('modules_customer', '[export_step4]'))
 					)
 			);
 		} else {
@@ -530,13 +527,12 @@ switch (args[0]){
 		$generic->setCol(0, 0, [], we_html_forms::radiobutton(we_import_functions::TYPE_GENERIC_XML, ($type == we_import_functions::TYPE_GENERIC_XML), "type", g_l('modules_customer', '[gxml_import]'), true, "defaultfont", "if(document.we_form.type[0].checked) top.type='" . we_import_functions::TYPE_GENERIC_XML . "';", false, g_l('modules_customer', '[txt_gxml_import]'), 0, 430));
 		$generic->setCol(1, 0, [], we_html_forms::radiobutton(self::TYPE_CSV, ($type == self::TYPE_CSV), "type", g_l('modules_customer', '[csv_import]'), true, "defaultfont", "if(document.we_form.type[1].checked) top.type='" . self::TYPE_CSV . "';", false, g_l('modules_customer', '[txt_csv_import]'), 0, 430));
 
-		$parts = array(
-			array(
-				"headline" => g_l('modules_customer', '[generic_import]'),
+		$parts = [
+			["headline" => g_l('modules_customer', '[generic_import]'),
 				"html" => $generic->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED,
-				'noline' => 1)
-		);
+				'noline' => 1]
+		];
 
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', '', we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post"], $this->getHiddens(["art" => self::ART_IMPORT, "step" => 1]) .
 						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step1]'))
@@ -551,14 +547,14 @@ switch (args[0]){
 		$type = we_base_request::_(we_base_request::STRING, "type", "");
 
 		$fileUploader = new we_fileupload_ui_base('upload');
-		$fileUploader->setExternalUiElements(array('btnUploadName' => 'next_footer'));
+		$fileUploader->setExternalUiElements(['btnUploadName' => 'next_footer']);
 		$fileUploader->setCallback('top.load.doNextAction()');
 		//$fileUploader->setForm(array('action' => WEBEDITION_DIR.'we_showMod.php?mod=customer&pnt=eibody&art=import&step=3&import_from=' . self::EXPORT_LOCAL . '&type=' . $type));
-		$fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 200));
+		$fileUploader->setInternalProgress(['isInternalProgress' => true, 'width' => 200]);
 		$fileUploader->setFileSelectOnclick('document.we_form.import_from[1].checked = true;');
 		$fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_UNIQUEID . ($type == self::TYPE_CSV ? ".csv" : ".xml"));
 		$fileUploader->setDisableUploadBtnOnInit(false);
-		$fileUploader->setDimensions(array('width' => 369, 'alertBoxWidth' => 430, 'marginTop' => 10));
+		$fileUploader->setDimensions(['width' => 369, 'alertBoxWidth' => 430, 'marginTop' => 10]);
 
 		$parts = [];
 		$js = we_html_element::jsElement('
@@ -569,16 +565,15 @@ function callBack(){
 		$css = $fileUploader->getCss();
 
 		$table = new we_html_table(['class' => 'default withSpace'], 2, 2);
-		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_SERVER, ($import_from == self::EXPORT_SERVER), "import_from", g_l('modules_customer', '[server_import]'), true, "defaultfont"));
+		$table->setCol(0, 0, ["colspan" => 2], we_html_forms::radiobutton(self::EXPORT_SERVER, ($import_from == self::EXPORT_SERVER), "import_from", g_l('modules_customer', '[server_import]'), true, "defaultfont"));
 
-		$table->setCol(1, 1, array('style' => 'padding-bottom:5px;'), $this->formFileChooser(250, "source", $source, "opener.top.body.document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
+		$table->setCol(1, 1, ['style' => 'padding-bottom:5px;'], $this->formFileChooser(250, "source", $source, "opener.top.body.document.we_form.import_from[0].checked=true;", ($type == we_import_functions::TYPE_GENERIC_XML ? we_base_ContentTypes::XML : "")));
 
-		$parts[] = array(
-			"headline" => g_l('modules_customer', '[source_file]'),
+		$parts[] = ["headline" => g_l('modules_customer', '[source_file]'),
 			"html" => $table->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
-		);
+		];
 
 		//upload table
 		$tmptable = new we_html_table(['class' => 'default withSpace'], 2, 1);
@@ -586,10 +581,10 @@ function callBack(){
 		$tmptable->setCol(0, 0, [], $fileUploader->getHtmlAlertBoxes());
 
 		//$tmptable->setCol(2, 0, array('style'=>'vertical-align:middle;'), we_html_tools::htmlTextInput("upload", 35, "", 255, "onclick=\"document.we_form.import_from[1].checked=true;\"", "file"));
-		$tmptable->setCol(1, 0, array('style' => 'vertical-align:middle;'), $fileUploader->getHTML());
+		$tmptable->setCol(1, 0, ['style' => 'vertical-align:middle;'], $fileUploader->getHTML());
 
 		$table = new we_html_table(['class' => 'default withSpace'], 2, 2);
-		$table->setCol(0, 0, array("colspan" => 2), we_html_forms::radiobutton(self::EXPORT_LOCAL, ($import_from == self::EXPORT_LOCAL), "import_from", g_l('modules_customer', '[upload_import]'), true, "defaultfont"));
+		$table->setCol(0, 0, ["colspan" => 2], we_html_forms::radiobutton(self::EXPORT_LOCAL, ($import_from == self::EXPORT_LOCAL), "import_from", g_l('modules_customer', '[upload_import]'), true, "defaultfont"));
 		$table->setColContent(1, 1, $tmptable->getHtml());
 
 		$parts[] = array(
@@ -599,7 +594,7 @@ function callBack(){
 			'noline' => 1
 		);
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $css . $js, we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post", "target" => "body", "enctype" => "multipart/form-data"), $this->getHiddens(array("art" => self::ART_IMPORT, "step" => 2)) .
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $css . $js, we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "body", "enctype" => "multipart/form-data"], $this->getHiddens(["art" => self::ART_IMPORT, "step" => 2]) .
 						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step2]'))
 					)
 				)
@@ -1019,7 +1014,7 @@ function callBack(){
 			case 3:
 			case 4:
 				return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard', 'data-wizzard' => setDynamicVar([
-								'ART_EXPORT' => self::ART_EXPORT,
+								'art' => self::ART_EXPORT,
 						])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px;', "onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "body", "action" => $this->frameset], "")
 						)
 				);
@@ -1031,7 +1026,7 @@ function callBack(){
 
 	private function getExportBackCode(){
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard', 'data-wizzard' => setDynamicVar([
-						'ART_EXPORT' => self::ART_EXPORT,
+						'art' => self::ART_EXPORT,
 				])]), we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "doNextBack()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "body", "action" => $this->frameset], "")
 				)
 		);
@@ -1210,7 +1205,7 @@ function doNext(){
 ');
 
 			return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard', 'data-wizzard' => setDynamicVar([
-							'ART_EXPORT' => self::ART_EXPORT,
+							'art' => self::ART_EXPORT,
 					])]) . $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "body", "action" => $this->frameset], "")
 					)
 			);
@@ -1219,14 +1214,11 @@ function doNext(){
 	}
 
 	private function getImportBackCode(){
-		$head = we_html_element::jsElement('
-function doNext(){
-	top.body.document.we_form.step.value--;
-	top.footer.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=eifooter&art=' . self::ART_IMPORT . '&step="+top.body.document.we_form.step.value;
-	top.body.document.we_form.submit();
-}');
+		$head = we_html_element::jsScript(WE_JS_MODULES_DIR . 'EIWizard.js', '', ['id' => 'loadVarEIWizard', 'data-wizzard' => setDynamicVar([
+					'art' => self::ART_IMPORT,
+		])]);
 
-		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNext()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "body", "action" => $this->frameset], "")
+		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $head, we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin: 5px', "onload" => "doNextBack()"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "body", "action" => $this->frameset], "")
 				)
 		);
 	}
@@ -1476,7 +1468,7 @@ function selector_cmd(){
 	var url = WE().util.getWe_cmdArgsUrl(args);
 	switch (args[0]){
 		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,' . we_selector_file::WINDOW_SELECTOR_WIDTH . ',' . we_selector_file::WINDOW_SELECTOR_HEIGHT . ',true,true,true,true);
+			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height,true,true,true,true);
 		break;
 		case "add_customer":
 		case "del_customer":
@@ -1489,8 +1481,8 @@ function selector_cmd(){
 }
 top.customers="' . implode(',', $customers) . '";');
 
-		$hiddens = we_html_element::htmlHiddens(array("wcmd" => "",
-				"cus" => we_base_request::_(we_base_request::INTLIST, "cus", "")));
+		$hiddens = we_html_element::htmlHiddens(["wcmd" => "",
+				"cus" => we_base_request::_(we_base_request::INTLIST, "cus", "")]);
 
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
@@ -1510,7 +1502,7 @@ top.customers="' . implode(',', $customers) . '";');
 		foreach($values as $k => $v){
 			$select->addOption(oldHtmlspecialchars($k), oldHtmlspecialchars($v));
 		}
-		$table = new we_html_table(array('class' => 'default', "width" => 250), 1, 3);
+		$table = new we_html_table(['class' => 'default', "width" => 250], 1, 3);
 
 		$table->setColContent(0, 0, we_html_tools::htmlTextInput($name, $input_size, $value));
 		$table->setCol(0, 1, array('style' => 'padding-left:10px;'), $select->getHtml());
@@ -1563,17 +1555,17 @@ document.we_form.filter_count.value="' . $count . '";');
 			}
 		}
 
-		$operators = array("=", "<>", "<", "<=", ">", ">=", "LIKE");
-		$logic = array("AND" => "AND", "OR" => "OR");
+		$operators = ["=", "<>", "<", "<=", ">", ">=", "LIKE"];
+		$logic = ["AND" => "AND", "OR" => "OR"];
 
-		$table = new we_html_table(array('class' => 'default'), 1, 3);
+		$table = new we_html_table(['class' => 'default'], 1, 3);
 		$colspan = "3";
 
 		$c = 0;
-		$fields_names = array("fieldname", "operator", "fieldvalue", "logic");
+		$fields_names = ["fieldname", "operator", "fieldvalue", "logic"];
 
 		for($i = 0; $i < $count; $i++){
-			$new = array("fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => "");
+			$new = ["fieldname" => "", "operator" => "", "fieldvalue" => "", "logic" => ""];
 			foreach($fields_names as $field){
 				if(($val = we_base_request::_(we_base_request::STRING, "filter_" . $field . "_" . $i))){
 					$new[$field] = $val;
@@ -1581,11 +1573,11 @@ document.we_form.filter_count.value="' . $count . '";');
 			}
 			if($i != 0){
 				$table->addRow();
-				$table->setCol($c, 0, array("colspan" => $colspan), we_html_tools::htmlSelect("filter_logic_" . $i, $logic, 1, $new["logic"], false, [], "value", 70));
+				$table->setCol($c, 0, ["colspan" => $colspan], we_html_tools::htmlSelect("filter_logic_" . $i, $logic, 1, $new["logic"], false, [], "value", 70));
 				$c++;
 			} else {
 				$table->addRow();
-				$table->setCol($c, 0, array("colspan" => $colspan), we_html_element::htmlHidden("filter_logic_0", ""));
+				$table->setCol($c, 0, ["colspan" => $colspan], we_html_element::htmlHidden("filter_logic_0", ""));
 				$c++;
 			}
 
@@ -1636,7 +1628,7 @@ document.we_form.filter_count.value="' . $count . '";');
 				$filter_count = we_base_request::_(we_base_request::INT, 'filter_count', 0);
 				$filter_fieldname = $filter_operator = $filter_fieldvalue = $filter_logic = [];
 
-				$fields_names = array('fieldname', 'operator', 'fieldvalue', 'logic');
+				$fields_names = ['fieldname', 'operator', 'fieldvalue', 'logic'];
 				for($i = 0; $i < $filter_count; $i++){
 					foreach($fields_names as $field){
 						$var = "filter_" . $field;

@@ -108,10 +108,9 @@ container.prototype.frames={
 	function getHTMLContruct($classes = ''){
 		return
 			we_html_element::cssLink(CSS_DIR . 'tree.css') .
-			we_html_element::htmlDiv(array(
-				'id' => 'treetable',
+			we_html_element::htmlDiv(['id' => 'treetable',
 				'class' => 'tree' . ($classes ? ' ' . $classes : ''),
-				), ''
+				], ''
 		);
 	}
 

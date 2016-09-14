@@ -59,21 +59,13 @@ class we_customer_view extends we_modules_view{
 
 		return
 			parent::getJSTop() .
-			we_html_element::jsElement('
-parent.document.title = "' . $title . '";
-') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js', "parent.document.title = '" . $title . "'");
 	}
 
 	function getJSProperty(){
-		return we_html_element::jsElement('
-function refreshForm(){
-	if(document.we_form.cmd.value!="home"){
-		we_cmd("switchPage",top.content.activ_tab);
-		top.content.editor.edheader.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=' . urlencode($this->customer->Username) . '";
-	}
-}' . $this->getJSSubmitFunction()) .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_property.js');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_property.js', '', ['id' => 'loadVarCustomer_property', 'data-customer' => setDynamicVar([
+					'username' => $this->customer->Username
+		])]);
 	}
 
 	function getJSSearch(){
@@ -81,31 +73,8 @@ function refreshForm(){
 var frames={
 	"set":"' . $this->frameset . '"
 };
-' .
-				$this->getJSSubmitFunction("search")
-			) .
+') .
 			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_search.js');
-	}
-
-	function getJSSettings(){
-		return '
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
-}
-
-function we_cmd(){
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customers&");
-
-	switch (args[0]) {
-		case "save_settings":
-			document.we_form.cmd.value=args[0];
-			submitForm();
-			break;
-		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-	}
-}' . $this->getJSSubmitFunction("customer_settings");
 	}
 
 	function processCommands(){
@@ -153,7 +122,7 @@ function we_cmd(){
 				$saveOk = $this->customer->save();
 
 				if($saveOk){
-					$tt = strtr(addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db)), array('>' => '&gt;', '<' => '&lt;'));
+					$tt = strtr(addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db)), ['>' => '&gt;', '<' => '&lt;']);
 					$js = ($newone ? '
 var attribs = {
 	id:"' . $this->customer->ID . '",
@@ -319,8 +288,8 @@ close();');
 				$curpos = array_search($field, $orderedarray);
 				$curpos1 = $curpos - 1;
 				if($curpos != 0){
-					$sort = str_replace(array(',' . $curpos . ',', ',' . $curpos1 . ','), array(',XX,', ',YY,'), $sort);
-					$sort = str_replace(array(',XX,', ',YY,'), array(',' . $curpos1 . ',', ',' . $curpos . ','), $sort);
+					$sort = str_replace([',' . $curpos . ',', ',' . $curpos1 . ','], [',XX,', ',YY,'], $sort);
+					$sort = str_replace([',XX,', ',YY,'], [',' . $curpos1 . ',', ',' . $curpos . ','], $sort);
 
 					$this->settings->setEditSort($sort);
 					$this->settings->save();
@@ -348,8 +317,8 @@ close();');
 				$curpos = array_search($field, $orderedarray);
 				$curpos1 = $curpos + 1;
 				if($curpos != count($orderedarray) - 1){
-					$sort = str_replace(array(',' . $curpos . ',', ',' . $curpos1 . ','), array(',XX,', ',YY,'), $sort);
-					$sort = str_replace(array(',XX,', ',YY,'), array(',' . $curpos1 . ',', ',' . $curpos . ','), $sort);
+					$sort = str_replace([',' . $curpos . ',', ',' . $curpos1 . ','], [',XX,', ',YY,'], $sort);
+					$sort = str_replace([',XX,', ',YY,'], [',' . $curpos1 . ',', ',' . $curpos . ','], $sort);
 					$this->settings->setEditSort($sort);
 					$this->settings->save();
 					$this->customer->loadPresistents();
@@ -390,7 +359,7 @@ close();');
 				break;
 			case 'show_sort_admin':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=sort_admin";
+				we_html_element::jsElement('var url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=sort_admin";
 new (WE().util.jsWindow)(window, url,"sort_admin",-1,-1,750,500,true,true,true,true);');
 
 				break;
@@ -451,22 +420,22 @@ self.close();');
 				break;
 			case 'show_search':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
+				we_html_element::jsElement('var url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
 						new (WE().util.jsWindow)(window, url,"search",-1,-1,650,600,true,true,true,false);');
 				break;
 			case 'show_customer_settings':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings";
+				we_html_element::jsElement('var url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings";
 						new (WE().util.jsWindow)(window, url,"customer_settings",-1,-1,550,250,true,true,true,false);');
 				break;
 			case 'import_customer':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import";
+				we_html_element::jsElement('var url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import";
 						new (WE().util.jsWindow)(window, url,"import_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'export_customer':
 				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=export";
+				we_html_element::jsElement('var url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=export";
 						new (WE().util.jsWindow)(window, url,"export_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'save_settings':
@@ -680,11 +649,11 @@ self.close();');
 		}
 
 		$arr = explode(' ', strToLower($keyword));
-		$array = array(
-			'AND' => array($arr[0]),
+		$array = [
+			'AND' => [$arr[0]],
 			'OR' => [],
 			'AND NOT' => []
-		);
+			];
 
 
 		for($i = 1; $i < count($arr); $i++){
@@ -728,7 +697,7 @@ self.close();');
 	function getHTMLBranchSelect($with_common = true, $with_other = true){
 		$branches_names = $this->customer->getBranchesNames();
 
-		$select = new we_html_select(array('name' => 'branch'));
+		$select = new we_html_select(['name' => 'branch']);
 
 		if($with_common){
 			$select->addOption(g_l('modules_customer', '[common]'), g_l('modules_customer', '[common]'));
@@ -746,7 +715,7 @@ self.close();');
 	}
 
 	function getHTMLSortSelect($include_no_sort = true){
-		$sort = new we_html_select(array('name' => 'sort', 'class' => 'weSelect'));
+		$sort = new we_html_select(['name' => 'sort', 'class' => 'weSelect']);
 
 		$sort_names = array_keys($this->settings->SortView);
 
@@ -768,7 +737,7 @@ self.close();');
 			case 'input':
 				return we_html_tools::htmlTextInput($field, 32, ($hasEncContent ? we_customer_customer::ENCRYPTED_DATA : $value), '', "onchange=\"top.content.setHot();\" style='width:240px;'");
 			case 'textarea':
-				return we_html_element::htmlTextArea(array('name' => $field, "style" => "width:240px;", "class" => "wetextarea"), ($hasEncContent ? we_customer_customer::ENCRYPTED_DATA : $value));
+				return we_html_element::htmlTextArea(['name' => $field, "style" => "width:240px;", "class" => "wetextarea"], ($hasEncContent ? we_customer_customer::ENCRYPTED_DATA : $value));
 			case 'number':
 				return we_html_tools::htmlTextInput($field, 32, intval($value), '', "onchange=\"top.content.setHot();\" style='width:240px;'", 'number');
 			case 'multiselect':
@@ -781,19 +750,19 @@ self.close();');
 				$cnt = count($defs);
 				$i = 0;
 				foreach($defs as $def){
-					$attribs = array('type' => 'checkbox', 'name' => $field . '_multi_' . ($i++), 'value' => $def, 'onclick' => 'setMultiSelectData(\'' . $field . '\',' . $cnt . ');');
+					$attribs = ['type' => 'checkbox', 'name' => $field . '_multi_' . ($i++), 'value' => $def, 'onclick' => 'setMultiSelectData(\'' . $field . '\',' . $cnt . ');'];
 					if(in_array($def, $values)){
 						$attribs['checked'] = 'checked';
 					}
 					$out .= we_html_element::htmlInput($attribs) . $def . we_html_element::htmlBr();
 				}
 
-				return we_html_element::htmlDiv(array('style' => 'height: 80px;overflow: auto;width: 220px;border: 1px solid #000;padding: 3px;background: #FFFFFF;'), $out);
+				return we_html_element::htmlDiv(['style' => 'height: 80px;overflow: auto;width: 220px;border: 1px solid #000;padding: 3px;background: #FFFFFF;'], $out);
 			case 'country':
 				$langcode = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 
 				$countrycode = array_search($langcode, getWECountries());
-				$countryselect = new we_html_select(array('name' => $field, 'style' => 'width:240px;', 'class' => 'wetextinput', 'id' => ($field === 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field === 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')));
+				$countryselect = new we_html_select(['name' => $field, 'style' => 'width:240px;', 'class' => 'wetextinput', 'id' => ($field === 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field === 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')]);
 
 				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
@@ -820,7 +789,7 @@ self.close();');
 				}
 				unset($countryvalue);
 				if(!empty($topCountries) && !empty($shownCountries)){
-					$countryselect->addOption('-', '----', array('disabled' => 'disabled'));
+					$countryselect->addOption('-', '----', ['disabled' => 'disabled']);
 				}
 
 				foreach($shownCountries as $countrykey => &$countryvalue){
@@ -838,7 +807,7 @@ self.close();');
 						$lcvalue = $lccode[0];
 					}
 					unset($lcvalue);
-					$languageselect = new we_html_select(array('name' => $field, 'style' => 'width:240px;', 'class' => 'wetextinput', "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => ($field === "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")));
+					$languageselect = new we_html_select(['name' => $field, 'style' => 'width:240px;', 'class' => 'wetextinput', "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => ($field === "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")]);
 					foreach(g_l('languages', '') as $languagekey => $languagevalue){
 						if(in_array($languagekey, $frontendL)){
 							$languageselect->addOption($languagekey, $languagevalue);
@@ -856,10 +825,10 @@ self.close();');
 
 				$defs = explode(',', $props['default']);
 				if($this->customer->ID && !in_array($value, $defs)){
-					$defs = array_merge(array($value), $defs);
+					$defs = array_merge([$value], $defs);
 				}
 
-				$select = new we_html_select(array('name' => $field, "style" => "width:240px;", "class" => "wetextinput", "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => "top.content.setHot();"));
+				$select = new we_html_select(['name' => $field, "style" => "width:240px;", "class" => "wetextinput", "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => "top.content.setHot();"]);
 				foreach($defs as $def){
 					$select->addOption($def, $def);
 				}
@@ -905,17 +874,17 @@ self.close();');
 	}
 
 	private function getCommonTable(array $common, $isAll){
-		$table = new we_html_table(array('width' => 500, 'height' => 50, 'class' => 'customer'), 1, 2);
+		$table = new we_html_table(['width' => 500, 'height' => 50, 'class' => 'customer'], 1, 2);
 		$c = 0;
-		$table->setRow(0, array('style' => 'vertical-align:top'));
+		$table->setRow(0, ['style' => 'vertical-align:top']);
 		foreach($common as $pk => $pv){
 			if($this->customer->isInfoDate($pk)){
 				$pv = ($pv == '' || !is_numeric($pv)) ? 0 : $pv;
-				$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-'), $this->settings->getPropertyTitle($pk)));
+				$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(['class' => 'defaultfont lowContrast'], date(g_l('weEditorInfo', '[date_format]'), $pv)) : '-'), $this->settings->getPropertyTitle($pk)));
 			} else {
 				switch($pk){
 					case 'ID':
-						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), $pv) : '-'), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(($pv ? we_html_element::htmlDiv(['class' => 'defaultfont lowContrast'], $pv) : '-'), $this->settings->getPropertyTitle($pk)));
 						++$c;
 						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], '');
 						break;

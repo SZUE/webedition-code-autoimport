@@ -358,11 +358,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				if(we_base_request::_(we_base_request::INT, "bid") !== false){
 					$newone = ($this->banner->ID == 0);
 					$acQuery = new we_selector_query();
-					if(!permissionhandler::hasPerm("EDIT_BANNER") && !permissionhandler::hasPerm("NEW_BANNER")){
-						echo we_message_reporting::jsMessagePush(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
-						return;
-					}
-					if($newone && !permissionhandler::hasPerm("NEW_BANNER")){
+					if((!permissionhandler::hasPerm("EDIT_BANNER") && !permissionhandler::hasPerm("NEW_BANNER")) ||
+						($newone && !permissionhandler::hasPerm("NEW_BANNER"))){
 						echo we_message_reporting::jsMessagePush(g_l('modules_banner', '[no_perms]'), we_message_reporting::WE_MESSAGE_ERROR);
 						return;
 					}
