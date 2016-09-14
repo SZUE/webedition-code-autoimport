@@ -1093,15 +1093,19 @@ function we_cmd_base(args, url) {
 				success: function (o) {
 					if (o.responseText !== undefined && o.responseText !== "") {
 						var weResponse = JSON.parse(o.responseText);
-						if (weResponse) {
-							top.document.getElementById("treeName").innerHTML = weResponse.DataArray.treeName;
-							if (!weResponse.DataArray.parentFolder) {
-								top.treeData.clear();
-								top.treeData.add(top.node.prototype.rootEntry(weResponse.DataArray.parentFolder, 'root', 'root', weResponse.DataArray.offset));
+						if (weResponse && weResponse.Success) {
+							if (weResponse.DataArray.treeName) {
+								top.document.getElementById("treeName").innerHTML = weResponse.DataArray.treeName;
 							}
-							for (var i = 0; i < weResponse.DataArray.items.length; i++) {
-								if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
-									top.treeData.add(new top.node(weResponse.DataArray.items[i]));
+							if (weResponse.DataArray.items) {
+								if (!weResponse.DataArray.parentFolder) {
+									top.treeData.clear();
+									top.treeData.add(top.node.prototype.rootEntry(weResponse.DataArray.parentFolder, 'root', 'root', weResponse.DataArray.offset));
+								}
+								for (var i = 0; i < weResponse.DataArray.items.length; i++) {
+									if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
+										top.treeData.add(new top.node(weResponse.DataArray.items[i]));
+									}
 								}
 							}
 							top.drawTree();
