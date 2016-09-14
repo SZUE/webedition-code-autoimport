@@ -74,15 +74,15 @@ foreach($_REQUEST['we_cmd'] as $k => $v){
 }
 
 // WYSIWYG && FORBIDHTML && FORBIDPHP
-$onOffVals = array('off' => 'false', 'on' => 'true');
+$onOffVals = ['off' => 'false', 'on' => 'true'];
 $selected = $we_doc->getElement($name . "dhtmledit") === "on" ? 'on' : 'off';
-$wysiwyg = we_html_tools::htmlSelect("dhtmledit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_element::htmlHidden('dhtmledit_orig', $we_doc->elements[$name . "dhtmledit"]["dat"]);
+$wysiwyg = we_html_tools::htmlSelect("dhtmledit", $onOffVals, 1, $selected, false, ['class' => "defaultfont"], 'value', 60) . we_html_element::htmlHidden('dhtmledit_orig', $we_doc->elements[$name . "dhtmledit"]["dat"]);
 
 $selected = $we_doc->getElement($name . "forbidhtml") === "on" ? 'on' : 'off';
-$forbidhtml = we_html_tools::htmlSelect("forbidhtml", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
+$forbidhtml = we_html_tools::htmlSelect("forbidhtml", $onOffVals, 1, $selected, false, ['class' => "defaultfont"], 'value', 60);
 
 $selected = $we_doc->getElement($name . "forbidphp", "dat", 'on') === "on" ? 'on' : 'off';
-$forbidphp = we_html_tools::htmlSelect("forbidphp", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
+$forbidphp = we_html_tools::htmlSelect("forbidphp", $onOffVals, 1, $selected, false, ['class' => "defaultfont"], 'value', 60);
 
 $table = '<table class="default">
 	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
@@ -92,16 +92,14 @@ $table = '<table class="default">
 		<td class="defaultfont" style="text-align:right">forbidhtml&nbsp;</td><td>' . $forbidhtml . '</td>
 	</tr>
 </table>';
-$parts = array(
-	array(
-		"headline" => "",
-		"html" => $table,
-	)
-);
+$parts = [["headline" => "",
+	"html" => $table,
+	]
+];
 
 // XML && REMOVEFIRSTPARAGRAPH
 $selected = $we_doc->getElement($name . "xml", "dat", 'on') === "on" ? 'on' : 'off';
-$xml = we_html_tools::htmlSelect("xml", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
+$xml = we_html_tools::htmlSelect("xml", $onOffVals, 1, $selected, false, ['class' => "defaultfont"], 'value', 60);
 
 $selected = $we_doc->getElement($name . "removefirstparagraph", "dat", 'on') === "on" ? 'on' : 'off';
 $removefirstparagraph = we_html_tools::htmlSelect("removefirstparagraph", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
@@ -123,10 +121,10 @@ $parts[] = array(
 
 // INLINEEDIT && SHOWMENUS
 $selected = $we_doc->getElement($name . "inlineedit", "dat", 'on') === "on" ? 'on' : 'off';
-$inlineedit = we_html_tools::htmlSelect("inlineedit", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60) . we_html_element::htmlHidden('inlineedit_orig', $we_doc->elements[$name . "inlineedit"]["dat"]);
+$inlineedit = we_html_tools::htmlSelect("inlineedit", $onOffVals, 1, $selected, false, ['class' => "defaultfont"], 'value', 60) . we_html_element::htmlHidden('inlineedit_orig', $we_doc->elements[$name . "inlineedit"]["dat"]);
 
 $selected = $we_doc->getElement($name . "showmenus", "dat", 'on') === "on" ? 'on' : 'off';
-$showmenus = we_html_tools::htmlSelect("showmenus", $onOffVals, 1, $selected, false, array('class' => "defaultfont"), 'value', 60);
+$showmenus = we_html_tools::htmlSelect("showmenus", $onOffVals, 1, $selected, false, ['class' => "defaultfont"], 'value', 60);
 
 $table = '<table class="default">
 	<colgroup><col style="width:70px;"/><col style="width:60px;"/><col style="width:95px;"/><col style="width:60px;"/><col style="width:140px;"/><col style="width:60px;"/></colgroup>
@@ -159,56 +157,52 @@ $table = '<table class="default">
 	</tr>
 </table>';
 
-$parts[] = array(
-	"headline" => "",
+$parts[] = ["headline" => "",
 	"html" => $table,
-);
+];
 
 // COMMANDS && CONTEXTMENU
-$select = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById('commands'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
+$select = we_html_tools::htmlSelect('tmp_commands', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, ['onchange' => "var elem=document.getElementById('commands'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]);
 $select_cm = we_html_tools::htmlSelect('tmp_contextmenu', we_wysiwyg_editor::getEditorCommands(false), 1, "", false, array('onchange' => "var elem=document.getElementById('contextmenu'); var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
 
 $table = '<table class="default">
 	<tr class="withBigSpace">
-		<td class="defaultfont" style="vertical-align:top;text-align:right;width:90px;">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), array('id' => "commands", 'style' => "width:392px;height:50px")) . '</td>	</tr>
+		<td class="defaultfont" style="vertical-align:top;text-align:right;width:90px;">commands&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_class::htmlTextArea("commands", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "commands")), ['id' => "commands", 'style' => "width:392px;height:50px"]) . '</td>	</tr>
 	<tr>
-		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), array('id' => "contextmenu", 'style' => "width:392px;height:50px")) . '</td>
+		<td class="defaultfont" valign="top" align="right">contextmenu&nbsp;</td><td colspan="5">' . $select_cm . '<br/>' . we_class::htmlTextArea("contextmenu", 3, 30, oldHtmlspecialchars($we_doc->getElement($name . "contextmenu")), ['id' => "contextmenu", 'style' => "width:392px;height:50px"]) . '</td>
 	</tr>
 </table>';
 
-$parts[] = array(
-	"headline" => "",
+$parts[] = ["headline" => "",
 	"html" => $table,
-);
+];
 
 // FONTNAMES
-$select = we_html_tools::htmlSelect('tmp_fontnames', we_wysiwyg_editor::getAttributeOptions('fontnames'), 1, "", false, array('onchange' => "var elem=document.we_form.fontnames; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
+$select = we_html_tools::htmlSelect('tmp_fontnames', we_wysiwyg_editor::getAttributeOptions('fontnames'), 1, "", false, ['onchange' => "var elem=document.we_form.fontnames; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]);
 $table = '<table cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" valign="top" align="right" style="width:90px;">fontnames&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('fontnames', 24, $we_doc->getElement($name . 'fontnames'), 1024, '', 'text', 396, 0) . '</td>
 	</tr>
 </table>';
 
-$parts[] = array(
-	"headline" => "",
+$parts[] = ["headline" => "",
 	"html" => $table,
-);
+];
 
 // FONTNAMES
-$select = we_html_tools::htmlSelect('tmp_fontsizes', we_wysiwyg_editor::getAttributeOptions('fontsizes'), 1, "", false, array('onchange' => "var elem=document.we_form.fontsizes; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
+$select = we_html_tools::htmlSelect('tmp_fontsizes', we_wysiwyg_editor::getAttributeOptions('fontsizes'), 1, "", false, ['onchange' => "var elem=document.we_form.fontsizes; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]);
 $table = '<table cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" valign="top" align="right" style="width:90px">fontsizes&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('fontsizes', 24, $we_doc->getElement($name . 'fontsizes'), 1024, '', 'text', 396, 0) . '</td>
 	</tr>
 </table>';
 
-$parts[] = array(
-	"headline" => "",
+$parts[] = ["headline" => "",
 	"html" => $table,
-);
+];
 
 // FORMATS
-$select = we_html_tools::htmlSelect('tmp_formats', we_wysiwyg_editor::getAttributeOptions('formats'), 1, "", false, array('onchange' => "var elem=document.we_form.formats; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"));
+$select = we_html_tools::htmlSelect('tmp_formats', we_wysiwyg_editor::getAttributeOptions('formats'), 1, "", false, ['onchange' => "var elem=document.we_form.formats; var txt = this.options[this.selectedIndex].text; if(elem.value.split(',').indexOf(txt)==-1){elem.value=(elem.value) ? (elem.value + ',' + txt) : txt;}this.selectedIndex=-1"]);
 $table = '<table cellpadding="0" cellspacing="0">
 	<tr>
 		<td class="defaultfont" valign="top" align="right" style="width:90px;">formats&nbsp;</td><td colspan="5">' . $select . '<br/>' . we_html_tools::htmlTextInput('formats', 24, $we_doc->getElement($name . 'formats'), 1024, '', 'text', 396, 0) . '</td>

@@ -189,7 +189,7 @@ EOS;
 		$delBut = addslashes(we_html_button::create_button(we_html_button::TRASH, "javascript:#####placeHolder#####;wecf_hot();"));
 		$script = <<<EO_SCRIPT
 
-var $name = new multi_edit("{$name}MultiEdit",document.we_form,0,"$delBut",$this->width,false);
+var $name = new (WE().util.multi_edit)("{$name}MultiEdit",document.we_form,0,"$delBut",$this->width,false);
 $name.addVariant();
 $name.addVariant();
 document.we_form.{$name}Control.value = $name.name;

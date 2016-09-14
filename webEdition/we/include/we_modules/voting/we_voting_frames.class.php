@@ -132,8 +132,7 @@ function setTab(tab) {
 
 		$sel_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:top.content.setHot();'));
 
-		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-			we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js');
+		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_editMulti.js');
 
 		$variant_js = ' function callAnswerLimit() {
 				' . we_message_reporting::getShowMessageCall(g_l('modules_voting', '[answer_limit]'), we_message_reporting::WE_MESSAGE_ERROR) . '
@@ -146,7 +145,7 @@ function setTab(tab) {
 			return $js . we_html_element::jsElement($variant_js);
 		}
 		$variant_js .=
-			'question_edit = new multi_edit("question",document.we_form,1,"",' . 520 . ',true);
+			'question_edit = new (WE().util.multi_edit)("question",document.we_form,1,"",' . 520 . ',true);
 				answers_edit = new multi_editMulti("answers",document.we_form,0,"' . $del_but1 . '",' . 500 . ',true);
 				answers_edit.SetImageIDText(WE().consts.g_l.voting.imageID_text);
 				answers_edit.SetMediaIDText(WE().consts.g_l.voting.mediaID_text);
@@ -198,7 +197,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 
 
 
-		$variant_js .= ' owners_label = new multi_edit("owners",document.we_form,0,"' . $del_but . '",510,false);
+		$variant_js .= ' owners_label = new (WE().util.multi_edit)("owners",document.we_form,0,"' . $del_but . '",510,false);
 			owners_label.addVariant();';
 		if(is_array($this->View->voting->Owners)){
 			$this->View->voting->Owners = array_filter($this->View->voting->Owners);
@@ -212,7 +211,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 		}
 		$variant_js .=
 			' owners_label.showVariant(0);
-			iptable_label = new multi_edit("iptable",document.we_form,0,"' . $del_but . '",510,false);
+			iptable_label = new (WE().util.multi_edit)("iptable",document.we_form,0,"' . $del_but . '",510,false);
 			iptable_label.addVariant();';
 
 		if(is_array($this->View->voting->BlackList)){
@@ -406,7 +405,7 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 			$table->getHtml() .
 			we_html_button::create_button(we_html_button::PLUS, "javascript:top.content.setHot();answers_edit.addItem()"),
 			'space' => we_html_multiIconBox::SPACE_MED
-			];
+		];
 
 		return $parts;
 	}

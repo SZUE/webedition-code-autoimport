@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-list($jsPrefs, $jsFile, $oSelCls) = include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
+list($jsFile, $oSelCls) = include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
 
 $oRdoSort = array(
@@ -134,10 +134,7 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[notepad]'), '', '', we_html_element::jsScript(JS_DIR . "weCombobox.js") .
 	$jsFile .
-	we_html_element::jsElement($jsPrefs) .
 	we_html_element::jsScript(JS_DIR . 'widgets/pad.js'), we_html_element::htmlBody(
-		array(
-		"class" => "weDialogBody", "onload" => "initDlg();"
-		), we_html_element::htmlForm(array(
-			"onsubmit" => "return false;"
-			), we_html_multiIconBox::getHTML("padProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))));
+		["class" => "weDialogBody", "onload" => "initDlg();"
+		], we_html_element::htmlForm(["onsubmit" => "return false;"
+			], we_html_multiIconBox::getHTML("padProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[notepad]')))));

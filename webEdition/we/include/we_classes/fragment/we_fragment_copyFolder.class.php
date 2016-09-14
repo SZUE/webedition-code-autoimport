@@ -624,28 +624,26 @@ class we_fragment_copyFolder extends we_fragment_base{
 		if(isset($_SESSION['weS']['WE_CREATE_DOCTYPE'])){
 			unset($_SESSION['weS']['WE_CREATE_DOCTYPE']);
 		}
+		$cmd = new we_base_jsCmd();
 
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			$pbText = g_l('copyFolder', '[prepareTemplates]');
 
 			echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 			flush();
-			echo we_base_jsCmd::singleCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1']);
+			$cmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1']);
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);
 		} elseif(!isset($_SESSION['weS']['WE_COPY_OBJECTS'])){
-			$cmd = new we_base_jsCmd();
 			$cmd->addCmd('we_cmd', ['load', FILE_TABLE]);
 			$cmd->addCmd('msg', ['msg' => g_l('copyFolder', '[copy_success]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
 			$cmd->addCmd('close');
-			echo $cmd->getCmds();
 		} else {
 			unset($_SESSION['weS']['WE_COPY_OBJECTS']);
-			$cmd = new we_base_jsCmd();
 			$cmd->addCmd('we_cmd', ['load', OBJECT_FILES_TABLE]);
 			$cmd->addCmd('msg', ['msg' => g_l('copyFolder', '[copy_success]'), 'prio' => we_message_reporting::WE_MESSAGE_NOTICE]);
 			$cmd->addCmd('close');
-			echo $cmd->getCmds();
 		}
+		echo $cmd->getCmds();
 	}
 
 	static function formCreateTemplateDirChooser(){
@@ -673,9 +671,8 @@ class we_fragment_copyFolder extends we_fragment_base{
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs(true);opener.addCat(top.allPaths);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
-		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-			we_html_element::jsElement('
-var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",478,false);
+		$js = we_html_element::jsElement('
+var categories_edit = new (WE().util.multi_edit)("categories",document.we_form,0,"' . $del_but . '",478,false);
 categories_edit.addVariant();
 categories_edit.showVariant(0);
 ');

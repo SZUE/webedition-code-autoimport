@@ -226,8 +226,7 @@ function setTab(tab) {
 			return $this->View->getHomeScreen();
 		}
 
-		$body = we_html_element::htmlBody(['class' => 'weEditorBody', 'onload' => 'loaded=1;'], we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
-				we_html_element::htmlForm(['name' => 'we_form', 'onsubmit' => 'return false'], $this->getHTMLProperties()
+		$body = we_html_element::htmlBody(['class' => 'weEditorBody', 'onload' => 'loaded=1;'], we_html_element::htmlForm(['name' => 'we_form', 'onsubmit' => 'return false'], $this->getHTMLProperties()
 				)
 		);
 

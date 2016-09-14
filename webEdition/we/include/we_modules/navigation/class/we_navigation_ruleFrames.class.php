@@ -224,9 +224,8 @@ var dependencies = {
 				'CategoriesControl' => 0,
 				'CategoriesCount' => 0
 			]) .
-			we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
 			we_html_element::jsElement('
-var categories_edit = new multi_edit("categories",document.we_form,0,"' . $del_but . '",400,false);
+var categories_edit = new (WE().util.multi_edit)("categories",document.we_form,0,"' . $del_but . '",400,false);
 categories_edit.addVariant();
 document.we_form.CategoriesControl.value = categories_edit.name;
 categories_edit.showVariant(0);

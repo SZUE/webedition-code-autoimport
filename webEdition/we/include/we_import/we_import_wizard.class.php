@@ -439,7 +439,7 @@ handle_event("previous");');
 			$parts[] = ["headline" => g_l('import', '[handle_document_options]') . '<br/>' . g_l('import', '[handle_template_options]'),
 				"html" => $tbl_extra->getHTML(),
 				'space' => we_html_multiIconBox::SPACE_MED
-				];
+			];
 
 
 			if(defined('OBJECT_TABLE')){
@@ -450,7 +450,7 @@ handle_event("previous");');
 				$parts[] = ["headline" => g_l('import', '[handle_object_options]') . '<br/>' . g_l('import', '[handle_class_options]'),
 					"html" => $tbl_extra->getHTML(),
 					'space' => we_html_multiIconBox::SPACE_MED
-					];
+				];
 			}
 
 			$tbl_extra = new we_html_table([], 4, 1);
@@ -2044,6 +2044,9 @@ function handle_event(evt) {
 	errorEmptyDateFormat:"' . we_message_reporting::prepareMsgForJS(g_l('siteimport', '[errorEmptyDateFormat]')) . '",
 	nameOfTemplateAlert:"' . g_l('siteimport', '[nameOfTemplateAlert]') . '",
 	we_filename_notValid:"' . g_l('alert', '[we_filename_notValid]') . '",
+	root_dir_1:"' . g_l('importFiles', '[root_dir_1]') . '",
+	root_dir_2:"' . g_l('importFiles', '[root_dir_2]') . '",
+	root_dir_3:"' . g_l('importFiles', '[root_dir_3]') . '",
 };';
 	}
 

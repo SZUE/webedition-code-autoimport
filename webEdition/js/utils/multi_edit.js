@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -22,8 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function multi_edit(parentId, form, itemNum, but, width, editable) {
-
+WE().util.multi_edit = function (parentId, form, itemNum, but, width, editable) {
 	this.variantCount = 0;
 	this.itemCount = 0;
 	this.currentVariant = 0;
@@ -156,4 +157,4 @@ function multi_edit(parentId, form, itemNum, but, width, editable) {
 	}
 //FIXME: do we need this as a global var?
 	window[this.name] = this;
-}
+};

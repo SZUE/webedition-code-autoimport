@@ -90,7 +90,7 @@ abstract class we_editor_save{
 
 	public static function templateSave($we_transaction){
 
-		echo we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', we_html_element::jsElement('var url=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?' . http_build_query(
+		echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('var url=WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?' . http_build_query(
 					['we_cmd' => [
 						0 => 'save_document',
 						1 => $we_transaction,

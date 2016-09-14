@@ -50,7 +50,7 @@ class we_import_site{
 	var $quality = 8;
 	var $degrees = 0;
 	private $postProcess;
-	var $excludeddirs = array(WEBEDITION_DIR, WE_THUMBNAIL_DIRECTORY);
+	var $excludeddirs = [WEBEDITION_DIR, WE_THUMBNAIL_DIRECTORY];
 	private static $DB = null;
 
 	/**
@@ -202,43 +202,38 @@ class we_import_site{
 			}
 			switch($name){
 				case 'Title' :
-					$values[] = array(
-						'name' => $name,
+					$values[] = ['name' => $name,
 						'pre' => '<title>',
 						'post' => '</title>'
-					);
+					];
 					break;
 
 				case 'Keywords' :
-					$values[] = array(
-						'name' => $name,
+					$values[] = ['name' => $name,
 						'pre' => '<meta name="keywords" content="',
 						'post' => '">'
-					);
+					];
 					break;
 
 				case 'Description' :
-					$values[] = array(
-						'name' => $name,
+					$values[] = ['name' => $name,
 						'pre' => '<meta name="description" content="',
 						'post' => '">'
-					);
+					];
 					break;
 
 				case 'Charset' :
-					$values[] = array(
-						'name' => $name,
+					$values[] = ['name' => $name,
 						'pre' => '<meta charset="',
 						'post' => '">'
-					);
+					];
 					break;
 
 				default :
-					$values[] = array(
-						'name' => $name,
+					$values[] = ['name' => $name,
 						'pre' => '',
 						'post' => ''
-					);
+					];
 			}
 		}
 
@@ -258,8 +253,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$ct = we_base_request::_(we_base_request::STRING, 'createType');
 
 		$data = ($ct === 'specify' ?
-				array(
-				'valueCreateType' => $ct,
+				['valueCreateType' => $ct,
 				'valueTemplateId' => we_base_request::_(we_base_request::INT, 'templateID', 0),
 				'valueUseRegex' => we_base_request::_(we_base_request::BOOL, 'useRegEx'),
 				'valueFieldValues' => serialize(we_base_request::_(we_base_request::RAW, 'fields', [])),
@@ -267,9 +261,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				'valueDateFormatField' => we_base_request::_(we_base_request::RAW, 'dateformatField', ''),
 				'valueTemplateName' => g_l('siteimport', '[newTemplate]'),
 				'valueTemplateParentID' => 0,
-				) :
-				array(
-				'valueCreateType' => $ct,
+				] :
+				['valueCreateType' => $ct,
 				'valueTemplateId' => 0,
 				'valueUseRegex' => false,
 				'valueFieldValues' => serialize([]),
@@ -277,12 +270,12 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				'valueDateFormatField' => '',
 				'valueTemplateName' => we_base_request::_(we_base_request::STRING, 'templateName', g_l('siteimport', '[newTemplate]')),
 				'valueTemplateParentID' => we_base_request::_(we_base_request::INT, 'templateParentID', 0),
-		));
+		]);
 		// update session
 		$_SESSION['prefs']['siteImportPrefs'] = we_serialize($data);
 		// update DB
 		$GLOBALS['DB_WE']->query('REPLACE INTO ' . PREFS_TABLE . ' SET userID=' . intval($_SESSION['user']["ID"]) . ',`key`="siteImportPrefs",`value`="' . $GLOBALS['DB_WE']->escape($_SESSION["prefs"]["siteImportPrefs"]) . '"');
-		return $this->_getHtmlPage('', we_html_element::jsElement('parent.close();'));
+		return $this->_getHtmlPage('', we_base_jsCmd::singleCmd('close'));
 	}
 
 	/**
@@ -295,22 +288,21 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 */
 	private function _getSiteImportTableHTML($fields, $values = []){
 
-		$headlines = array(
-			array('dat' => g_l('siteimport', '[fieldName]')),
-			array('dat' => g_l('siteimport', '[startMark]')),
-			array('dat' => g_l('siteimport', '[endMark]'))
-		);
+		$headlines = [['dat' => g_l('siteimport', '[fieldName]')],
+			['dat' => g_l('siteimport', '[startMark]')],
+			['dat' => g_l('siteimport', '[endMark]')]
+		];
 
 		$content = [];
 		if(count($fields) > 0){
 			$i = 0;
 			foreach(array_keys($fields) as $name){
 				list($valpre, $valpost) = $this->_getIndexOfValues($values, $name);
-				$content[] = array(
-					array('dat' => oldHtmlspecialchars($name) . we_html_element::htmlHidden('fields[' . $i . '][name]', $name)),
-					array('dat' => '<textarea name="fields[' . $i . '][pre]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpre) . '</textarea>'),
-					array('dat' => '<textarea name="fields[' . $i . '][post]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpost) . '</textarea>'),
-				);
+				$content[] = [
+					['dat' => oldHtmlspecialchars($name) . we_html_element::htmlHidden('fields[' . $i . '][name]', $name)],
+					['dat' => '<textarea name="fields[' . $i . '][pre]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpre) . '</textarea>'],
+					['dat' => '<textarea name="fields[' . $i . '][post]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpost) . '</textarea>'],
+				];
 				$i++;
 			}
 		}
@@ -328,10 +320,10 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	private function _getIndexOfValues($values, $name){
 		foreach($values as $cur){
 			if($cur['name'] === $name){
-				return array($cur['pre'], $cur['post']);
+				return [$cur['pre'], $cur['post']];
 			}
 		}
-		return array('', '');
+		return ['', ''];
 	}
 
 	/**
@@ -360,14 +352,13 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			}
 		}
 		$date_help_button = we_html_button::create_button('fa:btn_help,fa-question', "javascript:showDateHelp();", true, 0, 0);
-		$dateformatvals = array(
-			"unix" => g_l('import', '[uts]'),
+		$dateformatvals = ["unix" => g_l('import', '[uts]'),
 			"gmt" => g_l('import', '[gts]'),
 			"own" => g_l('import', '[fts]')
-		);
+		];
 		$dateFormatHTML = '<div id="dateFormatDiv" style="display:' . ($hasDateFields ? 'block' : 'none') . ';margin-bottom:10px;"><table style="margin:10px 0 10px 0" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
 				g_l('siteimport', '[dateFormat]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
-				"dateFormat", $dateformatvals, 1, $valueDateFormat, false, array('onchange' => "dateFormatChanged(this);")) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
+				"dateFormat", $dateformatvals, 1, $valueDateFormat, false, ['onchange' => "dateFormatChanged(this);"]) . '</td><td id="ownValueInput" style="padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . we_html_tools::htmlTextInput(
 				"dateformatField", 20, $valueDateFormatField) . '</td><td id="ownValueInputHelp" style="padding-bottom:1px;padding-left:10px;display:' . (($valueDateFormat === "own") ? 'block' : 'none') . '">' . $date_help_button . '</td></tr></table></div>';
 
 		$table = '<div style="overflow:auto;height:330px; margin-top:5px;"><div style="width:450px;" id="tablediv">' . $this->_getSiteImportTableHTML($templateFields, $valueFieldValues) . '</div></div>';
@@ -375,14 +366,14 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$regExCheckbox = we_html_forms::checkboxWithHidden($valueUseRegex, "useRegEx", oldHtmlspecialchars(g_l('siteimport', '[useRegEx]'), ENT_QUOTES));
 		$specifyHTML = $this->_getTemplateSelectHTML($valueTemplateId) . '<div id="specifyParam" style="padding-top:10px;display:' . ($valueTemplateId ? 'block' : 'none') . '">' . $dateFormatHTML . $regExCheckbox . $table . '</div>';
 
-		$vals = array(
+		$vals = [
 			"auto" => oldHtmlspecialchars(g_l('siteimport', '[cresteAutoTemplate]'), ENT_QUOTES),
 			"specify" => oldHtmlspecialchars(g_l('siteimport', '[useSpecifiedTemplate]'), ENT_QUOTES)
-		);
+		];
 
 		$html = '<table style="margin-bottom:10px" class="default"><tr><td style="padding-right:10px" class="defaultfont">' . oldHtmlspecialchars(
 				g_l('siteimport', '[importKind]'), ENT_QUOTES) . ':</td><td>' . we_html_tools::htmlSelect(
-				"createType", $vals, 1, $valueCreateType, false, array('onchange' => "createTypeChanged(this);")) . '</td></tr></table><div id="ctauto" style="display:' . (($valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
+				"createType", $vals, 1, $valueCreateType, false, ['onchange' => "createTypeChanged(this);"]) . '</td></tr></table><div id="ctauto" style="display:' . (($valueCreateType === "auto") ? 'block' : 'none') . '">' . we_html_tools::htmlAlertAttentionBox(
 				g_l('siteimport', '[autoExpl]'), we_html_tools::TYPE_INFO, 450) . self::_formPathHTML($valueTemplateName, $valueTemplateParentID) . '</div><div id="ctspecify" style="display:' . (($valueCreateType === "specify") ? 'block' : 'none') . '"><div style="height:4px;"></div>' . $specifyHTML . '</div>';
 
 		$html = '<div style="height:480px">' . $html . '</div>';
@@ -394,9 +385,9 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$bodyhtml = '<body class="weDialogBody">
 					<iframe style="position:absolute;top:-2000px;width:400px;height:200px;" src="about:blank" id="iloadframe" name="iloadframe"></iframe>
 					<form onsubmit="return false;" name="we_form" method="post" action="' . $_SERVER['SCRIPT_NAME'] . '" target="iloadframe">' .
-			we_html_element::htmlHiddens(array(
+			we_html_element::htmlHiddens([
 				"we_cmd[0]" => "siteImportSaveWePageSettings",
-				"ok" => 1)) . we_html_multiIconBox::getJS() .
+				"ok" => 1]) . we_html_multiIconBox::getJS() .
 			we_html_multiIconBox::getHTML("", $parts, 30, $buttons, -1, "", "", false, g_l('siteimport', '[importSettingsWePages]')) .
 			'</form></body>';
 
@@ -475,7 +466,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$wePagesOptionButton = we_html_button::create_button('preferences', "javascript:we_cmd('siteImportCreateWePageSettings')", true, 150, 22, "", "", false, true, "", true);
 		// Depth
 		$select = we_html_tools::htmlSelect(
-				"depth", array(
+				"depth", [
 				"-1" => g_l('siteimport', '[nolimit]'),
 				0,
 				1,
@@ -508,13 +499,13 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				28,
 				29,
 				30
-				), 1, $this->depth, false, [], "value", 150);
+				], 1, $this->depth, false, [], "value", 150);
 
 		$depth = we_html_tools::htmlFormElementTable($select, g_l('siteimport', '[depth]'));
 		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024)) ? : 20;
-		$maxarray = array(
+		$maxarray = [
 			"0" => g_l('siteimport', '[nolimit]'), "0.5" => "0.5"
-		);
+		];
 		for($i = 1; $i <= $maxallowed; $i++){
 			$maxarray[$i] = $i;
 		}
@@ -529,72 +520,65 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$thumbs = we_html_tools::htmlFormElementTable($select, g_l('importFiles', '[thumbnails]'));
 
 		/* Create Main Table */
-		$tableObj = new we_html_table(array('class' => 'default'), 5, 3);
-		$tableObj->setCol(0, 0, array("colspan" => 2,), $images);
+		$tableObj = new we_html_table(['class' => 'default'], 5, 3);
+		$tableObj->setCol(0, 0, ["colspan" => 2,], $images);
 		$tableObj->setCol(0, 2, null, $jss);
-		$tableObj->setCol(1, 0, array("colspan" => 2), $flashmovies);
+		$tableObj->setCol(1, 0, ["colspan" => 2], $flashmovies);
 		$tableObj->setCol(1, 2, null, $css);
-		$tableObj->setCol(2, 0, array("colspan" => 2), $htmlPages);
+		$tableObj->setCol(2, 0, ["colspan" => 2], $htmlPages);
 		$tableObj->setCol(2, 2, null, $text);
-		$tableObj->setCol(3, 0, array('style' => 'width:20px;'), "");
-		$tableObj->setCol(3, 1, array('style' => 'width:200px;'), $createWePages);
-		$tableObj->setCol(3, 2, array('style' => 'width:180px;'), $others);
+		$tableObj->setCol(3, 0, ['style' => 'width:20px;'], "");
+		$tableObj->setCol(3, 1, ['style' => 'width:200px;'], $createWePages);
+		$tableObj->setCol(3, 2, ['style' => 'width:180px;'], $others);
 		$tableObj->setCol(4, 1, null, $wePagesOptionButton);
 
-		$parts = array(
-			array(
-				"headline" => g_l('siteimport', '[dirs_headline]'),
+		$parts = [
+			["headline" => g_l('siteimport', '[dirs_headline]'),
 				"html" => $importFrom . $importTo,
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-			array(
-				"headline" => g_l('siteimport', '[import]'),
+			],
+			["headline" => g_l('siteimport', '[import]'),
 				"html" => $tableObj->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
-			),
-		);
+			],
+		];
 
-		$tableObj = new we_html_table(array('class' => 'default'), 1, 2);
-		$tableObj->setCol(0, 0, array('style' => 'width:220px;'), $depth);
-		$tableObj->setCol(0, 1, array('style' => 'width:180px;'), $maxSize);
+		$tableObj = new we_html_table(['class' => 'default'], 1, 2);
+		$tableObj->setCol(0, 0, ['style' => 'width:220px;'], $depth);
+		$tableObj->setCol(0, 1, ['style' => 'width:180px;'], $maxSize);
 
-		$parts[] = array(
-			"headline" => g_l('siteimport', '[limits]'),
+		$parts[] = ["headline" => g_l('siteimport', '[limits]'),
 			"html" => $tableObj->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
-		);
+		];
 
 		$content = we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[sameName_expl]'), we_html_tools::TYPE_INFO, 410) .
-			we_html_element::htmlDiv(array('style' => 'margin-top:10px;'), we_html_forms::radiobutton("overwrite", ($this->sameName === "overwrite"), "sameName", g_l('importFiles', '[sameName_overwrite]')) .
+			we_html_element::htmlDiv(['style' => 'margin-top:10px;'], we_html_forms::radiobutton("overwrite", ($this->sameName === "overwrite"), "sameName", g_l('importFiles', '[sameName_overwrite]')) .
 				we_html_forms::radiobutton("rename", ($this->sameName === "rename"), "sameName", g_l('importFiles', '[sameName_rename]')) .
 				we_html_forms::radiobutton("nothing", ($this->sameName === "nothing"), "sameName", g_l('importFiles', '[sameName_nothing]'))
 		);
 
-		$parts[] = array(
-			"headline" => g_l('importFiles', '[sameName_headline]'),
+		$parts[] = ["headline" => g_l('importFiles', '[sameName_headline]'),
 			"html" => $content,
 			'space' => we_html_multiIconBox::SPACE_MED
-		);
+		];
 
-		$parts[] = array(
-			'headline' => g_l('importFiles', '[imgsSearchable]'),
+		$parts[] = ['headline' => g_l('importFiles', '[imgsSearchable]'),
 			'html' => we_html_forms::checkboxWithHidden($this->isSearchable === true, 'isSearchable', g_l('importFiles', '	[searchable_label]')),
 			'space' => we_html_multiIconBox::SPACE_MED
-		);
+		];
 
 		if(permissionhandler::hasPerm("NEW_GRAFIK")){
-			$parts[] = array(
-				'headline' => g_l('importFiles', '[metadata]'),
+			$parts[] = ['headline' => g_l('importFiles', '[metadata]'),
 				'html' => we_html_forms::checkboxWithHidden($this->importMetadata == true, 'importMetadata', g_l('importFiles', '[import_metadata]')),
 				'space' => we_html_multiIconBox::SPACE_MED
-			);
+			];
 
 			if(we_base_imageEdit::gd_version() > 0){
-				$parts[] = array(
-					"headline" => g_l('importFiles', '[make_thumbs]'),
+				$parts[] = ["headline" => g_l('importFiles', '[make_thumbs]'),
 					"html" => $thumbs,
 					'space' => we_html_multiIconBox::SPACE_MED
-				);
+				];
 
 				$widthInput = we_html_tools::htmlTextInput("width", 10, $this->width, "", '', "text", 60);
 				$heightInput = we_html_tools::htmlTextInput("height", 10, $this->height, "", '', "text", 60);
@@ -621,32 +605,28 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				</tr>
 			</table>';
 
-				$parts[] = array(
-					"headline" => g_l('weClass', '[resize]'), "html" => $resize, 'space' => we_html_multiIconBox::SPACE_MED
-				);
+				$parts[] = ["headline" => g_l('weClass', '[resize]'), "html" => $resize, 'space' => we_html_multiIconBox::SPACE_MED
+				];
 
 				$radio0 = we_html_forms::radiobutton(0, $this->degrees == 0, "degrees", g_l('weClass', '[rotate0]'));
 				$radio180 = we_html_forms::radiobutton(180, $this->degrees == 180, "degrees", g_l('weClass', '[rotate180]'));
 				$radio90l = we_html_forms::radiobutton(90, $this->degrees == 90, "degrees", g_l('weClass', '[rotate90l]'));
 				$radio90r = we_html_forms::radiobutton(270, $this->degrees == 270, "degrees", g_l('weClass', '[rotate90r]'));
 
-				$parts[] = array(
-					"headline" => g_l('weClass', '[rotate]'),
+				$parts[] = ["headline" => g_l('weClass', '[rotate]'),
 					"html" => $radio0 . $radio180 . $radio90l . $radio90r,
 					'space' => we_html_multiIconBox::SPACE_MED
-				);
+				];
 
-				$parts[] = array(
-					"headline" => g_l('weClass', '[quality]'),
+				$parts[] = ["headline" => g_l('weClass', '[quality]'),
 					"html" => we_base_imageEdit::qualitySelect("quality", $this->quality),
 					'space' => we_html_multiIconBox::SPACE_MED
-				);
+				];
 			} else {
-				$parts[] = array(
-					"headline" => "",
+				$parts[] = ["headline" => "",
 					"html" => we_html_tools::htmlAlertAttentionBox(
 						g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, ""),
-				);
+				];
 			}
 			$foldAT = 5;
 		} else {
@@ -656,17 +636,15 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$wepos = weGetCookieVariable("but_wesiteimport");
 
 		$content = we_html_element::htmlForm(
-				array(
-				"action" => WEBEDITION_DIR . "we_cmd.php",
+				["action" => WEBEDITION_DIR . "we_cmd.php",
 				"name" => "we_form",
 				"method" => "post",
 				"target" => "siteimportcmd"
-				), we_html_multiIconBox::getJS() .
+				], we_html_multiIconBox::getJS() .
 				we_html_multiIconBox::getHTML("wesiteimport", $parts, 30, "", $foldAT, g_l('importFiles', '[image_options_open]'), g_l('importFiles', '[image_options_close]'), ($wepos === "down"), g_l('siteimport', '[siteimport]')) . $this->_getHiddensHTML());
 
-		$body = we_html_element::htmlBody(array(
-				"class" => "weDialogBody", "onunload" => "doUnload();"
-				), $content);
+		$body = we_html_element::htmlBody(["class" => "weDialogBody", "onunload" => "doUnload();"
+				], $content);
 
 		$js = we_html_element::jsScript(JS_DIR . 'import_site.js');
 
@@ -679,62 +657,29 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 * @return	string
 	 */
 	private function _getButtonsHTML(){
-
 		if($this->step == 1){
 			$this->_fillFiles();
 			if(count($this->files) == 0){
+				$jsCmd = new we_base_jsCmd();
+
 				$importDirectory = rtrim(rtrim($_SERVER['DOCUMENT_ROOT'], '/') . $this->from, '/');
-				if(count(scandir($importDirectory)) <= 2){
-					return we_html_element::jsElement('alert(\'' . addslashes(g_l('importFiles', '[emptyDir]')) . '\');top.close()');
-				}
-				return we_html_element::jsElement('alert(\'' . addslashes(g_l('importFiles', '[noFiles]')) . '\');top.close();');
+				$jsCmd->addCmd('msg', ['msg' => (count(scandir($importDirectory)) <= 2 ?
+						g_l('importFiles', '[emptyDir]') :
+						g_l('importFiles', '[noFiles]'))
+					, 'prio' => we_message_reporting::WE_MESSAGE_INFO]);
+
+				$jsCmd->addCmd('close');
+				return $jsCmd->getCmds();
 			}
 			new we_import_siteFrag($this);
 			return '';
 		}
 
-		$bodyAttribs = array(
-			"class" => "weDialogButtonsBody",
+		$bodyAttribs = ["class" => "weDialogButtonsBody",
 			'style' => 'overflow:hidden;'
-		);
+		];
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close()", true, 100, 22, "", "", false, false);
-
-		$js = we_html_element::jsElement("
-		function back() {
-			top.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&we_cmd[1]=siteImport';
-		}
-		function next() {
-			var testvalue = 0;
-			if(!top.siteimportcontent.document.we_form.from.value  || top.siteimportcontent.document.we_form.from.value=='/'){
-				testvalue += 1;
-			}
-			if(top.siteimportcontent.document.we_form.to.value == 0 || top.siteimportcontent.document.we_form.to.value == ''){
-				testvalue += 2;
-			}
-			switch(testvalue){
-			case 0:
-				top.siteimportcontent.document.we_form.submit();
-				break;
-			case 1:
-				if(confirm('" . g_l('importFiles', '[root_dir_1]') . "')){
-					top.siteimportcontent.document.we_form.submit();
-				}
-				break;
-			case 2:
-				if(confirm('" . g_l('importFiles', '[root_dir_2]') . "')){
-					top.siteimportcontent.document.we_form.submit();
-				}
-				break;
-			case 3:
-				if(confirm('" . g_l('importFiles', '[root_dir_3]') . "')){
-					top.siteimportcontent.document.we_form.submit();
-				}
-				break;
-			default:
-			}
-		}");
-
 
 		$prevNextButtons = we_html_button::create_button(we_html_button::BACK, "javascript:back();", true, 100, 22, "", "", false, false) .
 			we_html_button::create_button(we_html_button::NEXT, "javascript:next();", true, 100, 22, "", "", false, false);
@@ -742,15 +687,15 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$pb = new we_progressBar(0);
 		$pb->setStudLen(200);
 		$pb->addText("&nbsp;", 0, "progressTxt");
-		$js.=$pb->getJSCode();
+		$js = $pb->getJSCode();
 
-		$table = new we_html_table(array('class' => 'default', "width" => "100%"), 1, 2);
+		$table = new we_html_table(['class' => 'default', "width" => "100%"], 1, 2);
 		$table->setCol(0, 0, null, '<div id="progressBarDiv" style="display:none;">' . $pb->getHTML() . '</div>');
-		$table->setCol(0, 1, array("style" => "text-align:right"
-			), we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10));
+		$table->setCol(0, 1, ["style" => "text-align:right"
+			], we_html_button::position_yes_no_cancel($prevNextButtons, null, $cancelButton, 10, '', [], 10));
 
 
-		return $this->_getHtmlPage(we_html_element::htmlBody($bodyAttribs, $table->getHtml()), $js);
+		return $this->_getHtmlPage(we_html_element::htmlBody($bodyAttribs, $table->getHtml()), we_html_element::jsScript(JS_DIR . 'import_site.js') . $js);
 	}
 
 	/**
@@ -1167,8 +1112,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		foreach($fieldValues as $field){
 			if(!empty($field["pre"]) && !empty($field["post"]) && !empty($field['name'])){
 				$fieldval = '';
-				$field['pre'] = str_replace(array("\r\n", "\r"), "\n", $field['pre']);
-				$field['post'] = str_replace(array("\r\n", "\n"), "\n", $field['post']);
+				$field['pre'] = str_replace(["\r\n", "\r"], "\n", $field['pre']);
+				$field['post'] = str_replace(["\r\n", "\n"], "\n", $field['post']);
 				if(!$useRegex){
 					$prepos = strpos($content, $field["pre"]);
 					$postpos = strpos($content, $field["post"], abs($prepos));
@@ -1204,10 +1149,9 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 						if(preg_match('/<[^>]+src=["\']?([^"\' >]+)[^"\'>]?[^>]*>/i', $fieldval, $regs)){ // only if image tag has a src attribute
 							$src = $regs[1];
 							$imgId = path_to_id($src);
-							$we_doc->elements[$field['name']] = array(
-								"type" => "img",
+							$we_doc->elements[$field['name']] = ["type" => "img",
 								"bdid" => $imgId
-							);
+							];
 						}
 					} else {
 						$we_doc->setElement($field['name'], trim($fieldval));
@@ -1220,10 +1164,10 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 
 	private static function path_to_id_ct($path, $table, we_database_base $db){
 		if($path === '/'){
-			return array(0, '');
+			return [0, ''];
 		}
 		$res = getHash('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '"', $db);
-		return ($res? : array(0, null));
+		return ($res? : [0, null]);
 	}
 
 	/**
@@ -1396,17 +1340,15 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		//save and publish
 		if(!$GLOBALS['we_doc']->we_save()){
 			$GLOBALS['we_doc'] = $we_docSave;
-			return array(
-				'filename' => $_FILES['we_File']['name'],
+			return ['filename' => $_FILES['we_File']['name'],
 				'error' => 'save_error'
-			);
+			];
 		}
 		if(!$GLOBALS['we_doc']->we_publish()){
 			$GLOBALS['we_doc'] = $we_docSave;
-			return array(
-				'filename' => $_FILES['we_File']['name'],
+			return ['filename' => $_FILES['we_File']['name'],
 				'error' => 'publish_error'
-			);
+			];
 		}
 
 		$GLOBALS['we_doc'] = $we_docSave;
@@ -1503,10 +1445,9 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				$GLOBALS["we_doc"]->Filename = $GLOBALS["we_doc"]->Filename . "_" . $z;
 				$GLOBALS["we_doc"]->Path = $GLOBALS["we_doc"]->getParentPath() . (($GLOBALS["we_doc"]->getParentPath() != "/") ? "/" : "") . $GLOBALS["we_doc"]->Text;
 			} else {
-				return array(
-					"filename" => $GLOBALS["we_doc"]->Path,
+				return ["filename" => $GLOBALS["we_doc"]->Path,
 					"error" => "same_name"
-				);
+				];
 			}
 		}
 
@@ -1577,10 +1518,9 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		//save and publish
 		if(!$GLOBALS["we_doc"]->we_save()){
 			$GLOBALS["we_doc"] = $we_docSave;
-			return array(
-				"filename" => $path,
+			return ["filename" => $path,
 				"error" => "save_error"
-			);
+			];
 		}
 		if($contentType == we_base_ContentTypes::IMAGE && $importMetadata){
 			$GLOBALS["we_doc"]->importMetaData();
@@ -1588,10 +1528,9 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		}
 		if(!$GLOBALS["we_doc"]->we_publish()){
 			$GLOBALS["we_doc"] = $we_docSave;
-			return array(
-				"filename" => $path,
+			return ["filename" => $path,
 				"error" => "publish_error"
-			);
+			];
 		}
 		$GLOBALS["we_doc"] = $we_docSave;
 		return [];
@@ -1682,12 +1621,11 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 						if($this->createWePages){
 							$contentType = we_base_ContentTypes::WEDOCUMENT;
 							// webEdition files needs to be post processed (external links => internal links)
-							$this->postProcess[] = array(
-								"path" => $PathOfEntry,
+							$this->postProcess[] = ["path" => $PathOfEntry,
 								"contentType" => "post/process",
 								"sourceDir" => $this->from,
 								"destDirID" => $this->to
-							);
+							];
 						}
 						$importIt = true;
 					}
@@ -1733,8 +1671,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			}
 
 			if($importIt){
-				$this->files[] = array(
-					"path" => $PathOfEntry,
+				$this->files[] = ["path" => $PathOfEntry,
 					"contentType" => $contentType,
 					"sourceDir" => $this->from,
 					"destDirID" => $this->to,
@@ -1749,12 +1686,11 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 					"degrees" => $this->degrees,
 					"isSearchable" => $this->isSearchable,
 					"importMetadata" => $this->importMetadata
-				);
+				];
 			}
 			if($contentType === "folder"){
 				if(($this->depth == -1) || (abs($this->depth) > $this->depth)){
-					$this->files[] = array(
-						"path" => $PathOfEntry,
+					$this->files[] = ["path" => $PathOfEntry,
 						"contentType" => $contentType,
 						"sourceDir" => $this->from,
 						"destDirID" => $this->to,
@@ -1769,7 +1705,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 						"degrees" => "",
 						"isSearchable" => false,
 						"importMetadata" => 0
-					);
+					];
 					$this->depth++;
 					$this->_fillDirectories($PathOfEntry);
 					$this->depth--;
@@ -1785,14 +1721,13 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 */
 	private function _getHiddensHTML(){
 		return
-			we_html_element::htmlHiddens(array(
-				"we_cmd[0]" => "siteImport",
+			we_html_element::htmlHiddens(["we_cmd[0]" => "siteImport",
 				"cmd" => "buttons",
-				"step" => 1));
+				"step" => 1]);
 	}
 
 	private function _getFrameset(){
-		$body = we_html_element::htmlBody(array('id' => 'weMainBody')
+		$body = we_html_element::htmlBody(['id' => 'weMainBody']
 				, we_html_element::htmlIFrame('siteimportcontent', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=siteImport&cmd=content", 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;') .
 				we_html_element::htmlIFrame('siteimportbuttons', "we_cmd.php?we_cmd[0]=siteImport&cmd=buttons", 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 				we_html_element::htmlIFrame('siteimportcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')

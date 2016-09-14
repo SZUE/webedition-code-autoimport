@@ -154,3 +154,38 @@ function checkForm() {
 	}
 	return true;
 }
+
+function back() {
+	top.location.href = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=import&we_cmd[1]=siteImport';
+}
+
+function next() {
+	var testvalue = 0;
+	if (!top.siteimportcontent.document.we_form.from.value || top.siteimportcontent.document.we_form.from.value == '/') {
+		testvalue += 1;
+	}
+	if (top.siteimportcontent.document.we_form.to.value == 0 || top.siteimportcontent.document.we_form.to.value == '') {
+		testvalue += 2;
+	}
+	switch (testvalue) {
+		case 0:
+			top.siteimportcontent.document.we_form.submit();
+			break;
+		case 1:
+			if (confirm(WE().consts.g_l.import.root_dir_1)) {
+				top.siteimportcontent.document.we_form.submit();
+			}
+			break;
+		case 2:
+			if (confirm(WE().consts.g_l.import.root_dir_2)) {
+				top.siteimportcontent.document.we_form.submit();
+			}
+			break;
+		case 3:
+			if (confirm(WE().consts.g_l.import.root_dir_3)) {
+				top.siteimportcontent.document.we_form.submit();
+			}
+			break;
+		default:
+	}
+}

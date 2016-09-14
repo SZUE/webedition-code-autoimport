@@ -276,6 +276,7 @@ echo we_html_element::jsScript(JS_DIR . 'webEdition.js', '', [ 'id' => 'loadWEDa
  we_html_element::jsScript(JS_DIR . 'weButton.js') .
  we_html_element::jsScript(JS_DIR . 'we_users_ping.js') .
  we_html_element::jsScript(JS_DIR . 'we_lcmd.js') .
+ we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
  we_main_headermenu::css() .
  we_html_element::cssLink(CSS_DIR . 'sidebar.css');
 

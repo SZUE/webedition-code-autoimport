@@ -203,7 +203,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$table->setCol(1, 0, ['colspan' => 2, 'style' => 'text-align:right'], we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeAllCats()") . $addbut
 		);
 
-		$js = we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') . we_html_element::jsElement($variant_js) .
+		$js = we_html_element::jsElement($variant_js) .
 			we_html_element::jsScript(JS_DIR . 'we_fileupload_ui_preview.js', 'init();', ['id' => 'loadVarFileupload_ui_preview', 'data-preview' => setDynamicVar([
 					'delButton' => $del_but,
 					'categoriesDivSize' => ($width_size - 10),

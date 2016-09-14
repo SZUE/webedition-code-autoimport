@@ -50,8 +50,7 @@ $parts[] = array(
 echo we_html_tools::getHtmlTop() .
  weSuggest::getYuiFiles();
 require(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
- '</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
+echo '</head><body class="weEditorBody"><form name="we_form" onsubmit="return false">' .
  we_class::hiddenTrans() .
  (!($we_doc instanceof we_imageDocument) && permissionhandler::hasPerm('CAN_EDIT_CUSTOMERFILTER') ?
 	we_html_element::htmlHidden('we_edit_weDocumentCustomerFilter', 1) : '') .

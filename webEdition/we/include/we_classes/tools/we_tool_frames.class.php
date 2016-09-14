@@ -68,12 +68,12 @@ abstract class we_tool_frames extends we_modules_frame{
 
 		  $table->setCol(1, 0, array('class' => "small",'style'=>'p'), we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>')); */
 
-		$body = we_html_element::htmlBody(["id" => "eHeaderBody", "onload" => ($this->Model->ID ? '' : 'top.content.activ_tab=1;')."document.getElementById('tab_'+top.content.activ_tab).className='tabActive';setFrameSize()", "onresize" => "setFrameSize()"], '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .
+		$body = we_html_element::htmlBody(["id" => "eHeaderBody", "onload" => ($this->Model->ID ? '' : 'top.content.activ_tab=1;') . "document.getElementById('tab_'+top.content.activ_tab).className='tabActive';setFrameSize()", "onresize" => "setFrameSize()"], '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .
 				$we_tabs->getHTML() .
 				'</div>'
 		);
 
-		return $this->getHTMLDocument($body,we_html_element::cssLink(CSS_DIR . 'we_tab.css').  we_html_element::jsScript(WE_JS_MODULES_DIR.'we_tool_frames_tab.js'));
+		return $this->getHTMLDocument($body, we_html_element::cssLink(CSS_DIR . 'we_tab.css') . we_html_element::jsScript(WE_JS_MODULES_DIR . 'we_tool_frames_tab.js'));
 	}
 
 	protected function getHTMLEditorBody(){
@@ -89,8 +89,7 @@ abstract class we_tool_frames extends we_modules_frame{
 			return ob_get_clean();
 		}
 
-		$body = we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;'), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js?' . WE_VERSION) .
-				we_html_element::htmlForm(array('name' => 'we_form', 'onsubmit' => 'return false'), $this->getHTMLProperties()
+		$body = we_html_element::htmlBody(['class' => 'weEditorBody', 'onload' => 'loaded=1;'], we_html_element::htmlForm(['name' => 'we_form', 'onsubmit' => 'return false'], $this->getHTMLProperties()
 				)
 		);
 
