@@ -271,7 +271,7 @@ function documentLocking($we_doc){
  * This is only done when the IsDynamic - PersistantSlot is false.
  */
 
-function includeEditor($we_doc, $we_transaction){//this is really unclear what is done here
+function includeEditor($we_doc, $we_transaction, $insertReloadFooter){//this is really unclear what is done here
 	$we_include = $we_doc->editor();
 	ob_start();
 	if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
@@ -375,7 +375,7 @@ function doUnpublish($we_doc, $we_transaction){
 	we_editor_save::publishInc($we_transaction, $we_responseText, $we_responseTextType, $we_JavaScript);
 }
 
-function includeEditorDefault($we_doc, $we_transaction){
+function includeEditorDefault($we_doc, $we_transaction, $insertReloadFooter){
 	$we_include = $we_doc->editor();
 	if(!$we_include){ // object does not handle html-output, so we need to include a template( return value)
 		exit('Nothing to include ...');
@@ -467,7 +467,7 @@ if(
 	!empty($_POST) &&
 	we_base_request::_(we_base_request::BOOL, 'we_complete_request')
 ){
-	includeEditor($we_doc, $we_transaction);
+	includeEditor($we_doc, $we_transaction, $insertReloadFooter);
 } else {
 	$we_JavaScript = '';
 	switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
@@ -710,7 +710,7 @@ top.openWindow(\'' . WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=rebuild&step=2&btype
 			doUnpublish($we_doc, $we_transaction);
 			break;
 		default:
-			includeEditorDefault($we_doc, $we_transaction);
+			includeEditorDefault($we_doc, $we_transaction, $insertReloadFooter);
 	}
 }
 
