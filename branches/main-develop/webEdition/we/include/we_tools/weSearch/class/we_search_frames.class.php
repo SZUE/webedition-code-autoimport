@@ -121,20 +121,16 @@ function setTab(tab) {
 
 	protected function getHTMLEditorBody(){
 		$body = we_html_element::htmlBody(
-				array(
-				'class' => 'weEditorBody',
+				['class' => 'weEditorBody',
 				'onkeypress' => 'if(event.keyCode==13 || event.keyCode==3){weSearch.search(true);}',
 				'onload' => 'loaded=1;setTimeout(weSearch.init,200);',
 				'onresize' => 'weSearch.sizeScrollContent();'
-				), we_html_element::jsScript(JS_DIR . 'utils/multi_edit.js') .
-				we_html_element::htmlForm(array(
-					'name' => 'we_form',
+				], we_html_element::htmlForm(['name' => 'we_form',
 					'onsubmit' => 'return false'
-					), $this->getHTMLProperties() .
-					we_html_element::htmlHiddens(array(
-						'predefined' => $this->View->Model->predefined,
+					], $this->getHTMLProperties() .
+					we_html_element::htmlHiddens(['predefined' => $this->View->Model->predefined,
 						'savedSearchName' => $this->View->Model->Text
-				)))
+				]))
 		);
 
 		$whichSearch = we_search_view::SEARCH_DOCS;
@@ -392,7 +388,7 @@ function setTab(tab) {
 			case "edfooter":
 				return $this->getHTMLEditorFooter([
 						we_html_button::SAVE => [ [], 'tool_weSearch_save']
-						]);
+				]);
 
 			default:
 				return parent::getHTML($what, $mode, $step);

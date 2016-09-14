@@ -33,7 +33,7 @@ var _sLastPreviewCsv = '';
 function exit_close() {
 	if (_bPrev && _sInitCsv_ != _sLastPreviewCsv) {
 		var aCsv = _sInitCsv_.split(';');
-		opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], _sObjId);
+		opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], prefs._sObjId);
 	}
 	exitPrefs();
 	self.close();
@@ -69,7 +69,7 @@ function delUser(iUsrId) {
 		}
 	}
 	_fo.action = '/webEdition/we_widgets/dlg/mfd.php?we_cmd[0]=' +
-					_sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.selectedIndex +
+					prefs._sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.selectedIndex +
 					';' + getBinary('display_opt') + ';' + sUsers;
 	_fo.method = 'post';
 	_fo.submit();
@@ -83,12 +83,12 @@ function getCsv() {
 function refresh(bRender) {
 	if (bRender)
 		_sLastPreviewCsv = getCsv();
-	opener.rpc(getBinary('type'), _oSctDate.selectedIndex, _oSctNumEntries.selectedIndex, getBinary('display_opt'), _sUsers, _sObjId);
+	opener.rpc(getBinary('type'), _oSctDate.selectedIndex, _oSctNumEntries.selectedIndex, getBinary('display_opt'), _sUsers, prefs._sObjId);
 }
 
 function init() {
 	_fo = document.forms[0];
-	_oCsv_ = opener.document.getElementById(_sObjId + '_csv');
+	_oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	_oSctDate = _fo.elements.sct_date;
 	_oSctNumEntries = _fo.elements.sct_amount_entries;
@@ -118,7 +118,7 @@ function addUserToField() {
 	}
 	if (!bUsrExists) {//FIXME change this path!
 		_fo.action = '/webEdition/we/include/we_widgets/dlg/mfd.php?we_cmd[0]=' +
-						_sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
+						prefs._sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
 						_oSctNumEntries.selectedIndex + ';' + getBinary('display_opt') + ';' + _sUsers + ',' + iNewUsrId;
 		_fo.method = 'post';
 		_fo.submit();

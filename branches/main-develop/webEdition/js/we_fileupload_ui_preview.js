@@ -24,7 +24,7 @@
  */
 
 var preview = WE().util.getDynamicVar(document, 'loadVarFileupload_ui_preview', 'data-preview');
-var categories_edit = new multi_edit("categoriesDiv", document.forms[0], 0, preview.delButton, preview.categoriesDivSize, false);
+var categories_edit = new (WE().util.multi_edit)("categoriesDiv", document.forms[0], 0, preview.delButton, preview.categoriesDivSize, false);
 categories_edit.addVariant();
 
 function removeAllCats() {

@@ -312,12 +312,12 @@ function getCsv() {
 function preview() {
 	_bPrev = true;
 	previewPrefs();
-	opener.rpc(getCsv(), '', '', '', '', _sObjId);
+	opener.rpc(getCsv(), '', '', '', '', prefs._sObjId);
 }
 
 function exit_close() {
 	if (_sCsvInit_ != getCsv() && _bPrev) {
-		opener.rpc(_sCsvInit_, '', '', '', '', _sObjId);
+		opener.rpc(_sCsvInit_, '', '', '', '', prefs._sObjId);
 	}
 	exitPrefs();
 	self.close();
@@ -325,7 +325,7 @@ function exit_close() {
 
 function init() {
 	_fo = document.forms[0];
-	_sCsvInit_ = opener.document.getElementById(_sObjId + '_csv').value;
+	_sCsvInit_ = opener.document.getElementById(prefs._sObjId + '_csv').value;
 	var aCsv = _sCsvInit_.split(';');
 	for (var i = 0; i < aCsv.length; i++) {
 		var aVals = aCsv[i].split(',');
@@ -357,11 +357,11 @@ function deleteEntry(sValue) {
 
 function save() {
 	var sCsv = getCsv();
-	var oCsv_ = opener.document.getElementById(_sObjId + '_csv');
+	var oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	oCsv_.value = sCsv;
 	//savePrefs();
 	if (_sCsvInit_ != sCsv) {
-		opener.rpc(sCsv, '', '', '', '', _sObjId);
+		opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
 	}
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	self.close();

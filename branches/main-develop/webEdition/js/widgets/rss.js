@@ -58,7 +58,7 @@ function toggleRssTopFeed() {
 
 function init() {
 	_fo = document.forms[0];
-	var sCsv_ = opener.document.getElementById(_sObjId + '_csv').value;
+	var sCsv_ = opener.document.getElementById(prefs._sObjId + '_csv').value;
 	var aCsv = sCsv_.split(',');
 	var sUri = WE().util.Base64.decode(aCsv[0]);
 	_sInitUri = sUri;
@@ -134,7 +134,7 @@ function displayRssFeed(sUri, bOnChange) {
 					_sInitRssCfg != sRssCfgBinary || _iInitRssCfgNumEntries != sRssCfgSelIdx) {
 		_sLastPreviewUri = sUri;
 		var sTbBinary = getBinary('tb');
-		opener.rpc(escape(sUri), sRssCfgBinary, sRssCfgSelIdx, sTbBinary, getTbPersTitle(sUri), _sObjId);
+		opener.rpc(escape(sUri), sRssCfgBinary, sRssCfgSelIdx, sTbBinary, getTbPersTitle(sUri), prefs._sObjId);
 	}
 }
 
@@ -146,7 +146,7 @@ function resetRssFeed() {
 					(getBinary('tb') != _sInitTbCfg) ||
 					(_iInitRssCfgNumEntries != iSctConfSel) ||
 					(_iInitTbTitlePers != iRdoTitleSel)) {
-		opener.rpc(escape(_sInitUri), _sInitRssCfg, _iInitRssCfgNumEntries, _sInitTbCfg, getTbPersTitle(_sInitUri), _sObjId);
+		opener.rpc(escape(_sInitUri), _sInitRssCfg, _iInitRssCfgNumEntries, _sInitTbCfg, getTbPersTitle(_sInitUri), prefs._sObjId);
 	}
 }
 
@@ -174,7 +174,7 @@ function save() {
 		//return;
 	}
 	var oSctConf = _fo.elements.sct_conf;
-	var oCsv_ = opener.document.getElementById(_sObjId + '_csv');
+	var oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	var oRdoTitle = _fo.elements.rdo_title;
 	oCsv_.value = WE().util.Base64.encode(sUri) + ',' + getBinary('conf') + ',' + oSctConf.selectedIndex +
 					',' + getBinary('tb') + ',' + ((oRdoTitle[0].checked) ? 0 : 1);

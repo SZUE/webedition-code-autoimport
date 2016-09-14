@@ -22,7 +22,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'));
 
 // Check if we need to create a new thumbnail
 if(($name = we_base_request::_(we_base_request::STRING, 'newthumbnail')) && permissionhandler::hasPerm('ADMINISTRATOR')){
@@ -43,6 +42,7 @@ if(($delId = we_base_request::_(we_base_request::INT, 'deletethumbnail')) && per
 
 // Check which thumbnail to work with
 $GLOBALS['id'] = $GLOBALS['id']? : ( f('SELECT ID FROM ' . THUMBNAILS_TABLE . ' ORDER BY Name LIMIT 1')? : -1);
+$GLOBALS['scriptVars'] = [];
 
 /**
  * This function returns the HTML code of a dialog.
@@ -148,22 +148,9 @@ function build_dialog($selected_setting = 'ui'){
 		case 'dialog':
 			// Detect thumbnail names
 			$DB_WE->query('SELECT Name FROM ' . THUMBNAILS_TABLE);
-			$thumbnail_names = $DB_WE->getAll(true);
-
-			$thumbnail_names = $thumbnail_names ? '\'' . implode('\',\'', $thumbnail_names) . '\'' : '';
-
-			// Generate needed JS
-			$needed_JavaScript = we_html_element::jsElement("
-var thumbnail_names = [" . $thumbnail_names . "];
-function delete_thumbnail() {" .
-					(permissionhandler::hasPerm('ADMINISTRATOR') ?
-						"var deletion = confirm('" . sprintf(g_l('thumbnails', '[delete_prompt]'), f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($id))) . "');
-
-		if (deletion == true) {
-			self.location = WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=editThumbs&deletethumbnail=" . $id . "';
-		}" :
-						"") . "
-}");
+			$GLOBALS['scriptVars']['thumbnail_names'] = $DB_WE->getAll(true);
+			$GLOBALS['scriptVars']['selectedID'] = $id;
+			$GLOBALS['scriptVars']['selectedName'] = f('SELECT Name FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($id));
 
 			$enabled_buttons = false;
 
@@ -303,7 +290,7 @@ function delete_thumbnail() {" .
 				['headline' => g_l('thumbnails', '[properties]'), 'html' => $window_html->getHtml(), 'space' => we_html_multiIconBox::SPACE_SMALL],
 				['headline' => 'Filter', 'html' => we_html_element::htmlDiv(['class' => 'editorThumbnailsFilter'], $thumbnail_option_table['filter']->getHtml())],
 				['headline' => g_l('thumbnails', '[format]'), 'html' => $thumbnail_format_select->getHtml(), 'space' => we_html_multiIconBox::SPACE_MED],
-				], -1, '', '', false, $needed_JavaScript);
+				]);
 	}
 
 	return '';
@@ -346,19 +333,21 @@ function getMainDialog(){
 	return $cmd->getCmds() . build_dialog('saved');
 }
 
-echo we_html_element::jsScript(JS_DIR . 'we_thumbnails.js') . '</head>';
 //  check if gd_lib is installed ...
 if(we_base_imageEdit::gd_version() > 0){
-	echo we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'init();']
-		, we_html_element::htmlExIFrame('we_thumbnails', getMainDialog(), 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;') .
-		we_html_element::htmlExIFrame('we_thumbnails_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
-	) . '</html>';
+	//some var's are set
+	$dialog = getMainDialog();
+	echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'), '', '', we_html_element::jsScript(JS_DIR . 'we_thumbnails.js', '', ['id' => 'loadVarThumbnails', 'data-thumbnails' => setDynamicVar($GLOBALS['scriptVars'])]), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => 'init();']
+			, we_html_element::htmlExIFrame('we_thumbnails', $dialog, 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: hidden;') .
+			we_html_element::htmlExIFrame('we_thumbnails_footer', getFooter(), 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;')
+	));
 	return;
 }//  gd_lib is not installed - show error
 
-echo we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_multiIconBox::getHTML('thumbnails', [[
-		'headline' => '',
-		'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 440),
-		]
-		], 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'))
-) . '</html>';
+echo we_html_tools::getHtmlTop(g_l('thumbnails', '[thumbnails]'), '', '', '', we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_multiIconBox::getHTML('thumbnails', [
+			[
+				'headline' => '',
+				'html' => we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[add_description_nogdlib]'), we_html_tools::TYPE_INFO, 440),
+			]
+			], 30, '', -1, '', '', false, g_l('thumbnails', '[thumbnails]'))
+));

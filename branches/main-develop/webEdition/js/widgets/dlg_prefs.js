@@ -21,6 +21,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var prefs = WE().util.getDynamicVar(document, 'loadVarDlg_prefs', 'data-prefs');
+var _sCls_ = opener.document.getElementById(prefs._sObjId + '_cls').value;
 
 var _fo, _sInitCls, _oSctCls;
 var _iInitCls = 0;
@@ -38,17 +40,17 @@ function initPrefs() {
 }
 
 function savePrefs() {
-	opener.setTheme(_sObjId, _oSctCls[_oSctCls.selectedIndex].value);
+	opener.setTheme(prefs._sObjId, _oSctCls[_oSctCls.selectedIndex].value);
 }
 
 function previewPrefs() {
-	opener.setTheme(_sObjId, _oSctCls[_oSctCls.selectedIndex].value);
+	opener.setTheme(prefs._sObjId, _oSctCls[_oSctCls.selectedIndex].value);
 }
 
 function exitPrefs() {
 	var sTheme = _oSctCls[_oSctCls.selectedIndex].value;
 	if (_sCls_ != sTheme) {
 		sTheme = _oSctCls[_iInitCls].value;
-		opener.setTheme(_sObjId, sTheme);
+		opener.setTheme(prefs._sObjId, sTheme);
 	}
 }

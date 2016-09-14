@@ -21,10 +21,9 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-$jsPrefs = "
-var _sObjId='" . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . "';
-var _sCls_=opener.document.getElementById(_sObjId+'_cls').value;";
-$jsFile = we_html_element::jsScript(JS_DIR . 'widgets/dlg_prefs.js');
+$jsFile = we_html_element::jsScript(JS_DIR . 'widgets/dlg_prefs.js', '', ['id' => 'loadVarDlg_prefs', 'data-prefs' => setDynamicVar([
+			'_sObjId' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)
+	])]);
 
 $oSctCls = new we_html_select([
 	"name" => "sct_cls",
@@ -43,4 +42,4 @@ $oSelCls = new we_html_table(['class' => 'default'], 1, 2);
 $oSelCls->setCol(0, 0, ["width" => 130, 'class' => 'defaultfont'], g_l('cockpit', '[bgcolor]'));
 $oSelCls->setCol(0, 1, null, $oSctCls->getHTML());
 
-return [$jsPrefs, $jsFile, $oSelCls];
+return [$jsFile, $oSelCls];

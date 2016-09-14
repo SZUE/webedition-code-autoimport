@@ -300,7 +300,7 @@ function saveNote() {
 
 function initDlg() {
 	_fo = document.forms[0];
-	_oCsv_ = opener.document.getElementById(_sObjId + '_csv');
+	_oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	var aCsv = _sInitCsv_.split(',');
 	_sInitTitle = WE().util.Base64.decode(aCsv[0]);
@@ -363,14 +363,14 @@ function preview() {
 	var sTitleEnc = WE().util.Base64.encode(getTitle());
 	var sTitleEsc = escape(sTitleEnc);
 	var sBit = getBitString();
-	opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, _sObjId);
+	opener.rpc(sTitleEsc.concat(',' + sBit), '', '', '', sTitleEsc, prefs._sObjId);
 	previewPrefs();
 	_lastPreviewCsv = sTitleEnc.concat(',' + sBit);
 }
 
 function exit_close() {
 	if (_lastPreviewCsv !== '' && (_sInitTitle != getTitle() || _sInitBin != getBitString())) {
-		opener.rpc(_sInitCsv_, '', '', '', escape(WE().util.Base64.encode(_sInitTitle)), _sObjId);
+		opener.rpc(_sInitCsv_, '', '', '', escape(WE().util.Base64.encode(_sInitTitle)), prefs._sObjId);
 	}
 	exitPrefs();
 	self.close();

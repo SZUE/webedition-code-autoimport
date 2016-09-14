@@ -28,7 +28,7 @@
 
 var code;
 var to;
-var isLodaed = false;
+var isLoaded = false;
 var c = 0;
 var wait_count = 0;
 var wait_retry = 40;

@@ -84,7 +84,7 @@ function preview() {
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
 	previewPrefs();
-	opener.rpc(sSel + sSwitch, (sCsv) ? sCsv : '', '', '', sTitle, _sObjId);
+	opener.rpc(sSel + sSwitch, (sCsv) ? sCsv : '', '', '', sTitle, prefs._sObjId);
 }
 
 function exit_close() {
@@ -95,7 +95,7 @@ function exit_close() {
 	var aInitCsv = _sInitCsv_.split(';');
 	var sInitTitle = WE().util.Base64.decode(aInitCsv[0]);
 	if ((sInitTitle !== '' && sInitTitle != sTitle) || aInitCsv[1] != sSel + sSwitch || aInitCsv[2] != sCsv) {
-		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, _sObjId);
+		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, preview._sObjId);
 	}
 	exitPrefs();
 	self.close();

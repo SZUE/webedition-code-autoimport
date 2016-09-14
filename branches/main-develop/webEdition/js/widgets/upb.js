@@ -30,7 +30,7 @@ var _sLastPrevCsv = '';
 
 function init() {
 	_fo = document.forms[0];
-	_oCsv_ = opener.document.getElementById(_sObjId + '_csv');
+	_oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	var sCsv = _oCsv_.value;
 	_sInitCsv_ = sCsv;
 	var oChbxType = _fo.elements.chbx_type;
@@ -63,7 +63,7 @@ function save() {
 	var sCsv = getBinary();
 	_oCsv_.value = sCsv;
 	if ((!_bPrev && _sInitCsv_ != sCsv) || (_bPrev && _sLastPrevCsv != sCsv)) {
-		opener.rpc(sCsv, '', '', '', '', _sObjId);
+		opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
 	}
 	previewPrefs();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -75,12 +75,12 @@ function preview() {
 	var sCsv = getBinary();
 	_sLastPrevCsv = sCsv;
 	previewPrefs();
-	opener.rpc(sCsv, '', '', '', '', _sObjId);
+	opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
 }
 
 function exit_close() {
 	if (_sInitCsv_ != getBinary() && _bPrev) {
-		opener.rpc(_sInitCsv_, '', '', '', '', _sObjId);
+		opener.rpc(_sInitCsv_, '', '', '', '', prefs._sObjId);
 	}
 	exitPrefs();
 	self.close();

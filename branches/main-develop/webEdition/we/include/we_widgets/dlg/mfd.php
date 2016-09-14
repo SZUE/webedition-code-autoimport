@@ -22,7 +22,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
-list($jsPrefs, $jsFile, $oSelCls) = include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
+list($jsFile, $oSelCls) = include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 we_html_tools::protect();
 
 list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(';', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
@@ -149,8 +149,7 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML('mfdProps', $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', $jsFile .
-	we_html_element::jsElement($jsPrefs . $jsCode) .
+	we_html_element::jsElement($jsCode) .
 	we_html_element::jsScript(JS_DIR . 'widgets/mfd.js'), we_html_element::htmlBody(
-		array(
-		"class" => "weDialogBody", "onload" => "init();WE().util.setIconOfDocClass(document,'mfdUIcon');"
-		), we_html_element::htmlForm("", $sTblWidget)));
+		["class" => "weDialogBody", "onload" => "init();WE().util.setIconOfDocClass(document,'mfdUIcon');"
+		], we_html_element::htmlForm("", $sTblWidget)));

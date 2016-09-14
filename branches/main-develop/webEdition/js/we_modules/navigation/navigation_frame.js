@@ -78,7 +78,7 @@ function fieldChooserBut(cmd) {
 }
 
 function categoriesEdit(size, elements, delBut) {
-	categories_edit = new multi_edit("categories", document.we_form, 0, delBut, size, false);
+	categories_edit = new (WE().util.multi_edit)("categories", document.we_form, 0, delBut, size, false);
 	categories_edit.addVariant();
 	document.we_form.CategoriesControl.value = categories_edit.name;
 	for (var i = 0; i < elements.length; i++) {

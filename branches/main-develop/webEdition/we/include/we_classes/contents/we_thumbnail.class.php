@@ -673,8 +673,10 @@ class we_thumbnail{
 	hochkomma: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_hochkomma]')) . '",
 	empty: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_empty]')) . '",
 	exists: "' . we_message_reporting::prepareMsgForJS(g_l('alert', '[thumbnail_exists]')) . '",
-	new: "' . g_l('thumbnails', '[new]') . '"
+	new: "' . g_l('thumbnails', '[new]') . '",
+	delete_prompt:"' . g_l('thumbnails', '[delete_prompt]') . '"
 };
 		';
 	}
+
 }
