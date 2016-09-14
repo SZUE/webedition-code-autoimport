@@ -38,7 +38,7 @@ $table = isset($table) ? $table : FILE_TABLE;
 		</div>
 		<?php
 		$Tree = new we_tree_main('webEdition.php', 'top', 'top', 'top.load');
-		echo $Tree->getHTMLContruct();
+		echo $Tree->getHTMLConstruct();
 		?>
 		<div id="bm_searchField">
 			<div id="infoField" class="defaultfont"></div>

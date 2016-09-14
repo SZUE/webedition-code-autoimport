@@ -20,9 +20,11 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 /* global top, WE */
-var loaded=0;
+
+var customer = WE().util.getDynamicVar(document, 'loadVarCustomer_property', 'data-customer');
+
+var loaded = 0;
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -112,10 +114,10 @@ function we_cmd() {
 			document.we_form.branch.value = args[1];
 			submitForm();
 			break;
-		/*case "show_search":
-			keyword = top.content.we_form_treefooter.keyword.value;
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 650, 600, true, true, true, false);
-			break;*/
+			/*case "show_search":
+			 keyword = top.content.we_form_treefooter.keyword.value;
+			 new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 650, 600, true, true, true, false);
+			 break;*/
 		case "show_customer_settings":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings", "customer_settings", -1, -1, 570, 270, true, true, true, false);
 			break;
@@ -149,4 +151,20 @@ function resetLogins(id) {
 		failure: function (o) {
 		}
 	});
+}
+
+function refreshForm() {
+	if (document.we_form.cmd.value != "home") {
+		we_cmd("switchPage", top.content.activ_tab);
+		top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=" + encodeURI(customer.username);
+	}
+}
+
+function submitForm(target, action, method, form) {
+	var f = form ? self.document.forms[form] : self.document.we_form;
+	f.target = target ? target : edbody;
+	f.action = action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer";
+	f.method = method ? method : "post";
+
+	f.submit();
 }

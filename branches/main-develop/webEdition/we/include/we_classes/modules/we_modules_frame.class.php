@@ -161,7 +161,7 @@ abstract class we_modules_frame{
 		return we_html_element::htmlDiv([
 				'id' => 'tree',
 				'class' => ($this->showTreeHeader ? ' withHeader' : '') . ($this->showTreeFooter ? ' withFooter' : '')
-				], $extraHead . $this->Tree->getHTMLContruct()
+				], $extraHead . $this->Tree->getHTMLConstruct()
 		);
 	}
 
