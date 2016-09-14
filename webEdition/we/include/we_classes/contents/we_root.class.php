@@ -759,7 +759,7 @@ abstract class we_root extends we_class{
 	}
 
 	public function getEditorBodyAttributes($editor = 0){
-		return '';
+		return [];
 	}
 
 	/** get the Path of the Parent-Object */

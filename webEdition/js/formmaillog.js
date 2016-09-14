@@ -23,23 +23,22 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function doUnload() {
-	WE().util.jsWindow.prototype.closeAll(window);
+function clearBlockLog() {
+	if (confirm(WE().consts.g_l.prefs.clear_log_question)) {
+		document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_block_log&clearlog=1";
+	}
 }
 
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	//var url = WE().util.getWe_cmdArgsUrl(args);
+function clearEntry(id, ip) {
+	var txt = WE().consts.g_l.prefs.clear_block_entry_question;
 
-	switch (args[0]) {
-		case "openOrder":
-			//TODO: check this adress: mit oder ohne tree? Bisher: left
-			if (top.content.doClick) {
-				top.content.doClick(args[1], args[2], args[3]);//TODO: check this adress
-			}
-			break;
-		default:
-			// not needed yet
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+	if (confirm(txt.replace(/%s/, ip))) {
+		document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_block_log&clearEntry=" + id;
+	}
+}
+
+function clearLog() {
+	if (confirm(WE().consts.g_l.prefs.clear_log_question)) {
+		document.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=show_formmail_log&clearlog=1";
 	}
 }

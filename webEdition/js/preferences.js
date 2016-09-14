@@ -520,12 +520,10 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_selector_document", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, false, true, true);
 			break;
 		case "show_formmail_log":
-			url = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/weFormmailLog.php";
-			new (WE().util.jsWindow)(this, url, "we_selector_document", -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(this, url, "we_log", -1, -1, 840, 400, true, false, true);
 			break;
 		case "show_formmail_block_log":
-			url = WE().consts.dirs.WE_INCLUDES_DIR + "we_editors/weFormmailBlockLog.php";
-			new (WE().util.jsWindow)(this, url, "we_selector_document", -1, -1, 840, 400, true, false, true);
+			new (WE().util.jsWindow)(this, url, "we_log", -1, -1, 840, 400, true, false, true);
 			break;
 		case "openColorChooser":
 			new (WE().util.jsWindow)(this, url, "we_colorChooser", -1, -1, 430, 370, true, true, true);

@@ -4,9 +4,9 @@
  * webEdition CMS
  *
  * webEdition CMS
- * $Rev: 12758 $
- * $Author: mokraemer $
- * $Date: 2016-09-12 13:43:21 +0200 (Mo, 12. Sep 2016) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify

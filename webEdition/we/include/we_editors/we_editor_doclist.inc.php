@@ -47,14 +47,13 @@ echo we_html_tools::getCalendarFiles() .
 		$headline = $doclistView->makeHeadLines($GLOBALS['we_doc']->Table);
 		$foundItems = (isset($_SESSION['weS']['weSearch']['foundItems'])) ? $_SESSION['weS']['weSearch']['foundItems'] : 0;
 
-		echo $doclistView->getHTMLforDoclist(array(
-			array('html' => $doclistView->getSearchDialog()),
-			array('html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems, we_search_view::SEARCH_DOCLIST) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($foundItems, we_search_view::SEARCH_DOCLIST, $GLOBALS['we_doc']->Table) . "</div>"),
-		)) .
-		we_html_element::htmlHiddens(array(
-			'obj' => 1,
+		echo $doclistView->getHTMLforDoclist([
+			['html' => $doclistView->getSearchDialog()],
+			['html' => '<div id="parametersTop_DoclistSearch">' . $doclistView->getSearchParameterTop($foundItems, we_search_view::SEARCH_DOCLIST) . '</div>' . $doclistView->tblList($content, $headline, "doclist") . "<div id='parametersBottom_DoclistSearch'>" . $doclistView->getSearchParameterBottom($foundItems, we_search_view::SEARCH_DOCLIST, $GLOBALS['we_doc']->Table) . "</div>"],
+		 ]) .
+		we_html_element::htmlHiddens(['obj' => 1,
 			'we_complete_request' => 1
-		));
+		 ]);
 		?>
 	</form>
 </body>

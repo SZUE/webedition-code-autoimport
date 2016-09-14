@@ -271,7 +271,9 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 		add_dictionary_question: "' . g_l('prefs', '[add_dictionary_question]') . '",
 		delete_recipient: "' . g_l('alert', '[delete_recipient]') . '",
 		recipient_new_name: "' . g_l('alert', '[recipient_new_name]') . '",
-		input_name: "' . g_l('alert', '[input_name]') . '"
+		input_name: "' . g_l('alert', '[input_name]') . '",
+		clear_block_entry_question:"' . g_l('prefs', '[clear_block_entry_question]') . '",
+		clear_log_question:"'.g_l('prefs', '[clear_log_question]').'",
 	};';
 	}
 

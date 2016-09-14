@@ -58,10 +58,10 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 
 echo '</head>
 <body class="weEditorBody" onunload="doUnload()">' .
- we_html_multiIconBox::getHTML('', array(
-	array('html' => $we_doc->getSearchDialog()),
-	array('html' => $we_doc->getSearch()),
-	)
+ we_html_multiIconBox::getHTML('', [
+	['html' => $we_doc->getSearchDialog()],
+	['html' => $we_doc->getSearch()],
+	]
 	, 30) .
  '</body>
 </html>';

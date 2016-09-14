@@ -4,9 +4,9 @@
  * webEdition CMS
  *
  * webEdition CMS
- * $Rev: 12736 $
- * $Author: mokraemer $
- * $Date: 2016-09-07 00:35:27 +0200 (Mi, 07. Sep 2016) $
+ * $Rev$
+ * $Author$
+ * $Date$
  *
  * This source is part of webEdition CMS. webEdition CMS is
  * free software; you can redistribute it and/or modify
@@ -23,7 +23,28 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var weTabs;
-function setFrameSize() {
+var weTabs = new (WE().layout.we_tabs)(document, window);
 
+function mark() {
+	var elem = document.getElementById("mark");
+	elem.style.display = "inline";
+}
+
+function unmark() {
+	var elem = document.getElementById("mark");
+	elem.style.display = "none";
+}
+
+function setTab(tab) {
+	switch (tab) {
+
+		// Add new tab handlers here
+
+		default: // just toggle content to show
+			parent.edbody.document.we_form.pnt.value = "edbody";
+			parent.edbody.document.we_form.tabnr.value = tab;
+			parent.edbody.submitForm();
+			break;
+	}
+	top.content.activ_tab = tab;
 }

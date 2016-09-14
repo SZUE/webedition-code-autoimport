@@ -64,43 +64,16 @@ abstract class we_tool_frames extends we_modules_frame{
 		$we_tabs = new we_tabs();
 		$we_tabs->addTab(g_l('tools', '[properties]'), false, "setTab(1);", ["id" => "tab_1"]);
 
-		$tabsHead = we_tabs::getHeader('
-function mark() {
-	var elem = document.getElementById("mark");
-	elem.style.display = "inline";
-}
-
-function unmark() {
-	var elem = document.getElementById("mark");
-	elem.style.display = "none";
-}
-
-function setTab(tab) {
-	switch (tab) {
-
-		// Add new tab handlers here
-
-		default: // just toggle content to show
-				parent.edbody.document.we_form.pnt.value = "edbody";
-				parent.edbody.document.we_form.tabnr.value = tab;
-				parent.edbody.submitForm();
-		break;
-	}
-	top.content.activ_tab=tab;
-}
-
-' . ($this->Model->ID ? '' : 'top.content.activ_tab=1;'));
-
 		/* $table = new we_html_table(array("width" => '100%', "class" => 'default'), 3, 1);
 
 		  $table->setCol(1, 0, array('class' => "small",'style'=>'p'), we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>')); */
 
-		$body = we_html_element::htmlBody(["id" => "eHeaderBody", "onload" => "document.getElementById('tab_'+top.content.activ_tab).className='tabActive';setFrameSize()", "onresize" => "setFrameSize()"], '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .
+		$body = we_html_element::htmlBody(["id" => "eHeaderBody", "onload" => ($this->Model->ID ? '' : 'top.content.activ_tab=1;')."document.getElementById('tab_'+top.content.activ_tab).className='tabActive';setFrameSize()", "onresize" => "setFrameSize()"], '<div id="main" ><div id="headrow">&nbsp;' . we_html_element::htmlB(g_l('tools', ($this->Model->IsFolder ? '[group]' : '[entry]')) . ':&nbsp;' . str_replace('&amp;', '&', $this->Model->Text) . '<div id="mark" style="display: none;">*</div>') . '</div>' .
 				$we_tabs->getHTML() .
 				'</div>'
 		);
 
-		return $this->getHTMLDocument($body, $tabsHead);
+		return $this->getHTMLDocument($body,we_html_element::cssLink(CSS_DIR . 'we_tab.css').  we_html_element::jsScript(WE_JS_MODULES_DIR.'we_tool_frames_tab.js'));
 	}
 
 	protected function getHTMLEditorBody(){
@@ -187,7 +160,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			$no = 'opener.top.content.hot=0;opener.top.content.we_cmd("' . we_base_request::_(we_base_request::RAW, 'delayCmd') . '","' . $dp . '");self.close();';
 			$cancel = 'self.close();';
 
-			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body class="weEditorBody" onBlur="self.focus()" onload="self.focus()">' .
+			return we_html_tools::getHtmlTop(''/* FIXME: missing title */, '', '', '', '<body class="weEditorBody" onblur="self.focus()" onload="self.focus()">' .
 					we_html_tools::htmlYesNoCancelDialog(g_l('tools', '[exit_doc_question]'), '<span class="fa-stack fa-lg" style="color:#F2F200;"><i class="fa fa-exclamation-triangle fa-stack-2x" ></i><i style="color:black;" class="fa fa-exclamation fa-stack-1x"></i></span>', "ja", "nein", "abbrechen", $yes, $no, $cancel) .
 					'</body>');
 		}

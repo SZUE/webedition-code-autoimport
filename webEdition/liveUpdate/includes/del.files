@@ -465,6 +465,8 @@ we/include/we_editors/we_fileupload.inc.php
 we/include/we_editors/we_file_locked.inc.php
 we/include/we_editors/we_editor_publish.inc.php
 we/include/we_editors/we_editPasswd.inc.php
+we/include/we_editors/weFormmailLog.php
+we/include/we_editors/weFormmailBlockLog.php
 we/include/we_editors/file_restricted_footer.inc.php
 we/include/we_editors/file_no_save_footer.inc.php
 we/include/we_editors/file_locked_footer.inc.php
@@ -783,6 +785,7 @@ js/utils/lib.js
 js/utils/dimension.js
 js/selectors/we_sselector_footer.js
 js/selectors/delete_selector.js
+js/seemode.js
 js/seeMode.php
 js/multiEditor/multiTabs.js
 js/messageConsoleView.js
