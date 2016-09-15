@@ -44,7 +44,7 @@ if($bTbTitel && $rssTitle){
 	}
 }
 $sTbPrefix = implode(' - ', $aLabelPrefix);
-$aLang = array($sTbPrefix, '');
+$aLang = [$sTbPrefix, ''];
 
 $oTblDiv = we_html_element::jsElement("
 window.addEventListener('load',

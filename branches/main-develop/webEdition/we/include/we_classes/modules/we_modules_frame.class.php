@@ -85,8 +85,6 @@ abstract class we_modules_frame{
 				return $this->getHTMLExitQuestion();
 			case 'treeheader':
 				return $this->getHTMLTreeHeader();
-			case 'treefooter':
-				return $this->getHTMLTreeFooter();
 			default:
 				$ret = (empty($GLOBALS['extraJS']) ?
 						'' :
@@ -102,6 +100,11 @@ abstract class we_modules_frame{
 		$this->setTreeWidthFromCookie();
 
 		$extraHead = $this->getJSCmdCode() .
+			//FIXME: throw some of these functions out again and use generic version of main-window functions
+			//FIXME: move this var to a generic place
+			we_html_element::jsElement('
+var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
+') . we_html_element::jsScript(JS_DIR . 'modules_tree.js') .
 			self::getJSToggleTreeCode($this->module) .
 			we_main_headermenu::css() .
 			we_base_menu::getJS() .
@@ -262,14 +265,6 @@ abstract class we_modules_frame{
 		} else {
 			$this->treeWidth = $tw;
 		}
-	}
-
-	static function getJSToggleTreeCode($module){
-		//FIXME: throw some of these functions out again and use generic version of main-window functions
-		//FIXME: move this var to a generic place
-		return we_html_element::jsElement('
-var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
-') . we_html_element::jsScript(JS_DIR . 'modules_tree.js');
 	}
 
 	protected function formFileChooser($width = '', $IDName = 'ParentID', $IDValue = '/', $cmd = '', $filter = ''){

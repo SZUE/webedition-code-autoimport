@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -21,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
 var _oCsv_;
 var _sInitCsv_;
@@ -53,7 +56,7 @@ function delUser(iUsrId) {
 	var sUsers = '';
 	var i;
 	if (iUsrId != -1) {
-		var aUsers = _sUsers.split(',');
+		var aUsers = widget.sUsers.split(',');
 		var iUsersLen = aUsers.length;
 		for (i = 0; i < iUsersLen; i++) {
 			if (aUsers[i] == iUsrId) {
@@ -77,13 +80,13 @@ function delUser(iUsrId) {
 
 function getCsv() {
 	return getBinary('type') + ';' + _oSctDate.selectedIndex + ';' + _oSctNumEntries.value +
-					';' + getBinary('display_opt') + ';' + _sUsers;
+					';' + getBinary('display_opt') + ';' + widget.sUsers;
 }
 
 function refresh(bRender) {
 	if (bRender)
 		_sLastPreviewCsv = getCsv();
-	opener.rpc(getBinary('type'), _oSctDate.selectedIndex, _oSctNumEntries.selectedIndex, getBinary('display_opt'), _sUsers, prefs._sObjId);
+	opener.rpc(getBinary('type'), _oSctDate.selectedIndex, _oSctNumEntries.selectedIndex, getBinary('display_opt'), widget.sUsers, prefs._sObjId);
 }
 
 function init() {
@@ -93,6 +96,7 @@ function init() {
 	_oSctDate = _fo.elements.sct_date;
 	_oSctNumEntries = _fo.elements.sct_amount_entries;
 	initPrefs();
+	WE().util.setIconOfDocClass(document, 'mfdUIcon');
 }
 
 function getBinary(postfix) {
@@ -107,7 +111,7 @@ function getBinary(postfix) {
 
 function addUserToField() {
 	var iNewUsrId = _fo.elements.UserIDTmp.value;
-	var aUsers = _sUsers.split(',');
+	var aUsers = widget.sUsers.split(',');
 	var iUsersLen = aUsers.length;
 	var bUsrExists = false;
 	for (var i = 0; i < iUsersLen; i++) {
@@ -119,7 +123,7 @@ function addUserToField() {
 	if (!bUsrExists) {//FIXME change this path!
 		_fo.action = '/webEdition/we/include/we_widgets/dlg/mfd.php?we_cmd[0]=' +
 						prefs._sObjId + '&we_cmd[1]=' + getBinary('type') + ';' + _oSctDate.selectedIndex + ';' +
-						_oSctNumEntries.selectedIndex + ';' + getBinary('display_opt') + ';' + _sUsers + ',' + iNewUsrId;
+						_oSctNumEntries.selectedIndex + ';' + getBinary('display_opt') + ';' + widget.sUsers + ',' + iNewUsrId;
 		_fo.method = 'post';
 		_fo.submit();
 	}

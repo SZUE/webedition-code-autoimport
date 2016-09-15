@@ -23,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
 var _oCsv_, _fo, _sCsv, _sInitCsv_, table, categories_edit, SelectedItems, _sInitTitle_;
 
@@ -175,6 +176,11 @@ function init(tab, title, sBinary, _sCsv) {
 	_sInitTitle_ = title;
 	_fo = document.forms[0];
 	initPrefs();
+	categories_edit = new (WE().util.multi_edit)("categories", document.we_form, 0, widget.cats.del, 390, false);
+	categories_edit.addVariant();
+	document.we_form.CategoriesControl.value = categories_edit.name;
+	categories_edit.showVariant(0);
+
 	_oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	_sInitTitle_ = opener.document.getElementById(prefs._sObjId + '_prefix').value;
@@ -200,6 +206,4 @@ function init(tab, title, sBinary, _sCsv) {
 	for (var i = 0; i < aCsvLen; i++) {
 		SelectedItems[tab][i] = aCsv[i];
 	}
-
-
 }
