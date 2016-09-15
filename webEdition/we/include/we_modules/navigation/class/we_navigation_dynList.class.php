@@ -28,8 +28,8 @@ abstract class we_navigation_dynList{
 		$select = array(
 			FILE_TABLE . '.ID',
 			FILE_TABLE . '.Text',
-			LINK_TABLE . '.Name as FieldName',
-			'IFNULL('.CONTENT_TABLE . '.Dat,'.CONTENT_TABLE.'.BDID) as FieldData'
+			LINK_TABLE . '.Name AS FieldName',
+			'IFNULL('.CONTENT_TABLE . '.Dat,'.CONTENT_TABLE.'.BDID) AS FieldData'
 		);
 
 		$fieldset = self::getDocData($select, $doctypeid, id_to_path($dirid), $categories, $catlogic, array(), array(), 0);
