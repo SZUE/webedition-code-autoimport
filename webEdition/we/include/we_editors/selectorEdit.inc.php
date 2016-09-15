@@ -21,10 +21,8 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-
 we_html_tools::protect(["BROWSE_SERVER"]);
-
-echo we_html_tools::getHtmlTop();
+$jsCmd = new we_base_jsCmd();
 
 $id = we_base_request::_(we_base_request::FILE, 'id');
 if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){
@@ -36,7 +34,8 @@ if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){
 	$id = str_replace('//', '/', $id);
 	$we_fileData = we_base_file::load($id);
 	if($we_fileData === false){
-		$we_alerttext = sprintf(g_l('alert', '[can_not_open_file]'), str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), 1);
+		$jsCmd->addCmd('msg', ['msg' => sprintf(g_l('alert', '[can_not_open_file]'), str_replace(str_replace("\\", "/", dirname($id)) . "/", "", $id), 1), 'prio' => we_message_reporting::WE_MESSAGE_ERROR]);
+		$jsCmd->addCmd('close');
 	}
 } else {
 	$we_fileData = "";
@@ -44,27 +43,11 @@ if(we_base_request::_(we_base_request::STRING, "cmd") === "save"){
 
 $buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:document.forms[0].submit();"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();"));
 $content = '<textarea name="editFile" id="editFile" style="width:540px;height:380px;overflow: auto;">' . oldHtmlspecialchars($we_fileData) . '</textarea>';
+
+echo we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds() .
+	we_html_element::jsScript(JS_DIR . 'selectorEdit.js', (isset($data) ? 'init();' : ''))
+);
 ?>
-<script><!--
-	function setSize() {
-		var ta = document.getElementById("editFile");
-		ta.style.width = (document.body.offsetWidth - 60) + "px";
-		ta.style.height = (document.body.offsetHeight - 118) + "px";
-	}
-<?php
-if(isset($we_alerttext)){
-	echo we_message_reporting::getShowMessageCall($we_alerttext, we_message_reporting::WE_MESSAGE_ERROR);
-	?>
-		self.close();
-<?php } ?>
-	self.focus();
-<?php if(isset($data) && (!isset($we_alerttext))){ ?>
-		opener.top.fscmd.selectDir();
-		self.close();
-<?php } ?>
-//-->
-</script>
-</head>
 <body class="weDialogBody" onresize="setSize()" style="width:100%; height:100%"><div style="text-align:center">
 		<form method="post">
 			<input type="hidden" name="cmd" value="save" />

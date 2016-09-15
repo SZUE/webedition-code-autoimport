@@ -22,74 +22,27 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 we_html_tools::protect();
-echo we_html_tools::getHtmlTop(g_l('global', '[select_color]')) .
- we_html_element::jsScript(JS_DIR . 'we_colors2.js');
 $isA = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 0);
+echo we_html_tools::getHtmlTop(g_l('global', '[select_color]'), '', '', we_html_element::jsScript(JS_DIR . 'we_colors2.js', '', ['id' => 'loadVarSelectorColor', 'data-selector' => setDynamicVar([
+			'isA' => $isA,
+			'cmd1' => we_base_request::_(we_base_request::RAW, 'we_cmd', 0, 1),
+			'cmd3' => we_base_request::_(we_base_request::JS, 'we_cmd', '', 3),
+	])])
+);
 ?>
-<script><!--
-
-	function setColor() {
-<?php if($isA){ ?>
-			opener.document.we_form.elements["<?= we_base_request::_(we_base_request::RAW, 'we_cmd', 0, 1); ?>"].value = document.we_form.colorvalue.value;
-
-	<?php
-	if(($js = we_base_request::_(we_base_request::JS, 'we_cmd', '', 3))){
-		echo $js;
-	} else {
-		?>
-				opener._EditorFrame.setEditorIsHot(true);
-				opener.we_cmd("reload_editpage");
-
-		<?php
-	}
-} else {
-	?>
-			window.returnValue = document.we_form.colorvalue.value;
-<?php } ?>
-		window.close();
-	}
-	//-->
-</script>
-</head>
-
 <body class="weDialogBody"<?= 'onload="init(' . ($isA ? '"' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2) . '"' : 'window.dialogArguments["bgcolor"]') . ')"'; ?>>
 	<form name="we_form" action="" onsubmit="<?php if(!$isA){ ?>setColor();<?php } ?>return
 			false;">
-				<?php
-					$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, ($isA ? "javascript:setColor();" : we_html_button::WE_FORM . ":we_form")), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close()"));
-					echo we_html_tools::htmlDialogLayout('<table class="default">
+<?php
+$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, ($isA ? "javascript:setColor();" : we_html_button::WE_FORM . ":we_form")), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:window.close()"));
+echo we_html_tools::htmlDialogLayout('<table class="default">
 	<tr>
-		<td><table class="colorTable" class="default">
-<script><!--
-var z=0;
-for ( col in we_color2 ){
-	if(z == 0){
-		document.writeln(\'<tr>\');
-	}
-
-document.writeln(\'<td style="background-color:\'+col+\'" onclick="selectColor(\\\'\'+col+\'\\\');" title="\'+we_color2[col]+\'" >&nbsp;</td>\');
-
-if(z==17){
-		document.writeln(\'</tr>\');
-		z = 0;
-	}else{
-		z++;
-	}
-}
-if(z != 0){
-	for(var i=z;i<18;i++){
-		document.writeln(\'<td></td>\');
-	}
-	document.writeln(\'</tr>\');
-}
-//->
-</script>
-		</table></td>
+		<td id="colorTableCont"></td>
 	</tr>
 	<tr><td style="padding-top:10px;">' . we_html_tools::htmlFormElementTable('<input type="text" name="colorvalue" class="defaultfont" style="width:150px" />', g_l('wysiwyg', '[color]')) . '</td></tr>
 </table>
 ', g_l('global', '[select_color]'), $buttons);
-					?>
+?>
 	</form>
 </body>
 

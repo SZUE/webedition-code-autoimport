@@ -1,3 +1,5 @@
+/* global WE */
+
 /**
  * webEdition CMS
  *
@@ -21,6 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var selector = WE().util.getDynamicVar(document, 'loadVarSelectorColor', 'data-selector');
 
 var we_color2 = {
 	"#000000": "#000000",
@@ -248,4 +251,45 @@ function selectColor(c) {
 function init(color) {
 	top.focus();
 	document.we_form.colorvalue.value = color;
+	var html = '<table class="colorTable" class="default" >';
+	var z = 0;
+	for (var col in we_color2) {
+		if (z === 0) {
+			html += '<tr>';
+		}
+
+		html += '<td style="background-color:' + col + '" onclick="selectColor(\'' + col + '\');" title="' + we_color2[col] + '" >&nbsp;</td>';
+
+		if (z === 17) {
+			html += '</tr>';
+			z = 0;
+		} else {
+			z++;
+		}
+	}
+	if (z !== 0) {
+		for (var i = z; i < 18; i++) {
+			html += '<td></td>';
+		}
+		html += '</tr>';
+	}
+
+	document.getElementById("colorTable").innerHTML = html;
 }
+
+function setColor() {
+	if (selector.isA) {
+		opener.document.we_form.elements[selector.cmd1].value = document.we_form.colorvalue.value;
+		//FIXME: eval
+		if (selector.cmd3) {
+			eval(selector.cmd3);
+		} else {
+			opener._EditorFrame.setEditorIsHot(true);
+			opener.we_cmd("reload_editpage");
+		}
+	} else {
+		window.returnValue = document.we_form.colorvalue.value;
+	}
+	window.close();
+}
+
