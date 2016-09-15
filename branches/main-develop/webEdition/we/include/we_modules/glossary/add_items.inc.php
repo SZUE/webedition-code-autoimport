@@ -69,8 +69,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 		$UserDict = WE_SPELLCHECKER_MODULE_PATH . '/dict/' . $_SESSION['user']['Username'] . '@' . $_SERVER['SERVER_NAME'] . '.dict';
 
-		$AppletCode = we_html_element::htmlApplet(array(
-				'name' => "spellchecker",
+		$AppletCode = we_html_element::htmlApplet(['name' => "spellchecker",
 				'code' => "LeSpellchecker.class",
 				'archive' => "lespellchecker.jar",
 				'codebase' => getServerUrl(true) . WE_SPELLCHECKER_MODULE_DIR,
@@ -78,7 +77,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 				'height' => 2,
 				'id' => "applet",
 				'style' => "visibility: hidden",
-				), '
+				], '
 <param name="code" value="LeSpellchecker.class"/>
 <param name="archive" value="lespellchecker.jar"/>
 <param name="type" value="application/x-java-applet;version=1.1"/>
@@ -128,10 +127,10 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		}
 
 		$Text = preg_replace("=<br(>|([\s/][^>]*)>)\r?\n?=i", "\n", $ReplBody);
-		$Text = str_replace(array("\r\n", "\n", "\""), array(' ', ' ', "\\\""), $Text);
+		$Text = str_replace(["\r\n", "\n", "\""], [' ', ' ', "\\\""], $Text);
 		$Text = preg_replace("=<br(>|([\s/][^>]*)>)\r?\n?=i", "\n", $Text);
-		$Text = str_replace(array("\r\n", "\n", "&nbsp;"), ' ', $Text);
-		$Text = preg_replace(array("/[\t]+/", "/[ ]+/"), " ", $Text);
+		$Text = str_replace(["\r\n", "\n", "&nbsp;"], ' ', $Text);
+		$Text = preg_replace(["/[\t]+/", "/[ ]+/"], " ", $Text);
 
 		$ExceptionListFilename = we_glossary_glossary::getExceptionFilename($Language);
 
@@ -157,7 +156,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 		<?php
 		foreach($List as $Key => $Value){
-			$Value['Text'] = str_replace(array("\r", "\n"), '', $Value['Text']);
+			$Value['Text'] = str_replace(["\r", "\n"], '', $Value['Text']);
 			$TextReplaced = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Value['Text'], '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}${3}', $Text);
 			$Replaced = (trim($TextReplaced) != trim($Text));
 			$Text = trim($TextReplaced);
@@ -167,7 +166,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 		}
 
 		foreach($ExceptionList as $Key => $Value){
-			$Value = str_replace(array("\r", "\n"), '', $Value);
+			$Value = str_replace(["\r", "\n"], '', $Value);
 			$Text = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Value, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}${3}', $Text);
 		}
 		?>
@@ -198,15 +197,14 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 			case 'prepare':
 
 				//FIXME: these values should be obtained from global settings
-				$Languages = array(
-					'de' => 'de',
+				$Languages = ['de' => 'de',
 					'en' => 'en',
 					'es' => 'es',
 					'fi' => 'fi',
 					'ru' => 'ru',
 					'nl' => 'nl',
 					'pl' => 'pl',
-				);
+				];
 
 				$Modes = [];
 				if((
@@ -374,15 +372,14 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 
 
 				<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post" target="glossarycheck"><?php
-		echo we_html_element::htmlHiddens(array(
-			'ItemsToPublish' => '',
-			'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
-			'we_cmd[1]' => 'finish',
-			'we_cmd[2]' => $Transaction,
-			($cmd3 ? 'we_cmd[3]' : '') => $cmd3
-		));
+					echo we_html_element::htmlHiddens(['ItemsToPublish' => '',
+						'we_cmd[0]' => we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0),
+						'we_cmd[1]' => 'finish',
+						'we_cmd[2]' => $Transaction,
+						($cmd3 ? 'we_cmd[3]' : '') => $cmd3
+					]);
 
-		$Content = '
+					$Content = '
 	<table style="width:650px;" class="default defaultfont">
 	<colgroup><col style="width:150px;"/><col style="width:140px;"/><col style="width:200px;"/><col style="width:100px;"/></colgroup>
 	<tr>
@@ -403,125 +400,124 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', 'frameset', 1)){
 	</table>';
 
 
-		// Only glossary check
-		if($cmd3 === "checkOnly"){
-			$CancelButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();", true, 120, 22, "", "", false, false);
-			$PublishButton = "";
+					// Only glossary check
+					if($cmd3 === "checkOnly"){
+						$CancelButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.close();", true, 120, 22, "", "", false, false);
+						$PublishButton = "";
 
-			// glossary check and publishing
-		} else {
-			$CancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();", true, 120, 22, "", "", false, false);
-			$PublishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", true, 120, 22, "", "", true, false);
-		}
-		$ExecuteButton = we_html_button::create_button('execute', "javascript:checkForm();", true, 120, 22, "", "", true, false);
+						// glossary check and publishing
+					} else {
+						$CancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();", true, 120, 22, "", "", false, false);
+						$PublishButton = we_html_button::create_button(we_html_button::PUBLISH, "javascript:top.we_save_document();", true, 120, 22, "", "", true, false);
+					}
+					$ExecuteButton = we_html_button::create_button('execute', "javascript:checkForm();", true, 120, 22, "", "", true, false);
 
 
-		$Buttons = we_html_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
-		if($cmd3 != "checkOnly"){
-			$Buttons .= we_html_element::jsElement("WE().layout.button.hide(document, 'publish');");
-		}
+					$Buttons = we_html_button::position_yes_no_cancel($PublishButton . $ExecuteButton, "", $CancelButton);
+					if($cmd3 != "checkOnly"){
+						$Buttons .= we_html_element::jsElement("WE().layout.button.hide(document, 'publish');");
+					}
 
-		$Parts = [];
-		$Part = array(
-			"headline" => "",
-			"html" => $Content,
-		);
-		$Parts[] = $Part;
+					$Parts = [
+						["headline" => "",
+							"html" => $Content,
+						]
+					];
 
-		echo we_html_multiIconBox::getHTML('weMultibox', $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
+					echo we_html_multiIconBox::getHTML('weMultibox', $Parts, 30, $Buttons, -1, '', '', false, g_l('modules_glossary', '[glossary_check]'));
 
 //
 // --> Finish Step
 //
-		break;
-	case 'finish':
-		$ClassName = $_SESSION['weS']['we_data'][$Transaction][0]['ClassName'];
+					break;
+				case 'finish':
+					$ClassName = $_SESSION['weS']['we_data'][$Transaction][0]['ClassName'];
 
-		$we_doc = new $ClassName();
-		$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$Transaction]);
+					$we_doc = new $ClassName();
+					$we_doc->we_initSessDat($_SESSION['weS']['we_data'][$Transaction]);
 
-		$Language = $we_doc->Language;
+					$Language = $we_doc->Language;
 
-		//
-		// --> Insert or correct needed items
-		//
+					//
+					// --> Insert or correct needed items
+					//
 
 	$AddJs = "";
-		$items = we_base_request::_(we_base_request::STRING, 'item');
-		if($items){
+					$items = we_base_request::_(we_base_request::STRING, 'item');
+					if($items){
 
-			foreach($items as $Key => $Entry){
-				switch($Entry['type']){
-					case 'exception':
-						we_glossary_glossary::addToException($Language, $Key);
-						break;
-					case '':
-					case 'ignore':
-						break;
-					case 'correct':
-						foreach($we_doc->elements as &$val){
-							if(isset($val['type']) && (
-								$val['type'] === 'txt' || $val['type'] === 'input'
-								)
-							){
-								$val['dat'] = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Key, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}' . $Entry['title'] . '${3}', $temp);
+						foreach($items as $Key => $Entry){
+							switch($Entry['type']){
+								case 'exception':
+									we_glossary_glossary::addToException($Language, $Key);
+									break;
+								case '':
+								case 'ignore':
+									break;
+								case 'correct':
+									foreach($we_doc->elements as &$val){
+										if(isset($val['type']) && (
+											$val['type'] === 'txt' || $val['type'] === 'input'
+											)
+										){
+											$val['dat'] = preg_replace('-(^|\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~])(' . preg_quote($Key, '-') . ')(\s|[!"#$%&\'()*+,\-./:;=?@[\\]^_`{\|}~]|$)-', '${1}' . $Entry['title'] . '${3}', $temp);
+										}
+									}
+									unset($val);
+									break;
+								case "dictionary":
+									$AddJs .= "AddWords += '" . addslashes($Key) . ",'\n";
+									break;
+								default:
+									$Glossary = new we_glossary_glossary();
+									$Glossary->Path = '/' . $Language . '/' . $Entry['type'] . '/' . $Key;
+									$Glossary->IsFolder = 0;
+									$Glossary->Text = $Key;
+									$Glossary->Type = $Entry['type'];
+									$Glossary->Language = $Language;
+									$Glossary->Title = isset($Entry['title']) ? $Entry['title'] : '';
+									$Glossary->setAttribute('lang', isset($Entry['lang']) ? $Entry['lang'] : '');
+									$Glossary->Published = time();
+
+									if($Glossary->pathExists($Glossary->Path)){
+										$ID = $Glossary->getIDByPath($Glossary->Path);
+										$Glossary->ID = $ID;
+									}
+
+									$Glossary->save();
+									unset($Glossary);
 							}
 						}
-						unset($val);
-						break;
-					case "dictionary":
-						$AddJs .= "AddWords += '" . addslashes($Key) . ",'\n";
-						break;
-					default:
-						$Glossary = new we_glossary_glossary();
-						$Glossary->Path = '/' . $Language . '/' . $Entry['type'] . '/' . $Key;
-						$Glossary->IsFolder = 0;
-						$Glossary->Text = $Key;
-						$Glossary->Type = $Entry['type'];
-						$Glossary->Language = $Language;
-						$Glossary->Title = isset($Entry['title']) ? $Entry['title'] : '';
-						$Glossary->setAttribute('lang', isset($Entry['lang']) ? $Entry['lang'] : '');
-						$Glossary->Published = time();
+					}
 
-						if($Glossary->pathExists($Glossary->Path)){
-							$ID = $Glossary->getIDByPath($Glossary->Path);
-							$Glossary->ID = $ID;
-						}
+					$we_doc->saveinSession($_SESSION['weS']['we_data'][$Transaction]);
 
-						$Glossary->save();
-						unset($Glossary);
-				}
-			}
-		}
-
-		$we_doc->saveinSession($_SESSION['weS']['we_data'][$Transaction]);
-
-		//
-		// --> Actualize to Cache
-		//
+					//
+					// --> Actualize to Cache
+					//
 
 	$Cache = new we_glossary_cache($Language);
-		$Cache->write();
-		unset($Cache);
+					$Cache->write();
+					unset($Cache);
 
-		echo we_html_element::jsElement('
+					echo we_html_element::jsElement('
 top.we_reloadEditPage();
 var AddWords = "";
 ' . $AddJs . '
 top.add();' .
-			($cmd3 != 'checkOnly' ? "top.we_save_document();" : '') .
-			we_message_reporting::getShowMessageCall(
-				g_l('modules_glossary', ($cmd4 === 'checkOnly' ?
-						'[check_successful]' :
-						// glossary check with publishing
-						'[check_successful_and_publish]')), we_message_reporting::WE_MESSAGE_NOTICE, false, true) .
-			"top.close();");
-		?>
+						($cmd3 != 'checkOnly' ? "top.we_save_document();" : '') .
+						we_message_reporting::getShowMessageCall(
+							g_l('modules_glossary', ($cmd4 === 'checkOnly' ?
+									'[check_successful]' :
+									// glossary check with publishing
+									'[check_successful_and_publish]')), we_message_reporting::WE_MESSAGE_NOTICE, false, true) .
+						"top.close();");
+					?>
 					</head>
 					<body class="weDialogBody">
 						<form name="we_form" action="<?= WEBEDITION_DIR; ?>we_cmd.php" method="post"><?php
-	}
-?>
+					}
+					?>
 				</form>
 			</body>
 

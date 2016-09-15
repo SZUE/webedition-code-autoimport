@@ -31,13 +31,13 @@ function doClick(id, ct, indb) {
 	if (ct === 1) {
 		if (wasdblclick) {
 			top.fscmd.selectDir(id);
-			if (top.filter !== "folder" && top.filter !== "filefolder")
+			if (top.fileSelect.data.filter !== "folder" && top.fileSelect.data.filter !== "filefolder")
 				top.fscmd.selectFile("");
 			setTimeout(function () {
 				wasdblclick = false;
 			}, 400);
 		} else {
-			if ((top.filter === "folder" || top.filter === "filefolder") && (!indb)) {
+			if ((top.fileSelect.data.filter === "folder" || top.fileSelect.data.filter === "filefolder") && (!indb)) {
 				top.fscmd.selectFile(id);
 			}
 		}
@@ -52,9 +52,9 @@ function doClick(id, ct, indb) {
 }
 
 function doSelectFolder(entry, indb) {
-	switch (top.filter) {
+	switch (top.fileSelect.data.filter) {
 		case "all_Types":
-			if (!top.browseServer) {
+			if (!top.fileSelect.data.browseServer) {
 				break;
 			}
 			/* falls through */
@@ -68,7 +68,7 @@ function doSelectFolder(entry, indb) {
 }
 
 function clickEdit(dir) {
-	switch (top.filter) {
+	switch (top.fileSelect.data.filter) {
 		case "folder":
 		case "filefolder":
 			break;

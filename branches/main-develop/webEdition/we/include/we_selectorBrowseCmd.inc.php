@@ -133,7 +133,7 @@ selectOwn=' . intval($selectOwn) . ';
 					echo we_message_reporting::getShowMessageCall($we_responseText, we_message_reporting::WE_MESSAGE_ERROR);
 				}
 			}
-			echo "drawDir(top.fileSelect.data.currentDir);selectFile(top.currentName);";
+			echo "drawDir(top.fileSelect.data.currentDir);selectFile(top.fileSelect.data.currentName);";
 			break;
 		case "delete_file":
 			if(!($fid = we_base_request::_(we_base_request::FILE, "fid"))){

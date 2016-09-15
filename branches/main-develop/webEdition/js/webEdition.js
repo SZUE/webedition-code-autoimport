@@ -1205,6 +1205,11 @@ function we_cmd_base(args, url) {
 				setTimeout(we_cmd, 500, "setTab", args[1]);
 			}
 			break;
+		case "revert_published_question":
+			if (confirm(WE().consts.g_l.alert.revert_publish_question)) {
+				top.we_cmd("revert_published");
+			}
+			break;
 		case "update_image":
 		case "update_file":
 		case "copyDocument":
