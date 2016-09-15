@@ -271,7 +271,7 @@ if($ok){
 		$type = we_base_link::TYPE_MAIL;
 	} else {
 		$link = (we_unserialize($we_doc->getElement($name))? :
-						array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
+				array('ctype' => we_base_link::CONTENT_TEXT, 'type' => we_base_link::TYPE_INT, 'href' => we_base_link::EMPTY_EXT, 'text' => g_l('global', '[new_link]')));
 		$href = isset($link['href']) ? $link['href'] : '';
 		if($href && strpos($href, we_base_link::TYPE_MAIL_PREFIX) === 0){
 			$emaillink = substr($href, strlen(we_base_link::TYPE_MAIL_PREFIX));
@@ -334,57 +334,41 @@ if($ok){
 	$src_int = $img_id ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($img_id)) : '';
 	$ctype = isset($link['ctype']) ? $link['ctype'] : '';
 }
-
-echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getElement('Charset')) .
- weSuggest::getYuiFiles() .
- we_html_element::jsScript(JS_DIR . 'linklistedit.js');
-?>
-<script><!--
-
-<?php
 $trans = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
 
 $cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $name = we_base_request::_(we_base_request::STRING, 'name', $name);
 
 if($ok){
-	if($cmd === "edit_link_at_class"){
-		$_SESSION['weS']['WE_LINK'] = $link;
-		//FIXME: we_field XSS
-		?>
-			opener.setScrollTo();
-			opener.we_cmd("object_change_link_at_class", "<?= $trans; ?>", "<?= we_base_request::_(we_base_request::STRING, "we_field"); ?>", "<?= $name; ?>");
-			top.close();
-		<?php
-	} else if($cmd === "edit_link_at_object"){
-		$_SESSION['weS']['WE_LINK'] = array_filter($link);
-		?>
-			opener.setScrollTo();
-			opener.we_cmd("object_change_link_at_object", "<?= $trans; ?>", "link_<?= $name; ?>");
-			top.close();
-		<?php
-	} else if(!empty($linklist)){
-		$_SESSION['weS']["WE_LINKLIST"] = $linklist;
-		?>
-			opener.setScrollTo();
-			opener.we_cmd("change_linklist", "<?= $name; ?>", "");
-			top.close();
-			top.close();
-		<?php
-	} else if(!empty($link)){
-		$_SESSION['weS']['WE_LINK'] = array_filter($link);
-		?>
-			opener.setScrollTo();
-			opener.we_cmd("change_link", "<?= $name; ?>", "");
-			top.close();
-			top.close();
-		<?php
+	switch($cmd){
+		case "edit_link_at_class":
+			$_SESSION['weS']['WE_LINK'] = $link;
+			//FIXME: we_field XSS
+			break;
+		case "edit_link_at_object":
+			$_SESSION['weS']['WE_LINK'] = array_filter($link);
+			break;
+		default:
+			if(!empty($linklist)){
+				$_SESSION['weS']["WE_LINKLIST"] = $linklist;
+			} else if(!empty($link)){
+				$_SESSION['weS']['WE_LINK'] = array_filter($link);
+			}
 	}
 }
+
+echo we_html_tools::getHtmlTop(g_l('linklistEdit', '[edit_link]'), $we_doc->getElement('Charset'), '', weSuggest::getYuiFiles() .
+	we_html_element::jsScript(JS_DIR . 'linklistedit.js', '', ['id' => 'loadVarLinklistedit', 'data-linklist' => setDynamicVar([
+			'ok' => $ok,
+			'cmd' => $cmd,
+			'trans' => $trans,
+			'name' => $name,
+			'we_field' => we_base_request::_(we_base_request::STRING, "we_field"),
+			'emptyLinkList' => empty($linklist),
+			'emptyLink' => empty($link)
+	])])
+);
 ?>
-//-->
-</script>
-</head>
 
 <body class="weDialogBody" onload="self.focus();" style="overflow:hidden;">
 	<?php
@@ -550,9 +534,8 @@ if($ok){
 </table>';
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit()"), null, we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close()"));
 
-		$parts = array(
-			array('headline' => 'URL',
-				'html' => '
+		$parts = [array('headline' => 'URL',
+			'html' => '
 <table class="default">
 	<tr>
 		<td>' . $select_type . '</td>
@@ -572,9 +555,9 @@ if($ok){
 	</tr>
 ' : '') . '
 </table>',
-				'space' => we_html_multiIconBox::SPACE_MED2,
-				'noline' => 1),
-			array('headline' => g_l('global', '[content]'),
+			'space' => we_html_multiIconBox::SPACE_MED2,
+			'noline' => 1),
+			['headline' => g_l('global', '[content]'),
 				'html' => '
 <table class="default">
 	<tr><td>' . $content_select . '</td></tr>
@@ -591,24 +574,24 @@ if($ok){
 		<td style="padding-top:1em;">' . $imgProps . '</td>
 	</tr>
 </table><div></div>',
-				'space' => we_html_multiIconBox::SPACE_MED2),
-			array('headline' => g_l('linklistEdit', '[link_anchor]'),
+				'space' => we_html_multiIconBox::SPACE_MED2],
+			['headline' => g_l('linklistEdit', '[link_anchor]'),
 				'html' => $anchor,
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'noline' => 1),
-			array('headline' => g_l('linklistEdit', '[link_params]'),
+				'noline' => 1],
+			['headline' => g_l('linklistEdit', '[link_params]'),
 				'html' => $params,
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'noline' => 1),
+				'noline' => 1],
 			array('headline' => g_l('linklistEdit', '[link_target]'),
 				'html' => $ctarget,
 				'space' => we_html_multiIconBox::SPACE_MED2)
-		);
+		];
 
 
 		if(permissionhandler::hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS")){
 			//   start of accessible parameters
-			$parts[] = array('headline' => g_l('linklistEdit', '[language]'),
+			$parts[] = ['headline' => g_l('linklistEdit', '[language]'),
 				'html' => '
 <table class="default">
 	<tr>
@@ -617,14 +600,14 @@ if($ok){
 	</tr>
 </table>',
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'noline' => 1);
+				'noline' => 1];
 
-			$parts[] = array('headline' => g_l('linklistEdit', '[title]'),
+			$parts[] = ['headline' => g_l('linklistEdit', '[title]'),
 				'html' => $title,
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'noline' => 1);
+				'noline' => 1];
 
-			$parts[] = array('headline' => g_l('linklistEdit', '[keyboard]'),
+			$parts[] = ['headline' => g_l('linklistEdit', '[keyboard]'),
 				'html' => '
 <table class="default">
 	<tr>
@@ -637,7 +620,7 @@ if($ok){
 	</tr>
 </table>',
 				'space' => we_html_multiIconBox::SPACE_MED2,
-				'noline' => 1);
+				'noline' => 1];
 
 			$parts[] = array('headline' => g_l('wysiwyg', '[relation]'),
 				'html' => '<span class="default" style="margin-right:20px;">' . $relfield . '</span>' . $revfield,
@@ -682,6 +665,6 @@ if($ok){
 
 </html>
 <?php
-if(!we_base_request::_(we_base_request::BOOL, 'ok')){
+if(!$ok){
 	$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 }

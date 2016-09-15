@@ -85,9 +85,6 @@ function printFooterTable($ret, $filter, $currentName){
 }
 
 function printFrameSet(){
-	echo we_html_tools::getHtmlTop('', '', 'frameset');
-
-
 	$docroot = rtrim($_SERVER['DOCUMENT_ROOT'], '/');
 	$cmd1 = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 
@@ -111,52 +108,38 @@ function printFrameSet(){
 
 	$rootDir = we_base_request::_(we_base_request::FILE, 'we_cmd', '', 5);
 	$selectOwn = we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 6);
-	?>
-	<script><!--
-		var fileSelect = [
-						options:[
-						],
-						data:[
-										currentType:"<?= ($filter == we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : ''; ?>",
-										currentDir:"<?= str_replace($rootDir, '', $currentDir); ?>",
-										currentID:"<?= $currentID; ?>",
-						],
-						click:[
-							oldID = 0,
-							]
-		];
-		var rootDir = "<?= $rootDir; ?>";
-		var currentName = "<?= $currentName; ?>";
-		var currentFilter = "<?= str_replace(' ', '%20', g_l('contentTypes', '[' . $filter . ']', true) !== false ? g_l('contentTypes', '[' . $filter . ']') : ''); ?>";
-		var filter = '<?= $filter; ?>';
-		var browseServer = <?= $cmd1 ? 'false' : 'true'; ?>
 
-		var sitepath = "<?= $docroot; ?>";
-		function exit_close() {
-			if (!browseServer) {
-				var foo = (!top.fileSelect.data.currentID || (top.fileSelect.data.currentID === sitepath) ? "/" : top.fileSelect.data.currentID.substring(sitepath.length));
-
-				opener.document.we_form.elements[<?= $cmd1? : 'x'; ?>].value = foo;
-			}
-	<?= we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4); ?>;
-			close();
-		}
-
-		//-->
-	</script>
-	<?=
-	we_html_element::cssLink(CSS_DIR . 'selectors.css') .
-	we_html_element::cssElement('
+	echo we_html_tools::getHtmlTop('', '', 'frameset', we_html_element::cssLink(CSS_DIR . 'selectors.css') .
+		we_html_element::cssElement('
 #fsfooter{
 	 bottom:0px;
 }
 ') .
-	we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_header.js');
+		we_html_element::jsScript(JS_DIR . 'selectors/we_sselector_header.js', '', ['id' => 'loadVarSelectors', 'data-selector' => setDynamicVar([
+				'options' => [
+				],
+				'data' => [
+					'currentType' => ($filter == we_base_ContentTypes::FOLDER) ? we_base_ContentTypes::FOLDER : '',
+					'currentDir' => str_replace($rootDir, '', $currentDir),
+					'currentID' => $currentID,
+					'rootDir' => $rootDir,
+					'currentName' => $currentName,
+					'currentFilter' => str_replace(' ', '%20', g_l('contentTypes', '[' . $filter . ']', true) !== false ? g_l('contentTypes', '[' . $filter . ']') : ''),
+					'browseServer' => $cmd1 ? false : true,
+					'cmd1' => $cmd1,
+					'cmd4' => we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4),
+					'sitepath' => $docroot,
+					'filter' => $filter
+				],
+				'click' => [
+					'oldID ' => 0,
+				]
+		])])
+	);
 	?>
-	</head>
 	<body onload="setLookin();
-				top.fscmd.selectDir();" onunload="doUnload();">
-					<?=
+			top.fscmd.selectDir();" onunload="doUnload();">
+				<?=
 					we_html_element::htmlDiv(['id' => 'fsheader'], printHeaderHTML(($cmd1 ? 1 : 0))) .
 					we_html_element::htmlIFrame('fsbody', 'about:blank', '', '', '', true) .
 					we_html_element::htmlDiv(['id' => 'fsfooter'], printFooterTable(($cmd1 ? 1 : 0), $filter, $currentName)) .

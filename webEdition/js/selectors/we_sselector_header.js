@@ -23,6 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 WE().util.loadConsts("g_l.fileselector");
+var fileSelect = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-selector');
+
 
 var name_ord = 0;
 var type_ord = 0;
@@ -101,7 +103,7 @@ function setLookin() {
 			c++;
 		}
 	}
-	foo = top.rootDir.split("/");
+	foo = top.fileSelect.data.rootDir.split("/");
 	root = "/";
 	for (j = 0; j < foo.length; j++) {
 		if (foo[j] !== "") {
@@ -135,8 +137,8 @@ function editFile() {
 	if (!top.dirsel) {
 		var a = document.getElementsByName("fname")[0];
 		if ((top.fileSelect.data.currentID !== "") && (a.value !== "")) {
-			if (a.value != top.currentName) {
-				top.fileSelect.data.currentID = top.sitepath + top.rootDir + top.fileSelect.data.currentDir + "/" + a.value;
+			if (a.value != top.fileSelect.data.currentName) {
+				top.fileSelect.data.currentID = top.fileSelect.data.sitepath + top.fileSelect.data.rootDir + top.fileSelect.data.currentDir + "/" + a.value;
 			}
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=selectorEdit&id=" + top.fileSelect.data.currentID;
 			new (WE().util.jsWindow)(window, url, "we_fseditFile", -1, -1, 600, 500, true, false, true, true);
@@ -150,4 +152,16 @@ function editFile() {
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
+}
+
+function exit_close() {
+	if (!top.fileSelect.data.browseServer) {
+		var foo = (!top.fileSelect.data.currentID || (top.fileSelect.data.currentID === fileSelect.data.sitepath) ? "/" : top.fileSelect.data.currentID.substring(fileSelect.data.sitepath.length));
+		if (top.fileSelect.data.cmd1) {
+			opener.document.we_form.elements[top.fileSelect.data.cmd1].value = foo;
+		}
+	}
+	//FIXME:eval
+	eval(top.fileSelect.data.cmd4);
+	close();
 }

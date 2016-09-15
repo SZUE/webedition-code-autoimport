@@ -25,12 +25,6 @@ echo we_html_tools::getHtmlTop();
 $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_base_request::_(we_base_request::TRANSACTION, 'we_transaction'), 2);
 ?>
 <script><!--
-	function revertToPublished() {
-		if (confirm("<?= addslashes(g_l('weEditorInfo', '[revert_publish_question]')); ?>")) {
-			top.we_cmd("revert_published");
-		}
-	}
-
 <?php if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'revert_published'){ ?>
 		var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction("<?= $we_transaction; ?>");
 		_EditorFrame.setEditorIsHot(false);
@@ -55,14 +49,12 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 <div style="margin-bottom:10px;">' . round(($fs / 1024), 2) . "&nbsp;KB&nbsp;(" . $fs . "&nbsp;Byte)" . '</div>' :
 				'');
 
-		$parts = array(
-			array(
-				'headline' => '',
-				'html' => $html,
-				'space' => we_html_multiIconBox::SPACE_MED2,
-				'iconX' => we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $GLOBALS['we_doc']->ContentType . '",true,"' . (isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : '') . '"))')
-			)
-		);
+		$parts = [['headline' => '',
+			'html' => $html,
+			'space' => we_html_multiIconBox::SPACE_MED2,
+			'iconX' => we_html_element::jsElement('document.write(WE().util.getTreeIcon("' . $GLOBALS['we_doc']->ContentType . '",true,"' . (isset($GLOBALS['we_doc']->Extension) ? $GLOBALS['we_doc']->Extension : '') . '"))')
+			]
+		];
 
 		$html = '
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[creation_date]') . '</div>
@@ -77,12 +69,12 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 			($GLOBALS['we_doc']->ModifierID && ($name = f('SELECT CONCAT(First," ",Second," (",username,")") AS name FROM ' . USER_TABLE . ' WHERE ID=' . intval($GLOBALS['we_doc']->ModifierID))) ?
 				'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('modules_users', '[changed_by]') . '</div>
 <div style="margin-bottom:10px;">' . $name . '</div>' .
-				(in_array($GLOBALS['we_doc']->ContentType, array(we_base_ContentTypes::HTML, we_base_ContentTypes::WEDOCUMENT)) ?
+				(in_array($GLOBALS['we_doc']->ContentType, [we_base_ContentTypes::HTML, we_base_ContentTypes::WEDOCUMENT]) ?
 					'<div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[lastLive]') . '</div>' .
 					'<div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->Published ? date(g_l('weEditorInfo', '[date_format]'), $GLOBALS['we_doc']->Published) : "-") . '</div>' :
 					'') .
-				(!in_array($we_doc->Table, array(TEMPLATES_TABLE, VFILE_TABLE)) && $GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER && $GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published ?
-					'<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', 'javascript:revertToPublished();', true, 280) . '</div>' :
+				(!in_array($we_doc->Table, [TEMPLATES_TABLE, VFILE_TABLE]) && $GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER && $GLOBALS['we_doc']->Published && $GLOBALS['we_doc']->ModDate > $GLOBALS['we_doc']->Published ?
+					'<div style="margin-bottom:10px;">' . we_html_button::create_button('revert_published', "javascript:top.we_cmd('revert_published_question');", true, 280) . '</div>' :
 					'') :
 				'');
 
@@ -132,47 +124,42 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 <div class="weMultiIconBoxHeadline" style="padding-bottom:5px;">' . g_l('weEditorInfo', '[http_path]') . '</div>
 <div style="margin-bottom:10px;">' . ($GLOBALS['we_doc']->ID == 0 || !$published ? '-' : ($showlink ? '<a href="' . $http . '" target="_blank" title="' . oldHtmlspecialchars($http) . '">' : '') . we_base_util::shortenPath($http, 74) . ($showlink ? '</a>' : '')) . '</div>';
 
-					$parts[] = array(
-						'headline' => '',
+					$parts[] = ['headline' => '',
 						'html' => $html,
 						'space' => we_html_multiIconBox::SPACE_MED2,
 						'icon' => 'path.gif'
-					);
+					];
 			}
 
 			if(isset($anzeige)){
-				$parts[] = array(
-					'headline' => g_l('modules_workflow', '[workflow]'),
+				$parts[] = ['headline' => g_l('modules_workflow', '[workflow]'),
 					'html' => $anzeige,
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
 					'icon' => 'workflow.gif'
-				);
+				];
 			}
 
 			switch($GLOBALS['we_doc']->ContentType){
 				case we_base_ContentTypes::TEMPLATE:
 					list($cnt, $select) = $GLOBALS['we_doc']->formTemplateDocuments();
-					$parts[] = array(
-						'icon' => 'doc.gif',
+					$parts[] = ['icon' => 'doc.gif',
 						'headline' => g_l('weClass', '[documents]') . ($cnt ? ' (' . $cnt . ')' : ''),
 						'html' => $select,
 						'space' => we_html_multiIconBox::SPACE_MED2
-					);
+					];
 					list($cnt, $select) = $GLOBALS['we_doc']->formTemplatesUsed();
-					$parts[] = array(
-						'icon' => 'doc.gif',
+					$parts[] = ['icon' => 'doc.gif',
 						'headline' => g_l('weClass', '[usedTemplates]') . ($cnt ? ' (' . $cnt . ')' : ''),
 						'html' => $select,
 						'space' => we_html_multiIconBox::SPACE_MED2
-					);
+					];
 					list($cnt, $select) = $GLOBALS['we_doc']->formTemplateUsedByTemplate();
-					$parts[] = array(
-						'icon' => 'doc.gif',
+					$parts[] = ['icon' => 'doc.gif',
 						'headline' => g_l('weClass', '[usedByTemplates]') . ($cnt ? ' (' . $cnt . ')' : ''),
 						'html' => $select,
 						'space' => we_html_multiIconBox::SPACE_MED2
-					);
+					];
 					break;
 				case we_base_ContentTypes::IMAGE:
 					$metaData = $GLOBALS['we_doc']->getMetaData();
