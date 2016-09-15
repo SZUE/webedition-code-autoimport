@@ -23,6 +23,20 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var dd = {
+	dataTransfer: {
+		text: ''
+	}
+};
+if (self.location !== top.location) {
+	top.location = self.location;
+}
+
+var busy = 0;
+var hot = 0;
+var last = 0;
+var lastUsedLoadFrame = null;
+var nlHTMLMail = false;
 
 var WebEdition = {
 //all constants in WE used in JS
@@ -31,7 +45,8 @@ var WebEdition = {
 		sidebar: null,
 		cockpitFrame: null,
 		windows: [],
-		focusedWindow: null
+		focusedWindow: null,
+		browserwind: null,
 	},
 	handler: {
 		errorHandler: errorHandler,
@@ -776,7 +791,7 @@ function openBrowser(url) {
 		url = "/";
 	}
 	try {
-		browserwind = window.open(WE().consts.dirs.WEBEDITION_DIR + "openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
+		WE().layout.browserwind = window.open(WE().consts.dirs.WEBEDITION_DIR + "openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
 	} catch (e) {
 		top.we_showMessage(WE().consts.g_l.alert.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}
@@ -836,8 +851,8 @@ function doUnloadSEEM(whichWindow) {
 	}
 	try {
 		WE().util.jsWindow.prototype.closeAll();
-		if (browserwind) {
-			browserwind.close();
+		if (WE().layout.browserwind) {
+			WE().layout.browserwind.close();
 		}
 	} catch (e) {
 
@@ -874,8 +889,8 @@ function doUnloadNormal(whichWindow) {
 
 		try {
 			WE().util.jsWindow.prototype.closeAll();
-			if (browserwind) {
-				browserwind.close();
+			if (WE().layout.browserwind) {
+				WE().layout.browserwind.close();
 			}
 		} catch (e) {
 		}
@@ -1470,7 +1485,7 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, url, "we_navieditor", -1, -1, 400, 360, true, true, true, true);
 			break;
 		case "initPlugin":
-			weplugin_wait = new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
+			WE().layout.weplugin_wait = new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
 			break;
 		case "edit_settings_editor":
 			if (top.plugin.editSettings) {

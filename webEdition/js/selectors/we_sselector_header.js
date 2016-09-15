@@ -25,7 +25,6 @@
 WE().util.loadConsts("g_l.fileselector");
 var fileSelect = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-selector');
 
-
 var name_ord = 0;
 var type_ord = 0;
 var date_ord = 0;
@@ -164,4 +163,9 @@ function exit_close() {
 	//FIXME:eval
 	eval(top.fileSelect.data.cmd4);
 	close();
+}
+
+function init() {
+	setLookin();
+	top.fscmd.selectDir();
 }

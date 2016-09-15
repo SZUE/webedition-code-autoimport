@@ -41,59 +41,18 @@ $newUrl = $arr['scheme'] . '://' . $arr['host'] . ( isset($arr['port']) ? (':' .
 
 
 //	we also need some functionality here to check if the location of the doc was cahnged
-echo we_html_tools::getHtmlTop('', '', 'frameset');
+echo we_html_tools::getHtmlTop('', '', 'frameset', we_html_element::jsScript(JS_DIR . 'openExtDoc_frameset.js', '', ['id' => 'loadVarExtDoc', 'data-extdoc' => setDynamicVar([
+			'frameData' => [
+				'EditorType' => "none_webedition",
+				'EditorDocumentText' => str_replace('"', '', $arr["path"]),
+				'EditorDocumentPath' => str_replace('"', '', $newUrl),
+				'EditorContentType' => "none_webedition",
+				'EditorUrl' => str_replace('"', '', $text),
+				'EditorDocumentParameters' => str_replace('"', '', $param),
+			]
+	])])
+);
 ?>
-<script><!--
-	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(window.name);
-
-	_EditorFrame.initEditorFrameData({
-		EditorType: "none_webedition",
-		EditorDocumentText: "<?= str_replace('"', '', $arr["path"]); ?>",
-		EditorDocumentPath: "<?= str_replace('"', '', $newUrl); ?>",
-		EditorContentType: "none_webedition",
-		EditorUrl: "<?= str_replace('"', '', $text); ?>",
-		EditorDocumentParameters: "<?= str_replace('"', '', $param); ?>"
-	});
-
-	function checkDocument() {
-
-		loc = null;
-
-		try {
-			loc = extDocContent.location;
-		} catch (e) {
-
-		}
-
-		_EditorFrame.setEditorIsHot(false);
-
-		if (loc) {	//	Page is on webEdition-Server, open it with matching command
-
-			// close existing editor, it was closed very hard
-			WE().layout.weEditorFrameController.closeDocument(_EditorFrame.getFrameId());
-
-			// build command for this location
-			top.we_cmd("open_url_in_editor", loc);
-
-		} else {	//	Page is not known - replace top and bottom frame of editor
-			//	Fill upper and lower Frame with white
-			//	If the document is editable with webedition, it will be replaced
-			//	Location not known - empty top and footer
-
-			_EditorFrame.initEditorFrameData({
-				EditorType: "none_webedition",
-				EditorContentType: "none_webedition",
-				EditorDocumentText: "Unknown",
-				EditorDocumentPath: "Unknown"
-			});
-
-			extDocHeader.location = "about:blank";
-			extDocFooter.location = WE().consts.dirs.WEBEDITION_DIR+ "we/include/we_seem/we_SEEM_openExtDoc_footer.php";
-		}
-	}
-	//-->
-</script>
-</head>
 <body onload="_EditorFrame.initEditorFrameData({'EditorIsLoading': false});">
 	<?php
 	$headerSize = 35;

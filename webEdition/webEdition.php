@@ -101,44 +101,12 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 	}
 }
 
-echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', '', '', false);
-?>
-<script><!--
-<?php
-echo we_tool_lookup::getJsCmdInclude($jsCmd);
+$jsCode = we_tool_lookup::getJsCmdInclude($jsCmd);
 $jsmods = array_keys($jsCmd);
 $jsmods[] = 'base';
 $jsmods[] = 'tools';
 
-if(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])){
-	echo 'alert("' . g_l('global', '[pwd][startupRegExFailed]') . '");';
-	unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
-}
-?>
-
-if (self.location !== top.location) {
-	top.location = self.location;
-}
-
-var Header = null;
-var Tree = null;
-var busy = 0;
-var hot = 0;
-var last = 0;
-var lastUsedLoadFrame = null;
-var nlHTMLMail = false;
-var browserwind = null;
-var weplugin_wait = null;
-// seeMode
-// TODO: move to some JS-file
-var dd = {
-	dataTransfer: {
-		text: ''
-	}
-};
-//-->
-</script>
-<?php
+echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', '', '', false);
 $const = [
 	'g_l' => [],
 	'contentTypes' => [
@@ -285,26 +253,35 @@ foreach($jsCmd as $cur){
 }
 ?>
 <script><!--
+<?php
+echo $jsCode;
+
+if(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])){
+	echo 'alert("' . g_l('global', '[pwd][startupRegExFailed]') . '");';
+	unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
+}
+?>
+
 function we_cmd() {
-		var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-		var url = WE().util.getWe_cmdArgsUrl(args);
-		//	When coming from a we_cmd, always mark the document as opened with we !!!!
-		if (WE().layout.weEditorFrameController.getActiveDocumentReference) {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+	//	When coming from a we_cmd, always mark the document as opened with we !!!!
+	if (WE().layout.weEditorFrameController.getActiveDocumentReference) {
 
-			switch (args[0]) {
-				case 'edit_document':
-				case 'new_document':
-				case 'open_extern_document':
-				case 'edit_document_with_parameters':
-				case 'new_folder':
-				case 'edit_folder':
-					break;
-				default:
-					WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
-			}
-
-		}
 		switch (args[0]) {
+			case 'edit_document':
+			case 'new_document':
+			case 'open_extern_document':
+			case 'edit_document_with_parameters':
+			case 'new_folder':
+			case 'edit_folder':
+				break;
+			default:
+				WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
+		}
+
+	}
+	switch (args[0]) {
 <?php
 // deal with not activated modules
 $diff = array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']);
@@ -317,22 +294,22 @@ if($diff){
 		break;';
 }
 ?>
-			case "exit_doc_question":
-				// return !! important for multiEditor
-				return new (WE().util.jsWindow)(window, url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
-			case "eplugin_exit_doc" :
-				if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
-					if (top.plugin.isInEditor(args[1])) {
-						return confirm(WE().consts.g_l.main.eplugin_exit_doc);
-					}
+		case "exit_doc_question":
+			// return !! important for multiEditor
+			return new (WE().util.jsWindow)(window, url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
+		case "eplugin_exit_doc" :
+			if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
+				if (top.plugin.isInEditor(args[1])) {
+					return confirm(WE().consts.g_l.main.eplugin_exit_doc);
 				}
-				return true;
-			case "editor_plugin_doc_count":
-				if (top.plugin.document.WePlugin !== undefined) {
-					return top.plugin.getDocCount();
-				}
-				return 0;
-			default:
+			}
+			return true;
+		case "editor_plugin_doc_count":
+			if (top.plugin.document.WePlugin !== undefined) {
+				return top.plugin.getDocCount();
+			}
+			return 0;
+		default:
 <?php
 foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do a switch/case instead of search
 	echo 'if(we_cmd_' . $mod . '.apply(this,[args, url])){
@@ -340,26 +317,27 @@ foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do
 }';
 }
 ?>
-				we_showInNewTab(args, url);
-		}
-
+			we_showInNewTab(args, url);
 	}
 
-	function startMsg() {
+}
+
+function startMsg() {
 <?= we_main_headermenu::createMessageConsole('mainWindow', true); ?>
-	}
-	function updateCheck() {
+}
+function updateCheck() {
 <?php
 if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable())){
 	?>top.we_showMessage("<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
 <?php }
 ?>
-	}
+}
 
 //-->
 </script>
 </head>
-<body id="weMainBody" onload="initWE(); top.start('<?= $table_to_load; ?>');
+<body id="weMainBody" onload="initWE();
+		top.start('<?= $table_to_load; ?>');
 		startMsg();
 		updateCheck();
 		self.focus();" onbeforeunload ="return doUnload();">

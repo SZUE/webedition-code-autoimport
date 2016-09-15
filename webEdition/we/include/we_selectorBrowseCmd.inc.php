@@ -32,13 +32,7 @@ if($cmd === "save_last"){
 if(!$cmd || $cmd != "save_last"){
 	$selectOwn = we_base_request::_(we_base_request::BOOL, 'selectOwn', false);
 
-	echo we_html_element::jsScript(JS_DIR . 'selectors/sselector_cmd.js');
-	?>
-	<script><!--<?php
-	echo '
-filter="' . we_base_request::_(we_base_request::STRING, 'filter') . '";
-selectOwn=' . intval($selectOwn) . ';
-';
+	echo we_html_element::jsScript(JS_DIR . 'selectors/sselector_cmd.js', "top.fileSelect.data.filter='" . we_base_request::_(we_base_request::STRING, 'filter') . "';selectOwn=" . intval($selectOwn) . ";");
 
 	function delDir($dir){
 		$d = dir($dir);
@@ -160,7 +154,7 @@ selectOwn=' . intval($selectOwn) . ';
 			echo "selectFile('');drawDir(top.fileSelect.data.currentDir);";
 	}
 	?>
-		//-->
+	//-->
 	</script>
 <?php } ?>
 </head>
