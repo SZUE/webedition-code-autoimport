@@ -25,6 +25,8 @@ require_once($_SERVER['DOCUMENT_ROOT'] . '/webEdition/we/include/we.inc.php');
 list($jsFile, $oSelCls) = include_once (WE_INCLUDES_PATH . 'we_widgets/dlg/prefs.inc.php');
 
 we_html_tools::protect();
+$widgetData = [];
+
 $yuiSuggest = new weSuggest();
 $showAC = false;
 $yuiSuggest->setAutocompleteField("yuiAcInputDoc", "yuiAcContainerDoc", FILE_TABLE, "folder," . we_base_ContentTypes::WEDOCUMENT . "," . we_base_ContentTypes::HTML, weSuggest::DocSelector, 14, 1, "yuiAcLayerDoc", ["yuiAcIdDoc"], 1, "296px");
@@ -46,7 +48,7 @@ if($selection){
 }
 
 function getHTMLDirSelector($selType){
-	global $showAC, $yuiSuggest;
+	global $showAC;
 	$showAC = true;
 	$rootDirID = 0;
 	$folderID = 0;
@@ -90,26 +92,13 @@ if($ac){
 	}
 }
 
-function getHTMLCategory(){
+function getHTMLCategory(&$widgetData){
 	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs(true);opener.addCat(top.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-	$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;top.mark();'));
-
-	$variant_js = '
-		categories_edit=new (WE().util.multi_edit)("categories",document.we_form,0,"' . $del_but . '",390,false);
-		categories_edit.addVariant();
-		document.we_form.CategoriesControl.value=categories_edit.name;
-	';
-	$Categories = '';
-	if(is_array($Categories)){
-		foreach($Categories as $cat){
-			$variant_js .= '
-				categories_edit.addItem();
-				categories_edit.setItem(0,(categories_edit.itemCount-1),"' . $cat . '");
-			';
-		}
-	}
-
-	$variant_js .= 'categories_edit.showVariant(0);';
+	$del_but = we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;top.mark();');
+	$widgetData['cats'] = [
+		'del' => $del_but,
+		'items' => []
+	];
 
 	$table = new we_html_table(['id' => 'CategoriesBlock',
 		'style' => 'display: block;margin-top: 5px;',
@@ -124,7 +113,7 @@ function getHTMLCategory(){
 
 	$table->setCol(4, 0, ['colspan' => 2, 'style' => 'text-align:right'], we_html_button::create_button(we_html_button::DELETE_ALL, 'javascript:removeAllCats()') . $addbut);
 
-	return $table->getHtml() . we_html_element::jsElement($variant_js);
+	return $table->getHtml();
 }
 
 $seltype = ['doctype' => g_l('cockpit', '[documents]')];
@@ -134,8 +123,6 @@ if(defined('OBJECT_TABLE')){
 
 $tree = new we_export_tree('treeCmd.php', 'top', 'top', 'cmd');
 
-$divStatic = we_html_element::htmlDiv(["id" => "static", "style" => ($selection ? "display:block;" : "display:none;")], we_html_element::htmlDiv(["id" => "treeContainer"], $tree->getHTMLMultiExplorer(420, 180, false)) . '<iframe name="cmd" src="about:blank" style="visibility:hidden; width: 0px; height: 0px;"></iframe>');
-
 $captions = [];
 if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
 	$captions[FILE_TABLE] = g_l('export', '[documents]');
@@ -144,17 +131,16 @@ if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFI
 	$captions[OBJECT_FILES_TABLE] = g_l('export', '[objects]');
 }
 
-$divDynamic = we_html_element::htmlDiv(["id" => "dynamic", "style" => (!$selection ? 'display:block;' : 'display:none;')
-		], getHTMLDirSelector($selType) . we_html_element::htmlBr() . ((!$selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
-				$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_element::htmlBr() . getHTMLCategory());
 
 $divContent = we_html_element::htmlDiv(["style" => "display:block;"
 		], we_html_tools::htmlSelect("Selection", ["dynamic" => g_l('cockpit', '[dyn_selection]'), "static" => g_l('cockpit', '[stat_selection]')
 			], 1, ($selection ? "static" : "dynamic"), false, ['style' => "width:420px;border:#AAAAAA solid 1px;", 'onchange' => "closeAllSelection();we_submit();"], 'value') .
 		we_html_element::htmlBr() .
 		we_html_tools::htmlSelect("headerSwitch", $captions, 1, (!$selType ? FILE_TABLE : OBJECT_FILES_TABLE), false, ['style' => "width:420px;border:#AAAAAA solid 1px;margin-top:10px;", 'onchange' => "setHead(this.value);we_submit();"], 'value', 420) .
-		$divStatic .
-		$divDynamic .
+		we_html_element::htmlDiv(["id" => "static", "style" => ($selection ? "display:block;" : "display:none;")], we_html_element::htmlDiv(["id" => "treeContainer"], $tree->getHTMLMultiExplorer(420, 180, false)) . '<iframe name="cmd" src="about:blank" style="visibility:hidden; width: 0px; height: 0px;"></iframe>') .
+		we_html_element::htmlDiv(["id" => "dynamic", "style" => (!$selection ? 'display:block;' : 'display:none;')
+			], getHTMLDirSelector($selType) . we_html_element::htmlBr() . ((!$selType) ? $doctypeElement : we_html_tools::htmlFormElementTable(
+					$cls->getHTML(), g_l('cockpit', '[class]'))) . we_html_element::htmlBr() . getHTMLCategory($widgetData)) .
 		we_html_element::htmlBr() .
 		we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput("title", 55, $title, 255, "", "text", 420, 0), g_l('cockpit', '[title]'), "left", "defaultfont"));
 
@@ -175,7 +161,7 @@ $sTblWidget = we_html_multiIconBox::getHTML("mdcProps", $parts, 30, $buttons, -1
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[my_documents]'), '', '', weSuggest::getYuiFiles() .
 	$jsFile .
-	we_html_element::jsScript(JS_DIR . 'widgets/mdc.js'), we_html_element::htmlBody(
+	we_html_element::jsScript(JS_DIR . 'widgets/mdc.js', '', ['id' => 'loadVarWidget', 'data-widget' => setDynamicVar($widgetData)]), we_html_element::htmlBody(
 		["class" => "weDialogBody", "onload" => "init('" . $selTable . "','" . $sTitle . "','" . $selBinary . "','" . $sCsv . "');"
 		], we_html_element::htmlForm(
 			"", we_html_element::htmlHiddens(["table" => "",

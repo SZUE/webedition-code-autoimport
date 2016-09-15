@@ -118,8 +118,7 @@ $oSelectRssCont = new we_html_table(['class' => 'default'], 1, 2);
 $oSelectRssCont->setCol(0, 0, ["width" => 165], $oChbxContTitle . $oChbxContLink . $oChbxContDesc . $oChbxContEnc);
 $oSelectRssCont->setCol(0, 1, ["height" => "100%", 'style' => 'vertical-align:top;'], $oRssContR->getHTML());
 
-$rssConf = $oRemRssConf . we_html_element::htmlBr() . htmlClipElement(
-		g_l('cockpit', '[show_select_rsscontent]'), g_l('cockpit', '[hide_select_rsscontent]'), $oSelectRssCont->getHTML());
+$rssConf = $oRemRssConf . we_html_element::htmlBr() . htmlClipElement(g_l('cockpit', '[show_select_rsscontent]'), g_l('cockpit', '[hide_select_rsscontent]'), $oSelectRssCont->getHTML());
 
 $oRemLabel = we_html_tools::htmlAlertAttentionBox(g_l('cockpit', '[rss_label_rem]'), we_html_tools::TYPE_INFO, 410);
 $oChbxTb[0] = we_html_forms::checkbox("", 0, "chbx_tb", g_l('cockpit', '[label_rssfeed]'), true, "defaultfont", "", false, "", 0, 0);
@@ -131,13 +130,9 @@ $oChbxTb[5] = we_html_forms::checkbox("", 0, "chbx_tb", g_l('cockpit', '[copyrig
 $oRdoTitle[0] = we_html_forms::radiobutton(1, 0, "rdo_title", g_l('cockpit', '[original_of_rssfeed]'), true, "defaultfont", "", false, "", 0, "");
 $oRdoTitle[1] = we_html_forms::radiobutton(0, 0, "rdo_title", g_l('cockpit', '[personalized]'), true, "defaultfont", "", false, "", 0, "");
 
-$oTitleTb = new we_html_table(array('class' => 'default'), 2, 1);
-$oTitleTb->setCol(0, 0, array(
-	"width" => 165
-	), $oRdoTitle[0]);
-$oTitleTb->setCol(1, 0, array(
-	"width" => 165
-	), $oRdoTitle[1]);
+$oTitleTb = new we_html_table(['class' => 'default'], 2, 1);
+$oTitleTb->setCol(0, 0, ["width" => 165], $oRdoTitle[0]);
+$oTitleTb->setCol(1, 0, ["width" => 165], $oRdoTitle[1]);
 
 $oEditTb = new we_html_table(array('class' => 'default'), 6, 2);
 $oEditTb->setCol(0, 0, ["width" => 165], $oChbxTb[0]);
@@ -148,8 +143,7 @@ $oEditTb->setCol(3, 0, ["width" => 165], $oChbxTb[3]);
 $oEditTb->setCol(4, 0, ["width" => 165], $oChbxTb[4]);
 $oEditTb->setCol(5, 0, ["width" => 165], $oChbxTb[5]);
 
-$rssLabel = $oRemLabel . we_html_element::htmlBr() . htmlClipElement(
-		g_l('cockpit', '[show_edit_titlebar]'), g_l('cockpit', '[hide_edit_titlebar]'), $oEditTb->getHTML());
+$rssLabel = $oRemLabel . we_html_element::htmlBr() . htmlClipElement(g_l('cockpit', '[show_edit_titlebar]'), g_l('cockpit', '[hide_edit_titlebar]'), $oEditTb->getHTML());
 
 $parts = [
 	["headline" => "", "html" => $rssUri,],

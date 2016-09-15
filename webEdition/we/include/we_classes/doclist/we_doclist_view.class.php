@@ -44,6 +44,7 @@ class we_doclist_view extends we_search_view{
 						'modelClassName' => "placeholder",
 						'modelID' => "placeholder",
 						'modelIsFolder' => true,
+						'modelHeight' => $this->Model->height,
 						//showSelects: "placeholder",
 						'rows' => 0,
 					],
@@ -164,8 +165,7 @@ class we_doclist_view extends we_search_view{
 		<td style="width:188px;text-align:right">' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
 		<td></td>
 	</tr>
-</table>' .
-			we_html_element::jsElement('weSearch.calendarSetup(' . $this->Model->height . ');');
+</table>';
 
 		return $out;
 	}

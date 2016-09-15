@@ -27,8 +27,6 @@ we_html_tools::protect();
 
 list($sType, $iDate, $iAmountEntries, $sDisplayOpt, $sUsers) = explode(';', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 
-$jsCode = "var _sUsers='" . $sUsers . "';";
-
 $textname = 'UserNameTmp';
 $idname = 'UserIDTmp';
 $users = array_filter(explode(',', trim($sUsers, ',')));
@@ -52,10 +50,9 @@ if(permissionhandler::hasPerm('EDIT_MFD_USER') && $users){
 $content .= '</table>';
 
 $sUsrContent = '<table class="default" style="width:300px"><tr><td>' . we_html_element::htmlDiv(array('class' => "multichooser"), $content) .
-	we_html_element::htmlHiddens(array(
-		"UserNameTmp" => "",
+	we_html_element::htmlHiddens(["UserNameTmp" => "",
 		"UserIDTmp" => ""
-	)) .
+	]) .
 	'</td></tr>' .
 	(permissionhandler::hasPerm('EDIT_MFD_USER') ? '<tr><td style="text-align:right;padding-top:1em;">' .
 		we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:delUser(-1)", true, -1, -1, "", "", ($users ? false : true)) .
@@ -113,33 +110,29 @@ for($iCurrEntry = 1; $iCurrEntry <= 50; $iCurrEntry++){
 }
 $oSctNumEntries->selectOption($iAmountEntries);
 
-$oSelMaxEntries = new we_html_table(array("height" => "100%", 'class' => 'default'), 1, 3);
-$oSelMaxEntries->setCol(0, 0, array('class' => 'defaultfont', 'style' => 'vertical-align:middle;padding-right:5px;'), g_l('cockpit', '[max_amount_entries]'));
-$oSelMaxEntries->setCol(0, 2, array('style' => 'vertical-align:middle;'), $oSctNumEntries->getHTML());
+$oSelMaxEntries = new we_html_table(["height" => "100%", 'class' => 'default'], 1, 3);
+$oSelMaxEntries->setCol(0, 0, ['class' => 'defaultfont', 'style' => 'vertical-align:middle;padding-right:5px;'], g_l('cockpit', '[max_amount_entries]'));
+$oSelMaxEntries->setCol(0, 2, ['style' => 'vertical-align:middle;'], $oSctNumEntries->getHTML());
 
 $show = $oSelMaxEntries->getHTML() . $oChbxShowMfdBy . $oChbxShowDate . we_html_element::htmlBr() . $oShowUser;
 
-$parts = array(
-	array(
-		"headline" => g_l('cockpit', '[type]'),
+$parts = [
+	["headline" => g_l('cockpit', '[type]'),
 		"html" => $oDbTableType,
 		'space' => we_html_multiIconBox::SPACE_MED
-	),
-	array(
-		"headline" => g_l('cockpit', '[date]'),
+	],
+	["headline" => g_l('cockpit', '[date]'),
 		"html" => $oSctDate->getHTML(),
 		'space' => we_html_multiIconBox::SPACE_MED
-	),
-	array(
-		"headline" => g_l('cockpit', '[display]'),
+	],
+	["headline" => g_l('cockpit', '[display]'),
 		"html" => $show,
 		'space' => we_html_multiIconBox::SPACE_MED
-	),
-	array(
-		"headline" => "",
+	],
+	["headline" => "",
 		"html" => $oSelCls->getHTML(),
-	)
-);
+	]
+];
 
 $save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
 $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);
@@ -149,7 +142,7 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML('mfdProps', $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[last_modified]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[last_modified]'), '', '', $jsFile .
-	we_html_element::jsElement($jsCode) .
-	we_html_element::jsScript(JS_DIR . 'widgets/mfd.js'), we_html_element::htmlBody(
-		["class" => "weDialogBody", "onload" => "init();WE().util.setIconOfDocClass(document,'mfdUIcon');"
-		], we_html_element::htmlForm("", $sTblWidget)));
+	we_html_element::jsScript(JS_DIR . 'widgets/mfd.js', '', ['id' => 'loadVarWidget', 'data-widget' => setDynamicVar([
+			'sUsers' => $sUsers
+	])]), we_html_element::htmlBody(
+		["class" => "weDialogBody", "onload" => "init();"], we_html_element::htmlForm("", $sTblWidget)));

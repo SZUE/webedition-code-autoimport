@@ -35,7 +35,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 		break;
 	case 'add' :
 		include_once(WE_INCLUDES_PATH . 'we_widgets/cfg.inc.php');
-		$cmd2 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
+		$newSCurrId = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);
 
 		$aProps = [
 			$cmd1,
@@ -51,8 +51,7 @@ switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)){
 				}
 			}
 		}
-		$iCurrId = str_replace('m_', '', $cmd2);
-		$newSCurrId = $cmd2;
+		$iCurrId = str_replace('m_', '', $newSCurrId);
 		$iWidth = $aPrefs[$aProps[0]]['width'];
 		switch($aProps[0]){
 			case 'rss':

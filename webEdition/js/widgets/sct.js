@@ -23,6 +23,7 @@
  */
 var _sCsvInit_;
 var _bPrev = false;
+var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
 function addEntry(sText, sValue) {
 	var oSctPool = _fo.elements.sct_pool;
@@ -331,9 +332,9 @@ function init() {
 		var aVals = aCsv[i].split(',');
 		var iOpt = 0;
 		while (iOpt < aVals.length) {
-			if (_aLang[aVals[iOpt]] !== undefined) {
+			if (widget.aLang[aVals[iOpt]] !== undefined) {
 				deleteEntry(aVals[iOpt]);
-				addOption(_fo['list' + (i + 1) + '1'], _aLang[aVals[iOpt]], aVals[iOpt], false);
+				addOption(_fo['list' + (i + 1) + '1'], widget.aLang[aVals[iOpt]], aVals[iOpt], false);
 			}
 			iOpt++;
 		}

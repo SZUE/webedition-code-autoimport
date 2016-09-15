@@ -65,11 +65,6 @@ $shortcuts = array_filter([
 	'btn_add_image' => (permissionhandler::hasPerm('NEW_GRAFIK') ? g_l('button', '[btn_add_image][alt]') : '')
 	]);
 
-$jsLang = [];
-foreach($shortcuts as $k => $v){
-	$jsLang [] = "'" . $k . "':'" . $v . "'";
-}
-
 $oSctPool = new we_html_select([
 	"name" => "sct_pool",
 	'class' => 'defaultfont',
@@ -141,9 +136,9 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getJS() . we_html_multiIconBox::getHTML("sctProps", $parts, 30, $buttons, -1, "", "", "", g_l('cockpit', '[shortcuts]'));
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[shortcuts]'), '', '', $jsFile .
-	we_html_element::jsElement("
-_aLang={" . implode(',', $jsLang) . "};
-") .
-	we_html_element::jsScript(JS_DIR . 'widgets/sct.js'), we_html_element::htmlBody(
+	we_html_element::jsScript(JS_DIR . 'widgets/sct.js', '', ['id' => 'loadVarWidget', 'data-widget' => setDynamicVar([
+			'aLang' => $shortcuts,
+		])]
+	), we_html_element::htmlBody(
 		["class" => "weDialogBody", "onload" => "init();"
 		], we_html_element::htmlForm("", $sTblWidget)));

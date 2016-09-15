@@ -61,6 +61,7 @@ weSearch = {
 	elem: null,
 	rolloverElem: null,
 	init: function () {
+		weSearch.calendarSetup(searchConf.conf.modelHeight);
 		weSearch.conf.editorBodyFrame = (weSearch.conf.editorBody === "window" ? window : top.content.editor.edbody);
 		if (weSearch.conf.editorBodyFrame.document.readyState === "complete") {
 			if (weSearch.conf.editorBodyFrame.document.getElementById('mouseOverDivs_' + weSearch.conf.whichsearch)) {
