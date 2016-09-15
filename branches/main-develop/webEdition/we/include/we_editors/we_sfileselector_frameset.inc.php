@@ -134,20 +134,14 @@ function printFrameSet(){
 				'click' => [
 					'oldID ' => 0,
 				]
-		])])
+		])]), we_html_element::htmlBody([
+			'onload' => "init()",
+			'onunload' => "doUnload();"
+			], we_html_element::htmlDiv(['id' => 'fsheader'], printHeaderHTML(($cmd1 ? 1 : 0))) .
+			we_html_element::htmlIFrame('fsbody', 'about:blank', '', '', '', true) .
+			we_html_element::htmlDiv(['id' => 'fsfooter'], printFooterTable(($cmd1 ? 1 : 0), $filter, $currentName)) .
+			we_html_element::htmlIFrame('fscmd', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=selectorBrowseCmd&ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName . '&selectOwn=' . $selectOwn, 'display:none;', '', '', false))
 	);
-	?>
-	<body onload="setLookin();
-			top.fscmd.selectDir();" onunload="doUnload();">
-				<?=
-					we_html_element::htmlDiv(['id' => 'fsheader'], printHeaderHTML(($cmd1 ? 1 : 0))) .
-					we_html_element::htmlIFrame('fsbody', 'about:blank', '', '', '', true) .
-					we_html_element::htmlDiv(['id' => 'fsfooter'], printFooterTable(($cmd1 ? 1 : 0), $filter, $currentName)) .
-					we_html_element::htmlIFrame('fscmd', WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=selectorBrowseCmd&ret=' . ($cmd1 ? 1 : 0) . '&filter=' . $filter . '&currentName=' . $currentName . '&selectOwn=' . $selectOwn, 'display:none;', '', '', false);
-					?>
-	</body>
-	</html>
-	<?php
 }
 
 printFrameSet();
