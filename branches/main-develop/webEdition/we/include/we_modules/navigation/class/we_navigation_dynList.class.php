@@ -24,98 +24,28 @@
  */
 abstract class we_navigation_dynList{
 
-	public static function getDocuments($doctypeid, $dirid, array $categories, $catlogic, &$sort, $count, $field){
-		$select = 'f.ID,f.Text,l.Name AS FieldName,IFNULL(c.Dat,c.BDID) AS FieldData';
+	public static function getDocuments($doctypeid, $dirid, array $categories, $catlogic, $sort, $count, $field){
+		$select = 'f.ID AS id,f.Text AS text,IFNULL(c.Dat,c.BDID) AS field';
 
-		$fieldset = self::getDocData($select, $doctypeid, id_to_path($dirid), $categories, $catlogic);
-		$docs = $txt = $fields = $ids = [];
+		return self::getDocData($select, $doctypeid, $dirid, $categories, $catlogic, $field, $sort, $count);
 
-		foreach($fieldset as $data){
-			if(!isset($docs[$data['ID']])){
-				$docs[$data['ID']] = [];
-			}
-			$docs[$data['ID']][$data['FieldName']] = $data['FieldData'];
-
-			$txt[$data['ID']] = $data['Text'];
-
-			if($data['FieldName'] == $field){
-				$fields[$data['ID']] = $data['FieldData'];
-			} elseif(!isset($fields[$data['ID']])){
-				$fields[$data['ID']] = $data['Text'];
-			}
-		}
-
-		unset($fieldset);
-
-		$arr = [];
-		$sort = is_array($sort) ? $sort : [];
-
-		foreach($sort as $k => $sort){
-			$arr[$k] = [];
-			foreach($docs as $id => $doc){
-				$arr[$k]['id_' . $id] = (in_array($sort['field'], array_keys($doc)) ?
-						$doc[$sort['field']] :
-						$fields[$id]);
-			}
-			if($sort['order'] === 'DESC'){
-				natcasesort($arr[$k]);
-				$arr[$k] = array_reverse($arr[$k]);
-			} else {
-				natcasesort($arr[$k]);
-			}
-		}
-
-		if($arr){
-			$ids_tmp = array_keys($arr[0]);
-
-			$ids = [];
-
-			for($i = 0; $i < $count; $i++){
-				if(isset($ids_tmp[$i])){
-					$id = str_replace('id_', '', $ids_tmp[$i]);
-					$ids[$i] = [
-						'id' => str_replace('id_', '', $id),
-						'text' => $txt[$id],
-						'field' => we_navigation_navigation::encodeSpecChars(isset($fields[$id]) ? $fields[$id] : '')
-						];
-				} else {
-					break;
-				}
-			}
-		} else {
-			$counter = 0;
-			foreach($docs as $id => $doc){
-				if($counter < $count){
-					$ids[] = ['id' => $id,
-						'field' => we_navigation_navigation::encodeSpecChars(isset($fields[$id]) ? $fields[$id] : ''),
-						'text' => $txt[$id]
-						];
-					$counter++;
-				} else {
-					break;
-				}
-			}
-		}
-
-		return $ids;
 	}
 
-	private static function getDocData($select, $doctype, $dirpath, array $categories, $catlogic){
+	private static function getDocData($select, $doctype, $dirID, array $categories, $catlogic, $field, $order, $count = 100){
 		$db = new DB_WE();
 		$cats = [];
 		foreach(array_filter($categories) as $cat){
 			$cats[] = 'FIND_IN_SET(' . $cat . ',f.Category)'; //bug #6729
 		}
+		$sort = empty($order) ? array() : $order[0];
 
-		$dirpath = we_base_file::clearPath($dirpath . '/');
-
-		$db->query('SELECT ' . $select . ' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON f.ID=l.DID JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID WHERE (f.IsFolder=0 AND f.Published>0) ' .
-			'AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '" ' .
+		$db->query('SELECT ' . $select . ' FROM ' . FILE_TABLE . ' f JOIN ' . LINK_TABLE . ' l ON (f.ID=l.DID AND l.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' c ON l.CID=c.ID ' .
+			($sort ? ' JOIN ' . LINK_TABLE . ' ls ON (ls.DID=f.ID AND ls.DocumentTable="' . stripTblPrefix(FILE_TABLE) . '") JOIN ' . CONTENT_TABLE . ' cs ON (cs.ID=ls.CID)' : ''
+			) . 'WHERE (f.IsFolder=0 AND f.Published>0) AND l.nHash=x\'' . md5($field) . '\' AND f.ParentID=' . $dirID .
 			($doctype ? ' AND f.DocType=' . $db->escape($doctype) : '') .
-			($cats ? (' AND (' . implode($catlogic, $cats) . ')') : '') .
-			($dirpath != '/' ? (' AND f.Path LIKE "' . $db->escape($dirpath) . '%"') : '') .
-			' LIMIT 100');
-
+			($cats ? (' AND (' . implode(" $catlogic ", $cats) . ')') : '') .
+			($sort ? (' AND ls.nHash=x\'' . md5($sort['field']) . '\' ORDER BY IFNULL(cs.Dat,cs.BDID) ' . $sort['order']) : '') .
+			'  LIMIT 0,' . $count);
 
 		return $db->getAll();
 	}

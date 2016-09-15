@@ -298,8 +298,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 		$page = ($currentAnzahl ? ceil($currentSearchstart / $currentAnzahl) * $currentAnzahl : 0);
 
 		if($dataOnly){
-			return we_html_element::htmlSpan(array(
-					'class' => 'nextPrevData',
+			return we_html_element::htmlSpan(['class' => 'nextPrevData',
 					'style' => "display:none",
 					'data-setView' => $currentSetView,
 					'data-mode' => $this->Model->mode, // IMI DO: set mode to curr
@@ -312,16 +311,16 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 					'data-pageValue' => implode(',', array_keys($pages)),
 					'data-pageText' => implode(',', array_values($pages)),
 					'data-page' => $page
-			));
+					]);
 		}
 
 		$btnBack = we_html_button::create_button(we_html_button::BACK, 'javascript:weSearch.back();', true, 100, 22, '', '', $disableBack, true, '', false, '', 'btnSearchBack');
 		$btnNext = we_html_button::create_button(we_html_button::NEXT, 'javascript:weSearch.next();', true, 100, 22, '', '', $disableNext, true, '', false, '', 'btnSearchNext');
-		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, array('onchange' => "this.form.elements.searchstart" . $whichSearch . ".value = this.value; weSearch.search(false);"), 'value', 0, 'selectSearchPages');
+		$select = we_html_tools::htmlSelect('page', $pages, 1, $page, false, ['onchange' => "this.form.elements.searchstart" . $whichSearch . ".value = this.value; weSearch.search(false);"], 'value', 0, 'selectSearchPages');
 
 		$tbl = new we_html_table(array('style' => 'margin-top:-2px;'), 1, 4);
 		$tbl->setCol(0, 0, [], $btnBack);
-		$tbl->setCol(0, 1, array('class' => 'defaultfont', 'style' => 'padding-top:6px;'), we_html_element::htmlSpan(array('class' => 'spanSearchText bold'), $text));
+		$tbl->setCol(0, 1, ['class' => 'defaultfont', 'style' => 'padding-top:6px;'], we_html_element::htmlSpan(['class' => 'spanSearchText bold'], $text));
 		$tbl->setCol(0, 2, [], $btnNext);
 		$tbl->setCol(0, 3, [], $select);
 
@@ -343,7 +342,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 	}
 
 	function getSearchDialogOptions($whichSearch){
-		$table = new we_html_table(array('style' => 'width:500px',), 2, 3);
+		$table = new we_html_table(['style' => 'width:500px',], 2, 3);
 		$row = 0;
 		$currentSearchForField = $this->Model->getProperty('currentSearchForField');
 
@@ -358,7 +357,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 				$table->setCol($row, 0, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['content']) ? false : true, 'searchForContent' . $whichSearch, g_l('searchtool', '[Content]'), false, 'defaultfont', ''));
 				break;
 			case self::SEARCH_MEDIA :
-				$table->setCol($row, 0, array('style' => 'width:200px;'), we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
+				$table->setCol($row, 0, ['style' => 'width:200px;'], we_html_forms::checkboxWithHidden(empty($currentSearchForField['text']) ? false : true, 'searchForText' . $whichSearch, g_l('searchtool', '[onlyFilename]'), false, 'defaultfont', ''));
 				$table->setCol($row++, 1, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['title']) ? false : true, 'searchForTitle' . $whichSearch, g_l('searchtool', '[onlyTitle]'), false, 'defaultfont', ''));
 				$table->setCol($row, 0, [], we_html_forms::checkboxWithHidden(empty($currentSearchForField['meta']) ? false : true, 'searchForMeta' . $whichSearch, g_l('searchtool', '[onlyMetadata]'), false, 'defaultfont', ''));
 
@@ -370,16 +369,15 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 	}
 
 	function getSearchDialogMediaType($whichSearch){
-		$table = new we_html_table(array('style' => 'width:400px',), 2, 2);
+		$table = new we_html_table(['style' => 'width:400px',], 2, 2);
 		$currentSearchForContentType = $this->Model->getProperty('currentSearchForContentType');
 
 		switch($whichSearch){
 			case self::SEARCH_MEDIA :
 				$n = 1;
-				$table->setCol(0, 0, array('style' => 'width:200px;'), we_html_element::htmlHiddens(array(
-						'searchFields' . $whichSearch . '[' . $n . ']' => 'ContentType',
+				$table->setCol(0, 0, ['style' => 'width:200px;'], we_html_element::htmlHiddens(['searchFields' . $whichSearch . '[' . $n . ']' => 'ContentType',
 						'search' . $whichSearch . '[' . $n . ']' => 1,
-						'location' . $whichSearch . '[' . $n++ . ']' => 'IN')) .
+						'location' . $whichSearch . '[' . $n++ . ']' => 'IN']) .
 					we_html_forms::checkboxWithHidden($currentSearchForContentType['image'] ? true : false, 'searchForImage' . $whichSearch, g_l('contentTypes', '[image/*]'), false, 'defaultfont withSpace', ''));
 				$table->setCol(0, 1, [], we_html_forms::checkboxWithHidden($currentSearchForContentType['audio'] ? true : false, 'searchForAudio' . $whichSearch, g_l('contentTypes', '[audio/*]'), false, 'defaultfont', ''));
 				$table->setCol(1, 1, [], we_html_forms::checkboxWithHidden($currentSearchForContentType['video'] ? true : false, 'searchForVideo' . $whichSearch, g_l('contentTypes', '[video/*]'), false, 'defaultfont', ''));
@@ -403,30 +401,26 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 			case self::SEARCH_MEDIA :
 				$n = 2;
 				$table->setCol(0, 0, [], g_l('searchtool', '[usage_state]') . ': ');
-				$table->setCol(0, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
-						'searchFields' . $whichSearch . '[' . $n . ']' => 'IsUsed',
-						'location' . $whichSearch . '[' . $n . ']' => 'IS')) .
-					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', array(
-						0 => g_l('searchtool', '[all]'),
+				$table->setCol(0, 1, ['colspan' => 2], we_html_element::htmlHiddens(['searchFields' . $whichSearch . '[' . $n . ']' => 'IsUsed',
+						'location' . $whichSearch . '[' . $n . ']' => 'IS']) .
+					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', [0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_unsed]'),
-						2 => g_l('searchtool', '[only_unused]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, [], 'value', 228));
+						2 => g_l('searchtool', '[only_unused]')], 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, [], 'value', 228));
 				$table->setCol(0, 3, [], we_html_tools::htmlAlertAttentionBox(g_l('searchtool', '[media_do_rebuild]'), we_html_tools::TYPE_HELP, false));
 
 				$table->setCol(1, 0, [], g_l('searchtool', '[protection]') . ': ');
-				$table->setCol(1, 1, array('colspan' => 2), we_html_element::htmlHiddens(array(
-						'searchFields' . $whichSearch . '[' . ++$n . ']' => 'IsProtected',
-						'location' . $whichSearch . '[' . $n . ']' => 'IS')) .
-					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', array(
-						0 => g_l('searchtool', '[all]'),
+				$table->setCol(1, 1, ['colspan' => 2], we_html_element::htmlHiddens(['searchFields' . $whichSearch . '[' . ++$n . ']' => 'IsProtected',
+						'location' . $whichSearch . '[' . $n . ']' => 'IS']) .
+					we_html_tools::htmlSelect('search' . $whichSearch . '[' . $n . ']', [0 => g_l('searchtool', '[all]'),
 						1 => g_l('searchtool', '[only_protected]'),
-						2 => g_l('searchtool', '[only_unprotected]')), 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, [], 'value', 228));
+						2 => g_l('searchtool', '[only_unprotected]')], 1, isset($currentSearch[$n]) ? $currentSearch[$n] : '', false, [], 'value', 228));
 
 				$this->searchMediaOptFieldIndex = ++$n; // FIXME: do we need this (or can we handle it as simple param?)
 				break;
 			default:
 				return;
 		}
-		$table->setCol(2, 0, array('colspan' => 4), $this->getSearchDialogOptionalFields($whichSearch));
+		$table->setCol(2, 0, ['colspan' => 4], $this->getSearchDialogOptionalFields($whichSearch));
 		$table->setCol(3, 3, [], we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $table->getHtml();
@@ -441,7 +435,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 		 *
 		 */
 
-		$table = new we_html_table(array('style' => 'width:550px',), 4, 3);
+		$table = new we_html_table(['style' => 'width:550px',], 4, 3);
 		$currentSearchTables = $this->Model->getProperty('currentSearchTables');
 
 		if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
@@ -465,7 +459,7 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 			$table->setCol(0, 2, [], we_html_forms::checkboxWithHidden(in_array(VERSIONS_TABLE, $currentSearchTables), 'search_tables_advSearch[' . VERSIONS_TABLE . ']', g_l('versions', '[versions]'), false, 'defaultfont', ''));
 		}
 
-		$table->setCol(1, 2, array('style' => 'text-align:right'), we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
+		$table->setCol(1, 2, ['style' => 'text-align:right'], we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);"));
 
 		return $table->getHtml();
 	}
@@ -492,10 +486,9 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 <tr>
  <td style="padding-right:20px;">' . $searchInput . ($whichSearch == self::SEARCH_MEDIA ? ' ' . we_html_tools::htmlAlertAttentionBox("Ohne Suchbegriff werden alle Medien-Dokumente ausgegeben.", we_html_tools::TYPE_HELP, false) : '') . '</td>
  <td>' . we_html_button::create_button(we_html_button::SEARCH, "javascript:weSearch.search(true);") . '</td>
- <td>' . we_html_element::htmlHiddens(array(
-				'location' . $whichSearch . '[0]' => 'CONTAIN',
+ <td>' . we_html_element::htmlHiddens(['location' . $whichSearch . '[0]' => 'CONTAIN',
 				$searchTables => 1
-			)) . '</td>
+				]) . '</td>
  <td></td>
  <td></td>
 </tr>' . (false && $whichSearch == self::SEARCH_MEDIA ?
