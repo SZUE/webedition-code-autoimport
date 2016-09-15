@@ -433,7 +433,7 @@ class le_MySQL_DB extends le_MySQL{
 		}
 
 		/* establish connection, select database */
-		if(0 == $this->Link_ID){
+		if(!$this->Link_ID){
 
 			if(isset($GLOBALS["dbconnect"]) && $GLOBALS["dbconnect"] == "mysqli_pconnect"){
 				$this->Link_ID = mysqli_connect('p:' . $Host, $User, $Password);
