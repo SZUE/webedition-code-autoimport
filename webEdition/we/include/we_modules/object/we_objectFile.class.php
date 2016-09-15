@@ -306,7 +306,7 @@ class we_objectFile extends we_document{
 
 	function setRootDirID($doit = false){
 		if($this->TableID && ($this->InWebEdition || $doit)){
-			$hash = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_TABLE . ' o ON o.ID=of.TableID WHERE o.Path=of.Path AND of.IsClassFolder=1 AND o.ID=' . intval($this->TableID), $this->DB_WE);
+			$hash = getHash('SELECT o.Path,of.ID FROM ' . OBJECT_FILES_TABLE . ' of JOIN ' . OBJECT_TABLE . ' o ON o.ID=of.TableID WHERE of.IsClassFolder=1 AND of.ParentID=0 AND o.ID=' . intval($this->TableID), $this->DB_WE);
 			$this->RootDirPath = $hash['Path'];
 			$this->rootDirID = $hash['ID'];
 		}
@@ -782,7 +782,7 @@ class we_objectFile extends we_document{
 	private function getObjectFieldHTML($type, $ObjectID, array $attribs, $editable = true){
 		$db = new DB_WE();
 		//FIXME: this is bad matching text instead of id's
-		$foo = getHash('SELECT o.Text,of.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.Path=o.Path AND of.IsFolder=1 AND of.ParentID=0 AND of.IsClassFolder=1 AND o.ID=' . intval($ObjectID), $db);
+		$foo = getHash('SELECT o.Text,of.ID FROM ' . OBJECT_TABLE . ' o JOIN ' . OBJECT_FILES_TABLE . ' of ON o.ID=of.TableID WHERE of.IsFolder=1 AND of.ParentID=0 AND of.IsClassFolder=1 AND o.ID=' . intval($ObjectID), $db);
 		$name = isset($foo['Text']) ? $foo['Text'] : '';
 		$pid = isset($foo['ID']) ? $foo['ID'] : 0;
 

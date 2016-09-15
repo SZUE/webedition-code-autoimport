@@ -48,7 +48,7 @@ abstract class we_navigation_dynList{
 			($doctype ? ' AND f.DocType=' . $db->escape($doctype) : '') .
 			($cats ? (' AND (' . implode(" $catlogic ", $cats) . ')') : '') .
 			($sort ? (' AND ls.nHash=x\'' . md5($sort['field']) . '\' ORDER BY IFNULL(cs.Dat,cs.BDID) ' . $sort['order']) : '') .
-			'  LIMIT 0,' . $count);
+			'  LIMIT ' . $count);
 
 
 		return $db->getAll();
