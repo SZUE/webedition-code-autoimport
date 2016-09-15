@@ -23,13 +23,19 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
+var _oCsv_;
+var _sInitCsv_;
+var _oSctDate;
+var _bPrev = false;
+var _sLastPreviewCsv = '';
+var widget = WE().util.getDynamicVar(document, 'loadVarWidget', 'data-widget');
 
 function init() {
 	_fo = document.forms[0];
 	_oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
 	_oSctDate = _fo.elements.sct_date;
-	_fo.elements.revenueTarget.value = _sInitNum;
+	_fo.elements.revenueTarget.value = widget.sInitNum;
 	initPrefs();
 	//alert('form: ' + _fo.name);
 }

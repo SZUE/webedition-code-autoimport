@@ -27,14 +27,6 @@ we_html_tools::protect();
 
 list($sType, $iDate, $sRevenueTarget) = explode(";", we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
 
-$jsCode = "
-var _oCsv_;
-var _sInitCsv_;
-var _oSctDate;
-var _sInitNum='" . $sRevenueTarget . "';
-var _bPrev=false;
-var _sLastPreviewCsv='';
-";
 
 // Typ block
 while(strlen($sType) < 4){
@@ -61,42 +53,36 @@ if(defined('WE_SHOP_VAT_TABLE') && (permissionhandler::hasPerm(["NEW_SHOP_ARTICL
 $oDbTableType = $oChbxOrders . $oChbxCustomer . $oChbxAverageOrder . $oChbxTarget;
 //$oDbTableType->setCol(0, 3, null, $revenueTarget);
 
-$oSctDate = new we_html_select(array('name' => "sct_date", 'class' => 'defaultfont', "onchange" => ""));
-$aLangDate = array(
-	g_l('cockpit', '[today]'),
+$oSctDate = new we_html_select(['name' => "sct_date", 'class' => 'defaultfont', "onchange" => ""]);
+$aLangDate = [g_l('cockpit', '[today]'),
 	g_l('cockpit', '[this_week]'),
 	g_l('cockpit', '[last_week]'),
 	g_l('cockpit', '[this_month]'),
 	g_l('cockpit', '[last_month]'),
 	g_l('cockpit', '[this_year]'),
 	g_l('cockpit', '[last_year]')
-);
+];
 foreach($aLangDate as $k => $v){
 	$oSctDate->insertOption($k, $k, $v);
 }
 $oSctDate->selectOption($iDate);
 
-$parts = array(
-	array(
-		"headline" => g_l('cockpit', '[shop_dashboard][kpi]'),
-		"html" => $oDbTableType,
+$parts = [["headline" => g_l('cockpit', '[shop_dashboard][kpi]'),
+	"html" => $oDbTableType,
+	'space' => we_html_multiIconBox::SPACE_MED
+	],
+	["headline" => g_l('cockpit', '[shop_dashboard][revenue_target]'),
+		"html" => we_html_element::htmlDiv(["style" => "display:block;"], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0) . "&nbsp;&euro;", '', "left", "defaultfont")),
 		'space' => we_html_multiIconBox::SPACE_MED
-	),
-	array(
-		"headline" => g_l('cockpit', '[shop_dashboard][revenue_target]'),
-		"html" => we_html_element::htmlDiv(array("style" => "display:block;"), we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($name = "revenueTarget", $size = 55, $value = $sRevenueTarget, $maxlength = 255, $attribs = "", $type = "text", $width = 100, $height = 0) . "&nbsp;&euro;", '', "left", "defaultfont")),
-		'space' => we_html_multiIconBox::SPACE_MED
-	),
-	array(
-		"headline" => g_l('cockpit', '[date]'),
+	],
+	["headline" => g_l('cockpit', '[date]'),
 		"html" => $oSctDate->getHTML(),
 		'space' => we_html_multiIconBox::SPACE_MED
-	),
-	array(
-		"headline" => g_l('cockpit', '[display]'),
+	],
+	["headline" => g_l('cockpit', '[display]'),
 		"html" => $oSelCls->getHTML(),
-	)
-);
+	]
+];
 
 $save_button = we_html_button::create_button(we_html_button::SAVE, "javascript:save();", false, 0, 0);
 $preview_button = we_html_button::create_button(we_html_button::PREVIEW, "javascript:preview();", false, 0, 0);
@@ -106,8 +92,8 @@ $buttons = we_html_button::position_yes_no_cancel($save_button, $preview_button,
 $sTblWidget = we_html_multiIconBox::getHTML("shpProps", $parts, 30, $buttons, -1, "", "", "", "Shop");
 
 echo we_html_tools::getHtmlTop(g_l('cockpit', '[shop_dashboard][headline]'), '', '', $jsFile .
-	we_html_element::jsElement($jsCode) .
-	we_html_element::jsScript(JS_DIR . 'widgets/shop.js'), we_html_element::htmlBody(
-		array(
-		"class" => "weDialogBody", "onload" => "init();"
-		), we_html_element::htmlForm("", $sTblWidget)));
+	we_html_element::jsScript(JS_DIR . 'widgets/shop.js', '', ['id' => 'loadVarWidget', 'data-widget' => setDynamicVar([
+			'sInitNum' => $sRevenueTarget,
+	])]), we_html_element::htmlBody(
+		["class" => "weDialogBody", "onload" => "init();"
+		], we_html_element::htmlForm("", $sTblWidget)));
