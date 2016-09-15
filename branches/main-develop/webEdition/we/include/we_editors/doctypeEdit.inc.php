@@ -174,30 +174,28 @@ switch($wecmd0){
 		echo we_class::hiddenTrans();
 
 		if($we_doc->ID){
-			$parts = array(
-				array("headline" => g_l('weClass', '[doctypes]'),
-					"html" => $we_doc->formDocTypeHeader(),
-					'space' => we_html_multiIconBox::SPACE_MED
-				),
-				array("headline" => g_l('weClass', '[name]'),
+			$parts = [["headline" => g_l('weClass', '[doctypes]'),
+				"html" => $we_doc->formDocTypeHeader(),
+				'space' => we_html_multiIconBox::SPACE_MED
+				],
+				["headline" => g_l('weClass', '[name]'),
 					"html" => $we_doc->formName(),
 					'space' => we_html_multiIconBox::SPACE_MED
-				),
-				array("headline" => g_l('global', '[templates]'),
+				],
+				["headline" => g_l('global', '[templates]'),
 					"html" => $we_doc->formDocTypeTemplates(),
 					'space' => we_html_multiIconBox::SPACE_MED
-				),
-				array("headline" => g_l('weClass', '[defaults]'),
+				],
+				["headline" => g_l('weClass', '[defaults]'),
 					"html" => $we_doc->formDocTypeDefaults(),
 					'space' => we_html_multiIconBox::SPACE_MED
-				)
-			);
+				]
+			];
 		} else {
-			$parts = array(
-				array("headline" => "",
-					"html" => we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')"),
-				)
-			);
+			$parts = [["headline" => "",
+				"html" => we_html_button::create_button('new_doctype', "javascript:we_cmd('newDocType')"),
+				]
+			];
 		}
 
 		$cancelbut = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();if(top.opener.we_cmd){top.opener.we_cmd('switch_edit_page',0);}");

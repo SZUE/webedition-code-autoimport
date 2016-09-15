@@ -95,7 +95,7 @@ function exit_close() {
 	var aInitCsv = _sInitCsv_.split(';');
 	var sInitTitle = WE().util.Base64.decode(aInitCsv[0]);
 	if ((sInitTitle !== '' && sInitTitle != sTitle) || aInitCsv[1] != sSel + sSwitch || aInitCsv[2] != sCsv) {
-		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, preview._sObjId);
+		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, prefs._sObjId);
 	}
 	exitPrefs();
 	self.close();
@@ -105,7 +105,7 @@ function exit_close() {
 function we_submit() {
 	var bSelection = _fo.Selection.selectedIndex;
 	var bSelType = _fo.headerSwitch.selectedIndex;
-	_fo.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/mdc.php?we_cmd[0]=' + _sObjId + '&we_cmd[1]=' + opener.base64_encode(_fo.title.value) + ';' +
+	_fo.action = WE().consts.dirs.WE_INCLUDES_DIR + 'we_widgets/dlg/mdc.php?we_cmd[0]=' + prefs._sObjId + '&we_cmd[1]=' + opener.base64_encode(_fo.title.value) + ';' +
 					(bSelection ? '1' : '0') + (bSelType ? '1' : '0') + ';' + (bSelection ? getTreeSelected() : '');
 	_fo.method = 'post';
 	_fo.submit();
@@ -145,7 +145,7 @@ function save() {
 	var sSel = (_fo.Selection.selectedIndex) ? '1' : '0';
 	var sSwitch = (_fo.headerSwitch.selectedIndex) ? '1' : '0';
 	var sCsv = (parseInt(sSel)) ? getTreeSelected() : getCsv(parseInt(sSwitch));
-	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, _sObjId);
+	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, prefs._sObjId);
 	_oCsv_.value = WE().util.Base64.encode(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
 	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, top.window);
 	self.close();
@@ -175,9 +175,9 @@ function init(tab, title, sBinary, _sCsv) {
 	_sInitTitle_ = title;
 	_fo = document.forms[0];
 	initPrefs();
-	_oCsv_ = opener.document.getElementById(_sObjId + '_csv');
+	_oCsv_ = opener.document.getElementById(prefs._sObjId + '_csv');
 	_sInitCsv_ = _oCsv_.value;
-	_sInitTitle_ = opener.document.getElementById(_sObjId + '_prefix').value;
+	_sInitTitle_ = opener.document.getElementById(prefs._sObjId + '_prefix').value;
 	_fo.elements.title.value = _sInitTitle_;
 	var aInitCsv = _sInitCsv_.split(';');
 	var dir = aInitCsv[2].split(',');

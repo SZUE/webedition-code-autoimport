@@ -159,12 +159,10 @@ this.selectedIndex = 0;' .
 	}
 
 	static function htmlDialogLayout($content, $headline, $buttons = '', $width = "100%", $marginLeft = 30, $height = "", $overflow = "auto"){
-		return we_html_multiIconBox::getHTML('', array(
-				array(
-					"html" => $content,
+		return we_html_multiIconBox::getHTML('', [["html" => $content,
 					"headline" => ""
-				)
-				), $marginLeft, ($buttons ? '<div class="htmlDialogLayoutButtons">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
+					]
+		], $marginLeft, ($buttons ? '<div class="htmlDialogLayoutButtons">' . $buttons . '</div>' : ''), -1, "", "", false, $headline, "", $height, $overflow);
 	}
 
 	static function htmlDialogBorder3($w, array $content, array $headline, $class = "middlefont", $id = ""){
