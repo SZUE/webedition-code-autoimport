@@ -74,14 +74,7 @@ class we_workflow_frames extends we_modules_frame{
 
 		$extraHead = we_tabs::getHeader('
 function setTab(tab){
-	switch(tab){
-		case ' . self::TAB_PROPERTIES . ':
-			top.content.editor.edbody.we_cmd("switchPage",' . self::TAB_PROPERTIES . ');
-			break;
-		case ' . self::TAB_OVERVIEW . ':
-			top.content.editor.edbody.we_cmd("switchPage",' . self::TAB_OVERVIEW . ');
-			break;
-	}
+	top.content.editor.edbody.we_cmd("switchPage",tab);
 }');
 
 		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()',
@@ -144,8 +137,8 @@ function submitForm(){
 	f.submit();
 }' .
 					($pid ?
-						'' :
-						'top.content.treeData.clear();
+					'' :
+					'top.content.treeData.clear();
 top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));') .
 					$this->Tree->getJSLoadTree(!$pid, we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment))
 				)

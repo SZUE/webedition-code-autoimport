@@ -160,7 +160,7 @@ class we_customer_frames extends we_modules_frame{
 		return $this->getHTMLDocument($body, we_tabs::getHeader('
 function setTab(tab) {
 	top.content.activ_tab=tab;
-	parent.edbody.we_cmd(\'switchPage\',tab);
+	parent.edbody.we_cmd("switchPage",tab);
 }' .
 					$extraJS));
 	}

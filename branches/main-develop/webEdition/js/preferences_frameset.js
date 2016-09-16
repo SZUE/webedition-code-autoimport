@@ -24,6 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 var prefData = WE().util.getDynamicVar(document, 'loadVarPreferences_frameset', 'data-prefData');
+var weTabs = new (WE().layout.we_tabs)(document, window);
 
 var countSaveTrys = 0;
 function we_save() {
