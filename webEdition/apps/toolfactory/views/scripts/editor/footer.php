@@ -31,36 +31,33 @@ $page = we_ui_layout_HTMLPage::getInstance();
 
 
 $saveButton = new we_ui_controls_Button(
-	array(
-	'text' => $translate->_('Save'),
+	['text' => $translate->_('Save'),
 	'onClick' => 'weCmdController.fire({cmdName: "app_toolfactory_save"});',
 	'type' => 'onClick',
 	'width' => 110,
 	'disabled' => !permissionhandler::hasPerm('EDIT_APP_TOOLFACTORY'),
 	'style' => 'margin:9px 0 0 15px;'
-	)
+ ]
 );
 $unpublishButton = new we_ui_controls_Button(
-	array(
-	'text' => $translate->_('Unpublish'),
+	['text' => $translate->_('Unpublish'),
 	'onClick' => 'weCmdController.fire({cmdName: "app_toolfactory_unpublish", ignoreHot: "1", followCmd : {cmdName: "app_toolfactory_open",id: "' . $this->model->classname . '", ignoreHot: "1"}})',
 	'type' => 'onClick',
 	'width' => 110,
 	'disabled' => !permissionhandler::hasPerm('PUBLISH_APP_TOOLFACTORY'),
 	'style' => 'margin:9px 0 0 15px;'
-	)
+ ]
 );
 $publishButton = new we_ui_controls_Button(
-	array(
-	'text' => $translate->_('Publish'),
+	['text' => $translate->_('Publish'),
 	'onClick' => 'weCmdController.fire({cmdName: "app_toolfactory_publish", ignoreHot: "1", followCmd : {cmdName: "app_toolfactory_open",id: "' . $this->model->classname . '", ignoreHot: "1"}})',
 	'type' => 'onClick',
 	'width' => 110,
 	'disabled' => !permissionhandler::hasPerm('PUBLISH_APP_TOOLFACTORY'),
 	'style' => 'margin:9px 0 0 15px;'
-	)
+ ]
 );
-$page->setBodyAttributes(array('class' => 'weEditorFooter'));
+$page->setBodyAttributes(['class' => 'weEditorFooter']);
 
 $table = new we_ui_layout_Table;
 if(empty($this->model->ID)){
