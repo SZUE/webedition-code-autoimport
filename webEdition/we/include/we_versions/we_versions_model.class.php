@@ -65,7 +65,7 @@ class we_versions_model extends we_search_modelBase{
 	/**
 	 * @var string: gives the order
 	 */
-	protected $OrderVersionSearch = 'ID';
+	protected $OrderVersionSearch = 'ID DESC';
 	protected $searchTablesVersionSearch = [];
 
 	/**

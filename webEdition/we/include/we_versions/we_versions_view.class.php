@@ -34,7 +34,7 @@ class we_versions_view{
 	public function __construct($model = null){
 
 		$this->db = new DB_WE();
-		$this->Model = $model ? : new we_versions_model();
+		$this->Model = $model ?: new we_versions_model();
 		$this->version = new we_versions_version();
 		$this->searchclass = new we_versions_search($this);
 	}
@@ -69,14 +69,21 @@ var doc={
 var searchClass={
 	scrollHeight:' . $h . ',
 	anzahl:' . intval($this->Model->getProperty('currentAnzahl')) . ',
-	searchFields: "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, ['class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);']))) . '",
-	locationFields:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
-	locationFieldsDate:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, ['class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
-	locationFieldsText:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, ['class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
-	search:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
+	searchFields: "' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('searchFields[__we_new_id__]', $this->searchclass->getFields(), 1, "", false, [
+							'class' => "defaultfont", 'id' => "searchFields[__we_new_id__]", 'onchange' => 'changeit(this.value, __we_new_id__);']))) . '",
+	locationFields:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation(), 1, "", false, ['class' => "defaultfont",
+							'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
+	locationFieldsDate:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('date'), 1, "", false, [
+							'class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
+	locationFieldsText:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('location[__we_new_id__]', we_search_search::getLocation('text'), 1, "", false, [
+							'class' => "defaultfont", 'disabled' => 'disabled', 'id' => "location[__we_new_id__]"]))) . '",
+	search:"' . str_replace("\n", '\n', addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getModFields(), 1, "", false, ['class' => "defaultfont",
+							'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
 	trash:\'' . we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(__we_row__)") . '\',
-	searchUsers:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
-	searchStats:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, ['class' => "defaultfont", 'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
+	searchUsers:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getUsers(), 1, "", false, ['class' => "defaultfont",
+							'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
+	searchStats:"' . str_replace("\n", "\\n", addslashes(we_html_tools::htmlSelect('search[__we_new_id__]', $this->searchclass->getStats(), 1, "", false, ['class' => "defaultfont",
+							'style' => "width:190px;", 'id' => "search[__we_new_id__]"]))) . '",
 };') . we_html_element::jsScript(JS_DIR . 'versions_view.js');
 	}
 
@@ -112,24 +119,28 @@ var searchClass={
 		for($i = 0; $i < count($currentSearchFields); $i++){
 
 			$button = we_html_button::create_button(we_html_button::TRASH, "javascript:delRow(" . $i . ");", true, "", "", "", "", false);
-			$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+			$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array(
+					'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 			$locationDisabled = '';
 			$handle = '';
 
 			if(isset($currentSearchFields[$i])){
 				switch($currentSearchFields[$i]){
 					case "allModsIn":
-						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getModFields(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array(
+								'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 						$locationDisabled = 'disabled';
 						$currentLocation[$i] = 'IS';
 						break;
 					case "modifierID":
-						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getUsers(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getUsers(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array(
+								'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 						$locationDisabled = 'disabled';
 						$currentLocation[$i] = 'IS';
 						break;
 					case "status":
-						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getStats(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array('class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
+						$search = we_html_tools::htmlSelect("search[" . $i . "]", $this->searchclass->getStats(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ""), false, array(
+								'class' => "defaultfont", 'style' => "width:190px;", 'id' => 'search[' . $i . ']'));
 						$locationDisabled = 'disabled';
 						$currentLocation[$i] = 'IS';
 						break;
@@ -142,9 +153,11 @@ var searchClass={
 
 			$out .= '
 				<tr id="filterRow_' . $i . '">
-					<td>' . we_html_tools::htmlSelect("searchFields[" . $i . "]", $this->searchclass->getFields(), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
+					<td>' . we_html_tools::htmlSelect("searchFields[" . $i . "]", $this->searchclass->getFields(), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ""), false, array(
+					'class' => "defaultfont", 'id' => 'searchFields[' . $i . ']', 'onchange' => 'changeit(this.value, ' . $i . ');')) . '</td>
 					<td id="td_location[' . $i . ']">' .
-				we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($currentLocation[$i]) ? $currentLocation[$i] : ""), false, array('class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
+				we_html_tools::htmlSelect("location[" . $i . "]", we_search_search::getLocation($handle), 1, (isset($currentLocation[$i]) ? $currentLocation[$i] : ""), false, array(
+					'class' => "defaultfont", $locationDisabled => $locationDisabled, 'id' => 'location[' . $i . ']')) . '</td>
 					<td id="td_search[' . $i . ']">' . $search . '</td>
 					<td id="td_delButton[' . $i . ']">' . $button . '</td>
 					<td id="td_hiddenLocation[' . $i . ']">' . (!$locationDisabled ? '' : we_html_element::htmlHidden('location[' . $i . ']', $currentLocation[$i])) . '</td>
@@ -172,9 +185,7 @@ var searchClass={
 	 * @return string html-Code
 	 */
 	public function getParameterTop($foundItems){
-		$anzahl_all = array(
-			10 => 10, 25 => 25, 50 => 50, 100 => 100
-		);
+		$anzahl_all = [10 => 10, 25 => 25, 50 => 50, 100 => 100];
 
 		$order = $this->Model->getProperty('currentOrder');
 		$mode = $this->Model->mode;
@@ -238,16 +249,16 @@ var searchClass={
 
 		$out = '<table class="default"><tr><td id="zurueck">' .
 			($searchstart ?
-				we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
-				we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)) .
+			we_html_button::create_button(we_html_button::BACK, "javascript:back(" . $anzahl . ");") :
+			we_html_button::create_button(we_html_button::BACK, "", true, 100, 22, "", "", true)) .
 			'</td><td class="defaultfont"><b>' . (($we_search_anzahl) ? $searchstart + 1 : 0) . '-' .
 			(($we_search_anzahl - $searchstart) < $anzahl ?
-				$we_search_anzahl :
-				$searchstart + $anzahl) .
+			$we_search_anzahl :
+			$searchstart + $anzahl) .
 			' ' . g_l('global', '[from]') . ' ' . $we_search_anzahl . '</b></td><td id="weiter">' .
 			(($searchstart + $anzahl) < $we_search_anzahl ?
-				we_html_button::create_button(we_html_button::NEXT, "javascript:next(" . $anzahl . ");") : //bt_back
-				we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
+			we_html_button::create_button(we_html_button::NEXT, "javascript:next(" . $anzahl . ");") : //bt_back
+			we_html_button::create_button(we_html_button::NEXT, "", true, 100, 22, "", "", true)) .
 			'</td><td>';
 
 		$pages = [];
@@ -309,11 +320,8 @@ var searchClass={
 				});
 			} else {
 				$sortText = $sortierung[0];
-				$sortHow = SORT_ASC;
 				$sort1 = [];
-				if(isset($sortierung[1])){
-					$sortHow = SORT_DESC;
-				}
+				$sortHow = (isset($sortierung[1]) ? SORT_DESC : SORT_ASC);
 				foreach($_Result as $key => $row){
 					$sort1[$key] = strtolower($row[$sortText]);
 				}
@@ -342,16 +350,16 @@ var searchClass={
 				array('dat' => '<nobr>' . we_base_util::shortenPath($user, 30) . '</nobr>'),
 				array('dat' => '<nobr>' . ($versions[$f]["timestamp"] ? date("d.m.y - H:i:s", $versions[$f]['timestamp']) : "-") . ' </nobr>'),
 				array('dat' => (($modificationText != '') ? $modificationText : '') .
-					($fromScheduler ? : '') .
-					($fromImport ? : '') .
-					($resetFromVersion ? : '')),
+					($fromScheduler ?: '') .
+					($fromImport ?: '') .
+					($resetFromVersion ?: '')),
 				array('dat' => (permissionhandler::hasPerm("ADMINISTRATOR")) ? we_html_forms::checkbox($versions[$f]["ID"], 0, "deleteVersion", "", false, "defaultfont", "") : ""),
 				array('dat' => "<span class='printShow'>" . we_html_button::create_button('reset', "javascript:resetVersion('" . $versions[$f]["ID"] . "','" . $versions[$f]["documentID"] . "','" . $versions[$f]["version"] . "','" . $versions[$f]["documentTable"] . "');", true, 100, 22, "", "", $disabledReset) . "</span>"),
 				array('dat' => "<span class='printShow'>" . we_html_button::create_button(we_html_button::PREVIEW, "javascript:previewVersion('" . $table . "'," . $id . "," . $versions[$f]["version"] . ");") . "</span>"),
 				array('dat' => "<span class='printShow'>" .
 					(($versions[$f]["ContentType"] == we_base_ContentTypes::WEDOCUMENT || $versions[$f]["ContentType"] == we_base_ContentTypes::HTML || $versions[$f]["ContentType"] === we_base_ContentTypes::OBJECT_FILE) ?
-						we_html_forms::checkbox($versions[$f]["ID"], 0, "publishVersion_" . $versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
-						'') .
+					we_html_forms::checkbox($versions[$f]["ID"], 0, "publishVersion_" . $versions[$f]["ID"], g_l('versions', '[publishIfReset]'), false, "middlefont", "") :
+					'') .
 					'</span>'),
 			);
 		}
@@ -365,17 +373,17 @@ var searchClass={
 	 */
 	public function makeHeadLines(){
 		return [
-			['dat' => '<span onclick="setOrder(\'version\');">' . g_l('versions', '[version]') . ' <span id="version" >' . $this->getSortImage('version') . '</span></span>'],
+				['dat' => '<span onclick="setOrder(\'version\');">' . g_l('versions', '[version]') . ' <span id="version" >' . $this->getSortImage('version') . '</span></span>'],
 			['dat' => '<span onclick="setOrder(\'modifierID\');">' . g_l('versions', '[user]') . ' <span id="modifierID" >' . $this->getSortImage('modifierID') . '</span></span>'],
 			['dat' => '<span onclick="setOrder(\'timestamp\');">' . g_l('versions', '[modTime]') . '</a> <span id="timestamp" >' . $this->getSortImage('timestamp') . '</span></span>'],
 			['dat' => g_l('versions', '[modifications]')],
-			['dat' => (permissionhandler::hasPerm('ADMINISTRATOR') ? '<div id="deleteButton">' .
-					we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
+				['dat' => (permissionhandler::hasPerm('ADMINISTRATOR') ? '<div id="deleteButton">' .
+				we_html_button::create_button(we_html_button::TRASH, "javascript:deleteVers();") . '</div>' : '') .
 				we_html_forms::checkbox(1, 0, "deleteAllVersions", g_l('versions', '[mark]'), false, "middlefont", "checkAll();")],
-			['dat' => ''],
-			['dat' => ''],
-			['dat' => ''],
-			['dat' => ''],
+				['dat' => ''],
+				['dat' => ''],
+				['dat' => ''],
+				['dat' => ''],
 		];
 	}
 
