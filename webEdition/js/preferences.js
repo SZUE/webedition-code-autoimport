@@ -30,7 +30,7 @@ var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?";
 mainXhtmlFields = ["setXhtml_remove_wrong", "setXhtml_show_wrong"];
 showXhtmlFields = ["setXhtml_show_wrong_text", "setXhtml_show_wrong_js", "setXhtml_show_wrong_error_log"];
 
-WE().util.loadConsts("g_l.prefs");
+WE().util.loadConsts(document, "g_l.prefs");
 
 function checkAllRevert() {
 	var checkbox = document.getElementById("version_all");

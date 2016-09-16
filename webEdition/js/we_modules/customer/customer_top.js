@@ -28,7 +28,7 @@ var activ_tab = 0;
 var hot = 0;
 var scrollToVal = 0;
 
-WE().util.loadConsts("g_l.customer");
+WE().util.loadConsts(document, "g_l.customer");
 
 function setHot() {
 	hot = 1;

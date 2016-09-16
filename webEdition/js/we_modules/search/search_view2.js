@@ -28,7 +28,7 @@
 var activ_tab = 1;
 var hot = 0;
 
-WE().util.loadConsts("g_l.weSearch");
+WE().util.loadConsts(document, "g_l.weSearch");
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));

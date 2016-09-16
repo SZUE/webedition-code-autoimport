@@ -110,7 +110,8 @@ class we_customer_settings{
 		'key', 'set', 'enum', 'default', 'where', 'group', 'by', 'order', 'add', 'column', 'table', 'index', 'constraint', 'primary',
 		'unique', 'foreign', 'change', 'modify', 'drop', 'disable', 'enable', 'character', 'collate', 'first', 'rename',
 		'fulltext', 'quick', 'using', 'truncate',
-		'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied', 'autologin', 'autologindenied'
+		'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied', 'autologin',
+		'autologindenied'
 	);
 	public $treeTextFormatSQL = '';
 	public $formatFields = [];
@@ -205,10 +206,10 @@ class we_customer_settings{
 
 	function save(){
 		//FIXME: make Fieldadds more fields in DB
-		$this->properties['FieldAdds'] = we_serialize($this->FieldAdds);
-		$this->properties['SortView'] = we_serialize($this->SortView);
+		$this->properties['FieldAdds'] = we_serialize($this->FieldAdds, SERIALIZE_JSON);
+		$this->properties['SortView'] = we_serialize($this->SortView, SERIALIZE_JSON);
 		$this->properties['EditSort'] = $this->EditSort;
-		$this->properties['Prefs'] = we_serialize($this->Prefs);
+		$this->properties['Prefs'] = we_serialize($this->Prefs, SERIALIZE_JSON);
 
 		foreach($this->properties as $key => $value){
 			$this->db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="webadmin",pref_value="' . $this->db->escape($value) . '",pref_name="' . $key . '"');

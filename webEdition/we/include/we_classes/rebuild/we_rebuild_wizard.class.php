@@ -188,7 +188,7 @@ abstract class we_rebuild_wizard{
 
 
 		$js = '
-			WE().util.loadConsts("g_l.rebuild");
+			WE().util.loadConsts(document, "g_l.rebuild");
 WE().session.rebuild={};
 window.onload = function(){top.focus();}
 set_button_state(' . ($allbutdisabled ? 1 : 0) . ');

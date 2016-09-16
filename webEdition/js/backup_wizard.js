@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-WE().util.loadConsts("g_l.backupWizard");
+WE().util.loadConsts(document, "g_l.backupWizard");
 var backup = WE().util.getDynamicVar(document, 'loadVarBackup_wizard', 'data-backup');
 
 function we_submitForm(target, url) {

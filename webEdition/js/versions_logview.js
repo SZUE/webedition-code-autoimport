@@ -23,7 +23,7 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-WE().util.loadConsts("g_l.versions");
+WE().util.loadConsts(document, "g_l.versions");
 var logView = WE().util.getDynamicVar(document, 'loadVarVersions_logview', 'data-logView');
 
 var currentId = 0;

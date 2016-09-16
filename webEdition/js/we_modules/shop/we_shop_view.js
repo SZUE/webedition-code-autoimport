@@ -29,7 +29,7 @@ var get_focus = 1;
 var activ_tab = 1;
 var scrollToVal = 0;
 
-WE().util.loadConsts("g_l.shop");
+WE().util.loadConsts(document, "g_l.shop");
 var viewData = WE().util.getDynamicVar(document, 'loadVarShop_view', 'data-viewData');
 
 function doUnload() {

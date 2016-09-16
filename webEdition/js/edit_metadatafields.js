@@ -26,7 +26,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-WE().util.loadConsts("g_l.metadatafields");
+WE().util.loadConsts(document, "g_l.metadatafields");
 var phpdata = WE().util.getDynamicVar(document, 'loadVarEdit_metadatafields', 'data-phpdata');
 
 function togglePropositionTable(sel, index) {

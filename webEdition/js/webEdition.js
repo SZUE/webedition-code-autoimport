@@ -514,7 +514,7 @@ var WebEdition = {
 		weCmdEnc: function (inp) {
 			return 'WECMDENC_' + this.Base64.encode(inp);
 		},
-		loadConsts: function (check) {
+		loadConsts: function (doc, check) {
 			var cur = WE().consts;
 			var found = true;
 			var what = check.split(".");
@@ -529,7 +529,7 @@ var WebEdition = {
 				return;
 			}
 			//load consts
-			var fileref = document.createElement('script');
+			var fileref = doc.createElement('script');
 			fileref.setAttribute("src", WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=loadJSConsts&we_cmd[1]=" + check);
 			document.getElementsByTagName("head")[0].appendChild(fileref);
 		},
@@ -552,7 +552,7 @@ var WebEdition = {
 WebEdition.consts = WebEdition.util.getDynamicVar(document, 'loadWEData', 'data-consts');
 WebEdition.session = WebEdition.util.getDynamicVar(document, 'loadWEData', 'data-session')
 //finally load language files
-WE().util.loadConsts('g_l.main');
+WE().util.loadConsts(document, 'g_l.main');
 
 var regular_logout = false;
 var widthBeforeDeleteMode = 0;

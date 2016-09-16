@@ -25,7 +25,7 @@
  * @subpackage we_ui_layout
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
-WE().util.loadConsts("g_l.users");
+WE().util.loadConsts(document, "g_l.users");
 
 var loaded = 0;
 var hot = 0;

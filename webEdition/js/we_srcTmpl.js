@@ -24,7 +24,7 @@
 
 /* global _EditorFrame, WE */
 var doc = WE().util.getDynamicVar(document, 'loadVarSrcTmpl', 'data-doc');
-WE().util.loadConsts("tagWizzard");
+WE().util.loadConsts(document, "tagWizzard");
 
 var editor = null;
 var weIsTextEditor = true;

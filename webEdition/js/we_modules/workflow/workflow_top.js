@@ -26,7 +26,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-WE().util.loadConsts("g_l.workflow");
+WE().util.loadConsts(document, "g_l.workflow");
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);

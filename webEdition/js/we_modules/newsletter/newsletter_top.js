@@ -26,7 +26,7 @@
 
 var get_focus = 1;
 var hot = 0;
-WE().util.loadConsts("g_l.newsletter");
+WE().util.loadConsts(document, "g_l.newsletter");
 
 function setHot() {
 	hot = 1;

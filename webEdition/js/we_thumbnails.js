@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-WE().util.loadConsts("g_l.thumbnail");
+WE().util.loadConsts(document, "g_l.thumbnail");
 var thumbnails = WE().util.getDynamicVar(document, 'loadVarThumbnails', 'data-thumbnails');
 
 function init() {

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-WE().util.loadConsts("g_l.fileselector");
+WE().util.loadConsts(document, "g_l.fileselector");
 var fileSelect = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-selector');
 
 var name_ord = 0;

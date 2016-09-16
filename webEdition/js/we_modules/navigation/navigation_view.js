@@ -27,7 +27,7 @@ var activ_tab = 1;
 var hot = 0;
 var makeNewDoc = false;
 
-WE().util.loadConsts("g_l.navigation");
+WE().util.loadConsts(document, "g_l.navigation");
 
 function mark() {
 	hot = 1;

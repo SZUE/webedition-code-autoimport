@@ -23,8 +23,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 var fileSelect = WE().util.getDynamicVar(document, 'loadVarSelectors', 'data-selector');
-WE().util.loadConsts("g_l.fileselector");
-WE().util.loadConsts("selectors");
+WE().util.loadConsts(document, "g_l.fileselector");
+WE().util.loadConsts(document, "selectors");
 
 var entries = [];
 var clickCount = 0;

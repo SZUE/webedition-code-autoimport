@@ -125,7 +125,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(' . $pid . ',\'roo
 	protected function getHTMLEditorHeader($mode = 0){
 		$extraHead = we_html_element::jsElement('
 WE().consts.dirs.WE_MESSAGING_MODULE_DIR="' . WE_MESSAGING_MODULE_DIR . '";
-WE().util.loadConsts("g_l.messaging");
+WE().util.loadConsts(document, "g_l.messaging");
 function doSearch() {
 	top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=messaging&we_transaction=' . $this->transaction . '&pnt=cmd&mcmd=search_messages&searchterm=" + document.we_messaging_search.messaging_search_keyword.value;
 }

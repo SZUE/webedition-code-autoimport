@@ -27,7 +27,7 @@
  */
 
 var hot = 0;
-WE().util.loadConsts("g_l.banner");
+WE().util.loadConsts(document, "g_l.banner");
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
