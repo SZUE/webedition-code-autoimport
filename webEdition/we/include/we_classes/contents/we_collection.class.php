@@ -322,6 +322,7 @@ class we_collection extends we_root{
 	}
 
 	function formCollection(){
+// used to deliver html
 		$recursive = we_html_forms::checkboxWithHidden($this->InsertRecursive, 'we_' . $GLOBALS['we_doc']->Name . '_InsertRecursive', g_l('weClass', '[collection][insertRecursive]')) .
 			we_html_element::htmlHidden('check_we_' . $GLOBALS['we_doc']->Name . '_IsDuplicates', $this->IsDuplicates);
 		$slider = '<div id="sliderDiv" style="display:' . ($this->view === 'grid' ? 'block' : 'none') . '"><input type="range" class="collection-Slider" name="zoom" min="1" step="1" max="5" value="' . (7 - $this->itemsPerRow) . '" onchange="weCollectionEdit.doZoomGrid(this.value);"/></div>';
@@ -344,13 +345,14 @@ class we_collection extends we_root{
 		$toolbar->setCol(0, 6, ['class' => 'toolbarImport'], $btnImport);
 		$toolbar->setCol(0, 7, ['class' => 'toolbarNum weMultiIconBoxHeadline'], g_l('weClass', '[collection][number]') . ': <span id="numSpan"><i class="fa fa-2x fa-spinner fa-pulse"></i></span>');
 
-		$items = $this->getValidCollection(false, true, true);
-
 		$yuiSuggest = &weSuggest::getInstance();
-		$index = 0;
 		$jsItemsArr = $rows = $divs = '';
-		$jsStorageItems = "\n";
 
+
+// used to fill dynamic data to data-attrib
+		$items = $this->getValidCollection(false, true, true);
+		$itemStorage = [];
+		$jsStorageItems = "\n";
 		foreach($items as $item){
 			//FIXME: set icon in getValidCollection() and make only what's really needed
 			if(is_numeric($item['id']) && $item['id'] !== -1 && $item['ct'] === 'image/*'){
@@ -361,19 +363,13 @@ class we_collection extends we_root{
 				$item['icon'] = self::getHtmlIconThmubnail($file, 400, 400);
 			}
 
-			/*
-			  $index++;
-			  if($this->view === 'grid'){
-			  $divs .= $this->makeGridItem($item, $index, count($items));
-			  } else {
-			  $rows .= $this->makeListItem($item, $index, $yuiSuggest, count($items), true);
-			  }
-			 *
-			 */
-			$jsStorageItems .= $this->getJsStrorageItem($item, ++$index);
+			$jsStorageItems .= $this->getJsStrorageItem($item);
+			$itemStorage['item_' . $item['id']] = $item;
+
 			$jsItemsArr .= $item['id'] . ',';
 		}
 
+// used to write "static" js
 		// write "blank" collection row to js
 		$placeholders = [
 			'id' => '##ID##',
@@ -390,13 +386,11 @@ class we_collection extends we_root{
 			]
 		];
 
+// used to make dynamic js
 		$this->jsFormCollection .= "
 weCollectionEdit.isDragAndDrop = " . (self::isDragAndDrop() ? 1 : 0) . ";
 weCollectionEdit.gridItemDimension = " . json_encode($this->gridItemDimensions[$this->itemsPerRow]) . ";
 weCollectionEdit.maxIndex = " . count($items) . ";
-weCollectionEdit.blankItem.list = '" . strtr($this->makeListItem($placeholders, '##INDEX##', $yuiSuggest, 1, true, true), ["'" => "\'", "\r" => '', "\n" => '']) . "';
-weCollectionEdit.blankItem.listMinimal = '" . strtr($this->makeListItemMinimal($placeholders, '##INDEX##', $yuiSuggest, 1, true, true), ["'" => "\'", "\r" => '', "\n" => '']) . "';
-weCollectionEdit.blankItem.grid = '" . strtr($this->makeGridItem($placeholders, '##INDEX##'), ["'" => "\'", "\r" => '', "\n" => '']) . "';
 weCollectionEdit.collectionArr = [" . rtrim($jsItemsArr, ',') . "];
 weCollectionEdit.view = '" . $this->view . "';
 weCollectionEdit.viewSub = '" . ($this->viewSub === 'minimal' ? 'minimal' : 'broad') . "';
@@ -406,11 +400,12 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 " .
 			$jsStorageItems;
 
+// used to make some lang-entries
 		$longtext = g_l('weClass', '[collection][long_description]');
 		$ddtext = self::isDragAndDrop() ? g_l('weClass', '[collection][dd_ok]') : (we_base_browserDetect::isOpera() ? 'Drag n\' drop is not yet optimized for Opera 12: temporarily disabled!' : g_l('weClass', '[collection][dd_nok]'));
 
 
-		return we_html_element::jsElement($this->jsFormCollection) .
+		return we_html_element::jsElement($this->jsFormCollection) . // remove when new functions work
 			we_html_element::htmlHiddens(['we_' . $this->Name . '_view' => $this->view,
 				'we_' . $this->Name . '_viewSub' => $this->viewSub,
 				'we_' . $this->Name . '_itemsPerRow' => $this->itemsPerRow,
@@ -423,35 +418,59 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			we_html_element::htmlDiv(['id' => 'content_div_grid', 'class' => 'collection-content', 'style' => 'display:' . ($this->view === 'grid' ? 'inline-block' : 'none')]);
 	}
 
-	private function makeListItem($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
-		$textname = 'we_' . $this->Name . '_ItemName_' . $index;
-		$idname = 'we_' . $this->Name . '_ItemID_' . $index;
+	public static function getJSConsts(){
+		$placeholders = [
+			'index' => '##INDEX##',
+			'id' => '##ID##',
+			'path' => '##PATH##',
+			'name' => '##NAME##',
+			'type' => '##CT##',
+			'class' => '##CLASS##',
+			'icon' => ['url' => '##ICONURL##', 'sizeX' => 200, 'sizeY' => 200],
+			'remTable' => '##REMTABLE##',
+			'remCT' => '##REMCT##',
+			'defaultDir' => '##DFAULTDIR##',
+			'elements' => [
+				'attrib_title' => ['Dat' => '##ATTRIB_TITLE##', 'state' => '##S_ATTRIB_TITLE##', 'write' => '##W_ATTRIB_TITLE##'],
+				'attrib_alt' => ['Dat' => '##ATTRIB_ALT##', 'state' => '##S_ATTRIB_ALT##', 'write' => '##W_ATTRIB_ALT##'],
+				'meta_title' => ['Dat' => '##META_TITLE##', 'state' => '##S_META_TITLE##', 'write' => '##W_META_TITLE##'],
+				'meta_description' => ['Dat' => '##META_DESC##', 'state' => '##S_META_DESC##', 'write' => '##W_META_DESC##'],
+				'custom' => ['Dat' => '##CUSTOM##']
+			]
+		];
+
+		$yuiSuggest = &weSuggest::getInstance();
+		$textname = 'we_' . $placeholders['name'] . '_ItemName_' . $placeholders['index'];
+		$idname = 'we_' . $placeholders['name'] . '_ItemID_' . $placeholders['index'];
 		$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmd2 = "document.we_form.elements['" . $textname . "'].value";
-		//$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);opener.weCollectionEdit.reindexAndRetrieveCollection();";
-		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{opener._EditorFrame.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(" . $index . ", opener._EditorFrame.getContentEditor().document.we_form.elements['" . $idname . "'].value);} catch(e){}";
+		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{opener._EditorFrame.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(" . $placeholders['index'] . ", opener._EditorFrame.getContentEditor().document.we_form.elements['" . $idname . "'].value);} catch(e){}";
 
+		return 'WE().consts.collection={
+			blankItem : {
+				list : "' . strtr(self::makeListItem($placeholders, '##INDEX##', $yuiSuggest, 1, true, true), ['"' => '\"', "\r" => '', "\n" => '']) . '",
+				grid : \'' . strtr(self::makeGridItem($placeholders, '##INDEX##'), ["'" => "\'", "\r" => '', "\n" => '']) . '\'
+			},
+			selectorCmds : ["' . $wecmd1 . '","' . $wecmd2 . '","' . $wecmd3 . '"]
+		};';
+	}
 
-		if($noSelectorAutoInit){
-			$this->jsFormCollection .= 'weCollectionEdit.selectorCmds = ["' . $wecmd1 . '","' . $wecmd2 . '","' . $wecmd3 . '"];';
-			$wecmdenc1 = '##CMD1##';
-			$wecmdenc2 = '##CMD2##';
-			$wecmdenc3 = '##CMD3##';
-		} else {
-			$wecmdenc1 = we_base_request::encCmd($wecmd1);
-			$wecmdenc2 = we_base_request::encCmd($wecmd2);
-			$wecmdenc3 = we_base_request::encCmd($wecmd3);
-		}
+	private static function makeListItem($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
+		$textname = 'we_' . $item['name'] . '_ItemName_' . $item['index'];
+		$idname = 'we_' . $item['name'] . '_ItemID_' . $item['index'];
+		$wecmdenc1 = '##CMD1##';
+		$wecmdenc2 = '##CMD2##';
+		$wecmdenc3 = '##CMD3##';
 
-		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $this->DefaultDir . "),'" . addTblPrefix($this->getRemTable()) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
+		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $item['defaultDir'] . "),'" . $item['remTable'] . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . $item['remCT'] . "'," . (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $item['index']);
 		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', "javascript:weCollectionEdit.doClickAddItems(this);", true, 62, 22, '', '', false, false, '', false, '', 'btn_addFromTree');
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22, '', '', ($item['id'] === -1), false, '', false, '', 'btn_edit');
 
-		$yuiSuggest->setTable(addTblPrefix($this->getRemTable()));
-		$yuiSuggest->setContentType('folder,' . trim($this->remCT, ','));
+		$yuiSuggest->setTable($item['remTable']);
+		$yuiSuggest->setContentType('folder,' . $item['remCT']);
 		$yuiSuggest->setCheckFieldValue(false);
 		$yuiSuggest->setSelector(weSuggest::DocSelector);
-		$yuiSuggest->setAcId('Item_' . $index);
+		$yuiSuggest->setAcId('Item_' . $item['index']);
 		$yuiSuggest->setNoAutoInit($noAcAutoInit);
 		$yuiSuggest->setInput($textname, $item['path'], ['title' => $item['path'] . ' (ID: ' . $item['id'] . ')']);
 		$yuiSuggest->setResult($idname, $item['id']);
@@ -465,17 +484,17 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		$rowControlls = we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);weCollectionEdit.doClickAdd(this);", true, 50, 22) .
 			//$rowControllsArr[] = we_html_tools::htmlSelect('numselect_' . $index, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), 1, '', false, array('id' => 'numselect_' . $index));
-			we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($index === 1 ? true : false), false, '_' . $index, false, '', 'btn_up') .
-			we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index, false, '', 'btn_down') .
-			we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($index === $itemsNum ? true : false), false, '_' . $index);
+			we_html_button::create_button(we_html_button::DIRUP, 'javascript:weCollectionEdit.doClickUp(this);', true, 0, 0, '', '', ($item['index'] === 1 ? true : false), false, '_' . $item['index'], false, '', 'btn_up') .
+			we_html_button::create_button(we_html_button::DIRDOWN, 'javascript:weCollectionEdit.doClickDown(this);', true, 0, 0, '', '', ($item['index'] === $itemsNum ? true : false), false, '_' . $item['index'], false, '', 'btn_down') .
+			we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', 'javascript:weCollectionEdit.doClickDelete(this)', true, 0, 0, '', '', ($item['index'] === $itemsNum ? true : false), false, '_' . $item['index']);
 
 		$rowHtml = new we_html_table(['class' => $item['class'], 'draggable' => 'false'], 1, 4);
-		$imgDiv = we_html_element::htmlDiv(['id' => 'previweDiv_' . $index,
+		$imgDiv = we_html_element::htmlDiv(['id' => 'previweDiv_' . $item['index'],
 				'class' => 'previewDiv',
 				'style' => "background-image:url('" . $item['icon']['url'] . "');",
 				'title' => $item['path'] . ' (ID: ' . $item['id'] . ')'
 				], we_html_element::htmlDiv(['class' => 'divBtnSelect'], $selectButton));
-		$rowHtml->setCol(0, 0, ['class' => 'colNum weMultiIconBoxHeadline'], '<span class="list_label" id="label_' . $index . '">' . $index . '</span>');
+		$rowHtml->setCol(0, 0, ['class' => 'colNum weMultiIconBoxHeadline'], '<span class="list_label" id="label_' . $item['index'] . '">' . $item['index'] . '</span>');
 		$rowHtml->setCol(0, 1, ['class' => 'colPreview'], $imgDiv);
 
 		$rowInnerTable = new we_html_table(['draggable' => 'false'], 2, 1);
@@ -500,27 +519,15 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 		$rowHtml->setCol(0, 2, ['class' => 'colContent'], $rowInnerTable->getHtml());
 		$rowHtml->setCol(0, 3, ['class' => 'colControls weMultiIconBoxHeadline'], $rowControlls);
 
-		return we_html_element::htmlDiv(['id' => 'list_item_' . $index, 'class' => 'listItem', 'draggable' => 'false'], $rowHtml->getHtml());
+		return we_html_element::htmlDiv(['id' => 'list_item_' . $item['index'], 'class' => 'listItem', 'draggable' => 'false'], $rowHtml->getHtml());
 	}
 
 	private function makeListItemMinimal($item, $index, &$yuiSuggest, $itemsNum = 0, $noAcAutoInit = false, $noSelectorAutoInit = false){
 		$textname = 'we_' . $this->Name . '_ItemName_' . $index;
 		$idname = 'we_' . $this->Name . '_ItemID_' . $index;
-		$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$wecmd2 = "document.we_form.elements['" . $textname . "'].value";
-		//$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);opener.weCollectionEdit.reindexAndRetrieveCollection();";
-		$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{opener._EditorFrame.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(" . $index . ", opener._EditorFrame.getContentEditor().document.we_form.elements['" . $idname . "'].value);} catch(e){}";
-
-		if($noSelectorAutoInit){
-			$this->jsFormCollection .= 'weCollectionEdit.selectorCmds = ["' . $wecmd1 . '","' . $wecmd2 . '","' . $wecmd3 . '"];';
-			$wecmdenc1 = '##CMD1##';
-			$wecmdenc2 = '##CMD2##';
-			$wecmdenc3 = '##CMD3##';
-		} else {
-			$wecmdenc1 = we_base_request::encCmd($wecmd1);
-			$wecmdenc2 = we_base_request::encCmd($wecmd2);
-			$wecmdenc3 = we_base_request::encCmd($wecmd3);
-		}
+		$wecmdenc1 = '##CMD1##';
+		$wecmdenc2 = '##CMD2##';
+		$wecmdenc3 = '##CMD3##';
 
 		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $this->DefaultDir . "),'" . addTblPrefix($this->getRemTable()) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "'," . (permissionhandler::hasPerm('CAN_SELECT_OTHER_USERS_OBJECTS') ? 0 : 1) . ")", true, 52, 0, '', '', false, false, '_' . $index);
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22, '', '', ($item['id'] === -1), false, '', false, '', 'btn_edit');
@@ -562,6 +569,7 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 	private function makeGridItem($item, $index){ // TODO: maybe write only blank item and let JS render items oninit from storage?
 		$idname = 'collectionItem_we_id_' . $index;
+/*
 		//$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
 		$wecmd1 = "WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form.elements['" . $idname . "'].value";
 		$wecmd2 = "";
@@ -583,16 +591,21 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 			default:
 				$wecmdenc1 = $wecmdenc2 = $wecmdenc3 = '';
 		}
+*/
+//				$this->jsFormCollection .= "\n" . 'weCollectionEdit.gridBtnCmds = ["' . $wecmd1 . '","' . $wecmd2 . '","' . $wecmd3 . '"];';
+				$wecmdenc1 = '##CMD1##';
+				$wecmdenc2 = '';
+				$wecmdenc3 = '##CMD3##';
 
 		$trashButton = we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', "javascript:weCollectionEdit.doClickDelete(this);", true, 27, 22);
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22);
-		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $this->DefaultDir . "),'" . addTblPrefix($this->getRemTable()) . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . trim($this->remCT, ',') . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
+		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $item['defaultDir'] . "),'" . $item['remTable'] . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . $item['remCT'] . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
 
 		// TODO: make fn for attribs: same structure as in list
 		$toolbar = we_html_element::htmlDiv(array('class' => 'toolbarLeft weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>') .
 			we_html_element::htmlDiv(array(
 				'class' => 'toolbarAttribs',
-				'style' => 'display:' . ($this->itemsPerRow > 5 ? 'none' : 'block')
+				'style' => 'display: block'
 				), we_html_element::htmlDiv(array(
 					'class' => 'toolbarAttr',
 					'title' => $item['elements']['attrib_title']['Dat']
@@ -618,13 +631,13 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 		return we_html_element::htmlDiv(array(
 				//TODO: set dimensions by JS
-				'style' => 'width:' . $this->gridItemDimensions[$this->itemsPerRow]['item'] . 'px;height:' . $this->gridItemDimensions[$this->itemsPerRow]['item'] . 'px;',
+				'style' => 'width:200px;height:200px;',
 				'id' => 'grid_item_' . $index,
 				'class' => 'gridItem'
 				), we_html_element::htmlDiv(array(
 					'title' => $item['path'] . ' (ID: ' . $item['id'] . ')',
 					'class' => 'divContent',
-					'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : '') . (max($item['icon']['sizeX'], $item['icon']['sizeY']) < $this->gridItemDimensions[$this->itemsPerRow]['item'] ? 'background-size:auto;' : ''),
+					'style' => ($item['icon'] ? "background-image:url('" . $item['icon']['url'] . "');" : '') . (max($item['icon']['sizeX'], $item['icon']['sizeY']) < 200 ? 'background-size:auto;' : ''),
 					'draggable' => 'false',
 					), we_html_element::htmlDiv(array(
 						'class' => 'divInner',

@@ -23,11 +23,6 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var dd = {
-	dataTransfer: {
-		text: ''
-	}
-};
 if (self.location !== top.location) {
 	top.location = self.location;
 }
@@ -47,6 +42,11 @@ var WebEdition = {
 		windows: [],
 		focusedWindow: null,
 		browserwind: null,
+		dragNDrop: {
+			dataTransfer: {
+				text: ''
+			}
+		}
 	},
 	handler: {
 		errorHandler: errorHandler,
@@ -532,7 +532,6 @@ var WebEdition = {
 			var fileref = document.createElement('script');
 			fileref.setAttribute("src", WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=loadJSConsts&we_cmd[1]=" + check);
 			document.getElementsByTagName("head")[0].appendChild(fileref);
-
 		},
 		getDynamicVar: function (doc, id, dataname) {
 			var el = doc.getElementById(id);

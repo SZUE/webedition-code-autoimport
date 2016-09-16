@@ -87,6 +87,8 @@ abstract class we_base_jsConstants{
 				return we_search_view::getJSConsts();
 			case 'tagWizzard':
 				return we_template::getJSTWConsts();
+			case 'collection':
+				return we_collection::getJSConsts();
 			default:
 				t_e('loading of JS consts ' . $what . ' failed');
 		}
@@ -228,6 +230,10 @@ abstract class we_base_jsConstants{
 					cm_table_props:"' . g_l('wysiwyg', '[edit_table]') . '",
 				}
 			}
+	},
+	weCollection:{
+		element_not_set: "' . g_l('weClass', '[collection][notSet]') . '",
+		info_insertion: "' . g_l('weClass', '[collection][infoAddFiles]') . '"
 	}
 };
 ';
