@@ -13,6 +13,7 @@ $l_modules_object=array(
 	'class'=>'Luokka',
 	'class_id'=>'Luokan ID',
 	'classname'=>'Luokan nimi',
+	'collection_field'=>'Collection',
 	'copyClass'=>'Kopioi luokka',
 	'copyObject'=>'Kopioi objekti',
 	'country_field'=>'Country',

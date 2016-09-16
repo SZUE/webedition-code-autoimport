@@ -13,6 +13,7 @@ $l_modules_object=array(
 	'class'=>'Класс',
 	'class_id'=>'ID of the class',
 	'classname'=>'Имя класса',
+	'collection_field'=>'Collection',
 	'copyClass'=>'Copy class',
 	'copyObject'=>'Копировать объект',
 	'country_field'=>'Country',
