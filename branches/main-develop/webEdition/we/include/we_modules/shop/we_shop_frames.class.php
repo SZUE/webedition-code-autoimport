@@ -348,8 +348,8 @@ function setTab(tab) {
 
 	private static function prepareFieldname($str){
 		return (strpos($str, '_') ?
-				substr_replace($str, '/', strpos($str, '_'), 1) :
-				$str);
+			substr_replace($str, '/', strpos($str, '_'), 1) :
+			$str);
 	}
 
 	private static function showPrefDialog(){
@@ -371,12 +371,11 @@ function setTab(tab) {
 		$shoplocation = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_location"');
 		$categorymode = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="category_mode"');
 
-		$CLFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"'), array(
-			'stateField' => '-',
+		$CLFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"'), ['stateField' => '-',
 			'stateFieldIsISO' => 0,
 			'languageField' => '-',
 			'languageFieldIsISO' => 0
-		));
+			]);
 
 
 //	generate html-output table
@@ -520,7 +519,7 @@ function setTab(tab) {
 			$CLFields['languageFieldIsISO'] = we_base_request::_(we_base_request::RAW, 'languageFieldIsISO', 0);
 
 			// check if field exists
-			$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET tool="shop",pref_name="shop_CountryLanguage", pref_value="' . $DB_WE->escape(we_serialize($CLFields)) . '"');
+			$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET tool="shop",pref_name="shop_CountryLanguage", pref_value="' . $DB_WE->escape(we_serialize($CLFields, SERIALIZE_JSON)) . '"');
 			// Update Country Field in weShopVatRule
 			$weShopVatRule = we_shop_vatRule::getShopVatRule();
 			$weShopVatRule->stateField = $CLFields['stateField'];
@@ -593,9 +592,14 @@ function setTab(tab) {
 		$row = 0;
 		$htmlTable->setCol($row++, 0, ['class' => 'weDialogHeadline', 'colspan' => 4], g_l('modules_shop', '[paypal][name]'));
 
-		$list1 = ["AI" => "Anguilla", "AR" => "Argentina", "AU" => "Australia", "AT" => "Austria", "BE" => "Belgium", "BR" => "Brazil", "CA" => "Canada", "CL" => "Chile", "CN" => "China", "CR" => "Costa Rica", "CY" => "Cyprus", "CZ" => "Czech Republic", "DK" => "Denmark", "DO" => "Dominican Rep.", "EC" => "Equador", "EE" => "Estonia", "FI" => "Finland", "FR" => "France", "DE" => "Deutschland", "GR" => "Greece", "HK" => "Hong Kong"];
-		$list2 = ["HU" => "Hungary", "IS" => "Iceland", "IN" => "India", "IE" => "Ireland", "IL" => "Israel", "IT" => "Italy", "JM" => "Jamaica", "JP" => "Japan", "LV" => "Latvia", "LT" => "Lithuania", "LU" => "Luxemburg", "MY" => "Malaysia", "MT" => "Malta", "MX" => "Mexico"];
-		$list3 = ["NL" => "Netherlands", "NZ" => "New Zealand", "NO" => "Norway", "PL" => "Poland", "PT" => "Portugal", "SG" => "Singapore", "SK" => "Slovakia", "ZA" => "South Afrika", "KR" => "South Korea", "ES" => "Spain", "SE" => "Sweden", "CH" => "Switzerland", "TW" => "Taiwan", "TH" => "Thailand", "TR" => "Turkey", "GB" => "United Kingdom", "United States" => "US", "Uruguay" => "UY", "Venezuela" => "VE"];
+		$list1 = ["AI" => "Anguilla", "AR" => "Argentina", "AU" => "Australia", "AT" => "Austria", "BE" => "Belgium", "BR" => "Brazil", "CA" => "Canada", "CL" => "Chile",
+			"CN" => "China", "CR" => "Costa Rica", "CY" => "Cyprus", "CZ" => "Czech Republic", "DK" => "Denmark", "DO" => "Dominican Rep.", "EC" => "Equador", "EE" => "Estonia",
+			"FI" => "Finland", "FR" => "France", "DE" => "Deutschland", "GR" => "Greece", "HK" => "Hong Kong"];
+		$list2 = ["HU" => "Hungary", "IS" => "Iceland", "IN" => "India", "IE" => "Ireland", "IL" => "Israel", "IT" => "Italy", "JM" => "Jamaica", "JP" => "Japan", "LV" => "Latvia",
+			"LT" => "Lithuania", "LU" => "Luxemburg", "MY" => "Malaysia", "MT" => "Malta", "MX" => "Mexico"];
+		$list3 = ["NL" => "Netherlands", "NZ" => "New Zealand", "NO" => "Norway", "PL" => "Poland", "PT" => "Portugal", "SG" => "Singapore", "SK" => "Slovakia", "ZA" => "South Afrika",
+			"KR" => "South Korea", "ES" => "Spain", "SE" => "Sweden", "CH" => "Switzerland", "TW" => "Taiwan", "TH" => "Thailand", "TR" => "Turkey", "GB" => "United Kingdom",
+			"United States" => "US", "Uruguay" => "UY", "Venezuela" => "VE"];
 		$list = array_merge($list1, $list2, $list3);
 
 		$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[lc]'));
@@ -775,30 +779,30 @@ function setTab(tab) {
 		$tabSprache->setCol(0, 2, array('class' => 'defaultfont', "width" => 220), g_l('modules_shop', '[statusmails][SprachenFeld]') . we_class::htmlSelect('LanguageData[languageField]', $selectFields, 1, $weShopStatusMails->LanguageData['languageField']) . we_html_forms::checkboxWithHidden($weShopStatusMails->LanguageData['languageFieldIsISO'], 'LanguageData[languageFieldIsISO]', g_l('modules_shop', '[preferences][ISO-Kodiert]'), false, "defaultfont"));
 
 		$parts = [
-			[
+				[
 				'headline' => g_l('modules_shop', '[statusmails][AnzeigeDaten]'),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'html' => '',
 				'noline' => 1
 			],
-			[
+				[
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintDokumente]'), we_html_tools::TYPE_INFO, 650, false),
 				'noline' => 1
 			],
-			[
+				[
 				'headline' => '',
 				'html' => $tabStatus->getHtml()
 			],
-			[
+				[
 				'headline' => g_l('modules_shop', '[statusmails][EMailDaten]'),
 				'html' => '',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			],
-			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintEMailDaten]'), we_html_tools::TYPE_INFO, 650, false),
+				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[statusmails][hintEMailDaten]'), we_html_tools::TYPE_INFO, 650, false),
 				'noline' => 1
 			],
-			['space' => we_html_multiIconBox::SPACE_MED,
+				['space' => we_html_multiIconBox::SPACE_MED,
 				'html' => $tabEMail->getHtml(),
 			], [
 				'headline' => g_l('modules_shop', '[statusmails][Spracheinstellungen]'),
@@ -817,7 +821,8 @@ function setTab(tab) {
 			]
 		];
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/statusMails.js'), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_status">
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/statusMails.js'), we_html_element::htmlBody(['class' => "weDialogBody",
+					'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_status">
 		<input type="hidden" name="we_cmd[0]" value="saveShopStatusMails" />' .
 					we_html_multiIconBox::getHTML('weShopStatusMails', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
@@ -977,9 +982,9 @@ function setTab(tab) {
 </form>';
 
 		$parts = [
-			['html' => $vatTable],
-			['html' => $plusBut],
-			['html' => $formVat,],
+				['html' => $vatTable],
+				['html' => $plusBut],
+				['html' => $formVat,],
 		];
 
 		$jsCmd = new we_base_jsCmd();
@@ -991,7 +996,8 @@ function setTab(tab) {
 		}
 
 		return we_html_tools::getHtmlTop('', '', '', $jsCmd->getCmds() .
-				we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_vats.js', '', ['id' => 'loadVarEdit_shop_vats', 'data-allVats' => setDynamicVar($vatJSON)]), we_html_element::htmlBody(['class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
+				we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_vats.js', '', ['id' => 'loadVarEdit_shop_vats', 'data-allVats' => setDynamicVar($vatJSON)]), we_html_element::htmlBody([
+					'class' => 'weDialogBody', 'onload' => "window.focus();addListeners();"], we_html_multiIconBox::getHTML('weShopVates', $parts, 30, we_html_button::formatButtons(we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')), -1, '', '', false, g_l('modules_shop', '[vat][vat_edit_form_headline_box]'), "", ''
 		)));
 	}
 
@@ -1038,54 +1044,55 @@ function setTab(tab) {
 		$conditionReturn = we_class::htmlSelect('conditionalReturn[]', array('false' => 'false', 'true' => 'true'), 1, $actCondition['returnValue']);
 
 		$parts = [
-			['headline' => g_l('modules_shop', '[vat_country][defaultReturn]'),
+				['headline' => g_l('modules_shop', '[vat_country][defaultReturn]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $defaultInput,
 				'noline' => 1
 			],
-			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][defaultReturn_desc]'), we_html_tools::TYPE_INFO, 600),
+				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][defaultReturn_desc]'), we_html_tools::TYPE_INFO, 600),
 			],
-			['headline' => g_l('modules_shop', '[vat_country][stateField]') . ':',
+				['headline' => g_l('modules_shop', '[vat_country][stateField]') . ':',
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $countrySelect . $countrySelectISO,
 				'noline' => 1
 			],
-			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][stateField_desc]'), we_html_tools::TYPE_INFO, 600),
+				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][stateField_desc]'), we_html_tools::TYPE_INFO, 600),
 			],
-			['headline' => g_l('modules_shop', '[vat_country][statesLiableToVat]') . ':',
+				['headline' => g_l('modules_shop', '[vat_country][statesLiableToVat]') . ':',
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $textAreaLiableStates,
 				'noline' => 1
 			],
-			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesLiableToVat_desc]'), we_html_tools::TYPE_INFO, 600),
+				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesLiableToVat_desc]'), we_html_tools::TYPE_INFO, 600),
 			],
-			['headline' => g_l('modules_shop', '[vat_country][statesNotLiableToVat]') . ':',
+				['headline' => g_l('modules_shop', '[vat_country][statesNotLiableToVat]') . ':',
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $textAreaNotLiableStates,
 				'noline' => 1
 			],
-			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesNotLiableToVat_desc]'), we_html_tools::TYPE_INFO, 600),
+				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesNotLiableToVat_desc]'), we_html_tools::TYPE_INFO, 600),
 			],
-			['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules]') . ':',
+				['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules]') . ':',
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $conditionTextarea,
 				'noline' => 1
 			],
-			['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesSpecialRules_desc]'), we_html_tools::TYPE_INFO, 600),
+				['html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[vat_country][statesSpecialRules_desc]'), we_html_tools::TYPE_INFO, 600),
 				'noline' => 1
 			],
-			['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules_condition]'),
+				['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules_condition]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $conditionField . ' ' . $conditionSelect,
 				'noline' => 1
 			],
-			['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules_result]'),
+				['headline' => g_l('modules_shop', '[vat_country][statesSpecialRules_result]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $conditionReturn
 			]
 		];
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_country.js'), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_vat_country">
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/edit_shop_country.js'), we_html_element::htmlBody(['class' => "weDialogBody",
+					'onload' => "window.focus();"], '<form name="we_form" method="post" action="' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edit_shop_vat_country">
 		<input type="hidden" name="we_cmd[0]" value="saveVatRule" />' .
 					we_html_multiIconBox::getHTML('weShopCountryVat', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CANCEL, 'javascript:we_cmd(\'close\');')
@@ -1244,7 +1251,7 @@ function setTab(tab) {
 							$selAttribs = array('id' => 'weShopCatRels[' . $cat['ID'] . '][' . $k . ']');
 							$sel = we_html_tools::htmlSelect('weShopCatRels[' . $cat['ID'] . '][' . $k . ']', $v['selOptions'], 1, $value, false, $selAttribs, 'value', 220);
 
-							$innerTable->setCol($num, 0, array('class' => 'defaultfont' . ($isDefCountry ? ' bold' : ''), 'width' => 184, 'style' => ($isDefCountry ? '' : 'padding-bottom: 8px;')), ($v['textTerritory'] ? : 'N.N.'));
+							$innerTable->setCol($num, 0, array('class' => 'defaultfont' . ($isDefCountry ? ' bold' : ''), 'width' => 184, 'style' => ($isDefCountry ? '' : 'padding-bottom: 8px;')), ($v['textTerritory'] ?: 'N.N.'));
 							$innerTable->setCol($num, 1, array('class' => 'defaultfont', 'width' => 220), $sel);
 						}
 					}
@@ -1277,40 +1284,41 @@ function setTab(tab) {
 		}
 
 		$parts = [
-			['headline' => g_l('modules_shop', '[shopcats][text_shopCatDir]'),
+				['headline' => g_l('modules_shop', '[shopcats][text_shopCatDir]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => $selCategoryDirs,
 			],
-			['headline' => g_l('modules_shop', '[shopcats][text_editShopCatDir]'),
+				['headline' => g_l('modules_shop', '[shopcats][text_editShopCatDir]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => '',
 				'noline' => 1
 			],
-			['headline' => '',
+				['headline' => '',
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_edit_shopCatDir]'), we_html_tools::TYPE_INFO, '614', false, 100),
 				'noline' => 1
 			],
-			['headline' => '',
+				['headline' => '',
 				'html' => $catsDirTableHtml,
 			],
-			['headline' => g_l('modules_shop', '[shopcats][text_editShopCats]'),
+				['headline' => g_l('modules_shop', '[shopcats][text_editShopCats]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => '',
 				'noline' => 1
 			],
-			['headline' => '',
+				['headline' => '',
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('modules_shop', '[shopcats][info_editShopCats]'), we_html_tools::TYPE_INFO, "614", false, 101),
 				'noline' => 1
 			],
-			['headline' => '',
+				['headline' => '',
 				'html' => $catsTableHtml,
 				'noline' => 1
 			],
-			['headline' => '',
+				['headline' => '',
 			//'html' => $debug_output
 		]];
 
-		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/showCategoriesDialog.js') . $jscmd->getCmds(), we_html_element::htmlBody([ 'class' => "weDialogBody", 'onload' => "window.focus(); addListeners();"], '<form name="we_form" method="post" >
+		return we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/showCategoriesDialog.js') . $jscmd->getCmds(), we_html_element::htmlBody([
+					'class' => "weDialogBody", 'onload' => "window.focus(); addListeners();"], '<form name="we_form" method="post" >
 	<input type="hidden" name="we_cmd[0]" value="load" /><input type="hidden" name="onsaveclose" value="0" />' .
 					we_html_multiIconBox::getHTML('weShopCategories', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
@@ -1371,21 +1379,21 @@ function setTab(tab) {
 		}
 
 		$parts = [
-			['headline' => g_l('modules_shop', '[vat_country][stateField]'),
+				['headline' => g_l('modules_shop', '[vat_country][stateField]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_class::htmlSelect('stateField', $selectFieldsTbl, 1, $weShippingControl->stateField, false, [], 'value', 280),
 				'noline' => 1
 			],
-			['headline' => g_l('modules_shop', '[mwst]'),
+				['headline' => g_l('modules_shop', '[mwst]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_class::htmlSelect('vatId', $selectFieldsVat, 1, $weShippingControl->vatId, false, [], 'value', 280),
 				'noline' => 1
 			],
-			['headline' => g_l('modules_shop', '[shipping][prices_are_net]'),
+				['headline' => g_l('modules_shop', '[shipping][prices_are_net]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => we_class::htmlSelect('isNet', array(1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')), 1, $weShippingControl->isNet, false, [], 'value', 280)
 			],
-			['headline' => g_l('modules_shop', '[shipping][insert_packaging]'),
+				['headline' => g_l('modules_shop', '[shipping][insert_packaging]'),
 				'space' => we_html_multiIconBox::SPACE_BIG,
 				'html' => '<table class="default defaultfont">
 	<tr>
@@ -1489,7 +1497,7 @@ cell5.innerHTML=tmp.replace("#####placeHolder#####",entryId);
 	// append new row
 	tbl.appendChild(theNewRow);
 }
-') . (isset($jsMessage) ? we_message_reporting::jsMessagePush($jsMessage, $jsMessageType) : ''), we_html_element::htmlBody([ 'class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form">
+') . (isset($jsMessage) ? we_message_reporting::jsMessagePush($jsMessage, $jsMessageType) : ''), we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => "window.focus();"], '<form name="we_form">
 		<input type="hidden" id="we_cmd_field" name="we_cmd[0]" value="saveShipping" />' .
 					we_html_multiIconBox::getHTML('weShipping', $parts, 30, we_html_button::position_yes_no_cancel(
 							we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')

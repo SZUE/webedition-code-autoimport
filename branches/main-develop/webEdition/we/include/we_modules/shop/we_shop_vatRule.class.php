@@ -50,7 +50,7 @@ class we_shop_vatRule{
 
 		if($customer || $state){
 			if(isset($this->stateField) && (isset($customer[$this->stateField]) || $state)){
-				$state = isset($customer[$this->stateField]) ? $customer[$this->stateField] : ($state ? : false);
+				$state = isset($customer[$this->stateField]) ? $customer[$this->stateField] : ($state ?: false);
 
 				// is state liableToVat
 				if(in_array($state, $this->liableToVat)){
@@ -94,18 +94,19 @@ class we_shop_vatRule{
 	}
 
 	public static function getShopVatRule(){
-		if(($strFelder = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopVatRule"'))){
-			//FIX old class names
-			return we_unserialize(strtr($strFelder, array('O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":', 'O:13:"weshopvatrule":' => 'O:15:"we_shop_vatRule":')));
+		if(($strfelder = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopVatRule"'))){
+			$felder = we_unserialize(strfelder);
+			return new self(
+				$felder['defaultValue'], $felder['stateField'], $felder['liableToVat'], $felder['notLiableToVat'], $felder['conditionalRules'], $felder['stateFieldIsISO']
+			);
 		}
-		return new self('true', '', [], [], array(
-			array(
-				'states' => [],
+		return new self('true', '', [], [], [
+				['states' => [],
 				'customerField' => '',
 				'condition' => '',
 				'returnValue' => 1
-			)
-			), 0
+			]
+			], 0
 		);
 	}
 
@@ -139,14 +140,13 @@ class we_shop_vatRule{
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		if($DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' set pref_value="' . $DB_WE->escape(we_serialize($this, SERIALIZE_PHP)) . '",tool="shop",pref_name="weShopVatRule"')){
+		if($DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' set pref_value="' . $DB_WE->escape(we_serialize((array) $this, SERIALIZE_JSON)) . '",tool="shop",pref_name="weShopVatRule"')){
 			$CLFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"', '', $DB_WE));
 			if(!$CLFields){
-				$CLFields = array(
-					'stateField' => $this->stateField,
+				$CLFields = ['stateField' => $this->stateField,
 					'stateFieldIsISO' => $this->stateFieldIsISO
-				);
-				$DB_WE->query('UPDATE ' . SETTINGS_TABLE . ' SET pref_value="' . $DB_WE->escape(we_serialize($CLFields, SERIALIZE_PHP)) . '" WHERE tool="shop",pref_name="shop_CountryLanguage"');
+				];
+				$DB_WE->query('UPDATE ' . SETTINGS_TABLE . ' SET pref_value="' . $DB_WE->escape(we_serialize($CLFields, SERIALIZE_JSON)) . '" WHERE tool="shop",pref_name="shop_CountryLanguage"');
 			}
 
 			return true;

@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-WE().util.loadConsts("g_l.exports");
+WE().util.loadConsts(document, "g_l.exports");
 
 function setHot() {
 	hot = 1;

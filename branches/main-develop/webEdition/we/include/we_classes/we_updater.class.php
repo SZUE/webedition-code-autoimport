@@ -48,7 +48,7 @@ abstract class we_updater{
 	}
 
 	public static function updateUsers($db = null){ //FIXME: remove after 6.5 from 6360/update6300.php
-		$db = $db? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		$db->delTable(PREFS_TABLE . '_old');
 		if(count(getHash('SELECT * FROM ' . PREFS_TABLE . ' LIMIT 1', null, MYSQL_ASSOC)) > 3){
 			//make a backup
@@ -106,7 +106,7 @@ abstract class we_updater{
 		//FIXME: this takes long, so try to remove this
 		if(defined('OBJECT_X_TABLE')){
 			//this is from 6.3.9
-			$db = $db? : new DB_WE();
+			$db = $db ?: new DB_WE();
 
 			//change old tables to have different prim key
 			$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
@@ -228,7 +228,7 @@ abstract class we_updater{
 	 */
 
 	public static function fixInconsistentTables(we_database_base $db = null){//from backup
-		$db = $db? : $GLOBALS['DB_WE'];
+		$db = $db ?: $GLOBALS['DB_WE'];
 		$db->query('SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND DID NOT IN(SELECT ID FROM ' . FILE_TABLE . ')
 UNION
 SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblTemplates" AND DID NOT IN(SELECT ID FROM ' . TEMPLATES_TABLE . ')
@@ -265,7 +265,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	private static function updateCats(we_database_base $db = null){
-		$db = $db? : $GLOBALS['DB_WE'];
+		$db = $db ?: $GLOBALS['DB_WE'];
 
 		if($db->isColExist(CATEGORY_TABLE, 'Catfields')){
 			if(f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE Title=""') == f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE)){
@@ -288,38 +288,12 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 
 	public static function fixHistory(we_database_base $db = null){ //called from 6370/update6370.php
 		return;
-		/* $db = $db? : new DB_WE();
-		  if($db->isColExist(HISTORY_TABLE, 'ID')){
-		  $db->query('SELECT h1.ID FROM ' . HISTORY_TABLE . ' h1 LEFT JOIN ' . HISTORY_TABLE . ' h2 ON h1.DID=h2.DID AND h1.DocumentTable=h2.DocumentTable AND h1.ModDate=h2.ModDate WHERE h1.ID<h2.ID');
-		  $tmp = $db->getAll(true);
-		  if($tmp){
-		  $db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ID IN (' . implode(',', $tmp) . ')');
-		  }
-		  $db->delCol(HISTORY_TABLE, 'ID');
-		  if($db->isKeyExistAtAll(HISTORY_TABLE, 'DID')){
-		  $db->delKey(HISTORY_TABLE, 'DID');
-		  }
-		  self::replayUpdateDB('tblhistory.sql');
-		  }
-		  if(f('SELECT COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX . ' LIMIT 1')){
-		  $db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE ModDate="0000-00-00 00:00:00"');
-		  $db->query('RENAME TABLE ' . HISTORY_TABLE . ' TO old' . HISTORY_TABLE);
-		  //create clean table
-		  self::replayUpdateDB('tblhistory.sql');
-		  $db->query('INSERT IGNORE INTO ' . HISTORY_TABLE . ' (DID,DocumentTable,ContentType,ModDate,UserName,UID) SELECT DID,DocumentTable,ContentType,MAX(ModDate),UserName,UID FROM old' . HISTORY_TABLE . ' GROUP BY UID,DID,DocumentTable');
-		  $db->query('SELECT UID,COUNT(1) c FROM ' . HISTORY_TABLE . ' GROUP BY UID HAVING c>' . we_history::MAX);
-		  $all = $db->getAllFirst(false);
-		  foreach($all as $uid => $cnt){
-		  $db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE UID=' . $uid . ' ORDER BY ModDate DESC LIMIT ' . ($cnt - we_history::MAX));
-		  }
-		  $db->delTable('old' . HISTORY_TABLE);
-		  } */
 	}
 
 	public static function meassure($name){
 		static $last = 0;
 		static $times = [];
-		$last = $last? : microtime(true);
+		$last = $last ?: microtime(true);
 		if($name == -1){
 			t_e('notice', 'time for updates', $times);
 			return;
@@ -330,7 +304,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	public static function removeObsoleteFiles($path = ''){
-		$path = $path ? : WEBEDITION_PATH . 'liveUpdate/includes/';
+		$path = $path ?: WEBEDITION_PATH . 'liveUpdate/includes/';
 		if(!is_file($path . 'del.files')){
 			return true;
 		}
@@ -478,14 +452,41 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 	private static function updateShop(we_database_base $db){
-		$zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails" AND pref_value LIKE "%weShopStatusMails%"', '', $db);
-		if($zw){
+		//convert 1st gen values
+		if(($zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails" AND pref_value LIKE "%weShopStatusMails%"', '', $db))){
+			$zw = we_unserialize(
+				strtr($zw, [
+				'O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":',
+				'O:17:"weshopstatusmails":' => 'O:19:"we_shop_statusMails":',
+				])
+			);
 			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
-					'pref_value' => strtr($zw, [
-						'O:17:"weShopStatusMails":' => 'O:19:"we_shop_statusMails":',
-						'O:17:"weshopstatusmails":' => 'O:19:"we_shop_statusMails":',
-					])
+					'pref_value' => we_serialize((array) $zw, SERIALIZE_JSON)
 				]) . ' WHERE tool="shop" AND pref_name="weShopStatusMails"');
+		}
+
+		if(($zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopVatRule" AND pref_value LIKE "%weShopVatRule%"', '', $db))){
+			$zw = we_unserialize(
+				strtr($zw, [
+				'O:13:"weShopVatRule":' => 'O:15:"we_shop_vatRule":',
+				'O:13:"weshopvatrule":' => 'O:15:"we_shop_vatRule":'
+				])
+			);
+			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
+					'pref_value' => we_serialize((array) $zw, SERIALIZE_JSON)
+				]) . ' WHERE tool="shop" AND pref_name="weShopVatRule"');
+		}
+//convert 2nd gen values
+		if(($zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails" AND pref_value LIKE "%we_shop_statusMails%"', '', $db))){
+			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
+					'pref_value' => we_serialize((array) we_unserialize($zw), SERIALIZE_JSON)
+				]) . ' WHERE tool="shop" AND pref_name="weShopStatusMails"');
+		}
+
+		if(($zw = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopVatRule" AND pref_value LIKE "%we_shop_vatRule%"', '', $db))){
+			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
+					'pref_value' => we_serialize((array) we_unserialize($zw), SERIALIZE_JSON)
+				]) . ' WHERE tool="shop" AND pref_name="weShopVatRule"');
 		}
 	}
 
@@ -629,11 +630,3 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 	}
 
 }
-
-//SELECT f1.ID,f1.Path,FROM_UNIXTIME(f1.CreationDate),f1.ContentType,f2.ID,f2.Path,FROM_UNIXTIME(f2.CreationDate),f2.ContentType,EXISTS (SELECT * FROM tblLink WHERE DID=f1.ID AND DocumentTable='tblFile') FROM `tblFile` f1 JOIN tblFile f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID GROUP BY f1.ID
-
-//SELECT ID,Path,ContentType,TemplateID FROM `tblFile` f1 WHERE CreationDate=0 AND NOT EXISTS (SELECT * FROM tblLink WHERE DID=f1.ID AND DocumentTable='tblFile')
-
-//SELECT f1.ID AS fail,f2.ID as other,EXISTS (SELECT * FROM tblLink WHERE DID=f2.ID AND DocumentTable='tblFile') AS otherOk,FROM_UNIXTIME(f1.CreationDate),f1.ContentType,f2.Path,FROM_UNIXTIME(f2.CreationDate),f2.ContentType FROM `tblFile` f1 JOIN tblFile f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM tblLink WHERE DID=f1.ID AND DocumentTable='tblFile') GROUP BY f1.ID
-
-//SELECT f1.ID AS fail,f2.ID as other,BINARY f1.Path=BINARY f2.Path AS `binEq`,EXISTS (SELECT * FROM tblLink WHERE DID=f1.ID AND DocumentTable='tblFile') AS origOk,EXISTS (SELECT * FROM tblLink WHERE DID=f2.ID AND DocumentTable='tblFile') AS otherOk,f1.ContentType,f1.CreationDate,f2.CreationDate,f1.ModDate,f2.ModDate FROM `tblFile` f1 JOIN tblFile f2 ON f1.Path=f2.Path WHERE f1.ID!=f2.ID AND NOT EXISTS (SELECT * FROM tblLink WHERE DID=f1.ID AND DocumentTable='tblFile')

@@ -26,8 +26,8 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-WE().util.loadConsts("weSearch");
-WE().util.loadConsts("g_l.weSearch");
+WE().util.loadConsts(document, "weSearch");
+WE().util.loadConsts(document, "g_l.weSearch");
 var searchConf = WE().util.getDynamicVar(document, 'loadVarSearch_view', 'data-searchConf');
 
 weSearch = {

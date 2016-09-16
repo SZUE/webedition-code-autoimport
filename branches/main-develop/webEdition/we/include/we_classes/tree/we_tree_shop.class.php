@@ -44,7 +44,7 @@ function startTree(){
 	function getJSTreeCode(){
 		$menu = '
 var table="' . SHOP_TABLE . '";
-WE().util.loadConsts("g_l.shop");
+WE().util.loadConsts(document, "g_l.shop");
 function loadData() {
 				treeData.clear();
 				treeData.add(node.prototype.rootEntry(0, "root", "root"));';

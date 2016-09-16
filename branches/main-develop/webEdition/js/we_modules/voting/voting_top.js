@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-WE().util.loadConsts("g_l.voting");
+WE().util.loadConsts(document, "g_l.voting");
 
 var get_focus = 1;
 var activ_tab = 1;

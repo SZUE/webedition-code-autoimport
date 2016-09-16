@@ -24,7 +24,7 @@
  */
 var hot = 0; // this is hot for category edit!!
 
-WE().util.loadConsts("g_l.selectors.category");
+WE().util.loadConsts(document, "g_l.selectors.category");
 
 function unselectFile(id) {
 	e = getEntry(id);

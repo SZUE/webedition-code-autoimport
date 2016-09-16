@@ -566,8 +566,8 @@ function updateWidgetContent(widgetType, widgetId, contentData, titel) {
  * @param widgetId string: id fo widget
  *
  */
-function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId) {
-
+function executeAjaxRequest(/*param_1, initCfg, param_3, param_4, titel, widgetId*/) {
+	var widgetId = arguments[5];
 	// determine type of the widget
 	var widgetType = document.getElementById(widgetId + '_type').value;
 
@@ -578,7 +578,8 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 		case "rss":
 			_cmdName = "GetRss";
 			break;
-			//FIXME: what about all other tools?!
+		default:
+			_cmdName = "Widget"
 	}
 	var url = WE().util.getWe_cmdArgsUrl(Array.prototype.slice.call(arguments), WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=' + _cmdName + '&cns=widgets&');
 
@@ -589,7 +590,9 @@ function executeAjaxRequest(param_1, initCfg, param_3, param_4, titel, widgetId)
 					try {
 						var weResponse = JSON.parse(o.responseText);
 						if (weResponse.Success) {
-							updateWidgetContent(weResponse.DataArray.widgetType, weResponse.DataArray.widgetId, weResponse.DataArray.data, weResponse.DataArray.titel);
+							if (weResponse.DataArray.titel) {
+								updateWidgetContent(weResponse.DataArray.widgetType, weResponse.DataArray.widgetId, weResponse.DataArray.data, weResponse.DataArray.titel);
+							}
 						}
 					} catch (exc) {
 						alert("Could not complete the ajax request");
@@ -619,16 +622,17 @@ function rpc(a, b, c, d, e, wid, path) {
 
 	// temporaryliy add a form submit the form and save all !
 	// start bugfix #1145
-	var _tmpForm = document.createElement("form");
-	document.getElementsByTagName("body")[0].appendChild(_tmpForm);
+	//FIXME: use executeAjaxRequest for all widgets
 	switch (sType) {
 		case 'rss':
 			WE().layout.cockpitFrame.executeAjaxRequest(a, b, c, d, e, wid, path);
 			return false;
 		default:
-			path = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?mod=' + sType;
-			args.unshift("widget_cmd", "reload");
 	}
+	path = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?mod=' + sType;
+	args.unshift("widget_cmd", "reload");
+	var _tmpForm = document.createElement("form");
+	document.getElementsByTagName("body")[0].appendChild(_tmpForm);
 	_tmpForm.id = "_tmpSubmitForm";
 	_tmpForm.method = "POST";
 	_tmpForm.action = path;

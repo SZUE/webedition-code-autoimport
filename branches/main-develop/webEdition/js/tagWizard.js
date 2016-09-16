@@ -25,7 +25,7 @@
  */
 
 var tw = WE().util.getDynamicVar(document, 'loadVarTagWizard', 'data-tw');
-WE().util.loadConsts("g_l.tagWizzard");
+WE().util.loadConsts(document, "g_l.tagWizzard");
 
 function weTagWizard(tagName) {
 

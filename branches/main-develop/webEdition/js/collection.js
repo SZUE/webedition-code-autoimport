@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-WE().util.loadConsts('collection');
+WE().util.loadConsts(document, 'collection');
 
 wePropertiesEdit = {
 	hasOptions: function (obj) {
@@ -157,7 +157,8 @@ weCollectionEdit = {
 			removed: false
 		}
 	},
-	init: function () {top.console.log('gefeuert');
+	init: function () {
+		WE().t_e('gefeuert');
 		// load variable data
 		this.we_doc = WE().util.getDynamicVar(document, 'loadVarCollection', 'data-we_doc');
 		for (var prop in doc) {
@@ -174,10 +175,10 @@ weCollectionEdit = {
 
 		//this.addListenersToContainer();
 		if(WE().consts.collection){
-			top.console.log('do render');
+			WE().t_e('do render');
 			this.renderView(true);
 		} else {
-			top.console.log('cannot render');
+			WE().t_e('cannot render');
 		}
 	},
 	setView: function (view, viewSub) {

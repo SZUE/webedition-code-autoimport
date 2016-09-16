@@ -30,8 +30,10 @@ class we_shop_statusMails{
 	var $EMailData; // an array with the E-Mail data, see getShopStatusMails
 	var $LanguageData; // an array with the Language data, see getShopStatusMails
 	var $FieldsDocuments; // an array with dfault values and separate Arrays for each Langauge, see getShopStatusMails
-	public static $StatusFields = ['DateOrder', 'DateConfirmation', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateShipping', 'DateCustomD', 'DateCustomE', 'DatePayment', 'DateCustomF', 'DateCustomG', 'DateCancellation', 'DateCustomH', 'DateCustomI', 'DateCustomJ', 'DateFinished'];
-	public static $MailFields = ['MailShipping', 'MailPayment', 'MailOrder', 'MailConfirmation', 'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE', 'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ', 'MailCancellation', 'MailFinished'];
+	public static $StatusFields = ['DateOrder', 'DateConfirmation', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateShipping', 'DateCustomD', 'DateCustomE', 'DatePayment',
+		'DateCustomF', 'DateCustomG', 'DateCancellation', 'DateCustomH', 'DateCustomI', 'DateCustomJ', 'DateFinished'];
+	public static $MailFields = ['MailShipping', 'MailPayment', 'MailOrder', 'MailConfirmation', 'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE',
+		'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ', 'MailCancellation', 'MailFinished'];
 
 	function __construct(array $FieldsHidden, array $FieldsHiddenCOV, array $FieldsText, array $FieldsMails, array $EMailData, array $LanguageData, array $FieldsDocuments){
 		$this->FieldsHidden = $FieldsHidden;
@@ -80,136 +82,103 @@ class we_shop_statusMails{
 		foreach($frontendL as $langkey){
 			$documentsarray[$langkey] = $documentsarray['default'];
 		}
-		$zw = new self(
-			[//Fieldshidden
-			'DateOrder' => 0,
-			'DateConfirmation' => 1,
-			'DateCustomA' => 1,
-			'DateCustomB' => 1,
-			'DateCustomC' => 1,
-			'DateShipping' => 0,
-			'DateCustomD' => 1,
-			'DateCustomE' => 1,
-			'DateCancellation' => 1,
-			'DateCustomF' => 1,
-			'DateCustomG' => 1,
-			'DatePayment' => 0,
-			'DateCustomH' => 1,
-			'DateCustomI' => 1,
-			'DateCustomJ' => 1,
-			'DateFinished' => 1
-			], [//FieldshiddenCOV
-			'DateOrder' => 0,
-			'DateConfirmation' => 1,
-			'DateCustomA' => 1,
-			'DateCustomB' => 1,
-			'DateCustomC' => 1,
-			'DateShipping' => 0,
-			'DateCustomD' => 1,
-			'DateCustomE' => 1,
-			'DateCancellation' => 1,
-			'DateCustomF' => 1,
-			'DateCustomG' => 1,
-			'DatePayment' => 0,
-			'DateCustomH' => 1,
-			'DateCustomI' => 1,
-			'DateCustomJ' => 1,
-			'DateFinished' => 1
-			], [//FieldsTexts
-			'DateOrder' => g_l('modules_shop', '[bestelldatum]'),
-			'DateConfirmation' => g_l('modules_shop', '[bestaetigt]'),
-			'DateCustomA' => g_l('modules_shop', '[customA]'),
-			'DateCustomB' => g_l('modules_shop', '[customB]'),
-			'DateCustomC' => g_l('modules_shop', '[customC]'),
-			'DateShipping' => g_l('modules_shop', '[bearbeitet]'),
-			'DateCustomD' => g_l('modules_shop', '[customD]'),
-			'DateCustomE' => g_l('modules_shop', '[customE]'),
-			'DatePayment' => g_l('modules_shop', '[bezahlt]'),
-			'DateCustomF' => g_l('modules_shop', '[customF]'),
-			'DateCustomG' => g_l('modules_shop', '[customG]'),
-			'DateCancellation' => g_l('modules_shop', '[storniert]'),
-			'DateCustomH' => g_l('modules_shop', '[customH]'),
-			'DateCustomI' => g_l('modules_shop', '[customI]'),
-			'DateCustomJ' => g_l('modules_shop', '[customJ]'),
-			'DateFinished' => g_l('modules_shop', '[beendet]')
-			], [//FieldsMails
-			'DateOrder' => 1,
-			'DateConfirmation' => 1,
-			'DateCustomA' => 1,
-			'DateCustomB' => 1,
-			'DateCustomC' => 1,
-			'DateShipping' => 1,
-			'DateCustomD' => 1,
-			'DateCustomE' => 1,
-			'DateCancellation' => 1,
-			'DateCustomF' => 1,
-			'DateCustomG' => 1,
-			'DatePayment' => 1,
-			'DateCustomH' => 1,
-			'DateCustomI' => 1,
-			'DateCustomJ' => 1,
-			'DateFinished' => 0
-			], [//EMailData
-			'address' => '',
-			'name' => '',
-			'bcc' => '',
-			'DocumentSubjectField' => 'Title',
-			'DocumentAttachmentFieldA' => '',
-			'DocumentAttachmentFieldB' => '',
-			'emailField' => '',
-			'titleField' => ''
-			], [//LanguageData
-			'useLanguages' => 1,
-			'languageField' => '',
-			'languageFieldIsISO' => 0
-			], $documentsarray
-		);
-
 		if(($zw2 = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="weShopStatusMails"', '', $DB_WE))){
 			$zw2 = we_unserialize($zw2);
-			foreach($zw->FieldsHidden as $key => &$value){
-				if(isset($zw2->FieldsHidden[$key])){
-					$value = $zw2->FieldsHidden[$key];
-				}
-			}
-			unset($value);
-			foreach($zw->FieldsHiddenCOV as $key => &$value){
-				if(isset($zw2->FieldsHiddenCOV[$key])){
-					$value = $zw2->FieldsHiddenCOV[$key];
-				}
-			}
-			unset($value);
-			foreach($zw->FieldsText as $key => &$value){
-				if(isset($zw2->FieldsText[$key])){
-					$value = $zw2->FieldsText[$key];
-				}
-			}
-			foreach($zw->FieldsMails as $key => &$value){
-				if(isset($zw2->FieldsMails[$key])){
-					$value = $zw2->FieldsMails[$key];
-				}
-			}
-			unset($value);
-			foreach($zw->EMailData as $key => &$value){
-				if(isset($zw2->EMailData[$key])){
-					$value = $zw2->EMailData[$key];
-				}
-			}
-			unset($value);
-			foreach($zw->LanguageData as $key => &$value){
-				if(isset($zw2->LanguageData[$key])){
-					$value = $zw2->LanguageData[$key];
-				}
-			}
-			unset($value);
-			foreach($zw->FieldsDocuments as $key => &$value){
-				if(isset($zw2->FieldsDocuments[$key])){
-					$value = $zw2->FieldsDocuments[$key];
-				}
-			}
-			unset($value);
+		} else {
+			$zw2 = [
+				'FieldsHidden' => [],
+				'FieldsHiddenCOV' => [],
+				'FieldsText' => [],
+				'FieldsMails' => [],
+				'EMailData' => [],
+				'LanguageData' => [],
+				'FieldsDocuments' => []
+			];
 		}
-		return $zw;
+		return new self(
+			array_merge([//Fieldshidden
+				'DateOrder' => 0,
+				'DateConfirmation' => 1,
+				'DateCustomA' => 1,
+				'DateCustomB' => 1,
+				'DateCustomC' => 1,
+				'DateShipping' => 0,
+				'DateCustomD' => 1,
+				'DateCustomE' => 1,
+				'DateCancellation' => 1,
+				'DateCustomF' => 1,
+				'DateCustomG' => 1,
+				'DatePayment' => 0,
+				'DateCustomH' => 1,
+				'DateCustomI' => 1,
+				'DateCustomJ' => 1,
+				'DateFinished' => 1
+				], $zw2['FieldsHidden']), array_merge([//FieldshiddenCOV
+				'DateOrder' => 0,
+				'DateConfirmation' => 1,
+				'DateCustomA' => 1,
+				'DateCustomB' => 1,
+				'DateCustomC' => 1,
+				'DateShipping' => 0,
+				'DateCustomD' => 1,
+				'DateCustomE' => 1,
+				'DateCancellation' => 1,
+				'DateCustomF' => 1,
+				'DateCustomG' => 1,
+				'DatePayment' => 0,
+				'DateCustomH' => 1,
+				'DateCustomI' => 1,
+				'DateCustomJ' => 1,
+				'DateFinished' => 1
+				], $zw2['FieldsHiddenCOV']), array_merge([//FieldsTexts
+				'DateOrder' => g_l('modules_shop', '[bestelldatum]'),
+				'DateConfirmation' => g_l('modules_shop', '[bestaetigt]'),
+				'DateCustomA' => g_l('modules_shop', '[customA]'),
+				'DateCustomB' => g_l('modules_shop', '[customB]'),
+				'DateCustomC' => g_l('modules_shop', '[customC]'),
+				'DateShipping' => g_l('modules_shop', '[bearbeitet]'),
+				'DateCustomD' => g_l('modules_shop', '[customD]'),
+				'DateCustomE' => g_l('modules_shop', '[customE]'),
+				'DatePayment' => g_l('modules_shop', '[bezahlt]'),
+				'DateCustomF' => g_l('modules_shop', '[customF]'),
+				'DateCustomG' => g_l('modules_shop', '[customG]'),
+				'DateCancellation' => g_l('modules_shop', '[storniert]'),
+				'DateCustomH' => g_l('modules_shop', '[customH]'),
+				'DateCustomI' => g_l('modules_shop', '[customI]'),
+				'DateCustomJ' => g_l('modules_shop', '[customJ]'),
+				'DateFinished' => g_l('modules_shop', '[beendet]')
+				], $zw2['FieldsText']), array_merge([//FieldsMails
+				'DateOrder' => 1,
+				'DateConfirmation' => 1,
+				'DateCustomA' => 1,
+				'DateCustomB' => 1,
+				'DateCustomC' => 1,
+				'DateShipping' => 1,
+				'DateCustomD' => 1,
+				'DateCustomE' => 1,
+				'DateCancellation' => 1,
+				'DateCustomF' => 1,
+				'DateCustomG' => 1,
+				'DatePayment' => 1,
+				'DateCustomH' => 1,
+				'DateCustomI' => 1,
+				'DateCustomJ' => 1,
+				'DateFinished' => 0
+				], $zw2['FieldsMails']), array_merge([//EMailData
+				'address' => '',
+				'name' => '',
+				'bcc' => '',
+				'DocumentSubjectField' => 'Title',
+				'DocumentAttachmentFieldA' => '',
+				'DocumentAttachmentFieldB' => '',
+				'emailField' => '',
+				'titleField' => ''
+				], $zw2['EMailData']), array_merge([//LanguageData
+				'useLanguages' => 1,
+				'languageField' => '',
+				'languageFieldIsISO' => 0
+				], $zw2['LanguageData']), array_merge($documentsarray, $zw2['FieldsDocuments'])
+		);
 	}
 
 	function sendEMail($was, $order, $cdata, $pagelang = ''){
@@ -223,8 +192,8 @@ class we_shop_statusMails{
 				$field = 1;
 			} else {
 				$docID = (isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]) && isset($this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was]) ?
-						$this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was] :
-						$this->FieldsDocuments['default']['Date' . $was]);
+					$this->FieldsDocuments[$cdata[$this->LanguageData['languageField']]]['Date' . $was] :
+					$this->FieldsDocuments['default']['Date' . $was]);
 				$field = 2;
 			}
 			if(!empty($this->LanguageData['languageField']) && !empty($cdata[$this->LanguageData['languageField']])){
@@ -260,11 +229,11 @@ class we_shop_statusMails{
 		}
 		unset($_REQUEST['we_orderid'], $_SESSION['WE_SendMail']);
 
-		$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField'])? : 'no subject given';
+		$subject = $maildoc->getElement($this->EMailData['DocumentSubjectField']) ?: 'no subject given';
 		if($recipientOK && $this->EMailData['address'] != '' && we_check_email($this->EMailData['address'])){
 			$from = (!isset($this->EMailData['name']) || $this->EMailData['name'] === '' || $this->EMailData['name'] === null || $this->EMailData['name'] === $this->EMailData['address'] ?
-					$this->EMailData['address'] :
-					array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])
+				$this->EMailData['address'] :
+				array('email' => $this->EMailData['address'], 'name' => $this->EMailData['name'])
 				);
 
 			$phpmail = new we_mail_mail('', $subject, $from);
@@ -331,13 +300,13 @@ class we_shop_statusMails{
 	function save(){
 		$DB_WE = $GLOBALS['DB_WE'];
 
-		if($DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET pref_value="' . $DB_WE->escape(we_serialize($this, SERIALIZE_PHP)) . '",tool="shop",pref_name="weShopStatusMails"')){
+		if($DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET pref_value="' . $DB_WE->escape(we_serialize((array) $this, SERIALIZE_JSON)) . '",tool="shop",pref_name="weShopStatusMails"')){
 			$CLFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"', '', $DB_WE));
 			if(!$CLFields){
-				$CLFields = array(
+				$CLFields = [
 					'languageField' => $this->LanguageData['languageField'],
-					'languageFieldIsISO' => $this->LanguageData['languageFieldIsISO']);
-				$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET pref_value="' . $DB_WE->escape(we_serialize($CLFields, SERIALIZE_PHP)) . '",tool="shop",pref_name="shop_CountryLanguage"');
+					'languageFieldIsISO' => $this->LanguageData['languageFieldIsISO']];
+				$DB_WE->query('REPLACE ' . SETTINGS_TABLE . ' SET pref_value="' . $DB_WE->escape(we_serialize($CLFields, SERIALIZE_JSON)) . '",tool="shop",pref_name="shop_CountryLanguage"');
 			}
 
 			return true;
