@@ -184,7 +184,7 @@ $jsoCfg = [
 ];
 
 foreach($aPrefs as $type => $prefs){
-	$jsoCfg[$type . "_props_"] = [
+	$jsoCfg[$type . '_props_'] = [
 		'width' => intval($prefs["width"]),
 		'height' => intval($prefs["height"]),
 		'res' => $prefs["res"],

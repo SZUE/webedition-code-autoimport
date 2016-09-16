@@ -24,12 +24,12 @@
 $preview = !isset($aProps); //preview requested
 if($preview){
 
-	$aProps = array(
+	$aProps = [
 		0,
 		0,
 		0,
 		we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)
-	);
+	];
 }
 // widget UNPUBLISHED
 $bTypeDoc = (bool) $aProps[3]{0};
@@ -115,14 +115,13 @@ foreach($tbls as $table){
 
 	while($db->next_record()){
 		$cont[$db->f("ModDate")] = $path = '<tr><td class="upbIcon" data-contenttype="' . $db->f('ContentType') . '"></td><td class="upbEntry middlefont ' . ($db->f("Published") != '-' ? 'changed' : "notpublished") . '" onclick="WE().layout.weEditorFrameController.openDocument(\'' . $table . '\',' . $db->f("ID") . ',\'' . $db->f("ContentType") . '\')" title="' . $db->f("Path") . '">' . $db->f("Path") . '</td></tr>';
-		$row = array(
-			array('dat' => $path),
+		$row = [['dat' => $path],
 			/* array('dat' => $db->f("Creator") ? : '-'),
 			  array('dat' => $db->f('CreationDate')),
 			  array('dat' => $db->f("Modifier") ? : '-'),
 			  array('dat' => $db->f("Modified")),
 			  array('dat' => $db->f("Published")), */
-		);
+		];
 		if(defined('WORKFLOW_TABLE')){
 			if($db->f("wforder")){
 				$step = we_workflow_utility::findLastActiveStep($db->f("ID"), $table) + 1;
@@ -149,11 +148,12 @@ var _sTb='" . $sTb . "';
 
 function init(){
 	parent.rpcHandleResponse(_sType,_sObjId,document.getElementById(_sType),_sTb);
+	WE().util.setIconOfDocClass(document,'upbIcon');
 }
 ";
 
 	echo we_html_tools::getHtmlTop(g_l('cockpit', '[unpublished]'), '', '', we_html_element::jsElement($jsCode), we_html_element::htmlBody(['style' => 'margin:10px 15px;',
-			"onload" => 'if(parent!=self){init();}WE().util.setIconOfDocClass(document,"upbIcon");'
+			"onload" => 'if(parent!=self){init();}'
 			], we_html_element::htmlDiv(["id" => "upb"
 				], $ct)));
 }
