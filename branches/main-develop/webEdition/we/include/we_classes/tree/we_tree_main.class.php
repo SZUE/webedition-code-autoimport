@@ -25,7 +25,7 @@
 class we_tree_main extends we_tree_base{
 
 	function getHTMLConstruct($classes = ''){
-		return parent::getHTMLContruct('withFooter');
+		return parent::getHTMLConstruct('withFooter');
 	}
 
 	function getJSStartTree(){

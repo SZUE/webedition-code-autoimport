@@ -100,7 +100,7 @@ class we_shop_Basket{
 		return [
 			'shoppingItems' => $this->getShoppingItems(),
 			'cartFields' => $this->getCartFields()
-			];
+		];
 	}
 
 	/**
@@ -143,16 +143,14 @@ class we_shop_Basket{
 			$key = str_replace('.', '', uniqid('we_cart_', true));
 
 			if($quantity > 0){ // only add new item with positive number
-				$item = [
+				$this->ShoppingItems[$key] = [
 					'id' => $id,
 					'type' => $type,
 					'variant' => $variant,
 					'quantity' => $quantity,
 					'serial' => $this->getserial($id, $type, $variant, $customFields),
 					'customFields' => $customFields
-					];
-
-				$this->ShoppingItems[$key] = $item;
+				];
 			}
 		}
 	}

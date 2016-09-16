@@ -46,7 +46,7 @@ abstract class we_modules_frame{
 	}
 
 	public function getHTMLDocumentHeader($charset = ''){
-		$charset = ($charset? : $GLOBALS['WE_BACKENDCHARSET']);
+		$charset = ($charset ?: $GLOBALS['WE_BACKENDCHARSET']);
 		we_html_tools::headerCtCharset('text/html', $charset);
 		return we_html_tools::getHtmlTop($this->module, $charset);
 	}
@@ -87,8 +87,8 @@ abstract class we_modules_frame{
 				return $this->getHTMLTreeHeader();
 			default:
 				$ret = (empty($GLOBALS['extraJS']) ?
-						'' :
-						$this->getHTMLDocument('<body></body>', $GLOBALS['extraJS'])
+					'' :
+					$this->getHTMLDocument('<body></body>', $GLOBALS['extraJS'])
 					);
 				unset($GLOBALS['extraJS']);
 				t_e(__FILE__ . ' unknown reference: ' . $what, ($ret ? 'generated emergency document' : ''));
@@ -105,15 +105,14 @@ abstract class we_modules_frame{
 			we_html_element::jsElement('
 var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
 ') . we_html_element::jsScript(JS_DIR . 'modules_tree.js') .
-			self::getJSToggleTreeCode($this->module) .
 			we_main_headermenu::css() .
 			we_base_menu::getJS() .
 			$extraHead;
 
 		$body = we_html_element::htmlBody(['id' => 'weMainBody', "onload" => 'startTree();'], we_html_element::htmlExIFrame('header', self::getHTMLHeader(
 						(isset($this->toolDir) ?
-							$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
-							WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
+						$this->toolDir . 'conf/we_menu_' . $this->toolName . '.conf.php' :
+						WE_INCLUDES_PATH . 'menu/module_menu_' . $this->module . '.inc.php'))) .
 				($this->hasIconbar ? we_html_element::htmlIFrame('iconbar', $this->frameset . '&pnt=iconbar' . $extraUrlParams, '', '', '', false) : '') .
 				$this->getHTMLResize($extraUrlParams) .
 				we_html_element::htmlIFrame('cmd', $this->frameset . '&pnt=cmd' . $extraUrlParams)
@@ -139,7 +138,8 @@ var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
 	<div class="baumArrow" onclick="top.content.toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-' . ($this->treeWidth <= 30 ? "right" : "left") . '" ></i></div>
 </div>';
 
-		$content = we_html_element::htmlDiv(['id' => 'moduleContent'], we_html_element::htmlDiv(['id' => 'lframeDiv', 'style' => 'width: ' . $this->treeWidth . 'px;'], we_html_element::htmlDiv(['id' => 'vtabs'], $incDecTree) .
+		$content = we_html_element::htmlDiv(['id' => 'moduleContent'], we_html_element::htmlDiv(['id' => 'lframeDiv', 'style' => 'width: ' . $this->treeWidth . 'px;'], we_html_element::htmlDiv([
+						'id' => 'vtabs'], $incDecTree) .
 					$this->getHTMLLeft()
 				) .
 				we_html_element::htmlDiv(['id' => 'right', 'style' => 'left: ' . $this->treeWidth . 'px;'], we_html_element::htmlIFrame('editor', $this->frameset . '&pnt=editor' . $extraUrlParams, ' ', '', '', false)
@@ -155,7 +155,7 @@ var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
 		return we_html_element::htmlDiv(['id' => 'left', 'name' => 'left'], we_html_element::htmlDiv(['id' => 'treeheader', 'style' => ($this->showTreeHeader ? 'display:block;' : '')], $this->getHTMLTreeheader()) .
 				$this->getHTMLTree() .
 				($this->showTreeFooter ? we_html_element::htmlDiv(['id' => 'treefooter', 'class' => 'editfooter'], $this->getHTMLTreefooter()) :
-					''
+				''
 				)
 		);
 	}
