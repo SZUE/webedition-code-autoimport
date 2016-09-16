@@ -68,13 +68,7 @@ class we_banner_frames extends we_modules_frame{
 
 		$extraHead = we_tabs::getHeader('
 function setTab(tab){
-	switch(tab){
-		case ' . we_banner_banner::PAGE_PROPERTY . ':
-		case ' . we_banner_banner::PAGE_PLACEMENT . ':
-		case ' . we_banner_banner::PAGE_STATISTICS . ':
-			top.content.editor.edbody.we_cmd("switchPage",tab);
-			break;
-	}
+	top.content.editor.edbody.we_cmd("switchPage",tab);
 }');
 
 		//TODO: we have the following body in several modules!

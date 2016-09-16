@@ -78,9 +78,9 @@ function setTab(tab) {
 				($this->View->export->ID ? '' : 'top.content.activ_tab=1;') .
 				($this->View->export->IsFolder == 1 ? 'top.content.activ_tab=1;' : ''));
 
-		$table = new we_html_table(array("style" => 'width:100%;margin-top:3px', 'class' => 'default'), 1, 1);
+		$table = new we_html_table(["style" => 'width:100%;margin-top:3px', 'class' => 'default'], 1, 1);
 
-		$table->setCol(0, 0, array('class' => "small", 'style' => 'vertical-align:top;padding-left:15px;'), we_html_element::htmlB(g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text));
+		$table->setCol(0, 0, ['class' => "small", 'style' => 'vertical-align:top;padding-left:15px;'], we_html_element::htmlB(g_l('export', '[export]') . ':&nbsp;' . $this->View->export->Text));
 		$text = !empty($this->View->export->Path) ? $this->View->export->Path : "/" . $this->View->export->Text;
 		$extraJS = 'document.getElementById("tab_"+top.content.activ_tab).className="tabActive";';
 

@@ -208,7 +208,7 @@ function setTab(tab) {
 		$tab_body_content = '<div id="main"><div id="headrow"><b>' . str_replace(" ", "&nbsp;", $textPre) . ':&nbsp;</b><span id="h_path" class="header_small"><b id="titlePath">' . str_replace(" ", "&nbsp;", $textPost) . '</b></span></div>' .
 			$we_tabs->getHTML() .
 			'</div>';
-		$tab_body = we_html_element::htmlBody(array("onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"), $tab_body_content);
+		$tab_body = we_html_element::htmlBody(["onresize" => "weTabs.setFrameSize()", "onload" => "weTabs.setFrameSize()", "id" => "eHeaderBody"], $tab_body_content);
 
 		return $this->getHTMLDocument($tab_body, $tab_head);
 	}

@@ -129,23 +129,7 @@ class we_newsletter_frames extends we_modules_frame{
 
 		$js = '
 function setTab(tab) {
-	switch (tab) {
-		case ' . self::TAB_PROPERTIES . ':
-			top.content.editor.edbody.we_cmd("switchPage",' . self::TAB_PROPERTIES . ');
-			break;
-
-		case ' . self::TAB_MAILING . ':
-			top.content.editor.edbody.we_cmd("switchPage",' . self::TAB_MAILING . ');
-			break;
-
-		case ' . self::TAB_EDIT . ':
-			top.content.editor.edbody.we_cmd("switchPage",' . self::TAB_EDIT . ');
-			break;
-
-		case ' . self::TAB_REPORTING . ': //Tab Auswertung
-			top.content.editor.edbody.we_cmd("switchPage",' . self::TAB_REPORTING . ');
-			break;
-	}
+	top.content.editor.edbody.we_cmd("switchPage",tab);
 }';
 
 		$we_tabs = new we_tabs();
