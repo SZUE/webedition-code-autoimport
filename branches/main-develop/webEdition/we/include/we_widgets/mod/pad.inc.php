@@ -36,9 +36,9 @@ function convertDate($date){
  */
 function getDateSelector($label, $name, $btn){
 	$btnDatePicker = we_html_button::create_button(we_html_button::CALENDAR, 'javascript:', null, null, null, null, null, null, false, $btn);
-	return we_html_element::htmlSpan(array('class' => 'default', 'id' => $name . '_cell'), $label .
+	return we_html_element::htmlSpan(['class' => 'default', 'id' => $name . '_cell'], $label .
 			we_html_tools::htmlTextInput($name, 55, '', 10, 'id="' . $name . '" readonly="1"', "text", 70, 0) .
-			we_html_element::htmlA(array("href" => "#"), $btnDatePicker)
+			we_html_element::htmlA(["href" => "#"], $btnDatePicker)
 	);
 }
 
@@ -54,8 +54,7 @@ function getNoteList($sql, $bDate, $bDisplay){
 	$DB_WE->query($sql);
 	$notes = '<table style="width:100%;padding:0px 5px;" class="default">';
 	$rcd = 0;
-	$fields = array(
-		'ID',
+	$fields = ['ID',
 		'WidgetName',
 		'UserID',
 		'CreationDate',
@@ -65,12 +64,12 @@ function getNoteList($sql, $bDate, $bDisplay){
 		'Valid',
 		'ValidFrom',
 		'ValidUntil'
-	);
+	];
 	while($DB_WE->next_record()){
 		foreach($fields as $fld){
 			$dbf = $DB_WE->f($fld);
 
-			$fldValue = CheckAndConvertISObackend(str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), ($fld === 'ValidUntil' && ($dbf === '3000-01-01' || $dbf === '0000-00-00' || !$dbf) ? '' : $dbf)));
+			$fldValue = CheckAndConvertISObackend(str_replace(['<', '>', '\'', '"'], ['&lt;', '&gt;', '&#039;', '&quot;'], ($fld === 'ValidUntil' && ($dbf === '3000-01-01' || $dbf === '0000-00-00' || !$dbf) ? '' : $dbf)));
 			$notes .= we_html_element::htmlHidden($rcd . '_' . $fld, $fldValue, $rcd . '_' . $fld);
 		}
 
@@ -100,7 +99,7 @@ function getNoteList($sql, $bDate, $bDisplay){
 				}
 			}
 		}
-		$showTitle = str_replace(array('<', '>', '\'', '"'), array('&lt;', '&gt;', '&#039;', '&quot;'), $DB_WE->f("Title"));
+		$showTitle = strtr($DB_WE->f("Title"), ['<' => '&lt;', '>' => '&gt;', '\'' => '&#039;', '"' => '&quot;']);
 		switch($DB_WE->f("Priority")){
 			case 'high':
 				$color = 'red';
@@ -143,18 +142,17 @@ switch($command){
 		break;
 	case 'update' :
 		list($q_ID, $q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
-		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Title));
-		$entText = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Text));
+		$entTitle = strtr(base64_decode($q_Title), ["'" => '&#039;', '"' => '&quot;']);
+		$entText = strtr(base64_decode($q_Text), ["'" => '&#039;', '"' => '&quot;']);
 		if($q_Valid === "always" || $q_Valid === "date"){
 			$q_ValidUntil = "3000-01-01";
 		}
-		$DB_WE->query('UPDATE ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'Title' => $entTitle,
+		$DB_WE->query('UPDATE ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(['Title' => $entTitle,
 				'Text' => $entText,
 				'Priority' => $q_Priority,
 				'Valid' => $q_Valid,
 				'ValidFrom' => $q_ValidFrom,
-				'ValidUntil' => $q_ValidUntil)) . ' WHERE ID = ' . intval($q_ID));
+				'ValidUntil' => $q_ValidUntil]) . ' WHERE ID = ' . intval($q_ID));
 		break;
 	case 'insert' :
 		list($q_Title, $q_Text, $q_Priority, $q_Valid, $q_ValidFrom, $q_ValidUntil) = explode(';', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1));
@@ -165,10 +163,9 @@ switch($command){
 			$q_ValidUntil = "3000-01-01";
 		}
 
-		$entTitle = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Title));
-		$entText = str_replace(array("'", '"'), array('&#039;', '&quot;'), base64_decode($q_Text));
-		$DB_WE->query('INSERT INTO ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'WidgetName' => $title,
+		$entTitle = strtr(base64_decode($q_Title), ["'" => '&#039;', '"' => '&quot;']);
+		$entText = strtr(base64_decode($q_Text), ["'" => '&#039;', '"' => '&quot;']);
+		$DB_WE->query('INSERT INTO ' . NOTEPAD_TABLE . ' SET ' . we_database_base::arraySetter(['WidgetName' => $title,
 				'UserID' => intval($_SESSION['user']['ID']),
 				'CreationDate' => sql_function('CURDATE()'),
 				'Title' => $entTitle,
@@ -177,7 +174,7 @@ switch($command){
 				'Valid' => $q_Valid,
 				'ValidFrom' => $q_ValidFrom,
 				'ValidUntil' => $q_ValidUntil
-		)));
+		]));
 		break;
 }
 
@@ -202,7 +199,7 @@ $sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 		WidgetName = '" . $GLOBALS['DB_WE']->escape($title) . "' AND
 		UserID = " . intval($_SESSION['user']['ID']) .
 	($bDisplay ?
-		" AND (
+	" AND (
 			Valid = 'always' OR (
 				Valid = 'date' AND ValidFrom <= DATE_FORMAT(NOW(), \"%Y-%m-%d\")
 			) OR (
@@ -213,21 +210,19 @@ $sql = 'SELECT * FROM ' . NOTEPAD_TABLE . " WHERE
 	' ORDER BY ' . $q_sort;
 
 // validity settings
-$sctValid = we_html_tools::htmlSelect("sct_valid", array(
-		g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
-		), 1, g_l('cockpit', '[always]'), false, array('style' => "width:100px;", 'onchange' => "toggleTblValidity()"), 'value', 100, 'middlefont');
+$sctValid = we_html_tools::htmlSelect("sct_valid", [g_l('cockpit', '[always]'), g_l('cockpit', '[from_date]'), g_l('cockpit', '[period]')
+		], 1, g_l('cockpit', '[always]'), false, ['style' => "width:100px;", 'onchange' => "toggleTblValidity()"], 'value', 100, 'middlefont');
 $oTblValidity = getDateSelector(g_l('cockpit', '[from]'), "f_ValidFrom", "_from") . ' ' . getDateSelector(g_l('cockpit', '[until]'), "f_ValidUntil", "_until");
-$oTblPeriod = new we_html_table(array("width" => "100%", 'class' => 'default'), 1, 2);
-$oTblPeriod->setCol(0, 0, array('class' => "middlefont"), $sctValid);
-$oTblPeriod->setCol(0, 1, array("style" => "text-align:right"), $oTblValidity);
+$oTblPeriod = new we_html_table(["width" => "100%", 'class' => 'default'], 1, 2);
+$oTblPeriod->setCol(0, 0, ['class' => "middlefont"], $sctValid);
+$oTblPeriod->setCol(0, 1, ["style" => "text-align:right"], $oTblValidity);
 
 // Edit note prio settings
-$rdoPrio = array(
-	we_html_forms::radiobutton(0, 0, "rdo_prio", '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;" title="' . g_l('cockpit', '[high]') . '" ></i>', true, "middlefont", "", false, "", 0, ""),
+$rdoPrio = [we_html_forms::radiobutton(0, 0, "rdo_prio", '<i class="fa fa-dot-circle-o" style="color:red;margin-left:5px;" title="' . g_l('cockpit', '[high]') . '" ></i>', true, "middlefont", "", false, "", 0, ""),
 	we_html_forms::radiobutton(1, 0, "rdo_prio", '<i class="fa fa-dot-circle-o" style="color:#F2F200;margin-left:5px;" title="' . g_l('cockpit', '[medium]') . '"></i>', true, "middlefont", "", false, "", 0, ""),
 	we_html_forms::radiobutton(2, 1, "rdo_prio", '<i class="fa fa-dot-circle-o" style="color:green;margin-left:5px;" title="' . g_l('cockpit', '[low]') . '"></i>', true, "middlefont", "", false, "", 0, "")
-);
-$oTblPrio = new we_html_table(array('class' => 'default'), 1, 3);
+];
+$oTblPrio = new we_html_table(['class' => 'default'], 1, 3);
 $oTblPrio->setCol(0, 0, null, $rdoPrio[0]);
 $oTblPrio->setCol(0, 1, null, $rdoPrio[1]);
 $oTblPrio->setCol(0, 2, null, $rdoPrio[2]);

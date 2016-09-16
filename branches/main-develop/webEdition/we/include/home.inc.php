@@ -27,11 +27,10 @@ we_html_tools::protect();
 
 if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	$iLayoutCols = empty($_SESSION['prefs']['cockpit_amount_columns']) ? 3 : $_SESSION['prefs']['cockpit_amount_columns'];
-	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reset_home') ? true : false;
+	$bResetProps = (we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) === 'reset_home');
 	if(!$bResetProps && $iLayoutCols){
-		$aDat = (we_unserialize(we_base_preferences::getUserPref('cockpit_dat'))? : $aCfgProps);
-		$aDat = array_filter($aDat)? : $aCfgProps;
-		$aTrf = we_unserialize(we_base_preferences::getUserPref('cockpit_rss'))? : $aTopRssFeeds;
+		$aDat = array_filter((we_unserialize(we_base_preferences::getUserPref('cockpit_dat')) ?: $aCfgProps)) ?: $aCfgProps;
+		$aTrf = we_unserialize(we_base_preferences::getUserPref('cockpit_rss')) ?: $aTopRssFeeds;
 		if(count($aDat) > $iLayoutCols){
 			while(count($aDat) > $iLayoutCols){
 				$aDelCol = array_pop($aDat);
@@ -148,7 +147,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
 		we_html_element::cssLink(CSS_DIR . 'home.css') .
 		we_html_element::jsScript(JS_DIR . 'home.js', '', ['id' => 'loadVarHome', 'data-cockpit' => setDynamicVar($cockpit)])
-		, we_html_element::htmlBody([ 'onload' => "startCockpit();",], we_html_element::htmlForm(
+		, we_html_element::htmlBody(['onload' => "startCockpit();",], we_html_element::htmlForm(
 				['name' => 'we_form'
 				], we_html_element::htmlHiddens([
 					'we_cmd[0]' => 'widget_cmd',
@@ -165,7 +164,7 @@ if(permissionhandler::hasPerm('CAN_SEE_QUICKSTART')){
 	echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsScript(JS_DIR . 'utils/cockpit.js') .
 		we_html_element::cssLink(CSS_DIR . 'home.css') .
 		we_html_element::jsScript(JS_DIR . 'nohome.js'), we_html_element::htmlBody(
-			[ 'class' => 'noHome', "onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
+			['class' => 'noHome', "onload" => "_EditorFrame.initEditorFrameData({'EditorIsLoading':false});"
 			], we_html_element::htmlDiv(
 				['class' => "defaultfont errorMessage", "style" => "width: 400px;"], (permissionhandler::hasPerm(["CHANGE_START_DOCUMENT", "EDIT_SETTINGS"], false) ?
 					we_html_tools::htmlAlertAttentionBox("<strong>" . g_l('SEEM', '[question_change_startdocument]') . '</strong><br/><br/>' .
