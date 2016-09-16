@@ -25,30 +25,17 @@ $yuiSuggest = & weSuggest::getInstance();
 
 echo we_html_tools::getHtmlTop();
 require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
-echo we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
- we_html_element::jsElement('
-weCollectionEdit.we_doc = {
-	ID: "' . $GLOBALS['we_doc']->ID . '",
-	Path: "' . $GLOBALS['we_doc']->Path . '",
-	name: "' . $GLOBALS['we_doc']->Name . '",
-	remTable: "' . $GLOBALS['we_doc']->getRemTable() . '",
-	remCT: "' . $GLOBALS['we_doc']->getRemCT() . '",
-	realRemCT: "' . $GLOBALS['we_doc']->getRealRemCT() . '",
-	remClass: "' . $GLOBALS['we_doc']->getRemClass() . '",
-	defaultDir: ' . $GLOBALS['we_doc']->DefaultDir . '
-};
 
-weCollectionEdit.g_l = {
-	element_not_set: "' . g_l('weClass', '[collection][notSet]') . '",
-	info_insertion: "' . g_l('weClass', '[collection][infoAddFiles]') . '"
-
-};
-
-// since these props are defined on Properties we can write them here
-weCollectionEdit.dd.IsDuplicates = ' . intval($GLOBALS['we_doc']->IsDuplicates) . ';
-weCollectionEdit.dd.fillEmptyRows = 1;
-weCollectionEdit.view = "grid";
-');
+$properties = [
+	'docRemTable' => $GLOBALS['we_doc']->getRemTable(),
+	'docRemCT' => $GLOBALS['we_doc']->getRemCT(),
+	'docRealRemCT' => $GLOBALS['we_doc']->getRealRemCT(),
+	'docRemClass' => $GLOBALS['we_doc']->getRemClass(),
+	'docDefaultDir' => $GLOBALS['we_doc']->DefaultDir,
+	'docIsDuplicates' => intval($GLOBALS['we_doc']->IsDuplicates),
+	'docLastView' => "grid", // save last view to session
+];
+echo we_html_element::jsScript(JS_DIR . 'collection.js', '', ['id' => 'loadVarCollection', 'data-we_doc' => setDynamicVar($properties)]);
 ?>
 
 </head>

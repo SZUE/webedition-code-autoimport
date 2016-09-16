@@ -32,8 +32,11 @@ $hasGD = isset($GLOBALS['we_doc']) && $GLOBALS['we_doc']->ContentType === we_bas
 
 $doc = [
 	'we_transaction' => we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0),
+	'docId' => isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->ID) : 0,
+	'docPath' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '',
+	'docText' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Text : '',
 	'oldparentid' => isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->ParentID) : 0,
-	'docName ' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Name : '',
+	'docName' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Name : '',
 	'isFolder' => isset($GLOBALS['we_doc']) ? intval($GLOBALS['we_doc']->IsFolder) : 0,
 	'docTable' => isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Table : '',
 	'docClass' => isset($GLOBALS['we_doc']) ? get_class($GLOBALS['we_doc']) : '',

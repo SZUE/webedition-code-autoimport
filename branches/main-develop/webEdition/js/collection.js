@@ -24,6 +24,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
+WE().util.loadConsts('collection');
+
 wePropertiesEdit = {
 	hasOptions: function (obj) {
 		if (obj !== null && obj.options !== null) {
@@ -122,10 +124,6 @@ weCollectionEdit = {
 		}
 	},
 	maxIndex: 0,
-	blankItem: {
-		list: '',
-		grid: ''
-	},
 	collectionName: '',
 	csv: '',
 	view: 'grid',
@@ -144,15 +142,7 @@ weCollectionEdit = {
 		grid: null,
 		list: null
 	},
-	we_doc: {
-		ID: 0,
-		name: '',
-		remTable: '',
-		remCT: '',
-		remClass: '',
-		realRemCT: '',
-		defaultDir: 0
-	},
+	we_doc: {},
 	dd: {
 		fillEmptyRows: true,
 		placeholder: null,
@@ -167,27 +157,28 @@ weCollectionEdit = {
 			removed: false
 		}
 	},
-	g_l: {
-		info_insertion: ''
-	},
-	init: function () {
+	init: function () {top.console.log('gefeuert');
+		// load variable data
+		this.we_doc = WE().util.getDynamicVar(document, 'loadVarCollection', 'data-we_doc');
+		for (var prop in doc) {
+			this.we_doc[prop] = doc[prop];
+		}
+		this.view = this.we_doc.docLastView;
+
+		// do some other init
 		this.ct.grid = document.getElementById('content_div_grid');
 		this.ct.list = document.getElementById('content_div_list');
 		this.sliderDiv = document.getElementById('sliderDiv');
 		this.numSpan = document.getElementById('numSpan');
-		this.itemsPerRow = document.we_form['we_' + this.we_doc.name + '_itemsPerRow'].value;
+		this.itemsPerRow = document.we_form['we_' + this.we_doc.docName + '_itemsPerRow'].value;
 
-		/* use this when delivering complete html-items by php
-		 for(var i = 0; i < this.ct[this.view].children.length; i++){
-		 this.addListenersToItem(this.view, this.ct[this.view].children[i], i+1);
-		 }
-		 this.reindexAndRetrieveCollection(true);
-		 */
-
-		/* use this to render from storage */
 		//this.addListenersToContainer();
-		this.renderView(true);
-
+		if(WE().consts.collection){
+			top.console.log('do render');
+			this.renderView(true);
+		} else {
+			top.console.log('cannot render');
+		}
 	},
 	setView: function (view, viewSub) {
 		switch (view) {
@@ -208,8 +199,8 @@ weCollectionEdit = {
 				break;
 		}
 
-		document.we_form['we_' + this.we_doc.name + '_view'].value = this.view;
-		document.we_form['we_' + this.we_doc.name + '_viewSub'].value = this.viewSub === 'minimal' ? 'minimal' : 'broad';
+		document.we_form['we_' + this.we_doc.docName + '_view'].value = this.view;
+		document.we_form['we_' + this.we_doc.docName + '_viewSub'].value = this.viewSub === 'minimal' ? 'minimal' : 'broad';
 		this.dd.counter = 0;
 		this.renderView(true);
 	},
@@ -369,7 +360,7 @@ weCollectionEdit = {
 			}
 		}
 
-		top.we_cmd('addToCollection', 1, WE().consts.tables.TBL_PREFIX + this.we_doc.remTable, this.we_doc.ID, this.we_doc.Path, index, pos);
+		top.we_cmd('addToCollection', 1, WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable, this.we_doc.docId, this.we_doc.docPath, index, pos);
 	},
 	doClickDelete: function (elem) {
 		var el = this.getItem(elem);
@@ -383,7 +374,7 @@ weCollectionEdit = {
 
 		this.itemsPerRow = 7 - value;
 		this.gridItemDimension = this.gridItemDimensions[this.itemsPerRow];
-		document.we_form['we_' + this.we_doc.name + '_itemsPerRow'].value = this.itemsPerRow;
+		document.we_form['we_' + this.we_doc.docName + '_itemsPerRow'].value = this.itemsPerRow;
 
 		for (var i = 0; i < this.ct.grid.children.length; i++) {
 			this.ct.grid.children[i].style.width = this.ct.grid.children[i].style.height = this.gridItemDimension.item + 'px';
@@ -402,7 +393,7 @@ weCollectionEdit = {
 		}
 	},
 	doClickOpenToEdit: function (id) {
-		var table = this.we_doc.remTable === 'tblFile' ? WE().consts.tables.FILE_TABLE : WE().consts.tables.OBJECT_FILES_TABLE,
+		var table = this.we_doc.docRemTable === 'tblFile' ? WE().consts.tables.FILE_TABLE : WE().consts.tables.OBJECT_FILES_TABLE,
 						ct = this.storage['item_' + id].ct;
 		WE().layout.weEditorFrameController.openDocument(table, id, ct);
 	},
@@ -472,9 +463,10 @@ weCollectionEdit = {
 		document.body.appendChild(div); // we must append temporary div to a visible element to get offsetWidth of some sub elems
 
 		// FIXME: reduce obsolete replacements for listMinimal
-
+top.console.log(WE().consts.collection);
 		var viewPlusSub = t.view !== 'list' ? 'grid' : (t.viewSub === 'minimal' ? 'listMinimal' : 'list');
-		blank = t.blankItem[viewPlusSub].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
+
+		var blank = WE().consts.collection.blankItem[viewPlusSub].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
 						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
 						replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
 						replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
@@ -597,11 +589,11 @@ weCollectionEdit = {
 		//set first item on drop row
 		if (items.length) {
 			/*
-			 this.dd.IsDuplicates = document.we_form['check_we_' + this.we_doc.name + '_IsDuplicates'].checked;
+			 this.we_doc.docIsDuplicates = document.we_form['check_we_' + this.we_doc.docName + '_IsDuplicates'].checked;
 			 */
 			while (!isFirstSet && items.length) {
 				item = items.shift();
-				if (this.dd.IsDuplicates === 1 || this.collectionCsv.search(',' + item.id + ',') === -1) {
+				if (this.we_doc.docIsDuplicates === 1 || this.collectionCsv.search(',' + item.id + ',') === -1) {
 					var newEl = this.insertItem(el, false, item, this, '#00ee00');
 					this.doClickDelete(el);
 					el = newEl;
@@ -614,7 +606,7 @@ weCollectionEdit = {
 		}
 
 		for (var i = 0; i < items.length; i++) {
-			if (this.dd.IsDuplicates || this.collectionCsv.search(',' + items[i].id + ',') === -1) {
+			if (this.we_doc.docIsDuplicates || this.collectionCsv.search(',' + items[i].id + ',') === -1) {
 				itemsSet[0].push(items[i].id);
 				if (this.dd.fillEmptyRows && !rowsFull && el.nextSibling && el.nextSibling.id !== undefined && el.nextSibling.id.substr(0, 10) === this.view + '_item_') {
 					index = el.nextSibling.id.substr(10);
@@ -693,9 +685,9 @@ weCollectionEdit = {
 		}
 
 		if (!this.collectionName) {
-			this.collectionName = (WE().consts.tables.TBL_PREFIX + this.we_doc.remTable === WE().consts.tables.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
+			this.collectionName = (WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable === WE().consts.tables.FILE_TABLE) ? '_fileCollection' : '_objectCollection';
 		}
-		document.we_form.elements['we_' + this.we_doc.name + this.collectionName].value = this.collectionCsv;
+		document.we_form.elements['we_' + this.we_doc.docName + this.collectionName].value = this.collectionCsv;
 		if (!notSetHot) {
 			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
 		}
@@ -764,7 +756,7 @@ weCollectionEdit = {
 	},
 	enterDrag: function (type, view, evt, elem, last) {
 		var el = this.getItem(elem);
-		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
+		var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : WE().layout.dragNDrop.dataTransfer.text.split(',');
 		var c, newPos;
 
 		if (this.view === 'grid' && type === 'item') {
@@ -777,14 +769,14 @@ weCollectionEdit = {
 					c = this.ct[this.view];
 
 					if (!this.dd.moveItem.removed) {
-						newPos = Array.indexOf.call(c.children, el);
+						newPos = Array.prototype.indexOf.call(c.children, el);
 						c.removeChild(this.dd.moveItem.el);
 						c.insertBefore(this.getPlaceholder(), c.childNodes[newPos + (newPos >= this.dd.moveItem.pos ? 0 : -1)]);
 						this.dd.moveItem.removed = true;
 						return false;
 					}
 
-					newPos = Array.indexOf.call(c.children, el);
+					newPos = Array.prototype.indexOf.call(c.children, el);
 					c.removeChild(this.getPlaceholder());
 					c.insertBefore(this.getPlaceholder(), c.childNodes[newPos]);
 				}
@@ -812,7 +804,7 @@ weCollectionEdit = {
 							}
 							break;
 					}
-					if (data[0] === 'dragFolder' || (!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) !== -1)) {
+					if (data[0] === 'dragFolder' || (!this.we_doc.docRemCT || data[3] === 'folder' || this.we_doc.docRemCT.search(',' + data[3]) !== -1)) {
 						this.resetItemColors(el, 'okPrev');
 					} else {
 						this.resetItemColors(el, 'nokPrev');
@@ -822,7 +814,7 @@ weCollectionEdit = {
 					this.resetColors();
 					switch (type) {
 						case 'item':
-							if (data[0] === 'dragFolder' || (!this.we_doc.remCT || this.we_doc.remCT.search(',' + data[3]) !== -1)) {
+							if (data[0] === 'dragFolder' || (!this.we_doc.docRemCT || this.we_doc.docRemCT.search(',' + data[3]) !== -1)) {
 								this.resetItemColors(el, 'okPrev');
 							} else {
 								this.resetItemColors(el, 'nokPrev');
@@ -842,7 +834,7 @@ weCollectionEdit = {
 				this.resetItemColors(elem);
 			}
 		} else {
-			var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
+			var data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : WE().layout.dragNDrop.dataTransfer.text.split(',');
 			switch (data[0]) {
 				case 'dragItem':
 				case 'dragFolder':
@@ -888,9 +880,9 @@ weCollectionEdit = {
 		}
 	},
 	startMoveItem: function (evt, view) {
-		var elem = this.getItem(evt.target),
-						position = Array.indexOf.call(this.ct[view].children, elem);
-
+		var elem = this.getItem(evt.target);
+		var position = Array.prototype.indexOf.call(this.ct[view].children, elem);
+		top.console.log('pos: ' + position);
 		this.view = view;
 		this.dd.isMoveItem = true;
 		this.dd.moveItem.el = elem;
@@ -900,7 +892,7 @@ weCollectionEdit = {
 		this.dd.moveItem.pos = position;
 		this.dd.moveItem.removed = false;
 
-		top.dd.dataTransfer.text = 'moveItem,' + elem.id;
+		WE().layout.dragNDrop.dataTransfer.text = 'moveItem,' + elem.id;
 		evt.dataTransfer.setData('text', 'moveItem,' + elem.id);
 
 		if (this.view === 'grid') {
@@ -915,7 +907,7 @@ weCollectionEdit = {
 		if (!evt.dataTransfer.getData("text") && evt.dataTransfer.files.length === 1) {
 			data[0] = 'dragItemFromExtern';
 		} else {
-			data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : top.dd.dataTransfer.text.split(',');
+			data = evt.dataTransfer.getData("text") ? evt.dataTransfer.getData("text").split(',') : WE().layout.dragNDrop.dataTransfer.text.split(',');
 		}
 
 		switch (data[0]) {
@@ -953,8 +945,8 @@ weCollectionEdit = {
 					this.hideSpace(elem);
 				}
 
-				if (WE().consts.tables.TBL_PREFIX + this.we_doc.remTable == data[1]) {
-					if (!this.we_doc.remCT || data[3] === 'folder' || this.we_doc.remCT.search(',' + data[3]) != -1) {
+				if (WE().consts.tables.TBL_PREFIX + this.we_doc.docRemTable == data[1]) {
+					if (!this.we_doc.docRemCT || data[3] === 'folder' || this.we_doc.docRemCT.search(',' + data[3]) != -1) {
 						this.callForValidItemsAndInsert(index, data[2], false, type !== 'item', el);
 						return;
 					} else {
@@ -968,13 +960,13 @@ weCollectionEdit = {
 				break;
 			case 'dragItemFromExtern':
 				var files = evt.dataTransfer.files;
-				//weCollectionEdit.we_doc.realRemCT
-				if (this.we_doc.realRemCT.search(',' + files[0].type + ',') === -1) {
+				//weCollectionEdit.we_doc.docRealRemCT
+				if (this.we_doc.docRealRemCT.search(',' + files[0].type + ',') === -1) {
 					alert('wrong type');
 					return;
 				}
 
-				var parentID = weCollectionEdit.we_doc.defaultDir,
+				var parentID = weCollectionEdit.we_doc.docDefaultDir,
 								ct = files[0].type,
 								callback;
 
@@ -1025,12 +1017,11 @@ weCollectionEdit = {
 		notReplace = notReplace !== undefined ? notReplace : false;
 		try {
 			if (csvIDs) {
-				var postData;
-				postData = 'we_cmd[transaction]=' + encodeURIComponent(we_transaction);
+				postData = 'we_cmd[transaction]=' + encodeURIComponent(this.we_doc.we_transaction);
 				postData += '&we_cmd[id]=' + encodeURIComponent(csvIDs);
-				postData += '&we_cmd[collection]=' + encodeURIComponent(this.we_doc.ID);
+				postData += '&we_cmd[collection]=' + encodeURIComponent(this.we_doc.docId);
 				postData += '&we_cmd[full]=' + encodeURIComponent(1);
-				postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.name + '_InsertRecursive'].checked);
+				postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.docName + '_InsertRecursive'].checked);
 
 				xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function () {
@@ -1044,7 +1035,7 @@ weCollectionEdit = {
 							} else {
 								var resp = weCollectionEdit.addItems(document.getElementById(weCollectionEdit.view + '_item_' + index), respArr, notReplace);
 								if (message) {
-									top.we_showMessage(weCollectionEdit.g_l.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
+									top.we_showMessage(WE().consts.g_l.weCollection.info_insertion.replace(/##INS##/, resp[0]).replace(/##REJ##/, resp[1]), 1, window);
 								}
 							}
 							setTimeout(weCollectionEdit.resetColors, 300, weCollectionEdit);
