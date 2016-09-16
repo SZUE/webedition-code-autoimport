@@ -68,7 +68,7 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	}
 }
 
-echo we_html_tools::getHtmlTop('Neue Sammlung'/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
+echo we_html_tools::getHtmlTop('Neue Sammlung'/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'collection.js') .
 	we_html_element::jsElement('
 var name = "' . $collection->Name . '";
 var _EditorFrame = {};
