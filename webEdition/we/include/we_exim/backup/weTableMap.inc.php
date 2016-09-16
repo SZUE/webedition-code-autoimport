@@ -61,82 +61,86 @@ return [
 	],
 	'configuration' => [],
 	'object' => (defined('OBJECT_TABLE') ? [
-		strtolower(stripTblPrefix(OBJECT_TABLE)) => OBJECT_TABLE,
-		strtolower(stripTblPrefix(OBJECT_FILES_TABLE)) => OBJECT_FILES_TABLE,
-		strtolower(stripTblPrefix(OBJECT_X_TABLE)) => OBJECT_X_TABLE,
-		strtolower(stripTblPrefix(OBJECTLINK_TABLE)) => OBJECTLINK_TABLE,
-		] :
-		[]
+	strtolower(stripTblPrefix(OBJECT_TABLE)) => OBJECT_TABLE,
+	strtolower(stripTblPrefix(OBJECT_FILES_TABLE)) => OBJECT_FILES_TABLE,
+	strtolower(stripTblPrefix(OBJECT_X_TABLE)) => OBJECT_X_TABLE,
+	strtolower(stripTblPrefix(OBJECTLINK_TABLE)) => OBJECTLINK_TABLE,
+	] :
+	[]
 	),
 	'customer' => (defined('CUSTOMER_TABLE') ? [
-		strtolower(stripTblPrefix(CUSTOMER_TABLE)) => CUSTOMER_TABLE,
-		strtolower(stripTblPrefix(CUSTOMER_FILTER_TABLE)) => CUSTOMER_FILTER_TABLE,
-		strtolower(stripTblPrefix(CUSTOMER_AUTOLOGIN_TABLE)) => CUSTOMER_AUTOLOGIN_TABLE
-		] :
-		[]
+	strtolower(stripTblPrefix(CUSTOMER_TABLE)) => CUSTOMER_TABLE,
+	strtolower(stripTblPrefix(CUSTOMER_FILTER_TABLE)) => CUSTOMER_FILTER_TABLE,
+	strtolower(stripTblPrefix(CUSTOMER_AUTOLOGIN_TABLE)) => CUSTOMER_AUTOLOGIN_TABLE
+	] :
+	[]
 	),
-	'shop' => (defined('SHOP_TABLE') ? [
-		strtolower(stripTblPrefix(SHOP_TABLE)) => SHOP_TABLE,
-		strtolower(stripTblPrefix(WE_SHOP_VAT_TABLE)) => WE_SHOP_VAT_TABLE
-		] :
-		[]
+	'shop' => (defined('SHOP_ORDER_TABLE') ? [
+	strtolower(stripTblPrefix(SHOP_TABLE)) => SHOP_TABLE,
+	strtolower(stripTblPrefix(WE_SHOP_VAT_TABLE)) => WE_SHOP_VAT_TABLE,
+	strtolower(SHOP_ORDER_TABLE) => SHOP_ORDER_TABLE,
+	strtolower(SHOP_ORDER_DATES_TABLE) => SHOP_ORDER_DATES_TABLE,
+	strtolower(SHOP_ORDER_DOCUMENT_TABLE) => SHOP_ORDER_DOCUMENT_TABLE,
+	strtolower(SHOP_ORDER_ITEM_TABLE) => SHOP_ORDER_ITEM_TABLE
+	] :
+	[]
 	),
 	'workflow' => (defined('WORKFLOW_TABLE') ? [
-		strtolower(stripTblPrefix(WORKFLOW_TABLE)) => WORKFLOW_TABLE,
-		strtolower(stripTblPrefix(WORKFLOW_STEP_TABLE)) => WORKFLOW_STEP_TABLE,
-		strtolower(stripTblPrefix(WORKFLOW_TASK_TABLE)) => WORKFLOW_TASK_TABLE,
-		strtolower(stripTblPrefix(WORKFLOW_DOC_TABLE)) => WORKFLOW_DOC_TABLE,
-		strtolower(stripTblPrefix(WORKFLOW_DOC_STEP_TABLE)) => WORKFLOW_DOC_STEP_TABLE,
-		strtolower(stripTblPrefix(WORKFLOW_DOC_TASK_TABLE)) => WORKFLOW_DOC_TASK_TABLE,
-		strtolower(stripTblPrefix(WORKFLOW_LOG_TABLE)) => WORKFLOW_LOG_TABLE
-		] :
-		[]
+	strtolower(stripTblPrefix(WORKFLOW_TABLE)) => WORKFLOW_TABLE,
+	strtolower(stripTblPrefix(WORKFLOW_STEP_TABLE)) => WORKFLOW_STEP_TABLE,
+	strtolower(stripTblPrefix(WORKFLOW_TASK_TABLE)) => WORKFLOW_TASK_TABLE,
+	strtolower(stripTblPrefix(WORKFLOW_DOC_TABLE)) => WORKFLOW_DOC_TABLE,
+	strtolower(stripTblPrefix(WORKFLOW_DOC_STEP_TABLE)) => WORKFLOW_DOC_STEP_TABLE,
+	strtolower(stripTblPrefix(WORKFLOW_DOC_TASK_TABLE)) => WORKFLOW_DOC_TASK_TABLE,
+	strtolower(stripTblPrefix(WORKFLOW_LOG_TABLE)) => WORKFLOW_LOG_TABLE
+	] :
+	[]
 	),
 	'todo' => (defined('MSG_TODO_TABLE') ? [
-		strtolower(stripTblPrefix(MSG_TODO_TABLE)) => MSG_TODO_TABLE,
-		strtolower(stripTblPrefix(MSG_TODOHISTORY_TABLE)) => MSG_TODOHISTORY_TABLE,
-		strtolower(stripTblPrefix(MESSAGES_TABLE)) => MESSAGES_TABLE,
-		strtolower(stripTblPrefix(MSG_ACCOUNTS_TABLE)) => MSG_ACCOUNTS_TABLE,
-		strtolower(stripTblPrefix(MSG_ADDRBOOK_TABLE)) => MSG_ADDRBOOK_TABLE,
-		strtolower(stripTblPrefix(MSG_FOLDERS_TABLE)) => MSG_FOLDERS_TABLE,
-		] :
-		[]
+	strtolower(stripTblPrefix(MSG_TODO_TABLE)) => MSG_TODO_TABLE,
+	strtolower(stripTblPrefix(MSG_TODOHISTORY_TABLE)) => MSG_TODOHISTORY_TABLE,
+	strtolower(stripTblPrefix(MESSAGES_TABLE)) => MESSAGES_TABLE,
+	strtolower(stripTblPrefix(MSG_ACCOUNTS_TABLE)) => MSG_ACCOUNTS_TABLE,
+	strtolower(stripTblPrefix(MSG_ADDRBOOK_TABLE)) => MSG_ADDRBOOK_TABLE,
+	strtolower(stripTblPrefix(MSG_FOLDERS_TABLE)) => MSG_FOLDERS_TABLE,
+	] :
+	[]
 	),
 	'newsletter' => (defined('NEWSLETTER_TABLE') ? [
-		strtolower(stripTblPrefix(NEWSLETTER_TABLE)) => NEWSLETTER_TABLE,
-		strtolower(stripTblPrefix(NEWSLETTER_GROUP_TABLE)) => NEWSLETTER_GROUP_TABLE,
-		strtolower(stripTblPrefix(NEWSLETTER_BLOCK_TABLE)) => NEWSLETTER_BLOCK_TABLE,
-		strtolower(stripTblPrefix(NEWSLETTER_LOG_TABLE)) => NEWSLETTER_LOG_TABLE,
-		strtolower(stripTblPrefix(NEWSLETTER_CONFIRM_TABLE)) => NEWSLETTER_CONFIRM_TABLE
-		] :
-		[]
+	strtolower(stripTblPrefix(NEWSLETTER_TABLE)) => NEWSLETTER_TABLE,
+	strtolower(stripTblPrefix(NEWSLETTER_GROUP_TABLE)) => NEWSLETTER_GROUP_TABLE,
+	strtolower(stripTblPrefix(NEWSLETTER_BLOCK_TABLE)) => NEWSLETTER_BLOCK_TABLE,
+	strtolower(stripTblPrefix(NEWSLETTER_LOG_TABLE)) => NEWSLETTER_LOG_TABLE,
+	strtolower(stripTblPrefix(NEWSLETTER_CONFIRM_TABLE)) => NEWSLETTER_CONFIRM_TABLE
+	] :
+	[]
 	),
 	'banner' => (defined('BANNER_TABLE') ? [
-		strtolower(stripTblPrefix(BANNER_TABLE)) => BANNER_TABLE,
-		strtolower(stripTblPrefix(BANNER_CLICKS_TABLE)) => BANNER_CLICKS_TABLE,
-		strtolower(stripTblPrefix(BANNER_VIEWS_TABLE)) => BANNER_VIEWS_TABLE
-		] :
-		[]
+	strtolower(stripTblPrefix(BANNER_TABLE)) => BANNER_TABLE,
+	strtolower(stripTblPrefix(BANNER_CLICKS_TABLE)) => BANNER_CLICKS_TABLE,
+	strtolower(stripTblPrefix(BANNER_VIEWS_TABLE)) => BANNER_VIEWS_TABLE
+	] :
+	[]
 	),
 	'schedule' => (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ? [
-		strtolower(stripTblPrefix(SCHEDULE_TABLE)) => SCHEDULE_TABLE
-		] :
-		[]
+	strtolower(stripTblPrefix(SCHEDULE_TABLE)) => SCHEDULE_TABLE
+	] :
+	[]
 	),
 	'export' => (we_base_moduleInfo::isActive(we_base_moduleInfo::EXPORT) ? [
-		strtolower(stripTblPrefix(EXPORT_TABLE)) => EXPORT_TABLE
-		] :
-		[]
+	strtolower(stripTblPrefix(EXPORT_TABLE)) => EXPORT_TABLE
+	] :
+	[]
 	),
 	'voting' => (defined('VOTING_TABLE') ? [
-		strtolower(stripTblPrefix(VOTING_TABLE)) => VOTING_TABLE,
-		strtolower(stripTblPrefix(VOTING_LOG_TABLE)) => VOTING_LOG_TABLE
-		] :
-		[]
+	strtolower(stripTblPrefix(VOTING_TABLE)) => VOTING_TABLE,
+	strtolower(stripTblPrefix(VOTING_LOG_TABLE)) => VOTING_LOG_TABLE
+	] :
+	[]
 	),
 	'glossary' => (defined('GLOSSARY_TABLE') ? [
-		strtolower(stripTblPrefix(GLOSSARY_TABLE)) => GLOSSARY_TABLE
-		] :
-		[]
+	strtolower(stripTblPrefix(GLOSSARY_TABLE)) => GLOSSARY_TABLE
+	] :
+	[]
 	),
 ];

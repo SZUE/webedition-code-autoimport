@@ -312,7 +312,7 @@ function we_tag_field(array $attribs){
 			$out = CheckAndConvertISOfrontend(we_base_country::getTranslation($GLOBALS['lv']->f($name), we_base_country::LANGUAGE, $langcode));
 			break;
 		case 'shopVat' :
-			if(defined('SHOP_TABLE')){
+			if(defined('SHOP_ORDER_TABLE')){
 				if(!we_shop_category::isCategoryMode()){
 					$normVal = $GLOBALS['we_doc']->getFieldByVal($GLOBALS['lv']->f(WE_SHOP_VAT_FIELD_NAME, 'txt'), $type, $attribs, false, $GLOBALS['we_doc']->ParentID, $GLOBALS['we_doc']->Path, $GLOBALS['DB_WE'], $classid, 'listview'); // war '$GLOBALS['lv']->getElement', getElemet gibt es aber nicht in LVs, gefunden bei #4648
 					$out = we_shop_vats::getVatRateForSite($normVal);
@@ -327,7 +327,7 @@ function we_tag_field(array $attribs){
 			}
 			break;
 		case 'shopCategory' :
-			if(defined('SHOP_TABLE') && is_object($GLOBALS['lv'])){
+			if(defined('SHOP_ORDER_TABLE') && is_object($GLOBALS['lv'])){
 				$id = $GLOBALS['lv']->f(WE_SHOP_CATEGORY_FIELD_NAME);
 				$wedocCategory = $GLOBALS['lv']->f(we_listview_base::PROPPREFIX . 'CATEGORY');
 

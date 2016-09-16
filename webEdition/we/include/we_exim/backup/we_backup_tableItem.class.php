@@ -82,8 +82,8 @@ class we_backup_tableItem extends we_base_model{
 		if(defined('OBJECT_TABLE')){
 			$tables[OBJECT_FILES_TABLE] = array('Category');
 		}
-		if(defined('SHOP_TABLE')){
-			$tables[SHOP_TABLE] = array('strSerial', 'strSerialOrder');
+		if(defined('SHOP_ORDER_TABLE')){
+			$tables[SHOP_TABLE] = ['strSerial', 'strSerialOrder'];
 		}
 		return (array_key_exists($this->table, $tables) && in_array($was, $tables[$this->table]));
 	}

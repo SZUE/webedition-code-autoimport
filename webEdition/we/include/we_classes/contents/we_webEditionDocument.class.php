@@ -42,7 +42,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	public function __construct(){
 		parent::__construct();
 		if(isWE()){
-			//if(defined('SHOP_TABLE')){not needed for global variants
+			//if(defined('SHOP_ORDER_TABLE')){not needed for global variants
 			$this->EditPageNrs[] = we_base_constants::WE_EDITPAGE_VARIANTS;
 			//}
 

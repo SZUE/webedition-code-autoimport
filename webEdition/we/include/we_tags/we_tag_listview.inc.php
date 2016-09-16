@@ -45,7 +45,7 @@ function we_parse_tag_listview($attribs, $content, array $arr){
 			}
 			break;
 		case 'orderitem':
-			if(defined('SHOP_TABLE') && ($foo = attributFehltError($arr, 'orderid', __FUNCTION__))){
+			if(defined('SHOP_ORDER_TABLE') && ($foo = attributFehltError($arr, 'orderid', __FUNCTION__))){
 				return $foo;
 			}
 			break;
@@ -216,14 +216,14 @@ function we_tag_listview(array $attribs){
 			echo modulFehltError('Customer', __FUNCTION__ . ' type="onlinemonitor"');
 			return;
 		case 'order':
-			if(!defined('SHOP_TABLE')){
+			if(!defined('SHOP_ORDER_TABLE')){
 				echo modulFehltError('Shop', __FUNCTION__ . ' type="order"');
 				return;
 			}
 			$GLOBALS['lv'] = new we_listview_shopOrder($name, $we_rows, $we_offset, $we_lv_order, $we_lv_desc, $cond, $cols, $docid, $hidedirindex);
 			break;
 		case 'orderitem':
-			if(!defined('SHOP_TABLE')){
+			if(!defined('SHOP_ORDER_TABLE')){
 				echo modulFehltError('Shop', __FUNCTION__ . ' type="orderitem"');
 				return;
 			}
@@ -253,7 +253,7 @@ function we_tag_listview(array $attribs){
 			$GLOBALS['lv'] = new we_listview_banner($name, $we_rows, $order, $bannerid, $usefilter, $filterdatestart, $filterdateend);
 			break;
 		case 'shopVariant': // TODO: Remove in webEdition 7 - for backwords compatibility since FR# 8556
-			if(!defined('SHOP_TABLE')){
+			if(!defined('SHOP_ORDER_TABLE')){
 				echo modulFehltError('Shop', __FUNCTION__ . ' type="shopVariant"');
 				return;
 			}

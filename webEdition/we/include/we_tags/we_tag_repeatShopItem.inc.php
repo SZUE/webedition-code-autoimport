@@ -32,7 +32,7 @@ function we_parse_tag_repeatShopItem($a, $content, $attribs){
 }
 
 function we_tag_repeatShopItem(array $attribs){
-	if(!defined('SHOP_TABLE')){
+	if(!defined('SHOP_ORDER_TABLE')){
 		echo modulFehltError('Shop', __FUNCTION__);
 		return;
 	}

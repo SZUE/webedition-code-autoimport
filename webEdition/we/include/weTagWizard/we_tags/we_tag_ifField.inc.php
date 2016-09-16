@@ -21,7 +21,7 @@ $striphtml = new weTagData_selectAttribute('striphtml', [new weTagDataOption('fa
 	], false, '');
 $usekey = new weTagData_selectAttribute('usekey', weTagData_selectAttribute::getTrueFalse(), false, '');
 
-if(defined('SHOP_TABLE')){
+if(defined('SHOP_ORDER_TABLE')){
 	$catfield = new weTagData_selectAttribute('field', [new weTagDataOption('id'),
 		new weTagDataOption('is_destinationprinciple'),
 		new weTagDataOption('is_from doc_object'),
@@ -68,13 +68,14 @@ $this->TypeAttribute = new weTagData_typeAttribute('type', [new weTagDataOption(
 	new weTagDataOption('float', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
 	new weTagDataOption('int', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
 	new weTagDataOption('collection', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
-	new weTagDataOption('shopCategory', false, 'shop', (defined('SHOP_TABLE') ? [$catfield, $catmatch, $ignorefallbacks,] : []), []),
-	new weTagDataOption('shopVat', false, 'shop', isset($shopVatAttributes) ? $shopVatAttributes : [], defined('SHOP_TABLE') && !we_shop_category::isCategoryMode() ? [$name, $match] : []),
+	new weTagDataOption('shopCategory', false, 'shop', (defined('SHOP_ORDER_TABLE') ? [$catfield, $catmatch, $ignorefallbacks,] : []), []),
+	new weTagDataOption('shopVat', false, 'shop', isset($shopVatAttributes) ? $shopVatAttributes : [], defined('SHOP_ORDER_TABLE') && !we_shop_category::isCategoryMode() ? [
+		$name, $match] : []),
 	new weTagDataOption('checkbox', false, '', [$name, $match, $operator, $striphtml, $usekey], [$name, $match]),
 	], true, '');
 
 $this->Attributes = [$name, $match, $operator, $striphtml, $usekey];
 
-if(defined('SHOP_TABLE')){
+if(defined('SHOP_ORDER_TABLE')){
 	$this->Attributes = array_merge($this->Attributes, [$catfield, $catmatch, $ignorefallbacks, $vatfield, $vatmatch]);
 }
