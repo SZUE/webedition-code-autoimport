@@ -531,7 +531,7 @@ var WebEdition = {
 			//load consts
 			var fileref = doc.createElement('script');
 			fileref.setAttribute("src", WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=loadJSConsts&we_cmd[1]=" + check);
-			document.getElementsByTagName("head")[0].appendChild(fileref);
+			doc.getElementsByTagName("head")[0].appendChild(fileref);
 		},
 		getDynamicVar: function (doc, id, dataname) {
 			var el = doc.getElementById(id);
