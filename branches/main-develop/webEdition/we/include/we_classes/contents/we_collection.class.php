@@ -210,7 +210,7 @@ class we_collection extends we_root{
 	}
 
 	public function getPropertyPage(){
-		return we_html_element::jsScript(JS_DIR . 'we_editor_collectionContent.js') .
+		return we_html_element::jsScript(JS_DIR . 'collection.js') .
 			we_html_multiIconBox::getHTML('PropertyPage', [
 				['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(!permissionhandler::hasPerm('MOVE_COLLECTION')), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => 'cache.gif', 'headline' => 'Inhalt', 'html' => $this->formContent(), 'space' => we_html_multiIconBox::SPACE_MED2],
