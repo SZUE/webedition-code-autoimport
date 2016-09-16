@@ -28,7 +28,7 @@ var weTabs = new (WE().layout.we_tabs)(document, window);
 
 var countSaveTrys = 0;
 function we_save() {
-	for (var i; i < prefData.tabs.length; i++) {
+	for (var i = 0; i < prefData.tabs.length; i++) {
 		document.getElementById('content').contentDocument.getElementById('setting_' + prefData.tabs[i]).style.display = 'none';
 	}
 
@@ -64,7 +64,7 @@ function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
-	for (var i; i < prefData.validTabs.length; i++) {
+	for (var i = 0; i < prefData.validTabs.length; i++) {
 		try {
 			content.document.getElementById('setting_' + prefData.validTabs[i]).style.display = 'none';
 		} catch (e) {
