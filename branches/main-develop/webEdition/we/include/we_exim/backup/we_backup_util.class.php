@@ -73,8 +73,8 @@ abstract class we_backup_util{
 			WE_INCLUDES_DIR . 'conf/we_active_integrated_modules.inc.php',
 			WE_INCLUDES_DIR . 'conf/we_conf_language.inc.php',
 			($import || file_exists(WEBEDITION_PATH . 'agency.php') ?
-				WEBEDITION_DIR . 'agency.php' :
-				'')
+			WEBEDITION_DIR . 'agency.php' :
+			'')
 		));
 	}
 
@@ -83,13 +83,13 @@ abstract class we_backup_util{
 		$match = [];
 		if(preg_match('|tblobject_([0-9]*)$|', $table, $match)){
 			return (isset($_SESSION['weS']['weBackupVars']['tables']['tblobject_']) ?
-					$_SESSION['weS']['weBackupVars']['tables']['tblobject_'] . $match[1] :
-					false);
+				$_SESSION['weS']['weBackupVars']['tables']['tblobject_'] . $match[1] :
+				false);
 		}
 
 		return (isset($_SESSION['weS']['weBackupVars']['tables'][$table]) ?
-				$_SESSION['weS']['weBackupVars']['tables'][$table] :
-				false);
+			$_SESSION['weS']['weBackupVars']['tables'][$table] :
+			false);
 	}
 
 	static function getDefaultTableName($table){
@@ -143,7 +143,12 @@ abstract class we_backup_util{
 			case (defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : 'CUSTOMER_TABLE'):
 				return g_l('backup', '[' . $prefix . '_customer_data]');
 			case (defined('SHOP_TABLE') ? SHOP_TABLE : 'SHOP_TABLE'):
+			case (defined('SHOP_ORDER_TABLE') ? SHOP_ORDER_TABLE : 'SHOP_ORDER_TABLE'):
+			case (defined('SHOP_ORDER_DATES_TABLE') ? SHOP_ORDER_DATES_TABLE : 'SHOP_ORDER_DATES_TABLE'):
+			case (defined('SHOP_ORDER_DOCUMENT_TABLE') ? SHOP_ORDER_DOCUMENT_TABLE : 'SHOP_ORDER_DOCUMENT_TABLE'):
+			case (defined('SHOP_ORDER_ITEM_TABLE') ? SHOP_ORDER_ITEM_TABLE : 'SHOP_ORDER_ITEM_TABLE'):
 				return g_l('backup', '[' . $prefix . '_shop_data]');
+
 			case (defined('PREFS_TABLE') ? PREFS_TABLE : 'PREFS_TABLE'):
 				return g_l('backup', '[' . $prefix . '_prefs]');
 			case (defined('BANNER_CLICKS_TABLE') ? BANNER_CLICKS_TABLE : 'BANNER_CLICKS_TABLE'):
@@ -202,7 +207,7 @@ abstract class we_backup_util{
 			return $_SESSION['weS']['weBackupVars']['options']['backup_binary'];
 		}
 		static $settingsFiles = [];
-		$settingsFiles = $settingsFiles? : we_backup_util::getSettingsFiles(true);
+		$settingsFiles = $settingsFiles ?: we_backup_util::getSettingsFiles(true);
 		$isSetting = in_array($path, $settingsFiles);
 
 		if(($_SESSION['weS']['weBackupVars']['handle_options']['settings'] && $isSetting) ||
@@ -288,8 +293,8 @@ abstract class we_backup_util{
 		$part = we_base_file::loadPart($file, 0, 512, $iscompr);
 
 		return (preg_match('|<\?xml |i', $part) ?
-				'xml' :
-				'unknown');
+			'xml' :
+			'unknown');
 	}
 
 	public static function getXMLImportType($file, $iscompr = 0, $end_off = 0){

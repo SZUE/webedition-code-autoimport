@@ -176,7 +176,7 @@ if(isset($we_sess_folderID) && is_array($we_sess_folderID) && (!$we_doc->ID) && 
 if($we_doc->ID == 0){
 	$we_doc->EditPageNr = getTabs($we_doc->ClassName, we_base_constants::WE_EDITPAGE_PROPERTIES);
 } else if(isset($_SESSION['weS']['EditPageNr'])){
-	if(defined('SHOP_TABLE')){
+	if(defined('SHOP_ORDER_TABLE')){
 		$we_doc->checkTabs();
 	}
 

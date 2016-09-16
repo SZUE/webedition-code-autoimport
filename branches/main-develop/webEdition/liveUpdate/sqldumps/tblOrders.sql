@@ -47,7 +47,7 @@ CREATE TABLE ###TBLPREFIX###tblOrders (
   strSerial longtext NOT NULL,
   strSerialOrder longtext NOT NULL,
 	shopname tinytext NOT NULL DEFAULT '',
-  PRIMARY KEY  (IntID),
+  PRIMARY KEY (IntID),
 	KEY DateOrder (DateOrder),
 	KEY IntOrderID (IntOrderID),
 	KEY IntCustomerID(IntCustomerID),

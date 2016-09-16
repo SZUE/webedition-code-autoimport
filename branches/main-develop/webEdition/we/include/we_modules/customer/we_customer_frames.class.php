@@ -116,7 +116,7 @@ class we_customer_frames extends we_modules_frame{
 			"'" . g_l('modules_customer', '[all]') . "':'all',";
 //((top.content.activ_tab=="' . g_l('modules_customer','[other]') . '") )
 
-		if(defined('SHOP_TABLE')){
+		if(defined('SHOP_ORDER_TABLE')){
 			$tabs->addTab('<i class="fa fa-lg fa-shopping-cart"></i>', false, "setTab('" . g_l('modules_customer', '[orderTab]') . "');", ['id' => 'orderTab', 'title' => g_l('modules_customer', '[orderTab]')]);
 			$extraJS .= "'" . g_l('modules_customer', '[orderTab]') . "':'orderTab',";
 		}

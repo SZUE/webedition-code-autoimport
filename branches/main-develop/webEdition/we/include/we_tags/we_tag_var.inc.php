@@ -69,7 +69,7 @@ function we_tag_var(array $attribs){
 					$doc->$name_orig);
 			break;
 		case 'shopVat' :
-			if(defined('SHOP_TABLE')){
+			if(defined('SHOP_ORDER_TABLE')){
 				if(!we_shop_category::isCategoryMode()){
 					$vatId = $doc->getElement(WE_SHOP_VAT_FIELD_NAME);
 					$return = we_shop_vats::getVatRateForSite($vatId);
@@ -84,7 +84,7 @@ function we_tag_var(array $attribs){
 			}
 			return '';
 		case 'shopCategory' :
-			if(defined('SHOP_TABLE')){
+			if(defined('SHOP_ORDER_TABLE')){
 				return $doc->getElement(WE_SHOP_CATEGORY_FIELD_NAME);
 			}
 			return '';

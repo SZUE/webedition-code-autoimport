@@ -28,7 +28,7 @@ function we_tag_createShop(array $attribs){
 	if(($foo = attributFehltError($attribs, 'shopname', __FUNCTION__))){
 		return $foo;
 	}
-	if(!defined('SHOP_TABLE')){
+	if(!defined('SHOP_ORDER_TABLE')){
 		return modulFehltError('Shop', __FUNCTION__);
 	}
 

@@ -26,7 +26,7 @@ function we_tag_deleteShop(array $attribs){
 	if(($foo = attributFehltError($attribs, "shopname", __FUNCTION__))){
 		return $foo;
 	}
-	if(!defined('SHOP_TABLE')){
+	if(!defined('SHOP_ORDER_TABLE')){
 		return modulFehltError('Shop', __FUNCTION__);
 	}
 	$shopname = weTag_getAttribute("shopname", $attribs, '', we_base_request::STRING);

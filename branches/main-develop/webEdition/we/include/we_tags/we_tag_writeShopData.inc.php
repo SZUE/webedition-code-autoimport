@@ -71,7 +71,8 @@ function we_tag_writeShopData(array $attribs){
 
 	$DB_WE = $GLOBALS['DB_WE'];
 
-	$DB_WE->lock([SHOP_TABLE => 'write',
+	$DB_WE->lock([
+		SHOP_TABLE => 'write',
 		ERROR_LOG_TABLE => 'write',
 		WE_SHOP_VAT_TABLE => 'read',
 		CATEGORY_TABLE => 'read',

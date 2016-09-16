@@ -267,7 +267,7 @@ abstract class we_editor_footer{
 		}
 
 		// shop variants
-		if(defined('SHOP_TABLE')){
+		if(defined('SHOP_ORDER_TABLE')){
 			if($GLOBALS['we_doc']->EditPageNr == we_base_constants::WE_EDITPAGE_CONTENT && in_array(we_base_constants::WE_EDITPAGE_VARIANTS, $GLOBALS['we_doc']->EditPageNrs) && $GLOBALS['we_doc']->canHaveVariants(true) && $GLOBALS['we_doc']->EditPageNr != we_base_constants::WE_EDITPAGE_VARIANTS){ // first button is always - preview, when exists
 				$seeModeTable->addCol(2);
 				$seeModeTable->setCol(0, $pos++, [], we_html_button::create_button('shopVariants', "javascript:parent.editHeader.we_cmd('switch_edit_page', " . we_base_constants::WE_EDITPAGE_VARIANTS . ",'" . $GLOBALS["we_transaction"] . "');"));

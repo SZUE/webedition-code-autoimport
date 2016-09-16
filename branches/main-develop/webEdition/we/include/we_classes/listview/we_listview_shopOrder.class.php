@@ -62,7 +62,7 @@ class we_listview_shopOrder extends we_listview_base{
 			$this->condition = str_replace('ID', 'IntID', $this->condition);
 		}
 		// und nun sind alle anderen kaputt und werden repariert
-		$this->condition = strtr($this->condition, array(
+		$this->condition = strtr($this->condition, [
 			'OrderIntID' => 'OrderID',
 			'CustomerIntID' => 'CustomerID',
 			'ArticleIntID' => 'ArticleID',
@@ -76,7 +76,7 @@ class we_listview_shopOrder extends we_listview_base{
 			'Quantity' => 'IntQuantity',
 			'IntPayment_Type' => 'IntPayment_Type', //prevents accidential replacements
 			'Payment_Type' => 'IntPayment_Type'
-		));
+			]);
 
 		if($this->desc && $this->order && (!preg_match('|.+ desc$|i', $this->order))){
 			$this->order .= ' DESC';

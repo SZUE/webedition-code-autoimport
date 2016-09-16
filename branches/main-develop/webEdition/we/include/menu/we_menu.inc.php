@@ -457,7 +457,7 @@ $we_menu = [
 		'parent' => 'cockpit_new',
 		'cmd' => ['new_widget', 'shp'],
 		'perm' => 'CAN_SEE_QUICKSTART || NEW_SHOP_ARTICLE || DELETE_SHOP_ARTICLE || EDIT_SHOP_ORDER || DELETE_SHOP_ORDER || EDIT_SHOP_PREFS',
-		'hide' => !defined('SHOP_TABLE')
+		'hide' => !defined('SHOP_ORDER_TABLE')
 	], [// Cockpit > new Widget > online users
 		'text' => g_l('javaMenu_global', '[users_online]'),
 		'parent' => 'cockpit_new',

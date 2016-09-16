@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 function we_tag_addDelShopItem(array $attribs){
-	if(!defined('SHOP_TABLE')){
+	if(!defined('SHOP_ORDER_TABLE')){
 		echo modulFehltError('Shop', __FUNCTION__);
 		return;
 	}

@@ -87,7 +87,7 @@ function doClicked(checked, opt) {
 				}
 				break;
 			case 30:
-				if (WE().consts.tables.SHOP_TABLE && WE().consts.tables.CUSTOMER_TABLE && !document.we_form.handle_customer.checked) {
+				if (WE().consts.tables.SHOP_ORDER_TABLE && WE().consts.tables.CUSTOMER_TABLE && !document.we_form.handle_customer.checked) {
 					document.we_form.handle_customer.value = 1;
 					document.we_form.handle_customer.checked = true;
 					top.we_showMessage(WE().consts.g_l.backupWizard.shop_dep, WE().consts.message.WE_MESSAGE_NOTICE, window);
@@ -230,7 +230,7 @@ function doClicked(checked, opt) {
 			break;
 		case 25:
 			if (WE().consts.tables.CUSTOMER_TABLE) {
-				if (WE().consts.tables.SHOP_TABLE && document.we_form.elements.handle_shop.checked) {
+				if (WE().consts.tables.SHOP_ORDER_TABLE && document.we_form.elements.handle_shop.checked) {
 					document.we_form.elements.handle_shop.checked = false;
 					mess += "\n-" + WE().consts.g_l.backupWizard.shop_data;
 				}
