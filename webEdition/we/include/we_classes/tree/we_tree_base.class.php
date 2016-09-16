@@ -105,7 +105,7 @@ container.prototype.frames={
 
 	abstract protected function customJSFile();
 
-	function getHTMLContruct($classes = ''){
+	function getHTMLConstruct($classes = ''){
 		return
 			we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::htmlDiv(['id' => 'treetable',
