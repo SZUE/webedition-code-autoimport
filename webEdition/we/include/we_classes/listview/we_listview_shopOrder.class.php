@@ -58,112 +58,86 @@ class we_listview_shopOrder extends we_listview_base{
 		$this->LastDocPath = (isset($_SESSION['weS']['last_webEdition_document'])) ? $_SESSION['weS']['last_webEdition_document']['Path'] : '';
 		$this->Path = $this->docID ? id_to_path($this->docID, FILE_TABLE, $this->DB_WE) : (isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : '');
 
-		if(strpos($this->condition, 'ID') !== false && strpos($this->condition, 'IntID') === false){
-			$this->condition = str_replace('ID', 'IntID', $this->condition);
-		}
-		// und nun sind alle anderen kaputt und werden repariert
-		$this->condition = strtr($this->condition, [
-			'OrderIntID' => 'OrderID',
-			'CustomerIntID' => 'CustomerID',
-			'ArticleIntID' => 'ArticleID',
-			'IntOrderID' => 'IntOrderID', //prevents accidential replacements
-			'OrderID' => 'IntOrderID',
-			'IntCustomerID' => 'IntCustomerID', //prevents accidential replacements
-			'CustomerID' => 'IntCustomerID',
-			'IntArticleID' => 'IntArticleID', //prevents accidential replacements
-			'ArticleID' => 'IntArticleID',
-			'IntQuantity' => 'IntQuantity', //prevents accidential replacements
-			'Quantity' => 'IntQuantity',
-			'IntPayment_Type' => 'IntPayment_Type', //prevents accidential replacements
-			'Payment_Type' => 'IntPayment_Type'
-			]);
+		$replArray = [
+			'OrderID' => 'ID',
+			'OrderIntID' => 'ID',
+			'IntOrderID' => 'ID',
+			'CustomerIntID' => 'customerID',
+			'IntCustomerID' => 'customerID',
+			'CustomerID' => 'customerID',
+		];
 
-		if($this->desc && $this->order && (!preg_match('|.+ desc$|i', $this->order))){
-			$this->order .= ' DESC';
-		}
+		$this->condition = strtr($this->condition, $replArray);
+		$this->order = strtr($this->order, $replArray);
 
 		if($this->order){
-			switch(trim($this->order)){
-				case 'ID':
-				case 'CustomerID':
-				case 'ArticleID':
-				case 'Quantity':
-				case 'Payment_Type':
-					$this->order = 'Int' . trim($this->order);
-			}
-			$orderstring = ' ORDER BY ' . $this->order . ' ';
+			$orderstring = ' ORDER BY ' . $this->order . ' ' .
+				($this->desc && (!preg_match('|.+ desc$|i', $this->order)) ? ' DESC' : '');
 		} else {
-			$orderstring = '';
+			$orderstring = ' ORDER BY ID' . ($this->desc ? ' DESC' : '');
 		}
 
-		$where = ($this->condition ? (' WHERE ' . $this->condition) : '') . ' GROUP BY IntOrderID';
+		$where = ($this->condition ? (' WHERE ' . $this->condition) : '');
 
-		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_TABLE . $where, '', $this->DB_WE);
+		$this->anz_all = f('SELECT COUNT(1) FROM ' . SHOP_ORDER_TABLE . $where, '', $this->DB_WE);
 		$format = [];
-		foreach(we_shop_statusMails::$StatusFields as $field){
-			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
-		}
-		foreach(we_shop_statusMails::$MailFields as $field){
+		foreach(we_shop_statusMails::$BaseDateFields as $field){
 			$format[] = 'UNIX_TIMESTAMP(' . $field . ') AS ' . $field;
 		}
 
-		$this->DB_WE->query('SELECT IntOrderID AS OrderID,IntCustomerID AS CustomerID,IntPayment_Type AS Payment_Type,strSerialOrder,' . implode(',', $format) . ' FROM ' . SHOP_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . max(100, $this->maxItemsPerPage)) : ''));
+		$this->DB_WE->query('SELECT
+	ID AS OrderID,
+	ID AS ' . self::PROPPREFIX . 'ID,
+	ID AS ' . self::PROPPREFIX . 'ORDERID,
+	customerID AS CustomerID,
+	customerID AS ' . self::PROPPREFIX . 'CID,
+	customFields,
+	pricesNet AS shopPriceIsNet,
+	calcVat AS shopCalcVat,
+	priceName AS shopPricename,
+	shippingCost AS Shipping_costs,
+	shippingNet AS Shipping_isNet,
+	shippingVat AS Shipping_vatRate,
+	customerData,
+	' . implode(',', $format) .
+			' FROM ' . SHOP_ORDER_TABLE . $where . ' ' . $orderstring . ' ' . (($this->maxItemsPerPage > 0) ? (' LIMIT ' . $this->start . ',' . max(100, $this->maxItemsPerPage)) : ''));
 		$this->anz = $this->DB_WE->num_rows();
 	}
 
 	function next_record(){
 		$ret = $this->DB_WE->next_record(MYSQL_ASSOC);
 		if($ret){
-			$strSerialOrder = we_unserialize($this->DB_WE->Record['strSerialOrder']);
-			unset($this->DB_WE->Record['strSerialOrder']);
+			$custFields = we_unserialize($this->DB_WE->Record['customFields']);
+			$customerData = we_unserialize($this->DB_WE->Record['customerData']);
+			unset($this->DB_WE->Record['customFields'], $this->DB_WE->Record['customerData']);
 
-			if(is_array($strSerialOrder['we_sscf'])){
-				foreach($strSerialOrder['we_sscf'] as $key => &$value){
-					$this->DB_WE->Record[$key] = $value;
-				}
-				unset($value);
-			}
-			if(is_array($strSerialOrder['we_shopPriceShipping'])){
-				foreach($strSerialOrder['we_shopPriceShipping'] as $key => &$value){
-					$this->DB_WE->Record['Shipping_' . $key] = $value;
-				}
-				unset($value);
-			}
-			if(is_array($strSerialOrder['we_shopCustomer'])){
-				foreach($strSerialOrder['we_shopCustomer'] as $key => &$value){
-					if(!is_numeric($key)){
-						$this->DB_WE->Record['Customer_' . $key] = $value;
-					}
-				}
-				unset($value);
-			}
-			if(isset($strSerialOrder['we_shopPriceIsNet'])){
-				$this->DB_WE->Record['shopPriceIsNet'] = $strSerialOrder['we_shopPriceIsNet'];
-			}
-			if(isset($strSerialOrder['we_shopCalcVat'])){
-				$this->DB_WE->Record['shopCalcVat'] = $strSerialOrder['we_shopCalcVat'];
-			}
-			//Fix #7993
-			if(isset($strSerialOrder['we_shopPricename'])){
-				$this->DB_WE->Record['shopPricename'] = $strSerialOrder['we_shopPricename'];
+			//get all missing date fields
+			$this->DB_WE->Record = array_merge(
+				$this->DB_WE->Record, $GLOBALS['DB_WE']->getAllFirstq('SELECT type,UNIX_TIMESTAMP(date) FROM ' . SHOP_ORDER_DATES_TABLE . ' WHERE ID=' . $this->DB_WE->Record['OrderID'], false), [
+				self::PROPPREFIX . 'PATH' => $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'],
+				self::PROPPREFIX . 'TEXT' => '',
+				self::PROPPREFIX . 'LASTPATH' => $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID']
+				]
+			);
+
+			foreach($custFields as $key => $value){
+				$this->DB_WE->Record[$key] = $value;
 			}
 
-			$this->DB_WE->Record[self::PROPPREFIX . 'CID'] = $this->DB_WE->Record['CustomerID'];
-			$this->DB_WE->Record[self::PROPPREFIX . 'ORDERID'] = $this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record[self::PROPPREFIX . 'PATH'] = $this->Path . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record[self::PROPPREFIX . 'TEXT'] = ''; //$this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record[self::PROPPREFIX . 'ID'] = $this->DB_WE->Record['OrderID'];
-			$this->DB_WE->Record[self::PROPPREFIX . 'LASTPATH'] = $this->LastDocPath . '?we_orderid=' . $this->DB_WE->Record['OrderID'];
+			foreach($customerData as $key => $value){
+				$this->DB_WE->Record['Customer_' . $key] = $value;
+			}
+
 			$this->count++;
 			return true;
 		}
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-			$this->DB_WE->Record = array(
+			$this->DB_WE->Record = [
 				'WE_PATH' => '',
 				'WE_TEXT' => '',
 				'WE_ID' => '',
-			);
+			];
 			$this->count++;
 			return true;
 		}

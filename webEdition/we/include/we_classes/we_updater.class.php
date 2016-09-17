@@ -560,7 +560,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			$id = f('SELECT ID FROM ' . SHOP_ORDER_DOCUMENT_TABLE . ' WHERE DocID=' . $docid . ' AND type="' . $type . '" AND variant="' . $db->escape($variant) . '" AND Published=FROM_UNIXTIME(' . $pub . ')');
 			if(!$id){
 				$data = $dat;
-				unset($data['we_shoptitle'], $data['we_shopdescription'], $data['we_sacf'], $data['shopvat']);
+				unset($data['we_shoptitle'], $data['we_shopdescription'], $data['we_sacf'], $data['shopvat'], $data['shopcategory'], $data['WE_VARIANT']);
 				//add document first
 				$db2->query('REPLACE INTO ' . SHOP_ORDER_DOCUMENT_TABLE . ' SET ' . we_database_base::arraySetter([
 						'DocID' => $docid,
@@ -569,6 +569,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 						'Published' => sql_function('FROM_UNIXTIME(' . $pub . ')'),
 						'title' => strip_tags($dat['we_shoptitle']),
 						'description' => strip_tags($dat['we_shopdescription']),
+						'CategoryID' => empty($dat['shopcategory']) ? 0 : intval($dat['shopcategory']),
 						'SerializedData' => we_serialize($data, SERIALIZE_JSON, false, 5, true)
 				]));
 				$id = $db2->getInsertId();
