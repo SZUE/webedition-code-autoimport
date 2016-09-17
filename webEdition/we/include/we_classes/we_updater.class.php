@@ -490,6 +490,15 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 	}
 
+	private static function updateSetting(we_database_base $db){
+		$items = $db->getAllq('SELECT * FROM ' . SETTINGS_TABLE . ' WHERE pref_value LIKE "a:%"');
+		foreach($items as $item){
+			$db->query('UPDATE ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter([
+					'pref_value' => we_serialize(we_unserialize($item['pref_value']), SERIALIZE_JSON)
+				]) . ' WHERE tool="' . $item['tool'] . '" AND pref_name="' . $item['pref_name'] . '"');
+		}
+	}
+
 	public static function updateShop2($pos = 0){
 		$db = new DB_WE();
 		if($pos == 0){
@@ -623,6 +632,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				$what = 'shop';
 				self::updateShop($db);
 				self::meassure('shop');
+
+				self::updateSetting($db);
+				self::meassure('setting');
+
 				self::replayUpdateDB();
 				self::meassure('replayUpdateDB');
 				self::meassure(-1);
