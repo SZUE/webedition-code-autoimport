@@ -546,8 +546,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			$pub = intval(empty($dat['we_wedoc_Published']) ? $dat['WE_Published'] : $dat['we_wedoc_Published']);
 			$type = (!empty($dat['we_wedoc_ContentType'] && $dat['we_wedoc_ContentType'] == we_base_ContentTypes::OBJECT_FILE) ? 'object' : 'document');
 			$variant = $dat['WE_VARIANT'];
+
 			$id = f('SELECT ID FROM ' . SHOP_ORDER_DOCUMENT_TABLE . ' WHERE DocID=' . $docid . ' AND type="' . $type . '" AND variant="' . $db->escape($variant) . '" AND Published=FROM_UNIXTIME(' . $pub . ')');
-			$customField = $dat[WE_SHOP_ARTICLE_CUSTOM_FIELD];
 			if(!$id){
 				$title = strip_tags($dat['we_shoptitle']);
 				$desc = strip_tags($dat['we_shopdescription']);
@@ -569,7 +569,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					'orderDocID' => $id,
 					'quantity' => $db->f('IntQuantity'),
 					'Price' => $db->f('Price'),
-					'customFields' => we_serialize($customField, SERIALIZE_JSON, false, 0, true),
+					'Vat' => isset($dat[WE_SHOP_VAT_FIELD_NAME]) ? $dat[WE_SHOP_VAT_FIELD_NAME] : sql_function('NULL'),
+					'customFields' => we_serialize($dat[WE_SHOP_ARTICLE_CUSTOM_FIELD], SERIALIZE_JSON, false, 0, true),
 			]));
 
 			/* 			t_e($dat);

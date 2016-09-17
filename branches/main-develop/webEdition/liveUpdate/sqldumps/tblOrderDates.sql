@@ -5,6 +5,6 @@ CREATE TABLE ###TBLPREFIX###tblOrderDates (
 'DateCustomA','DateCustomB','DateCustomC','DateCustomD','DateCustomE','DateCustomF','DateCustomG','DateCustomH','DateCustomI','DateCustomJ',
 'MailCustomA','MailCustomB','MailCustomC','MailCustomD','MailCustomE','MailCustomF','MailCustomG','MailCustomH','MailCustomI','MailCustomJ'
 ) NOT NULL,
-	`date` DATETIME NOT NULL,
+	`date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY  (ID,type)
 ) ENGINE=MyISAM;

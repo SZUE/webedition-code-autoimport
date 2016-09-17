@@ -32,7 +32,7 @@ if(!isset($aCols[5])){
 	$isRefresh = false;
 }
 
-$sKPIs = $aCols[0] ? : [];
+$sKPIs = $aCols[0] ?: [];
 $bOrders = !empty($sKPIs[0]);
 $bCustomer = !empty($sKPIs[1]);
 $bAverageOrder = !empty($sKPIs[2]);
@@ -40,42 +40,45 @@ $bTarget = !empty($sKPIs[3]);
 
 $iDate = intval($aCols[1]);
 $sRevenueTarget = intval($aCols[2]);
-
+$day = date('d');
+$month = date('m');
+$year = (date('Y'));
+//note we use between, which means a between b and c is b<=a<=c, in case of date hour is always set to "00:00:00"
 switch($iDate){//FIXME: use cast & between to make this perform better
 	default:
 	case 0 : //heute
-		$queryShopDateCondtion = '(CAST(DateOrder AS DATE) = CURDATE())';
+		$queryShopDateCondtion = '(o.DateOrder BETWEEN "' . date('Y-m-d') . '" AND "' . date('Y-m-') . ($day + 1) . '")';
 		$timestampCustomer = '(MemberSince >= UNIX_TIMESTAMP(CURDATE()))';
 		$interval = g_l('cockpit', '[today]');
 		break;
 	case 1 : //diese woche
-		$queryShopDateCondtion = '(YEARWEEK(DateOrder,1) = YEARWEEK(CURDATE(),1))';
+		$queryShopDateCondtion = '(YEARWEEK(o.DateOrder,1) = YEARWEEK(CURDATE(),1))';
 		$timestampCustomer = '(YEARWEEK(FROM_UNIXTIME(MemberSince),1) = YEARWEEK(CURDATE(),1))';
 		$interval = g_l('cockpit', '[this_week]');
 		break;
 	case 2 : //letzte woche
-		$queryShopDateCondtion = '(YEARWEEK(DateOrder,1) = YEARWEEK(CURDATE(),1)-1)';
+		$queryShopDateCondtion = '(YEARWEEK(o.DateOrder,1) = YEARWEEK(CURDATE(),1)-1)';
 		$timestampCustomer = '(YEARWEEK(FROM_UNIXTIME(MemberSince),1) = YEARWEEK(CURDATE(),1)-1)';
 		$interval = g_l('cockpit', '[last_week]');
 		break;
 	case 3 : //dieser monat
-		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) AND MONTH(DateOrder) = MONTH(CURDATE()))';
-		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(CURDATE()) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(CURDATE()))';
+		$queryShopDateCondtion = '(o.DateOrder BETWEEN "' . $year . '-' . $month . '-01" AND "' . $year . '-' . ($month + 1) . '-01")';
+		$timestampCustomer = '(MemberSince BETWEEN UNIX_TIMESTAMP("' . $year . '-' . $month . '-01") AND UNIX_TIMESTAMP("' . $year . '-' . ($month + 1) . '-01"))';
 		$interval = g_l('cockpit', '[this_month]');
 		break;
 	case 4 : //letzter monat
-		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()-INTERVAL 1 MONTH) AND MONTH(DateOrder) = MONTH(CURDATE()-INTERVAL 1 MONTH))';
-		$timestampCustomer = '(MONTH(FROM_UNIXTIME(MemberSince)) = MONTH(CURDATE()-INTERVAL 1 MONTH) AND YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(CURDATE()-INTERVAL 1 MONTH))';
+		$queryShopDateCondtion = '(o.DateOrder BETWEEN "' . $year . '-' . ($month - 1) . '-01" AND "' . $year . '-' . $month . '-01")';
+		$timestampCustomer = '(MemberSince BETWEEN UNIX_TIMESTAMP("' . $year . '-' . ($month - 1) . '-01") AND UNIX_TIMESTAMP("' . $year . '-' . $month . '-01"))';
 		$interval = g_l('cockpit', '[last_month]');
 		break;
 	case 5 : //dieses jahr
-		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()))';
-		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = YEAR(CURDATE()))';
+		$queryShopDateCondtion = '(o.DateOrder BETWEEN "' . $year . '-01-01" AND "' . ($year + 1) . '-01-01")';
+		$timestampCustomer = '(MemberSince BETWEEN UNIX_TIMESTAMP("' . $year . '-01-01") AND UNIX_TIMESTAMP("' . ($year + 1) . '-01-01"))';
 		$interval = g_l('cockpit', '[this_year]');
 		break;
 	case 6 : //letztes jahr
-		$queryShopDateCondtion = '(YEAR(DateOrder) = YEAR(CURDATE()) - 1)';
-		$timestampCustomer = '(YEAR(FROM_UNIXTIME(MemberSince)) = (YEAR(CURDATE())-1))';
+		$queryShopDateCondtion = '(o.DateOrder BETWEEN "' . ($year - 1) . '-01-01" AND "' . ($year) . '-01-01")';
+		$timestampCustomer = '(MemberSince BETWEEN UNIX_TIMESTAMP("' . ($year - 1) . '-01-01") AND UNIX_TIMESTAMP("' . ($year) . '-01-01"))';
 		$interval = g_l('cockpit', '[last_year]');
 		break;
 }
@@ -85,162 +88,98 @@ $feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE
 $currency = oldHtmlspecialchars($feldnamen[0]);
 $numberformat = $feldnamen[2];
 $classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
-$defaultVat = ($feldnamen[1] ? : 0);
+$defaultVat = ($feldnamen[1] ?: 0);
 
-$amountCustomers = $amountOrders = $amountArticles = $amountCanceledOrders = $canceled = 0;
+$amountOrders = $amountArticles = $amountCanceledOrders = $canceled = 0;
 
 if(defined('WE_SHOP_VAT_TABLE') && (permissionhandler::hasPerm(['NEW_SHOP_ARTICLE', 'DELETE_SHOP_ARTICLE', 'EDIT_SHOP_ORDER', 'DELETE_SHOP_ORDER', 'EDIT_SHOP_PREFS']))){
-	$queryShop = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryShopDateCondtion;
 
 	$total = $payed = $unpayed = $timestampDatePayment = 0;
-	if(($maxRows = f('SELECT COUNT(1) ' . $queryShop))){
+	if(f('SELECT 1 FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi.orderID WHERE ' . $queryShopDateCondtion)){
 
-		$amountOrders = f('SELECT COUNT(distinct IntOrderID) ' . $queryShop);
-		$amountCanceledOrders = f('SELECT COUNT(distinct IntOrderID) ' . $queryShop . 'AND DateCancellation!=0');
-		$amountArticles = f('SELECT COUNT(IntID) ' . $queryShop);
-
-		// first of all calculate complete revenue of this year -> important check vats as well.
-		$cur = 0;
-		while($maxRows > $cur){
-			$DB_WE->query('SELECT strSerial,strSerialOrder,(Price*IntQuantity) AS actPrice,UNIX_TIMESTAMP(DatePayment) AS payed, UNIX_TIMESTAMP(DateCancellation) AS canceled ' . $queryShop . ' LIMIT ' . $cur . ',1000');
-			$cur+=1000;
-			while($DB_WE->next_record()){
-
-				// for the articlelist, we need also all these article, so save them in array
-				// initialize all data saved for an article
-				$shopArticleObject = we_unserialize($DB_WE->f('strSerial'));
-				$serialOrder = $DB_WE->f('strSerialOrder');
-				$orderData = we_unserialize($serialOrder);
-
-				// all data from strSerialOrders
-				// first unserialize order-data
-				// ********************************************************************************
-				// now get information about complete order
-				// - pay VAT?
-				// - prices are net?
-				// prices are net?
-				$pricesAreNet = (isset($orderData[WE_SHOP_PRICE_IS_NET_NAME]) ? $orderData[WE_SHOP_PRICE_IS_NET_NAME] : true);
-
-				// must calculate vat?
-				$calcVat = (isset($orderData[WE_SHOP_CALC_VAT]) ? $orderData[WE_SHOP_CALC_VAT] : true);
-
-				//
-				// no get information about complete order
-				// ********************************************************************************
-				// now calculate prices: without vat first
-				$actPrice = $DB_WE->f('actPrice');
-				// now calculate vats to prices !!!
-				if($calcVat){ // vat must be payed for this order
-					// now determine VAT
-					$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
-							$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
-							(isset($defaultVat) ? $defaultVat : 0)
-						);
-
-					if($articleVat){
-						if(!isset($articleVatArray[$articleVat])){ // avoid notices
-							$articleVatArray[$articleVat] = 0;
-						}
-
-						// calculate vats to prices if neccessary
-						if($pricesAreNet){
-							$articleVatArray[$articleVat] += ($actPrice * $articleVat / 100);
-							$actPrice += ($actPrice * $articleVat / 100);
-						} else {
-							$articleVatArray[$articleVat] += ($actPrice * $articleVat / (100 + $articleVat));
-						}
-					}
-				}
-				$total += $actPrice;
-
-				switch(true){
-					case ($DB_WE->f('payed') && !$DB_WE->f('canceled')): //Fix #10194
-						$payed += $actPrice;
-						break;
-					case ($DB_WE->f('canceled')):
-						$canceled += $actPrice;
-						break;
-					default:
-						$unpayed += $actPrice;
-				}
-			}
-		}
+		$amountOrders = f('SELECT COUNT(1) FROM ' . SHOP_ORDER_TABLE . ' o WHERE ' . $queryShopDateCondtion);
+		$amountCanceledOrders = f('SELECT COUNT(1) FROM ' . SHOP_ORDER_TABLE . ' o WHERE ' . $queryShopDateCondtion . ' AND o.DateCancellation IS NOT NULL');
+		$amountArticles = f('SELECT COUNT(1) FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi.orderID WHERE ' . $queryShopDateCondtion);
+		$query = 'SELECT
+SUM((oi.Price*oi.quantity*IF(o.pricesNet&&o.calcVat&&IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . '),(1+IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . ')/100),1)))
+FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi.orderID WHERE ' . $queryShopDateCondtion;
+		$DB_WE->t_e_query(1);
+		$payed = f($query . ' AND o.DatePayment IS NOT NULL AND o.DateCancellation IS NULL');
+		$canceled = f($query . ' AND o.DatePayment IS NULL AND o.DateCancellation IS NOT NULL');
+		$unpayed = f($query . ' AND o.DatePayment IS NULL AND o.DateCancellation IS NULL');
+		$total = $payed + $canceled + $unpayed;
 	}
 }
 
-if(defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER')){
-	$queryCustomer = ' FROM ' . CUSTOMER_TABLE . '	WHERE ' . $timestampCustomer;
+$amountCustomers = (defined('CUSTOMER_TABLE') && permissionhandler::hasPerm('CAN_SEE_CUSTOMER') ?
+	f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE . '	WHERE ' . $timestampCustomer) :
+	'');
 
-	if(($maxRowsCustomer = f('SELECT COUNT(1) ' . $queryCustomer))){
-		$amountCustomers = f('SELECT COUNT(distinct Username) ' . $queryCustomer);
-	}
-}
-
-$shopDashboardTable = new we_html_table(array('class' => 'default'), 1, 2);
+$shopDashboardTable = new we_html_table(['class' => 'default'], 1, 2);
 $i = 0;
 if($bOrders){
 	//1. row
-	$shopDashboardTable->setCol($i, 0, array('class' => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_order]')));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", "style" => "text-align:right"), we_html_element::htmlB(($amountOrders > 0 ? $amountOrders : 0)));
+	$shopDashboardTable->setCol($i, 0, ['class' => "middlefont"], we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_order]')));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", "style" => "text-align:right"], we_html_element::htmlB(($amountOrders > 0 ? $amountOrders : 0)));
 
 	//2. row
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][canceled_order]'));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", "style" => "text-align:right;color:red;"), ($amountCanceledOrders > 0 ? $amountCanceledOrders : 0));
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont", "style" => "color:red;"], g_l('cockpit', '[shop_dashboard][canceled_order]'));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", "style" => "text-align:right;color:red;"], ($amountCanceledOrders > 0 ? $amountCanceledOrders : 0));
 
 	//3. row
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont"), g_l('cockpit', '[shop_dashboard][cnt_articles]'));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", "style" => "text-align:right"), ($amountArticles > 0 ? $amountArticles : 0));
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], g_l('cockpit', '[shop_dashboard][cnt_articles]'));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", "style" => "text-align:right"], ($amountArticles > 0 ? $amountArticles : 0));
 
 	//4. row
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont"), g_l('cockpit', '[shop_dashboard][articles_order]'));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", 'style' => 'text-align:right;padding-bottom:2ex;'), we_base_util::formatNumber(($amountArticles > 0 ? ($amountArticles / $amountOrders) : 0), $numberformat));
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], g_l('cockpit', '[shop_dashboard][articles_order]'));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", 'style' => 'text-align:right;padding-bottom:2ex;'], we_base_util::formatNumber(($amountArticles > 0 ? ($amountArticles / $amountOrders) : 0), $numberformat));
 }
 
 if($bAverageOrder){
 	//order volume
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][order_volume]')));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", "style" => "text-align:right"), we_html_element::htmlB(we_base_util::formatNumber($total, $numberformat) . '&nbsp;' . $currency));
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][order_volume]')));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", "style" => "text-align:right"], we_html_element::htmlB(we_base_util::formatNumber($total, $numberformat) . '&nbsp;' . $currency));
 
 	//canceled volume
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][canceled]'));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", "style" => "text-align:right;color:red;"), we_base_util::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont", "style" => "color:red;"], g_l('cockpit', '[shop_dashboard][canceled]'));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", "style" => "text-align:right;color:red;"], we_base_util::formatNumber($canceled, $numberformat) . '&nbsp;' . $currency);
 
 	//revenue
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", "style" => "text-align:right"), we_html_element::htmlB(we_base_util::formatNumber(($total - $canceled), $numberformat) . '&nbsp;' . $currency));
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][revenue]')));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", "style" => "text-align:right"], we_html_element::htmlB(we_base_util::formatNumber(($total - $canceled), $numberformat) . '&nbsp;' . $currency));
 
 	//payed volume
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont", "style" => "color:green;"), g_l('cockpit', '[shop_dashboard][payed]'));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", "style" => "text-align:right;color:green;"), we_base_util::formatNumber($payed, $numberformat) . '&nbsp;' . $currency);
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont", "style" => "color:green;"], g_l('cockpit', '[shop_dashboard][payed]'));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", "style" => "text-align:right;color:green;"], we_base_util::formatNumber($payed, $numberformat) . '&nbsp;' . $currency);
 
 	//unpayed volume
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont", "style" => "color:red;"), g_l('cockpit', '[shop_dashboard][unpayed]'));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", "style" => "text-align:right;color:red;"), we_base_util::formatNumber($unpayed, $numberformat) . '&nbsp;' . $currency);
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont", "style" => "color:red;"], g_l('cockpit', '[shop_dashboard][unpayed]'));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", "style" => "text-align:right;color:red;"], we_base_util::formatNumber($unpayed, $numberformat) . '&nbsp;' . $currency);
 
 	//volume per order
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont"), g_l('cockpit', '[shop_dashboard][order_value_order]'));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", "style" => "text-align:right"), we_base_util::formatNumber(($amountOrders > 0 ? ($total / $amountOrders) : 0), $numberformat) . '&nbsp;' . $currency);
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], g_l('cockpit', '[shop_dashboard][order_value_order]'));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", "style" => "text-align:right"], we_base_util::formatNumber(($amountOrders > 0 ? ($total / $amountOrders) : 0), $numberformat) . '&nbsp;' . $currency);
 
 	//need some space
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont"), "&nbsp;");
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont"), "&nbsp;");
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], "&nbsp;");
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont"], "&nbsp;");
 }
 
 if($bCustomer){
 	//new customer
 	$shopDashboardTable->addRow();
-	$shopDashboardTable->setCol(++$i, 0, array('class' => "middlefont"), we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_new_customer]')));
-	$shopDashboardTable->setCol($i, 1, array('class' => "middlefont", "style" => "text-align:right"), we_html_element::htmlB(($amountCustomers > 0 ? $amountCustomers : 0)));
+	$shopDashboardTable->setCol( ++$i, 0, ['class' => "middlefont"], we_html_element::htmlB(g_l('cockpit', '[shop_dashboard][cnt_new_customer]')));
+	$shopDashboardTable->setCol($i, 1, ['class' => "middlefont", "style" => "text-align:right"], we_html_element::htmlB(($amountCustomers > 0 ? $amountCustomers : 0)));
 }
 
 $shopDashboard = '<div style="width:60%;float:left;">' .
@@ -251,8 +190,8 @@ $shopDashboard = '<div style="width:60%;float:left;">' .
 	'<canvas id="' . $newSCurrId . '_chart_div" width="160" height="160"></canvas>' .
 	'</div><br style="clear:both;"/>' .
 	($bTarget ?
-		we_html_element::jsScript(LIB_DIR . 'additional/gauge/gauge.min.js') .
-		we_html_element::jsElement("
+	we_html_element::jsScript(LIB_DIR . 'additional/gauge/gauge.min.js') .
+	we_html_element::jsElement("
 window.addEventListener('load',function() {
 	var shpG=new Gauge(WE().layout.cockpitFrame.document.getElementById('" . $newSCurrId . "_chart_div'), {
 		value: " . we_base_util::formatNumber(($total - $canceled)) . ",
@@ -269,7 +208,7 @@ window.addEventListener('load',function() {
 		redTo: " . ($sRevenueTarget * 0.9) . "
 	} );
 });") :
-		''
+	''
 	);
 
 
