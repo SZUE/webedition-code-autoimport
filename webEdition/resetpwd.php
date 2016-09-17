@@ -106,7 +106,7 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 		break;
 	case 'mail':
 		$resetTok = we_base_request::_(we_base_request::STRING, 'resetTok');
-		if(empty($_REQUEST['resetTok']) || empty($_SESSION['resetTok']) || $_REQUEST['resetTok'] != $_SESSION['resetTok']){
+		if(!$resetTok || empty($_SESSION [ 'resetTok']) || $resetTok !=  $_SESSION [ 'resetTok']){
 			showError(g_l('global', '[CSRF][tokenInvalid]'));
 			break;
 		}
