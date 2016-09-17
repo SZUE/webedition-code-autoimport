@@ -42,43 +42,54 @@ function startTree(){
 	}
 
 	function getJSTreeCode(){
+		$year = we_base_request::_(we_base_request::INT, 'year', date('Y'));
 		$menu = '
-var table="' . SHOP_TABLE . '";
 WE().util.loadConsts(document, "g_l.shop");
 function loadData() {
 				treeData.clear();
 				treeData.add(node.prototype.rootEntry(0, "root", "root"));';
 
-		$this->db->query("SELECT IntOrderID,DateShipping,DateConfirmation,DateCustomA,DateCustomB,DateCustomC,DateCustomD,DateCustomE,DatePayment,DateCustomF,DateCustomG,DateCancellation,DateCustomH,DateCustomI,DatecustomJ,DateFinished, DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysql]') . "') AS orddate, DATE_FORMAT(DateOrder,'%c%Y') AS mdate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC');
+		$this->db->query("SELECT
+o.ID,
+CONCAT(o.ID,IF(o.shopname,CONCAT(' (',o.shopname,'), '),', '),DATE_FORMAT(o.DateOrder,'" . g_l('date', '[format][mysql]') . "')) AS text,
+DateShipping IS NOT NULL AS published,
+DATE_FORMAT(DateOrder,'%c%Y') AS mdate,
+(DateConfirmation IS NOT NULL || DateShipping IS NOT NULL || EXISTS (SELECT * FROM " . SHOP_ORDER_DATES_TABLE . " od WHERE od.ID=o.ID AND od.type IN ('DateCustomA','DateCustomB','DateCustomC','DateCustomD','DateCustomE','DateCustomF','DateCustomG','DateCustomH','DateCustomI','DateCustomJ')) ) AS isActive,
+o.DatePayment IS NOT NULL AS isPayed,
+(DateCancellation IS NOT NULL || DateFinished IS NOT NULL) AS isFinished,
+DateShipping IS NOT NULL AS isShipped
+FROM " . SHOP_ORDER_TABLE . ' o WHERE
+DateOrder BETWEEN "' . ($year - 1) . '-12-31" AND "' . ($year + 1) . '-01-01"
+ORDER BY o.ID DESC');
 		while($this->db->next_record()){
 			//added for #6786
 			$style = 'color:black;font-family:liberation_sansbold;';
 
-			if($this->db->f('DateCustomA') || $this->db->f('DateCustomB') || $this->db->f('DateCustomC') || $this->db->f('DateCustomD') || $this->db->f('DateCustomE') || $this->db->f('DateCustomF') || $this->db->f('DateCustomG') || $this->db->f('DateCustomH') || $this->db->f('DateCustomI') || $this->db->f('DateCustomJ') || $this->db->f('DateConfirmation') || $this->db->f('DateShipping')){
+			if($this->db->f('isActive')){
 				$style = 'color:red;';
 			}
 
-			if($this->db->f('DatePayment')){
+			if($this->db->f('isPayed')){
 				$style = 'color:#006699;';
 			}
 
-			if($this->db->f('DateCancellation') || $this->db->f('DateFinished')){
+			if($this->db->f('isFinished')){
 				$style = 'color:black;';
 			}
 
-			$menu.= "  treeData.add({
-				id:'" . $this->db->f('IntOrderID') . "',
+			$menu .= "treeData.add({
+				id:'" . $this->db->f('ID') . "',
 				parentid:" . $this->db->f('mdate') . ",
-				text:'" . $this->db->f('IntOrderID') . ', ' . ' ' . $this->db->f('orddate') . "',
+				text:'" . $this->db->f('text') . "',
 				typ:'shop',
 				checked:false,
 				contentType:'shop',
-				table:'" . SHOP_TABLE . "',
-				published:" . (($this->db->f("DateShipping") > 0) ? 0 : 1) . ",
+				table:'" . SHOP_ORDER_TABLE . "',
+				published:" . $this->db->f("published") . ",
 				st:'" . $style . "'
 			});";
 
-			if($this->db->f('DateShipping') <= 0){
+			if(!$this->db->f('isShipped')){
 				if(isset($l[$this->db->f('mdate')])){
 					$l[$this->db->f('mdate')] ++;
 				} else {
@@ -93,12 +104,12 @@ function loadData() {
 			}
 		}
 
-		$year = we_base_request::_(we_base_request::INT, 'year', date('Y'));
+
 //unset($_SESSION['year']);
 		for($f = 12; $f > 0; $f--){
 			$r = (isset($v[$f . $year]) ? $v[$f . $year] : '');
 			$k = (isset($l[$f . $year]) ? $l[$f . $year] : '');
-			$menu.= "treeData.add({
+			$menu .= "treeData.add({
 	id:" . $f . $year . ",
 	parentid:0,
 	text:'" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',
@@ -111,7 +122,7 @@ function loadData() {
 	published:" . (($k > 0) ? 1 : 0) . "
 });";
 		}
-		$menu.='treeData.yearshop = ' . $year . ';
+		$menu .= 'treeData.yearshop = ' . $year . ';
 }';
 		return we_html_element::cssLink(CSS_DIR . 'tree.css') . we_html_element::jsElement($menu) . parent::getJSTreeCode();
 	}

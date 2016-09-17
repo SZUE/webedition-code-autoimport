@@ -262,8 +262,7 @@ class we_shop_statusMails{
 			}
 			$phpmail->buildMessage();
 			if($phpmail->Send()){
-				$dasDatum = date('Y-m-d H:i:s');
-				$DB_WE->query('UPDATE ' . SHOP_TABLE . ' SET Mail' . $DB_WE->escape($was) . '="' . $DB_WE->escape($dasDatum) . '" WHERE IntOrderID = ' . intval($order));
+				$DB_WE->query('REPLACE INTO ' . SHOP_ORDER_DATES_TABLE . ' SET type="Mail' . $DB_WE->escape($was) . '", ID=' . intval($order));
 
 				return true;
 			}

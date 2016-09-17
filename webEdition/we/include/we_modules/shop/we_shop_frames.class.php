@@ -41,9 +41,9 @@ class we_shop_frames extends we_modules_frame{
 	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();
 //	$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 //	$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
-		$data = getHash("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $this->db);
+		$data = getHash("SELECT ID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_ORDER_TABLE . ' ORDER BY ID DESC LIMIT 1', $this->db);
 
-		$headline = $data ? '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $data['IntOrderID'] . ',\'shop\',\'' . SHOP_TABLE . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $data['IntOrderID'], $data['orddate']) . '</a>' : '';
+		$headline = $data ? '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $data['ID'] . ',\'shop\',\'' . SHOP_ORDER_ . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $data['ID'], $data['orddate']) . '</a>' : '';
 
 /// config
 		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db));
@@ -173,9 +173,9 @@ class we_shop_frames extends we_modules_frame{
 
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 
-		$hash = getHash('SELECT IntCustomerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") AS d FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid . ' LIMIT 1', $DB_WE);
+		$hash = getHash('SELECT customerID,DATE_FORMAT(DateOrder,"' . g_l('date', '[format][mysqlDate]') . '") AS d FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid, $DB_WE);
 		if($hash){
-			$cid = $hash['IntCustomerID'];
+			$cid = $hash['customerID'];
 			$cdat = $hash['d'];
 		} else {
 			$cid = 0;
@@ -217,8 +217,8 @@ function setTab(tab) {
 //$yid = we_base_request::_(we_base_request::INT, "ViewYear", date("Y"));
 //$bid = we_base_request::_(we_base_request::INT, "bid", 0);
 //$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $this->db);
-		$data = getHash("SELECT IntOrderID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_TABLE . ' GROUP BY IntOrderID ORDER BY IntID DESC LIMIT 1', $this->db);
-		$headline = ($data ? sprintf(g_l('modules_shop', '[lastOrder]'), $data["IntOrderID"], $data["orddate"]) : '');
+		$data = getHash("SELECT ID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_ORDER_TABLE . ' ORDER BY ID DESC LIMIT 1', $this->db);
+		$headline = ($data ? sprintf(g_l('modules_shop', '[lastOrder]'), $data['ID'], $data["orddate"]) : '');
 
 /// config
 		$feldnamen = explode('|', f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_pref"', '', $this->db));
@@ -231,7 +231,7 @@ function setTab(tab) {
 		$resultD = f('SELECT 1 FROM ' . LINK_TABLE . ' WHERE Name="' . WE_SHOP_TITLE_FIELD_NAME . '" LIMIT 1', '', $this->db);
 
 // grep the last element from the year-set, wich is the current year
-		$yearTrans = f('SELECT DATE_FORMAT(DateOrder,"%Y") AS DateOrd FROM ' . SHOP_TABLE . ' ORDER BY DateOrd DESC LIMIT 1', '', $this->db);
+		$yearTrans = f('SELECT DATE_FORMAT(MAX(DateOrder),"%Y") AS DateOrd FROM ' . SHOP_ORDER_TABLE, '', $this->db);
 
 
 		$we_tabs = new we_tabs();
@@ -282,7 +282,7 @@ function setTab(tab) {
 				return $this->getHTMLIconbar();
 			case 'frameset':
 				$bid = we_base_request::_(we_base_request::INT, 'bid');
-				return $this->getHTMLFrameset($this->Tree->getJSTreeCode(), ($bid > 0 ? '&bid=' . ($bid === -1 ? intval(f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE, '', $this->db)) : $bid) : '&top=1&home=1'));
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode(), ($bid > 0 ? '&bid=' . ($bid === -1 ? intval(f('SELECT MAX(ID) FROM ' . SHOP_ORDER_TABLE, '', $this->db)) : $bid) : '&top=1&home=1'));
 			case 'exitQuestion':
 				return we_shop_frames::showExitQuestion();
 			case 'customerOrderList':
@@ -375,7 +375,7 @@ function setTab(tab) {
 			'stateFieldIsISO' => 0,
 			'languageField' => '-',
 			'languageFieldIsISO' => 0
-			]);
+		]);
 
 
 //	generate html-output table
