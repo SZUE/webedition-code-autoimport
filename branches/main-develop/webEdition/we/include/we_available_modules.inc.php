@@ -41,7 +41,8 @@ return ['users' => ['name' => 'users',
 		'alwaysActive' => false,
 		'hasSettings' => true,
 		'dependson' => '',
-		'childmodule' => 'shop'
+		'childmodule' => 'shop',
+		'tables' => ['CUSTOMER_TABLE'],
 	],
 	'navigation' => ['name' => 'navigation',
 		'perm' => 'EDIT_NAVIGATION || ADMINISTRATOR',
@@ -52,7 +53,8 @@ return ['users' => ['name' => 'users',
 		'alwaysActive' => true,
 		'hasSettings' => '',
 		'dependson' => '',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => [],
 	],
 	'collection' => ['name' => 'collection',
 		'perm' => 'CAN_SEE_COLLECTIONS || DELETE_COLLECTIONS || EDIT_COLLECTIONS || NEW_COLLECTIONS || ADMINISTRATOR',
@@ -63,7 +65,8 @@ return ['users' => ['name' => 'users',
 		'alwaysActive' => false,
 		'hasSettings' => false,
 		'dependson' => '',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => ['VFILE_TABLE'],
 	],
 	'shop' => ['name' => 'shop',
 		'text' => g_l('javaMenu_moduleInformation', '[shop][text]'),
@@ -73,7 +76,8 @@ return ['users' => ['name' => 'users',
 		'inModuleMenu' => true,
 		'hasSettings' => true,
 		'dependson' => 'customer',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => ['SHOP_TABLE', 'SHOP_ORDER_DATES_TABLE', 'SHOP_ORDER_DOCUMENT_TABLE', 'SHOP_ORDER_ITEM_TABLE', 'SHOP_ORDER_TABLE']
 	],
 	'schedule' => ['name' => 'schedule',
 		'text' => g_l('javaMenu_moduleInformation', '[schedule][text]'),
@@ -83,7 +87,8 @@ return ['users' => ['name' => 'users',
 		'alwaysActive' => false,
 		'hasSettings' => false,
 		'dependson' => '',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => ['SCHEDULE_TABLE'],
 	],
 	'editor' => ['name' => 'editor',
 		'text' => g_l('javaMenu_moduleInformation', '[editor][text]'),
@@ -94,7 +99,8 @@ return ['users' => ['name' => 'users',
 		'alwaysActive' => true,
 		'hasSettings' => true,
 		'dependson' => '',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => []
 	],
 	'object' => ['name' => 'object',
 		'text' => g_l('javaMenu_moduleInformation', '[object][text]'),
@@ -103,7 +109,8 @@ return ['users' => ['name' => 'users',
 		'inModuleMenu' => false,
 		'hasSettings' => false,
 		'dependson' => '',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => ['OBJECT_FILES_TABLE', 'OBJECT_TABLE']
 	],
 	'messaging' => ['name' => 'messaging',
 		'text' => g_l('javaMenu_moduleInformation', '[messaging][text]'),
@@ -113,7 +120,8 @@ return ['users' => ['name' => 'users',
 		'inModuleMenu' => true,
 		'hasSettings' => false, //the only setting was not used
 		'dependson' => '',
-		'childmodule' => 'workflow'
+		'childmodule' => 'workflow',
+		'tables' => ['WORKFLOW_DOC_STEP_TABLE', 'WORKFLOW_DOC_TABLE', 'WORKFLOW_DOC_TASK_TABLE', 'WORKFLOW_LOG_TABLE', 'WORKFLOW_STEP_TABLE', 'WORKFLOW_TABLE', 'WORKFLOW_TASK_TABLE']
 	],
 	'workflow' => ['name' => 'workflow',
 		'text' => g_l('javaMenu_moduleInformation', '[workflow][text]'),
@@ -133,7 +141,8 @@ return ['users' => ['name' => 'users',
 		'inModuleMenu' => true,
 		'hasSettings' => true,
 		'dependson' => '',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => ['NEWSLETTER_BLOCK_TABLE', 'NEWSLETTER_CONFIRM_TABLE', 'NEWSLETTER_GROUP_TABLE', 'NEWSLETTER_LOG_TABLE', 'NEWSLETTER_TABLE']
 	],
 	'banner' => ['name' => 'banner',
 		'text' => g_l('javaMenu_moduleInformation', '[banner][text]'),
@@ -144,7 +153,8 @@ return ['users' => ['name' => 'users',
 		'alwaysActive' => false,
 		'hasSettings' => true,
 		'dependson' => '',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => ['BANNER_CLICKS_TABLE', 'BANNER_TABLE', 'BANNER_VIEWS_TABLE']
 	],
 	'export' => ['name' => 'export',
 		'text' => g_l('javaMenu_moduleInformation', '[export][text]'),
@@ -156,7 +166,8 @@ return ['users' => ['name' => 'users',
 		'hasSettings' => false,
 		'inModuleWindow' => true,
 		'dependson' => '',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => []
 	],
 	'voting' => ['name' => 'voting',
 		'text' => g_l('javaMenu_moduleInformation', '[voting][text]'),
@@ -167,7 +178,8 @@ return ['users' => ['name' => 'users',
 		'alwaysActive' => false,
 		'hasSettings' => false,
 		'dependson' => '',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => ['VOTING_LOG_TABLE', 'VOTING_TABLE']
 	],
 	/* 'spellchecker' => [
 	  'name' => 'spellchecker',
@@ -190,6 +202,7 @@ return ['users' => ['name' => 'users',
 		'alwaysActive' => false,
 		'hasSettings' => true,
 		'dependson' => '',
-		'childmodule' => ''
+		'childmodule' => '',
+		'tables' => ['GLOSSARY_TABLE']
 	],
 ];

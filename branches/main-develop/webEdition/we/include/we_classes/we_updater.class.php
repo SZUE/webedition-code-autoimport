@@ -21,6 +21,7 @@
 abstract class we_updater{
 
 	static function replayUpdateDB($specFile = ''){
+		//FIXME: even in update, only execute queries on enabled modules
 		include_once(WEBEDITION_PATH . 'liveUpdate/conf/conf.inc.php');
 		include_once(WEBEDITION_PATH . 'liveUpdate/classes/liveUpdateFunctions.class.php');
 		$lf = new liveUpdateFunctions();
@@ -430,12 +431,12 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		$db->query("SELECT ID,CustomerFilter,WhiteList,BlackList,Customers FROM " . NAVIGATION_TABLE . " WHERE CustomerFilter LIKE 'a:%{i:%'");
 		$all = $db->getAll();
 		foreach($all as $a){
-			$db->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' . we_database_base::arraySetter(array(
+			$db->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' . we_database_base::arraySetter([
 					'CustomerFilter' => we_serialize(we_unserialize($a['CustomerFilter']), SERIALIZE_JSON),
 					'WhiteList' => trim($a['WhiteList'], ','),
 					'BlackList' => trim($a['BlackList'], ','),
 					'Customers' => trim($a['Customers'], ','),
-				)) . ' WHERE ID=' . $a['ID']);
+				]) . ' WHERE ID=' . $a['ID']);
 		}
 		if(defined('CUSTOMER_FILTER_TABLE')){
 			$db->query("SELECT modelId,filter,whiteList,blackList,specificCustomers FROM " . CUSTOMER_FILTER_TABLE . " WHERE filter LIKE 'a:%{i:%'");
@@ -526,17 +527,17 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		$db->query('SELECT IntOrderID,strSerialOrder FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID');
 		while($db->next_record(MYSQL_ASSOC)){
 			$dat = we_unserialize($db->f('strSerialOrder'));
-			$customer = $dat[WE_SHOP_CART_CUSTOMER_FIELD];
+			$customer = $dat['we_shopCustomer'];
 			unset($customer['Password'], $customer['_Password'], $customer['ID'], $customer['Username'], $customer['LoginDenied'], $customer['MemberSince'], $customer['LastLogin'], $customer['LastAccess'], $customer['AutoLoginDenied'], $customer['AutoLogin'], $customer['ModifyDate'], $customer['ModifiedBy'], $customer['Path'], $customer['Newsletter_Ok'], $customer['registered'], $customer['AutoLoginID']
 			);
 			$db2->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
-					'pricesNet' => intval($dat[WE_SHOP_PRICE_IS_NET_NAME]),
-					'priceName' => $dat[WE_SHOP_PRICENAME],
-					'shippingCost' => $dat[WE_SHOP_SHIPPING]['costs'],
-					'shippingNet' => $dat[WE_SHOP_SHIPPING]['isNet'],
-					'shippingVat' => $dat[WE_SHOP_SHIPPING]['vatRate'],
-					'calcVat' => empty($dat[WE_SHOP_CALC_VAT]) ? 1 : $dat[WE_SHOP_CALC_VAT],
-					'customFields' => we_serialize($dat[WE_SHOP_CART_CUSTOM_FIELD], SERIALIZE_JSON, false, 0, true),
+					'pricesNet' => intval($dat['we_shopPriceIsNet']),
+					'priceName' => $dat['we_shopPricename'],
+					'shippingCost' => $dat['we_shopPriceShipping']['costs'],
+					'shippingNet' => $dat['we_shopPriceShipping']['isNet'],
+					'shippingVat' => $dat['we_shopPriceShipping']['vatRate'],
+					'calcVat' => empty($dat['we_shopCalcVat']) ? 1 : $dat['we_shopCalcVat'],
+					'customFields' => $dat['we_sscf'] ? we_serialize($dat['we_sscf'], SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
 					'customerData' => we_serialize($customer, SERIALIZE_JSON, false, 5, true),
 				]) . ' WHERE ID=' . $db->f('IntOrderID'));
 		}
@@ -558,18 +559,17 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 
 			$id = f('SELECT ID FROM ' . SHOP_ORDER_DOCUMENT_TABLE . ' WHERE DocID=' . $docid . ' AND type="' . $type . '" AND variant="' . $db->escape($variant) . '" AND Published=FROM_UNIXTIME(' . $pub . ')');
 			if(!$id){
-				$title = strip_tags($dat['we_shoptitle']);
-				$desc = strip_tags($dat['we_shopdescription']);
-				unset($dat['we_shoptitle'], $dat['we_shopdescription'], $dat[WE_SHOP_ARTICLE_CUSTOM_FIELD]);
+				$data = $dat;
+				unset($data['we_shoptitle'], $data['we_shopdescription'], $data['we_sacf'], $data['shopvat']);
 				//add document first
 				$db2->query('REPLACE INTO ' . SHOP_ORDER_DOCUMENT_TABLE . ' SET ' . we_database_base::arraySetter([
 						'DocID' => $docid,
 						'type' => $type,
 						'variant' => $variant,
 						'Published' => sql_function('FROM_UNIXTIME(' . $pub . ')'),
-						'title' => $title,
-						'description' => $desc,
-						'SerializedData' => we_serialize($dat, SERIALIZE_JSON, false, 5, true)
+						'title' => strip_tags($dat['we_shoptitle']),
+						'description' => strip_tags($dat['we_shopdescription']),
+						'SerializedData' => we_serialize($data, SERIALIZE_JSON, false, 5, true)
 				]));
 				$id = $db2->getInsertId();
 			}
@@ -578,8 +578,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					'orderDocID' => $id,
 					'quantity' => $db->f('IntQuantity'),
 					'Price' => $db->f('Price'),
-					'Vat' => isset($dat[WE_SHOP_VAT_FIELD_NAME]) ? $dat[WE_SHOP_VAT_FIELD_NAME] : sql_function('NULL'),
-					'customFields' => we_serialize($dat[WE_SHOP_ARTICLE_CUSTOM_FIELD], SERIALIZE_JSON, false, 0, true),
+					'customFields' => $dat['we_sacf'] ? we_serialize($dat['we_sacf'], SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
+					'Vat' => isset($dat['shopvat']) ? $dat['shopvat'] : sql_function('NULL'),
 			]));
 
 			/* 			t_e($dat);
@@ -608,12 +608,16 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			case 'all':
 				self::updateUsers($db);
 				self::meassure('updateUsers');
-				self::updateObjectFilesX($db);
-				self::meassure('updateObjectFilesX');
+				if(defined('OBJECT_X_TABLE')){
+					self::updateObjectFilesX($db);
+					self::meassure('updateObjectFilesX');
+				}
 				self::fixInconsistentTables($db);
 				self::meassure('fixInconsistentTables');
-				self::updateGlossar();
-				self::meassure('updateGlossar');
+				if(defined('WE_GLOSSARY_MODULE_PATH')){
+					self::updateGlossar();
+					self::meassure('updateGlossar');
+				}
 				self::updateCats($db);
 				self::meassure('updateCats');
 				/* self::fixHistory();
@@ -630,8 +634,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::meassure('customerFilter');
 			case 'shop':
 				$what = 'shop';
-				self::updateShop($db);
-				self::meassure('shop');
+				if(defined('SHOP_TABLE')){
+					self::updateShop($db);
+					self::meassure('shop');
+				}
 
 				self::updateSetting($db);
 				self::meassure('setting');
