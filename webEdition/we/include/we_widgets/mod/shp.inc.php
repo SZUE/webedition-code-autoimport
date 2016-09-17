@@ -103,7 +103,7 @@ if(defined('WE_SHOP_VAT_TABLE') && (permissionhandler::hasPerm(['NEW_SHOP_ARTICL
 		$query = 'SELECT
 SUM((oi.Price*oi.quantity*IF(o.pricesNet&&o.calcVat&&IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . '),(1+IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . ')/100),1)))
 FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi.orderID WHERE ' . $queryShopDateCondtion;
-		$DB_WE->t_e_query(1);
+
 		$payed = f($query . ' AND o.DatePayment IS NOT NULL AND o.DateCancellation IS NULL');
 		$canceled = f($query . ' AND o.DatePayment IS NULL AND o.DateCancellation IS NOT NULL');
 		$unpayed = f($query . ' AND o.DatePayment IS NULL AND o.DateCancellation IS NULL');

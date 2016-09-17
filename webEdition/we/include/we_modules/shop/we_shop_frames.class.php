@@ -40,7 +40,6 @@ class we_shop_frames extends we_modules_frame{
 
 	function getHTMLIconbar(){ //TODO: move this to weShopView::getHTMLIconbar();
 //	$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
-//	$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid, '', $this->db);
 		$data = getHash("SELECT ID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_ORDER_TABLE . ' ORDER BY ID DESC LIMIT 1', $this->db);
 
 		$headline = $data ? '<a style="text-decoration: none;" href="javascript:we_cmd(\'openOrder\', ' . $data['ID'] . ',\'shop\',\'' . SHOP_ORDER_ . '\');">' . sprintf(g_l('modules_shop', '[lastOrder]'), $data['ID'], $data['orddate']) . '</a>' : '';
@@ -216,7 +215,6 @@ function setTab(tab) {
 	function getHTMLEditorHeaderTop(){
 //$yid = we_base_request::_(we_base_request::INT, "ViewYear", date("Y"));
 //$bid = we_base_request::_(we_base_request::INT, "bid", 0);
-//$cid = f('SELECT IntCustomerID FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . intval($bid), "IntCustomerID", $this->db);
 		$data = getHash("SELECT ID,DATE_FORMAT(DateOrder,'" . g_l('date', '[format][mysqlDate]') . "') AS orddate FROM " . SHOP_ORDER_TABLE . ' ORDER BY ID DESC LIMIT 1', $this->db);
 		$headline = ($data ? sprintf(g_l('modules_shop', '[lastOrder]'), $data['ID'], $data["orddate"]) : '');
 

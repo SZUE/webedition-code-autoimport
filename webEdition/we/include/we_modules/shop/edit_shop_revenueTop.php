@@ -27,7 +27,7 @@ we_html_tools::protect($protect);
 
 $selectedYear = we_base_request::_(we_base_request::INT, 'ViewYear', date('Y'));
 $selectedMonth = we_base_request::_(we_base_request::INT, 'ViewMonth', 1);
-$orderBy = we_base_request::_(we_base_request::STRING, 'orderBy', 'IntOrderID');
+$orderBy = we_base_request::_(we_base_request::STRING, 'orderBy', 'ID');
 $actPage = we_base_request::_(we_base_request::INT, 'actPage', 0);
 
 function orderBy($a, $b){
@@ -115,130 +115,34 @@ $parts = [
 	]
 ];
 
-// get queries for revenue and article list.
-$queryCondtion = 'YEAR(o.DateOrder)=' . $selectedYear . ($selectedMonth > 0 ? ' AND MONTH(o.DateOrder)=' . $selectedMonth : '');
+$to = ($selectedMonth ?
+	$selectedYear . '-' . ($selectedMonth + 1) :
+	($selectedYear + 1) . '-01');
 
-$query = ' FROM ' . SHOP_TABLE . '	WHERE ' . $queryCondtion;
-if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
-	$total = $payed = $unpayed = $canceled = 0;
+$queryShopDateCondtion = '(o.DateOrder BETWEEN "' . $selectedYear . '-' . ($selectedMonth ?: '01') . '-01" AND "' . $to . '-01")';
 
-	$amountOrders = f('SELECT COUNT(1) FROM ' . SHOP_ORDER_TABLE . ' o WHERE ' . $queryCondtion, '', $DB_WE);
-	//$unpayedOrders = f('SELECT COUNT(distinct IntOrderID) ' . $query . ' AND ISNULL(DatePayment)', '', $DB_WE);
-	//$payedOrders = $amountOrders - $unpayedOrders;
-	$editedOrders = f('SELECT COUNT(1) FROM ' . SHOP_ORDER_TABLE . ' o WHERE ' . $queryCondtion . ' AND !ISNULL(o.DateShipping)', '', $DB_WE);
-
-	//get table entries
-	$orderRows = [];
-	$DB_WE->query('SELECT strSerial,strSerialOrder,IntOrderID,IntCustomerID,IntArticleID,IntQuantity,DatePayment,DateOrder,DateCancellation,DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder, DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment, DATE_FORMAT(DateCancellation, "%d.%m.%Y") AS formatDateCancellation, Price ' . $query . ' ORDER BY ' . we_base_request::_(we_base_request::STRING, 'orderBy', 'IntOrderID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
-	while($DB_WE->next_record()){
-
-		// for the articlelist, we need also all these article, so save them in array
-		// initialize all data saved for an article
-		$shopArticleObject = we_unserialize($DB_WE->f('strSerial'));
-		$orderData = we_unserialize($DB_WE->f('strSerialOrder'));
+if(($maxRows = f('SELECT COUNT(1) FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi.orderID WHERE ' . $queryShopDateCondtion, '', $DB_WE))){
 
 
-		$netPrice = $orderData['we_shopPriceIsNet'] ? $DB_WE->f('Price') : ($DB_WE->f('Price') / (1 + (floatval($shopArticleObject['shopvat']) / 100)));
-		$grosPrice = $orderData['we_shopPriceIsNet'] ? ($DB_WE->f('Price') * (1 + (floatval($shopArticleObject['shopvat']) / 100))) : $DB_WE->f('Price');
+	$amountOrders = f('SELECT COUNT(1) FROM ' . SHOP_ORDER_TABLE . ' o WHERE ' . $queryShopDateCondtion, '', $DB_WE);
+	$editedOrders = f('SELECT COUNT(1) FROM ' . SHOP_ORDER_TABLE . ' o WHERE ' . $queryShopDateCondtion . ' AND !ISNULL(o.DateShipping)', '', $DB_WE);
 
-		$priceToShow = $orderData['we_shopCalcVat'] ? $grosPrice : $netPrice;
-		$articleSum = $DB_WE->f('IntQuantity') * $priceToShow;
-
-
-		$orderRows[] = [
-			'articleArray' => $shopArticleObject,
-			// save all data in array
-			'IntOrderID' => $DB_WE->f('IntOrderID'), // also for ordering
-			'IntCustomerID' => $DB_WE->f('IntCustomerID'),
-			'IntArticleID' => $DB_WE->f('IntArticleID'), // also for ordering
-			'IntQuantity' => $DB_WE->f('IntQuantity'),
-			'articleSum' => $articleSum,
-			'DatePayment' => $DB_WE->f('DatePayment'),
-			'DateOrder' => $DB_WE->f('DateOrder'),
-			'DateCancellation' => $DB_WE->f('DateCancellation'),
-			'formatDateOrder' => $DB_WE->f('formatDateOrder'), // also for ordering
-			'formatDatePayment' => $DB_WE->f('formatDatePayment'), // also for ordering
-			'formatDateCancellation' => $DB_WE->f('formatDateCancellation'), // also for ordering
-			'Price' => $priceToShow, // also for ordering
-			WE_SHOP_TITLE_FIELD_NAME => (isset($shopArticleObject[WE_SHOP_TITLE_FIELD_NAME]) ? $shopArticleObject[WE_SHOP_TITLE_FIELD_NAME] : $shopArticleObject['we_' . WE_SHOP_TITLE_FIELD_NAME]), // also for ordering
-			'orderArray' => $orderData,
-		];
-	}
+	$query = 'SELECT
+SUM((oi.Price*oi.quantity*IF(o.pricesNet&&o.calcVat&&IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . '),(1+IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . ')/100),1)))
+FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi.orderID WHERE ' . $queryShopDateCondtion;
 
 
-	// first of all calculate complete revenue of this year -> important check vats as well.
-	$cur = 0;
-	while($maxRows > $cur){
-		$DB_WE->query('SELECT strSerial,strSerialOrder,(Price*IntQuantity) AS actPrice,(!ISNULL(DatePayment)) AS payed, (!ISNULL(DateCancellation)) AS canceled ' . $query . ' LIMIT ' . $cur . ',1000');
-		$cur += 1000;
-		while($DB_WE->next_record()){
+	$payed = f($query . ' AND o.DatePayment IS NOT NULL AND o.DateCancellation IS NULL');
+	//$canceled = f($query . ' AND o.DatePayment IS NULL AND o.DateCancellation IS NOT NULL');
+	$unpayed = f($query . ' AND o.DatePayment IS NULL AND o.DateCancellation IS NULL');
+	$total = $payed + $unpayed;
 
-			// for the articlelist, we need also all these article, so save them in array
-			// initialize all data saved for an article
-			$shopArticleObject = we_unserialize($DB_WE->f('strSerial'));
-			$orderData = we_unserialize($DB_WE->f('strSerialOrder'));
+	$articleVatArray = $DB_WE->getAllFirstq('SELECT oi.Vat, SUM((IF(o.pricesNet,oi.Price*oi.quantity*(IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . ')/100), (oi.Price*oi.quantity)-( (oi.Price*oi.quantity)/(1+ (IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . ')/100) )) ))) FROM tblOrder o JOIN tblOrderItem oi ON o.ID=oi.orderID WHERE ' . $queryShopDateCondtion . ' AND o.DateCancellation IS NULL AND o.calcVat AND IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . ')>0 GROUP BY oi.Vat', false);
 
-			// all data from strSerialOrders
-			// first unserialize order-data
-			// ********************************************************************************
-			// now get information about complete order
-			// - pay VAT?
-			// - prices are net?
-			// prices are net?
-			$pricesAreNet = (isset($orderData[WE_SHOP_PRICE_IS_NET_NAME]) ? $orderData[WE_SHOP_PRICE_IS_NET_NAME] : true);
 
-			// must calculate vat?
-			$calcVat = (isset($orderData[WE_SHOP_CALC_VAT]) ? $orderData[WE_SHOP_CALC_VAT] : true);
-
-			//
-			// no get information about complete order
-			// ********************************************************************************
-			// now calculate prices: without vat first
-			$actPrice = $DB_WE->f('actPrice');
-			// now calculate vats to prices !!!
-			if($calcVat){ // vat must be payed for this order
-				// now determine VAT
-				$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
-					$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
-					(isset($defaultVat) ? $defaultVat : 0)
-					);
-
-				if($articleVat > 0){
-					if(!isset($articleVatArray[$articleVat])){ // avoid notices
-						$articleVatArray[$articleVat] = 0;
-					}
-
-					// calculate vats to prices if neccessary
-					if($pricesAreNet){
-						if($DB_WE->f('canceled') == 0){ // #7896 but not, if order is canceled
-							$articleVatArray[$articleVat] += ($actPrice * $articleVat / 100);
-						}
-						$actPrice += ($actPrice * $articleVat / 100);
-					} else {
-						if($DB_WE->f('canceled') == 0){ // #7896 but not, if order is canceled
-							$articleVatArray[$articleVat] += ($actPrice * $articleVat / (100 + $articleVat));
-						}
-					}
-				}
-			}
-
-			if($DB_WE->f('canceled') > 0){ //#7896
-				$canceled += $actPrice;
-			} else {
-				$total += $actPrice;
-				if($DB_WE->f('payed') > 0){
-					$payed += $actPrice;
-				} else {
-					$unpayed += $actPrice;
-				}
-			}
-		}
-	}
 	// generate vat table
-	$vatTable = '';
-	if(isset($articleVatArray)){
-		ksort($articleVatArray);
-		$vatTable .= '
+	if(!empty($articleVatArray)){
+		$vatTable = '
 			<tr>
 				<td colspan="7" class="shopContentfontR" style="padding-top:10px;">' . g_l('modules_shop', '[includedVat]') . ':</td>
 			</tr>';
@@ -248,8 +152,10 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 					<td colspan="5"></td>
 					<td class="shopContentfontR">' . $vat . '&nbsp;%</td>
 					<td class="shopContentfontR">' . we_base_util::formatNumber($amount) . $waehr . '</td>
-				</tr>' . "\n";
+				</tr>';
 		}
+	} else {
+		$vatTable = '';
 	}
 
 	$parts[] = [
@@ -263,7 +169,7 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 				<th>' . g_l('modules_shop', '[schonbezahlt]') . '</th>
 				<th>' . g_l('modules_shop', '[unbezahlt]') . '</th>
 				<th class="shopContentfontR">' . g_l('modules_shop', '[umsatzgesamt]') . '</th>
-			</tr>' . "\n" . '
+			</tr>' . '
 			<tr class="shopContentfont">
 				<td>' . $selectedYear . '</td>
 				<td>' . ($selectedMonth > 0 ? $selectedMonth : '' ) . '</td>
@@ -272,57 +178,65 @@ if(($maxRows = f('SELECT COUNT(1) ' . $query, '', $DB_WE))){
 				<td>' . we_base_util::formatNumber($payed) . $waehr . '</td>
 				<td class="defaultfont shopNotPayed">' . we_base_util::formatNumber($unpayed) . $waehr . '</td>
 				<td class="shopContentfontR">' . we_base_util::formatNumber($total) . $waehr . '</td>
-			</tr>' . "\n" .
-		$vatTable . '</table>' . "\n",
+			</tr>' .
+		$vatTable . '</table>',
 	];
 
 	$headline = [
-			['dat' => getTitleLink(g_l('modules_shop', '[bestellung]'), 'IntOrderID')],
+			['dat' => getTitleLink(g_l('modules_shop', '[bestellung]'), 'o.ID')],
 			['dat' => g_l('modules_shop', '[ArtName]')], // 'shoptitle'
 		['dat' => g_l('modules_shop', '[anzahl]')],
 			['dat' => getTitleLink(g_l('modules_shop', '[artPrice]'), 'Price')],
 			['dat' => g_l('modules_shop', '[Gesamt]')],
 			['dat' => getTitleLink(g_l('modules_shop', '[artOrdD]'), 'DateOrder')],
-			['dat' => getTitleLink(g_l('modules_shop', '[ArtID]'), 'IntArticleID')],
+			['dat' => getTitleLink(g_l('modules_shop', '[ArtID]'), 'orderDocID')],
 			['dat' => getTitleLink(g_l('modules_shop', '[artPay]'), 'DatePayment')],
 	];
 	$content = [];
 
-	// we need functionalitty to order these
+	$DB_WE->query('SELECT o.ID,
+	@price:=(oi.Price*IF(o.pricesNet&&o.calcVat&&IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . '),(1+IFNULL(oi.Vat,' . (isset($defaultVat) ? $defaultVat : 0) . ')/100),1)) AS priceToShow,
+	(oi.quantity*@price) AS articleSum,
+	oi.quantity,
+	oi.customFields,
+	od.DocID,
+	od.title,
+	od.variant,
+	DATE_FORMAT(DateOrder, "%d.%m.%Y") AS formatDateOrder,
+	DATE_FORMAT(DatePayment, "%d.%m.%Y") AS formatDatePayment,
+	DateCancellation IS NOT NULL AS isCancelled
+FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi.orderID JOIN ' . SHOP_ORDER_DOCUMENT_TABLE . ' od ON oi.orderDocID=od.ID
+WHERE ' .
+		$queryShopDateCondtion . '
+ORDER BY ' . we_base_request::_(we_base_request::STRING, 'orderBy', 'o.ID') . ' LIMIT ' . ($actPage * $nrOfPage) . ',' . $nrOfPage);
 
-	/* if(isset(REQUEST['orderBy']) && REQUEST['orderBy']){
-	  usort($orderRows, 'orderBy');
-	  } */
+	while($DB_WE->next_record(MYSQL_ASSOC)){
+		$hash = $DB_WE->getRecord();
 
-	foreach($orderRows as $orderRow){
+		$variantStr = ($hash['variant'] ? '<br /><strong>' . g_l('modules_shop', '[variant]') . ': ' . $hash['variant'] . '</strong>' : '');
 
-		$orderData = $orderRow['orderArray'];
-		$articleData = $orderRow['articleArray'];
-
-		$variantStr = '';
-		if(!empty($articleData['WE_VARIANT'])){
-			$variantStr = '<br /><strong>' . g_l('modules_shop', '[variant]') . ': ' . $articleData['WE_VARIANT'] . '</strong>';
-		}
-
-		$customFields = '';
-		if(!empty($articleData[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
+		if($hash['customFields']){
+			$cf = we_unserialize($hash['customFields']);
 			$customFields = we_html_element::htmlBr();
-			foreach($articleData[WE_SHOP_ARTICLE_CUSTOM_FIELD] as $key => $val){
+			foreach($cf as $key => $val){
 				$customFields .= $key . '=' . $val . we_html_element::htmlBr();
 			}
+		} else {
+			$customFields = '';
 		}
 
 		$content[] = [
-				['dat' => '<a href="javascript:we_cmd(\'openOrder\',' . $orderRow['IntOrderID'] . ',\'shop\',\'' . SHOP_ORDER_TABLE . '\');">' . $orderRow['IntOrderID'] . '</a>'],
-			['dat' => $orderRow[WE_SHOP_TITLE_FIELD_NAME] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'],
-				['dat' => $orderRow['IntQuantity']],
-				['dat' => we_base_util::formatNumber($orderRow['Price']) . $waehr],
-				['dat' => we_base_util::formatNumber($orderRow['articleSum']) . $waehr],
-				['dat' => $orderRow['formatDateOrder']],
-				['dat' => $orderRow['IntArticleID']],
-				['dat' => ($orderRow['DatePayment'] ? $orderRow['formatDatePayment'] : ( $orderRow['DateCancellation'] ? '<span class="defaultfont shopNotPayed">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="defaultfont shopNotPayed">' . g_l('modules_shop', '[artNPay]') . '</span>'))],
+				['dat' => '<a href="javascript:we_cmd(\'openOrder\',' . $hash['ID'] . ',\'shop\',\'' . SHOP_ORDER_TABLE . '\');">' . $hash['ID'] . '</a>'],
+				['dat' => $hash['title'] . '<span class="small">' . $variantStr . ' ' . $customFields . '</span>'],
+				['dat' => $hash['quantity']],
+				['dat' => we_base_util::formatNumber($hash['priceToShow']) . $waehr],
+				['dat' => we_base_util::formatNumber($hash['articleSum']) . $waehr],
+				['dat' => $hash['formatDateOrder']],
+				['dat' => $hash['DocID']],
+				['dat' => ($hash['formatDatePayment'] ?: ( $hash['isCancelled'] ? '<span class="defaultfont shopNotPayed">' . g_l('modules_shop', '[artCanceled]') . '</span>' : '<span class="defaultfont shopNotPayed">' . g_l('modules_shop', '[artNPay]') . '</span>'))],
 		];
 	}
+
 
 	$parts[] = ['html' => we_html_tools::htmlDialogBorder3(670, $content, $headline),
 		'noline' => true

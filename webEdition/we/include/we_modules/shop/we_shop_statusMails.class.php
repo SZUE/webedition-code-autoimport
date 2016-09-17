@@ -32,6 +32,7 @@ class we_shop_statusMails{
 	var $FieldsDocuments; // an array with dfault values and separate Arrays for each Langauge, see getShopStatusMails
 	public static $StatusFields = ['DateOrder', 'DateConfirmation', 'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateShipping', 'DateCustomD', 'DateCustomE', 'DatePayment',
 		'DateCustomF', 'DateCustomG', 'DateCancellation', 'DateCustomH', 'DateCustomI', 'DateCustomJ', 'DateFinished'];
+	public static $BaseDateFields = ['DateOrder', 'DateConfirmation', 'DateShipping', 'DatePayment', 'DateCancellation', 'DateFinished'];
 	public static $MailFields = ['MailShipping', 'MailPayment', 'MailOrder', 'MailConfirmation', 'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE',
 		'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ', 'MailCancellation', 'MailFinished'];
 
