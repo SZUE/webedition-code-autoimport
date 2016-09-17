@@ -74,6 +74,9 @@ class we_shop_view extends we_modules_view{
 		//$weShopVatRule = weShopVatRule::getShopVatRule();
 
 		$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
+		$hiddenStatusFields = array_keys(array_filter($weShopStatusMails->FieldsHidden, function ($v){
+				return $v == 1;
+			}));
 
 		// Get Country and Langfield Data
 		$this->CLFields = we_unserialize(f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="shop" AND pref_name="shop_CountryLanguage"', '', $this->db), [
@@ -89,13 +92,12 @@ class we_shop_view extends we_modules_view{
 		//$numberformat = $feldnamen[2];
 		$classid = (isset($feldnamen[3]) ? $feldnamen[3] : '');
 		$this->classIds = makeArrayFromCSV($classid);
-		$mwst = ($feldnamen[1] ?: '');
+		$mwst = floatval($feldnamen[1] ?: 0);
 
 		$da = '%d.%m.%Y';
 		$dateform = '00.00.0000';
-		$db = '%d.%m.%Y %H:%i';
 
-		$this->processCommands(); //imi
+		$ret = $this->processCommands(); //imi
 
 		$bid = we_base_request::_(we_base_request::INT, 'bid', 0);
 		if(we_base_request::_(we_base_request::BOOL, 'deletethisorder')){
@@ -117,10 +119,16 @@ class we_shop_view extends we_modules_view{
 				$this->db->query('DELETE FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid);
 				$this->db->query('DELETE FROM ' . SHOP_ORDER_DATES_TABLE . ' WHERE ID=' . $bid);
 
-				$letzerartikel = 1;
+				echo we_html_element::jsElement('
+				top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
+				top.content.treeData.deleteEntry(' . $_REQUEST['bid'] . ');
+			') . '
+		</head>
+		<body bgcolor="#ffffff"></body></html>';
+				return;
 			}
 		}
-		echo we_html_tools::getHtmlTop();
+		echo we_html_tools::getHtmlTop() . $ret;
 
 		// Get Customer data
 		$_REQUEST['cid'] = f('SELECT customerID FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid, '', $this->db);
@@ -135,7 +143,7 @@ class we_shop_view extends we_modules_view{
 			$fields = [];
 		}
 
-		$customer = $this->getOrderCustomerData($bid, $fields);
+		$customer = $this->getOrderCustomerData($bid, $fields ? $fields['orderCustomerFields'] : []);
 
 		if(isset($_REQUEST['SendMail'])){
 			$weShopStatusMails->sendEMail($_REQUEST['SendMail'], $_REQUEST['bid'], $customer);
@@ -143,63 +151,64 @@ class we_shop_view extends we_modules_view{
 		foreach(we_shop_statusMails::$StatusFields as $field){
 			if(isset($_REQUEST[$field])){
 				list($day, $month, $year) = explode('.', $_REQUEST[$field]);
-				$DateOrder = $year . '-' . $month . '-' . $day . ' 00:00:00';
-				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET ' . $field . '="' . $this->db->escape($DateOrder) . '" WHERE IntOrderID=' . $bid);
+				$DateOrder = $year . '-' . $month . '-' . $day;
+				if(in_array($field, we_shop_statusMails::$BaseDateFields)){
+					$this->db->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . $field . '="' . $this->db->escape($DateOrder) . '" WHERE ID=' . $bid);
+				} else {
+					$this->db->query('REPACE INTO ' . SHOP_ORDER_DATES_TABLE . ' SET ID=' . $bid . ',type="' . $field . '",date="' . $this->db->escape($DateOrder));
+				}
 				$weShopStatusMails->checkAutoMailAndSend(substr($field, 4), $bid, $customer);
 			}
 		}
 
 		if(($article = we_base_request::_(we_base_request::INT, 'article'))){
 			if(($preis = we_base_request::_(we_base_request::FLOAT, 'preis')) !== false){
-				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET Price=' . abs($preis) . ' WHERE IntID=' . $article);
+				$this->db->query('UPDATE ' . SHOP_ORDER_ITEM_TABLE . ' SET Price=' . abs($preis) . ' WHERE orderID=' . $bid . ' AND orderDocID=' . $article);
 			} else if(($anz = we_base_request::_(we_base_request::FLOAT, 'anzahl')) !== false){
-				$this->db->query('UPDATE ' . SHOP_TABLE . ' SET IntQuantity=' . abs($anz) . ' WHERE IntID=' . $article);
-			} else if(isset($_REQUEST['vat'])){
-				$tmpDoc = we_unserialize(f('SELECT strSerial FROM ' . SHOP_TABLE . ' WHERE IntID=' . $article, '', $this->db));
-				if($tmpDoc){
-					$tmpDoc[WE_SHOP_VAT_FIELD_NAME] = $_REQUEST['vat'];
-					$this->db->query('UPDATE ' . SHOP_TABLE . ' SET strSerial="' . $this->db->escape(we_serialize($tmpDoc, SERIALIZE_JSON)) . '" WHERE IntID=' . $article);
-				}
+				$this->db->query('UPDATE ' . SHOP_ORDER_ITEM_TABLE . ' SET quantity=' . abs($anz) . ' WHERE orderID=' . $bid . ' AND orderDocID=' . $article);
+			} else if(($vat = we_base_request::_(we_base_request::FLOAT, 'vat')) !== false){
+				$this->db->query('UPDATE ' . SHOP_ORDER_ITEM_TABLE . ' SET Vat="' . abs($vat) . '" WHERE orderID=' . $bid . ' AND orderDocID=' . $article);
 			}
 		}
 
-		if(!isset($letzerartikel)){ // order has still articles - get them all
-			// ********************************************************************************
-			// first get all information about orders, we need this for the rest of the page
-			//
+		// order has still articles - get them all
+		// ********************************************************************************
+		// first get all information about orders, we need this for the rest of the page
+		//
+		$showBaseFields = array_diff(we_shop_statusMails::$BaseDateFields, $hiddenStatusFields);
+		$showDateFields = array_diff(we_shop_statusMails::$StatusFields, $hiddenStatusFields);
+		$showMailFields = array_diff(we_shop_statusMails::$MailFields, $hiddenStatusFields);
+		$showAdvanced = array_merge(array_diff($showDateFields, $showBaseFields), $showMailFields);
 
-			$format = [];
-			foreach(we_shop_statusMails::$StatusFields as $field){
-				$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS ' . $field;
-			}
-			foreach(we_shop_statusMails::$MailFields as $field){
-				$format[] = 'DATE_FORMAT(' . $field . ',"' . $db . '") AS ' . $field;
-			}
+		$format = [];
+		foreach($showDateFields as $field){
+			$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS ' . $field;
+		}
 
-			$this->db->query('SELECT IntID,IntCustomerID,IntArticleID,strSerial,strSerialOrder,IntQuantity,Price, ' . implode(',', $format) . '	FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . we_base_request::_(we_base_request::INT, 'bid', 0));
+		if($showAdvanced){
+			$advanced = $GLOBALS['DB_WE']->getAllFirstq('SELECT odt.type,DATE_FORMAT(odt.date,"' . $da . '") FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_DATES_TABLE . ' odt ON odt.ID=o.ID WHERE odt.type IN ("' . implode('","', $showAdvanced) . '") AND o.ID=' . $bid, false);
+		}
 
-			// loop through all articles
-			while($this->db->next_record()){
+		/* foreach(we_shop_statusMails::$MailFields as $field){
+		  $format[] = 'DATE_FORMAT(' . $field . ',"' . $db . '") AS ' . $field;
+		  } */
 
-				// get all needed information for order-data
-				$_REQUEST['cid'] = $this->db->f('IntCustomerID');
-				$SerialOrder[] = $this->db->f('strSerialOrder');
-				foreach(we_shop_statusMails::$StatusFields as $field){
-					$_REQUEST[$field] = $this->db->f($field);
-				}
-				foreach(we_shop_statusMails::$MailFields as $field){
-					$_REQUEST[$field] = $this->db->f($field);
-				}
+//		$this->db->query('SELECT IntID,IntCustomerID,IntArticleID,strSerial,strSerialOrder,IntQuantity,Price, ' . implode(',', $format) . '	FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . $bid);
 
-				// all information for article
-				$ArticleId[] = $this->db->f('IntArticleID'); // id of article (object or document) in shopping cart
-				$tblOrdersId[] = $this->db->f('IntID');
-				$Quantity[] = $this->db->f('IntQuantity');
-				$Serial[] = $this->db->f('strSerial'); // the serialised doc
-				$Price[] = str_replace(',', '.', $this->db->f('Price')); // replace , by . for float values
-			}
-			if(!isset($ArticleId)){
-				echo we_html_element::jsElement('parent.parent.document.getElementById("iconbar").location.reload();') . '
+		$orderData = getHash('SELECT
+customerID,
+pricesNet,
+calcVat,
+shippingCost,
+shippingNet,
+shippingVat,
+customFields' .
+			($format ? ',' . implode(',', $format) : '') .
+			' FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $bid);
+
+		if(empty($orderData)){
+			//FIXME: JS is broken
+			echo we_html_element::jsElement('top.opener.document.getElementById("iconbar").location.reload();') . '
 </head>
 <body class="weEditorBody" onunload="doUnload()">
 <table style="width:300px">
@@ -207,89 +216,32 @@ class we_shop_view extends we_modules_view{
 		<td colspan="2" class="defaultfont">' . we_html_tools::htmlDialogLayout("<span class='defaultfont'>" . g_l('modules_shop', '[orderDoesNotExist]') . '</span>', g_l('modules_shop', '[loscht]')) . '</td>
 	</tr>
 </table></body></html>';
-				exit;
-			}
-			//
-			// first get all information about orders, we need this for the rest of the page
-			// ********************************************************************************
-			// ********************************************************************************
-			// no get information about complete order
-			// - pay VAT?
-			// - prices are net?
-			if($ArticleId){
-				// first unserialize order-data
-				if($SerialOrder[0]){
-					$orderData = we_unserialize($SerialOrder[0]);
-					$customCartFields = isset($orderData[WE_SHOP_CART_CUSTOM_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOM_FIELD] : [];
-				} else {
-					$orderData = [];
-					$customCartFields = [];
-				}
+			exit;
+		}
 
-				// prices are net?
-				$pricesAreNet = (isset($orderData[WE_SHOP_PRICE_IS_NET_NAME]) ? $orderData[WE_SHOP_PRICE_IS_NET_NAME] : true);
+		// get all needed information for order-data
+		$_REQUEST['cid'] = $orderData['customerID'];
+		foreach($showBaseFields as $field){
+			$_REQUEST[$field] = $orderData[$field];
+		}
+		foreach($showAdvanced as $field){
+			$_REQUEST[$field] = empty($advanced[$field]) ? '' : $advanced[$field];
+		}
+		// prices are net?
+		$pricesAreNet = $orderData['pricesNet'];
+		// must calculate vat?
+		$calcVat = $orderData['calcVat'];
+		$customCartFields = we_unserialize($orderData['customFields']);
+		// ********************************************************************************
+		// Building table with customer and order data fields - start
+		//
 
-				// must calculate vat?
-				$calcVat = (isset($orderData[WE_SHOP_CALC_VAT]) ? $orderData[WE_SHOP_CALC_VAT] : true);
-			}
-			//
-			// no get information about complete order
-			// ********************************************************************************
-			// ********************************************************************************
-			// Building table with customer and order data fields - start
-			//
-			$customerFieldTable = '';
-
-			// first show fields Forename and surname
-			if(isset($customer['Forename'])){
-				$customerFieldTable .= '
-		<tr style="height:25px">
-			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px">' . g_l('modules_customer', '[Forname]') . ':</td>
-			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"></td>
-			<td style="width:20px;height:25px;"></td>
-			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $customer['Forename'] . '</td>
-		</tr>';
-			}
-			if(isset($customer['Surname'])){
-				$customerFieldTable .= '
-		<tr style="height:25px">
-			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px;">' . g_l('modules_customer', '[Surname]') . ':</td>
-			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"></td>
-			<td style="width:20px;height:25px;"></td>
-			<td class="defaultfont" style="vertical-align:top;height:25px;" colspan="6">' . $customer['Surname'] . '</td>
-		</tr>';
-			}
-
-			foreach($customer as $key => $value){
-				if(in_array($key, $fields['customerFields'])){
-					switch($key){
-						case $this->CLFields['stateField']:
-							if($this->CLFields['stateFieldIsISO']){
-								$value = g_l('countries', '[' . strtoupper($value) . ']');
-							}
-							break;
-						case $this->CLFields['languageField']:
-							if($this->CLFields['languageFieldIsISO']){
-								$value = g_l('languages', '[' . strtolower($value) . ']');
-							}
-							break;
-					}
-					$customerFieldTable .= '
-		<tr height="25">
-			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px;">' . $key . ':</td>
-			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px;"></td>
-			<td style="width:20px;height:25px;"></td>
-			<td class="defaultfont" style="vertical-align:top;height:25px;" colspan="6">' . $value . '</td>
-		</tr>';
-				}
-			}
-
-			$orderDataTable = '
+		$orderDataTable = '
 		<table style="width:99%" class="default defaultfont">';
-			foreach(we_shop_statusMails::$StatusFields as $field){
-				if(!$weShopStatusMails->FieldsHidden[$field]){
-					$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field, 4), $_REQUEST[$field]);
-					$orderDataTable .= '
+
+		foreach($showDateFields as $field){
+			$EMailhandler = $weShopStatusMails->getEMailHandlerCode(substr($field, 4), $_REQUEST[$field]);
+			$orderDataTable .= '
 			<tr height="25">
 				<td class="defaultfont" style="width:86px;vertical-align:top" height="25">' . ($field === 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
 				<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"><b>' . ($field === 'DateOrder' ? $_REQUEST['bid'] : '') . '</b></td>
@@ -297,16 +249,15 @@ class we_shop_view extends we_modules_view{
 				<td style="width:98px;height:25px;" class="defaultfont">' . $weShopStatusMails->FieldsText[$field] . '</td>
 				<td style="height:25px;width:14px"></td>
 				<td class="defaultfont" style="width:14px;text-align:right;height:25px;">
-					<div id="div_Calendar_' . $field . '">' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '</div>
-					<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
+					<div id="div_Calendar_' . $field . '">' . ((empty($_REQUEST[$field]) || $_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '</div>
+					<input type="hidden" name="' . $field . '" id="hidden_Calendar_' . $field . '" value="' . (empty($_REQUEST[$field]) || ($_REQUEST[$field] == $dateform) ? '-' : $_REQUEST[$field]) . '" />
 				</td>
 				<td style="height:25px;width:10px"></td>
 				<td style="width:102px;vertical-align:top;height:25px">' . we_html_button::create_button(we_html_button::CALENDAR, "javascript:", null, null, null, null, null, null, false, 'button_Calendar_' . $field) . '</td>
 				<td style="width:300px;height:25px"  class="defaultfont">' . $EMailhandler . '</td>
 			</tr>';
-				}
-			}
-			$orderDataTable .= '
+		}
+		$orderDataTable .= '
 			<tr height="5">
 				<td class="defaultfont" style="width:86px;vertical-align:top;height:5px"></td>
 				<td class="defaultfont" style="vertical-align:top" height="5" width="40"></td>
@@ -331,7 +282,7 @@ class we_shop_view extends we_modules_view{
 				<td></td>
 				<td width="102" style="vertical-align:top"></td>
 				<td width="30"></td>
-			</tr>' . $customerFieldTable . '
+			</tr>' . $this->getCustomerFieldTable($customer, $fields ? $fields['orderCustomerFields'] : []) . '
 			<tr>
 				<td colspan="9"><a href="javascript:we_cmd(\'edit_order_customer\');">' . g_l('modules_shop', '[order][edit_order_customer]') . '</a></td>
 			</tr>
@@ -339,15 +290,15 @@ class we_shop_view extends we_modules_view{
 				<td colspan="9">' . (permissionhandler::hasPerm('EDIT_CUSTOMER') ? '<a href="javascript:we_cmd(\'customer_edit\');">' . g_l('modules_shop', '[order][open_customer]') . '</a>' : '') . ' </td>
 			</tr>
 		</table>';
-			//
-			// end of "Building table with customer fields"
-			// ********************************************************************************
-			// ********************************************************************************
-			// "Building the order infos"
-			//
+		//
+		// end of "Building table with customer fields"
+		// ********************************************************************************
+		// ********************************************************************************
+		// "Building the order infos"
+		//
 
 			// headline here - these fields are fix.
-			$orderTable = '
+		$orderTable = '
 		<table width="99%" class="default defaultfont">
 			<tr class="defaultfont lowContrast">
 				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[anzahl]') . '</th>
@@ -355,111 +306,106 @@ class we_shop_view extends we_modules_view{
 				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Beschreibung]') . '</th>
 				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Preis]') . '</th>
 				<th style="height:25px;padding-right:15px;">' . g_l('modules_shop', '[Gesamt]') . '</th>' .
-				($calcVat ? '<th height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
+			($calcVat ? '<th height="25">' . g_l('modules_shop', '[mwst]') . '</th>' : '' ) . '
 			</tr>';
 
+		$this->db->query('SELECT
+	oi.orderDocID,
+	oi.quantity,
+	oi.Price,
+	oi.customFields,
+	IF(o.pricesNet||o.calcVat||IFNULL(oi.Vat,' . $mwst . ')=0,oi.Price, (oi.Price/(1+(IFNULL(oi.Vat,' . $mwst . ')/100))) )AS NetPrice,
+	IFNULL(oi.Vat,' . $mwst . ') AS Vat,
+	od.DocID,
+	od.title,
+	od.description,
+	od.variant
+FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_ITEM_TABLE . ' oi ON o.ID=oi.orderID JOIN ' . SHOP_ORDER_DOCUMENT_TABLE . ' od ON oi.orderDocID=od.ID
+WHERE o.ID=' . $bid);
 
-			$articlePrice = $totalPrice = 0;
-			$articleVatArray = [];
-			// now loop through all articles in this order
-			foreach($ArticleId as $i => $currentArticle){
 
-				// now init each article
-				$shopArticleObject = (empty($Serial[$i]) ? // output 'document-articles' if $Serial[$d] is empty. This is when an order has been extended
-					// this should not happen any more
-					we_shop_Basket::getserial($currentArticle, we_shop_shop::DOCUMENT) :
-					// output if $Serial[$i] is not empty. This is when a user ordered an article online
-					we_unserialize($Serial[$i]));
+		// loop through all articles
+		$totalPrice = 0;
+		$articleVatArray = [];
+		while($this->db->next_record()){
+			// all information for article
+			$ArticleId = $this->db->f('DocID'); // id of article (object or document) in shopping cart
+			$tblOrdersId = $this->db->f('orderDocID');
+			// now determine VAT
+			$articleVat = $this->db->f('Vat');
 
-				if($shopArticleObject === false){
-					t_e('Error in DB-data', $currentArticle, $Serial[$i]);
-					continue;
+			// determine taxes - correct price, etc.
+			$Price = floatval($this->db->f('NetPrice'));
+			$Quantity = floatval($this->db->f('quantity'));
+			$articlePrice = $Price * $Quantity;
+			$totalPrice += $articlePrice;
+
+			// calculate individual vat for each article
+			if($calcVat && $articleVat){
+				if(!isset($articleVatArray[$articleVat])){ // avoid notices
+					$articleVatArray[$articleVat] = 0;
 				}
-
-				// now determine VAT
-				$articleVat = (isset($shopArticleObject[WE_SHOP_VAT_FIELD_NAME]) ?
-					$shopArticleObject[WE_SHOP_VAT_FIELD_NAME] :
-					((isset($mwst)) ?
-					$mwst :
-					0));
-
-				// determine taxes - correct price, etc.
-				$Price[$i] /= ($pricesAreNet || $calcVat ? 1 : (100 + $articleVat) / 100);
-				$articlePrice = $Price[$i] * $Quantity[$i];
-				$totalPrice += $articlePrice;
-
-				// calculate individual vat for each article
-				if($calcVat){
-
-					if($articleVat > 0){
-						if(!isset($articleVatArray[$articleVat])){ // avoid notices
-							$articleVatArray[$articleVat] = 0;
-						}
-						$articleVatArray[$articleVat] += ($articlePrice * $articleVat / (100 + ($pricesAreNet ? 0 : $articleVat)));
-					}
-				}
+				$articleVatArray[$articleVat] += $articlePrice * ($articleVat / 100);
+			}
 
 // table row of one article
-				$orderTable .= '
+			$orderTable .= '
 		<tr><td height="1" colspan="11"><hr style="color: black" noshade /></td></tr>
 		<tr>
-			<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity[$i] . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&anzahl='+anzahl;}}\">" . $Quantity[$i] . "</a>" . '</td>
-			<td>' . self::getFieldFromShoparticle($shopArticleObject, WE_SHOP_TITLE_FIELD_NAME, 35) . '</td>
-			<td>' . self::getFieldFromShoparticle($shopArticleObject, WE_SHOP_DESCRIPTION_FIELD_NAME, 35) . '</td>
-			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price[$i] . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&preis=' + preis; } }\">" . we_base_util::formatNumber($Price[$i]) . "</a>" . $waehr . '</td>
+			<td class="shopContentfontR">' . "<a href=\"javascript:var anzahl=prompt('" . g_l('modules_shop', '[jsanz]') . "','" . $Quantity . "'); if(anzahl != null){if(anzahl.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&anzahl='+anzahl;}}\">" . $Quantity . "</a>" . '</td>
+			<td>' . self::cutText($this->db->f('title'), 35) . '</td>
+			<td>' . self::cutText($this->db->f('description'), 35) . '</td>
+			<td class="shopContentfontR">' . "<a href=\"javascript:var preis = prompt('" . g_l('modules_shop', '[jsbetrag]') . "','" . $Price . "'); if(preis != null ){if(preis.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . "}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&preis=' + preis; } }\">" . we_base_util::formatNumber($Price) . "</a>" . $waehr . '</td>
 			<td class="shopContentfontR">' . we_base_util::formatNumber($articlePrice) . $waehr . '</td>' .
-					($calcVat ? '<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&article=$tblOrdersId[$i]&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
-			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $_REQUEST["bid"] . "&deleteaarticle=" . $tblOrdersId[$i] . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
+				($calcVat ? '<td class="shopContentfontR small">(' . "<a href=\"javascript:var vat = prompt('" . g_l('modules_shop', '[keinezahl]') . "','" . $articleVat . "'); if(vat != null ){if(vat.search(/\d.*/)==-1){" . we_message_reporting::getShowMessageCall("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true) . ";}else{document.location=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&article=$tblOrdersId&vat=' + vat; } }\">" . we_base_util::formatNumber($articleVat) . "</a>" . '%)</td>' : '') . '
+			<td>' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . g_l('modules_shop', '[jsloeschen]') . "'); if (check){document.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&bid=" . $bid . "&deleteaarticle=" . $tblOrdersId . "';}", true, 100, 22, "", "", !permissionhandler::hasPerm("DELETE_SHOP_ARTICLE")) . '</td>
 		</tr>';
-				// if this article has custom fields or is a variant - we show them in a extra rows
-				// add variant.
-				if(!empty($shopArticleObject['WE_VARIANT'])){
+			// if this article has custom fields or is a variant - we show them in a extra rows
+			// add variant.
+			if($this->db->f('variant')){
 
-					$orderTable .= '
+				$orderTable .= '
 		<tr>
 			<td colspan="4"></td>
-			<td class="small" colspan="6">' . g_l('modules_shop', '[variant]') . ': ' . $shopArticleObject['WE_VARIANT'] . '</td>
+			<td class="small" colspan="6">' . g_l('modules_shop', '[variant]') . ': ' . $this->db->f('variant') . '</td>
 		</tr>';
+			}
+			// add custom fields
+			if(($cf = $this->db->f('customFields'))){
+				$cf = we_unserialize($cf);
+				$caField = '';
+				foreach($cf as $key => $value){
+					$caField .= $key . ': ' . $value . '; ';
 				}
-				// add custom fields
-				if(isset($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && is_array($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD]) && !empty($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD])){
 
-					$caField = '';
-					foreach($shopArticleObject[WE_SHOP_ARTICLE_CUSTOM_FIELD] as $key => $value){
-						$caField .= "$key: $value; ";
-					}
-
-					$orderTable .= '
+				$orderTable .= '
 		<tr>
 			<td colspan="4"></td>
 			<td class="small" colspan="6">' . $caField . '</td>
 		</tr>';
-				}
 			}
+		}
 
-			// "Sum of order"
-			// add shipping to costs
-			if(isset($orderData[WE_SHOP_SHIPPING])){
+		// "Sum of order"
+		// add shipping to costs
+		// just calculate netPrice, gros, and taxes
 
-				// just calculate netPrice, gros, and taxes
+		if(!isset($articleVatArray[$orderData['shippingVat']])){
+			$articleVatArray[$orderData['shippingVat']] = 0;
+		}
 
-				if(!isset($articleVatArray[$orderData[WE_SHOP_SHIPPING]['vatRate']])){
-					$articleVatArray[$orderData[WE_SHOP_SHIPPING]['vatRate']] = 0;
-				}
+		if($orderData['shippingNet']){ // all correct here
+			$shippingCostsNet = $orderData['shippingCost'];
+			$shippingCostsVat = $orderData['shippingCost'] * $orderData['shippingVat'] / 100;
+			$shippingCostsGros = $shippingCostsNet + $shippingCostsVat;
+		} else {
+			$shippingCostsGros = $orderData['shippingCost'];
+			$shippingCostsVat = $orderData['shippingCost'] / ($orderData['shippingVat'] + 100) * $orderData['shippingVat'];
+			$shippingCostsNet = $orderData['shippingCost'] / ($orderData['shippingVat'] + 100) * 100;
+		}
+		$articleVatArray[$orderData['shippingVat']] += $shippingCostsVat;
 
-				if($orderData[WE_SHOP_SHIPPING]['isNet']){ // all correct here
-					$shippingCostsNet = $orderData[WE_SHOP_SHIPPING]['costs'];
-					$shippingCostsVat = $orderData[WE_SHOP_SHIPPING]['costs'] * $orderData[WE_SHOP_SHIPPING]['vatRate'] / 100;
-					$shippingCostsGros = $shippingCostsNet + $shippingCostsVat;
-				} else {
-					$shippingCostsGros = $orderData[WE_SHOP_SHIPPING]['costs'];
-					$shippingCostsVat = $orderData[WE_SHOP_SHIPPING]['costs'] / ($orderData[WE_SHOP_SHIPPING]['vatRate'] + 100) * $orderData[WE_SHOP_SHIPPING]['vatRate'];
-					$shippingCostsNet = $orderData[WE_SHOP_SHIPPING]['costs'] / ($orderData[WE_SHOP_SHIPPING]['vatRate'] + 100) * 100;
-				}
-				$articleVatArray[$orderData[WE_SHOP_SHIPPING]['vatRate']] += $shippingCostsVat;
-			}
-
-			$orderTable .= '
+		$orderTable .= '
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 		</tr>
@@ -468,42 +414,38 @@ class we_shop_view extends we_modules_view{
 			<td colspan="2" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPrice) . $waehr . '</strong></td>
 		</tr>';
 
-			if($calcVat){ // add Vat to price
-				$totalPriceAndVat = $totalPrice;
+		if($calcVat){ // add Vat to price
+			$totalPriceAndVat = $totalPrice;
 
-				if($pricesAreNet){ // prices are net
-					$orderTable .= '<tr><td height="1" colspan="11"><hr style="color: black" noshade /></td></tr>';
+			if($pricesAreNet){ // prices are net
+				$orderTable .= '<tr><td height="1" colspan="11"><hr style="color: black" noshade /></td></tr>';
 
-					if(isset($orderData[WE_SHOP_SHIPPING]) && isset($shippingCostsNet)){
-
-						$totalPriceAndVat += $shippingCostsNet;
-						$orderTable .= '
+				$totalPriceAndVat += $shippingCostsNet;
+				$orderTable .= '
 		<tr>
 			<td colspan="3" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
 			<td colspan="2" class="shopContentfontR"><strong><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_base_util::formatNumber($shippingCostsNet) . $waehr . '</a></strong></td>
-			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
+			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData['shippingVat']) . '%)</td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
-		</tr>';
-					}
-					$orderTable .= '
+		</tr>
 		<tr>
 			<td colspan="3" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[plusVat]') . '</label>:</td>
 			<td colspan="2"></td>
-			<td><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
+			<td><input id="checkBoxCalcVat" onclick="document.location=WE().consts.dirs.WEBEDITION_DIR+\'we_showMod.php?mod=shop&pnt=edbody&bid=' . $bid . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
 		</tr>';
-					foreach($articleVatArray as $vatRate => $sum){
-						if($vatRate){
-							$totalPriceAndVat += $sum;
-							$orderTable .= '
+				foreach($articleVatArray as $vatRate => $sum){
+					if($vatRate){
+						$totalPriceAndVat += $sum;
+						$orderTable .= '
 		<tr>
 			<td colspan="3" class="shopContentfontR">' . $vatRate . ' %:</td>
 			<td colspan="2" class="shopContentfontR">' . we_base_util::formatNumber($sum) . $waehr . '</td>
 		</tr>';
-						}
 					}
-					$orderTable .= '
+				}
+				$orderTable .= '
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 		</tr>
@@ -511,16 +453,16 @@ class we_shop_view extends we_modules_view{
 			<td colspan="3" class="shopContentfontR">' . g_l('modules_shop', '[gesamtpreis]') . ':</td>
 			<td colspan="2" class="shopContentfontR"><strong>' . we_base_util::formatNumber($totalPriceAndVat) . $waehr . '</strong></td>
 		</tr>';
-				} else { // prices are gros
-					$orderTable .= '<tr><td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td></tr>';
+			} else { // prices are gros
+				$orderTable .= '<tr><td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td></tr>';
 
-					if(isset($orderData[WE_SHOP_SHIPPING]) && isset($shippingCostsGros)){
-						$totalPrice += $shippingCostsGros;
-						$orderTable .= '
+
+				$totalPrice += $shippingCostsGros;
+				$orderTable .= '
 		<tr>
 			<td colspan="3" class="shopContentfontR">' . g_l('modules_shop', '[shipping][shipping_package]') . ':</td>
 			<td colspan="2" class="shopContentfontR"><a href="javascript:we_cmd(\'edit_shipping_cost\');">' . we_base_util::formatNumber($shippingCostsGros) . $waehr . '</a></td>
-			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData[WE_SHOP_SHIPPING]['vatRate']) . '%)</td>
+			<td class="shopContentfontR small">(' . we_base_util::formatNumber($orderData['shippingVat']) . '%)</td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
@@ -531,31 +473,26 @@ class we_shop_view extends we_modules_view{
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
-		</tr>';
-					}
-
-					$orderTable .= '
+		</tr>
 		<tr>
 			<td colspan="3" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[includedVat]') . '</label>:</td>
 			<td colspan="2"></td>
-			<td><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
+			<td><input id="checkBoxCalcVat" onclick="document.location=WE().consts.dirs.WEBEDITION_DIR+\'we_showMod.php?mod=shop&pnt=edbody&bid=' . $bid . '&we_cmd[0]=payVat&pay=0\';" type="checkbox" name="calculateVat" value="1" checked="checked" /></td>
 		</tr>';
-					foreach($articleVatArray as $vatRate => $sum){
-						if($vatRate){
-							$orderTable .= '
+				foreach($articleVatArray as $vatRate => $sum){
+					if($vatRate){
+						$orderTable .= '
 		<tr>
 			<td colspan="3" class="shopContentfontR">' . $vatRate . ' %:</td>
 			<td colspan="2" class="shopContentfontR">' . we_base_util::formatNumber($sum) . $waehr . '</td>
 		</tr>';
-						}
 					}
 				}
-			} else {
+			}
+		} else {
+			$totalPrice += $shippingCostsNet;
 
-				if(isset($shippingCostsNet)){
-					$totalPrice += $shippingCostsNet;
-
-					$orderTable .= '
+			$orderTable .= '
 		<tr>
 			<td height="1" colspan="11"><hr style="color: black" noshade /></td>
 		</tr>
@@ -569,7 +506,7 @@ class we_shop_view extends we_modules_view{
 		<tr>
 			<td colspan="3" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
 			<td colspan="2"></td>
-			<td><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
+			<td><input id="checkBoxCalcVat" onclick="document.location=WE().consts.dirs.WEBEDITION_DIR+\'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
 		</tr>
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
@@ -581,99 +518,54 @@ class we_shop_view extends we_modules_view{
 		<tr>
 			<td height="1" colspan="11"><hr size="2" style="color: black" noshade /></td>
 		</tr>';
-				} else {
-
-					$orderTable .= '
-		<tr>
-			<td colspan="3" class="shopContentfontR"><label style="cursor: pointer" for="checkBoxCalcVat">' . g_l('modules_shop', '[edit_order][calculate_vat]') . '</label></td>
-			<td colspan="2"></td>
-			<td><input id="checkBoxCalcVat" onclick="document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=edbody&bid=' . $_REQUEST['bid'] . '&we_cmd[0]=payVat&pay=1\';" type="checkbox" name="calculateVat" value="1" /></td>
-		</tr>';
-				}
-			}
-			$orderTable .= '</table>';
-			//
-			// "Sum of order"
-			// ********************************************************************************
-			// ********************************************************************************
-			// "Additional fields in shopping basket"
-			//
+		}
+		$orderTable .= '</table>';
+		//
+		// "Sum of order"
+		// ********************************************************************************
+		// ********************************************************************************
+		// "Additional fields in shopping basket"
+		//
 
 			// at last add custom shopping fields to order
-			// table with orders ends here
-
-			$customCartFieldsTable = '<table class="default" width="99%">
-					<tr>
-						<th colspan="3" class="defaultfont lowContrast" height="30">' . g_l('modules_shop', '[order_comments]') . '</th>
-					</tr>
-					<tr>
-						<td height="10"></td>
-					</tr>';
-
-			foreach($customCartFields as $key => $value){
-				$customCartFieldsTable .= '<tr>
-						<td class="defaultfont" style="padding-right:15px;vertical-align:top"><b>' . $key . ':</b></td>
-						<td class="defaultfont" style="padding-right:15px;vertical-align:top">' . nl2br($value) . '</td>
-						<td style="padding-right:15px;vertical-align:top;">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
-						<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=" . $_REQUEST["bid"] . "&cartfieldname=" . $key . "'; }") . '</td>
-					</tr>
-					<tr>
-						<td height="10"></td>
-					</tr>';
-			}
-			$customCartFieldsTable .= '<tr>
-						<td>' . we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('edit_shop_cart_custom_field');") . '</td>
-					</tr>
-					</table>';
-
-
-			//
-			// "Additional fields in shopping basket"
-			// ********************************************************************************
-			//
+		// table with orders ends here
+		//
+		// "Additional fields in shopping basket"
+		// ********************************************************************************
+		//
 			// "Building the order infos"
-			// ********************************************************************************
-			// ********************************************************************************
-			// "Html output for order with articles"
-			//
+		// ********************************************************************************
+		// ********************************************************************************
+		// "Html output for order with articles"
+		//
 			$js = '
 bid =' . we_base_request::_(we_base_request::INT, 'bid', 0) . ';
 cid =' . we_base_request::_(we_base_request::INT, 'cid', 0) . ';';
-			echo we_html_tools::getCalendarFiles() .
-			we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-			(isset($alertMessage) ?
-				we_message_reporting::jsMessagePush($alertMessage, $alertType) : '') .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_view2.js', $js);
-			?>
+		echo we_html_tools::getCalendarFiles() .
+		we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
+		(isset($alertMessage) ?
+			we_message_reporting::jsMessagePush($alertMessage, $alertType) : '') .
+		we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_view2.js', $js);
+		?>
 
-			</head>
-			<body class="weEditorBody" onload="hot = 1" onunload="doUnload()">
-
-							<?php
-							$parts = [['html' => $orderDataTable,
-								],
-									['html' => $orderTable,
-								]
-							];
-
-				if($customCartFieldsTable){
-					$parts[] = ['html' => $customCartFieldsTable,
-					];
-				}
-
-				echo we_html_multiIconBox::getHTML('', $parts, 30);
-
-				//
-				// "Html output for order with articles"
-				// ********************************************************************************
-			} else { // This order has no more entries
-				echo we_html_element::jsElement('
-				top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=edbody&deletethisorder=1&bid=' . $_REQUEST["bid"] . '";
-				top.content.treeData.deleteEntry(' . $_REQUEST['bid'] . ');
-			') . '
 		</head>
-		<body bgcolor="#ffffff">';
-			}
+		<body class="weEditorBody" onload="hot = 1" onunload="doUnload()"><?php
+			$parts = [['html' => $orderDataTable,
+				],
+					['html' => $orderTable,
+				]
+			];
+
+
+			$parts[] = ['html' => $this->getCustomCartFieldsTable($bid, $customCartFields),
+			];
+
+
+			echo we_html_multiIconBox::getHTML('', $parts, 30);
+
+			//
+			// "Html output for order with articles"
+			// ********************************************************************************
 
 			$js = '
 // init the used calendars
@@ -699,7 +591,7 @@ function CalendarChanged(calObject) {
 			}
 			echo we_html_element::jsElement($js);
 			?>
-			</body>
+				</body>
 		</html>
 		<?php
 	}
@@ -708,77 +600,76 @@ function CalendarChanged(calObject) {
 		$bid = we_base_request::_(we_base_request::INT, 'bid');
 		switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
 			case 'add_article':
-				if(we_base_request::_(we_base_request::FLOAT, 'anzahl') > 0){
+				if(we_base_request::_(we_base_request::FLOAT, 'anzahl') == 0){
+					return we_message_reporting::jsMessagePush("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true);
+				}
 
-					// add complete article / object here - inclusive request fields
-					$strSerialOrder = $this->getFieldFromOrder($bid, 'strSerialOrder');
+				// add complete article / object here - inclusive request fields
+				$strSerialOrder = $this->getFieldFromOrder($bid, 'strSerialOrder');
 
-					$tmp = explode('_', $_REQUEST['add_article']);
-					$isObj = ($tmp[1] == we_shop_shop::OBJECT);
+				$tmp = explode('_', $_REQUEST['add_article']);
+				$isObj = ($tmp[1] == we_shop_shop::OBJECT);
 
-					$id = intval($tmp[0]);
+				$id = intval($tmp[0]);
 
-					// check for variant or customfields
-					$customFieldsTmp = [];
-					if(strlen($_REQUEST['we_customField'])){
+				// check for variant or customfields
+				$customFieldsTmp = [];
+				if(strlen($_REQUEST['we_customField'])){
 
-						$fields = explode(';', trim($_REQUEST['we_customField']));
+					$fields = explode(';', trim($_REQUEST['we_customField']));
 
-						if(is_array($fields)){
-							foreach($fields as $field){
-								$fieldData = explode('=', $field);
-								if(is_array($fieldData) && count($fieldData) == 2){
-									$customFieldsTmp[trim($fieldData[0])] = trim($fieldData[1]);
-								}
+					if(is_array($fields)){
+						foreach($fields as $field){
+							$fieldData = explode('=', $field);
+							if(is_array($fieldData) && count($fieldData) == 2){
+								$customFieldsTmp[trim($fieldData[0])] = trim($fieldData[1]);
 							}
 						}
 					}
-
-					$variant = strip_tags($_REQUEST[we_base_constants::WE_VARIANT_REQUEST]);
-					$serialDoc = we_shop_Basket::getserial($id, ($isObj ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT), $variant, $customFieldsTmp);
-
-					// shop vats must be calculated
-					$orderArray = we_unserialize($strSerialOrder);
-					$standardVat = we_shop_vats::getStandardShopVat();
-
-					if(we_shop_category::isCategoryMode()){
-						$wedocCategory = $serialDoc[we_listview_base::PROPPREFIX . 'CATEGORY'];
-						$stateField = we_shop_vatRule::getStateField();
-						$billingCountry = !empty($orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField]) ?
-							$orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] : we_shop_category::getDefaultCountry();
-
-						$shopVat = we_shop_category::getShopVatByIdAndCountry((!empty($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) ? $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] : 0), $wedocCategory, $billingCountry);
-					} elseif(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
-						$shopVat = we_shop_vats::getShopVATById($serialDoc[WE_SHOP_VAT_FIELD_NAME]);
-					}
-
-					if(!empty($shopVat)){
-						$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $shopVat->vat;
-					} elseif($standardVat){
-						$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $standardVat->vat;
-					}
-
-					//need pricefield:
-					$pricename = (isset($orderArray[WE_SHOP_PRICENAME]) ? $orderArray[WE_SHOP_PRICENAME] : 'shopprice');
-					// now insert article to order:
-					$row = getHash('SELECT IntOrderID,IntCustomerID,DateOrder,DateShipping,Datepayment,IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . we_base_request::_(we_base_request::INT, 'bid'), $this->db);
-					$this->db->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
-						we_database_base::arraySetter(([
-							'IntArticleID' => $id,
-							'IntQuantity' => we_base_request::_(we_base_request::FLOAT, 'anzahl', 0),
-							'Price' => we_base_util::std_numberformat(self::getFieldFromShoparticle($serialDoc, $pricename)),
-							'IntOrderID' => $row['IntOrderID'],
-							'IntCustomerID' => $row['IntCustomerID'],
-							'DateOrder' => $row['DateOrder'],
-							'DateShipping' => $row['DateShipping'],
-							'Datepayment' => $row['Datepayment'],
-							'IntPayment_Type' => $row['IntPayment_Type'],
-							'strSerial' => we_serialize($serialDoc, SERIALIZE_JSON),
-							'strSerialOrder' => $strSerialOrder
-							])));
-				} else {
-					echo we_message_reporting::jsMessagePush("'" . g_l('modules_shop', '[keinezahl]') . "'", we_message_reporting::WE_MESSAGE_ERROR, true);
 				}
+
+				$variant = strip_tags($_REQUEST[we_base_constants::WE_VARIANT_REQUEST]);
+				$serialDoc = we_shop_Basket::getserial($id, ($isObj ? we_shop_shop::OBJECT : we_shop_shop::DOCUMENT), $variant, $customFieldsTmp);
+
+				// shop vats must be calculated
+				$orderArray = we_unserialize($strSerialOrder);
+				$standardVat = we_shop_vats::getStandardShopVat();
+
+				if(we_shop_category::isCategoryMode()){
+					$wedocCategory = $serialDoc[we_listview_base::PROPPREFIX . 'CATEGORY'];
+					$stateField = we_shop_vatRule::getStateField();
+					$billingCountry = !empty($orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField]) ?
+						$orderArray[WE_SHOP_CART_CUSTOMER_FIELD][$stateField] : we_shop_category::getDefaultCountry();
+
+					$shopVat = we_shop_category::getShopVatByIdAndCountry((!empty($serialDoc[WE_SHOP_CATEGORY_FIELD_NAME]) ? $serialDoc[WE_SHOP_CATEGORY_FIELD_NAME] : 0), $wedocCategory, $billingCountry);
+				} elseif(isset($serialDoc[WE_SHOP_VAT_FIELD_NAME])){
+					$shopVat = we_shop_vats::getShopVATById($serialDoc[WE_SHOP_VAT_FIELD_NAME]);
+				}
+
+				if(!empty($shopVat)){
+					$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $shopVat->vat;
+				} elseif($standardVat){
+					$serialDoc[WE_SHOP_VAT_FIELD_NAME] = $standardVat->vat;
+				}
+
+				//need pricefield:
+				$pricename = (isset($orderArray[WE_SHOP_PRICENAME]) ? $orderArray[WE_SHOP_PRICENAME] : 'shopprice');
+				// now insert article to order:
+				$row = getHash('SELECT IntOrderID,IntCustomerID,DateOrder,DateShipping,Datepayment,IntPayment_Type FROM ' . SHOP_TABLE . ' WHERE IntOrderID=' . we_base_request::_(we_base_request::INT, 'bid'), $this->db);
+				$this->db->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
+					we_database_base::arraySetter(([
+						'IntArticleID' => $id,
+						'IntQuantity' => we_base_request::_(we_base_request::FLOAT, 'anzahl', 0),
+						'Price' => we_base_util::std_numberformat(self::cutText($serialDoc, $pricename)),
+						'IntOrderID' => $row['IntOrderID'],
+						'IntCustomerID' => $row['IntCustomerID'],
+						'DateOrder' => $row['DateOrder'],
+						'DateShipping' => $row['DateShipping'],
+						'Datepayment' => $row['Datepayment'],
+						'IntPayment_Type' => $row['IntPayment_Type'],
+						'strSerial' => we_serialize($serialDoc, SERIALIZE_JSON),
+						'strSerialOrder' => $strSerialOrder
+				])));
 
 				break;
 
@@ -844,29 +735,8 @@ function CalendarChanged(calObject) {
 
 				// determine which articles should be shown >>>
 
-
-				echo we_html_element::jsElement('
-		self.focus();
-
-		function selectArticle(articleInfo) {
-			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&page=' . $page . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&add_article=" + articleInfo;
-		}
-
-		function switchEntriesPage(pageNum) {
-			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&page=" + pageNum;
-		}
-
-		function searchArticles() {
-			field = document.getElementById("searchArticle");
-			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&searchArticle=" + field.value;
-		}') . '
-		</head>
-		<body class="weDialogBody">';
-
-				$parts = array(
-					($AMOUNT_ARTICLES > 0 ?
-					array(
-					'headline' => g_l('modules_shop', '[Artikel]'),
+				$parts = [($AMOUNT_ARTICLES > 0 ?
+					['headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => we_html_multiIconBox::SPACE_MED,
 					'html' => '
 		<form name="we_intern_form">' . we_html_element::htmlHiddens(array(
@@ -884,18 +754,16 @@ function CalendarChanged(calObject) {
 			</tr>
 			</table>',
 					'noline' => 1
-					) :
-					array(
-					'headline' => g_l('modules_shop', '[Artikel]'),
+					] :
+					['headline' => g_l('modules_shop', '[Artikel]'),
 					'space' => we_html_multiIconBox::SPACE_MED,
 					'html' => g_l('modules_shop', '[add_article][empty_articles]')
+					]
 					)
-					)
-				);
+				];
 
 				if($AMOUNT_ARTICLES > 0 || isset($_REQUEST['searchArticle'])){
-					$parts[] = array(
-						'headline' => g_l('global', '[search]'),
+					$parts[] = ['headline' => g_l('global', '[search]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
 						'html' => '
 			<table class="default">
@@ -905,16 +773,14 @@ function CalendarChanged(calObject) {
 				</tr>
 			</table>
 		</form>'
-					);
+					];
 				}
 
 				if(isset($_REQUEST['add_article']) && $_REQUEST['add_article'] != '0'){
 					$saveBut = we_html_button::create_button(we_html_button::SAVE, "javascript:document.we_form.submit();window.close();");
 					list($id, $type) = explode('_', $_REQUEST['add_article']);
 
-					$variantOptions = array(
-						'-' => '-'
-					);
+					$variantOptions = ['-' => '-'];
 
 					$model = ($type == we_shop_shop::OBJECT ? new we_objectFile() : new we_webEditionDocument());
 
@@ -930,49 +796,56 @@ function CalendarChanged(calObject) {
 						}
 					}
 
-					$parts[] = array(
-						'headline' => g_l('modules_shop', '[Artikel]'),
+					$parts[] = ['headline' => g_l('modules_shop', '[Artikel]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
 						'html' => '
 							<form name="we_form" target="edbody">' .
-						we_html_element::htmlHiddens(array(
-							'bid' => $_REQUEST['bid'],
+						we_html_element::htmlHiddens(['bid' => $_REQUEST['bid'],
 							'we_cmd[]' => 'add_article',
 							'add_article' => $_REQUEST['add_article']
-						)) .
+						]) .
 						'<b>' . $model->elements[WE_SHOP_TITLE_FIELD_NAME]['dat'] . '</b>',
 						'noline' => 1
-					);
+					];
 
-					$parts[] = array(
-						'headline' => g_l('modules_shop', '[anzahl]'),
+					$parts[] = ['headline' => g_l('modules_shop', '[anzahl]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
 						'html' => we_html_tools::htmlTextInput('anzahl', 24, '', '', 'min="1"', 'number', 380),
 						'noline' => 1
-					);
+					];
 
-					$parts[] = array(
-						'headline' => g_l('modules_shop', '[variant]'),
+					$parts[] = ['headline' => g_l('modules_shop', '[variant]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
 						'html' => we_class::htmlSelect(we_base_constants::WE_VARIANT_REQUEST, $variantOptions, 1, '', false, [], 'value', 380),
 						'noline' => 1
-					);
+					];
 
-					$parts[] = array(
-						'headline' => g_l('modules_shop', '[customField]'),
+					$parts[] = ['headline' => g_l('modules_shop', '[customField]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
 						'html' => we_html_tools::htmlTextInput('we_customField', 24, '', '', '', 'text', 380) .
 						'<br /><span class="small">Eingabe in der Form: <i>name1=wert1;name2=wert2</i></span></form>',
 						'noline' => 1
-					);
+					];
 				}
 
-				echo we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
-				'</form>
-		</body>
-		</html>';
+				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('
+		self.focus();
+
+		function selectArticle(articleInfo) {
+			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&page=' . $page . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&add_article=" + articleInfo;
+		}
+
+		function switchEntriesPage(pageNum) {
+			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . (isset($_REQUEST['searchArticle']) ? '&searchArticle=' . $_REQUEST['searchArticle'] : '') . '&page=" + pageNum;
+		}
+
+		function searchArticles() {
+			field = document.getElementById("searchArticle");
+			document.location = "?we_cmd[0]=' . $_REQUEST['we_cmd'][0] . '&bid=' . $_REQUEST['bid'] . '&searchArticle=" + field.value;
+		}'), '<body class="weDialogBody">' .
+					we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_article][title]')) .
+					'</form>');
 				exit;
-				break;
 
 			case 'payVat':
 				$serialOrder = we_unserialize($this->getFieldFromOrder($bid, 'strSerialOrder'));
@@ -980,13 +853,9 @@ function CalendarChanged(calObject) {
 
 				// update all orders with this orderId
 				if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($serialOrder))){
-					$alertMessage = g_l('modules_shop', '[edit_order][js_saved_calculateVat_success]');
-					$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
-				} else {
-					$alertMessage = g_l('modules_shop', '[edit_order][js_saved_calculateVat_error]');
-					$alertType = we_message_reporting::WE_MESSAGE_ERROR;
+					return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_calculateVat_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
-				break;
+				return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_calculateVat_error]'), we_message_reporting::WE_MESSAGE_ERROR);
 
 			case 'delete_shop_cart_custom_field':
 				if(!empty($_REQUEST['cartfieldname'])){
@@ -995,31 +864,13 @@ function CalendarChanged(calObject) {
 
 					// update all orders with this orderId
 					if($this->updateFieldFromOrder($bid, 'strSerialOrder', we_serialize($serialOrder))){
-						$alertMessage = sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_success]'), $_REQUEST['cartfieldname']);
-						$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
-					} else {
-						$alertMessage = sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_error]'), $_REQUEST['cartfieldname']);
-						$alertType = we_message_reporting::WE_MESSAGE_ERROR;
+						return we_message_reporting::jsMessagePush(sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_success]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_NOTICE);
 					}
+					return we_message_reporting::jsMessagePush(sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field_error]'), $_REQUEST['cartfieldname']), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 				break;
 
 			case 'edit_shop_cart_custom_field':
-
-				echo we_html_element::jsElement('function we_submit() {
-	var elem = document.getElementById("cartfieldname");
-
-	if (elem && elem.value) {
-		document.we_form.submit();
-	} else {
-		top.we_showMessage(WE().consts.g_l.shop.field_empty_js_alert, WE().consts.message.WE_MESSAGE_ERROR, window);
-	}
-}') . '
-					</head>
-		<body class="weDialogBody">
-		<form name="we_form">
-		<input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
-		<input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />';
 				$saveBut = we_html_button::create_button(we_html_button::SAVE, 'javascript:we_submit();');
 				$cancelBut = we_html_button::create_button(we_html_button::CANCEL, 'javascript:self.close();');
 
@@ -1047,8 +898,21 @@ function CalendarChanged(calObject) {
 					]
 				];
 
-				echo we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]')) .
-				'</form></body></html>';
+				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement('function we_submit() {
+	var elem = document.getElementById("cartfieldname");
+
+	if (elem && elem.value) {
+		document.we_form.submit();
+	} else {
+		top.we_showMessage(WE().consts.g_l.shop.field_empty_js_alert, WE().consts.message.WE_MESSAGE_ERROR, window);
+	}
+}'), '
+		<body class="weDialogBody">
+		<form name="we_form">
+		<input type="hidden" name="bid" value="' . $_REQUEST['bid'] . '" />
+		<input type="hidden" name="we_cmd[0]" value="save_shop_cart_custom_field" />' .
+					we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[add_shop_field]')) .
+					'</form>');
 				exit;
 
 			case 'save_shop_cart_custom_field':
@@ -1068,8 +932,7 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 					$jsCmd = 'top.opener.' . we_message_reporting::getShowMessageCall(g_l('modules_shop', '[field_empty_js_alert]'), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 
-				echo we_html_element::jsElement($jsCmd . 'window.close();') .
-				'</head><body></body></html>';
+				echo we_html_tools::getHtmlTop('', '', '', we_html_element::jsElement($jsCmd . 'window.close();'), we_html_element::htmlBody());
 				exit;
 
 			case 'edit_shipping_cost':
@@ -1114,15 +977,15 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 				];
 
 
-				echo '</head>
+				echo we_html_tools::getHtmlTop('', '', '', '', '
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-				we_html_element::htmlHiddens([
-					'bid' => $_REQUEST['bid'],
-					"we_cmd[]" => 'save_shipping_cost'
-				]) .
-				we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
-				'</form></body></html>';
+					we_html_element::htmlHiddens([
+						'bid' => $_REQUEST['bid'],
+						"we_cmd[]" => 'save_shipping_cost'
+					]) .
+					we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[edit_shipping_cost][title]')) .
+					'</form>');
 				exit;
 
 			case 'save_shipping_cost':
@@ -1136,12 +999,9 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 
 					// update all orders with this orderId
 					if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($serialOrder))){
-						$alertMessage = g_l('modules_shop', '[edit_order][js_saved_shipping_success]');
-						$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
-					} else {
-						$alertMessage = g_l('modules_shop', '[edit_order][js_saved_shipping_error]');
-						$alertType = we_message_reporting::WE_MESSAGE_ERROR;
+						return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_shipping_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
 					}
+					return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_shipping_error]'), we_message_reporting::WE_MESSAGE_ERROR);
 				}
 
 				break;
@@ -1244,17 +1104,16 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 					}
 				}
 
-				echo '</head>
+				echo we_html_tools::getHtmlTop('', '', '', '', '
 						<body class="weDialogBody">
 						<form name="we_form" target="edbody">' .
-				we_html_element::htmlHiddens(array(
-					'bid' => $_REQUEST['bid'],
-					'we_cmd[]' => 'save_order_customer'
-				)) .
-				we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]')) .
-				'</form>
-						</body>
-						</html>';
+					we_html_element::htmlHiddens([
+						'bid' => $_REQUEST['bid'],
+						'we_cmd[]' => 'save_order_customer'
+					]) .
+					we_html_multiIconBox::getHTML('', $parts, 30, we_html_button::position_yes_no_cancel($saveBut, '', $cancelBut), -1, '', '', false, g_l('modules_shop', '[preferences][customerdata]')) .
+					'</form>
+						</body>');
 				exit;
 
 			case 'save_order_customer':
@@ -1263,13 +1122,9 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 				$orderData[WE_SHOP_CART_CUSTOMER_FIELD] = $_REQUEST['weCustomerOrder'];
 
 				if($this->updateFieldFromOrder($_REQUEST['bid'], 'strSerialOrder', we_serialize($orderData))){
-					$alertMessage = g_l('modules_shop', '[edit_order][js_saved_customer_success]');
-					$alertType = we_message_reporting::WE_MESSAGE_NOTICE;
-				} else {
-					$alertMessage = g_l('modules_shop', '[edit_order][js_saved_customer_error]');
-					$alertType = we_message_reporting::WE_MESSAGE_ERROR;
+					return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_customer_success]'), we_message_reporting::WE_MESSAGE_NOTICE);
 				}
-				break;
+				return we_message_reporting::jsMessagePush(g_l('modules_shop', '[edit_order][js_saved_customer_error]'), we_message_reporting::WE_MESSAGE_ERROR);
 		}
 	}
 
@@ -1296,38 +1151,25 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 
 	//some functions from edit_shop_properties
 
-	private static function getFieldFromShoparticle(array $array, $name, $length = 0){
-		$val = strip_tags(isset($array['we_' . $name]) ? $array['we_' . $name] : (isset($array[$name]) ? $array[$name] : '' ));
+	private static function cutText($val, $length = 0){
 		return $length && strlen($val) > $length ?
 			'<span ' . ($length ? 'class="cutText" title="' . $val . '" style="max-width: ' . $length . 'em;"' : '') . '>' . $val . '</span>' :
 			$val;
 	}
 
-	private function getOrderCustomerData($orderId, array $strFelder = []){
-		$hash = getHash('SELECT IntCustomerID,strSerialOrder FROM ' . SHOP_TABLE . '	WHERE IntOrderID=' . intval($orderId) . ' LIMIT 1', $this->db);
-		$customerId = $hash['IntCustomerID'];
-		$tmp = $hash['strSerialOrder'];
+	private function getOrderCustomerData($orderId, array $felder = []){
 		// get Customer
-		$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($customerId), $this->db, MYSQL_ASSOC);
+		$customerDb = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=(SELECT customerID FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $orderId . ')', $this->db, MYSQL_ASSOC);
 
-		$orderData = we_unserialize($tmp);
-		$customerOrder = (isset($orderData[WE_SHOP_CART_CUSTOMER_FIELD]) ? $orderData[WE_SHOP_CART_CUSTOMER_FIELD] : []);
+		$customerOrder = we_unserialize(f('SELECT customerData FROM ' . SHOP_ORDER_TABLE . ' WHERE ID=' . $orderId));
 
-		if(empty($strFelder)){ //used only if edit customer data is selected!!!
-			//only data from order - return all fields, fill in unknown fields from customer-db
-			// default values are fields saved with order
-			return array_merge($customerDb, $customerOrder);
-		}
-
-
-		$customer = $customerDb;
-		foreach($strFelder['orderCustomerFields'] as $field){
-			if(isset($customerOrder[$field])){
-				$customer[$field] = $customerOrder[$field];
-			}
-		}
-
-		return $customer;
+		//used only if edit customer data is selected!!!
+		//only data from order - return all fields, fill in unknown fields from customer-db
+		// default values are fields saved with order
+		$ret = array_merge($customerDb, $customerOrder);
+		return ($felder ? //return only selected fields
+			array_intersect_key($ret, array_flip($felder)) :
+			$ret);
 	}
 
 	private function getFieldFromOrder($bid, $field){
@@ -1363,6 +1205,75 @@ top.opener.' . we_message_reporting::getShowMessageCall(sprintf(g_l('modules_sho
 		}
 
 		return parent::getActualHomeScreen('shop', "shop.gif", $content);
+	}
+
+	private function getCustomCartFieldsTable($bid, $customCartFields){
+		$customCartFieldsTable = '<table class="default" width="99%">
+					<tr>
+						<th colspan="3" class="defaultfont lowContrast" height="30">' . g_l('modules_shop', '[order_comments]') . '</th>
+					</tr>
+					<tr>
+						<td height="10"></td>
+					</tr>';
+		foreach($customCartFields as $key => $value){
+			$customCartFieldsTable .= '<tr>
+						<td class="defaultfont" style="padding-right:15px;vertical-align:top"><b>' . $key . ':</b></td>
+						<td class="defaultfont" style="padding-right:15px;vertical-align:top">' . nl2br($value) . '</td>
+						<td style="padding-right:15px;vertical-align:top;">' . we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('edit_shop_cart_custom_field','" . $key . "');") . '</td>
+						<td style="vertical-align:top">' . we_html_button::create_button(we_html_button::TRASH, "javascript:check=confirm('" . sprintf(g_l('modules_shop', '[edit_order][js_delete_cart_field]'), $key) . "'); if (check) { document.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_showMod.php?mod=shop&pnt=edbody&we_cmd[0]=delete_shop_cart_custom_field&bid=" . $bid . "&cartfieldname=" . $key . "'; }") . '</td>
+					</tr>
+					<tr>
+						<td height="10"></td>
+					</tr>';
+		}
+		$customCartFieldsTable .= '<tr>
+						<td>' . we_html_button::create_button(we_html_button::PLUS, "javascript:we_cmd('edit_shop_cart_custom_field');") . '</td>
+					</tr>
+					</table>';
+		return $customCartFieldsTable;
+	}
+
+	private function getCustomerFieldTable(array $customer, array $customerFields){
+		$customerFieldTable = // first show fields Forename and surname
+			(empty($customer['Forename']) ? '' : '
+		<tr style="height:25px">
+			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px">' . g_l('modules_customer', '[Forname]') . ':</td>
+			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"></td>
+			<td style="width:20px;height:25px;"></td>
+			<td class="defaultfont" style="vertical-align:top" colspan="6" height="25">' . $customer['Forename'] . '</td>
+		</tr>') .
+			(empty($customer['Surname']) ? '' : '
+		<tr style="height:25px">
+			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px;">' . g_l('modules_customer', '[Surname]') . ':</td>
+			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"></td>
+			<td style="width:20px;height:25px;"></td>
+			<td class="defaultfont" style="vertical-align:top;height:25px;" colspan="6">' . $customer['Surname'] . '</td>
+		</tr>');
+
+		$customer = array_intersect_key($customer, array_flip($customerFields));
+		unset($customer['Surname'], $customer['Forename']);
+		foreach($customer as $key => $value){
+			switch($key){
+				case $this->CLFields['stateField']:
+					if($this->CLFields['stateFieldIsISO']){
+						$value = g_l('countries', '[' . strtoupper($value) . ']');
+					}
+					break;
+				case $this->CLFields['languageField']:
+					if($this->CLFields['languageFieldIsISO']){
+						$value = g_l('languages', '[' . strtolower($value) . ']');
+					}
+					break;
+			}
+			$customerFieldTable .= '
+		<tr height="25">
+			<td class="defaultfont" style="width:86px;vertical-align:top;height:25px;">' . $key . ':</td>
+			<td class="defaultfont" style="vertical-align:top;width:40px;height:25px;"></td>
+			<td style="width:20px;height:25px;"></td>
+			<td class="defaultfont" style="vertical-align:top;height:25px;" colspan="6">' . $value . '</td>
+		</tr>';
+		}
+		return $customerFieldTable;
 	}
 
 }

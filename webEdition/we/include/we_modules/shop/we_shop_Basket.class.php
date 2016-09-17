@@ -181,7 +181,8 @@ class we_shop_Basket{
 	 * @param string $variant
 	 * @return string
 	 */
-	private function getserial($id, $type, $variant = false, $customFields = []){
+	public function getserial($id, $type, $variant = false, $customFields = []){
+		t_e('call');
 		$DB_WE = new DB_WE();
 		$Record = [];
 
