@@ -502,6 +502,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 
 	public static function updateShop2($pos = 0){
 		$db = new DB_WE();
+		$db->query('TRUNCATE TABLE ' . SHOP_ORDER_DATES_TABLE);
+		$db->query('TRUNCATE TABLE ' . SHOP_ORDER_DOCUMENT_TABLE);
+		$db->query('TRUNCATE TABLE ' . SHOP_ORDER_ITEM_TABLE);
+		$db->query('TRUNCATE TABLE ' . SHOP_ORDER_TABLE);
 		if($pos == 0){
 			//make sure we have at least the last Order in the new table
 			$max = f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE);
