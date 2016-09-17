@@ -33,14 +33,14 @@ class rpcTriggerJSErrorCmd extends we_rpc_cmd{
 				//bad ie, don't log this anymore
 				return;
 			}
-			$file = empty($_REQUEST['we_cmd']['file']) ? '' : $_REQUEST['we_cmd']['file'];
-			$errobj = empty($_REQUEST['we_cmd']['errObj']) ? true : $_REQUEST['we_cmd']['errObj'];
+			$file = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 'file');
+			$errobj = we_base_request::_(we_base_request::STRING, 'we_cmd', true, 'errObj');
 			unset($_REQUEST['we_cmd']['file'], $_REQUEST['we_cmd']['line'], $_REQUEST['we_cmd']['errObj']);
 
 			$_REQUEST['we_cmd']['detected'] = [
 				'Browser' => $br->getBrowser() . ' ' . $br->getBrowserVersion(),
 				'System' => $br->getSystem(),
-				];
+			];
 			$data = str_replace($_SERVER['SERVER_NAME'], 'HOST', print_r($_REQUEST['we_cmd'], true));
 			unset($_REQUEST);
 			log_error_message(E_JS, $data, $file, $line, $errobj);

@@ -34,7 +34,8 @@ var passwd ={
 function defaultReset(){
 	$_SESSION['resetTok'] = md5(uniqid(__FILE__, true));
 	echo
-	we_html_element::htmlDiv(['style' => 'float: left;height: 50%;width: 1px;']) . we_html_element::htmlDiv(['style' => 'clear:left;position:relative;top:-25%;'], we_html_element::htmlForm(["action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'], '
+	we_html_element::htmlDiv(['style' => 'float: left;height: 50%;width: 1px;']) . we_html_element::htmlDiv(['style' => 'clear:left;position:relative;top:-25%;'], we_html_element::htmlForm([
+			"action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'], '
 	<table id="mainTable">
 		<tr><td colspan="2"><h2>' . g_l('global', '[changePass]') . '</h2></td></tr>
 		<tr><td>' . g_l('global', '[username]') . '</td><td><input type="text" name="s[username]" placeholder="' . g_l('global', '[username]') . '"/></td></tr>
@@ -50,7 +51,8 @@ function resetPwd(){
 	$uid = we_base_request::_(we_base_request::INT, 'user', 0);
 	$token = we_base_request::_(we_base_request::STRING, 'token', 0);
 	$_SESSION['resetTok'] = md5(uniqid(__FILE__, true));
-	echo we_html_element::htmlDiv(['style' => 'float: left;height: 50%;width: 1px;']) . we_html_element::htmlDiv(['style' => 'clear:left;position:relative;top:-25%;'], we_html_element::htmlForm(["action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'], '
+	echo we_html_element::htmlDiv(['style' => 'float: left;height: 50%;width: 1px;']) . we_html_element::htmlDiv(['style' => 'clear:left;position:relative;top:-25%;'], we_html_element::htmlForm([
+			"action" => WEBEDITION_DIR . 'resetpwd.php', 'method' => 'post'], '
 	<table id="mainTable">
 		<tr><td colspan="2"><h2>' . g_l('global', '[changePass]') . '</h2></td></tr>
 		<tr><td>' . g_l('global', '[newPass]') . '</td><td><input type="password" name="s[Password]" onchange="comparePwd(\'s[Password]\',\'s[Password2]\')" placeholder="' . g_l('global', '[newPass]') . '"/></td></tr>
@@ -70,7 +72,8 @@ function showError($txt){
 
 switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 	case 'mailreset':
-		if(empty($_REQUEST['resetTok']) || empty($_SESSION['resetTok']) || $_REQUEST['resetTok'] != $_SESSION['resetTok']){
+		$resetTok = we_base_request::_(we_base_request::STRING, 'resetTok');
+		if(!$resetTok || empty($_SESSION['resetTok']) || $resetTok != $_SESSION['resetTok']){
 			showError(g_l('global', '[CSRF][tokenInvalid]'));
 			break;
 		}
@@ -102,6 +105,7 @@ switch(we_base_request::_(we_base_request::STRING, 'type', '')){
 		}
 		break;
 	case 'mail':
+		$resetTok = we_base_request::_(we_base_request::STRING, 'resetTok');
 		if(empty($_REQUEST['resetTok']) || empty($_SESSION['resetTok']) || $_REQUEST['resetTok'] != $_SESSION['resetTok']){
 			showError(g_l('global', '[CSRF][tokenInvalid]'));
 			break;
