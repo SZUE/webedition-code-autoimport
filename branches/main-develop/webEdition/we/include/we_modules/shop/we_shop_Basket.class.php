@@ -148,7 +148,7 @@ class we_shop_Basket{
 					'type' => $type,
 					'variant' => $variant,
 					'quantity' => $quantity,
-					'serial' => $this->getserial($id, $type, $variant, $customFields),
+					'serial' => self::getserial($id, $type, $variant, $customFields),
 					'customFields' => $customFields
 				];
 			}
@@ -181,9 +181,8 @@ class we_shop_Basket{
 	 * @param string $variant
 	 * @return string
 	 */
-	public function getserial($id, $type, $variant = false, $customFields = []){
-		t_e('call');
-		$DB_WE = new DB_WE();
+	public static function getserial($id, $type, $variant = false, $customFields = []){
+		$DB_WE = $GLOBALS['DB_WE'];
 		$Record = [];
 
 		switch($type){

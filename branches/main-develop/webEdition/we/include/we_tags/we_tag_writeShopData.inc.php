@@ -40,7 +40,7 @@ function we_tag_writeShopData(array $attribs){
 		return $foo;
 	}
 
-	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING)? : $name;
+	$shopname = weTag_getAttribute('shopname', $attribs, '', we_base_request::STRING) ?: $name;
 	$pricename = weTag_getAttribute('pricename', $attribs, '', we_base_request::STRING);
 	$shipping = weTag_getAttribute('shipping', $attribs, '', we_base_request::FLOAT);
 	$shippingIsNet = weTag_getAttribute('shippingisnet', $attribs, false, we_base_request::BOOL);
@@ -71,18 +71,25 @@ function we_tag_writeShopData(array $attribs){
 
 	$DB_WE = $GLOBALS['DB_WE'];
 
-	$DB_WE->lock([
-		SHOP_TABLE => 'write',
-		ERROR_LOG_TABLE => 'write',
-		WE_SHOP_VAT_TABLE => 'read',
-		CATEGORY_TABLE => 'read',
-		SETTINGS_TABLE => 'read'
-	]);
-	$orderID = intval(f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE, '', $DB_WE)) + 1;
+	//first insert essential order data
+	$DB_WE->query('INSERT INTO ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
+			'shopname' => $shopname,
+			//'customOrderNo'=>''
+			'customerID' => intval($_SESSION['webuser']['ID']),
+			'customerData' => we_serialize($customer, SERIALIZE_JSON, false, 5, true),
+			'customFields' => $cartFields ? we_serialize($cartFields, SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
+			'pricesNet' => $netprices,
+			'priceName' => $pricename,
+			'shippingCost' => $shipping, //we prefill this
+			'shippingNet' => $shippingIsNet,
+			'shippingVat' => $shippingVatRate,
+			'calcVat' => $useVat ? $calcVat : 0,
+	]));
+
+	$orderID = $DB_WE->getInsertId();
+	$basket->setOrderID($orderID);
 
 	$totPrice = 0;
-	$articleCount = 0;
-	$first = false;
 	$categoryMode = we_shop_category::isCategoryMode();
 
 	foreach($shoppingItems as $shoppingItem){
@@ -96,81 +103,65 @@ function we_tag_writeShopData(array $attribs){
 			$catId = !empty($shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] : 0;
 
 			$shopVat = we_shop_category::getShopVatByIdAndCountry($catId, $wedocCategory, $billingCountry, true);
-			$shopCategory = we_shop_category::getShopCatFieldByID($catId, $wedocCategory, 'ID');
+			$shopCategory = $catId;
 		} else {
 			$vatId = isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]) ? $shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] : 0;
 			$shopVat = we_shop_vats::getVatRateForSite($vatId, true, false);
 			$shopCategory = 0;
 		}
 
-		if($shopVat !== false){ // has selected or standard shop rate
-			$shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME] = $shopVat;
-		} else { // could not find any shoprates, remove field if necessary
-			if(isset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME])){
-				unset($shoppingItem['serial'][WE_SHOP_VAT_FIELD_NAME]);
-			}
-		}
-		$shoppingItem['serial'][WE_SHOP_CATEGORY_FIELD_NAME] = $shopCategory ? : 0;
+		$dat = $shoppingItem['serial'];
 
-		if(!$DB_WE->query('INSERT INTO ' . SHOP_TABLE . ' SET ' .
-				we_database_base::arraySetter([
-					'IntArticleID' => intval($shoppingItem['id']),
-					'IntQuantity' => abs($shoppingItem['quantity']),
+		$docid = intval(isset($dat['OF_ID']) ? $dat['OF_ID'] : $dat['ID']);
+		$pub = intval(empty($dat['we_wedoc_Published']) ? $dat['WE_Published'] : $dat['we_wedoc_Published']);
+		$type = (!empty($dat['we_wedoc_ContentType'] && $dat['we_wedoc_ContentType'] == we_base_ContentTypes::OBJECT_FILE) ? 'object' : 'document');
+		$variant = $dat['WE_VARIANT'];
+
+		$orderDocID = f('SELECT ID FROM ' . SHOP_ORDER_DOCUMENT_TABLE . ' WHERE DocID=' . $docid . ' AND type="' . $type . '" AND variant="' . $DB_WE->escape($variant) . '" AND Published=FROM_UNIXTIME(' . $pub . ')');
+		if(!$orderDocID){
+			$data = $dat;
+			unset($data['we_shoptitle'], $data['we_shopdescription'], $data['we_sacf'], $data['shopvat'], $data['shopcategory'], $data['WE_VARIANT']);
+			//add document first
+			$DB_WE->query('INSERT INTO ' . SHOP_ORDER_DOCUMENT_TABLE . ' SET ' . we_database_base::arraySetter([
+					'DocID' => $docid,
+					'type' => $type,
+					'variant' => $variant,
+					'Published' => sql_function('FROM_UNIXTIME(' . $pub . ')'),
+					'title' => strip_tags($dat['we_shoptitle']),
+					'description' => strip_tags($dat['we_shopdescription']),
+					'CategoryID' => $shopCategory ?: 0,
+					'SerializedData' => we_serialize($data, SERIALIZE_JSON, false, 5, true)
+			]));
+			$orderDocID = $DB_WE->getInsertId();
+		}
+
+		if(!$DB_WE->query('INSERT INTO ' . SHOP_ORDER_ITEM_TABLE . ' SET ' . we_database_base::arraySetter([
+					'orderID' => $orderID,
+					'orderDocID' => $orderDocID,
+					'quantity' => abs($shoppingItem['quantity']),
 					'Price' => $preis,
-					'IntOrderID' => $orderID,
-					'IntCustomerID' => intval($_SESSION['webuser']['ID']),
-					'DateOrder' => sql_function('NOW()'),
-					'strSerial' => we_serialize($shoppingItem['serial'], SERIALIZE_JSON),
-					'shopname' => $shopname
+					'Vat' => ($shopVat !== false ? $shopVat : sql_function('NULL')),
+					'customFields' => $shoppingItem['serial'][WE_SHOP_ARTICLE_CUSTOM_FIELD] ? we_serialize($shoppingItem['serial'][WE_SHOP_ARTICLE_CUSTOM_FIELD], SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
 			]))){
 
-			$DB_WE->unlock();
 			t_e('error during write shop data contents of basket', $shoppingItems);
 			echo 'Data Insert Failed';
 			return;
 		}
-
-		if(!$first){
-			//all critical data is set, unlock tables again
-			$first = true;
-			$DB_WE->unlock();
-		}
-		$articleCount++;
-	}
-	$basket->setOrderID($orderID);
-
-	// second part: add cart fields to table order.
-	//{
-	// add shopcartfields to table
-	$weShippingControl = we_shop_shippingControl::getShippingControl();
-
-	$cartField = [
-		WE_SHOP_CART_CUSTOM_FIELD => $cartFields, // add custom cart fields to article
-		WE_SHOP_PRICE_IS_NET_NAME => $netprices, // add netprice flag to article
-		WE_SHOP_CART_CUSTOMER_FIELD => $customer, // add netprice flag to article
-		WE_SHOP_PRICENAME => $pricename,
-		WE_SHOP_SHIPPING => ($shipping === '' ?
-			[
-			'costs' => floatval($weShippingControl->getShippingCostByOrderValue($totPrice, $customer)),
-			'isNet' => (bool) $weShippingControl->isNet,
-			'vatRate' => floatval($weShippingControl->vatRate)
-			] :
-			[
-			'costs' => floatval(str_replace(',', '.', $shipping)),
-			'isNet' => (bool) $shippingIsNet,
-			'vatRate' => floatval($shippingVatRate)
-			]),
-	];
-
-
-	if($useVat){
-		$cartField[WE_SHOP_CALC_VAT] = $calcVat; // add flag to shop, if vats shall be used
 	}
 
-	if(!$DB_WE->query('UPDATE ' . SHOP_TABLE . ' SET strSerialOrder="' . $DB_WE->escape(we_serialize($cartField, SERIALIZE_JSON)) . '" WHERE intOrderID=' . intval($orderID))){
-		return;
+	if($shipping === ''){// we have to change shipping costs
+		$weShippingControl = we_shop_shippingControl::getShippingControl();
+
+		$DB_WE->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
+				'shippingCost' => floatval($weShippingControl->getShippingCostByOrderValue($totPrice, $customer)),
+				'shippingNet' => (bool) $weShippingControl->isNet,
+				'shippingVat' => floatval($weShippingControl->vatRate),
+			]) . ' WHERE ID=' . $orderID
+		);
 	}
-	//}
+
+
 	$doc = we_getDocForTag('top');
 	$lang = substr($doc->Language, 0, 2);
 	$weShopStatusMails = we_shop_statusMails::getShopStatusMails();
