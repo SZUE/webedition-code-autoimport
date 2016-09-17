@@ -30,42 +30,51 @@ class we_shop_functions{
 		// get orderdata of user here
 		$da = ( $GLOBALS['WE_LANGUAGE'] === 'Deutsch') ? '%d.%m.%Y' : '%m/%d/%Y';
 
+		$hidden = array_keys(array_filter($weShopStatusMails->FieldsHiddenCOV, function ($v){
+				return $v == 1;
+			}));
+		$showBaseFields = array_diff(we_shop_statusMails::$BaseDateFields, $hidden);
+		$showDateFields = array_diff(we_shop_statusMails::$StatusFields, $hidden);
+		$showAdvanced = array_diff($showDateFields, $showBaseFields);
+
 		$format = [];
-		foreach(we_shop_statusMails::$StatusFields as $field){
+		foreach($showBaseFields as $field){
 			$format[] = 'DATE_FORMAT(' . $field . ',"' . $da . '") AS format' . $field;
 		}
+		if($showAdvanced){
+			$advanced = $GLOBALS['DB_WE']->getAllFirstq('SELECT CONCAT(odt.ID,odt.type),DATE_FORMAT(odt.date,"' . $da . '") FROM ' . SHOP_ORDER_TABLE . ' o JOIN ' . SHOP_ORDER_DATES_TABLE . ' odt ON odt.ID=o.ID WHERE odt.type IN ("' . implode('","', $showAdvanced) . '") AND customerID=' . intval($customerId) . ' ORDER BY odt.ID', false);
+		}
 
-		$GLOBALS['DB_WE']->query('SELECT IntOrderID,shopname, ' . implode(',', we_shop_statusMails::$StatusFields) . ', ' . implode(',', $format) . ' FROM ' . SHOP_TABLE . ' WHERE IntCustomerID=' . intval($customerId) . ' GROUP BY IntOrderId ORDER BY IntID DESC');
+		$GLOBALS['DB_WE']->query('SELECT ID,shopname' . ($format ? ',' . implode(',', $format) : '') . ' FROM ' . SHOP_ORDER_TABLE . ' WHERE customerID=' . intval($customerId) . ' ORDER BY ID DESC');
 
-		$orderStr = '<table class="defaultfont" style="width:1200px">';
+		$orderStr = '<table class="defaultfont" style="width:100%">';
 		if($GLOBALS['DB_WE']->num_rows()){
-			$orderStr .='<tr>
-			<td></td><td><b>' . g_l('modules_shop', '[orderList][order]') . '</b></td>';
+			$orderStr .= '<tr><td></td><td><b>' . g_l('modules_shop', '[orderList][order]') . '</b></td>';
 
-			foreach(we_shop_statusMails::$StatusFields as $field){
-				if(!$weShopStatusMails->FieldsHidden[$field]){
-					$orderStr .='<td><b>' . $weShopStatusMails->FieldsText[$field] . '</b></td>';
-				}
+			foreach($showDateFields as $field){
+				$orderStr .= '<td><b>' . $weShopStatusMails->FieldsText[$field] . '</b></td>';
 			}
 
-			$orderStr .='</tr>';
+			$orderStr .= '</tr>';
 
 			while($GLOBALS['DB_WE']->next_record()){
 
 				$orderStr .= '<tr>';
 				if(permissionhandler::hasPerm('EDIT_SHOP_ORDER')){
 					$orderStr .= ($sameModul ?
-							('<td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + \'we_showMod.php?mod=shop&pnt=editor&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>') :
-							('<td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:top.document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=show_frameset&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>')
+						('<td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:top.content.editor.location=WE().consts.dirs.WEBEDITION_DIR + \'we_showMod.php?mod=shop&pnt=editor&bid=' . $GLOBALS['DB_WE']->f('ID') . '\';') . '</td>') :
+						('<td>' . we_html_button::create_button(we_html_button::EDIT, 'javascript:top.document.location=\'' . WEBEDITION_DIR . 'we_showMod.php?mod=shop&pnt=show_frameset&bid=' . $GLOBALS['DB_WE']->f('IntOrderID') . '\';') . '</td>')
 						);
 				} else {
-					$orderStr .='<td></td>';
+					$orderStr .= '<td></td>';
 				}
-				$orderStr .= '<td>' . $GLOBALS['DB_WE']->f('IntOrderID') . ' ('.$GLOBALS['DB_WE']->f('shopname')./*'. ' . g_l('modules_shop', '[orderList][order]') .*/ ')</td>';
-				foreach(we_shop_statusMails::$StatusFields as $field){
-					if(!$weShopStatusMails->FieldsHidden[$field]){
-						$orderStr .='<td>' . ( $GLOBALS['DB_WE']->f($field) > 0 ? $GLOBALS['DB_WE']->f('format' . $field) : '-' ) . '</td>';
-					}
+				$orderStr .= '<td>' . $GLOBALS['DB_WE']->f('ID') . ($GLOBALS['DB_WE']->f('shopname') ? ' (' . $GLOBALS['DB_WE']->f('shopname') . /* '. ' . g_l('modules_shop', '[orderList][order]') . */ ')' : '') . '</td>';
+				foreach($showDateFields as $field){
+					$val = (in_array($field, $showBaseFields) ?
+						$GLOBALS['DB_WE']->f('format' . $field) :
+						$advanced[$GLOBALS['DB_WE']->f('ID') . $field]);
+
+					$orderStr .= '<td>' . ( $val ?: '-' ) . '</td>';
 				}
 
 				$orderStr .= '</tr>';
