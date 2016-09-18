@@ -208,7 +208,9 @@ class we_users_user{
 	var $extensions_slots = [];
 	private $permissions_defaults = [];
 	// Preferences array
-	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file', 'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', /* 'force_glossary_action', 'force_glossary_check', */ 'cockpit_amount_columns', 'cockpit_amount_last_documents', 'editorMode');
+	private $preference_slots = array('sizeOpt', 'weWidth', 'weHeight', 'usePlugin', 'autostartPlugin', 'promptPlugin', 'Language', 'BackendCharset', 'seem_start_file',
+		'seem_start_type', 'seem_start_weapp', 'editorSizeOpt', 'editorWidth', 'editorHeight', 'editorFontname', 'editorFontsize', 'editorFont', 'default_tree_count', /* 'force_glossary_action', 'force_glossary_check', */
+		'cockpit_amount_columns', 'cockpit_amount_last_documents', 'editorMode');
 
 	// Constructor
 	public function __construct(){
@@ -1425,7 +1427,8 @@ _multiEditorreload = true;';
 		$dynamic_controls = new we_html_dynamicControls();
 		// Now we create the overview of the user rights
 		$parentPerm = $this->ParentID ? self::getAllPermissions($this->ID, true) : false;
-		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $parentPerm, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array('administrator'), true, true, 'we_form', 'perm_branch', true, true);
+		$content = $dynamic_controls->fold_checkbox_groups($this->permissions_slots, $parentPerm, $this->permissions_main_titles, $this->permissions_titles, $this->Name, $branch, array(
+			'administrator'), true, true, 'we_form', 'perm_branch', true, true);
 
 		$javascript = '
 function rebuildCheckboxClicked() {
@@ -1894,7 +1897,8 @@ function show_seem_chooser(val) {
 		// Build SEEM select start document chooser
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('Doc');
-		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
+		$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS,
+			we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
 		$yuiSuggest->setInput('seem_start_document_name', $document_path);
 		$yuiSuggest->setMaxResults(20);
 		$yuiSuggest->setMayBeEmpty(true);
@@ -1975,7 +1979,8 @@ function show_seem_chooser(val) {
 			$file_tree_count->selectOption($tree_count);
 		}
 
-		$settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br/>' . $file_tree_count->getHtml(), 'space' => we_html_multiIconBox::SPACE_BIG);
+		$settings[] = array('headline' => g_l('prefs', '[tree_title]'), 'html' => we_html_tools::htmlAlertAttentionBox(g_l('prefs', '[tree_count_description]'), we_html_tools::TYPE_INFO) . '<br/>' . $file_tree_count->getHtml(),
+			'space' => we_html_multiIconBox::SPACE_BIG);
 
 		// WINDOW DIMENSIONS
 
@@ -2056,7 +2061,8 @@ function show_seem_chooser(val) {
 		// Build specify font
 		$template_editor_font_specify_code = we_html_forms::checkbox(1, $template_editor_font_specify, $this->Name . "_Preference_editorFont", g_l('prefs', '[specify]'), true, "defaultfont", "top.content.setHot(); if (document.getElementsByName('" . $this->Name . "_Preference_editorFont')[0].checked) { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = false;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = false; } else { document.getElementsByName('" . $this->Name . "_Preference_editorFontname')[0].disabled = true;document.getElementsByName('" . $this->Name . "_Preference_editorFontsize')[0].disabled = true; }");
 
-		$template_editor_font_select_box = new we_html_select(array('class' => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "style" => "width: 90px;", ($template_editor_font_specify ? "enabled" : "disabled") => ($template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$template_editor_font_select_box = new we_html_select(array('class' => "weSelect", "name" => $this->Name . "_Preference_editorFontname", "style" => "width: 90px;",
+			($template_editor_font_specify ? "enabled" : "disabled") => ($template_editor_font_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($template_fonts as $tf){
 			$template_editor_font_select_box->addOption($tf, $tf);
@@ -2072,7 +2078,8 @@ function show_seem_chooser(val) {
 			}
 		}
 
-		$template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "style" => "width: 90px;", ($template_editor_font_size_specify ? "enabled" : "disabled") => ($template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
+		$template_editor_font_sizes_select_box = new we_html_select(array('class' => 'weSelect', 'name' => $this->Name . '_Preference_editorFontsize', "style" => "width: 90px;",
+			($template_editor_font_size_specify ? "enabled" : "disabled") => ($template_editor_font_size_specify ? "enabled" : "disabled"), "onchange" => "top.content.setHot();"));
 
 		foreach($template_font_sizes as $tf){
 			$template_editor_font_sizes_select_box->addOption($tf, $tf);
@@ -2467,10 +2474,34 @@ function resetTabs(){
 	}
 
 	public static function updateActiveUser(){
-		if($_SESSION['user']['ID']){
-			$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=NOW() WHERE ID=' . $_SESSION['user']['ID']);
-			$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND WHERE UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID="' . session_id() . '"');
+		if(!$_SESSION['user']['ID']){
+			return;
 		}
+		$ret = [
+			'requests' => [],
+			'reply' => [],
+			'unlock' => []
+		];
+
+		$GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . ' SET Ping=NOW() WHERE ID=' . $_SESSION['user']['ID']);
+		//FIXME do we need to check session_id??? for release requests?
+		//check release requests
+		$ret['requests'] = $GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl,l.releaseRequestText AS text,DATE_FORMAT(l.releaseRequestForce,"' . g_l('date', '[format][mysql]') . '") AS forceDate,CONCAT(u.First," ",u.Second," (",u.Username,")") AS User FROM ' . LOCK_TABLE . ' l JOIN ' . USER_TABLE . ' u ON (l.releaseRequestID=u.ID) WHERE l.UserID=' . intval($_SESSION['user']['ID']) . ' AND l.releaseRequestText IS NOT NULL AND l.releaseRequestID!=' . intval($_SESSION['user']['ID']));
+
+		//check my release requests
+		$ret['reply'] = $GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl,l.releaseRequestReply AS text,CONCAT(u.First," ",u.Second," (",u.Username,")") AS User FROM ' . LOCK_TABLE . ' l JOIN ' . USER_TABLE . ' u ON (l.UserID=u.ID) WHERE l.releaseRequestReply IS NOT NULL AND l.releaseRequestID=' . intval($_SESSION['user']['ID']) . ' AND l.UserID!=' . intval($_SESSION['user']['ID']));
+
+		//get all documents that have been released
+		$ret['unlock'] = $GLOBALS['DB_WE']->getAllq('SELECT l.ID,l.tbl FROM ' . LOCK_TABLE . ' l WHERE l.releaseRequestID=l.UserID AND l.sessionID!=x\'' . session_id() . '\'');
+
+		//FIXME how to handle force?!
+		//reset all replies
+		$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET releaseRequestReply=NULL,releaseRequestForce=NULL WHERE releaseRequestReply IS NOT NULL AND releaseRequestID=' . intval($_SESSION['user']['ID']));
+
+		//update my locks, reset releaseRequestText
+		$GLOBALS['DB_WE']->query('UPDATE ' . LOCK_TABLE . ' SET lockTime=NOW()+INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' SECOND,releaseRequestText=NULL WHERE UserID=' . intval($_SESSION['user']['ID']) . ' AND sessionID=x\'' . session_id() . '\'');
+
+		return $ret;
 	}
 
 	public static function getJSLangConsts(){

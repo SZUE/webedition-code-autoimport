@@ -27,7 +27,10 @@ class rpcPingCmd extends we_rpc_cmd{
 
 	function execute(){
 		$resp = new we_rpc_response();
-		we_users_user::updateActiveUser();
+		$relRequest = we_users_user::updateActiveUser();
+		if($relRequest){
+			$resp->setData('release', $relRequest);
+		}
 
 		if(defined('MESSAGING_SYSTEM')){
 			$messaging = new we_messaging_messaging($we_transaction);
