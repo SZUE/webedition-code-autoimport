@@ -47,6 +47,8 @@ function we_tag_writeShopData(array $attribs){
 	$shippingVatRate = weTag_getAttribute('shippingvatrate', $attribs, 0, we_base_request::FLOAT);
 	$netprices = weTag_getAttribute('netprices', $attribs, true, we_base_request::BOOL);
 	$useVat = weTag_getAttribute('usevat', $attribs, false, we_base_request::BOOL);
+	$customPrefix = weTag_getAttribute('customPrefix', $attribs, '', we_base_request::STRING);
+	$customPostfix = weTag_getAttribute('customPostfix', $attribs, '', we_base_request::STRING);
 
 	$customer = (isset($_SESSION['webuser']) ? $_SESSION['webuser'] : false);
 	unset($customer['Password'], $customer['_Password'], $customer['ID'], $customer['Username'], $customer['LoginDenied'], $customer['MemberSince'], $customer['LastLogin'], $customer['LastAccess'], $customer['AutoLoginDenied'], $customer['AutoLogin'], $customer['ModifyDate'], $customer['ModifiedBy'], $customer['Path'], $customer['Newsletter_Ok'], $customer['registered'], $customer['AutoLoginID']
@@ -74,7 +76,6 @@ function we_tag_writeShopData(array $attribs){
 	//first insert essential order data
 	$DB_WE->query('INSERT INTO ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
 			'shopname' => $shopname,
-			//'customOrderNo'=>''
 			'customerID' => intval($_SESSION['webuser']['ID']),
 			'customerData' => we_serialize($customer, SERIALIZE_JSON, false, 5, true),
 			'customFields' => $cartFields ? we_serialize($cartFields, SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
@@ -88,6 +89,12 @@ function we_tag_writeShopData(array $attribs){
 
 	$orderID = $DB_WE->getInsertId();
 	$basket->setOrderID($orderID);
+
+	if($customPostfix || $customPrefix){ //update customOrderNo
+		$DB_WE->query('UPDATE ' . SHOP_ORDER_TABLE . ' SET ' . we_database_base::arraySetter([
+				'customOrderNo' => $customPrefix . $orderID . $customPostfix
+			]) . ' WHERE ID=' . $orderID);
+	}
 
 	$totPrice = 0;
 	$categoryMode = we_shop_category::isCategoryMode();

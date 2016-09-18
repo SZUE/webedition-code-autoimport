@@ -191,6 +191,7 @@ class we_shop_view extends we_modules_view{
 
 		$orderData = getHash('SELECT
 customerID,
+customOrderNo,
 pricesNet,
 calcVat,
 shippingCost,
@@ -236,7 +237,7 @@ customFields' .
 			$orderDataTable .= '
 			<tr height="25">
 				<td class="defaultfont" style="width:86px;vertical-align:top" height="25">' . ($field === 'DateOrder' ? g_l('modules_shop', '[bestellnr]') : '') . '</td>
-				<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"><b>' . ($field === 'DateOrder' ? $bid : '') . '</b></td>
+				<td class="defaultfont" style="vertical-align:top;width:40px;height:25px"><b>' . ($field === 'DateOrder' ? ($orderData['customOrderNo'] ?: $bid) : '') . '</b></td>
 				<td style="width:20px;height:25px;"></td>
 				<td style="width:98px;height:25px;" class="defaultfont">' . $weShopStatusMails->FieldsText[$field] . '</td>
 				<td style="height:25px;width:14px"></td>
@@ -535,8 +536,6 @@ bid =' . $bid . ';
 cid =' . $orderData['customerID'] . ';';
 		echo we_html_tools::getCalendarFiles() .
 		we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-		(isset($alertMessage) ?
-			we_message_reporting::jsMessagePush($alertMessage, $alertType) : '') .
 		we_html_element::jsScript(WE_JS_MODULES_DIR . 'shop/we_shop_view2.js', $js);
 		?>
 
