@@ -64,6 +64,22 @@ window.setInterval(function () {
 						}
 
 					}
+
+					var releases = result.DataArray.release;
+					//FIXME: add support for release requests
+					var i;
+					//requests handling
+					for (i = 0; i < releases.requests; i++) {
+						console.log(releases.requests[i]);
+					}
+					//reply handling
+					for (i = 0; i < releases.reply; i++) {
+						console.log(releases.reply[i]);
+					}
+					//reload documents handling
+					for (i = 0; i < releases.unlock; i++) {
+						console.log(releases.unlock[i]);
+					}
 				}
 			}
 		},
