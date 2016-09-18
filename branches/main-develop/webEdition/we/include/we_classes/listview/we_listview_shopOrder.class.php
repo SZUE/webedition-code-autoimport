@@ -91,6 +91,7 @@ class we_listview_shopOrder extends we_listview_base{
 	ID AS ' . self::PROPPREFIX . 'ORDERID,
 	customerID AS CustomerID,
 	customerID AS ' . self::PROPPREFIX . 'CID,
+	customOrderNo,
 	customFields,
 	pricesNet AS shopPriceIsNet,
 	calcVat AS shopCalcVat,
