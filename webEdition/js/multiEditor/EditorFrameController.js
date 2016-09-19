@@ -289,7 +289,7 @@ EditorFrameController.prototype = {
 	doLogoutMultiEditor: function () {
 		// close all none Hot Editors
 		if (this.FreeEditorFrames.length !== this.EditorWindowsAmount) {
-			_UsedEditors = this.getEditorsInUse();
+			var _UsedEditors = this.getEditorsInUse();
 			for (var frameId in _UsedEditors) {
 				// remove all from editor-plugin
 				top.we_cmd("remove_from_editor_plugin", _UsedEditors[frameId].getEditorTransaction());
@@ -498,7 +498,7 @@ EditorFrameController.prototype = {
 	showEditor: function (editorId) {
 		if (editorId !== this.ActiveEditorFrameId) {
 			// add to navigationHistory:
-			_currentEditor = this.getEditorFrame(editorId);
+			var _currentEditor = this.getEditorFrame(editorId);
 
 			if (_currentEditor.getEditorIsInUse()) {
 
@@ -534,14 +534,14 @@ EditorFrameController.prototype = {
 		this.getActiveEditorFrame().switchToContentEditor(1);
 	},
 	getVisibleEditorFrame: function () {
-		editorFrame = this.getActiveEditorFrame();
+		var editorFrame = this.getActiveEditorFrame();
 		if (!editorFrame) {
 			return null;
 		}
 		return editorFrame.getContentEditor();
 	},
 	isEditTab: function () {
-		editorFrame = this.getActiveEditorFrame();
+		var editorFrame = this.getActiveEditorFrame();
 		if (!editorFrame) {
 			return null;
 		}
@@ -705,7 +705,7 @@ EditorFrameController.prototype = {
 		return false;
 	},
 	getDocumentReferenceByTransaction: function (theTransaction) {
-		_win = this.getEditorFrameByTransaction(theTransaction);
+		var _win = this.getEditorFrameByTransaction(theTransaction);
 		return (_win ? _win.getDocumentReference() : false);
 
 	},
@@ -714,7 +714,7 @@ EditorFrameController.prototype = {
 			this.init();
 		}
 
-		_win = this.getActiveEditorFrame();
+		var _win = this.getActiveEditorFrame();
 		return (_win ? _win.getDocumentReference() : false);
 	},
 	//----------------------------------------
@@ -722,18 +722,19 @@ EditorFrameController.prototype = {
 	//----------------------------------------
 	setActiveEditorFrame: function (id) {
 		if (this.ActiveEditorFrameId !== id) {
+			var _oldActive;
 			if ((_oldActive = this.getEditorFrame(this.ActiveEditorFrameId))) {
 				_oldActive.setEditorIsActive(false);
 			}
 
 			this.ActiveEditorFrameId = id;
 
-			_EditorWindow = this.getEditorFrame(id);
+			var _EditorWindow = this.getEditorFrame(id);
 			_EditorWindow.setEditorIsActive(true);
 		}
 	},
 	setEditorIsHot: function (newVal, id) {
-		_EditorWindow = this.getEditorFrame(id);
+		var _EditorWindow = this.getEditorFrame(id);
 		if (_EditorWindow) {
 			_EditorWindow.setEditorIsHot(newVal);
 		}
@@ -743,21 +744,23 @@ EditorFrameController.prototype = {
 	//----------------------------------------
 
 	getEditorIsHot: function (id) {
-		_EditorWindow = this.getEditorFrame(id);
+		var _EditorWindow = this.getEditorFrame(id);
 		if (_EditorWindow) {
 			return _EditorWindow.getEditorIsHot();
 		}
 		return null;
 	},
 	getEditorTransaction: function (frameId) {
-		if ((_EditorFrame = this.getEditorFrame(frameId))) {
+		var _EditorFrame = this.getEditorFrame(frameId);
+		if (_EditorFrame) {
 			return _EditorFrame.getEditorTransaction();
 		}
 		return null;
 
 	},
 	getEditorDocumentId: function (frameId) {
-		if ((_EditorFrame = this.getEditorFrame(frameId))) {
+		var _EditorFrame = this.getEditorFrame(frameId);
+		if (_EditorFrame) {
 			return _EditorFrame.getEditorDocumentId();
 		}
 		return null;
@@ -1284,12 +1287,12 @@ TabView.prototype = {
 	 * controls the click on a tab
 	 */
 	selectFrame: function (val) {
-		frameId = (typeof val) == "object" ? val.id.replace(/tab_/g, "") : val;
+		var frameId = (typeof val) == "object" ? val.id.replace(/tab_/g, "") : val;
 		WE().layout.weEditorFrameController.showEditor(frameId);
 		//this.selectTab(frameId);
 	},
 	setFrameSize: function () {
-		tabsHeight = (this.myDoc.getElementById('tabContainer').clientHeight ? (this.myDoc.getElementById('tabContainer').clientHeight) : (this.myDoc.body.clientHeight));
+		var tabsHeight = (this.myDoc.getElementById('tabContainer').clientHeight ? (this.myDoc.getElementById('tabContainer').clientHeight) : (this.myDoc.body.clientHeight));
 		tabsHeight = Math.max(tabsHeight, 30);
 		this.myDoc.getElementById('multiEditorDocumentTabsFrameDiv').style.height = tabsHeight + "px";
 		this.myDoc.getElementById('multiEditorEditorFramesetsDiv').style.top = tabsHeight + "px";
