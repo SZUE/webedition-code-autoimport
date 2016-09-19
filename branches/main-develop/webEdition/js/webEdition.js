@@ -42,15 +42,218 @@ var WebEdition = {
 		windows: [],
 		focusedWindow: null,
 		browserwind: null,
+		regular_logout: false,
 		dragNDrop: {
 			dataTransfer: {
 				text: ''
 			}
+		},
+		openToEdit: function (tab, id, contentType) {
+			if (id > 0) {
+				WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
+			}
+		},
+		we_setPath: function (_EditorFrame, path, text, id, classname) {
+			_EditorFrame = _EditorFrame ? _EditorFrame : WE().layout.weEditorFrameController.getActiveEditorFrame();
+			// update document-tab
+			_EditorFrame.initEditorFrameData({
+				EditorDocumentText: text,
+				EditorDocumentPath: path
+			});
+
+			if (classname) {
+				WE().layout.multiTabs.setTextClass(_EditorFrame.FrameId, classname);
+			}
+			if (_EditorFrame.getDocumentReference().frames.editHeader === undefined) {
+				return;
+			}
+			var doc = _EditorFrame.getDocumentReference().frames.editHeader.document;
+			if (doc) {
+				var div = doc.getElementById('h_path');
+				if (div) {
+					div.innerHTML = path.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+					if (id > 0) {
+						div = doc.getElementById('h_id');
+						div.innerHTML = id;
+					}
+				}
+			}
+		},
+		reloadUsedEditors: function (reloadTabs) {
+			var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
+
+			for (var frameId in usedEditors) {
+				if (reloadTabs[usedEditors[frameId].getEditorEditorTable()] && (reloadTabs[usedEditors[frameId].getEditorEditorTable()]).indexOf(',' + usedEditors[frameId].getEditorDocumentId() + ',') !== -1) {
+					usedEditors[frameId].setEditorReloadNeeded(true);
+				}
+			}
+		},
+		makeNewDoc: function (_EditorFrame, curType, curID, savetmpl, noClose) {
+			var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
+
+			switch (curType) {
+				case WE().consts.contentTypes.TEMPLATE:
+					if (WE().util.hasPerm("NEW_WEBEDITIONSITE")) {
+						if (_EditorFrame.getEditorMakeNewDoc() == true) {
+							if (savetmpl) {
+								top.we_cmd('new', WE().consts.tables.FILE_TABLE, '', WE().consts.contentTypes.WEDOCUMENT, '', curID);
+							}
+						} else if (noClose && _EditorFrame.getEditorIsInUse()) {
+							_EditorFrameDocumentRef.frames.editHeader.location.reload();
+						}
+					}
+					break;
+				case WE().consts.contentTypes.OBJECT:
+					if (WE().util.hasPerm('NEW_OBJECTFILE')) {
+						if (_EditorFrame.getEditorMakeNewDoc() == true) {
+							top.we_cmd('new', WE().consts.tables.OBJECT_FILES_TABLE, '', WE().consts.contentTypes.OBJECT_FILE, curID);
+						} else if (noClose && _EditorFrame.getEditorIsInUse()) {
+							_EditorFrameDocumentRef.frames.editHeader.location.reload();
+						}
+
+					}
+			}
+		},
+		propEdit: {
+			switchExt: function (doc, id, name) {
+				var a = doc.we_form.elements;
+				var ok = true;
+				if (id) {
+					ok = confirm(WE().consts.g_l.main.confirm_ext_change);
+				}
+				if (ok) {
+					a["we_" + name + "_Extension"].value = (a["we_" + name + "_IsDynamic"].value == 1 ? WE().consts.global.DEFAULT_DYNAMIC_EXT : WE().consts.global.DEFAULT_STATIC_EXT);
+				}
+			}
+		},
+		checkFileUpload: function (we_cmd_args) {
+			var parentObj = WE().layout.weEditorFrameController;
+			var frame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+
+			if (parentObj !== undefined && (frame.we_FileUpload) !== undefined && frame.we_FileUpload.getType() === 'binDoc') {
+				frame.we_FileUpload.doUploadIfReady(function () {
+					top.we_cmd.apply(this, we_cmd_args);
+				});
+			} else {
+				top.we_cmd.apply(this, we_cmd_args);
+			}
+
+		},
+		tree: {
+			oldWidth: 0,
+			widthBeforeDeleteMode: 0,
+			getWidth: function () {
+				var w = document.getElementById("bframeDiv").style.width;
+				return w.substr(0, w.length - 2);
+			},
+			toggle: function (setVisible) {
+				var tfd = self.document.getElementById("treeFrameDiv");
+				var w = WE().layout.tree.getWidth();
+
+				if (setVisible || (tfd.style.display === "none" && setVisible !== false)) {
+					WE().layout.tree.oldWidth = (WE().layout.tree.oldWidth < WE().consts.size.tree.min ? WE().consts.size.tree.defaultWidth : WE().layout.tree.oldWidth);
+					WE().layout.tree.setWidth(WE().layout.tree.oldWidth);
+					tfd.style.display = "block";
+					//setTreeArrow("left");
+					WE().layout.tree.storeWidth(WE().layout.tree.oldWidth);
+					return true;
+				}
+				tfd.style.display = "none";
+				WE().layout.tree.oldWidth = w;
+				WE().layout.tree.setWidth(WE().consts.size.tree.hidden);
+				//setTreeArrow("right");
+				return false;
+			},
+			treeOut: function () {
+				if (WE().layout.tree.getWidth() <= WE().consts.size.tree.min) {
+					WE().layout.tree.toggle();
+				}
+			},
+			setWidth: function (w) {
+				document.getElementById("bframeDiv").style.width = w + "px";
+				document.getElementById("bm_content_frameDiv").style.left = w + "px";
+				if (w > WE().consts.size.tree.hidden) {
+					WE().layout.tree.storeWidth(w);
+				}
+			},
+			inc: function () {
+				var w = parseInt(WE().layout.tree.getWidth());
+				if ((w >= WE().consts.size.tree.min) && (w < WE().consts.size.tree.max)) {
+					w += WE().consts.size.tree.step;
+					WE().layout.tree.setWidth(w);
+				}
+				if (w >= WE().consts.size.tree.max) {
+					w = WE().consts.size.tree.max;
+					WE().layout.tree.setWidth(w);
+					self.document.getElementById("incBaum").style.backgroundColor = "grey";
+				} else
+				if (w < WE().consts.size.tree.min) {
+					WE().layout.tree.toggle(true);
+				}
+			},
+			dec: function () {
+				var w = parseInt(WE().layout.tree.getWidth());
+				w -= WE().consts.size.tree.step;
+				if (w > WE().consts.size.tree.min) {
+					WE().layout.tree.setWidth(w);
+					document.getElementById("incBaum").style.backgroundColor = "";
+				}
+				if (w <= WE().consts.size.tree.min && ((w + WE().consts.size.tree.step) >= WE().consts.size.tree.min)) {
+					WE().layout.tree.toggle();
+				}
+			},
+			storeWidth: function (w) {
+				var ablauf = new Date();
+				var newTime = ablauf.getTime() + 30758400000;
+				ablauf.setTime(newTime);
+				WE().util.weSetCookie(document, "treewidth_main", w, ablauf, "/");
+			},
+		},
+		vtab: {
+			click: function (tab, table) {
+				if (top.deleteMode) {
+					we_cmd('exit_delete', table);
+				}
+				if (tab.classList.contains("tabActive")) {
+					if (WE().layout.tree.toggle()) {
+						we_cmd('loadVTab', table, 0);
+					}
+				} else {
+					WE().layout.vtab.setActiveTab(table);
+					WE().layout.tree.treeOut();
+					we_cmd('loadVTab', table, 0);
+				}
+			},
+			setActiveTab: function (table) {
+				var allTabs = document.getElementById("vtabs").getElementsByClassName("tab");
+				for (var i = 0; i < allTabs.length; i++) {
+					allTabs[i].className = "tab " + (allTabs[i].getAttribute("data-table") === table ? "tabActive" : "tabNorm");
+				}
+			}
+		},
+		openBrowser: function (url) {
+			if (!url) {
+				url = "/";
+			}
+			try {
+				WE().layout.browserwind = window.open(WE().consts.dirs.WEBEDITION_DIR + "openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
+			} catch (e) {
+				top.we_showMessage(WE().consts.g_l.alert.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
+			}
 		}
+
+
 	},
 	handler: {
 		errorHandler: errorHandler,
 		dealWithKeyboardShortCut: null,
+	},
+	t_e: function () {
+		var msg = '';
+		for (var i = 0; i < arguments.length; i++) {
+			msg += JSON.stringify(arguments[i]) + (i < (arguments.length - 1) ? "\n" : "");
+		}
+		WE().handler.errorHandler(msg, '', 0, 0, Array.prototype.slice.call(arguments));
 	},
 	//utility functions, defined in webedition.js
 	util: {
@@ -345,6 +548,26 @@ var WebEdition = {
 				btn.classList.add("fa-caret-right");
 			}
 		},
+		hasPermDelete: function (eTable, isFolder) {
+			if (eTable === "") {
+				return false;
+			}
+			if (WE().session.permissions.ADMINISTRATOR) {
+				return true;
+			}
+			switch (eTable) {
+				case WE().consts.tables.FILE_TABLE:
+					return (isFolder ? WE().session.permissions.DELETE_DOC_FOLDER : WE().session.permissions.DELETE_DOCUMENT);
+				case WE().consts.tables.TEMPLATES_TABLE:
+					return (isFolder ? WE().session.permissions.DELETE_TEMP_FOLDER : WE().session.permissions.DELETE_TEMPLATE);
+				case WE().consts.tables.OBJECT_FILES_TABLE:
+					return (isFolder ? WE().session.permissions.DELETE_OBJECTFILE : WE().session.permissions.DELETE_OBJECTFILE);
+				case WE().consts.tables.OBJECT_TABLE:
+					return (isFolder ? false : WE().session.permissions.DELETE_OBJECT);
+				default:
+					return false;
+			}
+		},
 		validate: {
 			email: function (email) {
 				email = email.replace(/".*"/g, "y");
@@ -555,12 +778,6 @@ WebEdition.session = WebEdition.util.getDynamicVar(document, 'loadWEData', 'data
 //finally load language files
 WE().util.loadConsts(document, 'g_l.main');
 
-var regular_logout = false;
-var widthBeforeDeleteMode = 0;
-var widthBeforeDeleteModeSidebar = 0;
-var we_mediaReferences = {};
-var oldTreeWidth = WE().consts.size.tree.defaultWidth;
-
 function doClickDirect(id, ct, table, fenster) {
 	if (!fenster) {
 		fenster = window;
@@ -601,127 +818,6 @@ function doExtClick(url) {
 	}
 
 	WE().layout.weEditorFrameController.openDocument('', '', '', '', '', url, '', '', parameters);
-}
-
-/*function treeResized() {
- var treeWidth = getTreeWidth();
- if (treeWidth <= WE().consts.size.tree.hidden) {
- //setTreeArrow("right");
- } else {
- //setTreeArrow("left");
- storeTreeWidth(treeWidth);
- }
- }*/
-
-function toggleTree(setVisible) {
-	var tfd = self.document.getElementById("treeFrameDiv");
-	var w = top.getTreeWidth();
-
-	if (setVisible || (tfd.style.display === "none" && setVisible !== false)) {
-		oldTreeWidth = (oldTreeWidth < WE().consts.size.tree.min ? WE().consts.size.tree.defaultWidth : oldTreeWidth);
-		setTreeWidth(oldTreeWidth);
-		tfd.style.display = "block";
-		//setTreeArrow("left");
-		storeTreeWidth(oldTreeWidth);
-		return true;
-	}
-	tfd.style.display = "none";
-	oldTreeWidth = w;
-	setTreeWidth(WE().consts.size.tree.hidden);
-	//setTreeArrow("right");
-	return false;
-}
-
-function treeOut() {
-	if (getTreeWidth() <= WE().consts.size.tree.min) {
-		toggleTree();
-	}
-}
-
-function getTreeWidth() {
-	var w = self.document.getElementById("bframeDiv").style.width;
-	return w.substr(0, w.length - 2);
-}
-
-function incTree() {
-	var w = parseInt(getTreeWidth());
-	if ((w >= WE().consts.size.tree.min) && (w < WE().consts.size.tree.max)) {
-		w += WE().consts.size.tree.step;
-		setTreeWidth(w);
-	}
-	if (w >= WE().consts.size.tree.max) {
-		w = WE().consts.size.tree.max;
-		setTreeWidth(w);
-		self.document.getElementById("incBaum").style.backgroundColor = "grey";
-	} else
-	if (w < WE().consts.size.tree.min) {
-		toggleTree(true);
-	}
-}
-
-function decTree() {
-	var w = parseInt(getTreeWidth());
-	w -= WE().consts.size.tree.step;
-	if (w > WE().consts.size.tree.min) {
-		setTreeWidth(w);
-		self.document.getElementById("incBaum").style.backgroundColor = "";
-	}
-	if (w <= WE().consts.size.tree.min && ((w + WE().consts.size.tree.step) >= WE().consts.size.tree.min)) {
-		toggleTree();
-	}
-}
-
-function getSidebarWidth() {
-	var obj = self.document.getElementById("sidebarDiv");
-	if (obj === undefined || obj === null) {
-		return 0;
-	}
-	var w = obj.style.left;
-	return w.substr(0, w.length - 2);
-}
-
-function setSidebarWidth() {
-	var obj = self.document.getElementById("sidebarDiv");
-	if (obj !== undefined && obj !== null) {
-		obj.style.left = top.w + "px";
-	}
-}
-
-function setTreeWidth(w) {
-	self.document.getElementById("bframeDiv").style.width = w + "px";
-	self.document.getElementById("bm_content_frameDiv").style.left = w + "px";
-	if (w > WE().consts.size.tree.hidden) {
-		storeTreeWidth(w);
-	}
-}
-
-function storeTreeWidth(w) {
-	var ablauf = new Date();
-	var newTime = ablauf.getTime() + 30758400000;
-	ablauf.setTime(newTime);
-	WE().util.weSetCookie(self.document, "treewidth_main", w, ablauf, "/");
-}
-
-function clickVTab(tab, table) {
-	if (top.deleteMode) {
-		we_cmd('exit_delete', table);
-	}
-	if (tab.classList.contains("tabActive")) {
-		if (toggleTree()) {
-			we_cmd('loadVTab', table, 0);
-		}
-	} else {
-		setActiveVTab(table);
-		treeOut();
-		we_cmd('loadVTab', table, 0);
-	}
-}
-
-function setActiveVTab(table) {
-	var allTabs = document.getElementById("vtabs").getElementsByClassName("tab");
-	for (var i = 0; i < allTabs.length; i++) {
-		allTabs[i].className = "tab " + (allTabs[i].getAttribute("data-table") === table ? "tabActive" : "tabNorm");
-	}
 }
 
 function we_repl(target, url) {
@@ -786,41 +882,9 @@ function openWindow(url, ref, x, y, w, h, scrollbars, menues) {
 	new (WE().util.jsWindow)(window, url, ref, x, y, w, h, true, scrollbars, menues);
 }
 
-function openBrowser(url) {
-	if (!url) {
-		url = "/";
-	}
-	try {
-		WE().layout.browserwind = window.open(WE().consts.dirs.WEBEDITION_DIR + "openBrowser.php?url=" + encodeURI(url), "browser", "menubar=yes,resizable=yes,scrollbars=yes,location=yes,status=yes,toolbar=yes");
-	} catch (e) {
-		top.we_showMessage(WE().consts.g_l.alert.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
-	}
-}
-
 function start(table_to_load) {
 	if (table_to_load) {
 		we_cmd("load", table_to_load);
-	}
-}
-
-function hasPermDelete(eTable, isFolder) {
-	if (eTable === "") {
-		return false;
-	}
-	if (WE().session.permissions.ADMINISTRATOR) {
-		return true;
-	}
-	switch (eTable) {
-		case WE().consts.tables.FILE_TABLE:
-			return (isFolder ? WE().session.permissions.DELETE_DOC_FOLDER : WE().session.permissions.DELETE_DOCUMENT);
-		case WE().consts.tables.TEMPLATES_TABLE:
-			return (isFolder ? WE().session.permissions.DELETE_TEMP_FOLDER : WE().session.permissions.DELETE_TEMPLATE);
-		case WE().consts.tables.OBJECT_FILES_TABLE:
-			return (isFolder ? WE().session.permissions.DELETE_OBJECTFILE : WE().session.permissions.DELETE_OBJECTFILE);
-		case WE().consts.tables.OBJECT_TABLE:
-			return (isFolder ? false : WE().session.permissions.DELETE_OBJECT);
-		default:
-			return false;
 	}
 }
 
@@ -869,7 +933,7 @@ function doUnloadSEEM(whichWindow) {
 
 function doUnloadNormal(whichWindow) {
 	var tinyDialog;
-	if (!regular_logout) {
+	if (!WE().layout.regular_logout) {
 
 		if (window.tinyMceDialog !== undefined && window.tinyMceDialog !== null) {
 			tinyDialog = tinyMceDialog;
@@ -1009,7 +1073,7 @@ function we_cmd_base(args, url) {
 			var path = ctrl.getActiveEditorFrame().getEditorDocumentPath();
 
 			if (ctrl.getActiveDocumentReference()) {
-				if (!hasPermDelete(eTable, (cType === "folder"))) {
+				if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
@@ -1025,7 +1089,7 @@ function we_cmd_base(args, url) {
 			var eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
 
 			if (ctrl.getActiveDocumentReference()) {
-				if (!hasPermDelete(eTable, (cType === "folder"))) {
+				if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 				} else {
 					we_sbmtFrm(self.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
@@ -1086,7 +1150,7 @@ function we_cmd_base(args, url) {
 		case "dologout":
 			// before the command 'logout' is executed, ask if unsaved changes should be saved
 			if (WE().layout.weEditorFrameController.doLogoutMultiEditor()) {
-				regular_logout = true;
+				WE().layout.regular_logout = true;
 				we_cmd('logout');
 			}
 			break;
@@ -1214,7 +1278,7 @@ function we_cmd_base(args, url) {
 			break;
 		case "setTab":
 			if (treeData !== undefined) {
-				setActiveVTab(args[1]);
+				WE().layout.vtab.setActiveTab(args[1]);
 				treeData.table = args[1];
 			} else {
 				setTimeout(we_cmd, 500, "setTab", args[1]);
@@ -1412,7 +1476,7 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, url, "we_del_selector", -1, -1, WE().consts.size.windowDelSelect.width, WE().consts.size.windowDelSelect.height, true, true, true, true);
 			break;
 		case "browse":
-			openBrowser();
+			WE().layout.openBrowser();
 			break;
 		case "home":
 			if (top.treeData) {
@@ -1443,7 +1507,7 @@ function we_cmd_base(args, url) {
 			break;
 		case 'copyFolderCheck':
 			//parents element start from 4
-			if (args.indexOf(args[1].currentID,3) > -1) {
+			if (args.indexOf(args[1].currentID, 3) > -1) {
 				WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 				break;
 			} else {
@@ -1547,8 +1611,8 @@ function we_cmd_base(args, url) {
 				cl.remove('deleteSelector');
 				cl.remove('moveSelector');
 				cl.remove('collectionSelector');
-				top.setTreeWidth(widthBeforeDeleteMode);
-				top.setSidebarWidth(widthBeforeDeleteModeSidebar);
+				WE().layout.tree.setWidth(WE().layout.tree.widthBeforeDeleteMode);
+				WE().layout.sidebar.setWidth(WE().layout.sidebar.widthBeforeDeleteMode);
 			}
 			break;
 		case "delete":
@@ -1570,19 +1634,19 @@ function we_cmd_base(args, url) {
 			}
 			self.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
 			self.document.getElementById("treetable").classList.add('deleteSelector');
-			top.toggleTree(true);
-			var width = top.getTreeWidth();
+			WE().layout.tree.toggle(true);
+			var width = WE().layout.tree.getWidth();
 
-			widthBeforeDeleteMode = width;
+			WE().layout.tree.widthBeforeDeleteMode = width;
 
 			if (width < WE().consts.size.tree.deleteWidth) {
-				top.setTreeWidth(WE().consts.size.tree.deleteWidth);
+				WE().layout.tree.setWidth(WE().consts.size.tree.deleteWidth);
 			}
-			top.storeTreeWidth(widthBeforeDeleteMode);
+			WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
 
-			var widthSidebar = top.getSidebarWidth();
+			var widthSidebar = WE().layout.sidebar.getWidth();
 
-			widthBeforeDeleteModeSidebar = widthSidebar;
+			WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
 
 			if (args[2] != 1) {
 				we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
@@ -1606,19 +1670,19 @@ function we_cmd_base(args, url) {
 				}
 				self.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
 				self.document.getElementById("treetable").classList.add('moveSelector');
-				top.toggleTree(true);
-				var width = top.getTreeWidth();
+				WE().layout.tree.toggle(true);
+				var width = WE().layout.tree.getWidth();
 
-				widthBeforeDeleteMode = width;
+				WE().layout.tree.widthBeforeDeleteMode = width;
 
 				if (width < WE().consts.size.tree.moveWidth) {
-					top.setTreeWidth(WE().consts.size.tree.moveWidth);
+					WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
 				}
-				top.storeTreeWidth(widthBeforeDeleteMode);
+				WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
 
-				var widthSidebar = top.getSidebarWidth();
+				var widthSidebar = WE().layout.sidebar.getWidth();
 
-				widthBeforeDeleteModeSidebar = widthSidebar;
+				WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
 
 				if (args[2] != 1) {
 					we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
@@ -1638,16 +1702,16 @@ function we_cmd_base(args, url) {
 				}
 				self.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
 				self.document.getElementById("treetable").classList.add('collectionSelector');
-				top.toggleTree(true);
-				var width = top.getTreeWidth();
-				widthBeforeDeleteMode = width;
+				WE().layout.tree.toggle(true);
+				var width = WE().layout.tree.getWidth();
+				WE().layout.tree.widthBeforeDeleteMode = width;
 				if (width < WE().consts.size.tree.moveWidth) {
 					top.setTreeWidth(WE().consts.size.tree.moveWidth);
 				}
-				top.storeTreeWidth(widthBeforeDeleteMode);
+				WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
 
-				var widthSidebar = top.getSidebarWidth();
-				widthBeforeDeleteModeSidebar = widthSidebar;
+				var widthSidebar = WE().layout.sidebar.getWidth();
+				WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
 
 				if (args[2] != 1) {
 					we_repl(document.getElementsByTagName("iframe").treeheader, url, args[0]);
@@ -1811,111 +1875,3 @@ function we_cmd_base(args, url) {
 	}
 	return true;
 }
-
-WE().t_e = function () {
-	var msg = '';
-	for (var i = 0; i < arguments.length; i++) {
-		msg += JSON.stringify(arguments[i]) + (i < (arguments.length - 1) ? "\n" : "");
-	}
-	WE().handler.errorHandler(msg, '', 0, 0, Array.prototype.slice.call(arguments));
-};
-
-/* ***********************************************
- * WE().layout functions
- ************************************************/
-
-WE().layout.openToEdit = function (tab, id, contentType) {
-	if (id > 0) {
-		WE().layout.weEditorFrameController.openDocument(tab, id, contentType);
-	}
-};
-
-WE().layout.we_setPath = function (_EditorFrame, path, text, id, classname) {
-	_EditorFrame = _EditorFrame ? _EditorFrame : WE().layout.weEditorFrameController.getActiveEditorFrame();
-	// update document-tab
-	_EditorFrame.initEditorFrameData({
-		EditorDocumentText: text,
-		EditorDocumentPath: path
-	});
-
-	if (classname) {
-		WE().layout.multiTabs.setTextClass(_EditorFrame.FrameId, classname);
-	}
-	if (_EditorFrame.getDocumentReference().frames.editHeader === undefined) {
-		return;
-	}
-	var doc = _EditorFrame.getDocumentReference().frames.editHeader.document;
-	if (doc) {
-		var div = doc.getElementById('h_path');
-		if (div) {
-			div.innerHTML = path.replace(/</g, '&lt;').replace(/>/g, '&gt;');
-			if (id > 0) {
-				div = doc.getElementById('h_id');
-				div.innerHTML = id;
-			}
-		}
-	}
-};
-
-WE().layout.reloadUsedEditors = function (reloadTabs) {
-	var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-
-	for (var frameId in usedEditors) {
-		if (reloadTabs[usedEditors[frameId].getEditorEditorTable()] && (reloadTabs[usedEditors[frameId].getEditorEditorTable()]).indexOf(',' + usedEditors[frameId].getEditorDocumentId() + ',') !== -1) {
-			usedEditors[frameId].setEditorReloadNeeded(true);
-		}
-	}
-};
-
-WE().layout.makeNewDoc = function (_EditorFrame, curType, curID, savetmpl, noClose) {
-	var _EditorFrameDocumentRef = _EditorFrame.getDocumentReference();
-
-	switch (curType) {
-		case WE().consts.contentTypes.TEMPLATE:
-			if (WE().util.hasPerm("NEW_WEBEDITIONSITE")) {
-				if (_EditorFrame.getEditorMakeNewDoc() == true) {
-					if (savetmpl) {
-						top.we_cmd('new', WE().consts.tables.FILE_TABLE, '', WE().consts.contentTypes.WEDOCUMENT, '', curID);
-					}
-				} else if (noClose && _EditorFrame.getEditorIsInUse()) {
-					_EditorFrameDocumentRef.frames.editHeader.location.reload();
-				}
-			}
-			break;
-		case WE().consts.contentTypes.OBJECT:
-			if (WE().util.hasPerm('NEW_OBJECTFILE')) {
-				if (_EditorFrame.getEditorMakeNewDoc() == true) {
-					top.we_cmd('new', WE().consts.tables.OBJECT_FILES_TABLE, '', WE().consts.contentTypes.OBJECT_FILE, curID);
-				} else if (noClose && _EditorFrame.getEditorIsInUse()) {
-					_EditorFrameDocumentRef.frames.editHeader.location.reload();
-				}
-
-			}
-	}
-};
-WE().layout.propEdit = {
-	switchExt: function (doc, id, name) {
-		var a = doc.we_form.elements;
-		var ok = true;
-		if (id) {
-			ok = confirm(WE().consts.g_l.main.confirm_ext_change);
-		}
-		if (ok) {
-			a["we_" + name + "_Extension"].value = (a["we_" + name + "_IsDynamic"].value == 1 ? WE().consts.global.DEFAULT_DYNAMIC_EXT : WE().consts.global.DEFAULT_STATIC_EXT);
-		}
-	}
-};
-
-WE().layout.checkFileUpload = function (we_cmd_args) {
-	var parentObj = WE().layout.weEditorFrameController;
-	var frame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
-
-	if (parentObj !== undefined && (frame.we_FileUpload) !== undefined && frame.we_FileUpload.getType() === 'binDoc') {
-		frame.we_FileUpload.doUploadIfReady(function () {
-			top.we_cmd.apply(this, we_cmd_args);
-		});
-	} else {
-		top.we_cmd.apply(this, we_cmd_args);
-	}
-
-};

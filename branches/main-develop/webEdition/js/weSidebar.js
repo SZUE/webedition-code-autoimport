@@ -25,7 +25,7 @@ WE().layout.sidebar = {
 //
 // ----> Functions to load documents in webEdition
 //
-
+	widthBeforeDeleteMode: 0,
 	load: function (url, params) {
 		var cmd = [
 			'loadSidebarDocument',
@@ -153,5 +153,19 @@ WE().layout.sidebar = {
 		mode = (obj.mode === undefined ? "" : obj.mode);
 		parameters = (obj.parameters === undefined ? "" : obj.parameters);
 		WE().layout.weEditorFrameController.openDocument(table, id, ct, editcmd, dt, url, code, mode, parameters);
+	},
+	getWidth: function () {
+		var obj = document.getElementById("sidebarDiv");
+		if (obj === undefined || obj === null) {
+			return 0;
+		}
+		var w = obj.style.left;
+		return w.substr(0, w.length - 2);
+	},
+	setWidth: function () {
+		var obj = document.getElementById("sidebarDiv");
+		if (obj !== undefined && obj !== null) {
+			obj.style.left = top.w + "px";
+		}
 	}
 };

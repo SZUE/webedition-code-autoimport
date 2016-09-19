@@ -81,7 +81,7 @@ function doClick(id) {
 	switch (table) {
 		case WE().consts.tables.FILE_TABLE:
 			if (wasdblclick && ct !== "folder") {
-				top.openBrowser(id);
+				WE().layout.openBrowser(id);
 				setTimeout(function () {
 					wasdblclick = false;
 				}, 400);

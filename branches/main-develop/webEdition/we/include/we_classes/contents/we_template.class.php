@@ -557,7 +557,7 @@ we_templateInit();?>';
 		}
 
 		return array($count, we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateDocuments', $path, 1, '', false, array('style' => 'margin-right: 20px;'), 'value', 0, $elemAttribs), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
-				we_html_button::create_button(we_html_button::VIEW, "javascript:top.openBrowser(document.we_form.elements['TemplateDocuments'].value);")
+				we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateDocuments'].value);")
 		));
 	}
 
@@ -583,7 +583,7 @@ we_templateInit();?>';
 		}
 
 		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedTemplates', $path, 1, '', false, array('style' => 'margin-right: 20px;')), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateUsedTemplates'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
-				we_html_button::create_button(we_html_button::VIEW, "javascript:top.openBrowser(document.we_form.elements['TemplateUsedTemplates'].value);")
+				we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateUsedTemplates'].value);")
 		));
 	}
 
@@ -609,7 +609,7 @@ we_templateInit();?>';
 		}
 
 		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedByTemplates', $path, 1, '', false, array('style' => 'margin-right: 20px;')), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . TEMPLATES_TABLE . "', document.we_form.elements['TemplateUsedByTemplates'].value, '" . we_base_ContentTypes::TEMPLATE . "');") .
-				we_html_button::create_button(we_html_button::VIEW, "javascript:top.openBrowser(document.we_form.elements['TemplateUsedByTemplates'].value);")
+				we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateUsedByTemplates'].value);")
 		));
 	}
 
