@@ -68,7 +68,7 @@ function startTree(){
 
 		$db->query('SELECT ' . $elem . ' FROM ' . $table . $where . ' ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,abs(text),Text' . ($segment ? " LIMIT $offset,$segment" : '' ));
 
-		while($db->next_record()){
+		while($db->next_record(MYSQLI_ASSOC)){
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
@@ -79,13 +79,7 @@ function startTree(){
 			);
 			$tt = '';
 
-			$fileds = [];
-
-			foreach($db->Record as $k => $v){
-				if(!is_numeric($k)){
-					$fileds[strtolower($k)] = $v;
-				}
-			}
+			$fileds = array_change_key_case($db->Record,CASE_LOWER);
 
 			$fileds['text'] = trim($tt) ? $tt : $db->f('Text');
 			$items[] = array_merge($fileds, $typ);

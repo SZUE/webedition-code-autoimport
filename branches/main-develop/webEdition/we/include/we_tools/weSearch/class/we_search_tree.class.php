@@ -71,38 +71,46 @@ class we_search_tree extends we_tree_base{
 		$db->query('SELECT ID,ParentID,Path,Text,IsFolder FROM ' . $db->escape(SUCHE_TABLE) . $where . ' ORDER BY (Text REGEXP "^[0-9]") DESC,abs(Text),Text' . ($segment ? ' LIMIT ' . abs($offset) . ',' . abs($segment) : ''));
 
 		while($db->next_record(MYSQL_ASSOC)){//FIXME: this is no good code
-			if(($db->f('ID') == 3 || $db->f('ID') == 7) && (!defined('OBJECT_FILES_TABLE') || !defined('OBJECT_TABLE') || !permissionhandler::hasPerm('CAN_SEE_OBJECTFILES'))){
+			switch($db->f('ID')){
+				case 3:
+				case 7:
+					if(!defined('OBJECT_FILES_TABLE') || !defined('OBJECT_TABLE') || !permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
+						continue;
+					}
+				case 2:
+				case 4:
+				case 5:
+				case 6:
+					if(!permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+						continue;
+					}
+				default:
+					if(strpos($db->f('Path'), '/Versionen') === 0 && !permissionhandler::hasPerm('SEE_VERSIONS')){
+						continue;
+					}
 
-			} elseif(($db->f('ID') == 2 || $db->f('ID') == 4 || $db->f('ID') == 5 || $db->f('ID') == 6) && !permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
+					$OpenCloseStatus = (in_array($db->f('ID'), $openFolders) ? 1 : 0);
 
-			} elseif(strpos($db->f('Path'), '/Versionen') === 0 && !permissionhandler::hasPerm('SEE_VERSIONS')){
+					$typ = [
+						'typ' => ($db->f('IsFolder') ? 'group' : 'item'),
+						'contentType' => ($db->f('IsFolder') ? 'folder' : 'we/search'),
+						'open' => $OpenCloseStatus,
+						'disabled' => 0,
+						'tooltip' => $db->f('ID'),
+						'offset' => $offset,
+						'order' => $db->f('Ordn'),
+						'published' => 1,
+						'disabled' => 0,
+						'text' => oldHtmlspecialchars(we_search_model::getLangText($db->f('Path'), $db->f('Text'))),
+					];
+					$fields = array_change_key_case($db->Record, CASE_LOWER);
 
-			} else {
-				$OpenCloseStatus = (in_array($db->f('ID'), $openFolders) ? 1 : 0);
 
-				$typ = array(
-					'typ' => ($db->f('IsFolder') ? 'group' : 'item'),
-					'contentType' => ($db->f('IsFolder') ? 'folder' : 'we/search'),
-					'open' => $OpenCloseStatus,
-					'disabled' => 0,
-					'tooltip' => $db->f('ID'),
-					'offset' => $offset,
-					'order' => $db->f('Ordn'),
-					'published' => 1,
-					'disabled' => 0,
-					'text' => oldHtmlspecialchars(we_search_model::getLangText($db->f('Path'), $db->f('Text'))),
-				);
-				$fields = [];
+					self::$treeItems[] = array_merge($fields, $typ);
 
-				foreach($db->Record as $k => $v){
-					$fields[strtolower($k)] = $v;
-				}
-
-				self::$treeItems[] = array_merge($fields, $typ);
-
-				if($typ['typ'] === "group" && $OpenCloseStatus == 1){
-					self::getItemsFromDB($db->f('ID'), 0, $segment);
-				}
+					if($typ['typ'] === "group" && $OpenCloseStatus == 1){
+						self::getItemsFromDB($db->f('ID'), 0, $segment);
+					}
 			}
 		}
 

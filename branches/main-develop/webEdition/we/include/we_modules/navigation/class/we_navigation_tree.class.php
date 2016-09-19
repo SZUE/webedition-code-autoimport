@@ -82,19 +82,13 @@ class we_navigation_tree extends we_tree_base{
 				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/navigation'),
 			);
 
-			$fileds = [];
-
-			foreach($db->Record as $k => $v){
-				$fileds[strtolower($k)] = $v;
-			}
+			$fileds = array_change_key_case($db->Record, CASE_LOWER);
 
 			$charset = ($db->f('IsFolder') == 0 ?
 					we_navigation_navigation::findCharset($db->f('ParentID')) :
 					$db->f('Charset'));
 
-			$text = strip_tags(strtr($db->f('Text'), array(
-				'&amp;' => '&', "<br/>" => " ", "<br />" => " "
-			)));
+			$text = strip_tags(strtr($db->f('Text'), ['&amp;' => '&', "<br/>" => " ", "<br />" => " "]));
 			$path = str_replace('&amp;', '&', $db->f('Path'));
 
 			if(!empty($charset) && function_exists('mb_convert_encoding')){
@@ -111,8 +105,7 @@ class we_navigation_tree extends we_tree_base{
 		$total = f('SELECT COUNT(1) FROM ' . NAVIGATION_TABLE . ' WHERE ' . $where, '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
-			$items[] = array(
-				'id' => 'next_' . $ParentID,
+			$items[] = ['id' => 'next_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
 				'contenttype' => 'arrowdown',
@@ -122,7 +115,7 @@ class we_navigation_tree extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $nextoffset
-			);
+				];
 		}
 
 		return $items;

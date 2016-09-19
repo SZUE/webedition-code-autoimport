@@ -144,7 +144,7 @@ class we_base_preferences{
 			}
 		}
 
-		$tmp = isset($_SESSION['prefs']) && is_array($_SESSION['prefs']) ? array_diff_assoc($_SESSION['prefs'], $GLOBALS['config_files']['oldPrefs']) : [];
+		$tmp = !empty($_SESSION['prefs']) && is_array($_SESSION['prefs']) ? array_diff_assoc($_SESSION['prefs'], $GLOBALS['config_files']['oldPrefs']) : [];
 		if(!empty($tmp)){
 			we_users_user::writePrefs($_SESSION['prefs']['userID'], $GLOBALS['DB_WE']);
 		}

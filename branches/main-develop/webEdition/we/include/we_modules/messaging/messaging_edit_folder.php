@@ -95,14 +95,14 @@ document.edit_folder.submit();
 
 		$n = isset($finf) ? $finf['Name'] : '';
 		$orgn = $n;
-		$fooArray = array(
+		$fooArray = [
 			"sent" => g_l('modules_messaging', '[folder_sent]'),
 			"messages" => g_l('modules_messaging', '[folder_messages]'),
 			"done" => g_l('modules_messaging', '[folder_done]'),
 			"task" => g_l('modules_messaging', '[folder_todo]'),
 			"rejected" => g_l('modules_messaging', '[folder_rejected]'),
 			"todo" => g_l('modules_messaging', '[folder_todo]')
-		);
+		];
 		if(isset($fooArray[strtolower($n)])){
 			$n = $fooArray[strtolower($n)];
 			$specialfolder = true;

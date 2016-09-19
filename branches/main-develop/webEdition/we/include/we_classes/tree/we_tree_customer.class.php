@@ -131,10 +131,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 			);
 
 			$tt = $db->f('treeFormat');
-			$fileds = [];
-			foreach($db->Record as $k => $v){
-				$fileds[strtolower($k)] = $v;
-			}
+			$fileds = array_change_key_case($db->Record,CASE_LOWER);
 
 			$fileds["text"] = oldHtmlspecialchars($tt);
 			$items[] = array_merge($fileds, $typ);

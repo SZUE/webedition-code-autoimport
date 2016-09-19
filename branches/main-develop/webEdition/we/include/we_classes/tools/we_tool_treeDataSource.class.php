@@ -100,7 +100,7 @@ class we_tool_treeDataSource{
 
 		$db->query('SELECT ' . $elem . ' FROM ' . $db->escape($table) . $where . ' ORDER BY (text REGEXP "^[0-9]") DESC,abs(text),Text ' . ($segment ? 'LIMIT ' . abs($offset) . ',' . abs($segment) : '' ));
 
-		while($db->next_record()){
+		while($db->next_record(MYSQLI_ASSOC)){
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
@@ -113,13 +113,7 @@ class we_tool_treeDataSource{
 				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'item'),
 			);
 
-			$fileds = [];
-
-			foreach($db->Record as $k => $v){
-				if(!is_numeric($k)){
-					$fileds[strtolower($k)] = $v;
-				}
-			}
+			$fileds = array_change_key_case($db->Record, CASE_LOWER);
 
 			$items[] = array_merge($fileds, $typ);
 		}
