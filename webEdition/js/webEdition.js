@@ -1808,7 +1808,7 @@ WE().t_e = function () {
 	for (var i = 0; i < arguments.length; i++) {
 		msg += JSON.stringify(arguments[i]) + (i < (arguments.length - 1) ? "\n" : "");
 	}
-	WE().handler.errorHandler(msg);
+	WE().handler.errorHandler(msg, '', 0, 0, Array.prototype.slice.call(arguments));
 };
 
 /* ***********************************************
