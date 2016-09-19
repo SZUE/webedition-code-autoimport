@@ -1441,6 +1441,15 @@ function we_cmd_base(args, url) {
 		case "copyWeDocumentCustomerFilter":
 			new (WE().util.jsWindow)(this, url, "copyWeDocumentCustomerFilter", -1, -1, 400, 115, true, true, true);
 			break;
+		case 'copyFolderCheck':
+			//parents element start from 4
+			if (args.indexOf(args[1].currentID,3) > -1) {
+				WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+				break;
+			} else {
+				we_cmd('copyFolder', args[1].currentID, args[2], 1, args[3]);
+			}
+			break;
 		case "copyFolder":
 			new (WE().util.jsWindow)(this, url, "copyfolder", -1, -1, 550, 320, true, true, true);
 			break;

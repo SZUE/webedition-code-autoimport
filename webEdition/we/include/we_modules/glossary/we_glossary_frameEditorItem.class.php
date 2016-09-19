@@ -316,7 +316,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			$linkPath = $linkID = $workspaceID = $parameter = "";
 		}
 
-		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','link[Attributes][ObjectLinkID]','link[Attributes][ObjectLinkPath]','" . we_base_request::encCmd("opener.we_cmd('populateWorkspaces');") . "','','0','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
+		$cmd = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements['link[Attributes][ObjectLinkID]'].value,'" . OBJECT_FILES_TABLE . "','link[Attributes][ObjectLinkID]','link[Attributes][ObjectLinkPath]','populateWorkspaces','','0','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$button = we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false);
 
 		$yuiSuggest = &weSuggest::getInstance();
