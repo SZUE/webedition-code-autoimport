@@ -22,10 +22,10 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var hot = 0;
+var hot = false;
 
 function setHot() {
-	hot = 1;
+	hot = true;
 }
 
 function addListeners() {

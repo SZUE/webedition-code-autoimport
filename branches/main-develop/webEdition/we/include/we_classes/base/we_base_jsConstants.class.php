@@ -153,6 +153,7 @@ abstract class we_base_jsConstants{
 		move_exit_open_docs_continue:"' . g_l('alert', '[move_exit_open_docs_continue]') . '",
 		discard_changed_data:"' . g_l('alert', '[discard_changed_data]') . '",
 		revert_publish_question:"' . we_message_reporting::prepareMsgForJS(g_l('weEditorInfo', '[revert_publish_question]')) . '",
+		same_master_template:"' . we_message_reporting::prepareMsgForJS(g_l('weClass', '[same_master_template]')) . '",
 	},
 	scheduler:{
 		activeSchedule:{

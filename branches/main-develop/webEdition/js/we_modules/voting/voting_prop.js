@@ -57,22 +57,20 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
 			break;
 		case "users_add_owner":
-			var owners = args[1];
-			var isfolders = args[2];
+			var owners = args[1].allPaths;
+			var isfolders = args[2].allIsFolder;
 
-			var own_arr = owners.split(",");
-			var isfolders_arr = isfolders.split(",");
-			for (i = 0; i < own_arr.length; i++) {
-				if (own_arr[i] !== "") {
+			for (i = 0; i < owners.length; i++) {
+				if (owners[i] !== "") {
 					owners_label.addItem();
-					owners_label.setItem(0, (owners_label.itemCount - 1), WE().util.getTreeIcon(isfolders_arr[i] == 1 ? "folder" : "we/user") + " " + own_arr[i]);
+					owners_label.setItem(0, (owners_label.itemCount - 1), WE().util.getTreeIcon(isfolders[i] == 1 ? "folder" : "we/user") + " " + owners[i]);
 					owners_label.showVariant(0);
 				}
 			}
 			break;
 		case "export_csv":
-			oldcmd = document.we_form.cmd.value;
-			oldpnt = document.we_form.pnt.value;
+			var oldcmd = document.we_form.cmd.value;
+			var oldpnt = document.we_form.pnt.value;
 			document.we_form.question_name.value = question_edit.name;
 			document.we_form.answers_name.value = answers_edit.name;
 			document.we_form.variant_count.value = answers_edit.variantCount;

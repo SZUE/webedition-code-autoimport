@@ -64,7 +64,7 @@ var activ_tab = 1;
 var hot= 0;
 var scrollToVal=0;
 var table = WE().consts.tables.FILE_TABLE;
-') . we_html_element::jsScript(WE_JS_MODULES_DIR . '/export/export_top.js', 'parent.document.title = "' . $title . '"');
+') . we_html_element::jsScript(WE_JS_MODULES_DIR . '/export/export_top.js', "parent.document.title='" . $title . "'");
 	}
 
 	function getJSProperty(){

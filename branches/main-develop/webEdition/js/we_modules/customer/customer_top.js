@@ -25,17 +25,17 @@
 
 var get_focus = 1;
 var activ_tab = 0;
-var hot = 0;
+var hot = false;
 var scrollToVal = 0;
 
 WE().util.loadConsts(document, "g_l.customer");
 
 function setHot() {
-	hot = 1;
+	hot = true;
 }
 
 function usetHot() {
-	hot = 0;
+	hot = false;
 }
 
 function doUnload() {

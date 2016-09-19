@@ -26,7 +26,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 var activ_tab = 1;
-var hot = 0;
+var hot = false;
 
 WE().util.loadConsts(document, "g_l.weSearch");
 
@@ -61,7 +61,7 @@ function we_cmd() {
 		case "tool_weSearch_new":
 		case "tool_weSearch_new_group":
 			if (top.content.editor.edbody.loaded) {
-				top.content.hot = 0;
+				top.content.hot = false;
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
@@ -125,7 +125,7 @@ function we_cmd() {
 			break;
 		case "tool_weSearch_new_forDocuments":
 			if (top.content.editor.edbody.loaded) {
-				top.content.hot = 0;
+				top.content.hot = false;
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.activ_tab = 1;
 				top.content.editor.edbody.document.we_form.tabnr.value = 1;
@@ -141,7 +141,7 @@ function we_cmd() {
 
 		case "tool_weSearch_new_forTemplates":
 			if (top.content.editor.edbody.loaded) {
-				top.content.hot = 0;
+				top.content.hot = false;
 				top.content.activ_tab = 2;
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.tabnr.value = 2;
@@ -157,7 +157,7 @@ function we_cmd() {
 
 		case "tool_weSearch_new_forObjects":
 			if (top.content.editor.edbody.loaded) {
-				top.content.hot = 0;
+				top.content.hot = false;
 				top.content.activ_tab = 3;
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.tabnr.value = 3;
@@ -173,7 +173,7 @@ function we_cmd() {
 
 		case "tool_weSearch_new_forMedia":
 			if (top.content.editor.edbody.loaded) {
-				top.content.hot = 0;
+				top.content.hot = false;
 				top.content.activ_tab = 5;
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.tabnr.value = 5;
@@ -189,7 +189,7 @@ function we_cmd() {
 
 		case "tool_weSearch_new_advSearch":
 			if (top.content.editor.edbody.loaded) {
-				top.content.hot = 0;
+				top.content.hot = false;
 				top.content.activ_tab = 3;
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
 				top.content.editor.edbody.document.we_form.tabnr.value = 3;
@@ -209,6 +209,6 @@ function we_cmd() {
 }
 
 function mark() {
-	hot = 1;
+	hot = true;
 	top.content.editor.edheader.mark();
 }

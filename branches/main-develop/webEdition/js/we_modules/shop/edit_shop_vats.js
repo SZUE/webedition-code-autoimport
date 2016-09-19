@@ -25,7 +25,7 @@
  */
 var allVats = WE().util.getDynamicVar(document, 'loadVarEdit_shop_vats', 'data-allVats');
 
-var hot = 0;
+var hot = false;
 
 function doKeyDown(e) {
 	var key = (e.charCode === undefined ? event.keyCode : e.charCode);
@@ -50,7 +50,7 @@ function we_submitForm(url) {
 }
 
 function setHot() {
-	hot = 1;
+	hot = true;
 }
 
 function addListeners() {

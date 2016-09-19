@@ -1648,7 +1648,7 @@ function delElement(elvalues,elem) {
 
 		if(defined('CUSTOMER_TABLE')){
 			$filter = new we_navigation_customerFilter(we_customer_abstractFilter::FILTER, [], [], [], $this->workspaces[CUSTOMER_TABLE]);
-			$view = new we_customer_filterView($filter, 'top.content.setHot();', 520);
+			$view = new we_customer_filterView($filter, 520);
 			if($parentWsp[CUSTOMER_TABLE]){
 
 				$parent = '';

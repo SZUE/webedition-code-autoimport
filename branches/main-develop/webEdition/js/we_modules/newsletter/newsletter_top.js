@@ -25,15 +25,15 @@
  */
 
 var get_focus = 1;
-var hot = 0;
+var hot = false;
 WE().util.loadConsts(document, "g_l.newsletter");
 
 function setHot() {
-	hot = 1;
+	hot = true;
 }
 
 function usetHot() {
-	hot = 0;
+	hot = false;
 }
 
 function doUnload() {
@@ -126,7 +126,7 @@ function we_cmd() {
 			break;
 
 		case "newsletter_edit":
-			top.content.hot = 0;
+			top.content.hot = false;
 			top.content.editor.edbody.document.we_form.ncmd.value = args[0];
 			top.content.editor.edbody.document.we_form.nid.value = args[1];
 			top.content.editor.edbody.submitForm();

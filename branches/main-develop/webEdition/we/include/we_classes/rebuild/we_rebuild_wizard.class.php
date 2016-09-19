@@ -362,7 +362,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	static function formCategory($categories, $catAnd){
 		$catAndCheck = we_html_forms::checkbox(1, $catAnd, "catAnd", g_l('rebuild', '[catAnd]'), false, "defaultfont", "document.we_form.btype[2].checked=true;");
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:document.we_form.btype[2].checked=true;we_cmd('del_all_cats')");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:document.we_form.btype[2].checked=true;we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22);
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:document.we_form.btype[2].checked=true;we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs.join(\\',\\'));')", false, 100, 22);
 		$upperTable = '<table class="default" style="width:495px;"><tr><td style="text-align:left">' . $catAndCheck . '</td><td style="text-align:right">' . $delallbut . $addbut . '</td></tr></table>';
 
 		$cats = new we_chooser_multiDir(495, $categories, "del_cat", $upperTable, '', '"we/category"', CATEGORY_TABLE);
@@ -397,8 +397,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 	 */
 	static function formFolders($folders, $thumnailpage = false, $width = 495){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('del_all_folders')");
-		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:" . ($thumnailpage ? "" : "document.we_form.btype[2].checked=true;") . "we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','add_folder','','','',1)");
 
 		$dirs = new we_chooser_multiDir($width, $folders, "del_folder", $delallbut . $addbut, '', 'ContentType', FILE_TABLE);
 

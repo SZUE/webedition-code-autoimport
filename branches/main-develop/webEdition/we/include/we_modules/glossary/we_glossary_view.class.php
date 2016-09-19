@@ -50,7 +50,7 @@ class we_glossary_view extends we_modules_view{
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
 		return
 			parent::getJSTop() .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view.js', 'parent.document.title = "' . $title . '";');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_view.js', "parent.document.title='" . $title . "';");
 	}
 
 	function getJSProperty(){

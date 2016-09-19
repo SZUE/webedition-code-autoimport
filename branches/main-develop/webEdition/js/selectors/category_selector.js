@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-var hot = 0; // this is hot for category edit!!
+var hot = false; // this is hot for category edit!!
 
 WE().util.loadConsts(document, "g_l.selectors.category");
 

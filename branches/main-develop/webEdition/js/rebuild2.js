@@ -88,7 +88,7 @@ function we_cmd() {
 			f.submit();
 			break;
 		case "add_folder":
-			var foldersToAdd = makeArrayFromCSV(args[1]);
+			var foldersToAdd = args[1].allIDs;
 			folders = makeArrayFromCSV(f[WE().session.rebuild.folders].value);
 			for (i = 0; i < foldersToAdd.length; i++) {
 				if (!WE().util.in_array(foldersToAdd[i], folders)) {

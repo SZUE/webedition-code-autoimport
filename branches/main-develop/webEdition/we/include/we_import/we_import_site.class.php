@@ -253,23 +253,23 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$ct = we_base_request::_(we_base_request::STRING, 'createType');
 
 		$data = ($ct === 'specify' ?
-				['valueCreateType' => $ct,
-				'valueTemplateId' => we_base_request::_(we_base_request::INT, 'templateID', 0),
-				'valueUseRegex' => we_base_request::_(we_base_request::BOOL, 'useRegEx'),
-				'valueFieldValues' => serialize(we_base_request::_(we_base_request::RAW, 'fields', [])),
-				'valueDateFormat' => we_base_request::_(we_base_request::STRING, 'dateFormat', 'unix'),
-				'valueDateFormatField' => we_base_request::_(we_base_request::RAW, 'dateformatField', ''),
-				'valueTemplateName' => g_l('siteimport', '[newTemplate]'),
-				'valueTemplateParentID' => 0,
-				] :
-				['valueCreateType' => $ct,
-				'valueTemplateId' => 0,
-				'valueUseRegex' => false,
-				'valueFieldValues' => serialize([]),
-				'valueDateFormat' => 'unix',
-				'valueDateFormatField' => '',
-				'valueTemplateName' => we_base_request::_(we_base_request::STRING, 'templateName', g_l('siteimport', '[newTemplate]')),
-				'valueTemplateParentID' => we_base_request::_(we_base_request::INT, 'templateParentID', 0),
+			['valueCreateType' => $ct,
+			'valueTemplateId' => we_base_request::_(we_base_request::INT, 'templateID', 0),
+			'valueUseRegex' => we_base_request::_(we_base_request::BOOL, 'useRegEx'),
+			'valueFieldValues' => serialize(we_base_request::_(we_base_request::RAW, 'fields', [])),
+			'valueDateFormat' => we_base_request::_(we_base_request::STRING, 'dateFormat', 'unix'),
+			'valueDateFormatField' => we_base_request::_(we_base_request::RAW, 'dateformatField', ''),
+			'valueTemplateName' => g_l('siteimport', '[newTemplate]'),
+			'valueTemplateParentID' => 0,
+			] :
+			['valueCreateType' => $ct,
+			'valueTemplateId' => 0,
+			'valueUseRegex' => false,
+			'valueFieldValues' => serialize([]),
+			'valueDateFormat' => 'unix',
+			'valueDateFormatField' => '',
+			'valueTemplateName' => we_base_request::_(we_base_request::STRING, 'templateName', g_l('siteimport', '[newTemplate]')),
+			'valueTemplateParentID' => we_base_request::_(we_base_request::INT, 'templateParentID', 0),
 		]);
 		// update session
 		$_SESSION['prefs']['siteImportPrefs'] = we_serialize($data);
@@ -289,8 +289,8 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	private function _getSiteImportTableHTML($fields, $values = []){
 
 		$headlines = [['dat' => g_l('siteimport', '[fieldName]')],
-			['dat' => g_l('siteimport', '[startMark]')],
-			['dat' => g_l('siteimport', '[endMark]')]
+				['dat' => g_l('siteimport', '[startMark]')],
+				['dat' => g_l('siteimport', '[endMark]')]
 		];
 
 		$content = [];
@@ -299,9 +299,9 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			foreach(array_keys($fields) as $name){
 				list($valpre, $valpost) = $this->_getIndexOfValues($values, $name);
 				$content[] = [
-					['dat' => oldHtmlspecialchars($name) . we_html_element::htmlHidden('fields[' . $i . '][name]', $name)],
-					['dat' => '<textarea name="fields[' . $i . '][pre]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpre) . '</textarea>'],
-					['dat' => '<textarea name="fields[' . $i . '][post]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpost) . '</textarea>'],
+						['dat' => oldHtmlspecialchars($name) . we_html_element::htmlHidden('fields[' . $i . '][name]', $name)],
+						['dat' => '<textarea name="fields[' . $i . '][pre]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpre) . '</textarea>'],
+						['dat' => '<textarea name="fields[' . $i . '][post]" style="width:160px;height:80px" wrap="off">' . oldHtmlspecialchars($valpost) . '</textarea>'],
 				];
 				$i++;
 			}
@@ -404,7 +404,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	private function _getTemplateSelectHTML($tid){
 		$path = f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid));
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','templateID','templateDummy','" . we_base_request::encCmd("opener.displayTable();") . "','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['templateID'].value,'" . TEMPLATES_TABLE . "','templateID','templateDummy','displayTable','','','" . we_base_ContentTypes::TEMPLATE . "',1)");
 
 		$foo = we_html_tools::htmlTextInput('templateDummy', 30, $path, "", ' readonly', "text", 320, 0);
 		return we_html_tools::htmlFormElementTable(
@@ -502,7 +502,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 				], 1, $this->depth, false, [], "value", 150);
 
 		$depth = we_html_tools::htmlFormElementTable($select, g_l('siteimport', '[depth]'));
-		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024)) ? : 20;
+		$maxallowed = round($GLOBALS['DB_WE']->getMaxAllowedPacket() / (1024 * 1024)) ?: 20;
 		$maxarray = [
 			"0" => g_l('siteimport', '[nolimit]'), "0.5" => "0.5"
 		];
@@ -533,11 +533,11 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$tableObj->setCol(4, 1, null, $wePagesOptionButton);
 
 		$parts = [
-			["headline" => g_l('siteimport', '[dirs_headline]'),
+				["headline" => g_l('siteimport', '[dirs_headline]'),
 				"html" => $importFrom . $importTo,
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
-			["headline" => g_l('siteimport', '[import]'),
+				["headline" => g_l('siteimport', '[import]'),
 				"html" => $tableObj->getHtml(),
 				'space' => we_html_multiIconBox::SPACE_MED
 			],
@@ -1167,7 +1167,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 			return [0, ''];
 		}
 		$res = getHash('SELECT ID,ContentType FROM ' . $db->escape($table) . ' WHERE Path="' . $db->escape($path) . '"', $db);
-		return ($res? : [0, null]);
+		return ($res ?: [0, null]);
 	}
 
 	/**
@@ -1305,7 +1305,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 	 */
 	public static function postprocessFile($path, $sourcePath, $destinationDirID){
 		$we_docSave = isset($GLOBALS["we_doc"]) ? $GLOBALS["we_doc"] : null;
-		self::$DB = self::$DB? : new DB_WE();
+		self::$DB = self::$DB ?: new DB_WE();
 
 		// preparing Paths
 		$path = str_replace('\\', '/', $path); // change windoof backslashes to slashes
@@ -1494,12 +1494,12 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		if($contentType == we_base_ContentTypes::IMAGE){
 			$GLOBALS["we_doc"]->Thumbs = $thumbs;
 			$newWidth = ($width && $widthSelect === "percent" ?
-					round(($GLOBALS["we_doc"]->getElement("origwidth") / 100) * $width) :
-					$width);
+				round(($GLOBALS["we_doc"]->getElement("origwidth") / 100) * $width) :
+				$width);
 
 			$newHeight = ($height && $widthSelect === "percent" ?
-					round(($GLOBALS["we_doc"]->getElement("origheight") / 100) * $height) :
-					$height);
+				round(($GLOBALS["we_doc"]->getElement("origheight") / 100) * $height) :
+				$height);
 
 			if(($newWidth && ($newWidth != $GLOBALS["we_doc"]->getElement("origwidth"))) || ($newHeight && ($newHeight != $GLOBALS["we_doc"]->getElement("origheight")))){
 				$GLOBALS["we_doc"]->resizeImage($newWidth, $newHeight, $quality, $keepRatio);

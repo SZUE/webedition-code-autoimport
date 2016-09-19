@@ -178,6 +178,7 @@ function findInclude($cmd){
 		case 'add_navi':
 		case 'change_link':
 		case 'change_linklist':
+		case 'copyDocumentSelect':
 		case 'copyDocument':
 		case 'del_thumb':
 		case 'delete_all_cats':
@@ -200,6 +201,7 @@ function findInclude($cmd){
 		case 'load_editor':
 		case 'new_alias':
 		case 'publish':
+		case 'reload_hot_editpage':
 		case 'reload_editpage':
 		case 'remove_image':
 		case 'resizeImage':

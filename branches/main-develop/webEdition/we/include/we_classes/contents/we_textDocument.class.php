@@ -78,7 +78,7 @@ class we_textDocument extends we_document{
 	}
 
 	function replaceWEIDs($doc = '', $registerOnly = false){
-		$doc = $doc ? : parent::i_getDocumentToSave();
+		$doc = $doc ?: parent::i_getDocumentToSave();
 		$matches = [];
 		if(preg_match_all('|#WE:(\d+)#|', $doc, $matches)){
 			$matches = array_unique($matches[1], SORT_NUMERIC);
@@ -197,12 +197,11 @@ class we_textDocument extends we_document{
 	}
 
 	public function getPropertyPage(){
-		return we_html_multiIconBox::getHTML('PropertyPage', array(
-				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED),
-				($this->ContentType == we_base_ContentTypes::CSS ? array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formParseFile(), 'space' => we_html_multiIconBox::SPACE_MED2) : null),
-				array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED),
-				array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED),
-				array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED))
+		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED],
+				($this->ContentType == we_base_ContentTypes::CSS ? ['icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formParseFile(), 'space' => we_html_multiIconBox::SPACE_MED2] : null),
+				['icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED],
+					['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED],
+					['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED]]
 		);
 	}
 

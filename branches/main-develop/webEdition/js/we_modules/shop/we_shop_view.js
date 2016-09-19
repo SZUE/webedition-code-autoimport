@@ -24,7 +24,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var hot = 0;
+var hot = false;
 var get_focus = 1;
 var activ_tab = 1;
 var scrollToVal = 0;

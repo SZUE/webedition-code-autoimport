@@ -27,11 +27,11 @@
 WE().util.loadConsts(document, "g_l.exports");
 
 function setHot() {
-	hot = 1;
+	hot = true;
 }
 
 function usetHot() {
-	hot = 0;
+	hot = false;
 }
 
 function doUnload() {
@@ -175,7 +175,7 @@ function we_cmd() {
 				WE().util.showMessage(WE().consts.g_l.exports.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return;
 			}
-			top.content.hot = 0;
+			top.content.hot = false;
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.pnt.value = "edbody";
 			top.content.editor.edbody.document.we_form.cmdid.value = args[1];

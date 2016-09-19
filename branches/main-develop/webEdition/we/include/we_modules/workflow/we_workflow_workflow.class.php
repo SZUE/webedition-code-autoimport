@@ -100,7 +100,7 @@ class we_workflow_workflow extends we_workflow_base{
 	 * Load workflow definition from database
 	 */
 	function load($id = 0){
-		$this->ID = $id ? : $this->ID;
+		$this->ID = $id ?: $this->ID;
 		if(!$this->ID){
 			return false;
 		}
@@ -206,12 +206,12 @@ class we_workflow_workflow extends we_workflow_base{
 
 	static function isDocInWorkflow($docID, we_database_base $db){
 		$id = f('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type IN(' . self::DOCTYPE_CATEGORY . ',' . self::FOLDER . ') AND Status=' . self::STATE_INACTIVE, '', $db);
-		return ($id ? : false);
+		return ($id ?: false);
 	}
 
 	static function isObjectInWorkflow($docID, we_database_base $db){
 		$id = f('SELECT ID FROM ' . WORKFLOW_DOC_TABLE . ' WHERE documentID=' . intval($docID) . ' AND Type=' . self::OBJECT . ' AND Status=' . self::STATE_INACTIVE, '', $db);
-		return ($id ? : false);
+		return ($id ?: false);
 	}
 
 	/**
@@ -264,7 +264,7 @@ class we_workflow_workflow extends we_workflow_base{
 		}
 		$all = array_keys($wfIDs);
 		return ($workflowID ? $workflowID // when we have found a document type-based workflow we can return
-				: (self::findWfIdForFolder($folder, $db, $all) ? : false));
+			: (self::findWfIdForFolder($folder, $db, $all) ?: false));
 	}
 
 	private static function findWfIdForFolder($folderID, we_database_base $db, array &$all){
@@ -324,7 +324,7 @@ class we_workflow_workflow extends we_workflow_base{
 		}
 		$all = array_keys($wfIDs);
 
-		return ($workflowID ? : false);
+		return ($workflowID ?: false);
 	}
 
 	function addNewStep(){
@@ -338,15 +338,16 @@ class we_workflow_workflow extends we_workflow_base{
 	}
 
 	public static function getJSLangConsts(){
-		return 'WE().consts.g_l.workflow.view={
+		return 'WE().consts.g_l.workflow={
+	view:{
 	save_changed_workflow:"' . g_l('modules_workflow', '[save_changed_workflow]') . '",
 	save_question:"' . g_l('modules_workflow', '[save_question]') . '",
 	delete_question:"' . g_l('modules_workflow', '[delete_question]') . '",
 	nothing_to_delete: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_delete]')) . '",
-	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_save]')) . '"
+	nothing_to_save: "' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[nothing_to_save]')) . '",
 	emty_log_question:"' . g_l('modules_workflow', '[emty_log_question]') . '",
-};
-WE().consts.g_l.workflow.prop={
+},
+prop:{
 	worktime_empty: "' . addslashes(g_l('modules_workflow', '[worktime_empty]')) . '",
 	user_empty:"' . addslashes(g_l('modules_workflow', '[user_empty]')) . '",
 	del_last_step:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[del_last_step]')) . '",
@@ -355,6 +356,7 @@ WE().consts.g_l.workflow.prop={
 	folders_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[folders_empty]')) . '",
 	doctype_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[doctype_empty]')) . '",
 	objects_empty:"' . we_message_reporting::prepareMsgForJS(g_l('modules_workflow', '[objects_empty]')) . '"
+}
 };';
 	}
 

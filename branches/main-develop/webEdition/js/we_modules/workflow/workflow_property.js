@@ -61,20 +61,24 @@ function we_cmd() {
 			submitForm();
 			break;
 		case "add_folder":
+		case "add_object":
+		case "add_object_file_folder":
+			document.we_form.wcmd.value = args[0];
+			document.we_form.wfolder.value = args[1].allIDs.join(',');
+			submitForm();
+			break;
 		case "del_folder":
 		case "del_all_folders":
 			document.we_form.wcmd.value = args[0];
 			document.we_form.wfolder.value = args[1];
 			submitForm();
 			break;
-		case "add_object_file_folder":
 		case "del_object_file_folder":
 		case "del_all_object_file_folders":
 			document.we_form.wcmd.value = args[0];
 			document.we_form.woffolder.value = args[1];
 			submitForm();
 			break;
-		case "add_object":
 		case "del_object":
 		case "del_all_objects":
 			document.we_form.wcmd.value = args[0];

@@ -232,16 +232,14 @@ answers_edit.' . ($this->View->voting->AllowSuccessors ? 'show' : 'hide') . 'Suc
 
 	function getHTMLTab1(){
 		$yuiSuggest = & weSuggest::getInstance();
-		$table = new we_html_table(array('id' => 'ownersTable', 'style' => 'display: ' . ($this->View->voting->RestrictOwners ? 'block' : 'none') . ';'), 3, 2);
-		$table->setCol(0, 1, array('colspan' => 2, 'class' => 'defaultfont'), g_l('modules_voting', '[limit_access_text]'));
-		$table->setColContent(1, 1, we_html_element::htmlDiv(array('id' => 'owners', 'class' => 'multichooser', 'style' => 'width: 510px; height: 60px; border: #AAAAAA solid 1px;')));
+		$table = new we_html_table(['id' => 'ownersTable', 'style' => 'display: ' . ($this->View->voting->RestrictOwners ? 'block' : 'none') . ';'], 3, 2);
+		$table->setCol(0, 1, ['colspan' => 2, 'class' => 'defaultfont'], g_l('modules_voting', '[limit_access_text]'));
+		$table->setColContent(1, 1, we_html_element::htmlDiv(['id' => 'owners', 'class' => 'multichooser', 'style' => 'width: 510px; height: 60px; border: #AAAAAA solid 1px;']));
 		$idname = 'owner_id';
 		$textname = 'owner_text';
-		$wecmdenc5 = we_base_request::encCmd("fillIDs();opener.we_cmd('users_add_owner',top.allPaths,top.allIsFolder);");
-		$table->setCol(2, 0, array('colspan' => 2, 'style' => 'text-align:right'), we_html_element::htmlHiddens(array(
-				$idname => '',
-				$textname => '')) .
-			we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_users_selector','" . $idname . "','" . $textname . "','',document.forms[0].elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1);")
+		$table->setCol(2, 0, ['colspan' => 2, 'style' => 'text-align:right'], we_html_element::htmlHiddens([$idname => '',
+				$textname => '']) .
+			we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot(); we_cmd('we_users_selector','" . $idname . "','" . $textname . "','',document.forms[0].elements['" . $idname . "'].value,'users_add_owner','','',1);")
 		);
 
 		$parts = [
@@ -687,7 +685,7 @@ function setVisible(id,visible){
 		return $out;
 	}
 
-	function getHTMLDirChooser(){
+	private function getHTMLDirChooser(){
 		$path = id_to_path($this->View->voting->ParentID, VOTING_TABLE);
 		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot(); we_cmd('we_voting_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','')");
 		$width = 416;

@@ -28,14 +28,14 @@ WE().util.loadConsts(document, "g_l.voting");
 
 var get_focus = 1;
 var activ_tab = 1;
-var hot = 0;
+var hot = false;
 var scrollToVal = 0;
 
 function setHot() {
-	hot = 1;
+	hot = true;
 }
 function usetHot() {
-	hot = 0;
+	hot = false;
 }
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);

@@ -34,6 +34,7 @@ function we_cmd() {
 				we_cmd("reload_editpage");
 			}
 			break;
+		case 'reload_hot_editpage':
 		case "reload_editpage":
 			if (WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1].we_cmd) {
 				WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1].we_cmd("reload_editpage");

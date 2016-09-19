@@ -159,7 +159,7 @@ class we_navigation_ruleFrames{
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setTable(OBJECT_TABLE);
 			$yuiSuggest->setWidth(275);
-			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.ClassID.value, '" . OBJECT_TABLE . "','ClassID','ClassIDPath','" . we_base_request::encCmd("top.opener.we_cmd('get_workspaces');") . "')"), 10);
+			$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements.ClassID.value, '" . OBJECT_TABLE . "','ClassID','ClassIDPath','get_workspaces')"), 10);
 
 			$weAcSelector = $yuiSuggest->getHTML();
 
@@ -205,7 +205,7 @@ var dependencies = {
 	}
 
 	function getHTMLCategory(){
-		$addbut = we_html_button::create_button('add', "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs(true);opener.addCat(top.allPaths, top.allIDs);')");
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths, top.allIDs);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 

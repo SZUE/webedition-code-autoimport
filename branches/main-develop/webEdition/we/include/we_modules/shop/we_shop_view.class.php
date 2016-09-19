@@ -540,8 +540,8 @@ cid =' . $orderData['customerID'] . ';';
 		?>
 
 		</head>
-		<body class="weEditorBody" onload="hot = 1" onunload="doUnload()"><?php
-			$parts = [['html' => $orderDataTable,
+				<body class="weEditorBody" onload="hot = true" onunload="doUnload()"><?php
+					$parts = [['html' => $orderDataTable,
 				],
 					['html' => $orderTable,
 				]

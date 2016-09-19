@@ -66,7 +66,14 @@ function onFolderSelectionChangeJS(value) {
 	var linktype = value === WE().consts.navigation.STYPE_DOCLINK ? WE().consts.navigation.STYPE_DOCLINK : (value === WE().consts.navigation.STYPE_CATLINK ? WE().consts.navigation.STYPE_CATLINK : (value === WE().consts.navigation.STYPE_OBJLINK ? WE().consts.navigation.STYPE_OBJLINK : WE().consts.navigation.STYPE_DOCLINK));
 	YAHOO.autocoml.modifySetById("yuiAcInputLinkPath", {
 		table: linktype === WE().consts.navigation.STYPE_DOCLINK ? WE().consts.tables.FILE_TABLE : (linktype === WE().consts.navigation.STYPE_OBJLINK ? WE().consts.tables.OBJECT_FILES_TABLE : (linktype === WE().consts.navigation.STYPE_CATLINK ? WE().consts.tables.CATEGORY_TABLE : "")),
-		cTypes: linktype === WE().consts.navigation.STYPE_DOCLINK ? [WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.XML, WE().consts.contentTypes.WEDOCUMENT, WE().consts.contentTypes.IMAGE, WE().consts.contentTypes.HTML, WE().consts.contentTypes.APPLICATION, WE().consts.contentTypes.FLASH].join(",") : (linktype === WE().consts.navigation.STYPE_OBJLINK ? [WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.OBJECT_FILE].join(",") : "")
+		cTypes: linktype === WE().consts.navigation.STYPE_DOCLINK ? [
+			WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.XML,
+			WE().consts.contentTypes.WEDOCUMENT, WE().consts.contentTypes.IMAGE,
+			WE().consts.contentTypes.HTML, WE().consts.contentTypes.APPLICATION,
+			WE().consts.contentTypes.FLASH
+		].join(",") : (linktype === WE().consts.navigation.STYPE_OBJLINK ? [
+			WE().consts.contentTypes.FOLDER, WE().consts.contentTypes.OBJECT_FILE
+		].join(",") : "")
 	}
 	);
 }
@@ -140,4 +147,19 @@ function selectItem() {
 	if (document.we_form.fields.selectedIndex > -1) {
 		WE().layout.button.switch_button_state(document, "save", "enabled");
 	}
+}
+
+function mark() {
+	var elem = document.getElementById("mark");
+	elem.style.display = "inline";
+}
+
+function unmark() {
+	var elem = document.getElementById("mark");
+	elem.style.display = "none";
+}
+
+function initNavHeader() {
+	weTabs.setFrameSize();
+	document.getElementById('tab_' + top.content.activ_tab).className = 'tabActive';
 }

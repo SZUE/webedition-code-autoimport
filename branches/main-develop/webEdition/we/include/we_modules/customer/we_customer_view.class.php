@@ -58,7 +58,7 @@ class we_customer_view extends we_modules_view{
 
 		return
 			parent::getJSTop() .
-			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js', "parent.document.title = '" . $title . "'");
+			we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_top.js', "parent.document.title='" . $title . "'");
 	}
 
 	function getJSProperty(){

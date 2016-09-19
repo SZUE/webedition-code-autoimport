@@ -661,14 +661,13 @@ class we_fragment_copyFolder extends we_fragment_base{
 		$yuiSuggest->setSelector(weSuggest::DirSelector);
 		$yuiSuggest->setTable(TEMPLATES_TABLE);
 		$yuiSuggest->setWidth(370);
-		$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.CreateTemplate.checked=true;");
-		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.CreateTemplateInFolderID.value,'" . TEMPLATES_TABLE . "','CreateTemplateInFolderID','foo','" . $wecmdenc3 . "')", true, 100, 22, "", "", true, false));
+		$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements.CreateTemplateInFolderID.value,'" . TEMPLATES_TABLE . "','CreateTemplateInFolderID','foo','setCreateTemplate')", true, 100, 22, "", "", true, false));
 
 		return $yuiSuggest->getHTML();
 	}
 
 	static function formCreateCategoryChooser(){
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs(true);opener.addCat(top.allPaths);')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 		$js = we_html_element::jsElement('

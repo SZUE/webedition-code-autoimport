@@ -28,7 +28,7 @@
 WE().util.loadConsts(document, "g_l.users");
 
 var loaded = 0;
-var hot = 0;
+var hot = false;
 
 function doUnload() {
 	WE().util.jsWindow.prototype.closeAll(window);
@@ -176,9 +176,9 @@ function we_cmd() {
 }
 
 function setHot() {
-	hot = 1;
+	hot = true;
 }
 
 function usetHot() {
-	hot = 0;
+	hot = false;
 }
