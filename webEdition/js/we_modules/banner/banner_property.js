@@ -83,7 +83,7 @@ function we_cmd() {
 }
 
 function submitForm(target, action, method) {
-	var f = self.document.we_form;
+	var f = window.document.we_form;
 	f.target = (target ? target : "edbody");
 	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=banner");
 	f.method = (method ? method : "post");

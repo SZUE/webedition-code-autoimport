@@ -29,7 +29,7 @@ var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrame(editorSave
 
 function pressed_cancel() {
 	window_closed();
-	self.close();
+	window.close();
 }
 
 function window_closed() {
@@ -51,7 +51,7 @@ function pressed_yes() {
 	//FIXME:we_save_document(XX) xx will be we_cmd[6]!
 	_EditorFrame.getDocumentReference().frames.editFooter.we_save_document("WE().layout.weEditorFrameController.closeDocument('" + editorSave.editorFrameId + "');" + (editorSave.nextCmd ? "top.setTimeout('" + editorSave.nextCmd + "', 1000);" : ""));
 	window_closed();
-	self.close();
+	window.close();
 }
 
 function pressed_no() {
@@ -62,5 +62,5 @@ function pressed_no() {
 		opener.top.setTimeout(editorSave.nextCmd, 1000);
 	}
 	window_closed();
-	self.close();
+	window.close();
 }

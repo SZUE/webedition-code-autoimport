@@ -32,7 +32,7 @@ function save() {
 	previewPrefs();
 	opener.saveSettings();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
-	self.close();
+	window.close();
 }
 
 function preview() {
@@ -42,5 +42,5 @@ function preview() {
 function exit_close() {
 	previewPrefs();
 	exitPrefs();
-	self.close();
+	window.close();
 }

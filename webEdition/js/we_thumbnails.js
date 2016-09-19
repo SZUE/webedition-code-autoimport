@@ -28,7 +28,7 @@ WE().util.loadConsts(document, "g_l.thumbnail");
 var thumbnails = WE().util.getDynamicVar(document, 'loadVarThumbnails', 'data-thumbnails');
 
 function init() {
-	self.focus();
+	window.focus();
 	changeFormat();
 }
 
@@ -59,7 +59,7 @@ function changeFormat() {
 }
 
 function change_thumbnail(id) {
-	self.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editThumbs&id=" + id;
+	window.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editThumbs&id=" + id;
 }
 
 function add_thumbnail() {
@@ -80,7 +80,7 @@ function add_thumbnail() {
 	} else if (WE().util.in_array(name, thumbnails.thumbnail_names)) {
 		top.we_showMessage(WE().consts.g_l.thumbnail.exists, WE().consts.message.WE_MESSAGE_ERROR, window);
 	} else {
-		self.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editThumbs&newthumbnail=" + encodeURI(name);
+		window.location = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editThumbs&newthumbnail=" + encodeURI(name);
 	}
 
 }
@@ -90,7 +90,7 @@ function delete_thumbnail() {
 	if (WE().util.hasPerm('ADMINISTRATOR')) {
 		var deletion = confirm(WE().util.sprintf(WE().consts.g_l.thumbnail.delete_prompt, thumbnails.selectedName));
 		if (deletion == true) {
-			self.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=editThumbs&deletethumbnail=' + thumbnails.selectedID;
+			window.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=editThumbs&deletethumbnail=' + thumbnails.selectedID;
 		}
 	}
 }

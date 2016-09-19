@@ -53,7 +53,7 @@ if (editorSave.we_editor_save) {//called from we_editor_save.inc.php
 //FIXME eval
 	eval(editorSave.we_JavaScript);
 
-	self.focus();
+	window.focus();
 	var showAlert = false;
 	var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 

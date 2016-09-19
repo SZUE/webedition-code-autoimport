@@ -27,7 +27,7 @@
 function save() {
 	var dir = document.we_form.ParentID;
 	opener.we_cmd("add_navi", WE_NAVIID, encodeURIComponent(document.we_form.Text.value), dir.options[dir.selectedIndex].value, document.we_form.Ordn.value);
-	self.close();
+	window.close();
 }
 
 function setSaveState() {

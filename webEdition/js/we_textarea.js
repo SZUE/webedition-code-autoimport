@@ -134,7 +134,7 @@ function we_textarea(name, value, cols, rows, width, height, autobr, autobrName,
 					(rows ? ' rows="' + rows + '"' : '') +
 					(id ? ' id="' + id + '"' : '') +
 					(style ? ' style="' + style + '"' : '') + ' ' +
-					changehandler + '="self.' + this.name + 'Object.onchange(this);" onblur="self.' + this.name + 'Object.onblur(this);">' +
+					changehandler + '="window.' + this.name + 'Object.onchange(this);" onblur="window.' + this.name + 'Object.onblur(this);">' +
 					(val ? this.htmlspecialchars(this.autobr ? this.br2nl(val) : val) : '') +
 					'</textarea>' +
 					'<input type="hidden" name="' + this.TAName + '" value=""></td></tr></table>'

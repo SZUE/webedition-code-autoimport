@@ -973,7 +973,7 @@ top.console.log(WE().consts.collection);
 
 				el = this.getItem(elem);
 				index = el.id.substr(10);
-				callback = "WE().layout.weEditorFrameController.getVisibleEditorFrame().weCollectionEdit.callForValidItemsAndInsert(" + index + ", importedDocument.id, 'dummy');self.close();";
+				callback = "WE().layout.weEditorFrameController.getVisibleEditorFrame().weCollectionEdit.callForValidItemsAndInsert(" + index + ", importedDocument.id, 'dummy');window.close();";
 
 				document.presetFileupload = files;
 				top.we_cmd("we_fileupload_editor", ct, 1, "", "", callback, parentID, 0, "", true);

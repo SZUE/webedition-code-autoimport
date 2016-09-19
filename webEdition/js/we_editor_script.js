@@ -123,7 +123,7 @@ function br2nl(i) {
 }
 
 function we_submitForm(target, url) {
-	var f = self.document.we_form;
+	var f = window.document.we_form;
 	if (!f) {
 		return false;
 	}

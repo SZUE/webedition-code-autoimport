@@ -33,7 +33,7 @@ function setSize() {
 
 function init() {
 	opener.top.fscmd.selectDir();
-	self.close();
+	window.close();
 }
 
-self.focus();
+window.focus();

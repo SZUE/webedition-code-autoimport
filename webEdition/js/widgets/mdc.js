@@ -99,7 +99,7 @@ function exit_close() {
 		opener.rpc(aInitCsv[1], aInitCsv[2], '', '', sInitTitle, prefs._sObjId);
 	}
 	exitPrefs();
-	self.close();
+	window.close();
 }
 
 
@@ -149,7 +149,7 @@ function save() {
 	opener.rpc(sSel + sSwitch, sCsv, '', '', sTitle, prefs._sObjId);
 	_oCsv_.value = WE().util.Base64.encode(sTitle) + ';' + sSel + sSwitch + ';' + sCsv;
 	WE().util.showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, top.window);
-	self.close();
+	window.close();
 }
 
 

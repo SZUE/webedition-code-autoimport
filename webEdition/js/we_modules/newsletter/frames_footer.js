@@ -74,12 +74,12 @@ function we_save() {
 }
 
 function afterLoad() {
-	if (self.document.we_form.htmlmail_check !== undefined) {
+	if (window.document.we_form.htmlmail_check !== undefined) {
 		if (top.opener.top.nlHTMLMail) {
-			self.document.we_form.htmlmail_check.checked = true;
+			window.document.we_form.htmlmail_check.checked = true;
 			document.we_form.hm.value = 1;
 		} else {
-			self.document.we_form.htmlmail_check.checked = false;
+			window.document.we_form.htmlmail_check.checked = false;
 			document.we_form.hm.value = 0;
 		}
 		populateGroups();

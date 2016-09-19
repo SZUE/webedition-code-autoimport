@@ -82,7 +82,7 @@ function we_cmd_glossary(args, url) {
 			}
 			break;
 		case "unlock"://FIXME:???
-			we_repl(self.load, url, args[0]);
+			we_repl(window.load, url, args[0]);
 			break;
 		default:
 			if ((args[0].substr(0, 15) === "GlossaryXYZnew_")) {

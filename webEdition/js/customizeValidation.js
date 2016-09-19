@@ -30,7 +30,7 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case "customValidationService":
-			if (self.we_submitForm(url)) {
+			if (window.we_submitForm(url)) {
 				we_cmd("reload_editpage");
 			}
 			break;
@@ -50,7 +50,7 @@ function we_cmd() {
 }
 
 function we_submitForm(url) {
-	var f = self.document.we_form;
+	var f = window.document.we_form;
 	if (!f.checkValidity()) {
 		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;

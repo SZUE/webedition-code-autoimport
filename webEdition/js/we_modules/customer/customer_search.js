@@ -68,7 +68,7 @@ function we_cmd() {
 
 
 function submitForm(target, action, method, form) {
-	var f = form ? self.document.forms[form] : self.document.we_form;
+	var f = form ? window.document.forms[form] : window.document.we_form;
 	f.target = target ? target : "search";
 	f.action = action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer";
 	f.method = method ? method : "post";

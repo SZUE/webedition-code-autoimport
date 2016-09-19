@@ -189,14 +189,14 @@ function keyEditorListener(_successor) {
 			switch (evt.keyCode) {
 				case 83: //S
 					if (evt.shiftKey) { // SHIFT + S (Publish)
-						self.focus(); // focus, to avoid a too late onchange of editor
+						window.focus(); // focus, to avoid a too late onchange of editor
 						this.cancelEvent(evt);
 						_activeEditorFrame.setEditorPublishWhenSave(true);
 						if (_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document !== undefined) {
 							_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document();
 						}
 					} else {// S (Save)
-						self.focus();  // focus, to avoid a too late onchange of editor
+						window.focus();  // focus, to avoid a too late onchange of editor
 						this.cancelEvent(evt);
 						_activeEditorFrame.setEditorPublishWhenSave(false);
 						if (_activeEditorFrame.getEditorFrameWindow().frames.editFooter.we_save_document !== undefined) {
@@ -210,7 +210,7 @@ function keyEditorListener(_successor) {
 					return true;
 				case 87://W
 				case 115: //F4 (closing a tab)
-					self.focus();  // focus, to avoid a too late onchange of editor
+					window.focus();  // focus, to avoid a too late onchange of editor
 					this.cancelEvent(evt);
 					WE().layout.weEditorFrameController.closeDocument(_activeEditorFrame.getFrameId());
 					return true;
@@ -221,7 +221,7 @@ function keyEditorListener(_successor) {
 			case 87://W
 			case 115: //F4 (closing a tab)
 				if (_editorType === "cockpit") {
-					self.focus();  // focus, to avoid a too late onchange of editor
+					window.focus();  // focus, to avoid a too late onchange of editor
 					WE().layout.weEditorFrameController.closeDocument(_activeEditorFrame.getFrameId());
 				}
 				this.cancelEvent(evt);

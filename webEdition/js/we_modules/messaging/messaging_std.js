@@ -159,5 +159,5 @@ function init_check() {
 function start() {
 	loadData();
 	drawTree();
-	self.focus();
+	window.focus();
 }

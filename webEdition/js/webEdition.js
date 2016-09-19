@@ -23,8 +23,8 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-if (self.location !== top.location) {
-	top.location = self.location;
+if (window.location !== top.location) {
+	top.location = window.location;
 }
 
 var busy = 0;
@@ -147,7 +147,7 @@ var WebEdition = {
 				return w.substr(0, w.length - 2);
 			},
 			toggle: function (setVisible) {
-				var tfd = self.document.getElementById("treeFrameDiv");
+				var tfd = window.document.getElementById("treeFrameDiv");
 				var w = WE().layout.tree.getWidth();
 
 				if (setVisible || (tfd.style.display === "none" && setVisible !== false)) {
@@ -185,7 +185,7 @@ var WebEdition = {
 				if (w >= WE().consts.size.tree.max) {
 					w = WE().consts.size.tree.max;
 					WE().layout.tree.setWidth(w);
-					self.document.getElementById("incBaum").style.backgroundColor = "grey";
+					window.document.getElementById("incBaum").style.backgroundColor = "grey";
 				} else
 				if (w < WE().consts.size.tree.min) {
 					WE().layout.tree.toggle(true);
@@ -735,7 +735,7 @@ var WebEdition = {
 				return string;
 			}
 		},
-		weCmdEnc: function (inp) {
+		weCmdEnc: function (inp) {//FIXME: deprecated
 			return 'WECMDENC_' + this.Base64.encode(inp);
 		},
 		loadConsts: function (doc, check) {
@@ -827,8 +827,8 @@ function we_repl(target, url) {
 			if (target.name === "load" || target.name === "load2") {
 				if (top.lastUsedLoadFrame === target.name) {
 					target = (target.name === "load" ?
-									self.load2 :
-									self.load);
+									window.load2 :
+									window.load);
 				}
 				top.lastUsedLoadFrame = target.name;
 			}
@@ -865,16 +865,16 @@ function doSave(url, trans, cmd) {
 	if (_EditorFrame.getEditorAutoRebuild()) {
 		url += "&we_cmd[8]=1";
 	}
-	if (!we_sbmtFrm(self.load, url)) {
+	if (!we_sbmtFrm(window.load, url)) {
 		url += "&we_transaction=" + trans;
-		we_repl(self.load, url, cmd);
+		we_repl(window.load, url, cmd);
 	}
 }
 
 function doPublish(url, trans, cmd) {
-	if (!we_sbmtFrm(self.load, url)) {
+	if (!we_sbmtFrm(window.load, url)) {
 		url += "&we_transaction=" + trans;
-		we_repl(self.load, url, cmd);
+		we_repl(window.load, url, cmd);
 	}
 }
 
@@ -1077,7 +1077,7 @@ function we_cmd_base(args, url) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
-					we_sbmtFrm(self.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
+					we_sbmtFrm(window.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
 				}
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -1092,23 +1092,23 @@ function we_cmd_base(args, url) {
 				if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 				} else {
-					we_sbmtFrm(self.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
+					we_sbmtFrm(window.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
 				}
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "do_delete":
-			we_sbmtFrm(self.load, url, document.getElementsByName("treeheader")[0]);
+			we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
 			break;
 		case "move_single_document":
-			we_sbmtFrm(self.load, url, WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
+			we_sbmtFrm(window.load, url, WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
 			break;
 		case "do_move":
-			we_sbmtFrm(self.load, url, document.getElementsByName("treeheader")[0]);
+			we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
 			break;
 		case "do_addToCollection":
-			we_sbmtFrm(self.load, url, document.getElementsByName("treeheader")[0]);
+			we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
 			break;
 		case "change_passwd":
 			new (WE().util.jsWindow)(this, url, "we_change_passwd", -1, -1, 300, 300, true, false, true, false);
@@ -1142,10 +1142,10 @@ function we_cmd_base(args, url) {
 			break;
 		case "changeLanguageRecursive":
 		case "changeTriggerIDRecursive":
-			we_repl(self.load, url, args[0]);
+			we_repl(window.load, url, args[0]);
 			break;
 		case "logout":
-			we_repl(self.load, url, args[0]);
+			we_repl(window.load, url, args[0]);
 			break;
 		case "dologout":
 			// before the command 'logout' is executed, ask if unsaved changes should be saved
@@ -1371,7 +1371,7 @@ function we_cmd_base(args, url) {
 		case "edit_document_with_parameters":
 		case "edit_document":
 			try {
-				if ((self.treeData !== undefined) && treeData) {
+				if ((window.treeData !== undefined) && treeData) {
 					treeData.unselectNode();
 					if (args[1]) {
 						treeData.selection_table = args[1];
@@ -1451,7 +1451,7 @@ function we_cmd_base(args, url) {
 			WE().layout.weEditorFrameController.closeAllButActiveDocument(activeId);
 			break;
 		case "open_url_in_editor":
-			we_repl(self.load, url, args[0]);
+			we_repl(window.load, url, args[0]);
 			break;
 		case "publish":
 		case "unpublish":
@@ -1541,17 +1541,17 @@ function we_cmd_base(args, url) {
 			new (WE().util.jsWindow)(this, url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
 			break;
 		case "not_installed_modules":
-			we_repl(self.load, url, args[0]);
+			we_repl(window.load, url, args[0]);
 			break;
 		case "start_multi_editor":
-			we_repl(self.load, url, args[0]);
+			we_repl(window.load, url, args[0]);
 			break;
 		case "customValidationService":
 			new (WE().util.jsWindow)(this, url, "we_customizeValidation", -1, -1, 700, 700, true, false, true);
 			break;
 		case "edit_home":
 			if (args[1] === 'add') {
-				self.load.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=' + args[1] + '&we_cmd[2]=' + args[2] + '&we_cmd[3]=' + args[3];
+				window.load.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=' + args[1] + '&we_cmd[2]=' + args[2] + '&we_cmd[3]=' + args[3];
 			}
 			break;
 		case "edit_navi":
@@ -1603,11 +1603,11 @@ function we_cmd_base(args, url) {
 			if (!WE().session.seemode) {
 				treeData.setState(treeData.tree_states.edit);
 				drawTree();
-				var cl = self.document.getElementById("bm_treeheaderDiv").classList;
+				var cl = window.document.getElementById("bm_treeheaderDiv").classList;
 				cl.remove('deleteSelector');
 				cl.remove('moveSelector');
 				cl.remove('collectionSelector');
-				cl = self.document.getElementById("treetable").classList;
+				cl = window.document.getElementById("treetable").classList;
 				cl.remove('deleteSelector');
 				cl.remove('moveSelector');
 				cl.remove('collectionSelector');
@@ -1632,8 +1632,8 @@ function we_cmd_base(args, url) {
 				treeData.setState(treeData.tree_states.edit);
 				drawTree();
 			}
-			self.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
-			self.document.getElementById("treetable").classList.add('deleteSelector');
+			window.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
+			window.document.getElementById("treetable").classList.add('deleteSelector');
 			WE().layout.tree.toggle(true);
 			var width = WE().layout.tree.getWidth();
 
@@ -1668,8 +1668,8 @@ function we_cmd_base(args, url) {
 					treeData.setState(treeData.tree_states.edit);
 					drawTree();
 				}
-				self.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
-				self.document.getElementById("treetable").classList.add('moveSelector');
+				window.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
+				window.document.getElementById("treetable").classList.add('moveSelector');
 				WE().layout.tree.toggle(true);
 				var width = WE().layout.tree.getWidth();
 
@@ -1700,8 +1700,8 @@ function we_cmd_base(args, url) {
 					treeData.setState(treeData.tree_states.edit);
 					drawTree();
 				}
-				self.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
-				self.document.getElementById("treetable").classList.add('collectionSelector');
+				window.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
+				window.document.getElementById("treetable").classList.add('collectionSelector');
 				WE().layout.tree.toggle(true);
 				var width = WE().layout.tree.getWidth();
 				WE().layout.tree.widthBeforeDeleteMode = width;

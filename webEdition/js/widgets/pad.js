@@ -356,7 +356,7 @@ function save() {
 	opener.setPrefs(_sObjId, sBit, sTitleEnc);
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	WE().layout.weNavigationHistory.navigateReload();
-	self.close();
+	window.close();
 }
 
 function preview() {
@@ -373,5 +373,5 @@ function exit_close() {
 		opener.rpc(_sInitCsv_, '', '', '', escape(WE().util.Base64.encode(_sInitTitle)), prefs._sObjId);
 	}
 	exitPrefs();
-	self.close();
+	window.close();
 }

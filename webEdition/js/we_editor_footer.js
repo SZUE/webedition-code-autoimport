@@ -27,7 +27,7 @@ var doc = WE().util.getDynamicVar(document, 'loadVarEditor_footer', 'data-doc');
 var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(doc.we_transaction);
 
 function we_submitForm(target, url) {
-	var f = self.document.we_form;
+	var f = window.document.we_form;
 	if (!f.checkValidity()) {
 		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return false;
@@ -78,21 +78,21 @@ function editSource() {
 }
 
 function setTemplate() {
-	self.document.we_form.autoRebuild.checked = (_EditorFrame.getEditorAutoRebuild() ? true : false);
-	self.document.we_form.makeNewDoc.checked = (_EditorFrame.getEditorMakeNewDoc() ? true : false);
+	window.document.we_form.autoRebuild.checked = (_EditorFrame.getEditorAutoRebuild() ? true : false);
+	window.document.we_form.makeNewDoc.checked = (_EditorFrame.getEditorMakeNewDoc() ? true : false);
 }
 
 function setTextDocument(hasCtrl, value) {
-	if (self.document.we_form && self.document.we_form.makeSameDoc) {
+	if (window.document.we_form && window.document.we_form.makeSameDoc) {
 		if (hasCtrl) {
-			self.document.we_form.makeSameDoc.checked = value;
+			window.document.we_form.makeSameDoc.checked = value;
 			_EditorFrame.setEditorMakeSameDoc(value);
 		} else if (doc.ID) {
-			self.document.we_form.makeSameDoc.checked = false;
+			window.document.we_form.makeSameDoc.checked = false;
 		} else if (_EditorFrame.getEditorMakeSameDoc()) {
-			self.document.we_form.makeSameDoc.checked = true;
+			window.document.we_form.makeSameDoc.checked = true;
 		} else {
-			self.document.we_form.makeSameDoc.checked = false;
+			window.document.we_form.makeSameDoc.checked = false;
 		}
 	}
 }
@@ -102,7 +102,7 @@ function setPath() {
 }
 
 function saveReload() {
-	self.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' + doc.we_transaction;
+	window.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=load_edit_footer&we_transaction=' + doc.we_transaction;
 }
 
 function we_cmd() {

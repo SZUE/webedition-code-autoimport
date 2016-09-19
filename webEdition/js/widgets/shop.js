@@ -66,7 +66,7 @@ function exit_close() {
 		opener.rpc(aCsv[0], aCsv[1], aCsv[2], aCsv[3], aCsv[4], prefs._sObjId);
 	}
 	exitPrefs();
-	self.close();
+	window.close();
 }
 
 function save() {
@@ -79,7 +79,7 @@ function save() {
 			refresh(false);
 		}
 		top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
-		self.close();
+		window.close();
 	} else {
 		WE().util.showMessage(WE().consts.g_l.cockpit.no_type_selected, WE().consts.message.WE_MESSAGE_ERROR, window);
 	}

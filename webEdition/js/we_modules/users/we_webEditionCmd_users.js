@@ -113,7 +113,7 @@ function we_cmd_users(args, url) {
 			new (WE().util.jsWindow)(this, url, "chooseAddress", -1, -1, 400, 590, true, true, true, true);
 			break;
 		case "users_changeR":
-			we_repl(self.load, url, args[0]);
+			we_repl(window.load, url, args[0]);
 			break;
 		default:
 			return false;

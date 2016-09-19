@@ -25,7 +25,7 @@
  */
 var loaded = false;
 function we_submitForm(target, url) {
-	var f = self.document.we_form;
+	var f = window.document.we_form;
 
 	ok = true;
 
@@ -59,7 +59,7 @@ function we_submitForm(target, url) {
 
 function switchPage(page) {
 	document.we_form.tab.value = page;
-	return we_submitForm(self.name, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody");
+	return we_submitForm(window.name, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=edbody");
 }
 
 function doUnload() {

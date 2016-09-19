@@ -218,7 +218,7 @@ function saveSettings() {
 		rss[i] = [cockpit._trf[i][0], cockpit._trf[i][1]];
 	}
 
-	fo = self.document.forms.we_form;
+	fo = window.document.forms.we_form;
 	fo.elements['we_cmd[2]'].value = JSON.stringify(aDat);
 	fo.elements['we_cmd[3]'].value = JSON.stringify(rss);
 	top.YAHOO.util.Connect.setForm(fo);
