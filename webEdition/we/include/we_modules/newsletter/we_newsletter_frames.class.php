@@ -602,8 +602,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 
 	function getHTMLExtern($group){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_files'," . $group . ")");
-		$wecmdenc4 = we_base_request::encCmd("opener.we_cmd('add_file',top.fileSelect.data.currentID,$group);");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('browse_server','fileselect','" . we_base_ContentTypes::TEXT . "','/','" . $wecmdenc4 . "','',1);");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('browse_server','fileselect','" . we_base_ContentTypes::TEXT . "','/','add_file," . $group . "','',1);");
 
 
 		$buttons = $delallbut . (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES')) ? $addbut : '';

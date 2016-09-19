@@ -260,7 +260,7 @@ function setTab(tab) {
 				'html' => we_html_element::htmlHidden('newone', ($this->Model->ID == 0 ? 1 : 0)) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Text', '', strtr($this->Model->Text, array_flip(get_html_translation_table(HTML_SPECIALCHARS))), '', 'style="width: 520px;" onchange="top.content.mark();"'), g_l('navigation', '[name]')) .
 				we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('Display', '', $this->Model->Display, '', 'style="width: 520px;" onchange="top.content.mark();"'), g_l('navigation', '[display]')) .
-				$this->getHTMLChooser(g_l('navigation', '[group]'), NAVIGATION_TABLE, 0, 'ParentID', $parentid, 'ParentPath', 'opener.top.content.mark()', we_base_ContentTypes::FOLDER, ($this->Model->IsFolder == 0 && $this->Model->Depended == 1)),
+				$this->getHTMLChooser(g_l('navigation', '[group]'), NAVIGATION_TABLE, 0, 'ParentID', $parentid, 'ParentPath', 'setHot', we_base_ContentTypes::FOLDER, ($this->Model->IsFolder == 0 && $this->Model->Depended == 1)),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
 			], [
@@ -270,7 +270,7 @@ function setTab(tab) {
 				'noline' => 1
 			], [
 				'headline' => '',
-				'html' => $this->getHTMLChooser(g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'opener.top.content.mark()', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . '<table><tr><td>' . we_html_multiIconBox::getJS() .
+				'html' => $this->getHTMLChooser(g_l('navigation', '[icon]'), FILE_TABLE, 0, 'IconID', $this->Model->IconID, 'IconPath', 'setHot', we_base_ContentTypes::IMAGE, false, true, 'folder,' . we_base_ContentTypes::IMAGE) . '<table><tr><td>' . we_html_multiIconBox::getJS() .
 				we_html_multiIconBox::_getButton($uniqname, "weToggleBox('" . $uniqname . "','" . addslashes(g_l('navigation', '[icon_properties_out]')) . "','" . addslashes(
 						g_l('navigation', '[icon_properties]')) . "')", $wepos, g_l('global', '[openCloseBox]')) . '</td><td><span style="cursor: pointer;" class="defaultfont" id="text_' . $uniqname . '" onclick="weToggleBox(\'' . $uniqname . '\',\'' . addslashes(g_l('navigation', '[icon_properties_out]')) . '\',\'' . addslashes(g_l('navigation', '[icon_properties]')) . '\');" >' . g_l('navigation', ($wepos === 'down' ? '[icon_properties_out]' : '[icon_properties]')) . '</span></td></tr></table>',
 				'space' => we_html_multiIconBox::SPACE_MED,
@@ -563,7 +563,7 @@ var hasClassSubDirs = {' . implode(',', $classHasSubDirsJS) . '};') . '
 
 		$cmd_doc = "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . FILE_TABLE . "','LinkID','LinkPath','enable_open_navigation_doc','','0',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
-		$cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "LinkID','LinkPath','" . we_base_request::encCmd('opener.top.content' . ".we_cmd('populateWorkspaces');WE().layout.button.switch_button_state(opener.document, 'open_navigation_obj', opener.document.we_form.elements.LinkID.value>0?'enabled':'disabled');") . "','','0',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
+		$cmd_obj = defined('OBJECT_TABLE') ? "javascript:we_cmd('we_selector_document',document.we_form.elements.LinkID.value,'" . OBJECT_FILES_TABLE . "LinkID','LinkPath','populateWorkspaces','','0',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")" : '';
 		$cmd_cat = "javascript:we_cmd('we_selector_category',document.we_form.elements.LinkID.value,'" . CATEGORY_TABLE . "','document.we_form.elements.LinkID.value','document.we_form.elements.LinkPath.value','populateText','','0')";
 
 		$button_doc = we_html_button::create_button(we_html_button::SELECT, $cmd_doc, true, 0, 0, '', '', $disabled) .
@@ -883,7 +883,7 @@ function showPreview() {
 			$cmd = "javascript:we_cmd('we_selector_file',document.we_form.$IDName.value,'" . $table . "','" . $IDName . "','" . $PathName . "','" . $cmd . "','','" . $rootDirID . "')";
 			$selector = weSuggest::DirSelector;
 		} else {
-			$cmd = "javascript:we_cmd('" . ($filter == we_base_ContentTypes::IMAGE ? 'we_selector_image' : 'we_selector_document') . "',document.we_form.$IDName.value,'" . $table . "','" . $IDName . "','" . $PathName . "','" . we_base_request::encCmd(str_replace('\\', '', $cmd)) . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+			$cmd = "javascript:we_cmd('" . ($filter == we_base_ContentTypes::IMAGE ? 'we_selector_image' : 'we_selector_document') . "',document.we_form.$IDName.value,'" . $table . "','" . $IDName . "','" . $PathName . "','" . $cmd . "','','" . $rootDirID . "','" . $filter . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 			$selector = weSuggest::DocSelector;
 		}
 
@@ -1124,7 +1124,7 @@ function showPreview() {
 	}
 
 	private function getHTMLLink($prefix = ''){
-		$cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements." . $prefix . "UrlID.value,'" . FILE_TABLE . "','" . $prefix . "UrlID','" . $prefix . "UrlIDPath','" . we_base_request::encCmd("opener.top.content.mark()") . "','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
+		$cmd = "javascript:we_cmd('we_selector_document',document.we_form.elements." . $prefix . "UrlID.value,'" . FILE_TABLE . "','" . $prefix . "UrlID','" . $prefix . "UrlIDPath','setHot','',0,'" . we_base_ContentTypes::WEDOCUMENT . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")";
 
 		$path = id_to_path($this->Model->UrlID);
 

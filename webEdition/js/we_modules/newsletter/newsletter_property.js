@@ -248,8 +248,12 @@ function we_cmd() {
 			break;
 
 		case "add_file":
+			document.we_form.ncmd.value = args[0];
+			document.we_form.nfile.value = args[1].add_file;
 			document.we_form.ngroup.value = args[2];
-			/* falls through */
+			top.content.hot = true;
+			submitForm();
+			break;
 		case "del_file":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.nfile.value = args[1];

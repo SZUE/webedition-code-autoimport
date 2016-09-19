@@ -307,7 +307,7 @@ function closeAllType(){
 
 		$parts = [["headline" => g_l('export', '[handle_document_options]') . we_html_element::htmlBr() . g_l('export', '[handle_template_options]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_document_options]'), we_html_tools::TYPE_INFO, 520, true, 60) . $formattable->getHtml(),
-				'space' => we_html_multiIconBox::SPACE_MED]
+			'space' => we_html_multiIconBox::SPACE_MED]
 		];
 
 		if(defined('OBJECT_TABLE')){
@@ -329,13 +329,13 @@ function closeAllType(){
 		$parts[] = ["headline" => g_l('export', '[handle_doctype_options]'),
 			"html" => $formattable->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
-			];
+		];
 
 		$parts[] = ["headline" => g_l('export', '[export_depth]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_exportdeep_options]'), we_html_tools::TYPE_INFO, 520) . '<br/>' . we_html_element::htmlLabel([
 				'style' => 'padding-right:5px;'], g_l('export', '[to_level]')) . we_html_tools::htmlTextInput("ExportDepth", 10, $this->View->export->ExportDepth, "", "onBlur=\"var r=parseInt(this.value);if(isNaN(r)) this.value=" . $this->View->export->ExportDepth . "; else{ this.value=r; top.content.hot=1;}\"", "text", 50),
 			'space' => we_html_multiIconBox::SPACE_MED
-			];
+		];
 
 		$formattable = new we_html_table([], 1, 1);
 		$formattable->setCol(0, 0, null, we_html_forms::checkboxWithHidden(($this->View->export->HandleOwners ? true : false), "HandleOwners", g_l('export', '[handle_owners]'), false, 'defaultfont', 'top.content.hot=1;'));
@@ -343,7 +343,7 @@ function closeAllType(){
 		$parts[] = ["headline" => g_l('export', '[handle_owners_option]'),
 			"html" => we_html_tools::htmlAlertAttentionBox(g_l('export', '[txt_owners]'), we_html_tools::TYPE_INFO, 520) . $formattable->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
-			];
+		];
 
 
 		return $parts;
@@ -361,7 +361,7 @@ function closeAllType(){
 	private function getHTMLDirChooser(){
 		$path = id_to_path($this->View->export->ParentID, EXPORT_TABLE);
 
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_export_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','" . we_base_request::encCmd("top.hot=1;") . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_export_dirSelector',document.we_form.elements.ParentID.value,'ParentID','ParentPath','setHot')");
 
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId("PathGroup");
@@ -672,11 +672,10 @@ if (top.content.editor.edbody.addLog){
 		}
 	}
 
-	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/', $cmd = ''){
+	private function formWeChooser($table = FILE_TABLE, $width = '', $rootDirID = 0, $IDName = 'ID', $IDValue = 0, $Pathname = 'Path', $Pathvalue = '/'){
 		$Pathvalue = ($Pathvalue ?: f('SELECT Path FROM ' . $this->db->escape($table) . ' WHERE ID=' . intval($IDValue), "", $this->db));
 
-		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
+		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . $table . "','" . $IDName . "','" . $Pathname . "','','','" . $rootDirID . "')");
 		$yuiSuggest = & weSuggest::getInstance();
 		$yuiSuggest->setAcId('SelPath');
 		$yuiSuggest->setContentType(we_base_ContentTypes::FOLDER);

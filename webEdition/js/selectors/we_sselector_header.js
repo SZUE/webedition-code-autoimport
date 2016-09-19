@@ -160,8 +160,19 @@ function exit_close() {
 			opener.document.we_form.elements[top.fileSelect.data.cmd1].value = foo;
 		}
 	}
-	//FIXME:eval
-	eval(top.fileSelect.data.cmd4);
+
+
+	if (top.fileSelect.data.cmd4) {
+		if (top.fileSelect.data.cmd4.indexOf(".") > 0) {
+			//FIXME:eval
+			eval(top.fileSelect.data.cmd4);
+		} else {
+			var tmp = top.fileSelect.data.cmd4.split(',');
+			tmp.splice(1, 0, top.fileSelect.data);
+			opener.we_cmd.apply(opener, tmp);
+		}
+	}
+
 	close();
 }
 
