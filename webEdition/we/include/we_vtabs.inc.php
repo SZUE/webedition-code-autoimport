@@ -47,11 +47,11 @@ $vtab = array(
 );
 foreach($vtab as $tab => $val){
 	if($val['show']){
-		echo '<div class="tab tabNorm" onclick="clickVTab(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="middlefont">' . $val['desc'] . '</span></div>';
+		echo '<div class="tab tabNorm" onclick="WE().layout.vtab.click(this,\'' . constant($tab) . '\');" data-table="' . constant($tab) . '"><span class="middlefont">' . $val['desc'] . '</span></div>';
 	}
 }
 ?>
 <div id="baumArrows">
-	<div class="baumArrow" id="incBaum" title="<?= g_l('global', '[tree][grow]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="incTree();"><i class="fa fa-plus"></i></div>
-	<div class="baumArrow" id="decBaum" title="<?= g_l('global', '[tree][reduce]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="decTree();"><i class="fa fa-minus"></i></div>
+	<div class="baumArrow" id="incBaum" title="<?= g_l('global', '[tree][grow]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="WE().layout.tree.inc();"><i class="fa fa-plus"></i></div>
+	<div class="baumArrow" id="decBaum" title="<?= g_l('global', '[tree][reduce]'); ?>" <?= ($treewidth <= 100) ? 'style="background-color: grey"' : ''; ?> onclick="WE().layout.tree.dec();"><i class="fa fa-minus"></i></div>
 </div>
