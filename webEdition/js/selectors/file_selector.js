@@ -587,8 +587,8 @@ function exit_open() {
 	if (top.fileSelect.data.JSCommand) {
 		if (top.fileSelect.data.JSCommand.indexOf(".") > 0) {
 			eval(top.fileSelect.data.JSCommand);
-		}else{
-			opener.we_cmd(top.fileSelect.data.JSCommand);
+		} else {
+			opener.we_cmd.apply(opener, top.fileSelect.data.JSCommand.split(','));
 		}
 	}
 

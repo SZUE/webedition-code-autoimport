@@ -127,6 +127,9 @@ function we_cmd() {
 		case "import_customer":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
+		case 'refreshForm':
+			refreshForm();
+			break;
 		default:
 			top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
