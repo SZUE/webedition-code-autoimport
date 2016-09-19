@@ -68,5 +68,5 @@ function yes_cmd_pressed() {
 		}
 	}
 	top.opener.top.we_cmd(question.nextCmd);
-	self.close();
+	window.close();
 }

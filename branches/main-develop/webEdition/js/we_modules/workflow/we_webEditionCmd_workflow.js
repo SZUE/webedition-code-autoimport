@@ -30,7 +30,7 @@ function we_cmd_workflow(args, url) {
 			new (WE().util.jsWindow)(this, url, "choose_workflow", -1, -1, 420, 320, true, true, true, true);
 			return true;
 		case "workflow_finish":
-			we_repl(self.load, url, args[0]);
+			we_repl(window.load, url, args[0]);
 			return true;
 		case "workflow_edit":
 		case "workflow_edit_ifthere":

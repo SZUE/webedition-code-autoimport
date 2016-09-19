@@ -267,11 +267,11 @@ function we_cmd() {
 				var contentEditor = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 				if (tw.openAtCursor) {
 					contentEditor.window.addCursorPosition(strWeTag);
-					self.close();
+					window.close();
 				} else {
 					contentEditor.document.we_form.elements.tag_edit_area.value = strWeTag;
 					contentEditor.document.we_form.elements.tag_edit_area.select();
-					self.close();
+					window.close();
 				}
 			} else {
 				if (weTagWizard.missingFields.length) {

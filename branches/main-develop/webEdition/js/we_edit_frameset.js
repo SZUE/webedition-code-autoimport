@@ -52,8 +52,8 @@ function we_cmd() {
 
 function closeAllModalWindows() {
 	try {
-		var _editor1 = self.frames[1];
-		var _editor2 = self.frames[2];
+		var _editor1 = window.frames[1];
+		var _editor2 = window.frames[2];
 		WE().util.jsWindow.prototype.closeAll(_editor1);
 		WE().util.jsWindow.prototype.closeAll(_editor2);
 	} catch (e) {

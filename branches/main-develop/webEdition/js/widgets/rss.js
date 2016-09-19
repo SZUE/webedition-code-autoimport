@@ -163,7 +163,7 @@ function getBinary(postfix) {
 function exit_close() {
 	resetRssFeed();
 	exitPrefs();
-	self.close();
+	window.close();
 }
 
 function save() {
@@ -192,7 +192,7 @@ function save() {
 	//displayRssFeed(sUri,true);
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
 	WE().layout.weNavigationHistory.navigateReload();
-	self.close();
+	window.close();
 }
 
 function preview() {

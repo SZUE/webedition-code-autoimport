@@ -165,7 +165,7 @@ function writeBody(d) {
 					(top.fileSelect.data.makeNewFolder ?
 									'<tr class="newEntry">' +
 									'<td class="selectoricon">' + WE().util.getTreeIcon('folder', false) + '</td>' +
-									'<td><input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" /></td>' +
+									'<td><input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.new_folder_name + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.new_folder_name + '" class="wetextinput" /></td>' +
 									'<td class="selector moddate">' + WE().consts.g_l.fileselector.date_format + '</td>' +
 									'</tr>' :
 									'');
@@ -176,7 +176,7 @@ function writeBody(d) {
 		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.fileSelect.data.currentID && (!top.fileSelect.data.makeNewFolder)) ? "selected" : "") + '" ' + ((top.fileSelect.data.we_editDirID || top.fileSelect.data.makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
 						'<td class="treeIcon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						(top.fileSelect.data.we_editDirID == entries[i].ID ?
-										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="self.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
+										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
 										'<td class="selector cutText directory" title="' + entries[i].text + '">' + entries[i].text
 										) +
 						'</td><td class="selector moddate">' + entries[i].modDate + '</td>' +
@@ -226,7 +226,7 @@ function weonclick(e) {
 			}
 		}
 		if (top.fileSelect.options.multiple) {
-			if (!self.shiftpressed && !self.ctrlpressed) {
+			if (!window.shiftpressed && !window.ctrlpressed) {
 				top.unselectAllFiles();
 			}
 		} else {

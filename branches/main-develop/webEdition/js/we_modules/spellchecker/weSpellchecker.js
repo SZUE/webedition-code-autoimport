@@ -222,7 +222,7 @@ function spellcheck() {
 		retryjava++;
 	} else {
 		top.we_showMessage(WE().consts.g_l.glossary.no_java, WE().consts.message.WE_MESSAGE_ERROR, window);
-		self.close();
+		window.close();
 	}
 }
 

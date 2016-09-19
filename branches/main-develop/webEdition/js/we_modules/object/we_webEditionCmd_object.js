@@ -95,7 +95,7 @@ function we_cmd_object(args, url) {
 			break;
 		case "object_toggleExtraWorkspace":
 		case "object_obj_search":
-			we_repl(self.load, url, args[0]);
+			we_repl(window.load, url, args[0]);
 			break;
 		case "delete_object":
 			top.we_cmd("del", 1, WE().consts.tables.OBJECT_TABLE);

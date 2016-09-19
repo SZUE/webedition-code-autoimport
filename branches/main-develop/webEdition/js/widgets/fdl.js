@@ -34,7 +34,7 @@ function save(){
 	previewPrefs();
 	refresh();
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
-	self.close();
+	window.close();
 }
 
 function preview(){
@@ -46,5 +46,5 @@ function exit_close(){
 	//previewPrefs();
 	refresh();
 	exitPrefs();
-	self.close();
+	window.close();
 }

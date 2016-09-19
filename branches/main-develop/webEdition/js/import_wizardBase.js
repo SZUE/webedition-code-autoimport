@@ -41,7 +41,7 @@ var weGetCategoriesCallback = {
 	failure: function (o) {
 		alert("failure");
 	},
-	scope: self.frame,
+	scope: window.frame,
 	timeout: 1500
 };
 
@@ -184,7 +184,7 @@ function weChangeDocType(f) {
 				var elems = JSON.parse(o.responseText).elems;
 				var node, prop;
 				for (var i = 0; i < elems.length; i++) {
-					if ((node = elems[i].type === 'formelement' ? self.document.we_form.elements[elems[i].name] : document.getElementById(elems[i].name))) {
+					if ((node = elems[i].type === 'formelement' ? window.document.we_form.elements[elems[i].name] : document.getElementById(elems[i].name))) {
 						for (var j = 0; j < elems[i].props.length; j++) {
 							prop = elems[i].props[j];
 							switch (prop.type) {
@@ -246,7 +246,7 @@ function handle_eventStep0(evt) {
 }
 
 function handle_eventWXMLImportStep2(evt) {
-	var we_form = self.document.we_form;
+	var we_form = window.document.we_form;
 	switch (evt) {
 		case "previous":
 			we_form.step.value = 1;
@@ -265,7 +265,7 @@ function handle_eventWXMLImportStep2(evt) {
 }
 
 function handle_eventGXMLImportStep3(evt) {
-	var f = self.document.we_form;
+	var f = window.document.we_form;
 	switch (evt) {
 		case 'previous':
 			f.step.value = 2;
@@ -285,7 +285,7 @@ function handle_eventGXMLImportStep3(evt) {
 }
 
 function handle_eventCSVImportStep3(evt) {
-	var f = self.document.we_form;
+	var f = window.document.we_form;
 	switch (evt) {
 		case 'previous':
 			f.step.value = 1;
@@ -366,7 +366,7 @@ function toggleField(form, fieldName, value) {
 	}
 }
 function cycle() {
-	var cf = self.document.we_form;
+	var cf = window.document.we_form;
 	var bf = top.wizbody.document.we_form;
 	for (var i = 0; i < bf.elements.length; i++) {
 		if ((bf.elements[i].name.indexOf('v') > -1) || (bf.elements[i].name.indexOf('records') > -1) ||

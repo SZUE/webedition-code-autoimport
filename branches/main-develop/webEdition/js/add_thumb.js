@@ -42,7 +42,7 @@ function add_thumbnails() {
 		opener.we_cmd("do_add_thumbnails", thumbs);
 	}
 
-	self.close();
+	window.close();
 
 }
 
@@ -70,6 +70,6 @@ function select_thumbnails(sel) {
 
 	WE().layout.button.switch_button_state(document, "add", (thumbs.length ? "enabled" : "disabled"));
 
-	self.showthumbs.location = WE().consts.dirs.WEBEDITION_DIR + "showThumb.php?u=" + Math.random() + "&t=" + thumbData.transaction + "&id=" + encodeURI(thumbs.join(","));
+	window.showthumbs.location = WE().consts.dirs.WEBEDITION_DIR + "showThumb.php?u=" + Math.random() + "&t=" + thumbData.transaction + "&id=" + encodeURI(thumbs.join(","));
 
 }

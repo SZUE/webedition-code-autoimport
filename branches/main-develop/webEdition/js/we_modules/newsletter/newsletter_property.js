@@ -204,7 +204,7 @@ function we_cmd() {
 	var url = WE().util.getWe_cmdArgsUrl(args);
 
 	if (args[0] != "switchPage") {
-		self.setScrollTo();
+		window.setScrollTo();
 	}
 
 	switch (args[0]) {
@@ -476,7 +476,7 @@ function we_cmd() {
 }
 
 function submitForm(target, action, method) {
-	var f = self.document.we_form;
+	var f = window.document.we_form;
 	f.target = (target ? target : "edbody");
 	f.action = (action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter");
 	f.method = (method ? method : "post");
@@ -649,7 +649,7 @@ function changeFieldValue(val, valueField) {
 function setFocus() {
 	if (top.content) {
 		if (top.content.get_focus) {
-			self.focus();
+			window.focus();
 		} else {
 			top.content.get_focus = 1;
 		}

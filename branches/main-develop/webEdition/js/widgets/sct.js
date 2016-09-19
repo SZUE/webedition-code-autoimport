@@ -321,7 +321,7 @@ function exit_close() {
 		opener.rpc(_sCsvInit_, '', '', '', '', prefs._sObjId);
 	}
 	exitPrefs();
-	self.close();
+	window.close();
 }
 
 function init() {
@@ -365,5 +365,5 @@ function save() {
 		opener.rpc(sCsv, '', '', '', '', prefs._sObjId);
 	}
 	top.we_showMessage(WE().consts.g_l.main.prefs_saved_successfully, WE().consts.message.WE_MESSAGE_NOTICE, window);
-	self.close();
+	window.close();
 }

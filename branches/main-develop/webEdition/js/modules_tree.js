@@ -29,7 +29,7 @@
 var oldTreeWidth = WE().consts.size.tree.default;
 
 function toggleTree() {
-	var tfd = self.document.getElementById("left");
+	var tfd = window.document.getElementById("left");
 	var w = getTreeWidth();
 
 	if (tfd.style.display === "none") {
@@ -48,15 +48,15 @@ function toggleTree() {
 
 function setTreeArrow(direction) {
 	try {
-		var arrImg = self.document.getElementById("arrowImg");
+		var arrImg = window.document.getElementById("arrowImg");
 		if (direction == "right") {
 			arrImg.classList.remove("fa-caret-left");
-			self.document.getElementById("incBaum").style.backgroundColor = "gray";
-			self.document.getElementById("decBaum").style.backgroundColor = "gray";
+			window.document.getElementById("incBaum").style.backgroundColor = "gray";
+			window.document.getElementById("decBaum").style.backgroundColor = "gray";
 		} else {
 			arrImg.classList.remove("fa-caret-right");
-			self.document.getElementById("incBaum").style.backgroundColor = "";
-			self.document.getElementById("decBaum").style.backgroundColor = "";
+			window.document.getElementById("incBaum").style.backgroundColor = "";
+			window.document.getElementById("decBaum").style.backgroundColor = "";
 		}
 		arrImg.classList.add("fa-caret-" + direction);
 	} catch (e) {
@@ -65,13 +65,13 @@ function setTreeArrow(direction) {
 }
 
 function getTreeWidth() {
-	var w = self.document.getElementById("lframeDiv").style.width;
+	var w = window.document.getElementById("lframeDiv").style.width;
 	return w.substr(0, w.length - 2);
 }
 
 function setTreeWidth(w) {
-	self.document.getElementById("lframeDiv").style.width = w + "px";
-	self.document.getElementById("right").style.left = w + "px";
+	window.document.getElementById("lframeDiv").style.width = w + "px";
+	window.document.getElementById("right").style.left = w + "px";
 	if (w > WE().consts.size.tree.hidden) {
 		storeTreeWidth(w);
 	}
@@ -89,7 +89,7 @@ function storeTreeWidth(w) {
 		val += val ? "," + param + ":" + moduleVals[param] : param + " : " + moduleVals[param];
 	}
 
-	WE().util.weSetCookie(self.document, "treewidth_modules", val, ablauf, "/");
+	WE().util.weSetCookie(window.document, "treewidth_modules", val, ablauf, "/");
 
 }
 
@@ -101,7 +101,7 @@ function incTree() {
 	}
 	if (w >= WE().consts.size.tree.max) {
 		w = WE().consts.size.tree.max;
-		self.document.getElementById("incBaum").style.backgroundColor = "grey";
+		window.document.getElementById("incBaum").style.backgroundColor = "grey";
 	}
 }
 
@@ -110,7 +110,7 @@ function decTree() {
 	w -= WE().consts.size.tree.step;
 	if (w > WE().consts.size.tree.min) {
 		setTreeWidth(w);
-		self.document.getElementById("incBaum").style.backgroundColor = "";
+		window.document.getElementById("incBaum").style.backgroundColor = "";
 	}
 	if (w <= WE().consts.size.tree.min && ((w + WE().consts.size.tree.step) >= WE().consts.size.tree.min)) {
 		toggleTree();

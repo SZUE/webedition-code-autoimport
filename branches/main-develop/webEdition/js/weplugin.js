@@ -34,11 +34,11 @@ var wait_count = 0;
 var wait_retry = 40;
 
 function setIsLoaded(flag) {
-	self.isLoaded = flag;
+	window.isLoaded = flag;
 }
 
 function editSettings() {
-	if (self.isLoaded) {
+	if (window.isLoaded) {
 		document.WePlugin.editSettings();
 	}
 }
@@ -72,7 +72,7 @@ function setSource(trans) {
 	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
 	if (_EditorFrame) {
 		_EditorFrame.setEditorIsHot(true);
-		var source = (self.isLoaded) ? document.WePlugin.getSource(trans).replace(/\r?\n?$/, "") : "";
+		var source = (window.isLoaded) ? document.WePlugin.getSource(trans).replace(/\r?\n?$/, "") : "";
 		if (_EditorFrame && _EditorFrame.getContentEditor().setSource) {
 			_EditorFrame.getContentEditor().setSource(source);
 		} else {
@@ -100,29 +100,29 @@ function reloadContentFrame(trans) {
 }
 
 function remove(transaction) {
-	if (self.isLoaded && (document.WePlugin.removeDocument)) {
+	if (window.isLoaded && (document.WePlugin.removeDocument)) {
 		document.WePlugin.removeDocument(transaction);
 	} else {
-		self.isLoaded = false;
+		window.isLoaded = false;
 	}
 }
 
 function isInEditor(transaction) {
-	if (self.isLoaded && transaction !== null && (document.WePlugin.inEditor)) {
+	if (window.isLoaded && transaction !== null && (document.WePlugin.inEditor)) {
 		return document.WePlugin.inEditor(transaction);
 	}
 	return false;
 }
 
 function getDocCount() {
-	if (self.isLoaded) {
+	if (window.isLoaded) {
 		return document.WePlugin.getDocCount();
 	}
 	return 1;
 }
 
 function pingPlugin() {
-	if (document.WePlugin && self.isLoaded) {
+	if (document.WePlugin && window.isLoaded) {
 		c++;
 		if (document.WePlugin.hasMessages) {
 			if (document.WePlugin.hasMessages()) {
@@ -153,7 +153,7 @@ function checkPlugin() {
 			if (callBack) {
 				eval("top.opener." + callBack);
 			}
-			self.close();
+			window.close();
 		} else {
 			nojava();
 		}

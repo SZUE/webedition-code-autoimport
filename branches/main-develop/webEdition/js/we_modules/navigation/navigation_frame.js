@@ -133,7 +133,7 @@ function setFields(cmd) {
 		}
 	}
 	opener[cmd](fields.join(","));
-	self.close();
+	window.close();
 }
 
 function selectItem() {

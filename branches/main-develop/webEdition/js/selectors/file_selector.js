@@ -86,7 +86,7 @@ function clearEntries() {
 }
 
 function exit_close() {
-	self.close();
+	window.close();
 }
 
 function doClick(id, ct) {
@@ -320,7 +320,7 @@ function weonclick(e) {
 		}
 	}
 	if (top.fileSelect.options.multiple) {
-		if ((self.shiftpressed === false) && (self.ctrlpressed === false)) {
+		if ((window.shiftpressed === false) && (window.ctrlpressed === false)) {
 			top.unselectAllFiles();
 		}
 	} else {
@@ -595,7 +595,7 @@ function exit_open() {
 		}
 	}
 
-	self.close();
+	window.close();
 }
 
-self.focus();
+window.focus();

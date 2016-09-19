@@ -40,7 +40,7 @@ function we_cmd_voting(args, url) {
 			}
 			return true;
 		case "unlock"://FIXME:???
-			we_repl(self.load, url, args[0]);
+			we_repl(window.load, url, args[0]);
 			return true;
 	}
 	return false;

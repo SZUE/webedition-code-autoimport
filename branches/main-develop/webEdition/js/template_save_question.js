@@ -37,16 +37,16 @@ function closeOnEscape() {
 }
 
 function pressed_cancel_button() {
-	self.close();
+	window.close();
 }
 
 function pressed_yes_button() {
 	opener.top.we_cmd('save_document', editorSave.we_transaction, 0, 1, 1, WE().util.Base64.encode(JSON.stringify(editorSave.we_responseJS)), WE().util.Base64.encode(JSON.stringify(editorSave.we_cmd6)));
-	self.close();
+	window.close();
 
 }
 
 function pressed_no_button() {
 	opener.top.we_cmd('save_document', editorSave.we_transaction, 0, 1, 0, WE().util.Base64.encode(JSON.stringify(editorSave.we_responseJS)), WE().util.Base64.encode(JSON.stringify(editorSave.we_cmd6)));
-	self.close();
+	window.close();
 }
