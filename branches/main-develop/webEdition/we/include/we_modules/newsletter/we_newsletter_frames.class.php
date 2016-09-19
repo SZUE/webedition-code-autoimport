@@ -579,7 +579,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		return we_html_element::htmlHiddens([
 				'copyid' => 0,
 				'copyid_text' => ""]) .
-			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file',document.we_form.elements.copyid.value,'" . NEWSLETTER_TABLE . "','copyid','copyid_text','" . we_base_request::encCmd("opener.we_cmd('copy_newsletter');") . "','','" . get_ws(NEWSLETTER_TABLE) . "')");
+			we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_file',document.we_form.elements.copyid.value,'" . NEWSLETTER_TABLE . "','copyid','copyid_text','copy_newsletter','','" . get_ws(NEWSLETTER_TABLE) . "')");
 	}
 
 	function getHTMLCustomer($group){

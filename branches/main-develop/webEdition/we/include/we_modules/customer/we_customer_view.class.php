@@ -43,13 +43,12 @@ class we_customer_view extends we_modules_view{
 	}
 
 	function getCommonHiddens($cmds = []){
-		return we_html_element::htmlHiddens(array(
-				'cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
+		return we_html_element::htmlHiddens(['cmd' => (isset($cmds['cmd']) ? $cmds['cmd'] : ''),
 				'pnt' => (isset($cmds['pnt']) ? $cmds['pnt'] : 'edbody'),
 				'cmdid' => (isset($cmds['cmdid']) ? $cmds['cmdid'] : ''),
 				'activ_sort' => (isset($cmds['activ_sort']) ? $cmds['activ_sort'] : ''),
 				'branch' => we_base_request::_(we_base_request::STRING, 'branch', g_l('modules_customer', '[common]'))
-		));
+		]);
 	}
 
 	function getJSTop(){
@@ -383,7 +382,7 @@ new (WE().util.jsWindow)(window, url,"sort_admin",-1,-1,750,500,true,true,true,t
 				break;
 			case 'add_sort_field':
 				if(($i = we_base_request::_(we_base_request::STRING, 'sortindex')) !== false){
-					$this->settings->SortView[$i][] = array('branch' => '', 'field' => '', 'order' => '');
+					$this->settings->SortView[$i][] = ['branch' => '', 'field' => '', 'order' => ''];
 				}
 				break;
 			case 'del_sort_field':
@@ -545,10 +544,9 @@ self.close();');
 	}
 
 	function getFieldProperties($field){
-		$ret = array(
-			'encrypt' => $this->settings->retriveFieldAdd($field, 'encrypt'),
+		$ret = ['encrypt' => $this->settings->retriveFieldAdd($field, 'encrypt'),
 			'default' => $this->settings->retriveFieldAdd($field, 'default', '')
-		);
+		];
 
 		$props = $this->customer->getFieldDbProperties($field);
 
@@ -653,7 +651,7 @@ self.close();');
 			'AND' => [$arr[0]],
 			'OR' => [],
 			'AND NOT' => []
-			];
+		];
 
 
 		for($i = 1; $i < count($arr); $i++){
@@ -889,13 +887,13 @@ self.close();');
 						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], '');
 						break;
 					case 'LoginDenied':
-						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), we_html_forms::checkbox(1, $pv, 'LoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => 'defaultfont lowContrast'], we_html_forms::checkbox(1, $pv, 'LoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'AutoLoginDenied':
-						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), we_html_forms::checkbox(1, $pv, 'AutoLoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => 'defaultfont lowContrast'], we_html_forms::checkbox(1, $pv, 'AutoLoginDenied', g_l('modules_customer', '[login_denied]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'AutoLogin':
-						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
+						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => 'defaultfont lowContrast'], we_html_forms::checkbox(1, $pv, 'AutoLogin', g_l('modules_customer', '[autologin_request]'), false, 'defaultfont', 'top.content.setHot();')), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'Password':
 						$table->setCol($c / 2, $c % 2, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, ($this->customer->ID ? we_customer_customer::NOPWD_CHANGE : ''), '', 'onchange="top.content.setHot();" autocomplete="off" ', 'password', "240px"), $this->settings->getPropertyTitle($pk)));
@@ -905,11 +903,11 @@ self.close();');
 						$table->setCol($c / 2, $c % 2, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', 'onchange="top.content.setHot();" ' . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'failedLogins':
-						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast', 'id' => 'FailedCustomerLogins'), intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
+						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => 'defaultfont lowContrast', 'id' => 'FailedCustomerLogins'], intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
 						break;
 					case 'resetFailed':
 						$but = we_html_button::create_button('reset', 'javascript:resetLogins(' . $this->customer->ID . ')');
-						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(array('class' => 'defaultfont lowContrast'), $but), ''));
+						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => 'defaultfont lowContrast'], $but), ''));
 						break;
 					default:
 						$inputattribs = '';
@@ -918,20 +916,19 @@ self.close();');
 			}
 			if(++$c % 2 == 0){
 				$table->addRow();
-				$table->setRow($c / 2, array('style' => 'vertical-align:top'));
+				$table->setRow($c / 2, ['style' => 'vertical-align:top']);
 			}
 		}
-		return array(
-			'headline' => g_l('modules_customer', ($isAll ? '[common]' : '[data]')),
+		return ['headline' => g_l('modules_customer', ($isAll ? '[common]' : '[data]')),
 			'html' => $table->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
-		);
+		];
 	}
 
 	private function getOtherTable(array $other, $isAll){
-		$table = new we_html_table(array('width' => 500, 'height' => 50, 'class' => 'customer'), 1, 2);
+		$table = new we_html_table(['width' => 500, 'height' => 50, 'class' => 'customer'], 1, 2);
 		$c = 0;
-		$table->setRow(0, array('style' => 'vertical-align:top'));
+		$table->setRow(0, ['style' => 'vertical-align:top']);
 		foreach($other as $k => $v){
 			$isEncField = $this->settings->retriveFieldAdd($k, 'encrypt');
 			$control = $this->getHTMLFieldControl($k, $v, $isEncField);
@@ -939,15 +936,14 @@ self.close();');
 				$table->setCol($c / 2, $c % 2, [], we_html_tools::htmlFormElementTable($control, $k . ($isEncField ? $this->getEncryptionHandling($k, $v != '') : '')));
 				if(++$c % 2 == 0){
 					$table->addRow();
-					$table->setRow($c / 2, array('style' => 'vertical-align:top'));
+					$table->setRow($c / 2, ['style' => 'vertical-align:top']);
 				}
 			}
 		}
-		return array(
-			'headline' => g_l('modules_customer', ($isAll ? '[other]' : '[data]')),
+		return ['headline' => g_l('modules_customer', ($isAll ? '[other]' : '[data]')),
 			'html' => $table->getHtml(),
 			'space' => we_html_multiIconBox::SPACE_MED
-		);
+		];
 	}
 
 	private function getEncryptionHandling($field, $hasContent){
@@ -956,9 +952,8 @@ self.close();');
 
 	function getHTMLProperties($preselect = ''){
 		$other = $parts = $branches = [];
-		$common = array(
-			'ID' => $this->customer->ID,
-		);
+		$common = ['ID' => $this->customer->ID,
+		];
 
 		$this->customer->getBranches($branches, $common, $other, $this->settings->getEditSort());
 
@@ -1000,11 +995,9 @@ self.close();');
 					$objectStr = g_l('modules_customer', '[NoObjects]');
 				}
 
-				$parts = array(
-					array(
-						"html" => $objectStr,
-					)
-				);
+				$parts = [
+					["html" => $objectStr,]
+				];
 				break;
 			case g_l('modules_customer', '[documentTab]'):
 				$DB_WE = new DB_WE();
@@ -1037,18 +1030,16 @@ self.close();');
 					$documentStr = g_l('modules_customer', '[NoDocuments]');
 				}
 
-				$parts = array(
-					array(
-						"html" => $documentStr,
-					)
-				);
+				$parts = [["html" => $documentStr,
+					]
+				];
 				break;
 			case g_l('modules_customer', '[all]'):
 				$isAll = true;
-				$parts = array(
+				$parts = [
 					$this->getCommonTable($common, true),
 					$this->getOtherTable($other, true)
-				);
+				];
 //no break;
 			default:
 				foreach($branches as $bk => $branch){
@@ -1058,7 +1049,7 @@ self.close();');
 						}
 					}
 
-					$table = new we_html_table(array("width" => 500, "height" => 50, "class" => 'customer'), 1, 2);
+					$table = new we_html_table(["width" => 500, "height" => 50, "class" => 'customer'], 1, 2);
 					$c = 0;
 					$table->setRow(0, ['style' => 'vertical-align:top;']);
 					foreach($branch as $k => $v){
@@ -1074,11 +1065,10 @@ self.close();');
 							$table->setRow($c / 2, ['style' => 'vertical-align:top;']);
 						}
 					}
-					$parts[] = array(
-						"headline" => (isset($isAll) ? $bk : g_l('modules_customer', '[data]')),
+					$parts[] = ["headline" => (isset($isAll) ? $bk : g_l('modules_customer', '[data]')),
 						"html" => $table->getHtml(),
 						'space' => we_html_multiIconBox::SPACE_MED
-					);
+					];
 				}
 		}
 
@@ -1089,7 +1079,7 @@ self.close();');
 		$hiddens['cmd'] = 'home';
 		$content = we_html_button::create_button('fat:new_customer,fa-lg fa-user-plus', "javascript:top.we_cmd('new_customer');", true, 0, 0, "", "", !permissionhandler::hasPerm("NEW_CUSTOMER"));
 
-		return parent::getActualHomeScreen('customer', "customer.gif", $content, we_html_element::htmlForm(array('name' => 'we_form'), $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0)));
+		return parent::getActualHomeScreen('customer', "customer.gif", $content, we_html_element::htmlForm(['name' => 'we_form'], $this->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0)));
 	}
 
 }
