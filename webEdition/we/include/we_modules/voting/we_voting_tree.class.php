@@ -58,26 +58,20 @@ class we_voting_tree extends we_tree_base{
 		$db->query('SELECT ' . $db->escape($elem) . ' FROM ' . $db->escape($table) . $where . ' ORDER BY IsFolder DESC,(text REGEXP "^[0-9]") DESC,ABS(text),Text' . ($segment ? ' LIMIT ' . abs($offset) . "," . abs($segment) : '' ));
 		$now = time();
 
-		while($db->next_record()){
+		while($db->next_record(MYSQLI_ASSOC)){
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
 				'disabled' => 0,
 				'tooltip' => $db->f('ID'),
 				'offset' => $offset,
-				'contentType'=>($db->f('IsFolder') == 1 ? 'folder' : 'we/voting'),
+				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/voting'),
 			);
 
 			if($db->f('IsFolder') == 0){
 				$typ['published'] = ($db->f('Active') && ($db->f('ActiveTime') == 0 || ($now < $db->f('Valid')))) ? 1 : 0;
 			}
-			$fileds = [];
-
-			foreach($db->Record as $k => $v){
-				if(!is_numeric($k)){
-					$fileds[strtolower($k)] = $v;
-				}
-			}
+			$fileds = array_change_key_case($db->Record, CASE_LOWER);
 
 			$items[] = array_merge($fileds, $typ);
 		}

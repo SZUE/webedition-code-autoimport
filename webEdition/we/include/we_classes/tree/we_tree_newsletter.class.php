@@ -68,7 +68,7 @@ class we_tree_newsletter extends we_tree_base{
 
 		$db->query('SELECT ' . $db->escape($elem) . " FROM $table $where ORDER BY (text REGEXP '^[0-9]') DESC,abs(text),Text " . ($segment ? 'LIMIT ' . $offset . ',' . $segment : '' ));
 
-		while($db->next_record()){
+		while($db->next_record(MYSQLI_ASSOC)){
 			$typ = array(
 				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
@@ -82,13 +82,7 @@ class we_tree_newsletter extends we_tree_base{
 				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/newsletter'),
 			);
 
-			$fileds = [];
-
-			foreach($db->Record as $k => $v){
-				if(!is_numeric($k)){
-					$fileds[strtolower($k)] = $v;
-				}
-			}
+			$fileds = array_change_key_case($db->Record, CASE_LOWER);
 
 			$items[] = array_merge($fileds, $typ);
 		}

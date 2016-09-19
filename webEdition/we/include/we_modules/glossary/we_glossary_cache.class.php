@@ -92,7 +92,7 @@ class we_glossary_cache{
 	function write(){
 		$DB_WE = new DB_WE();
 
-		$DB_WE->query('SELECT Text, Type, Language, Title, Attributes, LENGTH(Text) as Length,Fullword FROM ' . GLOSSARY_TABLE . ' WHERE Language="' . $DB_WE->escape($this->language) . '" AND Published>0 ORDER BY Length DESC');
+		$DB_WE->query('SELECT Text,Type,Language,Title,Attributes,LENGTH(Text) as Length,Fullword FROM ' . GLOSSARY_TABLE . ' WHERE Language="' . $DB_WE->escape($this->language) . '" AND Published>0 ORDER BY Length DESC');
 		$Items = [];
 
 		while($DB_WE->next_record()){
