@@ -94,6 +94,9 @@ function we_cmd_users(args, url) {
 				}});
 			break;
 		case "users_add_owner":
+			top._EditorFrame.setEditorIsHot(true);
+			top.setScrollTo();
+			args[1] = top.allIDs.join(',');
 		case "users_del_owner":
 		case "users_del_all_owners":
 		case "users_del_user":
