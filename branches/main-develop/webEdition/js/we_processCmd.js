@@ -23,41 +23,43 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-var el = document.getElementById('loadVarCmd');
-var cmd = el.getAttribute('data-cmds');
-if (cmd) {
-	var cmds = cmd.split(',');
-	var cmdData = null;
-	for (var i = 0; i < cmds.length; i++) {
-		cmdData = WE().util.decodeDynamicVar(el, 'data-cmd' + i);
+window.addEventListener('load', function () {
+	var el = document.getElementById('loadVarCmd');
+	var cmd = el.getAttribute('data-cmds');
+	if (cmd) {
+		var cmds = cmd.split(',');
+		var cmdData = null;
+		for (var i = 0; i < cmds.length; i++) {
+			cmdData = WE().util.decodeDynamicVar(el, 'data-cmd' + i);
 
-		//Keep switch clean, only few statements should be here, everthing else goes to specific js file
-		switch (cmds[i]) {
-			case 'msg':
-				top.we_showMessage(cmdData.msg, cmdData.prio ? cmdData.prio : WE().consts.message.WE_MESSAGE_NOTICE, window);
-				break;
-			case 'close':
-				top.close();
-				break;
-			case 'history.back':
-				history.back();
-				break;
-			case 'we_cmd':
-				top.we_cmd.apply(this, cmdData);
-				break;
-			case 'location':
-				switch (cmdData.doc) {
-					case 'document':
-						document.location = cmdData.loc;
-						break;
-					case 'body':
-						top.body.document.location = cmdData.loc;
-						break;
-				}
-				break;
-			default:
-				//if nothing matched, we set arg[0]=cmd & pass the whole argument to we_cmd
-				top.we_cmd.apply(this, [cmds[i], cmdData]);
+			//Keep switch clean, only few statements should be here, everthing else goes to specific js file
+			switch (cmds[i]) {
+				case 'msg':
+					top.we_showMessage(cmdData.msg, cmdData.prio ? cmdData.prio : WE().consts.message.WE_MESSAGE_NOTICE, window);
+					break;
+				case 'close':
+					top.close();
+					break;
+				case 'history.back':
+					history.back();
+					break;
+				case 'we_cmd':
+					top.we_cmd.apply(this, cmdData);
+					break;
+				case 'location':
+					switch (cmdData.doc) {
+						case 'document':
+							document.location = cmdData.loc;
+							break;
+						case 'body':
+							top.body.document.location = cmdData.loc;
+							break;
+					}
+					break;
+				default:
+					//if nothing matched, we set arg[0]=cmd & pass the whole argument to we_cmd
+					top.we_cmd.apply(this, [cmds[i], cmdData]);
+			}
 		}
 	}
-}
+});
