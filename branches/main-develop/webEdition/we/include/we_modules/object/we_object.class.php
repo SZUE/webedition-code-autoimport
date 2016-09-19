@@ -1282,9 +1282,7 @@ class we_object extends we_document{
 
 		$btnDelete = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value=''");
 
-		$wecmdenc1 = we_base_request::encCmd("WE().layout.weEditorFrameController.getVisibleEditorFrame().we_form.elements['" . $idname . "'].value");
-		$wecmdenc2 = we_base_request::encCmd("WE().layout.weEditorFrameController.getVisibleEditorFrame().we_form.elements['" . $textname . "'].value");
-		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix(VFILE_TABLE) . "');", true, 0, 0, "", "", false, false);
+		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','" . $idname . "','" . $textname . "',-1,'" . stripTblPrefix(VFILE_TABLE) . "');", true, 0, 0, "", "", false, false);
 
 		/*
 		  DAMD: der Autocompleter funktioniert hier nicht...
@@ -1467,10 +1465,9 @@ class we_object extends we_document{
 		$textname = 'userNameTmp';
 		$idname = 'userIDTmp';
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('object_del_all_users','')", true, 0, 0, "", "", $this->Users ? false : true);
-		$wecmdenc5 = we_base_request::encCmd("fillIDs();opener.we_cmd('users_add_user',top.allIDs.join(','))");
 //FIXME: bad encoded field!
 		$addbut = $canChange ?
-			we_html_element::htmlHiddens(array($idname => "", $textname => "")) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector',document.we_form.elements['" . $idname . "'].value,'" . $textname . "','',document.we_form.elements['" . $idname . "'].value,'" . $wecmdenc5 . "','','',1)") : '';
+			we_html_element::htmlHiddens([$idname => "", $textname => ""]) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector',document.we_form.elements['" . $idname . "'].value,'" . $textname . "','',document.we_form.elements['" . $idname . "'].value,'users_add_user','','',1)") : '';
 
 		$content = '<table class="default">
 <tr><td><div style="width:506px;" class="multichooser">' . $content . '</div></td></tr>' .

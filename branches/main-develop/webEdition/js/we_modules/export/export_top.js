@@ -52,6 +52,9 @@ function we_cmd() {
 	}
 
 	switch (args[0]) {
+		case 'setHot':
+			setHot();
+			break;
 		case "exit_export":
 			if (hot !== 1) {
 				top.opener.top.we_cmd("exit_modules");

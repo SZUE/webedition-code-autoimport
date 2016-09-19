@@ -587,12 +587,11 @@ function callBack(){
 		$table->setCol(0, 0, ["colspan" => 2], we_html_forms::radiobutton(self::EXPORT_LOCAL, ($import_from == self::EXPORT_LOCAL), "import_from", g_l('modules_customer', '[upload_import]'), true, "defaultfont"));
 		$table->setColContent(1, 1, $tmptable->getHtml());
 
-		$parts[] = array(
-			"headline" => "",
+		$parts[] = ["headline" => "",
 			"html" => $table->getHTML(),
 			'space' => we_html_multiIconBox::SPACE_MED,
 			'noline' => 1
-		);
+			];
 
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[import_title]'), '', '', $css . $js, we_html_element::htmlBody(['class' => "weDialogBody"], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "target" => "body", "enctype" => "multipart/form-data"], $this->getHiddens(["art" => self::ART_IMPORT, "step" => 2]) .
 						we_html_multiIconBox::getHTML("", $parts, 30, "", -1, "", "", false, g_l('modules_customer', '[import_step2]'))
