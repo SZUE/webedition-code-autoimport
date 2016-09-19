@@ -298,7 +298,8 @@ var WebEdition = {
 		 * @param prio integer one of the values 1,2,4
 		 * @param win object reference to the calling window
 		 */
-		showMessage: function (message, prio, win) {
+		showMessage: function (message, prio, win, timeout/*currently unsupprted*/) {
+			//FIXME:change this from alert to a dynamic window with timeout
 			win = (win ? win : this.window);
 			// default is error, to avoid missing messages
 			prio = prio ? prio : WE().consts.message.WE_MESSAGE_ERROR;
