@@ -29,7 +29,7 @@
 var treeHTML;
 var wasdblclick = false;
 var tout = null;
-var hot = 0;
+var hot = false;
 function container() {
 	this.len = 0;
 	this.state = 0;
@@ -476,10 +476,10 @@ function scrollToY() {
 }
 
 function setHot() {
-	hot = 1;
+	hot = true;
 }
 function usetHot() {
-	hot = 0;
+	hot = false;
 }
 
 function drawTree() {

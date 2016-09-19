@@ -44,6 +44,9 @@ function we_cmd() {
 		case "siteImportCreateWePageSettings":
 			new (WE().util.jsWindow)(this, url, "siteImportCreateWePageSettings", -1, -1, 520, 600, true, false, true);
 			break;
+		case "displayTable":
+			displayTable();
+			break;
 		default:
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}

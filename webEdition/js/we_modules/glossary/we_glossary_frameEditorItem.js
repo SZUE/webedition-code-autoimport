@@ -91,7 +91,7 @@ function doUnload() {
 
 function setHot() {
 	top.content.editor.edheader.document.getElementById("mark").style.display = "inline";
-	top.hot = 1;
+	top.hot = true;
 }
 
 function we_cmd() {

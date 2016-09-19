@@ -48,9 +48,7 @@ class we_voting_view extends we_modules_view{
 
 		return
 			parent::getJSTop() .
-			we_html_element::jsElement('
-parent.document.title = "' . $title . '";
-') . we_html_element::jsScript(WE_JS_MODULES_DIR . '/voting/voting_top.js');
+			we_html_element::jsScript(WE_JS_MODULES_DIR . '/voting/voting_top.js', "parent.document.title='" . $title . "'");
 	}
 
 	function getJSProperty(){
@@ -188,8 +186,8 @@ parent.document.title = "' . $title . '";
 					}
 
 					$js = ($newone ?
-							'top.content.treeData.makeNewEntry(id:' . $this->voting->ID . ',parentid:' . $this->voting->ParentID . ',text:\'' . $this->voting->Text . '\',open:0,contenttype:\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',table:\'' . VOTING_TABLE . '\',published:' . ($this->voting->isActive() ? 1 : 0) . '});top.content.drawTree();' :
-							'top.content.treeData.updateEntry({id:' . $this->voting->ID . ',text:"' . $this->voting->Text . '",parentid:"' . $this->voting->ParentID . '",published:' . ($this->voting->isActive() ? 1 : 0) . '});'
+						'top.content.treeData.makeNewEntry(id:' . $this->voting->ID . ',parentid:' . $this->voting->ParentID . ',text:\'' . $this->voting->Text . '\',open:0,contenttype:\'' . ($this->voting->IsFolder ? 'folder' : 'we/voting') . '\',table:\'' . VOTING_TABLE . '\',published:' . ($this->voting->isActive() ? 1 : 0) . '});top.content.drawTree();' :
+						'top.content.treeData.updateEntry({id:' . $this->voting->ID . ',text:"' . $this->voting->Text . '",parentid:"' . $this->voting->ParentID . '",published:' . ($this->voting->isActive() ? 1 : 0) . '});'
 						);
 					echo we_html_element::jsElement($js .
 						'top.content.editor.edheader.location.reload();' .
@@ -335,10 +333,10 @@ setTimeout(top.we_showMessage,500,"' . g_l('modules_voting', ($this->Model->IsFo
 								$myline .= $enclose . iconv(DEFAULT_CHARSET, $CSV_Charset . '//TRANSLIT', trim($values)) . $enclose . $delimiter;
 							}
 						} else {
-							$myline.= $enclose . '-' . $enclose . $delimiter;
+							$myline .= $enclose . '-' . $enclose . $delimiter;
 						}
 					} else {
-						$myline.= $enclose . '-' . $enclose . $delimiter;
+						$myline .= $enclose . '-' . $enclose . $delimiter;
 					}
 					$content[] = $myline;
 				}

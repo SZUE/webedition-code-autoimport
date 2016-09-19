@@ -54,6 +54,7 @@ function processEditorCmd($we_doc, $cmd0){
 		case 'do_add_thumbnails':
 			$we_doc->add_thumbnails(we_base_request::_(we_base_request::INTLISTA, 'we_cmd', [], 1));
 			break;
+		case 'copyDocumentSelect':
 		case 'copyDocument':
 			$we_doc->InWebEdition = true;
 			return $we_doc->copyDoc(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));

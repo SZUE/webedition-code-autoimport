@@ -34,12 +34,6 @@ class we_customer_filterView{
 	 */
 	protected $filter = null;
 
-	/**
-	 * Javascript call for making the document hot
-	 *
-	 * @var string
-	 */
-	protected $hotScript = '';
 
 	/**
 	 * width of filter
@@ -52,13 +46,11 @@ class we_customer_filterView{
 	 * Constructor
 	 *
 	 * @param we_customer_abstractFilter $filter
-	 * @param string $hotScript
 	 * @param integer $width
 	 * @return we_customer_filterView
 	 */
-	function __construct(&$filter, $hotScript = "", $width = 0){
+	function __construct(&$filter, $width = 0){
 		$this->setFilter($filter);
-		$this->setHotScript($hotScript);
 		$this->setWidth($width);
 	}
 
@@ -71,8 +63,8 @@ class we_customer_filterView{
 	 */
 	function getFilterHTML($ShowModeNone = false){
 		$script = '
-function wecf_hot() {' .
-			$this->hotScript . '
+function wecf_hot() {
+			top.content.setHot();
 }
 
 function updateView() {' .
@@ -125,8 +117,8 @@ function updateView() {' .
 				$this->createUpdateViewScript() . '
 }
 
-function wecf_hot() {' .
-				$this->hotScript . '
+function wecf_hot() {
+				top.content.setHot();
 }') .
 			we_customer_filterView::getDiv($this->getHTMLCustomerFilter(true), 'filterCustomerDiv', true, 25);
 	}
@@ -209,7 +201,7 @@ EO_SCRIPT;
 
 		$script .= $name . '.showVariant(0);';
 
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs(true);opener.addToMultiEdit(opener." . $name . ", top.allTexts,top.allIDs);opener.wecf_hot();','','','',1)");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allTexts,top.allIDs);opener.wecf_hot();','','','',1)");
 
 		$buttonTable = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")") . $addbut;
 
@@ -337,24 +329,6 @@ var buttons={
 	 */
 	function setFilter(&$filter){
 		$this->filter = $filter;
-	}
-
-	/**
-	 * accessor method for $this->_hotScript
-	 *
-	 * @return string
-	 */
-	function getHotScript(){
-		return $this->hotScript;
-	}
-
-	/**
-	 * mutator method for $this->_hotScript
-	 *
-	 * @param string $hotScript
-	 */
-	function setHotScript($hotScript){
-		$this->hotScript = $hotScript;
 	}
 
 	/**

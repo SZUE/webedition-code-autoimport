@@ -50,18 +50,27 @@ function we_cmd() {
 		case "we_banner_dirSelector":
 			new (WE().util.jsWindow)(this, url, "we_bannerselector", -1, -1, 600, 350, true, true, true);
 			break;
+		case "switchPageSelect":
+			document.we_form.ncmd.value = "switchPage";
+			document.we_form.page.value = args[2];
+			submitForm();
+			break;
 		case "switchPage":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.page.value = args[1];
 			submitForm();
 			break;
+		case "add_file":
+		case "add_folder":
+			document.we_form.ncmd.value = args[0];
+			document.we_form.ncmdvalue.value = args[1].allIDs.join(",");
+			submitForm();
+			break;
 		case "add_cat":
 		case "del_cat":
 		case "del_all_cats":
-		case "add_file":
 		case "del_file":
 		case "del_all_files":
-		case "add_folder":
 		case "del_folder":
 		case "del_customer":
 		case "del_all_customers":

@@ -89,7 +89,7 @@ container.prototype.checkNode = function (imgName) {
 	}
 	if (top.content) {
 		if (top.content.hot !== undefined) {
-			top.content.hot = 1;
+			top.content.hot = true;
 		}
 	}
 };

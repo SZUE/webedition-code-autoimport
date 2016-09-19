@@ -140,6 +140,7 @@ function we_cmd() {
 				this.wizbody.we_submit_form(this.wizbody.document.we_form, 'wizbody', WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=import");
 			}
 			break;
+		case 'reload_hot_editpage':
 		case 'reload_editpage':
 			break;
 		default:

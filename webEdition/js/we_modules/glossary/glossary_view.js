@@ -49,6 +49,9 @@ function we_cmd() {
 	var exc;
 
 	switch (args[0]) {
+		case "setHot":
+			top.content.setHot();
+			break;
 		case "exit_glossary":
 			if (hot !== 1) {
 				top.opener.top.we_cmd("exit_modules");
@@ -138,7 +141,7 @@ function we_cmd() {
 				WE().util.showMessage(WE().consts.g_l.glossary.view.no_perms, WE().consts.message.WE_MESSAGE_ERROR, this);
 				break;
 			}
-			top.content.hot = 0;
+			top.content.hot = false;
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.cmdid.value = args[1];
 			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;

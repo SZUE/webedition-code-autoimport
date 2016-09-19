@@ -64,7 +64,7 @@ function we_cmd_object(args, url) {
 		case "object_remove_image_at_class":
 		case "object_delete_link_at_class":
 		case "object_change_multiobject_at_class":
-			we_sbmtFrm(top.load, url);
+			WE().util.we_sbmtFrm(top.load, url);
 			break;
 		case "object_change_link_at_object":
 			top.load.location = url;
@@ -78,7 +78,7 @@ function we_cmd_object(args, url) {
 		case "object_change_objectlink":
 		case "object_delete_link_at_object":
 			url += "#f" + (parseInt(args[1]) - 1);
-			we_sbmtFrm(top.load, url);
+			WE().util.we_sbmtFrm(top.load, url);
 			break;
 		case "object_add_workspace":
 		case "object_del_workspace":
@@ -88,7 +88,7 @@ function we_cmd_object(args, url) {
 		case "object_del_extraworkspace":
 		case "object_changeTempl_ob":
 		case "object_ws_from_class":
-			if (!we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
+			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
 				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}

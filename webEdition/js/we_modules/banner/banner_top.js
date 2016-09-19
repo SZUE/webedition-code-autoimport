@@ -26,7 +26,7 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-var hot = 0;
+var hot = false;
 WE().util.loadConsts(document, "g_l.banner");
 
 function doUnload() {
@@ -34,11 +34,11 @@ function doUnload() {
 }
 
 function setHot() {
-	hot = 1;
+	hot = true;
 }
 
 function usetHot() {
-	hot = 0;
+	hot = false;
 }
 
 

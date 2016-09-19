@@ -24,13 +24,13 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 var activ_tab = 1;
-var hot = 0;
+var hot = false;
 var makeNewDoc = false;
 
 WE().util.loadConsts(document, "g_l.navigation");
 
 function mark() {
-	hot = 1;
+	hot = true;
 	top.content.editor.edheader.mark();
 }
 
@@ -50,6 +50,9 @@ function we_cmd() {
 		}
 	}
 	switch (args[0]) {
+		case "setHot":
+			mark();
+			break;
 		case "module_navigation_edit":
 			if (top.content.editor.edbody.loaded) {
 				top.content.editor.edbody.document.we_form.cmd.value = args[0];
@@ -64,7 +67,7 @@ function we_cmd() {
 		case "module_navigation_new":
 		case "module_navigation_new_group":
 			if (top.content.editor.edbody.loaded) {
-				top.content.hot = 0;
+				top.content.hot = false;
 				if (top.content.editor.edbody.document.we_form.presetFolder !== undefined) {
 					top.content.editor.edbody.document.we_form.presetFolder.value = false;
 				}
@@ -159,11 +162,22 @@ function we_cmd() {
 		case "move_down":
 			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=cmd&cmd=" + args[0];
 			break;
+		case "enable_open_navigation_doc":
+			WE().layout.button.switch_button_state(document, 'open_navigation_doc', document.we_form.elements.LinkID.value > 0 ? 'enabled' : 'disabled');
+			break;
+		case "populateText":
+			top.content.mark()
+			top.content.editor.edbody.document.we_form.cmd.value = args[0];
+			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
+			top.content.editor.edbody.document.we_form.pnt.value = "cmd";
+			top.content.editor.edbody.submitForm("cmd");
+			break;
+		case "populateWorkspaces":
+			WE().layout.button.switch_button_state(document, 'open_navigation_obj', opener.document.we_form.elements.LinkID.value > 0 ? 'enabled' : 'disabled');
+			/*falls through*/
 		case "dyn_preview":
 		case "create_template":
-		case "populateWorkspaces":
 		case "populateFolderWs":
-		case "populateText":
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
 			top.content.editor.edbody.document.we_form.pnt.value = "cmd";

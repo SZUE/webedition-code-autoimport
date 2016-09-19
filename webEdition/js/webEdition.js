@@ -27,8 +27,7 @@ if (window.location !== top.location) {
 	top.location = window.location;
 }
 
-var busy = 0;
-var hot = 0;
+var hot = false;
 var last = 0;
 var lastUsedLoadFrame = null;
 var nlHTMLMail = false;
@@ -293,6 +292,21 @@ var WebEdition = {
 			}
 			return false;
 		},
+		we_sbmtFrm: function (target, url, source) {
+			if (source === undefined) {
+				source = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+			}
+
+			if (source) {
+				if (source.we_submitForm !== undefined && source.we_submitForm) {
+					return source.we_submitForm(target.name, url);
+				}
+				if (source.contentWindow && source.contentWindow.we_submitForm) {
+					return source.contentWindow.we_submitForm(target.name, url);
+				}
+			}
+			return false;
+		},
 		hasPerm: function (perm) {
 			return (WE().session.permissions.ADMINISTRATOR || WE().session.permissions[perm] ? true : false);
 		},
@@ -478,8 +492,12 @@ var WebEdition = {
 			var url = (base === undefined ? WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?" : base);
 
 			if (Object.prototype.toString.call(args) === '[object Array]') {
+				var pos = 0;
 				for (var i = 0; i < args.length; i++) {
-					url += "we_cmd[" + i + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+					if (Object.prototype.toString.call(args[i]) !== '[object Object]') {
+						url += "we_cmd[" + pos + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
+						pos++;
+					}
 				}
 			} else {
 				url += Object.keys(args).map(function (key) {
@@ -651,8 +669,7 @@ var WebEdition = {
 			// public method for decoding
 			decode: function (input) {
 				var output = "";
-				var chr1, chr2, chr3;
-				var enc1, enc2, enc3, enc4;
+				var chr1, chr2, chr3, enc1, enc2, enc3, enc4;
 				var i = 0;
 
 				input = input.replace(/[^A-Za-z0-9\+\/\=]/g, "");
@@ -843,36 +860,20 @@ function we_repl(target, url) {
 	}
 }
 
-function we_sbmtFrm(target, url, source) {
-	if (source === undefined) {
-		source = WE().layout.weEditorFrameController.getVisibleEditorFrame();
-	}
-
-	if (source) {
-		if (source.we_submitForm !== undefined && source.we_submitForm) {
-			return source.we_submitForm(target.name, url);
-		}
-		if (source.contentWindow && source.contentWindow.we_submitForm) {
-			return source.contentWindow.we_submitForm(target.name, url);
-		}
-	}
-	return false;
-}
-
 function doSave(url, trans, cmd) {
 	var _EditorFrame = WE().layout.weEditorFrameController.getEditorFrameByTransaction(trans);
 	// _EditorFrame.setEditorIsHot(false);
 	if (_EditorFrame.getEditorAutoRebuild()) {
 		url += "&we_cmd[8]=1";
 	}
-	if (!we_sbmtFrm(window.load, url)) {
+	if (!WE().util.we_sbmtFrm(window.load, url)) {
 		url += "&we_transaction=" + trans;
 		we_repl(window.load, url, cmd);
 	}
 }
 
 function doPublish(url, trans, cmd) {
-	if (!we_sbmtFrm(window.load, url)) {
+	if (!WE().util.we_sbmtFrm(window.load, url)) {
 		url += "&we_transaction=" + trans;
 		we_repl(window.load, url, cmd);
 	}
@@ -1077,7 +1078,7 @@ function we_cmd_base(args, url) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
 					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
-					we_sbmtFrm(window.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
+					WE().util.we_sbmtFrm(window.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
 				}
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
@@ -1092,23 +1093,23 @@ function we_cmd_base(args, url) {
 				if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
 					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
 				} else {
-					we_sbmtFrm(window.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
+					WE().util.we_sbmtFrm(window.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
 				}
 			} else {
 				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
 			}
 			break;
 		case "do_delete":
-			we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
+			WE().util.we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
 			break;
 		case "move_single_document":
-			we_sbmtFrm(window.load, url, WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
+			WE().util.we_sbmtFrm(window.load, url, WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
 			break;
 		case "do_move":
-			we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
+			WE().util.we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
 			break;
 		case "do_addToCollection":
-			we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
+			WE().util.we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
 			break;
 		case "change_passwd":
 			new (WE().util.jsWindow)(this, url, "we_change_passwd", -1, -1, 300, 300, true, false, true, false);
@@ -1276,6 +1277,12 @@ function we_cmd_base(args, url) {
 		case "we_fileupload_editor":
 			new (WE().util.jsWindow)(this, url, "we_fileupload_editor", -1, -1, 500, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
+		case "setHot":
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+			break;
+		case 'setCreateTemplate':
+			document.we_form.CreateTemplate.checked = true;
+			break;
 		case "setTab":
 			if (treeData !== undefined) {
 				WE().layout.vtab.setActiveTab(args[1]);
@@ -1289,6 +1296,16 @@ function we_cmd_base(args, url) {
 				top.we_cmd("revert_published");
 			}
 			break;
+		case "checkSameMaster":
+			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+			if (args[1].currentID == args[2]) {
+				top.we_showMessage(WE().consts.g_l.alert.same_master_template, WE().consts.message.WE_MESSAGE_ERROR, window);
+				document.we_form.elements[args[1].JSIDName].value = '';
+				opener.document.we_form.elements[args[1].JSTextName].value = '';
+			}
+			break;
+		case "copyDocumentSelect":
+			url += "&we_cmd[1]=" + args[1].currentID;
 		case "update_image":
 		case "update_file":
 		case "copyDocument":
@@ -1320,6 +1337,7 @@ function we_cmd_base(args, url) {
 		case "add_navi":
 		case "delete_navi":
 		case "delete_all_navi":
+		case "reload_hot_editpage":
 			// set Editor hot
 			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
 			_EditorFrame.setEditorIsHot(true);
@@ -1336,13 +1354,13 @@ function we_cmd_base(args, url) {
 		case "doImage_convertJPEG":
 		case "doImage_crop":
 		case "revert_published":
-
+			setScrollTo();
 			// get editor root frame of active tab
 			var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
 			// get visible frame for displaying editor page
 			var _visibleEditorFrame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
 			// if cmd equals "reload_editpage" and there are parameters, attach them to the url
-			if (args[0] === "reload_editpage") {
+			if (args[0] === "reload_editpage" || args[0] === "reload_hot_editpage") {
 				url += (_currentEditorRootFrame.parameters ? _currentEditorRootFrame.parameters : '') +
 								(args[1] ? '#f' + args[1] : '');
 			} else if (args[0] === "remove_image" && args[2]) {
@@ -1355,7 +1373,7 @@ function we_cmd_base(args, url) {
 			}
 
 			if (_currentEditorRootFrame) {
-				if (!we_sbmtFrm(_visibleEditorFrame, url, _visibleEditorFrame)) {
+				if (!WE().util.we_sbmtFrm(_visibleEditorFrame, url, _visibleEditorFrame)) {
 					if (args[0] !== "update_image") {
 						// add we_transaction, if not set
 						if (!args[2]) {
@@ -1404,7 +1422,7 @@ function we_cmd_base(args, url) {
 				ctrl.setActiveEditorFrame(nextWindow.FrameId);
 				ctrl.toggleFrames();
 				if (_nextContent.frames && _nextContent.frames[1]) {
-					if (!we_sbmtFrm(_nextContent, url)) {
+					if (!WE().util.we_sbmtFrm(_nextContent, url)) {
 						we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 					}
 				} else {
@@ -1509,7 +1527,6 @@ function we_cmd_base(args, url) {
 			//parents element start from 4
 			if (args.indexOf(args[1].currentID, 3) > -1) {
 				WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-				break;
 			} else {
 				we_cmd('copyFolder', args[1].currentID, args[2], 1, args[3]);
 			}
@@ -1838,8 +1855,7 @@ function we_cmd_base(args, url) {
 			}
 
 			if (_currentEditorRootFrame) {
-
-				if (!we_sbmtFrm(_sendToFrame, url, _sendFromFrame)) {
+				if (!WE().util.we_sbmtFrm(_sendToFrame, url, _sendFromFrame)) {
 					// add we_transaction, if not set
 					if (!args[2]) {
 						args[2] = _we_activeTransaction;
@@ -1855,12 +1871,12 @@ function we_cmd_base(args, url) {
 		case "move_variant_down":
 		case "remove_variant":
 			url += "#f" + (parseInt(args[1]) - 1);
-			we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
+			WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
 			break;
 		case 'preview_variant':
 			url += "#f" + (parseInt(args[1]) - 1);
 			var prevWin = new (WE().util.jsWindow)(this, url, "previewVariation", -1, -1, 1600, 1200, true, true, true, true);
-			we_sbmtFrm(prevWin.wind, url);
+			WE().util.we_sbmtFrm(prevWin.wind, url);
 			break;
 		case 'cloneDocument':
 			var act = WE().layout.weEditorFrameController.getActiveEditorFrame();
@@ -1871,6 +1887,7 @@ function we_cmd_base(args, url) {
 			top.we_cmd("copyDocument", act.EditorDocumentId);
 			break;
 		default:
+			WE().t_e('no command matched to request', args[0]);
 			return false;
 	}
 	return true;

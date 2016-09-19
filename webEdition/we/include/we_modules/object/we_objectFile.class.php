@@ -233,8 +233,7 @@ class we_objectFile extends we_document{
 	function formCopyDocument(){
 		$idname = 'we_' . $this->Name . '_CopyID';
 		$rootDirId = self::getObjectRootPathOfObjectWorkspace($this->RootDirPath, $this->rootDirID);
-		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);opener.top.we_cmd('copyDocument',top.fileSelect.data.currentID);");
-		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].elements['" . $idname . "'].value,'" . $this->Table . "','" . $idname . "','','" . $wecmdenc3 . "','','" . $rootDirId . "','" . $this->ContentType . "');");
+		$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.forms[0].elements['" . $idname . "'].value,'" . $this->Table . "','" . $idname . "','','copyDocumentSelect','','" . $rootDirId . "','" . $this->ContentType . "');");
 		return we_html_element::htmlHidden($idname, $this->CopyID) . $but;
 	}
 

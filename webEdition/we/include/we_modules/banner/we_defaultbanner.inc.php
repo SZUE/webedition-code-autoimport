@@ -35,12 +35,11 @@ if(we_base_request::_(we_base_request::BOOL, "ok")){
 }
 $yuiSuggest = & weSuggest::getInstance();
 
-function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $idname = '', $title = "", $cmd = ""){
+function formBannerChooser($width = "", $table = BANNER_TABLE, $idvalue = 0, $idname = ''){
 	$yuiSuggest = & weSuggest::getInstance();
 	$path = id_to_path($idvalue, $table);
 	$textname = md5(uniqid(__FUNCTION__, true));
-	$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_selector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname. "','" . $wecmdenc3 . "')");
+	$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_banner_selector',document.we_form.elements['" . $idname . "'].value,'" . $idname . "','" . $textname . "')");
 
 	$yuiSuggest->setAcId("Path");
 	$yuiSuggest->setContentType("folder");
@@ -64,8 +63,8 @@ echo we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/we_defaultbanner.js',
 	<form name="we_form" action="<?= $_SERVER["SCRIPT_NAME"]; ?>" method="post"><input type="hidden" name="ok" value="1" /><input type="hidden" name="we_cmd[0]" value="<?= we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0); ?>" />
 		<?php
 		$DefaultBannerID = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="banner" AND pref_name="DefaultBannerID"');
-		$content = formBannerChooser(300, BANNER_TABLE, $DefaultBannerID, "DefaultBannerID", "");
-		$yes_button = we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();");
+		$content = formBannerChooser(300, BANNER_TABLE, $DefaultBannerID, "DefaultBannerID");
+$yes_button = we_html_button::create_button(we_html_button::SAVE, "javascript:we_save();");
 		$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$buttons = we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button);
 

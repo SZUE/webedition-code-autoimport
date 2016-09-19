@@ -74,7 +74,7 @@ class we_workflow_view extends we_modules_view{
 		$counter = 0;
 		$counter1 = 0;
 		foreach($this->workflowDef->steps as $sv){
-			$out.=we_html_element::htmlHiddens(array(
+			$out .= we_html_element::htmlHiddens(array(
 					$this->uid . '_step' . $counter . '_sid' => $sv->ID,
 					$this->uid . '_step' . $counter . '_and' => $sv->stepCondition,
 					$this->uid . '_step' . $counter . '_Worktime' => $sv->Worktime,
@@ -82,7 +82,7 @@ class we_workflow_view extends we_modules_view{
 			));
 			$counter1 = 0;
 			foreach($sv->tasks as $tv){
-				$out.=we_html_element::htmlHiddens(array(
+				$out .= we_html_element::htmlHiddens(array(
 						$this->uid . '_task' . $counter . $counter1 . '_tid' => $tv->ID,
 						$this->uid . '_task_' . $counter . '_' . $counter1 . '_userid' => $tv->userID,
 						$this->uid . '_task_' . $counter . '_' . $counter1 . '_Edit' => ($tv->Edit ? 1 : 0),
@@ -92,7 +92,7 @@ class we_workflow_view extends we_modules_view{
 			}
 			++$counter;
 		}
-		$out.=we_html_element::htmlHiddens(array(
+		$out .= we_html_element::htmlHiddens(array(
 				'wcat' => '0',
 				'wocat' => '0',
 				'wfolder' => '0',
@@ -109,7 +109,7 @@ class we_workflow_view extends we_modules_view{
 		$out = '';
 		foreach($this->hiddens as $val){
 			$dat = isset($this->workflowDef->persistents[$val]) ? $this->workflowDef->$val : $this->$val;
-			$out.=we_html_element::htmlHidden($this->uid . '_' . $val, (is_array($dat) ? implode(',', $dat) : $dat));
+			$out .= we_html_element::htmlHidden($this->uid . '_' . $val, (is_array($dat) ? implode(',', $dat) : $dat));
 		}
 		return $out;
 	}
@@ -118,7 +118,7 @@ class we_workflow_view extends we_modules_view{
 		$content = '<form name="we_form" onsubmit="return false">' .
 			$this->getHiddens();
 		if($this->show){
-			$content .=$this->getDocumentInfo();
+			$content .= $this->getDocumentInfo();
 		} else {
 			switch($this->page){
 				case self::PAGE_PROPERTIES:
@@ -126,10 +126,11 @@ class we_workflow_view extends we_modules_view{
 						$parts[] = ['headline' => g_l('modules_workflow', '[type]'),
 						'space' => we_html_multiIconBox::SPACE_MED,
 						'html' => $this->getWorkflowTypeHTML()],
-						['headline' => g_l('modules_workflow', '[specials]'),
+							['headline' => g_l('modules_workflow', '[specials]'),
 							'space' => we_html_multiIconBox::SPACE_MED,
 							'html' => '<br/>' .
 							we_html_forms::checkboxWithHidden($this->workflowDef->EmailPath, $this->uid . '_EmailPath', g_l('modules_workflow', '[EmailPath]'), false, 'defaultfont', '', false) .
+							'<br/>' .
 							we_html_forms::checkboxWithHidden($this->workflowDef->LastStepAutoPublish, $this->uid . '_LastStepAutoPublish', g_l('modules_workflow', '[LastStepAutoPublish]'), false, 'defaultfont', '', false)
 						],
 					];
@@ -141,9 +142,9 @@ class we_workflow_view extends we_modules_view{
 					$content .= $this->getHiddensFormPropertyPage() .
 						we_html_tools::htmlDialogLayout($this->getStepsHTML(), '');
 			}
-			$content .=$this->workflowHiddens();
+			$content .= $this->workflowHiddens();
 		}
-		$content .='</form>';
+		$content .= '</form>';
 		return we_html_element::htmlBody(array('class' => 'weEditorBody', 'onload' => 'loaded=1;', 'onunload' => 'doUnload()'), $content);
 	}
 
@@ -165,27 +166,25 @@ class we_workflow_view extends we_modules_view{
 	}
 
 	function getWorkflowTypeHTML(){
-		t_e($this->workflowDef);
-		return $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::FOLDER, $this->workflowDef->Type == we_workflow_workflow::FOLDER, $this->uid . '_Type', g_l('modules_workflow', '[type_dir]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
+		return $this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::FOLDER, $this->workflowDef->Type == we_workflow_workflow::FOLDER, $this->uid . '_Type', g_l('modules_workflow', '[type_dir]'), true, 'defaultfont', 'onclick=top.content.setHot();'), [
 				$this->getFoldersHTML(),
-				), 25) .
-			$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::DOCTYPE_CATEGORY, $this->workflowDef->Type == we_workflow_workflow::DOCTYPE_CATEGORY, $this->uid . '_Type', g_l('modules_workflow', '[type_doctype]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
+				], 25) .
+			$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::DOCTYPE_CATEGORY, $this->workflowDef->Type == we_workflow_workflow::DOCTYPE_CATEGORY, $this->uid . '_Type', g_l('modules_workflow', '[type_doctype]'), true, 'defaultfont', 'onclick=top.content.setHot();'), [
 				$this->getDocTypeHTML(),
 				$this->getCategoryHTML(),
-				), 25) .
+				], 25) .
 			(defined('OBJECT_TABLE') ?
-				$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::OBJECT, $this->workflowDef->Type == we_workflow_workflow::OBJECT, $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), array(
-					$this->getObjectHTML(),
-					$this->getObjCategoryHTML(),
-					$this->getObjectFileFoldersHTML(),
-					), 25) :
-				'');
+			$this->getTypeTableHTML(we_html_forms::radiobutton(we_workflow_workflow::OBJECT, $this->workflowDef->Type == we_workflow_workflow::OBJECT, $this->uid . '_Type', g_l('modules_workflow', '[type_object]'), true, 'defaultfont', 'onclick=top.content.setHot();'), [
+				$this->getObjectHTML(),
+				$this->getObjCategoryHTML(),
+				$this->getObjectFileFoldersHTML(),
+				], 25) :
+			'');
 	}
 
 	function getFoldersHTML(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_folders');");
-		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_folder',top.allIDs);");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','add_folder','','','',true)");
 
 		$dirs = new we_chooser_multiDir(495, $this->workflowDef->Folders, 'del_folder', $delallbut . $addbut, '', 'ContentType', FILE_TABLE, 'defaultfont', '', "top.content.setHot();");
 
@@ -194,7 +193,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getCategoryHTML(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs.join(\\',\\'));')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -203,7 +202,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getObjCategoryHTML(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objcats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs.join(\\',\\'));')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -212,8 +211,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getObjectHTML(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objects')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$wecmdenc3 = we_base_request::encCmd("opener.we_cmd('add_object',top.fileSelect.data.currentID);");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('openObjselector','','" . OBJECT_TABLE . "','','','" . $wecmdenc3 . "')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('openObjselector','','" . OBJECT_TABLE . "','','','add_object')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->Objects, "del_object", $delallbut . $addbut, "", "ContentType", OBJECT_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -222,9 +220,8 @@ class we_workflow_view extends we_modules_view{
 
 	function getObjectFileFoldersHTML(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_object_file_folders');");
-		//avascript:top.content.setHot();we_cmd('we_selector_directory','','".OBJECT_FILES_TABLE."','','','fillIDs();opener.we_cmd(\\'add_object_file_folder\\',top.allIDs);','','','',true)
-		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_object_file_folder',top.allIDs);");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . OBJECT_FILES_TABLE . "','','','" . $wecmdenc3 . "','','','',true)");
+		//avascript:top.content.setHot();we_cmd('we_selector_directory','','".OBJECT_FILES_TABLE."','','','fillIDs();opener.we_cmd(\\'add_object_file_folder\\',top.allIDs.join(','));','','','',true)
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . OBJECT_FILES_TABLE . "','','','add_object_file_folder','','','',true)");
 
 		$dirs = new we_chooser_multiDir(495, $this->workflowDef->ObjectFileFolders, "del_object_file_folder", $delallbut . $addbut, "", "ContentType", OBJECT_FILES_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -253,7 +250,7 @@ class we_workflow_view extends we_modules_view{
 
 		/*		 * *** WORKFLOWSTEPS **** */
 		foreach($this->workflowDef->steps as $sv){
-			$ids.=we_html_element::htmlHidden($this->uid . '_step' . $counter . '_sid', $sv->ID);
+			$ids .= we_html_element::htmlHidden($this->uid . '_step' . $counter . '_sid', $sv->ID);
 			$content[$counter] = array(
 				array(
 					'dat' => $counter + 1,
@@ -278,12 +275,11 @@ class we_workflow_view extends we_modules_view{
 
 			$counter1 = 0;
 			foreach($sv->tasks as $tv){
-				$ids.=we_html_element::htmlHidden($this->uid . '_task' . $counter . '_' . $counter1 . '_tid', $tv->ID);
+				$ids .= we_html_element::htmlHidden($this->uid . '_task' . $counter . '_' . $counter1 . '_tid', $tv->ID);
 				$headline[$counter1 + 3] = array('dat' => g_l('modules_workflow', '[user]') . (string) ($counter1 + 1));
 
 				$foo = f('SELECT Path FROM ' . USER_TABLE . ' WHERE ID=' . intval($tv->userID), '', $this->db);
-				$wecmdenc2 = we_base_request::encCmd("document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext.value");
-				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . '_task_' . $counter . '_' . $counter1 . "_userid.value', '" . $wecmdenc2 . "','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
+				$button = we_html_button::create_button(we_html_button::SELECT, "javascript:top.content.setHot();we_cmd('we_users_selector','document.we_form." . $this->uid . '_task_' . $counter . '_' . $counter1 . "_userid.value', '" . $this->uid . "_task_" . $counter . "_" . $counter1 . "_usertext','',document.we_form." . $this->uid . "_task_" . $counter . "_" . $counter1 . "_userid.value);");
 
 				$yuiSuggest->setAcId('User_' . $counter . '_' . $counter1);
 				$yuiSuggest->setContentType(we_users_user::TYPE_USER . ',' . we_users_user::TYPE_USER_GROUP);
@@ -336,9 +332,9 @@ class we_workflow_view extends we_modules_view{
 	function getTypeTableHTML($head, $values, $ident = 0, $textalign = "left", $textclass = "defaultfont"){
 		$out = '<table class="default">' . ($head ? '<tr><td class="' . trim($textclass) . '" style="text-align:' . trim($textalign) . '" colspan="2">' . $head . '</td></tr>' : '');
 		foreach($values as $val){
-			$out.='<tr><td class="' . trim($textclass) . '" style="padding-left:' . $ident . 'px;">' . $val . '</td></tr>';
+			$out .= '<tr><td class="' . trim($textclass) . '" style="padding-left:' . $ident . 'px;">' . $val . '</td></tr>';
 		}
-		$out.='</table>';
+		$out .= '</table>';
 		return $out;
 	}
 
@@ -371,15 +367,6 @@ class we_workflow_view extends we_modules_view{
 		}
 		return we_html_tools::htmlFormElementTable(
 				we_html_tools::htmlSelect($this->uid . '_DocType[]', $vals, 6, $this->workflowDef->DocType, true, array('onchange' => "top.content.setHot();"), "value", $width, "defaultfont"), g_l('modules_workflow', '[doctype]'));
-	}
-
-	/* creates the DirectoryChoooser field with the "browse"-Button. Clicking on the Button opens the fileselector */
-
-	function formDirChooser($width = '', $rootDirID = 0, $table = FILE_TABLE, $Pathname = 'ParentPath', $Pathvalue = '', $IDName = 'ParentID', $IDValue = '', $cmd = ''){
-		$wecmdenc3 = we_base_request::encCmd(str_replace('\\', '', $cmd));
-
-		$button = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $IDName . "'].value,'" . FILE_TABLE . "','" .$IDName . "','" . $Pathname . "','" . $wecmdenc3 . "','','" . $rootDirID . "')");
-		return we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($Pathname, 30, $Pathvalue, '', 'onchange="top.content.setHot();" readonly', "text", $width, 0), "", "left", "defaultfont", we_html_element::htmlHidden($IDName, $IDValue), $button);
 	}
 
 	function getJSTop(){
@@ -567,7 +554,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 					$childs = '';
 					$this->workflowDef->loadDocuments();
 					foreach($this->workflowDef->documents as $v){
-						$childs.="top.content.treeData.deleteEntry(" . $v["ID"] . ",'file');";
+						$childs .= "top.content.treeData.deleteEntry(" . $v["ID"] . ",'file');";
 					}
 					if(($dts = we_base_request::_(we_base_request::INTLISTA, $this->uid . '_DocType')) !== false){
 						$this->workflowDef->DocType = $dts;
@@ -1045,14 +1032,14 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 		$nextprev = '<table class="default"><tr><td>' .
 			($offset ?
-				we_html_button::create_button(we_html_button::BACK, WEBEDITION_DIR . 'we_showMod.php?mod=workflow&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset - $numRows)) :
-				we_html_button::create_button(we_html_button::BACK, '', false, 100, 22, '', '', true)
+			we_html_button::create_button(we_html_button::BACK, WEBEDITION_DIR . 'we_showMod.php?mod=workflow&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset - $numRows)) :
+			we_html_button::create_button(we_html_button::BACK, '', false, 100, 22, '', '', true)
 			) .
 			'</td><td class="defaultfont" style="padding: 0 10px 0 10px;"><b>' . (($anz) ? $offset + 1 : 0) . '-' .
 			(($anz - $offset) < $numRows ? $anz : $offset + $numRows) . ' ' . g_l('global', '[from]') . ' ' . $anz . '</b></td><td>' .
 			((($offset + $numRows) < $anz) ?
-				we_html_button::create_button(we_html_button::NEXT, WEBEDITION_DIR . 'we_showMod.php?mod=workflow&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset + $numRows)/* . "&order=$order" */) :
-				we_html_button::create_button(we_html_button::NEXT, '', '', 100, 22, '', '', true)
+			we_html_button::create_button(we_html_button::NEXT, WEBEDITION_DIR . 'we_showMod.php?mod=workflow&pnt=log&art=' . $art . '&type=' . $type . '&offset=' . ($offset + $numRows)/* . "&order=$order" */) :
+			we_html_button::create_button(we_html_button::NEXT, '', '', 100, 22, '', '', true)
 			) .
 			'</td><td></tr></table>';
 
@@ -1060,8 +1047,8 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 
 		return ($logs ?
-				we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, $content, $headlines), '', $buttonsTable) :
-				we_html_tools::htmlDialogLayout('<div style="width:500px;text-align:center" class="middlefont">-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
+			we_html_tools::htmlDialogLayout(we_html_tools::htmlDialogBorder3(580, $content, $headlines), '', $buttonsTable) :
+			we_html_tools::htmlDialogLayout('<div style="width:500px;text-align:center" class="middlefont">-- ' . g_l('modules_workflow', '[log_is_empty]') . ' --</div>', '', we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();")));
 	}
 
 	function getLogQuestion(){

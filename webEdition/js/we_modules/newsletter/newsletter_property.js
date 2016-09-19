@@ -95,7 +95,7 @@ function addEmail(group, email, html, salutation, title, firstname, lastname) {
 
 	dest.value = arr.join("\n");
 
-	top.content.hot = 1;
+	top.content.hot = true;
 }
 
 function editEmail(group, id, email, html, salutation, title, firstname, lastname) {
@@ -108,7 +108,7 @@ function editEmail(group, id, email, html, salutation, title, firstname, lastnam
 
 	dest.value = arr.join("\n");
 
-	top.content.hot = 1;
+	top.content.hot = true;
 }
 
 function mysplice(arr, id) {
@@ -129,14 +129,14 @@ function delEmail(group, id) {
 
 	arr.splice(id, 1);
 	dest.value = arr.join("\n");
-	top.content.hot = 1;
+	top.content.hot = true;
 }
 
 function delallEmails(group) {
 	var dest = document.forms[0].elements["group" + group + "_Emails"];
 
 	dest.value = "";
-	top.content.hot = 1;
+	top.content.hot = true;
 }
 
 function inSelectBox(p, val) {
@@ -235,13 +235,13 @@ function we_cmd() {
 		case "del_customer":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.ncustomer.value = args[1];
-			top.content.hot = 1;
+			top.content.hot = true;
 			submitForm();
 			break;
 
 		case "del_all_customers":
 		case "del_all_files":
-			top.content.hot = 1;
+			top.content.hot = true;
 			document.we_form.ncmd.value = args[0];
 			document.we_form.ngroup.value = args[1];
 			submitForm();
@@ -253,7 +253,7 @@ function we_cmd() {
 		case "del_file":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.nfile.value = args[1];
-			top.content.hot = 1;
+			top.content.hot = true;
 			submitForm();
 			break;
 
@@ -276,7 +276,7 @@ function we_cmd() {
 		case "delBlock":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.blockid.value = args[1];
-			top.content.hot = 1;
+			top.content.hot = true;
 			submitForm();
 			break;
 
@@ -284,7 +284,7 @@ function we_cmd() {
 		case "delGroup":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.ngroup.value = args[1];
-			top.content.hot = 1;
+			top.content.hot = true;
 			submitForm();
 			break;
 
@@ -361,7 +361,7 @@ function we_cmd() {
 
 		case "reload_table":
 		case "copy_newsletter":
-			top.content.hot = 1;
+			top.content.hot = true;
 			document.we_form.ncmd.value = args[0];
 			submitForm();
 			break;
@@ -369,7 +369,7 @@ function we_cmd() {
 		case "add_filter":
 		case "del_filter":
 		case "del_all_filters":
-			top.content.hot = 1;
+			top.content.hot = true;
 			document.we_form.ncmd.value = args[0];
 			document.we_form.ngroup.value = args[1];
 			submitForm();
@@ -377,7 +377,7 @@ function we_cmd() {
 
 		case "switch_sendall":
 			document.we_form.ncmd.value = args[0];
-			top.content.hot = 1;
+			top.content.hot = true;
 			if (document.we_form["sendallcheck_" + args[1]].checked) {
 				document.we_form["group" + args[1] + "_SendAll"].value = 1;
 			} else {
@@ -633,7 +633,7 @@ function calendarSetup(group, x) {
 }
 
 function changeFieldValue(val, valueField) {
-	top.content.hot = 1;
+	top.content.hot = true;
 	document.we_form.ncmd.value = val;
 	document.we_form.ngroup.value = valueField;
 

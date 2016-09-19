@@ -96,7 +96,7 @@ function we_cmd_users(args, url) {
 		case "users_add_owner":
 			top._EditorFrame.setEditorIsHot(true);
 			top.setScrollTo();
-			args[1] = top.allIDs.join(',');
+			args[1] = args[1].allIDs.join(',');
 		case "users_del_owner":
 		case "users_del_all_owners":
 		case "users_del_user":
@@ -104,7 +104,7 @@ function we_cmd_users(args, url) {
 			if (args[0] === "object_del_all_users" && args[3]) {
 				url += '#f' + args[3];
 			}
-			if (!we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
+			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
 				url += "&we_transaction=" + args[2];
 				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}

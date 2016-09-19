@@ -173,6 +173,7 @@ if(!isset($GLOBALS['WE_IS_DYN'])){ //only true on dynamic frontend pages
 		case 'load_editor':
 			$header = false;
 			break;
+		case 'reload_hot_editpage':
 		case 'reload_editpage':
 			$header = (!in_array($_SESSION['weS']['EditPageNr'], [we_base_constants::WE_EDITPAGE_CONTENT, we_base_constants::WE_EDITPAGE_PREVIEW, we_base_constants::WE_EDITPAGE_PROPERTIES]));
 			break;

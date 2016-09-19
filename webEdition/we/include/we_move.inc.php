@@ -168,8 +168,7 @@ $yuiSuggest->setSelector(weSuggest::DirSelector);
 $yuiSuggest->setTable($table);
 $yuiSuggest->setWidth(250);
 $yuiSuggest->setContainerWidth(360);
-$cmd1 = 'top.treeheader.document.we_form.elements.' . $idname . '.value';
-$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory'," . $cmd1 . ",'" . $table . "','" . we_base_request::encCmd($cmd1) . "','" . we_base_request::encCmd('top.treeheader.document.we_form.elements.' . $textname . '.value') . "','','',0)"), 10);
+$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',top.treeheader.document.we_form.elements.' . $idname . '.value,'" . $table . "','" . $idname . "','" . $textname . "','','',0)"), 10);
 
 $weAcSelector = $yuiSuggest->getHTML();
 

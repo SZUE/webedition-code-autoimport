@@ -125,7 +125,7 @@ class we_docTypes extends we_class{
 	}
 
 	private function formCategory(){
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category', -1, '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs);')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category', -1, '" . CATEGORY_TABLE . "', '', '', 'fillIDs();opener.we_cmd(\\'dt_add_cat\\', top.allIDs.join(','));')", false, 92, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(521, $this->Category, "dt_delete_cat", $addbut, "", '"we/category"', CATEGORY_TABLE);
 		return we_html_tools::htmlFormElementTable($cats->get(), g_l('weClass', '[category]'));
@@ -164,8 +164,7 @@ class we_docTypes extends we_class{
 	}
 
 	public function formDocTypeTemplates(){
-		$wecmdenc3 = we_base_request::encCmd("fillIDs();opener.we_cmd('add_dt_template', top.allIDs);");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_document', 0, '" . TEMPLATES_TABLE . "','','','" . $wecmdenc3 . "', '', '', '" . we_base_ContentTypes::TEMPLATE . "', 1,1)");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_document', 0, '" . TEMPLATES_TABLE . "','','','add_dt_template', '', '', '" . we_base_ContentTypes::TEMPLATE . "', 1,1)");
 		$templ = new we_chooser_multiDir(521, $this->Templates, "delete_dt_template", $addbut, "", 'ContentType', TEMPLATES_TABLE);
 		return $templ->get();
 	}

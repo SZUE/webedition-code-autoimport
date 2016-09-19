@@ -370,7 +370,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			$parameter = "";
 		}
 
-		$cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'" . CATEGORY_TABLE . "','link[Attributes][CategoryLinkID]','link[Attributes][CategoryLinkPath]','" . we_base_request::encCmd("opener.setHot();") . "','','0')";
+		$cmd = "javascript:we_cmd('we_selector_category',document.we_form.elements['link[Attributes][CategoryLinkID]'].value,'" . CATEGORY_TABLE . "','link[Attributes][CategoryLinkID]','link[Attributes][CategoryLinkPath]','setHot','','0')";
 
 		$selector1 = we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][CategoryLinkPath]', 58, $linkPath, '', 'onchange="setHot();" readonly', 'text', 400, 0), '', 'left', 'defaultfont', we_html_element::htmlHidden('link[Attributes][CategoryLinkID]', $linkID), we_html_button::create_button(we_html_button::SELECT, $cmd, true, 100, 22, '', '', false));
 

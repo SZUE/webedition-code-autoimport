@@ -50,8 +50,8 @@ class we_htmlDocument extends we_textContentDocument{
 
 	function i_publInScheduleTable(){
 		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ?
-				we_schedpro::publInScheduleTable($this, $this->DB_WE) :
-				false);
+			we_schedpro::publInScheduleTable($this, $this->DB_WE) :
+			false);
 	}
 
 	function getDocumentCode(){
@@ -65,14 +65,13 @@ class we_htmlDocument extends we_textContentDocument{
 	public function getPropertyPage(){
 		$wepos = weGetCookieVariable('but_weHtmlDocProp');
 
-		return we_html_multiIconBox::getHTML('PropertyPage', array(
-			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2),
-			array('icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formDocTypeTempl(), 'space' => we_html_multiIconBox::SPACE_MED2),
-			array('icon' => 'cat.gif', 'headline' => g_l('global', '[categorys]'), 'html' => $this->formCategory(), 'space' => we_html_multiIconBox::SPACE_MED2),
-			array('icon' => 'navi.gif', 'headline' => g_l('global', '[navigation]'), 'html' => $this->formNavigation(), 'space' => we_html_multiIconBox::SPACE_MED2),
-			array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2),
-			array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2),
-			array('icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2))
+		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'doc.gif', 'headline' => g_l('weClass', '[document]'), 'html' => $this->formDocTypeTempl(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'cat.gif', 'headline' => g_l('global', '[categorys]'), 'html' => $this->formCategory(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'navi.gif', 'headline' => g_l('global', '[navigation]'), 'html' => $this->formNavigation(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copy' . $this->ContentType . ']'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'user.gif', 'headline' => g_l('weClass', '[owners]'), 'html' => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2]]
 		);
 	}
 

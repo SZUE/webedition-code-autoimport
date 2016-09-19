@@ -47,9 +47,8 @@ function we_tag_video(array $attribs){
 		$startid = weTag_getAttribute('startid', $attribs, 0, we_base_request::INT);
 		$parentid = weTag_getAttribute('parentid', $attribs, 0, we_base_request::INT);
 		// Create "Edit" button
-		$wecmdenc3 = we_base_request::encCmd("opener.setScrollTo(); opener._EditorFrame.setEditorIsHot(true); opener.top.we_cmd('reload_editpage'); opener._EditorFrame.setEditorIsHot(true);");
 
-		$button = we_html_button::create_button('fa:btn_edit_video,fa-lg fa-pencil,fa-lg fa-file-video-o', "javascript:we_cmd('we_selector_document','" . ($id ? : $startid) . "', '" . FILE_TABLE . "','" . $fname . "','','" . $wecmdenc3 . "',''," . $parentid . ", '" . we_base_ContentTypes::VIDEO . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
+		$button = we_html_button::create_button('fa:btn_edit_video,fa-lg fa-pencil,fa-lg fa-file-video-o', "javascript:we_cmd('we_selector_document','" . ($id ?: $startid) . "', '" . FILE_TABLE . "','" . $fname . "','','reload_hot_editpage',''," . $parentid . ", '" . we_base_ContentTypes::VIDEO . "', " . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ")", true);
 
 		// Create "Delete/Clear" button
 		$clear_button = we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('remove_image', '" . $name . "')", true);

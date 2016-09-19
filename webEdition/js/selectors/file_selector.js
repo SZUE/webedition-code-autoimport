@@ -29,10 +29,6 @@ WE().util.loadConsts(document, "selectors");
 var entries = [];
 var clickCount = 0;
 var mk = null;
-var allIDs = "";
-var allPaths = "";
-var allTexts = "";
-var allIsFolder = "";
 var ctrlpressed = false;
 var shiftpressed = false;
 var wasdblclick = false;
@@ -258,40 +254,26 @@ function queryString(what, id, o) {
 	return top.fileSelect.options.formtarget + 'what=' + what + '&table=' + top.fileSelect.options.table + '&id=' + id + "&order=" + o + "&filter=" + top.fileSelect.data.currentType;
 }
 
-function fillIDs(asArray) {
-	allIDs = [];
-	allPaths = [];
-	allTexts = [];
-	allIsFolder = [];
+function fillIDs() {
+	top.fileSelect.data.allIDs = [];
+	top.fileSelect.data.allPaths = [];
+	top.fileSelect.data.allTexts = [];
+	top.fileSelect.data.allIsFolder = [];
 
 	for (var i = 0; i < entries.length; i++) {
 		if (isFileSelected(entries[i].ID)) {
-			allIDs.push(entries[i].ID);
-			allPaths.push(entries[i].path);
-			allTexts.push(entries[i].text);
-			allIsFolder.push(entries[i].isFolder);
+			top.fileSelect.data.allIDs.push(entries[i].ID);
+			top.fileSelect.data.allPaths.push(entries[i].path);
+			top.fileSelect.data.allTexts.push(entries[i].text);
+			top.fileSelect.data.allIsFolder.push(entries[i].isFolder);
 		}
 	}
-	if (top.fileSelect.data.currentID !== "" && allIDs.indexOf(top.fileSelect.data.currentID) === -1) {
-		allIDs.push(top.fileSelect.data.currentID);
+	if (top.fileSelect.data.currentID !== "" && top.fileSelect.data.allIDs.indexOf(top.fileSelect.data.currentID) === -1) {
+		top.fileSelect.data.allIDs.push(top.fileSelect.data.currentID);
 	}
-	if (top.fileSelect.data.currentPath !== "" && allPaths.indexOf(top.fileSelect.data.currentPath) === -1) {
-		allPaths.push(top.fileSelect.data.currentPath);
-		allTexts.push(we_makeTextFromPath(top.fileSelect.data.currentPath));
-	}
-
-	if (!asArray) {
-		allIDs = allIDs.join(',');
-		allPaths = allPaths.join(',');
-		allTexts = allTexts.join(',');
-		allIsFolder = allIsFolder.join(',');
-		//keep old behaviour
-		if (allIDs) {
-			allIDs = "," + allIDs + ",";
-			allPaths = "," + allPaths + ",";
-			allTexts = "," + allTexts + ",";
-			allIsFolder = "," + allIsFolder + ",";
-		}
+	if (top.fileSelect.data.currentPath !== "" && top.fileSelect.data.allPaths.indexOf(top.fileSelect.data.currentPath) === -1) {
+		top.fileSelect.data.allPaths.push(top.fileSelect.data.currentPath);
+		top.fileSelect.data.allTexts.push(we_makeTextFromPath(top.fileSelect.data.currentPath));
 	}
 }
 
@@ -515,7 +497,7 @@ function we_cmd() {
 			top.frames.fsvalues.document.we_form.elements.FolderIDPath.value = args[2];
 			break;
 		case 'newCatSuccess':
-			top.hot = 1; // this is hot for category edit!!
+			top.hot = true; // this is hot for category edit!!
 
 			if (top.fileSelect.data.currentID) {
 				top.DelBut(false);
@@ -588,7 +570,7 @@ function exit_open() {
 		if (top.fileSelect.data.JSCommand.indexOf(".") > 0) {
 			eval(top.fileSelect.data.JSCommand);
 		} else {
-			fillIDs(true);
+			fillIDs();
 			var tmp = top.fileSelect.data.JSCommand.split(',');
 			tmp.splice(1, 0, top.fileSelect.data);
 			opener.we_cmd.apply(opener, tmp);
