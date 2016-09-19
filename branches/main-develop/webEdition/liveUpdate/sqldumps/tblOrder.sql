@@ -2,6 +2,7 @@ CREATE TABLE ###TBLPREFIX###tblOrder (
 	ID int unsigned NOT NULL auto_increment,
 	shopname tinytext NOT NULL DEFAULT '',
 	customOrderNo varchar(100) DEFAULT NULL,
+	invoiceNo varchar(100) DEFAULT NULL,
   customerID int unsigned default 0,
 	customerData blob NOT NULL,
 	customFields TEXT default NULL,
