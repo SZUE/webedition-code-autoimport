@@ -20,7 +20,7 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 			ini_set('session.gc_divisor', 100);
 			ini_set('session.hash_function', 1); //set sha-1 which will generate 40 bytes of session_id
 			ini_set('session.hash_bits_per_character', 4);
-			session_set_save_handler(array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc'));
+			session_set_save_handler([$this, 'open'], [$this, 'close'], [$this, 'read'], [$this, 'write'], [$this, 'destroy'], [$this, 'gc']);
 			$this->DB = new DB_WE();
 			$this->execTime = intval(get_cfg_var('max_execution_time'));
 			$this->execTime = max(min(60, $this->execTime), 5); //time might be wrong (1&1); make exectime at least 5 seconds which is quite small
@@ -114,10 +114,9 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 		$sessID = self::getSessionID($sessID);
 		if(md5($sessID . $sessData, true) == $this->hash){//if nothing changed,we don't have to bother the db
 			$this->DB->query('UPDATE ' . SESSION_TABLE . ' SET ' .
-				we_database_base::arraySetter(array(
-					'lockid' => $lock ? $this->id : '',
+				we_database_base::arraySetter(['lockid' => $lock ? $this->id : '',
 					'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-				)) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
+					]) . ' WHERE session_id=x\'' . $sessID . '\' AND sessionName="' . $this->sessionName . '"');
 
 			if($this->DB->affected_rows()){//make sure we had an successfull update
 				return true;
@@ -126,13 +125,12 @@ class we_base_sessionHandler{//implements SessionHandlerInterface => 5.4
 
 		$sessData = SYSTEM_WE_SESSION_CRYPT && $this->crypt ? we_customer_customer::cryptData(gzcompress($sessData, 4), $this->crypt, true) : gzcompress($sessData, 4);
 
-		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'sessionName' => $this->sessionName,
+		$this->DB->query('REPLACE INTO ' . SESSION_TABLE . ' SET ' . we_database_base::arraySetter(['sessionName' => $this->sessionName,
 				'session_id' => sql_function('x\'' . $sessID . '\''),
 				'session_data' => sql_function('x\'' . bin2hex($sessData) . '\''),
 				'lockid' => $lock ? $this->id : '',
 				'lockTime' => sql_function($lock ? 'NOW()' : 'NULL'),
-		)));
+				]));
 		return true;
 	}
 

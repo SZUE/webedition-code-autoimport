@@ -1,5 +1,3 @@
-js/we_editor_collectionContent.js
-!we/include/we_modules/navigation/conf
 we_vtabs.php
 we_sselector_inc.php
 we_sselector_header.php
@@ -657,6 +655,7 @@ we/include/we_active_integrated_modules.inc.php
 we/include/we_TemplateSave.inc.php
 we/include/we_ContentTypes.inc.php
 we/include/weTagWizard/we_tags/we_tag_redirectObjectSeoUrls.inc.php
+we/include/weTagWizard/we_tags/we_tag_quicktime.inc.php
 we/include/weTagWizard/we_tags/we_tag_pagelogger.inc.php
 we/include/weTagWizard/we_tags/we_tag_makeMail.inc.php
 we/include/weTagWizard/we_tags/we_tag_list.inc.php
@@ -772,6 +771,7 @@ js/we_showMessage.js
 js/we_modules/messaging/messaging_usel_browse.js
 js/we_modules/messaging/messaging_hl.js
 js/we_modules/banner/banner_cmd.js
+js/we_editor_collectionContent.js
 js/we_colors.js
 js/weValidate.js
 js/weTinyMceFunctions.js
@@ -942,6 +942,7 @@ images/msg_fv_bg.gif
 images/icons/valid.gif
 images/icons/no_windowsmedia.gif
 images/icons/no_realmedia.gif
+images/icons/no_quicktime.gif
 images/icons/invalid.gif
 images/icons/errormark.gif
 images/gruen.gif
@@ -1057,6 +1058,7 @@ apps/toolfactory/hook/custom_hooks/dummy
 !we/include/we_modules/spellchecker/dict
 !we/include/we_modules/shop/images
 !we/include/we_modules/navigation/layout
+!we/include/we_modules/navigation/conf
 !we/include/we_message_reporting
 !we/include/we_logging
 !we/include/we_language/Spanish_UTF-8

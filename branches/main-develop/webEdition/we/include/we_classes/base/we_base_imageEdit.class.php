@@ -30,7 +30,7 @@
 abstract class we_base_imageEdit{
 	const IMAGE_EXTENSIONS = 'svgz';
 
-	public static $GDIMAGE_TYPE = array('.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png');
+	public static $GDIMAGE_TYPE = ['.gif' => 'gif', '.jpg' => 'jpg', '.jpeg' => 'jpg', '.png' => 'png'];
 
 	/*	 * ***********************************************************************
 	 * FUNCTIONS
@@ -112,7 +112,7 @@ abstract class we_base_imageEdit{
 			// Check if need to get the requested information
 			if(empty($gdinfo)){
 				// Initialize array with default values
-				$gdinfo = array('GD Version' => '', 'FreeType Support' => false, 'FreeType Linkage' => '', 'T1Lib Support' => false, 'GIF Read Support' => false, 'GIF Create Support' => false, 'JPG Support' => false, 'PNG Support' => false, 'WBMP Support' => false, 'XBM Support' => false);
+				$gdinfo = ['GD Version' => '', 'FreeType Support' => false, 'FreeType Linkage' => '', 'T1Lib Support' => false, 'GIF Read Support' => false, 'GIF Create Support' => false, 'JPG Support' => false, 'PNG Support' => false, 'WBMP Support' => false, 'XBM Support' => false];
 
 				// Now we need to read the phpinfo() to detect the GD library support
 				$phpinfo = self::php_info();
@@ -252,7 +252,7 @@ abstract class we_base_imageEdit{
 
 	private static function calculate_image_size($origwidth, $origheight, $newwidth, $newheight, $keep_aspect_ratio = true, $maxsize = true, $fitinside = false){
 		if(self::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, $fitinside)){
-			return array('width' => $origwidth, 'height' => $origheight, 'useorig' => 1);
+			return ['width' => $origwidth, 'height' => $origheight, 'useorig' => 1];
 		}
 
 		// If width has been specified set it and compute new height based on source area aspect ratio
@@ -287,12 +287,12 @@ abstract class we_base_imageEdit{
 			$outsize['height'] = $newheight;
 		}
 
-		return array('width' => $outsize['width'], 'height' => $outsize['height'], 'useorig' => 0);
+		return ['width' => $outsize['width'], 'height' => $outsize['height'], 'useorig' => 0];
 	}
 
 	static function calculate_image_sizeFit($origwidth, $origheight, $newwidth, $newheight, $maxsize = true){
 		if(self::should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize, true)){
-			return array('width' => $origwidth, 'height' => $origheight, 'useorig' => 1);
+			return ['width' => $origwidth, 'height' => $origheight, 'useorig' => 1];
 		}
 
 		// If width has been specified set it and compute new height based on source area aspect ratio
@@ -311,7 +311,7 @@ abstract class we_base_imageEdit{
 			}
 		}
 
-		return array('width' => $outsize['width'], 'height' => $outsize['height'], 'useorig' => 0);
+		return ['width' => $outsize['width'], 'height' => $outsize['height'], 'useorig' => 0];
 	}
 
 	private static function should_not_resize($origwidth, $origheight, $newwidth, $newheight, $maxsize = false, $fitinside = false){
@@ -336,7 +336,7 @@ abstract class we_base_imageEdit{
 			}
 			$w = ImageSX($gdimg);
 			$h = ImageSY($gdimg);
-			return array($w, $h, $ct, 'width="' . $w . '" height="' . $h . '"');
+			return [$w, $h, $ct, 'width="' . $w . '" height="' . $h . '"'];
 		}
 		return [];
 	}
@@ -346,7 +346,7 @@ abstract class we_base_imageEdit{
 	}
 
 	public static function is_imagetype_read_supported($type){
-		$t = array('gif', 'jpg', 'png');
+		$t = ['gif', 'jpg', 'png'];
 
 		$sit = self::supported_image_types();
 		$fn = '';
@@ -407,11 +407,11 @@ abstract class we_base_imageEdit{
 		//////////////////////////////////////////////////
 
 
-		$matrix = array(
-			array(1, 2, 1),
-			array(2, 4, 2),
-			array(1, 2, 1)
-		);
+		$matrix = [
+			[1, 2, 1],
+			[2, 4, 2],
+			[1, 2, 1]
+		];
 		imagecopy($imgBlur, $img, 0, 0, 0, 0, $w, $h);
 		imageconvolution($imgBlur, $matrix, 16, 0);
 
@@ -486,7 +486,7 @@ abstract class we_base_imageEdit{
 		return $img;
 	}
 
-	public static function edit_image($imagedata, $output_format = 'jpg', $output_filename = '', $output_quality = 75, $width = '', $height = '', array $options = array(we_thumbnail::OPTION_RATIO, we_thumbnail::OPTION_INTERLACE), array $crop = array(0, 0), $rotate_angle = 0){
+	public static function edit_image($imagedata, $output_format = 'jpg', $output_filename = '', $output_quality = 75, $width = '', $height = '', array $options = [we_thumbnail::OPTION_RATIO, we_thumbnail::OPTION_INTERLACE], array $crop = [0, 0], $rotate_angle = 0){
 		if($output_format === 'jpeg'){
 			$output_format = 'jpg';
 		}
@@ -495,7 +495,7 @@ abstract class we_base_imageEdit{
 
 		// Output format is available
 		if(!in_array($output_format, self::supported_image_types())){
-			return array(false, -1, -1);
+			return [false, -1, -1];
 		}
 		// Set quality for JPG images
 		if($output_format === 'jpg'){
@@ -663,7 +663,7 @@ abstract class we_base_imageEdit{
 			ImageDestroy($output_gdimg);
 		}
 
-			return !empty($gdimg) ? array($gdimg, $outsize['width'], $outsize['height']) : array(false, -1, -1);
+			return !empty($gdimg) ? [$gdimg, $outsize['width'], $outsize['height']] : [false, -1, -1];
 	}
 
 	/* static function ImageTrueColorToPalette2($image, $dither, $ncolors){

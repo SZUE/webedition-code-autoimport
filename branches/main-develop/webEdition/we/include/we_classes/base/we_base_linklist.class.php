@@ -174,12 +174,12 @@ class we_base_linklist{
 				'\';';
 			$foo = $js . "var we_win = window.open('','we_ll_" . key($this->listArray) . "',we_winOpts);";
 
-			$lattribs = removeAttribs($lattribs, array('name', 'href', 'onClick', 'onclick'));
+			$lattribs = removeAttribs($lattribs, ['name', 'href', 'onClick', 'onclick']);
 
 			$lattribs['target'] = 'we_ll_' . key($this->listArray);
 			$lattribs['onclick'] = $foo;
 		} else { //  no popUp
-			$lattribs = removeAttribs($lattribs, array('name', 'href'));
+			$lattribs = removeAttribs($lattribs, ['name', 'href']);
 		}
 		$lattribs['href'] = $link . str_replace('&', '&amp;', $params . $anchor);
 
@@ -455,7 +455,7 @@ class we_base_linklist{
 			++$this->cnt;
 		}
 		$ret = ($this->show == -1 || $this->show > $this->cnt);
-		$GLOBALS['we_position']['linklist'][$this->name] = array('size' => count($this->listArray), 'position' => $this->cnt);
+		$GLOBALS['we_position']['linklist'][$this->name] = ['size' => count($this->listArray), 'position' => $this->cnt];
 		if($this->pos++ == -1){
 			reset($this->listArray);
 			return $ret & ($this->length() > 0);
@@ -579,14 +579,13 @@ class we_base_linklist{
 	}
 
 	private function getRawLink(){
-		return array(
-			'href' => '',
+		return ['href' => '',
 			'text' => g_l('global', '[new_link]'),
 			'target' => '',
 			'type' => we_base_link::TYPE_EXT,
 			'ctype' => 'text',
 			'nr' => $this->getMaxListNr() + 1,
-		);
+			];
 	}
 
 	function getLinkContent(){
@@ -618,7 +617,7 @@ class we_base_linklist{
 	}
 
 	function makeImgTagFromSrc($src, $attribs){
-		$attribs = removeEmptyAttribs($attribs, array('alt'));
+		$attribs = removeEmptyAttribs($attribs, ['alt']);
 		$attribs['src'] = $src;
 		return getHtmlTag('img', $attribs);
 	}

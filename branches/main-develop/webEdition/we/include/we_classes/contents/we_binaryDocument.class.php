@@ -254,7 +254,7 @@ class we_binaryDocument extends we_document{
 		// second we build all input fields for them and take
 		// the elements of this imageDocument as values:
 		$fieldcount = count($defined_fields);
-		$content = new we_html_table(array('class' => 'default', "style" => "margin-top:4px;"), $fieldcount, 5);
+		$content = new we_html_table(['class' => 'default', "style" => "margin-top:4px;"], $fieldcount, 5);
 		$mdcontent = '';
 		for($i = 0; $i < $fieldcount; $i++){
 			$tagName = $defined_fields[$i]["tag"];
@@ -266,10 +266,10 @@ class we_binaryDocument extends we_document{
 
 				switch($type){
 					case 'textarea':
-						$inp = $this->formTextArea('txt', $tagName, $tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
+						$inp = $this->formTextArea('txt', $tagName, $tagName, 10, 30, ['onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px']);
 						break;
 					case 'wysiwyg':
-						$inp = $this->formTextArea('txt', $tagName, $tagName, 10, 30, array('onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px'));
+						$inp = $this->formTextArea('txt', $tagName, $tagName, 10, 30, ['onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'width:508px;height:150px;border: #AAAAAA solid 1px']);
 						break;
 					case 'date':
 						$inp = we_html_tools::htmlFormElementTable(we_html_tools::getDateInput('we_' . $this->Name . '_date[' . $tagName . ']', abs($this->getElement($tagName)), true), $tagName);
@@ -279,7 +279,7 @@ class we_binaryDocument extends we_document{
 						$inp = $this->formMetaField($tagName);
 				}
 
-				$content->setCol($i, 0, array("colspan" => 5, 'style' => 'padding-bottom:5px;'), $inp);
+				$content->setCol($i, 0, ["colspan" => 5, 'style' => 'padding-bottom:5px;'], $inp);
 			}
 		}
 
@@ -357,7 +357,7 @@ class we_binaryDocument extends we_document{
 		$groups = isset($ml['groups']['mediaID_' . $this->ID]) ? $ml['groups']['mediaID_' . $this->ID] : [];
 
 		if(empty($groups)){
-			return array('form' => g_l('weClass', '[notReferenced]'), 'num' => 0);
+			return ['form' => g_l('weClass', '[notReferenced]'), 'num' => 0];
 		}
 
 		$js = "";

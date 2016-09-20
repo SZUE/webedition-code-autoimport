@@ -79,7 +79,7 @@ class we_chooser_multiDirAndTemplate extends we_chooser_multiDir{
 				}
 				$path = id_to_path(isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", TEMPLATES_TABLE, $this->db);
 				if($this->isEditable()){
-					$tmplSelect = we_html_tools::htmlSelect($this->tmplSelectName . "_" . $this->nr, $this->tmplValsArr, 1, isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", false, array('onchange' => $this->getJsSetHot()));
+					$tmplSelect = we_html_tools::htmlSelect($this->tmplSelectName . "_" . $this->nr, $this->tmplValsArr, 1, isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "", false, ['onchange' => $this->getJsSetHot()]);
 					return '<tr><td></td><td><span class="small"><b>' . g_l('weClass', '[template]') . ':</b></span><br/>' . $tmplSelect . '</td><td style="vertical-align:bottom">' . $but . '</td></tr>';
 				}
 				return '<tr><td></td><td class="' . $this->css . '"><span class="small"><b>' . g_l('weClass', '[template]') . ':</b></span><br/>' . $path . we_html_element::htmlHidden($this->tmplSelectName . "_" . $this->nr, (isset($this->tmplArr[$this->nr]) ? $this->tmplArr[$this->nr] : "")) . '" /></td><td style="vertical-align:bottom">' . $but . '</td></tr>';

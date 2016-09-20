@@ -152,10 +152,9 @@ abstract class we_base_variants{
 			if(is_array($variation)){
 
 				foreach($variation as $name => $varArr){
-					$model->elements[we_base_constants::WE_VARIANTS_PREFIX . $i] = array(
-						'type' => 'txt',
+					$model->elements[we_base_constants::WE_VARIANTS_PREFIX . $i] = ['type' => 'txt',
 						'dat' => $name
-					);
+						];
 
 					foreach($varArr as $name => $datArr){
 						$model->elements[we_base_constants::WE_VARIANTS_PREFIX . $i . '_' . $name] = $datArr;

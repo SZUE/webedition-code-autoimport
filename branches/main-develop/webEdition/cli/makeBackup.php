@@ -36,11 +36,7 @@ require_once("cliConfig.php");
  */
 $_backup_filename = $_SERVER['DOCUMENT_ROOT'] . '/weBackup_daily.xml';
 
-$_REQUEST = array(
-	/**
-	 *  set to true for gzip compression
-	 */
-	'compress' => true,
+$_REQUEST = ['compress' => true,
 // export details
 
 	/**
@@ -121,7 +117,7 @@ $_REQUEST = array(
 	'handle_extern' => false,
 // be user friendly :-)
 	'verbose' => true,
-);
+	];
 
 // CONFIGURATION ENDS ---------------------------------------------------------
 // we want to see errors
@@ -141,7 +137,7 @@ we_error_handler(false);
 
 
 // knock out identifiation and permissions
-$_SESSION['perms'] = array('ADMINISTRATOR' => true);
+$_SESSION['perms'] = ['ADMINISTRATOR' => true];
 $_SESSION['user']['Username'] = 1;
 
 
@@ -202,8 +198,7 @@ if(PEAR::isError($args)){
 $short_opts = 'zv';
 
 // Long options
-$long_opts = array(
-	'all',
+$long_opts = ['all',
 	'core',
 	'versions',
 	'versions_binarys',
@@ -226,7 +221,7 @@ $long_opts = array(
 	'verbose',
 	'help',
 	'compress'
-);
+ ];
 
 // Convert the arguments to options - check for the first argument
 if($_SERVER['argv'] && realpath($_SERVER['argv'][0]) == __FILE__){
@@ -306,7 +301,7 @@ update_mem_limit(128);
 
 if(!isset($_SESSION['weS']['weBackupVars']) || empty($_SESSION['weS']['weBackupVars'])){
 
-	$_SESSION['weS']['weBackupVars'] = array();
+	$_SESSION['weS']['weBackupVars'] = [];
 
 	if(we_backup_preparer::prepareExport() === true){
 

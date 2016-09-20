@@ -41,8 +41,7 @@ $_backup_filename = $_SERVER['DOCUMENT_ROOT'] . '/weBackup_daily.xml';
 /**
  * export webEdition Core Data (Documents, Templates and Navigation)
  */
-$_REQUEST = array(
-	'handle_core' => true,
+$_REQUEST = ['handle_core' => true,
 	/**
 	 * export binary data
 	 */
@@ -117,7 +116,7 @@ $_REQUEST = array(
 	'handle_extern' => false,
 // be user friendly :-)
 	'verbose' => true,
-);
+	];
 
 // CONFIGURATION ENDS ---------------------------------------------------------
 // we want to see errors
@@ -136,7 +135,7 @@ if(!defined('WE_ERROR_LOG')){
 we_error_handler(false);
 
 // knock out identifiation and permissions
-$_SESSION['perms'] = array('ADMINISTRATOR' => true);
+$_SESSION['perms'] = ['ADMINISTRATOR' => true];
 $_SESSION['user']['Username'] = 1;
 
 
@@ -196,8 +195,7 @@ if(PEAR::isError($args)){
 $short_opts = 'v';
 
 // Long options
-$long_opts = array(
-	'all',
+$long_opts = ['all',
 	'core',
 	'versions',
 	'versions_binarys',
@@ -219,7 +217,7 @@ $long_opts = array(
 	'extern',
 	'verbose',
 	'help'
-);
+ ];
 
 // Convert the arguments to options - check for the first argument
 if($_SERVER['argv'] && realpath($_SERVER['argv'][0]) == __FILE__){

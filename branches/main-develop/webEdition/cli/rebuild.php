@@ -44,8 +44,7 @@ require_once("cliConfig.php");
  *
  * @var string
  */
-$_REQUEST = array(
-	'type' => 'all',
+$_REQUEST = ['type' => 'all',
 	/**
 	 * When rebuild type is set to "all", it rewrites
 	 * the maintable (tblFile) also.
@@ -117,7 +116,7 @@ $_REQUEST = array(
 	 * @var boolean
 	 */
 	'verbose' => true,
-);
+	];
 
 //  END OF OPTIONS
 
@@ -144,7 +143,7 @@ we_error_handler(false);
 
 
 // knock out identifiation and permissions
-$_SESSION['perms'] = array('ADMINISTRATOR' => true);
+$_SESSION['perms'] = ['ADMINISTRATOR' => true];
 $_SESSION['user']['Username'] = 1;
 
 
@@ -222,8 +221,7 @@ if(PEAR::isError($args)){
 $short_opts = 'vt:';
 
 // Long options
-$long_opts = array(
-	'type=',
+$long_opts = ['type=',
 	'rewriteMaintable=',
 	'rewriteTmptable=',
 	'categories=',
@@ -233,7 +231,7 @@ $long_opts = array(
 	'thumbnails=',
 	'verbose',
 	'help'
-);
+ ];
 
 // Convert the arguments to options - check for the first argument
 if($_SERVER['argv'] && realpath($_SERVER['argv'][0]) == __FILE__){
@@ -311,7 +309,7 @@ switch(($type = we_base_request::_(we_base_request::STRING, 'type'))){
 
 	case 'thumbnails':
 		$_thumbNames = makeArrayFromCSV($_REQUEST['thumbnails']);
-		$_thumbIds = array();
+		$_thumbIds = [];
 		$db = new DB_WE();
 		foreach($_thumbNames as $_thumbName){
 			$_thumbIds[] = f('SELECT ID FROM ' . THUMBNAILS_TABLE . " WHERE NAME='" . $db->escape($_thumbName) . "'", '', $db);

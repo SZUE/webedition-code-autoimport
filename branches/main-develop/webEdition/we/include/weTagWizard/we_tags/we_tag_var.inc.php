@@ -14,7 +14,7 @@ $win2iso = new weTagData_selectAttribute('win2iso', weTagData_selectAttribute::g
 $htmlspecialchars = new weTagData_selectAttribute('htmlspecialchars', weTagData_selectAttribute::getTrueFalse(), false, '');
 $key = new weTagData_selectAttribute('key', weTagData_selectAttribute::getTrueFalse(), false, '');
 $format = new weTagData_textAttribute('format', false, '');
-$num_format = new weTagData_selectAttribute('num_format', array(new weTagDataOption('german', false, ''), new weTagDataOption('english', false, ''), new weTagDataOption('french', false, ''), new weTagDataOption('swiss', false, '')), false, '');
+$num_format = new weTagData_selectAttribute('num_format', [new weTagDataOption('german', false, ''), new weTagDataOption('english', false, ''), new weTagDataOption('french', false, ''), new weTagDataOption('swiss', false, '')], false, '');
 
 $varType = new weTagData_selectAttribute('varType', [new weTagDataOption(we_base_request::STRING),
 	new weTagDataOption(we_base_request::INT),

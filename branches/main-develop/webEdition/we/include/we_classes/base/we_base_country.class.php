@@ -39,9 +39,8 @@ abstract class we_base_country{
 			return false;
 		}
 
-		self::$last = array(
-			$langcode => include($file)
-		);
+		self::$last = [$langcode => include($file)
+			];
 		return true;
 	}
 
@@ -70,22 +69,20 @@ abstract class we_base_country{
 		$months = self::getTranslationList(self::MONTH, $langcode);
 		$days = self::getTranslationList(self::DAY, $langcode);
 
-		$dat = $date->format(strtr($format, array(
-			'D' => "\dD\d", //Mon bis Sun
+		$dat = $date->format(strtr($format, ['D' => "\dD\d", //Mon bis Sun
 			'l' => "\lD\l", //Sunday bis Saturday
 			'F' => "\\fn\\f", //January bis December
 			'M' => '\mn\m', //Jan bis Dec
-		)));
+			]));
 
 		$wd = $date->format('D');
 		$mon = $date->format('n');
 
-		return strtr($dat, array(
-			"d" . $wd . "d" => $days['abbreviated'][strtolower($wd)], //Mon bis Sun
+		return strtr($dat, ["d" . $wd . "d" => $days['abbreviated'][strtolower($wd)], //Mon bis Sun
 			"l" . $wd . "l" => $days['wide'][strtolower($wd)], //Sunday bis Saturday
 			"f" . $mon . "f" => $months['wide'][$mon], //January bis December
 			"m" . $mon . "m" => $months['abbreviated'][$mon], //Jan bis Dec
-			)
+			]
 		);
 	}
 

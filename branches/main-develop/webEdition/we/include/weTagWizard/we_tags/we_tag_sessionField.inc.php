@@ -19,12 +19,12 @@ if(defined('CUSTOMER_TABLE')){
 	$xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$id = new weTagData_textAttribute('id', false, '');
 	$removefirstparagraph = new weTagData_selectAttribute('removefirstparagraph', weTagData_selectAttribute::getTrueFalse(), false, '');
-	$autofill = new weTagData_selectAttribute('autofill', array(new weTagDataOption('true'),
-		), false, '');
+	$autofill = new weTagData_selectAttribute('autofill', [new weTagDataOption('true'),
+		], false, '');
 	$parentid = new weTagData_selectorAttribute('parentid', FILE_TABLE, weTagData_selectorAttribute::FOLDER, false, 'customer');
 	$width = new weTagData_textAttribute('width', false, 'customer');
 	$height = new weTagData_textAttribute('height', false, 'customer');
-	$quality = new weTagData_selectAttribute('quality', array(new weTagDataOption('0'),
+	$quality = new weTagData_selectAttribute('quality', [new weTagDataOption('0'),
 		new weTagDataOption('1'),
 		new weTagDataOption('2'),
 		new weTagDataOption('3'),
@@ -35,7 +35,7 @@ if(defined('CUSTOMER_TABLE')){
 		new weTagDataOption('8'),
 		new weTagDataOption('9'),
 		new weTagDataOption('10'),
-		), false, 'customer');
+		], false, 'customer');
 	$keepratio = new weTagData_selectAttribute('keepratio', weTagData_selectAttribute::getTrueFalse(), false, 'customer');
 	$maximize = new weTagData_selectAttribute('maximize', weTagData_selectAttribute::getTrueFalse(), false, 'customer');
 	$bordercolor = new weTagData_textAttribute('bordercolor', false, 'customer');
@@ -50,9 +50,9 @@ if(defined('CUSTOMER_TABLE')){
 	$aslanguage = new weTagData_selectAttribute('aslanguage', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$outputlanguage = new weTagData_textAttribute('outputlanguage', false, '');
 	$languageautofill = new weTagData_selectAttribute('languageautofill', weTagData_selectAttribute::getTrueFalse(), false, '');
-	$doc = new weTagData_selectAttribute('doc', array(new weTagDataOption('self'),
+	$doc = new weTagData_selectAttribute('doc', [new weTagDataOption('self'),
 		new weTagDataOption('top'),
-		), false, '');
+		], false, '');
 
 	$usevalue = new weTagData_selectAttribute('usevalue', weTagData_selectAttribute::getTrueFalse(), false, '');
 	$minyear = new weTagData_textAttribute('minyear', false, '');

@@ -32,9 +32,9 @@ $xml = new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFa
 $abbr = new weTagData_selectAttribute('abbr', weTagData_selectAttribute::getTrueFalse(), false, '');
 $removefirstparagraph = new weTagData_selectAttribute('removefirstparagraph', weTagData_selectAttribute::getTrueFalse(), false, '');
 $inlineedit = new weTagData_selectAttribute('inlineedit', weTagData_selectAttribute::getTrueFalse(), false, '');
-$buttonpos = new weTagData_choiceAttribute('buttonpos', array(new weTagDataOption('top'),
+$buttonpos = new weTagData_choiceAttribute('buttonpos', [new weTagDataOption('top'),
 	new weTagDataOption('bottom'),
-	), false, false, '');
+ ], false, false, '');
 $win2iso = new weTagData_selectAttribute('win2iso', weTagData_selectAttribute::getTrueFalse(), false, '');
 $classes = new weTagData_textAttribute('classes', false, '');
 $spellcheck = new weTagData_selectAttribute('spellcheck', weTagData_selectAttribute::getTrueFalse(), false, 'spellchecker');
