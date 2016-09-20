@@ -300,12 +300,12 @@ abstract class we_export_functions{
 	static function correctLineend($content, $csv_lineend = "windows"){
 		switch($csv_lineend){
 			case "windows":
-				return str_replace(array("\n", "\r"), "\\r\\n", $content);
+				return str_replace(["\n", "\r"], "\\r\\n", $content);
 			case "unix":
 			default:
-				return str_replace(array("\r\n", "\r"), "\\n", $content);
+				return str_replace(["\r\n", "\r"], "\\n", $content);
 			case "mac":
-				return str_replace(array("\r\n", "\n"), "\\r", $content);
+				return str_replace(["\r\n", "\n"], "\\r", $content);
 		}
 	}
 

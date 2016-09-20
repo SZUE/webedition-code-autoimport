@@ -11,8 +11,8 @@ if(defined('CUSTOMER_TABLE')){
 		new weTagData_selectAttribute('persistentlogins', weTagData_selectAttribute::getTrueFalse(), false, ''),
 		new weTagData_selectAttribute('onlinemonitor', weTagData_selectAttribute::getTrueFalse(), false, ''),
 		new weTagData_sqlColAttribute('monitorgroupfield', CUSTOMER_TABLE, false, [], ''),
-		new weTagData_selectAttribute('monitordoc', array(new weTagDataOption('self'),
+		new weTagData_selectAttribute('monitordoc', [new weTagDataOption('self'),
 			new weTagDataOption('top'),
-			), false, ''),
+			], false, ''),
 	];
 }

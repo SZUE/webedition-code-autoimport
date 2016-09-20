@@ -116,7 +116,7 @@ class we_imageDocument extends we_binaryDocument{
 	function getOrigSize($calculateNew = false, $useOldPath = false){
 		if(!$this->DocChanged && $this->ID){
 			if($this->getElement('origwidth') && $this->getElement('origheight') && ($calculateNew == false)){
-				return array($this->getElement('origwidth'), $this->getElement('origheight'), 0, '');
+				return [$this->getElement('origwidth'), $this->getElement('origheight'), 0, ''];
 			}
 			// we have to calculate the path, because maybe the document was renamed
 			//$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;
@@ -468,11 +468,10 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 			//  Here we generate the image-tag
 			//   attribs for the image tag
-			$attribs = array(
-				'src' => $src
-			);
+			$attribs = ['src' => $src
+			];
 
-			$filter = array('filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid', 'origwidth', 'origheight', 'useMetaTitle'); //  dont use these array-entries
+			$filter = ['filesize', 'type', 'id', 'showcontrol', 'showthumbcontrol', 'thumbnail', 'href', 'longdescid', 'showimage', 'showinputs', 'listviewname', 'parentid', 'startid', 'origwidth', 'origheight', 'useMetaTitle']; //  dont use these array-entries
 
 			if(defined('HIDENAMEATTRIBINWEIMG_DEFAULT') && HIDENAMEATTRIBINWEIMG_DEFAULT){
 				$filter[] = 'name';
@@ -522,10 +521,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			}
 
 			if((!empty($href)) && $inc_href){ //  use link with rollover
-				$aAtts = array(
-					'href' => $href,
+				$aAtts = ['href' => $href,
 					'title' => isset($attribs['title']) ? $attribs['title'] : '',
-				);
+				];
 
 				if($target){
 					$aAtts['target'] = $target;
@@ -549,11 +547,11 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			return '';
 		}
 		$xml = isset($attribs) ? weTag_getAttribute('xml', $attribs, false, we_base_request::BOOL) : true; //rest is done in getHtmlTag
-		$attribs = array('style' => 'margin:8px 18px;border-style:none;width:64px;height:64px;',
+		$attribs = ['style' => 'margin:8px 18px;border-style:none;width:64px;height:64px;',
 			'src' => ICON_DIR . 'no_image.gif',
 			'alt' => 'no-image',
 			'xml' => $xml,
-		);
+		];
 		if(isset($this->name)){
 			$attribs['name'] = $this->name;
 		}
@@ -578,10 +576,9 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	private function getSvgSize($filename){
 		$line = we_base_file::load($filename, 'rb', 1000, 1);
 		$match = [];
-		return array(
-			(preg_match('|<svg[^>]*width="([^"]*)"[^>]*>|i', $line, $match) ? intval($match[1]) : ''),
+		return [(preg_match('|<svg[^>]*width="([^"]*)"[^>]*>|i', $line, $match) ? intval($match[1]) : ''),
 			(preg_match('|<svg[^>]*height="([^"]*)"[^>]*>|i', $line, $match) ? intval($match[1]) : ''),
-		);
+		];
 	}
 
 	/**
@@ -602,7 +599,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	 */
 	function formProperties(){
 		// Create table
-		$content = new we_html_table(array('class' => 'default propertydualtable'), 5, 3);
+		$content = new we_html_table(['class' => 'default propertydualtable'], 5, 3);
 		$row = 0;
 		// Row 1
 		$content->setCol($row, 0, null, $this->formInput2(148, 'width', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth"));
@@ -617,18 +614,18 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 
 
 		// Row 3
-		$content->setCol($row, 0, array('colspan' => 2), $this->formInput2(332, 'alt', 23, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
+		$content->setCol($row, 0, ['colspan' => 2], $this->formInput2(332, 'alt', 23, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 		$content->setCol($row++, 2, null, $this->formInput2(148, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"'));
 
 
 		//	Row 4
-		$content->setCol($row, 0, array('colspan' => 2), $this->formInput2(332, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
+		$content->setCol($row, 0, ['colspan' => 2], $this->formInput2(332, 'title', 23, 'attrib', ($this->getElement('useMetaTitle') == 1 ? "readonly='readonly'" : "") . '" onchange="_EditorFrame.setEditorIsHot(true);"', 'Title'));
 
 		$titleField = 'we_' . $this->Name . '_attrib[title]';
 		//$metaTitleField = 'we_' . $this->Name . '_txt[Title]';
 		$useMetaTitle = 'we_' . $this->Name . '_attrib[useMetaTitle]';
 		//	disable field 'title' when checked or not.   on checked true: document.forms[0]['$titleField'].value='$this->getElement('Title')' and  onchecked false: document.forms[0]['$titleField'].value='' added to fix bug #5814
-		$content->setCol($row++, 2, array('style' => 'vertical-align:bottom'), we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $titleField . "'].value='';}_EditorFrame.setEditorIsHot(true);"));
+		$content->setCol($row++, 2, ['style' => 'vertical-align:bottom'], we_html_forms::checkboxWithHidden($this->getElement('useMetaTitle'), $useMetaTitle, g_l('weClass', '[use_meta_title]'), false, 'defaultfont', "if(this.checked){ document.forms[0]['" . $titleField . "'].setAttribute('readonly', 'readonly', 'false'); document.forms[0]['" . $titleField . "'].value = '" . $this->getElement('Title') . "'; }else{ document.forms[0]['" . $titleField . "'].removeAttribute('readonly', 'false'); document.forms[0]['" . $titleField . "'].value='';}_EditorFrame.setEditorIsHot(true);"));
 
 		//  longdesc should be available in images.
 		//    check if longdesc is set and get path
@@ -682,7 +679,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$quality = max(min($quality, 10), 0) * 10;
 
 		$dataPath = TEMP_PATH . we_base_file::getUniqueId();
-		we_base_imageEdit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, array(we_thumbnail::OPTION_INTERLACE));
+		we_base_imageEdit::edit_image($this->getElement('data'), $type, $dataPath, $quality, $width, $height, [we_thumbnail::OPTION_INTERLACE]);
 
 		$this->setElement('data', $dataPath);
 		$this->Extension = '.' . $type;
@@ -705,18 +702,16 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			  $size = $w * ($sizeH / $h);
 			  }
 			  } */
-			return '<image style="max-width:100px;max-height:100px;" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace(array($_SERVER['DOCUMENT_ROOT'], WEBEDITION_DIR), '', $this->getElement('data')) . '" />';
+			return '<image style="max-width:100px;max-height:100px;" src="' . WEBEDITION_DIR . 'showTempFile.php?file=' . str_replace([$_SERVER['DOCUMENT_ROOT'], WEBEDITION_DIR], '', $this->getElement('data')) . '" />';
 		}
 
-		return '<img src="' . WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
-				'id' => $this->ID,
-				'size' => array(
-					'width' => $size,
+		return '<img src="' . WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(['id' => $this->ID,
+				'size' => ['width' => $size,
 					'height' => $sizeH,
-				),
+				],
 				'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $this->getElement('data')),
 				'extension' => $this->Extension,
-			)) . '" />';
+			]) . '" />';
 	}
 
 	protected function getMetaDataReader($force = false){
@@ -747,12 +742,12 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 					if(!(isset($fields[$fieldName]) && is_array($fields[$fieldName]))){
 						$fields[$fieldName] = [];
 					}
-					$fields[$fieldName][] = array($tagType, $tagName, $fieldType);
+					$fields[$fieldName][] = [$tagType, $tagName, $fieldType];
 				}
 			}
 		}
 
-		$typeMap = array('textfield' => 'txt', 'wysiwyg' => 'txt', 'textarea' => 'txt', 'date' => 'date');
+		$typeMap = ['textfield' => 'txt', 'wysiwyg' => 'txt', 'textarea' => 'txt', 'date' => 'date'];
 		$regs = [];
 
 		foreach($fields as $fieldName => $arr){
@@ -815,22 +810,22 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		}
 
 		// Create table
-		$content = new we_html_table(array('class' => 'default'), (defined('OBJECT_TABLE') ? 11 : 9), 2);
+		$content = new we_html_table(['class' => 'default'], (defined('OBJECT_TABLE') ? 11 : 9), 2);
 		$row = 0;
 		// No link
-		$content->setCol($row, 0, array('style' => 'vertical-align:top;padding-bottom:10px;'), we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$content->setCol($row, 0, ['style' => 'vertical-align:top;padding-bottom:10px;'], we_html_forms::radiobutton('no', ($linkType === 'no'), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[nolink]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
 		$content->setCol($row++, 1, null, '');
 
 		// External link
-		$ext_link_table = new we_html_table(array('class' => 'default'), 1, 2);
+		$ext_link_table = new we_html_table(['class' => 'default'], 1, 2);
 
 		$ext_link_table->setCol(0, 0, null, we_html_tools::htmlTextInput('we_' . $this->Name . '_txt[LinkHref]', 25, $this->getElement('LinkHref'), '', 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 280));
 		$ext_link_table->setCol(0, 1, null, $butExt);
 
 		$ext_link = "href" . we_html_element::htmlBr() . $ext_link_table->getHtml();
 
-		$content->setCol($row, 0, array('style' => 'vertical-align:top;padding-bottom:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
-		$content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $ext_link);
+		$content->setCol($row, 0, ['style' => 'vertical-align:top;padding-bottom:10px;'], we_html_forms::radiobutton(we_base_link::TYPE_EXT, ($linkType == we_base_link::TYPE_EXT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[extern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true)'));
+		$content->setCol($row++, 1, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], $ext_link);
 
 
 		// Internal link
@@ -847,8 +842,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setLabel('href');
 		$int_link = $yuiSuggest->getHTML();
 
-		$content->setCol($row, 0, array('style' => 'vertical-align:top'), we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
-		$content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $int_link);
+		$content->setCol($row, 0, ['style' => 'vertical-align:top'], we_html_forms::radiobutton(we_base_link::TYPE_INT, ($linkType == we_base_link::TYPE_INT), 'we_' . $this->Name . '_txt[LinkType]', g_l('weClass', '[intern]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+		$content->setCol($row++, 1, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], $int_link);
 
 		// Object link
 		if(defined('OBJECT_TABLE')){
@@ -866,12 +861,12 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 			$obj_link = $yuiSuggest->getHTML();
 
 
-			$content->setCol($row, 0, array('style' => 'vertical-align:top;padding-top:10px;'), we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
-			$content->setCol($row++, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $obj_link);
+			$content->setCol($row, 0, ['style' => 'vertical-align:top;padding-top:10px;'], we_html_forms::radiobutton(we_base_link::TYPE_OBJ, ($linkType == we_base_link::TYPE_OBJ), 'we_' . $this->Name . '_txt[LinkType]', g_l('linklistEdit', '[objectFile]'), true, 'defaultfont', '_EditorFrame.setEditorIsHot(true);'));
+			$content->setCol($row++, 1, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], $obj_link);
 		}
 
 		// Target
-		$content->setCol($row++, 0, array('colspan' => 2, 'class' => 'defaultfont', 'style' => 'vertical-align:top;padding:20px 0px;'), g_l('weClass', '[target]') . we_html_element::htmlBr() . we_html_tools::targetBox('we_' . $this->Name . '_txt[LinkTarget]', 33, 0, '', $this->getElement('LinkTarget'), '_EditorFrame.setEditorIsHot(true);', 20, 97));
+		$content->setCol($row++, 0, ['colspan' => 2, 'class' => 'defaultfont', 'style' => 'vertical-align:top;padding:20px 0px;'], g_l('weClass', '[target]') . we_html_element::htmlBr() . we_html_tools::targetBox('we_' . $this->Name . '_txt[LinkTarget]', 33, 0, '', $this->getElement('LinkTarget'), '_EditorFrame.setEditorIsHot(true);', 20, 97));
 
 
 		// Rollover image
@@ -888,8 +883,8 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 		$yuiSuggest->setLabel('href');
 		$rollover = $yuiSuggest->getHTML();
 
-		$content->setCol($row, 0, array('style' => 'vertical-align:top'), we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['" . $RollOverFlagName . "'].value = (this.checked ? 1 : 0); ") . we_html_element::htmlHidden($RollOverFlagName, $RollOverFlag));
-		$content->setCol($row, 1, array('class' => 'defaultfont', 'style' => 'vertical-align:top'), $rollover);
+		$content->setCol($row, 0, ['style' => 'vertical-align:top'], we_html_forms::checkbox(1, $RollOverFlag, $checkFlagName, 'Roll Over', false, 'defaultfont', "_EditorFrame.setEditorIsHot(true); this.form.elements['" . $RollOverFlagName . "'].value = (this.checked ? 1 : 0); ") . we_html_element::htmlHidden($RollOverFlagName, $RollOverFlag));
+		$content->setCol($row, 1, ['class' => 'defaultfont', 'style' => 'vertical-align:top'], $rollover);
 
 		return $content->getHtml();
 	}
@@ -961,7 +956,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 						!empty($_SESSION[$imgDataId]['height'])){
 						$imageData = we_base_file::load($_SESSION[$imgDataId]['serverPath']);
 						$thumb = new we_thumbnail();
-						$thumb->init('dummy', $_SESSION[$imgDataId]['width'], $_SESSION[$imgDataId]['height'], array($_SESSION[$imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION[$imgDataId]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0), '', 'dummy', 0, '', '', $_SESSION[$imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$imgDataId]['quality']);
+						$thumb->init('dummy', $_SESSION[$imgDataId]['width'], $_SESSION[$imgDataId]['height'], [$_SESSION[$imgDataId]['keepratio'] ? we_thumbnail::OPTION_RATIO : 0, $_SESSION[$imgDataId]['maximize'] ? we_thumbnail::OPTION_MAXSIZE : 0], '', 'dummy', 0, '', '', $_SESSION[$imgDataId]['extension'], $we_size[0], $we_size[1], $imageData, '', $_SESSION[$imgDataId]['quality']);
 
 						$imgData = '';
 						$thumb->getThumb($imgData);
@@ -981,15 +976,14 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	}
 
 	public function getPropertyPage(){
-		return we_html_multiIconBox::getHTML('PropertyPage', array(
-				array('icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2),
+		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				//array('icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_MED2),
-		));
+				['icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => "hyperlink.gif", "headline" => g_l('weClass', '[hyperlink]'), "html" => $this->formLink(), 'space' => we_html_multiIconBox::SPACE_MED2],
+		]);
 	}
 
 	private function checkDisableEditpages(){

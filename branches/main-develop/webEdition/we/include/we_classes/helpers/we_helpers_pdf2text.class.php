@@ -860,7 +860,7 @@ class we_helpers_pdf2text{
 	}
 
 	private function applyTextChars($text, $selectedFont){
-		$text = str_replace(array('\\\\', '\(', '\)'), array('\\\\', '(', ')'), $text);
+		$text = str_replace($text, ['\\\\' => '\\\\', '\(' => '(', '\)' => ')']);
 
 		if(!$selectedFont){
 			$this->text.=$text;

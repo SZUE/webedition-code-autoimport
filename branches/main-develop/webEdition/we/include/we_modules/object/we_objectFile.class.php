@@ -1135,7 +1135,7 @@ class we_objectFile extends we_document{
 			$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			$wecmdenc4 = we_base_request::encCmd("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][1].checked=true;" : ""));
 			$but = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? (
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" .$Path_elem_Name . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "',document.forms[0].elements['" . $Path_elem_Name . "'].value,'" . $wecmdenc4 . "')")
+					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $Path_elem_Name . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "',document.forms[0].elements['" . $Path_elem_Name . "'].value,'" . $wecmdenc4 . "')")
 					) : '');
 		}
 
@@ -1374,7 +1374,7 @@ class we_objectFile extends we_document{
 				'<img src="' . $imgSrc . '" ' . ($imgHeight ? 'style="height:' . $imgHeight . 'px;width:' . $imgWight . 'px"' : '') . '/>' :
 				$img->getHtml()) .
 			we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect(" . ($id? : 0) . ",'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )", true, 0, 0, '', '', ($id ? false : true)) .
-			we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image','" . ($id ? : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $fname. "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
+			we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image','" . ($id ? : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $fname . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();", true, 0, 0, '', '', ($id ? false : true));
 	}
 
@@ -1843,8 +1843,7 @@ class we_objectFile extends we_document{
 			$text = preg_replace('|\.+$|', '', str_replace(array(' ', '//'), array('-', '/'), (OBJECTSEOURLS_LOWERCASE ? strtolower($text) : $text)));
 			$text = (URLENCODE_OBJECTSEOURLS ?
 					str_replace('%2F', '/', urlencode($text)) :
-					preg_replace(array(
-						'~&szlig;~',
+					preg_replace(['~&szlig;~',
 						'~-*&(.)dash;-*~',
 						'~&(.)uml;~',
 						'~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~',
@@ -1853,8 +1852,7 @@ class we_objectFile extends we_document{
 						'~--+~',
 						'~//+~',
 						'~/$~',
-						), array(
-						'ss', //ß
+						], ['ss', //ß
 						'-', //~
 						'${1}e', //uml
 						'${1}${3}', //grave
@@ -1863,7 +1861,7 @@ class we_objectFile extends we_document{
 						'-', //--
 						'/', // //
 						'', // xxx/
-						), htmlentities($text, ENT_COMPAT, $this->Charset)));
+						], htmlentities($text, ENT_COMPAT, $this->Charset)));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';

@@ -387,7 +387,7 @@ abstract class we_database_base{
 		$isSelect = stripos($Query_String, 'select') === 0;
 		//FIX for current MySQL Versions which do not cache queries with dates
 		if($isSelect){
-			$Query_String = str_replace(array('CURDATE()', 'CURRENT_DATE()'), '"' . $date . '"', $Query_String);
+			$Query_String = str_replace(['CURDATE()', 'CURRENT_DATE()'], '"' . $date . '"', $Query_String);
 		}
 
 		$this->Query_ID = $this->_query($Query_String, $unbuffered);

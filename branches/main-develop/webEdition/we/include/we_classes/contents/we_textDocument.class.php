@@ -164,7 +164,7 @@ class we_textDocument extends we_document{
 								//we prepend an extra / before #WE, to make parser believe this is an absolute path
 								$doc = str_replace('/#WE:', '#WE:', $less->compile(preg_replace('|(#WE:\d+#)|', '/$1', $doc)));
 							} catch (exception $e){
-								$this->errMsg = str_replace(array('\n', "\n"), ' ', $e->getMessage());
+								$this->errMsg = str_replace(['\n', "\n"], ' ', $e->getMessage());
 								return false;
 							}
 						}
@@ -177,7 +177,7 @@ class we_textDocument extends we_document{
 							try{
 								$doc = $scss->compile($doc);
 							} catch (exception $e){
-								$this->errMsg = str_replace(array('\n', "\n"), ' ', $e->getMessage());
+								$this->errMsg = str_replace(['\n', "\n"], ' ', $e->getMessage());
 								return false;
 							}
 						}

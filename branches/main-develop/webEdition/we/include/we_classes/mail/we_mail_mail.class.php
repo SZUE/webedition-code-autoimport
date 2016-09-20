@@ -226,7 +226,7 @@ class we_mail_mail extends we_mail_znd{
 	}
 
 	public function addTextPart($val){
-		$this->AltBody = str_replace(array("\r\n", "\r", "\n"), array("\n", "\n", "\r\n"), $val);
+		$this->AltBody = str_replace(["\r\n", "\r", "\n"], array("\n", "\n", "\r\n"), $val);
 	}
 
 	public function addAddressList($list){

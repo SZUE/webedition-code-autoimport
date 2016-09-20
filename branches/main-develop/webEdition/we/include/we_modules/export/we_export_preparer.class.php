@@ -182,7 +182,7 @@ class we_export_preparer extends we_exim_XMLExIm{
 
 	private function isPathLocal($path){
 		if(stripos($path, $_SERVER['SERVER_NAME']) !== false){
-			$path = str_replace(array(getServerUrl(), getServerUrl(true)), '', $path);
+			$path = str_replace([getServerUrl(), getServerUrl(true)], '', $path);
 			//try again with password
 		}
 		return (is_readable($_SERVER['DOCUMENT_ROOT'] . $path) ? $path : false);

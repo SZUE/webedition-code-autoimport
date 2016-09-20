@@ -6,9 +6,9 @@ $this->Module = 'voting';
 $this->Attributes = [
 	new weTagData_textAttribute('id', false, ''),
 	new weTagData_selectAttribute('allowredirect', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_selectAttribute('writeto', array(new weTagDataOption('voting'),
+	new weTagData_selectAttribute('writeto', [new weTagDataOption('voting'),
 		new weTagDataOption('session'),
-		), false, ''),
+	 ], false, ''),
 	new weTagData_selectAttribute('deletesessiondata', weTagData_selectAttribute::getTrueFalse(), false, ''),
 	new weTagData_textAttribute('additionalfields', false, ''),
 ];

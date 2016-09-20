@@ -50,13 +50,13 @@ class we_document_video extends we_binaryDocument{
 		<td>' . $this->formDocChooser(155, 'poster', 'attrib') . '</td>
 	</tr>
 	<tr>
-		<td>' . $this->formSelectElement(155, 'autoplay', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . $this->formSelectElement(155, 'controller', array(1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
+		<td>' . $this->formSelectElement(155, 'autoplay', [0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')], "attrib", 1, ['onchange' => '_EditorFrame.setEditorIsHot(true);']) . '</td>
+		<td>' . $this->formSelectElement(155, 'controller', [1 => g_l('global', '[true]'), 0 => g_l('global', '[false]')], "attrib", 1, ['onchange' => '_EditorFrame.setEditorIsHot(true);']) . '</td>
 		<td>' . $this->formColor(155, 'bgcolor', "attrib") . '</td>
 	</tr>
 	<tr>
-		<td>' . $this->formSelectElement(155, 'mute', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
-		<td>' . $this->formSelectElement(155, 'loop', array(0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
+		<td>' . $this->formSelectElement(155, 'mute', [0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')], "attrib", 1, ['onchange' => '_EditorFrame.setEditorIsHot(true);']) . '</td>
+		<td>' . $this->formSelectElement(155, 'loop', [0 => g_l('global', '[false]'), 1 => g_l('global', '[true]')], "attrib", 1, ['onchange' => '_EditorFrame.setEditorIsHot(true);']) . '</td>
 		<td>' . $this->formInput2(155, 'name', 10, 'attrib', 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
 	</tr>
 </table>' .
@@ -87,8 +87,7 @@ class we_document_video extends we_binaryDocument{
 
 
 			return
-				getHtmlTag('video', array_filter(array(
-				'style' => 'width:' . ($width? : 400) . 'px;height:' . ($height? : 400) . 'px;' . ($preload ? 'margin-left:2em;' : '') . ($bgcolor ? 'background-color:' . $bgcolor . ';' : ''),
+				getHtmlTag('video', array_filter(['style' => 'width:' . ($width? : 400) . 'px;height:' . ($height? : 400) . 'px;' . ($preload ? 'margin-left:2em;' : '') . ($bgcolor ? 'background-color:' . $bgcolor . ';' : ''),
 				($play ? 'autoplay' : '') => 'autoplay',
 				(!$preload && $control !== '0' ? 'controls' : '') => 'controls',
 				($mute ? 'muted' : '') => 'muted',
@@ -96,12 +95,11 @@ class we_document_video extends we_binaryDocument{
 				($name ? 'name' : '') => $name,
 				($poster ? 'poster' : '') => $poster,
 				'preload' => ($preload || !$poster ? 'metadata' : 'none')
-				)), getHtmlTag('source', array(
-				'src' => ( $dyn ?
+				]), getHtmlTag('source', ['src' => ( $dyn ?
 					WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=show_binaryDoc&we_cmd[1]=' . $this->ContentType . '&we_cmd[2]=' . $GLOBALS['we_transaction'] . '&rand=' . we_base_file::getUniqueId() :
 					$this->Path),
 				'type' => 'video/' . str_replace('.', '', $this->Extension)
-				))
+				])
 				, true);
 		}
 		return '';
@@ -113,7 +111,7 @@ class we_document_video extends we_binaryDocument{
 		}
 
 		return ($bdid && $path && file_exists($_SERVER['DOCUMENT_ROOT'] . $path) ?
-				we_html_element::htmlImg(array('src' => $path, 'maxwidth' => '100px', 'maxheight' => '100px')) :
+				we_html_element::htmlImg(['src' => $path, 'maxwidth' => '100px', 'maxheight' => '100px']) :
 				$this->getHtml(true, true));
 	}
 

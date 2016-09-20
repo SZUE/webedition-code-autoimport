@@ -166,7 +166,7 @@ class we_backup_wizard{
 						$extra_files[$adddatadir . $entry] = $entry . " $filedate $filesize";
 						continue;
 					}
-					$ts = str_replace(array('.php', '.xml', '.gz', '.bz', '.zip'), '', preg_replace('|^weBackup_|', '', $entry));
+					$ts = str_replace(['.php', '.xml', '.gz', '.bz', '.zip'], '', preg_replace('|^weBackup_|', '', $entry));
 
 					if(is_numeric($ts) && !($ts < 1004569200)){//old Backup
 						$comp = we_base_file::getCompression($entry);
