@@ -1354,7 +1354,9 @@ function we_cmd_base(args, url) {
 		case "doImage_convertJPEG":
 		case "doImage_crop":
 		case "revert_published":
-			setScrollTo();
+			if (top.setScrollTo) {
+				setScrollTo();
+			}
 			// get editor root frame of active tab
 			var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
 			// get visible frame for displaying editor page
