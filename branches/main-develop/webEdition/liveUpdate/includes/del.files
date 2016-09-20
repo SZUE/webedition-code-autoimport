@@ -1,3 +1,7 @@
+!rpc/views/json/customer
+!rpc/views/json/widgets
+rpc/views/json/rpcSelectorGetSelectedIdView.class.php
+rpc/views/text/rpcSelectorGetSelectedIdView.class.php
 rpc/views/json/rpcHelloView.class.php
 we_vtabs.php
 we_sselector_inc.php
