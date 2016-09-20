@@ -517,7 +517,7 @@ class we_document extends we_root{
 		$this->i_setText();
 
 		if(!$skipHook){
-			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
+			$hook = new weHook('preSave', '', [$this, 'resave' => $resave]);
 //check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -547,7 +547,7 @@ class we_document extends we_root{
 
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('save', '', array($this, 'resave' => $resave));
+			$hook = new weHook('save', '', [$this, 'resave' => $resave]);
 //check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -561,12 +561,11 @@ class we_document extends we_root{
 	protected function i_writeMetaValues(){
 		foreach($this->DB_WE->getAllq('SELECT tag,type,importFrom,mode,csv FROM ' . METADATA_TABLE) as $meta){
 			if($meta['mode'] === 'auto' && $meta['type'] === 'textfield' && ($value = $this->getElement($meta['tag']))){
-				$values = $meta['csv'] ? array_map('trim', explode(',', $value)) : array($value);
+				$values = $meta['csv'] ? array_map('trim', explode(',', $value)) : [$value];
 				foreach($values as $v){
-					$this->DB_WE->query('INSERT INTO ' . METAVALUES_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'tag' => $meta['tag'],
+					$this->DB_WE->query('INSERT INTO ' . METAVALUES_TABLE . ' SET ' . we_database_base::arraySetter(['tag' => $meta['tag'],
 							'value' => $v
-					)));
+					]));
 				}
 			}
 		}
@@ -895,7 +894,7 @@ class we_document extends we_root{
 					$val = $attribs['id'];
 				}
 				$bin->initByID($val, FILE_TABLE);
-				return array($bin->Text, $bin->Path, $bin->ParentPath, $bin->Filename, $bin->Extension, $bin->getFilesize());
+				return [$bin->Text, $bin->Path, $bin->ParentPath, $bin->Filename, $bin->Extension, $bin->getFilesize()];
 			case 'video':
 				$video = new we_document_video();
 				if(isset($attribs['name'])){
@@ -982,8 +981,7 @@ class we_document extends we_root{
 
 					$charset = ( isset($GLOBALS['WE_MAIN_DOC']) && isset($GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'])) ? $GLOBALS['WE_MAIN_DOC']->elements['Charset']['dat'] : '';
 					if(trim(strtolower(substr($charset, 0, 3))) === 'iso' || $charset === ''){
-						$retval = strtr($retval, array(
-							chr(128) => '&#8364;',
+						$retval = strtr($retval, [chr(128) => '&#8364;',
 							chr(130) => '&#8218;',
 							chr(131) => '&#402;',
 							chr(132) => '&#8222;',
@@ -1009,10 +1007,10 @@ class we_document extends we_root{
 							chr(155) => '&#8250;',
 							chr(156) => '&#339;',
 							chr(158) => '&#382;',
-							chr(159) => '&#376;'));
+							chr(159) => '&#376;']);
 					}
 				}
-				return str_replace(array("##|n##", "##|r##"), array("\n", "\r"), $retval);
+				return str_replace(["##|n##", "##|r##"], ["\n", "\r"], $retval);
 		}
 	}
 
@@ -1135,7 +1133,7 @@ class we_document extends we_root{
 				$img = ($img ? : new we_imageDocument());
 				$img->initByID($link['img_id']);
 
-				$img_attribs = array('width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title']) ? $link['img_title'] : ''));
+				$img_attribs = ['width' => $link['width'], 'height' => $link['height'], 'border' => $link['border'], 'hspace' => $link['hspace'], 'vspace' => $link['vspace'], 'align' => $link['align'], 'alt' => $link['alt'], 'title' => (isset($link['img_title']) ? $link['img_title'] : '')];
 
 				if($useName){ //	rollover with links ...
 					$img_attribs['name'] = $useName;
@@ -1151,15 +1149,15 @@ class we_document extends we_root{
 				return $img->getHtml(false, false);
 			case we_base_link::CONTENT_EXT:
 //  set default atts
-				$img_attribs = array('src' => $link['img_src'],
+				$img_attribs = ['src' => $link['img_src'],
 					'alt' => '',
 					'xml' => $xml
-				);
+				];
 				if(isset($link['img_title'])){
 					$img_attribs['title'] = $link['img_title'];
 				}
 //  deal with all remaining attribs
-				$img_attList = array('width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'name');
+				$img_attList = ['width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'name'];
 				foreach($img_attList as $k){
 					if(!empty($link[$k])){
 						$img_attribs[$k] = $link[$k];
@@ -1176,16 +1174,16 @@ class we_document extends we_root{
 	function getLinkStartTag($link, $attribs, $parentID = 0, $path = '', we_database_base $db = null, $img = '', $useName = '', $hidedirindex = false, $objectseourls = false){
 		if(($l_href = self::getLinkHref($link, $parentID, $path, $db, $hidedirindex, $objectseourls))){
 //    define some arrays to order the attribs to image, link or js-window ...
-			$popUpAtts = array('jswin', 'jscenter', 'jswidth', 'jsheight', 'jsposx', 'jsposy', 'jsstatus', 'jsscrollbars', 'jsmenubar', 'jstoolbar', 'jsresizable', 'jslocation');
+			$popUpAtts = ['jswin', 'jscenter', 'jswidth', 'jsheight', 'jsposx', 'jsposy', 'jsstatus', 'jsscrollbars', 'jsmenubar', 'jstoolbar', 'jsresizable', 'jslocation'];
 
 //    attribs only for image - these are already handled
-			$imgAtts = array('img_id', 'width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'img_title');
+			$imgAtts = ['img_id', 'width', 'height', 'border', 'hspace', 'vspace', 'align', 'alt', 'img_title'];
 
 //    these are handled separately
-			$dontUse = array('img_id', 'obj_id', 'ctype', 'anchor', 'params', 'attribs', 'img_src', 'text', 'type', 'only');
+			$dontUse = ['img_id', 'obj_id', 'ctype', 'anchor', 'params', 'attribs', 'img_src', 'text', 'type', 'only'];
 
 //    these are already handled dont get them in output
-			$we_linkAtts = array('id');
+			$we_linkAtts = ['id'];
 
 			$linkAttribs = [];
 
@@ -1281,7 +1279,7 @@ class we_document extends we_root{
 				$linkAttribs['target'] = 'we_' . (isset($attribs['name']) ? $attribs['name'] : "");
 				$linkAttribs['onclick'] = $foo;
 			}
-			return $rollOverScript . getHtmlTag('a', removeAttribs($linkAttribs, array('hidedirindex', 'objectseourls')), '', false, true);
+			return $rollOverScript . getHtmlTag('a', removeAttribs($linkAttribs, ['hidedirindex', 'objectseourls']), '', false, true);
 		}
 		if(!empty($GLOBALS['we_link_not_published'])){
 			unset($GLOBALS['we_link_not_published']);
@@ -1420,14 +1418,13 @@ class we_document extends we_root{
 		$inputName = 'we_' . $this->Name . '_txt[' . $field . ']';
 
 		$onchange = "metaFieldSelectProposal(this, '" . $inputName . "', " . ($props['csv'] ? "true" : "false") . ");";
-		$mouseover = array(
-			'onmouseover' => "this.parentNode.getElementsByClassName('meta_icons')[0].style.display='inline-block';",
+		$mouseover = ['onmouseover' => "this.parentNode.getElementsByClassName('meta_icons')[0].style.display='inline-block';",
 			'onmouseout' => "this.parentNode.getElementsByClassName('meta_icons')[0].style.display='none';",
 			//'onclick' => "this.parentNode.getElementsByClassName('meta_icons')[0].style.display='none';",
-		);
+		];
 
 		$input = we_html_tools::htmlTextInput($inputName, 23, ($this->getElement($field) ? : (isset($GLOBALS['meta'][$field]) ? $GLOBALS['meta'][$field]['default'] : '')), '', '', 'txt', 308, 0, '', false, $props['closed']);
-		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $field . ']', $values, 1, '', false, array('onchange' => $onchange), "value", 200);
+		$sel = $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $field . ']', $values, 1, '', false, ['onchange' => $onchange], "value", 200);
 
 		// FIXME: if we want the icons make icon-css and better js
 		$csvText = g_l('metadata', '[txtIconCsv]');
@@ -1435,10 +1432,10 @@ class we_document extends we_root{
 		$autoText = g_l('metadata', '[txtIconAuto]');
 
 		$inlineCss = 'display:inline-block;background-color:#cccccc;border:1px solid black;height:1.2em;border-radius:1em;font-weight:normal;'; // FIXME: add class
-		$iconCsv = we_html_element::htmlDiv(array('title' => $csvText, 'style' => $inlineCss), '&nbsp;c,s,v&nbsp;');
-		$iconClosed = we_html_element::htmlDiv(array('title' => $closedText, 'style' => $inlineCss), '&nbsp;<i class="fa fa-key"></i>&nbsp;');
-		$iconAuto = we_html_element::htmlDiv(array('title' => $autoText, 'style' => $inlineCss), '&nbsp;&nbsp;<i class="fa fa-sign-in"></i>&nbsp;&nbsp;');
-		$icons = we_html_element::htmlDiv(array('style' => 'display:none;', 'class' => 'meta_icons'), ($props['closed'] ? $iconClosed . '&nbsp;' : '') . ($props['csv'] ? $iconCsv . '&nbsp;' : '') . (($props['mode'] === 'auto') && !$props['closed'] ? $iconAuto : ''));
+		$iconCsv = we_html_element::htmlDiv(['title' => $csvText, 'style' => $inlineCss], '&nbsp;c,s,v&nbsp;');
+		$iconClosed = we_html_element::htmlDiv(['title' => $closedText, 'style' => $inlineCss], '&nbsp;<i class="fa fa-key"></i>&nbsp;');
+		$iconAuto = we_html_element::htmlDiv(['title' => $autoText, 'style' => $inlineCss], '&nbsp;&nbsp;<i class="fa fa-sign-in"></i>&nbsp;&nbsp;');
+		$icons = we_html_element::htmlDiv(['style' => 'display:none;', 'class' => 'meta_icons'], ($props['closed'] ? $iconClosed . '&nbsp;' : '') . ($props['csv'] ? $iconCsv . '&nbsp;' : '') . (($props['mode'] === 'auto') && !$props['closed'] ? $iconAuto : ''));
 
 		return we_html_element::htmlDiv($mouseover, we_html_tools::htmlFormElementTable($input, (g_l('weClass', '[' . $field . ']', true)? : $field), '', '', $sel . $icons));
 	}
@@ -1465,7 +1462,7 @@ class we_document extends we_root{
 
 		return '<table class="default">' .
 			($withHeadline ? '<tr><td class="defaultfont">' . g_l('weClass', '[Charset]') . '</td></tr>' : '') .
-			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $value, false, array("onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"), "value", 330) . '</td></tr>' .
+			'<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $value, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $value, false, ["onblur" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');", "onchange" => "_EditorFrame.setEditorIsHot(true);document.forms[0].elements['" . $inputName . "'].value=this.options[this.selectedIndex].value;top.we_cmd('reload_editpage');"], "value", 330) . '</td></tr>' .
 			'</table>';
 	}
 
@@ -1561,13 +1558,11 @@ class we_document extends we_root{
 					}
 					$text = str_replace($reg[1] . '="' . $reg[2] . $reg[3] . $reg[4] . $reg[5], $reg[1] . '="' . $foo['Path'] . (!$foo['IsDynamic'] ? '?m=' . $foo['Published'] . $reg[4] : ($reg[4] ? '?' : '')) . $reg[5], $text);
 				} else {
-					$text = preg_replace(array(
-						'-<(a|img) [^>]*' . $reg[1] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
+					$text = preg_replace(['-<(a|img) [^>]*' . $reg[1] . '="' . $reg[2] . $reg[3] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 						'-<(a|img) [^>]*' . $reg[1] . '="' . $reg[2] . $reg[3] . '(\?|&|&amp;|")[^>]*>-Ui',
-						), array(
-						'${3}',
+						], ['${3}',
 						''
-						), $text);
+						], $text);
 				}
 			}
 		}
@@ -1595,13 +1590,11 @@ class we_document extends we_root{
 								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '?', 'href="' . $href . '&amp;', $text) :
 								str_replace('href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . $reg[2] . $reg[3], 'href="' . $href . $reg[2] . $reg[3], $text));
 					} else {
-						$text = preg_replace(array(
-							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
+						$text = preg_replace(['-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>(.*)</a>-Ui',
 							'-<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '("|&|&amp;|\?)[^>]*>-Ui',
-							), array(
-							'${2}',
+							], ['${2}',
 							''
-							), $text);
+							], $text);
 					}
 				}
 			}
@@ -1712,7 +1705,7 @@ class we_document extends we_root{
 		}
 
 //if document opens get initial object for versioning if no versions exist
-		if(in_array(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), array('load_edit_footer', 'switch_edit_page')) && $we_doc->Table !== VFILE_TABLE){
+		if(in_array(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0), ['load_edit_footer', 'switch_edit_page']) && $we_doc->Table !== VFILE_TABLE){
 			$version = new we_versions_version();
 			$version->setInitialDocObject($we_doc);
 		}

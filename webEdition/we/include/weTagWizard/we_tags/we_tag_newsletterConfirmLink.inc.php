@@ -8,4 +8,4 @@ $this->Module = 'newsletter';
 $this->Description = g_l('weTag', '[' . $tagName . '][description]', true);
 $this->DefaultValue = g_l('weTag', '[' . $tagName . '][defaultvalue]', true);
 
-$this->Attributes = array(new weTagData_selectAttribute('plain', weTagData_selectAttribute::getTrueFalse(), false, 'newsletter'));
+$this->Attributes = [new weTagData_selectAttribute('plain', weTagData_selectAttribute::getTrueFalse(), false, 'newsletter')];

@@ -53,10 +53,9 @@ class we_base_menu{
 							($e['text'][$GLOBALS['WE_LANGUAGE']] ? : '') :
 							($e['text'] ? : ''));
 
-					$menus[] = array(
-						'id' => $id,
+					$menus[] = ['id' => $id,
 						'code' => '<li class="top" onmouseover="topMenuHover(this)"><div class="top_div" onclick="topMenuClick(this)"><a href="#void" class="top_link"><span class="down">' . $mtext . '</span></a><ul class="sub">',
-					);
+						];
 				}
 			}
 		}

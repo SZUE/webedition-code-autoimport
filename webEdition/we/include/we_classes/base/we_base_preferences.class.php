@@ -27,36 +27,30 @@ class we_base_preferences{
 
 	static function loadConfigs(){
 		// First, read all needed files
-		$GLOBALS['config_files'] = array(
-			// we_conf.inc.php
-			'conf_conf' => array(
-				'filename' => WE_INCLUDES_PATH . 'conf/we_conf.inc.php',
+		$GLOBALS['config_files'] = ['conf_conf' => ['filename' => WE_INCLUDES_PATH . 'conf/we_conf.inc.php',
 				'content' => '',
 				'contentBak' => '',
 				'contentDef' => '',
-			),
+			],
 			// we_conf_global.inc.php
-			'conf_global' => array(
-				'filename' => WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php',
+			'conf_global' => ['filename' => WE_INCLUDES_PATH . 'conf/we_conf_global.inc.php',
 				'content' => '',
 				'contentBak' => '',
 				'contentDef' => '',
-			),
+			],
 			// proxysettings.inc.php
-			'conf_proxysettings' => array(
-				'filename' => WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.inc.php',
+			'conf_proxysettings' => ['filename' => WEBEDITION_PATH . 'liveUpdate/includes/proxysettings.inc.php',
 				'content' => '',
 				'contentBak' => '',
 				'contentDef' => '',
-			),
+			],
 			// we_active_integrated_modules.inc.php
-			'conf_active_integrated_modules' => array(
-				'filename' => WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php',
+			'conf_active_integrated_modules' => ['filename' => WE_INCLUDES_PATH . 'conf/we_active_integrated_modules.inc.php',
 				'content' => '',
 				'contentBak' => '',
 				'contentDef' => '',
-			),
-		);
+			],
+		];
 		foreach($GLOBALS['config_files'] as &$config){
 			$config['content'] = we_base_file::load($config['filename']);
 			$config['contentBak'] = $config['content'];
@@ -85,10 +79,10 @@ class we_base_preferences{
 	static function check_global_config($updateVersion = false, $file = '', $leave = []){
 		self::loadConfigs();
 		$processedConfigs = ($file ?
-				array('global' => 'contentBak') :
-				array('global' => 'contentDef', 'conf' => 'contentDef'));
+				['global' => 'contentBak'] :
+				['global' => 'contentDef', 'conf' => 'contentDef']);
 
-		$moveToConf = array('DB_SET_CHARSET');
+		$moveToConf = ['DB_SET_CHARSET'];
 		foreach($processedConfigs as $conf => $dataField){
 			// Read the global configuration file
 			$file_name = $GLOBALS['config_files']['conf_' . $conf]['filename'];
@@ -108,7 +102,7 @@ class we_base_preferences{
 			}
 
 			// load & Cut closing PHP tag from configuration file
-			$content = trim(str_replace(array('?>', "\n\n\n\n", "\n\n\n"), array('', "\n\n", "\n\n"), $content), "\n ");
+			$content = trim(str_replace(['?>', "\n\n\n\n", "\n\n\n"], ['', "\n\n", "\n\n"], $content), "\n ");
 
 			// Go through all needed values
 			foreach($GLOBALS['configs'][$conf] as $define => $value){
@@ -123,7 +117,7 @@ class we_base_preferences{
 				}
 			}
 			if($conf == 'global' && $updateVersion){
-				$content = self::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', str_replace(array('$Rev$'), '', WE_SVNREV), true);
+				$content = self::changeSourceCode('define', $content, 'CONF_SAVED_VERSION', str_replace(['$Rev$'], '', WE_SVNREV), true);
 			}
 			$GLOBALS['config_files']['conf_' . $conf]['contentBak'] = $oldContent;
 			$GLOBALS['config_files']['conf_' . $conf]['content'] = $content;
@@ -194,7 +188,7 @@ class we_base_preferences{
 	}
 
 	private static function _addSlashes($in){
-		return str_replace(array("\\", '"', "\$"), array("\\\\", '\"', "\\\$"), $in);
+		return str_replace(["\\", '"', "\$"], ["\\\\", '\"', "\\\$"], $in);
 	}
 
 	/**
@@ -244,9 +238,9 @@ class we_base_preferences{
  * NOTE: this file is regenerated, so any extra contents will be overwritten
  */
 
-$GLOBALS[\'weFrontendLanguages\'] = array(
+$GLOBALS[\'weFrontendLanguages\'] = [
 ' . $locales . '
-);
+];
 
 $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 				, 'w+'
@@ -256,7 +250,7 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 	public static function writeDefaultLanguageConfig(){
 		$file = WE_INCLUDES_PATH . 'conf/we_conf_language.inc.php';
 		if(!file_exists($file) || !is_file($file)){
-			self::we_writeLanguageConfig((WE_LANGUAGE === 'Deutsch' || WE_LANGUAGE === 'Deutsch_UTF-8' ? 'de_DE' : 'en_GB'), array('de_DE', 'en_GB'));
+			self::we_writeLanguageConfig((WE_LANGUAGE === 'Deutsch' || WE_LANGUAGE === 'Deutsch_UTF-8' ? 'de_DE' : 'en_GB'), ['de_DE', 'en_GB']);
 		}
 	}
 
@@ -273,7 +267,7 @@ $GLOBALS[\'weDefaultFrontendLanguage\'] = \'' . $default . '\';'
 		recipient_new_name: "' . g_l('alert', '[recipient_new_name]') . '",
 		input_name: "' . g_l('alert', '[input_name]') . '",
 		clear_block_entry_question:"' . g_l('prefs', '[clear_block_entry_question]') . '",
-		clear_log_question:"'.g_l('prefs', '[clear_log_question]').'",
+		clear_log_question:"' . g_l('prefs', '[clear_log_question]') . '",
 	};';
 	}
 

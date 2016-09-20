@@ -293,10 +293,9 @@ abstract class we_base_file{
 	public static function insertIntoCleanUp($path, $date = 300){
 		$DB_WE = new DB_WE();
 		$date = max($date, 300); //make each entry last at least 300 seconds
-		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'Path' => $DB_WE->escape($path),
+		$DB_WE->query('INSERT INTO ' . CLEAN_UP_TABLE . ' SET ' . we_database_base::arraySetter(['Path' => $DB_WE->escape($path),
 				'Date' => sql_function('(NOW()+ INTERVAL ' . intval($date) . ' SECOND)'),
-			)) . ' ON DUPLICATE KEY UPDATE Date=(NOW()+ INTERVAL ' . intval($date) . ' SECOND)');
+			]) . ' ON DUPLICATE KEY UPDATE Date=(NOW()+ INTERVAL ' . intval($date) . ' SECOND)');
 	}
 
 	public static function deleteLocalFile($filename){
@@ -346,7 +345,7 @@ abstract class we_base_file{
 			return $returnValue;
 		}
 
-		$cf = array($completeDirPath);
+		$cf = [$completeDirPath];
 
 		$parent = str_replace('\\', '/', dirname($completeDirPath));
 
@@ -420,7 +419,7 @@ abstract class we_base_file{
 	}
 
 	static function getCompression($filename){
-		$compressions = array('gzip', 'zip', 'bzip');
+		$compressions = ['gzip', 'zip', 'bzip'];
 		foreach($compressions as $val){
 			if(stripos(basename($filename), '.' . self::getZExtension($val)) !== false){
 				return $val;
@@ -660,7 +659,7 @@ abstract class we_base_file{
 		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
 		if(!$d){
 			self::checkAndMakeFolder(rtrim(WE_FRAGMENT_PATH, '/'));
-		$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
+			$d = dir(rtrim(WE_FRAGMENT_PATH, '/'));
 		}
 		while(false !== ($entry = $d->read())){
 			switch($entry){
@@ -765,9 +764,7 @@ abstract class we_base_file{
 	 * @param int $folderID
 	 */
 	static function getFoldersInFolder($folderID, $table = FILE_TABLE, we_database_base $db = null){
-		$outArray = array(
-			$folderID
-		);
+		$outArray = [$folderID];
 		$db = ($db ? : new DB_WE());
 		$db->query('SELECT ID FROM ' . $table . ' WHERE ParentID=' . intval($folderID) . ' AND IsFolder=1');
 		$new = [];

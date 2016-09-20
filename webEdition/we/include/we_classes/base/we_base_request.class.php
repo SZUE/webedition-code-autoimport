@@ -145,7 +145,7 @@ class we_base_request{
 				foreach($mails as &$mail){
 					if(!preg_match('-(["\'][\S\s]+["\']\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 						//if format didn't match, filter the whole var as one address
-						$regs = array_merge(array('', ''), explode('@', $mail, 2));
+						$regs = array_merge(['', ''], explode('@', $mail, 2));
 						if(!isset($regs[3])){
 							$mail = '';
 							continue;
@@ -165,7 +165,7 @@ class we_base_request{
 				$mail = trim(str_replace(we_base_link::TYPE_MAIL_PREFIX, '', $var));
 				if(!preg_match('-(["\'][\S\s]+["\']\s*|\S+\s*)<(\S+)@(\S+)>-', $mail, $regs)){ //mail formats "yy" <...@...>, =..... <...@...>
 					//if format didn't match, filter the whole var as one address
-					$regs = array_merge(array('', ''), explode('@', $mail, 2));
+					$regs = array_merge(['', ''], explode('@', $mail, 2));
 					if(!isset($regs[3])){
 						$mail = '';
 						continue;
@@ -181,10 +181,9 @@ class we_base_request{
 			case self::WEFILELISTA:
 			case self::FILELISTA:
 			case self::FILELIST:
-				$var = explode(',', trim(strtr($var, array(
-					'../' => '',
+				$var = explode(',', trim(strtr($var, ['../' => '',
 					'//' => ''
-						)), ','));
+					]), ','));
 				foreach($var as &$cur){
 					$cur = ($type == self::WEFILELIST || $type == self::WEFILELISTA ? $cur : filter_var($cur, FILTER_SANITIZE_URL));
 					if($cur === rtrim(WEBEDITION_DIR, '/') || strpos($cur, WEBEDITION_DIR) === 0){//file-selector has propably access
@@ -197,10 +196,9 @@ class we_base_request{
 				return;
 			case self::WEFILE:
 			case self::FILE:
-				$var = strtr(($type == self::FILE ? filter_var($var, FILTER_SANITIZE_URL) : $var), array(
-					'../' => '',
+				$var = strtr(($type == self::FILE ? filter_var($var, FILTER_SANITIZE_URL) : $var), ['../' => '',
 					'//' => '/'
-				));
+					]);
 				if(strpos($var, rtrim(WEBEDITION_DIR, '/')) === 0){//file-selector has propably access
 					if(!(strstr($var, SITE_DIR) || strstr($var, TEMP_DIR))){//allow site/tmp dir
 						$var = defined('supportDebugging') && (supportDebugging == $_SERVER['REMOTE_ADDR']) ? $var : '-1';
@@ -254,7 +252,7 @@ class we_base_request{
 	public static function filterVar($var, $varType, $default = ''){
 		//FIXME: remove checker at release
 		//$preVar = $var;
-		self::_weRequest($var, '', array($varType, $default));
+		self::_weRequest($var, '', [$varType, $default]);
 		/* 		if($varType != self::INTLIST && !is_bool($var) && !is_array($var) && $preVar != $var && $var != $default){
 		  t_e('changed var/tag attribute', $preVar, $var);
 		  } */

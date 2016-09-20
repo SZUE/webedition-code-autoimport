@@ -254,7 +254,7 @@ class we_mail_mail extends we_mail_znd{
 						}
 						$cid = 'cid:' . $this->doaddAttachmentInline($binParts[2], true, $binParts[1]);
 					} elseif(preg_match('/^[A-z][A-z]*:\/\/' . $_SERVER['SERVER_NAME'] . '/', $url) || !preg_match('/^[A-z][A-z]*:\/\//', $url)){
-						$filename = basename($url);
+						$filename = (explode('?', basename($url))[0]);
 						$fileParts = pathinfo($filename);
 						$ext = $fileParts['extension'];
 

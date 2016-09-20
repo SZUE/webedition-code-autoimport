@@ -256,7 +256,7 @@ abstract class we_base_delete{
 			}
 			/* hook */
 			if(!$skipHook){
-				$hook = new weHook('delete', '', array($object));
+				$hook = new weHook('delete', '', [$object]);
 				$hook->executeHook();
 			}
 

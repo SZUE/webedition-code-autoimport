@@ -39,7 +39,7 @@ abstract class we_class{
 	/* Name of the class => important for reconstructing the class from outside the class */
 	var $ClassName = __CLASS__;
 	/* In this array are all storagable class variables */
-	var $persistent_slots = array('ClassName', 'Name', 'ID', 'Table', 'wasUpdate', 'InWebEdition');
+	var $persistent_slots = ['ClassName', 'Name', 'ID', 'Table', 'wasUpdate', 'InWebEdition'];
 	/* Name of the Object that was createt from this class */
 	var $Name = '';
 
@@ -167,19 +167,18 @@ abstract class we_class{
 	}
 
 	static function htmlTextArea($name, $rows = 10, $cols = 30, $value = '', array $attribs = []){
-		return we_html_element::htmlTextArea(array_merge(array(
-				'name' => trim($name),
+		return we_html_element::htmlTextArea(array_merge(['name' => trim($name),
 				'class' => 'defaultfont wetextarea',
 				'rows' => abs($rows),
 				'cols' => abs($cols),
-					), $attribs
+					], $attribs
 				), ($value ? (oldHtmlspecialchars($value)) : ''));
 	}
 
 	//fixme: add auto-grouping, add format
 	function htmlSelect($name, array $values, $size = 1, $selectedIndex = '', $multiple = false, array $attribs = [], $compare = 'value', $width = 0, $classes = []){
 		$optgroup = false;
-		$selIndex = $multiple ? explode(',', $selectedIndex) : array($selectedIndex);
+		$selIndex = $multiple ? explode(',', $selectedIndex) : [$selectedIndex];
 		$ret = '';
 		foreach($values as $value => $text){
 			if($text === we_html_tools::OPTGROUP){
@@ -194,14 +193,13 @@ abstract class we_class{
 			$ret .= '</optgroup>';
 		}
 
-		return we_html_element::htmlSelect(array_merge($attribs, array(
-				'id' => trim($name),
+		return we_html_element::htmlSelect(array_merge($attribs, ['id' => trim($name),
 				'class' => "weSelect defaultfont",
 				'name' => trim($name),
 				'size' => abs($size),
 				($multiple ? 'multiple' : null) => 'multiple',
 				($width ? 'width' : null) => $width
-				)), $ret);
+				]), $ret);
 	}
 
 	############## new fns
@@ -209,10 +207,9 @@ abstract class we_class{
 
 	function formSelectElement($width, $name, $values, $type = 'txt', $size = 1, array $attribs = []){
 		return we_html_tools::htmlFormElementTable(
-				we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(array(
-					'class' => 'defaultfont',
+				we_html_tools::html_select('we_' . $this->Name . '_' . $type . '[' . $name . ']', $size, $values, $this->getElement($name), array_merge(['class' => 'defaultfont',
 					'width' => $width,
-						), $attribs))
+						], $attribs))
 				, g_l('weClass', '[' . $name . ']'));
 	}
 
@@ -236,9 +233,8 @@ abstract class we_class{
 
 		$ps = $this->$name;
 
-		$pop = $this->htmlSelect($myname . ($multiple ? 'Tmp' : ''), $vals, $size, $ps, $multiple, array_merge(array(
-			'onchange' => $onChange . ($multiple ? ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;" : '')
-				), $attribs), 'value', $width);
+		$pop = $this->htmlSelect($myname . ($multiple ? 'Tmp' : ''), $vals, $size, $ps, $multiple, array_merge(['onchange' => $onChange . ($multiple ? ";var we_sel='';for(i=0;i<this.options.length;i++){if(this.options[i].selected){we_sel += (this.options[i].value + ',');};};if(we_sel){we_sel=we_sel.substring(0,we_sel.length-1)};this.form.elements['" . $myname . "'].value=we_sel;" : '')
+				], $attribs), 'value', $width);
 
 		if($precode || $postcode){
 			$pop = '<table class="default"><tr>' . ($precode ? ('<td style="padding-right:' . $gap . 'px;">' . $precode . '</td>') : '') . '<td>' . $pop . '</td>' . ($postcode ? ('<td>' . $postcode . '</td>') : '') . '</tr></table>';
@@ -617,48 +613,43 @@ abstract class we_class{
 
 		foreach($LangLinkArray as $locale => $LDID){ //obsolete if we call executeSetLanguageLink with only the link to bechanged (instead of whole $LangLinkArray)
 			if(($ID = f('SELECT ID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DID=' . intval($this->ID) . ' AND Locale="' . $this->DB_WE->escape($locale) . '" AND isFolder=' . intval($isfolder) . ' AND IsObject=' . intval($isobject), 'ID', $this->DB_WE))){
-				$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'LDID' => $LDID,
+				$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(['LDID' => $LDID,
 						'DLocale' => $this->Language
-					)) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
+					]) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
 			} elseif($locale != $this->Language && $LDID > 0){
-				$this->DB_WE->query('INSERT INTO ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'DID' => $this->ID,
+				$this->DB_WE->query('INSERT INTO ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(['DID' => $this->ID,
 						'DLocale' => $this->Language,
 						'IsFolder' => $isfolder,
 						'IsObject' => $isobject,
 						'LDID' => $LDID,
 						'Locale' => $locale,
 						'DocumentTable' => $type
-				)));
+				]));
 			}
 
 			if(!$isfolder && $LDID && $LDID != $this->ID){
 				if(($ID = f('SELECT ID FROM ' . LANGLINK_TABLE . ' WHERE DocumentTable="' . $this->DB_WE->escape($type) . '" AND DID=' . intval($LDID) . ' AND Locale="' . $this->DB_WE->escape($this->Language) . '" AND IsObject=' . ($isobject ? 1 : 0), '', $this->DB_WE))){
 					if($LDID > 0){
-						$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-								'DID' => $LDID,
+						$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(['DID' => $LDID,
 								'DLocale' => $locale,
 								'LDID' => $this->ID,
 								'Locale' => $this->Language
-							)) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
+							]) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
 					} elseif($LDID < 0){// here we could delete istead of update (and then delete later...)
-						$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-								'DID' => $LDID, //FIXME: DID is unsigned => result=0!
+						$this->DB_WE->query('UPDATE ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(['DID' => $LDID, //FIXME: DID is unsigned => result=0!
 								'DLocale' => $locale,
 								'LDID' => 0,
 								'Locale' => $this->Language,
-							)) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
+							]) . ' WHERE ID=' . intval($ID) . ' AND DocumentTable="' . $this->DB_WE->escape($type) . '"');
 					}
 				} elseif($LDID > 0){
-					$this->DB_WE->query('INSERT INTO ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'DID' => $LDID,
+					$this->DB_WE->query('INSERT INTO ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(['DID' => $LDID,
 							'DLocale' => $locale,
 							'LDID' => $this->ID,
 							'Locale' => $this->Language,
 							'IsObject' => ($isobject ? 1 : 0),
 							'DocumentTable' => $type
-					)));
+					]));
 				}
 			}
 
@@ -677,14 +668,13 @@ abstract class we_class{
 						foreach($rows as $i => $row){
 							$j = ($i + 1) % count($rows);
 							if($rows[$i]['LDID'] && $rows[$j]['LDID']){
-								$this->DB_WE->query('REPLACE INTO ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-										'DID' => $rows[$i]['LDID'],
+								$this->DB_WE->query('REPLACE INTO ' . LANGLINK_TABLE . ' SET ' . we_database_base::arraySetter(['DID' => $rows[$i]['LDID'],
 										'DLocale' => $rows[$i]['Locale'],
 										'LDID' => $rows[$j]['LDID'],
 										'Locale' => $rows[$j]['Locale'],
 										'IsObject' => ($isobject ? 1 : 0),
 										'DocumentTable' => $type
-								)));
+								]));
 							}
 						}
 					}

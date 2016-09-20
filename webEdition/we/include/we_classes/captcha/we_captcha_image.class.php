@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_captcha_image{
-
 	/**
 	 * @var integer
 	 * @desc Length of the text
@@ -130,15 +129,14 @@ class we_captcha_image{
 		$this->setAlign();
 
 		// init the vertical align
-		$this->style = array(
-			'strikeout' => false,
+		$this->style = ['strikeout' => false,
 			'fullcircle' => false,
 			'outlinecircle' => false,
 			'fullrectangle' => false,
 			'outlinerectangle' => false,
 			'color' => false,
 			'number' => false,
-		);
+		];
 
 		// init the anglerange
 		$this->setBackground();
@@ -176,22 +174,20 @@ class we_captcha_image{
 				$this->font['family'][] = $family;
 			}
 		} else {
-			$this->font['family'] = array('Times');
+			$this->font['family'] = ['Times'];
 		}
 
 		// set the font size
 		$sizes = explode(",", $size);
 		if(count($sizes) > 1){
 			sort($sizes, SORT_NUMERIC);
-			$this->font['size'] = array(
-				'min' => intval($sizes[0]),
+			$this->font['size'] = ['min' => intval($sizes[0]),
 				'max' => intval($sizes[1])
-			);
+			];
 		} else {
-			$this->font['size'] = array(
-				'min' => intval($size),
+			$this->font['size'] = ['min' => intval($size),
 				'max' => intval($size)
-			);
+			];
 		}
 
 		// set the font colors
@@ -230,18 +226,18 @@ class we_captcha_image{
 			case 'a-z':
 				switch($case){
 					case "upper":
-						$this->charactersubset = array(array(65, 90));
+						$this->charactersubset = [[65, 90]];
 						break;
 					case "lower":
-						$this->charactersubset = array(array(97, 122));
+						$this->charactersubset = [[97, 122]];
 						break;
 					default:
-						$this->charactersubset = array(array(65, 90), array(97, 122));
+						$this->charactersubset = [[65, 90], [97, 122]];
 				}
 				break;
 			case 'num':
 			case '0-9':
-				$this->charactersubset = array(array(48, 57));
+				$this->charactersubset = [[48, 57]];
 				break;
 			case 'alphanum':
 			case 'a-z0-9':
@@ -249,13 +245,13 @@ class we_captcha_image{
 			default:
 				switch($case){
 					case "upper":
-						$this->charactersubset = array(array(48, 57), array(65, 90));
+						$this->charactersubset = [[48, 57], [65, 90]];
 						break;
 					case "lower":
-						$this->charactersubset = array(array(48, 57), array(97, 122));
+						$this->charactersubset = [[48, 57], [97, 122]];
 						break;
 					default:
-						$this->charactersubset = array(array(48, 57), array(65, 90), array(97, 122));
+						$this->charactersubset = [[48, 57], [65, 90], [97, 122]];
 				}
 				break;
 		}
@@ -296,15 +292,14 @@ class we_captcha_image{
 	 * @return void
 	 */
 	function setStyle($style = "", $color = "#cccccc", $number = "10,20"){
-		$this->style = array(
-			'strikeout' => false,
+		$this->style = ['strikeout' => false,
 			'fullcircle' => false,
 			'fullrectangle' => false,
 			'outlinecircle' => false,
 			'outlinerectangle' => false,
 			'color' => false,
 			'number' => false,
-		);
+		];
 
 		$styles = explode(",", $style);
 		if(!empty($styles)){
@@ -504,7 +499,7 @@ class we_captcha_image{
 			$width = abs(( (-1) * abs(min($coords[0], $coords[6])) ) + ( abs(max($coords[2], $coords[4])) ));
 			$height = abs(( (-1) * abs(min($coords[1], $coords[7])) ) + ( abs(max($coords[3], $coords[5])) ));
 		}
-		return array($use_fontfile, $family, $angle, $width, $height);
+		return [$use_fontfile, $family, $angle, $width, $height];
 	}
 
 	/**
@@ -630,22 +625,20 @@ class we_captcha_image{
 				}
 
 				$signs[] = ($use_fontfile ?
-								array(
-							'size' => $size,
-							'angle' => $angle,
-							'xpos' => $xpos,
-							'ypos' => $ypos,
-							'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
-							'family' => file_exists($family) ? $family : $_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'additional/fonts/DejaVuSans.ttf',
-							'sign' => $sign,
-								) :
-								array(
-							'xpos' => $xpos,
-							'ypos' => $ypos,
-							'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
-							'family' => $family,
-							'sign' => $sign,
-				));
+						['size' => $size,
+						'angle' => $angle,
+						'xpos' => $xpos,
+						'ypos' => $ypos,
+						'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
+						'family' => file_exists($family) ? $family : $_SERVER['DOCUMENT_ROOT'] . LIB_DIR . 'additional/fonts/DejaVuSans.ttf',
+						'sign' => $sign,
+						] :
+						['xpos' => $xpos,
+						'ypos' => $ypos,
+						'color' => imagecolorallocate($image, $color[0], $color[1], $color[2]),
+						'family' => $family,
+						'sign' => $sign,
+				]);
 
 
 				$space = rand(round($this->font['size']['min'] / 2), round($this->font['size']['max'] / 2));
@@ -660,7 +653,7 @@ class we_captcha_image{
 		}
 
 		if($this->align === 'random'){
-			$temp = array('left', 'right', 'center');
+			$temp = ['left', 'right', 'center'];
 			$this->align = $temp[rand(0, 2)];
 		}
 
@@ -673,21 +666,21 @@ class we_captcha_image{
 				break;
 			case 'center':
 				$xoffset = ($use_fontfile ?
-								($this->width / 2) - ($sumwidth / 2) :
-								($this->width / 2) - ($sumwidth / 2) + 3);
+						($this->width / 2) - ($sumwidth / 2) :
+						($this->width / 2) - ($sumwidth / 2) + 3);
 		}
 
 		foreach($signs as $sign){
 			if($use_fontfile){
 				imagettftext(
-						$image, // Imageressource
-						$sign['size'], // Fontsize
-						$sign['angle'], // Angle
-						$xoffset + $sign['xpos'], // X-Position
-						$sign['ypos'], // Y-Position
-						$sign['color'], // Fontcolor
-						$sign['family'], // Font Family (File)
-						$sign['sign'] // Text
+					$image, // Imageressource
+					$sign['size'], // Fontsize
+					$sign['angle'], // Angle
+					$xoffset + $sign['xpos'], // X-Position
+					$sign['ypos'], // Y-Position
+					$sign['color'], // Fontcolor
+					$sign['family'], // Font Family (File)
+					$sign['sign'] // Text
 				);
 			} else {
 				imagestring($image, $sign['family'], $xoffset + $sign['xpos'], $sign['ypos'], $sign['sign'], $sign['color']);

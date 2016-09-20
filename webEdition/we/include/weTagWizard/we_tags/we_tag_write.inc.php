@@ -25,14 +25,14 @@ $workspaces = new weTagData_textAttribute('workspaces', false, '');
 $parentid = (defined('OBJECT_FILES_TABLE') ? new weTagData_selectorAttribute('parentid', OBJECT_FILES_TABLE, weTagData_selectorAttribute::FOLDER, false, '') : null);
 $userid = new weTagData_textAttribute('userid', false, '');
 $name = new weTagData_textAttribute('name', false, '');
-$onduplicate = new weTagData_selectAttribute('onduplicate', array(new weTagDataOption('abort'),
+$onduplicate = new weTagData_selectAttribute('onduplicate', [new weTagDataOption('abort'),
 	new weTagDataOption('overwrite'),
 	new weTagDataOption('increment'),
-	), false, '');
-$onpredefinedname = new weTagData_selectAttribute('onpredefinedname', array(new weTagDataOption('appendto'),
+	], false, '');
+$onpredefinedname = new weTagData_selectAttribute('onpredefinedname', [new weTagDataOption('appendto'),
 	new weTagDataOption('infrontof'),
 	new weTagDataOption('overwrite'),
-	), false, '');
+	], false, '');
 $workflowname = new weTagData_textAttribute('workflowname', false, '');
 $workflowuserid = new weTagData_textAttribute('workflowuserid', false, '');
 

@@ -48,7 +48,7 @@ abstract class we_base_widget{
 	 * @param      bool $resize
 	 * @return     object Returns the we_html_table object
 	 */
-	static function create($iId, $sType, $oContent, $aLabel = array("", ""), $sCls = "white", $iRes = 0, $sCsv = "", $w = 0, $h = 0, $resize = true){
+	static function create($iId, $sType, $oContent, $aLabel = ['', ''], $sCls = "white", $iRes = 0, $sCsv = "", $w = 0, $h = 0, $resize = true){
 		$oDrag = new we_html_table(["id" => $iId . "_h", "style" => "width:100%"], 1, 1);
 		$oDrag->setCol(0, 0, ['style' => 'width:' . self::w_icon . 'px;height:16px;']);
 
@@ -73,10 +73,10 @@ abstract class we_base_widget{
 		  </span>');
 
 		$sIco = ($sType != "_reCloneType_") ? ($resize ? $oIco_prc->getHtml() : $oIco_pc->getHtml()) :
-			we_html_element::htmlDiv(array("id" => $iId . "_ico_prc", "style" => "display:block;"), $oIco_prc->getHtml()) .
-			we_html_element::htmlDiv(array("id" => $iId . "_ico_pc", "style" => "display:none;"), $oIco_pc->getHtml());
+			we_html_element::htmlDiv(["id" => $iId . "_ico_prc", "style" => "display:block;"], $oIco_prc->getHtml()) .
+			we_html_element::htmlDiv(["id" => $iId . "_ico_pc", "style" => "display:none;"], $oIco_pc->getHtml());
 
-		$oTb = new we_html_table(array("id" => $iId . "_tb", 'class' => 'widget_controls'), 1, 2);
+		$oTb = new we_html_table(["id" => $iId . "_tb", 'class' => 'widget_controls'], 1, 2);
 		$oTb->setCol(0, 0, [], $oDrag->getHtml());
 		$oTb->setCol(0, 1, ["width" => self::w_icon], $sIco);
 

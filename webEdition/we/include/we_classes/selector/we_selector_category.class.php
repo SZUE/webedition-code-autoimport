@@ -199,7 +199,8 @@ class we_selector_category extends we_selector_file{
 
 	private function renameChildrenPath($id, we_database_base $db = null){
 		$db = $db ? : new DB_WE();
-		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT(SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id) . ',"/",Text) WHERE ParentID=' . intval($id));
+		$parentPath = f('SELECT Path FROM ' . CATEGORY_TABLE . ' WHERE ID=' . intval($id));
+		$db->query('UPDATE ' . CATEGORY_TABLE . ' SET Path=CONCAT("' . $db->escape($parentPath) . '","/",Text) WHERE ParentID=' . intval($id));
 		$db->query('SELECT ID FROM ' . CATEGORY_TABLE . ' WHERE ParentID=' . intval($id)); //IsFolder=1 AND
 		$updates = $db->getAll(true);
 		foreach($updates as $id){
