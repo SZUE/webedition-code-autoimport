@@ -25,7 +25,7 @@
 class rpcSelectorGetSelectedIdCmd extends we_rpc_cmd{
 
 	function execute(){
-		$resp = new we_rpc_response();
+		$response = new we_rpc_response();
 
 		if(!($search = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 1)) || !($table = we_base_request::_(we_base_request::TABLE, 'we_cmd', false, 2))){
 			exit();
@@ -34,8 +34,46 @@ class rpcSelectorGetSelectedIdCmd extends we_rpc_cmd{
 		$selectorSuggest = new we_selector_query();
 		$contentTypes = explode(',', we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3));
 		$selectorSuggest->queryTable($search, $table, $contentTypes);
-		$resp->setData('data', $selectorSuggest->getResult());
-		return $resp;
+		$suggests = $selectorSuggest->getResult();
+		if(is_array($suggests) && isset($suggests[0]['ID'])){
+			$response->setStatus(true);
+			$response->setData('data', [
+				'id' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4),
+				'value' => $suggests[0]['ID'],
+				'contentType' => (isset($suggests[0]['ContentType']) ? $suggests[0]['ContentType'] : '')
+			]);
+			return $response;
+		}
+
+		$response->setStatus(false);
+
+		if(strpos(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3), ',')){
+			switch(we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2)){
+				case FILE_TABLE:
+					$msg = g_l('weSelectorSuggest', '[no_document]');
+					break;
+				case TEMPLATES_TABLE:
+					$msg = g_l('weSelectorSuggest', '[no_template]');
+					break;
+				case OBJECT_TABLE:
+					$msg = g_l('weSelectorSuggest', '[no_class]');
+					break;
+				case OBJECT_FILES_TABLE:
+					$msg = g_l('weSelectorSuggest', '[no_class]');
+					break;
+				default:
+					$msg = g_l('weSelectorSuggest', '[no_result]');
+					break;
+			}
+		} else {
+			$msg = g_l('weSelectorSuggest', '[no_folder]');
+		}
+		$response->setData('data', [
+			'msg' => $msg,
+			'nr' => we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2)
+		]);
+
+		return $response;
 	}
 
 }
