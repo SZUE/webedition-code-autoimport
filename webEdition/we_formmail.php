@@ -267,7 +267,7 @@ $email = preg_replace("/(\\n+|\\r+)/", '', (!empty($_REQUEST['email'])) ?
 			WE_DEFAULT_EMAIL));
 
 $subject = preg_replace("/(\\n+|\\r+)/", '', we_base_request::_(we_base_request::STRING, 'subject', WE_DEFAULT_SUBJECT));
-$charset = preg_replace("/(\\n+|\\r+)/", '', str_replace(array("\n", "\r"), '', we_base_request::_(we_base_request::STRING, 'charset', $GLOBALS['WE_BACKENDCHARSET'])));
+$charset = preg_replace("/(\\n+|\\r+)/", '', str_replace(["\n", "\r"], '', we_base_request::_(we_base_request::STRING, 'charset', $GLOBALS['WE_BACKENDCHARSET'])));
 $recipient = (!empty($_REQUEST['recipient'])) ? $_REQUEST['recipient'] : '';
 $from = preg_replace("/(\\n+|\\r+)/", '', (!empty($_REQUEST['from'])) ? $_REQUEST['from'] : WE_DEFAULT_EMAIL);
 $mimetype = we_base_request::_(we_base_request::STRING, 'mimetype', '');

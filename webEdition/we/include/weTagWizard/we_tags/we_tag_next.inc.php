@@ -11,7 +11,7 @@ $this->Attributes = [
 	new weTagData_textAttribute('class', false, ''),
 	new weTagData_textAttribute('style', false, ''),
 	new weTagData_selectAttribute('xml', weTagData_selectAttribute::getTrueFalse(), false, ''),
-	new weTagData_selectAttribute('only', array(new weTagDataOption('href'),
+	new weTagData_selectAttribute('only', [new weTagDataOption('href'),
 		new weTagDataOption('id'),
-		), false, ''),
+	 ], false, ''),
 ];

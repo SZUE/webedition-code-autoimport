@@ -303,7 +303,11 @@ we_templateInit();?>';
 		} else {
 			return parseError(g_l('parser', '[html_tags]')) . '<?php exit();?><!-- current parsed template code for debugging -->' . $code;
 		}
-		$code = str_replace(array('exit(', 'die(', 'exit;'), array('we_TemplateExit(', 'we_TemplateExit(', 'we_TemplateExit();'), $code);
+		$code = strtr_replace($code, [
+			'exit(' => 'we_TemplateExit(',
+			'die(' => 'we_TemplateExit(',
+			'exit;' => 'we_TemplateExit();'
+		]);
 		return $pre_code . $code . '<?php we_templatePost();';
 	}
 

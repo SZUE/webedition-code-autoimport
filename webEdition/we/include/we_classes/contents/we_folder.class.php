@@ -585,7 +585,7 @@ class we_folder extends we_root{
 			$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!="" ORDER BY Path DESC');
 			$lastRules = [];
 			while($db->next_record(MYSQL_NUM)){
-				$host = trim(str_replace(array('https://', 'http://'), '', $db->f(1)), '/');
+				$host = trim(str_replace(['https://', 'http://'], '', $db->f(1)), '/');
 				$rep1 = '-((href\s*=|src\s*=|action\s*=|location\s*=|content\s*=|url)\s*["\'\(])(' . preg_quote($db->f(0), '-') . ')(/[^"\'\)]*["\'\)])-';
 				$rep2 = '-^' . preg_quote($db->f(0), '-') . '(/.*)-';
 				if($_SERVER['SERVER_NAME'] == $host){

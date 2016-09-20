@@ -18,7 +18,7 @@ $this->Attributes = [
 	new weTagData_selectAttribute('formtagonly', weTagData_selectAttribute::getTrueFalse(), false, ''),
 	new weTagData_textAttribute('messageredirectAuto', false, ''),
 	new weTagData_textAttribute('messageredirectMan', false, ''),
-	new weTagData_choiceAttribute('charset', array(new weTagDataOption('UTF-8'),
+	new weTagData_choiceAttribute('charset', [new weTagDataOption('UTF-8'),
 		new weTagDataOption('ISO-8859-1'),
 		new weTagDataOption('ISO-8859-2'),
 		new weTagDataOption('ISO-8859-3'),
@@ -35,6 +35,6 @@ $this->Attributes = [
 		new weTagDataOption('ISO-8859-15'),
 		new weTagDataOption('Windows-1251'),
 		new weTagDataOption('Windows-1252'),
-		), false, true, ''),
+	 ], false, true, ''),
 	new weTagData_textAttribute('currency', false, ''),
 ];

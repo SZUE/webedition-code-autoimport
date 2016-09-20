@@ -465,7 +465,7 @@ class we_search_search extends we_search_base{
 		while($db2->next_record()){
 			$tempDoc = we_unserialize($db2->f('DocumentObject'));
 			if(!empty($tempDoc[0]['elements']['Title'])){
-				$keyword = str_replace(array('\_', '\%'), array('_', '%'), $keyword);
+				$keyword = strtr($keyword, ['\_' => '_', '\%' => '%']);
 				if(stristr($tempDoc[0]['elements']['Title']['dat'], $keyword)){
 					$titles[] = $db2->f('DocumentID');
 				}
@@ -1310,11 +1310,11 @@ class we_search_search extends we_search_base{
 						$sql[] = $this->sqlwhere($searchfield, ' LIKE "' . $this->db->escape($searchname) . '%" ');
 						break;
 					case 'IN':
-						$searchname = str_replace(array('\_', '\%'), array('_', '%'), $searchname);
+						$searchname = strtr($searchname, ['\_' => '_', '\%' => '%']);
 						$sql[] = $this->sqlwhere($searchfield, ' IN ("' . implode('","', array_map('trim', explode(',', $searchname))) . '") ');
 						break;
 					case 'IS':
-						$searchname = str_replace(array('\_', '\%'), array('_', '%'), $searchname);
+						$searchname = strtr($searchname, ['\_' => '_', '\%' => '%']);
 						$sql[] = $this->sqlwhere($searchfield, '="' . $this->db->escape($searchname) . '" ');
 						break;
 					case 'LO':
@@ -1414,8 +1414,8 @@ class we_search_search extends we_search_base{
 			$searchString = ($whichSearch === we_search_view::SEARCH_MEDIA && substr($curField, 0, 6) === 'meta__' && $searchText[$i] === '' && $location[$i] === 'IS') ? '##EMPTY##' : $searchText[$i];
 
 			if(!empty($searchString)){
-				if(!in_array($curField, array('Status', 'Speicherart', 'HasReferenceToID'))){
-					$searchString = str_replace(array('\\', '_', '%'), array('\\\\', '\_', '\%'), $searchString);
+				if(!in_array($curField, ['Status', 'Speicherart', 'HasReferenceToID'])){
+					$searchString = strtr($searchString, ['\\' => '\\\\', '_' => '\_', '%' => '\%']);
 				}
 
 				if($table === FILE_TABLE && $whichSearch === we_search_view::SEARCH_MEDIA){

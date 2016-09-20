@@ -72,9 +72,9 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 				"html" => $alert)
 		);
 
-		$butBrowse = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', false, false, '_btn') :
+		$butBrowse = str_replace(["\n\r", "\r\n", "\r", "\n"], "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', false, false, '_btn') :
 				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', false, false, '_btn', false, '', 'importerBrowseHarddisk'));
-		$butReset = str_replace(array("\n\r", "\r\n", "\r", "\n"), "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, 0, 0, '', '', true, false, '_btn'));
+		$butReset = str_replace(["\n\r", "\r\n", "\r", "\n"], "", we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, 0, 0, '', '', true, false, '_btn'));
 		// TODO: get fileselect from parent!
 		$fileselect = '
 		<form id="filechooser" action="" method="" enctype="multipart/form-data">
@@ -192,38 +192,38 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		);
 		$divBtnRefresh = we_html_element::htmlDiv(array('class' => 'btnRefresh'), we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", true, 0, 0, '', '', false, true, '', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh rowBtnProcess'));
 
-		return str_replace(array("\r", "\n"), "", we_html_element::htmlDiv(array('class' => 'importerElem'), we_html_element::htmlDiv(array('class' => 'weMultiIconBoxHeadline elemNum'), 'Nr. WE_FORM_NUM') .
-		we_html_element::htmlDiv(array('class' => 'elemContainer'),
-			we_html_element::htmlDiv(array('id' => 'preview_uploadFiles_WEFORMNUM', 'class' => 'weFileUploadEntry_preview elemPreview'),
-				we_html_element::htmlDiv(array('class' => 'elemPreviewPreview')) .
-				we_html_element::htmlDiv(array('class' => 'elemPreviewBtn'), $btnPreview)
+		return str_replace(["\r", "\n"], "", we_html_element::htmlDiv(['class' => 'importerElem'], we_html_element::htmlDiv(['class' => 'weMultiIconBoxHeadline elemNum'], 'Nr. WE_FORM_NUM') .
+		we_html_element::htmlDiv(['class' => 'elemContainer'],
+			we_html_element::htmlDiv(['id' => 'preview_uploadFiles_WEFORMNUM', 'class' => 'weFileUploadEntry_preview elemPreview'],
+				we_html_element::htmlDiv(['class' => 'elemPreviewPreview']) .
+				we_html_element::htmlDiv(['class' => 'elemPreviewBtn'], $btnPreview)
 			) .
-			we_html_element::htmlDiv(array('id' => 'icon_uploadFiles_WEFORMNUM', 'class' => 'weFileUploadEntry_icon elemIcon')) .
+			we_html_element::htmlDiv(['id' => 'icon_uploadFiles_WEFORMNUM', 'class' => 'weFileUploadEntry_icon elemIcon']) .
 
-			we_html_element::htmlDiv(array('class' => 'elemContent'),
-				we_html_element::htmlDiv(array('class' => 'elemContentTop'),
-					we_html_element::htmlDiv(array('id' => 'name_uploadFiles_WEFORMNUM', 'class' => 'elemFilename'), 'FILENAME') .
-					we_html_element::htmlDiv(array('id' => 'div_rowButtons_WEFORMNUM', 'class' => 'elemContentTopRight'),
-						we_html_element::htmlDiv(array('id' => 'size_uploadFiles_WEFORMNUM', 'class' => 'weFileUploadEntry_size elemSize'), 'FILESIZE') .
-						we_html_element::htmlDiv(array('class' => 'elemButtons'), $btnTable->getHtml())
+			we_html_element::htmlDiv(['class' => 'elemContent'],
+				we_html_element::htmlDiv(['class' => 'elemContentTop'],
+					we_html_element::htmlDiv(['id' => 'name_uploadFiles_WEFORMNUM', 'class' => 'elemFilename'], 'FILENAME') .
+					we_html_element::htmlDiv(['id' => 'div_rowButtons_WEFORMNUM', 'class' => 'elemContentTopRight'],
+						we_html_element::htmlDiv(['id' => 'size_uploadFiles_WEFORMNUM', 'class' => 'weFileUploadEntry_size elemSize'], 'FILESIZE') .
+						we_html_element::htmlDiv(['class' => 'elemButtons'], $btnTable->getHtml())
 					) .
-					we_html_element::htmlDiv(array('id' => 'div_rowProgress_WEFORMNUM', 'class' => 'elemProgress'), $progressbar)
+					we_html_element::htmlDiv(['id' => 'div_rowProgress_WEFORMNUM', 'class' => 'elemProgress'], $progressbar)
 				) .
-				we_html_element::htmlDiv(array('id' => 'editoptions_uploadFiles_WEFORMNUM', 'class' => 'weFileUploadEntry_editoption elemContentBottom'),
-					we_html_element::htmlForm(array('id' => 'form_editOpts_WEFORMNUM', 'data-type' => 'importer_rowForm', 'data-index' => 'WEFORMNUM'),
+				we_html_element::htmlDiv(['id' => 'editoptions_uploadFiles_WEFORMNUM', 'class' => 'weFileUploadEntry_editoption elemContentBottom'],
+					we_html_element::htmlForm(['id' => 'form_editOpts_WEFORMNUM', 'data-type' => 'importer_rowForm', 'data-index' => 'WEFORMNUM'],
 							$divOptionsLeft . $divOptopnsRight . $divBtnRefresh
 					)
 				) .
-				we_html_element::htmlDiv(array('class' => 'elemContentMask'),
-					we_html_element::htmlDiv(array('class' => 'we_file_drag_maskSpinner'), '<i class="fa fa-2x fa-spinner fa-pulse"></i></span>') .
-					we_html_element::htmlDiv(array('id' => 'image_edit_mask_text', 'class' => 'we_file_drag_maskBusyText'))
-				) . we_html_element::htmlDiv(array('id' => 'image_edit_done_WEFORMNUM', 'class' => 'elemContentDone')))
+				we_html_element::htmlDiv(['class' => 'elemContentMask'],
+					we_html_element::htmlDiv(['class' => 'we_file_drag_maskSpinner'], '<i class="fa fa-2x fa-spinner fa-pulse"></i></span>') .
+					we_html_element::htmlDiv(['id' => 'image_edit_mask_text', 'class' => 'we_file_drag_maskBusyText'])
+				) . we_html_element::htmlDiv(['id' => 'image_edit_done_WEFORMNUM', 'class' => 'elemContentDone']))
 		)));
 
 	}
 
 	protected function _getHtmlFileRow_legacy(){
-		return str_replace(array("\r", "\n"), "", '<table class="default importer_files"><tbody><tr height="28">
+		return str_replace(["\r", "\n"], "", '<table class="default importer_files"><tbody><tr height="28">
 			<td class="weMultiIconBoxHeadline" style="width:55px;padding-left:45px;padding-right:20px;" >' . g_l('importFiles', '[file]') . '&nbsp;<span id="headline_uploadFiles_WEFORMNUM">WE_FORM_NUM</span></td>
 			<td><input id="name_uploadFiles_WEFORMNUM" style="width:17.4em;" type="text" readonly="readonly" value="FILENAME" /></td>
 			<td>

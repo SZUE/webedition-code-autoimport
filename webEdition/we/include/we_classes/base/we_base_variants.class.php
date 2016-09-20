@@ -343,19 +343,17 @@ abstract class we_base_variants{
 <tr><td style="padding-bottom:8px;">' . $model->getFieldHTML($name, $type, $attributes, true, true) . '</td></tr>';
 				}
 				$content .= '</table>';
-				$parts[] = array(
-					'headline' => '',
+				$parts[] = ['headline' => '',
 					'html' => $content,
-				);
+					];
 			}
 		} else {
 			$i = 0;
 		}
 
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_variant','" . $i . "');"),
-		);
+			];
 		return $parts;
 	}
 
@@ -407,10 +405,9 @@ abstract class we_base_variants{
 				}
 				$content .= '</table>';
 
-				$parts[] = array(
-					'headline' => '',
+				$parts[] = ['headline' => '',
 					'html' => $content,
-				);
+					];
 			}
 		} else {
 			$i = 0;
@@ -418,10 +415,9 @@ abstract class we_base_variants{
 		$plusBut = we_html_button::create_button('fa:btn_add_field,fa-plus,fa-lg fa-square-o', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('insert_variant','" . $i . "');");
 		$content = $plusBut;
 
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => $content,
-		);
+			];
 		return $parts;
 	}
 
@@ -586,33 +582,27 @@ abstract class we_base_variants{
 
 		$fields = $we_doc->getVariantFieldNames();
 
-		$headline = array(
-			array(
-				'dat' => g_l('weClass', '[variant_fields]')
-			)
-		);
+		$headline = [['dat' => g_l('weClass', '[variant_fields]')
+				]
+		];
 
 
 		$content = [];
 		foreach($fields as $ind => $field){
 			$element = $we_doc->getElement('variant_' . $field);
-			$content[$ind] = array(array(
-					'dat' => we_html_forms::checkboxWithHidden($element ? true : false, 'we_' . $we_doc->Name . '_variant[variant_' . $field . ']', $field, false, 'middlefont', '_EditorFrame.setEditorIsHot(true);')
-			));
+			$content[$ind] = [['dat' => we_html_forms::checkboxWithHidden($element ? true : false, 'we_' . $we_doc->Name . '_variant[variant_' . $field . ']', $field, false, 'middlefont', '_EditorFrame.setEditorIsHot(true);')
+					]];
 		}
 
-		$parts = array(
-			array(
-				'headline' => '',
+		$parts = [['headline' => '',
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[variant_info]'), we_html_tools::TYPE_INFO, 620, false),
 				'noline' => 1
-			),
-			array(
-				'headline' => '',
+				],
+				['headline' => '',
 				'html' => we_html_tools::htmlDialogBorder3(600, $content, $headline),
 				'noline' => 1
-			)
-		);
+				]
+		];
 
 		echo we_class::hiddenTrans() .
 		we_html_multiIconBox::getHTML('template_variant', $parts, 30);

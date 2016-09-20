@@ -89,13 +89,12 @@ abstract class we_captcha_captcha{
 		$db = $GLOBALS['DB_WE'];
 		self::cleanup($db);
 //FIMXE: make IP bin save
-		$db->query('REPLACE INTO ' . CAPTCHA_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'IP' => inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR']),
+		$db->query('REPLACE INTO ' . CAPTCHA_TABLE . ' SET ' . we_database_base::arraySetter(['IP' => inet_pton(strstr($_SERVER['REMOTE_ADDR'], ':') ? $_SERVER['REMOTE_ADDR'] : '::ffff:' . $_SERVER['REMOTE_ADDR']),
 				'agent' => empty($_SERVER['HTTP_USER_AGENT']) ? '' : sql_function('x\'' . md5($_SERVER['HTTP_USER_AGENT']) . '\''),
 				'typ' => $type,
 				'code' => $captcha,
 				'valid' => sql_function('NOW()+INTERVAL ' . $validity . ' SECOND'),
-		)));
+		]));
 	}
 
 }

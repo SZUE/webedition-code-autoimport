@@ -155,7 +155,7 @@ class we_listview_search extends we_listview_base{
 		}
 
 		$bedingung_sql = '(' . implode(' AND ', $bAND) . ')';
-		$ranking = '(ROUND(MATCH(i.Text) AGAINST("' . str_replace(array('+', '-'), '', $this->search) . '"),3))';
+		$ranking = '(ROUND(MATCH(i.Text) AGAINST("' . str_replace(['+', '-'], '', $this->search) . '"),3))';
 		$ws_where = '';
 		if($this->workspaceID){
 			$ids = array_filter(explode(',', $this->workspaceID));

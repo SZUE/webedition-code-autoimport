@@ -193,7 +193,7 @@ abstract class we_html_forms{
 		$height = is_numeric($height) ? max($height ? : intval($rows) * 8, we_wysiwyg_editor::MIN_HEIGHT_INLINE) : $height;
 
 		if($wysiwyg){
-			$commands = ($showmenues ? $commands : str_replace(array('formatblock,', 'fontname,', 'fontsize,',), '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())));
+			$commands = ($showmenues ? $commands : str_replace(['formatblock,', 'fontname,', 'fontsize,',], '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())));
 			$commands = ($hidestylemenu ? str_replace('applystyle,', '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())) : $commands);
 			$out = we_wysiwyg_editor::getHeaderHTML(!$inwebedition, $isFrontendEdit);
 			$lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
@@ -210,15 +210,15 @@ abstract class we_html_forms{
 			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
 
 			if(stripos($name, "we_ui") === false){//we are in backend
-				$hiddenTextareaContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), we_wysiwyg_editor::parseInternalImageSrc($value));
-				$previewDivContent = str_replace(array("##|r##", "##|n##"), array("\r", "\n"), (
+				$hiddenTextareaContent = str_replace(we_wysiwyg_editor::parseInternalImageSrc($value),["##|r##"=>"\r", "##|n##"=>"\n"]);
+				$previewDivContent = str_replace((
 					isset($GLOBALS['we_doc']) && !($GLOBALS['we_doc'] instanceof we_objectFile) && !($GLOBALS['we_doc'] instanceof we_object) ?
 						we_wysiwyg_editor::parseInternalImageSrc($GLOBALS['we_doc']->getField($attribs)) :
 						we_document::parseInternalLinks($value, 0)
-					)
+					),  ["##|r##"=>"\r", "##|n##"=>"\n"]
 				);
 			} else {//we are in frontend
-				$previewDivContent = $hiddenTextareaContent = strtr(we_document::parseInternalLinks($value, 0), array('##|r##' => "\r", '##|n##' => "\n"));
+				$previewDivContent = $hiddenTextareaContent = strtr(we_document::parseInternalLinks($value, 0), ['##|r##' => "\r", '##|n##' => "\n"]);
 			}
 
 			$fieldName = preg_match('|^.+\[.+\]$|i', $name) ? preg_replace('/^.+\[(.+)\]$/', '${1}', $name) : '';

@@ -99,7 +99,7 @@ class we_import_files{
 
 	function _getJS($fileinput){
 		return we_html_element::jsElement('
-var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(array("\n", "\r"), " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
+var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action="' . WEBEDITION_DIR . 'we_cmd.php" enctype="multipart/form-data" target="imgimportbuttons">' . str_replace(["\n", "\r"], " ", $this->_getHiddens("buttons", $this->step + 1) . $fileinput) . '</form>\';
 ') .
 			we_html_element::jsScript(JS_DIR . 'import_files.js');
 	}

@@ -23,12 +23,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_shop_vat{
-
 	var $id;
 	var $text;
 	var $vat;
 	var $standard;
-
 	//TODO: make getters and set private
 	public $territory;
 	public $country;
@@ -37,7 +35,6 @@ class we_shop_vat{
 	public $categories;
 	public $textTerritory;
 	public $textTerritorySortable;
-
 	private static $predefinedNames = array(
 		'exempt',
 		'zero',
@@ -58,9 +55,8 @@ class we_shop_vat{
 
 		$this->country = substr($territory, 0, 2);
 		$this->province = (strlen($territory) > 2 ? substr($territory, 3) : '');
-		$this->textTerritory = $textProvince ?: we_base_country::getTranslation($this->country, we_base_country::TERRITORY, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
-		$this->textTerritorySortable = str_replace(array('Ä', 'Ö', 'Ü', 'ä', 'ö', 'ü'), array('Ae', 'Oe', 'Ue', 'ae', 'oe', 'ue'), $this->textTerritory);
-
+		$this->textTerritory = $textProvince ? : we_base_country::getTranslation($this->country, we_base_country::TERRITORY, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()));
+		$this->textTerritorySortable = strtr($this->textTerritory, ['Ä' => 'Ae', 'Ö' => 'Oe', 'Ü' => 'Ue', 'ä' => 'ae', 'ö' => 'oe', 'ü' => 'ue']);
 	}
 
 	public function getNaturalizedText(){
@@ -100,7 +96,7 @@ class we_shop_vat{
 
 	public function save(){
 		$this->territory = $this->province ? $this->country . '-' . $this->province : $this->country;
-		$this->textProvince = $this->textProvince ?: '';
+		$this->textProvince = $this->textProvince ? : '';
 
 		$set = we_database_base::arraySetter(array(
 				'text' => $this->text,

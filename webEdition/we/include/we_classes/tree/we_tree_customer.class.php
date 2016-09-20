@@ -36,7 +36,7 @@ class we_tree_customer extends we_tree_base{
 			'Thursday' => 4,
 			'Friday' => 5,
 			'Saturday' => 6
-			];
+		];
 
 		$months = ['January' => 0,
 			'February' => 1,
@@ -50,7 +50,7 @@ class we_tree_customer extends we_tree_base{
 			'October' => 9,
 			'November' => 10,
 			'December' => 11
-			];
+		];
 
 		$js = (!$rootID ?
 				'top.content.treeData.clear();' .
@@ -96,17 +96,17 @@ top.content.treeData.add(new top.content.node(attribs));' .
 		$prevoffset = max(0, $offset - $segment);
 		$items = ($offset && $segment ?
 				[["id" => "prev_" . $ParentID,
-					"parentid" => $ParentID,
-					"text" => "display (" . $prevoffset . "-" . $offset . ")",
-					"contenttype" => "arrowup",
-					"table" => CUSTOMER_TABLE,
-					"typ" => "threedots",
-					"open" => 0,
-					"published" => 1,
-					"disabled" => 0,
-					"tooltip" => "",
-					"offset" => $prevoffset
-					]] : []);
+				"parentid" => $ParentID,
+				"text" => "display (" . $prevoffset . "-" . $offset . ")",
+				"contenttype" => "arrowup",
+				"table" => CUSTOMER_TABLE,
+				"typ" => "threedots",
+				"open" => 0,
+				"published" => 1,
+				"disabled" => 0,
+				"tooltip" => "",
+				"offset" => $prevoffset
+				]] : []);
 
 
 		$settings = new we_customer_settings();
@@ -131,7 +131,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 			);
 
 			$tt = $db->f('treeFormat');
-			$fileds = array_change_key_case($db->Record,CASE_LOWER);
+			$fileds = array_change_key_case($db->Record, CASE_LOWER);
 
 			$fileds["text"] = oldHtmlspecialchars($tt);
 			$items[] = array_merge($fileds, $typ);
@@ -164,7 +164,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 
 		$notroot = (preg_match('|\{.\}|', $pid)) ? true : false;
 
-		$pid = str_replace(array('{', '}', '*****quot*****'), array('', '', "\\\\\'"), $pid);
+		$pid = strtr($pid, ['{' => '', '}' => '', '*****quot*****' => "\\\\\'"]);
 
 		if($pid || $notroot){
 			$pidarr = explode("-|-", $pid);

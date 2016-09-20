@@ -857,7 +857,7 @@ class we_document extends we_root{
 					unset($img->elements['height']);
 				}
 				if($attribs){
-					$img->initByAttribs(removeAttribs($attribs, array('hyperlink', 'target')));
+					$img->initByAttribs(removeAttribs($attribs, ['hyperlink', 'target']));
 				}
 				if(isset($GLOBALS['lv'])){
 					if(isset($GLOBALS['lv']->count)){

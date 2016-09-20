@@ -280,19 +280,17 @@ class we_collection extends we_root{
 		$classTable->setCol(0, 0, null, $classListFrom);
 		//FIXME: why a tags, if onclick is used????
 
-		$classTable->setCol(0, 1, array('style' => 'text-align:center;vertical-align:middle'
-			), we_html_element::htmlA(array(
-				"href" => "#",
+		$classTable->setCol(0, 1, ['style' => 'text-align:center;vertical-align:middle'
+			], we_html_element::htmlA(["href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('classListFrom'),document.getElementById('classListTo'),true, 'object');return false;"
-				), '<i class="fa fa-lg fa-caret-right"></i>') . we_html_element::htmlBr() . we_html_element::htmlBr() .
-			we_html_element::htmlA(array(
-				"href" => "#",
+				], '<i class="fa fa-lg fa-caret-right"></i>') . we_html_element::htmlBr() . we_html_element::htmlBr() .
+			we_html_element::htmlA(["href" => "#",
 				"onclick" => "wePropertiesEdit.moveSelectedOptions(document.getElementById('classListTo'),document.getElementById('classListFrom'),true, 'object');return false;"
-				), '<i class="fa fa-lg fa-caret-left"></i>'));
+				], '<i class="fa fa-lg fa-caret-left"></i>'));
 		$classTable->setCol(0, 2, null, $classListTo);
 
-		$selRemTable = ($fixedRemTable && $this->getRemTable() ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->getRemTable()) . we_html_element::htmlInput(array('disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->getRemTable()], 'width' => 356)) :
-				we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->getRemTable(), false, array('onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'margin-top: 5px;'), 'value')) .
+		$selRemTable = ($fixedRemTable && $this->getRemTable() ? we_html_element::htmlHidden('we_' . $this->Name . '_remTable', $this->getRemTable()) . we_html_element::htmlInput(['disabled' => 1, 'name' => 'disabledField', 'value' => $valsRemTable[$this->getRemTable()], 'width' => 356]) :
+				we_html_tools::htmlSelect('we_' . $this->Name . '_remTable', $valsRemTable, 1, $this->getRemTable(), false, ['onchange' => 'document.getElementById(\'mimetype\').style.display=(this.value===\'tblFile\'?\'block\':\'none\');document.getElementById(\'classname\').style.display=(this.value===\'tblFile\'?\'none\':\'block\');', 'style' => 'margin-top: 5px;'], 'value')) .
 			we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[collection][selector_remTable]'), we_html_tools::TYPE_HELP, false);
 
 
@@ -315,7 +313,7 @@ class we_collection extends we_root{
 				$classTable->getHTML() : '') .
 			'</div>
 </div>' .
-			we_html_element::htmlDiv(array('class' => 'collection_props-dublettes'), $dublettes) .
+			we_html_element::htmlDiv(['class' => 'collection_props-dublettes'], $dublettes) .
 			we_html_element::htmlDiv([], $defDir);
 
 		return $html;
@@ -356,7 +354,7 @@ class we_collection extends we_root{
 		foreach($items as $item){
 			//FIXME: set icon in getValidCollection() and make only what's really needed
 			if(is_numeric($item['id']) && $item['id'] !== -1 && $item['ct'] === 'image/*'){
-				$file = array('docID' => $item['id'], 'Path' => $item['path'], 'ContentType' => isset($item['ct']) ? $item['ct'] : 'text/*', 'Extension' => $item['ext']);
+				$file = ['docID' => $item['id'], 'Path' => $item['path'], 'ContentType' => isset($item['ct']) ? $item['ct'] : 'text/*', 'Extension' => $item['ext']];
 				$file['size'] = file_exists($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) ? filesize($_SERVER['DOCUMENT_ROOT'] . $file["Path"]) : 0;
 				$file['fileSize'] = we_base_file::getHumanFileSize($file['size']);
 				// FIXME: look for biggest icon size in grid view dynamically
@@ -569,62 +567,56 @@ weCollectionEdit.storage['item_-1'] = " . json_encode($this->getEmptyItem()) . "
 
 	private function makeGridItem($item, $index){ // TODO: maybe write only blank item and let JS render items oninit from storage?
 		$idname = 'collectionItem_we_id_' . $index;
-/*
-		//$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
-		$wecmd1 = "WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form.elements['" . $idname . "'].value";
-		$wecmd2 = "";
-		//$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{var ce = opener._EditorFrame.getContentEditor();ce.weCollectionEdit.callForValidItemsAndInsert(ce.weCollectionEdit.getItemId(ce.document.we_form.elements['collectionItem_we_id_" . $index . "']), top.fileSelect.data.currentID);} catch(e){}";
-		$wecmd3 = "try{var ce = top.opener.WE().layout.weEditorFrameController.getVisibleEditorFrame();ce.weCollectionEdit.callForValidItemsAndInsert(ce.weCollectionEdit.getItemId(ce.document.we_form.elements['collectionItem_we_id_" . $index . "']), top.fileSelect.data.currentID);} catch(e){}";
+		/*
+		  //$wecmd1 = "document.we_form.elements['" . $idname . "'].value";
+		  $wecmd1 = "WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form.elements['" . $idname . "'].value";
+		  $wecmd2 = "";
+		  //$wecmd3 = "opener._EditorFrame.setEditorIsHot(true);try{var ce = opener._EditorFrame.getContentEditor();ce.weCollectionEdit.callForValidItemsAndInsert(ce.weCollectionEdit.getItemId(ce.document.we_form.elements['collectionItem_we_id_" . $index . "']), top.fileSelect.data.currentID);} catch(e){}";
+		  $wecmd3 = "try{var ce = top.opener.WE().layout.weEditorFrameController.getVisibleEditorFrame();ce.weCollectionEdit.callForValidItemsAndInsert(ce.weCollectionEdit.getItemId(ce.document.we_form.elements['collectionItem_we_id_" . $index . "']), top.fileSelect.data.currentID);} catch(e){}";
 
-		switch($item['id']){
-			case '##ID##':
-				$this->jsFormCollection .= "\n" . 'weCollectionEdit.gridBtnCmds = ["' . $wecmd1 . '","' . $wecmd2 . '","' . $wecmd3 . '"];';
-				$wecmdenc1 = '##CMD1##';
-				$wecmdenc2 = '';
-				$wecmdenc3 = '##CMD3##';
-				break;
-			case -1:
-				$wecmdenc1 = we_base_request::encCmd($wecmd1);
-				$wecmdenc2 = '';
-				$wecmdenc3 = we_base_request::encCmd($wecmd3);
-				break;
-			default:
-				$wecmdenc1 = $wecmdenc2 = $wecmdenc3 = '';
-		}
-*/
+		  switch($item['id']){
+		  case '##ID##':
+		  $this->jsFormCollection .= "\n" . 'weCollectionEdit.gridBtnCmds = ["' . $wecmd1 . '","' . $wecmd2 . '","' . $wecmd3 . '"];';
+		  $wecmdenc1 = '##CMD1##';
+		  $wecmdenc2 = '';
+		  $wecmdenc3 = '##CMD3##';
+		  break;
+		  case -1:
+		  $wecmdenc1 = we_base_request::encCmd($wecmd1);
+		  $wecmdenc2 = '';
+		  $wecmdenc3 = we_base_request::encCmd($wecmd3);
+		  break;
+		  default:
+		  $wecmdenc1 = $wecmdenc2 = $wecmdenc3 = '';
+		  }
+		 */
 //				$this->jsFormCollection .= "\n" . 'weCollectionEdit.gridBtnCmds = ["' . $wecmd1 . '","' . $wecmd2 . '","' . $wecmd3 . '"];';
-				$wecmdenc1 = '##CMD1##';
-				$wecmdenc2 = '';
-				$wecmdenc3 = '##CMD3##';
+		$wecmdenc1 = '##CMD1##';
+		$wecmdenc2 = '';
+		$wecmdenc3 = '##CMD3##';
 
 		$trashButton = we_html_button::create_button('fa:btn_remove_from_collection,fa-lg fa-trash-o', "javascript:weCollectionEdit.doClickDelete(this);", true, 27, 22);
 		$editButton = we_html_button::create_button(we_html_button::EDIT, "javascript:weCollectionEdit.doClickOpenToEdit(" . $item['id'] . ", '" . $item['type'] . "');", true, 27, 22);
 		$selectButton = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',(document.we_form.elements['" . $idname . "'].value != -1 ? document.we_form.elements['" . $idname . "'].value : " . $item['defaultDir'] . "),'" . $item['remTable'] . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','" . $wecmdenc3 . "','','','" . $item['remCT'] . "',1)", true, 52, 0, '', '', false, false, '_' . $index);
 
 		// TODO: make fn for attribs: same structure as in list
-		$toolbar = we_html_element::htmlDiv(array('class' => 'toolbarLeft weMultiIconBoxHeadline'), '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>') .
-			we_html_element::htmlDiv(array(
-				'class' => 'toolbarAttribs',
+		$toolbar = we_html_element::htmlDiv(['class' => 'toolbarLeft weMultiIconBoxHeadline'], '<span class="grid_label" id="label_' . $index . '">' . $index . '</span>') .
+			we_html_element::htmlDiv(['class' => 'toolbarAttribs',
 				'style' => 'display: block'
-				), we_html_element::htmlDiv(array(
-					'class' => 'toolbarAttr',
+				], we_html_element::htmlDiv(['class' => 'toolbarAttr',
 					'title' => $item['elements']['attrib_title']['Dat']
-					), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i>') .
-				we_html_element::htmlDiv(array(
-					'class' => 'toolbarAttr',
+					], '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_title']['state'] . '"></i>') .
+				we_html_element::htmlDiv(['class' => 'toolbarAttr',
 					'title' => $item['elements']['attrib_alt']['Dat'],
-					), '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>') .
-				we_html_element::htmlDiv(array(
-					'class' => 'toolbarAttr',
+					], '<i class="fa fa-lg fa-circle ' . $item['elements']['attrib_alt']['state'] . '"></i>') .
+				we_html_element::htmlDiv(['class' => 'toolbarAttr',
 					'title' => $item['elements']['meta_title']['Dat'],
-					), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i>') .
-				we_html_element::htmlDiv(array(
-					'class' => 'toolbarAttr',
+					], '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_title']['state'] . '"></i>') .
+				we_html_element::htmlDiv(['class' => 'toolbarAttr',
 					'title' => $item['elements']['meta_description']['Dat']
-					), '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i>')
-			) . we_html_element::htmlDiv(array(
-				'class' => 'toolbarBtns',
-				), $editButton . $trashButton);
+					], '<i class="fa fa-lg fa-dot-circle-o ' . $item['elements']['meta_description']['state'] . '"></i>')
+			) . we_html_element::htmlDiv(['class' => 'toolbarBtns',
+				], $editButton . $trashButton);
 		//);
 
 		$displayBtnEdit = $item['id'] === -1 ? 'block' : ($item['id'] === '##ID##' ? '##SHOWBTN##' : 'none');

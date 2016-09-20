@@ -74,7 +74,7 @@ abstract class we_listview_base{
 
 		$this->name = $name;
 		//? strange setting - comes from we_tag_search
-		$this->search = trim(str_replace(array('"', '\\"'), '', (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name)) ? -1 : $val));
+		$this->search = trim(str_replace(['"', '\\"'], '', (!($val = we_base_request::_(we_base_request::STRING, 'we_lv_search_' . $this->name, '')) && we_base_request::_(we_base_request::BOOL, 'we_from_search_' . $this->name)) ? -1 : $val));
 		$this->DB_WE = new DB_WE();
 		$this->rows = $rows;
 		$this->maxItemsPerPage = $cols ? ($rows * $cols) : $rows;

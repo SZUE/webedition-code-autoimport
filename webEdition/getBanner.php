@@ -52,7 +52,7 @@ if($type && $type != 'pixel'){
 }
 switch($type){
 	case 'js':
-		$jsarr = explode("\n", str_replace(["\r", "'"], ["\n", "\\'"], $code));
+		$jsarr = explode("\n", strtr($code, ["\r" => "\n", "'" => "\\'"]));
 		header("Content-type: application/x-javascript");
 
 		foreach($jsarr as $line){

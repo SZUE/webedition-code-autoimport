@@ -152,7 +152,7 @@ class we_fileupload_resp_base extends we_fileupload{
 			return $this->response;
 		}
 
-		if(!copy($_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'], $_SERVER['DOCUMENT_ROOT'] . str_replace(array('\\', '//'), '/', $this->fileVars['fileDef']))){
+		if(!copy($_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'], $_SERVER['DOCUMENT_ROOT'] . str_replace(['\\', '//'], '/', $this->fileVars['fileDef']))){
 			return $this->response = array_merge($this->response, array('status' => 'failure', 'message' => 'error_copy_file', 'completed' => 1));
 		}
 
@@ -213,7 +213,7 @@ class we_fileupload_resp_base extends we_fileupload{
 	}
 
 	protected function makeFileTemp(){
-		return $this->fileVars['genericFileNameTemp'] ? str_replace(array(self::REPLACE_BY_UNIQUEID, self::REPLACE_BY_FILENAME), array(we_base_file::getUniqueId(), $this->fileVars['weFileName']), $this->fileVars['genericFileNameTemp']) : TEMP_DIR . we_base_file::getUniqueId();
+		return $this->fileVars['genericFileNameTemp'] ? strtr($this->fileVars['genericFileNameTemp'], [self::REPLACE_BY_UNIQUEID => we_base_file::getUniqueId(), self::REPLACE_BY_FILENAME => $this->fileVars['weFileName']]) : TEMP_DIR . we_base_file::getUniqueId();
 	}
 
 	private function checkFileType($mime = '', $fileName = '', $mode = ''){
