@@ -431,7 +431,7 @@ function we_save() {
 
 		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $width));
 
-		$select = we_html_tools::htmlSelect($name, $options, 1, "", false, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), 'value', $width);
+		$select = we_html_tools::htmlSelect($name . '_sel', $options, 1, "", false, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), 'value', $width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
@@ -465,7 +465,7 @@ function we_save() {
 
 		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $width));
 
-		$select = we_html_tools::htmlSelect($name, $options, $size, "", $multiple, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), $compare, $width);
+		$select = we_html_tools::htmlSelect($name . '_sel', $options, $size, "", $multiple, array("onchange" => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), $compare, $width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
