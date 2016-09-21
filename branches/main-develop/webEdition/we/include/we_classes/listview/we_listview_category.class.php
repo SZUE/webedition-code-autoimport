@@ -62,17 +62,11 @@ class we_listview_category extends we_listview_base{
 
 		$this->hidedirindex = $hidedirindex;
 
-		if($this->catID){
-			$cids = explode(",", $this->catID);
-			$tail = "";
-			foreach($cids as $cid){
-				$tail .= 'ID=' . intval($cid) . ' OR ';
-			}
-			$tail = preg_replace('/^(.+) OR /', '${1}', $tail);
-			$tail = '(' . $tail . ')';
-		} else {
-			$tail = ' ParentID=' . intval($this->parentID) . ' ';
-		}
+		$tail = ($this->catID ?
+			'ID IN(' . implode(',', array_map('intval', explode(",", $this->catID))) . ')' :
+			'ParentID=' . intval($this->parentID)
+			);
+
 
 		$this->anz_all = f('SELECT COUNT(1) FROM ' . CATEGORY_TABLE . ' WHERE ' . $tail, '', $this->DB_WE);
 
