@@ -113,7 +113,6 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-
 	static function create_button($name, $href, $unused3 = 0, $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, array $dimensions = []){
 		$cmd = '';
 
@@ -148,30 +147,30 @@ abstract class we_html_button{
 				$fas = explode(',', $names);
 				$value = '<span class="fa-stack">';
 				foreach($fas as $cnt => $fa){
-					$value.='<i class="fa ' . ($cnt == 0 ? 'fa-stack-2x ' : 'fa-stack-1x ') . $fa . '"></i>';
+					$value .= '<i class="fa ' . ($cnt == 0 ? 'fa-stack-2x ' : 'fa-stack-1x ') . $fa . '"></i>';
 				}
-				$value.='</span>';
-				$class.=' weIconButton';
+				$value .= '</span>';
+				$class .= ' weIconButton';
 				break;
 			case self::WE_FATEXT_BUTTON_IDENTIFY:
-				$class.=' weIconTextButton';
+				$class .= ' weIconTextButton';
 			case self::WE_FA_BUTTON_IDENTIFY:
 				//get name for title
 				list($name, $names) = explode(',', $names, 2);
 				$fas = explode(',', $names);
 				if(count($fas) > 1){
-					$class.=' multiicon';
+					$class .= ' multiicon';
 				}
 				$value = '';
 				foreach($fas as $cnt => $fa){
-					$value.='<i class="fa ' . ($cnt > 0 ? 'fa-moreicon ' : 'fa-firsticon ') . $fa . '"></i>';
+					$value .= '<i class="fa ' . ($cnt > 0 ? 'fa-moreicon ' : 'fa-firsticon ') . $fa . '"></i>';
 				}
 				if($type == self::WE_FA_BUTTON_IDENTIFY){
-					$class.=' weIconButton';
+					$class .= ' weIconButton';
 					break;
 				}
 				//add text, no break;
-				$value.=' ';
+				$value .= ' ';
 			default:
 				$text = $notTranslate ? $name : g_l('button', '[' . $name . '][value]') . ($opensDialog ? '&hellip;' : '');
 				$value = ($name == 'next' ? $text . ' ' . $value : $value . $text);
@@ -189,19 +188,19 @@ abstract class we_html_button{
 				break;
 			default:
 				// Check if the link has to be opened in a different frame or in a new window
-				$cmd = $on_click . /*($target ? // The link will be opened in a different frame or in a new window
-						// Check if the link has to be opend in a frame or a window
-						($target === '_blank' ? // The link will be opened in a new window
-							"new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
-							// The link will be opened in a different frame
-							"target_frame = eval('parent.' + " . $target . ");" .
-							"target_frame.location.href='" . $href . "';") :
-						// The link will be opened in the current frame or window
-				 */
-						"window.location.href='" . $href . "';";/*);*/
+				$cmd = $on_click . /* ($target ? // The link will be opened in a different frame or in a new window
+					  // Check if the link has to be opend in a frame or a window
+					  ($target === '_blank' ? // The link will be opened in a new window
+					  "new (WE().util.jsWindow)(window, '" . $href . "','" . $target . "', -1, -1, 500, 550, true, true, true);" :
+					  // The link will be opened in a different frame
+					  "target_frame = eval('parent.' + " . $target . ");" .
+					  "target_frame.location.href='" . $href . "';") :
+					  // The link will be opened in the current frame or window
+					 */
+					($href ? "window.location.href='" . $href . "';" : ''); /* ); */
 		}
 
-		return self::getButton($value, ($id? : ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($title ? : (g_l('button', '[' . $name . '][alt]', true) ? : '')), $disabled, $hrefData[0] === self::WE_FORM, $class, $dimensions);
+		return self::getButton($value, ($id ?: ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($title ?: (g_l('button', '[' . $name . '][alt]', true) ?: '')), $disabled, $hrefData[0] === self::WE_FORM, $class, $dimensions);
 	}
 
 	static function formatButtons($buttons){
@@ -244,8 +243,8 @@ abstract class we_html_button{
 		//	Create button array
 		//	button order depends on OS
 		$buttons = (we_base_browserDetect::isMAC() ?
-				$no_button . $cancel_button . $yes_button :
-				$yes_button . $no_button . $cancel_button);
+			$no_button . $cancel_button . $yes_button :
+			$yes_button . $no_button . $cancel_button);
 
 		return we_html_element::htmlDiv($attr, $buttons);
 	}
