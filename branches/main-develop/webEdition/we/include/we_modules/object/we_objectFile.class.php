@@ -278,14 +278,12 @@ class we_objectFile extends we_document{
 		$otmplsCSVArray = makeArrayFromCSV(isset($foo['Templates']) ? $foo['Templates'] : '');
 		$this->Workspaces = [];
 		$this->Templates = [];
-		$processedWs = [];
 
 // loop throgh all default workspaces
 		foreach($defwsCSVArray as $i => $defWs){
 // loop through each object workspace
 			foreach($owsCSVArray as $ows){
-				if((!in_array($defWs, $processedWs)) && we_users_util::in_workspace($defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
-					$processedWs[] = $defWs;
+				if(we_users_util::in_workspace($defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
 					$this->Workspaces[] = $defWs;
 					$this->Templates[] = $otmplsCSVArray[$i];
 				}
