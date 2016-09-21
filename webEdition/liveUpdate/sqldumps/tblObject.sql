@@ -39,9 +39,9 @@ CREATE TABLE ###TBLPREFIX###tblObject (
   DefaultUrlfield3 varchar(255) NOT NULL DEFAULT '_',
   DefaultTriggerID int unsigned NOT NULL default '0',
   ClassName enum('we_object') NOT NULL default 'we_object',
-  Workspaces varchar(1000) NOT NULL default '',
-  DefaultWorkspaces varchar(1000) NOT NULL default '',
-  Templates varchar(255) NOT NULL default '',
+  Workspaces text NOT NULL,
+  DefaultWorkspaces text NOT NULL,
+  Templates text NOT NULL,
   PRIMARY KEY (ID),
   UNIQUE KEY Path (Path)
 ) ENGINE=MyISAM;
