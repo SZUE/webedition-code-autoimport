@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_export(args, url) {
+we_cmd_modules.export = function (args, url) {
 	switch (args[0]) {
 		case "export_edit":
 		case "export_edit_ifthere":
@@ -45,4 +45,4 @@ function we_cmd_export(args, url) {
 			return true;
 	}
 	return false;
-}
+};

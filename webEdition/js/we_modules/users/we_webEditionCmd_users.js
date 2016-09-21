@@ -23,7 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 
-function we_cmd_users(args, url) {
+we_cmd_modules.users = function (args, url) {
 	switch (args[0]) {
 		case "we_users_selector":
 			if (WE().util.hasPerm('NEW_USER') || WE().util.hasPerm('NEW_GROUP') || WE().util.hasPerm('SAVE_USER') || WE().util.hasPerm('SAVE_GROUP') || WE().util.hasPerm('DELETE_USER') || WE().util.hasPerm('DELETE_GROUP')) {
@@ -120,7 +120,7 @@ function we_cmd_users(args, url) {
 			return false;
 	}
 	return true;
-}
+};
 
 function showNewWindow(args) {
 	var wind = WE().util.jsWindow.prototype.find('edit_module');

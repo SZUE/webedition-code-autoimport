@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_navigation(args, url) {
+we_cmd_modules.navigation = function (args, url) {
 	switch (args[0]) {
 		case "navigation_edit":
 		case "navigation_edit_ifthere":
@@ -54,4 +54,4 @@ function we_cmd_navigation(args, url) {
 			return true;
 	}
 	return false;
-}
+};

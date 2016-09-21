@@ -21,10 +21,10 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_tool_toolfactory(args, url) {
+we_cmd_modules.tool_toolfactory = function (args, url) {
 	switch (args[0]) {
 		default:
 			return false;
 	}
 	return true;
-}
+};

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_banner(args, url) {
+we_cmd_modules.banner = function (args, url) {
 	switch (args[0]) {
 		case "edit_settings_banner":
 			we_cmd("banner_default");
@@ -54,4 +54,4 @@ function we_cmd_banner(args, url) {
 			return true;
 	}
 	return false;
-}
+};

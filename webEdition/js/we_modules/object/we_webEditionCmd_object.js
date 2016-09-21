@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_object(args, url) {
+we_cmd_modules.object = function (args, url) {
 	switch (args[0]) {
 		case "object_edit_ifthere":
 		case "edit_object":
@@ -82,7 +82,7 @@ function we_cmd_object(args, url) {
 			break;
 		case "object_add_workspace":
 		case "object_add_css":
-			if (Array.isArray(args[1])) {
+			if (typeof (args[1]) === "object") {
 				url += "&we_cmd[1]=" + args[1].allIDs.join(",");
 			}
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
@@ -132,4 +132,4 @@ function we_cmd_object(args, url) {
 			return false;
 	}
 	return true;
-}
+};

@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_customer(args, url) {
+we_cmd_modules.customer = function (args, url) {
 	switch (args[0]) {
 		case "edit_settings_customer":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings", "customer_settings", -1, -1, 520, 300, true, false, true);
@@ -58,4 +58,4 @@ function we_cmd_customer(args, url) {
 			return true;
 	}
 	return false;
-}
+};

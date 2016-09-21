@@ -135,14 +135,8 @@ abstract class we_tool_lookup{
 
 	static function getJsCmdInclude(array &$includes){
 		$tools = self::getAllTools(true, true);
-		$cmd = '';
-		//ob_start();
-		foreach($tools as $tool){
-			$cmd.='	 case "tool_' . $tool['name'] . '_edit":
- 			new (WE().util.jsWindow)(window,url,"tool_window",-1,-1,1048,760,true,true,true,true);
-		break;
-';
 
+		foreach($tools as $tool){
 			switch($tool['name']){
 				case 'weSearch':
 					$path = WE_INCLUDES_DIR . 'we_tools/';
@@ -155,16 +149,6 @@ abstract class we_tool_lookup{
 				$includes['tool_' . $tool['name']] = $path . '.js';
 			}
 		}
-
-		return 'function we_cmd_tools(args,url) {
-	switch (args[0]) {
-		' . $cmd . '
-		default:
-			return false;
-	}
-	return true;
-}
-';
 	}
 
 	static function getDefineInclude(){

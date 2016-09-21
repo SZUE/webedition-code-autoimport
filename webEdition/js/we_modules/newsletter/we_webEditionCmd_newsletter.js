@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_newsletter(args, url) {
+we_cmd_modules.newsletter = function (args, url) {
 	switch (args[0]) {
 		case "edit_settings_newsletter":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=newsletter&pnt=newsletter_settings", "newsletter_settings", -1, -1, 600, 750, true, false, true);
@@ -57,4 +57,4 @@ function we_cmd_newsletter(args, url) {
 			return true;
 	}
 	return false;
-}
+};
