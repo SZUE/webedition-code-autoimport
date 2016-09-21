@@ -313,7 +313,7 @@ abstract class we_database_base{
 
 			for($i = 0; $i < strlen($queryToCheck); $i++){
 				$char = $queryToCheck[$i];
-				$active=array_filter($quotes);
+				$active = array_filter($quotes);
 				$active = !empty($active);
 				switch($char){
 					case '/':
@@ -762,8 +762,8 @@ abstract class we_database_base{
 			$query = [];
 			foreach($table as $key => $value){
 				$query[] = (is_numeric($key) ?
-						$value . ' ' . $mode :
-						$key . ' ' . $value);
+					$value . ' ' . $mode :
+					$key . ' ' . $value);
 			}
 			$query = implode(',', $query);
 		} else {
@@ -771,7 +771,7 @@ abstract class we_database_base{
 		}
 //always lock Errlog-Table
 		if(strpos($query, ERROR_LOG_TABLE) === FALSE){
-			$query.=',' . ERROR_LOG_TABLE . ' write';
+			$query .= ',' . ERROR_LOG_TABLE . ' write';
 		}
 
 		return $this->_query('lock tables ' . $query);
@@ -818,7 +818,7 @@ abstract class we_database_base{
 	 * @return boolean true if exists
 	 */
 	public function isColExist($tab, $col){
-		if(!$tab || !$col){
+		if(!$tab || !$col || !$this->isTabExist($tab)){
 			return false;
 		}
 		$col = trim($col, '`');
@@ -934,7 +934,7 @@ abstract class we_database_base{
 	}
 
 	public function getPrimaryKeys($tab, array $create = []){
-		$zw = $create ? : $this->getTableCreateArray($tab);
+		$zw = $create ?: $this->getTableCreateArray($tab);
 		if(!$zw){
 			return false;
 		}
@@ -1079,12 +1079,12 @@ abstract class we_database_base{
 		$this->repool();
 		if($html){
 			foreach($data as $key => $val){
-				$ret.='<tr><td>' . $key . ':</td><td>' . $val . '</td></tr>';
+				$ret .= '<tr><td>' . $key . ':</td><td>' . $val . '</td></tr>';
 			}
 			$ret = '<table class="defaultfont">' . $ret . '</table>';
 		} else {
 			foreach($data as $key => $val){
-				$ret.=$key . ': ' . $val . "\n";
+				$ret .= $key . ': ' . $val . "\n";
 			}
 		}
 		return $ret;
@@ -1106,7 +1106,7 @@ abstract class we_database_base{
 	 */
 	public static function getMysqlVer(/* $nodots = true */){
 		$DB_WE = new DB_WE();
-		list($res) = explode('-', f('SELECT VERSION()', '', $DB_WE)? : f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE));
+		list($res) = explode('-', f('SELECT VERSION()', '', $DB_WE) ?: f('SHOW VARIABLES LIKE "version"', 'Value', $DB_WE));
 		return $res;
 	}
 

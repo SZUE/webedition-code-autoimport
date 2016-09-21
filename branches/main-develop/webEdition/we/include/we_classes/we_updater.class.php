@@ -500,37 +500,50 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 	}
 
-	public static function updateShop2($pos = 0){
-		$db = new DB_WE();
-		$db->query('TRUNCATE TABLE ' . SHOP_ORDER_DATES_TABLE);
-		$db->query('TRUNCATE TABLE ' . SHOP_ORDER_DOCUMENT_TABLE);
-		$db->query('TRUNCATE TABLE ' . SHOP_ORDER_ITEM_TABLE);
-		$db->query('TRUNCATE TABLE ' . SHOP_ORDER_TABLE);
-		if($pos == 0){
-			//make sure we have at least the last Order in the new table
-			$max = f('SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE);
-			if(!$max){
-				//no shop used
-				return false;
-			}
-			$db->query('INSERT IGNORE INTO ' . SHOP_ORDER_TABLE . ' SET ID=' . $max);
+	private static function updateShop2(we_database_base $db, $pos = 0){
+		if(!$db->isTabExist(SHOP_TABLE)){
+			return;
 		}
+		$db = new DB_WE();
 		$db2 = $GLOBALS['DB_WE'];
+		$max = f('SELECT COUNT(DISTINCT IntOrderID) FROM ' . SHOP_TABLE);
+		$maxStep = 150;
+
+		if($pos > $max){//finished
+			$db->delTable(SHOP_TABLE . '_old');
+			$db->query('RENAME TABLE ' . SHOP_TABLE . ' TO ' . SHOP_TABLE . '_old');
+			return false;
+		}
+		if($pos == 0){
+			//clean new tables
+			$db->query('TRUNCATE TABLE ' . SHOP_ORDER_DATES_TABLE);
+			$db->query('TRUNCATE TABLE ' . SHOP_ORDER_DOCUMENT_TABLE);
+			$db->query('TRUNCATE TABLE ' . SHOP_ORDER_ITEM_TABLE);
+			$db->query('TRUNCATE TABLE ' . SHOP_ORDER_TABLE);
+			//make sure we have at least the last Order in the new table
+
+			$db->query('INSERT IGNORE INTO ' . SHOP_ORDER_TABLE . ' SET ID=(SELECT MAX(IntOrderID) FROM ' . SHOP_TABLE . ')');
+		}
 		//prefill as much as possible
 
-		$db->query('REPLACE INTO ' . SHOP_ORDER_TABLE . ' (ID,shopname,customerID,DateOrder,DateConfirmation,DateShipping,DatePayment,DateCancellation,DateFinished) (SELECT IntOrderID,shopname,IntCustomerID,DateOrder,DateConfirmation,DateShipping,DatePayment,DateCancellation,DateFinished FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID)');
+		$ids = implode(',', $db->getAllq('SELECT IntOrderID FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID LIMIT ' . $pos . ',' . $maxStep, true));
+
+		$db->query('REPLACE INTO ' . SHOP_ORDER_TABLE . ' (ID,shopname,customerID,DateOrder,DateConfirmation,DateShipping,DatePayment,DateCancellation,DateFinished) (SELECT IntOrderID,shopname,IntCustomerID,DateOrder,DateConfirmation,DateShipping,DatePayment,DateCancellation,DateFinished FROM ' . SHOP_TABLE . ' WHERE IntOrderID IN(' . $ids . ') GROUP BY IntOrderID)');
 
 		//fill in dates
 		foreach(['MailConfirmation', 'MailShipping', 'MailPayment', 'MailCancellation', 'MailFinished',
 		'DateCustomA', 'DateCustomB', 'DateCustomC', 'DateCustomD', 'DateCustomE', 'DateCustomF', 'DateCustomG', 'DateCustomH', 'DateCustomI', 'DateCustomJ',
 		'MailCustomA', 'MailCustomB', 'MailCustomC', 'MailCustomD', 'MailCustomE', 'MailCustomF', 'MailCustomG', 'MailCustomH', 'MailCustomI', 'MailCustomJ'] as $date){
-			$db->query('REPLACE INTO ' . SHOP_ORDER_DATES_TABLE . ' (ID,type,date) (SELECT IntOrderID,"' . $date . '",' . $date . ' FROM ' . SHOP_TABLE . ' WHERE ' . $date . ' IS NOT NULL GROUP BY IntOrderID)');
+			$db->query('REPLACE INTO ' . SHOP_ORDER_DATES_TABLE . ' (ID,type,date) (SELECT IntOrderID,"' . $date . '",' . $date . ' FROM ' . SHOP_TABLE . ' WHERE ' . $date . ' IS NOT NULL AND IntOrderID IN(' . $ids . ') GROUP BY IntOrderID)');
 		}
 
 		//fill the rest of the order itself
-		$db->query('SELECT IntOrderID,strSerialOrder FROM ' . SHOP_TABLE . ' GROUP BY IntOrderID');
+		$db->query('SELECT IntOrderID,strSerialOrder FROM ' . SHOP_TABLE . ' WHERE IntOrderID IN(' . $ids . ') GROUP BY IntOrderID');
+
 		while($db->next_record(MYSQL_ASSOC)){
+			$ids[] = $db->f('IntOrderID');
 			$dat = we_unserialize($db->f('strSerialOrder'));
+
 			$customer = $dat['we_shopCustomer'];
 			unset($customer['Password'], $customer['_Password'], $customer['ID'], $customer['Username'], $customer['LoginDenied'], $customer['MemberSince'], $customer['LastLogin'], $customer['LastAccess'], $customer['AutoLoginDenied'], $customer['AutoLogin'], $customer['ModifyDate'], $customer['ModifiedBy'], $customer['Path'], $customer['Newsletter_Ok'], $customer['registered'], $customer['AutoLoginID']
 			);
@@ -547,12 +560,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 
 		//fill in order items
-		$db->query('SELECT IntOrderID,Price,IntQuantity,strSerial FROM ' . SHOP_TABLE);
+		$db->query('SELECT IntOrderID,Price,IntQuantity,strSerial FROM ' . SHOP_TABLE . ' WHERE IntOrderID IN (' . implode(',', $ids) . ')');
 		while($db->next_record(MYSQL_ASSOC)){
-			$tmp = @unserialize($db->f('strSerial'));
-			if(empty($tmp)){
-				$tmp = unserialize(utf8_decode($db->f('strSerial')));
-			}
+			$tmp = we_unserialize($db->f('strSerial'));
 			$dat = array_filter($tmp, function($k){
 				return !is_numeric($k);
 			}, ARRAY_FILTER_USE_KEY);
@@ -586,20 +596,15 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					'customFields' => $dat['we_sacf'] ? we_serialize($dat['we_sacf'], SERIALIZE_JSON, false, 0, true) : sql_function('NULL'),
 					'Vat' => isset($dat['shopvat']) ? $dat['shopvat'] : sql_function('NULL'),
 			]));
-
-			/* 			t_e($dat);
-			  return; */
-			//$db2->query('UPDATE ' . SHOP_ORDER_ITEM_TABLE . ' SET ' . we_database_base::arraySetter([
-			//]));
 		}
+		return ['text' => 'Shop ' . $pos . ' / ' . $max, 'pos' => ($pos + $maxStep)];
 		//what about variants?! how do they apply?
 		//old not used: IntPayment_Type
-		//new unfilled tblOrder: customOrderNo
 		//FIXME strSerial may contain we_wedoc_ & OF_... & may contain numeric entries
 		/* 	 */
 	}
 
-	public static function doUpdate($what = 'all', $pos = 0){
+	public static function doUpdate($what = '', $pos = 0){
 		$db = new DB_WE();
 		self::meassure('start');
 		//if we are in liveupdate, initial db updates already triggered
@@ -608,9 +613,10 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			self::meassure('replayUpdateDB');
 			$what = 'all';
 		}
+		$pos = intval($pos);
 		switch($what){
 			default:
-			case 'all':
+			case '':
 				self::updateUsers($db);
 				self::meassure('updateUsers');
 				if(defined('OBJECT_X_TABLE')){
@@ -637,10 +643,17 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::meassure('fixVersions');
 				self::updateCustomerFilters($db);
 				self::meassure('customerFilter');
+				if(defined('SHOP_ORDER_TABLE')){
+					self::updateShop($db);
+					self::meassure('shop');
+				}
 			case 'shop':
 				$what = 'shop';
 				if(defined('SHOP_TABLE')){
-					self::updateShop($db);
+					$ret = self::updateShop2($db, $pos);
+					if($ret){
+						return array_merge($ret, ['what' => $what]);
+					}
 					self::meassure('shop');
 				}
 
