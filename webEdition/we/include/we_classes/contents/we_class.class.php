@@ -263,9 +263,9 @@ abstract class we_class{
 
 	public function initByID($ID, $Table = FILE_TABLE, $from = we_class::LOAD_MAID_DB){
 		$this->ID = intval($ID);
-		$this->Table = ($Table ? : FILE_TABLE);
+		$this->Table = ($Table ?: FILE_TABLE);
 		$this->we_load($from);
-		$GLOBALS['we_ID'] = $ID; //FIXME: check if we need this !
+		$GLOBALS['we_ID'] = intval($ID); //FIXME: check if we need this !
 		$GLOBALS['we_Table'] = $this->Table;
 		// init Customer Filter !
 		if(isset($this->documentCustomerFilter) && defined('CUSTOMER_TABLE')){
