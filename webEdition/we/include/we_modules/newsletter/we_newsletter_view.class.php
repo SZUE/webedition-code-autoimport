@@ -841,17 +841,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		$we_obj->initByID($we_objectID, OBJECT_FILES_TABLE);
 
 		$we_doc = $this->initDoc();
-		$we_doc->elements = $we_obj->elements;
-		$we_doc->Templates = $we_obj->Templates;
-		$we_doc->TableID = $we_obj->TableID;
-		$we_doc->CreatorID = $we_obj->CreatorID;
-		$we_doc->ModifierID = $we_obj->ModifierID;
-		$we_doc->RestrictOwners = $we_obj->RestrictOwners;
-		$we_doc->Owners = $we_obj->Owners;
-		$we_doc->OwnersReadOnly = $we_obj->OwnersReadOnly;
-		$we_doc->Category = $we_obj->Category;
-		$we_doc->OF_ID = $we_obj->ID;
-
+		$we_doc->initByObj($we_obj);
 		return $we_doc;
 	}
 

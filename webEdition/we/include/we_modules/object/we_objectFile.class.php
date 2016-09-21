@@ -68,7 +68,7 @@ class we_objectFile extends we_document{
 		$this->ContentType = we_base_ContentTypes::OBJECT_FILE;
 		$this->PublWhenSave = 0;
 		$this->IsTextContentDoc = true;
-		array_push($this->persistent_slots, 'CSS', 'DefArray', 'Text', 'AllowedClasses', 'Templates', 'Workspaces', 'RootDirPath', 'rootDirID', 'TableID', 'Category', 'IsSearchable', 'Charset', 'Language', 'Url', 'TriggerID', 'classData');
+		array_push($this->persistent_slots, 'CSS', 'DefArray', 'Text', 'AllowedClasses', 'Workspaces', 'RootDirPath', 'rootDirID', 'TableID', 'Category', 'IsSearchable', 'Charset', 'Language', 'Url', 'TriggerID', 'classData');
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			array_push($this->persistent_slots, 'From', 'To');
 		}
@@ -1519,7 +1519,7 @@ class we_objectFile extends we_document{
 		} else {
 			$textname = md5(uniqid(__FUNCTION__, true));
 //$idname = md5(uniqid(rand(), 1));
-			$addbut = we_html_tools::htmlSelect($textname, $values, 1, '', false, array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'object_add_workspace\',this.options[this.selectedIndex].value);'));
+			$addbut = we_html_tools::htmlSelect($textname, $values, 1, '', false, ['onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'object_add_workspace\',this.options[this.selectedIndex].value);']);
 		}
 		$obj = new we_chooser_multiDirAndTemplate(450, $this->Workspaces, 'object_del_workspace', $addbut, get_ws(FILE_TABLE), $this->Templates, 'we_' . $this->Name . '_Templates', $ts, get_ws(TEMPLATES_TABLE));
 
@@ -2547,16 +2547,7 @@ class we_objectFile extends we_document{
 		$GLOBALS['we_obj'] = $this;
 
 		$GLOBALS['we_doc'] = new we_webEditionDocument();
-		$GLOBALS['we_doc']->elements = $this->elements;
-		$GLOBALS['we_doc']->Templates = $this->Templates;
-		$GLOBALS['we_doc']->TableID = $this->TableID;
-		$GLOBALS['we_doc']->CreatorID = $this->CreatorID;
-		$GLOBALS['we_doc']->ModifierID = $this->ModifierID;
-		$GLOBALS['we_doc']->RestrictOwners = $this->RestrictOwners;
-		$GLOBALS['we_doc']->Owners = $this->Owners;
-		$GLOBALS['we_doc']->OwnersReadOnly = $this->OwnersReadOnly;
-		$GLOBALS['we_doc']->Category = $this->Category;
-		$GLOBALS['we_doc']->OF_ID = $this->ID;
+		$GLOBALS['we_doc']->initByObj($this);
 
 		$GLOBALS['we_doc']->InWebEdition = false;
 		$we_include = $includepath ?: $GLOBALS['we_doc']->TemplatePath;
