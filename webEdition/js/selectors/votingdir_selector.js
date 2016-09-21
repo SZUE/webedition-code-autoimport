@@ -1,4 +1,4 @@
-/* global WE, fileSelect */
+/* global WE, fileSelect, top */
 
 /**
  * webEdition CMS
@@ -62,7 +62,7 @@ function writeBody(d) {
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon((entries[i].isFolder ? 'folder' : 'we/voting'), false) + '</td>' +
 						(top.fileSelect.data.we_editDirID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-										'<td class="selector filename" style="" ><div class="cutText">' + entries[i].text + '</div>'
+										'<td class="selector cutText directory" title="' + entries[i].text + '">' + entries[i].text
 										) +
 						'</td></tr>';
 	}

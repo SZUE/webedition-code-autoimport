@@ -258,8 +258,8 @@ weSearch = {
 		this.conf.editorBodyFrame.document.getElementById('scrollContent_' + this.conf.whichsearch).innerHTML = '<table style="width:100%;height:100%"><tr><td style="text-align:center"><i class="fa fa-2x fa-spinner fa-pulse"></i><div id="scrollActive"></div></td></tr></table>';
 		top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackResultList, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchResult&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
 	},
-	makeAjaxRequestParametersTop: function () {
-		var args = '', newString = "";
+	/*makeAjaxRequestParametersTop: function () {
+		var args = '', newString = '';
 
 		for (var i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {
 			newString = this.conf.editorBodyFrame.document.we_form.elements[i].name;
@@ -274,7 +274,7 @@ weSearch = {
 			args += '&we_cmd[' + encodeURI(newString) + ']=' + encodeURI(this.conf.editorBodyFrame.document.we_form.elements[i].value);
 		}
 		top.YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", this.ajaxCallbackParametersBottom, 'protocol=json&cns=' + (this.conf.whichsearch === WE().consts.weSearch.SEARCH_DOCLIST ? 'doclist' : 'tools/weSearch') + '&tab=' + this.conf.tab + '&cmd=GetSearchParameters&position=bottom&whichsearch=' + this.conf.whichsearch + '&classname=' + this.conf.modelClassName + '&id=' + this.conf.modelID + '&we_transaction=' + this.conf.we_transaction + args);
-	},
+	},*/
 	getMouseOverDivs: function () {
 		var args = '', newString = '';
 		for (var i = 0; i < this.conf.editorBodyFrame.document.we_form.elements.length; i++) {

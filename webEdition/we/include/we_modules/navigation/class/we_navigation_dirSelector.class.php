@@ -74,9 +74,9 @@ class we_navigation_dirSelector extends we_selector_directory{
 			  $text = mb_convert_encoding($this->db->f('Text'), 'HTML-ENTITIES', $charset);
 			  } */
 			$entries[] = [
-				$this->db->f('ID'),
+				intval($this->db->f('ID')),
 				$this->db->f('Text'),
-				$this->db->f('IsFolder'),
+				intval($this->db->f('IsFolder')),
 				$this->db->f('Path')
 			];
 		}
