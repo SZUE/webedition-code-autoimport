@@ -27,6 +27,8 @@ function we_tag_ifWritten(array $attribs){
 	switch($type){
 		case 'customer':
 			return empty($GLOBALS['ERROR']['saveRegisteredUser']);
+		case 'shop':
+			return empty($GLOBALS['ERROR']['writeShopData']);
 		default:
 			$name = weTag_getAttribute('formname', $attribs, (empty($GLOBALS['WE_FORM']) ? 'we_global_form' : $GLOBALS['WE_FORM']), we_base_request::STRING);
 			//we need isset if we:write was not called before
