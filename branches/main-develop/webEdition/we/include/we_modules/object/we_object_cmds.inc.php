@@ -30,29 +30,6 @@ $we_doc = we_document::initDoc($we_dt);
 we_html_tools::protect();
 
 switch(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)){
-	case "object_toggleExtraWorkspace":
-		$oid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 2);
-		$wsid = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 3);
-		$wsPath = id_to_path($wsid, FILE_TABLE, $DB_WE);
-		$tableID = we_base_request::_(we_base_request::INT, 'we_cmd', 0, 4);
-		list($ofID, $foo) = getHash('SELECT of.ID,of.ExtraWorkspacesSelected FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.ID=' . intval($oid), $DB_WE, MYSQL_NUM);
-		if(strstr($foo, ',' . $wsid . ',')){
-			$ews = str_replace(',' . $wsid, ',', '', $foo);
-			if($ews == ','){
-				$ews = '';
-			}
-			$check = 0;
-		} else {
-			$ews = ($foo ? : ",") . $wsid . ",";
-			$check = 1;
-		}
-		//$DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($tableID) . ' SET OF_ExtraWorkspacesSelected="' . $DB_WE->escape($ews) . '" WHERE OF_ID=' . intval($oid));
-		$DB_WE->query('UPDATE ' . OBJECT_FILES_TABLE . ' SET ExtraWorkspacesSelected="' . $DB_WE->escape($ews) . '" WHERE ID=' . intval($ofID));
-		$of = new we_objectFile();
-		$of->initByID($ofID, OBJECT_FILES_TABLE);
-		$of->insertAtIndex();
-		echo we_base_jsCmd::singleCmd('we_cmd', ['reload_editpage']);
-		break;
 	case "object_obj_search":
 		$we_doc->Search = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2);
 		$we_doc->SearchField = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 3);

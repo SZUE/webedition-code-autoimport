@@ -138,12 +138,6 @@ function processEditorCmd($we_doc, $cmd0){
 		case 'object_del_workspace':
 			$we_doc->del_workspace(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
 			break;
-		case 'object_add_extraworkspace':
-			$we_doc->add_extraWorkspace(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
-			break;
-		case 'object_del_extraworkspace':
-			$we_doc->del_extraWorkspace(we_base_request::_(we_base_request::INT, 'we_cmd', 0, 1));
-			break;
 		case 'object_ws_from_class':
 			$we_doc->ws_from_class();
 			break;

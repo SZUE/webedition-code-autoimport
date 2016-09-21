@@ -57,12 +57,6 @@ if(($userID && $userID != $_SESSION['user']['ID']) || (we_base_request::_(we_bas
 	if(isset($_SESSION['weS']['we_data'][$we_transaction][0]['Templates'])){
 		$tids = makeArrayFromCSV($_SESSION['weS']['we_data'][$we_transaction][0]['Templates']); //	get all templateIds.
 		$workspaces = makeArrayFromCSV($_SESSION['weS']['we_data'][$we_transaction][0]['Workspaces']);
-		if($_SESSION['weS']['we_data'][$we_transaction][0]['ExtraWorkspaces']){
-			$workspaces[] = $_SESSION['weS']['we_data'][$we_transaction][0]['ExtraWorkspaces'];
-		}
-		if($_SESSION['weS']['we_data'][$we_transaction][0]['ExtraTemplates']){
-			$tids[] = $_SESSION['weS']['we_data'][$we_transaction][0]['ExtraTemplates'];
-		}
 
 		$tmpDB = new DB_WE();
 

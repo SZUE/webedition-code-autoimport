@@ -8,6 +8,12 @@
 /* query separator */
 ###UPDATEDROPCOL(Browser,###TBLPREFIX###tblversions)###
 /* query separator */
+###UPDATEDROPCOL(ExtraWorkspaces,###TBLPREFIX###tblversions)###
+/* query separator */
+###UPDATEDROPCOL(ExtraWorkspacesSelected,###TBLPREFIX###tblversions)###
+/* query separator */
+###UPDATEDROPCOL(ExtraTemplates,###TBLPREFIX###tblversions)###
+/* query separator */
 ###ONTAB(###TBLPREFIX###tblversions)UPDATE ###TBLPREFIX###tblversions SET documentTable=REPLACE(documentTable,"###TBLPREFIX###","") WHERE documentTable LIKE "###TBLPREFIX###%";###
 /* query separator */
 UPDATE ###TBLPREFIX###tblversions SET ClassName="we_otherDocument",ContentType="application/*" WHERE ClassName="we_quicktimeDocument"
@@ -46,10 +52,7 @@ CREATE TABLE ###TBLPREFIX###tblversions (
   Language char(5) NOT NULL,
   WebUserID bigint unsigned NOT NULL,
   Workspaces text NOT NULL,
-  ExtraWorkspaces text NOT NULL,
-  ExtraWorkspacesSelected text NOT NULL,
   Templates tinytext NOT NULL,
-  ExtraTemplates tinytext NOT NULL,
   MasterTemplateID int unsigned NOT NULL default '0',
   TableID mediumint unsigned NOT NULL,
   ObjectID bigint unsigned NOT NULL,

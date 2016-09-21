@@ -84,8 +84,6 @@ function we_cmd_object(args, url) {
 		case "object_del_workspace":
 		case "object_add_css":
 		case "object_del_css":
-		case "object_add_extraworkspace":
-		case "object_del_extraworkspace":
 		case "object_changeTempl_ob":
 		case "object_ws_from_class":
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
@@ -93,7 +91,6 @@ function we_cmd_object(args, url) {
 				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}
 			break;
-		case "object_toggleExtraWorkspace":
 		case "object_obj_search":
 			we_repl(window.load, url, args[0]);
 			break;

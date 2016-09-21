@@ -4,6 +4,29 @@
 /* query separator */
 ###UPDATEDROPCOL(Icon,###TBLPREFIX###tblObjectFiles)###
 /* query separator */
+###UPDATEDROPCOL(ExtraWorkspaces,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(ExtraWorkspacesSelected,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(ExtraTemplates,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(OF_IsSearchable,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(OF_Charset,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(OF_WebUserID,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(NCAddress,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(NCPerson,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(NCAddressHeadline,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(NCPersonHeadline,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+###UPDATEDROPCOL(NCAddressOpen,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
+
 CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   ID int unsigned NOT NULL auto_increment,
   ParentID int unsigned NOT NULL default '0',
@@ -21,10 +44,7 @@ CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   Owners varchar(255) NOT NULL default '',
   OwnersReadOnly text NOT NULL,
   Workspaces varchar(1000) NOT NULL default '',
-  ExtraWorkspaces varchar(1000) NOT NULL default '',
-  ExtraWorkspacesSelected varchar(1000) NOT NULL default '',
   Templates varchar(255) NOT NULL default '',
-  ExtraTemplates varchar(255) NOT NULL default '',
   TableID int unsigned NOT NULL default '0',
   Category text NOT NULL,
   ClassName enum('we_class_folder','we_objectFile') NOT NULL,
@@ -41,20 +61,3 @@ CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   KEY TableID (TableID),
   KEY Url (Url)
 ) ENGINE=MyISAM;
-
-/* query separator */
-###UPDATEDROPCOL(OF_IsSearchable,###TBLPREFIX###tblObjectFiles)###
-/* query separator */
-###UPDATEDROPCOL(OF_Charset,###TBLPREFIX###tblObjectFiles)###
-/* query separator */
-###UPDATEDROPCOL(OF_WebUserID,###TBLPREFIX###tblObjectFiles)###
-/* query separator */
-###UPDATEDROPCOL(NCAddress,###TBLPREFIX###tblObjectFiles)###
-/* query separator */
-###UPDATEDROPCOL(NCPerson,###TBLPREFIX###tblObjectFiles)###
-/* query separator */
-###UPDATEDROPCOL(NCAddressHeadline,###TBLPREFIX###tblObjectFiles)###
-/* query separator */
-###UPDATEDROPCOL(NCPersonHeadline,###TBLPREFIX###tblObjectFiles)###
-/* query separator */
-###UPDATEDROPCOL(NCAddressOpen,###TBLPREFIX###tblObjectFiles)###

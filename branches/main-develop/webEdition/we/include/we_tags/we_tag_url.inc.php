@@ -34,11 +34,11 @@ function we_tag_url(array $attribs){
 	$triggerid = weTag_getAttribute('triggerid', $attribs, 0, we_base_request::INT);
 	$hidedirindex = weTag_getAttribute('hidedirindex', $attribs, TAGLINKS_DIRECTORYINDEX_HIDE, we_base_request::BOOL);
 	$objectseourls = weTag_getAttribute('objectseourls', $attribs, TAGLINKS_OBJECTSEOURLS, we_base_request::BOOL);
-	
+
 	if(is_numeric($id) && (isset($urls[$type . $id]))){ // do only work you have never done before
 		return $urls[$type . $id];
 	}
-	
+
 	if($id !== 'self' && $id !== 'top' && intval($id) === 0){
 		$url = '/';
 	} else {
@@ -47,14 +47,14 @@ function we_tag_url(array $attribs){
             case we_base_ContentTypes::OBJECT :
 				$objectID = ($id === 'self' || $id === 'top') ? $GLOBALS['we_obj']->ID : intval($id);
 				if(($getObject = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($objectID)))){
-					$triggerDocPath = $triggerid ? id_to_path($triggerid) : 
-						($getObject['TriggerID'] ? id_to_path($getObject['TriggerID']) : 
+					$triggerDocPath = $triggerid ? id_to_path($triggerid) :
+						($getObject['TriggerID'] ? id_to_path($getObject['TriggerID']) :
 							(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
-								we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $getObject['Url'])), '/') . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $getObject['Url'])), '/')), $GLOBALS['we_obj']->Workspaces, $GLOBALS['we_obj']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
-								parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
+								we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $getObject['Url'])), '/') . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $getObject['Url'])), '/')), $GLOBALS['we_obj']->Workspaces, 0, $GLOBALS['DB_WE']) :
+						parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
 							)
 						);
-											
+
 					$path_parts = pathinfo($triggerDocPath);
 
 					if($objectseourls && $getObject['Url'] != '' && show_SeoLinks()){
@@ -81,7 +81,7 @@ function we_tag_url(array $attribs){
 						$docID = $id;
 						break;
 				}
-				
+
 				$getDocument = getHash('SELECT Path,IsFolder FROM ' . FILE_TABLE . ' WHERE ID=' . intval($docID));
 				if(isset($getDocument['Path'])){
 					$path = ($getDocument['Path'] . ($getDocument['IsFolder'] ? '/' : ''));
@@ -90,11 +90,11 @@ function we_tag_url(array $attribs){
 						($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' :
 						$path;
 				}
-				
+
 				break;
 		}
 	}
-	
+
 	$urls[$type . $id] = $url;
 	return $url;
 }

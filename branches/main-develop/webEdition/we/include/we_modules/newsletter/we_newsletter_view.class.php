@@ -843,7 +843,6 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		$we_doc = $this->initDoc();
 		$we_doc->elements = $we_obj->elements;
 		$we_doc->Templates = $we_obj->Templates;
-		$we_doc->ExtraTemplates = $we_obj->ExtraTemplates;
 		$we_doc->TableID = $we_obj->TableID;
 		$we_doc->CreatorID = $we_obj->CreatorID;
 		$we_doc->ModifierID = $we_obj->ModifierID;

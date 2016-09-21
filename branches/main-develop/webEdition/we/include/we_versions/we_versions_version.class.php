@@ -55,10 +55,7 @@ class we_versions_version{
 	protected $Language;
 	protected $WebUserID;
 	protected $Workspaces;
-	protected $ExtraWorkspaces;
-	protected $ExtraWorkspacesSelected;
 	protected $Templates;
-	protected $ExtraTemplates;
 	protected $MasterTemplateID;
 	protected $TableID;
 	protected $ObjectID; //FIXME: remove??
@@ -96,10 +93,7 @@ class we_versions_version{
 		'IsDynamic' => 18,
 		'DocType' => 19,
 		'Workspaces' => 20,
-		'ExtraWorkspaces' => 21,
-		'ExtraWorkspacesSelected' => 22,
 		'Templates' => 23,
-		'ExtraTemplates' => 24,
 		'Charset' => 25,
 		'InGlossar' => 26
 	);
@@ -226,29 +220,8 @@ class we_versions_version{
 	/**
 	 * @return unknown
 	 */
-	public function getExtraTemplates(){
-		return $this->ExtraTemplates;
-	}
-
-	/**
-	 * @return unknown
-	 */
 	public function getMasterTemplateID(){
 		return $this->MasterTemplateID;
-	}
-
-	/**
-	 * @return unknown
-	 */
-	public function getExtraWorkspaces(){
-		return $this->extraWorkspaces;
-	}
-
-	/**
-	 * @return unknown
-	 */
-	public function getExtraWorkspacesSelected(){
-		return $this->extraWorkspacesSelected;
 	}
 
 	/**
@@ -553,31 +526,10 @@ class we_versions_version{
 	}
 
 	/**
-	 * @param unknown_type $ExtraTemplates
-	 */
-	public function setExtraTemplates($ExtraTemplates){
-		$this->ExtraTemplates = $ExtraTemplates;
-	}
-
-	/**
 	 * @param unknown_type $MasterTemplateID
 	 */
 	public function setMasterTemplateID($MasterTemplateID){
 		$this->MasterTemplateID = $MasterTemplateID;
-	}
-
-	/**
-	 * @param unknown_type $ExtraWorkspaces
-	 */
-	public function setExtraWorkspaces($extraWorkspaces){
-		$this->extraWorkspaces = $extraWorkspaces;
-	}
-
-	/**
-	 * @param unknown_type $ExtraWorkspacesSelected
-	 */
-	public function setExtraWorkspacesSelected($extraWorkspacesSelected){
-		$this->extraWorkspacesSelected = $extraWorkspacesSelected;
 	}
 
 	/**
@@ -839,7 +791,7 @@ class we_versions_version{
 	 */
 	public function save($docObj, $status = "saved"){
 		$_SESSION['weS']['versions']['fromImport'] = 0;
-		$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0)? : we_base_request::_(we_base_request::STRING, 'cmd');
+		$cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) ?: we_base_request::_(we_base_request::STRING, 'cmd');
 //import
 		if(we_base_request::_(we_base_request::BOOL, "jupl")){
 			$_SESSION['weS']['versions']['fromImport'] = 1;
@@ -1051,8 +1003,8 @@ class we_versions_version{
 		if(isset($_SESSION['weS']['versions']['versionToCompare'][$document["Table"]][$document["ID"]]) && ($lastEntry = $_SESSION['weS']['versions']['versionToCompare'][$document['Table']][$document['ID']]) != ''){
 
 			$diffExists = (is_array($document) && $lastEntry ?
-					($docHash != $lastEntry) :
-					false);
+				($docHash != $lastEntry) :
+				false);
 
 			$lastEntry = self::getLastEntry($document['ID'], $document['Table'], $db);
 
@@ -1073,8 +1025,8 @@ class we_versions_version{
 		foreach($tblversionsFields as $fieldName){
 			if($fieldName != 'ID'){
 				$set[$fieldName] = (isset($document[$fieldName]) ?
-						$document[$fieldName] :
-						$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
+					$document[$fieldName] :
+					$this->makePersistentEntry($fieldName, $status, $document, $documentObj)
 					);
 			}
 		}
@@ -1214,10 +1166,10 @@ class we_versions_version{
 						case 'documentCustomFilter':
 							$newData = $diff = [];
 							$lastEntryField = (!$lastEntryField ? [] :
-									we_unserialize(
-										(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
-											html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
-											$lastEntryField)
+								we_unserialize(
+									(substr_compare($lastEntryField, 'a%3A', 0, 4) == 0 ?
+									html_entity_decode(urldecode($lastEntryField), ENT_QUOTES) :
+									$lastEntryField)
 							));
 							switch($val){
 								case 'documentElements':
@@ -1296,7 +1248,7 @@ class we_versions_version{
 
 				$modConstants = $this->getConstantsOfMod($modifications);
 
-				$entry = ($modConstants ? : '');
+				$entry = ($modConstants ?: '');
 				break;
 			case 'modifierID':
 				$entry = (isset($_SESSION['user']['ID'])) ? $_SESSION['user']['ID'] : '';
@@ -1568,7 +1520,7 @@ class we_versions_version{
 
 							$parentID = (isset($_SESSION['weS']['versions']['lastPathID'])) ? $_SESSION['weS']['versions']['lastPathID'] : 0;
 							$folder = (defined('OBJECT_FILES_TABLE') && $resetArray['documentTable'] == OBJECT_FILES_TABLE ?
-									new we_class_folder() : new we_folder());
+								new we_class_folder() : new we_folder());
 
 							$folder->we_new($resetArray['documentTable'], $parentID, $v);
 							$existsFolderPathID = f('SELECT ID FROM ' . $db->escape($resetArray['documentTable']) . ' WHERE Path="' . $db->escape($folder->Path) . '" AND IsFolder=1', '', $db);
@@ -1657,7 +1609,7 @@ class we_versions_version{
 
 	public static function showValue($k, $v, $table = ''){
 		$val = self::_showValue($k, $v, $table);
-		return ($val ? : '&nbsp;');
+		return ($val ?: '&nbsp;');
 	}
 
 	/**
@@ -1706,49 +1658,7 @@ class we_versions_version{
 					}
 				}
 				return $fieldValueText;
-			case 'ExtraWorkspaces':
-				$fieldValueText = '';
-				if($v != ''){
-					$vals = makeArrayFromCSV($v);
-					if(!empty($vals)){
-						foreach($vals as $k){
-							if($fieldValueText != ''){
-								$fieldValueText .= '<br/>';
-							}
-							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
-						}
-					}
-				}
-				return $fieldValueText;
-			case 'ExtraWorkspacesSelected':
-				$fieldValueText = '';
-				if($v != ''){
-					$vals = makeArrayFromCSV($v);
-					if(!empty($vals)){
-						foreach($vals as $k){
-							if(!empty($fieldValueText)){
-								$fieldValueText .= '<br/>';
-							}
-							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
-						}
-					}
-				}
-				return $fieldValueText;
 			case 'Templates':
-				$fieldValueText = '';
-				if($v != ''){
-					$vals = makeArrayFromCSV($v);
-					if(!empty($vals)){
-						foreach($vals as $k){
-							if($fieldValueText){
-								$fieldValueText .= '<br/>';
-							}
-							$fieldValueText .= we_base_util::shortenPathSpace(id_to_path($k, FILE_TABLE), $pathLength);
-						}
-					}
-				}
-				return $fieldValueText;
-			case 'ExtraTemplates':
 				$fieldValueText = '';
 				if($v != ''){
 					$vals = makeArrayFromCSV($v);
@@ -1895,7 +1805,7 @@ class we_versions_version{
 				return $fieldValueText;
 //Customer Filter
 			case '_id':
-				return ($v ? : 0);
+				return ($v ?: 0);
 			case '_accessControlOnTemplate':
 				return g_l('versions', ($v == 1) ? '[yes]' : '[no]');
 			case '_errorDocNoLogin':
@@ -2007,7 +1917,7 @@ class we_versions_version{
 		$keys = array_keys($a);
 		sort($keys);
 		foreach($keys as $key){
-			$tmp.=$key . (is_array($a[$key]) ? self::getHashValue($a[$key], true) : $a[$key]);
+			$tmp .= $key . (is_array($a[$key]) ? self::getHashValue($a[$key], true) : $a[$key]);
 		}
 		return ($inner ? $tmp : md5($tmp));
 	}

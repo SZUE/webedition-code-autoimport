@@ -48,14 +48,11 @@ class we_objectFile extends we_document{
 	var $rootDirID = 0;
 	var $RootDirPath = '/';
 	var $Workspaces = '';
-	var $ExtraWorkspaces = '';
-	var $ExtraWorkspacesSelected = '';
 	var $AllowedWorkspaces = [];
 	var $AllowedClasses = '';
 	var $Charset = '';
 	var $Language = '';
 	var $Templates = '';
-	var $ExtraTemplates = '';
 	var $DefArray = [];
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 	var $Url = '';
@@ -71,7 +68,7 @@ class we_objectFile extends we_document{
 		$this->ContentType = we_base_ContentTypes::OBJECT_FILE;
 		$this->PublWhenSave = 0;
 		$this->IsTextContentDoc = true;
-		array_push($this->persistent_slots, 'CSS', 'DefArray', 'Text', 'AllowedClasses', 'Templates', 'ExtraTemplates', 'Workspaces', 'ExtraWorkspaces', 'ExtraWorkspacesSelected', 'RootDirPath', 'rootDirID', 'TableID', 'Category', 'IsSearchable', 'Charset', 'Language', 'Url', 'TriggerID', 'classData');
+		array_push($this->persistent_slots, 'CSS', 'DefArray', 'Text', 'AllowedClasses', 'Templates', 'Workspaces', 'RootDirPath', 'rootDirID', 'TableID', 'Category', 'IsSearchable', 'Charset', 'Language', 'Url', 'TriggerID', 'classData');
 		if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER)){
 			array_push($this->persistent_slots, 'From', 'To');
 		}
@@ -147,7 +144,7 @@ class we_objectFile extends we_document{
 			}
 		}
 
-		$wof->DefArray = $wof->DefArray ? : $wof->getDefaultValueArray(); //bug #7426
+		$wof->DefArray = $wof->DefArray ?: $wof->getDefaultValueArray(); //bug #7426
 
 		if(($ret = we_base_request::_(we_base_request::URL, 'we_returnpage'))){
 			$wof->setElement('we_returnpage', $ret);
@@ -168,8 +165,8 @@ class we_objectFile extends we_document{
 		}
 		if(isset($_REQUEST['we_ui_' . $formname . '_Category'])){
 			$_REQUEST['we_ui_' . $formname . '_Category'] = (is_array($_REQUEST['we_ui_' . $formname . '_Category']) ?
-					implode(',', $_REQUEST['we_ui_' . $formname . '_Category']) :
-					implode(',', array_filter(explode(',', $_REQUEST['we_ui_' . $formname . '_Category']))));
+				implode(',', $_REQUEST['we_ui_' . $formname . '_Category']) :
+				implode(',', array_filter(explode(',', $_REQUEST['we_ui_' . $formname . '_Category']))));
 		}
 		foreach($wof->persistent_slots as $slotname){
 			if($slotname != 'categories' && ($tmp = we_base_request::_(we_base_request::RAW, 'we_ui_' . $formname . '_' . $slotname)) !== false){
@@ -191,7 +188,7 @@ class we_objectFile extends we_document{
 
 	function makeSameNew(array $keep = []){
 		$this->DefaultInit = true;
-		we_root::makeSameNew(array_merge($keep, array('Category', 'TableID', 'rootDirID', 'RootDirPath', 'Workspaces', 'ExtraWorkspaces', 'ExtraWorkspacesSelected', 'IsSearchable', 'Charset', 'Url', 'TriggerID')));
+		we_root::makeSameNew(array_merge($keep, ['Category', 'TableID', 'rootDirID', 'RootDirPath', 'Workspaces', 'IsSearchable', 'Charset', 'Url', 'TriggerID']));
 		$this->i_objectFileInit(true);
 		$this->DefaultInit = false;
 	}
@@ -208,7 +205,7 @@ class we_objectFile extends we_document{
 	}
 
 	private static function getObjectRootPathOfObjectWorkspace($classDir, $classId, we_database_base $db = null){
-		$db = ($db ? : new DB_WE());
+		$db = ($db ?: new DB_WE());
 		$classDir = rtrim($classDir, '/');
 		$rootId = $classId;
 		$cnt = 1;
@@ -281,8 +278,6 @@ class we_objectFile extends we_document{
 		$otmplsCSVArray = makeArrayFromCSV(isset($foo['Templates']) ? $foo['Templates'] : '');
 		$this->Workspaces = [];
 		$this->Templates = [];
-		$this->ExtraWorkspaces = '';
-		$this->ExtraTemplates = '';
 		$processedWs = [];
 
 // loop throgh all default workspaces
@@ -338,7 +333,7 @@ class we_objectFile extends we_document{
 		if($hash){
 // fix - the class access permissions should not be applied
 
-			$this->Category = $hash['DefaultCategory'] ? : '';
+			$this->Category = $hash['DefaultCategory'] ?: '';
 			if($hash['DefaultText']){
 				$text = $hash['DefaultText'];
 				$regs = [];
@@ -545,14 +540,16 @@ class we_objectFile extends we_document{
 		return '
 			<table class="default">
 				' . $headline . '
-				<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $this->Charset, false, array('onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');', 'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
+				<tr><td>' . we_html_tools::htmlTextInput($inputName, 24, $this->Charset, '', '', 'text', '14em') . '</td><td></td><td>' . $this->htmlSelect('we_tmp_' . $this->Name . '_select[' . $name . ']', $charsets, 1, $this->Charset, false, array(
+				'onblur' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');',
+				'onchange' => '_EditorFrame.setEditorIsHot(true);document.forms[0].elements[\'' . $inputName . '\'].value=this.options[this.selectedIndex].value;top.we_cmd(\'reload_editpage\');'), 'value', 330) . '</td></tr>
 			</table>';
 	}
 
 	public function formClass(){
 		return ($this->ID ?
-				'<span class="defaultfont">' . $this->classData['Text'] . '</span>' :
-				$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID,Text', '', 'IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
+			'<span class="defaultfont">' . $this->classData['Text'] . '</span>' :
+			$this->formSelect2(388, 'TableID', OBJECT_TABLE, 'ID,Text', '', 'IsFolder=0' . ($this->AllowedClasses ? ' AND ID IN(' . $this->AllowedClasses . ')' : '') . ' ORDER BY Path ', 1, $this->TableID, false, "if(_EditorFrame.getEditorDocumentId() != 0){we_cmd('reload_editpage');}else{we_cmd('restore_defaults');};_EditorFrame.setEditorIsHot(true);"));
 	}
 
 	public function formClassId(){
@@ -755,8 +752,8 @@ class we_objectFile extends we_document{
 
 	private static function formatDescription($desc){
 		return '<div class="objectDescription">' . (strpos($desc, '<script') === false ?
-				str_replace("\n", we_html_element::htmlBr(), $desc) :
-				$desc
+			str_replace("\n", we_html_element::htmlBr(), $desc) :
+			$desc
 			) . '</div>';
 	}
 
@@ -771,8 +768,8 @@ class we_objectFile extends we_document{
 			return $this->getPreviewView($name, isset($vals[$element]) ? $vals[$element] : '');
 		}
 		return ($variant ?
-				$this->htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $element) :
-				$this->formSelectFromArray('meta', $name, $vals, $this->getPreviewHeadline('meta', $name), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
+			$this->htmlSelect('we_' . $this->Name . '_meta[' . $name . ']', $vals, 1, $element) :
+			$this->formSelectFromArray('meta', $name, $vals, $this->getPreviewHeadline('meta', $name), 1, false, array('onchange' => '_EditorFrame.setEditorIsHot(true);')));
 	}
 
 	private function getObjectFieldHTML($type, $ObjectID, array $attribs, $editable = true){
@@ -821,7 +818,7 @@ class we_objectFile extends we_document{
 
 		if(!$editable){
 			$uniq = md5(uniqid(__FUNCTION__, true));
-			$txt = $ob->Text ? : $name;
+			$txt = $ob->Text ?: $name;
 			$but = we_html_multiIconBox::_getButton($uniq, "weToggleBox('" . $uniq . "','" . $txt . "','" . $txt . "')", "down", g_l('global', '[openCloseBox]'));
 
 			return $but .
@@ -897,7 +894,7 @@ class we_objectFile extends we_document{
 		$temp = we_unserialize($this->getElement($name, 'dat'));
 		$objects = isset($temp['objects']) ? $temp['objects'] : $temp;
 		$max = intval($this->DefArray[self::TYPE_MULTIOBJECT . '_' . $name]['max']);
-		$show = min(($max? : PHP_INT_MAX), count($objects));
+		$show = min(($max ?: PHP_INT_MAX), count($objects));
 		$isSEEM = (isset($_SESSION['weS']['we_mode']) && $_SESSION['weS']['we_mode'] == we_base_constants::MODE_SEE);
 
 		if(!$show && !$editable){
@@ -934,7 +931,7 @@ class we_objectFile extends we_document{
 
 				$path = $this->getElement('we_object_' . $name . '_path');
 				if(($myid = intval($objects[$f]))){
-					$path = $path ? : f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), '', $db);
+					$path = $path ?: f('SELECT Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($myid), '', $db);
 				}
 
 				$editObjectButton = we_html_button::create_button(we_html_button::VIEW, "javascript:top.doClickDirect('" . $myid . "','objectFile','" . OBJECT_FILES_TABLE . "');");
@@ -985,8 +982,8 @@ class we_objectFile extends we_document{
 			}
 
 			$content .= (empty($max) || count($objects) < $max ?
-					we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f - 1) . "')") :
-					we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', '#', true, 21, 22, "", "", true));
+				we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_insert_meta_at_object','" . $GLOBALS['we_transaction'] . "','" . self::TYPE_MULTIOBJECT . '_' . $name . "','" . ($f - 1) . "')") :
+				we_html_button::create_button('fa:btn_add_listelement,fa-plus,fa-lg fa-list-ul', '#', true, 21, 22, "", "", true));
 
 			$this->setElement($name, implode(',', $objects), 'multiobject');
 
@@ -1028,7 +1025,7 @@ class we_objectFile extends we_document{
 				$values[$shopVat->id] = $shopVat->vat . '% - ' . $shopVat->getNaturalizedText() . ' (' . $shopVat->territory . ')';
 			}
 
-			$val = $this->getElement($name) ? : $attribs['default'];
+			$val = $this->getElement($name) ?: $attribs['default'];
 
 			return
 				'<table class="defaultfont">
@@ -1055,7 +1052,7 @@ class we_objectFile extends we_document{
 					we_html_element::htmlHidden('we_' . $this->Name . '_shopCategory[' . $name . ']', $attribs['default']);
 			} else {
 				$values = array('0' => ' ') + we_shop_category::getShopCatFieldsFromDir('Path', true); //Fix #9355 don't use array_merge() because numeric keys will be renumbered!
-				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', $values, 1, ($this->getElement($name) ? : $attribs['default']));
+				$input = we_class::htmlSelect('we_' . $this->Name . '_shopCategory[' . $name . ']', $values, 1, ($this->getElement($name) ?: $attribs['default']));
 			}
 
 			return
@@ -1118,12 +1115,13 @@ class we_objectFile extends we_document{
 			$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $intID_elem_Name . "'].value='';document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "") . str_replace('\\', '', $extraCmd));
 			$but = ( $file ?
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $intID_elem_Name . "'].value,'" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $Path_elem_Name . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");") :
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $intID_elem_Name . "'].value,'" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $Path_elem_Name . "','" . $wecmdenc3 . "','',0);")
+				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $intID_elem_Name . "'].value,'" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $Path_elem_Name . "','" . $wecmdenc3 . "','',0,''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ",''," . ($directory ? 1 : 0) . ");") :
+				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_directory',document.we_form.elements['" . $intID_elem_Name . "'].value,'" . FILE_TABLE . "','" . $intID_elem_Name . "','" . $Path_elem_Name . "','" . $wecmdenc3 . "','',0);")
 				);
 			$yuiSuggest = &weSuggest::getInstance();
 			$yuiSuggest->setAcId($int_elem_Name . we_base_file::getUniqueId());
-			$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS, we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
+			$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS,
+				we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
 			$yuiSuggest->setInput($Path_elem_Name, $path, array('onchange' => ($showRadio ? "document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "")));
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(1);
@@ -1135,18 +1133,18 @@ class we_objectFile extends we_document{
 			$trashbut = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $Path_elem_Name . "'].value='';_EditorFrame.setEditorIsHot(true);");
 			$wecmdenc4 = we_base_request::encCmd("if (opener.opener != null){opener.opener._EditorFrame.setEditorIsHot(true);}else{opener._EditorFrame.setEditorIsHot(true);}" . ($showRadio ? "opener.document.we_form.elements['" . $int_elem_Name . "'][1].checked=true;" : ""));
 			$but = (permissionhandler::hasPerm('CAN_SELECT_EXTERNAL_FILES') ? (
-					we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $Path_elem_Name . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "',document.forms[0].elements['" . $Path_elem_Name . "'].value,'" . $wecmdenc4 . "')")
-					) : '');
+				we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('browse_server','" . $Path_elem_Name . "','" . (($directory && $file) ? 'filefolder' : ($file ? '' : we_base_ContentTypes::FOLDER)) . "',document.forms[0].elements['" . $Path_elem_Name . "'].value,'" . $wecmdenc4 . "')")
+				) : '');
 		}
 
 		return '<tr>' .
 			($showRadio ?
-				'<td>' . we_html_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, g_l('tags', (!$intID_elem_Name) ? '[ext_href]' : '[int_href]') . ':&nbsp;', true, 'defaultfont', '') . '</td>' :
-				'<input type="hidden" name="' . $int_elem_Name . '" value="' . ($intID_elem_Name ? 1 : 0) . '" />'
+			'<td>' . we_html_forms::radiobutton(($intID_elem_Name ? 1 : 0), $checked, $int_elem_Name, g_l('tags', (!$intID_elem_Name) ? '[ext_href]' : '[int_href]') . ':&nbsp;', true, 'defaultfont', '') . '</td>' :
+			'<input type="hidden" name="' . $int_elem_Name . '" value="' . ($intID_elem_Name ? 1 : 0) . '" />'
 			) . '<td>' .
 			($intID_elem_Name ?
-				$yuiSuggest->getHTML() :
-				'<input' . ($showRadio ? ' onchange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" style="width:200px" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
+			$yuiSuggest->getHTML() :
+			'<input' . ($showRadio ? ' onchange="this.form.elements[\'' . $int_elem_Name . '\'][' . ($intID_elem_Name ? 0 : 1) . '].checked=true;"' : '' ) . ' type="text" style="width:200px" name="' . $Path_elem_Name . '" value="' . $path . '" ' . $attr . ' />'
 			) . '
 	</td>
 	<td>' . $but . '</td>
@@ -1157,7 +1155,7 @@ class we_objectFile extends we_document{
 	private function htmlLinkInput($type, $n, array $attribs, $we_editmode = true, $variant = true){
 		$attribs['name'] = $n;
 		$link = we_unserialize($this->getElement($n));
-		$link = $link ? : array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]'));
+		$link = $link ?: array("ctype" => "text", "type" => we_base_link::TYPE_EXT, "href" => "#", "text" => g_l('global', '[new_link]'));
 
 		$img = new we_imageDocument();
 		$content = parent::getLinkContent($link, $this->ParentID, $this->Path, $GLOBALS['DB_WE'], $img);
@@ -1172,8 +1170,8 @@ class we_objectFile extends we_document{
 		}
 
 		return ($variant ?
-				'' :
-				$this->getPreviewHeadline('link', $n)
+			'' :
+			$this->getPreviewHeadline('link', $n)
 			) . ($startTag ? $startTag . $content . '</a>' : $content) . ($we_editmode ? ($buttons) : "");
 	}
 
@@ -1187,8 +1185,8 @@ class we_objectFile extends we_document{
 			return $this->getPreviewView($name, $this->getElement($name));
 		}
 		return ($variant ?
-				'' :
-				$this->getPreviewHeadline('input', $name)
+			'' :
+			$this->getPreviewHeadline('input', $name)
 			) .
 			we_html_tools::htmlTextInput("we_" . $this->Name . "_input[$name]", 40, $this->getElement($name), $this->getElement($name, "len"), 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 620);
 	}
@@ -1200,7 +1198,7 @@ class we_objectFile extends we_document{
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
 				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(we_base_country::getTranslation($this->getElement($name), we_base_country::TERRITORY, $langcode)) . '</div>' :
-					'');
+				'');
 		}
 
 		$countrycode = array_search($langcode, getWECountries());
@@ -1248,7 +1246,7 @@ class we_objectFile extends we_document{
 		if(!$editable){
 			return '<div class="weObjectPreviewHeadline">' . $name . '</div>' .
 				($this->getElement($name) != '--' || $this->getElement($name) ? '<div class="defaultfont">' . CheckAndConvertISObackend(we_base_country::getTranslation($this->getElement($name), we_base_country::LANGUAGE, array_search($GLOBALS['WE_LANGUAGE'], getWELangs()))) . '</div>' :
-					'');
+				'');
 		}
 		$frontendL = $GLOBALS["weFrontendLanguages"];
 		foreach($frontendL as &$lcvalue){
@@ -1301,7 +1299,7 @@ class we_objectFile extends we_document{
 		}
 		$d = abs($this->getElement($name));
 		return ($variant ? '' : $this->getPreviewHeadline('date', $name) ) .
-			we_html_tools::getDateInput("we_" . $this->Name . '_date[' . $name . ']', ($d ? : time()), true);
+			we_html_tools::getDateInput("we_" . $this->Name . '_date[' . $name . ']', ($d ?: time()), true);
 	}
 
 	private function getTextareaHTML($type, $name, array $attribs, $editable = true, $variant = false){
@@ -1327,7 +1325,7 @@ class we_objectFile extends we_document{
 		$removefirstparagraph = ((!isset($attribs['removefirstparagraph'])) || ($attribs['removefirstparagraph'] === 'on')) ? true : false;
 		$xml = (isset($attribs['xml']) && ($attribs['xml'] === 'on')) ? true : false;
 
-		$autobr = $this->getElement($name, 'autobr') ? : (isset($attribs['autobr']) ? $attribs['autobr'] : '');
+		$autobr = $this->getElement($name, 'autobr') ?: (isset($attribs['autobr']) ? $attribs['autobr'] : '');
 		$autobrName = 'we_' . $this->Name . '_text[' . $name . '#autobr]';
 		$textarea = we_html_forms::weTextarea('we_' . $this->Name . '_text[' . $name . ']', $value, $attribs, $autobr, $autobrName, true, ((!empty($attribs['classes'])) || $this->getDocumentCss()) ? false : true, false, $xml, $removefirstparagraph, $charset, true, false, $name);
 
@@ -1371,10 +1369,10 @@ class we_objectFile extends we_document{
 			'<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 // show thumbnail of image if there exists one:
 			($thumbID ?
-				'<img src="' . $imgSrc . '" ' . ($imgHeight ? 'style="height:' . $imgHeight . 'px;width:' . $imgWight . 'px"' : '') . '/>' :
-				$img->getHtml()) .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect(" . ($id? : 0) . ",'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )", true, 0, 0, '', '', ($id ? false : true)) .
-			we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image','" . ($id ? : (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $fname . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
+			'<img src="' . $imgSrc . '" ' . ($imgHeight ? 'style="height:' . $imgHeight . 'px;width:' . $imgWight . 'px"' : '') . '/>' :
+			$img->getHtml()) .
+			we_html_button::create_button(we_html_button::EDIT, "javascript:top.doClickDirect(" . ($id ?: 0) . ",'" . we_base_ContentTypes::IMAGE . "', '" . FILE_TABLE . "'  )", true, 0, 0, '', '', ($id ? false : true)) .
+			we_html_button::create_button('fa:btn_select_image,fa-lg fa-hand-o-right,fa-lg fa-file-image-o', "javascript:we_cmd('we_selector_image','" . ($id ?: (isset($this->DefArray["img_$name"]['defaultdir']) ? $this->DefArray["img_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $fname . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["img_$name"]['rootdir']) ? $this->DefArray["img_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::IMAGE . "')") .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','img_" . $name . "');setScrollTo();", true, 0, 0, '', '', ($id ? false : true));
 	}
 
@@ -1392,7 +1390,7 @@ class we_objectFile extends we_document{
 
 		$content = '<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' .
 			$img->getHtml() .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["binary_$name"]['defaultdir']) ? $this->DefArray["binary_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $fname . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["binary_$name"]['rootdir']) ? $this->DefArray["binary_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::APPLICATION . "')") .
+			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ?: (isset($this->DefArray["binary_$name"]['defaultdir']) ? $this->DefArray["binary_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $fname . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["binary_$name"]['rootdir']) ? $this->DefArray["binary_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::APPLICATION . "')") .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','binary_" . $name . "')");
 		return $this->getPreviewHeadline('binary', $name) .
 			$content;
@@ -1411,7 +1409,7 @@ class we_objectFile extends we_document{
 		$content .= '<input type=hidden name="' . $fname . '" value="' . $this->getElement($name) . '" />' . $img->getHtml();
 		$wecmdenc3 = we_base_request::encCmd("opener.top.we_cmd('object_reload_entry_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "');opener._EditorFrame.setEditorIsHot(true);");
 
-		$content .= we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ? : (isset($this->DefArray["flashmovie_$name"]['defaultdir']) ? $this->DefArray["flashmovie_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $fname . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["flashmovie_$name"]['rootdir']) ? $this->DefArray["flashmovie_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::FLASH . "')") .
+		$content .= we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_selector_document','" . ($id ?: (isset($this->DefArray["flashmovie_$name"]['defaultdir']) ? $this->DefArray["flashmovie_$name"]['defaultdir'] : 0)) . "','" . FILE_TABLE . "','" . $fname . "','','" . $wecmdenc3 . "','', " . (!empty($this->DefArray["flashmovie_$name"]['rootdir']) ? $this->DefArray["flashmovie_$name"]['rootdir'] : 0) . ",'" . we_base_ContentTypes::FLASH . "')") .
 			we_html_button::create_button(we_html_button::TRASH, "javascript:we_cmd('object_remove_image_at_object','" . $GLOBALS['we_transaction'] . "','flashmovie_" . $name . "')");
 		return $this->getPreviewHeadline('flashmovie', $name) .
 			$content;
@@ -1433,7 +1431,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function getPossibleWorkspaces($ClassWs, $all = false){
-		$ClassWs = $ClassWs ? : $this->classData['Workspaces'];
+		$ClassWs = $ClassWs ?: $this->classData['Workspaces'];
 		$wsArray = makeArrayFromCSV($ClassWs);
 		$userWs = get_ws(FILE_TABLE, true);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
@@ -1486,8 +1484,8 @@ class we_objectFile extends we_document{
 	 */
 	private function getPathArray(array $IDArr, $firstEntry){
 		return ($IDArr ?
-				(($firstEntry ? ['' => $firstEntry] : []) + id_to_path($IDArr, FILE_TABLE, $this->DB_WE, true) ) :
-				[]);
+			(($firstEntry ? ['' => $firstEntry] : []) + id_to_path($IDArr, FILE_TABLE, $this->DB_WE, true) ) :
+			[]);
 	}
 
 	function formWorkspaces(){
@@ -1511,15 +1509,6 @@ class we_objectFile extends we_document{
 
 		$this->Workspaces = implode(',', $newArr);
 		$this->Templates = implode(',', $newTmpls);
-
-		$arr = makeArrayFromCSV($this->ExtraWorkspaces);
-		$newArr = [];
-		foreach($arr as $nr => $id){
-			if(we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE)){
-				$newArr[] = $id;
-			}
-		}
-		$this->ExtraWorkspaces = implode(',', $newArr);
 
 		$arr = makeArrayFromCSV($this->Workspaces);
 		foreach($arr as $nr => $id){
@@ -1594,78 +1583,6 @@ class we_objectFile extends we_document{
 	function ws_from_class(){
 		$this->Workspaces = $this->classData["Workspaces"];
 		$this->Templates = $this->classData["Templates"];
-		$this->ExtraTemplates = "";
-		$this->ExtraWorkspaces = "";
-		$this->ExtraWorkspacesSelected = "";
-	}
-
-	function formExtraWorkspaces(){
-		$ws = $this->classData['Workspaces'];
-		$ts = $this->classData['Templates'];
-
-// values bekommen aller workspaces, welche hinzugef�gt werden d�rfen.
-		$values = $this->getPathArray($this->getPossibleWorkspaces($ws, true), g_l('global', '[add_workspace]'));
-
-		$arr = makeArrayFromCSV($this->ExtraWorkspaces);
-		foreach($arr as $id){
-			if(isset($values[$id]) || (!we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE))){
-				unset($values[$id]);
-			}
-		}
-
-		if(count($values) == 1){
-			$addbut = "";
-		} else {
-			$textname = md5(uniqid(__FUNCTION__, true));
-			$idname = md5(uniqid(__FUNCTION__, true));
-			$addbut = we_html_tools::htmlSelect($textname, $values, 1, "", false, array('onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'object_add_extraworkspace\',this.options[this.selectedIndex].value);'));
-		}
-
-		$obj = new we_chooser_multiDirAndTemplate(450, $this->ExtraWorkspaces, "object_del_extraworkspace", $addbut, get_ws(FILE_TABLE), $this->ExtraTemplates, "we_" . $this->Name . "_ExtraTemplates", $ts, get_ws(TEMPLATES_TABLE));
-		$obj->CanDelete = true;
-		return $obj->get();
-	}
-
-	function add_extraWorkspace($id){
-		$ExtraWorkspaces = makeArrayFromCSV($this->ExtraWorkspaces);
-		/* $workspaces = makeArrayFromCSV($this->Workspaces);
-		  $templates = makeArrayFromCSV($this->Templates); */
-		$extraTemplates = makeArrayFromCSV($this->ExtraTemplates);
-
-		if(!in_array($id, $ExtraWorkspaces)){
-			$ExtraWorkspaces[] = $id;
-			$tid = $this->getTemplateFromWs($id);
-			$extraTemplates[] = $tid;
-			$this->ExtraWorkspaces = implode(',', $ExtraWorkspaces);
-			$this->ExtraTemplates = implode(',', $extraTemplates);
-		}
-	}
-
-	function del_extraWorkspace($id){
-		$ExtraWorkspaces = makeArrayFromCSV($this->ExtraWorkspaces);
-		$ExtraTemplates = makeArrayFromCSV($this->ExtraTemplates);
-		foreach($ExtraWorkspaces as $key => $val){
-			if($val == $id){
-				unset($ExtraWorkspaces[$key]);
-				unset($ExtraTemplates[$key]);
-				break;
-			}
-		}
-		$tempArr = [];
-
-		foreach($ExtraWorkspaces as $ws){
-			$tempArr[] = $ws;
-		}
-
-		$this->ExtraWorkspaces = implode(',', $tempArr);
-
-		$tempArr = [];
-
-		foreach($ExtraTemplates as $t){
-			$tempArr[] = $t;
-		}
-
-		$this->ExtraTemplates = implode(',', $tempArr);
 	}
 
 	private function getTemplateFromWorkspace(array $wsArr, array $tmplArr, $parentID, $mode = 0){
@@ -1687,17 +1604,9 @@ class we_objectFile extends we_document{
 	function getTemplateID($parentID){
 		$wsArr = makeArrayFromCSV($this->Workspaces);
 		$tmplArr = makeArrayFromCSV($this->Templates);
-		$wsArrExtra = makeArrayFromCSV($this->ExtraWorkspaces);
-		$tmplArrExtra = makeArrayFromCSV($this->ExtraTemplates);
 
-
-		$tid = ($this->getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, 1)? :
-				($this->getTemplateFromWorkspace($wsArrExtra, $tmplArrExtra, $parentID, 1)? :
-					($this->getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, 0)? :
-						$this->getTemplateFromWorkspace($wsArrExtra, $tmplArrExtra, $parentID, 0)
-					)
-				)
-			);
+		$tid = ($this->getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, 1) ?:
+			($this->getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, 0)));
 
 		if(!$tid){
 			if(!empty($tmplArr)){
@@ -1766,7 +1675,7 @@ class we_objectFile extends we_document{
 				if(!empty($this->classData['DefaultUrlfield' . $i])){
 					preg_match('/(.+?)_(.*)/', $this->classData['DefaultUrlfield' . $i], $regs);
 					$cur = $urlfield[$i] = (isset($regs[1]) && $regs[1] !== '' && isset($regs[2]) && $regs[2] !== '' ?
-							$this->geFieldValue($regs[2], $regs[1]) : '');
+						$this->geFieldValue($regs[2], $regs[1]) : '');
 				}
 				if($i > 0 && preg_match('/%urlfield' . $i . '([^%]*)%/', $text, $regs)){
 					$anz = (!$regs[1] ? 64 : abs($regs[1]));
@@ -1842,26 +1751,26 @@ class we_objectFile extends we_document{
 			//remove duplicate "//" which will produce errors and transform URL to lowercase
 			$text = preg_replace('|\.+$|', '', str_replace(array(' ', '//'), array('-', '/'), (OBJECTSEOURLS_LOWERCASE ? strtolower($text) : $text)));
 			$text = (URLENCODE_OBJECTSEOURLS ?
-					str_replace('%2F', '/', urlencode($text)) :
-					preg_replace(['~&szlig;~',
-						'~-*&(.)dash;-*~',
-						'~&(.)uml;~',
-						'~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~',
-						'~&[^;]+;~',
-						'~[^0-9a-zA-Z/._-]~',
-						'~--+~',
-						'~//+~',
-						'~/$~',
-						], ['ss', //ß
-						'-', //~
-						'${1}e', //uml
-						'${1}${3}', //grave
-						'', //;;
-						'', //^a-z
-						'-', //--
-						'/', // //
-						'', // xxx/
-						], htmlentities($text, ENT_COMPAT, $this->Charset)));
+				str_replace('%2F', '/', urlencode($text)) :
+				preg_replace(['~&szlig;~',
+					'~-*&(.)dash;-*~',
+					'~&(.)uml;~',
+					'~&(.)(grave|acute|circ|tilde|ring|cedil|slash|caron);|&(..)(lig);|&#.*;~',
+					'~&[^;]+;~',
+					'~[^0-9a-zA-Z/._-]~',
+					'~--+~',
+					'~//+~',
+					'~/$~',
+					], ['ss', //ß
+					'-', //~
+					'${1}e', //uml
+					'${1}${3}', //grave
+					'', //;;
+					'', //^a-z
+					'-', //--
+					'/', // //
+					'', // xxx/
+					], htmlentities($text, ENT_COMPAT, $this->Charset)));
 			$this->Url = substr($text, 0, 256);
 		} else {
 			$this->Url = '';
@@ -1891,10 +1800,10 @@ class we_objectFile extends we_document{
 						$text .= ' ' . date(g_l('date', '[format][default]'), $v["dat"]);
 						break;
 					case self::TYPE_INT:
-						$text.=' ' . intval($v["dat"]);
+						$text .= ' ' . intval($v["dat"]);
 						break;
 					case self::TYPE_FLOAT:
-						$text.=' ' . floatval($v["dat"]);
+						$text .= ' ' . floatval($v["dat"]);
 						break;
 
 					case self::TYPE_META://FIXME: meta returns the key not the value
@@ -1923,7 +1832,7 @@ class we_objectFile extends we_document{
 			return true;
 		}
 
-		$ws = array_unique(array_merge(explode(',', $this->Workspaces), explode(',', $this->ExtraWorkspacesSelected)));
+		$ws = array_unique(explode(',', $this->Workspaces));
 
 		if(!$ws){
 			return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter([
@@ -1960,7 +1869,7 @@ class we_objectFile extends we_document{
 	}
 
 	function setLanguage($language = ''){
-		$this->Language = $language ? : $this->Language;
+		$this->Language = $language ?: $this->Language;
 		/* $this->DB_WE->query('UPDATE ' . OBJECT_X_TABLE . intval($this->TableID) . ' SET OF_Language="' . $this->DB_WE->escape($this->Language) . '" WHERE OF_ID=' . intval($this->ID)); */
 	}
 
@@ -2022,14 +1931,6 @@ class we_objectFile extends we_document{
 				}
 			}
 			$this->Workspaces = implode(',', $newWs);
-		}
-		if($this->ExtraWorkspaces){
-			$newWs = $this->DB_WE->getAllq('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN(' . trim($this->ExtraWorkspaces, ',') . ') AND IsFolder=1', true);
-			$this->ExtraWorkspaces = implode(',', $newWs, true);
-		}
-		if($this->ExtraWorkspacesSelected){
-			$newWs = $this->DB_WE->getAllq('SELECT ID FROM ' . FILE_TABLE . ' WHERE ID IN(' . trim($this->ExtraWorkspacesSelected, ',') . ') AND IsFolder=1', true);
-			$this->ExtraWorkspacesSelected = implode(',', $newWs);
 		}
 	}
 
@@ -2369,8 +2270,8 @@ class we_objectFile extends we_document{
 
 	public function we_republish($rebuildMain = true){
 		return ($this->Published && $this->ModDate <= $this->Published ?
-				$this->we_publish(true, $rebuildMain) :
-				$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID))
+			$this->we_publish(true, $rebuildMain) :
+			$this->DB_WE->query('DELETE FROM ' . INDEX_TABLE . ' WHERE ClassID=' . $this->TableID . ' AND ID=' . intval($this->ID))
 			);
 	}
 
@@ -2441,16 +2342,6 @@ class we_objectFile extends we_document{
 				}
 				if($this->Templates){
 					$this->Templates = ',' . $this->Templates;
-				}
-				break;
-			case 'we_' . $this->Name . '_ExtraTemplates_0':
-				$this->ExtraTemplates = '';
-				$cnt = count(makeArrayFromCSV($this->ExtraWorkspaces));
-				for($i = 0; $i < $cnt; ++$i){
-					$this->ExtraTemplates .= we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_ExtraTemplates_' . $i) . ',';
-				}
-				if($this->ExtraTemplates){
-					$this->ExtraTemplates = ',' . $this->ExtraTemplates;
 				}
 				break;
 		}
@@ -2584,8 +2475,8 @@ class we_objectFile extends we_document{
 
 	function i_publInScheduleTable(){
 		return (we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) ?
-				we_schedpro::publInScheduleTable($this, $this->DB_WE) :
-				false);
+			we_schedpro::publInScheduleTable($this, $this->DB_WE) :
+			false);
 	}
 
 	protected function i_writeDocument(){
@@ -2609,19 +2500,8 @@ class we_objectFile extends we_document{
 
 		$tableInfo = $this->DB_WE->metadata(OBJECT_X_TABLE . intval($this->TableID));
 
-		if($this->wasUpdate && $this->ExtraWorkspacesSelected){
-			$ews = makeArrayFromCSV($this->ExtraWorkspacesSelected);
-			$ew = makeArrayFromCSV($this->ExtraWorkspaces);
-			$newews = [];
-			foreach($ews as $ws){
-				if(in_array($ws, $ew)){
-					$newews[] = $ws;
-				}
-			}
-			$this->ExtraWorkspacesSelected = implode(',', $newews);
-		}
 		if(!$this->wasUpdate){
-			$this->CreatorID = $this->CreatorID ? : (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0);
+			$this->CreatorID = $this->CreatorID ?: (isset($_SESSION['user']['ID']) ? $_SESSION['user']['ID'] : 0);
 		}
 
 		$data = $regs = [];
@@ -2671,7 +2551,6 @@ class we_objectFile extends we_document{
 		$GLOBALS['we_doc'] = new we_webEditionDocument();
 		$GLOBALS['we_doc']->elements = $this->elements;
 		$GLOBALS['we_doc']->Templates = $this->Templates;
-		$GLOBALS['we_doc']->ExtraTemplates = $this->ExtraTemplates;
 		$GLOBALS['we_doc']->TableID = $this->TableID;
 		$GLOBALS['we_doc']->CreatorID = $this->CreatorID;
 		$GLOBALS['we_doc']->ModifierID = $this->ModifierID;
@@ -2682,7 +2561,7 @@ class we_objectFile extends we_document{
 		$GLOBALS['we_doc']->OF_ID = $this->ID;
 
 		$GLOBALS['we_doc']->InWebEdition = false;
-		$we_include = $includepath ? : $GLOBALS['we_doc']->TemplatePath;
+		$we_include = $includepath ?: $GLOBALS['we_doc']->TemplatePath;
 		ob_start();
 		include($we_include);
 		$contents = ob_get_clean();
@@ -2710,7 +2589,7 @@ class we_objectFile extends we_document{
 
 			foreach(array_keys($_REQUEST) as $n){
 				if(preg_match('/^we_' . $this->Name . '_(' . self::TYPE_HREF . '|' . self::TYPE_MULTIOBJECT . '|' . self::TYPE_IMG . ')$/', $n, $regs)){
-					${$regs[1] . 'Fields'}|=true;
+					${$regs[1] . 'Fields'} |= true;
 				}
 			}
 			if($hrefFields){
@@ -2801,8 +2680,8 @@ class we_objectFile extends we_document{
 		$object->initByID($this->TableID, OBJECT_TABLE);
 
 		return ($checkFields ?
-				$object->canHaveVariants() && !empty($object->getVariantFields()) :
-				$object->canHaveVariants());
+			$object->canHaveVariants() && !empty($object->getVariantFields()) :
+			$object->canHaveVariants());
 	}
 
 	public function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
@@ -2934,10 +2813,10 @@ class we_objectFile extends we_document{
 			return '';
 		}
 
-		$path = $path ? : $_SERVER['SCRIPT_NAME'];
-		$DB_WE = ($DB_WE ? : new DB_WE());
+		$path = $path ?: $_SERVER['SCRIPT_NAME'];
+		$DB_WE = ($DB_WE ?: new DB_WE());
 
-		$foo = getHash('SELECT of.Published,of.Workspaces,of.ExtraWorkspacesSelected,of.TriggerID,f.Published AS fPub FROM ' . OBJECT_FILES_TABLE . ' of LEFT JOIN ' . FILE_TABLE . ' f ON (of.TriggerID=f.ID AND f.IsDynamic=1) WHERE of.ID=' . intval($id), $DB_WE);
+		$foo = getHash('SELECT of.Published,of.Workspaces,of.TriggerID,f.Published AS fPub FROM ' . OBJECT_FILES_TABLE . ' of LEFT JOIN ' . FILE_TABLE . ' f ON (of.TriggerID=f.ID AND f.IsDynamic=1) WHERE of.ID=' . intval($id), $DB_WE);
 
 		if(!$foo){
 			return '';
@@ -2956,13 +2835,13 @@ class we_objectFile extends we_document{
 		$showLink = false;
 		//note: /=0, so "0" is a valid wsp
 		if($foo['Workspaces'] !== ''){
-			$wsp = array_merge(explode(',', trim($foo['Workspaces'], ',')), explode(',', trim($foo['ExtraWorkspacesSelected'], ',')));
-			if(we_users_util::in_workspace(($foo['TriggerID'] ? : $pid), $wsp, FILE_TABLE, $DB_WE)){
+			$wsp = explode(',', trim($foo['Workspaces'], ','));
+			if(we_users_util::in_workspace(($foo['TriggerID'] ?: $pid), $wsp, FILE_TABLE, $DB_WE)){
 				$showLink = true;
 			}
 		}
 		if($showLink){
-			$path = ($foo['TriggerID'] ? id_to_path($foo['TriggerID']) : self::getNextDynDoc($path, $pid, $foo['Workspaces'], $foo['ExtraWorkspacesSelected'], $DB_WE));
+			$path = ($foo['TriggerID'] ? id_to_path($foo['TriggerID']) : self::getNextDynDoc($path, $pid, $foo['Workspaces'], 0, $DB_WE));
 			if(!$path){
 				return '';
 			}
@@ -2976,8 +2855,8 @@ class we_objectFile extends we_document{
 					if($objectdaten['Url']){
 						return ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
 							($hidedirindex && seoIndexHide($path_parts['basename']) ?
-								'' :
-								$path_parts['filename'] . '/' ) .
+							'' :
+							$path_parts['filename'] . '/' ) .
 							$objectdaten['Url'] . $pidstr;
 					}
 				}
@@ -3001,12 +2880,13 @@ class we_objectFile extends we_document{
 	}
 
 	//Fix: #10219 leave this public while using in redirectSEOurls.php!
+	//FIXME: remove $ws2?
 	public static function getNextDynDoc($path, $pid, $ws1, $ws2, we_database_base $DB_WE){
 		if($path && f('SELECT IsDynamic FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND Path="' . $DB_WE->escape($path) . '" LIMIT 1', '', $DB_WE)){
 			return $path;
 		}
 
-		return (we_users_util::in_workspace($pid, $ws1) || we_users_util::in_workspace($pid, $ws2)) ?
+		return (we_users_util::in_workspace($pid, $ws1) || ($ws2 && we_users_util::in_workspace($pid, $ws2))) ?
 			f('SELECT Path FROM ' . FILE_TABLE . ' WHERE Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" AND IsDynamic=1 AND Path LIKE "' . id_to_path(intval($pid), FILE_TABLE, $DB_WE) . '%" ORDER BY CHAR_LENGTH(Path) LIMIT 1', '', $DB_WE) :
 			'';
 	}
@@ -3095,36 +2975,25 @@ class we_objectFile extends we_document{
 				'icon' => "charset.gif"
 			);
 		} elseif($this->hasWorkspaces()){ //	Show workspaces
-			$parts = array(
-				array(
-					"headline" => g_l('weClass', '[workspaces]'),
-					"html" => $this->formWorkspaces(),
-					'space' => we_html_multiIconBox::SPACE_MED2,
-					'noline' => 1,
-					'icon' => "workspace.gif"
-				),
-				array(
-					"headline" => g_l('weClass', '[extraWorkspaces]'),
-					"html" => $this->formExtraWorkspaces(),
-					'space' => we_html_multiIconBox::SPACE_MED2,
-					"forceRightHeadline" => 1
-				)
-			);
+			$parts = [["headline" => g_l('weClass', '[workspaces]'),
+				"html" => $this->formWorkspaces(),
+				'space' => we_html_multiIconBox::SPACE_MED2,
+				'noline' => 1,
+				'icon' => "workspace.gif"
+				],
+			];
 
 			$button = we_html_button::create_button('ws_from_class', "javascript:we_cmd('object_ws_from_class');_EditorFrame.setEditorIsHot(true);");
 
-			$parts[] = array(
-				"headline" => "",
+			$parts[] = ["headline" => "",
 				"html" => $button,
 				'space' => we_html_multiIconBox::SPACE_MED2
-			);
+			];
 		} else { //	No workspaces defined
-			$parts = array(
-				array(
-					"headline" => "",
-					"html" => g_l('modules_object', '[no_workspace_defined]'),
-				)
-			);
+			$parts = [["headline" => "",
+				"html" => g_l('modules_object', '[no_workspace_defined]'),
+				]
+			];
 		}
 		return we_html_multiIconBox::getHTML('PropertyPage', $parts);
 	}
@@ -3163,7 +3032,7 @@ class we_objectFile extends we_document{
 			$pid_tail[] = 'of.Workspaces=""';
 		}
 		foreach($parentIDs as $pid){
-			$pid_tail[] = 'FIND_IN_SET(' . intval($pid) . ',of.Workspaces) OR FIND_IN_SET(' . intval($pid) . ',of.ExtraWorkspacesSelected)';
+			$pid_tail[] = 'FIND_IN_SET(' . intval($pid) . ',of.Workspaces)';
 		}
 		return ($pid_tail ? ' (' . implode(' OR ', $pid_tail) . ') ' : 1);
 	}
