@@ -138,7 +138,7 @@ echo we_html_tools::getHtmlTop('', '', '',  we_html_element::cssLink(CSS_DIR . '
 		'onload' => '_EditorFrame.setEditorEditPageNr(' . $we_doc->EditPageNr . ');' .
 		($GLOBALS['we_doc']->ContentType != we_base_ContentTypes::TEMPLATE ? 'parent.openedWithWE=true;' : '') .
 		"WE().layout.we_setPath(_EditorFrame,'" . $we_doc->Path . "','" . ($we_doc->Filename ? $we_doc->Filename . (isset($we_doc->Extension) ? $we_doc->Extension : '') : $we_doc->Text) . "', " . intval($we_doc->ID) . ",'" . ($we_doc->Published == 0 ? 'notpublished' : ($we_doc->Table !== TEMPLATES_TABLE && $we_doc->Table !== VFILE_TABLE && $we_doc->ModDate > $we_doc->Published ? 'changed' : 'published')) . "');weTabs.setFrameSize();"
-		]), we_html_element::htmlDiv(['id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], '<div id="headrow">&nbsp;' . ($we_doc->ContentType ? we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) : '') . ': ' .
+		]), we_html_element::htmlDiv(['id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], ($we_doc->ContentType ? we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('contentTypes', '[' . $we_doc->ContentType . ']'))) : '') . ': ' .
 				($we_doc->Table == FILE_TABLE && $we_doc->ID ? '<a href="' . WEBEDITION_DIR . 'openBrowser.php?url=' . $we_doc->ID . '" target="browser">' : '') .
 				'<span id="h_path" class="bold cutText"></span>' . ($we_doc->Table == FILE_TABLE && $we_doc->ID ? '</a>' : '') . ' (ID: <span id="h_id"></span>)' .
 				$extraHead
