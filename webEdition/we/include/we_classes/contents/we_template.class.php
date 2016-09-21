@@ -303,7 +303,7 @@ we_templateInit();?>';
 		} else {
 			return parseError(g_l('parser', '[html_tags]')) . '<?php exit();?><!-- current parsed template code for debugging -->' . $code;
 		}
-		$code = strtr_replace($code, [
+		$code = strtr($code, [
 			'exit(' => 'we_TemplateExit(',
 			'die(' => 'we_TemplateExit(',
 			'exit;' => 'we_TemplateExit();'

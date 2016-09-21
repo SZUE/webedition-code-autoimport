@@ -47,8 +47,8 @@ function getHttpOption(){
 	if(ini_get('allow_url_fopen') != 1){
 		@ini_set('allow_url_fopen', '1');
 		return (ini_get('allow_url_fopen') != 1 ?
-				(function_exists('curl_init') ? 'curl' : 'none') :
-				'fopen');
+			(function_exists('curl_init') ? 'curl' : 'none') :
+			'fopen');
 	}
 	return 'fopen';
 }
@@ -88,7 +88,7 @@ function getHTTP($server, $url, &$status, $port = '', $username = '', $password 
 			return ($fh ? $page : 'Server Error: Failed opening URL: ' . $server . $url);
 		case 'curl':
 			$response = we_base_util::getCurlHttp($server, $url, []);
-			$status = $response['status']? : 200;
+			$status = $response['status'] ?: 200;
 			return ($response['status'] ? $response['error'] : $response['data']);
 		default:
 			return 'Server error: Unable to open URL (php configuration directive allow_url_fopen=Off)';
@@ -185,7 +185,7 @@ function we_make_attribs($attribs, $doNotUse = ''){
 }
 
 function we_getParentIDs($table, $id, &$ids, we_database_base $db = null){
-	$db = $db ? : new DB_WE();
+	$db = $db ?: new DB_WE();
 	while(($pid = f('SELECT ParentID FROM ' . $db->escape($table) . ' WHERE ID=' . intval($id), '', $db)) > 0){
 		$id = $pid; // #5836
 		$ids[] = $id;
@@ -214,7 +214,7 @@ function in_parentID($id, $pid, $table = FILE_TABLE, we_database_base $db = null
 	if(intval($pid) == 0 || $id == $pid || ($id == '' && $id != '0')){
 		return true;
 	}
-	$db = $db ? : new DB_WE();
+	$db = $db ?: new DB_WE();
 
 	$found = [];
 	$p = intval($id);
@@ -241,7 +241,7 @@ function path_to_id($path, $table = FILE_TABLE, we_database_base $db = null, $as
 	if(!is_array($path)){
 		$path = [$path];
 	}
-	$db = ($db ? : $GLOBALS['DB_WE']);
+	$db = ($db ?: $GLOBALS['DB_WE']);
 	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE Path IN ("' . implode('","', array_map('escape_sql_query', array_map('trim', $path))) . '")');
 	$ret = (in_array('/', $path) ? [0] : []) + $db->getAll(true);
 	return $asArray ? $ret : implode(',', $ret);
@@ -252,7 +252,7 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asA
 		return ($asArray ? [0 => '/'] : '/');
 	}
 
-	$db = $db ? : $GLOBALS['DB_WE'];
+	$db = $db ?: $GLOBALS['DB_WE'];
 
 	if(!is_array($IDs)){
 		$IDs = makeArrayFromCSV($IDs);
@@ -263,14 +263,14 @@ function id_to_path($IDs, $table = FILE_TABLE, we_database_base $db = null, $asA
 			break;
 		default:
 			$select = ($endslash ?
-					'IF(IsFolder=1,CONCAT(Path,"/"),Path)' :
-					'Path');
+				'IF(IsFolder=1,CONCAT(Path,"/"),Path)' :
+				'Path');
 	}
 
 	$foo = (in_array(0, $IDs) ? [0 => '/'] : []) +
 		($IDs ?
-			$db->getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false) :
-			[]
+		$db->getAllFirstq('SELECT ID,' . $select . ' FROM ' . $db->escape($table) . ' WHERE ID IN(' . implode(',', array_map('intval', $IDs)) . ')' . ($isPublished ? ' AND Published>0' : ''), false) :
+		[]
 		);
 
 	return $asArray ? $foo : implode(',', $foo);
@@ -323,7 +323,7 @@ function pushChildsFromArr(&$arr, $table = FILE_TABLE, $isFolder = ''){
 }
 
 function pushChilds(&$arr, $id, $table = FILE_TABLE, $isFolder = '', we_database_base $db = null){
-	$db = $db? : new DB_WE();
+	$db = $db ?: new DB_WE();
 	$arr[] = $id;
 	$db->query('SELECT ID FROM ' . $db->escape($table) . ' WHERE ParentID=' . intval($id) . (($isFolder != '' || $isFolder === 0) ? (' AND IsFolder=' . intval($isFolder)) : ''));
 	$all = $db->getAll(true);
@@ -345,7 +345,7 @@ function get_ws($table = FILE_TABLE, $asArray = false){
 }
 
 function we_readParents($id, &$parentlist, $tab, $match = 'ContentType', $matchvalue = 'folder', we_database_base $db = null){
-	$db = $db ? : new DB_WE();
+	$db = $db ?: new DB_WE();
 	if(($pid = f('SELECT ParentID FROM ' . $db->escape($tab) . ' WHERE ID=' . intval($id), '', $db)) !== ''){
 		if($pid == 0){
 			$parentlist[] = $pid;
@@ -360,7 +360,7 @@ function we_readChilds($pid, &$childlist, $tab, $folderOnly = true, $where = '',
 	if(empty($pid)){
 		return;
 	}
-	$db = $db ? : new DB_WE();
+	$db = $db ?: new DB_WE();
 	$db->query('SELECT ID,' . $db->escape($match) . ' FROM ' . $db->escape($tab) . ' WHERE ' . ($folderOnly ? ' IsFolder=1 AND ' : '') . 'ParentID IN (' . (is_array($pid) ? implode(',', $pid) : intval($pid)) . ') ' . $where);
 	$todo = [];
 	while($db->next_record()){
@@ -567,8 +567,8 @@ function getUploadMaxFilesize($mysql = false, we_database_base $db = null){
 	$min = min($post_max_size, $upload_max_filesize, ($mysql ? $db->getMaxAllowedPacket() : PHP_INT_MAX));
 
 	return (intval(FILE_UPLOAD_MAX_UPLOAD_SIZE) == 0 ?
-			$min :
-			min(FILE_UPLOAD_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
+		$min :
+		min(FILE_UPLOAD_MAX_UPLOAD_SIZE * 1024 * 1024, $min));
 }
 
 function we_convertIniSizes($in){
@@ -583,7 +583,7 @@ function we_convertIniSizes($in){
 }
 
 function we_getDocumentByID($id, $includepath = '', we_database_base $db = null, &$charset = ''){
-	$db = $db ? : new DB_WE();
+	$db = $db ?: new DB_WE();
 // look what document it is and get the className
 	$clNm = f('SELECT ClassName FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id), '', $db);
 
@@ -600,7 +600,7 @@ function we_getDocumentByID($id, $includepath = '', we_database_base $db = null,
 
 	$GLOBALS['we_doc']->initByID($id, FILE_TABLE, we_class::LOAD_MAID_DB);
 	$content = $GLOBALS['we_doc']->i_getDocument($includepath);
-	$charset = $GLOBALS['we_doc']->getElement('Charset')? : DEFAULT_CHARSET;
+	$charset = $GLOBALS['we_doc']->getElement('Charset') ?: DEFAULT_CHARSET;
 
 	if(isset($backupdoc)){
 		$GLOBALS['we_doc'] = $backupdoc;
@@ -694,13 +694,13 @@ function getHtmlTag($element, $attribs = [], $content = '', $forceEndTag = false
 
 	foreach($attribs as $k => $v){
 		$tag .= ' ' . ($k === 'link_attribute' ? // Bug #3741
-				$v :
-				str_replace('pass_', '', $k) . '="' . $v . '"');
+			$v :
+			str_replace('pass_', '', $k) . '="' . $v . '"');
 	}
 	return $tag . ($content || $forceEndTag ? //	use endtag
-			'>' . $content . '</' . $element . '>' :
+		'>' . $content . '</' . $element . '>' :
 //	xml style or not
-			( ($xhtml && !$onlyStartTag) ? ' />' : '>'));
+		( ($xhtml && !$onlyStartTag) ? ' />' : '>'));
 }
 
 /**
@@ -727,8 +727,8 @@ function getWeFrontendLanguagesForBackend(){
 	foreach($GLOBALS['weFrontendLanguages'] as $Locale){
 		$temp = explode('_', $Locale);
 		$la[$Locale] = (count($temp) == 1 ?
-				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' ' . $Locale) :
-				CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' (' . we_base_country::getTranslation($temp[1], we_base_country::TERRITORY, $targetLang) . ') ' . $Locale));
+			CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' ' . $Locale) :
+			CheckAndConvertISObackend(we_base_country::getTranslation($temp[0], we_base_country::LANGUAGE, $targetLang) . ' (' . we_base_country::getTranslation($temp[1], we_base_country::TERRITORY, $targetLang) . ') ' . $Locale));
 	}
 	return $la;
 }
@@ -779,8 +779,8 @@ function register_g_l_dir($dir){
 function g_l_encodeArray($tmp){
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ? $GLOBALS['WE_BACKENDCHARSET'] : (isset($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : $GLOBALS['WE_BACKENDCHARSET']));
 	return (is_array($tmp) ?
-			array_map(__METHOD__, $tmp) :
-			mb_convert_encoding($tmp, $charset, 'UTF-8'));
+		array_map(__METHOD__, $tmp) :
+		mb_convert_encoding($tmp, $charset, 'UTF-8'));
 }
 
 /**
@@ -796,9 +796,9 @@ function g_l($name, $specific, $omitErrors = false){
 	//t_e($name,$specific,$GLOBALS['we']['PageCharset'] , $GLOBALS['WE_BACKENDCHARSET']);
 	$charset = (isset($_SESSION['user']) && isset($_SESSION['user']['isWeSession']) ?
 //inside we
-			(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
+		(isset($GLOBALS['we']['PageCharset']) ? $GLOBALS['we']['PageCharset'] : $GLOBALS['WE_BACKENDCHARSET']) :
 //front-end
-			(!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
+		(!empty($GLOBALS['CHARSET']) ? $GLOBALS['CHARSET'] : DEFAULT_CHARSET) );
 //	return $name.$specific;
 //cache last accessed lang var
 	static $cache = [];
@@ -807,11 +807,11 @@ function g_l($name, $specific, $omitErrors = false){
 		$tmp = getVarArray($cache['l_' . $name], $specific);
 		if(!($tmp === false)){
 			return ($charset != 'UTF-8' ?
-					(is_array($tmp) ?
-						array_map('g_l_encodeArray', $tmp) :
-						mb_convert_encoding($tmp, $charset, 'UTF-8')
-					) :
-					$tmp);
+				(is_array($tmp) ?
+				array_map('g_l_encodeArray', $tmp) :
+				mb_convert_encoding($tmp, $charset, 'UTF-8')
+				) :
+				$tmp);
 		}
 	}
 	$dirs = (empty($_SESSION['weS']['gl']) ? [] : $_SESSION['weS']['gl']);
@@ -838,11 +838,11 @@ function g_l($name, $specific, $omitErrors = false){
 	if($tmp !== false){
 		$cache['l_' . $name] = ${'l_' . $name};
 		return ($charset != 'UTF-8' ?
-				(is_array($tmp) ?
-					array_map('g_l_encodeArray', $tmp) :
-					mb_convert_encoding($tmp, $charset, 'UTF-8')
-				) :
-				$tmp);
+			(is_array($tmp) ?
+			array_map('g_l_encodeArray', $tmp) :
+			mb_convert_encoding($tmp, $charset, 'UTF-8')
+			) :
+			$tmp);
 	}
 	if(!$omitErrors){
 		t_e('notice', 'Requested lang entry l_' . $name . $specific . ' not found in ' . $file . ' !');
@@ -1088,7 +1088,7 @@ function we_unserialize($string, $default = [], $quiet = false){
 	//compressed?
 	if($string && $string[0] === 'x'){
 		$try = @gzuncompress($string);
-		$string = $try? : $string;
+		$string = $try ?: $string;
 	}
 	//no content, return default
 	if($string === '' || $string === false){
@@ -1097,9 +1097,23 @@ function we_unserialize($string, $default = [], $quiet = false){
 	//std-serialized data by php
 	if(preg_match('/^[asO]:\d+:|^b:[01];/', $string)){
 		$ret = @unserialize($string);
+		if(!$ret){
+			$ret = @unserialize(utf8_decode($string));
+		}
+		if(!$ret){
+			$ret = @unserialize(utf8_encode($string));
+		}
+
 		//unserialize failed, we try to eliminate \r which seems to be a cause for this
 		if(!$ret && strlen($string) > 6){
-			$ret = @unserialize(str_replace("\r", '', $string));
+			$string = str_replace("\r", '', $string);
+			$ret = @unserialize($string);
+			if(!$ret){
+				$ret = @unserialize(utf8_decode($string));
+			}
+			if(!$ret){
+				$ret = @unserialize(utf8_encode($string));
+			}
 		}
 		return ($ret === false ? $default : $ret);
 	}
@@ -1111,7 +1125,7 @@ function we_unserialize($string, $default = [], $quiet = false){
 		}
 		//non UTF-8 json decode
 		static $json = null;
-		$json = $json ? : new Services_JSON(16/* SERVICES_JSON_LOOSE_TYPE */ | Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
+		$json = $json ?: new Services_JSON(16/* SERVICES_JSON_LOOSE_TYPE */ | Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
 		return (array) $json->decode(str_replace("\n", '\n', $string));
 	}
 	//data is really not serialized!
@@ -1150,7 +1164,7 @@ function we_serialize($array, $target = SERIALIZE_PHP, $numeric = false, $compre
 					break;
 				}
 				static $json = null;
-				$json = $json? : new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
+				$json = $json ?: new Services_JSON(Services_JSON::SERVICES_JSON_USE_NO_CHARSET_CONVERSION);
 				$ret = $json->encode($array, false);
 				if($ret){
 					break;
@@ -1178,7 +1192,7 @@ function setDynamicVar($data){
 }
 
 function updateAvailable(){
-	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json')? : ''), true);
+	$versionInfo = json_decode((we_base_file::load(WE_CACHE_PATH . 'newwe_version.json') ?: ''), true);
 	if($versionInfo && (version_compare($versionInfo['dotted'], WE_VERSION) > 0 /* ||
 		  //in branched mode, we compare svn revisions
 		  ( WE_VERSION_BRANCH != "" && intval(WE_SVNREV) < intval($versionInfo['svnrevision'])
