@@ -1304,8 +1304,17 @@ function we_cmd_base(args, url) {
 				opener.document.we_form.elements[args[1].JSTextName].value = '';
 			}
 			break;
+
+		case "add_cat":
+			url += "&we_cmd[1]=" + args[1].allIDs.join(",");
+			doReloadCmd(args, url, true);
+			break;
+
 		case "copyDocumentSelect":
 			url += "&we_cmd[1]=" + args[1].currentID;
+			doReloadCmd(args, url, true);
+			break;
+
 		case "update_image":
 		case "update_file":
 		case "copyDocument":
@@ -1326,7 +1335,6 @@ function we_cmd_base(args, url) {
 		case "remove_image":
 		case "delete_link":
 		case "delete_cat":
-		case "add_cat":
 		case "delete_all_cats":
 		case "schedule_add":
 		case "schedule_del":
@@ -1338,10 +1346,8 @@ function we_cmd_base(args, url) {
 		case "delete_navi":
 		case "delete_all_navi":
 		case "reload_hot_editpage":
-			// set Editor hot
-			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
-			_EditorFrame.setEditorIsHot(true);
-			/* falls through */
+			doReloadCmd(args, url, true);
+			break;
 		case "reload_editpage":
 		case "wrap_on_off":
 		case "restore_defaults":
@@ -1354,39 +1360,7 @@ function we_cmd_base(args, url) {
 		case "doImage_convertJPEG":
 		case "doImage_crop":
 		case "revert_published":
-			if (top.setScrollTo) {
-				setScrollTo();
-			}
-			// get editor root frame of active tab
-			var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
-			// get visible frame for displaying editor page
-			var _visibleEditorFrame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
-			// if cmd equals "reload_editpage" and there are parameters, attach them to the url
-			if (args[0] === "reload_editpage" || args[0] === "reload_hot_editpage") {
-				url += (_currentEditorRootFrame.parameters ? _currentEditorRootFrame.parameters : '') +
-								(args[1] ? '#f' + args[1] : '');
-			} else if (args[0] === "remove_image" && args[2]) {
-				url += '#f' + args[2];
-			}
-
-			// focus visible editor frame
-			if (_visibleEditorFrame) {
-				_visibleEditorFrame.focus();
-			}
-
-			if (_currentEditorRootFrame) {
-				if (!WE().util.we_sbmtFrm(_visibleEditorFrame, url, _visibleEditorFrame)) {
-					if (args[0] !== "update_image") {
-						// add we_transaction, if not set
-						if (!args[2]) {
-							args[2] = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorTransaction();
-						}
-						url += "&we_transaction=" + args[2];
-					}
-					we_repl(_visibleEditorFrame, url, args[0]);
-				}
-			}
-
+			doReloadCmd(args, url, false);
 			break;
 		case "edit_document_with_parameters":
 		case "edit_document":
@@ -1893,4 +1867,43 @@ function we_cmd_base(args, url) {
 			return false;
 	}
 	return true;
+}
+function doReloadCmd(args, url, hot) {
+	if (hot) {
+		// set Editor hot
+		var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+		_EditorFrame.setEditorIsHot(true);
+	}
+	if (top.setScrollTo) {
+		setScrollTo();
+	}
+	// get editor root frame of active tab
+	var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
+	// get visible frame for displaying editor page
+	var _visibleEditorFrame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+	// if cmd equals "reload_editpage" and there are parameters, attach them to the url
+	if (args[0] === "reload_editpage" || args[0] === "reload_hot_editpage") {
+		url += (_currentEditorRootFrame.parameters ? _currentEditorRootFrame.parameters : '') +
+						(args[1] ? '#f' + args[1] : '');
+	} else if (args[0] === "remove_image" && args[2]) {
+		url += '#f' + args[2];
+	}
+
+	// focus visible editor frame
+	if (_visibleEditorFrame) {
+		_visibleEditorFrame.focus();
+	}
+
+	if (_currentEditorRootFrame) {
+		if (!WE().util.we_sbmtFrm(_visibleEditorFrame, url, _visibleEditorFrame)) {
+			if (args[0] !== "update_image") {
+				// add we_transaction, if not set
+				if (!args[2]) {
+					args[2] = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorTransaction();
+				}
+				url += "&we_transaction=" + args[2];
+			}
+			we_repl(_visibleEditorFrame, url, args[0]);
+		}
+	}
 }

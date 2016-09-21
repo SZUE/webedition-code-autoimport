@@ -67,6 +67,11 @@ function we_cmd() {
 			submitForm();
 			break;
 		case "add_cat":
+		case "add_customer":
+			document.we_form.ncmd.value = args[0];
+			document.we_form.ncmdvalue.value = args[1].allIDs.join(",");
+			submitForm();
+			break;
 		case "del_cat":
 		case "del_all_cats":
 		case "del_file":
@@ -75,7 +80,6 @@ function we_cmd() {
 		case "del_customer":
 		case "del_all_customers":
 		case "del_all_folders":
-		case "add_customer":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.ncmdvalue.value = args[1];
 			submitForm();

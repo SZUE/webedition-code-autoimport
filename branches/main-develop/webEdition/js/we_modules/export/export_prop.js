@@ -50,6 +50,12 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
 			break;
 		case "add_cat":
+			document.we_form.cmd.value = args[0];
+			top.content.editor.edbody.document.we_form.pnt.value = "edbody";
+			document.we_form.tabnr.value = top.content.activ_tab;
+			document.we_form.cat.value = args[1].allIDs.join(",");
+			submitForm();
+			break;
 		case "del_cat":
 		case "del_all_cats":
 			document.we_form.cmd.value = args[0];

@@ -81,8 +81,15 @@ function we_cmd_object(args, url) {
 			WE().util.we_sbmtFrm(top.load, url);
 			break;
 		case "object_add_workspace":
-		case "object_del_workspace":
 		case "object_add_css":
+			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
+				url += "&we_cmd[1]=" + args[1].allIDs.join(",");
+				url += "&we_transaction=" + args[2];
+				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
+			}
+			break;
+
+		case "object_del_workspace":
 		case "object_del_css":
 		case "object_changeTempl_ob":
 		case "object_ws_from_class":

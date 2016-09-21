@@ -103,11 +103,12 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "add_dt_template":
+		case "dt_add_cat":
 			url += "&we_cmd[1]=" + args[1].allIDs.join(",");
 			we_save_docType(this.name, url);
 			break;
+
 		case "delete_dt_template":
-		case "dt_add_cat":
 		case "dt_delete_cat":
 		case "save_docType":
 			we_save_docType(this.name, url);

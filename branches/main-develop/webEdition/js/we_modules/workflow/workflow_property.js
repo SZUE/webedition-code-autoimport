@@ -47,13 +47,17 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_objectselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true);
 			break;
 		case "add_cat":
+		case "add_objcat":
+			document.we_form.wcmd.value = args[0];
+			document.we_form.wcat.value = args[1].allIDs.join(",");
+			submitForm();
+			break;
 		case "del_cat":
 		case "del_all_cats":
 			document.we_form.wcmd.value = args[0];
 			document.we_form.wcat.value = args[1];
 			submitForm();
 			break;
-		case "add_objcat":
 		case "del_objcat":
 		case "del_all_objcats":
 			document.we_form.wcmd.value = args[0];
