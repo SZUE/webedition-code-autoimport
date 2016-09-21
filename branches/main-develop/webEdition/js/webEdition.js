@@ -491,10 +491,10 @@ var WebEdition = {
 		getWe_cmdArgsUrl: function (args, base) {
 			var url = (base === undefined ? WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?" : base);
 
-			if (Object.prototype.toString.call(args) === '[object Array]') {
+			if (Array.isArray(args)) {
 				var pos = 0;
 				for (var i = 0; i < args.length; i++) {
-					if (Object.prototype.toString.call(args[i]) !== '[object Object]') {
+					if (typeof (args[i]) !== 'object') {
 						url += "we_cmd[" + pos + "]=" + encodeURIComponent(args[i]) + (i < (args.length - 1) ? "&" : "");
 						pos++;
 					}
