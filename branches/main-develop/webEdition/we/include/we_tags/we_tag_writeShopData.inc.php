@@ -31,7 +31,7 @@ we_base_moduleInfo::isActive(we_base_moduleInfo::SHOP);
  * @return         void
  */
 function we_tag_writeShopData(array $attribs){
-
+	$GLOBALS['ERROR']['writeShopData'] = false;
 	$name = weTag_getAttribute('name', $attribs, '', we_base_request::STRING);
 	if(($foo = attributFehltError($attribs, 'pricename', __FUNCTION__))){
 		return $foo;
@@ -61,6 +61,7 @@ function we_tag_writeShopData(array $attribs){
 
 	// Check for Shop being set
 	if(!isset($GLOBALS[$shopname])){
+		$GLOBALS['ERROR']['writeShopData'] = true;
 		return;
 	}
 	$basket = $GLOBALS[$shopname];
@@ -68,6 +69,7 @@ function we_tag_writeShopData(array $attribs){
 	$cartFields = $basket->getCartFields();
 
 	if(empty($shoppingItems)){
+		$GLOBALS['ERROR']['writeShopData'] = true;
 		return;
 	}
 
@@ -153,6 +155,7 @@ function we_tag_writeShopData(array $attribs){
 
 			t_e('error during write shop data contents of basket', $shoppingItems);
 			echo 'Data Insert Failed';
+			$GLOBALS['ERROR']['writeShopData'] = true;
 			return;
 		}
 	}
