@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_workflow(args, url) {
+we_cmd_modules.workflow = function (args, url) {
 	switch (args[0]) {
 		case "workflow_isIn":
 		case "workflow_pass":
@@ -51,4 +51,4 @@ function we_cmd_workflow(args, url) {
 			return true;
 	}
 	return false;
-}
+};

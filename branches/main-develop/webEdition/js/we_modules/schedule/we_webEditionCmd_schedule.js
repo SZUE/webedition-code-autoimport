@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_schedule(args, url) {
+we_cmd_modules.schedule = function (args, url) {
 	switch (args[0]) {
 		case "edit_schedule":
 		case "schedule_edit_ifthere":
@@ -30,4 +30,4 @@ function we_cmd_schedule(args, url) {
 			return true;
 	}
 	return false;
-}
+};

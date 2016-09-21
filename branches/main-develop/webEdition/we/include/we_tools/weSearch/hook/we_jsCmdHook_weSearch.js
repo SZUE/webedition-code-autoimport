@@ -21,11 +21,11 @@
  * @package    webEdition_base
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_tool_weSearch(args, url) {
+we_cmd_modules.tool_weSearch = function (args, url) {
 	switch (args[0]) {
-/*		case "tool_weSearch_edit":
-			new (WE().util.jsWindow)(window, url, "tool_window_weSearch", -1, -1, 970, 760, true, true, true, true);
-			break;*/
+		/*		case "tool_weSearch_edit":
+		 new (WE().util.jsWindow)(window, url, "tool_window_weSearch", -1, -1, 970, 760, true, true, true, true);
+		 break;*/
 		case "tool_weSearch_new_forDocuments":
 		case "tool_weSearch_new_forTemplates":
 		case "tool_weSearch_new_forObjects":
@@ -43,4 +43,4 @@ function we_cmd_tool_weSearch(args, url) {
 			return false;
 	}
 	return true;
-}
+};

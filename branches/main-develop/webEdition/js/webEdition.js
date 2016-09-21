@@ -1034,644 +1034,670 @@ function we_showInNewTab(args, url) {
 	}
 }
 
-function we_cmd_base(args, url) {
-	var ctrl, cType, eTable, nextWindow, width, widthSidebar;
-	switch (args[0]) {
-		case "loadVTab":
-			var op = top.treeData.makeFoldersOpenString();
-			parent.we_cmd("load", args[1], 0, op, top.treeData.table);
-			break;
-		case "exit_modules":
-			WE().util.jsWindow.prototype.closeByName('edit_module');
-			break;
-		case "openUnpublishedObjects":
-			we_cmd("tool_weSearch_edit", "", "", 7, 3);
-			break;
-		case "openUnpublishedPages":
-			we_cmd("tool_weSearch_edit", "", "", 4, 3);
-			break;
-		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
-			break;
-		case "openSidebar":
-			WE().layout.sidebar.open("default");
-			break;
-		case "loadSidebarDocument":
-			top.weSidebarContent.location.href = url;
-			break;
-		case "versions_preview":
-			new (WE().util.jsWindow)(this, url, "version_preview", -1, -1, 1000, 750, true, false, true, false);
-			break;
-		case "versions_wizard":
-			new (WE().util.jsWindow)(this, url, "versions_wizard", -1, -1, 600, 620, true, false, true);
-			break;
-		case "versioning_log":
-			new (WE().util.jsWindow)(this, url, "versioning_log", -1, -1, 600, 500, true, false, true);
-			break;
 
-		case "delete_single_document_question":
-			ctrl = WE().layout.weEditorFrameController;
-			cType = ctrl.getActiveEditorFrame().getEditorContentType();
-			eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
-			var path = ctrl.getActiveEditorFrame().getEditorDocumentPath();
+function we_cmd() {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+	//	When coming from a we_cmd, always mark the document as opened with we !!!!
+	if (WE().layout.weEditorFrameController.getActiveDocumentReference) {
 
-			if (ctrl.getActiveDocumentReference()) {
-				if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
-					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
-				} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
-					url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
-					WE().util.we_sbmtFrm(window.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
-				}
-			} else {
-				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
-			}
-			break;
-		case "delete_single_document":
-			ctrl = WE().layout.weEditorFrameController;
-			cType = ctrl.getActiveEditorFrame().getEditorContentType();
-			eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
-
-			if (ctrl.getActiveDocumentReference()) {
-				if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
-					top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
-				} else {
-					WE().util.we_sbmtFrm(window.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
-				}
-			} else {
-				top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
-			}
-			break;
-		case "do_delete":
-			WE().util.we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
-			break;
-		case "move_single_document":
-			WE().util.we_sbmtFrm(window.load, url, WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
-			break;
-		case "do_move":
-			WE().util.we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
-			break;
-		case "do_addToCollection":
-			WE().util.we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
-			break;
-		case "change_passwd":
-			new (WE().util.jsWindow)(this, url, "we_change_passwd", -1, -1, 300, 300, true, false, true, false);
-			break;
-		case "update":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
-			break;
-		case "upgrade":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=upgrade", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
-			break;
-		case "languageinstallation":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=languages", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
-			break;
-		case "del":
-			we_cmd('delete', 1, args[2]);
-			treeData.setState(treeData.tree_states.select);
-			top.treeData.unselectNode();
-			top.drawTree();
-			break;
-		case "mv":
-			we_cmd('move', 1, args[2]);
-			treeData.setState(treeData.tree_states.selectitem);
-			top.treeData.unselectNode();
-			top.drawTree();
-			break;//add_to_collection
-		case "tocollection":
-			we_cmd('addToCollection', 1, args[2]);
-			treeData.setState(treeData.tree_states.select);
-			top.treeData.unselectNode();
-			top.drawTree();
-			break;
-		case "changeLanguageRecursive":
-		case "changeTriggerIDRecursive":
-			we_repl(window.load, url, args[0]);
-			break;
-		case "logout":
-			we_repl(window.load, url, args[0]);
-			break;
-		case "dologout":
-			// before the command 'logout' is executed, ask if unsaved changes should be saved
-			if (WE().layout.weEditorFrameController.doLogoutMultiEditor()) {
-				WE().layout.regular_logout = true;
-				we_cmd('logout');
-			}
-			break;
-		case "exit_multi_doc_question":
-			new (WE().util.jsWindow)(this, url, "exit_multi_doc_question", -1, -1, 500, 300, true, false, true);
-			break;
-		case "load":
-			if (WE().session.seemode) {
+		switch (args[0]) {
+			case 'edit_document':
+			case 'new_document':
+			case 'open_extern_document':
+			case 'edit_document_with_parameters':
+			case 'new_folder':
+			case 'edit_folder':
 				break;
-			}
+			default:
+				WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
+		}
 
-			var table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
-			we_cmd("setTab", table);
-			/* falls through */
-		case "loadFolder":
-		case "closeFolder":
-			url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=LoadMainTree&');
-			YAHOO.util.Connect.asyncRequest("GET", url, {
-				success: function (o) {
-					if (o.responseText !== undefined && o.responseText !== "") {
-						var weResponse = JSON.parse(o.responseText);
-						if (weResponse && weResponse.Success) {
-							if (weResponse.DataArray.treeName) {
-								top.document.getElementById("treeName").innerHTML = weResponse.DataArray.treeName;
-							}
-							if (weResponse.DataArray.items) {
-								if (!weResponse.DataArray.parentFolder) {
-									top.treeData.clear();
-									top.treeData.add(top.node.prototype.rootEntry(weResponse.DataArray.parentFolder, 'root', 'root', weResponse.DataArray.offset));
+	}
+	switch (args[0]) {
+		case "exit_doc_question":
+			// return !! important for multiEditor
+			return new (WE().util.jsWindow)(window, url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
+		case "eplugin_exit_doc" :
+			if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
+				if (top.plugin.isInEditor(args[1])) {
+					return confirm(WE().consts.g_l.main.eplugin_exit_doc);
+				}
+			}
+			return true;
+		case "editor_plugin_doc_count":
+			if (top.plugin.document.WePlugin !== undefined) {
+				return top.plugin.getDocCount();
+			}
+			return 0;
+		default:
+			var i, mods = WE().consts.modules.jsmods;
+			for (i = 0; i < mods.length; i++) {
+				if (we_cmd_modules[mods[i]].apply(this, [args, url])) {
+					return true;
+				}
+				//if a tool window is requested, we have to open it
+				if (args[0] === (mods[i] + "_edit")) {
+					new (WE().util.jsWindow)(window, url, "tool_window", -1, -1, 1048, 760, true, true, true, true);
+					return true;
+				}
+			}
+			// deal with not activated modules
+			mods = WE().consts.modules.inactive;
+			for (i = 0; i < mods.length; i++) {
+				if (args[0] === (mods[i] + "_edit_ifthere")) {
+					new (WE().util.jsWindow)(window, url, "module_info", -1, -1, 380, 250, true, true, true);
+					return true;
+				}
+			}
+			//finally open new window
+			we_showInNewTab(args, url);
+	}
+}
+
+var we_cmd_modules = {
+	base: function (args, url) {
+		var ctrl, cType, eTable, nextWindow, width, widthSidebar;
+		switch (args[0]) {
+			case "loadVTab":
+				var op = top.treeData.makeFoldersOpenString();
+				parent.we_cmd("load", args[1], 0, op, top.treeData.table);
+				break;
+			case "exit_modules":
+				WE().util.jsWindow.prototype.closeByName('edit_module');
+				break;
+			case "openUnpublishedObjects":
+				we_cmd("tool_weSearch_edit", "", "", 7, 3);
+				break;
+			case "openUnpublishedPages":
+				we_cmd("tool_weSearch_edit", "", "", 4, 3);
+				break;
+			case "we_selector_category":
+				new (WE().util.jsWindow)(this, url, "we_cateditor", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
+				break;
+			case "openSidebar":
+				WE().layout.sidebar.open("default");
+				break;
+			case "loadSidebarDocument":
+				top.weSidebarContent.location.href = url;
+				break;
+			case "versions_preview":
+				new (WE().util.jsWindow)(this, url, "version_preview", -1, -1, 1000, 750, true, false, true, false);
+				break;
+			case "versions_wizard":
+				new (WE().util.jsWindow)(this, url, "versions_wizard", -1, -1, 600, 620, true, false, true);
+				break;
+			case "versioning_log":
+				new (WE().util.jsWindow)(this, url, "versioning_log", -1, -1, 600, 500, true, false, true);
+				break;
+
+			case "delete_single_document_question":
+				ctrl = WE().layout.weEditorFrameController;
+				cType = ctrl.getActiveEditorFrame().getEditorContentType();
+				eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
+				var path = ctrl.getActiveEditorFrame().getEditorDocumentPath();
+
+				if (ctrl.getActiveDocumentReference()) {
+					if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
+						top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
+					} else if (this.confirm(WE().consts.g_l.main.delete_single_confirm_delete + path)) {
+						url2 = url.replace(/we_cmd\[0\]=delete_single_document_question/g, "we_cmd[0]=delete_single_document");
+						WE().util.we_sbmtFrm(window.load, url2 + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().frames.editFooter);
+					}
+				} else {
+					top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
+				}
+				break;
+			case "delete_single_document":
+				ctrl = WE().layout.weEditorFrameController;
+				cType = ctrl.getActiveEditorFrame().getEditorContentType();
+				eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
+
+				if (ctrl.getActiveDocumentReference()) {
+					if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
+						top.we_showMessage(WE().consts.g_l.main.no_perms_action, WE().consts.message.WE_MESSAGE_ERROR, this);
+					} else {
+						WE().util.we_sbmtFrm(window.load, url + "&we_cmd[2]=" + ctrl.getActiveEditorFrame().getEditorEditorTable(), ctrl.getActiveDocumentReference().editFooter);
+					}
+				} else {
+					top.we_showMessage(WE().consts.g_l.main.no_document_opened, WE().consts.message.WE_MESSAGE_ERROR, this);
+				}
+				break;
+			case "do_delete":
+				WE().util.we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
+				break;
+			case "move_single_document":
+				WE().util.we_sbmtFrm(window.load, url, WE().layout.weEditorFrameController.getActiveDocumentReference().editFooter);
+				break;
+			case "do_move":
+				WE().util.we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
+				break;
+			case "do_addToCollection":
+				WE().util.we_sbmtFrm(window.load, url, document.getElementsByName("treeheader")[0]);
+				break;
+			case "change_passwd":
+				new (WE().util.jsWindow)(this, url, "we_change_passwd", -1, -1, 300, 300, true, false, true, false);
+				break;
+			case "update":
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=update", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
+				break;
+			case "upgrade":
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=upgrade", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
+				break;
+			case "languageinstallation":
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "liveUpdate/liveUpdate.php?active=languages", "we_update_" + WE().session.sess_id, -1, -1, 600, 500, true, true, true);
+				break;
+			case "del":
+				we_cmd('delete', 1, args[2]);
+				treeData.setState(treeData.tree_states.select);
+				top.treeData.unselectNode();
+				top.drawTree();
+				break;
+			case "mv":
+				we_cmd('move', 1, args[2]);
+				treeData.setState(treeData.tree_states.selectitem);
+				top.treeData.unselectNode();
+				top.drawTree();
+				break;//add_to_collection
+			case "tocollection":
+				we_cmd('addToCollection', 1, args[2]);
+				treeData.setState(treeData.tree_states.select);
+				top.treeData.unselectNode();
+				top.drawTree();
+				break;
+			case "changeLanguageRecursive":
+			case "changeTriggerIDRecursive":
+				we_repl(window.load, url, args[0]);
+				break;
+			case "logout":
+				we_repl(window.load, url, args[0]);
+				break;
+			case "dologout":
+				// before the command 'logout' is executed, ask if unsaved changes should be saved
+				if (WE().layout.weEditorFrameController.doLogoutMultiEditor()) {
+					WE().layout.regular_logout = true;
+					we_cmd('logout');
+				}
+				break;
+			case "exit_multi_doc_question":
+				new (WE().util.jsWindow)(this, url, "exit_multi_doc_question", -1, -1, 500, 300, true, false, true);
+				break;
+			case "load":
+				if (WE().session.seemode) {
+					break;
+				}
+
+				var table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
+				we_cmd("setTab", table);
+				/* falls through */
+			case "loadFolder":
+			case "closeFolder":
+				url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=LoadMainTree&');
+				YAHOO.util.Connect.asyncRequest("GET", url, {
+					success: function (o) {
+						if (o.responseText !== undefined && o.responseText !== "") {
+							var weResponse = JSON.parse(o.responseText);
+							if (weResponse && weResponse.Success) {
+								if (weResponse.DataArray.treeName) {
+									top.document.getElementById("treeName").innerHTML = weResponse.DataArray.treeName;
 								}
-								for (var i = 0; i < weResponse.DataArray.items.length; i++) {
-									if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
-										top.treeData.add(new top.node(weResponse.DataArray.items[i]));
+								if (weResponse.DataArray.items) {
+									if (!weResponse.DataArray.parentFolder) {
+										top.treeData.clear();
+										top.treeData.add(top.node.prototype.rootEntry(weResponse.DataArray.parentFolder, 'root', 'root', weResponse.DataArray.offset));
+									}
+									for (var i = 0; i < weResponse.DataArray.items.length; i++) {
+										if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {
+											top.treeData.add(new top.node(weResponse.DataArray.items[i]));
+										}
 									}
 								}
+								top.drawTree();
 							}
-							top.drawTree();
+						}
+						top.scrollToY();
+					}
+				});
+
+				break;
+			case "reload_editfooter":
+				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url, args[0]);
+				break;
+			case "rebuild":
+				new (WE().util.jsWindow)(this, url, "rebuild", -1, 0, 609, 645, true, false, true);
+				break;
+			case "openPreferences":
+				new (WE().util.jsWindow)(this, url, "preferences", -1, -1, 900, 670, true, true, true, true);
+				break;
+			case "editCat":
+				we_cmd("we_selector_category", 0, WE().consts.tables.CATEGORY_TABLE, "", "", "", "", "", 1);
+				break;
+			case "editThumbs":
+				new (WE().util.jsWindow)(this, url, "thumbnails", -1, -1, 570, 660, true, true, true);
+				break;
+			case "editMetadataFields":
+				new (WE().util.jsWindow)(this, url, "metadatafields", -1, -1, 500, 550, true, true, true);
+				break;
+			case "doctypes":
+				new (WE().util.jsWindow)(this, url, "doctypes", -1, -1, 800, 670, true, true, true);
+				break;
+			case "info":
+				new (WE().util.jsWindow)(this, url, "info", -1, -1, 432, 360, true, false, true);
+				break;
+			case "webEdition_online":
+				new (WE().util.jsWindow)(this, "http://www.webedition.org/", "webEditionOnline", -1, -1, 960, 700, true, true, true, true);
+				break;
+			case "snippet_shop":
+				alert("Es gibt noch keine URL für die Snippets Seite");
+				break;
+			case "help_modules":
+				WE().util.jsWindow.prototype.focus('edit_module');
+				url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
+				new (WE().util.jsWindow)(this, url, "help", -1, -1, 800, 600, true, false, true, true);
+				break;
+			case "info_modules":
+				WE().util.jsWindow.prototype.focus('edit_module');
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=info";
+				new (WE().util.jsWindow)(this, url, "info", -1, -1, 432, 350, true, false, true);
+				break;
+			case "help_tools":
+				WE().util.jsWindow.prototype.focus('tool_window') ||
+								WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
+								WE().util.jsWindow.prototype.focus('tool_window_weSearch');
+				url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
+				new (WE().util.jsWindow)(this, url, "help", -1, -1, 800, 600, true, false, true, true);
+				break;
+			case "info_tools":
+				WE().util.jsWindow.prototype.focus('tool_window') ||
+								WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
+								WE().util.jsWindow.prototype.focus('tool_window_weSearch');
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=info";
+				new (WE().util.jsWindow)(this, url, "info", -1, -1, 432, 350, true, false, true);
+				break;
+			case "help":
+				url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
+				new (WE().util.jsWindow)(this, url, "help", -1, -1, 720, 600, true, false, true, true);
+				break;
+			case "help_forum":
+				new (WE().util.jsWindow)(this, "http://forum.webedition.org", "help_forum", -1, -1, 960, 700, true, true, true, true);
+				break;
+			case "help_bugtracker":
+				new (WE().util.jsWindow)(this, "http://qa.webedition.org/tracker/", "help_bugtracker", -1, -1, 960, 700, true, true, true, true);
+				break;
+			case "help_changelog":
+				new (WE().util.jsWindow)(this, "http://www.webedition.org/de/webedition-cms/versionshistorie/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
+				break;
+			case "we_customer_selector":
+			case "we_selector_file":
+				new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+				break;
+			case "we_selector_directory":
+				new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
+				break;
+			case "we_selector_image":
+			case "we_selector_document":
+				new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+				break;
+			case "we_fileupload_editor":
+				new (WE().util.jsWindow)(this, url, "we_fileupload_editor", -1, -1, 500, WE().consts.size.docSelect.height, true, true, true, true);
+				break;
+			case "setHot":
+				WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+				break;
+			case 'setCreateTemplate':
+				document.we_form.CreateTemplate.checked = true;
+				break;
+			case "setTab":
+				if (treeData !== undefined) {
+					WE().layout.vtab.setActiveTab(args[1]);
+					treeData.table = args[1];
+				} else {
+					setTimeout(we_cmd, 500, "setTab", args[1]);
+				}
+				break;
+			case "revert_published_question":
+				if (confirm(WE().consts.g_l.alert.revert_publish_question)) {
+					top.we_cmd("revert_published");
+				}
+				break;
+			case "checkSameMaster":
+				WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
+				if (args[1].currentID == args[2]) {
+					top.we_showMessage(WE().consts.g_l.alert.same_master_template, WE().consts.message.WE_MESSAGE_ERROR, window);
+					document.we_form.elements[args[1].JSIDName].value = '';
+					opener.document.we_form.elements[args[1].JSTextName].value = '';
+				}
+				break;
+
+			case "add_cat":
+				url += "&we_cmd[1]=" + args[1].allIDs.join(",");
+				doReloadCmd(args, url, true);
+				break;
+
+			case "copyDocumentSelect":
+				url += "&we_cmd[1]=" + args[1].currentID;
+				doReloadCmd(args, url, true);
+				break;
+
+			case "update_image":
+			case "update_file":
+			case "copyDocument":
+			case "insert_entry_at_list":
+			case "delete_list":
+			case "down_entry_at_list":
+			case "up_entry_at_list":
+			case "down_link_at_list":
+			case "up_link_at_list":
+			case "add_entry_to_list":
+			case "add_link_to_linklist":
+			case "change_link":
+			case "change_linklist":
+			case "delete_linklist":
+			case "insert_link_at_linklist":
+			case "change_doc_type":
+			case "doctype_changed":
+			case "remove_image":
+			case "delete_link":
+			case "delete_cat":
+			case "delete_all_cats":
+			case "schedule_add":
+			case "schedule_del":
+			case "schedule_add_schedcat":
+			case "schedule_delete_all_schedcats":
+			case "schedule_delete_schedcat":
+			case "template_changed":
+			case "add_navi":
+			case "delete_navi":
+			case "delete_all_navi":
+			case "reload_hot_editpage":
+				doReloadCmd(args, url, true);
+				break;
+			case "reload_editpage":
+			case "wrap_on_off":
+			case "restore_defaults":
+			case "do_add_thumbnails":
+			case "del_thumb":
+			case "resizeImage":
+			case "rotateImage":
+			case "doImage_convertGIF":
+			case "doImage_convertPNG":
+			case "doImage_convertJPEG":
+			case "doImage_crop":
+			case "revert_published":
+				doReloadCmd(args, url, false);
+				break;
+			case "edit_document_with_parameters":
+			case "edit_document":
+				try {
+					if ((window.treeData !== undefined) && treeData) {
+						treeData.unselectNode();
+						if (args[1]) {
+							treeData.selection_table = args[1];
+						}
+						if (args[2]) {
+							treeData.selection = args[2];
+						}
+						if (treeData.selection_table === treeData.table) {
+							treeData.selectNode(treeData.selection);
 						}
 					}
-					top.scrollToY();
+				} catch (e) {
 				}
-			});
 
-			break;
-		case "reload_editfooter":
-			we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url, args[0]);
-			break;
-		case "rebuild":
-			new (WE().util.jsWindow)(this, url, "rebuild", -1, 0, 609, 645, true, false, true);
-			break;
-		case "openPreferences":
-			new (WE().util.jsWindow)(this, url, "preferences", -1, -1, 900, 670, true, true, true, true);
-			break;
-		case "editCat":
-			we_cmd("we_selector_category", 0, WE().consts.tables.CATEGORY_TABLE, "", "", "", "", "", 1);
-			break;
-		case "editThumbs":
-			new (WE().util.jsWindow)(this, url, "thumbnails", -1, -1, 570, 660, true, true, true);
-			break;
-		case "editMetadataFields":
-			new (WE().util.jsWindow)(this, url, "metadatafields", -1, -1, 500, 550, true, true, true);
-			break;
-		case "doctypes":
-			new (WE().util.jsWindow)(this, url, "doctypes", -1, -1, 800, 670, true, true, true);
-			break;
-		case "info":
-			new (WE().util.jsWindow)(this, url, "info", -1, -1, 432, 360, true, false, true);
-			break;
-		case "webEdition_online":
-			new (WE().util.jsWindow)(this, "http://www.webedition.org/", "webEditionOnline", -1, -1, 960, 700, true, true, true, true);
-			break;
-		case "snippet_shop":
-			alert("Es gibt noch keine URL für die Snippets Seite");
-			break;
-		case "help_modules":
-			WE().util.jsWindow.prototype.focus('edit_module');
-			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
-			new (WE().util.jsWindow)(this, url, "help", -1, -1, 800, 600, true, false, true, true);
-			break;
-		case "info_modules":
-			WE().util.jsWindow.prototype.focus('edit_module');
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=info";
-			new (WE().util.jsWindow)(this, url, "info", -1, -1, 432, 350, true, false, true);
-			break;
-		case "help_tools":
-			WE().util.jsWindow.prototype.focus('tool_window') ||
-							WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
-							WE().util.jsWindow.prototype.focus('tool_window_weSearch');
-			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
-			new (WE().util.jsWindow)(this, url, "help", -1, -1, 800, 600, true, false, true, true);
-			break;
-		case "info_tools":
-			WE().util.jsWindow.prototype.focus('tool_window') ||
-							WE().util.jsWindow.prototype.focus('tool_window_navigation') ||
-							WE().util.jsWindow.prototype.focus('tool_window_weSearch');
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=info";
-			new (WE().util.jsWindow)(this, url, "info", -1, -1, 432, 350, true, false, true);
-			break;
-		case "help":
-			url = "http://help.webedition.org/index.php?language=" + WE().session.helpLang;
-			new (WE().util.jsWindow)(this, url, "help", -1, -1, 720, 600, true, false, true, true);
-			break;
-		case "help_forum":
-			new (WE().util.jsWindow)(this, "http://forum.webedition.org", "help_forum", -1, -1, 960, 700, true, true, true, true);
-			break;
-		case "help_bugtracker":
-			new (WE().util.jsWindow)(this, "http://qa.webedition.org/tracker/", "help_bugtracker", -1, -1, 960, 700, true, true, true, true);
-			break;
-		case "help_changelog":
-			new (WE().util.jsWindow)(this, "http://www.webedition.org/de/webedition-cms/versionshistorie/", "help_changelog", -1, -1, 960, 700, true, true, true, true);
-			break;
-		case "we_customer_selector":
-		case "we_selector_file":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
-			break;
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.windowDirSelect.width, WE().consts.size.windowDirSelect.height, true, true, true, true);
-			break;
-		case "we_selector_image":
-		case "we_selector_document":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
-			break;
-		case "we_fileupload_editor":
-			new (WE().util.jsWindow)(this, url, "we_fileupload_editor", -1, -1, 500, WE().consts.size.docSelect.height, true, true, true, true);
-			break;
-		case "setHot":
-			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
-			break;
-		case 'setCreateTemplate':
-			document.we_form.CreateTemplate.checked = true;
-			break;
-		case "setTab":
-			if (treeData !== undefined) {
-				WE().layout.vtab.setActiveTab(args[1]);
-				treeData.table = args[1];
-			} else {
-				setTimeout(we_cmd, 500, "setTab", args[1]);
-			}
-			break;
-		case "revert_published_question":
-			if (confirm(WE().consts.g_l.alert.revert_publish_question)) {
-				top.we_cmd("revert_published");
-			}
-			break;
-		case "checkSameMaster":
-			WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);
-			if (args[1].currentID == args[2]) {
-				top.we_showMessage(WE().consts.g_l.alert.same_master_template, WE().consts.message.WE_MESSAGE_ERROR, window);
-				document.we_form.elements[args[1].JSIDName].value = '';
-				opener.document.we_form.elements[args[1].JSTextName].value = '';
-			}
-			break;
-
-		case "add_cat":
-			url += "&we_cmd[1]=" + args[1].allIDs.join(",");
-			doReloadCmd(args, url, true);
-			break;
-
-		case "copyDocumentSelect":
-			url += "&we_cmd[1]=" + args[1].currentID;
-			doReloadCmd(args, url, true);
-			break;
-
-		case "update_image":
-		case "update_file":
-		case "copyDocument":
-		case "insert_entry_at_list":
-		case "delete_list":
-		case "down_entry_at_list":
-		case "up_entry_at_list":
-		case "down_link_at_list":
-		case "up_link_at_list":
-		case "add_entry_to_list":
-		case "add_link_to_linklist":
-		case "change_link":
-		case "change_linklist":
-		case "delete_linklist":
-		case "insert_link_at_linklist":
-		case "change_doc_type":
-		case "doctype_changed":
-		case "remove_image":
-		case "delete_link":
-		case "delete_cat":
-		case "delete_all_cats":
-		case "schedule_add":
-		case "schedule_del":
-		case "schedule_add_schedcat":
-		case "schedule_delete_all_schedcats":
-		case "schedule_delete_schedcat":
-		case "template_changed":
-		case "add_navi":
-		case "delete_navi":
-		case "delete_all_navi":
-		case "reload_hot_editpage":
-			doReloadCmd(args, url, true);
-			break;
-		case "reload_editpage":
-		case "wrap_on_off":
-		case "restore_defaults":
-		case "do_add_thumbnails":
-		case "del_thumb":
-		case "resizeImage":
-		case "rotateImage":
-		case "doImage_convertGIF":
-		case "doImage_convertPNG":
-		case "doImage_convertJPEG":
-		case "doImage_crop":
-		case "revert_published":
-			doReloadCmd(args, url, false);
-			break;
-		case "edit_document_with_parameters":
-		case "edit_document":
-			try {
-				if ((window.treeData !== undefined) && treeData) {
-					treeData.unselectNode();
-					if (args[1]) {
-						treeData.selection_table = args[1];
-					}
-					if (args[2]) {
-						treeData.selection = args[2];
-					}
-					if (treeData.selection_table === treeData.table) {
-						treeData.selectNode(treeData.selection);
-					}
-				}
-			} catch (e) {
-			}
-
-			ctrl = WE().layout.weEditorFrameController;
-			if ((nextWindow = ctrl.getFreeWindow())) {
-				_nextContent = nextWindow.getDocumentReference();
-				// activate tab and set state to loading
-				WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
-				// use Editor Frame
-				nextWindow.initEditorFrameData(
-								{
-									"EditorType": "model",
-									"EditorEditorTable": args[1],
-									"EditorDocumentId": args[2],
-									"EditorContentType": args[3]
-								}
-				);
-				// set Window Active and show it
-				ctrl.setActiveEditorFrame(nextWindow.FrameId);
-				ctrl.toggleFrames();
-				if (_nextContent.frames && _nextContent.frames[1]) {
-					if (!WE().util.we_sbmtFrm(_nextContent, url)) {
+				ctrl = WE().layout.weEditorFrameController;
+				if ((nextWindow = ctrl.getFreeWindow())) {
+					_nextContent = nextWindow.getDocumentReference();
+					// activate tab and set state to loading
+					WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
+					// use Editor Frame
+					nextWindow.initEditorFrameData(
+									{
+										"EditorType": "model",
+										"EditorEditorTable": args[1],
+										"EditorDocumentId": args[2],
+										"EditorContentType": args[3]
+									}
+					);
+					// set Window Active and show it
+					ctrl.setActiveEditorFrame(nextWindow.FrameId);
+					ctrl.toggleFrames();
+					if (_nextContent.frames && _nextContent.frames[1]) {
+						if (!WE().util.we_sbmtFrm(_nextContent, url)) {
+							we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
+						}
+					} else {
 						we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
 					}
 				} else {
+					alert(WE().consts.g_l.main.no_editor_left);
+				}
+				break;
+			case "open_extern_document":
+			case "new_document":
+
+				ctrl = WE().layout.weEditorFrameController;
+				if ((nextWindow = ctrl.getFreeWindow())) {
+					_nextContent = nextWindow.getDocumentReference();
+					// activate tab and set it status loading ...
+					WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
+					nextWindow.updateEditorTab();
+					// set Window Active and show it
+					ctrl.setActiveEditorFrame(nextWindow.getFrameId());
+					ctrl.toggleFrames();
+					// load new document editor
 					we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
-				}
-			} else {
-				alert(WE().consts.g_l.main.no_editor_left);
-			}
-			break;
-		case "open_extern_document":
-		case "new_document":
-
-			ctrl = WE().layout.weEditorFrameController;
-			if ((nextWindow = ctrl.getFreeWindow())) {
-				_nextContent = nextWindow.getDocumentReference();
-				// activate tab and set it status loading ...
-				WE().layout.multiTabs.addTab(nextWindow.getFrameId(), nextWindow.getFrameId(), nextWindow.getFrameId());
-				nextWindow.updateEditorTab();
-				// set Window Active and show it
-				ctrl.setActiveEditorFrame(nextWindow.getFrameId());
-				ctrl.toggleFrames();
-				// load new document editor
-				we_repl(_nextContent, url + "&frameId=" + nextWindow.getFrameId());
-			} else {
-				alert(WE().consts.g_l.main.no_editor_left);
-			}
-			break;
-		case "close_document":
-			if (args[1]) { // close special tab
-				WE().layout.weEditorFrameController.closeDocument(args[1]);
-			} else if ((_currentEditor = WE().layout.weEditorFrameController.getActiveEditorFrame())) {
-				// close active tab
-				WE().layout.weEditorFrameController.closeDocument(_currentEditor.getFrameId());
-			}
-			break;
-		case "close_all_documents":
-			WE().layout.weEditorFrameController.closeAllDocuments();
-			break;
-		case "close_all_but_active_document":
-			activeId = null;
-			if (args[1]) {
-				activeId = args[1];
-			}
-			WE().layout.weEditorFrameController.closeAllButActiveDocument(activeId);
-			break;
-		case "open_url_in_editor":
-			we_repl(window.load, url, args[0]);
-			break;
-		case "publish":
-		case "unpublish":
-			doPublish(url, args[1], args[0]);
-			break;
-		case "publishWhenSave":
-			WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave();
-			break;
-		case "save_document":
-			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
-			if (_EditorFrame && _EditorFrame.getEditorFrameWindow().frames && _EditorFrame.getEditorFrameWindow().frames[1]) {
-				_EditorFrame.getEditorFrameWindow().frames[1].focus();
-			}
-
-			if (!args[1]) {
-				args[1] = _EditorFrame.getEditorTransaction();
-			}
-
-			doSave(url, args[1], args[0]);
-			break;
-		case "we_selector_delete":
-			new (WE().util.jsWindow)(this, url, "we_del_selector", -1, -1, WE().consts.size.windowDelSelect.width, WE().consts.size.windowDelSelect.height, true, true, true, true);
-			break;
-		case "browse":
-			WE().layout.openBrowser();
-			break;
-		case "home":
-			if (top.treeData) {
-				top.treeData.unselectNode();
-			}
-			WE().layout.weEditorFrameController.openDocument('', '', '', 'open_cockpit');
-			break;
-		case "browse_server":
-			new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
-			break;
-		case "make_backup":
-			new (WE().util.jsWindow)(this, url, "export_backup", -1, -1, 680, 600, true, true, true);
-			break;
-		case "recover_backup":
-			new (WE().util.jsWindow)(this, url, "recover_backup", -1, -1, 680, 600, true, true, true);
-			break;
-		case "import":
-			new (WE().util.jsWindow)(this, url, "import", -1, -1, 650, 720, true, false, true);
-			break;
-		case "import_files":
-			new (WE().util.jsWindow)(this, url, "import_files", -1, -1, 650, 720, true, false, true);
-			break;
-		case "export":
-			new (WE().util.jsWindow)(this, url, "export", -1, -1, 600, 540, true, false, true);
-			break;
-		case "copyWeDocumentCustomerFilter":
-			new (WE().util.jsWindow)(this, url, "copyWeDocumentCustomerFilter", -1, -1, 400, 115, true, true, true);
-			break;
-		case 'copyFolderCheck':
-			//parents element start from 4
-			if (args.indexOf(args[1].currentID, 3) > -1) {
-				WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-			} else {
-				we_cmd('copyFolder', args[1].currentID, args[2], 1, args[3]);
-			}
-			break;
-		case "copyFolder":
-			new (WE().util.jsWindow)(this, url, "copyfolder", -1, -1, 550, 320, true, true, true);
-			break;
-		case "del_frag":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "delFrag.php?currentID=" + args[1], "we_del", -1, -1, 600, 130, true, true, true);
-			break;
-		case "open_wysiwyg_window":
-			if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
-				WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
-			}
-			var wyw = args[2];
-			wyw = Math.max((wyw ? wyw : 0), 400);
-			var wyh = args[3];
-			wyh = Math.max((wyh ? wyh : 0), 300);
-			if (window.screen) {
-				var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
-				screen_height = screen_height - 40;
-				var screen_width = screen.availWidth - 10;
-				wyw = Math.min(screen_width, wyw);
-				wyh = Math.min(screen_height, wyh);
-			}
-			// set new width & height
-			url = url.replace(/we_cmd\[2\]=[^&]+/, 'we_cmd[2]=' + wyw);
-			url = url.replace(/we_cmd\[3\]=[^&]+/, 'we_cmd[3]=' + (wyh - args[10]));
-			new (WE().util.jsWindow)(this, url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
-			break;
-		case "not_installed_modules":
-			we_repl(window.load, url, args[0]);
-			break;
-		case "start_multi_editor":
-			we_repl(window.load, url, args[0]);
-			break;
-		case "customValidationService":
-			new (WE().util.jsWindow)(this, url, "we_customizeValidation", -1, -1, 700, 700, true, false, true);
-			break;
-		case "edit_home":
-			if (args[1] === 'add') {
-				window.load.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=' + args[1] + '&we_cmd[2]=' + args[2] + '&we_cmd[3]=' + args[3];
-			}
-			break;
-		case "edit_navi":
-			new (WE().util.jsWindow)(this, url, "we_navieditor", -1, -1, 400, 360, true, true, true, true);
-			break;
-		case "initPlugin":
-			WE().layout.weplugin_wait = new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
-			break;
-		case "edit_settings_editor":
-			if (top.plugin.editSettings) {
-				top.plugin.editSettings();
-			} else {
-				we_cmd("initPlugin", "top.plugin.editSettings()");
-			}
-			break;
-		case "sysinfo":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=sysinfo", "we_sysinfo", -1, -1, 720, 660, true, false, true);
-			break;
-		case "showerrorlog":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "errorlog.php", "we_errorlog", -1, -1, 920, 660, true, false, true);
-			break;
-		case "view_backuplog":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backupLog", "we_backuplog", -1, -1, 720, 660, true, false, true);
-			break;
-		case "show_message_console":
-			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=messageConsole", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);
-			break;
-		case "remove_from_editor_plugin":
-			if (args[1] && top.plugin && top.plugin.remove) {
-				top.plugin.remove(args[1]);
-			}
-			break;
-		case "new":
-			if (WE().session.seemode) {
-				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
-				break;
-			}
-			treeData.unselectNode();
-			if (args[5] !== undefined) {
-				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
-			} else {
-				WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4]);
-			}
-			break;
-		case "exit_delete":
-		case "exit_move":
-		case "exit_addToCollection":
-			deleteMode = false;
-			if (!WE().session.seemode) {
-				treeData.setState(treeData.tree_states.edit);
-				drawTree();
-				var cl = window.document.getElementById("bm_treeheaderDiv").classList;
-				cl.remove('deleteSelector');
-				cl.remove('moveSelector');
-				cl.remove('collectionSelector');
-				cl = window.document.getElementById("treetable").classList;
-				cl.remove('deleteSelector');
-				cl.remove('moveSelector');
-				cl.remove('collectionSelector');
-				WE().layout.tree.setWidth(WE().layout.tree.widthBeforeDeleteMode);
-				WE().layout.sidebar.setWidth(WE().layout.sidebar.widthBeforeDeleteMode);
-			}
-			break;
-		case "delete":
-			if (WE().session.seemode) {
-				if (top.deleteMode != args[1]) {
-					top.deleteMode = args[1];
-				}
-				if (args[2] != 1) {
-					we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url, args[0]);
+				} else {
+					alert(WE().consts.g_l.main.no_editor_left);
 				}
 				break;
-			}
-			if (top.deleteMode != args[1]) {
-				top.deleteMode = args[1];
-			}
-			if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
-				treeData.setState(treeData.tree_states.edit);
-				drawTree();
-			}
-			window.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
-			window.document.getElementById("treetable").classList.add('deleteSelector');
-			WE().layout.tree.toggle(true);
-			width = WE().layout.tree.getWidth();
+			case "close_document":
+				if (args[1]) { // close special tab
+					WE().layout.weEditorFrameController.closeDocument(args[1]);
+				} else if ((_currentEditor = WE().layout.weEditorFrameController.getActiveEditorFrame())) {
+					// close active tab
+					WE().layout.weEditorFrameController.closeDocument(_currentEditor.getFrameId());
+				}
+				break;
+			case "close_all_documents":
+				WE().layout.weEditorFrameController.closeAllDocuments();
+				break;
+			case "close_all_but_active_document":
+				activeId = null;
+				if (args[1]) {
+					activeId = args[1];
+				}
+				WE().layout.weEditorFrameController.closeAllButActiveDocument(activeId);
+				break;
+			case "open_url_in_editor":
+				we_repl(window.load, url, args[0]);
+				break;
+			case "publish":
+			case "unpublish":
+				doPublish(url, args[1], args[0]);
+				break;
+			case "publishWhenSave":
+				WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave();
+				break;
+			case "save_document":
+				var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
+				if (_EditorFrame && _EditorFrame.getEditorFrameWindow().frames && _EditorFrame.getEditorFrameWindow().frames[1]) {
+					_EditorFrame.getEditorFrameWindow().frames[1].focus();
+				}
 
-			WE().layout.tree.widthBeforeDeleteMode = width;
+				if (!args[1]) {
+					args[1] = _EditorFrame.getEditorTransaction();
+				}
 
-			if (width < WE().consts.size.tree.deleteWidth) {
-				WE().layout.tree.setWidth(WE().consts.size.tree.deleteWidth);
-			}
-			WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
-
-			widthSidebar = WE().layout.sidebar.getWidth();
-
-			WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
-
-			if (args[2] != 1) {
-				we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
-			}
-			break;
-		case "move":
-			if (WE().session.seemode) {
+				doSave(url, args[1], args[0]);
+				break;
+			case "we_selector_delete":
+				new (WE().util.jsWindow)(this, url, "we_del_selector", -1, -1, WE().consts.size.windowDelSelect.width, WE().consts.size.windowDelSelect.height, true, true, true, true);
+				break;
+			case "browse":
+				WE().layout.openBrowser();
+				break;
+			case "home":
+				if (top.treeData) {
+					top.treeData.unselectNode();
+				}
+				WE().layout.weEditorFrameController.openDocument('', '', '', 'open_cockpit');
+				break;
+			case "browse_server":
+				new (WE().util.jsWindow)(this, url, "browse_server", -1, -1, 840, 400, true, false, true);
+				break;
+			case "make_backup":
+				new (WE().util.jsWindow)(this, url, "export_backup", -1, -1, 680, 600, true, true, true);
+				break;
+			case "recover_backup":
+				new (WE().util.jsWindow)(this, url, "recover_backup", -1, -1, 680, 600, true, true, true);
+				break;
+			case "import":
+				new (WE().util.jsWindow)(this, url, "import", -1, -1, 650, 720, true, false, true);
+				break;
+			case "import_files":
+				new (WE().util.jsWindow)(this, url, "import_files", -1, -1, 650, 720, true, false, true);
+				break;
+			case "export":
+				new (WE().util.jsWindow)(this, url, "export", -1, -1, 600, 540, true, false, true);
+				break;
+			case "copyWeDocumentCustomerFilter":
+				new (WE().util.jsWindow)(this, url, "copyWeDocumentCustomerFilter", -1, -1, 400, 115, true, true, true);
+				break;
+			case 'copyFolderCheck':
+				//parents element start from 4
+				if (args.indexOf(args[1].currentID, 3) > -1) {
+					WE().util.showMessage(WE().consts.g_l.alert.copy_folder_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
+				} else {
+					we_cmd('copyFolder', args[1].currentID, args[2], 1, args[3]);
+				}
+				break;
+			case "copyFolder":
+				new (WE().util.jsWindow)(this, url, "copyfolder", -1, -1, 550, 320, true, true, true);
+				break;
+			case "del_frag":
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "delFrag.php?currentID=" + args[1], "we_del", -1, -1, 600, 130, true, true, true);
+				break;
+			case "open_wysiwyg_window":
+				if (WE().layout.weEditorFrameController.getActiveDocumentReference()) {
+					WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = false;
+				}
+				var wyw = args[2];
+				wyw = Math.max((wyw ? wyw : 0), 400);
+				var wyh = args[3];
+				wyh = Math.max((wyh ? wyh : 0), 300);
+				if (window.screen) {
+					var screen_height = ((screen.height - 50) > screen.availHeight) ? screen.height - 50 : screen.availHeight;
+					screen_height = screen_height - 40;
+					var screen_width = screen.availWidth - 10;
+					wyw = Math.min(screen_width, wyw);
+					wyh = Math.min(screen_height, wyh);
+				}
+				// set new width & height
+				url = url.replace(/we_cmd\[2\]=[^&]+/, 'we_cmd[2]=' + wyw);
+				url = url.replace(/we_cmd\[3\]=[^&]+/, 'we_cmd[3]=' + (wyh - args[10]));
+				new (WE().util.jsWindow)(this, url, "we_wysiwygWin", -1, -1, Math.max(220, wyw + (document.all ? 0 : ((navigator.userAgent.toLowerCase().indexOf('safari') > -1) ? 20 : 4))), Math.max(100, wyh + 60), true, false, true);
+				break;
+			case "not_installed_modules":
+				we_repl(window.load, url, args[0]);
+				break;
+			case "start_multi_editor":
+				we_repl(window.load, url, args[0]);
+				break;
+			case "customValidationService":
+				new (WE().util.jsWindow)(this, url, "we_customizeValidation", -1, -1, 700, 700, true, false, true);
+				break;
+			case "edit_home":
+				if (args[1] === 'add') {
+					window.load.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]=' + args[1] + '&we_cmd[2]=' + args[2] + '&we_cmd[3]=' + args[3];
+				}
+				break;
+			case "edit_navi":
+				new (WE().util.jsWindow)(this, url, "we_navieditor", -1, -1, 400, 360, true, true, true, true);
+				break;
+			case "initPlugin":
+				WE().layout.weplugin_wait = new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "editors/content/eplugin/weplugin_wait.php?callback=" + args[1], "weplugin_wait", -1, -1, 300, 100, true, false, true);
+				break;
+			case "edit_settings_editor":
+				if (top.plugin.editSettings) {
+					top.plugin.editSettings();
+				} else {
+					we_cmd("initPlugin", "top.plugin.editSettings()");
+				}
+				break;
+			case "sysinfo":
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=sysinfo", "we_sysinfo", -1, -1, 720, 660, true, false, true);
+				break;
+			case "showerrorlog":
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "errorlog.php", "we_errorlog", -1, -1, 920, 660, true, false, true);
+				break;
+			case "view_backuplog":
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=backupLog", "we_backuplog", -1, -1, 720, 660, true, false, true);
+				break;
+			case "show_message_console":
+				new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=messageConsole", "we_jsMessageConsole", -1, -1, 600, 500, true, false, true, false);
+				break;
+			case "remove_from_editor_plugin":
+				if (args[1] && top.plugin && top.plugin.remove) {
+					top.plugin.remove(args[1]);
+				}
+				break;
+			case "new":
+				if (WE().session.seemode) {
+					WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
+					break;
+				}
+				treeData.unselectNode();
+				if (args[5] !== undefined) {
+					WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4], "", args[5]);
+				} else {
+					WE().layout.weEditorFrameController.openDocument(args[1], args[2], args[3], "", args[4]);
+				}
+				break;
+			case "exit_delete":
+			case "exit_move":
+			case "exit_addToCollection":
+				deleteMode = false;
+				if (!WE().session.seemode) {
+					treeData.setState(treeData.tree_states.edit);
+					drawTree();
+					var cl = window.document.getElementById("bm_treeheaderDiv").classList;
+					cl.remove('deleteSelector');
+					cl.remove('moveSelector');
+					cl.remove('collectionSelector');
+					cl = window.document.getElementById("treetable").classList;
+					cl.remove('deleteSelector');
+					cl.remove('moveSelector');
+					cl.remove('collectionSelector');
+					WE().layout.tree.setWidth(WE().layout.tree.widthBeforeDeleteMode);
+					WE().layout.sidebar.setWidth(WE().layout.sidebar.widthBeforeDeleteMode);
+				}
+				break;
+			case "delete":
+				if (WE().session.seemode) {
+					if (top.deleteMode != args[1]) {
+						top.deleteMode = args[1];
+					}
+					if (args[2] != 1) {
+						we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url, args[0]);
+					}
+					break;
+				}
 				if (top.deleteMode != args[1]) {
 					top.deleteMode = args[1];
 				}
-				if (args[2] != 1) {
-					we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url, args[0]);
-				}
-			} else {
-				if (top.deleteMode != args[1]) {
-					top.deleteMode = args[1];
-				}
-				if (!top.deleteMode && treeData.state == treeData.tree_states.selectitem) {
+				if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
 					treeData.setState(treeData.tree_states.edit);
 					drawTree();
 				}
-				window.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
-				window.document.getElementById("treetable").classList.add('moveSelector');
+				window.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
+				window.document.getElementById("treetable").classList.add('deleteSelector');
 				WE().layout.tree.toggle(true);
 				width = WE().layout.tree.getWidth();
 
 				WE().layout.tree.widthBeforeDeleteMode = width;
 
-				if (width < WE().consts.size.tree.moveWidth) {
-					WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
+				if (width < WE().consts.size.tree.deleteWidth) {
+					WE().layout.tree.setWidth(WE().consts.size.tree.deleteWidth);
 				}
 				WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
 
@@ -1682,194 +1708,232 @@ function we_cmd_base(args, url) {
 				if (args[2] != 1) {
 					we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
 				}
-			}
-			break;
-		case "addToCollection":
-			if (WE().session.seemode) {
-				//
-			} else {
-				if (top.deleteMode != args[1]) {
-					top.deleteMode = args[1];
-				}
-				if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
-					treeData.setState(treeData.tree_states.edit);
-					drawTree();
-				}
-				window.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
-				window.document.getElementById("treetable").classList.add('collectionSelector');
-				WE().layout.tree.toggle(true);
-				width = WE().layout.tree.getWidth();
-				WE().layout.tree.widthBeforeDeleteMode = width;
-				if (width < WE().consts.size.tree.moveWidth) {
-					WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
-				}
-				WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
+				break;
+			case "move":
+				if (WE().session.seemode) {
+					if (top.deleteMode != args[1]) {
+						top.deleteMode = args[1];
+					}
+					if (args[2] != 1) {
+						we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference(), url, args[0]);
+					}
+				} else {
+					if (top.deleteMode != args[1]) {
+						top.deleteMode = args[1];
+					}
+					if (!top.deleteMode && treeData.state == treeData.tree_states.selectitem) {
+						treeData.setState(treeData.tree_states.edit);
+						drawTree();
+					}
+					window.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
+					window.document.getElementById("treetable").classList.add('moveSelector');
+					WE().layout.tree.toggle(true);
+					width = WE().layout.tree.getWidth();
 
-				widthSidebar = WE().layout.sidebar.getWidth();
-				WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
+					WE().layout.tree.widthBeforeDeleteMode = width;
 
-				if (args[2] != 1) {
-					we_repl(document.getElementsName("treeheader")[0], url, args[0]);
-				}
-			}
-			break;
-		case "reset_home":
-			var _currEditor = WE().layout.weEditorFrameController.getActiveEditorFrame();
-			if (_currEditor && _currEditor.getEditorType() === "cockpit") {
-				if (confirm(WE().consts.g_l.cockpit.reset_settings)) {
-					//FIXME: currently this doesn't work
-					WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]' + args[0];
-					if ((window.treeData !== undefined) && window.treeData) {
-						window.treeData.unselectNode();
+					if (width < WE().consts.size.tree.moveWidth) {
+						WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
+					}
+					WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
+
+					widthSidebar = WE().layout.sidebar.getWidth();
+
+					WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
+
+					if (args[2] != 1) {
+						we_repl(document.getElementsByName("treeheader")[0], url, args[0]);
 					}
 				}
-			} else {
-				top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
-			}
-			break;
-
-		case "new_widget":
-			if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
-				WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[1], 1, 1);
-			} else {
-				top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_ERROR, this);
-			}
-			break;
-		case "open_document":
-			we_cmd("load", WE().consts.tables.FILE_TABLE);
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.FILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,top.fileSelect.data.currentID,top.fileSelect.data.currentType)") + "&we_cmd[9]=1";
-			new (WE().util.jsWindow)(this, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
-			break;
-		case "open_collection":
-			we_cmd("load", WE().consts.tables.VFILE_TABLE);
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.VFILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,top.fileSelect.data.currentID,top.fileSelect.data.currentType)") + "&we_cmd[9]=1";
-			new (WE().util.jsWindow)(this, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
-			break;
-		case "edit_new_collection":
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4];
-			new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
-			break;
-		case "help_documentation":
-			new (WE().util.jsWindow)(this, "http://documentation.webedition.org/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
-			break;
-
-		case "help_tagreference":
-			new (WE().util.jsWindow)(this, "http://tags.webedition.org/" + WE().session.docuLang + "/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
-			break;
-		case "open_tagreference":
-			var docupath = "http://tags.webedition.org/" + WE().session.docuLang + "/" + args[1];
-			new (WE().util.jsWindow)(this, docupath, "we_tagreference", -1, -1, 1024, 768, true, true, true);
-			break;
-		case "open_template":
-			we_cmd("load", WE().consts.tables.TEMPLATES_TABLE);
-			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.TEMPLATES_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,top.fileSelect.data.currentID,top.fileSelect.data.currentType)") + "&we_cmd[8]=" + WE().consts.contentTypes.TEMPLATE + "&we_cmd[9]=1";
-			new (WE().util.jsWindow)(this, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
-			break;
-		case "switch_edit_page":
-			// get editor root frame of active tab
-			var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
-			// get visible frame for displaying editor page
-			var _visibleEditorFrame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
-			// frame where the form should be sent from
-			var _sendFromFrame = _visibleEditorFrame;
-			// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
-			var _isEditpageContent = (_visibleEditorFrame === _currentEditorRootFrame.frames[2]);
-			//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
-
-			// if we switch from we_base_constants::WE_EDITPAGE_CONTENT to another page
-			if (_isEditpageContent && args[1] !== WE().consts.global.WE_EDITPAGE_CONTENT) {
-				// clean body to avoid flickering
-				try {
-					_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
-				} catch (e) {
-					//can be caused by not loaded content
-				}
-				// switch to normal frame
-				WE().layout.weEditorFrameController.switchToNonContentEditor();
-				// set var to new active editor frame
-				_visibleEditorFrame = _currentEditorRootFrame.frames[1];
-				//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
-
-				// set flag to false
-				_isEditpageContent = false;
-				// if we switch to we_base_constants::WE_EDITPAGE_CONTENT from another page
-			} else if (!_isEditpageContent && args[1] === WE().consts.global.WE_EDITPAGE_CONTENT) {
-				// switch to content editor frame
-				WE().layout.weEditorFrameController.switchToContentEditor();
-				// set var to new active editor frame
-				_visibleEditorFrame = _currentEditorRootFrame.frames[2];
-				//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
-				// set flag to false
-				_isEditpageContent = true;
-			}
-
-			// frame where the form should be sent to
-			var _sendToFrame = _visibleEditorFrame;
-			// get active transaction
-			var _we_activeTransaction = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorTransaction();
-			// if there are parameters, attach them to the url
-			if (_currentEditorRootFrame.parameters) {
-				url += _currentEditorRootFrame.parameters;
-			}
-
-			// focus the frame
-			if (_sendToFrame) {
-				_sendToFrame.focus();
-			}
-			// if visible frame equals to editpage content and there is already content loaded
-			if (_isEditpageContent && _visibleEditorFrame && _visibleEditorFrame.weIsTextEditor !== undefined && _currentEditorRootFrame.frames[2].location !== "about:blank") {
-				// tell the backend the right edit page nr and break (don't send the form)
-				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
-					success: function (o) {
-					},
-					failure: function (o) {
-						alert(WE().consts.g_l.main.unable_to_call_setpagenr);
+				break;
+			case "addToCollection":
+				if (WE().session.seemode) {
+					//
+				} else {
+					if (top.deleteMode != args[1]) {
+						top.deleteMode = args[1];
 					}
-				}, "protocol=json&cmd=SetPageNr&transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
-				if (_visibleEditorFrame.reloadContent === false) {
+					if (!top.deleteMode && treeData.state == treeData.tree_states.select) {
+						treeData.setState(treeData.tree_states.edit);
+						drawTree();
+					}
+					window.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
+					window.document.getElementById("treetable").classList.add('collectionSelector');
+					WE().layout.tree.toggle(true);
+					width = WE().layout.tree.getWidth();
+					WE().layout.tree.widthBeforeDeleteMode = width;
+					if (width < WE().consts.size.tree.moveWidth) {
+						WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
+					}
+					WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
+
+					widthSidebar = WE().layout.sidebar.getWidth();
+					WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
+
+					if (args[2] != 1) {
+						we_repl(document.getElementsName("treeheader")[0], url, args[0]);
+					}
+				}
+				break;
+			case "reset_home":
+				var _currEditor = WE().layout.weEditorFrameController.getActiveEditorFrame();
+				if (_currEditor && _currEditor.getEditorType() === "cockpit") {
+					if (confirm(WE().consts.g_l.cockpit.reset_settings)) {
+						//FIXME: currently this doesn't work
+						WE().layout.weEditorFrameController.getActiveDocumentReference().location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=widget_cmd&we_cmd[1]' + args[0];
+						if ((window.treeData !== undefined) && window.treeData) {
+							window.treeData.unselectNode();
+						}
+					}
+				} else {
+					top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_NOTICE, window);
+				}
+				break;
+
+			case "new_widget":
+				if (WE().layout.weEditorFrameController.getActiveDocumentReference() && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart) {
+					WE().layout.weEditorFrameController.getActiveDocumentReference().createWidget(args[1], 1, 1);
+				} else {
+					top.we_showMessage(WE().consts.g_l.cockpit.not_activated, WE().consts.message.WE_MESSAGE_ERROR, this);
+				}
+				break;
+			case "open_document":
+				we_cmd("load", WE().consts.tables.FILE_TABLE);
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.FILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,top.fileSelect.data.currentID,top.fileSelect.data.currentType)") + "&we_cmd[9]=1";
+				new (WE().util.jsWindow)(this, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+				break;
+			case "open_collection":
+				we_cmd("load", WE().consts.tables.VFILE_TABLE);
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.VFILE_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,top.fileSelect.data.currentID,top.fileSelect.data.currentType)") + "&we_cmd[9]=1";
+				new (WE().util.jsWindow)(this, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+				break;
+			case "edit_new_collection":
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4];
+				new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
+				break;
+			case "help_documentation":
+				new (WE().util.jsWindow)(this, "http://documentation.webedition.org/", "help_documentation", -1, -1, 960, 700, true, true, true, true);
+				break;
+
+			case "help_tagreference":
+				new (WE().util.jsWindow)(this, "http://tags.webedition.org/" + WE().session.docuLang + "/", "help_tagreference", -1, -1, 960, 700, true, true, true, true);
+				break;
+			case "open_tagreference":
+				var docupath = "http://tags.webedition.org/" + WE().session.docuLang + "/" + args[1];
+				new (WE().util.jsWindow)(this, docupath, "we_tagreference", -1, -1, 1024, 768, true, true, true);
+				break;
+			case "open_template":
+				we_cmd("load", WE().consts.tables.TEMPLATES_TABLE);
+				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_selector_document&we_cmd[2]=" + WE().consts.tables.TEMPLATES_TABLE + "&we_cmd[5]=" + encodeURIComponent("WE().layout.weEditorFrameController.openDocument(table,top.fileSelect.data.currentID,top.fileSelect.data.currentType)") + "&we_cmd[8]=" + WE().consts.contentTypes.TEMPLATE + "&we_cmd[9]=1";
+				new (WE().util.jsWindow)(this, url, "we_dirChooser", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+				break;
+			case "switch_edit_page":
+				// get editor root frame of active tab
+				var _currentEditorRootFrame = WE().layout.weEditorFrameController.getActiveDocumentReference();
+				// get visible frame for displaying editor page
+				var _visibleEditorFrame = WE().layout.weEditorFrameController.getVisibleEditorFrame();
+				// frame where the form should be sent from
+				var _sendFromFrame = _visibleEditorFrame;
+				// set flag to true if active frame is frame nr 2 (frame for displaying editor page 1 with content editor)
+				var _isEditpageContent = (_visibleEditorFrame === _currentEditorRootFrame.frames[2]);
+				//var _isEditpageContent = _visibleEditorFrame == _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
+
+				// if we switch from we_base_constants::WE_EDITPAGE_CONTENT to another page
+				if (_isEditpageContent && args[1] !== WE().consts.global.WE_EDITPAGE_CONTENT) {
+					// clean body to avoid flickering
+					try {
+						_currentEditorRootFrame.frames[1].document.body.innerHTML = "";
+					} catch (e) {
+						//can be caused by not loaded content
+					}
+					// switch to normal frame
+					WE().layout.weEditorFrameController.switchToNonContentEditor();
+					// set var to new active editor frame
+					_visibleEditorFrame = _currentEditorRootFrame.frames[1];
+					//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[1].getElementsByTagName("iframe")[0];
+
+					// set flag to false
+					_isEditpageContent = false;
+					// if we switch to we_base_constants::WE_EDITPAGE_CONTENT from another page
+				} else if (!_isEditpageContent && args[1] === WE().consts.global.WE_EDITPAGE_CONTENT) {
+					// switch to content editor frame
+					WE().layout.weEditorFrameController.switchToContentEditor();
+					// set var to new active editor frame
+					_visibleEditorFrame = _currentEditorRootFrame.frames[2];
+					//_visibleEditorFrame = _currentEditorRootFrame.document.getElementsByTagName("div")[2].getElementsByTagName("iframe")[0];
+					// set flag to false
+					_isEditpageContent = true;
+				}
+
+				// frame where the form should be sent to
+				var _sendToFrame = _visibleEditorFrame;
+				// get active transaction
+				var _we_activeTransaction = WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorTransaction();
+				// if there are parameters, attach them to the url
+				if (_currentEditorRootFrame.parameters) {
+					url += _currentEditorRootFrame.parameters;
+				}
+
+				// focus the frame
+				if (_sendToFrame) {
+					_sendToFrame.focus();
+				}
+				// if visible frame equals to editpage content and there is already content loaded
+				if (_isEditpageContent && _visibleEditorFrame && _visibleEditorFrame.weIsTextEditor !== undefined && _currentEditorRootFrame.frames[2].location !== "about:blank") {
+					// tell the backend the right edit page nr and break (don't send the form)
+					YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
+						success: function (o) {
+						},
+						failure: function (o) {
+							alert(WE().consts.g_l.main.unable_to_call_setpagenr);
+						}
+					}, "protocol=json&cmd=SetPageNr&transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
+					if (_visibleEditorFrame.reloadContent === false) {
+						break;
+					}
+					_visibleEditorFrame.reloadContent = false;
+				}
+
+				if (_currentEditorRootFrame) {
+					if (!WE().util.we_sbmtFrm(_sendToFrame, url, _sendFromFrame)) {
+						// add we_transaction, if not set
+						if (!args[2]) {
+							args[2] = _we_activeTransaction;
+						}
+						url += "&we_transaction=" + args[2];
+						we_repl(_sendToFrame, url, args[0]);
+					}
+				}
+
+				break;
+			case "insert_variant":
+			case "move_variant_up":
+			case "move_variant_down":
+			case "remove_variant":
+				url += "#f" + (parseInt(args[1]) - 1);
+				WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
+				break;
+			case 'preview_variant':
+				url += "#f" + (parseInt(args[1]) - 1);
+				var prevWin = new (WE().util.jsWindow)(this, url, "previewVariation", -1, -1, 1600, 1200, true, true, true, true);
+				WE().util.we_sbmtFrm(prevWin.wind, url);
+				break;
+			case 'cloneDocument':
+				var act = WE().layout.weEditorFrameController.getActiveEditorFrame();
+				if (!act.EditorEditorTable || !act.EditorDocumentId) {
 					break;
 				}
-				_visibleEditorFrame.reloadContent = false;
-			}
-
-			if (_currentEditorRootFrame) {
-				if (!WE().util.we_sbmtFrm(_sendToFrame, url, _sendFromFrame)) {
-					// add we_transaction, if not set
-					if (!args[2]) {
-						args[2] = _we_activeTransaction;
-					}
-					url += "&we_transaction=" + args[2];
-					we_repl(_sendToFrame, url, args[0]);
-				}
-			}
-
-			break;
-		case "insert_variant":
-		case "move_variant_up":
-		case "move_variant_down":
-		case "remove_variant":
-			url += "#f" + (parseInt(args[1]) - 1);
-			WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url);
-			break;
-		case 'preview_variant':
-			url += "#f" + (parseInt(args[1]) - 1);
-			var prevWin = new (WE().util.jsWindow)(this, url, "previewVariation", -1, -1, 1600, 1200, true, true, true, true);
-			WE().util.we_sbmtFrm(prevWin.wind, url);
-			break;
-		case 'cloneDocument':
-			var act = WE().layout.weEditorFrameController.getActiveEditorFrame();
-			if (!act.EditorEditorTable || !act.EditorDocumentId) {
+				top.we_cmd("new", act.EditorEditorTable, "", act.EditorContentType);
+				top.we_cmd("copyDocument", act.EditorDocumentId);
 				break;
-			}
-			top.we_cmd("new", act.EditorEditorTable, "", act.EditorContentType);
-			top.we_cmd("copyDocument", act.EditorDocumentId);
-			break;
-		default:
-			WE().t_e('no command matched to request', args[0]);
-			return false;
+			default:
+				//WE().t_e('no command matched to request', args[0]);
+				return false;
+		}
+		return true;
 	}
-	return true;
-}
+};
+
 function doReloadCmd(args, url, hot) {
 	if (hot) {
 		// set Editor hot

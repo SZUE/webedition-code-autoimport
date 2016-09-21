@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_messaging(args, url) {
+we_cmd_modules.messaging = function (args, url) {
 	switch (args[0]) {
 		case "messaging_start":
 		case "messaging_edit_ifthere":
@@ -50,4 +50,4 @@ function we_cmd_messaging(args, url) {
 			return true;
 	}
 	return false;
-}
+};

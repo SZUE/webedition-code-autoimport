@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_glossary(args, url) {
+we_cmd_modules.glossary = function (args, url) {
 	var wind;
 	switch (args[0]) {
 		case "edit_settings_glossary":
@@ -98,4 +98,4 @@ function we_cmd_glossary(args, url) {
 			return false;
 	}
 	return true;
-}
+};

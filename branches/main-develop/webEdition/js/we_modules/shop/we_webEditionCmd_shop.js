@@ -33,7 +33,7 @@ function shopCloseWindow(args) {
 	return false;
 }
 
-function we_cmd_shop(args, url) {
+we_cmd_modules.shop = function (args, url) {
 	switch (args[0]) {
 		case "edit_settings_shop":
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=pref_shop", "pref_shop", -1, -1, 470, 600, true, false, true);
@@ -87,4 +87,4 @@ function we_cmd_shop(args, url) {
 			return false;
 	}
 	return true;
-}
+};

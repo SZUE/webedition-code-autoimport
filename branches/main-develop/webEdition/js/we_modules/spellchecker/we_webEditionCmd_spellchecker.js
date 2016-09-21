@@ -22,7 +22,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-function we_cmd_spellchecker(args, url) {
+we_cmd_modules.spellchecker = function (args, url) {
 	switch (args[0]) {
 		case "edit_settings_spellchecker":
 			we_cmd("spellchecker_edit");
@@ -33,4 +33,4 @@ function we_cmd_spellchecker(args, url) {
 			return true;
 	}
 	return false;
-}
+};
