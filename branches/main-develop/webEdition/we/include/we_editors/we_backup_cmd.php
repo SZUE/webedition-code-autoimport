@@ -38,13 +38,13 @@ if(!$cmd){
 if(($cmd === 'export' || $cmd === 'import') && isset($_SESSION['weS']['weBackupVars'])){
 	$last = $_SESSION['weS']['weBackupVars']['limits']['requestTime'];
 	$_SESSION['weS']['weBackupVars']['limits']['requestTime'] = (isset($_SERVER['REQUEST_TIME']) ? $_SERVER['REQUEST_TIME'] :
-			//we don't have the time of the request, assume some time is already spent.
-			time() - 3);
+		//we don't have the time of the request, assume some time is already spent.
+		time() - 3);
 
 	if(we_base_request::_(we_base_request::BOOL, 'reload')){
 		$tmp = $_SESSION['weS']['weBackupVars']['limits']['requestTime'] - $last;
 		t_e('Backup caused reload', $last, $_SESSION['weS']['weBackupVars']['limits'], $tmp);
-		$tmp-=4;
+		$tmp -= 4;
 		if($tmp > 0 && $tmp < $_SESSION['weS']['weBackupVars']['limits']['exec']){
 			$_SESSION['weS']['weBackupVars']['limits']['exec'] = $tmp;
 		}
@@ -318,7 +318,15 @@ top.cmd.location = "about:blank";
 			we_backup_fileReader::closeFile();
 
 			$description = we_backup_util::getDescription($_SESSION['weS']['weBackupVars']['current_table'], 'import');
-		} else {
+		} elseif(($_SESSION['weS']['weBackupVars']['offset'] == $_SESSION['weS']['weBackupVars']['offset_end'])){
+			if(empty($_SESSION['weS']['weBackupVars']['update'])){
+				$_SESSION['weS']['weBackupVars']['update'] = we_updater::doUpdate('internal');
+			} else {
+				// perform update
+				$_SESSION['weS']['weBackupVars']['update'] = we_updater::doUpdate($_SESSION['weS']['weBackupVars']['update']['what'], $_SESSION['weS']['weBackupVars']['update']['pos']);
+			}
+			$description = 'Update ' . (!empty($_SESSION['weS']['weBackupVars']['update']['text']) ? $_SESSION['weS']['weBackupVars']['update']['text'] : '');
+		} elseif(empty($_SESSION['weS']['weBackupVars']['update'])){
 			//make sure we_update is run on next request
 			++$_SESSION['weS']['weBackupVars']['offset'];
 		}
@@ -341,8 +349,6 @@ run();');
 			flush();
 		} else {
 
-// perform update
-			we_updater::doUpdate('internal');
 
 			if(is_file(TEMP_PATH . $_SESSION['weS']['weBackupVars']['backup_file'])){
 				unlink(TEMP_PATH . $_SESSION['weS']['weBackupVars']['backup_file']);

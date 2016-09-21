@@ -643,6 +643,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::meassure('fixVersions');
 				self::updateCustomerFilters($db);
 				self::meassure('customerFilter');
+				self::updateSetting($db);
+				self::meassure('setting');
 				if(defined('SHOP_ORDER_TABLE')){
 					self::updateShop($db);
 					self::meassure('shop');
@@ -657,9 +659,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					}
 					self::meassure('shop');
 				}
-
-				self::updateSetting($db);
-				self::meassure('setting');
 
 				self::replayUpdateDB();
 				self::meassure('replayUpdateDB');
