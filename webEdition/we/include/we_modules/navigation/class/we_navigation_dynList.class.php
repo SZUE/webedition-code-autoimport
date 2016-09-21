@@ -113,7 +113,7 @@ abstract class we_navigation_dynList{
 		$obj = new we_objectFile();
 		$obj->initByID($id, OBJECT_FILES_TABLE);
 
-		$values = array_merge(makeArrayFromCSV($obj->Workspaces), makeArrayFromCSV($obj->ExtraWorkspaces));
+		$values = makeArrayFromCSV($obj->Workspaces);
 
 		$all = $obj->getPossibleWorkspaces(false);
 		$ret = [];

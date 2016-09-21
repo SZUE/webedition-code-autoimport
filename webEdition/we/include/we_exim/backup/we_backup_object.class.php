@@ -25,7 +25,7 @@
 class we_backup_object extends we_object{
 	private $_ObjectBaseElements = array(
 		'ID', 'OF_ID', 'OF_ParentID', 'OF_Text', 'OF_Path', 'OF_Url', 'OF_TriggerID', 'OF_Workspaces', 'OF_ExtraWorkspaces', 'OF_ExtraWorkspacesSelected',
-		'OF_Templates', 'OF_ExtraTemplates', 'OF_Category', 'OF_Published', 'OF_IsSearchable', 'OF_Charset', 'OF_WebUserID', 'OF_Language', 'variant_weInternVariantElement'
+		'OF_Templates', 'OF_Category', 'OF_Published', 'OF_IsSearchable', 'OF_Charset', 'OF_WebUserID', 'OF_Language', 'variant_weInternVariantElement'
 	);
 	protected $isAddFieldNoSave = false;
 	protected $isModifyFieldNoSave = false;
@@ -46,22 +46,6 @@ class we_backup_object extends we_object{
 		if(!$this->wasUpdate){
 			$qarr = array(
 				'OF_ID' => 'BIGINT NOT NULL',
-				'OF_ParentID' => 'BIGINT NOT NULL',
-				'OF_Text' => 'VARCHAR(255) NOT NULL',
-				'OF_Path' => 'VARCHAR(255) NOT NULL',
-				'OF_Url' => 'VARCHAR(255) NOT NULL',
-				'OF_TriggerID' => 'BIGINT NOT NULL  default "0"',
-				'OF_Workspaces' => 'VARCHAR(255) NOT NULL',
-				'OF_ExtraWorkspaces' => 'VARCHAR(255) NOT NULL',
-				'OF_ExtraWorkspacesSelected' => 'VARCHAR(255) NOT NULL',
-				'OF_Templates' => 'VARCHAR(255) NOT NULL',
-				'OF_ExtraTemplates' => 'VARCHAR(255) NOT NULL',
-				'OF_Category' => 'VARCHAR(255) NOT NULL',
-				'OF_Published' => 'int(11) NOT NULL',
-				'OF_IsSearchable' => 'tinyint(1) NOT NULL default "1"',
-				'OF_Charset' => 'VARCHAR(64) NOT NULL',
-				'OF_WebUserID' => 'BIGINT NOT NULL',
-				'OF_Language' => 'VARCHAR(5) default "NULL"',
 			);
 
 			$indexe = array(

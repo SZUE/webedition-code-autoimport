@@ -56,14 +56,10 @@ switch($cmd){
 	case 'object_del_css':
 	case 'object_add_workspace':
 	case 'object_del_workspace':
-	case 'object_add_extraworkspace':
-	case 'object_del_extraworkspace':
 	case 'object_changeTempl_ob':
 	case 'object_ws_from_class':
 //	In this file we cant work with WE_OBJECT_MODULE_PATH, because a prefix is already set in : we_cmd.php
 		return 'we_editors/we_editor.inc.php';
-	case 'object_toggleExtraWorkspace':
-		return 'we_modules/object/we_object_cmds.inc.php';
 	case 'object_obj_search':
 		return 'we_modules/object/search_submit.php';
 	case 'object_preview_objectFile':

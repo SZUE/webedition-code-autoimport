@@ -120,34 +120,6 @@ class we_object_search extends we_search_base{
 		}
 	}
 
-	function getExtraWorkspace($exws, $len, $id, $userWSArray){
-		if(empty($exws)){
-			return "-";
-		}
-		$isAdmin = permissionhandler::hasPerm("ADMINISTRATOR");
-		$out = '<table class="default">';
-		foreach($exws as $cur){
-			if($cur == ""){
-				continue;
-			}
-
-			$checkbox = ($isAdmin || we_users_util::in_workspace($cur, $userWSArray) ?
-					'<a href="javascript:we_cmd(\'object_toggleExtraWorkspace\',\'' . $GLOBALS["we_transaction"] . '\',\'' . $this->db->f("ID") . '\',\'' . $cur . '\',\'' . $id . '\')"><i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $cur . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i></a>' :
-					'<i name="check_' . $id . '_' . $this->db->f("ID") . '" class="fa fa-' . (strstr($this->db->f("OF_ExtraWorkspacesSelected"), "," . $cur . ",") ? 'check-' : '') . 'square-o wecheckIcon"></i>'
-				);
-
-			$p = id_to_path($cur);
-			$out .= '
-<tr>
-	<td>' . $checkbox . '</td>
-	<td style="width:5px;"></td>
-	<td class="middlefont">&nbsp;<a href="javascript:setWs(\'' . $p . '\',\'' . $cur . '\')" class="middlefont" title="' . $p . '">' . we_base_util::shortenPath($p, $len) . '</a><td>
-</tr>';
-		}
-
-		return $out . '</table>';
-	}
-
 	function getWorkspaces(array $foo, $len){
 		if(!$foo){
 			return '-';

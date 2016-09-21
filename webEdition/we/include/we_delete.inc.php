@@ -161,7 +161,6 @@ function getObjectsForDocWorkspace($id, we_database_base $db){
 	$where = [];
 	foreach($ids as $id){
 		$where[] = 'FIND_IN_SET(' . $id . ',Workspaces)';
-		$where[] = 'FIND_IN_SET(' . $id . ',ExtraWorkspaces)';
 	}
 
 	$db->query('SELECT ID,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . implode(' OR ', $where));
