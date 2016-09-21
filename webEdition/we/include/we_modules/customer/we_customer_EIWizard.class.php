@@ -1462,22 +1462,6 @@ function formDirChooser() {
 		}
 		$customers = array_filter($customers);
 		$js = we_html_element::jsElement('
-function selector_cmd(){
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-	switch (args[0]){
-		case "we_selector_file":
-			new (WE().util.jsWindow)(window, url,"we_selector",-1,-1,WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height,true,true,true,true);
-		break;
-		case "add_customer":
-		case "del_customer":
-		case "del_all_customers":
-			document.we_form.wcmd.value=args[0];
-			document.we_form.cus.value=args[1];
-			document.we_form.submit();
-		break;
-	}
-}
 top.customers="' . implode(',', $customers) . '";');
 
 		$hiddens = we_html_element::htmlHiddens(["wcmd" => "",
@@ -1485,11 +1469,11 @@ top.customers="' . implode(',', $customers) . '";');
 
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','opener.top.body.selector_cmd(\'add_customer\',top.fileSelect.data.allIDs.join(\',\'));')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','add_customer')");
 		$custs = new we_chooser_multiDir(400, ($customers ? : []), "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 
 		$custs->isEditable = permissionhandler::hasPerm("EDIT_CUSTOMER");
-		return $js . $hiddens . $custs->get();
+		return we_html_element(WE_JS_MODULES_DIR . 'customer/EIWizard.js') . $js . $hiddens . $custs->get();
 	}
 
 	private function getHTMLChooser($name, $value, $values, $title){

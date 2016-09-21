@@ -51,3 +51,24 @@ function doNextAction() {
 	}
 	top.body.document.we_form.submit();
 }
+
+function selector_cmd() {
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	var url = WE().util.getWe_cmdArgsUrl(args);
+	switch (args[0]) {
+		case "we_selector_file":
+			new (WE().util.jsWindow)(window, url, "we_selector", -1, -1, WE().consts.size.windowSelect.width, WE().consts.size.windowSelect.height, true, true, true, true);
+			break;
+		case "add_customer":
+			document.we_form.wcmd.value = args[0];
+			document.we_form.cus.value = args[1].allIDs.join(",");
+			document.we_form.submit();
+			break;
+		case "del_customer":
+		case "del_all_customers":
+			document.we_form.wcmd.value = args[0];
+			document.we_form.cus.value = args[1];
+			document.we_form.submit();
+			break;
+	}
+}

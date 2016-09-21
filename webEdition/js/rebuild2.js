@@ -57,7 +57,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1, WE().consts.size.catSelect.width, WE().consts.size.catSelect.height, true, true, true, true);
 			break;
 		case "add_cat":
-			var catsToAdd = makeArrayFromCSV(args[1]);
+			var catsToAdd = args[1].allIDs;
 			cats = makeArrayFromCSV(f.categories.value);
 			for (i = 0; i < catsToAdd.length; i++) {
 				if (!WE().util.in_array(catsToAdd[i], cats)) {

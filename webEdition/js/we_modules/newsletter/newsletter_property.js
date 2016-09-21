@@ -231,7 +231,11 @@ function we_cmd() {
 
 		case "add_customer":
 			document.we_form.ngroup.value = args[2];
-			/* falls through */
+			document.we_form.ncmd.value = args[0];
+			document.we_form.ncustomer.value = args[1].allIDs.join(",");
+			top.content.hot = true;
+			submitForm();
+			break;
 		case "del_customer":
 			document.we_form.ncmd.value = args[0];
 			document.we_form.ncustomer.value = args[1];
@@ -624,7 +628,7 @@ function weShowMailsByStatus(status, group) {
 			}
 			break;
 		default :
-			//alert(status);
+		//alert(status);
 	}
 }
 

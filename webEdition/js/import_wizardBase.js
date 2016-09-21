@@ -86,18 +86,20 @@ function we_cmd() {
 			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
 				this.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
 			}
-			if (this.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + args[1] + ',') === -1) {
-				cats = args[1].split(/,/);
-				for (i = 0; i < cats.length; i++) {
-					if (cats[i] && (this.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
-						if (this.wizbody.document.we_form.elements['v[docCategories]'].value) {
-							this.wizbody.document.we_form.elements['v[docCategories]'].value = this.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
-						} else {
-							this.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
-						}
+			var found = false;
+			cats = args[1].allIDs;
+			for (i = 0; i < cats.length; i++) {
+				if (cats[i] && (this.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
+					found = true;
+					if (this.wizbody.document.we_form.elements['v[docCategories]'].value) {
+						this.wizbody.document.we_form.elements['v[docCategories]'].value = this.wizbody.document.we_form.elements['v[docCategories]'].value + cats[i] + ',';
+					} else {
+						this.wizbody.document.we_form.elements['v[docCategories]'].value = ',' + cats[i] + ',';
 					}
 				}
-				setTimeout(weGetCategories, 100, 'doc', this.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
+				if (found) {
+					setTimeout(weGetCategories, 100, 'doc', this.wizbody.document.we_form.elements['v[docCategories]'].value, 'rows');
+				}
 			}
 			break;
 		case 'delete_docCat':
@@ -114,18 +116,20 @@ function we_cmd() {
 			break;
 		case 'add_objCat':
 			this.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
-			if (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + args[1] + ',') === -1) {
-				cats = args[1].split(/,/);
-				for (i = 0; i < cats.length; i++) {
-					if (cats[i] && (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
-						if (this.wizbody.document.we_form.elements['v[objCategories]'].value) {
-							this.wizbody.document.we_form.elements['v[objCategories]'].value = this.wizbody.document.we_form.elements['v[objCategories]'].value + cats[i] + ',';
-						} else {
-							this.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
-						}
+			var found = false;
+			cats = args[1].allIDs;
+			for (i = 0; i < cats.length; i++) {
+				if (cats[i] && (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
+					found = true;
+					if (this.wizbody.document.we_form.elements['v[objCategories]'].value) {
+						this.wizbody.document.we_form.elements['v[objCategories]'].value = this.wizbody.document.we_form.elements['v[objCategories]'].value + cats[i] + ',';
+					} else {
+						this.wizbody.document.we_form.elements['v[objCategories]'].value = ',' + cats[i] + ',';
 					}
 				}
-				setTimeout(weGetCategories, 100, 'obj', this.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
+				if (found) {
+					setTimeout(weGetCategories, 100, 'obj', this.wizbody.document.we_form.elements['v[objCategories]'].value, 'rows');
+				}
 			}
 			break;
 		case 'delete_objCat':
