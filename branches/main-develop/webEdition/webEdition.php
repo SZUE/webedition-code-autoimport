@@ -101,10 +101,10 @@ foreach($GLOBALS['_we_active_integrated_modules'] as $mod){
 	}
 }
 
-$jsCode = we_tool_lookup::getJsCmdInclude($jsCmd);
+we_tool_lookup::getJsCmdInclude($jsCmd);
 $jsmods = array_keys($jsCmd);
 $jsmods[] = 'base';
-$jsmods[] = 'tools';
+$diff = array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']);
 
 echo we_html_tools::getHtmlTop('webEdition - ' . $_SESSION['user']['Username'], '', '', '', '', false);
 $const = [
@@ -133,6 +133,11 @@ $const = [
 		'WE_INCLUDES_DIR' => WE_INCLUDES_DIR,
 		'WE_JS_TINYMCE_DIR' => WE_JS_TINYMCE_DIR,
 		'WE_SPELLCHECKER_MODULE_DIR' => defined('SPELLCHECKER') ? WE_SPELLCHECKER_MODULE_DIR : '',
+	],
+	'modules' => [
+		'active' => $GLOBALS['_we_active_integrated_modules'],
+		'jsmods' => $jsmods,
+		'inactive' => $diff,
 	],
 	'global' => [
 		'WE_EDITPAGE_CONTENT' => we_base_constants::WE_EDITPAGE_CONTENT,
@@ -229,7 +234,7 @@ foreach($_SESSION['perms'] as $perm => $access){
 	$session['permissions'][$perm] = (!empty($_SESSION['perms']['ADMINISTRATOR']) ? 1 : intval($access));
 }
 
-echo we_html_element::jsScript(JS_DIR . 'webEdition.js', '', [ 'id' => 'loadWEData',
+echo we_html_element::jsScript(JS_DIR . 'webEdition.js', '', ['id' => 'loadWEData',
 	'data-session' => setDynamicVar($session),
 	'data-consts' => setDynamicVar($const),
 ]) .
@@ -252,160 +257,98 @@ foreach($jsCmd as $cur){
 	echo we_html_element::jsScript($cur);
 }
 ?>
-<script><!--
-<?php
-echo $jsCode;
-
-if(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])){
-	echo 'alert("' . g_l('global', '[pwd][startupRegExFailed]') . '");';
-	unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
-}
-?>
-
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-	//	When coming from a we_cmd, always mark the document as opened with we !!!!
-	if (WE().layout.weEditorFrameController.getActiveDocumentReference) {
-
-		switch (args[0]) {
-			case 'edit_document':
-			case 'new_document':
-			case 'open_extern_document':
-			case 'edit_document_with_parameters':
-			case 'new_folder':
-			case 'edit_folder':
-				break;
-			default:
-				WE().layout.weEditorFrameController.getActiveDocumentReference().openedWithWE = true;
+	<script><!--
+		<?php
+		if(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])){
+			echo 'alert("' . g_l('global', '[pwd][startupRegExFailed]') . '");';
+			unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
 		}
-
-	}
-	switch (args[0]) {
-<?php
-// deal with not activated modules
-$diff = array_diff(array_keys(we_base_moduleInfo::getAllModules()), $GLOBALS['_we_active_integrated_modules']);
-if($diff){
-	foreach($diff as $m){
-		echo 'case "' . $m . '_edit_ifthere":
-';
-	}
-	echo 'new (WE().util.jsWindow)(window, url,"module_info",-1,-1,380,250,true,true,true);
-		break;';
-}
-?>
-		case "exit_doc_question":
-			// return !! important for multiEditor
-			return new (WE().util.jsWindow)(window, url, "exit_doc_question", -1, -1, 380, 130, true, false, true);
-		case "eplugin_exit_doc" :
-			if (top.plugin !== undefined && top.plugin.document.WePlugin !== undefined) {
-				if (top.plugin.isInEditor(args[1])) {
-					return confirm(WE().consts.g_l.main.eplugin_exit_doc);
-				}
-			}
-			return true;
-		case "editor_plugin_doc_count":
-			if (top.plugin.document.WePlugin !== undefined) {
-				return top.plugin.getDocCount();
-			}
-			return 0;
-		default:
-<?php
-foreach($jsmods as $mod){//fixme: if all commands have valid prefixes, we can do a switch/case instead of search
-	echo 'if(we_cmd_' . $mod . '.apply(this,[args, url])){
-	break;
-}';
-}
-?>
-			we_showInNewTab(args, url);
-	}
-
-}
+		?>
 
 function startMsg() {
-<?= we_main_headermenu::createMessageConsole('mainWindow', true); ?>
+		<?= we_main_headermenu::createMessageConsole('mainWindow', true); ?>
 }
 function updateCheck() {
-<?php
-if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable())){
-	?>top.we_showMessage("<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
-<?php }
-?>
-}
-
-//-->
-</script>
-</head>
-<body id="weMainBody" onload="initWE();
-		top.start('<?= $table_to_load; ?>');
-		startMsg();
-		updateCheck();
-		self.focus();" onbeforeunload ="return doUnload();">
-	<div id="headerDiv"><?php
-		$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
-		$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
-		?>
-		<div id="weMainHeader"><?php
-			we_main_headermenu::pbody($msg);
-			?>
-		</div>
-	</div>
-	<div id="resizeFrame"><?php
-		$sidebarwidth = getSidebarWidth();
-		switch($_SESSION['weS']['we_mode']){
-			default:
-			case we_base_constants::MODE_NORMAL:
-				$treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= we_tree_base::MinWidth) ? intval($_COOKIE["treewidth_main"]) : we_tree_base::DefaultWidth;
-				$treeStyle = 'display:block;';
-				break;
-			case we_base_constants::MODE_SEE:
-				$treewidth = 0;
-				if($SEEM_edit_include){ // edit include file
-					$_REQUEST['SEEM_edit_include'] = true;
-					$_REQUEST['we_cmd'][0] = 'edit_document';
-				}
-				$treeStyle = '';
-				break;
-		}
-		?>
-		<div style="width:<?= $treewidth; ?>px;<?= $treeStyle; ?>" id="bframeDiv">
-			<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
-		</div>
-		<div style="right:<?= $sidebarwidth; ?>px;left:<?= $treewidth; ?>px;" id="bm_content_frameDiv">
-			<iframe src="<?= WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame"></iframe>
-		</div>
 		<?php
-		if(!(SIDEBAR_DISABLED == 1)){
+		if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable())){
+			?>top.we_showMessage("<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
+		<?php }
+		?>
+			}
+
+			//-->
+	</script>
+	</head>
+	<body id="weMainBody" onload="initWE();
+			top.start('<?= $table_to_load; ?>');
+			startMsg();
+			updateCheck();
+			self.focus();" onbeforeunload ="return doUnload();">
+		<div id="headerDiv"><?php
+			$SEEM_edit_include = we_base_request::_(we_base_request::BOOL, 'SEEM_edit_include');
+			$msg = (defined('MESSAGING_SYSTEM') && !$SEEM_edit_include);
 			?>
-			<div style="width:<?= $sidebarwidth; ?>px;" id="sidebarDiv">
-				<?php
-				$weFrame = new we_sidebar_frames();
-				$weFrame->getHTML('');
+			<div id="weMainHeader"><?php
+				we_main_headermenu::pbody($msg);
 				?>
 			</div>
-		<?php } ?>
-	</div>
-	<div id="cmdDiv">
-		<iframe src="about:blank" name="load"></iframe>
-		<iframe src="about:blank" name="load2"></iframe>
-		<iframe src="about:blank" name="plugin"></iframe>
-	</div>
-	<?php
+		</div>
+		<div id="resizeFrame"><?php
+			$sidebarwidth = getSidebarWidth();
+			switch($_SESSION['weS']['we_mode']){
+				default:
+				case we_base_constants::MODE_NORMAL:
+					$treewidth = isset($_COOKIE["treewidth_main"]) && ($_COOKIE["treewidth_main"] >= we_tree_base::MinWidth) ? intval($_COOKIE["treewidth_main"]) : we_tree_base::DefaultWidth;
+					$treeStyle = 'display:block;';
+					break;
+				case we_base_constants::MODE_SEE:
+					$treewidth = 0;
+					if($SEEM_edit_include){ // edit include file
+						$_REQUEST['SEEM_edit_include'] = true;
+						$_REQUEST['we_cmd'][0] = 'edit_document';
+					}
+					$treeStyle = '';
+					break;
+			}
+			?>
+			<div style="width:<?= $treewidth; ?>px;<?= $treeStyle; ?>" id="bframeDiv">
+				<?php include(WE_INCLUDES_PATH . 'baumFrame.inc.php'); ?>
+			</div>
+			<div style="right:<?= $sidebarwidth; ?>px;left:<?= $treewidth; ?>px;" id="bm_content_frameDiv">
+				<iframe src="<?= WEBEDITION_DIR; ?>multiContentFrame.php" name="bm_content_frame"></iframe>
+			</div>
+			<?php
+			if(!(SIDEBAR_DISABLED == 1)){
+				?>
+				<div style="width:<?= $sidebarwidth; ?>px;" id="sidebarDiv">
+					<?php
+					$weFrame = new we_sidebar_frames();
+					$weFrame->getHTML('');
+					?>
+				</div>
+			<?php } ?>
+		</div>
+		<div id="cmdDiv">
+			<iframe src="about:blank" name="load"></iframe>
+			<iframe src="about:blank" name="load2"></iframe>
+			<iframe src="about:blank" name="plugin"></iframe>
+		</div>
+		<?php
 //	get the frameset for the actual mode.
-	echo ((defined('MESSAGING_SYSTEM') && !$SEEM_edit_include) ?
-		we_messaging_headerMsg::getJS() : '') .
+		echo ((defined('MESSAGING_SYSTEM') && !$SEEM_edit_include) ?
+			we_messaging_headerMsg::getJS() : '') .
 //	get the Treefunctions for docselector
-	getWebEdition_Tree();
-	?>
-</body>
-</html>
-<?php
-if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
-	flush();
-	if(function_exists('fastcgi_finish_request')){
-		fastcgi_finish_request();
-	}
-	session_write_close();
+		getWebEdition_Tree();
+		?>
+	</body>
+	</html>
+	<?php
+	if(we_base_moduleInfo::isActive(we_base_moduleInfo::SCHEDULER) && (!isset($SEEM_edit_include) || !$SEEM_edit_include)){
+		flush();
+		if(function_exists('fastcgi_finish_request')){
+			fastcgi_finish_request();
+		}
+		session_write_close();
 // trigger scheduler
-	we_schedpro::trigger_schedule();
-}
+		we_schedpro::trigger_schedule();
+	}
