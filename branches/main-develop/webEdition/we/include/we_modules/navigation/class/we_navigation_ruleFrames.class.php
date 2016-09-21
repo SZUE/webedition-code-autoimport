@@ -205,7 +205,7 @@ var dependencies = {
 	}
 
 	function getHTMLCategory(){
-		$addbut = we_html_button::create_button('add', "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.fileSelect.data.allPaths, top.fileSelect.data.allIDs);')");
+		$addbut = we_html_button::create_button('add', "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','opener.addCat(top.fileSelect.data.allPaths, top.fileSelect.data.allIDs);')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;'));
 
 

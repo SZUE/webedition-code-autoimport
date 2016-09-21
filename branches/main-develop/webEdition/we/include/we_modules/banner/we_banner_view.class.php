@@ -551,7 +551,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	function formCategories(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\'add_cat\',top.fileSelect.data.allIDs.join(\',\'));')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',-1,'" . CATEGORY_TABLE . "','','','opener.we_cmd(\'add_cat\',top.fileSelect.data.allIDs.join(\',\'));')");
 
 		$cats = new we_chooser_multiDir(495, $this->banner->CategoryIDs, "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
 
@@ -660,7 +660,7 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 
 	function formCustomer(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_customers')");
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\'add_customer\',top.fileSelect.data.allIDs.join(\',\'));','','','',1)");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','opener.we_cmd(\'add_customer\',top.fileSelect.data.allIDs.join(\',\'));','','','',1)");
 		$obj = new we_chooser_multiDir(508, $this->banner->Customers, "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 		return $obj->get();
 	}

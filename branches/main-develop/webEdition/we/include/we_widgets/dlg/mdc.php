@@ -93,7 +93,7 @@ if($ac){
 }
 
 function getHTMLCategory(&$widgetData){
-	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.fileSelect.data.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+	$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','opener.addCat(top.fileSelect.data.allPaths);')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 	$del_but = we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;top.mark();');
 	$widgetData['cats'] = [
 		'del' => $del_but,
