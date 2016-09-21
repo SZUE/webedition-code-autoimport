@@ -1,3 +1,5 @@
+/* global tinyMCEPopup */
+
 tinyMCEPopup.requireLangPack();
 
 function init() {
@@ -28,7 +30,7 @@ function init() {
 	setActionforRowType(formObj, rowtype);
 
 	// Any cells selected
-	if (dom.select('td.mceSelected,th.mceSelected', trElm).length == 0) {
+	if (dom.select('td.mceSelected,th.mceSelected', trElm).length === 0) {
 		// Setup form
 		addClassesToList('class', 'table_row_styles');
 		TinyMCE_EditableSelects.init();
@@ -104,7 +106,7 @@ function updateAction() {
 			var rows = tableElm.getElementsByTagName("tr");
 
 			for (var i=0; i<rows.length; i++) {
-				if ((i % 2 == 0 && action == "odd") || (i % 2 != 0 && action == "even"))
+				if ((i % 2 == 0 && action === "odd") || (i % 2 !== 0 && action === "even"))
 					updateRow(rows[i], true, true);
 			}
 
@@ -145,7 +147,7 @@ function updateRow(tr_elm, skip_id, skip_parent) {
 	tr_elm.style.height = getCSSSize(formObj.height.value);
 	tr_elm.style.backgroundColor = formObj.bgcolor.value;
 
-	if (formObj.backgroundimage.value != "")
+	if (formObj.backgroundimage.value !== "")
 		tr_elm.style.backgroundImage = "url('" + formObj.backgroundimage.value + "')";
 	else
 		tr_elm.style.backgroundImage = '';
@@ -218,7 +220,7 @@ function changedSize() {
 	var st = dom.parseStyle(formObj.style.value);
 
 	var height = formObj.height.value;
-	if (height != "")
+	if (height !== "")
 		st['height'] = getCSSSize(height);
 	else
 		st['height'] = "";

@@ -69,5 +69,5 @@ var weTabs = WE().session.seemode ? '' : new (WE().layout.we_tabs)(document, win
 
 if (WE().session.seemode) {
 	top.setFrameSize = function () {
-	}
+	};
 }

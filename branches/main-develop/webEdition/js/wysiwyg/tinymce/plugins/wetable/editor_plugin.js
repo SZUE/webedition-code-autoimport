@@ -22,8 +22,8 @@
 		elm.appendChild(rng2.cloneContents());
 
 		// Check for text characters of other elements that should be treated as content
-		return elm.innerHTML.replace(/<(br|img|object|embed|input|textarea)[^>]*>/gi, '-').replace(/<[^>]+>/g, '').length == 0;
-	};
+		return elm.innerHTML.replace(/<(br|img|object|embed|input|textarea)[^>]*>/gi, '-').replace(/<[^>]+>/g, '').length === 0;
+	}
 
 	function getSpanVal(td, name) {
 		return parseInt(td.getAttribute(name) || 1);
@@ -94,7 +94,7 @@
 
 				startY += rows.length;
 			});
-		};
+		}
 
 		function getCell(x, y) {
 			var row;
@@ -102,7 +102,7 @@
 			row = grid[y];
 			if (row)
 				return row[x];
-		};
+		}
 
 		function setSpanVal(td, name, val) {
 			if (td) {
@@ -117,7 +117,7 @@
 
 		function isCellSelected(cell) {
 			return cell && (dom.hasClass(cell.elm, 'mceSelected') || cell == selectedCell);
-		};
+		}
 
 		function getSelectedRows() {
 			var rows = [];
@@ -132,7 +132,7 @@
 			});
 
 			return rows;
-		};
+		}
 
 		function deleteTable() {
 			var rng = dom.createRng();
@@ -143,7 +143,7 @@
 			selection.setRng(rng);
 
 			dom.remove(table);
-		};
+		}
 
 		function cloneCell(cell) {
 			var formatNode;
@@ -184,7 +184,7 @@
 			}
 
 			return cell;
-		};
+		}
 
 		function cleanup() {
 			var rng = dom.createRng();
@@ -206,7 +206,7 @@
 
 			// Empty header/body/footer
 			each(dom.select('thead,tbody,tfoot', table), function(part) {
-				if (part.rows.length == 0)
+				if (part.rows.length === 0)
 					dom.remove(part);
 			});
 
@@ -219,7 +219,7 @@
 				selection.select(row[Math.min(row.length - 1, startPos.x)].elm, true);
 				selection.collapse(true);
 			}
-		};
+		}
 
 		function fillLeftDown(x, y, rows, cols) {
 			var tr, x2, r, c, cell;
@@ -249,7 +249,7 @@
 					}
 				}
 			}
-		};
+		}
 
 		function split() {
 			each(grid, function(row, y) {
@@ -274,7 +274,7 @@
 					}
 				});
 			});
-		};
+		}
 
 		function merge(cell, cols, rows) {
 			var startX, startY, endX, endY, x, y, startCell, endCell, cell, children, count;
@@ -348,7 +348,7 @@
 										startCell.removeChild(node);
 								});
 							}
-							
+
 							// Remove cell
 							dom.remove(cell);
 						}
@@ -358,7 +358,7 @@
 				// Remove empty rows etc and restore caret location
 				cleanup();
 			}
-		};
+			}
 
 		function insertRow(before) {
 			var posY, cell, lastCell, x, rowElm, newRow, newCell, otherCell, rowSpan;
@@ -423,7 +423,7 @@
 				else
 					rowElm.parentNode.insertBefore(newRow, rowElm);
 			}
-		};
+			}
 
 		function insertCol(before) {
 			var posX, lastCell;
@@ -468,7 +468,7 @@
 					lastCell = cell;
 				}
 			});
-		};
+			}
 
 		function deleteCols() {
 			var cols = [];
@@ -494,7 +494,7 @@
 			});
 
 			cleanup();
-		};
+			}
 
 		function deleteRows() {
 			var rows;
@@ -553,7 +553,7 @@
 			cleanup();
 
 			return rows;
-		};
+		}
 
 		function copyRows() {
 			var rows = getSelectedRows();
@@ -563,7 +563,7 @@
 			});
 
 			return rows;
-		};
+			}
 
 		function pasteRows(rows, before) {
 			// If we don't have any rows in the clipboard, return immediately
@@ -638,11 +638,11 @@
 			});
 
 			return pos;
-		};
+			}
 
 		function setStartCell(cell) {
 			startPos = getPos(cell);
-		};
+		}
 
 		function findEndPos() {
 			var pos, maxX, maxY;
@@ -681,7 +681,7 @@
 			});
 
 			return {x : maxX, y : maxY};
-		};
+			}
 
 		function setEndCell(cell) {
 			var startX, startY, endX, endY, maxX, maxY, colSpan, rowSpan;
@@ -752,7 +752,7 @@
 					}
 				}
 			}
-		};
+			}
 
 		// Expose to public
 		tinymce.extend(this, {
@@ -995,7 +995,7 @@
 							var tableElm = ed.dom.getParent(ed.selection.getNode(), 'table');
 							var direction = e.shiftKey ? 'prev' : 'next';
 							var nextCell = getNeighboringCell(tableElm, tdElm, direction);
-							
+
 
 							if (!nextCell) {
 								if(direction === 'prev'){
@@ -1023,7 +1023,7 @@
 						}
 
 						//ed.undoManager.add();
-					} 
+					}
 					// END WE
 						else {
 						fixTableCellSelection(ed);
@@ -1038,19 +1038,19 @@
 
 				function tableCellSelected(ed, rng, n, currentCell) {
 					// The decision of when a table cell is selected is somewhat involved.  The fact that this code is
-					// required is actually a pointer to the root cause of this bug. A cell is selected when the start 
+					// required is actually a pointer to the root cause of this bug. A cell is selected when the start
 					// and end offsets are 0, the start container is a text, and the selection node is either a TR (most cases)
 					// or the parent of the table (in the case of the selection containing the last cell of a table).
-					var TEXT_NODE = 3, table = ed.dom.getParent(rng.startContainer, 'TABLE'), 
+					var TEXT_NODE = 3, table = ed.dom.getParent(rng.startContainer, 'TABLE'),
 					tableParent, allOfCellSelected, tableCellSelection;
-					if (table) 
+					if (table)
 					tableParent = table.parentNode;
-					allOfCellSelected =rng.startContainer.nodeType == TEXT_NODE && 
-						rng.startOffset == 0 && 
-						rng.endOffset == 0 && 
-						currentCell && 
+					allOfCellSelected =rng.startContainer.nodeType == TEXT_NODE &&
+						rng.startOffset == 0 &&
+						rng.endOffset == 0 &&
+						currentCell &&
 						(n.nodeName=="TR" || n==tableParent);
-					tableCellSelection = (n.nodeName=="TD"||n.nodeName=="TH")&& !currentCell;	   
+					tableCellSelection = (n.nodeName=="TD"||n.nodeName=="TH")&& !currentCell;
 					return  allOfCellSelected || tableCellSelection;
 					// return false;
 				}
@@ -1086,18 +1086,18 @@
 					var rng = ed.selection.getRng();
 					var n = ed.selection.getNode();
 					var currentCell = ed.dom.getParent(rng.startContainer, 'TD,TH');
-				
+
 					if (!tableCellSelected(ed, rng, n, currentCell))
 						return;
 						if (!currentCell) {
 							currentCell=n;
 						}
-					
+
 					// Get the very last node inside the table cell
 					var end = currentCell.lastChild;
 					while (end.lastChild)
 						end = end.lastChild;
-					
+
 					// Select the entire table cell. Nothing outside of the table cell should be selected.
 					rng.setEnd(end, end.nodeValue.length);
 					ed.selection.setRng(rng);
@@ -1403,7 +1403,7 @@ var tableElm = ed.dom.getParent(ed.selection.getNode(), 'table');
 			}
 		}
 	}
-					
+
 
 					if (!nextCell) {
 						//ed.execCommand("mceTableInsertRowAfter", tdElm);
@@ -1417,7 +1417,7 @@ var tableElm = ed.dom.getParent(ed.selection.getNode(), 'table');
 					}
 					//END WE-Fix
 					//Original: inst.selection.select(nextCell.firstChild);
-					
+
 					ed.selection.collapse(true);
 				},
 

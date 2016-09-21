@@ -89,7 +89,7 @@ function add_thumbnail() {
 function delete_thumbnail() {
 	if (WE().util.hasPerm('ADMINISTRATOR')) {
 		var deletion = confirm(WE().util.sprintf(WE().consts.g_l.thumbnail.delete_prompt, thumbnails.selectedName));
-		if (deletion == true) {
+		if (deletion) {
 			window.location = WE().consts.dirs.WEBEDITION_DIR + 'we_cmd.php?we_cmd[0]=editThumbs&deletethumbnail=' + thumbnails.selectedID;
 		}
 	}

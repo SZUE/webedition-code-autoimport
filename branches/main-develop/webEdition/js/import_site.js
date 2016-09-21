@@ -167,7 +167,7 @@ function next() {
 	if (!top.siteimportcontent.document.we_form.from.value || top.siteimportcontent.document.we_form.from.value == '/') {
 		testvalue += 1;
 	}
-	if (top.siteimportcontent.document.we_form.to.value == 0 || top.siteimportcontent.document.we_form.to.value == '') {
+	if (top.siteimportcontent.document.we_form.to.value === "0" || !top.siteimportcontent.document.we_form.to.value) {
 		testvalue += 2;
 	}
 	switch (testvalue) {

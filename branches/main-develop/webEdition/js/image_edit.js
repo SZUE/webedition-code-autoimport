@@ -127,7 +127,7 @@ function doOKResizeDialog() {
 	var f = document.we_form;
 	var qual = 8;
 
-	if (f.width.value == 0 || f.height.value == 0 || f.width.value == "0%" || f.height.value == "0%") {
+	if (f.width.value === "0" || f.height.value === "0" || f.width.value == "0%" || f.height.value == "0%") {
 		top.we_showMessage(WE().consts.g_l.alert.image_edit_null_not_allowed, WE().consts.message.WE_MESSAGE_ERROR, window);
 		return;
 	}

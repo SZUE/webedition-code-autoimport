@@ -53,25 +53,7 @@ function we_cmd() {
 			break;
 		case "new_user":
 			top.content.editor.edbody.focus();
-			if (hot === 1 && top.content.editor.edbody.document.we_form.cmd) {
-				if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
-					top.content.editor.edbody.document.we_form.cmd.value = "save_user";
-					top.content.editor.edbody.document.we_form.sd.value = 1;
-				} else {
-					top.content.usetHot();
-					top.content.editor.edbody.document.we_form.cmd.value = "new_user";
-				}
-				if (args[1]) {
-					top.content.editor.edbody.document.we_form.uid.value = args[1];
-				}
-				if (args[2]) {
-					top.content.editor.edbody.document.we_form.ctype.value = args[2];
-				}
-				if (args[3]) {
-					top.content.editor.edbody.document.we_form.ctable.value = args[3];
-				}
-				top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd");
-			} else {
+			if (!saveBeforeNextCmd(args)) {
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_user&cgroup=" + cgroup;
 			}
 			break;
@@ -80,71 +62,17 @@ function we_cmd() {
 			break;
 		case "display_user":
 			top.content.editor.edbody.focus();
-			if (hot === 1 && top.content.editor.edbody.document.we_form.cmd) {
-				if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
-					top.content.editor.edbody.document.we_form.cmd.value = "save_user";
-					top.content.editor.edbody.document.we_form.sd.value = 1;
-				} else {
-					top.content.usetHot();
-					top.content.editor.edbody.document.we_form.cmd.value = "display_user";
-				}
-				if (args[1]) {
-					top.content.editor.edbody.document.we_form.uid.value = args[1];
-				}
-				if (args[2]) {
-					top.content.editor.edbody.document.we_form.ctype.value = args[2];
-				}
-				if (args[3]) {
-					top.content.editor.edbody.document.we_form.ctable.value = args[3];
-				}
-				top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd");
-			} else {
+			if (!saveBeforeNextCmd(args)) {
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=display_user&uid=" + args[1];
 			}
 			break;
 		case "new_group":
-			if (hot === 1 && top.content.editor.edbody.document.we_form.cmd) {
-				if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
-					top.content.editor.edbody.document.we_form.cmd.value = "save_user";
-					top.content.editor.edbody.document.we_form.sd.value = 1;
-				} else {
-					top.content.usetHot();
-					top.content.editor.edbody.document.we_form.cmd.value = "new_group";
-				}
-				if (args[1]) {
-					top.content.editor.edbody.document.we_form.uid.value = args[1];
-				}
-				if (args[2]) {
-					top.content.editor.edbody.document.we_form.ctype.value = args[2];
-				}
-				if (args[3]) {
-					top.content.editor.edbody.document.we_form.ctable.value = args[3];
-				}
-				top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd");
-			} else {
+			if (!saveBeforeNextCmd(args)) {
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_group&cgroup=" + cgroup;
 			}
 			break;
 		case "new_alias":
-			if (hot === 1 && top.content.editor.edbody.document.we_form.cmd) {
-				if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
-					top.content.editor.edbody.document.we_form.cmd.value = "save_user";
-					top.content.editor.edbody.document.we_form.sd.value = 1;
-				} else {
-					top.content.usetHot();
-					top.content.editor.edbody.document.we_form.cmd.value = "new_alias";
-				}
-				if (args[1]) {
-					top.content.editor.edbody.document.we_form.uid.value = args[1];
-				}
-				if (args[2]) {
-					top.content.editor.edbody.document.we_form.ctype.value = args[2];
-				}
-				if (args[3]) {
-					top.content.editor.edbody.document.we_form.ctable.value = args[3];
-				}
-				top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd");
-			} else {
+			if (!saveBeforeNextCmd(args)) {
 				top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=new_alias&cgroup=" + cgroup;
 			}
 			break;
@@ -173,6 +101,31 @@ function we_cmd() {
 			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
+}
+
+function saveBeforeNextCmd(args) {
+	if (hot === 1 && top.content.editor.edbody.document.we_form.cmd) {
+		if (confirm(WE().consts.g_l.users.view.save_changed_user)) {
+			top.content.editor.edbody.document.we_form.cmd.value = "save_user";
+			top.content.editor.edbody.document.we_form.sd.value = 1;
+		} else {
+			top.content.usetHot();
+			top.content.editor.edbody.document.we_form.cmd.value = args[0];
+		}
+		if (args[1]) {
+			top.content.editor.edbody.document.we_form.uid.value = args[1];
+		}
+		if (args[2]) {
+			top.content.editor.edbody.document.we_form.ctype.value = args[2];
+		}
+		if (args[3]) {
+			top.content.editor.edbody.document.we_form.ctable.value = args[3];
+		}
+		top.content.editor.edbody.we_submitForm("cmd", WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd");
+		return true;
+	}
+	return false;
+
 }
 
 function setHot() {

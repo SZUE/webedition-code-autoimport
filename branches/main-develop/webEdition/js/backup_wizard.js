@@ -320,7 +320,7 @@ function delSelected() {
 
 function startImport(isFileReady) {
 	var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse();
-	var isFileReady = isFileReady || false;
+	isFileReady = isFileReady || false;
 	for (var frameId in _usedEditors) {
 		_usedEditors[frameId].setEditorIsHot(false);
 

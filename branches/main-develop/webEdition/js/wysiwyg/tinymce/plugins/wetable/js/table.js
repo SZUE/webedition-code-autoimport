@@ -1,3 +1,5 @@
+/* global tinyMCEPopup */
+
 tinyMCEPopup.requireLangPack();
 
 var action, orgTableWidth, orgTableHeight, dom = tinyMCEPopup.editor.dom;
@@ -19,26 +21,26 @@ function insertTable() {
 	elm = dom.getParent(inst.selection.getNode(), 'table');
 
 	// Get form data
-	cols = formObj.elements['cols'].value;
-	rows = formObj.elements['rows'].value;
-	border = formObj.elements['border'].value != "" ? formObj.elements['border'].value : 0;
-	cellpadding = formObj.elements['cellpadding'].value != "" ? formObj.elements['cellpadding'].value : "";
-	cellspacing = formObj.elements['cellspacing'].value != "" ? formObj.elements['cellspacing'].value : "";
+	cols = formObj.elements.cols.value;
+	rows = formObj.elements.rows.value;
+	border = formObj.elements.border.value !== "" ? formObj.elements.border.value : 0;
+	cellpadding = formObj.elements.cellpadding.value !== "" ? formObj.elements.cellpadding.value : "";
+	cellspacing = formObj.elements.cellspacing.value !== "" ? formObj.elements.cellspacing.value : "";
 	align = getSelectValue(formObj, "align");
 	frame = getSelectValue(formObj, "tframe");
 	rules = getSelectValue(formObj, "rules");
-	width = formObj.elements['width'].value;
-	height = formObj.elements['height'].value;
-	bordercolor = formObj.elements['bordercolor'].value;
-	bgcolor = formObj.elements['bgcolor'].value;
+	width = formObj.elements.width.value;
+	height = formObj.elements.height.value;
+	bordercolor = formObj.elements.bordercolor.value;
+	bgcolor = formObj.elements.bgcolor.value;
 	className = getSelectValue(formObj, "class");
-	id = formObj.elements['id'].value;
-	summary = formObj.elements['summary'].value;
-	style = formObj.elements['style'].value;
-	dir = formObj.elements['dir'].value;
-	lang = formObj.elements['lang'].value;
-	background = formObj.elements['backgroundimage'].value;
-	caption = formObj.elements['caption'].checked;
+	id = formObj.elements.id.value;
+	summary = formObj.elements.summary.value;
+	style = formObj.elements.style.value;
+	dir = formObj.elements.dir.value;
+	lang = formObj.elements.lang.value;
+	background = formObj.elements.backgroundimage.value;
+	caption = formObj.elements.caption.checked;
 
 	cellLimit = tinyMCEPopup.getParam('table_cell_limit', false);
 	rowLimit = tinyMCEPopup.getParam('table_row_limit', false);
@@ -57,7 +59,7 @@ function insertTable() {
 	}
 
 	// Update table
-	if (action == "update") {
+	if (action === "update") {
 		dom.setAttrib(elm, 'cellPadding', cellpadding, true);
 		dom.setAttrib(elm, 'cellSpacing', cellspacing, true);
 
@@ -67,7 +69,7 @@ function insertTable() {
 			dom.setAttrib(elm, 'border', '');
 		}
 
-		if (border == '') {
+		if (border === '') {
 			dom.setStyle(elm, 'border-width', '');
 			dom.setStyle(elm, 'border', '');
 			dom.setAttrib(elm, 'border', '');
@@ -118,7 +120,7 @@ function insertTable() {
 			dom.setStyle(elm, 'height', '');
  		}
 
-		if (background != '')
+		if (background !== '')
 			elm.style.backgroundImage = "url('" + background + "')";
 		else
 			elm.style.backgroundImage = '';
@@ -128,9 +130,9 @@ function insertTable() {
 				elm.style.width = getCSSSize(width);
 		}*/
 
-		if (bordercolor != "") {
+		if (bordercolor !== "") {
 			elm.style.borderColor = bordercolor;
-			elm.style.borderStyle = elm.style.borderStyle == "" ? "solid" : elm.style.borderStyle;
+			elm.style.borderStyle = elm.style.borderStyle === "" ? "solid" : elm.style.borderStyle;
 			elm.style.borderWidth = cssSize(border);
 		} else
 			elm.style.borderColor = '';
@@ -246,7 +248,7 @@ function insertTable() {
 		var tdorth = dom.select('td,th', node);
 
 		// Fixes a bug in IE where the caret cannot be placed after the table if the table is at the end of the document
-		if (tinymce.isIE && !tinymce.isIE11 && node.nextSibling == null) {
+		if (tinymce.isIE && !tinymce.isIE11 && node.nextSibling === null) {
 			if (inst.settings.forced_root_block)
 				dom.insertAfter(dom.create(inst.settings.forced_root_block), node);
 			else
@@ -254,7 +256,7 @@ function insertTable() {
 		}
 
 		try {
-			// IE9 might fail to do this selection 
+			// IE9 might fail to do this selection
 			inst.selection.setCursorLocation(tdorth[0], 0);
 		} catch (ex) {
 			// Ignore
@@ -273,14 +275,14 @@ function makeAttrib(attrib, value) {
 	var formObj = document.forms[0];
 	var valueElm = formObj.elements[attrib];
 
-	if (typeof(value) == "undefined" || value == null) {
+	if (typeof (value) === "undefined" || value === null) {
 		value = "";
 
 		if (valueElm)
 			value = valueElm.value;
 	}
 
-	if (value == "")
+	if (value === "")
 		return "";
 
 	// XML encode it
@@ -301,7 +303,7 @@ function init() {
 	document.getElementById('bgcolor_pickcontainer').innerHTML = getColorPickerHTML('bgcolor_pick','bgcolor');
 
 	var cols = 2, rows = 2, border = tinyMCEPopup.getParam('table_default_border', '0'), cellpadding = tinyMCEPopup.getParam('table_default_cellpadding', ''), cellspacing = tinyMCEPopup.getParam('table_default_cellspacing', '');
-	var align = "", width = "", height = "", bordercolor = "", bgcolor = "", className = "";
+	var align = "", width = "", height = "", className = "";
 	var id = "", summary = "", style = "", dir = "", lang = "", background = "", bgcolor = "", bordercolor = "", rules = "", frame = "";
 	var inst = tinyMCEPopup.editor, dom = inst.dom;
 	var formObj = document.forms[0];
@@ -321,14 +323,14 @@ function init() {
 	if (!action)
 		action = elm ? "update" : "insert";
 
-	if (elm && action != "insert") {
+	if (elm && action !== "insert") {
 		var rowsAr = elm.rows;
-		var cols = 0;
+		cols = 0;
 		for (var i=0; i<rowsAr.length; i++)
 			if (rowsAr[i].cells.length > cols)
 				cols = rowsAr[i].cells.length;
 
-		cols = cols;
+		//cols = cols;
 		rows = rowsAr.length;
 
 		st = dom.parseStyle(dom.getAttrib(elm, "style"));
@@ -390,7 +392,7 @@ function init() {
 		document.getElementById('backgroundimage').style.width = '180px';
 
 	// Disable some fields in update mode
-	if (action == "update") {
+	if (action === "update") {
 		formObj.cols.disabled = true;
 		formObj.rows.disabled = true;
 	}
@@ -407,10 +409,10 @@ function changedSize() {
 		st['width'] = "";*/
 
 	var height = formObj.height.value;
-	if (height != "")
-		st['height'] = getCSSSize(height);
+	if (height !== "")
+		st.height = getCSSSize(height);
 	else
-		st['height'] = "";
+		st.height = "";
 
 	formObj.style.value = dom.serializeStyle(st);
 }
@@ -443,11 +445,11 @@ function changedBorder() {
 	var st = dom.parseStyle(formObj.style.value);
 
 	// Update border width if the element has a color
-	if (formObj.border.value != "" && (isCssSize(formObj.border.value) || formObj.bordercolor.value != ""))
+	if (formObj.border.value !== "" && (isCssSize(formObj.border.value) || formObj.bordercolor.value !== ""))
 		st['border-width'] = cssSize(formObj.border.value);
 	else {
 		if (!formObj.border.value) {
-			st['border'] = '';
+			st.border = '';
 			st['border-width'] = '';
 		}
 	}
@@ -461,7 +463,7 @@ function changedColor() {
 
 	st['background-color'] = formObj.bgcolor.value;
 
-	if (formObj.bordercolor.value != "") {
+	if (formObj.bordercolor.value !== "") {
 		st['border-color'] = formObj.bordercolor.value;
 
 		// Add border-width if it's missing
@@ -481,11 +483,11 @@ function changedStyle() {
 	else
 		formObj.backgroundimage.value = '';
 
-	if (st['width'])
-		formObj.width.value = trimSize(st['width']);
+	if (st.width)
+		formObj.width.value = trimSize(st.width);
 
-	if (st['height'])
-		formObj.height.value = trimSize(st['height']);
+	if (st.height)
+		formObj.height.value = trimSize(st.height);
 
 	if (st['background-color']) {
 		formObj.bgcolor.value = st['background-color'];

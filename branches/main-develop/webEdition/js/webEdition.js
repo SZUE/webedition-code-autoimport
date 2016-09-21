@@ -93,7 +93,7 @@ var WebEdition = {
 			switch (curType) {
 				case WE().consts.contentTypes.TEMPLATE:
 					if (WE().util.hasPerm("NEW_WEBEDITIONSITE")) {
-						if (_EditorFrame.getEditorMakeNewDoc() == true) {
+						if (_EditorFrame.getEditorMakeNewDoc()) {
 							if (savetmpl) {
 								top.we_cmd('new', WE().consts.tables.FILE_TABLE, '', WE().consts.contentTypes.WEDOCUMENT, '', curID);
 							}
@@ -104,7 +104,7 @@ var WebEdition = {
 					break;
 				case WE().consts.contentTypes.OBJECT:
 					if (WE().util.hasPerm('NEW_OBJECTFILE')) {
-						if (_EditorFrame.getEditorMakeNewDoc() == true) {
+						if (_EditorFrame.getEditorMakeNewDoc()) {
 							top.we_cmd('new', WE().consts.tables.OBJECT_FILES_TABLE, '', WE().consts.contentTypes.OBJECT_FILE, curID);
 						} else if (noClose && _EditorFrame.getEditorIsInUse()) {
 							_EditorFrameDocumentRef.frames.editHeader.location.reload();
@@ -727,9 +727,10 @@ var WebEdition = {
 			},
 			// private method for UTF-8 decoding
 			_utf8_decode: function (utftext) {
-				var string = "";
-				var i = 0;
-				var c = c2 = 0;
+				var string = "",
+								i = 0,
+								c = 0,
+								c2 = 0;
 
 				while (i < utftext.length) {
 					c = utftext.charCodeAt(i);
@@ -791,7 +792,7 @@ var WebEdition = {
 };
 
 WebEdition.consts = WebEdition.util.getDynamicVar(document, 'loadWEData', 'data-consts');
-WebEdition.session = WebEdition.util.getDynamicVar(document, 'loadWEData', 'data-session')
+WebEdition.session = WebEdition.util.getDynamicVar(document, 'loadWEData', 'data-session');
 //finally load language files
 WE().util.loadConsts(document, 'g_l.main');
 
@@ -1034,6 +1035,7 @@ function we_showInNewTab(args, url) {
 }
 
 function we_cmd_base(args, url) {
+	var ctrl, cType, eTable, nextWindow, width, widthSidebar;
 	switch (args[0]) {
 		case "loadVTab":
 			var op = top.treeData.makeFoldersOpenString();
@@ -1068,9 +1070,9 @@ function we_cmd_base(args, url) {
 			break;
 
 		case "delete_single_document_question":
-			var ctrl = WE().layout.weEditorFrameController;
-			var cType = ctrl.getActiveEditorFrame().getEditorContentType();
-			var eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
+			ctrl = WE().layout.weEditorFrameController;
+			cType = ctrl.getActiveEditorFrame().getEditorContentType();
+			eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
 			var path = ctrl.getActiveEditorFrame().getEditorDocumentPath();
 
 			if (ctrl.getActiveDocumentReference()) {
@@ -1085,9 +1087,9 @@ function we_cmd_base(args, url) {
 			}
 			break;
 		case "delete_single_document":
-			var ctrl = WE().layout.weEditorFrameController;
-			var cType = ctrl.getActiveEditorFrame().getEditorContentType();
-			var eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
+			ctrl = WE().layout.weEditorFrameController;
+			cType = ctrl.getActiveEditorFrame().getEditorContentType();
+			eTable = ctrl.getActiveEditorFrame().getEditorEditorTable();
 
 			if (ctrl.getActiveDocumentReference()) {
 				if (!WE().util.hasPermDelete(eTable, (cType === "folder"))) {
@@ -1379,8 +1381,8 @@ function we_cmd_base(args, url) {
 				}
 			} catch (e) {
 			}
-			var nextWindow;
-			var ctrl = WE().layout.weEditorFrameController;
+
+			ctrl = WE().layout.weEditorFrameController;
 			if ((nextWindow = ctrl.getFreeWindow())) {
 				_nextContent = nextWindow.getDocumentReference();
 				// activate tab and set state to loading
@@ -1410,8 +1412,8 @@ function we_cmd_base(args, url) {
 			break;
 		case "open_extern_document":
 		case "new_document":
-			var nextWindow;
-			var ctrl = WE().layout.weEditorFrameController;
+
+			ctrl = WE().layout.weEditorFrameController;
 			if ((nextWindow = ctrl.getFreeWindow())) {
 				_nextContent = nextWindow.getDocumentReference();
 				// activate tab and set it status loading ...
@@ -1452,7 +1454,7 @@ function we_cmd_base(args, url) {
 			doPublish(url, args[1], args[0]);
 			break;
 		case "publishWhenSave":
-			WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave()
+			WE().layout.weEditorFrameController.getActiveEditorFrame().getEditorPublishWhenSave();
 			break;
 		case "save_document":
 			var _EditorFrame = WE().layout.weEditorFrameController.getActiveEditorFrame();
@@ -1628,7 +1630,7 @@ function we_cmd_base(args, url) {
 			window.document.getElementById("bm_treeheaderDiv").classList.add('deleteSelector');
 			window.document.getElementById("treetable").classList.add('deleteSelector');
 			WE().layout.tree.toggle(true);
-			var width = WE().layout.tree.getWidth();
+			width = WE().layout.tree.getWidth();
 
 			WE().layout.tree.widthBeforeDeleteMode = width;
 
@@ -1637,7 +1639,7 @@ function we_cmd_base(args, url) {
 			}
 			WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
 
-			var widthSidebar = WE().layout.sidebar.getWidth();
+			widthSidebar = WE().layout.sidebar.getWidth();
 
 			WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
 
@@ -1664,7 +1666,7 @@ function we_cmd_base(args, url) {
 				window.document.getElementById("bm_treeheaderDiv").classList.add('moveSelector');
 				window.document.getElementById("treetable").classList.add('moveSelector');
 				WE().layout.tree.toggle(true);
-				var width = WE().layout.tree.getWidth();
+				width = WE().layout.tree.getWidth();
 
 				WE().layout.tree.widthBeforeDeleteMode = width;
 
@@ -1673,7 +1675,7 @@ function we_cmd_base(args, url) {
 				}
 				WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
 
-				var widthSidebar = WE().layout.sidebar.getWidth();
+				widthSidebar = WE().layout.sidebar.getWidth();
 
 				WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
 
@@ -1696,14 +1698,14 @@ function we_cmd_base(args, url) {
 				window.document.getElementById("bm_treeheaderDiv").classList.add('collectionSelector');
 				window.document.getElementById("treetable").classList.add('collectionSelector');
 				WE().layout.tree.toggle(true);
-				var width = WE().layout.tree.getWidth();
+				width = WE().layout.tree.getWidth();
 				WE().layout.tree.widthBeforeDeleteMode = width;
 				if (width < WE().consts.size.tree.moveWidth) {
 					top.setTreeWidth(WE().consts.size.tree.moveWidth);
 				}
 				WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
 
-				var widthSidebar = WE().layout.sidebar.getWidth();
+				widthSidebar = WE().layout.sidebar.getWidth();
 				WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
 
 				if (args[2] != 1) {
