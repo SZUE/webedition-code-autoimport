@@ -26,15 +26,15 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-var treeData={
-	makeNewEntry:function(){
+var treeData = {
+	makeNewEntry: function () {
 	},
-	unselectNode:function(){
+	unselectNode: function () {
 	}
 };
 
-function drawTree(){
+function drawTree() {
 }
 
-function info(text){
+function info(text) {
 }

@@ -27,7 +27,7 @@ function addBlack() {
 	var p=document.we_form.elements.blacklist_sel;
 	var newRecipient=prompt(WE().consts.g_l.newsletter.add_email,"");
 
-	if (newRecipient != null) {
+	if (newRecipient !== null) {
 		if (newRecipient.length > 0) {
 			if (newRecipient.length > 255 ) {
 				top.we_showMessage(WE().consts.g_l.newsletter.email_max_len, WE().consts.message.WE_MESSAGE_ERROR, window);
@@ -70,8 +70,8 @@ function editBlack() {
 	if (index >= 0) {
 		var editRecipient=prompt(WE().consts.g_l.newsletter.edit_email,p.options[index].text);
 
-		if (editRecipient != null) {
-			if (editRecipient != "") {
+		if (editRecipient !== null) {
+			if (editRecipient !== "") {
 				if (editRecipient.length > 255 ) {
 							top.we_showMessage(WE().consts.g_l.newsletter.email_max_len, WE().consts.message.WE_MESSAGE_ERROR, window);
 					return;

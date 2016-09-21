@@ -1,3 +1,5 @@
+/* global tinyMCEPopup */
+
 tinyMCEPopup.requireLangPack();
 
 var ed;
@@ -8,7 +10,7 @@ function init() {
 
 	document.getElementById('backgroundimagebrowsercontainer').innerHTML = getBrowserHTML('backgroundimagebrowser','backgroundimage','image','table');
 	document.getElementById('bordercolor_pickcontainer').innerHTML = getColorPickerHTML('bordercolor_pick','bordercolor');
-	document.getElementById('bgcolor_pickcontainer').innerHTML = getColorPickerHTML('bgcolor_pick','bgcolor')
+	document.getElementById('bgcolor_pickcontainer').innerHTML = getColorPickerHTML('bgcolor_pick', 'bgcolor');
 
 	var inst = ed;
 	var tdElm = ed.dom.getParent(ed.selection.getStart(), "td,th");
@@ -102,14 +104,14 @@ function updateAction() {
 					inst.execCommand('mceEndUndoLevel');
 					tinyMCEPopup.close();
 				}
-			};
+			}
 
 			if (ed.getParam("accessibility_warnings", 1)) {
-				if (celltype == "th" && scope == "")
+				if (celltype === "th" && scope === "") {
 					tinyMCEPopup.confirm(ed.getLang('table_dlg.missing_scope', '', true), doUpdate);
-				else
+				} else {
 					doUpdate(1);
-
+				}
 				return;
 			}
 
@@ -119,31 +121,31 @@ function updateAction() {
 		case "row":
 			var cell = trElm.firstChild;
 
-			if (cell.nodeName != "TD" && cell.nodeName != "TH")
+			if (cell.nodeName !== "TD" && cell.nodeName !== "TH")
 				cell = nextCell(cell);
 
 			do {
 				cell = updateCell(cell, true);
-			} while ((cell = nextCell(cell)) != null);
+			} while ((cell = nextCell(cell)) !== null);
 
 			break;
 
 		case "col":
 			var curr, col = 0, cell = trElm.firstChild, rows = tableElm.getElementsByTagName("tr");
 
-			if (cell.nodeName != "TD" && cell.nodeName != "TH")
+			if (cell.nodeName !== "TD" && cell.nodeName !== "TH")
 				cell = nextCell(cell);
 
 			do {
 				if (cell == tdElm)
 					break;
-				col += cell.getAttribute("colspan")?cell.getAttribute("colspan"):1;
-			} while ((cell = nextCell(cell)) != null);
+				col += cell.getAttribute("colspan") ? cell.getAttribute("colspan") : 1;
+			} while ((cell = nextCell(cell)) !== null);
 
 			for (var i=0; i<rows.length; i++) {
 				cell = rows[i].firstChild;
 
-				if (cell.nodeName != "TD" && cell.nodeName != "TH")
+				if (cell.nodeName !== "TD" && cell.nodeName !== "TH")
 					cell = nextCell(cell);
 
 				curr = 0;
@@ -152,8 +154,8 @@ function updateAction() {
 						cell = updateCell(cell, true);
 						break;
 					}
-					curr += cell.getAttribute("colspan")?cell.getAttribute("colspan"):1;
-				} while ((cell = nextCell(cell)) != null);
+					curr += cell.getAttribute("colspan") ? cell.getAttribute("colspan") : 1;
+				} while ((cell = nextCell(cell)) !== null);
 			}
 
 			break;
@@ -164,12 +166,12 @@ function updateAction() {
 			for (var i=0; i<rows.length; i++) {
 				var cell = rows[i].firstChild;
 
-				if (cell.nodeName != "TD" && cell.nodeName != "TH")
+				if (cell.nodeName !== "TD" && cell.nodeName !== "TH")
 					cell = nextCell(cell);
 
 				do {
 					cell = updateCell(cell, true);
-				} while ((cell = nextCell(cell)) != null);
+				} while ((cell = nextCell(cell)) !== null);
 			}
 
 			break;
@@ -182,8 +184,8 @@ function updateAction() {
 }
 
 function nextCell(elm) {
-	while ((elm = elm.nextSibling) != null) {
-		if (elm.nodeName == "TD" || elm.nodeName == "TH")
+	while ((elm = elm.nextSibling) !== null) {
+		if (elm.nodeName === "TD" || elm.nodeName === "TH")
 			return elm;
 	}
 
@@ -221,14 +223,14 @@ function updateCell(td, skip_id) {
 	td.style.height = getCSSSize(formObj.height.value);
 	if (formObj.bordercolor.value != "") {
 		td.style.borderColor = formObj.bordercolor.value;
-		td.style.borderStyle = td.style.borderStyle == "" ? "solid" : td.style.borderStyle;
-		td.style.borderWidth = td.style.borderWidth == "" ? "1px" : td.style.borderWidth;
+		td.style.borderStyle = td.style.borderStyle === "" ? "solid" : td.style.borderStyle;
+		td.style.borderWidth = td.style.borderWidth === "" ? "1px" : td.style.borderWidth;
 	} else
 		td.style.borderColor = '';
 
 	td.style.backgroundColor = formObj.bgcolor.value;
 
-	if (formObj.backgroundimage.value != "")
+	if (formObj.backgroundimage.value !== "")
 		td.style.backgroundImage = "url('" + formObj.backgroundimage.value + "')";
 	else
 		td.style.backgroundImage = '';
@@ -266,13 +268,13 @@ function changedSize() {
 	var st = ed.dom.parseStyle(formObj.style.value);
 
 	var width = formObj.width.value;
-	if (width != "")
+	if (width !== "")
 		st['width'] = getCSSSize(width);
 	else
 		st['width'] = "";
 
 	var height = formObj.height.value;
-	if (height != "")
+	if (height !== "")
 		st['height'] = getCSSSize(height);
 	else
 		st['height'] = "";

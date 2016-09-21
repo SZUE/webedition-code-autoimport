@@ -30,7 +30,7 @@ function we_submitForm(target, url) {
 	ok = true;
 
 	if (f.input_pass) {
-		if (f.oldtab.value == 0) {
+		if (f.oldtab.value === "0") {
 			if (f.input_pass.value.length < 4 && f.input_pass.value.length !== 0) {
 				WE().util.showMessage(WE().consts.g_l.navigation.users.password_alert, WE().consts.message.WE_MESSAGE_ERROR, this);
 				return false;

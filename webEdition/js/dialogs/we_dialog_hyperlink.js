@@ -31,7 +31,7 @@ function checkAnchor(el) {
 	if (el.value && !new RegExp('#?[a-z]+[a-z0-9_:.-=]*$', 'i').test(el.value)) {
 		alert(WE().consts.g_l.alert.anchor_invalid);
 		window.setTimeout(function () {
-			el.focus;
+			el.focus();
 		}, 10);
 		return false;
 	}

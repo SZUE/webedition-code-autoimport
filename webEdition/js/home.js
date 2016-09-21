@@ -579,7 +579,7 @@ function executeAjaxRequest(/*param_1, initCfg, param_3, param_4, titel, widgetI
 			_cmdName = "GetRss";
 			break;
 		default:
-			_cmdName = "Widget"
+			_cmdName = "Widget";
 	}
 	var url = WE().util.getWe_cmdArgsUrl(Array.prototype.slice.call(arguments), WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?cmd=' + _cmdName + '&cns=widgets&');
 

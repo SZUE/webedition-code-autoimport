@@ -166,7 +166,7 @@ function we_cmd() {
 			WE().layout.button.switch_button_state(document, 'open_navigation_doc', document.we_form.elements.LinkID.value > 0 ? 'enabled' : 'disabled');
 			break;
 		case "populateText":
-			top.content.mark()
+			top.content.mark();
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
 			top.content.editor.edbody.document.we_form.tabnr.value = top.content.activ_tab;
 			top.content.editor.edbody.document.we_form.pnt.value = "cmd";
@@ -224,7 +224,7 @@ function moveAbs(pos, parent, selector) {
 	top.content.reloadGroup(parent);
 	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
 
-	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", (top.content.editor.edbody.document.we_form.Ordn.value == 0 ? "disabled" : "enabled"));
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", (top.content.editor.edbody.document.we_form.Ordn.value === "0" ? "disabled" : "enabled"));
 
 	top.content.editor.edbody.document.we_form.Position.innerHTML = selector;
 }
@@ -234,7 +234,7 @@ function moveUp(pos, parent, selector) {
 	top.content.reloadGroup(parent);
 	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_down", "enabled");
 
-	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", (top.content.editor.edbody.document.we_form.Ordn.value == 0 ? "disabled" : "enabled"));
+	WE().layout.button.switch_button_state(top.content.editor.edbody.document, "direction_up", (top.content.editor.edbody.document.we_form.Ordn.value === "0" ? "disabled" : "enabled"));
 
 	top.content.editor.edbody.document.we_form.Position.innerHTML = selector;
 }

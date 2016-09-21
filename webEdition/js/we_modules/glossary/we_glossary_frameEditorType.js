@@ -27,16 +27,16 @@
 var Rows = 1;
 
 function AllItems() {
-	if (document.we_form.selectAll.value == 0) {
+	if (document.we_form.selectAll.value === "0") {
 		temp = true;
-		document.we_form.selectAll.value = 1;
+		document.we_form.selectAll.value = "1";
 	} else {
 		temp = false;
-		document.we_form.selectAll.value = 0;
+		document.we_form.selectAll.value = "0";
 	}
 	for (var x = 0; x < document.we_form.elements.length; x++) {
 		var y = document.we_form.elements[x];
-		if (y.name == 'ID[]') {
+		if (y.name === 'ID[]') {
 			y.checked = temp;
 		}
 	}

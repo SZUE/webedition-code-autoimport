@@ -52,7 +52,7 @@ function stopTimeout() {
 
 function reload() {
 	chk = document.we_form.ecs.value;
-	if (parseInt(chk) > parseInt(param) && parseInt(chk) != 0) {
+	if (parseInt(chk) > parseInt(param) && parseInt(chk) !== 0) {
 		param = chk;
 		startTimeout();
 	} else {

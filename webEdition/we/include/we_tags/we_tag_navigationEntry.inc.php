@@ -50,6 +50,6 @@ function we_tag_navigationEntry(array $attribs, $content){
 		if($position === 'first'){
 			$position = 1;
 		}
-		$GLOBALS['we_navigation'][$navigationName]->setTemplate($content, $type, $level, $current, $position);
+		$GLOBALS['we_navigation'][$navigationName]->setTemplate(str_replace('\$', '$', $content), $type, $level, $current, $position);
 	}
 }

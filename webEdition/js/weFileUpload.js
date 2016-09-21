@@ -193,8 +193,8 @@ var weFileUpload = (function () {
 			this.IMG_MAKE_PREVIEW = 8;
 			this.IMG_POSTPROCESS = 9;
 
-			this.OPTS_QUALITY_NEUTRAL_VAL = 100,
-			this.OPTS_QUALITY_DEFAULT_VAL = 90,
+			this.OPTS_QUALITY_NEUTRAL_VAL = 100;
+			this.OPTS_QUALITY_DEFAULT_VAL = 90;
 			this.PRESERVE_IMG_DATAURL = true;
 			this.EDITABLE_CONTENTTYPES = ['image/jpeg', 'image/gif', 'image/png'];
 
@@ -423,6 +423,7 @@ var weFileUpload = (function () {
 						_.utils.processimagePostProcess(fileobj, _.controller.IMG_NEXT);
 						break;
 					case _.controller.IMG_NEXT:
+					/*falls through*/
 					default:
 						_.controller.processNextImage();
 				}
@@ -487,7 +488,7 @@ var weFileUpload = (function () {
 						scale: 0,
 						rotate: 0,
 						quality: 100
-					},
+					};
 					fileobj.isEdited = false;
 					_.utils.memorymanagerRegister(fileobj);
 				}
@@ -511,9 +512,9 @@ var weFileUpload = (function () {
 
 			this.editOptionsOnChange = function(target){
 				var form = target.form,
-					inputScale = form.elements['fuOpts_scale'],
-					inputRotate = form.elements['fuOpts_rotate'],
-					inputQuality = form.elements['fuOpts_quality'],
+								inputScale = form.elements.fuOpts_scale,
+								inputRotate = form.elements.fuOpts_rotate,
+								inputQuality = form.elements.fuOpts_quality,
 					scale = inputScale.value,
 					rotate = parseInt(inputRotate.value),
 					quality = parseInt(inputQuality.value),
@@ -527,7 +528,7 @@ var weFileUpload = (function () {
 						scale = target.value;
 						inputScale.focus();
 						target.value = 0;
-						// fall through
+						/* falls through*/
 					case 'fuOpts_scale':
 					case 'fuOpts_rotate':
 						if(scale || rotate){
@@ -1069,7 +1070,7 @@ var weFileUpload = (function () {
 						fileobj.focusPoint.style.left = Math.round(offsetLeft + ((parseFloat(fileobj.img.focusX) + 1) / 2) * fileobj.img.fullPrev.width) + 'px';
 						fileobj.focusPoint.style.top = Math.round(offsetTop + ((parseFloat(fileobj.img.focusY) + 1) / 2) * fileobj.img.fullPrev.height) + 'px';
 					}
-				} catch(e){
+				} catch (ex) {
 					//
 				}
 			};
@@ -1160,10 +1161,10 @@ var weFileUpload = (function () {
 			};
 
 			this.formEditOptsReset = function (form) { // USED
-				form.elements['fuOpts_scaleWhat'].value = 'pixel_l';
-				form.elements['fuOpts_scale'].value = '';
-				form.elements['fuOpts_rotate'].value = 0;
-				form.elements['fuOpts_quality'].value = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+				form.elements.fuOpts_scaleWhat.value = 'pixel_l';
+				form.elements.fuOpts_scale.value = '';
+				form.elements.fuOpts_rotate.value = 0;
+				form.elements.fuOpts_quality.value = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
 				form.getElementsByClassName('qualityValueContainer')[0].innerHTML = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
 			};
 
@@ -1203,17 +1204,17 @@ var weFileUpload = (function () {
 
 			this.abstractSetImageEditOptionsGeneral = function (formname) {
 				var form = document.forms[(formname ? formname : 'we_form')],
-					scale = form.elements['fuOpts_scale'].value,
-					deg = parseInt(form.elements['fuOpts_rotate'].value),
-					quality = parseInt(form.elements['fuOpts_quality'].value),
+								scale = form.elements.fuOpts_scale.value,
+								deg = parseInt(form.elements.fuOpts_rotate.value),
+								quality = parseInt(form.elements.fuOpts_quality.value),
 					opts = _.sender.imageEditOptions;
 
-				if(parseInt(form.elements['fuOpts_doEdit'].value) === 1 && (scale || deg || quality !== _.controller.OPTS_QUALITY_NEUTRAL_VAL)){
+				if (parseInt(form.elements.fuOpts_doEdit.value) === 1 && (scale || deg || quality !== _.controller.OPTS_QUALITY_NEUTRAL_VAL)) {
 					opts.doEdit = true;
-					opts.scaleWhat = form.elements['fuOpts_scaleWhat'].value;
+					opts.scaleWhat = form.elements.fuOpts_scaleWhat.value;
 					opts.scale = scale;
 					opts.rotate = deg;
-					opts.quality = form.elements['fuOpts_quality'].value;
+					opts.quality = form.elements.fuOpts_quality.value;
 				} else {
 					opts.doEdit = false;
 					opts.scaleWhat = 'pixel_l';
@@ -1243,8 +1244,8 @@ var weFileUpload = (function () {
 							exif = new ExifReader();
 							exif.load(event.target.result);
 							tags = exif.getAllTags();
-							if(tags['Orientation']){
-								switch(tags['Orientation'].value) {
+							if (tags.Orientation) {
+								switch (tags.Orientation.value) {
 									case 3:
 										fileobj.img.orientationValue = 180;
 										break;
@@ -1438,7 +1439,7 @@ var weFileUpload = (function () {
 						_.utils.logTimeFromStart('rotation skipped');
 						_.controller.processImage(fileobj, nexttask);
 						return;
-				};
+				}
 
 				var targetCanvas = document.createElement('canvas'),
 					ctxTargetCanvas = targetCanvas.getContext("2d");
@@ -1910,7 +1911,7 @@ var weFileUpload = (function () {
 							endPoint = head + length + 2;
 
 						if(uint8array[head + 1] == marker) {
-							return uint8array.subarray(head, endPoint);;
+							return uint8array.subarray(head, endPoint);
 						}
 
 						head = endPoint;
@@ -1990,7 +1991,7 @@ var weFileUpload = (function () {
 			this.pngReinsertTextchunks = function(dataArray, pngTextChunks){
 				var combinedChunks = [];
 				try{
-					var chunks = extractChunks(dataArray),
+					var chunks = extractChunks(dataArray);
 						combinedChunks = [];
 
 					combinedChunks.push(chunks.shift()); // new IHDR
@@ -2017,16 +2018,16 @@ var weFileUpload = (function () {
 			};
 
 			this.concatTypedArrays = function (resultConstructor, arrays) {
-				var size = 0,
+				var size = 0, i,
 					pos = 0;
 
-				for (var i = 0; i < arrays.length; i++) {
+				for (i = 0; i < arrays.length; i++) {
 					size += arrays[i].length;
 				}
 
 				var result = new resultConstructor(size);
 
-				for (var i = 0; i < arrays.length; i++) {
+				for (i = 0; i < arrays.length; i++) {
 					result.set(arrays[i], pos);
 					pos += arrays[i].length;
 				}
@@ -2368,12 +2369,24 @@ var weFileUpload = (function () {
 			// add some listeners:
 			if (_.EDIT_IMAGES_CLIENTSIDE) {
 				var generalform = document.getElementById('filechooser');
-				generalform.elements['fuOpts_scale'].addEventListener('keyup', function(e) {_.controller.editOptionsOnChange(e.target);});
-				generalform.elements['fuOpts_scaleWhat'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-				generalform.elements['fuOpts_scaleProps'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-				generalform.elements['fuOpts_rotate'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-				generalform.elements['check_fuOpts_doEdit'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-				generalform.elements['fuOpts_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				generalform.elements.fuOpts_scale.addEventListener('keyup', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				});
+				generalform.elements.fuOpts_scaleWhat.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				});
+				generalform.elements.fuOpts_scaleProps.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				});
+				generalform.elements.fuOpts_rotate.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				});
+				generalform.elements.check_fuOpts_doEdit.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				});
+				generalform.elements.fuOpts_quality.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
 				var btn = generalform.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
 				btn.addEventListener('click', function(){_.controller.editImageButtonOnClick(btn, -1, true);}, false);
 			}
@@ -2683,7 +2696,8 @@ var weFileUpload = (function () {
 					document.getElementById('we_fileUploadImporter_busyText').innerHTML = _.sender.imageEditOptions.doEdit ? _.utils.gl.maskImporterProcessImages : _.utils.gl.maskImporterReadImages;
 					try{
 						document.getElementById('we_fileUploadImporter_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
-					} catch(e){};
+					} catch (e) {
+					}
 					document.getElementById('we_fileUploadImporter_busyMessage').style.display = 'block';
 					document.getElementById('we_fileUploadImporter_busyMessage').style.zIndex = 800;
 					elem.style.display = 'block';
@@ -2719,7 +2733,8 @@ var weFileUpload = (function () {
 						document.getElementById('we_fileUploadImporter_busyText').innerHTML = _.sender.imageEditOptions.doEdit ? _.utils.gl.maskImporterProcessImages : _.utils.gl.maskImporterReadImages;
 						document.getElementById('we_fileUploadImporter_messageNr').innerHTML = _.sender.imageFilesToProcess.length;
 					}
-				} catch(e){};
+				} catch (e) {
+				}
 			};
 
 			this.appendRow = function (f, index) {
@@ -2766,12 +2781,24 @@ var weFileUpload = (function () {
 				f.entry = document.getElementById('div_uploadFiles_' + index);
 
 				var form = document.getElementById('form_editOpts_' + index);
-				form.elements['fuOpts_useCustomOpts'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				form.elements['fuOpts_scale'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				form.elements['fuOpts_scaleWhat'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				form.elements['fuOpts_scaleProps'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-				form.elements['fuOpts_rotate'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				form.elements['fuOpts_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				form.elements.fuOpts_useCustomOpts.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
+				form.elements.fuOpts_scale.addEventListener('keyup', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
+				form.elements.fuOpts_scaleWhat.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
+				form.elements.fuOpts_scaleProps.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				});
+				form.elements.fuOpts_rotate.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
+				form.elements.fuOpts_quality.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
 
 				var btn = form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
 				btn.addEventListener('click', function(){_.controller.editImageButtonOnClick(btn, index, false);}, false);
@@ -2936,11 +2963,11 @@ var weFileUpload = (function () {
 			};
 
 			this.formCustomEditOptsDisable = function(form, disable){
-				form.elements['fuOpts_scaleWhat'].disabled = disable;
-				form.elements['fuOpts_scale'].disabled = disable;
-				form.elements['fuOpts_scaleProps'].disabled = disable;
-				form.elements['fuOpts_rotate'].disabled = disable;
-				form.elements['fuOpts_quality'].disabled = disable;//#eee
+				form.elements.fuOpts_scaleWhat.disabled = disable;
+				form.elements.fuOpts_scale.disabled = disable;
+				form.elements.fuOpts_scaleProps.disabled = disable;
+				form.elements.fuOpts_rotate.disabled = disable;
+				form.elements.fuOpts_quality.disabled = disable;//#eee
 
 				var type = _.sender.preparedFiles[form.getAttribute('data-index')].type;
 				form.getElementsByClassName('optsQualityBox')[0].style.backgroundColor = disable ? '#eee' : (type === 'image/jpeg' ? 'white' : '#eee');
@@ -2958,12 +2985,12 @@ var weFileUpload = (function () {
 
 				for(i = 0; i < indexes.length; i++){
 					form = document.getElementById('form_editOpts_' + indexes[i]);
-					if(form && !form.elements['fuOpts_useCustomOpts'].checked){
-						form.elements['fuOpts_scaleWhat'].value = generalForm.elements['fuOpts_scaleWhat'].value;
-						form.elements['fuOpts_scale'].value = generalForm.elements['fuOpts_scale'].value;
-						form.elements['fuOpts_rotate'].value = generalForm.elements['fuOpts_rotate'].value;
-						form.elements['fuOpts_quality'].value = _.sender.preparedFiles[indexes[i]].type === 'image/jpeg' ? generalForm.elements['fuOpts_quality'].value : 100;
-						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = _.sender.preparedFiles[indexes[i]].type === 'image/jpeg' ? generalForm.elements['fuOpts_quality'].value : 100;
+					if (form && !form.elements.fuOpts_useCustomOpts.checked) {
+						form.elements.fuOpts_scaleWhat.value = generalForm.elements.fuOpts_scaleWhat.value;
+						form.elements.fuOpts_scale.value = generalForm.elements.fuOpts_scale.value;
+						form.elements.fuOpts_rotate.value = generalForm.elements.fuOpts_rotate.value;
+						form.elements.fuOpts_quality.value = _.sender.preparedFiles[indexes[i]].type === 'image/jpeg' ? generalForm.elements.fuOpts_quality.value : 100;
+						form.getElementsByClassName('qualityValueContainer')[0].innerHTML = _.sender.preparedFiles[indexes[i]].type === 'image/jpeg' ? generalForm.elements.fuOpts_quality.value : 100;
 					}
 				}
 			};
@@ -3002,6 +3029,7 @@ var weFileUpload = (function () {
 								elems[j].style.backgroundImage =  'none';
 							break;
 						case 'donotedit':
+						/*falls through*/
 						default:
 							elems[j].style.backgroundColor = 'white';
 							elems[j].style.backgroundImage = 'none';
@@ -3045,10 +3073,10 @@ var weFileUpload = (function () {
 
 				for(var i = 0; i < indexes.length; i++){
 					fileobj = _.sender.preparedFiles[indexes[i]];
-					var form = form = document.getElementById('form_editOpts_' + fileobj.index),
+					var form = document.getElementById('form_editOpts_' + fileobj.index),
 						type = 'general';
 
-					if(form && form.elements['fuOpts_useCustomOpts'].checked){
+					if (form && form.elements.fuOpts_useCustomOpts.checked) {
 						type = 'custom';
 					}
 
@@ -3059,10 +3087,10 @@ var weFileUpload = (function () {
 							fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? fileobj.img.editOptions.quality : _.controller.OPTS_QUALITY_NEUTRAL_VAL;
 							break;
 						case 'custom':
-							fileobj.img.editOptions.scaleWhat = form.elements['fuOpts_scaleWhat'].value;
-							fileobj.img.editOptions.scale = form.elements['fuOpts_scale'].value;
-							fileobj.img.editOptions.rotate = parseInt(form.elements['fuOpts_rotate'].value);
-							fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? parseInt(form.elements['fuOpts_quality'].value) : _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+							fileobj.img.editOptions.scaleWhat = form.elements.fuOpts_scaleWhat.value;
+							fileobj.img.editOptions.scale = form.elements.fuOpts_scale.value;
+							fileobj.img.editOptions.rotate = parseInt(form.elements.fuOpts_rotate.value);
+							fileobj.img.editOptions.quality = fileobj.type === 'image/jpeg' ? parseInt(form.elements.fuOpts_quality.value) : _.controller.OPTS_QUALITY_NEUTRAL_VAL;
 							break;
 					}
 					var scaleReference = fileobj.img.editOptions.scaleWhat === 'pixel_w' ? fileobj.img.origWidth : (
@@ -3072,7 +3100,7 @@ var weFileUpload = (function () {
 						fileobj.img.tooSmallToScale = true;
 						if(!fileobj.img.editOptions.rotate && fileobj.img.editOptions.quality !== _.controller.OPTS_QUALITY_NEUTRAL_VAL){
 							fileobj.img.editOptions.quality = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
-							form.elements['fuOpts_quality'].value = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
+							form.elements.fuOpts_quality.value = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
 							form.getElementsByClassName('optsQualityValue')[0].innerHTML = _.controller.OPTS_QUALITY_NEUTRAL_VAL;
 						}
 					} else {
@@ -3091,14 +3119,14 @@ var weFileUpload = (function () {
 					forms = document.getElementsByName('we_form');
 					for(i = 0; i < forms.length; i++){
 						index = forms[i].getAttribute('data-index');
-						if(_.sender.preparedFiles[index] && _.controller.EDITABLE_CONTENTTYPES.indexOf(_.sender.preparedFiles[index].type) !== -1
-								&& !forms[i].elements['fuOpts_useCustomOpts'].checked
-								&& !_.sender.preparedFiles[index].isUploadStarted){
+						if (_.sender.preparedFiles[index] && _.controller.EDITABLE_CONTENTTYPES.indexOf(_.sender.preparedFiles[index].type) !== -1 &&
+										!forms[i].elements.fuOpts_useCustomOpts.checked &&
+										!_.sender.preparedFiles[index].isUploadStarted) {
 							indexes.push(formposition ? i : index);
 						}
 					}
-				} else if(index !== undefined && index > -1 && _.sender.preparedFiles[index]
-						&& _.controller.EDITABLE_CONTENTTYPES.indexOf(_.sender.preparedFiles[index].type) !== -1) {
+				} else if (index !== undefined && index > -1 && _.sender.preparedFiles[index] &&
+								_.controller.EDITABLE_CONTENTTYPES.indexOf(_.sender.preparedFiles[index].type) !== -1) {
 					indexes.push(index);
 					if(formposition){
 						forms = document.getElementsByName('we_form');
@@ -3162,12 +3190,24 @@ var weFileUpload = (function () {
 			}
 
 			if (_.EDIT_IMAGES_CLIENTSIDE) {
-				document.we_form.elements['check_fuOpts_doEdit'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				document.we_form.elements['fuOpts_scaleProps'].addEventListener('change', function(e) {_.controller.editOptionsOnChange(e.target);});
-				document.we_form.elements['fuOpts_scale'].addEventListener('keyup', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				document.we_form.elements['fuOpts_scaleWhat'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				document.we_form.elements['fuOpts_rotate'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
-				document.we_form.elements['fuOpts_quality'].addEventListener('change', function(e){_.controller.editOptionsOnChange(e.target);}, false);
+				document.we_form.elements.check_fuOpts_doEdit.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
+				document.we_form.elements.fuOpts_scaleProps.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				});
+				document.we_form.elements.fuOpts_scale.addEventListener('keyup', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
+				document.we_form.elements.fuOpts_scaleWhat.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
+				document.we_form.elements.fuOpts_rotate.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
+				document.we_form.elements.fuOpts_quality.addEventListener('change', function (e) {
+					_.controller.editOptionsOnChange(e.target);
+				}, false);
 				document.we_form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0].addEventListener('click', function(e){_.controller.editImageButtonOnClick(e.target);}, false);
 				var btn = document.we_form.getElementsByClassName('weFileupload_btnImgEditRefresh')[0];
 				btn.addEventListener('click', function(){_.controller.editImageButtonOnClick(btn, -1, true);}, false);
@@ -3207,7 +3247,7 @@ var weFileUpload = (function () {
 				'div_upload_fileDrag_innerRight'
 				*/
 			];
-			for(var i = 0; i < ids.length; i++){
+			for (i = 0; i < ids.length; i++) {
 				document.getElementById(ids[i]).addEventListener('dragover', _.controller.fileDragHover, false);
 				document.getElementById(ids[i]).addEventListener('dragleave', _.controller.fileDragHover, false);
 				document.getElementById(ids[i]).addEventListener('drop', _.controller.fileSelectHandler, false);
@@ -3421,7 +3461,7 @@ var weFileUpload = (function () {
 						document.getElementsByClassName('qualityValueContainer')[0].innerHTML = 100;
 						document.getElementsByClassName('optsQuality')[0].style.display = 'none';
 					} else {
-						document.getElementsByClassName('optsQuality')[0].style.display = 'block'
+						document.getElementsByClassName('optsQuality')[0].style.display = 'block';
 					}
 					document.getElementsByClassName('weFileupload_btnImgEditRefresh')[0].disable = false;
 				} else {
@@ -3586,8 +3626,8 @@ var weFileUpload = (function () {
 				if (!_.EDIT_IMAGES_CLIENTSIDE) {
 					return;
 				}
-				document.we_form.elements['fu_doc_focusX'].value = fileobj.img.focusX;
-				document.we_form.elements['fu_doc_focusY'].value = fileobj.img.focusY;
+				document.we_form.elements.fu_doc_focusX.value = fileobj.img.focusX;
+				document.we_form.elements.fu_doc_focusY.value = fileobj.img.focusY;
 			};
 
 			//TODO: use progress fns from abstract after adapting them to standard progress

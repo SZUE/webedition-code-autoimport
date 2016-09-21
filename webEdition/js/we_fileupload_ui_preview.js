@@ -40,7 +40,7 @@ function removeAllCats() {
 function addCat(paths) {
 	var path = paths.split(",");
 	for (var i = 0; i < path.length; i++) {
-		if (path[i] != "") {
+		if (path[i] !== "") {
 			categories_edit.addItem();
 			categories_edit.setItem(0, (categories_edit.itemCount - 1), path[i]);
 		}

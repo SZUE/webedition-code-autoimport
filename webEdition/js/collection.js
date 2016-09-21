@@ -467,7 +467,7 @@ weCollectionEdit = {
 top.console.log(WE().consts.collection);
 		var viewPlusSub = t.view !== 'list' ? 'grid' : (t.viewSub === 'minimal' ? 'listMinimal' : 'list');
 
-		var blank = WE().consts.collection.blankItem[viewPlusSub].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
+		blank = WE().consts.collection.blankItem[viewPlusSub].replace(/##INDEX##/g, t.maxIndex).replace(/##ID##/g, item.id).replace(/##PATH##/g, item.path).
 						replace(/##CT##/g, item.ct).replace(/##ICONURL##/g, (item.icon ? item.icon.url.replace('%2F', '/') : '')).
 						replace(/##ATTRIB_TITLE##/g, item.elements.attrib_title.Dat).replace(/##S_ATTRIB_TITLE##/g, item.elements.attrib_title.state).
 						replace(/##ATTRIB_ALT##/g, item.elements.attrib_alt.Dat).replace(/##S_ATTRIB_ALT##/g, item.elements.attrib_alt.state).
@@ -1070,5 +1070,5 @@ function doFileUploader(table, ID) {
 	} else {
 		top.opener.top.console.debug('error: collection closed or changed tab');
 	}
-	top.close()
+	top.close();
 }

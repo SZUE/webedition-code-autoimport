@@ -61,8 +61,7 @@ function wiz_next(frm, url) {
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
 	var url = WE().util.getWe_cmdArgsUrl(args);
-	var cats;
-	var i;
+	var cats, found, i;
 
 	switch (args[0]) {
 		case 'we_selector_directory':
@@ -86,7 +85,7 @@ function we_cmd() {
 			if (WE().consts.tables.OBJECT_TABLE !== 'OBJECT_TABLE') {
 				this.wizbody.document.we_form.elements['v[import_type]'][0].checked = true;
 			}
-			var found = false;
+			found = false;
 			cats = args[1].allIDs;
 			for (i = 0; i < cats.length; i++) {
 				if (cats[i] && (this.wizbody.document.we_form.elements['v[docCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {
@@ -116,7 +115,7 @@ function we_cmd() {
 			break;
 		case 'add_objCat':
 			this.wizbody.document.we_form.elements['v[import_type]'][1].checked = true;
-			var found = false;
+			found = false;
 			cats = args[1].allIDs;
 			for (i = 0; i < cats.length; i++) {
 				if (cats[i] && (this.wizbody.document.we_form.elements['v[objCategories]'].value.indexOf(',' + cats[i] + ',') === -1)) {

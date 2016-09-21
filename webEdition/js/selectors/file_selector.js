@@ -546,7 +546,7 @@ function exit_open() {
 		opener.document.we_form.elements[top.fileSelect.data.JSTextName].value = top.fileSelect.data.currentID ? top.fileSelect.data.currentPath : "";
 
 		if ((opener.parent !== undefined) && (opener.parent.frames.editHeader !== undefined)) {
-			if (top.fileSelect.data.currentType != "") {
+			if (top.fileSelect.data.currentType !== "") {
 				switch (top.fileSelect.data.currentType) {
 					case "noalias":
 						setTabsCurPath = "@" + top.fileSelect.data.currentText;
@@ -562,7 +562,7 @@ function exit_open() {
 			}
 		}
 		if (opener.YAHOO !== undefined && opener.YAHOO.autocoml !== undefined) {
-			var val = opener.document.we_form.elements[top.fileSelect.data.JSTextName].id
+			var val = opener.document.we_form.elements[top.fileSelect.data.JSTextName].id;
 			opener.YAHOO.autocoml.selectorSetValid(val);
 		}
 	}

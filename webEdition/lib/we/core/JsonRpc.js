@@ -103,7 +103,7 @@ function we_core_JsonRpc(url, callback) {
 		// push additional arguments
 		if (typeof (args) == "object" && args.length) {
 			var l = args.length;
-			for (var i = 0; i < l; i++) {
+			for (i = 0; i < l; i++) {
 				json.params.push(args[i]);
 			}
 		}
@@ -137,7 +137,7 @@ we_core_JsonRpc.callMethod = function(cmdObj, url, service, method) {
 		}
 	} else if (arguments.length > 4) {
 		args = [];
-		for (var i = 4; i < arguments.length; i++) {
+		for (i = 4; i < arguments.length; i++) {
 			args.push(arguments[i]);
 		}
 	}

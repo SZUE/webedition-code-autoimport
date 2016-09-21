@@ -136,7 +136,7 @@ function weonclick(e) {
 			}
 		}
 		if (top.fileSelect.options.multiple) {
-			if (!window.shiftpressed && !window.ctrlpresseds) {
+			if (!window.shiftpressed && !window.ctrlpressed) {
 				top.unselectAllFiles();
 			}
 		} else {
