@@ -72,39 +72,3 @@ function writeBody(d) {
 		top.fsbody.document.we_form.we_FolderText_tmp.select();
 	}
 }
-
-function weonclick(e) {
-	if (top.fileSelect.data.makeNewFolder || top.fileSelect.data.we_editDirID) {
-		if (!inputklick) {
-			top.fileSelect.data.makeNewFolder = top.fileSelect.data.we_editDirID = false;
-			document.we_form.we_FolderText.value = escape(document.we_form.we_FolderText_tmp.value);
-			document.we_form.submit();
-		} else {
-			inputklick = false;
-		}
-	} else {
-		inputklick = false;
-		if (document.all) {
-			if (e.ctrlKey || e.altKey) {
-				ctrlpressed = true;
-			}
-			if (e.shiftKey) {
-				shiftpressed = true;
-			}
-		} else {
-			if (e.altKey || e.metaKey || e.ctrlKey) {
-				ctrlpressed = true;
-			}
-			if (e.shiftKey) {
-				shiftpressed = true;
-			}
-		}
-		if (top.fileSelect.options.multiple) {
-			if (!window.shiftpressed && !window.ctrlpressed) {
-				top.unselectAllFiles();
-			}
-		} else {
-			top.unselectAllFiles();
-		}
-	}
-}
