@@ -1767,14 +1767,19 @@ div.sysinfoMsg{
 div.radiobutton{
 	position:relative;
 	padding-left:25px;
+	min-height:30px;
 	input[type=radio]{
 		position: absolute;
 		left:0px;
 		cursor: pointer;
+		height: 2ex !important;
+		top: 50%;
 	}
 	label.elementText{
 		white-space:nowrap;
 		display:block;
+		position: absolute;
+		top: 50%;
 	}
 
 }

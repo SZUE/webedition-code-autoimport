@@ -1485,7 +1485,7 @@ top.customers="' . implode(',', $customers) . '";');
 
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:selector_cmd('del_all_customers')", true, 0, 0, "", "", ($customers ? false : true));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.top.body.selector_cmd(\'add_customer\',top.allIDs.join(\',\'));')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.top.body.selector_cmd(\'add_customer\',top.fileSelect.data.allIDs.join(\',\'));')");
 		$custs = new we_chooser_multiDir(400, ($customers ? : []), "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 
 		$custs->isEditable = permissionhandler::hasPerm("EDIT_CUSTOMER");
