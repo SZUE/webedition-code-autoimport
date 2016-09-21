@@ -124,7 +124,7 @@ abstract class updateBase{
 	}
 
 	static function getOnlyVersionTypeVersion($version){
-		$h = $GLOBALS['DB_WE']->getHash('SELECT typeversion FROM ' . VERSION_TABLE . ' WHERE version=' . $version . ' LIMIT 1');
+		$h = $GLOBALS['DB_WE']->getHash('SELECT typeversion FROM ' . VERSION_TABLE . ' WHERE version=' . intval($version) . ' LIMIT 1');
 		return $h['typeversion'];
 	}
 

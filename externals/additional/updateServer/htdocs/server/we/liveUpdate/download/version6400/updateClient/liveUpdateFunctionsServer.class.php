@@ -91,8 +91,8 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	function checkReplaceDocRoot($content){
 		//replaces any count of escaped docroot-strings
 		return ($this->replaceDocRootNeeded() ?
-				preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
-				$content);
+			preg_replace('-\$(_SERVER|GLOBALS)\[([\\\"\']+)DOCUMENT_ROOT([\\\"\']+)\]-', '\2' . LIVEUPDATE_SOFTWARE_DIR . '\3', $content) :
+			$content);
 	}
 
 	/**
@@ -543,7 +543,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 */
 	function executeQueriesInFiles($path){
 		static $db = null;
-		$db = $db? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		$db->query('SHOW variables LIKE "default_storage_engine"');
 		$db->next_record();
 		$defaultEngine = $db->f('Value');
@@ -566,7 +566,7 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 	 * @param string $query
 	 */
 	function executeUpdateQuery($query, we_database_base $db = null){
-		$db = ($db ? : new DB_WE());
+		$db = ($db ?: new DB_WE());
 
 		// when executing a create statement, try to create table,
 		// change fields when needed.
@@ -858,9 +858,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		return true;
 	}
 
-	static function weUpdaterDoUpdate(){
+	static function weUpdaterDoUpdate($what, $pos){
 		if(method_exists('we_updater', 'doUpdate')){
-			we_updater::doUpdate();
+			return we_updater::doUpdate($what, $pos);
 		}
 
 		return true;

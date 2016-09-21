@@ -30,7 +30,12 @@ class liveUpdateResponseServer extends liveUpdateResponse{
 			set_error_handler("liveUpdateErrorHandler");
 		}
 
-		return parent::getOutput();
+		switch($this->Type){
+			/* case 'executePatches':
+			  return $liveUpdateFnc::executePatches(); */
+			default:
+				return parent::getOutput();
+		}
 	}
 
 }

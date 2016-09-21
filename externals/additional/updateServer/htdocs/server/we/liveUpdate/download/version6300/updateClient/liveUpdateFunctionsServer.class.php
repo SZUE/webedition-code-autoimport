@@ -883,9 +883,9 @@ class liveUpdateFunctionsServer extends liveUpdateFunctions{
 		return true;
 	}
 
-	static function weUpdaterDoUpdate(){
+	static function weUpdaterDoUpdate($what, $pos){
 		if(method_exists('we_updater', 'doUpdate')){
-			we_updater::doUpdate();
+			return we_updater::doUpdate($what, $pos);
 		}
 
 		return true;

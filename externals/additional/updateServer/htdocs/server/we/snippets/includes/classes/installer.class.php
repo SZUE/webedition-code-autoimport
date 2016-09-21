@@ -172,7 +172,7 @@ class installer extends installerBase{
 			top.nextUrl = "' . $nextUrl . '";
 			top.leWizardProgress.set("' . $progress . '");
 			' . $activateStep . '
-			window.setTimeout("top.leWizardForm.proceedUrl();", 500);
+			window.setTimeout("top.leWizardForm.proceedUrl();", 100);
 		</script>';
 	}
 

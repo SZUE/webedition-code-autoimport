@@ -555,51 +555,61 @@ if ($success) {
 	static function getExecutePatchesResponse(){
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail());
+		$repeatUrl = installer::getUpdateClientUrl() . '?' . updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']);
 
-		$retArray['Type'] = 'eval';
-		$retArray['Code'] = '<?php
+		$retArray = [
+			'Type' => 'eval',
+			'Code' => '<?php
 
 ' . updateUtil::getOverwriteClassesCode() . '
 
 $delDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/includes/";
-if(is_file($delDir . "deleted.files")){
-	unlink($delDir . "deleted.files");
-}
 if(is_file($delDir . "del.files") && method_exists($liveUpdateFnc, "removeObsoleteFiles")){
+	if(is_file($delDir . "deleted.files")){
+		unlink($delDir . "deleted.files");
+	}
 	$liveUpdateFnc->removeObsoleteFiles($delDir);
 }
 if(method_exists($liveUpdateFnc, "removeDirOnlineInstaller")){
 	$liveUpdateFnc->removeDirOnlineInstaller();
 }
 
-$filesDir = LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/patches/";
-
 $allFiles = array();
-$liveUpdateFnc->getFilesOfDir($allFiles, $filesDir);
+$liveUpdateFnc->getFilesOfDir($allFiles, LIVEUPDATE_CLIENT_DOCUMENT_DIR . "/tmp/patches/");
 
 $success = true;
 $message = "";
 
-for ($i=0; $success && $i<count($allFiles); $i++) {
-	$message .= basename($allFiles[$i]) . "<br />";
-	$success = $liveUpdateFnc->executePatch($allFiles[$i]);
+foreach($allFiles as $file) {
+	$message .= basename($file) . "<br />";
+	$success = $liveUpdateFnc->executePatch($file);
 	if (!$success) {
-		$errorFile = basename($allFiles[$i]);
+		$errorFile .=" ". basename($file);
 	}
+	unlink($file);
 }
 
 if(method_exists($liveUpdateFnc, "weUpdaterDoUpdate")){
-	$liveUpdateFnc::weUpdaterDoUpdate();
+	$redo=$liveUpdateFnc::weUpdaterDoUpdate(empty($_REQUEST["what"])?"":$_REQUEST["what"],intval(empty($_REQUEST["pos"])?"":$_REQUEST["pos"]));
 }
 
 if ($success) {
-	$message = "<div>" . $message . "</div>".
-	"<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], count($_SESSION['clientChanges']['patches'])) . '</div>";
+	$message="";
+	if($allFiles){
+		$message = "<div>" . $message . "</div>".
+		"<div>' . sprintf($GLOBALS['lang']['installer']['amountPatchesExecuted'], count($_SESSION['clientChanges']['patches'])) . '</div>";
+	}
+	if(is_array($redo)){
+		$message.="<div>Update ".$redo["text"]."</div>";
+		echo "<script>top.frames.updatecontent.param=\"&what=".$redo["what"]."&pos=".$redo["pos"]."\";</script>";
+	?>' . installer::getProceedNextCommandResponsePart($repeatUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	}else{
 	?>' . installer::getProceedNextCommandResponsePart($nextUrl, installer::getInstallerProgressPercent(), '<?php print $message; ?>') . '<?php
+	}
 } else {
 	' . installer::getErrorMessageResponsePart(stripslashes('$errorFile'), '{$GLOBALS["errorDetail"]}') . '
 }
-?>';
+?>'];
 
 		return updateUtil::getResponseString($retArray);
 	}
@@ -637,8 +647,8 @@ if ($success) {
 		//bug #6305: bei 6.2.7 (ev. auch anderen) wird bein Nachinstallieren von Sprachen nicht $_SESSION['clientTargetVersionNumber'] gesetzt
 		//dann findet er auch nicht das downzuloadende Installer-Vereichnis und alles kommt leer an
 		$suchInstallerVersion = (!empty($_SESSION['clientTargetVersionNumber']) ?
-				$_SESSION['clientTargetVersionNumber'] :
-				$_SESSION['clientVersionNumber']
+			$_SESSION['clientTargetVersionNumber'] :
+			$_SESSION['clientVersionNumber']
 			);
 
 		$installerVersionDir = $availableInstallers[updateUtil::getNearestVersion($availableInstallers, $suchInstallerVersion)];
@@ -682,17 +692,17 @@ if ($success) {
 			}
 
 			$activateStep = '
-			top.frames["updatecontent"].finishLiInstallerStep("' . $_REQUEST['detail'] . '");
-			top.frames["updatecontent"].activateLiInstallerStep("' . static::getNextUpdateDetail() . '");';
+			top.frames.updatecontent.finishLiInstallerStep("' . $_REQUEST['detail'] . '");
+			top.frames.updatecontent.activateLiInstallerStep("' . static::getNextUpdateDetail() . '");';
 		}
 
 		return '<script>
-top.frames["updatecontent"].decreaseSpeed = false;
-top.frames["updatecontent"].nextUrl = "' . $nextUrl . '";
-top.frames["updatecontent"].setProgressBar("' . $progress . '");
-top.frames["updatecontent"].appendMessageLog("' . str_replace(["\n", "\r"], '', $message) . '\n");
+top.frames.updatecontent.decreaseSpeed = false;
+top.frames.updatecontent.nextUrl = "' . $nextUrl . '"+(top.frames.updatecontent.param?top.frames.updatecontent.param:"");
+top.frames.updatecontent.setProgressBar("' . $progress . '");
+top.frames.updatecontent.appendMessageLog("' . str_replace(["\n", "\r"], '', $message) . '\n");
 ' . $activateStep . '
-window.setTimeout("top.frames[\"updatecontent\"].proceedUrl();", 50);
+window.setTimeout("top.frames.updatecontent.proceedUrl();", 20);
 </script>';
 	}
 
@@ -858,8 +868,8 @@ window.open(\'?' . updateUtil::getCommonHrefParameters('installer', 'finishInsta
 		} while($ResponseSize < $_SESSION['DOWNLOAD_KBYTES_PER_STEP'] * 1024);
 
 		$nextUrl = installer::getUpdateClientUrl() . '?' . ($Position >= count($_SESSION['clientChanges']['allChanges']) ?
-				updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
-				updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
+			updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail(installer::getNextUpdateDetail()), installer::getNextUpdateDetail()) :
+			updateUtil::getCommonHrefParameters(installer::getCommandNameForDetail($_REQUEST['detail']), $_REQUEST['detail']) . "&position=$Position"
 			);
 
 

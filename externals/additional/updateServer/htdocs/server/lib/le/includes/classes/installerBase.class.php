@@ -40,7 +40,7 @@ class installerBase{
 		}
 
 		$steps = static::getInstallationStepNames();
-		foreach($steps as $i=>$step){
+		foreach($steps as $i => $step){
 			if($currentStep == $step && isset($steps[($i + 1)])){
 				return $steps[($i + 1)];
 			}

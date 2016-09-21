@@ -28,9 +28,7 @@ class installer extends installerBase{
 		}
 
 		if(strpos($nextUrl, "leStep=" . $_REQUEST["nextLeStep"])){
-			$activateStep = '
-				top.leStatus.update("leStatus", "' . ($_REQUEST["nextLeWizard"]) . '", "' . ($_REQUEST["nextLeStep"]) . '");
-			';
+			$activateStep = 'top.leStatus.update("leStatus", "' . ($_REQUEST["nextLeWizard"]) . '", "' . ($_REQUEST["nextLeStep"]) . '");';
 		}
 
 		if(static::getUpdateDetailPosition() === 0){
@@ -43,7 +41,7 @@ class installer extends installerBase{
 			top.leProgressBar.set("leProgress", "' . $progress . '");
 			top.leContent.' . $appendMessageLogJs . '("' . str_replace(["\r", "\n"], '', $message) . '\n");
 			' . $activateStep . '
-			window.setTimeout("top.leForm.proceedUrl();", 500);
+			window.setTimeout("top.leForm.proceedUrl();", 150);
 		</script>';
 	}
 
