@@ -567,10 +567,10 @@ function exit_open() {
 		}
 	}
 	if (top.fileSelect.data.JSCommand) {
+		fillIDs();
 		if (top.fileSelect.data.JSCommand.indexOf(".") > 0) {
 			eval(top.fileSelect.data.JSCommand);
 		} else {
-			fillIDs();
 			var tmp = top.fileSelect.data.JSCommand.split(',');
 			tmp.splice(1, 0, top.fileSelect.data);
 			opener.we_cmd.apply(opener, tmp);
