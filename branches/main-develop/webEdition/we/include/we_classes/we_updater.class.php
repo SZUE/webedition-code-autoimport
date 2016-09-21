@@ -500,7 +500,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 	}
 
-	public static function updateShop2(we_database_base $db, $pos = 0){
+	private static function updateShop2(we_database_base $db, $pos = 0){
 		if(!$db->isTabExist(SHOP_TABLE)){
 			return;
 		}
