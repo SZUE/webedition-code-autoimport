@@ -500,7 +500,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 	}
 
-	private static function updateShop2(we_database_base $db, $pos = 0){
+	public static function updateShop2(we_database_base $db, $pos = 0){
 		if(!$db->isTabExist(SHOP_TABLE)){
 			return;
 		}
@@ -541,7 +541,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		$db->query('SELECT IntOrderID,strSerialOrder FROM ' . SHOP_TABLE . ' WHERE IntOrderID IN(' . $ids . ') GROUP BY IntOrderID');
 
 		while($db->next_record(MYSQL_ASSOC)){
-			$ids[] = $db->f('IntOrderID');
 			$dat = we_unserialize($db->f('strSerialOrder'));
 
 			$customer = $dat['we_shopCustomer'];
@@ -560,7 +559,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 
 		//fill in order items
-		$db->query('SELECT IntOrderID,Price,IntQuantity,strSerial FROM ' . SHOP_TABLE . ' WHERE IntOrderID IN (' . implode(',', $ids) . ')');
+		$db->query('SELECT IntOrderID,Price,IntQuantity,strSerial FROM ' . SHOP_TABLE . ' WHERE IntOrderID IN (' . $ids . ')');
 		while($db->next_record(MYSQL_ASSOC)){
 			$tmp = we_unserialize($db->f('strSerial'));
 			$dat = array_filter($tmp, function($k){
