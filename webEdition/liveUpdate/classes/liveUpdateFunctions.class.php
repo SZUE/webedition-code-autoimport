@@ -886,13 +886,6 @@ class liveUpdateFunctions{
 		return true;
 	}
 
-	static function weUpdaterDoUpdate(){
-		if(method_exists('we_updater', 'doUpdate')){
-			we_updater::doUpdate();
-		}
-
-		return true;
-	}
 
 	/**
 	 * This file sets another errorhandler - to make specific error-messages

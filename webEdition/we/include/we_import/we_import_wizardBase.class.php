@@ -332,6 +332,7 @@ if (top.wizbody.addLog){
 									$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
 											we_html_element::jsElement($JScript . "setTimeout(we_import,15,1," . $v['cid'] . ");"));
 								} else {
+									//FIXME: if update needs more steps they must be handled here
 									we_updater::doUpdate('internal');
 									$JScript = "
 top.wizbusy.finish(" . $xmlExIm->options['rebuild'] . ");
