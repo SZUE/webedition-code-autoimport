@@ -2373,7 +2373,7 @@ class we_objectFile extends we_document{
 			if(!in_array($id, $recursiveObjects)){
 				$recursiveObjects[] = $id;
 				$tmpObj = new we_objectFile();
-				$tmpObj->initByID($id, OBJECT_FILES_TABLE, 0);
+				$tmpObj->initByID($id, OBJECT_FILES_TABLE, self::LOAD_MAID_DB);
 				array_pop($recursiveObjects);
 				foreach($tmpObj->elements as $n => $elem){
 					if($elem['type'] != self::TYPE_OBJECT && $n != 'Title' && $n != 'Description'){
@@ -2674,7 +2674,7 @@ class we_objectFile extends we_document{
 	}
 
 	public function initByID($we_ID, $we_Table = OBJECT_FILES_TABLE, $from = we_class::LOAD_MAID_DB){
-		parent::initByID(intval($we_ID), $we_Table, $from);
+		parent::initByID(intval($we_ID), OBJECT_FILES_TABLE, $from);
 		if($this->issetElement('Charset')){
 			$this->Charset = $this->getElement('Charset');
 			unset($this->elements['Charset']);

@@ -50,7 +50,7 @@ abstract class we_html_forms{
 		return '
 			<span class="default checkbox" style="' . $style . '">
 						<input type="checkbox" name="' . $name . '" id="' . $id . '" value="' . $value . '" ' . ($checked ? ' checked="checked"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : '') . ($disabled ? ' disabled="disabled"' : "") . ' />
-					<div class="elementText ' . $class . '"><label id="label_' . $id . '" for="' . $id . '" class="' . ($disabled ? 'disabled ' : '') . ($title ? ' showhelp' : '') . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' . (false && $title ? we_html_tools::htmlAlertAttentionBox($title, we_html_tools::TYPE_HELP) : '') . ($html ? : "") . '</div>' . ($description ? we_html_tools::htmlAlertAttentionBox($description, $type, $width) : '') .
+					<div class="elementText ' . $class . '"><label id="label_' . $id . '" for="' . $id . '" class="' . ($disabled ? 'disabled ' : '') . ($title ? ' showhelp' : '') . '"' . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' . (false && $title ? we_html_tools::htmlAlertAttentionBox($title, we_html_tools::TYPE_HELP) : '') . ($html ?: "") . '</div>' . ($description ? we_html_tools::htmlAlertAttentionBox($description, $type, $width) : '') .
 			'</span>';
 	}
 
@@ -178,26 +178,26 @@ abstract class we_html_forms{
 		$fontnames = weTag_getAttribute('fontnames', $attribs, '', we_base_request::STRING);
 		$showmenues = (
 			isset($attribs['showMenues']) ?
-				weTag_getAttribute('showMenues', $attribs, true, we_base_request::BOOL) :
-				(isset($attribs['showmenues']) ?
-					weTag_getAttribute('showmenues', $attribs, true, we_base_request::BOOL) :
-					weTag_getAttribute('showmenus', $attribs, true, we_base_request::BOOL))
+			weTag_getAttribute('showMenues', $attribs, true, we_base_request::BOOL) :
+			(isset($attribs['showmenues']) ?
+			weTag_getAttribute('showmenues', $attribs, true, we_base_request::BOOL) :
+			weTag_getAttribute('showmenus', $attribs, true, we_base_request::BOOL))
 			);
 		$importrtf = weTag_getAttribute('importrtf', $attribs, false, we_base_request::BOOL);
 		$doc = (!empty($GLOBALS['we_doc']) && ($GLOBALS['we_doc'] instanceof we_objectFile) ? 'we_doc' : 'WE_MAIN_DOC');
-		$inwebedition = ($forceinwebedition ? : !empty($GLOBALS[$doc]->InWebEdition));
+		$inwebedition = ($forceinwebedition ?: !empty($GLOBALS[$doc]->InWebEdition));
 		$inlineedit = // we are in frontend, where default is inlineedit = true
 			weTag_getAttribute('inlineedit', $attribs, ($inwebedition ? INLINEEDIT_DEFAULT : true), we_base_request::BOOL);
 		$value = self::removeBrokenInternalLinksAndImages($value);
-		$width = is_numeric($width) ? max($width ? : intval($cols) * 5.5, we_wysiwyg_editor::MIN_WIDTH_INLINE) : $width;
-		$height = is_numeric($height) ? max($height ? : intval($rows) * 8, we_wysiwyg_editor::MIN_HEIGHT_INLINE) : $height;
+		$width = is_numeric($width) ? max($width ?: intval($cols) * 5.5, we_wysiwyg_editor::MIN_WIDTH_INLINE) : $width;
+		$height = is_numeric($height) ? max($height ?: intval($rows) * 8, we_wysiwyg_editor::MIN_HEIGHT_INLINE) : $height;
 
 		if($wysiwyg){
-			$commands = ($showmenues ? $commands : str_replace(['formatblock,', 'fontname,', 'fontsize,',], '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())));
-			$commands = ($hidestylemenu ? str_replace('applystyle,', '', $commands ? : implode(',', we_wysiwyg_editor::getAllCmds())) : $commands);
+			$commands = ($showmenues ? $commands : str_replace(['formatblock,', 'fontname,', 'fontsize,',], '', $commands ?: implode(',', we_wysiwyg_editor::getAllCmds())));
+			$commands = ($hidestylemenu ? str_replace('applystyle,', '', $commands ?: implode(',', we_wysiwyg_editor::getAllCmds())) : $commands);
 			$out = we_wysiwyg_editor::getHeaderHTML(!$inwebedition, $isFrontendEdit);
 			$lang = (isset($GLOBALS['we_doc']) && isset($GLOBALS['we_doc']->Language)) ? $GLOBALS['we_doc']->Language : WE_LANGUAGE;
-			$buttonpos = $buttonpos ? : 'top';
+			$buttonpos = $buttonpos ?: 'top';
 			$tinyParams = weTag_getAttribute('tinyparams', $attribs, '', we_base_request::RAW);
 			$templates = weTag_getAttribute('templates', $attribs, '', we_base_request::STRING);
 			$formats = weTag_getAttribute('formats', $attribs, '', we_base_request::STRING);
@@ -210,12 +210,12 @@ abstract class we_html_forms{
 			$e = new we_wysiwyg_editor($name, $width, $height, '', $commands, $bgcolor, '', $class, $fontnames, (!$inwebedition), $xml, $removeFirstParagraph, $inlineedit, '', $charset, $cssClasses, $lang, '', $showSpell, $isFrontendEdit, $buttonpos, $oldHtmlspecialchars, $contentCss, $origName, $tinyParams, $contextmenu, false, $templates, $formats, $imagestartid, $galleryTemplates, $fontsizes);
 
 			if(stripos($name, "we_ui") === false){//we are in backend
-				$hiddenTextareaContent = str_replace(we_wysiwyg_editor::parseInternalImageSrc($value),["##|r##"=>"\r", "##|n##"=>"\n"]);
+				$hiddenTextareaContent = strtr(we_wysiwyg_editor::parseInternalImageSrc($value), ["##|r##" => "\r", "##|n##" => "\n"]);
 				$previewDivContent = str_replace((
 					isset($GLOBALS['we_doc']) && !($GLOBALS['we_doc'] instanceof we_objectFile) && !($GLOBALS['we_doc'] instanceof we_object) ?
-						we_wysiwyg_editor::parseInternalImageSrc($GLOBALS['we_doc']->getField($attribs)) :
-						we_document::parseInternalLinks($value, 0)
-					),  ["##|r##"=>"\r", "##|n##"=>"\n"]
+					we_wysiwyg_editor::parseInternalImageSrc($GLOBALS['we_doc']->getField($attribs)) :
+					we_document::parseInternalLinks($value, 0)
+					), ["##|r##" => "\r", "##|n##" => "\n"]
 				);
 			} else {//we are in frontend
 				$previewDivContent = $hiddenTextareaContent = strtr(we_document::parseInternalLinks($value, 0), ['##|r##' => "\r", '##|n##' => "\n"]);
@@ -229,7 +229,7 @@ abstract class we_html_forms{
 			return $out .
 				we_html_element::htmlTextArea(['name' => $name, 'id' => $name, 'onchange' => '_EditorFrame.setEditorIsHot(true);', 'style' => 'display: none', 'class' => 'wetextarea'], $hiddenTextareaContent) .
 				($fieldName ? we_html_element::jsElement('tinyEditors["' . $fieldName . '"] = "' . $name . '";') : '') .
-				($buttonTop ? '<div class="tbButtonWysiwygBorder" style="border-bottom:0px;">' . $e->getHTML() . '</div>' : '') . '<div class="wysiwygPreview tbButtonWysiwygBorder ' . ($class ? : "") . ' wetextarea tiny-wetextarea wetextarea-' . $origName . '" ' . $bgStyle . ' id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="border-top:0px;">' . $e->getHTML() . '</div>' : '');
+				($buttonTop ? '<div class="tbButtonWysiwygBorder" style="border-bottom:0px;">' . $e->getHTML() . '</div>' : '') . '<div class="wysiwygPreview tbButtonWysiwygBorder ' . ($class ?: "") . ' wetextarea tiny-wetextarea wetextarea-' . $origName . '" ' . $bgStyle . ' id="div_wysiwyg_' . $name . '">' . $previewDivContent . '</div>' . ($buttonBottom ? '<div class="tbButtonWysiwygBorder" style="border-top:0px;">' . $e->getHTML() . '</div>' : '');
 		}
 
 		if($width){
