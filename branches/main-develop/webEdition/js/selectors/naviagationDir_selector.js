@@ -83,6 +83,7 @@ function writeBody(d) {
 									'<input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.newFolderNavigation + '"  class="wetextinput" /></td>' +
 									'</tr>' :
 									'');
+
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';

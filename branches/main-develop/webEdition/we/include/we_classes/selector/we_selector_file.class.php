@@ -303,9 +303,9 @@ class we_selector_file{
 		$entries = [];
 		while($this->db->next_record()){
 			$entries[] = [
-				$this->db->f("ID"),
+				intval($this->db->f("ID")),
 				str_replace(["\n", "\r"], "", $this->db->f("Text")),
-				$this->db->f("IsFolder"),
+				intval($this->db->f("IsFolder")),
 				str_replace(["\n", "\r"], "", $this->db->f("Path")),
 				$this->db->f("ContentType")
 			];

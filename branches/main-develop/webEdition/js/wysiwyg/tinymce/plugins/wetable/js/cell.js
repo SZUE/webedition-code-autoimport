@@ -269,15 +269,15 @@ function changedSize() {
 
 	var width = formObj.width.value;
 	if (width !== "")
-		st['width'] = getCSSSize(width);
+		st.width = getCSSSize(width);
 	else
-		st['width'] = "";
+		st.width = "";
 
 	var height = formObj.height.value;
 	if (height !== "")
-		st['height'] = getCSSSize(height);
+		st.height = getCSSSize(height);
 	else
-		st['height'] = "";
+		st.height = "";
 
 	formObj.style.value = ed.dom.serializeStyle(st);
 }
@@ -301,11 +301,11 @@ function changedStyle() {
 	else
 		formObj.backgroundimage.value = '';
 
-	if (st['width'])
-		formObj.width.value = trimSize(st['width']);
+	if (st.width)
+		formObj.width.value = trimSize(st.width);
 
-	if (st['height'])
-		formObj.height.value = trimSize(st['height']);
+	if (st.height)
+		formObj.height.value = trimSize(st.height);
 
 	if (st['background-color']) {
 		formObj.bgcolor.value = st['background-color'];

@@ -35,7 +35,7 @@ function we_core_JsonRpc(url, callback) {
 	};
 
 	this.call = function(service, method, args) {
-
+		var i;
 		// create json object
 		var json = {
 			service: service,

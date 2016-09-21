@@ -82,9 +82,9 @@ function we_cmd_object(args, url) {
 			break;
 		case "object_add_workspace":
 		case "object_add_css":
+			url += "&we_cmd[1]=" + args[1].allIDs.join(",");
+			url += "&we_transaction=" + args[2];
 			if (!WE().util.we_sbmtFrm(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url)) {
-				url += "&we_cmd[1]=" + args[1].allIDs.join(",");
-				url += "&we_transaction=" + args[2];
 				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames[1], url, args[0]);
 			}
 			break;

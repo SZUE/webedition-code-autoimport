@@ -153,8 +153,7 @@ function addEntry(id, txt, folder, pth, moddte, ct) {
 function writeBody(d) {
 	var body = (top.fileSelect.data.we_editDirID ?
 					'<input type="hidden" name="what" value="' + WE().consts.selectors.DORENAMEFOLDER + '" />' +
-					'<input type="hidden" name="we_editDirID" value="' + top.fileSelect.data.we_editDirID + '" />'
-					:
+					'<input type="hidden" name="we_editDirID" value="' + top.fileSelect.data.we_editDirID + '" />' :
 					'<input type="hidden" name="what" value="' + WE().consts.selectors.CREATEFOLDER + '" />'
 					) +
 					'<input type="hidden" name="order" value="' + top.fileSelect.data.order + '" />' +
@@ -173,7 +172,7 @@ function writeBody(d) {
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
-		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.fileSelect.data.currentID && (!top.fileSelect.data.makeNewFolder)) ? "selected" : "") + '" ' + ((top.fileSelect.data.we_editDirID || top.fileSelect.data.makeNewFolder) ? "" : onclick) + (entries[i].isFolder ? ondblclick : "") + '>' +
+		body += '<tr id="line_' + entries[i].ID + '" class="' + ((entries[i].ID == top.fileSelect.data.currentID && (!top.fileSelect.data.makeNewFolder)) ? 'selected' : '') + '" ' + ((top.fileSelect.data.we_editDirID || top.fileSelect.data.makeNewFolder) ? '' : onclick) + (entries[i].isFolder ? ondblclick : '') + '>' +
 						'<td class="treeIcon">' + WE().util.getTreeIcon(entries[i].contentType, false) + '</td>' +
 						(top.fileSelect.data.we_editDirID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :

@@ -50,6 +50,7 @@ function writeBody(d) {
 									'<td><input type="hidden" name="we_FolderText" value="' + WE().consts.g_l.fileselector.newFolderExport + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + WE().consts.g_l.fileselector.newFolderExport + '"  class="wetextinput" /></td>' +
 									'</tr>' :
 									'');
+
 	for (i = 0; i < entries.length; i++) {
 		var onclick = ' onclick="return selectorOnClick(event,' + entries[i].ID + ');"';
 		var ondblclick = ' onDblClick="return selectorOnDblClick(' + entries[i].ID + ');"';
@@ -57,13 +58,12 @@ function writeBody(d) {
 						'<td class="selector selectoricon">' + WE().util.getTreeIcon((entries[i].isFolder ? 'folder' : 'we/export'), false) + '</td>' +
 						(top.fileSelect.data.we_editDirID == entries[i].ID ?
 										'<td class="selector"><input type="hidden" name="we_FolderText" value="' + entries[i].text + '" /><input onMouseDown="window.inputklick=true" name="we_FolderText_tmp" type="text" value="' + entries[i].text + '" class="wetextinput" style="width:100%" />' :
-										'<td class="selector filename" style="" ><div class="cutText">' + entries[i].text + "</div>"
+										'<td class="selector cutText directory" title="' + entries[i].text + '">' + entries[i].text
 										) +
 						'</td></tr>';
 	}
 
 	d.innerHTML = '<form name="we_form" target="fscmd" method="post" action="' + top.fileSelect.options.formtarget + '">' + body + '</table></form>';
-
 	if (top.fileSelect.data.makeNewFolder || top.fileSelect.data.we_editDirID) {
 		top.fsbody.document.we_form.we_FolderText_tmp.focus();
 		top.fsbody.document.we_form.we_FolderText_tmp.select();

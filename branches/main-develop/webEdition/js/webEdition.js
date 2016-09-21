@@ -1701,7 +1701,7 @@ function we_cmd_base(args, url) {
 				width = WE().layout.tree.getWidth();
 				WE().layout.tree.widthBeforeDeleteMode = width;
 				if (width < WE().consts.size.tree.moveWidth) {
-					top.setTreeWidth(WE().consts.size.tree.moveWidth);
+					WE().layout.tree.setWidth(WE().consts.size.tree.moveWidth);
 				}
 				WE().layout.tree.storeWidth(WE().layout.tree.widthBeforeDeleteMode);
 
@@ -1709,7 +1709,7 @@ function we_cmd_base(args, url) {
 				WE().layout.sidebar.widthBeforeDeleteMode = widthSidebar;
 
 				if (args[2] != 1) {
-					we_repl(document.getElementsByTagName("iframe").treeheader, url, args[0]);
+					we_repl(document.getElementsName("treeheader")[0], url, args[0]);
 				}
 			}
 			break;
