@@ -85,14 +85,15 @@ abstract class we_html_button{
 	 * @param boolean $important
 	 * @static
 	 */
-	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = '', array $dimensions = []){
+	static function getButton($text, $id, $cmd = '', $title = '', $disabled = false, $isFormButton = false, $class = '', array $dimensions = [], $htmlName = ""){
 		// $dimensions: to be used only when calling this function from app
 		$style = isset($dimensions['width']) || isset($dimensions['height']) ? ' style="' . (isset($dimensions['width']) ? 'width:' . $dimensions['width'] . 'px;' : '') . (isset($dimensions['height']) ? 'height:' . $dimensions['height'] . 'px;' : '') . '"' : '';
 
 		return '<button type="' . ($isFormButton ? 'submit' : 'button') . '" ' . ($title ? ' title="' . oldHtmlspecialchars($title) . '"' : '') .
 			($disabled ? ' disabled="disabled"' : '') .
 			$style .
-			' id="' . $id . '" class="weBtn' . ($class ? ' ' . $class : '') . '" ' .
+			($htmlName ? ' name="' . $htmlName . '"' : ' id="' . $id . '"') .
+			' class="weBtn' . ($class ? ' ' . $class : '') . '" ' .
 			' onclick="' . oldHtmlspecialchars($cmd) . '"' .
 			'>' . $text . '</button>';
 	}
@@ -113,12 +114,12 @@ abstract class we_html_button{
 	 *
 	 * @return     string
 	 */
-	static function create_button($name, $href, $unused3 = 0, $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, array $dimensions = []){
+	static function create_button($name, $href, $htmlName = "", $unused = 0, $unused2 = 0, $on_click = '', $target = '', $disabled = false, $uniqid = true, $suffix = '', $opensDialog = false, $title = '', $class = '', $id = '', $notTranslate = false, array $dimensions = []){
 		$cmd = '';
 
 		restart:
 		$all = explode(':', $name, 2);
-		list($type, $names) = count($all) == 1 ? array('', '') : $all;
+		list($type, $names) = count($all) == 1 ? ['', ''] : $all;
 		// Check if the button is a text button or an image button
 		$value = '';
 		if($on_click){
@@ -200,7 +201,7 @@ abstract class we_html_button{
 					($href ? "window.location.href='" . $href . "';" : ''); /* ); */
 		}
 
-		return self::getButton($value, ($id ?: ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($title ?: (g_l('button', '[' . $name . '][alt]', true) ?: '')), $disabled, $hrefData[0] === self::WE_FORM, $class, $dimensions);
+		return self::getButton($value, ($id ?: ($uniqid ? 'we' . $name . '_' . md5(uniqid(__FUNCTION__, true)) : $name) . $suffix), $cmd, ($title ?: (g_l('button', '[' . $name . '][alt]', true) ?: '')), $disabled, $hrefData[0] === self::WE_FORM, $class, $dimensions, $htmlName);
 	}
 
 	static function formatButtons($buttons){
