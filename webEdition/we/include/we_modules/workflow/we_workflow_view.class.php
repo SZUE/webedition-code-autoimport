@@ -193,7 +193,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getCategoryHTML(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_cats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.allIDs.join(\\',\\'));')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_cat\\',top.fileSelect.data.allIDs.join(\\',\\'));')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->Categories, 'del_cat', $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -202,7 +202,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getObjCategoryHTML(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_objcats')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.allIDs.join(\\',\\'));')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.we_cmd(\\'add_objcat\\',top.fileSelect.data.allIDs.join(\\',\\'));')", false, 100, 22, "", "", (!permissionhandler::hasPerm("EDIT_KATEGORIE")));
 
 		$cats = new we_chooser_multiDir(495, $this->workflowDef->ObjCategories, "del_objcat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE, "defaultfont", "", "top.content.setHot();");
 
@@ -220,7 +220,7 @@ class we_workflow_view extends we_modules_view{
 
 	function getObjectFileFoldersHTML(){
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:top.content.setHot();we_cmd('del_all_object_file_folders');");
-		//avascript:top.content.setHot();we_cmd('we_selector_directory','','".OBJECT_FILES_TABLE."','','','fillIDs();opener.we_cmd(\\'add_object_file_folder\\',top.allIDs.join(','));','','','',true)
+		//avascript:top.content.setHot();we_cmd('we_selector_directory','','".OBJECT_FILES_TABLE."','','','fillIDs();opener.we_cmd(\\'add_object_file_folder\\',top.fileSelect.data.allIDs.join(','));','','','',true)
 		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:top.content.setHot();we_cmd('we_selector_directory','','" . OBJECT_FILES_TABLE . "','','','add_object_file_folder','','','',true)");
 
 		$dirs = new we_chooser_multiDir(495, $this->workflowDef->ObjectFileFolders, "del_object_file_folder", $delallbut . $addbut, "", "ContentType", OBJECT_FILES_TABLE, "defaultfont", "", "top.content.setHot();");

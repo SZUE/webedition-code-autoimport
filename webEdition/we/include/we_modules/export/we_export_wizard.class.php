@@ -1238,7 +1238,7 @@ switch (args[0]) {
 
 
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_cats')", true, 0, 0, "", "", (isset($this->exportVars["categories"]) ? false : true));
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.top.body.we_cmd(\\'add_cat\\',top.allIDs.join(\\',\\'));')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category',0,'" . CATEGORY_TABLE . "','','','fillIDs();opener.top.body.we_cmd(\\'add_cat\\',top.fileSelect.data.allIDs.join(\\',\\'));')");
 		$cats = new we_chooser_multiDir(350, $this->exportVars["categories"], "del_cat", $delallbut . $addbut, "", '"we/category"', CATEGORY_TABLE);
 
 		if(!permissionhandler::hasPerm("EDIT_KATEGORIE")){

@@ -588,7 +588,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		if($this->View->newsletter->groups[$group]->SendAll == 0){
 
 			$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('del_all_customers'," . $group . ")");
-			$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\'add_customer\',top.allIDs.join(\',\')," . $group . ");','','','',1)");
+			$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.we_cmd(\'add_customer\',top.fileSelect.data.allIDs.join(\',\')," . $group . ");','','','',1)");
 
 			$cats = new we_chooser_multiDir(self::def_width, $this->View->newsletter->groups[$group]->Customers, "del_customer", $delallbut . $addbut, "", '"we/customer"', CUSTOMER_TABLE);
 			$cats->extraDelFn = "document.we_form.ngroup.value=$group";

@@ -1431,7 +1431,7 @@ class we_object extends we_document{
 		$textname = 'we_' . $this->Name . '_input[' . $name . 'usertext]';
 		$idname = 'we_' . $this->Name . '_input[' . $name . 'userid]';
 		$delallbut = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:we_cmd('object_del_all_users','" . $GLOBALS['we_transaction'] . "','" . $nr . "','" . $name . "')", true, 0, 0, "", "", ($users ? false : true));
-		$addbut = we_html_element::htmlHiddens(array($idname => 0, $textname => "")) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector',document.we_form.elements['" . $idname . "'].value,'document.we_form.elements[\\'" . $textname . "\\'].value','',document.we_form.elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'object_add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.allIDs.join(\\',\\'),\\'" . $name . "\\')','','',1)");
+		$addbut = we_html_element::htmlHiddens(array($idname => 0, $textname => "")) . we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_users_selector',document.we_form.elements['" . $idname . "'].value,'document.we_form.elements[\\'" . $textname . "\\'].value','',document.we_form.elements['" . $idname . "'].value,'fillIDs();opener.we_cmd(\\'object_add_user_to_field\\',\\'" . $GLOBALS['we_transaction'] . "\\',\\'" . $nr . "\\', top.fileSelect.data.allIDs.join(\\',\\'),\\'" . $name . "\\')','','',1)");
 
 		return '<table class="default"><tr><td>' .
 			'<div style="width:388px;" class="multichooser">' . $content . '</div></td></tr><tr><td style="text-align:right">' . $delallbut . $addbut . '</td></tr></table>' . we_html_element::jsElement('WE().util.setIconOfDocClass(document,\'userIcon\');');
@@ -1746,7 +1746,7 @@ class we_object extends we_document{
 		$this->Templates = implode(',', $newTmplArr);
 		$this->DefaultWorkspaces = implode(',', $newDefaultArr);
 
-		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd('object_add_workspace',top.allIDs.join(','));");
+		$wecmdenc3 = we_base_request::encCmd("opener._EditorFrame.setEditorIsHot(true);fillIDs();opener.we_cmd('object_add_workspace',top.fileSelect.data.allIDs.join(','));");
 		$button = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_directory','','" . FILE_TABLE . "','','','" . $wecmdenc3 . "','','','',1)");
 
 		$addbut = $button;
@@ -1769,7 +1769,7 @@ class we_object extends we_document{
 	}
 
 	function formCSS(){
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_document', 0, '" . FILE_TABLE . "','','','" . we_base_request::encCmd("fillIDs();opener.we_cmd('object_add_css', top.allIDs.join(','));") . "','','','" . we_base_ContentTypes::CSS . "', 1,1)");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_document', 0, '" . FILE_TABLE . "','','','" . we_base_request::encCmd("fillIDs();opener.we_cmd('object_add_css', top.fileSelect.data.allIDs.join(','));") . "','','','" . we_base_ContentTypes::CSS . "', 1,1)");
 		$css = new we_chooser_multiDir(510, $this->CSS, "object_del_css", $addbut, "", "ContentType", FILE_TABLE);
 		return $css->get();
 	}

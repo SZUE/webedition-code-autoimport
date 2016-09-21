@@ -201,7 +201,7 @@ EO_SCRIPT;
 
 		$script .= $name . '.showVariant(0);';
 
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.allTexts,top.allIDs);opener.wecf_hot();','','','',1)");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_customer_selector','','" . CUSTOMER_TABLE . "','','','fillIDs();opener.addToMultiEdit(opener." . $name . ", top.fileSelect.data.allTexts,top.fileSelect.data.allIDs);opener.wecf_hot();','','','',1)");
 
 		$buttonTable = we_html_button::create_button(we_html_button::DELETE_ALL, "javascript:removeFromMultiEdit(" . $name . ")") . $addbut;
 

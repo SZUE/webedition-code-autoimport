@@ -925,7 +925,7 @@ function showPreview() {
 	}
 
 	private function getHTMLCategory(){
-		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.allPaths);opener.top.content.mark();')");
+		$addbut = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('we_selector_category','','" . CATEGORY_TABLE . "','','','fillIDs();opener.addCat(top.fileSelect.data.allPaths);opener.top.content.mark();')");
 		$del_but = addslashes(we_html_button::create_button(we_html_button::TRASH, 'javascript:#####placeHolder#####;top.content.mark();'));
 
 		$variant_js = 'categoriesEdit(' . 510 . ', [' . (!empty($this->Model->Categories) ? '"' . implode('","', $this->Model->Categories) . '"' : '') . '], "' . $del_but . '");';
