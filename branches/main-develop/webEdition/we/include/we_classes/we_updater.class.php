@@ -587,7 +587,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				]));
 				$id = $db2->getInsertId();
 			}
-			$db2->query('REPLACE INTO ' . SHOP_ORDER_ITEM_TABLE . ' SET ' . we_database_base::arraySetter([
+
+			$db2->query('INSERT INTO ' . SHOP_ORDER_ITEM_TABLE . ' SET ' . we_database_base::arraySetter([
 					'orderID' => $db->f('IntOrderID'),
 					'orderDocID' => $id,
 					'quantity' => $db->f('IntQuantity'),
@@ -651,6 +652,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				if(defined('SHOP_TABLE')){
 					$ret = self::updateShop2($db, $pos);
 					if($ret){
+						self::meassure(-1);
 						return array_merge($ret, ['what' => $what]);
 					}
 					self::meassure('shop');
