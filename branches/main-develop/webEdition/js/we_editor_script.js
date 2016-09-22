@@ -332,6 +332,11 @@ function we_cmd() {
 				var win = new (WE().util.jsWindow)(this, WE().consts.dirs.WE_SPELLCHECKER_MODULE_DIR + "/weSpellchecker.php?editname=" + (args[1]), "spellcheckdialog", -1, -1, 500, 450, true, false, true, false);
 			}
 			break;
+		case "updateCollectionItem":
+			_EditorFrame.setEditorIsHot(true);
+			top.console.log('dieses',weCollectionEdit.getItemId(document.getElementById('collectionItem_staticIndex_' + args[2])));
+			weCollectionEdit.callForValidItemsAndInsert(weCollectionEdit.getItemId(document.getElementById('collectionItem_staticIndex_' + args[2])), args[1].currentID);
+			break;
 		case 'setHot':
 			_EditorFrame.setEditorIsHot(true);
 			break;
