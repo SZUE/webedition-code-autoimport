@@ -101,7 +101,7 @@ class we_folder extends we_root{
 	}
 
 	public function getDoclistModel(){
-		return $this->doclistModel ? : new we_doclist_model(0, $this->ID, $this->viewType);
+		return $this->doclistModel ?: new we_doclist_model(0, $this->ID, $this->viewType);
 	}
 
 	/**
@@ -171,7 +171,7 @@ class we_folder extends we_root{
 						$last_pid = $pid;
 					} else {
 						$folder = (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ?
-								new we_class_folder() : new self());
+							new we_class_folder() : new self());
 
 						$folder->we_new($tblName, $last_pid, end($p));
 						$folder->IsClassFolder = $last_pid == 0;
@@ -377,18 +377,18 @@ class we_folder extends we_root{
 			$userCanChange = false;
 		}
 		return (!$userCanChange ? '<table class="default"><tr><td><span class="defaultfont">' . $this->Path . '</span></td></tr>' :
-				'<table class="default">
+			'<table class="default">
 <colgroup><col style="width:20px;"/><col style="width:20px;"/><col style="width:100px;"/></colgroup>
 	<tr><td class="defaultfont" style="padding-bottom:10px;">' . $this->formInputField('', ($this->Table == FILE_TABLE || $this->Table == TEMPLATES_TABLE) ? 'Filename' : 'Text', g_l('weClass', '[foldername]'), 50, 0, 255, 'onchange="_EditorFrame.setEditorIsHot(true);pathOfDocumentChanged();"') . '</td><td></td><td></td></tr>
 	<tr><td colspan="3" class="defaultfont">' . $this->formDirChooser(0) . '</td></tr>' .
-				(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ? '
+			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE ? '
 	<tr><td colspan="3" class="defaultfont" style="padding-top:4px;">' . $this->formTriggerDocument() . '</td></tr>
 	<tr><td colspan="3">
 		<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[grant_tid_expl]') . ($this->ID ? '' : g_l('weClass', '[availableAfterSave]')), we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
-					we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
+			we_html_button::create_button(we_html_button::OK, 'javascript:if(_EditorFrame.getEditorIsHot()) { ' . we_message_reporting::getShowMessageCall(g_l('weClass', '[saveFirstMessage]'), we_message_reporting::WE_MESSAGE_ERROR) . "; } else {;we_cmd('changeTriggerIDRecursive','" . $GLOBALS["we_transaction"] . "');}", true, 100, 22, '', '', ($this->ID ? false : true)) . '</td></tr>
 					</table></td></tr>' :
-					'') .
-				($this->Table == FILE_TABLE && $this->ID && permissionhandler::hasPerm('ADMINISTRATOR') ? '
+			'') .
+			($this->Table == FILE_TABLE && $this->ID && permissionhandler::hasPerm('ADMINISTRATOR') ? '
 	<tr><td class="defaultfont" style="padding-top:10px;">' . $this->formInputField('', 'urlMap', g_l('weClass', '[urlMap]'), 50, 0, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" ') . '</td><td></td><td></td></tr>
 ' : '')) .
 			'</table>';
@@ -416,8 +416,8 @@ class we_folder extends we_root{
 		we_getParentIDs(FILE_TABLE, $this->ID, $parents);
 		$disabledNote = ($this->ID ? '' : ' ' . g_l('weClass', '[availableAfterSave]'));
 		$but = we_html_button::create_button(we_html_button::SELECT, ($this->ID ?
-					"javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . $this->Table . "', '" . $idname . "', '', 'copyFolderCheck," . $this->ID . "," . $this->Table . "," . implode(',', $parents) . "')" :
-					"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
+				"javascript:we_cmd('we_selector_directory', document.we_form.elements['" . $idname . "'].value, '" . $this->Table . "', '" . $idname . "', '', 'copyFolderCheck," . $this->ID . "," . $this->Table . "," . implode(',', $parents) . "')" :
+				"javascript:" . we_message_reporting::getShowMessageCall(g_l('alert', '[copy_folders_no_id]'), we_message_reporting::WE_MESSAGE_ERROR))
 				, true, 100, 22, "", "", !empty($disabledNote));
 
 		return '<table class="default"><tr><td style="padding-bottom:2px;">' . we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[copy_owners_expl]') . $disabledNote, we_html_tools::TYPE_INFO, 0, false) . '</td><td>' .
@@ -581,7 +581,7 @@ class we_folder extends we_root{
 	public static function getUrlReplacements(we_database_base $db, $onlyUrl = false, $hostMatch = false){
 		static $ret = -1;
 		if($ret == -1){
-			$ret = array('full' => [], 'url' => [], 'full_host' => [], 'url_host' => [],);
+			$ret = ['full' => [], 'url' => [], 'full_host' => [], 'url_host' => [],];
 			$db->query('SELECT Path,urlMap FROM ' . FILE_TABLE . ' WHERE urlMap!="" ORDER BY Path DESC');
 			$lastRules = [];
 			while($db->next_record(MYSQL_NUM)){
@@ -613,44 +613,43 @@ class we_folder extends we_root{
 		}
 		$replace = self::getUrlReplacements($GLOBALS['DB_WE'], true, true);
 		$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
-		return $replace ?
-			preg_replace($replace, array_keys($replace), $path) :
+		$cnt = 0;
+		$ret = $replace ?
+			preg_replace($replace, array_keys($replace), $path, 1, $cnt) :
 			$path;
+		return ($cnt ? getServerProtocol() . ':' : '') . $ret;
 	}
 
 	public function getPropertyPage(){
-		$parts = array(
-			array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2)
-		);
+		$parts = [['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2]
+		];
 
 		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
 			if(permissionhandler::hasPerm('ADMINISTRATOR')){
-				$parts[] = array('icon' => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2);
-				$parts[] = array(
-					"headline" => g_l('weClass', '[grant_language]'),
+				$parts[] = ['icon' => "lang.gif", "headline" => g_l('weClass', '[language]'), "html" => $this->formLangLinks(), 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2];
+				$parts[] = ["headline" => g_l('weClass', '[grant_language]'),
 					"html" => $this->formChangeLanguage(),
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					"forceRightHeadline" => true
-				);
+				];
 			} else if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
-				$parts[] = array(
-					'icon' => "lang.gif",
+				$parts[] = ['icon' => "lang.gif",
 					"headline" => g_l('weClass', '[language]'),
 					"html" => $this->formLangLinks(),
 					'space' => we_html_multiIconBox::SPACE_MED2
-				);
+				];
 			}
 		}
 
 		if($this->Table == FILE_TABLE && permissionhandler::hasPerm('CAN_COPY_FOLDERS') ||
 			(defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE && permissionhandler::hasPerm('CAN_COPY_OBJECTS'))){
-			$parts[] = array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyFolder]'), "html" => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2);
+			$parts[] = ['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyFolder]'), "html" => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2];
 		}
 
 		if($this->Table == FILE_TABLE || (defined('OBJECT_FILES_TABLE') && $this->Table == OBJECT_FILES_TABLE)){
-			$parts[] = array('icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners() . "<br/>", 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2);
+			$parts[] = ['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners() . "<br/>", 'noline' => 1, 'space' => we_html_multiIconBox::SPACE_MED2];
 			if(permissionhandler::hasPerm("ADMINISTRATOR")){
-				$parts[] = array("headline" => g_l('modules_users', '[grant_owners]'), "html" => $this->formChangeOwners(), 'space' => we_html_multiIconBox::SPACE_MED2, "forceRightHeadline" => 1);
+				$parts[] = ["headline" => g_l('modules_users', '[grant_owners]'), "html" => $this->formChangeOwners(), 'space' => we_html_multiIconBox::SPACE_MED2, "forceRightHeadline" => 1];
 			}
 		}
 

@@ -265,7 +265,7 @@ abstract class we_html_element{
 		$ret = '';
 		foreach($vals as $key => $value){
 			if($key){
-				$ret.=we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', [
+				$ret .= we_html_baseElement::getHtmlCode(new we_html_baseElement('input', 'selfclose', [
 						'name' => $key,
 						'value' => strpos($value, '"') !== false ? oldHtmlspecialchars($value) : $value,
 						'type' => 'hidden'
@@ -294,7 +294,7 @@ abstract class we_html_element{
 	 */
 	public static function htmlBr(){
 		static $br = 0;
-		$br = ($br ? : we_html_baseElement::getHtmlCode(new we_html_baseElement('br', 'selfclose')));
+		$br = ($br ?: we_html_baseElement::getHtmlCode(new we_html_baseElement('br', 'selfclose')));
 		return $br;
 	}
 
@@ -338,7 +338,7 @@ abstract class we_html_element{
 	 * @return		string
 	 */
 	public static function htmlHtml($content, $close = true){
-		return we_html_baseElement::getHtmlCode(new we_html_baseElement('html', $close, [], $content));
+		return we_html_baseElement::getHtmlCode(new we_html_baseElement('html', $close, [/* 'lang' => '', 'xml:lang' => '' */], $content));
 	}
 
 	/**
@@ -398,7 +398,7 @@ abstract class we_html_element{
 		$params['mayscript'] = 'true';
 		$tmp = '';
 		foreach($params as $key => $value){
-			$tmp.=we_html_element::htmlParam(['name' => $key, "value" => $value]);
+			$tmp .= we_html_element::htmlParam(['name' => $key, "value" => $value]);
 		}
 		$content = $tmp . $content;
 		$attribs['MAYSCRIPT'] = '';
@@ -435,7 +435,7 @@ abstract class we_html_element{
 	public static function htmlIFrame($name, $src, $style = '', $iframestyle = '', $onload = '', $scroll = true, $class = ''){
 		static $isApple = -1;
 		$isApple = ($isApple !== -1 ? $isApple : (/* we_base_browserDetect::inst()->isSafari() */ (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE)));
-		$iframestyle = $iframestyle ? : 'border:0px;width:100%;height:100%;overflow:hidden;';
+		$iframestyle = $iframestyle ?: 'border:0px;width:100%;height:100%;overflow:hidden;';
 
 		return self::htmlDiv(['style' => $style, 'name' => $name . 'Div', 'id' => $name . 'Div', 'class' => $class]
 				, we_html_baseElement::getHtmlCode(new we_html_baseElement('iframe', true, ['name' => $name, 'id' => $name, 'src' => $src, 'style' => $iframestyle, 'onload' => 'try{' . ($scroll ? 'this.contentDocument.body.classList.add(\'' . ($isApple ? 'iframeScrollIpad' : 'iframeScroll') . '\');' : 'this.contentDocument.body.classList.add(\'iframeNoScroll\');') . '}catch(e){}' . $onload])

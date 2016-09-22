@@ -74,12 +74,12 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 					if(!$isBlock){
 						switch($tag['name']){
 							case 'img':
-								$relevantTags[$type][md5($tag['attribs']['name'] . we_imageDocument::ALT_FIELD)] = $tag['attribs']['name'];
+						$relevantTags[$type][md5($tag['attribs']['name'] . we_imageDocument::ALT_FIELD)] = $tag['attribs']['name'];
 								$relevantTags[$type][md5($tag['attribs']['name'] . we_imageDocument::THUMB_FIELD)] = $tag['attribs']['name'];
 								$relevantTags[$type][md5($tag['attribs']['name'] . we_imageDocument::TITLE_FIELD)] = $tag['attribs']['name'];
 								break;
 							case 'href':
-								$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK)] = $tag['attribs']['name'];
+						$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK)] = $tag['attribs']['name'];
 								$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK_ID)] = $tag['attribs']['name'];
 								$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK_EXTPATH)] = $tag['attribs']['name'];
 						}
