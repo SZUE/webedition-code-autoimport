@@ -644,10 +644,12 @@ class we_folder extends we_root{
 		}
 		$replace = self::getUrlReplacements($GLOBALS['DB_WE'], true, true);
 		$path = f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . intval($id));
-		return $replace ?
-			preg_replace($replace, array_keys($replace), $path) :
-			$path;
-	}
+		$cnt=0;
+		$ret = $replace ?
+						preg_replace($replace, array_keys($replace), $path, 1, $cnt) :
+						$path;
+			return ($cnt ? getServerProtocol() . ':' : '') . $ret;
+	}	
 
 	public function getPropertyPage(){
 		$parts = array(
