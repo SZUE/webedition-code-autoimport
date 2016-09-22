@@ -429,7 +429,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 
 		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $width));
 
-		$select = we_html_tools::htmlSelect($name, $options, 1, "", false, array('onchange' => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), 'value', $width);
+		$select = we_html_tools::htmlSelect($name . '_sel', $options, 1, "", false, ['onchange' => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"], 'value', $width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
@@ -437,8 +437,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 	private static function getRevRel($name, $value, $title, $width){
 
 		$name = md5($name);
-		$options = array(
-			'' => '',
+		$options = ['' => '',
 			'contents' => 'contents',
 			'chapter' => 'chapter',
 			'section' => 'section',
@@ -455,7 +454,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 			'bookmark' => 'bookmark',
 			'alternate' => 'alternate',
 			'nofollow' => 'nofollow',
-		);
+			];
 		$size = 1;
 		$multiple = false;
 		$compare = "value";
@@ -463,7 +462,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 
 		$input = we_html_tools::htmlTextInput($name, 15, $value, "", '', "text", ($width - $width));
 
-		$select = we_html_tools::htmlSelect($name, $options, $size, "", $multiple, array('onchange' => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"), $compare, $width);
+		$select = we_html_tools::htmlSelect($name . '_sel', $options, $size, "", $multiple, ['onchange' => "setHot();this.form.elements['" . $name . "'].value=this.options[this.selectedIndex].value;this.selectedIndex=-1;"], $compare, $width);
 
 		return we_html_tools::htmlFormElementTable($input, $title, "left", "defaultfont", $select);
 	}
@@ -471,7 +470,7 @@ if(top.publishWhenSave==1 && document.getElementById("publishWhenSave")) {
 	private function getHTMLLinkAttributes(we_glossary_glossary $glossary){
 		$input_width = 70;
 		$popup = new we_html_table(['class' => 'withSpace'], 4, 4);
-		$popup->setCol(0, 0, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
+		$popup->setCol(0, 0, ['colspan' => 2], we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_open'), 'link[Attributes][popup_open]', g_l('modules_glossary', '[popup_open]')));
 		$popup->setCol(0, 2, array('colspan' => 2), we_html_forms::checkboxWithHidden($glossary->getAttribute('popup_center'), 'link[Attributes][popup_center]', g_l('modules_glossary', '[popup_center]')));
 
 		$popup->setCol(1, 0, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput('link[Attributes][popup_xposition]', 5, $glossary->getAttribute('popup_xposition'), '', 'onchange="setHot();"', 'text', $input_width), g_l('modules_glossary', '[popup_x]')));

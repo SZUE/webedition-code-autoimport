@@ -54,7 +54,7 @@ function checkFooter() {
 			button.innerHTML = '<i class="fa fa-lg fa-clock-o"></i> ' + WE().consts.g_l.scheduler.activeSchedule.value;
 		} else {
 			button.title = WE().consts.g_l.scheduler.inActiveSchedule.title;
-			button.innerHTML = '<i class="fa fa-lg fa-sun-o"></i> ' + WE().consts.g_l.scheduler.inActiveSchedule.value;
+			button.innerHTML = '<i class="fa fa-lg fa-globe"></i> ' + WE().consts.g_l.scheduler.inActiveSchedule.value;
 		}
 	}
 //we_schedule_task
