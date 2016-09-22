@@ -325,7 +325,7 @@ class we_collection extends we_root{
 		$btnListviewMinimal = we_html_button::create_button('fa:listview_minimal,fa-lg fa-align-justify', '', 'minimal', 0, 0, '', '', false, true, '', false, '', 'collection_btnView');
 
 		$callback = we_base_request::encCmd("doFileUploader('" . VFILE_TABLE . "', " . $this->ID . ");");
-		$btnImport = we_fileupload_ui_importer::getBtnImportFiles($this->DefaultDir, $callback, 'btn_import_files_and_insert');
+		$btnImport = we_fileupload_ui_importer::getBtnImportFiles($this->DefaultDir, '', $callback, 'btn_import_files_and_insert');
 		$addFromTreeButton = we_html_button::create_button('fa:btn_select_files, fa-lg fa-sitemap, fa-lg fa-angle-right, fa-lg fa-copy', '', 'collection_btnAddFromTree', 0, 0, '', '', false, true, '', false, '', 'collectionItem_btnAddFromTree');
 
 		//TODO: use tables and some padding
