@@ -205,7 +205,7 @@ var WebEdition = {
 				var ablauf = new Date();
 				var newTime = ablauf.getTime() + 30758400000;
 				ablauf.setTime(newTime);
-				WE().util.weSetCookie(document, "treewidth_main", w, ablauf, "/");
+				WE().util.weSetCookie(document, "treewidth_main", w, ablauf, WE().consts.dirs.WEBEDITION_DIR);
 			},
 		},
 		vtab: {
@@ -239,8 +239,17 @@ var WebEdition = {
 			} catch (e) {
 				top.we_showMessage(WE().consts.g_l.alert.browser_crashed, WE().consts.message.WE_MESSAGE_ERROR, window);
 			}
+		},
+		setIFrame: function (frame, scroll) {
+			try {
+				if (scroll) {
+					frame.contentDocument.body.classList.add(WE().session.isApple ? 'iframeScrollIpad' : 'iframeScroll');
+				} else {
+					frame.contentDocument.body.classList.add('iframeNoScroll');
+				}
+			} catch (e) {
+			}
 		}
-
 
 	},
 	handler: {
@@ -1927,6 +1936,87 @@ var we_cmd_modules = {
 				}
 				top.we_cmd("new", act.EditorEditorTable, "", act.EditorContentType);
 				top.we_cmd("copyDocument", act.EditorDocumentId);
+				break;
+			case 'new_webEditionPage':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.WEDOCUMENT);
+				break;
+			case 'new_image':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.IMAGE);
+				break;
+			case 'new_html_page':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.HTML);
+				break;
+			case 'new_flash_movie':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.FLASH);
+				break;
+			case 'new_video_movie':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.VIDEO);
+				break;
+			case 'new_audio_audio':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.AUDIO);
+				break;
+			case 'new_javascript':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.JS);
+				break;
+			case 'new_text_plain':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.TEXT);
+				break;
+			case 'new_text_xml':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.XML);
+				break;
+			case 'new_text_htaccess':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.HTACCESS);
+				break;
+			case 'new_css_stylesheet':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.CSS);
+				break;
+			case 'new_binary_document':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.APPLICATION);
+				break;
+			case 'new_template':
+				top.we_cmd("new", WE().consts.tables.TEMPLATES_TABLE, "", WE().consts.contentTypes.TEMPLATE);
+				break;
+			case 'new_document_folder':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", "folder");
+				break;
+			case 'new_template_folder':
+				top.we_cmd("new", WE().consts.tables.TEMPLATES_TABLE, "", "folder");
+				break;
+			case 'new_collection_folder':
+				top.we_cmd("new", WE().consts.tables.VFILE_TABLE, "", "folder");
+				break;
+			case 'new_collection':
+				top.we_cmd("new", WE().consts.tables.VFILE_TABLE, "", WE().consts.contentTypes.COLLECTION);
+				break;
+			case 'delete_documents':
+				top.we_cmd("del", 1, WE().consts.tables.FILE_TABLE);
+				break;
+			case 'delete_templates':
+				top.we_cmd("del", 1, WE().consts.tables.TEMPLATES_TABLE);
+				break;
+			case 'delete_collections':
+				top.we_cmd("del", 1, WE().consts.tables.VFILE_TABLE);
+				break;
+			case 'move_documents':
+				top.we_cmd("mv", 1, WE().consts.tables.FILE_TABLE);
+				break;
+			case 'move_templates':
+				top.we_cmd("mv", 1, WE().consts.tables.TEMPLATES_TABLE);
+				break;
+			case 'add_documents_to_collection':
+				top.we_cmd("tocollection", 1, WE().consts.tables.FILE_TABLE);
+				break;
+			case 'add_objectfiles_to_collection':
+				top.we_cmd("tocollection", 1, WE().consts.tables.OBJECT_FILES_TABLE);
+				break;
+			case 'new_dtPage':
+				top.we_cmd("new", WE().consts.tables.FILE_TABLE, "", WE().consts.contentTypes.WEDOCUMENT, args[1]);
+				break;
+			case 'new_ClObjectFile':
+				top.we_cmd("new", WE().consts.tables.OBJECT_FILES_TABLE, "", WE().consts.contentTypes.OBJECT_FILE, args[1]);
+				break;
+			case 'we_selector_delete':
+				top.we_cmd('we_selector_delete', '', -1, '', '', '', '', '', '', 1);
 				break;
 			default:
 				//WE().t_e('no command matched to request', args[0]);

@@ -1,3 +1,4 @@
+js/we_lcmd.js
 !rpc/views/json/customer
 !rpc/views/json/widgets
 rpc/views/json/rpcSelectorGetSelectedIdView.class.php

@@ -208,7 +208,7 @@ class we_banner_view extends we_modules_view{
 		$mod = we_base_request::_(we_base_request::STRING, 'mod', '');
 		$modData = we_base_moduleInfo::getModuleData($mod);
 		$title = isset($modData['text']) ? 'webEdition ' . g_l('global', '[modules]') . ' - ' . $modData['text'] : '';
-		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_top.js', 'parent.document.title="' . $title . '";');
+		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_top.js', "parent.document.title='" . $title . "';");
 	}
 
 	function getJSProperty(){

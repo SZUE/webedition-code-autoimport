@@ -235,7 +235,7 @@ container.prototype = {
 			attribs.disabled = 0;
 			attribs.selected = 0;
 			if (attribs.typ === "item") {
-				attribs.published = 0;
+				attribs.published = 1;
 			}
 
 			this.addSort(new node(attribs));
