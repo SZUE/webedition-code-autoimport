@@ -113,7 +113,7 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 	}
 
 	function getHTMLDCheck(){
-		return $this->getHTMLDocument(we_html_element::htmlBody(array('onload' => 'self.focus();'), $this->View->getHTMLDCheck()));
+		return $this->getHTMLDocument(we_html_element::htmlBody(['onload' => 'self.focus();'], $this->View->getHTMLDCheck()));
 	}
 
 }

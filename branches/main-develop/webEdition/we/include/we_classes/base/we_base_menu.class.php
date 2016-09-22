@@ -126,7 +126,7 @@ class we_base_menu{
 					$this->h_pCODE($men, $id, $newAst) .
 					'</ul></li>';
 			} else if($mtext){
-				$opt .= '<li><a href="#void" onclick="' . $this->menuaction . 'menuaction(\'' . (is_array($e["cmd"]) ? implode('\',\'', $e["cmd"]) : $e["cmd"]) . '\')">' . $mtext . '</a></li>';
+				$opt .= '<li><a href="#void" onclick="top.we_cmd(\'' . (is_array($e["cmd"]) ? implode('\',\'', $e["cmd"]) : $e["cmd"]) . '\')">' . $mtext . '</a></li>';
 			} else {//separator
 				$opt .= '<li class="disabled"></li>';
 			}

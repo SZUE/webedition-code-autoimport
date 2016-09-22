@@ -38,7 +38,6 @@ abstract class we_modules_frame{
 	protected $treeDefaultWidth = 200;
 	protected $treeWidth = 0;
 	protected $hasIconbar = false;
-	private static $treeWidthsJS = '{}';
 
 	function __construct($frameset){
 		$this->db = new DB_WE();
@@ -101,10 +100,7 @@ abstract class we_modules_frame{
 
 		$extraHead = $this->getJSCmdCode() .
 			//FIXME: throw some of these functions out again and use generic version of main-window functions
-			//FIXME: move this var to a generic place
-			we_html_element::jsElement('
-var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
-') . we_html_element::jsScript(JS_DIR . 'modules_tree.js') .
+			we_html_element::jsScript(JS_DIR . 'modules_tree.js') .
 			we_main_headermenu::css() .
 			we_base_menu::getJS() .
 			$extraHead;
@@ -133,9 +129,9 @@ var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
 
 	private function getHTMLResize($extraUrlParams = ''){
 		$incDecTree = '<div id="baumArrows">
-	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.incTree();"><i class="fa fa-plus"></i></div>
-	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.decTree();"><i class="fa fa-minus"></i></div>
-	<div class="baumArrow" onclick="top.content.toggleTree();"><i id="arrowImg" class="fa fa-lg fa-caret-' . ($this->treeWidth <= 30 ? "right" : "left") . '" ></i></div>
+	<div class="baumArrow" id="incBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.incTree(\'' . $this->module . '\');"><i class="fa fa-plus"></i></div>
+	<div class="baumArrow" id="decBaum" ' . ($this->treeWidth <= 30 ? 'style="background-color: grey"' : '') . ' onclick="top.content.decTree(\'' . $this->module . '\');"><i class="fa fa-minus"></i></div>
+	<div class="baumArrow" onclick="top.content.toggleTree(\'' . $this->module . '\');"><i id="arrowImg" class="fa fa-lg fa-caret-' . ($this->treeWidth <= 30 ? "right" : "left") . '" ></i></div>
 </div>';
 
 		$content = we_html_element::htmlDiv(['id' => 'moduleContent'], we_html_element::htmlDiv(['id' => 'lframeDiv', 'style' => 'width: ' . $this->treeWidth . 'px;'], we_html_element::htmlDiv([
@@ -249,21 +245,11 @@ var sizeTreeJsWidth=' . self::$treeWidthsJS . ';
 	}
 
 	private function setTreeWidthFromCookie(){
-		$tw = isset($_COOKIE["treewidth_modules"]) ? $_COOKIE["treewidth_modules"] : $this->treeDefaultWidth;
-		if(!is_numeric($tw)){
-			$tw = explode(',', trim($tw, ' ,'));
-			$twArr = [];
-			$twJS = '{';
-
-			foreach($tw as $v){
-				$entry = explode(':', trim($v));
-				$twArr[trim($entry[0])] = $entry[1];
-				$twJS .= $entry[0] . ':' . $entry[1] . ',';
-			}
-			self::$treeWidthsJS = rtrim($twJS, ',') . '}';
-			$this->treeWidth = isset($twArr[$this->module]) ? $twArr[$this->module] : $this->treeDefaultWidth;
+		if(isset($_COOKIE["treewidth_modules"])){
+			$tw = we_unserialize($_COOKIE["treewidth_modules"]);
+			$this->treeWidth = empty($tw[$this->module]) ? $this->treeDefaultWidth : $tw[$this->module];
 		} else {
-			$this->treeWidth = $tw;
+			$this->treeWidth = $this->treeDefaultWidth;
 		}
 	}
 

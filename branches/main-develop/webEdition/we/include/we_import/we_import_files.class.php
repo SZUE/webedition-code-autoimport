@@ -91,7 +91,7 @@ class we_import_files{
 			case "content" :
 				return $this->_getContent();
 			case "buttons" :
-				return $this->_getButtons();
+				return $this->getButtons();
 			default :
 				return $this->_getFrameset();
 		}
@@ -256,7 +256,7 @@ var we_fileinput = \'<form name="we_upload_form_WEFORMNUM" method="post" action=
 		return $this->_getHtmlPage($body);
 	}
 
-	function _getButtons(){
+	private function getButtons(){
 		$bodyAttribs = array('class' => "weDialogButtonsBody");
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:cancel()", true, 0, 0, '', '', false, false);
 		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:cancel()");

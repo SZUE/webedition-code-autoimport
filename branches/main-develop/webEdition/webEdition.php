@@ -229,6 +229,7 @@ $session = [
 	'helpLang' => $GLOBALS["WE_LANGUAGE"],
 	'messageSettings' => (!empty($_SESSION['prefs']['message_reporting']) ? we_message_reporting::WE_MESSAGE_INFO | we_message_reporting::WE_MESSAGE_ERROR | $_SESSION['prefs']['message_reporting'] : PHP_INT_MAX),
 	'isChrome' => we_base_browserDetect::isChrome(),
+	'isApple' => (/* we_base_browserDetect::inst()->isSafari() */ (we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPAD || we_base_browserDetect::inst()->getSystem() == we_base_browserDetect::SYS_IPHONE))
 ];
 foreach($_SESSION['perms'] as $perm => $access){
 	$session['permissions'][$perm] = (!empty($_SESSION['perms']['ADMINISTRATOR']) ? 1 : intval($access));
@@ -269,14 +270,14 @@ function startMsg() {
 		<?= we_main_headermenu::createMessageConsole('mainWindow', true); ?>
 }
 function updateCheck() {
-		<?php
-		if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable())){
-			?>top.we_showMessage("<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
-		<?php }
-		?>
-			}
+<?php
+if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailable())){
+	?>top.we_showMessage("<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
+<?php }
+?>
+				}
 
-			//-->
+				//-->
 	</script>
 	</head>
 	<body id="weMainBody" onload="initWE();
@@ -320,13 +321,13 @@ function updateCheck() {
 			<?php
 			if(!(SIDEBAR_DISABLED == 1)){
 				?>
-				<div style="width:<?= $sidebarwidth; ?>px;" id="sidebarDiv">
+			<div style="width:<?= $sidebarwidth; ?>px;" id="sidebarDiv">
 					<?php
 					$weFrame = new we_sidebar_frames();
 					$weFrame->getHTML('');
 					?>
-				</div>
-			<?php } ?>
+					</div>
+				<?php } ?>
 		</div>
 		<div id="cmdDiv">
 			<iframe src="about:blank" name="load"></iframe>
