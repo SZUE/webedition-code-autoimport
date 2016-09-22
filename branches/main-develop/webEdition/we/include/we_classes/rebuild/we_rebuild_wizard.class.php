@@ -47,7 +47,7 @@ abstract class we_rebuild_wizard{
 	static function getBusy(){
 		$dc = we_base_request::_(we_base_request::INT, 'dc', 0);
 
-		$WE_PB = new we_progressBar(0, true);
+		$WE_PB = new we_progressBar();
 		$WE_PB->setStudLen($dc ? 490 : 200);
 		$WE_PB->addText("", 0, "pb1");
 		$pb = $WE_PB->getHTML();

@@ -135,7 +135,7 @@ function setTab(tab) {
 function doProgress(progress) {
 	var elem = document.getElementById("progress");
 	if(elem.style.display == "none") elem.style.display = "";
-	setProgress(progress);
+	setProgress("",progress);
 }
 
 function hideProgress() {

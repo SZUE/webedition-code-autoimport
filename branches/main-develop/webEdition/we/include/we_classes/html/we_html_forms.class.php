@@ -88,8 +88,9 @@ abstract class we_html_forms{
 
 		// Create HTML tags
 		return '
+<div class="radiobuttonContainer">
 <div class="radiobutton"><input type="radio" name="' . $name . '" id="' . $id . '" value="' . $value . '" ' . ($checked ? ' checked="checked"' : '') . ($onMouseUp ? ' onmouseup="' . $onMouseUp . '"' : '') . ($onClick ? ' onclick="' . $onClick . '"' : "") . ($disabled ? ' disabled="disabled"' : '') . ' />
-<label id="label_' . $id . '" for="' . $id . '" class="elementText ' . ($disabled ? 'disabled ' : '') . $class . ($title ? ' showhelp' : '') . '" ' . ($onMouseUp ? ' onmouseup="' . str_replace('this.', "document.getElementById('" . $id . "').", $onMouseUp) . '"' : '') . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label>' .
+<label id="label_' . $id . '" for="' . $id . '" class="elementText ' . ($disabled ? 'disabled ' : '') . $class . ($title ? ' showhelp' : '') . '" ' . ($onMouseUp ? ' onmouseup="' . str_replace('this.', "document.getElementById('" . $id . "').", $onMouseUp) . '"' : '') . ($title ? ' title="' . $title . '"' : '') . '>' . $text . '</label></div>' .
 			($description ? '<div class="extra">' . we_html_tools::htmlAlertAttentionBox($description, $type, $width) . '</div>' : "") .
 			($extra_content ? '<div class="extra">' . $extra_content . '</div>' : "") . '
 </div>';

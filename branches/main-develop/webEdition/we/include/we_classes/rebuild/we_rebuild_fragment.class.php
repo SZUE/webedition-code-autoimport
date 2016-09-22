@@ -53,7 +53,7 @@ class we_rebuild_fragment extends we_fragment_base{
 	parent.wizbusy.document.getElementById("progr").style.display="";
 };
 parent.wizbusy.setProgressText("pb1",(parent.wizbusy.document.getElementById("progr") ? "' . addslashes(we_base_util::shortenPath($this->data["path"], 33)) . '" : "' . g_l('rebuild', '[savingDocument]') . addslashes(we_base_util::shortenPath($this->data["path"], 60)) . '") );
-parent.wizbusy.setProgress(' . $percent . ');');
+parent.wizbusy.setProgress("",' . $percent . ');');
 		flush();
 	}
 

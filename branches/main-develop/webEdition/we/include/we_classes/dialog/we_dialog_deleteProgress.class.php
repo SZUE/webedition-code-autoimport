@@ -26,7 +26,7 @@ abstract class we_dialog_deleteProgress{
 
 	public static function main(){
 
-		$WE_PB = new we_progressBar(0, true);
+		$WE_PB = new we_progressBar();
 		$WE_PB->setStudLen(490);
 		$WE_PB->addText("", 0, "pb1");
 		$js = $WE_PB->getJSCode();

@@ -583,7 +583,7 @@ class we_backup_wizard{
 			$progress = new we_progressBar(we_base_request::_(we_base_request::INT, "percent", 0));
 			$progress->setStudLen(200);
 			$progress->addText($text, 0, "current_description");
-			$head.=$progress->getJSCode('top.busy');
+			$head .= $progress->getJSCode();
 			$table->setCol(0, 0, ['style' => 'text-align:left;'], $progress->getHtml('', 'margin-left:15px'));
 		}
 

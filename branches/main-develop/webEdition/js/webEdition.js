@@ -1264,7 +1264,7 @@ var we_cmd_modules = {
 				we_repl(WE().layout.weEditorFrameController.getActiveDocumentReference().frames.editFooter, url, args[0]);
 				break;
 			case "rebuild":
-				new (WE().util.jsWindow)(this, url, "rebuild", -1, 0, 609, 645, true, false, true);
+				new (WE().util.jsWindow)(this, url, "rebuild", -1, 0, 609, 500, true, false, true);
 				break;
 			case "openPreferences":
 				new (WE().util.jsWindow)(this, url, "preferences", -1, -1, 900, 670, true, true, true, true);

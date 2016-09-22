@@ -684,7 +684,7 @@ parent.document.getElementById("dateFormatDiv").style.display="' . ($hasDateFiel
 		$prevNextButtons = we_html_button::create_button(we_html_button::BACK, "javascript:back();", true, 100, 22, "", "", false, false) .
 			we_html_button::create_button(we_html_button::NEXT, "javascript:next();", true, 100, 22, "", "", false, false);
 
-		$pb = new we_progressBar(0);
+		$pb = new we_progressBar();
 		$pb->setStudLen(200);
 		$pb->addText("&nbsp;", 0, "progressTxt");
 		$js = $pb->getJSCode();

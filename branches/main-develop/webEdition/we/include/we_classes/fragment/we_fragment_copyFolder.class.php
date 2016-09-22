@@ -126,14 +126,14 @@ class we_fragment_copyFolder extends we_fragment_base{
 							sprintf(g_l('copyFolder', '[rewrite]'), basename($this->data['Path'])) :
 							sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data['Path'])));
 
-					echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
+					echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress("",' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 					flush();
 				} else {
 					exit('Error importing File: ' . $this->data['Path']);
 				}
 			} else {
 				if($this->copyObjects()){
-					echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress(' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data["Path"]))) . '");');
+					echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress("",' . ((int) ((100 / count($this->alldata)) * (1 + $this->currentTask))) . ');parent.setProgressText("pbar1","' . addslashes(sprintf(g_l('copyFolder', $this->data['IsFolder'] ? '[copyFolder]' : '[copyFile]'), basename($this->data["Path"]))) . '");');
 					flush();
 				} else {
 					exit('Error importing Object: ' . $this->data['Path']);
@@ -629,7 +629,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 		if(isset($_SESSION['weS']['WE_CREATE_TEMPLATE'])){
 			$pbText = g_l('copyFolder', '[prepareTemplates]');
 
-			echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress(0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
+			echo we_html_element::jsElement('parent.document.getElementById("pbTd").style.display="block";parent.setProgress("",0);parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 			flush();
 			$cmd->addCmd('location', ['doc' => 'document', 'loc' => WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=copyFolder&finish=1']);
 			#unset($_SESSION['weS']['WE_CREATE_TEMPLATE']);

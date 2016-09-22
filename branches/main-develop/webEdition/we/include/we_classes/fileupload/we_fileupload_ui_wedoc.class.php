@@ -49,7 +49,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 
-		$progress = new we_progressBar(0, true);
+		$progress = new we_progressBar();
 		$progress->setStudLen(170);
 		$progress->setProgressTextPlace(0);
 		$progress->setName('_fileupload');

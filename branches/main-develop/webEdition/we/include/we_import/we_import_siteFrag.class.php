@@ -51,13 +51,13 @@ class we_import_siteFrag extends we_fragment_base{
 top.siteimportbuttons.document.getElementById("progressBarDiv").style.display="block";
 WE().layout.button.disable(top.siteimportbuttons.document, "back");
 WE().layout.button.disable(top.siteimportbuttons.document, "next");
-top.siteimportbuttons.setProgress(' . $progress . ');
+top.siteimportbuttons.setProgress("",' . $progress . ');
 top.siteimportbuttons.document.getElementById("progressTxt").innerHTML="' . oldHtmlspecialchars($progressText, ENT_QUOTES) . '";');
 	}
 
 	function finish(){
 		echo we_html_element::jsElement(
-			"top.siteimportbuttons.setProgress(100);setTimeout('" . we_message_reporting::getShowMessageCall(
+			"top.siteimportbuttons.setProgress('',100);setTimeout('" . we_message_reporting::getShowMessageCall(
 				g_l('siteimport', '[importFinished]'), we_message_reporting::WE_MESSAGE_NOTICE) . "top.close();',100);top.opener.top.we_cmd('load','" . FILE_TABLE . "');");
 	}
 

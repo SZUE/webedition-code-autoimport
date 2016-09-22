@@ -56,7 +56,7 @@ class we_fragment_del extends we_fragment_base{
 			$_SESSION['weS']['fragDel']['we_go_seem_start'] = true;
 		}
 		$percent = round((100 / count($this->alldata)) * (1 + $this->currentTask));
-		echo we_html_element::jsElement('parent.delmain.setProgressText("pb1","' . sprintf(g_l('delete', '[delete_entry]'), $p) . '");parent.delmain.setProgress(' . $percent . ');');
+		echo we_html_element::jsElement('parent.delmain.setProgressText("pb1","' . sprintf(g_l('delete', '[delete_entry]'), $p) . '");parent.delmain.setProgress("",' . $percent . ');');
 	}
 
 	function finish(){
