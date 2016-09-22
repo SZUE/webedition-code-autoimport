@@ -119,7 +119,7 @@ abstract class we_navigation_dynList{
 		$ret = [];
 		$db = new DB_WE();
 		foreach($values as $k => $id){
-			if(!we_base_file::isWeFile($id, FILE_TABLE, $db) || !in_array($id, $all)){
+			if(!we_base_file::isWeFile($id, FILE_TABLE, $db) || !isset($all[$id])){
 				unset($values[$k]);
 			} else {
 				$ret[$id] = id_to_path($id, FILE_TABLE, $db);

@@ -165,10 +165,10 @@ if(isset($GLOBALS['we_obj']) && $GLOBALS['we_obj']->documentCustomerFilter && !i
 	}
 }
 
-$pid = (empty($pid) ? f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($_SERVER['SCRIPT_NAME']) . '"') : $pid);
-$tid = (empty($tid) ? $GLOBALS['we_obj']->getTemplateID($pid) : $tid);
-$tmplPath = $tid ? preg_replace('/.tmpl$/i', '.php', f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid))) : '';
+$pid = ($pid ?: f('SELECT ParentID FROM ' . FILE_TABLE . ' WHERE Path="' . $DB_WE->escape($_SERVER['SCRIPT_NAME']) . '"') );
+$tid = ($tid ?: $GLOBALS['we_obj']->getTemplateID($pid));
 
+$tmplPath = $tid ? preg_replace('/.tmpl$/i', '.php', f('SELECT Path FROM ' . TEMPLATES_TABLE . ' WHERE ID=' . intval($tid))) : '';
 if(!$tid || !$tmplPath || !is_readable(TEMPLATES_PATH . $tmplPath)){
 	we_html_tools::setHttpCode(SUPPRESS404CODE ? 200 : 404);
 
@@ -199,9 +199,9 @@ if(!empty($_SESSION['weS']['we_data'][$we_transaction]['0']['InWebEdition'])){ /
 	return;
 } //	Not in webEdition, just show the file.
 //
-		// --> Start Glossary Replacement
+// --> Start Glossary Replacement
 //
-		$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
+$urlReplace = we_folder::getUrlReplacements($GLOBALS['DB_WE']);
 // --> Glossary Replacement
 $useGlossary = ((defined('GLOSSARY_TABLE') && (!isset($GLOBALS['WE_MAIN_DOC']) || $GLOBALS['WE_MAIN_ID'] == $GLOBALS['we_doc']->ID)) && (isset($we_doc->InGlossar) && $we_doc->InGlossar == 0) && we_glossary_replace::useAutomatic());
 $useBuffer = !empty($urlReplace) || $useGlossary;

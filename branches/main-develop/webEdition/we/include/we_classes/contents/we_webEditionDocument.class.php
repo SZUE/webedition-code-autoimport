@@ -59,7 +59,6 @@ class we_webEditionDocument extends we_textContentDocument{
 
 	public function initByObj(we_objectFile $obj){
 		$this->elements = $obj->elements;
-		$this->Templates = $obj->Templates;
 		$this->TableID = $obj->TableID;
 		$this->CreatorID = $obj->CreatorID;
 		$this->ModifierID = $obj->ModifierID;

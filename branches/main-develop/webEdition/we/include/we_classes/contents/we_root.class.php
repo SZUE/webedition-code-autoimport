@@ -101,7 +101,7 @@ abstract class we_root extends we_class{
 	}
 
 	public function makeSameNew(array $keep = []){
-		$keep = array_merge($keep, array('ParentID', 'ParentPath', 'EditPageNr',));
+		$keep = array_merge($keep, ['ParentID', 'ParentPath', 'EditPageNr',]);
 		$tempDoc = $this->ClassName;
 		$tempDoc = new $tempDoc();
 		$tempDoc->we_new();

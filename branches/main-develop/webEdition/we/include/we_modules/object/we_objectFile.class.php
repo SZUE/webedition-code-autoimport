@@ -52,7 +52,6 @@ class we_objectFile extends we_document{
 	var $AllowedClasses = '';
 	var $Charset = '';
 	var $Language = '';
-	var $Templates = '';
 	var $DefArray = [];
 	var $documentCustomerFilter = ''; // DON'T SET TO NULL !!!!
 	var $Url = '';
@@ -188,7 +187,7 @@ class we_objectFile extends we_document{
 
 	function makeSameNew(array $keep = []){
 		$this->DefaultInit = true;
-		we_root::makeSameNew(array_merge($keep, ['Category', 'TableID', 'rootDirID', 'RootDirPath', 'Workspaces', 'IsSearchable', 'Charset', 'Url', 'TriggerID']));
+		parent::makeSameNew(array_merge($keep, ['Category', 'TableID', 'rootDirID', 'RootDirPath', 'Workspaces', 'IsSearchable', 'Charset', 'Url', 'TriggerID']));
 		$this->i_objectFileInit(true);
 		$this->DefaultInit = false;
 	}
@@ -272,26 +271,22 @@ class we_objectFile extends we_document{
 			$ac = implode(',', we_users_util::getAllowedClasses($this->DB_WE));
 			$this->TableID = count($ac) ? $ac[0] : 0;
 		}
-		$foo = getHash('SELECT Workspaces,DefaultWorkspaces,Templates FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
-		$defwsCSVArray = makeArrayFromCSV(isset($foo['DefaultWorkspaces']) ? $foo['DefaultWorkspaces'] : '');
-		$owsCSVArray = makeArrayFromCSV(isset($foo['Workspaces']) ? $foo['Workspaces'] : '');
-		$otmplsCSVArray = makeArrayFromCSV(isset($foo['Templates']) ? $foo['Templates'] : '');
+		$foo = getHash('SELECT Workspaces,DefaultWorkspaces FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
+		$defwsCSVArray = $foo ? makeArrayFromCSV($foo['DefaultWorkspaces']) : [];
+		$owsCSVArray = $foo ? makeArrayFromCSV($foo['Workspaces']) : [];
 		$this->Workspaces = [];
-		$this->Templates = [];
 
 // loop throgh all default workspaces
-		foreach($defwsCSVArray as $i => $defWs){
+		foreach($defwsCSVArray as $defWs){
 // loop through each object workspace
 			foreach($owsCSVArray as $ows){
 				if(we_users_util::in_workspace($defWs, $ows, FILE_TABLE, $this->DB_WE)){ // if default workspace is within object workspace
 					$this->Workspaces[] = $defWs;
-					$this->Templates[] = $otmplsCSVArray[$i];
 				}
 			}
 		}
 
 		$this->Workspaces = implode(',', $this->Workspaces);
-		$this->Templates = implode(',', $this->Templates);
 	}
 
 	function setRootDirID($doit = false){
@@ -716,7 +711,7 @@ class we_objectFile extends we_document{
 		$fields = $regs = [];
 		foreach($tableInfo_sorted as $cur){
 			if(preg_match('/(.+?)_(.*)/', $cur['name'], $regs)){
-				$fields[] = array('name' => $regs[2], 'type' => $regs[1]);
+				$fields[] = ['name' => $regs[2], 'type' => $regs[1]];
 			}
 		}
 
@@ -1415,7 +1410,7 @@ class we_objectFile extends we_document{
 
 	public function getDefaultValueArray(){
 		if($this->TableID){
-			return we_unserialize($this->classData['DefaultValues']);
+			return is_array($this->classData['DefaultValues']) ? $this->classData['DefaultValues'] : ($this->classData['DefaultValues'] = we_unserialize($this->classData['DefaultValues']));
 		}
 		return [];
 	}
@@ -1434,21 +1429,8 @@ class we_objectFile extends we_document{
 		$userWs = get_ws(FILE_TABLE, true);
 // wenn User Admin ist oder keine Workspaces zugeteilt wurden
 		if(permissionhandler::hasPerm('ADMINISTRATOR') || ((!$userWs) && $all)){
-// alle ws, welche in Klasse definiert wurden und deren Unterordner zur?ckgeben
-//$foo = makeArrayFromCSV($ClassWs);
-			$paths = id_to_path($wsArray, FILE_TABLE, $this->DB_WE, true);
-			if(empty($paths)){
-				return $wsArray;
-			}
-			$where = [];
-			foreach($paths as $path){
-				if($path != '/'){
-					$where[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%"';
-				}
-			}
-			$where = (empty($where) ? '' : ' AND (ID IN (' . $ClassWs . ') OR ' . implode(' OR ', $where) . ')');
-
-			return $this->DB_WE->getAllq('SELECT ID FROM ' . FILE_TABLE . ' WHERE IsFolder=1' . $where, true);
+// alle ws, welche in Klasse definiert wurden zurückgeben
+			return $wsArray ? id_to_path($wsArray, FILE_TABLE, $this->DB_WE, true) : [];
 		}
 // alle UserWs, welche sich in einem der ClassWs befinden zur�ckgeben
 		$out = [];
@@ -1457,167 +1439,104 @@ class we_objectFile extends we_document{
 				$out[] = $ws;
 			}
 		}
-		$paths = id_to_path($out, FILE_TABLE, $this->DB_WE, true);
-		if(empty($paths)){
-			return $wsArray;
-		}
-		$ClassWs = '';
-		$where = [];
-		foreach($paths as $path){
-			if($path != '/'){
-				$where[] = 'Path LIKE "' . $this->DB_WE->escape($path) . '/%"';
-			}
-		}
-		$where = (empty($where) ? '' : ' AND (ID IN (' . $out . ') OR ' . implode(' OR ', $where) . ')');
-		return implode(',', $this->DB_WE->getAllq('SELECT ID FROM ' . FILE_TABLE . ' WHERE IsFolder=1' . $where, true));
+
+		return $out ? id_to_path($out, FILE_TABLE, $this->DB_WE, true) : [];
 	}
 
-	/**
-	 *
-	 * @param type $IDArr
-	 * @param type $firstEntry
-	 * @param we_database_base $db
-	 * @return type
-	 * @deprecated sicne 6.4.3
-	 */
-	private function getPathArray(array $IDArr, $firstEntry){
-		return ($IDArr ?
-			(($firstEntry ? ['' => $firstEntry] : []) + id_to_path($IDArr, FILE_TABLE, $this->DB_WE, true) ) :
-			[]);
-	}
+	private function formWorkspaces(){
+		$classWsTmpl = $this->classData['WorkspacesTemplates'];
 
-	function formWorkspaces(){
-		$ws = $this->classData['Workspaces'];
-		$ts = $this->classData['Templates'];
-
-		$values = $this->getPathArray($this->getPossibleWorkspaces($ws), g_l('global', '[add_workspace]'), $this->DB_WE);
+		$values = $this->getPossibleWorkspaces(false);
 
 //    remove not existing workspaces and templates
-		$arr = makeArrayFromCSV($this->Workspaces);
-		$tmpls = makeArrayFromCSV($this->Templates);
+		$arr = id_to_path($this->Workspaces, FILE_TABLE, $this->DB_WE, true);
 
-		$newArr = $newTmpls = [];
-//$newDefaultArr = [];
-		foreach($arr as $nr => $id){
-			if(we_base_file::isWeFile($id, FILE_TABLE, $this->DB_WE)){
-				$newArr[] = $id;
-				$newTmpls[] = (isset($tmpls[$nr]) ? $tmpls[$nr] : '');
-			}
-		}
+		//only dirs which are in class
+		$newArr = array_intersect(array_keys($arr), array_keys($classWsTmpl));
+		sort($newArr);
 
 		$this->Workspaces = implode(',', $newArr);
-		$this->Templates = implode(',', $newTmpls);
 
-		$arr = makeArrayFromCSV($this->Workspaces);
-		foreach($arr as $nr => $id){
-			if(isset($values[$id])){
-				unset($values[$id]);
-			}
-		}
-		if(count($values) == 1){
+		//list only dirs not already selected
+		$values = array_diff_key($values, $newArr);
+
+		if(empty($values)){
 			$addbut = '';
 		} else {
-			$textname = md5(uniqid(__FUNCTION__, true));
-//$idname = md5(uniqid(rand(), 1));
-			$addbut = we_html_tools::htmlSelect($textname, $values, 1, '', false, ['onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'object_add_workspace\',this.options[this.selectedIndex].value);']);
+			$values = array_merge(['' => g_l('global', '[add_workspace]')], $values);
+			$addbut = we_html_tools::htmlSelect(md5(uniqid(__FUNCTION__)), $values, 1, '', false, ['onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'object_add_workspace\',this.options[this.selectedIndex].value);']);
 		}
-		$obj = new we_chooser_multiDirAndTemplate(450, $this->Workspaces, 'object_del_workspace', $addbut, get_ws(FILE_TABLE), $this->Templates, 'we_' . $this->Name . '_Templates', $ts, get_ws(TEMPLATES_TABLE));
+		$obj = new we_chooser_multiDirAndTemplate(450, $this->Workspaces, 'object_del_workspace', $addbut, $classWsTmpl);
 
-// Bug Fix #207
-		$obj->isEditable = true; //$this->userIsCreator();
+		$obj->isEditable = true;
 
 		return $obj->get();
 	}
 
-	function getTemplateFromWs($wsID){
-
-		$mwsp = id_to_path($wsID, FILE_TABLE, $this->DB_WE);
-
-		$tarr = explode(',', $this->classData["Templates"]);
-		$warr = explode(',', $this->classData["Workspaces"]);
-
-		if(($pos = array_search($wsID, $warr, false)) === false){
-			foreach($warr as $wsi){
-				$wsp = id_to_path($wsi, FILE_TABLE, $this->DB_WE);
-				if(substr($mwsp, 0, strlen($wsp)) == $wsp){
-					$pos = array_search($wsi, $warr, false);
-					break;
-				}
-			}
-		}
-		return $tarr[$pos];
-	}
+	/* 	private function getTemplateFromWs($wsID){
+	  $classWsTmpl = $this->classData['WorkspacesTemplates'];
+	  if(isset($classWsTmpl[$wsID])){
+	  return $classWsTmpl[$wsID];
+	  }
+	  $mwsp = id_to_path($wsID, FILE_TABLE, $this->DB_WE);
+	  $wsp = id_to_path(array_keys($classWsTmpl), FILE_TABLE, $this->DB_WE, true);
+	  foreach($wsp as $pos => $curWsp){
+	  if(substr($mwsp, 0, strlen($wsp)) == $curWsp){
+	  return $classWsTmpl[$pos];
+	  }
+	  }
+	  return 0;
+	  } */
 
 	function add_workspace(array $ids){
 		$workspaces = makeArrayFromCSV($this->Workspaces);
-		$templates = makeArrayFromCSV($this->Templates);
 
 		foreach($ids as $id){
 			if(!in_array($id, $workspaces)){
 				$workspaces[] = $id;
-				$tid = $this->getTemplateFromWs($id);
-				$templates[] = $tid;
 				$this->Workspaces = implode(',', $workspaces);
-				$this->Templates = implode(',', $templates);
 			}
 		}
 	}
 
 	function del_workspace($id){
 		$workspaces = makeArrayFromCSV($this->Workspaces);
-		$Templates = makeArrayFromCSV($this->Templates);
 		foreach($workspaces as $key => $val){
 			if($val == $id){
-				unset($workspaces[$key], $Templates[$key]);
+				unset($workspaces[$key]);
 				break;
 			}
 		}
 
 		$this->Workspaces = implode(',', $workspaces);
-
-		$this->Templates = implode(',', $Templates);
 	}
 
 	function ws_from_class(){
 		$this->Workspaces = $this->classData["Workspaces"];
-		$this->Templates = $this->classData["Templates"];
 	}
 
-	private function getTemplateFromWorkspace(array $wsArr, array $tmplArr, $parentID, $mode = 0){
-		if(empty($tmplArr) || empty($wsArr)){
+	private function getTemplateFromWorkspace(array $wsArr, $parentID, $mode = 0){
+		$classWsTmpl = $this->classData['WorkspacesTemplates'];
+		if(empty($classWsTmpl) || empty($wsArr)){
 			return 0;
 		}
-		foreach($wsArr as $key => $val){
-			if($mode){
-				if($val === $parentID){
-					return $tmplArr[$key];
-				}
-			} elseif(we_users_util::in_workspace($parentID, $val)){
-				return $tmplArr[$key];
-			}
+		if($mode == 0){
+			return isset($classWsTmpl[$parentID]) ? $classWsTmpl[$parentID] : 0;
 		}
-		return 0;
+		$ws = f('SELECT ID,Path FROM ' . FILE_TABLE . ' AS parent WHERE ID IN (' . implode(',', array_keys($classWsTmpl)) . ') AND CONCAT(parent.Path,"/")=(
+SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . intval($parentID) . ') ORDER BY Path DESC LIMIT 1');
+
+		return $ws ? $classWsTmpl[$ws] : 0;
 	}
 
 	function getTemplateID($parentID){
 		$wsArr = makeArrayFromCSV($this->Workspaces);
-		$tmplArr = makeArrayFromCSV($this->Templates);
+		
+		$tid = ($this->getTemplateFromWorkspace($wsArr, $parentID, 1) ?:
+			($this->getTemplateFromWorkspace($wsArr, $parentID, 0)));
 
-		$tid = ($this->getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, 1) ?:
-			($this->getTemplateFromWorkspace($wsArr, $tmplArr, $parentID, 0)));
-
-		if(!$tid){
-			if(!empty($tmplArr)){
-				$tid = $tmplArr[0];
-			}
-		}
-		if(!$tid){
-			$foo = makeArrayFromCSV($this->classData['Templates']);
-			if(!empty($foo)){
-				$tid = $foo[0];
-			}
-		}
-		return $tid;
+		//noting found, use first of class-Template
+		return $tid ?: reset($this->classData['WorkspacesTemplates']);
 	}
 
 	function geFieldValue($t, $f){
@@ -2044,7 +1963,7 @@ class we_objectFile extends we_document{
 	function registerMediaLinks($temp = false, $linksReady = false){
 		//register media in fields type link
 		if(!$linksReady){
-			$dv = we_unserialize($this->classData['DefaultValues']);
+			$dv = $this->getDefaultValueArray();
 			foreach($dv as $k => $v){
 				if(strpos($k, 'link_') === 0){
 					$name = str_replace('link_', '', $k);
@@ -2141,6 +2060,7 @@ class we_objectFile extends we_document{
 				break;
 		}
 		$this->classData = getHash('SELECT * FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($this->TableID), $this->DB_WE);
+		$this->classData['WorkspacesTemplates'] = array_combine(explode(',', $this->classData['Workspaces']), explode(',', $this->classData['Templates']));
 		$this->loadSchedule();
 		$this->setTitleAndDescription();
 		$this->i_getLinkedObjects();
@@ -2273,7 +2193,7 @@ class we_objectFile extends we_document{
 			);
 	}
 
-	function i_objectFileInit($makeSameNewFlag = false){
+	private function i_objectFileInit($makeSameNewFlag = false){
 		if($this->ID){
 			$this->setRootDirID();
 			$oldTableID = f('SELECT TableID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->ID), '', $this->DB_WE);
@@ -2322,26 +2242,6 @@ class we_objectFile extends we_document{
 					unset($tmpFolder);
 				}
 			}
-		}
-	}
-
-	protected function i_set_PersistentSlot($name, $value){
-		if(in_array($name, $this->persistent_slots)){
-			$this->$name = $value;
-			return;
-		}
-		switch($name){
-			case 'Templates_0':
-
-				$this->Templates = '';
-				$cnt = count(makeArrayFromCSV($this->Workspaces));
-				for($i = 0; $i < $cnt; ++$i){
-					$this->Templates .= we_base_request::_(we_base_request::INT, 'we_' . $this->Name . '_Templates_' . $i) . ',';
-				}
-				if($this->Templates){
-					$this->Templates = ',' . $this->Templates;
-				}
-				break;
 		}
 	}
 
@@ -2949,20 +2849,18 @@ class we_objectFile extends we_document{
 			);
 
 
-			$parts[] = array(
-				"headline" => g_l('weClass', '[owners]'),
+			$parts[] = ["headline" => g_l('weClass', '[owners]'),
 				"html" => $this->formCreatorOwners(),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'icon' => "user.gif"
-			);
+			];
 
 
-			$parts[] = array(
-				"headline" => g_l('weClass', '[Charset]'),
+			$parts[] = ["headline" => g_l('weClass', '[Charset]'),
 				"html" => $this->formCharset(),
 				'space' => we_html_multiIconBox::SPACE_MED2,
 				'icon' => "charset.gif"
-			);
+			];
 		} elseif($this->hasWorkspaces()){ //	Show workspaces
 			$parts = [["headline" => g_l('weClass', '[workspaces]'),
 				"html" => $this->formWorkspaces(),

@@ -47,8 +47,6 @@ class we_chooser_multiDir{
 		$this->width = $width;
 		$this->ids = $ids;
 		$this->table = $table;
-		$this->ws = $ws;
-		$this->wsArr = makeArrayFromCSV($ws);
 		$this->cmd_del = $cmd_del;
 		$this->addbut = $addbut;
 		$this->css = $css;
