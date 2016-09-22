@@ -69,7 +69,7 @@ class we_base_ContentTypes{
 				'Table' => [FILE_TABLE],
 				'Class' => 'we_textDocument'
 			],
-			self::HTML => ['Extension' => ['.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml', '.xsl'],
+			self::HTML => ['Extension' => ['.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.aspx', '.pl', '.cgi', '.xml', '.xsl'],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_HTML',
 				'DefaultCode' => '<!doctype html>
@@ -86,7 +86,7 @@ class we_base_ContentTypes{
 				'Table' => [FILE_TABLE],
 				'Class' => 'we_htmlDocument'
 			],
-			self::WEDOCUMENT => ['Extension' => ['.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.pl', '.cgi', '.xml'],
+			self::WEDOCUMENT => ['Extension' => ['.html', '.htm', '.shtm', '.shtml', '.stm', '.php', '.jsp', '.asp', '.aspx', '.pl', '.cgi', '.xml'],
 				'ExtensionIsFilename' => false,
 				'Permission' => 'NEW_WEBEDITIONSITE',
 				'DefaultCode' => '',
