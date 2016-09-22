@@ -580,10 +580,9 @@ class we_backup_wizard{
 
 		if(we_base_request::_(we_base_request::STRING, "operation_mode") === "busy"){
 			$text = we_base_request::_(we_base_request::BOOL, "current_description", g_l('backup', '[working]'));
-			$progress = new we_progressBar(we_base_request::_(we_base_request::INT, "percent", 0));
-			$progress->setStudLen(200);
+			$progress = new we_progressBar(we_base_request::_(we_base_request::INT, "percent", 0), 200);
 			$progress->addText($text, 0, "current_description");
-			$head .= $progress->getJSCode();
+			$head .= we_progressBar::getJSCode();
 			$table->setCol(0, 0, ['style' => 'text-align:left;'], $progress->getHtml('', 'margin-left:15px'));
 		}
 

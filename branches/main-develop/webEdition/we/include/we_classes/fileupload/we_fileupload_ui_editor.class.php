@@ -57,7 +57,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 
 		$this->dimensions['dragWidth'] = 400;
 		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, [
-			['fu_file_parentID', 'int'],
+				['fu_file_parentID', 'int'],
 		]);
 		$this->doImport = $doImport;
 
@@ -99,9 +99,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 	}
 
 	public function getHtml($returnRows = false){
-		$progress = new we_progressBar();
-		$progress->setStudLen(200);
-		$progress->setName('_fileupload');
+		$progress = new we_progressBar(0, 200, '_fileupload');
 		$divProgressbar = we_html_element::htmlDiv(['id' => 'div_fileupload_progressBar', 'style' => 'display:none;'], $progress->getHTML('', 'font-size:11px;'));
 		$divButtons = we_html_element::htmlDiv(['id' => 'div_fileupload_buttons', 'style' => 'width:400px'], $this->getDivBtnInputReset($this->dimensions['inputWidth'] - 4)
 		);
@@ -150,7 +148,8 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 	}
 
 	public function getHtmlFooter(){
-		return we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'width:auto; height:100%;'), we_html_element::htmlDiv(array('style' => 'float:right'), (we_html_element::htmlDiv(array('style' => 'display:table-cell;'), $this->getDivBtnUploadCancel(170))) .
+		return we_html_element::htmlDiv(array('class' => 'weDialogButtonsBody', 'style' => 'width:auto; height:100%;'), we_html_element::htmlDiv(array('style' => 'float:right'), (we_html_element::htmlDiv(array(
+						'style' => 'display:table-cell;'), $this->getDivBtnUploadCancel(170))) .
 					we_html_element::htmlDiv(array('style' => 'display:table-cell;'), we_html_button::create_button(we_html_button::CLOSE, 'javascript:top.close()'))
 				)
 		);
@@ -283,7 +282,8 @@ documentWriteback = function(importedDocument){
 
 		echo we_html_tools::getHtmlTop('fileupload', '', '', $fileUpload->getEditorJS() .
 			we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js'), we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm([], we_html_element::htmlDiv(array('id' => 'we_fileupload_editor', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'), $fileUpload->getHtml()) .
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js'), we_html_element::htmlBody(array('class' => 'weDialogBody'), we_html_element::htmlForm([], we_html_element::htmlDiv(array(
+						'id' => 'we_fileupload_editor', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'), $fileUpload->getHtml()) .
 					we_html_element::htmlDiv(array('id' => 'we_fileupload_footer', 'class' => '', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'), $fileUpload->getHtmlFooter())
 				) .
 				weSuggest::getYuiFiles() .

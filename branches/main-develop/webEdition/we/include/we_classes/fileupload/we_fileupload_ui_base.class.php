@@ -307,10 +307,8 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 					</tr></tbody></table>
 				</div>';
 		/*
-		  $progress = new we_progressBar(0, true);
-		  $progress->setStudLen(170);
+		  $progress = new we_progressBar(0, 170,'_fileupload');
 		  $progress->setProgressTextPlace(0);
-		  $progress->setName('_fileupload');
 		  return $progress->getHTML('', 'font-size:11px;');
 		  $divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML('', 'font-size:11px;'));
 		 *
@@ -331,10 +329,8 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 	public function getJs(){
 		$this->externalProgress['create'] = $this->externalProgress['create'] && $this->externalProgress['isExternalProgress'] && $this->externalProgress['parentElemId'];
 		if($this->externalProgress['create']){
-			$progressbar = new we_progressBar();
-			$progressbar->setName($this->externalProgress['name']);
-			$progressbar->setStudLen($this->externalProgress['width']);
-			$this->externalProgress['html'] = str_replace(["\n\r", "\r\n", "\r", "\n"], '', $progressbar->getHTML());
+			$progressbar = new we_progressBar(0, $this->externalProgress['width'], $this->externalProgress['name']);
+			$this->externalProgress['html'] = str_replace(["\r", "\n"], '', $progressbar->getHTML());
 		}
 		$this->callback = strpos($this->callback, 'WECMDENC_') !== false ? base64_decode(urldecode(substr($this->callback, 9))) : $this->callback;
 
@@ -374,7 +370,7 @@ we_FileUpload.init({
 	responseClass : "' . $this->responseClass . '",
 	clientsideImageEditing : ' . ($this->cliensideImageEditing && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? 1 : 0) . '
 });
-			') . ($this->externalProgress['create'] ? $progressbar->getJSCode() : '');
+			') . ($this->externalProgress['create'] ? we_progressBar::getJSCode() : '');
 	}
 
 	protected function _getJsGl(){

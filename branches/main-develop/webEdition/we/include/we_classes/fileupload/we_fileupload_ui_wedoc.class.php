@@ -49,10 +49,8 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 	public function getHTML($fs = '', $ft = '', $md = '', $thumbnailSmall = '', $thumbnailBig = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 
-		$progress = new we_progressBar();
-		$progress->setStudLen(170);
+		$progress = new we_progressBar(0, 170, '_fileupload');
 		$progress->setProgressTextPlace(0);
-		$progress->setName('_fileupload');
 		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML('', 'font-size:11px;'));
 		$divFileInfo = we_html_element::htmlDiv([], $fs . '<br />' . $ft . '<br />' . $md);
 		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:180px'), $this->getDivBtnInputReset($isIE10 ? 84 : 170) .

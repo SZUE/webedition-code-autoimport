@@ -30,11 +30,11 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	$yes_button = we_html_button::create_button(we_html_button::OK, we_html_button::WE_FORM . ":we_form");
 	$cancel_button = we_html_button::create_button(we_html_button::CANCEL, "javascript:self.close();");
 
-	$pb = new we_progressBar();
-	$pb->setStudLen(270);
+	$pb = new we_progressBar(0, 270);
+
 	$pb->addText("&nbsp;", 0, "pbar1");
 
-	$buttons = '<table class="default" style="width:100%"><tr><td id="pbTd" style="text-align:left;display:none;">' . $pb->getHTML() . $pb->getJSCode() . '</td><td style="text-align:right">' .
+	$buttons = '<table class="default" style="width:100%"><tr><td id="pbTd" style="text-align:left;display:none;">' . $pb->getHTML() . '</td><td style="text-align:right">' .
 		we_html_button::position_yes_no_cancel($yes_button, null, $cancel_button) .
 		'</td></tr></table>';
 
@@ -69,6 +69,7 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 	}
 	we_fragment_copyFolder::printHeader();
 	echo
+	we_progressBar::getJSCode() .
 	we_html_element::jsScript(JS_DIR . 'copyFolder.js') .
 	'<body class="weDialogBody" onload="self.focus();">' .
 	'<form name="we_form" target="pbUpdateFrame" method="get">' .
@@ -82,6 +83,6 @@ if(we_base_request::_(we_base_request::BOOL, 'we_cmd', false, 3)){
 
 $bodyAttribs = ['style' => "background-color:#FFFFFF;margin:10px;"];
 $fr = (we_base_request::_(we_base_request::BOOL, 'finish') ?
-		new we_fragment_copyFolderFinish('we_copyFolderFinish', 1, 0, $bodyAttribs) :
-		new we_fragment_copyFolder('we_copyFolder', 1, 0, $bodyAttribs)
+	new we_fragment_copyFolderFinish('we_copyFolderFinish', 1, 0, $bodyAttribs) :
+	new we_fragment_copyFolder('we_copyFolder', 1, 0, $bodyAttribs)
 	);

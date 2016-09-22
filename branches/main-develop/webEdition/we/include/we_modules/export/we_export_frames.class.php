@@ -147,15 +147,14 @@ function hideProgress() {
 		$text = we_base_request::_(we_base_request::STRING, "current_description", g_l('export', '[working]'));
 		$progress = we_base_request::_(we_base_request::INT, "percent", 0);
 
-		$progressbar = new we_progressBar($progress);
-		$progressbar->setStudLen(200);
+		$progressbar = new we_progressBar($progress, 200);
 		$progressbar->addText($text, 0, "current_description");
 
 		$table2->setCol(0, 4, ["id" => "progress", "style" => "display: none"], $progressbar->getHtml());
 
 		return $this->getHTMLDocument(
 				we_html_element::htmlBody(['id' => 'footerBody'], we_html_element::htmlForm([], $table2->getHtml())
-				), (isset($progressbar) ? $progressbar->getJSCode() : "") . $js
+				), (isset($progressbar) ? we_progressBar::getJSCode() : "") . $js
 		);
 	}
 

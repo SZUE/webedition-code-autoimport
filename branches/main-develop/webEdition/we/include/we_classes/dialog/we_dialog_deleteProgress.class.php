@@ -26,15 +26,13 @@ abstract class we_dialog_deleteProgress{
 
 	public static function main(){
 
-		$WE_PB = new we_progressBar();
-		$WE_PB->setStudLen(490);
+		$WE_PB = new we_progressBar(0, 490);
 		$WE_PB->addText("", 0, "pb1");
-		$js = $WE_PB->getJSCode();
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$pb = we_html_tools::htmlDialogLayout($WE_PB->getHTML(), g_l('delete', '[delete]'), $cancelButton);
 
-		return we_html_tools::getHtmlTop('', '', '', $js, we_html_element::htmlBody(["class" => "weDialogBody"], $pb));
+		return we_html_tools::getHtmlTop('', '', '', we_progressBar::getJSCode(), we_html_element::htmlBody(["class" => "weDialogBody"], $pb));
 	}
 
 	public static function getHTML($table, $currentID){

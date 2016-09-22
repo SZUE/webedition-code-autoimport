@@ -317,11 +317,10 @@ function next() {
 		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:next();", true, 0, 0, "", "", $this->step > 0, false);
 
 		// TODO: let we_fileupload set pb
-		$pb = new we_progressBar();
-		$pb->setStudLen(200);
+		$pb = new we_progressBar(0, 200);
 		$pb->addText(sprintf(g_l('importFiles', '[import_file]'), 1), 0, "progress_title");
 		$progressbar = '<div id="progressbar" style="margin:0 0 6px 12px;' . (($this->step == 0) ? 'display:none;' : '') . '">' . $pb->getHTML() . '</div>';
-		$js .= $pb->getJSCode();
+		$js .= we_progressBar::getJSCode();
 
 		$prevNextButtons = $prevButton ? $prevButton . $nextButton : null;
 

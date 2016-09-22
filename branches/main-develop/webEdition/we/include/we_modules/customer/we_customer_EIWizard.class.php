@@ -912,8 +912,7 @@ function callBack(){
 			);
 			$text = g_l('modules_customer', '[exporting]');
 			$progress = 0;
-			$progressbar = new we_progressBar($progress);
-			$progressbar->setStudLen(200);
+			$progressbar = new we_progressBar($progress, 200);
 			$progressbar->addText($text, 0, "current_description");
 
 			$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
@@ -930,7 +929,7 @@ function callBack(){
 		}
 		$content->setCol(0, 1, array("style" => "text-align:right"), $buttons);
 
-		return we_html_tools::getHtmlTop('', '', '', (isset($progressbar) ? $progressbar->getJSCode() : ''), we_html_element::htmlBody(array('class' => "weDialogButtonsBody"), we_html_element::htmlForm(array(
+		return we_html_tools::getHtmlTop('', '', '', (isset($progressbar) ? we_progressBar::getJSCode() : ''), we_html_element::htmlBody(array('class' => "weDialogButtonsBody"), we_html_element::htmlForm(array(
 						"name" => "we_form",
 						"method" => "post",
 						"target" => "load",
@@ -964,8 +963,7 @@ function callBack(){
 				);
 				$text = g_l('modules_customer', '[importing]');
 				$progress = 0;
-				$progressbar = new we_progressBar($progress);
-				$progressbar->setStudLen(200);
+				$progressbar = new we_progressBar($progress, 200);
 				$progressbar->addText($text, 0, "current_description");
 
 				$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
@@ -989,7 +987,8 @@ function callBack(){
 		}
 		$content->setCol(0, 1, array("style" => "text-align:right"), $buttons);
 
-		return we_html_tools::getHtmlTop('', '', '', (isset($progressbar) ? $progressbar->getJSCode() : ""), we_html_element::htmlBody(['class' => "weDialogButtonsBody"], we_html_element::htmlForm(["name" => "we_form",
+		return we_html_tools::getHtmlTop('', '', '', (isset($progressbar) ? we_progressBar::getJSCode() : ""), we_html_element::htmlBody(['class' => "weDialogButtonsBody"], we_html_element::htmlForm([
+						"name" => "we_form",
 						"method" => "post",
 						"target" => "load",
 						"action" => $this->frameset
