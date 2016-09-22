@@ -91,13 +91,13 @@ class we_customer_copyWeDocumentFilterFrag extends we_fragment_base{
 		$targetDoc->rewriteNavigation();
 
 		echo we_html_element::jsElement("parent.setProgressText('copyWeDocumentCustomerFilterText', '" . we_base_util::shortenPath($targetDoc->Path, 55) . "');
-parent.setProgress(" . number_format(( ( $this->currentTask ) / $this->numberOfTasks) * 100, 0) . ");");
+parent.setProgress(''," . number_format(( ( $this->currentTask ) / $this->numberOfTasks) * 100, 0) . ");");
 	}
 
 	function finish(){
 		echo we_html_element::jsElement("
 parent.setProgressText('copyWeDocumentCustomerFilterText', '" . g_l('modules_customerFilter', '[apply_filter_done]') . "');
-parent.setProgress(100);
+parent.setProgress('',100);
 " . we_message_reporting::getShowMessageCall(g_l('modules_customerFilter', '[apply_filter_done]'), we_message_reporting::WE_MESSAGE_NOTICE) . "
 window.setTimeout(parent.top.close, 2000);
 ");

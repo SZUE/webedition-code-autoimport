@@ -48,7 +48,7 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 		$allChildsJS .= "_allChilds['id_" . $db->f("ID") . "'] = '" . $db->f("ContentType") . "';";
 	}
 
-	$pb = new we_progressBar(0, true);
+	$pb = new we_progressBar();
 	$pb->addText('&nbsp;', 0, 'copyWeDocumentCustomerFilterText');
 	$pb->setStudWidth(10);
 	$pb->setStudLen(300);

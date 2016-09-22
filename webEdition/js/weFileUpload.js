@@ -2578,7 +2578,7 @@ var weFileUpload = (function () {
 				_.sender.resp = resp;
 
 				if (!this.isCancelled) {
-					_.view.elems.footer.setProgress(100);
+					_.view.elems.footer.setProgress("", 100);
 					_.view.elems.footer.setProgressText('progress_title', '');
 					top.we_showMessage(resp.completed.message, top.WE().consts.message.WE_MESSAGE_INFO, window);
 
@@ -2621,7 +2621,7 @@ var weFileUpload = (function () {
 				this.currentFile = -1;
 				this.mapFiles = [];
 				this.totalFiles = _.sender.totalWeight = _.sender.currentWeight = _.sender.currentWeightTag = 0;
-				_.view.elems.footer.setProgress(0);
+				_.view.elems.footer.setProgress("", 0);
 				_.view.elems.extProgressDiv.style.display = 'none';
 				_.controller.setWeButtonState('reset_btn', true);
 				_.controller.setWeButtonState('browse_harddisk_btn', true);
@@ -2876,7 +2876,7 @@ var weFileUpload = (function () {
 						if (cur.partNum === 1) {
 							this.elems.footer.setProgressText('progress_title', _.utils.gl.doImport + ' ' + _.utils.gl.file + ' ' + j);
 						}
-						this.elems.footer.setProgress(totalProg.toFixed(totalDigits));
+						this.elems.footer.setProgress("", totalProg.toFixed(totalDigits));
 						return;
 					case 'fileOK' :
 						i = s.mapFiles[cur.fileNum];
@@ -2897,7 +2897,7 @@ var weFileUpload = (function () {
 						if (cur.partNum === 1) {
 							this.elems.footer.setProgressText('progress_title', _.utils.gl.doImport + ' ' + _.utils.gl.file + ' ' + j);
 						}
-						this.elems.footer.setProgress(totalProg.toFixed(totalDigits));
+						this.elems.footer.setProgress("", totalProg.toFixed(totalDigits));
 						return;
 					case 'startUpload' :
 						//set buttons state and show initial progress bar

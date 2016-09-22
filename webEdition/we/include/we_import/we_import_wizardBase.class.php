@@ -90,7 +90,7 @@ abstract class we_import_wizardBase{
 
 	private function getWizBusy(){
 		if(we_base_request::_(we_base_request::INT, "mode") == 1){
-			$WE_PB = new we_progressBar(0, true);
+			$WE_PB = new we_progressBar();
 			$WE_PB->setStudLen(200);
 			$WE_PB->addText($text = g_l('import', '[import_progress]'), 0, "pb1");
 			$pb = $WE_PB->getJSCode() .
@@ -326,7 +326,7 @@ if (top.wizbody.addLog){
 									$xmlExIm->savePerserves();
 
 									$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[update_links]') . $xmlExIm->RefTable->current . '/' . $xmlExIm->RefTable->getCount() . "');
-										top.wizbusy.setProgress(Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getCount() + $v["numFiles"]) . ")*100));";
+										top.wizbusy.setProgress('',Math.floor(((" . (int) ($v['cid'] + $xmlExIm->RefTable->current) . "+1)/" . (int) ($xmlExIm->RefTable->getCount() + $v["numFiles"]) . ")*100));";
 
 
 									$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
@@ -416,7 +416,7 @@ setTimeout(we_import,15,1," . $v['numFiles'] . ");";
 
 									$JScript = "
 top.wizbusy.setProgressText('pb1','" . $status . " - " . $counter_text . "');
-top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));";
+top.wizbusy.setProgress('',Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["numFiles"]) . ")*100));";
 
 
 									$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
@@ -531,7 +531,7 @@ top.wizbusy.setProgress(Math.floor(((" . $v['cid'] . "+1)/" . (int) (2 * $v["num
 
 					$JScript = "
 top.wizbusy.setProgressText('pb1','" . g_l('import', '[import]') . "');
-top.wizbusy.setProgress(Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));";
+top.wizbusy.setProgress('',Math.floor(((" . $v["cid"] . "+1)/" . $v["numFiles"] . ")*100));";
 
 
 					$out .= we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
@@ -568,7 +568,7 @@ function we_import(mode, cid,reload) {
 
 			default:
 				$JScript = "top.wizbusy.setProgressText('pb1','" . g_l('import', '[finish_progress]') . "');
-top.wizbusy.setProgress(100);
+top.wizbusy.setProgress('',100);
 top.opener.top.we_cmd('load', top.opener.top.treeData.table ,0);
 if(WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart && WE().layout.weEditorFrameController.getActiveDocumentReference().quickstart != undefined) WE().layout.weEditorFrameController.getActiveDocumentReference().location.reload();
 if(top.wizbusy && top.wizbusy.document.getElementById('progress')) {

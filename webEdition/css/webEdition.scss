@@ -1764,24 +1764,30 @@ div.sysinfoMsg{
 	}
 }
 
-div.radiobutton{
-	position:relative;
-	padding-left:25px;
-	min-height:30px;
-	input[type=radio]{
-		position: absolute;
-		left:0px;
-		cursor: pointer;
-		height: 2ex !important;
-		top: 50%;
-	}
-	label.elementText{
-		white-space:nowrap;
-		display:block;
-		position: absolute;
-		top: 50%;
-	}
+div.radiobuttonContainer{
+	div.radiobutton{
+		position:relative;
+		padding-left:25px;
+		min-height:30px;
+		input[type=radio]{
+			position: absolute;
+			left:0px;
+			cursor: pointer;
+			height: 2ex !important;
+			top: 50%;
+		}
+		label.elementText{
+			white-space:nowrap;
+			display:block;
+			position: absolute;
+			top: 50%;
+		}
 
+	}
+	div.extra{
+		margin-top:1ex;
+		padding-left:25px;
+	}
 }
 
 span.checkbox{
@@ -1794,10 +1800,6 @@ span.checkbox{
 		padding-right:1ex;
 		white-space:nowrap;
 	}
-}
-
-span.checkbox,
-div.radiobutton{
 	div.extra{
 		margin-top:1ex;
 	}

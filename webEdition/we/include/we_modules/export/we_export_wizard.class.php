@@ -949,7 +949,7 @@ if (top.footer.setProgressText){
 	top.footer.setProgressText("current_description","Exportiere ...");
 }
 if (top.footer.setProgress){
-	top.footer.setProgress(0);
+	top.footer.setProgress("",0);
 }
 							');
 				}
@@ -996,7 +996,7 @@ if (top.footer.setProgress){
 				$percent = min(100, max(0, (int) ((($all - $exports + 2) / $all) * 100)));
 
 				$progress_update = we_html_element::jsElement('
-							if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');
+							if (top.footer.setProgress) top.footer.setProgress("",' . $percent . ');
 						');
 
 				if($remaining_docs){
@@ -1105,7 +1105,7 @@ if (top.footer.setProgress){
 				if($all > $exports){
 					return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', '', we_html_element::htmlBody(["bgcolor" => "#ffffff", "style" => 'margin:5px', "onload" => "document.we_form.submit()"], we_html_element::htmlForm([
 									'name' => 'we_form', "method" => "post", "target" => "load", "action" => $this->frameset], $hiddens) .
-								we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');')
+								we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress("",' . $percent . ');')
 							)
 					);
 				}
@@ -1113,7 +1113,7 @@ if (top.footer.setProgress){
 					we_base_file::save($filename, we_exim_XMLExIm::getFooter(), "ab");
 				}
 
-				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(100);'), we_html_element::htmlBody(
+				return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress("",100);'), we_html_element::htmlBody(
 							['style' => 'margin:5px;',
 								"onload" => oldHtmlspecialchars($export_local ? ("top.body.location='" . $this->frameset . "&pnt=body&step=10&file_name=" . urlencode($filename) . "';top.footer.location='" . $this->frameset . "&pnt=footer&step=10';") : ( we_message_reporting::getShowMessageCall(g_l('export', '[server_finished]'), we_message_reporting::WE_MESSAGE_NOTICE) . ";top.close();"))]), null
 				);

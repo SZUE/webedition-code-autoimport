@@ -99,7 +99,7 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 	}
 
 	public function getHtml($returnRows = false){
-		$progress = new we_progressBar(0, true);
+		$progress = new we_progressBar();
 		$progress->setStudLen(200);
 		$progress->setName('_fileupload');
 		$divProgressbar = we_html_element::htmlDiv(['id' => 'div_fileupload_progressBar', 'style' => 'display:none;'], $progress->getHTML('', 'font-size:11px;'));

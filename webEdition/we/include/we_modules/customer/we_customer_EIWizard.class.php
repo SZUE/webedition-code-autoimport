@@ -1159,7 +1159,7 @@ function callBack(){
 		$percent = max(min(($all ? (int) ((($all - $exports + 2) / $all) * 100) : 0), 100), 0);
 
 
-		$progressjs = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress(' . $percent . ');');
+		$progressjs = we_html_element::jsElement('if (top.footer.setProgress) top.footer.setProgress("",' . $percent . ');');
 
 		return we_html_tools::getHtmlTop(g_l('modules_customer', '[export_title]'), '', '', $progressjs, we_html_element::htmlBody(array("onload" => "document.we_form.submit()"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post", "target" => "load", "action" => $this->frameset), $hiddens)
 				)
@@ -1329,7 +1329,7 @@ function doNext(){
 function doNext(){
 	' . (!($fstart < $fcount) ? 'document.we_form.cmd.value="import_end";' : 'document.we_form.cmd.value="do_import";') . '
 	if (top.footer.setProgress){
-		top.footer.setProgress(' . $percent . ');
+		top.footer.setProgress("",' . $percent . ');
 	}
 	document.we_form.submit();
 }');

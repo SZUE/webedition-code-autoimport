@@ -41,7 +41,7 @@ class we_fragment_copyFolderFinish extends we_fragment_copyFolder{
 
 			echo we_html_element::jsElement('
 parent.document.getElementById("pbTd").style.display="block";
-parent.setProgress(' . ((int) ((100 / count($this->alldata)) * ($this->currentTask + 1))) . ');
+parent.setProgress("",' . ((int) ((100 / count($this->alldata)) * ($this->currentTask + 1))) . ');
 parent.setProgressText("pbar1","' . addslashes($pbText) . '");');
 			flush();
 		} else {

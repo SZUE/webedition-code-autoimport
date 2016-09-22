@@ -66,7 +66,7 @@ class we_backup_delete extends we_fragment_base{
 		}
 		echo we_html_element::jsElement('
 			parent.delmain.setProgressText("pb1","' . sprintf(g_l('backup', '[delete_entry]'), $text) . '");
-			parent.delmain.setProgress(' . $percent . ');
+			parent.delmain.setProgress("",' . $percent . ');
 		');
 	}
 
