@@ -211,7 +211,7 @@ abstract class we_html_forms{
 
 			if(stripos($name, "we_ui") === false){//we are in backend
 				$hiddenTextareaContent = strtr(we_wysiwyg_editor::parseInternalImageSrc($value), ["##|r##" => "\r", "##|n##" => "\n"]);
-				$previewDivContent = str_replace((
+				$previewDivContent = strtr((
 					isset($GLOBALS['we_doc']) && !($GLOBALS['we_doc'] instanceof we_objectFile) && !($GLOBALS['we_doc'] instanceof we_object) ?
 					we_wysiwyg_editor::parseInternalImageSrc($GLOBALS['we_doc']->getField($attribs)) :
 					we_document::parseInternalLinks($value, 0)

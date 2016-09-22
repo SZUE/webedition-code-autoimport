@@ -26,6 +26,8 @@
 /* query separator */
 ###UPDATEDROPCOL(NCAddressOpen,###TBLPREFIX###tblObjectFiles)###
 /* query separator */
+###UPDATEDROPCOL(Templates,###TBLPREFIX###tblObjectFiles)###
+/* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   ID int unsigned NOT NULL auto_increment,
@@ -44,7 +46,6 @@ CREATE TABLE ###TBLPREFIX###tblObjectFiles (
   Owners varchar(255) NOT NULL default '',
   OwnersReadOnly text NOT NULL,
   Workspaces varchar(1000) NOT NULL default '',
-  Templates varchar(255) NOT NULL default '',
   TableID int unsigned NOT NULL default '0',
   Category text NOT NULL,
   ClassName enum('we_class_folder','we_objectFile') NOT NULL,

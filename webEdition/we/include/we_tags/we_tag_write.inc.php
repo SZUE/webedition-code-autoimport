@@ -152,12 +152,7 @@ function we_tag_write(array $attribs){
 			$GLOBALS['we_doc']->Language = $language;
 		}
 		if($workspaces && $type === 'object'){
-			$tmplArray = [];
-			foreach($workspaces as $wsId){
-				$tmplArray[] = $GLOBALS['we_' . $type][$name]->getTemplateFromWs($wsId);
-			}
 			$GLOBALS['we_' . $type][$name]->Workspaces = implode(',', $workspaces);
-			$GLOBALS['we_' . $type][$name]->Templates = implode(',', $tmplArray);
 		}
 
 		$GLOBALS['we_' . $type][$name]->Path = $GLOBALS['we_' . $type][$name]->getPath();

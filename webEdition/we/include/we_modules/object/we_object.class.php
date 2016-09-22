@@ -1708,7 +1708,7 @@ class we_object extends we_document{
 </table>';
 	}
 
-	function formWorkspaces(){
+	private function formWorkspaces(){
 //remove not existing workspaces - deal with templates as well
 		$arr = makeArrayFromCSV($this->Workspaces);
 		$defaultArr = makeArrayFromCSV($this->DefaultWorkspaces);
@@ -1746,7 +1746,7 @@ class we_object extends we_document{
 		return $content;
 	}
 
-	function formWorkspacesFlag(){
+	private function formWorkspacesFlag(){
 		return '<div style="margin-bottom:8px;">' . we_html_forms::radiobutton(1, $this->WorkspaceFlag == 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_all]')) . '</div><div>' .
 			we_html_forms::radiobutton(0, $this->WorkspaceFlag != 1, "we_" . $this->Name . "_WorkspaceFlag", g_l('modules_object', '[behaviour_no]')) . '</div>';
 	}
