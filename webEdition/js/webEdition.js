@@ -1130,7 +1130,6 @@ var we_cmd_modules = {
 			case "versioning_log":
 				new (WE().util.jsWindow)(this, url, "versioning_log", -1, -1, 600, 500, true, false, true);
 				break;
-
 			case "delete_single_document_question":
 				ctrl = WE().layout.weEditorFrameController;
 				cType = ctrl.getActiveEditorFrame().getEditorContentType();
@@ -1810,6 +1809,9 @@ var we_cmd_modules = {
 			case "edit_new_collection":
 				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4];
 				new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
+				break;
+			case 'collection_insertFiles':
+				WE().t_e('top', args);
 				break;
 			case "help_documentation":
 				new (WE().util.jsWindow)(this, "http://documentation.webedition.org/", "help_documentation", -1, -1, 960, 700, true, true, true, true);

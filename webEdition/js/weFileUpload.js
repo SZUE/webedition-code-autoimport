@@ -2583,7 +2583,11 @@ var weFileUpload = (function () {
 					top.we_showMessage(resp.completed.message, top.WE().consts.message.WE_MESSAGE_INFO, window);
 
 					setTimeout(function () {
-						that.callback(_);
+						//that.callback(_);
+						var testCmd = 'collection_insertFiles, 2, guten Tag, 17';
+						var tmp = testCmd.split(',');
+						tmp.splice(1, 0, _.sender.resp);
+						top.opener.we_cmd.apply(top.opener, tmp);
 					}, 100);
 				}
 				_.view.reloadOpener();
