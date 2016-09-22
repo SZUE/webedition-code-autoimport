@@ -262,15 +262,12 @@ function setTab(tab) {
 			$allBlockedByBlacklist = (array_key_exists("email_is_black", $results) ? $results['email_is_black'] : 0);
 			$percentBlockedByBlacklist = we_base_util::getPercent($allRecipients, $allBlockedByBlacklist, 2);
 
-			$pbByB = new we_progressBar($percentBlockedByBlacklist);
-			$pbByB->setName('blacklist' . $key);
-			$pbByB->setStudWidth(10);
-			$pbByB->setStudLen(150);
+			$pbByB = new we_progressBar($percentBlockedByBlacklist, 150, 'blacklist' . $key);
 
 			$table->addRow();
 			$table->setColContent(1, 0, we_html_element::htmlSpan(array('id' => 'blacklist_' . $key), g_l('modules_newsletter', '[reporting][mailing_emails_are_black]')));
-			$table->setColContent(1, 1, $pbByB->getJSCode() . $pbByB->getHTML());
-			$table->setCol(1, 2, array("style" => "padding: 0 5px 0 5px;"), we_html_element::htmlSpan(array('id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'), $allBlockedByBlacklist));
+			$table->setColContent(1, 1, $pbByB->getHTML());
+			$table->setCol(1, 2, ["style" => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'blacklist_total', 'style' => 'color:' . (($allBlockedByBlacklist > 0) ? 'red' : 'green') . ';'], $allBlockedByBlacklist));
 			$table->setCol(1, 3, array("style" => "padding: 0 5px 0 5px;"), '<i class="fa fa-lg ' . ($allBlockedByBlacklist == 0 ? "fa-check fa-ok" : "fa-close fa-cancel") . '"></i>');
 			//todo: statt show black list, sollte show_log begrenzt auf Log=email_is_black + $start_send + start_end
 			$table->setCol(1, 4, array('style' => 'width: 35px'), (($allBlockedByBlacklist == 0) ? '' : we_html_button::formatButtons(we_html_button::create_button(we_html_button::VIEW, "javascript:top.opener.top.we_cmd('black_list');"))));
@@ -279,14 +276,11 @@ function setTab(tab) {
 			$allBlockedByDomainCheck = (array_key_exists("domain_nok", $results) ? $results['domain_nok'] : 0);
 			$percentBlockedByDomain = we_base_util::getPercent($allRecipients, $allBlockedByDomainCheck, 2);
 
-			$pbBbD = new we_progressBar($percentBlockedByDomain);
-			$pbBbD->setName('domain' . $key);
-			$pbBbD->setStudWidth(10);
-			$pbBbD->setStudLen(150);
+			$pbBbD = new we_progressBar($percentBlockedByDomain, 150, 'domain' . $key);
 
 			$table->addRow();
 			$table->setColContent(2, 0, we_html_element::htmlSpan(['id' => 'domain_' . $key], g_l('modules_newsletter', '[reporting][mailing_emails_nok]')));
-			$table->setColContent(2, 1, $pbBbD->getJSCode() . $pbBbD->getHTML());
+			$table->setColContent(2, 1, $pbBbD->getHTML());
 			$table->setCol(2, 2, ["style" => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'domain_total', 'style' => 'color:' . (($allBlockedByDomainCheck > 0) ? 'red' : 'green') . ';'], $allBlockedByDomainCheck));
 			$table->setCol(2, 3, ["style" => "padding: 0 5px 0 5px;"], '<i class="fa fa-lg ' . ($allBlockedByDomainCheck == 0 ? "fa-check fa-ok" : "fa-close fa-cancel") . '"></i>');
 			//todo: statt domain, sollte show_log begrenzt auf Log=domain_nok + $start_send + start_end
@@ -296,14 +290,11 @@ function setTab(tab) {
 			$allClearRecipients = (array_key_exists("mail_sent", $results) ? $results['mail_sent'] : 0);
 			$percentClearRecipients = we_base_util::getPercent($allRecipients, $allClearRecipients, 2);
 
-			$pbCR = new we_progressBar($percentClearRecipients);
-			$pbCR->setName('recipients' . $key);
-			$pbCR->setStudWidth(10);
-			$pbCR->setStudLen(150);
+			$pbCR = new we_progressBar($percentClearRecipients, 150, 'recipients' . $key);
 
 			$table->addRow();
 			$table->setColContent(3, 0, we_html_element::htmlSpan(['id' => 'recipients_' . $key], g_l('modules_newsletter', '[reporting][mailing_emails_success]')));
-			$table->setColContent(3, 1, $pbCR->getJSCode() . $pbCR->getHTML());
+			$table->setColContent(3, 1, $pbCR->getHTML());
 			$table->setCol(3, 2, ["style" => "padding: 0 5px 0 5px;"], we_html_element::htmlSpan(['id' => 'recipients_total', 'style' => 'color:' . (($allClearRecipients <= 0) ? 'red' : 'green') . ';'], $allClearRecipients));
 			$table->setCol(3, 3, ["style" => "padding: 0 5px 0 5px;"], '<i class="fa fa-lg ' . ($allClearRecipients == $allRecipients ? "fa-check fa-ok" : "fa-exclamation-triangle fa-cancel") . '" title="' . ($allClearRecipients < $allRecipients ? g_l('modules_newsletter', '[reporting][mailing_advice_not_success]') : '') . '"></i>');
 			//todo: statt show_log, sollte show_log begrenzt auf Log=email_sent + $start_send + start_end
@@ -1749,8 +1740,7 @@ self.focus();
 	}
 
 	function getHTMLSendBody(){
-		$pb = new we_progressBar(we_base_request::_(we_base_request::INT, "pro", 0));
-		$pb->setStudLen(400);
+		$pb = new we_progressBar(we_base_request::_(we_base_request::INT, "pro", 0), 400);
 		$pb->addText(g_l('modules_newsletter', '[sending]'), 0, "title");
 
 		$footer = '<table style="width:580px;" class="default"><tr><td style="text-align:left">' .
@@ -1759,8 +1749,7 @@ self.focus();
 			'</td></tr></table>';
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), $pb->getJSCode() .
-						we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array('name' => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:280px;")), g_l('modules_newsletter', '[details]'), $footer)
+				we_html_element::htmlBody(array('class' => "weDialogBody"), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post"), we_html_tools::htmlDialogLayout(we_html_element::htmlTextarea(array('name' => "details", "cols" => 60, "rows" => 15, "style" => "width:530px;height:280px;")), g_l('modules_newsletter', '[details]'), $footer)
 					) .
 					we_html_element::jsElement('
 									document.we_form.details.value="' . g_l('modules_newsletter', (we_base_request::_(we_base_request::BOOL, "test") ? '[test_no_mail]' : '[sending]')) . '";

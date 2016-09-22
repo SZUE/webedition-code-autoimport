@@ -90,10 +90,9 @@ abstract class we_import_wizardBase{
 
 	private function getWizBusy(){
 		if(we_base_request::_(we_base_request::INT, "mode") == 1){
-			$WE_PB = new we_progressBar();
-			$WE_PB->setStudLen(200);
+			$WE_PB = new we_progressBar(0, 200);
 			$WE_PB->addText($text = g_l('import', '[import_progress]'), 0, "pb1");
-			$pb = $WE_PB->getJSCode() .
+			$pb = we_progressBar::getJSCode() .
 				we_html_element::htmlDiv(['id' => 'progress'], $WE_PB->getHTML());
 			$js = we_html_element::jsElement('
 function finish(rebuild) {

@@ -47,13 +47,9 @@ abstract class we_rebuild_wizard{
 	static function getBusy(){
 		$dc = we_base_request::_(we_base_request::INT, 'dc', 0);
 
-		$WE_PB = new we_progressBar();
-		$WE_PB->setStudLen($dc ? 490 : 200);
+		$WE_PB = new we_progressBar(0, ($dc ? 490 : 200));
 		$WE_PB->addText("", 0, "pb1");
 		$pb = $WE_PB->getHTML();
-
-		$js = $WE_PB->getJSCode() .
-			we_html_element::jsScript(JS_DIR . 'nextButtons.js');
 
 		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
 		$refreshButton = we_html_button::create_button(we_html_button::REFRESH, "javascript:parent.wizcmd.location.reload();", true, 0, 0, "", "", false, false);
@@ -77,7 +73,8 @@ abstract class we_rebuild_wizard{
 			$content->setCol(0, 1, array("style" => "text-align:right"), $content2);
 		}
 
-		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', $js, we_html_element::htmlBody(array('style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
+		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', we_progressBar::getJSCode() . we_html_element::jsScript(JS_DIR . 'nextButtons.js'), we_html_element::htmlBody(array(
+					'style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
 				)
 		);
 	}
@@ -211,8 +208,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			$metaFieldsHidden .= we_html_element::htmlHidden('_field[' . $key . ']', $val);
 		}
 
-		return array(
-			we_html_element::jsScript(JS_DIR . 'rebuild0.js'),
+		return [we_html_element::jsScript(JS_DIR . 'rebuild0.js'),
 			$js,
 			we_html_multiIconBox::getHTML("", $parts, 40, "", -1, "", "", false, g_l('rebuild', '[rebuild]')) .
 			$dthidden .
@@ -230,7 +226,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				"btype" => $btype,
 				"onlyEmpty" => $onlyEmpty,
 				"we_cmd[0]" => "rebuild",
-				"step" => 1)));
+				"step" => 1))];
 	}
 
 	/**

@@ -142,10 +142,8 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		</tr></tbody></table>';
 
 		/*
-		$progress = new we_progressBar(0, true);
-		$progress->setStudLen(100);
+		$progress = new we_progressBar(0,100,'_WEFORMNUM');
 		$progress->setProgressTextPlace(0);
-		$progress->setName('_WEFORMNUM');
 		$progressbar =  $progress->getHTML('', 'font-size:11px;');
 		 *
 		 */

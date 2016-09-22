@@ -23,32 +23,23 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_progressBar{
-	var $progress = 0;
-	var $texts = [];
-	var $stud_width = 10;
-	var $stud_len = 100;
-	var $progressTextPlace = 1;
-	var $name = "";
+	private $progress = 0;
+	private $texts = [];
+	private $stud_width = 10;
+	private $stud_len = 100;
+	private $progressTextPlace = 1;
+	private $name = "";
+	private static $studLen = [];
 
-	public function __construct($progress = 0){
+	public function __construct($progress = 0, $stud_len = 100, $name = ''){
 		$this->setProgress($progress);
+		$this->stud_len = $stud_len;
+		$this->name = $name;
+		self::$studLen[$name] = $stud_len;
 	}
 
-	public function getJSCode(){
-		return we_html_element::jsElement('
-function setProgressText(name,text){
-	var div = document.getElementById(name);
-	if(div){
-		div.innerHTML = text;
-	}
-}
-
-function setProgress(name,progress){
-	var koef=' . ($this->stud_len / 100) . ';
-		document.getElementById("progress_image"+name).style.width=koef*progress+"px";
-		document.getElementById("progress_image_bg"+name).style.width=(koef*100)-(koef*progress)+"px";
-		setProgressText("progress_text"+name,progress+"%");
-}');
+	public static function getJSCode(){
+		return we_html_element::jsScript(JS_DIR . 'we_progressBar.js', '', ['id' => 'loadVarProgressBar', 'data-progress' => setDynamicVar(self::$studLen)]);
 	}
 
 	public function addText($text = "", $place = 0, $id = "", $class = "small", $color = "#006699", $height = 10, $bold = 1){
@@ -59,24 +50,12 @@ function setProgress(name,progress){
 		$this->progress = min(100, $progress);
 	}
 
-	public function setName($name){
-		$this->name = $name;
-	}
-
 	public function setStudWidth($stud_width = 10){
 		$this->stud_width = $stud_width;
 	}
 
-	public function setStudLen($stud_len = 100){
-		$this->stud_len = $stud_len;
-	}
-
-	function setProgressTextPlace($place = 0){
+	public function setProgressTextPlace($place = 0){
 		$this->progressTextPlace = $place;
-	}
-
-	function emptyTexts(){
-		$this->texts = [];
 	}
 
 	public function getHTML($class = '', $style = ''){

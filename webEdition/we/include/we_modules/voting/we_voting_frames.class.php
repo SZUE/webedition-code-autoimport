@@ -551,15 +551,12 @@ function newIp(){
 
 				$percent = we_base_util::getPercent($total_score, $this->View->voting->Scores[$key], 2);
 
-				$pb = new we_progressBar($percent);
-				$pb->setName('item' . $key);
-				$pb->setStudWidth(10);
-				$pb->setStudLen(150);
+				$pb = new we_progressBar($percent, 150, 'item' . $key);
 
 				$table->addRow();
 				$table->setRow($key + 1, array("id" => "row_scores_$key"));
 				$table->setCol($i, 0, array('style' => 'width: 400px'), we_html_element::htmlSpan(array('id' => 'answers_score_' . $key), oldHtmlspecialchars(stripslashes($value))));
-				$table->setColContent($i, 1, $pb->getJSCode() . $pb->getHTML());
+				$table->setColContent($i, 1, $pb->getHTML());
 				$table->setColContent($i, 2, '&nbsp;');
 				$table->setColContent($i, 3, we_html_tools::htmlTextInput('scores_' . $key, 4, $this->View->voting->Scores[$key], '', 'id="scores_' . $key . '" onKeyUp="var r=parseInt(this.value);if(isNaN(r)) this.value=' . $this->View->voting->Scores[$key] . '; else{ this.value=r;document.we_form.scores_changed.value=1;}refreshTotal();"'));
 				$i++;
@@ -605,16 +602,16 @@ function refreshTexts(){
 		var t = document.getElementById("answers_score_"+i);
 		t.innerHTML = document.we_form[answers_edit.name+"_item"+i].value;
 	}
-}');
+}') . we_progressBar::getJSCode();
 
-		$parts[] = array(
+		$parts[] = [
 			"headline" => g_l('modules_voting', '[inquiry]'),
 			"html" => $js .
 			we_html_element::htmlHidden('scores_changed', 0) .
 			$table->getHTML() .
 			we_html_element::htmlBr() . $butt,
 			'space' => we_html_multiIconBox::SPACE_MED
-		);
+			];
 
 
 		$ok = we_html_button::create_button('export', "javascript:we_cmd('export_csv')");

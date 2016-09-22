@@ -848,8 +848,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 			$text = we_base_request::_(we_base_request::STRING, "current_description", g_l('backup', '[working]'));
 			$progress = we_base_request::_(we_base_request::INT, 'percent', 0);
 
-			$progressbar = new we_progressBar($progress);
-			$progressbar->setStudLen(200);
+			$progressbar = new we_progressBar($progress, 200);
 			$progressbar->addText($text, 0, "current_description");
 		}
 
@@ -857,7 +856,7 @@ top.footer.location="' . $this->frameset . '?pnt=footer&step=7";');
 		$content->setCol(0, 0, null, (isset($progressbar) ? $progressbar->getHtml() : ""));
 		$content->setCol(0, 1, ["style" => "text-align:right"], $buttons);
 
-		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', (isset($progressbar) ? $progressbar->getJSCode() : ""), we_html_element::htmlBody(['class' => "weDialogButtonsBody",
+		return we_html_tools::getHtmlTop(g_l('import', '[title]'), '', '', (isset($progressbar) ? we_progressBar::getJSCode() : ""), we_html_element::htmlBody(['class' => "weDialogButtonsBody",
 					'style' => 'overflow:hidden;'], we_html_element::htmlForm(["name" => "we_form",
 						"method" => "post",
 						"target" => "load",

@@ -48,11 +48,8 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 		$allChildsJS .= "_allChilds['id_" . $db->f("ID") . "'] = '" . $db->f("ContentType") . "';";
 	}
 
-	$pb = new we_progressBar();
+	$pb = new we_progressBar(0, 300);
 	$pb->addText('&nbsp;', 0, 'copyWeDocumentCustomerFilterText');
-	$pb->setStudWidth(10);
-	$pb->setStudLen(300);
-	$js = $pb->getJSCode();
 
 	// image and progressbar
 	$content = $pb->getHTML();
@@ -62,8 +59,7 @@ if(we_base_request::_(we_base_request::BOOL, "startCopy")){ // start the fragmen
 
 	$iframeLocation = WEBEDITION_DIR . 'we_cmd.php?we_cmd[0]=' . we_base_request::_(we_base_request::RAW, 'we_cmd', '', 0) . '&we_cmd[1]=' . we_base_request::_(we_base_request::INT, 'we_cmd', '', 1) . "&we_cmd[2]=" . we_base_request::_(we_base_request::TABLE, 'we_cmd', '', 2) . ($cmd3 !== false ? "&we_cmd[3]=" . $cmd3 : "" ) . '&startCopy=1';
 
-	echo we_html_tools::getHtmlTop(g_l('modules_customerFilter', '[apply_filter]')) .
-	we_html_element::jsElement('
+	echo we_html_tools::getHtmlTop(g_l('modules_customerFilter', '[apply_filter]'), '', '', we_html_element::jsElement('
 function checkForOpenChilds() {
 	' . $allChildsJS . '
 	var _openChilds = [];
@@ -93,11 +89,9 @@ function checkForOpenChilds() {
 
 	}
 	document.getElementById("iframeCopyWeDocumentCustomerFilter").src="' . $iframeLocation . '";
-}');
-	echo '</head><body class="weDialogBody" onload="checkForOpenChilds()">' .
-	$js . we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', '[apply_filter]'), $buttonBar) .
-	'<div style="display: none;"> <!-- hidden -->
+}') . we_progressBar::getJSCode(), '<body class="weDialogBody" onload="checkForOpenChilds()">' .
+		we_html_tools::htmlDialogLayout($content, g_l('modules_customerFilter', '[apply_filter]'), $buttonBar) .
+		'<div style="display: none;"> <!-- hidden -->
 	<iframe style="position: absolute; top: 150; height: 1px; width: 1px;" name="iframeCopyWeDocumentCustomerFilter" id="iframeCopyWeDocumentCustomerFilter" src="about:blank"></iframe>
-</div>
-</html>';
+</div></body>');
 }
