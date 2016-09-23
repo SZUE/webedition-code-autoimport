@@ -216,6 +216,14 @@ Sallitut kirjaimet ovat alfa-numeerisia , isot ja pienet kirjaimet, alaviiva, ta
 	),
 	'triggerDocNotDynamic'=>'The document entered into "Preset document for display" must be dynamic.',
 	'triggerIdNotValid'=>'No valid document has been entered into "Preset document for display": This entry is mandatory if SEO-URLs are activated.',
+	
+	'unusedElements'=>array(
+		'Name'=>'Name',
+		'block'=>'Block',
+		'content'=>'Example Content',
+		'count'=>'Occurences',
+		'type'=>'Type',
+	),
 	'variantNameInvalid'=>'Artikkelimuuttujan nimi ei voi olla tyhjä!',
 	
 	'video/*'=>array(

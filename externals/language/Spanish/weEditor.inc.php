@@ -216,6 +216,14 @@ All characters except <>?":|\\/* are valid.',
 	),
 	'triggerDocNotDynamic'=>'The document entered into "Preset document for display" must be dynamic.',
 	'triggerIdNotValid'=>'No valid document has been entered into "Preset document for display": This entry is mandatory if SEO-URLs are activated.',
+	
+	'unusedElements'=>array(
+		'Name'=>'Name',
+		'block'=>'Block',
+		'content'=>'Example Content',
+		'count'=>'Occurences',
+		'type'=>'Type',
+	),
 	'variantNameInvalid'=>'The name of an article variant can not be empty!',
 	
 	'video/*'=>array(

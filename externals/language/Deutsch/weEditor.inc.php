@@ -216,6 +216,14 @@ Erlaubte Zeichen sind alle außer <>?":|\\/* .',
 	),
 	'triggerDocNotDynamic'=>'Das unter "Voreinstellung Dokument für die Darstellung" gewählte Dokument muss dynamisch gespeichert sein.',
 	'triggerIdNotValid'=>'Sie haben unter "Voreinstellung Dokument für die Darstellung" kein oder kein gültiges Dokument eingetragen: Dieses ist bei aktivierten SEO-URLs zwingend erforderlich.',
+	
+	'unusedElements'=>array(
+		'Name'=>'Name',
+		'block'=>'Block',
+		'content'=>'Exemplarischer Inhalt',
+		'count'=>'Anzahl',
+		'type'=>'Typ',
+	),
 	'variantNameInvalid'=>'Der Name einer Artikel-Variante darf nicht leer sein!',
 	
 	'video/*'=>array(
