@@ -32,8 +32,7 @@
  */
 
 abstract class we_autoloader{
-	private static $domains = array(
-		'backup' => 'we_exim/backup',
+	private static $domains = ['backup' => 'we_exim/backup',
 		'banner' => 'we_modules/banner',
 		'base' => 'we_classes/base',
 		'cache' => 'we_classes/cache',
@@ -84,10 +83,9 @@ abstract class we_autoloader{
 		'workflow' => 'we_modules/workflow',
 		'wysiwyg' => 'we_classes/wysiwyg',
 		'xml' => 'we_classes/xml',
-	);
+	 ];
 	//fallback classes if local classes do not exist - mostly pear
-	private static $fallBack = array(
-		'Archive_Tar' => 'lib/additional/archive/Archive_Tar.class.php',
+	private static $fallBack = ['Archive_Tar' => 'lib/additional/archive/Archive_Tar.class.php',
 		'Console_Getopt' => 'lib/additional/pear/Getopt.php',
 		'Image_Transform_Driver_GD' => 'lib/additional/pear/Image_Transform_Driver_GD.class.php',
 		'Image_Transform' => 'lib/additional/pear/Image_Transform.class.php',
@@ -99,10 +97,8 @@ abstract class we_autoloader{
 		'Services_JSON' => 'lib/additional/pear/Services_JSON.class.php',
 		'XML_Parser2' => 'lib/additional/pear/XML_Parser.class.php',
 		'Less_Parser' => 'lib/additional/Less/Parser.php',
-	);
-	private static $classes = array(
-		'we_classes/contents' => array(
-			'we_binaryDocument' => 'we_binaryDocument.class.php',
+	 ];
+	private static $classes = ['we_classes/contents' => ['we_binaryDocument' => 'we_binaryDocument.class.php',
 			'we_class' => 'we_class.class.php',
 			'we_document' => 'we_document.class.php',
 			'we_flashDocument' => 'we_flashDocument.class.php',
@@ -118,9 +114,8 @@ abstract class we_autoloader{
 			'we_thumbnail' => 'we_thumbnail.class.php',
 			'we_webEditionDocument' => 'we_webEditionDocument.class.php',
 			'we_collection' => 'we_collection.class.php',
-		),
-		'we_classes' => array(
-			'doclistView' => 'doclistView.class.php',
+		 ],
+		'we_classes' => ['doclistView' => 'doclistView.class.php',
 			'DB_WE' => 'database/DB_WE.inc.php', //pseudo-element which loads a wrapper, doesn't contain a real class!
 			'permissionhandler' => 'permissionhandler/permissionhandler.class.php',
 			'weBinary' => 'weBinary.class.php',
@@ -136,25 +131,21 @@ abstract class we_autoloader{
 			'we_updater' => 'we_updater.class.php',
 			'weToolLookup' => 'tools/we_tool_lookup.class.php',
 			'we_message_reporting' => 'we_message_reporting.class.php',
-		),
-		'we_modules' => array(
-			'we_class_folder' => 'object/we_class_folder.class.php',
+		 ],
+		'we_modules' => ['we_class_folder' => 'object/we_class_folder.class.php',
 			'we_object' => 'object/we_object.class.php',
 			'we_objectFile' => 'object/we_objectFile.class.php',
 			'we_schedpro' => 'schedule/we_schedpro.class.php',
 			'paypal_class' => 'shop/paypal.class.php',
 			'shop' => 'shop/we_shop_shop.class.php',
 			'Basket' => 'shop/we_shop_Basket.class.php',
-		),
-		'we_hook/class' => array(
-			'weHook' => 'weHook.class.php',
-		),
-		'validation' => array(
-			'validation' => 'validation.class.php',
+		 ],
+		'we_hook/class' => ['weHook' => 'weHook.class.php',
+		],
+		'validation' => ['validation' => 'validation.class.php',
 			'validationService' => 'validationService.class.php',
-		),
-		'weTagWizard/classes' => array(
-			'weTagData' => 'weTagData.class.php',
+		 ],
+		'weTagWizard/classes' => ['weTagData' => 'weTagData.class.php',
 			'weTagDataAttribute' => 'weTagDataAttribute.class.php',
 			'weTagDataOption' => 'weTagDataOption.class.php',
 			'weTagData_choiceAttribute' => 'weTagData_choiceAttribute.class.php',
@@ -167,8 +158,8 @@ abstract class we_autoloader{
 			'weTagData_sqlRowAttribute' => 'weTagData_sqlRowAttribute.class.php',
 			'weTagData_textAttribute' => 'weTagData_textAttribute.class.php',
 			'weTagData_typeAttribute' => 'weTagData_typeAttribute.class.php',
-		),
-	);
+		 ],
+	];
 
 	public static function loadZend($class_name){
 		//t_e('load zend because of', $class_name);

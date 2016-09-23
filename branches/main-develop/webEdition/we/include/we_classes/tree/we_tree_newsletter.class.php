@@ -49,8 +49,7 @@ class we_tree_newsletter extends we_tree_base{
 
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
-			$items[] = array(
-				'id' => 'prev_' . $ParentID,
+			$items[] = ['id' => 'prev_' . $ParentID,
 				'parentid' => $ParentID,
 				'text' => 'display (' . $prevoffset . '-' . $offset . ')',
 				'contenttype' => 'arrowup',
@@ -61,7 +60,7 @@ class we_tree_newsletter extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $prevoffset
-			);
+				];
 		}
 
 		$where = " WHERE $wsQuery ParentID=" . intval($ParentID) . ' ' . $addWhere;
@@ -69,8 +68,7 @@ class we_tree_newsletter extends we_tree_base{
 		$db->query('SELECT ' . $db->escape($elem) . " FROM $table $where ORDER BY (text REGEXP '^[0-9]') DESC,abs(text),Text " . ($segment ? 'LIMIT ' . $offset . ',' . $segment : '' ));
 
 		while($db->next_record(MYSQLI_ASSOC)){
-			$typ = array(
-				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+			$typ = ['typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
 				'disabled' => 0,
 				'tooltip' => $db->f('ID'),
@@ -80,7 +78,7 @@ class we_tree_newsletter extends we_tree_base{
 				'path' => $db->f('Path'),
 				'published' => 1,
 				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/newsletter'),
-			);
+				];
 
 			$fileds = array_change_key_case($db->Record, CASE_LOWER);
 
@@ -90,8 +88,7 @@ class we_tree_newsletter extends we_tree_base{
 		$total = f('SELECT COUNT(1) FROM ' . $table . ' ' . $where, '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
-			$items[] = array(
-				'id' => 'next_' . $ParentID,
+			$items[] = ['id' => 'next_' . $ParentID,
 				'parentid' => 0,
 				'text' => 'display (' . $nextoffset . '-' . ($nextoffset + $segment) . ')',
 				'contenttype' => 'arrowdown',
@@ -101,7 +98,7 @@ class we_tree_newsletter extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $nextoffset
-			);
+				];
 		}
 
 		return $items;

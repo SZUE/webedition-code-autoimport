@@ -39,12 +39,11 @@ abstract class we_tree_base{
 	var $cmdFrame;
 	var $frameset = '';
 	var $styles = [];
-	var $tree_states = array(
-		'edit' => 0,
+	var $tree_states = ['edit' => 0,
 		'select' => 1,
 		'selectitem' => 2,
 		'selectgroup' => 3,
-	);
+	 ];
 	var $default_segment = 30;
 
 //Initialization

@@ -23,15 +23,14 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_importer extends we_fileupload_ui_base {
-	protected $dimensions = array(
-		'width' => 400,
+	protected $dimensions = ['width' => 400,
 		'dragHeight' => 90,
 		'dragWidth' => 320,
 		'progressWidth' => 90,
 		'alertBoxWidth' => 500,
 		'marginTop' => 0,
 		'marginBottom' => 0
-	);
+	 ];
 
 	public function __construct($name){
 		parent::__construct($name);
@@ -40,14 +39,12 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		$this->type = 'importer';
 		$this->doCommitFile = true;
 		$this->isGdOk = we_base_imageEdit::gd_version() > 0;
-		$this->internalProgress = array(
-			'isInternalProgress' => true,
+		$this->internalProgress = ['isInternalProgress' => true,
 			'width' => 100
-		);
-		$this->externalProgress = array(
-			'isExternalProgress' => true,
+			];
+		$this->externalProgress = ['isExternalProgress' => true,
 			'create' => false
-		);
+			];
 		$this->fileTable = FILE_TABLE;
 		$this->footerName = 'imgimportbuttons';
 		$this->contentName = 'imgimportcontent';
@@ -60,17 +57,15 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 
 	public function getHTML($hiddens = ''){
 		$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
-		$alert = we_html_element::htmlHiddens(array(
-				'we_cmd[0]' => 'import_files',
+		$alert = we_html_element::htmlHiddens(['we_cmd[0]' => 'import_files',
 				'cmd' => 'content',
 				'step' => 2
-			)) .
-			we_html_element::htmlDiv(array('id' => 'desc'), we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . ($this->maxUploadSizeMBytes == 0 ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), $this->maxUploadSizeMBytes)), we_html_tools::TYPE_INFO, 568, false, 20));
+				]) .
+			we_html_element::htmlDiv(['id' => 'desc'], we_html_tools::htmlAlertAttentionBox(g_l('importFiles', '[import_expl_js]') . '<br/><br/>' . ($this->maxUploadSizeMBytes == 0 ? g_l('importFiles', '[import_expl_js_no_limit]') : sprintf(g_l('importFiles', '[import_expl_js_limit]'), $this->maxUploadSizeMBytes)), we_html_tools::TYPE_INFO, 568, false, 20));
 
-		$topParts = array(
-			array("headline" => "",
-				"html" => $alert)
-		);
+		$topParts = [["headline" => "",
+			"html" => $alert]
+		];
 
 		$butBrowse = str_replace(["\n\r", "\r\n", "\r", "\n"], "", $isIE10 ? we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', false, false, '_btn') :
 				we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', false, false, '_btn', false, '', 'importerBrowseHarddisk'));
@@ -93,21 +88,19 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		(we_fileupload::EDIT_IMAGES_CLIENTSIDE ? '<div style="position:absolute; left: 370px; padding-top: 10px">' . we_fileupload_ui_preview::getFormImageEditClientside(true, false) . '</div>' : '') .
 		'</form>';
 
-		$topParts[] = array("html" => $fileselect, 'space' => 0);
+		$topParts[] = ["html" => $fileselect, 'space' => 0];
 
 		// TODO: finish GUI
-		$divMask = we_html_element::htmlDiv(array('id' => 'we_fileUploadImporter_mask', 'class' => 'editorMask'));
-		$divBusyMessage = we_html_element::htmlDiv(array('id' => 'we_fileUploadImporter_busyMessage', 'class' => 'editorMessage'),
-			we_html_element::htmlDiv(array('class' => 'we_file_drag_maskSpinner'), '<i class="fa fa-2x fa-spinner fa-pulse"></i>') .
-			we_html_element::htmlDiv(array('id' => 'we_fileUploadImporter_busyText', 'class' => 'we_file_drag_maskBusyText'))
+		$divMask = we_html_element::htmlDiv(['id' => 'we_fileUploadImporter_mask', 'class' => 'editorMask']);
+		$divBusyMessage = we_html_element::htmlDiv(['id' => 'we_fileUploadImporter_busyMessage', 'class' => 'editorMessage'], we_html_element::htmlDiv(['class' => 'we_file_drag_maskSpinner'], '<i class="fa fa-2x fa-spinner fa-pulse"></i>') .
+				we_html_element::htmlDiv(['id' => 'we_fileUploadImporter_busyText', 'class' => 'we_file_drag_maskBusyText'])
 		);
 		$loupe = we_fileupload_ui_preview::getHtmlLoup();
 
-		$content = we_html_element::htmlDiv(array('id' => 'forms', 'class' => 'fileuploadImporter', 'style' => 'display:block'), we_html_element::htmlForm(array(
-					'action' => WEBEDITION_DIR . 'we_cmd.php',
+		$content = we_html_element::htmlDiv(['id' => 'forms', 'class' => 'fileuploadImporter', 'style' => 'display:block'], we_html_element::htmlForm(['action' => WEBEDITION_DIR . 'we_cmd.php',
 					'name' => 'we_startform',
 					'method' => 'post'
-					), $hiddens) .
+					], $hiddens) .
 				'<div style="overflow:hidden; padding-bottom: 10px">' . we_html_multiIconBox::getHTML("selectFiles", $topParts, 30, "", -1, "", "", "", g_l('importFiles', '[step2]'), "", 0, "hidden") . '</div>' .
 				'<div id="div_upload_files" style="height:410px; width: 100%; overflow:auto">' . we_html_multiIconBox::getHTML("uploadFiles", [], 30, "", -1, "", "", "", "") . '</div>' .
 				$divMask .

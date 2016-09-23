@@ -35,20 +35,18 @@ class we_metadata_metaData{
 	/**
 	 * @var array specifies possible access methods to metadata handled by this implementation class (i.e. exif: readonly)
 	 */
-	protected $accesstypes = array('read,write');
+	protected $accesstypes = ['read,write'];
 
 	/**
 	 * @var array mapping of datatypes and their metadata models
 	 */
-	private $dataTypeMapping = array(
-		'jpe' => array('Exif', 'IPTC'), // iptc support is currently broken, will be fixed later
-		'jpg' => array('Exif', 'IPTC'),
-		'jpeg' => array('Exif', 'IPTC'),
-		'wbmp' => array('Exif'),
-		'pdf' => array('PDF'),
-	);
-	private $imageTypeMap = array(
-		'', // image type 0 not defined
+	private $dataTypeMapping = ['jpe' => ['Exif', 'IPTC'], // iptc support is currently broken, will be fixed later
+		'jpg' => ['Exif', 'IPTC'],
+		'jpeg' => ['Exif', 'IPTC'],
+		'wbmp' => ['Exif'],
+		'pdf' => ['PDF'],
+	];
+	private $imageTypeMap = ['', // image type 0 not defined
 		'gif', // IMAGETYPE_GIF
 		'jpg', // IMAGETYPE_JPEG
 		'png', // IMAGETYPE_PNG
@@ -65,7 +63,7 @@ class we_metadata_metaData{
 		'iff', // IMAGETYPE_IFF
 		'wbmp', // IMAGETYPE_WBMP
 		'xbm', // IMAGETYPE_XBM
-	);
+		];
 
 	/**
 	 * @var string name and path of the file for read/write operations

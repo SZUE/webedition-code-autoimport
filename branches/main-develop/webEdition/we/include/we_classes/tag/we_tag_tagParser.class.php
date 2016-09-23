@@ -165,7 +165,7 @@ class we_tag_tagParser{
 				}
 			}
 		}
-		return array(FALSE, FALSE);
+		return [FALSE, FALSE];
 	}
 
 	public static function makeArrayFromAttribs($attr){

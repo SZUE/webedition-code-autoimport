@@ -100,8 +100,7 @@ class we_selector_directory extends we_selector_file{
 		}
 		$this->path = '';
 
-		$this->values = array(
-			'ParentID' => 0,
+		$this->values = ['ParentID' => 0,
 			'Text' => '/',
 			'Path' => '/',
 			'IsFolder' => 1,
@@ -109,7 +108,7 @@ class we_selector_directory extends we_selector_file{
 			'RestrictOwners' => 0,
 			'Owners' => '',
 			'OwnersReadOnly' => '',
-			'CreatorID' => 0);
+			'CreatorID' => 0];
 	}
 
 	protected function getFsQueryString($what){
@@ -505,15 +504,13 @@ class we_selector_directory extends we_selector_file{
 								//remove old thumb
 								we_base_file::delete($_SERVER['DOCUMENT_ROOT'] . $thumbpath);
 							}
-							$thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
-									'id' => $this->id,
-									'size' => array(
-										'width' => 150,
+							$thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(['id' => $this->id,
+									'size' => ['width' => 150,
 										'height' => 200
-									),
+										],
 									'path' => $result['Path'],
 									'extension' => $extension,
-							));
+									]);
 						} else {
 							$thumbpath = $result['Path'];
 						}

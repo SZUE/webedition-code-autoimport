@@ -30,7 +30,7 @@ class we_metadata_PDF extends we_metadata_metaData{
 
 	public function __construct($filetype){
 		$this->filetype = $filetype;
-		$this->accesstypes = array('read');
+		$this->accesstypes = ['read'];
 	}
 
 	protected function getInstMetaData($selection = ''){

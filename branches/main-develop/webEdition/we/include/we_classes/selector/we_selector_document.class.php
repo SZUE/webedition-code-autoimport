@@ -27,19 +27,18 @@ class we_selector_document extends we_selector_directory{
 	protected $titles = [];
 	protected $titleName = '';
 	protected $startPath;
-	protected $ctp = array(//FIXME: add audio button
+	protected $ctp = [//FIXME: add audio button
 		we_base_ContentTypes::IMAGE => "NEW_GRAFIK",
 		we_base_ContentTypes::FLASH => "NEW_FLASH",
 		we_base_ContentTypes::VIDEO => "NEW_VIDEO",
 		we_base_ContentTypes::COLLECTION => "NEW_COLLECTION"
-	);
-	protected $ctb = array(
-		"" => "btn_add_file",
+	 ];
+	protected $ctb = ["" => "btn_add_file",
 		we_base_ContentTypes::IMAGE => 'fa:btn_add_image,fa-upload,fa-lg fa-file-image-o',
 		we_base_ContentTypes::FLASH => 'fa:btn_add_flash,fa-upload,fa-lg fa-flash',
 		we_base_ContentTypes::VIDEO => 'fa:btn_add_video,fa-upload,fa-lg fa-file-video-o',
 		we_base_ContentTypes::COLLECTION => 'fa:btn_add_collection,fa-plus,fa-lg fa-archive',
-	);
+	 ];
 
 	public function __construct($id, $table = '', $JSIDName = '', $JSTextName = '', $JSCommand = '', $order = '', $sessionID = '', $we_editDirID = '', $FolderText = '', $filter = '', $rootDirID = 0, $open_doc = false, $multiple = false, $canSelectDir = false, $startID = 0, $lang = ''){
 		parent::__construct($id, $table, $JSIDName, $JSTextName, $JSCommand, $order, 0, $we_editDirID, $FolderText, $rootDirID, $multiple, $filter, $startID);
@@ -146,8 +145,7 @@ class we_selector_document extends we_selector_directory{
 			}
 		}
 		$this->path = '';
-		$this->values = array(
-			'ParentID' => 0,
+		$this->values = ['ParentID' => 0,
 			'Text' => '/',
 			'Path' => '/',
 			'IsFolder' => 1,
@@ -156,7 +154,7 @@ class we_selector_document extends we_selector_directory{
 			'Owners' => '',
 			'OwnersReadOnly' => '',
 			'CreatorID' => 0,
-			'ContentType' => '');
+			'ContentType' => ''];
 		$this->id = '';
 	}
 
@@ -169,7 +167,7 @@ class we_selector_document extends we_selector_directory{
 		$entries = [];
 		while($this->db->next_record()){
 
-			$title = strip_tags(str_replace(array('"', "\n\r", "\n", "\\", '°',), array('\"', ' ', ' ', "\\\\", '&deg;'), (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
+			$title = strip_tags(str_replace(['"', "\n\r", "\n", "\\", '°',], ['\"', ' ', ' ', "\\\\", '&deg;'], (isset($this->titles[$this->db->f("ID")]) ? oldHtmlspecialchars($this->titles[$this->db->f("ID")]) : '-')));
 
 			$entries[] = [
 				intval($this->db->f('ID')),
@@ -290,7 +288,7 @@ class we_selector_document extends we_selector_directory{
 			we_html_element::htmlDiv(['id' => 'fsheader'], $this->printHeaderHTML($weCmd)) .
 			we_html_element::htmlIFrame('fsbody', $this->getFsQueryString(we_selector_file::BODY), '', '', '', true, 'preview' . ($is_object ? ' object' : '')) .
 			we_html_element::htmlIFrame('fspreview', $this->getFsQueryString(we_selector_file::PREVIEW), '', '', '', false, ($is_object ? 'object' : '')) .
-			we_html_element::htmlDiv(array('id' => 'fsfooter'), $this->printFooterTable()) .
+			we_html_element::htmlDiv(['id' => 'fsfooter'], $this->printFooterTable()) .
 			we_html_element::htmlDiv(['id' => 'fspath', 'class' => 'radient']) .
 			we_html_element::htmlIFrame('fscmd', 'about:blank', '', '', '', false) .
 			'</body>';
@@ -371,73 +369,62 @@ class we_selector_document extends we_selector_directory{
 					$imagepreview = '<img src="' . $thumbpath . '" id="previewpic"><p>' . g_l('fileselector', '[image_not_uploaded]') . '</p>';
 				} else {
 					$imagesize = getimagesize($_SERVER['DOCUMENT_ROOT'] . $result['Path']);
-					$thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(array(
-							'id' => $this->id,
-							'size' => array(
-								'width' => 150,
+					$thumbpath = WEBEDITION_DIR . 'thumbnail.php?' . http_build_query(['id' => $this->id,
+							'size' => ['width' => 150,
 								'height' => 200,
-							),
+								],
 							'path' => str_replace($_SERVER['DOCUMENT_ROOT'], '', $result['Path']),
 							'extension' => $result['Extension'],
-					));
+							]);
 					$imagepreview = "<a href='" . $result['Path'] . "' target='_blank'><img src='" . $thumbpath . "' border='0' id='previewpic'></a>";
 				}
 			}
 
-			$previewFields = array(
-				"metainfos" => array("headline" => g_l('weClass', '[metainfo]'), "data" => []),
-				"attributes" => array("headline" => g_l('weClass', '[attribs]'), "data" => []),
-				"folders" => array("headline" => g_l('fileselector', '[folders]'), "data" => []),
-				"files" => array("headline" => g_l('fileselector', '[files]'), "data" => []),
-				"masterTemplate" => array("headline" => g_l('weClass', '[master_template]'), "data" => []),
-				"properies" => array("headline" => g_l('weClass', '[tab_properties]'), "data" => array(
-						array(
-							"caption" => g_l('fileselector', '[name]'),
-							"content" => (
+			$previewFields = ["metainfos" => ["headline" => g_l('weClass', '[metainfo]'), "data" => []],
+				"attributes" => ["headline" => g_l('weClass', '[attribs]'), "data" => []],
+				"folders" => ["headline" => g_l('fileselector', '[folders]'), "data" => []],
+				"files" => ["headline" => g_l('fileselector', '[files]'), "data" => []],
+				"masterTemplate" => ["headline" => g_l('weClass', '[master_template]'), "data" => []],
+				"properies" => ["headline" => g_l('weClass', '[tab_properties]'), "data" => [["caption" => g_l('fileselector', '[name]'),
+						"content" => (
 							$showPreview ?
 								"<a href='" . $result['Path'] . "' target='_blank' style='color:black'><i style='margin-right:4px' class='fa fa-external-link fa-lg'></i>" . $result['Text'] . "</a>" :
 								$result['Text']
 							)
-						),
-						array(
-							"caption" => "ID",
+							],
+							["caption" => "ID",
 							"content" => "<a href='javascript:WE().layout.openToEdit(\"" . $this->table . "\",\"" . $this->id . "\",\"" . $result['ContentType'] . "\")' style='color:black'><i style='margin-right:4px' class='fa fa-edit fa-lg'></i>" . $this->id . "</a>"
-						)
-					)),
-			);
+							]
+					]],
+			];
 			if($result['CreationDate']){
-				$previewFields["properies"]["data"][] = array(
-					'caption' => g_l('fileselector', '[created]'),
+				$previewFields["properies"]["data"][] = ['caption' => g_l('fileselector', '[created]'),
 					'content' => is_numeric($result['CreationDate']) ? date(g_l('date', '[format][default]'), $result['CreationDate']) : $result['CreationDate']
-				);
+					];
 			}
 
 			if($result['ModDate']){
-				$previewFields["properies"]["data"][] = array(
-					"caption" => g_l('fileselector', '[modified]'),
+				$previewFields["properies"]["data"][] = ["caption" => g_l('fileselector', '[modified]'),
 					"content" => is_numeric($result['ModDate']) ? date(g_l('date', '[format][default]'), $result['ModDate']) : $result['ModDate']
-				);
+					];
 			}
 
-			$previewFields["properies"]["data"][] = array(
-				"caption" => g_l('fileselector', '[type]'),
+			$previewFields["properies"]["data"][] = ["caption" => g_l('fileselector', '[type]'),
 				"content" => ((g_l('contentTypes', '[' . $result['ContentType'] . ']') !== false) ? g_l('contentTypes', '[' . $result['ContentType'] . ']') : $result['ContentType'])
-			);
+				];
 
 			if(isset($result['Language'])){
 				$langs = getWeFrontendLanguagesForBackend();
-				$previewFields['properies']['data'][] = array(
-					'caption' => g_l('weClass', '[language]'),
+				$previewFields['properies']['data'][] = ['caption' => g_l('weClass', '[language]'),
 					'content' => $result['Language'] ? $langs[$result['Language']] : '-'
-				);
+					];
 			}
 
 
 			if(isset($imagesize)){
-				$previewFields["properies"]["data"][] = array(
-					"caption" => g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]'),
+				$previewFields["properies"]["data"][] = ["caption" => g_l('weClass', '[width]') . " x " . g_l('weClass', '[height]'),
 					"content" => $imagesize[0] . " x " . $imagesize[1] . " px "
-				);
+					];
 			}
 
 			switch($result['ContentType']){
@@ -447,32 +434,28 @@ class we_selector_document extends we_selector_directory{
 				case we_base_ContentTypes::OBJECT_FILE:
 					break;
 				default:
-					$previewFields["properies"]["data"][] = array(
-						"caption" => g_l('fileselector', '[filesize]'),
+					$previewFields["properies"]["data"][] = ["caption" => g_l('fileselector', '[filesize]'),
 						"content" => $filesize
-					);
+						];
 			}
 
 
 			if(isset($metainfos['Title'])){
-				$previewFields["metainfos"]["data"][] = array(
-					"caption" => g_l('weClass', '[Title]'),
+				$previewFields["metainfos"]["data"][] = ["caption" => g_l('weClass', '[Title]'),
 					"content" => $metainfos['Title']
-				);
+					];
 			}
 
 			if(isset($metainfos['Description'])){
-				$previewFields["metainfos"]["data"][] = array(
-					"caption" => g_l('weClass', '[Description]'),
+				$previewFields["metainfos"]["data"][] = ["caption" => g_l('weClass', '[Description]'),
 					"content" => $metainfos['Description']
-				);
+					];
 			}
 
 			if(isset($metainfos['Keywords'])){
-				$previewFields['metainfos']['data'][] = array(
-					"caption" => g_l('weClass', '[Keywords]'),
+				$previewFields['metainfos']['data'][] = ["caption" => g_l('weClass', '[Keywords]'),
 					"content" => $metainfos['Keywords']
-				);
+					];
 			}
 			switch($result['ContentType']){
 				case we_base_ContentTypes::IMAGE:
@@ -480,22 +463,19 @@ class we_selector_document extends we_selector_directory{
 					$name = (isset($metainfos['name']) ? $metainfos['name'] : '');
 					$alt = (isset($metainfos['alt']) ? $metainfos['alt'] : '');
 					if($Title !== ""){
-						$previewFields['attributes']['data'][] = array(
-							"caption" => g_l('weClass', '[Title]'),
+						$previewFields['attributes']['data'][] = ["caption" => g_l('weClass', '[Title]'),
 							"content" => oldHtmlspecialchars($Title)
-						);
+							];
 					}
 					if($name){
-						$previewFields['attributes']['data'][] = array(
-							"caption" => g_l('weClass', '[name]'),
+						$previewFields['attributes']['data'][] = ["caption" => g_l('weClass', '[name]'),
 							"content" => $name
-						);
+							];
 					}
 					if($alt){
-						$previewFields['attributes']['data'][] = array(
-							"caption" => g_l('weClass', '[alt]'),
+						$previewFields['attributes']['data'][] = ["caption" => g_l('weClass', '[alt]'),
 							"content" => oldHtmlspecialchars($alt)
-						);
+							];
 					}
 				//no break!
 				case we_base_ContentTypes::FLASH:
@@ -505,10 +485,9 @@ class we_selector_document extends we_selector_directory{
 					foreach($metaDataFields as $md){
 						if($md['tag'] != "Title" && $md['tag'] != "Description" && $md['tag'] != "Keywords"){
 							if(isset($metainfos[$md['tag']])){
-								$previewFields["metainfos"]["data"][] = array(
-									"caption" => $md['tag'],
+								$previewFields["metainfos"]["data"][] = ["caption" => $md['tag'],
 									"content" => $metainfos[$md['tag']]
-								);
+									];
 							}
 						}
 					}
@@ -517,18 +496,16 @@ class we_selector_document extends we_selector_directory{
 				case "folder":
 					if(isset($folderFolders) && is_array($folderFolders) && !empty($folderFolders)){
 						foreach($folderFolders as $fId => $fxVal){
-							$previewFields["folders"]["data"][] = array(
-								"caption" => $fId,
+							$previewFields["folders"]["data"][] = ["caption" => $fId,
 								"content" => $fxVal
-							);
+								];
 						}
 					}
 					if(isset($folderFiles) && is_array($folderFiles) && !empty($folderFiles)){
 						foreach($folderFiles as $fId => $fxVal){
-							$previewFields["files"]["data"][] = array(
-								"caption" => $fId,
+							$previewFields["files"]["data"][] = ["caption" => $fId,
 								"content" => $fxVal
-							);
+								];
 						}
 					}
 					break;
@@ -536,14 +513,12 @@ class we_selector_document extends we_selector_directory{
 				case we_base_ContentTypes::TEMPLATE:
 					if(isset($result['MasterTemplateID']) && !empty($result['MasterTemplateID'])){
 						$mastertemppath = f("SELECT Text, Path FROM " . $this->db->escape($this->table) . " WHERE ID=" . intval($result['MasterTemplateID']), "Path", $this->db);
-						$previewFields["masterTemplate"]["data"][] = array(
-							"caption" => "ID",
+						$previewFields["masterTemplate"]["data"][] = ["caption" => "ID",
 							"content" => $result['MasterTemplateID']
-						);
-						$previewFields["masterTemplate"]["data"][] = array(
-							"caption" => g_l('weClass', '[path]'),
+							];
+						$previewFields["masterTemplate"]["data"][] = ["caption" => g_l('weClass', '[path]'),
 							"content" => $mastertemppath
-						);
+							];
 					}
 					break;
 			}
