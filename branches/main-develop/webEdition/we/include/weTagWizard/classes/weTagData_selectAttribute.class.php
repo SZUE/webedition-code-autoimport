@@ -44,7 +44,7 @@ class weTagData_selectAttribute extends weTagDataAttribute{
 	static function getTrueFalse(){
 		static $tmp = false;
 		if(!$tmp){
-			$tmp = array(new weTagDataOption('true'), new weTagDataOption('false'));
+			$tmp = [new weTagDataOption('true'), new weTagDataOption('false')];
 		}
 		return $tmp;
 	}

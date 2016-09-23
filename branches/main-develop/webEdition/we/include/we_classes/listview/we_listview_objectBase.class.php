@@ -109,7 +109,7 @@ abstract class we_listview_objectBase extends we_listview_base{
 					$out .= '&' . ord(substr($in, $i, 1)) . ';';
 				}
 				return "'" . $out . "'";
-			}, strtr($cond, array('&gt;' => '>', '&lt;' => '<'))) . ' ';
+			}, strtr($cond, ['&gt;' => '>', '&lt;' => '<'])) . ' ';
 
 		if($order){
 			foreach(array_map('trim', explode(',', $order)) as $f){

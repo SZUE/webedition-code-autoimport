@@ -115,7 +115,7 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 				$divBusyMessage
 		);
 //<div id="imgfocus_point" style="display:none;" draggable="false"></div>
-		return we_html_element::htmlBody(array('class' => "weDialogBody"), $content);
+		return we_html_element::htmlBody(['class' => "weDialogBody"], $content);
 	}
 
 	//TODO: add param filetype
@@ -124,13 +124,13 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 	}
 
 	protected function _getHtmlFileRow(){
-		$btnTable = new we_html_table(array('class' => 'default') , 1, 2);
+		$btnTable = new we_html_table(['class' => 'default'], 1, 2);
 		$btnTable->addCol(we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);"));
 		$btnTable->setCol(0, 0, [], we_html_button::create_button(we_html_button::TRASH, "javascript:we_FileUpload.deleteRow(WEFORMNUM,this);"));
 		$divBtnSelect = we_html_element::htmlDiv(
-			array('class' => 'fileInputWrapper', 'style' => 'overflow:hidden;vertical-align: bottom; display: inline-block;'),
-			we_html_element::htmlInput(array('type' => 'file', 'id' => 'fileInput_uploadFiles_WEFORMNUM', 'class' => 'fileInput fileInputList fileInputHidden elemFileinput')) .
-			we_html_button::create_button('fa:, fa-lg fa-hdd-o', 'javascript:void(0)')
+				['class' => 'fileInputWrapper', 'style' => 'overflow:hidden;vertical-align: bottom; display: inline-block;'], we_html_element::htmlInput(['type' => 'file', 'id' => 'fileInput_uploadFiles_WEFORMNUM',
+					'class' => 'fileInput fileInputList fileInputHidden elemFileinput']) .
+				we_html_button::create_button('fa:, fa-lg fa-hdd-o', 'javascript:void(0)')
 		);
 		$btnTable->setCol(0, 1, [], $divBtnSelect);
 
@@ -148,47 +148,45 @@ class we_fileupload_ui_importer extends we_fileupload_ui_base {
 		 *
 		 */
 
-		$quality = we_html_element::htmlDiv(array('class' => 'qualityInputContainer'),
-				we_html_element::htmlInput(array('disabled' => true, 'class' => 'optsQuality', 'type' => 'range', 'title' => 'test', 'value' => 100, 'min' => 10, 'max' => 100, 'step' => 5, 'oninput' => 'this.parentNode.nextSibling.innerHTML = this.value', 'name' => 'fuOpts_quality')) .
-				we_html_element::htmlDiv(array('class' => 'qualityValueContainer'), 100)
-			);
+		$quality = we_html_element::htmlDiv(['class' => 'qualityInputContainer'], we_html_element::htmlInput(['disabled' => true, 'class' => 'optsQuality', 'type' => 'range',
+					'title' => 'test', 'value' => 100, 'min' => 10, 'max' => 100, 'step' => 5, 'oninput' => 'this.parentNode.nextSibling.innerHTML = this.value', 'name' => 'fuOpts_quality']) .
+				we_html_element::htmlDiv(['class' => 'qualityValueContainer'], 100)
+		);
 
 		$optsCheckbox = we_html_forms::checkbox(0, false, 'fuOpts_useCustomOpts', 'Eigene Einstellungen'/* . g_l('importFiles', '[edit_useGlobalOpts]')*/, true, 'defaultfont');
 
 		$scaleValue = we_html_tools::htmlTextInput('fuOpts_scale', 11, '', '', 'class="optsScaleInput optsScaleInput_row"', "text", 0, 0, '', true);
-		$scaleWhatSelect = we_html_tools::htmlSelect('fuOpts_scaleWhat', array(
-				'pixel_l' => g_l('importFiles', '[edit_pixel_longest]'),
+		$scaleWhatSelect = we_html_tools::htmlSelect('fuOpts_scaleWhat', ['pixel_l' => g_l('importFiles', '[edit_pixel_longest]'),
 				'pixel_w' => g_l('importFiles', '[edit_pixel_width]'),
 				'pixel_h' => g_l('importFiles', '[edit_pixel_height]'),
-			), 1, 0, false, array('disabled' => 'disabled'), '', 0, 'weSelect optsUnitSelect');
+				], 1, 0, false, ['disabled' => 'disabled'], '', 0, 'weSelect optsUnitSelect');
 		$scalePropositions = we_html_tools::htmlSelect('fuOpts_scaleProps',
-				array('' => '', 320 => 320, 640 => 640, 1280 => 1280, 1440 => 1440, 1600 => 1600, 1920 => 1920, 2560 => 2560),
-					1, 0, false, array('disabled' => 'disabled'), '', '', 'weSelect optsScalePropositions');
-		$scaleHelp = we_html_element::htmlDiv(array('data-index' => 'WEFORMNUM', 'class' => 'optsRowScaleHelp'), '<span class="fa-stack alertIcon" style="color:black;"><i class="fa fa-question-circle" ></i></span>' . we_html_element::htmlDiv(array('class' => 'optsRowScaleHelpText')));
-		$divOptsScale = we_html_element::htmlDiv(array('class' => 'optsRowScale'), $scaleWhatSelect . ' ' . $scalePropositions . $scaleValue) . $scaleHelp;
+ ['' => '', 320 => 320, 640 => 640, 1280 => 1280, 1440 => 1440, 1600 => 1600, 1920 => 1920,
+				2560 => 2560], 1, 0, false, ['disabled' => 'disabled'], '', '', 'weSelect optsScalePropositions');
+		$scaleHelp = we_html_element::htmlDiv(['data-index' => 'WEFORMNUM', 'class' => 'optsRowScaleHelp'], '<span class="fa-stack alertIcon" style="color:black;"><i class="fa fa-question-circle" ></i></span>' . we_html_element::htmlDiv([
+					'class' => 'optsRowScaleHelpText']));
+		$divOptsScale = we_html_element::htmlDiv(['class' => 'optsRowScale'], $scaleWhatSelect . ' ' . $scalePropositions . $scaleValue) . $scaleHelp;
 
-		$qualitySlide = we_html_element::htmlInput(array('disabled' => true, 'class' => 'optsQualitySlide', 'type' => 'range', 'title' => 'test', 'value' => 100, 'min' => 10, 'max' => 100, 'step' => 5, 'name' => 'fuOpts_quality'));
-		$qualityValue = we_html_element::htmlDiv(array('class' => 'optsQualityValue qualityValueContainer'), 100);
-		$qualityBox = we_html_element::htmlDiv(array('class' => 'optsQualityBox'), $qualitySlide . $qualityValue);
-		$divOptsQuality = we_html_element::htmlDiv(array('class' => 'optsRowQuality'), $qualityBox);
+		$qualitySlide = we_html_element::htmlInput(['disabled' => true, 'class' => 'optsQualitySlide', 'type' => 'range', 'title' => 'test', 'value' => 100, 'min' => 10,
+				'max' => 100, 'step' => 5, 'name' => 'fuOpts_quality']);
+		$qualityValue = we_html_element::htmlDiv(['class' => 'optsQualityValue qualityValueContainer'], 100);
+		$qualityBox = we_html_element::htmlDiv(['class' => 'optsQualityBox'], $qualitySlide . $qualityValue);
+		$divOptsQuality = we_html_element::htmlDiv(['class' => 'optsRowQuality'], $qualityBox);
 
-		$rotateSelect = we_html_tools::htmlSelect('fuOpts_rotate', array(
-				0 => g_l('weClass', '[rotate0]'),
+		$rotateSelect = we_html_tools::htmlSelect('fuOpts_rotate', [0 => g_l('weClass', '[rotate0]'),
 				180 => g_l('weClass', '[rotate180]'),
 				270 => g_l('weClass', '[rotate90l]'),
 				90 => g_l('weClass', '[rotate90r]'),
-			), 1, 0, false, array('disabled' => 'disabled'), '', 0, 'weSelect optsRotateSelect');
-		$divOptsRotation = we_html_element::htmlDiv(array('class' => 'optsRowRotate'), $rotateSelect);
+				], 1, 0, false, ['disabled' => 'disabled'], '', 0, 'weSelect optsRotateSelect');
+		$divOptsRotation = we_html_element::htmlDiv(['class' => 'optsRowRotate'], $rotateSelect);
 
-		$divOptionsLeft = we_html_element::htmlDiv(array('class' => 'optsLeft'),
-			we_html_element::htmlDiv(array('class' => 'optsLeftTop'), $optsCheckbox) .
-			we_html_element::htmlDiv(array('class' => 'optsLeftBottom'), $divOptsRotation)
+		$divOptionsLeft = we_html_element::htmlDiv(['class' => 'optsLeft'], we_html_element::htmlDiv(['class' => 'optsLeftTop'], $optsCheckbox) .
+				we_html_element::htmlDiv(['class' => 'optsLeftBottom'], $divOptsRotation)
 		);
-		$divOptopnsRight = we_html_element::htmlDiv(array('class' => 'optsRight' . (we_base_browserDetect::isIE() ? ' optsRightIE' : '')),
-			we_html_element::htmlDiv(array('class' => 'optsRightTop'), $divOptsScale) .
-			we_html_element::htmlDiv(array('class' => 'optsRightBottom'), $divOptsQuality)
+		$divOptopnsRight = we_html_element::htmlDiv(['class' => 'optsRight' . (we_base_browserDetect::isIE() ? ' optsRightIE' : '')], we_html_element::htmlDiv(['class' => 'optsRightTop'], $divOptsScale) .
+				we_html_element::htmlDiv(['class' => 'optsRightBottom'], $divOptsQuality)
 		);
-		$divBtnRefresh = we_html_element::htmlDiv(array('class' => 'btnRefresh'), we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", true, 0, 0, '', '', false, true, '', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh rowBtnProcess'));
+		$divBtnRefresh = we_html_element::htmlDiv(['class' => 'btnRefresh'], we_html_button::create_button(we_html_button::MAKE_PREVIEW, "javascript:", true, 0, 0, '', '', false, true, '', false, $title = 'Bearbeitungsvorschau erstellen', 'weFileupload_btnImgEditRefresh rowBtnProcess'));
 
 		return str_replace(["\r", "\n"], "", we_html_element::htmlDiv(['class' => 'importerElem'], we_html_element::htmlDiv(['class' => 'weMultiIconBoxHeadline elemNum'], 'Nr. WE_FORM_NUM') .
 		we_html_element::htmlDiv(['class' => 'elemContainer'],

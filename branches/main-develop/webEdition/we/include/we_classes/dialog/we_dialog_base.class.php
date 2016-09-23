@@ -271,12 +271,11 @@ function weDoOk() {' .
 	}
 
 	function getClassSelect($style = 'width: 300px;'){
-		$clSelect = new we_html_select(array(
-			"name" => "we_dialog_args[cssclass]",
+		$clSelect = new we_html_select(["name" => "we_dialog_args[cssclass]",
 			"id" => "we_dialog_args[cssclass]",
 			"style" => $style,
 			'class' => 'defaultfont'
-		));
+			]);
 		$clSelect->addOption("", g_l('wysiwyg', '[none]'));
 		$classesCSV = trim($this->args['cssclasses'], ",");
 		if($classesCSV){

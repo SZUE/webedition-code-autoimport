@@ -305,9 +305,9 @@ abstract class we_database_base{
 // if union is found in query, then take a closer look
 		if(!$allowUnion && stristr($Query_String, 'union') || stristr($Query_String, '/*!')){
 
-			$queryToCheck = str_replace(array('\\\\'/* escape for mysql connection */, '\\"', "\\'", '\\\`'), array('', '', '', ''), $Query_String);
+			$queryToCheck = str_replace(['\\\\'/* escape for mysql connection */, '\\"', "\\'", '\\\`'], '', $Query_String);
 
-			$quotes = array('\'' => false, '"' => false, '`' => false, '/*' => false, '#' => false);
+			$quotes = ['\'' => false, '"' => false, '`' => false, '/*' => false, '#' => false];
 
 			$queryWithoutStrings = '';
 
@@ -421,15 +421,14 @@ abstract class we_database_base{
 		if(self::$Trigger_cnt && (defined('ERROR_LOG_TABLE') && strpos($Query_String, ERROR_LOG_TABLE) === false || !defined('ERROR_LOG_TABLE'))){
 			--self::$Trigger_cnt;
 			$time = microtime(true) - $time;
-			$tmp = array(
-				'time' => $time,
+			$tmp = ['time' => $time,
 				'trigger' => self::$Trigger_cnt,
 				'errno' => $this->Errno,
 				'error' => $this->Error,
 				'affected' => $this->_affected_rows(),
 				'rows' => $this->num_rows(),
 				'explain' => []
-			);
+				];
 			if($isSelect){
 				$this->Query_ID = $this->_query('EXPLAIN ' . $Query_String);
 
@@ -542,10 +541,9 @@ abstract class we_database_base{
 		$this->query('SHOW TABLES' . (($like != '') ? ' LIKE "' . $like . '"' : ''));
 		$return = [];
 		while($this->next_record()){
-			$return[] = array(
-				"table_name" => $this->f(0),
+			$return[] = ["table_name" => $this->f(0),
 				"tablespace_name" => $this->Database,
-				"database" => $this->Database);
+				"database" => $this->Database];
 		}
 		return $return;
 	}
@@ -714,13 +712,12 @@ abstract class we_database_base{
 		}
 
 		for($i = 0; $i < $count; $i++){
-			$res[$i] = array(
-				'table' => $this->field_table($i),
+			$res[$i] = ['table' => $this->field_table($i),
 				'name' => $this->field_name($i),
 				'type' => $this->field_type($i),
 				'len' => $this->field_len($i),
 				'flags' => $this->field_flags($i),
-			);
+				];
 		}
 		if($full){
 			$res['num_fields'] = $count;
@@ -851,7 +848,7 @@ abstract class we_database_base{
 		}
 		if($engine === 'MYISAM'){
 			$defaultEngine = f('show variables LIKE "default_storage_engine"', 'Value');
-			$engine = (in_array(strtolower($defaultEngine), array('myisam', 'aria')) ? $defaultEngine : 'myisam');
+			$engine = (in_array(strtolower($defaultEngine), ['myisam', 'aria']) ? $defaultEngine : 'myisam');
 		}
 		$cols_sql = [];
 		foreach($cols as $name => $type){

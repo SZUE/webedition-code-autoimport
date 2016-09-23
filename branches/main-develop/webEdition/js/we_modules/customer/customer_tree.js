@@ -114,3 +114,28 @@ container.prototype.drawSort = function (nf, ai, zweigEintrag) {
 									this.draw(nf[ai].id, zweigEintrag + '<span class="' + (ai == nf.len ? "" : "strich ") + 'treeKreuz"></span>') :
 									"");
 };
+
+function applySort() {
+	document.we_form_treeheader.pnt.value = "cmd";
+	document.we_form_treeheader.cmd.value = "applySort";
+	submitForm("", "", "", "we_form_treeheader");
+}
+
+function addSorting(sortname) {
+	len = document.we_form_treeheader.sort.options.length;
+	for (i = 0; i < len; i++) {
+		if (document.we_form_treeheader.sort.options[i].value == sortname) {
+			return;
+		}
+	}
+	document.we_form_treeheader.sort.options[len] = new Option(sortname, sortname);
+
+}
+function submitForm(target, action, method, form) {
+	var f = form ? window.document.forms[form] : window.document.we_form;
+	f.target = target ? target : "cmd";
+	f.action = action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer";
+	f.method = method ? method : "post";
+
+	f.submit();
+}

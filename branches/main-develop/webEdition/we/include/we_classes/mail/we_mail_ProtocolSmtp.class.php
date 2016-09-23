@@ -224,7 +224,7 @@ class we_mail_ProtocolSmtp extends we_mail_ProtocolAbstract{
 
 		// Set rcpt to true, as per 4.1.1.3 of RFC 2821
 		$this->_send('RCPT TO:<' . $to . '>');
-		$this->_expect(array(250, 251), 300); // Timeout set for 5 minutes as per RFC 2821 4.5.3.2
+		$this->_expect([250, 251], 300); // Timeout set for 5 minutes as per RFC 2821 4.5.3.2
 		$this->_rcpt = true;
 	}
 
@@ -267,7 +267,7 @@ class we_mail_ProtocolSmtp extends we_mail_ProtocolAbstract{
 	public function rset(){
 		$this->_send('RSET');
 		// MS ESMTP doesn't follow RFC, see [ZF-1377]
-		$this->_expect(array(250, 220));
+		$this->_expect([250, 220]);
 
 		$this->_mail = false;
 		$this->_rcpt = false;
@@ -296,7 +296,7 @@ class we_mail_ProtocolSmtp extends we_mail_ProtocolAbstract{
 	 */
 	public function vrfy($user){
 		$this->_send('VRFY ' . $user);
-		$this->_expect(array(250, 251, 252), 300); // Timeout set for 5 minutes as per RFC 2821 4.5.3.2
+		$this->_expect([250, 251, 252], 300); // Timeout set for 5 minutes as per RFC 2821 4.5.3.2
 	}
 
 	/**

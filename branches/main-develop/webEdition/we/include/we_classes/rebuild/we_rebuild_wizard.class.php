@@ -63,18 +63,18 @@ abstract class we_rebuild_wizard{
 			$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
 			$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", $nextbutdisabled, false);
 
-			$content2 = we_html_element::htmlSpan(array("id" => "prev", "style" => "padding-left:10px;text-align:right"), $prevButton) .
-				we_html_element::htmlSpan(array("id" => "next", "style" => "padding-left:10px;text-align:right"), $nextButton) .
-				we_html_element::htmlSpan(array("id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"), $refreshButton) .
-				we_html_element::htmlSpan(array("id" => "cancel", "style" => "padding-left:10px;text-align:right"), $cancelButton);
+			$content2 = we_html_element::htmlSpan(["id" => "prev", "style" => "padding-left:10px;text-align:right"], $prevButton) .
+				we_html_element::htmlSpan(["id" => "next", "style" => "padding-left:10px;text-align:right"], $nextButton) .
+				we_html_element::htmlSpan(["id" => "refresh", "style" => "display:none; padding-left:10px;text-align:right"], $refreshButton) .
+				we_html_element::htmlSpan(["id" => "cancel", "style" => "padding-left:10px;text-align:right"], $cancelButton);
 
-			$content = new we_html_table(array("width" => "100%"), 1, 2);
-			$content->setCol(0, 0, array("id" => "progr", "style" => "display:none;padding-left:1em;text-align:left"), $pb);
-			$content->setCol(0, 1, array("style" => "text-align:right"), $content2);
+			$content = new we_html_table(["width" => "100%"], 1, 2);
+			$content->setCol(0, 0, ["id" => "progr", "style" => "display:none;padding-left:1em;text-align:left"], $pb);
+			$content->setCol(0, 1, ["style" => "text-align:right"], $content2);
 		}
 
-		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', we_progressBar::getJSCode() . we_html_element::jsScript(JS_DIR . 'nextButtons.js'), we_html_element::htmlBody(array(
-					'style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")), ($dc ? $pb : $content->getHtml())
+		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', we_progressBar::getJSCode() . we_html_element::jsScript(JS_DIR . 'nextButtons.js'), we_html_element::htmlBody([
+					'style' => 'overflow:hidden', "class" => ($dc ? "weDialogBody" : "weDialogButtonsBody")], ($dc ? $pb : $content->getHtml())
 				)
 		);
 	}
@@ -85,7 +85,7 @@ abstract class we_rebuild_wizard{
 	 * @return string for now it is an empty page
 	 */
 	static function getCmd(){
-		return self::getPage(array('', '', ''));
+		return self::getPage(['', '', '']);
 	}
 
 	/**
@@ -126,29 +126,24 @@ abstract class we_rebuild_wizard{
 			$type = '';
 		}
 
-		$parts = array(
-			array(
-				'headline' => '',
-				'html' => we_html_forms::radiobutton('rebuild_documents', ($type === 'rebuild_documents' && (permissionhandler::hasPerm(['REBUILD_ALL', 'REBUILD_FILTERD']))), 'type', g_l('rebuild', '[documents]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_documents]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (!(permissionhandler::hasPerm(['REBUILD_ALL', 'REBUILD_FILTERD'])))),
-			)
-		);
+		$parts = [['headline' => '',
+			'html' => we_html_forms::radiobutton('rebuild_documents', ($type === 'rebuild_documents' && (permissionhandler::hasPerm(['REBUILD_ALL', 'REBUILD_FILTERD']))), 'type', g_l('rebuild', '[documents]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_documents]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (!(permissionhandler::hasPerm(['REBUILD_ALL', 'REBUILD_FILTERD'])))),
+				]
+		];
 
 		if(defined('OBJECT_FILES_TABLE')){
-			$parts[] = array(
-				'headline' => '',
+			$parts[] = ['headline' => '',
 				'html' => we_html_forms::radiobutton('rebuild_objects', ($type === 'rebuild_objects' && permissionhandler::hasPerm('REBUILD_OBJECTS')), 'type', g_l('rebuild', '[rebuild_objects]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_objects]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_OBJECTS'))),
-			);
+				];
 		}
 
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => we_html_forms::radiobutton('rebuild_index', ($type === 'rebuild_index' && permissionhandler::hasPerm('REBUILD_INDEX')), 'type', g_l('rebuild', '[rebuild_index]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_index]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_INDEX'))),
-		);
+			];
 
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => we_html_forms::radiobutton('rebuild_thumbnails', ($type === 'rebuild_thumbnails' && permissionhandler::hasPerm('REBUILD_THUMBS')), 'type', g_l('rebuild', '[thumbnails]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_thumbnails]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (we_base_imageEdit::gd_version() == 0 || (!permissionhandler::hasPerm('REBUILD_THUMBS')))),
-		);
+			];
 
 		$navRebuildHTML = '<div>' .
 			we_html_forms::radiobutton('rebuild_navigation', ($type === 'rebuild_navigation' && permissionhandler::hasPerm('REBUILD_NAVIGATION')), 'type', g_l('rebuild', '[navigation]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_navigation]'), we_html_tools::TYPE_HELP, false), false, 'defaultfont', 'setNavStatDocDisabled()', !permissionhandler::hasPerm('REBUILD_NAVIGATION')) .
@@ -156,10 +151,9 @@ abstract class we_rebuild_wizard{
 			we_html_forms::checkbox(1, false, 'rebuildStaticAfterNavi', g_l('rebuild', '[rebuildStaticAfterNaviCheck]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[rebuildStaticAfterNaviHint]'), we_html_tools::TYPE_HELP, false), false, 'defaultfont', '', true) .
 			'</div>';
 
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => $navRebuildHTML,
-		);
+			];
 
 		$metaDataFields = we_metadata_metaData::getDefinedMetaDataFields();
 

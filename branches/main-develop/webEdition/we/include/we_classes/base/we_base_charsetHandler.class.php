@@ -105,7 +105,7 @@ class we_base_charsetHandler{
 	/**
 	 * @return array
 	 * @param $availableChars array
-	 * @desc This function returns an array(key = charset / value = charset - name(international) (name(national)))
+	 * @desc This function returns an key = charset / value = charset - name(international) (name(national)))
 	 */
 	function getCharsetsForTagWizzard(){
 		$retArr = [];

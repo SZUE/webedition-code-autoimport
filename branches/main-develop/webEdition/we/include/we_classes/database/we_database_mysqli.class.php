@@ -226,15 +226,14 @@ class DB_WE extends we_database_base{
 
 	public function _getInfo(){
 		$charset = mysqli_get_charset($this->Link_ID);
-		return array(
-			'type' => DB_CONNECT,
+		return ['type' => DB_CONNECT,
 			'protocol' => $this->Link_ID->protocol_version,
 			'client' => $this->Link_ID->client_info,
 			'host' => $this->Link_ID->host_info,
 			'server' => $this->Link_ID->server_info,
 			'database' => $this->Database,
 			'encoding' => $charset->charset
-		);
+			];
 	}
 
 	protected function ping(){

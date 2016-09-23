@@ -23,10 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_editor extends we_fileupload_ui_preview{
-	protected $editorJS = array(
-		'writebackTarget' => '',
+	protected $editorJS = ['writebackTarget' => '',
 		'editorCallback' => '',
-	);
+	 ];
 	protected $doImport = true;
 	protected $contentType = [];
 	protected $posBtnUpload = 'bottom';
@@ -66,23 +65,21 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			if(!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE){
 				$this->formElements['formAttributes'] = $this->formElements['formThumbnails'] = $this->formElements['formImageEdit'] = true;
 				// FIXME: do not append all of these when clientside scaling is active! <= we need php const CLIENTSIDE_IMAGE_EDIT
-				$evenMoreFields = array(
-					array('fu_doc_width', 'int'),
-					array('fu_doc_height', 'int'),
-					array('fu_doc_widthSelect', 'int'),
-					array('fu_doc_heightSelect', 'int'),
-					array('fu_doc_keepRatio', 'int'),
-					array('fu_doc_degrees', 'int'),
-					array('fu_doc_quality', 'int'),
-				);
+				$evenMoreFields = [['fu_doc_width', 'int'],
+						['fu_doc_height', 'int'],
+						['fu_doc_widthSelect', 'int'],
+						['fu_doc_heightSelect', 'int'],
+						['fu_doc_keepRatio', 'int'],
+						['fu_doc_degrees', 'int'],
+						['fu_doc_quality', 'int'],
+				];
 
-				$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
-					array('fu_doc_isSearchable', 'int'),
-					array('fu_doc_categories', 'text'),
-					array('fu_doc_thumbs', 'text'),
-					array('fu_doc_alt', 'text'),
-					array('fu_doc_title', 'text'),
-					), $evenMoreFields);
+				$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, [['fu_doc_isSearchable', 'int'],
+						['fu_doc_categories', 'text'],
+						['fu_doc_thumbs', 'text'],
+						['fu_doc_alt', 'text'],
+						['fu_doc_title', 'text'],
+					], $evenMoreFields);
 			}
 		} else {
 			$this->responseClass = 'we_fileupload_resp_base';
@@ -118,25 +115,25 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 				$divProgressbar . ($this->posBtnUpload === 'top' && !$this->isExternalBtnUpload ? $divBtnUpload : '')
 		);
 
-		$parts = is_array($form = $this->makeMultiIconRow('uploader', 'Dateiauswahl', $formUploader)) ? [$form] : [];
-		if($this->parentID['setField']){
-			$parts = is_array($form = $this->getFormParentID()) ? array_merge($parts, [$form]) : $parts;
+		$parts = [
+			(is_array($form = $this->makeMultiIconRow('uploader', 'Dateiauswahl', $formUploader)) ? [$form] : ''),
+			($this->parentID['setField'] && is_array($form = $this->getFormParentID()) ? [$form] : ''),
+			(is_array($form = $this->getFormSameName()) ? [$form] : ''),
+			($this->doImport && is_array($form = $this->getFormImportMeta()) ? [$form] : ''),
+			($this->doImport && is_array($form = $this->getFormIsSearchable()) ? [$form] : ''),
+			($this->doImport && is_array($form = $this->getFormCategories()) ? [$form] : ''),
+		];
+		if($this->doImport && (!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE)){
+			$parts = array_merge($parts, [
+			(is_array($form = $this->getFormImageAttributes()) ? [$form] : ''),
+			(is_array($form = $this->getFormThumbnails()) ? [$form] : ''),
+			(is_array($form = $this->getFormImageResize()) ? [$form] : ''),
+			(is_array($form = $this->getFormImageRotate()) ? [$form] : ''),
+			(is_array($form = $this->getFormImageQuality()) ? [$form] : '')
+			]);
 		}
-		$parts = is_array($form = $this->getFormSameName()) ? array_merge($parts, [$form]) : $parts;
 
-		if($this->doImport){
-			$parts = is_array($form = $this->getFormImportMeta()) ? array_merge($parts, array($form)) : $parts;
-			$parts = is_array($form = $this->getFormIsSearchable()) ? array_merge($parts, array($form)) : $parts;
-			$parts = is_array($form = $this->getFormCategories()) ? array_merge($parts, array($form)) : $parts;
-
-			if(!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE){
-				$parts = is_array($form = $this->getFormImageAttributes()) ? array_merge($parts, array($form)) : $parts;
-				$parts = is_array($form = $this->getFormThumbnails()) ? array_merge($parts, array($form)) : $parts;
-				$parts = is_array($form = $this->getFormImageResize()) ? array_merge($parts, array($form)) : $parts;
-				$parts = is_array($form = $this->getFormImageRotate()) ? array_merge($parts, array($form)) : $parts;
-				$parts = is_array($form = $this->getFormImageQuality()) ? array_merge($parts, array($form)) : $parts;
-			}
-		}
+		$parts = array_filter($parts);
 
 		if($returnRows){
 			return $parts;

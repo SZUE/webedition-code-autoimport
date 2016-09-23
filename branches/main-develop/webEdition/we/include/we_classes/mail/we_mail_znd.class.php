@@ -208,11 +208,10 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * @throws we_mail_exception for types not supported by Mime
 	 */
 	public function setType($type){
-		$allowed = array(
-			we_mail_mime::MULTIPART_ALTERNATIVE,
+		$allowed = [we_mail_mime::MULTIPART_ALTERNATIVE,
 			we_mail_mime::MULTIPART_MIXED,
 			we_mail_mime::MULTIPART_RELATED,
-		);
+			];
 		if(!in_array($type, $allowed)){
 			/**
 			 * @see Mail_Exception
@@ -295,10 +294,9 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * @return we_mail_znd Provides fluent interface
 	 */
 	public function setHeaderEncoding($encoding){
-		$allowed = array(
-			we_mail_mime::ENCODING_BASE64,
+		$allowed = [we_mail_mime::ENCODING_BASE64,
 			we_mail_mime::ENCODING_QUOTEDPRINTABLE
-		);
+			];
 		if(!in_array($encoding, $allowed)){
 			/**
 			 * @see Mail_Exception
@@ -472,7 +470,7 @@ class we_mail_znd extends we_mail_mimeMessage{
 		if(isset($this->_headers[$headerName])){
 			$this->_headers[$headerName][] = $value;
 		} else {
-			$this->_headers[$headerName] = array($value);
+			$this->_headers[$headerName] = [$value];
 		}
 
 		if($append){
@@ -514,7 +512,7 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 */
 	public function addTo($email, $name = ''){
 		if(!is_array($email)){
-			$email = array($name => $email);
+			$email = [$name => $email];
 		}
 
 		foreach($email as $n => $recipient){
@@ -534,7 +532,7 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 */
 	public function addCc($email, $name = ''){
 		if(!is_array($email)){
-			$email = array($name => $email);
+			$email = [$name => $email];
 		}
 
 		foreach($email as $n => $recipient){
@@ -552,7 +550,7 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 */
 	public function addBcc($email){
 		if(!is_array($email)){
-			$email = array($email);
+			$email = [$email];
 		}
 
 		foreach($email as $recipient){
@@ -698,7 +696,7 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * @return void
 	 */
 	public static function setDefaultFrom($email, $name = null){
-		self::$_defaultFrom = array('email' => $email, 'name' => $name);
+		self::$_defaultFrom = ['email' => $email, 'name' => $name];
 	}
 
 	/**
@@ -744,7 +742,7 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * @return void
 	 */
 	public static function setDefaultReplyTo($email, $name = null){
-		self::$_defaultReplyTo = array('email' => $email, 'name' => $name);
+		self::$_defaultReplyTo = ['email' => $email, 'name' => $name];
 	}
 
 	/**
@@ -1023,10 +1021,10 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * @throws we_mail_exception on attempts to create standard headers
 	 */
 	public function addHeader($name, $value, $append = false){
-		$prohibit = array('to', 'cc', 'bcc', 'from', 'subject',
+		$prohibit = ['to', 'cc', 'bcc', 'from', 'subject',
 			'reply-to', 'return-path',
 			'date', 'message-id',
-		);
+			];
 		if(in_array(strtolower($name), $prohibit)){
 			throw new we_mail_exception('Cannot set standard header from addHeader()');
 		}
@@ -1088,14 +1086,14 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * @return string
 	 */
 	protected function _filterEmail($email){
-		$rule = array("\r" => '',
+		$rule = ["\r" => '',
 			"\n" => '',
 			"\t" => '',
 			'"' => '',
 			',' => '',
 			'<' => '',
 			'>' => '',
-		);
+			];
 
 		return strtr($email, $rule);
 	}
@@ -1107,13 +1105,13 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * @return string
 	 */
 	protected function _filterName($name){
-		$rule = array("\r" => '',
+		$rule = ["\r" => '',
 			"\n" => '',
 			"\t" => '',
 			'"' => "'",
 			'<' => '[',
 			'>' => ']',
-		);
+			];
 
 		return trim(strtr($name, $rule));
 	}
@@ -1125,10 +1123,10 @@ class we_mail_znd extends we_mail_mimeMessage{
 	 * @return string
 	 */
 	protected function _filterOther($data){
-		$rule = array("\r" => '',
+		$rule = ["\r" => '',
 			"\n" => '',
 			"\t" => '',
-		);
+			];
 
 		return strtr($data, $rule);
 	}

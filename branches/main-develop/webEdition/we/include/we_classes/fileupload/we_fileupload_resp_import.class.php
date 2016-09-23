@@ -46,7 +46,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 		// FIXME: beim überschreiben bestehender grafiken mit einem neuen bild bleiben width und height in der db unveraendert, so dass beim bearbeiten verzerrt wird
 		$eic = we_fileupload::EDIT_IMAGES_CLIENTSIDE;
-		$this->docVars = array_filter(array(
+		$this->docVars = array_filter([
 			'transaction' => we_base_request::_(we_base_request::TRANSACTION, 'we_transaction', $this->docVars['transaction']),
 			'importMetadata' => we_base_request::_(we_base_request::BOOL, 'fu_doc_importMetadata', $this->docVars['importMetadata']),
 			'isSearchable' => we_base_request::_(we_base_request::BOOL, 'fu_doc_isSearchable', $this->docVars['isSearchable']),
@@ -67,7 +67,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 			'width' => ($eic ? we_base_request::NOT_VALID : we_base_request::_(we_base_request::INT, 'fu_doc_width', we_base_request::NOT_VALID)),
 			'height' => ($eic ? we_base_request::NOT_VALID : we_base_request::_(we_base_request::INT, 'fu_doc_height', we_base_request::NOT_VALID)),
-			), function($var){
+			], function($var){
 			return $var !== we_base_request::NOT_VALID;
 		}
 		);
@@ -77,7 +77,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 	}
 
 	public function setImageEditProps(){
-		$this->imageEditProps = array_merge($this->imageEditProps, array(
+		$this->imageEditProps = array_merge($this->imageEditProps, [
 			'parentID' => $this->fileVars['parentID'],
 			'sameName' => $this->fileVars['sameName'],
 			'importMetadata' => $this->docVars['importMetadata'],
@@ -91,7 +91,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			'quality' => $this->docVars['quality'],
 			'degrees' => $this->docVars['degrees'],
 			'categories' => empty($this->docVars['categories'])? : $this->docVars['categories']
-		));
+			]);
 	}
 
 	protected function postprocess(){
@@ -104,11 +104,10 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$response = $this->writeWebeditionDocument($we_doc);
 		}
 
-		if($response['success']){
-			return array_merge($this->response, array('status' => 'success', 'completed' => 1, 'weDoc' => $response['weDoc']));
-		} else {
-			return array_merge($this->response, array('status' => 'failure', 'message' => $response['error']));
-		}
+		return ($response['success'] ?
+			array_merge($this->response, ['status' => 'success', 'completed' => 1, 'weDoc' => $response['weDoc']]) :
+			array_merge($this->response, ['status' => 'failure', 'message' => $response['error']])
+			);
 	}
 
 	protected function isParentIdOk($parentID = 0){
@@ -118,21 +117,19 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 	protected function getWebeditionDocument(){ // TODO: avoid some more redundancy in this fn
 		if($this->docVars['transaction']){ // import new binary for existing wedoc
 			if(!isset($_SESSION['weS']['we_data'][$this->docVars['transaction']])){
-				return array(
-					'error' => 'transaction is not correct',
+				return ['error' => 'transaction is not correct',
 					'success' => false,
-					'weDoc' => array('id' => 0, 'path' => '')
-				);
+					'weDoc' => ['id' => 0, 'path' => '']
+				];
 			}
 
 			$we_dt = $_SESSION['weS']['we_data'][$this->docVars['transaction']];
 			$we_doc = we_document::initDoc($we_dt);
 			if(!$this->isParentIdOk($we_doc->ParentID)){
-				return array(
-					'error' => 'workspace not ok',
+				return ['error' => 'workspace not ok',
 					'success' => false,
-					'weDoc' => array('id' => 0, 'path' => '')
-				);
+					'weDoc' => ['id' => 0, 'path' => '']
+				];
 			}
 
 			$we_doc->Extension = strtolower((strpos($this->fileVars['weFileName'], '.') > 0) ? preg_replace('/^.+(\..+)$/', '${1}', $this->fileVars['weFileName']) : ''); //strtolower for feature 3764
@@ -163,11 +160,10 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 		// check workspace for new document
 		if(!$this->isParentIdOk($this->fileVars['parentID'])){
-			return array(
-				'error' => 'workspace not ok',
+			return ['error' => 'workspace not ok',
 				'success' => false,
-				'weDoc' => array('id' => 0, 'path' => '')
-			);
+				'weDoc' => ['id' => 0, 'path' => '']
+			];
 		}
 
 		// make new we_doc
@@ -190,11 +186,10 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		$matches = [];
 		preg_match('#^(.*)(\..+)$#', $filename, $matches);
 		if(!$matches){
-			return array(
-				'error' => g_l('importFiles', '[save_error]'),
+			return ['error' => g_l('importFiles', '[save_error]'),
 				'success' => false,
 				'weDoc' => ''
-			);
+				];
 		}
 		$we_doc->Filename = $matches[1];
 		$we_doc->Extension = strtolower($matches[2]);
@@ -227,11 +222,10 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 					$we_doc->Path = $we_doc->getParentPath() . (($we_doc->getParentPath() != '/') ? '/' : '') . $we_doc->Text;
 					break;
 				default:
-					return array(
-						'error' => g_l('importFiles', '[same_name]'),
+					return ['error' => g_l('importFiles', '[same_name]'),
 						'success' => false,
 						'weDoc' => ''
-					);
+						];
 			}
 		}
 
@@ -278,19 +272,18 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 				break;
 		}
 		if($error){
-			return array(
-				'filename' => $this->fileVars['weFileName'],
+			return ['filename' => $this->fileVars['weFileName'],
 				'error' => g_l('importFiles', '[no_perms]'),
 				'success' => false,
 				'weDoc' => ''
-			);
+				];
 		}
 
 		$tempFile = $_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'];
 		// TODO: there are more bad combinations to consider
 		if($we_doc->ContentType === we_base_ContentTypes::IMAGE){
 			if(!$we_doc->isSvg() && !in_array(we_base_imageEdit::detect_image_type($tempFile), we_base_imageEdit::$GDIMAGE_TYPE)){
-				return array('filename' => $this->fileVars['weFileName'], 'error' => g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']'));
+				return ['filename' => $this->fileVars['weFileName'], 'error' => g_l('alert', '[wrong_file][' . $we_doc->ContentType . ']')];
 			}
 		}
 
@@ -307,12 +300,11 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			fclose($fh);
 		} else {
 			//FIXME: fopen uses less memory then gd: gd can fail (and returns 500) even if $fh = true! // ?
-			//return array('filename' => $_FILES['we_File']['name'], 'error' => g_l('importFiles', '[read_file_error]'));
-			return array(
-				'error' => g_l('importFiles', '[read_file_error]'),
+			//return['filename' => $_FILES['we_File']['name'], 'error' => g_l('importFiles', '[read_file_error]'));
+			return ['error' => g_l('importFiles', '[read_file_error]'),
 				'success' => false,
 				'weDoc' => ''
-			);
+				];
 		}
 
 		switch($we_doc->ContentType){
@@ -387,26 +379,23 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$this->docVars['transaction']]); // save the changed object in session
 		} else {
 			if(!$we_doc->we_save()){
-				return array(
-					'error' => g_l('importFiles', '[save_error]'),
+				return ['error' => g_l('importFiles', '[save_error]'),
 					'success' => false,
 					'weDoc' => ''
-				);
+					];
 			}
 			if(!$we_doc->we_publish()){
-				return array(
-					'error' => "publish_error",
+				return ['error' => "publish_error",
 					'success' => false,
 					'weDoc' => ''
-				);
+					];
 			}
 		}
 
-		return array(
-			'error' => [],
+		return ['error' => [],
 			'success' => true,
-			'weDoc' => array('id' => $we_doc->ID, 'path' => $we_doc->Path, 'text' => $we_doc->Text)
-		);
+			'weDoc' => ['id' => $we_doc->ID, 'path' => $we_doc->Path, 'text' => $we_doc->Text]
+		];
 	}
 
 }

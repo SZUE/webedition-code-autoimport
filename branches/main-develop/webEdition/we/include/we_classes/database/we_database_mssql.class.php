@@ -38,7 +38,7 @@ class DB_WE extends we_database_base{
 		if(!$this->isConnected()){
 			switch(DB_CONNECT){
 				case 'msconnect':
-					$this->Link_ID = @sqlsrv_connect($Host, array('Database' => $Database, 'UID' => $User, 'PWD' => $Password, 'CharacterSet' => 'UTF-8'));
+					$this->Link_ID = @sqlsrv_connect($Host, ['Database' => $Database, 'UID' => $User, 'PWD' => $Password, 'CharacterSet' => 'UTF-8']);
 					if(!$this->Link_ID){
 						$this->halt("sqlsrv($Host, $User, $Database) failed.");
 						return false;

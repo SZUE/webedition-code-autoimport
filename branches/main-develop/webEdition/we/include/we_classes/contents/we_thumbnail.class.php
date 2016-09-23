@@ -171,7 +171,7 @@ class we_thumbnail{
 	 */
 	private $generateSmaller = false;
 	//focus point for resize
-	private $focus = array(0, 0);
+	private $focus = [0, 0];
 
 	/**
 	 * Constructor of class
@@ -244,15 +244,14 @@ class we_thumbnail{
 	 */
 	public function initByThumbID($thumbID, $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData = ''){
 		$foo = getHash('SELECT Width,Height,Options,Format,Name,Date,Quality FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? :
-			array(
-			'Width' => 0,
+			['Width' => 0,
 			'Height' => 0,
 			'Options' => '',
 			'Format' => '',
 			'Name' => '',
 			'Date' => '',
 			'Quality' => ''
-			)
+			]
 		;
 		$this->init($thumbID, $foo['Width'], $foo['Height'], $foo['Options'], $foo['Format'], $foo['Name'], $imageID, $imageFileName, $imagePath, $imageExtension, $imageWidth, $imageHeight, $imageData, $foo['Date'], $foo['Quality']);
 	}
@@ -304,14 +303,13 @@ class we_thumbnail{
 		if(!$this->getImageData($getBinary)){
 			return false;
 		}
-		$foo = getHash('SELECT Width,Height,Options,Format,Name,Date FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db)? : array(
-			'Width' => 0,
+		$foo = getHash('SELECT Width,Height,Options,Format,Name,Date FROM ' . THUMBNAILS_TABLE . ' WHERE ID=' . intval($thumbID), $this->db) ?: ['Width' => 0,
 			'Height' => 0,
 			'Options' => false,
 			'Format' => '',
 			'Name' => '',
 			'Date' => '',
-		);
+			];
 
 		$this->init($thumbID, $foo['Width'], $foo['Height'], $foo['Options'], $foo['Format'], $foo['Name'], $imageID, $this->imageFileName, $this->imagePath, $this->imageExtension, $this->imageWidth, $this->imageHeight, $this->imageData, $foo['Date']);
 
@@ -585,7 +583,7 @@ class we_thumbnail{
 					$this->imageHeight = $this->db->f('Dat');
 					break;
 				case 'focus':
-					$this->focus = we_unserialize($this->db->f('Dat'), array(0, 0));
+					$this->focus = we_unserialize($this->db->f('Dat'), [0, 0]);
 					break;
 			}
 		}

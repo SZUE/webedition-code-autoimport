@@ -855,7 +855,7 @@ class we_collection extends we_root{
 					$wspaces[] = ' Path LIKE "' . $this->DB_WE->escape($path) . '/%" OR Path="' . $this->DB_WE->escape($path) . '"';
 				}
 			}
-			$wspaces = empty($wspaces) ? array(false) : $wspaces;
+			$wspaces = empty($wspaces) ? [false] : $wspaces;
 		}
 		$wsQuery = ($checkWs && $wspaces[0] !== false ? ' AND (' . implode(' OR ', $wspaces) . ') ' : ' OR RestrictOwners=0 ' );
 
@@ -942,11 +942,11 @@ class we_collection extends we_root{
 				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size[width]=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
 				$imageViewPopup = '<img src="' . $urlPopup . '" /></a>';
 			} else {
-				$imagesize = array(0, 0);
+				$imagesize = [0, 0];
 				$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
 			}
 		} else {
-			$imagesize = array(0, 0);
+			$imagesize = [0, 0];
 			$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
 		}
 

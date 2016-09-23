@@ -794,7 +794,7 @@ class we_document extends we_root{
 		return '';
 	}
 
-//FIXME: parameter $attrib should be: array $attribs=array()
+//FIXME: parameter $attrib should be: array $attribs=[]
 //FIXME: check if we can rid of this function, since it causes problems every change of tags since it also uses the given attribs array!
 	public function getFieldByVal($val, $type, $attribs = '', $pathOnly = false, $parentID = 0, $path = '', we_database_base $db = null, $classID = '', $fn = 'this'){
 		$attribs = is_array($attribs) ? $attribs : [];

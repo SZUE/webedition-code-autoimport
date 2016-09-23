@@ -24,10 +24,9 @@
  */
 class we_dialog_Hyperlink extends we_dialog_base{
 	var $ClassName = __CLASS__;
-	var $changeableArgs = array(
-		'type', 'extHref', 'fileID', 'href', 'fileHref', 'fileCT', 'objID', 'objHref', 'mailHref', 'target', 'class',
+	var $changeableArgs = ['type', 'extHref', 'fileID', 'href', 'fileHref', 'fileCT', 'objID', 'objHref', 'mailHref', 'target', 'class',
 		'param', 'anchor', 'lang', 'hreflang', 'title', 'accesskey', 'tabindex', 'rel', 'rev'
-	);
+		];
 
 	function __construct($href = '', $target = '', $fileID = 0, $objID = 0, $noInternals = false){
 		parent::__construct();
@@ -117,15 +116,13 @@ class we_dialog_Hyperlink extends we_dialog_base{
 					break;
 				default:
 					$this->args['type'] = we_base_link::TYPE_EXT;
-					$this->args['extHref'] = preg_replace(array(
-						'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
+					$this->args['extHref'] = preg_replace(['|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 						'|^' . WEBEDITION_DIR . '|',
 						'|^([^\?#]+).*$|'
-						), array(
-						'${1}',
+						], ['${1}',
 						'',
 						'${1}'
-						), $this->args["href"]);
+						], $this->args["href"]);
 					$this->args['fileID'] = '';
 					$this->args['fileHref'] = '';
 					$this->args['mailHref'] = '';
@@ -296,8 +293,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 	}
 
 	function defaultInit(){
-		$this->args = array_merge($this->args, array(
-			'href' => we_base_link::TYPE_INT_PREFIX,
+		$this->args = array_merge($this->args, ['href' => we_base_link::TYPE_INT_PREFIX,
 			'type' => we_base_link::TYPE_INT,
 			'extHref' => '',
 			'fileID' => '',
@@ -320,7 +316,7 @@ class we_dialog_Hyperlink extends we_dialog_base{
 			'mailsubject' => '',
 			'mailcc' => '',
 			'mailbcc' => '',
-		));
+			]);
 	}
 
 	function getDialogContentHTML(){
@@ -432,10 +428,8 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 
 		$show_accessible_class = (permissionhandler::hasPerm("CAN_SEE_ACCESSIBLE_PARAMETERS") ? '' : ' class="weHide"');
 
-		return array(
-			array(
-				'html' =>
-				// Create table output
+		return [['html' =>
+			// Create table output
 				'<div style="position:relative; top:15px"><table class="default" style="height:65px">
 	<tr>
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;height:20px">' . g_l('weClass', '[linkType]') . '</td>
@@ -461,8 +455,8 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 </table></div>' .
 				weSuggest::getYuiFiles() .
 				$yuiSuggest->getYuiJs()
-			),
-			array('html' => '<table class="default">
+				],
+				['html' => '<table class="default">
 	<tr class="we_change ' . we_base_link::TYPE_INT . ' ' . we_base_link::TYPE_EXT . ' ' . we_base_link::TYPE_OBJ . '" style="display:' . (($this->args["type"] != we_base_link::TYPE_MAIL) ? "table-row" : "none") . ';">
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px">' . g_l('wysiwyg', '[anchor]') . '</td>
 		<td>' . $anchor . '</td>
@@ -491,8 +485,8 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;padding-top:10px;">' . g_l('wysiwyg', '[css_style]') . '</td>
 		<td>' . $classSelect . '</td>
 	</tr>
-</table>'),
-			array('html' => '<table class="default">
+</table>'],
+				['html' => '<table class="default">
 	<tr' . $show_accessible_class . '>
 		<td class="defaultfont lowContrast" style="vertical-align:top;width:100px;">' . g_l('wysiwyg', '[language]') . '</td>
 		<td><table class="default"><tr><td style="padding-left:2px;">' . $lang . '</td><td>' . $hreflang . '</td></tr></table></td>
@@ -510,8 +504,8 @@ if(this.value === \'\' || this.value === WE().consts.linkPrefix.EMPTY_EXT){
 		<td><table class="default"><tr><td style="padding-left:2px;">' . $rel . '</td><td>' . $rev . '</td></tr></table></td>
 	</tr>
 </table>'
-			)
-		);
+			]
+		];
 	}
 
 	function getRevRelSelect($type){

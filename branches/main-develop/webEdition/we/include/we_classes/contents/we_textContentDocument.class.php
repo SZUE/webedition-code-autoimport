@@ -55,7 +55,7 @@ abstract class we_textContentDocument extends we_textDocument{
 	}
 
 	public function makeSameNew(array $keep = []){
-		parent::makeSameNew(array_merge($keep, array('Category', 'ContentType', 'DocType', 'IsSearchable', 'Extension')));
+		parent::makeSameNew(array_merge($keep, ['Category', 'ContentType', 'DocType', 'IsSearchable', 'Extension']));
 	}
 
 	public function insertAtIndex(array $only = null, array $fieldTypes = null){
@@ -89,7 +89,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		return $this->DB_WE->query('REPLACE INTO ' . INDEX_TABLE . ' SET ' . we_database_base::arraySetter([
 					'ID' => intval($this->ID),
 					'DID' => intval($this->ID),
-					'Text' => substr(preg_replace(array('/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'), ' ', trim(strip_tags($text))), 0, $maxDB),
+					'Text' => substr(preg_replace(['/(&#160;|&nbsp;)/', "/ *[\r\n]+/", '/  +/'], ' ', trim(strip_tags($text))), 0, $maxDB),
 					'WorkspaceID' => intval($this->ParentID),
 					'Category' => $this->Category,
 					'Doctype' => $this->DocType,
@@ -228,7 +228,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		$this->errMsg = '';
 		$this->i_setText();
 		if(!$skipHook){
-			$hook = new weHook('preSave', '', array($this, 'resave' => $resave));
+			$hook = new weHook('preSave', '', [$this, 'resave' => $resave]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -260,7 +260,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('save', '', array($this, 'resave' => $resave));
+			$hook = new weHook('save', '', [$this, 'resave' => $resave]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -273,7 +273,7 @@ abstract class we_textContentDocument extends we_textDocument{
 
 	public function we_publish($DoNotMark = false, $saveinMainDB = true, $skipHook = false){
 		if(!$skipHook){
-			$hook = new weHook('prePublish', '', array($this));
+			$hook = new weHook('prePublish', '', [$this]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -312,7 +312,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('publish', '', array($this, 'prePublishTime' => $oldPublished));
+			$hook = new weHook('publish', '', [$this, 'prePublishTime' => $oldPublished]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -343,7 +343,7 @@ abstract class we_textContentDocument extends we_textDocument{
 		}
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('unpublish', '', array($this));
+			$hook = new weHook('unpublish', '', [$this]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();

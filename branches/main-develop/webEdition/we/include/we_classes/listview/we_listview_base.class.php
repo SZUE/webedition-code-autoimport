@@ -94,8 +94,7 @@ abstract class we_listview_base{
 		$this->id = $id;
 		$this->stop_next_row = false;
 
-		$this->calendar_struct = array(
-			'calendar' => $calendar,
+		$this->calendar_struct = ['calendar' => $calendar,
 			'defaultDate' => '',
 			'date' => -1,
 			'calendarCount' => '',
@@ -106,12 +105,12 @@ abstract class we_listview_base{
 			'forceFetch' => false,
 			'count' => 0,
 			'weekstart' => 0
-		);
+			];
 		if($calendar != ''){
 			$this->calendar_struct['datefield'] = $datefield ? : '###Published###';
 			$this->calendar_struct['defaultDate'] = ($date ? strtotime($date) : time());
 			if($weekstart){
-				$wdays = array('sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday');
+				$wdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
 				$match = array_search($weekstart, $wdays);
 				if($match !== false){
 					$this->calendar_struct['weekstart'] = $match;
@@ -285,7 +284,7 @@ abstract class we_listview_base{
 			}
 			$newdate = $year . '-' . $month . '-' . $day;
 
-			$attribs['href'] = we_tag('url', array('id' => ($urlID ? : 'top'), 'hidedirindex' => $this->hidedirindex));
+			$attribs['href'] = we_tag('url', ['id' => ($urlID ?: 'top'), 'hidedirindex' => $this->hidedirindex]);
 			$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&');
 			$attribs['rel'] = 'prev';
 
@@ -297,7 +296,7 @@ abstract class we_listview_base{
 			return '';
 		}
 
-		$attribs['href'] = we_tag('url', array('id' => ($urlID ? : 'top'), 'hidedirindex' => $this->hidedirindex));
+		$attribs['href'] = we_tag('url', ['id' => ($urlID ?: 'top'), 'hidedirindex' => $this->hidedirindex]);
 		$attribs['href'] .=(strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
 		if($only){
 			$this->close_a = false;
@@ -309,7 +308,7 @@ abstract class we_listview_base{
 	static function we_makeQueryString($queryString = '', $filter = ''){
 		$usedKeys = [];
 		//remove potential Cookies and filter from query
-		$filterArr = array_merge(array(//filter special variables
+		$filterArr = array_merge([//filter special variables
 			'edit_object',
 			'edit_document',
 			'we_editObject_ID',
@@ -321,7 +320,7 @@ abstract class we_listview_base{
 			'pv_tid',
 			'bsuniquevid',
 			's'//password-form
-			), ($filter ? explode(',', $filter) : []), array_keys($_COOKIE));
+			], ($filter ? explode(',', $filter) : []), array_keys($_COOKIE));
 		if(TAGLINKS_OBJECTSEOURLS && !empty($GLOBALS['WE_MAIN_DOC']->Url) && show_SeoLinks()){
 			$filterArr[] = 'we_objectID';
 			$filterArr[] = 'we_oid';
@@ -405,7 +404,7 @@ abstract class we_listview_base{
 			return '';
 		}
 
-		$attribs['href'] = we_tag('url', array('id' => ($urlID ? : 'top'), 'hidedirindex' => $this->hidedirindex));
+		$attribs['href'] = we_tag('url', ['id' => ($urlID ?: 'top'), 'hidedirindex' => $this->hidedirindex]);
 		$attribs['href'] .= (strpos($attribs['href'], '?') === false ? '?' : '&') . $tmp_href;
 		$attribs['rel'] = 'next';
 		if($only){
@@ -493,7 +492,7 @@ abstract class we_listview_base{
 	}
 
 	public function isCalendarField($type){
-		return in_array($type, array('day', 'dayname', 'dayname_long', 'dayname_short', 'month', 'monthname', 'monthname_long', 'monthname_short', 'year', 'hour'));
+		return in_array($type, ['day', 'dayname', 'dayname_long', 'dayname_short', 'month', 'monthname', 'monthname_long', 'monthname_short', 'year', 'hour']);
 	}
 
 	protected function fetchCalendar(&$condition, &$calendar_select, &$calendar_where, $matrix = []){

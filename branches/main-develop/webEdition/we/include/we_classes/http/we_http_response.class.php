@@ -25,10 +25,9 @@
 class we_http_response{
 
 	var $response = ""; // raw response, containing all headers and body
-	var $http_answer = array(
-		'prot' => '',
+	var $http_answer = ['prot' => '',
 		'code' => 0,
-		'msg' => ''); // possibility to check the answercode
+		'msg' => '']; // possibility to check the answercode
 	var $http_headers = []; // http headers in associative array
 	var $http_body = ""; // http body
 	var $error = false;

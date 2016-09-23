@@ -65,12 +65,11 @@ class we_http_request{
 	 */
 	function addFileByContent($varname, $content, $contentType = 'text/html', $filename = 'foo.html'){
 
-		$this->files[] = array(
-			'varname' => $varname,
+		$this->files[] = ['varname' => $varname,
 			'filename' => $filename,
 			'contentType' => $contentType,
 			'content' => $content
-		);
+			];
 	}
 
 	/**
@@ -124,10 +123,9 @@ class we_http_request{
 	 * @desc Adds variable by name and value to the Variables
 	 */
 	function addVar($name, $value){
-		$this->vars[] = array(
-			'name' => $name,
+		$this->vars[] = ['name' => $name,
 			'value' => $value
-		);
+			];
 	}
 
 	/**

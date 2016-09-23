@@ -82,7 +82,7 @@ class we_doclist_model extends we_search_modelBase{
 		//parent::__construct(SUCHE_TABLE);
 
 		$this->transaction = $transaction;
-		$this->searchTablesDoclistSearch = array($searchTable);
+		$this->searchTablesDoclistSearch = [$searchTable];
 		$this->folderIDDoclist = $folderID;
 		$this->setViewDoclistSearch = $setView;
 		$this->whichSearch = we_search_view::SEARCH_DOCLIST;
@@ -134,9 +134,9 @@ class we_doclist_model extends we_search_modelBase{
 			$this->mode = we_base_request::_(we_base_request::INT, 'we_cmd', $this->mode, 'mode');
 
 			// searchfield's default is an empty 'Content' dearch (not having any impact on the result)
-			$this->searchFieldsDoclistSearch = !$this->mode ? array('Content') : we_base_request::_(we_base_request::STRING, 'we_cmd', array('Content'), 'searchFields' . $this->whichSearch);
-			$this->searchDoclistSearch = !$this->mode ? array('') : array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', array(''), 'search' . $this->whichSearch));
-			$this->locationDoclistSearch = !$this->mode ? array('') : we_base_request::_(we_base_request::STRING, 'we_cmd', array(''), 'location' . $this->whichSearch);
+			$this->searchFieldsDoclistSearch = !$this->mode ? ['Content'] : we_base_request::_(we_base_request::STRING, 'we_cmd', ['Content'], 'searchFields' . $this->whichSearch);
+			$this->searchDoclistSearch = !$this->mode ? [''] : array_map('trim', we_base_request::_(we_base_request::STRING, 'we_cmd', [''], 'search' . $this->whichSearch));
+			$this->locationDoclistSearch = !$this->mode ? [''] : we_base_request::_(we_base_request::STRING, 'we_cmd', [''], 'location' . $this->whichSearch);
 
 			$this->OrderDoclistSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->OrderDoclistSearch, 'Order' . $this->whichSearch);
 			$this->setViewDoclistSearch = we_base_request::_(we_base_request::STRING, 'we_cmd', $this->setViewDoclistSearch, 'setView' . $this->whichSearch);

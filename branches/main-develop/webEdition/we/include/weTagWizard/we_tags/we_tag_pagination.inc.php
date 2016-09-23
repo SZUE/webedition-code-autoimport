@@ -11,7 +11,7 @@ if(($GLOBALS['WE_LANGUAGE'] == "Deutsch") || ($GLOBALS['WE_LANGUAGE'] == "Deutsc
 }
 
 /*
-$type = new weTagData_selectAttribute('type', array(new weTagDataOption('link', false, ''), new weTagDataOption('list', false, ''), new weTagDataOption('table', false, '')), false, '');
+$type = new weTagData_selectAttribute('type',new weTagDataOption('link', false, ''), new weTagDataOption('list', false, ''), new weTagDataOption('table', false, '')), false, '');
 
 $circle = new weTagData_selectAttribute('circle', weTagData_selectAttribute::getTrueFalse(), false, '');
 $range = new weTagData_textAttribute('range', false, '');

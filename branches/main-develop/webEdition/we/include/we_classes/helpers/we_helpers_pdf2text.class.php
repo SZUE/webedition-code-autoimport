@@ -183,7 +183,7 @@ class we_helpers_pdf2text{
 			preg_match_all('#(\d+)(([\r\n ]*\/\w+)*)#s', $diff, $matches, PREG_SET_ORDER);
 			foreach($matches as $m){
 				$start = $m[1];
-				$replace = explode(' ', trim(strtr($m[2], array("\n" => ' ', "\r" => ' ', '/' => ' ', '_' => '', '   ' => ' ', '  ' => ' '))));
+				$replace = explode(' ', trim(strtr($m[2], ["\n" => ' ', "\r" => ' ', '/' => ' ', '_' => '', '   ' => ' ', '  ' => ' '])));
 				foreach($replace as $cur){
 					$cur = trim($cur);
 					if(empty($cur)){
@@ -331,7 +331,7 @@ class we_helpers_pdf2text{
 		// position inside a group of 4 bytes (0-3)
 		$group_pos = 0;
 		$tuple = 0;
-		$pow85 = array((85 * 85 * 85 * 85), (85 * 85 * 85), (85 * 85), 85, 1);
+		$pow85 = [(85 * 85 * 85 * 85), (85 * 85 * 85), (85 * 85), 85, 1];
 		$last_pos = ($data_length - 1);
 		// for each byte
 		for($i = 0; $i < $data_length; ++$i){
@@ -520,7 +520,7 @@ class we_helpers_pdf2text{
 						$table[self::unichr($start)] = self::unichr($value++);
 					}
 				} else {
-					$values = explode('>', strtr($values, array(' ' => '', '<' => '')));
+					$values = explode('>', strtr($values, [' ' => '', '<' => '']));
 					foreach($values as $cur){
 						$table[self::unichr($start++)] = self::unichr($cur, true);
 					}

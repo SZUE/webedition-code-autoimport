@@ -30,6 +30,9 @@ var treeHTML;
 var wasdblclick = false;
 var tout = null;
 var hot = false;
+var we_scrollY = {};
+var treeData;
+
 function container() {
 	this.len = 0;
 	this.state = 0;

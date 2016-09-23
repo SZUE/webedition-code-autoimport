@@ -978,7 +978,7 @@ img' . self::$imgCnt . 'Out.src = "' . ($src? : $this->Path) . '";';
 	public function getPropertyPage(){
 		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => "path.gif", "headline" => g_l('weClass', '[path]'), "html" => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => "doc.gif", "headline" => g_l('weClass', '[document]'), "html" => $this->formIsSearchable() . $this->formIsProtected(), 'space' => we_html_multiIconBox::SPACE_MED2],
-				//array('icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2),
+				//['icon' => "meta.gif", "headline" => g_l('weClass', '[metainfo]'), "html" => $this->formMetaInfos(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => "navi.gif", "headline" => g_l('global', '[navigation]'), "html" => $this->formNavigation(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => "cat.gif", "headline" => g_l('global', '[categorys]'), "html" => $this->formCategory(), 'space' => we_html_multiIconBox::SPACE_MED2],
 				['icon' => "user.gif", "headline" => g_l('weClass', '[owners]'), "html" => $this->formCreatorOwners(), 'space' => we_html_multiIconBox::SPACE_MED2],

@@ -319,7 +319,7 @@ abstract class we_mail_ProtocolAbstract{
 		$errMsg = '';
 
 		if(!is_array($code)){
-			$code = array($code);
+			$code = [$code];
 		}
 
 		do{

@@ -247,7 +247,7 @@ _currentEditorRootFrame.frames[2].reloadContent = true;');
 
 		if($this->doUpdateCode){
 			$GLOBALS['we']['errorhandler']['shutdown'] = 'template';
-			register_shutdown_function(array($this, 'handleShutdown'), $code);
+			register_shutdown_function([$this, 'handleShutdown'], $code);
 
 			//remove "use" since this is not allowed inside functions
 			$var = create_function('', '?>' . preg_replace('|use [\w,\s\\\\]*;|', '', $code) . '<?php ');
@@ -280,22 +280,19 @@ we_templateInit();?>';
 
 		if($this->hasStartAndEndTag('html', $code) && $this->hasStartAndEndTag('head', $code) && $this->hasStartAndEndTag('body', $code)){
 			$pre_code .= '<?php $GLOBALS[\'WE_HTML_HEAD_BODY\']=true; ?>';
-			$repl = array(
-				'?>' => '__WE_?__WE__',
+			$repl = ['?>' => '__WE_?__WE__',
 				'=>' => '__WE_=__WE__',
 				'->' => '__WE_-__WE__'
-			);
+				];
 			$code = str_replace(array_keys($repl), $repl, $code);
 			//#### parse base href
-			$code = preg_replace(array(
-				'%(<body[^>]*)>%i',
+			$code = preg_replace(['%(<body[^>]*)>%i',
 				'%(<head[^>]*>)%i',
 				'%(</body[^>]*>)%i',
-				), array(
-				'${1}<?= (!empty($GLOBALS[\'we_editmode\']) ? \' onload="doScrollTo();" onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>',
+				], ['${1}<?= (!empty($GLOBALS[\'we_editmode\']) ? \' onload="doScrollTo();" onunload="doUnload()">\':\'>\'); we_templatePreContent(true);?>',
 				'${1}<?php we_templateHead();?>',
 				'<?php we_templatePostContent(true);?>${1}'
-				), $code);
+				], $code);
 
 			$code = str_replace($repl, array_keys($repl), $code);
 		} else if(!$this->hasStartAndEndTag('html', $code) && !$this->hasStartAndEndTag('head', $code) && !$this->hasStartAndEndTag('body', $code)){
@@ -347,7 +344,7 @@ we_templateInit();?>';
 	function i_getDocument($includepath = ''){
 		$this->_updateCompleteCode();
 		/* remove unwanted/-needed start/stop parser tags (?><php) */
-		return preg_replace(array("/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?= ?/si", "/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si"), array('${1}' . "\n" . '${2} echo ', '${1}' . "\n" . '${2}'), $this->parseTemplate());
+		return preg_replace(["/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?= ?/si", "/(:|;|{|})(\r|\n| |\t)*\?>(\r|\n|\t)*<\?php ?/si"], ['${1}' . "\n" . '${2} echo ', '${1}' . "\n" . '${2}'], $this->parseTemplate());
 	}
 
 	protected function i_writeSiteDir($doc){
@@ -424,7 +421,7 @@ we_templateInit();?>';
 	 * @param	none
 	 */
 	function readAllVariantFields($includedatefield = false){
-		$variant_tags = array('input', 'link', 'textarea', 'img', 'select');
+		$variant_tags = ['input', 'link', 'textarea', 'img', 'select'];
 		$templateCode = $this->getTemplateCode();
 		$tp = new we_tag_tagParser($templateCode, $this->getPath());
 		$tags = $tp->getAllTags();
@@ -457,10 +454,9 @@ we_templateInit();?>';
 						if($tagname === 'input' && isset($att['type']) && $att['type'] === 'date' && !$includedatefield){
 							// do nothing
 						} else {
-							$out[$name] = array(
-								'type' => $tagname,
+							$out[$name] = ['type' => $tagname,
 								'attributes' => $att
-							);
+								];
 						}
 						//additional parsing for selects
 						if($tagname === 'select'){
@@ -478,10 +474,9 @@ we_templateInit();?>';
 							$tagname = 'block';
 						case 'block':
 						case 'linklist':
-							$blocks[] = array(
-								'name' => $name,
+							$blocks[] = ['name' => $name,
 								'type' => $tagname
-							);
+								];
 							break;
 					}
 				}
@@ -531,21 +526,21 @@ we_templateInit();?>';
 
 	private function isUsedByDocuments(){
 		if($this->ID == 0){
-			return array(0, []);
+			return [0, []];
 		}
 		$where = ' WHERE temp_template_id=' . intval($this->ID) . ' OR TemplateID=' . intval($this->ID);
 		$cnt = f('SELECT COUNT(1) FROM ' . FILE_TABLE . $where);
 		$this->DB_WE->query('SELECT ID,SUBSTRING_INDEX(Path,Text,1),CONCAT(Text," (ID: ",ID,")"),IF(Published=0,"notpublished",IF(ModDate>Published,"changed","published")) FROM ' . FILE_TABLE . $where . ' ORDER BY Path LIMIT 100');
-		return array($cnt, $this->DB_WE->getAllFirst(true));
+		return [$cnt, $this->DB_WE->getAllFirst(true)];
 	}
 
 	function formTemplateDocuments(){
 		if($this->ID == 0){
-			return array(0, g_l('weClass', '[no_documents]'));
+			return [0, g_l('weClass', '[no_documents]')];
 		}
 		list($count, $elems) = $this->isUsedByDocuments();
 		if(!$count){
-			return array(0, g_l('weClass', '[no_documents]'));
+			return [0, g_l('weClass', '[no_documents]')];
 		}
 		$path = $elemAttribs = [];
 		$oldpath = '';
@@ -558,21 +553,21 @@ we_templateInit();?>';
 			$elemAttribs[$id] = $data[2];
 		}
 
-		return array($count, we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateDocuments', $path, 1, '', false, array('style' => 'margin-right: 20px;'), 'value', 0, $elemAttribs), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
+		return [$count, we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateDocuments', $path, 1, '', false, ['style' => 'margin-right: 20px;'], 'value', 0, $elemAttribs), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateDocuments'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
 				we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateDocuments'].value);")
-		));
+		)];
 	}
 
 	function formTemplatesUsed(){
 		if($this->ID == 0 || empty($this->IncludedTemplates)){
-			return array(0, g_l('weClass', '[no_documents]'));
+			return [0, g_l('weClass', '[no_documents]')];
 		}
 		$this->DB_WE->query('SELECT ID,SUBSTRING_INDEX(Path,Text,1),CONCAT(Text," (ID: ",ID,")") FROM ' . TEMPLATES_TABLE . ' WHERE ID IN (' . trim($this->IncludedTemplates, ',') . ') ORDER BY Path');
 
 		$elems = $this->DB_WE->getAllFirst(true);
 
 		if(empty($elems)){
-			return array(0, g_l('weClass', '[no_documents]'));
+			return [0, g_l('weClass', '[no_documents]')];
 		}
 		$path = [];
 		$oldpath = '';
@@ -584,21 +579,21 @@ we_templateInit();?>';
 			$path[$id] = $data[1];
 		}
 
-		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedTemplates', $path, 1, '', false, array('style' => 'margin-right: 20px;')), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateUsedTemplates'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
+		return [count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedTemplates', $path, 1, '', false, ['style' => 'margin-right: 20px;']), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . FILE_TABLE . "', document.we_form.elements['TemplateUsedTemplates'].value, '" . we_base_ContentTypes::WEDOCUMENT . "');") .
 				we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateUsedTemplates'].value);")
-		));
+		)];
 	}
 
 	function formTemplateUsedByTemplate(){
 		if($this->ID == 0){
-			return array(0, g_l('weClass', '[no_documents]'));
+			return [0, g_l('weClass', '[no_documents]')];
 		}
 		$this->DB_WE->query('SELECT ID,SUBSTRING_INDEX(Path,Text,1),CONCAT(Text," (ID: ",ID,")") FROM ' . TEMPLATES_TABLE . ' WHERE IsFolder=0 AND FIND_IN_SET(' . $this->ID . ',IncludedTemplates) ORDER BY Path');
 
 		$elems = $this->DB_WE->getAllFirst(true);
 
 		if(empty($elems)){
-			return array(0, g_l('weClass', '[no_documents]'));
+			return [0, g_l('weClass', '[no_documents]')];
 		}
 		$path = [];
 		$oldpath = '';
@@ -610,9 +605,9 @@ we_templateInit();?>';
 			$path[$id] = $data[1];
 		}
 
-		return array(count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedByTemplates', $path, 1, '', false, array('style' => 'margin-right: 20px;')), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . TEMPLATES_TABLE . "', document.we_form.elements['TemplateUsedByTemplates'].value, '" . we_base_ContentTypes::TEMPLATE . "');") .
+		return [count($elems), we_html_tools::htmlFormElementTable($this->htmlSelect('TemplateUsedByTemplates', $path, 1, '', false, ['style' => 'margin-right: 20px;']), '', 'left', 'defaultfont', '', we_html_button::create_button(we_html_button::EDIT, "javascript:WE().layout.weEditorFrameController.openDocument('" . TEMPLATES_TABLE . "', document.we_form.elements['TemplateUsedByTemplates'].value, '" . we_base_ContentTypes::TEMPLATE . "');") .
 				we_html_button::create_button(we_html_button::VIEW, "javascript:WE().layout.openBrowser(document.we_form.elements['TemplateUsedByTemplates'].value);")
-		));
+		)];
 	}
 
 	/**
@@ -937,12 +932,11 @@ we_templateInit();?>';
 	}
 
 	public function getPropertyPage(){
-		return we_html_multiIconBox::getHTML('PropertyPage', array(
-				array('icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2),
-				array('icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2)
-				)
+		return we_html_multiIconBox::getHTML('PropertyPage', [['icon' => 'path.gif', 'headline' => g_l('weClass', '[path]'), 'html' => $this->formPath(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'mastertemplate.gif', 'headline' => g_l('weClass', '[master_template]'), 'html' => $this->formMasterTemplate(), 'space' => we_html_multiIconBox::SPACE_MED2],
+				['icon' => 'charset.gif', 'headline' => g_l('weClass', '[Charset]'), 'html' => $this->formCharset(), 'space' => we_html_multiIconBox::SPACE_MED2],
+					['icon' => 'copy.gif', 'headline' => g_l('weClass', '[copyTemplate]'), 'html' => $this->formCopyDocument(), 'space' => we_html_multiIconBox::SPACE_MED2]
+				]
 		);
 	}
 
@@ -961,9 +955,10 @@ we_templateInit();?>';
 			foreach($allWeTags as $tagName){
 				if(($weTag = weTagData::getTagData($tagName))){
 					if($css){
-						$ret.='.cm-weTag_' . $tagName . ':hover:after {content: "' . strtr(html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET']), array('"' => '\'', "\n" => ' ')) . '";}' . "\n";
+						$ret .= '.cm-weTag_' . $tagName . ':hover:after {content: "' . strtr(html_entity_decode($weTag->getDescription(), null, $GLOBALS['WE_BACKENDCHARSET']), ['"' => '\'',
+								"\n" => ' ']) . '";}' . "\n";
 					} else {
-						$allTags['we:' . $tagName] = array('we' => $weTag->getAttributesForCM());
+						$allTags['we:' . $tagName] = ['we' => $weTag->getAttributesForCM()];
 					}
 				}
 			}

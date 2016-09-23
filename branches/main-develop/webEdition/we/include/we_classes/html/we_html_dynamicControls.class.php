@@ -196,10 +196,9 @@ class we_html_dynamicControls{
 				$groups = [];
 				foreach($groups_value as $group_item_key => $group_item_value){
 
-					$groups[$groups_key][$titles[$groups_key][$group_item_key]] = array(
-						'perm' => $group_item_key,
+					$groups[$groups_key][$titles[$groups_key][$group_item_key]] = ['perm' => $group_item_key,
 						'value' => $group_item_value
-					);
+						];
 				}
 
 				foreach($groups as $groups_key => $group_item){

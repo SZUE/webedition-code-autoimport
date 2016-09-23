@@ -23,9 +23,7 @@
  *
  * Taken from poppler sources
  */
-return array(
-	'macRomanEncoding' => array(
-		NULL,
+return ['macRomanEncoding' => [NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -281,9 +279,8 @@ return array(
 		'hungarumlaut',
 		'ogonek',
 		'caron'
-	),
-	'macExpertEncoding' => array(
-		NULL,
+	 ],
+	'macExpertEncoding' => [NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -539,9 +536,8 @@ return array(
 		NULL,
 		NULL,
 		NULL
-	),
-	'WinAnsiEncoding' => array(
-		NULL,
+	 ],
+	'WinAnsiEncoding' => [NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -797,9 +793,8 @@ return array(
 		'yacute',
 		'thorn',
 		'ydieresis'
-	),
-	'standardEncoding' => array(
-		NULL,
+	 ],
+	'standardEncoding' => [NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1055,9 +1050,8 @@ return array(
 		NULL,
 		NULL,
 		NULL
-	),
-	'expertEncoding' => array(
-		NULL,
+	 ],
+	'expertEncoding' => [NULL,
 		NULL,
 		NULL,
 		NULL,
@@ -1313,4 +1307,4 @@ return array(
 		'Yacutesmall',
 		'Thornsmall',
 		'Ydieresissmall'
-	));
+	 ]];

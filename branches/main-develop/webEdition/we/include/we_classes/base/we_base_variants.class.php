@@ -25,25 +25,25 @@
 /*
   data of variations have the following format in document
 
-  we_doc->elements[WE_VARIANTS_ELEMENT_NAME] = array(
-  [0] => array(
-  'VARIATIONNAME1' => array(
-  'fieldName1' => array(
+  we_doc->elements[WE_VARIANTS_ELEMENT_NAME] =
+  [0] =>
+  'VARIATIONNAME1' =>
+  'fieldName1' =>
   'type' = 'txt',
   'dat' = 'Text'
   ),
-  'fieldName2' => array(
+  'fieldName2' =>
   'type' = 'img',
   'dat' = 152
   )
   ),
-  [1] => array(
-  'VARIATIONNAME2' => array(
-  'fieldName1' => array(
+  [1] =>
+  'VARIATIONNAME2' =>
+  'fieldName1' =>
   'type' = 'txt',
   'dat' = 'CU'
   ),
-  'fieldName2' => array(
+  'fieldName2' =>
   'type' = 'img',
   'dat' = 155
   )
@@ -53,12 +53,12 @@
   =====>>
 
   in editmode available in document
-  we_doc->elements[WE_VARIANTS_PREFIX . '0'] = array('type' = 'txt', 'dat' = 'VARIATIONNAME1');
-  we_doc->elements[WE_VARIANTS_PREFIX . '0' . '_' . fieldName1] = array('type' = 'txt', 'dat' = 'Text');
-  we_doc->elements[WE_VARIANTS_PREFIX . '0' . '_' . fieldName2] = array('type' = 'img', 'dat' = 152);
+  we_doc->elements[WE_VARIANTS_PREFIX . '0'] ='type' = 'txt', 'dat' = 'VARIATIONNAME1');
+  we_doc->elements[WE_VARIANTS_PREFIX . '0' . '_' . fieldName1] ='type' = 'txt', 'dat' = 'Text');
+  we_doc->elements[WE_VARIANTS_PREFIX . '0' . '_' . fieldName2] ='type' = 'img', 'dat' = 152);
 
-  we_doc->elements[WE_VARIANTS_PREFIX . '1'] = array('type' = 'txt', 'dat' = 'VARIATIONNAME2');
-  we_doc->elements[WE_VARIANTS_PREFIX . '1' . '_' . fieldName1] = array('type' = 'txt', 'dat' = 'CU');
+  we_doc->elements[WE_VARIANTS_PREFIX . '1'] ='type' = 'txt', 'dat' = 'VARIATIONNAME2');
+  we_doc->elements[WE_VARIANTS_PREFIX . '1' . '_' . fieldName1] ='type' = 'txt', 'dat' = 'CU');
   ...
  */
 

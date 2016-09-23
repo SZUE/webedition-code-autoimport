@@ -1,3 +1,4 @@
+js/we_modules/customer/customer_treeHeader.js
 js/we_lcmd.js
 !rpc/views/json/customer
 !rpc/views/json/widgets

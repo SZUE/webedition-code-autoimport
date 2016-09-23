@@ -580,7 +580,7 @@ function setTab(tab) {
 
 
 			$htmlTable->setCol($row, 0, ['class' => 'defaultfont'], g_l('modules_shop', '[fieldEmail]'));
-			$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('fieldEmail', array_merge(array(""), $custfields), 1, $feldnamen[18]));
+			$htmlTable->setColContent($row++, 2, we_html_tools::htmlSelect('fieldEmail', array_merge([''], $custfields), 1, $feldnamen[18]));
 
 			$Parts[] = array("html" => $htmlTable->getHtml());
 		}

@@ -245,7 +245,7 @@ class we_folder extends we_root{
 			we_navigation_cache::clean(true);
 		}
 
-		if(LANGLINK_SUPPORT && in_array($this->Table, array(FILE_TABLE, defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'))){
+		if(LANGLINK_SUPPORT && in_array($this->Table, [FILE_TABLE, defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'])){
 			$this->setLanguageLink($this->LangLinks, 'tblFile', true, $this->IsClassFolder);
 		} else {
 			//if language changed, we must delete eventually existing entries in tblLangLink, even if !LANGLINK_SUPPORT!
@@ -253,7 +253,7 @@ class we_folder extends we_root{
 		}
 		/* hook */
 		if(!$skipHook){
-			$hook = new weHook('save', '', array($this, 'resave' => $resave));
+			$hook = new weHook('save', '', [$this, 'resave' => $resave]);
 			//check if doc should be saved
 			if($hook->executeHook() === false){
 				$this->errMsg = $hook->getErrorString();
@@ -317,10 +317,8 @@ class we_folder extends we_root{
 			$DocumentObject[0]['TriggerID'] = $this->TriggerID;
 
 			if(!$DB_WE2->query('UPDATE ' . TEMPORARY_DOC_TABLE . ' SET ' .
-					we_database_base::arraySetter(array(
-						//FIXME: this is due to customerfilter
-						'DocumentObject' => ($DocumentObject ? we_serialize($DocumentObject, SERIALIZE_PHP) : ''),
-					)) .
+					we_database_base::arraySetter(['DocumentObject' => ($DocumentObject ? we_serialize($DocumentObject, SERIALIZE_PHP) : ''),
+					]) .
 					' WHERE DocumentID=' . intval($DB_WE->f('ID')) . ' AND DocTable="' . stripTblPrefix($this->Table) . '" AND Active=1')){
 				return false;
 			}

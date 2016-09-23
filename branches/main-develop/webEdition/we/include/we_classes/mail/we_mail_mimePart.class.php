@@ -156,10 +156,9 @@ class we_mail_mimePart{
 		switch($this->encoding){
 			case we_mail_mime::ENCODING_QUOTEDPRINTABLE:
 				$filter = stream_filter_append(
-					$this->_content, 'convert.quoted-printable-encode', STREAM_FILTER_READ, array(
-					'line-length' => 76,
+					$this->_content, 'convert.quoted-printable-encode', STREAM_FILTER_READ, ['line-length' => 76,
 					'line-break-chars' => we_mail_mime::LINEEND
-					)
+					]
 				);
 				if(!is_resource($filter)){
 					throw new we_mail_exception('Failed to append quoted-printable filter');
@@ -168,10 +167,9 @@ class we_mail_mimePart{
 
 			case we_mail_mime::ENCODING_BASE64:
 				$filter = stream_filter_append(
-					$this->_content, 'convert.base64-encode', STREAM_FILTER_READ, array(
-					'line-length' => 76,
+					$this->_content, 'convert.base64-encode', STREAM_FILTER_READ, ['line-length' => 76,
 					'line-break-chars' => we_mail_mime::LINEEND
-					)
+					]
 				);
 				if(!is_resource($filter)){
 					throw new we_mail_exception('Failed to append base64 filter');
@@ -231,23 +229,16 @@ class we_mail_mimePart{
 				. " boundary=\"" . $this->boundary . '"';
 		}
 
-		$headers[] = array(
-			'Content-Type',
+		$headers[] = ['Content-Type',
 			$contentType
-		);
+		];
 
 		if($this->encoding){
-			$headers[] = array(
-				'Content-Transfer-Encoding',
-				$this->encoding
-			);
+			$headers[] = ['Content-Transfer-Encoding', $this->encoding];
 		}
 
 		if($this->id){
-			$headers[] = array(
-				'Content-ID',
-				'<' . $this->id . '>'
-			);
+			$headers[] = ['Content-ID', '<' . $this->id . '>'];
 		}
 
 		if($this->disposition){
@@ -255,31 +246,19 @@ class we_mail_mimePart{
 			if($this->filename){
 				$disposition .= '; filename="' . $this->filename . '"';
 			}
-			$headers[] = array(
-				'Content-Disposition',
-				$disposition
-			);
+			$headers[] = ['Content-Disposition', $disposition];
 		}
 
 		if($this->description){
-			$headers[] = array(
-				'Content-Description',
-				$this->description
-			);
+			$headers[] = ['Content-Description', $this->description];
 		}
 
 		if($this->location){
-			$headers[] = array(
-				'Content-Location',
-				$this->location
-			);
+			$headers[] = ['Content-Location', $this->location];
 		}
 
 		if($this->language){
-			$headers[] = array(
-				'Content-Language',
-				$this->language
-			);
+			$headers[] = ['Content-Language', $this->language];
 		}
 
 		return $headers;
@@ -288,7 +267,7 @@ class we_mail_mimePart{
 	/**
 	 * Return the headers for this part as a string
 	 *
-	 * @param  string $EOL Line end; defaults to 
+	 * @param  string $EOL Line end; defaults to
 	 * @return string
 	 */
 	public function getHeaders($EOL = we_mail_mime::LINEEND){

@@ -25,11 +25,11 @@
 class we_dialog_abbr extends we_dialog_base{
 	var $dialogWidth = 370;
 	var $JsOnly = true;
-	var $changeableArgs = array("title",
+	var $changeableArgs = ["title",
 		"lang",
 		"class",
 		"style"
-	);
+		];
 
 	function __construct($noInternals = false){
 		parent::__construct();
@@ -69,11 +69,10 @@ top.close();
 <tr><td>' . $lang . '</td></tr>
 </table>';
 		if(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY")){
-			$table .= we_html_element::htmlHiddens(array(
-					'weSaveToGlossary' => 0,
+			$table .= we_html_element::htmlHiddens(['weSaveToGlossary' => 0,
 					'language' => we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage']),
 					'text' => ''
-			));
+					]);
 		}
 
 		return $table;

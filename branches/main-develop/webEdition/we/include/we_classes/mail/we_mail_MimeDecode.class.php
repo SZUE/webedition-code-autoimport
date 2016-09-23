@@ -88,10 +88,9 @@ class we_mail_MimeDecode{
 		$result = [];
 		foreach($parts as $part){
 			self::splitMessage($part, $headers, $body, $EOL);
-			$result[] = array(
-				'header' => $headers,
+			$result[] = ['header' => $headers,
 				'body' => $body
-			);
+				];
 		}
 
 		return $result;
@@ -116,13 +115,11 @@ class we_mail_MimeDecode{
 			$headers = [];
 			// TODO: we're ignoring \r for now - is this function fast enough and is it safe to asume noone needs \r?
 			$body = str_replace(
-				array(
-				"\r",
+				["\r",
 				"\n"
-				), array(
-				'',
+				], ['',
 				$EOL
-				), $message
+				], $message
 			);
 
 			return;
@@ -171,10 +168,9 @@ class we_mail_MimeDecode{
 				$headers[$lower][] = $header;
 				continue;
 			}
-			$headers[$lower] = array(
-				$headers[$lower],
+			$headers[$lower] = [$headers[$lower],
 				$header
-			);
+				];
 		}
 	}
 

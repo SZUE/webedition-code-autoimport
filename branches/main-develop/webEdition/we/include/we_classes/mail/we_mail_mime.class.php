@@ -58,8 +58,7 @@ class we_mail_mime{
 	 *
 	 * @var array
 	 */
-	public static $qpKeys = array(
-		"\x00",
+	public static $qpKeys = ["\x00",
 		"\x01",
 		"\x02",
 		"\x03",
@@ -220,13 +219,12 @@ class we_mail_mime{
 		"\xFD",
 		"\xFE",
 		"\xFF"
-	);
+	];
 
 	/**
 	 * @var array
 	 */
-	public static $qpReplaceValues = array(
-		"=00",
+	public static $qpReplaceValues = ["=00",
 		"=01",
 		"=02",
 		"=03",
@@ -387,7 +385,7 @@ class we_mail_mime{
 		"=FD",
 		"=FE",
 		"=FF"
-	);
+	];
 
 	/**
 	 * @var string
@@ -486,12 +484,10 @@ class we_mail_mime{
 		$str = self::_encodeQuotedPrintable($str);
 
 		// Mail-Header required chars have to be encoded also:
-		$str = str_replace(
-			array('?', ' ', '_', ','), array('=3F', '=20', '=5F', '=2C'), $str
-		);
+		$str = strtr($str, ['?' => '=3F', ' ' => '=20', '_' => '=5F', ',' => '=2C']);
 
 		// initialize first line, we need it anyways
-		$lines = array(0 => "");
+		$lines = [0 => ''];
 
 		// Split encoded text into separate lines
 		$tmp = "";
@@ -601,7 +597,7 @@ class we_mail_mime{
 	 *
 	 * @param string $str
 	 * @param string $encoding
-	 * @param string $EOL Line end; defaults to 
+	 * @param string $EOL Line end; defaults to
 	 * @return string
 	 */
 	public static function encode($str, $encoding, $EOL = self::LINEEND){
