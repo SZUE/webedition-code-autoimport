@@ -68,7 +68,7 @@ abstract class we_tool_lookup{
 		if($addInternTools){
 
 			$internToolDir = WE_INCLUDES_PATH . 'we_tools/';
-			$internTools = array('weSearch', 'navigation');
+			$internTools = ['weSearch', 'navigation'];
 
 			foreach($internTools as $toolName){
 				$metaFile = $internToolDir . $toolName . '/conf/meta.conf.php';
@@ -268,7 +268,7 @@ abstract class we_tool_lookup{
 			$d = opendir($tooldir);
 			while(($entry = readdir($d))){
 				if(!is_dir($tooldir . '/' . $entry) && stripos($entry, $filematch) !== false){
-					$tagname = str_replace(array($rem_before, $rem_after), '', $entry);
+					$tagname = str_replace([$rem_before, $rem_after], '', $entry);
 					$founds[$tagname] = $tooldir . '/' . $entry;
 				}
 			}
@@ -419,7 +419,7 @@ abstract class we_tool_lookup{
 	}
 
 	static function getIgnoreList(){
-		return array('doctype', 'category', 'navigation', 'toolfactory', 'weSearch');
+		return ['doctype', 'category', 'navigation', 'toolfactory', 'weSearch'];
 	}
 
 	static function isInIgnoreList($toolname){

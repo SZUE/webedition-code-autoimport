@@ -56,11 +56,10 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 		echo we_class::hiddenTrans();
 
 		$tp = new we_tag_tagParser($GLOBALS['we_doc']->getTemplateCode(true, true));
-		$relevantTags = array(
-			'normal' => [],
+		$relevantTags = ['normal' => [],
 			'block' => [],
-		);
-		//FIXME: we need to get the names of blocks
+		];
+//FIXME: we need to get the names of blocks
 		$context = '';
 		foreach($tp->getTagsWithAttributes(true) as $tag){
 			if(!empty($tag['attribs']['name'])){
@@ -74,12 +73,12 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 					if(!$isBlock){
 						switch($tag['name']){
 							case 'img':
-						$relevantTags[$type][md5($tag['attribs']['name'] . we_imageDocument::ALT_FIELD)] = $tag['attribs']['name'];
+								$relevantTags[$type][md5($tag['attribs']['name'] . we_imageDocument::ALT_FIELD)] = $tag['attribs']['name'];
 								$relevantTags[$type][md5($tag['attribs']['name'] . we_imageDocument::THUMB_FIELD)] = $tag['attribs']['name'];
 								$relevantTags[$type][md5($tag['attribs']['name'] . we_imageDocument::TITLE_FIELD)] = $tag['attribs']['name'];
 								break;
 							case 'href':
-						$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK)] = $tag['attribs']['name'];
+								$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK)] = $tag['attribs']['name'];
 								$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK_ID)] = $tag['attribs']['name'];
 								$relevantTags[$type][md5($tag['attribs']['name'] . we_base_link::MAGIC_INT_LINK_EXTPATH)] = $tag['attribs']['name'];
 						}
@@ -110,17 +109,17 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 			$obsolete = [];
 		}
 
-		$table = new we_html_table(array('class' => 'default middlefont', 'width' => '100%'), count($obsolete) + 1, 6);
-		$table->setRowAttributes(0, array('class' => 'boxHeader'));
+		$table = new we_html_table(['class' => 'default middlefont', 'width' => '100%'], count($obsolete) + 1, 6);
+		$table->setRowAttributes(0, ['class' => 'boxHeader']);
 		$table->setColContent(0, 0, '');
-		$table->setColContent(0, 1, 'Block');
-		$table->setColContent(0, 2, 'Name');
-		$table->setColContent(0, 3, 'Typ');
-		$table->setColContent(0, 4, 'Anzahl');
-		$table->setColContent(0, 5, 'Exemplarischer Inhalt');
+		$table->setColContent(0, 1, g_l('weEditor', '[unusedElements][block]'));
+		$table->setColContent(0, 2, g_l('weEditor', '[unusedElements][Name]'));
+		$table->setColContent(0, 3, g_l('weEditor', '[unusedElements][type]'));
+		$table->setColContent(0, 4, g_l('weEditor', '[unusedElements][count]'));
+		$table->setColContent(0, 5, g_l('weEditor', '[unusedElements][content]'));
 		foreach($obsolete as $pos => $cur){
 			$row = $pos + 1;
-			$table->setRowAttributes($row, array('class' => 'htmlDialogBorder4Cell'));
+			$table->setRowAttributes($row, ['class' => 'htmlDialogBorder4Cell']);
 			$table->setColContent($row, 0, '<input type="checkbox" name="weg[' . $cur['nHash'] . ']" value="' . $cur['blockcnt'] . '"/>');
 			$table->setColContent($row, 1, $cur['block']);
 			$table->setColContent($row, 2, $cur['real']);
@@ -130,10 +129,10 @@ if(we_base_request::_(we_base_request::STRING, 'do') == 'delete' && !empty($remo
 		}
 
 		$parts = [
-			['headline' => g_l('weClass', '[unusedElementsTab]'),
+				['headline' => g_l('weClass', '[unusedElementsTab]'),
 				'html' => we_html_tools::htmlAlertAttentionBox(g_l('weClass', '[unusedElements][description]'), we_html_tools::TYPE_ALERT, 850, false)
 			],
-			['html' => $table->getHtml() .
+				['html' => $table->getHtml() .
 				($obsolete ? we_html_button::create_button(we_html_button::TRASH, "javascript: if(confirm('" . g_l('weClass', '[unusedElements][delete]') . "'))document.we_form.elements.do.value='delete';we_cmd('reload_editpage');") : ''),
 			],
 			/*

@@ -130,7 +130,7 @@ class we_selector_query{
 	 * @return void
 	 */
 	function search($search, $table, array $types, $limit = null, $rootDir = ""){
-		$search = strtr($search, array("[" => "\\\[", "]" => "\\\]"));
+		$search = strtr($search, ["[" => "\\\[", "]" => "\\\]"]);
 		$userExtraSQL = $this->getUserExtraQuery($table);
 		switch($table){
 			case USER_TABLE:

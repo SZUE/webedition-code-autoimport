@@ -54,8 +54,7 @@ class we_tree_users extends we_tree_base{
 			while($db->next_record()){
 				switch(($type = $db->f('Type'))){
 					case we_users_user::TYPE_USER_GROUP:
-						$items[] = array(
-							'id' => $db->f('ID'),
+						$items[] = ['id' => $db->f('ID'),
 							'parentid' => $db->f('ParentID'),
 							'text' => addslashes($db->f('Text')),
 							'typ' => 'group',
@@ -64,13 +63,12 @@ class we_tree_users extends we_tree_base{
 							'table' => USER_TABLE,
 							'loaded' => 0,
 							'checked' => false,
-						);
+							];
 						break;
 					default:
 						$p = we_unserialize($db->f('Permissions'));
 
-						$items[] = array(
-							'id' => $db->f('ID'),
+						$items[] = ['id' => $db->f('ID'),
 							'parentid' => $db->f('ParentID'),
 							'text' => addslashes($db->f('Text')),
 							'typ' => 'item',
@@ -78,7 +76,7 @@ class we_tree_users extends we_tree_base{
 							'contentType' => ($db->f('Type') == we_users_user::TYPE_ALIAS ? 'we/alias' : 'we/user'),
 							'table' => USER_TABLE,
 							'class' => (!empty($p['ADMINISTRATOR']) ? 'bold ' : '') . ($db->f('LoginDenied') ? 'red' : '')
-						);
+							];
 				}
 			}
 		}

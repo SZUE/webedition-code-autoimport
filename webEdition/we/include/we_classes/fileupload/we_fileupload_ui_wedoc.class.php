@@ -33,16 +33,14 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 			$this->setTypeCondition('forbidden', [], we_base_ContentTypes::inst()->getExtension(we_base_ContentTypes::IMAGE));
 		}
 
-		$this->formElements = array_merge($this->formElements, array(
-			'importMeta' => array('set' => true, 'multiIconBox' => false, 'rightHeadline' => true, 'noline' => true),
-		));
+		$this->formElements = array_merge($this->formElements, ['importMeta' => ['set' => true, 'multiIconBox' => false, 'rightHeadline' => true, 'noline' => true],
+		]);
 		$this->type = 'wedoc';
 		$this->dimensions['dragWidth'] = 300;
-		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, array(
-			array('we_transaction', 'text'),
-			array('we_doc_ct', 'text'),
-			array('we_doc_ext', 'text')
-		));
+		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, [['we_transaction', 'text'],
+				['we_doc_ct', 'text'],
+				['we_doc_ext', 'text']
+		]);
 		$this->cliensideImageEditing = $this->contentType === we_base_ContentTypes::IMAGE ? true : false;
 	}
 
@@ -51,9 +49,9 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 
 		$progress = new we_progressBar(0, 170, '_fileupload');
 		$progress->setProgressTextPlace(0);
-		$divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML('', 'font-size:11px;'));
+		$divProgressbar = we_html_element::htmlDiv(['id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'], $progress->getHTML('', 'font-size:11px;'));
 		$divFileInfo = we_html_element::htmlDiv([], $fs . '<br />' . $ft . '<br />' . $md);
-		$divButtons = we_html_element::htmlDiv(array('id' => 'div_fileupload_buttons', 'style' => 'width:180px'), $this->getDivBtnInputReset($isIE10 ? 84 : 170) .
+		$divButtons = we_html_element::htmlDiv(['id' => 'div_fileupload_buttons', 'style' => 'width:180px'], $this->getDivBtnInputReset($isIE10 ? 84 : 170) .
 				$divProgressbar .
 				$this->getDivBtnUploadCancel($isIE10 ? 84 : 170)
 		);

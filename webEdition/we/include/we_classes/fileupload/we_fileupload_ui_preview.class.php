@@ -37,11 +37,10 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		'tableProperties' => ['foldAtNr' => -1, 'foldAtOpen' => '', 'foldAtClose' => '']
 	];
 	protected $isExternalBtnUpload = false;
-	protected $parentID = array(
-		'setField' => false,
+	protected $parentID = ['setField' => false,
 		'preset' => IMAGESTARTID_DEFAULT,
 		'setFixed' => false,
-	);
+	 ];
 	protected $transaction;
 	protected $contentType;
 	protected $extension;
@@ -56,10 +55,10 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		$this->callback = '';
 		$this->type = 'preview';
 		$this->extension = $extension;
-		$this->setInternalProgress(array('isInternalProgress' => true));
+		$this->setInternalProgress(['isInternalProgress' => true]);
 		$this->internalProgress['width'] = 170;
 		$this->setTypeCondition('accepted', [$contentType]);
-		$this->setDimensions(array('width' => 200, 'dragHeight' => 116, 'alertBoxWidth' => 507));
+		$this->setDimensions(['width' => 200, 'dragHeight' => 116, 'alertBoxWidth' => 507]);
 		//$this->binDocProperties = $this->getDocProperties();
 		$this->moreFieldsToAppend = array_merge($this->moreFieldsToAppend, [['fu_doc_importMetadata', 'text'],
 			['fu_file_sameName', 'text'],
@@ -112,7 +111,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 				we_html_element::htmlDiv(['id' => 'image_edit_mask_text', 'class' => 'we_file_drag_maskBusyText'])
 		);
 
-		return self::getHtmlLoup() . ($this->isDragAndDrop ? we_html_element::htmlDiv(array('id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag'), $content) : $content);
+		return self::getHtmlLoup() . ($this->isDragAndDrop ? we_html_element::htmlDiv(['id' => 'div_we_File_fileDrag', 'class' => 'we_file_drag'], $content) : $content);
 	}
 
 	protected function getHiddens(){

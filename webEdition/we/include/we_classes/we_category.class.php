@@ -158,15 +158,14 @@ class we_category extends we_base_model{
 					$cats[] = $cat;
 				}
 			} else {//we return complete data allways as associative arrays
-				$cats[$data['ID']] = array(
-					'ID' => $data['ID'],
+				$cats[$data['ID']] = ['ID' => $data['ID'],
 					'ParentID' => $data['ParentID'],
 					'Path' => $data['Path'],
 					'Category' => $data['Category'],
 					'Title' => $data['Title'],
 					'Description' => $data['Description'],
 					'IsFolder' => 1//$data['IsFolder']
-				);
+					];
 			}
 		}
 

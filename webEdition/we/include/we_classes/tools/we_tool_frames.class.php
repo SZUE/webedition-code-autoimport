@@ -77,12 +77,12 @@ abstract class we_tool_frames extends we_modules_frame{
 	}
 
 	protected function getHTMLEditorBody(){
-		$hiddens = array('cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0));
+		$hiddens = ['cmd' => 'tool_' . $this->toolName . '_edit', 'pnt' => 'edbody', 'vernr' => we_base_request::_(we_base_request::INT, 'vernr', 0)];
 
 		if(we_base_request::_(we_base_request::BOOL, "home")){
 			$hiddens['cmd'] = 'home';
 			$GLOBALS['we_head_insert'] = $this->View->getJSProperty();
-			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(array('name' => 'we_form'), $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0));
+			$GLOBALS['we_body_insert'] = we_html_element::htmlForm(['name' => 'we_form'], $this->View->getCommonHiddens($hiddens) . we_html_element::htmlHidden('home', 0));
 			$tool = $GLOBALS['tool'] = $this->toolName;
 			ob_start();
 			include($this->toolDir . 'home.inc.php');

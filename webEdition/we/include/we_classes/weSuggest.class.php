@@ -212,14 +212,14 @@ class weSuggest{
 		$resultId = $this->resultId ? : 'yuiAcResult' . $this->acId;
 		$containerWidth = $this->containerWidth ? : $this->width;
 
-		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, array($resultId), $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir, $this->noautoinit);
+		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, [
+			$resultId], $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir, $this->noautoinit);
 		$inputField = $this->_htmlTextInput($this->inputName, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_element::htmlHidden($this->resultName, $this->resultValue, $resultId);
 		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
 
 		$html = we_html_tools::htmlFormElementTable(
-				array(
-				"text" => $resultField . $autoSuggest), $this->label, 'left', 'defaultfont', (
+				["text" => $resultField . $autoSuggest], $this->label, 'left', 'defaultfont', (
 				$this->selectButton ? : ''
 				), (
 				$this->additionalButton ? : ''
@@ -234,17 +234,17 @@ class weSuggest{
 		if(self::USE_DRAG_AND_DROP && ($this->isDropFromTree || $this->isDropFromExt)){
 			$this->isDropFromExt = $this->table === FILE_TABLE ? $this->isDropFromExt : false;
 
-			$texts = array(// FIXME: G_L(): [suggest][dnd_text_(0|1|2|3)] to avoid texts-array
+			$texts = [// FIXME: G_L(): [suggest][dnd_text_(0|1|2|3)] to avoid texts-array
 				'[something is wrong]',
 				'Dateien aus dem Dateibaum hierher ziehen',
 				'Dateien zum Upload von der Festplatte hierher ziehen',
 				'Dateien aus dem Dateibaum oder <br>zum Upload von der Festplatte hierher ziehen'
-			);
+				];
 			$dropzoneContent = 'Drag and Drop Auswahl<br>' . $texts[(($this->isDropFromTree ? 1 : 0) + ($this->isDropFromExt ? 2 : 0))];
 			$dropzoneStyle = 'width:auto;padding-top:14px;height:60px;';
 
 			$img = '';
-			$eventAttribs = array('ondragover' => 'handleDragOver(event, \'' . $this->acId . '\');', 'ondragleave' => 'handleDragLeave(event, \'' . $this->acId . '\');');
+			$eventAttribs = ['ondragover' => 'handleDragOver(event, \'' . $this->acId . '\');', 'ondragleave' => 'handleDragLeave(event, \'' . $this->acId . '\');'];
 
 			if(true && $this->contentType === we_base_ContentTypes::IMAGE){ // FIXME: add code for icons so we can have preview for all cts
 				if($this->resultValue){
@@ -253,24 +253,24 @@ class weSuggest{
 
 					if($file['ContentType'] === we_base_ContentTypes::IMAGE){
 						$url = WEBEDITION_DIR . 'thumbnail.php?id=' . $this->resultValue . "&size[width]=100&size[heihjt]=100&path=" . urlencode($file['Path']) . "&extension=" . $file['Extension'];
-						$img = we_html_element::htmlImg(array('src' => $url, 'style' => 'vertical-align:middle;'));
+						$img = we_html_element::htmlImg(['src' => $url, 'style' => 'vertical-align:middle;']);
 					}
 				}
 
-				$imgDiv = we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'float:left;height:100%;')), we_html_element::htmlSpan(array('style' => 'display:inline-block;height: 100%;vertical-align: middle;')) .
-						we_html_element::htmlSpan(array('id' => 'preview_' . $this->acId), $img)
+				$imgDiv = we_html_element::htmlDiv(array_merge($eventAttribs, ['style' => 'float:left;height:100%;']), we_html_element::htmlSpan(['style' => 'display:inline-block;height: 100%;vertical-align: middle;']) .
+						we_html_element::htmlSpan(['id' => 'preview_' . $this->acId], $img)
 				);
-				$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array_merge($eventAttribs, array('style' => 'display:inline-block;padding-top:30px;')), $dropzoneContent);
+				$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array_merge($eventAttribs, ['style' => 'display:inline-block;padding-top:30px;']), $dropzoneContent);
 				$dropzoneStyle = 'width:auto;padding:0px 0 0 12px;';
 			}
 
 			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;top.dropzoneAddPreview('" . $this->acId . "', id, table, ct, path);" . $this->doOnDropFromTree . "}";
 			$callbackExt = "if(importedDocument.id){" . $this->doOnDropFromExt . "top.close();}";
-			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->contentTypes, array('tree' => $callbackTree, 'external' => $callbackExt), $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->table);
+			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->contentTypes, ['tree' => $callbackTree, 'external' => $callbackExt], $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->table);
 
 
 			$html = we_html_element::htmlDiv([], we_html_element::htmlDiv([], $html) .
-					we_html_element::htmlDiv(array('style' => 'margin-top:-4px;'), $dropzone)
+					we_html_element::htmlDiv(['style' => 'margin-top:-4px;'], $dropzone)
 			);
 			$this->isDropFromTree = $this->isDropFromExt = false; //reset default for other instances on the same site
 		}
@@ -544,10 +544,10 @@ class weSuggest{
 		$this->inputMayBeEmpty[] = $inputMayBeEmpty;
 		switch($contentType){
 			case self::DirSelector:
-				array($this->ct, "folder");
+				[$this->ct, "folder"];
 				break;
 			case self::DocSelector:
-				array($this->ct, "doc");
+				[$this->ct, "doc"];
 				break;
 		}
 

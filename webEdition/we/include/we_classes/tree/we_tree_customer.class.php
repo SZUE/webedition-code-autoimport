@@ -120,15 +120,14 @@ top.content.treeData.add(new top.content.node(attribs));' .
 		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat, 0 AS ParentID,' . $elem . ',LoginDenied FROM ' . CUSTOMER_TABLE . ' ' . $where . ' ' . self::getSortOrder($settings) . ($segment ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		while($db->next_record(MYSQL_ASSOC)){
-			$typ = array(
-				'typ' => ($db->f("IsFolder") == 1 ? 'group' : 'item'),
+			$typ = ['typ' => ($db->f("IsFolder") == 1 ? 'group' : 'item'),
 				'contenttype' => ($db->f("IsFolder") == 1 ? 'we/customerGroup' : 'we/customer'),
 				'disabled' => 0,
 				'published' => $db->f('LoginDenied') ? 0 : 1,
 				'tooltip' => intval($db->f("ID")),
 				'offset' => $offset,
 				'ID' => intval($db->f("ID")),
-			);
+				];
 
 			$tt = $db->f('treeFormat');
 			$fileds = array_change_key_case($db->Record, CASE_LOWER);
@@ -140,8 +139,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 		$total = f('SELECT COUNT(1) FROM ' . CUSTOMER_TABLE . ' ' . $where, '', $db);
 		$nextoffset = $offset + $segment;
 		if($segment && ($total > $nextoffset)){
-			$items[] = array(
-				"id" => "next_" . $ParentID,
+			$items[] = ["id" => "next_" . $ParentID,
 				"parentid" => 0,
 				"text" => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
 				"contenttype" => "arrowdown",
@@ -151,7 +149,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 				"disabled" => 0,
 				"tooltip" => "",
 				"offset" => $nextoffset
-			);
+				];
 		}
 
 		return $items;
@@ -234,8 +232,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 					(!permissionhandler::hasPerm('ADMINISTRATOR') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
 					(count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : ''));
 
-				$items[] = array(
-					'id' => str_replace("\'", '*****quot*****', $gid),
+				$items[] = ['id' => str_replace("\'", '*****quot*****', $gid),
 					'parentid' => $old,
 					'path' => '',
 					'text' => $gname . ' (' . $groupTotal . '/' . '<abbr title="' . g_l('modules_customer', '[all]') . ' ' . g_l('modules_customer', '[customer_data]') . '">' . $total . '</abbr>)',
@@ -244,7 +241,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 					'typ' => 'group',
 					'disabled' => 0,
 					'open' => 0
-				);
+					];
 				$check[$gname] = 1;
 			} else {
 				$foo = [];
@@ -255,8 +252,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 					$gname = implode('-|-', $foo);
 					if($i >= $level){
 						if(!isset($check[$gname])){
-							$items[] = array(
-								'id' => $gname,
+							$items[] = ['id' => $gname,
 								'parentid' => $old,
 								'path' => '',
 								'text' => ($db->f($grouparr[$i]) ? : g_l('modules_customer', '[no_value]')),
@@ -265,7 +261,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 								'typ' => 'group',
 								'disabled' => 0,
 								'open' => 0
-							);
+								];
 							$check[$gname] = 1;
 						}
 					}
@@ -277,8 +273,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 					if($first){
 						$prevoffset = max(0, $offset - $segment);
 						if($offset && $segment){
-							$items[] = array(
-								'id' => "prev_" . $gname,
+							$items[] = ['id' => "prev_" . $gname,
 								'parentid' => $gname,
 								'text' => 'display (' . $prevoffset . '-' . $offset . ')',
 								'contenttype' => "arrowup",
@@ -289,12 +284,11 @@ top.content.treeData.add(new top.content.node(attribs));' .
 								'disabled' => 0,
 								'tooltip' => "",
 								'offset' => $prevoffset
-							);
+								];
 						}
 						$first = false;
 					}
-					$items[] = array(
-						'id' => $db->f("ID"),
+					$items[] = ['id' => $db->f("ID"),
 						'parentid' => str_replace("\'", "*****quot*****", $gname),
 						'path' => '',
 						'text' => oldHtmlspecialchars($tt),
@@ -304,7 +298,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 						'disabled' => 0,
 						'published' => $db->f('LoginDenied') ? 0 : 1,
 						'tooltip' => $db->f("ID")
-					);
+						];
 				}
 			}
 		}
@@ -314,8 +308,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 
 			$nextoffset = $offset + $segment;
 			if($segment && ($total > $nextoffset)){
-				$items[] = array(
-					'id' => "next_" . str_replace("\'", "*****quot*****", $old),
+				$items[] = ['id' => "next_" . str_replace("\'", "*****quot*****", $old),
 					'parentid' => str_replace("\'", "*****quot*****", $old),
 					'text' => "display (" . $nextoffset . "-" . ($nextoffset + $segment) . ")",
 					'contenttype' => "arrowdown",
@@ -325,7 +318,7 @@ top.content.treeData.add(new top.content.node(attribs));' .
 					'disabled' => 0,
 					'tooltip' => "",
 					'offset' => $nextoffset
-				);
+					];
 			}
 		}
 

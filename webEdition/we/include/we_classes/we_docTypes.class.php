@@ -118,7 +118,7 @@ class we_docTypes extends we_class{
 				$htmlzw.= $this->formDocTypes3($lang, $langkey, ($LDID ? : 0));
 				$langkeys[] = $langkey;
 			}
-			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $languages, 1, $value, false, array('onchange' => 'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'), "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
+			return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $languages, 1, $value, false, ['onchange' => 'dieWerte=\'' . implode(',', $langkeys) . '\'; disableLangDefault(\'we_' . $this->Name . '_LangDocType\',dieWerte,this.options[this.selectedIndex].value);'], "value", 521), g_l('weClass', '[language]'), "left", "defaultfont") .
 				we_html_element::htmlBr() . we_html_tools::htmlFormElementTable($htmlzw, g_l('weClass', '[languageLinksDefaults]'), 'left', 'defaultfont');
 		}
 		return we_html_tools::htmlFormElementTable($this->htmlSelect($inputName, $languages, 1, $value, false, [], "value", 521), g_l('weClass', '[language]'), "left", "defaultfont");

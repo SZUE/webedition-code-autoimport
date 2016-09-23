@@ -165,15 +165,13 @@ abstract class we_rebuild_wizard{
 			}
 		}
 
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => we_html_forms::radiobutton('rebuild_metadata', ($type === 'rebuild_metadata' && permissionhandler::hasPerm('REBUILD_META')), 'type', g_l('rebuild', '[metadata]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_rebuild_metadata]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', 'setNavStatDocDisabled()', (!permissionhandler::hasPerm('REBUILD_META')) || $rebuildMetaDisabled),
-		);
+			];
 
-		$parts[] = array(
-			'headline' => '',
+		$parts[] = ['headline' => '',
 			'html' => we_html_forms::radiobutton('rebuild_medialinks', ($type === 'rebuild_medialinks' && true), 'type', g_l('rebuild', '[media_links]') . ' ' . we_html_tools::htmlAlertAttentionBox(g_l('rebuild', '[txt_media_links]'), we_html_tools::TYPE_HELP, false), true, 'defaultfont', '', false),
-		);
+			];
 
 		$allbutdisabled = !(permissionhandler::hasPerm(['REBUILD_ALL', 'REBUILD_FILTERD', 'REBUILD_OBJECTS', 'REBUILD_INDEX', 'REBUILD_THUMBS', 'REBUILD_META']));
 
@@ -208,8 +206,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 			$dthidden .
 			$thumbsHidden .
 			$metaFieldsHidden .
-			we_html_element::htmlHiddens(array(
-				"catAnd" => $catAnd,
+			we_html_element::htmlHiddens(["catAnd" => $catAnd,
 				"thumbsFolders" => $thumbsFolders,
 				"metaFolders" => $metaFolders,
 				"maintable" => $maintable,
@@ -220,7 +217,7 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 				"btype" => $btype,
 				"onlyEmpty" => $onlyEmpty,
 				"we_cmd[0]" => "rebuild",
-				"step" => 1))];
+				"step" => 1])];
 	}
 
 	/**
@@ -278,10 +275,9 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 					break;
 				case 'rebuild_thumbnails':
 					if(!$thumbs){
-						return array(
-							'',
+						return ['',
 							$js . ';top.wizbusy.showPrevNextButton();' . we_message_reporting::getShowMessageCall(g_l('rebuild', '[no_thumbs_selected]'), we_message_reporting::WE_MESSAGE_ERROR),
-							'');
+							''];
 					}
 					$data = we_rebuild_base::getThumbnails($thumbs, $thumbsFolders);
 					break;
@@ -306,10 +302,9 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 
 				return [];
 			}
-			return array(
-				'',
+			return ['',
 				$js . we_message_reporting::getShowMessageCall(g_l('rebuild', '[nothing_to_rebuild]'), we_message_reporting::WE_MESSAGE_ERROR) . 'top.wizbusy.showPrevNextButton();',
-				'');
+				''];
 		}
 		switch(we_base_request::_(we_base_request::STRING, "type", "rebuild_documents")){
 			case 'rebuild_documents':
@@ -470,20 +465,16 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		$filter_content = we_html_forms::radiobutton('rebuild_filter', ($btype === 'rebuild_filter' && permissionhandler::hasPerm('REBUILD_FILTERD') || ($btype === 'rebuild_all' && (!permissionhandler::hasPerm('REBUILD_ALL')) && permissionhandler::hasPerm('REBUILD_FILTERD'))), 'btype', g_l('rebuild', '[rebuild_filter]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_FILTERD')), g_l('rebuild', '[txt_rebuild_filter]'), 0, 495, '', $filter_content);
 
 
-		$parts = array(
-			array(
-				'headline' => '',
-				'html' => we_html_forms::radiobutton('rebuild_all', ($btype === 'rebuild_all' && permissionhandler::hasPerm('REBUILD_ALL')), 'btype', g_l('rebuild', '[rebuild_all]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_ALL')), g_l('rebuild', '[txt_rebuild_all]'), 0, 495, '', $all_content),
-			),
-			array(
-				'headline' => '',
+		$parts = [['headline' => '',
+			'html' => we_html_forms::radiobutton('rebuild_all', ($btype === 'rebuild_all' && permissionhandler::hasPerm('REBUILD_ALL')), 'btype', g_l('rebuild', '[rebuild_all]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_ALL')), g_l('rebuild', '[txt_rebuild_all]'), 0, 495, '', $all_content),
+				],
+				['headline' => '',
 				'html' => we_html_forms::radiobutton('rebuild_templates', ($btype === 'rebuild_templates' && permissionhandler::hasPerm('REBUILD_TEMPLATES')), 'btype', g_l('rebuild', '[rebuild_templates]'), true, 'defaultfont', '', (!permissionhandler::hasPerm('REBUILD_TEMPLATES')), g_l('rebuild', '[txt_rebuild_templates]'), 0, 495),
-			),
-			array(
-				'headline' => '',
+				],
+				['headline' => '',
 				'html' => $filter_content,
-			)
-		);
+				]
+		];
 
 		$thumbsHidden = '';
 		$thumbsArray = makeArrayFromCSV($thumbs);
@@ -675,13 +666,13 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		}
 
 		if($tail){
-			$body = we_html_element::htmlBody(array('id' => 'weMainBody', "onload" => "wizcmd.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';")
+			$body = we_html_element::htmlBody(['id' => 'weMainBody', "onload" => "wizcmd.location=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=rebuild&amp;fr=body" . $tail . "';"]
 					, we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy&amp;dc=1", 'position:absolute;top:0px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 					we_html_element::htmlIFrame('wizcmd', "about:blank", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
 			);
 		} else {
 			$height = (we_base_browserDetect::isFF() ? 60 : 40);
-			$body = we_html_element::htmlBody(array('id' => 'weMainBody')
+			$body = we_html_element::htmlBody(['id' => 'weMainBody']
 					, we_html_element::htmlIFrame('wizbody', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=body", 'position:absolute;top:0px;bottom:' . $height . 'px;left:0px;right:0px;overflow: hidden') .
 					we_html_element::htmlIFrame('wizbusy', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=busy", 'position:absolute;height:' . $height . 'px;bottom:0px;left:0px;right:0px;overflow: hidden', '', '', false) .
 					we_html_element::htmlIFrame('wizcmd', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=rebuild&amp;fr=cmd", 'position:absolute;bottom:0px;height:0px;left:0px;right:0px;overflow: hidden;')
@@ -704,9 +695,8 @@ set_button_state(' . ($allbutdisabled ? 1 : 0) . ');
 		return we_html_tools::getHtmlTop(g_l('rebuild', '[rebuild]'), '', '', $contents[0] .
 				($contents[1] ?
 					we_html_element::jsElement($contents[1]) :
-					''), we_html_element::htmlBody(array(
-					"class" => "weDialogBody"
-					), we_html_element::htmlForm(array('name' => 'we_form', "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"), $contents[2])
+					''), we_html_element::htmlBody(["class" => "weDialogBody"
+					], we_html_element::htmlForm(['name' => 'we_form', "method" => "post", "action" => WEBEDITION_DIR . "we_cmd.php"], $contents[2])
 				)
 		);
 	}

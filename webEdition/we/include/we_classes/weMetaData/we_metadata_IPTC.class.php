@@ -34,11 +34,11 @@ class we_metadata_IPTC extends we_metadata_metaData{
 
 	const usedFields = 'byline_title,byline,caption_writer,caption,category,city,copyright_string,country_code,country,created_date,credit,edit_status,fixture_identifier,headline,keywords,local_caption,object_cycle,object_name,original_transmission_reference,originating_program,priority,program_version,province_state,reference_date,reference_number,reference_service,release_date,release_time,source,special_instructions,supplementary_category';
 
-	var $accesstypes = array("read");
+	var $accesstypes = ["read"];
 
 	public function __construct($filetype){
 		$this->filetype = $filetype;
-		$this->accesstypes = array("read");
+		$this->accesstypes = ["read"];
 	}
 
 	public static function getUsedFields(){
