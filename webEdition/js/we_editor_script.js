@@ -337,9 +337,9 @@ function we_cmd() {
 			top.console.log('dieses',weCollectionEdit.getItemId(document.getElementById('collectionItem_staticIndex_' + args[2])));
 			weCollectionEdit.callForValidItemsAndInsert(weCollectionEdit.getItemId(document.getElementById('collectionItem_staticIndex_' + args[2])), args[1].currentID);
 			break;
-		case 'collection_insertFiles':
-			WE().t_e('editor script', args);
-			break;
+		case "import_files":
+				new (WE().util.jsWindow)(this, url, "import_files", -1, -1, 650, 720, true, false, true);
+				break;
 		case 'setHot':
 			_EditorFrame.setEditorIsHot(true);
 			break;
