@@ -153,7 +153,7 @@ class we_webEditionDocument extends we_textContentDocument{
 	}
 
 	public function makeSameNew(array $keep = []){
-		parent::makeSameNew(array_merge($keep, array('TemplateID', 'TemplatePath', 'IsDynamic')));
+		parent::makeSameNew(array_merge($keep, ['TemplateID', 'TemplatePath', 'IsDynamic']));
 	}
 
 	function editor(){
@@ -504,10 +504,9 @@ class we_webEditionDocument extends we_textContentDocument{
 							$tagname = 'block';
 						case 'block':
 						case 'linklist':
-							$foo = array(
-								'name' => $name,
+							$foo = ['name' => $name,
 								'type' => $tagname
-							);
+								];
 							$blocks[] = $foo;
 							break;
 					}
@@ -659,7 +658,7 @@ class we_webEditionDocument extends we_textContentDocument{
 
 		/* if(!$resave){
 		  $hy = we_unserialize(we_base_preferences::getUserPref('History'));
-		  $hy['doc'][$this->ID] = array('Table' => $this->Table, 'ModDate' => $this->ModDate);
+		  $hy['doc'][$this->ID] = ['Table' => $this->Table, 'ModDate' => $this->ModDate];
 		  we_base_preferences::setUserPref('History', we_serialize($hy));
 		  } */
 		return $out;
@@ -961,8 +960,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 		if(!(isset($this->hidePages) && $this->InWebEdition)){
 			return;
 		}
-		$MNEMONIC_EDITPAGES = array(
-			we_base_constants::WE_EDITPAGE_PROPERTIES => 'properties',
+		$MNEMONIC_EDITPAGES = [we_base_constants::WE_EDITPAGE_PROPERTIES => 'properties',
 			we_base_constants::WE_EDITPAGE_CONTENT => 'edit',
 			we_base_constants::WE_EDITPAGE_INFO => 'information',
 			we_base_constants::WE_EDITPAGE_PREVIEW => 'preview',
@@ -971,7 +969,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 			we_base_constants::WE_EDITPAGE_VERSIONS => 'versions',
 			we_base_constants::WE_EDITPAGE_VARIANTS => 'variants',
 			we_base_constants::WE_EDITPAGE_WEBUSER => 'customer',
-		);
+			];
 
 		$hidePagesArr = explode(',', $this->hidePages); //	get pages which shall be disabled
 
@@ -1092,7 +1090,7 @@ if(!isset($GLOBALS[\'WE_MAIN_DOC\']) && isset($_REQUEST[\'we_objectID\'])) {
 	public function addUsedElement($type, $name){
 		$type = self::getFieldType($type, '', true);
 		if(!isset($this->usedElementNames[$type])){
-			$this->usedElementNames[$type] = array($name);
+			$this->usedElementNames[$type] = [$name];
 		} elseif(array_search($name, $this->usedElementNames[$type]) === false){
 			$this->usedElementNames[$type][] = $name;
 		}

@@ -137,7 +137,8 @@ class we_listview_langlink extends we_listview_base{
 		// if($this->showself == true)
 		// if($this->showself == false && $this->pagelanguage != $this->ownlanguage)
 		if($this->showself || (!$this->showself && $this->pagelanguage != $this->ownlanguage)){
-			$dt = array('DID' => $this->id, 'DLocale' => $this->ownlanguage, 'LDID' => $this->id, 'Locale' => $this->ownlanguage, 'DocumentTable' => (($this->linkType === 'tblFile') ? 'tblFile' : 'tblObjectFiles'), 'IsObject' => (($this->linkType === 'tblFile') ? 0 : 1), 'IsFolder' => 0);
+			$dt = ['DID' => $this->id, 'DLocale' => $this->ownlanguage, 'LDID' => $this->id, 'Locale' => $this->ownlanguage, 'DocumentTable' => (($this->linkType === 'tblFile') ? 'tblFile' : 'tblObjectFiles'),
+				'IsObject' => (($this->linkType === 'tblFile') ? 0 : 1), 'IsFolder' => 0];
 			if($this->linkType === 'tblFile'){
 				$dt['Path'] = id_to_path($this->id, FILE_TABLE);
 			} else {
@@ -246,8 +247,7 @@ class we_listview_langlink extends we_listview_base{
 				}
 			}
 
-			$this->Record = array(
-				'ID' => $link['LDID'],
+			$this->Record = ['ID' => $link['LDID'],
 				'WE_ID' => $link['LDID'],
 				'Path' => $WE_PATH,
 				'WE_PATH' => $WE_PATH,
@@ -260,20 +260,19 @@ class we_listview_langlink extends we_listview_base{
 				'WE_TARGETLANGUAGE' => $targetLang,
 				'WE_TARGETLANGUAGE_NAME' => $targetLang ? we_base_country::getTranslation($targetLang, we_base_country::LANGUAGE, $targetLang) : '',
 				'WE_TARGETCOUNTRY_NAME' => $targetLang ? we_base_country::getTranslation($targetCountry, we_base_country::TERRITORY, $targetLang) : ''
-			);
+				];
 
 			$this->count++;
 			return true;
 		}
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-			$this->Record = array(
-				'WE_PATH' => '',
+			$this->Record = ['WE_PATH' => '',
 				'WE_TEXT' => '',
 				'WE_ID' => '',
 				'ID' => '',
 				'Path' => ''
-			);
+				];
 			$this->count++;
 			return true;
 		}

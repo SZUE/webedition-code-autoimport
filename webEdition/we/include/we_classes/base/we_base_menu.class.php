@@ -39,10 +39,6 @@ class we_base_menu{
 		return self::getJS() . $this->getHTML();
 	}
 
-	public static function getJS(){
-		return we_html_element::jsScript(JS_DIR . 'we_lcmd.js');
-	}
-
 	public function getHTML(){
 		$out = '<ul id="nav">';
 		$menus = [];

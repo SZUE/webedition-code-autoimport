@@ -178,10 +178,9 @@ abstract class we_root extends we_class{
 	//FIXME: make this __sleep
 	function saveInSession(&$save, $toFile = false){
 		//NOTE: this is used for temporary documents! so be carefull when changing
-		$save = array(
-			[],
+		$save = [[],
 			$this->elements
-		);
+			];
 		foreach($this->persistent_slots as $slot){
 			switch($slot){
 				case 'elements'://elements are saved in slot 1
@@ -315,11 +314,10 @@ abstract class we_root extends we_class{
 	}
 
 	function htmlTextInput_formDirChooser($attribs = [], $addAttribs = []){
-		$attribs = array(
-			'class' => 'wetextinput',
+		$attribs = ['class' => 'wetextinput',
 			'size' => 30,
 			'value' => '',
-		);
+			];
 
 		foreach($addAttribs as $key => $value){
 			if(isset($attribs[$key])){
@@ -653,7 +651,8 @@ abstract class we_root extends we_class{
 			return '
 <table class="default" style="margin-top:2px;">' .
 				$headline . '
-	<tr><td style="padding-bottom:2px;">' . $this->htmlSelect($inputName, $languages, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", 'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"), "value") . '</td></tr>
+	<tr><td style="padding-bottom:2px;">' . $this->htmlSelect($inputName, $languages, 1, $value, false, ["onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);",
+					'onchange' => "dieWerte='" . implode(',', $langkeys) . "';showhideLangLink('we_" . $this->Name . "_LanguageDocDiv',dieWerte,this.options[this.selectedIndex].value);WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"], "value") . '</td></tr>
 	<tr><td class="defaultfont" style="text-align:left">' . g_l('weClass', '[languageLinks]') . '</td></tr>
 </table>
 <br/>' . $htmlzw; //.we_html_tools::htmlFormElementTable($htmlzw,g_l('weClass','[languageLinksDefaults]'),"left",	"defaultfont");	dieWerte=\''.implode(',',$langkeys).'\'; disableLangDefault(\'we_'.$this->Name.'_LangDocType\',dieWerte,this.options[this.selectedIndex].value);"
@@ -661,7 +660,8 @@ abstract class we_root extends we_class{
 		return '
 <table class="default" style="margin-top:2px;">' .
 			$headline . '
-	<tr><td>' . $this->htmlSelect($inputName, $languages, 1, $value, false, array("onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);", 'onchange' => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"), "value") . '</td></tr>
+	<tr><td>' . $this->htmlSelect($inputName, $languages, 1, $value, false, ["onblur" => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);",
+				'onchange' => "WE().layout.weEditorFrameController.getActiveEditorFrame().setEditorIsHot(true);"], "value") . '</td></tr>
 </table>';
 	}
 
@@ -1060,7 +1060,7 @@ abstract class we_root extends we_class{
 	protected function i_getContentData(){
 		//FIXME:if we need dHash/nHash we have to get it hex, since tblTemporaryDoc will have problems with bin data
 		$this->DB_WE->query('SELECT ID,BDID,Dat,CID,Type,Name,DocumentTable FROM ' . CONTENT_TABLE . ' c JOIN ' . LINK_TABLE . ' l ON c.ID=l.CID WHERE l.DID=' . intval($this->ID) . ' AND l.DocumentTable="' . $this->DB_WE->escape(stripTblPrefix($this->Table)) . '"');
-		$filter = array('Name', 'DID', 'Ord');
+		$filter = ['Name', 'DID', 'Ord'];
 		while($this->DB_WE->next_record(MYSQLI_ASSOC)){
 			$Name = $this->DB_WE->f('Name');
 
@@ -1092,13 +1092,13 @@ abstract class we_root extends we_class{
 			$tmpPaths = id_to_path($tmpIDs, $this->Table, $this->DB_WE, true);
 			foreach($langkeys as $langkey){
 				$this->LangLinks[$langkey] = empty($tmpIDs[$langkey]) || empty($tmpPaths[$tmpIDs[$langkey]]) ?
-					array('id' => 0, 'path' => '') :
-					array('id' => $tmpIDs[$langkey], 'path' => $tmpPaths[$tmpIDs[$langkey]]);
+					['id' => 0, 'path' => ''] :
+					['id' => $tmpIDs[$langkey], 'path' => $tmpPaths[$tmpIDs[$langkey]]];
 			}
 			return;
 		}
 		foreach($langkeys as $langkey){
-			$this->LangLinks[$langkey] = array('id' => 0, 'path' => '');
+			$this->LangLinks[$langkey] = ['id' => 0, 'path' => ''];
 		}
 	}
 
@@ -1141,11 +1141,10 @@ abstract class we_root extends we_class{
 
 			if($bdid || $dat){
 				$dat = ($bdid ? sql_function('NULL') : (is_array($dat) ? we_serialize($dat) : $dat));
-				$data = array(
-					'Dat' => $dat,
+				$data = ['Dat' => $dat,
 					'BDID' => intval($bdid),
 					'dHash' => sql_function('x\'' . ($bdid ? '00' : md5($dat)) . '\''),
-				);
+					];
 
 				$key = $v['type'] . '_' . $k;
 				if(isset($replace[$key])){
@@ -1158,14 +1157,13 @@ abstract class we_root extends we_class{
 				$this->DB_WE->query('REPLACE INTO ' . CONTENT_TABLE . ' SET ' . we_database_base::arraySetter($data));
 				$cid = $cid ? : $this->DB_WE->getInsertId();
 				$this->elements[$k]['id'] = $cid; // update Object itself
-				if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-							'DID' => $this->ID,
+				if(!$cid || !$this->DB_WE->query('REPLACE INTO ' . LINK_TABLE . ' SET ' . we_database_base::arraySetter(['DID' => $this->ID,
 							'CID' => $cid,
 							'Name' => $k,
 							'Type' => $v['type'],
 							'nHash' => sql_function('x\'' . md5($k) . '\''),
 							'DocumentTable' => stripTblPrefix($this->Table)
-						))
+							])
 					)){
 					//this should never happen
 					return false;
@@ -1379,8 +1377,7 @@ abstract class we_root extends we_class{
 
 		$sets = [];
 		foreach($this->MediaLinks as $k => $remObj){
-			$sets[] = we_database_base::arraySetter(array(
-					'ID' => $this->ID,
+			$sets[] = we_database_base::arraySetter(['ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->Table),
 					'type' => 'media',
 					'remObj' => $remObj,
@@ -1388,7 +1385,7 @@ abstract class we_root extends we_class{
 					'element' => !is_numeric($k) ? $k : '',
 					'position' => 0,
 					'isTemp' => $temp ? 1 : 0
-					), ',', true);
+					], ',', true);
 		}
 		if($sets){
 			return $this->DB_WE->query('REPLACE INTO ' . FILELINK_TABLE . ' VALUES ' . implode(',', $sets));
@@ -1486,8 +1483,8 @@ abstract class we_root extends we_class{
 			return [];
 		}
 		$category = property_exists($this, 'Category') ? array_map('escape_sql_query', array_unique(array_filter(array_merge(explode(',', $this->Category), explode(',', $this->oldCategory))))) : '';
-		$queries = array('(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '") OR (IsFolder=1 AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',
-		);
+		$queries = ['(((Selection="' . we_navigation_navigation::SELECTION_STATIC . '" AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '") OR (IsFolder=1 AND SelectionType="' . we_navigation_navigation::STYPE_DOCLINK . '")) AND LinkID=' . intval($this->ID) . ')',
+		];
 		if(isset($this->DocType)){
 			//FIXME: query should use ID, not parentID
 			$queries[] = '((Selection="' . we_navigation_navigation::SELECTION_DYNAMIC . '") AND (DocTypeID="' . $this->DB_WE->escape($this->DocType) . '" OR FolderID=' . intval($this->ParentID) . '))';

@@ -26,7 +26,7 @@
 
 class we_flashDocument extends we_document_deprecatedVideo{
 	/* Parameternames which are placed within the object-Tag */
-	var $ObjectParamNames = array('align', 'border', 'id', 'height', 'hspace', 'name', 'width', 'vspace', 'only', 'style');
+	var $ObjectParamNames = ['align', 'border', 'id', 'height', 'hspace', 'name', 'width', 'vspace', 'only', 'style'];
 
 	public function __construct(){
 		parent::__construct();
@@ -49,7 +49,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 		if($sizingstyle === 'none'){
 			$sizingstyle = false;
 		}
-		$removeAttribs = array('sizingrel', 'sizingbase', 'sizingstyle', 'xml', '_name_orig');
+		$removeAttribs = ['sizingrel', 'sizingbase', 'sizingstyle', 'xml', '_name_orig'];
 		if($sizingstyle){
 			$style_width = round($attribs['width'] / $sizingbase, 6);
 			$style_height = round($attribs['height'] / $sizingbase, 6);
@@ -98,13 +98,13 @@ class we_flashDocument extends we_document_deprecatedVideo{
 			$altContent = '';
 			if($alt){
 				if(($type = $GLOBALS['we_doc']->elements[$alt]['type'])){
-					$altContent = $GLOBALS['we_doc']->getField(array('name' => $alt, 'xml' => $xml), $type);
+					$altContent = $GLOBALS['we_doc']->getField(['name' => $alt, 'xml' => $xml], $type);
 				}
 			}
 
 			if($xml){ //  XHTML-Version
 				$allowedAtts = $this->ObjectParamNames;
-				$filter = array('alt', 'parentid', 'startid');
+				$filter = ['alt', 'parentid', 'startid'];
 
 				while(list($k, $v) = $this->nextElement('attrib')){
 					if(in_array($k, $allowedAtts, true)){ //  use as name='value'
@@ -118,7 +118,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 				$attribs['type'] = 'application/x-shockwave-flash';
 				$attribs['data'] = $src;
 			} else { //  Normal-Version - with embed-tag
-				$filter = array('type', 'alt', 'parentid', 'startid');
+				$filter = ['type', 'alt', 'parentid', 'startid'];
 
 				$allowedAtts = $this->ObjectParamNames;
 
@@ -141,11 +141,11 @@ class we_flashDocument extends we_document_deprecatedVideo{
 
 			//   handle with params
 			$params['movie'] = $src; //  always needed
-			$params = removeAttribs($params, array('xml', 'to', 'nameto', '_name_orig'));
+			$params = removeAttribs($params, ['xml', 'to', 'nameto', '_name_orig']);
 
 			foreach($params as $k => $v){
 				if($v !== ''){
-					$this->html .= getHtmlTag('param', array('name' => $k, 'value' => $v, 'xml' => $this->getElement('xml')));
+					$this->html .= getHtmlTag('param', ['name' => $k, 'value' => $v, 'xml' => $this->getElement('xml')]);
 				}
 			}
 
@@ -174,12 +174,11 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	<tr>
 		<td>' . $this->formInput2(155, "width", 10, "attrib", 'onchange="_EditorFrame.setEditorIsHot(true);"', "origwidth") . '</td>
 		<td>' . $this->formInput2(155, "height", 10, "attrib", 'onchange="_EditorFrame.setEditorIsHot(true);"', "origheight") . '</td>
-		<td>' . $this->formSelectElement(155, "scale", array(
-				"" => "",
+		<td>' . $this->formSelectElement(155, "scale", ["" => "",
 				"showall" => g_l('global', '[showall]'),
 				"noborder" => g_l('global', '[noborder]'),
 				"exactfit" => g_l('global', '[exactfit]')
-				), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
+				], "attrib", 1, ['onchange' => '_EditorFrame.setEditorIsHot(true);']) . '</td>
 	</tr>
 	<tr>
 		<td>' . $this->formInput2(155, "hspace", 10, "attrib", 'onchange="_EditorFrame.setEditorIsHot(true);"') . '</td>
@@ -197,7 +196,7 @@ class we_flashDocument extends we_document_deprecatedVideo{
 		<td>' . $this->formSelectElement(155, "loop", ["" => g_l('global', '[true]'), "false" => g_l('global', '[false]')], "attrib", 1, ['onchange' => '_EditorFrame.setEditorIsHot(true);']) . '</td>
 	</tr>
 	<tr>
-		<td>' . $this->formSelectElement(155, "wmode", array("" => "", "window" => "window", "opaque" => "opaque", "transparent" => "transparent"), "attrib", 1, array('onchange' => '_EditorFrame.setEditorIsHot(true);')) . '</td>
+		<td>' . $this->formSelectElement(155, "wmode", ["" => "", "window" => "window", "opaque" => "opaque", "transparent" => "transparent"], "attrib", 1, ['onchange' => '_EditorFrame.setEditorIsHot(true);']) . '</td>
 		<td></td>
 		<td></td>
 	</tr>
@@ -336,10 +335,10 @@ class we_flashDocument extends we_document_deprecatedVideo{
 	 * @return array
 	 */
 	function getOrigSize($calculateNew = false, $useOldPath = false){
-		$arr = array(0, 0, 0, '');
+		$arr = [0, 0, 0, ''];
 		if(!$this->DocChanged && $this->ID){
 			if($this->getElement('origwidth') && $this->getElement('origheight') && ($calculateNew == false)){
-				return array($this->getElement('origwidth'), $this->getElement('origheight'), 0, '');
+				return [$this->getElement('origwidth'), $this->getElement('origheight'), 0, ''];
 			} else {
 				// we have to calculate the path, because maybe the document was renamed
 				$path = $this->getParentPath() . '/' . $this->Filename . $this->Extension;

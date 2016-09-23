@@ -31,22 +31,18 @@ abstract class we_fileupload{
 	protected $genericFileNameTemp = '';
 	protected $predefinedConfig = '';
 	protected $doCommitFile = true;
-	protected $typeCondition = array(
-		'accepted' => array(
-			'cts' => '',
+	protected $typeCondition = ['accepted' => ['cts' => '',
 			'exts4cts' => '',
 			'exts' => '',
 			'all' => '',
-		),
-		'forbidden' => array(
-			'cts' => '',
+		 ],
+		'forbidden' => ['cts' => '',
 			'exts4cts' => '',
 			'exts' => '',
 			'all' => '',
-		)
-	);
-	protected $imageEditProps = array(
-		'parentID' => 0,
+		 ]
+	];
+	protected $imageEditProps = ['parentID' => 0,
 		'sameName' => 'rename',
 		'importMetadata' => false,
 		'isSearchable' => false,
@@ -59,7 +55,7 @@ abstract class we_fileupload{
 		'quality' => 8,
 		'degrees' => 0,
 		'categories' => ''
-	);
+	 ];
 
 	const CHUNK_SIZE = 128;
 	const ON_ERROR_RETURN = true; //obsolete?
@@ -116,15 +112,14 @@ abstract class we_fileupload{
 				$exts4cts = is_array(($tmp = we_base_ContentTypes::inst()->getExtension($ct))) ? array_merge($exts4cts, $tmp) :
 					($tmp ? array_merge($exts4cts, explode(',', trim($tmp, ','))) : $exts4cts);
 				$tmp = we_base_ContentTypes::inst()->getRealContentTypes($ct);
-				$cts = empty($tmp) ? array_merge($cts, array($ct)) : array_merge($cts, $tmp);
+				$cts = empty($tmp) ? array_merge($cts, [$ct]) : array_merge($cts, $tmp);
 			}
 		}
 
-		$ret = array(
-			'cts' => $cts ? ',' . implode(',', array_unique($cts)) . ',' : '',
+		$ret = ['cts' => $cts ? ',' . implode(',', array_unique($cts)) . ',' : '',
 			'exts4cts' => $exts4cts ? ',' . strtolower(implode(',', array_unique($exts4cts))) . ',' : '',
 			'exts' => $exts ? ',' . strtolower(implode(',', array_unique($exts))) . ',' : '',
-		);
+			];
 		$ret['all'] = str_replace(',,', ',', $ret['cts'] . $ret['exts4cts'] . $ret['exts']);
 
 		$this->typeCondition[$field] = $ret;

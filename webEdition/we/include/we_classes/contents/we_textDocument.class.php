@@ -155,10 +155,9 @@ class we_textDocument extends we_document{
 						if($this->parseFile){
 							$less = new lessc();
 							we_helpers_lessParser::$includedFiles = [];
-							$less->setImportDir(array(
-								$_SERVER['DOCUMENT_ROOT'],
+							$less->setImportDir([$_SERVER['DOCUMENT_ROOT'],
 								$_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(),
-							));
+								]);
 							$less->setFormatter('classic');
 							try{
 								//we prepend an extra / before #WE, to make parser believe this is an absolute path
@@ -173,7 +172,7 @@ class we_textDocument extends we_document{
 						if($this->parseFile){
 							$scss = new we_helpers_scss();
 							we_helpers_scss::$includedFiles = []; //due to rebuild!
-							$scss->setImportPaths(array_unique(array('', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT'] . '/')));
+							$scss->setImportPaths(array_unique(['', $_SERVER['DOCUMENT_ROOT'] . $this->getParentPath(), $_SERVER['DOCUMENT_ROOT'] . '/']));
 							try{
 								$doc = $scss->compile($doc);
 							} catch (exception $e){

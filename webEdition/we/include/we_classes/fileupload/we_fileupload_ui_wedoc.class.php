@@ -65,7 +65,7 @@ class we_fileupload_ui_wedoc extends we_fileupload_ui_preview{
 			$divFileInfo . $divButtons . '
 					</td>
 					<td style="width:300px">' .
-			we_html_element::htmlDiv(array('id' => 'div_fileupload_right', 'style' => "position:relative;"), $this->getHtmlDropZone('preview', $thumbnailSmall) .
+			we_html_element::htmlDiv(['id' => 'div_fileupload_right', 'style' => "position:relative;"], $this->getHtmlDropZone('preview', $thumbnailSmall) .
 				($this->contentType === we_base_ContentTypes::IMAGE && we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->getFormImageEditClientside() : '') . ($this->contentType === we_base_ContentTypes::IMAGE ? $this->getFormImportMeta() : '')
 			) . '
 					</td>

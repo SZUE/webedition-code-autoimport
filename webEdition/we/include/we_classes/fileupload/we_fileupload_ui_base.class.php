@@ -26,19 +26,17 @@ class we_fileupload_ui_base extends we_fileupload{
 	protected $responseClass = 'we_fileupload_resp_base';
 	protected $genericFilename = '';
 	protected $type = 'base';
-	protected $form = array(
-		'name' => '',
+	protected $form = ['name' => '',
 		'action' => ''
-	);
-	protected $externalUiElements = array(
-		'contentName' => '',
+	 ];
+	protected $externalUiElements = ['contentName' => '',
 		'footerName' => 'footer',
 		'btnUploadName' => 'upload_btn'
-	);
+	 ];
 	protected $fileselectOnclick = '';
 	protected $callback = 'document.we_form.submit()';
 	protected $nextCmd = '';
-	protected $dimensions = array(
+	protected $dimensions = ['width' => 400,
 		'width' => 400,
 		'dragWidth' => 300,
 		'dragHeight' => 30,
@@ -46,23 +44,21 @@ class we_fileupload_ui_base extends we_fileupload{
 		'alertBoxWidth' => 0,
 		'marginTop' => 0,
 		'marginBottom' => 0
-	);
+	 ];
 	protected $footerName = '';
 	protected $contentName = '';
 	protected $disableUploadBtnOnInit = true;
-	protected $internalProgress = array(
-		'isInternalProgress' => false,
+	protected $internalProgress = ['isInternalProgress' => false,
 		'width' => 0,
-	);
-	protected $externalProgress = array(
-		'isExternalProgress' => false,
+	 ];
+	protected $externalProgress = ['isExternalProgress' => false,
 		'parentElemId' => 'progressbar',
 		'create' => true,
 		'html' => '',
 		'width' => 120,
 		'name' => '',
 		'additionalParams' => []
-	);
+	 ];
 	protected $isPreset = false;
 	protected $fileTable = '';
 	protected $binDocProperties = [];
@@ -155,7 +151,7 @@ class we_fileupload_ui_base extends we_fileupload{
 			return $content;
 		}
 		$table = $table ? : FILE_TABLE;
-		$callback = array_merge(array('external' => '', 'tree' => ''), $callback);
+		$callback = array_merge(['external' => '', 'tree' => ''], $callback);
 
 		// // FIXME: make the following functions more concise und move to extarnal js file
 		$js = we_html_element::jsElement('
@@ -217,7 +213,8 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 ');
 
 		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . $js .
-			we_html_element::htmlDiv(array('id' => 'div_' . $name . '_fileDrag', 'class' => 'we_file_drag', 'ondrop' => 'handleDrop' . ($name ? md5($name) : '') . '(event, \'' . $writebackId . '\', \'' . $writebackTarget . '\',\'' . $name . '\');', 'ondragover' => 'handleDragOver(event, \'' . $name . '\');', 'ondragleave' => 'handleDragLeave(event, \'' . $name . '\');', 'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style), $content);
+			we_html_element::htmlDiv(['id' => 'div_' . $name . '_fileDrag', 'class' => 'we_file_drag', 'ondrop' => 'handleDrop' . ($name ? md5($name) : '') . '(event, \'' . $writebackId . '\', \'' . $writebackTarget . '\',\'' . $name . '\');',
+				'ondragover' => 'handleDragOver(event, \'' . $name . '\');', 'ondragleave' => 'handleDragLeave(event, \'' . $name . '\');', 'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style], $content);
 	}
 
 	public function getButtonWrapped($type, $disabled = false, $width = 170, $notWrapped = false){
@@ -225,29 +222,28 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 			case 'browse':
 				$isIE10 = we_base_browserDetect::isIE() && we_base_browserDetect::getIEVersion() < 11;
 
-				$fileInput = we_html_element::htmlInput(array(
-						'class' => 'fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : ''),
+				$fileInput = we_html_element::htmlInput(['class' => 'fileInput fileInputHidden' . ($isIE10 ? ' fileInputIE10' : ''),
 						'style' => 'width:' . $width . 'px;',
 						'type' => 'file',
 						'name' => $this->name,
 						'id' => $this->name,
 						'accept' => trim($this->typeCondition['accepted']['all'], ','),
-				));
+						]);
 				$btn = we_html_button::create_button('fat:browse_harddisk,fa-lg fa-hdd-o', 'javascript:void(0)', true, 0, 0, '', '', $disabled, false, '_btn', false, '', 'weBtn noMarginLeft');
 
-				return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;'), $fileInput . $btn
+				return we_html_element::htmlDiv(['id' => 'div_' . $this->name . '_fileInputWrapper', 'class' => 'we_fileInputWrapper', 'style' => 'vertical-align:top;display:inline-block;'], $fileInput . $btn
 				);
 			case 'reset':
 				$btn = we_html_button::create_button('reset', 'javascript:we_FileUpload.reset()', true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
-				return $notWrapped ? $btn : we_html_element::htmlDiv(array('id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'), $btn);
+				return $notWrapped ? $btn : we_html_element::htmlDiv(['id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'], $btn);
 
 			case 'upload':
 				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
-				return we_html_element::htmlDiv(array('id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'), $btn);
+				return we_html_element::htmlDiv(['id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'], $btn);
 
 			case 'cancel':
 				$btn = we_html_button::create_button(we_html_button::CANCEL, 'javascript:' . $this->getJsBtnCmd('cancel'), true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
-				return we_html_element::htmlDiv(array('id' => 'div_fileupload_btnCancel', 'style' => 'margin-top: 4px;display:none;'), $btn);
+				return we_html_element::htmlDiv(['id' => 'div_fileupload_btnCancel', 'style' => 'margin-top: 4px;display:none;'], $btn);
 		}
 	}
 
@@ -293,12 +289,12 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 	}
 
 	protected function getHtmlDropZone(){
-		return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileDrag', 'class' => 'we_file_drag', 'style' => 'margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none')), g_l('importFiles', '[dragdrop_text]'));
+		return we_html_element::htmlDiv(['id' => 'div_' . $this->name . '_fileDrag', 'class' => 'we_file_drag', 'style' => 'margin-top:0.5em;display:' . ($this->isDragAndDrop ? 'block' : 'none')], g_l('importFiles', '[dragdrop_text]'));
 	}
 
 	protected function getHtmlFileInfo(){
-		return we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_fileName', 'style' => 'height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . ';'), '') .
-			we_html_element::htmlDiv(array('style' => 'display:block;padding:0.6em 0 0 0.2em'), we_html_element::htmlDiv(array('id' => 'div_' . $this->name . '_message', 'style' => 'height:26px;font-size:1em;'), '&nbsp;') .
+		return we_html_element::htmlDiv(['id' => 'div_' . $this->name . '_fileName', 'style' => 'height:26px;padding-top:10px;display:' . ($this->isDragAndDrop ? 'none' : 'block') . ';'], '') .
+			we_html_element::htmlDiv(['style' => 'display:block;padding:0.6em 0 0 0.2em'], we_html_element::htmlDiv(['id' => 'div_' . $this->name . '_message', 'style' => 'height:26px;font-size:1em;'], '&nbsp;') .
 				($this->internalProgress['isInternalProgress'] ? $this->getProgress_tmp() : '')
 		);
 	}
@@ -315,7 +311,7 @@ doDragFromTree' . md5($name) . ' = function(text, writebackId){
 		  $progress = new we_progressBar(0, 170,'_fileupload');
 		  $progress->setProgressTextPlace(0);
 		  return $progress->getHTML('', 'font-size:11px;');
-		  $divProgressbar = we_html_element::htmlDiv(array('id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML('', 'font-size:11px;'));
+		  $divProgressbar = we_html_element::htmlDiv(['id' => 'div_fileupload_progressBar', 'style' => 'margin: 13px 0 10px 0;display:none;'), $progress->getHTML('', 'font-size:11px;'));
 		 *
 		 */
 	}

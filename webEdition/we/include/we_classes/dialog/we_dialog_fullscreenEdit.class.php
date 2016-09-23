@@ -26,7 +26,7 @@ class we_dialog_fullscreenEdit extends we_dialog_base{
 
 	var $JsOnly = true;
 	var $ClassName = __CLASS__;
-	var $changeableArgs = array("src");
+	var $changeableArgs = ["src"];
 
 	function __construct(){
 		parent::__construct();

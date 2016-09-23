@@ -832,11 +832,11 @@ setTimeout(top.we_showMessage,500,"' . g_l('tools', ($this->Model->IsFolder == 1
 				$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $file["docID"] . "&size[width]=" . $bigSize . "&path=" . $file["Path"] . "&extension=" . $file["Extension"];
 				$imageViewPopup = '<img src="' . $urlPopup . '" style="max-width:' . $smallSize . 'px;max-height:' . $smallSize . '"/></a>';
 			} else {
-				$imagesize = array(0, 0);
+				$imagesize = [0, 0];
 				$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
 			}
 		} else {
-			$imagesize = array(0, 0);
+			$imagesize = [0, 0];
 			$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $file["ContentType"] . '" data-extension="' . $file['Extension'] . '"></span>';
 		}
 

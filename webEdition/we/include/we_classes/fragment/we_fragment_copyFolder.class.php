@@ -60,8 +60,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 			$fromPath = id_to_path($fromID);
 			$db = new DB_WE();
 			$this->alldata = [];
-			$merge = array(
-				"CopyToId" => $toID,
+			$merge = ["CopyToId" => $toID,
 				"CopyFromId" => $fromID,
 				"CopyFromPath" => $fromPath,
 				"IsWeFile" => 0,
@@ -70,7 +69,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 				"CreateTemplateInFolderID" => $CreateTemplateInFolderID,
 				"OverwriteCategories" => $OverwriteCategories,
 				"newCategories" => $newCategories,
-			);
+				];
 
 			// make it twice to be sure that all linked IDs are correct
 			$db->query('SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Category FROM ' . FILE_TABLE . " WHERE (Path LIKE'" . $db->escape($fromPath) . "/%') AND ContentType != '" . we_base_ContentTypes::WEDOCUMENT . "' ORDER BY IsFolder DESC,Path");
@@ -96,8 +95,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 
 				$db = new DB_WE();
 				$this->alldata = [];
-				$merge = array(
-					"CopyToId" => $toID,
+				$merge = ["CopyToId" => $toID,
 					"CopyFromId" => $fromID,
 					"CopyFromPath" => $fromPath,
 					"IsWeFile" => 1,
@@ -109,7 +107,7 @@ class we_fragment_copyFolder extends we_fragment_base{
 					"CreateTemplateInFolderID" => 0,
 					"OverwriteCategories" => 0,
 					"newCategories" => '',
-				);
+					];
 				$db->query('SELECT ID,ParentID,Text,Path,IsFolder,ClassName,ContentType,Published FROM ' . OBJECT_FILES_TABLE . ' WHERE ' . $qfolders . " (Path LIKE'" . $db->escape($fromPath) . "/%') ORDER BY IsFolder DESC,Path");
 				while($db->next_record(MYSQL_ASSOC)){
 					$this->alldata[] = array_merge($db->getRecord(), $merge);
@@ -430,28 +428,27 @@ class we_fragment_copyFolder extends we_fragment_base{
 		// parse hard  coded  links in template  :TODO: check for ="/Path ='Path and =Path
 		$we_doc->elements['data']['dat'] = str_replace($this->data['CopyFromPath'] . '/', $this->copyToPath . '/', $we_doc->getElement('data'));
 
-		$ChangeTags = array(
-			'a' => array('id'),
-			'url' => array('id'),
-			'img' => array('id'),
-			'listview' => array('triggerid', 'workspaceID'),
-			'ifSelf' => array('id'),
-			'ifNotSelf' => array('id'),
-			'form' => array('id', 'onsuccess', 'onerror', 'onmailerror'),
-			'include' => array('id'),
-			'addDelNewsletterEmail' => array('mailid', 'id'),
-			'css' => array('id'),
-			'icon' => array('id'),
-			'js' => array('id'),
-			'linkToSEEM' => array('id'),
-			'linkToSeeMode' => array('id'),
-			'listdir' => array('id'),
-			'printVersion' => array('triggerid'),
-			'sendMail' => array('id'),
-			'write' => array('triggerid'),
-			'flashmovie' => array('id'),
-			'delete' => array('pid'),
-		);
+		$ChangeTags = ['a' => ['id'],
+			'url' => ['id'],
+			'img' => ['id'],
+			'listview' => ['triggerid', 'workspaceID'],
+			'ifSelf' => ['id'],
+			'ifNotSelf' => ['id'],
+			'form' => ['id', 'onsuccess', 'onerror', 'onmailerror'],
+			'include' => ['id'],
+			'addDelNewsletterEmail' => ['mailid', 'id'],
+			'css' => ['id'],
+			'icon' => ['id'],
+			'js' => ['id'],
+			'linkToSEEM' => ['id'],
+			'linkToSeeMode' => ['id'],
+			'listdir' => ['id'],
+			'printVersion' => ['triggerid'],
+			'sendMail' => ['id'],
+			'write' => ['triggerid'],
+			'flashmovie' => ['id'],
+			'delete' => ['pid'],
+		];
 
 		$changed = false;
 		$regs = [];

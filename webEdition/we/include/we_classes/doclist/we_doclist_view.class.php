@@ -111,10 +111,12 @@ class we_doclist_view extends we_search_view{
 			if(isset($currentSearchFields[$i])){
 				switch($currentSearchFields[$i]){
 					case 'Status':
-						$searchInput = we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', $this->searchclass->getFieldsStatus(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, array('class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']'));
+						$searchInput = we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', $this->searchclass->getFieldsStatus(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, [
+								'class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']']);
 						break;
 					case 'Speicherart':
-						$searchInput = we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', $this->searchclass->getFieldsSpeicherart(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, array('class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']'));
+						$searchInput = we_html_tools::htmlSelect('search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', $this->searchclass->getFieldsSpeicherart(), 1, (isset($currentSearch[$i]) ? $currentSearch[$i] : ''), false, [
+								'class' => 'defaultfont', 'style' => 'width:170px;', 'id' => 'search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']']);
 						break;
 					case 'Published':
 					case 'CreationDate':
@@ -148,8 +150,10 @@ class we_doclist_view extends we_search_view{
 			$locationValue = isset($currentLocation[$i]) ? $currentLocation[$i] : '';
 			$out .= '
 <tr id="filterRow_' . $i . '">
-	<td>' . we_html_element::htmlHidden('hidden_searchFields' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : '') . we_html_tools::htmlSelect('searchFields' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', $this->searchclass->getFields($i, we_search_view::SEARCH_DOCLIST), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ""), false, array('class' => "defaultfont", 'id' => 'searchFields' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');')) . ' </td>
-	<td id="td_location' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']">' . we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', we_search_search::getLocation($handle), 1, (isset($currentLocation[$i]) ? $currentLocation[$i] : ""), false, array('class' => "defaultfont", 'style' => 'width:150px', $locationDisabled => $locationDisabled, 'id' => 'location' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']')) . ' </td>
+	<td>' . we_html_element::htmlHidden('hidden_searchFields' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : '') . we_html_tools::htmlSelect('searchFields' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', $this->searchclass->getFields($i, we_search_view::SEARCH_DOCLIST), 1, (isset($currentSearchFields[$i]) ? $currentSearchFields[$i] : ""), false, [
+					'class' => "defaultfont", 'id' => 'searchFields' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', 'onchange' => 'weSearch.changeit(this.value, ' . $i . ');']) . ' </td>
+	<td id="td_location' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']">' . we_html_tools::htmlSelect('location' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', we_search_search::getLocation($handle), 1, (isset($currentLocation[$i]) ? $currentLocation[$i] : ""), false, [
+					'class' => "defaultfont", 'style' => 'width:150px', $locationDisabled => $locationDisabled, 'id' => 'location' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']']) . ' </td>
 	<td id="td_search' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']">' . $searchInput . '</td>
 	<td id="td_delButton[' . $i . ']">' . $button . '</td>
 	<td id="td_hiddenLocation[' . $i . ']">' . (!$locationDisabled ? '' : we_html_element::htmlHidden('location' . we_search_view::SEARCH_DOCLIST . '[' . $i . ']', $locationValue)) . '</td>
@@ -232,7 +236,7 @@ class we_doclist_view extends we_search_view{
 					['dat' => '<span class="iconListview"><span class="resultIcon" data-contenttype="' . $result[$f]["ContentType"] . '" data-extension="' . $result[$f]['Extension'] . '"></span></span>'],
 					// TODO: set thumb ptah when doctype is image/*
 					['dat' => '<a href="javascript:WE().layout.openToEdit(\'' . addTblPrefix($result[$f]['docTable']) . '\',\'' . $result[$f]['docID'] . '\',\'' . $result[$f]['ContentType'] . '\')" class="' . $fontColor . ' middlefont" title="' . $result[$f]['Text'] . '"><u>' . we_base_util::shortenPath($result[$f]['Text'], $we_PathLength)],
-					//array('dat' => '<nobr>' . g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']') . '</nobr>'),
+					//['dat' => '<nobr>' . g_l('contentTypes', '[' . $result[$f]['ContentType'] . ']') . '</nobr>'),
 					['dat' => '<nobr>' . we_base_util::shortenPath($result[$f]['SiteTitle'], $we_PathLength) . '</nobr>'],
 					['dat' => '<nobr>' . ($result[$f]['CreationDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['CreationDate']) : '-') . '</nobr>'],
 					['dat' => '<nobr>' . ($result[$f]['ModDate'] ? date(g_l('searchtool', '[date_format]'), $result[$f]['ModDate']) : '-') . '</nobr>']
@@ -252,11 +256,11 @@ class we_doclist_view extends we_search_view{
 						$urlPopup = WEBEDITION_DIR . "thumbnail.php?id=" . $result[$f]['docID'] . "&size[width]=" . $bigSize . "&path=" . $result[$f]['Path'] . "&extension=" . $result[$f]["Extension"];
 						$imageViewPopup = '<img src="' . $urlPopup . '"/></a>';
 					} else {
-						$imagesize = array(0, 0);
+						$imagesize = [0, 0];
 						$imageView = $imageViewPopup = '<span class="resultIcon" data-contenttype="' . $result[$f]['ContentType'] . '" data-extension="' . $result[$f]['Extension'] . '"></span>';
 					}
 				} else {
-					$imagesize = array(0, 0);
+					$imagesize = [0, 0];
 					$imageView = $imageViewPopup = '<span class="iconGridview"><span class="resultIcon" data-contenttype="' . $result[$f]['ContentType'] . '" data-extension="' . $result[$f]['Extension'] . '"></span></span>';
 				}
 

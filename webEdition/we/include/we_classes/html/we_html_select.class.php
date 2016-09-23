@@ -88,7 +88,7 @@ class we_html_select extends we_html_baseCollection{
 	 */
 	function addOptions(array $entries = []){
 		foreach($entries as $value => $text){
-			$this->childs[] = new we_html_baseElement("option", true, array("value" => $value), $text);
+			$this->childs[] = new we_html_baseElement("option", true, ["value" => $value], $text);
 		}
 	}
 
@@ -133,7 +133,7 @@ class we_html_select extends we_html_baseCollection{
 	 * @return		void
 	 */
 	function insertOption($optid, $value, $text, $over = false){
-		$new_opt = new we_html_baseElement("option", true, array("value" => $value), $text);
+		$new_opt = new we_html_baseElement("option", true, ["value" => $value], $text);
 
 		if($over){
 			$this->childs[$optid] = $new_opt;
@@ -186,7 +186,7 @@ class we_html_select extends we_html_baseCollection{
 				(string) $v->attribs["value"] == (string) $value;
 
 			if($equal){
-				$this->setOption($k, array("selected" => 'selected'));
+				$this->setOption($k, ["selected" => 'selected']);
 				return true;
 			}
 		}
@@ -242,7 +242,7 @@ class we_html_select extends we_html_baseCollection{
 	 * @return  we_html_baseElement
 	 */
 	public static function getNewOption($value, $text){
-		return new we_html_baseElement("option", true, array("value" => $value), $text);
+		return new we_html_baseElement("option", true, ["value" => $value], $text);
 	}
 
 	/**

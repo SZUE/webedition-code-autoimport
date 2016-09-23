@@ -152,15 +152,14 @@ class DB_WE extends we_database_base{
 	}
 
 	public function _getInfo(){
-		return array(
-			'type' => $this->conType,
+		return ['type' => $this->conType,
 			'protocol' => mysql_get_proto_info(),
 			'client' => mysql_get_client_info(),
 			'host' => mysql_get_host_info(),
 			'server' => mysql_get_server_info(),
 			'database' => $this->Database,
 			'encoding' => mysql_client_encoding(),
-		);
+			];
 	}
 
 	protected function errno(){

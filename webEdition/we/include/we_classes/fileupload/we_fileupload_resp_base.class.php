@@ -24,17 +24,15 @@
  */
 class we_fileupload_resp_base extends we_fileupload{
 	protected $name = 'we_File';
-	protected $response = array('status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '', 'weDoc' => '');
+	protected $response = ['status' => '', 'fileNameTemp' => '', 'mimePhp' => 'none', 'message' => '', 'completed' => '', 'weDoc' => ''];
 	protected $contentType = 'image/*'; // alloud target ct: obsolete => use typeCondition
-	protected $controlVars = array(
-		'partNum' => 1,
+	protected $controlVars = ['partNum' => 1,
 		'partCount' => 1,
 		'formnum' => 0,
 		'formcount' => 0,
 		'doCommitFile' => true
-	);
-	protected $fileVars = array(
-		'genericFileNameTemp' => '',
+	 ];
+	protected $fileVars = ['genericFileNameTemp' => '',
 		'fileTemp' => '',
 		'fileDef' => '',
 		'parentID' => 0,
@@ -43,9 +41,8 @@ class we_fileupload_resp_base extends we_fileupload{
 		'weFileSize' => 1,
 		'weFileCt' => '',
 		'sameName' => 'rename',
-	);
-	protected $docVars = array(
-		'transaction' => '',
+	 ];
+	protected $docVars = ['transaction' => '',
 		'importMetadata' => false,
 		'categories' => '',
 		'isSearchable' => true,
@@ -61,7 +58,7 @@ class we_fileupload_resp_base extends we_fileupload{
 		'degrees' => 0,
 		'focusX' => 0,
 		'focusY' => 0
-	);
+	 ];
 	protected $FILES = [];
 	protected $maxChunkCount = 0;
 	protected $uploadError = '';
@@ -80,7 +77,7 @@ class we_fileupload_resp_base extends we_fileupload{
 
 	protected function initByHttp(){
 		$this->FILES = $_FILES;
-		$this->fileVars = array_merge($this->fileVars, array_filter(array(
+		$this->fileVars = array_merge($this->fileVars, array_filter([
 			'genericFileNameTemp' => we_base_request::_(we_base_request::STRING, 'genericFilename', we_base_request::NOT_VALID),
 			'fileTemp' => we_base_request::_(we_base_request::STRING, 'weFileNameTemp', we_base_request::NOT_VALID),
 			'parentID' => we_base_request::_(we_base_request::URL, 'fu_file_parentID', we_base_request::NOT_VALID),
@@ -88,17 +85,17 @@ class we_fileupload_resp_base extends we_fileupload{
 			'weFileSize' => we_base_request::_(we_base_request::INT, 'weFileSize', we_base_request::NOT_VALID),
 			'weFileCt' => we_base_request::_(we_base_request::STRING, 'weFileCt', we_base_request::NOT_VALID),
 			'sameName' => we_base_request::_(we_base_request::STRING, 'fu_file_sameName', we_base_request::NOT_VALID)
-				), function($var){
+			], function($var){
 				return $var !== we_base_request::NOT_VALID;
 			})
 		);
-		$this->controlVars = array_merge($this->controlVars, array_filter(array(
+		$this->controlVars = array_merge($this->controlVars, array_filter([
 			'doCommitFile' => we_base_request::_(we_base_request::BOOL, 'doCommitFile', true),
 			'partNum' => we_base_request::_(we_base_request::INT, 'wePartNum', we_base_request::NOT_VALID),
 			'partCount' => we_base_request::_(we_base_request::INT, 'wePartCount', we_base_request::NOT_VALID),
 			'formnum' => we_base_request::_(we_base_request::INT, "weFormNum", we_base_request::NOT_VALID),
 			'formcount' => we_base_request::_(we_base_request::INT, "weFormCount", we_base_request::NOT_VALID),
-				), function($var){
+			], function($var){
 				return $var !== we_base_request::NOT_VALID;
 			})
 		);
@@ -106,24 +103,24 @@ class we_fileupload_resp_base extends we_fileupload{
 
 	public function processRequest(){
 		if(!(isset($this->FILES[$this->name]) && strlen($this->FILES[$this->name]["tmp_name"]))){
-			return array_merge($this->response, array('status' => 'failure', 'message' => g_l('importFiles', '[php_error]')));
+			return array_merge($this->response, ['status' => 'failure', 'message' => g_l('importFiles', '[php_error]')]);
 		}
 
 		// FIXME: this test ist too strong:
 		// Only check permissions when we know, that the file is to be imported (important: e.g. html should be permitted on we_otherDocument even if the right new_html is missing!)
 		$this->fileVars['weFileCt'] = getContentTypeFromFile($this->FILES[$this->name]['name']); //compare mime and ct by extension
 		if(!permissionhandler::hasPerm(($perm = we_base_ContentTypes::inst()->getPermission($this->fileVars['weFileCt'])))){
-			return array_merge($this->response, array('status' => 'failure', 'message' => 'no perms: ' . g_l('perms_workpermissions', '[' . $perm . ']')));
+			return array_merge($this->response, ['status' => 'failure', 'message' => 'no perms: ' . g_l('perms_workpermissions', '[' . $perm . ']')]);
 		}
 
 		if($this->controlVars['partNum'] > 1 && !$this->fileVars['fileTemp']){
-			return array_merge($this->response, array('status' => 'failure', 'message' => 'inconsistent_params'));
+			return array_merge($this->response, ['status' => 'failure', 'message' => 'inconsistent_params']);
 		}
 
 		$chunkName = $this->controlVars['partNum'] === 1 ? $this->makeFileTemp() : TEMP_DIR . we_base_file::getUniqueId();
 		$chunkFile = $_SERVER['DOCUMENT_ROOT'] . $chunkName;
 		if(!@move_uploaded_file($this->FILES[$this->name]["tmp_name"], $chunkFile)){
-			return array_merge($this->response, array('status' => 'failure', 'message' => 'move_file_error'));
+			return array_merge($this->response, ['status' => 'failure', 'message' => 'move_file_error']);
 		}
 
 		// if not first chunk append it to tempFile, else tmpFile = chunkFile
@@ -136,7 +133,7 @@ class we_fileupload_resp_base extends we_fileupload{
 
 		// everything works fine but upload not finished yet: get next chunk
 		if($this->controlVars['partCount'] !== $this->controlVars['partNum'] && $this->controlVars['partCount'] !== 1){
-			return array_merge($this->response, array('status' => 'continue', 'fileNameTemp' => $this->fileVars['fileTemp']));
+			return array_merge($this->response, ['status' => 'continue', 'fileNameTemp' => $this->fileVars['fileTemp']]);
 		}
 
 		// last chunk appended: start post process and get some response to send
@@ -145,7 +142,7 @@ class we_fileupload_resp_base extends we_fileupload{
 
 	protected function postprocess(){
 		if(!$this->controlVars['doCommitFile']){ // most simple variant: we just leave tempFile in tmp directory and inform GUI that it can go on and grab it
-			return array_merge($this->response, array('status' => 'success', 'fileNameTemp' => $this->fileVars['fileTemp'], 'completed' => 1));
+			return array_merge($this->response, ['status' => 'success', 'fileNameTemp' => $this->fileVars['fileTemp'], 'completed' => 1]);
 		}
 
 		if(!$this->checkSetFile()){
@@ -153,10 +150,11 @@ class we_fileupload_resp_base extends we_fileupload{
 		}
 
 		if(!copy($_SERVER['DOCUMENT_ROOT'] . $this->fileVars['fileTemp'], $_SERVER['DOCUMENT_ROOT'] . str_replace(['\\', '//'], '/', $this->fileVars['fileDef']))){
-			return $this->response = array_merge($this->response, array('status' => 'failure', 'message' => 'error_copy_file', 'completed' => 1));
+			return $this->response = array_merge($this->response, ['status' => 'failure', 'message' => 'error_copy_file', 'completed' => 1]);
 		}
 
-		return array_merge($this->response, array('status' => 'success', 'fileNameTemp' => $this->fileVars['fileTemp'], 'completed' => 1, 'weDoc' => array('id' => 0, 'path' => $this->fileVars['fileDef'], 'text' => $this->fileVars['weFileName']), 'commited' => 1));
+		return array_merge($this->response, ['status' => 'success', 'fileNameTemp' => $this->fileVars['fileTemp'], 'completed' => 1, 'weDoc' => ['id' => 0, 'path' => $this->fileVars['fileDef'],
+				'text' => $this->fileVars['weFileName']], 'commited' => 1]);
 	}
 
 	public function commitUploadedFile($absolute = false){
@@ -182,7 +180,7 @@ class we_fileupload_resp_base extends we_fileupload{
 			switch($this->fileVars['sameName']){
 				case 'overwrite':
 					if(path_to_id($path . $this->fileVars['weFileName'])){
-						$this->response = array_merge($this->response, array('status' => 'failure', 'message' => g_l('fileselector', '[can_not_overwrite_we_file]'), 'completed' => 1));
+						$this->response = array_merge($this->response, ['status' => 'failure', 'message' => g_l('fileselector', '[can_not_overwrite_we_file]'), 'completed' => 1]);
 						return false;
 					}
 					break;
@@ -203,7 +201,7 @@ class we_fileupload_resp_base extends we_fileupload{
 					$this->fileVars['weFileName'] = $tmp;
 					break;
 				default:
-					$this->response = array_merge($this->response, array('status' => 'failure', 'message' => g_l('importFiles', '[same_name]'), 'completed' => 1));
+					$this->response = array_merge($this->response, ['status' => 'failure', 'message' => g_l('importFiles', '[same_name]'), 'completed' => 1]);
 					return false;
 			}
 		}

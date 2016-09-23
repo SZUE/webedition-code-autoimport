@@ -59,11 +59,10 @@ abstract class we_gui_multiEditor{
 				switch($_SESSION['weS']['SEEM']['startType']){
 					case 'document':
 						if(self::checkIfValidStartdocument($_SESSION['weS']['SEEM']['startId'])){
-							$directCmd = array(
-								FILE_TABLE,
+							$directCmd = [FILE_TABLE,
 								$_SESSION['weS']['SEEM']['startId'],
 								we_base_ContentTypes::WEDOCUMENT,
-							);
+								];
 							$jsCommand = self::_buildJsCommand($directCmd);
 						} else {
 							t_e('invalid start doc ' . $_SESSION['weS']['SEEM']['startId']);
@@ -72,11 +71,10 @@ abstract class we_gui_multiEditor{
 						break;
 					case 'object':
 						if(self::checkIfValidStartdocument($_SESSION['weS']['SEEM']['startId'])){
-							$directCmd = array(
-								OBJECT_FILES_TABLE,
+							$directCmd = [OBJECT_FILES_TABLE,
 								$_SESSION['weS']['SEEM']['startId'],
 								we_base_ContentTypes::OBJECT_FILE
-							);
+								];
 							$jsCommand = self::_buildJsCommand($directCmd);
 						} else {
 							t_e('invalid start doc ' . $_SESSION['weS']['SEEM']['startId']);

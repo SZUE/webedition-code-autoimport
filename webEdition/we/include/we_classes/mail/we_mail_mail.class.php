@@ -77,7 +77,7 @@ class we_mail_mail extends we_mail_znd{
 	 *
 	 * @var array
 	 */
-	protected $embedImages = array('gif', 'jpg', 'jpeg', 'jpe', 'bmp', 'png', 'tif', 'tiff', 'swf', 'GIF', 'JPG', 'JPEG', 'JPE', 'BMP', 'PNG', 'TIF', 'TIFF', 'SWF');
+	protected $embedImages = ['gif', 'jpg', 'jpeg', 'jpe', 'bmp', 'png', 'tif', 'tiff', 'swf', 'GIF', 'JPG', 'JPEG', 'JPE', 'BMP', 'PNG', 'TIF', 'TIFF', 'SWF'];
 
 	/**
 	 *
@@ -213,7 +213,7 @@ class we_mail_mail extends we_mail_znd{
 				$name = '';
 			}
 		}
-		return array('email' => trim($email), "name" => trim($name));
+		return ['email' => trim($email), "name" => trim($name)];
 	}
 
 	public function formatEMail($email, $name){
@@ -226,7 +226,7 @@ class we_mail_mail extends we_mail_znd{
 	}
 
 	public function addTextPart($val){
-		$this->AltBody = str_replace(["\r\n", "\r", "\n"], array("\n", "\n", "\r\n"), $val);
+		$this->AltBody = str_replace(["\r\n", "\r", "\n"], ["\n", "\n", "\r\n"], $val);
 	}
 
 	public function addAddressList($list){
@@ -315,16 +315,13 @@ class we_mail_mail extends we_mail_znd{
 
 	public function parseHtml2TextPart($html){
 
-		$this->AltBody = trim(strip_tags(preg_replace(array(
-			'-<br[^>]*>-s',
+		$this->AltBody = trim(strip_tags(preg_replace(['-<br[^>]*>-s',
 			'-<(ul|ol)[^>]*>-s',
 			'-<(head|title|style|script)[^>]*>.*?</\1>-s'
-					), array(
-			"\n",
+			], ["\n",
 			"\n\n",
 			''
-					), strtr($html, array(
-			"\n" => '',
+			], strtr($html, ["\n" => '',
 			"\r" => '',
 			'</h1>' => "\n\n",
 			'</h2>' => "\n\n",
@@ -337,7 +334,7 @@ class we_mail_mail extends we_mail_znd{
 			'</li>' => "\n",
 			'&lt;' => '<',
 			'&gt;' => '>',
-						)
+			]
 				))
 		));
 	}
@@ -511,10 +508,9 @@ class we_mail_mail extends we_mail_znd{
 	public function setTextPartOutOfHTML($html){
 		//remove css/js code
 		$html = preg_replace('|<script.*</script>|', '', preg_replace('|<style.*/[ ]*style>|', '', $html));
-		$this->addTextPart(trim(strip_tags(strtr($html, array(
-			'&nbsp;' => ' ',
+		$this->addTextPart(trim(strip_tags(strtr($html, ['&nbsp;' => ' ',
 			'<br />' => "\n",
-			'<br/>' => "\n")
+			'<br/>' => "\n"]
 					)
 				)
 			)

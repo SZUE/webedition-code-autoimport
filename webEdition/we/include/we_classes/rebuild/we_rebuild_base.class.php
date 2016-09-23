@@ -242,25 +242,23 @@ abstract class we_rebuild_base{
 
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsFolder=1 OR Published>0 ORDER BY IsFolder DESC, LENGTH(Path)');
 		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
+			$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 				'type' => 'document',
 				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
 				'mt' => $maintable,
 				'tt' => $tmptable,
 				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
+				'it' => 0];
 		}
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsDynamic=0 AND Published>0 AND ContentType="' . we_base_ContentTypes::WEDOCUMENT . '" ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
+			$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 				'type' => 'document',
 				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
 				'mt' => $maintable,
 				'tt' => $tmptable,
 				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
+				'it' => 0];
 		}
 
 		return $data;
@@ -284,13 +282,12 @@ abstract class we_rebuild_base{
 			$foldersQuery = count($metaFolders) ? ' AND ParentId IN(' . implode(',', $metaFolders) . ') ' : '';
 			$GLOBALS['DB_WE']->query('SELECT ID,path FROM ' . FILE_TABLE . ' WHERE ContentType="' . we_base_ContentTypes::IMAGE . '" AND Extension IN (".jpg","jpeg","wbmp") ' . $foldersQuery);
 			while($GLOBALS['DB_WE']->next_record()){
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
+				$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 					'type' => 'metadata',
 					'onlyEmpty' => $onlyEmpty,
 					'path' => $GLOBALS['DB_WE']->f('path'),
 					'metaFields' => $metaFields
-				);
+					];
 			}
 		}
 		return $data;
@@ -311,14 +308,13 @@ abstract class we_rebuild_base{
 		while($GLOBALS['DB_WE']->next_record()){
 			// beware of a very special case: when a document is unpublished && mofified we must not have any main-table entries!
 			if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
+				$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 					'type' => 'medialink',
 					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
 					'mt' => 1,
 					'tt' => 0,
 					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
+					'it' => 0];
 			}
 		}
 
@@ -327,55 +323,51 @@ abstract class we_rebuild_base{
 			while($GLOBALS['DB_WE']->next_record()){
 				// beware of a very special case: when an object is unpublished && mofified we must not have any main-table entries!
 				if($GLOBALS['DB_WE']->f('Published') > 0 || $GLOBALS['DB_WE']->f('Published') == $GLOBALS['DB_WE']->f('ModDate')){
-					$data[] = array(
-						'id' => $GLOBALS['DB_WE']->f('ID'),
+					$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 						'type' => 'medialink',
 						'cn' => $GLOBALS['DB_WE']->f('ClassName'),
 						'mt' => 1,
 						'tt' => 0,
 						'path' => $GLOBALS['DB_WE']->f('Path'),
-						'it' => 0);
+						'it' => 0];
 				}
 			}
 		}
 
 		$GLOBALS['DB_WE']->query('SELECT DocumentID,DocTable FROM ' . TEMPORARY_DOC_TABLE . ' ORDER BY DocumentID');
 		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('DocumentID'),
+			$data[] = ['id' => $GLOBALS['DB_WE']->f('DocumentID'),
 				'type' => 'medialink',
 				'cn' => 'we_temporaryDocument',
 				'tbl' => $GLOBALS['DB_WE']->f('DocTable'),
 				'mt' => 0,
 				'tt' => 1,
 				'path' => '',
-				'it' => 0);
+				'it' => 0];
 		}
 
-		$tables = array(
-			array(TEMPLATES_TABLE, 'WHERE IsFolder=0', 'we_template'),
-			array((defined('OBJECT_TABLE') ? OBJECT_TABLE : false), 'WHERE IsFolder=0', 'we_object'),
-			array((defined('VFILE_TABLE') ? VFILE_TABLE : false), 'WHERE IsFolder=0', 'we_collection'),
-			array((defined('BANNER_TABLE') ? BANNER_TABLE : false), '', 'we_banner_banner'),
-			array(CATEGORY_TABLE, 'WHERE Description!=""', 'we_category'),
-			array((defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : false), 'WHERE IsFolder=0 AND type="link"', 'we_glossary_glossary'),
-			array(NAVIGATION_TABLE, 'WHERE IconID!=0 OR (SelectionType="docLink" AND LinkID!=0)', 'we_navigation_navigation'),
-			array((defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : false), '', 'we_newsletter_newsletter'),
-			array((defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : false), 'WHERE 1', 'we_customer_customer'),
-		);
+		$tables = [[TEMPLATES_TABLE, 'WHERE IsFolder=0', 'we_template'],
+				[(defined('OBJECT_TABLE') ? OBJECT_TABLE : false), 'WHERE IsFolder=0', 'we_object'],
+				[(defined('VFILE_TABLE') ? VFILE_TABLE : false), 'WHERE IsFolder=0', 'we_collection'],
+				[(defined('BANNER_TABLE') ? BANNER_TABLE : false), '', 'we_banner_banner'],
+				[CATEGORY_TABLE, 'WHERE Description!=""', 'we_category'],
+				[(defined('GLOSSARY_TABLE') ? GLOSSARY_TABLE : false), 'WHERE IsFolder=0 AND type="link"', 'we_glossary_glossary'],
+				[NAVIGATION_TABLE, 'WHERE IconID!=0 OR (SelectionType="docLink" AND LinkID!=0)', 'we_navigation_navigation'],
+				[(defined('NEWSLETTER_TABLE') ? NEWSLETTER_TABLE : false), '', 'we_newsletter_newsletter'],
+				[(defined('CUSTOMER_TABLE') ? CUSTOMER_TABLE : false), 'WHERE 1', 'we_customer_customer'],
+		];
 
 		foreach($tables as $table){
 			if($table[0]){
 				$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . $table[0] . ' ' . $table[1] . ' ORDER BY ID');
 				while($GLOBALS['DB_WE']->next_record()){
-					$data[] = array(
-						'id' => $GLOBALS['DB_WE']->f('ID'),
+					$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 						'type' => 'medialink',
 						'cn' => $table[2],
 						'mt' => 1,
 						'tt' => 0,
 						'path' => $GLOBALS['DB_WE']->f('Path'),
-						'it' => 0);
+						'it' => 0];
 				}
 			}
 		}
@@ -385,15 +377,14 @@ abstract class we_rebuild_base{
 
 	private static function insertTemplatesInArray(array $all, array &$data, $mt, $tt){
 		foreach($all as $cur){
-			$data[] = array(
-				'id' => $cur['ID'],
+			$data[] = ['id' => $cur['ID'],
 				'type' => 'template',
 				'cn' => $cur['ClassName'],
 				'mt' => $mt,
 				'tt' => $tt,
 				'path' => $cur['Path'],
 				'it' => 0
-			);
+				];
 		}
 	}
 
@@ -523,28 +514,26 @@ abstract class we_rebuild_base{
 		if(!$categories && !$catAnd && !$doctypes && !$folders && !$templateID){
 			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsFolder=1 ' . ($folders ? 'AND ' . $folders_query : '') . 'ORDER BY IsFolder DESC, LENGTH(Path)');
 			while($GLOBALS['DB_WE']->next_record()){
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
+				$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 					'type' => 'document',
 					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
 					'mt' => 0,
 					'tt' => 0,
 					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
+					'it' => 0];
 			}
 		}
 
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE IsDynamic=0 AND Published>0 AND ContentType IN("' . we_base_ContentTypes::WEDOCUMENT . '","' . we_base_ContentTypes::CSS . '","' . we_base_ContentTypes::JS . '") ' . $query . ' ORDER BY LENGTH(Path)');
 
 		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
+			$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 				'type' => 'document',
 				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
 				'mt' => 0,
 				'tt' => 0,
 				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
+				'it' => 0];
 		}
 		return $data;
 	}
@@ -559,25 +548,23 @@ abstract class we_rebuild_base{
 		if(permissionhandler::hasPerm('REBUILD_OBJECTS')){
 			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
+				$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 					'type' => 'object',
 					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
 					'mt' => 0,
 					'tt' => 0,
 					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
+					'it' => 0];
 			}
 			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE IsFolder=1 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
+				$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 					'type' => 'object',
 					'cn' => 'we_class_folder',
 					'mt' => 0,
 					'tt' => 0,
 					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
+					'it' => 0];
 			}
 		}
 		return $data;
@@ -593,24 +580,22 @@ abstract class we_rebuild_base{
 		if(permissionhandler::hasPerm('REBUILD_NAVIGATION')){
 			$GLOBALS['DB_WE']->query('SELECT ID,Path FROM ' . NAVIGATION_TABLE . ' WHERE IsFolder=0 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
+				$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 					'type' => 'navigation',
 					'cn' => 'weNavigation',
 					'mt' => 0,
 					'tt' => 0,
 					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 0);
+					'it' => 0];
 			}
-			$data[] = array(
-				'id' => 0,
+			$data[] = ['id' => 0,
 				'type' => 'navigation',
 				'cn' => 'weNavigation',
 				'mt' => 0,
 				'tt' => 0,
 				'path' => $GLOBALS['DB_WE']->f('Path'),
 				'it' => 0
-			);
+				];
 		}
 
 		if(we_base_request::_(we_base_request::BOOL, 'rebuildStaticAfterNavi')){
@@ -633,26 +618,24 @@ abstract class we_rebuild_base{
 		$data = [];
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . FILE_TABLE . ' WHERE Published > 0 AND IsSearchable=1 ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
+			$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 				'type' => 'document',
 				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
 				'mt' => 0,
 				'tt' => 0,
 				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 1);
+				'it' => 1];
 		}
 		if(defined('OBJECT_FILES_TABLE')){
 			$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path FROM ' . OBJECT_FILES_TABLE . ' WHERE Published > 0 ORDER BY ID');
 			while($GLOBALS['DB_WE']->next_record()){
-				$data[] = array(
-					'id' => $GLOBALS['DB_WE']->f('ID'),
+				$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 					'type' => 'object',
 					'cn' => $GLOBALS['DB_WE']->f('ClassName'),
 					'mt' => 0,
 					'tt' => 0,
 					'path' => $GLOBALS['DB_WE']->f('Path'),
-					'it' => 1);
+					'it' => 1];
 			}
 		}
 		$GLOBALS['DB_WE']->query('TRUNCATE ' . INDEX_TABLE);
@@ -683,8 +666,7 @@ abstract class we_rebuild_base{
 		}
 		$GLOBALS['DB_WE']->query('SELECT ID,ClassName,Path,Extension FROM ' . FILE_TABLE . ' WHERE ContentType="' . we_base_ContentTypes::IMAGE . '"' . ($folders_query ? ' AND ' . $folders_query : '') . ' ORDER BY ID');
 		while($GLOBALS['DB_WE']->next_record()){
-			$data[] = array(
-				'id' => $GLOBALS['DB_WE']->f('ID'),
+			$data[] = ['id' => $GLOBALS['DB_WE']->f('ID'),
 				'type' => 'thumbnail',
 				'cn' => $GLOBALS['DB_WE']->f('ClassName'),
 				'thumbs' => $thumbs,
@@ -692,7 +674,7 @@ abstract class we_rebuild_base{
 				'mt' => 0,
 				'tt' => 0,
 				'path' => $GLOBALS['DB_WE']->f('Path'),
-				'it' => 0);
+				'it' => 0];
 		}
 		return $data;
 	}
@@ -720,10 +702,9 @@ abstract class we_rebuild_base{
 			return 0;
 		}
 
-		$returnIDs = array(
-			'templateIDs' => [],
+		$returnIDs = ['templateIDs' => [],
 			'documentIDs' => [],
-		);
+			];
 
 		self::getTemplatesOfTemplate($id, $returnIDs['templateIDs']);
 

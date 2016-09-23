@@ -31,7 +31,14 @@ var publishWhenSave = 0;
 var weModuleWindow = true;
 
 function we_cmd() {
-	top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
+	//var url = WE().util.getWe_cmdArgsUrl(args);
+
+	switch (args[0]) {
+
+		default:
+			top.content.we_cmd.apply(this, args);
+	}
 }
 
 var current = moduleData.mod;

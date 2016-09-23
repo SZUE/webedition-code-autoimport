@@ -165,7 +165,7 @@ function refreshForm() {
 
 function submitForm(target, action, method, form) {
 	var f = form ? window.document.forms[form] : window.document.we_form;
-	f.target = target ? target : edbody;
+	f.target = target ? target : "edbody";
 	f.action = action ? action : WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer";
 	f.method = method ? method : "post";
 

@@ -296,7 +296,7 @@ class we_backup_object extends we_object{
 				$defaultArr['meta'] = array($type . '_' . $name . 'defaultkey0' => '');
 				break;
 			case we_objectFile::TYPE_MULTIOBJECT:
-				$defaultArr['meta'] = array('');
+				$defaultArr['meta'] = [''];
 				break;
 		}
 

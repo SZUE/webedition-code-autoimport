@@ -79,7 +79,7 @@ class we_listview_search extends we_listview_base{
 				$foo = preg_split('/ +/', $o);
 				$oname = $foo[0];
 				$otype = isset($foo[1]) ? $foo[1] : '';
-				$orderArr[] = array('oname' => $oname, 'otype' => $otype);
+				$orderArr[] = ['oname' => $oname, 'otype' => $otype];
 			}
 		}
 		$this->order = '';
@@ -161,7 +161,7 @@ class we_listview_search extends we_listview_base{
 			$ids = array_filter(explode(',', $this->workspaceID));
 			if($ids){
 				$workspaces = id_to_path($ids, FILE_TABLE, $this->DB_WE, true);
-				$cond = array('i.WorkspaceID IN (' . implode(',', $ids) . ')');
+				$cond = ['i.WorkspaceID IN (' . implode(',', $ids) . ')'];
 				foreach($workspaces as $workspace){
 					$cond[] = 'wsp.Path LIKE "' . $this->DB_WE->escape($workspace) . '/%"';
 				}
@@ -219,12 +219,11 @@ class we_listview_search extends we_listview_base{
 		}
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-			$this->DB_WE->Record = array(
-				'WE_LANGUAGE' => '',
+			$this->DB_WE->Record = ['WE_LANGUAGE' => '',
 				'WE_PATH' => '',
 				'WE_TEXT' => '',
 				'WE_ID' => '',
-			);
+				];
 			$this->count++;
 			return true;
 		}

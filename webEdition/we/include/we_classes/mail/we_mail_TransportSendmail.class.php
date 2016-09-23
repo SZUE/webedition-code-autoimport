@@ -82,7 +82,7 @@ class we_mail_TransportSendmail extends we_mail_TransportAbstract{
 	 */
 	public function _sendMail(){
 		if($this->parameters === null){
-			set_error_handler(array($this, '_handleMailErrors'));
+			set_error_handler([$this, '_handleMailErrors']);
 			$result = mail(
 				$this->recipients, $this->_mail->getSubject(), $this->body, $this->header);
 			restore_error_handler();
@@ -92,7 +92,7 @@ class we_mail_TransportSendmail extends we_mail_TransportAbstract{
 				);
 			}
 
-			set_error_handler(array($this, '_handleMailErrors'));
+			set_error_handler([$this, '_handleMailErrors']);
 			$result = mail(
 				$this->recipients, $this->_mail->getSubject(), $this->body, $this->header, $this->parameters);
 			restore_error_handler();

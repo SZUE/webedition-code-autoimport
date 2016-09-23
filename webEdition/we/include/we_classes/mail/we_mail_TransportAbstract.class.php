@@ -130,15 +130,14 @@ abstract class we_mail_TransportAbstract{
 				}
 			}
 
-			$this->_headers['Content-Type'] = array(
-				$type . ';'
+			$this->_headers['Content-Type'] = [$type . ';'
 				. $this->EOL
 				. " " . 'boundary="' . $boundary . '"'
-			);
+				];
 			$this->boundary = $boundary;
 		}
 
-		$this->_headers['MIME-Version'] = array('1.0');
+		$this->_headers['MIME-Version'] = ['1.0'];
 
 		return $this->_headers;
 	}
@@ -184,7 +183,7 @@ abstract class we_mail_TransportAbstract{
 				$value = implode(',' . $this->EOL . ' ', $content);
 				$this->header .= $header . ': ' . $value . $this->EOL;
 			} else {
-				array_walk($content, array(get_class($this), '_formatHeader'), $header);
+				array_walk($content, [get_class($this), '_formatHeader'], $header);
 				$this->header .= implode($this->EOL, $content) . $this->EOL;
 			}
 		}
@@ -273,7 +272,7 @@ abstract class we_mail_TransportAbstract{
 		foreach($headers as $header){
 			// Headers in Mime_Part are kept as arrays with two elements, a
 			// key and a value
-			$this->_headers[$header[0]] = array($header[1]);
+			$this->_headers[$header[0]] = [$header[1]];
 		}
 	}
 

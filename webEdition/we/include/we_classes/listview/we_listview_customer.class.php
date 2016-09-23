@@ -97,11 +97,10 @@ class we_listview_customer extends we_listview_base{
 		}
 		$this->stop_next_row = $this->shouldPrintEndTR();
 		if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-			$this->DB_WE->Record = array(
-				self::PROPPREFIX . 'PATH' => '',
+			$this->DB_WE->Record = [self::PROPPREFIX . 'PATH' => '',
 				self::PROPPREFIX . 'TEXT' => '',
 				self::PROPPREFIX . 'ID' => '',
-			);
+				];
 			$this->count++;
 			return true;
 		}

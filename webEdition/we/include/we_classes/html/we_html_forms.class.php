@@ -174,7 +174,7 @@ abstract class we_html_forms{
 		}
 
 		//FIXME: don't remove style width/height in no wysiwyg if no width is given!
-		$style = ($style ? explode(';', trim(preg_replace(array('/width:[^;"]+[;"]?/i', '/height:[^;"]+[;"]?/i'), '', $style), ' ;')) : []);
+		$style = ($style ? explode(';', trim(preg_replace(['/width:[^;"]+[;"]?/i', '/height:[^;"]+[;"]?/i'], '', $style), ' ;')) : []);
 
 		$fontnames = weTag_getAttribute('fontnames', $attribs, '', we_base_request::STRING);
 		$showmenues = (
@@ -266,11 +266,10 @@ abstract class we_html_forms{
 		if(preg_match_all('/(href|src)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+)([" \?#])/i', $text, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				if(!f('SELECT 1 FROM ' . FILE_TABLE . ' WHERE ID=' . intval($reg[2]), '', $DB_WE)){
-					$text = preg_replace(array(
-						'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . '[^>]*>([^<]+)</a>|i',
+					$text = preg_replace(['|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . '[^>]*>([^<]+)</a>|i',
 						'|<a [^>]*href="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . '[^>]*>|i',
 						//'|<img [^>]*src="' . we_base_link::TYPE_INT_PREFIX . $reg[2] . $reg[3] . '"[^>]*>|i',
-						), array('${1}'), $text);
+						], ['${1}'], $text);
 				}
 			}
 		}
@@ -290,10 +289,9 @@ abstract class we_html_forms{
 			if(preg_match_all('/href="' . we_base_link::TYPE_OBJ_PREFIX . '(\\d+)[^" \?#]+\??/i', $text, $regs, PREG_SET_ORDER)){
 				foreach($regs as $reg){
 					if(!id_to_path($reg[1], OBJECT_FILES_TABLE)){ // if object doesn't exists, remove the link
-						$text = preg_replace(array(
-							'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>([^<]+)</a>|i',
+						$text = preg_replace(['|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>([^<]+)</a>|i',
 							'|<a [^>]*href="' . we_base_link::TYPE_OBJ_PREFIX . $reg[1] . '"[^>]*>|i',
-							), array('${1}'), $text);
+							], ['${1}'], $text);
 					}
 				}
 			}

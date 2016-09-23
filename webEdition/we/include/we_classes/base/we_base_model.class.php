@@ -178,8 +178,7 @@ class we_base_model{
 		}
 
 		foreach($this->MediaLinks as $element => $remObj){
-			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'ID' => $this->ID,
+			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(['ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->table),
 					'type' => 'media',
 					'remObj' => $remObj,
@@ -187,7 +186,7 @@ class we_base_model{
 					'element' => (is_numeric($element) ? '' : $element),
 					'position' => 0,
 					'isTemp' => 0
-			)));
+					]));
 		}
 	}
 

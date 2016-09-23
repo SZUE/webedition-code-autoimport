@@ -229,11 +229,10 @@ class we_listview_multiobject extends we_listview_objectBase{
 			}
 			$this->stop_next_row = $this->shouldPrintEndTR();
 			if($this->cols && ($this->count <= $this->maxItemsPerPage) && !$this->stop_next_row){
-				$this->DB_WE->Record = array(
-					'WE_PATH' => '',
+				$this->DB_WE->Record = ['WE_PATH' => '',
 					'WE_TEXT' => '',
 					'WE_ID' => '',
-				);
+					];
 				$this->count++;
 				return true;
 			}

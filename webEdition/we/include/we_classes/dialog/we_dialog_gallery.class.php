@@ -25,10 +25,10 @@
 class we_dialog_gallery extends we_dialog_base{
 	var $dialogWidth = 370;
 	var $JsOnly = true;
-	var $changeableArgs = array('collid',
+	var $changeableArgs = ['collid',
 		'tmpl',
 		'templateIDs'
-	);
+		];
 
 	function __construct($noInternals = false){
 		parent::__construct();
@@ -83,7 +83,7 @@ WegalleryDialog.insert();
 		$collid = we_html_tools::htmlFormElementTable($yuiSuggest->getHTML(), 'Sammlung');
 
 		if(($tempArr = id_to_path(isset($this->args['templateIDs']) ? $this->args['templateIDs'] : '', TEMPLATES_TABLE, null, true))){
-			$templatesArr = array('----');
+			$templatesArr = ['----'];
 			foreach($tempArr as $k => $v){
 				$templatesArr[$k] = $v;
 			}

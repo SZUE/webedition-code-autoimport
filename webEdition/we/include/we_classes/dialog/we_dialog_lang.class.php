@@ -25,9 +25,8 @@
 class we_dialog_lang extends we_dialog_base{
 	var $dialogWidth = 370;
 	var $JsOnly = true;
-	var $changeableArgs = array(
-		"lang"
-	);
+	var $changeableArgs = ["lang"
+	];
 
 	function __construct($noInternals = false){
 		parent::__construct();
@@ -44,7 +43,7 @@ top.close();
 	}
 
 	function defaultInit(){
-		$this->args = array("lang" => "");
+		$this->args = ["lang" => ""];
 	}
 
 	public static function getTinyMceJS(){
@@ -57,11 +56,10 @@ top.close();
 <tr><td>' . $this->getLangField("lang", g_l('wysiwyg', '[language]'), 260) . '</td></tr>
 </table>' .
 			(defined('GLOSSARY_TABLE') && permissionhandler::hasPerm("NEW_GLOSSARY") && !$this->noInternals ?
-				we_html_element::htmlHiddens(array(
-					'weSaveToGlossary' => 0,
-					'language' => we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage']),
+				we_html_element::htmlHiddens(['weSaveToGlossary' => 0,
+				'language' => we_base_request::_(we_base_request::STRING, 'language', $GLOBALS['weDefaultFrontendLanguage']),
 					'text' => ''
-				)) : ''
+					]) : ''
 			);
 	}
 

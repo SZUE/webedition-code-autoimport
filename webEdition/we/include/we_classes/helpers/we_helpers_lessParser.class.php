@@ -27,7 +27,7 @@ class we_helpers_lessParser extends Less_Parser{
 
 	public function __construct($env = null){
 		if(!is_object($env)){
-			$env['import_callback'] = array('we_helpers_lessParser', 'importCallBack');
+			$env['import_callback'] = ['we_helpers_lessParser', 'importCallBack'];
 		}
 		parent::__construct($env);
 	}
@@ -36,11 +36,11 @@ class we_helpers_lessParser extends Less_Parser{
 		$matches = [];
 		if($env->path->value && preg_match('|#WE:(\d+)#|', $env->path->value, $matches)){
 			$hash = getHash('SELECT Path,ParentID FROM ' . FILE_TABLE . ' WHERE ID=' . intval($matches[1]), null, MYSQL_NUM);
-			list($path, $parentid) = ($hash? : array(0, 0));
+			list($path, $parentid) = ($hash? : [0, 0]);
 			if($hash){
 				self::$includedFiles[] = intval($matches[1]);
 			}
-			return array($path ? $env->path->value : $path, $parentid ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . $parentid) : '/');
+			return [$path ? $env->path->value : $path, $parentid ? f('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID=' . $parentid) : '/'];
 		}
 		return null;
 	}

@@ -25,8 +25,7 @@
 class we_dialog_image extends we_dialog_base{
 	private $weFileupload = null;
 	var $ClassName = __CLASS__;
-	var $changeableArgs = array(
-		"type",
+	var $changeableArgs = ["type",
 		"extSrc",
 		"fileID",
 		"src",
@@ -46,7 +45,7 @@ class we_dialog_image extends we_dialog_base{
 		"longdescid",
 		"longdescsrc",
 		"longdesc"
-	);
+		];
 
 	function __construct($noInternals = false){
 		parent::__construct();
@@ -84,11 +83,10 @@ class we_dialog_image extends we_dialog_base{
 				$this->args["thumbnail"] = $thumb;
 			} else {
 				$this->args["type"] = we_base_link::TYPE_EXT;
-				$this->args["extSrc"] = preg_replace(array(
-					'|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i',
+				$this->args["extSrc"] = preg_replace(['|^https?://' . $_SERVER['SERVER_NAME'] . '(/.*)$|i',
 					'|^' . WEBEDITION_DIR . 'we_cmd.php[^"\'#]+(#.*)$|',
 					'|^' . WEBEDITION_DIR . '|',
-					), array('${1}', '${1}', ''), $this->args["src"]);
+					], ['${1}', '${1}', ''], $this->args["src"]);
 				$this->args["fileID"] = '';
 				$this->args["fileSrc"] = '';
 				$this->args["thumbnail"] = 0;
@@ -363,8 +361,7 @@ class we_dialog_image extends we_dialog_base{
 		$classSelect = we_html_tools::htmlFormElementTable($this->getClassSelect('width: 140px;'), g_l('wysiwyg', '[css_style]'), 'left', 'defaultfont', '', '', '', '', '', '', 0);
 
 		$parts = [];
-		$parts[] = array(
-			'html' => '<table class="default" style="margin-bottom:4px;">
+		$parts[] = ['html' => '<table class="default" style="margin-bottom:4px;">
 <tr><td style="width:200px"><div style="display:inline;float:left">' . ($intSrc ? $radioButtonInt : '') . '</div></td><td><div style="display:inline;float:right">' . /* $radioButtonUpload */ (isset($radioButtonExt) ? $radioButtonExt : '') . '</div></td></tr>' .
 //<tr><td>' . $radioButtonExt . '</td><td>&nbsp;</td></tr>
 			'</table
@@ -375,9 +372,9 @@ class we_dialog_image extends we_dialog_base{
 				'') .
 			'</table>',
 			'noline' => true
-		);
+			];
 		/*
-		  $parts[] = array(
+		  $parts[] =[
 		  'html' => $this->weFileupload->getHTML(),
 		  'class' => 'weFileuploadEditor displayNone',
 		  'forceRightHeadline' => false,
@@ -386,7 +383,7 @@ class we_dialog_image extends we_dialog_base{
 		 *
 		 */
 		$parts[] = [];
-		$parts[] = array('headline' => g_l('wysiwyg', '[image][formatting]'),
+		$parts[] = ['headline' => g_l('wysiwyg', '[image][formatting]'),
 			'html' => '<table class="default" style="width:530px">
 					<tr>
 						<td>' . we_html_tools::htmlFormElementTable($thumbnails, g_l('wysiwyg', '[thumbnail]'), 'left', 'defaultfont', '', '', '', '', '', '', 0) . '</td>
@@ -394,9 +391,8 @@ class we_dialog_image extends we_dialog_base{
 						<td>' . $align . '</td>
 					</tr>
 				</table>'
-		);
-		$parts[] = array(
-			'headline' => g_l('global', '[attributes]'),
+			];
+		$parts[] = ['headline' => g_l('global', '[attributes]'),
 			'html' => '<table class="default" style="width:560px">
 					<tr><td style="padding-bottom:15px;">' . $width . '</td><td style="padding-bottom:15px;">' . $height . '</td><td style="padding-bottom:15px;">' . $ratio . '</td></tr>
 					<tr><td style="padding-bottom:15px;">' . $border . '</td><td style="padding-bottom:15px;">' . $hspace . '</td><td style="padding-bottom:15px;">' . $vspace . '</td></tr>
@@ -405,8 +401,7 @@ class we_dialog_image extends we_dialog_base{
 					<tr><td colspan="3" style="padding-bottom:15px;">' . $longdesc . '</td></tr>
 				</table>
 				<div></div>' .
-			we_html_element::htmlHiddens(array(
-				'we_dialog_args[name]' => (isset($this->args['name']) ? $this->args['name'] : ''),
+			we_html_element::htmlHiddens(['we_dialog_args[name]' => (isset($this->args['name']) ? $this->args['name'] : ''),
 				'we_dialog_args[type]' => (isset($this->args["type"]) ? $this->args["type"] : we_base_link::TYPE_INT),
 				'we_dialog_args[rendered_width]' => 0,
 				'we_dialog_args[rendered_height]' => 0,
@@ -415,11 +410,11 @@ class we_dialog_image extends we_dialog_base{
 				'isTinyMCEInitialization' => 0,
 				'tinyMCEInitRatioH' => 0,
 				'tinyMCEInitRatioW' => 0
-			)) .
+				]) .
 			weSuggest::getYuiFiles() .
 			$yuiSuggest->getYuiJs() .
 			we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_init.js')
-		);
+			];
 		return $parts;
 	}
 
@@ -479,8 +474,7 @@ if(top.document.we_form.tinyMCEInitRatioW !== undefined){
 				return we_dialog_base::getTinyMceJS() .
 					we_html_element::jsScript(WE_JS_TINYMCE_DIR . 'plugins/weimage/js/image_insert.js') .
 					'<form name="tiny_form">' .
-					we_html_element::htmlHiddens(array(
-						"src" => (isset($args["src"]) ? $args["src"] : ''),
+					we_html_element::htmlHiddens(["src" => (isset($args["src"]) ? $args["src"] : ''),
 						"width" => (empty($attribs["width"]) || intval($attribs["width"]) === 0 ? '' : $attribs["width"]),
 						"height" => (empty($attribs["height"]) || intval($attribs["height"]) === 0 ? '' : $attribs["height"]),
 						"hspace" => $attribs["hspace"],
@@ -492,7 +486,7 @@ if(top.document.we_form.tinyMCEInitRatioW !== undefined){
 						"class" => $attribs["cssclass"],
 						"title" => $attribs["title"],
 						"longdesc" => (intval($attribs["longdescid"]) ? $attribs["longdescsrc"] . '?id=' . intval($attribs["longdescid"]) : '')
-					)) . '</form>';
+						]) . '</form>';
 		}
 	}
 

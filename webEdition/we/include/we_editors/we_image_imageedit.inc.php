@@ -36,7 +36,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		$headline = g_l('weClass', '[image]');
 		$gdtype = $we_doc->getGDType();
 		$supported = we_base_imageEdit::supported_image_types();
-		$focus = we_unserialize($GLOBALS['we_doc']->getElement('focus', 'dat'), array(0, 0));
+		$focus = we_unserialize($GLOBALS['we_doc']->getElement('focus', 'dat'), [0, 0]);
 
 		echo
 		we_class::hiddenTrans() .

@@ -29,9 +29,7 @@ class we_tree_main extends we_tree_base{
 	}
 
 	function getJSStartTree(){
-		return '
-var we_scrollY={};
-treeData.table="' . FILE_TABLE . '";';
+		return 'treeData.table="' . FILE_TABLE . '";';
 	}
 
 	function getJSUpdateTreeScript($doc, $select = true){

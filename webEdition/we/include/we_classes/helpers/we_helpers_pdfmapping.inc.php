@@ -25,8 +25,7 @@
  * Taken from poppler sources
  *
  */
-return array(
-	'!' => 0x0021,
+return ['!' => 0x0021,
 	'#' => 0x0023,
 	'$' => 0x0024,
 	'%' => 0x0025,
@@ -4469,4 +4468,4 @@ return array(
 	'|' => 0x007c,
 	'}' => 0x007d,
 	'~' => 0x007e,
-);
+ ];

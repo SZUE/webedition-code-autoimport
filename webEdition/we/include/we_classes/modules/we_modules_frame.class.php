@@ -102,7 +102,6 @@ abstract class we_modules_frame{
 			//FIXME: throw some of these functions out again and use generic version of main-window functions
 			we_html_element::jsScript(JS_DIR . 'modules_tree.js') .
 			we_main_headermenu::css() .
-			we_base_menu::getJS() .
 			$extraHead;
 
 		$body = we_html_element::htmlBody(['id' => 'weMainBody', "onload" => 'startTree();'], we_html_element::htmlExIFrame('header', self::getHTMLHeader(

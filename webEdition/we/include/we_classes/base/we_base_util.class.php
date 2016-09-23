@@ -242,7 +242,7 @@ abstract class we_base_util{
 	/**
 	 * Converts a given number in a via array specified system.
 	 * as default a number is converted in the matching chars 0->^,1->a,2->b, ...
-	 * other systems can simply set via the parameter $chars for example -> array(0,1)
+	 * other systems can simply set via the parameter $chars for example ->[0,1]
 	 * for bin-system
 	 *
 	 * @return string
