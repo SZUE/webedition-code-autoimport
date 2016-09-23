@@ -1819,8 +1819,42 @@ var we_cmd_modules = {
 				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4];
 				new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 				break;
-			case 'collection_insertFiles':
-				WE().t_e('top', args);
+			case 'collection_insertFiles_direct':
+				if(args[2]){top.console.log(args);
+					var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
+						collID = parseInt(args[2]),
+						editor = null,
+						transaction = args[3],
+						frameId, candidate;
+
+					for (frameId in usedEditors) {
+						candidate = usedEditors[frameId];
+						if (candidate.getEditorEditorTable() === WE().consts.tables.VFILE_TABLE && parseInt(candidate.getEditorDocumentId()) === collID){
+							if(candidate.getEditorEditPageNr() == 1) {
+								editor = candidate;
+							} else {
+								transaction = candidate.editor.getEditorTransaction();
+							}
+							break;
+						}
+					}
+
+					if(editor){
+						editor.getContentEditor().weCollectionEdit.insertImportedDocuments(args[1].success);
+					} else {
+						// fire ajax request to insert files to session or db respectively
+						we_cmd('collection_insertFiles_rpc', args[1].success, collID, transaction)
+					}
+				}
+				break;
+			case 'collection_insertFiles_rpc':
+				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
+					success: function (o) {
+					},
+					failure: function (o) {
+						//alert(WE().consts.g_l.main.unable_to_call_setpagenr);
+					}
+				}, "protocol=json&cmd=GetItemsFromDB&transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
 				break;
 			case "help_documentation":
 				new (WE().util.jsWindow)(this, "http://documentation.webedition.org/", "help_documentation", -1, -1, 960, 700, true, true, true, true);

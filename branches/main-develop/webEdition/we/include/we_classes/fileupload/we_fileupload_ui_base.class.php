@@ -37,6 +37,7 @@ class we_fileupload_ui_base extends we_fileupload{
 	);
 	protected $fileselectOnclick = '';
 	protected $callback = 'document.we_form.submit()';
+	protected $nextCmd = '';
 	protected $dimensions = array(
 		'width' => 400,
 		'dragWidth' => 300,
@@ -92,6 +93,10 @@ class we_fileupload_ui_base extends we_fileupload{
 
 	public function setCallback($callback = ''){
 		$this->callback = $callback ? : 'if(document.forms["' . $this->form['name'] . '"]){document.forms["' . $this->form['name'] . '"].submit();}';
+	}
+
+	public function setNextCmd($nextCmd = ''){
+		$this->nextCmd = $nextCmd;
 	}
 
 	public function setIsPreset($isPreset = false){
@@ -355,6 +360,7 @@ we_FileUpload.init({
 	isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
 	isPreset: ' . ($this->isPreset ? 'true' : 'false') . ',
 	callback : function(scope){' . $this->callback . '},
+	nextCmd : "' . $this->nextCmd . '",
 	fileselectOnclick : function(){' . $this->fileselectOnclick . '},
 	chunkSize : ' . self::CHUNK_SIZE . ',
 	intProgress : ' . json_encode($this->internalProgress) . ',

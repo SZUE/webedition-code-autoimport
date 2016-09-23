@@ -111,6 +111,7 @@ var weFileUpload = (function () {
 				s.doCommitFile = conf.doCommitFile !== undefined ? conf.doCommitFile : s.doCommitFile;
 				s.chunkSize = typeof conf.chunkSize !== 'undefined' ? (conf.chunkSize * 1024) : s.chunkSize;
 				s.callback = conf.callback || s.callback;
+				s.nextCmd = conf.nextCmd || s.nextCmd;
 				s.responseClass = conf.responseClass || s.responseClass;
 				s.dialogCallback = conf.callback || s.dialogCallback;
 				s.maxUploadSize = typeof conf.maxUploadSize !== 'undefined' ? conf.maxUploadSize : s.maxUploadSize;
@@ -641,6 +642,7 @@ var weFileUpload = (function () {
 			this.callback = function () {
 				document.forms[0].submit();
 			};
+			this.nextCmd = '';
 			this.dialogCallback = null;
 			this.isUploading = false;
 			this.isCancelled = false;
@@ -2578,17 +2580,17 @@ var weFileUpload = (function () {
 				_.sender.resp = resp;
 
 				if (!this.isCancelled) {
-					_.view.elems.footer.setProgress("", 100);
+					_.view.elems.footer.setProgress('', 100);
 					_.view.elems.footer.setProgressText('progress_title', '');
 					top.we_showMessage(resp.completed.message, top.WE().consts.message.WE_MESSAGE_INFO, window);
 
-					setTimeout(function () {
-						//that.callback(_);
-						var testCmd = 'collection_insertFiles, 2, guten Tag, 17';
-						var tmp = testCmd.split(',');
-						tmp.splice(1, 0, _.sender.resp);
-						top.opener.we_cmd.apply(top.opener, tmp);
-					}, 100);
+					if(_.sender.nextCmd){
+						setTimeout(function () {
+							var tmp = _.sender.nextCmd.split(',');
+							tmp.splice(1, 0, _.sender.resp);
+							top.opener.top.we_cmd.apply(top.opener.top, tmp);
+						}, 100);
+					}
 				}
 				_.view.reloadOpener();
 

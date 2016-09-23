@@ -72,13 +72,13 @@ weAddToCollection = {
 
 		// check if collection is open
 		var _usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
-						_collID = document.getElementById('yuiAcResultDir').value,
-						_isOpen = false,
-						_isEditorCollActive = false,
-						_frameId,
-						_transaction,
-						_editor,
-						_contentEditor;
+			_collID = document.getElementById('yuiAcResultDir').value,
+			_isOpen = false,
+			_isEditorCollActive = false,
+			_frameId,
+			_transaction,
+			_editor,
+			_contentEditor;
 
 		_collID = _collID ? _collID : 0;
 		for (_frameId in _usedEditors) {
@@ -102,8 +102,8 @@ weAddToCollection = {
 
 				if (!this.conf.targetInsertIndex) {// opened from menu or from collection head
 					var ct = _contentEditor.document.getElementById('content_div_' + _contentEditor.weCollectionEdit.view),
-									collectionArr = _contentEditor.weCollectionEdit.collectionArr,
-									index = collectionArr[collectionArr.length - 1];
+						collectionArr = _contentEditor.weCollectionEdit.collectionArr,
+						index = collectionArr[collectionArr.length - 1];
 
 					for (var j = collectionArr.length - 1; j >= 0; j--) {
 						if (collectionArr[j] === -1) {
