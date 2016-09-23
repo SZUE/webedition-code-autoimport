@@ -54,6 +54,8 @@ class rpcGetValidItemsByIDCmd extends we_rpc_cmd{
 
 		$this->collection = new we_collection();
 		if($this->transaction && ($we_dt = isset($_SESSION['weS']['we_data'][$this->transaction])) ? $_SESSION['weS']['we_data'][$this->transaction] : ''){
+
+			// FIXME: this collection from session ist NOT OK!
 			$this->collection->we_initSessDat($we_dt);
 			$this->initSessDat = true;
 		} else if($this->collectionID){

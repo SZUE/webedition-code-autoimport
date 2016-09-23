@@ -36,9 +36,9 @@ class rpcInsertValidItemsByIDCmd extends rpcGetValidItemsByIDCmd{
 
 		$insertPos = -1; // used by addFromTree => loop through commands!
 
-		if(($validItems = $this->getValidItems())){
+		if(($validItems = $this->getValidItems())){t_e('coll before', $this->collection);
 			$result = $this->collection->addItemsToCollection($validItems, $this->initSessDat ? $insertPos : -1);
-			if($this->initSessDat){
+			if($this->initSessDat){t_e('coll after', $this->collection);
 //				$this->collection->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 			} else {
 //				$this->collection->save();
