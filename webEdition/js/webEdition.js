@@ -1824,7 +1824,7 @@ var we_cmd_modules = {
 					var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
 						collID = parseInt(args[2]),
 						editor = null,
-						transaction = args[3],
+						transaction = ''; // args[3], we should only use transactions verified here!
 						frameId, candidate;
 
 					for (frameId in usedEditors) {
@@ -1833,7 +1833,7 @@ var we_cmd_modules = {
 							if(candidate.getEditorEditPageNr() == 1) {
 								editor = candidate;
 							} else {
-								transaction = candidate.editor.getEditorTransaction();
+								transaction = candidate.getEditorTransaction();
 							}
 							break;
 						}
@@ -1842,19 +1842,27 @@ var we_cmd_modules = {
 					if(editor){
 						editor.getContentEditor().weCollectionEdit.insertImportedDocuments(args[1].success);
 					} else {
-						// fire ajax request to insert files to session or db respectively
-						we_cmd('collection_insertFiles_rpc', args[1].success, collID, transaction)
+						we_cmd('collection_insertFiles_rpc', args[1].success, collID, transaction);
 					}
 				}
 				break;
 			case 'collection_insertFiles_rpc':
+				// TODO: make some tests and return with alert when not ok
+				var postData = '&we_cmd[ids]=' + encodeURIComponent(args[1] ? args[1] : '');
+				postData += '&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0);
+				postData += '&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '');
+				postData += '&we_cmd[full]=0';
+				postData += '&we_cmd[recursive]=' + encodeURIComponent(args[4] ? args[4] : 0);
+
 				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
+					// make optional use of nextCmd possible here!
 					success: function (o) {
+						//
 					},
 					failure: function (o) {
 						//alert(WE().consts.g_l.main.unable_to_call_setpagenr);
 					}
-				}, "protocol=json&cmd=GetItemsFromDB&transaction=" + _we_activeTransaction + "&editPageNr=" + args[1]);
+				}, 'protocol=json&cmd=InsertValidItemsByID&cns=collection' + postData);
 				break;
 			case "help_documentation":
 				new (WE().util.jsWindow)(this, "http://documentation.webedition.org/", "help_documentation", -1, -1, 960, 700, true, true, true, true);

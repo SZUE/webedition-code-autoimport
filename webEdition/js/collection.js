@@ -1053,7 +1053,7 @@ weCollectionEdit = {
 		try {
 			if (csvIDs) {
 				postData = 'we_cmd[transaction]=' + encodeURIComponent(this.we_doc.we_transaction);
-				postData += '&we_cmd[id]=' + encodeURIComponent(csvIDs);
+				postData += '&we_cmd[ids]=' + encodeURIComponent(csvIDs);
 				postData += '&we_cmd[collection]=' + encodeURIComponent(this.we_doc.docId);
 				postData += '&we_cmd[full]=' + encodeURIComponent(1);
 				postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.docName + '_InsertRecursive'].checked);
@@ -1080,7 +1080,7 @@ weCollectionEdit = {
 						}
 					}
 				};
-				xhr.open('POST', WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?protocol=json&cmd=GetItemsFromDB&cns=collection', true);
+				xhr.open('POST', WE().consts.dirs.WEBEDITION_DIR + 'rpc.php?protocol=json&cmd=GetValidItemsByID&cns=collection', true);
 				xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 				xhr.send(postData);
 				// set max waiting time
