@@ -1820,11 +1820,11 @@ var we_cmd_modules = {
 				new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 				break;
 			case 'collection_insertFiles_direct':
-				if(args[2]){top.console.log(args);
+				if(args[2]){
 					var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
 						collID = parseInt(args[2]),
 						editor = null,
-						transaction = ''; // args[3], we should only use transactions verified here!
+						transaction = '', // args[3], we should only use transactions verified here!
 						frameId, candidate;
 
 					for (frameId in usedEditors) {

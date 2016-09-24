@@ -334,11 +334,10 @@ function we_cmd() {
 			break;
 		case "updateCollectionItem":
 			_EditorFrame.setEditorIsHot(true);
-			top.console.log('dieses',weCollectionEdit.getItemId(document.getElementById('collectionItem_staticIndex_' + args[2])));
 			weCollectionEdit.callForValidItemsAndInsert(weCollectionEdit.getItemId(document.getElementById('collectionItem_staticIndex_' + args[2])), args[1].currentID);
 			break;
 		case "import_files":
-				new (WE().util.jsWindow)(this, url, "import_files", -1, -1, 650, 720, true, false, true);
+				new (WE().util.jsWindow)(top, url, "import_files", -1, -1, 650, 720, true, false, true); // be sure we have top as opener!
 				break;
 		case 'setHot':
 			_EditorFrame.setEditorIsHot(true);
