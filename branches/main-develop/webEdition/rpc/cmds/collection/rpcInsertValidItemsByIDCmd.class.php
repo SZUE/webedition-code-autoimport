@@ -33,15 +33,14 @@ class rpcInsertValidItemsByIDCmd extends rpcGetValidItemsByIDCmd{
 
 	function execute(){
 		$validItems = $this->getValidItems();
-
 		$insertPos = -1; // used by addFromTree => loop through commands!
 
-		if(($validItems = $this->getValidItems())){t_e('coll before', $this->collection);
+		if(($validItems = $this->getValidItems())){
 			$result = $this->collection->addItemsToCollection($validItems, $this->initSessDat ? $insertPos : -1);
-			if($this->initSessDat){t_e('coll after', $this->collection);
-//				$this->collection->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
+			if($this->initSessDat){
+				$this->collection->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 			} else {
-//				$this->collection->save();
+				$this->collection->save();
 			}
 			//$script .= we_message_reporting::getShowMessageCall(sprintf(g_l('weClass', '[collection][insertedAndDuplicates]'), implode(',', $result[0]), implode(',', $result[1])), we_message_reporting::WE_MESSAGE_ERROR);
 		} else {
