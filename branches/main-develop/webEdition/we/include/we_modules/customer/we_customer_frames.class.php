@@ -64,7 +64,7 @@ class we_customer_frames extends we_modules_frame{
 			case 'frameset':
 				$this->View->customer->clearSessionVars();
 				$this->View->settings->load(false);
-				return $this->getHTMLFrameset($this->Tree->getJSTreeCode() . we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_treeHeader.js'), ($sid = we_base_request::_(we_base_request::RAW, 'sid', false)) !== false ? '&sid=' . $sid : '');
+				return $this->getHTMLFrameset($this->Tree->getJSTreeCode(), ($sid = we_base_request::_(we_base_request::RAW, 'sid', false)) !== false ? '&sid=' . $sid : '');
 			default:
 				return parent::getHTML($what, $mode, $step);
 		}
@@ -147,7 +147,8 @@ class we_customer_frames extends we_modules_frame{
 		$text = $this->View->customer->Username;
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'loaded();', 'id' => 'eHeaderBody',], we_html_element::htmlDiv(['id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlNobr(
+		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'loaded();', 'id' => 'eHeaderBody',], we_html_element::htmlDiv(['id' => 'main'], we_html_element::htmlDiv([
+						'id' => 'headrow'], we_html_element::htmlNobr(
 							we_html_element::htmlB(str_replace(' ', '&nbsp;', g_l('modules_customer', '[customer]')) . ':&nbsp;') .
 							we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
 							)
@@ -259,7 +260,7 @@ function setTab(tab) {
 
 		switch($type){
 			case "branch":
-				$hiddens.=we_html_element::htmlHidden("pnt", "branch_editor");
+				$hiddens .= we_html_element::htmlHidden("pnt", "branch_editor");
 				$edit = new we_html_table(["width" => 300], 1, 2);
 				$edit->setCol(0, 0, ['style' => 'vertical-align:middle;', "class" => "defaultfont lowContrast"], g_l('modules_customer', '[field_name]'));
 				$edit->setCol(0, 1, ['style' => 'vertical-align:middle;', 'class' => 'defaultfont'], we_html_tools::htmlTextInput("name", 26, $branch, '', ''));
@@ -267,7 +268,7 @@ function setTab(tab) {
 				$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_branch')");
 				break;
 			default:
-				$hiddens.=we_html_element::htmlHidden("pnt", "field_editor");
+				$hiddens .= we_html_element::htmlHidden("pnt", "field_editor");
 				$field_props = $this->View->getFieldProperties($field);
 
 				$types = new we_html_select(['name' => "field_type", "class" => "weSelect", "style" => "width:200px;", 'onchange' => 'setStatusEncryption(this.value);']);
@@ -313,8 +314,8 @@ function setTab(tab) {
 					we_html_element::htmlForm(['name' => 'we_form'], $hiddens .
 						we_html_tools::htmlDialogLayout($edit->getHtml(), (
 							$type === "branch" ?
-								(g_l('modules_customer', '[edit_branche]')) :
-								g_l('modules_customer', ($mode === "edit" ? '[edit_field]' : '[add_field]'))
+							(g_l('modules_customer', '[edit_branche]')) :
+							g_l('modules_customer', ($mode === "edit" ? '[edit_field]' : '[add_field]'))
 							), we_html_button::position_yes_no_cancel($save, null, $cancel)
 						)
 					)
@@ -357,7 +358,7 @@ function setTab(tab) {
 					)
 				), we_html_element::jsElement(
 					(we_base_request::_(we_base_request::STRING, 'error') ?
-						we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
+					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
 					$this->Tree->getJSLoadTree($pid, we_tree_customer::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
 		);
 	}
@@ -379,11 +380,12 @@ function setTab(tab) {
 		$search->setRow(0, ['style' => 'vertical-align:top']);
 		$search->setCol(0, 0, ['class' => 'defaultfont', 'colspan' => 3, 'style' => 'padding-bottom: 3px;'], g_l('modules_customer', '[search_for]'));
 
-		$select = new we_html_select(['name' => 'search_result', 'style' => 'width:550px;', 'onDblClick' => "opener.top.content.we_cmd('customer_edit',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)", "size" => 20]);
+		$select = new we_html_select(['name' => 'search_result', 'style' => 'width:550px;', 'onDblClick' => "opener.top.content.we_cmd('customer_edit',document.we_form.search_result.options[document.we_form.search_result.selectedIndex].value)",
+			"size" => 20]);
 
 		if($mode){
 			we_customer_add::getHTMLSearch($this, $search, $select);
-			$foundItems = $GLOBALS['advSearchFoundItems'] ? : 0;
+			$foundItems = $GLOBALS['advSearchFoundItems'] ?: 0;
 		} else {
 			$search->setCol(1, 0, ['style' => 'padding-bottom:5px;'], we_html_tools::htmlTextInput('keyword', 80, we_base_request::_(we_base_request::STRING, 'keyword', ''), '', 'onchange=""', 'text', '550px')
 			);
@@ -394,7 +396,7 @@ function setTab(tab) {
 				$sw .
 				$search_but
 			);
-			$hiddens.=we_html_element::htmlHidden('count', 1);
+			$hiddens .= we_html_element::htmlHidden('count', 1);
 
 			$max_res = $this->View->settings->getMaxSearchResults();
 			$result = [];
@@ -481,7 +483,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		$save = we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_settings')");
 
 		$body = we_html_element::htmlBody(['class' => "weDialogBody", 'onload' => 'self.focus();'], we_html_element::htmlForm(['name' => 'we_form'], we_html_tools::htmlDialogLayout(
-						we_html_element::htmlHiddens([ "pnt" => "settings", "cmd" => '']) .
+						we_html_element::htmlHiddens(["pnt" => "settings", "cmd" => '']) .
 						$table->getHtml(), g_l('modules_customer', '[settings]'), we_html_button::position_yes_no_cancel($save, $close)
 					)
 				)

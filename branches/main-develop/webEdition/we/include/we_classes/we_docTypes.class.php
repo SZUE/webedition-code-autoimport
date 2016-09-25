@@ -206,18 +206,19 @@ class we_docTypes extends we_class{
 			}
 			$vals[$v] = $t;
 		}
-		return $this->htmlSelect("DocTypes", $vals, 8, $this->ID, false, array('style' => "width:328px", 'onchange' => 'we_cmd(\'change_docType\',this.options[this.selectedIndex].value)'));
+		return $this->htmlSelect("DocTypes", $vals, 8, $this->ID, false, ['style' => "width:328px", 'onchange' => 'we_cmd(\'change_docType\',this.options[this.selectedIndex].value)']);
 	}
 
 	private function formDocTypes3($headline, $langkey, $derDT = 0){
 		$dtq = we_docTypes::getDoctypeQuery($this->DB_WE);
 		$this->DB_WE->query('SELECT dt.ID,dt.DocType FROM ' . DOC_TYPES_TABLE . ' dt LEFT JOIN ' . FILE_TABLE . ' dtf ON dt.ParentID=dtf.ID ' . $dtq['join'] . ' WHERE dt.Language="' . $langkey . '" AND ' . $dtq['where']);
-		$vals = array(0 => g_l('weClass', '[nodoctype]'));
+		$vals = [0 => g_l('weClass', '[nodoctype]')];
 		foreach($this->DB_WE->getAllFirst(false) as $k => $v){
 			$vals[$k] = $v;
 		}
 
-		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, array(($langkey == $this->Language ? 'disabled' : null) => "disabled", 'width' => 328, 'onchange' => '')), $headline, "left", "defaultfont");
+		return we_html_tools::htmlFormElementTable($this->htmlSelect('we_' . $this->Name . "_LangDocType[" . $langkey . "]", $vals, 1, $derDT, false, [($langkey == $this->Language ? 'disabled' : null) => "disabled",
+					'width' => 328, 'onchange' => '']), $headline, "left", "defaultfont");
 	}
 
 	private function formDirChooser($width = 100){
@@ -288,16 +289,14 @@ class we_docTypes extends we_class{
 		$paths = [];
 		$ws = get_ws(FILE_TABLE, true);
 		if(!$ws){
-			return array(
-				'join' => '',
+			return ['join' => '',
 				'where' => '1 ORDER BY dt.DocType'
-			);
+				];
 		}
 		if(WE_DOCTYPE_WORKSPACE_BEHAVIOR){
-			return array(
-				'join' => 'LEFT JOIN ' . FILE_TABLE . ' f ON (CONCAT(f.Path,"/") LIKE CONCAT(dtf.Path,"/%") AND f.ID IN(' . implode(',', $ws) . ') AND f.IsFolder=1 )',
+			return ['join' => 'LEFT JOIN ' . FILE_TABLE . ' f ON (CONCAT(f.Path,"/") LIKE CONCAT(dtf.Path,"/%") AND f.ID IN(' . implode(',', $ws) . ') AND f.IsFolder=1 )',
 				'where' => 'ISNULL(dtf.ID) OR !ISNULL(f.ID) ORDER BY dt.DocType'
-			);
+				];
 		}
 
 		$db->query('SELECT Path FROM ' . FILE_TABLE . ' WHERE ID IN(' . implode(',', $ws) . ')');
@@ -305,13 +304,11 @@ class we_docTypes extends we_class{
 			$paths[] = 'dtf.Path LIKE "' . $db->escape($db->f('Path')) . '/%"';
 		}
 		return ($paths ?
-				array(
-				'join' => '',
-				'where' => '(dt.ParentID IN(' . implode(',', $ws) . ') OR ' . implode(' OR ', $paths) . ' OR ISNULL(dtf.ID)) ORDER BY dt.DocType'
-				) : array(
-				'join' => '',
-				'where' => '1 ORDER BY dt.DocType'
-		));
+			['join' => '',
+			'where' => '(dt.ParentID IN(' . implode(',', $ws) . ') OR ' . implode(' OR ', $paths) . ' OR ISNULL(dtf.ID)) ORDER BY dt.DocType'
+				] : ['join' => '',
+			'where' => '1 ORDER BY dt.DocType'
+				]);
 	}
 
 	public static function getJSLangConsts(){

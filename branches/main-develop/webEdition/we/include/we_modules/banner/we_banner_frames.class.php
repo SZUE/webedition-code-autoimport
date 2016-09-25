@@ -39,7 +39,7 @@ class we_banner_frames extends we_modules_frame{
 				return $this->getHTMLEditorHeader($mode);
 			case "edfooter":
 				return $this->getHTMLEditorFooter([
-						we_html_button::SAVE => [ ['EDIT_BANNER'], 'save_banner']
+						we_html_button::SAVE => [['EDIT_BANNER'], 'save_banner']
 						], we_html_element::jsScript(WE_JS_MODULES_DIR . 'banner/banner_footer.js'));
 			case 'frameset':
 				return $this->getHTMLFrameset($this->Tree->getJSTreeCode());
@@ -60,10 +60,12 @@ class we_banner_frames extends we_modules_frame{
 
 		$we_tabs = new we_tabs();
 
-		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, ($isFolder || $page == we_banner_banner::PAGE_PROPERTY), "setTab(" . we_banner_banner::PAGE_PROPERTY . ");", ['title' => g_l('tabs', '[module][properties]')]);
+		$we_tabs->addTab(we_base_constants::WE_ICON_PROPERTIES, ($isFolder || $page == we_banner_banner::PAGE_PROPERTY), "setTab(" . we_banner_banner::PAGE_PROPERTY . ");", [
+			'title' => g_l('tabs', '[module][properties]')]);
 		if(!$isFolder){
 			$we_tabs->addTab(g_l('tabs', '[module][placement]'), ($page == we_banner_banner::PAGE_PLACEMENT), "setTab(" . we_banner_banner::PAGE_PLACEMENT . ");");
-			$we_tabs->addTab('<i class="fa fa-lg fa-pie-chart"></i>', ($page == we_banner_banner::PAGE_STATISTICS), "setTab(" . we_banner_banner::PAGE_STATISTICS . ");", ['title' => g_l('tabs', '[module][statistics]')]);
+			$we_tabs->addTab('<i class="fa fa-lg fa-pie-chart"></i>', ($page == we_banner_banner::PAGE_STATISTICS), "setTab(" . we_banner_banner::PAGE_STATISTICS . ");", [
+				'title' => g_l('tabs', '[module][statistics]')]);
 		}
 
 		$extraHead = we_tabs::getHeader('
@@ -72,7 +74,8 @@ function setTab(tab){
 }');
 
 		//TODO: we have the following body in several modules!
-		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'], we_html_element::htmlDiv(['id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlNobr(
+		$body = we_html_element::htmlBody(['onresize' => 'weTabs.setFrameSize()', 'onload' => 'weTabs.setFrameSize()', 'id' => 'eHeaderBody'], we_html_element::htmlDiv([
+					'id' => 'main'], we_html_element::htmlDiv(['id' => 'headrow'], we_html_element::htmlNobr(
 							we_html_element::htmlB(str_replace(" ", "&nbsp;", $headline1) . ':&nbsp;') .
 							we_html_element::htmlSpan(['id' => 'h_path', 'class' => 'header_small'], '<b id="titlePath">' . str_replace(" ", "&nbsp;", $text) . '</b>'
 							)
@@ -104,11 +107,7 @@ function setTab(tab){
 							"pnt" => "cmd",
 							"cmd" => "no_cmd"))
 					)
-				), we_html_element::jsElement(($pid ? '' : 'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
-					) .
-					$this->Tree->getJSLoadTree(!$pid, we_banner_tree::getItems($pid, $offset, $this->Tree->default_segment))
-				)
+				), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_banner_tree::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 

@@ -173,7 +173,7 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 		//TODO: check if $we_doc exists: depends on perms!!
 		/*
 		  if(!$we_doc){
-		  return array(
+		  return [
 		  'error' => g_l('importFiles', '[no_perms]'),
 		  'success' => false,
 		  'weDoc' => ''

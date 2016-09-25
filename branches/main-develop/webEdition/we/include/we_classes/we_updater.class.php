@@ -276,10 +276,9 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				while($db->next_record()){
 					$data = we_unserialize($db->f('Catfields'));
 					if($data){
-						$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-								'Title' => $data['default']['Title'],
+						$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(['Title' => $data['default']['Title'],
 								'Description' => $data['default']['Description'],
-							)) . ' WHERE ID=' . $db->f('ID'));
+								]) . ' WHERE ID=' . $db->f('ID'));
 					}
 				}
 			}
@@ -404,7 +403,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			}
 		}
 
-		$db->addTable('tmp', array('b' => 'varchar(255) NOT NULL'), array('KEY b (b)'), 'MYISAM', true);
+		$db->addTable('tmp', ['b' => 'varchar(255) NOT NULL'], ['KEY b (b)'], 'MYISAM', true);
 		$db->query('INSERT INTO tmp VALUES ("' . implode('"),("', $all) . '")');
 		//we add a limit since this file might not be executed to the end
 		$db->query('SELECT b FROM tmp LEFT JOIN ' . VERSIONS_TABLE . ' ON b=binaryPath WHERE ID IS NULL LIMIT 1000');
@@ -442,12 +441,12 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			$db->query("SELECT modelId,filter,whiteList,blackList,specificCustomers FROM " . CUSTOMER_FILTER_TABLE . " WHERE filter LIKE 'a:%{i:%'");
 			$all = $db->getAll();
 			foreach($all as $a){
-				$db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
+				$db->query('UPDATE ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter([
 						'filter' => we_serialize(we_unserialize($a['filter']), SERIALIZE_JSON),
 						'whiteList' => trim($a['whiteList'], ','),
 						'blackList' => trim($a['blackList'], ','),
 						'specificCustomers' => trim($a['specificCustomers'], ','),
-					)) . ' WHERE modelId=' . $a['modelId']);
+						]) . ' WHERE modelId=' . $a['modelId']);
 			}
 		}
 	}

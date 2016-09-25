@@ -81,13 +81,12 @@ class we_xml_parser{
 	 * string functions, number functions and boolean functions.
 	 * @var        array
 	 */
-	var $XPathFunctions = array(
-		'count', 'id', 'last', 'name', 'position',
+	var $XPathFunctions = ['count', 'id', 'last', 'name', 'position',
 		'concat', 'contains', 'starts-with', 'string', 'string-length',
 		'substring', 'substring-after', 'substring-before', 'translate',
 		'ceiling', 'floor', 'number', 'round', 'sum',
 		'boolean', 'false', 'lang', 'not', 'true'
-	);
+	 ];
 
 	/**
 	 * This variable will be modified by the default handler when a CDATA
@@ -686,7 +685,7 @@ class we_xml_parser{
 	 */
 	function evaluate($xPath, $context = ''){
 		// Remove slashes, single and double quotes.
-		$xPath = str_replace(array('"', '\''), '', stripslashes($xPath));
+		$xPath = str_replace(['"', '\''], '', stripslashes($xPath));
 
 		// Split the paths that are separated by a '|' character.
 		$xPaths = $this->splitPaths($xPath);
@@ -821,17 +820,15 @@ class we_xml_parser{
 	 */
 	function getAxis($step, $node){
 		// This array contains the XPath axes defined in the XPath specification.
-		$axesSpecifiers = array(
-			'self', 'parent', 'child', 'attribute', 'ancestor', 'descendant',
+		$axesSpecifiers = ['self', 'parent', 'child', 'attribute', 'ancestor', 'descendant',
 			'ancestor-or-self', 'descendant-or-self', 'following-sibling',
 			'preceding-sibling', 'following', 'preceding', 'namespace'
-		);
+			];
 
-		$axis = array(
-			'axis' => '',
+		$axis = ['axis' => '',
 			'node-test' => '',
 			'predicate' => []
-		);
+			];
 
 		// Check if there are predicates.
 		if(strpos($step, '[') !== false){
@@ -925,7 +922,7 @@ class we_xml_parser{
 		}
 
 		// Check if the axis specifier exists.
-		if(!in_array($axis['axis'], array_merge($axesSpecifiers, array('method')))){
+		if(!in_array($axis['axis'], array_merge($axesSpecifiers, ['method']))){
 			return FALSE;
 		}
 
@@ -1032,7 +1029,7 @@ class we_xml_parser{
 				}
 
 				// Perform an axis action.
-				$contexts = call_user_func(array(&$this, $method), $axis, $context);
+				$contexts = call_user_func([&$this, $method], $axis, $context);
 
 				// Check if there are predicates.
 				if(!empty($axis['predicate'])){
@@ -1073,7 +1070,7 @@ class we_xml_parser{
 
 		// Check if the method exec_method is defined.
 		// Return the result of the method.
-		return (method_exists($this, $method) ? call_user_func(array(&$this, $method), $node, $args) : false);
+		return (method_exists($this, $method) ? call_user_func([&$this, $method], $node, $args) : false);
 	}
 
 	/**
@@ -1084,8 +1081,8 @@ class we_xml_parser{
 	 * @see
 	 */
 	function evaluatePredicate($node, $predicate){
-		$operators = array(' or ', ' and ', '=', '!=', '<=', '<', '>=', '>',
-			'+', '-', '*', ' div ', ' mod ');
+		$operators = [' or ', ' and ', '=', '!=', '<=', '<', '>=', '>',
+			'+', '-', '*', ' div ', ' mod '];
 		$operator = '';
 		$position = 0;
 

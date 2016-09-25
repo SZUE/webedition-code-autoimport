@@ -31,19 +31,17 @@ if($we_doc->ClassName != 'we_imageDocument' && permissionhandler::hasPerm('CAN_E
 	}
 	$view = new we_customer_documentFilterView($filter, '_EditorFrame.setEditorIsHot(true);', 520);
 
-	$parts[] = array(
-		'headline' => g_l('modules_customerFilter', '[customerFilter]'),
+	$parts[] = ['headline' => g_l('modules_customerFilter', '[customerFilter]'),
 		'html' => $view->getFilterHTML(),
 		'space' => we_html_multiIconBox::SPACE_MED
-	);
+		];
 }
 
 
-$parts[] = array(
-	'headline' => g_l('modules_customer', '[one_customer]'),
+$parts[] = ['headline' => g_l('modules_customer', '[one_customer]'),
 	'html' => formWebuser(permissionhandler::hasPerm("CAN_CHANGE_DOCS_CUSTOMER")),
 	'space' => we_html_multiIconBox::SPACE_MED
-);
+ ];
 
 
 

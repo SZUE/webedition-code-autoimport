@@ -25,13 +25,8 @@
 class we_search_tree extends we_tree_base{
 	static $treeItems = [];
 
-	function getJSTreeCode(){
-		return parent::getJSTreeCode() .
-			we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
-	}
-
 	protected function customJSFile(){
-		return we_html_element::jsScript(JS_DIR . 'search_tree.js');
+		return we_html_element::jsScript(JS_DIR . 'search_tree.js') . we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
 	}
 
 	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500){
@@ -93,7 +88,7 @@ class we_search_tree extends we_tree_base{
 
 					$typ = [
 						'typ' => ($db->f('IsFolder') ? 'group' : 'item'),
-						'contentType' => ($db->f('IsFolder') ? 'folder' : 'we/search'),
+						'contenttype' => ($db->f('IsFolder') ? 'folder' : 'we/search'),
 						'open' => $OpenCloseStatus,
 						'disabled' => 0,
 						'tooltip' => $db->f('ID'),

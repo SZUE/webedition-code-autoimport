@@ -35,9 +35,27 @@ function we_cmd() {
 	//var url = WE().util.getWe_cmdArgsUrl(args);
 
 	switch (args[0]) {
+		case 'loadTree':
+			var pid = args[1]['pid'];
+			var items = args[1]['items'];
+			if (!pid) {
+				top.content.treeData.clear();
+				top.content.treeData.add(top.content.node.prototype.rootEntry(0, 'root', 'root'));
+			}
 
+			for (var i = 0; i < items.length; i++) {
+
+				if (!pid || top.content.treeData.indexOfEntry(items[i].id) < 0) {
+					top.content.treeData.addSort(new top.content.node(items[i]));
+				}
+			}
+
+			top.content.drawTree();
+
+
+			break;
 		default:
-			top.content.we_cmd.apply(this, args);
+			top.opener.top.we_cmd.apply(this, args);
 	}
 }
 

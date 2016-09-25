@@ -476,7 +476,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	send_question:"' . g_l('modules_newsletter', '[send_question]') . '",
 	no_email: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[no_email]')) . '",
 	search_text:"' . g_l('modules_newsletter', '[search_text]') . '",
-	test_email_question:"' . sprintf(g_l('modules_newsletter', '[test_email_question]'), $this->newsletter->Test) . '",
+	test_email_question:"' . g_l('modules_newsletter', '[test_email_question]') . '",
 	empty_name: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[empty_name]')) . '",
 	email_max_len: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[email_max_len]')) . '",
 	email_exists: "' . we_message_reporting::prepareMsgForJS(g_l('modules_newsletter', '[email_exists]')) . '",

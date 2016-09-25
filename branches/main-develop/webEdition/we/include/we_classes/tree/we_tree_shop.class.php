@@ -112,7 +112,7 @@ ORDER BY o.ID DESC');
 			$menu .= "treeData.add({
 	id:" . $f . $year . ",
 	parentid:0,
-	text:'" . (($f < 10) ? "0" . $f : $f) . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : 0) . "/" . (($r > 0) ? $r : 0) . ")',
+	text:'" . (($f < 10) ? '0' : '') . $f . ' ' . g_l('modules_shop', '[sl]') . " " . g_l('date', '[month][long][' . ($f - 1) . ']') . " (" . (($k > 0) ? "<b>" . $k . "</b>" : '0') . '/' . (($r > 0) ? $r : 0) . ")',
 	typ:'folder',
 	open:0,
 	contentType:'we/shop',

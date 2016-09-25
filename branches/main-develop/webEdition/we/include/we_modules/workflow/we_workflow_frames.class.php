@@ -135,13 +135,8 @@ function submitForm(){
 	f.target = "cmd";
 	f.method = "post";
 	f.submit();
-}' .
-					($pid ?
-					'' :
-					'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));') .
-					$this->Tree->getJSLoadTree(!$pid, we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment))
-				)
+}'
+				) . we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_workflow_tree::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 

@@ -23,7 +23,7 @@
 
 function doClick(id, typ) {
 	var node = treeData.get(id);
-	top.we_cmd('newsletter_edit', node.id, node.typ, node.table);
+	we_cmd('newsletter_edit', node.id, node.typ, node.table);
 }
 
 function info(text) {

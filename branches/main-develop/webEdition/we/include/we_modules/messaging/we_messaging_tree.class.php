@@ -78,29 +78,27 @@ function startTree(){
 			}
 
 			$items[] = (($sf_cnt = $messaging->get_subfolder_count($folder['ID'])) ?
-					array(
-					'id' => intval($folder['ID']),
-					'parentid' => intval($folder['ParentID']),
-					'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID']) . ')',
-					'typ' => 'group',
-					'open' => 0,
-					'contentType' => 'folder',
-					'table' => MESSAGES_TABLE,
-					'loaded' => 0,
-					'checked' => false,
-					'leaf_count' => $sf_cnt,
-					'viewclass' => $folder['view_class']
-					) :
-					array(
-					'id' => intval($folder['ID']),
-					'parentid' => intval($folder['ParentID']),
-					'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID']) . ')',
-					'typ' => 'item',
-					'open' => 0,
-					'contentType' => 'folder',
-					'table' => MESSAGES_TABLE,
-					'viewclass' => $folder['view_class']
-					)
+				['id' => intval($folder['ID']),
+				'parentid' => intval($folder['ParentID']),
+				'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID']) . ')',
+				'typ' => 'group',
+				'open' => 0,
+				'contenttype' => 'folder',
+				'table' => MESSAGES_TABLE,
+				'loaded' => 0,
+				'checked' => false,
+				'leaf_count' => $sf_cnt,
+				'viewclass' => $folder['view_class']
+				] :
+				['id' => intval($folder['ID']),
+				'parentid' => intval($folder['ParentID']),
+				'text' => $folder['Name'] . ' - (' . $messaging->get_message_count($folder['ID']) . ')',
+				'typ' => 'item',
+				'open' => 0,
+				'contenttype' => 'folder',
+				'table' => MESSAGES_TABLE,
+				'viewclass' => $folder['view_class']
+				]
 				);
 		}
 		return $items;
@@ -129,9 +127,9 @@ function cb_incstate() {
 		loaded = true;
 		loadData();
 		' . (isset($f) ?
-					'r_tree_open(' . $f['ID'] . ');
+				'r_tree_open(' . $f['ID'] . ');
 we_cmd("show_folder_content", ' . $f['ID'] . ');' :
-					'drawTree();'
+				'drawTree();'
 				) . '
 }') .
 			parent::getJSTreeCode();

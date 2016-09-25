@@ -128,12 +128,11 @@ if(inWorkflow($we_doc)){
 				return false;"<?php } ?>>
 					<?php
 					echo we_html_element::htmlHidden('sel', $we_doc->ID);
-					$_SESSION['weS']['seemForOpenDelSelector'] = array(
-						'ID' => $we_doc->ID,
-						'Table' => $we_doc->Table
-					);
+					$_SESSION['weS']['seemForOpenDelSelector'] = ['ID' => $we_doc->ID,
+	'Table' => $we_doc->Table
+					 ];
 
-					if($we_doc->userCanSave()){
+if($we_doc->userCanSave()){
 
 						switch($_SESSION['weS']['we_mode']){
 							default:

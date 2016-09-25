@@ -46,16 +46,15 @@ function escape_sql_query($inp){
 	}
 
 	return ($inp && is_string($inp) ?
-			strtr($inp, array(
-				'\\' => '\\\\',
-				"\0" => '\\0',
+			strtr($inp, ['\\' => '\\\\',
+			"\0" => '\\0',
 				"\n" => '\\n',
 				"\r" => '\\r',
 				"'" => "\\'",
 				'"' => '\\"',
 				"\x1a" => '\\Z'
-			)) :
-			$inp);
+				]) :
+		$inp);
 }
 
 function sql_function($name){
@@ -64,5 +63,5 @@ function sql_function($name){
 		$data = md5(uniqid(__FUNCTION__, true));
 	}
 	return (is_array($name) ? isset($name['sqlFunction']) && $name['sqlFunction'] === $data :
-			array('sqlFunction' => $data, 'val' => $name));
+		['sqlFunction' => $data, 'val' => $name]);
 }

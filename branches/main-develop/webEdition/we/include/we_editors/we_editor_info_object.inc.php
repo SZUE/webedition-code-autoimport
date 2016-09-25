@@ -61,10 +61,10 @@ if($GLOBALS['we_doc']->ModifierID){
 }
 
 
-$parts[] = array("headline" => "",
+$parts[] = ["headline" => "",
 	"html" => $html,
 	'space' => we_html_multiIconBox::SPACE_MED2,
 	'icon' => "cal.gif"
-);
+ ];
 
 echo we_html_tools::getHtmlTop('', '', '', we_html_multiIconBox::getJS(), we_html_element::htmlBody(['class' => "weEditorBody"], we_html_multiIconBox::getHTML("", $parts, 30)));

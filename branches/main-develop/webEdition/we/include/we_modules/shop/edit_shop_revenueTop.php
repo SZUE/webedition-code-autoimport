@@ -276,7 +276,7 @@ function we_cmd() {
 				}
 				break;
 			default: // not needed yet
-				top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+				top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 		}
 	}'), we_html_element::htmlBody(['class' => "weEditorBody", 'onload' => "self.focus(); setHeaderTitle();"], '<form>' . we_html_multiIconBox::getHTML('revenues', $parts, 30, '', -1, '', '', false, sprintf(g_l('tabs', '[module][revenueTotal]'), $selectedYear)) . '</form>'));
 

@@ -37,11 +37,10 @@ if(is_array($GLOBALS['we_doc']->DefArray)){
 	foreach($GLOBALS['we_doc']->DefArray as $n => $v){
 		if(is_array($v)){
 			if(!empty($v["required"]) && $editMode){
-				$parts[] = array(
-					"headline" => "",
+				$parts[] = ["headline" => "",
 					"html" => '*' . g_l('global', '[required_fields]'),
 					"name" => str_replace('.', '', uniqid('', true)),
-				);
+					];
 				break;
 			}
 		}

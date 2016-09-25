@@ -54,7 +54,7 @@ class we_tree_customer extends we_tree_base{
 
 		$js = (!$rootID ?
 				'top.content.treeData.clear();' .
-				'top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $rootID . '\',\'root\',\'root\'));' : '') .
+				'top.content.treeData.add(top.content.node.prototype.rootEntry(0,\'root\',\'root\'));' : '') .
 			'var attribs={};';
 		foreach($treeItems as $item){
 			$js.=($rootID ? 'if(top.content.treeData.indexOfEntry(\'' . str_replace(["\n", "\r", '\''], '', $item["id"]) . '\')<0){' : '') .

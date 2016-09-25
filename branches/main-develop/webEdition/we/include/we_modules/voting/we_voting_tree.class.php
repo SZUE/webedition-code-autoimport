@@ -38,8 +38,7 @@ class we_voting_tree extends we_tree_base{
 
 		$prevoffset = max(0, $offset - $segment);
 		if($offset && $segment){
-			$items[] = array(
-				"id" => "prev_" . $ParentID,
+			$items[] = ["id" => "prev_" . $ParentID,
 				"parentid" => $ParentID,
 				"text" => "display (" . $prevoffset . "-" . $offset . ")",
 				"contenttype" => "arrowup",
@@ -50,7 +49,7 @@ class we_voting_tree extends we_tree_base{
 				"disabled" => 0,
 				"tooltip" => "",
 				"offset" => $prevoffset
-			);
+				];
 		}
 
 		$where = ' WHERE ParentID=' . intval($ParentID) . ' ' . $addWhere . $owners_sql;
@@ -59,14 +58,13 @@ class we_voting_tree extends we_tree_base{
 		$now = time();
 
 		while($db->next_record(MYSQLI_ASSOC)){
-			$typ = array(
-				'typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
+			$typ = ['typ' => ($db->f('IsFolder') == 1 ? 'group' : 'item'),
 				'open' => 0,
 				'disabled' => 0,
 				'tooltip' => $db->f('ID'),
 				'offset' => $offset,
-				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/voting'),
-			);
+				'contenttype' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/voting'),
+			];
 
 			if($db->f('IsFolder') == 0){
 				$typ['published'] = ($db->f('Active') && ($db->f('ActiveTime') == 0 || ($now < $db->f('Valid')))) ? 1 : 0;

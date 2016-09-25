@@ -91,10 +91,13 @@ if($tool === "weSearch"){
 
 echo we_html_tools::getHtmlTop($title, '', 'frameset',
  we_html_element::jsScript(JS_DIR . 'toolframe.js') .
- YAHOO_FILES .
+	we_html_element::jsScript(WE_JS_MODULES_DIR . 'showMod.js', '', ['id' => 'loadVarShowMod', 'data-moduleData' => setDynamicVar([
+			'mod' => $tool,
+	])]) .
+	YAHOO_FILES .
  we_tabs::getHeader());
 ?>
-<body style="overflow:hidden;" <?= ($showHeader ? 'onload="weTabs.setFrameSize();"' : ''); ?>><?php
+<body style="overflow:hidden;" onload="<?= ($showHeader ? 'weTabs.setFrameSize();' : ''); ?>"><?php
 	$_REQUEST['tool'] = $tool;
 	echo ($showHeader ?
 			we_html_element::htmlExIFrame('navi', WE_INCLUDES_PATH . 'we_tools/tools_header.inc.php', 'right:0px;') : '') .

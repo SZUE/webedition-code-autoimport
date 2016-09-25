@@ -116,7 +116,7 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }

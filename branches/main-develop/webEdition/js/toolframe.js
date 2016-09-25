@@ -27,11 +27,3 @@ top.weToolWindow = true;
 
 var makeNewEntryCheck = 0;
 var publishWhenSave = 0;
-
-
-function we_cmd() {
-	//var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-//	var url = WE().util.getWe_cmdArgsUrl(args);
-
-	top.content.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-}

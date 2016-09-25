@@ -29,13 +29,12 @@ $html = '<div class="weMultiIconBoxHeadline" style="margin-bottom:5px;">ID</div>
 	'<div style="margin-bottom:10px;">' . g_l('weEditorInfo', '[' . $GLOBALS['we_doc']->ContentType . ']') . '</div>';
 
 
-$parts = array(
-	array("headline" => "",
-		"html" => $html,
+$parts = [["headline" => "",
+	"html" => $html,
 		'space' => we_html_multiIconBox::SPACE_MED2,
 		'icon' => "meta.gif"
-	)
-);
+	 ]
+];
 
 
 

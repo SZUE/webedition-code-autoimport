@@ -98,7 +98,7 @@ function we_cmd() {
 			break;
 
 		default:
-			top.opener.top.we_cmd.apply(this, arguments);
+			top.we_cmd.apply(this, arguments);
 	}
 }
 parent.document.title = viewData.title;

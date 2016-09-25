@@ -30,27 +30,23 @@ echo weSuggest::getYuiFiles();
 	<form name="we_form" method="post" onsubmit="return false;"><?php
 		echo we_class::hiddenTrans() .
 		we_html_multiIconBox::getJS() .
-		we_html_multiIconBox::getHTML("weImgProp", array(
-			array(
-				'icon' => "upload.gif",
-				"headline" => "",
+		we_html_multiIconBox::getHTML("weImgProp", [['icon' => "upload.gif",
+	"headline" => "",
 				"html" => $GLOBALS['we_doc']->formUpload(),
 				'space' => we_html_multiIconBox::SPACE_MED2
-			),
-			array(
-				'icon' => "attrib.gif",
-				"headline" => g_l('weClass', '[attribs]'),
+			 ],
+		['icon' => "attrib.gif",
+		"headline" => g_l('weClass', '[attribs]'),
 				"html" => $GLOBALS['we_doc']->formProperties(),
 				'space' => we_html_multiIconBox::SPACE_MED2
-			),
-			array(
-				'icon' => "meta.gif",
-				"headline" => g_l('weClass', '[metadata]'),
+			 ],
+		['icon' => "meta.gif",
+		"headline" => g_l('weClass', '[metadata]'),
 				"html" => $GLOBALS['we_doc']->formMetaInfos() . $GLOBALS['we_doc']->formMetaData(),
 				'space' => we_html_multiIconBox::SPACE_MED2
-			)
-			), 20) .
-		we_html_element::htmlHidden("we_complete_request", 1);
+			 ]
+	], 20) .
+ we_html_element::htmlHidden("we_complete_request", 1);
 		?>
 	</form>
 </body>

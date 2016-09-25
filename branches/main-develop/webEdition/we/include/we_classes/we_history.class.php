@@ -44,13 +44,12 @@ abstract class we_history{
 			$db->query('DELETE FROM ' . HISTORY_TABLE . ' WHERE DocumentTable="' . $tab . '" AND UID=' . $uid . ' ORDER BY ModDate ASC LIMIT ' . ($cnt - self::MAX));
 		}
 
-		$db->query('REPLACE INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'DID' => intval($object->ID),
+		$db->query('REPLACE INTO ' . HISTORY_TABLE . ' SET ' . we_database_base::arraySetter(['DID' => intval($object->ID),
 				'DocumentTable' => $tab,
 				'ContentType' => $object->ContentType,
 				'UserName' => (isset($GLOBALS['we']['Scheduler_active']) ? 'Scheduler' : (isset($_SESSION['user']['Username']) ? $_SESSION['user']['Username'] : (isset($_SESSION['webuser']['Username']) ? $_SESSION['webuser']['Username'] : 'Unknown'))),
 				'UID' => $uid,
-		)));
+				]));
 	}
 
 	/**
