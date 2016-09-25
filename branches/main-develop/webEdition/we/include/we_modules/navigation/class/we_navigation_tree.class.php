@@ -28,11 +28,7 @@ class we_navigation_tree extends we_tree_base{
 		return we_html_element::jsScript(JS_DIR . 'navigation_tree.js');
 	}
 
-	function getJSStartTree(){
-		return parent::getJSStartTree() . 'drawTree.selection_table="' . NAVIGATION_TABLE . '";';
-	}
-
-	static function getItems($ParentID = 0, $offset = 0, $segment = 500){
+	public function getItems($ParentID = 0, $offset = 0, $segment = 500){
 		$db = new DB_WE();
 
 		$items = $aWsQuery = $parentpaths = [];

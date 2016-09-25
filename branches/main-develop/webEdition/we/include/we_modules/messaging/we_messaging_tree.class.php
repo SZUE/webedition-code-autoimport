@@ -51,7 +51,7 @@ function startTree(){
 }';
 	}
 
-	public static function getItems($ParentId, $Offset, $Segment, we_messaging_messaging $messaging){
+	public function getItems($ParentId, $Offset, $Segment, we_messaging_messaging $messaging){
 		$items = [];
 		$db = new DB_WE();
 		foreach($messaging->available_folders as $folder){

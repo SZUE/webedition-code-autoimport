@@ -229,4 +229,19 @@
 		left: 0em;
 		position: absolute;
 	}
+	span.shop{
+		default{
+			color:black;
+			font-family:liberation_sansbold;
+		}
+		active{
+			color:red;
+		}
+		payed{
+			color:#006699;
+		}
+		finished{
+			color:black;
+		}
+	}
 }

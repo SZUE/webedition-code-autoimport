@@ -26,7 +26,6 @@
  * @license    http://www.gnu.org/licenses/lgpl-3.0.html  LGPL
  */
 
-var treeHTML;
 var wasdblclick = false;
 var tout = null;
 var hot = false;

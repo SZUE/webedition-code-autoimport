@@ -359,7 +359,7 @@ function setTab(tab) {
 				), we_html_element::jsElement(
 					(we_base_request::_(we_base_request::STRING, 'error') ?
 					we_message_reporting::getShowMessageCall(g_l('modules_customer', '[error_download_failed]'), we_message_reporting::WE_MESSAGE_ERROR) : '') .
-					$this->Tree->getJSLoadTree($pid, we_tree_customer::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
+					$this->Tree->getJSLoadTree(!$pid, we_tree_customer::getItems($pid, $offset, $this->Tree->default_segment, ($sort ? $sortField : ''))))
 		);
 	}
 

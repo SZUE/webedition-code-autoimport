@@ -24,8 +24,10 @@
  */
 class we_tree_main extends we_tree_base{
 
-	function getHTMLConstruct($classes = ''){
-		return parent::getHTMLConstruct('withFooter');
+	public function __construct($frameset = '', $topFrame = '', $treeFrame = '', $cmdFrame = ''){
+		parent::__construct($frameset, $topFrame, $treeFrame, $cmdFrame);
+		$this->autoload = false;
+		$this->extraClasses = 'withFooter';
 	}
 
 	function getJSStartTree(){

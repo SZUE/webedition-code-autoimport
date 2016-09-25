@@ -28,7 +28,7 @@ class we_glossary_tree extends we_tree_base{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'glossary/glossary_tree.js');
 	}
 
-	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
+	public function getItems($ParentId, $Offset = 0, $Segment = 500){
 		$Types = [we_glossary_glossary::TYPE_ABBREVATION,
 			we_glossary_glossary::TYPE_ACRONYM,
 			we_glossary_glossary::TYPE_FOREIGNWORD,
