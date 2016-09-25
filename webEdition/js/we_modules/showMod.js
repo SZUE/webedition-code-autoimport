@@ -38,15 +38,19 @@ function we_cmd() {
 		case 'loadTree':
 			var pid = args[1]['pid'];
 			var items = args[1]['items'];
+			var sorted = args[1]['sorted'];
 			if (!pid) {
 				top.content.treeData.clear();
 				top.content.treeData.add(top.content.node.prototype.rootEntry(0, 'root', 'root'));
 			}
 
 			for (var i = 0; i < items.length; i++) {
-
 				if (!pid || top.content.treeData.indexOfEntry(items[i].id) < 0) {
-					top.content.treeData.addSort(new top.content.node(items[i]));
+					if (sorted) {
+						top.content.treeData.addSort(new top.content.node(items[i]));
+					} else {
+						top.content.treeData.add(new top.content.node(items[i]));
+					}
 				}
 			}
 

@@ -86,8 +86,7 @@ function we_cmd() {
 			//FIXME: this is not correct; document doesnt work like this
 			if (viewData.isDocument) {
 				top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor&top=1&typ=document";
-			} else
-			if (viewData.isObject) {
+			} else if (viewData.isObject) {
 				top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor&top=1&typ=object&ViewClass=" + viewData.classID;
 			} else {
 				top.content.editor.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=shop&pnt=editor&top=1&typ=document";

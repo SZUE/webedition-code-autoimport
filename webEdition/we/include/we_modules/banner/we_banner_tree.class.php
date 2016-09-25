@@ -28,7 +28,7 @@ class we_banner_tree extends we_tree_base{
 		return we_html_element::jsScript(JS_DIR . 'banner_tree.js');
 	}
 
-	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
+	public function getItems($ParentId, $Offset = 0, $Segment = 500){
 		$items = [];
 		$db = new DB_WE();
 		$db->query('SELECT ID,ParentID,IsFolder,Text FROM ' . BANNER_TABLE . ' WHERE ParentID=' . $ParentId . ' ORDER BY (text REGEXP "^[0-9]") DESC,ABS(text),Text');

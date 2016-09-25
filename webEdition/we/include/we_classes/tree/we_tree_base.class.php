@@ -43,8 +43,11 @@ abstract class we_tree_base{
 		'select' => 1,
 		'selectitem' => 2,
 		'selectgroup' => 3,
-	 ];
+	];
 	var $default_segment = 30;
+	protected $autoload = true;
+	protected $addSorted = true;
+	protected $extraClasses = '';
 
 //Initialization
 
@@ -74,8 +77,7 @@ function startTree(pid,offset){
 	};
 	pid = pid ? pid : 0;
 	offset = offset ? offset : 0;
-	treeData.frames.cmd.location=treeData.frameset+"&pnt=cmd&pid="+pid+"&offset="+offset;
-	drawTree();
+	//treeData.frames.cmd.location=treeData.frameset+"&pnt=cmd&pid="+pid+"&offset="+offset;
 }';
 	}
 
@@ -85,7 +87,7 @@ function startTree(pid,offset){
 
 	 */
 
-	function getJSTreeCode(){
+	public function getJSTreeCode(){
 		return we_html_element::jsScript(JS_DIR . 'tree.js') .
 			$this->customJSFile() .
 			we_html_element::jsElement('
@@ -99,16 +101,20 @@ container.prototype.frames={
 	tree:' . $this->treeFrame . '
 };
 ' . $this->getJSStartTree()
-		);
+			) . ($this->autoload ? we_base_jsCmd::singleCmd('loadTree', [
+				'pid' => 0,
+				'items' => $this->getItems(0, 0, $this->Tree->default_segment),
+				'sorted' => $this->addSorted
+			]) : '');
 	}
 
 	abstract protected function customJSFile();
 
-	function getHTMLConstruct($classes = ''){
+	public function getHTMLConstruct(){
 		return
 			we_html_element::cssLink(CSS_DIR . 'tree.css') .
 			we_html_element::htmlDiv(['id' => 'treetable',
-				'class' => 'tree' . ($classes ? ' ' . $classes : ''),
+				'class' => 'tree' . ($this->extraClasses ? ' ' . $this->extraClasses : ''),
 				], ''
 		);
 	}
@@ -117,16 +123,16 @@ container.prototype.frames={
 		$js = '';
 		foreach($treeItems as $item){
 			$item['id'] = (is_numeric($item['id'])) ? $item['id'] : '"' . $item['id'] . '"';
-			$js.=($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry(' . $item['id'] . ')<0){' ) .
+			$js .= ($clear ? '' : 'if(' . $this->topFrame . '.treeData.indexOfEntry(' . $item['id'] . ')<0){' ) .
 				$this->topFrame . '.treeData.addSort(new ' . $this->topFrame . '.node({';
 			foreach($item as $k => $v){
-				$js.= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-						intval($v) :
-						'\'' . str_replace(['"', '\'', '\\'], '', $v) . '\'') . ',';
+				$js .= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
+					intval($v) :
+					'\'' . str_replace(['"', '\'', '\\'], '', $v) . '\'') . ',';
 			}
-			$js.='}));' . ($clear ? '' : '}');
+			$js .= '}));' . ($clear ? '' : '}');
 		}
-		$js.=$this->topFrame . '.drawTree();';
+		$js .= $this->topFrame . '.drawTree();';
 
 		return $js;
 	}
@@ -148,6 +154,10 @@ for(var i=1;i<=obj.len;i++){
 }
 top.treeData = cont;
 top.drawTree();';
+	}
+
+	public function getItems($ParentID = 0, $offset = 0, $segment = 500){
+
 	}
 
 }

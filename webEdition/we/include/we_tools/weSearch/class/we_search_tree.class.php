@@ -29,7 +29,7 @@ class we_search_tree extends we_tree_base{
 		return we_html_element::jsScript(JS_DIR . 'search_tree.js') . we_html_element::jsElement('drawTree.selection_table="' . SUCHE_TABLE . '";');
 	}
 
-	public static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500){
+	public function getItems($ParentID = 0, $offset = 0, $segment = 500){
 		$db = new DB_WE();
 		$openFolders = [];
 
@@ -104,7 +104,7 @@ class we_search_tree extends we_tree_base{
 					self::$treeItems[] = array_merge($fields, $typ);
 
 					if($typ['typ'] === "group" && $OpenCloseStatus == 1){
-						self::getItemsFromDB($db->f('ID'), 0, $segment);
+						$this->getItems($db->f('ID'), 0, $segment);
 					}
 			}
 		}

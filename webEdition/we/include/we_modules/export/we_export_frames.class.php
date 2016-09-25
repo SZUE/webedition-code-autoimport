@@ -129,7 +129,7 @@ function setTab(tab) {
 			);
 		}
 
-		$table2->setCol(0, $col++, array('style' => 'width:290px;'));
+		$table2->setCol(0, $col++, ['style' => 'width:290px;']);
 
 		$js = we_html_element::jsElement('
 function doProgress(progress) {
@@ -392,7 +392,7 @@ function closeAllType(){
 				$this->Tree->topFrame . '.treeData.clear();' .
 				$this->Tree->topFrame . '.treeData.add(' . $this->Tree->topFrame . '.node.prototype.rootEntry(\'' . we_base_request::_(we_base_request::STRING, "pid") . '\',\'root\',\'root\'));');
 
-			return we_html_element::jsElement($js . $this->Tree->getJSLoadTree($pid, we_export_treeMain::getItemsFromDB($pid)));
+			return we_html_element::jsElement($js . $this->Tree->getJSLoadTree($pid, we_export_treeMain::getItems($pid)));
 		}
 		return '';
 	}

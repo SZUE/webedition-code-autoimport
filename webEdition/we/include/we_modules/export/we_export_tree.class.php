@@ -120,7 +120,7 @@ var openFolders= {
 		return $out ? implode(' OR ', $out) : '';
 	}
 
-	private static function getItems($table, $ParentID, array &$treeItems, $of, we_database_base $DB_WE){
+	public function getItems($table, $ParentID, array &$treeItems, $of, we_database_base $DB_WE){
 		static $openFolders = -1;
 		if($openFolders == -1){
 			$openFolders = $of;

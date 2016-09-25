@@ -38,7 +38,7 @@ class we_tool_treeDataSource{
 	function getItems($pid, $offset = 0, $segment = 500, $sort = ''){
 		switch($this->SourceType){
 			case 'table' :
-				return $this->getItemsFromDB($pid, $offset, $segment);
+				return $this->getItems($pid, $offset, $segment);
 			case 'file':
 				return $this->getItemsFromFile($pid, $offset, $segment);
 			case 'custom':
@@ -56,7 +56,7 @@ class we_tool_treeDataSource{
 		return ($out ? 'Path IN(' . implode(',', $out) . ')' : '');
 	}
 
-	function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
+	function getItems($ParentID = 0, $offset = 0, $segment = 500, $elem = 'ID,ParentID,Path,Text,IsFolder', $addWhere = '', $addOrderBy = ''){
 
 		$db = new DB_WE();
 		$table = $this->SourceName;

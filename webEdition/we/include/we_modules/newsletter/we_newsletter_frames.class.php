@@ -327,7 +327,7 @@ function setTab(tab) {
 							"ncmd" => "",
 							"nopt" => ""])
 					)
-				), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_tree_newsletter::getItemsFromDB($pid)]));
+				), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_tree_newsletter::getItems($pid)]));
 	}
 
 	function getHTMLSendQuestion(){

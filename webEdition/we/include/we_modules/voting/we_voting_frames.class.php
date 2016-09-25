@@ -717,7 +717,7 @@ function setVisible(id,visible){
 							"cmd" => "no_cmd"]
 						)
 					)
-				), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_voting_tree::getItemsFromDB($pid, $offset, $this->Tree->default_segment)])
+				), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_voting_tree::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 

@@ -28,7 +28,7 @@ class we_voting_tree extends we_tree_base{
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'voting/voting_tree.js');
 	}
 
-	static function getItemsFromDB($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere = "", $addOrderBy = ""){
+	public function getItems($ParentID = 0, $offset = 0, $segment = 500, $elem = "ID,ParentID,Path,Text,IsFolder,RestrictOwners,Owners,Active,ActiveTime,Valid", $addWhere = "", $addOrderBy = ""){
 		$db = new DB_WE();
 		$table = VOTING_TABLE;
 

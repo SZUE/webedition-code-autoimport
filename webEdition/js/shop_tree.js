@@ -35,13 +35,13 @@ function drawTree() {
 container.prototype.drawShop = function (nf, ai, zweigEintrag) {
 	var perm = WE().util.hasPerm("EDIT_SHOP_ORDER");
 	return '<span class="treeKreuz ' + (ai == nf.len ? "kreuzungend" : "kreuzung") + '"></span><span ' +
-					(perm ? "onclick=\"doClick(" + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');\"" : "") + // make orders in tree clickable
+					(perm ? 'onclick="doClick(' + nf[ai].id + ",'" + nf[ai].contentType + "','" + nf[ai].table + "');\"" : "") + // make orders in tree clickable
 					">" +
 					WE().util.getTreeIcon('we/shop') +
 					(perm ?
 									"</a>" :
 									"") +
-					'<span style="' + nf[ai].st + '">' + nf[ai].text + '</span>' +
+					'<span class="shop ' + nf[ai].class + '">' + nf[ai].text + '</span>' +
 					"</span><br/>";
 };
 
