@@ -98,20 +98,13 @@ class we_messaging_frames extends we_modules_frame{
 	protected function getHTMLCmd(){
 		$head = $this->View->processCommands();
 
-		if(($pid = we_base_request::_(we_base_request::INT, 'pnt')) !== false){
-			$offset = we_base_request::_(we_base_request::INT, "offset", 0);
+		$pid = we_base_request::_(we_base_request::INT, 'pnt');
+		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
-			$tree = we_html_element::jsElement(
-					($pid ? '' :
-					'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(' . $pid . ',\'root\',\'root\'));'
-					) .
-					$this->Tree->getJSLoadTree(!$pid, we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging()))
-			);
-		} else {
-			$tree = '';
-		}
-		return $this->getHTMLDocument(we_html_element::htmlBody(), $head . $tree);
+		return $this->getHTMLDocument(we_html_element::htmlBody(), $head .
+				($pid === false ? '' :
+				we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_messaging_tree::getItems($pid, 0, $this->Tree->default_segment, $this->View->getMessaging())]))
+		);
 	}
 
 	protected function getHTMLEditor($extraUrlParams = '', $extraHead = ''){

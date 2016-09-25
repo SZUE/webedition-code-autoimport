@@ -29,13 +29,12 @@ class we_glossary_tree extends we_tree_base{
 	}
 
 	public static function getItems($ParentId, $Offset = 0, $Segment = 500){
-		$Types = array(
-			we_glossary_glossary::TYPE_ABBREVATION,
+		$Types = [we_glossary_glossary::TYPE_ABBREVATION,
 			we_glossary_glossary::TYPE_ACRONYM,
 			we_glossary_glossary::TYPE_FOREIGNWORD,
 			we_glossary_glossary::TYPE_LINK,
 			we_glossary_glossary::TYPE_TEXTREPLACE,
-		);
+			];
 
 		$Temp = explode('_', $ParentId);
 
@@ -54,8 +53,7 @@ class we_glossary_tree extends we_tree_base{
 		$Items = [];
 
 		foreach(getWeFrontendLanguagesForBackend() as $Key => $Val){
-			$Items[] = array(
-				'id' => $Key,
+			$Items[] = ['id' => $Key,
 				'parentid' => 0,
 				'text' => $Val,
 				'typ' => 'group',
@@ -65,8 +63,8 @@ class we_glossary_tree extends we_tree_base{
 				'offset' => 0,
 				'published' => 1,
 				'cmd' => "glossary_view_folder",
-				'contentType' => 'folder'
-			);
+				'contenttype' => 'folder'
+			];
 		}
 
 		return $Items;
@@ -76,17 +74,15 @@ class we_glossary_tree extends we_tree_base{
 
 		$Items = [];
 
-		$Types = array(
-			we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
+		$Types = [we_glossary_glossary::TYPE_ABBREVATION => g_l('modules_glossary', '[abbreviation]'),
 			we_glossary_glossary::TYPE_ACRONYM => g_l('modules_glossary', '[acronym]'),
 			we_glossary_glossary::TYPE_FOREIGNWORD => g_l('modules_glossary', '[foreignword]'),
 			we_glossary_glossary::TYPE_LINK => g_l('modules_glossary', '[link]'),
 			we_glossary_glossary::TYPE_TEXTREPLACE => g_l('modules_glossary', '[textreplacement]'),
-		);
+			];
 
 		foreach($Types as $Key => $Val){
-			$Items[] = array(
-				'id' => $Language . "_" . $Key,
+			$Items[] = ['id' => $Language . "_" . $Key,
 				'parentid' => $Language,
 				'text' => $Val,
 				'typ' => 'group',
@@ -96,13 +92,12 @@ class we_glossary_tree extends we_tree_base{
 				'offset' => 0,
 				'published' => 1,
 				'cmd' => 'glossary_view_type',
-				'contentType' => 'folder'
-			);
+				'contenttype' => 'folder'
+			];
 		}
 
 		if(permissionhandler::hasPerm("EDIT_GLOSSARY_DICTIONARY")){
-			$Items[] = array(
-				'id' => $Language . "_exception",
+			$Items[] = ['id' => $Language . "_exception",
 				'parentid' => $Language,
 				'text' => g_l('modules_glossary', '[exception]'),
 				'typ' => 'item',
@@ -112,8 +107,8 @@ class we_glossary_tree extends we_tree_base{
 				'offset' => 0,
 				'published' => 1,
 				'cmd' => 'glossary_view_exception',
-				'contentType' => 'we/glossar'
-			);
+				'contenttype' => 'we/glossar'
+			];
 		}
 
 		return $Items;
@@ -125,10 +120,9 @@ class we_glossary_tree extends we_tree_base{
 		$PrevOffset = max(0, $Offset - $Segment);
 
 		if($Offset && $Segment){
-			$Item = array(
-				"id" => "prev_" . $Language . "_" . $Type,
-				"parentid" => $Language . "_" . $Type,
-				"text" => "display (" . $PrevOffset . "-" . $Offset . ")",
+			$Item = ['id' => "prev_" . $Language . "_" . $Type,
+				'parentid' => $Language . "_" . $Type,
+				'text' => "display (" . $PrevOffset . "-" . $Offset . ")",
 				"contenttype" => "arrowup",
 				"table" => GLOSSARY_TABLE,
 				"typ" => "threedots",
@@ -136,7 +130,7 @@ class we_glossary_tree extends we_tree_base{
 				"disabled" => 0,
 				"tooltip" => "",
 				"offset" => $PrevOffset,
-			);
+				];
 			$Items[] = $Item;
 		}
 
@@ -184,8 +178,7 @@ class we_glossary_tree extends we_tree_base{
 
 		$NextOffset = $Offset + $Segment;
 		if($Segment && ($Total > $NextOffset)){
-			$Items[] = array(
-				'id' => 'next_' . $Language . '_' . $Type,
+			$Items[] = ['id' => 'next_' . $Language . '_' . $Type,
 				'parentid' => $Language . '_' . $Type,
 				'text' => 'display (' . $NextOffset . '-' . ($NextOffset + $Segment) . ')',
 				'contenttype' => 'arrowdown',
@@ -195,7 +188,7 @@ class we_glossary_tree extends we_tree_base{
 				'disabled' => 0,
 				'tooltip' => '',
 				'offset' => $NextOffset,
-			);
+				];
 		}
 		return $Items;
 	}

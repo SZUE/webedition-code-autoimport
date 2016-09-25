@@ -52,7 +52,7 @@ function getFirstValidEditPageNr($doc, $EditPageNr){
 
 function getTabs($classname, $predefined = 0){
 	$ret = $predefined;
-	$documentClasses = array('we_webEditionDocument', 'we_htmlDocument', 'we_flashDocument', 'we_imageDocument', 'we_otherDocument', 'we_textDocument', 'we_objectFile');
+	$documentClasses = ['we_webEditionDocument', 'we_htmlDocument', 'we_flashDocument', 'we_imageDocument', 'we_otherDocument', 'we_textDocument', 'we_objectFile'];
 	// Check which tab the user can see
 	if(in_array($classname, $documentClasses)){
 		$ret = getFirstValidEditPageNr($GLOBALS['we_doc'], $predefined);
@@ -221,9 +221,8 @@ if(!isset($we_doc->IsClassFolder) || !$we_doc->IsClassFolder){
 
 // objects need to know the last webEdition Path, because of Workspaces
 if($we_doc->ContentType == we_base_ContentTypes::WEDOCUMENT){
-	$_SESSION['weS']['last_webEdition_document'] = array(
-		'Path' => $we_doc->Path
-	);
+	$_SESSION['weS']['last_webEdition_document'] = ['Path' => $we_doc->Path
+	];
 }
 
 // get default code

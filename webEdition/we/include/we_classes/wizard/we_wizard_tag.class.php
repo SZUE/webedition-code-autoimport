@@ -142,7 +142,7 @@ abstract class we_wizard_tag{
 			}
 		}
 		$expiry = 24 * 3600;
-		we_cache_file::save('TagWizard_tagCount', array(count($tags)), $expiry);
+		we_cache_file::save('TagWizard_tagCount', [count($tags)], $expiry);
 		we_cache_file::save('TagWizard_needsEndTag', $endTags, $expiry);
 		we_cache_file::save('TagWizard_groups', $groups, $expiry);
 		we_cache_file::save('TagWizard_modules', $modules, $expiry);

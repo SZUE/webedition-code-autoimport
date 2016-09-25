@@ -223,9 +223,7 @@ abstract class we_modules_frame{
 		return $this->getHTMLDocument(we_html_element::htmlBody(['id' => 'footerBody'], $table2->getHtml()), $extraHead);
 	}
 
-	protected function getHTMLCmd(){
-		return $this->getHTMLDocument(we_html_element::htmlBody(), $this->Tree->getJSLoadTree());
-	}
+	abstract protected function getHTMLCmd();
 
 	function getHTMLSearch(){
 		// to be overridden

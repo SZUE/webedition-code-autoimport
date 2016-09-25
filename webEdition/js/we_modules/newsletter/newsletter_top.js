@@ -207,7 +207,7 @@ function we_cmd() {
 			break;
 
 		default:
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }

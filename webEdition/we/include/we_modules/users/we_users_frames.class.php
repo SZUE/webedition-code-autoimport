@@ -42,17 +42,10 @@ class we_users_frames extends we_modules_frame{
 		$offset = we_base_request::_(we_base_request::INT, "offset", 0);
 
 		return $this->getHTMLDocument(
-				we_html_element::htmlBody([], we_html_element::htmlForm(array('name' => 'we_form'), we_html_element::htmlHiddens(array(
-							"pnt" => "cmd",
-							"cmd" => "no_cmd"))
+				we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(["pnt" => "cmd",
+							"cmd" => "no_cmd"])
 					)
-				), we_html_element::jsElement(
-					($pid ?
-						'' :
-						'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));') .
-					$this->Tree->getJSLoadTree(!$pid, we_tree_users::getItems($pid, $offset, $this->Tree->default_segment))
-				)
+				), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_tree_users::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 
@@ -80,8 +73,8 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$yuiSuggest = & weSuggest::getInstance();
 
 		$user_object = (isset($_SESSION["user_session_data"]) ?
-				$_SESSION["user_session_data"] :
-				new we_users_user());
+			$_SESSION["user_session_data"] :
+			new we_users_user());
 
 		$js = $this->View->getJSProperty();
 		$tab = we_base_request::_(we_base_request::INT, 'tab', 0);
@@ -151,17 +144,17 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		$condition = "";
 		foreach($array_and as $value){
 			$value = $DB_WE->escape($value);
-			$condition.=($condition ? ' AND ' : '') .
+			$condition .= ($condition ? ' AND ' : '') .
 				'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
 		}
 		foreach($array_or as $value){
 			$value = $DB_WE->escape($value);
-			$condition.=($condition ? ' OR ' : '') .
+			$condition .= ($condition ? ' OR ' : '') .
 				'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
 		}
 		foreach($array_not as $value){
 			$value = $DB_WE->escape($value);
-			$condition.=($condition ? ' AND NOT ' : '') .
+			$condition .= ($condition ? ' AND NOT ' : '') .
 				'(First LIKE "%' . $value . '%" OR Second LIKE "%' . $value . '%" OR username LIKE "%' . $value . '%" OR Address LIKE "%' . $value . '%" OR City LIKE "%' . $value . '%" OR State LIKE "%' . $value . '%" OR Country LIKE "%' . $value . '%" OR Tel_preselection LIKE "%' . $value . '%" OR Fax_preselection LIKE "%' . $value . '%" OR Telephone LIKE "%' . $value . '%" OR Fax LIKE "%' . $value . '%" OR Description LIKE "%' . $value . '%")';
 		}
 
@@ -171,9 +164,9 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 		if($DB_WE->num_rows()){
 			$select = '<select name="search_results" size="20" style="width:520px;height:220px;" ondblclick="top.opener.top.we_cmd(\'check_user_display\',document.we_form.search_results.value); top.close();">';
 			while($DB_WE->next_record()){
-				$select.='<option value="' . $DB_WE->f("ID") . '">' . $DB_WE->f("Text") . '</option>';
+				$select .= '<option value="' . $DB_WE->f("ID") . '">' . $DB_WE->f("Text") . '</option>';
 			}
-			$select.='</select>';
+			$select .= '</select>';
 		}
 
 		$buttons = we_html_button::position_yes_no_cancel(
@@ -185,7 +178,8 @@ top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\
 			) . '<div style="height:20px;"></div>' .
 			we_html_tools::htmlFormElementTable($select, g_l('modules_users', '[search_result]'));
 
-		return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody', 'style' => "margin:10px 20px;"], we_html_element::htmlForm(['name' => 'we_form', 'method' => 'post'], we_html_element::htmlHiddens([
+		return $this->getHTMLDocument(we_html_element::htmlBody(['class' => 'weEditorBody', 'style' => "margin:10px 20px;"], we_html_element::htmlForm(['name' => 'we_form',
+						'method' => 'post'], we_html_element::htmlHiddens([
 							'mod' => 'users',
 							'pnt' => 'search']) .
 						we_html_tools::htmlDialogLayout($content, g_l('modules_users', '[search]'), $buttons))

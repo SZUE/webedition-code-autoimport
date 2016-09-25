@@ -38,7 +38,8 @@ class we_wysiwyg_editor{
 	var $value = '';
 	var $restrictContextmenu = '';
 	private $tinyPlugins = [];
-	private $wePlugins = array('wetable', 'weadaptunlink', 'weadaptbold', 'weadaptitalic', 'weimage', 'advhr', 'weabbr', 'weacronym', 'welang', 'wevisualaid', 'weinsertbreak', 'wespellchecker', 'welink', 'wefullscreen', 'wegallery');
+	private $wePlugins = ['wetable', 'weadaptunlink', 'weadaptbold', 'weadaptitalic', 'weimage', 'advhr', 'weabbr', 'weacronym', 'welang', 'wevisualaid', 'weinsertbreak',
+		'wespellchecker', 'welink', 'wefullscreen', 'wegallery'];
 	private $createContextmenu = true;
 	private $filteredElements = [];
 	private $bgcol = '';
@@ -70,9 +71,8 @@ class we_wysiwyg_editor{
 	private $fontnames = '';
 	private $fontnamesCSV = '';
 	private $fontsizes = '1 (8px)=xx-small,2 (10px)=x-small,3 (12px)=small,4 (14px)=medium,5 (18px)=large,6 (24px)=x-large,7 (36px)=xx-large'; // tinyMCE default!
-	private static $allFormats = array('p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'code', 'blockquote', 'samp');
-	private static $fontstrings = array(
-		'andale mono' => "Andale Mono='andale mono','times new roman',times;",
+	private static $allFormats = ['p', 'div', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'pre', 'code', 'blockquote', 'samp'];
+	private static $fontstrings = ['andale mono' => "Andale Mono='andale mono','times new roman',times;",
 		'arial' => 'Arial=arial,helvetica,sans-serif;',
 		'arial black' => "Arial Black='arial black',arial,'avant garde';",
 		'book antiqua' => "Book Antiqua='book antiqua',palatino;",
@@ -92,8 +92,9 @@ class we_wysiwyg_editor{
 		'verdana' => "Verdana=verdana,geneva,arial,helvetica,sans-serif;",
 		'webdings' => "Webdings=webdings;",
 		'wingdings' => "Wingdings=wingdings,'zapf dingbats';"
-	);
-	private static $allFontSizes = array('0.5em', '0.8em', '1em', '1.2em', '1.5em', '2em', '8px', '10px', '12px', '14px', '18px', '24px', '36px', 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large', 'smaller', 'larger', 'inherit');
+	 ];
+	private static $allFontSizes = ['0.5em', '0.8em', '1em', '1.2em', '1.5em', '2em', '8px', '10px', '12px', '14px', '18px', '24px', '36px', 'xx-small', 'x-small',
+		'small', 'medium', 'large', 'x-large', 'xx-large', 'smaller', 'larger', 'inherit'];
 
 	const CONDITIONAL = true;
 	const MIN_WIDTH_INLINE = 100;
@@ -108,7 +109,7 @@ class we_wysiwyg_editor{
 		$this->name = $name;
 		if(preg_match('|^.+\[.+\]$|i', $this->name)){
 			$this->fieldName = preg_replace('/^.+\[(.+)\]$/', '${1}', $this->name);
-			$this->fieldName_clean = str_replace(array('-', '.', '#', ' '), array('_minus_', '_dot_', '_sharp_', '_blank_'), $this->fieldName);
+			$this->fieldName_clean = str_replace(['-', '.', '#', ' '], ['_minus_', '_dot_', '_sharp_', '_blank_'], $this->fieldName);
 		};
 		$this->origName = $origName;
 		$this->bgcol = $bgcol;
@@ -117,7 +118,7 @@ class we_wysiwyg_editor{
 		} else if(!preg_match('/^[a-f0-9]{6}$/i', $this->bgcol) && !preg_match('/^[a-z]*$/i', $this->bgcol)){
 			$this->bgcol = '';
 		}
-		$this->tinyParams = str_replace(array('\'', '&#34;', '&#8216;', '&#8217;'), '"', trim($tinyParams, ' ,'));
+		$this->tinyParams = str_replace(['\'', '&#34;', '&#8216;', '&#8217;'], '"', trim($tinyParams, ' ,'));
 		$this->templates = trim($templates, ',');
 		$this->xml = $xml ? "xhtml" : "html";
 		$this->removeFirstParagraph = $removeFirstParagraph;
@@ -205,26 +206,27 @@ class we_wysiwyg_editor{
 	}
 
 	public static function getEditorCommands($isTag){
-		$commands = array(
-			'font' => array('fontname', 'fontsize'),
-			'prop' => array('formatblock', 'applystyle', 'bold', 'italic', 'underline', 'subscript', 'superscript', 'strikethrough', 'styleprops', 'removeformat', 'removetags'),
-			'xhtmlxtras' => array('cite', 'acronym', 'abbr', 'lang', 'del', 'ins', 'ltr', 'rtl'),
-			'color' => array('forecolor', 'backcolor'),
-			'justify' => array('justifyleft', 'justifycenter', 'justifyright', 'justifyfull'),
-			'list' => array('insertunorderedlist', 'insertorderedlist', 'indent', 'outdent', 'blockquote'),
-			'link' => array('createlink', 'unlink', 'anchor'),
-			'table' => array('inserttable', 'deletetable', 'editcell', 'editrow', 'insertcolumnleft', 'insertcolumnright', 'deletecol', 'insertrowabove', 'insertrowbelow', 'deleterow', 'increasecolspan', 'decreasecolspan'),
-			'insert' => array('insertimage', 'insertgallery', 'hr', 'inserthorizontalrule', 'insertspecialchar', 'insertbreak', 'insertdate', 'inserttime'),
-			'copypaste' => array(/* 'cut', 'copy', 'paste', */'pastetext', 'pasteword'),
-			'layer' => array('insertlayer', 'movebackward', 'moveforward', 'absolute'),
-			'essential' => array('undo', 'redo', 'spellcheck', 'selectall', 'search', 'replace', 'fullscreen', 'visibleborders'),
-			'advanced' => array('editsource', 'template')
-		);
+		$commands = [
+			'font' => ['fontname', 'fontsize'],
+			'prop' => ['formatblock', 'applystyle', 'bold', 'italic', 'underline', 'subscript', 'superscript', 'strikethrough', 'styleprops', 'removeformat', 'removetags'],
+			'xhtmlxtras' => ['cite', 'acronym', 'abbr', 'lang', 'del', 'ins', 'ltr', 'rtl'],
+			'color' => ['forecolor', 'backcolor'],
+			'justify' => ['justifyleft', 'justifycenter', 'justifyright', 'justifyfull'],
+			'list' => ['insertunorderedlist', 'insertorderedlist', 'indent', 'outdent', 'blockquote'],
+			'link' => ['createlink', 'unlink', 'anchor'],
+			'table' => ['inserttable', 'deletetable', 'editcell', 'editrow', 'insertcolumnleft', 'insertcolumnright', 'deletecol', 'insertrowabove', 'insertrowbelow', 'deleterow',
+				'increasecolspan', 'decreasecolspan'],
+			'insert' => ['insertimage', 'insertgallery', 'hr', 'inserthorizontalrule', 'insertspecialchar', 'insertbreak', 'insertdate', 'inserttime'],
+			'copypaste' => ['pastetext', 'pasteword'],
+			'layer' => ['insertlayer', 'movebackward', 'moveforward', 'absolute'],
+			'essential' => ['undo', 'redo', 'spellcheck', 'selectall', 'search', 'replace', 'fullscreen', 'visibleborders'],
+			'advanced' => ['editsource', 'template']
+		];
 
 		$tmp = array_keys($commands);
 		unset($tmp[0]); //unsorted
 		if($isTag){
-			$ret = array(new weTagDataOption(g_l('wysiwyg', '[groups]'), we_html_tools::OPTGROUP));
+			$ret = [new weTagDataOption(g_l('wysiwyg', '[groups]'), we_html_tools::OPTGROUP)];
 
 			foreach($tmp as $command){
 				$ret[] = new weTagDataOption($command);
@@ -239,12 +241,11 @@ class we_wysiwyg_editor{
 			return $ret;
 		}
 
-		$ret = array_merge(array(
-			'',
+		$ret = array_merge(['',
 			g_l('wysiwyg', '[groups]') => we_html_tools::OPTGROUP
-				), $tmp);
+			], $tmp);
 		foreach($commands as $key => $values){
-			$ret = array_merge($ret, array($key => we_html_tools::OPTGROUP), $values);
+			$ret = array_merge($ret, [$key => we_html_tools::OPTGROUP], $values);
 		}
 		return $ret;
 	}
@@ -317,7 +318,7 @@ return {
 	}
 
 	function getAllCmds(){
-		$arr = array(
+		$arr = [
 			'formatblock',
 			'fontname',
 			'fontsize',
@@ -390,7 +391,7 @@ return {
 			'editrow',
 			'deletetable',
 			'selectall'
-		);
+			];
 
 		if(defined('SPELLCHECKER')){
 			$arr[] = "spellcheck";
@@ -403,7 +404,7 @@ return {
 		$sepCon = new we_wysiwyg_ToolbarSeparator($this, self::CONDITIONAL);
 
 		//group: font
-		$this->elements = array_filter(array(
+		$this->elements = array_filter([
 			new we_wysiwyg_ToolbarButton($this, "fontname", 92, 20),
 			new we_wysiwyg_ToolbarButton($this, 'fontsize', 92, 20),
 			$sep,
@@ -521,7 +522,7 @@ return {
 			//group: advanced
 			new we_wysiwyg_ToolbarButton($this, "editsource"),
 			new we_wysiwyg_ToolbarButton($this, "template"),
-		));
+			]);
 	}
 
 	private function setFilteredElements(){
@@ -639,7 +640,7 @@ return {
 		// FIXME: the obove stuff has to be done before parsing medialinks!
 		// FIXME: make we_wysiwyg_editor::registerMedisLinks() just looking for IDs and writing the correct MediaLinks (after making internal link elsewhere)!
 		// parse internal IDs in one step to preserve order!
-		$content = str_replace(array(we_base_link::TYPE_THUMB_PREFIX), we_base_link::TYPE_INT_PREFIX, $content);
+		$content = str_replace(we_base_link::TYPE_THUMB_PREFIX, we_base_link::TYPE_INT_PREFIX, $content);
 		if(preg_match_all('/(src|href)="' . we_base_link::TYPE_INT_PREFIX . '(\\d+),?(\\d*)["|?]/i', $content, $regs, PREG_SET_ORDER)){
 			foreach($regs as $reg){
 				$internalIDs[] = intval($reg[2]);
@@ -658,9 +659,8 @@ return {
 	private function getToolbarRows(){
 		$tmpElements = $this->filteredElements;
 		$rownr = 0;
-		$rows = array(
-			$rownr => []
-		);
+		$rows = [$rownr => []
+		];
 
 		foreach($tmpElements as $elem){
 			if($elem->classname === "we_wysiwyg_ToolbarSeparator"){
@@ -685,8 +685,7 @@ return {
 	}
 
 	private static function wysiwygCmdToTiny($cmd){
-		$cmdMapping = array(
-			'abbr' => 'weabbr',
+		$cmdMapping = ['abbr' => 'weabbr',
 			'acronym' => 'weacronym',
 			'anchor' => 'anchor',
 			'applystyle' => 'styleselect',
@@ -765,7 +764,7 @@ return {
 			'template' => 'template',
 			'editrow' => 'row_props',
 			'deletetable' => 'delete_table'
-		);
+			];
 		return $cmdMapping[$cmd] != '--' ? $cmdMapping[$cmd] : '';
 	}
 
@@ -850,11 +849,10 @@ return {
 			$this->height = $height = $height - ($this->buttonpos === 'external' ? 0 : round((($k) / ($width / (5 * 22))) * 26));
 		}
 
-		$wefullscreenVars = array(
-			'outsideWE' => $this->outsideWE ? "1" : "",
+		$wefullscreenVars = ['outsideWE' => $this->outsideWE ? "1" : "",
 			'xml' => $this->xml ? "1" : "",
 			'removeFirstParagraph' => $this->removeFirstParagraph ? "1" : "0",
-		);
+			];
 
 		$contentCss = $this->contentCss ? $this->contentCss : '';
 
@@ -1240,13 +1238,12 @@ tinyMCE.weResizeEditor = function(render){
 
 
 tinyMCE.init(tinyMceConfObject__' . $this->fieldName_clean . ');
-') . getHtmlTag('textarea', array(
-					'wrap' => "off",
-					'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
+') . getHtmlTag('textarea', ['wrap' => "off",
+				'style' => 'color:#eeeeee; background-color:#eeeeee;  width:' . $width . '; height:' . $height . ';',
 					'id' => $this->name,
 					'name' => $this->name,
 					'class' => 'wetextarea'
-						), strtr($editValue, array('\n' => '', '&' => '&amp;')), true);
+					], strtr($editValue, ['\n' => '', '&' => '&amp;']), true);
 	}
 
 }

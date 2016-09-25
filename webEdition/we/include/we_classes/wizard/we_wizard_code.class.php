@@ -75,11 +75,10 @@ abstract class we_wizard_code{
 			} elseif(!is_dir(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $entry) && substr_compare($entry, '.xml', -4, 4, true) == 0){
 				// get the snippet
 				$snippet = new we_wizard_codeSnippet(WE_INCLUDES_PATH . self::SnippetPath . $SnippetDir . '/' . $entry);
-				$item = array(
-					'type' => 'option',
+				$item = ['type' => 'option',
 					'name' => $snippet->getName(),
 					'value' => $SnippetDir . '/' . $entry
-				);
+					];
 				$Snippets[] = $item;
 
 				// enter subdirectory only if depth is smaller than 2
@@ -96,11 +95,10 @@ abstract class we_wizard_code{
 					$foldername = $information['foldername'];
 				}
 
-				$folder = array(
-					'type' => 'optgroup',
+				$folder = ['type' => 'optgroup',
 					'name' => $foldername,
 					'value' => self::getSnippetsByDir($SnippetDir . '/' . $entry, $Depth)
-				);
+					];
 				$Snippets[] = $folder;
 			}
 		}

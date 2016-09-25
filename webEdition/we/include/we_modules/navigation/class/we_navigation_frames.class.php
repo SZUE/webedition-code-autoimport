@@ -123,12 +123,7 @@ class we_navigation_frames extends we_modules_frame{
 							'pnt' => 'cmd',
 							'cmd' => 'no_cmd'])
 					)
-				), we_html_element::jsElement(
-					($pid ?
-					'' :
-					'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
-					) . $this->Tree->getJSLoadTree(!$pid, we_navigation_tree::getItems($pid, $offset, $this->Tree->default_segment)))
+				), we_base_jsCmd::singleCmd('loadTree', ['pid' => intval($pid), 'items' => we_navigation_tree::getItems($pid, $offset, $this->Tree->default_segment)])
 		);
 	}
 

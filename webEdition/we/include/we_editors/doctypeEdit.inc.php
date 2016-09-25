@@ -21,7 +21,7 @@
  * @package none
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
-we_html_tools::protect(array('CAN_SEE_TEMPLATES', 'EDIT_DOCTYPE'));
+we_html_tools::protect(['CAN_SEE_TEMPLATES', 'EDIT_DOCTYPE']);
 
 $we_doc = new we_docTypes();
 

@@ -33,9 +33,9 @@ class we_element{
 	var $Dat = '';
 	var $LangugeID = 0;
 	var $Len = 0;
-	var $link_attribs = array('DID', 'Name', 'Type');
-	var $content_attribs = array('CID', 'BDID', 'Dat', 'LanguageID');
-	var $persistent_slots = array('ClassName', 'Name', 'Type', 'BDID', 'Dat', 'LanguageID');
+	var $link_attribs = ['DID', 'Name', 'Type'];
+	var $content_attribs = ['CID', 'BDID', 'Dat', 'LanguageID'];
+	var $persistent_slots = ['ClassName', 'Name', 'Type', 'BDID', 'Dat', 'LanguageID'];
 	var $Link;
 	var $Content;
 	var $linked = false;
@@ -119,34 +119,28 @@ class we_element{
 
 	function getElement(){
 		return ($this->linked ?
-				array(
-				$this->Name => array(
-					"id" => $this->CID,
-					"bdid" => $this->BDID,
+			[$this->Name => ["id" => $this->CID,
+				"bdid" => $this->BDID,
 					"languageid" => $this->LanguageID,
 					"cid" => $this->CID,
 					"type" => $this->Type,
 					"dat" => $this->Dat
-				)
-				) :
-				array(
-				$this->Name => array(
-					"dat" => $this->Dat,
-					"type" => $this->Type,
+					]
+			] :
+			[$this->Name => ["dat" => $this->Dat,
+				"type" => $this->Type,
 					"len" => $this->Len
-				)
-				)
+					]
+			]
 			);
 	}
 
 	function getObjectElement(){
-		return array(
-			$this->Name => array(
-				"dat" => base64_decode($this->Dat),
+		return [$this->Name => ["dat" => base64_decode($this->Dat),
 				"type" => $this->Type,
 				"len" => $this->Len
-			)
-		);
+				]
+		];
 	}
 
 }

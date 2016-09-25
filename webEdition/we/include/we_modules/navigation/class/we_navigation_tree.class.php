@@ -79,7 +79,7 @@ class we_navigation_tree extends we_tree_base{
 				'order' => intval($db->f('Ordn')),
 				'published' => $db->f('Depended') ? 0 : 1,
 				'disabled' => in_array($db->f('Path'), $parentpaths) ? 1 : 0,
-				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/navigation'),
+				'contenttype' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/navigation'),
 			);
 
 			$fileds = array_change_key_case($db->Record, CASE_LOWER);

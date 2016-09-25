@@ -88,29 +88,29 @@ class we_xml_rss extends XML_Parser2{
 	/**
 	 * @var array
 	 */
-	var $parentTags = array('CHANNEL', 'ITEM', 'IMAGE', 'TEXTINPUT');
+	var $parentTags = ['CHANNEL', 'ITEM', 'IMAGE', 'TEXTINPUT'];
 
 	/**
 	 * @var array
 	 */
-	var $channelTags = array('TITLE', 'LINK', 'DESCRIPTION', 'IMAGE',
+	var $channelTags = ['TITLE', 'LINK', 'DESCRIPTION', 'IMAGE',
 		'ITEMS', 'TEXTINPUT', 'LANGUAGE', 'COPYRIGHT',
 		'MANAGINGEditor', 'WEBMASTER', 'PUBDATE', 'LASTBUILDDATE',
 		'CATEGORY', 'GENERATOR', 'DOCS', 'CLOUD', 'TTL',
-		'RATING');
+		'RATING'];
 
 	/**
 	 * @var array
 	 */
-	var $itemTags = array('TITLE', 'LINK', 'DESCRIPTION', 'PUBDATE', 'AUTHOR', 'CATEGORY',
+	var $itemTags = ['TITLE', 'LINK', 'DESCRIPTION', 'PUBDATE', 'AUTHOR', 'CATEGORY',
 		'COMMENTS', 'ENCLOSURE', 'GUID', 'PUBDATE', 'SOURCE',
-		'CONTENT:ENCODED');
+		'CONTENT:ENCODED'];
 
 	/**
 	 * @var array
 	 */
-	var $imageTags = array('TITLE', 'URL', 'LINK', 'WIDTH', 'HEIGHT');
-	var $textinputTags = array('TITLE', 'DESCRIPTION', 'NAME', 'LINK');
+	var $imageTags = ['TITLE', 'URL', 'LINK', 'WIDTH', 'HEIGHT'];
+	var $textinputTags = ['TITLE', 'DESCRIPTION', 'NAME', 'LINK'];
 
 	/**
 	 * List of allowed module tags
@@ -120,7 +120,7 @@ class we_xml_rss extends XML_Parser2{
 	 *
 	 * @var array
 	 */
-	var $moduleTags = array('DC:TITLE', 'DC:CREATOR', 'DC:SUBJECT', 'DC:DESCRIPTION',
+	var $moduleTags = ['DC:TITLE', 'DC:CREATOR', 'DC:SUBJECT', 'DC:DESCRIPTION',
 		'DC:PUBLISHER', 'DC:CONTRIBUTOR', 'DC:DATE', 'DC:TYPE',
 		'DC:FORMAT', 'DC:IDENTIFIER', 'DC:SOURCE', 'DC:LANGUAGE',
 		'DC:RELATION', 'DC:COVERAGE', 'DC:RIGHTS',
@@ -128,7 +128,7 @@ class we_xml_rss extends XML_Parser2{
 		'BLOGCHANNEL:MYSUBSCRIPTIONS', 'BLOGCHANNEL:CHANGES',
 		'CC:LICENSE', 'CONTENT:ENCODED',
 		'SY:UPDATEPERIOD', 'SY:UPDATEFREQUENCY', 'SY:UPDATEBASE',
-	);
+	 ];
 
 	// }}}
 	// {{{ Constructor
@@ -221,7 +221,7 @@ class we_xml_rss extends XML_Parser2{
 			array_pop($this->insideTagStack);
 			$this->insideTag = end($this->insideTagStack);
 
-			$this->struct[] = array_merge(array('type' => strtolower($element)), $this->last);
+			$this->struct[] = array_merge(['type' => strtolower($element)], $this->last);
 		}
 
 		switch($element){

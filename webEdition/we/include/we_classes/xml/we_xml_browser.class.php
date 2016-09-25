@@ -73,16 +73,15 @@ class we_xml_browser extends we_xml_parser{
 		foreach($nodeSet as $node){
 			$nodeattribs = [];
 			if($this->hasAttributes($node)){
-				$attrs = $attrs + array("@n:" => g_l('modules_customer', '[none]'));
+				$attrs = $attrs + ["@n:" => g_l('modules_customer', '[none]')];
 				$attributes = $this->getAttributes($node);
 				foreach($attributes as $name => $value){
 					$nodeattribs[$name] = $value;
 				}
 			}
-			$nodes[$node] = array(
-				"attributes" => $nodeattribs,
+			$nodes[$node] = ["attributes" => $nodeattribs,
 				"content" => $this->getData($node)
-			);
+				];
 		}
 		return $nodes;
 	}
@@ -116,10 +115,9 @@ class we_xml_browser extends we_xml_parser{
 					break;
 				}
 				if($timeout){
-					$ctx = stream_context_create(array(
-						'http' => array(
+					$ctx = stream_context_create(['http' => array(
 							'timeout' => 1
-					)));
+					)]);
 				}
 				$content = ($timeout ? file_get_contents($file, false, $ctx) : file_get_contents($file));
 				break;

@@ -152,7 +152,7 @@ function checkFilePerm($selectedItems, $table){
 }
 
 function getObjectsForDocWorkspace($id, we_database_base $db){
-	$ids = (is_array($id)) ? $id : array($id);
+	$ids = (is_array($id)) ? $id : [$id];
 
 	if(!defined('OBJECT_FILES_TABLE')){
 		return [];
@@ -330,10 +330,9 @@ for ( frameId in _usedEditors ) {
 							$_SESSION['weS']['delete_files_nok'] = [];
 							$_SESSION['weS']['delete_files_info'] = str_replace('\n', '', sprintf(g_l('alert', '[folder_not_empty]'), ''));
 							foreach($GLOBALS["we_folder_not_del"] as $datafile){
-								$_SESSION['weS']['delete_files_nok'][] = array(
-									'ContentType' => 'folder',
+								$_SESSION['weS']['delete_files_nok'][] = ['ContentType' => 'folder',
 									"path" => $datafile
-								);
+									];
 							}
 							$script .= 'new (WE().util.jsWindow)(window, WE().consts.dirs.WEBEDITION_DIR+"we_cmd.php?we_cmd[0]=delInfo","we_delinfo",-1,-1,550,550,true,true,true);';
 						} else {

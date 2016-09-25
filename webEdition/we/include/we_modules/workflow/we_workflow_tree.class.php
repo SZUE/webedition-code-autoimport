@@ -41,7 +41,7 @@ class we_workflow_tree extends we_tree_base{
 				'text' => oldHtmlspecialchars(addslashes($workflowDef->Text)),
 				'typ' => 'group',
 				'open' => 0,
-				'contentType' => 'folder',
+				'contenttype' => 'folder',
 				'table' => WORKFLOW_TABLE,
 				'loaded' => 0,
 				'checked' => false,
@@ -55,7 +55,7 @@ class we_workflow_tree extends we_tree_base{
 					'text' => oldHtmlspecialchars(addslashes($v["Text"])),
 					'typ' => 'item',
 					'open' => 0,
-					'contentType' => 'file',
+					'contenttype' => 'file',
 					'table' => FILE_TABLE,
 				);
 			}

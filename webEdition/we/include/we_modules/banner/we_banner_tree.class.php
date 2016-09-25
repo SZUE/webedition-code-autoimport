@@ -34,26 +34,26 @@ class we_banner_tree extends we_tree_base{
 		$db->query('SELECT ID,ParentID,IsFolder,Text FROM ' . BANNER_TABLE . ' WHERE ParentID=' . $ParentId . ' ORDER BY (text REGEXP "^[0-9]") DESC,ABS(text),Text');
 		while($db->next_record()){
 			$IsFolder = $db->f("IsFolder");
-			$items[] = ($IsFolder ? array(
-					'id' => $db->f('ID'),
-					'parentid' => $db->f("ParentID"),
-					'text' => addslashes($db->f("Text")),
-					'typ' => 'group',
-					'open' => 0,
-					'contentType' => 'we/bannerFolder',
-					'table' => BANNER_TABLE,
-					'loaded' => 0,
-					'checked' => false,
-					) :
-					array(
-					'id' => $db->f('ID'),
-					'parentid' => $db->f("ParentID"),
-					'text' => addslashes($db->f("Text")),
-					'typ' => 'item',
-					'open' => 0,
-					'contentType' => 'we/banner',
-					'table' => BANNER_TABLE,
-					)
+			$items[] = ($IsFolder ? [
+				'id' => intval($db->f('ID')),
+				'parentid' => intval($db->f("ParentID")),
+				'text' => addslashes($db->f("Text")),
+				'typ' => 'group',
+				'open' => 0,
+				'contenttype' => 'we/bannerFolder',
+				'table' => BANNER_TABLE,
+				'loaded' => 0,
+				'checked' => false,
+				] :
+				[
+				'id' => intval($db->f('ID')),
+				'parentid' => intval($db->f("ParentID")),
+				'text' => addslashes($db->f("Text")),
+				'typ' => 'item',
+				'open' => 0,
+				'contenttype' => 'we/banner',
+				'table' => BANNER_TABLE,
+				]
 				);
 		}
 		return $items;

@@ -145,12 +145,7 @@ abstract class we_tool_frames extends we_modules_frame{
 		return $this->getHTMLDocument(we_html_element::htmlBody([], we_html_element::htmlForm(['name' => 'we_form'], we_html_element::htmlHiddens(['pnt' => 'cmd',
 							'cmd' => 'no_cmd'])
 					)
-				), we_html_element::jsElement(
-					($pid ?
-						'' :
-						'top.content.treeData.clear();
-top.content.treeData.add(top.content.node.prototype.rootEntry(\'' . $pid . '\',\'root\',\'root\'));'
-					) . $this->Tree->getJSLoadTree(!$pid, $loader->getItems($pid, $offset, $this->Tree->default_segment, ''))));
+				), we_base_jsCmd::singleCmd('loadTree', ['pid' => $pid, 'items' => $loader->getItems($pid, $offset, $this->Tree->default_segment, '')]));
 	}
 
 	protected function getHTMLExitQuestion(){

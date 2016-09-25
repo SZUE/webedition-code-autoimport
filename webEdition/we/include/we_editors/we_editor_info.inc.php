@@ -79,14 +79,13 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 				'');
 
 
-		$parts[] = array(
-			'headline' => '',
-			'html' => $html,
+		$parts[] = ['headline' => '',
+	'html' => $html,
 			'space' => we_html_multiIconBox::SPACE_MED2,
 			'icon' => 'cal.gif'
-		);
+		 ];
 
-		if($GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER){
+if($GLOBALS['we_doc']->ContentType !== we_base_ContentTypes::FOLDER){
 			switch($GLOBALS['we_doc']->Table){
 				case TEMPLATES_TABLE:
 				case VFILE_TABLE:
@@ -207,24 +206,22 @@ $we_transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_cmd', we_
 
 			if($GLOBALS['we_doc']->isBinary()){
 				$formReference = $GLOBALS['we_doc']->formReferences();
-				$parts[] = array(
-					'headline' => g_l('weClass', '[isUsed]') . ' (' . $formReference['num'] . ')',
-					'html' => $formReference['form'],
+				$parts[] = ['headline' => g_l('weClass', '[isUsed]') . ' (' . $formReference['num'] . ')',
+			'html' => $formReference['form'],
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
 					'icon' => 'references.gif'
-				);
-			}
+					];
+	}
 
 			if(isset($metaDataTable)){
-				$parts[] = array(
-					'headline' => '',
-					'html' => $metaDataTable,
+				$parts[] = ['headline' => '',
+			'html' => $metaDataTable,
 					'space' => we_html_multiIconBox::SPACE_MED2,
 					'forceRightHeadline' => 1,
 					'icon' => 'meta.gif'
-				);
-			}
+					];
+	}
 		}
 
 		echo we_html_multiIconBox::getHTML('', $parts, 20);

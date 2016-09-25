@@ -150,6 +150,6 @@ function we_cmd() {
 			top.content.editor.edbody.parent.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=voting&pnt=editor";
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
 }

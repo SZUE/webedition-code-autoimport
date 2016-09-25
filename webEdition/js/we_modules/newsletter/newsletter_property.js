@@ -337,7 +337,8 @@ function we_cmd() {
 			} else if (document.we_form.IsFolder.value == 1) {
 				top.we_showMessage(WE().consts.g_l.newsletter.no_newsletter_selected, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
-				if (confirm(WE().consts.g_l.newsletter.test_email_question)) {
+				//FIXME: check where we get the test-email adress, this has to be set in the stored data.
+				if (confirm(WE().util.sprintf(WE().consts.g_l.newsletter.test_email_question, 'TEST_EMAIL'/* $this->newsletter->Test */))) {
 					document.we_form.ncmd.value = args[0];
 					document.we_form.gview.value = parent.edfooter.document.we_form.gview.value;
 					document.we_form.hm.value = parent.edfooter.document.we_form.hm.value;

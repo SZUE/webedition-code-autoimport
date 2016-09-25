@@ -1252,7 +1252,7 @@ var we_cmd_modules = {
 								if (weResponse.DataArray.items) {
 									if (!weResponse.DataArray.parentFolder) {
 										top.treeData.clear();
-										top.treeData.add(top.node.prototype.rootEntry(weResponse.DataArray.parentFolder, 'root', 'root', weResponse.DataArray.offset));
+										top.treeData.add(top.node.prototype.rootEntry(0, 'root', 'root', weResponse.DataArray.offset));
 									}
 									for (var i = 0; i < weResponse.DataArray.items.length; i++) {
 										if (!weResponse.DataArray.parentFolder || top.treeData.indexOfEntry(weResponse.DataArray.items[i].id) < 0) {

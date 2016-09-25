@@ -77,8 +77,8 @@ class we_tree_newsletter extends we_tree_base{
 				'text' => $db->f('Text'),
 				'path' => $db->f('Path'),
 				'published' => 1,
-				'contentType' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/newsletter'),
-				];
+				'contenttype' => ($db->f('IsFolder') == 1 ? 'folder' : 'we/newsletter'),
+			];
 
 			$fileds = array_change_key_case($db->Record, CASE_LOWER);
 

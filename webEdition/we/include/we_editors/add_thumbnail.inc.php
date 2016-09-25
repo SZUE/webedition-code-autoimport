@@ -69,12 +69,12 @@ while($DB_WE->next_record()){
 
 $editbut = we_html_button::create_button('edit_all_thumbs', "javascript:we_cmd('editThumbs','top.opener.location = top.opener.location;');", false);
 
-$thumbs[] = array("headline" => "", "html" => $thumbnails->getHtml() . '<p style="text-align:right">' . $editbut . '</p>');
+$thumbs[] = ["headline" => "", "html" => $thumbnails->getHtml() . '<p style="text-align:right">' . $editbut . '</p>'];
 
 
 $iframe = '<iframe name="showthumbs" id="showthumbs" src="' . WEBEDITION_DIR . 'showThumb.php?u=' . $uniqid . '&t=' . $we_transaction . '&id=' . $selectedID . '" style="width:340px;height:130px;"></iframe>';
 
-$thumbs[] = array("headline" => "", "html" => $iframe);
+$thumbs[] = ["headline" => "", "html" => $iframe];
 
 $addbut = we_html_button::create_button(we_html_button::OK, "javascript:add_thumbnails();", false, 0, 0, "", "", !$enabled_buttons, false);
 $cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.close();");
@@ -82,4 +82,4 @@ $cancelbut = we_html_button::create_button(we_html_button::CANCEL, "javascript:t
 $buttons = we_html_button::position_yes_no_cancel($addbut, null, $cancelbut);
 
 $dialog = we_html_multiIconBox::getHTML("", $thumbs, 30, $buttons, -1, "", "", false, g_l('weClass', '[thumbnails]'));
-echo we_html_element::htmlBody(array('class' => "weDialogBody", "style" => "overflow: hidden;", "onload" => "top.focus();"), $dialog) . "</html>";
+echo we_html_element::htmlBody(['class' => "weDialogBody", "style" => "overflow: hidden;", "onload" => "top.focus();"], $dialog) . "</html>";

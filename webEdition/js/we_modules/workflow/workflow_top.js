@@ -111,7 +111,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=workflow&pnt=qlog", "log_question", -1, -1, 360, 230, true, false, true);
 			break;
 		default:
-			top.opener.top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
+			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 
 	}
 }
