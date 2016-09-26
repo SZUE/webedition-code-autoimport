@@ -172,10 +172,13 @@ function we_cmd() {
 			top.content.editor.edbody.document.we_form.pnt.value = "cmd";
 			top.content.editor.edbody.submitForm("cmd");
 			break;
+		case "dyn_preview":
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=dyn_preview";
+			new (WE().util.jsWindow)(window, url, "we_navigation_dyn_preview", -1, -1, 480, 350, true, true, true);
+			break;
 		case "populateWorkspaces":
 			WE().layout.button.switch_button_state(document, 'open_navigation_obj', opener.document.we_form.elements.LinkID.value > 0 ? 'enabled' : 'disabled');
 			/*falls through*/
-		case "dyn_preview":
 		case "create_template":
 		case "populateFolderWs":
 			top.content.editor.edbody.document.we_form.cmd.value = args[0];
@@ -209,7 +212,7 @@ function we_cmd() {
 			}
 			break;
 		case "show_search":
-			keyword = top.content.we_form_treefooter.keyword.value;
+			var keyword = top.content.we_form_treefooter.keyword.value;
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 580, 400, true, true, true, false);
 			break;
 

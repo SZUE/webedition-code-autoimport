@@ -88,7 +88,7 @@ function we_cmd() {
 			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=cmd&cmd=delete_user";
 			break;
 		case "show_search":
-			keyword = top.content.we_form_treefooter.keyword.value;
+			var keyword = top.content.we_form_treefooter.keyword.value;
 			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 580, 400, true, true, true, false);
 			break;
 		case "new_organization":

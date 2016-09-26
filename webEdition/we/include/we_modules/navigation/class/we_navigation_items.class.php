@@ -37,10 +37,10 @@ class we_navigation_items{
 	var $rootItem = 0;
 	var $hasCurrent = false;
 	var $currentRules = [];
-	private static $Storage = array(
+	private static $Storage = [
 		'items' => [],
-		'ids' => array(0 => '/'),
-	);
+		'ids' => [0 => '/'],
+	];
 
 	static function getCustomerData(we_navigation_navigation $navi){
 		//FIXME: check if we need this csv/unserialize code any more
@@ -61,20 +61,18 @@ class we_navigation_items{
 		}
 
 		return ($navi->LimitAccess ?
-				array(
-				'id' => $navi->AllCustomers == 0 ? $navi->Customers : [],
+				['id' => $navi->AllCustomers == 0 ? $navi->Customers : [],
 				'filter' => $navi->ApplyFilter == 1 ? $navi->CustomerFilter : [],
 				'blacklist' => $navi->ApplyFilter == 1 ? $navi->BlackList : [],
 				'whitelist' => $navi->ApplyFilter == 1 ? $navi->WhiteList : [],
 				'usedocumentfilter' => $navi->UseDocumentFilter ? 1 : 0
-				) :
-				array(
-				'id' => '',
+				] :
+				['id' => '',
 				'filter' => '',
 				'blacklist' => '',
 				'whitelist' => '',
 				'usedocumentfilter' => 1
-		));
+		]);
 	}
 
 	private function initRulesFromDB(){
@@ -207,7 +205,7 @@ class we_navigation_items{
 		$currentWorkspace = $isObject ? //webEdition object
 			(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
 				we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/') . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/')), $GLOBALS['WE_MAIN_DOC']->Workspaces, 0, $GLOBALS['DB_WE']) :
-			parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
+				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
 			) : //webEdition document
 			$GLOBALS['WE_MAIN_DOC']->Path;
 
@@ -359,9 +357,11 @@ class we_navigation_items{
 	 * 	$rootTemplate = '<we:navigationEntries />';
 	 */
 	private function setDefaultTemplates(){
-		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array('name' => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array('name' => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', we_base_ContentTypes::FOLDER, self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
-		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array('name' => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array('name' => "text")) . '); ?></a></li>', 'item', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
-		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+		if(empty($this->templates)){
+			$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array('name' => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array('name' => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', we_base_ContentTypes::FOLDER, self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+			$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array('name' => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array('name' => "text")) . '); ?></a></li>', 'item', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+			$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+		}
 	}
 
 	private function getDefaultTemplate($item){

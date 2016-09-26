@@ -163,12 +163,6 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				break;
 			case 'switchPage':
 				break;
-			case 'show_admin':
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('
-url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=customer_admin";
-new (WE().util.jsWindow)(window, url,"customer_admin",-1,-1,600,420,true,true,true,false);');
-				break;
 			case 'save_field':
 				$branch = we_base_request::_(we_base_request::STRING, 'branch');
 				$field = we_base_request::_(we_base_request::STRING, 'field');
@@ -356,12 +350,6 @@ close();');
 				}
 
 				break;
-			case 'show_sort_admin':
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('var url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=sort_admin";
-new (WE().util.jsWindow)(window, url,"sort_admin",-1,-1,750,500,true,true,true,true);');
-
-				break;
 			case 'add_sort':
 				$cout = 0;
 				$found = false;
@@ -416,26 +404,6 @@ opener.top.content.applySort();
 self.close();');
 				break;
 			case 'applySort':
-				break;
-			case 'show_search':
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('var url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
-						new (WE().util.jsWindow)(window, url,"search",-1,-1,650,600,true,true,true,false);');
-				break;
-			case 'show_customer_settings':
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('var url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings";
-						new (WE().util.jsWindow)(window, url,"customer_settings",-1,-1,550,250,true,true,true,false);');
-				break;
-			case 'import_customer':
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('var url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import";
-						new (WE().util.jsWindow)(window, url,"import_customer",-1,-1,640,600,true,true,true,false);');
-				break;
-			case 'export_customer':
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('var url =WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=export";
-						new (WE().util.jsWindow)(window, url,"export_customer",-1,-1,640,600,true,true,true,false);');
 				break;
 			case 'save_settings':
 				foreach($this->settings->getAllSettings() as $k => $v){

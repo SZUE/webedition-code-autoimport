@@ -110,18 +110,26 @@ function we_cmd() {
 			top.content.editor.edbody.submitForm();
 			break;
 		case "show_admin":
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=customer_admin";
+			new (WE().util.jsWindow)(window, url, "customer_admin", -1, -1, 600, 420, true, true, true, false);
+			break;
 		case "show_sort_admin":
-			if (top.content.editor.edbody.document.we_form.cmd.value === "home") {
-				top.content.editor.edbody.document.we_form.home.value = 1;
-			}
-			top.content.editor.edbody.document.we_form.cmd.value = args[0];
-			top.content.editor.edbody.document.we_form.cmdid.value = args[1];
-			top.content.editor.edbody.submitForm();
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=sort_admin";
+			new (WE().util.jsWindow)(window, url, "sort_admin", -1, -1, 750, 500, true, true, true, true);
+			break;
+		case "show_customer_settings":
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings";
+			new (WE().util.jsWindow)(window, url, "customer_settings", -1, -1, 550, 250, true, true, true, false);
+			break;
+		case "export_customer":
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=export";
+			new (WE().util.jsWindow)(window, url, "export_customer", -1, -1, 640, 600, true, true, true, false);
+			break;
+		case "import_customer":
+			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import";
+			new (WE().util.jsWindow)(window, url, "import_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		case "show_search":
-		case "show_customer_settings":
-		case "export_customer":
-		case "import_customer":
 			top.content.editor.edbody.we_cmd(args[0]);
 			break;
 		case "load":

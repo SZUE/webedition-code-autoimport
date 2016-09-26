@@ -299,13 +299,6 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 				$this->Model->Selection = we_navigation_navigation::SELECTION_NODYNAMIC;
 				$this->Model->saveField('Selection');
 				break;
-			case 'dyn_preview':
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('
-						url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=dyn_preview";
-						new (WE().util.jsWindow)(window, url,"we_navigation_dyn_preview",-1,-1,480,350,true,true,true);'
-				);
-				break;
 			case 'create_template':
 				echo we_html_element::jsElement(
 					'top.content.opener.top.we_cmd("new","' . TEMPLATES_TABLE . '","","' . we_base_ContentTypes::TEMPLATE . '","","' . base64_encode($this->Model->previewCode) . '");
@@ -374,11 +367,6 @@ setTimeout(top.we_showMessage,500,"' . g_l('navigation', ($this->Model->IsFolder
 					}
 				}
 				break;
-			case 'show_search':
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('url=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=navigation&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
-						new (WE().util.jsWindow)(window, url,"search",-1,-1,650,600,true,true,true,false);');
-				return;
 
 			default:
 		}
