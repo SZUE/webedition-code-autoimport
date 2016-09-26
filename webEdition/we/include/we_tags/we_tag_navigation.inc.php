@@ -27,7 +27,9 @@ function we_tag_navigation(array $attribs){
 	$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 	$name = weTag_getAttribute('navigationname', $attribs, 'default', we_base_request::STRING);
 
-	$GLOBALS['we_navigation'][$name] = new we_navigation_items();
+	if(empty($GLOBALS['we_navigation'][$name]) || !$GLOBALS['we_navigation'][$name] instanceof we_navigation_items){
+		$GLOBALS['we_navigation'][$name] = new we_navigation_items();
+	}
 	$realId = ($id ? : ($parentid != -1 ? $parentid : 0));
 	$showRoot = ($id ? true : ($parentid == -1));
 	$GLOBALS['we_navigation'][$name]->init($realId, $showRoot);
