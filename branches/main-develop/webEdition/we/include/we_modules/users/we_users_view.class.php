@@ -419,11 +419,6 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 				return $this->new_group();
 			case 'new_alias':
 				return $this->new_alias();
-			case 'show_search':
-				echo we_html_element::jsScript(JS_DIR . 'global.js', 'initWE();') .
-				we_html_element::jsElement('var url=WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=users&pnt=search&search=1&keyword=' . we_base_request::_(we_base_request::STRING, "keyword") . '";
-						new (WE().util.jsWindow)(window, url,"search",-1,-1,650,600,true,true,true,false);');
-				return;
 			case 'new_user':
 				return $this->new_user();
 			case 'display_user':

@@ -180,7 +180,7 @@ abstract class we_modules_frame{
 
 		$table = $hiddens .
 			we_html_tools::htmlTextInput("keyword", 10, '', '', 'placeholder="' . g_l('buttons_modules_message', '[search][alt]') . '"', "text", "150px") .
-			we_html_button::create_button(we_html_button::SEARCH, "javascript:submitForm('cmd', '', '', 'we_form_treefooter')");
+			we_html_button::create_button(we_html_button::SEARCH, "javascript:we_cmd('show_search')");
 
 		return we_html_element::jsElement($this->View->getJSSubmitFunction('cmd')) .
 			we_html_element::htmlDiv(['id' => 'search', 'style' => 'display:block'], we_html_element::htmlForm(['name' => 'we_form_treefooter', 'target' => 'cmd'], $table));

@@ -35,12 +35,7 @@ we_cmd_modules.customer = function (args, url) {
 		case "save_customer":
 		case "delete_customer":
 		case "exit_customer":
-		case "show_admin":
-		case "show_sort_admin":
-		case "show_customer_settings":
 		case "show_search":
-		case "import_customer":
-		case "export_customer":
 			var wind = WE().util.jsWindow.prototype.find('edit_module');
 			if (wind) {
 				wind.content.we_cmd(args[0]);
