@@ -130,10 +130,27 @@ function we_cmd() {
 			new (WE().util.jsWindow)(window, url, "import_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		case "show_search":
-			top.content.editor.edbody.we_cmd(args[0]);
+			var keyword = top.content.we_form_treefooter.keyword.value;
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=search&search=1&keyword=" + keyword, "search", -1, -1, 650, 600, true, true, true, false);
 			break;
 		case "load":
 			top.content.cmd.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=cmd&pid=" + args[1] + "&offset=" + args[2] + "&sort=" + args[3];
+			break;
+		case "we_users_selector":
+			new (WE().util.jsWindow)(this, url, "browse_users", -1, -1, 500, 300, true, false, true);
+			break;
+		case "we_selector_image":
+		case "we_selector_document":
+			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1, WE().consts.size.docSelect.width, WE().consts.size.docSelect.height, true, true, true, true);
+			break;
+		case "show_customer_settings":
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=settings", "customer_settings", -1, -1, 570, 270, true, true, true, false);
+			break;
+		case "export_customer":
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=export", "export_customer", -1, -1, 640, 600, true, true, true, false);
+			break;
+		case "import_customer":
+			new (WE().util.jsWindow)(this, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=import", "import_customer", -1, -1, 640, 600, true, true, true, false);
 			break;
 		default:
 			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
