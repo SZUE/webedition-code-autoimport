@@ -113,7 +113,7 @@ class we_navigation_items{
 			self::$cache[$parentid] = $this->items;
 		}
 
-		if(is_object($this->items['id' . $parentid])){
+		if(!empty($this->items['id' . $parentid]) && is_object($this->items['id' . $parentid])){
 			$this->items['id' . $parentid]->type = !$showRoot || $parentid == 0 ? 'root' : we_base_ContentTypes::FOLDER;
 		}
 		$this->currentRules = we_navigation_cache::getCachedRule();
@@ -360,10 +360,10 @@ class we_navigation_items{
 	 */
 	private function setDefaultTemplates(){
 		if(empty($this->templates)){
-		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', we_base_ContentTypes::FOLDER, self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
-		$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>', 'item', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
-		$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
-	}
+			$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a><?php if(' . we_tag_tagParser::printTag('ifHasEntries') . '){ ?><ul><?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?></ul><?php } ?></li>', we_base_ContentTypes::FOLDER, self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+			$this->setTemplate('<li><a href="<?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "href")) . '); ?>"><?php printElement( ' . we_tag_tagParser::printTag('navigationField', array("name" => "text")) . '); ?></a></li>', 'item', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+			$this->setTemplate('<?php printElement( ' . we_tag_tagParser::printTag('navigationEntries') . '); ?>', 'root', self::TEMPLATE_DEFAULT_LEVEL, self::TEMPLATE_DEFAULT_CURRENT, self::TEMPLATE_DEFAULT_POSITION);
+		}
 	}
 
 	private function getDefaultTemplate($item){
