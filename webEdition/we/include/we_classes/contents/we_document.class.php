@@ -1078,7 +1078,7 @@ class we_document extends we_root{
 			);
 	}
 
-	function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){
+	static function getLinkHref($link, $parentID, $path, we_database_base $db = null, $hidedirindex = false, $objectseourls = false){
 		$db = ($db ?: new DB_WE());
 
 // Bug Fix 8170&& 8166
