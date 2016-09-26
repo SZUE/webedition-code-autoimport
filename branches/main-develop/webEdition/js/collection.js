@@ -592,7 +592,7 @@ weCollectionEdit = {
 		}
 
 		if (last) {
-			newItem.setAttribute("name", "last");
+			newItem.setAttribute('name', 'lastItem_' + this.gui.view);
 		}
 		t.resetItemColors(newItem);
 		t.addListenersToItem(viewPlusSub, newItem, last, t.content.maxIndex, item.id, item.type);
@@ -752,11 +752,11 @@ weCollectionEdit = {
 		switch (this.gui.view) {
 			case 'grid':
 				elem = type === 'space' ? el.getElementsByClassName('divSpace')[0] : el.getElementsByClassName('divContent')[0];
-				elem.style.border = (el.getAttribute('name') === 'last' ? set.borderLast : set.border);
+				elem.style.border = (el.getAttribute('name') === 'lastItem_grid' ? set.borderLast : set.border);
 				elem.style.backgroundColor = set.backgroundColor;
 				break;
 			case 'list':
-				el.style.border = (el.getAttribute('name') === 'last' ? set.borderLast : set.border);
+				el.style.border = (el.getAttribute('name') === 'lastItem_list' ? set.borderLast : set.border);
 				el.firstChild.style.backgroundColor = set.backgroundColor;
 				break;
 		}
@@ -1049,7 +1049,10 @@ weCollectionEdit = {
 		};
 	},
 	callForValidItemsAndInsert: function (index, csvIDs, message, notReplace) {
+		index = Number.isInteger(parseInt(index)) && parseInt(index) > 0 ? parseInt(index) : 
+					document.getElementsByName('lastItem_' + this.gui.view)[0].id.substr(10);
 		notReplace = notReplace !== undefined ? notReplace : false;
+
 		try {
 			if (csvIDs) {
 				postData = 'we_cmd[transaction]=' + encodeURIComponent(this.we_doc.we_transaction);
