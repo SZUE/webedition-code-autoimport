@@ -682,7 +682,7 @@ abstract class we_base_file{
 		$d->close();
 	}
 
-	public function cleanWECache(){
+	public static function cleanWECache(){
 		if(defined('WE_VERSION_UPDATE')){
 			if(!is_writeable(WE_CACHE_PATH)){
 				t_e('cachedir ' . WE_CACHE_PATH . ' is not writeable expect errors, undefined behaviour');
