@@ -26,17 +26,22 @@
 include_once(dirname(__FILE__) . '/rpcGetValidItemsByIDCmd.class.php');
 
 class rpcInsertValidItemsByIDCmd extends rpcGetValidItemsByIDCmd{
+	protected $position = -1;
 
 	function __construct(){
+		$this->position = we_base_request::_(we_base_request::INT, 'we_cmd', -1, 'position');
 		parent::__construct();
+	}
+
+	protected function initByRequest(){
+		parent::initByRequest();
 	}
 
 	function execute(){
 		$validItems = $this->getValidItems();
-		$insertPos = -1; // used by addFromTree => loop through commands!
 
 		if(($validItems = $this->getValidItems())){
-			$result = $this->collection->addItemsToCollection($validItems, $this->initSessDat ? $insertPos : -1);
+			$result = $this->collection->addItemsToCollection($validItems, $this->position);
 			if($this->initSessDat){
 				$this->collection->saveInSession($_SESSION['weS']['we_data'][$this->transaction]);
 			} else {

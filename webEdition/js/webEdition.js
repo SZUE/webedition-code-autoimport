@@ -1820,16 +1820,19 @@ var we_cmd_modules = {
 				new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 				break;
 			case 'collection_insertFiles_direct':
-				if(args[2]){
+				var collection = args[2] !== undefined ? parseInt(args[2]) : 0;
+				var ids = args[1] !== undefined ? (args[1].success !== undefined ? args[1].success : args[1]) : [];
+
+				if(collection && ids){
 					var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
-						collID = parseInt(args[2]),
 						editor = null,
-						transaction = '', // args[3], we should only use transactions verified here!
-						frameId, candidate;
+						index = args[3] !== undefined ? args[3] : -1,
+						recursive = args[5] !== undefined ? args[5] : false,
+						transaction, frameId, candidate;
 
 					for (frameId in usedEditors) {
 						candidate = usedEditors[frameId];
-						if (candidate.getEditorEditorTable() === WE().consts.tables.VFILE_TABLE && parseInt(candidate.getEditorDocumentId()) === collID){
+						if (candidate.getEditorEditorTable() === WE().consts.tables.VFILE_TABLE && parseInt(candidate.getEditorDocumentId()) === collection){
 							if(candidate.getEditorEditPageNr() == 1) {
 								editor = candidate;
 							} else {
@@ -1840,9 +1843,10 @@ var we_cmd_modules = {
 					}
 
 					if(editor){
-						editor.getContentEditor().weCollectionEdit.insertImportedDocuments(args[1].success);
+						editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, ids.join(), 'bla', recursive, true);
 					} else {
-						we_cmd('collection_insertFiles_rpc', args[1].success, collID, transaction);
+						var position = args[3] !== undefined ? args[3] : -1;
+						we_cmd('collection_insertFiles_rpc', ids, collection, transaction, position, recursive);
 					}
 				}
 				break;
@@ -1852,7 +1856,8 @@ var we_cmd_modules = {
 				postData += '&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0);
 				postData += '&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '');
 				postData += '&we_cmd[full]=0';
-				postData += '&we_cmd[recursive]=' + encodeURIComponent(args[4] ? args[4] : 0);
+				postData += '&we_cmd[position]=' + encodeURIComponent(args[4] ? args[4] : -1);
+				postData += '&we_cmd[recursive]=' + encodeURIComponent(args[5] ? args[4] : 0);
 
 				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
 					// make optional use of nextCmd possible here!

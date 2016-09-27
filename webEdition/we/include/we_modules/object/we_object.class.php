@@ -1266,7 +1266,7 @@ class we_object extends we_document{
 
 		$btnDelete = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['" . $idname . "'].value='';document.we_form.elements['" . $textname . "'].value=''");
 
-		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','" . $idname . "','" . $textname . "',-1,'" . stripTblPrefix(VFILE_TABLE) . "');", true, 0, 0, "", "", false, false);
+		$btnNewCollection = we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix(VFILE_TABLE) . "');", true, 0, 0, "", "", false, false);
 
 		/*
 		  DAMD: der Autocompleter funktioniert hier nicht...

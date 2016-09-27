@@ -301,7 +301,7 @@ weCollectionEdit = {
 				}
 
 				elem.getElementsByClassName('collectionItem_btnAddFromTree')[0].addEventListener('click', function (e) {
-					weCollectionEdit.doClickAddItems(this)
+					weCollectionEdit.doClickAddItems(this);
 				}, false);
 			case 'listMinimal':
 				view = 'list';
@@ -391,7 +391,7 @@ weCollectionEdit = {
 	},
 	doClickAddItems: function (elem) {
 		var el = elem ? this.getItem(elem) : null,
-						index = el ? el.id.substr(10) : 0,
+						index = el ? el.id.substr(10) : -1,
 						pos = -1;
 
 		if (el) {
@@ -1048,7 +1048,7 @@ weCollectionEdit = {
 			removed: false,
 		};
 	},
-	callForValidItemsAndInsert: function (index, csvIDs, message, notReplace) {
+	callForValidItemsAndInsert: function (index, csvIDs, message, notReplace, recursive) {
 		index = Number.isInteger(parseInt(index)) && parseInt(index) > 0 ? parseInt(index) : 
 					document.getElementsByName('lastItem_' + this.gui.view)[0].id.substr(10);
 		notReplace = notReplace !== undefined ? notReplace : false;
@@ -1059,7 +1059,8 @@ weCollectionEdit = {
 				postData += '&we_cmd[ids]=' + encodeURIComponent(csvIDs);
 				postData += '&we_cmd[collection]=' + encodeURIComponent(this.we_doc.docId);
 				postData += '&we_cmd[full]=' + encodeURIComponent(1);
-				postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.docName + '_InsertRecursive'].checked);
+				postData += '&we_cmd[recursive]=' + encodeURIComponent(recursive);
+				//postData += '&we_cmd[recursive]=' + encodeURIComponent(document.we_form['check_we_' + weCollectionEdit.we_doc.docName + '_InsertRecursive'].checked);
 
 				xhr = new XMLHttpRequest();
 				xhr.onreadystatechange = function () {
@@ -1099,14 +1100,3 @@ weCollectionEdit = {
 
 	}
 };
-
-function doFileUploader(table, ID) {
-	var fc, editorID, frame, ce;
-	if ((fc = WE().layout.weEditorFrameController) && (editorID = fc.getEditorIdOfOpenDocument(table, ID)) && (fc.getEditorEditPageNr(editorID) == 1) && (frame = fc.getEditorFrame(editorID)) && (ce = frame.getContentEditor().weCollectionEdit)) {
-		ce.insertImportedDocuments(scope.sender.resp.success);
-	} else {
-		top.opener.top.console.debug('error: collection closed or changed tab');
-	}
-	top.close();
-}
-
