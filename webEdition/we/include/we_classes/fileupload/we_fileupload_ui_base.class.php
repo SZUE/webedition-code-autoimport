@@ -143,78 +143,22 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->isInternalBtnUpload = $flag;
 	}
 
-	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', array $contentType = [], $callback = [], $writebackId = '', $writebackTarget = '', $predefinedCallbackInt = '', $predefinedCallbackExt = '', $dropFromTree = true, $dropFromExt = true, $table = ''){
-		// FIXME: replace all PHP in JS by JS-params (to avoid "indexed" function names for hadleDrop(), doDragFromExternal() and doDragFromTree)
-		// => then move this JS to separate file to be included in edit headers once!
-
+	public static function getExternalDropZone($name = 'we_File', $content = '', $style = '', $dragFromTree = true, $dragFromExt = true, $jsCmdTree = '', $jsCmdExt = '', array $contentTypes = [], $table = ''){
 		if(!self::isDragAndDrop()){
 			return $content;
 		}
+
 		$table = $table ? : FILE_TABLE;
-		$callback = array_merge(['external' => '', 'tree' => ''], $callback);
+		$cts = $contentTypes ? ',' . implode(',', $contentTypes) . ',' : '';
 
-		// // FIXME: make the following functions more concise und move to extarnal js file
-		$js = we_html_element::jsElement('
-handleDragOver = function(e, name){
-	if(e.preventDefault){
-		e.preventDefault();
-	}
-	try {
-		document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag we_file_drag_hover";
-	} catch(e){}
-}
-
-handleDragLeave = function(e, name){
-	try {
-		document.getElementById("div_" + name + "_fileDrag").className = "we_file_drag";
-	} catch(e){}
-}
-
-handleDrop' . md5($name) . ' = function(e, writebackId, writebackTarget,divName){
-	var text, files;
-
-	try {
-		document.getElementById("div_"+divName+"_fileDrag").className = "we_file_drag";
-	} catch(e){}
-
-	e.preventDefault();
-	e.stopPropagation();
-
-	if(text = e.dataTransfer.getData("text")){
-		if(' . ($dropFromTree ? 'true' : 'false') . '){
-			switch(text.split(",")[0]){
-				case "dragItem": // drag from tree
-					doDragFromTree' . md5($name) . '(text, writebackId);
-					break;
-				default:
-					// more cases to come
-			}
-		} else {alert("no drop from tree here");}
-	} else if(e.dataTransfer.files){
-		if(' . ($dropFromExt ? 'true' : 'false') . '){
-			doDragFromExternal' . md5($name) . '(e.dataTransfer.files, writebackTarget);
-		} else {alert("no drop from external here");}
-	}
-}
-
-doDragFromExternal' . md5($name) . ' = function(files, writebackTarget){
-	document.presetFileupload = files;
-	top.we_cmd("we_fileupload_editor", "' . implode(',', $contentType) . '", 1, "", writebackTarget, "' . $callback['external'] . '", 0, 0, "' . $predefinedCallbackExt . '", true);
-}
-doDragFromTree' . md5($name) . ' = function(text, writebackId){
-	var data = text.split(",");
-
-	cts = "' . (empty($contentType) ? '' : ',' . implode(',', $contentType) . ',') . '";
-	if(data[2] && data[1] === "' . $table . '" && (cts === "" || cts.search("," + data[3])) != -1){
-		var table = data[1], id = data[2], ct = data[3], path = data[4];
-		' . (strpos($callback['tree'], 'WECMDENC_') !== false ? base64_decode(urldecode(substr($callback['tree'], 9))) : $callback['tree']) . '
-	}
-}
-');
-
-		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . $js .
-			we_html_element::htmlDiv(['id' => 'div_' . $name . '_fileDrag', 'class' => 'we_file_drag', 'ondrop' => 'handleDrop' . ($name ? md5($name) : '') . '(event, \'' . $writebackId . '\', \'' . $writebackTarget . '\',\'' . $name . '\');',
-				'ondragover' => 'handleDragOver(event, \'' . $name . '\');', 'ondragleave' => 'handleDragLeave(event, \'' . $name . '\');', 'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style], $content);
+		return we_html_element::cssLink(CSS_DIR . 'we_fileupload.css') . we_html_element::jsScript(JS_DIR . 'we_fileupload_externalDropzone.js') . // insert this in every top
+			we_html_element::htmlDiv(['id' => 'div_' . $name . '_fileDrag', 
+					'class' => 'we_file_drag', 
+					'ondrop' => "handleDrop(event,'" . $name . "', " . ($dragFromTree ? 'true' : 'false') . ", " . ($dragFromExt ? 'true' : 'false') . ", '" . $jsCmdTree . "', '" . $jsCmdExt . "', '" . $cts . "', '" . $table . "');",
+					'ondragover' => "handleDragOver(event, '" . $name . "');", 
+					'ondragleave' => "handleDragLeave(event, '" . $name . "');", 
+					'style' => 'margin-top:0.5em;display:' . (self::isDragAndDrop() ? 'block;' : 'none;') . $style
+				], $content);
 	}
 
 	public function getButtonWrapped($type, $disabled = false, $width = 170, $notWrapped = false){
