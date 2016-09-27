@@ -26,6 +26,7 @@ we_html_tools::protect(); // FIXME: use perms
 $collection = new we_collection();
 $collection->we_new();
 
+$cmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 $name = we_base_request::_(we_base_request::STRING, 'we_name', '');
 $fixedPID = we_base_request::_(we_base_request::INT, 'fixedpid', -1);
 $fixedRemTable = we_base_request::_(we_base_request::STRING, 'fixedremtable', '');
@@ -34,8 +35,6 @@ $collection->ParentID = $fixedPID !== -1 ? $fixedPID : we_base_request::_(we_bas
 $collection->ParentPath = id_to_path($collection->ParentID, $collection->Table);
 $collection->remTable = stripTblPrefix(FILE_TABLE); // FIXME: make dynamic when implementing object collections
 //$collection->remTable = $fixedRemTable ? : we_base_request::_(we_base_request::STRING, 'we_' . $name . '_remTable');
-
-$caller = we_base_request::_(we_base_request::STRING, 'caller');
 
 $id = 0;
 $saveSuccess = false;
@@ -55,12 +54,11 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	if(($jsMessage = $collection->checkFieldsOnSave())){
 		$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
 	} else {
-		$saveSuccess = $collection->we_save();
-		if($saveSuccess){
-			$jsMessage = $caller == 'selector' ? '' : sprintf(g_l('weEditor', '[text/weCollection][response_save_ok]'), $collection->Text);
+		if(($saveSuccess = $collection->we_save())){
+			$jsMessage = sprintf(g_l('weEditor', '[text/weCollection][response_save_ok]'), $collection->Text);
 			$jsMessageType = we_message_reporting::WE_MESSAGE_NOTICE;
 			$id = f('SELECT ID FROM ' . VFILE_TABLE . ' WHERE Text ="' . $collection->Text . '" AND ParentID=' . $collection->ParentID . ' LIMIT 1');
-			$writeBack = array(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1), we_base_request::_(we_base_request::CMD, 'we_cmd', '', 2));
+			$jsCommandOnSuccess = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1);
 		} else {
 			$jsMessage = 'unknown error ';
 			$jsMessageType = we_message_reporting::WE_MESSAGE_ERROR;
@@ -68,64 +66,26 @@ if(we_base_request::_(we_base_request::BOOL, 'dosave')){
 	}
 }
 
+$jsDynamicVars = ['name' => $collection->Name,
+	'cmd' =>  $cmd,
+	'scriptName' => $_SERVER['SCRIPT_NAME'],
+	'cmdOnSuccess' => $jsCommandOnSuccess,
+	'data' => ['id' => $id, 'text' => $collection->Path]
+	
+];
+
+$jsCmd = new we_base_jsCmd();
+if($jsMessage){
+	$jsCmd->addCmd('msg', ['msg' => $jsMessage, 'prio' => $jsMessageType]);
+}
+if($saveSuccess){
+	$jsCmd->addCmd('do_onSuccess');
+}
+
 echo we_html_tools::getHtmlTop('Neue Sammlung'/* FIXME: missing title */, '', '', we_html_element::jsScript(JS_DIR . 'collection.js') .
-	we_html_element::jsElement('
-var name = "' . $collection->Name . '";
-var _EditorFrame = {};
-_EditorFrame.setEditorIsHot = function(){};
-var pathOfDocumentChanged = false;
-
-function we_submitForm(url){
-	var f = self.document.we_form;
-	if (!f.checkValidity()) {
-		top.we_showMessage(WE().consts.g_l.main.save_error_fields_value_not_valid, WE().consts.message.WE_MESSAGE_ERROR, window);
-		return false;
-	}
-	f.action = url;
-	f.method = "post";
-	f.submit();
-	return true;
-}
-
-function we_cmd() {
-	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args);
-
-var cmd = "' . we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) . '";
-
-	switch (args[0]) {
-		case "we_selector_directory":
-			new (WE().util.jsWindow)(this, url, "we_fileselector", -1, -1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height, true, true, true, true);
-			break;
-		case "we_selector_category":
-			new (WE().util.jsWindow)(this, url, "we_catselector", -1, -1,WE().consts.size.docSelect.width,WE().consts.size.docSelect.height, true, true, true, true);
-			break;
-		case "close":
-			window.close();
-			break;
-		case "save_notclose":
-			if(document.we_form["we_" + name + "_Filename"].value){
-				document.we_form["we_cmd[0]"].value = cmd;
-				document.we_form["dosave"].value = 1;
-				we_submitForm("' . $_SERVER['SCRIPT_NAME'] . '");
-			} else {
-				alert("no name set");
-			}
-			break;
-		case "do_onSuccess":
-			' . ($caller === 'selector' ? 'opener.top.reloadDir();
-			opener.top.unselectAllFiles();
-			opener.top.doClick(' . $id . ', 0);
-			setTimeout(opener.top.selectFile, 200,' . $id . ');' :
-			((isset($writeBack[0]) && $writeBack[0] && isset($writeBack[1])) ? 'opener.' . $writeBack[0] . ' = ' . $id . ';
-			opener.' . $writeBack[1] . ' = "' . $collection->Path . '";' : '')) . '
-			window.close();
-			break;
-		default:
-			top.we_cmd.apply(this, Array.prototype.slice.call(arguments));
-	}
-}
-' . (!empty($jsMessage) ? we_message_reporting::getShowMessageCall($jsMessage, $jsMessageType) : '') . ($saveSuccess ? 'we_cmd("do_onSuccess");' : '')));
+		we_html_element::jsScript(JS_DIR . '/dialogs/we_dialog_newCollection.js', '', ['id' => 'loadVarWe_dialog_newCollection', 'data-dialog' => setDynamicVar($jsDynamicVars)]) .
+		$jsCmd->getCmds()
+	);
 
 $parts[] = ['headline' => g_l('weClass', '[path]'), 'html' => $collection->formPath($fixedPID !== -1, true), 'noline' => 1];
 $parts[] = ['headline' => 'Inhalt', 'html' => $collection->formContent(true), 'noline' => 1];
@@ -142,7 +102,7 @@ $content = we_html_element::htmlHiddens([
 	]) .
 	we_html_multiIconBox::getHTML(
 		'weNewCollection', $parts, 30, we_html_button::position_yes_no_cancel(
-			we_html_button::create_button(we_html_button::SAVE, 'javascript:we_cmd(\'save_notclose\');'), '', we_html_button::create_button(we_html_button::CLOSE, 'javascript:we_cmd(\'close\');')
+			we_html_button::create_button(we_html_button::SAVE, "javascript:we_cmd('save_notclose');"), '', we_html_button::create_button(we_html_button::CLOSE, "javascript:we_cmd('close');")
 		), -1, '', '', false, g_l('buttons_global', '[new_collection][value]'));
 
 echo we_html_element::htmlBody(

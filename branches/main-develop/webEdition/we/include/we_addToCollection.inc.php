@@ -27,7 +27,6 @@ $targetCollection = we_base_request::_(we_base_request::INT, 'we_cmd', '', 3);
 $targetCollectionPath = we_base_request::_(we_base_request::URL, 'we_cmd', '', 4);
 $insertIndex = we_base_request::_(we_base_request::STRING, 'we_cmd', 0, 5);
 $insertPos = ($pos = we_base_request::_(we_base_request::INT, 'we_cmd', -1, 6)) !== -1 ? $pos : (we_base_request::_(we_base_request::INT, 'we_targetInsertPos', -1));
-$msg = '';
 
 /* FIXME: adapt when collection perms are implemented
  *
@@ -42,53 +41,13 @@ $msg = '';
 $yuiSuggest = & weSuggest::getInstance();
 $cmd0 = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0);
 
-if($cmd0 === 'do_addToCollection'){
-	if(($targetCollection = we_base_request::_(we_base_request::INT, 'we_target', 0)) === 0){
-		$msg = we_message_reporting::jsMessagePush(g_l('alert', '[move_no_dir]'), we_message_reporting::WE_MESSAGE_ERROR);
-	} elseif(!($sel = we_base_request::_(we_base_request::INTLISTA, 'sel', []))){
-		$msg = we_message_reporting::jsMessagePush(g_l('alert', '[nothing_to_move]'), we_message_reporting::WE_MESSAGE_ERROR);
-	} else {
-		$collection = new we_collection();
-		$isSession = false;
-		if(($transaction = we_base_request::_(we_base_request::TRANSACTION, 'we_targetTransaction', '')) && isset($_SESSION['weS']['we_data'][$transaction])){
-			$isSession = true;
-			$collection->we_initSessDat($_SESSION['weS']['we_data'][$transaction]);
-		} else if(($collectionID = we_base_request::_(we_base_request::INT, 'we_target', 0))){
-			$collection->initByID($collectionID);
-		}
-
-		if($collection->getRemTable() !== stripTblPrefix(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 2))){
-			$msg = we_message_reporting::jsMessagePush(g_l('weClass', '[collection][wrongTable]'), we_message_reporting::WE_MESSAGE_ERROR);
-		} else {
-			$collBefore = $collection->getCollection();
-			if(($items = $collection->getValidItemsFromIDs($sel, false, $recursive = we_base_request::_(we_base_request::BOOL, 'InsertRecursive', false)))){
-				$result = $collection->addItemsToCollection($items, $isSession ? $insertPos : -1);
-				if($isSession){
-					$collection->saveInSession($_SESSION['weS']['we_data'][$transaction]);
-				} else {
-					$collection->save();
-				}
-				$msg = we_message_reporting::jsMessagePush(sprintf(g_l('weClass', '[collection][insertedAndDuplicates]'), implode(',', $result[0]), implode(',', $result[1])), we_message_reporting::WE_MESSAGE_ERROR);
-			} else {
-				$msg = we_message_reporting::jsMessagePush(g_l('weClass', '[collection][contentDoesntMatch]'), we_message_reporting::WE_MESSAGE_INFO);
-			}
-		}
-	}
-}
-
 echo we_html_tools::getHtmlTop() .
- $msg .
  we_html_element::jsScript(JS_DIR . 'weAddToCollection.js', '', ['id' => 'loadVarWeAddToCollection', 'data-init' => setDynamicVar([
 		'table' => $table,
 		'targetInsertIndex' => $insertIndex,
-		'targetInsertPos' => $insertPos,
+		'targetInsertPosition' => $insertPos,
 ])]) .
- weSuggest::getYuiFiles();
-
-if($cmd0 === "do_addToCollection"){
-	echo "</head><body></body></html>";
-	exit();
-}
+weSuggest::getYuiFiles();
 
 $ws_Id = get_def_ws($table);
 if($ws_Id){
@@ -100,7 +59,6 @@ if($ws_Id){
 
 $textname = 'we_targetname';
 $idname = 'we_target';
-
 $yuiSuggest->setAcId('Dir');
 $yuiSuggest->setContentType(we_base_ContentTypes::FOLDER . ',' . we_base_ContentTypes::COLLECTION);
 $yuiSuggest->setInput($textname, $targetCollectionPath);
@@ -112,14 +70,11 @@ $yuiSuggest->setTable(VFILE_TABLE);
 $yuiSuggest->setWidth(273);
 $yuiSuggest->setContainerWidth(300);
 $cmd1 = 'top.treeheader.document.we_form.elements.' . $idname . '.value';
-$wecmdenc1 = we_base_request::encCmd($cmd1);
-$wecmdenc2 = we_base_request::encCmd('top.treeheader.document.we_form.elements.' . $textname . '.value');
-$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:weAddToCollection.we_cmd('we_selector_document'," . $cmd1 . ",'" . VFILE_TABLE . "','" . $wecmdenc1 . "','" . $wecmdenc2 . "','','',0)"), 6);
-//$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(document.we_form.elements['" . $idname . "'].value){top.doClickDirect(document.we_form.elements['" . $idname . "'].value,'" . we_base_ContentTypes::COLLECTION . "','" . VFILE_TABLE . "'); return false}"));
 
-$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:top.we_cmd('edit_new_collection','" . $wecmdenc1 . "','" . $wecmdenc2 . "',-1,'" . stripTblPrefix($table) . "');", true, 0, 0, "", "", false, false), 0);
+$yuiSuggest->setSelectButton(we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document', document.we_form.elements." . $idname . ".value,'" . VFILE_TABLE . "','" . $idname . "','" . $textname . "','','',0)"), 6);
+$yuiSuggest->setAdditionalButton(we_html_button::create_button('fa:btn_add_collection,fa-plus,fa-lg fa-archive', "javascript:we_cmd('edit_new_collection','write_back_to_opener," . $idname . "," . $textname . "','',-1,'" . stripTblPrefix($table) . "');", true, 0, 0, "", "", false, false), 0);
 $weAcSelector = $yuiSuggest->getHTML();
-$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button('quit_addToCollection', "javascript:weAddToCollection.we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
+$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:weAddToCollection.press_ok_add();"), "", we_html_button::create_button('quit_addToCollection', "javascript:we_cmd('exit_addToCollection','','" . $table . "')"), 10, "left");
 
 $recursive = we_html_forms::checkboxWithHidden(1, 'InsertRecursive', g_l('weClass', '[collection][insertRecursive]'));
 

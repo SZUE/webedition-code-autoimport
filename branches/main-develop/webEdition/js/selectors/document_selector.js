@@ -150,7 +150,7 @@ function newFile() {
 }
 
 function newCollection() {
-	url = "we_cmd.php?we_cmd[0]=editNewCollection&fixedpid=" + top.fileSelect.data.currentDir + "&caller=selector";
+	url = "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=write_back_to_selector&fixedpid=" + top.currentDir;
 	new (WE().util.jsWindow)(window, url, "we_newICollection", -1, -1, 460, 560, true, false, true);
 }
 
