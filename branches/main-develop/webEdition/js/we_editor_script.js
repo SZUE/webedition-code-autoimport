@@ -337,8 +337,14 @@ function we_cmd() {
 			weCollectionEdit.callForValidItemsAndInsert(weCollectionEdit.getItemId(document.getElementById('collectionItem_staticIndex_' + args[2])), args[1].currentID);
 			break;
 		case "import_files":
-				new (WE().util.jsWindow)(top, url, "import_files", -1, -1, 650, 720, true, false, true); // be sure we have top as opener!
-				break;
+			new (WE().util.jsWindow)(top, url, "import_files", -1, -1, 650, 720, true, false, true); // be sure we have top as opener!
+			break;
+		case "dd_weimg_insertFromTree":
+			WE().layout.weEditorFrameController.getVisibleEditorFrame().setScrollTo();
+			we_cmd('setHot');
+			document.we_form.elements[args[3]].value=args[1].id;
+			top.we_cmd('reload_editpage', args[3], 'change_image');
+			break;
 		case 'setHot':
 			_EditorFrame.setEditorIsHot(true);
 			break;
