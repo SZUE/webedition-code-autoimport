@@ -2588,7 +2588,7 @@ var weFileUpload = (function () {
 						setTimeout(function () {
 							var tmp = _.sender.nextCmd.split(',');
 							tmp.splice(1, 0, _.sender.resp);
-							top.opener.top.we_cmd.apply(top.opener.top, tmp);
+							top.we_cmd.apply(top, tmp);
 						}, 100);
 					}
 				}
@@ -3302,9 +3302,15 @@ var weFileUpload = (function () {
 						this.form.form.elements.weFileCt.value = cur.mimePHP;
 						this.form.form.elements.weFileName.value = cur.file.name;
 						_.sender.currentFile = null;
-						//setTimeout(_.sender.dialogCallback, 100, resp); // FIXME: check if this works
+
+						for(var k in resp.weDoc){
+							resp[k]=resp.weDoc[k];
+						}
+
 						setTimeout(function () {
-							_.sender.dialogCallback(resp);
+							var tmp = _.sender.nextCmd.split(',');
+							tmp.splice(1, 0, resp);
+							top.we_cmd.apply(top, tmp);
 						}, 100);
 					}
 				} else if (resp.status === 'success') {
