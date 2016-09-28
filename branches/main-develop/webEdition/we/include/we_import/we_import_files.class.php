@@ -379,7 +379,7 @@ function next() {
 				we_html_element::htmlIFrame('imgimportbuttons', WEBEDITION_DIR . "we_cmd.php?we_cmd[0]=import_files&cmd=buttons" . ($step > -1 ? '&step=' . $step : '') . '&we_cmd[2]=' . $this->nextCmd . '&we_cmd[3]=' . $this->callBack, 'position:absolute;bottom:0px;height:40px;left:0px;right:0px;overflow: hidden;', '', '', false)
 		);
 
-		return $this->_getHtmlPage($body);
+		return $this->_getHtmlPage($body, we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js'));
 	}
 
 	function _getHtmlPage($body, $js = ""){
