@@ -57,7 +57,7 @@ function we_tag_path(array $attribs){
 		$path = $oldHtmlspecialchars ? oldHtmlspecialchars($sep . $show) : $sep . $show;
 	}
 	while($pID){
-		list($fileID, $filePath, $fText) = (getHash('SELECT ID,Path,Text FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder=0 AND ' . $q . ' AND Published>0', NULL, MYSQLI_NUM)? :
+		list($fileID, $filePath, $fText) = (getHash('SELECT ID,Path,Text FROM ' . FILE_TABLE . ' WHERE ParentID=' . intval($pID) . ' AND IsFolder=0 AND ' . $q . ' AND Published>0 LIMIT 1', NULL, MYSQLI_NUM)? :
 				array(0, '', '')
 			);
 		if($fileID){
@@ -87,7 +87,7 @@ function we_tag_path(array $attribs){
 		return $path;
 	}
 
-	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND ' . $q . ' AND (Published>0 AND IsSearchable=1)', null);
+	$hash = getHash('SELECT ID,Path FROM ' . FILE_TABLE . ' WHERE ParentID=0 AND IsFolder=0 AND ' . $q . ' AND Published>0 LIMIT 1', null);
 	$fileID = $hash ? $hash['ID'] : 0;
 	$filePath = ($hash ? $hash['Path'] : '');
 
