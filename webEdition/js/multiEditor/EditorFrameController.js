@@ -669,6 +669,43 @@ EditorFrameController.prototype = {
 		}
 		return null;
 	},
+	getEditorFrameByExactParams: function(id, table, tab, transaction) {
+		if(!id || !table || !tab || !transaction){
+			return null;
+		}
+
+		var usedEditors = this.getEditorsInUse(),
+			frameId, editor;
+
+		for (frameId in this.getEditorsInUse()) {
+			editor = usedEditors[frameId];
+			if (editor.getEditorEditorTable() === table && parseInt(editor.getEditorDocumentId()) === parseInt(id) &&
+					editor.getEditorEditPageNr() === tab && editor.getEditorTransaction() === transaction) {
+
+				return this.getEditorFrame(frameId);
+			}
+		}
+
+		return null;
+	},
+	getEditorTransactionByIdTable: function(id, table){
+		if(!id || !table){
+			return '';
+		}
+
+		var usedEditors = this.getEditorsInUse(),
+			frameId, editor;
+
+		for (frameId in this.getEditorsInUse()) {
+			editor = usedEditors[frameId];
+			if (editor.getEditorEditorTable() === table && parseInt(editor.getEditorDocumentId()) === id) {
+
+				return this.getEditorTransaction(frameId);
+			}
+		}
+
+		return '';
+	},
 	getEditorsInUse: function () {
 		var _ret = {};
 		for (var frameId in this.EditorFrames) {

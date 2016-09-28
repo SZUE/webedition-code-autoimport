@@ -264,9 +264,9 @@ class weSuggest{
 				$dropzoneStyle = 'width:auto;padding:0px 0 0 12px;';
 			}
 
-			$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;top.dropzoneAddPreview('" . $this->acId . "', id, table, ct, path);" . $this->doOnDropFromTree . "}";
-			$callbackExt = "if(importedDocument.id){" . $this->doOnDropFromExt . "top.close();}";
-			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->contentTypes, ['tree' => $callbackTree, 'external' => $callbackExt], $resultId, '', '', 'we_suggest_ext', $this->isDropFromTree, $this->isDropFromExt, $this->table);
+			//$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;top.dropzoneAddPreview('" . $this->acId . "', id, table, ct, path);" . $this->doOnDropFromTree . "}";
+			//$callbackExt = "if(importedDocument.id){" . $this->doOnDropFromExt . "top.close();}";
+			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->isDropFromTree, $this->isDropFromExt, 'dummy', 'dummy', $this->contentTypes, $this->table);
 
 
 			$html = we_html_element::htmlDiv([], we_html_element::htmlDiv([], $html) .
@@ -274,7 +274,6 @@ class weSuggest{
 			);
 			$this->isDropFromTree = $this->isDropFromExt = false; //reset default for other instances on the same site
 		}
-
 
 		if($reset){
 			$this->contentType = we_base_ContentTypes::FOLDER;

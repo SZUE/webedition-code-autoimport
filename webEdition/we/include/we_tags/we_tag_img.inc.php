@@ -129,7 +129,8 @@ function we_tag_img(array $attribs){
 //	$dropzoneCmdencExt = we_base_request::encCmd($btnSelectCallback . 'setTimeout(self.close, 250);');
 
 	if($GLOBALS['we_editmode'] && $out && $showcontrol){ //in editMode we surround image with dropzone
-		$out = we_fileupload_ui_base::getExternalDropZone($GLOBALS['we_doc']->Name . '_' . $name, $out, 'width:auto;height:auto;padding:12px;', true, true, 'dd_weimg_insertFromTree,' . $name . ',' . $fname, 'dd_weimg_insertFromExt,' . $name . ',' . $fname, [we_base_ContentTypes::IMAGE]);
+		$cmdTree = $cmdExt = 'tag_weimg_insertImage,' . $name . ',' . $fname . ',' . $GLOBALS['we_doc']->ID . ',' . (isset($GLOBALS['we_transaction']) ? $GLOBALS['we_transaction'] : '');
+		$out = we_fileupload_ui_base::getExternalDropZone($GLOBALS['we_doc']->Name . '_' . $name, $out, 'width:auto;height:auto;padding:12px;', true, true, $cmdTree , $cmdExt);
 	}
 
 	if(!$id && (!$GLOBALS['we_editmode'])){

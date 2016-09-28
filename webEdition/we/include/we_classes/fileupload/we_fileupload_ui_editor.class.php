@@ -116,20 +116,20 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		);
 
 		$parts = [
-			(is_array($form = $this->makeMultiIconRow('uploader', 'Dateiauswahl', $formUploader)) ? [$form] : ''),
-			($this->parentID['setField'] && is_array($form = $this->getFormParentID()) ? [$form] : ''),
-			(is_array($form = $this->getFormSameName()) ? [$form] : ''),
-			($this->doImport && is_array($form = $this->getFormImportMeta()) ? [$form] : ''),
-			($this->doImport && is_array($form = $this->getFormIsSearchable()) ? [$form] : ''),
-			($this->doImport && is_array($form = $this->getFormCategories()) ? [$form] : ''),
+			(is_array($form = $this->makeMultiIconRow('uploader', 'Dateiauswahl', $formUploader)) ? $form : ''),
+			($this->parentID['setField'] && is_array($form = $this->getFormParentID()) ? $form : ''),
+			(is_array($form = $this->getFormSameName()) ? $form : ''),
+			($this->doImport && is_array($form = $this->getFormImportMeta()) ? $form : ''),
+			($this->doImport && is_array($form = $this->getFormIsSearchable()) ? $form : ''),
+			($this->doImport && is_array($form = $this->getFormCategories()) ? $form : ''),
 		];
 		if($this->doImport && (!$this->contentType || $this->contentType === we_base_ContentTypes::IMAGE)){
 			$parts = array_merge($parts, [
-			(is_array($form = $this->getFormImageAttributes()) ? [$form] : ''),
-			(is_array($form = $this->getFormThumbnails()) ? [$form] : ''),
-			(is_array($form = $this->getFormImageResize()) ? [$form] : ''),
-			(is_array($form = $this->getFormImageRotate()) ? [$form] : ''),
-			(is_array($form = $this->getFormImageQuality()) ? [$form] : '')
+				(is_array($form = $this->getFormImageAttributes()) ? $form : ''),
+				(is_array($form = $this->getFormThumbnails()) ? $form : ''),
+				(is_array($form = $this->getFormImageResize()) ? $form : ''),
+				(is_array($form = $this->getFormImageRotate()) ? $form : ''),
+				(is_array($form = $this->getFormImageQuality()) ? $form : '')
 			]);
 		}
 
@@ -262,6 +262,7 @@ documentWriteback = function(importedDocument){
 		$setFixedImportTo = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 7);
 		$predefinedCallback = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 8);
 		$isPreset = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', false, 9));
+		$nextCmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 10);
 
 		$fileUpload = new we_fileupload_ui_editor($contentType, '', $doImport);
 		$fileUpload->setPredefinedConfig($predefinedConfig);
@@ -274,6 +275,7 @@ documentWriteback = function(importedDocument){
 			'customCallback' => $customCallback,
 			'predefinedCallback' => $predefinedCallback
 			]);
+		$fileUpload->setNextCmd($nextCmd);
 		$yuiSuggest = &weSuggest::getInstance();
 
 		echo we_html_tools::getHtmlTop('fileupload', '', '', $fileUpload->getEditorJS() .

@@ -73,13 +73,13 @@ handleDrop = function(e, name, dragFromTree, dragFromExt, cmdTree, cmdExt, cts, 
 	}
 };
 
-doDragFromExternal = function(files, cmdExt,cts){
+doDragFromExternal = function(files, cmdExt, cts){
 	if(!files || !cmdExt){
 		return false;
 	}
 
-	//document.presetFileupload = files;
-	document.we_cmd('we_fileupload_editor', cts, 1, '', '', '', 0, 0, '', true, cmdExt, files);
+	document.presetFileupload = files;
+	top.we_cmd('we_fileupload_editor', cts, 1, '', '', '', 0, 0, '', true, cmdExt, files);
 };
 
 doDragFromTree = function(text, cmdTree, cts, table){
@@ -94,6 +94,6 @@ doDragFromTree = function(text, cmdTree, cts, table){
 		var tmp = cmdTree.split(',');
 
 		tmp.splice(1, 0, data);
-		window.we_cmd.apply(window, tmp);
+		top.we_cmd.apply(top, tmp);
 	}
 };
