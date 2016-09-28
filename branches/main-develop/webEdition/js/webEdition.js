@@ -2065,6 +2065,47 @@ var we_cmd_modules = {
 			case 'we_selector_delete':
 				top.we_cmd('we_selector_delete', '', -1, '', '', '', '', '', '', 1);
 				break;
+			case 'tag_weimg_insertImage':
+				var editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], WE().consts.tables.FILE_TABLE, 1, args[5]);
+
+				if(editorFrame){
+					editorFrame.getContentEditor().setScrollTo();
+					editorFrame.setEditorIsHot(true);
+					editorFrame.getContentEditor().document.we_form.elements[args[3]].value=args[1].id;
+					if(editorFrame.getEditorIsActive()){
+						we_cmd('reload_editpage', args[3], 'change_image');
+					} else {
+						editorFrame.setEditorReloadNeeded(true);
+					}
+					
+				} else {
+					var verifiedTransaction = WE().layout.weEditorFrameController.getEditorTransactionByIdTable(args[4], WE().consts.tables.FILE_TABLE);
+					we_cmd('wedoc_setPropertyOrElement_rpc', {id: args[4], table: WE().consts.tables.FILE_TABLE, transaction: verifiedTransaction}, 
+							{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
+				}
+				break;
+			case 'wedoc_setPropertyOrElement_rpc':
+				if(!args[1] || !args[2] || !args[1].id || !args[1].table || !args[2].name){
+					return;
+				}
+
+				var postData = '&we_cmd[id]=' + encodeURIComponent(args[1].id);
+				postData += '&we_cmd[table]=' + encodeURIComponent(args[1].table);
+				postData += '&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '');
+				postData += '&we_cmd[name]=' + encodeURIComponent(args[2].name);
+				postData += '&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '');
+				postData += '&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat');
+				postData += '&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
+
+				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
+					success: function (o) {
+						//
+					},
+					failure: function (o) {
+						//alert(WE().consts.g_l.main.unable_to_call_setpagenr);
+					}
+				}, 'protocol=json&cmd=SetPropertyOrElement&cns=document' + postData);
+				break;
 			default:
 				//WE().t_e('no command matched to request', args[0]);
 				return false;
