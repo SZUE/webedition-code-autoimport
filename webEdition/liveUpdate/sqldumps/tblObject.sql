@@ -8,8 +8,8 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblObject (
-  ID int unsigned NOT NULL auto_increment,
-  ParentID int unsigned NOT NULL default '0',
+  ID smallint unsigned NOT NULL auto_increment,
+  ParentID smallint unsigned NOT NULL default '0',
   strOrder text NOT NULL,
   `Text` varchar(150) NOT NULL default '',
   IsFolder tinyint unsigned NOT NULL default '0',
