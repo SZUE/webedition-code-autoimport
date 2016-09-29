@@ -220,7 +220,6 @@ class we_tree_customer extends we_tree_base{
 		$select = array_filter($select);
 
 		$grp = implode(',', array_slice($grouparr, 0, $level + 1));
-
 		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,LoginDenied,Forename,Surname' .
 			($select ? ',' . implode(',', $select) : '' ) . ' FROM ' . CUSTOMER_TABLE .
 			(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
@@ -238,10 +237,10 @@ class we_tree_customer extends we_tree_base{
 				$gname = $db->f($grouparr[0]) ?: g_l('modules_customer', '[no_value]');
 				$gid = '{' . $gname . '}';
 
-				$groupTotal = f('SELECT COUNT(ID) FROM ' . CUSTOMER_TABLE . ' WHERE ' . $grp . '="' . $db->escape($gname) . '"' .
-					(!permissionhandler::hasPerm('ADMINISTRATOR') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
-					(count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : ''));
-
+				$groupTotal = 0; /* f('SELECT COUNT(ID) FROM ' . CUSTOMER_TABLE . ' WHERE ' . $grp . '="' . $db->escape($gname) . '"' .
+				  (!permissionhandler::hasPerm('ADMINISTRATOR') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
+				  (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : ''));
+				 */
 				$items[] = [
 					'id' => str_replace("\'", '*****quot*****', $gid),
 					'parentid' => $old,

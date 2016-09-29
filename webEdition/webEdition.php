@@ -80,18 +80,18 @@ if(we_base_request::_(we_base_request::STRING, 'we_cmd', '', 0) != "edit_include
 $GLOBALS['DB_WE']->query('UPDATE ' . USER_TABLE . '	SET Ping=NULL WHERE Ping<(NOW()-INTERVAL ' . (we_base_constants::PING_TIME + we_base_constants::PING_TOLERANZ) . ' second)');
 
 
-if(permissionhandler::hasPerm("CAN_SEE_DOCUMENTS")){
+if(permissionhandler::hasPerm('CAN_SEE_DOCUMENTS')){
 	$table_to_load = FILE_TABLE;
-} else if(permissionhandler::hasPerm("CAN_SEE_TEMPLATES")){
+} else if(permissionhandler::hasPerm('CAN_SEE_TEMPLATES')){
 	$table_to_load = TEMPLATES_TABLE;
-} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTFILES")){
+} else if(defined('OBJECT_FILES_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTFILES')){
 	$table_to_load = OBJECT_FILES_TABLE;
-} else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm("CAN_SEE_OBJECTS")){
+} else if(defined('OBJECT_TABLE') && permissionhandler::hasPerm('CAN_SEE_OBJECTS')){
 	$table_to_load = OBJECT_TABLE;
-} else if(permissionhandler::hasPerm("CAN_SEE_COLLECTIONS")){
+} else if(permissionhandler::hasPerm('CAN_SEE_COLLECTIONS')){
 	$table_to_load = VFILE_TABLE;
 } else {
-	$table_to_load = "";
+	$table_to_load = '';
 }
 
 $jsCmd = [];
@@ -258,15 +258,15 @@ foreach($jsCmd as $cur){
 }
 ?>
 	<script><!--
-		<?php
-		if(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])){
-			echo 'alert("' . g_l('global', '[pwd][startupRegExFailed]') . '");';
-			unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
-		}
-		?>
+<?php
+if(!empty($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT'])){
+	echo 'alert("' . g_l('global', '[pwd][startupRegExFailed]') . '");';
+	unset($_SESSION['WE_USER_PASSWORD_NOT_SUFFICIENT']);
+}
+?>
 
 function startMsg() {
-		<?= we_main_headermenu::createMessageConsole('mainWindow', true); ?>
+<?= we_main_headermenu::createMessageConsole('mainWindow', true); ?>
 }
 function updateCheck() {
 <?php
@@ -274,9 +274,9 @@ if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailabl
 	?>top.we_showMessage("<?php printf(g_l('sysinfo', '[newWEAvailable]'), $versionInfo['dotted'] . ' (svn ' . $versionInfo['svnrevision'] . ')', $versionInfo['date']); ?>", WE().consts.message.WE_MESSAGE_INFO, window);
 <?php }
 ?>
-				}
+}
 
-				//-->
+//-->
 	</script>
 	</head>
 	<body id="weMainBody" onload="initWE();
@@ -320,13 +320,13 @@ if(!empty($_SESSION['perms']['ADMINISTRATOR']) && ($versionInfo = updateAvailabl
 			<?php
 			if(!(SIDEBAR_DISABLED == 1)){
 				?>
-			<div style="width:<?= $sidebarwidth; ?>px;" id="sidebarDiv">
+				<div style="width:<?= $sidebarwidth; ?>px;" id="sidebarDiv">
 					<?php
 					$weFrame = new we_sidebar_frames();
 					$weFrame->getHTML('');
 					?>
-					</div>
-				<?php } ?>
+				</div>
+			<?php } ?>
 		</div>
 		<div id="cmdDiv">
 			<iframe src="about:blank" name="load"></iframe>

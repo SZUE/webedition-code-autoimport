@@ -221,7 +221,7 @@ function updateCell(td, skip_id) {
 	// Set styles
 	td.style.width = getCSSSize(formObj.width.value);
 	td.style.height = getCSSSize(formObj.height.value);
-	if (formObj.bordercolor.value != "") {
+	if (formObj.bordercolor.value !== "") {
 		td.style.borderColor = formObj.bordercolor.value;
 		td.style.borderStyle = td.style.borderStyle === "" ? "solid" : td.style.borderStyle;
 		td.style.borderWidth = td.style.borderWidth === "" ? "1px" : td.style.borderWidth;
