@@ -170,7 +170,7 @@ function updateRow(tr_elm, skip_id, skip_parent) {
 		if (newParent === null) {
 			newParent = doc.createElement(dest);
 
-			if (theTable.firstChild.nodeName == 'CAPTION')
+			if (theTable.firstChild.nodeName === 'CAPTION')
 				inst.dom.insertAfter(newParent, theTable.firstChild);
 			else
 				theTable.insertBefore(newParent, theTable.firstChild);

@@ -156,7 +156,7 @@ $step = we_base_request::_(we_base_request::INT, 'step', 0);
 
 switch(we_base_request::_(we_base_request::STRING, 'function', 'last')){
 	case 'deleteEqual':
-		$db->addTable('del', ['ID' => 'bigint(20) unsigned NOT NULL'], ['PRIMARY KEY (ID)'], 'MEMORY', true);
+		$db->addTable('del', ['ID' => 'int unsigned NOT NULL'], ['PRIMARY KEY (ID)'], 'MEMORY', true);
 		$db->query('INSERT INTO del SELECT ID FROM `' . ERROR_LOG_TABLE . '` WHERE (Text,File,Type,Function,Line) IN (SELECT Text,File,Type,Function,Line FROM `' . ERROR_LOG_TABLE . '` WHERE ID=' . $id . ')');
 		$db->query('DELETE FROM `' . ERROR_LOG_TABLE . '` WHERE ID IN (SELECT ID FROM del)');
 		$db->delTable('del', true);

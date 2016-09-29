@@ -22,7 +22,7 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   TitleField text NOT NULL,
   IconID int unsigned NOT NULL default '0',
   Selection enum('dynamic','nodynamic','static') NOT NULL default 'static',
-  LinkID bigint unsigned NOT NULL default '0',
+  LinkID int unsigned NOT NULL default '0',
   CurrentOnUrlPar tinyint unsigned NOT NULL DEFAULT '0',
   CurrentOnAnker tinyint unsigned NOT NULL DEFAULT '0',
   SelectionType enum('urlLink','category','catLink','classname','objLink','docLink','doctype') NOT NULL default 'docLink',

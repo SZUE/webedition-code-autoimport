@@ -441,7 +441,7 @@ class we_schedpro{
 
 		$DB_WE = new DB_WE();
 		$DB_WE->addTable('del', [
-			'ID' => 'bigint(20) unsigned NOT NULL',
+			'ID' => 'int unsigned NOT NULL',
 			'ClassName' => 'enum("we_htmlDocument","we_webEditionDocument","we_objectFile") NOT NULL'
 			], ['PRIMARY KEY (ID,ClassName)'], 'MEMORY', true);
 		$DB_WE->query('INSERT INTO del (ID,ClassName) SELECT s.DID,s.ClassName FROM ' . SCHEDULE_TABLE . ' s LEFT JOIN ' . FILE_TABLE . ' f ON f.ID=s.DID ' .
