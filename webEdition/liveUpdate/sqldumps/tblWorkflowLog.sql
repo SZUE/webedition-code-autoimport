@@ -1,6 +1,6 @@
 CREATE TABLE ###TBLPREFIX###tblWorkflowLog (
-  ID bigint unsigned NOT NULL auto_increment,
-  RefID bigint unsigned NOT NULL default '0',
+  ID mediumint unsigned NOT NULL auto_increment,
+  RefID int unsigned NOT NULL default '0',
   docTable enum('tblWorkflowLog') NOT NULL default 'tblWorkflowLog',
   userID int unsigned NOT NULL default '0',
   logDate int unsigned NOT NULL default '0',

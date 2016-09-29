@@ -2,7 +2,7 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblhistory (
-  DID bigint unsigned NOT NULL default '0',
+  DID int unsigned NOT NULL default '0',
   DocumentTable enum('tblFile','tblObject','tblTemplates','tblObjectFiles','tblVFile') NOT NULL,
   ContentType enum('image/*','text/html','text/webedition','text/weTmpl','text/js','text/css','text/htaccess','text/plain','folder','class_folder','application/x-shockwave-flash','video/quicktime','application/*','text/xml','object','objectFile','video/*','audio/*','text/weCollection') NOT NULL,
   ModDate TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

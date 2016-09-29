@@ -1,6 +1,6 @@
 CREATE TABLE ###TBLPREFIX###tblNewsletterGroup (
-  ID bigint unsigned NOT NULL auto_increment,
-  NewsletterID bigint NOT NULL default '0',
+  ID mediumint unsigned NOT NULL auto_increment,
+  NewsletterID mediumint unsigned NOT NULL default '0',
   Emails longtext NOT NULL,
   Customers longtext NOT NULL,
   SendAll tinyint unsigned NOT NULL default '0',

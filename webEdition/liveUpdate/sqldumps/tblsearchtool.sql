@@ -34,7 +34,7 @@ CREATE TABLE ###TBLPREFIX###tblsearchtool (
   anzahlTmplSearch tinyint unsigned NOT NULL,
   anzahlAdvSearch tinyint unsigned NOT NULL,
   anzahlMediaSearch tinyint unsigned NOT NULL,
-  anzahlMedialinksMediaSearch tinyint NOT NULL,
+  anzahlMedialinksMediaSearch tinyint unsigned NOT NULL,
   setViewDocSearch tinyint unsigned NOT NULL,
   setViewTmplSearch tinyint unsigned NOT NULL,
   setViewAdvSearch tinyint unsigned NOT NULL,
