@@ -191,12 +191,12 @@
 
 			// Empty rows
 			each(dom.select('tr', table), function(tr) {
-				if (tr.cells.length == 0)
+				if (tr.cells.length === 0)
 					dom.remove(tr);
 			});
 
 			// Empty table
-			if (dom.select('tr', table).length == 0) {
+			if (dom.select('tr', table).length === 0) {
 				rng.setStartAfter(table);
 				rng.setEndAfter(table);
 				selection.setRng(rng);
@@ -533,7 +533,7 @@
 						lastCell = cell;
 					}
 				});
-			};
+			}
 
 			// Get selected rows and move selection out of scope
 			rows = getSelectedRows();
@@ -544,7 +544,7 @@
 			});
 
 			cleanup();
-		};
+		}
 
 		function cutRows() {
 			var rows = getSelectedRows();
@@ -621,7 +621,7 @@
 
 			// Remove current selection
 			dom.removeClass(dom.select('td.mceSelected,th.mceSelected'), 'mceSelected');
-		};
+		}
 
 		function getPos(target) {
 			var pos;
@@ -770,7 +770,7 @@
 			setStartCell : setStartCell,
 			setEndCell : setEndCell
 		});
-	};
+	}
 
 	tinymce.create('tinymce.plugins.TablePlugin', {
 		init : function(ed, url) {
@@ -781,7 +781,7 @@
 
 				if (tblElm)
 					return new TableGrid(tblElm, ed.dom, selection);
-			};
+			}
 
 			function cleanup() {
 				// Restore selection possibilities
@@ -791,7 +791,7 @@
 					ed.dom.removeClass(ed.dom.select('td.mceSelected,th.mceSelected'), 'mceSelected');
 					hasCellSelection = false;
 				}
-			};
+			}
 
 			// Register buttons
 			each([
@@ -931,7 +931,7 @@
 
 							do {
 								// Text node
-								if (node.nodeType == 3 && tinymce.trim(node.nodeValue).length != 0) {
+								if (node.nodeType == 3 && tinymce.trim(node.nodeValue).length !== 0) {
 									if (start)
 										rng.setStart(node, 0);
 									else
@@ -949,7 +949,7 @@
 
 									return;
 								}
-							} while (node = (start ? walker.next() : walker.prev()));
+							} while ((node = (start ? walker.next() : walker.prev())));
 						}
 
 						// Try to expand text selection as much as we can only Gecko supports cell selection
@@ -971,7 +971,7 @@
 
 									lastNode = node;
 								}
-							} while (node = walker.next());
+							} while ((node = walker.next()));
 
 							setPoint(lastNode);
 
@@ -1046,11 +1046,11 @@
 					if (table)
 					tableParent = table.parentNode;
 					allOfCellSelected =rng.startContainer.nodeType == TEXT_NODE &&
-						rng.startOffset == 0 &&
-						rng.endOffset == 0 &&
+						rng.startOffset === 0 &&
+						rng.endOffset === 0 &&
 						currentCell &&
-						(n.nodeName=="TR" || n==tableParent);
-					tableCellSelection = (n.nodeName=="TD"||n.nodeName=="TH")&& !currentCell;
+						(n.nodeName==="TR" || n==tableParent);
+					tableCellSelection = (n.nodeName==="TD"||n.nodeName==="TH")&& !currentCell;
 					return  allOfCellSelected || tableCellSelection;
 					// return false;
 				}
@@ -1206,7 +1206,9 @@
 
 						function moveToRowInTarget(upBool, targetParent, sourceNode, event) {
 							var targetRow = getChildForDirection(targetParent, upBool);
-							targetRow && moveCursorToRow(ed, sourceNode, targetRow, upBool);
+							if(targetRow){
+moveCursorToRow(ed, sourceNode, targetRow, upBool);
+								}
 							tinymce.dom.Event.cancel(event);
 							return true;
 						}
@@ -1282,7 +1284,7 @@
 							var newNode = ed.selection.getNode();
 							var newParent = ed.dom.getParent(newNode, 'td,th');
 							var oldParent = ed.dom.getParent(preBrowserNode, 'td,th');
-							return newParent && newParent !== oldParent && checkSameParentTable(newParent, oldParent)
+							return newParent && newParent !== oldParent && checkSameParentTable(newParent, oldParent);
 						}
 
 						function checkSameParentTable(nodeOne, NodeTwo) {
@@ -1316,7 +1318,7 @@
 						else
 							ed.dom.add(ed.getBody(), 'br', {'data-mce-bogus': '1'});
 					}
-				};
+				}
 
 				// Fixes an bug where it's impossible to place the caret before a table in Gecko
 				// this fix solves it by detecting when the caret is at the beginning of such a table

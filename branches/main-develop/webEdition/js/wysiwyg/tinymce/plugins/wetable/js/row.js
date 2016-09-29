@@ -106,8 +106,9 @@ function updateAction() {
 			var rows = tableElm.getElementsByTagName("tr");
 
 			for (var i=0; i<rows.length; i++) {
-				if ((i % 2 == 0 && action === "odd") || (i % 2 !== 0 && action === "even"))
+				if ((i % 2 === 0 && action === "odd") || (i % 2 !== 0 && action === "even")){
 					updateRow(rows[i], true, true);
+				}
 			}
 
 			break;
@@ -166,7 +167,7 @@ function updateRow(tr_elm, skip_id, skip_parent) {
 				newParent = theTable.childNodes[i];
 		}
 
-		if (newParent == null) {
+		if (newParent === null) {
 			newParent = doc.createElement(dest);
 
 			if (theTable.firstChild.nodeName == 'CAPTION')

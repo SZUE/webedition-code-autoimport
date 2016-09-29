@@ -247,7 +247,7 @@ weCollectionEdit = {
 	},
 	addListenersToItem: function (viewPlusSub, elem, last, index, id, type) {
 		var t = this, input, ctrls, space, view;
-		
+
 		switch(viewPlusSub){
 			case 'grid':
 				view = 'grid';
@@ -303,6 +303,7 @@ weCollectionEdit = {
 				elem.getElementsByClassName('collectionItem_btnAddFromTree')[0].addEventListener('click', function (e) {
 					weCollectionEdit.doClickAddItems(this);
 				}, false);
+				/*falls through*/
 			case 'listMinimal':
 				view = 'list';
 				input = document.getElementById('yuiAcInputItem_' + elem.id.substr(10));
@@ -1049,7 +1050,7 @@ weCollectionEdit = {
 		};
 	},
 	callForValidItemsAndInsert: function (index, csvIDs, message, notReplace, recursive) {
-		index = Number.isInteger(parseInt(index)) && parseInt(index) > 0 ? parseInt(index) : 
+		index = Number.isInteger(parseInt(index)) && parseInt(index) > 0 ? parseInt(index) :
 					document.getElementsByName('lastItem_' + this.gui.view)[0].id.substr(10);
 		notReplace = notReplace !== undefined ? notReplace : false;
 

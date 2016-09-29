@@ -408,7 +408,7 @@ function tinyEdonDblClick(ed, e) {
 
 function tinyEdOnPostRender(ed, cm) {
 	window.addEventListener("resize", function (e) {
-		tinyMCE.weResizeEditor()
+		tinyMCE.weResizeEditor();
 	});
 	if (typeof tinyMCE.weResizeEditor === "function") {
 		tinyMCE.weResizeEditor(true);

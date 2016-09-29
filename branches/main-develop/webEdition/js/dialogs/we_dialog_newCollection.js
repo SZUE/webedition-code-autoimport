@@ -60,7 +60,7 @@ function we_cmd() {
 		case "save_notclose":
 			if(document.we_form["we_" + top.dialog.name + "_Filename"].value){
 				document.we_form["we_cmd[0]"].value = top.dialog.cmd;
-				document.we_form["dosave"].value = 1;
+				document.we_form.dosave.value = 1;
 				we_submitForm(top.dialog.scriptName);
 			} else {
 				alert("no name set");

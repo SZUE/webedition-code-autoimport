@@ -36,9 +36,9 @@ function we_cmd() {
 
 	switch (args[0]) {
 		case 'loadTree':
-			var pid = args[1]['pid'];
-			var items = args[1]['items'];
-			var sorted = args[1]['sorted'];
+			var pid = args[1].pid;
+			var items = args[1].items;
+			var sorted = args[1].sorted;
 			if (!pid) {
 				top.content.treeData.clear();
 				top.content.treeData.add(top.content.node.prototype.rootEntry(0, 'root', 'root'));

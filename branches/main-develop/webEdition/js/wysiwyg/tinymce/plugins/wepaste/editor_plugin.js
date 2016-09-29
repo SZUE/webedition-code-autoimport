@@ -136,7 +136,7 @@
 						}
 
 						if (!getParam(ed, "paste_text_notifyalways")) {
-							cookie.set("tinymcePasteText", "1", new Date(new Date().getFullYear() + 1, 12, 31))
+							cookie.set("tinymcePasteText", "1", new Date(new Date().getFullYear() + 1, 12, 31));
 						}
 					}
 				});
@@ -232,7 +232,7 @@
 				} else {
 					function block(e) {
 						e.preventDefault();
-					};
+					}
 
 					// Block mousedown and click to prevent selection change
 					dom.bind(ed.getDoc(), 'mousedown', block);
@@ -405,7 +405,7 @@
 				});
 			}
 
-			if (ed.settings.paste_enable_default_filters == false) {
+			if (ed.settings.paste_enable_default_filters === false) {
 				return;
 			}
 
@@ -469,7 +469,7 @@
 				} while (len != h.length);
 
 				// Remove all spans if no styles is to be retained
-				if (getParam(ed, "paste_retain_style_properties").replace(/^none$/i, "").length == 0) {
+				if (getParam(ed, "paste_retain_style_properties").replace(/^none$/i, "").length === 0) {
 					h = h.replace(/<\/?span[^>]*>/gi, "");
 				} else {
 					// We're keeping styles, so at least clean them up.
@@ -616,7 +616,7 @@
 						);
 
 						return cls.length ? ' class="' + cls.join(" ") + '"' : '';
-				};
+				}
 
 				h = h.replace(/ class="([^"]+)"/gi, removeClasses);
 				h = h.replace(/ class=([\-\w]+)/gi, removeClasses);
@@ -638,7 +638,7 @@
 		_postProcess : function(pl, o) {
 			var t = this, ed = t.editor, dom = ed.dom, styleProps;
 
-			if (ed.settings.paste_enable_default_filters == false) {
+			if (ed.settings.paste_enable_default_filters === false) {
 				return;
 			}
 
@@ -766,11 +766,11 @@
 					html = p.innerHTML;
 
 					// Remove middot/list items
-					if (type == 'ul')
+					if (type == 'ul'){
 						html = p.innerHTML.replace(/__MCE_ITEM__/g, '').replace(/^[\u2022\u00b7\u00a7\u00d8o\u25CF]\s*(&nbsp;|\u00a0)+\s*/, '');
-					else
-						html = p.innerHTML.replace(/__MCE_ITEM__/g, '').replace(/^\s*[\w|'<'|'>']+\.(&nbsp;|\u00a0)+\s*/, '');;
-
+					}else{
+						html = p.innerHTML.replace(/__MCE_ITEM__/g, '').replace(/^\s*[\w|'<'|'>']+\.(&nbsp;|\u00a0)+\s*/, '');
+						}
 					// Create li and add paragraph data into the new li
 					li = listElm.appendChild(dom.create('li', 0, html));
 					dom.remove(p);
@@ -822,7 +822,7 @@
 					else
 						content = content.replace(v[0], v[1]);
 				});
-			};
+			}
 
 			if ((typeof(content) === "string") && (content.length > 0)) {
 				// If HTML content with line-breaking tags, then remove all cr/lf chars because only tags will break a line

@@ -1,4 +1,4 @@
-/* global WE, top */
+/* global WE, top, YAHOO */
 
 /**
  * webEdition CMS
@@ -1106,7 +1106,7 @@ function we_cmd() {
 
 var we_cmd_modules = {
 	base: function (args, url) {
-		var ctrl, cType, eTable, nextWindow, width, widthSidebar;
+		var ctrl, cType, eTable, nextWindow, width, widthSidebar,postData,table;
 		switch (args[0]) {
 			case "loadVTab":
 				var op = top.treeData.makeFoldersOpenString();
@@ -1235,7 +1235,7 @@ var we_cmd_modules = {
 					break;
 				}
 
-				var table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
+				table = (args[1] !== undefined && args[1]) ? args[1] : WE().consts.tables.FILE_TABLE;
 				we_cmd("setTab", table);
 				/* falls through */
 			case "loadFolder":
@@ -1821,19 +1821,20 @@ var we_cmd_modules = {
 				break;
 			case 'collection_insertFiles_direct':
 				var collection = args[2] !== undefined ? parseInt(args[2]) : 0;
-				var ids = args[1] !== undefined ? (args[1].success !== undefined ? args[1].success : args[1]) : [];
+				var ids = args[1] !== undefined ? (args[1].success !== undefined ? args[1].success : args[1]) : [
+				];
 
-				if(collection && ids){
+				if (collection && ids) {
 					var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
-						editor = null,
-						index = args[3] !== undefined ? args[3] : -1,
-						recursive = args[5] !== undefined ? args[5] : false,
-						transaction, frameId, candidate;
+									editor = null,
+									index = args[3] !== undefined ? args[3] : -1,
+									recursive = args[5] !== undefined ? args[5] : false,
+									transaction, frameId, candidate;
 
 					for (frameId in usedEditors) {
 						candidate = usedEditors[frameId];
-						if (candidate.getEditorEditorTable() === WE().consts.tables.VFILE_TABLE && parseInt(candidate.getEditorDocumentId()) === collection){
-							if(candidate.getEditorEditPageNr() == 1) {
+						if (candidate.getEditorEditorTable() === WE().consts.tables.VFILE_TABLE && parseInt(candidate.getEditorDocumentId()) === collection) {
+							if (candidate.getEditorEditPageNr() == 1) {
 								editor = candidate;
 							} else {
 								transaction = candidate.getEditorTransaction();
@@ -1842,7 +1843,7 @@ var we_cmd_modules = {
 						}
 					}
 
-					if(editor){
+					if (editor) {
 						editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, ids.join(), 'bla', recursive, true);
 					} else {
 						var position = args[3] !== undefined ? args[3] : -1;
@@ -1852,7 +1853,7 @@ var we_cmd_modules = {
 				break;
 			case 'collection_insertFiles_rpc':
 				// TODO: make some tests and return with alert when not ok
-				var postData = '&we_cmd[ids]=' + encodeURIComponent(args[1] ? args[1] : '');
+				postData = '&we_cmd[ids]=' + encodeURIComponent(args[1] ? args[1] : '');
 				postData += '&we_cmd[collection]=' + encodeURIComponent(args[2] ? args[2] : 0);
 				postData += '&we_cmd[transaction]=' + encodeURIComponent(args[3] ? args[3] : '');
 				postData += '&we_cmd[full]=0';
@@ -2068,34 +2069,34 @@ var we_cmd_modules = {
 			case 'tag_weimg_insertImage':
 				var editorFrame = WE().layout.weEditorFrameController.getEditorFrameByExactParams(args[4], WE().consts.tables.FILE_TABLE, 1, args[5]);
 
-				if(editorFrame){
+				if (editorFrame) {
 					editorFrame.getContentEditor().setScrollTo();
 					editorFrame.setEditorIsHot(true);
-					editorFrame.getContentEditor().document.we_form.elements[args[3]].value=args[1].id;
-					if(editorFrame.getEditorIsActive()){
+					editorFrame.getContentEditor().document.we_form.elements[args[3]].value = args[1].id;
+					if (editorFrame.getEditorIsActive()) {
 						we_cmd('reload_editpage', args[3], 'change_image');
 					} else {
 						editorFrame.setEditorReloadNeeded(true);
 					}
-					
+
 				} else {
 					var verifiedTransaction = WE().layout.weEditorFrameController.getEditorTransactionByIdTable(args[4], WE().consts.tables.FILE_TABLE);
-					we_cmd('wedoc_setPropertyOrElement_rpc', {id: args[4], table: WE().consts.tables.FILE_TABLE, transaction: verifiedTransaction}, 
-							{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
+					we_cmd('wedoc_setPropertyOrElement_rpc', {id: args[4], table: WE().consts.tables.FILE_TABLE, transaction: verifiedTransaction},
+									{name: args[2], type: 'img', key: 'bdid', value: parseInt(args[1].id)});
 				}
 				break;
 			case 'wedoc_setPropertyOrElement_rpc':
-				if(!args[1] || !args[2] || !args[1].id || !args[1].table || !args[2].name){
+				if (!args[1] || !args[2] || !args[1].id || !args[1].table || !args[2].name) {
 					return;
 				}
 
-				var postData = '&we_cmd[id]=' + encodeURIComponent(args[1].id);
-				postData += '&we_cmd[table]=' + encodeURIComponent(args[1].table);
-				postData += '&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '');
-				postData += '&we_cmd[name]=' + encodeURIComponent(args[2].name);
-				postData += '&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '');
-				postData += '&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat');
-				postData += '&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
+				postData = '&we_cmd[id]=' + encodeURIComponent(args[1].id) +
+								'&we_cmd[table]=' + encodeURIComponent(args[1].table) +
+								'&we_cmd[transaction]=' + encodeURIComponent(args[1].transaction ? args[1].transaction : '') +
+								'&we_cmd[name]=' + encodeURIComponent(args[2].name) +
+								'&we_cmd[type]=' + encodeURIComponent(args[2].type ? args[2].type : '') +
+								'&we_cmd[key]=' + encodeURIComponent(args[2].key ? args[2].key : 'dat') +
+								'&we_cmd[value]=' + encodeURIComponent(args[2].value ? args[2].value : '');
 
 				YAHOO.util.Connect.asyncRequest('POST', WE().consts.dirs.WEBEDITION_DIR + "rpc.php", {
 					success: function (o) {
