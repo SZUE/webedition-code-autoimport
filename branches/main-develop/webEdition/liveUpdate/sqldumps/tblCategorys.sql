@@ -4,7 +4,7 @@
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblCategorys (
-  ID int unsigned NOT NULL auto_increment,
+  ID mediumint unsigned NOT NULL auto_increment,
   Category varchar(64) NOT NULL default '',
   `Text` varchar(64) default NULL,
   Path varchar(800) default NULL,
