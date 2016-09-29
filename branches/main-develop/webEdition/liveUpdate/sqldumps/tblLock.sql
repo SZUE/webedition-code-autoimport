@@ -9,7 +9,7 @@ CREATE TABLE ###TBLPREFIX###tblLock (
   sessionID binary(20) NOT NULL,
   lockTime datetime NOT NULL,
   tbl enum('tblFile','tblObject','tblTemplates','tblObjectFiles','tblVFile') NOT NULL,
-	releaseRequestID int default NULL,
+	releaseRequestID int unsigned default NULL,
 	releaseRequestText text default NULL,
 	releaseRequestForce datetime NULL,
 	releaseRequestReply text default NULL,

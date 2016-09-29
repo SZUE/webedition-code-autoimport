@@ -28,7 +28,7 @@ CREATE TABLE ###TBLPREFIX###tblnavigation (
   SelectionType enum('urlLink','category','catLink','classname','objLink','docLink','doctype') NOT NULL default 'docLink',
   FolderID int unsigned NOT NULL default '0',
   DocTypeID mediumint unsigned NOT NULL default '0',
-  ClassID int unsigned NOT NULL default '0',
+  ClassID smallint unsigned NOT NULL default '0',
   Categories text NOT NULL,
   CatAnd tinyint unsigned NOT NULL default '1',
   Sort text NOT NULL,

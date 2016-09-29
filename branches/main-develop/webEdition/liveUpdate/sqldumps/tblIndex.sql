@@ -36,7 +36,7 @@ CREATE TABLE ###TBLPREFIX###tblIndex (
   WorkspaceID int unsigned NOT NULL default '0',
   `Text` text NOT NULL,
   Category varchar(255) NOT NULL default '',
-  ClassID int unsigned NOT NULL default '0',
+  ClassID smallint unsigned NOT NULL default '0',
   Doctype mediumint unsigned NOT NULL default '0',
   Title varchar(255) NOT NULL default '',
   Description text NOT NULL,
