@@ -4,7 +4,7 @@ CREATE TABLE ###TBLPREFIX###tblWorkflowDef (
   IsFolder tinyint unsigned NOT NULL default '0',
   `Text` varchar(255) NOT NULL default '',
   Path varchar(255) NOT NULL default '/',
-  `Type` bigint unsigned NOT NULL default '0',
+  `Type` tinyint unsigned NOT NULL default '0',
   Folders text NOT NULL,
   DocType text NOT NULL,
   Objects text NOT NULL,

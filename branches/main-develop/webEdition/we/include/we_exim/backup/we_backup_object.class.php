@@ -44,18 +44,16 @@ class we_backup_object extends we_object{
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 
 		if(!$this->wasUpdate){
-			$qarr = array(
-				'OF_ID' => 'BIGINT NOT NULL',
-			);
+			$qarr = ['OF_ID' => 'INT unsigned NOT NULL',
+				];
 
-			$indexe = array(
-				'PRIMARY KEY (OF_ID)',
-			);
+			$indexe = ['PRIMARY KEY (OF_ID)',
+				];
 
 			$this->SerializedArray = we_unserialize($this->DefaultValues);
 			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : [];
 
-			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
+			$noFields = ['WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS'];
 			foreach($this->SerializedArray as $key => $value){
 				if(!in_array($key, $noFields)){
 					$arr = explode('_', $key);
@@ -178,12 +176,12 @@ class we_backup_object extends we_object{
 			case "meta":
 				return " VARCHAR(" . (($len > 0 && ($len < 256)) ? $len : 255) . ") NOT NULL ";
 			case "date":
-				return " INT(11) NOT NULL ";
+				return " INT unsigned NOT NULL ";
 			case "input":
 				return " VARCHAR(" . (($len > 0 && ($len < 4096)) ? $len : 255) . ") NOT NULL ";
 			case "country":
 			case "language":
-				return " VARCHAR(2) NOT NULL ";
+				return " CHAR(2) NOT NULL ";
 			case "link":
 			case "href":
 				return " TEXT NOT NULL ";
@@ -192,15 +190,15 @@ class we_backup_object extends we_object{
 			case "img":
 			case "flashmovie":
 			case "binary":
-				return " INT(11) DEFAULT '0' NOT NULL ";
+				return " INT unsigned DEFAULT '0' NOT NULL ";
 			case "checkbox":
-				return " INT(1) DEFAULT '0' NOT NULL";
+				return " tinyint unsigned DEFAULT '0' NOT NULL";
 			case "int":
 				return " INT(" . (($len > 0 && ($len < 256)) ? $len : "11") . ") DEFAULT NULL ";
 			case "float":
 				return " DOUBLE DEFAULT NULL ";
 			case "object":
-				return " BIGINT(20) DEFAULT '0' NOT NULL ";
+				return " INT unsigned DEFAULT '0' NOT NULL ";
 			case we_objectFile::TYPE_MULTIOBJECT:
 				return " TEXT NOT NULL ";
 			case 'shopVat':

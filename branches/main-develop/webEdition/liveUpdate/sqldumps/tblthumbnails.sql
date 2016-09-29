@@ -1,5 +1,5 @@
 CREATE TABLE ###TBLPREFIX###tblthumbnails (
-  ID bigint unsigned NOT NULL auto_increment,
+  ID int unsigned NOT NULL auto_increment,
   Name varchar(255) NOT NULL default '',
   `Date` int unsigned NOT NULL default '0',
   Format char(3) NOT NULL default '',

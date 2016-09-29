@@ -2067,11 +2067,11 @@ self.focus();');
 				if(!$test){
 					$phpmail->buildMessage();
 					if($phpmail->Send()){
-						if($this->View->settings["log_sending"]){
+						if($this->View->settings['log_sending']){
 							$this->View->newsletter->addLog("mail_sent", $email);
 						}
 					} else {
-						if($this->View->settings["log_sending"]){
+						if($this->View->settings['log_sending']){
 							$this->View->newsletter->addLog("mail_failed", $email);
 						}
 						echo we_html_element::jsElement('updateText("' . addslashes(sprintf(g_l('modules_newsletter', '[error]') . ": " . g_l('modules_newsletter', '[mail_failed]'), $email)) . '");');

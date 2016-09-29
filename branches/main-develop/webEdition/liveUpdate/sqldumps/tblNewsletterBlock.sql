@@ -1,6 +1,6 @@
 CREATE TABLE ###TBLPREFIX###tblNewsletterBlock (
-  ID bigint unsigned NOT NULL auto_increment,
-  NewsletterID bigint unsigned NOT NULL default '0',
+  ID mediumint unsigned NOT NULL auto_increment,
+  NewsletterID mediumint unsigned NOT NULL default '0',
   Groups varchar(255) NOT NULL default '',
   `Type` tinyint unsigned NOT NULL default '0',
   LinkID bigint unsigned NOT NULL default '0',

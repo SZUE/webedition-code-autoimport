@@ -47,7 +47,7 @@ class we_customer_settings{
 		'dateTime' => 'datetime',
 		'date' => 'date',
 		'password' => 'varchar(32)',
-		'img' => 'bigint(20)',
+		'img' => 'int unsigned',
 		'country' => "enum('AF','AX','AL','DZ','AS','AD','AO','AI','AQ','AG','AR','AM','AW','AU','AT','AZ','BS','BH','BD','BB','BY','BE','BZ','BJ','BM','BT','BO','BQ','BA','BW','BV','BR','IO','BN','BG','BF','BI','KH','CM','CA','CV','KY','CF','TD','CL','CN','CX','CC','CO','KM','CG','CD','CK','CR','CI','HR','CU','CW','CY','CZ','DK','DJ','DM','DO','EC','EG','SV','GQ','ER','EE','ET','FK','FO','FJ','FI','FR','GF','PF','TF','GA','GM','GE','DE','GH','GI','GR','GL','GD','GP','GU','GT','GG','GN','GW','GY','HT','HM','VA','HN','HK','HU','IS','IN','ID','IR','IQ','IE','IM','IL','IT','JM','JP','JE','JO','KZ','KE','KI','KP','KR','KW','KG','LA','LV','LB','LS','LR','LY','LI','LT','LU','MO','MK','MG','MW','MY','MV','ML','MT','MH','MQ','MR','MU','YT','MX','FM','MD','MC','MN','ME','MS','MA','MZ','MM','NA','NR','NP','NL','NC','NZ','NI','NE','NG','NU','NF','MP','NO','OM','PK','PW','PS','PA','PG','PY','PE','PH','PN','PL','PT','PR','QA','RE','RO','RU','RW','BL','SH','KN','LC','MT','PM','VC','WS','SM','ST','SA','SN','SR','SC','SL','SG','SX','SK','SI','SB','SO','ZA','GS','ES','LK','SD','SR','SJ','SZ','SE','CH','SY','TW','TJ','TZ','TH','TL','TG','TK','TO','TT','TN','TR','TM','TC','TV','UG','UA','AE','GB','US','UM','UY','UZ','VU','VA','VE','VN','VG','VI','WF','EH','YE','YU','ZM','ZW')",
 		'language' => "enum('ab','af','an','ar','as','az','be','bg','bn','bo','br','bs','ca','ce','co','cs','cu','cy','da','de','el','en','eo','es','et','eu','fa','fi','fj','fo','fr','fy','ga','gd','gl','gv','he','hi','hr','ht','hu','hy','id','is','it','ja','jv','ka','kg','ko','ku','kw','ky','la','lb','li','ln','lt','lv','mg','mk','mn','mo','ms','mt','my','nb','ne','nl','nn','no','oc','pl','pt','rm','ro','ru','sc','se','sk','sl','so','sq','sr','sv','sw','tk','tr','ty','uk','ur','uz','vi','vo','yi','zh')",
 	);
@@ -57,19 +57,18 @@ class we_customer_settings{
 	);
 	public $FieldAdds = [];
 	public $SortView = [];
-	private $Prefs = array(
+	private $Prefs = [
 		'treetext_format' => '#Username (#Forename #Surname)',
 		'start_year' => 1900,
 		'default_sort_view' => '',
 		'default_order' => '',
-	);
+	];
 	private $EditSort = '';
-	public $OrderTable = array(
+	public $OrderTable = [
 		'ASC' => 'ASC',
 		'DESC' => 'DESC'
-	);
-	public $FunctionTable = array(
-		'FIRSTCHAR' => 'UPPER(SUBSTRING(%s,1,1))',
+	];
+	public $FunctionTable = ['FIRSTCHAR' => 'UPPER(SUBSTRING(%s,1,1))',
 		/* 'ALPH2' => 'UPPER(SUBSTRING(%s,1,2))',
 		  'ALPH3' => 'UPPER(SUBSTRING(%s,1,3))', */
 		'MINUTE' => 'DATE_FORMAT(%s,\'%%i\')',
@@ -83,9 +82,8 @@ class we_customer_settings{
 		'DAYNAME' => 'DAYNAME(%s)',
 		'MONTHNAME' => 'MONTHNAME(%s)',
 		'QUARTER' => 'QUARTER(%s)'
-	);
-	private $TypeFunction = array(
-		'FIRSTCHAR' => 'input,select,textarea,password',
+	];
+	private $TypeFunction = ['FIRSTCHAR' => 'input,select,textarea,password',
 		/* 'ALPH2' => 'input,select,textarea,password',
 		  'ALPH3' => 'input,select,textarea,password', */
 		'MINUTE' => 'date',
@@ -99,10 +97,10 @@ class we_customer_settings{
 		'DAYNAME' => 'date',
 		'MONTHNAME' => 'date',
 		'QUARTER' => 'date'
-	);
+	];
 	private $PropertyTitle = [];
 	private $MaxSearchResults = 99999;
-	private $reservedWords = array('select', 'straight_join', 'sql_small_result', 'sql_buffer_result',
+	private $reservedWords = ['select', 'straight_join', 'sql_small_result', 'sql_buffer_result',
 		'sql_cache', 'sql_no_cache', 'sql_cals_found_rows', 'high_priority', 'distinct', 'distinctrow', 'all', 'into',
 		'outfile', 'dumpfile', 'from', 'where', 'group', 'by', 'asc', 'desc', 'with', 'rollup', 'having', 'order', 'limit',
 		'procedure', 'for', 'update', 'lock', 'in', 'share', 'mode', 'insert', 'alter', 'grant', 'option', 'to', 'require',
@@ -112,19 +110,17 @@ class we_customer_settings{
 		'fulltext', 'quick', 'using', 'truncate',
 		'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied', 'autologin',
 		'autologindenied'
-	);
+	];
 	public $treeTextFormatSQL = '';
 	public $formatFields = [];
 
 	function __construct(){
 		$this->db = new DB_WE();
 		$this->customer = new we_customer_customer();
-		$this->properties = array(
-			'default_saveRegisteredUser_register' => 'false',
-		);
+		$this->properties = ['default_saveRegisteredUser_register' => 'false',
+		];
 
-		$this->PropertyTitle = array(
-			'Username' => g_l('modules_customer', '[username]'),
+		$this->PropertyTitle = ['Username' => g_l('modules_customer', '[username]'),
 			'Password' => g_l('modules_customer', '[password]'),
 			'Forename' => g_l('modules_customer', '[Forname]'),
 			'Surname' => g_l('modules_customer', '[Surname]'),
@@ -135,7 +131,7 @@ class we_customer_settings{
 			'LastLogin' => g_l('modules_customer', '[LastLogin]'),
 			'LastAccess' => g_l('modules_customer', '[LastAccess]'),
 			'ID' => 'ID',
-		);
+		];
 	}
 
 	function load($tryFromSession = true){
@@ -258,15 +254,14 @@ class we_customer_settings{
 				return $this->field_types['input'];
 			}
 			return $this->special_field_types[$field_type] . '(\'' . implode('\',\'', explode(',', $this->FieldAdds[$fieldname]['default'])) . '\')';
-		} else {
-			switch($field_type){
-				case 'date':
-					return $this->field_types[$field_type] . ' DEFAULT "0000-00-00" ';
-				case 'dateTime':
-					return $this->field_types[$field_type] . ' DEFAULT "0000-00-00 00:00:00" ';
-				default:
-					return $this->field_types[$field_type];
-			}
+		}
+		switch($field_type){
+			case 'date':
+				return $this->field_types[$field_type] . ' DEFAULT "0000-00-00" ';
+			case 'dateTime':
+				return $this->field_types[$field_type] . ' DEFAULT "0000-00-00 00:00:00" ';
+			default:
+				return $this->field_types[$field_type];
 		}
 	}
 

@@ -204,7 +204,7 @@ class we_customer_customer extends we_base_model{
 
 		$arr = [];
 
-		$branch = $branch? : g_l('modules_customer', '[other]');
+		$branch = $branch ?: g_l('modules_customer', '[other]');
 
 
 		switch($branch){
@@ -250,16 +250,16 @@ class we_customer_customer extends we_base_model{
 
 	function getFieldsDbProperties(){
 		$ret = [];
-		$this->db->query('SHOW COLUMNS FROM ' . $this->db->escape($this->table));
+		$this->db->query('SHOW COLUMNS FROM ' . CUSTOMER_TABLE);
 		while($this->db->next_record()){
 			$record = $this->db->Record;
-			switch($record['Type']){
-				case 'int(11)':
-					if(empty($record['Default'])){
-						$record['Default'] = '0';
-					}
-					break;
-				case 'bigint(20)':
+			list($type) = explode('(', $record['Type']);
+			switch($type){
+				case 'tinyint':
+				case 'smallint':
+				case 'mediumint':
+				case 'int':
+				case 'bigint';
 					if(empty($record['Default'])){
 						$record['Default'] = '0';
 					}
@@ -300,7 +300,7 @@ class we_customer_customer extends we_base_model{
 	}
 
 	static function customerNameExist($name, we_database_base $db = null){
-		$db = $db ? : new DB_WE();
+		$db = $db ?: new DB_WE();
 		$name = trim($name);
 		return ($name ? f('SELECT 1 FROM ' . CUSTOMER_TABLE . ' WHERE Username="' . $db->escape($name) . '" LIMIT 1', '', $db) : true);
 	}

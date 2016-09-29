@@ -122,7 +122,7 @@ abstract class we_updater{
 				if($db->isColExist(OBJECT_X_TABLE . $table, 'OF_ParentID')){
 					//remove dummy entry
 					$db->query('DELETE FROM ' . OBJECT_X_TABLE . $table . ' WHERE OF_ID=0');
-
+					$db->changeColType(OBJECT_X_TABLE . $table, 'OF_ID', 'INT unsigned NOT NULL');
 					$db->delCol(OBJECT_X_TABLE . $table, 'OF_ParentID');
 					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Text');
 					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Path');
@@ -143,9 +143,39 @@ abstract class we_updater{
 					if($db->isKeyExist(OBJECT_X_TABLE . $table, 'Published')){
 						$db->delKey(OBJECT_X_TABLE . $table, 'Published');
 					}
+					$db->query('SHOW COLUMNS FROM ' . OBJECT_X_TABLE . $table . ' WHERE Field LIKE "checkbox_%" OR Field LIKE "img_%" OR Field LIKE "flashmovie_%" OR Field LIKE "binary_%" OR Field LIKE "country_%" OR Field LIKE "language_%" OR Field LIKE "collection_%" OR Field LIKE "object_%" OR Field LIKE "shopVat_%" OR Field LIKE "date_%"');
+					while($db->next_record()){
+						$field = $db->f('Field');
+						list($type) = explode('_', $field);
+						$default = $db->f('Default');
+						switch($type){
+							case we_objectFile::TYPE_DATE:
+								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' INT unsigned NOT NULL ');
+								break;
+							case we_objectFile::TYPE_COUNTRY:
+							case we_objectFile::TYPE_LANGUAGE:
+								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' CHAR(2) NOT NULL ');
+								break;
+							case we_objectFile::TYPE_IMG:
+							case we_objectFile::TYPE_FLASHMOVIE:
+							case we_objectFile::TYPE_QUICKTIME:
+							case we_objectFile::TYPE_BINARY:
+							case we_objectFile::TYPE_COLLECTION:
+								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' INT unsigned DEFAULT "0" NOT NULL ');
+								break;
+							case we_objectFile::TYPE_CHECKBOX:
+								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' TINYINT unsigned DEFAULT "' . $default . '" NOT NULL ');
+								break;
+							case we_objectFile::TYPE_OBJECT:
+								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' INT unsigned DEFAULT "0" NOT NULL ');
+								break;
+							case we_objectFile::TYPE_SHOPVAT:
+								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' decimal(4,2) default NOT NULL');
+								break;
+						}
+					}
 				}
 			}
-
 			if(!f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0 LIMIT 1')){
 				return;
 			}
@@ -278,7 +308,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 					if($data){
 						$udb->query('UPDATE ' . CATEGORY_TABLE . ' SET ' . we_database_base::arraySetter(['Title' => $data['default']['Title'],
 								'Description' => $data['default']['Description'],
-								]) . ' WHERE ID=' . $db->f('ID'));
+							]) . ' WHERE ID=' . $db->f('ID'));
 					}
 				}
 			}
@@ -446,7 +476,7 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 						'whiteList' => trim($a['whiteList'], ','),
 						'blackList' => trim($a['blackList'], ','),
 						'specificCustomers' => trim($a['specificCustomers'], ','),
-						]) . ' WHERE modelId=' . $a['modelId']);
+					]) . ' WHERE modelId=' . $a['modelId']);
 			}
 		}
 	}

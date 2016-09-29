@@ -1,5 +1,5 @@
 CREATE TABLE ###TBLPREFIX###tblFailedLogins (
-  ID  bigint unsigned NOT NULL AUTO_INCREMENT,
+  ID bigint unsigned NOT NULL AUTO_INCREMENT,
   Username varchar(64) NOT NULL default '',
   IP varchar(40) NOT NULL default '',
   isValid enum('true','false') NOT NULL DEFAULT 'true',

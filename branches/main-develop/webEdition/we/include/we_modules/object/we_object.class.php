@@ -162,12 +162,11 @@ class we_object extends we_document{
 
 		if(!$this->wasUpdate){
 			$q = [
-				'OF_ID' => 'BIGINT NOT NULL',
+				'OF_ID' => 'INT unsigned NOT NULL',
 			];
 
-			$indexe = array(
-				'PRIMARY KEY (OF_ID)'
-			);
+			$indexe = ['PRIMARY KEY (OF_ID)'
+				];
 
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
 			$this->DefaultValues = we_serialize($arrt, SERIALIZE_JSON);
@@ -418,12 +417,12 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_META:
 				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 255)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
 			case we_objectFile::TYPE_DATE:
-				return ' INT(11) NOT NULL ';
+				return ' INT unsigned NOT NULL ';
 			case we_objectFile::TYPE_INPUT:
 				return ' VARCHAR(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 4096)) ? $this->getElement($name . 'length', 'dat') : 255) . ') NOT NULL ';
 			case we_objectFile::TYPE_COUNTRY:
 			case we_objectFile::TYPE_LANGUAGE:
-				return ' VARCHAR(2) NOT NULL ';
+				return ' CHAR(2) NOT NULL ';
 			case we_objectFile::TYPE_LINK:
 			case we_objectFile::TYPE_HREF:
 				return ' TEXT NOT NULL ';
@@ -434,18 +433,19 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_QUICKTIME:
 			case we_objectFile::TYPE_BINARY:
 			case we_objectFile::TYPE_COLLECTION:
-				return ' INT(11) DEFAULT "0" NOT NULL ';
+				return ' INT unsigned DEFAULT "0" NOT NULL ';
 			case we_objectFile::TYPE_CHECKBOX:
-				return ' TINYINT(1) DEFAULT "' . ($this->getElement($name . 'default', 'dat') == 1 ? '1' : '0') . '" NOT NULL ';
+				return ' TINYINT unsigned DEFAULT "' . ($this->getElement($name . 'default', 'dat') == 1 ? '1' : '0') . '" NOT NULL ';
 			case we_objectFile::TYPE_INT:
 				return ' INT(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 256)) ? $this->getElement($name . 'length', 'dat') : '11') . ') DEFAULT NULL ';
 			case we_objectFile::TYPE_FLOAT:
 				return ' DOUBLE DEFAULT NULL ';
 			case we_objectFile::TYPE_OBJECT:
-				return ' BIGINT(20) DEFAULT "0" NOT NULL ';
+				return ' INT unsigned DEFAULT "0" NOT NULL ';
 			case we_objectFile::TYPE_MULTIOBJECT:
 				return ' TEXT NOT NULL ';
 			case we_objectFile::TYPE_SHOPVAT:
+				return ' decimal(4,2) default NOT NULL';
 			case we_objectFile::TYPE_SHOPCATEGORY:
 				return ' TEXT NOT NULL';
 			default:
