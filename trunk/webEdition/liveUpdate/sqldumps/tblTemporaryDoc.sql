@@ -1,5 +1,5 @@
 CREATE TABLE ###TBLPREFIX###tblTemporaryDoc (
-  DocumentID bigint unsigned NOT NULL default '0',
+  DocumentID int unsigned NOT NULL default '0',
   DocumentObject longtext NOT NULL,
   DocTable enum('tblFile','tblObjectFiles') NOT NULL,
 	saved TIMESTAMP on update CURRENT_TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -1,5 +1,5 @@
 CREATE TABLE ###TBLPREFIX###tblSchedule (
-  DID bigint unsigned NOT NULL default '0',
+  DID int unsigned NOT NULL default '0',
   `expire` DATETIME NOT NULL,
   `lockedUntil` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   Was tinyint unsigned NOT NULL default '0',
