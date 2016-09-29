@@ -425,7 +425,7 @@ class we_object extends we_document{
 				return ' CHAR(2) NOT NULL ';
 			case we_objectFile::TYPE_LINK:
 			case we_objectFile::TYPE_HREF:
-				return ' TEXT NOT NULL ';
+				return ' TINYTEXT NOT NULL ';
 			case we_objectFile::TYPE_TEXT:
 				return ' LONGTEXT NOT NULL ';
 			case we_objectFile::TYPE_IMG:
