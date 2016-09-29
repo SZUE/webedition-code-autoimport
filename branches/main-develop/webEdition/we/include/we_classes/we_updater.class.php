@@ -139,40 +139,56 @@ abstract class we_updater{
 					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Charset');
 					$db->delCol(OBJECT_X_TABLE . $table, 'OF_WebUserID');
 					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Language');
-					$db->delKey(OBJECT_X_TABLE . $table, 'published');
-					if($db->isKeyExist(OBJECT_X_TABLE . $table, 'Published')){
+					if($db->isKeyExistAtAll(OBJECT_X_TABLE . $table, 'published')){
+						$db->delKey(OBJECT_X_TABLE . $table, 'published');
+					}
+					if($db->isKeyExistAtAll(OBJECT_X_TABLE . $table, 'Published')){
 						$db->delKey(OBJECT_X_TABLE . $table, 'Published');
 					}
-					$db->query('SHOW COLUMNS FROM ' . OBJECT_X_TABLE . $table . ' WHERE Field LIKE "checkbox_%" OR Field LIKE "img_%" OR Field LIKE "flashmovie_%" OR Field LIKE "binary_%" OR Field LIKE "country_%" OR Field LIKE "language_%" OR Field LIKE "collection_%" OR Field LIKE "object_%" OR Field LIKE "shopVat_%" OR Field LIKE "date_%"');
-					while($db->next_record()){
-						$field = $db->f('Field');
+					$db->query('SHOW COLUMNS FROM ' . OBJECT_X_TABLE . $table . ' WHERE Field LIKE "checkbox_%" OR Field LIKE "img_%" OR Field LIKE "flashmovie_%" OR Field LIKE "binary_%" OR Field LIKE "country_%" OR Field LIKE "language_%" OR Field LIKE "collection_%" OR Field LIKE "object_%" OR Field LIKE "shopVat_%" OR Field LIKE "date_%" OR Field LIKE "link_%" OR Field LIKE "href_%"');
+					$entries = $db->getAll();
+					$changes = [];
+					foreach($entries as $entry){
+						$field = $entry['Field'];
 						list($type) = explode('_', $field);
-						$default = $db->f('Default');
+						$default = $entry['Default'];
 						switch($type){
 							case we_objectFile::TYPE_DATE:
-								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' INT unsigned NOT NULL ');
+								$changes[$field] = ' INT unsigned NOT NULL ';
 								break;
 							case we_objectFile::TYPE_COUNTRY:
 							case we_objectFile::TYPE_LANGUAGE:
-								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' CHAR(2) NOT NULL ');
+								$changes[$field] = ' CHAR(2) NOT NULL ';
+								break;
+							case we_objectFile::TYPE_LINK:
+							case we_objectFile::TYPE_HREF:
+								$changes[$field] = ' TINYTEXT NOT NULL ';
 								break;
 							case we_objectFile::TYPE_IMG:
 							case we_objectFile::TYPE_FLASHMOVIE:
 							case we_objectFile::TYPE_QUICKTIME:
 							case we_objectFile::TYPE_BINARY:
 							case we_objectFile::TYPE_COLLECTION:
-								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' INT unsigned DEFAULT "0" NOT NULL ');
+								$changes[$field] = ' INT unsigned DEFAULT "0" NOT NULL ';
 								break;
 							case we_objectFile::TYPE_CHECKBOX:
-								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' TINYINT unsigned DEFAULT "' . $default . '" NOT NULL ');
+								$changes[$field] = ' TINYINT unsigned DEFAULT "' . $default . '" NOT NULL ';
 								break;
 							case we_objectFile::TYPE_OBJECT:
-								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' INT unsigned DEFAULT "0" NOT NULL ');
+								$changes[$field] = ' INT unsigned DEFAULT "0" NOT NULL ';
 								break;
 							case we_objectFile::TYPE_SHOPVAT:
-								$db->changeColType(OBJECT_X_TABLE . $table, $field, ' decimal(4,2) default NOT NULL');
+								$changes[$field] = ' decimal(4,2) default NOT NULL';
 								break;
 						}
+					}
+					if($changes){
+						$query = '';
+						foreach($changes as $field => $change){
+							$query .= ($query ? ',' : '') . ' CHANGE `' . $field . '` `' . $field . '` ' . $change;
+						}
+						$db->query('ALTER TABLE `' . OBJECT_X_TABLE . $table . '` ' . $query);
+						$db->query('OPTIMIZE TABLE `' . OBJECT_X_TABLE . $table . '`');
 					}
 				}
 			}

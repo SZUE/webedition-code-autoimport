@@ -269,7 +269,7 @@ class we_customer_settings{
 		return isset($this->FieldAdds[$name]) ? $this->FieldAdds[$name]['type'] : (isset($this->FieldAdds['input']) ? $this->FieldAdds['input']['type'] : '');
 	}
 
-//returns predefined  field type
+//returns predefined field type
 	private function getOldFieldType($field_type){
 		foreach($this->field_types as $k => $v){
 			if($v == $field_type){
