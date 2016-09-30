@@ -145,7 +145,7 @@ function reloadDir() {
 }
 
 function newFile() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_fileupload_editor&we_cmd[1]=" + top.fileSelect.data.currentType + "&we_cmd[3]=selector&we_cmd[6]=" + top.fileSelect.data.currentDir + "&we_cmd[7]=1&we_cmd[8]=selector";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_fileupload_editor&we_cmd[1]=" + top.fileSelect.data.currentType + "&we_cmd[3]=selector&we_cmd[6]=" + top.fileSelect.data.currentDir + "&we_cmd[7]=1&we_cmd[10]=selector_insertFromUploader";
 	new (WE().util.jsWindow)(window, url, "we_fileupload_editor", -1, -1, 500, 550, true, true, true, true);
 }
 

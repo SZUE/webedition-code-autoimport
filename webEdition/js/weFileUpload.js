@@ -3312,6 +3312,9 @@ var weFileUpload = (function () {
 							tmp.splice(1, 0, resp);
 							opener.we_cmd.apply(opener, tmp);
 						}, 100);
+
+						//reload main tree and close!
+						//or we_FileUpload.reset(); and let nextCmd close uploader!
 					}
 				} else if (resp.status === 'success') {
 					_.sender.currentFile = null;
@@ -3321,7 +3324,6 @@ var weFileUpload = (function () {
 					}
 
 					this.fireCallback();
-
 				}
 
 			};
