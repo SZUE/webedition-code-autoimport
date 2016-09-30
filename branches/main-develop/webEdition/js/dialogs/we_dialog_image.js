@@ -83,7 +83,7 @@ function we_cmd() {
 			new (WE().util.jsWindow)(this, url, 'browse_server', -1, -1, 840, 400, true, false, true);
 			break;
 		case "we_fileupload_editor":
-			new (WE().util.jsWindow)(this, url, "we_fileupload_editor", -1, -1, 500, WE().consts.size.docSelect.height, true, true, true, true);
+			new (WE().util.jsWindow)(this, url, 'we_fileupload_editor', -1, -1, 500, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
 		case "dialog_imageChanged":
 			imageChanged();

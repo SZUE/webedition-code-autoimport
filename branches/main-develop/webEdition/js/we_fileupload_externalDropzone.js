@@ -79,7 +79,7 @@ doDragFromExternal = function(files, cmdExt, cts){
 	}
 
 	document.presetFileupload = files;
-	top.we_cmd('we_fileupload_editor', cts, 1, '', '', '', 0, 0, '', true, cmdExt, files);
+	top.we_cmd('we_fileupload_editor', cts, 1, '', 0, 0, true, cmdExt, files);
 };
 
 doDragFromTree = function(text, cmdTree, cts, table){

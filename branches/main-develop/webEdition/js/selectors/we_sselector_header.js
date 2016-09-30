@@ -41,7 +41,7 @@ function addOptionh(txt, id) {
 }
 
 function openFile() {
-	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_fileupload_editor&we_cmd[2]=0&we_cmd[6]=" + top.fileSelect.data.currentDir + "&we_cmd[7]=1&we_cmd[10]=sselector_insertFromUploader";
+	var url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=we_fileupload_editor&we_cmd[2]=0&we_cmd[3]=sselector&we_cmd[4]=" + top.fileSelect.data.currentDir + "&we_cmd[5]=1&we_cmd[7]=sselector_insertFromUploader";
 	new (WE().util.jsWindow)(window, url, "we_fileupload_editor", -1, -1, 500, 550, true, true, true, true);
 }
 
