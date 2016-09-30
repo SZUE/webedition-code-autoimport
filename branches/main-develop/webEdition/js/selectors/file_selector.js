@@ -514,6 +514,14 @@ function we_cmd() {
 				top.showPref(top.fileSelect.data.currentID);
 			}
 			break;
+		case 'selector_insertFromUploader':
+			var importedDoc = args[1];
+			top.reloadDir();
+			top.unselectAllFiles();
+			top.addEntry(importedDoc.currentID, importedDoc.currentText, false, importedDoc.currentPath, importedDoc.currentType);
+			top.doClick(importedDoc.currentID);
+			setTimeout(top.selectFile, 200, importedDoc.currentID);
+			break;
 		default:
 			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}

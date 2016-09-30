@@ -23,9 +23,7 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_editor extends we_fileupload_ui_preview{
-	protected $editorJS = ['writebackTarget' => '',
-		'editorCallback' => '',
-	 ];
+	protected $editorJS = ['editorCallback' => ''];
 	protected $doImport = true;
 	protected $contentType = [];
 	protected $posBtnUpload = 'bottom';
@@ -157,42 +155,10 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 			we_html_element::jsElement('
 predefinedCallback = "' . $this->editorJS['predefinedCallback'] . '";
 customCallback = function(importedDocument){' . $this->editorJS['customCallback'] . '};
-writebackTarget = "' . $this->editorJS['writebackTarget'] . '";
 
 doOnImportSuccess = function(importedDocument){
-	if(writebackTarget){
-		documentWriteback(importedDocument);
-	}
 
 	switch(predefinedCallback){
-		case "selector":
-			opener.top.reloadDir();
-			opener.top.unselectAllFiles();
-			opener.top.addEntry(importedDocument.id, importedDocument.text, false, "importedDocument.path");
-			opener.top.doClick(importedDocument.id);
-			setTimeout(opener.top.selectFile, 200, importedDocument.id);
-			reloadMainTree();
-			setTimeout(self.close, 100);
-			break;
-		case "sselector":
-			opener.top.fscmd.selectDir();
-			opener.top.fscmd.selectFile(importedDocument.text);
-			self.close();
-		case "weimg":
-			break;
-		/*
-		case "imagedialog":
-			alert("import done: " + importedDocument.path + " (id: " + importedDocument.id + ")");
-			we_FileUpload.reset();
-			document.we_form.elements["radio_type"][0].checked=true;
-			document.getElementById("imageInt").style.display="block";
-			document.getElementById("imageExt").style.display="none";
-			document.getElementsByClassName("weFileuploadEditor")[0].style.display="none";
-			document.getElementById("yuiAcResultImage").value = importedDocument.id;
-			document.getElementById("yuiAcInputImage").value = importedDocument.path;
-			imageChanged();
-			break;
-		*/
 		case "imagedialog_popup":
 			alert("import done: " + importedDocument.path + " (id: " + importedDocument.id + ")");
 			we_FileUpload.reset();
@@ -204,37 +170,9 @@ doOnImportSuccess = function(importedDocument){
 			top.opener.imageChanged();
 			top.close();
 			break;
-		case "we_suggest_ext":
-			alert("import done: " + importedDocument.path + " (id: " + importedDocument.id + ")");
-			if(top.opener.document.we_form && top.opener.document.we_form.elements["we_dialog_args[fileSrc]"]){
-				top.opener.document.we_form.elements["we_dialog_args[fileSrc]"].value=importedDocument.path;
-				top.opener.document.we_form.elements["we_dialog_args[fileID]"].value=importedDocument.id;
-			} else if(WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form &&
-					WE().layout.weEditorFrameController.getVisibleEditorFrame().document.we_form.elements["we_dialog_args[fileSrc]"]){
-				top.opener.document.we_form.elements["we_dialog_args[fileSrc]"].value=importedDocument.path;
-				top.opener.document.we_form.elements["we_dialog_args[fileID]"].value=importedDocument.id;
-			}
-			' . (weSuggest::USE_DRAG_AND_DROP ? 'top.opener.weSuggest_dropzoneAddPreview(\'Image\', -1);' : '') . '
-			top.opener.imageChanged();
-			self.close();
-			break;
-		default:
-			// do nothing
 	}
 
 	customCallback(importedDocument);
-}
-
-reloadMainTree = function (table) {
-	try {
-		top.opener.top.we_cmd(\'load\', \'tblFile\');
-	} catch (e) {
-		//
-	}
-};
-
-documentWriteback = function(importedDocument){
-	' . ($this->editorJS['writebackTarget'] ? 'WE().layout.weEditorFrameController.getVisibleEditorFrame().' . $this->editorJS['writebackTarget'] . ' = importedDocument.id;' : '//no writeback') . '
 }
 ');
 	}
@@ -256,7 +194,7 @@ documentWriteback = function(importedDocument){
 		$contentType = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1));
 		$doImport = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', true, 2));
 		$predefinedConfig = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
-		$writebackTarget = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 4));
+		//we_cmd 4 is not used anymore
 		$customCallback = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5));
 		$importToID = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 6);
 		$setFixedImportTo = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 7);
@@ -271,11 +209,11 @@ documentWriteback = function(importedDocument){
 		$fileUpload->setIsPreset($isPreset);
 		$fileUpload->setIsExternalBtnUpload(true);
 		$fileUpload->setFieldParentID(['setField' => true, 'preset' => $importToID, 'setFixed' => $setFixedImportTo]);
-		$fileUpload->setEditorJS(['writebackTarget' => $writebackTarget,
-			'customCallback' => $customCallback,
+		$fileUpload->setEditorJS(['customCallback' => $customCallback,
 			'predefinedCallback' => $predefinedCallback
 			]);
 		$fileUpload->setNextCmd($nextCmd);
+t_e('cmd upload editor', $fileUpload);
 		$yuiSuggest = &weSuggest::getInstance();
 
 		echo we_html_tools::getHtmlTop('fileupload', '', '', $fileUpload->getEditorJS() .
