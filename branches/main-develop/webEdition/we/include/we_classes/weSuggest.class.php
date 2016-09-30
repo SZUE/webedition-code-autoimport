@@ -50,6 +50,7 @@
 class weSuggest{
 	const DocSelector = 'docSelector';
 	const DirSelector = 'dirSelector';
+	const BTN_EDIT = true;
 	const USE_DRAG_AND_DROP = true;
 
 	private $noautoinit = false;
@@ -224,6 +225,7 @@ class weSuggest{
 		$inputField = $this->_htmlTextInput($this->inputName, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_element::htmlHidden($this->resultName, $this->resultValue, $resultId);
 		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
+		$this->openButton = $this->openButton === self::BTN_EDIT ? we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_suggest_openToEdit','" . $this->acId . "')") : $this->openButton;
 
 		$html = we_html_tools::htmlFormElementTable(
 				["text" => $resultField . $autoSuggest], $this->label, 'left', 'defaultfont', (

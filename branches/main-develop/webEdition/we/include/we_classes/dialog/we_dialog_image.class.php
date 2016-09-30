@@ -275,7 +275,7 @@ class we_dialog_image extends we_dialog_base{
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(315);
 			$yuiSuggest->setSelectButton($btnSelect);
-			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements.yuiAcResultImage.value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements.yuiAcResultImage.value,'" . we_base_ContentTypes::IMAGE . "','" . FILE_TABLE . "'); }"));
+			$yuiSuggest->setOpenButton(weSuggest::BTN_EDIT);
 			$yuiSuggest->setAdditionalButton($btnUpload);
 			$yuiSuggest->setIsDropFromTree(true);
 			$yuiSuggest->setIsDropFromExt(true);
