@@ -394,8 +394,18 @@ class we_fileupload_resp_import extends we_fileupload_resp_base{
 
 		return ['error' => [],
 			'success' => true,
-			'weDoc' => ['id' => $we_doc->ID, 'path' => $we_doc->Path, 'text' => $we_doc->Text]
-		];
+			'weDoc' => ['id' => $we_doc->ID, 
+					'path' => $we_doc->Path, 
+					'text' => $we_doc->Text, 
+					'ct' => $we_doc->ContentType, 
+					'table' => FILE_TABLE,
+					'currentID' => $we_doc->ID,
+					'currentPath' => $we_doc->Path,
+					'currentText' => $we_doc->Text,
+					'currentType' => $we_doc->ContentType,
+					'currentTable' => FILE_TABLE
+				]
+			];
 	}
 
 }

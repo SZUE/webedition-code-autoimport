@@ -200,7 +200,7 @@ doOnImportSuccess = function(importedDocument){
 			top.opener.document.getElementById("imageExt").style.display="none";
 			top.opener.document.getElementById("yuiAcResultImage").value = importedDocument.id;
 			top.opener.document.getElementById("yuiAcInputImage").value = importedDocument.path;
-			' . (weSuggest::USE_DRAG_AND_DROP ? 'top.opener.dropzoneAddPreview(\'Image\', -1);' : '') . '
+			' . (weSuggest::USE_DRAG_AND_DROP ? 'top.opener.weSuggest_dropzoneAddPreview(\'Image\', -1);' : '') . '
 			top.opener.imageChanged();
 			top.close();
 			break;
@@ -214,7 +214,7 @@ doOnImportSuccess = function(importedDocument){
 				top.opener.document.we_form.elements["we_dialog_args[fileSrc]"].value=importedDocument.path;
 				top.opener.document.we_form.elements["we_dialog_args[fileID]"].value=importedDocument.id;
 			}
-			' . (weSuggest::USE_DRAG_AND_DROP ? 'top.opener.dropzoneAddPreview(\'Image\', -1);' : '') . '
+			' . (weSuggest::USE_DRAG_AND_DROP ? 'top.opener.weSuggest_dropzoneAddPreview(\'Image\', -1);' : '') . '
 			top.opener.imageChanged();
 			self.close();
 			break;
@@ -280,7 +280,8 @@ documentWriteback = function(importedDocument){
 
 		echo we_html_tools::getHtmlTop('fileupload', '', '', $fileUpload->getEditorJS() .
 			we_html_element::jsScript(JS_DIR . 'keyListener.js') .
-			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js'), we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm([], we_html_element::htmlDiv([
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js') .
+			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_fileupload.js'), we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm([], we_html_element::htmlDiv([
 						'id' => 'we_fileupload_editor', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'], $fileUpload->getHtml()) .
 					we_html_element::htmlDiv(['id' => 'we_fileupload_footer', 'class' => '', 'style' => 'position:absolute;height:40px;bottom:0px;left:0px;right:0px;overflow: hidden;'], $fileUpload->getHtmlFooter())
 				) .

@@ -79,6 +79,13 @@ function we_cmd() {
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4] + "&caller=" + args[5];
 			new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 			break;
+		case "we_suggest_writeBack":
+			if(YAHOO.autocoml){
+				YAHOO.autocoml.writebackExternalSelection(args[1], args[2]);
+			} else {
+				WE().t_e('we_suggest_writeBack: no autocompleter found on this frame');
+			}
+			break;
 		default:
 			opener.we_cmd.apply(this, Array.prototype.slice.call(arguments));
 	}
