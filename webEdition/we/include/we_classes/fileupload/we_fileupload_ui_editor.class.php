@@ -171,26 +171,30 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		$contentType = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 1));
 		$doImport = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', true, 2));
 		$predefinedConfig = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 3);
-		//we_cmd 4 is not used anymore
-		$customCallback = stripslashes(we_base_request::_(we_base_request::CMD, 'we_cmd', '', 5));
-		$importToID = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 6);
-		$setFixedImportTo = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 7);
-		$predefinedCallback = we_base_request::_(we_base_request::CMD, 'we_cmd', '', 8);
-		$isPreset = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', false, 9));
-		$nextCmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 10);
+		$importToID = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 4);
+		$setFixedImportTo = we_base_request::_(we_base_request::CMD, 'we_cmd', 0, 5);
+		$isPreset = boolval(we_base_request::_(we_base_request::CMD, 'we_cmd', false, 6));
+		$nextCmd = we_base_request::_(we_base_request::STRING, 'we_cmd', '', 7);
+		
+		/*
+		 * used nextCmd:
+				nextCmds: 
+				collection_insertFiles
+				selector_insertFromUploader
+				sselector_insertFromUploader
+				we_suggest_writeBack
+		 */
 
 		$fileUpload = new we_fileupload_ui_editor($contentType, '', $doImport);
 		$fileUpload->setPredefinedConfig($predefinedConfig);
-		$fileUpload->setCallback('top.doOnImportSuccess(scope.weDoc);');
+		$fileUpload->setCallback('top.doOnImportSuccess(scope.weDoc);'); // FIXME: move this to uploader js!
 		$fileUpload->setDimensions(['dragWidth' => 374, 'inputWidth' => 378]);
 		$fileUpload->setIsPreset($isPreset);
 		$fileUpload->setIsExternalBtnUpload(true);
 		$fileUpload->setFieldParentID(['setField' => true, 'preset' => $importToID, 'setFixed' => $setFixedImportTo]);
-		$fileUpload->setEditorJS(['customCallback' => $customCallback,
-			'predefinedCallback' => $predefinedCallback
-			]);
+		$fileUpload->setEditorJS([]);
 		$fileUpload->setNextCmd($nextCmd);
-t_e('cmd upload editor', $fileUpload);
+
 		$yuiSuggest = &weSuggest::getInstance();
 
 		echo we_html_tools::getHtmlTop('fileupload', '', '', $fileUpload->getEditorJS() .

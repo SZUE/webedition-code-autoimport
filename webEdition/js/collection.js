@@ -1011,7 +1011,7 @@ weCollectionEdit = {
 				nextCmd = 'collection_insertFiles,' + this.we_doc.docId + ',' + index + ',' + position;
 
 				document.presetFileupload = files;
-				top.we_cmd("we_fileupload_editor", ct, 1, '', '', '', parentID, 0, '', true, nextCmd);
+				top.we_cmd('we_fileupload_editor', ct, 1, '', parentID, 0, true, nextCmd);
 				break;
 			default:
 				return;
