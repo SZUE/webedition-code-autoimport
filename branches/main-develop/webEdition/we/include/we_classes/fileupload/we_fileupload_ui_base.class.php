@@ -182,7 +182,7 @@ class we_fileupload_ui_base extends we_fileupload{
 				return $notWrapped ? $btn : we_html_element::htmlDiv(['id' => 'div_fileupload_btnReset', 'style' => 'height:30px;margin-top:18px;display:none;'], $btn);
 
 			case 'upload':
-				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), true, 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
+				$btn = we_html_button::create_button(we_html_button::UPLOAD, 'javascript:' . $this->getJsBtnCmd('upload'), '', 0, 0, '', '', $disabled, false, '_btn', true, '', 'weBtn noMarginLeft');
 				return we_html_element::htmlDiv(['id' => 'div_fileupload_btnUpload', 'style' => 'margin-top: 4px;'], $btn);
 
 			case 'cancel':

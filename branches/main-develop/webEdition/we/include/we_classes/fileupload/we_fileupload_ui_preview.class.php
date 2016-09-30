@@ -203,7 +203,7 @@ class we_fileupload_ui_preview extends we_fileupload_ui_base{
 		);
 
 		$js = we_html_element::jsElement($variant_js) .
-			we_html_element::jsScript(JS_DIR . 'we_fileupload_ui_preview.js', 'init();', ['id' => 'loadVarFileupload_ui_preview', 'data-preview' => setDynamicVar([
+			we_html_element::jsScript(JS_DIR . 'we_fileupload_formCategories.js', 'init();', ['id' => 'loadVarFileupload_ui_preview', 'data-preview' => setDynamicVar([
 					'delButton' => $del_but,
 					'categoriesDivSize' => ($width_size - 10),
 					'variantCats' => $cats

@@ -259,41 +259,27 @@ class we_dialog_image extends we_dialog_base{
 			/**
 			 * input for webedition internal image files
 			 */
-			$wecmdenc3 = we_base_request::encCmd("opener.document.we_form.elements.radio_type[0].checked=true;opener.document.we_form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';" . (weSuggest::USE_DRAG_AND_DROP ? "opener.dropzoneAddPreview('Image', -1);" : "") . "opener.imageChanged();"); // FIXME: dropzoneAddPreview() must be called by weSuggest
 			$startID = $this->args['selectorStartID'] ? : (IMAGESTARTID_DEFAULT ? : 0);
-
-			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','we_dialog_args[fileID]','we_dialog_args[fileSrc]','" . $wecmdenc3 . "'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
+			$btnSelect = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_image',document.we_form.elements['we_dialog_args[fileID]'].value,'" . FILE_TABLE . "','','','we_suggest_writeBack,Image'," . $startID . ",'','" . we_base_ContentTypes::IMAGE . "'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$btnUpload = we_html_button::create_button('fa:btn_add_image,fa-upload,fa-lg fa-file-image-o', "javascript:we_cmd('we_fileupload_editor', '" . we_base_ContentTypes::IMAGE . "', 1, '', '', '', 0, 0, 'imagedialog_popup', 0)");
-
-			//$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "radio_type", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "if(this.form.elements.radio_type[0].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='block';top.document.getElementById('imageExt').style.display='none';top.document.getElementsByClassName('weFileuploadEditor')[0].style.display='none';}imageChanged();");
 			$radioButtonInt = we_html_forms::radiobutton(we_base_link::TYPE_INT, (isset($this->args["type"]) && $this->args["type"] == we_base_link::TYPE_INT), "radio_type", g_l('wysiwyg', '[internal_image]'), true, "defaultfont", "if(this.form.elements.radio_type[0].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='block';top.document.getElementById('imageExt').style.display='none';}imageChanged();");
 
 			$yuiSuggest->setAcId("Image");
 			$yuiSuggest->setContentType(we_base_ContentTypes::IMAGE);
 			$yuiSuggest->setInput("we_dialog_args[fileSrc]", str_replace('"', '&quot;', (isset($this->args["fileSrc"]) ? $this->args["fileSrc"] : "")));
-			//Bug #3556:
-			//$yuiSuggest->setDoOnTextfieldBlur('imageChanged();');
-			//#8587: Better solution for #3556:
-			$yuiSuggest->setDoOnItemSelect("if(param2[2][1]!=='undefined'&&param2[2][1]){document.we_form.elements['we_dialog_args[fileID]']=param2[2][1];if(param2[2][2]!=='undefined'&&param2[2][2]!=='folder'){imageChanged();}}");
+			$yuiSuggest->setjsCommandOnItemSelect('dialog_imageChanged');
 			$yuiSuggest->setLabel('');
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(true);
 			$yuiSuggest->setResult("we_dialog_args[fileID]", str_replace('"', '&quot;', (isset($this->args["fileID"]) ? $this->args["fileID"] : "")));
 			$yuiSuggest->setSelector(weSuggest::DocSelector);
 			$yuiSuggest->setWidth(315);
-			$yuiSuggest->setSelectButton($but);
+			$yuiSuggest->setSelectButton($btnSelect);
 			$yuiSuggest->setOpenButton(we_html_button::create_button(we_html_button::EDIT, "javascript:if(top.document.we_form.elements.yuiAcResultImage.value){if(opener.top.doClickDirect!==undefined){var p=opener.top;}else if(opener.top.opener.top.doClickDirect!==undefined){var p=opener.top.opener.top;}else{return;}p.doClickDirect(document.we_form.elements.yuiAcResultImage.value,'" . we_base_ContentTypes::IMAGE . "','" . FILE_TABLE . "'); }"));
 			$yuiSuggest->setAdditionalButton($btnUpload);
 			$yuiSuggest->setIsDropFromTree(true);
 			$yuiSuggest->setIsDropFromExt(true);
-			$yuiSuggest->setDoOnDropFromTree('imageChanged();');
-			$yuiSuggest->setDoOnDropFromExt(weSuggest::USE_DRAG_AND_DROP ? 'opener.dropzoneAddPreview(\'Image\', -1);top.opener.imageChanged();self.close();' : ''); // FIXME: dropzoneAddPreview() must be called by weSuggest
 			$intSrc = $yuiSuggest->getHTML();
-
-			/**
-			 * input for image upload
-			 */
-			//$radioButtonUpload = we_html_forms::radiobutton(we_base_link::TYPE_INT, false, "radio_type", g_l('buttons_global', '[upload][value]'), true, "defaultfont", "if(this.form.elements['radio_type'][1].checked){this.form.elements['we_dialog_args[type]'].value='" . we_base_link::TYPE_INT . "';top.document.getElementById('imageInt').style.display='none';top.document.getElementById('imageExt').style.display='none';top.document.getElementsByClassName('weFileuploadEditor')[0].style.display='block';}imageChanged();");
 
 			/**
 			 * thumbnail select list
@@ -309,7 +295,7 @@ class we_dialog_image extends we_dialog_base{
 			$thumbnails .= '</select>';
 
 			/**
-			 * longdec file chooser
+			 * longdesc file chooser
 			 */
 			$but = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['we_dialog_args[longdescid]'].value,'" . FILE_TABLE . "','we_dialog_args[longdescid]','we_dialog_args[longdescsrc]','','','',''," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_FILES") ? 0 : 1) . ");");
 			$but2 = we_html_button::create_button(we_html_button::TRASH, "javascript:document.we_form.elements['we_dialog_args[longdescid]'].value='';document.we_form.elements['we_dialog_args[longdescsrc]'].value='';");

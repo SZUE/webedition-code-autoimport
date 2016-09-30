@@ -90,7 +90,16 @@ doDragFromTree = function(text, cmdTree, cts, table){
 	var transfer = text.split(',');
 
 	if(transfer[2] && transfer[1] === table && (cts === '' || cts.search(transfer[3])) !== -1){
-		var data = {id: transfer[2], path: transfer[4], table: transfer[1], ct: transfer[3]};
+		var data = {
+				id: transfer[2],
+				path: transfer[4],
+				ct: transfer[3],
+				table: transfer[1],
+				currentID: transfer[2],
+				currentPath: transfer[4],
+				currentType: transfer[3],
+				currentTable: transfer[1]
+			};
 		var tmp = cmdTree.split(',');
 
 		tmp.splice(1, 0, data);

@@ -55,6 +55,8 @@ class weSuggest{
 	private $noautoinit = false;
 	private $noAutoInits = [];
 	var $inputfields = [];
+	private $ctfields = [];
+	private $acIds = [];
 	var $containerwidth = [];
 	var $tables = [];
 	var $rootDirs = [];
@@ -69,6 +71,7 @@ class weSuggest{
 	var $inputMayBeEmpty = [];
 	var $doOnItemSelect = [];
 	var $doOnTextfieldBlur = [];
+	var $jsCommandOnItemSelect = [];
 	/*	 * ************************************* */
 	var $acId = '';
 	var $checkFieldValue = true;
@@ -97,6 +100,7 @@ class weSuggest{
 	var $width = 280;
 	var $doOnItemSelectTxt = '';
 	var $doOnTextfieldBlurTxt = '';
+	var $jsCommandOnItemSelectTxt = '';
 	protected $isDropFromTree = false;
 	protected $isDropFromExt = false;
 	protected $doOnDropFromTree = '';
@@ -139,6 +143,8 @@ class weSuggest{
 
 				$current = [
 					'id' => $field,
+					'ctField' => $this->ctfields[$i],
+					'acId' => $this->acIds[$i],
 					'container' => $this->containerfields[$i],
 					'selector' => $this->selectors[$i],
 					'sel' => '',
@@ -157,8 +163,9 @@ class weSuggest{
 					'mayBeEmpty' => ($this->inputMayBeEmpty[$i] ? true : false),
 					'checkField' => intval(!empty($this->checkFieldsValues[$i])),
 					'checkValues' => (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i]) ? $this->setOnSelectFields[$i] : []),
-					'blur' => $this->doOnTextfieldBlur[$i]? : '',
-					'itemSelect' => $this->doOnItemSelect[$i]? : '',
+					'blur' => $this->doOnTextfieldBlur[$i] ? : '',
+					'itemSelect' => $this->doOnItemSelect[$i] ? : '',
+					'jsCommandItemSelect' => $this->jsCommandOnItemSelect[$i]? : '',
 					'fields_id' => (isset($this->setOnSelectFields[$i]) && is_array($this->setOnSelectFields[$i]) && $this->setOnSelectFields[$i] ? $this->setOnSelectFields[$i] : [])
 				];
 //FIXME: set object to $field, needs change in weSuggest.js
@@ -213,7 +220,7 @@ class weSuggest{
 		$containerWidth = $this->containerWidth ? : $this->width;
 
 		$this->setAutocompleteField($inputId, "yuiAcContainer" . $this->acId, $this->table, $this->contentType, $this->selector, $this->maxResults, 0, "yuiAcLayer" . $this->acId, [
-			$resultId], $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir, $this->noautoinit);
+			$resultId], $this->checkFieldValue, (we_base_browserDetect::isIE() ? $containerWidth : ($containerWidth - 8)), $this->mayBeEmpty, $this->rootDir, $this->noautoinit, 'yuiAcContentType' . $this->acId, $this->acId);
 		$inputField = $this->_htmlTextInput($this->inputName, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_element::htmlHidden($this->resultName, $this->resultValue, $resultId);
 		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
@@ -263,17 +270,15 @@ class weSuggest{
 				$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array_merge($eventAttribs, ['style' => 'display:inline-block;padding-top:30px;']), $dropzoneContent);
 				$dropzoneStyle = 'width:auto;padding:0px 0 0 12px;';
 			}
-
-			//$callbackTree = "if(id){document.we_form.elements['" . $resultId . "'].value=id;document.we_form.elements['" . $inputId . "'].value=path;top.dropzoneAddPreview('" . $this->acId . "', id, table, ct, path);" . $this->doOnDropFromTree . "}";
-			//$callbackExt = "if(importedDocument.id){" . $this->doOnDropFromExt . "top.close();}";
-			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->isDropFromTree, $this->isDropFromExt, 'dummy', 'dummy', $this->contentTypes, $this->table);
-
+			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->isDropFromTree, $this->isDropFromExt, 'we_suggest_writeBack,' . $this->acId, 'we_suggest_writeBack,' . $this->acId, $this->contentTypes, $this->table);
 
 			$html = we_html_element::htmlDiv([], we_html_element::htmlDiv([], $html) .
 					we_html_element::htmlDiv(['style' => 'margin-top:-4px;'], $dropzone)
 			);
 			$this->isDropFromTree = $this->isDropFromExt = false; //reset default for other instances on the same site
 		}
+
+		$html .= we_html_element::htmlHidden('yuiAcContentType' . $this->acId, isset($file['ContentType']) ? $file['ContentType'] : '', 'yuiAcContentType' . $this->acId);
 
 		if($reset){
 			$this->contentType = we_base_ContentTypes::FOLDER;
@@ -286,6 +291,7 @@ class weSuggest{
 			$this->width = 280;
 			$this->doOnItemSelectTxt = '';
 			$this->doOnTextfieldBlurTxt = '';
+			$this->jsCommandOnItemSelectTxt = '';
 		}
 		$this->acId = '';
 		$this->maxResults = 20;
@@ -342,6 +348,10 @@ class weSuggest{
 
 	function setDoOnItemSelect($val){
 		$this->doOnItemSelectTxt = $val;
+	}
+
+	function setjsCommandOnItemSelect($val){
+		$this->jsCommandOnItemSelectTxt = $val;
 	}
 
 	function setDoOnTextfieldBlur($val){
@@ -526,8 +536,10 @@ class weSuggest{
 	 * @param unknown_type $checkFieldsValue
 	 * @param unknown_type $containerwidth
 	 */
-	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = '', $selector = '', $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = 'true', $rootDir = '', $noautoinit = false){
+	function setAutocompleteField($inputFieldId, $containerFieldId, $table, $contentType = '', $selector = '', $maxResults = 10, $queryDelay = 0, $layerId = null, $setOnSelectFields = null, $checkFieldsValue = true, $containerwidth = "100%", $inputMayBeEmpty = 'true', $rootDir = '', $noautoinit = false, $ctFieldId = '', $acId = ''){
 		$this->inputfields[] = $inputFieldId;
+		$this->ctfields[] = $ctFieldId;
+		$this->acIds[] = $acId;
 		$this->noAutoInits[] = $noautoinit;
 		$this->containerfields[] = $containerFieldId;
 		$this->tables[] = $table;
@@ -552,7 +564,7 @@ class weSuggest{
 
 		/* FIXME: dropzone callback must be placed here: but this is never called, because we have imageChanged() onChange() in other fields
 		  if($this->isDropFromExt || $this->isDropFromTree){
-		  $this->doOnItemSelect .= top.dropzoneAddPreview('" . $this->acId . "', document.we_form['yuiAcResult" . $this->acId . "'].value, '" . $this->table . "', 'image/*', document.we_form['yuiAcId" . $this->acId . "'].value);";
+		  $this->doOnItemSelect .= top.weSuggest_dropzoneAddPreview('" . $this->acId . "', document.we_form['yuiAcResult" . $this->acId . "'].value, '" . $this->table . "', 'image/*', document.we_form['yuiAcId" . $this->acId . "'].value);";
 		  }
 		 *
 		 */
@@ -560,6 +572,8 @@ class weSuggest{
 		$this->doOnItemSelectTxt = '';
 		$this->doOnTextfieldBlur[] = $this->doOnTextfieldBlurTxt;
 		$this->doOnTextfieldBlurTxt = '';
+		$this->jsCommandOnItemSelect[] = $this->jsCommandOnItemSelectTxt;
+		$this->jsCommandOnItemSelectTxt = '';
 	}
 
 	/**

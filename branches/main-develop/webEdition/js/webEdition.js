@@ -2107,6 +2107,13 @@ var we_cmd_modules = {
 					}
 				}, 'protocol=json&cmd=SetPropertyOrElement&cns=document' + postData);
 				break;
+			case "we_suggest_writeBack":
+				if(YAHOO.autocoml){
+					YAHOO.autocoml.writebackExternalSelection(args[1], args[2]);
+				} else {
+					WE().t_e('we_suggest_writeBack: no autocompleter found on this frame');
+				}
+				break;
 			default:
 				//WE().t_e('no command matched to request', args[0]);
 				return false;

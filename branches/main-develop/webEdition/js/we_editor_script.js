@@ -339,6 +339,13 @@ function we_cmd() {
 		case "import_files":
 			new (WE().util.jsWindow)(top, url, "import_files", -1, -1, 650, 720, true, false, true); // be sure we have top as opener!
 			break;
+		case "we_suggest_writeBack":
+			if(YAHOO.autocoml){
+				YAHOO.autocoml.writebackExternalSelection(args[1], args[2]);
+			} else {
+				WE().t_e('we_suggest_writeBack: no autocompleter found on this frame');
+			}
+			break;
 		case 'setHot':
 			_EditorFrame.setEditorIsHot(true);
 			break;
@@ -353,7 +360,6 @@ function we_cmd() {
 
 	}
 }
-
 
 function fields_are_valid() {
 	if (doc.isWEObject) {

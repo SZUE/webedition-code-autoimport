@@ -2071,7 +2071,7 @@ var weFileUpload = (function () {
 		};
 
 		this.reset = function () {
-			_.view.elems.top.fileSelect.value = null;
+			_.view.elems.fileSelect.value = null;
 			_.view.repaintGUI({what: 'resetGui'});
 		};
 
@@ -3503,9 +3503,11 @@ var weFileUpload = (function () {
 						this.setDisplay('divProgressBar', 'none');
 						this.setDisplay('divBtnCancel', 'none');
 						this.setDisplay('dragInnerRight', '');
+						/*
 						if (_.EDIT_IMAGES_CLIENTSIDE) {
 							document.getElementById('make_preview_weFileupload').disabled = true;//make same as following
 						}
+						*/
 						_.controller.setWeButtonState(_.view.uploadBtnName, false);
 						_.controller.setWeButtonState('browse_harddisk_btn', true);
 						return;
