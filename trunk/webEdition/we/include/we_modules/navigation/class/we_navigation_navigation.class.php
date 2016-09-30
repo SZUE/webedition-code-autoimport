@@ -710,97 +710,52 @@ class we_navigation_navigation extends we_base_model{
 		}
 	}
 
-	function getHref($id = 0){
-		if($this->IsFolder){
-			$path = '';
+    /**
+     * @param int $id
+     * @return array|mixed|string
+     */
+    function getHref($id = 0){
+        $id = $this->IsFolder ? $this->LinkID : ($id ? : $this->LinkID);
+        $selectionType = $this->IsFolder ? $this->FolderSelection : $this->SelectionType;
 //FIXME: remove eval
-			eval('$param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->FolderParameter)) . '";');
-			switch($this->FolderSelection){
-				case self::STYPE_URLLINK:
-					$path = $this->FolderUrl;
-					break;
-				default:
-					$objecturl = '';
-					if($this->FolderSelection == self::STYPE_OBJLINK){
-						if(NAVIGATION_OBJECTSEOURLS){
-							$db = new DB_WE();
-							$objectdaten = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($this->LinkID) . ' LIMIT 1', $db);
-							$objecturl = empty($objectdaten['Url']) ? '' : $objectdaten['Url'];
-							$objecttriggerid = empty($objectdaten['TriggerID']) ? 0 : $objectdaten['TriggerID'];
-							if(!$objecturl){
-								$param = 'we_objectID=' . $this->LinkID . ($param ? '&' : '') . $param;
-							}
-						} else {
-							$param = 'we_objectID=' . $this->LinkID . ($param ? '&' : '') . $param;
-						}
-						$id = ($objecttriggerid ? : we_navigation_dynList::getFirstDynDocument($this->FolderWsID));
-					} else {
-						$id = $this->LinkID;
-					}
-					$p = we_navigation_items::id2path($id);
-					$path = ($p === '/' ? '' : $p);
-					if(NAVIGATION_OBJECTSEOURLS && $objecturl != ''){
-						$path_parts = pathinfo($path);
-//FIXME: can we use seoIndexHide($path_parts['basename'])??
-						$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' .
-								(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES))) ?
-										'' : $path_parts['filename'] . '/'
-								) . $objecturl;
-					}
-					break;
-			}
-		} else {
-			$id = ($id ? : $this->LinkID);
-			$path = '';
-//FIXME: remove eval
-			eval('$param = "' . addslashes(preg_replace('%\\$%', '$this->', $this->Parameter)) . '";');
+        eval('$param = "' . addslashes(preg_replace('%\\$%', '$this->', ($this->IsFolder ? $this->FolderParameter : $this->Parameter))) . '";');
 
-			switch($this->SelectionType){
-				case self::STYPE_URLLINK:
-					$path = $this->Url;
-					break;
-				case self::STYPE_CATEGORY:
-				case self::STYPE_CATLINK:
-					$path = $this->LinkSelection === self::LSELECTION_EXTERN ? $this->Url : we_navigation_items::id2path($this->UrlID);
-					if(!empty($this->CatParameter)){
-						$param = $this->CatParameter . '=' . $id . (!empty($param) ? '&' : '') . $param;
-					}
-					break;
-				default:
-					if($this->SelectionType == self::STYPE_CLASS || $this->SelectionType == self::STYPE_OBJLINK){
-						$objecturl = '';
-						if(NAVIGATION_OBJECTSEOURLS){
-							$db = new DB_WE();
-							$objectdaten = getHash('SELECT  Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ' LIMIT 1', $db);
-							if(isset($objectdaten['Url'])){
-								$objecturl = $objectdaten['Url'];
-								$objecttriggerid = $objectdaten['TriggerID'];
-							} else {
-								$objecturl = '';
-								$objecttriggerid = '';
-							}
-							if(!$objecturl){
-								$param = 'we_objectID=' . $id . ($param ? '&' : '') . $param;
-							}
-						} else {
-							$param = 'we_objectID=' . $id . ($param ? '&' : '') . $param;
-							$objecttriggerid = '';
-						}
-						$id = ($objecttriggerid ? : we_navigation_dynList::getFirstDynDocument($this->WorkspaceID, $db));
-					}
+        switch($selectionType){
+            case self::STYPE_URLLINK: //folder and entry
+                $path = $this->IsFolder ? $this->FolderUrl : $this->Url;
+                break;
+            case self::STYPE_CATEGORY:
+            case self::STYPE_CATLINK:
+                $path = $this->LinkSelection === self::LSELECTION_EXTERN ? $this->Url : we_navigation_items::id2path($this->UrlID);
+                if(!empty($this->CatParameter)){
+                    $param = $this->CatParameter . '=' . $id . (!empty($param) ? '&' : '') . $param;
+                }
+                break;
+            case self::STYPE_CLASS:
+            case self::STYPE_OBJLINK: //folder and entry
+                $db = new DB_WE();
+                if(NAVIGATION_OBJECTSEOURLS){
+                    $object = getHash('SELECT Url,TriggerID FROM ' . OBJECT_FILES_TABLE . ' WHERE ID=' . intval($id) . ' LIMIT 1', $db);
 
-					$p = we_navigation_items::id2path($id);
-					$path = ($p === '/' ? '' : $p);
-					if(NAVIGATION_OBJECTSEOURLS && !empty($objecturl)){
-						$path_parts = pathinfo($path);
+                    if(empty($object['Url'])){
+                        $param = 'we_objectID=' . $id . ($param ? '&' : '') . $param;
+                    }
+                } else {
+                    $param = 'we_objectID=' . $id . ($param ? '&' : '') . $param;
+                }
+                $id = we_navigation_dynList::getFirstDynDocument(($this->IsFolder ? $this->FolderWsID : $this->WorkspaceID), $db) ? : (!empty($object['TriggerID']) ? $object['TriggerID'] : $id);
+            default: //folder and entry
+                $p = we_navigation_items::id2path($id);
+                $path = ($p === '/' ? '' : $p);
+                if(NAVIGATION_OBJECTSEOURLS && !empty($object['Url'])){
+                    $path_parts = pathinfo($path);
 //FIXME: can we use seoIndexHide($path_parts['basename'])??
-						$path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
-								(NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
-										'' : $path_parts['filename'] . '/'
-								) . $objecturl;
-					}
-			}
-		}
+                    $path = ($path_parts['dirname'] != '/' ? $path_parts['dirname'] : '') . '/' . (
+                        (NAVIGATION_DIRECTORYINDEX_HIDE && NAVIGATION_DIRECTORYINDEX_NAMES && in_array($path_parts['basename'], array_map('trim', explode(',', NAVIGATION_DIRECTORYINDEX_NAMES)))) ?
+                            '' : $path_parts['filename'] . '/'
+                        ) . $object['Url'];
+                }
+        }
 
 		if(!is_array($this->Attributes)){
 			$this->Attributes = array_filter(we_unserialize($this->Attributes));
