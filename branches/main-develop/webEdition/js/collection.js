@@ -996,22 +996,22 @@ weCollectionEdit = {
 				break;
 			case 'dragItemFromExtern':
 				var files = evt.dataTransfer.files;
-				//weCollectionEdit.we_doc.docRealRemCT
 				if (this.we_doc.docRealRemCT.search(',' + files[0].type + ',') === -1) {
 					alert('wrong type');
 					return;
 				}
 
-				var parentID = weCollectionEdit.we_doc.docDefaultDir,
-								ct = files[0].type,
-								callback;
+				var parentID = this.we_doc.docDefaultDir,
+					ct = files[0].type,
+					position, nextCmd;
 
 				el = this.getItem(elem);
-				index = el.id.substr(10);
-				callback = "WE().layout.weEditorFrameController.getVisibleEditorFrame().weCollectionEdit.callForValidItemsAndInsert(" + index + ", importedDocument.id, 'dummy');window.close();";
+				position = el.id.substr(10);
+				index = el.getElementsByClassName('collectionItem_staticIndex')[0].id.substr(27);
+				nextCmd = 'collection_insertFiles,' + this.we_doc.docId + ',' + index + ',' + position;
 
 				document.presetFileupload = files;
-				top.we_cmd("we_fileupload_editor", ct, 1, "", "", callback, parentID, 0, "", true);
+				top.we_cmd("we_fileupload_editor", ct, 1, '', '', '', parentID, 0, '', true, nextCmd);
 				break;
 			default:
 				return;
@@ -1050,6 +1050,7 @@ weCollectionEdit = {
 		};
 	},
 	callForValidItemsAndInsert: function (index, csvIDs, message, notReplace, recursive) {
+		// FIXME: we need a consize distinction between index and position
 		index = Number.isInteger(parseInt(index)) && parseInt(index) > 0 ? parseInt(index) :
 					document.getElementsByName('lastItem_' + this.gui.view)[0].id.substr(10);
 		notReplace = notReplace !== undefined ? notReplace : false;

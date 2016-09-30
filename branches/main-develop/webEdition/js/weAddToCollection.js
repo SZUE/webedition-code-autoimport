@@ -71,7 +71,7 @@ weAddToCollection = {
 			}
 		}
 
-		we_cmd('collection_insertFiles_direct',
+		we_cmd('collection_insertFiles',
 				selection,
 				document.getElementById('yuiAcResultDir').value,
 				this.conf.targetInsertIndex,

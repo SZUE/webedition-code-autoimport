@@ -1819,17 +1819,20 @@ var we_cmd_modules = {
 				url = WE().consts.dirs.WEBEDITION_DIR + "we_cmd.php?we_cmd[0]=editNewCollection&we_cmd[1]=" + args[1] + "&we_cmd[2]=" + args[2] + "&fixedpid=" + args[3] + "&fixedremtable=" + args[4];
 				new (WE().util.jsWindow)(this, url, "weNewCollection", -1, -1, 590, 560, true, true, true, true);
 				break;
-			case 'collection_insertFiles_direct':
-				var collection = args[2] !== undefined ? parseInt(args[2]) : 0;
-				var ids = args[1] !== undefined ? (args[1].success !== undefined ? args[1].success : args[1]) : [
-				];
+			case 'collection_insertFiles':
+				if(args[1] === undefined || args[2] === undefined){
+					break;
+				}
+
+				var collection = parseInt(args[2]);
+				var ids = (args[1].success !== undefined ? args[1].success : (args[1].currentID !== undefined ? [args[1].currentID] : args[1]));
 
 				if (collection && ids) {
 					var usedEditors = WE().layout.weEditorFrameController.getEditorsInUse(),
-									editor = null,
-									index = args[3] !== undefined ? args[3] : -1,
-									recursive = args[5] !== undefined ? args[5] : false,
-									transaction, frameId, candidate;
+						editor = null,
+						index = args[3] !== undefined ? args[3] : -1,
+						recursive = args[5] !== undefined ? args[5] : false,
+						transaction, frameId, candidate;
 
 					for (frameId in usedEditors) {
 						candidate = usedEditors[frameId];
@@ -1844,9 +1847,11 @@ var we_cmd_modules = {
 					}
 
 					if (editor) {
+						// FIXME: we need a consize distinction between index and position
+						//var index = editor.getContentEditor().weCollectionEdit.getItemId(editor.getContentEditor().document.getElementById('collectionItem_staticIndex_' + index))
 						editor.getContentEditor().weCollectionEdit.callForValidItemsAndInsert(index, ids.join(), 'bla', recursive, true);
 					} else {
-						var position = args[3] !== undefined ? args[3] : -1;
+						var position = args[4] !== undefined ? args[4] : index;
 						we_cmd('collection_insertFiles_rpc', ids, collection, transaction, position, recursive);
 					}
 				}

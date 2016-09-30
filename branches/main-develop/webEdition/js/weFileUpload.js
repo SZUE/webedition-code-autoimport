@@ -3311,6 +3311,7 @@ var weFileUpload = (function () {
 							var tmp = _.sender.nextCmd.split(',');
 							tmp.splice(1, 0, resp);
 							opener.we_cmd.apply(opener, tmp);
+							top.close();
 						}, 100);
 
 						//reload main tree and close!
@@ -3325,7 +3326,6 @@ var weFileUpload = (function () {
 
 					this.fireCallback();
 				}
-
 			};
 
 			this.processError = function (arg) {

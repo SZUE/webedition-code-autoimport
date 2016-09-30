@@ -150,31 +150,8 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		);
 	}
 
-	public function getEditorJS(){ // TODO: move this JS to weFileupload.js!!
-		return we_html_element::jsScript(JS_DIR . 'weFileUpload.js') .
-			we_html_element::jsElement('
-predefinedCallback = "' . $this->editorJS['predefinedCallback'] . '";
-customCallback = function(importedDocument){' . $this->editorJS['customCallback'] . '};
-
-doOnImportSuccess = function(importedDocument){
-
-	switch(predefinedCallback){
-		case "imagedialog_popup":
-			alert("import done: " + importedDocument.path + " (id: " + importedDocument.id + ")");
-			we_FileUpload.reset();
-			top.opener.document.getElementById("imageInt").style.display="block";
-			top.opener.document.getElementById("imageExt").style.display="none";
-			top.opener.document.getElementById("yuiAcResultImage").value = importedDocument.id;
-			top.opener.document.getElementById("yuiAcInputImage").value = importedDocument.path;
-			' . (weSuggest::USE_DRAG_AND_DROP ? 'top.opener.weSuggest_dropzoneAddPreview(\'Image\', -1);' : '') . '
-			top.opener.imageChanged();
-			top.close();
-			break;
-	}
-
-	customCallback(importedDocument);
-}
-');
+	public function getEditorJS(){
+		return we_html_element::jsScript(JS_DIR . 'weFileUpload.js');
 	}
 
 	public function setEditorJS($editorJS = []){
