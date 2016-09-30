@@ -162,52 +162,57 @@ class we_navigation_item{
 				break;
 		}
 
-		if(isset($_SERVER['REQUEST_URI']) && isset($id) && ($this->docid == $id)){
-			static $uri = null;
-			static $uriarrq = array();
-			$refarrq = array();
+        if(isset($id) && ($this->docid == $id)){
+            $cleanRequestUri = defined(WE_REDIRECTED_SEO) ? WE_REDIRECTED_SEO : (isset($_SERVER['REQUEST_URI']) ? parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) : ''); //Fix #11057
+            if(isset($_SERVER['REQUEST_URI']) && (stripos($this->href, $cleanRequestUri)!==false)){
+                static $uri = null;
+                static $uriarrq = array();
+                $refarrq = array();
 
-			$uri = ($uri === null ? parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI'])) : $uri);
-			$ref = parse_url(str_replace('&amp;', '&', $this->href));
-			if(!empty($uri['query']) && !$uriarrq){
-				parse_str($uri['query'], $uriarrq);
-			}
-			if(!empty($ref['query'])){
-				parse_str($ref['query'], $refarrq);
-			}
-			if(($this->CurrentOnAnker || $this->currentOnCat) && !$this->CurrentOnUrlPar){
-				//remove other param tha "anchors" or catParams respectively
-				$tmpUriarrq = $tmpRefarrq = array();
-				if($this->CurrentOnAnker){
-					$tmpUriarrq['we_anchor'] = isset($uriarrq['we_anchor']) ? $uriarrq['we_anchor'] : '#';
-					$tmpRefarrq['we_anchor'] = isset($refarrq['we_anchor']) ? $refarrq['we_anchor'] : '#';
-				}
-				if($this->currentOnCat){
-					$tmpUriarrq[$this->catParam] = isset($uriarrq[$this->catParam]) ? $uriarrq[$this->catParam] : '#';
-					$tmpRefarrq[$this->catParam] = isset($refarrq[$this->catParam]) ? $refarrq[$this->catParam] : '#';
-				}
-			} else {
-				$tmpUriarrq = $uriarrq;
-				$tmpRefarrq = $refarrq;
-			}
-			$allfound = true;
-			//current is true, if all arguements set in navigation match current request - if we have more (maybe a form, etc.) ignore this.
-			foreach($tmpRefarrq as $key => $val){
-				$allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
-			}
+                $uri = ($uri === null ? parse_url(str_replace('&amp;', '&', $_SERVER['REQUEST_URI'])) : $uri);
+                $ref = parse_url(str_replace('&amp;', '&', $this->href));
+                if(!empty($uri['query']) && !$uriarrq){
+                    parse_str($uri['query'], $uriarrq);
+                }
+                if(!empty($ref['query'])){
+                    parse_str($ref['query'], $refarrq);
+                }
+                if(($this->CurrentOnAnker || $this->currentOnCat) && !$this->CurrentOnUrlPar){
+                    //remove other param tha "anchors" or catParams respectively
+                    $tmpUriarrq = $tmpRefarrq = array();
+                    if($this->CurrentOnAnker){
+                        $tmpUriarrq['we_anchor'] = isset($uriarrq['we_anchor']) ? $uriarrq['we_anchor'] : '#';
+                        $tmpRefarrq['we_anchor'] = isset($refarrq['we_anchor']) ? $refarrq['we_anchor'] : '#';
+                    }
+                    if($this->currentOnCat){
+                        $tmpUriarrq[$this->catParam] = isset($uriarrq[$this->catParam]) ? $uriarrq[$this->catParam] : '#';
+                        $tmpRefarrq[$this->catParam] = isset($refarrq[$this->catParam]) ? $refarrq[$this->catParam] : '#';
+                    }
+                } else {
+                    $tmpUriarrq = $uriarrq;
+                    $tmpRefarrq = $refarrq;
+                }
 
-			if($allfound){
-				$this->setCurrent($weNavigationItems);
-			} elseif($this->current){
-				$this->unsetCurrent($weNavigationItems);
-			}
-			return $allfound;
-		}
+                $allfound = true;
+                //current is true, if all arguements set in navigation match current request - if we have more (maybe a form, etc.) ignore this.
+                foreach($tmpRefarrq as $key => $val){
+                    $allfound &= isset($tmpUriarrq[$key]) && $tmpUriarrq[$key] == $val;
+                }
 
-		if(isset($id) && ($this->docid == $id) && !($this->CurrentOnUrlPar || $this->CurrentOnAnker)){
-			$this->setCurrent($weNavigationItems);
-			return true;
-		}
+                if($allfound){
+                    $this->setCurrent($weNavigationItems);
+                } elseif($this->current){
+                    $this->unsetCurrent($weNavigationItems);
+                }
+                return $allfound;
+            }
+
+            if(!($this->CurrentOnUrlPar || $this->CurrentOnAnker) && (stripos($this->href, $cleanRequestUri)!==false)){
+                $this->setCurrent($weNavigationItems);
+                return true;
+            }
+        }
+
 		if($this->current){
 			$this->unsetCurrent($weNavigationItems);
 		}
