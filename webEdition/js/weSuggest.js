@@ -70,6 +70,20 @@ YAHOO.autocoml = {
 
 		YAHOO.autocoml.doOnAcResultChange('yuiAcInput' + acId, result);
 	},
+	openSelectionToEdit: function(acId){
+		if(!acId || !document.we_form.elements['yuiAcInput' + acId]){
+			WE().t_e('suggestor function "openSelectionToEdit": suggestor does not exist on this frame');
+		}
+
+		var table = YAHOO.autocoml.yuiAcFields[YAHOO.autocoml.yuiAcFieldsById['yuiAcInput' + acId]].table,
+			id = document.we_form.elements['yuiAcResult' + acId].value,
+			type = document.we_form.elements['yuiAcContentType' + acId].value;
+	
+		if(table && id && type){
+			WE().layout.openToEdit(table, id, type);
+		}
+	},
+
 	doOnTextfieldBlur: function (x, y, i) {
 		ret = true;
 		//document.getElementById(YAHOO.autocoml.yuiAcFields[i].id).blur();

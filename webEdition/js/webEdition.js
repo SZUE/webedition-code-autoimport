@@ -2107,9 +2107,16 @@ var we_cmd_modules = {
 					}
 				}, 'protocol=json&cmd=SetPropertyOrElement&cns=document' + postData);
 				break;
+			case "we_suggest_openToEdit":
+				if(this.YAHOO.autocoml){
+					this.YAHOO.autocoml.openSelectionToEdit(args[1]);
+				} else {
+					WE().t_e('we_cmd "we_suggest_openToEdit": no autocompleter found on this frame');
+				}
+				break;
 			case "we_suggest_writeBack":
-				if(YAHOO.autocoml){
-					YAHOO.autocoml.writebackExternalSelection(args[1], args[2]);
+				if(this.YAHOO.autocoml){
+					this.YAHOO.autocoml.writebackExternalSelection(args[1], args[2]);
 				} else {
 					WE().t_e('we_suggest_writeBack: no autocompleter found on this frame');
 				}

@@ -3310,7 +3310,7 @@ var weFileUpload = (function () {
 						setTimeout(function () {
 							var tmp = _.sender.nextCmd.split(',');
 							tmp.splice(1, 0, resp);
-							top.we_cmd.apply(top, tmp);
+							opener.we_cmd.apply(opener, tmp);
 						}, 100);
 					}
 				} else if (resp.status === 'success') {

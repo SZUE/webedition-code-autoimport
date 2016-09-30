@@ -85,13 +85,6 @@ function we_cmd() {
 		case "we_fileupload_editor":
 			new (WE().util.jsWindow)(this, url, "we_fileupload_editor", -1, -1, 500, WE().consts.size.docSelect.height, true, true, true, true);
 			break;
-		case "we_suggest_writeBack":
-			if(YAHOO.autocoml){
-				YAHOO.autocoml.writebackExternalSelection(args[1], args[2]);
-			} else {
-				WE().t_e('we_suggest_writeBack: no autocompleter found on this frame');
-			}
-			break;
 		case "dialog_imageChanged":
 			imageChanged();
 			break;
