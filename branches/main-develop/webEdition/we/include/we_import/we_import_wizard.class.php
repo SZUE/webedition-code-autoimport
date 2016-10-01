@@ -1321,7 +1321,7 @@ function handle_eventNext(){
 		fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', '[select_seperator]'), we_message_reporting::WE_MESSAGE_ERROR) . "}
 	if (fvalid) {
 		f.step.value = 2;
-		we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
+		top.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
 	}
 }
 ";
@@ -2022,7 +2022,7 @@ function handle_event(evt) {
 					break;
 				default:
 					$wizard->fileUploader = new we_fileupload_ui_base($name);
-					$wizard->fileUploader->setCallback('top.wizbody.handle_eventNext()');
+					$wizard->fileUploader->setNextCmd('fileupload_callback' . $type);
 					$wizard->fileUploader->setExternalUiElements(array('contentName' => 'wizbody', 'btnUploadName' => 'next_btn'));
 					$wizard->fileUploader->setFileSelectOnclick("self.document.we_form.elements['v[rdofloc]'][1].checked=true;");
 					$wizard->fileUploader->setInternalProgress(array('isInternalProgress' => true, 'width' => 200));

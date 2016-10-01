@@ -299,13 +299,13 @@ we_FileUpload.init({
 	typeCondition : ' . str_replace(["\n\r", "\r\n", "\r", "\n"], "", json_encode($this->typeCondition)) . ',
 	isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
 	isPreset: ' . ($this->isPreset ? 'true' : 'false') . ',
-	callback : function(scope){' . $this->callback . '},
+		callback : function(scope){' . $this->callback . '},
 	nextCmd : "' . $this->nextCmd . '",
-	fileselectOnclick : function(){' . $this->fileselectOnclick . '},
+		fileselectOnclick : function(){' . $this->fileselectOnclick . '},
 	chunkSize : ' . self::CHUNK_SIZE . ',
 	intProgress : ' . json_encode($this->internalProgress) . ',
 	extProgress : ' . json_encode($this->externalProgress) . ',
-	gl: ' . $this->_getJsGl() . ',
+		gl: ' . $this->_getJsGl() . ',
 	isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
 	htmlFileRow : \'' . (we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->_getHtmlFileRow() : $this->_getHtmlFileRow_legacy()) . '\',
 	fileTable : "' . $this->fileTable . '",
@@ -319,7 +319,7 @@ we_FileUpload.init({
 			') . ($this->externalProgress['create'] ? we_progressBar::getJSCode() : '');
 	}
 
-	protected function _getJsGl(){
+	protected function _getJsGl(){ // move to consts
 		return '{
 		dropText : "' . g_l('importFiles', '[dragdrop_text]') . '",
 		sizeTextOk : "' . g_l('newFile', '[file_size]') . ': ",

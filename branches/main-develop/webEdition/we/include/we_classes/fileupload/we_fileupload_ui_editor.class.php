@@ -23,7 +23,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_fileupload_ui_editor extends we_fileupload_ui_preview{
-	protected $editorJS = ['editorCallback' => ''];
 	protected $doImport = true;
 	protected $contentType = [];
 	protected $posBtnUpload = 'bottom';
@@ -150,14 +149,6 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 		);
 	}
 
-	public function getEditorJS(){
-		return we_html_element::jsScript(JS_DIR . 'weFileUpload.js');
-	}
-
-	public function setEditorJS($editorJS = []){
-		$this->editorJS = array_merge($this->editorJS, $editorJS);
-	}
-
 	public function setDoImport($doImport = true){
 		$this->doImport = $doImport;
 		$this->responseClass = $this->doImport ? 'we_fileupload_resp_import' : 'we_fileupload_resp_base';
@@ -182,23 +173,20 @@ class we_fileupload_ui_editor extends we_fileupload_ui_preview{
 				collection_insertFiles
 				selector_insertFromUploader
 				sselector_insertFromUploader
-				we_suggest_writeBack
+				suggest_writeBack
 		 */
 
 		$fileUpload = new we_fileupload_ui_editor($contentType, '', $doImport);
 		$fileUpload->setPredefinedConfig($predefinedConfig);
-		$fileUpload->setCallback('top.doOnImportSuccess(scope.weDoc);'); // FIXME: move this to uploader js!
 		$fileUpload->setDimensions(['dragWidth' => 374, 'inputWidth' => 378]);
 		$fileUpload->setIsPreset($isPreset);
 		$fileUpload->setIsExternalBtnUpload(true);
 		$fileUpload->setFieldParentID(['setField' => true, 'preset' => $importToID, 'setFixed' => $setFixedImportTo]);
-		$fileUpload->setEditorJS([]);
 		$fileUpload->setNextCmd($nextCmd);
 
 		$yuiSuggest = &weSuggest::getInstance();
 
-		echo we_html_tools::getHtmlTop('fileupload', '', '', $fileUpload->getEditorJS() .
-			we_html_element::jsScript(JS_DIR . 'keyListener.js') .
+		echo we_html_tools::getHtmlTop('fileupload', '', '', we_html_element::jsScript(JS_DIR . 'keyListener.js') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_base.js') .
 			we_html_element::jsScript(JS_DIR . 'dialogs/we_dialog_fileupload.js'), we_html_element::htmlBody(['class' => 'weDialogBody'], we_html_element::htmlForm([], we_html_element::htmlDiv([
 						'id' => 'we_fileupload_editor', 'class' => 'weDialogBody', 'style' => 'position:absolute;top:0px;bottom:40px;left:0px;right:0px;overflow: auto;'], $fileUpload->getHtml()) .
