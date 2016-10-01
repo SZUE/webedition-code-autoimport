@@ -248,7 +248,49 @@ function handle_eventStep0(evt) {
 			break;
 	}
 }
+/*
+function handle_eventWXMLImportStep1(evt) {
+	var f = self.document.we_form;
+	switch(evt) {
+		case 'previous':
+			f.step.value = 0;
+			top.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_WE_XML . "';
+			break;
+		case 'next':
+			if(f.elements['v[rdofloc]'][1].checked===true){
+				//" . $this->fileUploader->getJsBtnCmd('upload') . "} // make command for this
+			} else {
+				handle_eventNextWXMLImportStep1();
+			}
+			break;
+		case 'cancel':
+			top.close();
+			break;
+	}
+}
 
+function handle_eventNextWXMLImportStep1(){
+	var f = self.document.we_form,
+		fs = f.elements['v[fserver]'].value,
+		ext = '',
+		fl = we_FileUpload !== undefined ? 'placeholder.xml' : f.elements.uploaded_xml_file.value;
+
+	if (f.elements['v[rdofloc]'][0].checked==true && fs!=='/') {
+		if (fs.match(/\.\./)=='..') { " . (we_message_reporting::getShowMessageCall(g_l('import', '[invalid_path]'), we_message_reporting::WE_MESSAGE_ERROR)) . "; return; }
+		ext = fs.substr(fs.length-4,4);
+		f.elements['v[import_from]'].value = fs;
+
+	}	else if (f.elements['v[rdofloc]'][1].checked==true && fl!=='') {
+		ext = fl.substr(fl.length-4,4);
+		f.elements['v[import_from]'].value = fl;
+	}	else if (fs=='/' || fl=='') {
+		" . (we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR)) . "; return;
+	}
+	f.step.value = 2;
+	// timing Problem with Safari
+	setTimeout(we_submit_form,50,self.document.forms.we_form,'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
+}
+*/
 function handle_eventWXMLImportStep2(evt) {
 	var we_form = window.document.we_form;
 	switch (evt) {
@@ -287,9 +329,92 @@ function handle_eventGXMLImportStep3(evt) {
 			break;
 	}
 }
+/*
+function handle_eventCSVImportStep1(evt) {
+	var f = self.document.we_form;
+	switch(evt) {
+		case 'previous':
+			f.step.value = 0;
+			top.location.href=WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&we_cmd[1]=" . we_import_functions::TYPE_CSV . "';
+			break;
+		case 'next':
+			if(f.elements['v[rdofloc]'][1].checked===true){
+				" . $this->fileUploader->getJsBtnCmd('upload') . "
+			}	else {
+				handle_eventNext();
+			}
+			break;
+		case 'cancel':
+			top.close();
+			break;
+	}
+}
+
+function handle_eventNextCSVImportStep1(){
+	var f = self.document.we_form,
+		fvalid = true,
+		fs = f.elements['v[fserver]'].value,
+		fl = we_FileUpload !== undefined ? 'placeholder.xml' : f.elements['uploaded_csv_file'].value,
+		ext = '';
+
+	if ((f.elements['v[rdofloc]'][0].checked==true) && fs!='/') {
+		if (fs.match(/\.\./)=='..') { " . we_message_reporting::getShowMessageCall(g_l('import', '[invalid_path]'), we_message_reporting::WE_MESSAGE_ERROR) . " return; }
+		ext = fs.substr(fs.length-4,4);
+		f.elements['v[import_from]'].value = fs;
+	}else if (f.elements['v[rdofloc]'][1].checked==true && fl!='') {
+		ext = fl.substr(fl.length-4,4);
+		f.elements['v[import_from]'].value = fl;
+	}else if (fs=='/' || fl=='') {" .
+			(we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR)) . " return;
+	}
+	if (fvalid && f.elements['v[csv_seperator]'].value=='') {
+		fvalid=false; " . we_message_reporting::getShowMessageCall(g_l('import', '[select_seperator]'), we_message_reporting::WE_MESSAGE_ERROR) . "}
+	if (fvalid) {
+		f.step.value = 2;
+		top.we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
+	}
+}
+
+function handle_eventCSVImportStep2(evt) {
+	var f = self.document.we_form;
+	if(f.elements['v[import_type]'].value == 'documents'){
+		f.elements['v[we_TemplateID]'].value = f.elements['v[docType]'].value == -1 ? f.elements.noDocTypeTemplateId.value : f.elements.docTypeTemplateId.value;
+	}
+
+	switch(evt) {
+		case 'previous':
+			f.step.value = 1;
+			we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
+			break;
+		case 'next':
+			if(f.elements['v[import_type]'].value == 'documents'){
+				if(!f.elements['v[we_TemplateID]'].value ) {
+					f.elements['v[we_TemplateID]'].value =f.elements.DocTypeTemplateId.value;
+				}
+			}" . (defined('OBJECT_TABLE') ?
+				"			if(f.elements['v[import_from]'].value != '/' && ((f.elements['v[import_type]'][0].checked == true && f.elements['v[we_TemplateID]'].value != 0) || (f.elements['v[import_type]'][1].checked == true)))" :
+				"			if(f.elements['v[import_from]'].value != '/' && f.elements['v[we_TemplateID]'].value != 0)") . "
+			{
+				f.step.value = 3;
+				we_submit_form(f, 'wizbody', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import');
+			} else {
+				if(f.elements['v[import_from]'].value == '/') {
+					" . we_message_reporting::getShowMessageCall(g_l('import', '[select_source_file]'), we_message_reporting::WE_MESSAGE_ERROR) .
+			'}' .
+			(defined('OBJECT_TABLE') ?
+				"				else if(f.elements['v[import_type]'][0].checked == true) {" . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR) . '}' :
+				"				else {" . we_message_reporting::getShowMessageCall(g_l('import', '[select_docType]'), we_message_reporting::WE_MESSAGE_ERROR)) . "
+			}
+			break;
+		case 'cancel':
+			top.close();
+			break;
+	}
+}
+*/
 
 function handle_eventCSVImportStep3(evt) {
-	var f = window.document.we_form;
+	var f = top.wizbody.document.we_form;
 	switch (evt) {
 		case 'previous':
 			f.step.value = 1;

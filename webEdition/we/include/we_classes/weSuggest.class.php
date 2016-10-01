@@ -225,7 +225,7 @@ class weSuggest{
 		$inputField = $this->_htmlTextInput($this->inputName, $this->inputValue, "", 'id="' . $inputId . '" ' . $this->inputAttribs, "text", $this->width, 0, "", $this->inputDisabled);
 		$resultField = we_html_element::htmlHidden($this->resultName, $this->resultValue, $resultId);
 		$autoSuggest = '<div id="yuiAcLayer' . $this->acId . '" class="yuiAcLayer">' . $inputField . '<div id="yuiAcContainer' . $this->acId . '"></div></div>';
-		$this->openButton = $this->openButton === self::BTN_EDIT ? we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('we_suggest_openToEdit','" . $this->acId . "')") : $this->openButton;
+		$this->openButton = $this->openButton === self::BTN_EDIT ? we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('suggest_openToEdit','" . $this->acId . "')") : $this->openButton;
 
 		$html = we_html_tools::htmlFormElementTable(
 				["text" => $resultField . $autoSuggest], $this->label, 'left', 'defaultfont', (
@@ -272,7 +272,7 @@ class weSuggest{
 				$dropzoneContent = $imgDiv . we_html_element::htmlDiv(array_merge($eventAttribs, ['style' => 'display:inline-block;padding-top:30px;']), $dropzoneContent);
 				$dropzoneStyle = 'width:auto;padding:0px 0 0 12px;';
 			}
-			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->isDropFromTree, $this->isDropFromExt, 'we_suggest_writeBack,' . $this->acId, 'we_suggest_writeBack,' . $this->acId, $this->contentTypes, $this->table);
+			$dropzone = we_fileupload_ui_base::getExternalDropZone($this->acId, $dropzoneContent, $dropzoneStyle, $this->isDropFromTree, $this->isDropFromExt, 'suggest_writeBack,' . $this->acId, 'suggest_writeBack,' . $this->acId, $this->contentTypes, $this->table);
 
 			$html = we_html_element::htmlDiv([], we_html_element::htmlDiv([], $html) .
 					we_html_element::htmlDiv(['style' => 'margin-top:-4px;'], $dropzone)

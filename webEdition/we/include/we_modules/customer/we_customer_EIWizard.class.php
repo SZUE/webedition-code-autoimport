@@ -549,6 +549,7 @@ switch (args[0]){
 		$fileUploader = new we_fileupload_ui_base('upload');
 		$fileUploader->setExternalUiElements(['btnUploadName' => 'next_footer']);
 		$fileUploader->setCallback('top.load.doNextAction()');
+		$fileUploader->setNextCmd('do_next');
 		//$fileUploader->setForm(array('action' => WEBEDITION_DIR.'we_showMod.php?mod=customer&pnt=eibody&art=import&step=3&import_from=' . self::EXPORT_LOCAL . '&type=' . $type));
 		$fileUploader->setInternalProgress(['isInternalProgress' => true, 'width' => 200]);
 		$fileUploader->setFileSelectOnclick('document.we_form.import_from[1].checked = true;');

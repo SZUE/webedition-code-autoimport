@@ -2158,16 +2158,20 @@ var weFileUpload = (function () {
 
 			this.postProcess = function (resp) {
 				var that = _.sender,
-								cur = this.currentFile;
+					cur = this.currentFile;
 
 				this.form.form.elements.weFileNameTemp.value = cur.fileNameTemp;
 				this.form.form.elements.weFileCt.value = cur.mimePHP;
 				this.form.form.elements.weFileName.value = cur.file.name;
 				//this.form.form.elements.weIsUploadComplete.value = 1;
-				//setTimeout(that.callback, 100, resp); // FIXME: check if this works
-				setTimeout(function () {
-					that.callback(resp);
-				}, 100);
+
+				if(_.sender.nextCmd){
+					setTimeout(function () {
+						var tmp = _.sender.nextCmd.split(',');
+						tmp.splice(1, 0, _.sender.resp);
+						window.we_cmd.apply(window, tmp);
+					}, 100);
+				}
 			};
 
 			this.processError = function (arg) {
@@ -3285,8 +3289,6 @@ var weFileUpload = (function () {
 
 		function Sender() {
 			this.totalWeight = 0;
-			this.callback = null;
-			this.dialogCallback = null;
 
 			this.doOnFileFinished = function (resp) {
 			};
@@ -3323,8 +3325,6 @@ var weFileUpload = (function () {
 						window.we_cmd('update_file');
 						WE().layout.we_setPath(null, resp.weDoc.path, resp.weDoc.text, 0, "published");
 					}
-
-					this.fireCallback();
 				}
 			};
 
@@ -3378,18 +3378,7 @@ var weFileUpload = (function () {
 				this.currentFile = -1;
 				this.isCancelled = true;
 				this.isUploading = false;
-				var c = _.sender.callback;
 				_.view.repaintGUI({what: 'resetGui'});
-				this.fireCallback(c);
-			};
-
-			this.fireCallback = function (c) {
-				var cb = c || _.sender.callback;
-
-				if (cb) {
-					_.sender.callback = null;
-					cb();
-				}
 			};
 		}
 
@@ -3580,7 +3569,6 @@ var weFileUpload = (function () {
 					default:
 						_.sender.preparedFiles = [];
 						_.sender.currentFile = -1;
-						_.sender.callback = null;
 						this.setInternalProgress(0);
 						this.setGuiState(this.STATE_RESET);
 						return;
@@ -3755,15 +3743,13 @@ var weFileUpload = (function () {
 			};
 		}
 
-		this.doUploadIfReady = function (callback) {
+		this.doUploadIfReady = function () {
 			if (_.sender.isAutostartPermitted && _.sender.preparedFiles.length > 0 && _.sender.preparedFiles[0].uploadConditionsOk) {
-				_.sender.callback = callback;
 				_.sender.isAutostartPermitted = false;
 				this.startUpload();
 			} else {
 				//there may be a file in preview with uploadConditions nok!
 				_.view.repaintGUI({what: 'resetGui'});
-				callback();
 			}
 		};
 	}

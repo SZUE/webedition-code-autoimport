@@ -73,6 +73,7 @@ abstract class we_import_wizardBase{
 			list($js, $content) = $this->$step();
 			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
 			return we_html_tools::getHtmlTop('', '', '', ($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
+					we_html_element::jsScript(JS_DIR . 'import_wizardWizbody.js') .
 					we_html_element::jsElement($js), we_html_element::htmlBody(["class" => "weDialogBody",
 						"onload" => $doOnLoad ? "parent.wiz_next('wizbusy', WE().consts.dirs.WEBEDITION_DIR+'we_cmd.php?we_cmd[0]=import&pnt=wizbusy&mode=" . $mode . "&type=" . (we_base_request::_(we_base_request::RAW, 'type', '')) . "'); self.focus();" : "if(set_button_state){set_button_state()};"
 						], we_html_element::htmlForm($a, we_html_element::htmlHiddens(["pnt" => "wizbody",
