@@ -206,7 +206,7 @@ class we_navigation_items{
 
 		$currentWorkspace = $isObject ? //webEdition object
 			(defined('WE_REDIRECTED_SEO') ? //webEdition object uses SEO-URL
-				we_objectFile::getNextDynDoc(($path = rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/') . DEFAULT_DYNAMIC_EXT), path_to_id(rtrim(substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)), '/')), $GLOBALS['WE_MAIN_DOC']->Workspaces, $GLOBALS['WE_MAIN_DOC']->ExtraWorkspacesSelected, $GLOBALS['DB_WE']) :
+                substr(WE_REDIRECTED_SEO, 0, strripos(WE_REDIRECTED_SEO, $GLOBALS['WE_MAIN_DOC']->Url)) :
 				parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH)
 			) : //webEdition document
 			$GLOBALS['WE_MAIN_DOC']->Path;
@@ -214,6 +214,14 @@ class we_navigation_items{
 		foreach($this->currentRules as $rule){
 			$ponder = 4;
 			$parentPath = '';
+
+            if(($cats = makeArrayFromCSV($rule->Categories))){
+                if(!$this->checkCategories($cats, $mainCats)){
+                    continue; // remove from selection
+                }
+                $ponder--;
+            }
+
 			switch($rule->SelectionType){ // FIXME: why not use continue instead of $ponder = 999?
 				case we_navigation_navigation::STYPE_DOCTYPE:
 					if($isObject){
@@ -250,17 +258,9 @@ class we_navigation_items{
 			if(!empty($parentPath) && strpos($currentWorkspace, $parentPath) === 0){
 				$ponder--;
 				$currLen = strlen($parentPath);
-				if($currLen > $len){
+				if($currLen >= $len){ //the longest path wins
 					$len = $currLen;
 					$ponder--;
-				}
-			}
-
-			if(($cats = makeArrayFromCSV($rule->Categories))){
-				if($this->checkCategories($cats, $mainCats)){
-					$ponder--;
-				} else {
-					continue; // remove from selection
 				}
 			}
 
