@@ -234,12 +234,10 @@ class we_navigation_items{
 						$ponder--;
 					}
 
-					$parentPath = self::id2path($rule->FolderID);
-					if($parentPath && $parentPath != '/'){
-						$parentPath .= '/';
-					}
+					if($rule->FolderID){
+                        $parentPath = rtrim(self::id2path($rule->FolderID), '/') . '/';
+                    }
 					break;
-
 				case we_navigation_navigation::STYPE_CLASS:
 					if(!$isObject){
 						continue; // remove from selection
@@ -251,11 +249,13 @@ class we_navigation_items{
 						$ponder--;
 					}
 
-					$parentPath = rtrim(self::id2path($rule->WorkspaceID), '/') . '/';
+					if($rule->WorkspaceID){
+                        $parentPath = rtrim(self::id2path($rule->WorkspaceID), '/') . '/';
+                    }
 					break;
 			}
 
-			if(!empty($parentPath) && strpos($currentWorkspace, $parentPath) === 0){
+			if(!empty($parentPath) && strpos($currentWorkspace, $parentPath) !== false){
 				$ponder--;
 				$currLen = strlen($parentPath);
 				if($currLen >= $len){ //the longest path wins
