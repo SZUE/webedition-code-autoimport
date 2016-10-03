@@ -32,63 +32,64 @@ class we_tree_customer extends we_tree_base{
 	protected function customJSFile(){
 		return we_html_element::jsScript(WE_JS_MODULES_DIR . 'customer/customer_tree.js');
 	}
-	/*
-	  function getJSLoadTree($rootID, array $treeItems){
-	  $days = ['Sunday' => 0,
-	  'Monday' => 1,
-	  'Tuesday' => 2,
-	  'Wednesday' => 3,
-	  'Thursday' => 4,
-	  'Friday' => 5,
-	  'Saturday' => 6
-	  ];
 
-	  $months = ['January' => 0,
-	  'February' => 1,
-	  'March' => 2,
-	  'April' => 3,
-	  'May' => 4,
-	  'June' => 5,
-	  'July' => 6,
-	  'August' => 7,
-	  'September' => 8,
-	  'October' => 9,
-	  'November' => 10,
-	  'December' => 11
-	  ];
+	function getJSLoadTree($clear, array $treeItems){
+		$days = [
+			'Sunday' => 0,
+			'Monday' => 1,
+			'Tuesday' => 2,
+			'Wednesday' => 3,
+			'Thursday' => 4,
+			'Friday' => 5,
+			'Saturday' => 6
+		];
 
-	  $js = (!$rootID ?
-	  'top.content.treeData.clear();' .
-	  'top.content.treeData.add(top.content.node.prototype.rootEntry(0,\'root\',\'root\'));' : '') .
-	  'var attribs={};';
-	  foreach($treeItems as $item){
-	  $js .= ($rootID ? 'if(top.content.treeData.indexOfEntry(\'' . str_replace(["\n", "\r", '\''], '', $item["id"]) . '\')<0){' : '') .
-	  'attribs={';
+		$months = [
+			'January' => 0,
+			'February' => 1,
+			'March' => 2,
+			'April' => 3,
+			'May' => 4,
+			'June' => 5,
+			'July' => 6,
+			'August' => 7,
+			'September' => 8,
+			'October' => 9,
+			'November' => 10,
+			'December' => 11
+		];
 
-	  foreach($item as $k => $v){
-	  if($k === 'text'){
-	  if(in_array($v, array_keys($days))){
-	  $v = g_l('date', '[day][long][' . $days[$v] . ']');
-	  }
-	  if(in_array($v, array_keys($months))){
-	  $v = g_l('date', '[month][long][' . $months[$v] . ']');
-	  }
-	  }
-	  $js .= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
-	  intval($v) :
-	  '\'' . str_replace(['"', '\'', '\\'], '', $v) . '\'') .
-	  ',';
-	  }
+		$js = ($clear ?
+			'top.content.treeData.clear();' .
+			'top.content.treeData.add(top.content.node.prototype.rootEntry(0,\'root\',\'root\'));' : '') .
+			'var attribs={};';
+		foreach($treeItems as $item){
+			$js .= (!$clear ? 'if(top.content.treeData.indexOfEntry(\'' . str_replace(["\n", "\r", '\''], '', $item["id"]) . '\')<0){' : '') .
+				'attribs={';
 
-	  $js .= '};
+			foreach($item as $k => $v){
+				if($k === 'text'){
+					if(in_array($v, array_keys($days))){
+						$v = g_l('date', '[day][long][' . $days[$v] . ']');
+					}
+					if(in_array($v, array_keys($months))){
+						$v = g_l('date', '[month][long][' . $months[$v] . ']');
+					}
+				}
+				$js .= strtolower($k) . ':' . ($v === 1 || $v === 0 || is_bool($v) || $v === 'true' || $v === 'false' || is_int($v) ?
+					intval($v) :
+					'\'' . str_replace(['"', '\'', '\\'], '', $v) . '\'') .
+					',';
+			}
+
+			$js .= '};
 	  top.content.treeData.add(new top.content.node(attribs));' .
-	  ($rootID ? '}' : '');
-	  }
-	  $js .= 'top.content.drawTree();';
+				(!$clear ? '}' : '');
+		}
+		$js .= 'top.content.drawTree();';
 
-	  return $js;
-	  }
-	 */
+		return $js;
+	}
 
 	public function getItems($pid, $offset = 0, $segment = 500, $sort = false){
 		if($sort === false){
@@ -220,10 +221,11 @@ class we_tree_customer extends we_tree_base{
 		$select = array_filter($select);
 
 		$grp = implode(',', array_slice($grouparr, 0, $level + 1));
-		$db->query('SELECT ' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,LoginDenied,Forename,Surname' .
+
+		$db->query('SELECT COUNT(1) AS Anz,' . $settings->treeTextFormatSQL . ' AS treeFormat,ID,LoginDenied,Forename,Surname' .
 			($select ? ',' . implode(',', $select) : '' ) . ' FROM ' . CUSTOMER_TABLE .
 			(!permissionhandler::hasPerm("ADMINISTRATOR") && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' WHERE ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
-			' GROUP BY ' . $grp . (count($grouparr) ? ($level ? ',ID' : '') : 'ID') . (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
+			' GROUP BY ' . $grp . ($grouparr ? ($level ? ',ID' : '') : 'ID') . ($havingarr ? ' HAVING ' . implode(' AND ', $havingarr) : '') . ' ORDER BY ' . implode(',', $orderarr) . self::getSortOrder($settings, ($orderarr ? ',' : '')) . (($level == $levelcount && $segment) ? ' LIMIT ' . $offset . ',' . $segment : ''));
 
 		$items = $foo = [];
 		$gname = '';
@@ -237,10 +239,7 @@ class we_tree_customer extends we_tree_base{
 				$gname = $db->f($grouparr[0]) ?: g_l('modules_customer', '[no_value]');
 				$gid = '{' . $gname . '}';
 
-				$groupTotal = 0; /* f('SELECT COUNT(ID) FROM ' . CUSTOMER_TABLE . ' WHERE ' . $grp . '="' . $db->escape($gname) . '"' .
-				  (!permissionhandler::hasPerm('ADMINISTRATOR') && $_SESSION['user']['workSpace'][CUSTOMER_TABLE] ? ' AND ' . $_SESSION['user']['workSpace'][CUSTOMER_TABLE] : '') .
-				  (count($havingarr) ? ' HAVING ' . implode(' AND ', $havingarr) : ''));
-				 */
+				$groupTotal = $db->f('Anz');
 				$items[] = [
 					'id' => str_replace("\'", '*****quot*****', $gid),
 					'parentid' => $old,
@@ -266,7 +265,7 @@ class we_tree_customer extends we_tree_base{
 								'id' => $gname,
 								'parentid' => $old,
 								'path' => '',
-								'text' => ($db->f($grouparr[$i]) ?: g_l('modules_customer', '[no_value]')),
+								'text' => ($db->f($grouparr[$i]) ?: g_l('modules_customer', '[no_value]')) . ' (' . $db->f('Anz') . ')',
 								'contenttype' => 'folder',
 								'isfolder' => 1,
 								'typ' => 'group',
