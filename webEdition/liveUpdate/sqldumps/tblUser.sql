@@ -4,7 +4,7 @@
 /* query separator */
 ###UPDATEDROPCOL(Portal,###TBLPREFIX###tblUser)###
 /* query separator */
-###UPDATEDROPCOL(UseSalt,###TBLPREFIX###tblUser)###
+###ONCOL(UseSalt,###TBLPREFIX###tblUser) ALTER TABLE ###TBLPREFIX###tblUser CHANGE COLUMN `Type` `Typeold` tinyint NOT NULL;###
 /* query separator */
 
 CREATE TABLE ###TBLPREFIX###tblUser (
@@ -13,9 +13,9 @@ CREATE TABLE ###TBLPREFIX###tblUser (
   `Text` varchar(255) NOT NULL default '',
   Path varchar(255) NOT NULL default '',
   IsFolder tinyint unsigned NOT NULL default '0',
-  `Type` tinyint unsigned NOT NULL default '0',
+  `Type` enum('user','group','alias') NOT NULL default 'user',
   username varchar(255) NOT NULL default '',
-  passwd varchar(255) NOT NULL default '',
+  passwd TINYTEXT NOT NULL,
   LoginDenied tinyint unsigned NOT NULL default '0',
   Permissions text NOT NULL,
   ParentPerms tinyint unsigned NOT NULL default '0',
@@ -45,7 +45,7 @@ CREATE TABLE ###TBLPREFIX###tblUser (
   HouseNo varchar(11) NOT NULL default '',
   City tinytext NOT NULL default '',
   PLZ varchar(32) NOT NULL default '',
-  State tinytext NOT NULL default '',
+  `State` tinytext NOT NULL default '',
   Country tinytext NOT NULL default '',
   Tel_preselection varchar(11) NOT NULL default '',
   Telephone varchar(32) NOT NULL default '',
@@ -61,3 +61,11 @@ CREATE TABLE ###TBLPREFIX###tblUser (
 ) ENGINE=MyISAM;
 /* query separator */
 ###INSTALLONLY###INSERT INTO ###TBLPREFIX###tblUser SET ID=1,Text='admin',Path='/admin',username='admin',passwd='c0e024d9200b5705bc4804722636378a',Permissions='a:1:{s:13:"ADMINISTRATOR";i:1;}',CreateDate=UNIX_TIMESTAMP();
+/* query separator */
+###ONCOL(Typeold,###TBLPREFIX###tblUser)UPDATE ###TBLPREFIX###tblUser SET Type='group' WHERE Typeold=1;###
+/* query separator */
+###ONCOL(Typeold,###TBLPREFIX###tblUser)UPDATE ###TBLPREFIX###tblUser SET Type='alias' WHERE Typeold=2;###
+/* query separator */
+###UPDATEDROPCOL(UseSalt,###TBLPREFIX###tblUser)###
+/* query separator */
+###UPDATEDROPCOL(Typeold,###TBLPREFIX###tblUser)###
