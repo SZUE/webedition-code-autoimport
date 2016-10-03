@@ -23,10 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_users_user{
-	//FIXME: make these constants (db) to enum fields
-	const TYPE_USER = 0;
-	const TYPE_USER_GROUP = 1;
-	const TYPE_ALIAS = 2;
+	const TYPE_USER = 'user';
+	const TYPE_USER_GROUP = 'group';
+	const TYPE_ALIAS = 'alias';
 	const INVALID_CREDENTIALS = 1;
 	const MAX_LOGIN_COUNT_REACHED = 2;
 	const ERR_USER_PATH_NOK = -5;
