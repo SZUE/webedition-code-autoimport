@@ -1115,7 +1115,7 @@ class we_objectFile extends we_document{
 			$yuiSuggest->setAcId($int_elem_Name . we_base_file::getUniqueId());
 			$yuiSuggest->setContentType([we_base_ContentTypes::FOLDER, we_base_ContentTypes::WEDOCUMENT, we_base_ContentTypes::IMAGE, we_base_ContentTypes::HTML, we_base_ContentTypes::JS,
 				we_base_ContentTypes::CSS, we_base_ContentTypes::APPLICATION]);
-			$yuiSuggest->setInput($Path_elem_Name, $path, array('onchange' => ($showRadio ? "document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "")));
+			$yuiSuggest->setInput($Path_elem_Name, $path, ['onchange' => ($showRadio ? "document.we_form.elements['" . $int_elem_Name . "'][0].checked=true;" : "")]);
 			$yuiSuggest->setMaxResults(10);
 			$yuiSuggest->setMayBeEmpty(1);
 			$yuiSuggest->setResult($intID_elem_Name, $intID);
@@ -1531,7 +1531,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 
 	function getTemplateID($parentID){
 		$wsArr = makeArrayFromCSV($this->Workspaces);
-		
+
 		$tid = ($this->getTemplateFromWorkspace($wsArr, $parentID, 1) ?:
 			($this->getTemplateFromWorkspace($wsArr, $parentID, 0)));
 
@@ -2482,7 +2482,7 @@ SELECT LEFT(Path,LENGTH(parent.Path)+1) FROM ' . FILE_TABLE . ' WHERE ID=' . int
 				}
 			}
 			if($hrefFields){
-				$empty = array('int' => 1, 'intID' => '', 'intPath' => '', 'extPath' => '');
+				$empty = ['int' => 1, 'intID' => '', 'intPath' => '', 'extPath' => ''];
 				$hrefs = $match = [];
 				foreach($_REQUEST['we_' . $this->Name . '_' . self::TYPE_HREF] as $k => $val){
 					if(preg_match('|^(.+)' . we_base_link::MAGIC_INFIX . '(.+)$|', $k, $match)){
