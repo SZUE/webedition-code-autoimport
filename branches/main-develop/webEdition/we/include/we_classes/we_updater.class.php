@@ -108,7 +108,19 @@ abstract class we_updater{
 		if(defined('OBJECT_X_TABLE')){
 			//this is from 6.3.9
 			$db = $db ?: new DB_WE();
+			$tmpDB = new DB_WE();
 
+			$db->query('SELECT ID,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE DefaultValues LIKE "a:%"');
+			while($db->next_record(MYSQL_ASSOC)){
+				$data = we_unserialize($db->f('DefaultValues'));
+				foreach($data as &$d){
+					$d = array_filter($d);
+					unset($d['intPath']);
+				}
+				$tmpDB->query('UPDATE ' . OBJECT_TABLE . ' SET ' . we_database_base::arraySetter([
+						'DefaultValues' => we_serialize($data, SERIALIZE_JSON)
+					]) . ' WHERE ID=' . $db->f('ID'));
+			}
 			//change old tables to have different prim key
 			$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
 			foreach($tables as $table){

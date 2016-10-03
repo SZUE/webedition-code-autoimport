@@ -113,12 +113,11 @@ class we_object extends we_document{
 	}
 
 	function saveToDB(){
-		$arrt = array(
-			'WorkspaceFlag' => $this->WorkspaceFlag,
+		$arrt = ['WorkspaceFlag' => $this->WorkspaceFlag,
 			//	Save charsets in defaultvalues
 //	charset must be in other namespace -> for header !!!
-			'elements' => array('Charset' => array('dat' => $this->getElement('Charset'))),
-		);
+			'elements' => ['Charset' => ['dat' => $this->getElement('Charset')]],
+		];
 
 		$this->wasUpdate = $this->ID > 0;
 
@@ -161,12 +160,9 @@ class we_object extends we_document{
 
 
 		if(!$this->wasUpdate){
-			$q = [
-				'OF_ID' => 'INT unsigned NOT NULL',
-			];
+			$q = ['OF_ID' => 'INT unsigned NOT NULL',];
 
-			$indexe = ['PRIMARY KEY (OF_ID)'
-				];
+			$indexe = ['PRIMARY KEY (OF_ID)'];
 
 			$arrt['WE_CSS_FOR_CLASS'] = $this->CSS;
 			$this->DefaultValues = we_serialize($arrt, SERIALIZE_JSON);
@@ -200,7 +196,7 @@ class we_object extends we_document{
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$tableInfo = $this->DB_WE->metadata($ctable);
 		$q = $regs = [];
-		$fieldsToDelete = ($fD = $this->getElement('felderloeschen')) ? explode(',', $fD) : [];
+		$fieldsToDelete = $this->getElement('felderloeschen', 'dat', []);
 		foreach($tableInfo as $info){
 			if(!preg_match('/(.+?)_(.*)/', $info['name'], $regs)){
 				continue;
@@ -224,7 +220,7 @@ class we_object extends we_document{
 				((strpos($info['name'], self::QUERY_PREFIX) !== 0) && (strpos($nam, self::QUERY_PREFIX) === 0) ?
 				', ADD INDEX (`' . $nam . '`) ' : '');
 
-			$arrt[$nam] = array(
+			$arrt[$nam] = array_filter([
 				'default' => (strpos($info['name'], 'date_') === 0 ?
 				($this->getElement($info['name'] . 'defaultThumb') ? '' : $this->getElement($info['name'] . 'default')) :
 				$this->getElement($info['name'] . 'default')),
@@ -257,7 +253,6 @@ class we_object extends we_document{
 				'editdescription' => $this->getElement($info['name'] . 'editdescription'),
 				'int' => $this->getElement($info['name'] . 'int'),
 				'intID' => $this->getElement($info['name'] . 'intID'),
-				'intPath' => $this->getElement($info['name'] . 'intPath'),
 				'hreftype' => $this->getElement($info['name'] . 'hreftype'),
 				'hrefdirectory' => $this->getElement($info['name'] . 'hrefdirectory'),
 				'hreffile' => $this->getElement($info['name'] . 'hreffile'),
@@ -266,7 +261,7 @@ class we_object extends we_document{
 				'shopcatRootdir' => $this->getElement($info['name'] . 'shopcatRootdir'),
 				'shopcatLimitChoice' => $this->getElement($info['name'] . 'shopcatLimitChoice'),
 				'uniqueID' => $this->SerializedArray[$info['name']]['uniqueID'] ?: md5(uniqid(__FILE__, true)),
-			);
+			]);
 			if($this->isVariantField($info['name']) && $this->getElement($info['name'] . 'variant') == 1){
 				$arrt[$nam]['variant'] = 1;
 			} else if($this->issetElement($info['name'] . 'variant')){
@@ -292,12 +287,12 @@ class we_object extends we_document{
 			}
 		}
 
-		$neu = explode(',', $this->getElement('neuefelder'));
+		$neu = $this->getElement('neuefelder');
 
 		foreach($neu as $cur){
 			if(!empty($cur)){
 				$nam = $this->getElement($cur . self::ELEMENT_TYPE) . '_' . $this->getElement($cur);
-				$arrt[$nam] = array(
+				$arrt[$nam] = array_filter([
 					'default' => $this->getElement($cur . 'default'),
 					'defaultThumb' => $this->getElement($cur . 'defaultThumb'),
 					'defaultdir' => $this->getElement($cur . 'defaultdir'),
@@ -328,7 +323,6 @@ class we_object extends we_document{
 					'editdescription' => $this->getElement($cur . 'editdescription'),
 					'int' => $this->getElement($cur . 'int'),
 					'intID' => $this->getElement($cur . 'intID'),
-					'intPath' => $this->getElement($cur . 'intPath'),
 					'hreftype' => $this->getElement($cur . 'hreftype'),
 					'hrefdirectory' => $this->getElement($cur . 'hrefdirectory', 'dat', 'false'),
 					'hreffile' => $this->getElement($cur . 'hreffile', 'dat', 'true'),
@@ -337,7 +331,7 @@ class we_object extends we_document{
 					'shopcatRootdir' => $this->getElement($cur . 'shopcatRootdir'),
 					'shopcatLimitChoice' => $this->getElement($cur . 'shopcatLimitChoice'),
 					'uniqueID' => md5(uniqid(__FILE__, true)),
-				);
+				]);
 
 				if($this->isVariantField($cur) && $this->getElement($cur . 'variant') == 1){
 					$arrt[$nam]['variant'] = 1;
@@ -590,7 +584,7 @@ class we_object extends we_document{
 		$this->setElement($uid . self::ELEMENT_MAX, "");
 		$this->setElement("wholename" . $identifier, $uid);
 
-		$this->setElement("neuefelder", $this->getElement("neuefelder") . "," . $uid);
+		$this->setElement("neuefelder", array_push($this->getElement("neuefelder", 'dat', []), $uid));
 
 		if(isset($after) && in_array($after, array_keys($sort))){
 			$pos = $sort[$after];
@@ -613,16 +607,15 @@ class we_object extends we_document{
 	}
 
 	function removeEntryFromClass($identifier){
-
 		$sort = $this->getElement("we_sort");
-//$max = $this->getElement("Sortgesamt");
 
 		$uid = $this->getElement("wholename" . $identifier);
 
-		if(stristr(($nf = $this->getElement('neuefelder')), ',' . $uid)){
-			$this->setElement("neuefelder", str_replace("," . $uid, "", $nf));
+		if(($pos = array_search($uid, ($nf = $this->getElement('neuefelder', 'dat', [])))) !== false){
+			unset($nf[$pos]);
+			$this->setElement("neuefelder", $nf);
 		} else {
-			$this->setElement("felderloeschen", $this->getElement("felderloeschen") . "," . $uid);
+			$this->setElement("felderloeschen", array_push($this->getElement("felderloeschen", 'dat', []), $uid));
 		}
 
 		$this->delElement("wholename" . $identifier);
@@ -662,11 +655,11 @@ class we_object extends we_document{
 	}
 
 	function upMetaAtClass($name, $i){
-		$temp = $this->elements[$name . "defaultkey" . ($i - 1)]["dat"];
+		$temp = $this->elements[$name . 'defaultkey' . ($i - 1)]['dat'];
 		$this->elements[$name . "defaultkey" . ($i - 1)]["dat"] = $this->elements[$name . "defaultkey" . ($i)]["dat"];
 		$this->elements[$name . "defaultkey" . ($i)]["dat"] = $temp;
 
-		$temp = $this->elements[$name . "defaultvalue" . ($i - 1)]["dat"];
+		$temp = $this->elements[$name . 'defaultvalue' . ($i - 1)]['dat'];
 		$this->elements[$name . "defaultvalue" . ($i - 1)]["dat"] = $this->elements[$name . "defaultvalue" . ($i)]["dat"];
 		$this->elements[$name . "defaultvalue" . ($i)]["dat"] = $temp;
 	}
@@ -996,7 +989,7 @@ class we_object extends we_document{
 					$this->setElement($name . "count", 0);
 				}
 
-				$addArray = array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10);
+				$addArray = [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10];
 
 				for($f = 0; $f <= $this->getElement($name . 'count'); $f++){
 					$content .= '<tr><td>' . we_html_tools::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'defaultkey' . $f . ']', 40, $this->getElement($name . "defaultkey" . $f), 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 105) .
@@ -1172,7 +1165,7 @@ class we_object extends we_document{
 		$extPath = isset($hrefArr["extPath"]) ? $hrefArr["extPath"] : "";
 		$int_elem_Name = 'we_' . $this->Name . '_href[' . $nint . ']';
 		$intPath_elem_Name = 'we_' . $this->Name . '_vars[' . $nintPath . ']';
-		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']'; //TOFO: should we use #bdid?
+		$intID_elem_Name = 'we_' . $this->Name . '_href[' . $nintID . ']'; //TODO: should we use #bdid?
 		$ext_elem_Name = 'we_' . $this->Name . '_href[' . $nextPath . ']';
 
 		switch($type){
@@ -1376,24 +1369,27 @@ class we_object extends we_document{
 		return we_html_forms::weTextarea('we_' . $this->Name . '_input[' . $name . 'default]', $value, $attribs, $autobr, $autobrName, true, (($this->CSS || $attribs['classes']) ? false : true), false, false, ($rmfp ? $rmfp === 'on' : REMOVEFIRSTPARAGRAPH_DEFAULT), "");
 	}
 
-	function add_user_to_field($id, $name){
-		$users = makeArrayFromCSV($this->getElement($name . "users", "dat"));
-		$ids = makeArrayFromCSV($id);
+	function add_user_to_field(array $ids, $name){
+		$users = makeArrayFromCSV($this->getElement($name . 'users', 'dat'));
 		foreach($ids as $id){
 			if($id && (!in_array($id, $users))){
 				$users[] = $id;
 			}
 		}
-		$this->setElement($name . "users", implode(',', $users));
+		$this->setElement($name . 'users', implode(',', $users));
 	}
 
 	function del_user_from_field($id, $name){
-		$csv = str_replace($id . ',', '', $this->getElement($name . "users"));
-		$this->setElement($name . "users", ($csv === ',' ? '' : $csv));
+		$users = makeArrayFromCSV($this->getElement($name . 'users', 'dat'));
+		$pos = array_search($id, $users);
+		if($pos !== false){
+			unset($users[$pos]);
+		}
+		$this->setElement($name . 'users', implode(',', $users));
 	}
 
 	function formUsers1($name, $nr = 0){
-		$users = $this->getElement($name . 'users') ? explode(',', $this->getElement($name . 'users')) : [];
+		$users = $this->getElement($name . 'users') ? makeArrayFromCSV($this->getElement($name . 'users')) : [];
 		$content = '<table class="default" style="width:388px;margin:5px;" >';
 		if($users){
 			$this->DB_WE->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN (' . implode(',', $users) . ')');
@@ -1787,7 +1783,7 @@ class we_object extends we_document{
 		$this->elements = $doc->elements;
 		foreach($this->elements as $n => $e){
 			if(strtolower(substr($n, 0, 9)) === 'wholename'){
-				$this->setElement('neuefelder', $this->getElement('neuefelder') . ',' . $e['dat']);
+				$this->setElement('neuefelder', array_merge($this->getElement('neuefelder', 'dat', []), $e['dat']));
 			}
 		}
 		$this->EditPageNr = we_base_constants::WE_EDITPAGE_PROPERTIES;
@@ -1893,8 +1889,7 @@ class we_object extends we_document{
 
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$tableInfo = $this->DB_WE->metadata($ctable);
-		$fields = array(
-			'max' => '',
+		$fields = ['max' => '',
 			'default' => '',
 			'defaultThumb' => '',
 			'autobr' => '',
@@ -1932,7 +1927,7 @@ class we_object extends we_document{
 			'shopcatRootdir' => '',
 			'shopcatLimitChoice' => 0,
 			'intPath' => '',
-		);
+		];
 		foreach($tableInfo as $info){
 			$type = $name = '';
 			@list($type, $name) = explode('_', $info['name'], 2);
@@ -2108,7 +2103,7 @@ class we_object extends we_document{
 		}
 
 		if($hrefFields){
-			$empty = array('int' => 1, 'intID' => '', 'intPath' => '', 'extPath' => '');
+			$empty = ['int' => 1, 'intID' => '', 'intPath' => '', 'extPath' => ''];
 			$hrefs = $match = [];
 			foreach($_REQUEST['we_' . $this->Name . '_' . we_objectFile::TYPE_HREF] as $k => $val){
 				if(preg_match('|^(.+)' . we_base_link::MAGIC_INFIX . '(.+)$|', $k, $match)){
