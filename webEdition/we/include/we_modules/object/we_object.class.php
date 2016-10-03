@@ -1434,12 +1434,16 @@ class we_object extends we_document{
 	}
 
 	function del_user_from_field($id, $name){
-		$csv = str_replace($id . ',', '', $this->getElement($name . "users"));
-		$this->setElement($name . "users", ($csv === ',' ? '' : $csv));
+		$users = makeArrayFromCSV($this->getElement($name . "users", "dat"));
+		$pos=array_search($id,$users);
+		if($pos!==false){
+			unset($users[$pos]);
+		}
+		$this->setElement($name . "users", implode(',', $users));
 	}
 
 	function formUsers1($name, $nr = 0){
-		$users = $this->getElement($name . 'users') ? explode(',', $this->getElement($name . 'users')) : array();
+		$users = $this->getElement($name . 'users') ? makeArrayFromCSV($this->getElement($name . 'users')) : array();
 		$content = '<table class="default" style="width:388px;margin:5px;" >';
 		if($users){
 			$this->DB_WE->query('SELECT ID,Path,(IF(IsFolder,"we/userGroup",(IF(Alias>0,"we/alias","we/user")))) AS ContentType FROM ' . USER_TABLE . ' WHERE ID IN (' . implode(',', $users) . ')');
