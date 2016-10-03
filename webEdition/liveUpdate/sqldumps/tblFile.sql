@@ -37,7 +37,7 @@ CREATE TABLE ###TBLPREFIX###tblFile (
 	RestrictOwners tinyint unsigned NOT NULL default '0',
 	Owners tinytext NOT NULL,
 	OwnersReadOnly text NOT NULL,
-	`Language` varchar(5) NOT NULL default '',
+	`Language` char(5) NOT NULL default '',
 	WebUserID bigint unsigned NOT NULL default '0',
 	viewType enum('list','icons') NOT NULL default 'list',
 	InGlossar tinyint unsigned NOT NULL default '0',
