@@ -708,11 +708,12 @@ abstract class we_database_base{
 		}
 		$count = $this->num_fields();
 		if(!$count){
-			trigger_error('MYSQL-ERROR' . "\n" . 'Fehler: Metadata-Query on table ' . $table . ' failed' . "\n", E_USER_WARNING);
+			trigger_error('MYSQL-ERROR' . "\n" . 'Error: Metadata-Query on table ' . $table . ' failed' . "\n", E_USER_WARNING);
 		}
 
 		for($i = 0; $i < $count; $i++){
-			$res[$i] = ['table' => $this->field_table($i),
+			$res[$i] = [
+				'table' => $this->field_table($i),
 				'name' => $this->field_name($i),
 				'type' => $this->field_type($i),
 				'len' => $this->field_len($i),
@@ -885,7 +886,7 @@ abstract class we_database_base{
 			return false;
 		}
 
-		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' CHANGE `' . $col . '` `' . $col . '` ' . $newtyp);
+		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' MODIFY `' . $col . '` ' . $newtyp);
 	}
 
 	public function getColTyp($tab, $col){

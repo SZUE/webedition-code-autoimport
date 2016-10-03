@@ -114,8 +114,10 @@ abstract class we_updater{
 			while($db->next_record(MYSQL_ASSOC)){
 				$data = we_unserialize($db->f('DefaultValues'));
 				foreach($data as &$d){
-					$d = array_filter($d);
-					unset($d['intPath']);
+					if(is_array($d)){
+						$d = array_filter($d);
+						unset($d['intPath']);
+					}
 				}
 				$tmpDB->query('UPDATE ' . OBJECT_TABLE . ' SET ' . we_database_base::arraySetter([
 						'DefaultValues' => we_serialize($data, SERIALIZE_JSON)
@@ -197,7 +199,7 @@ abstract class we_updater{
 					if($changes){
 						$query = '';
 						foreach($changes as $field => $change){
-							$query .= ($query ? ',' : '') . ' CHANGE `' . $field . '` `' . $field . '` ' . $change;
+							$query .= ($query ? ',' : '') . ' MODIFY `' . $field . '` ' . $change;
 						}
 						$db->query('ALTER TABLE `' . OBJECT_X_TABLE . $table . '` ' . $query);
 						$db->query('OPTIMIZE TABLE `' . OBJECT_X_TABLE . $table . '`');

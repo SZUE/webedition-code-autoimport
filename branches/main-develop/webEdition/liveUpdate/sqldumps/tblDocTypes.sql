@@ -12,7 +12,7 @@
 /* query separator */
 ###UPDATEDROPCOL(LockID,###TBLPREFIX###tblDocTypes)###
 /* query separator */
-###ONCOL(ContentTable,###TBLPREFIX###tblDocTypes)ALTER TABLE ###TBLPREFIX###tblDocTypes CHANGE SubDir SubDir ENUM('0','1','2','3','4','-','y','ym','ymd') NOT NULL DEFAULT '-';###
+###ONCOL(ContentTable,###TBLPREFIX###tblDocTypes)ALTER TABLE ###TBLPREFIX###tblDocTypes MODIFY SubDir ENUM('0','1','2','3','4','-','y','ym','ymd') NOT NULL DEFAULT '-';###
 /* query separator */
 ###ONCOL(ContentTable,###TBLPREFIX###tblDocTypes)UPDATE ###TBLPREFIX###tblDocTypes SET SubDir='' WHERE SubDir='0';###
 /* query separator */
