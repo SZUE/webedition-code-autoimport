@@ -218,8 +218,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 		}
 
 		foreach($this->MediaLinks as $element => $remObj){
-			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'ID' => $this->ID,
+			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(['ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->table),
 					'type' => 'media',
 					'remObj' => $remObj,
@@ -227,7 +226,7 @@ class we_newsletter_newsletter extends we_newsletter_base{
 					'element' => (is_numeric($element) ? '' : $element),
 					'position' => 0,
 					'isTemp' => 0
-			)));
+					]));
 		}
 	}
 
@@ -398,11 +397,10 @@ class we_newsletter_newsletter extends we_newsletter_base{
 	 * @param string $param
 	 */
 	function addLog($log, $param = ''){
-		$this->db->query('INSERT INTO ' . NEWSLETTER_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'NewsletterID' => $this->ID,
+		$this->db->query('INSERT INTO ' . NEWSLETTER_LOG_TABLE . ' SET ' . we_database_base::arraySetter(['NewsletterID' => $this->ID,
 				'Log' => $log,
 				'Param' => $param
-		)));
+				]));
 	}
 
 	/**

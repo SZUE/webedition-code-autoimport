@@ -155,15 +155,14 @@ class we_messaging_todo extends we_messaging_proto{
 
 	function history_update($id, $userid, $fromuserid, $comment, $action, $status = -1){
 		return $this->DB_WE->query('INSERT INTO ' . MSG_TODOHISTORY_TABLE . ' SET ' .
-						we_database_base::arraySetter(array(
-							'ParentID' => $id,
+						we_database_base::arraySetter(['ParentID' => $id,
 							'UserID' => $userid,
 							'fromUserID' => $fromuserid,
 							'Comment' => $comment,
 							'Created' => sql_function('UNIX_TIMESTAMP()'),
 							'action' => $action,
 							'status' => ($status < 0 ? sql_function('NULL') : $status)
-		)));
+							]));
 	}
 
 	function add_comment(){
@@ -392,8 +391,7 @@ class we_messaging_todo extends we_messaging_proto{
 				}
 			}
 
-			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
-						'ParentID' => intval($in_folder),
+			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' SET ' . we_database_base::arraySetter(['ParentID' => intval($in_folder),
 						'UserID' => intval($userid),
 						'msg_type' => $this->sql_class_nr,
 						'obj_type' => we_messaging_proto::TODO_NR,
@@ -407,7 +405,7 @@ class we_messaging_todo extends we_messaging_proto{
 						'seenStatus' => 0,
 						'Priority' => $data['priority'] ? : sql_function('NULL'),
 						'Content_Type' => !empty($data['Content_Type']) ? $data['Content_Type'] : sql_function('NULL')
-			)));
+						]));
 
 			$results['id'] = $this->DB_WE->getInsertId();
 			$results['ok'][] = $rcpt;

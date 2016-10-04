@@ -249,8 +249,7 @@ abstract class we_newsletter_util{
 
 		if($mailid){
 			$db->query('REPLACE INTO ' . NEWSLETTER_CONFIRM_TABLE . ' SET ' .
-				we_database_base::arraySetter(array(
-					'confirmID' => $confirmID,
+				we_database_base::arraySetter(['confirmID' => $confirmID,
 					'subscribe_mail' => strtolower($f['subscribe_mail']),
 					'subscribe_html' => $f['subscribe_html'],
 					'subscribe_salutation' => $f['subscribe_salutation'],
@@ -259,7 +258,7 @@ abstract class we_newsletter_util{
 					'subscribe_lastname' => $f['subscribe_lastname'],
 					'lists' => $lists,
 					'expires' => sql_function('UNIX_TIMESTAMP() + ' . weTag_getAttribute('expiredoubleoptin', $attribs, 1440, we_base_request::INT) * 60) // in secs
-			)));
+					]));
 
 			$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 			$subject = weTag_getAttribute('subject', $attribs, 'newsletter', we_base_request::STRING);

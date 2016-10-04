@@ -185,7 +185,7 @@ class we_messaging_format extends we_class{
 		switch($this->mode){
 			case 're':
 				if(substr($ret, 0, 4) != 'Re: '){
-					$ret = "Re: $ret";
+					$ret = 'Re: ' . $ret;
 				}
 				break;
 			case 'new':

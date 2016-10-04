@@ -193,15 +193,14 @@ class we_banner_banner extends we_banner_base{
 		}
 
 		foreach(array_unique($this->MediaLinks) as $remObj){
-			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'ID' => $this->ID,
+			$this->db->query('REPLACE INTO ' . FILELINK_TABLE . ' SET ' . we_database_base::arraySetter(['ID' => $this->ID,
 					'DocumentTable' => stripTblPrefix($this->table),
 					'type' => 'media',
 					'remObj' => $remObj,
 					'remTable' => stripTblPrefix(FILE_TABLE),
 					'position' => 0,
 					'isTemp' => 0
-			)));
+					]));
 		}
 	}
 
@@ -374,14 +373,13 @@ class we_banner_banner extends we_banner_base{
 			));
 		}
 		if(!$nocount){
-			$db->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'ID' => intval($id),
+			$db->query('INSERT INTO ' . BANNER_VIEWS_TABLE . ' SET ' . we_database_base::arraySetter(['ID' => intval($id),
 					'Timestamp' => sql_function('UNIX_TIMESTAMP()'),
 					'IP' => $_SERVER['REMOTE_ADDR'],
 					'Referer' => $referer ? : (isset($_SERVER["HTTP_REFERER"]) ? $_SERVER["HTTP_REFERER"] : ""),
 					'DID' => intval($did),
 					'Page' => $page
-			)));
+					]));
 			$db->query('UPDATE ' . BANNER_TABLE . ' SET views=views+1 WHERE ID=' . intval($id));
 		}
 

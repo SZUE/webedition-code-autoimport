@@ -706,8 +706,7 @@ class we_voting_voting extends we_base_model{
 		$cookieStatus = $this->cookieDisabled() ? 0 : 1;
 		$userid = (defined('CUSTOMER_TABLE') && !empty($_SESSION["webuser"]["registered"]) && !empty($_SESSION["webuser"]["ID"]) ?
 				$_SESSION["webuser"]["ID"] : 0);
-		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
-				'votingsession' => $votingsession,
+		$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(['votingsession' => $votingsession,
 				'voting' => $this->ID,
 				'time' => sql_function('UNIX_TIMESTAMP()'),
 				'ip' => $_SERVER['REMOTE_ADDR'],
@@ -720,7 +719,7 @@ class we_voting_voting extends we_base_model{
 				'successor' => $successor,
 				'additionalfields' => $additionalfields,
 				'status' => $status,
-		)));
+				]));
 
 		return true;
 	}
@@ -748,8 +747,7 @@ class we_voting_voting extends we_base_model{
 			return false;
 		}
 		foreach($LogData as $ld){
-			$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(array(
-					'votingsession' => '',
+			$this->db->query('INSERT INTO `' . VOTING_LOG_TABLE . '` SET ' . we_database_base::arraySetter(['votingsession' => '',
 					'voting' => $this->ID,
 					'time' => $ld['time'],
 					'ip' => $ld['ip'],
@@ -762,7 +760,7 @@ class we_voting_voting extends we_base_model{
 					'successor' => '',
 					'additionalfields' => '',
 					'status' => $ld['status'],
-			)));
+					]));
 		}
 		$this->LogData = '';
 		$this->saveField('LogData', false);

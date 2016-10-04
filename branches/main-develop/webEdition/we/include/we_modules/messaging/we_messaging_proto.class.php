@@ -54,24 +54,23 @@ abstract class we_messaging_proto /* extends we_class */{
 	var $selected_message = [];
 	var $selected_set = [];
 	var $search_ids = [];
-	var $search_fields = array('headerSubject', 'headerFrom', 'MessageText');
+	var $search_fields = ['headerSubject', 'headerFrom', 'MessageText'];
 	var $search_folder_ids = [];
 	var $sortfield = 'headerDate';
 	var $last_sortfield = '';
 	var $sortorder = 'desc';
 	var $ids_selected = [];
 	var $available_folders = [];
-	var $cached = array(
-		'sortorder' => 0,
-		'sortfield' => 0);
+	var $cached = ['sortorder' => 0,
+		'sortfield' => 0];
 //    var $got_sortstuff_from_db = 0;
 	var $update_interval = 10;
-	var $default_folders = array(
+	var $default_folders = [
 		self::FOLDER_DONE => -1,
 		self::FOLDER_REJECT => -1,
 		self::FOLDER_TRASH => -1,
 		self::FOLDER_SENT => -1,
-		self::FOLDER_INBOX => -1);
+		self::FOLDER_INBOX => -1];
 	var $table = MESSAGES_TABLE;
 	var $folder_tbl = MSG_FOLDERS_TABLE;
 	var $DB_WE;
@@ -207,10 +206,10 @@ abstract class we_messaging_proto /* extends we_class */{
 
 		$this->DB_WE->query('SELECT ID,ParentID,Name,obj_type FROM  ' . $this->DB_WE->escape($this->folder_tbl) . ' WHERE msg_type=' . intval($this->sql_class_nr) . ' AND UserID=' . intval($this->userid));
 		while($this->DB_WE->next_record(MYSQL_ASSOC)){
-			$this->available_folders[$this->DB_WE->f('ID')] = $this->DB_WE->getRecord() + array(
+			$this->available_folders[$this->DB_WE->f('ID')] = $this->DB_WE->getRecord() + [
 				'ClassName' => $this->ClassName,
 				'view_class' => $this->view_class,
-			);
+				];
 		}
 
 		return $this->available_folders;
@@ -218,14 +217,14 @@ abstract class we_messaging_proto /* extends we_class */{
 
 	function create_folder($name, $parent){
 		$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->folder_tbl) . ' ' .
-			we_database_base::arraySetter(array(
+			we_database_base::arraySetter([
 				'ParentID' => $parent,
 				'UserID' => $this->userid,
 				'account_id' => -1,
 				'msg_type' => $this->sql_class_nr,
 				'obj_type' => we_messaging_proto::FOLDER_NR,
 				'Name' => $name
-		)));
+				]));
 		return $this->DB_WE->getInsertId();
 	}
 
@@ -302,10 +301,10 @@ abstract class we_messaging_proto /* extends we_class */{
 	function sort_set(){
 		if(!empty($this->selected_set)){
 			if(($this->last_sortfield != $this->sortfield) || $this->sortorder != 'asc'){
-				usort($this->selected_set, array($this, 'cmp_asc'));
+				usort($this->selected_set, [$this, 'cmp_asc']);
 				$this->sortorder = 'asc';
 			} else {
-				usort($this->selected_set, array($this, 'cmp_desc'));
+				usort($this->selected_set, [$this, 'cmp_desc']);
 				$this->sortorder = 'desc';
 			}
 
@@ -314,10 +313,9 @@ abstract class we_messaging_proto /* extends we_class */{
 	}
 
 	function save_sortstuff($id, $sortfield, $sortorder){
-		$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->folder_tbl) . ' SET ' . we_database_base::arraySetter(array(
-				'sortItem' => $sortfield,
+		$this->DB_WE->query('UPDATE ' . $this->DB_WE->escape($this->folder_tbl) . ' SET ' . we_database_base::arraySetter(['sortItem' => $sortfield,
 				'sortOrder' => ($sortorder === 'asc' ? 'desc' : 'asc')
-			)) .
+				]) .
 			' WHERE ID=' . intval($id) . ' AND UserID=' . intval($this->userid));
 	}
 

@@ -112,8 +112,7 @@ class we_messaging_message extends we_messaging_proto{
 				$tmp['tag'] = $this->DB_WE->f('tag');
 			}
 
-			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' SET ' . we_database_base::arraySetter(array(
-					'ParentID' => intval($target_fid),
+			$this->DB_WE->query('INSERT INTO ' . $this->DB_WE->escape($this->table) . ' SET ' . we_database_base::arraySetter(['ParentID' => intval($target_fid),
 					'UserID' => $this->userid,
 					'msg_type' => $tmp['msg_type'],
 					'obj_type' => $tmp['obj_type'],
@@ -125,7 +124,7 @@ class we_messaging_message extends we_messaging_proto{
 					'MessageText' => $tmp['MessageText'],
 					'seenStatus' => $tmp['seenStatus'],
 					'tag' => $tmp['tag'],
-			)));
+					]));
 
 			//$pending_ids[] = $this->DB_WE->getInsertId();
 		}

@@ -492,11 +492,10 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 	function saveSettings($settings){
 		$db = new DB_WE();
 		foreach($settings as $key => $value){
-			$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'tool' => 'banner',
+			$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => 'banner',
 					'pref_name' => $key,
 					'pref_value' => $value
-			)));
+					]));
 		}
 	}
 

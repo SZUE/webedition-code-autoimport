@@ -213,8 +213,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 
 		$DB_WE = new DB_WE();
 		$DB_WE->query('UPDATE ' . NAVIGATION_TABLE . ' SET ' .
-			we_database_base::arraySetter(array(
-				'LimitAccess' => $limitAccess,
+			we_database_base::arraySetter(['LimitAccess' => $limitAccess,
 				'ApplyFilter' => $applyFilter,
 				'AllCustomers' => $allCustomers,
 				'Customers' => implode(',', $filterObj->getSpecificCustomers()),
@@ -222,7 +221,7 @@ class we_navigation_customerFilter extends we_customer_abstractFilter{
 				'CustomerFilter' => we_serialize($filterObj->getFilter(), SERIALIZE_JSON),
 				'BlackList' => implode(',', $filterObj->getBlackList()),
 				'WhiteList' => implode(',', $filterObj->getWhiteList())
-			)) .
+				]) .
 			' WHERE UseDocumentFilter=1 AND ' . we_navigation_navigation::getNavCondition($id, $table));
 	}
 

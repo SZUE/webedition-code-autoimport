@@ -50,10 +50,9 @@ if(FORMMAIL_LOG){
 			if(f('SELECT COUNT(1) FROM ' . FORMMAIL_LOG_TABLE . ' WHERE unixTime>(NOW()- INTERVAL ' . intval(FORMMAIL_SPAN) . ' SECOND) AND ip="' . $GLOBALS['DB_WE']->escape($_SERVER['REMOTE_ADDR']) . '"') > FORMMAIL_TRIALS){
 				$blocked = true;
 				// insert in block table
-				$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'ip' => $_SERVER['REMOTE_ADDR'],
+				$GLOBALS['DB_WE']->query('REPLACE INTO ' . FORMMAIL_BLOCK_TABLE . ' SET ' . we_database_base::arraySetter(['ip' => $_SERVER['REMOTE_ADDR'],
 						'blockedUntil' => (FORMMAIL_BLOCKTIME == -1 ? -1 : sql_function('(UNIX_TIMESTAMP()+' . intval(FORMMAIL_BLOCKTIME) . ')'))
-				)));
+						]));
 			}
 		}
 	}
@@ -67,14 +66,13 @@ if($blocked){
 
 function contains_bad_str($str_to_test){
 	$str_to_test = trim($str_to_test);
-	$bad_strings = array(
-		'content-type:',
+	$bad_strings = ['content-type:',
 		'mime-version:',
 		'Content-Transfer-Encoding:',
 		'bcc:',
 		'cc:',
 		'to:',
-	);
+		];
 
 	foreach($bad_strings as $bad_string){
 		if(preg_match('|^' . preg_quote($bad_string, '|') . '|i', $str_to_test) || preg_match('|[\n\r]' . preg_quote($bad_string, "|") . '|i', $str_to_test)){

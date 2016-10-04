@@ -24,11 +24,10 @@
 echo we_html_tools::getHtmlTop(g_l('modules_banner', '[defaultbanner]'));
 
 if(we_base_request::_(we_base_request::BOOL, "ok")){
-	$GLOBALS['DB_WE']->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-			'tool' => 'banner',
+	$GLOBALS['DB_WE']->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => 'banner',
 			'pref_name' => 'DefaultBannerID',
 			'pref_value' => we_base_request::_(we_base_request::INT, "DefaultBannerID", 0)
-	)));
+			]));
 
 	echo we_html_element::jsElement('top.close();') . '</head><body></body></html>';
 	exit();

@@ -1939,10 +1939,9 @@ class we_versions_version{
 		$db = new DB_WE();
 		$fields = self::getLastEntry($docID, $docTable, $db);
 		if($fields){
-			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'ParentID' => $parentId,
+			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter(['ParentID' => $parentId,
 					'Path' => $path
-			)));
+					]));
 		}
 	}
 
