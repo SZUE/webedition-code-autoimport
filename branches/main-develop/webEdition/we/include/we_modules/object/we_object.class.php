@@ -51,7 +51,7 @@ class we_object extends we_document{
 
 	public function __construct(){
 		parent::__construct();
-		array_push($this->persistent_slots, 'WorkspaceFlag', 'RestrictUsers', 'UsersReadOnly', 'Text', 'SerializedArray', 'Templates', 'Workspaces', 'DefaultWorkspaces', 'ID', 'Users', 'strOrder', 'Category', 'DefaultCategory', 'DefaultText', 'DefaultValues', 'DefaultTitle', 'DefaultKeywords', 'DefaultUrl', 'DefaultUrlfield0', 'DefaultUrlfield1', 'DefaultUrlfield2', 'DefaultUrlfield3', 'DefaultTriggerID', 'DefaultDesc', 'CSS');
+		array_push($this->persistent_slots, 'WorkspaceFlag', 'RestrictUsers', 'UsersReadOnly', 'Text', 'SerializedArray', 'Templates', 'Workspaces', 'DefaultWorkspaces', 'ID', 'Users', 'Category', 'DefaultCategory', 'DefaultText', 'DefaultValues', 'DefaultTitle', 'DefaultKeywords', 'DefaultUrl', 'DefaultUrlfield0', 'DefaultUrlfield1', 'DefaultUrlfield2', 'DefaultUrlfield3', 'DefaultTriggerID', 'DefaultDesc', 'CSS');
 		if(isWE()){
 			array_push($this->EditPageNrs, we_base_constants::WE_EDITPAGE_PROPERTIES, we_base_constants::WE_EDITPAGE_WORKSPACE, we_base_constants::WE_EDITPAGE_INFO, we_base_constants::WE_EDITPAGE_CONTENT); // ,we_base_constants::WE_EDITPAGE_PREVIEW
 		}
@@ -174,8 +174,6 @@ class we_object extends we_document{
 			$this->DefaultTriggerID = ($tmp = $this->getElement('triggerid')) ? $this->getElement($tmp . self::ELEMENT_TYPE) . '_' . $this->getElement($tmp) : '0';
 
 
-			$this->strOrder = implode(',', $this->getElement('we_sort'));
-
 			$this->DefaultCategory = $this->Category;
 			$this->i_savePersistentSlotsToDB();
 
@@ -188,31 +186,41 @@ class we_object extends we_document{
 			$this->wasUpdate = true;
 		}
 
+		$we_sort = $this->getElement('we_sort');
+		asort($we_sort, SORT_NUMERIC);
+		$this->setElement('we_sort', $we_sort);
+
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
 		$tableInfo = $this->DB_WE->metadata($ctable, we_database_base::META_NAME);
 		$q = $regs = [];
-		$fieldsToDelete = $this->getElement('felderloeschen', 'dat', []);
-		foreach($tableInfo as $cur){
-			if(!preg_match('/(.+?)_(.*)/', $cur, $regs) || $regs[1] == 'OF' || $regs[1] == 'variant'){
-				continue;
+		$fieldsToDelete = array_intersect($this->getElement('felderloeschen', 'dat', []), $tableInfo);
+		foreach($fieldsToDelete as $cur){
+			$q[] = ' DROP `' . $cur . '` ';
+		}
+
+		$neu = $this->getElement('neuefelder', 'dat', []);
+
+		$lastElement = 'OF_ID';
+		foreach(array_keys($we_sort) as $id){
+			$cur = $this->getElement("wholename" . $id, 'dat');
+			$newType = $this->getElement($cur . self::ELEMENT_TYPE);
+			$nam = $newType . '_' . $this->getElement($cur);
+
+			if(in_array($cur, $neu)){
+				$q[] = ' ADD `' . $nam . '` ' . $this->switchtypes($cur) . ' AFTER `' . $lastElement . '`';
+			} else {
+				//change from object is indexed to unindexed
+				if((strpos($cur, self::QUERY_PREFIX) === 0) && ($newType . '_' != self::QUERY_PREFIX)){
+					$q[] = ' DROP KEY `' . $cur . '` ';
+				}
+
+				$q[] = ' CHANGE `' . $cur . '` `' . $nam . '` ' . $this->switchtypes($cur) . ' AFTER `' . $lastElement . '`';
 			}
-
-			if(in_array($cur, $fieldsToDelete)){
-				$q[] = ' DROP `' . $cur . '` ';
-				continue;
-			}
-
-			$nam = $this->getElement($cur . self::ELEMENT_TYPE) . '_' . $this->getElement($cur);
-//change from object is indexed to unindexed
-			if((strpos($cur, self::QUERY_PREFIX) === 0) && (strpos($nam, self::QUERY_PREFIX) !== 0)){
-				$q[] = ' DROP KEY `' . $cur . '` ';
-			}
-
-			$q[] = ' CHANGE `' . $cur . '` `' . $nam . '` ' . $this->switchtypes($cur);
-
-			if((strpos($cur, self::QUERY_PREFIX) !== 0) && (strpos($nam, self::QUERY_PREFIX) === 0)){
+			//add index for complex queries
+			if((strpos($cur, self::QUERY_PREFIX) !== 0) && ($newType . '_' == self::QUERY_PREFIX)){
 				$q[] = 'ADD INDEX (`' . $nam . '`) ';
 			}
+			$lastElement = $nam;
 
 			$arrt[$nam] = array_filter([
 				'default' => $this->getElement($cur . 'default'),
@@ -246,8 +254,8 @@ class we_object extends we_document{
 				'int' => $this->getElement($cur . 'int'),
 				'intID' => $this->getElement($cur . 'intID'),
 				'hreftype' => $this->getElement($cur . 'hreftype'),
-				'hrefdirectory' => $this->getElement($cur . 'hrefdirectory'),
-				'hreffile' => $this->getElement($cur . 'hreffile'),
+				'hrefdirectory' => $this->getElement($cur . 'hrefdirectory', 'dat', 'false'),
+				'hreffile' => $this->getElement($cur . 'hreffile', 'dat', 'true'),
 				'shopcatField' => $this->getElement($cur . 'shopcatField'),
 				'shopcatShowPath' => $this->getElement($cur . 'shopcatShowPath'),
 				'shopcatRootdir' => $this->getElement($cur . 'shopcatRootdir'),
@@ -268,85 +276,11 @@ class we_object extends we_document{
 
 					$val = $this->getElement($cur . 'defaultvalue' . $f);
 					$val = ($val != $cur . 'defaultvalue' . $f ? $val : '');
-					if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
+					if($newType == we_objectFile::TYPE_MULTIOBJECT){
 						$arrt[$nam]['meta'][] = $val;
 					} else {
 						$arrt[$nam]['meta'][$this->getElement($cur . 'defaultkey' . $f)] = $val;
 					}
-				}
-			}
-		}
-
-		$neu = $this->getElement('neuefelder', 'dat', []);
-
-		foreach($neu as $cur){
-			if(!empty($cur)){
-				$nam = $this->getElement($cur . self::ELEMENT_TYPE) . '_' . $this->getElement($cur);
-				$arrt[$nam] = array_filter([
-					'default' => $this->getElement($cur . 'default'),
-					'defaultThumb' => $this->getElement($cur . 'defaultThumb'),
-					'defaultdir' => $this->getElement($cur . 'defaultdir'),
-					'rootdir' => $this->getElement($cur . 'rootdir'),
-					'autobr' => $this->getElement($cur . 'autobr'),
-					'dhtmledit' => $this->getElement($cur . 'dhtmledit'),
-					'showmenues' => $this->getElement($cur . 'showmenues'),
-					'commands' => $this->getElement($cur . 'commands'),
-					'contextmenu' => $this->getElement($cur . 'contextmenu'),
-					self::ELEMENT_HEIGHT => $this->getElement($cur . 'height', 'dat', 200),
-					self::ELEMENT_WIDTH => $this->getElement($cur . self::ELEMENT_WIDTH, 'dat', 618),
-					'bgcolor' => $this->getElement($cur . 'bgcolor'),
-					self::ELEMENT_CLASS => $this->getElement($cur . 'class'),
-					'max' => $this->getElement($cur . 'max'),
-					'cssClasses' => $this->getElement($cur . 'cssClasses'),
-					'fontnames' => $this->getElement($cur . 'fontnames'),
-					'fontsizes' => $this->getElement($cur . 'fontsizes'),
-					'formats' => $this->getElement($cur . 'formats'),
-					'tinyparams' => $this->getElement($cur . 'tinyparams'),
-					'templates' => $this->getElement($cur . 'templates'),
-					'xml' => $this->getElement($cur . 'xml'),
-					'removefirstparagraph' => $this->getElement($cur . 'removefirstparagraph'),
-					'forbidhtml' => $this->getElement($cur . 'forbidhtml'),
-					'forbidphp' => $this->getElement($cur . 'forbidphp'),
-					'inlineedit' => $this->getElement($cur . 'inlineedit'),
-					'users' => $this->getElement($cur . 'users'),
-					'required' => $this->getElement($cur . 'required'),
-					'editdescription' => $this->getElement($cur . 'editdescription'),
-					'int' => $this->getElement($cur . 'int'),
-					'intID' => $this->getElement($cur . 'intID'),
-					'hreftype' => $this->getElement($cur . 'hreftype'),
-					'hrefdirectory' => $this->getElement($cur . 'hrefdirectory', 'dat', 'false'),
-					'hreffile' => $this->getElement($cur . 'hreffile', 'dat', 'true'),
-					'shopcatField' => $this->getElement($cur . 'shopcatField'),
-					'shopcatShowPath' => $this->getElement($cur . 'shopcatShowPath'),
-					'shopcatRootdir' => $this->getElement($cur . 'shopcatRootdir'),
-					'shopcatLimitChoice' => $this->getElement($cur . 'shopcatLimitChoice'),
-					'uniqueID' => md5(uniqid(__FILE__, true)),
-				]);
-
-				if($this->isVariantField($cur) && $this->getElement($cur . 'variant') == 1){
-					$arrt[$nam]['variant'] = 1;
-				} else if($this->issetElement($cur . 'variant')){
-					$this->delElement($cur . 'variant');
-				}
-
-				for($f = 0; $f <= $this->getElement($cur . 'count', 'dat', 0); $f++){
-					$val = $this->getElement($cur . 'defaultvalue' . $f);
-					if((!isset($arrt[$nam]['meta'])) || (!is_array($arrt[$nam]['meta']))){
-						$arrt[$nam]['meta'] = [];
-					}
-					if(substr($nam, 0, 12) == we_objectFile::TYPE_MULTIOBJECT . '_'){
-						$arrt[$nam]['meta'][] = $val;
-					} elseif(($key = $this->getElement($cur . 'defaultkey' . $f)) !== ''){ //Fix #9830
-						$arrt[$nam]['meta'][$key] = $val;
-					} else {
-						$arrt[$nam]['meta'][''] = $val;
-					}
-				}
-
-				$q[] = ' ADD `' . $nam . '` ' . $this->switchtypes($cur);
-//add index for complex queries
-				if($this->getElement($cur . self::ELEMENT_TYPE, 'dat') == we_objectFile::TYPE_OBJECT){
-					$q[] = ' ADD INDEX (`' . $nam . '`)';
 				}
 			}
 		}
@@ -387,7 +321,6 @@ class we_object extends we_document{
 			$this->DB_WE->query('ALTER TABLE ' . $ctable . ' ' . implode(',', $q));
 		}
 
-		$this->strOrder = implode(',', $this->getElement("we_sort"));
 		$this->i_savePersistentSlotsToDB();
 
 		unset($this->elements);
@@ -420,7 +353,7 @@ class we_object extends we_document{
 			case we_objectFile::TYPE_CHECKBOX:
 				return ' TINYINT unsigned DEFAULT "' . ($this->getElement($name . 'default', 'dat') == 1 ? '1' : '0') . '" NOT NULL ';
 			case we_objectFile::TYPE_INT:
-				return ' INT(' . (($this->getElement($name . 'length', 'dat') > 0 && ($this->getElement($name . 'length', 'dat') < 256)) ? $this->getElement($name . 'length', 'dat') : '11') . ') DEFAULT NULL ';
+				return ' INT DEFAULT NULL ';
 			case we_objectFile::TYPE_FLOAT:
 				return ' DOUBLE DEFAULT NULL ';
 			case we_objectFile::TYPE_OBJECT:
@@ -451,13 +384,19 @@ class we_object extends we_document{
 		if($this->issetElement('we_sort')){
 			return;
 		}
-		$t = we_objectFile::getSortArray($this->ID, $this->DB_WE);
+		$ctable = OBJECT_X_TABLE . intval($this->ID);
+		$tableInfo = $this->DB_WE->metadata($ctable, we_database_base::META_NAME);
 		$sort = [];
-		foreach($t as $v){
-			if($v < 0){
-				$v = 0;
+		$i = 0;
+		foreach($tableInfo as $name){
+			list($type, $name) = explode('_', $name, 2);
+			switch($type){
+				case 'OF':
+				case 'variant':
+					break;
+				default:
+					$sort[str_replace('.', '', uniqid($name))] = $i++;
 			}
-			$sort[str_replace('.', '', uniqid(__FUNCTION__, true))] = $v;
 		}
 		$this->setElement('we_sort', $sort);
 	}
@@ -485,84 +424,31 @@ class we_object extends we_document{
 		}
 	}
 
-	function getSortIndex($nr){
-		$sort = $this->getElement("we_sort");
+	private function moveEntryAtClass($identifier, $move){
+		$sort = $this->getElement('we_sort');
+		$pos = $sort[$identifier];
 
-		$i = 0;
-		foreach(array_keys($sort) as $k){
-			if($i == $nr){
-				return $k;
-			}
-			$i++;
-		}
-	}
-
-	function getSortIndexByValue($value){
-		$sort = $this->getElement("we_sort");
-
-		$i = 0;
-		foreach($sort as $k => $v){
-			if($v == $value){
-				return $k;
-			}
-			$i++;
+		$newPos = array_search($pos + $move, $sort);
+		if($newPos !== false){
+			$sort[$identifier] = $sort[$newPos];
+			$sort[$newPos] = $pos;
+			asort($sort, SORT_NUMERIC);
+			$this->setElement('we_sort', $sort);
 		}
 	}
 
 	function downEntryAtClass($identifier){
-		$sort = $this->getElement("we_sort");
-		$pos = $sort[$identifier];
-
-		$t = [];
-		$i = 0;
-		$position = count($sort);
-		foreach($sort as $ident => $identpos){
-			if($ident == $identifier && $i < count($sort) - 1){
-				$position = $i;
-			}
-			if($i == $position + 1){
-				$t[$ident] = $identpos;
-				$t[$identifier] = $pos;
-			} elseif($i != $position){
-				$t[$ident] = $sort[$ident];
-			}
-			$i++;
-		}
-
-		$this->setElement("we_sort", $t);
+		$this->moveEntryAtClass($identifier, 1);
 	}
 
 	function upEntryAtClass($identifier){
-		$sort = $this->getElement("we_sort");
-		$pos = $sort[$identifier];
-		$reversed = array_reverse($sort, true);
-
-		$t = [];
-		$i = 0;
-		$position = count($reversed);
-		foreach($reversed as $ident => $identpos){
-			if($ident == $identifier && $i < count($reversed) - 1){
-				$position = $i;
-			}
-			if($i == $position + 1){
-				$t[$ident] = $identpos;
-				$t[$identifier] = $sort[$identifier];
-			} elseif($i != $position){
-				$t[$ident] = $reversed[$ident];
-			}
-			$i++;
-		}
-
-		$this->setElement("we_sort", array_reverse($t, true));
+		$this->moveEntryAtClass($identifier, -1);
 	}
 
 	function addEntryToClass($identifier, $after = false){
-		$sort = $this->getElement("we_sort");
+		$sort = $this->getElement('we_sort');
 		$uid = uniqid();
 
-		$gesamt = $this->getElement("Sortgesamt");
-
-		$this->setElement("Sortgesamt", ($sort ? ++$gesamt : 0));
 		$this->setElement($uid, '');
 		$this->setElement($uid . self::ELEMENT_LENGHT, "");
 		$this->setElement($uid . self::ELEMENT_TYPE, "");
@@ -571,31 +457,28 @@ class we_object extends we_document{
 		$this->setElement($uid . self::ELEMENT_CLASS, "");
 		$this->setElement($uid . self::ELEMENT_MAX, "");
 		$this->setElement("wholename" . $identifier, $uid);
+		$nf = $this->getElement("neuefelder", 'dat', []);
+		$nf[] = $uid;
+		$this->setElement("neuefelder", $nf);
 
-		$this->setElement("neuefelder", array_push($this->getElement("neuefelder", 'dat', []), $uid));
-
-		if(isset($after) && in_array($after, array_keys($sort))){
+		if($after && isset($sort[$after])){
 			$pos = $sort[$after];
-			$t = [];
-			foreach($sort as $ident => $identpos){
-				if($pos > $identpos){
-					$t[$ident] = $identpos;
-				} elseif($pos == $identpos){
-					$t[$ident] = $identpos;
-					$t[$identifier] = count($sort);
-				} elseif($pos < $identpos){
-					$t[$ident] = $identpos;
+
+			foreach($sort as &$identpos){
+				if($identpos > $pos){
+					$identpos = $identpos + 1;
 				}
 			}
-			$sort = $t;
+			$sort[$identifier] = $pos + 1;
 		} else {
 			$sort[$identifier] = count($sort);
 		}
+		asort($sort, SORT_NUMERIC);
 		$this->setElement("we_sort", $sort);
 	}
 
 	function removeEntryFromClass($identifier){
-		$sort = $this->getElement("we_sort");
+		$sort = $this->getElement('we_sort', 'dat');
 
 		$uid = $this->getElement("wholename" . $identifier);
 
@@ -603,7 +486,9 @@ class we_object extends we_document{
 			unset($nf[$pos]);
 			$this->setElement("neuefelder", $nf);
 		} else {
-			$this->setElement("felderloeschen", array_push($this->getElement("felderloeschen", 'dat', []), $uid));
+			$er = $this->getElement("felderloeschen", 'dat', []);
+			$er[] = $uid;
+			$this->setElement("felderloeschen", $er);
 		}
 
 		$this->delElement("wholename" . $identifier);
@@ -619,17 +504,15 @@ class we_object extends we_document{
 
 ### move elements ####
 		$pos = $sort[$identifier];
-		foreach($sort as $ident => $identpos){
-			if($identpos == $pos){
-				unset($sort[$ident]);
-			} elseif($identpos > $pos){
-				$sort[$ident] --;
+		unset($sort[$identifier]);
+		foreach($sort as &$identpos){
+			if($identpos > $pos){
+				$identpos = $identpos - 1;
 			}
 		}
-		$this->setElement("Sortgesamt", count($sort));
 ### end move elements ####
-
-		$this->setElement("we_sort", ($sort ?: []));
+		asort($sort, SORT_NUMERIC);
+		$this->setElement('we_sort', ($sort ?: []));
 	}
 
 	function downMetaAtClass($name, $i){
@@ -816,10 +699,10 @@ class we_object extends we_document{
 					we_class::htmlSelect('we_' . $this->Name . '_input[' . $name . 'typeLen]', $values, 1, $sel ? $sel : 'INT', false, ['onchange' => "_EditorFrame.setEditorIsHot(true);",
 						'width' => '388px']) .
 					'</td></tr>';
-//nobreak;
+				break;
 			default:
 // Length
-				$maxLengthVal = $type == we_objectFile::TYPE_INT ? 9 : 255;
+				$maxLengthVal = 255;
 				$content .= '<tr style="vertical-align:top"><td class="weMultiIconBoxHeadlineThin" style="width:100px;vertical-align:top">' . g_l('modules_object', '[length]') . '</td>' .
 					'<td class="defaultfont">' .
 					we_html_tools::htmlTextInput('we_' . $this->Name . "_input[" . $name . self::ELEMENT_LENGHT . ']', 10, ($this->getElement($name . "length", "dat") > 0 && ($this->getElement($name . "length", "dat") < ($maxLengthVal + 1)) ? $this->getElement($name . "length", "dat") : $maxLengthVal), ($type == we_objectFile::TYPE_INT ? 2 : 4), 'onchange="_EditorFrame.setEditorIsHot(true);" weType="weObject_' . $type . '_length"', "text", 388) .
@@ -843,22 +726,22 @@ class we_object extends we_document{
 					$count++;
 				}
 				asort($vals);
-				if($this->getElement($name . "class") === ""){
-					$this->setElement($name . "class", array_shift(array_flip($vals)));
+				if($this->getElement($name . 'class') === ''){
+					$this->setElement($name . 'class', array_shift(array_flip($vals)));
 				}
-				$content .= $this->htmlSelect("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "class]", $vals, 1, $this->getElement($name . 'class', "dat"), "", [
+				$content .= $this->htmlSelect('we_' . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . 'class]', $vals, 1, $this->getElement($name . 'class', 'dat'), '', [
 						'onchange' => "if(this.form.elements['we_" . $this->Name . '_input[' . $name . 'default]' . "']){this.form.elements['we_" . $this->Name . '_input[' . $name . 'default]' . "'].value='';};_EditorFrame.setEditorIsHot(true);we_cmd('object_change_multiobject_at_class','" . $GLOBALS['we_transaction'] . "','" . $identifier . "','" . $name . "')"], "value", 388) .
 					'</td></tr>
 <tr style="vertical-align:top">
 	<td style="width:100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[max_objects]') . '</td>
-	<td class="defaultfont"><nobr>' . we_html_tools::htmlTextInput("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "max]", 5, $this->getElement($name . "max", "dat"), 3, 'onchange="_EditorFrame.setEditorIsHot(true);we_cmd(\'object_reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . ($identifier) . '\');"', "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</nobr></td>
+	<td class="defaultfont"><nobr>' . we_html_tools::htmlTextInput("we_" . $this->Name . '_' . we_objectFile::TYPE_MULTIOBJECT . '[' . $name . "max]", 5, $this->getElement($name . 'max', 'dat'), 3, 'onchange="_EditorFrame.setEditorIsHot(true);we_cmd(\'object_reload_entry_at_class\',\'' . $GLOBALS['we_transaction'] . '\',\'' . ($identifier) . '\');"', "text", 50) . ' (' . g_l('modules_object', '[no_maximum]') . ')</nobr></td>
 </tr>
 <tr style="vertical-align:top"><td  width="100" class="weMultiIconBoxHeadlineThin">' . g_l('modules_object', '[default]') . '</td><td class="defaultfont"><table>';
 
-				if(!$this->issetElement($name . "count")){
-					$this->setElement($name . "count", 0);
+				if(!$this->issetElement($name . 'count')){
+					$this->setElement($name . 'count', 0);
 				}
-				for($f = 0; $f <= $this->getElement($name . "count"); $f++){
+				for($f = 0; $f <= $this->getElement($name . 'count', 'dat', 0); $f++){
 					$content .= $this->getMultiObjectFieldHTML($name, $identifier, $f);
 				}
 
@@ -978,7 +861,7 @@ class we_object extends we_document{
 
 				$addArray = [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10];
 
-				for($f = 0; $f <= $this->getElement($name . 'count'); $f++){
+				for($f = 0; $f <= $this->getElement($name . 'count', 'dat', 0); $f++){
 					$content .= '<tr><td>' . we_html_tools::htmlTextInput('we_' . $this->Name . '_input[' . $name . 'defaultkey' . $f . ']', 40, $this->getElement($name . "defaultkey" . $f), 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 105) .
 						'</td><td>' . we_html_tools::htmlTextInput("we_" . $this->Name . "_input[" . $name . "defaultvalue" . $f . "]", 40, $this->getElement($name . "defaultvalue" . $f), 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 105);
 
@@ -989,7 +872,7 @@ class we_object extends we_document{
 						we_html_button::create_button(we_html_button::DIRUP, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_up_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')") :
 						we_html_button::create_button(we_html_button::DIRUP, "#", true, 0, 0, "", "", true)
 						) .
-						(($f < ($this->getElement($name . 'count'))) ?
+						(($f < ($this->getElement($name . 'count', 'dat', 0))) ?
 						we_html_button::create_button(we_html_button::DIRDOWN, "javascript:_EditorFrame.setEditorIsHot(true);we_cmd('object_down_meta_at_class','" . $GLOBALS['we_transaction'] . "','" . ($identifier) . "','" . $name . "','" . ($f) . "')") :
 						we_html_button::create_button(we_html_button::DIRDOWN, "#", true, 0, 0, "", "", true)
 						) .
@@ -1289,7 +1172,7 @@ class we_object extends we_document{
 		$selectObject = we_html_button::create_button(we_html_button::SELECT, "javascript:we_cmd('we_selector_document',document.we_form.elements['" . $idname . "'].value,'" . OBJECT_FILES_TABLE . "','" . $idname . "','" . $textname . "','setHot','','" . $rootDir . "','objectFile'," . (permissionhandler::hasPerm("CAN_SELECT_OTHER_USERS_OBJECTS") ? 0 : 1) . ")");
 		$delbutton = we_html_button::create_button(we_html_button::TRASH, "javascript:" . $cmd1 . "='';document.we_form.elements['" . $textname . "'].value=''");
 
-		$count = $this->getElement($name . "count");
+		$count = $this->getElement($name . "count", 'dat', 0);
 
 		return '<tr>' .
 			'<td>' . we_html_tools::htmlTextInput($textname, 30, $path, 255, 'onchange="_EditorFrame.setEditorIsHot(true);" readonly ', "text", 146) . '</td>' .
@@ -1571,7 +1454,7 @@ class we_object extends we_document{
 				$key = $regs[1];
 				if(preg_match('/unique([^%]*)/', $key, $regs)){
 					$anz = (!$regs[1] ? 16 : abs($regs[1]));
-					$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
+					$unique = substr(md5(uniqid('', true)), 0, min($anz, 32));
 					$text = preg_replace('/%unique[^%]*%/', $unique, (isset($text) ? $text : ""));
 					$select .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultText_' . $zahl . "]", g_l('modules_object', '[value]'), 1, "%unique%", "", ['onchange' => '_EditorFrame.setEditorIsHot(true);we_cmd(\'reload_editpage\');'], "value", 140) . "&nbsp;" .
 						we_html_tools::htmlTextInput('we_' . $this->Name . "_input[unique_" . $zahl . "]", 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
@@ -1622,7 +1505,7 @@ class we_object extends we_document{
 				foreach(self::$urlUnique as $key => $len){
 					if(preg_match('/' . $key . '([^%]*)/', $data, $regs)){
 						$anz = (!$regs[1] ? $len : abs($regs[1]));
-						$unique = substr(md5(uniqid(__FUNCTION__, true)), 0, min($anz, 32));
+						$unique = substr(md5(uniqid('', true)), 0, min($anz, 32));
 						$text = preg_replace('/%' . $key . '[^%]*%/', $unique, (isset($text) ? $text : ""));
 						$select2 .= $this->htmlSelect('we_' . $this->Name . '_input[DefaultUrl_' . $zahl . ']', g_l('modules_object', '[url]'), 1, '%' . $key . '%', '', ['onchange' => "_EditorFrame.setEditorIsHot(true);we_cmd('reload_editpage');"], "value", 140) . "&nbsp;" .
 							we_html_tools::htmlTextInput('we_' . $this->Name . '_input[' . $key . '_' . $zahl . ']', 40, $anz, 255, 'onchange="_EditorFrame.setEditorIsHot(true);"', "text", 140);
@@ -1824,9 +1707,8 @@ class we_object extends we_document{
 			return;
 		}
 		$f = 0;
-		$rec = getHash('SELECT strOrder,DefaultCategory,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultTriggerID,DefaultKeywords,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->ID, $this->DB_WE);
+		$rec = getHash('SELECT DefaultCategory,DefaultText,DefaultDesc,DefaultTitle,DefaultUrl,DefaultUrlfield0,DefaultUrlfield1,DefaultUrlfield2,DefaultUrlfield3,DefaultTriggerID,DefaultKeywords,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE ID=' . $this->ID, $this->DB_WE);
 
-		$this->strOrder = $rec['strOrder'];
 		$this->setSort();
 
 		$this->DefaultValues = $rec['DefaultValues'];
@@ -1913,12 +1795,14 @@ class we_object extends we_document{
 			'shopcatLimitChoice' => 0,
 			'intPath' => '',
 		];
+		$sort = $this->getElement('we_sort');
+
 		foreach($tableInfo as $info){
 			list($type, $name) = explode('_', $info['name'], 2);
 			if($name && $type != 'OF' && $type != 'variant'){
 
 				$this->setElement($info['name'], $name, 'dat');
-				$this->setElement("wholename" . $this->getSortIndexByValue($f), $info['name'], 'dat');
+				$this->setElement("wholename" . array_search($f, $sort), $info['name'], 'dat');
 				$this->setElement($info['name'] . self::ELEMENT_LENGHT, $info["len"], 'dat');
 				$this->setElement($info['name'] . self::ELEMENT_TYPE, $type, 'dat');
 				$typeLen = strtoupper($info['type']) . (strpos($info['flags'], 'unsigned') !== false || (defined('MYSQLI_UNSIGNED_FLAG') && (($info['flags'] & MYSQLI_UNSIGNED_FLAG) > 0)) ? '_U' : '');
@@ -1934,7 +1818,6 @@ class we_object extends we_document{
 				$f++;
 			}
 		}
-		$this->setElement('Sortgesamt', ($f - 1));
 	}
 
 	protected function i_set_PersistentSlot($name, $value){
@@ -2006,24 +1889,25 @@ class we_object extends we_document{
 
 	protected function i_hasDoubbleFieldNames(){
 		$sort = $this->getElement('we_sort');
-		$count = $this->getElement('Sortgesamt');
+		if(empty($sort)){
+			return false;
+		}
 		$usedNames = [];
-		if(is_array($sort)){
-			for($i = 0; $i <= $count && $sort; $i++){
-				$foo = $this->getElement($this->getElement('wholename' . $this->getSortIndex($i)), 'dat');
-				if(empty($foo)){ //we don't allow field names evaluating to false, report them as double ;-)
-					return false;
-				}
-				if(!in_array($foo, $usedNames)){
-					$usedNames[] = $foo;
-					continue;
-				}
-				switch($this->getElement($this->getElement('wholename' . $this->getSortIndex($i)) . 'dtype', 'dat')){
-					case we_objectFile::TYPE_OBJECT:
-						return f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $foo, '', $this->DB_WE);
-					default:
-						return $foo;
-				}
+		foreach(array_keys($sort) as $elem){
+			$name = $this->getElement('wholename' . $elem);
+			$foo = $this->getElement($name, 'dat');
+			if(empty($foo)){ //we don't allow field names evaluating to false, report them as double ;-)
+				return false;
+			}
+			if(!in_array($foo, $usedNames)){
+				$usedNames[] = $foo;
+				continue;
+			}
+			switch($this->getElement($name . 'dtype', 'dat')){
+				case we_objectFile::TYPE_OBJECT:
+					return f('SELECT Path FROM ' . OBJECT_TABLE . ' WHERE ID=' . $foo, '', $this->DB_WE);
+				default:
+					return $foo;
 			}
 		}
 		return false;
@@ -2039,22 +1923,19 @@ class we_object extends we_document{
 
 	function includedObjectHasDoubbleFieldNames($incClass){
 		$sort = $this->getElement('we_sort');
-		$count = $this->getElement('Sortgesamt');
-		$usedNames = [];
-		$doubleNames = [];
+		$usedNames = $doubleNames = [];
 		if(is_array($sort)){
-			for($i = 0; $i <= $count && $sort; $i++){
-				$foo = $this->getElement($this->getElement('wholename' . $this->getSortIndex($i)), 'dat');
+			foreach(array_keys($sort) as $elem){
+				$foo = $this->getElement($this->getElement('wholename' . $elem), 'dat');
 				$usedNames[] = $foo;
 			}
 		}
 		$incclassobj = new we_object();
 		$incclassobj->initByID($incClass, $this->Table);
 		$isort = $incclassobj->getElement('we_sort');
-		$icount = $incclassobj->getElement('Sortgesamt');
 		if(is_array($isort) && $isort){
-			for($i = 0; $i <= $icount; $i++){
-				$foo = $incclassobj->getElement($incclassobj->getElement('wholename' . $incclassobj->getSortIndex($i)), 'dat');
+			foreach(array_keys($isort) as $elem){
+				$foo = $incclassobj->getElement($incclassobj->getElement('wholename' . $elem), 'dat');
 				if(in_array($foo, $usedNames)){
 					$doubleNames[] = $foo;
 				}

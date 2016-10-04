@@ -64,7 +64,6 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		}
 
 		$sort = $we_doc->getElement("we_sort");
-		$count = $we_doc->getElement("Sortgesamt");
 
 		$uniquename = md5(uniqid(__FILE__, true));
 		$width = 800;
@@ -86,8 +85,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		we_html_multiIconBox::_getBoxEnd();
 
 		$js = '';
-		for($i = 0; $i <= $count && $sort; $i++){
-			$identifier = $we_doc->getSortIndex($i);
+		foreach(array_keys($sort) as $identifier){
 			$uniqid = "entry_" . $identifier;
 
 			echo '<div id="' . $uniqid . '" class="objectFileElement">

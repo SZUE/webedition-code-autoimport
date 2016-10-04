@@ -103,6 +103,7 @@ abstract class we_updater{
 		return true;
 	}
 
+	//FIXME: this has to be done in multisteps
 	private static function updateObjectFilesX(we_database_base $db = null){
 		//FIXME: this takes long, so try to remove this
 		if(defined('OBJECT_X_TABLE')){
@@ -205,7 +206,33 @@ abstract class we_updater{
 						$db->query('OPTIMIZE TABLE `' . OBJECT_X_TABLE . $table . '`');
 					}
 				}
+				if(($sort = f('SELECT strOrder FROM ' . OBJECT_TABLE . 'WHERE ID=' . $table))){
+					$ctable = OBJECT_X_TABLE . $table;
+					$tableInfo = $db->metadata($ctable, we_database_base::META_NAME);
+					$sort = [];
+					$i = 0;
+					foreach($tableInfo as $name){
+						list($type, $name) = explode('_', $name, 2);
+						switch($type){
+							case 'OF':
+							case 'variant':
+								break;
+							default:
+								$sort[$name] = $sort[$i];
+								$i++;
+						}
+					}
+					asort($sort, SORT_NUMERIC);
+					$last = 'OF_ID';
+					foreach(array_keys($sort) as $value){
+						$db->moveCol($ctable, $value, $last);
+						$last = $value;
+					}
+
+					$db->query('UPDATE ' . OBJECT_TABLE . ' SET strOrder="" WHERE ID=' . $table);
+				}
 			}
+			$db->delCol(OBJECT_TABLE, 'strOrder');
 			if(!f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0 LIMIT 1')){
 				return;
 			}
@@ -678,10 +705,6 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 			case '':
 				self::updateUsers($db);
 				self::meassure('updateUsers');
-				if(defined('OBJECT_X_TABLE')){
-					self::updateObjectFilesX($db);
-					self::meassure('updateObjectFilesX');
-				}
 				self::fixInconsistentTables($db);
 				self::meassure('fixInconsistentTables');
 				if(defined('WE_GLOSSARY_MODULE_PATH')){
@@ -704,6 +727,17 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::meassure('customerFilter');
 				self::updateSetting($db);
 				self::meassure('setting');
+			case 'object':
+				$what = 'object';
+				if(defined('OBJECT_X_TABLE')){
+					$ret = self::updateObjectFilesX($db, $pos);
+					if($ret){
+						self::meassure(-1);
+						return array_merge($ret, ['what' => $what]);
+					}
+					self::meassure('updateObjectFilesX');
+				}
+
 				if(defined('SHOP_ORDER_TABLE')){
 					self::updateShop($db);
 					self::meassure('shop');

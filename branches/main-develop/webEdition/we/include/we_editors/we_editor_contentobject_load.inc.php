@@ -41,7 +41,7 @@ $we_doc->we_initSessDat($we_dt);
 //
 
 $charset = (!empty($we_doc->elements['Charset']['dat']) ? //	send charset which might be determined in template
-		$we_doc->elements['Charset']['dat'] : DEFAULT_CHARSET);
+	$we_doc->elements['Charset']['dat'] : DEFAULT_CHARSET);
 
 we_html_tools::headerCtCharset('text/html', $charset);
 
@@ -75,7 +75,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 	<?php
 
 	function reloadElement($jsGUI, $we_transaction, $we_doc, $id){
-		$identifier = array_pop(explode('_', $id));
+		$identifier = array_pop(explode('_', $id, 2));
 		$uniqid = 'entry_' . $identifier;
 		$wholename = $we_doc->getElement('wholename' . $identifier);
 
@@ -127,7 +127,7 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 	switch($cmd){
 		case 'object_insert_entry_at_class':
 			if($id != false){
-				$after = array_pop(explode('_', $id));
+				$after = array_pop(explode('_', $id, 2));
 				$afterid = $id;
 			} else {
 				$after = false;
@@ -155,14 +155,14 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 			$we_doc->saveInSession($_SESSION['weS']['we_data'][$we_transaction]);
 			break;
 		case 'object_change_entry_at_class':
-			$identifier = array_pop(explode('_', $id));
+			$identifier = array_pop(explode('_', $id, 2));
 			$fieldname = $we_doc->getElement("wholename" . $identifier);
 			$we_doc->setElement($fieldname . 'default', '');
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
 
 		case 'object_reload_entry_at_class':
-			$identifier = array_pop(explode('_', $id));
+			$identifier = array_pop(explode('_', $id, 2));
 			$fieldname = $we_doc->getElement('wholename' . $identifier);
 			reloadElement($jsGUI, $we_transaction, $we_doc, $id);
 			break;
@@ -220,7 +220,7 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 
 		case 'object_delete_entry_at_class':
 			if(isset($id)){
-				$identifier = array_pop(explode('_', $id));
+				$identifier = array_pop(explode('_', $id, 2));
 				$uniqid = 'entry_' . $identifier;
 				$we_doc->removeEntryFromClass($identifier);
 				echo $jsGUI->getResponse('delete', $uniqid);
@@ -232,12 +232,12 @@ if(confObject = typeof tinyMceConfObject__' . $wholename . 'default === \'object
 			$sort = $we_doc->getElement('we_sort');
 
 			if(isset($id)){
-				$identifier = array_pop(explode('_', $id));
+				$identifier = array_pop(explode('_', $id, 2));
 				$uniqid = 'entry_' . $identifier;
 				$we_doc->upEntryAtClass($identifier);
 				echo $jsGUI->getResponse('up', $uniqid);
 				$ret = '';
-				foreach(array_flip($sort) as $sortId){
+				foreach(array_keys($sort) as $sortId){
 					$field = $we_doc->elements['wholename' . $sortId]['dat'];
 					$ret .= '
 var target = _EditorFrame.getContentEditor(),
@@ -255,12 +255,12 @@ if(typeof target[confName] === \'object\'){
 			$sort = $we_doc->getElement('we_sort');
 
 			if(isset($id)){
-				$identifier = array_pop(explode('_', $id));
+				$identifier = array_pop(explode('_', $id, 2));
 				$uniqid = 'entry_' . $identifier;
 				$we_doc->downEntryAtClass($identifier);
 				echo $jsGUI->getResponse('down', $uniqid);
 				$ret = '';
-				foreach(array_flip($sort) as $sortId){
+				foreach(array_keys($sort) as $sortId){
 					$field = $we_doc->elements['wholename' . $sortId]['dat'];
 					$ret .= '
 var target = _EditorFrame.getContentEditor(),
