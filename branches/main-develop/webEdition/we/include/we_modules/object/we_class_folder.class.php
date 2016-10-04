@@ -667,15 +667,15 @@ function changeit(f){
 EOF;
 		$objID = f('SELECT ID FROM ' . OBJECT_TABLE . ' WHERE Path="' . $this->DB_WE->escape($this->Path) . '"', '', $this->DB_WE);
 		if($objID){
-			$tableInfo = $this->DB_WE->metadata(OBJECT_X_TABLE . $objID);
+			$tableInfo = $this->DB_WE->metadata(OBJECT_X_TABLE . $objID, we_database_base::META_NAME);
 
-			foreach($tableInfo as $info){
+			foreach($tableInfo as $infoName){
 //fixme: explode?
-				$type = explode('_', $info['name']);
+				$type = explode('_', $infoName);
 				switch($type[0]){
 					case 'meta':
 						$ret .= "
-if(f=='" . $info['name'] . "'){
+if(f=='" . $infoName . "'){
 	document.we_form_search.target='load';
 	document.we_form_search.action=WE().consts.dirs.WE_MODULES_DIR+'object/search_submit.php';
 	document.we_form_search.todo.value='changemeta';
@@ -684,7 +684,7 @@ if(f=='" . $info['name'] . "'){
 						break;
 					case 'date':
 						$ret .= "
-if(f=='" . $info['name'] . "'){
+if(f=='" . $infoName . "'){
 	document.we_form_search.target='load';
 	document.we_form_search.action=WE().consts.dirs.WE_MODULES_DIR+'object/search_submit.php';
 	document.we_form_search.todo.value='changedate';
@@ -693,7 +693,7 @@ if(f=='" . $info['name'] . "'){
 						break;
 					case 'checkbox':
 						$ret .= "
-if(f=='" . $info['name'] . "'){
+if(f=='" . $infoName . "'){
 	document.we_form_search.target='load';
 	document.we_form_search.action=WE().consts.dirs.WE_MODULES_DIR+'object/search_submit.php';
 	document.we_form_search.todo.value='changecheckbox';

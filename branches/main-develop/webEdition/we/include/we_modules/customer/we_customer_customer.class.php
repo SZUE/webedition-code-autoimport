@@ -80,11 +80,8 @@ class we_customer_customer extends we_base_model{
 	}
 
 	public function loadPresistents(){
-		$this->persistent_slots = [];
-		$tableInfo = $this->db->metadata($this->table);
-		foreach($tableInfo as $t){
-			$fname = $t['name'];
-			$this->persistent_slots[] = $fname;
+		$this->persistent_slots = $this->db->metadata($this->table, we_database_base::META_NAME);
+		foreach($this->persistent_slots as $fname){
 			if(!isset($this->$fname)){
 				$this->$fname = '';
 			}

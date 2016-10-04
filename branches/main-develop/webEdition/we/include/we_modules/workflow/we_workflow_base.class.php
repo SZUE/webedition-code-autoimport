@@ -38,18 +38,17 @@ class we_workflow_base{
 	}
 
 	function load(){
-		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID));
-		if($this->db->next_record()){
-			foreach($tableInfo as $cur){
-				$fieldName = $cur['name'];
-				if(isset($this->persistents[$fieldName])){
-					$this->$fieldName = ($this->persistents[$fieldName] == we_base_request::INTLISTA ?
-							($this->db->f($fieldName) === '' ?
-								[] :
-								explode(',', trim($this->db->f($fieldName), ','))) :
-							$this->db->f($fieldName));
-				}
+		$data = getHash('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID));
+		if(!$data){
+			return;
+		}
+		foreach($data as $key => $value){
+			if(isset($this->persistents[$key])){
+				$this->$key = ($this->persistents[$key] == we_base_request::INTLISTA ?
+					($value === '' ?
+					[] :
+					explode(',', trim($value, ','))) :
+					$value);
 			}
 		}
 	}

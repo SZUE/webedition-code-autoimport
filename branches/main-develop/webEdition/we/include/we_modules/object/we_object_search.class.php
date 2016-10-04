@@ -59,27 +59,27 @@ class we_object_search extends we_search_base{
 		}
 		$opts = '';
 		$all = [];
-		$tableInfoFields = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID);
-		$tableInfoProperties = $GLOBALS['DB_WE']->metadata(OBJECT_FILES_TABLE);
+		$tableInfoFields = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $objID, we_database_base::META_NAME);
+		$tableInfoProperties = $GLOBALS['DB_WE']->metadata(OBJECT_FILES_TABLE, we_database_base::META_NAME);
 
 		if($properties){
 			foreach($tableInfoProperties as $cur){
-				switch($cur['name']){
+				switch($cur){
 					case 'Text':
-						$opts .= '<option value="' . $cur['name'] . '" ' . (($select == $cur['name']) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>';
-						$all[] = $cur['name'];
+						$opts .= '<option value="' . $cur . '" ' . (($select == $cur) ? "selected" : "") . '>' . g_l('modules_object', '[objectname]') . '</option>';
+						$all[] = $cur;
 						break;
 					case 'Path':
-						$opts .= '<option value="' . $cur['name'] . '" ' . (($select == $cur['name']) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>';
-						$all[] = $cur['name'];
+						$opts .= '<option value="' . $cur . '" ' . (($select == $cur) ? "selected" : "") . '>' . g_l('modules_object', '[objectpath]') . '</option>';
+						$all[] = $cur;
 						break;
 					case 'ID':
-						$opts .= '<option value="' . $cur['name'] . '" ' . (($select == $cur['name']) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>';
-						$all[] = $cur['name'];
+						$opts .= '<option value="' . $cur . '" ' . (($select == $cur) ? "selected" : "") . '>' . g_l('modules_object', '[objectid]') . '</option>';
+						$all[] = $cur;
 						break;
 					case 'Url':
-						$opts .= '<option value="' . $cur['name'] . '" ' . (($select == $cur['name']) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>';
-						$all[] = $cur['name'];
+						$opts .= '<option value="' . $cur . '" ' . (($select == $cur) ? "selected" : "") . '>' . g_l('modules_object', '[objecturl]') . '</option>';
+						$all[] = $cur;
 						break;
 				}
 			}
@@ -87,14 +87,14 @@ class we_object_search extends we_search_base{
 
 		if($fields){
 			foreach($tableInfoFields as $cur){
-				if($cur['name'] != 'ID' && substr($cur['name'], 0, 3) != "OF_" && stripos($cur['name'], we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($cur['name'], "object") !== 0){
-					$regs = explode('_', $cur['name'], 2);
+				if($cur != 'ID' && substr($cur, 0, 3) != 'OF_' && stripos($cur, we_objectFile::TYPE_MULTIOBJECT) !== 0 && stripos($cur, "object") !== 0){
+					$regs = explode('_', $cur, 2);
 					if(count($regs) == 2){
-						$opts .= '<option value="' . $cur['name'] . '" '
-							. (($select == $cur['name']) ? "selected" : "") . '>'
+						$opts .= '<option value="' . $cur . '" '
+							. (($select == $cur) ? "selected" : "") . '>'
 							. $regs[1] . '</option>';
 					}
-					$all[] = $cur['name'];
+					$all[] = $cur;
 				}
 			}
 		}
@@ -175,7 +175,7 @@ class we_object_search extends we_search_base{
 		}
 
 		foreach($this->db->metadata($tablename) as $f){
-			if(in_array($f['type'], array('int', 'tinyint', 'smallint', 'mediumint', 'bigint'))){
+			if(in_array($f['type'], ['int', 'tinyint', 'smallint', 'mediumint', 'bigint'])){
 				self::$intFields[] = $f['name'];
 			}
 		}
@@ -188,7 +188,7 @@ class we_object_search extends we_search_base{
 		}
 
 		foreach($this->db->metadata($tablename) as $f){
-			if(in_array($f['type'], array('real', 'float', 'double', 'decimal'))){
+			if(in_array($f['type'], ['real', 'float', 'double', 'decimal'])){
 				self::$realFields[] = $f['name'];
 			}
 		}

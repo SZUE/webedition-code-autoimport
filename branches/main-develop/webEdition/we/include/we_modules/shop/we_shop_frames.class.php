@@ -358,11 +358,11 @@ function setTab(tab) {
 
 		$ignoreFields = explode(',', we_shop_shop::ignoredEditFields);
 
-		$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
+		$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE, we_database_base::META_NAME);
 		$selectFields['-'] = '-';
 		foreach($customerTableFields as $tblField){
-			if(!in_array($tblField['name'], $ignoreFields)){
-				$selectFields[$tblField['name']] = $tblField['name'];
+			if(!in_array($tblField, $ignoreFields)){
+				$selectFields[$tblField] = $tblField;
 			}
 		}
 
@@ -692,11 +692,11 @@ function setTab(tab) {
 // array with all rules
 
 		$ignoreFields = array('ID', 'Forename', 'Surname', 'Password', 'Username', 'ParentID', 'Path', 'IsFolder', 'Text');
-		$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
+		$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE, we_database_base::META_NAME);
 		$selectFields['-'] = '-';
 		foreach($customerTableFields as $tblField){
-			if(!in_array($tblField['name'], $ignoreFields)){
-				$selectFields[$tblField['name']] = $tblField['name'];
+			if(!in_array($tblField, $ignoreFields)){
+				$selectFields[$tblField] = $tblField;
 			}
 		}
 
@@ -1013,9 +1013,9 @@ function setTab(tab) {
 
 // array with all rules
 
-		$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
+		$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE, we_database_base::META_NAME);
 		foreach($customerTableFields as $tblField){
-			$selectFields[$tblField['name']] = $tblField['name'];
+			$selectFields[$tblField] = $tblField;
 		}
 
 // default value f�r mwst
@@ -1358,10 +1358,10 @@ function setTab(tab) {
 // show shippingControl
 // first show fields: country, vat, isNet?
 
-		$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE);
+		$customerTableFields = $DB_WE->metadata(CUSTOMER_TABLE, we_database_base::META_NAME);
 		$selectFieldsCtl = $selectFieldsVat = $selectFieldsTbl = [];
 		foreach($customerTableFields as $tblField){
-			$selectFieldsTbl[$tblField['name']] = $tblField['name'];
+			$selectFieldsTbl[$tblField] = $tblField;
 		}
 		$shopVats = we_shop_vats::getAllShopVATs();
 		foreach($shopVats as $shopVat){ //Fix #9625 use shopVat->Id as key instead of the sorted array $id!

@@ -189,11 +189,10 @@ class we_object extends we_document{
 		}
 
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
-		$tableInfo = $this->DB_WE->metadata($ctable);
+		$tableInfo = $this->DB_WE->metadata($ctable, we_database_base::META_NAME);
 		$q = $regs = [];
 		$fieldsToDelete = $this->getElement('felderloeschen', 'dat', []);
-		foreach($tableInfo as $info){
-			$cur = $info['name'];
+		foreach($tableInfo as $cur){
 			if(!preg_match('/(.+?)_(.*)/', $cur, $regs) || $regs[1] == 'OF' || $regs[1] == 'variant'){
 				continue;
 			}
@@ -530,8 +529,7 @@ class we_object extends we_document{
 			$i++;
 		}
 
-		$sort = $t;
-		$this->setElement("we_sort", $sort);
+		$this->setElement("we_sort", $t);
 	}
 
 	function upEntryAtClass($identifier){
@@ -635,12 +633,12 @@ class we_object extends we_document{
 	}
 
 	function downMetaAtClass($name, $i){
-		$temp = $this->getElement($name . "defaultkey" . ($i + 1));
-		$this->elements[$name . "defaultkey" . ($i + 1)]["dat"] = $this->elements[$name . "defaultkey" . ($i)]["dat"];
-		$this->elements[$name . "defaultkey" . ($i)]["dat"] = $temp;
+		$temp = $this->getElement($name . 'defaultkey' . ($i + 1));
+		$this->elements[$name . 'defaultkey' . ($i + 1)]['dat'] = $this->elements[$name . 'defaultkey' . ($i)]['dat'];
+		$this->elements[$name . 'defaultkey' . ($i)]['dat'] = $temp;
 
-		$temp = $this->elements[$name . "defaultvalue" . ($i + 1)]["dat"];
-		$this->elements[$name . "defaultvalue" . ($i + 1)]["dat"] = $this->elements[$name . "defaultvalue" . ($i)]["dat"];
+		$temp = $this->elements[$name . 'defaultvalue' . ($i + 1)]['dat'];
+		$this->elements[$name . "defaultvalue" . ($i + 1)]["dat"] = $this->elements[$name . "defaultvalue" . ($i)]['dat'];
 		$this->elements[$name . "defaultvalue" . ($i)]["dat"] = $temp;
 	}
 

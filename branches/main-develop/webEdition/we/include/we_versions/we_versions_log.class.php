@@ -43,26 +43,21 @@ class we_versions_log{
 	}
 
 	function loadPresistents(){
-
-		$tableInfo = $this->db->metadata($this->table);
-		foreach($tableInfo as $t){
-			$columnName = $t['name'];
-			$this->persistent_slots[] = $columnName;
+		$this->persistent_slots = $this->db->metadata($this->table, we_database_base::META_NAME);
+		foreach($this->persistent_slots as $columnName){
 			if(!isset($this->$columnName)){
-				$this->$columnName = "";
+				$this->{$columnName} = "";
 			}
 		}
 	}
 
 	function load(){
-
 		$content = [];
-		$tableInfo = $this->db->metadata($this->table);
+		$tableInfo = $this->db->metadata($this->table, we_database_base::META_NAME);
 		$this->db->query('SELECT ID,timestamp,typ,userID FROM ' . $this->db->escape($this->table) . ' ORDER BY timestamp DESC');
 		$m = 0;
 		while($this->db->next_record()){
-			for($i = 0; $i < count($tableInfo); $i++){
-				$columnName = $tableInfo[$i]['name'];
+			foreach($tableInfo as $columnName){
 				if(in_array($columnName, $this->persistent_slots)){
 					$content[$m][$columnName] = $this->db->f($columnName);
 				}

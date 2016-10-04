@@ -78,11 +78,6 @@ class we_base_model{
 		}
 		if($this->isKeyDefined()){
 			$isAdvanced|=$this->isAdvanced || !is_numeric(key($this->persistent_slots));
-			//if($id){
-			//	$this->ID = $id;
-			//}
-			//#6338: Kode vor den if-Block geschoben
-			//$tableInfo = $this->db->metadata($this->table);
 
 			if(($data = getHash('SELECT * FROM `' . $this->table . '` WHERE ' . $this->getKeyWhere(), $this->db, MYSQL_ASSOC))){
 				foreach($data as $fieldName => $value){

@@ -60,7 +60,7 @@ require_once(WE_INCLUDES_PATH . 'we_editors/we_editor_script.inc.php');
 		echo we_class::hiddenTrans();
 
 		if($we_doc->ID){
-			$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $we_doc->ID);
+			//$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $we_doc->ID);
 		}
 
 		$sort = $we_doc->getElement("we_sort");
