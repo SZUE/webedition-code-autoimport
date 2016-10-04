@@ -23,10 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html  GPL
  */
 class we_backup_object extends we_object{
-	private $_ObjectBaseElements = array(
-		'ID', 'OF_ID', 'OF_ParentID', 'OF_Text', 'OF_Path', 'OF_Url', 'OF_TriggerID', 'OF_Workspaces', 'OF_ExtraWorkspaces', 'OF_ExtraWorkspacesSelected',
+	private $_ObjectBaseElements = ['ID', 'OF_ID', 'OF_ParentID', 'OF_Text', 'OF_Path', 'OF_Url', 'OF_TriggerID', 'OF_Workspaces', 'OF_ExtraWorkspaces', 'OF_ExtraWorkspacesSelected',
 		'OF_Templates', 'OF_Category', 'OF_Published', 'OF_IsSearchable', 'OF_Charset', 'OF_WebUserID', 'OF_Language', 'variant_weInternVariantElement'
-	);
+	];
 	protected $isAddFieldNoSave = false;
 	protected $isModifyFieldNoSave = false;
 	protected $isDropFieldNoSave = false;
@@ -45,10 +44,10 @@ class we_backup_object extends we_object{
 
 		if(!$this->wasUpdate){
 			$qarr = ['OF_ID' => 'INT unsigned NOT NULL',
-				];
+			];
 
 			$indexe = ['PRIMARY KEY (OF_ID)',
-				];
+			];
 
 			$this->SerializedArray = we_unserialize($this->DefaultValues);
 			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : [];
@@ -78,13 +77,12 @@ class we_backup_object extends we_object{
 				$fold = new we_class_folder();
 				$fold->initByPath($this->getPath(), OBJECT_FILES_TABLE);
 			}
-
 		} else {
 			$this->SerializedArray = we_unserialize($this->DefaultValues);
 			$this->SerializedArray = is_array($this->SerializedArray) ? $this->SerializedArray : [];
 
-			$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
-			$tableInfo = $this->DB_WE->metadata($ctable, true);
+			$noFields = ['WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS'];
+			$tableInfo = $this->DB_WE->metadata($ctable, we_database_base::META_FULL);
 
 			$add = $drop = $alter = $addKey = [];
 
@@ -209,11 +207,12 @@ class we_backup_object extends we_object{
 
 	function isFieldExists($name, $type = ''){
 		$this->SerializedArray = we_unserialize($this->DefaultValues);
-		$noFields = array('WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS');
-		foreach($this->SerializedArray as $fieldname => $value){
+//		$noFields = ['WorkspaceFlag', 'elements', 'WE_CSS_FOR_CLASS'];
+		foreach(array_keys($this->SerializedArray) as $fieldname){
 			$arr = explode('_', $fieldname);
-			if(!isset($arr[0]))
+			if(!isset($arr[0])){
 				continue;
+			}
 			$fieldtype = $arr[0];
 			unset($arr[0]);
 			$fieldname = implode('_', $arr);
@@ -247,8 +246,7 @@ class we_backup_object extends we_object{
 	}
 
 	function getDefaultArray($name, $type = '', $default = ''){
-		$defaultArr = array(
-			'default' => '',
+		$defaultArr = ['default' => '',
 			'defaultThumb' => '',
 			'defaultdir' => '',
 			'rootdir' => '',
@@ -286,12 +284,12 @@ class we_backup_object extends we_object{
 			'shopcatRootdir' => '',
 			'shopcatLimitChoice' => 0,
 			'uniqueID' => md5(uniqid(__FUNCTION__, true)),
-		);
+		];
 		switch($type){
 			case 'text':
 			case 'input':
 			case 'int':
-				$defaultArr['meta'] = array($type . '_' . $name . 'defaultkey0' => '');
+				$defaultArr['meta'] = [$type . '_' . $name . 'defaultkey0' => ''];
 				break;
 			case we_objectFile::TYPE_MULTIOBJECT:
 				$defaultArr['meta'] = [''];
@@ -414,8 +412,8 @@ class we_backup_object extends we_object{
 		$this->DefaultValues = we_serialize($this->SerializedArray);
 
 		return ($this->isModifyFieldNoSave ?
-				true :
-				$this->saveToDB(true));
+			true :
+			$this->saveToDB(true));
 	}
 
 	function resetOrder(){
@@ -428,7 +426,7 @@ class we_backup_object extends we_object{
 
 	function setOrder($order, $writeToDB = false){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
-		$metadata = $this->DB_WE->metadata($ctable, true);
+		$metadata = $this->DB_WE->metadata($ctable, we_database_base::META_FULL);
 		if(is_array($order) && $writeToDB){
 			$last = '';
 			foreach($order as $oval){
@@ -476,7 +474,7 @@ class we_backup_object extends we_object{
 			} else {
 				$neworder = array_flip($neworder);
 				$theorder = [];
-				foreach($consider as $ck => $cv){
+				foreach($consider as $cv){
 					$theorder[str_replace('.', '', uniqid(__FUNCTION__, true))] = $neworder[$cv];
 				}
 				$this->setElement("we_sort", $theorder);
@@ -488,7 +486,7 @@ class we_backup_object extends we_object{
 
 	function getFieldsOrdered($withoutPrefix = false){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
-		$metadata = $this->DB_WE->metadata($ctable, true);
+		$metadata = $this->DB_WE->metadata($ctable, we_database_base::META_FULL);
 		$metas = array_keys($metadata['meta']);
 		$consider = array_diff($metas, $this->_ObjectBaseElements);
 		if($withoutPrefix){
@@ -511,7 +509,7 @@ class we_backup_object extends we_object{
 
 	function checkFields($fields){
 		$ctable = OBJECT_X_TABLE . intval($this->ID);
-		$metadata = $this->DB_WE->metadata($ctable, true);
+		$metadata = $this->DB_WE->metadata($ctable, we_database_base::META_FULL);
 		$metas = array_keys($metadata['meta']);
 		$consider = array_diff($metas, $this->_ObjectBaseElements);
 		$theKeys = explode(',', $this->strOrder);

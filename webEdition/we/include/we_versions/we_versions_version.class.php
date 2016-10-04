@@ -1426,18 +1426,14 @@ class we_versions_version{
 			return;
 		}
 		$db = new DB_WE();
-		$resetArray = $tblFields = [];
-		$tableInfo = $db->metadata(VERSIONS_TABLE);
+		$resetArray = [];
 		$we_transaction = we_base_request::_(we_base_request::TRANSACTION, "we_transaction", 0);
 
-		foreach($tableInfo as $cur){
-			$tblFields[] = $cur['name'];
-		}
 
 		$data = getHash('SELECT * FROM ' . VERSIONS_TABLE . ' WHERE ID=' . intval($ID), $db);
 
 		if($data){
-			foreach($tblFields as $k => $v){
+			foreach($data as $k => $v){
 				if(isset($data[$v])){
 					$resetArray[$v] = $data[$v];
 				}
@@ -1881,14 +1877,7 @@ class we_versions_version{
 	 * @return array of fieldnames
 	 */
 	private static function getFieldsFromTable($table, we_database_base $db){
-		$fieldNames = [];
-
-		$tableInfo = $db->metadata($table);
-		foreach($tableInfo as $cur){
-			$fieldNames[] = $cur['name'];
-		}
-
-		return $fieldNames;
+		return $db->metadata($table, we_database_base::META_NAME);
 	}
 
 	/**
@@ -1896,7 +1885,6 @@ class we_versions_version{
 	 * @return array
 	 */
 	private static function objectToArray($obj){
-		$arr = [];
 		$arr = is_object($obj) ? get_object_vars($obj) : $obj;
 
 		foreach($arr as $key => $val){
@@ -1941,7 +1929,7 @@ class we_versions_version{
 		if($fields){
 			$db->query('UPDATE ' . VERSIONS_TABLE . ' SET ' . we_database_base::arraySetter(['ParentID' => $parentId,
 					'Path' => $path
-					]));
+			]));
 		}
 	}
 

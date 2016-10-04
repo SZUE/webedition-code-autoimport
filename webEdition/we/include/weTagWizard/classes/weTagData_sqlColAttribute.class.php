@@ -42,14 +42,12 @@ class weTagData_sqlColAttribute extends weTagData_selectAttribute{
 		$options = [];
 
 		// get options from choosen table
-		$items = [];
-		$tableInfo = $GLOBALS['DB_WE']->metadata($this->Table);
+		$tableInfo = $GLOBALS['DB_WE']->metadata($this->Table, we_database_base::META_NAME);
 		sort($tableInfo); // #3490
 
-		for($i = 0; $i < count($tableInfo); $i++){
-
-			if(!in_array($tableInfo[$i]['name'], $filter)){
-				$options[] = new weTagDataOption($tableInfo[$i]['name']);
+		foreach($tableInfo as $name){
+			if(!in_array($name, $filter)){
+				$options[] = new weTagDataOption($name);
 			}
 		}
 		parent::__construct($name, $options, $required, $module, $description, $deprecated);

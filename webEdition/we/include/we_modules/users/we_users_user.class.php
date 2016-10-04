@@ -271,15 +271,14 @@ class we_users_user{
 
 	function savePersistentSlotsInDB(){
 		$this->ModDate = time();
-		$tableInfo = $this->DB_WE->metadata($this->Table);
+		$tableInfo = $this->DB_WE->metadata($this->Table, we_database_base::META_NAME);
 		if($this->clearpasswd !== ''){
 			$this->passwd = self::makeSaltedPassword($this->clearpasswd);
 		}
 
 		$updt = [];
 
-		foreach($tableInfo as $t){
-			$fieldName = $t['name'];
+		foreach($tableInfo as $fieldName){
 			$val = (isset($this->$fieldName) ? $this->$fieldName : 0 );
 			if($fieldName != 'ID'){
 				if($fieldName === 'editorFontname' && $this->Preferences['editorFont'] == '0'){

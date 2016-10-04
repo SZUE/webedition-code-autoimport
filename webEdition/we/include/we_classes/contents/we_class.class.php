@@ -338,14 +338,13 @@ abstract class we_class{
 	}
 
 	protected function i_savePersistentSlotsToDB($felder = ''){
-		$tableInfo = $this->DB_WE->metadata($this->Table);
+		$tableInfo = $this->DB_WE->metadata($this->Table, we_database_base::META_NAME);
 		$feldArr = $felder ? makeArrayFromCSV($felder) : $this->persistent_slots;
 		$fields = [];
 		if(!$this->wasUpdate && $this->insertID && f('SELECT 1 FROM ' . $this->DB_WE->escape($this->Table) . ' WHERE ID=' . intval($this->insertID) . ' LIMIT 1', '', $this->DB_WE)){
 			return false;
 		}
-		foreach($tableInfo as $info){
-			$fieldName = $info['name'];
+		foreach($tableInfo as $fieldName){
 			if(in_array($fieldName, $feldArr)){
 				$val = isset($this->$fieldName) ? $this->$fieldName : '';
 

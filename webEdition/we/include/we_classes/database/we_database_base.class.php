@@ -30,6 +30,10 @@ if(!defined('DB_DATABASE')){
 }
 
 abstract class we_database_base{
+	const META_SHORT = 'short';
+	const META_FULL = 'all';
+	const META_NAME = 'name';
+
 	private static $pool = [];
 	protected static $conCount = 0;
 	protected static $linkCount = 0;
@@ -380,7 +384,7 @@ abstract class we_database_base{
 			}
 		}
 		static $date = 0;
-		$date = $date ? $date : date('Y-m-d');
+		$date = $date ?: date('Y-m-d');
 
 		$this->Insert_ID = 0;
 		$this->Affected_Rows = 0;
@@ -428,7 +432,7 @@ abstract class we_database_base{
 				'affected' => $this->_affected_rows(),
 				'rows' => $this->num_rows(),
 				'explain' => []
-				];
+			];
 			if($isSelect){
 				$this->Query_ID = $this->_query('EXPLAIN ' . $Query_String);
 
@@ -665,9 +669,9 @@ abstract class we_database_base{
 
 	/* public: return table metadata */
 
-	public function metadata($table = '', $full = false){
+	public function metadata($table = '', $field = self::META_SHORT){
 		$res = [];
-		$hash = 'metaData' . md5($table, true) . ($full ? ' X' : '');
+		$hash = 'metaData' . md5($table, true) . $field;
 		/*
 		 * Due to compatibility problems with Table we changed the behavior
 		 * of metadata();
@@ -712,15 +716,23 @@ abstract class we_database_base{
 		}
 
 		for($i = 0; $i < $count; $i++){
-			$res[$i] = [
-				'table' => $this->field_table($i),
-				'name' => $this->field_name($i),
-				'type' => $this->field_type($i),
-				'len' => $this->field_len($i),
-				'flags' => $this->field_flags($i),
-				];
+			switch($field){
+				case self::META_FULL:
+				case self::META_SHORT:
+					$res[$i] = [
+						'table' => $this->field_table($i),
+						'name' => $this->field_name($i),
+						'type' => $this->field_type($i),
+						'len' => $this->field_len($i),
+						'flags' => $this->field_flags($i),
+					];
+					break;
+				case self::META_NAME:
+					$res[$i] = $this->field_name($i);
+					break;
+			}
 		}
-		if($full){
+		if($field == self::META_FULL){
 			$res['num_fields'] = $count;
 			for($i = 0; $i < $count; $i++){
 				$res['meta'][$res[$i]['name']] = $i;

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * webEdition CMS
  *
@@ -27,7 +26,6 @@
  * Document Definition base class
  */
 abstract class we_banner_base{ // FIXME: base on we_ModelBase to us registerFileLink()
-
 	protected $db;
 	public $persistents = [];
 	protected $table = "";
@@ -38,14 +36,11 @@ abstract class we_banner_base{ // FIXME: base on we_ModelBase to us registerFile
 	}
 
 	public function load(){
-		$tableInfo = $this->db->metadata($this->table);
-		$this->db->query('SELECT * FROM ' . $this->db->escape($this->table) . ' WHERE ID=' . intval($this->ID));
-		if($this->db->next_record()){
-			foreach($tableInfo as $cur){
-				$fieldName = $cur['name'];
-				if(isset($this->persistents[$fieldName])){
-					$foo = $this->db->f($fieldName);
-					$this->{$fieldName} = $foo;
+		$data = getHash('SELECT * FROM ' . BANNER_TABLE . ' WHERE ID=' . intval($this->ID));
+		if($data){
+			foreach($data as $key => $value){
+				if(isset($this->persistents[$key])){
+					$this->{$key} = $value;
 				}
 			}
 		}

@@ -89,7 +89,7 @@ class we_exim_contentProvider{
 
 		switch($we_ContentType){
 			case we_base_ContentTypes::FOLDER:
-				$we_Table = $table ? : FILE_TABLE;
+				$we_Table = $table ?: FILE_TABLE;
 				break;
 			case we_base_ContentTypes::TEMPLATE:
 				$we_Table = TEMPLATES_TABLE;
@@ -236,7 +236,7 @@ class we_exim_contentProvider{
 						we_xml_composer::we_xmlElement('SeqN', $object->SeqN) .
 						we_xml_composer::we_xmlElement('Data', self::encode($data), array(self::CODING_ATTRIBUTE => self::CODING_ENCODE)) .
 						'</' . $tag . '>' . we_backup_util::backupMarker . "\n");
-					$offset+=$rsize;
+					$offset += $rsize;
 					$object->SeqN++;
 				}
 				// if offset g.t. filesize then exit
@@ -249,16 +249,6 @@ class we_exim_contentProvider{
 
 	static function version2file(&$object, $file, $fwrite = 'fwrite'){
 		self::binary2file($object, $file, $fwrite, 'we:version');
-	}
-
-	private static function objectMetadata($obj){
-		static $hash = [];
-		if(isset($hash[$obj])){
-			return $hash[$obj];
-		}
-		$db = new DB_WE();
-		$hash[$obj] = $db->metadata($obj);
-		return $hash[$obj];
 	}
 
 	static function object2xml($object, $file, array $attribs = [], $fwrite = 'fwrite'){
@@ -274,7 +264,7 @@ class we_exim_contentProvider{
 			case 'we_category':
 			case 'we_thumbnailEx':
 			case 'we_thumbnail':
-				$object->persistent_slots = array_merge(array('ClassName'), $object->persistent_slots);
+				$object->persistent_slots = array_merge(['ClassName'], $object->persistent_slots);
 				break;
 			default:
 				break;
@@ -288,7 +278,7 @@ class we_exim_contentProvider{
 		// fix for classes; insert missing field length into default values ---
 		switch($classname){
 			case 'we_object':
-				$tableInfo = self::objectMetadata(OBJECT_X_TABLE . $object->ID);
+				$tableInfo = $GLOBALS['DB_WE']->metadata(OBJECT_X_TABLE . $object->ID);
 				$defvalues = we_unserialize($object->DefaultValues);
 				foreach($tableInfo as $cur){
 					$fieldname = $cur['name'];
@@ -331,7 +321,7 @@ class we_exim_contentProvider{
 					$coding = array(self::CODING_ATTRIBUTE => self::CODING_ENCODE);
 				}
 			}
-			$write.= we_xml_composer::we_xmlElement($v, $content, $coding);
+			$write .= we_xml_composer::we_xmlElement($v, $content, $coding);
 		}
 		$fwrite($file, $write);
 
