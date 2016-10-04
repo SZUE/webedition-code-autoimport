@@ -35,12 +35,11 @@ if(permissionhandler::hasPerm('ADMINISTRATOR')){
 	pushChilds($childs, $we_doc->ID, $we_doc->Table, '', $GLOBALS['DB_WE']);
 	if($childs){
 		$q = 'UPDATE ' . $we_doc->Table . ' SET ' .
-			we_database_base::arraySetter(array(
-				'CreatorID' => $we_doc->CreatorID,
+			we_database_base::arraySetter(['CreatorID' => $we_doc->CreatorID,
 				'Owners' => $we_doc->Owners,
 				'RestrictOwners' => $we_doc->RestrictOwners,
 				'OwnersReadOnly' => $we_doc->OwnersReadOnly
-			)) . ' WHERE ID IN(' . implode(',', $childs) . ')';
+				]) . ' WHERE ID IN(' . implode(',', $childs) . ')';
 		$ok = $DB_WE->query($q);
 	}
 }

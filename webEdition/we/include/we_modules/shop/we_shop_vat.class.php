@@ -98,13 +98,12 @@ class we_shop_vat{
 		$this->territory = $this->province ? $this->country . '-' . $this->province : $this->country;
 		$this->textProvince = $this->textProvince ? : '';
 
-		$set = we_database_base::arraySetter(array(
-				'text' => $this->text,
+		$set = we_database_base::arraySetter(['text' => $this->text,
 				'vat' => $this->vat,
 				'standard' => $this->standard,
 				'territory' => $this->territory,
 				'textProvince' => $this->textProvince
-		));
+				]);
 
 		if($this->id == 0){ // insert a new vat
 			if($GLOBALS['DB_WE']->query('INSERT INTO ' . WE_SHOP_VAT_TABLE . ' SET ' . $set)){

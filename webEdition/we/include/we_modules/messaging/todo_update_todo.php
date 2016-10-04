@@ -44,7 +44,7 @@ function do_confirm() {
 		WE().util.jsWindow.prototype.closeAll(window);
 	}
 //-->
-</script>
+	</script>
 </head>
 <body class="weDialogBody" onunload="doUnload();">
 	<?php
@@ -54,50 +54,49 @@ function do_confirm() {
 	?>
 	<form action="<?= WE_MESSAGING_MODULE_DIR; ?>todo_update.php" name="update_todo_form" method="post">
 		<?php
-		echo we_html_element::htmlHiddens(array(
+		echo we_html_element::htmlHiddens([
 			'we_transaction' => $transaction,
 			'rcpts_string' => '',
 			'mode' => we_base_request::_(we_base_request::STRING, 'mode')
-		));
+		]);
 
 		$prio = $compose->get_priority();
-		$parts = array(
-			array("headline" => g_l('modules_messaging', '[assigner]'),
-				"html" => $compose->get_from(),
-				'space' => we_html_multiIconBox::SPACE_MED,
-				'noline' => 1
-			),
-			array("headline" => g_l('modules_messaging', '[subject]'),
+		$parts = [["headline" => g_l('modules_messaging', '[assigner]'),
+			"html" => $compose->get_from(),
+			'space' => we_html_multiIconBox::SPACE_MED,
+			'noline' => 1
+			],
+				["headline" => g_l('modules_messaging', '[subject]'),
 				"html" => $compose->get_subject(),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			),
-			array("headline" => g_l('modules_messaging', '[deadline]'),
+			],
+				["headline" => g_l('modules_messaging', '[deadline]'),
 				"html" => we_html_tools::getDateInput('td_deadline%s', $compose->get_deadline()),
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			),
-			array("headline" => g_l('modules_messaging', '[status]'),
+			],
+				["headline" => g_l('modules_messaging', '[status]'),
 				"html" => we_html_tools::htmlTextInput('todo_status', 4, $messaging->selected_message['hdrs']['status']) . ' %',
 				'space' => we_html_multiIconBox::SPACE_MED,
 				'noline' => 1
-			),
-			array("headline" => g_l('modules_messaging', '[priority]'),
-				"html" => we_html_tools::html_select('todo_priority', 1, array(1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10), $compose->get_priority()),
+			],
+				["headline" => g_l('modules_messaging', '[priority]'),
+				"html" => we_html_tools::html_select('todo_priority', 1, [1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 => 7, 8 => 8, 9 => 9, 10 => 10], $compose->get_priority()),
 				'space' => we_html_multiIconBox::SPACE_MED,
-			),
-			array("headline" => "",
+			],
+				["headline" => "",
 				"html" => $compose->get_msg_text(),
 				'noline' => 1
-			),
-			array("headline" => "",
+			],
+				["headline" => "",
 				"html" => $compose->get_todo_history(),
-			),
-			array("headline" => g_l('modules_messaging', '[comment]'),
+			],
+				["headline" => g_l('modules_messaging', '[comment]'),
 				"html" => '<textarea cols="40" rows="8" name="todo_comment"></textarea>',
 				'space' => we_html_multiIconBox::SPACE_MED,
-			)
-		);
+			]
+		];
 
 		$buttons = we_html_button::position_yes_no_cancel(we_html_button::create_button(we_html_button::OK, "javascript:do_confirm();"), "", we_html_button::create_button(we_html_button::CANCEL, "javascript:top.window.close()")
 		);

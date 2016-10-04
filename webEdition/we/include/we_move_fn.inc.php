@@ -191,10 +191,9 @@ function moveItems($targetDirectoryID, array $ids, $table, &$notMovedItems){
 				}
 
 				// update table
-				$DB_WE->query('UPDATE ' . FILE_TABLE . ' SET ' . we_database_base::arraySetter(array(
-						'ParentID' => intval($parentID),
+				$DB_WE->query('UPDATE ' . FILE_TABLE . ' SET ' . we_database_base::arraySetter(['ParentID' => intval($parentID),
 						'Path' => $newPath . '/' . $fileName
-					)) . ' WHERE ID=' . intval($id));
+						]) . ' WHERE ID=' . intval($id));
 			}
 			break;
 

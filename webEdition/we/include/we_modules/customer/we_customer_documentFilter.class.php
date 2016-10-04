@@ -291,8 +291,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 			$blackList = $docCustomerFilter->getBlackList();
 			$whiteList = $docCustomerFilter->getWhiteList();
 
-			$db->query('REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'modelId' => $model->ID,
+			$db->query('REPLACE INTO ' . CUSTOMER_FILTER_TABLE . ' SET ' . we_database_base::arraySetter(['modelId' => $model->ID,
 					'modelType' => $model->ContentType,
 					'modelTable' => stripTblPrefix($model->Table),
 					'accessControlOnTemplate' => $docCustomerFilter->getAccessControlOnTemplate(),
@@ -303,7 +302,7 @@ class we_customer_documentFilter extends we_customer_abstractFilter{
 					'filter' => ($filter ? we_serialize($filter, SERIALIZE_JSON) : ''),
 					'whiteList' => ($whiteList ? implode(',', $whiteList) : ''),
 					'blackList' => ($blackList ? implode(',', $blackList) : ''),
-				))
+					])
 			);
 		}
 	}

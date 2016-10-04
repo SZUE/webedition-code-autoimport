@@ -2462,14 +2462,13 @@ function resetTabs(){
 	 */
 	public static function logLoginFailed($table, $user){
 		$db = $GLOBALS['DB_WE'];
-		$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(array(
-				'UserTable' => $table,
+		$db->query('INSERT INTO ' . FAILED_LOGINS_TABLE . ' SET ' . we_database_base::arraySetter(['UserTable' => $table,
 				'Username' => $user,
 				'IP' => $_SERVER['REMOTE_ADDR'],
 				'Servername' => $_SERVER['SERVER_NAME'],
 				'Port' => $_SERVER['SERVER_PORT'],
 				'Script' => $_SERVER['SCRIPT_NAME']
-		)));
+				]));
 	}
 
 	public static function updateActiveUser(){

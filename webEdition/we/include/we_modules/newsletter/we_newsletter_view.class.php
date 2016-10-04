@@ -1375,7 +1375,7 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 
 	function putSetting($name, $value){
 		$db = new DB_WE();
-		$db->query('INSERT IGNORE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array('tool' => 'newsletter', 'pref_name' => $name, pref_value => $value)));
+		$db->query('INSERT IGNORE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => 'newsletter', 'pref_name' => $name, pref_value => $value]));
 	}
 
 	function saveSettings(){
@@ -1383,14 +1383,14 @@ new (WE().util.jsWindow)(window, url,"newsletter_send",-1,-1,600,400,true,true,t
 		// WORKARROUND BUG NR 7450
 		foreach($this->settings as $key => $value){
 			if($key != 'black_list'){
-				$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array('tool' => 'newsletter', 'pref_name' => $key, 'pref_value' => $value)));
+				$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => 'newsletter', 'pref_name' => $key, 'pref_value' => $value]));
 			}
 		}
 	}
 
 	function saveSetting($name, $value){
 		$db = new DB_WE();
-		$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(array('tool' => 'newsletter', 'pref_name' => $name, 'pref_value' => $value)));
+		$db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' . we_database_base::arraySetter(['tool' => 'newsletter', 'pref_name' => $name, 'pref_value' => $value]));
 	}
 
 	function getBlackList(){

@@ -36,13 +36,12 @@ abstract class we_workflow_log{
 
 	static function logDocumentEvent($workflowDocID, $userID, $type, $description, we_database_base $db = null){
 		$db = $db? : new DB_WE();
-		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . ' SET ' . we_database_base::arraySetter(array(
-					'RefID' => $workflowDocID,
+		$db->query('INSERT INTO ' . WORKFLOW_LOG_TABLE . ' SET ' . we_database_base::arraySetter(['RefID' => $workflowDocID,
 					'userID' => $userID,
 					'logDate' => sql_function('UNIX_TIMESTAMP()'),
 					'Type' => $type,
 					'Description' => $description
-		)));
+					]));
 	}
 
 	static function getLogForDocument($docID, $order = "DESC", $wfType = 0){

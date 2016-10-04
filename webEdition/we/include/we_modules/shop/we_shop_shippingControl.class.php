@@ -83,11 +83,10 @@ class we_shop_shippingControl{
 		$DB_WE = $GLOBALS['DB_WE'];
 
 		return $DB_WE->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET ' .
-				we_database_base::arraySetter(array(
-					'tool' => 'shop',
+				we_database_base::arraySetter(['tool' => 'shop',
 					'pref_name' => 'weShippingControl',
 					'pref_value' => we_serialize($this)
-		)));
+					]));
 	}
 
 	function delete($id){
