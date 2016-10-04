@@ -77,7 +77,7 @@ function getTemplTag($type, $name, $isField = false){
 			return $isField ? '<we:field type="date" name="' . $name . '"/>' : '<we:var type="date" name="' . $name . '"/>';
 		case 'object':
 			return (!in_array($name, $GLOBALS["usedIDs"]) ?
-					getObjectTags($name, $isField) : '');
+				getObjectTags($name, $isField) : '');
 		case we_objectFile::TYPE_MULTIOBJECT:
 			return getMultiObjectTags($name);
 	}
@@ -130,13 +130,9 @@ $tmpl->Extension = ".tmpl";
 $tmpl->setParentID(isset($pid) ? $pid : 0 );
 $tmpl->Path = $tmpl->ParentPath . (isset($filename) ? $filename : "") . ".tmpl";
 
-$usedIDs = array(
-	$_SESSION['weS']['we_data'][$cmd3][0]["ID"]
-);
+$usedIDs = [$_SESSION['weS']['we_data'][$cmd3][0]["ID"]];
 
 $sort = $_SESSION['weS']['we_data'][$cmd3][0]["elements"]["we_sort"]["dat"];
-
-$count = $sort ? $_SESSION['weS']['we_data'][$cmd3][0]["elements"]["Sortgesamt"]["dat"] : 0;
 
 $content = '<html>
 	<head>

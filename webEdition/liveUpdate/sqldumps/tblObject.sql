@@ -10,7 +10,6 @@
 CREATE TABLE ###TBLPREFIX###tblObject (
   ID smallint unsigned NOT NULL auto_increment,
   ParentID smallint unsigned NOT NULL default '0',
-  strOrder text NOT NULL,
   `Text` varchar(150) NOT NULL default '',
   IsFolder tinyint unsigned NOT NULL default '0',
   ContentType enum('object') NOT NULL default 'object',

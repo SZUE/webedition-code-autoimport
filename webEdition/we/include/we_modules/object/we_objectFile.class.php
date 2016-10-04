@@ -549,36 +549,6 @@ class we_objectFile extends we_document{
 		return '<span class="defaultfont">' . $this->TableID . '</span>';
 	}
 
-	static function getSortArray($tableID, we_database_base $db){
-		if(!$tableID){
-			return [];
-		}
-		$order = makeArrayFromCSV(f('SELECT strOrder FROM ' . OBJECT_TABLE . ' WHERE ID=' . intval($tableID), '', $db));
-		$tableInfo = $db->metadata(OBJECT_X_TABLE . intval($tableID));
-		$regs = [];
-		$fields = 0;
-		foreach($tableInfo as $info){
-			if(preg_match('/(.+?)_(.*)/', $info['name'], $regs)){
-				switch($regs[1]){
-					case 'OF':
-					case 'variant':
-						break;
-					default:
-						$fields++;
-				}
-			}
-		}
-
-		if((count($order) != $fields) || !in_array(0, $order)){
-			$order = [];
-			for($y = 0; $y < $fields; $y++){
-				$order[$y] = $y;
-			}
-		}
-
-		return $order;
-	}
-
 	static function getSortedTableInfo($tableID, $contentOnly, we_database_base $db, $checkVariants = false){
 		if(!$tableID){
 			return [];
@@ -614,27 +584,12 @@ class we_objectFile extends we_document{
 		if($contentOnly == false){
 			return $tableInfo2;
 		}
-		$tableInfo_sorted = [];
 
-		$order = self::getSortArray(intval($tableID), $db);
-		$start = self::getFirstTableInfoEntry($tableInfo2);
-		foreach($order as $o){
-			$tableInfo_sorted[] = $tableInfo2[$start + $o];
-		}
 		if($checkVariants && isset($variantdata) && is_array($variantdata)){
-			$tableInfo_sorted[] = $variantdata;
+			$tableInfo2[] = $variantdata;
 		}
 
-		return $tableInfo_sorted;
-	}
-
-	static function getFirstTableInfoEntry($tableInfo){
-		foreach($tableInfo as $nr => $field){
-			if($field['name'] != 'ID' && substr($field['name'], 0, 3) != 'OF_'){
-				return $nr;
-			}
-		}
-		return 0;
+		return $tableInfo2;
 	}
 
 	function getFieldHTML($name, $type, array $attribs, $editable = true, $variant = false){
