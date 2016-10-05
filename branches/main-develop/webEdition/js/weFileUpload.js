@@ -101,13 +101,15 @@ var weFileUpload = (function () {
 
 			//initialize properties only when conf is defined: dispatch them to modules
 			if (typeof conf !== 'undefined') {
-				s.typeCondition = conf.typeCondition || s.typeCondition;
 				_.fieldName = conf.fieldName || _.fieldName;
 				_.uiType = conf.uiType || _.uiType;
 				_.genericFilename = conf.genericFilename || _.genericFilename;
 				_.EDIT_IMAGES_CLIENTSIDE = conf.clientsideImageEditing ? true : false;
-				c.fileselectOnclick = conf.fileselectOnclick || _.controller.fileselectOnclick;
+
 				c.isPreset = conf.isPreset || c.isPreset;
+				c.cmdFileselectOnclick = conf.cmdFileselectOnclick || c.cmdFileselectOnclick;
+
+				s.typeCondition = conf.typeCondition || s.typeCondition;
 				s.doCommitFile = conf.doCommitFile !== undefined ? conf.doCommitFile : s.doCommitFile;
 				s.chunkSize = typeof conf.chunkSize !== 'undefined' ? (conf.chunkSize * 1024) : s.chunkSize;
 				s.callback = conf.callback || s.callback;
@@ -120,7 +122,9 @@ var weFileUpload = (function () {
 					s.form.action = conf.form.action || s.form.action;
 				}
 				s.moreFieldsToAppend = conf.moreFieldsToAppend || [];
+
 				u.gl = conf.gl || u.gl;
+
 				v.isDragAndDrop = typeof conf.isDragAndDrop !== 'undefined' ? conf.isDragAndDrop : v.isDragAndDrop;
 				v.footerName = conf.footerName || v.footerName;
 				if (typeof conf.intProgress === 'object') {
@@ -211,6 +215,7 @@ var weFileUpload = (function () {
 			};
 
 			this.fileselectOnclick = function () {
+				window.we_cmd(this.cmdFileselectOnclick);
 			};
 
 			this.checkIsPresetFiles = function () {

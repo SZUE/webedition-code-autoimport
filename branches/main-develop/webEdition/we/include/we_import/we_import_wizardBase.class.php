@@ -69,8 +69,8 @@ abstract class we_import_wizardBase{
 			if($step == 1){
 				$a["enctype"] = 'multipart/form-data';
 			}
-			$step = 'get' . $type . 'Step' . $step;
-			list($js, $content) = $this->$step();
+			$task = 'get' . $type . 'Step' . $step;
+			list($js, $content) = $this->$task(); // FIXME: use switch/case instead of implicite eval()!
 			$doOnLoad = !we_base_request::_(we_base_request::BOOL, 'noload');
 			return we_html_tools::getHtmlTop('', '', '', ($this->fileUploader ? $this->fileUploader->getCss() . $this->fileUploader->getJs() : '') .
 					we_html_element::jsScript(JS_DIR . 'import_wizardWizbody.js') .
@@ -117,10 +117,10 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 			$pb = $js = '';
 		}
 
-		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:parent.wizbody.handle_event('cancel');", false, 0, 0, '', '', false, false);
-		$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:parent.wizbody.handle_event('previous');", true, 0, 0, "", "", true, false);
-		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:parent.wizbody.handle_event('next');", true, 0, 0, "", "", false, false, '_btn');
-		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:parent.wizbody.handle_event('cancel');", true, 0, 0, "", "", false, false);
+		$cancelButton = we_html_button::create_button(we_html_button::CANCEL, "javascript:top.handleEvent('cancel');", '', 0, 0, '', '', false, false);
+		$prevButton = we_html_button::create_button(we_html_button::BACK, "javascript:top.handleEvent('previous');", '', 0, 0, "", "", true, false);
+		$nextButton = we_html_button::create_button(we_html_button::NEXT, "javascript:top.handleEvent('next');", '', 0, 0, "", "", false, false, '_btn');
+		$closeButton = we_html_button::create_button(we_html_button::CLOSE, "javascript:top.handleEvent('cancel');", '', 0, 0, "", "", false, false);
 
 		$prevNextButtons = $prevButton ? $prevButton . $nextButton : null;
 
@@ -132,7 +132,7 @@ top.wizcmd.we_import(1,-2' . ((we_base_request::_(we_base_request::STRING, 'type
 		);
 
 		echo we_html_tools::getHtmlTop('', '', '', '', we_html_element::htmlBody(["class" => "weDialogButtonsBody",
-				"onload" => "top.wizbody.set_button_state();",
+				"onload" => "top.set_button_state();",
 				'style' => 'overflow:hidden;'
 				], $content->getHtml() . $js
 			)
