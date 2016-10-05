@@ -62,7 +62,25 @@ class we_navigation_item{
 	var $customers;
 	var $items = array();
 
-	function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = '', $CurrentOnUrlPar = 0, $CurrentOnAnker = 0, $currentOnCat = 0, $catParam = ''){
+    /**
+     * we_navigation_item constructor.
+     * @param $id
+     * @param $docid
+     * @param $table
+     * @param $text
+     * @param $display
+     * @param $href
+     * @param $type
+     * @param $icon
+     * @param $attributes
+     * @param $limitaccess
+     * @param string $customers
+     * @param int $CurrentOnUrlPar
+     * @param int $CurrentOnAnker
+     * @param int $currentOnCat
+     * @param string $catParam
+     */
+    function __construct($id, $docid, $table, $text, $display, $href, $type, $icon, $attributes, $limitaccess, $customers = '', $CurrentOnUrlPar = 0, $CurrentOnAnker = 0, $currentOnCat = 0, $catParam = ''){
 		$this->id = $id;
 		$this->parentid = 0;
 		$this->name = $text;
@@ -112,21 +130,27 @@ class we_navigation_item{
 		}
 	}
 
-	function __wakeup(){
+    function __wakeup(){
 		//need to reset customer access if the object was serialized (in cache)
 		$this->customerAccess = true;
 		$this->visible = -1;
 		//leave linkValid, since on publish the cache is regenerated
 	}
 
-	function addItem(&$item){
+    /**
+     * @param $item
+     */
+    function addItem(&$item){
 		$item->parentid = $this->id;
 		$item->level = $this->level + 1;
 		$this->items['id' . $item->id] = &$item;
 		$item->position = count($this->items);
 	}
 
-	function setCurrent(we_navigation_items &$weNavigationItems){
+    /**
+     * @param we_navigation_items $weNavigationItems
+     */
+    function setCurrent(we_navigation_items &$weNavigationItems){
 		$this->current = true;
 
 		if(isset($weNavigationItems->items['id' . $this->parentid]) && $this->level != 0){
@@ -135,7 +159,11 @@ class we_navigation_item{
 		}
 	}
 
-	function unsetCurrent(we_navigation_items &$weNavigationItems, $self = true){
+    /**
+     * @param we_navigation_items $weNavigationItems
+     * @param bool $self
+     */
+    function unsetCurrent(we_navigation_items &$weNavigationItems, $self = true){
 		if($self){
 			$this->current = false;
 		}
@@ -148,7 +176,11 @@ class we_navigation_item{
 		}
 	}
 
-	function isCurrent(we_navigation_items $weNavigationItems){
+    /**
+     * @param we_navigation_items $weNavigationItems
+     * @return bool
+     */
+    function isCurrent(we_navigation_items $weNavigationItems){
 		switch($this->table){
 			case (defined('OBJECT_FILES_TABLE') ? OBJECT_FILES_TABLE : 'OBJECT_FILES_TABLE'):
 				if(isset($GLOBALS['we_obj'])){
@@ -163,7 +195,7 @@ class we_navigation_item{
 		}
 
         if(isset($id) && ($this->docid == $id)){
-            $cleanRequestUri = defined(WE_REDIRECTED_SEO) ? WE_REDIRECTED_SEO : (isset($_SERVER['REQUEST_URI']) ? parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) : ''); //Fix #11057
+            $cleanRequestUri = defined('WE_REDIRECTED_SEO') ? WE_REDIRECTED_SEO : (isset($_SERVER['REQUEST_URI']) ? parse_url(urldecode($_SERVER['REQUEST_URI']), PHP_URL_PATH) : ''); //Fix #11057
             if(isset($_SERVER['REQUEST_URI']) && (stripos($this->href, $cleanRequestUri)!==false)){
                 static $uri = null;
                 static $uriarrq = array();
@@ -219,7 +251,10 @@ class we_navigation_item{
 		return false;
 	}
 
-	public function isVisible(){
+    /**
+     * @return bool|int
+     */
+    public function isVisible(){
 		if($this->visible != -1){
 			//item is determined
 			return $this->visible;
@@ -235,11 +270,16 @@ class we_navigation_item{
 		return $this->visible;
 	}
 
-	public function setLevel(){
+    public function setLevel(){
 		self::$currentPosition[$this->level] = 0;
 	}
 
-	function writeItem(&$weNavigationItems, $depth = false){
+    /**
+     * @param $weNavigationItems
+     * @param bool $depth
+     * @return string
+     */
+    function writeItem(&$weNavigationItems, $depth = false){
 		if(!isset(self::$currentPosition[$this->level])){
 			self::$currentPosition[$this->level] = 0;
 		}
@@ -269,7 +309,8 @@ class we_navigation_item{
 		//use this since items might be invisible
 		self::$currentPosition[$this->level] ++;
 		ob_start();
-		//FIXME:eval
+
+        //FIXME:eval
 		eval('?>' . $weNavigationItems->getTemplate($this));
 		$executeContent = ob_get_clean();
 
@@ -278,7 +319,11 @@ class we_navigation_item{
 		return $executeContent;
 	}
 
-	function getNavigationField($attribs){
+    /**
+     * @param $attribs
+     * @return string
+     */
+    function getNavigationField($attribs){
 		$fieldname = weTag_getAttribute('_name_orig', $attribs, '', we_base_request::STRING);
 		$compl = weTag_getAttribute('complete', $attribs, '', we_base_request::STRING);
 		// name
@@ -337,7 +382,11 @@ class we_navigation_item{
 		return $code;
 	}
 
-	function getNavigationFieldAttributes($attribs){
+    /**
+     * @param $attribs
+     * @return array
+     */
+    function getNavigationFieldAttributes($attribs){
 		$attr = weTag_getAttribute('attributes', $attribs, '', we_base_request::STRING);
 		if($attr){
 			$fields = makeArrayFromCSV($attr);
@@ -413,7 +462,10 @@ class we_navigation_item{
 		return $attribs;
 	}
 
-	function getPopupJs(&$attributes){
+    /**
+     * @param $attributes
+     */
+    function getPopupJs(&$attributes){
 		$js = 'var we_winOpts;';
 
 		if(!empty($this->attributes['popup_center']) && !empty($this->attributes['popup_width']) && !empty($this->attributes['popup_height'])){
