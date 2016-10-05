@@ -552,7 +552,7 @@ switch (args[0]){
 		$fileUploader->setNextCmd('do_next');
 		//$fileUploader->setForm(array('action' => WEBEDITION_DIR.'we_showMod.php?mod=customer&pnt=eibody&art=import&step=3&import_from=' . self::EXPORT_LOCAL . '&type=' . $type));
 		$fileUploader->setInternalProgress(['isInternalProgress' => true, 'width' => 200]);
-		$fileUploader->setFileSelectOnclick('document.we_form.import_from[1].checked = true;');
+		//$fileUploader->setCmdFileSelectOnclick('fileupload_doOnFileSelect'); // FIXME: set cmd to we_cmd: document.we_form.import_from[1].checked = true;
 		$fileUploader->setGenericFileName(TEMP_DIR . we_fileupload::REPLACE_BY_UNIQUEID . ($type == self::TYPE_CSV ? ".csv" : ".xml"));
 		$fileUploader->setDisableUploadBtnOnInit(false);
 		$fileUploader->setDimensions(['width' => 369, 'alertBoxWidth' => 430, 'marginTop' => 10]);

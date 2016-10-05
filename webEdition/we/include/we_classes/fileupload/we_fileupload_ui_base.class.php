@@ -33,7 +33,7 @@ class we_fileupload_ui_base extends we_fileupload{
 		'footerName' => 'footer',
 		'btnUploadName' => 'upload_btn'
 	 ];
-	protected $fileselectOnclick = '';
+	protected $cmdFileselectOnclick = '';
 	protected $callback = 'document.we_form.submit()';
 	protected $nextCmd = '';
 	protected $dimensions = ['width' => 400,
@@ -107,8 +107,8 @@ class we_fileupload_ui_base extends we_fileupload{
 		$this->disableUploadBtnOnInit = $disable;
 	}
 
-	public function setFileSelectOnclick($onclick = ''){
-		$this->fileselectOnclick = $onclick;
+	public function setCmdFileSelectOnclick($cmd){
+		$this->cmdFileselectOnclick = $cmd;
 	}
 
 	public function setGenericFileName($genericFileName = ''){
@@ -292,20 +292,19 @@ we_FileUpload.init({
 	fieldName : "' . $this->name . '",
 	genericFilename : ' . json_encode($this->genericFilename) . ',
 	doCommitFile: ' . ($this->doCommitFile ? 'true' : 'false') . ',
-	form : ' . json_encode($this->form) . ',
+		form : ' . json_encode($this->form) . ', // FIXME: no paths to eval!
 	footerName : "' . $this->footerName . '",
 	uploadBtnName : "' . $this->externalUiElements['btnUploadName'] . '",
 	maxUploadSize : ' . $this->maxUploadSizeBytes . ',
 	typeCondition : ' . str_replace(["\n\r", "\r\n", "\r", "\n"], "", json_encode($this->typeCondition)) . ',
 	isDragAndDrop : ' . ($this->isDragAndDrop ? 'true' : 'false') . ',
 	isPreset: ' . ($this->isPreset ? 'true' : 'false') . ',
-		callback : function(scope){' . $this->callback . '},
 	nextCmd : "' . $this->nextCmd . '",
-		fileselectOnclick : function(){' . $this->fileselectOnclick . '},
+	cmdFileselectOnclick : "' . $this->cmdFileselectOnclick . '",
 	chunkSize : ' . self::CHUNK_SIZE . ',
 	intProgress : ' . json_encode($this->internalProgress) . ',
 	extProgress : ' . json_encode($this->externalProgress) . ',
-		gl: ' . $this->_getJsGl() . ',
+		gl: ' . $this->_getJsGl() . ', // FIXME: move to some getJSConsts()
 	isGdOk : ' . ($this->isGdOk ? 'true' : 'false') . ',
 	htmlFileRow : \'' . (we_fileupload::EDIT_IMAGES_CLIENTSIDE ? $this->_getHtmlFileRow() : $this->_getHtmlFileRow_legacy()) . '\',
 	fileTable : "' . $this->fileTable . '",
