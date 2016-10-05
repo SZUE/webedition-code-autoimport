@@ -37,13 +37,13 @@ abstract class we_newsletter_util{
 		$db->query('DELETE FROM ' . NEWSLETTER_CONFIRM_TABLE . ' WHERE subscribe_mail ="' . $db->escape($unsubscribe_mail) . '"');
 
 		$emailExists = ($customer ?
-				self::removeFromDB($db, $emailField, $unsubscribe_mail, $abos) :
-				self::removeFromFile($paths, $unsubscribe_mail));
+			self::removeFromDB($db, $emailField, $unsubscribe_mail, $abos) :
+			self::removeFromFile($paths, $unsubscribe_mail));
 
 		if($emailExists){
 			return true;
 		}
-		$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = $GLOBALS['WE_REMOVENEWSLETTER_STATUS']? : we_newsletter_base::STATUS_EMAIL_EXISTS;
+		$GLOBALS['WE_REMOVENEWSLETTER_STATUS'] = $GLOBALS['WE_REMOVENEWSLETTER_STATUS'] ?: we_newsletter_base::STATUS_EMAIL_EXISTS;
 		return false;
 	}
 
@@ -78,7 +78,8 @@ abstract class we_newsletter_util{
 				'ModifyDate' => sql_function('UNIX_TIMESTAMP()'),
 				'ModifiedBy' => 'frontend',
 			);
-			$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => 'modify', 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => false, 'isUnsubscribe' => true));
+			$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => 'modify', 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => false,
+				'isUnsubscribe' => true));
 			$hook->executeHook();
 			$db->query('UPDATE ' . CUSTOMER_TABLE . ' SET ' . we_database_base::arraySetter(array_merge($update, $fields)) . ' ' . $where);
 		}
@@ -258,7 +259,7 @@ abstract class we_newsletter_util{
 					'subscribe_lastname' => $f['subscribe_lastname'],
 					'lists' => $lists,
 					'expires' => sql_function('UNIX_TIMESTAMP() + ' . weTag_getAttribute('expiredoubleoptin', $attribs, 1440, we_base_request::INT) * 60) // in secs
-					]));
+			]));
 
 			$id = weTag_getAttribute('id', $attribs, 0, we_base_request::INT);
 			$subject = weTag_getAttribute('subject', $attribs, 'newsletter', we_base_request::STRING);
@@ -433,24 +434,25 @@ abstract class we_newsletter_util{
 			$GLOBALS['WE_NEWSUBSCRIBER_USERNAME'] = $f['subscribe_mail'];
 		}
 		$fields = (!$uid ? array(
-				'Username' => $f['subscribe_mail'],
-				'Path' => '/' . $f['subscribe_mail'],
-				'Password' => $GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'],
-				'MemberSince' => time(),
-				'LoginDenied' => 0,
-				'LastLogin' => 0,
-				'LastAccess' => 0,
-				($customerFieldPrefs['customer_salutation_field'] != 'ID' ? $customerFieldPrefs['customer_salutation_field'] : '') => $f['subscribe_salutation'],
-				($customerFieldPrefs['customer_title_field'] != 'ID' ? $customerFieldPrefs['customer_title_field'] : '') => $f['subscribe_title'],
-				($customerFieldPrefs['customer_firstname_field'] != 'ID' ? $customerFieldPrefs['customer_firstname_field'] : '') => $f['subscribe_firstname'],
-				($customerFieldPrefs['customer_lastname_field'] != 'ID' ? $customerFieldPrefs['customer_lastname_field'] : '') => $f['subscribe_lastname'],
-				($customerFieldPrefs['customer_email_field'] != 'ID' ? $customerFieldPrefs['customer_email_field'] : '') => $f['subscribe_mail'],
-				($customerFieldPrefs['customer_html_field'] != 'ID' ? $customerFieldPrefs['customer_html_field'] : '') => $f['subscribe_html'],
-				) : array(
-				'ModifyDate' => time(),
-				'ModifiedBy' => 'frontend',
+			'Username' => $f['subscribe_mail'],
+			'Path' => '/' . $f['subscribe_mail'],
+			'Password' => $GLOBALS['WE_NEWSUBSCRIBER_PASSWORD'],
+			'MemberSince' => time(),
+			'LoginDenied' => 0,
+			'LastLogin' => 0,
+			'LastAccess' => 0,
+			($customerFieldPrefs['customer_salutation_field'] != 'ID' ? $customerFieldPrefs['customer_salutation_field'] : '') => $f['subscribe_salutation'],
+			($customerFieldPrefs['customer_title_field'] != 'ID' ? $customerFieldPrefs['customer_title_field'] : '') => $f['subscribe_title'],
+			($customerFieldPrefs['customer_firstname_field'] != 'ID' ? $customerFieldPrefs['customer_firstname_field'] : '') => $f['subscribe_firstname'],
+			($customerFieldPrefs['customer_lastname_field'] != 'ID' ? $customerFieldPrefs['customer_lastname_field'] : '') => $f['subscribe_lastname'],
+			($customerFieldPrefs['customer_email_field'] != 'ID' ? $customerFieldPrefs['customer_email_field'] : '') => $f['subscribe_mail'],
+			($customerFieldPrefs['customer_html_field'] != 'ID' ? $customerFieldPrefs['customer_html_field'] : '') => $f['subscribe_html'],
+			) : array(
+			'ModifyDate' => time(),
+			'ModifiedBy' => 'frontend',
 		));
-		$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => (!$uid ? 'new' : 'modify'), 'tagname' => 'addDelNewsletterEmail', 'isSubscribe' => true, 'isUnsubscribe' => false));
+		$hook = new weHook('customer_preSave', '', array('customer' => &$fields, 'from' => 'tag', 'type' => (!$uid ? 'new' : 'modify'), 'tagname' => 'addDelNewsletterEmail',
+			'isSubscribe' => true, 'isUnsubscribe' => false));
 		$hook->executeHook();
 
 		$db->query($uid ?
@@ -485,7 +487,7 @@ abstract class we_newsletter_util{
 			}
 
 			if(!$db->isColExist(CUSTOMER_TABLE, $abo)){
-				$db->addCol(CUSTOMER_TABLE, $abo, 'VARCHAR(200) DEFAULT "' . $db->escape($setDefault) . '"');
+				$db->addCol(CUSTOMER_TABLE, $abo, 'VARCHAR(200) DEFAULT "' . $db->escape($setDefault) . '"', 'Username');
 				$fieldDefault = array('default' => isset($customerFields['Newsletter_Ok']['default']) && !empty($customerFields['Newsletter_Ok']['default']) ? $customerFields['Newsletter_Ok']['default'] : ',1');
 				$customerFields[$abo] = $fieldDefault;
 				$updateCustomerFields = true;

@@ -520,6 +520,53 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 	}
 
+	public static function updateCustomer(we_database_base $db){
+		$order = f('SELECT pref_value FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="EditSort"');
+		if(!$order){
+			return;
+		}
+		$order = makeArrayFromCSV($order);
+		$meta = $db->metadata(CUSTOMER_TABLE);
+		$defaultCols = ['ID', 'Password', 'Forename', 'Surname', 'LoginDenied', 'MemberSince', 'LastLogin', 'LastAccess', 'AutoLogin', 'AutoLoginDenied', 'ModifyDate',
+			'ModifiedBy', 'Username',];
+		$last = 'FIRST';
+		foreach($defaultCols as $col){
+			$db->moveCol(CUSTOMER_TABLE, $col, $last);
+			$last = $col;
+		}
+
+
+		$newOrder = [];
+		foreach($meta as $i => $col){
+			if(!in_array($col, $defaultCols)){
+				$newOrder[$col] = $order[$i];
+			}
+		}
+		asort($newOrder, SORT_NUMERIC);
+		//now we have the defined order
+		//sort by groups again
+		$groups = [
+			'' => []
+		];
+		foreach(array_keys($newOrder) as $col){
+			$tmp = explode('_', $col, 2);
+			if(empty($tmp[1])){
+				array_unshift($tmp, '');
+			}
+			$groups[$tmp[0]][] = $tmp[1];
+		}
+		$last = 'Username';
+		foreach($groups as $group => $entries){
+			foreach($entries as $entry){
+				$name = ($group === '' ? '' : $group . '_') . $entry;
+				$db->moveCol(CUSTOMER_TABLE, $name, $last);
+				$last = $name;
+			}
+		}
+
+		$db->query('DELETE FROM ' . SETTINGS_TABLE . ' WHERE tool="webadmin" AND pref_name="EditSort"');
+	}
+
 	public static function updateCustomerFilters(we_database_base $db){
 		$db->query("SELECT ID,CustomerFilter,WhiteList,BlackList,Customers FROM " . NAVIGATION_TABLE . " WHERE CustomerFilter LIKE 'a:%{i:%'");
 		$all = $db->getAll();
@@ -731,6 +778,8 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 				self::meassure('fixVersions');
 				self::updateCustomerFilters($db);
 				self::meassure('customerFilter');
+				self::updateCustomer($db);
+				self::meassure('customer');
 				self::updateSetting($db);
 				self::meassure('setting');
 			case 'object':

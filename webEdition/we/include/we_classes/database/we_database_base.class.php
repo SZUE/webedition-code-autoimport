@@ -889,7 +889,7 @@ abstract class we_database_base{
 		if($this->isColExist($tab, $col)){
 			return false;
 		}
-		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $this->escape($col) . '` ' . $typ . (($pos != '') ? ' ' . $pos : ''));
+		return $this->query('ALTER TABLE ' . $this->escape($tab) . ' ADD `' . $this->escape($col) . '` ' . $typ . ($pos !== '' ? ' ' . ($pos === 'FIRST' ? '' : 'AFTER ') . $pos : ''));
 	}
 
 	public function changeColType($tab, $col, $newtyp){
@@ -1047,7 +1047,7 @@ abstract class we_database_base{
 		$found = false;
 		foreach($zw as $def){
 			if(strpos($def, $colName) !== FALSE){
-				$found = trim($def,"\t\n\r\0\x0B ,");
+				$found = trim($def, "\t\n\r\0\x0B ,");
 				break;
 			}
 		}

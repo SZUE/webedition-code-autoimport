@@ -137,7 +137,7 @@ function resetLogins(id) {
 }
 
 function refreshForm() {
-	if (document.we_form.cmd.value != "home") {
+	if (document.we_form.cmd.value !== "home") {
 		we_cmd("switchPage", top.content.activ_tab);
 		top.content.editor.edheader.location = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=edheader&text=" + encodeURI(customer.username);
 	}
