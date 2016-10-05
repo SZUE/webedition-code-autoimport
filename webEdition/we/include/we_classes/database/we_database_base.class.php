@@ -1047,7 +1047,7 @@ abstract class we_database_base{
 		$found = false;
 		foreach($zw as $def){
 			if(strpos($def, $colName) !== FALSE){
-				$found = $def;
+				$found = trim($def,"\t\n\r\0\x0B ,");
 				break;
 			}
 		}
