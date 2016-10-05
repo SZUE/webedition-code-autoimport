@@ -479,6 +479,8 @@ class liveUpdateFunctions{
 				$default = ' DEFAULT NULL';
 			}
 			$extra = strtoupper($fieldInfo['Extra']);
+			$pos = ($fieldInfo['last'] === 'FIRST' ? $fieldInfo['last'] : 'AFTER ' . $fieldInfo['last']);
+			$extra .= ' ' . $pos;
 			//note: auto_increment cols must have an index!
 			if(strpos($extra, 'AUTO_INCREMENT') !== false){
 				$keyfound = false;
@@ -491,7 +493,7 @@ class liveUpdateFunctions{
 					}
 				}
 				if(!$keyfound){
-					$extra .= ' FIRST, ADD INDEX _temp (' . $fieldInfo['Field'] . ')';
+					$extra .= ', ADD INDEX _temp (' . $fieldInfo['Field'] . ')';
 				}
 			}
 
@@ -686,8 +688,9 @@ class liveUpdateFunctions{
 					// determine changed and new fields.
 					$changeFields = []; // array with changed fields
 					$addFields = []; // array with new fields
-
+					$lastField = 'FIRST';
 					foreach($newTable as $fieldName => $newField){
+						$newField['last'] = $lastField;
 						if(isset($origTable[$fieldName])){ // field exists
 							if(!($newField['Type'] == $origTable[$fieldName]['Type'] && $newField['Null'] == $origTable[$fieldName]['Null'] && $newField['Default'] == $origTable[$fieldName]['Default'] && $newField['Extra'] == $origTable[$fieldName]['Extra'])){
 								$changeFields[$fieldName] = $newField;
@@ -695,6 +698,7 @@ class liveUpdateFunctions{
 						} else { // field does not exist
 							$addFields[$fieldName] = $newField;
 						}
+						$lastField = $fieldName;
 					}
 
 					// determine new keys

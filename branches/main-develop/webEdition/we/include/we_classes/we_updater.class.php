@@ -104,137 +104,21 @@ abstract class we_updater{
 	}
 
 	//FIXME: this has to be done in multisteps
-	private static function updateObjectFilesX(we_database_base $db = null){
+	private static function updateObjectFilesX(we_database_base $db = null, $pos = 0){
 		//FIXME: this takes long, so try to remove this
-		if(defined('OBJECT_X_TABLE')){
-			//this is from 6.3.9
-			$db = $db ?: new DB_WE();
-			$tmpDB = new DB_WE();
+		if(!defined('OBJECT_X_TABLE')){
+			return false;
+		}
+		//this is from 6.3.9
+		$db = $db ?: new DB_WE();
+		$tmpDB = new DB_WE();
+		$max = f('SELECT COUNT(1) FROM ' . OBJECT_TABLE);
+		$maxStep = 15;
 
-			$db->query('SELECT ID,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE DefaultValues LIKE "a:%"');
-			while($db->next_record(MYSQL_ASSOC)){
-				$data = we_unserialize($db->f('DefaultValues'));
-				foreach($data as &$d){
-					if(is_array($d)){
-						$d = array_filter($d);
-						unset($d['intPath']);
-					}
-				}
-				$tmpDB->query('UPDATE ' . OBJECT_TABLE . ' SET ' . we_database_base::arraySetter([
-						'DefaultValues' => we_serialize($data, SERIALIZE_JSON)
-					]) . ' WHERE ID=' . $db->f('ID'));
-			}
-			//change old tables to have different prim key
-			$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE, true);
-			foreach($tables as $table){
-				if($db->isColExist(OBJECT_X_TABLE . $table, 'ID')){
-					$db->delCol(OBJECT_X_TABLE . $table, 'ID');
-					//we need to set the key, if sth. is present 2 times, this is an error.
-					$db->addKey(OBJECT_X_TABLE . $table, 'PRIMARY KEY (OF_ID)', true);
-				}
-
-				//remove old OF_ cols
-				if($db->isColExist(OBJECT_X_TABLE . $table, 'OF_ParentID')){
-					//remove dummy entry
-					$db->query('DELETE FROM ' . OBJECT_X_TABLE . $table . ' WHERE OF_ID=0');
-					$db->changeColType(OBJECT_X_TABLE . $table, 'OF_ID', 'INT unsigned NOT NULL');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_ParentID');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Text');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Path');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Url');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_TriggerID');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Workspaces');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_ExtraWorkspaces');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_ExtraWorkspacesSelected');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Templates');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_ExtraTemplates');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Category');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Published');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_IsSearchable');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Charset');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_WebUserID');
-					$db->delCol(OBJECT_X_TABLE . $table, 'OF_Language');
-					if($db->isKeyExistAtAll(OBJECT_X_TABLE . $table, 'published')){
-						$db->delKey(OBJECT_X_TABLE . $table, 'published');
-					}
-					if($db->isKeyExistAtAll(OBJECT_X_TABLE . $table, 'Published')){
-						$db->delKey(OBJECT_X_TABLE . $table, 'Published');
-					}
-					$db->query('SHOW COLUMNS FROM ' . OBJECT_X_TABLE . $table . ' WHERE Field LIKE "checkbox_%" OR Field LIKE "img_%" OR Field LIKE "flashmovie_%" OR Field LIKE "binary_%" OR Field LIKE "country_%" OR Field LIKE "language_%" OR Field LIKE "collection_%" OR Field LIKE "object_%" OR Field LIKE "shopVat_%" OR Field LIKE "date_%" OR Field LIKE "link_%" OR Field LIKE "href_%"');
-					$entries = $db->getAll();
-					$changes = [];
-					foreach($entries as $entry){
-						$field = $entry['Field'];
-						list($type) = explode('_', $field);
-						$default = $entry['Default'];
-						switch($type){
-							case we_objectFile::TYPE_DATE:
-								$changes[$field] = ' INT unsigned NOT NULL ';
-								break;
-							case we_objectFile::TYPE_COUNTRY:
-							case we_objectFile::TYPE_LANGUAGE:
-								$changes[$field] = ' CHAR(2) NOT NULL ';
-								break;
-							case we_objectFile::TYPE_LINK:
-							case we_objectFile::TYPE_HREF:
-								$changes[$field] = ' TINYTEXT NOT NULL ';
-								break;
-							case we_objectFile::TYPE_IMG:
-							case we_objectFile::TYPE_FLASHMOVIE:
-							case we_objectFile::TYPE_QUICKTIME:
-							case we_objectFile::TYPE_BINARY:
-							case we_objectFile::TYPE_COLLECTION:
-								$changes[$field] = ' INT unsigned DEFAULT "0" NOT NULL ';
-								break;
-							case we_objectFile::TYPE_CHECKBOX:
-								$changes[$field] = ' TINYINT unsigned DEFAULT "' . $default . '" NOT NULL ';
-								break;
-							case we_objectFile::TYPE_OBJECT:
-								$changes[$field] = ' INT unsigned DEFAULT "0" NOT NULL ';
-								break;
-							case we_objectFile::TYPE_SHOPVAT:
-								$changes[$field] = ' decimal(4,2) default NOT NULL';
-								break;
-						}
-					}
-					if($changes){
-						$query = '';
-						foreach($changes as $field => $change){
-							$query .= ($query ? ',' : '') . ' MODIFY `' . $field . '` ' . $change;
-						}
-						$db->query('ALTER TABLE `' . OBJECT_X_TABLE . $table . '` ' . $query);
-						$db->query('OPTIMIZE TABLE `' . OBJECT_X_TABLE . $table . '`');
-					}
-				}
-				if(($sort = f('SELECT strOrder FROM ' . OBJECT_TABLE . 'WHERE ID=' . $table))){
-					$ctable = OBJECT_X_TABLE . $table;
-					$tableInfo = $db->metadata($ctable, we_database_base::META_NAME);
-					$sort = [];
-					$i = 0;
-					foreach($tableInfo as $name){
-						list($type, $name) = explode('_', $name, 2);
-						switch($type){
-							case 'OF':
-							case 'variant':
-								break;
-							default:
-								$sort[$name] = $sort[$i];
-								$i++;
-						}
-					}
-					asort($sort, SORT_NUMERIC);
-					$last = 'OF_ID';
-					foreach(array_keys($sort) as $value){
-						$db->moveCol($ctable, $value, $last);
-						$last = $value;
-					}
-
-					$db->query('UPDATE ' . OBJECT_TABLE . ' SET strOrder="" WHERE ID=' . $table);
-				}
-			}
+		if($pos > $max){//finished
 			$db->delCol(OBJECT_TABLE, 'strOrder');
 			if(!f('SELECT 1 FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0 LIMIT 1')){
-				return;
+				return false;
 			}
 			//correct folder properties
 			$db->query('UPDATE ' . OBJECT_FILES_TABLE . ' of SET IsClassFolder=IF(ParentID=0,1,0)');
@@ -245,8 +129,131 @@ abstract class we_updater{
 
 			//all files without a tableID can be deleted
 			$db->query('DELETE FROM ' . OBJECT_FILES_TABLE . ' WHERE TableID=0');
+			return false;
 		}
-		return true;
+
+		$db->query('SELECT ID,DefaultValues FROM ' . OBJECT_TABLE . ' WHERE DefaultValues LIKE "a:%" ORDER BY ID LIMIT ' . $pos . ',' . $maxStep);
+		while($db->next_record(MYSQL_ASSOC)){
+			$data = we_unserialize($db->f('DefaultValues'));
+			foreach($data as &$d){
+				if(is_array($d)){
+					$d = array_filter($d);
+					unset($d['intPath']);
+				}
+			}
+			$tmpDB->query('UPDATE ' . OBJECT_TABLE . ' SET ' . we_database_base::arraySetter([
+					'DefaultValues' => we_serialize($data, SERIALIZE_JSON)
+				]) . ' WHERE ID=' . $db->f('ID'));
+		}
+		//change old tables to have different prim key
+		$tables = $db->getAllq('SELECT ID FROM ' . OBJECT_TABLE . ' ORDER BY ID LIMIT ' . $pos . ',' . $maxStep, true);
+		foreach($tables as $table){
+			if($db->isColExist(OBJECT_X_TABLE . $table, 'ID')){
+				$db->delCol(OBJECT_X_TABLE . $table, 'ID');
+				//we need to set the key, if sth. is present 2 times, this is an error.
+				$db->addKey(OBJECT_X_TABLE . $table, 'PRIMARY KEY (OF_ID)', true);
+			}
+
+			//remove old OF_ cols
+			if($db->isColExist(OBJECT_X_TABLE . $table, 'OF_ParentID')){
+				//remove dummy entry
+				$db->query('DELETE FROM ' . OBJECT_X_TABLE . $table . ' WHERE OF_ID=0');
+				$db->changeColType(OBJECT_X_TABLE . $table, 'OF_ID', 'INT unsigned NOT NULL');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_ParentID');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_Text');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_Path');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_Url');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_TriggerID');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_Workspaces');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_ExtraWorkspaces');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_ExtraWorkspacesSelected');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_Templates');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_ExtraTemplates');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_Category');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_Published');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_IsSearchable');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_Charset');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_WebUserID');
+				$db->delCol(OBJECT_X_TABLE . $table, 'OF_Language');
+				if($db->isKeyExistAtAll(OBJECT_X_TABLE . $table, 'published')){
+					$db->delKey(OBJECT_X_TABLE . $table, 'published');
+				}
+				if($db->isKeyExistAtAll(OBJECT_X_TABLE . $table, 'Published')){
+					$db->delKey(OBJECT_X_TABLE . $table, 'Published');
+				}
+				$db->query('SHOW COLUMNS FROM ' . OBJECT_X_TABLE . $table . ' WHERE Field LIKE "checkbox_%" OR Field LIKE "img_%" OR Field LIKE "flashmovie_%" OR Field LIKE "binary_%" OR Field LIKE "country_%" OR Field LIKE "language_%" OR Field LIKE "collection_%" OR Field LIKE "object_%" OR Field LIKE "shopVat_%" OR Field LIKE "date_%" OR Field LIKE "link_%" OR Field LIKE "href_%"');
+				$entries = $db->getAll();
+				$changes = [];
+				foreach($entries as $entry){
+					$field = $entry['Field'];
+					list($type) = explode('_', $field);
+					$default = $entry['Default'];
+					switch($type){
+						case we_objectFile::TYPE_DATE:
+							$changes[$field] = ' INT unsigned NOT NULL ';
+							break;
+						case we_objectFile::TYPE_COUNTRY:
+						case we_objectFile::TYPE_LANGUAGE:
+							$changes[$field] = ' CHAR(2) NOT NULL ';
+							break;
+						case we_objectFile::TYPE_LINK:
+						case we_objectFile::TYPE_HREF:
+							$changes[$field] = ' TINYTEXT NOT NULL ';
+							break;
+						case we_objectFile::TYPE_IMG:
+						case we_objectFile::TYPE_FLASHMOVIE:
+						case we_objectFile::TYPE_QUICKTIME:
+						case we_objectFile::TYPE_BINARY:
+						case we_objectFile::TYPE_COLLECTION:
+							$changes[$field] = ' INT unsigned DEFAULT "0" NOT NULL ';
+							break;
+						case we_objectFile::TYPE_CHECKBOX:
+							$changes[$field] = ' TINYINT unsigned DEFAULT "' . $default . '" NOT NULL ';
+							break;
+						case we_objectFile::TYPE_OBJECT:
+							$changes[$field] = ' INT unsigned DEFAULT "0" NOT NULL ';
+							break;
+						case we_objectFile::TYPE_SHOPVAT:
+							$changes[$field] = ' decimal(4,2) default NOT NULL';
+							break;
+					}
+				}
+				if($changes){
+					$query = '';
+					foreach($changes as $field => $change){
+						$query .= ($query ? ',' : '') . ' MODIFY `' . $field . '` ' . $change;
+					}
+					$db->query('ALTER TABLE `' . OBJECT_X_TABLE . $table . '` ' . $query);
+					$db->query('OPTIMIZE TABLE `' . OBJECT_X_TABLE . $table . '`');
+				}
+			}
+			if(($sort = f('SELECT strOrder FROM ' . OBJECT_TABLE . 'WHERE ID=' . $table))){
+				$ctable = OBJECT_X_TABLE . $table;
+				$tableInfo = $db->metadata($ctable, we_database_base::META_NAME);
+				$sort = [];
+				$i = 0;
+				foreach($tableInfo as $name){
+					list($type, $name) = explode('_', $name, 2);
+					switch($type){
+						case 'OF':
+						case 'variant':
+							break;
+						default:
+							$sort[$name] = $sort[$i];
+							$i++;
+					}
+				}
+				asort($sort, SORT_NUMERIC);
+				$last = 'OF_ID';
+				foreach(array_keys($sort) as $value){
+					$db->moveCol($ctable, $value, $last);
+					$last = $value;
+				}
+
+				$db->query('UPDATE ' . OBJECT_TABLE . ' SET strOrder="" WHERE ID=' . $table);
+			}
+		}
+		return ['text' => 'Objects ' . $pos . ' / ' . $max, 'pos' => ($pos + $maxStep)];
 	}
 
 	private static function upgradeTblLink($db){
@@ -586,12 +593,11 @@ SELECT CID FROM ' . LINK_TABLE . ' WHERE DocumentTable="tblFile" AND Type="objec
 		}
 	}
 
-	private static function updateShop2(we_database_base $db, $pos = 0){
-		if(!$db->isTabExist(SHOP_TABLE)){
+	private static function updateShop2(we_database_base $db2, $pos = 0){
+		if(!$db2->isTabExist(SHOP_TABLE)){
 			return;
 		}
 		$db = new DB_WE();
-		$db2 = $GLOBALS['DB_WE'];
 		$max = f('SELECT COUNT(DISTINCT IntOrderID) FROM ' . SHOP_TABLE);
 		$maxStep = 150;
 
