@@ -1032,6 +1032,7 @@ class we_document extends we_root{
 		}
 	}
 
+	//FIXME: check if we can rid of this function, since it causes problems every change of tags since it also uses the given attribs array!
 	function getField($attribs, $type = 'txt', $pathOnly = false){
 		if(is_array($attribs) && isset($attribs['_name_orig'])){
 			unset($attribs['_name_orig']);

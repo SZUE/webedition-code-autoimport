@@ -179,7 +179,7 @@ class we_listview_document extends we_listview_base{
 
 		if($this->customers && $this->customers !== '*'){
 			foreach(explode(',', $this->customers) as $cid){
-				$customerData = array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE), we_customer_customer::getEncryptedFields());
+				$customerData = getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE);//array_merge(getHash('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($cid), $this->DB_WE), we_customer_customer::getEncryptedFields());
 				$this->customerArray['cid_' . $customerData['ID']] = $customerData;
 			}
 
@@ -299,9 +299,9 @@ class we_listview_document extends we_listview_base{
 		}
 		if($this->customers === '*' && $idListArray){
 			$this->DB_WE->query('SELECT * FROM ' . CUSTOMER_TABLE . ' WHERE ID IN(' . implode(',', array_unique($idListArray)) . ')');
-			$encrypted = we_customer_customer::getEncryptedFields();
+//			$encrypted = we_customer_customer::getEncryptedFields();
 			while($this->DB_WE->next_record(MYSQL_ASSOC)){
-				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = array_merge($this->DB_WE->getRecord(), $encrypted);
+				$this->customerArray['cid_' . $this->DB_WE->f('ID')] = $this->DB_WE->getRecord();//array_merge($this->DB_WE->getRecord(), $encrypted);
 			}
 			unset($idListArray);
 		}
