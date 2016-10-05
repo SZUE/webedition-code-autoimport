@@ -53,8 +53,8 @@ class we_listview_customer extends we_listview_base{
 		$this->condition = $condition;
 
 		$this->Path = ($this->docID ?
-				id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :
-				(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : ''));
+			id_to_path($this->docID, FILE_TABLE, $this->DB_WE) :
+			(isset($GLOBALS['we_doc']) ? $GLOBALS['we_doc']->Path : ''));
 
 		$this->hidedirindex = $hidedirindex;
 
@@ -87,7 +87,7 @@ class we_listview_customer extends we_listview_base{
 	function next_record(){
 		$ret = $this->DB_WE->next_record(MYSQL_ASSOC);
 		if($ret){
-			array_merge($this->DB_WE->Record, we_customer_customer::getEncryptedFields());
+			//$this->DB_WE->Record = array_merge($this->DB_WE->Record, we_customer_customer::getEncryptedFields());
 			$this->DB_WE->Record['wedoc_Path'] = $this->Path . '?we_cid=' . $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['WE_PATH'] = $this->Path . '?we_cid=' . $this->DB_WE->Record['ID'];
 			$this->DB_WE->Record['WE_TEXT'] = $this->DB_WE->Record['Username'];
