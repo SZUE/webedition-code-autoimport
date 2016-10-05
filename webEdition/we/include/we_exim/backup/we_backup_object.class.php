@@ -324,13 +324,9 @@ class we_backup_object extends we_object{
 		$this->SerializedArray = we_unserialize($this->DefaultValues);
 		$this->SerializedArray[$type . '_' . $name] = $defaultArr;
 		$this->DefaultValues = we_serialize($this->SerializedArray);
-		if(isset($this->strOrder)){
-			$arrOrder = explode(',', $this->strOrder);
-			$arrOrder[] = max($arrOrder) + 1;
-			$this->strOrder = implode(',', $arrOrder);
-		} else {
-			$this->strOrder = '';
-		}
+		$ord = $this->getElement('we_sort', 'dat', []);
+		$ord[] = max($ord) + 1;
+		$this->setElement('we_sort', $ord);
 		if($this->isAddFieldNoSave){
 			return true;
 		}
@@ -362,11 +358,11 @@ class we_backup_object extends we_object{
 		}
 		if($isfound){
 			$this->DefaultValues = we_serialize($this->SerializedArray);
-			$arrOrder = explode(',', $this->strOrder);
+			$ord = $this->getElement('we_sort');
 
-			unset($arrOrder[array_search(max($arrOrder), $arrOrder)]);
+			unset($ord[array_search(max($ord), $ord)]);
 
-			$this->strOrder = implode(',', $arrOrder);
+			$this->setElement('we_sort', $ord);
 			if($this->isDropFieldNoSave){
 				return true;
 			}
@@ -416,95 +412,9 @@ class we_backup_object extends we_object{
 			$this->saveToDB(true));
 	}
 
-	function resetOrder(){
+	private function resetOrder(){
 		unset($this->elements['we_sort']);
 		$this->setSort();
-		$we_sort = $this->getElement('we_sort');
-		$this->strOrder = implode(',', $we_sort);
-		$this->we_save();
-	}
-
-	function setOrder($order, $writeToDB = false){
-		$ctable = OBJECT_X_TABLE . intval($this->ID);
-		$metadata = $this->DB_WE->metadata($ctable, we_database_base::META_FULL);
-		if(is_array($order) && $writeToDB){
-			$last = '';
-			foreach($order as $oval){
-				if($last === ''){
-					$last = 'OF_Language';
-				}
-				$ovalname = $this->getFieldPrefix($oval) . '_' . $oval;
-				if(array_key_exists($ovalname, $metadata['meta'])){
-					$nummer = $metadata['meta'][$ovalname];
-					$type = $metadata[$nummer]['type'];
-					if($type === 'string'){
-						$len = $metadata[$nummer]['len'];
-						$type = 'VARCHAR(' . $len . ')';
-					}
-					$this->DB_WE->moveCol($ctable, $ovalname, $last);
-					//query('ALTER TABLE ' . $ctable . ' MODIFY COLUMN ' . $ovalname . ' ' . $type . ' AFTER ' . $last);
-					$last = $ovalname;
-				} else {
-					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ') Field not found: Field: ' . $ovalname);
-				}
-			}
-		}
-		if(is_array($order) && !$writeToDB){
-
-			$metas = array_keys($metadata['meta']);
-			$consider = array_diff($metas, $this->_ObjectBaseElements);
-			$consider = array_combine(range(0, count($consider) - 1), $consider);
-			$neworder = [];
-			foreach($order as $oval){
-				$zw = $this->getFieldPrefix($oval) . '_' . $oval;
-				if($zw){
-					$neworder[] = $zw;
-				} else {
-					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ')  No Field-Prefix found in for ' . $oval);
-				}
-			}
-			if(count($neworder) != count($consider)){
-				if(count($neworder) > count($consider)){
-					$thedifference = array_diff($neworder, $consider);
-					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ')  Order-Array (' . count($neworder) . ') has larger length than generated Fields Array (' . count($consider) . '), Missing: (' . implode(',', $thedifference) . ') Order-Array:(' . implode(',', $neworder) . ') Fields-Array:(' . implode(',', $consider) . ') ');
-				} else {
-					$thedifference = array_diff($consider, $neworder);
-					t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ')  Order-Array (' . count($neworder) . ') has smaller length than generated Fields Array (' . count($consider) . '), Missing: (' . implode(',', $thedifference) . ') Order-Array:(' . implode(',', $neworder) . ') Fields-Array:(' . implode(',', $consider) . ') ');
-				}
-			} else {
-				$neworder = array_flip($neworder);
-				$theorder = [];
-				foreach($consider as $cv){
-					$theorder[str_replace('.', '', uniqid(__FUNCTION__, true))] = $neworder[$cv];
-				}
-				$this->setElement("we_sort", $theorder);
-				$this->strOrder = implode(',', $theorder);
-				$this->saveToDB();
-			}
-		}
-	}
-
-	function getFieldsOrdered($withoutPrefix = false){
-		$ctable = OBJECT_X_TABLE . intval($this->ID);
-		$metadata = $this->DB_WE->metadata($ctable, we_database_base::META_FULL);
-		$metas = array_keys($metadata['meta']);
-		$consider = array_diff($metas, $this->_ObjectBaseElements);
-		if($withoutPrefix){
-			foreach($consider as &$value){
-				$zw = explode('_', $value, 2);
-				$value = $zw[1];
-			}
-		}
-		if(!empty($consider)){
-			$consider = array_values($consider);
-			$akeys = explode(',', $this->strOrder);
-			$order = [];
-			foreach($akeys as $k => $v){
-				$order[] = $consider[$v];
-			}
-			return $order;
-		}
-		return false;
 	}
 
 	function checkFields($fields){
@@ -512,11 +422,9 @@ class we_backup_object extends we_object{
 		$metadata = $this->DB_WE->metadata($ctable, we_database_base::META_FULL);
 		$metas = array_keys($metadata['meta']);
 		$consider = array_diff($metas, $this->_ObjectBaseElements);
-		$theKeys = explode(',', $this->strOrder);
-		if(count($theKeys) != count($consider)){
-			$this->resetOrder();
-			$theKeys = explode(',', $this->strOrder);
-		}
+		$this->resetOrder();
+		$theKeys = $this->getElement('we_sort');
+
 		if(count($theKeys) == count($consider)){
 			$consider = array_combine($theKeys, $consider);
 			$isOK = true;
@@ -527,9 +435,8 @@ class we_backup_object extends we_object{
 				}
 			}
 			return $isOK;
-		} else {
-			t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ') different field count - not recoverable bei resetOrder strOrder');
 		}
+		t_e('warning', __METHOD__ . ' ' . $ctable . ' (' . $this->Text . ') different field count - not recoverable bei resetOrder');
 	}
 
 	/* setter for for property isAddFieldNoSave which allows to construct Classes from within Apps */
