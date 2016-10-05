@@ -63,7 +63,6 @@ class we_customer_settings{
 		'default_sort_view' => '',
 		'default_order' => '',
 	];
-	private $EditSort = '';
 	public $OrderTable = [
 		'ASC' => 'ASC',
 		'DESC' => 'DESC'
@@ -109,7 +108,7 @@ class we_customer_settings{
 		'unique', 'foreign', 'change', 'modify', 'drop', 'disable', 'enable', 'character', 'collate', 'first', 'rename',
 		'fulltext', 'quick', 'using', 'truncate',
 		'id', 'username', 'isfolder', 'icon', 'parentid', 'membersince', 'lastlogin', 'lastaccess', 'path', 'text', 'forename', 'surname', 'logindenied', 'autologin',
-		'autologindenied'
+		'autologindenied', 'modifydate', 'modifiedby'
 	];
 	public $treeTextFormatSQL = '';
 	public $formatFields = [];
@@ -147,15 +146,6 @@ class we_customer_settings{
 		if(!is_array($this->SortView)){
 			$this->SortView = [];
 		}
-
-		if(isset($this->properties['EditSort'])){
-			$this->EditSort = $this->properties['EditSort'];
-		} else {
-			$orderedarray = $this->customer->persistent_slots;
-			$sortarray = range(0, count($orderedarray) - 1);
-			$this->EditSort = implode(',', $sortarray);
-		}
-
 
 		if(isset($this->properties['FieldAdds'])){
 			$this->FieldAdds = we_unserialize($this->properties['FieldAdds']);
@@ -204,21 +194,12 @@ class we_customer_settings{
 		//FIXME: make Fieldadds more fields in DB
 		$this->properties['FieldAdds'] = we_serialize($this->FieldAdds, SERIALIZE_JSON);
 		$this->properties['SortView'] = we_serialize($this->SortView, SERIALIZE_JSON);
-		$this->properties['EditSort'] = $this->EditSort;
 		$this->properties['Prefs'] = we_serialize($this->Prefs, SERIALIZE_JSON);
 
 		foreach($this->properties as $key => $value){
 			$this->db->query('REPLACE INTO ' . SETTINGS_TABLE . ' SET tool="webadmin",pref_value="' . $this->db->escape($value) . '",pref_name="' . $key . '"');
 		}
 		return true;
-	}
-
-	function getEditSort(){
-		return $this->EditSort;
-	}
-
-	function setEditSort($sortstring){
-		$this->EditSort = $sortstring;
 	}
 
 	function getPref($pref_name){

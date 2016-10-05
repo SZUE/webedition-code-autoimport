@@ -121,7 +121,8 @@ var frames={
 				$saveOk = $this->customer->save();
 
 				if($saveOk){
-					$tt = strtr(addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db)), ['>' => '&gt;', '<' => '&lt;']);
+					$tt = strtr(addslashes(f('SELECT ' . $this->settings->treeTextFormatSQL . ' AS treeFormat FROM ' . CUSTOMER_TABLE . ' WHERE ID=' . intval($this->customer->ID), '', $this->db)), [
+						'>' => '&gt;', '<' => '&lt;']);
 					$js = ($newone ? '
 var attribs = {
 	id:"' . $this->customer->ID . '",
@@ -133,7 +134,7 @@ var attribs = {
 }
 top.content.treeData.addSort(new top.content.node(attribs));
 top.content.applySort();' :
-							'top.content.treeData.updateEntry({id:' . $this->customer->ID . ',text:"' . $tt . '"});
+						'top.content.treeData.updateEntry({id:' . $this->customer->ID . ',text:"' . $tt . '"});
 							top.content.editor.edheader.document.getElementById("titlePath").innerText="' . $this->customer->Username . '";'
 						);
 				} else {
@@ -192,59 +193,16 @@ top.content.editor.edfooter.location=WE().consts.dirs.WEBEDITION_DIR + "we_showM
 						break;
 					default:
 						$this->customer->loadPresistents();
-						$sort = $this->settings->getEditSort();
-						$sortarray = makeArrayFromCSV($sort);
-						$orderedarray = $this->customer->persistent_slots;
-
-						if(count($sortarray) != count($orderedarray)){
-							if(count($sortarray) < count($orderedarray)){
-								$sortarray[] = max($sortarray) + 1;
-							}
-							if(count($sortarray) < count($orderedarray)){
-								$sortarray[] = max($sortarray) + 1;
-							}
-							if(count($sortarray) < count($orderedarray)){
-								$sortarray[] = max($sortarray) + 1;
-							}
-							if(count($sortarray) != count($orderedarray)){
-								$sortarray = range(0, count($orderedarray) - 1);
-							}
-						}
-						$this->settings->setEditSort(implode(',', $sortarray));
-						$this->settings->save();
 
 						echo we_html_element::jsElement('
 opener.submitForm();
-opener.opener.refreshForm();
+opener.opener.top.content.editor.edbody.refreshForm();
 close();');
 				}
 
 				break;
 			case 'delete_field':
 				$field = we_base_request::_(we_base_request::STRING, 'fields_select');
-
-				$sort = $this->settings->getEditSort();
-				$sortarray = makeArrayFromCSV($sort);
-				$orderedarray = $this->customer->persistent_slots;
-				if(count($sortarray) != count($orderedarray)){
-					$sortarray = range(0, count($orderedarray) - 1);
-				}
-				$orderedarray = array_combine($sortarray, $orderedarray);
-				ksort($orderedarray);
-				$curpos = array_search($field, $orderedarray);
-				$curposS = array_search($curpos, $sortarray);
-				unset($sortarray[$curposS]);
-				foreach($sortarray as &$val){
-					if($val >= $curpos){
-						$val--;
-					}
-				}
-				if($sortarray[count($sortarray) - 1] == ''){
-					array_pop($sortarray);
-				}
-				$this->settings->setEditSort(implode(',', $sortarray));
-				$this->settings->save();
-
 				$ber = '';
 				$fname = $this->customer->transFieldName($field, $ber);
 
@@ -253,71 +211,16 @@ close();');
 				$this->customer->loadPresistents();
 				echo we_html_element::jsElement(
 					we_message_reporting::getShowMessageCall(sprintf(g_l('modules_customer', '[field_deleted]'), $fname, $ber), we_message_reporting::WE_MESSAGE_NOTICE) .
-					'opener.refreshForm();'
+					'opener.top.content.editor.edbody.refreshForm();'
 				);
-				break;
-			case 'reset_edit_order':
-				$orderedarray = $this->customer->persistent_slots;
-				$sortarray = range(0, count($orderedarray) - 1);
-				$this->settings->setEditSort(implode(',', $sortarray));
-				$this->settings->save();
 				break;
 			case 'move_field_up':
 				$field = we_base_request::_(we_base_request::STRING, 'fields_select');
-				$sort = $this->settings->getEditSort();
-				$sortarray = makeArrayFromCSV($sort);
-				$orderedarray = $this->customer->persistent_slots;
-				if(count($sortarray) != count($orderedarray)){
-					if(count($sortarray) < count($orderedarray)){
-						$sortarray[] = max($sortarray) + 1;
-					}
-					if(count($sortarray) != count($orderedarray)){
-						$sortarray = range(0, count($orderedarray) - 1);
-					}
-				}
-				$orderedarray = array_combine($sortarray, $orderedarray);
-				ksort($orderedarray);
-
-				$curpos = array_search($field, $orderedarray);
-				$curpos1 = $curpos - 1;
-				if($curpos != 0){
-					$sort = str_replace([',' . $curpos . ',', ',' . $curpos1 . ','], [',XX,', ',YY,'], $sort);
-					$sort = str_replace([',XX,', ',YY,'], [',' . $curpos1 . ',', ',' . $curpos . ','], $sort);
-
-					$this->settings->setEditSort($sort);
-					$this->settings->save();
-					$this->customer->loadPresistents();
-				}
-				echo we_html_element::jsElement('opener.refreshForm();');
-
+				$this->moveField($field, true);
 				break;
 			case 'move_field_down':
 				$field = we_base_request::_(we_base_request::STRING, 'fields_select');
-				$sort = $this->settings->getEditSort();
-				$sortarray = makeArrayFromCSV($sort);
-				$orderedarray = $this->customer->persistent_slots;
-				if(count($sortarray) != count($orderedarray)){
-					if(count($sortarray) < count($orderedarray)){
-						$sortarray[] = max($sortarray) + 1;
-					}
-					if(count($sortarray) != count($orderedarray)){
-						$sortarray = range(0, count($orderedarray) - 1);
-					}
-				}
-				$orderedarray = array_combine($sortarray, $orderedarray);
-				ksort($orderedarray);
-
-				$curpos = array_search($field, $orderedarray);
-				$curpos1 = $curpos + 1;
-				if($curpos != count($orderedarray) - 1){
-					$sort = str_replace([',' . $curpos . ',', ',' . $curpos1 . ','], [',XX,', ',YY,'], $sort);
-					$sort = str_replace([',XX,', ',YY,'], [',' . $curpos1 . ',', ',' . $curpos . ','], $sort);
-					$this->settings->setEditSort($sort);
-					$this->settings->save();
-					$this->customer->loadPresistents();
-				}
-				echo we_html_element::jsElement('opener.refreshForm();');
-
+				$this->moveField($field, false);
 				break;
 			case 'save_branch':
 				$branch_new = we_base_request::_(we_base_request::STRING, 'name', '');
@@ -479,7 +382,7 @@ self.close();');
 				$this->settings->SortView = [];
 
 				for($i = 0; $i < $counter; $i++){
-					$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i)? :
+					$sort_name = we_base_request::_(we_base_request::STRING, 'sort_' . $i) ?:
 						g_l('modules_customer', '[sort_name]') . '_' . $i;
 
 
@@ -495,8 +398,8 @@ self.close();');
 						}
 						if(($field = we_base_request::_(we_base_request::STRING, 'field_' . $i . '_' . $j))){
 							$new['field'] = ($new['branch'] == g_l('modules_customer', '[common]') ?
-									str_replace(g_l('modules_customer', '[common]') . '_', '', $field) :
-									$field);
+								str_replace(g_l('modules_customer', '[common]') . '_', '', $field) :
+								$field);
 						}
 						if(($func = we_base_request::_(we_base_request::STRING, 'function_' . $i . '_' . $j))){
 							$new['function'] = $func;
@@ -580,7 +483,18 @@ self.close();');
 			}
 			$this->db->changeColType(CUSTOMER_TABLE, $new_field_name, ($encrypt ? 'BLOB' : $this->settings->getDbType($field_type, $new_field_name)) . ' NOT NULL');
 		} else {
-			$this->db->addCol(CUSTOMER_TABLE, $new_field_name, ($encrypt ? 'BLOB' : $this->settings->getDbType($field_type, $new_field_name)) . ' NOT NULL');
+			//search position to insert
+			$meta = array_reverse($this->db->metadata(CUSTOMER_TABLE, we_database_base::META_NAME));
+			$last = '';
+			$isOther = ($branch == g_l('modules_customer', '[other]'));
+			$branch .= '_';
+			foreach($meta as $cur){
+				if(strpos($cur, $branch) || ($isOther && !strpos($cur, '_'))){
+					$last = $cur;
+					break;
+				}
+			}
+			$this->db->addCol(CUSTOMER_TABLE, $new_field_name, ($encrypt ? 'BLOB' : $this->settings->getDbType($field_type, $new_field_name)) . ' NOT NULL', $last);
 		}
 
 		$this->settings->save();
@@ -649,9 +563,9 @@ self.close();');
 						$conditionarr[] = $field . ' LIKE "%' . $value . '%"';
 					}
 				}
-				$condition.=($condition ?
-						' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')' :
-						' (' . implode(' OR ', $conditionarr) . ')'
+				$condition .= ($condition ?
+					' ' . $ak . ' (' . implode(' OR ', $conditionarr) . ')' :
+					' (' . implode(' OR ', $conditionarr) . ')'
 					);
 			}
 		}
@@ -728,7 +642,8 @@ self.close();');
 				$langcode = array_search($GLOBALS['WE_LANGUAGE'], getWELangs());
 
 				$countrycode = array_search($langcode, getWECountries());
-				$countryselect = new we_html_select(['name' => $field, 'style' => 'width:240px;', 'class' => 'wetextinput', 'id' => ($field === 'Gruppe' ? 'yuiAcInputPathGroupX' : ''), 'onchange' => ($field === 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')]);
+				$countryselect = new we_html_select(['name' => $field, 'style' => 'width:240px;', 'class' => 'wetextinput', 'id' => ($field === 'Gruppe' ? 'yuiAcInputPathGroupX' : ''),
+					'onchange' => ($field === 'Gruppe' ? 'top.content.setHot();' : 'top.content.setHot();')]);
 
 				$topCountries = array_flip(explode(',', WE_COUNTRIES_TOP));
 
@@ -773,7 +688,8 @@ self.close();');
 						$lcvalue = $lccode[0];
 					}
 					unset($lcvalue);
-					$languageselect = new we_html_select(['name' => $field, 'style' => 'width:240px;', 'class' => 'wetextinput', "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => ($field === "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")]);
+					$languageselect = new we_html_select(['name' => $field, 'style' => 'width:240px;', 'class' => 'wetextinput', "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''),
+						"onchange" => ($field === "Gruppe" ? "top.content.setHot();" : "top.content.setHot();")]);
 					foreach(g_l('languages', '') as $languagekey => $languagevalue){
 						if(in_array($languagekey, $frontendL)){
 							$languageselect->addOption($languagekey, $languagevalue);
@@ -794,7 +710,8 @@ self.close();');
 					$defs = array_merge([$value], $defs);
 				}
 
-				$select = new we_html_select(['name' => $field, "style" => "width:240px;", "class" => "wetextinput", "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''), "onchange" => "top.content.setHot();"]);
+				$select = new we_html_select(['name' => $field, "style" => "width:240px;", "class" => "wetextinput", "id" => ($field === "Gruppe" ? "yuiAcInputPathGroupX" : ''),
+					"onchange" => "top.content.setHot();"]);
 				foreach($defs as $def){
 					$select->addOption($def, $def);
 				}
@@ -871,7 +788,8 @@ self.close();');
 						$table->setCol($c / 2, $c % 2, [], we_html_tools::htmlFormElementTable(we_html_tools::htmlTextInput($pk, 32, $pv, '', 'onchange="top.content.setHot();" ' . $inputattribs, "text", "240px"), $this->settings->getPropertyTitle($pk)));
 						break;
 					case 'failedLogins':
-						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => 'defaultfont lowContrast', 'id' => 'FailedCustomerLogins'], intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
+						$table->setCol($c / 2, $c % 2, ['class' => 'defaultfont'], we_html_tools::htmlFormElementTable(we_html_element::htmlDiv(['class' => 'defaultfont lowContrast',
+									'id' => 'FailedCustomerLogins'], intval($common['failedLogins']) . ' / ' . SECURITY_LIMIT_CUSTOMER_NAME), sprintf(g_l('modules_customer', '[failedLogins]'), SECURITY_LIMIT_CUSTOMER_NAME_HOURS)));
 						break;
 					case 'resetFailed':
 						$but = we_html_button::create_button('reset', 'javascript:resetLogins(' . $this->customer->ID . ')');
@@ -923,8 +841,7 @@ self.close();');
 		$common = ['ID' => $this->customer->ID,
 		];
 
-		$this->customer->getBranches($branches, $common, $other, $this->settings->getEditSort());
-
+		$this->customer->getBranches($branches, $common, $other);
 		$common['failedLogins'] = f('SELECT COUNT(1) FROM ' . FAILED_LOGINS_TABLE . ' WHERE UserTable="tblWebUser" AND Username="' . $GLOBALS['DB_WE']->escape($this->customer->Username) . '" AND isValid="true" AND LoginDate>(NOW() - INTERVAL ' . intval(SECURITY_LIMIT_CUSTOMER_NAME_HOURS) . ' hour)');
 		if($common['failedLogins'] >= intval(SECURITY_LIMIT_CUSTOMER_NAME)){
 			$common['resetFailed'] = '';
@@ -948,23 +865,23 @@ self.close();');
 				$DB_WE->query('SELECT ID,TableID,ContentType,Path,Text,ModDate,Published FROM ' . OBJECT_FILES_TABLE . ' of WHERE of.WebUserID=' . intval($this->customer->ID) . ' ORDER BY of.Path');
 				$objectStr = '';
 				if($DB_WE->num_rows()){
-					$objectStr.='<table class="defaultfont" style="width:600px;">' .
+					$objectStr .= '<table class="defaultfont" style="width:600px;">' .
 						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_object', '[class]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td>';
 					while($DB_WE->next_record(MYSQL_ASSOC)){
-						$objectStr.='<tr>
+						$objectStr .= '<tr>
 	<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . OBJECT_FILES_TABLE . "'); }") . '</td>
 	<td>' . $DB_WE->f('ID') . '</td>
 	<td title="' . $DB_WE->f('Path') . '"><div class="cutText">' . $DB_WE->f('Text') . '</div></td>
 	<td class="defaultfont ' . ($DB_WE->f('Published') ? ($DB_WE->f('ModDate') > $DB_WE->f('Published') ? 'changed' : '') : 'notpublished') . '">' . date('d.m.Y H:i', $DB_WE->f('ModDate')) . '</td>
 </tr>';
 					}
-					$objectStr.='</table>';
+					$objectStr .= '</table>';
 				} else {
 					$objectStr = g_l('modules_customer', '[NoObjects]');
 				}
 
 				$parts = [
-					["html" => $objectStr,]
+						["html" => $objectStr,]
 				];
 				break;
 			case g_l('modules_customer', '[documentTab]'):
@@ -983,7 +900,7 @@ self.close();');
 						'<tr><td>&nbsp;</td> <td><b>' . g_l('modules_customer', '[ID]') . '</b></td><td><b>' . g_l('modules_customer', '[filename]') . '</b></td><td><b>' . g_l('modules_customer', '[Aenderungsdatum]') . '</b></td><td><b>' . g_l('modules_customer', '[Titel]') . '</b></td>' .
 						'</tr>';
 					while($DB_WE->next_record()){
-						$documentStr.='<tr>' .
+						$documentStr .= '<tr>' .
 							'<td>' . we_html_button::create_button(we_html_button::EDIT, "javascript: if(top.opener.top.doClickDirect){top.opener.top.doClickDirect(" . $DB_WE->f('ID') . ",'" . $DB_WE->f('ContentType') . "','" . FILE_TABLE . "'); }") . '</td>' .
 							'<td>' . $DB_WE->f('ID') . '</td>' .
 							'<td title="' . $DB_WE->f('Path') . '"><div class="cutText">' . $DB_WE->f('Text') . '</div></td>' .
@@ -993,7 +910,7 @@ self.close();');
 							'<td title="' . $DB_WE->f('description') . '">' . $DB_WE->f('title') . '</td>' .
 							'</tr>';
 					}
-					$documentStr.='</table>';
+					$documentStr .= '</table>';
 				} else {
 					$documentStr = g_l('modules_customer', '[NoDocuments]');
 				}
@@ -1041,6 +958,17 @@ self.close();');
 		}
 
 		return we_html_multiIconBox::getHTML('', $parts, 30);
+	}
+
+	private function moveField($field, $mvUp){
+		$chng = ($mvUp ? -2 : 1);
+		$fields = $this->db->metadata(CUSTOMER_TABLE, we_database_base::META_NAME);
+		$pos = array_search($field, $fields);
+		if($pos){
+			$this->db->moveCol(CUSTOMER_TABLE, $field, $fields[$pos + $chng]);
+			$this->customer->loadPresistents();
+		}
+		echo we_html_element::jsElement('opener.top.content.editor.edbody.refreshForm();');
 	}
 
 	public function getHomeScreen(){

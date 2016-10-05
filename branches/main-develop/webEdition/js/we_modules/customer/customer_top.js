@@ -111,7 +111,7 @@ function we_cmd() {
 			break;
 		case "show_admin":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=customer_admin";
-			new (WE().util.jsWindow)(window, url, "customer_admin", -1, -1, 600, 420, true, true, true, false);
+			new (WE().util.jsWindow)(window, url, "customer_admin", -1, -1, 620, 460, true, true, true, false);
 			break;
 		case "show_sort_admin":
 			url = WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&pnt=sort_admin";

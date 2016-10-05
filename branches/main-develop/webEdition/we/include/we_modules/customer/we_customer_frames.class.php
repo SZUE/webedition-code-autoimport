@@ -74,7 +74,7 @@ class we_customer_frames extends we_modules_frame{
 	function getHTMLFieldsSelect($branch){
 		$select = new we_html_select(['name' => 'branch']);
 
-		$fields_names = $this->View->customer->getFieldsNames($branch, $this->View->settings->getEditSort());
+		$fields_names = $this->View->customer->getFieldsNames($branch);
 		$this->jsOut_fieldTypesByName = 'var fieldTypesByName = [];';
 		foreach($fields_names as $val){
 			$tmp = $this->View->getFieldProperties($val);
@@ -210,16 +210,14 @@ function setTab(tab) {
 		$select->selectOption($branch_select);
 
 		$fields = $this->getHTMLFieldsSelect($branch);
-		$fields->setAttributes(['name' => "fields_select", "size" => 15, "onchange" => '', "style" => "width:350px;height:250px;"]);
+		$fields->setAttributes(['name' => "fields_select", "size" => 15, "onchange" => 'setFieldsButtons(this.selectedIndex,this.length);', "style" => "width:350px;height:250px;"]);
 		//$hiddens = rray("name" => "field", "value" => ''));
 
 		$buttons_table = we_html_button::create_button(we_html_button::ADD, "javascript:we_cmd('open_add_field')") .
-			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('open_edit_field')") .
-			we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete_field')") .
-			we_html_button::create_button(we_html_button::DIRUP, "javascript:we_cmd('move_field_up')") .
-			we_html_button::create_button(we_html_button::DIRDOWN, "javascript:we_cmd('move_field_down')") .
-			we_html_element::htmlSpan(['class' => "defaultfont lowContrast"], g_l('modules_customer', '[sort_edit_fields_explain]')) .
-			we_html_button::create_button('reset', "javascript:we_cmd('reset_edit_order')");
+			we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('open_edit_field')", '', 0, 0, '', '', true, false, '', false, '', '', 'editFieldButton') .
+			we_html_button::create_button(we_html_button::DELETE, "javascript:we_cmd('delete_field')", '', 0, 0, '', '', true, false, '', false, '', '', 'deleteFieldButton') .
+			we_html_button::create_button(we_html_button::DIRUP, "javascript:we_cmd('move_field_up')", '', 0, 0, '', '', true, false, '', false, '', '', 'moveFieldUpButton') .
+			we_html_button::create_button(we_html_button::DIRDOWN, "javascript:we_cmd('move_field_down')", '', 0, 0, '', '', true, false, '', false, '', '', 'moveFieldDownButton');
 
 		$table = new we_html_table(['class' => 'default', "width" => 500], 4, 5);
 
@@ -228,7 +226,6 @@ function setTab(tab) {
 		$table->setCol(1, 0, ['style' => 'padding-right:10px;'], we_html_tools::htmlTextInput("branch", 48, $branch, '', 'style="width:350px;"'));
 		$table->setCol(1, 2, ['style' => 'padding-right:10px;'], $select->getHtml());
 		$table->setCol(1, 4, ['style' => 'padding-bottom:10px;'], we_html_button::create_button(we_html_button::EDIT, "javascript:we_cmd('open_edit_branch')"));
-
 
 		$table->setCol(2, 0, ['class' => "defaultfont lowContrast", 'style' => 'vertical-align:top;'], g_l('modules_customer', '[fields]'));
 		$table->setCol(3, 0, ['style' => 'vertical-align:top;padding-right:10px;'], $fields->getHtml());
@@ -453,10 +450,10 @@ var fieldDate = new weDate(date_format_dateonly);
 		$table->setCol($cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[default_sort_view]') . ":&nbsp;");
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_sort_view_select->getHtml());
 
-		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[start_year]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[start_year]') . ":&nbsp;");
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("start_year", 32, $this->View->settings->getSettings('start_year'), ''));
 
-		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
+		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[treetext_format]') . ":&nbsp;");
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], we_html_tools::htmlTextInput("treetext_format", 32, $this->View->settings->getSettings('treetext_format'), ''));
 
 
@@ -468,7 +465,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		}
 		$default_order->selectOption($this->View->settings->getSettings('default_order'));
 
-		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[default_order]') . ':&nbsp;');
+		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], g_l('modules_customer', '[default_order]') . ':&nbsp;');
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_order->getHtml());
 
 		$default_saveRegisteredUser_register = new we_html_select(['name' => 'default_saveRegisteredUser_register', 'style' => 'width:250px;', 'class' => 'weSelect']);
@@ -476,7 +473,7 @@ var fieldDate = new weDate(date_format_dateonly);
 		$default_saveRegisteredUser_register->addOption('true', 'true');
 		$default_saveRegisteredUser_register->selectOption($this->View->settings->getPref('default_saveRegisteredUser_register'));
 
-		$table->setCol( ++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], '&lt;we:saveRegisteredUser register=&quot;');
+		$table->setCol(++$cur, 0, ['class' => 'defaultfont', 'style' => 'padding-right:30px;'], '&lt;we:saveRegisteredUser register=&quot;');
 		$table->setCol($cur, 2, ['class' => 'defaultfont'], $default_saveRegisteredUser_register->getHtml() . '&quot;/>');
 
 		$close = we_html_button::create_button(we_html_button::CLOSE, "javascript:self.close();");

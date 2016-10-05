@@ -43,7 +43,7 @@ function saveField() {
 
 function we_cmd() {
 	var args = WE().util.getWe_cmdArgsArray(Array.prototype.slice.call(arguments));
-	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer");
+	var url = WE().util.getWe_cmdArgsUrl(args, WE().consts.dirs.WEBEDITION_DIR + "we_showMod.php?mod=customer&");
 
 	var branch, field;
 	switch (args[0]) {
@@ -66,46 +66,30 @@ function we_cmd() {
 			field = document.we_form.fields_select.value;
 			if (field === "") {
 				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else {
-				if (confirm(WE().consts.g_l.customer.admin.del_fild_question)) {
-					document.we_form.cmd.value = args[0];
-					submitForm();
-				}
+				break;
 			}
-			break;
-		case "reset_edit_order":
-			field = document.we_form.fields_select.value;
-			branch = document.we_form.branch.value;
-			if (confirm(WE().consts.g_l.customer.admin.reset_edit_order_question)) {
+			if (confirm(WE().consts.g_l.customer.admin.del_fild_question)) {
 				document.we_form.cmd.value = args[0];
 				submitForm();
 			}
 			break;
 		case "move_field_up":
-			field = document.we_form.fields_select.value;
-			branch = document.we_form.branch.value;
-			if (field === "") {
-				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else {
-				document.we_form.cmd.value = args[0];
-				submitForm();
-			}
-			break;
 		case "move_field_down":
 			field = document.we_form.fields_select.value;
 			branch = document.we_form.branch.value;
 			if (field === "") {
 				top.we_showMessage(WE().consts.g_l.customer.admin.no_field, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else {
-				document.we_form.cmd.value = args[0];
-				submitForm();
+				break;
 			}
+			document.we_form.cmd.value = args[0];
+			submitForm();
+
 			break;
 		case "open_edit_branch":
 			branch = document.we_form.branch_select.options[document.we_form.branch_select.selectedIndex].text;
 			if (branch === "") {
 				top.we_showMessage(WE().consts.g_l.customer.admin.no_branch, WE().consts.message.WE_MESSAGE_ERROR, this);
-			} else if (branch == WE().consts.g_l.customer.admin.other) {
+			} else if (branch === WE().consts.g_l.customer.admin.other) {
 				top.we_showMessage(WE().consts.g_l.customer.admin.branch_no_edit, WE().consts.message.WE_MESSAGE_ERROR, this);
 			} else {
 				url += "&pnt=branch_editor&art=edit&&branch=" + branch;
@@ -147,4 +131,11 @@ function submitForm(target, action, method, form) {
 	f.method = method ? method : "post";
 
 	f.submit();
+}
+
+function setFieldsButtons(pos, max) {
+	document.getElementById("editFieldButton").disabled = false;
+	document.getElementById("deleteFieldButton").disabled = false;
+	document.getElementById("moveFieldUpButton").disabled = (pos === 0);
+	document.getElementById("moveFieldDownButton").disabled = (pos === (max - 1));
 }

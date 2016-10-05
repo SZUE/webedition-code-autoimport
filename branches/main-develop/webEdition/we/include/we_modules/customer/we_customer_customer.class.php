@@ -60,9 +60,9 @@ class we_customer_customer extends we_base_model{
 	var $LastAccess = 0;
 	var $ModifyDate;
 	var $ModifiedBy;
-	var $protected = array('ID', 'Path', 'ModifiedBy', 'ModifyDate');
-	var $properties = array('Username', 'Password', 'Forename', 'Surname', 'LoginDenied', 'MemberSince', 'LastLogin', 'LastAccess', 'AutoLoginDenied', 'AutoLogin');
-	var $udates = array('MemberSince', 'LastLogin', 'LastAccess');
+	var $protected = ['ID', 'Path', 'ModifiedBy', 'ModifyDate'];
+	var $properties = ['Username', 'Password', 'Forename', 'Surname', 'LoginDenied', 'MemberSince', 'LastLogin', 'LastAccess', 'AutoLoginDenied', 'AutoLogin'];
+	var $udates = ['MemberSince', 'LastLogin', 'LastAccess'];
 
 	/**
 	 * Default Constructor
@@ -156,36 +156,26 @@ class we_customer_customer extends we_base_model{
 		return $real_name;
 	}
 
-	function getBranches(array &$banches, array &$fixed, array &$other, $mysort = ''){
+	function getBranches(array &$branches, array &$fixed, array &$other){
 		$fixed['ID'] = $this->ID; // Bug Fix #8413 + #8520
 		if(!isset($this->persistent_slots)){
 			return;
 		}
-		$sortarray = ($mysort ? makeArrayFromCSV($mysort) : range(0, count($this->persistent_slots) - 1));
 
-		if(count($sortarray) != count($this->persistent_slots)){
-			if(count($sortarray) == count($this->persistent_slots) - 1){
-				$sortarray[] = max($sortarray) + 1;
-			} else {
-				$sortarray = range(0, count($this->persistent_slots) - 1);
-			}
-		}
-		$orderedarray = array_combine($sortarray, $this->persistent_slots);
-		ksort($orderedarray);
-
-		$branche = [];
-		foreach($orderedarray as $per){
+		$branch = '';
+		foreach($this->persistent_slots as $per){
 			$var_value = (isset($this->$per) ? $this->$per : null);
-			$field = $this->transFieldName($per, $branche);
+			$field = $this->transFieldName($per, $branch);
 
 			if($field != $per){
-				$banches[$branche][$field] = $var_value;
+				$branches[$branch][$field] = $var_value;
 			} else if(in_array($per, $this->properties)){
 				$fixed[$per] = $var_value;
 			} else if(!in_array($per, $this->protected)){
 				$other[$per] = $var_value;
 			}
 		}
+		ksort($branches);
 	}
 
 	function getBranchesNames(){
@@ -194,10 +184,10 @@ class we_customer_customer extends we_base_model{
 		return array_keys($branches);
 	}
 
-	function getFieldsNames($branch, $mysort = ''){
+	function getFieldsNames($branch){
 		$branches = $common = $other = [];
 
-		$this->getBranches($branches, $common, $other, $mysort);
+		$this->getBranches($branches, $common, $other);
 
 		$arr = [];
 
@@ -447,7 +437,6 @@ class we_customer_customer extends we_base_model{
 		},
 	admin:{
 		del_fild_question:"' . g_l('modules_customer', '[del_fild_question]') . '",
-		reset_edit_order_question:"' . g_l('modules_customer', '[reset_edit_order_question]') . '",
 		other:"' . g_l('modules_customer', '[other]') . '",
 		no_field: "' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_field]')) . '",
 		no_branch:"' . we_message_reporting::prepareMsgForJS(g_l('modules_customer', '[no_branch]')) . '",
