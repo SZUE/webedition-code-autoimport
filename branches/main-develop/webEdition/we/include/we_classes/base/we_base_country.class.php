@@ -78,10 +78,10 @@ abstract class we_base_country{
 		$wd = $date->format('D');
 		$mon = $date->format('n');
 
-		return strtr($dat, ["d" . $wd . "d" => $days['abbreviated'][strtolower($wd)], //Mon bis Sun
-			"l" . $wd . "l" => $days['wide'][strtolower($wd)], //Sunday bis Saturday
-			"f" . $mon . "f" => $months['wide'][$mon], //January bis December
-			"m" . $mon . "m" => $months['abbreviated'][$mon], //Jan bis Dec
+		return strtr($dat, ['d' . $wd . 'd' => $days['abbreviated'][strtolower($wd)], //Mon bis Sun
+			'l' . $wd . 'l' => $days['wide'][strtolower($wd)], //Sunday bis Saturday
+			'f' . $mon . 'f' => $months['wide'][$mon], //January bis December
+			'm' . $mon . 'm' => $months['abbreviated'][$mon], //Jan bis Dec
 			]
 		);
 	}

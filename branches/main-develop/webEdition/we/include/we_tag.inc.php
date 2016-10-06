@@ -275,8 +275,8 @@ function weTag_getAttribute($name, $attribs, $default = '', $type = we_base_requ
 	$regs = [];
 	if($useGlobal && !is_array($value) && preg_match('|^\\\\?\$([^\[]+)(\[.*\])?|', $value, $regs)){
 		$value = (isset($regs[2]) ?
-				getArrayValue($GLOBALS, $regs[1], $regs[2]) :
-				(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
+			getArrayValue($GLOBALS, $regs[1], $regs[2]) :
+			(isset($GLOBALS[$regs[1]]) ? $GLOBALS[$regs[1]] : ''));
 	}
 
 	$value = we_base_request::filterVar($value, (is_bool($type) ? we_base_request::BOOL : $type), $default);
@@ -300,11 +300,11 @@ function cutSimpleText($text, $len){
 	$text = substr($text, 0, $len);
 	//cut to last whitespace, if any.
 	return substr($text, 0, max([strrpos($text, ' '),
-				strrpos($text, '.'),
-				strrpos($text, ','),
-				strrpos($text, "\n"),
-				strrpos($text, "\t"),
-			]) ?: $len
+			strrpos($text, '.'),
+			strrpos($text, ','),
+			strrpos($text, "\n"),
+			strrpos($text, "\t"),
+		]) ?: $len
 	);
 }
 
@@ -372,8 +372,8 @@ function we_getDocForTag($docAttr, $maindefault = false){
 			return $GLOBALS['WE_MAIN_DOC'];
 		default :
 			return ($maindefault ?
-					$GLOBALS['WE_MAIN_DOC'] :
-					$GLOBALS['we_doc']);
+				$GLOBALS['WE_MAIN_DOC'] :
+				$GLOBALS['we_doc']);
 	}
 }
 
@@ -498,7 +498,7 @@ function we_getSelectField($name, $value, $values, array $attribs = [], $addMiss
 	}
 	if((!$isin) && $addMissing && $value != ''){
 		$content .= getHtmlTag('option', ['value' => oldHtmlspecialchars($value), 'selected' => 'selected'
-				], oldHtmlspecialchars($value), true);
+			], oldHtmlspecialchars($value), true);
 	}
 	return getHtmlTag('select', $attribs, $content, true);
 }
@@ -539,5 +539,5 @@ function getFieldOutLang(array $attribs){
 		$lang = explode('_', $GLOBALS['WE_LANGUAGE']);
 		$langcode = array_search($lang[0], getWELangs());
 	}
-	return $langcode;
+	return [$lang, $langcode];
 }

@@ -56,8 +56,8 @@ function we_tag_setVar(array $attribs){
 					$valueFrom = isset($GLOBALS['WE_MAIN_DOC']->$nameFrom) ? $GLOBALS['WE_MAIN_DOC']->$nameFrom : '';
 				} else {
 					$valueFrom = $GLOBALS['WE_MAIN_DOC']->issetElement($nameFrom . ($typeFrom === 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
-							$GLOBALS['WE_MAIN_DOC']->getField(['name' => $nameFrom], $typeFrom, true) :
-							'';
+						$GLOBALS['WE_MAIN_DOC']->getField(['name' => $nameFrom], $typeFrom, true) :
+						'';
 				}
 				break;
 			case 'self' :
@@ -65,22 +65,23 @@ function we_tag_setVar(array $attribs){
 					$valueFrom = isset($GLOBALS['we_doc']->$nameFrom) ? $GLOBALS['we_doc']->$nameFrom : '';
 				} else {
 					$valueFrom = $GLOBALS['we_doc']->issetElement($nameFrom . ($typeFrom === 'href' ? we_base_link::MAGIC_INT_LINK : '')) ?
-							$GLOBALS['we_doc']->getField(['name' => $nameFrom], $typeFrom, true) :
-							'';
+						$GLOBALS['we_doc']->getField(['name' => $nameFrom], $typeFrom, true) :
+						'';
 				}
 				break;
 			case 'object' :
 			case 'document' :
 				$valueFrom = ($propertyFrom ?
-						(isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '') :
-						(is_object($GLOBALS['we_' . $from][$formnameFrom]) && $GLOBALS['we_' . $from][$formnameFrom]->issetElement($nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : ''));
+					(isset($GLOBALS['we_' . $from][$formnameFrom]->$nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->$nameFrom : '') :
+					(is_object($GLOBALS['we_' . $from][$formnameFrom]) && $GLOBALS['we_' . $from][$formnameFrom]->issetElement($nameFrom) ? $GLOBALS['we_' . $from][$formnameFrom]->getElement($nameFrom) : ''));
 
 				break;
 			case 'sessionfield' :
 				$valueFrom = isset($_SESSION['webuser'][$nameFrom]) ? $_SESSION['webuser'][$nameFrom] : '';
 				break;
 			case 'calendar' :
-				$valueFrom = we_listview_base::getCalendarFieldValue($GLOBALS['lv']->calendar_struct, $nameFrom, getFieldOutLang($attribs));
+				list(, $langcode) = getFieldOutLang($attribs);
+				$valueFrom = we_listview_base::getCalendarFieldValue($GLOBALS['lv']->calendar_struct, $nameFrom, $langcode);
 				break;
 			case 'listview' :
 				if(!isset($GLOBALS['lv'])){
